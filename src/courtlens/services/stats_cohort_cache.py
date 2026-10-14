@@ -189,6 +189,7 @@ def presentation_page(
     from courtlens.services.stats_engine import (
         decode_cursor,
         encode_cursor,
+        fold_name,
         stats_presentation_hash,
     )
 
@@ -197,13 +198,13 @@ def presentation_page(
     if eligible > len(rows):
         return None
     ids = set(presentation.player_ids) if presentation.player_ids is not None else None
-    name = (query.name or "").strip().lower()
+    name = fold_name(query.name or "")
     shown = sort_rows(
         [
             row
             for row in rows
             if (ids is None or row["player_id"] in ids)
-            and (not name or name in str(row["player_name"]).lower())
+            and (not name or name in fold_name(str(row["player_name"])))
         ],
         query.sort,
     )

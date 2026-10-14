@@ -221,3 +221,26 @@ for _bucket in BUCKETS:
             ["selected_pbp", "shotdetail", "event_lineups"],
             analogue=True,
         )
+
+# Owner, 2026-10-13: only stats with solid footing stay on the site. Nothing serves, lists or
+# ranks a retired metric; the producer above still computes them so sealed extras artifacts stay
+# reproducible byte for byte.
+# - Play-type bucket analogues: implausible values (Create TS median 19%, Space TS median 133%).
+# - Block recovered fraction: no player reaches its 200-block qualification, so it never ranks.
+# - Credited turnovers forced: steals plus charges presented as forced turnovers, which complete
+#   attribution cannot support.
+# - PBP-sample TS% and FTR: duplicates of the box-score TS% and FTR that differ by up to half a
+#   point because they cover fewer games.
+RETIRED_METRICS = frozenset(
+    {
+        *(
+            f"pbp_{bucket}_{suffix}"
+            for bucket in BUCKETS
+            for suffix in ("tsa", "frequency", "ts", "rts")
+        ),
+        "pbp_block_recovered_pct",
+        "pbp_credited_ftov_per100",
+        "impact_ts_pct",
+        "impact_ftr",
+    }
+)

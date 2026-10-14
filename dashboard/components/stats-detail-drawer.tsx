@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { TeamLogoStack } from "./team-logo";
 import { Icon } from "./ui/icon";
+import { OverlayPortal } from "./ui/overlay-portal";
 import { PlayerPortrait } from "./player-portrait";
 import { formatStatValue, formatIntValue, formatPctValue } from "@/lib/stats-presets";
 import type { PlayerResearchItem } from "@/lib/types";
@@ -46,7 +47,7 @@ export function StatsDetailDrawer({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") { e.preventDefault(); onClose(); }
       if (e.key === "Tab" && panel) {
-        const controls = [...panel.querySelectorAll<HTMLElement>("a[href], button:not(:disabled), input, select, textarea, [tabindex='0']")];
+        const controls = [...panel.querySelectorAll<HTMLElement>("a[href], button:not(:disabled), summary, input, select, textarea, [tabindex='0']")];
         const first = controls[0], last = controls.at(-1);
         if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)) {
           e.preventDefault(); last?.focus();
@@ -77,6 +78,7 @@ export function StatsDetailDrawer({
   const queryString = queryParams.toString();
 
   return (
+    <OverlayPortal>
     <div
       className="stats-drawer-backdrop"
       onClick={(e) => {
@@ -97,9 +99,6 @@ export function StatsDetailDrawer({
               size="lg"
             />
             <div className="stats-drawer-title-group">
-              <span className="stats-drawer-tag font-mono text-xs">
-                ID: {player.player_id}
-              </span>
               <h2 id="player-drawer-title" className="stats-drawer-name">
                 {player.player_name}
               </h2>
@@ -131,28 +130,30 @@ export function StatsDetailDrawer({
           </button>
         </div>
 
+        <div className="stats-drawer-content">
         {/* Action Buttons */}
         <div className="stats-drawer-actions">
           <Link
             href={`/players/${player.player_id}?${queryString}`}
             className="button button-primary stats-drawer-action-primary"
           >
-            View Full Profile
+            <Icon name="person" size={16} /> Full profile
           </Link>
           <Link
             href={`/compare?playerA=${player.player_id}&${queryString}`}
             className="button"
           >
-            Compare Head-to-Head
+            <Icon name="users" size={16} /> Compare
           </Link>
           {onToggleCompare && (
             <button
               type="button"
               onClick={() => onToggleCompare(player)}
               className={`button ${isCompared ? "button-active" : ""}`}
+              aria-pressed={isCompared}
               title={isCompared ? "Remove from Compare Tray" : "Add to Compare Tray (C)"}
             >
-              {isCompared ? <><Icon name="check" size={14} />In Compare Tray</> : <><Icon name="plus" size={14} />Add to Tray</>}
+              {isCompared ? <><Icon name="check" size={16} />In tray</> : <><Icon name="plus" size={16} />Add to tray</>}
             </button>
           )}
           {onToggleFavorite && (
@@ -162,6 +163,7 @@ export function StatsDetailDrawer({
               className={`button ${isFavorite ? "button-active text-accent" : ""}`}
               title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               aria-label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+              aria-pressed={isFavorite}
             >
               {isFavorite ? <><Icon name="star" size={14} filled />Favorited</> : <><Icon name="star" size={14} />Favorite</>}
             </button>
@@ -169,7 +171,7 @@ export function StatsDetailDrawer({
         </div>
 
         {/* Investigation Shortcuts */}
-        <div className="stats-drawer-shortcuts">
+        <nav className="stats-drawer-shortcuts" aria-label="Player research links">
           <Link
             href={`/research/trends?playerId=${player.player_id}&${queryString}`}
             className="button button-small"
@@ -191,33 +193,10 @@ export function StatsDetailDrawer({
           >
             Peers
           </Link>
-        </div>
-
-        {/* Temporal Discipline & Quality Disclaimer */}
-        <div className="stats-drawer-disclaimer">
-          <strong className="text-accent text-xs">Temporal Discipline Notice:</strong>
-          <p className="text-xs text-muted">
-            Exclusively derived from games strictly prior to <code>{context.before_date}</code> ({context.season}, {context.phase.replace("_", " ")}).
-            Absent box scores are unknown, never zero outcomes.
-          </p>
-        </div>
+        </nav>
 
         {/* Drawer Body Sections */}
         <div className="stats-drawer-body">
-          {player.impact_support && <section className="stats-drawer-section">
-            <h3 className="stats-drawer-section-title">CourtLens impact samples</h3>
-            <p>Model support differs from the box-score appearance sample. Missing metrics stay unknown.</p>
-            <details><summary>Metric-specific support</summary>
-              {Object.entries(player.impact_support).map(([key, sample]) => <p key={key}>
-                <strong>{key}</strong>: {sample.covered_games ?? sample.games ?? 0} covered games
-                {sample.total_games != null && ` / ${sample.total_games} player games`}
-                {sample.denominator != null && ` · denominator ${sample.denominator.toFixed(2)}`}
-                {sample.off_opportunities != null && ` · offense ${sample.off_opportunities}, defense ${sample.def_opportunities}`}
-                {sample.on && sample.off && ` · on/off minutes ${(sample.on.seconds / 60).toFixed(1)} / ${(sample.off.seconds / 60).toFixed(1)}`}
-                {` · ${sample.qualified ? "Qualified" : sample.reason || "Below ranking sample"}`}
-              </p>)}
-            </details>
-          </section>}
           {/* Section: Scoring & Volume */}
           <div className="stats-drawer-section">
             <h3 className="stats-drawer-section-title">Scoring &amp; Volume</h3>
@@ -345,6 +324,8 @@ export function StatsDetailDrawer({
           </div>
         </div>
 
+        </div>
+
         {/* Drawer Footer */}
         <div className="stats-drawer-footer">
           <span className="text-xs text-muted">
@@ -356,5 +337,6 @@ export function StatsDetailDrawer({
         </div>
       </div>
     </div>
+    </OverlayPortal>
   );
 }

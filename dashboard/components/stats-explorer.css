@@ -113,9 +113,10 @@
 .stats-workspace .stats-guide-cell .player-portrait, .stats-workspace .stats-guide-cell .player-portrait-fallback { width: 30px; height: 30px; min-width: 30px; min-height: 30px; border: 0; font-size: var(--text-xs); }
 .stats-workspace .dense-stats-table .stats-group-1 { background: var(--color-surface-2); }
 .stats-workspace .dense-stats-table tbody tr:hover td,
-.stats-workspace .dense-stats-table tbody tr.row-previewed td { background: var(--color-surface-hover); }
+.stats-workspace .dense-stats-table tbody tr:focus-visible td { background: var(--color-surface-hover); }
 .stats-workspace .dense-stats-table tbody tr.row-selected td { background: var(--color-surface-3); }
-.stats-workspace .dense-stats-table tbody tr.row-previewed .player-cell-name { color: var(--color-accent); }
+.stats-workspace .dense-stats-table tbody tr:hover .player-cell-name,
+.stats-workspace .dense-stats-table tbody tr:focus-visible .player-cell-name { color: var(--color-accent); }
 .stats-workspace .dense-stats-table .stat-cell-content { align-items: flex-end; gap: var(--space-0-5); line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .stat-main-value { font-family: var(--font-sans), sans-serif; font-weight: 500; line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .pct-elite, .stats-workspace .dense-stats-table .pct-good { color: var(--color-accent); }
@@ -127,6 +128,9 @@
 .stats-workspace .stats-header-search .lookup-input-wrapper:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 1px var(--color-accent); }
 .stats-workspace .stats-header-search input { width: 100%; min-width: 0; min-height: var(--control-sm); padding: 0; font-size: var(--text-sm); background: transparent; border: 0; border-radius: 0; }
 .stats-workspace .stats-header-search input::-webkit-search-cancel-button { display: none; }
+/* Typed searches keep the current rows, dimmed, until the filtered rows land. */
+.stats-workspace .dense-stats-table tbody { transition: opacity var(--dur-fast) var(--ease-out); }
+.stats-workspace .dense-stats-table tbody.stats-table-body-searching { opacity: 0.55; }
 .stats-workspace .stats-row-actions { text-align: center; white-space: nowrap; }
 .stats-workspace .stats-icon-action { width: 24px; min-height: var(--control-sm); display: inline-grid; place-items: center; color: var(--color-text-secondary); background: transparent; border: 0; border-radius: var(--radius-xs); }
 .stats-workspace .stats-icon-action:hover, .stats-workspace .stats-icon-action[aria-pressed=true] { color: var(--color-accent); background: var(--color-accent-soft); }
@@ -198,37 +202,46 @@
 .stats-workspace .density-compact .player-cell-teams { font-size: var(--text-xs); }
 .stats-workspace .density-compact .stats-primary-portrait { width: 28px; height: 28px; min-width: 28px; min-height: 28px; }
 
-/* Table palette: lifted header, guide bands, rail and footer around the dark card/data surface. */
-.stats-workspace .stats-table-frame {
-  --table-surface: var(--color-surface-3);
-  --table-data: color-mix(in srgb, var(--color-surface-1) 55%, var(--color-surface-3));
-  --table-data-hover: color-mix(in srgb, var(--color-white) 4%, var(--table-data));
-  --table-row-hover: color-mix(in srgb, var(--color-white) 4%, var(--color-surface-3));
-
-  background: var(--table-surface);
+/* Table palette: lifted header, guide bands, rail and footer around the dark card/data surface.
+   The frame and the preview rail re-map the charcoal surface steps onto the slate pair so their
+   controls, inputs and selected rows stay in one family on the blue page. Above the table the
+   control consoles use exactly the table's lift, like Databallr. */
+.stats-workspace {
+  --color-surface-2: var(--color-table-lift);
+  --color-surface-3: var(--color-table-lift);
 }
+.stats-workspace .stats-frame-layout {
+  --table-surface: var(--color-table-lift);
+  --table-data: var(--color-table-well);
+  --table-data-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-data));
+  --table-row-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-surface));
+  --color-surface-1: var(--color-table-well);
+  --color-surface-2: color-mix(in srgb, var(--color-table-well) 50%, var(--color-table-lift));
+  --color-surface-3: var(--color-table-lift);
+}
+.stats-workspace .stats-table-frame { background: var(--table-surface); }
+.stats-workspace .stats-frame-layout .stats-preview-rail { background: var(--color-table-rail); scrollbar-color: var(--color-hairline-strong) var(--color-table-rail); }
 .stats-workspace .stats-table-frame .stats-scroll-region,
-.stats-workspace .stats-table-frame .stats-preview-rail,
 .stats-workspace .stats-table-frame .stats-pagination-footer { background: var(--table-surface); scrollbar-color: var(--color-hairline-strong) var(--table-surface); }
 .stats-workspace .stats-table-frame .dense-stats-table th,
 .stats-workspace .stats-table-frame .dense-stats-table td,
 .stats-workspace .stats-table-frame .dense-stats-table .pinned-col,
 .stats-workspace .stats-table-frame .dense-stats-table .stats-group-1 { background: var(--table-surface); }
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover td,
-.stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed td { background: var(--table-row-hover); }
+.stats-workspace .stats-table-frame .dense-stats-table tbody tr:focus-visible td { background: var(--table-row-hover); }
 .stats-workspace .stats-table-frame .dense-stats-table tbody td { border-bottom-color: var(--color-hairline); }
 .stats-workspace .stats-table-frame .dense-stats-table .stats-guide-cell { background: var(--table-surface); border-bottom-color: transparent; }
 .stats-workspace .stats-table-frame .dense-stats-table tbody .stats-guide-cell { position: relative; background: var(--table-data); }
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover .stats-guide-cell,
-.stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed .stats-guide-cell { background: var(--table-data-hover); }
+.stats-workspace .stats-table-frame .dense-stats-table tbody tr:focus-visible .stats-guide-cell { background: var(--table-data-hover); }
 .stats-workspace .stats-table-frame .dense-stats-table tbody .stats-guide-cell::before { content: ""; position: absolute; inset: 0; background: var(--table-surface); transform: translateX(var(--guide-offset, 0px)); }
 /* Player cards and metric cells share the darker inner well; header and guide bands stay lifted. */
 .stats-workspace .stats-table-frame .dense-stats-table tbody .pinned-col,
 .stats-workspace .stats-table-frame .dense-stats-table tbody td.stats-metric-cell { background: var(--table-data); }
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover .pinned-col,
-.stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed .pinned-col,
+.stats-workspace .stats-table-frame .dense-stats-table tbody tr:focus-visible .pinned-col,
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover td.stats-metric-cell,
-.stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed td.stats-metric-cell { background: var(--table-data-hover); }
+.stats-workspace .stats-table-frame .dense-stats-table tbody tr:focus-visible td.stats-metric-cell { background: var(--table-data-hover); }
 /* Seamless rows like the reference: no row rules, so the guide band reads as part of the table. */
 .stats-workspace .stats-table-frame .dense-stats-table tbody td { border-bottom: 0; }
 .stats-workspace .stats-table-frame .stats-guide-cell .player-portrait,
@@ -408,7 +421,9 @@
   .stats-trend-series[data-series="3"], .stats-trend-player[data-series="3"] { --series: var(--color-trend-3); }
   .stats-trend-series[data-series="4"], .stats-trend-player[data-series="4"] { --series: var(--color-trend-4); }
   .stats-trend-player { --series: var(--color-trend-1); }
-  .stats-trend-series polyline { fill: none; stroke: var(--series); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .stats-trend-series path { fill: none; stroke: var(--series); stroke-linejoin: round; stroke-linecap: round; }
+  .stats-trend-line { stroke-width: 2.5; }
+  .stats-trend-glow { stroke-width: 10; opacity: 0.16; }
   .stats-trend-players { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: var(--space-4); padding-top: var(--space-2); border-top: 1px solid var(--color-hairline); }
   .stats-trend-player { position: relative; display: grid; justify-items: center; gap: var(--space-1); width: 96px; text-align: center; font-size: var(--text-sm); }
   .stats-trend-player .player-portrait, .stats-trend-player .player-portrait-fallback { width: 64px; height: 64px; border-radius: var(--radius-sm); box-shadow: inset 0 0 0 2px var(--series); }
@@ -456,7 +471,7 @@
   .stats-workspace :is(.stats-position-chip, .stats-team-button, .stats-draft-menu .ui-menu-trigger):active { transform: scale(0.96); }
   .stats-team-option .team-logo { transition: transform var(--dur-fast) var(--ease-out); }
   .stats-team-option:hover .team-logo { transform: scale(1.08); }
-  .stats-trend-dialog .chart-value-dot, .stats-trend-dialog .stats-trend-series polyline { animation: chart-crossfade var(--dur-slow) var(--ease-out); }
+  .stats-trend-dialog .chart-value-dot, .stats-trend-dialog .stats-trend-series path { animation: chart-crossfade var(--dur-slow) var(--ease-out); }
 }
 
 /* Stats fifth review: one fixed frame height. The rail matches the table frame (its content
@@ -547,4 +562,116 @@
     color: var(--color-on-accent);
     font-weight: 600;
   }
+}
+
+/* Owner review: brighter scope controls, visible header alignment and a padded player drawer. */
+@layer foundation {
+  .stats-workspace :is(.stats-help-button, .context-season-stepper, .context-stepper-button,
+    .context-season-picker, .context-phase-segments, .stats-preset-tabs, .stats-divider-modes,
+    .stats-view-actions .control-pill, .stats-team-button, .stats-position-chip,
+    .stats-draft-menu .ui-menu-trigger, .ui-filter-bar-scope .ui-date-trigger,
+    .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle) {
+    background: var(--color-surface-3);
+  }
+  .stats-workspace .dense-stats-table .stats-header-tier-2 .table-sort-button {
+    align-items: flex-end;
+    padding-block: 0;
+  }
+  .stats-workspace .dense-stats-table .pinned-col-search { padding-bottom: calc(var(--space-1) + var(--space-0-5)); }
+  .stats-workspace .stats-counting-modes { gap: var(--space-1); max-width: 100%; }
+  .stats-workspace .stats-counting-modes .control-pill { min-height: calc(var(--control-md) + var(--space-1)); padding: 0 var(--space-3); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 500; border-radius: var(--radius-sm); background: var(--color-surface-2); }
+  .stats-workspace .stats-counting-modes .control-pill.active { background: var(--color-accent-soft); color: var(--color-accent); font-weight: 600; }
+  .stats-workspace .stats-counting-modes .control-pill:hover:not(:disabled) { background: var(--color-surface-3); }
+
+  body:has(> .stats-drawer-backdrop) { overflow: hidden; }
+  .stats-drawer-backdrop { animation-duration: var(--dur-fast); }
+  .stats-drawer-panel {
+    --drawer-padding: var(--space-6);
+    width: 520px;
+    max-width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+    border: 0;
+    box-shadow: var(--shadow-3);
+    animation-duration: var(--dur-base);
+    animation-timing-function: var(--ease-out);
+  }
+  .stats-drawer-header { flex: none; align-items: center; gap: var(--space-3); padding: var(--drawer-padding); }
+  .stats-drawer-hero { flex: 1; min-width: 0; gap: var(--space-3); }
+  .stats-drawer-hero :is(.player-portrait, .player-portrait-fallback) { width: 64px; height: 64px; min-width: 64px; min-height: 64px; }
+  .stats-drawer-title-group { min-width: 0; gap: var(--space-2); }
+  .stats-drawer-name { font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; overflow-wrap: anywhere; }
+  .stats-drawer-teams { gap: var(--space-1); }
+  .stats-drawer-close { flex: none; display: grid; place-items: center; width: var(--control-lg); min-height: var(--control-lg); padding: 0; }
+  .stats-drawer-content { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+  .stats-drawer-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); padding: var(--space-5) var(--drawer-padding) var(--space-3); border: 0; }
+  .stats-drawer-panel .button { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-width: 0; min-height: var(--control-lg); padding: var(--space-2) var(--space-4); border: 0; border-radius: var(--radius-sm); background: var(--color-surface-3); color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 500; text-decoration: none; white-space: nowrap; }
+  .stats-drawer-panel .button:hover { background: color-mix(in srgb, var(--color-white) 4%, var(--color-surface-3)); }
+  .stats-drawer-panel .button-primary { background: var(--color-accent); color: var(--color-on-accent); font-weight: 600; }
+  .stats-drawer-panel .button-primary:hover { background: var(--color-accent); }
+  .stats-drawer-panel .button-active { background: var(--color-accent-soft); color: var(--color-accent); }
+  .stats-drawer-shortcuts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0 var(--drawer-padding) var(--space-5); }
+  .stats-drawer-shortcuts .button { min-height: var(--control-md); padding-inline: var(--space-2); font-size: var(--text-xs); }
+  .stats-drawer-body { padding: var(--space-1) var(--drawer-padding) var(--drawer-padding); gap: var(--space-6); }
+  .stats-drawer-section { gap: var(--space-3); }
+  .stats-drawer-section-title { font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600; text-transform: none; letter-spacing: 0; padding-bottom: var(--space-2); color: var(--color-text); }
+  .stats-drawer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+  .stats-drawer-panel .stats-card { min-width: 0; padding: var(--space-4); gap: var(--space-1); border: 0; }
+  .stats-drawer-panel .stats-card-label { font-size: var(--text-xs); line-height: var(--text-xs-lh); text-transform: none; letter-spacing: 0; }
+  .stats-drawer-panel .stats-card-value { font-family: var(--font-sans), sans-serif; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .stats-drawer-panel .stats-card-sub { margin: 0; line-height: var(--text-xs-lh); }
+  .stats-drawer-footer { flex: none; padding: var(--space-3) var(--drawer-padding); gap: var(--space-3); border-top-color: var(--color-hairline); }
+  @media (max-width: 767px) {
+    .stats-workspace .stats-counting-modes { flex-wrap: wrap; }
+    .stats-workspace .stats-counting-modes .control-pill { min-height: var(--control-lg); }
+    .stats-drawer-panel { --drawer-padding: var(--space-4); width: 100vw; }
+    .stats-drawer-shortcuts .button { min-height: var(--control-lg); }
+  }
+}
+
+/* Owner review: the consoles above the table highlight on hover (this layer outranks the older
+   pages-layer hover rules), and the single-choice pill groups slide like the preset tabs. */
+@layer foundation {
+  .stats-workspace {
+    --console-hover: color-mix(in srgb, var(--color-white) 7%, var(--color-table-lift));
+  }
+  .stats-workspace :is(.stats-help-button, .context-stepper-button, .context-season-picker,
+    .stats-view-actions .control-pill, .stats-team-button, .stats-position-chip,
+    .stats-draft-menu .ui-menu-trigger, .ui-filter-bar-scope .ui-date-trigger,
+    .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle,
+    .stats-preset-tab, .stats-divider-modes .control-pill, .context-phase-segments .ui-segmented-item,
+    .stats-counting-modes .control-pill) {
+    /* Background only: a colour fade runs on the main thread and lags the label behind the slide. */
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .stats-workspace :is(.stats-help-button, .context-stepper-button, .context-season-picker,
+    .stats-view-actions .control-pill, .stats-team-button, .stats-position-chip,
+    .stats-draft-menu .ui-menu-trigger, .ui-filter-bar-scope .ui-date-trigger,
+    .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle,
+    .stats-preset-tab, .stats-divider-modes .control-pill, .context-phase-segments .ui-segmented-item,
+    .stats-counting-modes .control-pill):hover:not(:disabled, .active, [aria-pressed="true"], [aria-checked="true"]) {
+    background-color: var(--console-hover);
+    color: var(--color-text);
+  }
+  .stats-workspace :is(.stats-divider-modes, .stats-counting-modes) .control-pill { position: relative; }
+  .stats-workspace :is(.stats-divider-modes, .stats-counting-modes) .control-pill.active { background: transparent; box-shadow: none; }
+  .stats-workspace :is(.stats-divider-modes, .stats-counting-modes) .control-pill > span:not(.stats-preset-indicator) { position: relative; z-index: var(--z-base); }
+}
+
+/* Databallr-style control contrast: inactive labels above the table read brighter and bolder.
+   Active (accent) and disabled controls keep their own colors. Foundation layer, because the
+   shared control colors are set there. */
+@layer foundation {
+  .stats-workspace :is(
+    .stats-help-button, .context-stepper-button, .context-phase-segments .ui-segmented-item,
+    .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .stats-team-button, .stats-position-chip,
+    .stats-draft-menu .ui-menu-trigger, .ui-filter-bar-meta .ui-button, .stats-preset-tab,
+    .stats-divider-modes .control-pill, .stats-view-actions .control-pill, .stats-counting-modes .control-pill
+  ):not(.active, .is-selected, .ui-segmented-item-active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], :disabled) {
+    color: var(--color-text-control);
+    font-weight: 600;
+    &:hover { color: var(--color-text); }
+  }
+  .stats-workspace .stats-draft-menu.is-selected .ui-menu-trigger { color: var(--color-accent); }
+  .stats-workspace .ui-filter-bar-scope .ui-popover-trigger { font-weight: 600; }
 }

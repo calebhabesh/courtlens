@@ -9,10 +9,10 @@ import type { MetricDefinition } from "./types";
  */
 
 export type GlossaryGroup = "Counting Stats" | "Shooting" | "Rates" | "Impact Metrics" | "On-Off" | "Defense"
-  | "Rebounding" | "Playmaking" | "Play Types" | "Team" | "Other";
+  | "Rebounding" | "Playmaking" | "Team" | "Other";
 
 export const GLOSSARY_GROUPS: GlossaryGroup[] = ["Counting Stats", "Shooting", "Rates", "Impact Metrics", "On-Off",
-  "Defense", "Rebounding", "Playmaking", "Play Types", "Team", "Other"];
+  "Defense", "Rebounding", "Playmaking", "Team", "Other"];
 
 const PLAIN: Record<string, string> = {
   dpm: "DARKO's forecast of a player's contribution to scoring margin against an average player, in points per 100 possessions. Imported from darko.app at the phase's last admitted game date; not a season average.",
@@ -70,20 +70,16 @@ const PLAIN: Record<string, string> = {
   pbp_blk_per100: "Blocks per 100 defensive possessions played.",
   pbp_foul_frequency: "Personal fouls relative to possessions played.",
   pbp_drb_pct: "Share of available defensive rebounds the player grabbed while on the court.",
-  pbp_block_recovered_pct: "Share of the player's blocks after which the team recovered the ball.",
   matchup_fga_per100: "Field goal attempts by opponents the player was matched up against, per 100 defensive possessions.",
-  impact_ts_pct: "True shooting percentage over the games in the play-by-play sample used for impact metrics.",
   impact_rts: "The player's true shooting percentage minus the league average, in percentage points.",
   impact_tsadd_per100: "Points added over a league-average shooter on the same shooting volume, per 100 possessions.",
   impact_three_point_rate: "Three-point attempts as a share of all field goal attempts (3PA / FGA).",
-  impact_ftr: "Free throw attempts per field goal attempt over the games in the play-by-play sample.",
   impact_ast_per100: "Assists per 100 offensive possessions played.",
   pbp_bad_pass_tov: "Turnovers recorded as bad passes in play-by-play.",
   pbp_rim_assists: "Assists on made shots in the restricted area.",
   pbp_self_miss_orb_pct: "Share of the player's own missed shots that the player rebounds.",
   pbp_team_miss_orb_pct: "Share of teammates' missed shots, while the player is on the court, that the player rebounds.",
   pbp_charges_drawn: "Offensive fouls drawn by taking a charge.",
-  pbp_credited_ftov_per100: "Steals plus charges drawn per 100 defensive possessions.",
   fg2m: "Two-point field goals made (all makes inside the three-point line).",
   fg2a: "Two-point field goal attempts.",
   fg2_pct: "Two-pointers made divided by two-pointers attempted.",
@@ -123,18 +119,15 @@ const NAME: Record<string, string> = {
   on_defensive_rating: "Defensive Rating On Court", onoff_defensive_rating: "Defensive Rating On-Off Difference",
   pbp_stl_per100: "Steals Per 100 Possessions", pbp_blk_per100: "Blocks Per 100 Possessions",
   pbp_foul_frequency: "Foul Rate", pbp_drb_pct: "Defensive Rebound Percentage",
-  pbp_block_recovered_pct: "Block Recovery Percentage", matchup_fga_per100: "Matchup Shots Faced Per 100 Possessions",
-  impact_ts_pct: "True Shooting Percentage (Play-by-Play Sample)", impact_rts: "Relative True Shooting",
+  matchup_fga_per100: "Matchup Shots Faced Per 100 Possessions",
+  impact_rts: "Relative True Shooting",
   impact_tsadd_per100: "True Shooting Points Added Per 100 Possessions", impact_three_point_rate: "Three-Point Attempt Rate",
-  impact_ftr: "Free Throw Rate (Play-by-Play Sample)", impact_ast_per100: "Assists Per 100 Possessions",
+  impact_ast_per100: "Assists Per 100 Possessions",
   pbp_bad_pass_tov: "Bad-Pass Turnovers", pbp_rim_assists: "Rim Assists",
   pbp_self_miss_orb_pct: "Own-Miss Offensive Rebound Percentage", pbp_team_miss_orb_pct: "Teammate-Miss Offensive Rebound Percentage",
-  pbp_charges_drawn: "Charges Drawn", pbp_credited_ftov_per100: "Turnovers Forced Per 100 Possessions",
+  pbp_charges_drawn: "Charges Drawn",
   rim_ast_per100: "Rim Assists Per 100 Possessions",
 };
-
-const BUCKET_NAMES: Record<string, string> = { create: "Self-Created", space: "Spacing", trans: "Transition", finish: "Rim Finishing", unknown: "Unclassified" };
-const BUCKET_STAT_NAMES: Record<string, string> = { tsa: "True Shooting Attempts", frequency: "Shot Frequency", ts: "True Shooting Percentage", rts: "Relative True Shooting" };
 
 const PER_36: Record<string, string> = {
   pts: "Points", reb: "Rebounds", ast: "Assists", stl: "Steals", blk: "Blocks", tov: "Turnovers", pf: "Personal fouls",
@@ -142,39 +135,19 @@ const PER_36: Record<string, string> = {
   rim_ast: "Rim assists", pts_created: "Points created",
 };
 
-const BUCKETS: Record<string, string> = {
-  create: "unassisted shots outside the restricted area (self-created)",
-  space: "assisted shots outside the restricted area (spacing)",
-  trans: "shots within 6 seconds of an opponent turnover or defensive rebound (transition)",
-  finish: "half-court shots in the restricted area (finishing)",
-  unknown: "shots without a usable location or assist record",
-};
-
-const BUCKET_STAT: Record<string, (bucket: string) => string> = {
-  tsa: bucket => `True shooting attempts (FGA + 0.44 × FTA) on ${bucket}.`,
-  frequency: bucket => `Share of the player's true shooting attempts that were ${bucket}.`,
-  ts: bucket => `True shooting percentage on ${bucket}.`,
-  rts: bucket => `True shooting percentage on ${bucket}, relative to the league average on the same shot type.`,
-};
-
 /** Friendlier short forms where the catalog's own short name reads like a field name. */
 const SHORT: Record<string, string> = {
   team_possessions_estimated: "POSS", team_off_rtg_estimated: "ORTG", team_def_rtg_estimated: "DRTG",
   team_net_rtg_estimated: "NET RTG", team_efg_pct: "Team eFG%", team_tov_pct: "Team TOV%",
   team_oreb_pct: "Team OREB%", team_ftr: "Team FTR", pbp_foul_frequency: "Foul rate",
-  pbp_block_recovered_pct: "BLK REC%", matchup_fga_per100: "Matchup FGA/100",
-  pbp_credited_ftov_per100: "Forced TOV/100", pbp_charges_drawn: "Charges",
-  impact_ts_pct: "PBP TS%", impact_ftr: "PBP FTR", pbp_rim_assists: "Rim AST", pbp_bad_pass_tov: "Bad-pass TOV",
+  matchup_fga_per100: "Matchup FGA/100",
+  pbp_charges_drawn: "Charges",
+  pbp_rim_assists: "Rim AST", pbp_bad_pass_tov: "Bad-pass TOV",
   fgm_per_game: "FGM/G", fga_per_game: "FGA/G", fg3m_per_game: "3PM/G", fg3a_per_game: "3PA/G", ftm_per_game: "FTM/G",
   fta_per_game: "FTA/G", rim_ast_per_36: "Rim AST/36", pts_created_per_36: "PTS Created/36",
 };
 
-const BUCKET_SHORT: Record<string, string> = { create: "Create", space: "Space", trans: "Transition", finish: "Rim", unknown: "Unclassified" };
-const BUCKET_STAT_SHORT: Record<string, string> = { tsa: "TSA", frequency: "Freq", ts: "TS%", rts: "rTS" };
-
 export function glossaryShortName(metric: MetricDefinition): string {
-  const bucket = metric.key.match(/^pbp_(create|space|trans|finish|unknown)_(tsa|frequency|ts|rts)$/);
-  if (bucket) return `${BUCKET_SHORT[bucket[1]]} ${BUCKET_STAT_SHORT[bucket[2]]}`;
   return SHORT[metric.key] ?? metric.short_name;
 }
 
@@ -183,8 +156,6 @@ export function glossaryName(metric: MetricDefinition): string {
   if (NAME[metric.key]) return NAME[metric.key];
   const rapm = metric.key.match(/^(orapm|drapm|rapm|obpr|dbpr|bpr)(_2y|_3y)?$/);
   if (rapm) return `${RAPM_NAMES[rapm[1]]} (${SPAN_NAME[rapm[2] ?? ""]})`;
-  const bucket = metric.key.match(/^pbp_(create|space|trans|finish|unknown)_(tsa|frequency|ts|rts)$/);
-  if (bucket) return `${BUCKET_NAMES[bucket[1]]} ${BUCKET_STAT_NAMES[bucket[2]]}`;
   return metric.display_name;
 }
 
@@ -197,14 +168,11 @@ export function glossaryPlain(metric: MetricDefinition): string {
   if (rapm) return `${RAPM[rapm[1]]} ${SPAN[rapm[2] ?? ""]}`;
   const per36 = metric.key.match(/^(\w+)_per_36$/);
   if (per36 && PER_36[per36[1]]) return `${PER_36[per36[1]]} per 36 minutes played, putting players with different minutes on the same scale.`;
-  const bucket = metric.key.match(/^pbp_(create|space|trans|finish|unknown)_(tsa|frequency|ts|rts)$/);
-  if (bucket) return BUCKET_STAT[bucket[2]](BUCKETS[bucket[1]]);
   return metric.display_name;
 }
 
 export function glossaryGroup(metric: MetricDefinition): GlossaryGroup {
   const key = metric.key;
-  if (/^pbp_(create|space|trans|finish|unknown)_/.test(key)) return "Play Types";
   if (key.endsWith("_per_36")) return "Rates";
   switch (metric.category) {
     case "participation": case "scoring": return "Counting Stats";

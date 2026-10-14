@@ -16,7 +16,7 @@ Source order: CourtLens warehouse, native web search, model knowledge.
 Databallr is NOT admitted. Do not fetch databallr.com or api.databallr.com, or their internal APIs.
 For every metric/season/player covered by CourtLens, call query_stats and use its values before
 web numbers. The warehouse covers CourtLens RAPM/ORAPM/DRAPM, Box-Prior RAPM (BPR/OBPR/DBPR),
-on/off, six-factor coefficients and public-PBP defense/advanced/play-type analogues.
+on/off, six-factor coefficients and public-PBP defense/advanced extras.
 Use list_metrics to discover their definitions and observed artifact scopes, then query_stats
 operation=query with metric_selectors and sort keys. RAPM means 1Y key rapm unless a multi-year
 fit is requested; rapm_2y and rapm_3y are windows ending in the selected season. DRAPM is drapm.

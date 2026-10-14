@@ -6,8 +6,8 @@ import { PlayerPortrait } from "./player-portrait";
 import { Icon } from "./ui/icon";
 import { Modal } from "./ui/modal";
 import { Select } from "./ui/select";
-import { ValueDot } from "./charts/value-dot";
-import { executeWorkbenchQuery } from "@/lib/workbench-api";
+import { ValueDot, valueDotRadius, valueDotsFit } from "./charts/value-dot";
+import { executeWorkbenchQuery, getPlayerSeasons } from "@/lib/workbench-api";
 import { DARKO_COLUMNS, formatColumnValue, TRACKING_COLUMNS, usesImpactManifest, type ColumnDefinition } from "@/lib/stats-presets";
 import { DarkoSourceLink } from "./darko-source-link";
 import type { MetricHint } from "@/lib/stats-glossary";
@@ -15,9 +15,35 @@ import { phaseLabel } from "@/lib/scope-labels";
 import type { PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
 
 const MAX_PLAYERS = 4;
+const SEASON_CONCURRENCY = 3;
 
 type TrendPlayer = { player_id: string; player_name: string; portrait_url?: string | null };
-type SeasonRows = { season: string; items: PlayerResearchItem[] };
+/** failed: the season query errored, so its values are unavailable (not "no games"). */
+type SeasonRows = { season: string; items: PlayerResearchItem[]; failed?: boolean };
+
+/** The loaded seasons from the first to the last one any player appeared in; gaps inside stay. */
+export function careerSeasons(loaded: string[], played: string[]): string[] {
+  const seen = new Set(played);
+  const first = loaded.findIndex(season => seen.has(season));
+  if (first < 0) return [];
+  const last = loaded.findLastIndex(season => seen.has(season));
+  return loaded.slice(first, last + 1);
+}
+
+/** Promise.allSettled over items, running at most `limit` calls at a time. */
+export async function settleLimited<T, R>(items: T[], limit: number, run: (item: T) => Promise<R>): Promise<PromiseSettledResult<R>[]> {
+  const results: PromiseSettledResult<R>[] = new Array(items.length);
+  let next = 0;
+  const worker = async () => {
+    while (next < items.length) {
+      const index = next++;
+      try { results[index] = { status: "fulfilled", value: await run(items[index]) }; }
+      catch (reason) { results[index] = { status: "rejected", reason }; }
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+  return results;
+}
 
 export type TrendTarget = { player: PlayerResearchItem; columnKey: string };
 
@@ -71,7 +97,7 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
   useEffect(() => {
     if (!target || ids.length === 0) return;
     let active = true;
-    Promise.all(seasons.map(async season => {
+    const querySeason = async (season: string): Promise<SeasonRows> => {
       const scope = catalog?.stats_scopes?.find(entry => entry.season === season && entry.phase === querySpec.phase);
       const spec: QuerySpec = {
         release_id: querySpec.release_id, season, phase: querySpec.phase,
@@ -82,8 +108,20 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
       };
       const response = await executeWorkbenchQuery(spec, { player_ids: ids });
       return { season, items: response.items };
-    })).then(rows => { if (active) setResult({ key: requestKey, rows }); })
-      .catch(error => { if (active) setResult({ key: requestKey, error: error instanceof Error ? error.message : "Trend unavailable" }); });
+    };
+    // Only the seasons the players appeared in, a few at a time: each season query computes that
+    // season's whole cohort server-side, so all 26 at once saturated the API and timed out.
+    getPlayerSeasons(ids, querySpec.phase, querySpec.release_id ?? undefined)
+      .then(response => careerSeasons(seasons, Object.values(response.seasons).flat()))
+      .catch(() => seasons)
+      .then(range => settleLimited(range, SEASON_CONCURRENCY, querySeason).then(settled => {
+        if (!active) return;
+        const rows = settled.map((entry, index): SeasonRows => entry.status === "fulfilled" ? entry.value
+          : { season: range[index], items: [], failed: true });
+        setResult(range.length > 0 && rows.every(row => row.failed)
+          ? { key: requestKey, error: "Trend unavailable: the season queries failed. Try again." }
+          : { key: requestKey, rows });
+      }));
     return () => { active = false; };
     // requestKey covers every input of the request.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -143,28 +181,76 @@ function niceStep(raw: number): number {
   return power * (fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 2.5 ? 2.5 : fraction <= 5 ? 5 : 10);
 }
 
+/** Databallr labels a season by the year it ends: 2015-16 is 2016. */
+function seasonTick(season: string): string {
+  const match = /^(\d{2})(\d{2})-(\d{2})$/.exec(season);
+  if (!match) return season;
+  const end = Number(match[3]), start = Number(match[2]);
+  return `${end < start ? Number(match[1]) + 1 : match[1]}${match[3]}`;
+}
+
+/**
+ * A smooth line through the points that never overshoots them (monotone cubic, Fritsch-Carlson),
+ * so a curve between two seasons never suggests a value neither season had.
+ */
+function smoothPath(points: { x: number; y: number }[]): string {
+  if (points.length < 2) return "";
+  const n = points.length;
+  const slopes = points.slice(1).map((point, index) => (point.y - points[index].y) / (point.x - points[index].x));
+  const tangents = points.map((_, index) => {
+    if (index === 0) return slopes[0];
+    if (index === n - 1) return slopes[n - 2];
+    const [a, b] = [slopes[index - 1], slopes[index]];
+    // A turning point stays flat; elsewhere the mean neighbouring slope gives a visible curve.
+    return a * b <= 0 ? 0 : (a + b) / 2;
+  });
+  // Fritsch-Carlson limit: tangents too steep for a segment would bulge past its endpoints.
+  slopes.forEach((slope, index) => {
+    if (slope === 0) { tangents[index] = 0; tangents[index + 1] = 0; return; }
+    const alpha = tangents[index] / slope, beta = tangents[index + 1] / slope;
+    const size = Math.hypot(alpha, beta);
+    if (size > 3) { tangents[index] = 3 * alpha / size * slope; tangents[index + 1] = 3 * beta / size * slope; }
+  });
+  let path = `M${points[0].x},${points[0].y}`;
+  for (let index = 0; index < n - 1; index++) {
+    const [p0, p1] = [points[index], points[index + 1]];
+    const dx = (p1.x - p0.x) / 3;
+    path += `C${p0.x + dx},${p0.y + tangents[index] * dx} ${p1.x - dx},${p1.y - tangents[index + 1] * dx} ${p1.x},${p1.y}`;
+  }
+  return path;
+}
+
 function TrendChart({ column, players, rows }: { column: ColumnDefinition; players: TrendPlayer[]; rows: SeasonRows[] }) {
-  const width = 640, height = 260, left = 64, right = 40, top = 40, bottom = 32;
+  const width = 720, height = 380, left = 56, right = 24, top = 24, bottom = 40;
   const series = players.map(player => rows.map(row => {
     const item = row.items.find(entry => entry.player_id === player.player_id);
     const value = item ? plotValue(column, item) : null;
-    return { season: row.season, value, label: item && value !== null ? formatColumnValue(column, item) : "No games" };
+    return { season: row.season, value, label: item && value !== null ? formatColumnValue(column, item) : row.failed ? "Unavailable" : "No games" };
   }));
   const values = series.flat().map(point => point.value).filter((value): value is number => value !== null);
   if (values.length === 0) return <p className="stats-trend-note">No games for these players in the loaded seasons.</p>;
   const low = Math.min(...values), high = Math.max(...values);
   // Databallr: round tick steps with headroom, and points inset from both axes, so no value
   // marker sits on an axis line or over the tick labels.
-  const pad = (high - low || Math.abs(high) || 1) * 0.2;
-  const step = niceStep((high - low + 2 * pad) / 4);
+  const pad = (high - low || Math.abs(high) || 1) * 0.15;
+  const step = niceStep((high - low + 2 * pad) / 6);
   const min = Math.floor((low - pad) / step) * step, max = Math.ceil((high + pad) / step) * step;
-  const inset = 40;
+  const inset = 32;
   const plotLeft = left + inset, plotRight = width - right - inset;
-  const x = (index: number) => plotLeft + (rows.length === 1 ? (plotRight - plotLeft) / 2 : index * (plotRight - plotLeft) / (rows.length - 1));
+  const spacing = rows.length > 1 ? (plotRight - plotLeft) / (rows.length - 1) : plotRight - plotLeft;
+  const x = (index: number) => plotLeft + (rows.length === 1 ? (plotRight - plotLeft) / 2 : index * spacing);
   const y = (value: number) => top + (max - value) / (max - min) * (height - top - bottom);
   const ticks = Array.from({ length: Math.round((max - min) / step) + 1 }, (_, index) => min + step * index);
   const tickLabel = (value: number) => column.format ? column.format(value) : value.toFixed(1);
-  const single = players.length === 1;
+  // Long careers: every other (or third) season label, so year labels never collide.
+  const labelEvery = Math.max(1, Math.ceil(40 / spacing));
+  const showTick = (index: number) => index === rows.length - 1 || (index % labelEvery === 0 && rows.length - 1 - index >= labelEvery);
+  // Every point prints its value (Databallr). Long careers shrink the markers and their text to
+  // the season spacing instead of dropping the values.
+  const widest = "0".repeat(Math.max(...series.flat().map(point => point.label.length)));
+  const roomy = valueDotsFit(rows.length, plotRight - plotLeft, 2 * valueDotRadius(widest, true) + 4);
+  const large = players.length === 1 && roomy;
+  const radius = roomy ? undefined : Math.max(9, Math.floor(spacing / 2) - 1);
 
   return (
     <figure className="stats-trend-figure">
@@ -173,22 +259,23 @@ function TrendChart({ column, players, rows }: { column: ColumnDefinition; playe
           <line x1={left} x2={width - right} y1={y(tick)} y2={y(tick)} />
           <text x={left - 8} y={y(tick)} dy="0.32em" textAnchor="end">{tickLabel(tick)}</text>
         </g>)}
-        {rows.map((row, index) => <text key={row.season} className="stats-trend-axis" x={x(index)} y={height - 8} textAnchor="middle">{row.season}</text>)}
+        {rows.map((row, index) => showTick(index) && <text key={row.season} className="stats-trend-axis" x={x(index)} y={height - 14} textAnchor="middle">{seasonTick(row.season)}<title>{row.season}</title></text>)}
         {series.map((points, seriesIndex) => {
           const plotted: Point[] = points.flatMap((point, index) => point.value === null ? [] : [{ ...point, value: point.value, x: x(index), y: y(point.value) }]);
           // Break the line at seasons without a row; a gap is unknown, not zero.
-          const segments: Point[][] = [];
+          const segments: Point[][] = [[]];
           points.forEach((point, index) => {
-            if (point.value === null) { segments.push([]); return; }
-            const last = segments.at(-1);
-            const mark = { ...point, value: point.value, x: x(index), y: y(point.value) };
-            if (last) last.push(mark); else segments.push([mark]);
+            if (point.value === null) { if (segments.at(-1)!.length) segments.push([]); return; }
+            segments.at(-1)!.push({ ...point, value: point.value, x: x(index), y: y(point.value) });
           });
+          const name = players[seriesIndex].player_name;
           return <g key={players[seriesIndex].player_id} className="stats-trend-series" data-series={seriesIndex + 1}>
-            {segments.filter(segment => segment.length > 1).map((segment, index) =>
-              <polyline key={index} points={segment.map(point => `${point.x},${point.y}`).join(" ")} />)}
-            {plotted.map(point => <ValueDot key={point.season} x={point.x} y={point.y} label={point.label} large={single}
-              title={`${players[seriesIndex].player_name}, ${point.season}: ${point.label}`} />)}
+            {segments.filter(segment => segment.length > 1).map((segment, index) => <g key={index}>
+              <path className="stats-trend-glow" d={smoothPath(segment)} />
+              <path className="stats-trend-line" d={smoothPath(segment)} />
+            </g>)}
+            {plotted.map(point => <ValueDot key={point.season} x={point.x} y={point.y} label={point.label} large={large} round radius={radius}
+              title={`${name}, ${point.season}: ${point.label}`} />)}
           </g>;
         })}
       </svg>

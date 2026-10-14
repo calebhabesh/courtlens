@@ -9,7 +9,7 @@ const metric = (key: string, short_name = key.toUpperCase(), display_name = shor
 
 describe("stats glossary copy", () => {
   it("describes every catalog family instead of repeating the metric name", () => {
-    for (const key of ["pts_per_game", "reb_total_per_game", "ast_per_36", "rapm_3y", "dbpr", "pbp_space_rts", "onoff_net_rating", "team_tov_pct", "impact_rts"]) {
+    for (const key of ["pts_per_game", "reb_total_per_game", "ast_per_36", "rapm_3y", "dbpr", "onoff_net_rating", "team_tov_pct", "impact_rts"]) {
       const text = glossaryPlain(metric(key));
       expect(text, key).not.toBe(key.toUpperCase());
       expect(text.length, key).toBeGreaterThan(20);
@@ -20,7 +20,6 @@ describe("stats glossary copy", () => {
   it("shows readable short forms, never backend field names", () => {
     expect(glossaryShortName(metric("pts_per_game", "PPG"))).toBe("PPG");
     expect(glossaryShortName(metric("team_possessions_estimated", "POSS_EST"))).toBe("POSS");
-    expect(glossaryShortName(metric("pbp_create_frequency", "Create analogue frequency"))).toBe("Create Freq");
   });
 
   it("collapses catalog aliases with the same meaning", () => {
@@ -33,7 +32,6 @@ describe("glossary structure: abbreviation, full name, definition", () => {
   it("spells abbreviations out as full names", () => {
     expect(glossaryName(metric("impact_three_point_rate", "3PR", "3PR"))).toBe("Three-Point Attempt Rate");
     expect(glossaryName(metric("bpr_2y", "2Y BPR", "2Y BPR"))).toBe("Box Prior RAPM (2 seasons)");
-    expect(glossaryName(metric("pbp_create_ts", "Create analogue ts", "Create analogue ts"))).toBe("Self-Created True Shooting Percentage");
     expect(glossaryName(metric("on_net_rating", "Net on", "Net on"))).toBe("Net Rating On Court");
   });
   it("never opens a definition by restating its name", () => {

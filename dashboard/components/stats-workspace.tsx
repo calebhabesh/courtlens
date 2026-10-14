@@ -165,7 +165,8 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
         {researchData && directory && <PlayerDirectory catalog={catalog} data={researchData} />}
         {researchData && !directory && (
           <WorkbenchPlayerExplorer
-            key={JSON.stringify({ querySpec, favorites: params.favorites, positions: params.positions, draftYear })}
+            // The name search filters as you type, so it must not remount the table (or its field).
+            key={JSON.stringify({ querySpec: { ...querySpec, name: undefined }, favorites: params.favorites, positions: params.positions, draftYear })}
             querySpec={querySpec}
             countingMode={countingMode}
             catalog={catalog}
