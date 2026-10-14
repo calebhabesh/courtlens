@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import { getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { Metadata } from "next";
@@ -8,6 +7,7 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { TeamExplorerView } from "@/components/team-explorer-view";
 import { getTeamsResearch } from "@/lib/workbench-api";
 import type { TeamResearchResponse } from "@/lib/types";
+import { ButtonLink } from "@/components/ui/kit";
 
 export const metadata: Metadata = {
   title: "Team Explorer & Four Factors · CourtLens",
@@ -52,7 +52,7 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
 
   return (
     <PageShell template="explorer" className="teams-page">
-      {loadError && <><PageHeader title="Team Stats & Cohorts" subtitle="Standings, scoring and Four Factors." /><GatedNote action={<Link className="button" href="/teams">Retry</Link>} why={loadError}>Team research is unavailable.</GatedNote></>}
+      {loadError && <><PageHeader title="Team Stats & Cohorts" subtitle="Standings, scoring and Four Factors." /><GatedNote action={<ButtonLink size="lg" href="/teams">Retry</ButtonLink>} why={loadError}>Team research is unavailable.</GatedNote></>}
       {teamsData && <TeamExplorerView
         initialTeams={teamsData.teams} catalog={catalog ?? undefined} releaseId={resolvedReleaseId}
         season={season} phase={phase} beforeDate={beforeDate}

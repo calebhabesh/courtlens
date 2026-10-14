@@ -11,6 +11,7 @@ import { StatTile } from "@/components/ui/stat-tile";
 import { getImpact } from "@/lib/workbench-api";
 import { IMPACT_COLUMNS, formatStatValue } from "@/lib/stats-presets";
 import { formatDate } from "@/lib/format-date";
+import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +39,7 @@ export default async function Page({ searchParams }: {
     <Suspense fallback={<div className="ui-filter-bar" aria-hidden="true" />}>
       <ContextBar initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate} showWindow={false} sampleNoun="players" sampleSize={data?.total_players} detailRows={detailRows} />
     </Suspense>
-    {!data ? <div role="alert"><GatedNote tone="warning" action={<Link className="button" href={`/research/rapm?${scope}`}>Retry</Link>}>Impact serving unavailable. Restore the local API connection.</GatedNote></div> :
+    {!data ? <div role="alert"><GatedNote tone="warning" action={<ButtonLink size="lg" href={`/research/rapm?${scope}`}>Retry</ButtonLink>}>Impact serving unavailable. Restore the local API connection.</GatedNote></div> :
       <ResearchLayout headline={data.status === "available" && <RankedBars title="Qualified 1Y RAPM leaders" source="CourtLens sealed IM04 lineup model" sample={`${data.total_players} served players · ${coverage?.admitted_games ?? "unknown"} admitted games`}
         measure="points per 100 counted controls" tone="identity-b" note="Blue = 1Y RAPM; descriptive under lineup confounding. No uncertainty interval is served."
         items={data.players.filter(p => p.metrics.rapm != null).slice(0, 5).map(p => ({key: p.player_id, name: p.player_name, label: <PlayerIdentity playerId={p.player_id} name={p.player_name} href={`/players/${p.player_id}?${scope}`} size="sm" />, value: p.metrics.rapm!, formatted: formatStatValue(p.metrics.rapm, 2), detail: `${p.support.rapm?.games ?? "unknown"} games · ${p.support.rapm?.seconds == null ? "unknown" : Math.round(p.support.rapm.seconds / 60)} minutes`}))} />} findings={data.status === "available" ? <>

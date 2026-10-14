@@ -6,6 +6,7 @@ import { useState } from "react";
 import { formatDate } from "@/lib/format-date";
 import { EntityField } from "./entity-picker";
 import type { AnalyticsCatalog } from "@/lib/types";
+import { Button } from "./ui/kit";
 
 type Selection = { id: string; name: string } | null;
 
@@ -44,7 +45,7 @@ export function CompareSelector({ catalog, initialA, initialB, date, legacy = fa
       <EntityField releaseId={searchParams.get("releaseId") || searchParams.get("release_id")} season={searchParams.get("season")} phase={searchParams.get("phase")} beforeDate={searchParams.get("beforeDate") || searchParams.get("before_date")} label={`Player ${side === 0 ? "A" : "B"}`} value={(side === 0 ? a : b)?.id ?? ""} initialName={(side === 0 ? a : b)?.name} required onChange={(id, items) => { const selection = id ? {id, name: items[0].display_name} : null; if(side === 0) {setA(selection);if(selection && b && selection.id !== b.id)apply(selection,b);} else {setB(selection);if(selection && a && selection.id !== a.id)apply(a,selection);} }} />
     </div>)}
     {legacy && <div className="compare-date"><label htmlFor="compare-date">Replay date</label><select value={date} onChange={event => apply(a,b,event.target.value)} id="compare-date" name="date">{!catalog.supported_replay_dates.includes(date) && <option value={date}>{formatDate(date)} · unsupported</option>}{catalog.supported_replay_dates.map((value) => <option key={value} value={value}>{formatDate(value)}</option>)}</select></div>}
-    <button className="button button-small" disabled={!a || !b} onClick={() => { setA(b); setB(a);apply(b,a); }} type="button">Swap players</button>
+    <Button size="lg" disabled={!a || !b} onClick={() => { setA(b); setB(a);apply(b,a); }}>Swap players</Button>
     <p className="form-hint" role="status">{a?.id === b?.id && a ? "Choose two different players." : ""}</p>
   </form>;
 }

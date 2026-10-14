@@ -7,6 +7,7 @@ import { GatedNote } from "./ui/gated-note";
 import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { StatTile } from "./ui/stat-tile";
+import { Button } from "./ui/kit";
 
 const defaults = () => Object.fromEntries(Object.entries(flowDefaults).map(([key, v]) => [key, String(v)])) as Record<keyof FlowInputs, string>;
 const CATEGORY = { two: "2P", three: "3P", ft: "FT" } as const;
@@ -21,8 +22,8 @@ export function PossessionCalculatorView() {
   const scenario = result;
   return <PageShell template="research" className="research-view calculator-view">
     <PageHeader title="Hypothetical Calculator" subtitle="Offensive rating from your own possession assumptions; nothing here is observed data." actions={<>
-      <button className="button" onClick={() => setInputs(defaults())}>Reset hypothetical defaults</button>
-      {scenario && <button className="button button-primary" onClick={() => downloadResearch("courtlens-hypothetical-flow.json", { model: flowVersion, classification: "hypothetical_design_model", source: "user_assumptions", inputs: values, result: scenario, sensitivities: flowSensitivities(values) })}>Export scenario JSON</button>}
+      <Button size="lg" onClick={() => setInputs(defaults())}>Reset hypothetical defaults</Button>
+      {scenario && <Button size="lg" variant="primary" onClick={() => downloadResearch("courtlens-hypothetical-flow.json", { model: flowVersion, classification: "hypothetical_design_model", source: "user_assumptions", inputs: values, result: scenario, sensitivities: flowSensitivities(values) })}>Export scenario JSON</Button>}
     </>} />
     <FilterBar collapsible={false} label="Calculator model" summary="Hypothetical model" scope={<span className="research-scope-label">Independent repeated-chance design model · user assumptions</span>}
       details={<DataDetailsButton rows={[{ label: "Model", value: flowVersion, mono: true }, { label: "Classification", value: "Hypothetical design model" }, { label: "Source", value: "User assumptions" }]}>

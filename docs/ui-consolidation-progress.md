@@ -268,3 +268,85 @@ Evidence: [UC04 players evidence](evidence/ui-consolidation/uc04-players/README.
   the player specs (`player-career`, `player-profile`, `players-fo09`) pass 9/9.
 - **Owner approval (2026-10-14):** C2, C3, C9 and D15–D19 approved as shown. No baseline needed
   regenerating.
+
+## UC04 batch 4 — catalogued pages (2026-10-14)
+
+Evidence: [UC04 catalogued pages evidence](evidence/ui-consolidation/uc04-pages/README.md).
+
+- **Scope:** every catalogued page after Stats and Players: Compare, Teams and team detail, Team
+  Compare, Recent Games, Live, Playoffs and series, Showcase, Rankings, Tier List, Roster Shapes,
+  Stat Line Shift, Contracts and Books, Matchups, Similar Players and Shot Profile, RAPM, Six
+  Factor and shooting results, Wingspan, Calculator. Also `research-trend-charts` (player Game Log
+  tab), which batch 3 missed. 35 files leave the ratchet (60 → 25); two more non-ratchet views
+  (`season-matchups-view`, `six-factor-view`) move their segmented controls to the kit.
+- **Migrated:** legacy `.button`/`.button-small` → `Button`/`ButtonLink lg` (they render 40 px
+  here); legacy `ui/button` callers → kit (`md` 34 → `sm` 32, `sm` → `xs`); every
+  `SegmentedControl` caller on these pages → `Segmented` (`lg` in filter bars, `md` on Compare);
+  icons inside buttons → `icon`/`iconAfter`. Recent Games and Showcase Export menus open from a
+  kit primary `Button` through `renderTrigger`. Rankings and Tier List: board tabs → `Segmented`,
+  aggregator picker → toggle `Chip`s, modal close, reorder and remove → `IconButton xs`, Delete
+  Board/List → `Button lg danger`, favourite quick-adds → `Button xs ghost`.
+- **Kit addition:** `IconButtonLink` (square icon-only link) for the Showcase rail shortcuts.
+- **Spec:** `roster-chip` and `tier-player-chip` are draggable cards with inputs, not chips; they
+  move to "does not fit" and leave the lint list. `tier-reorder-btn` maps to `secondary` because
+  ghost icons were unreadable on the light tier label.
+- **Batch 3 regression fixed here:** batch 3 deleted the global `.stats-preset-tab` rules, but
+  Rankings and Tier List still used that class for personal board tabs, which then rendered as
+  21 px unstyled text (visible only with personal boards, so no baseline caught it). They are kit
+  `Segmented` now.
+- **Shared step (with the `components/ui` legacy components):** `lookup-input` (28 routes),
+  `entity-picker` (8 routes) and the season popover's mode switch and Apply button.
+- **CSS removed:** `modal-close-btn`, `ranking-chip-btn`, `ranking-meta-btn`, `ranking-reorder-btn`,
+  `ranking-delete-btn`, `tier-delete-btn`, `tier-quick-fav-btn`, `tier-reorder-btn`,
+  `tier-remove-btn`, `finance-detail-button`, `playoffs-tabs` and the Showcase tooltip/active rules
+  (`pages.css` 140,440 → 138,280 bytes; `components.css` 124,767 → 124,445;
+  `presentation-clarity.css` 22,801 → 22,639).
+- **Changes for review:** C1 (legacy md buttons 34 → 32: Profile, Export, Pause updates, Play,
+  Aggregate boards, New board, Copy to my boards, New tier list, Add tier row, Export JSON, Change
+  team), C2 (legacy `.button`: padding 16 → 12, text 14 → 13, weight 600 → 500, no hairline;
+  Compare suggestions, Compare Teams, All teams, Change team, Calculator, Contracts, Retry
+  actions), C3 (`.button-small` at 40: text 12 → 13; Swap players, table Compare/Profile, series
+  links, Lineage, View Data Table), C12 (Similar Players PvP Compare / Set Target are `Button lg`;
+  the fixture shows only the error state, so the phone wrap is not measured), C13 (filter-bar
+  segmented items 36 → 32 in the 40 px group: Teams view, Team Compare tabs, Recent Games ×3,
+  Playoffs ×3, Showcase focus, Roster basis, Shot profile, Matchups, Six Factor), and:
+  - D20 Compare presets and counting mode: same 36 px group, items 32 → 28 (kit `md`).
+  - D21 Playoff series player filter: three 40 px buttons (active one primary-filled) → one 40 px
+    `Segmented` with the accent-outline selection.
+  - D22 Recent Games and Showcase Export: the same primary button, 34 → 32 px.
+  - D23 Recent Games and Showcase rail: favourite and compare lose the custom tooltip for the
+    native one and the star fills when on (as D15); the three rail shortcuts are `IconButtonLink`s
+    with the same 32 px look.
+  - D24 Rankings and Tier List: board tabs as above; Aggregate boards shows the selected look while
+    the aggregator is open; the board picker's checkboxes become toggle chips; favourite quick-adds
+    40 → 28 px ghost; ranking row reorder 40 → 28 ghost and remove 40 → 28 danger; tier row
+    controls 20 → 28 px filled (each tier label box grows 8 px); tier card remove 22×14 → 28 px
+    danger; dialog close 30×22 → 28×28.
+  - D25 Contracts Books player names: underlined accent text → `Button xs ghost` (the fixture has
+    no rows, so not pictured).
+- **Semantics:** Rankings/Tier List board tabs and the playoff series filter are
+  `radiogroup`/`radio`; the aggregator picker is `aria-pressed` buttons instead of checkboxes.
+  `entity-selection.spec.ts` and `pc12-example-boards.spec.ts` updated for the radio role.
+- **Test hardening:** `presentation-defaults.spec.ts:22` failed 2/20 on this build and 0/20 on
+  `300a83c`. A probe showed a hidden streamed copy (`div[hidden]#S:1`) of the Compare view for
+  about 300 ms after some reloads; `getByLabel` matches inside `[hidden]`, so strict mode saw two
+  checkboxes. The spec now uses `getByRole("checkbox")`, which ignores hidden content: the file
+  passes 220/220 with `--repeat-each=20`. The streamed copy itself predates this batch (it is the
+  same mechanism as the known planner and Roster Shapes flakes).
+- **Verification:** ESLint/Stylelint **PASS**; typecheck **PASS**; Vitest **76 files / 511 PASS**
+  (one new `IconButtonLink` test); full Playwright against the 3180 fixture build
+  **439 PASS / 27 skips / 20 failures**: 18 screenshot baselines that change with C1–C13
+  (`visual-baselines.spec.ts`: FO06 phone showcase, playoffs bracket, recent games, roster shapes
+  depth, team stats; FO11 phone team comparison overview and factors; FO12 phone calculator; PC04
+  desktop shot-profile, shot-aftermath, first-load roster-shapes; PC04 phone recent-games,
+  first-load roster-shapes, shot-profile; PC11 phone player-matchups, six-factor; and
+  `pc12-headlines.spec.ts` Teams and Team Compare at 390), pending approval;
+  `presentation-defaults:22`, fixed as above; and the known planner flake `fo13-pages:112`
+  (3/12 on `300a83c`). The page specs touched by this batch (`entity-selection`,
+  `pc12-example-boards`, `roster-shapes`, `showcase`, `live`, `compare-overhaul`,
+  `teams-overhaul`, `player-career`) pass 43/43.
+- **Owner approval (2026-10-14):** C1, C2, C3, C12, C13 and D20–D25 approved as shown, including
+  the `roster-chip`/`tier-player-chip` spec move and the filled tier-row controls. Before updating,
+  the two screenshot specs against a fresh 3180 fixture build failed on exactly the 18 listed
+  baselines (90 pass); those 18 were regenerated with `--update-snapshots=changed` and the rerun
+  passes **108/108**. No other baseline changed.

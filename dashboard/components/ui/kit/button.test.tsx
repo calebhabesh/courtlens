@@ -2,7 +2,7 @@
 import { createRef } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { Button, ButtonLink, ButtonSummary, IconButton } from "./button";
+import { Button, ButtonLink, ButtonSummary, IconButton, IconButtonLink } from "./button";
 
 afterEach(cleanup);
 
@@ -63,4 +63,12 @@ it("requires an icon label and uses it for the accessible name and tooltip", () 
   expect(screen.getByRole("button").getAttribute("aria-busy")).toBe("true");
   fireEvent.click(screen.getByRole("button"));
   expect(click).toHaveBeenCalledOnce();
+});
+
+it("renders an icon-only link square, named by its label", () => {
+  render(<IconButtonLink href="/last-games" icon="history" label="Recent games" size="sm" variant="secondary" />);
+  const link = screen.getByRole("link", { name: "Recent games" });
+  expect(link.getAttribute("href")).toBe("/last-games");
+  expect(link.getAttribute("title")).toBe("Recent games");
+  expect(link.className).toContain("kit:w-control-sm");
 });

@@ -1,6 +1,4 @@
-import { Icon } from "@/components/ui/icon";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ContextBar } from "@/components/context-bar";
 import { PlayoffsSeriesView } from "@/components/playoffs-series-view";
 import { GatedNote } from "@/components/ui/gated-note";
@@ -8,6 +6,7 @@ import { PageShell } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
 import { getPlayoffSeriesDetail } from "@/lib/workbench-api";
 import type { PlayoffSeriesDetailResponse } from "@/lib/types";
+import { ButtonLink } from "@/components/ui/kit";
 
 export const metadata: Metadata = {
   title: "Playoff Series",
@@ -54,7 +53,7 @@ export default async function PlayoffSeriesDetailPage({
         <GatedNote
           tone="warning"
           why={loadError ?? undefined}
-          action={<Link href="/playoffs" className="button button-small"><Icon name="left" size={14} />Playoffs</Link>}
+          action={<ButtonLink size="lg" href="/playoffs" icon="left">Playoffs</ButtonLink>}
         >
           This series could not be loaded.
         </GatedNote>

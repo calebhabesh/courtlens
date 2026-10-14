@@ -4,6 +4,7 @@ import { TeamLogo } from "./team-logo";
 import { PercentileCell } from "./charts/percentile-cell";
 import type { TeamResearchItem } from "@/lib/types";
 import type { TablePreset } from "./team-explorer-view";
+import { ButtonLink } from "./ui/kit";
 
 type Column = { key: string; label: string; group: string; value: (team: TeamResearchItem) => number | null; format: (value: number) => string };
 const tenth = (value: number) => value.toFixed(1);
@@ -47,7 +48,7 @@ export function TeamStatisticsTable({ teams, name, preset, sortField, sortDirect
         <td className="num">{index + 1}</td><th scope="row" className="team-table-identity"><div className="directory-identity"><TeamLogo team={team.tricode} size={20} /><div><Link href={link(`/teams/${team.team_id}`)}>{team.name}</Link><small>{team.games_played} games · {team.division ?? "Division unknown"}</small></div></div></th>
         <td className="num">{cell("wins", `${team.wins}-${team.losses}`, "Record by wins")}</td><td className="num">{cell("win_pct", team.win_pct == null ? null : team.win_pct.toFixed(3), "Win percentage")}</td>
         {columns.map(col => { const value = col.value(team); return <td key={col.key} className="num" data-metric={col.key}>{cell(col.key, value == null ? null : col.format(value), col.label)}</td>; })}
-        <td><div className="table-actions-group"><Link className="button button-small" href={link(`/team-compare?teamA=${team.team_id}`)}>Compare</Link><Link className="button button-small button-primary" href={link(`/teams/${team.team_id}`)}>Profile</Link></div></td>
+        <td><div className="table-actions-group"><ButtonLink size="lg" href={link(`/team-compare?teamA=${team.team_id}`)}>Compare</ButtonLink><ButtonLink size="lg" variant="primary" href={link(`/teams/${team.team_id}`)}>Profile</ButtonLink></div></td>
       </tr>;
     })}</tbody>
   </table>;

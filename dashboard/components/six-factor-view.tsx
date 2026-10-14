@@ -9,12 +9,12 @@ import { DataDetailsButton } from "./ui/data-details";
 import { Field } from "./ui/field";
 import { GatedNote } from "./ui/gated-note";
 import { ResearchLayout } from "./ui/page-shell";
-import { SegmentedControl } from "./ui/segmented-control";
 import { Select } from "./ui/select";
 import { StatTile } from "./ui/stat-tile";
 import { formatDate } from "@/lib/format-date";
 import { getSixFactor, signed } from "@/lib/stats-feeds";
 import type { ImpactResponse } from "@/lib/types";
+import { Segmented } from "./ui/kit";
 
 /** The six favorable-sign factors: positive always helps the player's team. Not additive. */
 export const SIX_FACTORS = [
@@ -58,7 +58,7 @@ export function SixFactorView() {
       </>}
       filters={<Field label="Factor" layout="inline"><Select aria-label="Factor" value={factor} onChange={e => setFactor(e.target.value)}>
         {SIX_FACTORS.map(f => <option key={f.key} value={f.key}>{f.short} · {f.label}</option>)}</Select></Field>}
-      modes={<SegmentedControl name="Side" value={meta.side} onChange={side => setFactor(SIX_FACTORS.find(f => f.side === side)!.key)}
+      modes={<Segmented size="lg" label="Side" value={meta.side} onChange={side => setFactor(SIX_FACTORS.find(f => f.side === side)!.key)}
         options={[{ value: "offense", label: "Offense" }, { value: "defense", label: "Defense" }]} />}
       count={data && <CountChip>{data.total_players.toLocaleString("en-US")} rated</CountChip>}
       details={data && <DataDetailsButton rows={[

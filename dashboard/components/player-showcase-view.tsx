@@ -1,21 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ContextBar } from "./context-bar";
 import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
 import { ShowcaseCard, type ShowcaseCardStat } from "./showcase-card";
 import { TeamLogo } from "./team-logo";
-import { Button, IconButton } from "./ui/button";
-import { Icon } from "./ui/icon";
 import { PlayerIdentity } from "./ui/identity";
 import { Menu, MenuItem } from "./ui/menu";
 import { PageHeader } from "./ui/panel";
 import { BoardLayout, PageShell } from "./ui/page-shell";
-import { SegmentedControl } from "./ui/segmented-control";
-import { Tooltip } from "./ui/tooltip";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import { exportSvgAsPng, exportSvgFile, inlineSvgImages } from "@/lib/image-export";
 import { orientedPercentile, type GoodDirection } from "@/lib/percentile-display";
@@ -24,6 +19,7 @@ import { scopeContextLine } from "@/lib/scope-labels";
 import { RANK_PAGE_LIMIT, useCohortRanks } from "@/lib/use-cohort-ranks";
 import { useWorkspace } from "@/lib/workspace-context";
 import type { PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
+import { Button, IconButton, IconButtonLink, Segmented } from "./ui/kit";
 
 const FOCUS_LABELS: Record<ShowcasePresetId, string> = {
   overall: "Overall",
@@ -134,12 +130,8 @@ export function PlayerShowcaseView({
   };
 
   const linkButton = (href: string, label: string, icon: "history" | "user" | "swap") => (
-    <Tooltip content={label}>
-      <Link href={buildPreservedContextUrl(href, searchParams)} aria-label={label}
-        className="ui-button ui-button-secondary ui-button-md ui-icon-button showcase-rail-action">
-        <Icon name={icon} size={16} />
-      </Link>
-    </Tooltip>
+    <IconButtonLink href={buildPreservedContextUrl(href, searchParams)} label={label} icon={icon} size="sm" variant="secondary"
+      className="showcase-rail-action" />
   );
 
   return (
@@ -159,9 +151,8 @@ export function PlayerShowcaseView({
                 else router.push(buildPreservedContextUrl(`/showcase?playerId=${item.canonical_id}`, searchParams));
               }} />
           </div>
-          <Menu align="right" className="showcase-export" trigger={<span className="ui-button ui-button-primary ui-button-md">
-            <Icon name="download" size={16} />{exporting ? "Exporting…" : "Export"}<Icon name="chevron-down" size={14} />
-          </span>}>
+          <Menu align="right" className="showcase-export" renderTrigger={props => <Button {...props} size="sm" variant="primary" icon="download"
+            iconAfter="chevron-down">{exporting ? "Exporting…" : "Export"}</Button>}>
             <MenuItem icon="download" label="PNG image" disabled={exporting} onClick={() => void exportCard("png")} />
             <MenuItem icon="page" label="SVG file" disabled={exporting} onClick={() => void exportCard("svg")} />
           </Menu>
@@ -178,7 +169,7 @@ export function PlayerShowcaseView({
         sampleSize={eligiblePlayers}
         lastIncludedDate={lastIncludedDate}
         showWindow={false}
-        modes={<SegmentedControl<ShowcasePresetId> name="showcase-focus" value={focus} onChange={setFocus}
+        modes={<Segmented<ShowcasePresetId> size="lg" label="showcase-focus" value={focus} onChange={setFocus}
           options={SHOWCASE_PRESETS.map((entry) => ({ value: entry.id, label: FOCUS_LABELS[entry.id] }))} />}
       />
 
@@ -195,10 +186,10 @@ export function PlayerShowcaseView({
             </div>)}
           </dl>
           <div className="showcase-playback" role="group" aria-label="Card playback">
-            <IconButton icon="left" label="Previous player" variant="secondary" onClick={() => step(-1)} />
-            <Button variant={playing ? "primary" : "secondary"} icon={playing ? "pause" : "play"} aria-pressed={playing}
+            <IconButton size="sm" icon="left" label="Previous player" variant="secondary" onClick={() => step(-1)} />
+            <Button size="sm" variant={playing ? "primary" : "secondary"} icon={playing ? "pause" : "play"} pressed={playing}
               onClick={() => setPlaying((value) => !value)}>{playing ? "Pause" : "Play"}</Button>
-            <IconButton icon="right" label="Next player" variant="secondary" onClick={() => step(1)} />
+            <IconButton size="sm" icon="right" label="Next player" variant="secondary" onClick={() => step(1)} />
             <span className="showcase-counter" aria-live="polite">{index + 1} / {count}</span>
           </div>
           <p className="showcase-footnote">Percentile among {eligiblePlayers.toLocaleString("en-US")} eligible players, the Stats cohort. Ranks shown within the top {RANK_PAGE_LIMIT}.</p>
@@ -209,14 +200,10 @@ export function PlayerShowcaseView({
               portraitUrl={player.portrait_url} subtitle={`${player.games_played} games`}
               href={buildPreservedContextUrl(`/players/${player.player_id}`, searchParams)} />
             <div className="showcase-rail-actions">
-              <Tooltip content={isFavorite ? "Remove from favorites" : "Add to favorites"}>
-                <IconButton icon="star" label={isFavorite ? "Remove from favorites" : "Add to favorites"} variant="secondary"
-                  aria-pressed={isFavorite} className={`showcase-fav ${isFavorite ? "is-active" : ""}`} onClick={() => toggleFavorite(player.player_id)} />
-              </Tooltip>
-              <Tooltip content={inTray ? "Remove from compare tray" : "Add to compare tray"}>
-                <IconButton icon={inTray ? "check" : "plus"} label={inTray ? "Remove from compare tray" : "Add to compare tray"} variant="secondary"
-                  aria-pressed={inTray} className={inTray ? "is-active" : ""} onClick={() => toggleCompare(player.player_id)} />
-              </Tooltip>
+              <IconButton size="sm" icon="star" label={isFavorite ? "Remove from favorites" : "Add to favorites"} variant="secondary" filled={isFavorite}
+                pressed={isFavorite} onClick={() => toggleFavorite(player.player_id)} />
+              <IconButton size="sm" icon={inTray ? "check" : "plus"} label={inTray ? "Remove from compare tray" : "Add to compare tray"} variant="secondary"
+                pressed={inTray} onClick={() => toggleCompare(player.player_id)} />
               {linkButton(`/last-games?playerId=${player.player_id}&${scopeParams}`, "Recent games", "history")}
               {linkButton(`/players/${player.player_id}?${scopeParams}`, "Player profile", "user")}
               {linkButton(`/compare?playerA=${player.player_id}&${scopeParams}`, "Compare head to head", "swap")}

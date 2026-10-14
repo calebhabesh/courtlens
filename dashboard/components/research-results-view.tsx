@@ -12,6 +12,7 @@ import { GatedNote } from "./ui/gated-note";
 import { ResearchLayout } from "./ui/page-shell";
 import { StatTile } from "./ui/stat-tile";
 import { Skeleton } from "./ui/skeleton";
+import { Button } from "./ui/kit";
 
 const titles: Record<string, string> = {
   "courtload-expected-shot-retrospective-v2": "Expected-Shot Experiment",
@@ -77,7 +78,7 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
       { label: "Resource accounting", value: JSON.stringify(result.resource_accounting), mono: true }
     ] : [])
   ];
-  const exportButton = result && <button className="button" onClick={() => downloadResearch(`courtlens-research-${result.run.run_id}.json`, result)}>Export verified report JSON</button>;
+  const exportButton = result && <Button size="lg" onClick={() => downloadResearch(`courtlens-research-${result.run.run_id}.json`, result)}>Export verified report JSON</Button>;
   const details = <DataDetailsButton rows={detailRows} />;
   const runPicker = runs.length > 1 && <Field label="Run" layout="inline"><Select aria-label="Registered run" value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map((r, index) => <option key={r.run_id} value={r.run_id}>Run {runs.length - index} · {humanLabel(r.status)}</option>)}</Select></Field>;
   const status = result ? (result.run.status === "selection_failed_negative_result" ? "Completed negative result" : humanLabel(result.run.status)) : entry ? humanLabel(entry.status) : null;
@@ -89,7 +90,7 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
   let findings: React.ReactNode = null;
   let body: React.ReactNode;
   if (error) {
-    body = <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v + 1); }}>Retry reads</button>}>Report unavailable: {error}</GatedNote></div>;
+    body = <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v + 1); }}>Retry reads</Button>}>Report unavailable: {error}</GatedNote></div>;
   } else if (!registry || (runId && !result)) {
     findings = <>{[0, 1, 2, 3].map(i => <Skeleton key={i} height={88} />)}</>;
     body = <p className="sr-only" role="status">Loading the registered experiment…</p>;

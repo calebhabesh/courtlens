@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { ComparisonRows } from "@/components/ui/comparison-rows";
 import { TeamLogo } from "@/components/team-logo";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CompareSuggestions } from "@/components/compare-suggestions";
 import { CompareSelector } from "@/components/compare-selector";
 import { PlayerCompareView } from "@/components/player-compare-view";
@@ -17,6 +16,7 @@ import { resolveStatsQuery } from "@/lib/stats-query";
 import { getMetricCatalog, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
 import { comparePlayers } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerComparisonResponse } from "@/lib/types";
+import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Comparison · CourtLens" };
@@ -40,7 +40,7 @@ export default async function ComparePage({ searchParams }: {
   const rawSelected = await searchParams;
   const selected = { ...rawSelected, releaseId: rawSelected.releaseId ?? rawSelected.release_id, beforeDate: rawSelected.beforeDate ?? rawSelected.before_date };
   const loaded = await loadComparison(selected);
-  if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<Link className="button" href="/players">Open players</Link>}>Comparison unavailable.</GatedNote></PageShell>;
+  if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open players</ButtonLink>}>Comparison unavailable.</GatedNote></PageShell>;
   const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, leaders } = loaded;
   const context = {
     season: String(wbComparison?.context?.season ?? selected.season ?? workbenchCatalog?.default_season ?? ""),
@@ -58,7 +58,7 @@ export default async function ComparePage({ searchParams }: {
     <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
       detailRows={[{label:"Legacy snapshot",value:catalog.snapshot_id,mono:true},{label:"Source",value:catalog.source}, ...(cohort ? [{label:"Percentile cohort",value:`${cohort.total_eligible_players} eligible players; Stats midrank percentiles, oriented by catalog direction.`}] : [])]} />
     {!comparison && !error ? <CompareSuggestions leaders={leaders} scope={context} selector={selector} /> : selector}
-    {error && <div role="alert"><GatedNote why={error} action={<Link className="button" href="/compare">Choose players</Link>}>Unable to compare.</GatedNote></div>}
+    {error && <div role="alert"><GatedNote why={error} action={<ButtonLink size="lg" href="/compare">Choose players</ButtonLink>}>Unable to compare.</GatedNote></div>}
     {comparison && !wbComparison && <ComparisonView comparison={comparison} />}
 
   </PageShell>;

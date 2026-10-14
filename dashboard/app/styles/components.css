@@ -1068,21 +1068,6 @@
   color: var(--color-text-secondary);
 }
 
-.modal-close-btn {
-  background: transparent;
-  border: none;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  font-size: var(--text-lg);
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-sm);
-}
-
-.modal-close-btn:hover {
-  color: var(--color-text);
-  background: var(--color-surface-2);
-}
-
 .modal-body {
   padding: var(--space-4) var(--space-5);
   overflow-y: auto;

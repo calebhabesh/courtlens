@@ -18,6 +18,7 @@ import { TeamLogo } from "./team-logo";
 import { getSharedCatalog } from "@/lib/route-availability";
 import { FINANCE_TEAMS } from "@/lib/finance-teams";
 import { formatDate } from "@/lib/format-date";
+import { Button, ButtonLink } from "./ui/kit";
 import {
   POSITION_LABELS, UNKNOWN_REASONS, centsMoney, dollars, earnerDonut, getLeaguePayrolls, getTeamContracts, money,
   nextOption, payrollFlow, positionDonut, resolveRefresh, timelineRows, yearsListed,
@@ -71,7 +72,7 @@ function Loading() {
 }
 
 function Failure({ error }: { error: string }) {
-  return <div role="alert"><GatedNote why={error} action={<button className="button" onClick={() => window.location.reload()}>Retry</button>}>Contracts are unavailable right now.</GatedNote></div>;
+  return <div role="alert"><GatedNote why={error} action={<Button size="lg" onClick={() => window.location.reload()}>Retry</Button>}>Contracts are unavailable right now.</GatedNote></div>;
 }
 
 export function ContractsLeague() {
@@ -177,7 +178,7 @@ export function ContractsTeam({ team }: { team: string }) {
   </Select></Field>;
   return <PageShell template="profile" className="contracts-page">
     <PageHeader title="Contracts & Payroll" subtitle={data ? `${data.team_name} · ${data.context.label} · as of ${formatDate(data.context.observed_at)}` : "2026-27 · reported salaries"}
-      actions={<>{switcher}<Link className="button" href={`/contracts${query}`}>All teams</Link>{data && <DataDetailsButton rows={[...contextRows(data.context),
+      actions={<>{switcher}<ButtonLink size="lg" href={`/contracts${query}`}>All teams</ButtonLink>{data && <DataDetailsButton rows={[...contextRows(data.context),
         { label: "Reference statistics release", value: data.statistics_release_id ?? "Unavailable", mono: true },
         { label: "Impact model", value: data.impact_version ?? "Unavailable" }]}>
         <Limitations items={data.limitations} />
