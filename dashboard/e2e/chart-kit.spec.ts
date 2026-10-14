@@ -74,16 +74,15 @@ test("PC03 prerendered SVG titles contain a single descriptive string", async ({
 test("PC03 Compare exports retain resolved token colors in SVG and PNG", async ({ page }) => {
   await openWorkbench(page, "/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13");
   await page.getByText("Export chart preview", { exact: true }).click();
-  const exportButton = page.getByRole("button", { name: "Export", exact: true });
-  await exportButton.click();
+  // PC04 moved SVG export into the More menu and PNG export to Share image.
+  await page.getByRole("button", { name: "More", exact: true }).click();
   const pendingSvg = page.waitForEvent("download");
-  await page.getByRole("menuitem", { name: /SVG/ }).click();
+  await page.getByRole("menuitem", { name: "Export SVG" }).click();
   const svg = readFileSync((await (await pendingSvg).path())!, "utf8");
   expect(svg).not.toContain("var(--");
   expect(svg).toContain("#80bfff"); expect(svg).toContain("#ffd166");
-  await exportButton.click();
   const pendingPng = page.waitForEvent("download");
-  await page.getByRole("menuitem", { name: /PNG/ }).click();
+  await page.getByRole("button", { name: "Share image", exact: true }).click();
   const png = readFileSync((await (await pendingPng).path())!);
   expect(png.subarray(1, 4).toString()).toBe("PNG");
 });
