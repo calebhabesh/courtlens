@@ -270,31 +270,19 @@
   .stats-workspace .ui-filter-bar { border: 0; box-shadow: none; margin-bottom: var(--space-2); }
   .stats-workspace .ui-filter-bar-scope, .stats-workspace .ui-filter-bar-controls { gap: var(--space-3); }
   .context-season-stepper { display: inline-flex; align-items: stretch; height: var(--control-lg); background: var(--color-surface-2); border-radius: var(--radius-sm); }
-  .context-stepper-button:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
-  .context-stepper-button:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
-  .context-stepper-button { display: inline-grid; place-items: center; width: 36px; min-height: var(--control-lg); padding: 0; border: 0; background: transparent; color: var(--color-text-secondary); }
-  .context-stepper-button:hover:not(:disabled) { background: var(--color-surface-hover); color: var(--color-text); }
   .stats-workspace .context-season-picker { display: inline-flex; align-items: center; gap: var(--space-1); padding-left: var(--space-3); background: var(--color-surface-3); color: var(--color-accent); }
   .stats-workspace .context-season-picker .ui-select-wrapper { background: transparent; }
   .stats-workspace .context-season-picker .ui-select { min-height: var(--control-lg); background: transparent; border: 0; color: var(--color-text); font-size: var(--text-lg); font-weight: 600; padding-left: var(--space-1); }
   /* 43e: season scope popover (single season or a From–Through range, Databallr pattern). */
   .season-scope-popover { display: flex; }
-  .season-scope-popover > .ui-popover-trigger { display: flex; }
-  .season-scope-trigger { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--control-lg); padding-inline: var(--space-3); background: var(--color-surface-3); color: var(--color-accent); }
+  .season-scope-icon { color: var(--color-accent); }
   .season-scope-value { color: var(--color-text); font-size: var(--text-lg); font-weight: 600; white-space: nowrap; }
-  .season-scope-trigger .ui-icon:last-child { color: var(--color-text-secondary); }
   .season-scope-popover .ui-popover-panel { width: min(340px, calc(100vw - 2 * var(--space-4))); padding: var(--space-3); gap: var(--space-3); }
   .season-scope-panel { display: grid; gap: var(--space-3); }
   .season-scope-panel .ui-select-wrapper { width: 100%; }
   .season-scope-range { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
   .season-scope-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2); width: 100%; }
-  .season-scope-quick-button { min-height: var(--control-md); border: 0; border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 600; cursor: pointer; }
-  .season-scope-quick-button:hover { background: var(--color-surface-hover); color: var(--color-text); }
-  .season-scope-quick-button[aria-pressed=true] { background: var(--color-accent-soft); color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
   .season-scope-apply { width: 100%; }
-  .stats-workspace .context-phase-segments { height: var(--control-lg); background: var(--color-surface-2); padding: var(--space-1); border-radius: var(--radius-sm); }
-  .stats-workspace .context-phase-segments .ui-segmented-item { min-height: var(--control-md); padding-inline: var(--space-3); font-size: var(--text-md); font-weight: 600; border-radius: var(--radius-xs); }
-  .stats-workspace .context-phase-segments .ui-segmented-indicator { border-radius: var(--radius-xs); background-color: var(--color-accent-soft); box-shadow: inset 0 0 0 1px var(--color-accent); }
   .stats-workspace .ui-filter-bar-page { border-left: 0; padding-left: 0; }
   .stats-workspace .stats-team-select { min-height: var(--control-lg); background: var(--color-surface-2); border: 0; font-size: var(--text-md); padding-left: var(--space-4); }
   .stats-workspace .ui-filter-bar .context-label, .stats-workspace .ui-filter-bar .ui-field-label { font-size: var(--text-xs); }
@@ -485,18 +473,15 @@
   .stats-workspace .stats-header-search .lookup-input-wrapper { min-height: var(--control-md); }
   .stats-workspace .stats-header-search .lookup-input { min-height: calc(var(--control-md) - 2px); }
 
-  .stats-workspace :is(.context-season-picker .ui-select, .season-scope-value,
-    .context-phase-segments .ui-segmented-item, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button, .stats-preset-tab) {
+  .stats-workspace :is(.context-season-picker .ui-select, .season-scope-value, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button, .stats-preset-tab) {
     font-size: var(--text-sm);
     line-height: var(--text-sm-lh);
     font-weight: 500;
     color: var(--color-text-secondary);
   }
   .stats-workspace :is(.ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button) { min-height: var(--control-lg); padding-block: 0; }
-  .stats-workspace :is(.context-phase-segments .ui-segmented-item-active,
+  .stats-workspace :is(
     .stats-preset-tab.active) { color: var(--color-accent); font-weight: 600; }
-
-  .stats-workspace .context-phase-segments .ui-segmented-item { min-height: var(--control-md); padding-block: 0; }
   .stats-workspace .stats-preset-tab { padding-inline: var(--space-2); }
   .stats-workspace .stats-divider-field > .ui-field-label { color: var(--color-on-bg-secondary); }
 
@@ -527,8 +512,8 @@
 
 /* Owner review: brighter scope controls, visible header alignment and a padded player drawer. */
 @layer foundation {
-  .stats-workspace :is(.context-season-stepper, .context-stepper-button,
-    .context-season-picker, .context-phase-segments, .stats-preset-tabs, .ui-filter-bar-scope .ui-date-trigger,
+  .stats-workspace :is(.context-season-stepper,
+    .context-season-picker, .stats-preset-tabs, .ui-filter-bar-scope .ui-date-trigger,
     .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle) {
     background: var(--color-surface-3);
   }
@@ -594,16 +579,16 @@
   .stats-workspace {
     --console-hover: color-mix(in srgb, var(--color-white) 7%, var(--color-table-lift));
   }
-  .stats-workspace :is(.context-stepper-button, .context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
+  .stats-workspace :is(.context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
     .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle,
-    .stats-preset-tab, .context-phase-segments .ui-segmented-item,
+    .stats-preset-tab,
     .stats-counting-modes .control-pill) {
     /* Background only: a colour fade runs on the main thread and lags the label behind the slide. */
     transition: background-color var(--dur-fast) var(--ease-out);
   }
-  .stats-workspace :is(.context-stepper-button, .context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
+  .stats-workspace :is(.context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
     .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle,
-    .stats-preset-tab, .context-phase-segments .ui-segmented-item,
+    .stats-preset-tab,
     .stats-counting-modes .control-pill):hover:not(:disabled, .active, [aria-pressed="true"], [aria-checked="true"]) {
     background-color: var(--console-hover);
     color: var(--color-text);
@@ -617,7 +602,7 @@
    Active (accent) and disabled controls keep their own colors. Foundation layer, because the
    shared control colors are set there. */
 @layer foundation {
-  .stats-workspace :is(.context-stepper-button, .context-phase-segments .ui-segmented-item,
+  .stats-workspace :is(
     .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar-meta .ui-button, .stats-preset-tab, .stats-counting-modes .control-pill):not(.active, .is-selected, .ui-segmented-item-active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], :disabled) {
     color: var(--color-text-control);
     font-weight: 600;
