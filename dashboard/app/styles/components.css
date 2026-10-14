@@ -2179,7 +2179,7 @@ button:disabled, input:disabled, select:disabled, textarea:disabled {
   cursor: not-allowed;
 }
 .button, .replica-action-link, .replica-nav-link, .replica-nav-dropdown-btn,
-.control-pill, .stats-preset-tab { min-height: var(--control-lg); }
+.control-pill { min-height: var(--control-lg); }
 input:not([type=checkbox]):not([type=radio]), select { min-height: var(--control-lg); }
 select:not([multiple]):not([size]) {
   appearance: none;

@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "./ui/input";
 import { Select } from "./ui/select";
 import { Field } from "./ui/field";
-import { Button } from "./ui/button";
+import { Button, ButtonLink } from "./ui/kit";
 import { Skeleton } from "./ui/skeleton";
 import { ContextBar } from "./context-bar";
 import { TeamLogoStack } from "./team-logo";
@@ -54,11 +54,11 @@ export function PlayerDirectory({ data, catalog }: { data: PlayerResearchRespons
           {pending ? Array.from({ length: data.items.length || 8 }, (_, index) => <tr key={index}>{Array.from({ length: 7 }, (_, column) => <td key={column}><Skeleton variant="text" width={column ? 60 : 160} /></td>)}</tr>) : data.items.length ? data.items.map(player => <tr key={player.player_id} data-player-id={player.player_id}>
             <th scope="row" className="directory-player"><div className="directory-identity"><TeamLogoStack teams={player.teams} /><div><Link href={buildPreservedContextUrl(`/players/${player.player_id}`, params)}>{player.player_name}</Link><small>{player.teams.join(" / ") || "Team unknown"}</small>{player.table_qualified === false && <span className="table-small-sample">Small sample</span>}</div></div></th>
             {COLUMNS.map(key => <td key={key} className="num"><PercentileCell compact value={player.metrics[key] == null ? null : formatColumnValue(ALL_CATALOG_METRICS[key], player)} percentile={player.table_percentiles?.[key] ?? null} qualified={player.table_qualified === true} label={ALL_CATALOG_METRICS[key].label} cohort={`${player.table_cohort_sample_sizes?.[key] ?? "Unknown"} valid league players; 500+ season minutes`} /></td>)}
-          </tr>) : <tr><td colSpan={7}>No players match. <button className="button" onClick={() => update({ name: null, teamId: null, team_id: null })}>Clear filters</button></td></tr>}
+          </tr>) : <tr><td colSpan={7}>No players match. <Button size="lg" onClick={() => update({ name: null, teamId: null, team_id: null })}>Clear filters</Button></td></tr>}
         </tbody>
       </table>
     </div>
-    {data.has_more && data.next_cursor && <Link className="button" href={`${pathname}?${new URLSearchParams({ ...Object.fromEntries(params), cursor: data.next_cursor })}`}>Next players</Link>}
+    {data.has_more && data.next_cursor && <ButtonLink size="lg" href={`${pathname}?${new URLSearchParams({ ...Object.fromEntries(params), cursor: data.next_cursor })}`}>Next players</ButtonLink>}
   </section>;
 }
 
@@ -70,8 +70,8 @@ function DirectoryFilters({ search, team, hasName, onSearchChange, onSearch, onT
   const nameId = useId();
   return <form className="directory-filters" onSubmit={event => { event.preventDefault(); onSearch(); }}>
     <Field label="Find player" htmlFor={nameId} layout="inline"><Input id={nameId} type="search" value={search} placeholder="Name" onChange={event => onSearchChange(event.target.value)} /></Field>
-    <Button type="submit" variant="secondary">Search</Button>
+    <Button size="lg" tone="console" type="submit">Search</Button>
     <Field label="Team" layout="inline"><Select aria-label="Directory team" value={team} onChange={event => onTeamChange(event.target.value)}><option value="">All teams</option>{NBA_TEAMS.map(team => <option key={team.tricode} value={team.tricode}>{team.name}</option>)}</Select></Field>
-    {hasName && <Button variant="ghost" onClick={onClear}>Clear search</Button>}
+    {hasName && <Button size="lg" variant="ghost" onClick={onClear}>Clear search</Button>}
   </form>;
 }

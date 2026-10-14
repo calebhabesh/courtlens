@@ -222,3 +222,49 @@ Evidence: [UC04 shell evidence](evidence/ui-consolidation/uc04-shell/README.md).
 - **Owner approval (2026-10-14):** C6 and D10–D14 approved as shown, including the 32 px Ask
   at 768–1279 px (no tablet kit size). `analysis-window-popup-linux.png` regenerated (only that
   baseline); `native-select-theme.spec.ts` 4/4 PASS against the 3180 fixture build.
+
+## UC04 batch 3 — Players and player profile (2026-10-14)
+
+Evidence: [UC04 players evidence](evidence/ui-consolidation/uc04-players/README.md).
+
+- **Migrated:** career table views (`Segmented lg console dense`, the Stats preset geometry),
+  Counting Mode and Phase (`Segmented md deferChange`, as Stats), stint expand (`IconButton xs`,
+  C9); Back to table (`Button xs primary`); profile favourite and compare (`IconButton sm
+  secondary`), Export (`IconButton sm` through `Menu renderTrigger`, spinner while exporting) and
+  Explore (`MenuTrigger sm`); game log Per Game / Per 36 Min (`Segmented sm`); Lineage
+  (`Button lg`, C3); directory Search (`Button lg console`), Clear search, Clear filters and Next
+  players (`Button`/`ButtonLink lg`); fixture search and replay-profile Change date / Return to
+  player search (`Button`/`ButtonLink lg`, C2). `StatsChoicePills` has no callers left and is
+  deleted. Seven files leave the ratchet (67 → 60).
+- **CSS removed:** the preset-tab, preset-indicator, counting-mode and `control-pill` rules under
+  `.stats-workspace` and the global `.stats-preset-tab` rules (`stats-explorer.css` 54,403 → 49,919
+  bytes; `pages.css` 141,368 → 140,440; `components.css` 124,786 → 124,767).
+- **Not in this batch:** the profile section tabs (Overview, Game Log, Tracking) are the legacy
+  `Tabs` in `components/ui` (C1), and `TablePercentileLegend`'s Rules disclosure shares
+  `ui-why-summary` with `GatedNote`'s Why? (about 50 callers). Both move with the legacy-component
+  step, so "Rules" and "Why?" stay identical.
+- **Changes for review:** C2 (fixture search, Change date, Return to player search: padding
+  16 → 12, text 14 → 13, weight 600 → 500, no hairline border), C3 (Lineage text 12 → 13,
+  weight 600 → 500, no border), C9 (stint expand 24 → 28; the fixture has no multi-team season to
+  show it), and:
+  - D15 Profile actions: Export becomes a 32 px filled icon button like favourite and compare
+    (was a 28 px transparent box), Explore gains 12 px padding (+8 px wide); the row grows 9 px
+    to the left, so the bio facts shift up to 8 px left. Favourite and compare lose
+    the custom tooltip for the kit's native one; the favourite star fills when on.
+  - D16 Career Counting Mode and Phase: separate 36 px pills → one 36 px group with 28 px items,
+    inactive text secondary 500 (the D4 Stats look). Phone: one line instead of two (−20 px).
+  - D17 Game log Per Game / Per 36 Min: same 32 px group, items 28 → 24 with the kit's 4 px
+    padding; text 12 → 13.
+  - D18 Directory Search: weight 500 → 600 and control text colour, matching the Team select
+    beside it.
+  - D19 Back to table: 4 px narrower (kit icon gap; the Esc key cap loses its extra 4 px margin).
+- **Semantics:** career views were `tablist`/`tab` and Counting Mode/Phase `group`/`button`; all
+  are now `radiogroup`/`radio` with arrow keys, as on Stats. `player-career.spec.ts` updated.
+- **Verification:** ESLint/Stylelint **PASS**; typecheck **PASS**; Vitest **76 files / 510 PASS**;
+  full Playwright against the 3180 fixture build **457 PASS / 27 skips / 2 failures**, both
+  streamed-duplicate strict-mode flakes on untouched pages (`fo13-pages:93` planner sign-in,
+  `saved-operations:52` methodology heading). With `--repeat-each=8` they fail 6/16 on this build
+  and 5/16 on an `ee2a8af` build, so they predate the batch. No screenshot baseline changed;
+  the player specs (`player-career`, `player-profile`, `players-fo09`) pass 9/9.
+- **Owner approval (2026-10-14):** C2, C3, C9 and D15–D19 approved as shown. No baseline needed
+  regenerating.
