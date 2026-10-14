@@ -8,6 +8,10 @@ updates:
       python-dependencies:
         patterns: ["*"]
         update-types: [minor, patch]
+    ignore:
+      # dbt-adapters pins mashumaro below 3.18; let dbt upgrades move it.
+      - dependency-name: mashumaro
+        versions: [">=3.18"]
   - package-ecosystem: npm
     directory: /dashboard
     schedule: {interval: weekly}
