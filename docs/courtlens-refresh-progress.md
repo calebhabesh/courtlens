@@ -710,3 +710,13 @@ SVGs, simultaneous brand instances have unique paint IDs, and served assets matc
 Dashboard lint/types, Vitest 511/511, production webpack build and six header browser checks pass.
 Scoped glance: identity, readability, spacing and no page overflow pass. Other page presentation
 is outside this asset-only follow-up. [Evidence](evidence/alignment/app-shell/silver-mark/README.md).
+
+### App-shell follow-up: favicon lens clearance (2026-10-14)
+
+Owner requested slightly more padding around the round lens. The favicon artwork scale is now
+82% (was 90%), adding 0.60px of top/left lens clearance at 16px. Both SVG copies match; metadata
+uses v6. Native 16px/32px visual inspection, served-asset parity, blue background pixels and
+responsive overflow checks pass. Dashboard lint/types and Vitest 511/511 pass; four existing
+header checks pass. A broader search test fails on live lookup, and its rerun times out during
+workspace initialization on the active dev server. Scoped glance passes for favicon identity,
+readability and padding. [Evidence](evidence/alignment/app-shell/favicon-padding/README.md).

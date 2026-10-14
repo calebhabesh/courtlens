@@ -10,7 +10,7 @@
     </linearGradient>
   </defs>
   <rect x="3" y="3" width="27" height="27" rx="5" fill="#15325a" />
-  <g transform="translate(16.5 16.5) scale(0.9) translate(-16.5 -16.5)">
+  <g transform="translate(16.5 16.5) scale(0.82) translate(-16.5 -16.5)">
   <line x1="20.5" y1="20.5" x2="27.4" y2="27.4" stroke="url(#silver)" stroke-width="3.4" stroke-linecap="butt" />
   <circle cx="27.4" cy="27.4" r="1.7" fill="url(#silver)" />
   <circle cx="14" cy="14" r="7.8" fill="#ff7a2f" />
