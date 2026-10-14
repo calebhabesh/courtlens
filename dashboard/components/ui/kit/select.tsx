@@ -28,9 +28,9 @@ const heights: Record<SelectSize, string> = {
  * the text-to-chevron gap stays 4 px and the visible gaps mirror.
  */
 const chevrons = {
-  sm: { size: 14, pad: "kit:pe-[calc(var(--space-8)-14px*4/24)]", end: "kit:end-[calc(var(--space-3)-14px*4/24)]" },
-  md: { size: 16, pad: "kit:pe-[calc(var(--space-8)-16px*4/24)]", end: "kit:end-[calc(var(--space-3)-16px*4/24)]" },
-  lg: { size: 16, pad: "kit:pe-[calc(var(--space-8)-16px*4/24)]", end: "kit:end-[calc(var(--space-3)-16px*4/24)]" },
+  sm: { size: 14, pad: "kit:pe-[calc(var(--space-8)-var(--kit-chevron-sm)*4/24)]", end: "kit:end-[calc(var(--space-3)-var(--kit-chevron-sm)*4/24)]" },
+  md: { size: 16, pad: "kit:pe-[calc(var(--space-8)-var(--kit-chevron)*4/24)]", end: "kit:end-[calc(var(--space-3)-var(--kit-chevron)*4/24)]" },
+  lg: { size: 16, pad: "kit:pe-[calc(var(--space-8)-var(--kit-chevron)*4/24)]", end: "kit:end-[calc(var(--space-3)-var(--kit-chevron)*4/24)]" },
 } as const;
 
 const tones: Record<SelectTone, string> = {

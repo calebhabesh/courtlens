@@ -101,3 +101,34 @@ prose are not runtime verification; each entry records what was run and measured
   so no row layout moves. Each UC04 batch applies C13 to its filter-bar `SegmentedControl` callers
   and regenerates only the affected baselines, listing them in its entry.
 
+
+## UC03 — Lint ratchet (2026-10-14)
+
+- `dashboard/eslint/control-kit.mjs` adds a local `control-kit` ESLint plugin with three rules:
+  - `no-control-class`: the 8 legacy `.button*` classes and 55 bespoke control classes from the
+    control kit v1 mapping are errors in any `className`/`*ClassName` value (literals, template
+    text, `cx` arguments and object keys) outside `components/ui`. Ratchet
+    `PENDING_CONTROL_CLASS` starts at **82 files / 428 hits**; classes listed as not fitting the kit
+    (table cells, nav, menu rows, badges, inputs) are not banned.
+  - `kit-layout-only`: a kit component's `className` may not carry `kit:` size, padding, gap,
+    type, colour, radius, ring, shadow, opacity or scale utilities.
+  - `kit-tokens`: the Stylelint value contracts applied to `kit:` utilities: no hex/rgb/hsl,
+    no raw px (except 0/1) or rem in padding, margin, gap, radius, text or leading, no numeric
+    z-index, no `transition-all`, no numeric durations, no `!important`. Stylelint stays for the
+    remaining vanilla CSS, so together they replace its contracts for Tailwind (UC00).
+- The kit itself had three hits: the Select chevron optics used raw `14px`/`16px`. They now use new
+  `--kit-chevron-sm`/`--kit-chevron` tokens with the same values, so geometry is unchanged.
+- `.stylelintrc.json` adds `selector-disallowed-list` for `.ui-button`, `.ui-icon-button`,
+  `.ui-select`, `.ui-segmented*`, `.ui-*-trigger`, `.ui-chip`, `.ui-entity-chip`,
+  `.ui-filter-bar-toggle`, `.ui-why-summary` (with suffixes) and `[data-kit]`. The ratchet override
+  starts at **6 files / 145 selectors**: components.css 43, foundation.css 61, stats-explorer.css 26,
+  pages.css 13, presentation-clarity.css 1, table-presentation.css 1. Wrapper classes stay allowed.
+- `eslint/control-kit.test.ts` (30 tests) covers each rule's valid/invalid cases and both
+  ratchets: neither list may grow past its start, and every listed file must still violate, so a
+  migrated file has to leave the list.
+- Verification: dashboard ESLint/Stylelint **PASS, zero errors/warnings**; typecheck **PASS**;
+  Vitest **76 files / 510 tests PASS**; full Playwright in a disk-backed sandbox on 3180/4180
+  **458 PASS / 27 opt-in skips / 1 failure**: `roster-shapes.spec.ts:108` hit a strict-mode
+  duplicate `.roster-team` while a streamed copy was still loading (no UC03 code on that page).
+  Rerun of that spec with `--repeat-each=3`: **21/21 PASS**. Visual baselines unchanged.
+  Frozen identifiers **6 PASS**; `git diff --check` **PASS**.

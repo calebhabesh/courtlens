@@ -100,6 +100,12 @@ Keep existing exports and callers until UC04 migrates them:
   `.ui-chip`, …) or set `height`/`padding` on them. Layout (margin, grid placement) stays
   allowed through wrapper classes.
 
+**Done 2026-10-14:** rules in `dashboard/eslint/control-kit.mjs` (`no-control-class`,
+`kit-layout-only`, `kit-tokens`) and a `selector-disallowed-list` in `.stylelintrc.json`. Ratchets
+start at 82 TSX files (`PENDING_CONTROL_CLASS`) and 6 CSS files (the last Stylelint override);
+tests fail if either list grows or keeps a migrated file. Stylelint stays for vanilla CSS;
+`kit-tokens` applies its value contracts to `kit:` utilities. Details in the progress log.
+
 ### UC04 — Migration
 
 Migrate in batches. Each batch empties its files from the ratchet and deletes the CSS it no

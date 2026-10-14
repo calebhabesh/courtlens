@@ -1,6 +1,7 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTypescript from "eslint-config-next/typescript";
+import { controlKitPlugin, PENDING_CONTROL_CLASS } from "./eslint/control-kit.mjs";
 
 // D26: arrows (U+2190–21FF), geometric shapes (U+25A0–25FF), misc symbols and dingbats incl. check
 // marks and stars (U+2600–27BF), more arrows (U+2B00–2BFF) and emoji (surrogate pairs for
@@ -88,6 +89,26 @@ export default defineConfig([
     { files: PENDING_RAW_TITLE.filter((file) => !PENDING_NATIVE_DATE.includes(file)), rules: { "no-restricted-syntax": ["error", ...baseSyntaxRules, nativeDateRule] } },
     { files: PENDING_NATIVE_DATE.filter((file) => PENDING_RAW_TITLE.includes(file)), rules: { "no-restricted-syntax": ["error", ...baseSyntaxRules] } }
   ].filter((group) => group.files.length > 0),
+  {
+    plugins: { "control-kit": controlKitPlugin },
+    files: ["**/*.{ts,tsx}"],
+    rules: {
+      "control-kit/no-control-class": "error",
+      "control-kit/kit-layout-only": "error",
+      "control-kit/kit-tokens": "error"
+    }
+  },
+  {
+    // The legacy components/ui controls render these classes until UC04 replaces them.
+    files: ["components/ui/**/*.{ts,tsx}"],
+    rules: { "control-kit/no-control-class": "off" }
+  },
+  { files: PENDING_CONTROL_CLASS, rules: { "control-kit/no-control-class": "off" } },
+  {
+    // The rules' own tests hold violating fixtures as strings.
+    files: ["eslint/**"],
+    rules: { "control-kit/kit-tokens": "off" }
+  },
   {
     // PageHeader is the one place that renders the page title element.
     files: ["components/ui/panel.tsx"],
