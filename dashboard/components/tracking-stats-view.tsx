@@ -7,6 +7,7 @@ import { FeedDetails, FeedFailure, FeedScopeFields, FeedSkeleton, useFeed, useUr
 import { CountChip, FilterBar } from "./ui/filter-bar";
 import { Field } from "./ui/field";
 import { GatedNote } from "./ui/gated-note";
+import { Button } from "./ui/kit";
 import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { RouteTabs } from "./ui/route-tabs";
@@ -51,7 +52,7 @@ function Body({ data, sort, setSort }: { data: TrackingView; sort: string; setSo
         </tr>)}</tbody>
       </table>
     </div>
-    {sorted.length > TABLE_LIMIT && <button className="button" onClick={() => setAll(v => !v)}>{all ? `Show first ${TABLE_LIMIT}` : `Show all ${sorted.length} players`}</button>}
+    {sorted.length > TABLE_LIMIT && <Button size="lg" onClick={() => setAll(v => !v)}>{all ? `Show first ${TABLE_LIMIT}` : `Show all ${sorted.length} players`}</Button>}
   </ResearchLayout>;
 }
 
@@ -71,7 +72,7 @@ export function TrackingStatsView() {
         {data.groups.map(g => <option key={g.value} value={g.value}>{g.label}</option>)}</Select></Field>}
       count={<CountChip>{data.players.length} players</CountChip>} />}
     {error && (season || phase
-      ? <GatedNote why={error} action={<button className="button" onClick={() => set({ season: null, phase: null })}>Show the latest observed season</button>}>No tracking feed was observed for this season or phase.</GatedNote>
+      ? <GatedNote why={error} action={<Button size="lg" onClick={() => set({ season: null, phase: null })}>Show the latest observed season</Button>}>No tracking feed was observed for this season or phase.</GatedNote>
       : <FeedFailure error={error} retry={retry} what="Tracking" />)}
     {loading && <FeedSkeleton label="Loading tracking" />}
     {data && <Body data={data} sort={sort} setSort={key => set({ sort: key })} />}

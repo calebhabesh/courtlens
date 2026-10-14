@@ -35,6 +35,8 @@ const sizes: Record<KitSize, string> = {
 
 /** Inline padding for labelled controls; square (icon-only) controls have none. */
 const paddings: Record<KitSize, string> = { xs: "kit:px-2", sm: "kit:px-3", md: "kit:px-3", lg: "kit:px-3" };
+/** `dense`: one 4 px step less, for packed rows (the Stats footer) that must not wrap. */
+const densePaddings: Record<KitSize, string> = { xs: "kit:px-1", sm: "kit:px-2", md: "kit:px-2", lg: "kit:px-2" };
 
 const squares: Record<KitSize, string> = {
   xs: "kit:w-control-xs kit:phone:min-w-control-lg",
@@ -67,14 +69,16 @@ export interface ControlClassOptions {
   square?: boolean;
   /** Chips and segments use a 4 px icon gap; buttons 8 px. */
   tight?: boolean;
+  /** One 4 px step less inline padding. */
+  dense?: boolean;
 }
 
-export function controlClasses({ size, variant, tone = "default", square = false, tight = false }: ControlClassOptions) {
+export function controlClasses({ size, variant, tone = "default", square = false, tight = false, dense = false }: ControlClassOptions) {
   return cx(
     pressable,
     sizes[size],
     tight ? "kit:gap-1" : "kit:gap-2",
-    square ? squares[size] : paddings[size],
+    square ? squares[size] : (dense ? densePaddings : paddings)[size],
     tone === "default" ? variants[variant] : tones[tone],
     variant !== "primary" && selectedClasses,
   );

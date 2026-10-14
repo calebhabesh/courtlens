@@ -132,3 +132,60 @@ prose are not runtime verification; each entry records what was run and measured
   duplicate `.roster-team` while a streamed copy was still loading (no UC03 code on that page).
   Rerun of that spec with `--repeat-each=3`: **21/21 PASS**. Visual baselines unchanged.
   Frozen identifiers **6 PASS**; `git diff --check` **PASS**.
+
+## UC04 batch 1 — Stats (2026-10-14)
+
+**Owner approved 2026-10-14:** C1–C5, C9, C10 and D1–D9 as listed; C7 and C8 dropped from the
+spec. `stats-phone.png` regenerated after approval. Evidence: [UC04 Stats evidence](evidence/ui-consolidation/uc04-stats/README.md).
+
+- **Files (13 leave the ratchet, 82 → 69):** `workbench-player-explorer`, `stats-page-controls`,
+  `stats-preview-rail`, `stats-detail-drawer`, `stats-feed-ui`, `stats-workspace`,
+  `stats-glossary-view`, `tracking-stats-view`, `manage-views-modal`, `hotkeys-modal`,
+  `compare-tray`, `scatter-plot-view`, `multi-player-lines-view`. `StatsChoicePills` stays for the
+  career table (batch 3). `ContextBar` and `SeasonScopePicker` serve 17 pages and move with
+  batch 2.
+- **Kit changes:** `dense` on `Button`/`ButtonLink`/`ButtonSummary` (one 4 px padding step less)
+  and on `Segmented` (also abutting items), so the preset row and footer keep their widths;
+  `IconButton filled`; a UC02 bug fixed where `Segmented`'s console tone lost its text colour to
+  the default tone's (two colour utilities resolved by stylesheet order).
+- **CSS removed:** 59 dead rules or selectors across `stats-explorer.css` (64,138 → 56,794 bytes),
+  `stats-glossary.css`, `components.css` and `pages.css`. Layout that lived on control classes
+  moved to wrappers (`stats-expand-action`, `stats-row-pin`, `filter-clear-slot`,
+  `filter-action-slot`, `stats-footer-group.is-single`), because kit utilities outrank page CSS.
+- **Semantics:** presets (`tablist`/`tab`) and Table Divider/Counting Mode (`group`/`button`) are
+  now `radiogroup`/`radio` with arrow-key selection. Four e2e specs updated; the FO14 phone
+  preset-clipping check now targets the radios instead of a class that no longer exists.
+- **Spec changes applied:** C1 (drawer research links 34 → 32), C2 (legacy buttons: padding
+  16 → 12; the drawer's Close is now surface-2 on a surface-2 footer), C3 (Hotkeys "Got it" text
+  12 → 13), C4 (Select Team, Draft Class padding 16 → 12), C5 (help row, Add View, Manage icons
+  14 → 16), C9 (row and preview-rail icon actions → 28 × 28), C10 (glossary chips solid accent →
+  accent outline; also padding 16 → 12, text 14 → 13).
+- **Not applied:** C7 (footer padding 4 → 8) and C8 (preset padding 8 → 12). Each wraps its row at
+  1440 px (measured: footer expand control drops a line; Add View/Manage drop a line and the table
+  moves down 48 px). `dense` keeps today's widths.
+- **New changes for review:**
+  - D1 Draft Class gains the `MenuTrigger` chevron (+8 px).
+  - D2 The "C" position chip is 33 px wide, not 40 (the kit has no minimum width).
+  - D3 Table tool buttons lose their 1 px hairline border and accent icons (white icons on the
+    same fill); Filters with active filters shows the full selected look.
+  - D4 Counting Mode: five separate 36 px pills → one 36 px segmented group with 28 px items;
+    inactive text secondary 500 instead of control 600.
+  - D5 Footer: the current density, open Filters and expanded state show accent fill + ring
+    instead of accent text; scroll buttons' kbd-to-icon gap 4 → 8; density buttons size to
+    content. Disabled First Page now dims.
+  - D6 Phone: preset and divider groups 40 → 48 with 40 px items (the C13 phone rule); Counting
+    Mode fits one line, so the table starts 20 px higher.
+  - D7 Manage Views: text tabs → filled `xs` chips; close 30 × 22 → 28 × 28. On phone, Create View
+    and Hotkeys "Got it" fit one 40 px line instead of wrapping to 46.
+  - D8 Stats `xs` buttons: weight 600 → 500.
+  - D9 Compare tray remove: hover turns neutral instead of red.
+- **Verification:** ESLint/Stylelint **PASS, zero errors/warnings**; typecheck **PASS**; Vitest
+  **76 files / 510 tests PASS**; full Playwright against the 3180 fixture build **457 PASS /
+  27 opt-in skips / 2 failures**: `stats-phone.png` (4% of pixels, pending approval) and
+  `fo13-pages.spec.ts:112` (strict-mode duplicate while a streamed copy loads; planner code
+  unchanged). `fo13-pages.spec.ts` with `--repeat-each=5`: 34/35 pass, the one failure the same
+  duplicate on a different planner test, so the flake predates this batch. The desktop Stats baseline passes within its 1% tolerance.
+- **After approval:** `stats-phone-linux.png` regenerated (only that baseline). Re-verified in the
+  sandbox: lint, typecheck, Vitest 510 PASS; full Playwright **458 PASS / 27 skips / 1 failure**,
+  the known Roster Shapes streamed-duplicate flake (`advanced-research.spec.ts:62`), which passes
+  15/15 with `--repeat-each=3`.
