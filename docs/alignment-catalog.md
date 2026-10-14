@@ -554,6 +554,10 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
 38. [x] More contrast between the bio labels and values, like ESPN and Basketball-Reference. — values
     semibold white; labels medium weight in a dimmer grey (on-bg-tertiary mixed 75% toward the page,
     about 4.7:1); second lines stay regular.
+39. [x] Country flags beside the country name. — 82 flags covering every country the NBA player index
+    lists (its own spellings, e.g. "DRC", "Macedonia"), from flag-icons 7.2.3 (MIT, licence in
+    `public/flags/LICENSE`) rendered to 60×45 PNGs (36 KB in all; the SVGs with coats of arms ran to
+    180 KB); shown at 20×15. Unknown names show no flag. `lib/country-flags.ts`.
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
 awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut). The
 "now TOR" chip on Stats rows was approved and built as Stats instruction 72.

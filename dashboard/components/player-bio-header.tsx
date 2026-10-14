@@ -6,6 +6,7 @@ import { Button } from "./ui/kit";
 import { PlayerAvatar } from "./ui/identity";
 import { TeamLogo } from "./team-logo";
 import { PageHeader } from "./ui/panel";
+import { countryFlag } from "@/lib/country-flags";
 import { formatDate } from "@/lib/format-date";
 import catalog from "@/lib/team-branding.json";
 import { teamBrandColor } from "@/lib/team-colors";
@@ -81,6 +82,7 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   const experience = bio?.prior_seasons == null ? null : bio.prior_seasons === 0 ? "Rookie"
     : `${bio.prior_seasons + 1}${ordinalSuffix(bio.prior_seasons + 1)} season`;
   const origin = bio?.draft?.organization ?? bio?.college ?? null;
+  const flag = countryFlag(bio?.country);
   // Born carries the age; outside the current season the age is dated to the page's cutoff.
   const born = bio?.birth_date
     ? { label: "Born", value: `${formatDate(bio.birth_date)}${bio.age != null && !datedAge ? ` (${bio.age})` : ""}`,
@@ -92,7 +94,9 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     { label: "Draft", value: bio?.draft ? <>{draftPick}{draftTeam && <> · <span className="player-bio-team">
       <TeamLogo team={draftTeam} size={18} />{draftTeam}</span></>}</> : bio?.undrafted ? "Undrafted" : null, detail: origin },
     { label: "Experience", value: experience },
-    { label: "Country", value: bio?.country ?? null },
+    { label: "Country", value: bio?.country ? <span className="player-bio-country">
+      {/* eslint-disable-next-line @next/next/no-img-element -- a 1 KB static flag needs no image optimisation */}
+      {flag && <img src={flag} width={20} height={15} alt="" />}{bio.country}</span> : null },
   ];
   const combine = bio?.combine;
   const measured = combine ? [
