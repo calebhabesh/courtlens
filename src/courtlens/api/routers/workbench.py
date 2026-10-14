@@ -172,6 +172,11 @@ from courtlens.services.personal_state import (
     update_workspace_state,
 )
 from courtlens.services.player_bio import player_bio
+from courtlens.services.portrait_derivatives import (
+    PORTRAIT_DERIVATIVE_MIME,
+    PORTRAIT_SIZES,
+    portrait_derivative,
+)
 from courtlens.services.position_estimates import (
     draft_class_player_ids,
     draft_classes,
@@ -1532,9 +1537,17 @@ def get_player_portrait_media(hash: str, session: Session = Depends(get_db)) -> 
     return FileResponse(path, media_type=portrait.mime_type)
 
 
-@router.get("/players/{id}/portrait")
-def get_player_portrait(id: str, session: Session = Depends(get_db)) -> FileResponse:
-    """Serve cached player portrait image by player ID with cache headers."""
+@router.get("/players/{id}/portrait", response_model=None)
+def get_player_portrait(
+    id: str,
+    size: int | None = Query(
+        None, description=f"Square face-framed derivative in pixels: one of {PORTRAIT_SIZES}"
+    ),
+    session: Session = Depends(get_db),
+) -> FileResponse | Response:
+    """Serve a player's cached portrait, or a display-sized derivative of it, by player ID."""
+    if size is not None and size not in PORTRAIT_SIZES:
+        raise HTTPException(status_code=422, detail=f"size must be one of {PORTRAIT_SIZES}")
     portrait = session.scalar(
         select(PlayerPortrait)
         .where(
@@ -1549,6 +1562,15 @@ def get_player_portrait(id: str, session: Session = Depends(get_db)) -> FileResp
     path = Path(portrait.storage_path)
     if not path.exists():
         raise HTTPException(status_code=404, detail="Portrait file missing on disk")
+    if size is not None:
+        content = portrait_derivative(
+            path, portrait.content_sha256, size, get_settings().portraits_cache_path
+        )
+        return Response(
+            content,
+            media_type=PORTRAIT_DERIVATIVE_MIME,
+            headers={"Cache-Control": "public, max-age=86400"},
+        )
     return FileResponse(
         path,
         media_type=portrait.mime_type,

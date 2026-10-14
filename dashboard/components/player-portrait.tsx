@@ -2,13 +2,24 @@
 
 import { Icon } from "./ui/icon";
 import { useEffect, useRef, useState } from "react";
-import { browserApi } from "@/lib/workbench-api";
+import { portraitSource, type PortraitWidth } from "@/lib/portrait-source";
+
+type PortraitSize = "sm" | "md" | "lg" | "xl";
+
+// Box size, the largest CSS box each size is drawn at (page CSS enlarges some, e.g. 40px table
+// avatars and 64px drawer heroes), and the derivative used when srcset is unsupported.
+const SIZES: Record<PortraitSize, { box: number; largest: number; fallback: PortraitWidth }> = {
+  sm: { box: 30, largest: 40, fallback: 64 },
+  md: { box: 48, largest: 64, fallback: 96 },
+  lg: { box: 80, largest: 80, fallback: 192 },
+  xl: { box: 144, largest: 144, fallback: 288 }
+};
 
 interface PlayerPortraitProps {
   playerId?: string;
   name: string;
   portraitUrl?: string | null;
-  size?: "sm" | "md" | "lg";
+  size?: PortraitSize;
   className?: string;
   alt?: string;
 }
@@ -37,16 +48,9 @@ export function PlayerPortrait({
     .slice(0, 2)
     .join("");
 
-  const dimension = size === "lg" ? 80 : size === "md" ? 48 : 30;
-  const sizeClass = size === "lg" ? "player-portrait-lg" : size === "md" ? "player-portrait-md" : "player-portrait-sm";
-
-  // Use explicit portraitUrl, or player endpoint if playerId provided
-  const portraitPath = portraitUrl || (playerId ? `/api/workbench/players/${playerId}/portrait` : null);
-  const versionedPath = portraitPath?.match(/^\/api\/workbench\/players\/[^/]+\/portrait$/)
-    ? `${portraitPath}?quality=1040x760` : portraitPath;
-  const source = versionedPath?.startsWith("/")
-    ? `${browserApi.replace(/\/$/, "")}${versionedPath}`
-    : versionedPath;
+  const { box, largest, fallback } = SIZES[size];
+  const sizeClass = `player-portrait-${size}`;
+  const source = portraitSource(portraitUrl, playerId, fallback);
 
   if (error || !source) {
     return (
@@ -65,11 +69,13 @@ export function PlayerPortrait({
     // eslint-disable-next-line @next/next/no-img-element
     <img
       ref={imageRef}
-      src={source}
+      src={source.src}
+      srcSet={source.srcSet}
+      sizes={source.srcSet ? `${largest}px` : undefined}
       alt={alt ?? `${name} portrait`}
-      width={dimension}
-      height={dimension}
-      loading={size === "lg" ? "eager" : "lazy"}
+      width={box}
+      height={box}
+      loading={size === "lg" || size === "xl" ? "eager" : "lazy"}
       onError={() => setError(true)}
       className={`player-portrait ${sizeClass} ${className}`}
     />

@@ -62,6 +62,7 @@ orderly-set==5.5.0
 packaging==26.3
 parsedatetime==2.6
 pathspec==1.0.4
+pillow==12.3.0
 pluggy==1.6.0
 prometheus_client==0.26.0
 protobuf==6.33.6

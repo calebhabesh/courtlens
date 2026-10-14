@@ -10,7 +10,6 @@ import { TeamLogo } from "../team-logo";
 export type IdentitySize = "sm" | "md" | "lg" | "xl";
 
 const LOGO_SIZE: Record<IdentitySize, number> = { sm: 16, md: 20, lg: 28, xl: 40 };
-const PORTRAIT_SIZE: Record<IdentitySize, "sm" | "md" | "lg"> = { sm: "sm", md: "md", lg: "lg", xl: "lg" };
 
 export function teamStyle(team?: string | null): CSSProperties | undefined {
   const accent = teamAccent(team);
@@ -49,7 +48,7 @@ export function PlayerIdentity({ playerId, name, team, subtitle, size = "md", hr
   return (
     <div className={`ui-identity ui-identity-${size} ${team ? "has-team" : ""} ${className}`} style={teamStyle(team)}>
       <span className="ui-identity-media">
-        <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size={PORTRAIT_SIZE[size]} className="ui-identity-portrait" />
+        <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size={size} className="ui-identity-portrait" />
         {team && <span className="ui-identity-badge"><TeamLogo team={team} size={LOGO_SIZE[size]} /></span>}
       </span>
       <span className="ui-identity-text">
