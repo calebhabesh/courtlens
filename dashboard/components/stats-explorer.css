@@ -151,13 +151,18 @@
 .stats-workspace .player-cell-teams abbr { text-decoration: none; }
 /* "now TOR": the row keeps its games' team; the chip says where an active player is listed today.
    Rows are 46px (38 compact) so the 18px pill has room on the subtitle line (Stats 73). */
-.stats-workspace .stats-team-move { display: inline-flex; align-items: center; gap: var(--space-1); height: 18px; margin-block: calc(var(--space-0-5) * -1); padding: 0 var(--space-2) 0 var(--space-1); border-radius: var(--radius-pill); background: var(--color-surface-press); color: var(--color-text); line-height: var(--text-sm-lh); vertical-align: middle; }
+.stats-workspace .stats-team-move { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1); height: 18px; padding: 0 var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-press); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 55%, transparent); color: var(--color-text); line-height: 1; vertical-align: middle; }
+.stats-workspace .stats-team-move > span:not(.team-logo) { display: block; line-height: 1; }
+/* The subtitle clips overflow (for its ellipsis); a line as tall as the pill keeps its outline whole. */
+.stats-workspace .dense-stats-table .player-cell-teams.has-move { line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .stats-team-move .team-logo { width: 14px; height: 14px; min-width: 14px; }
 @media (max-width: 767px) {
   /* Phone cards are narrow: a moved row drops its position and the word "now" (the pill, logo
      and title still say it) so the new team always fits. */
   .stats-workspace .player-cell-teams.has-move .player-cell-position,
-  .stats-workspace .stats-team-move-label { display: none; }
+  .stats-workspace .stats-team-move > span.stats-team-move-label { display: none; }
+  .stats-workspace .stats-team-move { gap: var(--space-0-5); padding: 0 var(--space-1); }
+  .stats-workspace .dense-stats-table .stats-team-move .team-logo { width: 12px; height: 12px; min-width: 12px; }
 }
 @media (max-width: 1199px) {
   .stats-workspace .stats-frame-layout.has-rail, .stats-workspace .stats-frame-layout.has-rail.preview-collapsed { grid-template-columns: minmax(0, 1fr); }
