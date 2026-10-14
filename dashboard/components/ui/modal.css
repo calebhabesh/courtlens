@@ -1,0 +1,114 @@
+@layer components {
+/* Modals & Drawers */
+.ui-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  background-color: var(--color-scrim);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.ui-modal-panel {
+  background-color: var(--color-surface-3);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-3);
+  width: min(560px, 100%);
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  outline: 0;
+}
+
+.ui-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.ui-modal-title {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ui-modal-desc {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-text-secondary);
+  margin: var(--space-1) 0 0;
+}
+
+.ui-modal-body {
+  padding: var(--space-4);
+  overflow-y: auto;
+}
+
+.ui-drawer-root {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-drawer);
+}
+
+.ui-drawer-panel {
+  position: fixed;
+  z-index: var(--z-drawer);
+  background-color: var(--color-surface-3);
+  box-shadow: var(--shadow-3);
+  outline: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ui-drawer-right {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(440px, 100%);
+}
+
+.ui-drawer-left {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(440px, 100%);
+}
+
+.ui-drawer-bottom {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 80vh;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.ui-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.ui-drawer-title {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ui-drawer-body {
+  padding: var(--space-4);
+  overflow-y: auto;
+  flex: 1;
+}
+}

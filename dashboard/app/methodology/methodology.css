@@ -1,0 +1,16 @@
+@layer pages {
+/* Methodology catalog (FO13 Article template) */
+.methodology-catalog .data-table { min-width: 880px; table-layout: fixed; }
+.methodology-catalog .data-table th, .methodology-catalog .data-table td { vertical-align: top; white-space: normal; overflow-wrap: anywhere; }
+.methodology-catalog tbody th, .methodology-catalog td { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+.methodology-catalog tbody th { text-align: left; text-transform: none; letter-spacing: normal; font-weight: 500; background: none; }
+.methodology-catalog thead th:nth-child(1) { width: 20%; }
+.methodology-catalog thead th:nth-child(2) { width: 10%; }
+.methodology-catalog thead th:nth-child(3) { width: 26%; }
+.methodology-catalog thead th:nth-child(4) { width: 20%; }
+.methodology-group-row th { padding-top: var(--space-4); color: var(--color-text-tertiary); font-size: var(--text-xs); font-weight: 600; text-align: left; text-transform: none; }
+.methodology-metric-name { display: block; color: var(--color-text); font-weight: 500; }
+.methodology-metric-key, .methodology-denominator { display: block; margin-top: var(--space-1); color: var(--color-text-tertiary); font-family: var(--font-mono), ui-monospace, monospace; font-size: var(--text-xs); }
+.methodology-code { font-family: var(--font-mono), ui-monospace, monospace; font-size: var(--text-xs); overflow-wrap: anywhere; }
+.methodology-limitations { color: var(--color-text-secondary); }
+}

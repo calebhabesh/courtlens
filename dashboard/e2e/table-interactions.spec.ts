@@ -27,10 +27,10 @@ async function personalFixture(page: import("@playwright/test").Page, compareTra
 test("recurring guide modes preserve primary identity, header alignment and reload", async ({ page }) => {
   await personalFixture(page); await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
   const row = page.locator(".dense-stats-table tbody tr").first();
-  const guides = page.getByRole("group", { name: "Table Divider", exact: true });
+  const guides = page.getByRole("radiogroup", { name: "Table Divider", exact: true });
   // Photos is the default, so an initial click on it is a no-op; start elsewhere.
   for (const mode of ["Logos", "Photos", "Initials", "None"]) {
-    await guides.getByRole("button", { name: mode, exact: true }).click();
+    await guides.getByRole("radio", { name: mode, exact: true }).click();
     await page.waitForURL(url => url.searchParams.get("identityMode") === mode.toLowerCase());
     await expect(row.locator(".stats-guide-cell")).toHaveCount(mode === "None" ? 0 : 5);
     await expect(row.locator(".stats-primary-portrait")).toHaveCount(1);
@@ -82,7 +82,7 @@ test("custom selected columns deduplicate normalization and preserve recurring g
   // PTS and PTS/36 become the same displayed per-game metric; keep one effective column.
   await expect(page.locator(".stats-group-th")).toHaveText(["Scoring", "Shooting"]);
   await expect(page.locator(".dense-stats-table tbody tr").first().locator(".stats-guide-cell")).toHaveCount(1);
-  await page.getByRole("button", { name: "Totals", exact: true }).click(); await page.waitForURL(/countingMode=raw/);
+  await page.getByRole("radio", { name: "Totals", exact: true }).click(); await page.waitForURL(/countingMode=raw/);
   await expect(page.getByRole("button", { name: "Sort by PTS", exact: true })).toHaveCount(1);
 });
 

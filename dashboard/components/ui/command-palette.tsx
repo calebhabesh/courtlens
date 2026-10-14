@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, modalVariants, scrimVariants } from "../../lib/motion";
 import { Icon, type IconName } from "./icon";
 import { OverlayPortal } from "./overlay-portal";
+import { IconButton } from "./kit";
 import { PlayerPortrait } from "../player-portrait";
 import { TeamLogo, TeamLogoStack } from "../team-logo";
 import { queryLookup } from "@/lib/workbench-api";
@@ -558,19 +559,18 @@ export function GlobalCommandPalette({
                   className="ui-command-input lookup-input"
                 />
                 {query && (
-                  <button
-                    type="button"
-                    className="lookup-clear-btn"
-                    aria-label="Clear search"
+                  <IconButton
+                    size="sm"
+                    variant="ghost"
+                    icon="close"
+                    label="Clear search"
                     onClick={() => {
                       setQuery("");
                       setItems([]);
                       setSelectedIndex(0);
                       inputRef.current?.focus();
                     }}
-                  >
-                    <Icon name="close" size={14} />
-                  </button>
+                  />
                 )}
                 {!query && <kbd className="ui-command-shortcut">Esc</kbd>}
                 <button

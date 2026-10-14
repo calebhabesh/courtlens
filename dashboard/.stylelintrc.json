@@ -14,7 +14,17 @@
       },
       { "severity": "error" }
     ],
-    "declaration-no-important": [true, { "severity": "error" }]
+    "declaration-no-important": [true, { "severity": "error" }],
+    "selector-disallowed-list": [
+      [
+        "/\\.ui-(?:button|icon-button|select|segmented|menu-trigger|popover-trigger|date-trigger|entity-chip|chip|filter-bar-toggle|why-summary)(?![a-z0-9])/",
+        "/\\[data-kit\\b/"
+      ],
+      {
+        "severity": "error",
+        "message": "Page and feature CSS may not select control kit classes. Place the control with a wrapper class and set its look with size, variant and tone props (UC03, docs/design/control-kit-v1.md)."
+      }
+    ]
   },
   "overrides": [
     {

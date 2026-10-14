@@ -9,7 +9,7 @@ for (const width of [1440, 390, 375]) test.describe(`PC03 chart kit ${width}px`,
     errorsByPage.set(page, errors);
     page.on("pageerror", e => errors.push(e.message));
     await page.setViewportSize({ width, height: width === 1440 ? 900 : 844 });
-    await page.goto("/design");
+    await openWorkbench(page, "/design");
     await expect(page.locator("#chart-kit .chart-frame")).toHaveCount(10);
   });
   test.afterEach(async ({ page }) => expect(errorsByPage.get(page)).toEqual([]));

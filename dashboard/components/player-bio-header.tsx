@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Icon } from "./ui/icon";
+import { Button } from "./ui/kit";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
 import { PageHeader } from "./ui/panel";
@@ -96,10 +96,9 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
 
   return (
     <div className="player-bio-header">
-      {returnHref && <button type="button" className="ui-button ui-button-primary ui-button-sm player-back-button"
-        onClick={() => { markStatsRestore(); router.push(returnHref); }}>
-        <Icon name="left" size={14} />Back to table<kbd aria-hidden="true">Esc</kbd>
-      </button>}
+      {returnHref && <Button size="xs" variant="primary" icon="left" onClick={() => { markStatsRestore(); router.push(returnHref); }}>
+        Back to table<kbd className="player-back-kbd" aria-hidden="true">Esc</kbd>
+      </Button>}
       <div className="player-bio-main">
         <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl ?? undefined} size="lg" />
         <div className="player-bio-identity">

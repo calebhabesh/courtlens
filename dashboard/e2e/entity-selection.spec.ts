@@ -106,7 +106,7 @@ for(const [route,label] of [["rankings","Add player to board"],["tierlist","Add 
       await request.fulfill({json:workspace});
     });
     await openWorkbench(page,`/${route}`);
-    if(route === "tierlist") {await page.getByRole("tab",{name:/Fixture tiers/}).click();await page.getByRole("combobox",{name:"Assign to tier",exact:true}).selectOption("b");}
+    if(route === "tierlist") {await page.getByRole("radio",{name:/Fixture tiers/}).click();await page.getByRole("combobox",{name:"Assign to tier",exact:true}).selectOption("b");}
     const input=page.getByRole("combobox",{name:label,exact:true});await input.fill("Fixture Star");await page.getByRole("option").filter({hasText:"Fixture Star"}).click();
     await expect.poll(()=>saves.length).toBe(1);
     if(route === "rankings") expect(saves[0]).toMatchObject({entries:[{player_id:"23",player_name:"Fixture Star"}]});

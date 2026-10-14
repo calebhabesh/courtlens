@@ -14,6 +14,7 @@ import { PageHeader } from "./ui/panel";
 import { SortHeader } from "./table-ui";
 import { PlayerPortrait } from "@/components/player-portrait";
 import type { PlayoffSeriesDetailResponse, PlayerSeriesStats } from "@/lib/types";
+import { ButtonLink, Segmented } from "./ui/kit";
 import {
   buildTeamSeriesComparison,
   formatPercent,
@@ -120,15 +121,13 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
         title={`${team1.team_name} vs ${team2.team_name}`}
         subtitle={`${detail.season} Postseason · ${detail.round_name}${detail.conference ? ` · ${detail.conference}` : ""}`}
         actions={<>
-          <Link href={buildPreservedContextUrl("/playoffs", searchParams)} className="button button-small">
+          <ButtonLink size="lg" href={buildPreservedContextUrl("/playoffs", searchParams)}>
             <Icon name="left" size={14} />Playoffs
-          </Link>
-          <Link
-            href={`/team-compare?teamA=${team1.team_id}&teamB=${team2.team_id}&season=${detail.season}&phase=playoffs`}
-            className="button button-small"
-          >
+          </ButtonLink>
+          <ButtonLink size="lg"
+            href={`/team-compare?teamA=${team1.team_id}&teamB=${team2.team_id}&season=${detail.season}&phase=playoffs`}>
             Compare teams
-          </Link>
+          </ButtonLink>
         </>}
       />
       {filterBar}
@@ -309,29 +308,11 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
               Per-game averages strictly over played games. Unplayed placeholder games do not dilute denominators.
             </p>
           </div>
-          <div className="playoffs-tabs">
-            <button
-              type="button"
-              className={`button button-small ${playerTab === "all" ? "button-primary" : ""}`}
-              onClick={() => setPlayerTab("all")}
-            >
-              All Players ({team1_players.length + team2_players.length})
-            </button>
-            <button
-              type="button"
-              className={`button button-small ${playerTab === "team1" ? "button-primary" : ""}`}
-              onClick={() => setPlayerTab("team1")}
-            >
-              {team1.tricode} ({team1_players.length})
-            </button>
-            <button
-              type="button"
-              className={`button button-small ${playerTab === "team2" ? "button-primary" : ""}`}
-              onClick={() => setPlayerTab("team2")}
-            >
-              {team2.tricode} ({team2_players.length})
-            </button>
-          </div>
+          <Segmented size="lg" label="Series players" value={playerTab} onChange={setPlayerTab} options={[
+            { value: "all", label: `All Players (${team1_players.length + team2_players.length})` },
+            { value: "team1", label: `${team1.tricode} (${team1_players.length})` },
+            { value: "team2", label: `${team2.tricode} (${team2_players.length})` },
+          ]} />
         </div>
 
         <div className="table-wrapper research-table-scroll" role="region" aria-label="Series statistics scroll area" tabIndex={0}>
@@ -389,12 +370,10 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
                   <td className="num font-mono font-semibold">{formatPercent(p.efg_pct)}</td>
                   <td className="num font-mono font-bold text-accent">{formatPercent(p.ts_pct)}</td>
                   <td className="playoff-table-col-action">
-                    <Link
-                      href={`/players/${p.player_id}?season=${detail.season}&phase=playoffs`}
-                      className="button button-small button-primary"
-                    >
+                    <ButtonLink size="lg" variant="primary"
+                      href={`/players/${p.player_id}?season=${detail.season}&phase=playoffs`}>
                       Profile
-                    </Link>
+                    </ButtonLink>
                   </td>
                 </tr>
               ))}

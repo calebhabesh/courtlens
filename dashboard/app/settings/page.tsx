@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { InstallInterface } from "@/components/install-interface";
 import { WorkbenchPortraitSettings } from "@/components/workbench-portrait-settings";
 import { AssistantStatusCard } from "@/components/assistant-status-card";
@@ -12,6 +11,7 @@ import { PageHeader } from "@/components/ui/panel";
 import { formatTimestamp } from "@/lib/format-date";
 import { getAssistantStatus, getWorkbenchStatus } from "@/lib/workbench-api";
 import type { AssistantStatusResponse, WorkbenchStatus } from "@/lib/types";
+import { ButtonLink } from "@/components/ui/kit";
 
 export const metadata: Metadata = { title: "Settings · CourtLens" };
 export const dynamic = "force-dynamic";
@@ -71,7 +71,7 @@ export default async function SettingsPage() {
           storagePath={portraits?.storage_path ?? "data/cache/portraits"}
         />
         <InstallInterface />
-        <ArticleSection id="worker" title="Background worker" actions={<Link href="/data-status" className="ui-button ui-button-secondary ui-button-sm">Open Data Status</Link>}>
+        <ArticleSection id="worker" title="Background worker" actions={<ButtonLink size="xs" href="/data-status">Open Data Status</ButtonLink>}>
           <dl className="ui-article-facts">
             <div><dt>Scheduled refresh</dt><dd>{worker ? `${worker.scheduled_refresh_utc} UTC daily` : "Unavailable"}</dd></div>
             <div><dt>Active job</dt><dd>{worker?.active_job ? `${jobLabel(worker.active_job.job_type)} · ${worker.active_job.stage ?? "stage unavailable"}` : worker ? "No active job reported" : "Unavailable"}</dd></div>

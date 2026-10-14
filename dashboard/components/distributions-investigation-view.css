@@ -1,0 +1,123 @@
+@layer pages {
+/* ==========================================================================
+   Design Language v1: Research Suite (DL06)
+   - Distributions, Dispersion & Splits
+   - Trends & Period Comparisons
+   - Ranking Boards
+   - Player Similarity & Dimension Profiles
+   - Reproducible Case Studies
+   - Scatter Plots & Multi-Player Lines
+   - Saved Investigations Library
+   ========================================================================== */
+
+/* Distributions Workspace */
+
+.dist-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.dist-strip-card {
+  padding: var(--space-5);
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-1);
+}
+
+.dist-strip-container {
+  padding: var(--space-6) var(--space-4);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-hairline);
+}
+
+.dist-strip-track {
+  position: relative;
+  height: 80px;
+  width: 100%;
+}
+
+.dist-strip-span-line {
+  position: absolute;
+  top: 35px;
+  left: var(--span-left, 0%);
+  width: var(--span-width, 100%);
+  height: 4px;
+  background: color-mix(in srgb, var(--color-text) 25%, transparent);
+  border-radius: var(--radius-xs);
+}
+
+.dist-strip-iqr-box {
+  position: absolute;
+  top: 23px;
+  left: var(--iqr-left, 0%);
+  width: var(--iqr-width, 50%);
+  height: 28px;
+  background: var(--color-accent-soft);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-xs);
+}
+
+.dist-strip-median-line {
+  position: absolute;
+  top: 15px;
+  left: calc(var(--med-left, 50%) - 2px);
+  width: 4px;
+  height: 44px;
+  background: var(--color-accent);
+  border-radius: var(--radius-xs);
+  z-index: var(--z-sticky);
+}
+
+.dist-strip-dot {
+  position: absolute;
+  top: 33px;
+  left: calc(var(--dot-left, 0%) - 4px);
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-text);
+  box-shadow: var(--shadow-1);
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.dist-strip-labels {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.dist-strip-label {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+
+.dist-strip-label.median {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.dist-table-card {
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-1);
+}
+
+.dist-table-header {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.dist-table-title {
+  margin: 0;
+  font-size: var(--text-md);
+  color: var(--color-text);
+}
+}

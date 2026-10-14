@@ -1,0 +1,106 @@
+@layer components {
+/* Command Palette */
+.ui-command-palette-scrim {
+  align-items: flex-start;
+  padding-block-start: 12vh;
+}
+
+.ui-command-palette {
+  background-color: var(--color-surface-3);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-3);
+  width: min(600px, 100%);
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  outline: 0;
+}
+
+.ui-command-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.ui-command-search-icon {
+  color: var(--color-text-secondary);
+}
+
+.ui-command-input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  font-size: var(--text-md);
+  line-height: var(--text-md-lh);
+  outline: 0;
+}
+
+.ui-command-shortcut {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  background-color: var(--color-surface-2);
+  padding: var(--space-0-5) var(--space-1);
+  border-radius: var(--radius-xs);
+}
+
+.ui-command-list {
+  overflow-y: auto;
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.ui-command-empty {
+  padding: var(--space-6);
+  text-align: center;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-sm);
+}
+
+.ui-command-group-heading {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-tertiary);
+  padding: var(--space-2) var(--space-3) var(--space-1);
+}
+
+.ui-command-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--color-text);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.ui-command-item-active,
+.ui-command-item:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.ui-command-item-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.ui-command-item-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.ui-command-item-subtitle {
+  font-size: var(--text-xs);
+}
+}

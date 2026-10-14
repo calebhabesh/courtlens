@@ -1,0 +1,28 @@
+@layer pages {
+/* PF06 route-wide surfaces share the foundation spacing and available width. */
+.advanced-research { max-width: none; margin: 0; padding: var(--space-5); }
+.advanced-research .panel { padding: var(--space-4); margin: var(--space-5) 0; }
+.advanced-research .panel :where(h2, h3, p) { margin: 0; }
+.advanced-research .panel > * + * { margin-top: var(--space-4); }
+.availability-reason { display: block; white-space: normal; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: 1.5; margin-top: var(--space-1); }
+.availability-menu { max-width: min(420px, calc(100vw - 32px)); max-height: 60vh; overflow-y: auto; }
+.panel details, details.panel { overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  .advanced-research { padding: var(--space-4); }
+  .advanced-research .panel { padding: var(--space-4); }
+  .research-links :where(input, select) { max-width: 100%; min-width: 0; }
+}
+
+.workbench-content > *, .ui-tabbed-page-body > *, .advanced-research > *, .panel-header > * { min-width: 0; }
+.workbench-content .table-card, .ui-tabbed-page-body .table-card { min-width: 0; }
+.workbench-content code, .ui-tabbed-page-body code { overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  :is(.workbench-content, .ui-tabbed-page-body) .panel :where(input, select) { max-width: 100%; min-width: 0; }
+  :is(.workbench-content, .ui-tabbed-page-body) .panel-header > *, .page-header > * { max-width: 100%; }
+}
+
+.responsive-pair > * { min-width: 0; }
+@media (max-width: 700px) {
+  .responsive-pair { grid-template-columns: minmax(0, 1fr); }
+}
+}

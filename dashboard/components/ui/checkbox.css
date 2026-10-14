@@ -1,0 +1,50 @@
+@layer components {
+/* Checkbox */
+.ui-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-text);
+}
+
+.ui-checkbox-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ui-checkbox-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-surface-2);
+  border: 1px solid var(--color-hairline-strong);
+  transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  color: var(--color-on-accent);
+  flex-shrink: 0;
+}
+
+.ui-checkbox-input:focus-visible + .ui-checkbox-box {
+  box-shadow: var(--focus-ring);
+}
+
+.ui-checkbox-box[data-checked=true],
+.ui-checkbox-box[data-indeterminate=true] {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.ui-checkbox-indeterminate-mark {
+  display: block;
+  width: var(--space-2);
+  height: var(--space-0-5);
+  background-color: var(--color-on-accent);
+  border-radius: var(--radius-xs);
+}
+}

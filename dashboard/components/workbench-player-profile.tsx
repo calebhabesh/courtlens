@@ -1,14 +1,13 @@
 "use client";
 
 import { Icon, type IconName } from "./ui/icon";
-import { IconButton } from "./ui/button";
+import { Button, IconButton, MenuTrigger, Segmented } from "./ui/kit";
 import { Menu, MenuItem } from "./ui/menu";
 import { PageShell, ProfileLayout } from "./ui/page-shell";
 import { StatTile } from "./ui/stat-tile";
 import { Tabs, TabsContent, TabsList, TabTrigger } from "./ui/tabs";
 import { PlayerCombinePanel, PlayerTrackingPanel } from "./player-feed-panels";
 import { Tooltip } from "./ui/tooltip";
-import { SegmentedControl } from "./ui/segmented-control";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { ImpactPlayerCard } from "./impact-player-card";
 
@@ -173,21 +172,16 @@ export function WorkbenchPlayerProfile({
         team={latest_team ? { id: latest_team.id, tricode: latest_team.tricode, name: latest_team.name } : null}
         bio={bio} currentSeason={catalog?.default_season ?? null}
         actions={<>
-          <Tooltip content={isFavorite ? "Remove from favorites" : "Add to favorites"}>
-            <IconButton icon="star" label={isFavorite ? "Remove from favorites" : "Add to favorites"} variant="secondary"
-              aria-pressed={isFavorite} className={isFavorite ? "is-active" : ""} onClick={() => toggleFavorite(player.id)} />
-          </Tooltip>
-          <Tooltip content={inTray ? "Remove from compare tray" : "Add to compare tray"}>
-            <IconButton icon={inTray ? "check" : "plus"} label={inTray ? "Remove from compare tray" : "Add to compare tray"} variant="secondary"
-              aria-pressed={inTray} className={inTray ? "is-active" : ""} onClick={() => toggleCompare(player.id)} />
-          </Tooltip>
-          <Menu align="right" trigger={<span className="ui-button ui-button-secondary ui-button-sm">
-            <Icon name="download" size={14} />{exporting ? "Exporting…" : <span className="sr-only">Export</span>}
-          </span>}>
+          <IconButton size="sm" variant="secondary" icon="star" filled={isFavorite} pressed={isFavorite}
+            label={isFavorite ? "Remove from favorites" : "Add to favorites"} onClick={() => toggleFavorite(player.id)} />
+          <IconButton size="sm" variant="secondary" icon={inTray ? "check" : "plus"} pressed={inTray}
+            label={inTray ? "Remove from compare tray" : "Add to compare tray"} onClick={() => toggleCompare(player.id)} />
+          <Menu align="right" renderTrigger={props => <IconButton {...props} size="sm" variant="secondary" icon="download"
+            label={exporting ? "Exporting…" : "Export"} loading={exporting} />}>
             <MenuItem icon="download" label="Export PNG" disabled={exporting} onClick={() => void handleExportPng()} />
             <MenuItem icon="page" label="Export SVG" disabled={exporting} onClick={handleExportSvg} />
           </Menu>
-          <Menu align="right" trigger={<span className="ui-button ui-button-secondary ui-button-sm">Explore<Icon name="chevron-down" size={14} /></span>}>
+          <Menu align="right" renderTrigger={props => <MenuTrigger {...props} size="sm">Explore</MenuTrigger>}>
             {explore.map(item => <MenuItem key={item.href} icon={item.icon} label={item.label} onClick={() => router.push(item.href)} />)}
           </Menu>
         </>}
@@ -256,7 +250,7 @@ export function WorkbenchPlayerProfile({
           </div>
 
           <div className="profile-toolbar-row">
-            <SegmentedControl<CountingExposureMode> name="Game log exposure" size="sm" value={exposureMode} onChange={setExposureMode}
+            <Segmented<CountingExposureMode> label="Game log exposure" size="sm" value={exposureMode} onChange={setExposureMode}
               options={[{ value: "per_game", label: "Per Game" }, { value: "per_36", label: "Per 36 Min" }]} />
             <span className="badge font-mono">{games.length} games</span>
           </div>
@@ -319,14 +313,9 @@ export function WorkbenchPlayerProfile({
                     </td>
                     <td className="num font-mono">{g.legacy_fantasy_score?.toFixed(1) ?? "—"}</td>
                     <td className="text-right">
-                      <button
-                        type="button"
-                        className="button button-small"
-                        onClick={() => setSelectedFact(g.game_id)}
-                        title="Inspect raw cryptographic lineage"
-                      >
+                      <Button size="lg" onClick={() => setSelectedFact(g.game_id)} title="Inspect raw cryptographic lineage">
                         Lineage
-                      </button>
+                      </Button>
                     </td>
                   </tr>
                 );

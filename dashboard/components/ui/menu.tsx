@@ -6,6 +6,8 @@ import {
   type ReactNode,
   type KeyboardEvent,
   type MouseEvent,
+  type ButtonHTMLAttributes,
+  type Ref,
 } from "react";
 import { motion, AnimatePresence, popoverVariants } from "../../lib/motion";
 import { Icon, type IconName } from "./icon";
@@ -42,8 +44,16 @@ export function MenuItem({
   );
 }
 
-export interface MenuProps {
-  trigger: ReactNode;
+export type OverlayTriggerProps = Pick<ButtonHTMLAttributes<HTMLButtonElement>, "onClick" | "aria-haspopup" | "aria-expanded" | "aria-label"> & {
+  ref: Ref<HTMLButtonElement>;
+};
+
+type OverlayTrigger = {
+  /** Render one kit control (`MenuTrigger`, `IconButton`) and forward these props to it; the ref is for React to attach after render. */
+  renderTrigger: (props: OverlayTriggerProps) => ReactNode;
+};
+
+export type MenuProps = OverlayTrigger & {
   align?: "left" | "right";
   hoverIntent?: boolean;
   className?: string;
@@ -51,7 +61,7 @@ export interface MenuProps {
 }
 
 export function Menu({
-  trigger,
+  renderTrigger,
   align = "left",
   hoverIntent = false,
   className = "",
@@ -60,6 +70,7 @@ export function Menu({
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const setTriggerRef = useCallback((node: HTMLButtonElement | null) => { triggerRef.current = node; }, []);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const openMenu = () => {
@@ -125,7 +136,7 @@ export function Menu({
   useEffect(() => {
     if (!isOpen) return;
     const handleOutsideClick = (e: globalThis.MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (containerRef.current && e.target instanceof Node && !containerRef.current.contains(e.target)) {
         closeMenu();
       }
     };
@@ -141,16 +152,9 @@ export function Menu({
       onKeyDown={handleKeyDown}
       className={`ui-menu-container ${className}`}
     >
-      <button
-        ref={triggerRef}
-        type="button"
-        aria-haspopup="menu"
-        aria-expanded={isOpen}
-        onClick={toggle}
-        className="ui-menu-trigger"
-      >
-        {trigger}
-      </button>
+      {/* The renderer forwards the callback ref to its button; it never reads a ref during render. */}
+      {/* eslint-disable-next-line react-hooks/refs -- render prop forwards the callback ref for React to attach after render. */}
+      {renderTrigger({ ref: setTriggerRef, "aria-haspopup": "menu", "aria-expanded": isOpen, onClick: toggle })}
 
       <AnimatePresence>
         {isOpen && (
@@ -163,7 +167,7 @@ export function Menu({
             className={`ui-menu-panel ui-menu-align-${align}`}
             onClick={(event) => {
               // Choosing an item closes the menu and returns focus to the trigger.
-              if ((event.target as HTMLElement).closest('[role="menuitem"]:not(:disabled)')) {
+              if (event.target instanceof Element && event.target.closest('[role="menuitem"]:not(:disabled)')) {
                 closeMenu();
                 triggerRef.current?.focus();
               }
@@ -177,8 +181,7 @@ export function Menu({
   );
 }
 
-export interface PopoverProps {
-  trigger: ReactNode;
+export type PopoverProps = OverlayTrigger & {
   align?: "left" | "right";
   className?: string;
   /** Accessible name of the trigger when its content is not text alone. */
@@ -189,7 +192,7 @@ export interface PopoverProps {
   children: ReactNode;
 }
 
-export function Popover({ trigger, align = "left", className = "", triggerLabel, open, onOpenChange, children }: PopoverProps) {
+export function Popover({ renderTrigger, align = "left", className = "", triggerLabel, open, onOpenChange, children }: PopoverProps) {
   const [ownOpen, setOwnOpen] = useState(false);
   const isOpen = open ?? ownOpen;
   const setIsOpen = useCallback((value: boolean) => {
@@ -197,16 +200,21 @@ export function Popover({ trigger, align = "left", className = "", triggerLabel,
     onOpenChange?.(value);
   }, [open, onOpenChange]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const setTriggerRef = useCallback((node: HTMLButtonElement | null) => { triggerRef.current = node; }, []);
 
   useEffect(() => {
     if (!isOpen) return;
     const handleOutside = (e: globalThis.MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (containerRef.current && e.target instanceof Node && !containerRef.current.contains(e.target)) {
         setIsOpen(false);
       }
     };
     const handleEscape = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape") setIsOpen(false);
+      if (e.key === "Escape") {
+        setIsOpen(false);
+        triggerRef.current?.focus();
+      }
     };
     document.addEventListener("mousedown", handleOutside);
     document.addEventListener("keydown", handleEscape);
@@ -218,16 +226,8 @@ export function Popover({ trigger, align = "left", className = "", triggerLabel,
 
   return (
     <div ref={containerRef} className={`ui-popover-container ${className}`}>
-      <button
-        type="button"
-        aria-haspopup="dialog"
-        aria-expanded={isOpen}
-        aria-label={triggerLabel}
-        onClick={() => setIsOpen(!isOpen)}
-        className="ui-popover-trigger"
-      >
-        {trigger}
-      </button>
+      {/* eslint-disable-next-line react-hooks/refs -- render prop forwards the callback ref for React to attach after render. */}
+      {renderTrigger({ ref: setTriggerRef, "aria-haspopup": "dialog", "aria-expanded": isOpen, "aria-label": triggerLabel, onClick: () => setIsOpen(!isOpen) })}
 
       <AnimatePresence>
         {isOpen && (

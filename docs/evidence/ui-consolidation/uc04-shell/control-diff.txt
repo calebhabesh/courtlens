@@ -1,0 +1,358 @@
+== stats@1440: 18 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+  ~ div|group|Season: w 180.3 → 194.3; icons 14,14,14 → 16,16,14
+  ~ button||No earlier season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 6px 0px 0px 6px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); icons 14 → 16
+  ~ button||Season: 2025-26: w 108.3 → 114.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); moved 4,0; icons 14,14 → 16,14
+  ~ button||No later season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 0px 6px 6px 0px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); moved 10,0; icons 14 → 16
+  ~ div|radiogroup|Filter by competition phase: w 149.8 → 153.8; fs 14px → 13px; moved 14,0
+  ~ button|radio|Regular: moved 14,0
+  ~ button|radio|Playoffs: moved 18,0
+  ~ button||Through date: Jun 29, 2026: moved 18,0
+  ~ select||Analysis window: moved 18,0
+  ~ button||Select Team: moved 18,0
+  ~ button||Point guards: moved 18,0
+  ~ button||Shooting guards: moved 18,0
+  ~ button||Small forwards: moved 18,0
+  ~ button||Power forwards: moved 18,0
+  ~ button||Centers: moved 18,0
+  ~ button||Draft Class: moved 18,0
+== stats-season@1440: 22 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+  ~ div|group|Season: w 180.3 → 194.3; icons 14,14,14 → 16,16,14
+  ~ button||No earlier season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 6px 0px 0px 6px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); icons 14 → 16
+  ~ button||Season: 2025-26: w 108.3 → 114.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); moved 4,0; icons 14,14 → 16,14
+  ~ div|radiogroup|Season mode: moved 4,0
+  ~ button|radio|Single season: moved 4,0
+  ~ button|radio|Multi-season: moved 4,0
+  ~ select||Season: moved 4,0
+  ~ button||No later season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 0px 6px 6px 0px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); moved 10,0; icons 14 → 16
+  ~ div|radiogroup|Filter by competition phase: w 149.8 → 153.8; fs 14px → 13px; moved 14,0
+  ~ button|radio|Regular: moved 14,0
+  ~ button|radio|Playoffs: moved 18,0
+  ~ button||Through date: Jun 29, 2026: moved 18,0
+  ~ select||Analysis window: moved 18,0
+  ~ button||Select Team: moved 18,0
+  ~ button||Point guards: moved 18,0
+  ~ button||Shooting guards: moved 18,0
+  ~ button||Small forwards: moved 18,0
+  ~ button||Power forwards: moved 18,0
+  ~ button||Centers: moved 18,0
+  ~ button||Draft Class: moved 18,0
+== stats-season-multi@1440: TimeoutError: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('radio', { name: 'Multi-season' })[22m
+[2m    - locator resolved to <button disabled role="radio" type="button" tabindex="-1" data-value="multi" data-active="false" aria-checked="false" class="ui-segment
+== stats-date@1440: 62 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+  ~ div|group|Season: w 180.3 → 194.3; icons 14,14,14 → 16,16,14
+  ~ button||No earlier season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 6px 0px 0px 6px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); icons 14 → 16
+  ~ button||Season: 2025-26: w 108.3 → 114.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); moved 4,0; icons 14,14 → 16,14
+  ~ button||No later season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 0px 6px 6px 0px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); moved 10,0; icons 14 → 16
+  ~ div|radiogroup|Filter by competition phase: w 149.8 → 153.8; fs 14px → 13px; moved 14,0
+  ~ button|radio|Regular: moved 14,0
+  ~ button|radio|Playoffs: moved 18,0
+  ~ button||Through date: Jun 29, 2026: moved 18,0
+  ~ button||Previous month: moved 18,0
+  ~ button||Next month: moved 18,0
+  ~ button||May 31, 2026, unavailable: moved 18,0
+  ~ button||Jun 1, 2026, unavailable: moved 18,0
+  ~ button||Jun 2, 2026, unavailable: moved 18,0
+  ~ button||Jun 3, 2026, unavailable: moved 18,0
+  ~ button||Jun 4, 2026, unavailable: moved 18,0
+  ~ button||Jun 5, 2026, unavailable: moved 18,0
+  ~ button||Jun 6, 2026, unavailable: moved 18,0
+  ~ button||Jun 7, 2026, unavailable: moved 18,0
+  ~ button||Jun 8, 2026, unavailable: moved 18,0
+  ~ button||Jun 9, 2026, unavailable: moved 18,0
+  ~ button||Jun 10, 2026, unavailable: moved 18,0
+  ~ button||Jun 11, 2026, unavailable: moved 18,0
+  ~ button||Jun 12, 2026, unavailable: moved 18,0
+  ~ button||Jun 13, 2026, unavailable: moved 18,0
+  ~ button||Jun 14, 2026, unavailable: moved 18,0
+  ~ button||Jun 15, 2026, unavailable: moved 18,0
+  ~ button||Jun 16, 2026, unavailable: moved 18,0
+  ~ button||Jun 17, 2026, unavailable: moved 18,0
+  ~ button||Jun 18, 2026, unavailable: moved 18,0
+  ~ button||Jun 19, 2026, unavailable: moved 18,0
+  ~ button||Jun 20, 2026, unavailable: moved 18,0
+  ~ button||Jun 21, 2026, unavailable: moved 18,0
+  ~ button||Jun 22, 2026, unavailable: moved 18,0
+  ~ button||Jun 23, 2026, unavailable: moved 18,0
+  ~ button||Jun 24, 2026, unavailable: moved 18,0
+  ~ button||Jun 25, 2026, unavailable: moved 18,0
+  ~ button||Jun 26, 2026, unavailable: moved 18,0
+  ~ button||Jun 27, 2026, unavailable: moved 18,0
+  ~ button||Jun 28, 2026, unavailable: moved 18,0
+  ~ button||Jun 29, 2026, unavailable: moved 18,0
+  ~ button||Jun 30, 2026, unavailable: moved 18,0
+  ~ button||Jul 1, 2026, unavailable: moved 18,0
+  ~ button||Jul 2, 2026, unavailable: moved 18,0
+  ~ button||Jul 3, 2026, unavailable: moved 18,0
+  ~ button||Jul 4, 2026, unavailable: moved 18,0
+  ~ button||Jul 5, 2026, unavailable: moved 18,0
+  ~ button||Jul 6, 2026, unavailable: moved 18,0
+  ~ button||Jul 7, 2026, unavailable: moved 18,0
+  ~ button||Jul 8, 2026, unavailable: moved 18,0
+  ~ button||Jul 9, 2026, unavailable: moved 18,0
+  ~ button||Jul 10, 2026, unavailable: moved 18,0
+  ~ button||Jul 11, 2026, unavailable: moved 18,0
+  ~ select||Analysis window: moved 18,0
+  ~ button||Select Team: moved 18,0
+  ~ button||Point guards: moved 18,0
+  ~ button||Shooting guards: moved 18,0
+  ~ button||Small forwards: moved 18,0
+  ~ button||Power forwards: moved 18,0
+  ~ button||Centers: moved 18,0
+  ~ button||Draft Class: moved 18,0
+== more-menu@1440: 18 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; border 0px rgb(169, 175, 185) → 0px rgb(242, 243, 245); icons 14 → 16
+  ~ div|group|Season: w 180.3 → 194.3; icons 14,14,14 → 16,16,14
+  ~ button||No earlier season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 6px 0px 0px 6px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); icons 14 → 16
+  ~ button||Season: 2025-26: w 108.3 → 114.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); moved 4,0; icons 14,14 → 16,14
+  ~ button||No later season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 0px 6px 6px 0px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); moved 10,0; icons 14 → 16
+  ~ div|radiogroup|Filter by competition phase: w 149.8 → 153.8; fs 14px → 13px; moved 14,0
+  ~ button|radio|Regular: moved 14,0
+  ~ button|radio|Playoffs: moved 18,0
+  ~ button||Through date: Jun 29, 2026: moved 18,0
+  ~ select||Analysis window: moved 18,0
+  ~ button||Select Team: moved 18,0
+  ~ button||Point guards: moved 18,0
+  ~ button||Shooting guards: moved 18,0
+  ~ button||Small forwards: moved 18,0
+  ~ button||Power forwards: moved 18,0
+  ~ button||Centers: moved 18,0
+  ~ button||Draft Class: moved 18,0
+== players@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== player@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== compare@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== teams@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== team@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== last-games@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== playoffs@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== showcase@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== live@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== trends@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== rapm@1440: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||More options: fs 12px → 13px; icons 14 → 16
+== stats@1024: 11 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+  ~ div|group|Season: w 180.3 → 194.3; icons 14,14,14 → 16,16,14
+  ~ button||No earlier season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 6px 0px 0px 6px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); icons 14 → 16
+  ~ button||Season: 2025-26: w 108.3 → 114.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); moved 4,0; icons 14,14 → 16,14
+  ~ button||No later season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 0px 6px 6px 0px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); moved 10,0; icons 14 → 16
+  ~ div|radiogroup|Filter by competition phase: w 149.8 → 153.8; fs 14px → 13px; moved 14,0
+  ~ button|radio|Regular: moved 14,0
+  ~ button|radio|Playoffs: moved 18,0
+  ~ button||Through date: Jun 29, 2026: moved 18,0
+  ~ select||Analysis window: moved 18,0
+== stats-season@1024: 15 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+  ~ div|group|Season: w 180.3 → 194.3; icons 14,14,14 → 16,16,14
+  ~ button||No earlier season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 6px 0px 0px 6px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); icons 14 → 16
+  ~ button||Season: 2025-26: w 108.3 → 114.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); moved 4,0; icons 14,14 → 16,14
+  ~ div|radiogroup|Season mode: moved 4,0
+  ~ button|radio|Single season: moved 4,0
+  ~ button|radio|Multi-season: moved 4,0
+  ~ select||Season: moved 4,0
+  ~ button||No later season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 0px 6px 6px 0px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); moved 10,0; icons 14 → 16
+  ~ div|radiogroup|Filter by competition phase: w 149.8 → 153.8; fs 14px → 13px; moved 14,0
+  ~ button|radio|Regular: moved 14,0
+  ~ button|radio|Playoffs: moved 18,0
+  ~ button||Through date: Jun 29, 2026: moved 18,0
+  ~ select||Analysis window: moved 18,0
+== stats-season-multi@1024: TimeoutError: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('radio', { name: 'Multi-season' })[22m
+[2m    - locator resolved to <button disabled role="radio" type="button" tabindex="-1" data-value="multi" data-active="false" aria-checked="false" class="ui-segment
+== stats-date@1024: 55 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+  ~ div|group|Season: w 180.3 → 194.3; icons 14,14,14 → 16,16,14
+  ~ button||No earlier season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 6px 0px 0px 6px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); icons 14 → 16
+  ~ button||Season: 2025-26: w 108.3 → 114.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); moved 4,0; icons 14,14 → 16,14
+  ~ button||No later season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 0px 6px 6px 0px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); moved 10,0; icons 14 → 16
+  ~ div|radiogroup|Filter by competition phase: w 149.8 → 153.8; fs 14px → 13px; moved 14,0
+  ~ button|radio|Regular: moved 14,0
+  ~ button|radio|Playoffs: moved 18,0
+  ~ button||Through date: Jun 29, 2026: moved 18,0
+  ~ button||Previous month: moved 18,0
+  ~ button||Next month: moved 18,0
+  ~ button||May 31, 2026, unavailable: moved 18,0
+  ~ button||Jun 1, 2026, unavailable: moved 18,0
+  ~ button||Jun 2, 2026, unavailable: moved 18,0
+  ~ button||Jun 3, 2026, unavailable: moved 18,0
+  ~ button||Jun 4, 2026, unavailable: moved 18,0
+  ~ button||Jun 5, 2026, unavailable: moved 18,0
+  ~ button||Jun 6, 2026, unavailable: moved 18,0
+  ~ button||Jun 7, 2026, unavailable: moved 18,0
+  ~ button||Jun 8, 2026, unavailable: moved 18,0
+  ~ button||Jun 9, 2026, unavailable: moved 18,0
+  ~ button||Jun 10, 2026, unavailable: moved 18,0
+  ~ button||Jun 11, 2026, unavailable: moved 18,0
+  ~ button||Jun 12, 2026, unavailable: moved 18,0
+  ~ button||Jun 13, 2026, unavailable: moved 18,0
+  ~ button||Jun 14, 2026, unavailable: moved 18,0
+  ~ button||Jun 15, 2026, unavailable: moved 18,0
+  ~ button||Jun 16, 2026, unavailable: moved 18,0
+  ~ button||Jun 17, 2026, unavailable: moved 18,0
+  ~ button||Jun 18, 2026, unavailable: moved 18,0
+  ~ button||Jun 19, 2026, unavailable: moved 18,0
+  ~ button||Jun 20, 2026, unavailable: moved 18,0
+  ~ button||Jun 21, 2026, unavailable: moved 18,0
+  ~ button||Jun 22, 2026, unavailable: moved 18,0
+  ~ button||Jun 23, 2026, unavailable: moved 18,0
+  ~ button||Jun 24, 2026, unavailable: moved 18,0
+  ~ button||Jun 25, 2026, unavailable: moved 18,0
+  ~ button||Jun 26, 2026, unavailable: moved 18,0
+  ~ button||Jun 27, 2026, unavailable: moved 18,0
+  ~ button||Jun 28, 2026, unavailable: moved 18,0
+  ~ button||Jun 29, 2026, unavailable: moved 18,0
+  ~ button||Jun 30, 2026, unavailable: moved 18,0
+  ~ button||Jul 1, 2026, unavailable: moved 18,0
+  ~ button||Jul 2, 2026, unavailable: moved 18,0
+  ~ button||Jul 3, 2026, unavailable: moved 18,0
+  ~ button||Jul 4, 2026, unavailable: moved 18,0
+  ~ button||Jul 5, 2026, unavailable: moved 18,0
+  ~ button||Jul 6, 2026, unavailable: moved 18,0
+  ~ button||Jul 7, 2026, unavailable: moved 18,0
+  ~ button||Jul 8, 2026, unavailable: moved 18,0
+  ~ button||Jul 9, 2026, unavailable: moved 18,0
+  ~ button||Jul 10, 2026, unavailable: moved 18,0
+  ~ button||Jul 11, 2026, unavailable: moved 18,0
+  ~ select||Analysis window: moved 18,0
+== nav-drawer@1024: 11 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+  ~ div|group|Season: w 180.3 → 194.3; icons 14,14,14 → 16,16,14
+  ~ button||No earlier season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 6px 0px 0px 6px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); icons 14 → 16
+  ~ button||Season: 2025-26: w 108.3 → 114.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); moved 4,0; icons 14,14 → 16,14
+  ~ button||No later season: w 36 → 40; fs 14px → 13px; fw 400 → 500; radius 0px 6px 6px 0px → 6px; bg rgb(31, 38, 50) → rgba(0, 0, 0, 0); moved 10,0; icons 14 → 16
+  ~ div|radiogroup|Filter by competition phase: w 149.8 → 153.8; fs 14px → 13px; moved 14,0
+  ~ button|radio|Regular: moved 14,0
+  ~ button|radio|Playoffs: moved 18,0
+  ~ button||Through date: Jun 29, 2026: moved 18,0
+  ~ select||Analysis window: moved 18,0
+== players@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== player@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== compare@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== teams@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== team@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== last-games@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== playoffs@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== showcase@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== live@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== trends@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== rapm@1024: 2 changed
+  ~ button||Ask: w 60.8 → 70.6; h 40 → 32; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,4
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== stats@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== stats-filter-sheet@390: 11 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+  ~ button||Close drawer: moved 0,-4
+  ~ div|group|Season: moved 0,-4; icons 14,14,14 → 16,16,14
+  ~ button||No earlier season: fs 14px → 13px; fw 400 → 500; radius 6px 0px 0px 6px → 6px; moved 0,-4; icons 14 → 16
+  ~ button||Season: 2025-26: w 119.8 → 125.8; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); moved 0,-4; icons 14,14 → 16,14
+  ~ button||No later season: fs 14px → 13px; fw 400 → 500; radius 0px 6px 6px 0px → 6px; moved 6,-4; icons 14 → 16
+  ~ div|radiogroup|Filter by competition phase: h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved 0,-4
+  ~ button|radio|Regular: w 67.3 → 62.9; pad 4px 12px 4px 12px → 0px 8px 0px 8px; fs 12px → 13px; moved 2,-2
+  ~ button|radio|Playoffs: w 67.3 → 62.9; pad 4px 12px 4px 12px → 0px 8px 0px 8px; fs 12px → 13px; moved 1.6,-2
+== nav-drawer@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== players@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== player@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== compare@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== teams@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== team@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== last-games@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== playoffs@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== showcase@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== live@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== trends@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16
+== rapm@390: 3 changed
+  ~ button||Search workbench: fs 12px → 13px; moved -9.8,0; icons 14 → 16
+  ~ button||Ask: w 60.8 → 70.6; pad 4px 8px 4px 8px → 0px 12px 0px 12px; fs 12px → 13px; moved -9.8,0
+  ~ button||Toggle navigation drawer: fs 12px → 13px; icons 14 → 16

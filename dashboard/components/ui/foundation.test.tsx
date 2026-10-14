@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, renderHook, screen } from "@testing-library/react";
-import { ChipGroup } from "./chip-group";
 import { DatePicker } from "./date-picker";
 import { GatedNote } from "./gated-note";
 import { PageHeader } from "./panel";
@@ -14,10 +13,6 @@ afterEach(() => {
   cleanup();
   window.localStorage.clear();
 });
-
-async function flushFrames() {
-  await act(async () => { await new Promise((resolve) => requestAnimationFrame(() => resolve(null))); });
-}
 
 describe("DatePicker", () => {
   function Controlled({ initial = "2026-04-10", onChange = () => {}, disabled }: { initial?: string; onChange?: (v: string) => void; disabled?: (v: string) => boolean }) {
@@ -110,40 +105,6 @@ describe("Advanced mode", () => {
       window.dispatchEvent(new StorageEvent("storage", { key: storageKeys.advancedMode }));
     });
     expect(result.current[0]).toBe(true);
-  });
-});
-
-describe("ChipGroup", () => {
-  it("single-select chips are a radio group with one tab stop and arrow movement", async () => {
-    function Single() {
-      const [value, setValue] = useState("season");
-      return <ChipGroup label="Window" value={value} onChange={setValue}
-        options={[{ value: "season", label: "Season" }, { value: "last_10", label: "Last 10" }, { value: "last_5", label: "Last 5", disabled: true }]} />;
-    }
-    render(<Single />);
-    const season = screen.getByRole("radio", { name: "Season" });
-    expect(season.getAttribute("aria-checked")).toBe("true");
-    expect(season.tabIndex).toBe(0);
-    expect(screen.getByRole("radio", { name: "Last 10" }).tabIndex).toBe(-1);
-    fireEvent.keyDown(screen.getByRole("radiogroup"), { key: "ArrowRight" });
-    await flushFrames();
-    expect(screen.getByRole("radio", { name: "Last 10" }).getAttribute("aria-checked")).toBe("true");
-    fireEvent.keyDown(screen.getByRole("radiogroup"), { key: "ArrowRight" });
-    expect(screen.getByRole("radio", { name: "Season" }).getAttribute("aria-checked")).toBe("true");
-  });
-
-  it("multi-select chips toggle with aria-pressed", () => {
-    function Multi() {
-      const [value, setValue] = useState<string[]>(["G"]);
-      return <ChipGroup label="Positions" multiple value={value} onChange={setValue}
-        options={[{ value: "G", label: "Guards" }, { value: "F", label: "Forwards" }]} />;
-    }
-    render(<Multi />);
-    const forwards = screen.getByRole("button", { name: "Forwards" });
-    fireEvent.click(forwards);
-    expect(forwards.getAttribute("aria-pressed")).toBe("true");
-    fireEvent.click(screen.getByRole("button", { name: "Guards" }));
-    expect(screen.getByRole("button", { name: "Guards" }).getAttribute("aria-pressed")).toBe("false");
   });
 });
 

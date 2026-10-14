@@ -1,6 +1,6 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { Icon, type IconName } from "./icon";
-import { IconButton } from "./button";
+import { IconButton } from "./kit";
 
 export type InputSize = "sm" | "md" | "lg";
 
@@ -86,7 +86,7 @@ export function SearchField({
           <IconButton
             icon="close"
             label="Clear search"
-            size="sm"
+            size="xs"
             variant="ghost"
             onClick={onClear}
           />

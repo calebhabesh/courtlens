@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 import {
-  Button,
-  ChipGroup,
   CountChip,
   DataDetailsButton,
   DatePicker,
-  EntityChip,
   Field,
   FilterBar,
   GatedNote,
@@ -15,18 +12,18 @@ import {
   PageHeader,
   Panel,
   PlayerIdentity,
-  SegmentedControl,
   Select,
   StatTile,
   Switch,
   TeamIdentity,
   TemplateSkeleton,
-  type PageTemplate
+  type PageTemplate,
 } from "@/components/ui";
 import { TeamGrid } from "@/components/team-grid";
 import { ArticleLayout, ArticleSection } from "@/components/ui/article-layout";
 import { useAdvancedMode } from "@/lib/advanced-mode";
 import { formatDate, parseIsoDate } from "@/lib/format-date";
+import { Button, Chip, Segmented } from "@/components/ui/kit";
 
 const FOCUS = [
   { value: "overall", label: "Overall Impact" },
@@ -63,11 +60,11 @@ export function DesignFoundationShowcase() {
         <PageHeader
           title="Player Showcase"
           subtitle="Shareable stat cards for any player in the current scope."
-          actions={<><Button variant="secondary" size="sm" icon="search">Find player</Button><Button variant="primary" size="sm" icon="download">Export</Button></>}
+          actions={<><Button variant="secondary" size="xs" icon="search">Find player</Button><Button variant="primary" size="xs" icon="download">Export</Button></>}
         />
       </Panel>
 
-      <Panel title="FilterBar (D6) · modes (v1.1) · Field · DatePicker · ChipGroup · Data details" compact>
+      <Panel title="FilterBar (D6) · modes (v1.1) · Field · DatePicker · Chip · Data details" compact>
         <FilterBar
           label="Example filter bar"
           summary={`${season} · Regular Season · ${formatDate(through, "compact")}`}
@@ -88,9 +85,13 @@ export function DesignFoundationShowcase() {
               <DatePicker label="Example through date" value={through} onChange={setThrough} min="2025-10-21" max="2026-04-12" />
             </Field>
           </>}
-          filters={<ChipGroup label="Example positions" multiple value={positions} onChange={setPositions}
-            options={[{ value: "G", label: "Guards" }, { value: "F", label: "Forwards" }, { value: "C", label: "Centers" }]} />}
-          modes={<SegmentedControl name="Example basis" value={basis} onChange={setBasis}
+          filters={<div className="ui-design-cluster" role="group" aria-label="Example positions">
+            {[{ value: "G", label: "Guards" }, { value: "F", label: "Forwards" }, { value: "C", label: "Centers" }].map(option => (
+              <Chip key={option.value} size="lg" pressed={positions.includes(option.value)}
+                onClick={() => setPositions(current => current.includes(option.value) ? current.filter(value => value !== option.value) : [...current, option.value])}>{option.label}</Chip>
+            ))}
+          </div>}
+          modes={<Segmented size="lg" label="Example basis" value={basis} onChange={setBasis}
             options={[{ value: "observed", label: "Observed" }, { value: "projected", label: "Projected" }]} />}
           count={<CountChip>591 players</CountChip>}
           details={<DataDetailsButton scope={{ releaseId: "5bbb6035-6794-4bb0-b894-7208f52ef7ad", season, phase, beforeDate: "2026-04-13", window: "season" }}
@@ -112,15 +113,15 @@ export function DesignFoundationShowcase() {
           </Field>
         </Panel>
 
-        <Panel title="Segmented (stretch) and single-select chips" compact>
-          <SegmentedControl name="Example focus" stretch options={FOCUS} value={focus} onChange={setFocus} />
-          <ChipGroup label="Example window" value="season" onChange={() => {}}
-            options={[{ value: "season", label: "Season" }, { value: "last_10", label: "Last 10" }, { value: "last_5", label: "Last 5", count: 5 }]} />
+        <Panel title="Segmented (stretch and plain)" compact>
+          <Segmented size="md" label="Example focus" stretch options={FOCUS} value={focus} onChange={setFocus} />
+          <Segmented size="md" label="Example window" value="season" onChange={() => {}}
+            options={[{ value: "season", label: "Season" }, { value: "last_10", label: "Last 10" }, { value: "last_5", label: "Last 5" }]} />
         </Panel>
 
         <Panel title="GatedNote with Why? (D4/D14)" compact>
           <GatedNote
-            action={<Button size="sm" variant="secondary">Jump to Apr 12</Button>}
+            action={<Button size="xs" variant="secondary">Jump to Apr 12</Button>}
             why={<p>The retained release has no finalized games dated Oct 8, 2026. Missing games are unknown, not zero.</p>}
           >
             No games on Oct 8.
@@ -136,11 +137,6 @@ export function DesignFoundationShowcase() {
           <PlayerIdentity name="Missing Photo" team="BOS" size="md" subtitle="Initials on team color" />
           <TeamIdentity team="NYK" size="lg" subtitle="53-29 · Atlantic" />
         </div>
-        <div className="ui-design-chip-row">
-          <EntityChip kind="player" id="1629029" name="Luka Dončić" team="LAL" onRemove={() => {}} />
-          <EntityChip kind="player" id="1630162" name="Anthony Edwards" team="MIN" />
-          <EntityChip kind="team" id="DEN" name="Denver Nuggets" />
-        </div>
       </Panel>
 
       <Panel title="StatTile (D16)" compact>
@@ -153,7 +149,7 @@ export function DesignFoundationShowcase() {
       </Panel>
 
       <Panel title="Template skeletons (D11/D22)" compact>
-        <SegmentedControl name="Skeleton template" options={TEMPLATES} value={template} onChange={setTemplate} />
+        <Segmented size="md" label="Skeleton template" options={TEMPLATES} value={template} onChange={setTemplate} />
         <div className="ui-design-skeleton-frame"><TemplateSkeleton template={template} /></div>
       </Panel>
 

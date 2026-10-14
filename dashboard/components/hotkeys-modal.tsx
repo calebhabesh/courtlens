@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "./ui/kit";
 import { Modal } from "./ui/modal";
 
 interface HotkeysModalProps {
@@ -62,9 +63,9 @@ export function HotkeysModal({ isOpen, onClose }: HotkeysModalProps) {
         <span className="text-xs text-muted">
           Table shortcuts (T, C, Z, W/E, A/D) require focus on the table container.
         </span>
-        <button type="button" className="button button-small" onClick={onClose}>
+        <Button size="lg" onClick={onClose}>
           Got it (Esc)
-        </button>
+        </Button>
       </div>
     </Modal>
   );

@@ -48,10 +48,10 @@ test("the career table lists played seasons with a Career row, and phase links t
   await expect(career.locator("tfoot")).toContainText("Career");
   await expect(career.locator(".player-career-pending")).toHaveCount(0);
   // View tabs reuse the Stats views.
-  await page.getByRole("tablist", { name: "Career table views" }).getByRole("tab", { name: "Shooting", exact: true }).click();
+  await page.getByRole("radiogroup", { name: "Career table views" }).getByRole("radio", { name: "Shooting", exact: true }).click();
   await expect(career.locator("thead")).toContainText("FGM");
   // The fixture catalog observes no playoffs, so that phase cannot be chosen.
-  await expect(page.getByRole("group", { name: "Phase" }).getByRole("button", { name: "Playoffs" })).toBeDisabled();
+  await expect(page.getByRole("radiogroup", { name: "Phase" }).getByRole("radio", { name: "Playoffs" })).toBeDisabled();
   // The trajectory moved to Game Log; Overview leads with the season summary.
   await expect(page.locator(".pc12-profile-trajectory")).toHaveCount(0);
   await page.getByRole("tablist", { name: "Profile sections" }).getByRole("tab", { name: "Game Log" }).click();

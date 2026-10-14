@@ -1,0 +1,8 @@
+@layer components {
+/* Team Compare View Classes */
+.team-compare-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+}

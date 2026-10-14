@@ -1,22 +1,17 @@
 "use client";
 
-import { Icon } from "./ui/icon";
 import { ValueDot, valueDotsFit } from "./charts/value-dot";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { exampleParams, type ExampleSubject } from "@/lib/example-subject";
 import { ExampleSubjectCard } from "./example-subject";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ContextBar } from "./context-bar";
-import { IconButton } from "./ui/button";
 import { GatedNote } from "./ui/gated-note";
 import { PlayerIdentity, teamStyle } from "./ui/identity";
 import { Menu, MenuItem } from "./ui/menu";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
-import { SegmentedControl } from "./ui/segmented-control";
 import { StatTile } from "./ui/stat-tile";
-import { Tooltip } from "./ui/tooltip";
 import { formatDate } from "@/lib/format-date";
 import { scopeContextLine } from "@/lib/scope-labels";
 import { LineageDrawer } from "./lineage-drawer";
@@ -35,6 +30,7 @@ import {
   type RecentGamesWindow
 } from "@/lib/player-pages";
 import type { PlayerGameLogItem, PlayerProfile } from "@/lib/types";
+import { Button, ButtonLink, IconButton, Segmented } from "./ui/kit";
 
 interface RecentGamesViewProps {
   initialProfile: PlayerProfile;
@@ -185,18 +181,13 @@ export function RecentGamesView({
               }}
             />
           </div>
-          <Tooltip content={isFavorite ? "Remove from favorites" : "Add to favorites"}>
-            <IconButton icon="star" label={isFavorite ? "Remove from favorites" : "Add to favorites"} variant="secondary"
-              aria-pressed={isFavorite} className={isFavorite ? "is-active" : ""} onClick={() => toggleFavorite(player.id)} />
-          </Tooltip>
-          <Tooltip content={inTray ? "Remove from compare tray" : "Add to compare tray"}>
-            <IconButton icon={inTray ? "check" : "plus"} label={inTray ? "Remove from compare tray" : "Add to compare tray"} variant="secondary"
-              aria-pressed={inTray} className={inTray ? "is-active" : ""} onClick={() => toggleCompare(player.id)} />
-          </Tooltip>
-          <Link href={`/players/${player.id}?${scopeParams}`} className="ui-button ui-button-secondary ui-button-md">Profile</Link>
-          <Menu align="right" trigger={<span className="ui-button ui-button-primary ui-button-md">
-            <Icon name="download" size={16} />{exporting ? "Exporting…" : "Export"}<Icon name="chevron-down" size={14} />
-          </span>}>
+          <IconButton size="sm" icon="star" label={isFavorite ? "Remove from favorites" : "Add to favorites"} variant="secondary" filled={isFavorite}
+            pressed={isFavorite} onClick={() => toggleFavorite(player.id)} />
+          <IconButton size="sm" icon={inTray ? "check" : "plus"} label={inTray ? "Remove from compare tray" : "Add to compare tray"} variant="secondary"
+            pressed={inTray} onClick={() => toggleCompare(player.id)} />
+          <ButtonLink size="sm" href={`/players/${player.id}?${scopeParams}`}>Profile</ButtonLink>
+          <Menu align="right" renderTrigger={props => <Button {...props} size="sm" variant="primary" icon="download" iconAfter="chevron-down">
+            {exporting ? "Exporting…" : "Export"}</Button>}>
             <MenuItem icon="table" label="CSV game log" onClick={handleExportCsv} />
             <MenuItem icon="download" label="Export PNG" disabled={exporting} onClick={() => void handleExportPng()} />
             <MenuItem icon="page" label="Export SVG" onClick={handleExportSvg} />
@@ -214,15 +205,15 @@ export function RecentGamesView({
         sampleSize={initialGames.length}
         lastIncludedDate={last_observed_date}
         detailRows={[{ label: "Player", value: player.id, mono: true }]}
-        filters={<SegmentedControl<RecentGamesWindow> name="Appearance window" value={windowSelection} onChange={setWindowSelection} options={[
+        filters={<Segmented<RecentGamesWindow> size="lg" label="Appearance window" value={windowSelection} onChange={setWindowSelection} options={[
           { value: "last_5", label: "Last 5" }, { value: "last_10", label: "Last 10" }, { value: "last_20", label: "Last 20" },
           { value: "all", label: `All (${initialGames.length})` }
         ]} />}
         modes={<>
-          <SegmentedControl<CountingExposureMode> name="Exposure" value={exposureMode} onChange={setExposureMode} options={[
+          <Segmented<CountingExposureMode> size="lg" label="Exposure" value={exposureMode} onChange={setExposureMode} options={[
             { value: "per_game", label: "Per Game" }, { value: "per_36", label: "Per 36" }
           ]} />
-          <SegmentedControl<RecentGamesViewMode> name="Layout" value={viewMode} onChange={setViewMode} options={[
+          <Segmented<RecentGamesViewMode> size="lg" label="Layout" value={viewMode} onChange={setViewMode} options={[
             { value: "table", label: "Table", icon: "table" }, { value: "cards", label: "Cards", icon: "cards" }
           ]} />
         </>}
@@ -434,14 +425,11 @@ export function RecentGamesView({
                       <td className="num font-mono font-semibold">{formatPercent(tsPct)}</td>
                       <td className="num font-mono">{g.legacy_fantasy_score?.toFixed(1) ?? "—"}</td>
                       <td className="text-right">
-                        <button
-                          type="button"
-                          className="button button-small"
+                        <Button size="lg"
                           onClick={() => setSelectedFact(g.game_id)}
-                          title="Inspect raw cryptographic lineage"
-                        >
+                          title="Inspect raw cryptographic lineage">
                           Lineage
-                        </button>
+                        </Button>
                       </td>
                     </tr>
                   );
@@ -503,13 +491,10 @@ export function RecentGamesView({
                   <span className="text-xs text-muted font-mono">
                     FG: {g.stats?.field_goals_made ?? 0}/{g.stats?.field_goals_attempted ?? 0}
                   </span>
-                  <button
-                    type="button"
-                    className="button button-small"
-                    onClick={() => setSelectedFact(g.game_id)}
-                  >
+                  <Button size="lg"
+                    onClick={() => setSelectedFact(g.game_id)}>
                     Lineage
-                  </button>
+                  </Button>
                 </div>
               </div>
             );

@@ -104,7 +104,7 @@ test("mobile details, collapsed filters and submitted search remain accessible",
   await expect(page.getByLabel("Minimum total minutes played")).toBeVisible();
   await page.getByRole("button", { name: "Filters", exact: true }).click();
   // The team picker sits with the scope controls, which collapse into the Filters sheet on phones.
-  await page.locator(".ui-filter-bar-toggle").click();
+  await page.locator(".filter-bar-toggle-slot > button").click();
   const sheet = page.getByRole("dialog", { name: "Filters", exact: true });
   await expect(sheet.getByRole("button", { name: "Select Team", exact: true })).toBeVisible();
   await expect(sheet.getByRole("group", { name: "Positions" })).toBeVisible();

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Icon, type IconName } from "./ui/icon";
+import { Chip } from "./ui/kit";
 import { PageHeader } from "./ui/panel";
 import "./stats-glossary.css";
 import { GLOSSARY_GROUPS, type GlossaryEntry, type GlossaryGroup } from "@/lib/stats-glossary";
@@ -35,13 +36,13 @@ export function StatsGlossaryView({ entries, available }: { entries: GlossaryEnt
         </label>} />
 
       <div className="glossary-filters" role="group" aria-label="Categories">
-        <button type="button" className="glossary-chip" aria-pressed={group === "all"} onClick={() => setGroup("all")}>
-          All Stats <span>({entries.length})</span>
-        </button>
+        <Chip size="lg" pressed={group === "all"} onClick={() => setGroup("all")}>
+          All Stats <span className="glossary-count">({entries.length})</span>
+        </Chip>
         {GLOSSARY_GROUPS.filter(name => counts[name] > 0).map(name => (
-          <button key={name} type="button" className="glossary-chip" aria-pressed={group === name} onClick={() => setGroup(name)}>
-            {name} <span>({counts[name]})</span>
-          </button>
+          <Chip key={name} size="lg" pressed={group === name} onClick={() => setGroup(name)}>
+            {name} <span className="glossary-count">({counts[name]})</span>
+          </Chip>
         ))}
       </div>
 

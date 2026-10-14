@@ -1,0 +1,270 @@
+@layer pages {
+/* Scatter Plot & Multi-Player Lines */
+.panel-header-wrap {
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.scatter-panel-title,
+.lines-panel-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.scatter-header-actions,
+.lines-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.th-rank,
+.cell-rank {
+  width: 40px;
+}
+
+.lines-empty-lead {
+  margin-bottom: var(--space-2);
+}
+
+.lines-empty-desc {
+  max-width: 480px;
+  margin: 0 auto var(--space-4);
+}
+
+.scatter-svg-container,
+.lines-svg-container {
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.scatter-svg,
+.lines-svg {
+  width: 100%;
+  height: auto;
+  min-width: 480px;
+  display: block;
+  background: var(--color-surface-0);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-hairline);
+}
+
+.scatter-point-group,
+.lines-point-group {
+  cursor: pointer;
+  outline: none;
+}
+
+.scatter-point-label {
+  pointer-events: none;
+}
+
+.scatter-filter-toolbar,
+.lines-filter-toolbar {
+  margin: var(--space-3) 0;
+  background: var(--color-surface-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-hairline);
+}
+
+/* Hover cards anchor to their data point inside a frame the size of the SVG (lib/chart-anchor). */
+.chart-hover-frame {
+  position: relative;
+  min-width: 480px;
+}
+
+.scatter-tooltip,
+.lines-tooltip {
+  position: absolute;
+  left: var(--tooltip-left, 0px);
+  top: var(--tooltip-top, 0px);
+  transform: translate(var(--tooltip-dx, 14px), var(--tooltip-dy, -50%));
+  pointer-events: none;
+  z-index: var(--z-dropdown);
+  background: var(--color-surface-3);
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  box-shadow: var(--shadow-2);
+  font-size: var(--text-xs);
+  color: var(--color-text);
+  min-width: 180px;
+}
+
+.scatter-tooltip[data-side="left"], .lines-tooltip[data-side="left"] { --tooltip-dx: calc(-100% - 14px); }
+.scatter-tooltip[data-align="below"], .lines-tooltip[data-align="below"] { --tooltip-dy: 10px; }
+.scatter-tooltip[data-align="above"], .lines-tooltip[data-align="above"] { --tooltip-dy: calc(-100% - 10px); }
+
+.scatter-tooltip-title,
+.lines-tooltip-title {
+  font-weight: 600;
+  color: var(--color-accent);
+  font-size: var(--text-sm);
+}
+
+.scatter-tooltip-sub,
+.lines-tooltip-sub {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  margin: var(--space-0-5) 0 var(--space-1);
+}
+
+.scatter-tooltip-grid,
+.lines-tooltip-grid {
+  font-size: var(--text-xs);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-0-5) var(--space-2);
+}
+
+.scatter-tooltip-outlier {
+  color: var(--color-info);
+  margin-top: var(--space-1);
+  font-weight: 600;
+  font-size: var(--text-xs);
+}
+
+.scatter-tooltip-footer,
+.lines-tooltip-footer {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-1);
+  border-top: 1px solid var(--color-hairline);
+  padding-top: var(--space-0-5);
+}
+
+.scatter-legend,
+.lines-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-1);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-hairline);
+}
+
+.scatter-legend-item,
+.lines-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.scatter-dot-neutral {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-pill);
+  background: var(--color-text-secondary);
+  display: inline-block;
+}
+
+.scatter-dot-cluster {
+  width: 11px;
+  height: 11px;
+  border-radius: var(--radius-pill);
+  background: var(--color-category-2);
+  display: inline-block;
+}
+
+.scatter-dot-active {
+  width: 11px;
+  height: 11px;
+  border-radius: var(--radius-pill);
+  background: var(--color-identity-a);
+  display: inline-block;
+}
+
+.scatter-dot-highlight {
+  width: 13px;
+  height: 13px;
+  border-radius: var(--radius-pill);
+  background: var(--color-category-3);
+  border: 1.5px solid var(--color-accent);
+  display: inline-block;
+}
+
+.scatter-table-container,
+.lines-table-container {
+  margin-top: var(--space-4);
+}
+
+.scatter-table-wrapper,
+.lines-table-wrapper {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.lines-empty-panel {
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.lines-notice-warning {
+  border-left-color: var(--color-negative);
+  margin: var(--space-2) 0;
+}
+
+.lines-series-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--series-color, var(--color-hairline));
+  background: var(--color-surface-2);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.lines-game-context {
+  margin-left: var(--space-1);
+}
+
+.lines-series-card.is-focused {
+  border-color: var(--color-accent);
+}
+
+.lines-series-card.is-muted {
+  opacity: 0.5;
+}
+
+.lines-symbol {
+  font-size: var(--text-sm);
+  line-height: 1;
+  color: var(--series-color, inherit);
+}
+
+.lines-player-name {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.lines-card-remove {
+  margin-left: auto;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-size: var(--text-xs);
+  line-height: 1;
+  padding: var(--space-0-5);
+  border-radius: var(--radius-xs);
+  color: var(--color-text-tertiary);
+}
+
+.lines-card-remove:hover {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+}
+
+.lines-th-series {
+  color: var(--series-color, var(--color-text));
+}
+}

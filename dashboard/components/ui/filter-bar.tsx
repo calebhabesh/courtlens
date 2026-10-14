@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { Button } from "./button";
+import { ControlScope, useControlScope } from "./control-scope";
 import { Drawer } from "./drawer";
+import { Button } from "./kit";
 
 export interface FilterBarProps {
   /** Global scope controls: Season · Phase · Through date, plus Window where the page uses it. */
@@ -38,6 +39,7 @@ const NARROW = "(max-width: 767px)";
  */
 export function FilterBar({ scope, filters, modes, count, details, summary, label = "Research context controls", collapsible = true, className = "" }: FilterBarProps) {
   const [sheetOpen, setSheetOpen] = useState(false);
+  const { tone } = useControlScope();
 
   useEffect(() => {
     if (!sheetOpen) return;
@@ -48,15 +50,16 @@ export function FilterBar({ scope, filters, modes, count, details, summary, labe
   }, [sheetOpen]);
 
   return (
+    <ControlScope size="lg">
     <div className={`ui-filter-bar ${modes ? "has-modes" : ""} ${collapsible ? "" : "is-fixed-scope"} ${className}`} role="region" aria-label={label}>
       <div className="ui-filter-bar-controls">
         <div className="ui-filter-bar-scope">{scope}</div>
         {filters && <div className="ui-filter-bar-page">{filters}</div>}
       </div>
       {modes && <div className="ui-filter-bar-modes">{modes}</div>}
-      {collapsible && <Button className="ui-filter-bar-toggle" icon="sliders" onClick={() => setSheetOpen(true)} aria-haspopup="dialog">
-        Filters{summary ? <span className="ui-filter-bar-summary">{summary}</span> : null}
-      </Button>}
+      {collapsible && <span className="filter-bar-toggle-slot"><Button size="lg" tone={tone} stretch icon="sliders" onClick={() => setSheetOpen(true)} aria-haspopup="dialog">
+        Filters{summary ? <>{" "}<span className="ui-filter-bar-summary">{summary}</span></> : null}
+      </Button></span>}
       {(count || details) && (
         <div className="ui-filter-bar-meta">
           {count}
@@ -64,12 +67,13 @@ export function FilterBar({ scope, filters, modes, count, details, summary, labe
         </div>
       )}
       {collapsible && <Drawer isOpen={sheetOpen} onClose={() => setSheetOpen(false)} side="bottom" title="Filters" className="ui-filter-sheet">
-        <div className="ui-filter-sheet-body">
+        <div className="ui-filter-sheet-body"><ControlScope fill>
           {scope}
           {filters}
-        </div>
+        </ControlScope></div>
       </Drawer>}
     </div>
+    </ControlScope>
   );
 }
 

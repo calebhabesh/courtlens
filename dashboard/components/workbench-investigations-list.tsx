@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Fragment, useState } from "react";
 import { getExportUrl, reproduceInvestigation } from "@/lib/workbench-api";
 import { formatDate } from "@/lib/format-date";
@@ -8,6 +7,7 @@ import { humanLabel } from "@/lib/route-availability";
 import type { InvestigationReproduce, SavedInvestigation } from "@/lib/types";
 import { DataDetailsButton } from "./ui/data-details";
 import { GatedNote } from "./ui/gated-note";
+import { Button, ButtonLink } from "./ui/kit";
 
 /** Legacy archive investigations: original IDs, result signatures and export contracts are kept. */
 export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigation[] }) {
@@ -24,7 +24,7 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
   };
 
   if (items.length === 0) {
-    return <GatedNote action={<Link href="/players" className="button">Explore players</Link>}>No legacy investigations. Save reproducible queries from the Player Directory.</GatedNote>;
+    return <GatedNote action={<ButtonLink size="lg" href="/players">Explore players</ButtonLink>}>No legacy investigations. Save reproducible queries from the Player Directory.</GatedNote>;
   }
 
   return (
@@ -44,10 +44,10 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
               <td className="num">{item.total_rows.toLocaleString("en-US")}</td>
               <td>{formatDate(item.created_at.slice(0, 10))}</td>
               <td><div className="research-row-actions">
-                <button type="button" className="button button-small" onClick={() => handleReproduce(item.id)} disabled={rep?.loading} title="Verify exact SHA-256 match against bound dataset">{rep?.loading ? "Verifying…" : "Verify Reproduction"}</button>
-                <a href={getExportUrl(item.id, "csv")} download={`investigation-${item.id}.csv`} className="button button-small">Export CSV</a>
-                <a href={getExportUrl(item.id, "json")} download={`investigation-${item.id}.json`} className="button button-small">Export JSON</a>
-                <Link href={`/players?${sp.toString()}`} className="button button-small">Open in Explorer</Link>
+                <Button size="lg" onClick={() => handleReproduce(item.id)} disabled={rep?.loading} title="Verify exact SHA-256 match against bound dataset">{rep?.loading ? "Verifying…" : "Verify Reproduction"}</Button>
+                <ButtonLink size="lg" href={getExportUrl(item.id, "csv")} download={`investigation-${item.id}.csv`}>Export CSV</ButtonLink>
+                <ButtonLink size="lg" href={getExportUrl(item.id, "json")} download={`investigation-${item.id}.json`}>Export JSON</ButtonLink>
+                <ButtonLink size="lg" href={`/players?${sp.toString()}`}>Open in Explorer</ButtonLink>
                 <DataDetailsButton label="Details" rows={[{ label: "Catalog", value: item.metric_version, mono: true }, { label: "Manifest SHA-256", value: item.manifest_sha256, mono: true }, { label: "Result SHA-256", value: item.result_sha256, mono: true }, { label: "ID", value: item.id, mono: true }]} />
               </div></td>
             </tr>

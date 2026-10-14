@@ -5,7 +5,7 @@ import type { LookupItem } from "@/lib/types";
 import { queryLookup } from "@/lib/workbench-api";
 import { buildLookupCacheKey, defaultLookupCache } from "@/lib/lookup-cache";
 import { LookupIdentity, LookupInput, useLookupScope, type LookupScope } from "./lookup-input";
-import { Icon } from "./ui/icon";
+import { IconButton } from "./ui/kit";
 
 export interface EntityPickerProps extends LookupScope {
   label: string;
@@ -27,7 +27,7 @@ export function EntityPicker({label, kind = "player", selected, onChange, multip
   const full = multiple && selected.length >= max;
   return <div className="entity-picker" role="group" aria-label={label}>
     <span className="entity-label">{label}</span>
-    {selected.length > 0 && <ul className="entity-chips" aria-label={`Selected ${label}`}>{selected.map(item=><li key={item.canonical_id} className="entity-chip"><LookupIdentity item={item} committed /><button type="button" disabled={disabled} aria-label={`Remove ${item.display_name} from ${label}`} onClick={()=>{setText("");onChange(selected.filter(value=>value.canonical_id !== item.canonical_id));}}><Icon name="close" /></button></li>)}</ul>}
+    {selected.length > 0 && <ul className="entity-chips" aria-label={`Selected ${label}`}>{selected.map(item=><li key={item.canonical_id} className="entity-chip"><LookupIdentity item={item} committed /><IconButton size="lg" variant="ghost" icon="close" disabled={disabled} label={`Remove ${item.display_name} from ${label}`} onClick={()=>{setText("");onChange(selected.filter(value=>value.canonical_id !== item.canonical_id));}} /></li>)}</ul>}
     <LookupInput {...scope} candidates={candidates} label={label} value={text} kinds={[kind]} excludedIds={[...excludedIds,...selected.map(item=>item.canonical_id)]} required={required && selected.length === 0} disabled={disabled || full} placeholder={full ? `Maximum ${max} selected` : `Search ${kind}s by name`} onChange={value=>{setText(value); if(!multiple && selected.length) onChange([]);}} onSelect={item=>{setText("");onChange(multiple ? [...selected,item] : [item]);}} />
     {required && selected.length === 0 && text && <span className="form-hint">Choose a suggestion to confirm this {kind}.</span>}
     {/* Typed text is never a committed selection or a valid form value. */}

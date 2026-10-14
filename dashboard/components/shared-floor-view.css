@@ -1,0 +1,15 @@
+@layer pages {
+/* B22 shared-floor workspace */
+.floor-form, .floor-result { padding: var(--space-4); margin-bottom: var(--space-4); }
+.floor-scroll { overflow-x: auto; max-width: 100%; margin: var(--space-3) 0; }
+.floor-scroll table { width: 100%; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.floor-scroll th, .floor-scroll td { padding: var(--space-2) var(--space-3); text-align: right; }
+.floor-scroll th:first-child { text-align: left; white-space: normal; min-width: 150px; }
+.floor-scroll caption { text-align: left; padding: var(--space-1) 0; color: var(--color-text-secondary); }
+.floor-hash, .floor-result pre { overflow-wrap: anywhere; white-space: pre-wrap; font-size: var(--text-xs); }
+.floor-result details { margin: var(--space-3) 0; }
+.floor-result summary { cursor: pointer; padding: var(--space-2) 0; }
+.shared-floor button:focus-visible, .shared-floor input:focus-visible, .shared-floor select:focus-visible, .shared-floor summary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+
+.floor-actions button, .floor-result button { padding: var(--space-1-5, var(--space-2)) var(--space-3); color: var(--color-text); background: var(--color-surface-2); border: 1px solid var(--color-hairline); border-radius: var(--radius-sm); cursor: pointer; }
+}

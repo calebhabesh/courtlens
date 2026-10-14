@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useExampleSubject } from "./example-subject";
 import { PairedBars, RankedBars } from "./charts";
 import { comparePeriods, getRankOperation } from "@/lib/workbench-api";
@@ -15,10 +14,10 @@ import { GatedNote } from "./ui/gated-note";
 import { PlayerIdentity } from "./ui/identity";
 import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
-import { SegmentedControl } from "./ui/segmented-control";
 import { Select } from "./ui/select";
 import { StatTile } from "./ui/stat-tile";
 import { PlayerLookup, ResearchBodySkeleton, deltaClass, downloadCsv, evidenceRows, signed, useInvestigationScope, useShareLink } from "./research-investigation";
+import { Button, ButtonLink, Segmented } from "./ui/kit";
 
 type View = "player" | "rank";
 const KEY_DELTAS = ["pts_per_game", "min_per_game", "ts_pct", "fg3_pct", "ast_per_game", "pts"];
@@ -107,30 +106,30 @@ export function TrendsInvestigationView() {
 
   return <PageShell template="research" className="research-view trends-view">
     <PageHeader title="Workload Trends" subtitle="A player's recent stretch against the one before it, or the league's largest shifts." actions={<>
-      <button type="button" className="button" onClick={share}>Share Link</button>
-      {view === "player" && result && <button type="button" className="button" onClick={exportCsv}>Export CSV</button>}
-      <Link href="/stats" className="button button-primary">Open in Stats</Link>
+      <Button size="lg" onClick={share}>Share Link</Button>
+      {view === "player" && result && <Button size="lg" onClick={exportCsv}>Export CSV</Button>}
+      <ButtonLink size="lg" variant="primary" href="/stats">Open in Stats</ButtonLink>
     </>} />
     <ContextBar initialReleaseId={releaseId ?? undefined} initialSeason={season || undefined} initialPhase={phase} initialBeforeDate={beforeDate ?? undefined} showWindow={false}
       filters={filters}
-      modes={<SegmentedControl<View> name="Trends view" value={view} onChange={next => set({ view: next === "player" ? null : next })} options={[{ value: "player", label: "Player Periods" }, { value: "rank", label: "League Shifts" }]} />}
+      modes={<Segmented<View> size="lg" label="Trends view" value={view} onChange={next => set({ view: next === "player" ? null : next })} options={[{ value: "player", label: "Player Periods" }, { value: "rank", label: "League Shifts" }]} />}
       detailRows={view === "player" ? evidenceRows(result, "Period comparison") : evidenceRows(ranked?.value, "Cohort ranking")} />
     {catalog === null && <div role="status"><GatedNote>Context catalog unavailable. Explicit URL scope is retained; reload to retry.</GatedNote></div>}
     {view === "player" ? <>
       {(!current && playerId || exampleState.loading) && <ResearchBodySkeleton />}
-      {exampleState.error && <GatedNote why={exampleState.error} action={<button className="button" onClick={() => window.location.reload()}>Retry</button>}>Example unavailable. Choose a player.</GatedNote>}
-      {current?.error && <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => setRetry(v => v + 1)}>Retry</button>}>Period comparison unavailable: {current.error}</GatedNote></div>}
+      {exampleState.error && <GatedNote why={exampleState.error} action={<Button size="lg" onClick={() => window.location.reload()}>Retry</Button>}>Example unavailable. Choose a player.</GatedNote>}
+      {current?.error && <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => setRetry(v => v + 1)}>Retry</Button>}>Period comparison unavailable: {current.error}</GatedNote></div>}
       {result && <ResearchLayout headline={<>
         {exampleState.example && <div className="pc12-example-label"><PlayerIdentity playerId={result.player_id} name={`Example: ${result.player_name}`} team={team} size="sm" subtitle="Season minutes rule" />
-          <button className="button button-small" onClick={() => {
-            const toggle = document.querySelector<HTMLButtonElement>(".ui-filter-bar-toggle");
+          <Button size="lg" onClick={() => {
+            const toggle = document.querySelector<HTMLButtonElement>(".filter-bar-toggle-slot > button");
             const focusLookup = () => Array.from(document.querySelectorAll<HTMLInputElement>('input[aria-label="Target player"]')).find(input => input.checkVisibility())?.focus();
             if (toggle?.checkVisibility()) {
               toggle.click();
               // The drawer focuses its panel on its first frame; focus its visible lookup after that.
               requestAnimationFrame(() => requestAnimationFrame(focusLookup));
             } else focusLookup();
-          }}>Change</button>
+          }}>Change</Button>
         </div>}
         <PairedBars title={`${result.player_name} · target against baseline`} source="CourtLens admitted player box scores"
         sample={`${result.period_a.appearances_count} target / ${result.period_b.appearances_count} baseline games · ${result.period_a.total_minutes} / ${result.period_b.total_minutes} minutes`}
@@ -159,7 +158,7 @@ export function TrendsInvestigationView() {
       </ResearchLayout>}
     </> : <>
       {!ranked && <ResearchBodySkeleton tiles={3} />}
-      {ranked?.error && <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => setRetry(v => v + 1)}>Retry</button>}>Cohort ranking unavailable: {ranked.error}</GatedNote></div>}
+      {ranked?.error && <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => setRetry(v => v + 1)}>Retry</Button>}>Cohort ranking unavailable: {ranked.error}</GatedNote></div>}
       {ranked?.value && <ResearchLayout headline={<RankedBars title="Largest period shifts" source="CourtLens admitted player box scores" sample={`${ranked.value.total_eligible} eligible players · at least 10 appearances`}
         measure={RANK_METRICS.find(([key]) => key === rankMetric)?.[1] ?? rankMetric} tone="identity-b" note="Blue = signed recent-minus-prior change; zero baseline. Descriptive, not causal."
         items={ranked.value.items.slice(0, 5).map(item => ({key: item.player_id, name: item.player_name, label: item.player_name, value: item.delta_value, detail: `${item.games_played} games`}))} />} findings={<>
@@ -180,7 +179,7 @@ export function TrendsInvestigationView() {
                 <td className="num">{item.baseline_value ?? "—"}</td><td className="num">{item.comparison_value ?? "—"}</td>
                 <td className="num"><span className={deltaClass(item.delta_value)}>{signed(item.delta_value)}</span></td>
                 <td className="num">{pctDelta === null ? "—" : <span className={deltaClass(pctDelta)}>{signed(pctDelta, "%")}</span>}</td>
-                <td><button type="button" className="button button-small" onClick={() => set({ view: null, playerId: item.player_id, player_id: null })}>Investigate</button></td>
+                <td><Button size="lg" onClick={() => set({ view: null, playerId: item.player_id, player_id: null })}>Investigate</Button></td>
               </tr>;
             })}</tbody>
           </table>

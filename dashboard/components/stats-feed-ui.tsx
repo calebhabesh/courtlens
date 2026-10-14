@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
 import { Field } from "./ui/field";
 import { GatedNote } from "./ui/gated-note";
+import { Button } from "./ui/kit";
 import { LookupInput } from "./lookup-input";
 import { Select } from "./ui/select";
 import { Skeleton } from "./ui/skeleton";
@@ -85,7 +86,7 @@ export function FeedDetails({ envelope, rows = [], children }: { envelope: FeedE
 }
 
 export function FeedFailure({ error, retry, what }: { error: string; retry: () => void; what: string }) {
-  return <div role="alert"><GatedNote tone="warning" why={error} action={<button className="button" onClick={retry}>Retry</button>}>{what} is unavailable right now.</GatedNote></div>;
+  return <div role="alert"><GatedNote tone="warning" why={error} action={<Button size="lg" onClick={retry}>Retry</Button>}>{what} is unavailable right now.</GatedNote></div>;
 }
 
 export function FeedSkeleton({ label }: { label: string }) {

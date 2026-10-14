@@ -1,0 +1,25 @@
+@layer components {
+/* Tooltip */
+.ui-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.ui-tooltip {
+  position: absolute;
+  bottom: calc(100% + var(--space-1));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-tooltip);
+  background-color: var(--color-surface-3);
+  color: var(--color-text);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-1);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  white-space: nowrap;
+  pointer-events: none;
+}
+}

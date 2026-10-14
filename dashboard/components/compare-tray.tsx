@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { queryLookup } from "@/lib/workbench-api";
 import { buildLookupCacheKey, defaultLookupCache } from "@/lib/lookup-cache";
-import { Icon } from "./ui/icon";
-import Link from "next/link";
+import { Button, ButtonLink, IconButton } from "./ui/kit";
 import { PlayerPortrait } from "./player-portrait";
 import type { PlayerResearchItem } from "@/lib/types";
 
@@ -74,24 +73,20 @@ export function CompareTray({
         </div>
 
         <div className="compare-tray-actions">
-          <button
-            type="button"
-            className="button button-small"
-            onClick={onClearAll}
-            title="Clear all selections"
-          >
+          <Button size="xs" onClick={onClearAll} title="Clear all selections">
             Clear
-          </button>
-          <Link
+          </Button>
+          <ButtonLink
+            size="xs"
+            variant="primary"
             href={compareHref}
             onClick={event => { if (!canCompare) event.preventDefault(); }}
-            className={`button button-small button-primary ${!canCompare ? "button-disabled" : ""}`}
             aria-disabled={!canCompare}
             tabIndex={canCompare ? 0 : -1}
             title={canCompare ? "Compare the first two selected players (Z)" : "Select at least 2 players to compare"}
           >
             {canCompare ? selectedPlayers.length > 2 ? "Compare first 2" : "Compare (2)" : "Select 2+ players"}
-          </Link>
+          </ButtonLink>
         </div>
       </div>
     </div>
@@ -121,10 +116,9 @@ export function TrayChip({ player, context, onRemove }: { player: PlayerResearch
   }, [key, player.player_name]);
   const identity = resolved?.key === key ? resolved : null;
   const name = player.player_name === "Selected player" ? identity?.name ?? "Resolving player…" : player.player_name;
-  return <div className="compare-tray-chip">
+  return <div className="compare-tray-item">
     <PlayerPortrait playerId={player.player_id} name={name} portraitUrl={identity?.portrait ?? player.portrait_url} size="sm" />
     <span className="compare-tray-chip-name" role={identity?.error ? "status" : undefined}>{name}</span>
-    <button type="button" className="compare-tray-chip-remove" onClick={() => onRemove(player.player_id)}
-      aria-label={`Remove ${name} from compare tray`} title="Remove player"><Icon name="close" /></button>
+    <IconButton icon="close" label={`Remove ${name} from compare tray`} title="Remove player" onClick={() => onRemove(player.player_id)} />
   </div>;
 }

@@ -8,6 +8,7 @@ import { StatTile } from "./ui/stat-tile";
 import { GatedNote } from "./ui/gated-note";
 import { ValueBar } from "./charts";
 import { Skeleton } from "./ui/skeleton";
+import { Button } from "./ui/kit";
 
 export function useExampleSubject(parameter: string, aliases: string[] = [], kind: ExampleKind = "player", enabled = true) {
   const params = useSearchParams(), path = usePathname();
@@ -68,10 +69,10 @@ export function ExampleSubjectCard({ example, error, loading = false, loadingKin
       <ValueBar title={`Subject ${index === 0 ? "A" : "B"} · Points / Game`} value={null} domain={[0,40]} source="Published box scores" sample="Resolving" state="loading" />
     </div>)}</div>{provenance}
   </section>;
-  if (!example) return error ? <GatedNote why={error} action={<button className="button" onClick={() => window.location.reload()}>Retry</button>}>Example unavailable.</GatedNote> : null;
+  if (!example) return error ? <GatedNote why={error} action={<Button size="lg" onClick={() => window.location.reload()}>Retry</Button>}>Example unavailable.</GatedNote> : null;
   return <section className="pc04-example" aria-label="Observed example context">
     <div className="pc04-example-heading"><strong>Example: {example.players.map(player => player.player_name).join(" · ")}</strong>
-      <button className="button button-small" onClick={() => document.querySelector<HTMLInputElement>(".entity-picker input, .lookup-input input, input[role=combobox]")?.focus()}>Change</button>
+      <Button size="lg" onClick={() => document.querySelector<HTMLInputElement>(".entity-picker input, .lookup-input input, input[role=combobox]")?.focus()}>Change</Button>
     </div>
     <div className="pc04-example-players">{example.players.map((player,index) => <div key={player.player_id}>
       <PlayerIdentity playerId={player.player_id} name={player.player_name} team={player.teams[0]} subtitle={`${index === 0 ? "A" : "B"} · ${player.games_played} GP · ${Math.round(player.total_minutes).toLocaleString("en-US")} MIN`} />

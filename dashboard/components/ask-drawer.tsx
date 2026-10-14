@@ -6,6 +6,7 @@ import { AskCourtLens } from "./ask-courtlens";
 import { useEffect, useRef } from "react";
 import { ThreadedAssistant } from "./threaded-assistant";
 import type { AssistantPageContext } from "@/lib/assistant-v2.generated";
+import { Button } from "./ui/kit";
 
 export function AskDrawer({ onClose, pageContext, pageLabel }: {onClose: () => void; pageContext: AssistantPageContext; pageLabel: string}) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -21,7 +22,7 @@ export function AskDrawer({ onClose, pageContext, pageLabel }: {onClose: () => v
     node?.showModal();
   }, []);
   return <dialog ref={dialog} className="conversation-dialog" aria-labelledby="ask-drawer-title" onClose={onClose}>
-    <div className="conversation-row"><h2 id="ask-drawer-title">Research conversation</h2><button className="button" onClick={() => dialog.current?.close()}>Close research conversation</button><Link href={fullPageUrl} onClick={() => dialog.current?.close()}>Open full research page</Link></div>
+    <div className="conversation-row"><h2 id="ask-drawer-title">Research conversation</h2><Button size="lg" onClick={() => dialog.current?.close()}>Close research conversation</Button><Link href={fullPageUrl} onClick={() => dialog.current?.close()}>Open full research page</Link></div>
     {manual ? <AskCourtLens variant="panel" initialReleaseId={pageContext.selections.release_id ?? undefined} initialSeason={pageContext.selections.season ?? undefined} initialPhase={pageContext.selections.phase} initialBeforeDate={pageContext.selections.before_date ?? undefined} initialWindow={pageContext.selections.window} /> : <ThreadedAssistant variant="panel" initialContext={pageContext.selections} pageContext={pageContext} pageLabel={pageLabel} />}
   </dialog>;
 }

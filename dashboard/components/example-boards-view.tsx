@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { exampleBoardScope, exampleTierGroups } from "@/lib/example-boards";
 import type { WorkbenchQueryResponse } from "@/lib/types";
 import { PlayerIdentity } from "./ui/identity";
-import { Button } from "./ui/button";
 import { CountChip, FilterBar } from "./ui/filter-bar";
 import { DataDetailsButton } from "./ui/data-details";
 import { GatedNote } from "./ui/gated-note";
 import { PercentileCell } from "./charts/percentile-cell";
 import { TablePercentileLegend } from "./table-percentile-legend";
+import { Button, ButtonLink } from "./ui/kit";
 
 export function ExampleBoardsView({ data, kind, onCopy, copying, copyError, copyDisabled }: {
   data: WorkbenchQueryResponse | null;
@@ -45,12 +44,12 @@ export function ExampleBoardsView({ data, kind, onCopy, copying, copyError, copy
     <GatedNote why="Ranking boards represent personal subjective evaluations. CourtLens never fabricates a global community consensus or automated public authority from subjective inputs. This example shows measured workload. Copies become personal boards; tier allocations reflect personal subjective categorizations after editing.">
       Example: season minutes leaders · Read-only
     </GatedNote>
-    {!data || !data.items.length ? <GatedNote action={data ? <Link className="button" href="/stats">Open Stats</Link> : <Button variant="secondary" onClick={() => window.location.reload()}>Retry example</Button>}>
+    {!data || !data.items.length ? <GatedNote action={data ? <ButtonLink size="lg" href="/stats">Open Stats</ButtonLink> : <Button size="sm" variant="secondary" onClick={() => window.location.reload()}>Retry example</Button>}>
       {data ? "No observed players in this scope." : "Example board unavailable."}
     </GatedNote> : <section className="pc12-example-board" aria-label="Season minutes example board">
       <div className="pc12-example-header">
         <div><h2>{kind === "rankings" ? "Season Minutes Leaders" : "Season Minutes Groups"}</h2><p>Source: published box scores · {data.items.length} of {data.total_eligible_players} observed players</p></div>
-        <Button icon="copy" variant="secondary" disabled={copying || copyDisabled} onClick={onCopy}>{copying ? "Copying…" : "Copy to my boards"}</Button>
+        <Button size="sm" icon="copy" variant="secondary" disabled={copying || copyDisabled} onClick={onCopy}>{copying ? "Copying…" : "Copy to my boards"}</Button>
       </div>
       {copyError && <p role="alert">{copyError}</p>}
       {kind === "rankings" ? <>

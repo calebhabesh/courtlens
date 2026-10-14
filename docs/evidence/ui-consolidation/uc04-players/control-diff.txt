@@ -1,0 +1,228 @@
+== players@1440: 2 changed
+  ~ button||Search: w 66.5 → 67; fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ select||Directory team: moved 0.5,0
+== players-rules@1440: 2 changed
+  ~ button||Search: w 66.5 → 67; fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ select||Directory team: moved 0.5,0
+== players-fixture@1440: 2 changed
+  ~ select||2022-23: moved 0,0.5
+  ~ button||Search: w 80.3 → 66.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== player@1440: 41 changed
+  ~ button||Add to favorites: moved -9.4,0
+  ~ button||Add to compare tray: moved -9.4,0
+  ~ button||Export: w 30 → 32; h 28 → 32; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); moved -9.4,-2; icons 14 → 16
+  ~ button||Explore: w 77.8 → 85.3; h 28 → 32; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); moved -7.4,-2
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  - removed button||Regular 70.9x36
+  - removed button||Playoffs 70.9x36
+  + added div|radiogroup|Career table views 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div|radiogroup|Phase 153.8x36
+  + added button|radio|Regular 70.9x28
+  + added button|radio|Playoffs 70.9x28
+== player-back@1440: 42 changed
+  ~ button||Back to table Esc: w 146.5 → 142.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ button||Add to favorites: moved -9.4,0
+  ~ button||Add to compare tray: moved -9.4,0
+  ~ button||Export: w 30 → 32; h 28 → 32; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); moved -9.4,-2; icons 14 → 16
+  ~ button||Explore: w 77.8 → 85.3; h 28 → 32; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); moved -7.4,-2
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  - removed button||Regular 70.9x36
+  - removed button||Playoffs 70.9x36
+  + added div|radiogroup|Career table views 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div|radiogroup|Phase 153.8x36
+  + added button|radio|Regular 70.9x28
+  + added button|radio|Playoffs 70.9x28
+== player-games@1440: 8 changed
+  ~ button||Add to favorites: moved -9.4,0
+  ~ button||Add to compare tray: moved -9.4,0
+  ~ button||Export: w 30 → 32; h 28 → 32; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); moved -9.4,-2; icons 14 → 16
+  ~ button||Explore: w 77.8 → 85.3; h 28 → 32; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); moved -7.4,-2
+  ~ div|radiogroup|Game log exposure: w 164 → 181.4; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -17.3,0
+  ~ button|radio|Per Game: w 78.5 → 83; h 28 → 24; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; moved -15.3,2
+  ~ button|radio|Per 36 Min: w 81.6 → 86.4; h 28 → 24; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; moved -6.8,2
+  ~ button||Lineage: w 70.5 → 71.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.2,0
+== player-lineage@1440: 8 changed
+  ~ button||Add to favorites: moved -9.4,0
+  ~ button||Add to compare tray: moved -9.4,0
+  ~ button||Export: w 30 → 32; h 28 → 32; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); moved -9.4,-2; icons 14 → 16
+  ~ button||Explore: w 77.8 → 85.3; h 28 → 32; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); moved -7.4,-2
+  ~ div|radiogroup|Game log exposure: w 164 → 181.4; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -17.3,0
+  ~ button|radio|Per Game: w 78.5 → 83; h 28 → 24; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; moved -15.3,2
+  ~ button|radio|Per 36 Min: w 81.6 → 86.4; h 28 → 24; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; moved -6.8,2
+  ~ button||Lineage: w 70.5 → 71.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.2,0
+== player-fixture@1440: 1 changed
+  ~ a||Return to player search: pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== player-missing@1440: 1 changed
+  ~ a||Return to player search: pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== teams@1440: 0 changed
+== players@390: 0 changed
+== players-rules@390: 0 changed
+== players-fixture@390: 2 changed
+  ~ select||2022-23: moved 0,0.5
+  ~ button||Search: w 80.3 → 66.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== player@390: 40 changed
+  ~ button||Export: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); icons 14 → 16
+  ~ button||Explore: w 77.8 → 85.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36)
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  - removed button||Regular 70.9x40
+  - removed button||Playoffs 70.9x40
+  ~ a||2025-26: moved 0,-20
+  + added div|radiogroup|Career table views 366x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+  + added div|radiogroup|Phase 137.8x48
+  + added button|radio|Regular 62.9x40
+  + added button|radio|Playoffs 62.9x40
+== player-back@390: 41 changed
+  ~ button||Back to table Esc: w 146.5 → 142.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ button||Export: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); icons 14 → 16
+  ~ button||Explore: w 77.8 → 85.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36)
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  - removed button||Regular 70.9x40
+  - removed button||Playoffs 70.9x40
+  ~ a||2025-26: moved 0,-20
+  + added div|radiogroup|Career table views 366x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+  + added div|radiogroup|Phase 137.8x48
+  + added button|radio|Regular 62.9x40
+  + added button|radio|Playoffs 62.9x40
+== player-games@390: 6 changed
+  ~ button||Export: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); icons 14 → 16
+  ~ button||Explore: w 77.8 → 85.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36)
+  ~ div|radiogroup|Game log exposure: w 164 → 165.4; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Per Game: w 78.5 → 75; pad 4px 12px 4px 12px → 0px 8px 0px 8px; fs 12px → 13px; moved 2,2
+  ~ button|radio|Per 36 Min: w 81.6 → 78.4; pad 4px 12px 4px 12px → 0px 8px 0px 8px; fs 12px → 13px; moved 2.5,2
+  ~ button||Lineage: w 70.5 → 71.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.3,4
+== player-lineage@390: 10 changed
+  ~ button||Export: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); icons 14 → 16
+  ~ button||Explore: w 77.8 → 85.3; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36)
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: moved 0,4
+  ~ div||1 games Data details: moved 0,4
+  ~ button||Data details: moved 0,4
+  ~ div|radiogroup|Game log exposure: w 164 → 165.4; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Per Game: w 78.5 → 75; pad 4px 12px 4px 12px → 0px 8px 0px 8px; fs 12px → 13px; moved 2,2
+  ~ button|radio|Per 36 Min: w 81.6 → 78.4; pad 4px 12px 4px 12px → 0px 8px 0px 8px; fs 12px → 13px; moved 2.5,2
+  ~ button||Lineage: w 70.5 → 71.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.3,4
+  ~ button||Close drawer: moved 0,4
+== player-fixture@390: 1 changed
+  ~ a||Return to player search: pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== player-missing@390: 1 changed
+  ~ a||Return to player search: pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== teams@390: 0 changed

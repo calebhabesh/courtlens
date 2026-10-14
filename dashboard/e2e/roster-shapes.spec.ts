@@ -195,7 +195,7 @@ test.describe("PC10 Roster Shapes", () => {
     await projected.click();
     await expect(page.getByLabel("Projected minutes for Fixture Guard")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    const heights = await page.locator(".roster-chip-menu .ui-menu-trigger").evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
+    const heights = await page.locator(".roster-chip-menu > button").evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
     expect(Math.min(...heights)).toBeGreaterThanOrEqual(39.99);
     await expect(page.getByRole("combobox", { name: "Choose team" })).toHaveValue("BOS");
   });
