@@ -116,6 +116,9 @@
     --kit-primary-hover: color-mix(in srgb, var(--color-accent) 88%, var(--color-white));
     --kit-danger-hover: color-mix(in srgb, var(--color-negative) 15%, var(--color-surface-2));
     --kit-console-hover: color-mix(in srgb, var(--color-white) 7%, var(--color-table-lift));
+    /* Select chevron glyph sizes, for its optical end offset (instruction 71). */
+    --kit-chevron-sm: 14px;
+    --kit-chevron: 16px;
 
     /* Typography Tokens */
     /* 2xs: Stats percentile sublabels only (Databallr alignment, owner instruction 2026-10-12). */
