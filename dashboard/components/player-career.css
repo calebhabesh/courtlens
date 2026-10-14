@@ -26,8 +26,11 @@
   .player-career tbody th.pinned-col-year, .player-career tfoot th.pinned-col-year {
     padding: var(--space-1) var(--space-2); font-weight: 600; font-size: var(--text-sm); text-transform: none; letter-spacing: 0;
   }
+  /* YEAR, each season's logo, CAREER and the footnote share the controls' 12px left edge (row 2, 40);
+     outranks Stats' header-cell padding. */
+  .player-career.stats-workspace .player-career-table th.pinned-col-year { padding-left: var(--space-3); }
   .player-career .player-career-year { display: flex; align-items: center; gap: var(--space-2); }
-  .player-career .player-career-year a { color: var(--color-text-primary); text-decoration: none; font-variant-numeric: tabular-nums; }
+  .player-career .player-career-year a { color: var(--color-text); text-decoration: none; font-variant-numeric: tabular-nums; }
   .player-career .player-career-year a:hover, .player-career .player-career-year a:focus-visible { color: var(--color-accent); }
   .player-career .player-career-row { cursor: pointer; }
   .player-career .player-career-row.row-selected th.pinned-col-year { box-shadow: inset 2px 0 0 var(--color-accent); }
@@ -36,7 +39,7 @@
   .player-career .player-career-stints td { padding: var(--space-2) var(--space-3); background: var(--color-table-well); text-align: left; }
   .player-career .player-career-stints ul { display: flex; flex-direction: column; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
   .player-career .player-career-stints li { display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-xs); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
-  .player-career .player-career-stints strong { color: var(--color-text-primary); min-width: var(--space-8); }
+  .player-career .player-career-stints strong { color: var(--color-text); min-width: var(--space-8); }
   .player-career tfoot .player-career-total th, .player-career tfoot .player-career-total td {
     position: sticky; bottom: 0; background: var(--color-table-lift); border-top: 1px solid var(--color-hairline-strong);
   }
