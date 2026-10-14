@@ -1,0 +1,102 @@
+@layer pages {
+/* Trends Workspace */
+
+.trend-inv-stat-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-2);
+}
+
+.trend-inv-meta-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.trend-inv-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.th-col-pad,
+.td-col-pad {
+  padding: var(--space-3) var(--space-4);
+}
+
+.th-col-pad-right,
+.td-col-pad-right {
+  padding: var(--space-3) var(--space-4);
+  text-align: right;
+  font-family: var(--font-mono);
+}
+
+.th-col-pad-center,
+.td-col-pad-center {
+  padding: var(--space-3) var(--space-4);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .trend-inv-grid-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Similarity Workspace */
+.similarity-target-card {
+  padding: var(--space-5);
+  border-top: 3px solid var(--color-accent);
+  background: var(--color-surface-1);
+  border-radius: var(--radius-sm);
+}
+
+.similarity-weights-card {
+  padding: var(--space-5);
+  border-top: 3px solid var(--color-hairline-strong);
+  background: var(--color-surface-1);
+  border-radius: var(--radius-sm);
+}
+
+.similarity-dim-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.similarity-dim-row {
+  padding: var(--space-2);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.similarity-match-card {
+  padding: var(--space-5);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-1);
+  margin-bottom: var(--space-4);
+}
+
+.similarity-match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.similarity-match-score {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  font-family: var(--font-mono), monospace;
+  color: var(--color-accent);
+}
+}

@@ -1,0 +1,174 @@
+@layer components {
+/* Incremental Global Lookup (Block B06) */
+.lookup-combobox {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+}
+
+.lookup-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.lookup-search-icon {
+  position: absolute;
+  left: 0.65rem;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.lookup-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 var(--space-8) 0 var(--space-8);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.lookup-input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+.lookup-input:focus {
+  border-color: var(--color-accent);
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.lookup-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  min-width: 440px;
+  max-width: 540px;
+  background: var(--color-surface-1);
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 12px 32px var(--color-scrim);
+  z-index: var(--z-modal);
+  max-height: 420px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInDropdown 120ms ease;
+}
+
+.lookup-listbox {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.lookup-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--color-surface-1) 90%, var(--color-surface-0));
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+}
+
+.lookup-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  transition: background-color 100ms ease;
+  border-left: 3px solid transparent;
+}
+
+.lookup-option:hover,
+.lookup-option.selected {
+  background: var(--color-surface-2);
+}
+
+.lookup-option.selected {
+  border-left-color: var(--color-accent);
+}
+
+.lookup-item-leading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lookup-item-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: var(--space-0-5);
+}
+
+.lookup-item-name {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lookup-alias-badge {
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  padding: var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono), monospace;
+}
+
+.lookup-item-subtitle {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lookup-status-message {
+  padding: var(--space-4);
+  font-size: var(--text-sm);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+.lookup-status-message.error {
+  color: var(--color-negative);
+}
+
+/* Concise navigation/table suggestions; entity forms keep their detailed identities. */
+.lookup-compact-results .lookup-item-subtitle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lookup-compact-results .lookup-option { padding-block: var(--space-3); align-items: center; }
+.lookup-floating-dropdown {
+  animation: fadeInDropdown var(--dur-fast) var(--ease-out);
+  position: fixed;
+  left: var(--lookup-left);
+  top: var(--lookup-top);
+  width: var(--lookup-width);
+  max-height: var(--lookup-max-height);
+  min-width: 0;
+  max-width: none;
+  z-index: var(--z-modal);
+}
+
+.lookup-compact-results .player-portrait, .lookup-compact-results .player-portrait-fallback { width: 38px; height: 38px; min-width: 38px; min-height: 38px; }
+}

@@ -1,0 +1,56 @@
+@layer pages {
+/* Compare Controls & Results (Preserved for comparison keyboard & 375px viewport tests) */
+.compare-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  align-items: end;
+  padding: var(--space-5);
+  margin: var(--space-5) 0;
+  background: var(--color-surface-1);
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-sm);
+  max-width: 100%;
+}
+.compare-picker, .compare-date {
+  min-width: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.compare-picker label, .compare-date label {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+.compare-picker p {
+  margin: var(--space-1) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+.compare-search-line input, .compare-date select {
+  min-width: 0;
+  width: 100%;
+  min-height: 40px;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-sm);
+}
+.compare-controls > .form-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}
+.comparison-rows {
+  margin: 0;
+  border: 1px solid var(--color-hairline-strong);
+  border-top: 0;
+}
+
+@media (max-width: 700px) {
+  .compare-controls {
+    grid-template-columns: 1fr;
+  }
+}
+}

@@ -108,6 +108,9 @@ tests fail if either list grows or keeps a migrated file. Stylelint stays for va
 
 ### UC04 — Migration
 
+**Done 2026-10-14:** batches 1–5 by page, then the shared step (6a chrome, 6b form triggers, 6c
+menus, search and legacy deletions). Both ratchets are closed: no TSX file or stylesheet is exempt.
+
 Migrate in batches. Each batch empties its files from the ratchet and deletes the CSS it no
 longer needs:
 
@@ -123,6 +126,10 @@ longer needs:
 Split `components.css` and `pages.css` into files colocated with their component or route.
 Preserve the `tokens, base, motion, components, pages, foundation` layer order. Remove rules
 nothing references (measure bytes before and after). Visual baselines must pass unchanged.
+
+**Done 2026-10-14:** 457 dead rules removed; 63 colocated files imported in cascade order from
+`app/globals.css`; `components.css`/`pages.css` reduced to shared layout and unlayered rules (CSS
+sources 406,772 → 352,148 B). Measurements and baselines unchanged. Details in the progress log.
 
 ### UC06 — Close
 
