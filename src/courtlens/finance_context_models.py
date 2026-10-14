@@ -46,21 +46,23 @@ class FinanceRefreshSource(Base):
 
 MODELS = (FinanceThreshold, FinanceRefresh, FinanceRefreshSource)
 GUARD_SQL = (
-    """CREATE FUNCTION seal_finance_context() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+    """CREATE OR REPLACE FUNCTION seal_finance_context() RETURNS trigger
+    LANGUAGE plpgsql AS $$ BEGIN
     RAISE EXCEPTION 'finance context is append-only'; END; $$""",
     *(
         f"CREATE TRIGGER seal_{name} BEFORE UPDATE OR DELETE OR TRUNCATE ON {name} "
         "FOR EACH STATEMENT EXECUTE FUNCTION seal_finance_context()"
         for name in ("finance_thresholds", "finance_refreshes", "finance_refresh_sources")
     ),
-    """CREATE FUNCTION seal_finance_refresh_member() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN
+    """CREATE OR REPLACE FUNCTION seal_finance_refresh_member() RETURNS trigger
+    LANGUAGE plpgsql AS $$ BEGIN
     IF NOT EXISTS (SELECT 1 FROM finance_refreshes WHERE id=NEW.refresh_id
       AND admission_transaction=txid_current()::text) THEN
       RAISE EXCEPTION 'finance refresh membership is sealed'; END IF;
     RETURN NEW; END; $$""",
     "CREATE TRIGGER seal_finance_refresh_insert BEFORE INSERT ON finance_refresh_sources "
     "FOR EACH ROW EXECUTE FUNCTION seal_finance_refresh_member()",
-    """CREATE FUNCTION validate_finance_refresh_scope() RETURNS trigger
+    """CREATE OR REPLACE FUNCTION validate_finance_refresh_scope() RETURNS trigger
     LANGUAGE plpgsql AS $$ BEGIN
     IF TG_TABLE_NAME='finance_refreshes' THEN
       IF NOT EXISTS (SELECT 1 FROM player_context_datasets
@@ -82,7 +84,7 @@ GUARD_SQL = (
         "FOR EACH ROW EXECUTE FUNCTION validate_finance_refresh_scope()"
         for name in ("finance_refreshes", "finance_refresh_sources")
     ),
-    """CREATE FUNCTION seal_finance_refresh_provenance() RETURNS trigger
+    """CREATE OR REPLACE FUNCTION seal_finance_refresh_provenance() RETURNS trigger
     LANGUAGE plpgsql AS $$ BEGIN
     IF TG_TABLE_NAME='workbench_acquisitions' AND EXISTS (
       SELECT 1 FROM finance_refresh_sources WHERE acquisition_id=OLD.id) THEN
