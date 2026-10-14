@@ -54,3 +54,6 @@ Thumbs.db
 # Disposable verification scratch (restore copies, backups); never committed
 data/*-verify-temp/
 .claude/settings.local.json
+
+# Owner's local scratch list; never tracked.
+/TODO.md
