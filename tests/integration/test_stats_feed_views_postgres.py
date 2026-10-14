@@ -176,11 +176,18 @@ def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine
     assert (bio["jersey"], bio["listed_height_inches"], bio["prior_seasons"]) == ("12", 83, 0)
     assert bio["age"] == 21 and bio["as_of"] == date(2026, 4, 12)
     assert bio["country"] == "Fictionland" and not bio["undrafted"]
+    # The current team is the latest index listing, whatever season the page looks at.
+    assert bio["current_team"] == {
+        "team_id": "1610612761",
+        "team_tricode": "TOR",
+        "listing_season": "2026-27",
+    }
     # Another season has no roster row: the index listing serves, experience stays unknown.
     other = player_bio(marts, "99001", "2024-25", date(2025, 4, 14))
     assert other["listing_source"] == "player_index" and other["prior_seasons"] is None
     assert other["age"] == 20
     undrafted = player_bio(marts, "99003", "2025-26", date(2026, 4, 13))
     assert undrafted["undrafted"] and undrafted["draft"] is None and undrafted["age"] is None
+    assert undrafted["current_team"] is None  # No team in the index: a free agent or retired.
     assert age_on(date(2004, 4, 20), date(2026, 4, 19)) == 21
     assert age_on(date(2004, 4, 20), date(2026, 4, 20)) == 22

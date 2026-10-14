@@ -4,15 +4,17 @@ import { Icon, type IconName } from "./ui/icon";
 import { Button, IconButton, MenuTrigger, Segmented } from "./ui/kit";
 import { Menu, MenuItem } from "./ui/menu";
 import { PageShell, ProfileLayout } from "./ui/page-shell";
-import { StatTile } from "./ui/stat-tile";
+import { ordinal } from "./ui/stat-tile";
+import { TeamLogoStack } from "./team-logo";
 import { Tabs, TabsContent, TabsList, TabTrigger } from "./ui/tabs";
 import { PlayerCombinePanel, PlayerTrackingPanel } from "./player-feed-panels";
 import { Tooltip } from "./ui/tooltip";
+import catalogBranding from "@/lib/team-branding.json";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { ImpactPlayerCard } from "./impact-player-card";
 
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { formatDate } from "@/lib/format-date";
 import { orientedPercentile, type GoodDirection } from "@/lib/percentile-display";
@@ -48,6 +50,44 @@ export interface ProfileHeroStats {
   query: QuerySpec;
   eligible: number;
   goodDirections: Record<string, GoodDirection>;
+}
+
+type FormKey = "min_per_game" | "pts_per_game" | "reb_total_per_game" | "ast_per_game" | "ts_pct" | "efg_pct";
+const FORM_COLUMNS: { key: FormKey; format: (value: number | null) => string }[] = [
+  { key: "min_per_game", format: value => value?.toFixed(1) ?? "—" },
+  { key: "pts_per_game", format: value => value?.toFixed(1) ?? "—" },
+  { key: "reb_total_per_game", format: value => value?.toFixed(1) ?? "—" },
+  { key: "ast_per_game", format: value => value?.toFixed(1) ?? "—" },
+  { key: "ts_pct", format: value => formatPercent(value) },
+  { key: "efg_pct", format: value => formatPercent(value) },
+];
+
+/** Up or down against the season, ignoring differences that round away at the shown precision. */
+function formTrend(value: number | null, season: number | null): "up" | "down" | null {
+  if (value == null || season == null) return null;
+  const scale = Math.abs(season) < 1 ? 1000 : 10;
+  const delta = Math.round(value * scale) - Math.round(season * scale);
+  return delta > 0 ? "up" : delta < 0 ? "down" : null;
+}
+
+function teamName(tricode: string): string {
+  return catalogBranding.teams.find(entry => entry.tricode === tricode)?.artwork_name ?? tricode;
+}
+
+/** The summary's career figure: the Career row's value, or the best season for season-only DPM. */
+function careerLine(metric: (typeof HERO_METRICS)[number], career: PlayerCareerResponse | null): { label: string; value: string; note?: string } | null {
+  // A one-season career would only repeat the season's value.
+  if (!career || career.seasons.length < 2) return null;
+  if (metric.key === "dpm") {
+    let best: { season: string; value: number } | null = null;
+    for (const entry of career.seasons) {
+      const value = entry.item?.metrics.dpm;
+      if (value != null && (best == null || value > best.value)) best = { season: entry.season, value };
+    }
+    return best ? { label: "Best", value: metric.format(best.value), note: best.season } : null;
+  }
+  const value = career.career?.metrics[metric.key];
+  return value == null ? null : { label: "Career", value: metric.format(value) };
 }
 
 interface WorkbenchPlayerProfileProps {
@@ -94,6 +134,7 @@ export function WorkbenchPlayerProfile({
   const heroKeys = useMemo(() => HERO_METRICS.map((metric) => metric.key), []);
   const { ranks } = useCohortRanks(heroQuery ?? EMPTY_QUERY, heroQuery ? heroKeys : [], hero?.goodDirections ?? {});
   // Values, percentiles and ranks all come from the player's Stats row and cohort.
+  const careerItem = career?.player_id === player.id && career.phase === context.phase ? career : null;
   const heroStats = HERO_METRICS.map((metric) => {
     const value = hero?.item?.metrics[metric.key];
     return {
@@ -102,8 +143,14 @@ export function WorkbenchPlayerProfile({
       value: metric.format(value ?? null),
       percentile: hero?.item ? orientedPercentile(hero.item.percentiles?.[metric.key], hero.goodDirections[metric.key]) : null,
       rank: hero?.item ? ranks[metric.key]?.[player.id] ?? null : null,
+      career: careerLine(metric, careerItem),
     };
   });
+  // Who the season's games were played for, named when the header shows another (current) team.
+  const seasonTeams = careerItem?.seasons.find(entry => entry.season === context.season)?.item?.teams
+    ?? (latest_team ? [latest_team.tricode] : []);
+  const headerTeam = bio?.current_team?.team_tricode ?? latest_team?.tricode ?? null;
+  const showSeasonTeam = seasonTeams.length > 0 && (seasonTeams.length > 1 || seasonTeams[0] !== headerTeam);
 
   const isFavorite = favorites.includes(player.id);
   const inTray = compareTray.includes(player.id);
@@ -200,10 +247,25 @@ export function WorkbenchPlayerProfile({
             {hero && <Tooltip content={`Bars are percentiles among ${hero.eligible.toLocaleString("en-US")} eligible players (the Stats cohort); ranks are within the top ${RANK_PAGE_LIMIT}.`}>
               <span className="player-season-summary-info" tabIndex={0} role="img" aria-label="How percentiles are ranked"><Icon name="info" size={14} /></span>
             </Tooltip>}
+            {showSeasonTeam && <span className="player-season-team">
+              {seasonSummary?.gp != null ? `${seasonSummary.gp} games with` : "Played for"}
+              <TeamLogoStack teams={seasonTeams} size={18} decorative />
+              {seasonTeams.map(teamName).join(" / ")}
+            </span>}
           </div>
-          <div className="player-hero-tiles" role="group" aria-label="Season summary">
-            {heroStats.map(stat => <StatTile key={stat.key} label={stat.label} value={stat.value} percentile={stat.percentile} rank={stat.rank} rankOf={stat.rank != null ? RANK_PAGE_LIMIT : null} />)}
-          </div>
+          <dl className="player-summary-strip" role="group" aria-label="Season summary">
+            {heroStats.map(stat => <div key={stat.key} className="player-summary-stat">
+              <dt>{stat.label}{stat.rank != null && <span className="player-summary-rank" title={`${ordinal(stat.rank)} of the top ${RANK_PAGE_LIMIT}`}>{ordinal(stat.rank)}</span>}</dt>
+              <dd>
+                <span className="player-summary-value">{stat.value}</span>
+                {stat.percentile != null && <span className="player-summary-bar" role="meter" aria-label={`${stat.label} percentile`}
+                  aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(stat.percentile)}
+                  aria-valuetext={`${ordinal(Math.round(stat.percentile))} percentile`}
+                  style={{ "--pct": `${Math.max(0, Math.min(100, stat.percentile))}%` } as CSSProperties} />}
+                {stat.career && <span className="player-summary-career">{stat.career.label} <strong>{stat.career.value}</strong>{stat.career.note && ` (${stat.career.note})`}</span>}
+              </dd>
+            </div>)}
+          </dl>
         </section>}
         tabs={<TabsList aria-label="Profile sections">
           <TabTrigger value="overview">Overview</TabTrigger>
@@ -216,30 +278,31 @@ export function WorkbenchPlayerProfile({
       {catalog && <PlayerCareerTable playerId={player.id} catalog={catalog} season={context.season} phase={context.phase}
         firstCoveredSeason={catalog.stats_scopes?.filter(scope => scope.phase === context.phase).map(scope => scope.season).sort()[0] ?? null}
         draftYear={bio?.draft?.year ?? null} initialCareer={career} />}
-      <ImpactPlayerCard data={impact} compact />
-      {/* Season, last 10 and last 5 in one comparable table. */}
-      <section className="panel player-splits" aria-label="Production splits">
-        <h2 className="panel-title">Production Splits</h2>
-        <div className="table-wrapper" role="region" aria-label="Production splits table" tabIndex={0}>
-          <table className="data-table">
-            <thead><tr><th>Window</th><th className="num">GP</th><th className="num">MPG</th><th className="num">PPG</th><th className="num">RPG</th><th className="num">APG</th><th className="num">TS%</th><th className="num">eFG%</th></tr></thead>
-            <tbody>
-              {([["Season", seasonSummary], ["Last 10", last10Summary], ["Last 5", last5Summary]] as const).map(([label, sum]) => (
-                <tr key={label}>
-                  <th scope="row">{label}</th>
-                  <td className="num">{sum?.gp ?? "—"}</td>
-                  <td className="num">{sum?.min_per_game?.toFixed(1) ?? "—"}</td>
-                  <td className="num">{sum?.pts_per_game?.toFixed(1) ?? "—"}</td>
-                  <td className="num">{sum?.reb_total_per_game?.toFixed(1) ?? "—"}</td>
-                  <td className="num">{sum?.ast_per_game?.toFixed(1) ?? "—"}</td>
-                  <td className="num">{formatPercent(sum?.ts_pct)}</td>
-                  <td className="num">{formatPercent(sum?.efg_pct)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <div className="player-overview-duo">
+        <ImpactPlayerCard data={impact} compact />
+        <section className="player-open-section" aria-label="Recent form">
+          <header className="player-open-heading"><h2>Recent form</h2><span>Last 10 and last 5 against the season</span></header>
+          <div className="player-form-table" role="region" aria-label="Recent form table" tabIndex={0}>
+            <table>
+              <thead><tr><th>Window</th><th className="num">GP</th><th className="num">MPG</th><th className="num">PTS</th><th className="num">REB</th><th className="num">AST</th><th className="num">TS%</th><th className="num">eFG%</th></tr></thead>
+              <tbody>
+                {([["Season", seasonSummary], ["Last 10", last10Summary], ["Last 5", last5Summary]] as const).map(([label, sum]) => (
+                  <tr key={label}>
+                    <th scope="row">{label}</th>
+                    <td className="num">{sum?.gp ?? "—"}</td>
+                    {FORM_COLUMNS.map(column => {
+                      const value = sum?.[column.key] ?? null;
+                      const trend = label === "Season" ? null : formTrend(value, seasonSummary?.[column.key] ?? null);
+                      return <td key={column.key} className={`num ${trend ? `player-form-${trend}` : ""}`}
+                        title={trend ? `${trend === "up" ? "Above" : "Below"} the season` : undefined}>{column.format(value)}</td>;
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
         </TabsContent>
         <TabsContent value="games" className="player-tab-body">
       {tab === "games" && <section className="pc12-profile-trajectory" aria-label="Headline result"><ResearchTrendCharts games={games} playerName={player.name} /></section>}

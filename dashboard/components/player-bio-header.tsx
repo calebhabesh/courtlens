@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/kit";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
 import { PageHeader } from "./ui/panel";
 import { formatDate } from "@/lib/format-date";
+import catalog from "@/lib/team-branding.json";
+import { teamBrandColor } from "@/lib/team-colors";
 import { readStatsReturn, STATS_RETURN_PARAM, markStatsRestore } from "@/lib/stats-return";
 import type { PlayerBio } from "@/lib/types";
 
@@ -21,6 +23,10 @@ export function formatHeight(inches: number | null | undefined): string | null {
   return `${feet}′${whole}${fraction}″`;
 }
 
+function teamName(tricode: string): string {
+  return catalog.teams.find(entry => entry.tricode === tricode)?.artwork_name ?? tricode;
+}
+
 function ordinalSuffix(value: number): string {
   const tens = value % 100;
   if (tens >= 11 && tens <= 13) return "th";
@@ -28,9 +34,10 @@ function ordinalSuffix(value: number): string {
 }
 
 /**
- * The player page header: Back to table (only when opened from Stats), photo, name, team,
- * position and jersey, then a compact bio grid. Listings are team-reported; the combine line
- * holds measured values and appears only when the player attended a combine.
+ * The player page header: Back to table (only when opened from Stats), then the photo, a hairline
+ * divider and one left-aligned column: name with the current team's logo, team · position ·
+ * jersey, bio facts, and the combine line. Listings are team-reported; the combine line holds
+ * measured values and appears only when the player attended a combine.
  */
 export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, currentSeason, actions }: {
   name: string;
@@ -69,19 +76,22 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
 
   const listed = [formatHeight(bio?.listed_height_inches), bio?.listed_weight_lbs != null ? `${Math.round(bio.listed_weight_lbs)} lb` : null].filter(Boolean).join(" · ");
   const datedAge = bio?.age != null && currentSeason != null && bio.season !== currentSeason;
-  const draft = bio?.draft
-    ? [String(bio.draft.year), bio.draft.round != null && bio.draft.pick != null ? `R${bio.draft.round}, #${bio.draft.pick}` : null, bio.draft.team_tricode].filter(Boolean).join(" · ")
-    : bio?.undrafted ? "Undrafted" : null;
+  const draftTeam = bio?.draft?.team_tricode ?? null;
+  const draftPick = bio?.draft ? [String(bio.draft.year), bio.draft.round != null && bio.draft.pick != null ? `R${bio.draft.round} #${bio.draft.pick}` : null].filter(Boolean).join(" · ") : null;
   const experience = bio?.prior_seasons == null ? null : bio.prior_seasons === 0 ? "Rookie"
     : `${bio.prior_seasons + 1}${ordinalSuffix(bio.prior_seasons + 1)} season`;
-  const origin = bio?.draft?.organization ?? bio?.college;
-  const facts: { label: string; value: string | null; title?: string }[] = [
-    { label: "Age", value: bio?.age != null ? `${bio.age}${datedAge ? ` (as of ${formatDate(bio.as_of)})` : ""}` : null,
-      title: bio?.birth_date ? `Born ${formatDate(bio.birth_date)}` : undefined },
+  const origin = bio?.draft?.organization ?? bio?.college ?? null;
+  // Born carries the age; outside the current season the age is dated to the page's cutoff.
+  const born = bio?.birth_date
+    ? { label: "Born", value: `${formatDate(bio.birth_date)}${bio.age != null && !datedAge ? ` (${bio.age})` : ""}`,
+      detail: datedAge ? `Age ${bio.age} on ${formatDate(bio.as_of)}` : null }
+    : { label: "Age", value: bio?.age != null ? String(bio.age) : null, detail: datedAge ? `On ${formatDate(bio?.as_of ?? "")}` : null };
+  const facts: { label: string; value: ReactNode; detail?: string | null; title?: string }[] = [
+    born,
     { label: "Listed", value: listed || null, title: "Team-reported height (in shoes) and weight" },
+    { label: "Draft", value: bio?.draft ? <>{draftPick}{draftTeam && <> · <span className="player-bio-team">
+      <TeamLogo team={draftTeam} size={18} />{draftTeam}</span></>}</> : bio?.undrafted ? "Undrafted" : null, detail: origin },
     { label: "Experience", value: experience },
-    { label: "Draft", value: draft },
-    { label: "Pre-draft", value: origin ?? null },
     { label: "Country", value: bio?.country ?? null },
   ];
   const combine = bio?.combine;
@@ -92,28 +102,39 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     ["Reach", formatHeight(combine.standing_reach_inches)],
     ["Weight", combine.weight_lbs != null ? `${Math.round(combine.weight_lbs)} lb` : null],
   ].filter((entry): entry is [string, string] => entry[1] != null) : [];
-  const identity = [team?.name, bio?.listed_position, bio?.jersey ? `#${bio.jersey}` : null].filter(Boolean).join(" · ");
+  // The header names who the player plays for today; without a current listing (free agents,
+  // retired players) it falls back to the team of the page's season.
+  const listedTeam = bio?.current_team?.team_tricode ?? null;
+  const headerTeam = listedTeam
+    ? { tricode: listedTeam, name: teamName(listedTeam) }
+    : team ? { tricode: team.tricode, name: team.name } : null;
+  const identity = [headerTeam?.name, bio?.listed_position, bio?.jersey ? `#${bio.jersey}` : null].filter(Boolean) as string[];
+  const glow = teamBrandColor(headerTeam?.tricode);
 
   return (
-    <div className="player-bio-header">
+    <div className="player-bio-header" style={glow ? { "--team-glow": glow } as CSSProperties : undefined}>
       {returnHref && <Button size="xs" variant="primary" icon="left" onClick={() => { markStatsRestore(); router.push(returnHref); }}>
         Back to table<kbd className="player-back-kbd" aria-hidden="true">Esc</kbd>
       </Button>}
-      <div className="player-bio-main">
-        <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl ?? undefined} size="lg" />
-        <div className="player-bio-identity">
-          <PageHeader title={name} subtitle={identity || undefined} className="player-bio-title" />
-          {team && <TeamLogo team={team.tricode} size={20} />}
-        </div>
-        <dl className="player-bio-facts">
-          {facts.filter(fact => fact.value).map(fact => <div key={fact.label} title={fact.title}>
-            <dt>{fact.label}</dt><dd>{fact.value}</dd>
-          </div>)}
-          {combine && measured.length > 0 && <div className="player-bio-combine" title="Official NBA Draft Combine measurements">
+      <div className={`player-bio-main ${glow ? "has-glow" : ""}`}>
+        <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl ?? undefined} size="xl" className="player-bio-photo" />
+        <span className="player-bio-divider" aria-hidden="true" />
+        <div className="player-bio-who">
+          <div className="player-bio-name">
+            <PageHeader title={name} />
+            {headerTeam && <TeamLogo team={headerTeam.tricode} size={40} />}
+          </div>
+          {identity.length > 0 && <p className="player-bio-identity">{identity.map(part => <span key={part}>{part}</span>)}</p>}
+          <dl className="player-bio-facts">
+            {facts.filter(fact => fact.value).map(fact => <div key={fact.label} title={fact.title}>
+              <dt>{fact.label}</dt><dd><span>{fact.value}</span>{fact.detail && <small>{fact.detail}</small>}</dd>
+            </div>)}
+          </dl>
+          {combine && measured.length > 0 && <dl className="player-bio-combine" title="Official NBA Draft Combine measurements">
             <dt>{combine.draft_year} Combine</dt>
-            <dd>{measured.map(([label, value]) => <span key={label}><span className="player-bio-combine-label">{label}</span> {value}</span>)}</dd>
-          </div>}
-        </dl>
+            {measured.map(([label, value]) => <dd key={label}>{label} <strong>{value}</strong></dd>)}
+          </dl>}
+        </div>
         <div className="player-bio-actions">{actions}</div>
       </div>
     </div>

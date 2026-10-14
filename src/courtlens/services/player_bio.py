@@ -3,8 +3,9 @@
 Listings are team-reported (NBA Stats player index and team rosters); combine values are
 official Draft Combine measurements. They are never mixed: a listed height is not a
 measured one. A season's own roster listing describes the player in that season; the
-all-time index supplies what does not change (country, college, draft). Missing values
-stay null.
+all-time index supplies what does not change (country, college, draft). The index's current
+listing names the team the player belongs to today; it identifies the player and never
+re-attributes a season's games. Missing values stay null.
 """
 
 from __future__ import annotations
@@ -111,6 +112,14 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
             "weight_lbs": _number(row["weight_lbs"]),
         }
 
+    current_team = None
+    if bio is not None and bio["listed_team_id"]:
+        current_team = {
+            "team_id": bio["listed_team_id"],
+            "team_tricode": team_tricode(bio["listed_team_id"]),
+            "listing_season": bio["index_season"],
+        }
+
     source = listing or bio
     birth_date = bio["birth_date"] if bio else listing["birth_date"] if listing else None
     return {
@@ -130,5 +139,6 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
         "draft": draft,
         "undrafted": bool(bio and bio["draft_year"] is None and draft is None),
         "combine": combine,
+        "current_team": current_team,
         "limitations": LIMITATIONS,
     }

@@ -3,9 +3,30 @@ import { IMPACT_COLUMNS, formatStatValue } from "@/lib/stats-presets";
 import { ImpactDisclosure } from "./impact-disclosure";
 import { GatedNote } from "./ui/gated-note";
 
-/** `compact` (player page): values only, without the sample table and model note. */
+function signed(value: number | null | undefined): string {
+  const text = formatStatValue(value, 2);
+  return value != null && value > 0 ? `+${text}` : text;
+}
+
+/** `compact` (player page): an open section of signed values, without the sample table and model note. */
 export function ImpactPlayerCard({ data, compact = false }: { data: ImpactResponse | null; compact?: boolean }) {
   const player = data?.players[0];
+  if (compact) {
+    const metrics = player?.metrics ?? {};
+    const parts = [metrics.orapm != null ? `Off ${signed(metrics.orapm)}` : null, metrics.drapm != null ? `Def ${signed(metrics.drapm)}` : null].filter(Boolean);
+    return <section className="player-open-section" aria-label="Player impact">
+      <header className="player-open-heading"><h2>Player impact</h2><span>Points per 100 controls</span></header>
+      {!data ? <p className="player-open-empty" role="status">Impact serving is unavailable. Restore the local API connection.</p>
+        : !player ? <p className="player-open-empty">No accepted impact sample for this player and cutoff.</p>
+        : <dl className="player-figures">
+          {(["rapm", "rapm_2y", "rapm_3y", "bpr"] as const).map(key => <div key={key}>
+            <dt>{IMPACT_COLUMNS[key].label}</dt>
+            <dd><span className="player-figure-value">{signed(metrics[key])}</span>
+              {key === "rapm" && parts.length > 0 && <small>{parts.join(" · ")}</small>}</dd>
+          </div>)}
+        </dl>}
+    </section>;
+  }
   return <section className="panel impact-player-card" aria-label="Player impact">
     <h2>Player impact</h2>
     {!data ? <p role="status">Impact serving is unavailable. Restore the local API connection.</p> : <>

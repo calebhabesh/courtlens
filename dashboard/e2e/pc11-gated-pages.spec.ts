@@ -100,7 +100,7 @@ test("player profile gains a Tracking tab; a player with no combine record has n
   await expect(page.getByRole("tab", { name: "Tracking" })).toHaveAttribute("aria-selected", "true");
   const drives = page.getByRole("region", { name: "Drives" });
   await expect(drives).toContainText("12.0");
-  await expect(drives).toContainText("80 pct");
+  await expect(drives.locator(".player-stat-pct", { hasText: "80" })).toHaveCount(1);
   await expect(page.getByRole("tab", { name: "Combine" })).toHaveCount(0);
 });
 

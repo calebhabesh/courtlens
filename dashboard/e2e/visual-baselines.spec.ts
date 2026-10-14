@@ -114,7 +114,7 @@ for (const view of WIDTHS) {
     // FO09: Profile template and Recent Games.
     test("player profile", async ({ page }) => {
       await openWorkbench(page, "/players/23");
-      await expect(page.getByLabel("Season summary").locator(".ui-stat-tile")).toHaveCount(6);
+      await expect(page.getByLabel("Season summary").locator(".player-summary-stat")).toHaveCount(6);
       await settle(page);
       await expect(page).toHaveScreenshot(`player-profile-${view.name}.png`, shot);
     });

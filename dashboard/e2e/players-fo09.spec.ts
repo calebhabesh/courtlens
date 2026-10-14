@@ -12,7 +12,7 @@ test.describe("FO09 Players", () => {
     await openWorkbench(page, "/players/23");
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page.locator("h1")).toContainText("Fixture Star");
-    const tiles = page.getByLabel("Season summary").locator(".ui-stat-tile");
+    const tiles = page.getByLabel("Season summary").locator(".player-summary-stat");
     await expect(tiles).toHaveCount(6);
     await expect(tiles.first()).toContainText("PTS");
     const sections = page.getByRole("tablist", { name: "Profile sections" });

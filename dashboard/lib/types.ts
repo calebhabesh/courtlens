@@ -2224,5 +2224,7 @@ export type PlayerBio = {
     standing_reach_inches: number | null;
     weight_lbs: number | null;
   } | null;
+  /** The latest NBA player index listing: who the player plays for today, not a season's team. */
+  current_team?: { team_id: string; team_tricode: string | null; listing_season: string } | null;
   limitations: string[];
 };
