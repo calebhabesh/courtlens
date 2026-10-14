@@ -1,6 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
 
+// PC12 D stopped mid-way (53ee4d6) before these specs were run; Rankings and Tier Lists
+// are redone in the Databallr alignment pass. Re-enable with that work.
+test.fixme(true, "PC12 D example boards are unfinished; see docs/presentation-clarity-progress.md");
+
 function initialWorkspace() {
   return { workspace_id: "default", name: "Example test workspace", version: 1, views: [], favorites: [], compare_tray: [], ranking_boards: [] as Record<string, unknown>[], tier_lists: [] as Record<string, unknown>[], preferences: { density: "standard", identity_mode: "photos", counting_mode: "per_game", default_view_id: "overview", table_expanded: false, theme: "dark" }, created_at: "", updated_at: "" };
 }

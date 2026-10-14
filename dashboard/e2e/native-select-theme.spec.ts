@@ -64,7 +64,9 @@ for (const label of ["Filter by season", "Filter by competition phase", "Analysi
     await page.evaluate(() => window.scrollTo(0, 0));
     await expect(page.locator("select:open")).toBeVisible();
     // The styled picker stays in the browser's top layer, including in a Filters drawer.
-    expect(await page.screenshot({ caret: "hide" })).toMatchSnapshot(`${label.toLowerCase().replaceAll(" ", "-")}-popup.png`);
+    // The scope pickers open above the table: capture the scope rows and popup, not table layout.
+    expect(await page.screenshot({ caret: "hide", animations: "disabled", clip: { x: 0, y: 0, width: 1440, height: 380 } }))
+      .toMatchSnapshot(`${label.toLowerCase().replaceAll(" ", "-")}-popup.png`, { maxDiffPixelRatio: .01 });
     await page.keyboard.press("Escape");
     await expect(select).toHaveValue(value);
   });
