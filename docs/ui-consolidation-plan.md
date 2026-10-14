@@ -138,6 +138,10 @@ Design Language gains a controls section that points to `control-kit-v1.md`. Upd
 `AGENTS.md`, merge to `main` through a PR with CI green, and resume alignment on
 `databallr-alignment` (rebased or merged onto the new `main`).
 
+**Done 2026-10-14 except the owner steps:** ratchets removed, shared CSS reduced, Design Language
+v1.3 Controls section, `AGENTS.md` updated, PR opened. The owner merges it once CI is green and
+then resumes alignment.
+
 ## Out of scope
 
 Visual redesign, new controls nobody asked for, alignment instructions, and the deferred Stats
