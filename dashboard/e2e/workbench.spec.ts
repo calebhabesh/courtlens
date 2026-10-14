@@ -74,8 +74,9 @@ test.describe("Workbench Dark Research Interface", () => {
     await page.waitForLoadState("networkidle");
 
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Team Stats & Cohorts");
-    await expect(page.getByText("Toronto Raptors")).toBeVisible();
-    await expect(page.getByText("Boston Celtics")).toBeVisible();
+    // The headline ranking also names teams, so check the table's own team links.
+    await expect(page.getByRole("link", { name: "Toronto Raptors", exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Boston Celtics", exact: true })).toBeVisible();
 
     // Standings notice
     await expect(page.getByText("Record order is descriptive; ties have no official placement.")).toBeVisible();

@@ -40,7 +40,7 @@ jobs:
       DBT_DATABASE: courtlens
       DBT_SCHEMA: analytics
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Use PostgreSQL 17 client tools
         run: |
           if ! test -x /usr/lib/postgresql/17/bin/pg_dump; then
@@ -55,7 +55,9 @@ jobs:
           fi
           echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
           /usr/lib/postgresql/17/bin/pg_dump --version
-      - uses: actions/setup-python@v5
+      - name: Install pdftotext for PDF report tests
+        run: sudo apt-get update && sudo apt-get install --yes --no-install-recommends poppler-utils
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -75,8 +77,8 @@ jobs:
       run:
         working-directory: dashboard
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -94,7 +96,7 @@ jobs:
   containers:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: docker compose config --quiet
       - run: docker compose up --build -d db migrate api dashboard
       - run: docker compose exec -T api courtlens seed-demo

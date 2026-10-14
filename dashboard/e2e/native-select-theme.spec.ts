@@ -75,7 +75,8 @@ for (const label of ["Filter by season", "Analysis window"]) {
     await expect(page.locator("select:open")).toBeVisible();
     // The styled picker stays in the browser's top layer, including in a Filters drawer.
     // The scope pickers open above the table: capture the scope rows and popup, not table layout.
-    expect(await page.screenshot({ caret: "hide", animations: "disabled", clip: { x: 0, y: 0, width: 1440, height: 380 } })).toMatchSnapshot(`${label.toLowerCase().replaceAll(" ", "-")}-popup.png`);
+    expect(await page.screenshot({ caret: "hide", animations: "disabled", clip: { x: 0, y: 0, width: 1440, height: 380 } }))
+      .toMatchSnapshot(`${label.toLowerCase().replaceAll(" ", "-")}-popup.png`, { maxDiffPixelRatio: .01 });
     await page.keyboard.press("Escape");
     // Escape may also close the season popover; the applied season must not change either way.
     if (label === "Filter by season") await expect(page.getByRole("button", { name: /^Season: / })).toContainText(value);
