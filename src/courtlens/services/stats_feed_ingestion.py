@@ -30,6 +30,7 @@ from courtlens.ingestion.stats_feeds import (
     SPECS,
     TRACKING,
     FeedScope,
+    hoopr_bio_url,
     hoopr_url,
     parse_feed,
     pbpstats_url,
@@ -106,6 +107,18 @@ def run_plan(
             for team_id in sorted(NBA_TEAMS):
                 url = pbpstats_url(season, "regular_season", "Lineup", team_id)
                 plan.append((PBPSTATS_SOURCE, url, season))
+    return plan
+
+
+def bio_plan(
+    revision: str, roster_seasons: list[str], index_season: str
+) -> list[tuple[str, str, str]]:
+    """The current all-time player index plus every team's roster in each listed season."""
+    plan = [(HOOPR_SOURCE, hoopr_bio_url(revision, "playerindex", index_season), index_season)]
+    for season in roster_seasons:
+        for team_id in sorted(NBA_TEAMS):
+            url = hoopr_bio_url(revision, "commonteamroster", season, team_id)
+            plan.append((HOOPR_SOURCE, url, season))
     return plan
 
 
@@ -306,6 +319,8 @@ def latest_datasets(session: Session, known_at: datetime | None = None) -> list[
 
 
 def _scope_label(season: str, season_type: str) -> str:
+    if season_type == "bio":
+        return f"{season} listings"
     return f"{season} draft" if season_type == "draft" else f"{season} {season_type}"
 
 
@@ -345,7 +360,13 @@ def feed_capabilities(
                 "pbpstats season totals (possessions, plus-minus) are a secondary cross-check; "
                 "they are not on/off splits."
             )
-        limitations.append("Season totals only; unlisted seasons are not observed.")
+        if capability == "player_bio":
+            limitations.append(
+                "Team-reported listings (birth date, size, jersey, experience); a roster file is "
+                "the team's roster when mirrored, so mid-season moves may be missing."
+            )
+        else:
+            limitations.append("Season totals only; unlisted seasons are not observed.")
         entries[capability] = CapabilityEntry(
             name=capability,
             status=CapabilityStatus.PARTIAL,
@@ -384,6 +405,7 @@ __all__ = [
     "SPECS",
     "FeedFetcher",
     "admit_feed",
+    "bio_plan",
     "coverage_summary",
     "feed_capabilities",
     "latest_datasets",

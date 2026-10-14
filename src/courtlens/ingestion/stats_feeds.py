@@ -76,6 +76,8 @@ class FeedSpec:
     variants: dict[str, str] | None  # file variant -> declared parameter value
     variant_param: str | None
     draft_scope: bool = False
+    # Player biography listings: the season's roster per team, or the all-time player index.
+    bio_scope: bool = False
 
 
 SPECS = {
@@ -111,6 +113,18 @@ SPECS = {
     "drafthistory": FeedSpec(
         "drafthistory", "draft_history", "draft_metadata", "DraftHistory", None, None, True
     ),
+    "playerindex": FeedSpec(
+        "playerindex", "player_index", "player_bio", "PlayerIndex", None, None, bio_scope=True
+    ),
+    "commonteamroster": FeedSpec(
+        "commonteamroster",
+        "team_roster",
+        "player_bio",
+        "CommonTeamRoster",
+        None,
+        None,
+        bio_scope=True,
+    ),
 }
 PBP_FEEDS = {
     "Player": ("pbpstats_player", "on_off"),
@@ -128,7 +142,7 @@ class FeedScope:
     feed: str
     capability: str
     season: str  # Canonical "2025-26"; draft feeds use the draft year, e.g. "2025".
-    season_type: str  # regular_season | playoffs | draft
+    season_type: str  # regular_season | playoffs | draft | bio
     variant: str  # "" when the endpoint has a single variant
     revision: str | None  # Pinned upstream commit for mirror files
 
@@ -161,10 +175,42 @@ def hoopr_url(revision: str, endpoint: str, label: int, file: str | None) -> str
     return f"{HOOPR_BASE}/{revision}/nba_stats/json/{endpoint}/{tail}"
 
 
+def hoopr_bio_url(revision: str, endpoint: str, season: str, team_id: str | None = None) -> str:
+    """hoopR labels the player index by season END year and team rosters by START year."""
+    start = int(valid_season(season)[:4])
+    if endpoint == "playerindex":
+        return f"{HOOPR_BASE}/{revision}/nba_stats/json/playerindex/{start + 1}.json"
+    return f"{HOOPR_BASE}/{revision}/nba_stats/json/commonteamroster/{start}/{team_id}.json"
+
+
+def _bio_scope(url: str, season: str) -> FeedScope | None:
+    match = re.fullmatch(
+        re.escape(HOOPR_BASE) + r"/([0-9a-f]{40})/nba_stats/json/"
+        r"(playerindex|commonteamroster)/(\d{4})(?:/(\d+))?\.json",
+        url,
+    )
+    if match is None:
+        return None
+    revision, endpoint, label, team = match.groups()
+    valid_season(season)
+    start = int(season[:4])
+    spec = SPECS[endpoint]
+    if endpoint == "playerindex":
+        if team is not None or int(label) != start + 1:
+            raise ValueError("player index URL and requested season disagree")
+        return FeedScope(HOOPR_SOURCE, spec.feed, spec.capability, season, "bio", "", revision)
+    if team not in NBA_TEAMS or int(label) != start:
+        raise ValueError("team roster URL and requested season disagree")
+    return FeedScope(HOOPR_SOURCE, spec.feed, spec.capability, season, "bio", team, revision)
+
+
 def scope_for_url(source: str, url: str, season: str) -> FeedScope:
     """Exact allowlist. The scope is derived from the URL; the season must agree."""
     valid_scope_season(season)
     if source == HOOPR_SOURCE:
+        bio = _bio_scope(url, season)
+        if bio is not None:
+            return bio
         match = re.fullmatch(
             re.escape(HOOPR_BASE) + r"/([0-9a-f]{40})/nba_stats/json/([a-z]+)/"
             r"(\d{4})(?:/([a-z-]+?)(?:_([a-z0-9-]+?))?(?:_(offensive|defensive))?_totals)?\.json",
@@ -174,7 +220,7 @@ def scope_for_url(source: str, url: str, season: str) -> FeedScope:
             raise ValueError("source URL is not admitted for stats feeds")
         revision, endpoint, label, phase, variant, side = match.groups()
         spec = SPECS.get(endpoint)
-        if spec is None:
+        if spec is None or spec.bio_scope:
             raise ValueError("endpoint is not admitted for stats feeds")
         label_year = int(label)
         if spec.draft_scope:
@@ -275,6 +321,15 @@ def _check_declared(scope: FeedScope, spec: FeedSpec, params: dict[str, Any]) ->
     regular-season matchup file, "2025"); the caller must then prove the season from
     every row's NBA SEASON_ID instead.
     """
+    if spec.bio_scope:
+        # The index declares "2026-27" (older files the start year); rosters the start year.
+        declared = str(params.get("Season") or "")
+        allowed = {scope.season[:4]} | ({scope.season} if spec.endpoint == "playerindex" else set())
+        if declared not in allowed:
+            raise ValueError("payload declares a different season")
+        if spec.endpoint == "commonteamroster" and str(params.get("TeamID")) != scope.variant:
+            raise ValueError("payload declares a different team")
+        return False
     if spec.draft_scope:
         declared = str(_declared(params, "SeasonYear", "Season") or "")
         if declared[:4] != scope.season:
@@ -332,6 +387,16 @@ def _entity_key(feed: str, row: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         if player is None:
             raise ValueError("pbpstats player row without an NBA person id")
         return player, {"player_id": player, "team_id": nba_id(row.get("team_id"))}
+    if feed == "player_index":
+        player = nba_id(row.get("person_id"))
+        if player is None:
+            raise ValueError("player index row without an NBA person id")
+        return player, {"player_id": player}
+    if feed == "team_roster":
+        player, team = nba_id(row.get("player_id")), nba_id(row.get("team_id"))
+        if player is None or team is None:
+            raise ValueError("roster row without an NBA person and team id")
+        return player, {"player_id": player, "team_id": team}
     if feed == "draft_history":
         player = nba_id(row.get("person_id"))
         pick = row.get("overall_pick")
@@ -394,7 +459,11 @@ def _finish(
         )
     if truncated:
         limitations.append(f"The source returned its {cap}-row cap; rows beyond it are unobserved.")
-    if scope.source == HOOPR_SOURCE:
+    if scope.season_type == "bio":
+        limitations.append(
+            "Listings as mirrored from NBA Stats when fetched; listed sizes are team-reported."
+        )
+    elif scope.source == HOOPR_SOURCE:
         limitations.append("Season totals as mirrored from NBA Stats; no game-level dates.")
     players = {p for _, r in rows for p in [r.get("player_id")] if p}
     # Keys appear only when they apply, so output for inputs the first release
@@ -468,4 +537,6 @@ def parse_feed(body: bytes, scope: FeedScope) -> ParsedFeed:
     }
     if rows_must_prove:
         declared["season_established_by"] = "row SEASON_ID"
+    if spec.bio_scope and params.get("TeamID"):
+        declared["TeamID"] = params["TeamID"]
     return _finish(scope, records, declared)

@@ -5,6 +5,7 @@ assertCurrentEnvironment();
 
 import type {
   AssistantAnswer,
+  PlayerBio,
   AssistantQueryRequest,
   AssistantStatusResponse,
   BackfillStatusResponse,
@@ -172,6 +173,23 @@ export async function executeWorkbenchQuery(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, ...(presentation ? { presentation } : {}) })
   });
+}
+
+/** Seasons each player has game rows in for one phase; a stat trend plots only these. */
+export async function getPlayerSeasons(
+  playerIds: string[],
+  phase: string,
+  releaseId?: string
+): Promise<{ phase: string; seasons: Record<string, string[]> }> {
+  const sp = new URLSearchParams({ phase });
+  playerIds.forEach(id => sp.append("playerId", id));
+  if (releaseId) sp.set("releaseId", releaseId);
+  return wbFetch(`/api/workbench/player-seasons?${sp}`);
+}
+
+export async function getPlayerBio(id: string, params: { season: string; beforeDate: string }): Promise<PlayerBio> {
+  const sp = new URLSearchParams({ season: params.season, beforeDate: params.beforeDate });
+  return wbFetch<PlayerBio>(`/api/workbench/players/${encodeURIComponent(id)}/bio?${sp}`);
 }
 
 export async function getPlayerProfile(

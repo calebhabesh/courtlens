@@ -127,3 +127,60 @@ def test_play_type_tracking_and_combine_views(marts):
     assert searched["default_rule"] is None
     missing = views.combine_view(marts, None, "99999")
     assert missing["selected_player_id"] is None and missing["draft_year"] == 2025
+
+
+def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine(marts):
+    from datetime import date
+
+    from courtlens.services.player_bio import age_on, player_bio
+
+    # Without the bio marts, draft and combine still serve and listings stay unknown.
+    early = player_bio(marts, "99001", "2025-26", date(2026, 4, 13))
+    assert early["listing_source"] is None and early["age"] is None
+    assert early["draft"]["pick"] == 3 and early["combine"]["wingspan_inches"] == 92
+    marts.execute(
+        text(
+            "CREATE TABLE mart_player_bio (player_id text, source_player_name text, jersey text, "
+            "listed_position text, listed_height_inches int, listed_weight_lbs numeric, "
+            "college text, country text, draft_year int, draft_round int, draft_number int, "
+            "from_year int, to_year int, listed_team_id text, birth_date date, "
+            "index_season text, dataset_id text)"
+        )
+    )
+    marts.execute(
+        text(
+            "CREATE TABLE mart_player_roster_seasons (season text, team_id text, player_id text, "
+            "source_player_name text, jersey text, listed_position text, "
+            "listed_height_inches int, listed_weight_lbs numeric, birth_date date, "
+            "prior_seasons int, school text, how_acquired text, dataset_id text, row_key text)"
+        )
+    )
+    marts.execute(
+        text(
+            "INSERT INTO mart_player_bio VALUES ('99001','Fictional One','15','C',84,250,"
+            "'Fictional U','Fictionland',2025,1,3,2025,2026,'1610612761','2004-04-20',"
+            "'2026-27','i'),"
+            "('99003','Fictional Three',NULL,'G',75,190,NULL,'Fictionland',NULL,NULL,NULL,"
+            "2020,2026,NULL,NULL,'2026-27','i')"
+        )
+    )
+    marts.execute(
+        text(
+            "INSERT INTO mart_player_roster_seasons VALUES ('2025-26','1610612761','99001',"
+            "'Fictional One','12','C-F',83,245,'2004-04-20',0,'Fictional U',NULL,'r','k')"
+        )
+    )
+    # The season's own roster listing wins over the current index listing.
+    bio = player_bio(marts, "99001", "2025-26", date(2026, 4, 13))
+    assert bio["listing_source"] == "season_roster"
+    assert (bio["jersey"], bio["listed_height_inches"], bio["prior_seasons"]) == ("12", 83, 0)
+    assert bio["age"] == 21 and bio["as_of"] == date(2026, 4, 12)
+    assert bio["country"] == "Fictionland" and not bio["undrafted"]
+    # Another season has no roster row: the index listing serves, experience stays unknown.
+    other = player_bio(marts, "99001", "2024-25", date(2025, 4, 14))
+    assert other["listing_source"] == "player_index" and other["prior_seasons"] is None
+    assert other["age"] == 20
+    undrafted = player_bio(marts, "99003", "2025-26", date(2026, 4, 13))
+    assert undrafted["undrafted"] and undrafted["draft"] is None and undrafted["age"] is None
+    assert age_on(date(2004, 4, 20), date(2026, 4, 19)) == 21
+    assert age_on(date(2004, 4, 20), date(2026, 4, 20)) == 22

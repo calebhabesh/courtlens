@@ -45,6 +45,6 @@ describe("impact serving presentation", () => {
       expect(normalizedColumn(column, "per_36").key).toBe(key);
     }
     expect(IMPACT_COLUMNS.o_ts.format?.(0.5)).toBe("0.50");
-    expect(IMPACT_COLUMNS.impact_ts_pct.format?.(0.5)).toBe("50.0%");
+    expect(IMPACT_COLUMNS.pbp_drb_pct.format?.(0.5)).toBe("50.0%");
   });
 });
