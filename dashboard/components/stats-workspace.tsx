@@ -1,4 +1,5 @@
 import { GatedNote } from "./ui/gated-note";
+import { ButtonLink } from "./ui/kit";
 import { PageHeader } from "./ui/panel";
 import "./stats-explorer.css";
 import { redirect } from "next/navigation";
@@ -122,13 +123,13 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   return (
     <section className="stats-workspace">
       <div className="workbench-content">
-        <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <Link className="button" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</Link> : undefined} />
+        <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <ButtonLink size="lg" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</ButtonLink> : undefined} />
         {!directory && <WhatsNewLine />}
         {!directory && <StatsHelpRow />}
         {staleRelease && latestHref && (
           <GatedNote tone="warning" className="stats-stale-release"
             // A full load: switching releases must not reuse the pinned page's client state.
-            action={<a className="button" href={latestHref}>Switch to latest data</a>}>
+            action={<ButtonLink size="lg" href={latestHref}>Switch to latest data</ButtonLink>}>
             This link is pinned to an older data release ({catalog.seasons?.length ?? 0} {catalog.seasons?.length === 1 ? "season" : "seasons"}). The latest release covers {staleRelease.seasons?.length ?? 0} seasons.
           </GatedNote>
         )}
@@ -157,7 +158,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
         />}
 
         {loadError && (
-          <GatedNote tone="warning" action={<a href={`${basePath}?${new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string"))}`} className="ui-button ui-button-secondary ui-button-sm">Retry</a>}>
+          <GatedNote tone="warning" action={<ButtonLink size="sm" href={`${basePath}?${new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string"))}`}>Retry</ButtonLink>}>
             {loadError}
           </GatedNote>
         )}

@@ -16,8 +16,7 @@ import { useToast } from "./ui/toast";
 import { PercentileCell } from "./charts/percentile-cell";
 import { Skeleton } from "./ui/skeleton";
 import { Field } from "./ui/field";
-import { SlidingIndicator } from "./ui/sliding-indicator";
-import { StatsChoicePills } from "./stats-choice-pills";
+import { Button, IconButton, Segmented } from "./ui/kit";
 import { TeamLogoStack } from "./team-logo";
 import { PlayerPortrait } from "./player-portrait";
 import { StatsDetailDrawer } from "./stats-detail-drawer";
@@ -631,62 +630,28 @@ export function WorkbenchPlayerExplorer({
     <div className={`player-explorer-container ${isExpanded ? "table-expanded" : ""}`}>
       {/* Preset Tabs Row (F02 & F04) */}
       <div className="stats-preset-tabs-wrapper">
-        <div className="stats-preset-tabs" role="tablist" aria-label="Stats Explorer Presets">
-          {ORDERED_PRESETS.map((p) => {
-            const isActive = p.id === activePresetId;
-            return (
-              <button
-                key={p.id}
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => handlePresetSelect(p.id)}
-                className={`stats-preset-tab ${isActive ? "active" : ""}`}
-                title={p.description}
-              >
-                {isActive && <SlidingIndicator layoutId="stats-preset-indicator" className="stats-preset-indicator" />}
-                <span>{p.label}</span>
-                {p.gated && <span className="stats-preset-gated-tag">Partial</span>}
-              </button>
-            );
-          })}
-
-          {/* Personal Custom Views (F04) */}
-          {views.map((v) => {
-            const isActive = v.id === activePresetId;
-            const isDefault = v.id === defaultViewId;
-            const hasUnavailable = (v.unavailable_columns?.length ?? 0) > 0;
-            return (
-              <button
-                key={v.id}
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => handlePresetSelect(v.id as PresetId)}
-                className={`stats-preset-tab ${isActive ? "active" : ""}`}
-                title={`Custom View: ${v.name} (${v.columns.length} columns)`}
-              >
-                {isActive && <SlidingIndicator layoutId="stats-preset-indicator" className="stats-preset-indicator" />}
-                <span>{v.name}</span>
-                {isDefault && <span className="stats-default-view-star"><Icon name="star" size={14} filled /><span className="sr-only">Default view</span></span>}
-                {hasUnavailable && <span className="stats-preset-gated-tag">Unavailable: {v.unavailable_columns?.length}</span>}
-              </button>
-            );
-          })}
-        </div>
+        {/* Built-in presets, then personal custom views (F04). */}
+        <Segmented label="Stats Explorer Presets" size="lg" tone="console" dense value={activePresetId as string}
+          onChange={id => handlePresetSelect(id as PresetId)}
+          options={[
+            ...ORDERED_PRESETS.map(p => ({ value: p.id as string, title: p.description,
+              label: <>{p.label}{p.gated && <span className="stats-preset-gated-tag">Partial</span>}</> })),
+            ...views.map(v => ({ value: v.id, title: `Custom View: ${v.name} (${v.columns.length} columns)`,
+              label: <>{v.name}
+                {v.id === defaultViewId && <span className="stats-default-view-star"><Icon name="star" size={14} filled /><span className="sr-only">Default view</span></span>}
+                {(v.unavailable_columns?.length ?? 0) > 0 && <span className="stats-preset-gated-tag">Unavailable: {v.unavailable_columns?.length}</span>}</> })),
+          ]} />
 
         <Field label="Table Divider" layout="inline" className="stats-divider-field">
-          <StatsChoicePills label="Table Divider" className="stats-divider-modes" indicatorId="stats-divider-indicator"
-            options={IDENTITY_MODES.map(im => ({ id: im.id, label: im.label, title: im.tooltip }))}
-            value={identityMode} onSelect={handleIdentityModeSelect} />
+          <Segmented label="Table Divider" size="lg" tone="console" deferChange
+            options={IDENTITY_MODES.map(im => ({ value: im.id, label: im.label, title: im.tooltip }))}
+            value={identityMode} onChange={handleIdentityModeSelect} />
         </Field>
-        <div className="control-button-group stats-view-actions">
-          <button type="button" onClick={() => { setManageStartsNew(true); setIsManageViewsOpen(true); }}
-            className="control-pill" title="Create a personal view from any catalog columns">
-            <Icon name="columns" size={14} /> Add View
-          </button>
-          <button type="button" onClick={() => { setManageStartsNew(false); setIsManageViewsOpen(true); }}
-            className="control-pill" title="Manage custom views, default view, and import/export">
-            <Icon name="settings" size={14} /> Manage
-          </button>
+        <div className="stats-view-actions">
+          <Button size="lg" tone="console" icon="columns" onClick={() => { setManageStartsNew(true); setIsManageViewsOpen(true); }}
+            title="Create a personal view from any catalog columns">Add View</Button>
+          <Button size="lg" tone="console" icon="settings" onClick={() => { setManageStartsNew(false); setIsManageViewsOpen(true); }}
+            title="Manage custom views, default view, and import/export">Manage</Button>
         </div>
       </div>
 
@@ -721,58 +686,49 @@ export function WorkbenchPlayerExplorer({
       <div className={`stats-table-frame ${viewMode === "table" ? "is-table" : ""}`}>
       <div className="stats-controls-row">
         <strong className="stats-table-brand"><CourtLensWordmark height={16} /></strong>
-        <StatsChoicePills label="Counting Mode" className="stats-counting-modes" indicatorId="stats-counting-indicator"
-          options={ORDERED_COUNTING_MODES.map(cm => ({ id: cm.id, label: cm.label, title: cm.tooltip,
+        <Segmented label="Counting Mode" size="md" deferChange
+          options={ORDERED_COUNTING_MODES.map(cm => ({ value: cm.id, label: cm.label, title: cm.tooltip,
             disabled: catalog?.stats_normalizations ? !catalog.stats_normalizations.includes(cm.id) : cm.gated }))}
-          value={countingMode} onSelect={handleCountingModeSelect} />
+          value={countingMode} onChange={handleCountingModeSelect} />
         <div className="stats-tool-group" role="group" aria-label="Explorer View Mode">
-          <button type="button" onClick={() => setViewMode(viewMode === "scatter" ? "table" : "scatter")}
-            className="stats-tool-button" aria-pressed={viewMode === "scatter"} aria-label="Scatter plot" title="Scatter plot"><Icon name="scatter" /></button>
-          <button type="button" onClick={() => setViewMode(viewMode === "lines" ? "table" : "lines")}
-            className="stats-tool-button" aria-pressed={viewMode === "lines"} aria-label="Trend lines" title="Trend lines"><Icon name="trend" /></button>
-          <button type="button" onClick={openComparison} disabled={comparedPlayers.length < 2}
-            className="stats-tool-button" aria-label="Compare selected players (Z)"
-            title={comparedPlayers.length < 2 ? "Add two players with + to compare them" : "Compare the first two selected players (Z)"}><Icon name="users" /></button>
+          <IconButton variant="secondary" icon="scatter" label="Scatter plot" pressed={viewMode === "scatter"}
+            onClick={() => setViewMode(viewMode === "scatter" ? "table" : "scatter")} />
+          <IconButton variant="secondary" icon="trend" label="Trend lines" pressed={viewMode === "lines"}
+            onClick={() => setViewMode(viewMode === "lines" ? "table" : "lines")} />
+          <IconButton variant="secondary" icon="users" label="Compare selected players (Z)" onClick={openComparison} disabled={comparedPlayers.length < 2}
+            title={comparedPlayers.length < 2 ? "Add two players with + to compare them" : "Compare the first two selected players (Z)"} />
         </div>
         <div className="stats-tool-group" role="group" aria-label="Table tools">
-          <Menu className="stats-tool-menu" trigger={<span className="stats-tool-button" title="Table settings"><Icon name="settings" /><span className="sr-only">Table settings</span></span>}>
+          <Menu className="stats-tool-menu" renderTrigger={props => <IconButton {...props} variant="secondary" icon="settings" label="Table settings" />}>
             <MenuItem icon={showPercentiles ? "eye-off" : "eye"} label={showPercentiles ? "Hide percentiles" : "Show percentiles"}
               onClick={() => setShowPercentiles(value => !value)} />
             <MenuItem icon="save" label={saving ? "Saving…" : "Save legacy scope"} disabled={saving || !legacySaveAvailable}
               onClick={handleSaveInvestigation} />
           </Menu>
-          <button type="button" onClick={() => updateParam({ favorites: favoritesOnly ? null : "1" })}
-            className="stats-tool-button" aria-pressed={favoritesOnly}
-            aria-label={favoritesOnly ? "Show all players" : `Favorites only${favorites.length ? ` (${favorites.length})` : ""}`}
-            title={favoritesOnly ? "Show all players" : "Filter to favorite players only"}>
-            <Icon name="star" filled={favoritesOnly} />
-          </button>
-          <button type="button" onClick={() => setIsHotkeysOpen(true)} className="stats-tool-button" aria-label="Hotkeys" title="Keyboard shortcuts (?)"><Icon name="help" /></button>
-          <button type="button" className={`stats-tool-button ${hasActiveFilters ? "has-active" : ""}`} aria-pressed={filtersOpen}
+          <IconButton variant="secondary" icon="star" filled={favoritesOnly} pressed={favoritesOnly}
+            onClick={() => updateParam({ favorites: favoritesOnly ? null : "1" })}
+            label={favoritesOnly ? "Show all players" : `Favorites only${favorites.length ? ` (${favorites.length})` : ""}`}
+            title={favoritesOnly ? "Show all players" : "Filter to favorite players only"} />
+          <IconButton variant="secondary" icon="help" label="Hotkeys" title="Keyboard shortcuts (?)" onClick={() => setIsHotkeysOpen(true)} />
+          {/* Active filters keep the selected outline while the panel is closed. */}
+          <IconButton variant="secondary" icon="filter" label="Filters" pressed={filtersOpen} data-selected={hasActiveFilters ? "true" : undefined}
             onClick={() => setFiltersOpen(value => !value)} aria-expanded={filtersOpen} aria-controls="stats-filters"
-            aria-label="Filters" title={hasActiveFilters ? "Filters (active) · F" : "Filters · F"}>
-            <Icon name="filter" />
-          </button>
+            title={hasActiveFilters ? "Filters (active) · F" : "Filters · F"} />
           {/* Alphabetical order lives with the table tools; the search then spans the cards. */}
-          <button type="button" className="stats-tool-button" aria-pressed={nameSorted}
+          <IconButton variant="secondary" icon={nameSorted && currentSortDirection === "asc" ? "sort-za" : "sort-az"} label="Sort by Player" pressed={nameSorted}
             onClick={() => nameSorted ? updateParam({ sortMetric: "player_name", sortDirection: currentSortDirection === "asc" ? "desc" : "asc" })
               : updateParam({ sortMetric: "player_name", sortDirection: "asc" })}
-            aria-label="Sort by Player" title={nameSorted && currentSortDirection === "asc" ? "Sort players Z–A" : "Sort players A–Z"}>
-            <Icon name={nameSorted && currentSortDirection === "asc" ? "sort-za" : "sort-az"} />
-          </button>
-          <button type="button" className="stats-tool-button" onClick={resetTable}
-            aria-label="Reset table" title="Reset sort and filters">
-            <Icon name="reset" />
-          </button>
+            title={nameSorted && currentSortDirection === "asc" ? "Sort players Z–A" : "Sort players A–Z"} />
+          <IconButton variant="secondary" icon="reset" label="Reset table" title="Reset sort and filters" onClick={resetTable} />
         </div>
-        <button type="button" onClick={() => setIsExpanded(value => !value)} className="stats-tool-button stats-expand-button"
-          aria-pressed={isExpanded} aria-label={isExpanded ? "Standard height" : "Expand table"} title="Expand table (T)">
-          <Icon name={isExpanded ? "collapse" : "expand"} />
-        </button>
+        <span className="stats-expand-action">
+          <IconButton icon={isExpanded ? "collapse" : "expand"} label={isExpanded ? "Standard height" : "Expand table"} title="Expand table (T)"
+            pressed={isExpanded} onClick={() => setIsExpanded(value => !value)} />
+        </span>
       </div>
 
       {actionError && <div role="alert" className="notice-box stats-action-error">
-        {actionError} <button type="button" className="button button-small" onClick={() => setActionError(null)}>Dismiss</button>
+        {actionError} <Button size="xs" onClick={() => setActionError(null)}>Dismiss</Button>
       </div>}
 
       {/* Save Success Notice */}
@@ -870,14 +826,9 @@ export function WorkbenchPlayerExplorer({
 
         {/* Reset Filters Action */}
         {hasActiveFilters && (
-          <button
-            type="button"
-            onClick={handleResetFilters}
-            className="button button-small stats-filter-reset"
-            title="Reset all active search and sample filters"
-          >
+          <Button size="md" className="stats-filter-reset" onClick={handleResetFilters} title="Reset all active search and sample filters">
             Reset Filters
-          </button>
+          </Button>
         )}
       </div>}
 
@@ -900,17 +851,17 @@ export function WorkbenchPlayerExplorer({
               aria-label="Filter players by name"
             />
             {localName && (
-              <button
-                type="button"
-                className="filter-clear-btn"
-                onClick={() => {
-                  setLocalName("");
-                  updateParam({ name: null });
-                }}
-                aria-label="Clear player search"
-              >
-                <Icon name="close" size={14} />
-              </button>
+              <span className="filter-clear-slot">
+                <IconButton
+                  size="xs"
+                  icon="close"
+                  label="Clear player search"
+                  onClick={() => {
+                    setLocalName("");
+                    updateParam({ name: null });
+                  }}
+                />
+              </span>
             )}
           </div>
         </form>
@@ -994,8 +945,8 @@ export function WorkbenchPlayerExplorer({
                         if (event.key === "Enter") { event.preventDefault(); if (typedName !== lastName) pushName(typedName); }
                         else if (event.key === "Escape" && localName) { event.preventDefault(); setLocalName(""); }
                       }} />
-                    {localName && <button type="button" className="lookup-clear-btn" aria-label="Clear player search"
-                      onClick={() => { setLocalName(""); pushName(""); nameInputRef.current?.focus(); }}><Icon name="close" /></button>}
+                    {localName && <IconButton size="sm" icon="close" label="Clear player search"
+                      onClick={() => { setLocalName(""); pushName(""); nameInputRef.current?.focus(); }} />}
                   </div>
                 </div>
               </th>
@@ -1050,13 +1001,9 @@ export function WorkbenchPlayerExplorer({
                   <p className="stats-empty-title">
                     {urlName ? `No players match “${urlName}” under the current filters.` : "No players matched the current query filters."}
                   </p>
-                  <button
-                    type="button"
-                    onClick={handleResetFilters}
-                    className="button button-small"
-                  >
+                  <Button size="md" onClick={handleResetFilters}>
                     Clear Search &amp; Sample Filters
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ) : (
@@ -1105,15 +1052,8 @@ export function WorkbenchPlayerExplorer({
                         </Link>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedPlayerForDrawer(player)}
-                          className="stats-icon-action stats-details-button"
-                          aria-label={`Open details for ${player.player_name}`}
-                          title="Open full player details"
-                        >
-                          <Icon name="cards" size={14} />
-                        </button>
+                        <IconButton size="xs" icon="cards" label={`Open details for ${player.player_name}`} title="Open full player details"
+                          onClick={() => setSelectedPlayerForDrawer(player)} />
                       </div>
                     </td>
 
@@ -1147,9 +1087,10 @@ export function WorkbenchPlayerExplorer({
 
                     {/* Actions Cell */}
                     <td className="stats-row-actions">
-                      <button type="button" className="stats-icon-action stats-row-pin"
-                        onClick={() => { setPreviewPlayer(player); setPreviewPinned(true); setPreviewCollapsed(false); }}
-                        aria-label={`Pin preview for ${player.player_name}`} title="Pin player preview"><Icon name="pin" size={14} /></button>
+                      <span className="stats-row-pin">
+                        <IconButton size="xs" icon="pin" label={`Pin preview for ${player.player_name}`} title="Pin player preview"
+                          onClick={() => { setPreviewPlayer(player); setPreviewPinned(true); setPreviewCollapsed(false); }} />
+                      </span>
                     </td>
                   </tr>
                 );
@@ -1177,51 +1118,49 @@ export function WorkbenchPlayerExplorer({
         </div>
         <div className="stats-footer-controls">
           <div className="stats-footer-group" role="group" aria-label="Row density">
-            <button type="button" className="stats-footer-button" onClick={() => handleDensityChange("compact")}
-              disabled={tableDensity === "compact"} aria-label="Compact rows (W)"><span aria-hidden="true">−W</span></button>
+            <Button size="xs" variant="ghost" dense onClick={() => handleDensityChange("compact")}
+              pressed={tableDensity === "compact"} aria-label="Compact rows (W)"><span aria-hidden="true">−W</span></Button>
             <span className="stats-density-meter" role="img" aria-label={tableDensity === "compact" ? "Compact density" : "Standard density"}>
               <span className="is-on" /><span className={tableDensity === "standard" ? "is-on" : ""} />
             </span>
-            <button type="button" className="stats-footer-button" onClick={() => handleDensityChange("standard")}
-              disabled={tableDensity === "standard"} aria-label="Standard rows (E)"><span aria-hidden="true">E+</span></button>
+            <Button size="xs" variant="ghost" dense onClick={() => handleDensityChange("standard")}
+              pressed={tableDensity === "standard"} aria-label="Standard rows (E)"><span aria-hidden="true">E+</span></Button>
           </div>
           <div className="stats-footer-group" role="group" aria-label="View">
-            <button type="button" className="stats-footer-button" onClick={() => stepView(-1)} aria-label="Previous view"><Icon name="left" size={14} /></button>
+            <IconButton size="xs" icon="left" label="Previous view" onClick={() => stepView(-1)} />
             <span className="stats-footer-label" aria-hidden="true">View</span>
-            <button type="button" className="stats-footer-button" onClick={() => stepView(1)} aria-label="Next view"><Icon name="right" size={14} /></button>
+            <IconButton size="xs" icon="right" label="Next view" onClick={() => stepView(1)} />
           </div>
           <div className="stats-footer-group" role="group" aria-label="Scroll">
-            <button type="button" className="stats-footer-button" onClick={() => scrollTable(-1)} aria-label="Scroll table left (A)"><kbd aria-hidden="true">A</kbd><Icon name="left" size={14} /></button>
+            <Button size="xs" variant="ghost" dense onClick={() => scrollTable(-1)} aria-label="Scroll table left (A)"><kbd aria-hidden="true">A</kbd><Icon name="left" size={14} /></Button>
             <span className="stats-footer-label" aria-hidden="true">Scroll</span>
-            <button type="button" className="stats-footer-button" onClick={() => scrollTable(1)} aria-label="Scroll table right (D)"><Icon name="right" size={14} /><kbd aria-hidden="true">D</kbd></button>
+            <Button size="xs" variant="ghost" dense onClick={() => scrollTable(1)} aria-label="Scroll table right (D)"><Icon name="right" size={14} /><kbd aria-hidden="true">D</kbd></Button>
           </div>
-          <button type="button" className={`stats-footer-button stats-footer-group ${filtersOpen ? "is-active" : ""}`} onClick={() => setFiltersOpen(value => !value)}
-            aria-pressed={filtersOpen} aria-label="Toggle filters (F)"><Icon name="filter" size={14} /><span aria-hidden="true">Filters</span><kbd aria-hidden="true">F</kbd></button>
-          <button type="button" className={`stats-footer-button stats-footer-group ${isExpanded ? "is-active" : ""}`} onClick={() => setIsExpanded(value => !value)}
-            aria-pressed={isExpanded} aria-label={isExpanded ? "Standard height (T)" : "Expand table (T)"}><Icon name={isExpanded ? "collapse" : "expand"} size={14} /><kbd aria-hidden="true">T</kbd></button>
+          <div className="stats-footer-group is-single">
+            <Button size="xs" variant="ghost" dense icon="filter" onClick={() => setFiltersOpen(value => !value)}
+              pressed={filtersOpen} aria-label="Toggle filters (F)"><span aria-hidden="true">Filters</span><kbd aria-hidden="true">F</kbd></Button>
+          </div>
+          <div className="stats-footer-group is-single">
+            <Button size="xs" variant="ghost" dense icon={isExpanded ? "collapse" : "expand"} onClick={() => setIsExpanded(value => !value)}
+              pressed={isExpanded} aria-label={isExpanded ? "Standard height (T)" : "Expand table (T)"}><kbd aria-hidden="true">T</kbd></Button>
+          </div>
         </div>
         <div className="stats-pagination-actions">
-          <button
-            type="button"
+          <Button size="xs" icon="left"
             onClick={() => {
               const params = new URLSearchParams(searchParams?.toString() ?? "");
               params.delete("cursor");
               router.push(`${pathname}?${params.toString()}`);
             }}
             disabled={!searchParams?.get("cursor")}
-            className="button button-small"
           >
-            <Icon name="left" size={14} />First Page
-          </button>
+            First Page
+          </Button>
 
           {data.has_more && data.next_cursor && (
-            <button
-              type="button"
-              onClick={() => updateParam({ cursor: data.next_cursor })}
-              className="button button-small button-primary"
-            >
-              Next Page<Icon name="right" size={14} />
-            </button>
+            <Button size="xs" variant="primary" iconAfter="right" onClick={() => updateParam({ cursor: data.next_cursor })}>
+              Next Page
+            </Button>
           )}
         </div>
 

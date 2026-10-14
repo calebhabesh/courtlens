@@ -38,7 +38,9 @@ for (const route of ["/stats", "/planner", "/live", "/research/ask?experience=ma
     }).map(e => e.getAttribute("aria-label") || e.textContent));
     expect(short).toEqual([]);
     if (route === "/stats") {
-      expect(await page.locator(".stats-preset-tab").evaluateAll(tabs => tabs.filter(tab => tab.scrollWidth > tab.clientWidth + 1).map(tab => tab.textContent))).toEqual([]);
+      const presets = page.getByRole("radiogroup", { name: "Stats Explorer Presets" }).getByRole("radio");
+      expect(await presets.count()).toBeGreaterThan(0);
+      expect(await presets.evaluateAll(tabs => tabs.filter(tab => tab.scrollWidth > tab.clientWidth + 1).map(tab => tab.textContent))).toEqual([]);
     }
     await expect(page.getByRole("main")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);

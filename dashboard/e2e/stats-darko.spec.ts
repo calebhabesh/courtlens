@@ -15,7 +15,7 @@ test("Overview uses dated DARKO columns, sort, reset and stable counting modes",
   await expect(rows.first()).toContainText("Fixture Guard");
   await page.getByRole("button", { name: "Reset table", exact: true }).click();
   await expect(rows.first()).toContainText("Fixture Star");
-  await page.getByRole("button", { name: "Per 36", exact: true }).click();
+  await page.getByRole("radio", { name: "Per 36", exact: true }).click();
   await expect(rows.first().locator("td[data-column='dpm']")).toContainText("+6.2");
 });
 

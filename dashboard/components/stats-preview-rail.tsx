@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "./ui/icon";
+import { Button, IconButton } from "./ui/kit";
 
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogoStack } from "./team-logo";
@@ -44,21 +45,14 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
   }, [highlight]);
   return <aside className={`stats-preview-rail ${collapsed ? "is-collapsed" : ""}`} aria-label="Player preview">
     <div className="stats-preview-heading">
-      <button type="button" onClick={onToggleCollapse} className="stats-icon-action"
-        aria-label={collapsed ? "Expand player preview" : "Collapse player preview"} aria-expanded={!collapsed}
-        title={collapsed ? "Expand player preview" : "Collapse player preview"}>
-        {collapsed ? <Icon name="left" size={14} /> : <Icon name="right" size={14} />}
-      </button>
-      {!collapsed && <><span>Player Preview</span>{player && onToggleFavorite && <button type="button" className="stats-icon-action"
-        onClick={onToggleFavorite} aria-pressed={isFavorite}
-        aria-label={isFavorite ? `Remove ${player.player_name} from favorites` : `Add ${player.player_name} to favorites`}
-        title={isFavorite ? "Remove from favorites" : "Add to favorites"}>
-        <Icon name="star" size={14} filled={isFavorite} />
-      </button>}{player && <button type="button" className="stats-icon-action"
-        onClick={onTogglePin} aria-pressed={pinned} aria-label={pinned ? "Unpin player preview" : "Pin player preview"}
-        title={pinned ? "Unpin to resume hover previews" : "Keep this player in the preview"}>
-        {pinned ? <Icon name="unpin" size={14} /> : <Icon name="pin" size={14} />}
-      </button>}</>}
+      <IconButton size="xs" icon={collapsed ? "left" : "right"} onClick={onToggleCollapse} aria-expanded={!collapsed}
+        label={collapsed ? "Expand player preview" : "Collapse player preview"} />
+      {!collapsed && <><span>Player Preview</span>{player && onToggleFavorite && <IconButton size="xs" icon="star" filled={isFavorite}
+        onClick={onToggleFavorite} pressed={isFavorite}
+        label={isFavorite ? `Remove ${player.player_name} from favorites` : `Add ${player.player_name} to favorites`}
+        title={isFavorite ? "Remove from favorites" : "Add to favorites"} />}{player && <IconButton size="xs" icon={pinned ? "unpin" : "pin"}
+        onClick={onTogglePin} pressed={pinned} label={pinned ? "Unpin player preview" : "Pin player preview"}
+        title={pinned ? "Unpin to resume hover previews" : "Keep this player in the preview"} />}</>}
     </div>
     {!collapsed && (player ? <>
       <div className="stats-preview-identity">
@@ -88,9 +82,7 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
       </dl>
       <div className="stats-preview-footer">
         <span>League reference · 500+ season minutes · {eligiblePlayers} players in view{player.table_qualified === false ? " · Small sample" : ""}</span>
-        <button type="button" className="button button-small" onClick={() => onOpenDetails(player)}>
-          Full player details
-        </button>
+        <Button size="xs" onClick={() => onOpenDetails(player)}>Full player details</Button>
       </div>
     </> : <div className="stats-preview-empty">
       <div className="stats-preview-shortcuts"><strong>Quick hotkeys</strong>

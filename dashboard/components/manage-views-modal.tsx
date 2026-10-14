@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "./ui/icon";
+import { Button, Chip, IconButton } from "./ui/kit";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
 import { ALL_CATALOG_METRICS, IMPACT_COLUMNS, isPickerDeadEnd, isV4Column } from "@/lib/stats-presets";
@@ -374,63 +375,53 @@ export function ManageViewsModal({
               F04 Custom Views · Personal state persistence with atomic version checks.
             </p>
           </div>
-          <button
-            type="button"
-            className="modal-close-btn"
-            onClick={onClose}
-            aria-label="Close manage views modal"
-          >
-            <Icon name="close" size={14} />
-          </button>
+          <IconButton size="xs" icon="close" label="Close manage views modal" onClick={onClose} />
         </div>
 
         {/* Conflict Notice if any */}
         {conflictNotice && (
           <div className="notice-box views-modal-notice">
             <span className="views-modal-notice-text">{conflictNotice}</span>
-            <button
-              type="button"
-              className="button button-small views-modal-notice-dismiss"
-              onClick={clearConflictNotice}
-            >
+            <Button size="xs" className="views-modal-notice-dismiss" onClick={clearConflictNotice}>
               Dismiss
-            </button>
+            </Button>
           </div>
         )}
 
         {/* Modal Navigation Tabs */}
         <div className="views-modal-tabs">
-          <button
-            type="button"
-            className={`control-pill ${activeTab === "list" ? "active" : ""}`}
+          <Chip
+            size="xs"
+            pressed={activeTab === "list"}
             onClick={() => {
               setActiveTab("list");
               setErrorMessage(null);
             }}
           >
             Custom Views ({views.length}/{MAX_CUSTOM_VIEWS})
-          </button>
-          <button
-            type="button"
-            className={`control-pill ${activeTab === "editor" ? "active" : ""}`}
+          </Chip>
+          <Chip
+            size="xs"
+            pressed={activeTab === "editor"}
+            icon={editingViewId ? undefined : "plus"}
             onClick={() => {
               if (activeTab !== "editor") handleOpenAddView();
             }}
             disabled={views.length >= MAX_CUSTOM_VIEWS && !editingViewId}
             title={views.length >= MAX_CUSTOM_VIEWS ? "Maximum 10 custom views reached" : "Add or edit custom view"}
           >
-            {editingViewId ? "Edit View" : <><Icon name="plus" size={14} />Add View</>}
-          </button>
-          <button
-            type="button"
-            className={`control-pill ${activeTab === "import_export" ? "active" : ""}`}
+            {editingViewId ? "Edit View" : "Add View"}
+          </Chip>
+          <Chip
+            size="xs"
+            pressed={activeTab === "import_export"}
             onClick={() => {
               setActiveTab("import_export");
               setErrorMessage(null);
             }}
           >
             Export / Import &amp; Reset
-          </button>
+          </Chip>
         </div>
 
         {/* Modal Body */}
@@ -442,14 +433,9 @@ export function ManageViewsModal({
                 <span className="text-xs text-muted">
                   Personal views saved: <strong>{views.length}</strong> / {MAX_CUSTOM_VIEWS}. Use keyboard buttons to reorder.
                 </span>
-                <button
-                  type="button"
-                  onClick={handleOpenAddView}
-                  disabled={views.length >= MAX_CUSTOM_VIEWS}
-                  className="button button-small button-primary"
-                >
-                  <Icon name="plus" size={14} />Create View
-                </button>
+                <Button size="xs" variant="primary" icon="plus" onClick={handleOpenAddView} disabled={views.length >= MAX_CUSTOM_VIEWS}>
+                  Create View
+                </Button>
               </div>
 
               {views.length === 0 ? (
@@ -457,13 +443,9 @@ export function ManageViewsModal({
                   <p className="text-muted views-modal-empty-p">
                     No custom views created yet. Built-in presets are currently active.
                   </p>
-                  <button
-                    type="button"
-                    onClick={handleOpenAddView}
-                    className="button button-small button-primary"
-                  >
+                  <Button size="xs" variant="primary" onClick={handleOpenAddView}>
                     Create Your First Custom View
-                  </button>
+                  </Button>
                 </div>
               ) : (
                 <div className="views-modal-items">
@@ -501,72 +483,40 @@ export function ManageViewsModal({
 
                         <div className="views-modal-row-actions">
                           {/* Reorder Buttons */}
-                          <button
-                            type="button"
-                            onClick={() => handleMoveUp(idx)}
-                            disabled={idx === 0}
-                            className="button button-small views-modal-btn-icon"
-                            title="Move view up"
-                            aria-label={`Move ${view.name} up`}
-                          >
-                            <Icon name="chevron-up" size={14} />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleMoveDown(idx)}
-                            disabled={idx === views.length - 1}
-                            className="button button-small views-modal-btn-icon"
-                            title="Move view down"
-                            aria-label={`Move ${view.name} down`}
-                          >
-                            <Icon name="chevron-down" size={14} />
-                          </button>
+                          <IconButton size="xs" variant="secondary" icon="chevron-up" label={`Move ${view.name} up`} title="Move view up"
+                            onClick={() => handleMoveUp(idx)} disabled={idx === 0} />
+                          <IconButton size="xs" variant="secondary" icon="chevron-down" label={`Move ${view.name} down`} title="Move view down"
+                            onClick={() => handleMoveDown(idx)} disabled={idx === views.length - 1} />
 
                           {/* Set Default */}
                           {!isDefault && (
-                            <button
-                              type="button"
-                              onClick={() => handleSetDefault(view.id)}
-                              className="button button-small views-modal-btn-action"
-                              title="Set as default view"
-                            >
+                            <Button size="xs" onClick={() => handleSetDefault(view.id)} title="Set as default view">
                               Make Default
-                            </button>
+                            </Button>
                           )}
 
                           {/* Open / Select */}
                           {onSelectView && (
-                            <button
-                              type="button"
+                            <Button
+                              size="xs"
+                              variant="primary"
                               onClick={() => {
                                 onSelectView(view.id);
                                 onClose();
                               }}
-                              className="button button-small button-primary views-modal-btn-action"
                             >
                               Open
-                            </button>
+                            </Button>
                           )}
 
                           {/* Edit */}
-                          <button
-                            type="button"
-                            onClick={() => handleOpenEditView(view)}
-                            className="button button-small views-modal-btn-action"
-                          >
+                          <Button size="xs" onClick={() => handleOpenEditView(view)}>
                             Edit
-                          </button>
+                          </Button>
 
                           {/* Delete */}
-                          <button
-                            type="button"
-                            onClick={() => handleDelete(view.id)}
-                            className="button button-small views-modal-btn-danger"
-                            title="Delete custom view"
-                            aria-label={`Delete ${view.name}`}
-                          >
-                            <Icon name="close" size={14} />
-                          </button>
+                          <IconButton size="xs" variant="danger" icon="close" label={`Delete ${view.name}`} title="Delete custom view"
+                            onClick={() => handleDelete(view.id)} />
                         </div>
                       </div>
                     );
@@ -585,8 +535,8 @@ export function ManageViewsModal({
                       Canonical presets (Overview, Shooting, Defense, True Shooting, Rates Per 36, Playmaking, Rebounding, Impact, On-Off, Six Factor) are recoverable at any time.
                     </p>
                   </div>
-                  <button
-                    type="button"
+                  <Button
+                    size="xs"
                     onClick={async () => {
                       try {
                         const presets = await getWorkspacePresets();
@@ -595,10 +545,9 @@ export function ManageViewsModal({
                         alert(err instanceof Error ? err.message : "Failed to load presets");
                       }
                     }}
-                    className="button button-small whitespace-nowrap"
                   >
                     Inspect Presets
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -782,21 +731,12 @@ export function ManageViewsModal({
 
               {/* Form Actions */}
               <div className="views-modal-form-row justify-end pt-3 border-t">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("list")}
-                  className="button button-small"
-                  disabled={saving}
-                >
+                <Button size="xs" onClick={() => setActiveTab("list")} disabled={saving}>
                   Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="button button-small button-primary"
-                  disabled={saving}
-                >
+                </Button>
+                <Button size="xs" type="submit" variant="primary" disabled={saving}>
                   {saving ? "Saving…" : editingViewId ? "Save Changes" : "Create View"}
-                </button>
+                </Button>
               </div>
             </form>
           )}
@@ -812,13 +752,9 @@ export function ManageViewsModal({
                 <p className="text-xs text-muted">
                   Download a portable JSON bundle containing custom views, favorite players, compare tray, ranking boards, tier lists, and layout preferences with a canonical SHA-256 checksum.
                 </p>
-                <button
-                  type="button"
-                  onClick={handleExport}
-                  className="button button-small button-primary"
-                >
-                  <Icon name="download" size={14} />Export Bundle (.json)
-                </button>
+                <Button size="xs" variant="primary" icon="download" onClick={handleExport}>
+                  Export Bundle (.json)
+                </Button>
               </div>
 
               {/* Import Section */}
@@ -867,14 +803,9 @@ export function ManageViewsModal({
                 )}
 
                 <div className="mt-3">
-                  <button
-                    type="button"
-                    onClick={handleImportSubmit}
-                    disabled={!importJsonText.trim()}
-                    className="button button-small button-primary"
-                  >
+                  <Button size="xs" variant="primary" onClick={handleImportSubmit} disabled={!importJsonText.trim()}>
                     Verify &amp; Import Bundle
-                  </button>
+                  </Button>
                 </div>
               </div>
 
@@ -886,13 +817,9 @@ export function ManageViewsModal({
                 <p className="text-xs text-muted">
                   Reset all custom views, ranking boards, tier lists, and preferences to original defaults. This action cannot be undone.
                 </p>
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="button button-small text-negative border-negative"
-                >
-                  <Icon name="reset" size={14} />Reset to Defaults
-                </button>
+                <Button size="xs" variant="danger" icon="reset" onClick={handleReset}>
+                  Reset to Defaults
+                </Button>
               </div>
             </div>
           )}
@@ -903,9 +830,9 @@ export function ManageViewsModal({
           <span className="text-xs text-muted font-mono">
             Workspace ID: default
           </span>
-          <button type="button" className="button button-small" onClick={onClose}>
+          <Button size="xs" onClick={onClose}>
             Done
-          </button>
+          </Button>
         </div>
       </div>
     </div>

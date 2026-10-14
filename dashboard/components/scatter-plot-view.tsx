@@ -1,5 +1,6 @@
 "use client";
 import { Icon } from "./ui/icon";
+import { Button, Chip } from "./ui/kit";
 
 import { useState, useMemo, useRef, useCallback } from "react";
 import type { PlayerResearchItem } from "@/lib/types";
@@ -191,31 +192,16 @@ export function ScatterPlotView({
 
         {/* Action Buttons: Export & Share */}
         <div className="scatter-header-actions">
-          <button
-            type="button"
-            onClick={handleExportPng}
-            disabled={exporting}
-            className="button button-small"
-            title="Download context-stamped PNG image with evidence watermark"
-          >
-            {exporting ? "Rendering…" : <><Icon name="download" />Export PNG</>}
-          </button>
-          <button
-            type="button"
-            onClick={handleExportSvg}
-            className="button button-small"
-            title="Download standalone SVG file"
-          >
+          <Button size="xs" icon={exporting ? undefined : "download"} onClick={handleExportPng} disabled={exporting}
+            title="Download context-stamped PNG image with evidence watermark">
+            {exporting ? "Rendering…" : "Export PNG"}
+          </Button>
+          <Button size="xs" onClick={handleExportSvg} title="Download standalone SVG file">
             SVG
-          </button>
-          <button
-            type="button"
-            onClick={handleCopyLink}
-            className="button button-small"
-            title="Copy local query link to clipboard"
-          >
-            {copySuccess ? <><Icon name="check" size={14} />Copied</> : <><Icon name="copy" />Copy local URL</>}
-          </button>
+          </Button>
+          <Button size="xs" icon={copySuccess ? "check" : "copy"} onClick={handleCopyLink} title="Copy local query link to clipboard">
+            {copySuccess ? "Copied" : "Copy local URL"}
+          </Button>
         </div>
       </div>
 
@@ -279,24 +265,16 @@ export function ScatterPlotView({
         </div>
 
         {/* Outlier Labels Toggle */}
-        <button
-          type="button"
-          onClick={() => setShowOutlierLabels((prev) => !prev)}
-          className={`control-pill filter-action-pill ${showOutlierLabels ? "active" : ""}`}
-          title="Toggle visible text labels on statistical outliers"
-        >
+        <span className="filter-action-slot"><Chip size="xs" pressed={showOutlierLabels} onClick={() => setShowOutlierLabels((prev) => !prev)}
+          title="Toggle visible text labels on statistical outliers">
           Labels: {showOutlierLabels ? "On" : "Off"}
-        </button>
+        </Chip></span>
 
         {/* Data Table Toggle */}
-        <button
-          type="button"
-          onClick={() => setShowDataTable((prev) => !prev)}
-          className={`control-pill filter-action-pill ${showDataTable ? "active" : ""}`}
-          title="Toggle accessible chart data table below"
-        >
+        <span className="filter-action-slot"><Chip size="xs" pressed={showDataTable} onClick={() => setShowDataTable((prev) => !prev)}
+          title="Toggle accessible chart data table below">
           {showDataTable ? "Hide Table" : "Show Data Table"}
-        </button>
+        </Chip></span>
       </div>
 
       {/* Null/Missing Values Disclosure Banner */}

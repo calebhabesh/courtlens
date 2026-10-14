@@ -13,6 +13,8 @@ interface ControlLookProps {
   icon?: IconName;
   /** Trailing icon; a `chevron-down` gets the mirrored chevron offset. */
   iconAfter?: IconName;
+  /** One 4 px step less inline padding, for packed rows that must not wrap. */
+  dense?: boolean;
   /**
    * Layout only (margin, grid or flex placement). Size, padding and colour come from props; UC03
    * lint rejects size utilities here.
@@ -40,7 +42,7 @@ export interface ButtonProps extends ControlLookProps, Omit<ButtonHTMLAttributes
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { size = "md", variant = "secondary", tone, icon, iconAfter, loading = false, pressed, className, type = "button", disabled, children, ...props },
+  { size = "md", variant = "secondary", tone, icon, iconAfter, dense, loading = false, pressed, className, type = "button", disabled, children, ...props },
   ref,
 ) {
   return (
@@ -51,7 +53,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       aria-busy={loading || undefined}
       aria-pressed={pressed}
       data-kit="button"
-      className={cx(controlClasses({ size, variant, tone }), className)}
+      className={cx(controlClasses({ size, variant, tone, dense }), className)}
       {...props}
     >
       <Content size={size} icon={icon} iconAfter={iconAfter} loading={loading}>{children}</Content>
@@ -67,7 +69,7 @@ export interface ButtonLinkProps extends ControlLookProps, Omit<AnchorHTMLAttrib
 
 /** A link with button geometry (Next `Link`, so client navigation and prefetch still apply). */
 export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(function ButtonLink(
-  { size = "md", variant = "secondary", tone, icon, iconAfter, current, className, href, children, ...props },
+  { size = "md", variant = "secondary", tone, icon, iconAfter, dense, current, className, href, children, ...props },
   ref,
 ) {
   return (
@@ -76,7 +78,7 @@ export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(functio
       href={href}
       aria-current={current ? "page" : undefined}
       data-kit="button"
-      className={cx(controlClasses({ size, variant, tone }), className)}
+      className={cx(controlClasses({ size, variant, tone, dense }), className)}
       {...props}
     >
       <Content size={size} icon={icon} iconAfter={iconAfter}>{children}</Content>
@@ -87,9 +89,9 @@ export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(functio
 export interface ButtonSummaryProps extends ControlLookProps, Omit<HTMLAttributes<HTMLElement>, "className"> {}
 
 /** The `<summary>` of a `<details>` disclosure (for example "Why?"), with button geometry. */
-export function ButtonSummary({ size = "xs", variant = "ghost", tone, icon, iconAfter, className, children, ...props }: ButtonSummaryProps) {
+export function ButtonSummary({ size = "xs", variant = "ghost", tone, icon, iconAfter, dense, className, children, ...props }: ButtonSummaryProps) {
   return (
-    <summary data-kit="button" className={cx(controlClasses({ size, variant, tone }), "kit:list-none kit:[&::-webkit-details-marker]:hidden", className)} {...props}>
+    <summary data-kit="button" className={cx(controlClasses({ size, variant, tone, dense }), "kit:list-none kit:[&::-webkit-details-marker]:hidden", className)} {...props}>
       <Content size={size} icon={icon} iconAfter={iconAfter}>{children}</Content>
     </summary>
   );
@@ -99,11 +101,13 @@ export interface IconButtonProps extends Omit<ButtonProps, "icon" | "iconAfter" 
   icon: IconName;
   /** Required: the accessible name and the native tooltip. */
   label: string;
+  /** Filled glyph for an "on" toggle (for example a favourite star). */
+  filled?: boolean;
 }
 
 /** Square icon-only button. */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { size = "md", variant = "ghost", tone, icon, label, loading = false, pressed, className, type = "button", disabled, ...props },
+  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, className, type = "button", disabled, ...props },
   ref,
 ) {
   return (
@@ -119,7 +123,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       className={cx(controlClasses({ size, variant, tone, square: true }), className)}
       {...props}
     >
-      <Icon name={loading ? "loader" : icon} size={kitIconSize[size]} className={loading ? "ui-spinner" : undefined} />
+      <Icon name={loading ? "loader" : icon} size={kitIconSize[size]} filled={filled && !loading} className={loading ? "ui-spinner" : undefined} />
     </button>
   );
 });

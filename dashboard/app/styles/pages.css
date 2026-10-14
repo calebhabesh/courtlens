@@ -467,21 +467,6 @@
   padding-right: var(--space-8);
 }
 
-.filter-clear-btn {
-  position: absolute;
-  right: 0.5rem;
-  background: transparent;
-  border: 0;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  font-size: var(--text-md);
-  padding: var(--space-1);
-}
-
-.filter-clear-btn:hover {
-  color: var(--color-text);
-}
-
 /* Results Meta Banner */
 .stats-results-meta {
   display: flex;
@@ -953,7 +938,18 @@
   display: none;
 }
 
-.compare-tray-chip {
+.filter-clear-slot {
+  position: absolute;
+  right: var(--space-2);
+  display: inline-flex;
+}
+
+.filter-action-slot {
+  align-self: flex-end;
+  display: inline-flex;
+}
+
+.compare-tray-item {
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -972,20 +968,6 @@
   text-overflow: ellipsis;
 }
 
-.compare-tray-chip-remove {
-  background: transparent;
-  border: 0;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  font-size: var(--text-xs);
-  padding: var(--space-0-5);
-  display: grid;
-  place-items: center;
-}
-
-.compare-tray-chip-remove:hover {
-  color: var(--color-negative);
-}
 
 .compare-tray-actions {
   display: flex;
@@ -1396,7 +1378,6 @@
   position: static; transform: none; width: auto; max-width: 100%; margin-top: var(--space-4);
   border-radius: var(--radius-sm); box-shadow: none; animation: none;
 }
-.compare-tray-chip-remove { min-width: 36px; min-height: 36px; display: grid; place-items: center; }
 .research-table-scroll .data-table tbody td { min-height: 48px; padding-block: var(--space-3); }
 @media (max-width: 700px) {
   .stats-scroll-region { --identity-name-width: 190px; }
@@ -3476,11 +3457,6 @@
 .lines-empty-desc {
   max-width: 480px;
   margin: 0 auto var(--space-4);
-}
-
-.filter-action-pill {
-  align-self: flex-end;
-  min-height: 40px;
 }
 
 .scatter-svg-container,

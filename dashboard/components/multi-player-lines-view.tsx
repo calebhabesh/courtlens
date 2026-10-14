@@ -1,5 +1,6 @@
 "use client";
 import { Icon } from "./ui/icon";
+import { Button, Chip } from "./ui/kit";
 
 import { anchoredTooltip } from "@/lib/chart-anchor";
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
@@ -418,32 +419,16 @@ export function MultiPlayerLinesView({
 
         {/* Action Buttons: Export & Share */}
         <div className="lines-header-actions">
-          <button
-            type="button"
-            onClick={handleExportPng}
-            disabled={exporting || loading}
-            className="button button-small"
-            title="Download context-stamped PNG image with evidence watermark"
-          >
-            {exporting ? "Rendering…" : <><Icon name="download" />Export PNG</>}
-          </button>
-          <button
-            type="button"
-            onClick={handleExportSvg}
-            disabled={loading}
-            className="button button-small"
-            title="Download standalone SVG file"
-          >
+          <Button size="xs" icon={exporting ? undefined : "download"} onClick={handleExportPng} disabled={exporting || loading}
+            title="Download context-stamped PNG image with evidence watermark">
+            {exporting ? "Rendering…" : "Export PNG"}
+          </Button>
+          <Button size="xs" onClick={handleExportSvg} disabled={loading} title="Download standalone SVG file">
             SVG
-          </button>
-          <button
-            type="button"
-            onClick={handleCopyLink}
-            className="button button-small"
-            title="Copy local query link to clipboard"
-          >
-            {copySuccess ? <><Icon name="check" size={14} />Copied</> : <><Icon name="copy" />Copy local URL</>}
-          </button>
+          </Button>
+          <Button size="xs" icon={copySuccess ? "check" : "copy"} onClick={handleCopyLink} title="Copy local query link to clipboard">
+            {copySuccess ? "Copied" : "Copy local URL"}
+          </Button>
         </div>
       </div>
 
@@ -497,14 +482,10 @@ export function MultiPlayerLinesView({
         </div>
 
         {/* Data Table Toggle */}
-        <button
-          type="button"
-          onClick={() => setShowDataTable((prev) => !prev)}
-          className={`control-pill filter-action-pill ${showDataTable ? "active" : ""}`}
-          title="Toggle accessible chart data table"
-        >
+        <span className="filter-action-slot"><Chip size="xs" pressed={showDataTable} onClick={() => setShowDataTable((prev) => !prev)}
+          title="Toggle accessible chart data table">
           {showDataTable ? "Hide Table" : "Show Data Table"}
-        </button>
+        </Chip></span>
       </div>
 
       {loading && (
