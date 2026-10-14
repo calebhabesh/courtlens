@@ -48,4 +48,5 @@ Follow-up 35: the header photo uses Compare's ring and logo badge (shared `Playe
 specs and baselines unchanged, player baselines regenerated.
 
 Not done, awaiting the owner: the Basketball-Reference bio crawl (honours, awards column,
-birthplace, high school, shooting hand, debut) and the "now TOR" chip on Stats rows.
+birthplace, high school, shooting hand, debut). The "now TOR" chip on Stats rows was built as Stats
+instruction 72.

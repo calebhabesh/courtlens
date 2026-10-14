@@ -433,6 +433,16 @@ Teams strict-mode selector failure); Stats baselines regenerated and checked 2/2
 and real-data 1440/390 screenshots pass the glance test. Full measured evidence and source limits:
 [DARKO evidence](evidence/alignment/stats/darko/README.md).
 
+Follow-up instruction (owner, 2026-10-14, from the player page's current team):
+72. [x] Make it as clear as possible when a player now plays for a team other than the one his row's
+    stats belong to (off-season trades). — no CT column (empty for nearly every row); the row keeps
+    its games' team, and an active player listed with a team he has not played for in the latest
+    season gets a "now [logo] TOR" chip in place of the season label, titled "Played 2025-26 for the
+    LA Clippers. Now listed with the Toronto Raptors (NBA player index)." Older seasons, season
+    ranges, mid-season trades already on the row, free agents and retired players get none; on
+    phones the position and the word "now" give way so the chip fits. Rows carry `current_team`
+    from `mart_player_bio`; the rule is `lib/current-team.ts`.
+
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
@@ -533,6 +543,6 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
     avatar, 12% team colour fading out 32px beyond the ring; the header keeps that room so the halo
     has faded before the sticky filter bar.
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
-awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut) and a
-"now TOR" chip on the latest completed season's Stats rows when the current listing differs.
+awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut). The
+"now TOR" chip on Stats rows was approved and built as Stats instruction 72.
 Evidence: docs/evidence/alignment/players/ ([README](evidence/alignment/players/README.md)).

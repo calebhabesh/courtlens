@@ -132,7 +132,7 @@ def test_play_type_tracking_and_combine_views(marts):
 def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine(marts):
     from datetime import date
 
-    from courtlens.services.player_bio import age_on, player_bio
+    from courtlens.services.player_bio import age_on, current_teams, player_bio
 
     # Without the bio marts, draft and combine still serve and listings stay unknown.
     early = player_bio(marts, "99001", "2025-26", date(2026, 4, 13))
@@ -189,5 +189,10 @@ def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine
     undrafted = player_bio(marts, "99003", "2025-26", date(2026, 4, 13))
     assert undrafted["undrafted"] and undrafted["draft"] is None and undrafted["age"] is None
     assert undrafted["current_team"] is None  # No team in the index: a free agent or retired.
+    # Stats rows read the same listing; players without a team are left out.
+    assert current_teams(marts, ["99001", "99003", "missing"]) == {
+        "99001": {"team_id": "1610612761", "team_tricode": "TOR", "listing_season": "2026-27"}
+    }
+    assert current_teams(marts, []) == {}
     assert age_on(date(2004, 4, 20), date(2026, 4, 19)) == 21
     assert age_on(date(2004, 4, 20), date(2026, 4, 20)) == 22

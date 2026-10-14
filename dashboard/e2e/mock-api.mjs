@@ -168,6 +168,8 @@ const workbenchPlayers = {
       sample_sizes: { gp: 70 },
       stints: [{ team_id: "100", tricode: "TOR", name: "Toronto Raptors", games_played: 70 }],
       metrics: { ...playerMetrics, dpm: 6.2, o_dpm: 4.1, d_dpm: 2.1 },
+      // Listed with the team he played for: no "now" chip.
+      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27" },
       portrait_available: true,
       lineage_url: "/api/workbench/lineage?playerId=23"
     },
@@ -184,6 +186,8 @@ const workbenchPlayers = {
       sample_sizes: { gp: 68 },
       stints: [{ team_id: "200", tricode: "BOS", name: "Boston Celtics", games_played: 68 }],
       metrics: { ...playerMetrics, pts: 1500, pts_per_game: 22.0, dpm: 2.4, o_dpm: 1.7, d_dpm: 0.7 },
+      // Played the season for Boston, listed with Toronto since: the row shows "now TOR".
+      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27" },
       portrait_available: false,
       lineage_url: "/api/workbench/lineage?playerId=24"
     }

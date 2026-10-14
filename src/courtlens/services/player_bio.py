@@ -40,6 +40,33 @@ def _number(value: Any) -> float | None:
     return None if value is None else float(value)
 
 
+def _current_team(bio: dict[str, Any]) -> dict[str, Any] | None:
+    if not bio["listed_team_id"]:
+        return None
+    return {
+        "team_id": bio["listed_team_id"],
+        "team_tricode": team_tricode(bio["listed_team_id"]),
+        "listing_season": bio["index_season"],
+    }
+
+
+def current_teams(session: Session, player_ids: list[str]) -> dict[str, dict[str, Any]]:
+    """The latest NBA index listing for each player that has a team (active players only).
+
+    The listing names who a player plays for today; it never re-attributes a season's games.
+    """
+    if not player_ids or not _available(session, "mart_player_bio"):
+        return {}
+    rows = _rows(
+        session,
+        f"""SELECT player_id, listed_team_id, index_season FROM {_mart("mart_player_bio")}
+        WHERE player_id IN :ids""",
+        ids=player_ids,
+    )
+    found = {row["player_id"]: _current_team(row) for row in rows}
+    return {player_id: team for player_id, team in found.items() if team is not None}
+
+
 def player_bio(session: Session, player_id: str, season: str, before_date: date) -> dict[str, Any]:
     """Biography as of the page's scope: games before ``before_date`` in ``season``."""
     as_of = before_date - timedelta(days=1)
@@ -112,13 +139,7 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
             "weight_lbs": _number(row["weight_lbs"]),
         }
 
-    current_team = None
-    if bio is not None and bio["listed_team_id"]:
-        current_team = {
-            "team_id": bio["listed_team_id"],
-            "team_tricode": team_tricode(bio["listed_team_id"]),
-            "listing_season": bio["index_season"],
-        }
+    current_team = _current_team(bio) if bio is not None else None
 
     source = listing or bio
     birth_date = bio["birth_date"] if bio else listing["birth_date"] if listing else None

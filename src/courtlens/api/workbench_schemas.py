@@ -295,6 +295,14 @@ class ResearchQuerySchema(BaseModel):
     cursor: str | None = None
 
 
+class PlayerBioCurrentTeam(BaseModel):
+    """The team the latest NBA player index lists; not the team a season's games belong to."""
+
+    team_id: str
+    team_tricode: str | None
+    listing_season: str
+
+
 class PlayerResearchItem(BaseModel):
     player_id: str
     player_name: str
@@ -313,6 +321,8 @@ class PlayerResearchItem(BaseModel):
     table_cohort_sample_sizes: dict[str, int] | None = None
     # Estimated five-position label for the queried season (position-estimates-v1).
     position: Literal["PG", "SG", "SF", "PF", "C"] | None = None
+    # Who the player is listed with today (active players); the row's teams stay its games' teams.
+    current_team: PlayerBioCurrentTeam | None = None
 
 
 class DraftClass(BaseModel):
@@ -563,14 +573,6 @@ class PlayerBioCombine(BaseModel):
     wingspan_inches: float | None
     standing_reach_inches: float | None
     weight_lbs: float | None
-
-
-class PlayerBioCurrentTeam(BaseModel):
-    """The team the latest NBA player index lists; not the team a season's games belong to."""
-
-    team_id: str
-    team_tricode: str | None
-    listing_season: str
 
 
 class PlayerBioResponse(BaseModel):
