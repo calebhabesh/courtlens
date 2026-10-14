@@ -74,6 +74,11 @@ Write `docs/design/control-kit-v1.md` from measurements of the current site:
 
 Evidence: a measured table per page (13 pages from the control-padding check) and the mapping.
 
+**Done 2026-10-14:** [control kit v1](design/control-kit-v1.md). Owner decisions: four sizes
+(`xs` 28 / `sm` 32 / `md` 36 / `lg` 40) instead of three, so no control changes height by adopting
+the scale; keep the current chevron offset. The spec lists the deliberate changes C1–C12 that each
+UC04 batch brings to the owner with before/after screenshots.
+
 ### UC02 — Kit
 
 Build or extend in `components/ui/`, each with its own CSS file:
