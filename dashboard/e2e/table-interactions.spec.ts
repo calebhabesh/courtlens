@@ -27,11 +27,12 @@ async function personalFixture(page: import("@playwright/test").Page, compareTra
 test("recurring guide modes preserve primary identity, header alignment and reload", async ({ page }) => {
   await personalFixture(page); await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
   const row = page.locator(".dense-stats-table tbody tr").first();
-  const guides = page.getByRole("group", { name: "Group guides", exact: true });
-  for (const mode of ["Photos", "Logos", "Initials", "None"]) {
+  const guides = page.getByRole("group", { name: "Table Divider", exact: true });
+  // Photos is the default, so an initial click on it is a no-op; start elsewhere.
+  for (const mode of ["Logos", "Photos", "Initials", "None"]) {
     await guides.getByRole("button", { name: mode, exact: true }).click();
     await page.waitForURL(url => url.searchParams.get("identityMode") === mode.toLowerCase());
-    await expect(row.locator(".stats-guide-cell")).toHaveCount(mode === "None" ? 0 : 3);
+    await expect(row.locator(".stats-guide-cell")).toHaveCount(mode === "None" ? 0 : 5);
     await expect(row.locator(".stats-primary-portrait")).toHaveCount(1);
     await expect(row.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
     expect(await row.locator(".stats-guide-cell [tabindex]").count()).toBe(0);
@@ -60,14 +61,15 @@ test("recurring guide modes preserve primary identity, header alignment and relo
 });
 
 test("keyboard sorting, single compare shortcut and drawer focus stay scoped", async ({ page }) => {
-  const fixture = await personalFixture(page); await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
-  const sort = page.getByRole("button", { name: "Sort by PPG", exact: true });
+  const fixture = await personalFixture(page); await openWorkbench(page, "/stats?sortMetric=pts_per_game&sortDirection=desc"); await page.waitForLoadState("networkidle");
+  const sort = page.getByRole("button", { name: "Sort by PTS", exact: true });
   await sort.focus(); await sort.press("Space"); await page.waitForURL(/sortDirection=asc/);
   await expect(sort.locator("..")).toHaveAttribute("aria-sort", "ascending");
   const row = page.locator(".dense-stats-table tbody tr[data-player-id='23']");
-  await row.focus(); await page.keyboard.press("c"); await expect(row.getByRole("checkbox")).toBeChecked();
+  await row.focus(); await page.keyboard.press("c");
+  await expect(row.getByRole("button", { name: "Remove Fixture Star from comparison", exact: true })).toHaveAttribute("aria-pressed", "true");
   expect(fixture.adds()).toBe(1);
-  await page.getByRole("combobox", { name: "Filter players by name", exact: true }).fill("c"); await page.getByRole("combobox", { name: "Filter players by name", exact: true }).press("c");
+  await page.getByRole("searchbox", { name: "Filter players by name", exact: true }).fill("c"); await page.getByRole("searchbox", { name: "Filter players by name", exact: true }).press("c");
   await page.locator("h1").click(); await page.keyboard.press("c"); expect(fixture.adds()).toBe(1);
   const detail = row.getByRole("button", { name: "Open details for Fixture Star" }); await detail.click();
   const dialog = page.getByRole("dialog", { name: "Fixture Star", exact: true }); await expect(dialog).toBeVisible();
@@ -89,9 +91,10 @@ test("selection failure remains actionable and does not change the selected row"
   await page.route("**/api/workspace/compare-tray/**", route => route.fulfill({ status: 503, json: { detail: "Selection service unavailable. Try again." } }));
   await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
   const row = page.locator(".dense-stats-table tbody tr").first();
-  await row.getByRole("checkbox").click();
+  const toggle = row.locator(".stats-compare-toggle");
+  await toggle.click();
   await expect(page.locator(".stats-action-error[role=alert]")).toContainText("Selection service unavailable. Try again.");
-  await expect(row.getByRole("checkbox")).not.toBeChecked();
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
   await page.getByRole("button", { name: "Dismiss", exact: true }).click();
   await expect(page.locator(".stats-action-error")).toHaveCount(0);
 });

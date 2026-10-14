@@ -25,6 +25,16 @@ describe("ReplicaNav context-preserving navigation links", () => {
     expect(parsed.searchParams.get("releaseId")).toBe("rel_snapshot_123");
   });
 
+  it("site navigation drops release and model pins so old links cannot trap the site", () => {
+    const current = new URLSearchParams({
+      season: "2024-25", phase: "playoffs", releaseId: "retired", darkoManifest: "old", impactManifest: "old", release_id: "retired"
+    });
+    const parsed = new URL(buildPreservedContextUrl("/stats", current, { dropPins: true }), "https://courtlens.local");
+    expect(parsed.searchParams.get("season")).toBe("2024-25");
+    expect(parsed.searchParams.get("phase")).toBe("playoffs");
+    for (const pin of ["releaseId", "release_id", "darkoManifest", "impactManifest"]) expect(parsed.searchParams.has(pin)).toBe(false);
+  });
+
   it("does not leak transient query params (cursor, name, sort) to new pages", () => {
     const current = new URLSearchParams({
       season: "2025-26",

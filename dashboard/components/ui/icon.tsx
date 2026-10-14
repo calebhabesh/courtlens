@@ -4,7 +4,8 @@ import {
   Check, ChevronUp, Loader2, Info, AlertTriangle, Command, SlidersHorizontal, MoreHorizontal, Sparkles, Filter, Calendar, Database,
   CornerDownLeft, History, FileText, ArrowLeftRight, Lock, Plus, User, Table2, BarChart3, TrendingUp, LayoutGrid,
   Save, Scale, RefreshCw, Camera, Zap, RotateCcw, ExternalLink, HelpCircle, Maximize2, Keyboard, Eye, EyeOff, Columns3,
-  ChartNoAxesColumn, ChartNoAxesCombined, ChartScatter, Minimize2, Pin, PinOff, UserRound
+  ChartNoAxesColumn, ChartNoAxesCombined, ChartScatter, Minimize2, Pin, PinOff, UserRound, Users, CirclePlus, CircleCheck,
+  GraduationCap, ArrowDownAZ, ArrowDownZA
 } from "lucide-react";
 
 // D26: Lucide only, always through this wrapper (lint bans `lucide-react` elsewhere). One stroke
@@ -21,7 +22,9 @@ const icons = {
   cards: LayoutGrid, save: Save, scale: Scale, refresh: RefreshCw, camera: Camera, zap: Zap, reset: RotateCcw,
   external: ExternalLink, help: HelpCircle, expand: Maximize2, keyboard: Keyboard, eye: Eye, "eye-off": EyeOff,
   columns: Columns3, "chart-column": ChartNoAxesColumn, "chart-line": ChartNoAxesCombined, scatter: ChartScatter,
-  collapse: Minimize2, pin: Pin, unpin: PinOff, person: UserRound
+  collapse: Minimize2, pin: Pin, unpin: PinOff, person: UserRound, users: Users, "circle-plus": CirclePlus,
+  "circle-check": CircleCheck, graduation: GraduationCap,
+  "sort-az": ArrowDownAZ, "sort-za": ArrowDownZA
 };
 
 export type IconName = keyof typeof icons;
@@ -33,5 +36,5 @@ export type IconSize = 14 | 16 | 20;
  */
 export function Icon({ name, className = "", size = 16, filled = false }: { name: IconName; className?: string; size?: IconSize; filled?: boolean }) {
   const Glyph = icons[name];
-  return <Glyph className={`ui-icon ${filled ? "ui-icon-filled" : ""} ${className}`} size={size} strokeWidth={2} aria-hidden="true" focusable="false" />;
+  return <Glyph className={`ui-icon ui-icon-${size} ${filled ? "ui-icon-filled" : ""} ${className}`} size={size} strokeWidth={2} aria-hidden="true" focusable="false" />;
 }

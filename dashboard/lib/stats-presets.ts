@@ -26,6 +26,8 @@ export interface ColumnDefinition {
   sortMetric: string;
   format?: (val: number | null | undefined, item?: PlayerResearchItem) => string;
   countingModeKeys?: Partial<Record<CountingMode, string>>;
+  /** Keep this label and format under every counting mode instead of the catalog entry's (Overview). */
+  keepLabel?: boolean;
 }
 
 /** Table and preview must display the same server-owned value and normalization. */
@@ -142,10 +144,100 @@ export const IMPACT_COLUMNS: Record<string, ColumnDefinition> = Object.fromEntri
   impactDefinitions.metrics.map(metric => [metric.key, {
     key: metric.key, label: metric.short_name, group: metric.category === "impact" ? "CourtLens impact" : "CourtLens extras",
     num: true, sortMetric: metric.key, tooltip: `${metric.display_name}: ${metric.formula}. ${metric.unit}. ${metric.validity_definition}`,
+    // Plain sums (charges drawn, rim assists, bad-pass turnovers) are whole counts.
     format: (value: number | null | undefined) => metric.unit === "ratio" || metric.unit === "ratio difference"
-      ? formatPctValue(value) : formatStatValue(value, 2)
+      ? formatPctValue(value) : metric.aggregation_recipe === "sum" ? formatIntValue(value) : formatStatValue(value, 2)
   }])
 );
+
+/**
+ * A column's plain full name for chart titles ("True Shooting %"), without the formula or sample
+ * notes its tooltip carries; formulas stay in hover text and the glossary.
+ */
+export function columnName(column: Pick<ColumnDefinition, "label" | "tooltip">): string {
+  const name = (column.tooltip ?? "").split(":")[0].replace(/\s*\([^)]*\)\s*$/, "").trim();
+  return name && name !== column.label ? name : column.label;
+}
+
+/** Chart axis title: abbreviation plus its plain name, e.g. "TS% (True Shooting %)". */
+export function axisTitle(column: Pick<ColumnDefinition, "label" | "tooltip">): string {
+  const name = columnName(column);
+  return name === column.label ? column.label : `${column.label} (${name})`;
+}
+
+/** Signed one-decimal impact estimate, as Databallr shows its DPM family (+1.9). */
+export function formatSignedValue(val: number | null | undefined): string {
+  if (val === null || val === undefined || isNaN(val)) return "—";
+  return `${val > 0 ? "+" : ""}${val.toFixed(1)}`;
+}
+
+/** A ratio difference shown as signed percentage points (rTS +8.9). */
+export function formatSignedPctPoints(val: number | null | undefined): string {
+  if (val === null || val === undefined || isNaN(val)) return "—";
+  return formatSignedValue(val * 100);
+}
+
+/** A count that follows the counting mode: per game, totals or per 36 (totals as integers). */
+function countingColumn(base: string, label: string, group: string, name: string, raw = base): ColumnDefinition {
+  return {
+    key: `${base}_per_game`, label, group, num: true, sortMetric: `${base}_per_game`,
+    format: (v, it) => (v == null ? "—" : Number.isInteger(v) && it?.metrics[raw] === v ? formatIntValue(v) : formatStatValue(v, 1)),
+    countingModeKeys: { raw, per_game: `${base}_per_game`, per_36: `${base}_per_36` },
+    tooltip: `${name} (respects counting mode)`,
+    keepLabel: true
+  };
+}
+
+const oneDecimal = (v: number | null | undefined) => formatStatValue(v, 1);
+
+/** Published DARKO forecasts, separate from CourtLens' descriptive BPR fits. */
+export const DARKO_COLUMNS: Record<string, ColumnDefinition> = Object.fromEntries(
+  [["dpm", "DPM", "Daily Plus-Minus"], ["o_dpm", "ODPM", "Offensive Daily Plus-Minus"],
+    ["d_dpm", "DDPM", "Defensive Daily Plus-Minus"]].map(([key, label, name]) => [key, {
+    key, label, group: "Impact", num: true, sortMetric: key, format: formatSignedValue, keepLabel: true,
+    tooltip: `${name}: DARKO by Kostya Medvedovsky (darko.app). Latest retrospective pregame forecast at the phase's last admitted game date; points per 100 possessions, higher is better. Not a season average.`
+  }])
+);
+
+/**
+ * courtlens-stats-v4 columns. Impact-derived ones need the sealed impact manifest like
+ * IMPACT_COLUMNS; tracking ones are full-season NBA tracking totals (null in shorter scopes).
+ */
+export const V4_IMPACT_COLUMNS: Record<string, ColumnDefinition> = {
+  rim_ast_per_game: { key: "rim_ast_per_game", label: "Rim AST", group: "Playmaking", num: true, sortMetric: "rim_ast_per_game", format: oneDecimal, tooltip: "Rim assists per game" },
+  rim_ast_per_36: { key: "rim_ast_per_36", label: "Rim AST/36", group: "Playmaking", num: true, sortMetric: "rim_ast_per_36", format: oneDecimal, tooltip: "Rim assists per 36 minutes" },
+  rim_ast_per100: { key: "rim_ast_per100", label: "Rim AST/100", group: "Playmaking", num: true, sortMetric: "rim_ast_per100", format: oneDecimal, tooltip: "Rim assists per 100 offensive possessions" },
+  offensive_load: { key: "offensive_load", label: "Load", group: "Playmaking", num: true, sortMetric: "offensive_load", format: oneDecimal, tooltip: "Offensive Load per 100 possessions" },
+  ctov_pct: { key: "ctov_pct", label: "cTOV%", group: "Efficiency", num: true, sortMetric: "ctov_pct", format: formatPctValue, tooltip: "Creation-adjusted turnover %" }
+};
+
+export const TRACKING_COLUMNS: Record<string, ColumnDefinition> = {
+  on_ball_pct: { key: "on_ball_pct", label: "OnBall%", group: "Tracking", num: true, sortMetric: "on_ball_pct", format: formatPctValue, tooltip: "Share of court time with the ball" },
+  pts_created: { key: "pts_created", label: "PTS Created", group: "Tracking", num: true, sortMetric: "pts_created", format: formatIntValue, tooltip: "Points plus points from assists" },
+  pts_created_per_game: { key: "pts_created_per_game", label: "PTS Created", group: "Tracking", num: true, sortMetric: "pts_created_per_game", format: oneDecimal, tooltip: "Points created per game" },
+  pts_created_per_36: { key: "pts_created_per_36", label: "PTS Created/36", group: "Tracking", num: true, sortMetric: "pts_created_per_36", format: oneDecimal, tooltip: "Points created per 36 minutes" }
+};
+
+const V4_BOX_COLUMNS: Record<string, ColumnDefinition> = {
+  fg2m: { key: "fg2m", label: "2PM", group: "Shooting", num: true, sortMetric: "fg2m", format: formatIntValue, tooltip: "Two-pointers made" },
+  fg2a: { key: "fg2a", label: "2PA", group: "Shooting", num: true, sortMetric: "fg2a", format: formatIntValue, tooltip: "Two-pointers attempted" },
+  fg2_pct: { key: "fg2_pct", label: "2P%", group: "Shooting", num: true, sortMetric: "fg2_pct", format: formatPctValue, tooltip: "Two-point percentage" },
+  ...Object.fromEntries((["fgm", "fga", "fg3m", "fg3a", "ftm", "fta"] as const).map(stem => {
+    const label = { fgm: "FGM", fga: "FGA", fg3m: "3PM", fg3a: "3PA", ftm: "FTM", fta: "FTA" }[stem];
+    const key = `${stem}_per_game`;
+    return [key, { key, label: `${label}/G`, group: "Shooting", num: true, sortMetric: key, format: oneDecimal, tooltip: `${label} per game` }];
+  }))
+};
+
+/** Columns whose values come from the sealed impact bundle, so the query must pin its manifest. */
+export function usesImpactManifest(key: string): boolean {
+  return key in IMPACT_COLUMNS || key in V4_IMPACT_COLUMNS;
+}
+
+/** Columns only in courtlens-stats-v4 (custom views that use them save under v4). */
+export function isV4Column(key: string): boolean {
+  return key in V4_IMPACT_COLUMNS || key in TRACKING_COLUMNS || key in V4_BOX_COLUMNS || key in DARKO_COLUMNS;
+}
 
 function impactColumns(keys: string[], group: string): ColumnDefinition[] {
   return keys.map(key => ({ ...IMPACT_COLUMNS[key], group }));
@@ -154,68 +246,39 @@ function impactColumns(keys: string[], group: string): ColumnDefinition[] {
 export const STATS_PRESETS: PresetDefinition[] = [
   {
     id: "overview",
-    groupLabels: { Participation: "Profile", Scoring: "Counting", Rebounding: "Counting", Playmaking: "Counting" },
+    // Owner order (2026-10-12): Profile, Impact, Counting, Efficiency, Shooting, Other.
+    // DPM-family slots use the explicitly dated DARKO forecast (source policy v3).
+    groupLabels: { Participation: "Profile", Impact: "Impact", Counting: "Counting", Efficiency: "Eff", Shooting: "Shooting", Other: "Other" },
     label: "Overview",
-    description: "Core box-score volume, conventional averages, and efficiency benchmarks.",
+    description: "Core box-score volume, impact estimates and efficiency benchmarks.",
     columns: [
       { key: "gp", label: "GP", group: "Participation", num: true, sortMetric: "gp", format: formatIntValue, tooltip: "Games Played (confirmed appearances)" },
       { key: "min", label: "MIN", group: "Participation", num: true, sortMetric: "min", format: formatIntValue, tooltip: "Total Minutes Played" },
       { key: "min_per_game", label: "MPG", group: "Participation", num: true, sortMetric: "min_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Minutes Per Game" },
-      {
-        key: "pts_per_game",
-        label: "PTS",
-        group: "Scoring",
-        num: true,
-        sortMetric: "pts_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.pts)),
-        countingModeKeys: { raw: "pts", per_game: "pts_per_game", per_36: "pts_per_36" },
-        tooltip: "Points (respects counting mode)"
-      },
-      {
-        key: "reb_per_game",
-        label: "REB",
-        group: "Rebounding",
-        num: true,
-        sortMetric: "reb_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.reb)),
-        countingModeKeys: { raw: "reb", per_game: "reb_per_game", per_36: "reb_per_36" },
-        tooltip: "Total Rebounds (respects counting mode)"
-      },
-      {
-        key: "ast_per_game",
-        label: "AST",
-        group: "Playmaking",
-        num: true,
-        sortMetric: "ast_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.ast)),
-        countingModeKeys: { raw: "ast", per_game: "ast_per_game", per_36: "ast_per_36" },
-        tooltip: "Assists (respects counting mode)"
-      },
-      {
-        key: "stl_per_game",
-        label: "STL",
-        group: "Defense",
-        num: true,
-        sortMetric: "stl_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.stl)),
-        countingModeKeys: { raw: "stl", per_game: "stl_per_game", per_36: "stl_per_36" },
-        tooltip: "Steals (respects counting mode)"
-      },
-      {
-        key: "blk_per_game",
-        label: "BLK",
-        group: "Defense",
-        num: true,
-        sortMetric: "blk_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.blk)),
-        countingModeKeys: { raw: "blk", per_game: "blk_per_game", per_36: "blk_per_36" },
-        tooltip: "Blocks (respects counting mode)"
-      },
-      { key: "fg_pct", label: "FG%", group: "Efficiency", num: true, sortMetric: "fg_pct", format: formatPctValue, tooltip: "Field Goal Percentage (FGM / FGA)" },
-      { key: "fg3_pct", label: "3P%", group: "Efficiency", num: true, sortMetric: "fg3_pct", format: formatPctValue, tooltip: "3-Point Field Goal Percentage (3PM / 3PA)" },
-      { key: "ft_pct", label: "FT%", group: "Efficiency", num: true, sortMetric: "ft_pct", format: formatPctValue, tooltip: "Free Throw Percentage (FTM / FTA)" },
+      { ...TRACKING_COLUMNS.on_ball_pct, group: "Participation", keepLabel: true },
+      DARKO_COLUMNS.dpm,
+      DARKO_COLUMNS.o_dpm,
+      DARKO_COLUMNS.d_dpm,
+      // The three headline counts first, then creation (points created, rim assists) and TOV.
+      countingColumn("pts", "PTS", "Counting", "Points"),
+      countingColumn("reb", "REB", "Counting", "Total Rebounds"),
+      countingColumn("ast", "AST", "Counting", "Assists"),
+      countingColumn("pts_created", "PTS Created", "Counting", "Points created", "pts_created"),
+      countingColumn("rim_ast", "Rim AST", "Counting", "Rim assists", "pbp_rim_assists"),
+      countingColumn("tov", "TOV", "Counting", "Turnovers"),
       { key: "ts_pct", label: "TS%", group: "Efficiency", num: true, sortMetric: "ts_pct", format: formatPctValue, tooltip: "True Shooting %: PTS / (2 * (FGA + 0.44 * FTA))" },
-      { key: "efg_pct", label: "eFG%", group: "Efficiency", num: true, sortMetric: "efg_pct", format: formatPctValue, tooltip: "Effective Field Goal %: (FGM + 0.5 * 3PM) / FGA" }
+      { ...IMPACT_COLUMNS.impact_rts, label: "rTS%", group: "Efficiency", format: formatSignedPctPoints, keepLabel: true },
+      { key: "efg_pct", label: "eFG%", group: "Efficiency", num: true, sortMetric: "efg_pct", format: formatPctValue, tooltip: "Effective Field Goal %: (FGM + 0.5 * 3PM) / FGA" },
+      { ...V4_IMPACT_COLUMNS.ctov_pct, keepLabel: true },
+      { ...V4_BOX_COLUMNS.fg2_pct, keepLabel: true },
+      { key: "fg3_pct", label: "3P%", group: "Shooting", num: true, sortMetric: "fg3_pct", format: formatPctValue, tooltip: "3-Point Field Goal Percentage (3PM / 3PA)" },
+      countingColumn("fg3a", "3PA", "Shooting", "Three-point attempts"),
+      { key: "ft_pct", label: "FT%", group: "Shooting", num: true, sortMetric: "ft_pct", format: formatPctValue, tooltip: "Free Throw Percentage (FTM / FTA)" },
+      countingColumn("fta", "FTA", "Shooting", "Free throw attempts"),
+      countingColumn("oreb", "OREB", "Other", "Offensive Rebounds"),
+      countingColumn("dreb", "DREB", "Other", "Defensive Rebounds"),
+      countingColumn("stl", "STL", "Other", "Steals"),
+      countingColumn("blk", "BLK", "Other", "Blocks")
     ]
   },
   {
@@ -232,7 +295,7 @@ export const STATS_PRESETS: PresetDefinition[] = [
         num: true,
         sortMetric: "fga",
         format: (v, it) => (v !== undefined ? formatIntValue(v) : formatIntValue(it?.metrics.fga)),
-        countingModeKeys: { raw: "fga", per_game: "fga", per_36: "fga_per_36" },
+        countingModeKeys: { raw: "fga", per_game: "fga_per_game", per_36: "fga_per_36" },
         tooltip: "Field Goal Attempts"
       },
       { key: "fg_pct", label: "FG%", group: "Field Goals", num: true, sortMetric: "fg_pct", format: formatPctValue, tooltip: "Field Goal Percentage" },
@@ -244,7 +307,7 @@ export const STATS_PRESETS: PresetDefinition[] = [
         num: true,
         sortMetric: "fg3a",
         format: (v, it) => (v !== undefined ? formatIntValue(v) : formatIntValue(it?.metrics.fg3a)),
-        countingModeKeys: { raw: "fg3a", per_game: "fg3a", per_36: "fg3a_per_36" },
+        countingModeKeys: { raw: "fg3a", per_game: "fg3a_per_game", per_36: "fg3a_per_36" },
         tooltip: "3-Point Field Goal Attempts"
       },
       { key: "fg3_pct", label: "3P%", group: "3-Pointers", num: true, sortMetric: "fg3_pct", format: formatPctValue, tooltip: "3-Point Percentage" },
@@ -256,7 +319,7 @@ export const STATS_PRESETS: PresetDefinition[] = [
         num: true,
         sortMetric: "fta",
         format: (v, it) => (v !== undefined ? formatIntValue(v) : formatIntValue(it?.metrics.fta)),
-        countingModeKeys: { raw: "fta", per_game: "fta", per_36: "fta_per_36" },
+        countingModeKeys: { raw: "fta", per_game: "fta_per_game", per_36: "fta_per_36" },
         tooltip: "Free Throw Attempts"
       },
       { key: "ft_pct", label: "FT%", group: "Free Throws", num: true, sortMetric: "ft_pct", format: formatPctValue, tooltip: "Free Throw Percentage" },
@@ -402,12 +465,13 @@ export const STATS_PRESETS: PresetDefinition[] = [
 
 ];
 
+// Plain headings for the play-by-play extras each view appends (was "CourtLens public-source sample").
+const EXTRAS_GROUP: Record<string, string> = { defense: "Advanced Defense", advanced: "Advanced" };
 for (const [id, keys] of Object.entries({
-  defense: ["drapm", "dbpr", "d_ts", "d_tov", "d_reb", "pbp_stl_per100", "pbp_blk_per100", "pbp_drb_pct", "pbp_foul_frequency", "pbp_block_recovered_pct", "matchup_fga_per100", "pbp_charges_drawn", "pbp_credited_ftov_per100"],
-  advanced: ["impact_ts_pct", "impact_rts", "impact_tsadd_per100", "impact_three_point_rate", "impact_ftr", "impact_ast_per100", "pbp_bad_pass_tov", "pbp_rim_assists", "pbp_self_miss_orb_pct", "pbp_team_miss_orb_pct"],
-  trueshooting: impactDefinitions.metrics.filter(metric => /^pbp_(create|space|trans|finish|unknown)_/.test(metric.key)).map(metric => metric.key)
+  defense: ["drapm", "dbpr", "d_ts", "d_tov", "d_reb", "pbp_stl_per100", "pbp_blk_per100", "pbp_drb_pct", "pbp_foul_frequency", "matchup_fga_per100", "pbp_charges_drawn"],
+  advanced: ["impact_rts", "impact_tsadd_per100", "impact_three_point_rate", "impact_ast_per100", "pbp_bad_pass_tov", "pbp_rim_assists", "pbp_self_miss_orb_pct", "pbp_team_miss_orb_pct"]
 })) {
-  STATS_PRESETS.find(preset => preset.id === id)?.columns.push(...impactColumns(keys, "CourtLens public-source sample"));
+  STATS_PRESETS.find(preset => preset.id === id)?.columns.push(...impactColumns(keys, EXTRAS_GROUP[id]));
 }
 
 // Comprehensive catalog of registered and formatted metrics for column selection
@@ -470,10 +534,20 @@ export const ALL_CATALOG_METRICS: Record<string, ColumnDefinition> = {
   pf_per_36: { key: "pf_per_36", label: "PF/36", group: "Fouls", num: true, sortMetric: "pf_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Personal Fouls Per 36 Minutes" },
 
   ...IMPACT_COLUMNS,
+  ...V4_IMPACT_COLUMNS,
+  ...TRACKING_COLUMNS,
+  ...DARKO_COLUMNS,
+  ...V4_BOX_COLUMNS,
 
   // Gated / Unavailable Metrics
   six_factor_impact: { key: "six_factor_impact", label: "SIX FACTOR", group: "Impact", num: true, sortMetric: "six_factor_impact", tooltip: "Six-Factor RAPM Impact; requires admitted inputs", format: () => "—" }
 };
+
+/** Owner, 2026-10-13: the column picker hides the always-empty Six Factor placeholder. (The PBP
+ * play-type "analogue" buckets were retired from the API entirely.) */
+export function isPickerDeadEnd(key: string): boolean {
+  return key === "six_factor_impact";
+}
 
 export function buildCustomViewPreset(customView: CustomViewDefinition): PresetDefinition {
   const unavailableSet = new Set(customView.unavailable_columns ?? []);
@@ -601,6 +675,13 @@ export function calculateCohortPercentiles(
 
   return result;
 }
+
+/** View tab order shared by the Stats table and the player career table. */
+const PRESET_ORDER: PresetId[] = ["overview", "shooting", "impact", "onoff", "sixfactor", "advanced", "defense", "trueshooting"];
+export const ORDERED_PRESETS = [...STATS_PRESETS].sort((a, b) =>
+  (PRESET_ORDER.indexOf(a.id) + 1 || PRESET_ORDER.length + 1) - (PRESET_ORDER.indexOf(b.id) + 1 || PRESET_ORDER.length + 1));
+/** Per Game, Per 36, Per 75, Per 100, then Totals (Databallr's order). */
+export const ORDERED_COUNTING_MODES = [...COUNTING_MODES.filter(mode => mode.id !== "raw"), ...COUNTING_MODES.filter(mode => mode.id === "raw")];
 
 /** Contiguous runs preserve custom column order, including repeated group names. */
 export function tableGroups(preset: PresetDefinition): Array<HeaderGroup & { start: number }> {

@@ -10,6 +10,7 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from courtlens.domain.impact_extras_catalog import RETIRED_METRICS
 from courtlens.domain.metrics import METRIC_CATALOG_V2
 from courtlens.domain.query_spec import ALLOWED_METADATA_FIELDS, get_allowed_query_fields
 
@@ -37,7 +38,7 @@ class CustomViewDefinition(BaseModel):
 
     id: str = Field(default_factory=lambda: str(uuid4()), min_length=1, max_length=100)
     name: str = Field(min_length=1, max_length=100)
-    metric_version: Literal["v2", "courtlens-stats-v3"] = "v2"
+    metric_version: Literal["v2", "courtlens-stats-v3", "courtlens-stats-v4"] = "v2"
     unavailable_columns: list[str] = Field(default_factory=list)
     columns: list[str] = Field(default_factory=list)
     sort_field: str | None = None
@@ -45,6 +46,20 @@ class CustomViewDefinition(BaseModel):
     is_default: bool = False
     created_at: str = Field(default_factory=utc_now_iso)
     updated_at: str = Field(default_factory=utc_now_iso)
+
+    @model_validator(mode="before")
+    @classmethod
+    def drop_retired_metrics(cls, data: Any) -> Any:
+        """Saved views keep loading after a metric is retired; the retired column is dropped."""
+        if not isinstance(data, dict):
+            return data
+        cleaned = dict(data)
+        for field in ("columns", "unavailable_columns"):
+            if isinstance(cleaned.get(field), list):
+                cleaned[field] = [key for key in cleaned[field] if key not in RETIRED_METRICS]
+        if cleaned.get("sort_field") in RETIRED_METRICS:
+            cleaned["sort_field"] = None
+        return cleaned
 
     @model_validator(mode="after")
     def validate_definition(self) -> CustomViewDefinition:

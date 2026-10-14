@@ -55,7 +55,13 @@ from courtlens.workbench_models import (
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_WORKBENCH_SEASONS = [2024, 2025, 2026, 2027]  # 2023-24 through 2026-27
+# 2000-01 through 2026-27. Stats alignment 43 (owner, 2026-10-13): history back to 2000-01 like
+# Databallr; a refresh must republish every admitted season, never only the recent ones.
+DEFAULT_WORKBENCH_SEASONS = list(range(2001, 2028))
+# Parser identity is part of dataset membership, so a normalization fix yields a new dataset
+# instead of silently reusing one parsed by the old rules. v2: person_id 0 placeholders quarantined;
+# v3: whole-minute values ("26") parse as 26:00.
+WORKBENCH_PARSER_VERSION = "workbench-v3"
 
 
 def _dbt_workbench_env(database_url: str, schema: str = "analytics") -> dict[str, str]:
@@ -181,7 +187,7 @@ def import_workbench_data(
     # 1. Compute aggregate content hash across raw files
     overall_content_sha256, seasons_meta, files_to_hash = workbench_content_sha256(years, root)
     membership_sha256 = hashlib.sha256(
-        f"{overall_content_sha256}:{','.join(sorted(seasons_meta))}".encode()
+        f"{overall_content_sha256}:{','.join(sorted(seasons_meta))}:{WORKBENCH_PARSER_VERSION}".encode()
     ).hexdigest()
 
     # 2. Check if a WorkbenchDataset with these hashes already exists
@@ -337,7 +343,7 @@ def import_workbench_data(
             membership_sha256=membership_sha256,
             semantic_signature=semantic_signature,
             source_namespace="sportsdataverse",
-            parser_version="workbench-v1",
+            parser_version=WORKBENCH_PARSER_VERSION,
             quality_version="reconciliation-v1",
             seasons_json=seasons_meta,
             phases_json=["regular_season", "preseason", "playoffs", "play_in", "cup_final"],
@@ -407,19 +413,30 @@ def import_workbench_data(
         session.add(acq)
         session.flush()
 
-        art_id = new_uuid()
-        art = WorkbenchArtifact(
-            id=art_id,
-            sha256=overall_content_sha256,
-            resource=f"sportsdataverse-{years[0]}-{years[-1]}",
-            storage_path=str(root),
-            mime_type="application/csv+gzip",
-            bytes=total_bytes,
-            source_attribution="SportsDataverse NBA Stats release",
-            acquired_at=utc_now(),
+        # Raw content is content-addressed: a re-parse of identical files (new parser version)
+        # reuses the retained artifact instead of duplicating it.
+        resource = f"sportsdataverse-{years[0]}-{years[-1]}"
+        art_id = session.scalar(
+            select(WorkbenchArtifact.id).where(
+                WorkbenchArtifact.sha256 == overall_content_sha256,
+                WorkbenchArtifact.resource == resource,
+            )
         )
-        session.add(art)
-        session.flush()
+        if art_id is None:
+            art_id = new_uuid()
+            session.add(
+                WorkbenchArtifact(
+                    id=art_id,
+                    sha256=overall_content_sha256,
+                    resource=resource,
+                    storage_path=str(root),
+                    mime_type="application/csv+gzip",
+                    bytes=total_bytes,
+                    source_attribution="SportsDataverse NBA Stats release",
+                    acquired_at=utc_now(),
+                )
+            )
+            session.flush()
 
         # Generic shared version & observation for dataset rows
         ident_sample = session.scalar(select(WorkbenchIdentity.id).limit(1))
@@ -430,7 +447,7 @@ def import_workbench_data(
             id=ver_id,
             identity_id=ident_sample,
             content_sha256=overall_content_sha256,
-            parser_version="workbench-v1",
+            parser_version=WORKBENCH_PARSER_VERSION,
             payload_json={"years": years},
         )
         session.add(ver)

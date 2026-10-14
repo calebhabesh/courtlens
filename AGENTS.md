@@ -10,7 +10,7 @@ For polish/freeze UI, query-correctness or hybrid-assistant work, read the [conf
 
 For Ask/assistant work (chat UI, planner reliability, general-knowledge answers, narrative, streaming, assistant panel or assistant eval), read the [assistant revamp handoff](docs/assistant-revamp-plan.md) first. It supersedes the freeze handoff for the Ask experience only and keeps its analytical contracts. Record evidence in the [revamp progress log](docs/assistant-revamp-progress.md).
 
-For the Ask agent rework (tool-calling agent loop, multi-provider keys, web search, answer-first prose, Databallr metrics, v3 eval), read the [assistant agent handoff](docs/assistant-agent-plan.md) first. It supersedes the revamp handoff for how Ask plans, routes and answers, and keeps the revamp's layout, side panel, threads, saved findings and streaming transport. Record evidence in the [agent progress log](docs/assistant-agent-progress.md). Databallr is an approved design reference and may be replicated visually; data must come from CourtLens' own pipelines, never from Databallr.
+For the Ask agent rework (tool-calling agent loop, multi-provider keys, web search, answer-first prose, Databallr metrics, v3 eval), read the [assistant agent handoff](docs/assistant-agent-plan.md) first. It supersedes the revamp handoff for how Ask plans, routes and answers, and keeps the revamp's layout, side panel, threads, saved findings and streaming transport. Record evidence in the [agent progress log](docs/assistant-agent-progress.md). Databallr is an approved design reference and may be replicated visually. Data sources follow [source policy v3](docs/design/source-policy-v3.md): any free source may be used (including published model outputs and Databallr); cost is the only exclusion.
 
 For RAPM, on/off, six-factor, defensive and other impact metrics computed from public play-by-play (stints, possessions, ratings, Stats preset ungating), read the [impact metrics handoff](docs/impact-metrics-plan.md) first and record evidence in the [impact metrics progress log](docs/impact-metrics-progress.md).
 
@@ -18,7 +18,7 @@ For the CourtLoad → CourtLens rename (package, CLI, env vars, database) or any
 
 For any page layout, page structure, filter bar, header/search/drawer, copy density, imagery or icon work, read the [frontend overhaul handoff](docs/frontend-overhaul-plan.md) first. It supersedes the refresh and freeze handoffs for page layout and structure, and keeps all analytical, identity and data contracts. Execute its blocks in order, stop at its owner review gates, and record evidence (including the glance test) in the [overhaul progress log](docs/frontend-overhaul-progress.md).
 
-For chart/graphic presentation, color semantics, first-load default states, new free data sources (contracts, rosters, injuries, tracking, play types), Roster Shapes, Contracts/Free Agency, gated-page removal, or hosting the demo, read the [presentation clarity handoff](docs/presentation-clarity-plan.md) first. It supersedes the overhaul for data presentation, D21 and page existence, and supersedes earlier source gates through its [source policy v2](docs/design/nba-direct-admission-v2.md); it keeps every analytical contract. CourtLens is a non-commercial portfolio demo: zero recurring costs, and pages without free data are removed, not gated. Record evidence in the [presentation clarity progress log](docs/presentation-clarity-progress.md).
+For chart/graphic presentation, color semantics, first-load default states, new free data sources (contracts, rosters, injuries, tracking, play types), Roster Shapes, Contracts/Free Agency, gated-page removal, or hosting the demo, read the [presentation clarity handoff](docs/presentation-clarity-plan.md) first. It supersedes the overhaul for data presentation, D21 and page existence, and supersedes earlier source gates through its [source policy v2](docs/design/nba-direct-admission-v2.md), itself superseded by [source policy v3](docs/design/source-policy-v3.md) (any free source; cost is the only exclusion); it keeps every analytical contract. CourtLens is a non-commercial portfolio demo: zero recurring costs, and pages without free data are removed, not gated. Record evidence in the [presentation clarity progress log](docs/presentation-clarity-progress.md).
 
 For any work that makes a CourtLens page look or behave like its Databallr counterpart (the app shell, Stats, Players, Compare, Teams, WOWY and every other row in the catalog), read the [Databallr alignment handoff](docs/databallr-alignment-plan.md) first. It supersedes the overhaul, refresh, freeze and presentation-clarity handoffs for the layout and presentation of catalogued pages, and keeps every analytical, data and source contract. Work one page at a time, from the owner's instructions recorded in the [alignment catalog](docs/databallr-alignment-catalog.md). Only the owner marks a page aligned. The presentation-clarity handoff is closed, and its PC13 hosting block is parked.
 
@@ -61,6 +61,15 @@ For the hosted read-only demo at courtlens.calebhabesh.com (production Compose s
    - Strict 4px spatial rhythm (`--space-*`), fixed type scale (`--text-*`), and tonal elevation surfaces (`--color-surface-*`, `--shadow-*`) without bright container borders (hairlines only at 6–10% white).
    - ESLint (`no-restricted-syntax`, `no-restricted-imports`) and Stylelint rules enforce Design Language v1 contracts at `error` level and must pass with 0 errors and 0 warnings (`npm --prefix dashboard run lint`).
    - Motion and physics springs (`lib/motion.ts`) must respect reduced motion (`prefers-reduced-motion` token duration collapse to 1ms).
+
+## Local Resource Hygiene
+
+`/tmp` is RAM-backed (tmpfs) on the owner's machine; abandoned workspaces there have filled RAM and swap and caused system-wide OOM kills.
+
+- Put scratch workspaces (dashboard copies, browser-test sandboxes, stage builds, logs) under `$TMPDIR`, which make targets and Claude Code point at the disk-backed `~/.cache/courtlens-tmp`. Never hard-code `/tmp/...`.
+- Delete every workspace you create when the task ends, and stop any dev servers, Playwright browsers or Postgres containers you started.
+- `make clean-scratch` removes stale scratch; `make install-scratch-cleanup` installs the hourly timer that does it automatically.
+- `make test` skips the `kernel_limits` tests, which deliberately OOM-kill tiny capped systemd units and trigger desktop "low memory" notifications. Run them only via `make test-kernel-limits` when changing `research_limits.py`.
 
 ## Common Commands
 
