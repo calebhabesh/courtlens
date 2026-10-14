@@ -53,6 +53,8 @@ from courtlens.api.workbench_schemas import (
     PeriodMode,
     PersonalWorkspaceState,
     PlayerBioResponse,
+    PlayerCareerResponse,
+    PlayerCareerSeason,
     PlayerComparisonResponse,
     PlayerGameLogItem,
     PlayerGameLogResponse,
@@ -553,6 +555,54 @@ def get_combine(
 def get_draft_classes(session: Session = Depends(get_db)) -> DraftClassesResponse:
     """NBA draft years available to the Stats draft-class filter (official draft history)."""
     return DraftClassesResponse(classes=draft_classes(session))
+
+
+@router.get("/players/{player_id}/career", response_model=PlayerCareerResponse)
+def get_player_career(
+    player_id: str,
+    phase: Literal["regular_season", "playoffs"] = "regular_season",
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> PlayerCareerResponse:
+    """Player page career table in one read: every season row with its league table ranks."""
+    from courtlens.services.player_career import player_career
+
+    career = player_career(session, player_id, phase, release_id)
+
+    def item(row: dict[str, Any] | None, season: str | list[str]) -> PlayerResearchItem | None:
+        if row is None:
+            return None
+        return PlayerResearchItem(
+            **{
+                key: row.get(key)
+                for key in (
+                    "player_id",
+                    "player_name",
+                    "teams",
+                    "stints_count",
+                    "games_played",
+                    "total_minutes",
+                    "metrics",
+                    "sample_sizes",
+                    "impact_support",
+                    "table_qualified",
+                    "table_percentiles",
+                    "table_cohort_sample_sizes",
+                )
+            },
+            position=season_positions(season).get(player_id),
+        )
+
+    return PlayerCareerResponse(
+        player_id=player_id,
+        release_id=career.context.release_id,
+        phase=career.phase,
+        seasons=[
+            PlayerCareerSeason(season=entry.season, item=item(entry.item, entry.season))
+            for entry in career.seasons
+        ],
+        career=item(career.career, [entry.season for entry in career.seasons]),
+    )
 
 
 @router.get("/player-seasons", response_model=PlayerSeasonsResponse)

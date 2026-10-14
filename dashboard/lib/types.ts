@@ -609,6 +609,16 @@ export type PlayerResearchItem = {
   position?: EstimatedPosition | null;
 };
 
+/** A player's career table in one read: each season ranked against its own league (newest first). */
+export type PlayerCareerResponse = {
+  player_id: string;
+  release_id: string;
+  phase: string;
+  seasons: { season: string; item: PlayerResearchItem | null }[];
+  // Aggregated over the same seasons; season-only joins and ranks are unknown.
+  career: PlayerResearchItem | null;
+};
+
 export type LookupAvailability = {
   has_current_season: boolean;
   status: string;

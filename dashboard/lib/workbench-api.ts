@@ -26,6 +26,7 @@ import type {
   MetricCatalog,
   OpponentContextRequest,
   OpponentContextResponse,
+  PlayerCareerResponse,
   PlayerComparisonResponse,
   PlayerGameLogResponse,
   PlayerMeasurementsDetailResponse,
@@ -172,6 +173,21 @@ export async function executeWorkbenchQuery(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, ...(presentation ? { presentation } : {}) })
+  });
+}
+
+/**
+ * Every season row of a player's career table with its league ranks, plus the Career row, in one
+ * read from stored season cohorts. A season not stored yet is computed once, so allow longer.
+ */
+export async function getPlayerCareer(
+  id: string,
+  params: { phase: string; releaseId?: string }
+): Promise<PlayerCareerResponse> {
+  const sp = new URLSearchParams({ phase: params.phase });
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  return wbFetch(`/api/workbench/players/${encodeURIComponent(id)}/career?${sp}`, {
+    signal: AbortSignal.timeout(30000)
   });
 }
 

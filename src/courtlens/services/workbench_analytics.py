@@ -7,7 +7,7 @@ import csv
 import hashlib
 import io
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import UTC, date, datetime, time
 from pathlib import Path
 from typing import Any, Literal
@@ -418,6 +418,24 @@ def resolve_workbench_context(
         supported_dates=supported_dates,
         published_at=published_at,
         warnings=warnings,
+    )
+
+
+def season_context(context: ResolvedContext, season: str, before_date: date) -> ResolvedContext:
+    """The context of another season of the same release and phase at an explicit cutoff.
+
+    Equal to resolve_workbench_context(release, season, phase, before_date) for a workbench
+    context resolved with an explicit cutoff and the season window, without re-reading the
+    dataset: a player's career resolves once instead of once per season.
+    """
+    if context.dataset_type != "workbench" or context.window != "season":
+        raise ValueError("season_context derives whole-season workbench contexts only")
+    return replace(
+        context,
+        season=season,
+        before_date=before_date,
+        cutoff_utc=_cutoff_utc(before_date),
+        default_before_date=context.coverage_end,
     )
 
 

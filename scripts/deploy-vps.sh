@@ -92,6 +92,10 @@ if ! compose "$next" "${tunnel_profile[@]}" up -d --wait --wait-timeout 300 --re
 fi
 curl -fsS http://127.0.0.1:8090/healthz >/dev/null
 curl -fsS http://127.0.0.1:8090/api/health >/dev/null
+# Store every season's Stats cohort now, so no visitor waits for one to be computed. A new
+# release or changed serving code changes the stored keys (docs/deployment.md).
+compose "$next" exec -T api courtlens warm-stats-cohorts < /dev/null \
+  || echo "Stats cohort warm-up failed; each season is computed on its first view." >&2
 
 [[ -f release.env ]] && mv release.env release.prev.env
 mv "$next" release.env

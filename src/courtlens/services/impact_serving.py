@@ -108,6 +108,38 @@ def query_uses_impact(query: QuerySpec) -> bool:
     return bool(impact_query_fields(query))
 
 
+def selected_entries(store: dict[str, Any], query: QuerySpec, cutoff: str) -> list[dict[str, Any]]:
+    return [
+        e
+        for e in store["entries"]
+        if e["scope"]["season"] == query.season
+        and e["scope"]["phase"] == query.phase
+        and e["scope"]["last_included_date"] < cutoff
+    ]
+
+
+def selected_team_id(query: QuerySpec) -> str | None:
+    team = get_team_info(query.team_scope.team_id) if query.team_scope.team_id else None
+    return team.team_id if team else query.team_scope.team_id
+
+
+def impact_artifacts(query: QuerySpec, cutoff: str) -> tuple[list[dict[str, Any]], str]:
+    """impact_for_query's artifacts and status without assembling every player's values.
+
+    Query hashes bind these; building the player rows for each hash cost milliseconds a call.
+    """
+    store = load_impact_store(query.impact_manifest_sha256)
+    if store is None or query.window.kind.value != "season" or query.season_scope.seasons:
+        return [], "unavailable"
+    team_id = selected_team_id(query)
+    artifacts = [
+        {"sha256": entry["sha256"], **entry["scope"]}
+        for entry in selected_entries(store, query, cutoff)
+        if not (team_id and entry["kind"] == "extras")
+    ]
+    return artifacts, "available" if artifacts else "unavailable"
+
+
 def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
     """Select only sealed fits fully observable before this exclusive cutoff."""
     store = load_impact_store(query.impact_manifest_sha256)
@@ -133,20 +165,13 @@ def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
             "short/date/career windows are unavailable."
         )
         return result
-    selected = [
-        e
-        for e in store["entries"]
-        if e["scope"]["season"] == query.season
-        and e["scope"]["phase"] == query.phase
-        and e["scope"]["last_included_date"] < cutoff
-    ]
+    selected = selected_entries(store, query, cutoff)
     if not selected:
         result["reason"] = (
             "No sealed fit is wholly before this cutoff; later outcomes are never used."
         )
         return result
-    team = get_team_info(query.team_scope.team_id) if query.team_scope.team_id else None
-    team_id = team.team_id if team else query.team_scope.team_id
+    team_id = selected_team_id(query)
     for entry in selected:
         # Extras are full-season player aggregates, not a selected-team sample.
         if team_id and entry["kind"] == "extras":
@@ -236,12 +261,14 @@ def derive_extras(row: dict[str, Any]) -> None:
 SQL_SUPPORT_FIELDS = ("qualified", "covered_games", "denominator")
 
 
-def impact_sql_rows(impact: dict[str, Any]) -> str:
+def impact_sql_rows(impact: dict[str, Any], player_ids: list[str] | None = None) -> str:
     """Bounded coefficient/support payload, never raw play-by-play or game facts.
 
     Support is slimmed to SQL_SUPPORT_FIELDS: round-tripping every player's full support (about
-    22 KB each) through the query and back dominated cold Stats requests.
+    22 KB each) through the query and back dominated cold Stats requests. player_ids limits the
+    payload to the players a query reads (the join is per player).
     """
+    wanted = set(player_ids) if player_ids is not None else None
     return json.dumps(
         [
             {
@@ -253,6 +280,7 @@ def impact_sql_rows(impact: dict[str, Any]) -> str:
                 },
             }
             for pid, row in sorted(impact["players"].items())
+            if wanted is None or pid in wanted
         ],
         separators=(",", ":"),
         allow_nan=False,

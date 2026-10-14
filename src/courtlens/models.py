@@ -309,6 +309,7 @@ from courtlens import (  # noqa: E402,F401
     live_models,
     player_context_models,
     research_models,
+    stats_cohort_models,
     stats_feed_models,
     warehouse_models,
     workbench_models,

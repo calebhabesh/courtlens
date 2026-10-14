@@ -162,3 +162,31 @@ def test_retired_play_type_analogues_never_leave_the_server(tmp_path: Path) -> N
         }
     )
     assert saved.columns == ["pts_per_game"] and saved.sort_field is None
+
+
+@pytest.mark.parametrize("configured", [True, False])
+def test_query_binding_artifacts_equal_the_full_selection(tmp_path: Path, configured: bool) -> None:
+    """impact_artifacts skips assembling player values but selects exactly impact_for_query's."""
+    from courtlens.domain.query_spec import SeasonScope
+    from courtlens.services.impact_serving import impact_artifacts
+
+    path, _ = make_store(tmp_path)
+    queries = [
+        QuerySpec(season="2023-24"),
+        QuerySpec(season="2023-24", phase="playoffs"),
+        QuerySpec(season="2024-25"),
+        QuerySpec(season="2023-24", team_scope=TeamScope(team_id="TOR")),
+        QuerySpec(season="2023-24", window=WindowSpec(kind="last_10")),
+        QuerySpec(
+            season="2023-24",
+            season_scope=SeasonScope(seasons=["2022-23", "2023-24"], aggregate_multi_season=True),
+        ),
+    ]
+    with patch(
+        "courtlens.services.impact_serving.get_settings",
+        return_value=Settings(impact_serving_manifest=path if configured else None),
+    ):
+        for query in queries:
+            for cutoff in ("2024-01-31", "2024-02-01", "2024-07-01"):
+                full = impact_for_query(query, cutoff)
+                assert impact_artifacts(query, cutoff) == (full["artifacts"], full["status"])

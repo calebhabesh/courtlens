@@ -45,9 +45,12 @@ _lock = Lock()
 
 
 def clear() -> None:
+    from courtlens.services import stats_cohort_store
+
     with _lock:
         _entries.clear()
         _decoded.clear()
+    stats_cohort_store.clear()
 
 
 def cohort_key(kind: str, scope_hash: str, query: QuerySpec) -> str:
@@ -143,6 +146,24 @@ def sort_rows(rows: list[dict[str, Any]], sort: list[SortSpec]) -> list[dict[str
     return ordered
 
 
+def presentation_key(context: ResolvedContext, scope: QuerySpec) -> str:
+    """The in-memory key of a scope's presentation cohort (scope from cohort_query)."""
+    from courtlens.services.stats_engine import stats_presentation_hash
+
+    scope_hash = stats_presentation_hash(context, scope, StatsPresentation())
+    return cohort_key("presentation", scope_hash, scope)
+
+
+def persisted_key(session: Session, context: ResolvedContext, scope: QuerySpec) -> str | None:
+    """The stored entry key of a scope's presentation cohort, or None when it cannot persist."""
+    from courtlens.services import stats_cohort_store
+
+    facts = stats_cohort_store.source_facts(session, context)
+    if facts is None:
+        return None
+    return stats_cohort_store.entry_key(facts, context, scope, presentation_key(context, scope))
+
+
 def presentation_cohort(
     session: Session, context: ResolvedContext, scope: QuerySpec
 ) -> tuple[list[dict[str, Any]], int]:
@@ -152,9 +173,18 @@ def presentation_cohort(
     about 22 KB a player, and encoding/decoding it for every cached row cost more than the
     query itself. presentation_page reattaches full support to the rows it returns.
     """
-    from courtlens.services.stats_engine import execute_stats_query, stats_presentation_hash
+    from courtlens.services import stats_cohort_store
+    from courtlens.services.stats_engine import execute_stats_query
+
+    key = presentation_key(context, scope)
 
     def compute() -> tuple[list[dict[str, Any]], int]:
+        # Persisted second tier: an immutable scope is aggregated once, not once per process.
+        stored_key = persisted_key(session, context, scope)
+        if stored_key is not None:
+            stored = stats_cohort_store.load_cohort(session, stored_key)
+            if stored is not None:
+                return stored
         rows, count, _, _ = execute_stats_query(
             session,
             context,
@@ -166,13 +196,14 @@ def presentation_cohort(
         for row in rows:
             if row.get("impact_support"):
                 row["impact_support"] = {
-                    key: {field: entry[field] for field in SQL_SUPPORT_FIELDS if field in entry}
-                    for key, entry in row["impact_support"].items()
+                    name: {field: entry[field] for field in SQL_SUPPORT_FIELDS if field in entry}
+                    for name, entry in row["impact_support"].items()
                 }
+        if stored_key is not None:
+            stats_cohort_store.save_cohort(session, context, scope, key, stored_key, rows, count)
         return rows, count
 
-    scope_hash = stats_presentation_hash(context, scope, StatsPresentation())
-    return cached_rows(cohort_key("presentation", scope_hash, scope), compute, shared=True)
+    return cached_rows(key, compute, shared=True)
 
 
 def presentation_page(

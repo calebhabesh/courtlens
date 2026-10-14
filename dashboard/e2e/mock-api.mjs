@@ -654,6 +654,21 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/draft-classes") return json(response, 200, {
     source: "NBA draft history (fixture)", classes: [2020, 2019, 2018].map(year => ({ year, players: 58 }))
   });
+  const careerMatch = url.pathname.match(/^\/api\/workbench\/players\/([^/]+)\/career$/);
+  if (careerMatch) {
+    // One played fixture season, ranked against its two-player league, and its Career row.
+    const index = workbenchPlayers.items.findIndex(row => row.player_id === careerMatch[1]);
+    const row = workbenchPlayers.items[index];
+    const phase = url.searchParams.get("phase") ?? "regular_season";
+    const ranked = row && {
+      ...row, table_qualified: true,
+      table_percentiles: Object.fromEntries(Object.keys(row.metrics).map(key => [key, index === 0 ? 75 : 25])),
+      table_cohort_sample_sizes: Object.fromEntries(Object.keys(row.metrics).map(key => [key, 2]))
+    };
+    return json(response, 200, { player_id: careerMatch[1], release_id: url.searchParams.get("releaseId") ?? workbenchContext.release_id,
+      phase, seasons: row && phase === "regular_season" ? [{ season: "2025-26", item: ranked }] : [],
+      career: row && phase === "regular_season" ? row : null });
+  }
   if (url.pathname === "/api/workbench/player-seasons") return json(response, 200, {
     phase: url.searchParams.get("phase") ?? "regular_season",
     seasons: Object.fromEntries(url.searchParams.getAll("playerId").map(id => [id, ["2025-26"]]))
