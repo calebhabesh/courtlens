@@ -607,6 +607,8 @@ export type PlayerResearchItem = {
   cohort_sample_sizes?: Record<string, number> | null;
   // Estimated position for the queried season (Stats query only).
   position?: EstimatedPosition | null;
+  /** Who the NBA player index lists the player with today; the row's teams stay its games' teams. */
+  current_team?: { team_id: string; team_tricode: string | null; listing_season: string } | null;
 };
 
 /** A player's career table in one read: each season ranked against its own league (newest first). */

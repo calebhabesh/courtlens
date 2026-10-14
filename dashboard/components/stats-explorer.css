@@ -149,6 +149,14 @@
 .stats-workspace .stats-preview-shortcuts kbd { display: inline-block; min-width: 44px; background: var(--color-surface-1); color: var(--color-accent); border-radius: var(--radius-xs); text-align: center; font-size: var(--text-xs); margin-right: var(--space-1); }
 .stats-workspace .table-expanded .stats-scroll-region { height: calc(100dvh - 160px); }
 .stats-workspace .player-cell-teams abbr { text-decoration: none; }
+/* "now TOR": the row keeps its games' team; the chip says where an active player is listed today. */
+.stats-workspace .stats-team-move { display: inline-flex; align-items: center; gap: var(--space-1); height: 1lh; padding: 0 var(--space-2) 0 var(--space-1); border-radius: var(--radius-pill); background: var(--color-surface-hover); color: var(--color-text); line-height: inherit; vertical-align: top; }
+@media (max-width: 767px) {
+  /* Phone cards are narrow: a moved row drops its position and the word "now" (the pill, logo
+     and title still say it) so the new team always fits. */
+  .stats-workspace .player-cell-teams.has-move .player-cell-position,
+  .stats-workspace .stats-team-move-label { display: none; }
+}
 @media (max-width: 1199px) {
   .stats-workspace .stats-frame-layout.has-rail, .stats-workspace .stats-frame-layout.has-rail.preview-collapsed { grid-template-columns: minmax(0, 1fr); }
   .stats-workspace .stats-preview-rail, .stats-workspace .stats-row-pin { display: none; }

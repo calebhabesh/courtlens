@@ -17,7 +17,8 @@ import { PercentileCell } from "./charts/percentile-cell";
 import { Skeleton } from "./ui/skeleton";
 import { Field } from "./ui/field";
 import { Button, IconButton, Segmented } from "./ui/kit";
-import { TeamLogoStack } from "./team-logo";
+import { TeamLogo, TeamLogoStack } from "./team-logo";
+import { latestStatsSeason, teamMove } from "@/lib/current-team";
 import { PlayerPortrait } from "./player-portrait";
 import { StatsDetailDrawer } from "./stats-detail-drawer";
 import { CompareTray } from "./compare-tray";
@@ -93,6 +94,9 @@ export function WorkbenchPlayerExplorer({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const seasonLabel = seasonScopeLabel(querySpec?.season_scope?.seasons ?? null, querySpec?.season ?? data?.context?.season ?? "");
+  // A single-season view can flag players who have since moved teams; season ranges cannot.
+  const rowSeason = querySpec?.season_scope?.seasons?.length ? null : querySpec?.season ?? data?.context?.season ?? null;
+  const latestSeason = useMemo(() => latestStatsSeason(catalog), [catalog]);
 
   const {
     views,
@@ -1009,6 +1013,7 @@ export function WorkbenchPlayerExplorer({
             ) : (
               items.map((player) => {
                 const isCompared = comparedPlayers.some((p) => p.player_id === player.player_id);
+                const move = teamMove(player, rowSeason, latestSeason);
 
                 return (
                   <tr
@@ -1045,10 +1050,12 @@ export function WorkbenchPlayerExplorer({
                           season: query.season, phase: query.phase, beforeDate: query.before_date,
                           window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {}),
                           [STATS_RETURN_PARAM]: "stats"
-                        })}`} title={player.player_name} aria-label={player.player_name} className="stats-player-link"
+                        })}`} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link"
                           onClick={rememberTablePosition}>
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
-                        <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"}{player.position && <> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></>} · {seasonLabel}</span>
+                        <span className={`player-cell-teams ${move ? "has-move" : ""}`}>{player.teams?.join(" / ") || "Team unknown"}{player.position && <span className="player-cell-position"> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></span>} · {/* On a moved player's row the chip takes the season's place (every
+                          row shares the season; the chip's title names it) so it is never truncated. */}
+                          {move ? <span className="stats-team-move" title={move.title}><span className="stats-team-move-label">now</span><TeamLogo team={move.tricode} size={12} />{move.tricode}</span> : seasonLabel}</span>
                         </Link>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>
