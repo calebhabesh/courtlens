@@ -8,7 +8,6 @@ import { Chip, RemovableChip } from "./chip";
 import { MenuTrigger } from "./menu-trigger";
 import { Select, type SelectSize } from "./select";
 import { Segmented } from "./segmented";
-import { SegmentedControl } from "../segmented-control";
 import type { KitSize, KitVariant } from "./recipes";
 
 const sizes: readonly KitSize[] = ["xs", "sm", "md", "lg"];
@@ -86,19 +85,6 @@ export function ControlKitShowcase() {
               {!removed && <RemovableChip size={size} tone={tone} icon="users" removeLabel={`Remove ${size} ${tone} team`} onRemove={() => setRemoved(true)}>Boston Celtics</RemovableChip>}
             </div>))}
             {removed && <Button onClick={() => setRemoved(false)}>Restore removable chips</Button>}
-          </div>
-        </Panel>
-        <Panel title="C13 proposal: filter-bar segmented items">
-          <div data-c13-comparison className={stack}>
-            <p>Pending owner approval in UC04: keep a 40 px group with 4 px inner padding, making desktop items 32 px instead of 36 px. Phone items stay 40 px inside a 48 px group.</p>
-            <div className={stack}>
-              <h3 className="kit:text-sm">Before: existing filter-bar control</h3>
-              <div data-c13-before className="ui-filter-bar kit:static kit:w-fit">
-                <SegmentedControl name="Current filter view" size="md" value={choice} onChange={setChoice} options={[{ value: "table", label: "Table", icon: "table" }, { value: "cards", label: "Cards", icon: "cards" }]} />
-              </div>
-              <h3 className="kit:text-sm">Proposed: kit group lg</h3>
-              <div data-c13-after><Segmented label="Proposed filter view" size="lg" value={choice} onChange={setChoice} options={[{ value: "table", label: "Table", icon: "table" }, { value: "cards", label: "Cards", icon: "cards" }]} /></div>
-            </div>
           </div>
         </Panel>
       </div>

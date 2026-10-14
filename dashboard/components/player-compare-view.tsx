@@ -19,7 +19,7 @@ import { saveInvestigation } from "@/lib/workbench-api";
 import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
 import { scopeContextLine } from "@/lib/scope-labels";
 import type { AnalyticsCatalog, MetricDefinition, PlayerComparisonResponse, WorkbenchCatalog, WorkbenchQueryResponse } from "@/lib/types";
-import { Button, Segmented } from "./ui/kit";
+import { Button, MenuTrigger, Segmented } from "./ui/kit";
 export type { ComparePresetId } from "@/lib/comparison-metrics";
 
 export function PlayerCompareView({ comparison, cohort, metricDefinitions = [], workbenchCatalog, selector, additionalPlayerIds = [], context }: {
@@ -57,7 +57,7 @@ export function PlayerCompareView({ comparison, cohort, metricDefinitions = [], 
   return <div className="player-compare-container" role="region" aria-label="Player Comparison Explorer">
     <PageHeader title="Player Comparison" subtitle={`Source: ${workbenchCatalog?.source ?? "published box scores"} · ${a.games_played} / ${b.games_played} GP`} actions={<>
       <Button size="lg" icon="download" disabled={exporting} onClick={() => void share()}>{exporting ? "Exporting…" : "Share image"}</Button>
-      <Menu trigger="More"><MenuItem label="Export SVG" onClick={() => {if (svgRef.current) exportSvgFile(svgRef.current, `courtlens-compare-${a.id}-vs-${b.id}.svg`, {title:`${a.name} vs ${b.name}`,context,filename:"courtlens-compare"});}} />
+      <Menu renderTrigger={props => <MenuTrigger {...props} size="lg">More</MenuTrigger>}><MenuItem label="Export SVG" onClick={() => {if (svgRef.current) exportSvgFile(svgRef.current, `courtlens-compare-${a.id}-vs-${b.id}.svg`, {title:`${a.name} vs ${b.name}`,context,filename:"courtlens-compare"});}} />
         <MenuItem label="Copy link" onClick={() => {void navigator.clipboard.writeText(window.location.href).then(() => setNotice("Link copied.")).catch(() => setNotice("Clipboard unavailable."));}} />
         <MenuItem label="Save investigation" onClick={() => {void saveInvestigation(`${a.name} vs ${b.name}`, {type:"player_comparison", ...Object.fromEntries(params), ...context, preset:active, customMetrics:custom}).then(() => setNotice("Investigation saved.")).catch(() => setNotice("Save unavailable."));}} />
       </Menu>

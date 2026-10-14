@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ControlScope } from "./control-scope";
 
 export interface FieldProps {
   label: ReactNode;
@@ -16,7 +17,7 @@ export function Field({ label, children, layout = "stacked", htmlFor, hint, clas
   return (
     <div className={`ui-field ui-field-${layout} ${className}`}>
       {htmlFor ? <label className="ui-field-label" htmlFor={htmlFor}>{label}</label> : <span className="ui-field-label">{label}</span>}
-      <div className="ui-field-control">{children}</div>
+      <div className="ui-field-control"><ControlScope size="lg">{children}</ControlScope></div>
       {hint && <span className="ui-field-hint">{hint}</span>}
     </div>
   );

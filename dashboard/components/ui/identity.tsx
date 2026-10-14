@@ -6,7 +6,6 @@ import catalog from "../../lib/team-branding.json";
 import { teamAccent } from "../../lib/team-colors";
 import { PlayerPortrait } from "../player-portrait";
 import { TeamLogo } from "../team-logo";
-import { Icon } from "./icon";
 
 export type IdentitySize = "sm" | "md" | "lg" | "xl";
 
@@ -88,33 +87,5 @@ export function TeamIdentity({ team, name, subtitle, size = "md", href, classNam
         {subtitle && <span className="ui-identity-subtitle">{subtitle}</span>}
       </span>
     </div>
-  );
-}
-
-export interface EntityChipProps {
-  kind: "player" | "team";
-  id: string;
-  name: string;
-  /** For players: team ID or tricode for the accent. */
-  team?: string | null;
-  href?: string;
-  onRemove?: () => void;
-  className?: string;
-}
-
-/** Compact pill for trays, roster lanes and selections: 24px headshot or logo plus the name. */
-export function EntityChip({ kind, id, name, team, href, onRemove, className = "" }: EntityChipProps) {
-  return (
-    <span className={`ui-entity-chip ${className}`} style={teamStyle(kind === "team" ? id : team)}>
-      {kind === "player"
-        ? <PlayerPortrait playerId={id} name={name} size="sm" className="ui-entity-chip-media" />
-        : <TeamLogo team={id} size={20} />}
-      <Name href={href}>{name}</Name>
-      {onRemove && (
-        <button type="button" className="ui-entity-chip-remove" aria-label={`Remove ${name}`} onClick={onRemove}>
-          <Icon name="close" size={14} />
-        </button>
-      )}
-    </span>
   );
 }

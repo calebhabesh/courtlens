@@ -107,7 +107,7 @@ export function Segmented<T extends string>({ label, options, value, onChange, s
               "kit:transition-[color,background-color,scale] kit:duration-[var(--dur-fast),var(--dur-fast),var(--dur-instant)] kit:ease-out kit:active:not-disabled:scale-98 kit:hoverable:bg-surface-hover kit:hoverable:text-text kit:selected:text-accent kit:selected:font-semibold",
               "kit:motion-reduce:duration-(--dur-instant)",
               "kit:focus-visible:outline-none kit:focus-visible:shadow-[inset_0_0_0_2px_var(--color-accent)] kit:disabled:opacity-45 kit:disabled:pointer-events-none kit:disabled:cursor-not-allowed",
-              "kit:phone:min-h-control-lg kit:phone:min-w-control-lg kit:phone:px-2", itemPadding, stretch && "kit:flex-1")}>
+              "kit:phone:min-h-control-lg kit:phone:min-w-control-lg kit:phone:px-2", itemPadding, stretch && "kit:grow kit:shrink-0")}>
             {active && <SlidingIndicator layoutId={`kit-segmented-${id}`} className="kit:absolute kit:inset-0 kit:rounded-xs kit:bg-accent-soft kit:inset-ring kit:inset-ring-accent kit:pointer-events-none" />}
             <span className="kit:relative kit:inline-flex kit:items-center kit:gap-1">
               {option.icon && <Icon name={option.icon} size={kitIconSize[size]} />}

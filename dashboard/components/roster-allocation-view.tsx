@@ -8,7 +8,6 @@ import { PlayerPortrait } from "./player-portrait";
 import { TeamGrid, teamDisplayName } from "./team-grid";
 import { AccordionItem } from "./ui/accordion";
 import { GatedNote } from "./ui/gated-note";
-import { Icon } from "./ui/icon";
 import { TeamIdentity } from "./ui/identity";
 import { Input } from "./ui/input";
 import { Menu, MenuItem } from "./ui/menu";
@@ -27,7 +26,7 @@ import {
 import { teamAccent } from "@/lib/team-colors";
 import { getTeamDetail } from "@/lib/workbench-api";
 import type { TeamDetailResponse, WorkbenchCatalog } from "@/lib/types";
-import { Button, Segmented } from "./ui/kit";
+import { Button, IconButton, Segmented } from "./ui/kit";
 
 export interface RosterAllocationViewProps {
   catalog: WorkbenchCatalog | null;
@@ -105,7 +104,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
     const playerId = focusAfterMove.current;
     if (!playerId) return;
     focusAfterMove.current = null;
-    boardRef.current?.querySelector<HTMLElement>(`[data-player-id="${CSS.escape(playerId)}"] .ui-menu-trigger`)?.focus();
+    boardRef.current?.querySelector<HTMLElement>(`[data-player-id="${CSS.escape(playerId)}"] .roster-chip-menu button`)?.focus();
   }, [positions]);
 
   const onDrop = (lane: Lane) => (event: DragEvent<HTMLElement>) => {
@@ -140,9 +139,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
             aria-label={`Projected minutes for ${row.player_name}`} placeholder="—" error={minutesInvalid} aria-invalid={minutesInvalid}
             value={projected[row.player_id] ?? ""} onChange={(event) => setProjected((current) => ({ ...current, [row.player_id]: event.target.value }))} />
         ) : null}
-        <Menu align="right" className="roster-chip-menu" trigger={<span className="roster-chip-move">
-          <Icon name="more" size={16} /><span className="sr-only">Move {row.player_name}</span>
-        </span>}>
+        <Menu align="right" className="roster-chip-menu" renderTrigger={props => <IconButton {...props} size="xs" variant="ghost" icon="more" label={`Move ${row.player_name}`} />}>
           {LANES.filter((lane) => lane !== row.allocation_position).map((lane) => (
             <MenuItem key={lane} label={lane === "Unassigned" ? "Move to Unassigned" : `Move to ${lane} · ${LANE_LABELS[lane]}`} onClick={() => { focusAfterMove.current = row.player_id; move(row.player_id, lane); }} />
           ))}

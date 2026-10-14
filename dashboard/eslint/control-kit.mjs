@@ -28,18 +28,9 @@ export const CONTROL_CLASSES = [
   "ui-menu-trigger", "ui-popover-trigger", "ui-date-trigger", "season-scope-trigger", "stats-team-button",
   "availability-trigger", "ui-filter-bar-toggle",
   // → Chip
-  "control-pill", "stats-position-chip", "entity-chip", "ui-entity-chip", "compare-tray-chip",
+  "control-pill", "stats-position-chip", "ui-entity-chip", "compare-tray-chip",
   "ranking-chip-btn", "filter-action-pill", "season-scope-quick-button",
   "glossary-chip",
-];
-
-/**
- * Ratchet: files that still apply control classes. A UC04 batch removes the files it migrates;
- * nothing may be added. UC03 started with 82 files. Dynamic route folders are escaped glob patterns.
- */
-export const PENDING_CONTROL_CLASS = [
-  "components/entity-picker.tsx",
-  "components/lookup-input.tsx",
 ];
 
 const CONTROL_SET = new Set(CONTROL_CLASSES);

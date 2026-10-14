@@ -2,7 +2,8 @@
 
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { addDays, formatDate, parseIsoDate, toIsoDate } from "../../lib/format-date";
-import { Icon } from "./icon";
+import { useControlScope } from "./control-scope";
+import { Button, IconButton } from "./kit";
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const WEEKDAYS = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
@@ -48,6 +49,7 @@ function monthGrid(month: string): string[] {
  */
 export function DatePicker({ value, onChange, label, min, max, isDateDisabled, placeholder = "Select a date", disabled = false, className = "" }: DatePickerProps) {
   const [open, setOpen] = useState(false);
+  const placement = useControlScope();
   const fallback = value || max || toIsoDate(new Date());
   const [focused, setFocused] = useState(fallback);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -117,10 +119,12 @@ export function DatePicker({ value, onChange, label, min, max, isDateDisabled, p
         }
       }}
     >
-      <button
+      <Button
         ref={triggerRef}
-        type="button"
-        className="ui-date-trigger"
+        size="lg"
+        icon="calendar"
+        stretch={placement.fill}
+        tone={placement.tone === "console" ? "console" : undefined}
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-label={`${label}: ${value ? formatDate(value) : placeholder}`}
@@ -131,23 +135,18 @@ export function DatePicker({ value, onChange, label, min, max, isDateDisabled, p
           setOpen((current) => !current);
         }}
       >
-        <Icon name="calendar" size={16} />
         <span className={value ? "ui-date-value" : "ui-date-placeholder"}>{value ? formatDate(value) : placeholder}</span>
-      </button>
+      </Button>
       {open && (
         <div className="ui-date-popover" role="dialog" aria-modal="false" aria-labelledby={titleId}>
           <div className="ui-date-header">
-            <button type="button" className="ui-date-nav" aria-label="Previous month" onClick={() => setFocused(shiftMonth(focused, -1))}
-              disabled={Boolean(min && monthStart(focused) <= monthStart(min))}>
-              <Icon name="left" size={16} />
-            </button>
+            <IconButton size="sm" variant="ghost" icon="left" label="Previous month" onClick={() => setFocused(shiftMonth(focused, -1))}
+              disabled={Boolean(min && monthStart(focused) <= monthStart(min))} />
             <span id={titleId} className="ui-date-title" aria-live="polite">
               {MONTHS[displayMonth.getUTCMonth()]} {displayMonth.getUTCFullYear()}
             </span>
-            <button type="button" className="ui-date-nav" aria-label="Next month" onClick={() => setFocused(shiftMonth(focused, 1))}
-              disabled={Boolean(max && monthStart(focused) >= monthStart(max))}>
-              <Icon name="right" size={16} />
-            </button>
+            <IconButton size="sm" variant="ghost" icon="right" label="Next month" onClick={() => setFocused(shiftMonth(focused, 1))}
+              disabled={Boolean(max && monthStart(focused) >= monthStart(max))} />
           </div>
           <div ref={gridRef} role="grid" aria-label={label} className="ui-date-grid" onKeyDown={onGridKeyDown}>
             <div role="row" className="ui-date-row">

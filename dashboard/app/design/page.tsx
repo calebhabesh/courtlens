@@ -2,15 +2,11 @@
 
 import { useState } from "react";
 import {
-  Icon,
-  Button,
-  IconButton,
   Input,
   SearchField,
   Select,
   Checkbox,
   Switch,
-  SegmentedControl,
   Tabs,
   TabsList,
   TabTrigger,
@@ -46,6 +42,7 @@ import {
 import { DesignFoundationShowcase } from "@/components/design-foundation-showcase";
 import { DesignChartShowcase } from "@/components/charts/design-chart-showcase";
 import { ControlKitShowcase } from "@/components/ui/kit/showcase";
+import { Button, IconButton, MenuTrigger, Segmented } from "@/components/ui/kit";
 import { motion, DURATIONS, SPRING } from "@/lib/motion";
 import RootLoading from "@/app/loading";
 import StatsLoading from "@/app/stats/loading";
@@ -100,14 +97,14 @@ function DesignShowcase() {
         subtitle="Tokens, components and chart states."
         actions={
           <div className="ui-design-header-actions">
-            <Button
+            <Button size="sm"
               variant="secondary"
               icon="command"
               onClick={() => setIsPaletteOpen(true)}
             >
               Command Palette (⌘K)
             </Button>
-            <Button
+            <Button size="sm"
               variant="primary"
               icon="sparkles"
               onClick={() =>
@@ -252,10 +249,10 @@ function DesignShowcase() {
                   />
                 </div>
                 <div className="ui-spring-controls">
-                  <Button size="sm" onClick={() => setSpringBoxPos(0)}>0px</Button>
-                  <Button size="sm" onClick={() => setSpringBoxPos(80)}>80px</Button>
-                  <Button size="sm" onClick={() => setSpringBoxPos(160)}>160px</Button>
-                  <Button size="sm" onClick={() => setSpringBoxPos(240)}>240px</Button>
+                  <Button size="xs" onClick={() => setSpringBoxPos(0)}>0px</Button>
+                  <Button size="xs" onClick={() => setSpringBoxPos(80)}>80px</Button>
+                  <Button size="xs" onClick={() => setSpringBoxPos(160)}>160px</Button>
+                  <Button size="xs" onClick={() => setSpringBoxPos(240)}>240px</Button>
                 </div>
               </div>
             </div>
@@ -267,27 +264,27 @@ function DesignShowcase() {
           <div className="ui-design-row">
             <Panel title="Buttons (Variants × Sizes)" compact>
               <div className="ui-design-cluster">
+                <Button variant="primary" size="xs">Primary XS</Button>
                 <Button variant="primary" size="sm">Primary SM</Button>
-                <Button variant="primary" size="md">Primary MD</Button>
                 <Button variant="primary" size="lg">Primary LG</Button>
               </div>
               <div className="ui-design-cluster">
+                <Button variant="secondary" size="xs">Secondary XS</Button>
                 <Button variant="secondary" size="sm">Secondary SM</Button>
-                <Button variant="secondary" size="md">Secondary MD</Button>
                 <Button variant="secondary" size="lg">Secondary LG</Button>
               </div>
               <div className="ui-design-cluster">
+                <Button variant="ghost" size="xs">Ghost XS</Button>
                 <Button variant="ghost" size="sm">Ghost SM</Button>
-                <Button variant="ghost" size="md">Ghost MD</Button>
                 <Button variant="ghost" size="lg">Ghost LG</Button>
               </div>
               <div className="ui-design-cluster">
+                <Button variant="danger" size="xs">Danger XS</Button>
                 <Button variant="danger" size="sm">Danger SM</Button>
-                <Button variant="danger" size="md">Danger MD</Button>
                 <Button variant="danger" size="lg">Danger LG</Button>
               </div>
               <div className="ui-design-cluster">
-                <Button
+                <Button size="sm"
                   loading={btnLoading}
                   onClick={() => {
                     setBtnLoading(true);
@@ -296,9 +293,9 @@ function DesignShowcase() {
                 >
                   {btnLoading ? "Processing…" : "Click for Loading State"}
                 </Button>
-                <Button disabled>Disabled Button</Button>
-                <IconButton icon="star" label="Favorite player" />
-                <IconButton icon="download" label="Export CSV" variant="ghost" />
+                <Button size="sm" disabled>Disabled Button</Button>
+                <IconButton size="sm" variant="secondary" icon="star" label="Favorite player" />
+                <IconButton size="sm" icon="download" label="Export CSV" variant="ghost" />
               </div>
             </Panel>
 
@@ -378,7 +375,9 @@ function DesignShowcase() {
         <Section title="4. Navigation & Layout Controls" description="Sliding spring indicators and crossfading contents.">
           <div className="ui-design-row">
             <Panel title="Segmented Control" compact>
-              <SegmentedControl
+              <Segmented
+                size="md"
+                label="Example research view"
                 value={segmentedVal}
                 onChange={setSegmentedVal}
                 options={[
@@ -436,10 +435,11 @@ function DesignShowcase() {
         <Section title="5. Data Tables" description="Hairline dividers, sticky header, row hover, tabular numbers, and sorting.">
           <Panel>
             <div className="ui-design-table-toolbar">
-              <SegmentedControl
+              <Segmented
                 size="sm"
+                label="Table density"
                 value={tableDensity}
-                onChange={v => setTableDensity(v as "default" | "compact")}
+                onChange={(v: string) => setTableDensity(v as "default" | "compact")}
                 options={[
                   { value: "default", label: "Default Density" },
                   { value: "compact", label: "Compact Density" },
@@ -497,26 +497,14 @@ function DesignShowcase() {
           <div className="ui-design-row">
             <Panel title="Menu & Popover" compact>
               <div className="ui-design-cluster">
-                <Menu
-                  trigger={
-                    <span className="ui-button ui-button-secondary ui-button-md">
-                      <Icon name="menu" size={14} /> Open Actions Menu
-                    </span>
-                  }
-                >
+                <Menu renderTrigger={props => <MenuTrigger {...props} size="sm" icon="menu">Open Actions Menu</MenuTrigger>}>
                   <MenuItem label="View Profile" icon="star" onClick={() => toast({ title: "View Profile" })} />
                   <MenuItem label="Compare Matchup" icon="sliders" onClick={() => toast({ title: "Compare" })} />
                   <MenuItem label="Export Shotchart" icon="download" shortcut="⌘E" onClick={() => toast({ title: "Export" })} />
                   <MenuItem label="Remove from Roster" icon="trash" disabled onClick={() => {}} />
                 </Menu>
 
-                <Popover
-                  trigger={
-                    <span className="ui-button ui-button-secondary ui-button-md">
-                      <Icon name="info" size={14} /> Popover Info
-                    </span>
-                  }
-                >
+                <Popover renderTrigger={props => <MenuTrigger {...props} size="sm" icon="info">Popover Info</MenuTrigger>}>
                   <div style={{ "--p": "var(--space-3)" } as React.CSSProperties}>
                     <h4>Calibration Interval</h4>
                     <p className="text-muted" style={{ "--mt": "var(--space-1)" } as React.CSSProperties}>
@@ -526,15 +514,15 @@ function DesignShowcase() {
                 </Popover>
 
                 <Tooltip content="Tooltip delayed 300ms">
-                  <Button variant="ghost" icon="sparkles">Hover for Tooltip</Button>
+                  <Button size="sm" variant="ghost" icon="sparkles">Hover for Tooltip</Button>
                 </Tooltip>
               </div>
             </Panel>
 
             <Panel title="Modal & Drawer Controls" compact>
               <div className="ui-design-cluster">
-                <Button onClick={() => setIsModalOpen(true)}>Open Modal Dialog</Button>
-                <Button
+                <Button size="sm" onClick={() => setIsModalOpen(true)}>Open Modal Dialog</Button>
+                <Button size="sm"
                   onClick={() => {
                     setDrawerSide("right");
                     setIsDrawerOpen(true);
@@ -542,7 +530,7 @@ function DesignShowcase() {
                 >
                   Open Drawer (Right)
                 </Button>
-                <Button
+                <Button size="sm"
                   variant="secondary"
                   onClick={() => {
                     setDrawerSide("bottom");
@@ -587,9 +575,11 @@ function DesignShowcase() {
 
             <Panel title="Route Loading Skeletons" compact>
               <div className="ui-design-column">
-                <SegmentedControl
+                <Segmented
+                  size="md"
+                  label="Skeleton preview"
                   value={previewSkeleton}
-                  onChange={(val) => setPreviewSkeleton(val as typeof previewSkeleton)}
+                  onChange={(val: string) => setPreviewSkeleton(val as typeof previewSkeleton)}
                   options={[
                     { value: "none", label: "None" },
                     { value: "stats", label: "Stats" },
@@ -606,7 +596,7 @@ function DesignShowcase() {
 
             <Panel title="Presence Enter/Exit Wrapper" compact>
               <Button
-                size="sm"
+                size="xs"
                 variant="secondary"
                 onClick={() => setShowPresenceBox(!showPresenceBox)}
               >
@@ -634,7 +624,7 @@ function DesignShowcase() {
                 icon="search"
                 title="No matching players found"
                 description="Try broadening your filter criteria or selecting an earlier replay season."
-                action={<Button size="sm" variant="secondary">Reset Filters</Button>}
+                action={<Button size="xs" variant="secondary">Reset Filters</Button>}
               />
             </Panel>
           </div>
@@ -667,8 +657,8 @@ function DesignShowcase() {
             and empirical 80% interval coverage of 79.6%.
           </p>
           <div className="ui-modal-footer-demo">
-            <Button variant="ghost" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-            <Button variant="primary" onClick={() => setIsModalOpen(false)}>Acknowledge</Button>
+            <Button size="sm" variant="ghost" onClick={() => setIsModalOpen(false)}>Cancel</Button>
+            <Button size="sm" variant="primary" onClick={() => setIsModalOpen(false)}>Acknowledge</Button>
           </div>
         </div>
       </Modal>
@@ -681,7 +671,7 @@ function DesignShowcase() {
       >
         <p>This drawer demonstrates edge sliding over 320ms with ease-out, background blur scrim, and trapped keyboard focus.</p>
         <div style={{ "--mt": "var(--space-4)" } as React.CSSProperties}>
-          <Button variant="secondary" onClick={() => setIsDrawerOpen(false)}>Close Drawer</Button>
+          <Button size="sm" variant="secondary" onClick={() => setIsDrawerOpen(false)}>Close Drawer</Button>
         </div>
       </Drawer>
 

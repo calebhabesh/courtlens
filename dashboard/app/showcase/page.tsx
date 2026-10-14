@@ -5,6 +5,7 @@ import { resolveStatsQuery } from "@/lib/stats-query";
 import { executeWorkbenchQuery, getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { PlayerResearchItem, WorkbenchCatalog, WorkbenchQueryResponse } from "@/lib/types";
+import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -60,7 +61,7 @@ export default async function ShowcasePage({ searchParams }: ShowcasePageProps) 
           icon="alert"
           title="No players to showcase for this scope."
           description="Try another season or phase in Stats."
-          action={<a className="ui-button ui-button-secondary ui-button-md" href="/stats">Open Stats</a>}
+          action={<ButtonLink size="sm" href="/stats">Open Stats</ButtonLink>}
         />
       </div>
     );
