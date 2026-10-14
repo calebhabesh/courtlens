@@ -529,6 +529,9 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
 35. [x] Header photo uses Compare's identity treatment: the team-colour ring with the team logo badge.
     — shared `PlayerAvatar` (components/ui/identity.tsx), the same media as `PlayerIdentity`; the
     separate logo beside the name is dropped since the badge carries it.
+36. [x] The team-colour glow circles the photo ring and is very subtle. — a halo centred on the
+    avatar, 12% team colour fading out 32px beyond the ring; the header keeps that room so the halo
+    has faded before the sticky filter bar.
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
 awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut) and a
 "now TOR" chip on the latest completed season's Stats rows when the current listing differs.

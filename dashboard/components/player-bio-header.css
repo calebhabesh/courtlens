@@ -7,15 +7,16 @@
     display: grid; grid-template-columns: auto 1px minmax(0, 1fr) auto; gap: var(--space-6) var(--space-8);
     align-items: start; width: 100%;
   }
-  /* A faint wash of the current team's colour behind the photo, the header's one flourish. */
-  .player-bio-main.has-glow::before {
-    content: ""; position: absolute; pointer-events: none;
-    /* Ends at the header's bottom edge, so it has faded out before the filter bar below. */
-    top: calc(var(--space-10) * -1); bottom: 0; left: calc(var(--space-16) * -2); width: 460px;
-    background: radial-gradient(closest-side, color-mix(in srgb, var(--team-glow) 24%, transparent), transparent);
-  }
-  /* Positioned children paint above the glow, which comes first in the stacking order. */
+  /* A soft halo of the current team's colour centred on the photo ring, the header's one flourish.
+     It fades out --halo beyond the ring; the header keeps that much room under the photo so the
+     halo has faded before the sticky filter bar (which would cut it into a block). */
+  .player-bio-main { --halo: var(--space-8); }
+  .player-bio-main.has-glow { min-height: calc(144px + var(--halo)); }
   .player-bio-main > * { position: relative; }
+  .player-bio-main.has-glow .player-bio-photo::before {
+    content: ""; position: absolute; inset: calc(var(--halo) * -1); border-radius: var(--radius-pill); pointer-events: none;
+    background: radial-gradient(circle closest-side, color-mix(in srgb, var(--team-glow) 12%, transparent) 62%, transparent);
+  }
   .player-bio-divider { align-self: stretch; background: var(--color-hairline-strong); }
   .player-bio-who { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
   .player-bio-identity { display: flex; flex-wrap: wrap; margin: calc(var(--space-2) * -1) 0 0; color: var(--color-on-bg-secondary); font-size: var(--text-md); }
@@ -61,6 +62,7 @@
   @media (max-width: 767px) {
     .player-bio-main { grid-template-columns: auto minmax(0, 1fr); gap: var(--space-4); }
     .player-bio-divider { display: none; }
+    .player-bio-main.has-glow { min-height: calc(96px + var(--halo)); }
     .player-bio-actions { grid-column: 1 / -1; }
     /* Positioned children paint above the glow, which comes first in the stacking order. */
   .player-bio-main > * { position: relative; }
