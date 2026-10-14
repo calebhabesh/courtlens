@@ -38,12 +38,8 @@ export const CONTROL_CLASSES = [
  * nothing may be added. UC03 started with 82 files. Dynamic route folders are escaped glob patterns.
  */
 export const PENDING_CONTROL_CLASS = [
-  "components/assistant-status-card.tsx",
   "components/entity-picker.tsx",
-  "components/install-interface.tsx",
   "components/lookup-input.tsx",
-  "components/table-percentile-legend.tsx",
-  "components/workbench-portrait-settings.tsx",
 ];
 
 const CONTROL_SET = new Set(CONTROL_CLASSES);

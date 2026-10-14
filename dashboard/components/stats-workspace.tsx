@@ -20,6 +20,7 @@ const ESTIMATED_POSITIONS: EstimatedPosition[] = ["PG", "SG", "SF", "PF", "C"];
 import { Icon } from "./ui/icon";
 import { readPublication } from "@/lib/original-content";
 import Link from "next/link";
+import { ControlScope } from "./ui/control-scope";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 
 export async function StatsWorkspace({ params: rawParams, basePath = "/stats", title = "Stats" }: {
@@ -121,6 +122,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   }
 
   return (
+    <ControlScope tone="console">
     <section className="stats-workspace">
       <div className="workbench-content">
         <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <ButtonLink size="lg" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</ButtonLink> : undefined} />
@@ -179,6 +181,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
         )}
       </div>
     </section>
+    </ControlScope>
   );
 }
 

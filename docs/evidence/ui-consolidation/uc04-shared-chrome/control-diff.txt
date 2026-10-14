@@ -1,0 +1,619 @@
+== stats@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-preview-pinned@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-filters@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-team-dialog@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-details@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-totals@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-scatter@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-lines@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-manage-views@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-hotkeys@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-compare-tray@1440: 1 changed
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-glossary@1440: 0 changed
+== stats-tracking@1440: 1 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== stats@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-filters@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-details@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-totals@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-scatter@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-lines@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-manage-views@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-hotkeys@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-compare-tray@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-glossary@390: 0 changed
+== stats-tracking@390: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ button||Filters 2025-26 · Regular season: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== stats@1440: 2 changed
+  ~ div||Data details: w 109.5 → 111.5; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-season@1440: 2 changed
+  ~ div||Data details: w 109.5 → 111.5; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-date@1440: 2 changed
+  ~ div||Data details: w 109.5 → 111.5; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== more-menu@1440: 2 changed
+  ~ div||Data details: w 109.5 → 111.5; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== players@1440: 2 changed
+  ~ div||2 eligible players Data details: w 231.9 → 233.9; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== player@1440: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== compare@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== teams@1440: 2 changed
+  ~ div||2 teams Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== team@1440: 2 changed
+  ~ div||72 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== last-games@1440: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== playoffs@1440: 2 changed
+  ~ div||1 series Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== showcase@1440: 2 changed
+  ~ div||2 eligible players Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== live@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== trends@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== rapm@1440: 2 changed
+  ~ div||802 players Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== stats@1024: 2 changed
+  ~ div||Data details: w 109.5 → 111.5; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-season@1024: 2 changed
+  ~ div||Data details: w 109.5 → 111.5; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== stats-date@1024: 2 changed
+  ~ div||Data details: w 109.5 → 111.5; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== nav-drawer@1024: 2 changed
+  ~ div||Data details: w 109.5 → 111.5; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== players@1024: 2 changed
+  ~ div||2 eligible players Data details: w 231.9 → 233.9; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+== player@1024: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== compare@1024: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== teams@1024: 2 changed
+  ~ div||2 teams Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== team@1024: 2 changed
+  ~ div||72 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== last-games@1024: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== playoffs@1024: 2 changed
+  ~ div||1 series Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== showcase@1024: 2 changed
+  ~ div||2 eligible players Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== live@1024: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== trends@1024: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== rapm@1024: 2 changed
+  ~ div||802 players Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== stats@390: 3 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ div||Data details: icons 14 → 16
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== stats-filter-sheet@390: TimeoutError: locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.ui-filter-bar-toggle')[22m
+
+== nav-drawer@390: 4 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ div||Data details: icons 14 → 16
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+  ~ button||Close drawer: bg rgba(255, 255, 255, 0.04) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185)
+== players@390: 3 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ div||2 eligible players Data details: icons 14 → 16
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+== player@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== compare@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== teams@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== team@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== last-games@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== playoffs@390: 2 changed
+  ~ button||Filters 2025-26 · Playoffs · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== showcase@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== live@390: 2 changed
+  ~ button||Filters Oct 14: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== trends@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== rapm@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 30: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== players@1440: 3 changed
+  ~ div||2 eligible players Data details: w 231.9 → 233.9; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== players-rules@1440: 3 changed
+  ~ div||2 eligible players Data details: w 231.9 → 233.9; moved -2,0; icons 14 → 16
+  ~ button||Data details: w 109.5 → 111.5; border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); moved -2,0; icons 14 → 16
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== players-fixture@1440: 0 changed
+== player@1440: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== player-back@1440: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== player-games@1440: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== player-lineage@1440: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== player-fixture@1440: 0 changed
+== player-missing@1440: 0 changed
+== teams@1440: 4 changed
+  ~ div||2 teams Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== players@390: 4 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ div||2 eligible players Data details: icons 14 → 16
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== players-rules@390: 4 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: fw 500 → 600; color rgb(169, 175, 185) → rgb(213, 217, 224); border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224)
+  ~ div||2 eligible players Data details: icons 14 → 16
+  ~ button||Data details: border 0px rgba(0, 0, 0, 0) → 0px rgb(213, 217, 224); icons 14 → 16
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px; color rgb(242, 243, 245) → rgb(169, 175, 185); border 0px rgb(242, 243, 245) → 0px rgb(169, 175, 185)
+== players-fixture@390: 0 changed
+== player@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== player-back@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== player-games@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== player-lineage@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== player-fixture@390: 0 changed
+== player-missing@390: 0 changed
+== teams@390: 4 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== compare@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== compare-pair@1440: 4 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== compare-fixture@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== teams@1440: 4 changed
+  ~ div||2 teams Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== team@1440: 3 changed
+  ~ div||72 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== team-compare@1440: 3 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== wowy@1440: 1 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== last-games@1440: 3 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== last-games-player@1440: 3 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== live@1440: 4 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== live-game@1440: 4 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== playoffs@1440: 3 changed
+  ~ div||1 series Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== playoff-series@1440: 3 changed
+  ~ div||5 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== playoff-series-fixture@1440: 3 changed
+  ~ div||5 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== showcase@1440: 2 changed
+  ~ div||2 eligible players Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== rankings@1440: 7 changed
+  ~ div||2 players Data details: h 40 → 28; moved 0,5.5
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,5.5
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px; moved 0,-1
+  ~ button||Copy to my boards: moved 0,-1
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px; moved 0,-1
+  ~ a||Fixture Star: moved 0,-1
+  ~ a||Fixture Guard: moved 0,-1
+== rankings-new@1440: 11 changed
+  ~ button||Close create ranking board dialog: moved 0,-0.5
+  ~ select||Overall Offense Defense Position Custom: moved 0,-0.5
+  ~ button||Cancel: moved 0,-0.5
+  ~ button||Create Board: moved 0,-0.5
+  ~ div||2 players Data details: h 40 → 28; moved 0,5.5
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,5.5
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px; moved 0,-1
+  ~ button||Copy to my boards: moved 0,-1
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px; moved 0,-1
+  ~ a||Fixture Star: moved 0,-1
+  ~ a||Fixture Guard: moved 0,-1
+== rankings-board@1440: 2 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== tierlist@1440: 6 changed
+  ~ div||2 players Data details: h 40 → 28; moved 0,5.5
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,5.5
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px; moved 0,-1
+  ~ button||Copy to my boards: moved 0,-1
+  ~ a||Fixture Star: moved 0,-1
+  ~ a||Fixture Guard: moved 0,-1
+== tierlist-list@1440: 1 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== roster-shapes@1440: 3 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== roster-shapes-bos@1440: 1 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== stat-line-shift@1440: 3 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== contracts@1440: 1 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== contracts-books@1440: 4 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== matchups@1440: 1 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== similar@1440: 3 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== shot-profile@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== aftermath@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== rapm@1440: 4 changed
+  ~ div||802 players Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== shooting@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== wingspan@1440: 1 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== calculator@1440: 3 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== player-games@1440: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== compare@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== compare-pair@390: 4 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== compare-fixture@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jan 9: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== teams@390: 4 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== team@390: 3 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== team-compare@390: 3 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== wowy@390: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ button||Filters TOR · 2025-26: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== last-games@390: 3 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== last-games-player@390: 3 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== live@390: 4 changed
+  ~ button||Filters Oct 14: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== live-game@390: 4 changed
+  ~ button||Filters Oct 14: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== playoffs@390: 3 changed
+  ~ button||Filters 2025-26 · Playoffs · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== playoff-series@390: 3 changed
+  ~ button||Filters 2023-24 · Playoffs · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== playoff-series-fixture@390: 3 changed
+  ~ button||Filters 2023-24 · Playoffs · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== showcase@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== rankings@390: 3 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== rankings-new@390: 3 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== rankings-board@390: 2 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Rules: w 46.9 → 46.5; fw 600 → 500; radius 4px → 6px
+== tierlist@390: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== tierlist-list@390: 1 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== roster-shapes@390: 3 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== roster-shapes-bos@390: 1 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== stat-line-shift@390: 3 changed
+  ~ button||Filters 2025-26: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== contracts@390: 1 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== contracts-books@390: 4 changed
+  ~ button||Filters 2025-26: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== matchups@390: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ button||Filters 2025-26 · Regular season: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== similar@390: 3 changed
+  ~ button||Filters 2025-26 · Last 10: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== shot-profile@390: 2 changed
+  ~ button||Filters Published scope: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== aftermath@390: 2 changed
+  ~ button||Filters Published scope: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== rapm@390: 4 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 30: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== shooting@390: 1 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== wingspan@390: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ button||Filters 2026 combine: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== calculator@390: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== player-games@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== forecasts@1440: 4 changed
+  ~ div||48,870 scored forecasts Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== evaluation@1440: 4 changed
+  ~ div||39,988 scored forecasts Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== evaluation-missing@1440: 1 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== investigations@1440: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== investigations-personal@1440: 1 changed
+  ~ button||Details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== saved-detail@1440: 4 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ button||Definitions, inputs and exact evidence (1 cells): pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== operation-gallery@1440: 0 changed
+== case-studies@1440: 3 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== distributions@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== distributions-ranked@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== trends@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== trends-rank@1440: 2 changed
+  ~ div||Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== adjusted-shooting@1440: 2 changed
+  ~ div||5 players Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== data-status@1440: 3 changed
+  ~ div||4 seasons Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+  ~ button||Details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== settings@1440: 3 changed
+  ~ summary||Configuration details: w 130.9 → 128.9; fw 600 → 500; radius 4px → 6px
+  ~ summary||Source and storage: w 124.3 → 123; fw 600 → 500; radius 4px → 6px
+  ~ summary||Local service requirements: w 167 → 164.9; fw 600 → 500; radius 4px → 6px
+== planner@1440: 0 changed
+== ask@1440: 0 changed
+== ask-answered@1440: 0 changed
+== ask-manual@1440: 0 changed
+== ask-drawer@1440: 2 changed
+  ~ div||1 games Data details: h 40 → 28; moved 0,6
+  ~ button||Data details: h 40 → 28; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,6
+== forecasts@390: 3 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== evaluation@390: 3 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== evaluation-missing@390: 1 changed
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== investigations@390: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== investigations-personal@390: 1 changed
+  ~ button||Details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== saved-detail@390: 3 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ button||Definitions, inputs and exact evidence (1 cells): pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== operation-gallery@390: 0 changed
+== case-studies@390: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ summary||Why?: w 48.5 → 48.1; fw 600 → 500; radius 4px → 6px
+== distributions@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== distributions-ranked@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== trends@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== trends-rank@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Apr 12: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== adjusted-shooting@390: 2 changed
+  ~ button||Filters 2025-26 · Regular season: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== data-status@390: 2 changed
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+  ~ button||Details: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== settings@390: 3 changed
+  ~ summary||Configuration details: w 130.9 → 128.9; fw 600 → 500; radius 4px → 6px
+  ~ summary||Source and storage: w 124.3 → 123; fw 600 → 500; radius 4px → 6px
+  ~ summary||Local service requirements: w 167 → 164.9; fw 600 → 500; radius 4px → 6px
+== planner@390: 0 changed
+== ask@390: 0 changed
+== ask-answered@390: 0 changed
+== ask-manual@390: 0 changed
+== ask-drawer@390: 2 changed
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Data details: pad 4px 8px 4px 8px → 0px 8px 0px 8px

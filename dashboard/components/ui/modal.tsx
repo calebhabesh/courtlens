@@ -6,7 +6,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { motion, AnimatePresence, modalVariants, scrimVariants } from "../../lib/motion";
-import { IconButton } from "./button";
+import { IconButton } from "./kit";
 import { OverlayPortal } from "./overlay-portal";
 
 export interface ModalProps {
@@ -126,8 +126,8 @@ export function Modal({
                 <IconButton
                   icon="close"
                   label="Close dialog"
+                  size="xs"
                   variant="ghost"
-                  size="sm"
                   onClick={onClose}
                 />
               </div>

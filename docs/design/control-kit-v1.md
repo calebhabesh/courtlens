@@ -51,13 +51,18 @@ Owner decisions (2026-10-14):
 
 | Component | Sizes | Notes |
 | --- | --- | --- |
-| `Button` | xs–lg | Leading `icon`, trailing `iconAfter`; `ButtonLink` renders Next `Link` with `href`, and `ButtonSummary` renders native `<summary>`, sharing the same recipe. |
+| `Button` | xs–lg | Leading `icon`, trailing `iconAfter`; `ButtonLink` renders Next `Link` with `href`, and `ButtonSummary` renders native `<summary>`, sharing the same recipe. `stretch` fills the row, lead-aligns and truncates the label (the phone Filters toggle). |
 | `IconButton` | xs–lg | `label` is required and becomes the tooltip and `aria-label`. |
 | `IconButtonLink` | xs–lg | Square icon-only Next `Link` (added in UC04 batch 4 for rail shortcuts); `label` as for `IconButton`. |
 | `Select` | sm–lg | Native select with the built-in chevron (below). |
 | `Segmented` | xs–lg | Generalises `SegmentedControl` and `StatsChoicePills`; the active indicator is `SlidingIndicator`. Radio semantics and roving focus, optional `deferChange` for an expensive owner update. Existing callers migrate in UC04. |
 | `MenuTrigger` | xs–lg | Button plus trailing chevron that opens `Menu` or a popover; carries `aria-expanded`. Pass `Menu`/`Popover`'s `renderTrigger` props directly to it (one button, no nested trigger). Covers the date, season and team triggers. |
 | `Chip` | xs–lg | `pressed` exposes a toggle (`aria-pressed`); `RemovableChip` provides a trailing remove button centered in its own square hit area. |
+
+**Placement defaults.** Shared controls that render in many places (Data details's console tone, and from
+UC04 batch 6b the legacy `Select`, date and menu triggers) read `ControlScope` (`components/ui/control-scope.tsx`):
+`FilterBar` provides `lg`, the Stats workspace (`/stats`, `/players`) provides the console tone, and
+an explicit prop wins. This replaces page CSS that resized a control by where it sat.
 
 An **attached group** (the season stepper: previous, picker, next) is a wrapper that removes the
 inner radii and gaps between kit controls of one size. The controls themselves are unchanged.
@@ -134,11 +139,11 @@ are listed last as dead CSS for UC05.
 
 | Kit target | Classes |
 | --- | --- |
-| `Button` | `stats-help-button` (lg, C5), `stats-footer-button` (xs ghost `dense`), `player-back-button` (xs primary), `views-modal-btn-action` (xs), `finance-detail-button` (xs ghost), `courtlens-ask-btn` (sm ghost, C6), `ui-why-summary` (xs ghost as summary) |
+| `Button` | `stats-help-button` (lg, C5), `stats-footer-button` (xs ghost `dense`), `player-back-button` (xs primary), `views-modal-btn-action` (xs), `finance-detail-button` (xs ghost), `courtlens-ask-btn` (sm ghost, C6), `ui-why-summary` (xs ghost as summary), `ui-filter-bar-toggle` (lg `stretch`; it opens the Filters sheet, not a menu, so no chevron), Data details (xs ghost; lg `dense` console on the Stats workspace — filter bars have no slack at 1024 px, so it may not grow) |
 | `IconButton` | `stats-tool-button`, `stats-expand-button` (md ghost); `stats-icon-action`, `stats-details-button`, `player-career-expand` (xs ghost, C9); `ranking-reorder-btn` (xs ghost); `tier-reorder-btn` (xs secondary, it sits on the coloured tier label); `ranking-meta-btn`, `tier-quick-fav-btn` (`Button` xs ghost with an icon, since they carry a label); `ranking-delete-btn`, `tier-remove-btn`, `tier-delete-btn` (xs danger); `modal-close-btn`, `filter-clear-btn`, `lookup-clear-btn` (xs ghost); `courtlens-mobile-toggle`, `courtlens-mobile-search-btn`, `icon-button`, `ui-icon-button` (sm ghost); `context-stepper-button` (lg, attached group) |
 | `Select` | `ui-select`, `stats-team-select` |
 | `Segmented` | `ui-segmented-item`, `stats-preset-tab` (lg console `dense`), `ui-tab-trigger` (sm, C1), `tier-tab`, `dist-tab`, `player-tab`, `StatsChoicePills` |
-| `MenuTrigger` | `ui-menu-trigger`, `ui-popover-trigger` (lg, attached group), `ui-date-trigger` (lg, leading icon), `season-scope-trigger`, `stats-team-button` (lg, C4), `availability-trigger`, `ui-filter-bar-toggle` |
+| `MenuTrigger` | `ui-menu-trigger`, `ui-popover-trigger` (lg, attached group), `ui-date-trigger` (lg, leading icon), `season-scope-trigger`, `stats-team-button` (lg, C4), `availability-trigger` |
 | `Chip` | `control-pill` (sm/md/lg by measured height), `stats-position-chip` (lg), `entity-chip`/`ui-entity-chip` (lg removable), `ranking-chip-btn`, `filter-action-pill`, `season-scope-quick-button`, `glossary-chip` (sm) |
 
 ### Does not fit the kit, and why

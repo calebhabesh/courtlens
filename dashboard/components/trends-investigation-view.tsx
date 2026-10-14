@@ -122,7 +122,7 @@ export function TrendsInvestigationView() {
       {result && <ResearchLayout headline={<>
         {exampleState.example && <div className="pc12-example-label"><PlayerIdentity playerId={result.player_id} name={`Example: ${result.player_name}`} team={team} size="sm" subtitle="Season minutes rule" />
           <Button size="lg" onClick={() => {
-            const toggle = document.querySelector<HTMLButtonElement>(".ui-filter-bar-toggle");
+            const toggle = document.querySelector<HTMLButtonElement>(".filter-bar-toggle-slot > button");
             const focusLookup = () => Array.from(document.querySelectorAll<HTMLInputElement>('input[aria-label="Target player"]')).find(input => input.checkVisibility())?.focus();
             if (toggle?.checkVisibility()) {
               toggle.click();

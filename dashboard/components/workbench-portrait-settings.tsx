@@ -4,7 +4,7 @@ import { useState } from "react";
 import { enqueueJob } from "@/lib/workbench-api";
 import { useToast } from "./ui/toast";
 import { ArticleSection } from "./ui/article-layout";
-import { Button } from "./ui/kit";
+import { Button, ButtonSummary } from "./ui/kit";
 
 interface PortraitSettingsProps {
   available?: boolean;
@@ -66,7 +66,7 @@ export function WorkbenchPortraitSettings({
       </dl>
       {msg && <p role="status">{msg}</p>}
       <details className="ui-why">
-        <summary className="ui-why-summary">Source and storage</summary>
+        <ButtonSummary>Source and storage</ButtonSummary>
         <dl className="ui-why-body ui-article-facts">
           <div><dt>Local cache path</dt><dd className="font-mono">{storagePath}</dd></div>
           <div><dt>Source CDN</dt><dd className="font-mono">cdn.nba.com/headshots/nba/latest/260x190/</dd></div>

@@ -455,13 +455,13 @@
   .stats-workspace .stats-header-search .lookup-input-wrapper { min-height: var(--control-md); }
   .stats-workspace .stats-header-search .lookup-input { min-height: calc(var(--control-md) - 2px); }
 
-  .stats-workspace :is(.context-season-picker .ui-select, .season-scope-value, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button) {
+  .stats-workspace :is(.context-season-picker .ui-select, .season-scope-value, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select) {
     font-size: var(--text-sm);
     line-height: var(--text-sm-lh);
     font-weight: 500;
     color: var(--color-text-secondary);
   }
-  .stats-workspace :is(.ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button) { min-height: var(--control-lg); padding-block: 0; }
+  .stats-workspace :is(.ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select) { min-height: var(--control-lg); padding-block: 0; }
   .stats-workspace .stats-divider-field > .ui-field-label { color: var(--color-on-bg-secondary); }
 
   @media (max-width: 767px) {
@@ -489,7 +489,7 @@
 @layer foundation {
   .stats-workspace :is(.context-season-stepper,
     .context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
-    .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle) {
+    .ui-filter-bar-scope .ui-select) {
     background: var(--color-surface-3);
   }
   .stats-workspace .dense-stats-table .stats-header-tier-2 .table-sort-button {
@@ -549,12 +549,12 @@
     --console-hover: color-mix(in srgb, var(--color-white) 7%, var(--color-table-lift));
   }
   .stats-workspace :is(.context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
-    .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle) {
+    .ui-filter-bar-scope .ui-select) {
     /* Background only: a colour fade runs on the main thread and lags the label behind the slide. */
     transition: background-color var(--dur-fast) var(--ease-out);
   }
   .stats-workspace :is(.context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
-    .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle):hover:not(:disabled, .active, [aria-pressed="true"], [aria-checked="true"]) {
+    .ui-filter-bar-scope .ui-select):hover:not(:disabled, .active, [aria-pressed="true"], [aria-checked="true"]) {
     background-color: var(--console-hover);
     color: var(--color-text);
   }
@@ -565,7 +565,7 @@
    shared control colors are set there. */
 @layer foundation {
   .stats-workspace :is(
-    .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar-meta .ui-button):not(.active, .is-selected, .ui-segmented-item-active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], :disabled) {
+    .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select):not(.active, .is-selected, .ui-segmented-item-active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], :disabled) {
     color: var(--color-text-control);
     font-weight: 600;
     &:hover { color: var(--color-text); }
