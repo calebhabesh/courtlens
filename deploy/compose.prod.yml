@@ -26,7 +26,8 @@ services:
     image: ${COURTLENS_POSTGRES_IMAGE:?}
     restart: unless-stopped
     mem_limit: 2g
-    cpus: 1.0
+    # Player pages fan out ~25 season queries at once; one CPU serialized them (17s pages).
+    cpus: 3.0
     shm_size: 256m
     command:
       - postgres
@@ -66,7 +67,7 @@ services:
     image: ${COURTLENS_API_IMAGE:?}
     restart: unless-stopped
     mem_limit: 1536m
-    cpus: 1.5
+    cpus: 2.0
     environment: *api-environment
     volumes:
       - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro

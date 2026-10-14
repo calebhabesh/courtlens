@@ -56,7 +56,10 @@ for dir in "${SERVING_DIRS[@]}"; do
   "${RSYNC[@]}" "$DATA_DIR/$dir/" "$SSH_HOST:$REMOTE_DIR/data/$dir/"
 done
 
-"${SSH[@]}" bash -s -- "$REMOTE_DIR" "$sha" "$OWNER" <<'REMOTE'
+# Upload the remote script first and run it with stdin closed, so no command
+# (docker compose run, for one) can swallow the rest of the script.
+# shellcheck disable=SC2016
+"${SSH[@]}" "bash -c 'tmp=\"\$(mktemp)\"; cat > \"\$tmp\"; bash \"\$tmp\" \"\$@\" < /dev/null; rc=\$?; rm -f \"\$tmp\"; exit \$rc' bash '$REMOTE_DIR' '$sha' '$OWNER'" <<'REMOTE'
 set -euo pipefail
 dir="$1"; sha="$2"; owner="$3"
 cd "$dir"
@@ -78,7 +81,7 @@ tunnel_profile=()
 
 compose "$next" config --quiet
 compose "$next" up -d --wait db
-compose "$next" --profile migrate run --rm migrate
+compose "$next" --profile migrate run --rm -T migrate < /dev/null
 if ! compose "$next" "${tunnel_profile[@]}" up -d --wait --wait-timeout 300 --remove-orphans; then
   echo "New release failed health checks." >&2
   if [[ -f release.env ]]; then
@@ -95,7 +98,9 @@ mv "$next" release.env
 
 # Keep only the current and previous release images; LineWatchTO's host-wide prune
 # never removes images that a container still uses.
-keep="$(cat release.env release.prev.env 2>/dev/null | sed -n 's/^COURTLENS_\(API\|DASHBOARD\)_IMAGE=.*@//p' | sort -u)"
+releases=(release.env)
+[[ -f release.prev.env ]] && releases+=(release.prev.env)
+keep="$(sed -n 's/^COURTLENS_\(API\|DASHBOARD\)_IMAGE=.*@//p' "${releases[@]}" | sort -u)"
 docker image ls --no-trunc --format '{{.Repository}} {{.ID}} {{.Digest}}' \
   | awk -v o="ghcr.io/$owner/courtlens-" 'index($1, o) == 1' \
   | while read -r _ id digest; do
