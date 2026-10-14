@@ -5,7 +5,7 @@ import { enqueueJob, getWorkbenchJobs } from "@/lib/workbench-api";
 import { formatDate, formatTimestamp } from "@/lib/format-date";
 import type { WorkbenchJobItem, WorkbenchStatus } from "@/lib/types";
 import { Badge, type BadgeVariant } from "./ui/badge";
-import { Button } from "./ui/button";
+import { Button } from "./ui/kit";
 import { Icon } from "./ui/icon";
 import { DataDetailsButton } from "./ui/data-details";
 import { CountChip, FilterBar } from "./ui/filter-bar";
@@ -83,7 +83,7 @@ export function DataStatusView({ status, initialJobs, error }: { status: Workben
   ];
   const actions = (
     <>
-      <Button variant="primary" size="sm" icon="refresh" loading={submitting === "refresh"} disabled={submitting !== null} onClick={() => void trigger("refresh")}>Refresh workbench</Button>
+      <Button size="xs" variant="primary" icon="refresh" loading={submitting === "refresh"} disabled={submitting !== null} onClick={() => void trigger("refresh")}>Refresh workbench</Button>
       {/* Menu renders its own trigger button, so the trigger is button-styled content, not a Button. */}
       <Menu align="right" trigger={<span className="ui-button ui-button-secondary ui-button-sm">More jobs<Icon name="chevron-down" size={14} /></span>}>
         <MenuItem icon="camera" label="Acquire portraits" disabled={submitting !== null} onClick={() => void trigger("portraits")} />

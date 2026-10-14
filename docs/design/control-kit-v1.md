@@ -139,7 +139,7 @@ are listed last as dead CSS for UC05.
 | `Select` | `ui-select`, `stats-team-select` |
 | `Segmented` | `ui-segmented-item`, `stats-preset-tab` (lg console `dense`), `ui-tab-trigger` (sm, C1), `tier-tab`, `dist-tab`, `player-tab`, `StatsChoicePills` |
 | `MenuTrigger` | `ui-menu-trigger`, `ui-popover-trigger` (lg, attached group), `ui-date-trigger` (lg, leading icon), `season-scope-trigger`, `stats-team-button` (lg, C4), `availability-trigger`, `ui-filter-bar-toggle` |
-| `Chip` | `control-pill` (sm/md/lg by measured height), `stats-position-chip` (lg), `entity-chip`/`ui-entity-chip` (lg removable), `ranking-chip-btn`, `filter-action-pill`, `season-scope-quick-button`, `ask-chip`, `agent-source-chip`, `glossary-chip` (sm) |
+| `Chip` | `control-pill` (sm/md/lg by measured height), `stats-position-chip` (lg), `entity-chip`/`ui-entity-chip` (lg removable), `ranking-chip-btn`, `filter-action-pill`, `season-scope-quick-button`, `glossary-chip` (sm) |
 
 ### Does not fit the kit, and why
 
@@ -153,6 +153,7 @@ are listed last as dead CSS for UC05.
 | `feed-link-button` | Inline text action inside a caption (19.5 px line box); a control size would break the sentence. | Prose link style |
 | `team-card-button` | A whole card is the link. | Card |
 | `roster-chip`, `tier-player-chip` | Draggable roster and tier cards holding a portrait, a link and an inline input or select; not a control (moved here in UC04 batch 4). | Roster Shapes, Tier List |
+| `ask-chip`, `agent-source-chip` | Ask follow-up questions, actions and inline citations: model-written labels of any length that wrap onto several lines (a 390 px follow-up measured 46 px), and the citation flows inline inside answer prose. A fixed-height, no-wrap kit control would overflow (moved here in UC04 batch 5). | Ask page and panel |
 | `ui-count-chip`, `ui-badge-pill`, `views-modal-metric-chip`, `stats-drawer-team-pill` | Static labels, not controls. | `Badge` |
 | `lookup-input`, `ui-input` | Text fields (30/40 px). Field sizes follow the same height scale but are outside UC02. | `Input` |
 

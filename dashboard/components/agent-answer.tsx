@@ -7,7 +7,6 @@ import { agentCellText, agentResultView, resultAnchor, resultColumnLabel, review
 import { parsePositionedMarkdown } from "@/lib/markdown";
 import { scopeChipLabel } from "@/lib/assistant-chat";
 import { pinnedContext } from "@/lib/conversation";
-import { Button } from "./ui/controls";
 
 function AnswerLink({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
   return href.startsWith("/") ? <Link className={className} href={href}>{children}</Link> : <a className={className} href={href} {...(href.startsWith("https:") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{children}</a>;
@@ -91,7 +90,7 @@ export function AgentResult({ block, answer }: { block: AgentResultBlock; answer
     <div className="agent-result-heading"><h3>{name}</h3>{context.season && <span className="ask-scope-tag">{scopeChipLabel(context)}</span>}</div>
     {!view ? <p className="text-muted">No rows were returned.</p> : view.kind === "facts"
       ? <dl className="ask-facts">{view.entries.map(([key, value]) => <div key={key}><dt>{resultColumnLabel(key, result)}</dt><dd>{agentCellText(value)}</dd></div>)}</dl>
-      : <><div className="ask-table" role="region" aria-label={`${name} table`} tabIndex={0}><table className="data-table"><caption>{expanded ? `All ${view.total} returned rows` : `${Math.min(10, view.total)} of ${view.total} returned rows`}</caption><thead><tr>{view.columns.map(key => <th scope="col" key={key}>{resultColumnLabel(key, result)}</th>)}</tr></thead><tbody>{(expanded ? view.rows : view.rows.slice(0, 10)).map((row, i) => <tr key={i}>{view.columns.map(key => <td key={key} title={agentCellText(row[key])}>{agentCellText(row[key])}</td>)}</tr>)}</tbody></table></div>{view.total > 10 && <Button className="ask-chip" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? "Show fewer" : `Show all ${view.total} rows`}</Button>}</>}
+      : <><div className="ask-table" role="region" aria-label={`${name} table`} tabIndex={0}><table className="data-table"><caption>{expanded ? `All ${view.total} returned rows` : `${Math.min(10, view.total)} of ${view.total} returned rows`}</caption><thead><tr>{view.columns.map(key => <th scope="col" key={key}>{resultColumnLabel(key, result)}</th>)}</tr></thead><tbody>{(expanded ? view.rows : view.rows.slice(0, 10)).map((row, i) => <tr key={i}>{view.columns.map(key => <td key={key} title={agentCellText(row[key])}>{agentCellText(row[key])}</td>)}</tr>)}</tbody></table></div>{view.total > 10 && <button type="button" className="ask-chip" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? "Show fewer" : `Show all ${view.total} rows`}</button>}</>}
     {result.limitations?.map((text, i) => <p key={i} className="text-muted ask-limitation">{text}</p>)}
     <div className="ask-chips">{href && <AnswerLink className="ask-chip" href={href}>Open equivalent analysis</AnswerLink>}{review && <Link className="ask-chip" href={review}>Review and save {result.operation.replaceAll("_", " ")}</Link>}</div>
     <details className="ask-disclosure"><summary>Returned fields and exact evidence</summary><pre>{JSON.stringify({ data: result.data, rows: result.rows, evidence: result.evidence, context: block.context }, null, 2)}</pre></details>
@@ -112,11 +111,11 @@ export function AgentAnswer({ answer, busy, onChoice, onRetry }: { answer: Agent
     {!!answer.provenance?.unsupported_numbers?.length && !answer.provenance?.unverified_sentences?.length && <p className="agent-unverified">This answer contains unverified numbers.</p>}
     {!!answer.provenance?.warehouse_override_missed && <p className="agent-unverified">A web claim overlaps CourtLens coverage. Check the warehouse result before relying on it.</p>}
     {results.map((block, i) => <AgentResult key={`${block.result.operation_hash}-${i}`} block={block} answer={answer} />)}
-    {!!answer.follow_ups?.length && <div className="ask-chips" role="group" aria-label="Follow-up questions">{answer.follow_ups.map(choice => <Button className="ask-chip" key={choice} disabled={busy} onClick={() => onChoice(choice)}>{choice}</Button>)}</div>}
+    {!!answer.follow_ups?.length && <div className="ask-chips" role="group" aria-label="Follow-up questions">{answer.follow_ups.map(choice => <button type="button" className="ask-chip" key={choice} disabled={busy} onClick={() => onChoice(choice)}>{choice}</button>)}</div>}
     <div className="ask-chips">{answer.actions?.filter(action => action.kind !== "retry" && action.kind !== "source" && !results.some(block => block.result.open_url === action.url)).map((action, i) => {
       const href = safeAgentUrl(action.url);
       return href ? <AnswerLink key={i} className="ask-chip" href={href}>{action.label}</AnswerLink> : null;
-    })}{retryable && <Button className="ask-chip" disabled={busy} onClick={onRetry}>Retry question</Button>}</div>
+    })}{retryable && <button type="button" className="ask-chip" disabled={busy} onClick={onRetry}>Retry question</button>}</div>
     {!!sources.length && <details className="ask-disclosure agent-sources"><summary>Sources ({sources.length})</summary><ul className="hybrid-sources">{sources.map(source => <li key={source.source_id}><SourceChip source={source} answer={answer} /><p>{sourceDetails(source)}</p>{source.excerpt && <blockquote>{source.excerpt}</blockquote>}</li>)}</ul></details>}
     <details className="ask-disclosure ask-how"><summary>How I got this</summary>
       <ol className="agent-trace">{answer.trace?.map((step, i) => <li key={i}><strong>{step.tool}</strong> · {step.status} · {step.elapsed_ms} ms{step.rows != null ? ` · ${step.rows} rows` : ""}{step.hits != null ? ` · ${step.hits} hits` : ""}<code>{JSON.stringify(step.arguments ?? {})}</code></li>)}</ol>

@@ -5,7 +5,6 @@ import type { HybridTurnResponse } from "@/lib/assistant-v2.generated";
 import { cellText, compactResult, generalKnowledgeParts } from "@/lib/assistant-chat";
 import { researchDestination, type Result } from "@/lib/conversation";
 import { ConversationResult } from "./conversation-result";
-import { Button } from "./ui/controls";
 
 export function safeAnswerUrl(value?: string | null): string | null {
   if (!value || /[\\\u0000- ]/.test(value)) return null;
@@ -39,7 +38,7 @@ export function HybridAnswer({ answer, onChoice, onRetry, busy }: {
           // Approximations and filters are part of the answer, so they sit beside it.
           return <div key={index}><CompactResult result={result} />{result.limitations.map(text => <p key={text} className="text-muted ask-limitation">{text}</p>)}</div>;
         }
-        case "clarification": return <div key={index}><p>{block.text}</p><div className="ask-chips">{block.choices?.map(choice => <Button key={choice} className="ask-chip" disabled={busy} onClick={() => onChoice(choice)}>{choice}</Button>)}</div></div>;
+        case "clarification": return <div key={index}><p>{block.text}</p><div className="ask-chips">{block.choices?.map(choice => <button type="button" key={choice} className="ask-chip" disabled={busy} onClick={() => onChoice(choice)}>{choice}</button>)}</div></div>;
         case "inability": return <div key={index}><p>{block.text}</p><p className="text-muted">{block.next_action}</p></div>;
         case "external_claim": return <div key={index}><span className="hybrid-origin">External source</span><p>{block.text}</p><p className="text-muted">{block.period} · {block.qualifier}</p></div>;
         case "narrative": return <p key={index} className="hybrid-narrative">{block.text}</p>;
@@ -54,7 +53,7 @@ export function HybridAnswer({ answer, onChoice, onRetry, busy }: {
       {answer.scope && <span className="ask-scope-tag" title={`Resolved on ${answer.scope.as_of}`}>{answer.scope.label}</span>}
       {actions.map((action, index) => action.href.startsWith("/") ? <Link className="ask-chip" key={index} href={action.href}>{action.label}</Link> : <a className="ask-chip" key={index} href={action.href} target="_blank" rel="noopener noreferrer">{action.label}</a>)}
       {evidenceSteps.map(result => <Link className="ask-chip" key={result.step_id} href={researchDestination({step_id: result.step_id, operation: result.operation, arguments: result.arguments}, answer.scope!.selections)}>Review and save {result.operation.replaceAll("_", " ")}</Link>)}
-      {retryable && <Button className="ask-chip" disabled={busy} onClick={onRetry}>Retry question</Button>}
+      {retryable && <button type="button" className="ask-chip" disabled={busy} onClick={onRetry}>Retry question</button>}
     </div>}
     {(answer.sources?.length ?? 0) > 0 && <details className="ask-disclosure"><summary>Sources ({answer.sources!.length})</summary><ul className="hybrid-sources">{answer.sources!.map(source => {
       const href = safeAnswerUrl(source.url);

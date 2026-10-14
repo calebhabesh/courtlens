@@ -14,6 +14,7 @@ import { GatedNote } from "./ui/gated-note";
 import { ResearchLayout } from "./ui/page-shell";
 import { Skeleton } from "./ui/skeleton";
 import { StatTile } from "./ui/stat-tile";
+import { Button, ButtonLink } from "./ui/kit";
 
 const day = (value: string | null | undefined) => value ? formatDate(value.slice(0, 10)) : "—";
 /** "2024-25 · Regular Season · Through Apr 14, 2025" from a retained context. */
@@ -50,8 +51,8 @@ export function SavedOperationLibrary({ legacy, legacyError }: { legacy: SavedIn
       <section aria-label="Saved analytical operations" className="research-section">
         <h2>Saved Analytical Operations</h2>
         {loading && <p role="status" className="sr-only">Loading retained operations…</p>}
-        {error && <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => { setLoading(true); setRetry(value => value + 1); }}>Retry library</button>}>{error}</GatedNote></div>}
-        {!loading && !error && items.length === 0 && <GatedNote action={<Link className="button" href="/research/ask">Run an investigation without AI</Link>} why={<p>Explicitly retained manual or conversational results. Questions are optional metadata; provider narrative is excluded.</p>}>No retained operations on this page.</GatedNote>}
+        {error && <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => { setLoading(true); setRetry(value => value + 1); }}>Retry library</Button>}>{error}</GatedNote></div>}
+        {!loading && !error && items.length === 0 && <GatedNote action={<ButtonLink size="lg" href="/research/ask">Run an investigation without AI</ButtonLink>} why={<p>Explicitly retained manual or conversational results. Questions are optional metadata; provider narrative is excluded.</p>}>No retained operations on this page.</GatedNote>}
         {loading && <Skeleton height={240} />}
         {!loading && !error && items.length > 0 && <div className="table-wrapper research-table" role="region" aria-label="Saved operations table" tabIndex={0}>
           <table className="data-table">
@@ -66,7 +67,7 @@ export function SavedOperationLibrary({ legacy, legacyError }: { legacy: SavedIn
             </tr>)}</tbody>
           </table>
         </div>}
-        <div className="research-pager"><button className="button" disabled={loading || offset === 0} onClick={() => page(Math.max(0, offset - 50))}>Previous saved operations</button><span>Page {offset / 50 + 1}</span><button className="button" disabled={loading || !!error || items.length < 50} onClick={() => page(offset + 50)}>Next saved operations</button></div>
+        <div className="research-pager"><Button size="lg" disabled={loading || offset === 0} onClick={() => page(Math.max(0, offset - 50))}>Previous saved operations</Button><span>Page {offset / 50 + 1}</span><Button size="lg" disabled={loading || !!error || items.length < 50} onClick={() => page(offset + 50)}>Next saved operations</Button></div>
       </section>
       <section aria-label="Legacy saved investigations" className="research-section">
         <h2>Legacy Saved Investigations</h2>

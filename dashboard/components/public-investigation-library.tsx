@@ -7,6 +7,7 @@ import { PlayerIdentity } from "./ui/identity";
 import { CountChip, FilterBar } from "./ui/filter-bar";
 import { GatedNote } from "./ui/gated-note";
 import { DataDetailsButton } from "./ui/data-details";
+import { ButtonLink } from "./ui/kit";
 
 export function PublicInvestigationLibrary({ details }: { details: (SavedDetail | null)[] }) {
   const available = details.filter((detail): detail is SavedDetail => detail !== null);
@@ -22,10 +23,10 @@ export function PublicInvestigationLibrary({ details }: { details: (SavedDetail 
           <p>{entry.description}</p>
           <p className="research-caption">{String(context.season)} · {humanLabel(String(context.phase))} · {throughLabel(typeof context.before_date === "string" ? context.before_date : null)}</p>
           <p className="research-caption">Source: retained CourtLens operation · {detail.manifest.results.reduce((n, result) => n + result.rows.length, 0)} returned rows</p>
-          <div className="research-row-actions"><Link className="button" href={`/investigations/saved/${detail.id}`}>Open Finding</Link><DataDetailsButton rows={[{ label: "Original title", value: detail.title }, { label: "Manifest SHA-256", value: detail.manifest_sha256, mono: true }, { label: "Retained ID", value: detail.id, mono: true }]} /></div>
+          <div className="research-row-actions"><ButtonLink size="lg" href={`/investigations/saved/${detail.id}`}>Open Finding</ButtonLink><DataDetailsButton rows={[{ label: "Original title", value: detail.title }, { label: "Manifest SHA-256", value: detail.manifest_sha256, mono: true }, { label: "Retained ID", value: detail.id, mono: true }]} /></div>
         </article>;
       })}
     </section>
-    {available.length < details.length && <GatedNote action={<Link className="button" href="/research/case-studies">Case Studies</Link>} why={<p>Only findings whose retained manifest matches the curated record are shown. Missing or changed records are never replaced by fabricated results.</p>}>{details.length - available.length} retained examples unavailable.</GatedNote>}
+    {available.length < details.length && <GatedNote action={<ButtonLink size="lg" href="/research/case-studies">Case Studies</ButtonLink>} why={<p>Only findings whose retained manifest matches the curated record are shown. Missing or changed records are never replaced by fabricated results.</p>}>{details.length - available.length} retained examples unavailable.</GatedNote>}
   </>;
 }

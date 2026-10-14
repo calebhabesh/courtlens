@@ -29,8 +29,8 @@ export const CONTROL_CLASSES = [
   "availability-trigger", "ui-filter-bar-toggle",
   // → Chip
   "control-pill", "stats-position-chip", "entity-chip", "ui-entity-chip", "compare-tray-chip",
-  "ranking-chip-btn", "filter-action-pill", "season-scope-quick-button", "ask-chip",
-  "agent-source-chip", "glossary-chip",
+  "ranking-chip-btn", "filter-action-pill", "season-scope-quick-button",
+  "glossary-chip",
 ];
 
 /**
@@ -38,30 +38,11 @@ export const CONTROL_CLASSES = [
  * nothing may be added. UC03 started with 82 files. Dynamic route folders are escaped glob patterns.
  */
 export const PENDING_CONTROL_CLASS = [
-  "app/evaluation/page.tsx",
-  "app/forecasts/page.tsx",
-  "app/investigations/page.tsx",
-  "components/agent-answer.tsx",
-  "components/ask-courtlens.tsx",
-  "components/ask-drawer.tsx",
   "components/assistant-status-card.tsx",
-  "components/case-studies-view.tsx",
-  "components/conversation-result.tsx",
-  "components/distributions-investigation-view.tsx",
   "components/entity-picker.tsx",
-  "components/hybrid-answer.tsx",
   "components/install-interface.tsx",
   "components/lookup-input.tsx",
-  "components/play-type-shooting-view.tsx",
-  "components/public-investigation-library.tsx",
-  "components/research-operation-view.tsx",
-  "components/save-operation.tsx",
-  "components/saved-operation-detail.tsx",
-  "components/saved-operation-library.tsx",
   "components/table-percentile-legend.tsx",
-  "components/threaded-assistant.tsx",
-  "components/trends-investigation-view.tsx",
-  "components/workbench-investigations-list.tsx",
   "components/workbench-portrait-settings.tsx",
 ];
 
