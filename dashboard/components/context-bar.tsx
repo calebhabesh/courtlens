@@ -10,7 +10,7 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { Field } from "@/components/ui/field";
 import { Select } from "@/components/ui/select";
 import { Icon } from "@/components/ui/icon";
-import { SegmentedControl } from "@/components/ui/segmented-control";
+import { IconButton, Segmented } from "@/components/ui/kit";
 import { beforeDateFromThrough, formatDate, throughDateFromBefore } from "@/lib/format-date";
 import { getSharedCatalog } from "@/lib/route-availability";
 import { applyScopeChange, type ScopeKey } from "@/lib/scope-url";
@@ -164,31 +164,27 @@ export function ContextBar({
     <>
       {steppedScope ? (
         <div className="context-season-stepper" role="group" aria-label="Season">
-          <button type="button" className="context-stepper-button" disabled={!stepBack}
+          <IconButton size="lg" icon="left" disabled={!stepBack}
             onClick={() => stepBack && stepBack()}
-            aria-label={seasonFrom
+            label={seasonFrom
               ? (earlierRange ? `Earlier range, ${earlierRange.from} – ${earlierRange.through}` : "No earlier range")
-              : (previousSeason ? `Previous season, ${previousSeason}` : "No earlier season")}>
-            <Icon name="left" size={14} />
-          </button>
+              : (previousSeason ? `Previous season, ${previousSeason}` : "No earlier season")} />
           {allowMultiSeason ? (
             <SeasonScopePicker seasons={seasons} season={season} seasonFrom={seasonFrom} onApply={applySeasonScope} />
           ) : (
             <span className="context-season-picker"><Icon name="calendar" size={14} />{seasonSelect}</span>
           )}
-          <button type="button" className="context-stepper-button" disabled={!stepForward}
+          <IconButton size="lg" icon="right" disabled={!stepForward}
             onClick={() => stepForward && stepForward()}
-            aria-label={seasonFrom
+            label={seasonFrom
               ? (laterRange ? `Later range, ${laterRange.from} – ${laterRange.through}` : "No later range")
-              : (nextSeason ? `Next season, ${nextSeason}` : "No later season")}>
-            <Icon name="right" size={14} />
-          </button>
+              : (nextSeason ? `Next season, ${nextSeason}` : "No later season")} />
         </div>
       ) : (
         <Field label="Season" layout="inline">{seasonSelect}</Field>
       )}
       {steppedScope ? (
-        <SegmentedControl name="Filter by competition phase" size="sm" className="context-phase-segments" value={shownPhase}
+        <Segmented label="Filter by competition phase" size="lg" value={shownPhase}
           onChange={selectPhase}
           options={phaseSegments.map((value) => ({ value, disabled: !phases.includes(value),
             label: `${SHORT_PHASES[value] ?? phaseLabel(value)}${value === phase && !phases.includes(value) ? " · unavailable" : ""}` }))} />
