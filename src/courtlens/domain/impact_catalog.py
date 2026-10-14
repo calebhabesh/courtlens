@@ -2,8 +2,15 @@
 
 from dataclasses import replace
 
-from courtlens.domain.impact_extras_catalog import IMPACT_EXTRAS_CATALOG
+from courtlens.domain.impact_extras_catalog import IMPACT_EXTRAS_CATALOG, RETIRED_METRICS
 from courtlens.domain.metrics import METRIC_CATALOG_V2, MetricDefinition
+from courtlens.domain.stats_v4_catalog import (
+    BOX_METRICS,
+    DARKO_METRICS,
+    IMPACT_DERIVED,
+    TRACKING_METRICS,
+)
+from courtlens.domain.stats_v4_catalog import VERSION as V4_VERSION
 
 VERSION = "courtlens-stats-v3"
 
@@ -85,5 +92,19 @@ ON_OFF_METRICS = {
         ("onoff_defensive_rating", "DRtg on/off", "on DRtg - off DRtg"),
     )
 }
-IMPACT_CATALOG = {**RATING_METRICS, **ON_OFF_METRICS, **IMPACT_EXTRAS_CATALOG}
-SERVING_CATALOG = {**METRIC_CATALOG_V2, **IMPACT_CATALOG}
+# Served extras exclude retired metrics, which sealed artifacts still carry but nothing serves.
+SERVED_EXTRAS = {k: d for k, d in IMPACT_EXTRAS_CATALOG.items() if k not in RETIRED_METRICS}
+IMPACT_CATALOG = {**RATING_METRICS, **ON_OFF_METRICS, **SERVED_EXTRAS}
+V3_CATALOG = {**METRIC_CATALOG_V2, **IMPACT_CATALOG}
+# Sealed impact columns plus v4 values derived from them at serving time; all share impact gates.
+IMPACT_COLUMNS = {**IMPACT_CATALOG, **IMPACT_DERIVED}
+# Computed in SQL from box totals and impact support, not carried in the sealed rows.
+SQL_DERIVED_IMPACT = frozenset({"offensive_load", "ctov_pct", "rim_ast_per_36"})
+SERVING_CATALOG = {
+    **V3_CATALOG,
+    **BOX_METRICS,
+    **IMPACT_DERIVED,
+    **TRACKING_METRICS,
+    **DARKO_METRICS,
+}
+SERVING_VERSIONS = {VERSION: V3_CATALOG, V4_VERSION: SERVING_CATALOG}

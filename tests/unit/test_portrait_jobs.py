@@ -1,3 +1,4 @@
+import hashlib
 import struct
 from contextlib import nullcontext
 from pathlib import Path
@@ -123,3 +124,23 @@ def test_portrait_fetch_validates_official_high_resolution_png(tmp_path: Path, v
         assert result is not None and result[1].read_bytes() == content
     else:
         assert result is None and list(tmp_path.iterdir()) == []
+
+
+def test_portrait_fetch_rejects_cdn_silhouette(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    content = (
+        b"\x89PNG\r\n\x1a\n" + b"\x00\x00\x00\x0dIHDR" + struct.pack(">II", 1040, 760) + b"\x01" * 9
+    )
+    monkeypatch.setattr(
+        workbench_jobs,
+        "PLACEHOLDER_PORTRAIT_SHA256",
+        frozenset({hashlib.sha256(content).hexdigest()}),
+    )
+
+    def handle(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, content=content, headers={"content-type": "image/png"})
+
+    with httpx.Client(transport=httpx.MockTransport(handle)) as client:
+        assert workbench_jobs._fetch_player_portrait(client, "711", tmp_path) is None
+    assert list(tmp_path.iterdir()) == []

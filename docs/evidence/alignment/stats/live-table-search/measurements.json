@@ -1,0 +1,5 @@
+{
+  "source": "local dev server on :3100 against FastAPI/PostgreSQL :8000, /stats default scope",
+  "1440": { "leb": ["LeBron James", "Caleb Houstan", "Maxi Kleber", "Caleb Martin", "Caleb Love"], "lebr": ["LeBron James"], "jokic": ["Nikola Jokić"], "firstResultMs": 1057, "focused": true, "value": "leb", "lookupRequests": 0, "listboxes": 0, "overflow": 0 },
+  "390": { "leb": ["LeBron James", "Caleb Houstan", "Maxi Kleber", "Caleb Martin", "Caleb Love"], "lebr": ["LeBron James"], "jokic": ["Nikola Jokić"], "firstResultMs": 1099, "focused": true, "value": "leb", "lookupRequests": 0, "listboxes": 0, "overflow": 0 }
+}

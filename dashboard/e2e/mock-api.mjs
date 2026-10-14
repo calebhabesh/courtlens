@@ -167,7 +167,7 @@ const workbenchPlayers = {
       stints_count: 1,
       sample_sizes: { gp: 70 },
       stints: [{ team_id: "100", tricode: "TOR", name: "Toronto Raptors", games_played: 70 }],
-      metrics: playerMetrics,
+      metrics: { ...playerMetrics, dpm: 6.2, o_dpm: 4.1, d_dpm: 2.1 },
       portrait_available: true,
       lineage_url: "/api/workbench/lineage?playerId=23"
     },
@@ -183,7 +183,7 @@ const workbenchPlayers = {
       stints_count: 1,
       sample_sizes: { gp: 68 },
       stints: [{ team_id: "200", tricode: "BOS", name: "Boston Celtics", games_played: 68 }],
-      metrics: { ...playerMetrics, pts: 1500, pts_per_game: 22.0 },
+      metrics: { ...playerMetrics, pts: 1500, pts_per_game: 22.0, dpm: 2.4, o_dpm: 1.7, d_dpm: 0.7 },
       portrait_available: false,
       lineage_url: "/api/workbench/lineage?playerId=24"
     }
@@ -614,14 +614,21 @@ createServer(async (request, response) => {
     default_season: "2025-26", default_phase: "regular_season", default_before_date: "2026-06-30",
     stats_scopes: [{ season: "2025-26", phase: "regular_season", coverage_start: "2025-10-21", coverage_end: "2026-04-12", default_before_date: "2026-06-30" }],
     stats_windows: ["season", "last_10", "last_5"], stats_normalizations: ["raw", "per_game", "per_36"],
-    stats_sort_fields: Object.keys(workbenchPlayers.items[0].metrics), warnings: []
+    stats_sort_fields: Object.keys(workbenchPlayers.items[0].metrics), warnings: [],
+    darko: { status: "available", manifest_sha256: "b".repeat(64),
+      scopes: [{ season: "2025-26", phase: "regular_season", as_of: "2026-04-12", data_date: "2026-04-12" }] }
   });
   if (url.pathname === "/api/workbench/query" && request.method === "POST") {
     let raw = "";
     for await (const chunk of request) raw += chunk;
     const body = JSON.parse(raw);
     const query = body.query;
+    // Estimated positions and draft classes the server would resolve for the fixture players.
+    const fixturePositions = { 23: "SF", 24: "PG" }, fixtureDrafts = { 23: 2018, 24: 2020 };
+    const darkoAvailable = query.window?.kind === "season" && query.before_date > "2026-04-12";
     const rows = workbenchPlayers.items.map((row, index) => ({ ...row,
+      metrics: darkoAvailable ? row.metrics : { ...row.metrics, dpm: null, o_dpm: null, d_dpm: null },
+      position: fixturePositions[row.player_id] ?? null,
       percentiles: Object.fromEntries(Object.keys(row.metrics).map((key) => [key, index === 0 ? 75 : 25])),
       ...(body.presentation?.table_percentiles ? {
         table_qualified: true,
@@ -630,15 +637,27 @@ createServer(async (request, response) => {
       } : {})
     }));
     const selected = rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
-      (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)));
+      (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)) &&
+      (!body.presentation?.positions?.length || body.presentation.positions.includes(fixturePositions[row.player_id])) &&
+      (!body.presentation?.draft_year || body.presentation.draft_year === fixtureDrafts[row.player_id]));
     const sort = query.sort?.[0];
     if (sort) selected.sort((a, b) => (sort.field === "player_name" ? a.player_name.localeCompare(b.player_name) : (a.metrics[sort.field] ?? 0) - (b.metrics[sort.field] ?? 0)) * (sort.direction === "asc" ? 1 : -1));
     return json(response, 200, { context: workbenchContext, query, total_eligible_players: rows.length,
       total_output_players: selected.length, output_offset: 0,
       cohort: { version: "pf01a-v1", scope_hash: "fixture-cohort", eligible_players: rows.length, formula: "midrank", good_directions: {} },
       ...(body.presentation?.table_percentiles ? { table_cohort: { version: "courtlens-table-percentiles-v1", scope_hash: "fixture-table-cohort", qualified_players: 2, min_season_minutes: 500, reference: "League", formula: "midrank" } } : {}),
-      items: selected, next_cursor: null, has_more: false, warnings: [] });
+      items: selected, next_cursor: null, has_more: false, warnings: [],
+      darko: { status: darkoAvailable ? "available" : "unavailable", source: "DARKO (synthetic browser fixture)",
+        version: "fixture", manifest_sha256: "b".repeat(64), limitations: ["Synthetic UI fixture; no real player rating."],
+        ...(darkoAvailable ? { as_of: "2026-04-12", data_date: "2026-04-12" } : {}) } });
   }
+  if (url.pathname === "/api/workbench/draft-classes") return json(response, 200, {
+    source: "NBA draft history (fixture)", classes: [2020, 2019, 2018].map(year => ({ year, players: 58 }))
+  });
+  if (url.pathname === "/api/workbench/player-seasons") return json(response, 200, {
+    phase: url.searchParams.get("phase") ?? "regular_season",
+    seasons: Object.fromEntries(url.searchParams.getAll("playerId").map(id => [id, ["2025-26"]]))
+  });
   if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
   if (url.pathname === "/api/workbench/players") {
     const q = (url.searchParams.get("name") ?? "").toLowerCase();
@@ -647,6 +666,15 @@ createServer(async (request, response) => {
     // Dedicated observed-team duo fixture; kept out of the normal two-row Stats cohort.
     if (url.searchParams.get("teamId") === "TOR") filtered = filtered.map(player => ({...player,teams:["TOR"]}));
     return json(response, 200, { ...workbenchPlayers, items: filtered, total_eligible_players: filtered.length });
+  }
+  const bioMatch = url.pathname.match(/^\/api\/workbench\/players\/(23|24)\/bio$/);
+  if (bioMatch) {
+    // Synthetic listings; neither fixture player attended a combine.
+    const fixture = bioMatch[1] === "23"
+      ? { jersey: "7", listed_position: "F", listed_height_inches: 80, listed_weight_lbs: 220, prior_seasons: 6, birth_date: "1998-02-10", age: 28, country: "Fixtureland", college: "Fixture State", draft: { year: 2018, round: 1, pick: 9, team_id: "100", team_tricode: "TOR", organization: "Fixture State" }, undrafted: false }
+      : { jersey: null, listed_position: "G", listed_height_inches: 75, listed_weight_lbs: 190, prior_seasons: 0, birth_date: null, age: null, country: null, college: null, draft: null, undrafted: true };
+    return json(response, 200, { player_id: bioMatch[1], season: url.searchParams.get("season") ?? "2025-26", as_of: "2026-04-12",
+      listing_source: "season_roster", combine: null, limitations: ["Synthetic UI fixture."], ...fixture });
   }
   if (url.pathname === "/api/workbench/players/23") return json(response, 200, workbenchPlayerProfile("23"));
   if (url.pathname === "/api/workbench/players/24") return json(response, 200, workbenchPlayerProfile("24"));

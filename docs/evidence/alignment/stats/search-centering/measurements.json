@@ -1,0 +1,34 @@
+[
+  {
+    "viewport": 1440,
+    "search": {
+      "x": 44,
+      "width": 288,
+      "height": 32,
+      "center": 188
+    },
+    "cards": {
+      "left": 24,
+      "right": 352,
+      "center": 188
+    },
+    "offset": 0,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "search": {
+      "x": 12,
+      "width": 228,
+      "height": 42,
+      "center": 126
+    },
+    "cards": {
+      "left": 8,
+      "right": 244,
+      "center": 126
+    },
+    "offset": 0,
+    "overflow": false
+  }
+]

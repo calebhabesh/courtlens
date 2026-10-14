@@ -39,6 +39,13 @@ class Settings(BaseSettings):
     impact_serving_manifest: Path | None = Path(
         "data/derived/impact-serving-v1/6e162489a53a8af673aa5b9108a60e62940ad6119c5d228a956ad01fbf218717.json"
     )
+    position_estimates_manifest: Path | None = Path(
+        "data/derived/position-estimates-v1/1f8c19f2f4f27e2322d80e59fbe1fa519d299bb970d6cdc60aa2d8febe572a00.json"
+    )
+    # Sealed by `courtlens refresh-darko`; absent means DPM columns stay unknown.
+    darko_manifest: Path | None = Path(
+        "data/derived/darko-dpm-v2/0c9163ac92984be3efa962264bc1d2c6c9fba438b041008ef682d89051c84781.json"
+    )
     value_archetypes_manifest: Path | None = Path(
         "data/derived/value-archetypes-v1/serving/5caeb935e21fce5842fb5ebb33c7ad515cb550eb2021b88886ca3e7b5b6e2f7e.json"
     )

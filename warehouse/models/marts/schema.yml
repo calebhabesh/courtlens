@@ -187,6 +187,22 @@ models:
         data_tests: [not_null]
       - name: entity_key
         data_tests: [not_null]
+  - name: mart_player_roster_seasons
+    description: Team-reported roster listings per season (birth date, size, jersey, experience).
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]
+  - name: mart_player_bio
+    description: One biography row per NBA person from the player index and team rosters.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: player_id
+        data_tests: [unique, not_null]
   - name: mart_stats_draft_history
     description: Draft history by draft year.
     config:

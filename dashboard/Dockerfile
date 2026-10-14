@@ -1,7 +1,9 @@
 FROM node:24-alpine AS dependencies
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# Scripts are skipped here: postinstall fetches the Switzer font, which needs scripts/ and
+# public/fonts/. The builder's prebuild hook runs that fetch with the full source.
+RUN npm ci --ignore-scripts
 
 FROM node:24-alpine AS builder
 WORKDIR /app

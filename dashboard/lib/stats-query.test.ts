@@ -13,6 +13,15 @@ const catalog = {
 } as WorkbenchCatalog;
 
 describe("PF01b Stats scope and normalization", () => {
+  it("defaults Overview to DPM while preserving explicit sort and counting modes", () => {
+    expect(resolveStatsQuery({}, catalog, "per_game", "dpm").sort).toEqual([{ field: "dpm", direction: "desc" }]);
+    expect(resolveStatsQuery({ sortDirection: "asc" }, catalog, "per_game", "dpm").sort).toEqual([{ field: "dpm", direction: "asc" }]);
+    expect(resolveStatsQuery({ sort_metric: "ast", sort_direction: "asc" }, catalog, "per_36", "dpm").sort)
+      .toEqual([{ field: "ast_per_36", direction: "asc", nulls_last: true }]);
+    for (const mode of ["raw", "per_game", "per_36", "per_75", "per_100"] as const) {
+      expect(normalizedColumn(ALL_CATALOG_METRICS.dpm, mode)).toMatchObject({ key: "dpm", sortMetric: "dpm", label: "DPM" });
+    }
+  });
   it("uses catalog defaults and matching scope cutoff", () => {
     expect(resolveStatsQuery({}, catalog, "per_game")).toMatchObject({
       release_id: "retained", season: "2024-25", phase: "regular_season", before_date: "2025-04-14",

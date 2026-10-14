@@ -11,6 +11,7 @@ from courtlens.domain.research_registration import ComputeBudget
 from courtlens.evaluation.research_limits import run_limited
 
 
+@pytest.mark.kernel_limits
 @pytest.mark.parametrize(
     "code,expected",
     [

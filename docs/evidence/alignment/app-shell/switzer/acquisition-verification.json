@@ -1,0 +1,5 @@
+{
+  "existingOriginal": "accepted without redownload",
+  "mismatchingFile": "rejected",
+  "missingFile": "acquired and matched original bytes"
+}

@@ -334,6 +334,7 @@ export type MetricCatalog = {
 };
 
 export type WorkbenchCatalog = {
+  darko?: { status: string; manifest_sha256: string | null; scopes: { season: string; phase: string; as_of: string; data_date: string }[] } | null;
   impact?: { status: string; scopes: ImpactArtifact[]; manifest_sha256: string | null } | null;
   release_id: string;
   snapshot_id: string;
@@ -506,6 +507,7 @@ export type PagingSpec = {
 
 export type QuerySpec = {
   impact_manifest_sha256?: string | null;
+  darko_manifest_sha256?: string | null;
   release_id?: string | null;
   season: string;
   phase: string;
@@ -533,7 +535,15 @@ export type StatsPresentation = {
   // null/omitted selects all; [] selects none. Does not redefine the cohort.
   player_ids?: string[] | null;
   table_percentiles?: boolean;
+  // Estimated five-position labels for the queried season (position-estimates-v1).
+  positions?: EstimatedPosition[] | null;
+  // NBA draft class (draft year); undrafted players never match.
+  draft_year?: number | null;
 };
+
+export type EstimatedPosition = "PG" | "SG" | "SF" | "PF" | "C";
+
+export type DraftClassesResponse = { source: string; classes: { year: number; players: number }[] };
 
 export type TableCohort = {
   version: string;
@@ -545,6 +555,7 @@ export type TableCohort = {
 };
 
 export type WorkbenchQueryResponse = {
+  darko?: DarkoDisclosure | null;
   table_cohort?: TableCohort | null;
   impact?: ImpactDisclosureData | null;
   context: Record<string, unknown>;
@@ -565,6 +576,19 @@ export type WorkbenchQueryResponse = {
   warnings: string[];
 };
 
+export type DarkoDisclosure = {
+  status: string;
+  source: string;
+  version: string;
+  manifest_sha256: string | null;
+  as_of?: string;
+  data_date?: string;
+  url?: string;
+  raw_sha256?: string;
+  observed_at?: string;
+  limitations: string[];
+};
+
 export type PlayerResearchItem = {
   table_qualified?: boolean | null;
   table_percentiles?: Record<string, number | null> | null;
@@ -581,6 +605,8 @@ export type PlayerResearchItem = {
   portrait_url?: string | null;
   percentiles?: Record<string, number | null> | null;
   cohort_sample_sizes?: Record<string, number> | null;
+  // Estimated position for the queried season (Stats query only).
+  position?: EstimatedPosition | null;
 };
 
 export type LookupAvailability = {
@@ -638,6 +664,7 @@ export type LookupResponse = {
 
 export type PlayerResearchQuery = {
   impact_manifest_sha256?: string;
+  darko_manifest_sha256?: string;
   release_id?: string;
   season: string;
   phase: string;
@@ -655,6 +682,7 @@ export type PlayerResearchQuery = {
 };
 
 export type PlayerResearchResponse = {
+  darko?: DarkoDisclosure | null;
   table_cohort?: TableCohort | null;
   impact?: ImpactDisclosureData | null;
   total_output_players?: number | null;
@@ -1484,7 +1512,7 @@ export type AggregationMethod = "borda" | "average_rank";
 export interface CustomViewDefinition {
   id: string;
   name: string;
-  metric_version?: "v2" | "courtlens-stats-v3";
+  metric_version?: "v2" | "courtlens-stats-v3" | "courtlens-stats-v4";
   unavailable_columns?: string[];
   columns: string[];
   sort_field?: string | null;
@@ -2160,3 +2188,31 @@ export interface ScheduleDatesResponse {
   nearest_finals: NearestGameDates;
   warnings: string[];
 }
+
+/** Player page header listings (team-reported) and combine values (measured), as of a scope. */
+export type PlayerBio = {
+  player_id: string;
+  season: string;
+  as_of: string;
+  listing_source: "season_roster" | "player_index" | null;
+  jersey: string | null;
+  listed_position: string | null;
+  listed_height_inches: number | null;
+  listed_weight_lbs: number | null;
+  prior_seasons: number | null;
+  birth_date: string | null;
+  age: number | null;
+  country: string | null;
+  college: string | null;
+  draft: { year: number; round: number | null; pick: number | null; team_id: string | null; team_tricode: string | null; organization: string | null } | null;
+  undrafted: boolean;
+  combine: {
+    draft_year: number;
+    height_no_shoes_inches: number | null;
+    height_shoes_inches: number | null;
+    wingspan_inches: number | null;
+    standing_reach_inches: number | null;
+    weight_lbs: number | null;
+  } | null;
+  limitations: string[];
+};

@@ -33,6 +33,7 @@ from courtlens.api.workbench_schemas import (
     DistributionMeasure,
     DistributionRequest,
     DistributionResponse,
+    DraftClassesResponse,
     ForecastIssuanceDetailResponse,
     ForecastsListResponse,
     ImpactResponse,
@@ -51,6 +52,7 @@ from courtlens.api.workbench_schemas import (
     OpponentContextResponse,
     PeriodMode,
     PersonalWorkspaceState,
+    PlayerBioResponse,
     PlayerComparisonResponse,
     PlayerGameLogItem,
     PlayerGameLogResponse,
@@ -59,6 +61,7 @@ from courtlens.api.workbench_schemas import (
     PlayerProfileStint,
     PlayerResearchItem,
     PlayerResearchResponse,
+    PlayerSeasonsResponse,
     PlayerTrackingResponse,
     PlayoffBracketResponse,
     PlayoffSeriesDetailResponse,
@@ -103,9 +106,8 @@ from courtlens.api.workbench_schemas import (
 from courtlens.config import get_settings
 from courtlens.database import get_db
 from courtlens.domain.context import CapabilityEntry, CapabilityStatus
-from courtlens.domain.impact_catalog import RATING_METRICS
+from courtlens.domain.impact_catalog import RATING_METRICS, SERVING_VERSIONS
 from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
-from courtlens.domain.impact_catalog import VERSION as SERVING_VERSION
 from courtlens.domain.metrics import (
     METRIC_CATALOG_VERSION,
     SUPPORTED_PHASES,
@@ -125,6 +127,7 @@ from courtlens.services.analytical_ops import (
 )
 from courtlens.services.assistant.service import run_assistant_query
 from courtlens.services.assistant.status import get_assistant_status
+from courtlens.services.darko import darko_catalog_scope, darko_disclosure
 from courtlens.services.entity_lookup import (
     lookup_entities,
     resolve_lookup_binding,
@@ -134,6 +137,7 @@ from courtlens.services.identity_crosswalk import resolve_crosswalk
 from courtlens.services.impact_serving import (
     impact_catalog_scope,
     impact_for_query,
+    impact_query_fields,
     query_uses_impact,
 )
 from courtlens.services.measurements import (
@@ -165,10 +169,19 @@ from courtlens.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
+from courtlens.services.player_bio import player_bio
+from courtlens.services.position_estimates import (
+    draft_class_player_ids,
+    draft_classes,
+    position_player_ids,
+    season_positions,
+)
 from courtlens.services.roster_shapes import roster_shapes
 from courtlens.services.schedule_dates import schedule_dates
 from courtlens.services.stats_catalog import stats_catalog_scope
+from courtlens.services.stats_cohort_cache import presentation_page
 from courtlens.services.stats_engine import (
+    darko_query_fields,
     decode_cursor,
     execute_stats_query,
     stats_cohort_summary,
@@ -229,6 +242,7 @@ from courtlens.workbench_models import (
     SavedInvestigation,
     WorkbenchIdentity,
     WorkbenchJob,
+    WorkbenchPlayerGame,
 )
 
 router = APIRouter(prefix="/workbench", tags=["workbench"])
@@ -352,6 +366,7 @@ def get_catalog(
         warnings=context.warnings,
         capabilities=capabilities,
         impact=impact_catalog_scope(),
+        darko=darko_catalog_scope(),
     )
 
 
@@ -362,8 +377,8 @@ def get_metrics(version: str | None = None) -> MetricCatalogResponse:
     definitions = [
         MetricDefinitionSchema(**m.to_dict())
         for m in (
-            METRIC_CATALOG.values()
-            if target_version == SERVING_VERSION
+            SERVING_VERSIONS[target_version].values()
+            if target_version in SERVING_VERSIONS
             else list_metric_definitions(version=target_version)
         )
     ]
@@ -499,6 +514,17 @@ def get_player_tracking(
     return PlayerTrackingResponse.model_validate(rounded(view))
 
 
+@router.get("/players/{player_id}/bio", response_model=PlayerBioResponse)
+def get_player_bio(
+    player_id: str,
+    season: str = Query(..., pattern=SEASON_PATTERN),
+    before_date: date = Query(..., alias="beforeDate"),
+    session: Session = Depends(get_db),
+) -> PlayerBioResponse:
+    """Player page header: listed size, age as of the scope, draft and combine values."""
+    return PlayerBioResponse.model_validate(player_bio(session, player_id, season, before_date))
+
+
 @router.get("/wowy", response_model=WowyViewResponse)
 def get_wowy(
     season: str | None = Query(None, pattern=SEASON_PATTERN),
@@ -521,6 +547,41 @@ def get_combine(
 ) -> CombineViewResponse:
     """PC11 Combine & Wingspan from the official NBA Draft Combine feeds."""
     return CombineViewResponse.model_validate(rounded(combine_view(session, draft_year, player_id)))
+
+
+@router.get("/draft-classes", response_model=DraftClassesResponse)
+def get_draft_classes(session: Session = Depends(get_db)) -> DraftClassesResponse:
+    """NBA draft years available to the Stats draft-class filter (official draft history)."""
+    return DraftClassesResponse(classes=draft_classes(session))
+
+
+@router.get("/player-seasons", response_model=PlayerSeasonsResponse)
+def get_player_seasons(
+    player_ids: list[str] = Query(..., alias="playerId", min_length=1, max_length=8),
+    phase: str = Query("regular_season"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> PlayerSeasonsResponse:
+    """Seasons each player has game rows in, so a stat trend queries only those seasons."""
+    context = resolve_workbench_context(session, release_id=release_id, requested_phase=phase)
+    seasons: dict[str, list[str]] = {pid: [] for pid in player_ids}
+    if context.dataset_type == "workbench":
+        rows = session.execute(
+            select(WorkbenchPlayerGame.player_id, WorkbenchPlayerGame.season)
+            .where(
+                WorkbenchPlayerGame.dataset_id == context.dataset_id,
+                WorkbenchPlayerGame.phase == phase,
+                WorkbenchPlayerGame.player_id.in_(player_ids),
+            )
+            .distinct()
+        ).all()
+        for pid, season in rows:
+            seasons[pid].append(season)
+    else:
+        seasons = {pid: [context.season] for pid in player_ids}
+    return PlayerSeasonsResponse(
+        phase=phase, seasons={pid: sorted(values) for pid, values in seasons.items()}
+    )
 
 
 @router.get("/value-archetypes", response_model=ValueArchetypesResponse)
@@ -598,11 +659,52 @@ def execute_query_endpoint(
         requested_window=spec.window.kind.value,
     )
 
-    items_raw, total_count, next_cursor, has_more = execute_stats_query(
-        session, context, spec, presentation=payload.presentation
+    presentation = payload.presentation
+    position_scope: str | list[str] = spec.season_scope.seasons or spec.season or context.season
+    if presentation is not None and (presentation.positions or presentation.draft_year):
+        # Positions and draft classes narrow the displayed players like favorites; the
+        # analytical cohort and its percentiles are unchanged.
+        shown = set(presentation.player_ids) if presentation.player_ids is not None else None
+        for ids in (
+            position_player_ids(position_scope, presentation.positions)
+            if presentation.positions
+            else None,
+            draft_class_player_ids(session, presentation.draft_year)
+            if presentation.draft_year
+            else None,
+        ):
+            if ids is not None:
+                shown = ids if shown is None else shown & ids
+        payload = payload.model_copy(
+            update={
+                "presentation": presentation.model_copy(
+                    update={
+                        "player_ids": sorted(shown or set()),
+                        "positions": None,
+                        "draft_year": None,
+                    }
+                )
+            }
+        )
+    positions = season_positions(position_scope)
+    view_impact = impact_query_fields(spec)
+
+    # Presentation queries page through a cached whole cohort: display filters never re-run
+    # the analytics (services/stats_cohort_cache.py).
+    cached = (
+        presentation_page(session, context, spec, payload.presentation)
+        if payload.presentation is not None
+        else None
     )
+    eligible: int | None = None
+    if cached is not None:
+        items_raw, total_count, next_cursor, has_more, eligible = cached
+    else:
+        items_raw, total_count, next_cursor, has_more = execute_stats_query(
+            session, context, spec, presentation=payload.presentation
+        )
     cohort = (
-        stats_cohort_summary(session, context, spec, payload.presentation)
+        stats_cohort_summary(session, context, spec, payload.presentation, eligible)
         if payload.presentation is not None
         else None
     )
@@ -625,10 +727,18 @@ def execute_query_endpoint(
             sample_sizes=r["sample_sizes"],
             percentiles=r.get("percentiles"),
             cohort_sample_sizes=r.get("cohort_sample_sizes"),
-            impact_support=r.get("impact_support"),
+            # Support for the view's own impact columns, not every sealed metric (~26 KB a row).
+            impact_support={
+                key: value
+                for key, value in (r.get("impact_support") or {}).items()
+                if key in view_impact
+            }
+            if r.get("impact_support") is not None
+            else None,
             table_qualified=r.get("table_qualified"),
             table_percentiles=r.get("table_percentiles"),
             table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),
+            position=positions.get(r["player_id"]),
         )
         for r in items_raw
     ]
@@ -658,6 +768,7 @@ def execute_query_endpoint(
         }
         if query_uses_impact(spec)
         else None,
+        darko=darko_disclosure(spec, context.before_date) if darko_query_fields(spec) else None,
     )
 
 
@@ -1187,6 +1298,14 @@ def create_saved_analysis(
     if query_uses_impact(spec) and spec.impact_manifest_sha256 is None:
         digest = impact_for_query(spec, context.before_date.isoformat())["manifest_sha256"]
         spec = spec.model_copy(update={"impact_manifest_sha256": digest})
+    if darko_query_fields(spec) and spec.darko_manifest_sha256 is None:
+        digest = darko_disclosure(spec, context.before_date)["manifest_sha256"]
+        if digest is None:
+            raise HTTPException(
+                status_code=422,
+                detail="No sealed DARKO bundle is available to retain this investigation.",
+            )
+        spec = spec.model_copy(update={"darko_manifest_sha256": digest})
     query = query_spec_to_research_query(spec)
     inv = save_investigation(session, context, title=payload.title, query=query)
     inv_data = get_investigation(session, inv.id)

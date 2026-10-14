@@ -48,11 +48,12 @@ courtlens = "courtlens.cli:app"
 packages = ["src/courtlens"]
 
 [tool.pytest.ini_options]
-addopts = "-ra --strict-markers --strict-config -m 'not requires_published_data'"
+addopts = "-ra --strict-markers --strict-config -m 'not requires_published_data and not kernel_limits'"
 testpaths = ["tests"]
 markers = [
   "postgres: requires a disposable PostgreSQL database",
   "requires_published_data: verifies exact historical results against a restored disposable backup",
+  "kernel_limits: deliberately OOM-kills capped systemd units (desktop OOM notifications); run with -m kernel_limits",
 ]
 
 [tool.ruff]

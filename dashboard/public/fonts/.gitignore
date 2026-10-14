@@ -1,0 +1,3 @@
+# Switzer's FFL permits self-hosting, but excludes font redistribution through repositories.
+# npm's setup/dev/build hooks acquire the original pinned file from Fontshare.
+/switzer-variable.woff2

@@ -1,0 +1,50 @@
+{
+  "scale": 0.9000000357627869,
+  "radius": 5,
+  "corners": [
+    [
+      21,
+      42,
+      85,
+      24
+    ],
+    [
+      21,
+      42,
+      85,
+      24
+    ],
+    [
+      21,
+      42,
+      85,
+      24
+    ],
+    [
+      21,
+      42,
+      85,
+      24
+    ]
+  ],
+  "blueEdge": [
+    21,
+    50,
+    90,
+    255
+  ],
+  "icons": [
+    {
+      "href": "/icon.svg?v=4",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "status": 200,
+  "sourceCopiesMatch": true,
+  "inspectedSizes": [
+    16,
+    32,
+    64
+  ]
+}

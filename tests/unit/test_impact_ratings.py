@@ -299,7 +299,7 @@ def test_impact_ratings_cannot_enter_forecasting_features(monkeypatch):
     from courtlens.evaluation.points_features import POINTS_FEATURE_VARIANTS
 
     assert not any(
-        any(term in feature for term in ("rapm", "bpr", "impact", "on_off", "six_factor"))
+        any(term in feature for term in ("rapm", "bpr", "dpm", "impact", "on_off", "six_factor"))
         for variant in POINTS_FEATURE_VARIANTS.values()
         for feature in variant
     )
@@ -310,6 +310,7 @@ def test_impact_ratings_cannot_enter_forecasting_features(monkeypatch):
     for method in ("fit_target", "choose_alpha", "on_off"):
         monkeypatch.setattr(f"courtlens.evaluation.impact_ratings.{method}", forbidden)
     monkeypatch.setattr("courtlens.evaluation.impact_rating_runner.run", forbidden)
+    monkeypatch.setattr("courtlens.services.darko.load_darko_store", forbidden)
     rows = [
         points_features.PointsPlayerGame(
             "past",

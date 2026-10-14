@@ -335,7 +335,7 @@
 /* Gated Capability Banner */
 .stats-gated-banner {
   padding: var(--space-3) var(--space-4);
-  background: color-mix(in srgb, var(--color-surface-2) 90%, var(--color-bg));
+  background: color-mix(in srgb, var(--color-surface-2) 90%, var(--color-surface-0));
   border-left: 3px solid var(--color-accent);
   border-radius: var(--radius-sm);
   margin-bottom: var(--space-3);
@@ -818,22 +818,6 @@
   gap: var(--space-2);
   margin-block: var(--space-2);
   flex-wrap: wrap;
-}
-
-.stats-drawer-disclaimer {
-  padding: var(--space-3) var(--space-5);
-  background: color-mix(in srgb, var(--color-surface-2) 90%, var(--color-bg));
-  border-left: 3px solid var(--color-accent);
-  border-bottom: 1px solid var(--color-hairline);
-}
-
-.stats-drawer-disclaimer p {
-  margin: var(--space-1) 0 0;
-}
-
-.stats-drawer-disclaimer code {
-  color: var(--color-accent);
-  font-size: var(--text-xs);
 }
 
 .stats-drawer-body {
@@ -3536,11 +3520,18 @@
   border: 1px solid var(--color-hairline);
 }
 
+/* Hover cards anchor to their data point inside a frame the size of the SVG (lib/chart-anchor). */
+.chart-hover-frame {
+  position: relative;
+  min-width: 480px;
+}
+
 .scatter-tooltip,
 .lines-tooltip {
   position: absolute;
   left: var(--tooltip-left, 0px);
   top: var(--tooltip-top, 0px);
+  transform: translate(var(--tooltip-dx, 14px), var(--tooltip-dy, -50%));
   pointer-events: none;
   z-index: var(--z-dropdown);
   background: var(--color-surface-3);
@@ -3552,6 +3543,10 @@
   color: var(--color-text);
   min-width: 180px;
 }
+
+.scatter-tooltip[data-side="left"], .lines-tooltip[data-side="left"] { --tooltip-dx: calc(-100% - 14px); }
+.scatter-tooltip[data-align="below"], .lines-tooltip[data-align="below"] { --tooltip-dy: 10px; }
+.scatter-tooltip[data-align="above"], .lines-tooltip[data-align="above"] { --tooltip-dy: calc(-100% - 10px); }
 
 .scatter-tooltip-title,
 .lines-tooltip-title {
@@ -4447,6 +4442,52 @@
     .player-hero { grid-template-columns: minmax(0, 1fr); padding: var(--space-4); }
     .player-hero-identity { flex-direction: row; align-items: center; }
     .player-hero-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+}
+
+
+/* Player page (alignment row 2): bio header, then the latest-season summary without an accent edge. */
+@layer pages {
+  .player-bio-header { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .player-back-button kbd { margin-left: var(--space-1); padding: 0 var(--space-1); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--color-black) 18%, transparent); font-size: var(--text-2xs); }
+  .player-bio-main {
+    display: grid; grid-template-columns: auto minmax(0, 0.9fr) minmax(0, 2fr) auto; gap: var(--space-3) var(--space-5);
+    align-items: center; width: 100%;
+  }
+  .player-bio-identity { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+  .player-bio-identity .ui-page-header { min-width: 0; margin: 0; padding: 0; border: 0; }
+  .player-bio-identity .ui-page-header-subtitle { margin-top: var(--space-1); }
+  .player-bio-facts {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: var(--space-2) var(--space-3); margin: 0;
+  }
+  .player-bio-facts > div { display: flex; flex-direction: column; gap: var(--space-0-5); min-width: 0; }
+  .player-bio-facts dt { color: var(--color-text-tertiary); font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.06em; }
+  .player-bio-facts dd { margin: 0; color: var(--color-text-primary); font-size: var(--text-sm); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .player-bio-facts .player-bio-combine { grid-column: 1 / -1; }
+  .player-bio-combine dd { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
+  .player-bio-combine-label { color: var(--color-text-secondary); font-weight: 400; }
+  .player-bio-actions { display: flex; align-items: center; gap: var(--space-2); justify-self: end; }
+  .player-season-summary {
+    display: flex; flex-direction: column; gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-1);
+  }
+  .player-season-summary-heading { display: flex; align-items: center; gap: var(--space-2); }
+  .player-season-summary-heading h2 { margin: 0; font-size: var(--text-sm); font-weight: 600; color: var(--color-text-secondary); }
+  .player-season-summary-info { display: inline-flex; color: var(--color-text-tertiary); cursor: help; }
+  .player-season-summary .player-hero-tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  @media (max-width: 1199px) {
+    .player-bio-main { grid-template-columns: auto minmax(0, 1fr) auto; }
+    .player-bio-facts { grid-column: 1 / -1; }
+    .player-season-summary .player-hero-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 767px) {
+    .player-bio-main { grid-template-columns: auto minmax(0, 1fr); }
+    .player-bio-actions { grid-column: 1 / -1; justify-self: start; }
+    .player-bio-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .player-season-summary { padding: var(--space-3); }
+    .player-season-summary .player-hero-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
   }
 }
 

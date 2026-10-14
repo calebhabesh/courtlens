@@ -603,3 +603,99 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
   claim. Dashboard lint/types clean, 439 unit tests, 54 affected browser checks and ten screenshot
   captures pass; Python 2,036 pass, Ruff/mypy clean. Hosted-menu checks pass separately.
 - Owner Stats/guide edits are preserved. PC12 D and PC13 remain pending.
+
+### Stats alignment follow-up: dated DARKO credit (2026-10-12)
+
+Owner instruction 39 adds a highlighted blue source hyperlink wherever Stats presents DARKO.
+The alignment handoff governs this bounded change: token-based link component in the hover card,
+footer, preview, trend dialog, glossary, methodology and Data details; source links retain hover/focus
+and open DARKO. No raw inline styles or new icon system. Dashboard lint/types and 453 Vitest tests
+pass, production build passes, Stats browser/source-link checks and desktop/phone baselines pass;
+the known unrelated Teams selector failure is retained. Real-data screenshots, source dates and
+measured glance test: [DARKO evidence](evidence/alignment/stats/darko/README.md).
+
+### Stats alignment follow-up: Impact-first Overview (2026-10-12)
+
+Owner instruction 40 reorders Overview and its preview to Profile → Impact → Counting → Efficiency
+→ Shooting → Other. Dashboard lint/types, Vitest 453/453, affected browser specs 24/24, updated Stats
+baselines 2/2 and production build pass. Real-data desktop/phone screenshots and 10/10 glance test:
+[Impact-first evidence](evidence/alignment/stats/impact-first/README.md).
+
+### App-shell follow-ups: navbar spacing and favicon (2026-10-13)
+
+Owner-requested navbar logo/wordmark gap reduced from 12px to `--space-1` (4px), scoped to the
+header. Real-data 1440/768/390 measurements: 4px gap, 0px vertical offset, 56px header and no page
+overflow. Browser-tab SVG uses a tighter frameless crop, larger orange ball and clearer seams;
+16px/32px previews inspected, app/public copies match, and versioned favicon metadata/endpoint
+verified. Dashboard lint/typecheck pass; navbar Vitest 454/454 and four affected browser checks
+pass (two initial streamed-page setup timeouts passed on rerun). Bounded glance evidence and
+screenshots: [app-shell evidence](evidence/alignment/app-shell/brand-spacing/README.md).
+
+### Favicon follow-up: site-blue background (2026-10-13)
+
+Owner requested the site's blue background for the favicon. Both SVGs now fill their cropped
+canvas with `#15325a`, matching `--color-bg`; metadata uses URL v3. Browser checks verify served
+bytes, source parity and an opaque `[21, 50, 90, 255]` corner pixel at 16px. 16px/32px visual
+inspection passes. Dashboard lint/typecheck and Vitest 454/454 pass.
+[Background evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-site-blue-favicon-background).
+
+### Favicon follow-up: smaller logo and rounded corners (2026-10-13)
+
+Owner requested a slightly smaller mark and softly rounded, squircle-like background. Artwork
+scales to 90% around the canvas center; the site-blue background has a 5-unit radius. App/public
+SVGs match; URL v4 and served bytes verified. 16px/32px visual inspection passes, including corner
+transparency and the opaque blue edge. Dashboard lint/typecheck and Vitest 454/454 pass.
+[Rounded evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-smaller-logo-and-softly-rounded-corners).
+
+### App-shell follow-up: Switzer UI font (2026-10-13)
+
+Owner selected Switzer for the interface. Root `--font-sans` now uses the original, self-hosted
+Switzer 1.2 variable file; setup/dev/build hooks acquire its pinned hash without redistributing
+the font through git. Default digits and sampled accents pass. Lint/types, Vitest 454/454,
+production build, 13 focused browser checks and 120 visual/picker checks pass; baselines refreshed
+and verified. Five viewport sizes, blocked fonts and live Settings pass. Source/license manifest,
+screenshots and scoped glance test: [Switzer evidence](evidence/alignment/app-shell/switzer/README.md).
+
+### Stats follow-up: uniform controls with the previous layout (2026-10-13)
+
+Owner instructions 44–45 normalize above-table text and containers, mute Through/Window values,
+and label the divider modes. The final owner revision restores the original flex/wrap arrangement:
+presets → Table Divider → Add View/Manage. Switzer and the type/container changes are retained.
+Real 2048/1440/390/375 captures show consistent text, 40px outer controls and no page overflow;
+the bounded glance check passes. Dashboard lint/types, Vitest 459/459 and production build pass;
+affected browser and visual/picker checks pass. [Measured evidence](evidence/alignment/stats/control-uniformity/README.md).
+Other Stats data instructions remain pending; only the owner marks the page aligned.
+
+### Stats follow-up: compact table search (2026-10-13)
+
+Owner instruction 46 reduces desktop search from 320×40px to 288×32px at 1440, with existing
+phone touch sizing retained. Real 1440/390/375 captures pass the scoped glance check with no page
+overflow. Dashboard lint/types, Vitest 459/459, production build, six readability/search browser
+checks and refreshed Stats screenshot checks pass. [Evidence](evidence/alignment/stats/search-sizing/README.md).
+
+### Stats follow-up: centered table search (2026-10-13)
+
+Owner instruction 47 centers the compact search above the player cards. Real desktop/phone
+measurements show zero center offset; the scoped glance check passes. Lint/types, Vitest 459/459,
+production build, existing search browser checks and Stats baselines pass.
+[Evidence](evidence/alignment/stats/search-centering/README.md).
+
+### Stats follow-up: slightly wider centered search (2026-10-13)
+
+Owner instruction 48 increases the cap from 288px to 304px, retaining centering and height.
+Real desktop/phone measurements and scoped glance check pass. Lint/types, Vitest 459/459,
+production build, six search browser checks and two Stats baseline checks pass.
+[Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-slightly-wider-still-centered).
+
+### Stats follow-up: another small search-width increase (2026-10-13)
+
+Owner instruction 49 increases the cap to 312px, preserving centering and height. Real desktop/phone
+measurements and scoped glance check pass. Lint/types, Vitest 459/459, production build, six search
+browser checks and two Stats baselines pass. [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-another-8px-of-width).
+
+### Stats follow-up: bottom-aligned headers and dark player cards (2026-10-13)
+
+Owner instructions 51–52 bottom-align the search/stat header controls and match pinned identity
+cells to the metric-cell base and hover surfaces. Real desktop/phone measurements and scoped
+glance check pass. Lint/types, Vitest 459/459, production build, 27 affected browser checks and
+two refreshed Stats baselines pass. [Evidence](evidence/alignment/stats/card-surface/README.md).

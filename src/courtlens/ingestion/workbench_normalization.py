@@ -34,13 +34,16 @@ TEAM_COUNT_FIELDS = PLAYER_COUNT_FIELDS
 
 
 def parse_minutes(value: str) -> int | None:
-    """Parse minutes in 'm:ss' format with seconds strictly in 0..59.
+    """Parse minutes in 'm:ss' format with seconds strictly in 0..59, or whole minutes.
 
     Empty string returns None. Team minutes may exceed 60 minutes.
     """
     if not value or value.strip() == "":
         return None
     val = value.strip()
+    # One 2003-04 game (0020300778) records whole minutes without seconds ("26").
+    if re.fullmatch(r"\d+", val):
+        return 60 * int(val)
     match = re.fullmatch(r"(\d+):(\d{1,2})", val)
     if not match:
         raise ValueError(f"malformed_minutes: '{value}'")
@@ -210,6 +213,9 @@ def normalize_player_row(
     validate_stats(stats)
 
     person_id = str(row["person_id"]).strip()
+    # 2000-01 to 2002-03 files carry nameless placeholder rows under person_id 0: not a player.
+    if person_id in ("", "0"):
+        raise ValueError("player_identity_missing")
     team_id = str(row["team_id"]).strip()
     side = row.get("side", "").strip().lower()
     tricode = row.get("team_tricode", "").strip()

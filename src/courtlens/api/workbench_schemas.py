@@ -275,6 +275,7 @@ class WorkbenchCatalogResponse(BaseModel):
     capabilities: dict[str, Any] = Field(default_factory=dict)
     warnings: list[str]
     impact: dict[str, Any] | None = None
+    darko: dict[str, Any] | None = None
 
 
 class ResearchQuerySchema(BaseModel):
@@ -310,6 +311,24 @@ class PlayerResearchItem(BaseModel):
     table_qualified: bool | None = None
     table_percentiles: dict[str, float | None] | None = None
     table_cohort_sample_sizes: dict[str, int] | None = None
+    # Estimated five-position label for the queried season (position-estimates-v1).
+    position: Literal["PG", "SG", "SF", "PF", "C"] | None = None
+
+
+class DraftClass(BaseModel):
+    year: int
+    players: int
+
+
+class DraftClassesResponse(BaseModel):
+    source: str = "NBA draft history via the hoopR-nba-stats-raw mirror (CC BY 4.0)"
+    classes: list[DraftClass]
+
+
+class PlayerSeasonsResponse(BaseModel):
+    phase: str
+    # Seasons with at least one game row per player, ascending; a missing season is unknown.
+    seasons: dict[str, list[str]]
 
 
 class PlayerResearchResponse(BaseModel):
@@ -344,6 +363,7 @@ class WorkbenchQueryResponse(BaseModel):
     has_more: bool
     warnings: list[str] = Field(default_factory=list)
     impact: dict[str, Any] | None = None
+    darko: dict[str, Any] | None = None
 
 
 class ImpactPlayerResponse(BaseModel):
@@ -508,6 +528,46 @@ class WowyViewResponse(BaseModel):
     artifact_sha256: str
     inputs: dict[str, Any]
     source: str
+    limitations: list[str]
+
+
+class PlayerBioDraft(BaseModel):
+    year: int
+    round: int | None
+    pick: int | None
+    team_id: str | None
+    team_tricode: str | None
+    organization: str | None
+
+
+class PlayerBioCombine(BaseModel):
+    draft_year: int
+    height_no_shoes_inches: float | None
+    height_shoes_inches: float | None
+    wingspan_inches: float | None
+    standing_reach_inches: float | None
+    weight_lbs: float | None
+
+
+class PlayerBioResponse(BaseModel):
+    """Profile header listings as of the page scope; combine values are measured."""
+
+    player_id: str
+    season: str
+    as_of: date
+    listing_source: Literal["season_roster", "player_index"] | None
+    jersey: str | None
+    listed_position: str | None
+    listed_height_inches: int | None
+    listed_weight_lbs: float | None
+    prior_seasons: int | None
+    birth_date: date | None
+    age: int | None
+    country: str | None
+    college: str | None
+    draft: PlayerBioDraft | None
+    undrafted: bool
+    combine: PlayerBioCombine | None
     limitations: list[str]
 
 
@@ -1121,7 +1181,7 @@ class LookupResponse(BaseModel):
 
 class CreateCustomViewRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    metric_version: Literal["v2", "courtlens-stats-v3"] = "v2"
+    metric_version: Literal["v2", "courtlens-stats-v3", "courtlens-stats-v4"] = "v2"
 
     unavailable_columns: list[str] = Field(default_factory=list)
 
@@ -1134,7 +1194,7 @@ class CreateCustomViewRequest(BaseModel):
 
 class UpdateCustomViewRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    metric_version: Literal["v2", "courtlens-stats-v3"] | None = None
+    metric_version: Literal["v2", "courtlens-stats-v3", "courtlens-stats-v4"] | None = None
 
     unavailable_columns: list[str] | None = None
 

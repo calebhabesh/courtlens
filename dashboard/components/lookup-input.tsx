@@ -126,7 +126,8 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
     const update = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        const box = ref.current?.getBoundingClientRect();
+        // Anchor to the whole field (icon included), so results drop straight from the search box.
+        const box = (ref.current?.closest(".lookup-input-wrapper") ?? ref.current)?.getBoundingClientRect();
         if (!box) return;
         const width = Math.min(Math.max(box.width, 320), window.innerWidth - 16);
         const below = window.innerHeight - box.bottom - 12;

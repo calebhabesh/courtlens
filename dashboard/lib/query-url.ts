@@ -44,6 +44,7 @@ export function encodeQueryToSearchParams(
   // Core context
   set("releaseId", "release_id", query.release_id);
   set("impactManifest", "impact_manifest_sha256", query.impact_manifest_sha256);
+  set("darkoManifest", "darko_manifest_sha256", query.darko_manifest_sha256);
   set("season", "season", query.season);
   set("phase", "phase", query.phase);
   set("beforeDate", "before_date", query.before_date);
@@ -242,6 +243,7 @@ export function decodeSearchParamsToQuery(
   return {
     release_id: releaseId,
     ...(get("impactManifest", "impact_manifest_sha256") ? { impact_manifest_sha256: get("impactManifest", "impact_manifest_sha256") } : {}),
+    ...(get("darkoManifest", "darko_manifest_sha256") ? { darko_manifest_sha256: get("darkoManifest", "darko_manifest_sha256") } : {}),
     season,
     phase,
     before_date: beforeDate,
@@ -262,6 +264,7 @@ export function querySpecToLegacyQuery(spec: QuerySpec): PlayerResearchQuery {
   return {
     release_id: spec.release_id ?? undefined,
     ...(spec.impact_manifest_sha256 ? { impact_manifest_sha256: spec.impact_manifest_sha256 } : {}),
+    ...(spec.darko_manifest_sha256 ? { darko_manifest_sha256: spec.darko_manifest_sha256 } : {}),
     season: spec.season,
     phase: spec.phase,
     before_date: spec.before_date ?? "2026-06-30",
@@ -288,14 +291,19 @@ export const CONTEXT_PARAMS = [
   "releaseId",
   "release_id",
   "impactManifest", "impact_manifest_sha256",
+  "darkoManifest", "darko_manifest_sha256",
   "finance_book_id", "finance_financial_season", "finance_known_at", "finance_effective_on",
   "finance_unknown_dates", "finance_team_id", "finance_player_ids", "finance_statuses",
   "finance_amount_kind", "finance_small_big_threshold_cents", "finance_scenario"
 ] as const;
 
+/** Release and model-bundle pins: shared and saved links keep them, site navigation does not. */
+const PIN_PARAMS = new Set(["releaseId", "impactManifest", "darkoManifest"]);
+
 export function buildPreservedContextUrl(
   targetHref: string,
-  sourceParams?: URLSearchParams | null
+  sourceParams?: URLSearchParams | null,
+  { dropPins = false }: { dropPins?: boolean } = {}
 ): string {
   const [basePath, targetQuery] = targetHref.split("?");
   const targetParams = new URLSearchParams(targetQuery || "");
@@ -303,11 +311,12 @@ export function buildPreservedContextUrl(
   if (sourceParams) {
     const aliases: Record<string, string> = {
       release_id: "releaseId", before_date: "beforeDate", window_n: "windowN",
-      from_date: "fromDate", to_date: "toDate", impact_manifest_sha256: "impactManifest"
+      from_date: "fromDate", to_date: "toDate", impact_manifest_sha256: "impactManifest", darko_manifest_sha256: "darkoManifest"
     };
     const normalized = new URLSearchParams();
     for (const param of CONTEXT_PARAMS) {
       const key = aliases[param] ?? param;
+      if (dropPins && PIN_PARAMS.has(key)) continue;
       const val = sourceParams.get(key) ?? sourceParams.get(param);
       if (val) normalized.set(key, val);
     }

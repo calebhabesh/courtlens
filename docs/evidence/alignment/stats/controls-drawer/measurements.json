@@ -1,0 +1,533 @@
+[
+  {
+    "viewport": 2048,
+    "search": {
+      "width": 312,
+      "height": 32,
+      "bottom": 447
+    },
+    "labels": [
+      {
+        "label": "GP",
+        "bottom": 447
+      },
+      {
+        "label": "MIN",
+        "bottom": 447
+      },
+      {
+        "label": "MPG",
+        "bottom": 447
+      },
+      {
+        "label": "OnBall%",
+        "bottom": 447
+      }
+    ],
+    "counting": [
+      {
+        "label": "Per Game",
+        "height": 36,
+        "font": "13px"
+      },
+      {
+        "label": "Per 36",
+        "height": 36,
+        "font": "13px"
+      },
+      {
+        "label": "Per 75",
+        "height": 36,
+        "font": "13px"
+      },
+      {
+        "label": "Per 100",
+        "height": 36,
+        "font": "13px"
+      },
+      {
+        "label": "Totals",
+        "height": 36,
+        "font": "13px"
+      }
+    ],
+    "toolHeight": 36,
+    "overflow": false,
+    "controlBackgrounds": [
+      {
+        "label": "How to Use This Page",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Stats Glossary",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Hotkeys",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "RegularPlayoffsCup FinalPlay-In",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Select Team",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "PG",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "SG",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "SF",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "PF",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "C",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "OverviewShootingImpactOn-OffSix FactorRates (Per 36)DefenseTrue ShootingPlaymakingRebounding",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "PhotosLogosInitialsNone",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Add View",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Manage",
+        "background": "rgb(36, 40, 46)"
+      }
+    ],
+    "idleColor": "color(srgb 0.108824 0.120196 0.139412)",
+    "hoverColor": "color(srgb 0.144471 0.155388 0.173835)",
+    "afterLeaveColor": "color(srgb 0.108824 0.120196 0.139412)"
+  },
+  {
+    "viewport": 1440,
+    "search": {
+      "width": 312,
+      "height": 32,
+      "bottom": 499
+    },
+    "labels": [
+      {
+        "label": "GP",
+        "bottom": 499
+      },
+      {
+        "label": "MIN",
+        "bottom": 499
+      },
+      {
+        "label": "MPG",
+        "bottom": 499
+      },
+      {
+        "label": "OnBall%",
+        "bottom": 499
+      }
+    ],
+    "counting": [
+      {
+        "label": "Per Game",
+        "height": 36,
+        "font": "13px"
+      },
+      {
+        "label": "Per 36",
+        "height": 36,
+        "font": "13px"
+      },
+      {
+        "label": "Per 75",
+        "height": 36,
+        "font": "13px"
+      },
+      {
+        "label": "Per 100",
+        "height": 36,
+        "font": "13px"
+      },
+      {
+        "label": "Totals",
+        "height": 36,
+        "font": "13px"
+      }
+    ],
+    "toolHeight": 36,
+    "overflow": false,
+    "controlBackgrounds": [
+      {
+        "label": "How to Use This Page",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Stats Glossary",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Hotkeys",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "RegularPlayoffsCup FinalPlay-In",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Select Team",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "PG",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "SG",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "SF",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "PF",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "C",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "OverviewShootingImpactOn-OffSix FactorRates (Per 36)DefenseTrue ShootingPlaymakingRebounding",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "PhotosLogosInitialsNone",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Add View",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Manage",
+        "background": "rgb(36, 40, 46)"
+      }
+    ],
+    "idleColor": "color(srgb 0.108824 0.120196 0.139412)",
+    "hoverColor": "color(srgb 0.144471 0.155388 0.173835)",
+    "afterLeaveColor": "color(srgb 0.108824 0.120196 0.139412)",
+    "drawer": {
+      "width": 520.0000610351562,
+      "right": 1440.425537109375,
+      "height": 900,
+      "overflow": false,
+      "bodyLocked": "hidden",
+      "portaled": true,
+      "buttons": [
+        {
+          "text": "Full profile",
+          "width": 224.50006103515625,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        },
+        {
+          "text": "Compare",
+          "width": 224.5,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        },
+        {
+          "text": "Add to tray",
+          "width": 224.50006103515625,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        },
+        {
+          "text": "Favorite",
+          "width": 224.5,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        }
+      ],
+      "scrollable": true,
+      "noticesRemoved": true
+    },
+    "bodyAfterClose": "visible"
+  },
+  {
+    "viewport": 390,
+    "search": {
+      "width": 228,
+      "height": 42,
+      "bottom": 789
+    },
+    "labels": [
+      {
+        "label": "GP",
+        "bottom": 789
+      },
+      {
+        "label": "MIN",
+        "bottom": 789
+      },
+      {
+        "label": "MPG",
+        "bottom": 789
+      },
+      {
+        "label": "OnBall%",
+        "bottom": 789
+      }
+    ],
+    "counting": [
+      {
+        "label": "Per Game",
+        "height": 40,
+        "font": "13px"
+      },
+      {
+        "label": "Per 36",
+        "height": 40,
+        "font": "13px"
+      },
+      {
+        "label": "Per 75",
+        "height": 40,
+        "font": "13px"
+      },
+      {
+        "label": "Per 100",
+        "height": 40,
+        "font": "13px"
+      },
+      {
+        "label": "Totals",
+        "height": 40,
+        "font": "13px"
+      }
+    ],
+    "toolHeight": 40,
+    "overflow": false,
+    "controlBackgrounds": [
+      {
+        "label": "How to Use This Page",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Stats Glossary",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Hotkeys",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "OverviewShootingImpactOn-OffSix FactorRates (Per 36)DefenseTrue ShootingPlaymakingRebounding",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "PhotosLogosInitialsNone",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Add View",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Manage",
+        "background": "rgb(36, 40, 46)"
+      }
+    ],
+    "idleColor": "color(srgb 0.108824 0.120196 0.139412)",
+    "hoverColor": "color(srgb 0.144471 0.155388 0.173835)",
+    "afterLeaveColor": "color(srgb 0.108824 0.120196 0.139412)",
+    "drawer": {
+      "width": 390,
+      "right": 390.31693118810654,
+      "height": 844,
+      "overflow": false,
+      "bodyLocked": "hidden",
+      "portaled": true,
+      "buttons": [
+        {
+          "text": "Full profile",
+          "width": 167.5,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        },
+        {
+          "text": "Compare",
+          "width": 167.5,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        },
+        {
+          "text": "Add to tray",
+          "width": 167.5,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        },
+        {
+          "text": "Favorite",
+          "width": 167.5,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        }
+      ],
+      "scrollable": true,
+      "noticesRemoved": true
+    },
+    "bodyAfterClose": "visible"
+  },
+  {
+    "viewport": 375,
+    "search": {
+      "width": 228,
+      "height": 42,
+      "bottom": 789
+    },
+    "labels": [
+      {
+        "label": "GP",
+        "bottom": 789
+      },
+      {
+        "label": "MIN",
+        "bottom": 789
+      },
+      {
+        "label": "MPG",
+        "bottom": 789
+      },
+      {
+        "label": "OnBall%",
+        "bottom": 789
+      }
+    ],
+    "counting": [
+      {
+        "label": "Per Game",
+        "height": 40,
+        "font": "13px"
+      },
+      {
+        "label": "Per 36",
+        "height": 40,
+        "font": "13px"
+      },
+      {
+        "label": "Per 75",
+        "height": 40,
+        "font": "13px"
+      },
+      {
+        "label": "Per 100",
+        "height": 40,
+        "font": "13px"
+      },
+      {
+        "label": "Totals",
+        "height": 40,
+        "font": "13px"
+      }
+    ],
+    "toolHeight": 40,
+    "overflow": false,
+    "controlBackgrounds": [
+      {
+        "label": "How to Use This Page",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Stats Glossary",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Hotkeys",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "OverviewShootingImpactOn-OffSix FactorRates (Per 36)DefenseTrue ShootingPlaymakingRebounding",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "PhotosLogosInitialsNone",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Add View",
+        "background": "rgb(36, 40, 46)"
+      },
+      {
+        "label": "Manage",
+        "background": "rgb(36, 40, 46)"
+      }
+    ],
+    "idleColor": "color(srgb 0.108824 0.120196 0.139412)",
+    "hoverColor": "color(srgb 0.144471 0.155388 0.173835)",
+    "afterLeaveColor": "color(srgb 0.108824 0.120196 0.139412)",
+    "drawer": {
+      "width": 375,
+      "right": 375.3052152991295,
+      "height": 812,
+      "overflow": false,
+      "bodyLocked": "hidden",
+      "portaled": true,
+      "buttons": [
+        {
+          "text": "Full profile",
+          "width": 160,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        },
+        {
+          "text": "Compare",
+          "width": 159.99998474121094,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        },
+        {
+          "text": "Add to tray",
+          "width": 160,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        },
+        {
+          "text": "Favorite",
+          "width": 159.99998474121094,
+          "height": 40,
+          "padding": "8px 16px",
+          "whiteSpace": "nowrap"
+        }
+      ],
+      "scrollable": true,
+      "noticesRemoved": true
+    },
+    "bodyAfterClose": "visible"
+  }
+]

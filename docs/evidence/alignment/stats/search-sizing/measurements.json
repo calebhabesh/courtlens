@@ -1,0 +1,68 @@
+{
+  "before": [
+    {
+      "viewport": 1440,
+      "width": 320,
+      "height": 40
+    },
+    {
+      "viewport": 390,
+      "width": 228,
+      "height": 42
+    }
+  ],
+  "after": [
+    {
+      "viewport": 1440,
+      "search": {
+        "x": 28,
+        "y": 467,
+        "width": 288,
+        "height": 32,
+        "top": 467,
+        "right": 316,
+        "bottom": 499,
+        "left": 28
+      },
+      "font": "13px",
+      "overflow": false
+    },
+    {
+      "viewport": 390,
+      "search": {
+        "x": 12,
+        "y": 703,
+        "width": 228,
+        "height": 42,
+        "top": 703,
+        "right": 240,
+        "bottom": 745,
+        "left": 12
+      },
+      "font": "13px",
+      "overflow": false
+    },
+    {
+      "viewport": 375,
+      "search": {
+        "x": 12,
+        "y": 703,
+        "width": 228,
+        "height": 42,
+        "top": 703,
+        "right": 240,
+        "bottom": 745,
+        "left": 12
+      },
+      "font": "13px",
+      "overflow": false
+    }
+  ],
+  "productionWithText": {
+    "width": 288,
+    "height": 32,
+    "dropdownWidth": 320,
+    "leftOffset": 0,
+    "focusShadow": "rgb(14, 16, 19) 0px 0px 0px 2px, rgb(255, 209, 102) 0px 0px 0px 4px"
+  }
+}

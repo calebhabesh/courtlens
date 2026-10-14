@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import base64
 import json
+import unicodedata
 from decimal import Decimal
 from typing import Any
 
@@ -15,8 +16,9 @@ from fastapi import HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from courtlens.domain.impact_catalog import IMPACT_CATALOG
+from courtlens.domain.impact_catalog import IMPACT_COLUMNS as IMPACT_CATALOG
 from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
+from courtlens.domain.impact_catalog import SQL_DERIVED_IMPACT
 from courtlens.domain.metrics import (
     resolve_metric_alias,
 )
@@ -32,11 +34,14 @@ from courtlens.domain.query_spec import (
     WindowKind,
 )
 from courtlens.domain.stats_presentation import StatsPresentation
+from courtlens.domain.stats_v4_catalog import BOX_METRICS, DARKO_METRICS, TRACKING_METRICS
 from courtlens.domain.teams import get_team_info, resolve_team_tricode
+from courtlens.services.darko import darko_binding, darko_sql_rows
 from courtlens.services.impact_serving import (
     impact_for_query,
     impact_query_fields,
     impact_sql_rows,
+    query_fields,
     query_uses_impact,
 )
 from courtlens.services.workbench_analytics import (
@@ -105,13 +110,99 @@ COLUMN_MAP: dict[str, str] = {
     "stints_count": "stints_count",
 }
 COLUMN_MAP.update({key: key for key in IMPACT_CATALOG})
+COLUMN_MAP.update({key: key for key in BOX_METRICS})
+COLUMN_MAP.update({key: key for key in TRACKING_METRICS})
+COLUMN_MAP.update({key: key for key in DARKO_METRICS})
 
 # Only implemented numeric catalog columns participate; metadata is never ranked.
 PERCENTILE_COLUMNS = {
     key: column
     for key, column in COLUMN_MAP.items()
-    if key in METRIC_CATALOG and key not in IMPACT_CATALOG
+    if key in METRIC_CATALOG
+    and key not in IMPACT_CATALOG
+    and key not in TRACKING_METRICS
+    and key not in DARKO_METRICS
 }
+TRACKING_MART = "analytics_marts.mart_stats_player_tracking"
+MAX_SEASON_RANGE = 30
+
+
+# Name search ignores case and accents, so "jokic" finds "Nikola Jokić" as the table filters.
+NAME_ACCENTED = "àáâãäåāăąçćčďđèéêëēėęěìíîïīįıłľĺñńňòóôõöøōőŕřśšşșțťùúûüūůűųýÿźżž"
+NAME_PLAIN = "aaaaaaaaacccddeeeeeeeeiiiiiiilllnnnoooooooorrssssttuuuuuuuuyyzzz"
+_NAME_FOLD = str.maketrans(NAME_ACCENTED, NAME_PLAIN)
+
+
+def fold_name(text: str) -> str:
+    """Lower-case a name and strip its accents for search matching."""
+    decomposed = unicodedata.normalize("NFKD", text.strip().lower().translate(_NAME_FOLD))
+    return "".join(c for c in decomposed if not unicodedata.combining(c))
+
+
+def folded_name_sql(expr: str, is_sqlite: bool) -> str:
+    """SQL twin of ``fold_name`` (SQLite test databases only lower-case)."""
+    if is_sqlite:
+        return f"LOWER({expr})"
+    return f"translate(LOWER({expr}), '{NAME_ACCENTED}', '{NAME_PLAIN}')"
+
+
+def tracking_query_fields(query: QuerySpec) -> set[str]:
+    return query_fields(query) & TRACKING_METRICS.keys()
+
+
+def darko_query_fields(query: QuerySpec) -> set[str]:
+    return query_fields(query) & DARKO_METRICS.keys()
+
+
+def darko_applies(context: ResolvedContext, query: QuerySpec) -> bool:
+    """One DARKO rating per player-season: whole seasons only; a team filter keeps it."""
+    return (
+        context.dataset_type == "workbench"
+        and query.window.kind == WindowKind.SEASON
+        and not query.season_scope.seasons
+    )
+
+
+def _darko_sql(
+    params: dict[str, Any],
+    query: QuerySpec,
+    context: ResolvedContext,
+    table_name: str,
+    is_sqlite: bool,
+    applies: bool,
+) -> str:
+    """Join the sealed DARKO season ratings when every game of the season-phase is in scope."""
+    if is_sqlite or not applies:
+        nulls = ", ".join(f"CAST(NULL AS REAL) AS {key}" for key in DARKO_METRICS)
+        return f"aggregated AS (SELECT t.*, {nulls} FROM aggregated_darko t)"
+    season = query.season or context.season
+    params["darko_season"] = season
+    params["darko_rows"], params["darko_as_of"] = darko_sql_rows(query, context.before_date)
+    return f"""darko AS MATERIALIZED (
+        SELECT s.player_id, s.dpm, s.o_dpm, s.d_dpm
+        FROM jsonb_to_recordset(CAST(:darko_rows AS jsonb))
+            AS s(player_id text, dpm double precision, o_dpm double precision,
+                 d_dpm double precision)
+        WHERE CAST(:darko_as_of AS date) >= (
+            SELECT max(g.game_date) FROM {table_name} g
+            WHERE g.dataset_id = :dataset_id AND g.season = :darko_season AND g.phase = :phase
+        )
+    ),
+    aggregated AS (
+        SELECT t.*, d.dpm, d.o_dpm, d.d_dpm
+        FROM aggregated_darko t
+        LEFT JOIN darko d ON d.player_id = t.player_id
+    )"""
+
+
+def tracking_applies(context: ResolvedContext, query: QuerySpec) -> bool:
+    """Tracking season totals have no dates: only a whole, unfiltered season-phase may join."""
+    return (
+        context.dataset_type == "workbench"
+        and query.window.kind == WindowKind.SEASON
+        and not query.season_scope.seasons
+        and not query.team_scope.team_id
+    )
 
 
 def impact_query_binding(context: ResolvedContext, query: QuerySpec) -> dict[str, Any]:
@@ -129,7 +220,10 @@ def stats_presentation_hash(
     cohort: bool = False,
 ) -> str:
     """Bind complete query semantics, independently of paging and visual preferences."""
-    spec = query.model_dump(mode="json", exclude={"page", "view_state", "impact_manifest_sha256"})
+    spec = query.model_dump(
+        mode="json",
+        exclude={"page", "view_state", "impact_manifest_sha256", "darko_manifest_sha256"},
+    )
     if cohort:
         for key in ("name", "sort", "metric_selectors"):
             spec.pop(key, None)
@@ -145,6 +239,7 @@ def stats_presentation_hash(
             "query": spec,
             "player_ids": None if cohort else presentation.player_ids,
             **impact_query_binding(context, query),
+            **(darko_binding(query, context.before_date) if darko_query_fields(query) else {}),
         }
     )
 
@@ -177,6 +272,8 @@ def compute_stats_query_context_hash(context: ResolvedContext, query: QuerySpec)
         primary_sort.direction,
     ]
     binding = impact_query_binding(context, query)
+    if darko_query_fields(query):
+        binding.update(darko_binding(query, context.before_date))
     return canonical_hash([payload, binding] if binding else payload)[:32]
 
 
@@ -331,6 +428,100 @@ def _rate_per_36_sql(stat_col: str, alias: str, *, paired: bool = False) -> str:
     count(*) FILTER (WHERE minutes_seconds > 0 AND {stat_col} IS NOT NULL) AS n_{alias}"""
 
 
+def _offensive_load_sql(is_sqlite: bool) -> str:
+    """Taylor's Box Creation, Offensive Load and cTOV% per 100 offensive possessions.
+
+    Possessions are the player's counted offensive controls from the sealed extras (the AST/100
+    denominator); without them every derived value stays null.
+    """
+    possessions = (
+        "json_extract(a.impact_support, '$.impact_ast_per100.denominator')"
+        if is_sqlite
+        else "(a.impact_support->'impact_ast_per100'->>'denominator')::double precision"
+    )
+    return f"""SELECT z.*,
+            CASE WHEN z.load_100 > 0 THEN round(CAST(z.load_100 AS numeric), 1) END
+                AS offensive_load,
+            CASE WHEN z.load_100 > 0 THEN round(CAST(z.tov_100 / z.load_100 AS numeric), 4) END
+                AS ctov_pct,
+            CASE WHEN z.total_minutes > 0 AND z.pbp_rim_assists IS NOT NULL
+                THEN round(CAST(36.0 * z.pbp_rim_assists / z.total_minutes AS numeric), 1) END
+                AS rim_ast_per_36
+        FROM (
+            SELECT y.*, (y.ast_100 - 0.38 * y.box_creation) * 0.75 + y.fga_100
+                + 0.44 * y.fta_100 + y.box_creation + y.tov_100 AS load_100
+            FROM (
+                SELECT x.*, x.ast_100 * 0.1843 + (x.pts_100 + x.tov_100) * 0.0969
+                    - 2.3021 * x.three_proficiency
+                    + 0.0582 * x.ast_100 * (x.pts_100 + x.tov_100) * x.three_proficiency
+                    - 1.1942 AS box_creation
+                FROM (
+                    SELECT w.*,
+                        100.0 * w.ast / w.off_possessions AS ast_100,
+                        100.0 * w.pts / w.off_possessions AS pts_100,
+                        100.0 * w.tov / w.off_possessions AS tov_100,
+                        100.0 * w.fga / w.off_possessions AS fga_100,
+                        100.0 * w.fta / w.off_possessions AS fta_100,
+                        (2.0 / (1.0 + exp(-100.0 * w.fg3a / w.off_possessions)) - 1.0)
+                            * CASE WHEN w.fg3a > 0 THEN 1.0 * w.fg3m / w.fg3a ELSE 0 END
+                            AS three_proficiency
+                    FROM (
+                        SELECT a.*, CASE WHEN {possessions} > 0 THEN {possessions} END
+                            AS off_possessions
+                        FROM aggregated_impact a
+                    ) w
+                ) x
+            ) y
+        ) z"""
+
+
+def _tracking_sql(
+    params: dict[str, Any],
+    query: QuerySpec,
+    context: ResolvedContext,
+    table_name: str,
+    is_sqlite: bool,
+    applies: bool,
+) -> str:
+    """Join tracking season totals only when every game of the season-phase is in scope."""
+    if is_sqlite or not applies:
+        nulls = ", ".join(f"CAST(NULL AS REAL) AS {key}" for key in TRACKING_METRICS)
+        return f"aggregated AS (SELECT t.*, {nulls} FROM aggregated_tracking t)"
+    params["tracking_season"] = query.season or context.season
+    return f"""tracking AS MATERIALIZED (
+        SELECT m.player_id::text AS player_id,
+            sum(m.value) FILTER (WHERE m.measure = 'possessions' AND m.stat = 'time_of_poss')
+                AS time_of_poss,
+            sum(m.value) FILTER (WHERE m.measure = 'possessions' AND m.stat = 'min')
+                AS tracking_min,
+            sum(m.value) FILTER (WHERE m.measure = 'passing' AND m.stat = 'ast_pts_created')
+                AS ast_pts_created
+        FROM {TRACKING_MART} m
+        WHERE m.season = :tracking_season AND m.season_type = :phase
+          AND m.measure IN ('possessions', 'passing')
+          AND :before_date > (
+              SELECT max(g.game_date) FROM {table_name} g
+              WHERE g.dataset_id = :dataset_id AND g.season = :tracking_season
+                AND g.phase = :phase
+          )
+        GROUP BY m.player_id
+    ),
+    aggregated AS (
+        SELECT t.*,
+            CASE WHEN k.tracking_min > 0 THEN round(k.time_of_poss / k.tracking_min, 4) END
+                AS on_ball_pct,
+            t.pts + k.ast_pts_created AS pts_created,
+            CASE WHEN t.games_played > 0
+                THEN round((t.pts + k.ast_pts_created)::numeric / t.games_played, 1) END
+                AS pts_created_per_game,
+            CASE WHEN t.total_minutes > 0
+                THEN round(36.0 * (t.pts + k.ast_pts_created)::numeric / t.total_minutes, 1) END
+                AS pts_created_per_36
+        FROM aggregated_tracking t
+        LEFT JOIN tracking k ON k.player_id = t.player_id
+    )"""
+
+
 def build_stats_query_sql(
     context: ResolvedContext,
     query: QuerySpec,
@@ -341,6 +532,7 @@ def build_stats_query_sql(
     is_sqlite: bool = False,
     legacy_nonappearance: bool = False,
     presentation: StatsPresentation | None = None,
+    cohort_percentiles: bool = True,
 ) -> tuple[str, dict[str, Any]]:
     """Build parameterized SQL query for aggregating and filtering eligible player stats.
 
@@ -361,6 +553,8 @@ def build_stats_query_sql(
         key = key_wb if is_workbench else key_ar
         if is_sqlite:
             value = f"CAST(json_extract({col_name}, '$.{key}') AS INTEGER)"
+        elif col_name == "wpg.stats_json":
+            value = f"(wpg.sj->>'{key}')::int"
         else:
             value = f"({col_name}->>'{key}')::int"
         if is_workbench and legacy_nonappearance:
@@ -430,8 +624,10 @@ def build_stats_query_sql(
 
     # Name search
     if query.name and presentation is None:
-        params["name_pattern"] = f"%{query.name.strip().lower()}%"
-        candidate_filters.append(f"LOWER({player_name_expr}) LIKE :name_pattern")
+        params["name_pattern"] = f"%{fold_name(query.name)}%"
+        candidate_filters.append(
+            f"{folded_name_sql(player_name_expr, is_sqlite)} LIKE :name_pattern"
+        )
 
     # 3. Window Function for Last-N Appearances
     has_window_rank = query.window.kind in (
@@ -527,6 +723,21 @@ def build_stats_query_sql(
 
     # 6. Assemble Full Query
     paired_rates = presentation is not None
+    paired_fg2 = "fgm IS NOT NULL AND fga IS NOT NULL AND fg3m IS NOT NULL AND fg3a IS NOT NULL"
+    per_game_shots = ",\n            ".join(
+        f"round(avg({col}) FILTER (WHERE {col} IS NOT NULL), 1) AS {col}_per_game, "
+        f"count({col}) AS n_{col}_per_game"
+        for col in ("fgm", "fga", "fg3m", "fg3a", "ftm", "fta")
+    )
+    # Postgres: parse each row's json stats once (OFFSET 0 keeps the subquery from being
+    # inlined back into one parse per extracted field).
+    fact_filters = " AND ".join(f for f in candidate_filters if f.startswith("wpg."))
+    fact_source = (
+        table_name
+        if is_sqlite
+        else f"(SELECT wpg.*, wpg.stats_json::jsonb AS sj FROM {table_name} wpg "
+        f"WHERE {fact_filters} OFFSET 0)"
+    )
     cte_sql = f"""WITH ranked_games AS (
         SELECT
             wpg.player_id,
@@ -555,7 +766,7 @@ def build_stats_query_sql(
                 PARTITION BY wpg.player_id
                 ORDER BY wpg.game_date DESC, wpg.game_id DESC
             ) AS app_rank
-        FROM {table_name} wpg
+        FROM {fact_source} wpg
         {identity_join}
         WHERE {where_candidate_clause}
     ),
@@ -659,6 +870,16 @@ def build_stats_query_sql(
                      )),
                      4
                  ) else null end as ts_pct,
+            sum(fgm - fg3m) FILTER (WHERE {paired_fg2}) AS fg2m,
+            sum(fga - fg3a) FILTER (WHERE {paired_fg2}) AS fg2a,
+            count(*) FILTER (WHERE {paired_fg2}) AS n_fg2,
+            case when sum(fga - fg3a) FILTER (WHERE {paired_fg2}) > 0
+                 then round(
+                     sum(fgm - fg3m) FILTER (WHERE {paired_fg2})::numeric
+                     / sum(fga - fg3a) FILTER (WHERE {paired_fg2})::numeric,
+                     4
+                 ) else null end as fg2_pct,
+            {per_game_shots},
             count(*) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) AS n_ftr,
             case when sum(fga) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) > 0
                  then round(sum(fta)::numeric / sum(fga)::numeric, 4) else null end as ftr,
@@ -700,7 +921,9 @@ def build_stats_query_sql(
         GROUP BY player_id
     )"""
 
+    materialized = "" if is_sqlite else " MATERIALIZED"
     if query_uses_impact(query):
+        sealed_keys = [key for key in IMPACT_CATALOG if key not in SQL_DERIVED_IMPACT]
         impact = impact_for_query(query, context.before_date.isoformat())
         params["impact_rows"] = impact_sql_rows(impact)
         if is_sqlite:
@@ -708,17 +931,17 @@ def build_stats_query_sql(
             identity = "json_extract(s.value, '$.player_id')"
             support = "json_extract(s.value, '$.support')"
             values = [
-                f"CAST(json_extract(s.value, '$.{key}') AS REAL) AS {key}" for key in IMPACT_CATALOG
+                f"CAST(json_extract(s.value, '$.{key}') AS REAL) AS {key}" for key in sealed_keys
             ]
         else:
-            definitions = ", ".join(f"{key} double precision" for key in IMPACT_CATALOG)
+            definitions = ", ".join(f"{key} double precision" for key in sealed_keys)
             source = (
                 "jsonb_to_recordset(CAST(:impact_rows AS jsonb)) "
                 f"AS s(player_id text, support jsonb, {definitions})"
             )
             identity = "s.player_id"
             support = "s.support"
-            values = [f"s.{key} AS {key}" for key in IMPACT_CATALOG]
+            values = [f"s.{key} AS {key}" for key in sealed_keys]
         cte_sql = cte_sql.replace("aggregated AS (", "aggregated_boxes AS (")
         cte_sql += (
             ", aggregated AS (SELECT b.*, "
@@ -726,10 +949,27 @@ def build_stats_query_sql(
             + f", {support} AS impact_support FROM aggregated_boxes b LEFT JOIN {source}"
             + f" ON {identity} = b.player_id)"
         )
+        # Materialize each layer: inlined, the planner re-joins the impact rows per later layer.
+        cte_sql = cte_sql.replace("aggregated AS (", f"aggregated_impact AS{materialized} (")
+        cte_sql += ", aggregated AS (" + _offensive_load_sql(is_sqlite) + ")"
+
+    if tracking_query_fields(query):
+        cte_sql = cte_sql.replace("aggregated AS (", f"aggregated_tracking AS{materialized} (")
+        cte_sql += ", " + _tracking_sql(
+            params, query, context, table_name, is_sqlite, tracking_applies(context, query)
+        )
+
+    if darko_query_fields(query):
+        cte_sql = cte_sql.replace("aggregated AS (", f"aggregated_darko AS{materialized} (")
+        cte_sql += ", " + _darko_sql(
+            params, query, context, table_name, is_sqlite, darko_applies(context, query)
+        )
 
     percentile_columns = dict(PERCENTILE_COLUMNS)
+    percentile_columns.update({key: key for key in sorted(darko_query_fields(query))})
     if query_uses_impact(query):
         percentile_columns.update({key: key for key in sorted(impact_query_fields(query))})
+    percentile_columns.update({key: key for key in sorted(tracking_query_fields(query))})
     result_table = "aggregated"
     result_filter = where_agg_clause
     if presentation is not None:
@@ -738,8 +978,10 @@ def build_stats_query_sql(
         cte_sql += f", eligible AS (SELECT * FROM aggregated {where_agg_clause})"
         display_filters = []
         if query.name:
-            params["name_pattern"] = f"%{query.name.strip().lower()}%"
-            display_filters.append("LOWER(player_name) LIKE :name_pattern")
+            params["name_pattern"] = f"%{fold_name(query.name)}%"
+            display_filters.append(
+                f"{folded_name_sql('player_name', is_sqlite)} LIKE :name_pattern"
+            )
         if presentation.player_ids is not None:
             id_keys = []
             for idx, player_id in enumerate(presentation.player_ids):
@@ -749,9 +991,13 @@ def build_stats_query_sql(
             display_filters.append(f"player_id IN ({', '.join(id_keys)})" if id_keys else "1=0")
         result_filter = "WHERE " + " AND ".join(display_filters) if display_filters else ""
         result_table = "eligible"
-        if not is_count_only:
+        if not is_count_only and cohort_percentiles:
+            # Ranks are computed on a narrow projection (player and ranked values) and joined
+            # back: every window sorts rows, and the full rows carry kilobytes of impact support
+            # each, so ranking them directly cost over a second per season with impact columns.
+            value_sql = []
             percentile_sql = []
-            for key, column in percentile_columns.items():
+            for index, (key, column) in enumerate(percentile_columns.items()):
                 if key in IMPACT_CATALOG:
                     qualified = (
                         f"json_extract(impact_support, '$.{key}.qualified') = 1"
@@ -759,16 +1005,26 @@ def build_stats_query_sql(
                         else f"(impact_support->'{key}'->>'qualified')::boolean IS TRUE"
                     )
                     column = f"CASE WHEN {qualified} THEN {column} ELSE NULL END"
-                n = f"count({column}) OVER ()"
-                less = f"rank() OVER (ORDER BY {column} ASC NULLS LAST) - 1"
-                equal = f"count(*) OVER (PARTITION BY {column})"
+                value = f"pv_{index}"
+                value_sql.append(f"{column} AS {value}")
+                n = f"count({value}) OVER ()"
+                less = f"rank() OVER (ORDER BY {value} ASC NULLS LAST) - 1"
+                equal = f"count(*) OVER (PARTITION BY {value})"
                 percentile_sql.append(
-                    f"CASE WHEN ({column}) IS NULL OR {n} < 2 THEN NULL ELSE "
+                    f"CASE WHEN {value} IS NULL OR {n} < 2 THEN NULL ELSE "
                     f"least(99, greatest(1, round(100.0 * ({less} + 0.5 * {equal}) / {n}))) "
                     f"END AS pct_{key}, {n} AS cohort_n_{key}"
                 )
+            materialized = "" if is_sqlite else "MATERIALIZED "
             cte_sql += (
-                ", cohort_ranked AS (SELECT *, " + ", ".join(percentile_sql) + " FROM eligible)"
+                f", cohort_values AS {materialized}(SELECT player_id, "
+                + ", ".join(value_sql)
+                + " FROM eligible)"
+                + ", cohort_percentiles AS (SELECT player_id AS ranked_player_id, "
+                + ", ".join(percentile_sql)
+                + " FROM cohort_values)"
+                + ", cohort_ranked AS (SELECT * FROM eligible JOIN cohort_percentiles"
+                + " ON cohort_percentiles.ranked_player_id = eligible.player_id)"
             )
             result_table = "cohort_ranked"
 
@@ -896,6 +1152,16 @@ def parse_player_row(row_dict: dict[str, Any]) -> dict[str, Any]:
     metrics["ftr"] = _cast_num(row_dict.get("ftr"))
     sample_sizes["ftr"] = int(row_dict.get("n_ftr") or 0)
 
+    # v4 box shooting: 2-point splits share one paired sample; per-game volumes their own.
+    for key in BOX_METRICS:
+        metrics[key] = _cast_num(row_dict.get(key))
+        n_key = "n_fg2" if key.startswith("fg2") else f"n_{key}"
+        sample_sizes[key] = int(row_dict.get(n_key) or 0)
+    for key in (*TRACKING_METRICS, *DARKO_METRICS):
+        if key in row_dict:
+            metrics[key] = _cast_num(row_dict.get(key))
+            sample_sizes[key] = gp if metrics[key] is not None else 0
+
     # Fantasy score
     metrics["legacy_fantasy_score_per_game"] = _cast_num(
         row_dict.get("legacy_fantasy_score_per_game")
@@ -945,6 +1211,7 @@ def execute_stats_query(
     max_export_rows: int = MAX_EXPORT_ROWS,
     legacy_nonappearance: bool = False,
     presentation: StatsPresentation | None = None,
+    cohort_percentiles: bool = True,
 ) -> tuple[list[dict[str, Any]], int, str | None, bool]:
     """Execute typed QuerySpec against indexed facts using SQL aggregation and windowing.
 
@@ -952,9 +1219,20 @@ def execute_stats_query(
         (items, total_eligible_count, next_cursor, has_more)
     """
     if presentation is not None:
-        if query.entity_kind != EntityKind.PLAYER or query.season_scope.seasons:
+        if query.entity_kind != EntityKind.PLAYER:
+            raise HTTPException(status_code=422, detail="Stats presentation supports players")
+        seasons = query.season_scope.seasons
+        # A season range aggregates whole seasons ending at the query season, whose coverage
+        # sets the exclusive cutoff; season-only joins (DARKO, tracking, impact) stay unknown.
+        if seasons and (
+            len(seasons) > MAX_SEASON_RANGE
+            or len(set(seasons)) != len(seasons)
+            or max(seasons) != query.season
+        ):
             raise HTTPException(
-                status_code=422, detail="Stats presentation supports single-season players"
+                status_code=422,
+                detail=f"A season range holds at most {MAX_SEASON_RANGE} distinct seasons "
+                "and ends at the query season",
             )
         if query.team_scope.current_roster_only or not query.team_scope.participation_only:
             raise HTTPException(
@@ -1037,7 +1315,7 @@ def execute_stats_query(
         legacy_hash = compute_query_context_hash(context, legacy_query)
         valid_hashes = (
             [context_hash]
-            if presentation is not None or query_uses_impact(query)
+            if presentation is not None or query_uses_impact(query) or darko_query_fields(query)
             else [context_hash, legacy_hash]
         )
         start_offset = decode_cursor(query.page.cursor, valid_hashes)
@@ -1046,23 +1324,34 @@ def execute_stats_query(
 
     # 3. Determine dialect
     is_sqlite = session.bind.dialect.name == "sqlite" if session.bind else False
+    if not is_sqlite:
+        # One request aggregates a few hundred wide rows: JIT compilation costs more than the
+        # query, and the per-column percentile sorts otherwise spill to disk. Transaction-local.
+        session.execute(text("SET LOCAL jit = off"))
+        session.execute(text("SET LOCAL work_mem = '32MB'"))
+        # Parallel workers share hash tables through /dev/shm, which Docker caps at 64 MB; a
+        # few thousand game rows gain nothing from them.
+        session.execute(text("SET LOCAL max_parallel_workers_per_gather = 0"))
 
-    # 4. Execute Count Query
-    count_sql, count_params = build_stats_query_sql(
-        context,
-        query,
-        is_count_only=True,
-        is_sqlite=is_sqlite,
-        legacy_nonappearance=legacy_nonappearance,
-        presentation=presentation,
-    )
-    total_count = session.execute(text(count_sql), count_params).scalar() or 0
+    def count_rows() -> int:
+        count_sql, count_params = build_stats_query_sql(
+            context,
+            query,
+            is_count_only=True,
+            is_sqlite=is_sqlite,
+            legacy_nonappearance=legacy_nonappearance,
+            presentation=presentation,
+        )
+        return int(session.execute(text(count_sql), count_params).scalar() or 0)
 
-    # 5. Determine limit & offset
+    # 4-5. An export reads one row past its bound instead of re-running the whole aggregation
+    # to count it: the count only runs when the bound is exceeded (count = rows otherwise).
     if is_export:
-        limit = max_export_rows
+        total_count = -1
+        limit = max_export_rows + 1
         offset = 0
     else:
+        total_count = count_rows()
         limit = min(max(1, query.page.limit), MAX_PAGE_SIZE)
         offset = start_offset
 
@@ -1076,10 +1365,21 @@ def execute_stats_query(
         is_sqlite=is_sqlite,
         legacy_nonappearance=legacy_nonappearance,
         presentation=presentation,
+        cohort_percentiles=cohort_percentiles,
     )
     result_rows = session.execute(text(main_sql), main_params).mappings().all()
 
+    if is_export:
+        total_count = len(result_rows) if len(result_rows) <= max_export_rows else count_rows()
+        result_rows = result_rows[:max_export_rows]
+
     items = [parse_player_row(dict(r)) for r in result_rows]
+    if query_uses_impact(query) and any("impact_support" in item for item in items):
+        # SQL carried slim support (impact_sql_rows); serve each player's full sealed support.
+        full = impact_for_query(query, context.before_date.isoformat())["players"]
+        for item in items:
+            if "impact_support" in item and item["player_id"] in full:
+                item["impact_support"] = full[item["player_id"]]["support"]
 
     # 7. Cursor & Pagination Flags
     if is_export:
@@ -1092,25 +1392,39 @@ def execute_stats_query(
 
 
 def stats_cohort_summary(
-    session: Session, context: ResolvedContext, query: QuerySpec, presentation: StatsPresentation
+    session: Session,
+    context: ResolvedContext,
+    query: QuerySpec,
+    presentation: StatsPresentation,
+    eligible_players: int | None = None,
 ) -> dict[str, Any]:
-    """Count the complete eligible cohort even when presentation returns no rows."""
-    cohort_query = query.model_copy(update={"name": None})
-    sql, params = build_stats_query_sql(
-        context,
-        cohort_query,
-        is_count_only=True,
-        is_sqlite=session.bind.dialect.name == "sqlite" if session.bind else False,
-        presentation=StatsPresentation(),
-    )
+    """Count the complete eligible cohort even when presentation returns no rows.
+
+    A caller that already holds the whole cohort passes its size and skips the count query.
+    """
+    if eligible_players is None:
+        cohort_query = query.model_copy(update={"name": None})
+        sql, params = build_stats_query_sql(
+            context,
+            cohort_query,
+            is_count_only=True,
+            is_sqlite=session.bind.dialect.name == "sqlite" if session.bind else False,
+            presentation=StatsPresentation(),
+        )
+        eligible_players = int(session.execute(text(sql), params).scalar() or 0)
     return {
         "version": presentation.version,
         "scope_hash": stats_presentation_hash(context, query, presentation, cohort=True),
-        "eligible_players": int(session.execute(text(sql), params).scalar() or 0),
+        "eligible_players": eligible_players,
         "formula": "100 * (count_less + 0.5 * count_equal) / n; rounded, clamped to 1-99",
         "good_directions": {
             key: METRIC_CATALOG[key].good_direction
-            for key in [*PERCENTILE_COLUMNS, *sorted(impact_query_fields(query))]
+            for key in [
+                *PERCENTILE_COLUMNS,
+                *sorted(impact_query_fields(query)),
+                *sorted(tracking_query_fields(query)),
+                *sorted(darko_query_fields(query)),
+            ]
         },
     }
 

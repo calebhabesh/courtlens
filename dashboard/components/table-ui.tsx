@@ -8,11 +8,13 @@ import { Icon } from "./ui/icon";
 
 /** Native buttons keep Enter/Space and focus semantics consistent across tables. */
 export function SortHeader({ label, metric, active, direction, onSort, sortable = true,
-  description, className = "" }: {
+  description, className = "", column }: {
   label: string; metric: string; active: boolean; direction: string;
   onSort: (metric: string) => void; sortable?: boolean; description?: string; className?: string;
+  /** Column key for page-level header hints (Stats). */
+  column?: string;
 }) {
-  return <th scope="col" className={className}
+  return <th scope="col" className={className} data-column={column}
     aria-sort={active ? direction === "asc" ? "ascending" : "descending" : "none"}>
     {sortable ? <button type="button" className="table-sort-button" onClick={() => onSort(metric)}
       title={description ?? label} aria-label={`Sort by ${label}`}>

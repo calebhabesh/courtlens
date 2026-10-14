@@ -259,3 +259,75 @@ def test_combine_placeholder_identity_stays_unknown_not_name_matched() -> None:
         "unidentified_rows"
         not in parse_feed(synergy_body(), scope_for_url(HOOPR_SOURCE, ISO_URL, "2025-26")).coverage
     )
+
+
+def _bio_body(
+    result: str, params: dict[str, object], headers: list[str], rows: list[list[object]]
+) -> bytes:
+    return json.dumps(
+        {"parameters": params, "resultSets": [{"name": result, "headers": headers, "rowSet": rows}]}
+    ).encode()
+
+
+def test_bio_urls_follow_hoopr_labels_and_payloads_must_agree() -> None:
+    from courtlens.ingestion.stats_feeds import hoopr_bio_url
+
+    # The index is labelled by season END year; rosters by START year.
+    index_url = hoopr_bio_url(REV, "playerindex", "2026-27")
+    assert index_url.endswith("/playerindex/2027.json")
+    index = scope_for_url(HOOPR_SOURCE, index_url, "2026-27")
+    assert (index.feed, index.capability, index.season_type, index.variant) == (
+        "player_index",
+        "player_bio",
+        "bio",
+        "",
+    )
+    roster_url = hoopr_bio_url(REV, "commonteamroster", "2025-26", "1610612743")
+    assert roster_url.endswith("/commonteamroster/2025/1610612743.json")
+    roster = scope_for_url(HOOPR_SOURCE, roster_url, "2025-26")
+    assert (roster.feed, roster.variant) == ("team_roster", "1610612743")
+    for url, season in (
+        (roster_url, "2026-27"),
+        (index_url, "2025-26"),
+        (roster_url.replace("1610612743", "1"), "2025-26"),
+    ):
+        with pytest.raises(ValueError):
+            scope_for_url(HOOPR_SOURCE, url, season)
+    headers = ["TeamID", "SEASON", "PLAYER", "NUM", "HEIGHT", "BIRTH_DATE", "EXP", "PLAYER_ID"]
+    row = [1610612743, "2025", "Fictional Center", "15", "6-11", "FEB 19, 1995", "10", 99001]
+    parsed = parse_feed(
+        _bio_body("CommonTeamRoster", {"Season": "2025", "TeamID": 1610612743}, headers, [row]),
+        roster,
+    )
+    payload = parsed.rows[0][1]
+    assert (payload["entity_key"], payload["player_id"], payload["team_id"]) == (
+        "99001",
+        "99001",
+        "1610612743",
+    )
+    assert payload["values"]["birth_date"] == "FEB 19, 1995"
+    assert parsed.coverage["declared_parameters"]["TeamID"] == 1610612743
+    for params in ({"Season": "2024", "TeamID": 1610612743}, {"Season": "2025", "TeamID": 1}):
+        with pytest.raises(ValueError, match="different"):
+            parse_feed(_bio_body("CommonTeamRoster", params, headers, [row]), roster)
+    # The index declares the canonical season (older files the start year).
+    index_headers = ["PERSON_ID", "PLAYER_LAST_NAME", "COUNTRY", "DRAFT_YEAR"]
+    index_row = [99001, "Center", "Serbia", 2014]
+    for declared in ("2026-27", "2026"):
+        parsed = parse_feed(
+            _bio_body("PlayerIndex", {"Season": declared}, index_headers, [index_row]), index
+        )
+        assert parsed.rows[0][1]["player_id"] == "99001"
+    with pytest.raises(ValueError, match="different season"):
+        parse_feed(
+            _bio_body("PlayerIndex", {"Season": "2025-26"}, index_headers, [index_row]), index
+        )
+
+
+def test_bio_plan_covers_the_index_and_every_team_roster() -> None:
+    from courtlens.services.stats_feed_ingestion import bio_plan
+
+    plan = bio_plan(REV, ["2024-25", "2025-26"], "2026-27")
+    assert len(plan) == 1 + 2 * 30
+    for source, url, season in plan:
+        scope_for_url(source, url, season)

@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "./ui/icon";
+import { ValueDot, valueDotsFit } from "./charts/value-dot";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { exampleParams, type ExampleSubject } from "@/lib/example-subject";
 import { ExampleSubjectCard } from "./example-subject";
@@ -292,6 +293,7 @@ export function RecentGamesView({
                   ? `M ${points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" L ")}`
                   : "";
 
+                const dotsFit = valueDotsFit(points.length, chartW, 26);
                 const avgY = summary.ptsPerGame !== null
                   ? topY + chartH - (summary.ptsPerGame / maxPts) * chartH
                   : null;
@@ -315,27 +317,19 @@ export function RecentGamesView({
                     {/* Discrete Points */}
                     {points.map((p) => (
                       <g key={p.date} className="plot-point-group">
-                        <circle
-                          cx={p.x}
-                          cy={p.y}
-                          r="4.5"
-                          fill="var(--color-accent)"
-                          stroke="var(--color-surface-1)"
-                          strokeWidth="2"
-                        >
-                          <title>{`${p.date} vs ${p.opp}: ${p.pts} PTS (${p.min.toFixed(0)} MIN)`}</title>
-                        </circle>
-                        <text
-                          x={p.x}
-                          y={p.y - 8}
-                          fill="var(--color-text)"
-                          fontSize="10"
-                          fontFamily="monospace"
-                          fontWeight="bold"
-                          textAnchor="middle"
-                        >
-                          {p.pts}
-                        </text>
+                        {dotsFit ? (
+                          <ValueDot x={p.x} y={p.y} label={String(p.pts)} color="var(--color-accent)"
+                            title={`${p.date} vs ${p.opp}: ${p.pts} PTS (${p.min.toFixed(0)} MIN)`} />
+                        ) : (
+                          <>
+                            <circle cx={p.x} cy={p.y} r="4.5" fill="var(--color-accent)" stroke="var(--color-surface-1)" strokeWidth="2">
+                              <title>{`${p.date} vs ${p.opp}: ${p.pts} PTS (${p.min.toFixed(0)} MIN)`}</title>
+                            </circle>
+                            <text x={p.x} y={p.y - 8} fill="var(--color-text)" fontSize="10" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
+                              {p.pts}
+                            </text>
+                          </>
+                        )}
                         <text
                           x={p.x}
                           y="168"

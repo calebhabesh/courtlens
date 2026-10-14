@@ -82,3 +82,17 @@ def test_personal_aggregate_declares_population_and_missing_penalty() -> None:
     assert result.ranked_players[1].average_rank == 2
     assert result.ranked_players[1].boards_present_count == 1
     assert "no external consensus" in result.methodology_notes
+
+
+def test_stats_presentation_positions_are_canonical_and_bounded() -> None:
+    from pydantic import ValidationError
+
+    from courtlens.domain.stats_presentation import StatsPresentation
+
+    assert StatsPresentation(positions=["C", "PG", "PG", "SF"]).positions == ["PG", "SF", "C"]
+    assert StatsPresentation().positions is None
+    with pytest.raises(ValidationError):
+        StatsPresentation.model_validate({"positions": ["G"]})
+    assert StatsPresentation(draft_year=2018).draft_year == 2018
+    with pytest.raises(ValidationError):
+        StatsPresentation.model_validate({"draft_year": 1900})

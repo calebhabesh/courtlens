@@ -7,8 +7,8 @@ import { AssistantPageProvider } from "@/lib/assistant-page-context";
 import { ToastProvider } from "@/components/ui/toast";
 import "./globals.css";
 
-const publicSans = localFont({
-  src: "../public/fonts/public-sans-variable.woff2",
+const switzer = localFont({
+  src: "../public/fonts/switzer-variable.woff2",
   weight: "100 900",
   style: "normal",
   variable: "--font-sans",
@@ -35,18 +35,18 @@ export const metadata: Metadata = {
   description:
     "Dense local NBA analytics and research workbench. Investigate player production, explore team cohorts, inspect prospective points estimates under uncertainty, and reproduce evidence-backed findings.",
   icons: {
-    icon: "/icon.svg",
+    icon: { url: "/icon.svg?v=4", type: "image/svg+xml", sizes: "any" },
     apple: "/icons/courtlens-apple-180.png"
   }
 };
 
-export const viewport: Viewport = { themeColor: "#0b0d10" };
+export const viewport: Viewport = { themeColor: "#15325a" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
-      className={`${publicSans.variable} ${jetBrainsMono.variable}`}
+      className={`${switzer.variable} ${jetBrainsMono.variable}`}
       data-scroll-behavior="smooth"
     >
       <body>
