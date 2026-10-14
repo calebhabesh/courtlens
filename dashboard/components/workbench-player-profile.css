@@ -1,4 +1,5 @@
 @layer pages {
+  /* Recent Games' window hero (kept from the earlier player hero). */
   .player-hero {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
@@ -12,10 +13,74 @@
   .player-hero-identity { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
   .player-hero-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-3); min-width: 0; }
   .player-hero-tiles .ui-stat-tile { background: var(--color-surface-2); }
-  .player-tab-body { display: flex; flex-direction: column; gap: var(--space-4); }
   @media (max-width: 767px) {
     .player-hero { grid-template-columns: minmax(0, 1fr); padding: var(--space-4); }
     .player-hero-identity { flex-direction: row; align-items: center; }
     .player-hero-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  /* TabsContent wraps its children in one motion div; the section rhythm goes on that. */
+  .player-tab-body > div { display: flex; flex-direction: column; gap: var(--space-8); }
+
+  /* Open sections (alignment row 2, 22): a heading, one hairline, content on the page ground. */
+  .player-open-section { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .player-open-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-1) var(--space-3);
+    padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-open-heading h2 { margin: 0; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 650; }
+  .player-open-heading span { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); }
+  .player-open-empty { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+
+  .player-overview-duo { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--space-12); align-items: start; }
+
+  .player-figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4) var(--space-6); margin: 0; }
+  .player-figures > div { display: flex; flex-direction: column; gap: var(--space-0-5); min-width: 0; }
+  .player-figures dt { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .player-figures dd { display: flex; flex-direction: column; gap: var(--space-0-5); margin: 0; }
+  .player-figure-value { color: var(--color-text); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); font-weight: 650; font-variant-numeric: tabular-nums; }
+  .player-figures small { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+
+  .player-form-table { overflow-x: auto; min-width: 0; }
+  .player-form-table table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+  .player-form-table th, .player-form-table td { padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-hairline); text-align: right; white-space: nowrap; }
+  .player-form-table thead th { padding-top: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .player-form-table th:first-child { padding-left: 0; text-align: left; }
+  .player-form-table tbody th { color: var(--color-on-bg-secondary); font-weight: 500; }
+  .player-form-table td { color: var(--color-text); }
+  .player-form-table td:last-child, .player-form-table th:last-child { padding-right: 0; }
+  .player-form-table .player-form-up { color: var(--color-percentile-text-high); }
+  .player-form-table .player-form-down { color: var(--color-percentile-text-low); }
+
+  /* Tracking and Combine rows (row 2, 26): label, value, percentile bar and number on the Stats scale. */
+  .player-feed { display: flex; flex-direction: column; gap: var(--space-4); }
+  .player-stat-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-8) var(--space-10); }
+  .player-stat-group { min-width: 0; }
+  /* Combine's headline figures share the groups' columns so their edges line up. */
+  .player-feed .player-figures { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); column-gap: var(--space-10); padding-bottom: var(--space-4); }
+  .player-stat-group h3 { margin: 0 0 var(--space-1); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline-strong);
+    color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
+  .player-stat-group dl { margin: 0; }
+  .player-stat-row {
+    --pct-high: clamp(0%, calc((var(--pct, 50) - 50) * 2%), 100%);
+    --pct-low: clamp(0%, calc((50 - var(--pct, 50)) * 2%), 100%);
+    --pct-color: color-mix(in oklab, var(--color-percentile-text-high) var(--pct-high),
+      color-mix(in oklab, var(--color-percentile-text-low) var(--pct-low), var(--color-percentile-text-mid)));
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--space-3);
+    padding: var(--space-2) 0; border-bottom: 1px solid var(--color-hairline); font-size: var(--text-sm); line-height: var(--text-sm-lh);
+  }
+  .player-stat-row dt { min-width: 0; color: var(--color-on-bg-secondary); }
+  .player-stat-row dd { display: grid; grid-template-columns: 64px 48px 28px; align-items: center; gap: var(--space-2); margin: 0; font-variant-numeric: tabular-nums; }
+  .player-stat-value { color: var(--color-text); font-weight: 600; text-align: right; white-space: nowrap; }
+  /* Unranked values take the whole value area instead of wrapping in the first column. */
+  .player-stat-value:only-child { grid-column: 1 / -1; }
+  .player-stat-bar { position: relative; height: 4px; overflow: hidden; border-radius: var(--radius-pill); background: var(--color-hairline-strong); }
+  .player-stat-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: calc(var(--pct) * 1%); border-radius: inherit; background: var(--pct-color); }
+  .player-stat-pct { color: var(--pct-color); font-size: var(--text-xs); font-weight: 600; text-align: right; }
+  .player-stat-note { grid-column: 2 / 4; color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); text-align: right; }
+
+  @media (max-width: 1199px) {
+    .player-overview-duo { grid-template-columns: minmax(0, 1fr); gap: var(--space-8); }
+  }
+  @media (max-width: 767px) {
+    .player-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 }

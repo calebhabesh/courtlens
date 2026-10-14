@@ -26,15 +26,15 @@ test("the header summarises the player and the summary card has no accent edge",
   await openWorkbench(page, "/players/23");
   await expect(page.locator("h1")).toHaveCount(1);
   const facts = page.locator(".player-bio-facts");
-  await expect(facts).toContainText("Age28");
+  await expect(facts).toContainText("BornFeb 10, 1998 (28)");
   await expect(facts).toContainText("6′8″ · 220 lb");
   await expect(facts).toContainText("7th season");
-  await expect(facts).toContainText("2018 · R1, #9 · TOR");
+  await expect(facts).toContainText("2018 · R1 #9 · TOR");
   await expect(facts).toContainText("Fixtureland");
   // No combine record: no combine line, never a row of dashes.
   await expect(page.locator(".player-bio-combine")).toHaveCount(0);
   const summary = page.getByRole("region", { name: "Season summary" });
-  await expect(summary.locator(".ui-stat-tile")).toHaveCount(6);
+  await expect(summary.locator(".player-summary-stat")).toHaveCount(6);
   expect(await summary.evaluate(el => getComputedStyle(el).boxShadow)).toBe("none");
 });
 

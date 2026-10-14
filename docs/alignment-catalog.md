@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Switzer interface font verified; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions 1–71 done; 43f/43g data follow-ups deferred; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Career table, bio header and back-to-table (1–17); owner review pending |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Redesign (19–28) done; bio crawl and Stats chip await go-ahead; owner review pending |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -486,4 +486,34 @@ Follow-up instructions (owner, 2026-10-14, career table speed):
     index and a post-deploy warm-up. Giannis 4.3–4.7 s (14 requests) → 48 ms (one read, in the
     page HTML); view and counting-mode switches make no request; values and ranks unchanged.
     [Career speed evidence](evidence/alignment/players/career-speed/README.md).
+Follow-up instructions (owner, 2026-10-14, page redesign; agreed from the
+[player page mockup](https://claude.ai/artifact/C3UjfZMcdm3A9qQZJ65TRy) v3):
+19. [x] Full-width, left-aligned layout like Stats (no centred column), so the career table has room.
+20. [x] Header: larger photo, a hairline divider, then one left-aligned column: name with a 40px team
+    logo centred on it, Team · Position · #, bio facts (label over value with a quiet second line),
+    the combine line and an honours row. Actions stay at the right.
+21. [x] The drafting team's logo beside its tricode in the Draft fact, scaled to the text.
+22. [x] Remove the black containers everywhere except the career table: the season summary, Player
+    impact, Production Splits, Tracking and Combine sit on the page background as open sections
+    (heading, one hairline, content), with typography that contrasts with the background.
+23. [x] Season summary tiles add the career figure beneath each value (best season for DPM).
+24. [x] Player impact values are signed; offence and defence sit under 1Y RAPM.
+25. [x] Production Splits becomes "Recent form" beside Player impact; Last 10 / Last 5 values tint
+    up (gold) or down (blue) against the season.
+26. [x] Tracking and Combine: one row per stat (label, value, thin percentile bar, percentile) in
+    place of the blue boxes; gold 80th+, blue 20th and below, grey between; groups fill the width.
+27. [x] The header shows the player's current team (NBA player index); a faint glow behind the
+    photo uses that team's colour. Season stats keep the team they were recorded with, and the
+    summary names it ("65 games with LA Clippers") when it differs from the header team.
+28. [x] Spacing and padding checked throughout; every value aligns with its neighbours.
+Done notes (19–28): header photo, divider and left column with the current team (new
+`current_team` from the NBA player index; retired and free-agent players fall back to the season's
+team) and its colour glow; drafting team logo in Draft; summary, impact, Recent form, Tracking and
+Combine as open sections; career figure per tile (best season for DPM, hidden for one-season
+players); signed impact with Off/Def; Recent form tints at the shown precision; stat rows on the
+Stats percentile scale; "N games with <team>" when the season's team differs from the header.
+Honours row awaits the crawl below. [Redesign evidence](evidence/alignment/players/redesign/README.md).
+Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
+awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut) and a
+"now TOR" chip on the latest completed season's Stats rows when the current listing differs.
 Evidence: docs/evidence/alignment/players/ ([README](evidence/alignment/players/README.md)).

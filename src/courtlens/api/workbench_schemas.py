@@ -565,6 +565,14 @@ class PlayerBioCombine(BaseModel):
     weight_lbs: float | None
 
 
+class PlayerBioCurrentTeam(BaseModel):
+    """The team the latest NBA player index lists; not the team a season's games belong to."""
+
+    team_id: str
+    team_tricode: str | None
+    listing_season: str
+
+
 class PlayerBioResponse(BaseModel):
     """Profile header listings as of the page scope; combine values are measured."""
 
@@ -584,6 +592,7 @@ class PlayerBioResponse(BaseModel):
     draft: PlayerBioDraft | None
     undrafted: bool
     combine: PlayerBioCombine | None
+    current_team: PlayerBioCurrentTeam | None = None
     limitations: list[str]
 
 
