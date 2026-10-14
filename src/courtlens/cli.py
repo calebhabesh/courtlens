@@ -1261,6 +1261,62 @@ def acquire_stats_feeds_command(
         raise typer.Exit(1)
 
 
+@app.command("acquire-player-bio")
+def acquire_player_bio_command(
+    revision: str = typer.Option(..., help="Pinned 40-hex hoopR-nba-stats-raw commit."),
+    roster_season: list[str] = typer.Option([], help="Seasons whose team rosters to fetch."),
+    index_season: str = typer.Option("2026-27", help="Season of the all-time player index."),
+    root: Path = typer.Option(Path("data/raw/stats-feeds")),
+    report: Path | None = typer.Option(None, help="Write the run summary JSON here."),
+) -> None:
+    """Player index and team rosters (birth dates, listed sizes, jersey, experience).
+
+    A franchise absent from a season has no roster file: that fetch fails and is reported,
+    and the run continues.
+    """
+    import httpx
+
+    from courtlens.services.stats_feed_ingestion import FeedFetcher, admit_feed, bio_plan
+
+    plan = bio_plan(revision, roster_season, index_season)
+    results = []
+    with SessionLocal() as session, httpx.Client() as client:
+        fetcher = FeedFetcher(session, root, client)
+        for source, url, scope_season in plan:
+            receipt = fetcher.fetch(source, url, scope_season)
+            session.commit()
+            result: dict[str, Any] = {
+                "url": url,
+                "status": receipt.status,
+                "http_status": receipt.http_status,
+                "reason": receipt.error_summary,
+            }
+            if receipt.status == "success":
+                try:
+                    dataset = admit_feed(session, receipt.id, root)
+                    session.commit()
+                    result |= {"dataset_id": dataset.id, "rows": dataset.coverage_json["rows"]}
+                except (ValueError, KeyError) as error:
+                    session.rollback()
+                    result |= {"status": "rejected", "reason": str(error)[:300]}
+            results.append(result)
+            typer.echo(json.dumps(result))
+    summary = {
+        "revision": revision,
+        "index_season": index_season,
+        "roster_seasons": roster_season,
+        "planned": len(plan),
+        "admitted": sum("dataset_id" in r for r in results),
+        "failed": [r["url"] for r in results if r["status"] == "failed"],
+        "rejected": [r["url"] for r in results if r["status"] == "rejected"],
+    }
+    if report is not None:
+        report.write_text(json.dumps(summary, indent=2) + "\n")
+    typer.echo(json.dumps({k: v for k, v in summary.items() if k != "roster_seasons"}))
+    if summary["rejected"]:
+        raise typer.Exit(1)
+
+
 @app.command("refresh-darko")
 def refresh_darko_command(
     season: list[str] = typer.Option(["2023-24", "2024-25", "2025-26"], help="Seasons to fetch."),

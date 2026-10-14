@@ -52,6 +52,7 @@ from courtlens.api.workbench_schemas import (
     OpponentContextResponse,
     PeriodMode,
     PersonalWorkspaceState,
+    PlayerBioResponse,
     PlayerComparisonResponse,
     PlayerGameLogItem,
     PlayerGameLogResponse,
@@ -60,6 +61,7 @@ from courtlens.api.workbench_schemas import (
     PlayerProfileStint,
     PlayerResearchItem,
     PlayerResearchResponse,
+    PlayerSeasonsResponse,
     PlayerTrackingResponse,
     PlayoffBracketResponse,
     PlayoffSeriesDetailResponse,
@@ -167,6 +169,7 @@ from courtlens.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
+from courtlens.services.player_bio import player_bio
 from courtlens.services.position_estimates import (
     draft_class_player_ids,
     draft_classes,
@@ -239,6 +242,7 @@ from courtlens.workbench_models import (
     SavedInvestigation,
     WorkbenchIdentity,
     WorkbenchJob,
+    WorkbenchPlayerGame,
 )
 
 router = APIRouter(prefix="/workbench", tags=["workbench"])
@@ -510,6 +514,17 @@ def get_player_tracking(
     return PlayerTrackingResponse.model_validate(rounded(view))
 
 
+@router.get("/players/{player_id}/bio", response_model=PlayerBioResponse)
+def get_player_bio(
+    player_id: str,
+    season: str = Query(..., pattern=SEASON_PATTERN),
+    before_date: date = Query(..., alias="beforeDate"),
+    session: Session = Depends(get_db),
+) -> PlayerBioResponse:
+    """Player page header: listed size, age as of the scope, draft and combine values."""
+    return PlayerBioResponse.model_validate(player_bio(session, player_id, season, before_date))
+
+
 @router.get("/wowy", response_model=WowyViewResponse)
 def get_wowy(
     season: str | None = Query(None, pattern=SEASON_PATTERN),
@@ -538,6 +553,35 @@ def get_combine(
 def get_draft_classes(session: Session = Depends(get_db)) -> DraftClassesResponse:
     """NBA draft years available to the Stats draft-class filter (official draft history)."""
     return DraftClassesResponse(classes=draft_classes(session))
+
+
+@router.get("/player-seasons", response_model=PlayerSeasonsResponse)
+def get_player_seasons(
+    player_ids: list[str] = Query(..., alias="playerId", min_length=1, max_length=8),
+    phase: str = Query("regular_season"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> PlayerSeasonsResponse:
+    """Seasons each player has game rows in, so a stat trend queries only those seasons."""
+    context = resolve_workbench_context(session, release_id=release_id, requested_phase=phase)
+    seasons: dict[str, list[str]] = {pid: [] for pid in player_ids}
+    if context.dataset_type == "workbench":
+        rows = session.execute(
+            select(WorkbenchPlayerGame.player_id, WorkbenchPlayerGame.season)
+            .where(
+                WorkbenchPlayerGame.dataset_id == context.dataset_id,
+                WorkbenchPlayerGame.phase == phase,
+                WorkbenchPlayerGame.player_id.in_(player_ids),
+            )
+            .distinct()
+        ).all()
+        for pid, season in rows:
+            seasons[pid].append(season)
+    else:
+        seasons = {pid: [context.season] for pid in player_ids}
+    return PlayerSeasonsResponse(
+        phase=phase, seasons={pid: sorted(values) for pid, values in seasons.items()}
+    )
 
 
 @router.get("/value-archetypes", response_model=ValueArchetypesResponse)

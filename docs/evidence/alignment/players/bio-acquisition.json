@@ -1,0 +1,41 @@
+{
+  "revision": "5d5f9ea4c79130f699d4ac950b4e259c7e3f9aab",
+  "index_season": "2026-27",
+  "roster_seasons": [
+    "2000-01",
+    "2001-02",
+    "2002-03",
+    "2003-04",
+    "2004-05",
+    "2005-06",
+    "2006-07",
+    "2007-08",
+    "2008-09",
+    "2009-10",
+    "2010-11",
+    "2011-12",
+    "2012-13",
+    "2013-14",
+    "2014-15",
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "planned": 781,
+  "admitted": 777,
+  "failed": [
+    "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-raw/5d5f9ea4c79130f699d4ac950b4e259c7e3f9aab/nba_stats/json/commonteamroster/2000/1610612740.json",
+    "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-raw/5d5f9ea4c79130f699d4ac950b4e259c7e3f9aab/nba_stats/json/commonteamroster/2001/1610612740.json",
+    "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-raw/5d5f9ea4c79130f699d4ac950b4e259c7e3f9aab/nba_stats/json/commonteamroster/2002/1610612766.json",
+    "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-raw/5d5f9ea4c79130f699d4ac950b4e259c7e3f9aab/nba_stats/json/commonteamroster/2003/1610612766.json"
+  ],
+  "rejected": []
+}
