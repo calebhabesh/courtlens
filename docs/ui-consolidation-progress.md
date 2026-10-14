@@ -189,3 +189,36 @@ spec. `stats-phone.png` regenerated after approval. Evidence: [UC04 Stats eviden
   sandbox: lint, typecheck, Vitest 510 PASS; full Playwright **458 PASS / 27 skips / 1 failure**,
   the known Roster Shapes streamed-duplicate flake (`advanced-research.spec.ts:62`), which passes
   15/15 with `--repeat-each=3`.
+
+## UC04 batch 2 — app shell (2026-10-14)
+
+Evidence: [UC04 shell evidence](evidence/ui-consolidation/uc04-shell/README.md).
+
+- **Migrated:** header Ask (`Button sm ghost onBackground`), More (`IconButton sm`), phone search
+  and drawer toggle (`IconButton lg`, shown and hidden through wrapper spans); `ContextBar` season
+  stepper (`IconButton lg` ghost in the existing group), phase (`Segmented lg`, C13 geometry);
+  `SeasonScopePicker` trigger (`MenuTrigger lg` through `Popover renderTrigger`, keeping the large
+  season value and accent calendar as content) and quick ranges (`Chip sm`). `context-bar` and
+  `season-scope-picker` leave the ratchet (69 → 67). 27 dead rules or selectors removed
+  (`stats-explorer.css` 56,785 → 54,354 bytes, `components.css`).
+- **Deferred to a legacy-component step:** `DataDetailsButton`, the `FilterBar` toggle and the
+  legacy `Select`, `DatePicker`, `SegmentedControl` and `Menu` triggers live in `components/ui`
+  and render on about 30 pages with context-dependent sizes. They migrate together, after the
+  page batches, so each page is reviewed once.
+- **Changes for review:** C6 (Ask text 12 → 13, padding 8 → 12, +10 px wide), and:
+  - D10 Ask at 768–1279 px is 32 px tall instead of 40 (the kit's 40 px rule starts at 767 px).
+  - D11 Season stepper buttons 36 → 40 px wide with 16 px chevrons; the rest of the Stats scope row
+    shifts 18 px right (no wrap at 1440 or 1024).
+  - D12 Season trigger icon-to-text gap 4 → 8 and no open-state highlight; its chevron follows
+    the label colour.
+  - D13 Phase segments get the kit's 4 px gap (+4 px).
+  - D14 Header icon glyphs 14 → 16 (More, search, drawer toggle).
+  - Phone filter sheet: phase group 44 → 48 with 40 px items (C13 rule).
+- **Verification:** ESLint/Stylelint **PASS**; typecheck **PASS**; Vitest **510 PASS**; full
+  Playwright against the 3180 fixture build **455 PASS / 27 skips / 4 failures**: the
+  `analysis-window-popup.png` screenshot (the Window select moved 18 px right, D11; pending
+  approval) and three known streamed-duplicate flakes (`advanced-research:62`, `fo13-pages:47`,
+  `roster-shapes:108`), which pass 19/19 on rerun. The Stats desktop and phone baselines pass.
+- **Owner approval (2026-10-14):** C6 and D10–D14 approved as shown, including the 32 px Ask
+  at 768–1279 px (no tablet kit size). `analysis-window-popup-linux.png` regenerated (only that
+  baseline); `native-select-theme.spec.ts` 4/4 PASS against the 3180 fixture build.

@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { motion, AnimatePresence, popoverVariants } from "../../lib/motion";
 import { Icon } from "./icon";
-import { Button, IconButton } from "./button";
+import { Button, IconButton } from "./kit";
 import { Drawer } from "./drawer";
 import { Accordion, AccordionItem } from "./accordion";
 import { GlobalCommandPalette } from "./command-palette";
@@ -368,19 +368,20 @@ export function Header() {
 
       {/* Right: search icon (phones), Ask, More (desktop), drawer toggle (below desktop) */}
       <div className="courtlens-header-right replica-nav-right">
-        <IconButton
-          icon="search"
-          label="Search workbench"
-          variant="ghost"
-          size="sm"
-          className="courtlens-mobile-search-btn"
-          onClick={() => setPaletteOpen(true)}
-        />
+        <span className="courtlens-mobile-search-btn">
+          <IconButton
+            icon="search"
+            label="Search workbench"
+            size="lg"
+            tone="onBackground"
+            onClick={() => setPaletteOpen(true)}
+          />
+        </span>
 
         {!isHostedDemo && <Button
           variant="ghost"
+          tone="onBackground"
           size="sm"
-          className="courtlens-ask-btn"
           disabled={pageSupportsPanel && !assistantPage}
           aria-haspopup={assistantPage ? "dialog" : undefined}
           onClick={() => {
@@ -389,7 +390,7 @@ export function Header() {
           }}
         >
           <Icon name="message" size={16} className="courtlens-ask-icon" />
-          <span>Ask</span>
+          Ask
         </Button>}
 
         <div className="courtlens-nav-item courtlens-more">
@@ -397,7 +398,7 @@ export function Header() {
             ref={moreButtonRef}
             icon="more-horizontal"
             label="More options"
-            variant="ghost"
+            tone="onBackground"
             size="sm"
             aria-haspopup="menu"
             aria-expanded={moreMenuOpen}
@@ -489,15 +490,16 @@ export function Header() {
           </AnimatePresence>
         </div>
 
-        <IconButton
-          icon="menu"
-          label="Toggle navigation drawer"
-          variant="ghost"
-          size="sm"
-          className="courtlens-mobile-toggle"
-          aria-expanded={mobileDrawerOpen}
-          onClick={() => setMobileDrawerOpen(true)}
-        />
+        <span className="courtlens-mobile-toggle">
+          <IconButton
+            icon="menu"
+            label="Toggle navigation drawer"
+            size="lg"
+            tone="onBackground"
+            aria-expanded={mobileDrawerOpen}
+            onClick={() => setMobileDrawerOpen(true)}
+          />
+        </span>
       </div>
 
       {/* Navigation drawer below the desktop breakpoint; rendered at document.body by Drawer */}

@@ -290,13 +290,6 @@
   flex-shrink: 0;
 }
 
-.courtlens-ask-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  color: var(--color-text);
-}
-
 .courtlens-ask-icon {
   color: var(--color-accent);
 }
@@ -2581,9 +2574,6 @@ textarea, input, select { max-width: 100%; }
 }
 
 /* Header ghost buttons sit directly on the blue page background. */
-.courtlens-header-right .ui-button-ghost:not(:hover) {
-  color: var(--color-on-bg-secondary);
-}
 
 .ui-button-danger {
   background-color: var(--color-surface-2);

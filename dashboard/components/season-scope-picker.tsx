@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
+import { Chip, MenuTrigger } from "@/components/ui/kit";
 import { Popover } from "@/components/ui/menu";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Select } from "@/components/ui/select";
@@ -54,13 +55,12 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
       onOpenChange={openChange}
       className="season-scope-popover"
       triggerLabel={`Season: ${label}`}
-      trigger={
-        <span className="context-season-picker season-scope-trigger">
-          <Icon name="calendar" size={14} />
+      renderTrigger={props => (
+        <MenuTrigger {...props} size="lg">
+          <Icon name="calendar" size={16} className="season-scope-icon" />
           <span className="season-scope-value">{label}</span>
-          <Icon name="chevron-down" size={14} />
-        </span>
-      }
+        </MenuTrigger>
+      )}
     >
       <div className="season-scope-panel">
         <SegmentedControl<Mode>
@@ -103,11 +103,11 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
                 {QUICK_RANGES.map((years) => {
                   const start = quickRangeFrom(seasons, through, years);
                   return (
-                    <button key={years} type="button" className="season-scope-quick-button"
-                      aria-pressed={from === start && seasonsBetween(seasons, start, through).length === years}
+                    <Chip key={years} size="sm"
+                      pressed={from === start && seasonsBetween(seasons, start, through).length === years}
                       onClick={() => setFrom(start)}>
                       {years}Y
-                    </button>
+                    </Chip>
                   );
                 })}
               </div>
