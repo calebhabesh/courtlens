@@ -37,12 +37,14 @@ function Content({ size, icon, iconAfter, loading, children }: { size: KitSize; 
 
 export interface ButtonProps extends ControlLookProps, Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className"> {
   loading?: boolean;
+  /** Fill the row, lead-align the content and truncate the label (the phone "Filters" toggle). */
+  stretch?: boolean;
   /** Toggle buttons: sets `aria-pressed` and the selected look. */
   pressed?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { size = "md", variant = "secondary", tone, icon, iconAfter, dense, loading = false, pressed, className, type = "button", disabled, children, ...props },
+  { size = "md", variant = "secondary", tone, icon, iconAfter, dense, loading = false, pressed, stretch = false, className, type = "button", disabled, children, ...props },
   ref,
 ) {
   return (
@@ -53,10 +55,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       aria-busy={loading || undefined}
       aria-pressed={pressed}
       data-kit="button"
-      className={cx(controlClasses({ size, variant, tone, dense }), className)}
+      className={cx(controlClasses({ size, variant, tone, dense }), stretch && "kit:w-full kit:min-w-0 kit:shrink kit:justify-start", className)}
       {...props}
     >
-      <Content size={size} icon={icon} iconAfter={iconAfter} loading={loading}>{children}</Content>
+      <Content size={size} icon={icon} iconAfter={iconAfter} loading={loading}>{stretch ? <span className="kit:min-w-0 kit:truncate">{children}</span> : children}</Content>
     </button>
   );
 });
