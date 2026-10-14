@@ -14,6 +14,7 @@ import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerProfile, type ProfileHeroStats } from "@/components/workbench-player-profile";
 import { HERO_METRICS } from "@/lib/player-hero";
 import { GatedNote } from "@/components/ui/gated-note";
+import { Button, ButtonLink } from "@/components/ui/kit";
 import { PageShell } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
 import { formatDate } from "@/lib/format-date";
@@ -197,7 +198,7 @@ function ProfileView({
               {catalogDates.map((value) => <option key={value} value={value}>{value}</option>)}
             </select>
           </label>
-          <button className="button button-dark" type="submit">Change date</button>
+          <Button size="lg" type="submit">Change date</Button>
         </form>}
       />
 
@@ -334,7 +335,7 @@ function PlayerError({ error, id, date }: { error: unknown; id: string; date?: s
         <span className="empty-code">{apiError?.status ?? "ERROR"}</span>
         <p>{unsupported ? `${date ?? "This date"} is outside the available replay dates.` : `CourtLens could not open player ${id} from this snapshot.`}</p>
         {Array.isArray(detail?.nearest_supported_dates) && <p>Nearest dates: {(detail.nearest_supported_dates as string[]).join(" or ")}</p>}
-        <Link className="button button-dark" href="/players">Return to player search</Link>
+        <ButtonLink size="lg" href="/players">Return to player search</ButtonLink>
       </div>
     </PageShell>
   );

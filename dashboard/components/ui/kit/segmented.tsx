@@ -23,7 +23,7 @@ export interface SegmentedProps<T extends string> {
   tone?: "default" | "console";
   stretch?: boolean;
   disabled?: boolean;
-  /** Paint the choice before starting an expensive parent update, as StatsChoicePills does. */
+  /** Paint the choice before starting an expensive parent update (the Stats and career counting modes). */
   deferChange?: boolean;
   /** Abutting items with one 4 px step less inline padding, for long rows such as the Stats presets. */
   dense?: boolean;
