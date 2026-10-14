@@ -325,6 +325,22 @@ class DraftClassesResponse(BaseModel):
     classes: list[DraftClass]
 
 
+class PlayerCareerSeason(BaseModel):
+    season: str
+    # None when the player has no row in that season's Stats cohort.
+    item: PlayerResearchItem | None
+
+
+class PlayerCareerResponse(BaseModel):
+    player_id: str
+    release_id: str
+    phase: str
+    # Covered seasons with observed games, newest first; each ranked against its own league.
+    seasons: list[PlayerCareerSeason]
+    # Aggregated over the same seasons; season-only joins and ranks stay unknown.
+    career: PlayerResearchItem | None
+
+
 class PlayerSeasonsResponse(BaseModel):
     phase: str
     # Seasons with at least one game row per player, ascending; a missing season is unknown.

@@ -18,7 +18,7 @@ with them. Only the loopback origin port is published.
 | `deploy/Caddyfile` | Routing and the read-only boundary |
 | `deploy/pinned.env` | Third-party image digests and serving manifest paths |
 | `.github/workflows/images.yml` | arm64 API and dashboard images, built after CI passes on main |
-| `scripts/deploy-vps.sh` | Pull, migrate, health-check, prune |
+| `scripts/deploy-vps.sh` | Pull, migrate, health-check, warm Stats cohorts, prune |
 
 ### Read-only boundary
 
@@ -43,6 +43,13 @@ Postgres and about 1.4 GB of serving files. The data snapshot is frozen, so the 
 does not grow. Deploys never build on the VPS. Each deploy removes CourtLens images other
 than the current and previous release. Container logs rotate at 3 × 10 MB, and journald
 is capped at 200 MB.
+
+Stored Stats cohorts (`stats_cohort_entries`/`stats_cohort_rows`) add about 120 MB: every
+season's whole-league Stats rows and ranks for the served release. After each deploy the script
+runs `courtlens warm-stats-cohorts` in the API container, which stores any season the new release
+or serving code has not stored yet (about 40 s locally for 62 seasons) and deletes entries of
+other releases. If it fails the deploy still completes; each season is then computed and stored
+on its first view.
 
 Scheduled refresh (C22) is not enabled. Publication is append-only, so turning it on
 also needs a retention job that keeps only the last few ready snapshots on the VPS.

@@ -68,7 +68,11 @@ class WorkbenchIdentity(Base):
     """Stable entity plus source namespace and external IDs."""
 
     __tablename__ = "workbench_identities"
-    __table_args__ = (UniqueConstraint("namespace", "kind", "external_id"),)
+    __table_args__ = (
+        UniqueConstraint("namespace", "kind", "external_id"),
+        # Stats queries join every game row to its player's name on these columns.
+        Index("ix_workbench_identities_kind_external", "kind", "external_id"),
+    )
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
     namespace: Mapped[str] = mapped_column(String(50), nullable=False)

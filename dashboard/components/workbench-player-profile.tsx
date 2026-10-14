@@ -28,6 +28,7 @@ import { formatPercent, scaleToPer36, type CountingExposureMode } from "@/lib/pl
 import { HERO_METRICS } from "@/lib/player-hero";
 import type {
   PlayerBio,
+  PlayerCareerResponse,
   PlayerResearchItem,
   QuerySpec,
   PlayerGameLogItem,
@@ -56,6 +57,8 @@ interface WorkbenchPlayerProfileProps {
   bio?: PlayerBio | null;
   impact?: ImpactResponse | null;
   hero?: ProfileHeroStats | null;
+  /** The career table's rows, read with the page; null fetches them in the browser. */
+  career?: PlayerCareerResponse | null;
   /** The shared filter bar, placed directly under the page header. */
   filterBar?: ReactNode;
 }
@@ -67,6 +70,7 @@ export function WorkbenchPlayerProfile({
   bio = null,
   impact = null,
   hero = null,
+  career = null,
   filterBar
 }: WorkbenchPlayerProfileProps) {
   const router = useRouter();
@@ -211,7 +215,7 @@ export function WorkbenchPlayerProfile({
         <TabsContent value="overview" className="player-tab-body">
       {catalog && <PlayerCareerTable playerId={player.id} catalog={catalog} season={context.season} phase={context.phase}
         firstCoveredSeason={catalog.stats_scopes?.filter(scope => scope.phase === context.phase).map(scope => scope.season).sort()[0] ?? null}
-        draftYear={bio?.draft?.year ?? null} />}
+        draftYear={bio?.draft?.year ?? null} initialCareer={career} />}
       <ImpactPlayerCard data={impact} compact />
       {/* Season, last 10 and last 5 in one comparable table. */}
       <section className="panel player-splits" aria-label="Production splits">

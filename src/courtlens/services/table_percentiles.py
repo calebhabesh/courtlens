@@ -41,6 +41,48 @@ def percentile(value: Any, cohort: list[float], direction: str | None) -> float 
     return floor(min(99, max(1, oriented)) + 0.5)
 
 
+def table_reference(
+    league: list[dict[str, Any]], season_rows: list[dict[str, Any]], items: list[dict[str, Any]]
+) -> tuple[set[str], dict[str, list[float]]]:
+    """Qualified players and each ranked column's qualified distribution.
+
+    season_rows qualify on season minutes; league supplies the values ranked against. Only
+    columns the items carry are ranked.
+    """
+    qualified_ids = {
+        row["player_id"]
+        for row in season_rows
+        if (number(row["metrics"].get("min")) or 0) >= TABLE_PERCENTILE_MIN_MINUTES
+    }
+    keys = {key for row in items for key in row["metrics"] if key in SERVING_CATALOG}
+    distributions: dict[str, list[float]] = {}
+    for key in keys:
+        distributions[key] = sorted(
+            value
+            for row in league
+            if row["player_id"] in qualified_ids
+            and (row.get("impact_support") or {}).get(key, {}).get("qualified", True)
+            and (value := number(row["metrics"].get(key))) is not None
+        )
+    return qualified_ids, distributions
+
+
+def rank_items(
+    items: list[dict[str, Any]], qualified_ids: set[str], distributions: dict[str, list[float]]
+) -> None:
+    """Annotate each item with its table qualification, ranks and reference sizes."""
+    sizes = {key: len(values) for key, values in distributions.items()}
+    for row in items:
+        row["table_qualified"] = row["player_id"] in qualified_ids
+        row["table_percentiles"] = {
+            key: percentile(row["metrics"].get(key), values, SERVING_CATALOG[key].good_direction)
+            if (row.get("impact_support") or {}).get(key, {}).get("qualified", True)
+            else None
+            for key, values in distributions.items()
+        }
+        row["table_cohort_sample_sizes"] = dict(sizes)
+
+
 def annotate_players(
     session: Session, context: ResolvedContext, query: QuerySpec, items: list[dict[str, Any]]
 ) -> dict[str, Any]:
@@ -97,32 +139,8 @@ def annotate_players(
         season_rows, season_count = league_rows(season_scope)
         if season_count > len(season_rows):
             raise ValueError(f"Season qualification exceeds the {MAX_COHORT:,}-player bound")
-    qualified_ids = {
-        row["player_id"]
-        for row in season_rows
-        if (number(row["metrics"].get("min")) or 0) >= TABLE_PERCENTILE_MIN_MINUTES
-    }
-    keys = {key for row in items for key in row["metrics"] if key in SERVING_CATALOG}
-    distributions: dict[str, list[float]] = {}
-    for key in keys:
-        distributions[key] = sorted(
-            value
-            for row in league
-            if row["player_id"] in qualified_ids
-            and (row.get("impact_support") or {}).get(key, {}).get("qualified", True)
-            and (value := number(row["metrics"].get(key))) is not None
-        )
-    for row in items:
-        row["table_qualified"] = row["player_id"] in qualified_ids
-        row["table_percentiles"] = {
-            key: percentile(row["metrics"].get(key), values, SERVING_CATALOG[key].good_direction)
-            if (row.get("impact_support") or {}).get(key, {}).get("qualified", True)
-            else None
-            for key, values in distributions.items()
-        }
-        row["table_cohort_sample_sizes"] = {
-            key: len(values) for key, values in distributions.items()
-        }
+    qualified_ids, distributions = table_reference(league, season_rows, items)
+    rank_items(items, qualified_ids, distributions)
     return {
         "version": VERSION,
         "scope_hash": canonical_hash(

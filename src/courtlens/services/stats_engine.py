@@ -38,6 +38,7 @@ from courtlens.domain.stats_v4_catalog import BOX_METRICS, DARKO_METRICS, TRACKI
 from courtlens.domain.teams import get_team_info, resolve_team_tricode
 from courtlens.services.darko import darko_binding, darko_sql_rows
 from courtlens.services.impact_serving import (
+    impact_artifacts,
     impact_for_query,
     impact_query_fields,
     impact_sql_rows,
@@ -208,8 +209,8 @@ def tracking_applies(context: ResolvedContext, query: QuerySpec) -> bool:
 def impact_query_binding(context: ResolvedContext, query: QuerySpec) -> dict[str, Any]:
     if not query_uses_impact(query):
         return {}
-    impact = impact_for_query(query, context.before_date.isoformat())
-    return {"impact_artifacts": impact["artifacts"], "impact_status": impact["status"]}
+    artifacts, status = impact_artifacts(query, context.before_date.isoformat())
+    return {"impact_artifacts": artifacts, "impact_status": status}
 
 
 def stats_presentation_hash(
@@ -533,12 +534,18 @@ def build_stats_query_sql(
     legacy_nonappearance: bool = False,
     presentation: StatsPresentation | None = None,
     cohort_percentiles: bool = True,
+    subject_player_ids: list[str] | None = None,
 ) -> tuple[str, dict[str, Any]]:
     """Build parameterized SQL query for aggregating and filtering eligible player stats.
 
     Uses analytical window functions for last-N appearance membership before aggregating,
     keeping query execution strictly in the database engine.
+
+    subject_player_ids reads only those players' games. Every Stats value is aggregated per
+    player, so their rows are unchanged; cohort ranks need every player and are refused.
     """
+    if subject_player_ids is not None and cohort_percentiles and not is_count_only:
+        raise ValueError("Cohort percentiles need the whole cohort, not subject players")
     params: dict[str, Any] = {
         "dataset_id": context.dataset_id,
         "phase": query.phase or context.phase,
@@ -598,6 +605,15 @@ def build_stats_query_sql(
         target_season = query.season or context.season
         params["season"] = target_season
         candidate_filters.append("wpg.season = :season")
+
+    if subject_player_ids is not None:
+        subject_keys = []
+        for idx, player_id in enumerate(subject_player_ids):
+            params[f"subject_{idx}"] = player_id
+            subject_keys.append(f":subject_{idx}")
+        candidate_filters.append(
+            f"wpg.player_id IN ({', '.join(subject_keys)})" if subject_keys else "1=0"
+        )
 
     # Team scope filter
     if query.team_scope.team_id:
@@ -925,7 +941,7 @@ def build_stats_query_sql(
     if query_uses_impact(query):
         sealed_keys = [key for key in IMPACT_CATALOG if key not in SQL_DERIVED_IMPACT]
         impact = impact_for_query(query, context.before_date.isoformat())
-        params["impact_rows"] = impact_sql_rows(impact)
+        params["impact_rows"] = impact_sql_rows(impact, subject_player_ids)
         if is_sqlite:
             source = "json_each(:impact_rows) AS s"
             identity = "json_extract(s.value, '$.player_id')"
@@ -1212,6 +1228,7 @@ def execute_stats_query(
     legacy_nonappearance: bool = False,
     presentation: StatsPresentation | None = None,
     cohort_percentiles: bool = True,
+    subject_player_ids: list[str] | None = None,
 ) -> tuple[list[dict[str, Any]], int, str | None, bool]:
     """Execute typed QuerySpec against indexed facts using SQL aggregation and windowing.
 
@@ -1341,6 +1358,7 @@ def execute_stats_query(
             is_sqlite=is_sqlite,
             legacy_nonappearance=legacy_nonappearance,
             presentation=presentation,
+            subject_player_ids=subject_player_ids,
         )
         return int(session.execute(text(count_sql), count_params).scalar() or 0)
 
@@ -1366,6 +1384,7 @@ def execute_stats_query(
         legacy_nonappearance=legacy_nonappearance,
         presentation=presentation,
         cohort_percentiles=cohort_percentiles,
+        subject_player_ids=subject_player_ids,
     )
     result_rows = session.execute(text(main_sql), main_params).mappings().all()
 

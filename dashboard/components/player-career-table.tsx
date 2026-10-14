@@ -7,37 +7,31 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PercentileCell } from "./charts/percentile-cell";
 import { TeamLogoStack } from "./team-logo";
 import { IconButton, Segmented } from "./ui/kit";
-import { settleLimited } from "./stats-trend-dialog";
 import { applyScopeChange } from "@/lib/scope-url";
 import { normalizedColumn } from "@/lib/stats-query";
 import {
-  DARKO_COLUMNS,
   ORDERED_COUNTING_MODES,
   ORDERED_PRESETS,
   formatColumnValue,
   tableGroups,
-  usesImpactManifest,
   type CountingMode,
   type PresetId
 } from "@/lib/stats-presets";
-import { executeWorkbenchQuery, getPlayerProfile, getPlayerSeasons } from "@/lib/workbench-api";
-import type { PlayerProfileStint, PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
+import { getPlayerCareer, getPlayerProfile } from "@/lib/workbench-api";
+import type { PlayerCareerResponse, PlayerProfileStint, PlayerResearchItem, WorkbenchCatalog } from "@/lib/types";
 
-/** Each season query computes that season's whole cohort server-side; a few run at a time. */
-const SEASON_CONCURRENCY = 3;
-const DARKO_KEYS = new Set(Object.keys(DARKO_COLUMNS));
 const PHASES = [{ id: "regular_season", label: "Regular" }, { id: "playoffs", label: "Playoffs" }] as const;
-
-type SeasonRow = { season: string; item: PlayerResearchItem | null; failed?: boolean };
-type Loaded = { key: string; seasons: string[] | null; rows: Record<string, SeasonRow>; career?: PlayerResearchItem | null; careerFailed?: boolean };
 
 /**
  * Databallr's career view inside the player page: the Stats table with one row per season the
  * player appeared in (newest first), each percentile ranked against that season's Stats cohort,
  * and a Career row aggregated over the same seasons. Season-only metrics (DPM, tracking,
  * impact) have no career value, so that row leaves them blank.
+ *
+ * Every row arrives in one read of stored season cohorts (usually with the page) and carries
+ * every column, so views and counting modes switch without another request.
  */
-export function PlayerCareerTable({ playerId, catalog, season, phase, firstCoveredSeason, draftYear }: {
+export function PlayerCareerTable({ playerId, catalog, season, phase, firstCoveredSeason, draftYear, initialCareer = null }: {
   playerId: string;
   catalog: WorkbenchCatalog;
   season: string;
@@ -45,6 +39,8 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   /** The earliest season in CourtLens data, for the "Career since" label. */
   firstCoveredSeason: string | null;
   draftYear: number | null;
+  /** Rows read with the page; when absent or for another scope, the table reads them itself. */
+  initialCareer?: PlayerCareerResponse | null;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -59,52 +55,27 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
     return { ...base, columns: columns.filter((column, index) => columns.findIndex(c => c.key === column.key) === index) };
   }, [presetId, countingMode]);
   const groups = useMemo(() => tableGroups(preset), [preset]);
-  const columnKeys = preset.columns.map(column => column.key);
-  const requestKey = JSON.stringify({ playerId, phase, columnKeys, release: catalog.release_id });
-  const [loaded, setLoaded] = useState<Loaded | null>(null);
+  const requestKey = `${playerId}|${phase}|${catalog.release_id}`;
+  const serverRows = initialCareer?.player_id === playerId && initialCareer.phase === phase
+    && initialCareer.release_id === catalog.release_id ? initialCareer : null;
+  // undefined while loading; null when the read failed.
+  const [fetched, setFetched] = useState<{ key: string; data: PlayerCareerResponse | null } | null>(null);
+  const needsFetch = serverRows === null;
 
   useEffect(() => {
+    if (!needsFetch) return;
     let active = true;
-    const keys = JSON.parse(requestKey).columnKeys as string[];
-    const scopeFor = (value: string) => catalog.stats_scopes?.find(scope => scope.season === value && scope.phase === phase);
-    const spec = (value: string, seasons?: string[]): QuerySpec => ({
-      release_id: catalog.release_id, season: value, phase, before_date: scopeFor(value)?.default_before_date ?? null,
-      window: { kind: "season" }, view_state: { columns: keys },
-      ...(seasons ? { season_scope: { seasons, aggregate_multi_season: true } } : {}),
-      ...(keys.some(usesImpactManifest) && catalog.impact?.manifest_sha256 ? { impact_manifest_sha256: catalog.impact.manifest_sha256 } : {}),
-      ...(!seasons && keys.some(key => DARKO_KEYS.has(key)) && catalog.darko?.manifest_sha256 ? { darko_manifest_sha256: catalog.darko.manifest_sha256 } : {}),
-      sort: [{ field: "gp", direction: "desc" }], page: { limit: 1 }
-    });
-    const update = (change: (current: Loaded) => Loaded) => {
-      if (active) setLoaded(current => change(current?.key === requestKey ? current : { key: requestKey, seasons: null, rows: {} }));
-    };
-    getPlayerSeasons([playerId], phase, catalog.release_id).then(response => {
-      // Only seasons with observed games, newest first; covered seasons only.
-      const covered = new Set(catalog.stats_scopes?.filter(scope => scope.phase === phase).map(scope => scope.season));
-      const seasons = (response.seasons[playerId] ?? []).filter(value => covered.has(value)).sort().reverse();
-      update(current => ({ ...current, seasons }));
-      // The career aggregate is the slowest query; it runs beside the season rows, not after.
-      if (seasons.length > 0) {
-        executeWorkbenchQuery(spec(seasons[0], [...seasons].reverse()), { player_ids: [playerId] })
-          .then(result => update(current => ({ ...current, career: result.items[0] ?? null })))
-          .catch(() => update(current => ({ ...current, careerFailed: true })));
-      }
-      void settleLimited(seasons, SEASON_CONCURRENCY, async value => {
-        const result = await executeWorkbenchQuery(spec(value), { player_ids: [playerId], table_percentiles: true });
-        update(current => ({ ...current, rows: { ...current.rows, [value]: { season: value, item: result.items[0] ?? null } } }));
-      }).then(settled => {
-        settled.forEach((entry, index) => {
-          if (entry.status === "rejected") update(current => ({ ...current, rows: { ...current.rows, [seasons[index]]: { season: seasons[index], item: null, failed: true } } }));
-        });
-      });
-    }).catch(() => update(current => ({ ...current, seasons: [] })));
+    getPlayerCareer(playerId, { phase, releaseId: catalog.release_id })
+      .then(data => { if (active) setFetched({ key: requestKey, data }); })
+      .catch(() => { if (active) setFetched({ key: requestKey, data: null }); });
     return () => { active = false; };
     // requestKey covers every input of the request.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [requestKey]);
+  }, [requestKey, needsFetch]);
 
-  const current = loaded?.key === requestKey ? loaded : null;
-  const seasons = current?.seasons ?? null;
+  const career = serverRows ?? (fetched?.key === requestKey ? fetched.data : undefined);
+  const seasons = career === undefined ? null : career?.seasons.map(entry => entry.season) ?? [];
+  const rows = useMemo(() => new Map((career?.seasons ?? []).map(entry => [entry.season, entry.item])), [career]);
   const careerSince = Boolean(seasons?.length && firstCoveredSeason && seasons.at(-1) === firstCoveredSeason
     && (draftYear == null || draftYear < Number(firstCoveredSeason.slice(0, 4))));
 
@@ -154,7 +125,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
             value={phase} onChange={value => router.push(scopeHref("phase", value), { scroll: false })} />
         </div>
         <div className="table-wrapper stats-scroll-region player-career-scroll" role="region" aria-label="Career table scroll area" tabIndex={0}
-          aria-busy={!seasons || seasons.some(value => !current?.rows[value])}>
+          aria-busy={seasons === null}>
           <table className="data-table dense-stats-table player-career-table" aria-label="Career statistics by season"
             style={{ "--career-columns": preset.columns.length } as React.CSSProperties}>
             <thead>
@@ -169,11 +140,13 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
             </thead>
             <tbody>
               {seasons === null && <tr><td colSpan={preset.columns.length + 1} className="player-career-status">Loading seasons…</td></tr>}
-              {seasons?.length === 0 && <tr><td colSpan={preset.columns.length + 1} className="player-career-status">
+              {career === null && <tr><td colSpan={preset.columns.length + 1} className="player-career-status">
+                Career table unavailable. Reload to retry.</td></tr>}
+              {career && seasons?.length === 0 && <tr><td colSpan={preset.columns.length + 1} className="player-career-status">
                 No {phase === "playoffs" ? "playoff" : "regular-season"} games in CourtLens data.</td></tr>}
               {seasons?.map(value => {
-                const row = current?.rows[value];
-                const teams = row?.item?.teams ?? [];
+                const item = rows.get(value) ?? null;
+                const teams = item?.teams ?? [];
                 const stints = expanded[value];
                 const selected = value === season;
                 return <Fragment key={value}>
@@ -189,10 +162,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
                           onClick={() => toggleStints(value)} />}
                       </span>
                     </th>
-                    {row?.failed
-                      ? <td colSpan={preset.columns.length} className="player-career-status">Season unavailable. Reload to retry.</td>
-                      : row ? preset.columns.map((_, index) => cell(row.item, index))
-                      : preset.columns.map(column => <td key={column.key} className="stats-metric-cell"><span className="player-career-pending" aria-hidden="true" /></td>)}
+                    {preset.columns.map((_, index) => cell(item, index))}
                   </tr>
                   {stints && <tr className="player-career-stints">
                     <td colSpan={preset.columns.length + 1}>
@@ -214,11 +184,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
             {Boolean(seasons?.length) && <tfoot>
               <tr className="player-career-total">
                 <th scope="row" className="pinned-col pinned-col-year">{careerSince ? `Career since ${firstCoveredSeason}` : "Career"}</th>
-                {current?.careerFailed
-                  ? <td colSpan={preset.columns.length} className="player-career-status">Career totals unavailable.</td>
-                  : current?.career !== undefined
-                  ? preset.columns.map((_, index) => cell(current.career ?? null, index, true))
-                  : preset.columns.map(column => <td key={column.key} className="stats-metric-cell"><span className="player-career-pending" aria-hidden="true" /></td>)}
+                {preset.columns.map((_, index) => cell(career?.career ?? null, index, true))}
               </tr>
             </tfoot>}
           </table>

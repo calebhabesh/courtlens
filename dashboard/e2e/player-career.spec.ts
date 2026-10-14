@@ -40,16 +40,20 @@ test("the header summarises the player and the summary card has no accent edge",
 
 test("the career table lists played seasons with a Career row, and phase links the page", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
+  // The rows arrive with the page and carry every column: the browser never requests them.
+  const careerRequests: string[] = [];
+  page.on("request", request => { if (new URL(request.url()).pathname.endsWith("/career")) careerRequests.push(request.url()); });
   await openWorkbench(page, "/players/23");
   const career = page.getByRole("table", { name: "Career statistics by season" });
   await expect(career.locator("tbody tr.player-career-row")).toHaveCount(1);
   await expect(career.locator("tbody tr.player-career-row").first()).toContainText("2025-26");
   await expect(career.locator("tbody tr.player-career-row").first()).toHaveAttribute("aria-current", "true");
   await expect(career.locator("tfoot")).toContainText("Career");
-  await expect(career.locator(".player-career-pending")).toHaveCount(0);
+  await expect(page.getByRole("region", { name: "Career table scroll area" })).toHaveAttribute("aria-busy", "false");
   // View tabs reuse the Stats views.
   await page.getByRole("radiogroup", { name: "Career table views" }).getByRole("radio", { name: "Shooting", exact: true }).click();
   await expect(career.locator("thead")).toContainText("FGM");
+  expect(careerRequests).toEqual([]);
   // The fixture catalog observes no playoffs, so that phase cannot be chosen.
   await expect(page.getByRole("radiogroup", { name: "Phase" }).getByRole("radio", { name: "Playoffs" })).toBeDisabled();
   // The trajectory moved to Game Log; Overview leads with the season summary.

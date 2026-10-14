@@ -21,7 +21,7 @@ import { formatDate } from "@/lib/format-date";
 import type { GoodDirection } from "@/lib/percentile-display";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import type { WorkbenchCatalog } from "@/lib/types";
-import { executeWorkbenchQuery, getPlayerBio, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact } from "@/lib/workbench-api";
+import { executeWorkbenchQuery, getPlayerBio, getPlayerCareer, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact } from "@/lib/workbench-api";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Profile" };
@@ -78,6 +78,10 @@ export default async function PlayerPage({
   const windowParam = selected.window || "season";
 
   let wbLoaded: { profile: PlayerProfile; log: PlayerGameLogResponse } | null = null;
+  // The career table arrives with the page: one stored read, started beside the profile.
+  const careerRequest = catalog
+    ? getPlayerCareer(id, { phase, releaseId: catalog.release_id }).catch(() => null)
+    : Promise.resolve(null);
 
   try {
     const [profile, log] = await Promise.all([
@@ -102,10 +106,11 @@ export default async function PlayerPage({
   }
 
   if (wbLoaded) {
-    const [impact, hero, bio] = await Promise.all([
+    const [impact, hero, bio, career] = await Promise.all([
       getImpact({ season, phase, beforeDate, playerId: id, window: windowParam }).catch(() => null),
       catalog ? heroStats(id, selected, catalog) : null,
       getPlayerBio(id, { season, beforeDate }).catch(() => null),
+      careerRequest,
     ]);
 
     return (
@@ -116,6 +121,7 @@ export default async function PlayerPage({
         bio={bio}
         impact={impact}
         hero={hero}
+        career={career}
         filterBar={<ContextBar
           key="filter-bar"
           initialSeason={season}

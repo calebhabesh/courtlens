@@ -478,4 +478,12 @@ removed, cohort note is a tooltip (7); compact header with icon actions, listed 
 line only when measured (9, 10); age as of Through, dated outside the current season (11); PTS,
 REB, AST, TS%, DPM, MPG tiles (12); no accent edge (13); Combine tab (14); "Career since 2000-01"
 with a coverage note (16).
+Follow-up instructions (owner, 2026-10-14, career table speed):
+18. [x] The career table is slow and loads row by row (Giannis); Databallr's rows appear at once,
+    as if pre-loaded. Make the data load as fast and efficiently as possible, durably. — season
+    cohorts and ranks persisted per release (content-addressed, superseded on any source or code
+    change), one server-rendered read for every row, a one-player Career aggregate, an identity
+    index and a post-deploy warm-up. Giannis 4.3–4.7 s (14 requests) → 48 ms (one read, in the
+    page HTML); view and counting-mode switches make no request; values and ranks unchanged.
+    [Career speed evidence](evidence/alignment/players/career-speed/README.md).
 Evidence: docs/evidence/alignment/players/ ([README](evidence/alignment/players/README.md)).

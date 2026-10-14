@@ -50,6 +50,20 @@ app = typer.Typer(
 )
 
 
+@app.command("warm-stats-cohorts")
+def warm_stats_cohorts_command(
+    release_id: str | None = typer.Option(
+        None, help="Release to warm; defaults to the published release."
+    ),
+    prune: bool = typer.Option(True, help="Delete stored cohorts of other releases."),
+) -> None:
+    """Store every season's whole-league Stats cohort so player pages and Stats load at once."""
+    from courtlens.services.player_career import warm_stats_cohorts
+
+    with SessionLocal() as session:
+        typer.echo(json.dumps(warm_stats_cohorts(session, release_id, prune=prune)))
+
+
 @app.command("acquire-player-context")
 def acquire_player_context_command(
     source: str = typer.Option("nba_player_index", help="Admitted PC05 source name."),
