@@ -1,0 +1,73 @@
+@layer components {
+/* Player Profile & Stats Workspace Components */
+
+.panel-subtitle-margin {
+  margin: var(--space-1) 0 0;
+}
+
+.is-current-season {
+  background: var(--color-surface-2);
+}
+
+.profile-toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.notice-box-accent {
+  border-left-color: var(--color-accent);
+}
+
+.compare-identity-panel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.compare-metric-key {
+  margin-left: var(--space-2);
+}
+
+.text-player-a {
+  color: var(--color-accent);
+}
+
+.text-player-b {
+  color: var(--color-info);
+}
+
+.compare-bar-svg {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--color-surface-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-hairline-strong);
+}
+
+.compare-tray-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.compare-tray-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-surface-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-hairline-strong);
+}
+
+.compare-tray-item.is-player-a {
+  border-color: var(--color-accent);
+}
+
+.compare-tray-item.is-player-b {
+  border-color: var(--color-info);
+}
+}

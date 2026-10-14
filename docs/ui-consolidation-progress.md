@@ -499,3 +499,34 @@ Run as one batch on the owner's pre-approval (one before/after diff against `ef8
   **459 PASS / 27 skips / 0 failures** after regenerating two baselines that changed with this
   batch (`native-select-theme` Filter by season popup: the select no longer keeps the legacy hover
   colour under the open picker; `visual-baselines` phone design style guide: the `/design` demos).
+
+## UC05 — CSS split (2026-10-14)
+
+Evidence: [UC05 evidence](evidence/ui-consolidation/uc05/README.md) (method, scripts, maps and checks).
+
+- **Dead rules removed:** 457 rules (470 counting nested children) whose every selector names a
+  class no TS/TSX file uses: `components.css` 228, `pages.css` 220, `base.css` 9 (unused utilities)
+  and `stats-explorer.css` 19. Surviving rules are byte-identical and in their original order.
+- **Split:** `components.css` and `pages.css` sections moved into 63 files next to their component
+  (`components/ui/header.css`, `components/ui/menu.css`, `components/ranking-boards-view.css`, …) or
+  route (`app/design/design.css`, `app/methodology/methodology.css`, `app/teams/[id]/team-detail.css`),
+  each wrapped in its original `@layer`. `app/globals.css` imports them in first-appearance order,
+  which is the cascade order. The two files keep only shared layout and the unlayered rules
+  (unlayered rules beat every layer, so they stay unlayered and in order). Sections that override
+  others (`app/styles/shared-overrides.css`, `route-surfaces.css`, `page-fallbacks.css`,
+  `components/workbench-player-explorer-responsive.css`) have their own files so they still come
+  after what they override. The layer order `tokens, base, motion, components, pages, foundation`
+  is unchanged.
+- **Sizes:** `components.css` 118,022 → 9,542 B (4,698 → 375 lines); `pages.css` 137,537 → 16,562 B
+  (4,708 → 286 lines); all CSS sources 406,772 → 352,148 B; compiled global stylesheet
+  381,128 → 318,399 B.
+- **Cascade checks:** the splitter refuses any reorder of two rules in one layer that share a
+  class, a property and a specificity; the compiled before/after comparison finds 0 added rules,
+  the 470 dead removals and 0 order conflicts. The first version of that check skipped pairs in
+  different `@media` contexts; the measurement run caught the result (a 4 px phone compare-tray
+  shift), the check was corrected and the overriding responsive section given its own file.
+- **Verification:** ESLint/Stylelint **PASS**; typecheck **PASS**; Vitest **76 files / 504 PASS**;
+  all five measurement scripts **0 changes** in 196 states against the `e5a785c` build; full
+  Playwright **457 PASS / 27 skips / 2 failures**, both the known streamed-duplicate strict-mode
+  flakes (`fo13-pages:112` planner Email, `roster-shapes:108`), which pass 9/10 on rerun with the
+  planner flake the one failure. No baseline changed.
