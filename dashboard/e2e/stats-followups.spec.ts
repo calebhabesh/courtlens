@@ -69,7 +69,7 @@ test("a stat cell opens its season trend and Escape returns to the table", async
   await expect(dialog).toHaveCount(0);
 });
 
-test("the name search spans the player cards and its results drop from the field", async ({ page }) => {
+test("the name search spans the player cards and filters the table as you type", async ({ page }) => {
   await openWorkbench(page, "/stats");
   const field = (await page.locator(".stats-header-search .lookup-input-wrapper").boundingBox())!;
   const card = (await rows(page).first().locator("td").first().boundingBox())!;
@@ -83,10 +83,11 @@ test("the name search spans the player cards and its results drop from the field
   await page.waitForURL(url => url.searchParams.get("sortMetric") === "player_name" && url.searchParams.get("sortDirection") === "asc");
   await expect(az).toHaveAttribute("aria-pressed", "true");
   await expect(az).toHaveAttribute("title", "Sort players Z–A");
-  await page.getByRole("combobox", { name: "Filter players by name" }).fill("fix");
-  const results = page.locator(".lookup-floating-dropdown");
-  await expect(results).toBeVisible();
-  expect(Math.abs((await results.boundingBox())!.x - field.x)).toBeLessThanOrEqual(1);
+  // Databallr: typing narrows the table's own rows; there is no suggestion dropdown.
+  await page.getByRole("searchbox", { name: "Filter players by name" }).fill("guard");
+  await page.waitForURL(url => url.searchParams.get("name") === "guard");
+  await expect(rows(page)).toHaveCount(1);
+  await expect(page.locator(".lookup-floating-dropdown, [role='listbox']")).toHaveCount(0);
 });
 
 test("Reset table clears every sort and filter, even mid-navigation", async ({ page }) => {
@@ -140,7 +141,7 @@ test("trend points stay clear of the axes", async ({ page }) => {
   const gap = await chart.evaluate(svg => {
     const axisEnd = Math.max(...[...svg.querySelectorAll(".stats-trend-grid text")].map(t => t.getBoundingClientRect().right));
     const gridBottom = Math.max(...[...svg.querySelectorAll(".stats-trend-grid line")].map(l => l.getBoundingClientRect().bottom));
-    const dots = [...svg.querySelectorAll(".chart-value-dot rect")].map(r => r.getBoundingClientRect());
+    const dots = [...svg.querySelectorAll(".chart-value-dot rect, .chart-value-dot circle")].map(r => r.getBoundingClientRect());
     return { left: Math.min(...dots.map(d => d.left)) - axisEnd, bottom: gridBottom - Math.max(...dots.map(d => d.bottom)) };
   });
   expect(gap.left).toBeGreaterThan(8);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useOptimistic, useState, useTransition } from "react";
 
 import { CountChip, FilterBar } from "@/components/ui/filter-bar";
 import { phaseLabel } from "@/lib/scope-labels";
@@ -110,6 +110,13 @@ export function ContextBar({
     },
     [router, pathname, searchParams, releaseId, catalog, phase, season, allowedPhases]
   );
+  // The phase indicator slides on click; the URL value takes over once the navigation commits.
+  const [, startPhaseNavigation] = useTransition();
+  const [shownPhase, setShownPhase] = useOptimistic(phase);
+  const selectPhase = (value: string) => startPhaseNavigation(() => {
+    setShownPhase(value);
+    updateParam("phase", value);
+  });
 
   const throughDate = /^\d{4}-\d{2}-\d{2}$/.test(beforeDate) ? throughDateFromBefore(beforeDate) : "";
   const range = allowMultiSeason ? seasonRange(seasons, searchParams?.get(SEASON_FROM_PARAM), season) : null;
@@ -181,8 +188,8 @@ export function ContextBar({
         <Field label="Season" layout="inline">{seasonSelect}</Field>
       )}
       {steppedScope ? (
-        <SegmentedControl name="Filter by competition phase" size="sm" className="context-phase-segments" value={phase}
-          onChange={(value) => updateParam("phase", value)}
+        <SegmentedControl name="Filter by competition phase" size="sm" className="context-phase-segments" value={shownPhase}
+          onChange={selectPhase}
           options={phaseSegments.map((value) => ({ value, disabled: !phases.includes(value),
             label: `${SHORT_PHASES[value] ?? phaseLabel(value)}${value === phase && !phases.includes(value) ? " · unavailable" : ""}` }))} />
       ) : (

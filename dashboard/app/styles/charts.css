@@ -109,7 +109,12 @@
 
 /* Databallr-style value markers: the number sits inside the data point. */
 @layer foundation {
-  .chart-value-dot rect { fill: var(--series, var(--color-accent)); stroke: var(--color-surface-2); stroke-width: 2; }
+  .chart-value-dot rect, .chart-value-dot circle { fill: var(--series, var(--color-accent)); stroke: var(--color-surface-2); stroke-width: 2; }
   .chart-value-dot text { fill: var(--color-on-accent); font-size: var(--text-2xs); font-weight: 700; font-variant-numeric: tabular-nums; pointer-events: none; }
   .chart-value-dot.is-large text { font-size: var(--text-xs); }
+  /* Round variant (Databallr trend): white value, thin surface ring and a soft halo. */
+  .chart-value-dot.is-round circle { stroke-width: 1.5; }
+  .chart-value-dot.is-round .chart-value-dot-halo { fill: color-mix(in srgb, var(--series, var(--color-accent)) 28%, transparent); stroke: none; }
+  .chart-value-dot.is-round text { fill: var(--color-white); }
+  .chart-value-dot.is-compact text { font-size: calc(var(--text-2xs) * 0.85); letter-spacing: -0.02em; }
 }

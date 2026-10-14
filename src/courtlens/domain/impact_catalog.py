@@ -2,7 +2,7 @@
 
 from dataclasses import replace
 
-from courtlens.domain.impact_extras_catalog import IMPACT_EXTRAS_CATALOG
+from courtlens.domain.impact_extras_catalog import IMPACT_EXTRAS_CATALOG, RETIRED_METRICS
 from courtlens.domain.metrics import METRIC_CATALOG_V2, MetricDefinition
 from courtlens.domain.stats_v4_catalog import (
     BOX_METRICS,
@@ -92,7 +92,9 @@ ON_OFF_METRICS = {
         ("onoff_defensive_rating", "DRtg on/off", "on DRtg - off DRtg"),
     )
 }
-IMPACT_CATALOG = {**RATING_METRICS, **ON_OFF_METRICS, **IMPACT_EXTRAS_CATALOG}
+# Served extras exclude retired metrics, which sealed artifacts still carry but nothing serves.
+SERVED_EXTRAS = {k: d for k, d in IMPACT_EXTRAS_CATALOG.items() if k not in RETIRED_METRICS}
+IMPACT_CATALOG = {**RATING_METRICS, **ON_OFF_METRICS, **SERVED_EXTRAS}
 V3_CATALOG = {**METRIC_CATALOG_V2, **IMPACT_CATALOG}
 # Sealed impact columns plus v4 values derived from them at serving time; all share impact gates.
 IMPACT_COLUMNS = {**IMPACT_CATALOG, **IMPACT_DERIVED}

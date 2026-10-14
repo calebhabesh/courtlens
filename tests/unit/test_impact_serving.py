@@ -130,3 +130,35 @@ def test_serving_catalog_extends_and_preserves_explicit_versions() -> None:
         assert [m.model_dump() for m in get_metrics(version).metrics] == [
             m.to_dict() for m in list_metric_definitions(version)
         ]
+
+
+def test_retired_play_type_analogues_never_leave_the_server(tmp_path: Path) -> None:
+    """Owner, 2026-10-13: sealed extras still carry the bucket analogues; nothing serves them."""
+    from courtlens.domain.impact_extras_catalog import IMPACT_EXTRAS_CATALOG, RETIRED_METRICS
+    from courtlens.domain.personal_state import CustomViewDefinition
+
+    assert len(RETIRED_METRICS) == 24 and IMPACT_EXTRAS_CATALOG.keys() >= RETIRED_METRICS
+    assert not RETIRED_METRICS & IMPACT_CATALOG.keys()
+    assert not RETIRED_METRICS & {m.key for m in get_metrics("courtlens-stats-v4").metrics}
+    _, body = make_store(tmp_path / "base")
+    extras = deepcopy(body)
+    for row in extras["entries"][1]["players"].values():
+        row["metrics"]["pbp_create_ts"] = 1.3
+        row["support"]["pbp_create_ts"] = {"qualified": True}
+    path, _ = write_artifact(tmp_path, extras)
+    with patch(
+        "courtlens.services.impact_serving.get_settings",
+        return_value=Settings(impact_serving_manifest=path),
+    ):
+        player = impact_for_query(QuerySpec(season="2023-24"), "2024-02-01")["players"]["a"]
+    assert "pbp_create_ts" not in player["metrics"] and "pbp_create_ts" not in player["support"]
+    assert player["metrics"]["pbp_stl_per100"] == 1
+    saved = CustomViewDefinition.model_validate(
+        {
+            "name": "Old",
+            "metric_version": "courtlens-stats-v4",
+            "columns": ["pts_per_game", "pbp_create_ts"],
+            "sort_field": "pbp_create_ts",
+        }
+    )
+    assert saved.columns == ["pts_per_game"] and saved.sort_field is None

@@ -133,10 +133,28 @@
   .ui-field .ui-select-wrapper { min-height: var(--control-lg); }
   .ui-field .ui-select { min-height: var(--control-lg); }
 
+  /* Trailing chevrons: the glyph leaves 5 of its 24 units empty on each side, leading text
+     or a leading icon about 2. Pulling the chevron out by the difference (3 units) gives
+     the visible chevron the same edge gap as the control's left side. */
+  .ui-icon-14 { --ui-icon-size: 14px; }
+  .ui-icon-16 { --ui-icon-size: 16px; }
+  .ui-icon-20 { --ui-icon-size: 20px; }
+  :is(button, summary, .ui-button, .ui-menu-trigger, .season-scope-trigger) > .lucide-chevron-down:last-child {
+    margin-inline-end: calc(var(--ui-icon-size) * -3 / 24);
+  }
+  /* Selects lead with text (about 1 unit), so their chevron moves 4 units; sizes match the
+     Select component's chevron sizes. */
+  .ui-select-wrapper { --ui-select-chevron-size: 16px; }
+  .ui-select-wrapper-sm { --ui-select-chevron-size: 14px; }
+  .ui-select-wrapper-lg { --ui-select-chevron-size: 20px; }
+  .ui-select-wrapper .ui-select-chevron {
+    right: calc(var(--space-3) - var(--ui-select-chevron-size) * 4 / 24);
+  }
+
   /* Select structure: the chevron's space is reserved here so page padding rules cannot run
      option text under it (same failure mode as the lookup icon). */
   .ui-select-wrapper .ui-select {
-    padding: 0 var(--space-8) 0 var(--space-3);
+    padding: 0 calc(var(--space-8) - var(--ui-select-chevron-size) * 4 / 24) 0 var(--space-3);
     border: 0;
     background: var(--color-surface-2);
     font-size: var(--text-sm);

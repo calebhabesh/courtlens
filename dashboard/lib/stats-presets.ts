@@ -144,8 +144,9 @@ export const IMPACT_COLUMNS: Record<string, ColumnDefinition> = Object.fromEntri
   impactDefinitions.metrics.map(metric => [metric.key, {
     key: metric.key, label: metric.short_name, group: metric.category === "impact" ? "CourtLens impact" : "CourtLens extras",
     num: true, sortMetric: metric.key, tooltip: `${metric.display_name}: ${metric.formula}. ${metric.unit}. ${metric.validity_definition}`,
+    // Plain sums (charges drawn, rim assists, bad-pass turnovers) are whole counts.
     format: (value: number | null | undefined) => metric.unit === "ratio" || metric.unit === "ratio difference"
-      ? formatPctValue(value) : formatStatValue(value, 2)
+      ? formatPctValue(value) : metric.aggregation_recipe === "sum" ? formatIntValue(value) : formatStatValue(value, 2)
   }])
 );
 
@@ -464,12 +465,13 @@ export const STATS_PRESETS: PresetDefinition[] = [
 
 ];
 
+// Plain headings for the play-by-play extras each view appends (was "CourtLens public-source sample").
+const EXTRAS_GROUP: Record<string, string> = { defense: "Advanced Defense", advanced: "Advanced" };
 for (const [id, keys] of Object.entries({
-  defense: ["drapm", "dbpr", "d_ts", "d_tov", "d_reb", "pbp_stl_per100", "pbp_blk_per100", "pbp_drb_pct", "pbp_foul_frequency", "pbp_block_recovered_pct", "matchup_fga_per100", "pbp_charges_drawn", "pbp_credited_ftov_per100"],
-  advanced: ["impact_ts_pct", "impact_rts", "impact_tsadd_per100", "impact_three_point_rate", "impact_ftr", "impact_ast_per100", "pbp_bad_pass_tov", "pbp_rim_assists", "pbp_self_miss_orb_pct", "pbp_team_miss_orb_pct"],
-  trueshooting: impactDefinitions.metrics.filter(metric => /^pbp_(create|space|trans|finish|unknown)_/.test(metric.key)).map(metric => metric.key)
+  defense: ["drapm", "dbpr", "d_ts", "d_tov", "d_reb", "pbp_stl_per100", "pbp_blk_per100", "pbp_drb_pct", "pbp_foul_frequency", "matchup_fga_per100", "pbp_charges_drawn"],
+  advanced: ["impact_rts", "impact_tsadd_per100", "impact_three_point_rate", "impact_ast_per100", "pbp_bad_pass_tov", "pbp_rim_assists", "pbp_self_miss_orb_pct", "pbp_team_miss_orb_pct"]
 })) {
-  STATS_PRESETS.find(preset => preset.id === id)?.columns.push(...impactColumns(keys, "CourtLens public-source sample"));
+  STATS_PRESETS.find(preset => preset.id === id)?.columns.push(...impactColumns(keys, EXTRAS_GROUP[id]));
 }
 
 // Comprehensive catalog of registered and formatted metrics for column selection
@@ -541,11 +543,10 @@ export const ALL_CATALOG_METRICS: Record<string, ColumnDefinition> = {
   six_factor_impact: { key: "six_factor_impact", label: "SIX FACTOR", group: "Impact", num: true, sortMetric: "six_factor_impact", tooltip: "Six-Factor RAPM Impact; requires admitted inputs", format: () => "—" }
 };
 
-/** Owner, 2026-10-13: the column picker hides CourtLens extras that lead nowhere yet: the PBP
- * play-type "analogue" buckets (implausible values, e.g. TS above 100%) and the always-empty
- * Six Factor placeholder. Saved views that already hold them still render. */
+/** Owner, 2026-10-13: the column picker hides the always-empty Six Factor placeholder. (The PBP
+ * play-type "analogue" buckets were retired from the API entirely.) */
 export function isPickerDeadEnd(key: string): boolean {
-  return /^pbp_(create|space|trans|finish|unknown)_/.test(key) || key === "six_factor_impact";
+  return key === "six_factor_impact";
 }
 
 export function buildCustomViewPreset(customView: CustomViewDefinition): PresetDefinition {
@@ -674,6 +675,13 @@ export function calculateCohortPercentiles(
 
   return result;
 }
+
+/** View tab order shared by the Stats table and the player career table. */
+const PRESET_ORDER: PresetId[] = ["overview", "shooting", "impact", "onoff", "sixfactor", "advanced", "defense", "trueshooting"];
+export const ORDERED_PRESETS = [...STATS_PRESETS].sort((a, b) =>
+  (PRESET_ORDER.indexOf(a.id) + 1 || PRESET_ORDER.length + 1) - (PRESET_ORDER.indexOf(b.id) + 1 || PRESET_ORDER.length + 1));
+/** Per Game, Per 36, Per 75, Per 100, then Totals (Databallr's order). */
+export const ORDERED_COUNTING_MODES = [...COUNTING_MODES.filter(mode => mode.id !== "raw"), ...COUNTING_MODES.filter(mode => mode.id === "raw")];
 
 /** Contiguous runs preserve custom column order, including repeated group names. */
 export function tableGroups(preset: PresetDefinition): Array<HeaderGroup & { start: number }> {

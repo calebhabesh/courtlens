@@ -570,3 +570,31 @@ remain required. IM04 remains planned until measured completion is recorded belo
   [acceptance seal](evidence/im08/acceptance.json.gz) bind the measured boundary.
   **IM08 is verified as a source assessment; all direct-source data gates remain
   blocked. AG07 and AG08 are unchanged.**
+
+## Owner retirement: PBP play-type analogues (2026-10-13)
+
+- Owner instruction: the Create / Space / Trans / Finish / Unknown play-type analogue stats
+  (TSA, frequency, TS, rTS; 20 keys) are not trustworthy (bucket TS above 100%, an
+  "Unknown" bucket holding free throws and unresolved joins) and are purged from the site.
+- `RETIRED_METRICS` in `impact_extras_catalog.py` names the 20 keys. The served
+  `IMPACT_CATALOG` excludes them, so the metrics API, Stats views, preview rail, glossary,
+  column picker, percentiles and the assistant's `list_metrics`/`query_stats` no longer
+  carry them. `impact_for_query` drops them from sealed rows before serving, and saved custom
+  views drop retired columns and sort fields on load instead of failing validation.
+- Sealed extras artifacts are not rewritten: the producer still computes the keys so
+  existing content addresses stay reproducible. No artifact, manifest, release, dataset or
+  semantic signature changed. `dashboard/lib/impact-metrics.json` was regenerated.
+- Measured: **2,064 Python tests passed** (1 inherited browser skip, 24 deselected), including
+  the new retirement test; Ruff, format and strict mypy (241 source files) pass. **460 Vitest
+  tests** pass; dashboard lint and typecheck pass. The live API catalog lists 0 retired keys
+  and still lists the observed extras; the True Shooting view renders only box-score columns.
+- Follow-up audit (owner: "make sure everything is solid"): every served extra was checked
+  against the installed 2025–26 regular-season store. Four more are retired, for 24 in total:
+  `pbp_block_recovered_pct` (0 of 512 players reach its qualification, so it never ranks),
+  `pbp_credited_ftov_per100` (median 1.69 against STL/100 1.62: steals plus charges labelled as
+  forced turnovers), and `impact_ts_pct` / `impact_ftr` (PBP-sample duplicates of box TS% and
+  FTR, measured up to 0.53 and 0.81 points apart over the top-100-minute players). Kept extras
+  have plausible ranges (e.g. STL/100 p5–p95 0.96–2.83, DRB% 8.1–26.2%, foul rate 2.4–6.0 per
+  100); `impact_rts` (Overview rTS%) and `impact_ast_per100` (possession denominator for
+  offensive load, cTOV% and rim AST/100) stay. Re-measured: 2,064 Python and 460 Vitest tests
+  pass; Ruff, format, mypy, dashboard lint and typecheck pass; the live API lists 0 retired keys.

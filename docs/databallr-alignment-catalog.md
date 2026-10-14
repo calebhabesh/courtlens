@@ -13,8 +13,8 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Switzer interface font verified; owner review pending |
-| 1 | Stats | `/stats` | 🔧 | Seasons back to 2000-01 live (43a–d); multi-season mode next (43e) |
-| 2 | Dashboard (player) | `/players/[id]` | ⬜ | |
+| 1 | Stats | `/stats` | 👀 | Instructions 1–71 done; 43f/43g data follow-ups deferred; owner review pending |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Career table, bio header and back-to-table (1–17); owner review pending |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -81,7 +81,7 @@ Switzer follow-up: lint/typecheck, Vitest 454/454, production build, 13 focused 
 120 visual/picker checks pass; typography baselines refreshed and checked. Five responsive sizes,
 blocked fonts and live Settings checked. Evidence: docs/evidence/alignment/app-shell/switzer/.
 
-### 1 Stats — 🔧 in progress
+### 1 Stats — 👀 ready for review
 Instructions (owner, 2026-10-12):
 1. [x] Integrate Databallr's Stats buttons (where applicable) and their layout. Reference: owner
    screenshot of Databallr's NBA Player Statistics page, 2026-10-12. — interpreted as the rows below.
@@ -265,8 +265,11 @@ Follow-up instructions (owner, 2026-10-12, sixth review):
       contrast. — header navigation drops release/model pins; Stats shows a notice with "Switch to
       latest data" when a link is pinned to an older release; select spans the panel; the button
       keeps on-accent text over the filter bar's control styling.
-    - 43f [ ] PBP-derived impact (RAPM, on/off, six factor) for added seasons.
-    - 43g [ ] Draft classes before 2000 so older players match the Draft Class filter.
+    - 43f [ ] PBP-derived impact (RAPM, on/off, six factor) for added seasons. Deferred
+      (2026-10-14) to a data block after the consolidation block: multi-season PBP compute.
+    - 43g [ ] Draft classes before 2000 so older players match the Draft Class filter. Deferred
+      with 43f. The pinned hoopR mirror only has 1996–1999 drafts (files 1997–2000); 1976–1995
+      need another free source (e.g. NBA DraftHistory direct).
 Follow-up instructions (owner, 2026-10-13, control uniformity):
 44. [x] Normalize the containers/buttons above the table for uniform text and container sizing.
     Through/Window selector text should be grey, not white. Final owner revision: restore the
@@ -302,6 +305,89 @@ Follow-up instructions (owner, 2026-10-13, table header and card surfaces):
 52. [x] Make the player cards use the same black base color as the table, like Databallr's scheme.
     - Done: pinned compare/player cells use the metric-cell base and hover surfaces.
       [Measured screenshots and verification](evidence/alignment/stats/card-surface/README.md).
+Follow-up instructions (owner, 2026-10-13, controls, hover and player drawer):
+53. [x] Buttons above the table should use lighter grey instead of black. — settled by 62–66: every
+    console measures the table lift rgb(31, 38, 50).
+54. [x] The search bar still is not bottom-aligned with the visible stat headers. — search and
+    header labels end on the same pixel (498 px at 1440, 788 px at 390).
+55. [x] Row highlighting should stop when the cursor leaves; recommend keeping or removing it,
+    with a performant table as the priority. — kept: pure CSS `:hover`, no JS state; measured
+    idle → hover → idle again after leaving.
+56. [x] Clean up the player details drawer opened from the four-square button; buttons and
+    containers need proper padding and a cleaner layout. — portaled drawer, ID tag removed, 2×2
+    grid of 40px icon actions, research links as one row, scrolling body.
+57. [x] Make Per Game/Per 36/Per 75/etc. the same size as the toolbar buttons to their right;
+    they are too small and hard to see. — 36px like the icon tools (40px on phone), 13px text.
+58. [x] Remove the Temporal Discipline Notice from the player drawer. Owner preference:
+    keep site notices concise and avoid repeating technical explanations in routine views.
+59. [x] Make the player drawer even cleaner: remove CourtLens impact samples and
+    Metric-specific support. — both removed (58–59).
+    [Evidence](evidence/alignment/stats/controls-drawer/README.md).
+Follow-up instructions (owner, 2026-10-13, focus line and table palette):
+60. [x] Remove the line that occasionally appears under the nav bar when clicking around the page.
+    - Done: it was the browser focus ring on `main#content` (the skip-link target, `tabIndex=-1`),
+      which takes focus on clicks in blank space; `.replica-main:focus` now has no outline.
+61. [x] Choose a better-contrasting light/dark grey pair for the table highlights and the preview
+    rail, one that works with the blue background.
+    - Done: new `--color-table-lift` (#2a3342) and `--color-table-well` (#141a23) slate tokens; the
+      frame and rail re-map the surface steps onto them, and hover lift rose from 4% to 6% white.
+62. [x] The buttons and consoles above the table should use the table's light grey, like Databallr.
+    - Done: `.stats-workspace` maps surface-2 and surface-3 to `--color-table-lift`, so the
+      consoles measure the same rgb(42, 51, 66) as the table frame (owner rejected a lighter step).
+63. [x] Make that grey slightly darker, and give the player preview sidebar its own darker shade.
+    - Done: `--color-table-lift` #2a3342 → #252d3a (consoles and frame measure rgb(37, 45, 58));
+      new `--color-table-rail` #1c2330 for the preview rail (rgb(28, 35, 48)).
+64. [x] Give the buttons and consoles above the table hover highlights and slide animations.
+    - Cause: the console background rule lives in the `foundation` layer, which outranks every
+      `pages`-layer hover rule; Per Game/Photos groups had no indicator, and Regular/Playoffs only
+      switched after the server navigation finished.
+    - Done: foundation-layer hover (rgb(37, 45, 58) → rgb(52, 60, 72)) with a background
+      transition on every console; sliding indicators on the divider and counting groups; phase,
+      counting and divider selections use `useOptimistic` so the indicator slides on click
+      (measured 162→249 px, 222→292 px and 891→961 px over ~150 ms).
+65. [x] The Table Divider slide isn't smooth like the view tabs; make every console snappy and smooth.
+    - Cause: a divider switch redraws every row's guide cells at once (200–300 ms of main-thread
+      work) while the Motion indicator, which animates on the main thread, is mid-slide.
+    - Done: `SlidingIndicator` now slides with a Web Animations transform that the compositor runs
+      even while the table re-renders; the divider and counting groups are `StatsChoicePills`,
+      whose click repaints only the pills and starts the table update a frame later; the label
+      colour swaps instantly (no colour fade). Video check: label switches on the click frame and
+      the box glides over ~200 ms with a new position every frame.
+66. [x] Make the table/console/button grey slightly darker for white-text contrast.
+    - Done: lift #252d3a → #1f2632 (rgb(31, 38, 50)), rail #1c2330 → #181e28, well #141a23 →
+      #11161e, so the rail and data cells stay distinct steps below the lift.
+67. [x] Purge the play-type "analogue" stats (Create/Space/Trans/Finish/Unknown TSA, frequency,
+    TS, rTS) from the site; show only stats with solid footing.
+    - Done: retired in the served catalog and stripped at serving; the True Shooting view now
+      shows volume, percentages and true-efficiency box columns only. See the
+      [impact metrics progress log](impact-metrics-progress.md) for the measured retirement.
+68. [x] Make sure every stat on the site is solid.
+    - Done: audited each served extra against real 2025–26 values; also retired block recovered
+      fraction (never qualifies), credited turnovers forced (overclaims) and PBP TS%/FTR
+      (duplicates that disagree with box TS%/FTR). Defense and Rates (Per 36) keep only extras
+      with plausible measured ranges.
+69. [x] Replace the "CourtLens public-source sample" heading and show counts as whole numbers.
+    - Done: Defense's extras sit under "Advanced Defense" and Rates (Per 36)'s under "Advanced";
+      plain-sum extras (charges drawn, rim assists, bad-pass turnovers) format as integers
+      (measured 14, 167, 244 instead of 14.00, 167.00, 244.00).
+Follow-up instructions (owner, 2026-10-13, table search):
+70. [x] Make the table search filter the table's own rows as you type, like Databallr, instead of
+    a site-search suggestion dropdown.
+    - Done: plain search field (same size and place) pushes `name` 250 ms after typing stops
+      (Enter pushes at once, Escape clears) with history replace; current rows dim instead of
+      skeletons; the table no longer remounts on a name change, so focus and later keystrokes
+      survive; server name matching ignores accents ("jokic" → Nikola Jokić).
+      [Evidence](evidence/alignment/stats/live-table-search/README.md).
+Follow-up instructions (owner, 2026-10-14, control padding):
+71. [x] Center the text in buttons, containers and dropdown selectors. Some have uneven padding,
+    especially dropdowns (more on the right than the left), and this repeats across the site.
+    Prefer uniform padding: equal above/below and equal left/right.
+    - Done (owner chose mirror sides, sizes unchanged): text was already vertically centered
+      (within 0.3 px). Selects showed ~2.5 px more on the right because the chevron glyph leaves
+      empty space in its icon box; the shared select and every control ending in a chevron now
+      offset it (site-wide), and Team Compare's remove × is centered in its hit area. Measured
+      after: no select or chevron trigger off by 1 px or more on 13 pages.
+      [Evidence](evidence/alignment/stats/control-padding/README.md).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
@@ -334,3 +420,50 @@ recorded); final focused runs 54 + 32 passed. Affected browser set 33/34 (only t
 Teams strict-mode selector failure); Stats baselines regenerated and checked 2/2. Production build
 and real-data 1440/390 screenshots pass the glance test. Full measured evidence and source limits:
 [DARKO evidence](evidence/alignment/stats/darko/README.md).
+
+### 2 Dashboard (player) — 👀 ready for review
+Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
+1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
+   that exact table state (scroll, search, sort, view). Esc acts only when no dialog/menu is open.
+   Keep `/players/[id]` as the one player page; no separate in-table view.
+2. [x] Overview order: header → latest-season summary → career season table → Player impact →
+   Production Splits. Production Trajectory charts move to the Game Log tab.
+3. [x] Career season table like Databallr's: the Stats table component with seasons as rows, the
+   same view tabs, Per Game/36/75/100/Totals and Regular/Playoffs, with each percentile ranked
+   against that season's Stats cohort. Only seasons the player appeared in (no empty years).
+   It replaces the Multi-Season Career History table.
+4. [x] Traded seasons are one row with stacked team logos; the per-team stints show on expand
+   (replaces the Participation Stints panel).
+5. [x] Clicking a season row sets the page's season; the selected row is highlighted and the
+   summary above shows that season.
+6. [x] Add a free NBA.com player-info source (fetched once, cached) for birthdate, country,
+   jersey, college and experience. Missing values are omitted, never zero.
+7. [x] Remove Prospective Forecast Status, the "Impact samples and artifact identity" disclosure
+   and the "Why?" model note from Overview; the percentile cohort line becomes a tooltip.
+8. [x] Career table newest season first, with a pinned Career row (games/minutes-weighted
+   per-game and percentage values; impact columns and percentiles blank).
+9. [x] Compact header: Back to table, photo, name, Team · Position · #Jersey; a bio grid; actions as
+   icons plus Explore. The scope bar stays one slim row beneath.
+10. [x] Header measurements: listed `6'11" · 284 lb` as the main line; a second "YYYY Combine"
+    line (barefoot, with shoes, wingspan, standing reach, weight) only when a combine record exists.
+11. [x] Age is as of the page's Through date; labelled "(as of <date>)" only outside the current
+    season.
+12. [x] Latest-season summary tiles: PTS, REB, AST, TS%, DPM, MPG with percentile bars.
+13. [x] Remove the gold edge highlight around the latest-season summary card.
+14. [x] Rename the Measurements tab to Combine; hide it when the player has no combine record.
+15. [x] Compact, information-dense, but clear, organised and well-formatted throughout.
+16. [x] When the first covered season is 2000-01 and the player was drafted before 2000 (or has no
+    draft record), the bottom row reads "Career since 2000-01" with a one-line coverage note.
+17. [x] The Regular/Playoffs toggle is the page phase: tiles, table and game log share it.
+Done notes: Back to table/Esc via `from=stats` + saved scroll (1); summary → career table → impact
+→ splits, trajectory heads Game Log (2); `PlayerCareerTable` reuses the Stats views, counting modes
+and cells with per-season cohort percentiles, played seasons only, replacing 26 server profile
+fetches (3, 8; the Career row is one exact multi-season Stats query, i.e. true summed totals and
+shooting percentages, not the weighted approximation instruction 8 described); traded rows expand to team stints (4); row clicks and the phase pills navigate the
+page scope (5, 17); new hoopR `playerindex` + `commonteamroster` feeds, 777/781 admitted, marts
+`mart_player_bio` and `mart_player_roster_seasons` (6); forecast panel, impact samples and Why?
+removed, cohort note is a tooltip (7); compact header with icon actions, listed line and a combine
+line only when measured (9, 10); age as of Through, dated outside the current season (11); PTS,
+REB, AST, TS%, DPM, MPG tiles (12); no accent edge (13); Combine tab (14); "Career since 2000-01"
+with a coverage note (16).
+Evidence: docs/evidence/alignment/players/ ([README](evidence/alignment/players/README.md)).

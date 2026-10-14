@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import base64
 import json
+import unicodedata
 from decimal import Decimal
 from typing import Any
 
@@ -124,6 +125,25 @@ PERCENTILE_COLUMNS = {
 }
 TRACKING_MART = "analytics_marts.mart_stats_player_tracking"
 MAX_SEASON_RANGE = 30
+
+
+# Name search ignores case and accents, so "jokic" finds "Nikola Jokić" as the table filters.
+NAME_ACCENTED = "àáâãäåāăąçćčďđèéêëēėęěìíîïīįıłľĺñńňòóôõöøōőŕřśšşșțťùúûüūůűųýÿźżž"
+NAME_PLAIN = "aaaaaaaaacccddeeeeeeeeiiiiiiilllnnnoooooooorrssssttuuuuuuuuyyzzz"
+_NAME_FOLD = str.maketrans(NAME_ACCENTED, NAME_PLAIN)
+
+
+def fold_name(text: str) -> str:
+    """Lower-case a name and strip its accents for search matching."""
+    decomposed = unicodedata.normalize("NFKD", text.strip().lower().translate(_NAME_FOLD))
+    return "".join(c for c in decomposed if not unicodedata.combining(c))
+
+
+def folded_name_sql(expr: str, is_sqlite: bool) -> str:
+    """SQL twin of ``fold_name`` (SQLite test databases only lower-case)."""
+    if is_sqlite:
+        return f"LOWER({expr})"
+    return f"translate(LOWER({expr}), '{NAME_ACCENTED}', '{NAME_PLAIN}')"
 
 
 def tracking_query_fields(query: QuerySpec) -> set[str]:
@@ -604,8 +624,10 @@ def build_stats_query_sql(
 
     # Name search
     if query.name and presentation is None:
-        params["name_pattern"] = f"%{query.name.strip().lower()}%"
-        candidate_filters.append(f"LOWER({player_name_expr}) LIKE :name_pattern")
+        params["name_pattern"] = f"%{fold_name(query.name)}%"
+        candidate_filters.append(
+            f"{folded_name_sql(player_name_expr, is_sqlite)} LIKE :name_pattern"
+        )
 
     # 3. Window Function for Last-N Appearances
     has_window_rank = query.window.kind in (
@@ -956,8 +978,10 @@ def build_stats_query_sql(
         cte_sql += f", eligible AS (SELECT * FROM aggregated {where_agg_clause})"
         display_filters = []
         if query.name:
-            params["name_pattern"] = f"%{query.name.strip().lower()}%"
-            display_filters.append("LOWER(player_name) LIKE :name_pattern")
+            params["name_pattern"] = f"%{fold_name(query.name)}%"
+            display_filters.append(
+                f"{folded_name_sql('player_name', is_sqlite)} LIKE :name_pattern"
+            )
         if presentation.player_ids is not None:
             id_keys = []
             for idx, player_id in enumerate(presentation.player_ids):

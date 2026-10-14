@@ -12,7 +12,7 @@ from fastapi import HTTPException
 
 from courtlens.config import get_settings
 from courtlens.domain.impact_catalog import IMPACT_COLUMNS
-from courtlens.domain.impact_extras_catalog import WAVE_TWO
+from courtlens.domain.impact_extras_catalog import RETIRED_METRICS, WAVE_TWO
 from courtlens.domain.query_spec import QuerySpec
 from courtlens.domain.teams import get_team_info
 
@@ -25,7 +25,6 @@ LIMITATIONS = [
     "Patched lineups retain minute/plus-minus and unavailable period-minute limitations.",
     "On/off off-court references include team games without a player appearance.",
     "Multi-team on/off is unavailable without a selected team; team records remain separate.",
-    "PBP play-type buckets are CourtLens analogues, including Unknown and free throws.",
 ]
 
 
@@ -158,8 +157,13 @@ def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
                 result["coverage"].append(coverage)
         for pid, source in entry["players"].items():
             row = result["players"].setdefault(pid, {"metrics": {}, "support": {}, "on_off": {}})
-            row["metrics"].update(source["metrics"])
-            row["support"].update(source["support"])
+            # Sealed extras still carry retired metrics; they never leave the server.
+            row["metrics"].update(
+                (k, v) for k, v in source["metrics"].items() if k not in RETIRED_METRICS
+            )
+            row["support"].update(
+                (k, v) for k, v in source["support"].items() if k not in RETIRED_METRICS
+            )
             if entry["kind"] == "extras":
                 derive_extras(row)
             if entry["kind"] == "ratings" and entry["scope"]["years"] == 1:
