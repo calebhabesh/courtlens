@@ -1,0 +1,21 @@
+@layer pages {
+/* Advanced research: explicit report context and editable design assumptions. */
+.advanced-research { max-width: 1400px; margin: 0 auto; padding: var(--space-6); min-width: 0; }
+.advanced-research .panel { padding: var(--space-4); margin: var(--space-4) 0; min-width: 0; background: var(--color-surface-1); border: 1px solid var(--color-hairline); border-radius: var(--radius-sm); }
+.advanced-research h1 { font-size: var(--text-2xl); font-weight: 600; letter-spacing: -0.01em; color: var(--color-text); margin-bottom: var(--space-2); }
+.advanced-research h2 { font-size: var(--text-lg); font-weight: 600; color: var(--color-text); margin-bottom: var(--space-2); }
+.advanced-research h3 { font-size: var(--text-md); font-weight: 600; margin-top: var(--space-4); color: var(--color-text); }
+.advanced-research p { margin: var(--space-3) 0; color: var(--color-text-secondary); line-height: 1.5; }
+.advanced-research code { overflow-wrap: anywhere; font-family: var(--font-mono), monospace; }
+.research-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--space-4); }
+.research-input { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin: var(--space-3) 0; }
+.research-input input { width: 6rem; }
+.research-document { white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--text-xs); line-height: 1.6; margin: var(--space-3) 0; }
+.research-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-1) var(--space-4); }
+.advanced-research summary { cursor: pointer; padding: var(--space-3) 0; }
+@media (max-width: 700px) {
+  .research-grid { grid-template-columns: minmax(0, 1fr); }
+  .advanced-research { padding: var(--space-3); }
+}
+.advanced-research select { max-width: 100%; }
+}

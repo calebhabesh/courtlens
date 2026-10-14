@@ -130,8 +130,6 @@
   .ui-field-stacked .ui-field-control > * { width: 100%; }
   .ui-field-hint { font-size: var(--text-xs); color: var(--color-text-tertiary); }
 
-  .ui-field .ui-select-wrapper { min-height: var(--control-lg); }
-  .ui-field .ui-select { min-height: var(--control-lg); }
 
   /* Trailing chevrons: the glyph leaves 5 of its 24 units empty on each side, leading text
      or a leading icon about 2. Pulling the chevron out by the difference (3 units) gives
@@ -139,29 +137,9 @@
   .ui-icon-14 { --ui-icon-size: 14px; }
   .ui-icon-16 { --ui-icon-size: 16px; }
   .ui-icon-20 { --ui-icon-size: 20px; }
-  :is(button, summary, .ui-button, .ui-menu-trigger, .season-scope-trigger) > .lucide-chevron-down:last-child {
+  :is(button, summary, .season-scope-trigger) > .lucide-chevron-down:last-child {
     margin-inline-end: calc(var(--ui-icon-size) * -3 / 24);
   }
-  /* Selects lead with text (about 1 unit), so their chevron moves 4 units; sizes match the
-     Select component's chevron sizes. */
-  .ui-select-wrapper { --ui-select-chevron-size: 16px; }
-  .ui-select-wrapper-sm { --ui-select-chevron-size: 14px; }
-  .ui-select-wrapper-lg { --ui-select-chevron-size: 20px; }
-  .ui-select-wrapper .ui-select-chevron {
-    right: calc(var(--space-3) - var(--ui-select-chevron-size) * 4 / 24);
-  }
-
-  /* Select structure: the chevron's space is reserved here so page padding rules cannot run
-     option text under it (same failure mode as the lookup icon). */
-  .ui-select-wrapper .ui-select {
-    padding: 0 calc(var(--space-8) - var(--ui-select-chevron-size) * 4 / 24) 0 var(--space-3);
-    border: 0;
-    background: var(--color-surface-2);
-    font-size: var(--text-sm);
-    line-height: var(--text-sm-lh);
-    text-overflow: ellipsis;
-  }
-
   /* Native select semantics, with the same panel and row treatment as the site menus.
      Unsupported browsers retain the dark native popup from the base layer. */
   @supports (appearance: base-select) {
@@ -175,11 +153,6 @@
       align-items: center;
       background-image: none;
     }
-
-    .ui-select::picker-icon { display: none; }
-
-    .ui-select-chevron { transition: transform var(--dur-fast) var(--ease-out); }
-    .ui-select:open + .ui-select-chevron { transform: rotate(180deg); }
 
     select:not([multiple]):not([size])::picker(select) {
       min-inline-size: max(anchor-size(width), 180px);
@@ -230,7 +203,6 @@
 
     @media (prefers-reduced-motion: reduce) {
       select:not([multiple]):not([size])::picker(select) { animation-duration: var(--dur-base); }
-      .ui-select-chevron { transition-duration: var(--dur-base); }
     }
   }
 
@@ -264,7 +236,11 @@
   .ui-filter-bar-page, .ui-filter-bar-modes { padding-left: var(--space-3); border-left: 1px solid var(--color-hairline); }
   /* Modes never clip on desktop; scope and filters wrap first. Below 768px they take their own row. */
   .ui-filter-bar-modes { display: flex; flex-shrink: 0; align-items: center; gap: var(--space-2); min-width: 0; }
-  .ui-filter-bar-scope .ui-select-wrapper { width: auto; }
+  /* The shared select fills its container (forms, sheets) except in the filter bar row. */
+  .legacy-select { width: 100%; }
+  .ui-filter-bar-scope .legacy-select { width: auto; }
+  /* The season popover renders inside the scope slot; its fields fill the panel. */
+  .season-scope-panel .legacy-select { width: 100%; }
 
   .ui-filter-bar-meta {
     display: flex;
@@ -274,9 +250,9 @@
     flex-shrink: 0;
   }
 
-  .ui-filter-bar-toggle { display: none; }
-  .ui-filter-bar-meta .ui-button { min-height: var(--control-lg); }
-  .ui-filter-bar-summary { margin-left: var(--space-2); color: var(--color-text-secondary); font-weight: 400; }
+  .filter-bar-toggle-slot { display: none; }
+  /* A real space keeps "Filters" and the summary apart in the accessible name; the margin tops it up to the old 16 px gap. */
+  .ui-filter-bar-summary { margin-left: var(--space-3); color: var(--color-text-secondary); font-weight: 400; }
 
   .ui-count-chip {
     display: inline-flex;
@@ -293,31 +269,12 @@
 
   .ui-filter-sheet-body { display: flex; flex-direction: column; gap: var(--space-4); }
   .ui-filter-sheet-body .ui-field-inline { flex-direction: column; align-items: stretch; gap: var(--space-1); }
-  .ui-filter-sheet-body .ui-select-wrapper, .ui-filter-sheet-body .ui-date-picker, .ui-filter-sheet-body .ui-date-trigger { width: 100%; }
+  .ui-filter-sheet-body .ui-date-picker { width: 100%; }
 
   /* ---------- Date picker (D11) ---------- */
   .ui-date-picker { position: relative; display: inline-flex; }
 
-  .ui-date-trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    min-height: var(--control-lg);
-    padding: 0 var(--space-3);
-    border: 0;
-    border-radius: var(--radius-sm);
-    background: var(--color-surface-2);
-    color: var(--color-text);
-    font: inherit;
-    font-size: var(--text-sm);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-    cursor: pointer;
-  }
-
-  .ui-date-trigger:hover { background: var(--color-surface-3); }
-  .ui-date-trigger:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
-  .ui-date-trigger .ui-icon { color: var(--color-text-secondary); }
+  .ui-date-value, .ui-date-placeholder { font-variant-numeric: tabular-nums; }
   .ui-date-placeholder { color: var(--color-text-secondary); }
 
   .ui-date-popover {
@@ -335,7 +292,7 @@
   .ui-date-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2); }
   .ui-date-title { font-size: var(--text-sm); font-weight: 600; }
 
-  .ui-date-nav, .ui-date-day {
+  .ui-date-day {
     display: inline-grid;
     place-items: center;
     border: 0;
@@ -345,9 +302,6 @@
     cursor: pointer;
   }
 
-  .ui-date-nav { width: var(--control-md); height: var(--control-md); border-radius: var(--radius-sm); }
-  .ui-date-nav:hover:not(:disabled) { background: var(--color-surface-hover); }
-  .ui-date-nav:disabled { color: var(--color-text-tertiary); cursor: default; }
   .ui-date-grid { display: flex; flex-direction: column; gap: var(--space-0-5); }
   .ui-date-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--space-0-5); }
   .ui-date-row > [role=gridcell] { display: grid; }
@@ -365,70 +319,6 @@
   .ui-date-day.is-outside { color: var(--color-text-tertiary); }
   .ui-date-day.is-disabled { color: var(--color-text-tertiary); opacity: 0.45; cursor: not-allowed; text-decoration: line-through; }
   .ui-date-day.is-selected { background: var(--color-accent); color: var(--color-on-accent); font-weight: 700; }
-
-  /* ---------- Segmented control and chips (Stats pattern) ---------- */
-  .ui-segmented-control { max-width: 100%; overflow-x: auto; scrollbar-width: none; border-radius: var(--radius-sm); }
-  .ui-segmented-control-stretch { display: flex; width: 100%; overflow-x: auto; scrollbar-width: none; }
-  .ui-segmented-item { flex-shrink: 0; white-space: nowrap; }
-  .ui-segmented-control-stretch .ui-segmented-item { flex: 1 0 auto; justify-content: center; }
-
-  .ui-segmented-item {
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--control-sm);
-    border-radius: var(--radius-xs);
-  }
-
-  .ui-segmented-control-md .ui-segmented-item { min-height: var(--control-md); font-size: var(--text-sm); }
-  /* Inside the filter bar a segmented control matches the 40px fields (glance item 2). */
-  .ui-filter-bar .ui-segmented-control-md .ui-segmented-item { min-height: calc(var(--control-lg) - var(--space-1)); }
-  .ui-segmented-item[data-active=true] { color: var(--color-accent); }
-  .ui-segmented-item:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px var(--color-accent); }
-
-  .ui-segmented-indicator {
-    border-radius: inherit;
-    background-color: var(--color-accent-soft);
-    box-shadow: inset 0 0 0 1px var(--color-accent);
-  }
-
-  .ui-chip-group { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-
-  .ui-chip-option {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
-    min-height: var(--control-md);
-    padding: 0 var(--space-3);
-    border: 0;
-    border-radius: var(--radius-pill);
-    background: var(--color-surface-2);
-    color: var(--color-text-secondary);
-    font: inherit;
-    font-size: var(--text-sm);
-    cursor: pointer;
-    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
-  }
-
-  .ui-chip-option:hover:not(:disabled) { background: var(--color-surface-3); color: var(--color-text); }
-  .ui-chip-option:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
-  .ui-chip-option:disabled { opacity: 0.45; cursor: not-allowed; }
-
-  .ui-chip-option.is-selected {
-    background: var(--color-accent-soft);
-    color: var(--color-accent);
-    box-shadow: inset 0 0 0 1px var(--color-accent);
-    font-weight: 600;
-  }
-
-  .ui-chip-count {
-    min-width: var(--space-5);
-    padding: 0 var(--space-1);
-    border-radius: var(--radius-pill);
-    background: var(--color-surface-3);
-    font-size: var(--text-xs);
-    font-variant-numeric: tabular-nums;
-    text-align: center;
-  }
 
   /* ---------- Gated note and Why? (D4/D14) ---------- */
   .ui-gated-note {
@@ -449,24 +339,6 @@
   .ui-why { display: block; min-width: 0; }
   .ui-why[open] { flex-basis: 100%; }
 
-  .ui-why-summary {
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--control-sm);
-    padding: 0 var(--space-2);
-    border-radius: var(--radius-xs);
-    color: var(--color-text-secondary);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    text-decoration: underline dotted;
-    text-underline-offset: 3px;
-    cursor: pointer;
-    list-style: none;
-  }
-
-  .ui-why-summary::-webkit-details-marker { display: none; }
-  .ui-why-summary:hover { color: var(--color-text); }
-  .ui-why-summary:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
 
   .ui-why-body {
     max-width: 80ch;
@@ -602,46 +474,6 @@
     background: color-mix(in srgb, var(--team-color) 16%, transparent);
   }
 
-  .ui-entity-chip {
-    --team-color: var(--color-text-tertiary);
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    max-width: 100%;
-    min-height: var(--control-md);
-    padding: var(--space-0-5) var(--space-2) var(--space-0-5) var(--space-0-5);
-    border-radius: var(--radius-pill);
-    background: var(--color-surface-2);
-    box-shadow: inset 2px 0 0 var(--team-color);
-    font-size: var(--text-sm);
-  }
-
-  .ui-entity-chip .ui-identity-name { font-size: var(--text-sm); font-weight: 500; }
-
-  .ui-entity-chip .player-portrait, .ui-entity-chip .player-portrait-fallback {
-    width: var(--space-6);
-    height: var(--space-6);
-    min-width: var(--space-6);
-    min-height: var(--space-6);
-    border: 0;
-    border-radius: var(--radius-pill);
-    font-size: var(--text-xs);
-    background: color-mix(in srgb, var(--team-color) 25%, var(--color-surface-3));
-  }
-
-  .ui-entity-chip-remove {
-    display: inline-grid;
-    place-items: center;
-    width: var(--space-6);
-    height: var(--space-6);
-    border: 0;
-    border-radius: var(--radius-pill);
-    background: transparent;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-  }
-
-  .ui-entity-chip-remove:hover { background: var(--color-surface-hover); color: var(--color-text); }
 
   /* ---------- Stat tile (D16) ---------- */
   .ui-stat-tile {
@@ -727,15 +559,6 @@
     outline: 0;
   }
 
-  .lookup-input-wrapper .lookup-clear-btn {
-    position: static;
-    flex-shrink: 0;
-    display: inline-grid;
-    place-items: center;
-    min-width: var(--control-md);
-    min-height: var(--control-md);
-    padding: 0;
-  }
 
   /* ---------- Drawer stacking ----------
    * Root cause of the unreadable drawer (FO01, confirmed in browser): inside .ui-drawer-root the
@@ -751,8 +574,6 @@
    * backdrop-filter can no longer become their containing block. */
   .courtlens-header .courtlens-mobile-toggle,
   .courtlens-header .courtlens-mobile-search-btn { display: none; }
-  .courtlens-header-right .ui-button { height: var(--control-md); }
-  .courtlens-header-right .ui-icon-button { width: var(--control-md); }
 
   .ui-command-palette-scrim { align-items: flex-start; padding: 12vh var(--space-4) var(--space-4); }
   .ui-command-palette { width: min(640px, 100%); max-height: min(600px, 76vh); }
@@ -768,7 +589,6 @@
     border-radius: 0;
   }
   .ui-command-palette .ui-command-input { padding: 0; font-size: var(--text-md); }
-  .ui-command-palette .lookup-clear-btn { transform: none; }
   .ui-command-palette .lookup-group-header { background: transparent; }
   .ui-command-close { display: none; }
   .ui-command-palette .ui-command-list { flex: 1; min-height: 0; }
@@ -830,8 +650,6 @@
     .courtlens-header .courtlens-nav,
     .courtlens-header .courtlens-more { display: none; }
     .courtlens-header .courtlens-mobile-toggle { display: inline-flex; }
-    .courtlens-header-right .ui-button { height: var(--control-lg); }
-    .courtlens-header-right .ui-icon-button { width: var(--control-lg); }
   }
 
   @media (max-width: 767px) {
@@ -865,11 +683,9 @@
     .ui-page { --page-pad-inline: var(--space-3); padding-top: var(--space-4); }
     .ui-filter-bar-controls { display: none; }
     .ui-filter-bar { flex-wrap: nowrap; gap: var(--space-2); }
-    .ui-filter-bar-toggle { display: inline-flex; flex: 1; min-width: 0; min-height: var(--control-lg); justify-content: flex-start; }
-    .ui-filter-bar-toggle > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .filter-bar-toggle-slot { display: flex; flex: 1; min-width: 0; }
     .ui-filter-bar-summary { overflow: hidden; text-overflow: ellipsis; }
     .ui-filter-bar-meta { gap: var(--space-1); }
-    .ui-filter-bar-meta .ui-button { min-width: var(--control-lg); min-height: var(--control-lg); }
     /* A fixed scope has nothing to choose, so its one-line label stays in the bar. */
     .ui-filter-bar.is-fixed-scope .ui-filter-bar-controls { display: flex; flex: 1; min-width: 0; }
     .ui-filter-bar.is-fixed-scope .ui-filter-bar-scope { flex-wrap: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -878,17 +694,6 @@
     /* Mode switches stay visible as a full-width second row (gate 2). */
     .ui-filter-bar.has-modes { flex-wrap: wrap; }
     .ui-filter-bar-modes { order: 10; flex: 1 0 100%; padding-left: 0; border-left: 0; }
-    .ui-filter-bar-modes .ui-segmented-control { display: flex; width: 100%; overflow-x: auto; scrollbar-width: none; }
-    /* Long labels ("Playmaking & Defense") wrap to two lines instead of clipping off the row. */
-    .ui-filter-bar .ui-filter-bar-modes .ui-segmented-item {
-      flex: 1 1 auto;
-      justify-content: center;
-      min-height: var(--control-lg);
-      padding-inline: var(--space-2);
-      white-space: normal;
-      text-align: center;
-      line-height: var(--text-xs-lh);
-    }
     .ui-hide-narrow { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .ui-page-header-title { font-size: var(--text-xl); line-height: var(--text-xl-lh); }
     .ui-page-header-actions { width: 100%; flex-wrap: wrap; margin-left: 0; }
@@ -909,7 +714,6 @@
   .ui-design-foundation .ui-panel-body { display: flex; flex-direction: column; gap: var(--space-3); }
   .ui-design-foundation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-4); }
   .ui-design-identity-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-8); }
-  .ui-design-chip-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
   .ui-design-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-3); }
   .ui-design-skeleton-frame { max-height: 480px; overflow: hidden; border-radius: var(--radius-md); background: var(--color-surface-0); }
 }
@@ -1000,13 +804,13 @@
   .ui-article-section p, .ui-article-section li { font-size: var(--text-md); line-height: 1.65; color: var(--color-text-secondary); }
   .ui-article-section h3 { margin: var(--space-2) 0 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 600; }
   .ui-article-section strong { color: var(--color-text); }
-  .ui-article-section :where(p, li, dd) a:not(.ui-button) {
+  .ui-article-section :where(p, li, dd) a {
     color: var(--color-accent);
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
     text-underline-offset: 3px;
   }
-  .ui-article-section :where(p, li, dd) a:not(.ui-button):hover { text-decoration-color: var(--color-accent); }
+  .ui-article-section :where(p, li, dd) a:hover { text-decoration-color: var(--color-accent); }
   .ui-article-section ul, .ui-article-section ol { display: flex; flex-direction: column; gap: var(--space-2); padding-left: var(--space-5); }
   .ui-article-section pre {
     padding: var(--space-4);
@@ -1055,8 +859,7 @@
   @media (max-width: 767px) {
     .ui-article-facts > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
     .ui-article-facts dd { text-align: left; }
-    .ui-article :is(.ui-button, .ui-switch, .ui-why-summary) { min-height: var(--control-lg); }
-    .data-status-view :is(.ui-button, .ui-menu-trigger) { min-height: var(--control-lg); }
+    .ui-article .ui-switch { min-height: var(--control-lg); }
   }
 }
 
@@ -1078,13 +881,13 @@
    links keep their text geometry; checkbox/radio hit areas belong to their enclosing label. */
 @layer foundation {
   @media (max-width: 767px) {
-    body :is(button, summary, .ui-button, [role="tab"], [role="menuitem"], .control-pill, .ui-switch,
+    body :is(button, summary, [role="tab"], [role="menuitem"], .control-pill, .ui-switch,
       input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea) {
       min-height: var(--control-lg);
       min-width: var(--control-lg);
     }
     .stats-workspace .dense-stats-table .table-sort-button { min-height: var(--control-lg); }
-    main a:not(p a):not(li a), .data-table a:not(.ui-button) {
+    main a:not(p a):not(li a), .data-table a {
       display: inline-flex;
       align-items: center;
       min-height: var(--control-lg);

@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
+import { Button, Chip, MenuTrigger, Segmented } from "@/components/ui/kit";
 import { Popover } from "@/components/ui/menu";
-import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Select } from "@/components/ui/select";
 import { QUICK_RANGES, quickRangeFrom, seasonScopeLabel, seasonsBetween } from "@/lib/season-range";
 
@@ -54,17 +53,16 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
       onOpenChange={openChange}
       className="season-scope-popover"
       triggerLabel={`Season: ${label}`}
-      trigger={
-        <span className="context-season-picker season-scope-trigger">
-          <Icon name="calendar" size={14} />
+      renderTrigger={props => (
+        <MenuTrigger {...props} size="lg">
+          <Icon name="calendar" size={16} className="season-scope-icon" />
           <span className="season-scope-value">{label}</span>
-          <Icon name="chevron-down" size={14} />
-        </span>
-      }
+        </MenuTrigger>
+      )}
     >
       <div className="season-scope-panel">
-        <SegmentedControl<Mode>
-          name="Season mode"
+        <Segmented<Mode>
+          label="Season mode"
           size="sm"
           stretch
           value={mode}
@@ -103,16 +101,16 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
                 {QUICK_RANGES.map((years) => {
                   const start = quickRangeFrom(seasons, through, years);
                   return (
-                    <button key={years} type="button" className="season-scope-quick-button"
-                      aria-pressed={from === start && seasonsBetween(seasons, start, through).length === years}
+                    <Chip key={years} size="sm"
+                      pressed={from === start && seasonsBetween(seasons, start, through).length === years}
                       onClick={() => setFrom(start)}>
                       {years}Y
-                    </button>
+                    </Chip>
                   );
                 })}
               </div>
             </Field>
-            <Button variant="primary" className="season-scope-apply" disabled={pending.length < 2}
+            <Button size="lg" variant="primary" disabled={pending.length < 2}
               onClick={() => apply(from, through)}>
               Show {pending.length} seasons
             </Button>

@@ -1,0 +1,1830 @@
+== stats@1440: 88 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Open details for Fixture Star: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Star: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ button||Open details for Fixture Guard: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Guard: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ div|group|Row density: w 86 → 78.9; moved -7.8,0
+  ~ button||Compact rows (W): w 28 → 26.9; fw 400 → 500; moved -7.8,0
+  ~ button||Standard rows (E): w 28 → 22; fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -8.9,0
+  ~ div|group|View: moved -14.9,0
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ div|group|Scroll: w 110.6 → 121; moved -14.9,0
+  ~ button||Scroll table left (A): w 32 → 37.2; fw 400 → 500; moved -14.9,0
+  ~ button||Scroll table right (D): w 32 → 37.2; fw 400 → 500; moved -9.7,0
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved -4.5,0
+  ~ button||Expand table (T): w 32 → 37.2; fw 400 → 500; radius 4px → 6px; moved 5.4,0
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.8,0
+  ~ button||Collapse player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div||Filters F 79.4x28
+  + added div||T 37.2x28
+== stats-preview-pinned@1440: 91 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Open details for Fixture Star: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Star: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; bg rgba(255, 209, 102, 0.12) → rgba(255, 255, 255, 0.04); color rgb(255, 209, 102) → rgb(242, 243, 245); border 0px rgb(255, 209, 102) → 0px rgb(242, 243, 245); moved -2,0
+  ~ button||Open details for Fixture Guard: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Guard: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ div|group|Row density: w 86 → 78.9; moved -7.8,0
+  ~ button||Compact rows (W): w 28 → 26.9; fw 400 → 500; moved -7.8,0
+  ~ button||Standard rows (E): w 28 → 22; fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -8.9,0
+  ~ div|group|View: moved -14.9,0
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ div|group|Scroll: w 110.6 → 121; moved -14.9,0
+  ~ button||Scroll table left (A): w 32 → 37.2; fw 400 → 500; moved -14.9,0
+  ~ button||Scroll table right (D): w 32 → 37.2; fw 400 → 500; moved -9.7,0
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved -4.5,0
+  ~ button||Expand table (T): w 32 → 37.2; fw 400 → 500; radius 4px → 6px; moved 5.4,0
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.8,0
+  ~ button||Collapse player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px
+  ~ button||Add Fixture Star to favorites: w 24 → 28; fw 400 → 500; radius 4px → 6px; moved -8,0
+  ~ button||Unpin player preview: w 24 → 28; fw 400 → 600; radius 4px → 6px; shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -4,0
+  ~ button||Full player details: pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245)
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div||Filters F 79.4x28
+  + added div||T 37.2x28
+== stats-filters@1440: 88 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 600; bg rgba(255, 255, 255, 0.04) → rgba(255, 209, 102, 0.12); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 209, 102); shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Open details for Fixture Star: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Star: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ button||Open details for Fixture Guard: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Guard: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ div|group|Row density: w 86 → 78.9; moved -8.2,0
+  ~ button||Compact rows (W): w 28 → 26.9; fw 400 → 500; moved -8.2,0
+  ~ button||Standard rows (E): w 28 → 22; fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -9.3,0
+  ~ div|group|View: moved -15.3,0
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -15.3,0
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -15.2,0
+  ~ div|group|Scroll: w 110.6 → 121; moved -15.2,0
+  ~ button||Scroll table left (A): w 32 → 37.2; fw 400 → 500; moved -15.2,0
+  ~ button||Scroll table right (D): w 32 → 37.2; fw 400 → 500; moved -10.1,0
+  ~ button||Toggle filters (F): w 69.5 → 80.1; fw 400 → 600; radius 4px → 6px; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -4.9,0
+  ~ button||Expand table (T): w 32 → 37.2; fw 400 → 500; radius 4px → 6px; moved 5.7,0
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.8,0
+  ~ button||Collapse player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div||Filters F 80.1x28
+  + added div||T 37.2x28
+== stats-team-dialog@1440: 88 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Open details for Fixture Star: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Star: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ button||Open details for Fixture Guard: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Guard: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ div|group|Row density: w 86 → 78.9; moved -7.8,0
+  ~ button||Compact rows (W): w 28 → 26.9; fw 400 → 500; moved -7.8,0
+  ~ button||Standard rows (E): w 28 → 22; fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -8.9,0
+  ~ div|group|View: moved -14.9,0
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ div|group|Scroll: w 110.6 → 121; moved -14.9,0
+  ~ button||Scroll table left (A): w 32 → 37.2; fw 400 → 500; moved -14.9,0
+  ~ button||Scroll table right (D): w 32 → 37.2; fw 400 → 500; moved -9.7,0
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved -4.5,0
+  ~ button||Expand table (T): w 32 → 37.2; fw 400 → 500; radius 4px → 6px; moved 5.4,0
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.8,0
+  ~ button||Collapse player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div||Filters F 79.4x28
+  + added div||T 37.2x28
+== stats-details@1440: 99 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Open details for Fixture Star: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Star: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ button||Open details for Fixture Guard: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Guard: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ div|group|Row density: w 86 → 78.9; moved -7.8,0
+  ~ button||Compact rows (W): w 28 → 26.9; fw 400 → 500; moved -7.8,0
+  ~ button||Standard rows (E): w 28 → 22; fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -8.9,0
+  ~ div|group|View: moved -14.9,0
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ div|group|Scroll: w 110.6 → 121; moved -14.9,0
+  ~ button||Scroll table left (A): w 32 → 37.2; fw 400 → 500; moved -14.9,0
+  ~ button||Scroll table right (D): w 32 → 37.2; fw 400 → 500; moved -9.7,0
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved -4.5,0
+  ~ button||Expand table (T): w 32 → 37.2; fw 400 → 500; radius 4px → 6px; moved 5.4,0
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.8,0
+  ~ button||Collapse player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px
+  ~ button||Add Fixture Star to favorites: w 24 → 28; fw 400 → 500; radius 4px → 6px; moved -8,0
+  ~ button||Pin player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px; moved -4,0
+  ~ button||Full player details: pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245)
+  ~ a||Full profile: pad 8px 16px 8px 16px → 0px 12px 0px 12px; fw 600 → 500
+  ~ a||Compare: pad 8px 16px 8px 16px → 0px 12px 0px 12px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ button||Add to tray: pad 8px 16px 8px 16px → 0px 12px 0px 12px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ button||Add to Favorites: pad 8px 16px 8px 16px → 0px 12px 0px 12px; bg rgb(36, 40, 46) → rgb(28, 31, 36); icons 14 → 16
+  ~ a||Trends: h 34 → 32; pad 8px 8px 8px 8px → 0px 12px 0px 12px; fs 12px → 13px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ a||Distributions: h 34 → 32; pad 8px 8px 8px 8px → 0px 12px 0px 12px; fs 12px → 13px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ a||Peers: h 34 → 32; pad 8px 8px 8px 8px → 0px 12px 0px 12px; fs 12px → 13px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ button||Close: w 65.8 → 57.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; bg rgb(36, 40, 46) → rgb(28, 31, 36); moved 8,0
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div||Filters F 79.4x28
+  + added div||T 37.2x28
+== stats-totals@1440: 88 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Open details for Fixture Star: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Star: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ button||Open details for Fixture Guard: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Guard: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ div|group|Row density: w 86 → 78.9; moved -7.8,0
+  ~ button||Compact rows (W): w 28 → 26.9; fw 400 → 500; moved -7.8,0
+  ~ button||Standard rows (E): w 28 → 22; fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -8.9,0
+  ~ div|group|View: moved -14.9,0
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ div|group|Scroll: w 110.6 → 121; moved -14.9,0
+  ~ button||Scroll table left (A): w 32 → 37.2; fw 400 → 500; moved -14.9,0
+  ~ button||Scroll table right (D): w 32 → 37.2; fw 400 → 500; moved -9.7,0
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved -4.5,0
+  ~ button||Expand table (T): w 32 → 37.2; fw 400 → 500; radius 4px → 6px; moved 5.4,0
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.8,0
+  ~ button||Collapse player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div||Filters F 79.4x28
+  + added div||T 37.2x28
+== stats-scatter@1440: 74 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 600; bg rgba(255, 255, 255, 0.04) → rgba(255, 209, 102, 0.12); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 209, 102); shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Export PNG: w 105.1 → 100.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 11.7,0; icons 16 → 14
+  ~ button||SVG: w 41.7 → 39.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 7,0
+  ~ button||Copy local URL: w 124.3 → 119.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 4.8,0; icons 16 → 14
+  ~ button||Labels: On: pad 4px 8px 4px 8px → 0px 8px 0px 8px; radius 4px → 6px; shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px
+  ~ button||Show Data Table: w 106.5 → 107.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 400 → 500; radius 4px → 6px; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); color rgb(169, 175, 185) → rgb(242, 243, 245); border 0px rgb(169, 175, 185) → 0px rgb(242, 243, 245)
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+== stats-lines@1440: 73 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 600; bg rgba(255, 255, 255, 0.04) → rgba(255, 209, 102, 0.12); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 209, 102); shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Export PNG: w 105.1 → 100.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 11.7,0; icons 16 → 14
+  ~ button||SVG: w 41.7 → 39.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 7,0
+  ~ button||Copy local URL: w 124.3 → 119.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 4.8,0; icons 16 → 14
+  ~ button||Show Data Table: w 106.5 → 107.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 400 → 500; radius 4px → 6px; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); color rgb(169, 175, 185) → rgb(242, 243, 245); border 0px rgb(169, 175, 185) → 0px rgb(242, 243, 245)
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+== stats-manage-views@1440: 96 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Open details for Fixture Star: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Star: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ button||Open details for Fixture Guard: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Guard: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ div|group|Row density: w 86 → 78.9; moved -7.8,0
+  ~ button||Compact rows (W): w 28 → 26.9; fw 400 → 500; moved -7.8,0
+  ~ button||Standard rows (E): w 28 → 22; fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -8.9,0
+  ~ div|group|View: moved -14.9,0
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ div|group|Scroll: w 110.6 → 121; moved -14.9,0
+  ~ button||Scroll table left (A): w 32 → 37.2; fw 400 → 500; moved -14.9,0
+  ~ button||Scroll table right (D): w 32 → 37.2; fw 400 → 500; moved -9.7,0
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved -4.5,0
+  ~ button||Expand table (T): w 32 → 37.2; fw 400 → 500; radius 4px → 6px; moved 5.4,0
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.8,0
+  ~ button||Collapse player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px
+  ~ button||Close manage views modal: w 30 → 28; h 22 → 28; pad 4px 8px 4px 8px → 0px 0px 0px 0px; fs 16px → 12px; fw 400 → 500; moved 2,0
+  ~ button||Custom Views (0/10): pad 4px 8px 4px 8px → 0px 8px 0px 8px; radius 4px → 6px; shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px
+  ~ button||Add View: w 85.4 → 86; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 400 → 500; radius 4px → 6px; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); color rgb(169, 175, 185) → rgb(242, 243, 245); border 0px rgb(169, 175, 185) → 0px rgb(242, 243, 245)
+  ~ button||Export / Import & Reset: w 140 → 141.6; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 400 → 500; radius 4px → 6px; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); color rgb(169, 175, 185) → rgb(242, 243, 245); border 0px rgb(169, 175, 185) → 0px rgb(242, 243, 245); moved 0.6,0
+  ~ button||Create View: w 108.3 → 105.2; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(14, 16, 19); moved 3.1,0
+  ~ button||Create Your First Custom View: w 186.5 → 182; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(14, 16, 19); moved 2.2,0
+  ~ button||Inspect Presets: w 104.4 → 101; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 3.4,0
+  ~ button||Done: w 47.4 → 45.2; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.2,0
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div||Filters F 79.4x28
+  + added div||T 37.2x28
+== stats-hotkeys@1440: 89 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Open details for Fixture Star: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Star: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ button||Open details for Fixture Guard: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Guard: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ div|group|Row density: w 86 → 78.9; moved -7.8,0
+  ~ button||Compact rows (W): w 28 → 26.9; fw 400 → 500; moved -7.8,0
+  ~ button||Standard rows (E): w 28 → 22; fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -8.9,0
+  ~ div|group|View: moved -14.9,0
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ div|group|Scroll: w 110.6 → 121; moved -14.9,0
+  ~ button||Scroll table left (A): w 32 → 37.2; fw 400 → 500; moved -14.9,0
+  ~ button||Scroll table right (D): w 32 → 37.2; fw 400 → 500; moved -9.7,0
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved -4.5,0
+  ~ button||Expand table (T): w 32 → 37.2; fw 400 → 500; radius 4px → 6px; moved 5.4,0
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.8,0
+  ~ button||Collapse player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px
+  ~ button||Got it (Esc): w 85.5 → 87.3; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.8,0
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div||Filters F 79.4x28
+  + added div||T 37.2x28
+== stats-compare-tray@1440: 96 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; moved 4,0; icons 14 → 16
+  ~ button||Select Team: w 105.8 → 97.8; pad 0px 16px 0px 16px → 0px 12px 0px 12px
+  ~ button||Point guards: moved -8,0
+  ~ button||Shooting guards: moved -8,0
+  ~ button||Small forwards: w 40 → 39.6; moved -8,0
+  ~ button||Power forwards: w 40 → 39.6; moved -8.4,0
+  ~ button||Centers: w 40 → 33; moved -8.9,0
+  ~ button||Draft Class: w 122.1 → 130.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; moved -15.9,0; icons 16 → 16,14
+  - removed div|tablist|Stats Explorer Presets 782.6x40
+  - removed button|tab|Overview 74.4x32
+  - removed button|tab|Shooting 69.5x32
+  - removed button|tab|Impact 57.7x32
+  - removed button|tab|On-Off 56.2x32
+  - removed button|tab|Six Factor 75.8x32
+  - removed button|tab|Rates (Per 36) 100.4x32
+  - removed button|tab|Defense 66.3x32
+  - removed button|tab|True Shooting 99.8x32
+  - removed button|tab|Playmaking 86.3x32
+  - removed button|tab|Rebounding 88.2x32
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x32
+  - removed button||Logos 60.8x32
+  - removed button||Initials 63.5x32
+  - removed button||None 55.9x32
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,0; icons 14 → 16
+  - removed div|group|Counting Mode 353.2x36
+  - removed button||Per Game 83x36
+  - removed button||Per 36 62.2x36
+  - removed button||Per 75 61.9x36
+  - removed button||Per 100 69.4x36
+  - removed button||Totals 60.6x36
+  ~ div|group|Explorer View Mode: moved 7.1,0
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ div|group|Table tools: moved 7.1,0
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 7.1,0
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 7.1,0
+  ~ button||Expand table: fs 14px → 13px; fw 400 → 500
+  ~ button||Dismiss: w 62 → 59.4; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245)
+  ~ button||Open details for Fixture Star: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Star: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ button||Open details for Fixture Guard: w 22 → 28; h 26 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -6,-1
+  ~ button||Pin preview for Fixture Guard: w 24 → 28; fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved -2,0
+  ~ div|group|Row density: w 86 → 78.9; moved -7.8,0
+  ~ button||Compact rows (W): w 28 → 26.9; fw 400 → 500; moved -7.8,0
+  ~ button||Standard rows (E): w 28 → 22; fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -8.9,0
+  ~ div|group|View: moved -14.9,0
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved -14.9,0
+  ~ div|group|Scroll: w 110.6 → 121; moved -14.9,0
+  ~ button||Scroll table left (A): w 32 → 37.2; fw 400 → 500; moved -14.9,0
+  ~ button||Scroll table right (D): w 32 → 37.2; fw 400 → 500; moved -9.7,0
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved -4.5,0
+  ~ button||Expand table (T): w 32 → 37.2; fw 400 → 500; radius 4px → 6px; moved 5.4,0
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.8,0
+  ~ button||Remove Fixture Star from compare tray: pad 2px 2px 2px 2px → 0px 0px 0px 0px; fs 12px → 13px; fw 400 → 500
+  ~ button||Remove Fixture Guard from compare tray: pad 2px 2px 2px 2px → 0px 0px 0px 0px; fs 12px → 13px; fw 400 → 500
+  ~ button||Clear: w 47.9 → 45.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 5.2,0
+  ~ a||Compare (2): w 87 → 84.2; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(14, 16, 19); moved 2.8,0
+  ~ button||Collapse player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px
+  ~ button||Add Fixture Guard to favorites: w 24 → 28; fw 400 → 500; radius 4px → 6px; moved -8,0
+  ~ button||Pin player preview: w 24 → 28; fw 400 → 500; radius 4px → 6px; moved -4,0
+  ~ button||Full player details: pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245)
+  + added div|radiogroup|Stats Explorer Presets 782.6x40
+  + added button|radio|Overview 74.4x32
+  + added button|radio|Shooting 69.5x32
+  + added button|radio|Impact 57.7x32
+  + added button|radio|On-Off 56.2x32
+  + added button|radio|Six Factor 75.8x32
+  + added button|radio|Rates (Per 36) 100.4x32
+  + added button|radio|Defense 66.3x32
+  + added button|radio|True Shooting 99.8x32
+  + added button|radio|Playmaking 86.3x32
+  + added button|radio|Rebounding 88.2x32
+  + added div|radiogroup|Table Divider 266.1x40
+  + added button|radio|Photos 66x32
+  + added button|radio|Logos 60.8x32
+  + added button|radio|Initials 63.5x32
+  + added button|radio|None 55.9x32
+  + added div|radiogroup|Counting Mode 360.2x36
+  + added button|radio|Per Game 83x28
+  + added button|radio|Per 36 61.9x28
+  + added button|radio|Per 75 61.9x28
+  + added button|radio|Per 100 69.4x28
+  + added button|radio|Totals 59.9x28
+  + added div||Filters F 79.4x28
+  + added div||T 37.2x28
+== stats-glossary@1440: 3 changed
+  ~ button||All Stats (20): w 110.4 → 98.6; pad 0px 16px 0px 16px → 0px 12px 0px 12px; fs 14px → 13px; radius 999px → 6px; bg rgb(255, 209, 102) → rgba(255, 209, 102, 0.12); color rgb(14, 16, 19) → rgb(255, 209, 102); border 0px rgb(14, 16, 19) → 0px rgb(255, 209, 102); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px
+  ~ button||Shooting (4): w 108.3 → 95.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; radius 999px → 6px; moved -11.8,0
+  ~ button||Other (16): w 94.6 → 83.4; pad 0px 16px 0px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; radius 999px → 6px; moved -24.7,0
+== stats-tracking@1440: 0 changed
+== stats@390: 95 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; icons 14 → 16
+  - removed div|tablist|Stats Explorer Presets 374x40
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x40
+  - removed button||Logos 60.8x40
+  - removed button||Initials 63.5x40
+  - removed button||None 55.9x40
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; moved 0,16; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,16; icons 14 → 16
+  - removed div|group|Counting Mode 350x84
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  ~ div|group|Explorer View Mode: moved 0,-20
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ div|group|Table tools: moved 0,-20
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 0,-20
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by GP: moved 0,-20
+  ~ button||Sort by MIN: moved 0,-20
+  ~ button||Sort by MPG: moved 0,-20
+  ~ button||Sort by DPM: moved 0,-20
+  ~ button||Sort by ODPM: moved 0,-20
+  ~ button||Sort by DDPM: moved 0,-20
+  ~ button||Sort by PTS: moved 0,-20
+  ~ button||Sort by REB: moved 0,-20
+  ~ button||Sort by AST: moved 0,-20
+  ~ button||Sort by TOV: moved 0,-20
+  ~ button||Sort by 3P%: moved 0,-20
+  ~ button||Sort by FT%: moved 0,-20
+  ~ button||Sort by OREB: moved 0,-20
+  ~ button||Sort by DREB: moved 0,-20
+  ~ button||Sort by STL: moved 0,-20
+  ~ button||Sort by BLK: moved 0,-20
+  ~ button||Add Fixture Star to comparison: moved 0,-20
+  ~ button||Open details for Fixture Star: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Add Fixture Guard to comparison: moved 0,-20
+  ~ button||Open details for Fixture Guard: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ div|group|Row density: moved 0,-20
+  ~ button||Compact rows (W): fw 400 → 500; moved 0,-20
+  ~ button||Standard rows (E): fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ div|group|View: moved 0,-20
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ div|group|Scroll: moved 0,-20
+  ~ button||Scroll table left (A): fw 400 → 500; moved 0,-20
+  ~ button||Scroll table right (D): fw 400 → 500; moved 0,-20
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Expand table (T): fw 400 → 500; radius 4px → 6px; moved 9.8,-20
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20
+  + added div|radiogroup|Stats Explorer Presets 374x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Table Divider 234.1x48
+  + added button|radio|Photos 58x40
+  + added button|radio|Logos 52.8x40
+  + added button|radio|Initials 55.5x40
+  + added button|radio|None 47.9x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+  + added div||Filters F 79.4x40
+  + added div||T 40x40
+== stats-filters@390: 97 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; icons 14 → 16
+  - removed div|tablist|Stats Explorer Presets 374x40
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x40
+  - removed button||Logos 60.8x40
+  - removed button||Initials 63.5x40
+  - removed button||None 55.9x40
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; moved 0,16; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,16; icons 14 → 16
+  - removed div|group|Counting Mode 350x84
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  ~ div|group|Explorer View Mode: moved 0,-20
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ div|group|Table tools: moved 0,-20
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 0,-20
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Filters: fs 14px → 13px; fw 400 → 600; bg rgba(255, 255, 255, 0.04) → rgba(255, 209, 102, 0.12); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 209, 102); shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ select||Sort table by metric: moved 0,-20
+  ~ select||Results per page: moved 0,-20
+  ~ button||Sort by GP: moved 0,-20
+  ~ button||Sort by MIN: moved 0,-20
+  ~ button||Sort by MPG: moved 0,-20
+  ~ button||Sort by DPM: moved 0,-20
+  ~ button||Sort by ODPM: moved 0,-20
+  ~ button||Sort by DDPM: moved 0,-20
+  ~ button||Sort by PTS: moved 0,-20
+  ~ button||Sort by REB: moved 0,-20
+  ~ button||Sort by AST: moved 0,-20
+  ~ button||Sort by TOV: moved 0,-20
+  ~ button||Sort by 3P%: moved 0,-20
+  ~ button||Sort by FT%: moved 0,-20
+  ~ button||Sort by OREB: moved 0,-20
+  ~ button||Sort by DREB: moved 0,-20
+  ~ button||Sort by STL: moved 0,-20
+  ~ button||Sort by BLK: moved 0,-20
+  ~ button||Add Fixture Star to comparison: moved 0,-20
+  ~ button||Open details for Fixture Star: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Add Fixture Guard to comparison: moved 0,-20
+  ~ button||Open details for Fixture Guard: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ div|group|Row density: moved 0,-20
+  ~ button||Compact rows (W): fw 400 → 500; moved 0,-20
+  ~ button||Standard rows (E): fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ div|group|View: moved 0,-20
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ div|group|Scroll: moved 0,-20
+  ~ button||Scroll table left (A): fw 400 → 500; moved 0,-20
+  ~ button||Scroll table right (D): fw 400 → 500; moved 0,-20
+  ~ button||Toggle filters (F): w 69.5 → 80.1; fw 400 → 600; radius 4px → 6px; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ button||Expand table (T): fw 400 → 500; radius 4px → 6px; moved 10.6,-20
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20
+  + added div|radiogroup|Stats Explorer Presets 374x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Table Divider 234.1x48
+  + added button|radio|Photos 58x40
+  + added button|radio|Logos 52.8x40
+  + added button|radio|Initials 55.5x40
+  + added button|radio|None 47.9x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+  + added div||Filters F 80.1x40
+  + added div||T 40x40
+== stats-details@390: 103 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; icons 14 → 16
+  - removed div|tablist|Stats Explorer Presets 374x40
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x40
+  - removed button||Logos 60.8x40
+  - removed button||Initials 63.5x40
+  - removed button||None 55.9x40
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; moved 0,16; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,16; icons 14 → 16
+  - removed div|group|Counting Mode 350x84
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  ~ div|group|Explorer View Mode: moved 0,-20
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ div|group|Table tools: moved 0,-20
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 0,-20
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by GP: moved 0,-20
+  ~ button||Sort by MIN: moved 0,-20
+  ~ button||Sort by MPG: moved 0,-20
+  ~ button||Sort by DPM: moved 0,-20
+  ~ button||Sort by ODPM: moved 0,-20
+  ~ button||Sort by DDPM: moved 0,-20
+  ~ button||Sort by PTS: moved 0,-20
+  ~ button||Sort by REB: moved 0,-20
+  ~ button||Sort by AST: moved 0,-20
+  ~ button||Sort by TOV: moved 0,-20
+  ~ button||Sort by 3P%: moved 0,-20
+  ~ button||Sort by FT%: moved 0,-20
+  ~ button||Sort by OREB: moved 0,-20
+  ~ button||Sort by DREB: moved 0,-20
+  ~ button||Sort by STL: moved 0,-20
+  ~ button||Sort by BLK: moved 0,-20
+  ~ button||Add Fixture Star to comparison: moved 0,-20
+  ~ button||Open details for Fixture Star: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Add Fixture Guard to comparison: moved 0,-20
+  ~ button||Open details for Fixture Guard: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ div|group|Row density: moved 0,-20
+  ~ button||Compact rows (W): fw 400 → 500; moved 0,-20
+  ~ button||Standard rows (E): fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ div|group|View: moved 0,-20
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ div|group|Scroll: moved 0,-20
+  ~ button||Scroll table left (A): fw 400 → 500; moved 0,-20
+  ~ button||Scroll table right (D): fw 400 → 500; moved 0,-20
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Expand table (T): fw 400 → 500; radius 4px → 6px; moved 9.8,-20
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ a||Full profile: pad 8px 16px 8px 16px → 0px 12px 0px 12px; fw 600 → 500
+  ~ a||Compare: pad 8px 16px 8px 16px → 0px 12px 0px 12px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ button||Add to tray: pad 8px 16px 8px 16px → 0px 12px 0px 12px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ button||Add to Favorites: pad 8px 16px 8px 16px → 0px 12px 0px 12px; bg rgb(36, 40, 46) → rgb(28, 31, 36); icons 14 → 16
+  ~ a||Trends: pad 8px 8px 8px 8px → 0px 12px 0px 12px; fs 12px → 13px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ a||Distributions: pad 8px 8px 8px 8px → 0px 12px 0px 12px; fs 12px → 13px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ a||Peers: pad 8px 8px 8px 8px → 0px 12px 0px 12px; fs 12px → 13px; bg rgb(36, 40, 46) → rgb(28, 31, 36)
+  ~ button||Close: w 65.8 → 57.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; bg rgb(36, 40, 46) → rgb(28, 31, 36); moved 8,0
+  + added div|radiogroup|Stats Explorer Presets 374x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Table Divider 234.1x48
+  + added button|radio|Photos 58x40
+  + added button|radio|Logos 52.8x40
+  + added button|radio|Initials 55.5x40
+  + added button|radio|None 47.9x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+  + added div||Filters F 79.4x40
+  + added div||T 40x40
+== stats-totals@390: 95 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; icons 14 → 16
+  - removed div|tablist|Stats Explorer Presets 374x40
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x40
+  - removed button||Logos 60.8x40
+  - removed button||Initials 63.5x40
+  - removed button||None 55.9x40
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; moved 0,16; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,16; icons 14 → 16
+  - removed div|group|Counting Mode 350x84
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  ~ div|group|Explorer View Mode: moved 0,-20
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ div|group|Table tools: moved 0,-20
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 0,-20
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by GP: moved 0,-20
+  ~ button||Sort by MIN: moved 0,-20
+  ~ button||Sort by MPG: moved 0,-20
+  ~ button||Sort by DPM: moved 0,-20
+  ~ button||Sort by ODPM: moved 0,-20
+  ~ button||Sort by DDPM: moved 0,-20
+  ~ button||Sort by PTS: moved 0,-20
+  ~ button||Sort by REB: moved 0,-20
+  ~ button||Sort by AST: moved 0,-20
+  ~ button||Sort by TOV: moved 0,-20
+  ~ button||Sort by 3P%: moved 0,-20
+  ~ button||Sort by FT%: moved 0,-20
+  ~ button||Sort by OREB: moved 0,-20
+  ~ button||Sort by DREB: moved 0,-20
+  ~ button||Sort by STL: moved 0,-20
+  ~ button||Sort by BLK: moved 0,-20
+  ~ button||Add Fixture Star to comparison: moved 0,-20
+  ~ button||Open details for Fixture Star: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Add Fixture Guard to comparison: moved 0,-20
+  ~ button||Open details for Fixture Guard: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ div|group|Row density: moved 0,-20
+  ~ button||Compact rows (W): fw 400 → 500; moved 0,-20
+  ~ button||Standard rows (E): fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ div|group|View: moved 0,-20
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ div|group|Scroll: moved 0,-20
+  ~ button||Scroll table left (A): fw 400 → 500; moved 0,-20
+  ~ button||Scroll table right (D): fw 400 → 500; moved 0,-20
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Expand table (T): fw 400 → 500; radius 4px → 6px; moved 9.8,-20
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20
+  + added div|radiogroup|Stats Explorer Presets 374x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Table Divider 234.1x48
+  + added button|radio|Photos 58x40
+  + added button|radio|Logos 52.8x40
+  + added button|radio|Initials 55.5x40
+  + added button|radio|None 47.9x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+  + added div||Filters F 79.4x40
+  + added div||T 40x40
+== stats-scatter@390: 69 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; icons 14 → 16
+  - removed div|tablist|Stats Explorer Presets 374x40
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x40
+  - removed button||Logos 60.8x40
+  - removed button||Initials 63.5x40
+  - removed button||None 55.9x40
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; moved 0,16; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,16; icons 14 → 16
+  - removed div|group|Counting Mode 350x84
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  ~ div|group|Explorer View Mode: moved 0,-20
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 600; bg rgba(255, 255, 255, 0.04) → rgba(255, 209, 102, 0.12); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 209, 102); shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ div|group|Table tools: moved 0,-20
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 0,-20
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Export PNG: w 105.1 → 100.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20; icons 16 → 14
+  ~ button||SVG: w 41.7 → 40; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved -4.8,-20
+  ~ button||Copy local URL: w 124.3 → 119.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved -6.5,-20; icons 16 → 14
+  ~ select||Select X-axis metric: moved 0,-20
+  ~ select||Select Y-axis metric: moved 0,-20
+  ~ select||Select reference lines type: moved 0,-20
+  ~ button||Labels: On: pad 4px 8px 4px 8px → 0px 8px 0px 8px; radius 4px → 6px; shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ button||Show Data Table: w 106.5 → 107.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 400 → 500; radius 4px → 6px; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); color rgb(169, 175, 185) → rgb(242, 243, 245); border 0px rgb(169, 175, 185) → 0px rgb(242, 243, 245); moved 0,-20
+  + added div|radiogroup|Stats Explorer Presets 374x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Table Divider 234.1x48
+  + added button|radio|Photos 58x40
+  + added button|radio|Logos 52.8x40
+  + added button|radio|Initials 55.5x40
+  + added button|radio|None 47.9x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+== stats-lines@390: 70 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; icons 14 → 16
+  - removed div|tablist|Stats Explorer Presets 374x40
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x40
+  - removed button||Logos 60.8x40
+  - removed button||Initials 63.5x40
+  - removed button||None 55.9x40
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; moved 0,16; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,16; icons 14 → 16
+  - removed div|group|Counting Mode 350x84
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  ~ div|group|Explorer View Mode: moved 0,-20
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 600; bg rgba(255, 255, 255, 0.04) → rgba(255, 209, 102, 0.12); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 209, 102); shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ div|group|Table tools: moved 0,-20
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 0,-20
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Export PNG: w 105.1 → 100.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20; icons 16 → 14
+  ~ button||SVG: w 41.7 → 40; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved -4.8,-20
+  ~ button||Copy local URL: w 124.3 → 119.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved -6.5,-20; icons 16 → 14
+  ~ select||Select metric to plot: moved 0,-20
+  ~ select||Select rolling average window: moved 0,-20
+  ~ select||Select game log window: moved 0,-20
+  ~ button||Show Data Table: w 106.5 → 107.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 400 → 500; radius 4px → 6px; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); color rgb(169, 175, 185) → rgb(242, 243, 245); border 0px rgb(169, 175, 185) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Remove Fixture Star: moved 0,-20
+  ~ button||Remove Fixture Guard: moved 0,-20
+  + added div|radiogroup|Stats Explorer Presets 374x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Table Divider 234.1x48
+  + added button|radio|Photos 58x40
+  + added button|radio|Logos 52.8x40
+  + added button|radio|Initials 55.5x40
+  + added button|radio|None 47.9x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+== stats-manage-views@390: 103 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; icons 14 → 16
+  - removed div|tablist|Stats Explorer Presets 374x40
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x40
+  - removed button||Logos 60.8x40
+  - removed button||Initials 63.5x40
+  - removed button||None 55.9x40
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; moved 0,16; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,16; icons 14 → 16
+  - removed div|group|Counting Mode 350x84
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  ~ div|group|Explorer View Mode: moved 0,-20
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ div|group|Table tools: moved 0,-20
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 0,-20
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by GP: moved 0,-20
+  ~ button||Sort by MIN: moved 0,-20
+  ~ button||Sort by MPG: moved 0,-20
+  ~ button||Sort by DPM: moved 0,-20
+  ~ button||Sort by ODPM: moved 0,-20
+  ~ button||Sort by DDPM: moved 0,-20
+  ~ button||Sort by PTS: moved 0,-20
+  ~ button||Sort by REB: moved 0,-20
+  ~ button||Sort by AST: moved 0,-20
+  ~ button||Sort by TOV: moved 0,-20
+  ~ button||Sort by 3P%: moved 0,-20
+  ~ button||Sort by FT%: moved 0,-20
+  ~ button||Sort by OREB: moved 0,-20
+  ~ button||Sort by DREB: moved 0,-20
+  ~ button||Sort by STL: moved 0,-20
+  ~ button||Sort by BLK: moved 0,-20
+  ~ button||Add Fixture Star to comparison: moved 0,-20
+  ~ button||Open details for Fixture Star: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Add Fixture Guard to comparison: moved 0,-20
+  ~ button||Open details for Fixture Guard: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ div|group|Row density: moved 0,-20
+  ~ button||Compact rows (W): fw 400 → 500; moved 0,-20
+  ~ button||Standard rows (E): fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ div|group|View: moved 0,-20
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ div|group|Scroll: moved 0,-20
+  ~ button||Scroll table left (A): fw 400 → 500; moved 0,-20
+  ~ button||Scroll table right (D): fw 400 → 500; moved 0,-20
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Expand table (T): fw 400 → 500; radius 4px → 6px; moved 9.8,-20
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Close manage views modal: pad 4px 8px 4px 8px → 0px 0px 0px 0px; fs 16px → 12px; fw 400 → 500; moved 0,-16
+  ~ button||Custom Views (0/10): w 115.1 → 131.8; pad 4px 8px 4px 8px → 0px 8px 0px 8px; radius 4px → 6px; shadow rgb(255, 209, 102) 0px 0px 0px 1px inset → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-16
+  ~ button||Add View: w 75.3 → 86; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 400 → 500; radius 4px → 6px; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); color rgb(169, 175, 185) → rgb(242, 243, 245); border 0px rgb(169, 175, 185) → 0px rgb(242, 243, 245); moved 16.8,-16
+  ~ button||Export / Import & Reset: w 122.1 → 141.6; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 400 → 500; radius 4px → 6px; bg rgba(0, 0, 0, 0) → rgb(31, 38, 50); color rgb(169, 175, 185) → rgb(242, 243, 245); border 0px rgb(169, 175, 185) → 0px rgb(242, 243, 245); moved 27.4,-16
+  ~ button||Create View: w 84.4 → 105.2; h 46 → 40; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(14, 16, 19); moved -20.9,-16
+  ~ button||Create Your First Custom View: w 186.5 → 182; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(14, 16, 19); moved 2.2,-22
+  ~ button||Inspect Presets: w 43.5 → 101; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved -57.4,-13
+  ~ button||Done: w 47.4 → 45.2; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 2.3,-4
+  + added div|radiogroup|Stats Explorer Presets 374x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Table Divider 234.1x48
+  + added button|radio|Photos 58x40
+  + added button|radio|Logos 52.8x40
+  + added button|radio|Initials 55.5x40
+  + added button|radio|None 47.9x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+  + added div||Filters F 79.4x40
+  + added div||T 40x40
+== stats-hotkeys@390: 96 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; icons 14 → 16
+  - removed div|tablist|Stats Explorer Presets 374x40
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x40
+  - removed button||Logos 60.8x40
+  - removed button||Initials 63.5x40
+  - removed button||None 55.9x40
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; moved 0,16; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,16; icons 14 → 16
+  - removed div|group|Counting Mode 350x84
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  ~ div|group|Explorer View Mode: moved 0,-20
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(169, 175, 185) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ div|group|Table tools: moved 0,-20
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 0,-20
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by GP: moved 0,-20
+  ~ button||Sort by MIN: moved 0,-20
+  ~ button||Sort by MPG: moved 0,-20
+  ~ button||Sort by DPM: moved 0,-20
+  ~ button||Sort by ODPM: moved 0,-20
+  ~ button||Sort by DDPM: moved 0,-20
+  ~ button||Sort by PTS: moved 0,-20
+  ~ button||Sort by REB: moved 0,-20
+  ~ button||Sort by AST: moved 0,-20
+  ~ button||Sort by TOV: moved 0,-20
+  ~ button||Sort by 3P%: moved 0,-20
+  ~ button||Sort by FT%: moved 0,-20
+  ~ button||Sort by OREB: moved 0,-20
+  ~ button||Sort by DREB: moved 0,-20
+  ~ button||Sort by STL: moved 0,-20
+  ~ button||Sort by BLK: moved 0,-20
+  ~ button||Add Fixture Star to comparison: moved 0,-20
+  ~ button||Open details for Fixture Star: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Add Fixture Guard to comparison: moved 0,-20
+  ~ button||Open details for Fixture Guard: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ div|group|Row density: moved 0,-20
+  ~ button||Compact rows (W): fw 400 → 500; moved 0,-20
+  ~ button||Standard rows (E): fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ div|group|View: moved 0,-20
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ div|group|Scroll: moved 0,-20
+  ~ button||Scroll table left (A): fw 400 → 500; moved 0,-20
+  ~ button||Scroll table right (D): fw 400 → 500; moved 0,-20
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Expand table (T): fw 400 → 500; radius 4px → 6px; moved 9.8,-20
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Got it (Esc): w 61.8 → 87.3; h 46 → 40; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -25.5,0
+  + added div|radiogroup|Stats Explorer Presets 374x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Table Divider 234.1x48
+  + added button|radio|Photos 58x40
+  + added button|radio|Logos 52.8x40
+  + added button|radio|Initials 55.5x40
+  + added button|radio|None 47.9x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+  + added div||Filters F 79.4x40
+  + added div||T 40x40
+== stats-compare-tray@390: 102 changed
+  ~ button||How to Use This Page: w 175.3 → 177.3; icons 14 → 16
+  ~ a||Stats Glossary: w 133.4 → 135.4; moved 2,0; icons 14 → 16
+  ~ button||Hotkeys: w 94.9 → 96.9; icons 14 → 16
+  ~ button||Filters 2025-26 · Regular Season · Jun 29: moved 0,228.5
+  ~ button||Data details: moved 0,228.5
+  - removed div|tablist|Stats Explorer Presets 374x40
+  - removed button|tab|Overview 74.4x40
+  - removed button|tab|Shooting 69.5x40
+  - removed button|tab|Impact 57.7x40
+  - removed button|tab|On-Off 56.2x40
+  - removed button|tab|Six Factor 75.8x40
+  - removed button|tab|Rates (Per 36) 100.4x40
+  - removed button|tab|Defense 66.3x40
+  - removed button|tab|True Shooting 99.8x40
+  - removed button|tab|Playmaking 86.3x40
+  - removed button|tab|Rebounding 88.2x40
+  - removed div|group|Table Divider 266.1x40
+  - removed button||Photos 66x40
+  - removed button||Logos 60.8x40
+  - removed button||Initials 63.5x40
+  - removed button||None 55.9x40
+  - removed div||Add View Manage 198.5x40
+  ~ button||Add View: w 99.1 → 105.1; moved 0,16; icons 14 → 16
+  ~ button||Manage: w 91.4 → 97.4; moved 6,16; icons 14 → 16
+  - removed div|group|Counting Mode 350x84
+  - removed button||Per Game 83x40
+  - removed button||Per 36 62.2x40
+  - removed button||Per 75 61.9x40
+  - removed button||Per 100 69.4x40
+  - removed button||Totals 60.6x40
+  ~ div|group|Explorer View Mode: moved 0,-20
+  ~ button||Scatter plot: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Trend lines: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Compare selected players (Z): fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ div|group|Table tools: moved 0,-20
+  ~ button||Table settings: fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → color(srgb 0.0941176 0.117647 0.156863); moved 0,-20
+  ~ button||Favorites only: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Hotkeys: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Filters: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by Player: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Reset table: fs 14px → 13px; fw 400 → 500; color rgb(255, 209, 102) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Dismiss: w 62 → 59.4; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Sort by GP: moved 0,-20
+  ~ button||Sort by MIN: moved 0,-20
+  ~ button||Sort by MPG: moved 0,-20
+  ~ button||Sort by DPM: moved 0,-20
+  ~ button||Sort by ODPM: moved 0,-20
+  ~ button||Sort by DDPM: moved 0,-20
+  ~ button||Sort by PTS: moved 0,-20
+  ~ button||Sort by REB: moved 0,-20
+  ~ button||Sort by AST: moved 0,-20
+  ~ button||Sort by TOV: moved 0,-20
+  ~ button||Sort by 3P%: moved 0,-20
+  ~ button||Sort by FT%: moved 0,-20
+  ~ button||Sort by OREB: moved 0,-20
+  ~ button||Sort by DREB: moved 0,-20
+  ~ button||Sort by STL: moved 0,-20
+  ~ button||Sort by BLK: moved 0,-20
+  ~ button||Remove Fixture Star from comparison: moved 0,-20
+  ~ button||Open details for Fixture Star: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Remove Fixture Guard from comparison: moved 0,-20
+  ~ button||Open details for Fixture Guard: fs 14px → 12px; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ div|group|Row density: moved 0,-20
+  ~ button||Compact rows (W): fw 400 → 500; moved 0,-20
+  ~ button||Standard rows (E): fw 400 → 600; bg rgba(0, 0, 0, 0) → rgba(255, 209, 102, 0.12); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved 0,-20
+  ~ div|group|View: moved 0,-20
+  ~ button||Previous view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ button||Next view: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; moved 0,-20
+  ~ div|group|Scroll: moved 0,-20
+  ~ button||Scroll table left (A): fw 400 → 500; moved 0,-20
+  ~ button||Scroll table right (D): fw 400 → 500; moved 0,-20
+  ~ button||Toggle filters (F): w 69.5 → 79.4; fw 400 → 500; radius 4px → 6px; moved 0,-20
+  ~ button||Expand table (T): fw 400 → 500; radius 4px → 6px; moved 9.8,-20
+  ~ button||First Page: w 95.7 → 92.9; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 0,-20
+  ~ button||Remove Fixture Star from compare tray: pad 2px 2px 2px 2px → 0px 0px 0px 0px; fs 12px → 13px; fw 400 → 500; moved 0,-20
+  ~ button||Remove Fixture Guard from compare tray: pad 2px 2px 2px 2px → 0px 0px 0px 0px; fs 12px → 13px; fw 400 → 500; moved 0,-20
+  ~ button||Clear: w 47.9 → 45.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(242, 243, 245); moved 5.2,-20
+  ~ a||Compare (2): w 87 → 84.2; pad 4px 8px 4px 8px → 0px 8px 0px 8px; fw 600 → 500; border 1px rgba(0, 0, 0, 0) → 0px rgb(14, 16, 19); moved 2.8,-20
+  + added div|radiogroup|Stats Explorer Presets 374x48
+  + added button|radio|Overview 74.4x40
+  + added button|radio|Shooting 69.5x40
+  + added button|radio|Impact 57.7x40
+  + added button|radio|On-Off 56.2x40
+  + added button|radio|Six Factor 75.8x40
+  + added button|radio|Rates (Per 36) 100.4x40
+  + added button|radio|Defense 66.3x40
+  + added button|radio|True Shooting 99.8x40
+  + added button|radio|Playmaking 86.3x40
+  + added button|radio|Rebounding 88.2x40
+  + added div|radiogroup|Table Divider 234.1x48
+  + added button|radio|Photos 58x40
+  + added button|radio|Logos 52.8x40
+  + added button|radio|Initials 55.5x40
+  + added button|radio|None 47.9x40
+  + added div|radiogroup|Counting Mode 320.2x48
+  + added button|radio|Per Game 75x40
+  + added button|radio|Per 36 53.9x40
+  + added button|radio|Per 75 53.9x40
+  + added button|radio|Per 100 61.4x40
+  + added button|radio|Totals 51.9x40
+  + added div||Filters F 79.4x40
+  + added div||T 40x40
+== stats-glossary@390: 3 changed
+  ~ button||All Stats (20): w 110.4 → 98.6; pad 0px 16px 0px 16px → 0px 12px 0px 12px; fs 14px → 13px; radius 999px → 6px; bg rgb(255, 209, 102) → rgba(255, 209, 102, 0.12); color rgb(14, 16, 19) → rgb(255, 209, 102); border 0px rgb(14, 16, 19) → 0px rgb(255, 209, 102); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px
+  ~ button||Shooting (4): w 108.3 → 95.3; pad 0px 16px 0px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; radius 999px → 6px; moved -11.8,0
+  ~ button||Other (16): w 94.6 → 83.4; pad 0px 16px 0px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; radius 999px → 6px; moved -24.7,0
+== stats-tracking@390: 0 changed

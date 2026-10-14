@@ -13,12 +13,12 @@ import { TeamIdentity, teamStyle } from "./ui/identity";
 import { PageShell, ProfileLayout, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { RouteTabs } from "./ui/route-tabs";
-import { SegmentedControl } from "./ui/segmented-control";
 import { Select } from "./ui/select";
 import { Skeleton } from "./ui/skeleton";
 import { StatTile } from "./ui/stat-tile";
 import { FINANCE_TEAMS } from "@/lib/finance-teams";
 import { formatDate } from "@/lib/format-date";
+import { Button, ButtonLink, Segmented } from "./ui/kit";
 import {
   FIT_LABELS, SHAPE_FIT_LABELS, SORTS, SOURCE, category, categoryLabels, getRosterShapes, one, parseSort, percent, rankOf,
   shapeItems, signed, sortTeams, wholeMinutes, type RosterShapes, type ShapeSort, type ShapeTeam
@@ -78,7 +78,7 @@ function Details({ data }: { data: RosterShapes }) {
 }
 
 function Failure({ error }: { error: string }) {
-  return <div role="alert"><GatedNote why={error} action={<button className="button" onClick={() => window.location.reload()}>Retry</button>}>Roster Shapes are unavailable right now.</GatedNote></div>;
+  return <div role="alert"><GatedNote why={error} action={<Button size="lg" onClick={() => window.location.reload()}>Retry</Button>}>Roster Shapes are unavailable right now.</GatedNote></div>;
 }
 
 /** One shared legend: color = archetype, outline = fit, hatch = unknown, white space = gap to the fullest roster. */
@@ -155,7 +155,7 @@ export function RosterShapesLeague() {
     </>}>
       <ShapesLegend data={data} note={false} />
       <div className="shapes-toolbar">
-        <SegmentedControl<ShapeSort> name="shapes-sort" value={sort} onChange={setSort} options={SORTS} />
+        <Segmented<ShapeSort> size="lg" label="shapes-sort" value={sort} onChange={setSort} options={SORTS} />
         <span className="chart-note">{sort === "fit" ? "Best fit = share of known value from returning players." : sort === "az" ? "Alphabetical by team." : "Largest known value over replacement first."}</span>
       </div>
       <ul className="shapes-grid" aria-label="Team roster shapes">
@@ -214,7 +214,7 @@ export function RosterShapesTeam({ team, view, depth }: RosterShapesTeamProps) {
   const teamName = info?.name ?? team;
   return <PageShell template="profile" className="shapes-page">
     <PageHeader title="Roster Shapes" subtitle={`${teamName} · ${view === "depth" ? "depth chart from observed minutes" : data ? `${data.label} · ${data.projected_note}` : "2026-27 · projected"}`}
-      actions={<>{switcher}<Link className="button" href={`/roster-shapes${query}`}>All teams</Link>{data && view === "shape" && <Details data={data} />}</>} />
+      actions={<>{switcher}<ButtonLink size="lg" href={`/roster-shapes${query}`}>All teams</ButtonLink>{data && view === "shape" && <Details data={data} />}</>} />
     <ProfileLayout tabs={tabs} hero={view === "depth" ? null : <div className="shapes-hero">
       <TeamIdentity team={teamId} name={teamName} size="xl" subtitle={shape ? `${shape.players} players on the 2026-27 index roster` : "2026-27 index roster"} />
       {shape && <div className="shapes-tiles">

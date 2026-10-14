@@ -1,0 +1,51 @@
+@layer components {
+/* Player Portrait Primitives */
+.player-portrait,
+.player-portrait-fallback {
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surface-2);
+  border: 1px solid var(--color-hairline);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.player-portrait {
+  object-fit: cover;
+  object-position: top center;
+}
+
+.player-portrait-fallback {
+  display: grid;
+  place-items: center;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-family: var(--font-mono), monospace;
+}
+
+.player-portrait-sm {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
+  font-size: var(--text-xs);
+}
+
+.player-portrait-md {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  font-size: var(--text-md);
+}
+
+.player-portrait-lg {
+  width: 80px;
+  height: 80px;
+  min-width: 80px;
+  min-height: 80px;
+  font-size: var(--text-2xl);
+}
+
+.brand-title { display: flex; align-items: center; min-height: 24px; }
+.courtlens-wordmark { display: block; flex-shrink: 0; }
+}

@@ -70,6 +70,13 @@ Instructions (owner, 2026-10-13):
 5. [x] Try Switzer instead of Public Sans for the interface. Owner: "Let's try switzer, I actually
    used this font in another project. It's nice." — original Switzer 1.2 variable WOFF2,
    self-hosted with pinned setup/dev/build acquisition; uniform digits and sampled accents verified.
+6. [x] Give the magnifying glass a cool, lustrous silver gradient across the CourtLens logo, icon
+   and favicon, like a silver analogue of Databallr's golden logo (owner, 2026-10-14). — shared
+   ring/handle gradient, matching SVG/PNG variants and versioned URLs; 16px/32px visual checks,
+   desktop/phone headers, served-asset parity and unique paint references verified.
+7. [x] Add a little more padding around the round part of the magnifying glass in the favicon;
+   it looks pressed against the edges (owner screenshot, 2026-10-14). — artwork scale 90% → 82%,
+   adding 0.60px of top/left lens clearance at 16px; visual inspection and served v6 SVG pass.
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.
@@ -80,6 +87,11 @@ legibility pass. Evidence: `favicon-rounded-comparison.png`, `favicon-rounded-ve
 Switzer follow-up: lint/typecheck, Vitest 454/454, production build, 13 focused browser checks and
 120 visual/picker checks pass; typography baselines refreshed and checked. Five responsive sizes,
 blocked fonts and live Settings checked. Evidence: docs/evidence/alignment/app-shell/switzer/.
+Silver follow-up: lint/typecheck, Vitest 511/511, production webpack build, six header browser checks
+and responsive/asset verification pass. Evidence: docs/evidence/alignment/app-shell/silver-mark/.
+Padding follow-up: lint/typecheck, Vitest 511/511, four header checks and favicon browser verification
+pass; the broader search check has dev-server lookup/workspace timeouts. Evidence:
+docs/evidence/alignment/app-shell/favicon-padding/.
 
 ### 1 Stats — 👀 ready for review
 Instructions (owner, 2026-10-12):

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PageShell } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
 import { RecentGamesView } from "@/components/recent-games-view";
 import { getPlayerGameLog, getPlayerProfile, getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { PlayerGameLogResponse, PlayerProfile, WorkbenchCatalog } from "@/lib/types";
 import { loadExampleSubject } from "@/lib/example-subject";
+import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -76,9 +76,9 @@ export default async function LastGamesPage({ searchParams }: LastGamesPageProps
           <h2>Player not found in this snapshot</h2>
           <p>{loadError ?? `Could not find confirmed appearances for player ID ${playerId}.`}</p>
           <div className="empty-state-actions">
-            <Link className="button button-dark" href="/players">
+            <ButtonLink size="lg" href="/players">
               Browse Players Directory
-            </Link>
+            </ButtonLink>
           </div>
         </div>
       </PageShell>

@@ -7,16 +7,13 @@ import { ContextBar } from "./context-bar";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamGrid, teamDisplayName } from "./team-grid";
 import { AccordionItem } from "./ui/accordion";
-import { Button } from "./ui/button";
 import { GatedNote } from "./ui/gated-note";
-import { Icon } from "./ui/icon";
 import { TeamIdentity } from "./ui/identity";
 import { Input } from "./ui/input";
 import { Menu, MenuItem } from "./ui/menu";
 import { Modal } from "./ui/modal";
 import { PageHeader } from "./ui/panel";
 import { BoardLayout, PageShell } from "./ui/page-shell";
-import { SegmentedControl } from "./ui/segmented-control";
 import { Select } from "./ui/select";
 import { Skeleton } from "./ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
@@ -29,6 +26,7 @@ import {
 import { teamAccent } from "@/lib/team-colors";
 import { getTeamDetail } from "@/lib/workbench-api";
 import type { TeamDetailResponse, WorkbenchCatalog } from "@/lib/types";
+import { Button, IconButton, Segmented } from "./ui/kit";
 
 export interface RosterAllocationViewProps {
   catalog: WorkbenchCatalog | null;
@@ -106,7 +104,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
     const playerId = focusAfterMove.current;
     if (!playerId) return;
     focusAfterMove.current = null;
-    boardRef.current?.querySelector<HTMLElement>(`[data-player-id="${CSS.escape(playerId)}"] .ui-menu-trigger`)?.focus();
+    boardRef.current?.querySelector<HTMLElement>(`[data-player-id="${CSS.escape(playerId)}"] .roster-chip-menu button`)?.focus();
   }, [positions]);
 
   const onDrop = (lane: Lane) => (event: DragEvent<HTMLElement>) => {
@@ -141,9 +139,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
             aria-label={`Projected minutes for ${row.player_name}`} placeholder="—" error={minutesInvalid} aria-invalid={minutesInvalid}
             value={projected[row.player_id] ?? ""} onChange={(event) => setProjected((current) => ({ ...current, [row.player_id]: event.target.value }))} />
         ) : null}
-        <Menu align="right" className="roster-chip-menu" trigger={<span className="roster-chip-move">
-          <Icon name="more" size={16} /><span className="sr-only">Move {row.player_name}</span>
-        </span>}>
+        <Menu align="right" className="roster-chip-menu" renderTrigger={props => <IconButton {...props} size="xs" variant="ghost" icon="more" label={`Move ${row.player_name}`} />}>
           {LANES.filter((lane) => lane !== row.allocation_position).map((lane) => (
             <MenuItem key={lane} label={lane === "Unassigned" ? "Move to Unassigned" : `Move to ${lane} · ${LANE_LABELS[lane]}`} onClick={() => { focusAfterMove.current = row.player_id; move(row.player_id, lane); }} />
           ))}
@@ -203,15 +199,15 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
   const exportDisabled = !data || !rows.length || summary.invalid;
 
   const actions = teamId ? <>
-    <Button variant="secondary" icon="swap" onClick={() => setPickerOpen(true)}>Change team</Button>
-    <Button variant="primary" icon="download" disabled={exportDisabled}
+    <Button size="sm" variant="secondary" icon="swap" onClick={() => setPickerOpen(true)}>Change team</Button>
+    <Button size="sm" variant="primary" icon="download" disabled={exportDisabled}
       onClick={() => data && downloadResearch(ALLOCATION_EXPORT_FILENAME, allocationExport(data, mode, allocations))}>Export JSON</Button>
   </> : undefined;
   const content = (
     <>
       {embedded ? <div className="roster-embedded-actions">
         <p className="roster-embedded-intro">Place players into a depth chart and see how {scope.season ?? "observed"} minutes split by position.</p>
-        <Button variant="primary" icon="download" disabled={exportDisabled}
+        <Button size="sm" variant="primary" icon="download" disabled={exportDisabled}
           onClick={() => data && downloadResearch(ALLOCATION_EXPORT_FILENAME, allocationExport(data, mode, allocations))}>Export JSON</Button>
       </div> : <PageHeader
         title="Roster Shapes"
@@ -228,7 +224,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
         initialBeforeDate={scope.beforeDate}
         sampleSize={data ? rows.length : undefined}
         showWindow={false}
-        modes={<SegmentedControl<AllocationMode> name="roster-basis" value={mode} onChange={setMode}
+        modes={<Segmented<AllocationMode> size="lg" label="roster-basis" value={mode} onChange={setMode}
           options={[{ value: "observed", label: "Observed" }, { value: "projected", label: "Projected" }]} />}
         detailRows={data ? [
           { label: "Roster source", value: "Team player-game boxes (team detail)" },
@@ -258,7 +254,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
           </div>
 
           {load.status === "error" ? (
-            <GatedNote tone="warning" action={<Button size="sm" variant="secondary" icon="refresh" onClick={() => setAttempt((value) => value + 1)}>Retry</Button>}
+            <GatedNote tone="warning" action={<Button size="xs" variant="secondary" icon="refresh" onClick={() => setAttempt((value) => value + 1)}>Retry</Button>}
               why={<p>{load.message}</p>}>Couldn’t load {teamName} minutes.</GatedNote>
           ) : load.status !== "ready" ? (
             <BoardLayout className="roster-board" main={<div className="roster-skeleton" role="status" aria-busy="true" aria-label="Loading minutes">
@@ -266,7 +262,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
               <div className="roster-lanes">{POSITION_LANES.map((name) => <Skeleton key={name} height={200} />)}</div>
             </div>} />
           ) : !rows.length ? (
-            <GatedNote why={caveats} action={<Button size="sm" variant="secondary" icon="swap" onClick={() => setPickerOpen(true)}>Change team</Button>}>
+            <GatedNote why={caveats} action={<Button size="xs" variant="secondary" icon="swap" onClick={() => setPickerOpen(true)}>Change team</Button>}>
               No minutes for {teamName} in this scope.
             </GatedNote>
           ) : (

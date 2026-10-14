@@ -108,7 +108,7 @@ test("phone picker stays above the Filters drawer and accepts touch selection", 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await openWorkbench(page, "/stats");
-  await page.locator(".ui-filter-bar-toggle").click();
+  await page.locator(".filter-bar-toggle-slot > button").click();
   const window = page.getByRole("combobox", { name: "Analysis window", exact: true }).filter({ visible: true });
   await window.tap();
   const option = window.locator('option[value="last_5"]');

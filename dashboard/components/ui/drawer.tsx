@@ -6,7 +6,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { motion, AnimatePresence, getDrawerVariants, scrimVariants } from "../../lib/motion";
-import { IconButton } from "./button";
+import { IconButton } from "./kit";
 import { OverlayPortal } from "./overlay-portal";
 
 export interface DrawerProps {
@@ -121,8 +121,8 @@ export function Drawer({
                 <IconButton
                   icon="close"
                   label="Close drawer"
+                  size="xs"
                   variant="ghost"
-                  size="sm"
                   onClick={onClose}
                 />
               </div>

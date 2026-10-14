@@ -1,0 +1,269 @@
+== forecasts@1440: 2 changed
+  ~ a||Evaluation Archive: w 154.6 → 134.2; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 41.2,0
+  ~ a||Evaluation Protocol: w 159.1 → 138.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 20.8,0
+== evaluation@1440: 3 changed
+  ~ a||Points Forecasts: w 142.2 → 122.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 19.3,0
+  ~ a||Methodology: w 119.4 → 102.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ summary||Why?: moved -17.2,0
+== evaluation-missing@1440: 2 changed
+  ~ a||Open Evaluation Archive: w 192.4 → 169.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ summary||Why?: moved -23.3,0
+== investigations@1440: 5 changed
+  ~ a||My Saved Investigations: w 191.2 → 167.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 23.7,0
+  ~ a||Open Finding: w 119.6 → 102.7; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Data details: moved -16.9,0
+  ~ a||Case Studies: w 118.8 → 101.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ summary||Why?: moved -17.1,0
+== investigations-personal@1440: 5 changed
+  ~ a||Public Examples: w 139.9 → 121.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 39.1,0
+  ~ a||New Investigation: w 174.3 → 154; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 20.3,0
+  ~ button||Previous saved operations: w 205.3 → 180.7; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Next saved operations: w 178.6 → 156.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -24.7,0
+  ~ a||Explore players: w 134 → 115.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== saved-detail@1440: 5 changed
+  ~ a||All Investigations: w 144.5 → 124.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 72.5,0
+  ~ button||Verify reproduction without AI: w 142.6 → 123; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg color(srgb 1 0.846667 0.49) → color(srgb 1 0.841255 0.472); border 1px rgb(169, 175, 185) → 0px rgb(14, 16, 19); moved 52.6,0
+  ~ a||Export JSON: w 116 → 99.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 33,0
+  ~ a||Export CSV: w 106.8 → 90.7; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 16.1,0
+  ~ a||Open in Stats: w 99.5 → 102.5; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== operation-gallery@1440: 1 changed
+  ~ a||Saved Investigations: w 168.4 → 146.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 21.8,0
+== case-studies@1440: 9 changed
+  ~ a||Saved Investigations: w 168.4 → 146.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 39,0
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 17.2,0
+  ~ div|radiogroup|Case study: w 484.3 → 496.3; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Case 1: Pascal Siakam: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|Case 2: Scottie Barnes: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+  ~ button|radio|Case 3: Toronto Raptors: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 10,2
+  ~ a||Analyze in Trends: w 148.8 → 129.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 63.5,0
+  ~ a||View Siakam Profile: w 162 → 140.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 43.8,0
+  ~ a||Inspect Raptors Roster: w 181.5 → 158.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 22.7,0
+== distributions@1440: 8 changed
+  ~ button||Share Link: w 102.2 → 86.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 32.9,0
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 17.2,0
+  ~ div|radiogroup|Distributions view: w 472.2 → 488.2; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -16,0
+  ~ button|radio|Distribution: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -14,2
+  ~ button|radio|Venue & Rest: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -10,2
+  ~ button|radio|Opponent Context: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -6,2
+  ~ button|radio|Dispersion Ranking: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -2,2
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== distributions-ranked@1440: 8 changed
+  ~ button||Share Link: w 102.2 → 86.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 32.9,0
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 17.2,0
+  ~ div|radiogroup|Distributions view: w 472.4 → 488.4; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -16,0
+  ~ button|radio|Distribution: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -14,2
+  ~ button|radio|Venue & Rest: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -10,2
+  ~ button|radio|Opponent Context: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -6,2
+  ~ button|radio|Dispersion Ranking: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -2,2
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== trends@1440: 6 changed
+  ~ button||Share Link: w 102.2 → 86.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 32.9,0
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 17.2,0
+  ~ div|radiogroup|Trends view: w 219 → 227; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -8,0
+  ~ button|radio|Player Periods: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -6,2
+  ~ button|radio|League Shifts: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -2,2
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== trends-rank@1440: 6 changed
+  ~ button||Share Link: w 102.2 → 86.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 32.9,0
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 17.2,0
+  ~ div|radiogroup|Trends view: w 218.9 → 226.9; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Player Periods: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|League Shifts: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== adjusted-shooting@1440: 3 changed
+  ~ div|radiogroup|Side: w 148.9 → 156.9; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Offense: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|Defense: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+== data-status@1440: 1 changed
+  ~ button||Refresh workbench: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== settings@1440: 5 changed
+  ~ button||Clear history: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Acquire more portraits: pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,-2
+  ~ summary||Source and storage: moved 0,-2
+  ~ summary||Local service requirements: moved 0,-2
+  ~ a||Open Data Status: moved 0,-2
+== planner@1440: 1 changed
+  ~ button||Sign in: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== ask@1440: 12 changed
+  ~ button||Conversations: moved 0,-1
+  ~ button||New chat: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Delete chat: moved 0,-1
+  ~ button||Send question: radius 50% → 6px; moved 0,-1
+  ~ button||Impact What was Victor Wembanyama's RAPM last se: moved 0,-1
+  ~ button||Defense Who is the best defender in the NBA?: moved 0,-1
+  ~ button||Awards Who won MVP last season?: moved 0,-1
+  ~ button||League leaders Who led the league in assists per: moved 0,-1
+  ~ button||Forecast Show the registered points forecast for: moved 0,-1
+  ~ button||Compare Compare Nikola Jokić and Victor Wembanya: moved 0,-1
+  ~ button||Concepts Explain pick and roll: moved 0,-1
+  ~ button||Using CourtLens How do I compare two players her: moved 0,-1
+== ask-answered@1440: 12 changed
+  ~ button||Conversations: moved 0,-1
+  ~ button||New chat: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Delete chat: moved 0,-1
+  ~ button||example.org: moved 0,-2
+  ~ button||How did his assist rate change from last season : moved 0,-2
+  ~ button||Who else averaged double-digit assists?: moved 0,-2
+  ~ a||Open assist leaders in Stats: moved 0,-2
+  ~ summary||Sources (1): moved 0,-2
+  ~ button||Synthetic source · example.org · retrieved date : moved 0,-2
+  ~ summary||How I got this: moved 0,-2
+  ~ summary||: moved 0,-2
+  ~ button||Send question: radius 50% → 6px
+== ask-manual@1440: 4 changed
+  ~ button||Clear conversation: w 131.2 → 136.3; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -5,0
+  ~ button||Run manual operation: w 175.4 → 153.7; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg color(srgb 1 0.846667 0.49) → color(srgb 1 0.841255 0.472); border 1px rgb(169, 175, 185) → 0px rgb(14, 16, 19); moved 21.7,0
+  ~ a||Open in Stats: w 99.5 → 102.5; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Save investigation: pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19)
+== ask-drawer@1440: 15 changed
+  ~ button||Close research conversation: w 220 → 194.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 12.8,0
+  ~ button||Conversations: moved 0,-1
+  ~ button||New chat: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Delete chat: moved 0,-1
+  ~ button||Send question: radius 50% → 6px; moved 0,-2
+  ~ button||Impact What was Victor Wembanyama's RAPM last se: moved 0,-2
+  ~ button||Defense Who is the best defender in the NBA?: moved 0,-2
+  ~ button||Awards Who won MVP last season?: moved 0,-2
+  ~ button||League leaders Who led the league in assists per: moved 0,-2
+  ~ button||Forecast Show the registered points forecast for: moved 0,-2
+  ~ button||Compare Compare Nikola Jokić and Victor Wembanya: moved 0,-2
+  ~ button||Concepts Explain pick and roll: moved 0,-2
+  ~ button||Using CourtLens How do I compare two players her: moved 0,-2
+  ~ button||Reload history: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,18
+  ~ button||Remove page context: w 44 → 28; h 44 → 28; pad 8px 16px 8px 16px → 0px 0px 0px 0px; fs 14px → 12px; fw 600 → 500; color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(0, 0, 0, 0) → 0px rgb(169, 175, 185); moved 0,16; icons  → 14
+== forecasts@390: 2 changed
+  ~ a||Evaluation Archive: w 154.6 → 134.2; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Evaluation Protocol: w 159.1 → 138.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -20.4,0
+== evaluation@390: 2 changed
+  ~ a||Points Forecasts: w 142.2 → 122.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Methodology: w 119.4 → 102.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 17.3,0
+== evaluation-missing@390: 2 changed
+  ~ a||Open Evaluation Archive: w 134.8 → 169.1; h 72 → 40; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -34.3,0
+  ~ summary||Why?: moved 0,-32
+== investigations@390: 4 changed
+  ~ a||My Saved Investigations: w 191.2 → 167.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Open Finding: w 119.6 → 102.7; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Data details: moved -16.9,0
+  ~ a||Case Studies: w 118.8 → 101.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== investigations-personal@390: 5 changed
+  ~ a||Public Examples: w 139.9 → 121.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||New Investigation: w 174.3 → 154; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -18.8,0
+  ~ button||Previous saved operations: w 205.3 → 180.7; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Next saved operations: w 178.6 → 156.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Explore players: w 83.2 → 115.6; h 54 → 40; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -32.4,7
+== saved-detail@390: 5 changed
+  ~ a||All Investigations: w 144.5 → 124.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Verify reproduction without AI: w 142.6 → 123; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg color(srgb 1 0.846667 0.49) → rgb(255, 209, 102); border 1px rgb(169, 175, 185) → 0px rgb(14, 16, 19); moved -19.9,0
+  ~ a||Export JSON: w 116 → 99.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 263.7,-48
+  ~ a||Export CSV: w 106.8 → 90.7; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -124,0
+  ~ a||Open in Stats: w 99.5 → 102.5; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== operation-gallery@390: 1 changed
+  ~ a||Saved Investigations: w 168.4 → 146.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== case-studies@390: 11 changed
+  ~ a||Saved Investigations: w 168.4 → 146.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -21.8,0
+  ~ div|radiogroup|Case study: h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Case 1: Pascal Siakam: w 119.3 → 150.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Case 2: Scottie Barnes: w 118.1 → 148.8; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 37,2
+  ~ button|radio|Case 3: Toronto Raptors: w 124.6 → 157.2; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 71.7,2
+  ~ a||Pascal Siakam: moved 0,4
+  ~ a||Analyze in Trends: w 148.8 → 129.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 0,4
+  ~ a||View Siakam Profile: w 162 → 140.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -19.7,4
+  ~ a||Inspect Raptors Roster: w 181.5 → 158.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,4
+  ~ summary||Why?: moved 0,4
+== distributions@390: 8 changed
+  ~ button||Share Link: w 102.2 → 86.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -15.7,0
+  ~ div|radiogroup|Distributions view: h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Distribution: w 71.8 → 85.8; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Venue & Rest: w 79.8 → 95.7; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 20,2
+  ~ button|radio|Opponent Context: w 102.4 → 123.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 39.8,2
+  ~ button|radio|Dispersion Ranking: w 107.9 → 130.8; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 65.3,2
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,4
+== distributions-ranked@390: 8 changed
+  ~ button||Share Link: w 102.2 → 86.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -15.7,0
+  ~ div|radiogroup|Distributions view: h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Distribution: w 70.7 → 84.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Venue & Rest: w 79.8 → 95.7; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 19.6,2
+  ~ button|radio|Opponent Context: w 102.3 → 123.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 39.5,2
+  ~ button|radio|Dispersion Ranking: w 109.2 → 132.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 65.2,2
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,4
+== trends@390: 6 changed
+  ~ button||Share Link: w 102.2 → 86.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -15.7,0
+  ~ div|radiogroup|Trends view: w 366 → 211; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Player Periods: w 184.2 → 102.7; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|League Shifts: w 177.8 → 96.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -75.5,2
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,4
+== trends-rank@390: 6 changed
+  ~ button||Share Link: w 102.2 → 86.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Open in Stats: w 119.7 → 102.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -15.7,0
+  ~ div|radiogroup|Trends view: w 366 → 210.9; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Player Periods: w 183 → 101.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|League Shifts: w 179 → 97.4; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -75.5,2
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,4
+== adjusted-shooting@390: 14 changed
+  ~ div|radiogroup|Side: w 366 → 140.9; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Offense: w 179.8 → 63.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Defense: w 182.2 → 65.6; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -110.5,2
+  ~ a||Fixture Anchor: moved 0,4
+  ~ a||Fixture Wing: moved 0,4
+  ~ a||Fixture Guard: moved 0,4
+  ~ a||Fixture Big: moved 0,4
+  ~ a||Fixture Anchor: moved 0,4
+  ~ select||Player: moved 0,4
+  ~ button||Fixture Anchor: moved 0,4
+  ~ button||Fixture Wing: moved 0,4
+  ~ button||Fixture Guard: moved 0,4
+  ~ button||Fixture Big: moved 0,4
+  ~ button||Fixture Rookie: moved 0,4
+== data-status@390: 1 changed
+  ~ button||Refresh workbench: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== settings@390: 2 changed
+  ~ button||Clear history: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Acquire more portraits: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== planner@390: 1 changed
+  ~ button||Sign in: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== ask@390: 10 changed
+  ~ button||New chat: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Send question: w 44 → 40; h 44 → 40; radius 50% → 6px; moved 4,0
+  ~ button||Impact What was Victor Wembanyama's RAPM last se: moved 0,-4
+  ~ button||Defense Who is the best defender in the NBA?: moved 0,-4
+  ~ button||Awards Who won MVP last season?: moved 0,-4
+  ~ button||League leaders Who led the league in assists per: moved 0,-4
+  ~ button||Forecast Show the registered points forecast for: moved 0,-4
+  ~ button||Compare Compare Nikola Jokić and Victor Wembanya: moved 0,-4
+  ~ button||Concepts Explain pick and roll: moved 0,-4
+  ~ button||Using CourtLens How do I compare two players her: moved 0,-4
+== ask-answered@390: 8 changed
+  ~ button||New chat: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||How did his assist rate change from last season : bg rgb(36, 40, 46) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(255, 209, 102); border 1px rgba(255, 255, 255, 0.06) → 1px rgb(255, 209, 102)
+  ~ summary||Scope: Default scope · Edit scope for the next q: moved 0,4
+  ~ select||Season: moved 0,4
+  ~ select||Phase: moved 0,4
+  ~ button||Through date: Published default: moved 0,4
+  ~ select||: moved 0,4
+  ~ button||Send question: w 44 → 40; h 44 → 40; radius 50% → 6px; moved 4,4
+== ask-manual@390: 4 changed
+  ~ button||Clear conversation: w 131.2 → 136.3; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -5,0
+  ~ button||Run manual operation: w 175.4 → 153.7; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; bg color(srgb 1 0.846667 0.49) → rgb(255, 209, 102); border 1px rgb(169, 175, 185) → 0px rgb(14, 16, 19); moved 21.7,0
+  ~ a||Open in Stats: w 99.5 → 102.5; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Save investigation: pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19)
+== ask-drawer@390: 16 changed
+  ~ button||Close research conversation: w 220 → 194.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Open full research page: moved 213.6,-42.5
+  ~ button||Conversations: moved 0,-33
+  ~ button||New chat: pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,-33
+  ~ button||Delete chat: moved 0,-33
+  ~ button||Send question: w 44 → 40; h 44 → 40; radius 50% → 6px; moved 4,-33
+  ~ button||Impact What was Victor Wembanyama's RAPM last se: moved 0,-37
+  ~ button||Defense Who is the best defender in the NBA?: moved 0,-37
+  ~ button||Awards Who won MVP last season?: moved 0,-37
+  ~ button||League leaders Who led the league in assists per: moved 0,-37
+  ~ button||Forecast Show the registered points forecast for: moved 0,-37
+  ~ button||Compare Compare Nikola Jokić and Victor Wembanya: moved 0,-37
+  ~ button||Concepts Explain pick and roll: moved 0,-37
+  ~ button||Using CourtLens How do I compare two players her: moved 0,-37
+  ~ button||Reload history: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Remove page context: w 42.1 → 40; pad 8px 16px 8px 16px → 0px 0px 0px 0px; fs 14px → 12px; fw 600 → 500; color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(0, 0, 0, 0) → 0px rgb(169, 175, 185); icons  → 14

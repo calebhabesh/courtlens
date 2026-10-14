@@ -66,7 +66,6 @@
     .pc04-metric-table td { font-size: var(--text-md); line-height: var(--text-md-lh); }
     .pc04-metric-table thead th { font-size: var(--text-xs); line-height: var(--text-xs-lh); overflow-wrap: anywhere; }
     .pc04-modes { gap: var(--space-2); }
-    .pc04-modes .ui-segmented-control { max-width: 100%; overflow: auto; }
     .pc04-compare :is(button, summary), .pc04-example button, .pc04-next-games .button { min-height: var(--control-lg); }
     .pc04-custom-grid { grid-template-columns: 1fr; }
     .pc04-example-heading { align-items: flex-start; }
@@ -233,7 +232,6 @@
 .pc12-example-player > span { font-size: var(--text-sm); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
 .pc12-example-player .ui-identity-name { min-height: var(--control-lg); display: flex; align-items: center; }
 .tier-workspace-wrapper .tier-label-box { width: 144px; min-width: 144px; font-size: var(--text-lg); font-weight: 600; text-align: center; overflow-wrap: anywhere; }
-.tier-workspace-wrapper .tier-reorder-btn { color: var(--color-on-accent); }
 
 @media (max-width: 767px) {
   .pc12-example-header { align-items: flex-start; flex-direction: column; }
@@ -242,7 +240,7 @@
   .tier-workspace-wrapper .tier-row-card { flex-direction: column; }
   .tier-workspace-wrapper .tier-label-box { width: auto; min-width: 0; padding: var(--space-3); }
   .tier-workspace-wrapper .tier-row-controls { justify-content: center; }
-  .tier-workspace-wrapper .tier-reorder-btn, .tier-workspace-wrapper .tier-remove-btn, .tier-workspace-wrapper .tier-move-select { min-width: var(--control-lg); min-height: var(--control-lg); }
+  .tier-workspace-wrapper .tier-move-select { min-width: var(--control-lg); min-height: var(--control-lg); }
   .tier-workspace-wrapper .tier-player-chip { flex-wrap: wrap; max-width: 100%; }
   .tier-workspace-wrapper .tier-player-link { display: flex; align-items: center; min-height: var(--control-lg); }
   .tier-workspace-wrapper .tier-add-input-wrap { flex-wrap: wrap; min-width: 0; }

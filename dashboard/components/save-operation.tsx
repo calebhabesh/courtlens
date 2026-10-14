@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import type { Turn } from "@/lib/conversation";
 import { canSaveTurn, makeSaveRequest, saveOperation, type SaveRequest, type SavedDetail } from "@/lib/saved-operations";
+import { Button } from "./ui/kit";
 
 export function SaveOperation({ turn, disabled = false }: { turn: Turn; disabled?: boolean }) {
   const id = useId();
@@ -34,6 +35,6 @@ export function SaveOperation({ turn, disabled = false }: { turn: Turn; disabled
     <label htmlFor={`${id}-title`}>Investigation title</label>
     <input id={`${id}-title`} required maxLength={255} pattern=".*\S.*" value={title} disabled={pending || disabled} onChange={event => {setTitle(event.target.value);attempt.current=null;setError(null);}} />
     <label><input type="checkbox" checked={includeQuestion} disabled={pending || disabled} onChange={event => {setIncludeQuestion(event.target.checked);attempt.current=null;setError(null);}} /> Retain my selected question as durable metadata</label>
-    <button className="button button-primary" disabled={pending || disabled || !title.trim()}>{pending ? "Saving…" : error ? "Retry saving investigation" : "Save investigation"}</button>
+    <Button size="lg" variant="primary" type="submit" disabled={pending || disabled || !title.trim()}>{pending ? "Saving…" : error ? "Retry saving investigation" : "Save investigation"}</Button>
   </form>;
 }

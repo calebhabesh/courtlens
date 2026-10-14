@@ -11,6 +11,7 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { PageShell, ResearchLayout } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
 import { StatTile } from "@/components/ui/stat-tile";
+import { ButtonLink } from "@/components/ui/kit";
 
 export const metadata: Metadata = { title: "Points Forecasts" };
 export const dynamic = "force-dynamic";
@@ -95,8 +96,8 @@ export default async function ForecastsPage() {
   return (
     <PageShell template="research" className="research-view forecasts-view">
       <PageHeader title="Points Forecasts" subtitle="Next-game points estimates, their out-of-time test and the prospective ledger." actions={<>
-        <Link href="/evaluation" className="button">Evaluation Archive</Link>
-        <Link href="/methodology" className="button">Evaluation Protocol</Link>
+        <ButtonLink size="lg" href="/evaluation">Evaluation Archive</ButtonLink>
+        <ButtonLink size="lg" href="/methodology">Evaluation Protocol</ButtonLink>
       </>} />
       <FilterBar collapsible={false} label="Forecast protocol" summary="basketball-points-v1" scope={<span className="research-scope-label">basketball-points-v1 · 2025-26 holdout</span>}
         count={metrics ? <CountChip>{(baseline?.forecast_rows ?? 0).toLocaleString("en-US")} scored forecasts</CountChip> : undefined}
@@ -110,7 +111,7 @@ export default async function ForecastsPage() {
           ...(runId ? [{ label: "Run", value: runId, mono: true }, { label: "Reproduce", value: `courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage validate\ncourtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage calibrate\ncourtlens evaluate-points --registered-run ${runId} --stage final --open-final-test\ncourtlens activate-points-policy --registered-run ${runId}`, mono: true }] : []),
           { label: "Protocol rule", value: "Feature computations exclude the target date and every later outcome (game_date < replay_date)." },
         ]} />} />
-      {!evaluation ? <div role="alert"><GatedNote tone="warning" action={<Link className="button" href="/forecasts">Retry</Link>}>Forecast evaluation unavailable. Restore the local API connection.</GatedNote></div> :
+      {!evaluation ? <div role="alert"><GatedNote tone="warning" action={<ButtonLink size="lg" href="/forecasts">Retry</ButtonLink>}>Forecast evaluation unavailable. Restore the local API connection.</GatedNote></div> :
       <ResearchLayout headline={intervals && <PairedBars title="Holdout interval coverage" source="Sealed basketball-points-v1 final test · 2025-26"
         sample={`${(baseline?.forecast_rows ?? 0).toLocaleString("en-US")} scored forecasts · conditional on appearance`} names={["Observed coverage", "Nominal 80%"]} domain={[0, 100]}
         note="Amber = observed share inside the interval; blue = nominal target. Width and promotion gates remain separate."

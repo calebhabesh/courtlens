@@ -699,3 +699,24 @@ Owner instructions 51–52 bottom-align the search/stat header controls and matc
 cells to the metric-cell base and hover surfaces. Real desktop/phone measurements and scoped
 glance check pass. Lint/types, Vitest 459/459, production build, 27 affected browser checks and
 two refreshed Stats baselines pass. [Evidence](evidence/alignment/stats/card-surface/README.md).
+
+### App-shell follow-up: lustrous silver magnifying glass (2026-10-14)
+
+Owner requested a cool silver analogue of Databallr's golden logo. A continuous six-stop silver
+SVG gradient now colors the magnifying-glass ring and handle across the shared logo, favicon,
+Apple touch and installable app icons. PNG variants match their SVG artwork; icon URLs use v5.
+Desktop/phone headers and 16px/32px favicons pass visual inspection. Geometry matches the before
+SVGs, simultaneous brand instances have unique paint IDs, and served assets match the sources.
+Dashboard lint/types, Vitest 511/511, production webpack build and six header browser checks pass.
+Scoped glance: identity, readability, spacing and no page overflow pass. Other page presentation
+is outside this asset-only follow-up. [Evidence](evidence/alignment/app-shell/silver-mark/README.md).
+
+### App-shell follow-up: favicon lens clearance (2026-10-14)
+
+Owner requested slightly more padding around the round lens. The favicon artwork scale is now
+82% (was 90%), adding 0.60px of top/left lens clearance at 16px. Both SVG copies match; metadata
+uses v6. Native 16px/32px visual inspection, served-asset parity, blue background pixels and
+responsive overflow checks pass. Dashboard lint/types and Vitest 511/511 pass; four existing
+header checks pass. A broader search test fails on live lookup, and its rerun times out during
+workspace initialization on the active dev server. Scoped glance passes for favicon identity,
+readability and padding. [Evidence](evidence/alignment/app-shell/favicon-padding/README.md).

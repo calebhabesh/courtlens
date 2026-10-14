@@ -1,10 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="512" height="512">
+  <defs>
+    <linearGradient id="silver" x1="5" y1="5" x2="29" y2="29" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#eef3f8" />
+      <stop offset="0.22" stop-color="#a1adbd" />
+      <stop offset="0.42" stop-color="#f8fbff" />
+      <stop offset="0.58" stop-color="#8795a8" />
+      <stop offset="0.78" stop-color="#d5dfe9" />
+      <stop offset="1" stop-color="#a3b0c2" />
+    </linearGradient>
+  </defs>
   <rect width="32" height="32" fill="#0c0d10" />
   <g transform="translate(16 16) scale(0.72) translate(-16 -16)">
-  <line x1="20.5" y1="20.5" x2="27.4" y2="27.4" stroke="#f2f3f5" stroke-width="3.4" stroke-linecap="butt" />
-  <circle cx="27.4" cy="27.4" r="1.7" fill="#f2f3f5" />
+  <line x1="20.5" y1="20.5" x2="27.4" y2="27.4" stroke="url(#silver)" stroke-width="3.4" stroke-linecap="butt" />
+  <circle cx="27.4" cy="27.4" r="1.7" fill="url(#silver)" />
   <circle cx="14" cy="14" r="7" fill="#ff7a2f" />
   <path d="M7 14h14M14 7v14M9.2 9.2c2.6 2.6 2.6 7 0 9.6M18.8 9.2c-2.6 2.6-2.6 7 0 9.6" fill="none" stroke="#0c0d10" stroke-width="1.2" />
-  <circle cx="14" cy="14" r="9.2" fill="none" stroke="#f2f3f5" stroke-width="2" />
+  <circle cx="14" cy="14" r="9.2" fill="none" stroke="url(#silver)" stroke-width="2" />
   </g>
 </svg>

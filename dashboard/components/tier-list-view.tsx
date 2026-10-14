@@ -1,7 +1,5 @@
 "use client";
 
-import { Icon } from "./ui/icon";
-import { Button } from "./ui/button";
 import { GatedNote } from "./ui/gated-note";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
@@ -17,6 +15,7 @@ import { ExampleBoardsView } from "./example-boards-view";
 import { EXAMPLE_BOARD_ID, exampleTierCopy } from "@/lib/example-boards";
 import { executeWorkbenchQuery, getWorkbenchCatalog } from "@/lib/workbench-api";
 import { resolveStatsQuery } from "@/lib/stats-query";
+import { Button, IconButton, Segmented } from "./ui/kit";
 
 const DEFAULT_TIER_COLORS = [
   "var(--color-category-1)", "var(--color-category-2)", "var(--color-category-3)",
@@ -363,12 +362,12 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
         title="Tier Lists"
         subtitle="Your own player tiers, arranged by drag and drop or keyboard."
         actions={<>
-          {activeList && <Button variant="secondary" icon="plus" onClick={handleAddTierRow}>Add tier row</Button>}
-          <Button variant="primary" icon="plus" onClick={() => setIsCreatingList(true)}>New tier list</Button>
+          {activeList && <Button size="sm" variant="secondary" icon="plus" onClick={handleAddTierRow}>Add tier row</Button>}
+          <Button size="sm" variant="primary" icon="plus" onClick={() => setIsCreatingList(true)}>New tier list</Button>
         </>}
       />
 
-      {tierLists.length > 0 && <Button variant="secondary" aria-pressed={!activeList} onClick={() => setActiveTierListId(activeList ? EXAMPLE_BOARD_ID : null)}>{activeList ? "View minutes example" : "My tier lists"}</Button>}
+      {tierLists.length > 0 && <Button size="sm" variant="secondary" pressed={!activeList} onClick={() => setActiveTierListId(activeList ? EXAMPLE_BOARD_ID : null)}>{activeList ? "View minutes example" : "My tier lists"}</Button>}
       {activeList && <GatedNote why="Tier allocations reflect personal subjective categorizations. Cards support HTML5 drag-and-drop as well as accessible keyboard controls (move up/down buttons or tier dropdown).">
         Tiers are personal categorizations.
       </GatedNote>}
@@ -386,14 +385,7 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
           <div className="modal-card tier-modal-card">
             <div className="modal-header">
               <h2 className="modal-title">Create New Tier List</h2>
-              <button
-                type="button"
-                className="modal-close-btn"
-                onClick={() => setIsCreatingList(false)}
-                aria-label="Close create tier list dialog"
-              >
-                <Icon name="close" size={14} />
-              </button>
+              <IconButton size="xs" icon="close" label="Close create tier list dialog" onClick={() => setIsCreatingList(false)} />
             </div>
             <form onSubmit={handleCreateListSubmit} className="modal-body tier-modal-body">
               <div>
@@ -426,20 +418,15 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
               </div>
 
               <div className="modal-footer tier-modal-footer">
-                <button
-                  type="button"
-                  onClick={() => setIsCreatingList(false)}
-                  className="button button-small"
-                >
+                <Button size="lg"
+                  onClick={() => setIsCreatingList(false)}>
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button size="lg" variant="primary"
                   type="submit"
-                  className="button button-small button-primary"
-                  disabled={!newTitle.trim()}
-                >
+                  disabled={!newTitle.trim()}>
                   Create Tier List
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -453,40 +440,16 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
         <div className="tier-list-container">
           {/* Tabs Row */}
           <div className="stats-preset-tabs-wrapper tier-tabs-bar">
-            <div className="stats-preset-tabs" role="tablist" aria-label="Personal Tier Lists">
-              {tierLists.map((tl) => {
-                const isActive = tl.id === activeList?.id;
-                const totalPlayers = tl.tiers.reduce((acc, t) => acc + t.player_ids.length, 0);
-                return (
-                  <button
-                    key={tl.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => setActiveTierListId(tl.id)}
-                    className={`stats-preset-tab ${isActive ? "active" : ""}`}
-                    title={tl.description || tl.title}
-                  >
-                    <span>{tl.title}</span>
-                    <span className="tier-tab-count">
-                      ({totalPlayers})
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            <Segmented size="lg" label="Personal Tier Lists" value={activeList?.id ?? ""} onChange={setActiveTierListId}
+              options={tierLists.map((tl) => ({ value: tl.id, title: tl.description || tl.title,
+                label: <>{tl.title}<span className="tier-tab-count">({tl.tiers.reduce((acc, t) => acc + t.player_ids.length, 0)})</span></> }))} />
 
             {/* Actions for active tier list */}
             {activeList && (
               <div className="tier-header-actions">
-                <button
-                  type="button"
-                  onClick={handleDeleteActiveList}
-                  className="button button-small tier-delete-btn"
-                  title="Delete this tier list"
-                >
+                <Button size="lg" variant="danger" onClick={handleDeleteActiveList} title="Delete this tier list">
                   Delete List
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -522,19 +485,14 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
                     {favorites.slice(0, 4).map((favId) => {
                       const isAssigned = activeList.tiers.some((t) => t.player_ids.includes(favId));
                       return (
-                        <button
-                          key={favId}
-                          type="button"
-                          disabled={isAssigned}
+                        <Button key={favId} size="xs" variant="ghost" icon={isAssigned ? "check" : "plus"} disabled={isAssigned}
                           onClick={() => {
                             const firstTier = activeList.tiers[0]?.tier_id;
                             if (firstTier) handleAddPlayerToTier(favId, firstTier);
                           }}
-                          className="button button-small tier-quick-fav-btn"
-                          title={isAssigned ? "Already in a tier" : `Add to ${activeList.tiers[0]?.label || "first tier"}`}
-                        >
-                          {isAssigned ? <Icon name="check" size={14} /> : <Icon name="plus" size={14} />}#{favId}
-                        </button>
+                          title={isAssigned ? "Already in a tier" : `Add to ${activeList.tiers[0]?.label || "first tier"}`}>
+                          #{favId}
+                        </Button>
                       );
                     })}
                   </div>
@@ -565,35 +523,12 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
 
                         {/* Tier Row Controls (Reorder / Delete) */}
                         <div className="tier-row-controls">
-                          <button
-                            type="button"
-                            onClick={() => handleMoveTierUp(tierIdx)}
-                            disabled={tierIdx === 0}
-                            className="tier-reorder-btn"
-                            title="Move tier row up"
-                            aria-label={`Move tier ${tier.label} up`}
-                          >
-                            <Icon name="chevron-up" size={14} />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleMoveTierDown(tierIdx)}
-                            disabled={tierIdx === activeList.tiers.length - 1}
-                            className="tier-reorder-btn"
-                            title="Move tier row down"
-                            aria-label={`Move tier ${tier.label} down`}
-                          >
-                            <Icon name="chevron-down" size={14} />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteTierRow(tier.tier_id)}
-                            className="tier-reorder-btn"
-                            title="Delete this tier row"
-                            aria-label={`Delete tier ${tier.label}`}
-                          >
-                            <Icon name="close" size={14} />
-                          </button>
+                          <IconButton size="xs" variant="secondary" icon="chevron-up" onClick={() => handleMoveTierUp(tierIdx)} disabled={tierIdx === 0}
+                            label={`Move tier ${tier.label} up`} title="Move tier row up" />
+                          <IconButton size="xs" variant="secondary" icon="chevron-down" onClick={() => handleMoveTierDown(tierIdx)}
+                            disabled={tierIdx === activeList.tiers.length - 1} label={`Move tier ${tier.label} down`} title="Move tier row down" />
+                          <IconButton size="xs" variant="secondary" icon="close" onClick={() => handleDeleteTierRow(tier.tier_id)}
+                            label={`Delete tier ${tier.label}`} title="Delete this tier row" />
                         </div>
                       </div>
 
@@ -637,15 +572,8 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
                               </select>
 
                               {/* Remove button */}
-                              <button
-                                type="button"
-                                onClick={() => handleRemovePlayer(pid, tier.tier_id)}
-                                className="tier-remove-btn"
-                                title="Remove player from tier list"
-                                aria-label={`Remove ${playerName(pid)} from tier list`}
-                              >
-                                <Icon name="close" size={14} />
-                              </button>
+                              <IconButton size="xs" variant="danger" icon="close" onClick={() => handleRemovePlayer(pid, tier.tier_id)}
+                                label={`Remove ${playerName(pid)} from tier list`} title="Remove player from tier list" />
                             </div>
                           ))
                         )}

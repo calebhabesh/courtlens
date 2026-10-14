@@ -1,0 +1,8 @@
+@layer components {
+/* B35b retained evidence and original local content */
+.saved-operation-form { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-sm); }
+.saved-operation-form p { margin: 0; }
+.saved-operation-form input:not([type="checkbox"]) { width: 100%; min-width: 0; }
+.saved-hash, .saved-operation-detail pre, .original-article pre { overflow-wrap: anywhere; word-break: break-word; white-space: pre-wrap; }
+.saved-operation-detail, .saved-operation-detail > *, .original-article { min-width: 0; }
+}

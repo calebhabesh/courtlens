@@ -8,9 +8,9 @@ import { CountChip, FilterBar } from "./ui/filter-bar";
 import { PlayerIdentity } from "./ui/identity";
 import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
-import { SegmentedControl } from "./ui/segmented-control";
 import { StatTile } from "./ui/stat-tile";
 import { fmt, getSeasonMatchups, pct, sourceLabel, type FeedPhase } from "@/lib/stats-feeds";
+import { Segmented } from "./ui/kit";
 
 /** PC11 Player Matchups from NBA tracking season matchups: who guarded a player, or whom they guarded. */
 export function SeasonMatchupsView() {
@@ -25,7 +25,7 @@ export function SeasonMatchupsView() {
     {data && <FilterBar label="Matchup filters" summary={data.label}
       scope={<FeedScopeFields scopes={data.scopes} season={data.season} phase={data.phase} onChange={next => set({ season: next.season, phase: next.phase as FeedPhase })} />}
       filters={<PlayerLookup label="Find a player" onPick={id => set({ playerId: id })} />}
-      modes={<SegmentedControl name="Matchup side" value={side} onChange={value => set({ side: value === "defense" ? "defense" : null })}
+      modes={<Segmented size="lg" label="Matchup side" value={side} onChange={value => set({ side: value === "defense" ? "defense" : null })}
         options={[{ value: "offense", label: "On offense" }, { value: "defense", label: "On defense" }]} />}
       count={detail && <CountChip>{detail.opponents} opponents</CountChip>} />}
     {error && <FeedFailure error={error} retry={retry} what="Player Matchups" />}

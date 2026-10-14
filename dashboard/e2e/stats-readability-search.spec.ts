@@ -75,7 +75,7 @@ test("global search clear button uses the right edge and concise player captions
   await input.fill("Star");
   // FO02: the search modal is .ui-command-palette; .ui-command-palette on its scrim caused the 480px dim column.
   const gap = await page.locator(".ui-command-palette").evaluate(element =>
-    element.querySelector("input")!.getBoundingClientRect().right - element.querySelector(".lookup-clear-btn")!.getBoundingClientRect().right);
+    element.querySelector("input")!.getBoundingClientRect().right - element.querySelector("button[aria-label=\"Clear search\"]")!.getBoundingClientRect().right);
   expect(gap).toBeLessThanOrEqual(8);
   await expect(page.locator(".ui-command-palette").getByRole("option")).toHaveCount(3);
   await expect(page.locator(".ui-command-palette .lookup-alias-badge")).toHaveCount(0);

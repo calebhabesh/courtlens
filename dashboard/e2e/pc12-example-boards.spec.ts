@@ -73,7 +73,7 @@ for (const kind of ["rankings", "tierlist"] as const) {
     }
     expect(JSON.stringify(kind === "rankings" ? state.ranking_boards[0] : state.tier_lists[0])).toBe(original);
     await page.reload();
-    await page.getByRole("tab", { name: /Minutes (Leaders|Groups)/ }).click();
+    await page.getByRole("radio", { name: /Minutes (Leaders|Groups)/ }).click();
     if (kind === "rankings") await expect(page.locator(".rankings-table tbody tr").first()).toContainText("Fixture Guard");
     else await expect(page.locator(".tier-row-card").nth(1)).toContainText("Fixture Star");
   });

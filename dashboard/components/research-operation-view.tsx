@@ -16,6 +16,7 @@ import { PageHeader } from "./ui/panel";
 import { StatTile } from "./ui/stat-tile";
 import { ResearchBodySkeleton } from "./research-investigation";
 import { Icon } from "./ui/icon";
+import { ButtonLink } from "./ui/kit";
 
 const OPERATION_PAGES = [
   { title: "Player Comparison", href: "/compare", icon: "swap" as const, description: "Aligned production, efficiency and per-metric differences." },
@@ -64,15 +65,15 @@ export function ResearchOperationView() {
   }, [serialized]);
   const current = state?.url === serialized ? state : null;
   const turn = current?.turn;
-  if (!params.get("operation")) return <PageShell template="research"><PageHeader title="Research Operation" subtitle="Choose an operation to explore published observations." actions={<Link className="button" href="/investigations">Saved Investigations</Link>} />
+  if (!params.get("operation")) return <PageShell template="research"><PageHeader title="Research Operation" subtitle="Choose an operation to explore published observations." actions={<ButtonLink size="lg" href="/investigations">Saved Investigations</ButtonLink>} />
     <section className="pc04-operation-gallery" aria-label="Available research operations">{OPERATION_PAGES.map(operation => <Link className="pc04-operation-card" href={operation.href} key={operation.href}><Icon name={operation.icon} size={20} /><h2>{operation.title}</h2><p>{operation.description}</p></Link>)}</section>
   </PageShell>;
   return <PageShell template="research" className="research-view conversation research-operation">
-    <PageHeader title="Research Operation" subtitle="One exact manual operation, rerun against its retained release without AI." actions={<Link className="button" href="/investigations">Saved Investigations</Link>} />
+    <PageHeader title="Research Operation" subtitle="One exact manual operation, rerun against its retained release without AI." actions={<ButtonLink size="lg" href="/investigations">Saved Investigations</ButtonLink>} />
     <FilterBar collapsible={false} label="Operation scope" summary="Retained scope" scope={<span className="research-scope-label">{turn ? contextLine(turn.context) : "Retained release and arguments are preserved"}</span>}
       details={<DataDetailsButton rows={turn ? [{ label: "Resolved context", value: JSON.stringify(turn.context), mono: true }, { label: "Context fingerprint", value: turn.context_fingerprint, mono: true }, { label: "Conversation", value: turn.conversation_id, mono: true }] : []} />} />
     {!current && <><p role="status" className="sr-only">Loading retained observations…</p><ResearchBodySkeleton tiles={3} /></>}
-    {current?.error && <div role="alert"><GatedNote tone="warning" action={<Link className="button" href="/research/ask">Open Ask</Link>}>{current.error}</GatedNote></div>}
+    {current?.error && <div role="alert"><GatedNote tone="warning" action={<ButtonLink size="lg" href="/research/ask">Open Ask</ButtonLink>}>{current.error}</GatedNote></div>}
     {turn && <ResearchLayout findings={<>
       <StatTile label="Status" value={statusLabels[turn.status]} />
       <StatTile label="Operations" value={turn.results.length} footnote={turn.results.map(result => humanLabel(result.operation)).join(" · ")} />

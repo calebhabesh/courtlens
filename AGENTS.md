@@ -22,6 +22,8 @@ For chart/graphic presentation, color semantics, first-load default states, new 
 
 For any work that makes a CourtLens page look or behave like its Databallr counterpart (the app shell, Stats, Players, Compare, Teams, WOWY and every other row in the catalog), read the [Databallr alignment handoff](docs/databallr-alignment-plan.md) first. It supersedes the overhaul, refresh, freeze and presentation-clarity handoffs for the layout and presentation of catalogued pages, and keeps every analytical, data and source contract. Work one page at a time, from the owner's instructions recorded in the [alignment catalog](docs/databallr-alignment-catalog.md). Only the owner marks a page aligned. The presentation-clarity handoff is closed, and its PC13 hosting block is parked.
 
+For any button, icon button, select, segmented group, menu trigger or chip, use the control kit in `dashboard/components/ui/kit` as specified in [control kit v1](docs/design/control-kit-v1.md) and the Controls section of Design Language; never style a control with page CSS or a bespoke class. The [UI consolidation handoff](docs/ui-consolidation-plan.md) that built it is complete (UC00–UC05; history in the [consolidation progress log](docs/ui-consolidation-progress.md)). Component and page CSS lives next to the component or route that owns it and is imported from `dashboard/app/globals.css` in cascade order inside its layer; add a new file there in the position where its rules must apply.
+
 For the hosted read-only demo at courtlens.calebhabesh.com (production Compose stack, Caddy read-only boundary, arm64 images, VPS deploys and disk budget), read [the deployment guide](docs/deployment.md) first. Any new non-GET endpoint the demo should allow must be added to the Caddy allowlist there.
 
 ## Architecture and Stack
@@ -30,7 +32,7 @@ For the hosted read-only demo at courtlens.calebhabesh.com (production Compose s
 - **Database:** PostgreSQL 17 with strict foreign keys, immutable dataset memberships, and session advisory locks for publication.
 - **Warehouse:** dbt-postgres with layered staging (`stg_`), intermediate (`fct_`), and serving marts (`mart_`).
 - **Offline ML / Evaluation:** scikit-learn 1.6.1, rolling baselines (last-10, EWMA-20), out-of-time chronological validation and calibration, immutable hashed artifacts.
-- **Frontend:** Next.js 15 (App Router), TypeScript, responsive vanilla CSS.
+- **Frontend:** Next.js 16 (App Router), TypeScript; the control kit is Tailwind v4 (`kit:` prefix, `utilities` layer); component and page styles are layered vanilla CSS colocated with their owners.
 - **Packaging:** Docker Compose v2 for local reproducible deployment.
 
 ## Key Principles & Guardrails
@@ -59,7 +61,7 @@ For the hosted read-only demo at courtlens.calebhabesh.com (production Compose s
    - All dashboard presentation must adhere strictly to [Design Language v1](docs/design/design-language-v1.md).
    - Zero raw inline styles (`style={{ ... }}`) are permitted across dashboard code; dynamic geometry and visualization variables must pass type-safe CSS custom properties (`--*`).
    - Strict 4px spatial rhythm (`--space-*`), fixed type scale (`--text-*`), and tonal elevation surfaces (`--color-surface-*`, `--shadow-*`) without bright container borders (hairlines only at 6–10% white).
-   - ESLint (`no-restricted-syntax`, `no-restricted-imports`) and Stylelint rules enforce Design Language v1 contracts at `error` level and must pass with 0 errors and 0 warnings (`npm --prefix dashboard run lint`).
+   - ESLint (`no-restricted-syntax`, `no-restricted-imports`, the `control-kit` rules) and Stylelint rules enforce Design Language v1 contracts at `error` level and must pass with 0 errors and 0 warnings (`npm --prefix dashboard run lint`). No file is exempt from the control-kit rules.
    - Motion and physics springs (`lib/motion.ts`) must respect reduced motion (`prefers-reduced-motion` token duration collapse to 1ms).
 
 ## Local Resource Hygiene

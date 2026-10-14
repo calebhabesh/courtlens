@@ -10,7 +10,6 @@ import type { ScheduleDatesResponse } from "@/lib/types";
 import { ContextBar } from "./context-bar";
 import { LiveBoardHeader } from "./live-board";
 import { TeamLogo } from "./team-logo";
-import { Button } from "./ui/button";
 import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
 import { DatePicker } from "./ui/date-picker";
 import { Field } from "./ui/field";
@@ -19,6 +18,7 @@ import { GatedNote } from "./ui/gated-note";
 import { Icon } from "./ui/icon";
 import { PageShell } from "./ui/page-shell";
 import { PlayerIdentity } from "./ui/identity";
+import { Button, ButtonLink } from "./ui/kit";
 
 /** Days shown either side of the selected slate in the date strip. */
 const STRIP_RADIUS = 7;
@@ -309,7 +309,7 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
       slate={valid ? slate : undefined}
       subtitle={params.get("fallbackFrom") ? `Most recent finals · ${formatDate(slate)} · ${params.get("fallbackReason") === "empty" ? "No games today" : "Live unavailable"}.` : historical ? `Admitted finals for ${valid ? formatDate(slate) : "the selected date"}.` : `Provisional scores for ${valid ? formatDate(slate) : "the selected date"}, Eastern slate.`}
       // Pausing only applies to Live demand; finalized research never polls.
-      actions={historical ? undefined : <Button variant="secondary" onClick={() => setPaused(!paused)} aria-pressed={paused} icon={paused ? "play" : "pause"}>{paused ? "Resume updates" : "Pause updates"}</Button>}
+      actions={historical ? undefined : <Button size="sm" variant="secondary" onClick={() => setPaused(!paused)} pressed={paused} icon={paused ? "play" : "pause"}>{paused ? "Resume updates" : "Pause updates"}</Button>}
     />
     {historical
       ? <ContextBar
@@ -332,12 +332,12 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
       <section aria-label="Game slate" className="live-game-grid">{games.map(g => <GameCard key={g.source_id} game={g} href={href(slate, g.source_id)} selected={gameId === g.source_id} />)}</section>
       {params.get("fallbackFrom") && <>
         <section className="pc04-performers" aria-label="Top performers"><h2>Top Performers · Points</h2>{performers.map(player => <PlayerIdentity key={player.source_id} playerId={player.canonical_id ?? undefined} name={player.name} team={games.flatMap(game=>game.teams).find(team=>team.source_id===player.team_source_id)?.canonical_id} size="lg" subtitle={`${player.statistics.points} PTS · ${formatDate(slate,"compact")}`} />)}<p className="chart-provenance">Source: admitted final player boxes · {games.length} games. Missing player points are excluded.</p></section>
-        <nav className="pc04-next-games" aria-label="Next games"><strong>Next Games</strong>{(params.get("nextGamesDate") || counts?.nearest_scheduled.after) ? <Link className="button" href={href((params.get("nextGamesDate") || counts?.nearest_scheduled.after)!,undefined,false)}>{formatDate((params.get("nextGamesDate") || counts?.nearest_scheduled.after)!)}</Link> : <span>Next retained schedule date unknown.</span>}</nav>
+        <nav className="pc04-next-games" aria-label="Next games"><strong>Next Games</strong>{(params.get("nextGamesDate") || counts?.nearest_scheduled.after) ? <ButtonLink size="lg" href={href((params.get("nextGamesDate") || counts?.nearest_scheduled.after)!,undefined,false)}>{formatDate((params.get("nextGamesDate") || counts?.nearest_scheduled.after)!)}</ButtonLink> : <span>Next retained schedule date unknown.</span>}</nav>
       </>}
       {!games.length && (loaded || !historical) && <GatedNote
         action={loaded && nearest && (nearest.before || nearest.after) ? <span className="live-jumps">
-          {nearest.before && <Link className="button button-small" href={href(nearest.before)}><Icon name="left" size={14} />{formatDate(nearest.before, "compact")}</Link>}
-          {nearest.after && <Link className="button button-small" href={href(nearest.after)}>{formatDate(nearest.after, "compact")}<Icon name="right" size={14} /></Link>}
+          {nearest.before && <ButtonLink size="lg" href={href(nearest.before)} icon="left">{formatDate(nearest.before, "compact")}</ButtonLink>}
+          {nearest.after && <ButtonLink size="lg" href={href(nearest.after)} iconAfter="right">{formatDate(nearest.after, "compact")}</ButtonLink>}
         </span> : undefined}
         why={historical
           ? "No admitted finals in this release, phase and date. Coverage is unknown outside retained facts."

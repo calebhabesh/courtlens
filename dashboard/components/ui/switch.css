@@ -1,0 +1,77 @@
+@layer components {
+/* Switch */
+.ui-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.ui-switch-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ui-switch-track {
+  --switch-track-color: var(--color-surface-2);
+  --switch-track-border: var(--color-hairline);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: var(--space-10);
+  min-height: var(--control-md);
+  height: var(--control-md);
+  border-radius: var(--radius-pill);
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+  padding-inline: var(--space-0-5);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  outline: 0;
+}
+
+/* A compact 20px track inside the full button hit area (32px desktop, 40px phone). */
+.ui-switch-track::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: var(--space-5);
+  transform: translateY(-50%);
+  border-radius: inherit;
+  background-color: var(--switch-track-color);
+  border: 1px solid var(--switch-track-border);
+}
+
+.ui-switch-track:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+.ui-switch-track[data-checked=true] {
+  --switch-track-color: var(--color-accent);
+  --switch-track-border: var(--color-accent);
+}
+
+.ui-switch-thumb {
+  position: relative;
+  display: block;
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-text);
+  transition: transform var(--dur-base) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+
+.ui-switch-track[data-checked=true] .ui-switch-thumb {
+  transform: translateX(var(--space-5));
+  background-color: var(--color-on-accent);
+}
+
+.ui-switch-label {
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  color: var(--color-text);
+}
+}

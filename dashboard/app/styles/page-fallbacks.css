@@ -1,0 +1,24 @@
+@layer pages {
+/* Saved Investigations Library */
+
+/* Block DL07 — Settings, Data Status, Methodology, Forecasts, and Tier List */
+
+/* Header fallback & common layout */
+.header-suspense-fallback {
+  height: var(--header-height, 56px);
+  background: var(--color-surface-1);
+}
+
+.table-empty-cell {
+  text-align: center;
+  padding: var(--space-8);
+}
+
+.notice-box-warning {
+  border-left-color: var(--color-warning);
+}
+
+.notice-box-accent {
+  border-left-color: var(--color-accent);
+}
+}

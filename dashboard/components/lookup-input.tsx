@@ -7,6 +7,7 @@ import type { LookupItem } from "@/lib/types";
 import { buildLookupCacheKey, defaultLookupCache } from "@/lib/lookup-cache";
 import { queryLookup } from "@/lib/workbench-api";
 import { Icon } from "./ui/icon";
+import { Button, IconButton } from "./ui/kit";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo, TeamLogoStack } from "./team-logo";
 
@@ -159,7 +160,7 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
     className={`lookup-dropdown ${compactResults ? "lookup-compact-results" : ""} ${portalDropdown ? "lookup-floating-dropdown" : ""}`}
     style={floatingStyle}>
       {loading && <p className="lookup-status-message">Searching…</p>}
-      {error && <div className="lookup-status-message error">{error}<button type="button" className="button button-small" onClick={() => {invalidate(); setState(null); setRetry(n=>n+1); ref.current?.focus();}}>Retry search</button></div>}
+      {error && <div className="lookup-status-message error">{error}<Button size="xs" onClick={() => {invalidate(); setState(null); setRetry(n=>n+1); ref.current?.focus();}}>Retry search</Button></div>}
       {!loading && !ime && !error && !items.length && <p className="lookup-status-message">{`No matches for “${value}”. Try a shorter name or another spelling.`}</p>}
       <ul id={`${id}-list`} role="listbox" aria-label={`${label} suggestions`} className="lookup-listbox">
         {items.map((item,index) => <Fragment key={`${item.kind}:${item.canonical_id}`}>{(index === 0 || items[index-1].kind !== item.kind) && <li role="presentation" className="lookup-group-header">{item.kind === "player" ? "Players" : item.kind === "team" ? "Teams" : "Pages and tools"}</li>}<li id={`${id}-option-${index}`} role="option" tabIndex={-1} aria-selected={index === currentActive} className={`lookup-option ${index === currentActive ? "selected" : ""}`} onPointerDown={event=>{if(event.pointerType === "mouse") event.preventDefault();}} onClick={()=>choose(item)} onMouseEnter={()=>setActive(index)}><LookupIdentity item={item} compact={compactResults} /></li></Fragment>)}
@@ -178,7 +179,7 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
           else if (event.key === "Escape") { if(open) event.preventDefault(); close(); }
           else if (event.key === "Tab") close();
         }} />
-      {value && !disabled && <button type="button" className="lookup-clear-btn" aria-label={clearLabel ?? `Clear ${label}`} onClick={() => {change(""); onClear?.(); ref.current?.focus();}}><Icon name="close" /></button>}
+      {value && !disabled && <IconButton size="sm" variant="ghost" icon="close" label={clearLabel ?? `Clear ${label}`} onClick={() => {change(""); onClear?.(); ref.current?.focus();}} />}
     </div>
     <span id={`${id}-status`} role="status" aria-live="polite" className="sr-only">{open && !loading && !ime ? error ?? `${items.length} suggestions. Use arrow keys to choose, then Enter.` : ""}</span>
     {portalDropdown ? position && dropdown && createPortal(dropdown, document.body) : dropdown}
