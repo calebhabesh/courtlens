@@ -11,13 +11,15 @@ import type { KitSize } from "./kit";
 export interface ControlScopeValue {
   size?: KitSize;
   tone?: "default" | "console";
+  /** Controls fill the row (the phone Filters sheet). */
+  fill?: boolean;
 }
 
 const ControlScopeContext = createContext<ControlScopeValue>({});
 
-export function ControlScope({ size, tone, children }: ControlScopeValue & { children: ReactNode }) {
+export function ControlScope({ size, tone, fill, children }: ControlScopeValue & { children: ReactNode }) {
   const outer = useContext(ControlScopeContext);
-  return <ControlScopeContext.Provider value={{ size: size ?? outer.size, tone: tone ?? outer.tone }}>{children}</ControlScopeContext.Provider>;
+  return <ControlScopeContext.Provider value={{ size: size ?? outer.size, tone: tone ?? outer.tone, fill: fill ?? outer.fill }}>{children}</ControlScopeContext.Provider>;
 }
 
 export function useControlScope() {

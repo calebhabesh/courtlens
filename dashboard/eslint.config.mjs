@@ -1,7 +1,7 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTypescript from "eslint-config-next/typescript";
-import { controlKitPlugin, PENDING_CONTROL_CLASS } from "./eslint/control-kit.mjs";
+import { controlKitPlugin } from "./eslint/control-kit.mjs";
 
 // D26: arrows (U+2190–21FF), geometric shapes (U+25A0–25FF), misc symbols and dingbats incl. check
 // marks and stars (U+2600–27BF), more arrows (U+2B00–2BFF) and emoji (surrogate pairs for
@@ -103,7 +103,6 @@ export default defineConfig([
     files: ["components/ui/**/*.{ts,tsx}"],
     rules: { "control-kit/no-control-class": "off" }
   },
-  { files: PENDING_CONTROL_CLASS, rules: { "control-kit/no-control-class": "off" } },
   {
     // The rules' own tests hold violating fixtures as strings.
     files: ["eslint/**"],

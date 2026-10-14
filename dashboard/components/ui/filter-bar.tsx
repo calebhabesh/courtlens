@@ -67,10 +67,10 @@ export function FilterBar({ scope, filters, modes, count, details, summary, labe
         </div>
       )}
       {collapsible && <Drawer isOpen={sheetOpen} onClose={() => setSheetOpen(false)} side="bottom" title="Filters" className="ui-filter-sheet">
-        <div className="ui-filter-sheet-body">
+        <div className="ui-filter-sheet-body"><ControlScope fill>
           {scope}
           {filters}
-        </div>
+        </ControlScope></div>
       </Drawer>}
     </div>
     </ControlScope>

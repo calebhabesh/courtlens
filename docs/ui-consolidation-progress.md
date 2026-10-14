@@ -449,3 +449,53 @@ The shared step that batches 2–4 deferred runs as 6a (page chrome), 6b (form t
   overflow); full Playwright against the 3180 fixture build **459 PASS / 27 skips / 0 failures**.
   After the final gap fix, the Filters-sheet and screenshot specs pass **140/140**. No baseline
   changed.
+
+## UC04 batches 6b and 6c — shared form triggers, menus and legacy removal (2026-10-14)
+
+Evidence: [UC04 shared controls evidence](evidence/ui-consolidation/uc04-shared-controls/README.md).
+Run as one batch on the owner's pre-approval (one before/after diff against `ef80339`).
+
+- **6b, form triggers:**
+  - `components/ui/select.tsx` keeps its API and draws the kit `Select`. Legacy `md` (32 px) maps to
+    kit `sm`; `FilterBar` and `Field` provide `lg` and the Stats workspace the console tone through
+    `ControlScope`. A `legacy-select` wrapper class carries the old full-width default
+    (`width: auto` in the filter bar row, full width in the season popover).
+  - The date trigger is a kit `Button lg` with the calendar icon and no chevron (a `MenuTrigger`
+    chevron would widen the 1024 px filter bars, which have no slack); it stretches in the phone
+    Filters sheet (`ControlScope fill`). Month arrows are `IconButton sm ghost`.
+  - Season popover: mode switch → `Segmented sm stretch`, Apply → `Button lg primary` (full width as a
+    grid item). Legacy `SegmentedControl` is deleted with its CSS; `/design` callers use `Segmented`
+    and the obsolete C13 proposal panel is removed.
+  - Kit fix: `Segmented stretch` items grow but no longer shrink below their label (labels clipped at
+    390 px on `/design`); a crowded group scrolls, as the legacy control did.
+- **6c, menus, search and legacy removal:**
+  - `Menu`/`Popover` take only `renderTrigger`; their built-in trigger button and CSS are gone. Data
+    Status "More jobs" → `MenuTrigger xs`, Compare "More" (an unpadded text button) → `MenuTrigger lg`,
+    roster card move → `IconButton xs ghost`.
+  - Search clear (lookup input and command palette) → `IconButton sm ghost`; lookup Retry →
+    `Button xs`; entity picker remove → `IconButton lg ghost`.
+  - Legacy `Button`/`IconButton`, `controls.tsx`, `ChipGroup` and `EntityChip` are deleted; `/design`
+    and five pages that hand-wrote `ui-button` classes on links use kit `Button`/`ButtonLink`.
+  - Spec: `ui-tab-trigger` (in-page section tabs) moves to "does not fit" as underline navigation like
+    `RouteTabs`; `entity-chip` is an identity card; raw `<select>` elements (about 25, never covered by
+    the class lint) are recorded as an alignment follow-up.
+- **Ratchets closed:** the TSX `PENDING_CONTROL_CLASS` list is empty and removed; the Stylelint
+  kit-selector override is removed with zero violations (131 → 0 selectors during the shared step).
+  Tests now assert both stay closed; the ESLint test probes that the rule is live.
+- **Found and fixed during verification:** the season popover's selects shrank to content width
+  (the filter-bar row's `width: auto` reached into the popover; `.season-scope-panel .legacy-select`
+  restores full width); giving the popover the default tone made its select vanish into the panel
+  (on Stats both surfaces map to the table lift), so it keeps the console tone; the Segmented
+  `stretch` clipping above.
+- **Changes:** filter-bar and form selects keep their 40 px size and colours (a zero-width border
+  colour changes); date triggers weight 400 → 500 and the calendar icon takes the label colour;
+  month arrows secondary; season mode segments 28 → 24 px; Compare "More" becomes a 40 px button;
+  Data Status "More jobs" 28 px kit trigger; entity remove buttons weight and colour (same 40 px);
+  `/design` demos re-labelled to kit sizes and its C13, ChipGroup and EntityChip demos removed.
+- **Verification:** ESLint/Stylelint **PASS, zero warnings, no exemptions**; typecheck **PASS**;
+  Vitest **76 files / 504 PASS** (legacy Button, SegmentedControl and ChipGroup tests removed with
+  their components; kit tests cover the replacements); all five measurement scripts before/after,
+  zero errors, zero overflow, no row wraps; full Playwright against the 3180 fixture build
+  **459 PASS / 27 skips / 0 failures** after regenerating two baselines that changed with this
+  batch (`native-select-theme` Filter by season popup: the select no longer keeps the legacy hover
+  colour under the open picker; `visual-baselines` phone design style guide: the `/design` demos).

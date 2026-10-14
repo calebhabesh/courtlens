@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Panel, SegmentedControl } from "@/components/ui";
+import { Panel } from "@/components/ui";
+import { Button, Segmented } from "@/components/ui/kit";
 import { ChartFrame, PairedBars, ReliabilityPlot, DeltaChip, Donut, PercentileCell, Sankey, ShapePack, ThresholdBar, TimelineGrid, ValueBar, comparisonFlags, type Category, type ChartMeta } from "./index";
 
 const categoryLabels: Record<Category, string> = { 1: "Category one", 2: "Category two", 3: "Category three", 4: "Category four", 5: "Category five", 6: "Category six" };
@@ -14,13 +15,13 @@ export function DesignChartShowcase() {
   const [state, setState] = useState<NonNullable<ChartMeta["state"]>>("ready");
   const [revision, setRevision] = useState(false);
   const [unqualified, setUnqualified] = useState(false);
-  const meta = { source, sample, state, action: <Button size="sm" onClick={() => setState("ready")}>Show example</Button> };
+  const meta = { source, sample, state, action: <Button size="xs" onClick={() => setState("ready")}>Show example</Button> };
   const amount = revision ? 72 : 60;
   const lowFlags = comparisonFlags({ good_direction: "low" });
   return <div className="chart-showcase" id="chart-kit">
     <div className="chart-showcase-row">
-      <SegmentedControl name="Chart state" value={state} onChange={v => setState(v as NonNullable<ChartMeta["state"]>)} options={[{ value: "ready", label: "Ready" }, { value: "loading", label: "Loading" }, { value: "empty", label: "Empty" }, { value: "error", label: "Error" }]} />
-      <Button variant="secondary" onClick={() => setRevision(v => !v)}>Change values</Button>
+      <Segmented size="md" label="Chart state" value={state} onChange={(v: string) => setState(v as NonNullable<ChartMeta["state"]>)} options={[{ value: "ready", label: "Ready" }, { value: "loading", label: "Loading" }, { value: "empty", label: "Empty" }, { value: "error", label: "Error" }]} />
+      <Button size="sm" variant="secondary" onClick={() => setRevision(v => !v)}>Change values</Button>
     </div>
     <div className="chart-showcase-grid">
       <Panel compact title="Identity A/B and metric differences">
@@ -35,7 +36,7 @@ export function DesignChartShowcase() {
         <ValueBar {...meta} title="ValueBar · signed observed value" value={revision ? 3 : -2} domain={[-5, 5]} tone="identity-b" note="Blue = Subject B" />
         <ChartFrame {...meta} title="PercentileCell · qualified cohort">
           <div className="chart-showcase-row">{[0, 25, 50, 75, 100].map(p => <PercentileCell key={p} label="Illustrative rank" value={p / 10} percentile={p} qualified={!unqualified} cohort="Same season and phase; 500 minutes minimum" />)}<PercentileCell label="Missing value" value={null} percentile={null} qualified cohort="Same season and phase" /></div>
-          <Button size="sm" variant="secondary" onClick={() => setUnqualified(v => !v)}>{unqualified ? "Show qualified ranks" : "Show small sample"}</Button>
+          <Button size="xs" variant="secondary" onClick={() => setUnqualified(v => !v)}>{unqualified ? "Show qualified ranks" : "Show small sample"}</Button>
           <p className="chart-note">Blue intensifies with oriented rank. Unqualified values retain their value and say Small sample.</p>
         </ChartFrame>
       </Panel>

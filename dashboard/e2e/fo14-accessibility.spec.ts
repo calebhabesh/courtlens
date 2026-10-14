@@ -32,7 +32,7 @@ for (const route of ["/stats", "/planner", "/live", "/research/ask?experience=ma
     await page.setViewportSize({ width: 390, height: 844 });
     await openWorkbench(page, route);
     await page.waitForLoadState("networkidle");
-    const short = await page.locator("main button,main summary,main .ui-button,main a:not(p a):not(li a)").evaluateAll(elements => elements.filter(e => e.checkVisibility()).filter(e => {
+    const short = await page.locator("main button,main summary,main a:not(p a):not(li a)").evaluateAll(elements => elements.filter(e => e.checkVisibility()).filter(e => {
       const r = e.getBoundingClientRect();
       return r.width > 0 && (r.height < 39.5 || r.width < 39.5);
     }).map(e => e.getAttribute("aria-label") || e.textContent));
@@ -118,7 +118,7 @@ test("reduced-motion status hydrates without replacing the style guide", async (
 test("phone segmented controls keep every label inside its target", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openWorkbench(page, "/design");
-  const clipped = await page.locator(".ui-segmented-item").evaluateAll(items => items.filter(item => item.scrollWidth > item.clientWidth + 1).map(item => item.textContent));
+  const clipped = await page.locator("[data-kit=segmented] [role=radio]").evaluateAll(items => items.filter(item => item.scrollWidth > item.clientWidth + 1).map(item => item.textContent));
   expect(clipped).toEqual([]);
 });
 

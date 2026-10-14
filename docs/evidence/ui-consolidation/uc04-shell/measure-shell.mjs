@@ -50,7 +50,7 @@ const PAGES = [
   ["stats", "/stats"],
   ["stats-season", "/stats", async page => { await page.getByRole("button", { name: /^Season: / }).first().click(); }, { notPhone: true }],
   ["stats-date", "/stats", async page => { await page.getByRole("button", { name: /^Through date/ }).first().click(); }, { notPhone: true }],
-  ["stats-filter-sheet", "/stats", async page => { await page.locator(".ui-filter-bar-toggle").click(); }, { phoneOnly: true }],
+  ["stats-filter-sheet", "/stats", async page => { await page.locator(".filter-bar-toggle-slot > button").click(); }, { phoneOnly: true }],
   ["more-menu", "/stats", click("button", "More options"), { desktopOnly: true }],
   ["nav-drawer", "/stats", click("button", "Toggle navigation drawer"), { notDesktop: true }],
   ["players", "/players"],

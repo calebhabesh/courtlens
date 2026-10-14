@@ -259,18 +259,14 @@
   .stats-workspace .ui-filter-bar-scope, .stats-workspace .ui-filter-bar-controls { gap: var(--space-3); }
   .context-season-stepper { display: inline-flex; align-items: stretch; height: var(--control-lg); background: var(--color-surface-2); border-radius: var(--radius-sm); }
   .stats-workspace .context-season-picker { display: inline-flex; align-items: center; gap: var(--space-1); padding-left: var(--space-3); background: var(--color-surface-3); color: var(--color-accent); }
-  .stats-workspace .context-season-picker .ui-select-wrapper { background: transparent; }
-  .stats-workspace .context-season-picker .ui-select { min-height: var(--control-lg); background: transparent; border: 0; color: var(--color-text); font-size: var(--text-lg); font-weight: 600; padding-left: var(--space-1); }
   /* 43e: season scope popover (single season or a From–Through range, Databallr pattern). */
   .season-scope-popover { display: flex; }
   .season-scope-icon { color: var(--color-accent); }
   .season-scope-value { color: var(--color-text); font-size: var(--text-lg); font-weight: 600; white-space: nowrap; }
   .season-scope-popover .ui-popover-panel { width: min(340px, calc(100vw - 2 * var(--space-4))); padding: var(--space-3); gap: var(--space-3); }
   .season-scope-panel { display: grid; gap: var(--space-3); }
-  .season-scope-panel .ui-select-wrapper { width: 100%; }
   .season-scope-range { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
   .season-scope-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2); width: 100%; }
-  .season-scope-apply { width: 100%; }
   .stats-workspace .ui-filter-bar-page { border-left: 0; padding-left: 0; }
   .stats-workspace .stats-team-select { min-height: var(--control-lg); background: var(--color-surface-2); border: 0; font-size: var(--text-md); padding-left: var(--space-4); }
   .stats-workspace .ui-filter-bar .context-label, .stats-workspace .ui-filter-bar .ui-field-label { font-size: var(--text-xs); }
@@ -384,15 +380,6 @@
   .stats-trend-definition strong { color: var(--color-text); }
 }
 
-/* Season selector (instruction 13): the shared select paints its own surface from the foundation
-   layer, so the uniform picker surface is set in that layer too. */
-@layer foundation {
-  .stats-workspace .context-season-picker .ui-select-wrapper { background: transparent; }
-  .stats-workspace .context-season-picker .ui-select,
-  .stats-workspace .context-season-picker .ui-select:hover,
-  .stats-workspace .context-season-picker .ui-select:focus { background: var(--color-surface-3); box-shadow: none; }
-}
-
 /* Stats third review: Draft Class menu, two-line headers and the wrapped scope row. */
 @layer pages {
   .stats-workspace .stats-draft-menu .ui-menu-panel { max-height: 320px; overflow-y: auto; min-width: 160px; }
@@ -455,13 +442,12 @@
   .stats-workspace .stats-header-search .lookup-input-wrapper { min-height: var(--control-md); }
   .stats-workspace .stats-header-search .lookup-input { min-height: calc(var(--control-md) - 2px); }
 
-  .stats-workspace :is(.context-season-picker .ui-select, .season-scope-value, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select) {
+  .stats-workspace .season-scope-value {
     font-size: var(--text-sm);
     line-height: var(--text-sm-lh);
     font-weight: 500;
     color: var(--color-text-secondary);
   }
-  .stats-workspace :is(.ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select) { min-height: var(--control-lg); padding-block: 0; }
   .stats-workspace .stats-divider-field > .ui-field-label { color: var(--color-on-bg-secondary); }
 
   @media (max-width: 767px) {
@@ -470,26 +456,10 @@
   }
 }
 
-/* 43e: the season popover sits inside the filter bar, whose foundation-layer control rules would dim
-   the primary action to secondary text and shrink the selects; restore both at the same layer. */
-@layer foundation {
-  .season-scope-panel .ui-field-control,
-  .season-scope-panel .ui-field-control > .ui-select-wrapper,
-  .stats-workspace .season-scope-panel .ui-filter-bar .ui-select,
-  .season-scope-panel .ui-select-wrapper .ui-select { width: 100%; }
-  .season-scope-panel .ui-button.season-scope-apply,
-  .stats-workspace .season-scope-panel .ui-button.season-scope-apply,
-  .stats-workspace .season-scope-panel .ui-button.season-scope-apply:hover:not(:disabled) {
-    color: var(--color-on-accent);
-    font-weight: 600;
-  }
-}
-
 /* Owner review: brighter scope controls, visible header alignment and a padded player drawer. */
 @layer foundation {
   .stats-workspace :is(.context-season-stepper,
-    .context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
-    .ui-filter-bar-scope .ui-select) {
+    .context-season-picker) {
     background: var(--color-surface-3);
   }
   .stats-workspace .dense-stats-table .stats-header-tier-2 .table-sort-button {
@@ -548,13 +518,11 @@
   .stats-workspace {
     --console-hover: color-mix(in srgb, var(--color-white) 7%, var(--color-table-lift));
   }
-  .stats-workspace :is(.context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
-    .ui-filter-bar-scope .ui-select) {
+  .stats-workspace :is(.context-season-picker) {
     /* Background only: a colour fade runs on the main thread and lags the label behind the slide. */
     transition: background-color var(--dur-fast) var(--ease-out);
   }
-  .stats-workspace :is(.context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
-    .ui-filter-bar-scope .ui-select):hover:not(:disabled, .active, [aria-pressed="true"], [aria-checked="true"]) {
+  .stats-workspace :is(.context-season-picker):hover:not(:disabled, .active, [aria-pressed="true"], [aria-checked="true"]) {
     background-color: var(--console-hover);
     color: var(--color-text);
   }
@@ -564,11 +532,4 @@
    Active (accent) and disabled controls keep their own colors. Foundation layer, because the
    shared control colors are set there. */
 @layer foundation {
-  .stats-workspace :is(
-    .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select):not(.active, .is-selected, .ui-segmented-item-active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], :disabled) {
-    color: var(--color-text-control);
-    font-weight: 600;
-    &:hover { color: var(--color-text); }
-  }
-  .stats-workspace .ui-filter-bar-scope .ui-popover-trigger { font-weight: 600; }
 }
