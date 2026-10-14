@@ -2,8 +2,9 @@
 
 import { useState, type ReactNode } from "react";
 import { formatDate, throughDateFromBefore } from "../../lib/format-date";
-import { Button } from "./button";
+import { useControlScope } from "./control-scope";
 import { Drawer } from "./drawer";
+import { Button } from "./kit";
 
 export interface DataScope {
   releaseId?: string | null;
@@ -102,9 +103,12 @@ export function DataDetails({ open, onClose, scope, rows = [], kicker, children 
 /** Trigger for page-level Data details, placed at the right of the filter bar or page header. */
 export function DataDetailsButton({ scope, rows, children, label = "Data details" }: { scope?: DataScope; rows?: DataDetailRow[]; children?: ReactNode; label?: string }) {
   const [open, setOpen] = useState(false);
+  // On the Stats console it is a filled 40 px control; elsewhere a ghost with the xs label. Filter
+  // bars have no slack at 1024 px, so neither may grow wider (lg padding wrapped Teams and Showcase).
+  const console_ = useControlScope().tone === "console";
   return (
     <>
-      <Button variant="ghost" size="sm" icon="database" onClick={() => setOpen(true)} aria-haspopup="dialog"><span className="ui-hide-narrow">{label}</span></Button>
+      <Button variant="ghost" size={console_ ? "lg" : "xs"} dense={console_} tone={console_ ? "console" : undefined} icon="database" onClick={() => setOpen(true)} aria-haspopup="dialog"><span className="ui-hide-narrow">{label}</span></Button>
       <DataDetails open={open} onClose={() => setOpen(false)} scope={scope} rows={rows}>{children}</DataDetails>
     </>
   );

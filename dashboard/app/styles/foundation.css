@@ -274,9 +274,9 @@
     flex-shrink: 0;
   }
 
-  .ui-filter-bar-toggle { display: none; }
-  .ui-filter-bar-meta .ui-button { min-height: var(--control-lg); }
-  .ui-filter-bar-summary { margin-left: var(--space-2); color: var(--color-text-secondary); font-weight: 400; }
+  .filter-bar-toggle-slot { display: none; }
+  /* A real space keeps "Filters" and the summary apart in the accessible name; the margin tops it up to the old 16 px gap. */
+  .ui-filter-bar-summary { margin-left: var(--space-3); color: var(--color-text-secondary); font-weight: 400; }
 
   .ui-count-chip {
     display: inline-flex;
@@ -449,24 +449,6 @@
   .ui-why { display: block; min-width: 0; }
   .ui-why[open] { flex-basis: 100%; }
 
-  .ui-why-summary {
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--control-sm);
-    padding: 0 var(--space-2);
-    border-radius: var(--radius-xs);
-    color: var(--color-text-secondary);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    text-decoration: underline dotted;
-    text-underline-offset: 3px;
-    cursor: pointer;
-    list-style: none;
-  }
-
-  .ui-why-summary::-webkit-details-marker { display: none; }
-  .ui-why-summary:hover { color: var(--color-text); }
-  .ui-why-summary:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
 
   .ui-why-body {
     max-width: 80ch;
@@ -865,11 +847,9 @@
     .ui-page { --page-pad-inline: var(--space-3); padding-top: var(--space-4); }
     .ui-filter-bar-controls { display: none; }
     .ui-filter-bar { flex-wrap: nowrap; gap: var(--space-2); }
-    .ui-filter-bar-toggle { display: inline-flex; flex: 1; min-width: 0; min-height: var(--control-lg); justify-content: flex-start; }
-    .ui-filter-bar-toggle > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .filter-bar-toggle-slot { display: flex; flex: 1; min-width: 0; }
     .ui-filter-bar-summary { overflow: hidden; text-overflow: ellipsis; }
     .ui-filter-bar-meta { gap: var(--space-1); }
-    .ui-filter-bar-meta .ui-button { min-width: var(--control-lg); min-height: var(--control-lg); }
     /* A fixed scope has nothing to choose, so its one-line label stays in the bar. */
     .ui-filter-bar.is-fixed-scope .ui-filter-bar-controls { display: flex; flex: 1; min-width: 0; }
     .ui-filter-bar.is-fixed-scope .ui-filter-bar-scope { flex-wrap: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -1055,7 +1035,7 @@
   @media (max-width: 767px) {
     .ui-article-facts > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
     .ui-article-facts dd { text-align: left; }
-    .ui-article :is(.ui-button, .ui-switch, .ui-why-summary) { min-height: var(--control-lg); }
+    .ui-article :is(.ui-button, .ui-switch) { min-height: var(--control-lg); }
     .data-status-view :is(.ui-button, .ui-menu-trigger) { min-height: var(--control-lg); }
   }
 }

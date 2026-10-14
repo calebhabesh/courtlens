@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Icon } from "./icon";
+import { ButtonSummary } from "./kit";
 
 export interface GatedNoteProps {
   /** One plain line, e.g. "No games on Oct 8." */
@@ -26,7 +27,7 @@ export function GatedNote({ children, why, action, tone = "neutral", className =
       </div>
       {why && (
         <details className="ui-why">
-          <summary className="ui-why-summary">Why?</summary>
+          <ButtonSummary>Why?</ButtonSummary>
           <div className="ui-why-body">{why}</div>
         </details>
       )}

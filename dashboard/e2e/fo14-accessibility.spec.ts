@@ -89,7 +89,7 @@ test("404 uses the shared header and a keyboard reachable return action", async 
 test("200% desktop reflow keeps the filter sheet usable by keyboard", async ({ page }) => {
   await page.setViewportSize({ width: 720, height: 450 });
   await openWorkbench(page, "/stats");
-  const trigger = page.locator(".ui-filter-bar-toggle");
+  const trigger = page.locator(".filter-bar-toggle-slot > button");
   await trigger.focus();
   await page.keyboard.press("Enter");
   const sheet = page.getByRole("dialog", { name: "Filters", exact: true });

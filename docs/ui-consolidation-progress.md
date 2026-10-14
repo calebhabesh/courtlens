@@ -411,3 +411,41 @@ D-numbers continue this log's UC04 series; they are not Design Language's D26 gl
   `ask-chip`/`agent-source-chip` spec move and the square Send/Stop. Against a fresh 3180 fixture
   build the three screenshot specs failed on exactly the 4 listed baselines (110 pass); those were
   regenerated with `--update-snapshots=changed` and the rerun passes **114/114**.
+
+## UC04 batch 6a — shared page chrome (2026-10-14)
+
+Evidence: [UC04 shared chrome evidence](evidence/ui-consolidation/uc04-shared-chrome/README.md).
+The shared step that batches 2–4 deferred runs as 6a (page chrome), 6b (form triggers) and 6c
+(menus, tabs, search, entity picker, legacy deletions). The owner pre-approved its changes
+(2026-10-14) and asked for the remaining blocks to run on the agent's judgement.
+
+- **Migrated:** the `FilterBar` Filters toggle → `Button lg` with a new kit `stretch` option (fills
+  the row, lead-aligns and truncates; it opens a sheet, so no chevron), shown and hidden through a
+  `filter-bar-toggle-slot` wrapper; `DataDetailsButton` → kit `Button` ghost; `GatedNote`'s Why?,
+  `TablePercentileLegend`'s Rules and the three Settings disclosures → `ButtonSummary xs ghost`;
+  drawer, modal and search-clear close buttons → `IconButton xs ghost` (same 28 px). The TSX
+  ratchet drops 6 → 2 (`entity-picker`, `lookup-input`, both 6c).
+- **Placement context:** `components/ui/control-scope.tsx` gives shared controls their size and
+  tone from where they sit, replacing page CSS that did it by selector. `FilterBar` provides `lg`
+  and the Stats workspace (`/stats`, `/players`) the console tone; explicit props win.
+- **CSS removed:** `.ui-why-summary` (4 rules), `.ui-filter-bar-toggle` (3) and
+  `.ui-filter-bar-meta .ui-button` (2) in foundation.css, and the Stats console selectors for the
+  toggle and Data details (5) in stats-explorer.css.
+- **Found and fixed during measurement:**
+  - With the kit's `lg` padding, Data details grew 15 px and wrapped a filter control to a second
+    row (+52 px) on Players, Teams and Showcase at 1024 px. A probe showed the Teams and Showcase
+    bars have no slack, so Data details keeps its old width: `xs` ghost outside the Stats console
+    (resting look unchanged; its hover box is 28 instead of 40 px) and `lg dense` on the console.
+  - The phone toggle's accessible name ran together ("Filters2025-26 …") once label and summary
+    shared one truncating span. A real space restores it; the summary margin rises to 12 px so the
+    visible gap is 14.5 px (was 16).
+- **Changes:** Why?/Rules and the Settings disclosures lose the dotted underline, weight
+  600 → 500, radius 4 → 6, with the kit hover fill (the approved UC01 mapping); content below a Why?
+  on Rankings and Tier List moves up 1 px. Stats console Data details: 16 px icon, +2 px wide. Phone
+  Filters toggle on Stats: console tone (control text, weight 600). Data details elsewhere: 28 px
+  hover box.
+- **Verification:** ESLint/Stylelint **PASS**; typecheck **PASS**; Vitest **76 files / 511 PASS**;
+  all five measurement scripts before and after (196 states at 1440/1024/390, zero errors or
+  overflow); full Playwright against the 3180 fixture build **459 PASS / 27 skips / 0 failures**.
+  After the final gap fix, the Filters-sheet and screenshot specs pass **140/140**. No baseline
+  changed.
