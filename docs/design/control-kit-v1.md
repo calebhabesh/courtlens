@@ -34,8 +34,8 @@ Owner decisions (2026-10-14):
 - **Segmented size measures the outer group**, including 4 px inner padding on each side.
   Desktop group/item heights are xs 28/20, sm 32/24, md 36/28 and lg 40/32. Phone groups are
   48 px with 40 px items and 8 px inline item padding. UC01 measured individual legacy items;
-  those measurements are not outer-group heights. C13 records the filter-bar item change for
-  its UC04 owner review; no existing group changes in UC02.
+  those measurements are not outer-group heights. C13 records the filter-bar item
+  change, approved by the owner on 2026-10-14 and applied in UC04; no existing group changes in UC02.
 - **Weight:** 500 by default. Console controls (`secondary` at `lg`/`md`) use 600 and
   `--color-text-control` while inactive, which is the Stats/Databallr contrast rule already in
   `stats-explorer.css`. In the kit this is the `console` tone, not a page override. Its rest
@@ -184,7 +184,7 @@ before its baseline is regenerated. Heights are unchanged except C1, C9, C12 and
 | C10 | Solid-accent `.control-pill.active` → accent outline selected | pages using `pages.css` pills |
 | C11 | `MenuTrigger` text-to-chevron gap 8 → 4 | Export, More jobs, Table settings |
 | C12 | Phone: wrapped 60 px `button-secondary` → one line at 40 | Similar Players PvP Compare |
-| C13 | Filter-bar segmented items 36 → 32 inside a 40 px group with 4 px inner padding; phone items remain 40 inside a 48 px group | Filter-bar `SegmentedControl` callers; proposed in UC02, pending owner approval in UC04 |
+| C13 | Filter-bar segmented items 36 → 32 inside a 40 px group with 4 px inner padding; phone items remain 40 inside a 48 px group | Filter-bar `SegmentedControl` callers; proposed in UC02, **approved 2026-10-14**; applied with each filter-bar caller's UC04 batch |
 
 Open for the owner (no change by default): `Select` uses a 16 px chevron while `MenuTrigger` uses
 14, and both sit in the Stats console row.
