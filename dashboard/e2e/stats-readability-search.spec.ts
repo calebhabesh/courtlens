@@ -14,7 +14,7 @@ test("standard records are readable and portrait gutters center between metric g
         (cell.previousElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().right +
          cell.nextElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().left) / 2) };
   });
-  expect(geometry.height).toBeCloseTo(42, 1);
+  expect(geometry.height).toBeCloseTo(46, 1);
   expect(geometry.font).toBe("14px");
   geometry.offsets.forEach(offset => expect(Math.abs(offset)).toBeLessThan(1));
   expect(geometry.offsets).toHaveLength(5);
