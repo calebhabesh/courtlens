@@ -558,6 +558,8 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
     lists (its own spellings, e.g. "DRC", "Macedonia"), from flag-icons 7.2.3 (MIT, licence in
     `public/flags/LICENSE`) rendered to 60×45 PNGs (36 KB in all; the SVGs with coats of arms ran to
     180 KB); shown at 20×15. Unknown names show no flag. `lib/country-flags.ts`.
+40. [x] Align "Year" in the career table. — left-aligned: YEAR, each season's logo, CAREER and the
+    footnote all start 12px in, the same edge as the Per Game controls (measured at 1440 and 390).
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
 awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut). The
 "now TOR" chip on Stats rows was approved and built as Stats instruction 72.
