@@ -17,6 +17,7 @@ import { PageHeader } from "./ui/panel";
 import { StatTile } from "./ui/stat-tile";
 import { TemplateSkeleton } from "./ui/template-skeleton";
 import { useToast } from "./ui/toast";
+import { Button, ButtonLink } from "./ui/kit";
 
 /** One retained investigation on the Research template; results below stay immutable. */
 export function SavedOperationDetail({ id }: { id: string }) {
@@ -47,10 +48,10 @@ export function SavedOperationDetail({ id }: { id: string }) {
       busy.current = false; setVerifying(false);
     }
   }
-  const back = <Link className="button" href="/investigations">All Investigations</Link>;
+  const back = <ButtonLink size="lg" href="/investigations">All Investigations</ButtonLink>;
   if (error) return <PageShell template="research" className="research-view saved-operation-detail">
     <PageHeader title="Saved Investigation" actions={back} />
-    <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => { setError(null); setRetry(value => value + 1); }}>Retry saved detail</button>}>{error}</GatedNote></div>
+    <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => { setError(null); setRetry(value => value + 1); }}>Retry saved detail</Button>}>{error}</GatedNote></div>
   </PageShell>;
   if (!detail) return <><p role="status" className="sr-only">Loading retained evidence…</p><TemplateSkeleton template="research" /></>;
   const manifest = detail.manifest;
@@ -60,9 +61,9 @@ export function SavedOperationDetail({ id }: { id: string }) {
   return <PageShell template="research" className="research-view saved-operation-detail">
     <PageHeader title={entry?.title ?? detail.title} subtitle={`Saved ${formatDate(detail.created_at.slice(0, 10))} · retained analytical evidence`} actions={<>
       {back}
-      <button className="button button-primary" aria-label="Verify reproduction without AI" disabled={verifying} onClick={() => void verify()}>{verifying ? "Reproducing…" : "Verify Without AI"}</button>
-      <a className="button" href={operationExportUrl(id, "json")}>Export JSON</a>
-      <a className="button" href={operationExportUrl(id, "csv")}>Export CSV</a>
+      <Button size="lg" variant="primary" aria-label="Verify reproduction without AI" disabled={verifying} onClick={() => void verify()}>{verifying ? "Reproducing…" : "Verify Without AI"}</Button>
+      <ButtonLink size="lg" href={operationExportUrl(id, "json")}>Export JSON</ButtonLink>
+      <ButtonLink size="lg" href={operationExportUrl(id, "csv")}>Export CSV</ButtonLink>
     </>} />
     <FilterBar collapsible={false} label="Retained scope" summary={String(context.season ?? "Retained scope")} scope={<span className="research-scope-label">{contextLine(context)}{typeof context.window === "string" ? ` · ${humanLabel(context.window)}` : ""}</span>}
       details={<DataDetailsButton rows={[

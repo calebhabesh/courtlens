@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
-import Link from "next/link";
 import { getDistribution, getOpponentContext, getRankOperation, getSplitProfile } from "@/lib/workbench-api";
 import { formatDate } from "@/lib/format-date";
 import type { DistributionResponse, OpponentContextResponse, RankOperationResponse, SplitBucketSummary, SplitProfileResponse } from "@/lib/types";
@@ -12,10 +11,10 @@ import { GatedNote } from "./ui/gated-note";
 import { PlayerIdentity } from "./ui/identity";
 import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
-import { SegmentedControl } from "./ui/segmented-control";
 import { Select } from "./ui/select";
 import { StatTile } from "./ui/stat-tile";
 import { PlayerLookup, ResearchBodySkeleton, downloadCsv, evidenceRows, useInvestigationScope, useShareLink } from "./research-investigation";
+import { Button, ButtonLink, Segmented } from "./ui/kit";
 
 type Tab = "distribution" | "splits" | "opponent" | "rank";
 type Loaded<T> = { key: string; value?: T; error?: string } | null;
@@ -102,7 +101,7 @@ export function DistributionsInvestigationView() {
       <Field label="Measure" layout="inline"><Select aria-label="Dispersion measure" value={measure} onChange={e => set({ measure: e.target.value })}><option value="iqr">Interquartile range</option><option value="population_sd">Standard deviation</option></Select></Field>
       <Field label="Order" layout="inline"><Select aria-label="Sort order" value={direction} onChange={e => set({ rankDirection: e.target.value })}><option value="desc">Highest dispersion (most volatile)</option><option value="asc">Lowest dispersion (most consistent)</option></Select></Field></>
     : undefined;
-  const failed = active?.error && <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => setRetry(v => v + 1)}>Retry</button>}>{TABS.find(t => t.value === tab)?.label} unavailable: {active.error}</GatedNote></div>;
+  const failed = active?.error && <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => setRetry(v => v + 1)}>Retry</Button>}>{TABS.find(t => t.value === tab)?.label} unavailable: {active.error}</GatedNote></div>;
   const loading = !active && (tab === "opponent" || tab === "rank" || playerId) && <ResearchBodySkeleton tiles={tab === "distribution" ? 4 : 3} />;
   const d = dist?.value, sp = splits?.value, opp = opponent?.value, rk = rank?.value;
   const backToBack = sp?.rest_splits.find(b => /back-to-back/i.test(b.bucket_label));
@@ -110,13 +109,13 @@ export function DistributionsInvestigationView() {
 
   return <PageShell template="research" className="research-view distributions-view">
     <PageHeader title="Distributions & Splits" subtitle="Game-to-game spread, venue and rest splits, and opponent defensive context." actions={<>
-      <button type="button" className="button" onClick={share}>Share Link</button>
-      {tab === "distribution" && d && <button type="button" className="button" onClick={exportCsv}>Export CSV</button>}
-      <Link href="/stats" className="button button-primary">Open in Stats</Link>
+      <Button size="lg" onClick={share}>Share Link</Button>
+      {tab === "distribution" && d && <Button size="lg" onClick={exportCsv}>Export CSV</Button>}
+      <ButtonLink size="lg" variant="primary" href="/stats">Open in Stats</ButtonLink>
     </>} />
     <ContextBar initialReleaseId={releaseId ?? undefined} initialSeason={season || undefined} initialPhase={phase} initialBeforeDate={beforeDate ?? undefined} showWindow={false}
       filters={filters}
-      modes={<SegmentedControl<Tab> name="Distributions view" value={tab} onChange={next => set({ tab: next })} options={TABS} />}
+      modes={<Segmented<Tab> size="lg" label="Distributions view" value={tab} onChange={next => set({ tab: next })} options={TABS} />}
       detailRows={evidenceRows(active?.value, TABS.find(t => t.value === tab)?.label)} />
     {catalog === null && <div role="status"><GatedNote>Context catalog unavailable. Explicit URL scope is retained; reload to retry.</GatedNote></div>}
     {loading}{failed}
@@ -172,7 +171,7 @@ export function DistributionsInvestigationView() {
       <div className="table-wrapper research-table" role="region" aria-label="Dispersion ranking" tabIndex={0}>
         <table className="data-table"><caption>{metricLabel(metric)} · {measure === "iqr" ? "interquartile range" : "standard deviation"}</caption>
           <thead><tr><th className="num">Rank</th><th>Player</th><th>Team</th><th className="num">Games</th><th className="num">Minutes</th><th className="num">{measure === "iqr" ? "IQR" : "SD"}</th><th><span className="sr-only">Action</span></th></tr></thead>
-          <tbody>{rk.items.map(item => <tr key={item.player_id}><td className="num">{item.rank}</td><th scope="row">{item.player_name}</th><td>{item.team_tricode ? <span className="research-team"><TeamLogo team={item.team_tricode} size={16} />{item.team_tricode}</span> : "—"}</td><td className="num">{item.games_played}</td><td className="num">{item.total_minutes}</td><td className="num">{item.delta_value ?? "—"}</td><td><button type="button" className="button button-small" onClick={() => set({ tab: "distribution", playerId: item.player_id, player_id: null })}>View Distribution</button></td></tr>)}</tbody>
+          <tbody>{rk.items.map(item => <tr key={item.player_id}><td className="num">{item.rank}</td><th scope="row">{item.player_name}</th><td>{item.team_tricode ? <span className="research-team"><TeamLogo team={item.team_tricode} size={16} />{item.team_tricode}</span> : "—"}</td><td className="num">{item.games_played}</td><td className="num">{item.total_minutes}</td><td className="num">{item.delta_value ?? "—"}</td><td><Button size="lg" onClick={() => set({ tab: "distribution", playerId: item.player_id, player_id: null })}>View Distribution</Button></td></tr>)}</tbody>
         </table>
       </div>
       <Disclosures items={rk.disclosures}>Descriptive dispersion only; not injury risk or future volatility.</Disclosures>

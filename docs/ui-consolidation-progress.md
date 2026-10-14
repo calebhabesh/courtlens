@@ -350,3 +350,64 @@ Evidence: [UC04 catalogued pages evidence](evidence/ui-consolidation/uc04-pages/
   the two screenshot specs against a fresh 3180 fixture build failed on exactly the 18 listed
   baselines (90 pass); those 18 were regenerated with `--update-snapshots=changed` and the rerun
   passes **108/108**. No other baseline changed.
+
+## UC04 batch 5 — Ask and CourtLens-only pages (2026-10-14)
+
+Evidence: [UC04 Ask and CourtLens-only pages evidence](evidence/ui-consolidation/uc04-courtlens/README.md).
+D-numbers continue this log's UC04 series; they are not Design Language's D26 glyph rule.
+
+- **Scope:** `/forecasts`, `/evaluation`, `/investigations` (public, personal, saved detail),
+  `/research/operation`, `/research/ask` and the Ask drawer, Case Studies, Distributions, Trends,
+  adjusted shooting, `/data-status`, `/settings` and `/planner`. 19 files leave the ratchet
+  (25 → 6). `/design` was never on the ratchet (no banned classes).
+- **Left for the shared step (6 files):** `assistant-status-card`, `install-interface` and
+  `workbench-portrait-settings` keep one `ui-why-summary` each (shared with `GatedNote`'s Why?, as
+  batch 3 decided); their other buttons migrate now. `entity-picker`, `lookup-input` and
+  `table-percentile-legend` were already assigned to that step.
+- **Migrated:** legacy `.button`/`.button-small` → `Button`/`ButtonLink lg` (all measured 40 px
+  here; the two form submits get an explicit `type="submit"`, since the kit defaults to
+  `button`); legacy `ui/button` callers → kit (`md` 34 → `sm` 32, `sm` 28 → `xs`): Settings
+  history, portraits and install, Data Status refresh, Planner sign-in and compare; the four
+  filter-bar `SegmentedControl`s (Case Studies, Distributions, Trends, adjusted shooting) →
+  `Segmented lg`. Ask: Send and Stop → `IconButton md` (primary/secondary), sidebar toggle,
+  Delete chat and Close conversations → `IconButton sm secondary` (they rendered filled; the
+  `button-quiet` override lost), New chat → `Button sm ghost`, notice actions → `Button sm` in an
+  `ask-notice-actions` row, page-context remove → `IconButton xs`.
+- **Spec:** `ask-chip` and `agent-source-chip` move to "does not fit" and leave the lint list.
+  Follow-up questions and action labels are model-written text of any length that wraps (a 390 px
+  follow-up measured 46 px), and the citation chip flows inline inside answer prose; a fixed-height,
+  no-wrap kit control would overflow. Their legacy `Button` wrappers become plain
+  `<button className="ask-chip">`; `button.ask-chip` keeps the weight 500, line height and disabled
+  look the legacy button supplied (measured parity after a first pass showed 500 → 400).
+- **CSS removed:** `.ask-send.button` (desktop and phone), `.ask-topbar .button`,
+  `.ask-page-context button` and `.ask-notice .button + .button`.
+- **Changes for review:** C1 (legacy md 34 → 32: Clear history, Sign in, Compare scenario, New chat,
+  Ask notice actions), C2 (legacy `.button`: padding 16 → 12, text 14 → 13, weight 600 → 500, no
+  hairline; every header link, Retry, Share Link, Export, Verify, pager and Save on these pages),
+  C3 (`.button-small` at 40: text 12 → 13; Open in Stats/Research, Clear conversation, View
+  Distribution, Investigate, legacy investigation actions), C13 (filter-bar segmented items
+  36 → 32 in the 40 px group; phone groups 44 → 48 with 40 px items: Case Studies, Distributions,
+  Trends, adjusted shooting), and:
+  - D26 Ask Send/Stop: a 36 px circle (44 on phone) → the kit's 36 px rounded square (40 on phone).
+    The kit has no circular control; keeping the circle means a bespoke control.
+  - D27 Ask page-context remove: a 44 × 44 transparent "×" text button → a 28 px `IconButton`
+    with the close icon (40 on phone); the context row is 16 px shorter, so the dock above it moves
+    down 16 px.
+  - D28 Ask drawer at 390 px: the shorter Close research conversation button lets the drawer header
+    fit one line, so the panel starts 33 px higher.
+  - D29 Ask follow-up chip hover: the accent outline the action-link chips already used, instead of
+    the legacy button's surface fill.
+  - Phone segmented groups on Trends and adjusted shooting no longer stretch to the full row
+    (366 px); they size to their options, as on every other migrated filter bar.
+- **Verification:** ESLint/Stylelint **PASS**; typecheck **PASS**; Vitest **76 files / 511 PASS**;
+  full Playwright against the 3180 fixture build **452 PASS / 27 skips / 7 failures**: four
+  screenshot baselines that change with C2/C13 (`visual-baselines.spec.ts` FO12 phone
+  case-studies and PC11 phone adjusted-shooting; `pc12-headlines.spec.ts` Trends at 390;
+  `pc12-demo-hygiene.spec.ts` `pc12-c-saved-390`), pending approval; and three streamed-duplicate
+  strict-mode flakes (`advanced-research:62`, `roster-shapes:108`, `fo13-pages:47`). Rerun with
+  `--repeat-each=5` they fail 5/15 and then 1/15; the planner failure is the duplicate `Email`
+  field at `fill`, before the migrated Sign in button is used.
+- **Owner approval (2026-10-14):** C1, C2, C3, C13 and D26–D29 approved as shown, including the
+  `ask-chip`/`agent-source-chip` spec move and the square Send/Stop. Against a fresh 3180 fixture
+  build the three screenshot specs failed on exactly the 4 listed baselines (110 pass); those were
+  regenerated with `--update-snapshots=changed` and the rerun passes **114/114**.

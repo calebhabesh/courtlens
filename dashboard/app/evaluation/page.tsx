@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { browserApi, getAnalyticsEvaluation } from "@/lib/api";
 import { PairedBars } from "@/components/charts";
 import { formatDate } from "@/lib/format-date";
@@ -10,6 +9,7 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { PageShell, ResearchLayout } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
 import { StatTile } from "@/components/ui/stat-tile";
+import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Evaluation Archive" };
@@ -37,7 +37,7 @@ export default async function EvaluationPage({ searchParams }: {
   if (report) return <EvaluationView report={report} />;
   return <PageShell template="research" className="research-view evaluation-page">
     <PageHeader title={TITLE} subtitle={SUBTITLE} />
-    <div role="alert"><GatedNote action={<Link className="button" href={snapshotId ? "/evaluation" : "/forecasts"}>{snapshotId ? "Open Evaluation Archive" : "Points Forecasts"}</Link>} why={<p>{snapshotId ? "The requested snapshot has no matching, verified evaluation artifact. Its selection is preserved; the archive uses the frozen experiment's own inputs." : "The frozen experiment's retained inputs or verified report are unavailable. Points Forecasts has the separate basketball-points experiment."}</p>}>{snapshotId ? "Evaluation unavailable for the selected snapshot." : "Evaluation archive is unavailable."}</GatedNote></div>
+    <div role="alert"><GatedNote action={<ButtonLink size="lg" href={snapshotId ? "/evaluation" : "/forecasts"}>{snapshotId ? "Open Evaluation Archive" : "Points Forecasts"}</ButtonLink>} why={<p>{snapshotId ? "The requested snapshot has no matching, verified evaluation artifact. Its selection is preserved; the archive uses the frozen experiment's own inputs." : "The frozen experiment's retained inputs or verified report are unavailable. Points Forecasts has the separate basketball-points experiment."}</p>}>{snapshotId ? "Evaluation unavailable for the selected snapshot." : "Evaluation archive is unavailable."}</GatedNote></div>
   </PageShell>;
 }
 
@@ -58,7 +58,7 @@ function EvaluationView({ report }: { report: AnalyticsEvaluation }) {
   const gap = ewma && context ? context.mae - ewma.mae : null;
   const build = report.latest_build;
   return <PageShell template="research" className="research-view evaluation-page">
-    <PageHeader title={TITLE} subtitle={SUBTITLE} actions={<Link className="button" href="/forecasts">Points Forecasts</Link>} />
+    <PageHeader title={TITLE} subtitle={SUBTITLE} actions={<ButtonLink size="lg" href="/forecasts">Points Forecasts</ButtonLink>} />
     <FilterBar collapsible={false} label="Evaluation archive" summary="Final test · 2023–24" scope={<span className="research-scope-label">Frozen historical experiment · final test 2023–24</span>}
       count={ewma ? <CountChip>{ewma.forecast_rows.toLocaleString("en-US")} scored forecasts</CountChip> : undefined}
       details={<DataDetailsButton rows={[
@@ -112,7 +112,7 @@ function EvaluationView({ report }: { report: AnalyticsEvaluation }) {
           <p>Candidate-side counts do not establish total player coverage: M6 did not count observed S3 appearances with no candidate.</p>
           <ul>{report.limitations.map(limit => <li key={limit}>{limit}</li>)}</ul>
           <p>Dates, schedules and team links are reconstructed from revised archive records. An interval describes conditional production error on held-out historical appearances; it does not estimate whether a player will appear.</p>
-        </>} action={<Link className="button" href="/methodology">Methodology</Link>}>What this historical test can and cannot establish.</GatedNote>
+        </>} action={<ButtonLink size="lg" href="/methodology">Methodology</ButtonLink>}>What this historical test can and cannot establish.</GatedNote>
       </section>
     </ResearchLayout>
   </PageShell>;

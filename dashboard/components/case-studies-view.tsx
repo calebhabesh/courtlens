@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FilterBar } from "./ui/filter-bar";
 import { DataDetailsButton } from "./ui/data-details";
@@ -8,9 +7,9 @@ import { GatedNote } from "./ui/gated-note";
 import { PlayerIdentity, TeamIdentity } from "./ui/identity";
 import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
-import { SegmentedControl } from "./ui/segmented-control";
 import { StatTile } from "./ui/stat-tile";
 import { TeamLogo } from "./team-logo";
+import { ButtonLink, Segmented } from "./ui/kit";
 
 interface CaseStudy {
   id: string;
@@ -264,11 +263,11 @@ export function CaseStudiesView() {
   return (
     <PageShell template="research" className="research-view case-studies-view">
       <PageHeader title="Case Studies" subtitle="Reproducible investigations of stints, forecast conditionality and defensive guardrails." actions={<>
-        <Link href="/investigations" className="button">Saved Investigations</Link>
-        <Link href="/stats" className="button button-primary">Open in Stats</Link>
+        <ButtonLink size="lg" href="/investigations">Saved Investigations</ButtonLink>
+        <ButtonLink size="lg" variant="primary" href="/stats">Open in Stats</ButtonLink>
       </>} />
       <FilterBar collapsible={false} label="Case study" summary={`Case ${selected.number}: ${selected.subject}`} scope={<span className="research-scope-label">Sealed case studies · CourtLens release evidence</span>}
-        modes={<SegmentedControl name="Case study" value={selected.id} onChange={choose} options={CASE_STUDIES.map(c => ({ value: c.id, label: `Case ${c.number}: ${c.subject}` }))} />}
+        modes={<Segmented size="lg" label="Case study" value={selected.id} onChange={choose} options={CASE_STUDIES.map(c => ({ value: c.id, label: `Case ${c.number}: ${c.subject}` }))} />}
         details={<DataDetailsButton rows={[{ label: "Case", value: `${selected.number} · ${selected.id}`, mono: true }, { label: "Artifact hash", value: selected.evidenceHash, mono: true }, ruleRow, { label: "Provenance", value: "Sealed under CourtLens temporal verification contracts. Recomputed from frozen source acquisitions; reconciled fact rows from PostgreSQL 17 materialized marts." }]} />} />
       <ResearchLayout findings={selected.dataEvidence.map(row => <StatTile key={row.label} label={row.label} value={known(row.ptsG)} unit={row.ptsG > 0 ? (row.games > 1 ? " PTS/G" : " PTS") : undefined} footnote={`${row.games} ${row.games === 1 ? "game" : "games"} · ${row.team}`} />)}>
         <section className="panel research-section case-study-hero" aria-label={`Case ${selected.number}`}>
@@ -279,7 +278,7 @@ export function CaseStudiesView() {
             <h2>{selected.title}</h2>
             <p className="research-caption">{selected.subtitle}</p>
           </div>
-          <div className="research-result-actions">{selected.actionLinks.map(link => <Link key={link.label} href={link.href} className={`button ${link.primary ? "button-primary" : ""}`}>{link.label}</Link>)}</div>
+          <div className="research-result-actions">{selected.actionLinks.map(link => <ButtonLink size="lg" variant={link.primary ? "primary" : "secondary"} key={link.label} href={link.href}>{link.label}</ButtonLink>)}</div>
         </section>
         <div className="table-wrapper research-table" role="region" aria-label="Case study observations" tabIndex={0}>
           <table className="data-table"><caption>Observed real-data evidence</caption>
