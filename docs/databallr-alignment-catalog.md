@@ -450,6 +450,13 @@ Follow-up instruction (owner, 2026-10-14, from the player page's current team):
     padding (8px, 4px on phones), every child's midpoint on the pill's (measured 0px off); a 1px
     `--color-accent` outline at 55%; the subtitle line is pill-height so the outline is never clipped.
 
+75. [x] Slimmer, tighter controls above the Stats table and on the player page; they felt oversized.
+    — 32 px (kit `sm`) instead of 40 on desktop for the filter bar (every page that has one), the
+    help buttons, team/position/draft controls, the view-tab consoles, Add View/Manage and Data
+    details; `Field`, the date picker, the season picker and Data details now follow the
+    surrounding size instead of forcing `lg`. Phones keep the kit's 40 px hit area. Desktop
+    baselines whose content moved up were regenerated; no phone baseline changed.
+
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
@@ -560,6 +567,7 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
     180 KB); shown at 20×15. Unknown names show no flag. `lib/country-flags.ts`.
 40. [x] Align "Year" in the career table. — left-aligned: YEAR, each season's logo, CAREER and the
     footnote all start 12px in, the same edge as the Per Game controls (measured at 1440 and 390).
+41. [x] Slimmer scope controls and view tabs on the player page — built with Stats instruction 75.
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
 awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut). The
 "now TOR" chip on Stats rows was approved and built as Stats instruction 72.

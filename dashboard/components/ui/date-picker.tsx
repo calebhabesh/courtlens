@@ -121,7 +121,7 @@ export function DatePicker({ value, onChange, label, min, max, isDateDisabled, p
     >
       <Button
         ref={triggerRef}
-        size="lg"
+        size={placement.size ?? "lg"}
         icon="calendar"
         stretch={placement.fill}
         tone={placement.tone === "console" ? "console" : undefined}

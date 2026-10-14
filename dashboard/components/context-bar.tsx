@@ -164,7 +164,7 @@ export function ContextBar({
     <>
       {steppedScope ? (
         <div className="context-season-stepper" role="group" aria-label="Season">
-          <IconButton size="lg" icon="left" disabled={!stepBack}
+          <IconButton size="sm" icon="left" disabled={!stepBack}
             onClick={() => stepBack && stepBack()}
             label={seasonFrom
               ? (earlierRange ? `Earlier range, ${earlierRange.from} – ${earlierRange.through}` : "No earlier range")
@@ -174,7 +174,7 @@ export function ContextBar({
           ) : (
             <span className="context-season-picker"><Icon name="calendar" size={14} />{seasonSelect}</span>
           )}
-          <IconButton size="lg" icon="right" disabled={!stepForward}
+          <IconButton size="sm" icon="right" disabled={!stepForward}
             onClick={() => stepForward && stepForward()}
             label={seasonFrom
               ? (laterRange ? `Later range, ${laterRange.from} – ${laterRange.through}` : "No later range")
@@ -184,7 +184,7 @@ export function ContextBar({
         <Field label="Season" layout="inline">{seasonSelect}</Field>
       )}
       {steppedScope ? (
-        <Segmented label="Filter by competition phase" size="lg" value={shownPhase}
+        <Segmented label="Filter by competition phase" size="sm" value={shownPhase}
           onChange={selectPhase}
           options={phaseSegments.map((value) => ({ value, disabled: !phases.includes(value),
             label: `${SHORT_PHASES[value] ?? phaseLabel(value)}${value === phase && !phases.includes(value) ? " · unavailable" : ""}` }))} />

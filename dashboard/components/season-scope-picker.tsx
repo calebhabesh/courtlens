@@ -8,6 +8,7 @@ import { Button, Chip, MenuTrigger, Segmented } from "@/components/ui/kit";
 import { Popover } from "@/components/ui/menu";
 import { Select } from "@/components/ui/select";
 import { QUICK_RANGES, quickRangeFrom, seasonScopeLabel, seasonsBetween } from "@/lib/season-range";
+import { useControlScope } from "@/components/ui/control-scope";
 
 type Mode = "single" | "multi";
 
@@ -24,6 +25,7 @@ interface SeasonScopePickerProps {
 
 /** Databallr-style season control: one season, or a From–Through range with quick ranges. */
 export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: SeasonScopePickerProps) {
+  const placement = useControlScope();
   const newestFirst = [...seasons].sort().reverse();
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>(seasonFrom ? "multi" : "single");
@@ -54,7 +56,7 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
       className="season-scope-popover"
       triggerLabel={`Season: ${label}`}
       renderTrigger={props => (
-        <MenuTrigger {...props} size="lg">
+        <MenuTrigger {...props} size={placement.size ?? "lg"}>
           <Icon name="calendar" size={16} className="season-scope-icon" />
           <span className="season-scope-value">{label}</span>
         </MenuTrigger>

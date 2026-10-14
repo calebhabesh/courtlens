@@ -103,12 +103,14 @@ export function DataDetails({ open, onClose, scope, rows = [], kicker, children 
 /** Trigger for page-level Data details, placed at the right of the filter bar or page header. */
 export function DataDetailsButton({ scope, rows, children, label = "Data details" }: { scope?: DataScope; rows?: DataDetailRow[]; children?: ReactNode; label?: string }) {
   const [open, setOpen] = useState(false);
-  // On the Stats console it is a filled 40 px control; elsewhere a ghost with the xs label. Filter
-  // bars have no slack at 1024 px, so neither may grow wider (lg padding wrapped Teams and Showcase).
-  const console_ = useControlScope().tone === "console";
+  // On the console it is a filled control at the placement's size (the filter bar's 32 px);
+  // elsewhere a ghost with the xs label. Filter bars have no slack at 1024 px, so neither may grow
+  // wider (lg padding wrapped Teams and Showcase).
+  const placement = useControlScope();
+  const console_ = placement.tone === "console";
   return (
     <>
-      <Button variant="ghost" size={console_ ? "lg" : "xs"} dense={console_} tone={console_ ? "console" : undefined} icon="database" onClick={() => setOpen(true)} aria-haspopup="dialog"><span className="ui-hide-narrow">{label}</span></Button>
+      <Button variant="ghost" size={console_ ? placement.size ?? "lg" : "xs"} dense={console_} tone={console_ ? "console" : undefined} icon="database" onClick={() => setOpen(true)} aria-haspopup="dialog"><span className="ui-hide-narrow">{label}</span></Button>
       <DataDetails open={open} onClose={() => setOpen(false)} scope={scope} rows={rows}>{children}</DataDetails>
     </>
   );
