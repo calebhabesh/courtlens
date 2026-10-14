@@ -48,6 +48,10 @@ Choose before UC02 starts, so controls migrate once:
 
 Record the decision and the date here and in the progress log.
 
+**Decided 2026-10-14: Tailwind v4.** The owner will keep building the project and wants to move
+faster. UC02 builds the kit in Tailwind, and UC03 replaces the Stylelint contracts with
+equivalent rules. `AGENTS.md` names Tailwind for new dashboard styling.
+
 ## Blocks
 
 Execute in order. Each block ends with dashboard lint, typecheck, Vitest, the full Playwright

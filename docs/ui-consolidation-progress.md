@@ -11,4 +11,6 @@ prose are not runtime verification; each entry records what was run and measured
   83 files; 53 bespoke control classes in CSS; `components.css` 5,024 lines and `pages.css`
   4,859 lines of 12,698 total; 115 rules targeting `.button`, `.ui-button`, `.ui-select` or
   `.icon-button`.
-- UC00 styling-system decision: **pending owner**.
+- UC00 styling-system decision (owner, 2026-10-14): **Tailwind v4**. The owner will keep building
+  the project and wants faster development, so the kit is built in Tailwind and controls migrate
+  once. Existing `tokens.css` values move into `@theme`; page CSS migrates as each page is touched.
