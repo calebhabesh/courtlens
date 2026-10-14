@@ -1,9 +1,9 @@
 import { AskCourtLens } from "@/components/ask-courtlens";
-import Link from "next/link";
 import { PageShell } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
 import { GatedNote } from "@/components/ui/gated-note";
 import { isHostedDemo } from "@/lib/hosted";
+import { ButtonLink } from "@/components/ui/kit";
 
 interface AskPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -39,7 +39,7 @@ export default async function AskPage({ searchParams }: AskPageProps) {
       <PageHeader
         title="Ask CourtLens"
         subtitle="Ask follow-up questions or run manual research against a pinned release, with exact results and evidence."
-        actions={<Link href="/research/ask" className="ui-button ui-button-secondary ui-button-sm">Open assistant</Link>}
+        actions={<ButtonLink size="xs" href="/research/ask">Open assistant</ButtonLink>}
       />
       <AskCourtLens
         initialReleaseId={releaseId}

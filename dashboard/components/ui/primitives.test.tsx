@@ -3,14 +3,11 @@ import { useState } from "react";
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup, act } from "@testing-library/react";
 import {
-  Button,
-  IconButton,
   Input,
   SearchField,
   Select,
   Checkbox,
   Switch,
-  SegmentedControl,
   Tabs,
   TabsList,
   TabTrigger,
@@ -50,6 +47,7 @@ import {
   MOTION_ALLOWLIST,
   getDrawerVariants,
 } from "../../lib/motion";
+import { Button, MenuTrigger } from "./kit";
 
 afterEach(() => {
   cleanup();
@@ -81,37 +79,6 @@ describe("Design Language v1 Motion Tokens and Utilities", () => {
     expect(getDrawerVariants("right").initial).toEqual({ x: "100%" });
     expect(getDrawerVariants("left").initial).toEqual({ x: "-100%" });
     expect(getDrawerVariants("bottom").initial).toEqual({ y: "100%" });
-  });
-});
-
-describe("Button and IconButton Primitives", () => {
-  it("renders button variants and sizes", () => {
-    const { rerender } = render(<Button variant="primary" size="lg">Action</Button>);
-    let btn = screen.getByRole("button", { name: "Action" }) as HTMLButtonElement;
-    expect(btn.className).toContain("ui-button-primary");
-    expect(btn.className).toContain("ui-button-lg");
-
-    rerender(<Button variant="ghost" size="sm">Quiet Action</Button>);
-    btn = screen.getByRole("button", { name: "Quiet Action" }) as HTMLButtonElement;
-    expect(btn.className).toContain("ui-button-ghost");
-    expect(btn.className).toContain("ui-button-sm");
-  });
-
-  it("handles loading state by disabling and setting aria-busy", () => {
-    const handleClick = vi.fn();
-    render(<Button loading onClick={handleClick}>Submit</Button>);
-    const btn = screen.getByRole("button", { name: "Submit" }) as HTMLButtonElement;
-    expect(btn.getAttribute("aria-busy")).toBe("true");
-    expect(btn.disabled).toBe(true);
-    fireEvent.click(btn);
-    expect(handleClick).not.toHaveBeenCalled();
-  });
-
-  it("renders IconButton with accessible label and title", () => {
-    render(<IconButton icon="star" label="Favorite player" />);
-    const btn = screen.getByRole("button", { name: "Favorite player" });
-    expect(btn.getAttribute("title")).toBe("Favorite player");
-    expect(btn.getAttribute("aria-label")).toBe("Favorite player");
   });
 });
 
@@ -184,41 +151,7 @@ describe("Checkbox and Switch Primitives", () => {
   });
 });
 
-describe("SegmentedControl and Tabs Primitives", () => {
-  it("handles SegmentedControl keyboard arrows and selection", () => {
-    function ControlledSegmented() {
-      const [val, setVal] = useState("a");
-      return (
-        <SegmentedControl
-          name="view"
-          value={val}
-          onChange={setVal}
-          options={[
-            { value: "a", label: "Option A" },
-            { value: "b", label: "Option B" },
-            { value: "c", label: "Option C" },
-          ]}
-        />
-      );
-    }
-    render(<ControlledSegmented />);
-    const group = screen.getByRole("radiogroup");
-    const optionA = screen.getByRole("radio", { name: "Option A" });
-    const optionB = screen.getByRole("radio", { name: "Option B" });
-
-    expect(optionA.getAttribute("aria-checked")).toBe("true");
-
-    fireEvent.click(optionB);
-    expect(optionB.getAttribute("aria-checked")).toBe("true");
-
-    fireEvent.keyDown(group, { key: "ArrowRight" });
-    const optionC = screen.getByRole("radio", { name: "Option C" });
-    expect(optionC.getAttribute("aria-checked")).toBe("true");
-
-    fireEvent.keyDown(group, { key: "Home" });
-    expect(optionA.getAttribute("aria-checked")).toBe("true");
-  });
-
+describe("Tabs Primitives", () => {
   it("handles Tabs keyboard arrows and panel switching", () => {
     function ControlledTabs() {
       const [tab, setTab] = useState("t1");
@@ -269,7 +202,7 @@ describe("Badge and Chip Primitives", () => {
 describe("Panel, Section and PageHeader Primitives", () => {
   it("renders Panel with title, actions, and body", () => {
     render(
-      <Panel title="Card Title" actions={<Button size="sm">Action</Button>}>
+      <Panel title="Card Title" actions={<Button size="xs">Action</Button>}>
         <p>Body text</p>
       </Panel>
     );
@@ -329,7 +262,7 @@ describe("Table Primitives and SortHeader", () => {
 describe("Menu, Popover and Tooltip Primitives", () => {
   it("opens Menu on click and closes on Escape", () => {
     render(
-      <Menu trigger={<span>Open Menu</span>}>
+      <Menu renderTrigger={props => <MenuTrigger {...props}>Open Menu</MenuTrigger>}>
         <MenuItem label="Item 1" onClick={() => {}} />
         <MenuItem label="Item 2" onClick={() => {}} />
       </Menu>
@@ -348,7 +281,7 @@ describe("Menu, Popover and Tooltip Primitives", () => {
   it("closes Menu after an item is chosen and returns focus to the trigger", () => {
     let chosen = 0;
     render(
-      <Menu trigger={<span>Export</span>}>
+      <Menu renderTrigger={props => <MenuTrigger {...props}>Export</MenuTrigger>}>
         <MenuItem label="PNG image" onClick={() => { chosen += 1; }} />
       </Menu>
     );
@@ -362,7 +295,7 @@ describe("Menu, Popover and Tooltip Primitives", () => {
 
   it("opens Popover on click and toggles visibility", () => {
     render(
-      <Popover trigger={<span>Open Popover</span>}>
+      <Popover renderTrigger={props => <MenuTrigger {...props}>Open Popover</MenuTrigger>}>
         <div>Popover details</div>
       </Popover>
     );

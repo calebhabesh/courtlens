@@ -3,7 +3,7 @@ import tsParser from "@typescript-eslint/parser";
 import { readFileSync } from "node:fs";
 import stylelint, { type Config } from "stylelint";
 import { describe, expect, it } from "vitest";
-import { controlKitPlugin, PENDING_CONTROL_CLASS } from "./control-kit.mjs";
+import { controlKitPlugin } from "./control-kit.mjs";
 
 RuleTester.describe = describe;
 RuleTester.it = it;
@@ -66,28 +66,22 @@ describe("control-kit/kit-tokens", () => {
   });
 });
 
-describe("PENDING_CONTROL_CLASS ratchet", () => {
-  it("only shrinks from the 82 files UC03 started with", () => {
-    expect(PENDING_CONTROL_CLASS.length).toBeLessThanOrEqual(82);
-    expect([...PENDING_CONTROL_CLASS].sort()).toEqual(PENDING_CONTROL_CLASS);
-    expect(new Set(PENDING_CONTROL_CLASS).size).toBe(PENDING_CONTROL_CLASS.length);
-  });
-
-  it("lists only files that still use control classes, so migrated files leave the list", async () => {
+describe("control-class ratchet (closed in UC04 batch 6c)", () => {
+  it("applies no-control-class to every dashboard file outside components/ui", async () => {
     const eslint = new ESLint({
       cwd: process.cwd(),
-      overrideConfig: { rules: { "control-kit/no-control-class": "error" } },
       ruleFilter: ({ ruleId }) => ruleId === "control-kit/no-control-class",
     });
-    const files = PENDING_CONTROL_CLASS.map((file) => file.replace(/\\/g, ""));
-    const results = await eslint.lintFiles(files);
-    const clean = results.filter((result) => result.errorCount === 0).map((result) => result.filePath);
-    expect(results).toHaveLength(files.length);
-    expect(clean).toEqual([]);
-  }, 60_000);
+    // The rule must be live under the real config, or the empty result below would prove nothing.
+    const [probe] = await eslint.lintText(`export const A = () => <button className="button" />;`, { filePath: "components/ratchet-probe.tsx" });
+    expect(probe.messages.map((message) => message.ruleId)).toContain("control-kit/no-control-class");
+    const results = await eslint.lintFiles(["app/**/*.tsx", "components/**/*.tsx"]);
+    expect(results.length).toBeGreaterThan(100);
+    expect(results.flatMap((result) => result.messages.map((message) => `${result.filePath}:${message.line}`))).toEqual([]);
+  }, 120_000);
 });
 
-describe("Stylelint kit-selector ratchet", () => {
+describe("Stylelint kit-selector rule", () => {
   const config = JSON.parse(readFileSync(".stylelintrc.json", "utf8")) as {
     rules: NonNullable<Config["rules"]>;
     overrides: Array<{ files: string[]; rules: Record<string, unknown> }>;
@@ -103,12 +97,7 @@ describe("Stylelint kit-selector ratchet", () => {
     expect(await problems(".ui-tabs-list, .ui-selectable, .stats-toolbar > * { margin: 0; }")).toBe(0);
   });
 
-  it("only shrinks from the six files UC03 started with, each still selecting kit classes", async () => {
-    const files = ratchet?.files ?? [];
-    expect(files.length).toBeLessThanOrEqual(6);
-    for (const file of files) {
-      const { results } = await stylelint.lint({ files: file, config: strict });
-      expect(results[0].warnings.length, file).toBeGreaterThan(0);
-    }
+  it("is closed: no stylesheet is exempt from the kit-selector rule (UC04 batch 6c)", () => {
+    expect(ratchet).toBeUndefined();
   });
 });

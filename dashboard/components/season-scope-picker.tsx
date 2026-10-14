@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Icon } from "@/components/ui/icon";
-import { Chip, MenuTrigger } from "@/components/ui/kit";
+import { Button, Chip, MenuTrigger, Segmented } from "@/components/ui/kit";
 import { Popover } from "@/components/ui/menu";
-import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Select } from "@/components/ui/select";
 import { QUICK_RANGES, quickRangeFrom, seasonScopeLabel, seasonsBetween } from "@/lib/season-range";
 
@@ -63,8 +61,8 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
       )}
     >
       <div className="season-scope-panel">
-        <SegmentedControl<Mode>
-          name="Season mode"
+        <Segmented<Mode>
+          label="Season mode"
           size="sm"
           stretch
           value={mode}
@@ -112,7 +110,7 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
                 })}
               </div>
             </Field>
-            <Button variant="primary" className="season-scope-apply" disabled={pending.length < 2}
+            <Button size="lg" variant="primary" disabled={pending.length < 2}
               onClick={() => apply(from, through)}>
               Show {pending.length} seasons
             </Button>

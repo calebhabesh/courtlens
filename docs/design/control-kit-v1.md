@@ -59,10 +59,13 @@ Owner decisions (2026-10-14):
 | `MenuTrigger` | xs–lg | Button plus trailing chevron that opens `Menu` or a popover; carries `aria-expanded`. Pass `Menu`/`Popover`'s `renderTrigger` props directly to it (one button, no nested trigger). Covers the date, season and team triggers. |
 | `Chip` | xs–lg | `pressed` exposes a toggle (`aria-pressed`); `RemovableChip` provides a trailing remove button centered in its own square hit area. |
 
-**Placement defaults.** Shared controls that render in many places (Data details's console tone, and from
-UC04 batch 6b the legacy `Select`, date and menu triggers) read `ControlScope` (`components/ui/control-scope.tsx`):
-`FilterBar` provides `lg`, the Stats workspace (`/stats`, `/players`) provides the console tone, and
-an explicit prop wins. This replaces page CSS that resized a control by where it sat.
+**Placement defaults.** Shared controls that render in many places (Data details's console tone, the
+shared `Select` and the date trigger) read `ControlScope` (`components/ui/control-scope.tsx`):
+`FilterBar` and `Field` provide `lg`, the Stats workspace (`/stats`, `/players`) provides the console tone,
+the phone Filters sheet sets `fill` (the date trigger stretches), and an explicit prop wins. The shared
+`components/ui/select.tsx` keeps its API and draws the kit `Select` (legacy `md` 32 px → kit `sm`); the
+date trigger is a kit `Button lg` with the calendar icon and no chevron (a chevron would widen the
+1024 px filter bars, which have no slack). This replaces page CSS that resized a control by where it sat.
 
 An **attached group** (the season stepper: previous, picker, next) is a wrapper that removes the
 inner radii and gaps between kit controls of one size. The controls themselves are unchanged.
@@ -142,9 +145,9 @@ are listed last as dead CSS for UC05.
 | `Button` | `stats-help-button` (lg, C5), `stats-footer-button` (xs ghost `dense`), `player-back-button` (xs primary), `views-modal-btn-action` (xs), `finance-detail-button` (xs ghost), `courtlens-ask-btn` (sm ghost, C6), `ui-why-summary` (xs ghost as summary), `ui-filter-bar-toggle` (lg `stretch`; it opens the Filters sheet, not a menu, so no chevron), Data details (xs ghost; lg `dense` console on the Stats workspace — filter bars have no slack at 1024 px, so it may not grow) |
 | `IconButton` | `stats-tool-button`, `stats-expand-button` (md ghost); `stats-icon-action`, `stats-details-button`, `player-career-expand` (xs ghost, C9); `ranking-reorder-btn` (xs ghost); `tier-reorder-btn` (xs secondary, it sits on the coloured tier label); `ranking-meta-btn`, `tier-quick-fav-btn` (`Button` xs ghost with an icon, since they carry a label); `ranking-delete-btn`, `tier-remove-btn`, `tier-delete-btn` (xs danger); `modal-close-btn`, `filter-clear-btn`, `lookup-clear-btn` (xs ghost); `courtlens-mobile-toggle`, `courtlens-mobile-search-btn`, `icon-button`, `ui-icon-button` (sm ghost); `context-stepper-button` (lg, attached group) |
 | `Select` | `ui-select`, `stats-team-select` |
-| `Segmented` | `ui-segmented-item`, `stats-preset-tab` (lg console `dense`), `ui-tab-trigger` (sm, C1), `tier-tab`, `dist-tab`, `player-tab`, `StatsChoicePills` |
-| `MenuTrigger` | `ui-menu-trigger`, `ui-popover-trigger` (lg, attached group), `ui-date-trigger` (lg, leading icon), `season-scope-trigger`, `stats-team-button` (lg, C4), `availability-trigger` |
-| `Chip` | `control-pill` (sm/md/lg by measured height), `stats-position-chip` (lg), `entity-chip`/`ui-entity-chip` (lg removable), `ranking-chip-btn`, `filter-action-pill`, `season-scope-quick-button`, `glossary-chip` (sm) |
+| `Segmented` | `ui-segmented-item`, `stats-preset-tab` (lg console `dense`), `tier-tab`, `dist-tab`, `player-tab`, `StatsChoicePills` |
+| `MenuTrigger` | `ui-menu-trigger`, `ui-popover-trigger` (through `Menu`/`Popover` `renderTrigger`, the only trigger API since UC04 batch 6c), `season-scope-trigger`, `stats-team-button` (lg, C4), `availability-trigger` |
+| `Chip` | `control-pill` (sm/md/lg by measured height), `stats-position-chip` (lg), `ranking-chip-btn`, `filter-action-pill`, `season-scope-quick-button`, `glossary-chip` (sm) |
 
 ### Does not fit the kit, and why
 
@@ -154,13 +157,15 @@ are listed last as dead CSS for UC05.
 | `stats-compare-toggle` | Round 22 px row checkbox. | `Checkbox` |
 | `courtlens-nav-dropdown-btn`, `courtlens-nav-item`, `courtlens-dropdown-item`, `courtlens-search-pill` | Header navigation uses an underline active state and a 27.5 px line box; the search pill is a field. | App shell (`header.tsx`) |
 | `ui-menu-item`, `ui-command-item`, `lookup-item`, `showcase-roster-item`, `ask-history-item`, `scatter-legend-item`, `ui-swatch-item` | Rows in lists, menus and legends, laid out left-aligned at full width. | `Menu`, `CommandPalette`, list owners |
-| `ui-accordion-trigger`, `ui-route-tab` | Full-width disclosure header; route tabs are links with `aria-current`. Both keep their components and reuse the kit's focus and selected tokens. | `Accordion`, `RouteTabs` |
+| `ui-accordion-trigger`, `ui-route-tab`, `ui-tab-trigger` | Full-width disclosure header; route tabs and in-page section tabs (`Tabs`) are underline navigation with `aria-current`/`aria-selected`. Boxed `Segmented` groups would restyle the player and team profiles and split them from `RouteTabs`, so `ui-tab-trigger` moved here in UC04 batch 6c. | `Accordion`, `RouteTabs`, `Tabs` |
 | `feed-link-button` | Inline text action inside a caption (19.5 px line box); a control size would break the sentence. | Prose link style |
 | `team-card-button` | A whole card is the link. | Card |
+| `entity-chip` | Selected-entity card in `EntityPicker`: a portrait identity whose name and caption wrap; its remove action is a kit `IconButton lg ghost` (moved here in UC04 batch 6c). | `EntityPicker` |
 | `roster-chip`, `tier-player-chip` | Draggable roster and tier cards holding a portrait, a link and an inline input or select; not a control (moved here in UC04 batch 4). | Roster Shapes, Tier List |
 | `ask-chip`, `agent-source-chip` | Ask follow-up questions, actions and inline citations: model-written labels of any length that wrap onto several lines (a 390 px follow-up measured 46 px), and the citation flows inline inside answer prose. A fixed-height, no-wrap kit control would overflow (moved here in UC04 batch 5). | Ask page and panel |
 | `ui-count-chip`, `ui-badge-pill`, `views-modal-metric-chip`, `stats-drawer-team-pill` | Static labels, not controls. | `Badge` |
-| `lookup-input`, `ui-input` | Text fields (30/40 px). Field sizes follow the same height scale but are outside UC02. | `Input` |
+| `lookup-input`, `ui-input` | Text fields (30/40 px). Field sizes follow the same height scale but are outside UC02. Their clear buttons are kit `IconButton sm ghost`. | `Input` |
+| Raw `<select>` (about 25 in 15 files: Stats sort and paging, scatter and line-chart axes, Manage Views, rankings, tier list, shooting, compare date, Ask scope) | Unclassed native selects with page CSS. The UC03 lint matches classes, so it never covered them; they are recorded as a follow-up for the alignment pages rather than migrated in UC04. | Page owners |
 
 Not controls (names matched by the search only): `player-season-summary`, `finance-summary`,
 `conversation-summary`, `ui-filter-bar-summary`, `dist-summary`, `ui-accordion-item`,

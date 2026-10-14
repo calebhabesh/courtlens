@@ -4067,8 +4067,6 @@
 
 /* ---------- Player Showcase (FO04, Board template, D15/D16) ---------- */
 .showcase-search { flex: 0 1 280px; min-width: 0; }
-.showcase-export .ui-menu-trigger { padding: 0; border: 0; background: none; border-radius: var(--radius-sm); }
-.showcase-export .ui-menu-trigger > .ui-button { pointer-events: none; }
 .showcase-stage { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); }
 /* The card scales with the viewport height so the card and its playback controls share one screen
    at 1440x900, but never below 420px wide (or the column width on phones). */
@@ -4254,21 +4252,7 @@
 .roster-chip-input { appearance: textfield; text-align: right; font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
 .roster-chip-input::-webkit-inner-spin-button, .roster-chip-input::-webkit-outer-spin-button { margin: 0; appearance: none; }
 .roster-chip-menu { flex: none; }
-.roster-chip-menu .ui-menu-trigger {
-  display: inline-grid;
-  place-items: center;
-  width: var(--control-sm);
-  height: var(--control-sm);
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-}
-.roster-chip-menu .ui-menu-trigger:hover { background: var(--color-surface-hover); color: var(--color-text); }
-.roster-chip-move { display: inline-flex; }
-.roster-table .ui-select { min-width: 132px; }
+.roster-table .legacy-select { min-width: 132px; }
 @media (max-width: 1279px) {
   .roster-lanes { grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); }
 }
@@ -4278,7 +4262,6 @@
   .roster-gauge-bar { width: 100%; }
   .roster-lanes, .roster-lane-pool, .roster-lane-pool .roster-lane-chips { grid-template-columns: minmax(0, 1fr); }
   .roster-lane-empty { min-height: 48px; }
-  .roster-chip-menu .ui-menu-trigger { width: var(--control-lg); height: var(--control-lg); }
   .roster-chip-input-wrap.ui-input-wrapper { width: 72px; min-height: var(--control-lg); }
   .team-grid-list, .roster-picker-modal .team-grid-list { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
   .team-grid-tile { min-height: 96px; }
@@ -4367,7 +4350,7 @@
 .teams-page .team-explorer-container { display: grid; gap: var(--space-4); min-width: 0; }
 .teams-page .team-explorer-stack, .team-profile-page .ui-profile-body { min-width: 0; }
 .teams-page .ui-filter-bar .ui-input-wrapper { max-width: 160px; }
-.teams-page .ui-filter-bar .ui-select-wrapper { max-width: 180px; }
+.teams-page .ui-filter-bar .legacy-select { max-width: 180px; }
 .teams-page .team-explorer-league-averages { margin: 0; padding: var(--space-2) var(--space-3); }
 .team-profile-hero { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 3fr); gap: var(--space-6); align-items: center; padding: var(--space-5); background: var(--color-surface-1); border-radius: var(--radius-md); box-shadow: inset var(--space-1) 0 var(--team-color, var(--color-accent)); }
 .team-profile-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
@@ -4385,7 +4368,7 @@
 .finance-workspace .ui-page-header nav { display: flex; gap: var(--space-2); }
 .finance-filter-bar .ui-filter-bar-scope, .finance-filter-bar .ui-filter-bar-page { flex-wrap: wrap; }
 .finance-filter-bar .ui-input-wrapper { max-width: 96px; }
-.finance-filter-bar .ui-select-wrapper { max-width: 200px; }
+.finance-filter-bar .legacy-select { max-width: 200px; }
 .finance-filter-bar .ui-field-label { white-space: nowrap; }
 .finance-result { display: grid; gap: var(--space-4); }
 .finance-result > h2 { font-size: var(--text-lg); margin: 0; }
@@ -4409,7 +4392,7 @@
   .team-profile-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .shift-players, .finance-row-filters, .finance-team-hero { grid-template-columns: 1fr; }
   .shift-subjects { flex-wrap: wrap; }
-  .team-stat-shift .ui-filter-sheet .ui-input-wrapper, .finance-workspace .ui-filter-sheet .ui-input-wrapper, .finance-workspace .ui-filter-sheet .ui-select-wrapper { max-width: 100%; }
+  .team-stat-shift .ui-filter-sheet .ui-input-wrapper, .finance-workspace .ui-filter-sheet .ui-input-wrapper, .finance-workspace .ui-filter-sheet .legacy-select { max-width: 100%; }
   .finance-workspace .finance-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .finance-summary strong { font-size: var(--text-lg); }
   .team-profile-page .data-table th:first-child, .team-profile-page .data-table td:first-child, .finance-workspace .data-table th:first-child, .team-stat-shift .data-table th:first-child, .team-stat-shift .data-table td:first-child { position: sticky; left: 0; z-index: var(--z-base); background: var(--color-surface-1); }
@@ -4420,7 +4403,7 @@
 .teams-page .team-explorer-stack > .panel { padding: var(--space-3); }
 .teams-page .team-explorer-panel-header { padding: 0 0 var(--space-2); margin: 0; }
 .team-stat-shift .ui-filter-bar-scope .ui-field { flex-direction: row; align-items: center; }
-.team-stat-shift .ui-filter-bar-scope .ui-select-wrapper { max-width: 160px; }
+.team-stat-shift .ui-filter-bar-scope .legacy-select { max-width: 160px; }
 .team-stat-shift .shift-players .entity-chips:empty { display: none; }
 .team-profile-page .ui-tabs, .team-profile-page .ui-tabs-content { min-width: 0; max-width: 100%; }
 .team-profile-page .ui-profile-body > div > div { grid-template-columns: minmax(0, 1fr); }
@@ -4593,8 +4576,8 @@
   gap: var(--space-3);
 }
 
-.fo11-wowy .ui-filter-bar-scope .ui-select-wrapper,
-.fo11-matchups .ui-filter-bar-scope .ui-select-wrapper {
+.fo11-wowy .ui-filter-bar-scope .legacy-select,
+.fo11-matchups .ui-filter-bar-scope .legacy-select {
   max-width: 160px;
 }
 
