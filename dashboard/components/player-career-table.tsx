@@ -113,7 +113,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   return (
     <section className="stats-workspace player-career" aria-label="Career by season">
       <div className="player-career-controls">
-        <Segmented label="Career table views" size="lg" tone="console" dense value={presetId}
+        <Segmented label="Career table views" size="sm" tone="console" dense value={presetId}
           onChange={setPresetId} options={ORDERED_PRESETS.map(p => ({ value: p.id, label: p.label }))} />
       </div>
       <div className="stats-table-frame is-table">

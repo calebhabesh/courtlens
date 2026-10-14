@@ -635,7 +635,7 @@ export function WorkbenchPlayerExplorer({
       {/* Preset Tabs Row (F02 & F04) */}
       <div className="stats-preset-tabs-wrapper">
         {/* Built-in presets, then personal custom views (F04). */}
-        <Segmented label="Stats Explorer Presets" size="lg" tone="console" dense value={activePresetId as string}
+        <Segmented label="Stats Explorer Presets" size="sm" tone="console" dense value={activePresetId as string}
           onChange={id => handlePresetSelect(id as PresetId)}
           options={[
             ...ORDERED_PRESETS.map(p => ({ value: p.id as string, title: p.description,
@@ -647,14 +647,14 @@ export function WorkbenchPlayerExplorer({
           ]} />
 
         <Field label="Table Divider" layout="inline" className="stats-divider-field">
-          <Segmented label="Table Divider" size="lg" tone="console" deferChange
+          <Segmented label="Table Divider" size="sm" tone="console" deferChange
             options={IDENTITY_MODES.map(im => ({ value: im.id, label: im.label, title: im.tooltip }))}
             value={identityMode} onChange={handleIdentityModeSelect} />
         </Field>
         <div className="stats-view-actions">
-          <Button size="lg" tone="console" icon="columns" onClick={() => { setManageStartsNew(true); setIsManageViewsOpen(true); }}
+          <Button size="sm" tone="console" icon="columns" onClick={() => { setManageStartsNew(true); setIsManageViewsOpen(true); }}
             title="Create a personal view from any catalog columns">Add View</Button>
-          <Button size="lg" tone="console" icon="settings" onClick={() => { setManageStartsNew(false); setIsManageViewsOpen(true); }}
+          <Button size="sm" tone="console" icon="settings" onClick={() => { setManageStartsNew(false); setIsManageViewsOpen(true); }}
             title="Manage custom views, default view, and import/export">Manage</Button>
         </div>
       </div>
