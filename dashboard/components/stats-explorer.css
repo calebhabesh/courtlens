@@ -10,7 +10,7 @@
   --text-muted: var(--color-text-secondary);
   --accent: var(--color-accent);
   --control-height: var(--control-md);
-  background: var(--color-bg);
+  background: transparent;
   min-height: calc(100dvh - var(--header-height));
 }
 /* FO13: the desktop gutter matches the header and every other page (24px); phones keep the dense 8px. */

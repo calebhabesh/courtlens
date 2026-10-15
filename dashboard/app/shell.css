@@ -1,0 +1,16 @@
+@layer components {
+  .replica-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--color-bg);
+    background-image: url("/patterns/coach-marks.svg");
+    background-size: calc(var(--space-16) * 6);
+    color: var(--color-text);
+  }
+
+  @media (forced-colors: active) {
+    .replica-shell { background-image: none; }
+  }
+}

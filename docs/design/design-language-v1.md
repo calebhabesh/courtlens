@@ -65,6 +65,13 @@ migration and are deleted in DL08.
 | `--color-positive` / `--color-negative` / `--color-info` | `#60d394` / `#ff6b6b` / `#67aaf9` | Data semantics |
 | `--focus-ring` | `0 0 0 2px var(--color-surface-0), 0 0 0 4px var(--color-accent)` | All focusable elements (`:focus-visible`) |
 
+The page backdrop uses a static, repeating coaching-board motif (owner, 2026-10-14): thin X's
+and O's in `#b4c2dc` at 4% stroke opacity, on a 384 px tile. Marks are approximately 18 px across
+and spaced roughly 192 px apart. The SVG is applied only to the app shell's blue background;
+table, card, menu and sticky-filter surfaces retain their own fills. It has no animation, overlay
+element or interaction, and is disabled in forced-colors mode. `app/shell.css` owns the shell;
+`public/patterns/coach-marks.svg` owns the motif geometry and stroke.
+
 All text and surface pairs used for essential text must meet WCAG AA (4.5:1, or 3:1 at 18px+).
 DL01 verified this with `scripts/verify-contrast.py`; v1.3 (blue background) re-measured ratios:
 

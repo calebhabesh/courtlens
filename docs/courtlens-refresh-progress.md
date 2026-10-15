@@ -739,3 +739,16 @@ the gap in standard and compact density, existing row heights and centered, uncl
 Scoped glance passes for spacing and pill readability; no page overflow. Dashboard lint/typecheck,
 Vitest 525/525, production webpack build and six moved-team/date browser checks pass. Stats remains
 ready for owner review. [Evidence](evidence/alignment/stats/name-subtitle-spacing/README.md).
+
+### App-shell follow-up: coaching-board backdrop preview (2026-10-14)
+
+Instruction 8 adds a static 339-byte SVG tile with sparse X's and O's, initially 384 px at 4%
+stroke opacity. The Stats wrapper is transparent so the shell backdrop is visible. At 1440,
+2400 and 390, toggling the pattern changes the exposed background while the measured table pixels
+and geometry remain identical. Player/Settings previews pass the scoped glance check; on-background
+text contrast is at least 6.59:1 at full stroke coverage. Forced colors hides the motif.
+Dashboard lint/typecheck, Vitest 525/525 and production webpack build pass. The 11 existing header
+and moved-team/date browser checks pass with one final-run phone height precision flake passing
+its isolated rerun (47.99993896484375 vs 48). The production-served SVG matches the source.
+Owner finds the initial preview too sparse and faint and requested the tuning parameters;
+density/opacity refinement remains open. [Evidence](evidence/alignment/app-shell/coach-pattern/README.md).
