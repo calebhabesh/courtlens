@@ -228,7 +228,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
             </tbody>
             {Boolean(seasons?.length) && <tfoot>
               <tr className="player-career-total">
-                <th scope="row" className="pinned-col pinned-col-year">{careerSince ? `Career since ${firstCoveredSeason}` : "Career"}</th>
+                <th scope="row" className="pinned-col pinned-col-year">{careerSince ? <>Career since <span className="player-career-since">{firstCoveredSeason}</span></> : "Career"}</th>
                 {preset.columns.map((_, index) => cell(career?.career ?? null, index, true))}
                 {awardColumn && <td className="group-start player-career-awards" />}
               </tr>

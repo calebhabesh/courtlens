@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
 | 1 | Stats | `/stats` | ✅ | Owner approved first revision 2026-10-15; deferred 43f/43g remain open |
-| 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; known gap: Career-since label crowds GP |
+| 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -538,9 +538,9 @@ and the player page. It's not a perfect version, but a presentable one now." Row
 aligned as a first revision; later instructions reopen a row. Approved screenshots are Playwright
 baselines in `dashboard/e2e/visual-baselines.spec.ts` (`stats-*`, `player-profile-*`; the player
 profile baselines were refreshed in the approval commit for instructions 56–67).
-Known gap: in the career table's pinned Year column, "CAREER SINCE 2025-26" runs into the GP
-value for players whose data starts after their debut (seen on the fixture player; present before
-the approval). Fix when the row reopens.
+Known gap fixed (owner request, 2026-10-15): "CAREER SINCE 2025-26" ran into the GP value in the
+career table's pinned column. It now wraps inside the column with the season kept whole.
+[Evidence](evidence/alignment/players/career-since-label/README.md).
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
    that exact table state (scroll, search, sort, view). Esc acts only when no dialog/menu is open.
