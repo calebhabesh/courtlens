@@ -779,3 +779,14 @@ the original blue fill, zero pattern requests and no page overflow. Player deskt
 pass the scoped glance check for readable information on an uninterrupted blue surface.
 Dashboard lint/typecheck, Vitest 525/525 and five production header browser checks pass.
 [Evidence](evidence/alignment/app-shell/plain-backdrop/README.md).
+
+### Player follow-up: dark glass headline stats (2026-10-14)
+
+Owner instruction 49 gives each of the six headline stats a dark translucent gradient, restrained
+hairline/inset highlight, token-based radius and spacing, and a static 12 px backdrop blur. Labels
+and career comparisons use container text colors. Live 2025–26 Kawhi Leonard captures at 1440/390
+verify current values, six-column desktop and three-by-two phone layouts, fitting content and
+no page overflow. Scoped glance passes for contrast, padding and readable grouping. Text contrast
+against the composited gradient is at least 6.62:1. Dashboard lint/typecheck, Vitest 525/525,
+production webpack build and four existing player-page browser checks pass. Other player sections
+await any further owner direction. [Evidence](evidence/alignment/players/dark-glass/README.md).

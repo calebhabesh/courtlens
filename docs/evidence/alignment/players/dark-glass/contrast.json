@@ -1,0 +1,8 @@
+{
+  "method": "Text contrast against both translucent gradient endpoints composited over page blue",
+  "ratios": {
+    "color-text": 13.16,
+    "color-text-secondary": 6.62,
+    "color-accent": 10.14
+  }
+}

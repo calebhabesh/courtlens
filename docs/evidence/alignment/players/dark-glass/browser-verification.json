@@ -1,0 +1,115 @@
+{
+  "source": "Production sandbox against live local PostgreSQL; API proxy allows GET/HEAD and the read-only POST workbench query",
+  "results": [
+    {
+      "width": 1440,
+      "route": "/players/202695?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season",
+      "pageOverflow": false,
+      "cards": [
+        {
+          "text": "PTS27.9Career 20.7",
+          "width": 222,
+          "height": 109,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "REB6.4Career 6.4",
+          "width": 222,
+          "height": 109,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "AST3.6Career 3.1",
+          "width": 222,
+          "height": 109,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "TS%62.9%Career 60.7%",
+          "width": 222,
+          "height": 109,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "DPM+6.3Best +6.5 (2016-17)",
+          "width": 222,
+          "height": 109,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "MPG32.1Career 31.8",
+          "width": 222,
+          "height": 109,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "route": "/players/202695?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season",
+      "pageOverflow": false,
+      "cards": [
+        {
+          "text": "PTS27.9Career 20.7",
+          "width": 114,
+          "height": 101,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "REB6.4Career 6.4",
+          "width": 114,
+          "height": 101,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "AST3.6Career 3.1",
+          "width": 114,
+          "height": 101,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "TS%62.9%Career 60.7%",
+          "width": 114,
+          "height": 117,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "DPM+6.3Best +6.5 (2016-17)",
+          "width": 114,
+          "height": 117,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        },
+        {
+          "text": "MPG32.1Career 31.8",
+          "width": 114,
+          "height": 117,
+          "background": "linear-gradient(145deg, color(srgb 0.141176 0.156863 0.180392 / 0.88), color(srgb 0.0823529 0.0901961 0.105882 / 0.92))",
+          "blur": "blur(12px) saturate(1.2)",
+          "contentFits": true
+        }
+      ]
+    }
+  ]
+}

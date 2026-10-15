@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Reference parser/marts and Contract, transactions, highs follow-up ready for review |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Dark glass headline-stat cards ready for owner review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -666,6 +666,13 @@ Follow-up instructions (owner, 2026-10-14, parser → marts → presentation, in
     and 390. Commit one block at a time; do not push. Only the owner marks alignment. — dashboard
     checks and Ruff pass; Python 2,106; Vitest 525; focused browser 26 plus four baselines. Full
     mypy retains two pre-existing Gemini SDK errors reproduced from HEAD (reference report).
+
+49. [x] Put a dark glass (glassmorphism/visionOS) container around each headline stat to improve
+    contrast against the blue backdrop. The owner may extend the treatment to other player-page
+    information later; this pass covers PTS, REB, AST, TS%, DPM and MPG only. (2026-10-14.) — dark
+    translucent gradient, 12 px backdrop blur, restrained hairline/inset highlight and rounded
+    corners. Six cards on desktop, three by two on phone; live 2025–26 values and content fit
+    verified. [Evidence](evidence/alignment/players/dark-glass/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run
