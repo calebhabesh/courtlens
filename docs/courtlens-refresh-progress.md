@@ -730,3 +730,12 @@ retain their existing spacing. Scoped glance passes for subtitle alignment, read
 spacing. Dashboard lint/typecheck, Vitest 525/525, production webpack build and all six existing
 moved-team/date browser checks pass. Stats remains ready for owner review.
 [Evidence](evidence/alignment/stats/now-pill-centering/README.md).
+
+### Stats follow-up: name/subtitle spacing (2026-10-14)
+
+Owner instruction 83 adds a 2 px gap below player names, reduced from 4 px after the owner's
+"A smidgen less" follow-up. Live and production-fixture browser measurements at 1440/390 confirm
+the gap in standard and compact density, existing row heights and centered, unclipped move pills.
+Scoped glance passes for spacing and pill readability; no page overflow. Dashboard lint/typecheck,
+Vitest 525/525, production webpack build and six moved-team/date browser checks pass. Stats remains
+ready for owner review. [Evidence](evidence/alignment/stats/name-subtitle-spacing/README.md).
