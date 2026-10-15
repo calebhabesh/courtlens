@@ -62,30 +62,30 @@ export function PlayerReferenceSections({ reference }: { reference: Reference })
   const transactions = reference.transactions ?? [];
   const highs = (reference.game_highs ?? []).filter(row => row.scope === "career");
   return <>
-    {(contract.length > 0 || history.length > 0 || events.length > 0) && <section className="player-open-section player-reference" aria-label="Contract">
+    {(contract.length > 0 || history.length > 0 || events.length > 0) && <section className="player-open-section player-reference player-glass" aria-label="Contract">
       <header className="player-open-heading"><h2>Contract</h2><span>Reported salaries · USD</span></header>
       <div className="player-contract-layout">
-        <div className="player-contract-current"><h3>Current contract</h3>
+        <div className="player-contract-current"><h3>Current Contract</h3>
           {contract.length > 0 ? <SalaryTable rows={contract} current /> : <p className="player-open-empty">No current contract listed in the retained report.</p>}
           {reference.remaining_guaranteed && <p className="player-contract-guaranteed">Remaining guaranteed total <strong><Guarantee value={reference.remaining_guaranteed} /></strong></p>}
           <p className="player-reference-note">Options are reported terms. A dash means unknown; a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s retained official NBA threshold.</p>
         </div>
-        {events.length > 0 && <div className="player-contract-notes"><h3>Contract events</h3><Events events={events} /></div>}
+        {events.length > 0 && <div className="player-contract-notes"><h3>Contract Events</h3><Events events={events} /></div>}
       </div>
       {history.length > 0 && <div className="player-salary-history">
-        <div className="player-earnings"><span>Reported career earnings</span><strong>{money(reference.career_earnings)}</strong><small>Source total may be incomplete; reported salaries, not verified cash earned.</small></div>
-        <details><ButtonSummary size="sm" variant="ghost" tone="onBackground" iconAfter="chevron-down">Salary history · {history.length} {history.length === 1 ? "entry" : "entries"}</ButtonSummary><SalaryTable rows={[...history].sort((a, b) => b.season.localeCompare(a.season))} /></details>
+        <div className="player-earnings"><span>Reported Career Earnings</span><strong>{money(reference.career_earnings)}</strong><small>Source total may be incomplete; reported salaries, not verified cash earned.</small></div>
+        <details><ButtonSummary size="sm" variant="ghost" iconAfter="chevron-down">Salary History · {history.length} {history.length === 1 ? "entry" : "entries"}</ButtonSummary><SalaryTable rows={[...history].sort((a, b) => b.season.localeCompare(a.season))} /></details>
       </div>}
       <Credit reference={reference} anchor="all_contract" />
     </section>}
-    {transactions.length > 0 && <section className="player-open-section player-reference" aria-label="Transactions">
+    {transactions.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Transactions">
       <header className="player-open-heading"><h2>Transactions</h2><span>{transactions.length} dated reports and notes</span></header>
       <Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(0, 6)} />
-      {transactions.length > 6 && <details><ButtonSummary size="sm" variant="ghost" tone="onBackground" iconAfter="chevron-down">Earlier transactions · {transactions.length - 6}</ButtonSummary><Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(6)} /></details>}
+      {transactions.length > 6 && <details><ButtonSummary size="sm" variant="ghost" iconAfter="chevron-down">Earlier Transactions · {transactions.length - 6}</ButtonSummary><Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(6)} /></details>}
       <Credit reference={reference} anchor="all_transactions" />
     </section>}
-    {highs.length > 0 && <section className="player-open-section player-reference" aria-label="Career highs">
-      <header className="player-open-heading"><h2>Career highs</h2><span>Highest known single-game values</span></header>
+    {highs.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Career highs">
+      <header className="player-open-heading"><h2>Career Highs</h2><span>Highest known single-game values</span></header>
       <div className="player-reference-table" role="region" aria-label="Career highs table" tabIndex={0}><table>
         <thead><tr><th scope="col">Phase</th>{HIGH_COLUMNS.map(([key, label]) => <th key={key} scope="col">{label}</th>)}</tr></thead>
         <tbody>{highs.map(row => <tr key={row.phase}><th scope="row">{row.phase === "regular_season" ? "Regular season" : "Playoffs"}</th>{HIGH_COLUMNS.map(([key, label]) => {

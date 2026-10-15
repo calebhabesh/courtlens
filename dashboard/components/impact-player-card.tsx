@@ -8,21 +8,21 @@ function signed(value: number | null | undefined): string {
   return value != null && value > 0 ? `+${text}` : text;
 }
 
-/** `compact` (player page): an open section of signed values, without the sample table and model note. */
+/** `compact` (player page): signed values in a glass panel, without the sample table and model note. */
 export function ImpactPlayerCard({ data, compact = false }: { data: ImpactResponse | null; compact?: boolean }) {
   const player = data?.players[0];
   if (compact) {
     const metrics = player?.metrics ?? {};
     const parts = [metrics.orapm != null ? `Off ${signed(metrics.orapm)}` : null, metrics.drapm != null ? `Def ${signed(metrics.drapm)}` : null].filter(Boolean);
-    return <section className="player-open-section" aria-label="Player impact">
-      <header className="player-open-heading"><h2>Player impact</h2><span>Points per 100 controls</span></header>
+    return <section className="player-open-section player-glass" aria-label="Player impact">
+      <header className="player-open-heading"><h2>Player Impact</h2><span>Points per 100 controls</span></header>
       {!data ? <p className="player-open-empty" role="status">Impact serving is unavailable. Restore the local API connection.</p>
         : !player ? <p className="player-open-empty">No accepted impact sample for this player and cutoff.</p>
         : <dl className="player-figures">
           {(["rapm", "rapm_2y", "rapm_3y", "bpr"] as const).map(key => <div key={key}>
             <dt>{IMPACT_COLUMNS[key].label}</dt>
             <dd><span className="player-figure-value">{signed(metrics[key])}</span>
-              {key === "rapm" && parts.length > 0 && <small>{parts.join(" · ")}</small>}</dd>
+              {key === "rapm" && parts.length > 0 && <small className="player-impact-parts">{parts.map(part => <span key={part}>{part}</span>)}</small>}</dd>
           </div>)}
         </dl>}
     </section>;

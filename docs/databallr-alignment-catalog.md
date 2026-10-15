@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Centered Accolades subheader with matching padding ready for owner review |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Uniform glass and title-case headings below the career table ready for owner review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -708,6 +708,16 @@ Follow-up instructions (owner, 2026-10-14, career awards):
     bottom padding. Badges retain their left alignment. Lint/types, 526 Vitest tests, production
     build and seven career browser checks pass.
     [Evidence](evidence/alignment/players/career-awards/README.md#centered-subheader-follow-up-2026-10-15).
+
+55. [x] Apply the same glass/visionOS effect as the headline stats to all applicable containers
+    below the player-page table, using judgment about where it looks good. Make the sections
+    below the table use title case. (Owner screenshot, 2026-10-15.)
+    Player Impact, Recent Form, Contract, Transactions and Career Highs share the headline
+    cards' uniform glass recipe. Each is one padded panel; nested content remains together.
+    Headings, subsections and disclosure labels use title case. Live 1440/390 appearance parity,
+    content fit, contrast and expanded sections pass, alongside lint/types, 526 Vitest tests,
+    production build and 15 player browser checks.
+    [Evidence](evidence/alignment/players/overview-glass/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run
