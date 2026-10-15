@@ -309,3 +309,14 @@ cross-reference does not advance AG source/evaluation statuses or claim owner vi
   planning, prose, streaming, threads and provider behavior remain unchanged. No provider call ran.
 - Dashboard 439 unit tests and 54 affected browser checks pass, including legacy conversations,
   manual Research Operation, saved exports/reproduction and failure states. This is PC12 C only.
+
+## 2026-10-15 — Gemini SDK content input typing
+
+Strict mypy rejected `list[Content]` at both Gemini generation calls because the SDK accepts
+an invariant list of its broader content union. The adapter now declares
+`list[types.ContentUnionDict]`, using the SDK's input type for streaming and regular calls.
+The request contents and runtime behavior stay the same.
+
+Verification: all 40 provider adapter tests pass through offline SDK transports; strict mypy
+passes for 252 source files; Ruff and its format check pass. Pytest reports one deprecation
+warning from the installed Google SDK on Python 3.14. No live provider call ran.

@@ -68,7 +68,7 @@ class GeminiProvider:
             for part in message.native_content
             if part.get("function_call") and not part["function_call"].get("id")
         }
-        contents: list[types.Content] = []
+        contents: list[types.ContentUnionDict] = []
         for message in messages:
             if message.role == "tool":
                 parts = [
