@@ -12,9 +12,9 @@ Rows are in working order.
 
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
-| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
-| 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Contract table, career totals, Per 36 cleanup and section headings ready for owner review |
+| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
+| 1 | Stats | `/stats` | ✅ | Owner approved first revision 2026-10-15; deferred 43f/43g remain open |
+| 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; known gap: Career-since label crowds GP |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -53,7 +53,13 @@ Data-blocked: <Databallr elements we can't source>
 Evidence: docs/evidence/alignment/<page>/
 ```
 
-### 0 App shell — 👀 ready for review
+### 0 App shell — ✅ aligned (first revision)
+
+Owner approval (2026-10-15): "I think I'm done the first solid revision of the main stats page
+and the player page. It's not a perfect version, but a presentable one now." Rows 0–2 are
+aligned as a first revision; later instructions reopen a row. Approved screenshots are Playwright
+baselines in `dashboard/e2e/visual-baselines.spec.ts` (`stats-*`, `player-profile-*`; the player
+profile baselines were refreshed in the approval commit for instructions 56–67).
 Instructions (owner, 2026-10-13):
 1. [x] On the site nav bar, move the wordmark closer to the actual logo so they look like one
    wordmark + logo; they look a little far apart from each other. — navbar gap 12px → 4px
@@ -115,7 +121,13 @@ Padding follow-up: lint/typecheck, Vitest 511/511, four header checks and favico
 pass; the broader search check has dev-server lookup/workspace timeouts. Evidence:
 docs/evidence/alignment/app-shell/favicon-padding/.
 
-### 1 Stats — 👀 ready for review
+### 1 Stats — ✅ aligned (first revision)
+
+Owner approval (2026-10-15): "I think I'm done the first solid revision of the main stats page
+and the player page. It's not a perfect version, but a presentable one now." Rows 0–2 are
+aligned as a first revision; later instructions reopen a row. Approved screenshots are Playwright
+baselines in `dashboard/e2e/visual-baselines.spec.ts` (`stats-*`, `player-profile-*`; the player
+profile baselines were refreshed in the approval commit for instructions 56–67).
 Instructions (owner, 2026-10-12):
 1. [x] Integrate Databallr's Stats buttons (where applicable) and their layout. Reference: owner
    screenshot of Databallr's NBA Player Statistics page, 2026-10-12. — interpreted as the rows below.
@@ -519,7 +531,16 @@ Follow-up instructions (owner, 2026-10-14, retained-page data):
     `--space-0-5`, reduced from the initial 4 px. Measured at 1440/390 in both densities; row heights
     and centered pill alignment retained. [Evidence](evidence/alignment/stats/name-subtitle-spacing/README.md).
 
-### 2 Dashboard (player) — 👀 ready for review
+### 2 Dashboard (player) — ✅ aligned (first revision)
+
+Owner approval (2026-10-15): "I think I'm done the first solid revision of the main stats page
+and the player page. It's not a perfect version, but a presentable one now." Rows 0–2 are
+aligned as a first revision; later instructions reopen a row. Approved screenshots are Playwright
+baselines in `dashboard/e2e/visual-baselines.spec.ts` (`stats-*`, `player-profile-*`; the player
+profile baselines were refreshed in the approval commit for instructions 56–67).
+Known gap: in the career table's pinned Year column, "CAREER SINCE 2025-26" runs into the GP
+value for players whose data starts after their debut (seen on the fixture player; present before
+the approval). Fix when the row reopens.
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
    that exact table state (scroll, search, sort, view). Esc acts only when no dialog/menu is open.
