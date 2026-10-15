@@ -467,6 +467,15 @@ Follow-up instruction (owner, 2026-10-14, from the player page's current team):
     last team, so `current_team` (Stats 72, row 2 27) named one for retired players; the mart's
     `listed_team_id` now requires an active roster (616 players).
 
+78. [x] Horizontal row dividers like Databallr, for every page with this table. — a 10% white rule
+    under each row, through the guide-photo bands too (Stats, the player career table and the other
+    `stats-workspace` tables); replaces the earlier "seamless rows" choice.
+79. [x] On a multi-team row, put the "now" pill on its own line. — that row keeps its season label and
+    grows only as tall as the pill needs. The pill's rule is unchanged and deliberately not limited to
+    the off-season: active listing, latest season only, listed team not among the row's teams (so a
+    deadline deal shows until the first game for the new team). Older seasons get none (owner agreed:
+    most rows would carry one).
+
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
@@ -578,6 +587,13 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
 40. [x] Align "Year" in the career table. — left-aligned: YEAR, each season's logo, CAREER and the
     footnote all start 12px in, the same edge as the Per Game controls (measured at 1440 and 390).
 41. [x] Slimmer scope controls and view tabs on the player page — built with Stats instruction 75.
+42. [x] Basketball-Reference bio crawl (owner go-ahead 2026-10-14). — `courtlens acquire-bbref-bios`:
+    26 index pages, name + birth-date matching (ambiguous players stay unmatched), player pages at 4 s,
+    pages retained with receipts, profiles appended to `bbref_player_profiles` (newest serves). The
+    header adds birthplace (Born), shooting hand (Listed), debut (Experience), High school and a career
+    honours row (titles and major awards in gold); the career table adds an Awards column and an
+    All-Star star on regular-season rows. Refresh yearly after the awards (late June, `--active-only`);
+    see source policy v3. Earlier proposal text:
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
 awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut). The
 "now TOR" chip on Stats rows was approved and built as Stats instruction 72.

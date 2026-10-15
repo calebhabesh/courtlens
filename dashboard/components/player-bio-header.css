@@ -36,6 +36,11 @@
   .player-bio-combine dd { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
   .player-bio-combine strong { color: var(--color-text); font-weight: 600; }
   .player-bio-actions { display: flex; align-items: center; gap: var(--space-2); }
+  /* Career honours (Basketball-Reference): titles and major awards in gold, the rest neutral. */
+  .player-bio-honours { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  .player-bio-honours li { padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-hover);
+    color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
+  .player-bio-honours li.is-top { background: var(--color-accent-soft); color: var(--color-accent); font-weight: 600; }
 
   /* Season summary: open on the page ground, split by faint rules (row 2, 22–23). */
   .player-season-summary { display: flex; flex-direction: column; gap: var(--space-4); }

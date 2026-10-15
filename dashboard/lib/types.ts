@@ -2228,5 +2228,11 @@ export type PlayerBio = {
   } | null;
   /** The latest NBA player index listing: who the player plays for today, not a season's team. */
   current_team?: { team_id: string; team_tricode: string | null; listing_season: string } | null;
+  /** Basketball-Reference biography and honours as of its last crawl (whole career to date). */
+  reference?: {
+    source: string; url: string; as_of: string;
+    birthplace: string | null; high_school: string | null; shoots: string | null; debut_date: string | null;
+    honours: string[]; awards: Record<string, string[]>; all_star_seasons: string[];
+  } | null;
   limitations: string[];
 };

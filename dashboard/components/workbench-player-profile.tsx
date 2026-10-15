@@ -279,7 +279,8 @@ export function WorkbenchPlayerProfile({
         <TabsContent value="overview" className="player-tab-body">
       {catalog && <PlayerCareerTable playerId={player.id} catalog={catalog} season={context.season} phase={context.phase}
         firstCoveredSeason={catalog.stats_scopes?.filter(scope => scope.phase === context.phase).map(scope => scope.season).sort()[0] ?? null}
-        draftYear={bio?.draft?.year ?? null} initialCareer={career} />}
+        draftYear={bio?.draft?.year ?? null} initialCareer={career}
+        awards={bio?.reference ? { bySeason: bio.reference.awards, allStarSeasons: bio.reference.all_star_seasons, source: bio.reference.source } : null} />}
       <div className="player-overview-duo">
         <ImpactPlayerCard data={impact} compact />
         <section className="player-open-section" aria-label="Recent form">

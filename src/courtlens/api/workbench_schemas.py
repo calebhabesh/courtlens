@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -575,6 +575,22 @@ class PlayerBioCombine(BaseModel):
     weight_lbs: float | None
 
 
+class PlayerBioReference(BaseModel):
+    """Basketball-Reference biography and honours as of its last crawl (career-to-date facts)."""
+
+    source: str
+    url: str
+    as_of: datetime
+    birthplace: str | None
+    high_school: str | None
+    shoots: str | None
+    debut_date: date | None
+    honours: list[str]
+    # Season ("2015-16") -> award codes as the source lists them ("MVP-2", "AS", "NBA1").
+    awards: dict[str, list[str]]
+    all_star_seasons: list[str]
+
+
 class PlayerBioResponse(BaseModel):
     """Profile header listings as of the page scope; combine values are measured."""
 
@@ -595,6 +611,7 @@ class PlayerBioResponse(BaseModel):
     undrafted: bool
     combine: PlayerBioCombine | None
     current_team: PlayerBioCurrentTeam | None = None
+    reference: PlayerBioReference | None = None
     limitations: list[str]
 
 

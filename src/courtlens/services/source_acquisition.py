@@ -77,6 +77,9 @@ class ScheduledFetcher:
         self.resource, self.kinds, self.validate_url = resource, kinds, validate_url
         self.last_start: dict[str, float] = {}
         self.stopped: set[str] = set()
+        # robots.txt is read once per host per run and recorded on every receipt: re-reading it
+        # before each page doubled the requests a long crawl makes to the source.
+        self.robots: dict[str, tuple[httpx.Response, WorkbenchArtifact]] = {}
 
     def _get(self, url: str, interval: float) -> httpx.Response:
         host = urlsplit(url).netloc
@@ -160,16 +163,19 @@ class ScheduledFetcher:
                 remaining = interval - (datetime.now(UTC) - finished).total_seconds()
                 if remaining > 0:
                     time.sleep(remaining)
-            robots_url = f"https://{host}/robots.txt"
-            robots = self._get(robots_url, interval)
-            robot_artifact = retain(
-                robots.content,
-                self.root,
-                f"{self.resource}_robots",
-                host,
-                self.session,
-                "text/plain",
-            )
+            if host in self.robots:
+                robots, robot_artifact = self.robots[host]
+            else:
+                robots = self._get(f"https://{host}/robots.txt", interval)
+                robot_artifact = retain(
+                    robots.content,
+                    self.root,
+                    f"{self.resource}_robots",
+                    host,
+                    self.session,
+                    "text/plain",
+                )
+                self.robots[host] = (robots, robot_artifact)
             meta = {
                 **receipt.metadata_json,
                 "robots_status": robots.status_code,
