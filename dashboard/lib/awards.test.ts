@@ -27,7 +27,7 @@ describe("season award codes", () => {
 describe("career honours", () => {
   it("tidies the source's wording and puts titles and major awards first", () => {
     expect(honours(["7x All Star", "2014-15 STL Champ", "2x NBA Champ", "2x Finals MVP", "2x Def. POY", "2019-20 AS MVP"])).toEqual([
-      { label: "2× NBA Champ", top: true }, { label: "2× Finals MVP", top: true }, { label: "2× Def. POY", top: true },
+      { label: "2× NBA Champ", top: true }, { label: "2× Finals MVP", top: true }, { label: "2× DPOY", top: true },
       { label: "7× All-Star", top: false }, { label: "2014-15 STL Champ", top: false }, { label: "2019-20 AS MVP", top: false },
     ]);
     expect(honours(["2015-16 MVP"])[0].top).toBe(true);

@@ -102,7 +102,6 @@
 .stats-workspace .stats-header-search { position: relative; display: flex; align-items: center; gap: var(--space-1); width: 100%; }
 .stats-workspace .stats-header-search .lookup-combobox, .stats-workspace .stats-header-search > div:first-child { flex: 1; min-width: 0; }
 .stats-workspace .stats-header-search .lookup-input-wrapper { min-height: var(--control-md); padding-inline: var(--space-3) 0; gap: var(--space-2); background: var(--color-surface-2); border: 1px solid var(--color-hairline); border-radius: var(--radius-sm); transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out); }
-.stats-workspace .stats-header-search .lookup-input-wrapper:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 1px var(--color-accent); }
 .stats-workspace .stats-header-search input { width: 100%; min-width: 0; min-height: var(--control-sm); padding: 0; font-size: var(--text-sm); background: transparent; border: 0; border-radius: 0; }
 .stats-workspace .stats-header-search input::-webkit-search-cancel-button { display: none; }
 /* Typed searches keep the current rows, dimmed, until the filtered rows land. */
@@ -360,7 +359,7 @@
   .stats-workspace .stats-cell-button:hover { background: var(--color-surface-hover); box-shadow: inset 0 0 0 1px var(--color-hairline-strong); }
   .stats-workspace .stats-cell-button:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px var(--color-accent); }
   .stats-trend-dialog { width: min(900px, calc(100vw - var(--space-8))); max-width: 900px; }
-  .stats-trend-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-hairline); }
+  .stats-trend-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
   .stats-trend-back { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--control-lg); padding: 0 var(--space-4); border: 0; border-radius: var(--radius-sm); background: var(--color-accent); color: var(--color-on-accent); font-size: var(--text-md); font-weight: 600; }
   .stats-trend-back kbd { font-size: var(--text-xs); opacity: 0.7; background: transparent; }
   .stats-trend-metric { width: auto; min-width: 200px; }
@@ -379,7 +378,7 @@
   .stats-trend-series path { fill: none; stroke: var(--series); stroke-linejoin: round; stroke-linecap: round; }
   .stats-trend-line { stroke-width: 2.5; }
   .stats-trend-glow { stroke-width: 10; opacity: 0.16; }
-  .stats-trend-players { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: var(--space-4); padding-top: var(--space-2); border-top: 1px solid var(--color-hairline); }
+  .stats-trend-players { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: var(--space-4); }
   .stats-trend-player { position: relative; display: grid; justify-items: center; gap: var(--space-1); width: 96px; text-align: center; font-size: var(--text-sm); }
   .stats-trend-player .player-portrait, .stats-trend-player .player-portrait-fallback { width: 64px; height: 64px; border-radius: var(--radius-sm); box-shadow: inset 0 0 0 2px var(--series); }
   .stats-trend-player > span { display: inline-flex; align-items: center; gap: var(--space-1); }
