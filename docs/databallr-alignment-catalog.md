@@ -457,6 +457,11 @@ Follow-up instruction (owner, 2026-10-14, from the player page's current team):
     surrounding size instead of forcing `lg`. Phones keep the kit's 40 px hit area. Desktop
     baselines whose content moved up were regenerated; no phone baseline changed.
 
+76. [x] Slightly larger player photos and team logos in the table, with taller rows to fit. — desktop
+    photos 32 → 40 px, logos 20 → 24, guide photos 30 → 36, rows 46 → 52 (compact 38 → 44, photo
+    34); the name column widens 300 → 312 px so names and the "now" pill keep their room, and the
+    search box fills its header cell. Phones keep 32/20 in 46 px rows.
+
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
