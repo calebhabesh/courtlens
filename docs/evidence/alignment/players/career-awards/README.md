@@ -57,3 +57,17 @@ node scripts/verify_player_career_awards.cjs
 
 `PLAYWRIGHT_BASE_URL`, `PLAYER_ID` and `EVIDENCE_DIR` select the sandbox, player and output.
 `VERIFY_BEFORE=1` captures measurements without the fixed-layout assertions.
+
+## Centered subheader follow-up, 2026-10-15
+
+Instruction 54 centers Accolades under Awards and matches its bottom padding to the other
+stat headers. Only the awards header gets the alignment and padding override. Body badges
+retain their left alignment.
+
+Production fixture measurements at 1440 and 390 show identical text centers for both headings.
+Accolades and every metric header have 4 px bottom padding. The first badge retains its 13 px
+inset, and the page has no horizontal overflow. Scoped glance passes at both widths.
+
+[Desktop](centered-heading/career-1440.png), [phone](centered-heading/career-390.png) and
+[measurements](centered-heading/measurements.json). Dashboard lint/typecheck, 526 Vitest tests,
+production build and all seven career-table browser checks pass. Owner alignment remains pending.

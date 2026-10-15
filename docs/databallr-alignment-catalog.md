@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Career awards column and clearer, wrapping badges ready for owner review |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Centered Accolades subheader with matching padding ready for owner review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -701,6 +701,13 @@ Follow-up instructions (owner, 2026-10-14, career awards):
     to screen readers. Live Kawhi rows fit on at most two lines at 1440/390 with unchanged
     row heights. Lint, types, 526 Vitest tests, production build and 15 player browser checks pass.
     [Evidence](evidence/alignment/players/career-awards/README.md).
+
+54. [x] Center "Accolades" under "Awards". It's the only field. Follow-up: confirm Accolades
+    has the same padding below it as the other stats. (Owner, 2026-10-15.)
+    Both text centers match exactly at 1440/390; Accolades and all metric headers have 4 px
+    bottom padding. Badges retain their left alignment. Lint/types, 526 Vitest tests, production
+    build and seven career browser checks pass.
+    [Evidence](evidence/alignment/players/career-awards/README.md#centered-subheader-follow-up-2026-10-15).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

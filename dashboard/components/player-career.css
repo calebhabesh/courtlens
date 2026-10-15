@@ -57,6 +57,7 @@
   /* Season awards (Basketball-Reference) and the All-Star star beside the year. */
   .player-career .player-career-star { display: inline-flex; color: var(--color-accent); }
   .player-career.stats-workspace .player-career-table .player-career-awards { text-align: left; white-space: normal; padding: var(--space-0-5) var(--space-3); }
+  .player-career.stats-workspace .player-career-table th.player-career-awards { text-align: center; padding-block: var(--space-1); }
   .player-career .player-career-awards-list { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
   .player-career .player-career-award { white-space: nowrap; }
   .player-career .player-career-footnote { margin: 0; padding: var(--space-2) var(--space-3); color: var(--color-text-tertiary); font-size: var(--text-xs); }

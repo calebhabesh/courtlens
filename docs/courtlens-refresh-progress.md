@@ -826,3 +826,10 @@ The former overflow reproduces on the old code. All 14 retained Kawhi rows fit a
 with at most two badge lines and unchanged 52/49 px rows. Scoped glance and pinned-Year checks
 pass. Lint/typecheck, Vitest 526/526, production webpack build and 15 player browser checks pass.
 [Evidence](evidence/alignment/players/career-awards/README.md). Owner alignment remains pending.
+
+### Player follow-up: centered Accolades subheader (2026-10-15)
+
+Instruction 54 centers Accolades under Awards and matches its 4 px bottom padding to the stat
+headers. Both text centers match exactly at 1440/390. Badges remain left-aligned and scoped
+glance passes. Lint/typecheck, 526 Vitest tests, production build and seven career browser checks
+pass. [Evidence](evidence/alignment/players/career-awards/README.md#centered-subheader-follow-up-2026-10-15).
