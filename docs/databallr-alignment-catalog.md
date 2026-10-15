@@ -905,6 +905,25 @@ Follow-up instructions (owner, 2026-10-15, fourth review):
     old next to Basketball-Reference and ESPN. — yes: the CDN's "latest" headshot is byte-identical
     to its 2026-27 folder (uploaded Oct 2026, media day), which is what those sites show now. The
     card shows the CDN's 2025-26 folder photo for the 2025-26 season. No change.
+Follow-up instructions (owner, 2026-10-15, fifth review):
+31. [x] Expanding Trend lines scrolls it into view and collapsing scrolls back up; fix the bug where
+    collapsing it disturbs the Compare nav item's bottom highlight. — the header is sticky and
+    re-renders on in-page URL changes, so a scroll between renders read as a move of its
+    shared-layout indicator; `layoutDependency={activeSection}` limits it to section changes
+    (sampled every frame through a collapse: one position).
+32. [x] Owner question: show the team name as text near the player? — yes, the full team name
+    under the player's name; a traded season lists both, oldest first.
+33. [x] Owner question: the logo discs need to be more visible/larger; Databallr puts the team logo
+    in the photo background. Recommend the best option. — Databallr's: the latest team's logo
+    large behind the headshot (42% opacity) on the card and share image; the corner discs go,
+    the team line covers traded seasons.
+34. [x] Owner question: is the off-centre background logo deliberate, or should it be centred? —
+    centred behind the head.
+35. [x] Owner question: a small team logo next to the team name text? — yes, a 16px logo per team.
+36. [x] Expanding Trend lines scrolls to the end of the page (the whole drawer in view); collapsing
+    scrolls smoothly back up to the original position (refines 31). — follows the drawer to the
+    page end while its chart loads (2.5s); closing scrolls back first, then folds the drawer
+    (on `scrollend`, 1.2s fallback). Reduced motion jumps instead.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

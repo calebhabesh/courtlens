@@ -258,6 +258,9 @@ export function Header() {
   const indicator = (
     <motion.span
       layoutId="header-active-indicator"
+      // Measure only when the active section changes: the header is sticky and re-renders on
+      // in-page URL changes, and a scroll between renders would otherwise read as a move.
+      layoutDependency={activeSection}
       className="courtlens-nav-indicator"
       transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
     />

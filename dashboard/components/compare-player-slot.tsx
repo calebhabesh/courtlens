@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "next/navigation";
 import { EntityField } from "./entity-picker";
 import { PlayerPortrait } from "./player-portrait";
+import teamBranding from "@/lib/team-branding.json";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 import { formatHeight } from "./player-bio-header";
@@ -19,6 +20,11 @@ export function bioLine(bio: PlayerBio | null | undefined): string | null {
   if (!bio) return null;
   const parts = [bio.age != null ? `Age ${bio.age}` : null, bio.listed_position, formatHeight(bio.listed_height_inches)].filter(Boolean);
   return parts.length ? parts.join(" · ") : null;
+}
+
+/** A team's catalog record (full name and logo artwork); null for codes without artwork. */
+export function teamRecord(team: string | undefined) {
+  return team ? teamBranding.teams.find(entry => entry.tricode === team || entry.team_id === team) ?? null : null;
 }
 
 /** The scope's teams oldest first; a traded player's latest team (the photo, tint) is last. */
@@ -51,10 +57,15 @@ export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: 
   const latest = teams.at(-1);
   const tint = teamBrandColor(latest);
   const line = bioLine(bio);
+  const record = teamRecord(latest);
+
   return <div className="pvp-slot pvp-fade" data-identity={side}
     style={tint ? ({ "--team-tint": tint } as CSSProperties) : undefined}>
     <div className="pvp-photo-frame">
       <button type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${label}, ${player.name}`} onClick={() => setSearching(open => !open)}>
+        {/* The latest team's logo sits large behind the headshot, as Databallr does (33). */}
+        {/* eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, decorative */}
+        {record && <img className="pvp-watermark" src={record.asset} alt="" aria-hidden="true" />}
         <PlayerPortrait playerId={player.id} name={player.name} portraitUrl={player.portrait_url} size="xl" className="pvp-portrait"
           era={season ? { season, team: latest } : null} />
         {games != null
@@ -62,9 +73,6 @@ export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: 
           : <span className="pvp-badge" title={`${player.games_played} games · ${Math.round(player.total_minutes).toLocaleString("en-US")} minutes`}>{player.games_played} GP</span>}
         <span className="pvp-change" aria-hidden="true"><Icon name="user-edit" size={16} /></span>
       </button>
-      {teams.length > 0 && <span className="pvp-logos" data-count={teams.length} role="img" aria-label={`Teams: ${teams.join(", then ")}`} title={teams.join(" then ")}>
-        {teams.map(team => <span key={team} className="pvp-logo"><TeamLogo team={team} size={teams.length > 1 ? 30 : 34} /></span>)}
-      </span>}
     </div>
     {searching
       ? <div className="pvp-search" ref={searchRef}>
@@ -73,6 +81,9 @@ export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: 
         </div>
       : <div className="pvp-who">
           <Link className="pvp-name" href={`/players/${player.id}`}>{player.name}</Link>
+          {/* Full team names with small logos, oldest first: "Brooklyn Nets, Phoenix Suns" (32, 35). */}
+          {teams.length > 0 && <span className="pvp-team">{teams.map(team => <span key={team} className="pvp-team-entry">
+            <TeamLogo team={team} size={16} />{teamRecord(team)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
         </div>}
   </div>;

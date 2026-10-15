@@ -44,15 +44,19 @@
     transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
   .pvp-photo:is(:hover, :focus-visible) .pvp-change { background: var(--color-accent); color: var(--color-on-accent); }
-  /* Team logos ride the photo's lower-left corner like the player page badge (8, 18): opaque
-     discs, latest team in front. */
-  .pvp-logos { position: absolute; left: calc(var(--space-2) * -1); bottom: calc(var(--space-2) * -1); display: flex; pointer-events: none; }
-  /* The player page badge (foundation .ui-identity-badge): a surface-3 disc with a soft shadow. */
-  .pvp-logo { display: inline-grid; place-items: center; padding: var(--space-1); border-radius: var(--radius-pill); background: var(--color-surface-3); box-shadow: var(--shadow-1); }
-  .pvp-logo + .pvp-logo { margin-left: calc(var(--space-3) * -1); }
+  /* The latest team's logo, large and centred behind the head like Databallr's cards (33, 34);
+     the portrait paints above it. */
+  .pvp-watermark {
+    position: absolute; left: 4%; top: -2%; width: 92%; height: auto; opacity: 0.42;
+    pointer-events: none; user-select: none;
+  }
+  .pvp-photo .pvp-portrait { position: relative; }
   .pvp-who { display: flex; flex-direction: column; align-items: center; gap: var(--space-0-5); min-width: 0; }
   .pvp-name { justify-content: center; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
   .pvp-name:hover { text-decoration: underline; }
+  /* The team as words under the name (32); a traded season lists both, oldest first. */
+  .pvp-team { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 var(--space-2); color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 500; }
+  .pvp-team-entry { display: inline-flex; align-items: center; gap: var(--space-1); }
   .pvp-bio { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
   /* The search slides in under the photo (26) with its label centred above the field (27). */
   .pvp-search { width: 100%; min-width: 0; text-align: left; animation: pvp-search-in var(--dur-base) var(--ease-out); }
@@ -91,6 +95,7 @@
   .pvp-tray[data-open] { width: calc(100% - var(--space-4)); }
   .pvp-tray[data-open] .pvp-tray-tab { order: 2; }
   .pvp-tray-body {
+    scroll-margin-top: calc(var(--header-height) + var(--space-4));
     width: 100%; padding: var(--space-6) var(--space-5) var(--space-4); margin-top: calc(var(--space-4) * -1);
     background: color-mix(in srgb, var(--color-surface-0) 58%, transparent); border: 1px solid var(--color-hairline-strong); border-top: 0;
     border-radius: 0 0 var(--radius-lg) var(--radius-lg); backdrop-filter: blur(20px) saturate(150%);
