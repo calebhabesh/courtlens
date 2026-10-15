@@ -15,7 +15,7 @@ Rows are in working order.
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
 | 1 | Stats | `/stats` | ✅ | Owner approved first revision 2026-10-15; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
-| 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
+| 3 | PvP | `/compare` | 🔍 ready for review | Compare Export fixed (card export) |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
 | 6 | Last X Games | `/last-games` | ⬜ | |
@@ -805,3 +805,27 @@ Operational instructions (owner, 2026-10-14):
   dates); optional raw-page compression (roughly 1–1.5 GB to about 200 MB). No compression while
   the crawl is writing.
 Evidence: docs/evidence/alignment/players/ ([README](evidence/alignment/players/README.md)).
+
+### 3 PvP — 🔍 ready for review
+Instructions (owner, 2026-10-15; concept board https://claude.ai/artifact/RE9bkpgam6NNnoVoEEvGcc,
+owner chose the recommendation and delegated the three open decisions):
+1. [x] Revamp /compare into a Databallr-style dual player card: one centered card holding square
+   team-tinted portraits with a badge, the preset tabs, the counting mode and mirrored value rows,
+   with a difference pill on the leading side only. — `player-compare-view.tsx` + `.css`; portrait
+   press opens search in place (`compare-player-slot.tsx`); swap button between portraits.
+2. [x] Add the Stats page's small league percentile number under each value (gold → gray → blue);
+   no row tint. Group labels on Overall. — cohort query asks for table percentiles; Counting /
+   Efficiency / Profile groups; centre labels use short names (Points, TS%).
+3. [x] Edit Metrics opens the custom metric picker in a drawer (delegated decision). — grouped
+   by catalog category; per-game twins and aliases hidden; saved views apply from the drawer.
+4. [x] One bio line under each name: age · position · height (delegated decision). — season
+   listing via the bio endpoint; absent facts are omitted.
+5. [x] Share Image exports the card itself (fixes the known Compare Export gap). — SVG copy of
+   the card (`compare-card-export.tsx`), headshots inlined; Export SVG uses it too.
+6. [x] Owner question, 2026-10-15: preselect two known players or show grayed avatars? Agent
+   recommendation: open on a real pair, the season's top two scorers (pts/game, 500+ minutes),
+   written to the URL. Supersedes presentation-clarity C5 for this page; silhouettes remain only
+   when no pair can be resolved. — server redirect; live default Dončić vs Gilgeous-Alexander.
+Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
+Per 100 stay disabled with their reason.
+Evidence: docs/evidence/alignment/compare/

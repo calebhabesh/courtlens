@@ -2,8 +2,14 @@ import type { MetricComparisonItem, MetricDefinition, PlayerComparisonResponse, 
 
 export type ComparePresetId = "overall" | "offense" | "defense" | "sixfactor" | "custom";
 export type CompareCountingMode = "per_game" | "raw" | "per_75" | "per_100";
+/** Overall reads in career-table groups (alignment row 3); the other presets are one list. */
+export const OVERALL_GROUPS = [
+  { label: "Counting", metrics: ["pts", "reb", "ast", "stl", "blk", "tov"] },
+  { label: "Efficiency", metrics: ["ts_pct", "efg_pct", "ftr"] },
+  { label: "Profile", metrics: ["min", "gp"] }
+] as const;
 export const COMPARE_PRESETS = {
-  overall: { label: "Overall", metrics: ["pts", "reb", "ast", "stl", "blk", "tov", "min", "gp", "ts_pct", "efg_pct", "ftr"] },
+  overall: { label: "Overall", metrics: OVERALL_GROUPS.flatMap(group => [...group.metrics]) },
   offense: { label: "Offense", metrics: ["pts", "ast", "tov", "ts_pct", "efg_pct", "fg3_pct", "ft_pct", "ftr", "oreb"] },
   defense: { label: "Defense", metrics: ["stl", "blk", "dreb", "pf"] },
   sixfactor: { label: "Six Factor", metrics: ["ts_pct", "efg_pct", "ftr", "tov", "oreb", "dreb"] },
@@ -40,7 +46,61 @@ export function comparisonRows(keys: string[], mode: CompareCountingMode, compar
   });
 }
 
-export function formatComparisonValue(value: number | string | null, unit: string) {
-  if (typeof value === "number" && Number.isFinite(value)) return ["percentage", "%", "ratio", "ratio difference"].includes(unit) ? `${(value * 100).toFixed(1)}%` : value.toFixed(1);
+const PERCENT_UNITS = new Set(["percentage", "%", "ratio", "ratio difference"]);
+export function isPercentUnit(unit: string) { return PERCENT_UNITS.has(unit); }
+
+/** The group a metric opens on Overall, matched on its base key (`pts_per_game` opens Counting). */
+export function overallGroupStart(metric: string): string | null {
+  for (const group of OVERALL_GROUPS) {
+    const first = group.metrics[0];
+    if (metric === first || metric.startsWith(`${first}_per_`)) return group.label;
+  }
+  return null;
+}
+
+/** Card value: the row label carries the unit, so percentages read 66.5 and games 68. */
+export function formatCardValue(value: number | string | null, unit: string, metric = "") {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    if (isPercentUnit(unit)) return (value * 100).toFixed(1);
+    return metric === "gp" ? value.toFixed(0) : value.toFixed(1);
+  }
   return value == null ? "—" : String(value);
+}
+
+export function formatComparisonValue(value: number | string | null, unit: string) {
+  if (typeof value === "number" && Number.isFinite(value)) return isPercentUnit(unit) ? `${(value * 100).toFixed(1)}%` : value.toFixed(1);
+  return value == null ? "—" : String(value);
+}
+
+const CARD_WORDS: Record<string, string> = {
+  pts: "Points", reb: "Rebounds", reb_total: "Rebounds", oreb: "Off Rebounds", dreb: "Def Rebounds", ast: "Assists",
+  stl: "Steals", blk: "Blocks", tov: "Turnovers", pf: "Fouls", min: "Minutes", gp: "Games"
+};
+
+/** The card's centre label: a word for counts (the mode names the rate), else the catalog short name. */
+export function cardLabel(metric: string, definition?: Pick<MetricDefinition, "short_name" | "display_name">) {
+  const base = metric.replace(/_per_(game|75|100)$/, "");
+  return CARD_WORDS[base] ?? definition?.short_name ?? definition?.display_name ?? metric;
+}
+
+/** Catalog aliases of a listed metric (`reb_total` is `reb`). */
+const ALIASES = new Set(["reb_total", "reb_total_per_game"]);
+
+const CATEGORY_LABELS: Record<string, string> = {
+  scoring: "Scoring", counting: "Counting", efficiency: "Efficiency", playmaking: "Playmaking", rebounding: "Rebounding",
+  defense: "Defense", participation: "Profile", rates: "Per 36"
+};
+
+/**
+ * Edit Metrics groups. Per-game twins of counted metrics are left out (the counting mode chooses
+ * the rate), as are team factors and legacy scores, which describe no single player.
+ */
+export function pickerMetrics(catalog: MetricDefinition[]) {
+  const groups = new Map<string, MetricDefinition[]>();
+  for (const metric of catalog) {
+    const label = CATEGORY_LABELS[metric.category];
+    if (!label || ALIASES.has(metric.key) || (metric.key.endsWith("_per_game") && COUNTS.has(metric.key.replace(/_per_game$/, "")))) continue;
+    groups.set(label, [...(groups.get(label) ?? []), metric]);
+  }
+  return [...groups].map(([label, metrics]) => ({ label, metrics }));
 }

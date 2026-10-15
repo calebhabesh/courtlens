@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { ComparisonRows } from "@/components/ui/comparison-rows";
 import { TeamLogo } from "@/components/team-logo";
 import type { Metadata } from "next";
-import { CompareSuggestions } from "@/components/compare-suggestions";
+import { redirect } from "next/navigation";
 import { CompareSelector } from "@/components/compare-selector";
 import { PlayerCompareView } from "@/components/player-compare-view";
 import { AnalyticsApiError, getAnalyticsCatalog, getAnalyticsCompare } from "@/lib/api";
@@ -13,9 +13,9 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { PlayerIdentity } from "@/components/ui/identity";
 import { formatDate } from "@/lib/format-date";
 import { resolveStatsQuery } from "@/lib/stats-query";
-import { getMetricCatalog, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
+import { getMetricCatalog, getPlayerBio, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
 import { comparePlayers } from "@/lib/workbench-api";
-import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerComparisonResponse } from "@/lib/types";
+import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerBio, PlayerComparisonResponse, WorkbenchCatalog } from "@/lib/types";
 import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
@@ -39,9 +39,12 @@ export default async function ComparePage({ searchParams }: {
 }) {
   const rawSelected = await searchParams;
   const selected = { ...rawSelected, releaseId: rawSelected.releaseId ?? rawSelected.release_id, beforeDate: rawSelected.beforeDate ?? rawSelected.before_date };
+  // Alignment row 3, 6: the page opens on a real pair, written to the URL (supersedes PC C5).
+  const fallbackPair = await defaultPairUrl(rawSelected);
+  if (fallbackPair) redirect(fallbackPair);
   const loaded = await loadComparison(selected);
   if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open players</ButtonLink>}>Comparison unavailable.</GatedNote></PageShell>;
-  const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, leaders } = loaded;
+  const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, bios } = loaded;
   const context = {
     season: String(wbComparison?.context?.season ?? selected.season ?? workbenchCatalog?.default_season ?? ""),
     phase: String(wbComparison?.context?.phase ?? selected.phase ?? workbenchCatalog?.default_phase ?? "regular_season"),
@@ -49,19 +52,36 @@ export default async function ComparePage({ searchParams }: {
     window: String(wbComparison?.context?.window ?? selected.window ?? "season"),
     release_id: String(wbComparison?.context?.release_id ?? selected.releaseId ?? workbenchCatalog?.release_id ?? "")
   };
-  const selector = (    <CompareSelector catalog={catalog} date={date} legacy={Boolean(selected.snapshotId === "snapshot-browser-fixture" || comparison && !wbComparison)}
-      initialA={wbComparison ? { id: wbComparison.player_a.id, name: wbComparison.player_a.name } : comparison ? comparison.player_a.player : targetA ? {id:targetA,name:`Player ${targetA}`} : null}
-      initialB={wbComparison ? { id: wbComparison.player_b.id, name: wbComparison.player_b.name } : comparison ? comparison.player_b.player : targetB ? {id:targetB,name:`Player ${targetB}`} : null} />);
-  if(wbComparison) return <PageShell template="compare" className="fo11-player-comparison"><PlayerCompareView comparison={wbComparison} catalog={catalog} workbenchCatalog={workbenchCatalog} selector={selector} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} /></PageShell>;
+  // The legacy snapshot comparison keeps its form; everything else is the duel card.
+  if(!comparison) return <PageShell template="compare" className="fo11-player-comparison">
+    <PlayerCompareView comparison={wbComparison} bios={bios} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
+      selector={<CompareSelector catalog={catalog} date={date} legacy={selected.snapshotId === "snapshot-browser-fixture"}
+        initialA={targetA ? {id:targetA,name:`Player ${targetA}`} : null} initialB={targetB ? {id:targetB,name:`Player ${targetB}`} : null} />} />
+  </PageShell>;
+  const selector = <CompareSelector catalog={catalog} date={date} legacy initialA={comparison.player_a.player} initialB={comparison.player_b.player} />;
   return <PageShell template="compare" className="fo11-player-comparison">
     <PageHeader title="Player Comparison" subtitle="Descriptive metrics under a shared scope." />
     <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
-      detailRows={[{label:"Legacy snapshot",value:catalog.snapshot_id,mono:true},{label:"Source",value:catalog.source}, ...(cohort ? [{label:"Percentile cohort",value:`${cohort.total_eligible_players} eligible players; Stats midrank percentiles, oriented by catalog direction.`}] : [])]} />
-    {!comparison && !error ? <CompareSuggestions leaders={leaders} scope={context} selector={selector} /> : selector}
-    {error && <div role="alert"><GatedNote why={error} action={<ButtonLink size="lg" href="/compare">Choose players</ButtonLink>}>Unable to compare.</GatedNote></div>}
-    {comparison && !wbComparison && <ComparisonView comparison={comparison} />}
-
+      detailRows={[{label:"Legacy snapshot",value:catalog.snapshot_id,mono:true},{label:"Source",value:catalog.source}]} />
+    {selector}
+    <ComparisonView comparison={comparison} />
   </PageShell>;
+}
+
+/** The season's top two scorers (points per game, 500+ minutes), else its two minutes leaders. */
+async function defaultPairUrl(raw: Record<string, string | undefined>): Promise<string | null> {
+  if (raw.playerA || raw.playerB || raw.players || raw.snapshotId === "snapshot-browser-fixture") return null;
+  const workbenchCatalog: WorkbenchCatalog | null = await getWorkbenchCatalog(raw.releaseId ?? raw.release_id).catch(() => null);
+  if (!workbenchCatalog) return null;
+  const scope = resolveStatsQuery({ ...raw, beforeDate: raw.beforeDate ?? raw.before_date, releaseId: raw.releaseId ?? raw.release_id }, workbenchCatalog, "per_game");
+  const base = { release_id: scope.release_id ?? undefined, season: scope.season, phase: scope.phase, before_date: scope.before_date ?? undefined, window: "season", sort_direction: "desc" as const, limit: 2 };
+  const scorers = await queryPlayerResearch({ ...base, sort_metric: "pts_per_game", min_minutes: 500 }).catch(() => null);
+  const pair = scorers && scorers.items.length >= 2 ? scorers.items
+    : (await queryPlayerResearch({ ...base, sort_metric: "min", min_games: 1 }).catch(() => null))?.items ?? [];
+  if (pair.length < 2) return null;
+  const next = new URLSearchParams(Object.entries(raw).filter((entry): entry is [string, string] => typeof entry[1] === "string"));
+  next.set("playerA", pair[0].player_id); next.set("playerB", pair[1].player_id);
+  return `/compare?${next}`;
 }
 
 async function loadComparison(selected: {
@@ -129,11 +149,14 @@ async function loadComparison(selected: {
         }
       }
     }
-    const cohort = wbComparison && scope ? await executeWorkbenchQuery({...scope,page:{limit:2}}, {player_ids:[wbComparison.player_a.id,wbComparison.player_b.id]}).catch(() => null) : null;
-    const [metrics, suggested] = await Promise.all([getMetricCatalog().catch(() => null), !targetA && !targetB && scope ? queryPlayerResearch({ release_id:scope.release_id ?? undefined, season:scope.season, phase:scope.phase, before_date:scope.before_date ?? undefined, window:"season", sort_metric:"min", sort_direction:"desc", min_games:1, limit:2 }).catch(() => null) : Promise.resolve(null)]);
+    const cohort = wbComparison && scope ? await executeWorkbenchQuery({...scope,page:{limit:2}}, {player_ids:[wbComparison.player_a.id,wbComparison.player_b.id],table_percentiles:true}).catch(() => null) : null;
+    const bioScope = { season: String(wbComparison?.context?.season ?? scope?.season ?? ""), beforeDate: String(wbComparison?.context?.before_date ?? scope?.before_date ?? date) };
+    const [metrics, bios] = await Promise.all([getMetricCatalog().catch(() => null), wbComparison
+      ? Promise.all([wbComparison.player_a.id, wbComparison.player_b.id].map(id => getPlayerBio(id, bioScope).catch(() => null))) as Promise<[PlayerBio | null, PlayerBio | null]>
+      : Promise.resolve([null, null] as [PlayerBio | null, PlayerBio | null])]);
     return {
       metricDefinitions: metrics?.metrics ?? [],
-      leaders: suggested?.items.slice(0,2) ?? [],
+      bios,
       catalog,
       workbenchCatalog,
       cohort,

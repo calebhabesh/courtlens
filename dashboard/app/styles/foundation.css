@@ -902,4 +902,12 @@
       justify-content: center;
     }
   }
+
+  /* Player Comparison (alignment row 3): the title sits centred over the duel card, Databallr's
+     size; header rules live in this layer, so the page's override does too. */
+  .ui-page-header.pvp-header { align-items: center; text-align: center; }
+  .pvp-header .ui-page-header-title-row { justify-content: center; }
+  .pvp-header .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); }
+  .pvp-header .ui-page-header-subtitle { color: var(--color-on-bg-secondary); }
+  .pvp-scope .ui-filter-bar { border-bottom: 0; }
 }

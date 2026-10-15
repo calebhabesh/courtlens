@@ -13,8 +13,8 @@ test("player comparison uses shared scope, signed values and contextual URL mode
   await expect(page).toHaveURL(/playerA=24&playerB=23/);
   const url=new URL(page.url());expect(url.searchParams.get("releaseId")).toBe("fixture-release");expect(url.searchParams.get("window")).toBe("last_10");expect(url.searchParams.get("beforeDate")).toBe("2026-04-13");
   expect(url.searchParams.get("players")).toBe("24,23,1");
-  await expect(page.locator('.ui-compare-side').first()).toContainText("Fixture Guard");
-  await expect(page.locator('.ui-compare-side .ui-identity-media')).toHaveCount(2);
+  await expect(page.locator('.pvp-slot').first()).toContainText("Fixture Guard");
+  await expect(page.locator('.pvp-slot .pvp-portrait')).toHaveCount(2);
 });
 
 test("team comparison preserves unknown versus zero, unknown outcomes and scope across tabs",async({page})=>{
