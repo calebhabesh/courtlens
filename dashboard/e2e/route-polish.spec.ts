@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
 
-test("release availability agrees across desktop and mobile and preserves context", async ({ page }) => {
+test("release availability agrees across desktop and mobile and never carries this page's scope", async ({ page }) => {
   await openWorkbench(page, "/stats?season=2025-26&phase=regular_season&beforeDate=2026-06-30");
   await page.getByRole("button", { name: "More options", exact: true }).click();
   await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
@@ -14,7 +14,8 @@ test("release availability agrees across desktop and mobile and preserves contex
   const section = page.locator(".replica-mobile-section").filter({ has: page.getByText("Availability", { exact: true }) });
   expect(await section.locator("a").evaluateAll(items => items.map(item => item.getAttribute("href")))).toEqual(links);
   await expect(page.locator(".replica-mobile-drawer").getByRole("link", { name: "Shooting", exact: true })).toBeVisible();
-  expect(links.every(href => href?.includes("beforeDate=2026-06-30"))).toBe(true);
+  // Every page keeps its own season (owner, 2026-10-15): navigation carries no scope parameters.
+  expect(links.every(href => !/[?&](season|phase|beforeDate)=/.test(href ?? ""))).toBe(true);
 });
 
 test("catalog scope options keep unavailable context explicit and synchronize navigation", async ({ page }) => {

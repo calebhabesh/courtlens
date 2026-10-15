@@ -105,6 +105,20 @@ Instructions (owner, 2026-10-13):
     restored; SVG, generator and npm script removed. The experiment remains in Git history.
     Live and production Stats/player checks at 1440/390 confirm no background image, no pattern
     requests and no page overflow. [Evidence](evidence/alignment/app-shell/plain-backdrop/README.md).
+12. [x] Every search that uses the integrated player search should get the Stats table search's
+    solid focus outline (player comparison, etc.). (Owner, 2026-10-15.) One foundation rule for
+    every lookup field; the palette's flat input row stays ringless.
+13. [x] Only show "aka" when the nickname is real (verified through Basketball-Reference) and can
+    be queried. (Owner screenshots, 2026-10-15.) Parser `bbref-player-v3` reads the pages' labelled
+    nickname answers (945 of 2,312 players); only those are captioned.
+14. [x] Suggestions should list known/current players first: "Vic" should find Victor Wembanyama
+    before obscure players. (Owner screenshot, 2026-10-15.) Match tiers, then current season, then
+    games played.
+15. [x] Remove the edge highlight from the site/player search; the shading is enough. (Owner
+    screenshot, 2026-10-15.)
+16. [x] List all of a player's nicknames in the results, and allow clearing recent searches (clear
+    all and per player). (Owner screenshot, 2026-10-15.)
+    [Evidence](evidence/alignment/app-shell/search-nicknames/README.md).
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.
@@ -792,6 +806,11 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
 67. [x] Add a similar stats table to Career Highs. (Owner, 2026-10-15.) Shared reference-grid
     styles; Phase lead column; Scoring / Counting / Other groups over equal columns.
     [Evidence](evidence/alignment/players/career-highs-table/README.md).
+68. [x] Like ESPN and the PvP card: a team-shaded background with the team logo behind the photo,
+    and the actual team logo, fairly large, next to the team the player plays for. (Owner
+    screenshots, 2026-10-15.) The PvP tile (168 px, 104 px on phones) replaces the round photo and
+    halo; a 36 px logo leads the identity line.
+    [Evidence](evidence/alignment/players/team-header/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run
@@ -953,6 +972,18 @@ Follow-up instructions (owner, 2026-10-15, eighth review):
 42. [x] Owner question: should the console's Season act as a global override that resets any
     per-player season? — yes: changing it clears `seasonA`/`seasonB` (ContextBar
     `clearOnSeasonChange`), so both players follow it; per-player menus remain for one-off picks.
+Follow-up instructions (owner, 2026-10-15, ninth review):
+43. [x] Title case for "No Games" wherever it appears. — badge, caption and per-player menu.
+44. [x] Owner question: show in the season menu, with each player's photo and a coloured Lucide
+    icon (a check), which players played each season, instead of "neither played" text? — yes:
+    the console season is a menu (`compare-season-picker.tsx`, through ContextBar `renderSeason`)
+    whose trigger and rows show both players' mini photos, checked in their identity colour when
+    they played and greyed when not, newest first; screen readers get the status in words.
+45. [x] The season chosen on one page must not carry to other pages (today Compare's season reaches
+    the Stats page); every page keeps its own season. — header links (desktop and mobile) and
+    global search results are plain hrefs, so each page opens at its own defaults; header
+    availability is judged at those defaults. In-page drill-down links (a player from a season's
+    roster) still keep their season. Shared app shell change, so it applies to every page.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

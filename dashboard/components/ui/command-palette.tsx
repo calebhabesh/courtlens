@@ -12,7 +12,6 @@ import { IconButton } from "./kit";
 import { PlayerPortrait } from "../player-portrait";
 import { TeamLogo, TeamLogoStack } from "../team-logo";
 import { queryLookup } from "@/lib/workbench-api";
-import { buildPreservedContextUrl } from "@/lib/query-url";
 import { defaultLookupCache, buildLookupCacheKey } from "@/lib/lookup-cache";
 import { rememberRecentSearch, useRecentSearches } from "@/lib/recent-searches";
 import type { LookupItem, LookupAvailability } from "@/lib/types";
@@ -458,8 +457,8 @@ export function GlobalCommandPalette({
     rememberRecentSearch(item);
     onClose();
     setQuery("");
-    const url = buildPreservedContextUrl(item.destination_url, searchParams);
-    router.push(url);
+    // Results open at the destination's own scope: one page's season never carries to another.
+    router.push(item.destination_url);
   };
 
   const handleRawSubmit = () => {
@@ -467,8 +466,7 @@ export function GlobalCommandPalette({
     if (trimmed) {
       onClose();
       setQuery("");
-      const url = buildPreservedContextUrl(`/stats?name=${encodeURIComponent(trimmed)}`, searchParams);
-      router.push(url);
+      router.push(`/stats?name=${encodeURIComponent(trimmed)}`);
     }
   };
 

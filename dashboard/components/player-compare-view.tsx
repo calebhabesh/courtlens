@@ -10,6 +10,7 @@ import { PercentileCell } from "./charts";
 import { CompareCardExport } from "./compare-card-export";
 import { ComparePlayerSlot, type CompareSelection } from "./compare-player-slot";
 import { CompareMetricsDrawer } from "./compare-metrics-drawer";
+import { CompareSeasonPicker } from "./compare-season-picker";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { BrandMark } from "./brand";
 import { accoladeGroups, type AccoladeGroups } from "@/lib/compare-accolades";
@@ -125,12 +126,6 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   const cutoffOf = (side: "a" | "b") => sides?.[side].before_date ?? context.before_date;
   const crossSeason = seasonOf("a") !== seasonOf("b");
   const accolades = accoladeGroups(bios, [a?.championships, b?.championships], [seasonOf("a"), seasonOf("b")], [cutoffOf("a"), cutoffOf("b")]);
-  // The page Season menu marks which seasons each compared player played (38).
-  const lastName = (name?: string) => name?.split(" ").slice(1).join(" ") || name || "";
-  const seasonNotes = played && a && b ? Object.fromEntries((workbenchCatalog?.seasons ?? []).map(entry => {
-    const inA = played.a.includes(entry), inB = played.b.includes(entry);
-    return [entry, inA && inB ? "" : inA ? `${lastName(a.name)} only` : inB ? `${lastName(b.name)} only` : "neither played"];
-  }).filter(([, note]) => note)) : undefined;
   /** Compare one player in another season; the page season clears that player's override. */
   function chooseSeason(side: "a" | "b", season: string) {
     const next = new URLSearchParams(params.toString());
@@ -181,7 +176,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     <PageHeader className="pvp-header" icon="swap" title="Player Comparison" subtitle="Compare stats between any two NBA players" />
     <div className="pvp-scope">
       <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
-        seasonNotes={seasonNotes}
+        renderSeason={played && a && b ? picker => <CompareSeasonPicker {...picker} played={played} players={[a, b]} /> : undefined}
         // The console's Season is a global override: it resets both players' own seasons (42).
         clearOnSeasonChange={PER_PLAYER_SEASONS}
         modes={<div className="pvp-actions">

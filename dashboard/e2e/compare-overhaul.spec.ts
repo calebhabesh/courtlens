@@ -47,16 +47,18 @@ test("each player can be compared in their own season; seasons without games say
     await page.getByRole("button",{name:"Swap players",exact:true}).click();await expect(page).toHaveURL(new RegExp(`seasonB=${other}`));
     await expect(page.getByRole("combobox",{name:"Player B season",exact:true})).toHaveValue(other);}
   await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2003-04&phase=regular_season");
-  await expect(page.locator(".pvp-slot[data-inactive]").first()).toContainText("No games in 2003-04");
+  await expect(page.locator(".pvp-slot[data-inactive]").first()).toContainText("No Games in 2003-04");
   await expect(page.locator(".pvp-name").first()).not.toHaveText(/^\d+$/);
 });
 
 test("the console Season is a global override that clears per-player seasons (row 3, 42)",async({page})=>{
   await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&seasonA=2024-25");
-  const season=page.getByRole("combobox",{name:"Filter by season",exact:true});
-  const other=await season.locator("option").evaluateAll(options=>options.map(option=>(option as HTMLOptionElement).value).find(value=>value!=="2025-26"));
+  // The console season is a menu showing who played each season (row 3, 44).
+  await page.getByRole("button",{name:/^Filter by season/}).click();
+  const items=page.getByRole("menuitem");
+  const other=(await items.allTextContents()).map(text=>text.slice(0,7)).find(value=>value!=="2025-26");
   test.skip(!other,"Fixture catalog has one season");
-  await season.selectOption(other!);await expect(page).toHaveURL(new RegExp(`season=${other}`));
+  await items.filter({hasText:other!}).first().click();await expect(page).toHaveURL(new RegExp(`season=${other}`));
   expect(new URL(page.url()).searchParams.get("seasonA")).toBeNull();
 });
 
