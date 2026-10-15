@@ -52,7 +52,7 @@
      the plain logo. Black marks stay black. The player page tile and the share image match. */
   .pvp-watermark {
     position: absolute; left: 4%; top: -2%; width: 92%; height: auto; opacity: 0.5;
-    filter: brightness(1.8) saturate(0.75) drop-shadow(0 0 1.5px rgb(255 255 255 / 80%));
+    filter: brightness(1.8) saturate(0.75) drop-shadow(0 0 1.5px color-mix(in srgb, var(--color-text) 80%, transparent));
     pointer-events: none; user-select: none;
   }
   .pvp-photo .pvp-portrait { position: relative; }
@@ -70,7 +70,10 @@
   /* The search slides in under the photo (26) with its label centred above the field (27). */
   .pvp-search { width: 100%; min-width: 0; text-align: left; animation: pvp-search-in var(--dur-base) var(--ease-out); }
   .pvp-search .entity-label { display: block; text-align: center; }
+  .pvp-search[data-closing] { animation: pvp-search-out var(--dur-fast) var(--ease-in) forwards; pointer-events: none; }
+  .pvp-who[data-returned] { animation: pvp-search-in var(--dur-base) var(--ease-out); }
   @keyframes pvp-search-in { from { opacity: 0; transform: translateY(calc(var(--space-2) * -1)); } to { opacity: 1; transform: none; } }
+  @keyframes pvp-search-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(calc(var(--space-2) * -1)); } }
 
   .pvp-presets { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 
@@ -96,13 +99,11 @@
 
   /* Trend lines slide out from under the card as its drawer (17): a tab while closed, a tray
      tucked under the card's lower edge while open. */
-  .pvp-tray { display: flex; flex-direction: column; align-items: center; width: calc(100% - var(--space-6)); margin-top: -1px; }
+  .pvp-tray { display: flex; flex-direction: column; align-items: center; width: calc(100% - var(--space-4)); margin-top: -1px; }
   .pvp-tray-tab {
     padding: 0 var(--space-2) var(--space-1); border-radius: 0 0 var(--radius-md) var(--radius-md);
     background: color-mix(in srgb, var(--color-surface-0) 58%, transparent); border: 1px solid var(--color-hairline-strong); border-top: 0;
   }
-  .pvp-tray[data-open] { width: calc(100% - var(--space-4)); }
-  .pvp-tray[data-open] .pvp-tray-tab { order: 2; }
   /* The drawer's height slides between 0 and its content (37): grid rows animate where height:auto
      cannot. @starting-style runs the slide on insertion; reduced motion collapses the duration. */
   .pvp-tray-drawer {
@@ -110,6 +111,8 @@
     transition: grid-template-rows var(--dur-slow) var(--ease-out), opacity var(--dur-slow) var(--ease-out); opacity: 0.4;
   }
   .pvp-tray-drawer[data-open] { grid-template-rows: 1fr; opacity: 1; }
+  /* Retraction eases in as well as out, so the drawer does not drop most of its height at once. */
+  .pvp-tray-drawer:not([data-open]) { transition-timing-function: var(--ease-in-out); }
   @starting-style { .pvp-tray-drawer[data-open] { grid-template-rows: 0fr; opacity: 0.4; } }
   .pvp-tray-clip { min-height: 0; overflow: hidden; }
   .pvp-tray-body {
