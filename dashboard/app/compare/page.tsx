@@ -13,7 +13,7 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { PlayerIdentity } from "@/components/ui/identity";
 import { formatDate } from "@/lib/format-date";
 import { resolveStatsQuery } from "@/lib/stats-query";
-import { getComparisonCareer, getMetricCatalog, getPlayerBio, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
+import { getComparisonCareer, getMetricCatalog, getPlayerBio, getPlayerSeasons, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
 import { comparePlayers } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerBio, PlayerComparisonResponse, WorkbenchCatalog } from "@/lib/types";
 import { ButtonLink } from "@/components/ui/kit";
@@ -36,6 +36,8 @@ export default async function ComparePage({ searchParams }: {
     release_id?: string;
     before_date?: string;
     span?: string;
+    seasonA?: string;
+    seasonB?: string;
   }>;
 }) {
   const rawSelected = await searchParams;
@@ -45,12 +47,15 @@ export default async function ComparePage({ searchParams }: {
   if (fallbackPair) redirect(fallbackPair);
   const loaded = await loadComparison(selected);
   if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open players</ButtonLink>}>Comparison unavailable.</GatedNote></PageShell>;
-  const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, bios } = loaded;
+  const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, bios, sides, played } = loaded;
   // Career view (alignment row 3, 21): both careers through the same cutoff, fetched on request.
-  const career = wbComparison && rawSelected.span === "career" ? await getComparisonCareer(wbComparison.player_a.id, wbComparison.player_b.id, {
-    season: String(wbComparison.context.season), beforeDate: String(wbComparison.context.before_date), phase: String(wbComparison.context.phase),
+  const careerIn = (side: CompareSide) => wbComparison ? getComparisonCareer(wbComparison.player_a.id, wbComparison.player_b.id, {
+    season: side.season, beforeDate: side.before_date, phase: String(wbComparison.context.phase),
     releaseId: wbComparison.context.release_id ? String(wbComparison.context.release_id) : undefined
-  }).catch(() => null) : null;
+  }).catch(() => null) : Promise.resolve(null);
+  const [careerA, careerB] = wbComparison && rawSelected.span === "career"
+    ? await Promise.all(sides.a.season === sides.b.season ? [careerIn(sides.a)] : [careerIn(sides.a), careerIn(sides.b)]) : [null];
+  const career = careerA ? { ...careerA, player_b: (careerB ?? careerA).player_b } : null;
   const context = {
     season: String(wbComparison?.context?.season ?? selected.season ?? workbenchCatalog?.default_season ?? ""),
     phase: String(wbComparison?.context?.phase ?? selected.phase ?? workbenchCatalog?.default_phase ?? "regular_season"),
@@ -60,7 +65,7 @@ export default async function ComparePage({ searchParams }: {
   };
   // The legacy snapshot comparison keeps its form; everything else is the duel card.
   if(!comparison) return <PageShell template="compare" className="fo11-player-comparison">
-    <PlayerCompareView comparison={wbComparison} bios={bios} career={career} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
+    <PlayerCompareView comparison={wbComparison} bios={bios} career={career} sides={sides} played={played} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
       selector={<CompareSelector catalog={catalog} date={date} legacy={selected.snapshotId === "snapshot-browser-fixture"}
         initialA={targetA ? {id:targetA,name:`Player ${targetA}`} : null} initialB={targetB ? {id:targetB,name:`Player ${targetB}`} : null} />} />
   </PageShell>;
@@ -72,6 +77,21 @@ export default async function ComparePage({ searchParams }: {
     {selector}
     <ComparisonView comparison={comparison} />
   </PageShell>;
+}
+
+type CompareSide = { season: string; before_date: string };
+
+/** A cross-season comparison from two reads: A's side from A's season, B's from B's (row 3, 38). */
+function mergeSides(inA: PlayerComparisonResponse, inB: PlayerComparisonResponse, context: PlayerComparisonResponse["context"]): PlayerComparisonResponse {
+  const byMetric = new Map(inB.aligned_metrics.map(row => [row.metric, row]));
+  return { ...inA, context, player_b: inB.player_b,
+    aligned_metrics: inA.aligned_metrics.map(row => {
+      const other = byMetric.get(row.metric);
+      const valueB = other?.value_b ?? null;
+      return { ...row, value_b: valueB, n_b: other?.n_b ?? 0,
+        diff: typeof row.value_a === "number" && typeof valueB === "number" ? row.value_a - valueB : null };
+    }),
+    warnings: [...inA.warnings, ...inB.warnings] };
 }
 
 /** The season's top two scorers (points per game, 500+ minutes), else its two minutes leaders. */
@@ -101,6 +121,8 @@ async function loadComparison(selected: {
   beforeDate?: string;
   window?: string;
   releaseId?: string;
+  seasonA?: string;
+  seasonB?: string;
 }) {
   try {
     const catalog = await getAnalyticsCatalog(selected.snapshotId);
@@ -117,6 +139,15 @@ async function loadComparison(selected: {
     const targetB = selected.playerB || parsedPlayers[1];
     const additionalPlayerIds = parsedPlayers.filter((id) => id !== targetA && id !== targetB);
 
+    // Each side's season and cutoff: the page scope unless the player's own season is chosen.
+    const sideScope = (season: string | undefined): { season: string; before_date: string; query: typeof scope } => {
+      const own = season && season !== scope?.season && /^\d{4}-\d{2}$/.test(season) && workbenchCatalog?.stats_scopes?.some(entry => entry.season === season)
+        ? resolveStatsQuery({ ...selected, beforeDate: undefined, season }, workbenchCatalog, "per_game") : scope;
+      return { season: own?.season ?? String(selected.season ?? ""), before_date: own?.before_date ?? selected.beforeDate ?? date, query: own };
+    };
+    const scopedA = sideScope(selected.seasonA), scopedB = sideScope(selected.seasonB);
+    const sides = { a: { season: scopedA.season, before_date: scopedA.before_date }, b: { season: scopedB.season, before_date: scopedB.before_date } };
+
     let comparison: AnalyticsCompare | null = null;
     let wbComparison: PlayerComparisonResponse | null = null;
     let error: string | null = null;
@@ -128,13 +159,17 @@ async function loadComparison(selected: {
         // First try workbench comparison if not explicitly locked to mock fixture
         if (selected.snapshotId !== "snapshot-browser-fixture") {
           try {
-            wbComparison = await comparePlayers(targetA, targetB, {
-              season: scope?.season ?? selected.season,
-              phase: scope?.phase ?? selected.phase,
-              beforeDate: selected.beforeDate || scope?.before_date || date,
-              window: selected.window,
-              releaseId: scope?.release_id ?? selected.releaseId
+            const compareIn = (side: CompareSide) => comparePlayers(targetA, targetB, {
+              season: side.season, phase: scope?.phase ?? selected.phase, beforeDate: side.before_date,
+              window: selected.window, releaseId: scope?.release_id ?? selected.releaseId
             });
+            if (sides.a.season === sides.b.season) wbComparison = await compareIn(sides.a);
+            else {
+              // Each player in their own season (alignment row 3, 38): one read per season, merged.
+              const [inA, inB] = await Promise.all([compareIn(sides.a), compareIn(sides.b)]);
+              // The page scope keeps the page's season and cutoff; each side carries its own.
+              wbComparison = mergeSides(inA, inB, { ...inA.context, season: scope?.season ?? inA.context.season, before_date: scope?.before_date ?? inA.context.before_date });
+            }
           } catch {
             // Fall through to legacy comparison
           }
@@ -155,14 +190,21 @@ async function loadComparison(selected: {
         }
       }
     }
-    const cohort = wbComparison && scope ? await executeWorkbenchQuery({...scope,page:{limit:2}}, {player_ids:[wbComparison.player_a.id,wbComparison.player_b.id],table_percentiles:true}).catch(() => null) : null;
-    const bioScope = { season: String(wbComparison?.context?.season ?? scope?.season ?? ""), beforeDate: String(wbComparison?.context?.before_date ?? scope?.before_date ?? date) };
-    const [metrics, bios] = await Promise.all([getMetricCatalog().catch(() => null), wbComparison
-      ? Promise.all([wbComparison.player_a.id, wbComparison.player_b.id].map(id => getPlayerBio(id, bioScope).catch(() => null))) as Promise<[PlayerBio | null, PlayerBio | null]>
-      : Promise.resolve([null, null] as [PlayerBio | null, PlayerBio | null])]);
+    const cohortIn = (query: typeof scope, ids: string[]) => query ? executeWorkbenchQuery({ ...query, page: { limit: 2 } }, { player_ids: ids, table_percentiles: true }).catch(() => null) : Promise.resolve(null);
+    const ids = wbComparison ? [wbComparison.player_a.id, wbComparison.player_b.id] : [];
+    const [cohortA, cohortB] = wbComparison ? sides.a.season === sides.b.season ? [await cohortIn(scopedA.query, ids)] : await Promise.all([cohortIn(scopedA.query, [ids[0]]), cohortIn(scopedB.query, [ids[1]])]) : [null];
+    // One cohort-shaped source: each player's row from their own season.
+    const cohort = cohortA && cohortB ? { ...cohortA, items: [...cohortA.items, ...cohortB.items] } : cohortA ?? null;
+    const [metrics, bios, playedSeasons] = await Promise.all([getMetricCatalog().catch(() => null), wbComparison
+      ? Promise.all(([[ids[0], sides.a], [ids[1], sides.b]] as const).map(([id, side]) => getPlayerBio(id, { season: side.season, beforeDate: side.before_date }).catch(() => null))) as Promise<[PlayerBio | null, PlayerBio | null]>
+      : Promise.resolve([null, null] as [PlayerBio | null, PlayerBio | null]),
+      wbComparison ? getPlayerSeasons(ids, String(wbComparison.context.phase ?? scope?.phase ?? "regular_season"), scope?.release_id ?? undefined).catch(() => null) : Promise.resolve(null)]);
+    const played = wbComparison && playedSeasons ? { a: playedSeasons.seasons[ids[0]] ?? [], b: playedSeasons.seasons[ids[1]] ?? [] } : null;
     return {
       metricDefinitions: metrics?.metrics ?? [],
       bios,
+      sides,
+      played,
       catalog,
       workbenchCatalog,
       cohort,

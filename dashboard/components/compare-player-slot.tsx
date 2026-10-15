@@ -8,6 +8,7 @@ import { PlayerPortrait } from "./player-portrait";
 import teamBranding from "@/lib/team-branding.json";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
+import { Select } from "./ui/kit";
 import { formatHeight } from "./player-bio-header";
 import { teamBrandColor } from "@/lib/team-colors";
 import type { ComparisonPlayer, PlayerBio } from "@/lib/types";
@@ -37,7 +38,7 @@ export function slotTeams(player: Pick<ComparisonPlayer, "teams" | "teams_chrono
  * latest team's colour, its team logos (every team of the scope, latest in front), a games badge
  * and a change-player icon, then the name and one bio line. Pressing the photo opens search.
  */
-export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: {
+export function ComparePlayerSlot({ side, player, bio, season, games, playedSeasons = null, onSeason, onPick }: {
   side: "a" | "b";
   player: CompareSlotPlayer;
   bio?: PlayerBio | null;
@@ -45,6 +46,10 @@ export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: 
   season?: string;
   /** Career games when the card compares careers; the season's games otherwise. */
   games?: number | null;
+  /** Seasons this player has games in (this phase); null while unknown. */
+  playedSeasons?: string[] | null;
+  /** Compare this player in another season (alignment row 3, 38). */
+  onSeason?: (season: string) => void;
   onPick: (selection: CompareSelection) => void;
 }) {
   const params = useSearchParams();
@@ -56,10 +61,13 @@ export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: 
   const teams = slotTeams(player);
   const latest = teams.at(-1);
   const tint = teamBrandColor(latest);
-  const line = bioLine(bio);
+  // No games in the compared season (39): say so plainly instead of an empty identity.
+  const inactive = season != null && (playedSeasons ? !playedSeasons.includes(season) : player.games_played === 0);
+  const line = inactive ? null : bioLine(bio);
+  const span = playedSeasons?.length ? `${playedSeasons[0]} – ${playedSeasons.at(-1)}` : null;
   const record = teamRecord(latest);
 
-  return <div className="pvp-slot pvp-fade" data-identity={side}
+  return <div className="pvp-slot pvp-fade" data-identity={side} data-inactive={inactive || undefined}
     style={tint ? ({ "--team-tint": tint } as CSSProperties) : undefined}>
     <div className="pvp-photo-frame">
       <button type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${label}, ${player.name}`} onClick={() => setSearching(open => !open)}>
@@ -68,7 +76,9 @@ export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: 
         {record && <img className="pvp-watermark" src={record.asset} alt="" aria-hidden="true" />}
         <PlayerPortrait playerId={player.id} name={player.name} portraitUrl={player.portrait_url} size="xl" className="pvp-portrait"
           era={season ? { season, team: latest } : null} />
-        {games != null
+        {inactive
+          ? <span className="pvp-badge">No games</span>
+          : games != null
           ? <span className="pvp-badge" title={`${games.toLocaleString("en-US")} career games through ${season}`}>{games.toLocaleString("en-US")} GP</span>
           : <span className="pvp-badge" title={`${player.games_played} games · ${Math.round(player.total_minutes).toLocaleString("en-US")} minutes`}>{player.games_played} GP</span>}
         <span className="pvp-change" aria-hidden="true"><Icon name="user-edit" size={16} /></span>
@@ -82,9 +92,16 @@ export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: 
       : <div className="pvp-who">
           <Link className="pvp-name" href={`/players/${player.id}`}>{player.name}</Link>
           {/* Full team names with small logos, oldest first: "Brooklyn Nets, Phoenix Suns" (32, 35). */}
-          {teams.length > 0 && <span className="pvp-team">{teams.map(team => <span key={team} className="pvp-team-entry">
+          {inactive && <span className="pvp-dnp">No games in {season}{span ? <><br />Played {span}</> : null}</span>}
+          {!inactive && teams.length > 0 && <span className="pvp-team">{teams.map(team => <span key={team} className="pvp-team-entry">
             <TeamLogo team={team} size={16} />{teamRecord(team)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
+          {onSeason && season && playedSeasons && <span className="pvp-season">
+            <Select size="sm" aria-label={`${label} season`} value={season} onChange={event => onSeason(event.target.value)}>
+              {!playedSeasons.includes(season) && <option value={season}>{season} · no games</option>}
+              {[...playedSeasons].reverse().map(entry => <option key={entry} value={entry}>{entry}</option>)}
+            </Select>
+          </span>}
         </div>}
   </div>;
 }

@@ -38,6 +38,19 @@ test("Career compares both players through the cutoff without league percentiles
   await expect(page.getByRole("table",{name:"Accolades"})).toBeVisible();
 });
 
+test("each player can be compared in their own season; seasons without games say so (row 3, 38-39)",async({page})=>{
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
+  const seasonA=page.getByRole("combobox",{name:"Player A season",exact:true});
+  await expect(seasonA).toHaveValue("2025-26");
+  const other=await seasonA.locator("option").evaluateAll(options=>options.map(option=>(option as HTMLOptionElement).value).find(value=>value!=="2025-26"));
+  if(other){await seasonA.selectOption(other);await expect(page).toHaveURL(new RegExp(`seasonA=${other}`));await expect(seasonA).toHaveValue(other);
+    await page.getByRole("button",{name:"Swap players",exact:true}).click();await expect(page).toHaveURL(new RegExp(`seasonB=${other}`));
+    await expect(page.getByRole("combobox",{name:"Player B season",exact:true})).toHaveValue(other);}
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2003-04&phase=regular_season");
+  await expect(page.locator(".pvp-slot[data-inactive]").first()).toContainText("No games in 2003-04");
+  await expect(page.locator(".pvp-name").first()).not.toHaveText(/^\d+$/);
+});
+
 test("team comparison preserves unknown versus zero, unknown outcomes and scope across tabs",async({page})=>{
   await openWorkbench(page,"/team-compare?teamA=100&teamB=200&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
   const points=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Points Per Game",exact:true})});

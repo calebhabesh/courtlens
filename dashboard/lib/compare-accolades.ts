@@ -27,6 +27,8 @@ export interface AccoladeGroups {
   season: AccoladeRow[];
   /** The compared season's honours were not yet announced at the cutoff. */
   seasonPending: boolean;
+  /** Compared seasons whose honours were still unannounced at their cutoff (both sides). */
+  pendingSeasons: string[];
 }
 
 const ALL_STAR_KNOWN = "-02-15";
@@ -82,8 +84,14 @@ function placeRow(key: string, label: string, title: string, seasonA: string[] |
   return { key, label, title, a: a ?? null, b: b ?? null, shown: [shown(a), shown(b)], leader };
 }
 
-export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], championships: [ComparisonChampionships | null | undefined, ComparisonChampionships | null | undefined], season: string, beforeDate: string): AccoladeGroups {
-  const [codesA, codesB] = bios.map(bio => seasonCodes(bio, beforeDate));
+/**
+ * ``season`` and ``beforeDate`` are one value for both players, or a pair when each player is
+ * compared in their own season (alignment row 3, 38).
+ */
+export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], championships: [ComparisonChampionships | null | undefined, ComparisonChampionships | null | undefined], seasons: string | [string, string], beforeDates: string | [string, string]): AccoladeGroups {
+  const [seasonOfA, seasonOfB] = typeof seasons === "string" ? [seasons, seasons] : seasons;
+  const [cutA, cutB] = typeof beforeDates === "string" ? [beforeDates, beforeDates] : beforeDates;
+  const codesA = seasonCodes(bios[0], cutA), codesB = seasonCodes(bios[1], cutB);
   const vote = (award: string) => (code: string) => { const match = code.match(new RegExp(`^${award}-(\\d+)$`)); return match ? Number(match[1]) : null; };
   const career = [
     countRow("titles", "Titles", "NBA championships, from admitted playoff box scores", titles(championships[0]), titles(championships[1])),
@@ -93,7 +101,8 @@ export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], champ
     countRow("all_def", "All-Def", "All-Defensive team selections", count(codesA, code => /^DEF[12]$/.test(code)), count(codesB, code => /^DEF[12]$/.test(code))),
     countRow("all_star", "All-Star", "All-Star selections", count(codesA, code => code === "AS"), count(codesB, code => code === "AS"))
   ];
-  const seasonA = codesA ? codesA.get(season) ?? [] : null, seasonB = codesB ? codesB.get(season) ?? [] : null;
+  const seasonA = codesA ? codesA.get(seasonOfA) ?? [] : null, seasonB = codesB ? codesB.get(seasonOfB) ?? [] : null;
+  const season = seasonOfA === seasonOfB ? seasonOfA : "Season";
   const seasonRows = [
     placeRow("season_mvp", "MVP Vote", `${season} MVP voting finish`, seasonA, seasonB, vote("MVP"), place => place === 1 ? "Won" : ordinal(place)),
     placeRow("season_dpoy", "DPOY Vote", `${season} DPOY voting finish`, seasonA, seasonB, vote("DPOY"), place => place === 1 ? "Won" : ordinal(place)),
@@ -101,8 +110,9 @@ export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], champ
     placeRow("season_all_def", "All-Def", `${season} All-Defensive team`, seasonA, seasonB, code => code.match(/^DEF([12])$/) ? Number(code[3]) : null, place => `${ordinal(place)} Team`),
     placeRow("season_all_star", "All-Star", `${season} All-Star selection`, seasonA, seasonB, code => code === "AS" ? 1 : null, () => "Selected")
   ].filter((row): row is AccoladeRow => row != null);
-  const seasonPending = !announcedBefore(season, "MVP-1", beforeDate);
+  const pendingSeasons = [...new Set([[seasonOfA, cutA], [seasonOfB, cutB]].filter(([entry, cut]) => !announcedBefore(entry, "MVP-1", cut)).map(([entry]) => entry))];
+  const seasonPending = pendingSeasons.length > 0;
   // Like Stathead, honours neither player holds are left out; an unknown side keeps its row.
   const held = career.filter(row => !(row.a === 0 && row.b === 0));
-  return { career: (codesA || codesB || championships.some(Boolean)) ? held : [], season: seasonRows, seasonPending };
+  return { career: (codesA || codesB || championships.some(Boolean)) ? held : [], season: seasonRows, seasonPending, pendingSeasons };
 }
