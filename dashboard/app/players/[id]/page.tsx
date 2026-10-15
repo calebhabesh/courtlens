@@ -21,7 +21,8 @@ import { formatDate } from "@/lib/format-date";
 import type { GoodDirection } from "@/lib/percentile-display";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import type { WorkbenchCatalog } from "@/lib/types";
-import { executeWorkbenchQuery, getPlayerBio, getPlayerCareer, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact } from "@/lib/workbench-api";
+import { executeWorkbenchQuery, getPlayerBio, getPlayerCareer, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact, getMetricCatalog } from "@/lib/workbench-api";
+import { metricHints } from "@/lib/stats-glossary";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Profile" };
@@ -106,11 +107,13 @@ export default async function PlayerPage({
   }
 
   if (wbLoaded) {
-    const [impact, hero, bio, career] = await Promise.all([
+    const [impact, hero, bio, career, metricCatalog] = await Promise.all([
       getImpact({ season, phase, beforeDate, playerId: id, window: windowParam }).catch(() => null),
       catalog ? heroStats(id, selected, catalog) : null,
       getPlayerBio(id, { season, beforeDate }).catch(() => null),
       careerRequest,
+      // Header hover text for the career table's trend dialog; failing only hides it.
+      getMetricCatalog().catch(() => null),
     ]);
 
     return (
@@ -122,6 +125,7 @@ export default async function PlayerPage({
         impact={impact}
         hero={hero}
         career={career}
+        metricHints={metricCatalog ? metricHints(metricCatalog.metrics) : {}}
         filterBar={<ContextBar
           key="filter-bar"
           initialSeason={season}

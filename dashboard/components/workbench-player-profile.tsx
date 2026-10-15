@@ -11,6 +11,7 @@ import { PlayerCombinePanel, PlayerTrackingPanel } from "./player-feed-panels";
 import { Tooltip } from "./ui/tooltip";
 import { ControlScope } from "./ui/control-scope";
 import catalogBranding from "@/lib/team-branding.json";
+import type { MetricHint } from "@/lib/stats-glossary";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { ImpactPlayerCard } from "./impact-player-card";
 
@@ -102,6 +103,8 @@ interface WorkbenchPlayerProfileProps {
   career?: PlayerCareerResponse | null;
   /** The shared filter bar, placed directly under the page header. */
   filterBar?: ReactNode;
+  /** Stats header hover text, for the career table's trend dialog. */
+  metricHints?: Record<string, MetricHint>;
 }
 
 export function WorkbenchPlayerProfile({
@@ -112,7 +115,8 @@ export function WorkbenchPlayerProfile({
   impact = null,
   hero = null,
   career = null,
-  filterBar
+  filterBar,
+  metricHints = {}
 }: WorkbenchPlayerProfileProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -280,7 +284,8 @@ export function WorkbenchPlayerProfile({
       {catalog && <PlayerCareerTable playerId={player.id} catalog={catalog} season={context.season} phase={context.phase}
         firstCoveredSeason={catalog.stats_scopes?.filter(scope => scope.phase === context.phase).map(scope => scope.season).sort()[0] ?? null}
         draftYear={bio?.draft?.year ?? null} initialCareer={career}
-        awards={bio?.reference ? { bySeason: bio.reference.awards, allStarSeasons: bio.reference.all_star_seasons, source: bio.reference.source } : null} />}
+        awards={bio?.reference ? { bySeason: bio.reference.awards, allStarSeasons: bio.reference.all_star_seasons, source: bio.reference.source } : null}
+        trendQuery={hero?.query ?? null} hints={metricHints} />}
       <div className="player-overview-duo">
         <ImpactPlayerCard data={impact} compact />
         <section className="player-open-section" aria-label="Recent form">

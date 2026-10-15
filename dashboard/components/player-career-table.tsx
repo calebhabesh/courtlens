@@ -20,7 +20,9 @@ import {
 } from "@/lib/stats-presets";
 import { getPlayerCareer, getPlayerProfile } from "@/lib/workbench-api";
 import { seasonAwardChips } from "@/lib/awards";
-import type { PlayerCareerResponse, PlayerProfileStint, PlayerResearchItem, WorkbenchCatalog } from "@/lib/types";
+import type { MetricHint } from "@/lib/stats-glossary";
+import { StatsTrendDialog, type TrendTarget } from "./stats-trend-dialog";
+import type { PlayerCareerResponse, PlayerProfileStint, PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
 
 const PHASES = [{ id: "regular_season", label: "Regular" }, { id: "playoffs", label: "Playoffs" }] as const;
 
@@ -33,7 +35,7 @@ const PHASES = [{ id: "regular_season", label: "Regular" }, { id: "playoffs", la
  * Every row arrives in one read of stored season cohorts (usually with the page) and carries
  * every column, so views and counting modes switch without another request.
  */
-export function PlayerCareerTable({ playerId, catalog, season, phase, firstCoveredSeason, draftYear, initialCareer = null, awards = null }: {
+export function PlayerCareerTable({ playerId, catalog, season, phase, firstCoveredSeason, draftYear, initialCareer = null, awards = null, trendQuery = null, hints = {} }: {
   playerId: string;
   catalog: WorkbenchCatalog;
   season: string;
@@ -45,12 +47,16 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   initialCareer?: PlayerCareerResponse | null;
   /** Basketball-Reference season awards and All-Star seasons (regular-season table only). */
   awards?: { bySeason: Record<string, string[]>; allStarSeasons: string[]; source: string } | null;
+  /** The page's Stats query: season cells open the Stats trend dialog with it, as on Stats. */
+  trendQuery?: QuerySpec | null;
+  hints?: Record<string, MetricHint>;
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [presetId, setPresetId] = useState<PresetId>("overview");
   const [countingMode, setCountingMode] = useState<CountingMode>("per_game");
+  const [trendTarget, setTrendTarget] = useState<TrendTarget | null>(null);
   const [expanded, setExpanded] = useState<Record<string, PlayerProfileStint[] | "loading" | "failed">>({});
 
   const preset = useMemo(() => {
@@ -109,11 +115,15 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
     const column = preset.columns[index];
     const value = item ? item.metrics[column.key] ?? (column.key === "gp" ? item.games_played : column.key === "min" ? item.total_minutes : null) : null;
     const group = groups.findIndex(g => index >= g.start && index < g.start + g.colSpan) % 2;
+    const formatted = item && value != null ? formatColumnValue(column, item) : null;
+    const shown = <PercentileCell variant="text" showPercentile={!career} value={formatted}
+      percentile={career ? null : item?.table_percentiles?.[column.key] ?? null}
+      qualified={item?.table_qualified === true && item?.impact_support?.[column.key]?.qualified !== false}
+      label={column.label} cohort={`${item?.table_cohort_sample_sizes?.[column.key] ?? "Unknown"} valid league players that season`} />;
     return <td key={column.key} data-column={column.key} className={`stats-metric-cell stats-group-${group} ${column.num ? "num" : ""} ${divider(index)}`}>
-      <PercentileCell variant="text" showPercentile={!career} value={item && value != null ? formatColumnValue(column, item) : null}
-        percentile={career ? null : item?.table_percentiles?.[column.key] ?? null}
-        qualified={item?.table_qualified === true && item?.impact_support?.[column.key]?.qualified !== false}
-        label={column.label} cohort={`${item?.table_cohort_sample_sizes?.[column.key] ?? "Unknown"} valid league players that season`} />
+      {/* Season cells open the Stats trend dialog for that stat, as on Stats; the Career row does not. */}
+      {!career && item && trendQuery ? <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player: item, columnKey: column.key })}
+        aria-label={`${column.label} ${formatted ?? "unknown"} for ${item.player_name}. Open ${column.label} trend`}>{shown}</button> : shown}
     </td>;
   };
 
@@ -206,6 +216,8 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
             </tfoot>}
           </table>
         </div>
+        {trendQuery && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={trendQuery} catalog={catalog}
+          hints={hints} onClose={() => setTrendTarget(null)} />}
         <p className="player-career-footnote">
           {seasons?.length ? `${seasons.length} ${seasons.length === 1 ? "season" : "seasons"}. ` : ""}
           Percentiles rank each season against that season&apos;s Stats cohort.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/kit";
 import { PlayerAvatar } from "./ui/identity";
@@ -61,7 +61,8 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     if (fromStats) setReturnHref(readStatsReturn()?.href ?? null);
   }, [fromStats]);
 
-  useEffect(() => {
+  // A layout effect attaches Esc before the browser paints the button, so it never shows dead.
+  useLayoutEffect(() => {
     if (!returnHref) return;
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
