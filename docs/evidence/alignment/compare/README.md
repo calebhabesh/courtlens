@@ -113,3 +113,15 @@ when they played (Durant's missed 2019-20 is greyed). [No Games](review9-no-game
 title case. Navigation keeps no scope: on Compare at 2017-18 the header Stats link is `/stats`.
 Checks: Vitest 540/540; full browser suite 470 passed, 28 skipped; failures are the known roster and
 control-kit specs plus a shared-floor lookup flake that passes 6/6 alone.
+
+## Season honors and selector follow-up, instructions 49 through 56
+
+Every recorded season honor is visible as a badge. Each player's group centers on the numeric
+column and wraps when needed. All-Star is gold. Season pickers show distinct medal, trophy,
+and star icons with a legend. Search results fit full names. The counting menu keeps a fixed
+160px slot across season and career modes.
+
+Lint, typecheck, 544 Vitest tests, 53 browser checks, and the production build pass. One browser
+test skips because its mock catalog has one season. Live desktop and phone captures, measured
+coordinates, source limits, and the scoped glance check are in the
+[follow-up evidence](season-honors/README.md). Instruction 48 remains pending.

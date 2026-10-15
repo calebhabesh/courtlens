@@ -1,7 +1,7 @@
 @layer pages {
   /* Player Comparison (alignment row 3): the slim 560px duel card (22), packed to stay on one
      screen: one-line rows, one control row, accolades under the stats. */
-  .pvp { --pvp-width: 580px; --pvp-photo: 164px; display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 0; }
+  .pvp { --pvp-width: 580px; --pvp-photo: 164px; --pvp-pill-width: 68px; --pvp-label-width: 104px; display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 0; }
   /* A little air around the scope console (40), kept tight so the card clears the page bottom (41). */
   .pvp-scope { display: flex; justify-content: center; width: 100%; min-width: 0; padding-block: var(--space-1) var(--space-2); }
   .pvp-column { display: flex; flex-direction: column; gap: var(--space-3); width: min(100%, var(--pvp-width)); min-width: 0; }
@@ -19,7 +19,10 @@
   .pvp-stack > .pvp-card { width: 100%; position: relative; z-index: var(--z-sticky); }
   .pvp-players { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: var(--space-4); }
   .pvp-swap { margin-top: calc(var(--pvp-photo) / 2 - var(--control-sm) / 2); }
-  .pvp-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-2); }
+  .pvp-controls { --pvp-counting-width: 160px; display: grid; grid-template-columns: minmax(0, 1fr) var(--pvp-counting-width); align-items: center; gap: var(--space-2); }
+  .pvp-counting-menu { display: grid; width: var(--pvp-counting-width); justify-self: center; }
+  .pvp-counting-group { margin: 0; padding: var(--space-2) var(--space-3); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .pvp-counting-current { color: var(--color-accent); font-weight: 600; }
   .pvp-players-empty { display: grid; grid-template-columns: repeat(2, minmax(0, var(--pvp-photo))); justify-content: center; gap: var(--space-8); }
 
   /* One side: square headshot on the team's colour, then the name and one bio line. */
@@ -77,8 +80,8 @@
   /* Stats, then accolades: mirrored one-line rows, pill · value · label · value · pill. */
   .pvp-body { display: flex; flex-direction: column; gap: var(--space-2); }
   .pvp-rows { width: 100%; table-layout: fixed; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-  .pvp-col-pill { width: 68px; }
-  .pvp-col-label { width: 104px; }
+  .pvp-col-pill { width: var(--pvp-pill-width); }
+  .pvp-col-label { width: var(--pvp-label-width); }
   .pvp-rows :is(td, th) { padding: 0; text-align: center; vertical-align: middle; }
   .pvp-plain[data-leading] { font-weight: 700; }
   .pvp-pending td { padding-block: var(--space-0-5); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
@@ -91,6 +94,13 @@
     background: var(--color-identity-a); color: var(--color-on-accent); font-size: var(--text-xs); line-height: var(--text-sm-lh); font-weight: 600;
   }
   .pvp-pill[data-identity="b"] { background: var(--color-identity-b); }
+  .pvp-honors { display: grid; gap: var(--space-2); min-width: 0; }
+  .pvp-honors h3 { margin: 0; text-align: center; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .pvp-honors-pair { display: grid; grid-template-columns: var(--pvp-pill-width) minmax(0, 1fr) var(--pvp-label-width) minmax(0, 1fr) var(--pvp-pill-width); align-items: start; }
+  .pvp-honors-side { position: relative; grid-column: 2; min-width: 0; width: calc(100% + var(--space-12)); margin-inline: calc(var(--space-6) * -1); }
+  .pvp-honors-side + .pvp-honors-side { grid-column: 4; }
+  .pvp-honors-strip { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-1); min-height: var(--space-5); white-space: nowrap; }
+  .pvp-honors-empty, .pvp-honors-note { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; }
   /* The card closes on the wordmark alone (10). */
   .pvp-foot { display: flex; align-items: center; justify-content: center; gap: var(--space-2); color: var(--color-accent); }
 
@@ -146,6 +156,12 @@
   .pvp-mark-check .ui-icon { width: 10px; height: 10px; stroke-width: 3; }
   .pvp-season-menu .ui-menu-panel { max-height: 360px; overflow-y: auto; }
   .pvp-season-current { color: var(--color-accent); font-weight: 600; }
+  .pvp-player-season-menu .ui-menu-panel { min-width: 224px; }
+  .pvp-season-honor-icons { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-accent); }
+  .pvp-season-honor-icons > span { display: inline-flex; }
+  .pvp-season-legend { display: flex; justify-content: center; gap: var(--space-3); margin: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .pvp-season-legend > span { display: inline-flex; align-items: center; gap: var(--space-1); white-space: nowrap; }
+  .pvp-season-legend .ui-icon { flex-shrink: 0; color: var(--color-accent); }
 
   /* Edit Metrics drawer: search, then glossary-style rows of abbreviation and term (14). */
   /* SearchField draws its own clear button; the browser's search cancel would be a second one. */
@@ -162,10 +178,10 @@
   .pvp-drawer-group legend { margin-bottom: var(--space-2); padding: 0; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 
   @media (width < 600px) {
-    .pvp { --pvp-photo: 132px; }
+    .pvp { --pvp-photo: 132px; --pvp-pill-width: 48px; --pvp-label-width: 84px; }
     .pvp-card { padding: var(--space-4) var(--space-3) var(--space-3); }
-    .pvp-col-pill { width: 48px; }
-    .pvp-col-label { width: 84px; }
+    .pvp-controls { grid-template-columns: minmax(0, 1fr); }
+    .pvp-counting-menu .ui-menu-panel { top: auto; bottom: calc(100% + var(--space-1)); }
     .pvp-pill { min-width: 40px; padding-inline: var(--space-1); }
     .pvp-value { height: 32px; font-size: var(--text-md); line-height: var(--text-md-lh); }
     /* The five presets need about 350px: they borrow the card's side padding instead of scrolling. */

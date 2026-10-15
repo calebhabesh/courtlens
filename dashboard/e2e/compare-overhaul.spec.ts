@@ -30,7 +30,7 @@ test("compare card: console actions, change cues, wordmark footer and trend tray
 
 test("Career compares both players through the cutoff without league percentiles (row 3, 21)",async({page})=>{
   await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
-  await page.getByRole("combobox",{name:"Counting mode",exact:true}).selectOption("career:per_game");await expect(page).toHaveURL(/span=career/);
+  await page.getByRole("button",{name:/^Counting mode,/}).click();await page.getByRole("menuitem",{name:"Career · Per Game",exact:true}).click();await expect(page).toHaveURL(/span=career/);
   const table=page.getByRole("table",{name:"Descriptive comparison"});
   await expect(table.locator("caption")).toHaveText("Career through 2025-26");
   await expect(table.getByRole("rowheader",{name:"Seasons",exact:true})).toBeVisible();
@@ -38,14 +38,37 @@ test("Career compares both players through the cutoff without league percentiles
   await expect(page.getByRole("table",{name:"Accolades"})).toBeVisible();
 });
 
+for(const width of [1440,390]) test(`counting menu keeps its slot across season and career modes at ${width}px`,async({page})=>{
+  await page.emulateMedia({reducedMotion:"reduce"});
+  await page.setViewportSize({width,height:900});
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13");
+  const trigger=page.getByRole("button",{name:/^Counting mode,/});
+  const before=await trigger.boundingBox();
+  await trigger.click();await expect(page.getByRole("menuitem",{name:/^Per 75/})).toBeDisabled();
+  expect(await page.getByRole("menuitem",{name:"Career · Per Game",exact:true}).evaluate(element=>getComputedStyle(element).borderWidth)).toBe("0px");
+  // Click the visible item directly so Playwright's automatic scrolling does not move the page.
+  const item=await page.getByRole("menuitem",{name:"Career · Per Game",exact:true}).boundingBox();
+  expect(item).not.toBeNull();if(item) await page.mouse.click(item.x+item.width/2,item.y+item.height/2);
+  await expect(trigger).toHaveText("Career · Per Game");
+  const after=await trigger.boundingBox();
+  expect(after?.x).toBeCloseTo(before?.x??0,0);expect(after?.y).toBeCloseTo(before?.y??0,0);expect(after?.width).toBe(before?.width);
+  const presets=await page.locator(".pvp-presets").boundingBox();
+  if(width===1440) expect(after?.y).toBeCloseTo(presets?.y??0,0);
+  expect(await page.locator(".pvp-presets").evaluate(element=>element.scrollWidth<=element.clientWidth)).toBe(true);
+  await trigger.click();await page.getByRole("menuitem",{name:"Per Game",exact:true}).click();await expect(trigger).toHaveText("Per Game");
+});
+
 test("each player can be compared in their own season; seasons without games say so (row 3, 38-39)",async({page})=>{
   await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
-  const seasonA=page.getByRole("combobox",{name:"Player A season",exact:true});
-  await expect(seasonA).toHaveValue("2025-26");
-  const other=await seasonA.locator("option").evaluateAll(options=>options.map(option=>(option as HTMLOptionElement).value).find(value=>value!=="2025-26"));
-  if(other){await seasonA.selectOption(other);await expect(page).toHaveURL(new RegExp(`seasonA=${other}`));await expect(seasonA).toHaveValue(other);
+  const seasonA=page.getByRole("button",{name:/^Player A season, 2025-26/});
+  await expect(seasonA).toBeVisible();
+  await seasonA.click();
+  const items=page.getByRole("menuitem");
+  const other=(await items.allTextContents()).map(text=>text.slice(0,7)).find(value=>value!=="2025-26");
+  if(other){await items.filter({hasText:other}).first().click();await expect(page).toHaveURL(new RegExp(`seasonA=${other}`));
+    await expect(page.getByRole("button",{name:new RegExp(`^Player A season, ${other}`)})).toBeVisible();
     await page.getByRole("button",{name:"Swap players",exact:true}).click();await expect(page).toHaveURL(new RegExp(`seasonB=${other}`));
-    await expect(page.getByRole("combobox",{name:"Player B season",exact:true})).toHaveValue(other);}
+    await expect(page.getByRole("button",{name:new RegExp(`^Player B season, ${other}`)})).toBeVisible();}
   await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2003-04&phase=regular_season");
   await expect(page.locator(".pvp-slot[data-inactive]").first()).toContainText("No Games in 2003-04");
   await expect(page.locator(".pvp-name").first()).not.toHaveText(/^\d+$/);
@@ -60,6 +83,54 @@ test("the console Season is a global override that clears per-player seasons (ro
   test.skip(!other,"Fixture catalog has one season");
   await items.filter({hasText:other!}).first().click();await expect(page).toHaveURL(new RegExp(`season=${other}`));
   expect(new URL(page.url()).searchParams.get("seasonA")).toBeNull();
+});
+
+for(const width of [1440,390]) test(`season honors show every badge in aligned rows at ${width}px (row 3, 49)`,async({page})=>{
+  await page.emulateMedia({reducedMotion:"reduce"});
+  await page.setViewportSize({width,height:900});
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-07-01");
+  const honors=page.getByRole("region",{name:"Season honors",exact:true});
+  await expect(honors).toContainText("DPOY Winner");
+  const centers=await page.evaluate(()=>{
+    const center=(element:Element)=>{const box=element.getBoundingClientRect();return box.x+box.width/2;};
+    return {values:Array.from(document.querySelectorAll('.pvp-rows[aria-label="Descriptive comparison"] tbody tr:not(.pvp-group) .pvp-value')).slice(0,2).map(center),honors:Array.from(document.querySelectorAll(".pvp-honors-side")).map(center)};
+  });
+  centers.values.forEach((value,index)=>expect(centers.honors[index]).toBeCloseTo(value,0));
+  for(const label of ["DPOY Winner","All-NBA 1st","All-Def 1st","All-Star","MVP 2nd"]) await expect(honors.getByText(label,{exact:true})).toBeVisible();
+  await expect(honors.getByText("All-Star",{exact:true})).toHaveCSS("color","rgb(255, 209, 102)");
+  await expect(honors.getByRole("button")).toHaveCount(0);
+  const badgeRows=await honors.locator('.pvp-honors-side[data-identity="b"] .ui-badge').evaluateAll(elements=>{
+    const rows=new Map<number,{left:number;right:number;count:number}>();
+    for(const element of elements){const box=element.getBoundingClientRect(),row=rows.get(box.y);rows.set(box.y,{left:Math.min(row?.left??box.left,box.left),right:Math.max(row?.right??box.right,box.right),count:(row?.count??0)+1});}
+    return [...rows.values()];
+  });
+  expect(badgeRows.reduce((count,row)=>count+row.count,0)).toBe(5);
+  badgeRows.forEach(row=>expect((row.left+row.right)/2).toBeCloseTo(centers.values[1],0));
+  if(width===1440) expect(badgeRows.some(row=>row.count===2)).toBe(true);
+  await page.getByRole("button",{name:/^Player B season/}).click();
+  await expect(page.getByRole("menuitem",{name:/2025-26 All-Star/})).toBeVisible();
+  const legend=page.locator(".pvp-season-legend");
+  expect(await legend.getByText("All-Star",{exact:true}).evaluate(element=>element.getBoundingClientRect().height)).toBeLessThan(20);
+  const star=page.getByRole("menuitem",{name:/2025-26 All-Star/}).locator(".pvp-season-honor-icons svg");
+  expect(await star.evaluate(element=>getComputedStyle(element).color)).toBe("rgb(255, 209, 102)");
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});
+
+for(const width of [1440,390]) test(`player search shows full names in wider viewport-bounded results at ${width}px`,async({page})=>{
+  await page.setViewportSize({width,height:900});
+  await page.route("**/api/workbench/lookup?*",route=>route.fulfill({json:{
+    query:{raw:"gianna",normalized:"gianna",tokens:["gianna"],version:"fixture-pf04"},catalog_version:"fixture-pf04",total_matches:1,
+    items:[{id:"34",canonical_id:"34",kind:"player",display_name:"Giannis Antetokounmpo",portrait_fallback:"GA",destination_url:"/players/34"}]
+  }}));
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13");
+  await page.getByRole("button",{name:/^Change Player A,/}).click();
+  await page.getByRole("combobox",{name:"Player A",exact:true}).fill("gianna");
+  const result=page.getByRole("option",{name:"Giannis Antetokounmpo"});await expect(result).toBeVisible();
+  const name=result.locator(".lookup-item-name");
+  expect(await name.evaluate(element=>element.scrollWidth<=element.clientWidth)).toBe(true);
+  const box=await page.locator(".lookup-floating-dropdown").boundingBox();
+  expect(box?.width).toBeCloseTo(Math.min(440,width-16),0);expect(box?.x).toBeGreaterThanOrEqual(0);
+  expect((box?.x??0)+(box?.width??0)).toBeLessThanOrEqual(width);
 });
 
 test("team comparison preserves unknown versus zero, unknown outcomes and scope across tabs",async({page})=>{

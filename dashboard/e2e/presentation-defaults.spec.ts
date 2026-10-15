@@ -10,7 +10,8 @@ for (const width of [1440,390]) test(`Compare opens on a resolved pair with perc
   await expect(page).toHaveURL(/playerA=\w+&playerB=\w+/);
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
   await expect(page.locator(".pvp-slot")).toHaveCount(2);await expect(page.locator(".pvp-badge")).toHaveCount(2);
-  await expect(page.getByRole("combobox",{name:"Counting mode",exact:true}).locator('option[value="per_75"]')).toBeDisabled();
+  await page.getByRole("button",{name:/^Counting mode,/}).click();
+  await expect(page.getByRole("menuitem",{name:/^Per 75/})).toBeDisabled();await page.keyboard.press("Escape");
   // Owner trial (row 3, 22): league percentiles are hidden to keep the slim card on one screen.
   await expect(page.locator(".pvp-rows .stat-pct-sublabel")).toHaveCount(0);
   if (width === 390) {
@@ -35,12 +36,12 @@ test("Custom picks and exact counting units survive reload and Back/Forward; SVG
   await page.reload();await expect(page.getByRole("radio",{name:"Custom",exact:true})).toHaveAttribute("aria-checked","true");
   await page.getByRole("button",{name:"Edit Metrics",exact:true}).click();await expect(page.getByRole("dialog").getByRole("checkbox",{name:"Fouls Total",exact:true})).toBeChecked();
   await page.keyboard.press("Escape");
-  const mode=page.getByRole("combobox",{name:"Counting mode",exact:true});
-  await mode.selectOption("raw");
+  const mode=page.getByRole("button",{name:/^Counting mode,/});
+  await mode.click();await page.getByRole("menuitem",{name:"Totals",exact:true}).click();
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("1,960");
-  await page.goBack();await expect(mode).toHaveValue("per_game");
+  await page.goBack();await expect(mode).toHaveText("Per Game");
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("28.0");await page.goForward();
-  await expect(mode).toHaveValue("raw");
+  await expect(mode).toHaveText("Totals");
   await page.getByRole("button",{name:"More",exact:true}).click();const download=page.waitForEvent("download");await page.getByRole("menuitem",{name:"Export SVG",exact:true}).click();
   const exported = await download;
   expect(exported.suggestedFilename()).toMatch(/\.svg$/);
