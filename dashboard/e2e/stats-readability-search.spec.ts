@@ -14,7 +14,7 @@ test("standard records are readable and portrait gutters center between metric g
         (cell.previousElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().right +
          cell.nextElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().left) / 2) };
   });
-  expect(geometry.height).toBeCloseTo(46, 1);
+  expect(geometry.height).toBeCloseTo(52, 1);
   expect(geometry.font).toBe("14px");
   geometry.offsets.forEach(offset => expect(Math.abs(offset)).toBeLessThan(1));
   expect(geometry.offsets).toHaveLength(5);
@@ -22,7 +22,7 @@ test("standard records are readable and portrait gutters center between metric g
     main: row.querySelector(".stats-primary-portrait")!.getBoundingClientRect().width,
     guides: [...row.querySelectorAll(".stats-guide-marker > *")].map(image => image.getBoundingClientRect().width)
   }));
-  expect(portraits).toEqual({ main: 32, guides: [30, 30, 30, 30, 30] });
+  expect(portraits).toEqual({ main: 40, guides: [36, 36, 36, 36, 36] });
 });
 
 test("header branding and secondary navigation align", async ({ page }) => {
