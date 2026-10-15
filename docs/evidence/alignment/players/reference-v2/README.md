@@ -39,3 +39,23 @@ export TMPDIR="$HOME/.cache/courtlens-tmp"
 
 Do not start `acquire-bbref-bios` while the owner's crawl is running. No task-owned server uses
 3100 or 8000.
+
+## Warehouse block
+
+Five local dbt models build successfully: latest retained profile staging plus awards, honours,
+salary reports and transactions. All 19 dbt tests pass. The PostgreSQL fixture test executes the
+actual model SQL and checks newest-parse selection, MVP vote place, exact salary arithmetic,
+latest matching cap threshold, missing historical thresholds, ABA exclusion, explicit trade
+teams and event/observation time separation.
+
+At this build, the marts contain 1,200 awards, 540 honours, 4,305 salary reports and 5,161
+transactions. Counts are a measured snapshot while the crawl continues, not complete coverage.
+[Measured values](marts.json) include Leonard's retained September 14, 2026 trade from LAC to TOR.
+Awards are retrospective season references. Their exact announcement dates are unknown;
+`known_at` is the original acquisition time. They never enter historical basketball features.
+
+```sh
+cd warehouse
+../.venv/bin/dbt run --profiles-dir . --target-path "$TMPDIR/dbt/target" --select tag:player_reference
+../.venv/bin/dbt test --profiles-dir . --target-path "$TMPDIR/dbt/target" --select tag:player_reference
+```
