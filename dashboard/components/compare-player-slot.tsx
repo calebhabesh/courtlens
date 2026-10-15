@@ -8,7 +8,7 @@ import { PlayerPortrait } from "./player-portrait";
 import teamBranding from "@/lib/team-branding.json";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
-import { Select } from "./ui/kit";
+import { ComparePlayerSeasonPicker } from "./compare-player-season-picker";
 import { formatHeight } from "./player-bio-header";
 import { teamBrandColor } from "@/lib/team-colors";
 import type { ComparisonPlayer, PlayerBio } from "@/lib/types";
@@ -38,12 +38,13 @@ export function slotTeams(player: Pick<ComparisonPlayer, "teams" | "teams_chrono
  * latest team's colour, its team logos (every team of the scope, latest in front), a games badge
  * and a change-player icon, then the name and one bio line. Pressing the photo opens search.
  */
-export function ComparePlayerSlot({ side, player, bio, season, games, playedSeasons = null, onSeason, onPick }: {
+export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games, playedSeasons = null, onSeason, onPick }: {
   side: "a" | "b";
   player: CompareSlotPlayer;
   bio?: PlayerBio | null;
   /** The compared season: the photo is the player's headshot from it when one exists. */
   season?: string;
+  beforeDate: string;
   /** Career games when the card compares careers; the season's games otherwise. */
   games?: number | null;
   /** Seasons this player has games in (this phase); null while unknown. */
@@ -89,7 +90,7 @@ export function ComparePlayerSlot({ side, player, bio, season, games, playedSeas
     {search !== "closed"
       ? <div className="pvp-search" ref={searchRef} data-closing={search === "closing" || undefined}
           onAnimationEnd={event => { if (event.animationName === "pvp-search-out") { setSearch("closed"); setReturned(true); } }}>
-          <EntityField label={label} value="" releaseId={params.get("releaseId") || params.get("release_id")} season={params.get("season")} phase={params.get("phase")} beforeDate={params.get("beforeDate") || params.get("before_date")}
+          <EntityField label={label} value="" portalDropdown dropdownMinWidth={440} releaseId={params.get("releaseId") || params.get("release_id")} season={params.get("season")} phase={params.get("phase")} beforeDate={params.get("beforeDate") || params.get("before_date")}
             onChange={(id, items) => { if (id && items[0]) { setSearch("closing"); onPick({ id, name: items[0].display_name }); } }} />
         </div>
       : <div className="pvp-who" data-returned={returned || undefined}>
@@ -100,10 +101,7 @@ export function ComparePlayerSlot({ side, player, bio, season, games, playedSeas
             <TeamLogo team={team} size={16} />{teamRecord(team)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
           {onSeason && season && playedSeasons && <span className="pvp-season">
-            <Select size="sm" aria-label={`${label} season`} value={season} onChange={event => onSeason(event.target.value)}>
-              {!playedSeasons.includes(season) && <option value={season}>{season} · No Games</option>}
-              {[...playedSeasons].reverse().map(entry => <option key={entry} value={entry}>{entry}</option>)}
-            </Select>
+            <ComparePlayerSeasonPicker label={label} season={season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} beforeDate={beforeDate} align={side === "a" ? "left" : "right"} onSelect={onSeason} />
           </span>}
         </div>}
   </div>;

@@ -1,0 +1,17 @@
+
+> courtlens-dashboard@0.1.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v4.1.11 /home/ethioking/dev/courtlens/dashboard
+
+···············································································································································································stderr | components/ui/primitives.test.tsx > Input and SearchField Primitives > renders SearchField with shortcut and clear trigger
+You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`.
+
+·················································································································································································································································································································································································
+
+ Test Files  84 passed (84)
+      Tests  544 passed (544)
+   Start at  07:27:29
+   Duration  3.42s (transform 5.78s, setup 0ms, import 14.89s, tests 6.31s, environment 4.96s)
+

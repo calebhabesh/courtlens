@@ -502,3 +502,13 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
   Tables scroll within the panels, and page widths match the viewports.
 - Lint/typecheck, 526 Vitest tests, production build and 15 player browser checks pass.
 - [Evidence](evidence/alignment/players/overview-glass/README.md). Owner alignment remains pending.
+
+## 2026-10-15: Comparison honors and selector follow-up
+
+The alignment handoff controls this page. Instructions 49 through 56 replace season award rows
+with badge groups that show every honor, centered on each player's values. Badges wrap when space runs
+out. Season menus use distinct gold honor icons. Search results fit full names. The counting
+selector uses the shared menu and stays in its slot. The 1440 and 390 scoped glance checks pass.
+Lint, typecheck, 544 Vitest tests, 53 browser checks, and the production build pass, with one
+browser skip due to the fixture catalog. [Evidence](evidence/alignment/compare/season-honors/README.md).
+Owner alignment remains pending.

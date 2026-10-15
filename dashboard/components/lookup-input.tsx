@@ -65,12 +65,14 @@ export interface LookupInputProps extends LookupScope {
   disabled?: boolean;
   compactResults?: boolean;
   portalDropdown?: boolean;
+  /** Minimum floating result width, bounded by the viewport. */
+  dropdownMinWidth?: number;
   clearLabel?: string;
   onClear?: () => void;
 }
 
 /** Form-safe lookup. Enter only commits an explicitly highlighted candidate. */
-export function LookupInput({ label, value, onChange, onSelect, onSubmitText, kinds, candidates, excludedIds = [], limit = 10, debounceMs = 120, placeholder = "Search by name", inputRef, autoFocus, required, disabled, compactResults = false, portalDropdown = false, clearLabel, onClear, ...scope }: LookupInputProps) {
+export function LookupInput({ label, value, onChange, onSelect, onSubmitText, kinds, candidates, excludedIds = [], limit = 10, debounceMs = 120, placeholder = "Search by name", inputRef, autoFocus, required, disabled, compactResults = false, portalDropdown = false, dropdownMinWidth = 320, clearLabel, onClear, ...scope }: LookupInputProps) {
   const resolved = useLookupScope(scope);
   const key = buildLookupCacheKey({ query: value, ...resolved, kinds, limit }) + JSON.stringify(candidates ?? null);
   const id = useId();
@@ -132,7 +134,7 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
         // Anchor to the whole field (icon included), so results drop straight from the search box.
         const box = (ref.current?.closest(".lookup-input-wrapper") ?? ref.current)?.getBoundingClientRect();
         if (!box) return;
-        const width = Math.min(Math.max(box.width, 320), window.innerWidth - 16);
+        const width = Math.min(Math.max(box.width, dropdownMinWidth), window.innerWidth - 16);
         const below = window.innerHeight - box.bottom - 12;
         const above = box.top - 12;
         const useAbove = below < 180 && above > below;
@@ -146,7 +148,7 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
     window.addEventListener("resize", update);
     window.addEventListener("scroll", update, true);
     return () => { cancelAnimationFrame(frame); window.removeEventListener("resize", update); window.removeEventListener("scroll", update, true); };
-  }, [portalDropdown, open, ref, key, loading, items.length, error]);
+  }, [portalDropdown, dropdownMinWidth, open, ref, key, loading, items.length, error]);
   const blur: React.FocusEventHandler<HTMLDivElement> = event => {
     if (!rootRef.current?.contains(event.relatedTarget) && !dropdownRef.current?.contains(event.relatedTarget)) close();
   };

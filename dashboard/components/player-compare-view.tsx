@@ -11,6 +11,7 @@ import { CompareCardExport } from "./compare-card-export";
 import { ComparePlayerSlot, type CompareSelection } from "./compare-player-slot";
 import { CompareMetricsDrawer } from "./compare-metrics-drawer";
 import { CompareSeasonPicker } from "./compare-season-picker";
+import { CompareSeasonHonors } from "./compare-season-honors";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { BrandMark } from "./brand";
 import { accoladeGroups, type AccoladeGroups } from "@/lib/compare-accolades";
@@ -25,7 +26,7 @@ import { useWorkspace } from "@/lib/workspace-context";
 import { saveInvestigation } from "@/lib/workbench-api";
 import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
 import type { AnalyticsCatalog, ComparisonCareerResponse, MetricComparisonItem, MetricDefinition, PlayerBio, PlayerComparisonResponse, PlayerResearchItem, WorkbenchCatalog, WorkbenchQueryResponse } from "@/lib/types";
-import { Button, IconButton, Segmented, Select } from "./ui/kit";
+import { Button, IconButton, MenuTrigger, Segmented } from "./ui/kit";
 export type { ComparePresetId } from "@/lib/comparison-metrics";
 
 const smooth = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
@@ -115,7 +116,6 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   }
   const seasonOf = (side: "a" | "b") => sides?.[side].season ?? context.season;
   const cutoffOf = (side: "a" | "b") => sides?.[side].before_date ?? context.before_date;
-  const crossSeason = seasonOf("a") !== seasonOf("b");
   const accolades = accoladeGroups(bios, [a?.championships, b?.championships], [seasonOf("a"), seasonOf("b")], [cutoffOf("a"), cutoffOf("b")]);
   /** Compare one player in another season; the page season clears that player's override. */
   function chooseSeason(side: "a" | "b", season: string) {
@@ -192,29 +192,20 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
       <section className="pvp-card" aria-label="Comparison card">
         {a && b ? <>
           <div className="pvp-players">
-            <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" player={a} bio={bios[0]} season={seasonOf("a")} playedSeasons={played?.a ?? null}
+            <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" player={a} bio={bios[0]} season={seasonOf("a")} beforeDate={cutoffOf("a")} playedSeasons={played?.a ?? null}
               onSeason={season => chooseSeason("a", season)} onPick={selection => pick("a", selection)}
               games={careerView ? careerOf("a")?.item?.games_played : undefined} />
             <IconButton className="pvp-swap" size="sm" variant="secondary" icon="swap" label="Swap players" onClick={swap} />
-            <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" player={b} bio={bios[1]} season={seasonOf("b")} playedSeasons={played?.b ?? null}
+            <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" player={b} bio={bios[1]} season={seasonOf("b")} beforeDate={cutoffOf("b")} playedSeasons={played?.b ?? null}
               onSeason={season => chooseSeason("b", season)} onPick={selection => pick("b", selection)}
               games={careerView ? careerOf("b")?.item?.games_played : undefined} />
           </div>
           <div className="pvp-controls">
-            <div className="pvp-presets"><Segmented size="sm" label="Comparison Metric Presets" value={active} onChange={value => change({ preset: value })}
+            <div className="pvp-presets"><Segmented size="sm" dense label="Comparison Metric Presets" value={active} onChange={value => change({ preset: value })}
               options={Object.entries(COMPARE_PRESETS).map(([value, entry]) => ({ value: value as ComparePresetId, label: entry.label }))} /></div>
             {/* Season or career and the counting mode share one menu (21, 22): season values stay bare. */}
-            <Select size="sm" aria-label="Counting mode" value={careerView ? `career:${careerMode}` : mode}
-              onChange={event => { const [first, second] = event.target.value.split(":"); change(second ? { span: "career", countingMode: second } : { span: "season", countingMode: first }, true); }}>
-              <optgroup label={context.season}>
-                {MODES.map(entry => <option key={entry.value} value={entry.value} disabled={entry.rate && !rates.includes(entry.value)}>
-                  {entry.rate && !rates.includes(entry.value) ? `${entry.label} (needs possession data)` : entry.label}</option>)}
-              </optgroup>
-              <optgroup label={`Career through ${context.season}`}>
-                <option value="career:per_game">Career · Per Game</option>
-                <option value="career:raw">Career · Totals</option>
-              </optgroup>
-            </Select>
+            <CountingMenu value={careerView ? `career:${careerMode}` : mode} season={context.season} rates={rates}
+              onChange={value => { const [first, second] = value.split(":"); change(second ? { span: "career", countingMode: second } : { span: "season", countingMode: first }, true); }} />
           </div>
         </> : <>
           {/* Only when no pair resolves: silhouettes over the two-field picker. */}
@@ -244,9 +235,10 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
             <table key={`${a.id}-${b.id}-accolades`} className="pvp-rows pvp-fade" aria-label="Accolades">
               <caption className="sr-only">{`Accolades through ${formatDate(context.before_date)}`}</caption>
               <Columns names={[a.name, b.name]} />
-              <tbody><AccoladeRows groups={accolades} season={crossSeason ? "Season" : context.season} names={[a.name, b.name]} /></tbody>
+              <tbody><AccoladeRows groups={accolades} names={[a.name, b.name]} /></tbody>
             </table>
           </div>
+          <CompareSeasonHonors honors={accolades.season} names={[a.name, b.name]} />
           {!rows.length && <GatedNote action={<Button size="md" onClick={() => change({ preset: "custom", customMetrics: CUSTOM_DEFAULT.join(",") })}>Reset metrics</Button>}>No custom metrics selected.</GatedNote>}
           <footer className="pvp-foot"><BrandMark size={22} framed={false} /><CourtLensWordmark height={18} /></footer>
         </>}
@@ -271,11 +263,32 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     </div>
 
     {a && b && <div className="pvp-export" aria-hidden="true">
-      <CompareCardExport ref={svgRef} season={context.season} seasons={[seasonOf("a"), seasonOf("b")]} players={[a, b]} rows={rows} accolades={[...accolades.career, ...accolades.season]} direction={direction} labels={new Map(metricDefinitions.map(entry => [entry.key, entry]))} title={`${exportTitle} · ${spanLabel} · ${COMPARE_PRESETS[active].label}`} />
+      <CompareCardExport ref={svgRef} season={context.season} seasons={[seasonOf("a"), seasonOf("b")]} players={[a, b]} rows={rows} accolades={accolades.career} honors={accolades.season} direction={direction} labels={new Map(metricDefinitions.map(entry => [entry.key, entry]))} title={`${exportTitle} · ${spanLabel} · ${COMPARE_PRESETS[active].label}`} />
     </div>}
     <CompareMetricsDrawer open={editing} onClose={() => setEditing(false)} selected={custom} catalog={metricDefinitions} views={views}
       onChange={next => change({ preset: "custom", customMetrics: next.join(",") })} />
   </div>;
+}
+
+type CountingChoice = CompareCountingMode | "career:per_game" | "career:raw";
+
+/** A stable trigger slot and the shared menu keep native option outlines out of the card. */
+function CountingMenu({ value, season, rates, onChange }: { value: CountingChoice; season: string; rates: string[]; onChange: (value: CountingChoice) => void }) {
+  const careerModes: { value: CountingChoice; label: string }[] = [{ value: "career:per_game", label: "Career · Per Game" }, { value: "career:raw", label: "Career · Totals" }];
+  const label = [...MODES, ...careerModes].find(entry => entry.value === value)?.label ?? "Per Game";
+  return <Menu className="pvp-counting-menu" align="right" renderTrigger={props => <MenuTrigger {...props} size="sm" aria-label={`Counting mode, ${label}`}>{label}</MenuTrigger>}>
+    <div role="group" aria-label={season}>
+      <p className="pvp-counting-group" aria-hidden="true">{season}</p>
+      {MODES.map(entry => <MenuItem key={entry.value} label={entry.rate && !rates.includes(entry.value) ? `${entry.label} (needs possession data)` : entry.label}
+        disabled={entry.rate && !rates.includes(entry.value)} icon={value === entry.value ? "check" : undefined}
+        className={value === entry.value ? "pvp-counting-current" : undefined} onClick={() => onChange(entry.value)} />)}
+    </div>
+    <div role="group" aria-label={`Career through ${season}`}>
+      <p className="pvp-counting-group" aria-hidden="true">Career through {season}</p>
+      {careerModes.map(entry => <MenuItem key={entry.value} label={entry.label} icon={value === entry.value ? "check" : undefined}
+        className={value === entry.value ? "pvp-counting-current" : undefined} onClick={() => onChange(entry.value)} />)}
+    </div>
+  </Menu>;
 }
 
 /** Fixed mirrored columns (pill · value · label · value · pill) with the player names for readers. */
@@ -331,12 +344,12 @@ function PlainRow({ label, title, a, b, names }: { label: string; title: string;
   </tr>;
 }
 
-/** Accolades through the cutoff, then the compared season's honours once announced (row 3, 9). */
-function AccoladeRows({ groups, season, names }: { groups: AccoladeGroups; season: string; names: [string, string] }) {
-  if (!groups.career.length && !groups.season.length) return <tr className="pvp-pending"><td colSpan={5}>No accolades on record for either player.</td></tr>;
-  const row = (entry: AccoladeGroups["career"][number], pills: boolean) => {
+/** Career accolade counts through the cutoff; season honors use their own badge strips. */
+function AccoladeRows({ groups, names }: { groups: AccoladeGroups; names: [string, string] }) {
+  if (!groups.career.length) return <tr className="pvp-pending"><td colSpan={5}>No accolades on record for either player.</td></tr>;
+  const row = (entry: AccoladeGroups["career"][number]) => {
     const gap = entry.a != null && entry.b != null ? Math.abs(entry.a - entry.b) : null;
-    const pill = (side: "a" | "b") => pills && entry.leader === side && gap
+    const pill = (side: "a" | "b") => entry.leader === side && gap
       ? <span className="pvp-pill" data-identity={side} title={`${names[side === "a" ? 0 : 1]}: ${gap} more`}>+{gap}</span> : null;
     const value = (side: "a" | "b") => <td className="pvp-value pvp-plain" data-leading={entry.leader === side || undefined}>{entry.shown[side === "a" ? 0 : 1]}</td>;
     return <tr key={entry.key}>
@@ -347,10 +360,7 @@ function AccoladeRows({ groups, season, names }: { groups: AccoladeGroups; seaso
   };
   return <>
     {groups.career.length > 0 && <tr className="pvp-group"><th colSpan={5} scope="colgroup">Accolades</th></tr>}
-    {groups.career.map(entry => row(entry, true))}
-    {(groups.season.length > 0 || groups.seasonPending) && <tr className="pvp-group"><th colSpan={5} scope="colgroup">{season} Honors</th></tr>}
-    {groups.season.map(entry => row(entry, false))}
-    {groups.seasonPending && <tr className="pvp-pending"><td colSpan={5}>{groups.pendingSeasons.join(" and ")} awards are announced after this cutoff.</td></tr>}
+    {groups.career.map(row)}
   </>;
 }
 

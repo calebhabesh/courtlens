@@ -1,4 +1,5 @@
 import type { ComparisonChampionships, PlayerBio } from "./types";
+import { seasonAwardChips } from "./awards";
 
 /**
  * The comparison card's accolades (alignment row 3, 9), dated to the compared cutoff.
@@ -16,19 +17,24 @@ export interface AccoladeRow {
   title: string;
   a: number | null;
   b: number | null;
-  /** Text shown for each side; counts print as numbers, season honours as words. */
+  /** Career counts as numbers, or an em dash for unknown. */
   shown: [string, string];
   /** Which side leads, by the row's own order; null for ties, unknowns and absent honours. */
   leader: "a" | "b" | null;
 }
 
+export type SeasonHonorBadge = ReturnType<typeof seasonAwardChips>[number];
+
+export interface SeasonHonors {
+  season: string;
+  /** null means the reference source is unknown, not that the player earned no honors. */
+  badges: SeasonHonorBadge[] | null;
+  pending: boolean;
+}
+
 export interface AccoladeGroups {
   career: AccoladeRow[];
-  season: AccoladeRow[];
-  /** The compared season's honours were not yet announced at the cutoff. */
-  seasonPending: boolean;
-  /** Compared seasons whose honours were still unannounced at their cutoff (both sides). */
-  pendingSeasons: string[];
+  season: [SeasonHonors, SeasonHonors];
 }
 
 const ALL_STAR_KNOWN = "-02-15";
@@ -66,22 +72,17 @@ function titles(championships: ComparisonChampionships | null | undefined): numb
   return championships.complete ? championships.seasons.length : null;
 }
 
-const ORDINAL = ["", "1st", "2nd", "3rd"];
-function ordinal(place: number) { return ORDINAL[place] ?? `${place}th`; }
-
-/** One season-honour row: the best place each player reached for codes matching ``prefix``. */
-function placeRow(key: string, label: string, title: string, seasonA: string[] | null, seasonB: string[] | null, place: (code: string) => number | null, word: (place: number) => string): AccoladeRow | null {
-  const best = (codes: string[] | null) => {
-    if (codes == null) return undefined;
-    const places = codes.map(place).filter((value): value is number => value != null);
-    return places.length ? Math.min(...places) : null;
-  };
-  const a = best(seasonA), b = best(seasonB);
-  if (a == null && b == null) return null;
-  const shown = (value: number | null | undefined) => value === undefined ? "—" : value === null ? "—" : word(value);
-  // Placed beats unplaced; between places the lower one leads.
-  const leader = a === undefined || b === undefined ? null : a === null ? (b === null ? null : "b") : b === null ? "a" : leaderOf(a, b, "low");
-  return { key, label, title, a: a ?? null, b: b ?? null, shown: [shown(a), shown(b)], leader };
+/** Reuse the player page's labels, with every supplied season code and admitted titles. */
+function seasonHonors(season: string, codes: Map<string, string[]> | null, championships: ComparisonChampionships | null | undefined, beforeDate: string): SeasonHonors {
+  const known = codes?.get(season) ?? [];
+  const badges = seasonAwardChips(known);
+  if (known.includes("AS")) badges.push({ code: "AS", label: "All-Star", description: "All-Star selection", win: false });
+  if (championships?.seasons.includes(season)) badges.unshift({ code: "TITLE", label: "NBA Champ", description: "NBA championship, from admitted playoff box scores", win: true });
+  // Award wins first, then team selections, All-Star and voting finishes. The source order
+  // breaks ties; gold denotes an earned award, never a winning side of the comparison.
+  const priority = (badge: SeasonHonorBadge) => badge.win ? 0 : /^(NBA|DEF|ALLR)/.test(badge.code) ? 1 : badge.code === "AS" ? 2 : 3;
+  badges.sort((a, b) => priority(a) - priority(b));
+  return { season, badges: codes || badges.length ? badges : null, pending: !announcedBefore(season, "MVP-1", beforeDate) };
 }
 
 /**
@@ -92,7 +93,6 @@ export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], champ
   const [seasonOfA, seasonOfB] = typeof seasons === "string" ? [seasons, seasons] : seasons;
   const [cutA, cutB] = typeof beforeDates === "string" ? [beforeDates, beforeDates] : beforeDates;
   const codesA = seasonCodes(bios[0], cutA), codesB = seasonCodes(bios[1], cutB);
-  const vote = (award: string) => (code: string) => { const match = code.match(new RegExp(`^${award}-(\\d+)$`)); return match ? Number(match[1]) : null; };
   const career = [
     countRow("titles", "Titles", "NBA championships, from admitted playoff box scores", titles(championships[0]), titles(championships[1])),
     countRow("mvp", "MVP", "Most Valuable Player awards", count(codesA, code => code === "MVP-1"), count(codesB, code => code === "MVP-1")),
@@ -101,18 +101,7 @@ export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], champ
     countRow("all_def", "All-Def", "All-Defensive team selections", count(codesA, code => /^DEF[12]$/.test(code)), count(codesB, code => /^DEF[12]$/.test(code))),
     countRow("all_star", "All-Star", "All-Star selections", count(codesA, code => code === "AS"), count(codesB, code => code === "AS"))
   ];
-  const seasonA = codesA ? codesA.get(seasonOfA) ?? [] : null, seasonB = codesB ? codesB.get(seasonOfB) ?? [] : null;
-  const season = seasonOfA === seasonOfB ? seasonOfA : "Season";
-  const seasonRows = [
-    placeRow("season_mvp", "MVP Vote", `${season} MVP voting finish`, seasonA, seasonB, vote("MVP"), place => place === 1 ? "Won" : ordinal(place)),
-    placeRow("season_dpoy", "DPOY Vote", `${season} DPOY voting finish`, seasonA, seasonB, vote("DPOY"), place => place === 1 ? "Won" : ordinal(place)),
-    placeRow("season_all_nba", "All-NBA", `${season} All-NBA team`, seasonA, seasonB, code => code.match(/^NBA([123])$/) ? Number(code[3]) : null, place => `${ordinal(place)} Team`),
-    placeRow("season_all_def", "All-Def", `${season} All-Defensive team`, seasonA, seasonB, code => code.match(/^DEF([12])$/) ? Number(code[3]) : null, place => `${ordinal(place)} Team`),
-    placeRow("season_all_star", "All-Star", `${season} All-Star selection`, seasonA, seasonB, code => code === "AS" ? 1 : null, () => "Selected")
-  ].filter((row): row is AccoladeRow => row != null);
-  const pendingSeasons = [...new Set([[seasonOfA, cutA], [seasonOfB, cutB]].filter(([entry, cut]) => !announcedBefore(entry, "MVP-1", cut)).map(([entry]) => entry))];
-  const seasonPending = pendingSeasons.length > 0;
   // Like Stathead, honours neither player holds are left out; an unknown side keeps its row.
   const held = career.filter(row => !(row.a === 0 && row.b === 0));
-  return { career: (codesA || codesB || championships.some(Boolean)) ? held : [], season: seasonRows, seasonPending, pendingSeasons };
+  return { career: (codesA || codesB || championships.some(Boolean)) ? held : [], season: [seasonHonors(seasonOfA, codesA, championships[0], cutA), seasonHonors(seasonOfB, codesB, championships[1], cutB)] };
 }

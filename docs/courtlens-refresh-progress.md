@@ -842,3 +842,12 @@ Section and subsection headings use title case. Live desktop/phone appearance pa
 glance, expanded content fit and sampled text contrast of at least 5.88:1 pass. Lint/typecheck,
 526 Vitest tests, production build and 15 player browser checks pass.
 [Evidence](evidence/alignment/players/overview-glass/README.md). Owner alignment remains pending.
+
+## 2026-10-15: Comparison honors and stable selectors
+
+Alignment instructions 49 through 56 show every recorded season honor in centered, wrapping
+badge groups. All-Star is gold. Per-player season menus show medal, trophy, and star markers
+with a legend. Search fits full names. The counting menu keeps a fixed slot across mode changes.
+Lint, typecheck, 544 Vitest tests, 53 browser checks, and the production build pass. One browser
+test skips on the one-season fixture. Real 1440 and 390 captures and the scoped glance check
+pass. [Evidence](evidence/alignment/compare/season-honors/README.md). Owner alignment remains pending.

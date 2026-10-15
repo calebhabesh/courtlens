@@ -6,7 +6,7 @@ import { cardLabel, formatCardValue, isPercentUnit, isWholeCount } from "@/lib/c
 import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
-import type { AccoladeRow } from "@/lib/compare-accolades";
+import type { AccoladeRow, SeasonHonors } from "@/lib/compare-accolades";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { MetricComparisonItem, MetricDefinition } from "@/lib/types";
 import { slotTeams, teamRecord, type CompareSlotPlayer } from "./compare-player-slot";
@@ -25,13 +25,14 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
   players: [CompareSlotPlayer, CompareSlotPlayer];
   rows: MetricComparisonItem[];
   accolades?: AccoladeRow[];
+  honors?: [SeasonHonors, SeasonHonors];
   direction: (metric: string) => GoodDirection;
   labels: Map<string, MetricDefinition>;
   title: string;
   season?: string;
   /** Each player's own season when they differ; the photo and caption follow it. */
   seasons?: [string, string];
-}>(function CompareCardExport({ players, rows, accolades = [], direction, labels, title, season, seasons }, ref) {
+}>(function CompareCardExport({ players, rows, accolades = [], honors, direction, labels, title, season, seasons }, ref) {
   const lines: ExportRow[] = [
     ...rows.map(row => {
       const a = typeof row.value_a === "number" ? row.value_a : null, b = typeof row.value_b === "number" ? row.value_b : null;
@@ -43,9 +44,26 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
         pill: leader && gap != null ? `+${gap.toLocaleString("en-US", { minimumFractionDigits: precision, maximumFractionDigits: precision })}` : null };
     }),
     ...accolades.map(row => ({ key: row.key, label: row.label, shown: row.shown, leader: row.leader,
-      pill: row.leader && row.a != null && row.b != null && !row.key.startsWith("season_") ? `+${Math.abs(row.a - row.b)}` : null }))
+      pill: row.leader && row.a != null && row.b != null ? `+${Math.abs(row.a - row.b)}` : null }))
   ];
-  const height = ROWS_TOP + lines.length * ROW + 56;
+  // Match the card: every honor stays visible in rows centered on its player's numeric column.
+  const honorColumns = honors?.map(entry => {
+    const badges = entry.badges?.length ? entry.badges : [{ code: "EMPTY", label: entry.badges == null ? "—" : entry.pending ? "Pending" : "None recorded", win: false }];
+    const rowWidths = new Map<number, number>();
+    let x = 0, y = 0;
+    const placed = badges.map(badge => {
+      const width = Math.min(192, badge.label.length * 7.5 + 16);
+      if (x && x + width > 192) { x = 0; y += 28; }
+      const item = { ...badge, x, y, width };
+      rowWidths.set(y, x + width); x += width + 4;
+      return item;
+    });
+    return placed.map(badge => ({ ...badge, x: badge.x + (192 - (rowWidths.get(badge.y) ?? 192)) / 2 }));
+  }) ?? [];
+  const honorsTop = ROWS_TOP + lines.length * ROW;
+  const honorsHeight = honors ? 34 + Math.max(0, ...honorColumns.flatMap(column => column.map(badge => badge.y))) + 28 : 0;
+  const pending = honors?.some(entry => entry.pending) ?? false;
+  const height = honorsTop + honorsHeight + (pending ? 20 : 0) + 56;
   const column = (side: 0 | 1) => side === 0 ? WIDTH * 0.25 : WIDTH * 0.75;
   const markWidth = MARK * WORDMARK_WIDTH / WORDMARK_HEIGHT;
   return <svg ref={ref} xmlns="http://www.w3.org/2000/svg" className="pvp-export-svg" role="img" aria-label={title} viewBox={`0 0 ${WIDTH} ${height}`} width={WIDTH} height={height}
@@ -82,6 +100,16 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
         <text x={WIDTH * 0.7} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "b" ? 700 : 500} fill="var(--color-text)">{line.shown[1]}</text>
       </g>;
     })}
+    {honors && <>
+      <text x={WIDTH / 2} y={honorsTop + 10} textAnchor="middle" fontSize="10" fontWeight="600" fill="var(--color-text-secondary)">{[...new Set(honors.map(entry => entry.season))].join(" / ")} Honors</text>
+      {honorColumns.map((column, side) => <g key={side} transform={`translate(${WIDTH * (side === 0 ? 0.3 : 0.7) - 96} ${honorsTop + 22})`}>
+        {column.map(badge => <g key={badge.code}>
+          <rect x={badge.x} y={badge.y} width={badge.width} height="22" rx="4" fill={badge.win || badge.code === "AS" ? "var(--color-accent-soft)" : "var(--color-surface-2)"} />
+          <text x={badge.x + badge.width / 2} y={badge.y + 15} textAnchor="middle" fontSize="12" fill={badge.win || badge.code === "AS" ? "var(--color-accent)" : "var(--color-text-secondary)"}>{badge.label}</text>
+        </g>)}
+      </g>)}
+      {pending && <text x={WIDTH / 2} y={honorsTop + honorsHeight + 8} textAnchor="middle" fontSize="11" fill="var(--color-text-secondary)">End-of-season awards pending at this cutoff.</text>}
+    </>}
     {/* The ball-lens logo beside the wordmark, as on the card (23). */}
     <g transform={`translate(${(WIDTH - markWidth - LOGO - 8) / 2} ${height - 22 - LOGO})`}><BrandMark size={LOGO} framed={false} /></g>
     <path d={WORDMARK_PATH} fill="var(--color-accent)" transform={`translate(${(WIDTH - markWidth - LOGO - 8) / 2 + LOGO + 8} ${height - 20 - MARK}) scale(${MARK / WORDMARK_HEIGHT})`} />

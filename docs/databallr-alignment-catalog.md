@@ -1007,6 +1007,33 @@ Follow-up instructions (owner, 2026-10-15, tenth review):
 48. [ ] Search results drop verbose captions ("Observed in selected scope", "No observed appearances
     in selected scope · No appearances in selected season"); picking a player gives their most
     recent valid version. Remove them wherever search results use them unless necessary.
+Follow-up instructions (owner, 2026-10-15, season honors):
+49. [x] On the player comparison page, use player-page-style badges for the compared year's
+    honors, covering all recorded season accolades rather than only All-Star, without making
+    the comparison container longer. — all recorded season codes and admitted titles use the
+    player-page badge labels. Final wrapping follows 54 and 56, with each side's season and cutoff.
+50. [x] Add small MVP / All-Star icons to the per-player season picker so MVP seasons can be
+    spotted at a glance, like the global season selector's visual aids. Use distinct major-accolade
+    icons: medal for MVP, trophy for a championship year, star for All-Star. Make them clear.
+    — descriptive accessible labels and a compact legend; only honors known before the cutoff.
+51. [x] Make the All-Star icon yellow too, and the per-player season dropdown wide enough for
+    "All-Star" to stay on one line.
+52. [x] Under season honors, make the All-Star badges yellow too. Widen player search results to
+    fit full player names. Split the honors badges between players on the same axes as their
+    numeric values; stack badges when needed. — centered groups; final wrapping follows 56.
+53. [x] Fix season-honors spacing so any combination of badges looks aligned and structured.
+    — centered rows with a uniform 4px gap; every badge stays visible.
+54. [x] What does +3 mean? List individual accolade badges instead. — supersedes the preview
+    and overflow count. Show every honor in compact rows centered on each player's values.
+55. [x] The counting-mode dropdown's entry outlines show through, and selecting an option can
+    move it to the next line. Keep its position fixed on the toolset line. — shared menu, stable
+    160px slot, dense kit presets; the phone layout always keeps its separate counting row.
+56. [x] Do not stack each individual honor. Stack only when the current line runs out of room,
+    with about one or two badges per line. — centered wrapping within each player's column.
+    Measured at 1440 and 390; every badge remains visible, and counting-menu coordinates stay
+    unchanged across modes. 544 Vitest and 53 browser checks pass; the one-season fixture skips
+    the console override test. [Evidence](evidence/alignment/compare/season-honors/README.md).
+    Instructions 49 through 56 are ready for owner review. Instruction 48 remains pending.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
