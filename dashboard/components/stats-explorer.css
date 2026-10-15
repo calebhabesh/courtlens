@@ -154,6 +154,8 @@
    Rows are 52px (44 compact) so the 18px pill has room on the subtitle line (Stats 73). */
 .stats-workspace .stats-team-move { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1); height: 18px; padding: 0 var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-press); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 55%, transparent); color: var(--color-text); line-height: 1; vertical-align: middle; }
 .stats-workspace .stats-team-move > span:not(.team-logo) { display: block; line-height: 1; }
+/* Multi-team rows: the pill sits on its own line under the teams; only those rows grow taller. */
+.stats-workspace .dense-stats-table .player-cell-move-line { display: block; margin-top: var(--space-0-5); line-height: var(--text-sm-lh); }
 /* The subtitle clips overflow (for its ellipsis); a line as tall as the pill keeps its outline whole. */
 .stats-workspace .dense-stats-table .player-cell-teams.has-move { line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .stats-team-move .team-logo { width: 14px; height: 14px; min-width: 14px; }
@@ -234,8 +236,11 @@
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:focus-visible .pinned-col,
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover td.stats-metric-cell,
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:focus-visible td.stats-metric-cell { background: var(--table-data-hover); }
-/* Seamless rows like the reference: no row rules, so the guide band reads as part of the table. */
-.stats-workspace .stats-table-frame .dense-stats-table tbody td { border-bottom: 0; }
+/* A faint rule under every row, through the guide bands too, so each row reads as one band
+   (Databallr; owner, 2026-10-14). */
+.stats-workspace .stats-table-frame .dense-stats-table tbody td,
+.stats-workspace .stats-table-frame .dense-stats-table tbody th,
+.stats-workspace .stats-table-frame .dense-stats-table tbody .stats-guide-cell { border-bottom: 1px solid var(--color-hairline-strong); }
 .stats-workspace .stats-table-frame .stats-guide-cell .player-portrait,
 .stats-workspace .stats-table-frame .stats-guide-cell .player-portrait-fallback { border: 0; border-radius: var(--radius-pill); background-color: var(--table-surface); overflow: hidden; }
 

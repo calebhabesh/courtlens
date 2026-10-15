@@ -26,3 +26,17 @@ test("the moved-team chip fits the narrow phone card", async ({ page }) => {
   await expect(teams.locator(".stats-team-move")).toBeVisible();
   expect(await teams.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
 });
+
+test("a multi-team row keeps its season and puts the chip on its own line", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  // The fixture API answers name=traded with Fixture Guard's season split BOS / MIA.
+  await openWorkbench(page, "/stats?name=traded");
+  const moved = page.locator(".stats-table-row", { hasText: "Fixture Guard" });
+  await expect(moved.locator(".player-cell-teams")).toContainText("BOS / MIA");
+  await expect(moved.locator(".player-cell-teams")).toContainText("2025-26");
+  await expect(moved.locator(".player-cell-move-line .stats-team-move")).toHaveText("nowTOR");
+  for (const line of [".player-cell-teams", ".player-cell-move-line"]) {
+    expect(await moved.locator(line).evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
+  }
+  await moved.locator(".pinned-col-name").screenshot({ path: "test-results/multi-team-move.png" });
+});
