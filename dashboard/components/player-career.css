@@ -17,9 +17,13 @@
   /* Simple vertical rules between column groups (row 2, 32), in place of Stats' guide gutters. */
   .player-career .player-career-table .group-start { border-left: 1px solid var(--color-hairline-strong); }
   .player-career .player-career-table {
-    --table-min-width: calc(var(--year-width) + var(--career-columns, 20) * 68px);
-    --table-width: min(100%, calc(var(--year-width) + var(--career-columns, 20) * 88px));
+    --career-awards-width: 0px;
+    --table-min-width: calc(var(--year-width) + var(--career-columns, 20) * 68px + var(--career-awards-width));
+    --table-width: min(100%, calc(var(--year-width) + var(--career-columns, 20) * 88px + var(--career-awards-width)));
   }
+  .player-career .player-career-table.has-awards { --career-awards-width: 240px; }
+  .player-career .player-career-year-column { width: var(--year-width); }
+  .player-career .player-career-awards-column { width: var(--career-awards-width); }
   /* Long labels (PTS Created) wrap onto two lines, as on Stats. */
   .player-career .stats-header-tier-2 th:not(.pinned-col-year) { white-space: normal; line-height: var(--text-xs-lh); vertical-align: bottom; }
   .player-career .pinned-col-year, .player-career .pinned-col-year-group {
@@ -52,11 +56,9 @@
   .player-career .player-career-status { padding: var(--space-4); text-align: center; color: var(--color-text-secondary); font-size: var(--text-sm); }
   /* Season awards (Basketball-Reference) and the All-Star star beside the year. */
   .player-career .player-career-star { display: inline-flex; color: var(--color-accent); }
-  .player-career .player-career-awards { text-align: left; white-space: nowrap; padding-inline: var(--space-3); }
-  .player-career .player-career-awards-th { text-align: left; }
-  .player-career .player-career-award { display: inline-block; margin-right: var(--space-1); padding: 0 var(--space-1);
-    border-radius: var(--radius-xs); background: var(--color-surface-hover); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-sm-lh); }
-  .player-career .player-career-award.is-win { background: var(--color-accent-soft); color: var(--color-accent); font-weight: 600; }
+  .player-career.stats-workspace .player-career-table .player-career-awards { text-align: left; white-space: normal; padding: var(--space-0-5) var(--space-3); }
+  .player-career .player-career-awards-list { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
+  .player-career .player-career-award { white-space: nowrap; }
   .player-career .player-career-footnote { margin: 0; padding: var(--space-2) var(--space-3); color: var(--color-text-tertiary); font-size: var(--text-xs); }
   @media (max-width: 767px) {
     .player-career .player-career-scroll { --year-width: 104px; }

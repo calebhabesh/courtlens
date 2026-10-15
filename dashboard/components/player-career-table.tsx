@@ -7,6 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PercentileCell } from "./charts/percentile-cell";
 import { TeamLogoStack } from "./team-logo";
 import { Icon } from "./ui/icon";
+import { Badge } from "./ui/badge";
 import { IconButton, Segmented } from "./ui/kit";
 import { applyScopeChange } from "@/lib/scope-url";
 import { normalizedColumn } from "@/lib/stats-query";
@@ -146,18 +147,23 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
         </div>
         <div className="table-wrapper stats-scroll-region player-career-scroll" role="region" aria-label="Career table scroll area" tabIndex={0}
           aria-busy={seasons === null}>
-          <table className="data-table dense-stats-table player-career-table" aria-label="Career statistics by season"
-            style={{ "--career-columns": preset.columns.length + (awardColumn ? 3 : 0) } as React.CSSProperties}>
+          <table className={`data-table dense-stats-table player-career-table ${awardColumn ? "has-awards" : ""}`} aria-label="Career statistics by season"
+            style={{ "--career-columns": preset.columns.length } as React.CSSProperties}>
+            <colgroup>
+              <col className="player-career-year-column" />
+              {preset.columns.map(column => <col key={column.key} />)}
+              {awardColumn && <col className="player-career-awards-column" />}
+            </colgroup>
             <thead>
               <tr className="stats-header-tier-1">
                 <th className="pinned-col pinned-col-year-group"><span className="sr-only">Season</span></th>
                 {groups.map((group, index) => <th key={`${group.label}-${index}`} colSpan={group.colSpan} scope="colgroup" className={`stats-group-th ${index > 0 ? "group-start" : ""}`}>{group.label}</th>)}
-                {awardColumn && <th scope="colgroup" className="stats-group-th group-start player-career-awards-th"><span className="sr-only">Awards</span></th>}
+                {awardColumn && <th scope="colgroup" className="stats-group-th group-start">Awards</th>}
               </tr>
               <tr className="stats-header-tier-2">
                 <th scope="col" className="pinned-col pinned-col-year">Year</th>
                 {preset.columns.map((column, index) => <th key={column.key} scope="col" data-column={column.key} className={`${column.num ? "num" : ""} ${divider(index)}`} title={column.tooltip ?? column.label}>{column.label}</th>)}
-                {awardColumn && <th scope="col" className="group-start player-career-awards" title={`Season awards and voting finishes (${awards?.source})`}>Awards</th>}
+                {awardColumn && <th scope="col" className="group-start player-career-awards" title={`Season awards and voting finishes (${awards?.source})`}>Accolades</th>}
               </tr>
             </thead>
             <tbody>
@@ -186,8 +192,13 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
                       </span>
                     </th>
                     {preset.columns.map((_, index) => cell(item, index))}
-                    {awardColumn && <td className="group-start player-career-awards">
-                      {seasonAwardChips(awards?.bySeason[value]).map(chip => <span key={chip.code} className={`player-career-award ${chip.win ? "is-win" : ""}`}>{chip.code}</span>)}
+                    {awardColumn && <td className="stats-metric-cell group-start player-career-awards">
+                      <div className="player-career-awards-list">
+                        {seasonAwardChips(awards?.bySeason[value]).map(chip => <Badge key={chip.code} variant={chip.win ? "accent" : "default"}
+                          className="player-career-award" title={chip.description}>
+                          <span aria-hidden="true">{chip.label}</span><span className="sr-only">{chip.description}</span>
+                        </Badge>)}
+                      </div>
                     </td>}
                   </tr>
                   {stints && <tr className="player-career-stints">

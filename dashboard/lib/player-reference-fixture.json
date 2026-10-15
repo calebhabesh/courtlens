@@ -3,7 +3,7 @@
   "url": "https://www.basketball-reference.com/players/f/fixture01.html",
   "as_of": "2026-10-01T12:00:00Z",
   "birthplace": null, "high_school": null, "shoots": null, "debut_date": null,
-  "honours": [], "awards": {}, "all_star_seasons": [],
+  "honours": [], "awards": {"2025-26": ["MVP-2", "DPOY-1", "AS", "NBA1", "DEF1"]}, "all_star_seasons": ["2025-26"],
   "career_earnings": "1000000",
   "salary_history": [
     {"season": "2025-26", "team": "Boston Celtics", "team_code": "BOS", "salary": "1000000"},

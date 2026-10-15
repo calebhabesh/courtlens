@@ -477,3 +477,12 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - Dashboard lint/types, Vitest 511/511, four header checks and favicon browser verification pass.
   The broader live search check has lookup/workspace timeouts, recorded in the evidence.
 - [Evidence](evidence/alignment/app-shell/favicon-padding/README.md). Owner alignment remains pending.
+
+## 2026-10-14 — Player career awards column
+
+- Owner instructions 52–53 add visible Awards / Accolades headers, a 240 px column and the same
+  background and hover colors as metric cells. Badges wrap with explicit team names and vote places.
+- Scoped glance passes at 1440/390. All 14 retained Kawhi rows fit, with two badge lines at most,
+  unchanged row heights, intact dividers and no page overflow. The pinned-Year checks pass.
+- Lint/typecheck, Vitest 526/526, production webpack build and 15 affected browser checks pass.
+- [Evidence](evidence/alignment/players/career-awards/README.md). Owner alignment remains pending.

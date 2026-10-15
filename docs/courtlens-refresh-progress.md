@@ -816,3 +816,13 @@ glance passes for whole-surface tint, readable labels and quiet edges. Conservat
 with or without the backdrop filter is at least 7.49:1. Lint/typecheck, Vitest 525/525, production
 webpack build and six player-page browser checks pass, including the pinned-Year regression.
 [Evidence](evidence/alignment/players/dark-glass-uniform/README.md).
+
+### Player follow-up: complete career awards column (2026-10-14)
+
+Instructions 52–53 give awards a visible group and Accolades subheader, a fixed 240 px column,
+and the metric-cell background and hover treatment. Badges now wrap with readable labels such
+as All-NBA 1st, MVP 2nd and DPOY Winner. Full names are available to screen readers.
+The former overflow reproduces on the old code. All 14 retained Kawhi rows fit at 1440/390,
+with at most two badge lines and unchanged 52/49 px rows. Scoped glance and pinned-Year checks
+pass. Lint/typecheck, Vitest 526/526, production webpack build and 15 player browser checks pass.
+[Evidence](evidence/alignment/players/career-awards/README.md). Owner alignment remains pending.

@@ -1,0 +1,64 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test player-career.spec.ts --grep awards form --workers=1
+
+
+Running 2 tests using 1 worker
+
+  ✘  1 e2e/player-career.spec.ts:7:7 › awards form a complete column with wrapping badges and continuous row highlighting at 1440 (11.2s)
+  ✘  2 e2e/player-career.spec.ts:7:7 › awards form a complete column with wrapping badges and continuous row highlighting at 390 (6.1s)
+
+
+  1) e2e/player-career.spec.ts:7:7 › awards form a complete column with wrapping badges and continuous row highlighting at 1440
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Career table scroll area' }).getByRole('table').locator('.stats-header-tier-2').getByRole('columnheader', { name: 'Accolades', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Career table scroll area' }).getByRole('table').locator('.stats-header-tier-2').getByRole('columnheader', { name: 'Accolades', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Career table scroll area' }).getByRole('table').locator('.stats-header-tier-2').getByRole('columnheader', { name: 'Accolades', exact: true })
+
+
+      14 |     const table = scroll.getByRole("table");
+      15 |     await expect(table.locator(".stats-header-tier-1").getByRole("columnheader", { name: "Awards", exact: true })).toHaveText("Awards");
+    > 16 |     await expect(table.locator(".stats-header-tier-2").getByRole("columnheader", { name: "Accolades", exact: true })).toBeVisible();
+         |                                                                                                                       ^
+      17 |     const row = table.locator("tbody .player-career-row").first();
+      18 |     const awards = row.locator("td").last();
+      19 |     await expect(awards.locator(".ui-badge > span > [aria-hidden]")).toHaveText(["MVP 2nd", "DPOY Winner", "All-NBA 1st", "All-Def 1st"]);
+        at /home/ethioking/.cache/courtlens-tmp/career-awards.pX96UW/dashboard/e2e/player-career.spec.ts:16:119
+
+    Error Context: test-results/player-career-awards-form--85566-us-row-highlighting-at-1440/error-context.md
+
+  2) e2e/player-career.spec.ts:7:7 › awards form a complete column with wrapping badges and continuous row highlighting at 390
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('region', { name: 'Career table scroll area' }).getByRole('table').locator('.stats-header-tier-2').getByRole('columnheader', { name: 'Accolades', exact: true })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('region', { name: 'Career table scroll area' }).getByRole('table').locator('.stats-header-tier-2').getByRole('columnheader', { name: 'Accolades', exact: true }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Career table scroll area' }).getByRole('table').locator('.stats-header-tier-2').getByRole('columnheader', { name: 'Accolades', exact: true })
+
+
+      14 |     const table = scroll.getByRole("table");
+      15 |     await expect(table.locator(".stats-header-tier-1").getByRole("columnheader", { name: "Awards", exact: true })).toHaveText("Awards");
+    > 16 |     await expect(table.locator(".stats-header-tier-2").getByRole("columnheader", { name: "Accolades", exact: true })).toBeVisible();
+         |                                                                                                                       ^
+      17 |     const row = table.locator("tbody .player-career-row").first();
+      18 |     const awards = row.locator("td").last();
+      19 |     await expect(awards.locator(".ui-badge > span > [aria-hidden]")).toHaveText(["MVP 2nd", "DPOY Winner", "All-NBA 1st", "All-Def 1st"]);
+        at /home/ethioking/.cache/courtlens-tmp/career-awards.pX96UW/dashboard/e2e/player-career.spec.ts:16:119
+
+    Error Context: test-results/player-career-awards-form--eef2e-ous-row-highlighting-at-390/error-context.md
+
+  2 failed
+    e2e/player-career.spec.ts:7:7 › awards form a complete column with wrapping badges and continuous row highlighting at 1440
+    e2e/player-career.spec.ts:7:7 › awards form a complete column with wrapping badges and continuous row highlighting at 390
