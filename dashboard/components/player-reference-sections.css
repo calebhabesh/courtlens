@@ -15,7 +15,7 @@
      headers, table-well data cells, uppercase group tier, gold total rows. */
   .player-contract-frame { background: var(--color-table-lift); border-radius: var(--radius-md); overflow: clip; }
   .player-contract-scroll { --season-width: 184px; max-height: min(70dvh, 760px); overflow: auto; scrollbar-color: var(--color-hairline-strong) var(--color-table-lift); }
-  .player-contract-table { width: 100%; min-width: 880px; border-collapse: separate; border-spacing: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
+  .player-contract-table { width: 100%; min-width: 880px; table-layout: fixed; border-collapse: separate; border-spacing: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
   .player-contract-table th, .player-contract-table td { padding: var(--space-2) var(--space-3); text-align: center; white-space: nowrap; background: var(--color-table-lift); }
   .player-contract-table thead th { position: sticky; z-index: var(--z-sticky); }
   /* Header rows match the career table's: 28 px group labels over 40 px column labels (row 2, 65). */
@@ -30,15 +30,17 @@
     width: var(--season-width); min-width: var(--season-width); max-width: var(--season-width);
     font-weight: 600;
   }
-  /* Season is a group label like Salary / Terms / Events, spanning both header rows (row 2, 64). */
-  .player-contract-tier-1 th.player-contract-season { vertical-align: top; font-weight: 700; }
+  .player-contract-season-column { width: var(--season-width); }
+  .player-contract-events-column { width: 32%; }
+  /* Season is a group label like Salary / Terms / Events (row 2, 64). */
+  .player-contract-tier-1 th.player-contract-season { font-weight: 700; }
   /* Group labels need no rules between them; the body keeps its column-group rules. */
   .player-contract-table thead .group-start { border-left: 0; }
   .player-contract-table thead .player-contract-season { z-index: var(--z-sticky-corner); }
   .player-contract-table tbody th.player-contract-season { border-bottom: 1px solid var(--color-hairline-strong); }
   .player-contract-table .player-reference-team { justify-content: center; vertical-align: middle; }
   .player-contract-table td small { display: block; color: var(--color-text-secondary); font-size: var(--text-xs); }
-  .player-contract-table .player-contract-events-cell { width: 36%; min-width: 280px; white-space: normal; }
+  .player-contract-table .player-contract-events-cell { white-space: normal; }
   /* Section labels sit centered in the Season column; the rest of the row stays empty. */
   .player-contract-section th, .player-contract-section td { border-bottom: 1px solid var(--color-hairline-strong); }
   .player-contract-section th.player-contract-season { padding-block: var(--space-2) var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; white-space: normal; }
@@ -70,7 +72,8 @@
     /* Wrapped labels make the rows uneven, so the totals follow the table on phones. */
     .player-contract-table tfoot td { position: static; }
     .player-contract-table tfoot th { bottom: auto; }
-    .player-contract-table .player-contract-events-cell { width: 200px; min-width: 200px; }
+    .player-contract-events-column { width: 200px; }
+    .player-contract-tier-2 th.player-contract-season { white-space: normal; }
     .player-contract-events li { grid-template-columns: minmax(0, 1fr); gap: 0; }
     .player-reference-events li { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
     .player-reference-table th:first-child { position: sticky; left: 0; background: color-mix(in srgb, var(--color-surface-0) 58%, var(--color-bg)); z-index: var(--z-sticky); padding-right: var(--space-3); }

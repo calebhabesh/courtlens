@@ -763,6 +763,11 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
     headers (Year / Current Contract). (Owner screenshot, 2026-10-15.) Both headers measure
     28 + 40 px; Year and the contract section labels are centered.
     [Evidence](evidence/alignment/players/contract-header/README.md).
+66. [x] Contract headers Current Contract / Team / Salary / % of Cap / Option should align with each
+    other (same padding below), and columns should be properly distributed so the Salary group
+    header and the Salary sub-header are center-aligned. (Owner screenshot, 2026-10-15.)
+    Current Contract moved into the column-label row; fixed, equal data columns; centers measured.
+    [Evidence](evidence/alignment/players/contract-header/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

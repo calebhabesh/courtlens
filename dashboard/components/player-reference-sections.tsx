@@ -77,14 +77,22 @@ function ContractTable({ reference, contract, history, events }: {
   return <div className="player-contract-frame">
     <div className="player-contract-scroll" role="region" aria-label="Contract table scroll area" tabIndex={0}>
       <table className="player-contract-table" aria-label="Contract and salary history by season">
+        {/* Fixed, equal data columns: each group label centers over its columns (row 2, 66). */}
+        <colgroup>
+          <col className="player-contract-season-column" />
+          {[0, 1, 2, 3, 4].map(i => <col key={i} />)}
+          <col className="player-contract-events-column" />
+        </colgroup>
         <thead>
           <tr className="player-contract-tier-1">
-            <th scope="col" rowSpan={2} className="player-contract-season">Season</th>
+            <th scope="colgroup" className="player-contract-season">Season</th>
             <th scope="colgroup" colSpan={3} className="group-start">Salary</th>
             <th scope="colgroup" colSpan={2} className="group-start">Terms</th>
             <th scope="colgroup" className="group-start">Events</th>
           </tr>
           <tr className="player-contract-tier-2">
+            {/* The first section's label shares the column-label row (row 2, 66). */}
+            <th scope="rowgroup" className="player-contract-season">Current Contract</th>
             <th scope="col" className="group-start player-contract-team">Team</th>
             <th scope="col">Salary</th>
             <th scope="col">% of Cap</th>
@@ -94,7 +102,6 @@ function ContractTable({ reference, contract, history, events }: {
           </tr>
         </thead>
         <tbody>
-          <tr className="player-contract-section"><th scope="rowgroup" className="player-contract-season">Current Contract</th><td colSpan={6} /></tr>
           {contract.length > 0 ? contract.map((salary, i) => row(salary, i, true))
             : <tr><td colSpan={7} className="player-contract-empty">No current contract listed in the retained report.</td></tr>}
         </tbody>
