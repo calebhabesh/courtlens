@@ -2,23 +2,14 @@ import { expect, test } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
 
 for (const width of [1440, 390]) {
-  test(`reference sections preserve terms and expand retained history at ${width}`, async ({ page }) => {
+  test(`reference sections keep contract terms, history and events in one table at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await openWorkbench(page, "/players/24");
-    const contract = page.getByRole("region", { name: "Contract", exact: true });
-    await expect(contract.getByRole("heading", { name: "Current Contract", exact: true })).toBeVisible();
-    const salaries = page.getByRole("table", { name: "Current contract salaries" });
-    await expect(salaries).toContainText("$2,000,000");
-    await expect(salaries).toContainText("1.2%");
-    await expect(salaries).toContainText("Player option");
-    await expect(salaries).toContainText("Team option");
-    await expect(salaries).not.toContainText("$123.45");
-    await expect(contract.getByRole("link", { name: "$123.45", exact: true })).toBeVisible();
-    await contract.getByText("Salary History · 2 entries", { exact: true }).click();
-    const history = page.getByRole("table", { name: "Reported salary history" });
-    await expect(history).toBeVisible();
-    await expect(history).toContainText("$0");
-    await expect(history).toContainText("$1,000,000");
+    const table = page.getByRole("table", { name: "Contract and salary history by season" });
+    await expect(table.getByText("Current Contract", { exact: true })).toBeVisible();
+    await expect(table.getByText("Salary History · 2 Seasons", { exact: true })).toBeVisible();
+    for (const text of ["$2,000,000", "1.2%", "Player option", "Team option", "$0", "$1,000,000", "Signed extension."]) await expect(table).toContainText(text);
+    await expect(table.getByRole("row", { name: /^Remaining Guaranteed/ }).getByRole("link", { name: "$123.45", exact: true })).toBeVisible();
     const transactions = page.getByRole("region", { name: "Transactions", exact: true });
     await expect(transactions.locator("time").first()).toHaveAttribute("datetime", "2026-09-22");
     await transactions.getByText("Earlier Transactions · 1", { exact: true }).click();
@@ -29,10 +20,10 @@ for (const width of [1440, 390]) {
     await expect(highs.getByRole("link", { name: "42", exact: true })).toHaveAttribute("title", "PTS · Jan 2, 2026");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
     if (width === 390) {
-      const scroller = page.getByRole("region", { name: "Current contract by season", exact: true });
+      const scroller = page.getByRole("region", { name: "Contract table scroll area", exact: true });
       expect(await scroller.evaluate(el => el.scrollWidth > el.clientWidth)).toBe(true);
       await scroller.evaluate(el => { el.scrollLeft = el.scrollWidth; });
-      await expect(salaries.getByText("Team option", { exact: true })).toBeVisible();
+      await expect(table.getByText("Signed extension.", { exact: true })).toBeVisible();
     }
   });
 }

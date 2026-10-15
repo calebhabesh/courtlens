@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Uniform glass and title-case headings below the career table ready for owner review |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Contract table, career season totals and Rates (Per 36) removal ready for owner review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -718,6 +718,22 @@ Follow-up instructions (owner, 2026-10-14, career awards):
     content fit, contrast and expanded sections pass, alongside lint/types, 526 Vitest tests,
     production build and 15 player browser checks.
     [Evidence](evidence/alignment/players/overview-glass/README.md).
+
+Follow-up instructions (owner, 2026-10-15, contract and career footer):
+56. [x] Under the stats overview table, the Contract container should be a table formatted the
+    same way as the stats table; all its information can be put in a table. (Owner screenshot.)
+    One table in the career table's look: Season pinned, Salary / Terms / Events group headers,
+    Current Contract and Salary History section rows (history newest first, no disclosure),
+    each season's dated contract events in its own row (NBA July–June season), and gold
+    Remaining Guaranteed / Career Earnings total rows. Events outside the listed seasons get an
+    Other Contract Events row. [Evidence](evidence/alignment/players/contract-table/README.md).
+57. [x] At the bottom of the player stats table (e.g. Kawhi Leonard), put "Total = 14 Seasons",
+    then the team logos with how many seasons he played for each team. Logos in first-team
+    order with counts (Kawhi: SAS 7, TOR 1, LAC 6); a split season counts for each team.
+58. [x] Rates (Per 36) and the Per 36 mode duplicate each other on Stats and the player table.
+    Confirmed redundant: every Rates column is a per-36 value the Per 36 mode already shows
+    through Overview, Shooting and Defense. The view is removed from both tables and the
+    recoverable canonical presets; the `advanced` ID stays reserved so saved bundles validate.
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

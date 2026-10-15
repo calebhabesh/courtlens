@@ -6,7 +6,6 @@ export type PresetId =
   | "shooting"
   | "defense"
   | "trueshooting"
-  | "advanced"
   | "playmaking"
   | "rebounding"
   | "impact"
@@ -400,28 +399,6 @@ export const STATS_PRESETS: PresetDefinition[] = [
     ]
   },
   {
-    id: "advanced",
-    label: "Rates (Per 36)",
-    description: "Standardized per-36 minute rates across all primary box-score categories.",
-    columns: [
-      { key: "gp", label: "GP", group: "Exposure", num: true, sortMetric: "gp", format: formatIntValue, tooltip: "Games Played" },
-      { key: "min", label: "MIN", group: "Exposure", num: true, sortMetric: "min", format: formatIntValue, tooltip: "Total Minutes" },
-      { key: "min_per_game", label: "MPG", group: "Exposure", num: true, sortMetric: "min_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Minutes Per Game" },
-      { key: "pts_per_36", label: "PTS/36", group: "Per-36 Rates", num: true, sortMetric: "pts_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Points per 36 minutes" },
-      { key: "reb_per_36", label: "REB/36", group: "Per-36 Rates", num: true, sortMetric: "reb_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Rebounds per 36 minutes" },
-      { key: "ast_per_36", label: "AST/36", group: "Per-36 Rates", num: true, sortMetric: "ast_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Assists per 36 minutes" },
-      { key: "stl_per_36", label: "STL/36", group: "Per-36 Rates", num: true, sortMetric: "stl_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Steals per 36 minutes" },
-      { key: "blk_per_36", label: "BLK/36", group: "Per-36 Rates", num: true, sortMetric: "blk_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Blocks per 36 minutes" },
-      { key: "tov_per_36", label: "TOV/36", group: "Per-36 Rates", num: true, sortMetric: "tov_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Turnovers per 36 minutes" },
-      { key: "pf_per_36", label: "PF/36", group: "Per-36 Rates", num: true, sortMetric: "pf_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Personal fouls per 36 minutes" },
-      { key: "fga_per_36", label: "FGA/36", group: "Shot Rates", num: true, sortMetric: "fga_per_36", format: (v) => formatStatValue(v, 1), tooltip: "FGA per 36 minutes" },
-      { key: "fg3a_per_36", label: "3PA/36", group: "Shot Rates", num: true, sortMetric: "fg3a_per_36", format: (v) => formatStatValue(v, 1), tooltip: "3PA per 36 minutes" },
-      { key: "fta_per_36", label: "FTA/36", group: "Shot Rates", num: true, sortMetric: "fta_per_36", format: (v) => formatStatValue(v, 1), tooltip: "FTA per 36 minutes" },
-      { key: "ts_pct", label: "TS%", group: "Efficiency", num: true, sortMetric: "ts_pct", format: formatPctValue, tooltip: "True Shooting %" },
-      { key: "efg_pct", label: "eFG%", group: "Efficiency", num: true, sortMetric: "efg_pct", format: formatPctValue, tooltip: "Effective Field Goal %" }
-    ]
-  },
-  {
     id: "playmaking",
     label: "Playmaking",
     description: "Assist creation, turnover economy, and ball-handling workload.",
@@ -677,7 +654,7 @@ export function calculateCohortPercentiles(
 }
 
 /** View tab order shared by the Stats table and the player career table. */
-const PRESET_ORDER: PresetId[] = ["overview", "shooting", "impact", "onoff", "sixfactor", "advanced", "defense", "trueshooting"];
+const PRESET_ORDER: PresetId[] = ["overview", "shooting", "impact", "onoff", "sixfactor", "defense", "trueshooting"];
 export const ORDERED_PRESETS = [...STATS_PRESETS].sort((a, b) =>
   (PRESET_ORDER.indexOf(a.id) + 1 || PRESET_ORDER.length + 1) - (PRESET_ORDER.indexOf(b.id) + 1 || PRESET_ORDER.length + 1));
 /** Per Game, Per 36, Per 75, Per 100, then Totals (Databallr's order). */

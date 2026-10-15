@@ -109,7 +109,10 @@ test("the career table lists played seasons with a Career row, and phase links t
   await expect(career.locator("tbody tr.player-career-row").first()).toHaveAttribute("aria-current", "true");
   await expect(career.locator("tfoot")).toContainText("Career");
   await expect(page.getByRole("region", { name: "Career table scroll area" })).toHaveAttribute("aria-busy", "false");
-  // View tabs reuse the Stats views.
+  await expect(page.locator(".player-career-totals")).toContainText("Total = 1 Season");
+  await expect(page.getByRole("list", { name: "Seasons by team" }).getByRole("listitem")).not.toHaveCount(0);
+  // View tabs reuse the Stats views; the Per 36 counting mode replaced the Rates (Per 36) view.
+  await expect(page.getByRole("radiogroup", { name: "Career table views" }).getByRole("radio", { name: "Rates (Per 36)" })).toHaveCount(0);
   await page.getByRole("radiogroup", { name: "Career table views" }).getByRole("radio", { name: "Shooting", exact: true }).click();
   await expect(career.locator("thead")).toContainText("FGM");
   expect(careerRequests).toEqual([]);
