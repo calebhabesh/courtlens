@@ -753,6 +753,16 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
     Transactions" drop-down looks oddly indented. (Owner screenshot, 2026-10-15.) Renamed; the
     disclosure label now starts at the dates' edge, and the revealed list stays aligned.
     [Evidence](evidence/alignment/players/transaction-news/README.md).
+64. [x] The Earlier Transactions selection highlight extends farther left; make it have none.
+    The contract table needs work: section headers aren't centered over their sub-headers,
+    Contract Events should be centered on its own, Season should be a header like
+    Salary/Terms/Events, and the thin vertical dividers between header sections go.
+    (Owner screenshots, 2026-10-15.) New kit `text` variant (no fill, flush); contract header
+    and cells centered, Season a two-row group label, no header rules.
+65. [x] Use the stats table's header spacing for the contract table, and center the leftmost
+    headers (Year / Current Contract). (Owner screenshot, 2026-10-15.) Both headers measure
+    28 + 40 px; Year and the contract section labels are centered.
+    [Evidence](evidence/alignment/players/contract-header/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

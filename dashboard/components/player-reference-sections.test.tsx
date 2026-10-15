@@ -18,7 +18,7 @@ describe("player reference sections", () => {
     render(<PlayerReferenceSections reference={reference} />);
     const table = screen.getByRole("table", { name: "Contract and salary history by season" });
     const rows = within(table).getAllByRole("row").map(row => row.textContent ?? "");
-    expect(rows.findIndex(text => text.startsWith("Current Contract"))).toBeLessThan(rows.findIndex(text => text.startsWith("Salary History · 2 Seasons")));
+    expect(rows.findIndex(text => text.startsWith("Current Contract"))).toBeLessThan(rows.findIndex(text => text.startsWith("Salary History")));
     const current = rows.find(text => text.startsWith("2026-27")) ?? "";
     expect(current).toContain("$2,000,000");
     expect(current).toContain("1.2%");

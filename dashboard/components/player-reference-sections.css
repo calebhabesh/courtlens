@@ -18,8 +18,9 @@
   .player-contract-table { width: 100%; min-width: 880px; border-collapse: separate; border-spacing: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
   .player-contract-table th, .player-contract-table td { padding: var(--space-2) var(--space-3); text-align: center; white-space: nowrap; background: var(--color-table-lift); }
   .player-contract-table thead th { position: sticky; z-index: var(--z-sticky); }
-  .player-contract-tier-1 th { top: 0; height: 26px; padding-block: var(--space-1); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
-  .player-contract-tier-2 th { top: 26px; height: 36px; padding-block: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; vertical-align: bottom; }
+  /* Header rows match the career table's: 28 px group labels over 40 px column labels (row 2, 65). */
+  .player-contract-tier-1 th { top: 0; height: 28px; padding: var(--space-1) var(--space-2); font-size: var(--text-sm); line-height: 1.5; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .player-contract-tier-2 th { top: 28px; height: 40px; padding: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-transform: uppercase; vertical-align: bottom; }
   .player-contract-table tbody td { height: 44px; background: var(--color-table-well); border-bottom: 1px solid var(--color-hairline-strong); }
   .player-contract-table tbody tr:hover td { background: color-mix(in srgb, var(--color-white) 6%, var(--color-table-well)); }
   .player-contract-table tbody tr:hover th.player-contract-season { background: color-mix(in srgb, var(--color-white) 6%, var(--color-table-lift)); }
@@ -27,14 +28,21 @@
   .player-contract-table .player-contract-season {
     position: sticky; left: 0; z-index: var(--z-sticky);
     width: var(--season-width); min-width: var(--season-width); max-width: var(--season-width);
-    text-align: left; font-weight: 600;
+    font-weight: 600;
   }
+  /* Season is a group label like Salary / Terms / Events, spanning both header rows (row 2, 64). */
+  .player-contract-tier-1 th.player-contract-season { vertical-align: top; font-weight: 700; }
+  /* Group labels need no rules between them; the body keeps its column-group rules. */
+  .player-contract-table thead .group-start { border-left: 0; }
   .player-contract-table thead .player-contract-season { z-index: var(--z-sticky-corner); }
   .player-contract-table tbody th.player-contract-season { border-bottom: 1px solid var(--color-hairline-strong); }
-  .player-contract-table .player-contract-team { text-align: left; }
+  .player-contract-table .player-reference-team { justify-content: center; vertical-align: middle; }
   .player-contract-table td small { display: block; color: var(--color-text-secondary); font-size: var(--text-xs); }
-  .player-contract-table .player-contract-events-cell { width: 40%; min-width: 280px; text-align: left; white-space: normal; }
-  .player-contract-section th { padding-block: var(--space-2) var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.05em; text-align: left; text-transform: uppercase; border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-contract-table .player-contract-events-cell { width: 36%; min-width: 280px; white-space: normal; }
+  /* Section labels sit centered in the Season column; the rest of the row stays empty. */
+  .player-contract-section th, .player-contract-section td { border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-contract-section th.player-contract-season { padding-block: var(--space-2) var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; white-space: normal; }
+  .player-contract-table tbody .player-contract-section td { height: auto; background: var(--color-table-lift); }
   .player-contract-empty { color: var(--color-text-secondary); text-align: left; }
   /* Gold total rows stay at the scroll area's foot like the career row; two rows stack. */
   .player-contract-table tfoot tr:first-child:not(:last-child) { --foot-bottom: 36px; }
@@ -43,7 +51,8 @@
   .player-contract-total th, .player-contract-total td { height: 36px; padding-block: var(--space-1); }
   .player-contract-total th.player-contract-season { z-index: var(--z-sticky-corner); color: var(--color-accent); font-size: var(--text-xs); letter-spacing: 0.05em; text-transform: uppercase; }
   .player-contract-total strong { font-weight: 650; }
-  .player-contract-events { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  /* Each season's events form one block centered under Contract Events, read left to right. */
+  .player-contract-events { display: inline-grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; text-align: left; vertical-align: middle; }
   .player-contract-events li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--space-3); }
   .player-contract-events time, .player-contract-events .player-event-undated { color: var(--color-text-secondary); font-size: var(--text-xs); }
   .player-reference-note, .player-reference-credit { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
@@ -55,10 +64,6 @@
   .player-reference-events time, .player-event-undated { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
   .player-reference-events p { margin: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); overflow-wrap: anywhere; }
   .player-reference details[open] > .player-reference-table, .player-reference details[open] > .player-reference-events { margin-top: var(--space-4); }
-  /* The disclosure's label lines up with the dates above it: the wrapper takes back the ghost
-     button's 12px inline padding, and the revealed list returns to the content edge (row 2, 63). */
-  .player-reference > details { margin-inline-start: calc(-1 * var(--space-3)); }
-  .player-reference > details > .player-reference-events { margin-inline-start: var(--space-3); }
   @media (max-width: 767px) {
     .player-contract-scroll { --season-width: 112px; }
     .player-contract-total th.player-contract-season { white-space: normal; line-height: var(--text-xs-lh); }

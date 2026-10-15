@@ -7,7 +7,7 @@ for (const width of [1440, 390]) {
     await openWorkbench(page, "/players/24");
     const table = page.getByRole("table", { name: "Contract and salary history by season" });
     await expect(table.getByText("Current Contract", { exact: true })).toBeVisible();
-    await expect(table.getByText("Salary History · 2 Seasons", { exact: true })).toBeVisible();
+    await expect(table.getByText("Salary History", { exact: true })).toBeVisible();
     for (const text of ["$2,000,000", "1.2%", "Player option", "Team option", "$0", "$1,000,000", "Signed extension."]) await expect(table).toContainText(text);
     await expect(table.getByRole("row", { name: /^Remaining Guaranteed/ }).getByRole("link", { name: "$123.45", exact: true })).toBeVisible();
     const transactions = page.getByRole("region", { name: "Transaction News", exact: true });
