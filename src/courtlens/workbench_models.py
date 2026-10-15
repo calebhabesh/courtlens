@@ -322,6 +322,37 @@ class PlayerPortrait(Base):
     acquired_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
 
 
+class PlayerSeasonPortrait(Base):
+    """A player's official headshot for one team and season, or a recorded miss.
+
+    The NBA CDN keeps team-season headshots from 2015-16 on. A ``missing`` row records that the
+    CDN had no photo for that stint, so it is not requested again; it never stands in for one.
+    """
+
+    __tablename__ = "player_season_portraits"
+    __table_args__ = (
+        UniqueConstraint("player_id", "team_id", "season", "source_name"),
+        Index("ix_player_season_portraits_lookup", "player_id", "season", "status"),
+    )
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
+    player_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    team_id: Mapped[str] = mapped_column(String(20), nullable=False)
+    team_tricode: Mapped[str] = mapped_column(String(5), nullable=False)
+    season: Mapped[str] = mapped_column(String(10), nullable=False)
+    source_name: Mapped[str] = mapped_column(String(50), nullable=False)
+    source_url: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(String(20), nullable=False)
+    content_sha256: Mapped[str | None] = mapped_column(String(64))
+    storage_path: Mapped[str | None] = mapped_column(Text)
+    mime_type: Mapped[str | None] = mapped_column(String(50))
+    width: Mapped[int | None] = mapped_column(Integer)
+    height: Mapped[int | None] = mapped_column(Integer)
+    bytes: Mapped[int | None] = mapped_column(Integer)
+    attribution: Mapped[str] = mapped_column(Text, nullable=False)
+    acquired_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+
+
 class WorkbenchJob(Base):
     """Local worker job state with heartbeat and timing tracking."""
 
@@ -924,6 +955,7 @@ for _sealed_model in (
     WorkbenchReconstructionOverride,
     WorkbenchLineupStint,
     WorkbenchStintPlayer,
+    PlayerSeasonPortrait,
 ):
     event.listen(_sealed_model, "before_update", _prevent_sealed_mutation)
     event.listen(_sealed_model, "before_delete", _prevent_sealed_mutation)

@@ -826,6 +826,15 @@ owner chose the recommendation and delegated the three open decisions):
    recommendation: open on a real pair, the season's top two scorers (pts/game, 500+ minutes),
    written to the URL. Supersedes presentation-clarity C5 for this page; silhouettes remain only
    when no pair can be resolved. — server redirect; live default Dončić vs Gilgeous-Alexander.
+7. [x] Owner, 2026-10-15: show how each player looked in the compared season ("ingest those new
+   photos"; disk cost accepted). — `player_season_portraits` (migration `17b810a4f015`, sealed,
+   misses recorded) filled by `courtlens acquire-season-portraits` from the NBA CDN's team-season
+   headshots (`/headshots/nba/{teamId}/{startYear}/1040x760/{playerId}.png`, 2015-16 on; folder
+   is the season's start year, checked on Durant's OKC/GSW/BKN/PHX/HOU stints). Targets are
+   observed player-team-seasons only. The portrait endpoint takes `season`/`team`, prefers the
+   named team for traded seasons, falls back to the current headshot and names the served season
+   in `X-Portrait-Season`. Compare portraits and the share image request the compared season.
+   Hosted demo: needs the migration plus a refreshed dump and portrait rsync to show them.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

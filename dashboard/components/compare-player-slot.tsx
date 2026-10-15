@@ -24,9 +24,11 @@ export function bioLine(bio: PlayerBio | null | undefined): string | null {
  * One side of the duel card (alignment row 3): a square headshot on the team's colour with a games
  * badge, then the name and one bio line. Pressing the photo swaps in the player search.
  */
-export function ComparePlayerSlot({ side, player, bio, onPick }: {
+export function ComparePlayerSlot({ side, player, bio, season, onPick }: {
   side: "a" | "b";
   player: CompareSlotPlayer;
+  /** The compared season: the photo is the player's headshot from it when one exists. */
+  season?: string;
   bio?: PlayerBio | null;
   onPick: (selection: CompareSelection) => void;
 }) {
@@ -38,7 +40,8 @@ export function ComparePlayerSlot({ side, player, bio, onPick }: {
   return <div className="pvp-slot" data-identity={side}
     style={tint ? ({ "--team-tint": tint } as CSSProperties) : undefined}>
     <button type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${label}, ${player.name}`} onClick={() => setSearching(open => !open)}>
-      <PlayerPortrait playerId={player.id} name={player.name} portraitUrl={player.portrait_url} size="xl" className="pvp-portrait" />
+      <PlayerPortrait playerId={player.id} name={player.name} portraitUrl={player.portrait_url} size="xl" className="pvp-portrait"
+        era={season ? { season, team: player.teams[0] } : null} />
       <span className="pvp-badge" title={`${player.games_played} games · ${Math.round(player.total_minutes).toLocaleString("en-US")} minutes`}>{player.games_played} GP</span>
       <span className="pvp-photo-hint" aria-hidden="true"><Icon name="search" size={14} /></span>
     </button>

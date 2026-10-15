@@ -734,6 +734,31 @@ def acquire_portraits_command(
     )
 
 
+@app.command("acquire-season-portraits")
+def acquire_season_portraits_command(
+    from_season: str = typer.Option("2015-16", help="First season (the CDN starts at 2015-16)."),
+    season: list[str] | None = typer.Option(None, help="Only these seasons; repeatable."),
+    limit: int | None = typer.Option(None, min=1, help="Maximum stints to request this run."),
+    delay: float = typer.Option(0.1, min=0.0, max=5.0, help="Seconds each worker waits."),
+    workers: int = typer.Option(4, min=1, max=8, help="Concurrent CDN requests."),
+) -> None:
+    """Acquire team-season headshots for every observed player-team-season (resumable)."""
+    from courtlens.services.season_portraits import acquire_season_portraits
+
+    settings = get_settings()
+    summary = acquire_season_portraits(
+        engine,
+        settings.portraits_cache_path,
+        from_season=from_season,
+        seasons=season or None,
+        limit=limit,
+        delay_seconds=delay,
+        workers=workers,
+        progress=lambda done: typer.echo(json.dumps(done.__dict__), err=True),
+    )
+    typer.echo(json.dumps(summary.__dict__, indent=2))
+
+
 @app.command("acquire-rich-sources")
 def acquire_rich_sources_command(
     season: int = typer.Option(2024, help="Season ending year (e.g. 2024 for 2023-24)."),

@@ -2,7 +2,7 @@
 
 import { Icon } from "./ui/icon";
 import { useEffect, useRef, useState } from "react";
-import { portraitSource, type PortraitWidth } from "@/lib/portrait-source";
+import { portraitSource, type PortraitEra, type PortraitWidth } from "@/lib/portrait-source";
 
 type PortraitSize = "sm" | "md" | "lg" | "xl";
 
@@ -22,6 +22,8 @@ interface PlayerPortraitProps {
   size?: PortraitSize;
   className?: string;
   alt?: string;
+  /** Prefer the headshot from this season and team (compare cards). */
+  era?: PortraitEra | null;
 }
 
 export function PlayerPortrait({
@@ -30,7 +32,8 @@ export function PlayerPortrait({
   portraitUrl,
   size = "sm",
   className = "",
-  alt
+  alt,
+  era
 }: PlayerPortraitProps) {
   const [error, setError] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -50,7 +53,7 @@ export function PlayerPortrait({
 
   const { box, largest, fallback } = SIZES[size];
   const sizeClass = `player-portrait-${size}`;
-  const source = portraitSource(portraitUrl, playerId, fallback);
+  const source = portraitSource(portraitUrl, playerId, fallback, era);
 
   if (error || !source) {
     return (

@@ -114,9 +114,9 @@ export function PlayerCompareView({ comparison, bios = [null, null], cohort, met
 
       <section className="pvp-card" aria-label="Comparison card">
         {a && b ? <div className="pvp-players">
-          <ComparePlayerSlot key={`a-${a.id}`} side="a" player={a} bio={bios[0]} onPick={selection => pick("a", selection)} />
+          <ComparePlayerSlot key={`a-${a.id}`} side="a" player={a} bio={bios[0]} season={context.season} onPick={selection => pick("a", selection)} />
           <IconButton className="pvp-swap" size="md" variant="secondary" icon="swap" label="Swap players" onClick={swap} />
-          <ComparePlayerSlot key={`b-${b.id}`} side="b" player={b} bio={bios[1]} onPick={selection => pick("b", selection)} />
+          <ComparePlayerSlot key={`b-${b.id}`} side="b" player={b} bio={bios[1]} season={context.season} onPick={selection => pick("b", selection)} />
         </div> : <>
           {/* Only when no pair resolves: silhouettes over the two-field picker. */}
           <div className="pvp-players pvp-players-empty" aria-hidden="true">
@@ -165,7 +165,7 @@ export function PlayerCompareView({ comparison, bios = [null, null], cohort, met
     </div>
 
     {a && b && <div className="pvp-export" aria-hidden="true">
-      <CompareCardExport ref={svgRef} players={[a, b]} rows={rows} direction={direction} labels={new Map(metricDefinitions.map(entry => [entry.key, entry]))} title={`${exportTitle} · ${COMPARE_PRESETS[active].label}`} footnote={footnote} />
+      <CompareCardExport ref={svgRef} season={context.season} players={[a, b]} rows={rows} direction={direction} labels={new Map(metricDefinitions.map(entry => [entry.key, entry]))} title={`${exportTitle} · ${COMPARE_PRESETS[active].label}`} footnote={footnote} />
     </div>}
     <CompareMetricsDrawer open={editing} onClose={() => setEditing(false)} selected={custom} catalog={metricDefinitions} views={views}
       onChange={next => change({ preset: "custom", customMetrics: next.join(",") })} />
