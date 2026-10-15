@@ -35,6 +35,6 @@ Production sandbox build, Kawhi Leonard (202695), read-only proxy to retained lo
 | Earlier Transactions hovered | [1440](earlier-transactions-hover-1440.png) | [390](earlier-transactions-hover-390.png) |
 
 Dashboard lint and typecheck pass, along with all 527 Vitest tests and 31 Playwright checks
-(player-reference, player-career, fo14-accessibility, players-fo09); after instruction 66, 25 checks
+(player-reference, player-career, fo14-accessibility, players-fo09); after instruction 66, 27 checks
 (player-reference, player-career, fo14-accessibility) and the full Vitest suite pass again. Owner alignment is still
 pending.
