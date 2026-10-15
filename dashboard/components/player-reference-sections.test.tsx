@@ -14,20 +14,35 @@ const reference: NonNullable<PlayerBio["reference"]> = {
 afterEach(cleanup);
 
 describe("player reference sections", () => {
-  it("shows reported salaries, options, cap share and a separate remaining guarantee", () => {
+  it("puts contract, history, events and totals in one season table", () => {
     render(<PlayerReferenceSections reference={reference} />);
-    const contract = screen.getByRole("table", { name: "Current contract salaries" });
-    expect(contract.textContent).toContain("$2,000,000");
-    expect(contract.textContent).toContain("1.2%");
-    expect(contract.textContent).toContain("Player option");
-    expect(contract.textContent).toContain("Team option");
-    expect(contract.textContent).toContain("Two-way");
-    expect(contract.textContent).not.toContain("$123.45");
+    const table = screen.getByRole("table", { name: "Contract and salary history by season" });
+    const rows = within(table).getAllByRole("row").map(row => row.textContent ?? "");
+    expect(rows.findIndex(text => text.startsWith("Current Contract"))).toBeLessThan(rows.findIndex(text => text.startsWith("Salary History · 2 Seasons")));
+    const current = rows.find(text => text.startsWith("2026-27")) ?? "";
+    expect(current).toContain("$2,000,000");
+    expect(current).toContain("1.2%");
+    // Both dated 2026 events fall in 2026-27, newest first.
+    expect(current.indexOf("Signed extension.")).toBeLessThan(current.indexOf("Traded from BOS to TOR."));
+    expect(rows.find(text => text.startsWith("2027-28"))).toContain("Player option");
+    expect(rows.find(text => text.startsWith("2028-29"))).toContain("Team option");
+    expect(rows.find(text => text.startsWith("2028-29"))).toContain("Two-way");
+    expect(rows.find(text => text.startsWith("2024-25"))).toContain("$0");
+    expect(rows.find(text => text.startsWith("Remaining Guaranteed"))).toContain("$123.45");
     expect(screen.getByText("$123.45").getAttribute("href")).toContain("/contracts/TOR.html");
-    expect(screen.getByText("Reported Career Earnings").parentElement?.textContent).toContain("$1,000,000");
-    expect(screen.getByText(/Source total may be incomplete/)).toBeTruthy();
-    expect(screen.getByText("Signed extension.")).toBeTruthy();
+    expect(rows.find(text => text.startsWith("Career Earnings"))).toContain("$1,000,000");
+    expect(screen.getByText(/Career earnings total reported salaries/)).toBeTruthy();
     expect(screen.getByText("Traded from BOS to TOR.").getAttribute("title")).toContain("September 14, 2026");
+  });
+  it("keeps events outside the listed seasons in their own row", () => {
+    render(<PlayerReferenceSections reference={{ ...reference, contract_events: [
+      { date: "2019-07-10", type: "signed", description: "Signed rookie deal.", from_team_code: null, to_team_code: null },
+      { date: null, type: "note", description: "Undated note.", from_team_code: null, to_team_code: null },
+    ] }} />);
+    const table = screen.getByRole("table", { name: "Contract and salary history by season" });
+    expect(within(table).getByText("Other Contract Events")).toBeTruthy();
+    expect(within(table).getByText("Signed rookie deal.")).toBeTruthy();
+    expect(within(table).getByText("Undated note.")).toBeTruthy();
   });
   it("keeps phases separate, known zero visible and missing highs unknown", () => {
     render(<PlayerReferenceSections reference={reference} />);
@@ -43,7 +58,7 @@ describe("player reference sections", () => {
       { season: "2026-27", team: "Brooklyn Nets", team_code: "BRK", salary: "0" },
       { season: "2007-08", team: "Seattle SuperSonics", team_code: "SEA", salary: null },
     ] }} />);
-    const table = screen.getByRole("table", { name: "Current contract salaries" });
+    const table = screen.getByRole("table", { name: "Contract and salary history by season" });
     expect(within(table).getByRole("img", { name: "BKN" })).toBeTruthy();
     expect(within(table).getAllByText("BRK")).toHaveLength(1);
     expect(within(table).getAllByText("SEA")).toHaveLength(1);

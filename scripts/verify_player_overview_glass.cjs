@@ -41,7 +41,7 @@ async function main() {
       const panels = page.locator('.player-open-section.player-glass');
       await expect(panels).toHaveCount(5);
       await expect(panels.locator('h2')).toHaveText(['Player Impact', 'Recent Form', 'Contract', 'Transactions', 'Career Highs']);
-      await expect(panels.locator('h3')).toHaveText(['Current Contract', 'Contract Events']);
+      await expect(page.getByRole('table', { name: 'Contract and salary history by season' })).toBeVisible();
       const measured = await page.evaluate(() => {
         const appearance = el => {
           const s = getComputedStyle(el);

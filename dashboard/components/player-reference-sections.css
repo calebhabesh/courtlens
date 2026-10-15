@@ -1,7 +1,4 @@
 @layer pages {
-  .player-reference h3 { margin: 0 0 var(--space-3); color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
-  .player-contract-layout { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--space-10); align-items: start; }
-  .player-contract-current, .player-contract-notes { min-width: 0; }
   .player-reference-table { isolation: isolate; min-width: 0; max-width: 100%; overflow-x: auto; }
   .player-reference-table table { width: 100%; border-collapse: collapse; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
   .player-reference-table th, .player-reference-table td { padding: var(--space-3); border-bottom: 1px solid var(--color-hairline); text-align: right; white-space: nowrap; }
@@ -14,6 +11,41 @@
   .player-contract-option { font-size: var(--text-xs); }
   .player-contract-option.is-player { color: var(--color-status-player-option); }
   .player-contract-option.is-team { color: var(--color-status-team-option); }
+  /* Contract: one table in the career table's look (alignment row 2, 56) — table-lift frame and
+     headers, table-well data cells, uppercase group tier, gold total rows. */
+  .player-contract-frame { background: var(--color-table-lift); border-radius: var(--radius-md); overflow: clip; }
+  .player-contract-scroll { --season-width: 184px; max-height: min(70dvh, 760px); overflow: auto; scrollbar-color: var(--color-hairline-strong) var(--color-table-lift); }
+  .player-contract-table { width: 100%; min-width: 880px; border-collapse: separate; border-spacing: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
+  .player-contract-table th, .player-contract-table td { padding: var(--space-2) var(--space-3); text-align: center; white-space: nowrap; background: var(--color-table-lift); }
+  .player-contract-table thead th { position: sticky; z-index: var(--z-sticky); }
+  .player-contract-tier-1 th { top: 0; height: 26px; padding-block: var(--space-1); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .player-contract-tier-2 th { top: 26px; height: 36px; padding-block: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; vertical-align: bottom; }
+  .player-contract-table tbody td { height: 44px; background: var(--color-table-well); border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-contract-table tbody tr:hover td { background: color-mix(in srgb, var(--color-white) 6%, var(--color-table-well)); }
+  .player-contract-table tbody tr:hover th.player-contract-season { background: color-mix(in srgb, var(--color-white) 6%, var(--color-table-lift)); }
+  .player-contract-table .group-start { border-left: 1px solid var(--color-hairline-strong); }
+  .player-contract-table .player-contract-season {
+    position: sticky; left: 0; z-index: var(--z-sticky);
+    width: var(--season-width); min-width: var(--season-width); max-width: var(--season-width);
+    text-align: left; font-weight: 600;
+  }
+  .player-contract-table thead .player-contract-season { z-index: var(--z-sticky-corner); }
+  .player-contract-table tbody th.player-contract-season { border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-contract-table .player-contract-team { text-align: left; }
+  .player-contract-table td small { display: block; color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .player-contract-table .player-contract-events-cell { width: 40%; min-width: 280px; text-align: left; white-space: normal; }
+  .player-contract-section th { padding-block: var(--space-2) var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.05em; text-align: left; text-transform: uppercase; border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-contract-empty { color: var(--color-text-secondary); text-align: left; }
+  /* Gold total rows stay at the scroll area's foot like the career row; two rows stack. */
+  .player-contract-table tfoot tr:first-child:not(:last-child) { --foot-bottom: 36px; }
+  .player-contract-table tfoot th, .player-contract-table tfoot td { position: sticky; bottom: var(--foot-bottom, 0); border-top: 1px solid var(--color-hairline-strong); }
+  .player-contract-table tfoot tr + tr th, .player-contract-table tfoot tr + tr td { border-top: 0; }
+  .player-contract-total th, .player-contract-total td { height: 36px; padding-block: var(--space-1); }
+  .player-contract-total th.player-contract-season { z-index: var(--z-sticky-corner); color: var(--color-accent); font-size: var(--text-xs); letter-spacing: 0.05em; text-transform: uppercase; }
+  .player-contract-total strong { font-weight: 650; }
+  .player-contract-events { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  .player-contract-events li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--space-3); }
+  .player-contract-events time, .player-contract-events .player-event-undated { color: var(--color-text-secondary); font-size: var(--text-xs); }
   .player-reference-note, .player-reference-credit { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
   .player-reference-note { margin-top: var(--space-3); }
   .player-reference a { color: var(--color-info); text-underline-offset: var(--space-1); }
@@ -22,19 +54,16 @@
   .player-reference-events li { display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: var(--space-4); }
   .player-reference-events time, .player-event-undated { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
   .player-reference-events p { margin: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); overflow-wrap: anywhere; }
-  .player-contract-guaranteed { display: flex; flex-wrap: wrap; gap: var(--space-3); color: var(--color-text-secondary); font-size: var(--text-sm); }
-  .player-salary-history { display: grid; gap: var(--space-3); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline); }
-  .player-earnings { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-4); }
-  .player-earnings > span { color: var(--color-text-secondary); font-size: var(--text-sm); }
-  .player-earnings > strong { color: var(--color-text); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-variant-numeric: tabular-nums; }
-  .player-earnings small { color: var(--color-text-secondary); font-size: var(--text-xs); }
   .player-reference details[open] > .player-reference-table, .player-reference details[open] > .player-reference-events { margin-top: var(--space-4); }
-  @media (max-width: 1199px) {
-    .player-contract-layout { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
-  }
   @media (max-width: 767px) {
+    .player-contract-scroll { --season-width: 112px; }
+    .player-contract-total th.player-contract-season { white-space: normal; line-height: var(--text-xs-lh); }
+    /* Wrapped labels make the rows uneven, so the totals follow the table on phones. */
+    .player-contract-table tfoot td { position: static; }
+    .player-contract-table tfoot th { bottom: auto; }
+    .player-contract-table .player-contract-events-cell { width: 200px; min-width: 200px; }
+    .player-contract-events li { grid-template-columns: minmax(0, 1fr); gap: 0; }
     .player-reference-events li { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
     .player-reference-table th:first-child { position: sticky; left: 0; background: color-mix(in srgb, var(--color-surface-0) 58%, var(--color-bg)); z-index: var(--z-sticky); padding-right: var(--space-3); }
-    .player-earnings small { flex-basis: 100%; }
   }
 }

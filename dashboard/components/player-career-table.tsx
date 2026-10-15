@@ -5,7 +5,7 @@ import "./player-career.css";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PercentileCell } from "./charts/percentile-cell";
-import { TeamLogoStack } from "./team-logo";
+import { TeamLogo, TeamLogoStack } from "./team-logo";
 import { Icon } from "./ui/icon";
 import { Badge } from "./ui/badge";
 import { IconButton, Segmented } from "./ui/kit";
@@ -93,6 +93,14 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   const career = serverRows ?? (fetched?.key === requestKey ? fetched.data : undefined);
   const seasons = career === undefined ? null : career?.seasons.map(entry => entry.season) ?? [];
   const rows = useMemo(() => new Map((career?.seasons ?? []).map(entry => [entry.season, entry.item])), [career]);
+  // Seasons per team, in the order the player first played for each (oldest first).
+  const teamSeasons = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const entry of [...(career?.seasons ?? [])].reverse()) {
+      for (const team of new Set(entry.item?.teams ?? [])) counts.set(team, (counts.get(team) ?? 0) + 1);
+    }
+    return [...counts];
+  }, [career]);
   const careerSince = Boolean(seasons?.length && firstCoveredSeason && seasons.at(-1) === firstCoveredSeason
     && (draftYear == null || draftYear < Number(firstCoveredSeason.slice(0, 4))));
 
@@ -229,9 +237,15 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
         </div>
         {trendQuery && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={trendQuery} catalog={catalog}
           hints={hints} onClose={() => setTrendTarget(null)} />}
+        {Boolean(seasons?.length) && <div className="player-career-totals">
+          <span className="player-career-totals-label">Total = {seasons?.length} {seasons?.length === 1 ? "Season" : "Seasons"}</span>
+          <ul aria-label="Seasons by team">{teamSeasons.map(([team, count]) => <li key={team} title={`${count} ${count === 1 ? "season" : "seasons"} with ${team}`}>
+            <TeamLogo team={team} size={20} /><span className="sr-only">{team}</span><span>{count}</span>
+          </li>)}</ul>
+        </div>}
         <p className="player-career-footnote">
-          {seasons?.length ? `${seasons.length} ${seasons.length === 1 ? "season" : "seasons"}. ` : ""}
           Percentiles rank each season against that season&apos;s Stats cohort.
+          {(seasons?.length ?? 0) < teamSeasons.reduce((sum, [, count]) => sum + count, 0) && " A season split between teams counts for each."}
           {careerSince && ` Seasons before ${firstCoveredSeason} aren't in CourtLens data.`}
         </p>
       </div>
