@@ -157,3 +157,14 @@ copied rather than symlinked. The fixture set comprises `player-reference`, `pla
 No changes were pushed. The owner's servers at 3100/8000 and the original crawl are left running.
 Aliases and raw-page compression remain deferred. Once the crawl finishes, rerun the offline
 reparse and selected dbt build above to include pages acquired after this run's input snapshot.
+
+
+## Final offline pass
+
+The owner's crawl finished with 2,312 matched players, no failures and 76 unmatched identities.
+A final offline reparse appended 1,579 profiles and skipped 733, with no failures; every retained
+page now has a v2 profile. See [the final report](reparse-final.json). No source requests were made.
+
+The selected dbt build ran all five models; all 19 tests pass. The marts now contain 16,785 salary
+reports (2,290 players), 24,687 transactions (2,311 players), 3,553 awards (587 players) and
+1,545 honours (698 players). Unmatched identities remain unmatched.
