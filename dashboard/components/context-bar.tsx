@@ -40,6 +40,8 @@ interface ContextBarProps {
   filters?: React.ReactNode;
   /** View/mode switches that stay visible on phones (see `FilterBar` `modes`). */
   modes?: React.ReactNode;
+  /** Short notes appended to season options, e.g. which compared players played it. */
+  seasonNotes?: Record<string, string>;
   /** Page-specific Data details rows (source routes, resolved context), after the catalog rows. */
   detailRows?: DataDetailRow[];
   /** Stats alignment: season picker flanked by previous/next buttons, phase as a segmented control. */
@@ -71,6 +73,7 @@ export function ContextBar({
   showThrough = true,
   filters,
   modes,
+  seasonNotes,
   detailRows = [],
   steppedScope = false,
   allowMultiSeason = false
@@ -141,7 +144,7 @@ export function ContextBar({
   const seasonSelect = (
     <Select value={season} onChange={(e) => updateParam("season", e.target.value)} aria-label="Filter by season">
       {!seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
-      {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
+      {seasons.map((s) => <option key={s} value={s}>{seasonNotes?.[s] ? `${s} · ${seasonNotes[s]}` : s}</option>)}
     </Select>
   );
   const chronological = [...seasons].sort();

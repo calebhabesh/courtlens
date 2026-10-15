@@ -931,6 +931,21 @@ Follow-up instructions (owner, 2026-10-15, sixth review):
     frame. Closing retracts it while the page scrolls back, and the URL changes after the
     retraction (transitionend, 700ms fallback). Sampled per frame: open and close both settle
     in about 350ms with no tab jump.
+Follow-up instructions (owner, 2026-10-15, seventh review):
+38. [x] Owner question: should the season menu show which seasons both players played, or should each
+    player get their own season so different seasons can be compared? Choose the best UX and
+    integrate it into the card. — both: a season menu under each player lists only seasons they
+    played (`seasonA`/`seasonB` override the page season; the page season clears it). A different
+    season is read with that season's default cutoff and merged per side (stats, bios, photos,
+    accolades, career); swap carries each season with its player. The page Season menu notes
+    "Dončić only" / "neither played" per season.
+39. [x] Handle seasons a player did not play: today the card shows the player ID as the name, "Age 5"
+    and "0 GP" (owner screenshot of 2003-04 Dončić vs Gilgeous-Alexander). Make the text clear. —
+    the compare API names players from the identity catalog when they have no games; the card
+    greys the photo, badges it "No games" and reads "No games in 2003-04 / Played 2018-19 – 2025-26"
+    instead of age and team.
+40. [x] Move the card down a little: more padding above and below the scope console. — 8px above,
+    16px below.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

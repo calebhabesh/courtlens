@@ -43,4 +43,11 @@ describe("comparison accolades", () => {
     expect(groups.career.find(entry => entry.key === "titles")?.shown).toEqual(["—", "0"]);
     expect(groups.career.find(entry => entry.key === "mvp")).toMatchObject({ shown: ["—", "0"], leader: null });
   });
+
+  it("reads each player's honours from their own season and cutoff when seasons differ", () => {
+    const groups = accoladeGroups([durant, lebron], [null, null], ["2015-16", "2017-18"], ["2016-06-20", "2018-04-12"]);
+    expect(groups.season.find(entry => entry.key === "season_mvp")).toMatchObject({ shown: ["5th", "—"] });
+    expect(groups.pendingSeasons).toEqual(["2017-18"]);
+    expect(groups.career.find(entry => entry.key === "all_star")).toMatchObject({ a: 1, b: 3 });
+  });
 });

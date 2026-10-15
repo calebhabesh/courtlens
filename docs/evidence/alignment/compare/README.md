@@ -90,3 +90,11 @@ session's uncommitted search alias change in the working tree, not this work.
 The Trend lines drawer slides out of the card and retracts into it ([open](review6-trend-drawer-open.png)).
 Frame samples: drawer height 0, 96, 583, 648, 653px over 300ms with the page following; closing
 653, 382, 48, 0px while scrolling back to the start. 29 compare browser tests pass.
+
+## Seventh review (instructions 38–40)
+
+[2016-17 Durant vs 2025-26 Gilgeous-Alexander](review7-cross-season-1440.png): each player has a
+season menu of their own seasons; the page bar keeps its 2025-26 scope. [2003-04](review7-no-games-2003-04.png):
+names come from the identity catalog and each card reads "No games in 2003-04 / Played …". Swap
+and reload keep each season with its player. Checks: Vitest 540/540, 199 browser tests plus a new
+per-season test, compare integration test; compare baselines regenerated.

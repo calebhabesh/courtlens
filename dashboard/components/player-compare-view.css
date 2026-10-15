@@ -2,7 +2,8 @@
   /* Player Comparison (alignment row 3): the slim 560px duel card (22), packed to stay on one
      screen: one-line rows, one control row, accolades under the stats. */
   .pvp { --pvp-width: 580px; --pvp-photo: 164px; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); min-width: 0; }
-  .pvp-scope { display: flex; justify-content: center; width: 100%; min-width: 0; }
+  /* A little more air around the scope console moves the card down (40). */
+  .pvp-scope { display: flex; justify-content: center; width: 100%; min-width: 0; padding-block: var(--space-2) var(--space-4); }
   .pvp-column { display: flex; flex-direction: column; gap: var(--space-3); width: min(100%, var(--pvp-width)); min-width: 0; }
   /* Edit Metrics, Share Image and More sit in the scope console, left of Data details (13). */
   .pvp-actions { display: flex; align-items: center; gap: var(--space-2); }
@@ -57,6 +58,10 @@
   /* The team as words under the name (32); a traded season lists both, oldest first. */
   .pvp-team { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 var(--space-2); color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 500; }
   .pvp-team-entry { display: inline-flex; align-items: center; gap: var(--space-1); }
+  /* Each player's own season (38) and the plain no-games state (39). */
+  .pvp-season { margin-top: var(--space-1); }
+  .pvp-dnp { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .pvp-slot[data-inactive] .pvp-photo { filter: grayscale(1) brightness(0.8); }
   .pvp-bio { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
   /* The search slides in under the photo (26) with its label centred above the field (27). */
   .pvp-search { width: 100%; min-width: 0; text-align: left; animation: pvp-search-in var(--dur-base) var(--ease-out); }

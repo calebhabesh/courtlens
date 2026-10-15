@@ -29,7 +29,9 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
   labels: Map<string, MetricDefinition>;
   title: string;
   season?: string;
-}>(function CompareCardExport({ players, rows, accolades = [], direction, labels, title, season }, ref) {
+  /** Each player's own season when they differ; the photo and caption follow it. */
+  seasons?: [string, string];
+}>(function CompareCardExport({ players, rows, accolades = [], direction, labels, title, season, seasons }, ref) {
   const lines: ExportRow[] = [
     ...rows.map(row => {
       const a = typeof row.value_a === "number" ? row.value_a : null, b = typeof row.value_b === "number" ? row.value_b : null;
@@ -53,7 +55,8 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
     {players.map((player, side) => {
       const x = column(side as 0 | 1) - PHOTO / 2;
       const latest = slotTeams(player).at(-1);
-      const source = portraitSource(player.portrait_url, player.id, 288, season ? { season, team: latest } : null);
+      const own = seasons?.[side] ?? season;
+      const source = portraitSource(player.portrait_url, player.id, 288, own ? { season: own, team: latest } : null);
       const id = `pvp-export-clip-${side}`;
       return <g key={player.id}>
         <clipPath id={id}><rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" /></clipPath>
@@ -63,7 +66,7 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
         <rect x={x + PHOTO - 58} y={TOP + PHOTO - 30} width="52" height="24" rx="6" fill="var(--color-text)" />
         <text x={x + PHOTO - 32} y={TOP + PHOTO - 13} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-surface-0)">{`${player.games_played} GP`}</text>
         <text x={column(side as 0 | 1)} y={TOP + PHOTO + 26} textAnchor="middle" fontSize="15" fontWeight="600" fill="var(--color-text)">{player.name}</text>
-        <text x={column(side as 0 | 1)} y={TOP + PHOTO + 44} textAnchor="middle" fontSize="12" fill="var(--color-text-secondary)">{slotTeams(player).map(team => teamRecord(team)?.artwork_name ?? team).join(", ")}</text>
+        <text x={column(side as 0 | 1)} y={TOP + PHOTO + 44} textAnchor="middle" fontSize="12" fill="var(--color-text-secondary)">{[seasons && seasons[0] !== seasons[1] ? seasons[side] : null, ...slotTeams(player).map(team => teamRecord(team)?.artwork_name ?? team)].filter(Boolean).join(" · ")}</text>
       </g>;
     })}
     {lines.map((line, index) => {

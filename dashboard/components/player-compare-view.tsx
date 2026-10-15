@@ -32,6 +32,8 @@ const smooth = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion:
 /** Owner trial, row 3, 22: league percentiles hidden to keep the slim card on one screen. */
 const SHOW_PERCENTILES = false;
 
+type Side = { season: string; before_date: string };
+
 type Scope = { season: string; phase: string; before_date: string; window: string; release_id?: string };
 
 const MODES: { value: CompareCountingMode; label: string; rate?: boolean }[] = [
@@ -44,10 +46,14 @@ const MODES: { value: CompareCountingMode; label: string; rate?: boolean }[] = [
  * one row of presets and the span/counting menu, then mirrored one-line rows for the stats and the
  * accolades. Pills mark the leading side per metric, which also reads heavier; there is no verdict.
  */
-export function PlayerCompareView({ comparison: served, bios: servedBios = [null, null], career: servedCareer = null, span = "season", cohort, metricDefinitions = [], workbenchCatalog, additionalPlayerIds = [], context, selector, error = null }: {
+export function PlayerCompareView({ comparison: served, bios: servedBios = [null, null], career: servedCareer = null, sides: servedSides = null, played: servedPlayed = null, span = "season", cohort, metricDefinitions = [], workbenchCatalog, additionalPlayerIds = [], context, selector, error = null }: {
   comparison: PlayerComparisonResponse | null; bios?: [PlayerBio | null, PlayerBio | null]; catalog?: AnalyticsCatalog; cohort?: WorkbenchQueryResponse | null;
   /** Both careers through the cutoff; present when ``span`` is career. */
   career?: ComparisonCareerResponse | null; span?: "season" | "career";
+  /** Each player's season and cutoff; they differ when one player is compared in another season. */
+  sides?: { a: Side; b: Side } | null;
+  /** Seasons each player has games in, this phase. */
+  played?: { a: string[]; b: string[] } | null;
   metricDefinitions?: MetricDefinition[]; workbenchCatalog?: WorkbenchCatalog | null; additionalPlayerIds?: string[];
   context: Scope; selector?: ReactNode; error?: string | null;
 }) {
@@ -58,6 +64,8 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   const comparison = served && flipped ? mirror(served) : served;
   const bios: [PlayerBio | null, PlayerBio | null] = flipped ? [servedBios[1], servedBios[0]] : servedBios;
   const career = servedCareer && flipped ? { ...servedCareer, player_a: servedCareer.player_b, player_b: servedCareer.player_a } : servedCareer;
+  const sides = servedSides && flipped ? { a: servedSides.b, b: servedSides.a } : servedSides;
+  const played = servedPlayed && flipped ? { a: servedPlayed.b, b: servedPlayed.a } : servedPlayed;
   const { views } = useWorkspace();
   const [exporting, setExporting] = useState(false), [notice, setNotice] = useState(""), [editing, setEditing] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -112,7 +120,23 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     // A fallback for when transitionend never fires (nothing left to animate).
     window.setTimeout(finishClosing, 700);
   }
-  const accolades = accoladeGroups(bios, [a?.championships, b?.championships], context.season, context.before_date);
+  const seasonOf = (side: "a" | "b") => sides?.[side].season ?? context.season;
+  const cutoffOf = (side: "a" | "b") => sides?.[side].before_date ?? context.before_date;
+  const crossSeason = seasonOf("a") !== seasonOf("b");
+  const accolades = accoladeGroups(bios, [a?.championships, b?.championships], [seasonOf("a"), seasonOf("b")], [cutoffOf("a"), cutoffOf("b")]);
+  // The page Season menu marks which seasons each compared player played (38).
+  const lastName = (name?: string) => name?.split(" ").slice(1).join(" ") || name || "";
+  const seasonNotes = played && a && b ? Object.fromEntries((workbenchCatalog?.seasons ?? []).map(entry => {
+    const inA = played.a.includes(entry), inB = played.b.includes(entry);
+    return [entry, inA && inB ? "" : inA ? `${lastName(a.name)} only` : inB ? `${lastName(b.name)} only` : "neither played"];
+  }).filter(([, note]) => note)) : undefined;
+  /** Compare one player in another season; the page season clears that player's override. */
+  function chooseSeason(side: "a" | "b", season: string) {
+    const next = new URLSearchParams(params.toString());
+    const key = side === "a" ? "seasonA" : "seasonB";
+    if (season === context.season) next.delete(key); else next.set(key, season);
+    navigate(next, true);
+  }
 
   function navigate(next: URLSearchParams, server: boolean) {
     if (server) router.push(`/compare?${next}`, { scroll: false });
@@ -134,6 +158,9 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     if (!a || !b) return;
     const next = new URLSearchParams(params.toString());
     next.set("playerA", b.id); next.set("playerB", a.id);
+    const seasonA = params.get("seasonA"), seasonB = params.get("seasonB");
+    if (seasonB) next.set("seasonA", seasonB); else next.delete("seasonA");
+    if (seasonA) next.set("seasonB", seasonA); else next.delete("seasonB");
     if (additionalPlayerIds.length) next.set("players", [b.id, a.id, ...additionalPlayerIds].join(",")); else next.delete("players");
     navigate(next, false);
   }
@@ -153,6 +180,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     <PageHeader className="pvp-header" icon="swap" title="Player Comparison" subtitle="Compare stats between any two NBA players" />
     <div className="pvp-scope">
       <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
+        seasonNotes={seasonNotes}
         modes={<div className="pvp-actions">
           <Button size="sm" variant="primary" icon="sliders" onClick={() => setEditing(true)}>Edit Metrics</Button>
           <Button size="sm" icon="download" disabled={exporting || !a || !b} onClick={() => void share()}>{exporting ? "Exporting…" : "Share Image"}</Button>
@@ -175,10 +203,12 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
       <section className="pvp-card" aria-label="Comparison card">
         {a && b ? <>
           <div className="pvp-players">
-            <ComparePlayerSlot key={`a-${a.id}`} side="a" player={a} bio={bios[0]} season={context.season} onPick={selection => pick("a", selection)}
+            <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" player={a} bio={bios[0]} season={seasonOf("a")} playedSeasons={played?.a ?? null}
+              onSeason={season => chooseSeason("a", season)} onPick={selection => pick("a", selection)}
               games={careerView ? careerOf("a")?.item?.games_played : undefined} />
             <IconButton className="pvp-swap" size="sm" variant="secondary" icon="swap" label="Swap players" onClick={swap} />
-            <ComparePlayerSlot key={`b-${b.id}`} side="b" player={b} bio={bios[1]} season={context.season} onPick={selection => pick("b", selection)}
+            <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" player={b} bio={bios[1]} season={seasonOf("b")} playedSeasons={played?.b ?? null}
+              onSeason={season => chooseSeason("b", season)} onPick={selection => pick("b", selection)}
               games={careerView ? careerOf("b")?.item?.games_played : undefined} />
           </div>
           <div className="pvp-controls">
@@ -225,7 +255,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
             <table key={`${a.id}-${b.id}-accolades`} className="pvp-rows pvp-fade" aria-label="Accolades">
               <caption className="sr-only">{`Accolades through ${formatDate(context.before_date)}`}</caption>
               <Columns names={[a.name, b.name]} />
-              <tbody><AccoladeRows groups={accolades} season={context.season} names={[a.name, b.name]} /></tbody>
+              <tbody><AccoladeRows groups={accolades} season={crossSeason ? "Season" : context.season} names={[a.name, b.name]} /></tbody>
             </table>
           </div>
           {!rows.length && <GatedNote action={<Button size="md" onClick={() => change({ preset: "custom", customMetrics: CUSTOM_DEFAULT.join(",") })}>Reset metrics</Button>}>No custom metrics selected.</GatedNote>}
@@ -253,7 +283,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     </div>
 
     {a && b && <div className="pvp-export" aria-hidden="true">
-      <CompareCardExport ref={svgRef} season={context.season} players={[a, b]} rows={rows} accolades={[...accolades.career, ...accolades.season]} direction={direction} labels={new Map(metricDefinitions.map(entry => [entry.key, entry]))} title={`${exportTitle} · ${spanLabel} · ${COMPARE_PRESETS[active].label}`} />
+      <CompareCardExport ref={svgRef} season={context.season} seasons={[seasonOf("a"), seasonOf("b")]} players={[a, b]} rows={rows} accolades={[...accolades.career, ...accolades.season]} direction={direction} labels={new Map(metricDefinitions.map(entry => [entry.key, entry]))} title={`${exportTitle} · ${spanLabel} · ${COMPARE_PRESETS[active].label}`} />
     </div>}
     <CompareMetricsDrawer open={editing} onClose={() => setEditing(false)} selected={custom} catalog={metricDefinitions} views={views}
       onChange={next => change({ preset: "custom", customMetrics: next.join(",") })} />
@@ -332,7 +362,7 @@ function AccoladeRows({ groups, season, names }: { groups: AccoladeGroups; seaso
     {groups.career.map(entry => row(entry, true))}
     {(groups.season.length > 0 || groups.seasonPending) && <tr className="pvp-group"><th colSpan={5} scope="colgroup">{season} Honors</th></tr>}
     {groups.season.map(entry => row(entry, false))}
-    {groups.seasonPending && <tr className="pvp-pending"><td colSpan={5}>{season} awards are announced after this cutoff.</td></tr>}
+    {groups.seasonPending && <tr className="pvp-pending"><td colSpan={5}>{groups.pendingSeasons.join(" and ")} awards are announced after this cutoff.</td></tr>}
   </>;
 }
 

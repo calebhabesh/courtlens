@@ -1372,11 +1372,25 @@ def compare_players_endpoint(
     )
     titles = championships(session, context.dataset_id, context.before_date, [target_a, target_b])
 
+    # A player without games in the scope has no profile name; use the identity catalog's name
+    # instead of echoing the ID (alignment row 3, 39).
+    names: dict[str, str] = {
+        external_id: display_name
+        for external_id, display_name in session.execute(
+            select(WorkbenchIdentity.external_id, WorkbenchIdentity.display_name).where(
+                WorkbenchIdentity.kind == "player",
+                WorkbenchIdentity.external_id.in_([target_a, target_b]),
+            )
+        ).all()
+    }
+
     # API-only identity enrichment leaves analytical/saved serializers unchanged.
     def with_teams(player: dict[str, Any]) -> dict[str, Any]:
         association = associations.get(player["id"])
+        name = player.get("name")
         return {
             **player,
+            "name": names.get(player["id"], name) if not name or name == player["id"] else name,
             "teams": association.teams if association else [],
             "teams_chronological": ordered.get(player["id"], []),
             "championships": titles.get(player["id"]),
