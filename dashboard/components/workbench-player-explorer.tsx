@@ -1055,7 +1055,7 @@ export function WorkbenchPlayerExplorer({
                         })}`} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link"
                           onClick={rememberTablePosition}>
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
-                        <span className={`player-cell-teams ${inlineMove ? "has-move" : ""}`}>{player.teams?.join(" / ") || "Team unknown"}{player.position && <span className="player-cell-position"> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></span>} · {/* On a one-team row the chip takes the season's place (every row
+                        <span className={`player-cell-teams ${inlineMove ? "has-move" : ""}`}><span>{player.teams?.join(" / ") || "Team unknown"}{player.position && <span className="player-cell-position"> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></span>} ·</span>{" "}{/* On a one-team row the chip takes the season's place (every row
                           shares the season; the chip's title names it); a multi-team row keeps its season and puts
                           the chip on a line of its own, so it is never truncated. */}
                           {inlineMove ? moveChip : seasonLabel}</span>

@@ -13,7 +13,7 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Switzer interface font verified; owner review pending |
-| 1 | Stats | `/stats` | 👀 | Instructions through 81 done except deferred 43f/43g; owner review pending |
+| 1 | Stats | `/stats` | 👀 | Instructions through 82 done except deferred 43f/43g; owner review pending |
 | 2 | Dashboard (player) | `/players/[id]` | 👀 | Reference parser/marts and Contract, transactions, highs follow-up ready for review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
@@ -484,6 +484,13 @@ Follow-up instructions (owner, 2026-10-14, retained-page data):
 81. [x] In-table Per Game / Regular controls should be 32px. — kit `sm` on Stats and the career
     table; measured group heights 32px at 1440, 48px at 390 with the existing phone touch sizing.
     [Measured screenshots and replayable checks](evidence/alignment/players/reference-v2/README.md#stats-follow-up).
+
+82. [x] Make sure the "now" pill badge is center aligned with the text/dot beside it. It currently
+    looks lower. If needed, increase the spacing between the name on the first line and the text
+    on the second line to accommodate this. (Owner screenshot, 2026-10-14.) — subtitle text and pill
+    share a flex row with centered alignment; their measured vertical center difference is 0 px at
+    1440 and 390. The 18 px subtitle contains the whole pill without extra name spacing.
+    [Screenshots and verification](evidence/alignment/stats/now-pill-centering/README.md).
 
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
