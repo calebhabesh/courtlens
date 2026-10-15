@@ -98,3 +98,10 @@ season menu of their own seasons; the page bar keeps its 2025-26 scope. [2003-04
 names come from the identity catalog and each card reads "No games in 2003-04 / Played …". Swap
 and reload keep each season with its player. Checks: Vitest 540/540, 199 browser tests plus a new
 per-season test, compare integration test; compare baselines regenerated.
+
+## Eighth review (instructions 41–42)
+
+[Tighter console spacing](review8-tighter-1440.png): the card starts 22px higher and ends about
+40px higher. Changing the console Season from 2025-26 to 2024-25 with Dončić on 2023-24 put both
+players on 2024-25 and removed `seasonA`. Checks: Vitest 540/540; 134 browser tests (the override
+test skips on the one-season fixture; verified on live data); compare baselines regenerated.

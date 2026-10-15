@@ -33,6 +33,7 @@ const smooth = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion:
 const SHOW_PERCENTILES = false;
 
 type Side = { season: string; before_date: string };
+const PER_PLAYER_SEASONS = ["seasonA", "seasonB"];
 
 type Scope = { season: string; phase: string; before_date: string; window: string; release_id?: string };
 
@@ -181,6 +182,8 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     <div className="pvp-scope">
       <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
         seasonNotes={seasonNotes}
+        // The console's Season is a global override: it resets both players' own seasons (42).
+        clearOnSeasonChange={PER_PLAYER_SEASONS}
         modes={<div className="pvp-actions">
           <Button size="sm" variant="primary" icon="sliders" onClick={() => setEditing(true)}>Edit Metrics</Button>
           <Button size="sm" icon="download" disabled={exporting || !a || !b} onClick={() => void share()}>{exporting ? "Exporting…" : "Share Image"}</Button>

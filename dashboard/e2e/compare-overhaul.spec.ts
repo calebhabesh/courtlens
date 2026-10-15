@@ -51,6 +51,15 @@ test("each player can be compared in their own season; seasons without games say
   await expect(page.locator(".pvp-name").first()).not.toHaveText(/^\d+$/);
 });
 
+test("the console Season is a global override that clears per-player seasons (row 3, 42)",async({page})=>{
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&seasonA=2024-25");
+  const season=page.getByRole("combobox",{name:"Filter by season",exact:true});
+  const other=await season.locator("option").evaluateAll(options=>options.map(option=>(option as HTMLOptionElement).value).find(value=>value!=="2025-26"));
+  test.skip(!other,"Fixture catalog has one season");
+  await season.selectOption(other!);await expect(page).toHaveURL(new RegExp(`season=${other}`));
+  expect(new URL(page.url()).searchParams.get("seasonA")).toBeNull();
+});
+
 test("team comparison preserves unknown versus zero, unknown outcomes and scope across tabs",async({page})=>{
   await openWorkbench(page,"/team-compare?teamA=100&teamB=200&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
   const points=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Points Per Game",exact:true})});
