@@ -512,3 +512,12 @@ selector uses the shared menu and stays in its slot. The 1440 and 390 scoped gla
 Lint, typecheck, 544 Vitest tests, 53 browser checks, and the production build pass, with one
 browser skip due to the fixture catalog. [Evidence](evidence/alignment/compare/season-honors/README.md).
 Owner alignment remains pending.
+
+## 2026-10-15: Comparison honors copy and fixed year context
+
+Alignment instructions 57 and 58 remove pending honors copy from the card and export. Empty
+honors use a dash. Year headings in the counting menu have a darker fill and remain labels
+that keyboard navigation skips. Live 1440 and 390 captures, exact honor alignment, and the
+scoped glance check pass. Lint, typecheck, 544 Vitest tests, 29 browser checks, and the production
+build pass. One browser test skips on the one-season fixture.
+[Evidence](evidence/alignment/compare/honors-context/README.md). Owner alignment remains pending.

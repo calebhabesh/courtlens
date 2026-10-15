@@ -21,7 +21,7 @@
   .pvp-swap { margin-top: calc(var(--pvp-photo) / 2 - var(--control-sm) / 2); }
   .pvp-controls { --pvp-counting-width: 160px; display: grid; grid-template-columns: minmax(0, 1fr) var(--pvp-counting-width); align-items: center; gap: var(--space-2); }
   .pvp-counting-menu { display: grid; width: var(--pvp-counting-width); justify-self: center; }
-  .pvp-counting-group { margin: 0; padding: var(--space-2) var(--space-3); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .pvp-counting-group { margin: 0; padding: var(--space-2) var(--space-3); border-radius: var(--radius-xs); background: var(--color-surface-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
   .pvp-counting-current { color: var(--color-accent); font-weight: 600; }
   .pvp-players-empty { display: grid; grid-template-columns: repeat(2, minmax(0, var(--pvp-photo))); justify-content: center; gap: var(--space-8); }
 
@@ -100,7 +100,7 @@
   .pvp-honors-side { position: relative; grid-column: 2; min-width: 0; width: calc(100% + var(--space-12)); margin-inline: calc(var(--space-6) * -1); }
   .pvp-honors-side + .pvp-honors-side { grid-column: 4; }
   .pvp-honors-strip { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-1); min-height: var(--space-5); white-space: nowrap; }
-  .pvp-honors-empty, .pvp-honors-note { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; }
+  .pvp-honors-empty { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; }
   /* The card closes on the wordmark alone (10). */
   .pvp-foot { display: flex; align-items: center; justify-content: center; gap: var(--space-2); color: var(--color-accent); }
 

@@ -1034,6 +1034,17 @@ Follow-up instructions (owner, 2026-10-15, season honors):
     unchanged across modes. 544 Vitest and 53 browser checks pass; the one-season fixture skips
     the console override test. [Evidence](evidence/alignment/compare/season-honors/README.md).
     Instructions 49 through 56 are ready for owner review. Instruction 48 remains pending.
+Follow-up instructions (owner, 2026-10-15, honors copy and counting-menu context):
+57. [x] Remove "Pending" under season honors and the "End-of-season awards pending at this
+    cutoff" note; they make no sense in this section. Both card and export show a dash for
+    empty honors, with source-aware accessible text. Existing award cutoffs remain.
+58. [x] In the comparison-container dropdown, shade the year differently so users know it is
+    fixed context rather than an entry. Season and career headings use a darker fill and
+    semibold text; neither is selectable or receives menu-item focus. Desktop and phone
+    captures, 544 Vitest tests, 29 browser checks, lint, typecheck, and production build pass.
+    One browser test skips on the one-season fixture.
+    [Evidence](evidence/alignment/compare/honors-context/README.md).
+    Instructions 57 and 58 are ready for owner review; instruction 48 remains pending.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
