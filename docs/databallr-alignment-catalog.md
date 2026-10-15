@@ -13,7 +13,7 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Switzer interface font verified; owner review pending |
-| 1 | Stats | `/stats` | 👀 | Instructions through 82 done except deferred 43f/43g; owner review pending |
+| 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
 | 2 | Dashboard (player) | `/players/[id]` | 👀 | Reference parser/marts and Contract, transactions, highs follow-up ready for review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
@@ -491,6 +491,11 @@ Follow-up instructions (owner, 2026-10-14, retained-page data):
     share a flex row with centered alignment; their measured vertical center difference is 0 px at
     1440 and 390. The 18 px subtitle contains the whole pill without extra name spacing.
     [Screenshots and verification](evidence/alignment/stats/now-pill-centering/README.md).
+
+83. [x] Increase spacing between first and second line in the table. Follow-up: "A smidgen less."
+    (Owner screenshot and spacing adjustment, 2026-10-14.) — 2 px subtitle top margin using
+    `--space-0-5`, reduced from the initial 4 px. Measured at 1440/390 in both densities; row heights
+    and centered pill alignment retained. [Evidence](evidence/alignment/stats/name-subtitle-spacing/README.md).
 
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):

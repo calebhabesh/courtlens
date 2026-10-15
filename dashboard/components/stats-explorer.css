@@ -83,7 +83,7 @@
 .stats-workspace .dense-stats-table .player-cell { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
 .stats-workspace .stats-identity-copy { flex: 1; min-width: 0; line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .player-cell-name { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal; font-size: var(--text-md); line-height: var(--text-sm-lh); }
-.stats-workspace .dense-stats-table .player-cell-teams { display: block; font-size: var(--text-xs); color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stats-workspace .dense-stats-table .player-cell-teams { display: block; margin-top: var(--space-0-5); font-size: var(--text-xs); color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Photos 40 px and logos 28 px, in 52 px rows (owner, 2026-10-14); phones keep 32/20 in 46 px rows. */
 .stats-workspace .dense-stats-table .stats-primary-portrait { width: 40px; height: 40px; min-width: 40px; min-height: 40px; border: 0; }
 .stats-workspace .dense-stats-table .team-logo-stack { flex-wrap: nowrap; flex-shrink: 0; }
