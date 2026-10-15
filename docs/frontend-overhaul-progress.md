@@ -486,3 +486,10 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
   unchanged row heights, intact dividers and no page overflow. The pinned-Year checks pass.
 - Lint/typecheck, Vitest 526/526, production webpack build and 15 affected browser checks pass.
 - [Evidence](evidence/alignment/players/career-awards/README.md). Owner alignment remains pending.
+
+## 2026-10-15 — Centered career Accolades subheader
+
+- Instruction 54 centers Accolades under Awards and gives it the same 4 px bottom padding as
+  metric headers. Exact text-center measurements and scoped glance pass at 1440/390.
+- Lint/typecheck, 526 Vitest tests, production build and seven career browser checks pass.
+- [Evidence](evidence/alignment/players/career-awards/README.md#centered-subheader-follow-up-2026-10-15).
