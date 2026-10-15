@@ -752,3 +752,19 @@ and moved-team/date browser checks pass with one final-run phone height precisio
 its isolated rerun (47.99993896484375 vs 48). The production-served SVG matches the source.
 Owner finds the initial preview too sparse and faint and requested the tuning parameters;
 density/opacity refinement remains open. [Evidence](evidence/alignment/app-shell/coach-pattern/README.md).
+
+### App-shell follow-up: denser irregular coaching-board scatter (2026-10-14)
+
+Instructions 9–10 raise opacity to 7% and replace the small repeated arrangement with 100 seeded
+positions across a 1152 px tile. Marks retain their size and 1.5 px strokes, with slight X-angle
+variation. Measured minimum center separation is 72.28 px, including across seams. All 100 x
+coordinates and 99 y coordinates are distinct. The generator reruns byte-identically; SVG uses
+native dimensions so CSS does not scale the marks.
+
+Live 1440/2400/390 captures and player-header inspection pass the scoped glance check: irregular
+spacing, more visible marks, legible labels and no page overflow. Toggling the pattern preserves
+the opaque table interior pixels and geometry. Text contrast at full stroke coverage is at least
+6.18:1; forced colors still hides the pattern. Lint/typecheck, Vitest 525/525, production webpack
+build and five existing header browser checks pass. Production-served asset parity and intrinsic
+sizing pass at desktop/phone widths. Owner visual approval remains pending.
+[Evidence](evidence/alignment/app-shell/coach-pattern-tuning/README.md).

@@ -1,0 +1,45 @@
+{
+  "source": "Live local dashboard and PostgreSQL; read-only requests",
+  "pixelComparison": "Opaque frame interior excludes the transparent rounded corners",
+  "results": [
+    {
+      "width": 1440,
+      "nativeTile": {
+        "width": 1152,
+        "height": 1152
+      },
+      "cssScaling": false,
+      "patternVisible": true,
+      "opaqueTableInteriorPixelsUnchanged": true,
+      "tableGeometryUnchanged": true,
+      "pageOverflow": false,
+      "forcedColorsPatternHidden": true
+    },
+    {
+      "width": 2400,
+      "nativeTile": {
+        "width": 1152,
+        "height": 1152
+      },
+      "cssScaling": false,
+      "patternVisible": true,
+      "opaqueTableInteriorPixelsUnchanged": true,
+      "tableGeometryUnchanged": true,
+      "pageOverflow": false,
+      "forcedColorsPatternHidden": true
+    },
+    {
+      "width": 390,
+      "nativeTile": {
+        "width": 1152,
+        "height": 1152
+      },
+      "cssScaling": false,
+      "patternVisible": true,
+      "opaqueTableInteriorPixelsUnchanged": true,
+      "tableGeometryUnchanged": true,
+      "pageOverflow": false,
+      "forcedColorsPatternHidden": true
+    }
+  ]
+}

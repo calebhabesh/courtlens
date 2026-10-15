@@ -1,0 +1,24 @@
+{
+  "tile_px": 1152,
+  "marks": {
+    "x": 50,
+    "o": 50
+  },
+  "unique_center_x": 100,
+  "unique_center_y": 99,
+  "minimum_center_spacing_px": 72.28,
+  "opacity": 0.07,
+  "stroke_px": 1.5,
+  "circle_diameter_px": 18,
+  "cross_span_px": 16,
+  "mark_size_preserved": true,
+  "generator_deterministic": true,
+  "sha256": "d38d678649fe6a95ac931944a9c92f59469cfac43228992f663e93b2900cdb13",
+  "svg_bytes": 6776,
+  "text_contrast_at_full_stroke": {
+    "color-text": 10.01,
+    "color-on-bg-secondary": 7.38,
+    "color-on-bg-tertiary": 6.18,
+    "color-accent": 7.7
+  }
+}

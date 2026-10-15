@@ -12,7 +12,7 @@ Rows are in working order.
 
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
-| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 🔧 | Coaching-board backdrop implemented; owner requested density/visibility tuning |
+| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Denser, irregular coaching-board backdrop ready for owner review |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
 | 2 | Dashboard (player) | `/players/[id]` | 👀 | Reference parser/marts and Contract, transactions, highs follow-up ready for review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
@@ -53,7 +53,7 @@ Data-blocked: <Databallr elements we can't source>
 Evidence: docs/evidence/alignment/<page>/
 ```
 
-### 0 App shell — 🔧 in progress
+### 0 App shell — 👀 ready for review
 Instructions (owner, 2026-10-13):
 1. [x] On the site nav bar, move the wordmark closer to the actual logo so they look like one
    wordmark + logo; they look a little far apart from each other. — navbar gap 12px → 4px
@@ -83,7 +83,17 @@ Instructions (owner, 2026-10-13):
    384 px / 4% SVG preview implemented and measured; static shell background, transparent Stats
    wrapper, no change to filled table pixels. [Evidence](evidence/alignment/app-shell/coach-pattern/README.md).
    Owner preview feedback: "a little too infrequent, and subtle"; asked which parameters can be
-   adjusted. Density/opacity tuning is pending; app shell remains in progress.
+   adjusted; the approved tuning follows in instruction 9.
+9. [x] Bring the marks closer together (roughly 144 px apart, a 288 px tile) and raise opacity
+   from 4% to 7%, keeping the marks roughly 18–20 px and strokes at 1.5 px. Owner: "Yes. Let's do
+   that, they are very sparse, and a little too subtle." (2026-10-14.) The spacing arrangement is
+   superseded by instruction 10; 7% opacity, original mark size and 1.5 px strokes are retained.
+10. [x] "It seems like they are being placed on rows, I just want it to be randomly placed across
+    the backdrop and closer to each other." (Owner, 2026-10-14.) — replace the small repeated
+    arrangement with an irregular, more closely spaced scatter; keep it static at 7% opacity.
+    — 100 seeded, irregular positions on a 1152 px tile, at least 72 px apart including across
+    seams, with small X-angle variations. Native SVG sizing preserves the marks. Generator
+    reruns produce identical bytes. [Evidence](evidence/alignment/app-shell/coach-pattern-tuning/README.md).
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.
