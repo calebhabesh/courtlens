@@ -45,15 +45,11 @@
     transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
   .pvp-photo:is(:hover, :focus-visible) .pvp-change { background: var(--color-accent); color: var(--color-on-accent); }
-  /* The latest team's logo, large and centred behind the head like Databallr's cards (33, 34);
-     the portrait paints above it. */
-  /* Lightened artwork with a soft light edge keeps every logo readable on its own colour (Raptors
-     red on red, 76ers and Jazz navy on navy): at least 2.2:1 for all 30 teams, against 1.03 for
-     the plain logo. Black marks stay black. At 115% of the tile, centred a little above the
-     middle, more of it shows around the head. The player page tile and the share image match. */
+  /* The latest team's logo, large behind the head like Databallr's cards (33, 34), at 115% of the
+     tile and a little above the middle so more of it shows around the head; the portrait paints
+     above it. The player page tile and the share image match. */
   .pvp-watermark {
-    position: absolute; left: -7.5%; top: -11.5%; width: 115%; height: auto; opacity: 0.5;
-    filter: brightness(1.8) saturate(0.75) drop-shadow(0 0 1.5px color-mix(in srgb, var(--color-text) 80%, transparent));
+    position: absolute; left: -7.5%; top: -11.5%; width: 115%; height: auto; opacity: 0.42;
     pointer-events: none; user-select: none;
   }
   .pvp-photo .pvp-portrait { position: relative; }

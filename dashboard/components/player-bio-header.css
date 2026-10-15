@@ -14,11 +14,9 @@
     position: relative; display: block; width: var(--bio-photo); aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-md);
     background: radial-gradient(120% 100% at 50% 8%, var(--team-tint, var(--color-surface-3)), color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 35%, var(--color-surface-0)));
   }
-  /* The PvP watermark's treatment: lightened artwork with a soft light edge, readable on every
-     team's colour, at 115% so more of it shows around the head. */
+  /* The PvP watermark: the logo at 115% so more of it shows around the head. */
   .player-bio-watermark {
-    position: absolute; left: -7.5%; top: -11.5%; width: 115%; height: auto; opacity: 0.5;
-    filter: brightness(1.8) saturate(0.75) drop-shadow(0 0 1.5px color-mix(in srgb, var(--color-text) 80%, transparent));
+    position: absolute; left: -7.5%; top: -11.5%; width: 115%; height: auto; opacity: 0.42;
     pointer-events: none; user-select: none;
   }
   .player-bio-photo .player-bio-portrait {
