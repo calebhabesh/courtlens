@@ -594,6 +594,9 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
     honours row (titles and major awards in gold); the career table adds an Awards column and an
     All-Star star on regular-season rows. Refresh yearly after the awards (late June, `--active-only`);
     see source policy v3. Earlier proposal text:
+43. [x] Career table cells are clickable like Stats. — each season cell opens the same Stats trend
+    dialog (stat switcher, add players, definitions) with the page's Stats query; the Career row stays
+    plain. Also fixed a race where Esc could miss "Back to table" in the frame before its listener.
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
 awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut). The
 "now TOR" chip on Stats rows was approved and built as Stats instruction 72.
