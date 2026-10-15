@@ -13,7 +13,7 @@ describe("PC04 comparison units and persisted custom metrics",()=>{
 });
 describe("alignment row 3 duel card",()=>{
   it("labels counts by word in every mode and others by catalog short name",()=>{expect(cardLabel("pts_per_game")).toBe("Points");expect(cardLabel("tov")).toBe("Turnovers");expect(cardLabel("ts_pct",{short_name:"TS%",display_name:"True Shooting"})).toBe("TS%");});
-  it("reads percentages without a sign, games whole and unknown as a dash",()=>{expect(formatCardValue(0.665,"percentage")).toBe("66.5");expect(formatCardValue(68,"games","gp")).toBe("68");expect(formatCardValue(null,"points")).toBe("—");});
+  it("reads percentages without a sign, games whole and unknown as a dash",()=>{expect(formatCardValue(0.665,"percentage")).toBe("66.5");expect(formatCardValue(68,"games","gp")).toBe("68");expect(formatCardValue(14984.0,"points","pts")).toBe("14,984");expect(formatCardValue(31.14,"points","pts_per_game")).toBe("31.1");expect(formatCardValue(null,"points")).toBe("—");});
   it("opens Overall groups on each group's first metric in any counting mode",()=>{expect(overallGroupStart("pts_per_75")).toBe("Counting");expect(overallGroupStart("ts_pct")).toBe("Efficiency");expect(overallGroupStart("reb_per_game")).toBeNull();});
   it("leaves per-game twins, aliases and team factors out of Edit Metrics",()=>{
     const groups=pickerMetrics([{key:"pts",category:"scoring"},{key:"pts_per_game",category:"scoring"},{key:"reb",category:"rebounding"},{key:"reb_total",category:"rebounding"},{key:"fgm_per_game",category:"efficiency"},{key:"team_pace",category:"team_factors"}] as MetricDefinition[]);

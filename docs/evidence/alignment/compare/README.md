@@ -66,3 +66,12 @@ Back to the slim 560px card with percentiles hidden as a trial: [default](review
 counting menu) and [phone](review3-phone-390.png). Card plus trend tab end at 1,104 / 1,188 /
 1,254px at 1440 wide. The logo sits beside the wordmark on the card and share image.
 Checks: lint/typecheck, Vitest 537/537, 199 affected browser tests; compare baselines regenerated.
+
+## Fourth review (instructions 24–30)
+
+[Default with more room](review4-default-1440.png) (ends at 1,230px), [search reveal](review4-search-reveal.png)
+with a centred label, [career totals](review4-career-totals-1440.png) in the text colour with whole
+numbers. Swaps mirror the card on the client (about 70ms). [Wembanyama 2023-24, 2024-25, 2025-26
+and the CDN's latest](review4-wembanyama-2023-24-to-latest.png): latest equals the 2026-27 folder.
+Checks: lint/typecheck, Vitest 537/537, affected browser specs (presentation defaults ×3 for the
+rounded touch-target check); compare baselines regenerated.

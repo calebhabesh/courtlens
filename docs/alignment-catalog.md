@@ -886,6 +886,25 @@ Follow-up instructions (owner, 2026-10-15, third review):
     1,254px (Career) at 1440 wide; the owner's screenshot shows about 1,320 CSS px of height.
 23. [x] Put the CourtLens logo beside the card's wordmark. — BrandMark beside the wordmark on the
     card and in the share image.
+Follow-up instructions (owner, 2026-10-15, fourth review):
+24. [x] The card saves too much space; give it more breathing room. — 580px card, 164px photos,
+    30px rows, 26px group labels, roomier gaps. Ends at 1,230px by default at 1440 wide; a
+    season with full honours 1,330px and its Career view 1,400px.
+25. [x] Team badges styled like the player page badge, without the dark outline. — the
+    `.ui-identity-badge` recipe: surface-3 disc, 4px padding, shadow-1, no border.
+26. [x] Animate the player search revealing under the photo. — slides and fades in over
+    `--dur-base`; the field takes focus.
+27. [x] Centre the "Player A/B" label above its search field.
+28. [x] Career totals read grey next to per-game values; make them consistent. — career rows are
+    unranked, and the percentile cell muted unranked values; card values now always use the text
+    colour. Totals of counted stats read as whole numbers with separators (14,984).
+29. [x] Swapping players still lags; make it feel immediate. — the card mirrors both sides at once
+    and only rewrites the URL (no server round trip; about 70ms in the sandbox); the fade is
+    a short opacity settle.
+30. [x] Owner question: is the current-season photo up to date? Wembanyama's 2025-26 photo looks
+    old next to Basketball-Reference and ESPN. — yes: the CDN's "latest" headshot is byte-identical
+    to its 2026-27 folder (uploaded Oct 2026, media day), which is what those sites show now. The
+    card shows the CDN's 2025-26 folder photo for the 2025-26 season. No change.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

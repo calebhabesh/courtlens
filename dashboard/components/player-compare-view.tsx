@@ -4,7 +4,7 @@ import { Fragment, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
-import { COMPARE_PRESETS, CUSTOM_DEFAULT, cardLabel, customMetricKeys, comparisonRows, formatCardValue, isPercentUnit, overallGroupStart, type CompareCountingMode, type ComparePresetId } from "@/lib/comparison-metrics";
+import { COMPARE_PRESETS, CUSTOM_DEFAULT, isWholeCount, cardLabel, customMetricKeys, comparisonRows, formatCardValue, isPercentUnit, overallGroupStart, type CompareCountingMode, type ComparePresetId } from "@/lib/comparison-metrics";
 import { comparisonFlags, leadingIdentity } from "./charts/semantics";
 import { PercentileCell } from "./charts";
 import { CompareCardExport } from "./compare-card-export";
@@ -42,7 +42,7 @@ const MODES: { value: CompareCountingMode; label: string; rate?: boolean }[] = [
  * one row of presets and the span/counting menu, then mirrored one-line rows for the stats and the
  * accolades. Pills mark the leading side per metric, which also reads heavier; there is no verdict.
  */
-export function PlayerCompareView({ comparison, bios = [null, null], career = null, span = "season", cohort, metricDefinitions = [], workbenchCatalog, additionalPlayerIds = [], context, selector, error = null }: {
+export function PlayerCompareView({ comparison: served, bios: servedBios = [null, null], career: servedCareer = null, span = "season", cohort, metricDefinitions = [], workbenchCatalog, additionalPlayerIds = [], context, selector, error = null }: {
   comparison: PlayerComparisonResponse | null; bios?: [PlayerBio | null, PlayerBio | null]; catalog?: AnalyticsCatalog; cohort?: WorkbenchQueryResponse | null;
   /** Both careers through the cutoff; present when ``span`` is career. */
   career?: ComparisonCareerResponse | null; span?: "season" | "career";
@@ -50,6 +50,12 @@ export function PlayerCompareView({ comparison, bios = [null, null], career = nu
   context: Scope; selector?: ReactNode; error?: string | null;
 }) {
   const router = useRouter(), params = useSearchParams();
+  // Swap is instant (29): the card holds both sides, so it mirrors them while the URL changes,
+  // and later server reads arrive already in the URL's order.
+  const flipped = served != null && params.get("playerA") === served.player_b.id && params.get("playerB") === served.player_a.id;
+  const comparison = served && flipped ? mirror(served) : served;
+  const bios: [PlayerBio | null, PlayerBio | null] = flipped ? [servedBios[1], servedBios[0]] : servedBios;
+  const career = servedCareer && flipped ? { ...servedCareer, player_a: servedCareer.player_b, player_b: servedCareer.player_a } : servedCareer;
   const { views } = useWorkspace();
   const [exporting, setExporting] = useState(false), [notice, setNotice] = useState(""), [editing, setEditing] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -94,7 +100,7 @@ export function PlayerCompareView({ comparison, bios = [null, null], career = nu
     const next = new URLSearchParams(params.toString());
     next.set("playerA", b.id); next.set("playerB", a.id);
     if (additionalPlayerIds.length) next.set("players", [b.id, a.id, ...additionalPlayerIds].join(",")); else next.delete("players");
-    navigate(next, true);
+    navigate(next, false);
   }
   function direction(metric: string) { return comparisonFlags(metricDefinitions.find(definition => definition.key === metric) ?? {}).direction; }
   const exportTitle = a && b ? `${a.name} vs ${b.name}` : "Player Comparison";
@@ -227,13 +233,13 @@ function MetricRow({ row, direction, names, definition, percentiles, minutes }: 
   definition?: MetricDefinition; percentiles: [PlayerResearchItem | undefined, PlayerResearchItem | undefined]; minutes: number;
 }) {
   const a = typeof row.value_a === "number" ? row.value_a : null, b = typeof row.value_b === "number" ? row.value_b : null;
-  const precision = row.metric === "gp" ? 0 : 1;
+  const precision = isWholeCount(row.metric) ? 0 : 1;
   const gap = a != null && b != null ? Math.abs(a - b) * (isPercentUnit(row.unit) ? 100 : 1) : null;
   // A gap that rounds to nothing on the card is shown as a tie: no pill, no emphasis.
   const leader = gap != null && Number(gap.toFixed(precision)) > 0 ? leadingIdentity(a, b, direction) : null;
   const label = cardLabel(row.metric, definition);
   const pill = (side: "a" | "b") => leader === side && gap != null
-    ? <span className="pvp-pill" data-identity={side} title={`${names[side === "a" ? 0 : 1]}: ${gap.toFixed(1)}${isPercentUnit(row.unit) ? " percentage points" : ""} ${direction === "low" ? "fewer" : "more"} ${label.toLowerCase()}`}>+{gap.toFixed(precision)}</span>
+    ? <span className="pvp-pill" data-identity={side} title={`${names[side === "a" ? 0 : 1]}: ${gap.toFixed(1)}${isPercentUnit(row.unit) ? " percentage points" : ""} ${direction === "low" ? "fewer" : "more"} ${label.toLowerCase()}`}>+{gap.toLocaleString("en-US", { minimumFractionDigits: precision, maximumFractionDigits: precision })}</span>
     : null;
   const cell = (side: "a" | "b") => {
     const value = side === "a" ? row.value_a : row.value_b;
@@ -288,4 +294,11 @@ function AccoladeRows({ groups, season, names }: { groups: AccoladeGroups; seaso
     {groups.season.map(entry => row(entry, false))}
     {groups.seasonPending && <tr className="pvp-pending"><td colSpan={5}>{season} awards are announced after this cutoff.</td></tr>}
   </>;
+}
+
+/** The same comparison seen from the other side: players, values, samples and gaps swapped. */
+function mirror(comparison: PlayerComparisonResponse): PlayerComparisonResponse {
+  return { ...comparison, player_a: comparison.player_b, player_b: comparison.player_a,
+    aligned_metrics: comparison.aligned_metrics.map(row => ({ ...row, value_a: row.value_b, value_b: row.value_a, n_a: row.n_b, n_b: row.n_a,
+      diff: typeof row.diff === "number" ? -row.diff : row.diff })) };
 }

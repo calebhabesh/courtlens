@@ -14,7 +14,8 @@ for (const width of [1440,390]) test(`Compare opens on a resolved pair with perc
   // Owner trial (row 3, 22): league percentiles are hidden to keep the slim card on one screen.
   await expect(page.locator(".pvp-rows .stat-pct-sublabel")).toHaveCount(0);
   if (width === 390) {
-    const sizes = await page.locator(".pvp-card button:visible").evaluateAll(buttons => buttons.map(button => button.getBoundingClientRect().height));
+    // Rounded: layout can land a 40px target at 39.99997px.
+    const sizes = await page.locator(".pvp-card button:visible").evaluateAll(buttons => buttons.map(button => Math.round(button.getBoundingClientRect().height)));
     expect(Math.min(...sizes)).toBeGreaterThanOrEqual(40);
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
@@ -36,7 +37,7 @@ test("Custom picks and exact counting units survive reload and Back/Forward; SVG
   await page.keyboard.press("Escape");
   const mode=page.getByRole("combobox",{name:"Counting mode",exact:true});
   await mode.selectOption("raw");
-  await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("1960.0");
+  await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("1,960");
   await page.goBack();await expect(mode).toHaveValue("per_game");
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("28.0");await page.goForward();
   await expect(mode).toHaveValue("raw");
@@ -44,7 +45,7 @@ test("Custom picks and exact counting units survive reload and Back/Forward; SVG
   const exported = await download;
   expect(exported.suggestedFilename()).toMatch(/\.svg$/);
   const svg = readFileSync((await exported.path())!, "utf8");
-  expect(svg).toContain("1960.0");expect(svg).toContain("Fouls");expect(svg).not.toContain("var(--");
+  expect(svg).toContain("1,960");expect(svg).toContain("Fouls");expect(svg).not.toContain("var(--");
   const image = page.waitForEvent("download");await page.getByRole("button",{name:"Share Image",exact:true}).click();
   const png = readFileSync((await (await image).path())!);
   expect(png.subarray(0,8).toString("hex")).toBe("89504e470d0a1a0a");

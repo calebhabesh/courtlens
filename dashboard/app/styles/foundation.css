@@ -543,9 +543,8 @@
     border-radius: var(--radius-sm);
   }
 
-  .lookup-input-wrapper:focus-within { border-color: var(--color-accent); box-shadow: var(--focus-ring); }
-  /* Stats table search: one solid 2px gold outline (border plus a flush 1px ring), no offset ring. */
-  .stats-workspace .stats-header-search .lookup-input-wrapper:focus-within { box-shadow: 0 0 0 1px var(--color-accent); }
+  /* Every lookup search: one solid 2px gold outline (border plus a flush 1px ring), no offset ring. */
+  .lookup-input-wrapper:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 1px var(--color-accent); }
   .lookup-input-wrapper .lookup-search-icon { position: static; flex-shrink: 0; width: var(--space-4); height: var(--space-4); }
 
   .lookup-input-wrapper .lookup-input {
@@ -589,6 +588,7 @@
     border: 0;
     border-bottom: 1px solid var(--color-hairline);
     border-radius: 0;
+    box-shadow: none;
   }
   .ui-command-palette .ui-command-input { padding: 0; font-size: var(--text-md); }
   .ui-command-palette .lookup-group-header { background: transparent; }
@@ -914,5 +914,7 @@
      beside its value so rows stay one line tall (19). Its text rules live in this layer. */
   .pvp-value .chart-percentile-text { display: inline-flex; align-items: baseline; gap: var(--space-1); }
   .pvp-value .stat-main-value { font-weight: 400; }
+  /* Unranked values (careers, small samples) keep the text colour instead of the cell's muted one (28). */
+  .pvp-value .chart-percentile-text[data-qualified] { color: var(--color-text); }
   .pvp-value[data-leading] .stat-main-value { font-weight: 700; }
 }

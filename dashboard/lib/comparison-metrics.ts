@@ -63,11 +63,14 @@ export function overallGroupStart(metric: string): string | null {
   return null;
 }
 
-/** Card value: the row label carries the unit, so percentages read 66.5 and games 68. */
+/** Games and season totals of counted stats read as whole numbers (pts, not pts_per_game). */
+export function isWholeCount(metric: string) { return metric === "gp" || COUNTS.has(metric); }
+
+/** Card value: the row label carries the unit, so percentages read 66.5, games 68, totals 14,984. */
 export function formatCardValue(value: number | string | null, unit: string, metric = "") {
   if (typeof value === "number" && Number.isFinite(value)) {
     if (isPercentUnit(unit)) return (value * 100).toFixed(1);
-    return metric === "gp" ? value.toFixed(0) : value.toFixed(1);
+    return isWholeCount(metric) ? Math.round(value).toLocaleString("en-US") : value.toFixed(1);
   }
   return value == null ? "—" : String(value);
 }
