@@ -8,12 +8,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, modalVariants, scrimVariants } from "../../lib/motion";
 import { Icon, type IconName } from "./icon";
 import { OverlayPortal } from "./overlay-portal";
-import { IconButton } from "./kit";
+import { Button, IconButton } from "./kit";
 import { PlayerPortrait } from "../player-portrait";
 import { TeamLogo, TeamLogoStack } from "../team-logo";
 import { queryLookup } from "@/lib/workbench-api";
 import { defaultLookupCache, buildLookupCacheKey } from "@/lib/lookup-cache";
-import { rememberRecentSearch, useRecentSearches } from "@/lib/recent-searches";
+import { clearRecentSearches, forgetRecentSearch, rememberRecentSearch, useRecentSearches } from "@/lib/recent-searches";
+import { nicknameCaption } from "@/lib/lookup-caption";
 import type { LookupItem, LookupAvailability } from "@/lib/types";
 
 export interface CommandItem {
@@ -206,13 +207,12 @@ export function CommandPalette({
 
 const KIND_LABEL: Record<LookupItem["kind"], string> = { player: "Player", team: "Team", page: "Page" };
 
-/** Formats compact player captions */
+/** A player reads as their team code(s) only; picking one opens their latest valid season (owner,
+    2026-10-15: no scope wording in search results). */
 function compactCaption(item: LookupItem) {
   if (item.kind !== "player") return item.subtitle;
-  if (item.availability?.status === "no_current_games") return "No stats in selected scope";
-  const association = item.team_association;
-  if (!association?.teams.length) return undefined;
-  return `${association.teams.join(" / ")}${association.basis === "last_observed" ? " · Last observed team" : association.season ? ` · ${association.season}` : " · Selected scope"}`;
+  const teams = item.team_association?.teams ?? [];
+  return teams.length ? teams.join(" / ") : undefined;
 }
 
 const DEFAULT_PAGE_AVAILABILITY: LookupAvailability = {
@@ -491,6 +491,10 @@ export function GlobalCommandPalette({
     } else if (e.key === "End") {
       e.preventDefault();
       setSelectedIndex(flatItems.length - 1);
+    } else if (e.key === "Delete" && isQueryEmpty && activeIndex >= 0 && activeIndex < recents.length) {
+      // Recents lead the empty state, so the active index is the recent's own index.
+      e.preventDefault();
+      forgetRecentSearch(recents[activeIndex]);
     } else if (e.key === "Enter") {
       e.preventDefault();
       if (activeIndex >= 0 && flatItems[activeIndex]) {
@@ -609,7 +613,13 @@ export function GlobalCommandPalette({
                   displayGroups.map(group => (
                     <div key={group.name} className="ui-command-group">
                       <div className="lookup-group-header ui-command-group-heading">
-                        {group.name}
+                        <span>{group.name}</span>
+                        {group.recent && (
+                          <Button size="xs" variant="text" onMouseDown={e => e.preventDefault()}
+                            onClick={() => { clearRecentSearches(); setSelectedIndex(0); }}>
+                            Clear all
+                          </Button>
+                        )}
                       </div>
                       {group.items.map(item => {
                         const itemIndex = globalCounter++;
@@ -663,6 +673,9 @@ export function GlobalCommandPalette({
                             <span className="lookup-item-content ui-command-item-text">
                               <span className="lookup-item-name ui-command-item-label">
                                 {item.display_name}
+                                {!group.recent && nicknameCaption(item) && (
+                                  <span className="lookup-alias-badge">{nicknameCaption(item)}</span>
+                                )}
                               </span>
                               <span className="lookup-item-subtitle ui-command-item-subtitle">
                                 {item.kind === "player" && !group.recent && (
@@ -680,6 +693,14 @@ export function GlobalCommandPalette({
                                 {caption}
                               </span>
                             </span>
+                            {group.recent && (
+                              <span className="ui-command-item-actions">
+                                <IconButton size="xs" variant="ghost" icon="close"
+                                  label={`Remove ${item.display_name} from recent searches`}
+                                  onMouseDown={e => e.preventDefault()}
+                                  onClick={e => { e.stopPropagation(); forgetRecentSearch(item); }} />
+                              </span>
+                            )}
                           </div>
                         );
                       })}

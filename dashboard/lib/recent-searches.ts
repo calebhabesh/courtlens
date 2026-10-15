@@ -51,6 +51,16 @@ export function rememberRecentSearch(item: LookupItem): void {
   window.dispatchEvent(new Event(EVENT));
 }
 
+export function forgetRecentSearch(item: Pick<LookupItem, "kind" | "canonical_id">): void {
+  const next = readRecentSearches().filter(entry => !(entry.kind === item.kind && entry.canonical_id === item.canonical_id));
+  try {
+    window.localStorage.setItem(storageKeys.recentSearches, JSON.stringify(next));
+  } catch {
+    return;
+  }
+  window.dispatchEvent(new Event(EVENT));
+}
+
 export function clearRecentSearches(): void {
   try {
     window.localStorage.removeItem(storageKeys.recentSearches);

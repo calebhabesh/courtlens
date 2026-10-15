@@ -46,4 +46,17 @@ describe("LookupInput before typing", () => {
     await settle();
     expect(screen.getByRole("option").textContent).toContain("Nikola Jokić");
   });
+
+  it("lists every verified nickname after the name, and none for generated aliases", async () => {
+    vi.useFakeTimers();
+    respond([
+      { ...jokic, matched_alias: "Joker", nicknames: ["Joker", "The Big Honey"] },
+      { ...jokic, canonical_id: "1", display_name: "Vic Law", matched_alias: null, nicknames: [] },
+    ] as LookupItem[]);
+    render(<LookupInput label="Search players" value="big honey" onChange={() => {}} onSelect={() => {}} kinds={["player"]} />);
+    fireEvent.focus(screen.getByRole("combobox"));
+    await settle();
+    const captions = Array.from(document.querySelectorAll(".lookup-alias-badge")).map(node => node.textContent);
+    expect(captions).toEqual(["aka Joker, The Big Honey"]);
+  });
 });

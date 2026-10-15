@@ -67,10 +67,34 @@
   font-size: var(--text-xs);
   line-height: var(--text-xs-lh);
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-transform: none;
+  letter-spacing: normal;
   color: var(--color-text-tertiary);
   padding: var(--space-2) var(--space-3) var(--space-1);
+}
+
+/* Only the group name is a caps label; Recent's "Clear all" reads as a sentence-case action. */
+.ui-command-group-heading > span:first-child {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* A recent's remove button appears on the row being pointed at or arrowed to; always on touch. */
+.ui-command-item-actions {
+  display: inline-flex;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.ui-command-item:hover .ui-command-item-actions,
+.ui-command-item-active .ui-command-item-actions,
+.ui-command-item-actions:focus-within {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .ui-command-item-actions { opacity: 1; }
 }
 
 .ui-command-item {

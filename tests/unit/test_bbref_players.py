@@ -28,6 +28,10 @@ INDEX = b"""<html><body><table id="players"><tbody>
 </tbody></table></body></html>"""
 
 PAGE = b"""<html><body><div id="meta"><div><h1><span>Kawhi Leonard</span></h1>
+<p><span class="desc">(name previously spelled Kawhy)</span></p>
+<p>
+(The Klaw, Board Man)
+</p>
 <p><strong>Position:</strong> Small Forward &#9642; <strong>Shoots:</strong> Right</p>
 <p><strong>Born: </strong><span id="necro-birth" data-birth="1991-06-29">June 29, 1991</span>
 <span>in&nbsp;Los Angeles,&nbsp;<a href="/x">California</a></span>
@@ -35,6 +39,8 @@ PAGE = b"""<html><body><div id="meta"><div><h1><span>Kawhi Leonard</span></h1>
 <p><strong>High School:</strong> King in Riverside, <a href="/y">California</a></p>
 <p><strong>NBA Debut: </strong><a href="/z">December 26, 2011</a></p>
 </div></div>
+<div class="faq"><h3>What are Kawhi Leonard's nicknames?</h3>
+<p>The Klaw, Board Man are nicknames for Kawhi Leonard.</p></div>
 <ul id="bling"><li><a>7x All Star</a></li><li><a>2x NBA Champ</a></li></ul>
 <!-- <table id="per_game_stats"><tbody>
 <tr><th data-stat="year_id">2015-16</th><td data-stat="awards">MVP-2,DPOY-1,AS,NBA1</td></tr>
@@ -59,6 +65,22 @@ def test_player_page_biography_honours_and_season_awards() -> None:
     assert profile["high_school"] == "King in Riverside, California"
     assert (profile["shoots"], profile["debut_date"]) == ("Right", "2011-12-26")
     assert profile["honours"] == ["7x All Star", "2x NBA Champ"]
+    # Only the labelled nickname answer counts; a parenthesised bio note is not a nickname.
+    assert profile["nicknames"] == ["The Klaw", "Board Man"]
+    single = parse_player_page(
+        b'<div id="meta"><h1>Sam</h1><p><span class="desc">(born Samuel)</span></p></div>'
+        b"<h3>What is Sam's nickname?</h3><p>Slim is a nickname for Sam.</p>",
+        "sam01",
+    )
+    assert single["nicknames"] == ["Slim"]
+    # Names ending in "s" take a bare apostrophe in the question.
+    plural = parse_player_page(
+        b'<div id="meta"><h1>Lou Williams</h1></div>'
+        b"<h3>What are Lou Williams' nicknames?</h3>"
+        b"<p>Sweet Lou, Lou-Will are nicknames for Lou Williams.</p>",
+        "willilo02",
+    )
+    assert plural["nicknames"] == ["Sweet Lou", "Lou-Will"]
     # Tables inside HTML comments are read; empty and non-season rows are left out.
     assert profile["awards"] == {"2015-16": ["MVP-2", "DPOY-1", "AS", "NBA1"]}
     assert profile["all_star_seasons"] == ["2015-16"]
@@ -68,6 +90,7 @@ def test_missing_fields_stay_null() -> None:
     profile = parse_player_page(b'<div id="meta"><h1>Someone</h1></div>', "someo01")
     assert profile["birthplace"] is None and profile["high_school"] is None
     assert profile["honours"] == [] and profile["awards"] == {}
+    assert profile["nicknames"] == []
 
 
 def test_matching_requires_name_and_birth_date_and_rejects_ambiguity() -> None:
@@ -147,7 +170,7 @@ def test_the_newest_profile_serves(session: Session) -> None:
 def test_v2_salary_history_contract_options_and_dated_events() -> None:
     raw = Path("tests/fixtures/bbref/player-v2.html").read_bytes()
     profile = parse_player_page(raw, "sample01")
-    assert profile["parser"] == "bbref-player-v2"
+    assert profile["parser"] == "bbref-player-v3"
     assert profile["salary_history"] == [
         {
             "season": "2024-25",
@@ -287,20 +310,20 @@ def test_offline_reparse_preserves_lineage_and_is_idempotent(
         session, tmp_path, Path("tests/fixtures/bbref/player-v2.html").read_bytes()
     )
     assert reparse(session, tmp_path) == {
-        "parser": "bbref-player-v2",
+        "parser": "bbref-player-v3",
         "profiles": 1,
         "skipped": 0,
         "failed": [],
     }
     assert reparse(session, tmp_path) == {
-        "parser": "bbref-player-v2",
+        "parser": "bbref-player-v3",
         "profiles": 0,
         "skipped": 1,
         "failed": [],
     }
     rows = list(session.scalars(select(BbrefPlayerProfile)))
     assert len(rows) == 2
-    new = next(r for r in rows if r.parser_version == "bbref-player-v2")
+    new = next(r for r in rows if r.parser_version == "bbref-player-v3")
     assert (
         new.acquisition_id,
         new.content_sha256,

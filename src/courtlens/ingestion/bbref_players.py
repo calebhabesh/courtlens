@@ -11,11 +11,12 @@ import re
 import unicodedata
 from dataclasses import dataclass
 from datetime import date, datetime
+from itertools import pairwise
 from typing import Any
 
 from courtlens.ingestion.finance_sources import Node, TableParser, document, money
 
-PARSER_VERSION = "bbref-player-v2"
+PARSER_VERSION = "bbref-player-v3"
 HOST = "www.basketball-reference.com"
 INDEX_PATH = re.compile(r"^/players/([a-z])/$")
 PLAYER_PATH = re.compile(r"^/players/([a-z])/([a-z.'-]{1,9}\d{2})\.html$")
@@ -156,6 +157,29 @@ def _after_label(paragraph: Node, label: str) -> str:
     text = _visible_text(paragraph)
     found = re.search(re.escape(label) + r"\s*:?\s*(.*)", text, re.I)
     return found.group(1).strip() if found else ""
+
+
+NICKNAME_QUESTION = re.compile(r"What (?:are|is) .+ nicknames?\??", re.I)
+NICKNAME_ANSWER = re.compile(r"(.+?) (?:are nicknames|is a nickname) for .+", re.I)
+
+
+def _nicknames(root: Node) -> list[str]:
+    """The page's labelled answer to "What are <name>'s nicknames?".
+
+    The bio block repeats them in a bare parenthesised paragraph, but it also uses
+    parentheses for notes such as "(last name previously spelled Adetokunbo)".
+    """
+    for parent in [root, *root.walk("div")]:
+        elements = [child for child in parent.children if isinstance(child, Node)]
+        for question, answer in pairwise(elements):
+            if question.tag != "h3" or answer.tag != "p":
+                continue
+            if not NICKNAME_QUESTION.fullmatch(question.text()):
+                continue
+            found = NICKNAME_ANSWER.fullmatch(answer.text())
+            if found:
+                return [name.strip() for name in found.group(1).split(",") if name.strip()]
+    return []
 
 
 def _season_awards(root: Node) -> dict[str, list[str]]:
@@ -474,6 +498,7 @@ def parse_player_page(raw: bytes, bbref_id: str) -> dict[str, Any]:
         "high_school": high_school or None,
         "shoots": shoots,
         "debut_date": debut_date,
+        "nicknames": _nicknames(root),
         "honours": [honour for honour in honours if honour],
         "awards": awards,
         "all_star_seasons": sorted(season for season, codes in awards.items() if "AS" in codes),

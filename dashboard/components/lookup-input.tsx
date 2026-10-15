@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import type { LookupItem } from "@/lib/types";
 import { buildLookupCacheKey, defaultLookupCache } from "@/lib/lookup-cache";
+import { nicknameCaption } from "@/lib/lookup-caption";
 import { queryLookup } from "@/lib/workbench-api";
 import { Icon } from "./ui/icon";
 import { Button, IconButton } from "./ui/kit";
@@ -33,16 +34,17 @@ export function useLookupScope(scope: LookupScope) {
   };
 }
 
-function compactCaption(item: LookupItem) {
+/** A player reads as their team code(s) only, in every result list (owner, 2026-10-15): no
+    "observed in selected scope" wording; picking one gives their latest valid season. */
+function playerCaption(item: LookupItem) {
   if (item.kind !== "player") return item.subtitle;
-  if (item.availability?.status === "no_current_games") return "No stats in selected scope";
-  const association = item.team_association;
-  if (!association?.teams.length) return undefined;
-  return `${association.teams.join(" / ")}${association.basis === "last_observed" ? " · Last observed team" : association.season ? ` · ${association.season}` : " · Selected scope"}`;
+  const teams = item.team_association?.teams ?? [];
+  return teams.length ? teams.join(" / ") : undefined;
 }
 
-export function LookupIdentity({ item, committed = false, compact = false }: { item: LookupItem; committed?: boolean; compact?: boolean }) {
-  return <><span className="lookup-item-leading">{item.kind === "player" ? <><PlayerPortrait playerId={item.metadata?.identity_namespace === "planner" ? undefined : item.canonical_id} name={item.display_name} portraitUrl={item.portrait_url} size="sm" /><TeamLogoStack teams={item.team_association?.teams ?? []} label={item.team_association?.basis === "last_observed" ? "Last observed team" : "Teams observed in selected scope"} /></> : item.kind === "team" ? <TeamLogo team={item.portrait_fallback ?? item.canonical_id} size={32} /> : <Icon name="search" />}</span><span className="lookup-item-content"><span className="lookup-item-name">{item.display_name}</span>{!committed && !compact && item.matched_alias && <span className="lookup-alias-badge">aka {item.matched_alias}</span>}<span className="lookup-item-subtitle">{compact ? compactCaption(item) : <>{item.subtitle}{item.kind === "player" && item.availability?.status === "no_current_games" ? item.team_association?.season ? " · No appearances in selected season" : " · No observed appearances" : ""}</>}</span></span></>;
+export function LookupIdentity({ item, committed = false }: { item: LookupItem; committed?: boolean; /** Kept for callers; captions are the same everywhere. */ compact?: boolean }) {
+  const aka = committed ? null : nicknameCaption(item);
+  return <><span className="lookup-item-leading">{item.kind === "player" ? <><PlayerPortrait playerId={item.metadata?.identity_namespace === "planner" ? undefined : item.canonical_id} name={item.display_name} portraitUrl={item.portrait_url} size="sm" /><TeamLogoStack teams={item.team_association?.teams ?? []} label={item.team_association?.basis === "last_observed" ? "Last observed team" : "Teams observed in selected scope"} /></> : item.kind === "team" ? <TeamLogo team={item.portrait_fallback ?? item.canonical_id} size={32} /> : <Icon name="search" />}</span><span className="lookup-item-content"><span className="lookup-item-name" title={aka ?? undefined}>{item.display_name}{aka && <span className="lookup-alias-badge">{aka}</span>}</span>{playerCaption(item) && <span className="lookup-item-subtitle">{playerCaption(item)}</span>}</span></>;
 }
 
 export interface LookupInputProps extends LookupScope {

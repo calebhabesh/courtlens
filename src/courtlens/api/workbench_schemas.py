@@ -1268,6 +1268,8 @@ class LookupItem(BaseModel):
     match_basis: str
     match_score: float
     matched_alias: str | None = None
+    # Every Basketball-Reference nickname, the matched one (if any) first.
+    nicknames: list[str] = Field(default_factory=list)
     portrait_url: str | None = None
     portrait_fallback: str | None = None
     availability: LookupAvailability = Field(default_factory=LookupAvailability)
