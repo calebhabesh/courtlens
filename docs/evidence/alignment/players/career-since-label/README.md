@@ -2,7 +2,7 @@
 
 Known gap from the 2026-10-15 approval, fixed the same day at the owner's request. In the career
 table's gold total row, "Career since 2025-26" (shown when a player's CourtLens data starts after
-his debut) was one unbroken line that overflowed the pinned Year column and ran into the GP
+their debut) was one unbroken line that overflowed the pinned Year column and ran into the GP
 value. The label now wraps inside the column and keeps the season unbroken ("2025-26" never
 splits at its hyphen).
 
