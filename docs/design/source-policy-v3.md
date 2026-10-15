@@ -36,7 +36,7 @@ The machine-readable registry is `src/courtlens/domain/source_policy.py`. Source
 | Official NBA transactions | `nba.com` | transactions | operator import |
 | nba_data archive | `github.com/shufinskiy/nba_data` | play types, matchups, shots, on/off | 1 s |
 | pbpstats API | `api.pbpstats.com` | on/off, lineups | 5 s |
-| Basketball-Reference | `www.basketball-reference.com` | contracts, draft | 3 s |
+| Basketball-Reference | `www.basketball-reference.com` | contracts, draft, player bios and honours (`courtlens acquire-bbref-bios`, 4 s) | 3 s |
 | Spotrac | `www.spotrac.com` | contracts, free agency, cap | 5 s |
 | HoopsHype salaries | `hoopshype.com` | contracts | 5 s |
 | ESPN injuries | `site.api.espn.com` | injuries | 5 s |
@@ -44,6 +44,21 @@ The machine-readable registry is `src/courtlens/domain/source_policy.py`. Source
 | DARKO (darko.app) | `www.darko.app` | DPM, ODPM, DDPM (Kostya Medvedovsky's model) | 5 s |
 
 Adding a source is a registry row plus an ingestion path; no admission review is required.
+
+## Basketball-Reference player bios
+
+`courtlens acquire-bbref-bios` reads the 26 A–Z player index pages, matches CourtLens players to
+Basketball-Reference IDs (normalized name plus birth date; without our birth date, a unique name with
+overlapping seasons; anything ambiguous stays unmatched), then fetches each matched player page
+serially at 4 s (above the 3 s Crawl-delay and the source's 20 requests a minute). robots.txt is read
+once per run and recorded on every receipt; a 403/429 ends the run. Pages are retained as
+content-addressed artifacts; parsed profiles (birthplace, high school, shooting hand, debut, honours,
+season awards) are appended to `bbref_player_profiles` and the newest per player serves the player
+page. Reruns resume: profiles newer than `--max-age-days` (300) are skipped.
+
+Refresh once a year after the awards season (late June, when MVP, All-NBA and Finals MVP are final):
+`--active-only` takes about 45 minutes. A full rerun picks up newly debuted players. Mid-season,
+All-Star selections (February) are the only change worth an extra active-only run.
 
 ## DARKO operator import
 

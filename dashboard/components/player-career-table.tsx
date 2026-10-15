@@ -6,6 +6,7 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PercentileCell } from "./charts/percentile-cell";
 import { TeamLogoStack } from "./team-logo";
+import { Icon } from "./ui/icon";
 import { IconButton, Segmented } from "./ui/kit";
 import { applyScopeChange } from "@/lib/scope-url";
 import { normalizedColumn } from "@/lib/stats-query";
@@ -18,6 +19,7 @@ import {
   type PresetId
 } from "@/lib/stats-presets";
 import { getPlayerCareer, getPlayerProfile } from "@/lib/workbench-api";
+import { seasonAwardChips } from "@/lib/awards";
 import type { PlayerCareerResponse, PlayerProfileStint, PlayerResearchItem, WorkbenchCatalog } from "@/lib/types";
 
 const PHASES = [{ id: "regular_season", label: "Regular" }, { id: "playoffs", label: "Playoffs" }] as const;
@@ -31,7 +33,7 @@ const PHASES = [{ id: "regular_season", label: "Regular" }, { id: "playoffs", la
  * Every row arrives in one read of stored season cohorts (usually with the page) and carries
  * every column, so views and counting modes switch without another request.
  */
-export function PlayerCareerTable({ playerId, catalog, season, phase, firstCoveredSeason, draftYear, initialCareer = null }: {
+export function PlayerCareerTable({ playerId, catalog, season, phase, firstCoveredSeason, draftYear, initialCareer = null, awards = null }: {
   playerId: string;
   catalog: WorkbenchCatalog;
   season: string;
@@ -41,6 +43,8 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   draftYear: number | null;
   /** Rows read with the page; when absent or for another scope, the table reads them itself. */
   initialCareer?: PlayerCareerResponse | null;
+  /** Basketball-Reference season awards and All-Star seasons (regular-season table only). */
+  awards?: { bySeason: Record<string, string[]>; allStarSeasons: string[]; source: string } | null;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -58,6 +62,9 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   // A hairline opens each column group after the first (Profile | Impact | Counting …).
   const groupStarts = useMemo(() => new Set(groups.slice(1).map(group => group.start)), [groups]);
   const divider = (index: number) => groupStarts.has(index) ? "group-start" : "";
+  // Awards are regular-season honours: the column shows on that phase when any season has one.
+  const awardColumn = phase === "regular_season" && Boolean(awards && Object.keys(awards.bySeason).length);
+  const span = preset.columns.length + 1 + (awardColumn ? 1 : 0);
   const requestKey = `${playerId}|${phase}|${catalog.release_id}`;
   const serverRows = initialCareer?.player_id === playerId && initialCareer.phase === phase
     && initialCareer.release_id === catalog.release_id ? initialCareer : null;
@@ -130,22 +137,24 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
         <div className="table-wrapper stats-scroll-region player-career-scroll" role="region" aria-label="Career table scroll area" tabIndex={0}
           aria-busy={seasons === null}>
           <table className="data-table dense-stats-table player-career-table" aria-label="Career statistics by season"
-            style={{ "--career-columns": preset.columns.length } as React.CSSProperties}>
+            style={{ "--career-columns": preset.columns.length + (awardColumn ? 3 : 0) } as React.CSSProperties}>
             <thead>
               <tr className="stats-header-tier-1">
                 <th className="pinned-col pinned-col-year-group"><span className="sr-only">Season</span></th>
                 {groups.map((group, index) => <th key={`${group.label}-${index}`} colSpan={group.colSpan} scope="colgroup" className={`stats-group-th ${index > 0 ? "group-start" : ""}`}>{group.label}</th>)}
+                {awardColumn && <th scope="colgroup" className="stats-group-th group-start player-career-awards-th"><span className="sr-only">Awards</span></th>}
               </tr>
               <tr className="stats-header-tier-2">
                 <th scope="col" className="pinned-col pinned-col-year">Year</th>
                 {preset.columns.map((column, index) => <th key={column.key} scope="col" data-column={column.key} className={`${column.num ? "num" : ""} ${divider(index)}`} title={column.tooltip ?? column.label}>{column.label}</th>)}
+                {awardColumn && <th scope="col" className="group-start player-career-awards" title={`Season awards and voting finishes (${awards?.source})`}>Awards</th>}
               </tr>
             </thead>
             <tbody>
-              {seasons === null && <tr><td colSpan={preset.columns.length + 1} className="player-career-status">Loading seasons…</td></tr>}
-              {career === null && <tr><td colSpan={preset.columns.length + 1} className="player-career-status">
+              {seasons === null && <tr><td colSpan={span} className="player-career-status">Loading seasons…</td></tr>}
+              {career === null && <tr><td colSpan={span} className="player-career-status">
                 Career table unavailable. Reload to retry.</td></tr>}
-              {career && seasons?.length === 0 && <tr><td colSpan={preset.columns.length + 1} className="player-career-status">
+              {career && seasons?.length === 0 && <tr><td colSpan={span} className="player-career-status">
                 No {phase === "playoffs" ? "playoff" : "regular-season"} games in CourtLens data.</td></tr>}
               {seasons?.map(value => {
                 const item = rows.get(value) ?? null;
@@ -160,15 +169,19 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
                         <TeamLogoStack teams={teams} size={20} />
                         <a href={scopeHref("season", value)} onClick={event => { event.preventDefault(); openSeason(value); }}
                           title={`Show ${value}`}>{value}</a>
+                        {awards?.allStarSeasons.includes(value) && phase === "regular_season" && <span className="player-career-star" title="All-Star"><Icon name="star" size={14} filled /><span className="sr-only">All-Star</span></span>}
                         {teams.length > 1 && <IconButton size="xs" className="player-career-expand-slot" aria-expanded={Boolean(stints)}
                           icon={stints ? "chevron-up" : "chevron-down"} label={`${stints ? "Hide" : "Show"} ${value} team stints`}
                           onClick={() => toggleStints(value)} />}
                       </span>
                     </th>
                     {preset.columns.map((_, index) => cell(item, index))}
+                    {awardColumn && <td className="group-start player-career-awards">
+                      {seasonAwardChips(awards?.bySeason[value]).map(chip => <span key={chip.code} className={`player-career-award ${chip.win ? "is-win" : ""}`}>{chip.code}</span>)}
+                    </td>}
                   </tr>
                   {stints && <tr className="player-career-stints">
-                    <td colSpan={preset.columns.length + 1}>
+                    <td colSpan={span}>
                       {stints === "loading" ? "Loading team stints…" : stints === "failed" ? "Team stints unavailable." :
                         <ul aria-label={`${value} team stints`}>{stints.map(stint => <li key={stint.team_id}>
                           <TeamLogoStack teams={[stint.team_tricode]} size={16} /><strong>{stint.team_tricode}</strong>
@@ -188,6 +201,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
               <tr className="player-career-total">
                 <th scope="row" className="pinned-col pinned-col-year">{careerSince ? `Career since ${firstCoveredSeason}` : "Career"}</th>
                 {preset.columns.map((_, index) => cell(career?.career ?? null, index, true))}
+                {awardColumn && <td className="group-start player-career-awards" />}
               </tr>
             </tfoot>}
           </table>

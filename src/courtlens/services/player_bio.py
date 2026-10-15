@@ -16,12 +16,15 @@ from typing import Any
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from courtlens.services.bbref_bio import player_reference
 from courtlens.services.stats_feed_views import _mart, _rows, team_tricode
 
 LIMITATIONS = [
     "Listed height and weight are team-reported (shoes on) and can differ from combine "
     "measurements.",
     "Combine values are the official NBA Draft Combine measurements from the draft year.",
+    "Birthplace, high school, shooting hand, debut, honours and season awards are from "
+    "Basketball-Reference as of its last crawl; they cover the whole career to date.",
 ]
 
 
@@ -161,5 +164,6 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
         "undrafted": bool(bio and bio["draft_year"] is None and draft is None),
         "combine": combine,
         "current_team": current_team,
+        "reference": player_reference(session, player_id),
         "limitations": LIMITATIONS,
     }

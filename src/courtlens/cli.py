@@ -1331,6 +1331,53 @@ def acquire_player_bio_command(
         raise typer.Exit(1)
 
 
+@app.command("acquire-bbref-bios")
+def acquire_bbref_bios_command(
+    limit: int | None = typer.Option(None, help="Fetch at most this many player pages."),
+    active_only: bool = typer.Option(False, help="Only players on an active roster."),
+    max_age_days: int = typer.Option(300, help="Re-fetch profiles older than this."),
+    letters: str = typer.Option("abcdefghijklmnopqrstuvwxyz", help="Index pages to read."),
+    root: Path = typer.Option(Path("data/raw/bbref")),
+    report: Path | None = typer.Option(None, help="Write the run summary JSON here."),
+) -> None:
+    """Basketball-Reference biographies, honours and season awards (operator run, resumable).
+
+    Index pages first, then each matched player's page at the source's pace (about 4 s a page).
+    A 403/429 ends the run; rerunning skips players whose profile is newer than --max-age-days.
+    """
+    from datetime import timedelta
+
+    import httpx
+
+    from courtlens.services.bbref_bio import BbrefFetcher, CrawlEvent, crawl
+
+    def log(event: CrawlEvent) -> None:
+        typer.echo(
+            json.dumps(
+                {"kind": event.kind, "url": event.url, "status": event.status, **event.detail},
+                default=str,
+            ),
+            err=True,
+        )
+
+    with SessionLocal() as session, httpx.Client() as client:
+        summary = crawl(
+            session,
+            BbrefFetcher(session, root, client),
+            root,
+            limit=limit,
+            active_only=active_only,
+            max_age=timedelta(days=max_age_days),
+            letters=letters,
+            log=log,
+        )
+    if report is not None:
+        report.write_text(json.dumps(summary, indent=2, default=str) + "\n")
+    typer.echo(json.dumps(summary, default=str))
+    if summary.get("stopped"):
+        raise typer.Exit(1)
+
+
 @app.command("refresh-darko")
 def refresh_darko_command(
     season: list[str] = typer.Option(["2023-24", "2024-25", "2025-26"], help="Seasons to fetch."),

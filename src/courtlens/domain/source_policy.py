@@ -94,7 +94,7 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
         "Basketball-Reference",
         "www.basketball-reference.com",
         "primary",
-        ("contracts", "draft_metadata"),
+        ("contracts", "draft_metadata", "player_bio"),
         3,
         "Basketball-Reference.com",
     ),

@@ -6,6 +6,7 @@ import { Button } from "./ui/kit";
 import { PlayerAvatar } from "./ui/identity";
 import { TeamLogo } from "./team-logo";
 import { PageHeader } from "./ui/panel";
+import { honours } from "@/lib/awards";
 import { countryFlag } from "@/lib/country-flags";
 import { formatDate } from "@/lib/format-date";
 import catalog from "@/lib/team-branding.json";
@@ -84,16 +85,21 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   const origin = bio?.draft?.organization ?? bio?.college ?? null;
   const flag = countryFlag(bio?.country);
   // Born carries the age; outside the current season the age is dated to the page's cutoff.
+  const ref = bio?.reference ?? null;
   const born = bio?.birth_date
     ? { label: "Born", value: `${formatDate(bio.birth_date)}${bio.age != null && !datedAge ? ` (${bio.age})` : ""}`,
-      detail: datedAge ? `Age ${bio.age} on ${formatDate(bio.as_of)}` : null }
+      detail: [ref?.birthplace, datedAge ? `Age ${bio.age} on ${formatDate(bio.as_of)}` : null].filter(Boolean).join(" · ") || null }
     : { label: "Age", value: bio?.age != null ? String(bio.age) : null, detail: datedAge ? `On ${formatDate(bio?.as_of ?? "")}` : null };
+  // "King in Riverside, California" -> school "King", place "Riverside, California".
+  const school = ref?.high_school?.match(/^(.*?)\s+in\s+(.+)$/) ?? null;
   const facts: { label: string; value: ReactNode; detail?: string | null; title?: string }[] = [
     born,
-    { label: "Listed", value: listed || null, title: "Team-reported height (in shoes) and weight" },
+    { label: "Listed", value: listed || null, detail: ref?.shoots ? `Shoots ${ref.shoots.toLowerCase()}` : null,
+      title: "Team-reported height (in shoes) and weight" },
     { label: "Draft", value: bio?.draft ? <>{draftPick}{draftTeam && <> · <span className="player-bio-team">
       <TeamLogo team={draftTeam} size={18} />{draftTeam}</span></>}</> : bio?.undrafted ? "Undrafted" : null, detail: origin },
-    { label: "Experience", value: experience },
+    { label: "Experience", value: experience, detail: ref?.debut_date ? `Debut ${formatDate(ref.debut_date)}` : null },
+    { label: "High school", value: school ? school[1] : ref?.high_school ?? null, detail: school ? school[2] : null },
     { label: "Country", value: bio?.country ? <span className="player-bio-country">
       {/* eslint-disable-next-line @next/next/no-img-element -- a 1 KB static flag needs no image optimisation */}
       {flag && <img src={flag} width={20} height={15} alt="" />}{bio.country}</span> : null },
@@ -135,6 +141,10 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
             <dt>{combine.draft_year} Combine</dt>
             {measured.map(([label, value]) => <dd key={label}>{label} <strong>{value}</strong></dd>)}
           </dl>}
+          {ref && ref.honours.length > 0 && <ul className="player-bio-honours" aria-label="Career honours"
+            title={`Career honours from ${ref.source}, as of ${formatDate(ref.as_of)}`}>
+            {honours(ref.honours).map(item => <li key={item.label} className={item.top ? "is-top" : undefined}>{item.label}</li>)}
+          </ul>}
         </div>
         <div className="player-bio-actions">{actions}</div>
       </div>
