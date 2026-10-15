@@ -10,6 +10,7 @@ a rerun resumes: players with a current profile are skipped.
 
 from __future__ import annotations
 
+import hashlib
 import string
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass
@@ -106,7 +107,6 @@ def has_current_profile(session: Session, player_id: str, max_age: timedelta) ->
         select(BbrefPlayerProfile.observed_at)
         .where(
             BbrefPlayerProfile.player_id == player_id,
-            BbrefPlayerProfile.parser_version == PARSER_VERSION,
         )
         .order_by(BbrefPlayerProfile.observed_at.desc())
         .limit(1)
@@ -227,12 +227,110 @@ def _limited(
         yield item
 
 
+def reparse(
+    session: Session,
+    root: Path,
+    *,
+    player_ids: list[str] | None = None,
+    limit: int | None = None,
+) -> dict[str, Any]:
+    """Append this parser's output for retained, previously matched pages. Never fetch.
+
+    Snapshot the input list so a concurrent crawl can keep appending v1 profiles. Rerun to
+    include pages it retains after this run begins. The acquisition time never changes.
+    """
+    query = select(BbrefPlayerProfile).order_by(
+        BbrefPlayerProfile.observed_at.desc(), BbrefPlayerProfile.created_at.desc()
+    )
+    if player_ids:
+        query = query.where(BbrefPlayerProfile.player_id.in_(player_ids))
+    retained = list(session.scalars(query))
+    existing = {
+        (row.player_id, row.content_sha256)
+        for row in retained
+        if row.parser_version == PARSER_VERSION
+    }
+    seen: set[tuple[str, str]] = set()
+    summary: dict[str, Any] = {
+        "parser": PARSER_VERSION,
+        "profiles": 0,
+        "skipped": 0,
+        "failed": [],
+    }
+    session.commit()
+    attempted = 0
+    for previous in retained:
+        key = (previous.player_id, previous.content_sha256)
+        if key in seen:
+            continue
+        seen.add(key)
+        if key in existing:
+            summary["skipped"] += 1
+            continue
+        if limit is not None and attempted >= limit:
+            break
+        attempted += 1
+        try:
+            receipt = session.get(WorkbenchAcquisition, previous.acquisition_id)
+            artifact = session.get(WorkbenchArtifact, receipt.artifact_id) if receipt else None
+            if (
+                receipt is None
+                or artifact is None
+                or receipt.status != "success"
+                or receipt.resource != RESOURCE
+                or artifact.resource != RESOURCE
+                or receipt.source_url != player_url(previous.bbref_id)
+                or receipt.content_sha256 != previous.content_sha256
+                or artifact.sha256 != previous.content_sha256
+            ):
+                raise ValueError("retained page lineage mismatch")
+            path = (root / artifact.storage_path).resolve()
+            if not path.is_relative_to(root.resolve()):
+                raise ValueError("retained page escapes raw store")
+            raw = path.read_bytes()
+            if (
+                len(raw) != artifact.bytes
+                or hashlib.sha256(raw).hexdigest() != previous.content_sha256
+            ):
+                raise ValueError("retained page integrity failure")
+            profile = parse_player_page(raw, previous.bbref_id)
+            session.add(
+                BbrefPlayerProfile(
+                    player_id=previous.player_id,
+                    bbref_id=previous.bbref_id,
+                    match_basis=previous.match_basis,
+                    acquisition_id=previous.acquisition_id,
+                    content_sha256=previous.content_sha256,
+                    parser_version=PARSER_VERSION,
+                    profile=profile,
+                    observed_at=previous.observed_at,
+                )
+            )
+            session.commit()
+            summary["profiles"] += 1
+        except (ValueError, OSError) as error:
+            session.rollback()
+            summary["failed"].append(
+                {
+                    "player_id": previous.player_id,
+                    "content_sha256": previous.content_sha256,
+                    "reason": str(error)[:300],
+                }
+            )
+    return summary
+
+
 def player_reference(session: Session, player_id: str) -> dict[str, Any] | None:
     """The newest parsed profile for a player, with its source and as-of time."""
     row = session.scalar(
         select(BbrefPlayerProfile)
         .where(BbrefPlayerProfile.player_id == player_id)
-        .order_by(BbrefPlayerProfile.observed_at.desc())
+        .order_by(
+            BbrefPlayerProfile.observed_at.desc(),
+            BbrefPlayerProfile.created_at.desc(),
+            BbrefPlayerProfile.parser_version.desc(),
+            BbrefPlayerProfile.id.desc(),
+        )
         .limit(1)
     )
     if row is None:

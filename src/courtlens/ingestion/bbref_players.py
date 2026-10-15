@@ -13,9 +13,9 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Any
 
-from courtlens.ingestion.finance_sources import Node, document
+from courtlens.ingestion.finance_sources import Node, TableParser, document, money
 
-PARSER_VERSION = "bbref-player-v1"
+PARSER_VERSION = "bbref-player-v2"
 HOST = "www.basketball-reference.com"
 INDEX_PATH = re.compile(r"^/players/([a-z])/$")
 PLAYER_PATH = re.compile(r"^/players/([a-z])/([a-z.'-]{1,9}\d{2})\.html$")
@@ -175,8 +175,247 @@ def _season_awards(root: Node) -> dict[str, list[str]]:
     return {season: codes for season, codes in awards.items() if codes}
 
 
+class PlayerPageParser(TableParser):
+    def handle_comment(self, data: str) -> None:
+        # Transactions are also commented out, without a table. Keep finance-html-v1 unchanged.
+        if "<table" in data or re.search(r"id=[\"']div_transactions[\"']", data):
+            nested = PlayerPageParser()
+            nested.feed(data)
+            self.stack[-1].children.extend(nested.root.children)
+
+
+def _by_id(root: Node, tag: str, identifier: str) -> Node | None:
+    return next((n for n in root.walk(tag) if n.attrs.get("id") == identifier), None)
+
+
+def _row_cells(row: Node) -> list[Node]:
+    return [c for c in row.children if isinstance(c, Node) and c.tag in {"th", "td"}]
+
+
+def _team(node: Node) -> dict[str, str | None]:
+    for link in node.walk("a"):
+        match = re.fullmatch(
+            r"/(?:teams|contracts)/([A-Z]{2,3})(?:/\d{4})?\.html", link.attrs.get("href", "")
+        )
+        if match:
+            return {"team": link.text(), "team_code": match[1]}
+    return {"team": node.text() or None, "team_code": None}
+
+
+def _salary(node: Node) -> str | None:
+    # Exact reported dollars only. Unknown is not zero, and annotations are kept separately.
+    label = node.text()
+    if label == "< $Minimum":
+        return None
+    return money(re.sub(r"\s*\(TW\)$", "", label).strip())
+
+
+def _salary_note(node: Node) -> dict[str, str]:
+    label = node.text()
+    return {"salary_note": label} if "(TW)" in label or label == "< $Minimum" else {}
+
+
+def _salaries(root: Node) -> tuple[list[dict[str, Any]], str | None]:
+    table = _by_id(root, "table", "all_salaries")
+    rows: list[dict[str, Any]] = []
+    total = None
+    if table is None:
+        return rows, total
+    for row in table.walk("tr"):
+        cells = _cells(row)
+        if "salary" not in cells:
+            continue
+        season = cells["season"].text() if "season" in cells else ""
+        if re.fullmatch(r"\d{4}-\d{2}", season):
+            rows.append(
+                {
+                    "season": season,
+                    **(
+                        _team(cells["team_name"])
+                        if "team_name" in cells
+                        else {"team": None, "team_code": None}
+                    ),
+                    "league": cells["lg_id"].text() if "lg_id" in cells else None,
+                    "salary": _salary(cells["salary"]),
+                    **_salary_note(cells["salary"]),
+                }
+            )
+        elif (
+            any(c.text().lower() in {"career", "total"} for c in cells.values())
+            or "tfoot" in row.attrs.get("class", "").split()
+        ):
+            total = _salary(cells["salary"])
+    return rows, total
+
+
+_DATE = (
+    r"(?:January|February|March|April|May|June|July|August|September|October|November|December)"
+    r" \d{1,2}, \d{4}"
+)
+
+
+def _dated(text: str) -> str | None:
+    found = re.search(_DATE, text)
+    if found:
+        return datetime.strptime(found[0], "%B %d, %Y").date().isoformat()
+    return None
+
+
+def _event_type(text: str) -> str:
+    label = text.lower()
+    if label.startswith("traded"):
+        return "traded"
+    if label.startswith("signed"):
+        return "extended" if "extension" in label else "signed"
+    for verb in (
+        "drafted",
+        "waived",
+        "released",
+        "assigned",
+        "recalled",
+        "suspended",
+        "claimed",
+        "retired",
+    ):
+        if label.startswith(verb):
+            return verb
+    return "other"
+
+
+def _contract(root: Node) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    section = _by_id(root, "div", "all_contract")
+    salaries: list[dict[str, Any]] = []
+    events: list[dict[str, Any]] = []
+    if section is None:
+        return salaries, events
+    for table in section.walk("table"):
+        seasons: dict[int, str] = {}
+        for row in table.walk("tr"):
+            cells = _row_cells(row)
+            if any(c.tag == "th" for c in cells):
+                seasons = {
+                    i: c.text()
+                    for i, c in enumerate(cells)
+                    if re.fullmatch(r"\d{4}-\d{2}", c.text())
+                }
+                continue
+            if not cells or not seasons:
+                continue
+            team = _team(cells[0])
+            for i, season in seasons.items():
+                if i >= len(cells):
+                    raise ValueError("current contract row has fewer cells than its season header")
+                classes = {
+                    cls
+                    for n in [cells[i], *cells[i].walk("span")]
+                    for cls in n.attrs.get("class", "").split()
+                }
+                if {"salary-pl", "salary-tm"} <= classes:
+                    raise ValueError("conflicting contract option markings")
+                salaries.append(
+                    {
+                        "season": season,
+                        **team,
+                        "salary": _salary(cells[i]),
+                        **_salary_note(cells[i]),
+                        "option": "player"
+                        if "salary-pl" in classes
+                        else "team"
+                        if "salary-tm" in classes
+                        else None,
+                    }
+                )
+    for footer in section.walk("div"):
+        if not footer.attrs.get("id", "").startswith("tfooter_contracts_"):
+            continue
+        for item in footer.walk("li"):
+            note = item.text()
+            trade = re.search(r"Traded from ([A-Z]{2,3}) to ([A-Z]{2,3})", note)
+            events.append(
+                {
+                    "date": _dated(note),
+                    "type": _event_type(note),
+                    "description": note,
+                    "from_team_code": trade[1] if trade else None,
+                    "to_team_code": trade[2] if trade else None,
+                }
+            )
+    return salaries, events
+
+
+def _transactions(root: Node) -> list[dict[str, Any]]:
+    section = _by_id(root, "div", "div_transactions")
+    events: list[dict[str, Any]] = []
+    if section is None:
+        return events
+    for paragraph in section.walk("p"):
+        if "transaction" not in paragraph.attrs.get("class", "").split():
+            continue
+        text = paragraph.text()
+        description = re.sub(r"^" + _DATE + r"\s*:\s*", "", text)
+        directions = {}
+        for direction in ("from", "to"):
+            teams = {
+                n.attrs[f"data-attr-{direction}"]
+                for n in paragraph.walk("a")
+                if f"data-attr-{direction}" in n.attrs
+            }
+            directions[f"{direction}_team_code"] = next(iter(teams)) if len(teams) == 1 else None
+        events.append(
+            {
+                "date": _dated(text),
+                "type": _event_type(description),
+                "description": description,
+                **directions,
+            }
+        )
+    return events
+
+
+def _source_link(cell: Node) -> tuple[str | None, str | None]:
+    for link in cell.walk("a"):
+        href = link.attrs.get("href", "")
+        if href.startswith("/") and not href.startswith("//"):
+            game = re.fullmatch(r"/boxscores/(\d{8})[A-Z0-9]+\.html", href)
+            played = datetime.strptime(game[1], "%Y%m%d").date().isoformat() if game else None
+            return f"https://{HOST}{href}", played
+    return None, None
+
+
+def _highs(root: Node) -> list[dict[str, Any]]:
+    result: list[dict[str, Any]] = []
+    for table_id, phase in (("highs-reg-season", "regular_season"), ("highs-playoffs", "playoffs")):
+        table = _by_id(root, "table", table_id)
+        if table is None:
+            continue
+        for row in table.walk("tr"):
+            cells = _cells(row)
+            season = cells["season"].text() if "season" in cells else ""
+            if season != "Career" and not re.fullmatch(r"\d{4}-\d{2}", season):
+                continue
+            values = {}
+            for key, cell in cells.items():
+                if key in {"season", "age", "team", "league"}:
+                    continue
+                url, played = _source_link(cell)
+                values[key] = {"value": cell.text() or None, "url": url, "date": played}
+            result.append(
+                {
+                    "phase": phase,
+                    "season": None if season == "Career" else season,
+                    "scope": "career" if season == "Career" else "season",
+                    "values": values,
+                }
+            )
+    return result
+
+
 def parse_player_page(raw: bytes, bbref_id: str) -> dict[str, Any]:
-    root = document(raw)
+    if len(raw) > 4_000_000:
+        raise ValueError("player HTML exceeds byte bound")
+    parser = PlayerPageParser()
+    parser.feed(raw.decode("utf-8-sig"))
+    root = parser.root
     meta = next((node for node in root.walk("div") if node.attrs.get("id") == "meta"), None)
     if meta is None:
         raise ValueError("player page has no biography block")
@@ -216,7 +455,15 @@ def parse_player_page(raw: bytes, bbref_id: str) -> dict[str, Any]:
     honours = [item.text() for item in bling.walk("li")] if bling else []
 
     awards = _season_awards(root)
+    salaries, career_earnings = _salaries(root)
+    contract, contract_events = _contract(root)
     return {
+        "salary_history": salaries,
+        "career_earnings": career_earnings,
+        "current_contract": contract,
+        "contract_events": contract_events,
+        "transactions": _transactions(root),
+        "game_highs": _highs(root),
         "parser": PARSER_VERSION,
         "bbref_id": bbref_id,
         "name": name,

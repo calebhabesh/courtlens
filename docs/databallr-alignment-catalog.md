@@ -13,8 +13,8 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Switzer interface font verified; owner review pending |
-| 1 | Stats | `/stats` | 👀 | Instructions 1–71 done; 43f/43g data follow-ups deferred; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Redesign (19–28) done; bio crawl and Stats chip await go-ahead; owner review pending |
+| 1 | Stats | `/stats` | 🔧 | Instructions 1–71 done; 43f/43g data follow-ups deferred; owner review pending |
+| 2 | Dashboard (player) | `/players/[id]` | 🔧 | Retained-page parser, marts and Contract/timeline/highs follow-up in progress |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -93,7 +93,7 @@ Padding follow-up: lint/typecheck, Vitest 511/511, four header checks and favico
 pass; the broader search check has dev-server lookup/workspace timeouts. Evidence:
 docs/evidence/alignment/app-shell/favicon-padding/.
 
-### 1 Stats — 👀 ready for review
+### 1 Stats — 🔧 in progress
 Instructions (owner, 2026-10-12):
 1. [x] Integrate Databallr's Stats buttons (where applicable) and their layout. Reference: owner
    screenshot of Databallr's NBA Player Statistics page, 2026-10-12. — interpreted as the rows below.
@@ -476,7 +476,12 @@ Follow-up instruction (owner, 2026-10-14, from the player page's current team):
     deadline deal shows until the first game for the new team). Older seasons get none (owner agreed:
     most rows would carry one).
 
-### 2 Dashboard (player) — 👀 ready for review
+Follow-up instructions (owner, 2026-10-14, retained-page data):
+80. [ ] Show the trade date in the Stats "now" pill tooltip when transactions know it; add the
+    NBA player-index refresh date to the tooltip.
+81. [ ] In-table Per Game / Regular controls should be 32px. Retained as a later follow-up.
+
+### 2 Dashboard (player) — 🔧 in progress
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
    that exact table state (scroll, search, sort, view). Esc acts only when no dialog/menu is open.
@@ -597,7 +602,36 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
 43. [x] Career table cells are clickable like Stats. — each season cell opens the same Stats trend
     dialog (stat switcher, add players, definitions) with the page's Stats query; the Career row stays
     plain. Also fixed a race where Esc could miss "Back to table" in the frame before its listener.
-Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
-awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut). The
-"now TOR" chip on Stats rows was approved and built as Stats instruction 72.
+Follow-up instructions (owner, 2026-10-14, parser → marts → presentation, in this order):
+44. [x] Parser v2 reads retained pages only: salary history (`#all_salaries`), current contract
+    (`#all_contract`: per-season salaries, player/team options, dated signing/extension/trade
+    notes), dated transactions (`#div_transactions`) and regular-season/playoff game highs
+    (`#all_highs`). Add `courtlens reparse-bbref` to append new parser-version rows without fetching.
+    Verify with small synthetic fixtures. — 14 tests pass; offline pass appended 569 v2 profiles,
+    no fetches, original timestamps retained. [Evidence](evidence/alignment/players/reference-v2/README.md).
+45. [ ] Add dbt marts keyed by NBA player_id: `mart_player_awards` (season, award, vote place),
+    `mart_player_honours`, `mart_player_salaries` (season, team, salary, share of cap using existing
+    finance thresholds), `mart_player_transactions` (date, type, from/to team). Document temporal
+    semantics: season awards become known after season end. Run dbt locally from `warehouse/`
+    with `../.venv/bin/dbt run --profiles-dir . --target-path $TMPDIR/dbt/target`; the Compose
+    migrate image is stale.
+46. [ ] Add an open Contract section: current contract by season (salary, % of cap, options and
+    guaranteed amounts where existing finance data knows them), dated contract events, salary
+    history and career earnings. Then a dated transactions timeline and career highs. Keep the
+    presentation organised and clear; credit the source on each.
+47. [ ] Header says "Last with <team>" when a player has no active NBA listing.
+48. [ ] Verify lint, typecheck, Vitest, pytest and sandbox Playwright, with screenshots at 1440
+    and 390. Commit one block at a time; do not push. Only the owner marks alignment.
+
+Operational instructions (owner, 2026-10-14):
+- The existing Basketball-Reference crawl runs in another session. Do not run
+  `acquire-bbref-bios` or start another crawl. Its eventual summary is
+  `~/.cache/courtlens-tmp/bbref-crawl-report.json`. Leave its process alone.
+- Ports 3100 and 8000 belong to the owner's servers. Browser verification uses a sandbox copy
+  on 3180/4180; copy `docs/` with rsync, never symlink it. Scratch lives under disk-backed
+  `$TMPDIR` and is deleted with any task-owned servers at completion.
+- Fetching follows source policy v3. This work adds no fetches.
+- Deferred smaller work: aliases for 76 unmatched players (nicknames, accents, missing birth
+  dates); optional raw-page compression (roughly 1–1.5 GB to about 200 MB). No compression while
+  the crawl is writing.
 Evidence: docs/evidence/alignment/players/ ([README](evidence/alignment/players/README.md)).
