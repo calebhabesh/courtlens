@@ -61,9 +61,9 @@ export interface Honour {
   top: boolean;
 }
 
-/** Career honours in the source's order with titles and major awards first: "7x All Star" -> "7× All-Star". */
+/** Career honours in the source's order with titles and major awards first: "7x All Star" -> "7× All-Star", "Def. POY" -> "DPOY". */
 export function honours(list: string[] | undefined): Honour[] {
-  const tidy = (text: string) => text.replace(/^(\d+)x /, "$1× ").replace(/\bAll Star\b/g, "All-Star");
+  const tidy = (text: string) => text.replace(/^(\d+)x /, "$1× ").replace(/\bAll Star\b/g, "All-Star").replace(/\bDef\. POY\b/g, "DPOY");
   const items = (list ?? []).map(text => ({ label: tidy(text.trim()), top: TOP_HONOURS.some(pattern => pattern.test(text.trim())) }));
   return [...items.filter(item => item.top), ...items.filter(item => !item.top)];
 }

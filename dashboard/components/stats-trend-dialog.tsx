@@ -141,7 +141,7 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
         </Select>
       </div>
       <div className="stats-trend-body" aria-busy={!current}>
-        <h3 className="stats-trend-title">{column.label} progression</h3>
+        <h3 className="stats-trend-title">{column.label} Progression</h3>
         {current?.error ? <p role="alert" className="stats-trend-note">{current.error}</p>
           : current?.rows ? <TrendChart column={column} players={players} rows={current.rows} />
           : <p className="stats-trend-note" role="status">Loading seasons…</p>}

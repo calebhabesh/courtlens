@@ -740,6 +740,15 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
     look. (Owner, 2026-10-15.) 20 px headings with Activity, TrendingUp, Banknote,
     ArrowLeftRight and Trophy icons; no heading hairline.
     [Evidence](evidence/alignment/players/section-headings/README.md).
+60. [x] On the player page, why "2x Def. POY" instead of "2x DPOY"? (Owner screenshot, 2026-10-15.)
+    Basketball-Reference's wording was passed through; the honour tidier now writes DPOY.
+61. [x] Trend dialog: title-case the graph title, and try removing the divider lines above and
+    below the graph for a cleaner look. "PTS Progression"; both hairlines removed (the
+    definition footer keeps its separator).
+62. [x] Make the outline around the table search solid instead of the double outline. (Owner
+    screenshot, 2026-10-15.) One 2px gold outline; the Stats override moved into the foundation
+    layer so the shared offset ring no longer draws outside it.
+    [Evidence](evidence/alignment/players/dpoy-trend-search/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run
