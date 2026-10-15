@@ -720,3 +720,13 @@ responsive overflow checks pass. Dashboard lint/types and Vitest 511/511 pass; f
 header checks pass. A broader search test fails on live lookup, and its rerun times out during
 workspace initialization on the active dev server. Scoped glance passes for favicon identity,
 readability and padding. [Evidence](evidence/alignment/app-shell/favicon-padding/README.md).
+
+### Stats follow-up: center the current-team pill (2026-10-14)
+
+Owner instruction 82 centers the "now" pill with its neighboring subtitle text and dot using a
+flex row. Live Kawhi Leonard cards at 1440/390 have zero vertical center difference, no clipped
+pill outline and no page overflow. Production fixture measurements agree. The name and subtitle
+retain their existing spacing. Scoped glance passes for subtitle alignment, readability and
+spacing. Dashboard lint/typecheck, Vitest 525/525, production webpack build and all six existing
+moved-team/date browser checks pass. Stats remains ready for owner review.
+[Evidence](evidence/alignment/stats/now-pill-centering/README.md).
