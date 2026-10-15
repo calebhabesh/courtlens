@@ -12,16 +12,16 @@ for (const width of [1440, 390]) {
       const icon = row.querySelector('[data-kit="icon-button"]');
       if (!(button instanceof HTMLElement) || !(icon instanceof HTMLElement)) throw new Error("Missing matrix controls");
       const style = getComputedStyle(button);
-      return { size: row.getAttribute("data-demo-size"), height: button.getBoundingClientRect().height,
+      return { size: row.getAttribute("data-demo-size"), variant: row.getAttribute("data-demo-variant"), height: button.getBoundingClientRect().height,
         iconHeight: icon.getBoundingClientRect().height, iconWidth: icon.getBoundingClientRect().width,
         padding: style.paddingInlineStart, blockPadding: style.paddingBlockStart, font: style.fontSize,
         gap: style.gap, glyph: button.querySelector("svg")?.getBoundingClientRect().height };
     }));
-    expect(measurements).toHaveLength(16);
+    expect(measurements).toHaveLength(20);
     for (const measured of measurements) {
       const desktopHeight = measured.size === "xs" ? 28 : measured.size === "sm" ? 32 : measured.size === "md" ? 36 : 40;
       const height = width === 390 ? 40 : desktopHeight;
-      expect(measured).toMatchObject({ height, iconHeight: height, iconWidth: height, padding: measured.size === "xs" ? "8px" : "12px", blockPadding: "0px", font: measured.size === "xs" ? "12px" : "13px", gap: "8px", glyph: measured.size === "xs" ? 14 : 16 });
+      expect(measured).toMatchObject({ height, iconHeight: height, iconWidth: height, padding: measured.variant === "text" ? "0px" : measured.size === "xs" ? "8px" : "12px", blockPadding: "0px", font: measured.size === "xs" ? "12px" : "13px", gap: "8px", glyph: measured.size === "xs" ? 14 : 16 });
     }
     for (const size of ["xs", "sm", "md", "lg"]) {
       const group = kit.getByRole("radiogroup", { name: `${size} default view`, exact: true });

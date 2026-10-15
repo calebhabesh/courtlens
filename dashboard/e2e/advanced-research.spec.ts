@@ -62,7 +62,7 @@ test("calculator rejects invalid scenarios and shows checked finite differences 
 test("roster keeps observed and projected inputs separate and exports context",async ({page}) => {
   await page.route("**/api/workbench/teams/fixture?*",route => { expect(new URL(route.request().url()).searchParams.get("phase")).toBe("regular_season"); return route.fulfill({json:{team:{id:"fixture",name:"Fixture Team",tricode:"FIX"},context:{release_id:"fixture-release",season:"2025-26",phase:"regular",before_date:"2026-07-01"},record:{games_played:1},player_cohort:[{player_id:"1",player_name:"Fixture Player",games_played:1,total_minutes:30,points:0,points_per_game:0}],warnings:["Fixture scope only"]}}); });
   // FO05: no form or Load button; the team loads from the URL as soon as it is chosen.
-  await page.goto("/roster-shapes?season=2025-26&phase=regular_season&team=fixture");
+  await openWorkbench(page, "/roster-shapes/fixture?season=2025-26&phase=regular_season&view=depth");
   const chart = page.getByRole("region",{name:"Roster allocations",exact:true});
   await expect(page.locator(".roster-team")).toContainText("30 observed minutes");
   await expect(chart.getByRole("region",{name:"Unassigned lane"})).toContainText("30 min · 100.0%");
