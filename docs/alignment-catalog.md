@@ -609,12 +609,13 @@ Follow-up instructions (owner, 2026-10-14, parser → marts → presentation, in
     (`#all_highs`). Add `courtlens reparse-bbref` to append new parser-version rows without fetching.
     Verify with small synthetic fixtures. — 14 tests pass; offline pass appended 569 v2 profiles,
     no fetches, original timestamps retained. [Evidence](evidence/alignment/players/reference-v2/README.md).
-45. [ ] Add dbt marts keyed by NBA player_id: `mart_player_awards` (season, award, vote place),
+45. [x] Add dbt marts keyed by NBA player_id: `mart_player_awards` (season, award, vote place),
     `mart_player_honours`, `mart_player_salaries` (season, team, salary, share of cap using existing
     finance thresholds), `mart_player_transactions` (date, type, from/to team). Document temporal
     semantics: season awards become known after season end. Run dbt locally from `warehouse/`
     with `../.venv/bin/dbt run --profiles-dir . --target-path $TMPDIR/dbt/target`; the Compose
-    migrate image is stale.
+    migrate image is stale. — five models build, 19 dbt tests and the actual-SQL PostgreSQL
+    fixture pass. [Measured rows and semantics](evidence/alignment/players/reference-v2/README.md).
 46. [ ] Add an open Contract section: current contract by season (salary, % of cap, options and
     guaranteed amounts where existing finance data knows them), dated contract events, salary
     history and career earnings. Then a dated transactions timeline and career highs. Keep the
