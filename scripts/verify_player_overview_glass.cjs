@@ -58,7 +58,7 @@ async function main() {
             heading: el.querySelector('h2').textContent, appearance: appearance(el), padding: getComputedStyle(el).padding,
             width: el.getBoundingClientRect().width, nestedGlass: el.querySelectorAll('.player-glass').length,
             contentFilter: getComputedStyle(el.querySelector('h2')).filter,
-            overflow: [...el.querySelectorAll('.player-reference-table, .player-form-table')].map(table => ({ client: table.clientWidth, scroll: table.scrollWidth }))
+            overflow: [...el.querySelectorAll('.player-ref-grid-scroll, .player-form-table')].map(table => ({ client: table.clientWidth, scroll: table.scrollWidth }))
           })) };
       });
       measured.contrast = glassContrast(measured.colors);

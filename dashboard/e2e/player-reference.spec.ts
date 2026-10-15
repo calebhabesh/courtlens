@@ -15,7 +15,7 @@ for (const width of [1440, 390]) {
     await transactions.getByText("Earlier Transactions · 1", { exact: true }).click();
     await expect(transactions.getByText("Drafted by Boston.")).toBeVisible();
     const highs = page.getByRole("region", { name: "Career highs table", exact: true });
-    await expect(highs).toContainText("Regular season");
+    await expect(highs).toContainText("Regular Season");
     await expect(highs).toContainText("Playoffs");
     await expect(highs.getByRole("link", { name: "42", exact: true })).toHaveAttribute("title", "PTS · Jan 2, 2026");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
