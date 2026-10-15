@@ -185,6 +185,7 @@ from courtlens.services.position_estimates import (
 )
 from courtlens.services.roster_shapes import roster_shapes
 from courtlens.services.schedule_dates import schedule_dates
+from courtlens.services.season_portraits import find_season_portrait
 from courtlens.services.stats_catalog import stats_catalog_scope
 from courtlens.services.stats_cohort_cache import presentation_page
 from courtlens.services.stats_engine import (
@@ -246,6 +247,7 @@ from courtlens.services.wowy_serving import wowy_capability, wowy_view
 from courtlens.workbench_models import (
     ModelPolicyActivation,
     PlayerPortrait,
+    PlayerSeasonPortrait,
     SavedInvestigation,
     WorkbenchIdentity,
     WorkbenchJob,
@@ -1545,12 +1547,27 @@ def get_player_portrait(
     size: int | None = Query(
         None, description=f"Square face-framed derivative in pixels: one of {PORTRAIT_SIZES}"
     ),
+    season: str | None = Query(
+        None,
+        pattern=r"^\d{4}-\d{2}$",
+        description="Prefer the player's headshot from this season (2015-16 on).",
+    ),
+    team: str | None = Query(
+        None,
+        pattern=r"^[A-Za-z]{2,4}$|^[0-9]{1,12}$",
+        description="With season: prefer that team's headshot (tricode or NBA team ID).",
+    ),
     session: Session = Depends(get_db),
 ) -> FileResponse | Response:
-    """Serve a player's cached portrait, or a display-sized derivative of it, by player ID."""
+    """Serve a player's cached portrait, or a display-sized derivative of it, by player ID.
+
+    With ``season`` the team-season headshot is served when one was acquired; otherwise the
+    current one. ``X-Portrait-Season`` names the season actually served (absent for current).
+    """
     if size is not None and size not in PORTRAIT_SIZES:
         raise HTTPException(status_code=422, detail=f"size must be one of {PORTRAIT_SIZES}")
-    portrait = session.scalar(
+    seasonal = find_season_portrait(session, id, season, team) if season else None
+    portrait: PlayerPortrait | PlayerSeasonPortrait | None = seasonal or session.scalar(
         select(PlayerPortrait)
         .where(
             PlayerPortrait.player_id == id,
@@ -1559,8 +1576,11 @@ def get_player_portrait(
         .order_by(PlayerPortrait.acquired_at.desc())
         .limit(1)
     )
-    if portrait is None:
+    if portrait is None or portrait.storage_path is None or portrait.content_sha256 is None:
         raise HTTPException(status_code=404, detail="Portrait not found for player")
+    headers = {"Cache-Control": "public, max-age=86400"}
+    if seasonal is not None:
+        headers["X-Portrait-Season"] = seasonal.season
     path = Path(portrait.storage_path)
     if not path.exists():
         raise HTTPException(status_code=404, detail="Portrait file missing on disk")
@@ -1568,16 +1588,8 @@ def get_player_portrait(
         content = portrait_derivative(
             path, portrait.content_sha256, size, get_settings().portraits_cache_path
         )
-        return Response(
-            content,
-            media_type=PORTRAIT_DERIVATIVE_MIME,
-            headers={"Cache-Control": "public, max-age=86400"},
-        )
-    return FileResponse(
-        path,
-        media_type=portrait.mime_type,
-        headers={"Cache-Control": "public, max-age=86400"},
-    )
+        return Response(content, media_type=PORTRAIT_DERIVATIVE_MIME, headers=headers)
+    return FileResponse(path, media_type=portrait.mime_type or "image/png", headers=headers)
 
 
 @router.get("/forecasts/evaluation", response_model=PointsForecastEvaluationResponse)

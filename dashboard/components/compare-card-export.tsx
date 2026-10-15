@@ -22,7 +22,8 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
   labels: Map<string, MetricDefinition>;
   title: string;
   footnote: string;
-}>(function CompareCardExport({ players, rows, direction, labels, title, footnote }, ref) {
+  season?: string;
+}>(function CompareCardExport({ players, rows, direction, labels, title, footnote, season }, ref) {
   const height = ROWS_TOP + rows.length * ROW + 48;
   const column = (side: 0 | 1) => side === 0 ? WIDTH * 0.25 : WIDTH * 0.75;
   return <svg ref={ref} xmlns="http://www.w3.org/2000/svg" className="pvp-export-svg" role="img" aria-label={title} viewBox={`0 0 ${WIDTH} ${height}`} width={WIDTH} height={height}
@@ -31,7 +32,7 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
     <rect width={WIDTH} height={height} rx="16" fill="var(--color-surface-1)" />
     {players.map((player, side) => {
       const x = column(side as 0 | 1) - PHOTO / 2;
-      const source = portraitSource(player.portrait_url, player.id, 288);
+      const source = portraitSource(player.portrait_url, player.id, 288, season ? { season, team: player.teams[0] } : null);
       const id = `pvp-export-clip-${side}`;
       return <g key={player.id}>
         <clipPath id={id}><rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" /></clipPath>
