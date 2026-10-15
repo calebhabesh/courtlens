@@ -833,3 +833,12 @@ Instruction 54 centers Accolades under Awards and matches its 4 px bottom paddin
 headers. Both text centers match exactly at 1440/390. Badges remain left-aligned and scoped
 glance passes. Lint/typecheck, 526 Vitest tests, production build and seven career browser checks
 pass. [Evidence](evidence/alignment/players/career-awards/README.md#centered-subheader-follow-up-2026-10-15).
+
+### Player follow-up: glass sections below the career table (2026-10-15)
+
+Instruction 55 extends the uniform glass to Player Impact, Recent Form, Contract, Transactions
+and Career Highs. The six headline cards and five lower panels share one appearance rule.
+Section and subsection headings use title case. Live desktop/phone appearance parity, scoped
+glance, expanded content fit and sampled text contrast of at least 5.88:1 pass. Lint/typecheck,
+526 Vitest tests, production build and 15 player browser checks pass.
+[Evidence](evidence/alignment/players/overview-glass/README.md). Owner alignment remains pending.

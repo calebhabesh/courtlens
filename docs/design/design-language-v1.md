@@ -205,11 +205,14 @@ Panels use surface-1 with no shadow, or `--shadow-1`. Menus and popovers use sur
 `--shadow-2`. Modals and drawers use surface-3 with `--shadow-3` over a scrim of
 `rgb(0 0 0 / 55%)` plus `backdrop-filter: blur(4px)`.
 
-Owner-approved exception (2026-10-14, revised for uniform glass throughout): the six player
-headline-stat cards use surface-0 at 58% opacity across the entire face, a 10% rim, `--shadow-2`,
+Owner-approved exception (2026-10-14, extended 2026-10-15): the six player headline-stat cards
+and the Overview sections below the career table (Player Impact, Recent Form, Contract,
+Transactions and Career Highs) share `player-glass`: surface-0 at 58% opacity, a 10% rim, `--shadow-2`,
 and static 20 px backdrop blur with 150% saturation. There is no gradient or directional sheen.
 Only the backdrop is filtered; text stays sharp. The uniform tinted fill remains when backdrop
-filters are unsupported. Other player sections retain their existing presentation.
+filters are unsupported. Each lower section has one glass container with 20 px padding on
+desktop and 16 px on phone. Nested tables and lists remain inside that container. Section
+headings and subsection labels use title case. Other player sections retain their presentation.
 
 ### Spacing
 

@@ -261,7 +261,7 @@ export function WorkbenchPlayerProfile({
             </span>}
           </div>
           <dl className="player-summary-strip" role="group" aria-label="Season summary">
-            {heroStats.map(stat => <div key={stat.key} className="player-summary-stat">
+            {heroStats.map(stat => <div key={stat.key} className="player-summary-stat player-glass">
               <dt>{stat.label}{stat.rank != null && <span className="player-summary-rank" title={`${ordinal(stat.rank)} of the top ${RANK_PAGE_LIMIT}`}>{ordinal(stat.rank)}</span>}</dt>
               <dd>
                 <span className="player-summary-value">{stat.value}</span>
@@ -289,8 +289,8 @@ export function WorkbenchPlayerProfile({
         trendQuery={hero?.query ?? null} hints={metricHints} />}
       <div className="player-overview-duo">
         <ImpactPlayerCard data={impact} compact />
-        <section className="player-open-section" aria-label="Recent form">
-          <header className="player-open-heading"><h2>Recent form</h2><span>Last 10 and last 5 against the season</span></header>
+        <section className="player-open-section player-glass" aria-label="Recent form">
+          <header className="player-open-heading"><h2>Recent Form</h2><span>Last 10 and last 5 against the season</span></header>
           <div className="player-form-table" role="region" aria-label="Recent form table" tabIndex={0}>
             <table>
               <thead><tr><th>Window</th><th className="num">GP</th><th className="num">MPG</th><th className="num">PTS</th><th className="num">REB</th><th className="num">AST</th><th className="num">TS%</th><th className="num">eFG%</th></tr></thead>

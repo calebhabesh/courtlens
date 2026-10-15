@@ -24,7 +24,7 @@ describe("player reference sections", () => {
     expect(contract.textContent).toContain("Two-way");
     expect(contract.textContent).not.toContain("$123.45");
     expect(screen.getByText("$123.45").getAttribute("href")).toContain("/contracts/TOR.html");
-    expect(screen.getByText("Reported career earnings").parentElement?.textContent).toContain("$1,000,000");
+    expect(screen.getByText("Reported Career Earnings").parentElement?.textContent).toContain("$1,000,000");
     expect(screen.getByText(/Source total may be incomplete/)).toBeTruthy();
     expect(screen.getByText("Signed extension.")).toBeTruthy();
     expect(screen.getByText("Traded from BOS to TOR.").getAttribute("title")).toContain("September 14, 2026");
@@ -55,6 +55,6 @@ describe("player reference sections", () => {
     unmount();
     render(<PlayerReferenceSections reference={{ ...reference, salary_history: [], current_contract: [], contract_events: [], transactions: [], game_highs: [] }} />);
     expect(screen.queryByRole("heading", { name: "Contract" })).toBeNull();
-    expect(screen.queryByRole("heading", { name: "Career highs" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Career Highs" })).toBeNull();
   });
 });

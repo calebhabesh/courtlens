@@ -493,3 +493,12 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
   metric headers. Exact text-center measurements and scoped glance pass at 1440/390.
 - Lint/typecheck, 526 Vitest tests, production build and seven career browser checks pass.
 - [Evidence](evidence/alignment/players/career-awards/README.md#centered-subheader-follow-up-2026-10-15).
+
+## 2026-10-15 — Glass panels below the player career table
+
+- Instruction 55 adds the headline cards' uniform glass to Player Impact, Recent Form, Contract,
+  Transactions and Career Highs, with title-case section and subsection headings.
+- Live 1440/390 appearance parity, scoped glance, expanded content fit and contrast pass.
+  Tables scroll within the panels, and page widths match the viewports.
+- Lint/typecheck, 526 Vitest tests, production build and 15 player browser checks pass.
+- [Evidence](evidence/alignment/players/overview-glass/README.md). Owner alignment remains pending.
