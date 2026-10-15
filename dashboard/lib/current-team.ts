@@ -1,3 +1,4 @@
+import { formatDate } from "./format-date";
 import catalog from "./team-branding.json";
 import type { PlayerResearchItem, WorkbenchCatalog } from "./types";
 
@@ -32,9 +33,12 @@ export function teamMove(item: PlayerResearchItem, rowSeason: string | null, lat
   const played = item.teams ?? [];
   if (played.length === 0 || played.includes(now)) return null;
   const before = played.map(teamName).join(" and ");
+  const listing = item.current_team;
+  const refreshed = listing?.index_refreshed_at ? ` Index refreshed ${formatDate(listing.index_refreshed_at)}.` : "";
+  const trade = listing?.trade_date ? ` Traded ${formatDate(listing.trade_date)} (Basketball-Reference).` : "";
   return {
     tricode: now,
-    title: `Played ${rowSeason} for the ${before}. Now listed with the ${teamName(now)} (NBA player index).`,
+    title: `Played ${rowSeason} for the ${before}. Now listed with the ${teamName(now)} (NBA player index).${refreshed}${trade}`,
     spoken: `now with the ${teamName(now)}`,
   };
 }

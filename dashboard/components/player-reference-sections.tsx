@@ -1,9 +1,12 @@
 import { ButtonSummary } from "./ui/kit";
 import { TeamLogo } from "./team-logo";
+import teamCatalog from "@/lib/team-branding.json";
 import { formatDate } from "@/lib/format-date";
 import type { PlayerBio, PlayerGuarantee, PlayerReferenceEvent, PlayerSalary } from "@/lib/types";
 
 type Reference = NonNullable<PlayerBio["reference"]>;
+const TEAM_ARTWORK = new Set(teamCatalog.teams.map(team => team.tricode));
+const BREF_ARTWORK: Record<string, string> = { BRK: "BKN", CHO: "CHA", PHO: "PHX" };
 const dollars = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 2 });
 function money(value: string | null | undefined) { return value == null ? "—" : dollars.format(Number(value)); }
 
@@ -22,7 +25,7 @@ function SalaryTable({ rows, current }: { rows: PlayerSalary[]; current?: boolea
       <thead><tr><th scope="col">Season</th><th scope="col">Team</th><th scope="col">Salary</th><th scope="col">% of cap</th>{current && <><th scope="col">Option</th><th scope="col" title="Annual guarantee only when explicitly reported; remaining totals appear separately">Guaranteed</th></>}</tr></thead>
       <tbody>{rows.map((row, i) => <tr key={`${row.season}:${row.team_code}:${i}`}>
         <th scope="row">{row.season}</th>
-        <td><span className="player-reference-team">{row.team_code && <TeamLogo team={row.team_code} size={18} />}<span title={row.team ?? undefined}>{row.team_code ?? row.team ?? "—"}</span></span></td>
+        <td><span className="player-reference-team">{row.team_code && (TEAM_ARTWORK.has(row.team_code) || row.team_code in BREF_ARTWORK) && <TeamLogo team={BREF_ARTWORK[row.team_code] ?? row.team_code} size={18} />}<span title={row.team ?? undefined}>{row.team_code ?? row.team ?? "—"}</span></span></td>
         <td title={row.salary_note ?? undefined}>{money(row.salary)}{row.salary_note && <small>{row.salary_note.includes("(TW)") ? "Two-way" : row.salary_note}</small>}</td>
         <td>{row.share_of_cap == null ? "—" : row.cap_source_url ? <a href={row.cap_source_url} target="_blank" rel="noreferrer" title={`Official cap threshold · retained ${formatDate(row.cap_as_of)}`}>{(row.share_of_cap * 100).toFixed(1)}%</a> : `${(row.share_of_cap * 100).toFixed(1)}%`}</td>
         {current && <><td>{row.option ? <span className={`player-contract-option is-${row.option}`}>{row.option === "player" ? "Player option" : "Team option"}</span> : "—"}</td><td><Guarantee value={row.guarantee} /></td></>}

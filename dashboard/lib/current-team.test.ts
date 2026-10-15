@@ -15,6 +15,13 @@ describe("teamMove", () => {
     expect(move?.title).toBe("Played 2025-26 for the LA Clippers. Now listed with the Toronto Raptors (NBA player index).");
   });
 
+  it("dates the index refresh and the known trade without changing row teams", () => {
+    const item = row(["LAC"], "TOR");
+    item.current_team = { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27", index_refreshed_at: "2026-10-01T12:00:00Z", trade_date: "2026-09-14" };
+    expect(teamMove(item, "2025-26", "2025-26")?.title).toBe("Played 2025-26 for the LA Clippers. Now listed with the Toronto Raptors (NBA player index). Index refreshed Oct 1, 2026. Traded Sep 14, 2026 (Basketball-Reference).");
+    expect(item.teams).toEqual(["LAC"]);
+  });
+
   it("stays quiet when the listing matches a team on the row, including a mid-season trade", () => {
     expect(teamMove(row(["DEN"], "DEN"), "2025-26", "2025-26")).toBeNull();
     expect(teamMove(row(["LAC", "TOR"], "TOR"), "2025-26", "2025-26")).toBeNull();

@@ -13,7 +13,7 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Switzer interface font verified; owner review pending |
-| 1 | Stats | `/stats` | 🔧 | Instructions 1–71 done; 43f/43g data follow-ups deferred; owner review pending |
+| 1 | Stats | `/stats` | 👀 | Instructions through 81 done except deferred 43f/43g; owner review pending |
 | 2 | Dashboard (player) | `/players/[id]` | 👀 | Reference parser/marts and Contract, transactions, highs follow-up ready for review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
@@ -93,7 +93,7 @@ Padding follow-up: lint/typecheck, Vitest 511/511, four header checks and favico
 pass; the broader search check has dev-server lookup/workspace timeouts. Evidence:
 docs/evidence/alignment/app-shell/favicon-padding/.
 
-### 1 Stats — 🔧 in progress
+### 1 Stats — 👀 ready for review
 Instructions (owner, 2026-10-12):
 1. [x] Integrate Databallr's Stats buttons (where applicable) and their layout. Reference: owner
    screenshot of Databallr's NBA Player Statistics page, 2026-10-12. — interpreted as the rows below.
@@ -477,9 +477,13 @@ Follow-up instruction (owner, 2026-10-14, from the player page's current team):
     most rows would carry one).
 
 Follow-up instructions (owner, 2026-10-14, retained-page data):
-80. [ ] Show the trade date in the Stats "now" pill tooltip when transactions know it; add the
-    NBA player-index refresh date to the tooltip.
-81. [ ] In-table Per Game / Regular controls should be 32px. Retained as a later follow-up.
+80. [x] Show the trade date in the Stats "now" pill tooltip when transactions know it; add the
+    NBA player-index refresh date to the tooltip. — the latest dated joining event must be a
+    trade to the current listing. An older trade is not borrowed after a later signing. Leonard
+    reads "Index refreshed Oct 13, 2026. Traded Sep 14, 2026 (Basketball-Reference)."
+81. [x] In-table Per Game / Regular controls should be 32px. — kit `sm` on Stats and the career
+    table; measured group heights 32px at 1440, 48px at 390 with the existing phone touch sizing.
+    [Measured screenshots and replayable checks](evidence/alignment/players/reference-v2/README.md#stats-follow-up).
 
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
@@ -626,7 +630,7 @@ Follow-up instructions (owner, 2026-10-14, parser → marts → presentation, in
     last team, independent of selected season; retired/free-agent status is not inferred.
 48. [x] Verify lint, typecheck, Vitest, pytest and sandbox Playwright, with screenshots at 1440
     and 390. Commit one block at a time; do not push. Only the owner marks alignment. — dashboard
-    checks and Ruff pass; Python 2,106; Vitest 524; focused browser 26 plus four baselines. Full
+    checks and Ruff pass; Python 2,106; Vitest 525; focused browser 26 plus four baselines. Full
     mypy retains two pre-existing Gemini SDK errors reproduced from HEAD (reference report).
 
 Operational instructions (owner, 2026-10-14):
