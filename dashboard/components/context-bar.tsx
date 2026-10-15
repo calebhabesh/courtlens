@@ -40,8 +40,8 @@ interface ContextBarProps {
   filters?: React.ReactNode;
   /** View/mode switches that stay visible on phones (see `FilterBar` `modes`). */
   modes?: React.ReactNode;
-  /** Short notes appended to season options, e.g. which compared players played it. */
-  seasonNotes?: Record<string, string>;
+  /** Replaces the season select (e.g. Compare's picker showing who played); it must call onSelect. */
+  renderSeason?: (props: { season: string; seasons: string[]; onSelect: (season: string) => void }) => React.ReactNode;
   /** Page parameters a season change clears, e.g. Compare's per-player seasons (global override). */
   clearOnSeasonChange?: string[];
   /** Page-specific Data details rows (source routes, resolved context), after the catalog rows. */
@@ -75,7 +75,7 @@ export function ContextBar({
   showThrough = true,
   filters,
   modes,
-  seasonNotes,
+  renderSeason,
   clearOnSeasonChange,
   detailRows = [],
   steppedScope = false,
@@ -145,10 +145,10 @@ export function ContextBar({
     [router, pathname, searchParams, catalog, season, phase, releaseId, allowedPhases]
   );
 
-  const seasonSelect = (
+  const seasonSelect = renderSeason ? renderSeason({ season, seasons, onSelect: (value) => updateParam("season", value) }) : (
     <Select value={season} onChange={(e) => updateParam("season", e.target.value)} aria-label="Filter by season">
       {!seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
-      {seasons.map((s) => <option key={s} value={s}>{seasonNotes?.[s] ? `${s} · ${seasonNotes[s]}` : s}</option>)}
+      {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
     </Select>
   );
   const chronological = [...seasons].sort();

@@ -47,8 +47,12 @@
   .pvp-photo:is(:hover, :focus-visible) .pvp-change { background: var(--color-accent); color: var(--color-on-accent); }
   /* The latest team's logo, large and centred behind the head like Databallr's cards (33, 34);
      the portrait paints above it. */
+  /* Lightened artwork with a soft light edge keeps every logo readable on its own colour (Raptors
+     red on red, 76ers and Jazz navy on navy): at least 2.2:1 for all 30 teams, against 1.03 for
+     the plain logo. Black marks stay black. The player page tile and the share image match. */
   .pvp-watermark {
-    position: absolute; left: 4%; top: -2%; width: 92%; height: auto; opacity: 0.42;
+    position: absolute; left: 4%; top: -2%; width: 92%; height: auto; opacity: 0.5;
+    filter: brightness(1.8) saturate(0.75) drop-shadow(0 0 1.5px rgb(255 255 255 / 80%));
     pointer-events: none; user-select: none;
   }
   .pvp-photo .pvp-portrait { position: relative; }
@@ -124,6 +128,24 @@
   .pvp-notice { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); }
   /* The export card stays in the document (exports read its computed tokens) but off screen. */
   .pvp-export { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+  /* Console season menu (44): each season with both players' mini photos, checked in their
+     identity colour when they played it; a player who did not is greyed without a check. */
+  .pvp-season-row { display: inline-flex; align-items: center; gap: var(--space-3); }
+  .pvp-season-label { min-width: 56px; font-variant-numeric: tabular-nums; }
+  .pvp-marks { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .pvp-mark { position: relative; display: inline-grid; width: 22px; height: 22px; }
+  .pvp-mark .pvp-mark-photo { width: 22px; height: 22px; min-width: 22px; min-height: 22px; }
+  .pvp-mark:not([data-played]) .pvp-mark-photo { filter: grayscale(1); opacity: 0.4; }
+  .pvp-mark-check {
+    position: absolute; right: calc(var(--space-1) * -1); bottom: calc(var(--space-1) * -1); display: grid; place-items: center;
+    width: 14px; height: 14px; border-radius: var(--radius-pill); background: var(--color-identity-a); color: var(--color-on-accent);
+    box-shadow: 0 0 0 2px var(--color-surface-2);
+  }
+  .pvp-mark[data-identity="b"] .pvp-mark-check { background: var(--color-identity-b); }
+  .pvp-mark-check .ui-icon { width: 10px; height: 10px; stroke-width: 3; }
+  .pvp-season-menu .ui-menu-panel { max-height: 360px; overflow-y: auto; }
+  .pvp-season-current { color: var(--color-accent); font-weight: 600; }
 
   /* Edit Metrics drawer: search, then glossary-style rows of abbreviation and term (14). */
   /* SearchField draws its own clear button; the browser's search cancel would be a second one. */

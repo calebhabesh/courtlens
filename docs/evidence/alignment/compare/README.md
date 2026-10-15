@@ -105,3 +105,11 @@ per-season test, compare integration test; compare baselines regenerated.
 40px higher. Changing the console Season from 2025-26 to 2024-25 with Dončić on 2023-24 put both
 players on 2024-25 and removed `seasonA`. Checks: Vitest 540/540; 134 browser tests (the override
 test skips on the one-season fixture; verified on live data); compare baselines regenerated.
+
+## Ninth review (instructions 43–45)
+
+[Season picker](review9-season-picker.png): each season shows both players, checked in their colour
+when they played (Durant's missed 2019-20 is greyed). [No Games](review9-no-games-title-case.png) in
+title case. Navigation keeps no scope: on Compare at 2017-18 the header Stats link is `/stats`.
+Checks: Vitest 540/540; full browser suite 470 passed, 28 skipped; failures are the known roster and
+control-kit specs plus a shared-floor lookup flake that passes 6/6 alone.
