@@ -40,6 +40,9 @@
   .player-open-heading h2 { margin: 0; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 650; }
   .player-open-heading span { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); }
   .player-open-empty { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  /* Overview's glass sections: larger headings with a leading icon and no hairline (row 2, 59). */
+  .player-glass .player-open-heading { align-items: center; padding-bottom: 0; border-bottom: 0; }
+  .player-glass .player-open-heading h2 { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-xl); line-height: var(--text-xl-lh); }
   .player-glass :is(.player-open-heading > span, .player-open-empty, .player-figures dt, .player-figures small, .player-form-table th) { color: var(--color-text-secondary); }
 
   .player-overview-duo { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--space-6); align-items: stretch; }

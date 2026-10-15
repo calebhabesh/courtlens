@@ -2,6 +2,7 @@ import type { ImpactResponse } from "@/lib/types";
 import { IMPACT_COLUMNS, formatStatValue } from "@/lib/stats-presets";
 import { ImpactDisclosure } from "./impact-disclosure";
 import { GatedNote } from "./ui/gated-note";
+import { Icon } from "./ui/icon";
 
 function signed(value: number | null | undefined): string {
   const text = formatStatValue(value, 2);
@@ -15,7 +16,7 @@ export function ImpactPlayerCard({ data, compact = false }: { data: ImpactRespon
     const metrics = player?.metrics ?? {};
     const parts = [metrics.orapm != null ? `Off ${signed(metrics.orapm)}` : null, metrics.drapm != null ? `Def ${signed(metrics.drapm)}` : null].filter(Boolean);
     return <section className="player-open-section player-glass" aria-label="Player impact">
-      <header className="player-open-heading"><h2>Player Impact</h2><span>Points per 100 controls</span></header>
+      <header className="player-open-heading"><h2><Icon name="activity" size={20} />Player Impact</h2><span>Points per 100 controls</span></header>
       {!data ? <p className="player-open-empty" role="status">Impact serving is unavailable. Restore the local API connection.</p>
         : !player ? <p className="player-open-empty">No accepted impact sample for this player and cutoff.</p>
         : <dl className="player-figures">

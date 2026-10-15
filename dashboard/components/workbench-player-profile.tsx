@@ -290,7 +290,7 @@ export function WorkbenchPlayerProfile({
       <div className="player-overview-duo">
         <ImpactPlayerCard data={impact} compact />
         <section className="player-open-section player-glass" aria-label="Recent form">
-          <header className="player-open-heading"><h2>Recent Form</h2><span>Last 10 and last 5 against the season</span></header>
+          <header className="player-open-heading"><h2><Icon name="trend" size={20} />Recent Form</h2><span>Last 10 and last 5 against the season</span></header>
           <div className="player-form-table" role="region" aria-label="Recent form table" tabIndex={0}>
             <table>
               <thead><tr><th>Window</th><th className="num">GP</th><th className="num">MPG</th><th className="num">PTS</th><th className="num">REB</th><th className="num">AST</th><th className="num">TS%</th><th className="num">eFG%</th></tr></thead>
