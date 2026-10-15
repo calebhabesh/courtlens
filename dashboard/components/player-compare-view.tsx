@@ -89,11 +89,12 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   const minutes = cohort?.table_cohort?.min_season_minutes ?? 500;
   const modeLabel = MODES.find(entry => entry.value === mode)?.label ?? "Per Game";
   const trends = params.get("compareView") === "lines";
-  // Trend lines slide out of the card and retract into it (37): the drawer's height animates on
-  // open (CSS @starting-style) while the page follows it to the end (31, 36); on close it retracts
-  // while the page scrolls back, and the URL changes once the retraction ends.
+  // Trend lines slide out of the card and retract into it (37): once opened the drawer stays
+  // mounted and only its grid rows animate, so the retraction ends without a re-layout (47). The
+  // page follows it to the end on open (31, 36) and scrolls back as it retracts.
   const drawerRef = useRef<HTMLDivElement>(null), returnTo = useRef<number | null>(null);
-  const [closing, setClosing] = useState(false), closingRef = useRef(false);
+  const [kept, setKept] = useState(trends);
+  if (trends && !kept) setKept(true);
   useEffect(() => {
     const drawer = drawerRef.current;
     if (!trends || !drawer || returnTo.current == null) return;
@@ -105,22 +106,12 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     const stop = window.setTimeout(() => observer.disconnect(), 2500);
     return () => { observer.disconnect(); window.clearTimeout(stop); };
   }, [trends]);
-  function finishClosing() {
-    if (!closingRef.current) return;
-    closingRef.current = false;
-    setClosing(false);
-    change({ compareView: "table" });
-  }
   function toggleTrends() {
-    if (closingRef.current) return;
     if (!trends) { returnTo.current = window.scrollY; change({ compareView: "lines" }); return; }
     const top = returnTo.current ?? window.scrollY;
     returnTo.current = null;
-    closingRef.current = true;
-    setClosing(true);
+    change({ compareView: "table" });
     window.scrollTo({ top, behavior: smooth() });
-    // A fallback for when transitionend never fires (nothing left to animate).
-    window.setTimeout(finishClosing, 700);
   }
   const seasonOf = (side: "a" | "b") => sides?.[side].season ?? context.season;
   const cutoffOf = (side: "a" | "b") => sides?.[side].before_date ?? context.before_date;
@@ -261,19 +252,18 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
         </>}
       </section>
 
-        {a && b && <div className="pvp-tray" data-open={trends || undefined}>
-          <div className="pvp-tray-tab">
-            <Button size="sm" variant="ghost" icon="chart-line" iconAfter={trends && !closing ? "chevron-up" : "chevron-down"} aria-expanded={trends && !closing} aria-controls="pvp-trend-drawer"
-              onClick={toggleTrends}>Trend lines</Button>
-          </div>
-          {trends && <div className="pvp-tray-drawer" data-open={!closing || undefined} ref={drawerRef}
-            onTransitionEnd={event => { if (event.target === event.currentTarget && event.propertyName === "grid-template-rows") finishClosing(); }}>
+        {a && b && <div className="pvp-tray">
+          {kept && <div className="pvp-tray-drawer" data-open={trends || undefined} ref={drawerRef} inert={!trends}>
             <div className="pvp-tray-clip">
               <div className="pvp-tray-body" id="pvp-trend-drawer">
                 <MultiPlayerLinesView variant="embedded" playerIds={[a.id, b.id, ...additionalPlayerIds]} context={context} />
               </div>
             </div>
           </div>}
+          <div className="pvp-tray-tab">
+            <Button size="sm" variant="ghost" icon="chart-line" iconAfter={trends ? "chevron-up" : "chevron-down"} aria-expanded={trends} aria-controls="pvp-trend-drawer"
+              onClick={toggleTrends}>Trend lines</Button>
+          </div>
         </div>}
       </div>
       {notice && <p className="pvp-notice" role="status">{notice} {notice === "Investigation saved." && <Link href="/investigations">Open saved investigations</Link>}</p>}

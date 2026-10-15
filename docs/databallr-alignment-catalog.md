@@ -15,7 +15,7 @@ Rows are in working order.
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
 | 1 | Stats | `/stats` | ✅ | Owner approved first revision 2026-10-15; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
-| 3 | PvP | `/compare` | 🔍 ready for review | Compare Export fixed (card export) |
+| 3 | PvP | `/compare` | 🔄 in progress | Compare Export fixed (card export) |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
 | 6 | Last X Games | `/last-games` | ⬜ | |
@@ -811,6 +811,11 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
     screenshots, 2026-10-15.) The PvP tile (168 px, 104 px on phones) replaces the round photo and
     halo; a 36 px logo leads the identity line.
     [Evidence](evidence/alignment/players/team-header/README.md).
+69. [x] On both PvP and the player page, make the background team logo contrast well for every
+    NBA team; the Raptors logo is hard to see on Kawhi's picture. (Owner screenshot, 2026-10-15.)
+    Lightened artwork (brightness 1.8, saturation 0.75) with a 1.5 px light edge at 50%: at least
+    2.2:1 for all 30 teams, against 1.03 before. The share image matches.
+    [Evidence](evidence/alignment/players/team-header/README.md#watermark-contrast-instruction-69).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run
@@ -825,7 +830,7 @@ Operational instructions (owner, 2026-10-14):
   the crawl is writing.
 Evidence: docs/evidence/alignment/players/ ([README](evidence/alignment/players/README.md)).
 
-### 3 PvP — 🔍 ready for review
+### 3 PvP — 🔄 in progress
 Instructions (owner, 2026-10-15; concept board https://claude.ai/artifact/RE9bkpgam6NNnoVoEEvGcc,
 owner chose the recommendation and delegated the three open decisions):
 1. [x] Revamp /compare into a Databallr-style dual player card: one centered card holding square
@@ -984,6 +989,17 @@ Follow-up instructions (owner, 2026-10-15, ninth review):
     global search results are plain hrefs, so each page opens at its own defaults; header
     availability is judged at those defaults. In-page drill-down links (a player from a season's
     roster) still keep their season. Shared app shell change, so it applies to every page.
+Follow-up instructions (owner, 2026-10-15, tenth review):
+46. [x] The player search under a photo needs a proper exit animation (it fades in but vanishes). —
+    it fades and lifts out over `--dur-fast` before unmounting (sampled 1.0, 0.82, 0.42, 0), then
+    the name block fades back in.
+47. [x] Fix the page glitch at the end of the Trend lines retraction. — the drawer stays mounted once
+    opened (inert while closed) and only its grid rows transition, so nothing unmounts or reorders
+    at the end; the retraction eases in and out. Sampled: scroll and tab position hold steady
+    after the drawer reaches 0.
+48. [ ] Search results drop verbose captions ("Observed in selected scope", "No observed appearances
+    in selected scope · No appearances in selected season"); picking a player gives their most
+    recent valid version. Remove them wherever search results use them unless necessary.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

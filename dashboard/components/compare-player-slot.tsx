@@ -53,9 +53,11 @@ export function ComparePlayerSlot({ side, player, bio, season, games, playedSeas
   onPick: (selection: CompareSelection) => void;
 }) {
   const params = useSearchParams();
-  const [searching, setSearching] = useState(false);
+  // The search slides in focused (26) and fades out before it unmounts (46); the name returns after.
+  const [search, setSearch] = useState<"closed" | "open" | "closing">("closed");
+  const [returned, setReturned] = useState(false);
+  const searching = search === "open";
   const searchRef = useRef<HTMLDivElement>(null);
-  // The revealed search takes focus so typing starts at once (26).
   useEffect(() => { if (searching) searchRef.current?.querySelector<HTMLInputElement>('[role="combobox"]')?.focus(); }, [searching]);
   const label = `Player ${side.toUpperCase()}`;
   const teams = slotTeams(player);
@@ -70,7 +72,7 @@ export function ComparePlayerSlot({ side, player, bio, season, games, playedSeas
   return <div className="pvp-slot pvp-fade" data-identity={side} data-inactive={inactive || undefined}
     style={tint ? ({ "--team-tint": tint } as CSSProperties) : undefined}>
     <div className="pvp-photo-frame">
-      <button type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${label}, ${player.name}`} onClick={() => setSearching(open => !open)}>
+      <button type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${label}, ${player.name}`} onClick={() => setSearch(state => state === "open" ? "closing" : "open")}>
         {/* The latest team's logo sits large behind the headshot, as Databallr does (33). */}
         {/* eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, decorative */}
         {record && <img className="pvp-watermark" src={record.asset} alt="" aria-hidden="true" />}
@@ -84,12 +86,13 @@ export function ComparePlayerSlot({ side, player, bio, season, games, playedSeas
         <span className="pvp-change" aria-hidden="true"><Icon name="user-edit" size={16} /></span>
       </button>
     </div>
-    {searching
-      ? <div className="pvp-search" ref={searchRef}>
+    {search !== "closed"
+      ? <div className="pvp-search" ref={searchRef} data-closing={search === "closing" || undefined}
+          onAnimationEnd={event => { if (event.animationName === "pvp-search-out") { setSearch("closed"); setReturned(true); } }}>
           <EntityField label={label} value="" releaseId={params.get("releaseId") || params.get("release_id")} season={params.get("season")} phase={params.get("phase")} beforeDate={params.get("beforeDate") || params.get("before_date")}
-            onChange={(id, items) => { if (id && items[0]) { setSearching(false); onPick({ id, name: items[0].display_name }); } }} />
+            onChange={(id, items) => { if (id && items[0]) { setSearch("closing"); onPick({ id, name: items[0].display_name }); } }} />
         </div>
-      : <div className="pvp-who">
+      : <div className="pvp-who" data-returned={returned || undefined}>
           <Link className="pvp-name" href={`/players/${player.id}`}>{player.name}</Link>
           {/* Full team names with small logos, oldest first: "Brooklyn Nets, Phoenix Suns" (32, 35). */}
           {inactive && <span className="pvp-dnp">No Games in {season}{span ? <><br />Played {span}</> : null}</span>}
