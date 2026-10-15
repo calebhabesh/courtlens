@@ -690,7 +690,7 @@ export function WorkbenchPlayerExplorer({
       <div className={`stats-table-frame ${viewMode === "table" ? "is-table" : ""}`}>
       <div className="stats-controls-row">
         <strong className="stats-table-brand"><CourtLensWordmark height={16} /></strong>
-        <Segmented label="Counting Mode" size="md" deferChange
+        <Segmented label="Counting Mode" size="sm" deferChange
           options={ORDERED_COUNTING_MODES.map(cm => ({ value: cm.id, label: cm.label, title: cm.tooltip,
             disabled: catalog?.stats_normalizations ? !catalog.stats_normalizations.includes(cm.id) : cm.gated }))}
           value={countingMode} onChange={handleCountingModeSelect} />

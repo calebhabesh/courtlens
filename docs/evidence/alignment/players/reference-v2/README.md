@@ -82,12 +82,13 @@ A further offline pass appended 164 profiles and skipped 569, with no failures, 
 pages in total. See [the catch-up report](reparse-catchup.json). The independent crawl still runs;
 newly acquired pages require a subsequent offline pass and dbt build.
 
-Verification: Ruff and format pass; dashboard lint/typecheck pass; Vitest 524/524; isolated Python
+Verification: Ruff and format pass; dashboard lint/typecheck pass; Vitest 525/525; isolated Python
 2,106 passed, one existing browser-fixture skip. The focused sandbox Playwright set passes 26/26;
 four existing player/Stats visual baselines also pass without regeneration. The final date-copy
-change passes both new section checks again. Local dbt builds all six selected models, and all 21
+and final CSS changes pass both new section checks and all four baselines again. Local dbt builds all six selected models, and all 21
 selected dbt tests pass. Full mypy retains only the two reproduced pre-existing Gemini SDK typing
-errors. No new type error was reported.
+errors. No new type error was reported. The final Python wrapper received SIGTERM after pytest had
+printed its passing summary; its disposable PostgreSQL container was removed manually.
 
 Live production sandbox checks at 1440 and 390 verify reported salaries, cap share, options,
 source credits, expandable history, no page overflow, no browser or console errors, and the
@@ -119,4 +120,40 @@ and 38–40px control rules:
 | Color meaning | Pass | Pass | Named player/team options use contract status tokens; source links are blue |
 | Source/sample context | Pass | Pass | Each reference section names its source, acquisition date and career scope |
 
+The final CSS check uses `--z-sticky` within an isolated table stacking context. The table's
+source codes BRK/CHO/PHO use the corresponding current NBA artwork; historical codes without
+artwork stay text, without duplicate fallback labels. The added fixture test checks both cases.
+
 The page is ready for owner review, not marked aligned.
+
+
+## Stats follow-up
+
+The "now" tooltip now includes the NBA index's actual local refresh date and the dated
+Basketball-Reference trade when its latest joining event is a trade to that listed team. A later
+signing or departure prevents an older trade to the same team being reused. Row statistics and
+team membership rules are unchanged.
+
+In-table counting groups and the career table's phase group use kit `sm`. Live and fixture
+measurements give 32px outer group height at 1440 and the existing 48px group with 40px items on
+phones. No page CSS styles these controls.
+
+[Desktop Stats](stats-trade-1440.png) and [phone Stats](stats-trade-390.png) preserve the row's
+historical team. The [browser measurements](browser-verification.json) contain the full tooltip,
+control heights, page widths, source counts and console/page errors.
+
+To repeat the read-only checks against a production sandbox and the retained local dataset:
+
+```sh
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:3180 node scripts/verify_player_reference.cjs
+```
+
+The sandbox API at 4180 must allow `http://127.0.0.1:3180` in `COURTLENS_CORS_ORIGINS`.
+The script never starts a server. Use the isolated copy described in the catalog, with `docs/`
+copied rather than symlinked. The fixture set comprises `player-reference`, `player-career`,
+`players-fo09`, `stats-team-move-dates`, `stats-team-move` and `stats-followups` (26 tests). All
+26 pass; the four existing player/Stats screenshot baselines pass without regeneration.
+
+No changes were pushed. The owner's servers at 3100/8000 and the original crawl are left running.
+Aliases and raw-page compression remain deferred. Once the crawl finishes, rerun the offline
+reparse and selected dbt build above to include pages acquired after this run's input snapshot.

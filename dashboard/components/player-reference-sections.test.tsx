@@ -38,6 +38,17 @@ describe("player reference sections", () => {
     expect(within(table).getByRole("link", { name: "42" }).getAttribute("title")).toContain("Jan 2, 2026");
     expect(screen.getAllByRole("link", { name: "Basketball-Reference.com" })).toHaveLength(3);
   });
+  it("uses NBA artwork for current BRef aliases and leaves historical codes as text", () => {
+    render(<PlayerReferenceSections reference={{ ...reference, current_contract: [
+      { season: "2026-27", team: "Brooklyn Nets", team_code: "BRK", salary: "0" },
+      { season: "2007-08", team: "Seattle SuperSonics", team_code: "SEA", salary: null },
+    ] }} />);
+    const table = screen.getByRole("table", { name: "Current contract salaries" });
+    expect(within(table).getByRole("img", { name: "BKN" })).toBeTruthy();
+    expect(within(table).getAllByText("BRK")).toHaveLength(1);
+    expect(within(table).getAllByText("SEA")).toHaveLength(1);
+    expect(within(table).queryByRole("img", { name: /SEA/ })).toBeNull();
+  });
   it("orders transactions newest first and omits absent sections", () => {
     const { container, unmount } = render(<PlayerReferenceSections reference={reference} />);
     expect(container.querySelector('[aria-label="Transactions"] time')?.getAttribute("datetime")).toBe("2026-09-22");
