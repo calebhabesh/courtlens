@@ -30,7 +30,7 @@ test("compare card: console actions, change cues, wordmark footer and trend tray
 
 test("Career compares both players through the cutoff without league percentiles (row 3, 21)",async({page})=>{
   await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
-  await page.getByRole("radio",{name:"Career",exact:true}).click();await expect(page).toHaveURL(/span=career/);
+  await page.getByRole("combobox",{name:"Counting mode",exact:true}).selectOption("career:per_game");await expect(page).toHaveURL(/span=career/);
   const table=page.getByRole("table",{name:"Descriptive comparison"});
   await expect(table.locator("caption")).toHaveText("Career through 2025-26");
   await expect(table.getByRole("rowheader",{name:"Seasons",exact:true})).toBeVisible();

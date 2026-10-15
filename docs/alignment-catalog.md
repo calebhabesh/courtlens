@@ -876,6 +876,16 @@ Follow-up instructions (owner, 2026-10-15, second review):
     aggregates each player's observed seasons up to the compared one with games before the
     cutoff only (`career_through`); career rows carry no league percentile, add a Seasons row and
     the photo badge shows career games. Per 75/100 stay disabled in Career.
+Follow-up instructions (owner, 2026-10-15, third review):
+22. [x] Return to the previous slim card, with everything on the unscrolled page; try dropping the
+    percentile numbers to save space (keep or drop decided later). Supersedes 19's wide layout. —
+    560px card again; percentiles hidden (`SHOW_PERCENTILES = false`, one flag to restore);
+    26px one-line rows; presets and one span/counting menu share a row (Career · Per Game /
+    Totals live in that menu, as the owner's screenshot pointed); accolades follow the stats.
+    The card plus trend tab ends at 1,104px (default), 1,188px (a season with honours) and
+    1,254px (Career) at 1440 wide; the owner's screenshot shows about 1,320 CSS px of height.
+23. [x] Put the CourtLens logo beside the card's wordmark. — BrandMark beside the wordmark on the
+    card and in the share image.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
