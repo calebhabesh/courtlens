@@ -52,6 +52,8 @@ select
     -- retired player's last team, which is not a current listing.
     case when (idx.source_values ->> 'roster_status') ~ '^1(\.0+)?$'
         then nullif(idx.source_values ->> 'team_id', '0') end as listed_team_id,
+    nullif(idx.source_values ->> 'team_id', '0') as last_team_id,
+    idx.observed_at as index_observed_at,
     birth_dates.birth_date,
     idx.season as index_season,
     idx.dataset_id

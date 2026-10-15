@@ -1,5 +1,6 @@
 import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
+const playerReference = JSON.parse(readFileSync(new URL("../lib/player-reference-fixture.json", import.meta.url), "utf8"));
 import { pc11Response, sixFactor } from "./pc11-fixtures.mjs";
 
 // Recorded real retained finding, no question/provider prose. Other public examples stay
@@ -169,7 +170,7 @@ const workbenchPlayers = {
       stints: [{ team_id: "100", tricode: "TOR", name: "Toronto Raptors", games_played: 70 }],
       metrics: { ...playerMetrics, dpm: 6.2, o_dpm: 4.1, d_dpm: 2.1 },
       // Listed with the team he played for: no "now" chip.
-      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27" },
+      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27", index_refreshed_at: "2026-10-01T12:00:00Z", trade_date: "2026-09-14" },
       portrait_available: true,
       lineage_url: "/api/workbench/lineage?playerId=23"
     },
@@ -187,7 +188,7 @@ const workbenchPlayers = {
       stints: [{ team_id: "200", tricode: "BOS", name: "Boston Celtics", games_played: 68 }],
       metrics: { ...playerMetrics, pts: 1500, pts_per_game: 22.0, dpm: 2.4, o_dpm: 1.7, d_dpm: 0.7 },
       // Played the season for Boston, listed with Toronto since: the row shows "now TOR".
-      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27" },
+      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27", index_refreshed_at: "2026-10-01T12:00:00Z", trade_date: "2026-09-14" },
       portrait_available: false,
       lineage_url: "/api/workbench/lineage?playerId=24"
     }
@@ -694,7 +695,9 @@ createServer(async (request, response) => {
       ? { jersey: "7", listed_position: "F", listed_height_inches: 80, listed_weight_lbs: 220, prior_seasons: 6, birth_date: "1998-02-10", age: 28, country: "Fixtureland", college: "Fixture State", draft: { year: 2018, round: 1, pick: 9, team_id: "100", team_tricode: "TOR", organization: "Fixture State" }, undrafted: false }
       : { jersey: null, listed_position: "G", listed_height_inches: 75, listed_weight_lbs: 190, prior_seasons: 0, birth_date: null, age: null, country: null, college: null, draft: null, undrafted: true };
     return json(response, 200, { player_id: bioMatch[1], season: url.searchParams.get("season") ?? "2025-26", as_of: "2026-04-12",
-      listing_source: "season_roster", combine: null, limitations: ["Synthetic UI fixture."], ...fixture });
+      listing_source: "season_roster", combine: null,
+      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27", index_refreshed_at: "2026-10-01T12:00:00Z" },
+      reference: bioMatch[1] === "24" ? playerReference : null, limitations: ["Synthetic UI fixture."], ...fixture });
   }
   if (url.pathname === "/api/workbench/players/23") return json(response, 200, workbenchPlayerProfile("23"));
   if (url.pathname === "/api/workbench/players/24") return json(response, 200, workbenchPlayerProfile("24"));

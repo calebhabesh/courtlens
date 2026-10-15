@@ -7,7 +7,8 @@ with thresholds as (
         season,
         id as threshold_id,
         observed_at as cap_observed_at,
-        (payload_json::jsonb ->> 'cap_cents')::numeric as cap_cents
+        (payload_json::jsonb ->> 'cap_cents')::numeric as cap_cents,
+        payload_json::jsonb ->> 'source_url' as cap_source_url
     from {{ source('operational', 'finance_thresholds') }}
     order by season, observed_at desc, id desc
 ),
@@ -37,6 +38,7 @@ select
     r.value ->> 'option' as option,
     (r.value ->> 'salary')::numeric * 100 / nullif(t.cap_cents, 0) as share_of_cap,
     t.cap_cents,
+    t.cap_source_url,
     t.threshold_id,
     t.cap_observed_at,
     case when r.value ->> 'salary' is not null and t.cap_cents is not null

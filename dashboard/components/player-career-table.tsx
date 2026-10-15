@@ -135,11 +135,11 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
       </div>
       <div className="stats-table-frame is-table">
         <div className="stats-controls-row">
-          <Segmented label="Counting Mode" size="md" deferChange
+          <Segmented label="Counting Mode" size="sm" deferChange
             options={ORDERED_COUNTING_MODES.map(mode => ({ value: mode.id, label: mode.label, title: mode.tooltip,
               disabled: catalog.stats_normalizations ? !catalog.stats_normalizations.includes(mode.id) : mode.gated }))}
             value={countingMode} onChange={setCountingMode} />
-          <Segmented label="Phase" size="md" deferChange
+          <Segmented label="Phase" size="sm" deferChange
             options={PHASES.map(p => ({ value: p.id, label: p.label, title: `${p.label} games`,
               disabled: !catalog.stats_scopes?.some(scope => scope.phase === p.id) }))}
             value={phase} onChange={value => router.push(scopeHref("phase", value), { scroll: false })} />

@@ -608,7 +608,7 @@ export type PlayerResearchItem = {
   // Estimated position for the queried season (Stats query only).
   position?: EstimatedPosition | null;
   /** Who the NBA player index lists the player with today; the row's teams stay its games' teams. */
-  current_team?: { team_id: string; team_tricode: string | null; listing_season: string } | null;
+  current_team?: PlayerCurrentTeam | null;
 };
 
 /** A player's career table in one read: each season ranked against its own league (newest first). */
@@ -2201,6 +2201,33 @@ export interface ScheduleDatesResponse {
   warnings: string[];
 }
 
+export type PlayerCurrentTeam = {
+  team_id: string; team_tricode: string | null; listing_season: string;
+  index_refreshed_at?: string | null; trade_date?: string | null; trade_source_url?: string | null;
+};
+
+export type PlayerGuarantee = {
+  amount: string | null; status: "full" | "partial" | "none" | null;
+  source_url: string; as_of: string;
+};
+
+export type PlayerSalary = {
+  season: string; team: string | null; team_code: string | null; salary: string | null;
+  salary_note?: string | null; league?: string | null; option?: "player" | "team" | null;
+  share_of_cap?: number | null; cap_source_url?: string | null; cap_as_of?: string | null;
+  guarantee?: PlayerGuarantee | null;
+};
+
+export type PlayerReferenceEvent = {
+  date: string | null; type: string; description: string;
+  from_team_code: string | null; to_team_code: string | null;
+};
+
+export type PlayerGameHighs = {
+  phase: "regular_season" | "playoffs"; scope: "career" | "season"; season: string | null;
+  values: Partial<Record<string, { value: string | null; url: string | null; date: string | null }>>;
+};
+
 /** Player page header listings (team-reported) and combine values (measured), as of a scope. */
 export type PlayerBio = {
   player_id: string;
@@ -2227,12 +2254,17 @@ export type PlayerBio = {
     weight_lbs: number | null;
   } | null;
   /** The latest NBA player index listing: who the player plays for today, not a season's team. */
-  current_team?: { team_id: string; team_tricode: string | null; listing_season: string } | null;
+  current_team?: PlayerCurrentTeam | null;
+  last_team?: PlayerCurrentTeam | null;
   /** Basketball-Reference biography and honours as of its last crawl (whole career to date). */
   reference?: {
     source: string; url: string; as_of: string;
     birthplace: string | null; high_school: string | null; shoots: string | null; debut_date: string | null;
     honours: string[]; awards: Record<string, string[]>; all_star_seasons: string[];
+    salary_history?: PlayerSalary[]; career_earnings?: string | null;
+    current_contract?: PlayerSalary[]; remaining_guaranteed?: PlayerGuarantee | null;
+    contract_events?: PlayerReferenceEvent[]; transactions?: PlayerReferenceEvent[];
+    game_highs?: PlayerGameHighs[];
   } | null;
   limitations: string[];
 };

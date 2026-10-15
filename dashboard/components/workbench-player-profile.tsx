@@ -22,6 +22,7 @@ import { formatDate } from "@/lib/format-date";
 import { orientedPercentile, type GoodDirection } from "@/lib/percentile-display";
 import { scopeContextLine } from "@/lib/scope-labels";
 import { RANK_PAGE_LIMIT, useCohortRanks } from "@/lib/use-cohort-ranks";
+import { PlayerReferenceSections } from "./player-reference-sections";
 import { PlayerBioHeader } from "./player-bio-header";
 import { PlayerCareerTable } from "./player-career-table";
 import { ResearchTrendCharts } from "./research-trend-charts";
@@ -154,7 +155,7 @@ export function WorkbenchPlayerProfile({
   // Who the season's games were played for, named when the header shows another (current) team.
   const seasonTeams = careerItem?.seasons.find(entry => entry.season === context.season)?.item?.teams
     ?? (latest_team ? [latest_team.tricode] : []);
-  const headerTeam = bio?.current_team?.team_tricode ?? latest_team?.tricode ?? null;
+  const headerTeam = bio?.current_team?.team_tricode ?? bio?.last_team?.team_tricode ?? latest_team?.tricode ?? null;
   const showSeasonTeam = seasonTeams.length > 0 && (seasonTeams.length > 1 || seasonTeams[0] !== headerTeam);
 
   const isFavorite = favorites.includes(player.id);
@@ -311,6 +312,7 @@ export function WorkbenchPlayerProfile({
           </div>
         </section>
       </div>
+      {bio?.reference && <PlayerReferenceSections reference={bio.reference} />}
         </TabsContent>
         <TabsContent value="games" className="player-tab-body">
       {tab === "games" && <section className="pc12-profile-trajectory" aria-label="Headline result"><ResearchTrendCharts games={games} playerName={player.name} /></section>}

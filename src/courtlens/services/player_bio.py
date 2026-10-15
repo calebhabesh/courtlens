@@ -17,6 +17,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from courtlens.services.bbref_bio import player_reference
+from courtlens.services.player_contracts import enrich_contracts
 from courtlens.services.stats_feed_views import _mart, _rows, team_tricode
 
 LIMITATIONS = [
@@ -24,7 +25,8 @@ LIMITATIONS = [
     "measurements.",
     "Combine values are the official NBA Draft Combine measurements from the draft year.",
     "Birthplace, high school, shooting hand, debut, honours and season awards are from "
-    "Basketball-Reference as of its last crawl; they cover the whole career to date.",
+    "Basketball-Reference as of its last crawl; contracts, transactions and game highs also "
+    "cover the whole career to date, independently of the basketball cutoff.",
 ]
 
 
@@ -50,6 +52,9 @@ def _current_team(bio: dict[str, Any]) -> dict[str, Any] | None:
         "team_id": bio["listed_team_id"],
         "team_tricode": team_tricode(bio["listed_team_id"]),
         "listing_season": bio["index_season"],
+        "index_refreshed_at": bio.get("index_observed_at"),
+        "trade_date": bio.get("trade_date"),
+        "trade_source_url": bio.get("trade_source_url"),
     }
 
 
@@ -62,10 +67,29 @@ def current_teams(session: Session, player_ids: list[str]) -> dict[str, dict[str
         return {}
     rows = _rows(
         session,
-        f"""SELECT player_id, listed_team_id, index_season FROM {_mart("mart_player_bio")}
+        f"""SELECT * FROM {_mart("mart_player_bio")}
         WHERE player_id IN :ids""",
         ids=player_ids,
     )
+    if _available(session, "mart_player_transactions"):
+        trades = _rows(
+            session,
+            f"""SELECT DISTINCT ON (player_id)
+            player_id, type, to_team, date, source_url FROM {_mart("mart_player_transactions")}
+            WHERE player_id IN :ids
+                AND type IN ('traded', 'signed', 'claimed', 'waived', 'released', 'retired')
+                AND date IS NOT NULL
+            ORDER BY player_id, date DESC, entry_number DESC""",
+            ids=player_ids,
+        )
+        by_team = {(r["player_id"], r["to_team"]): r for r in trades}
+        for row in rows:
+            tricode = team_tricode(row["listed_team_id"]) if row["listed_team_id"] else None
+            code = {"BKN": "BRK", "CHA": "CHO", "PHX": "PHO"}.get(tricode or "", tricode)
+            trade = by_team.get((row["player_id"], code))
+            if trade and trade["type"] == "traded":
+                row["trade_date"] = trade["date"]
+                row["trade_source_url"] = trade["source_url"]
     found = {row["player_id"]: _current_team(row) for row in rows}
     return {player_id: team for player_id, team in found.items() if team is not None}
 
@@ -144,6 +168,18 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
 
     current_team = _current_team(bio) if bio is not None else None
 
+    reference = player_reference(session, player_id)
+    if reference is not None:
+        enrich_contracts(session, player_id, reference)
+    last_team = None
+    if bio and not current_team and bio.get("last_team_id"):
+        last_team = {
+            "team_id": bio["last_team_id"],
+            "team_tricode": team_tricode(bio["last_team_id"]),
+            "listing_season": bio["index_season"],
+            "index_refreshed_at": bio.get("index_observed_at"),
+        }
+
     source = listing or bio
     birth_date = bio["birth_date"] if bio else listing["birth_date"] if listing else None
     return {
@@ -164,6 +200,7 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
         "undrafted": bool(bio and bio["draft_year"] is None and draft is None),
         "combine": combine,
         "current_team": current_team,
-        "reference": player_reference(session, player_id),
+        "last_team": last_team,
+        "reference": reference,
         "limitations": LIMITATIONS,
     }

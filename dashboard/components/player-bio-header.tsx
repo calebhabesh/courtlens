@@ -114,12 +114,15 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     ["Weight", combine.weight_lbs != null ? `${Math.round(combine.weight_lbs)} lb` : null],
   ].filter((entry): entry is [string, string] => entry[1] != null) : [];
   // The header names who the player plays for today; without a current listing (free agents,
-  // retired players) it falls back to the team of the page's season.
+  // retired players) it uses the index's last team. Missing index evidence falls back to
+  // the page's observed season team, explicitly labelled as observed.
   const listedTeam = bio?.current_team?.team_tricode ?? null;
+  const lastTeam = bio?.last_team?.team_tricode;
   const headerTeam = listedTeam
     ? { tricode: listedTeam, name: teamName(listedTeam) }
+    : lastTeam ? { tricode: lastTeam, name: teamName(lastTeam) }
     : team ? { tricode: team.tricode, name: team.name } : null;
-  const identity = [headerTeam?.name, bio?.listed_position, bio?.jersey ? `#${bio.jersey}` : null].filter(Boolean) as string[];
+  const identity = [headerTeam ? `${listedTeam ? "" : lastTeam ? "Last with " : "Observed with "}${headerTeam.name}` : null, bio?.listed_position, bio?.jersey ? `#${bio.jersey}` : null].filter((part): part is string => part != null);
   const glow = teamBrandColor(headerTeam?.tricode);
 
   return (
