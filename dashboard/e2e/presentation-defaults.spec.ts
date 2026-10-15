@@ -11,7 +11,8 @@ for (const width of [1440,390]) test(`Compare opens on a resolved pair with perc
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
   await expect(page.locator(".pvp-slot")).toHaveCount(2);await expect(page.locator(".pvp-badge")).toHaveCount(2);
   await expect(page.getByRole("combobox",{name:"Counting mode",exact:true}).locator('option[value="per_75"]')).toBeDisabled();
-  await expect(page.locator(".pvp-rows .stat-pct-sublabel").first()).toBeVisible();
+  // Owner trial (row 3, 22): league percentiles are hidden to keep the slim card on one screen.
+  await expect(page.locator(".pvp-rows .stat-pct-sublabel")).toHaveCount(0);
   if (width === 390) {
     const sizes = await page.locator(".pvp-card button:visible").evaluateAll(buttons => buttons.map(button => button.getBoundingClientRect().height));
     expect(Math.min(...sizes)).toBeGreaterThanOrEqual(40);

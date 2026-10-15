@@ -10,8 +10,9 @@ import type { AccoladeRow } from "@/lib/compare-accolades";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { MetricComparisonItem, MetricDefinition } from "@/lib/types";
 import { slotTeams, type CompareSlotPlayer } from "./compare-player-slot";
+import { BrandMark } from "./brand";
 
-const WIDTH = 560, PHOTO = 168, TOP = 24, ROW = 34, ROWS_TOP = TOP + PHOTO + 64, MARK = 20;
+const WIDTH = 560, PHOTO = 168, TOP = 24, ROW = 34, ROWS_TOP = TOP + PHOTO + 64, MARK = 20, LOGO = 24;
 
 type ExportRow = { key: string; label: string; shown: [string, string]; leader: "a" | "b" | null; pill: string | null };
 
@@ -75,6 +76,8 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
         <text x={WIDTH * 0.7} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "b" ? 700 : 500} fill="var(--color-text)">{line.shown[1]}</text>
       </g>;
     })}
-    <path d={WORDMARK_PATH} fill="var(--color-accent)" transform={`translate(${(WIDTH - markWidth) / 2} ${height - 20 - MARK}) scale(${MARK / WORDMARK_HEIGHT})`} />
+    {/* The ball-lens logo beside the wordmark, as on the card (23). */}
+    <g transform={`translate(${(WIDTH - markWidth - LOGO - 8) / 2} ${height - 22 - LOGO})`}><BrandMark size={LOGO} framed={false} /></g>
+    <path d={WORDMARK_PATH} fill="var(--color-accent)" transform={`translate(${(WIDTH - markWidth - LOGO - 8) / 2 + LOGO + 8} ${height - 20 - MARK}) scale(${MARK / WORDMARK_HEIGHT})`} />
   </svg>;
 });

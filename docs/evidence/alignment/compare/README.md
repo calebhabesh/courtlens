@@ -58,3 +58,11 @@ stacks the band and tables; [share image](review2-share-image.png).
 Checks: dashboard lint/typecheck, Vitest 537/537; Python unit 1,530 passed and the career
 integration suite 11/11 (new cutoff test); 199 affected browser tests plus a new Career test pass;
 the four compare baselines regenerated, all others unchanged.
+
+## Third review (instructions 22–23)
+
+Back to the slim 560px card with percentiles hidden as a trial: [default](review3-default-1440.png),
+[2016-17 with honours](review3-2016-17-1440.png), [Career](review3-career-1440.png) (chosen from the
+counting menu) and [phone](review3-phone-390.png). Card plus trend tab end at 1,104 / 1,188 /
+1,254px at 1440 wide. The logo sits beside the wordmark on the card and share image.
+Checks: lint/typecheck, Vitest 537/537, 199 affected browser tests; compare baselines regenerated.

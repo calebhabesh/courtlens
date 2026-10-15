@@ -11,6 +11,7 @@ import { CompareCardExport } from "./compare-card-export";
 import { ComparePlayerSlot, type CompareSelection } from "./compare-player-slot";
 import { CompareMetricsDrawer } from "./compare-metrics-drawer";
 import { CourtLensWordmark } from "./courtlens-wordmark";
+import { BrandMark } from "./brand";
 import { accoladeGroups, type AccoladeGroups } from "@/lib/compare-accolades";
 import { formatDate } from "@/lib/format-date";
 import { PageHeader } from "./ui/panel";
@@ -26,6 +27,9 @@ import type { AnalyticsCatalog, ComparisonCareerResponse, MetricComparisonItem, 
 import { Button, IconButton, Segmented, Select } from "./ui/kit";
 export type { ComparePresetId } from "@/lib/comparison-metrics";
 
+/** Owner trial, row 3, 22: league percentiles hidden to keep the slim card on one screen. */
+const SHOW_PERCENTILES = false;
+
 type Scope = { season: string; phase: string; before_date: string; window: string; release_id?: string };
 
 const MODES: { value: CompareCountingMode; label: string; rate?: boolean }[] = [
@@ -34,10 +38,9 @@ const MODES: { value: CompareCountingMode; label: string; rate?: boolean }[] = [
 ];
 
 /**
- * Player Comparison (alignment row 3): one duel card in Databallr's shape, laid out to fit an
- * unscrolled desktop page (19). A band holds both players around the presets, the Season/Career
- * switch and the counting mode; below it the stats and the accolades sit side by side as mirrored
- * tables. Pills mark the leading side per metric, which also reads heavier; there is no verdict.
+ * Player Comparison (alignment row 3): one slim duel card in Databallr's shape (22). Both players,
+ * one row of presets and the span/counting menu, then mirrored one-line rows for the stats and the
+ * accolades. Pills mark the leading side per metric, which also reads heavier; there is no verdict.
  */
 export function PlayerCompareView({ comparison, bios = [null, null], career = null, span = "season", cohort, metricDefinitions = [], workbenchCatalog, additionalPlayerIds = [], context, selector, error = null }: {
   comparison: PlayerComparisonResponse | null; bios?: [PlayerBio | null, PlayerBio | null]; catalog?: AnalyticsCatalog; cohort?: WorkbenchQueryResponse | null;
@@ -59,7 +62,9 @@ export function PlayerCompareView({ comparison, bios = [null, null], career = nu
   const keys = active === "custom" ? custom : COMPARE_PRESETS[active].metrics;
   const careerItems = career ? [career.player_a.item, career.player_b.item].filter((item): item is PlayerResearchItem => item != null) : [];
   const careerView = span === "career";
-  const rows = comparison ? careerView ? comparisonRows(keys, mode, comparison, metricDefinitions, { items: careerItems }, true) : comparisonRows(keys, mode, comparison, metricDefinitions, cohort) : [];
+  // Careers offer per game and totals only; possession rates need season exposure.
+  const careerMode: CompareCountingMode = mode === "raw" ? "raw" : "per_game";
+  const rows = comparison ? careerView ? comparisonRows(keys, careerMode, comparison, metricDefinitions, { items: careerItems }, true) : comparisonRows(keys, mode, comparison, metricDefinitions, cohort) : [];
   const a = comparison?.player_a ?? null, b = comparison?.player_b ?? null;
   // Career rows carry no league percentile: each season ranks against its own league.
   const cohortRow = (id?: string) => careerView ? undefined : cohort?.items.find(row => row.player_id === id);
@@ -127,25 +132,31 @@ export function PlayerCompareView({ comparison, bios = [null, null], career = nu
     <div className="pvp-column" data-paired={(a && b) || undefined}>
       <div className="pvp-stack">
       <section className="pvp-card" aria-label="Comparison card">
-        {a && b ? <div className="pvp-band">
-          <ComparePlayerSlot key={`a-${a.id}`} side="a" player={a} bio={bios[0]} season={context.season} onPick={selection => pick("a", selection)}
-            games={careerView ? careerOf("a")?.item?.games_played : undefined} />
+        {a && b ? <>
+          <div className="pvp-players">
+            <ComparePlayerSlot key={`a-${a.id}`} side="a" player={a} bio={bios[0]} season={context.season} onPick={selection => pick("a", selection)}
+              games={careerView ? careerOf("a")?.item?.games_played : undefined} />
+            <IconButton className="pvp-swap" size="sm" variant="secondary" icon="swap" label="Swap players" onClick={swap} />
+            <ComparePlayerSlot key={`b-${b.id}`} side="b" player={b} bio={bios[1]} season={context.season} onPick={selection => pick("b", selection)}
+              games={careerView ? careerOf("b")?.item?.games_played : undefined} />
+          </div>
           <div className="pvp-controls">
             <div className="pvp-presets"><Segmented size="sm" label="Comparison Metric Presets" value={active} onChange={value => change({ preset: value })}
               options={Object.entries(COMPARE_PRESETS).map(([value, entry]) => ({ value: value as ComparePresetId, label: entry.label }))} /></div>
-            <div className="pvp-switches">
-              <Segmented size="sm" label="Season or career" value={span} onChange={value => change({ span: value }, true)}
-                options={[{ value: "season" as const, label: context.season }, { value: "career" as const, label: "Career" }]} />
-              <Select size="sm" aria-label="Counting mode" value={mode} onChange={event => change({ countingMode: event.target.value }, true)}>
-                {MODES.map(entry => <option key={entry.value} value={entry.value} disabled={entry.rate && (careerView || !rates.includes(entry.value))}>
-                  {entry.rate && (careerView || !rates.includes(entry.value)) ? `${entry.label} (needs possession data)` : entry.label}</option>)}
-              </Select>
-            </div>
-            <IconButton className="pvp-swap" size="sm" variant="secondary" icon="swap" label="Swap players" onClick={swap} />
+            {/* Season or career and the counting mode share one menu (21, 22): season values stay bare. */}
+            <Select size="sm" aria-label="Counting mode" value={careerView ? `career:${careerMode}` : mode}
+              onChange={event => { const [first, second] = event.target.value.split(":"); change(second ? { span: "career", countingMode: second } : { span: "season", countingMode: first }, true); }}>
+              <optgroup label={context.season}>
+                {MODES.map(entry => <option key={entry.value} value={entry.value} disabled={entry.rate && !rates.includes(entry.value)}>
+                  {entry.rate && !rates.includes(entry.value) ? `${entry.label} (needs possession data)` : entry.label}</option>)}
+              </optgroup>
+              <optgroup label={`Career through ${context.season}`}>
+                <option value="career:per_game">Career · Per Game</option>
+                <option value="career:raw">Career · Totals</option>
+              </optgroup>
+            </Select>
           </div>
-          <ComparePlayerSlot key={`b-${b.id}`} side="b" player={b} bio={bios[1]} season={context.season} onPick={selection => pick("b", selection)}
-            games={careerView ? careerOf("b")?.item?.games_played : undefined} />
-        </div> : <>
+        </> : <>
           {/* Only when no pair resolves: silhouettes over the two-field picker. */}
           <div className="pvp-players-empty" aria-hidden="true">
             <span className="pvp-photo pvp-photo-empty"><span className="pvp-silhouette"><Icon name="person" size={20} /></span></span>
@@ -157,7 +168,7 @@ export function PlayerCompareView({ comparison, bios = [null, null], career = nu
         {a && b && <>
           <div className="pvp-body">
             <table key={`${a.id}-${b.id}-${active}-${mode}-${span}`} className="pvp-rows pvp-fade" aria-label="Descriptive comparison">
-              <caption className="pvp-caption">{careerView ? `Career through ${context.season}` : `${context.season} ${context.phase === "playoffs" ? "Playoffs" : "Season"}`}</caption>
+              <caption className="sr-only">{careerView ? `Career through ${context.season}` : `${context.season} ${context.phase === "playoffs" ? "Playoffs" : "Season"}`}</caption>
               <Columns names={[a.name, b.name]} />
               <tbody>{rows.map(row => {
                 const group = active === "overall" ? overallGroupStart(row.metric) : null;
@@ -171,13 +182,13 @@ export function PlayerCompareView({ comparison, bios = [null, null], career = nu
               </tbody>
             </table>
             <table key={`${a.id}-${b.id}-accolades`} className="pvp-rows pvp-fade" aria-label="Accolades">
-              <caption className="pvp-caption" title={`Through ${formatDate(context.before_date)}`}>Accolades</caption>
+              <caption className="sr-only">{`Accolades through ${formatDate(context.before_date)}`}</caption>
               <Columns names={[a.name, b.name]} />
               <tbody><AccoladeRows groups={accolades} season={context.season} names={[a.name, b.name]} /></tbody>
             </table>
           </div>
           {!rows.length && <GatedNote action={<Button size="md" onClick={() => change({ preset: "custom", customMetrics: CUSTOM_DEFAULT.join(",") })}>Reset metrics</Button>}>No custom metrics selected.</GatedNote>}
-          <footer className="pvp-foot"><CourtLensWordmark height={20} /></footer>
+          <footer className="pvp-foot"><BrandMark size={22} framed={false} /><CourtLensWordmark height={18} /></footer>
         </>}
       </section>
 
@@ -228,7 +239,7 @@ function MetricRow({ row, direction, names, definition, percentiles, minutes }: 
     const value = side === "a" ? row.value_a : row.value_b;
     const player = side === "a" ? percentiles[0] : percentiles[1];
     return <td className="pvp-value" data-leading={leader === side || undefined} title={`n=${side === "a" ? row.n_a : row.n_b}`}>
-      <PercentileCell variant="text" value={value == null ? null : formatCardValue(value, row.unit, row.metric)} percentile={player?.table_percentiles?.[row.metric] ?? null}
+      <PercentileCell variant="text" showPercentile={SHOW_PERCENTILES} value={value == null ? null : formatCardValue(value, row.unit, row.metric)} percentile={player?.table_percentiles?.[row.metric] ?? null}
         qualified={player?.table_qualified === true} label={`${names[side === "a" ? 0 : 1]} ${label}`}
         cohort={`${player?.table_cohort_sample_sizes?.[row.metric] ?? "Unknown"} valid league players; ${minutes}+ season minutes`} />
     </td>;
@@ -271,7 +282,7 @@ function AccoladeRows({ groups, season, names }: { groups: AccoladeGroups; seaso
     </tr>;
   };
   return <>
-    {groups.career.length > 0 && <tr className="pvp-group"><th colSpan={5} scope="colgroup">Career</th></tr>}
+    {groups.career.length > 0 && <tr className="pvp-group"><th colSpan={5} scope="colgroup">Accolades</th></tr>}
     {groups.career.map(entry => row(entry, true))}
     {(groups.season.length > 0 || groups.seasonPending) && <tr className="pvp-group"><th colSpan={5} scope="colgroup">{season} Honors</th></tr>}
     {groups.season.map(entry => row(entry, false))}
