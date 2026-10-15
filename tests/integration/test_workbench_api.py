@@ -86,7 +86,7 @@ def test_workbench_lookup_endpoint(client: TestClient) -> None:
     resp_empty = client.get("/api/workbench/lookup")
     assert resp_empty.status_code == 200
     data_empty = resp_empty.json()
-    assert data_empty["catalog_version"] == "pf04-v1"
+    assert data_empty["catalog_version"] == "pf04-v2"
     assert len(data_empty["items"]) == 10
     assert all(i["match_basis"] == "suggestion" for i in data_empty["items"])
     destinations = [i["destination_url"] for i in data_empty["items"]]

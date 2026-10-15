@@ -35,6 +35,7 @@ from courtlens.domain.entity_lookup import (
     tokenize_lookup_text,
 )
 from courtlens.domain.teams import NBA_TEAMS, get_team_info, resolve_team_tricode
+from courtlens.reference_models import BbrefPlayerProfile
 from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot
 from courtlens.workbench_models import (
     WorkbenchDataset,
@@ -114,6 +115,7 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
             WorkbenchPlayerGame.season,
             WorkbenchPlayerGame.team_id,
             func.max(WorkbenchPlayerGame.game_date).label("latest_date"),
+            func.count().label("games"),
         ).group_by(
             WorkbenchPlayerGame.player_id,
             WorkbenchPlayerGame.season,
@@ -124,15 +126,17 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
 
         summary_rows = session.execute(summary_query).all()
 
-        for pid, season, team_id, latest_date in summary_rows:
+        for pid, season, team_id, latest_date, games in summary_rows:
             if pid not in player_summaries:
                 player_summaries[pid] = {
                     "seasons": set(),
                     "latest_date": latest_date,
                     "latest_team_id": team_id,
+                    "games": 0,
                 }
             entry = player_summaries[pid]
             entry["seasons"].add(season)
+            entry["games"] += games
             if latest_date and (
                 entry["latest_date"] is None or latest_date >= entry["latest_date"]
             ):
@@ -142,11 +146,34 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
         # Fallback if table is not accessible or dataset does not exist
         pass
 
+    # 3. Basketball-Reference nicknames from each player's newest parsed profile
+    nicknames: dict[str, list[str]] = {}
+    try:
+        nickname_rows = session.execute(
+            select(BbrefPlayerProfile.player_id, BbrefPlayerProfile.profile["nicknames"])
+            .where(BbrefPlayerProfile.player_id.in_([i.external_id for i in player_identities]))
+            .order_by(BbrefPlayerProfile.observed_at, BbrefPlayerProfile.created_at)
+        ).all()
+        for pid, names in nickname_rows:
+            # Profiles from parsers before bbref-player-v3 carry no nicknames key.
+            if isinstance(names, list):
+                nicknames[pid] = [str(name) for name in names]
+    except Exception:
+        session.rollback()
+
     for ident in player_identities:
         raw_aliases = []
         if isinstance(ident.metadata_json, dict) and "aliases" in ident.metadata_json:
             raw_aliases = ident.metadata_json["aliases"]
-        generated = generate_player_aliases(ident.display_name, raw_aliases)
+        player_nicknames = {
+            normalize_lookup_text(name): name for name in nicknames.get(ident.external_id, [])
+        }
+        player_nicknames.pop("", None)
+        # "greek freak" should find "The Greek Freak" as a whole nickname, not a later word.
+        for norm, name in list(player_nicknames.items()):
+            if norm.startswith("the ") and len(norm) > 4:
+                player_nicknames.setdefault(norm[4:], name)
+        generated = generate_player_aliases(ident.display_name, [*raw_aliases, *player_nicknames])
 
         summary = player_summaries.get(ident.external_id, {})
         seasons = tuple(sorted(summary.get("seasons", [])))
@@ -178,6 +205,8 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
                 latest_team_id=latest_team_id,
                 latest_tricode=latest_tricode,
                 metadata={"identity_id": ident.id, "namespace": ident.namespace},
+                nicknames=player_nicknames,
+                games=summary.get("games", 0),
             )
         )
 
@@ -247,6 +276,23 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
         )
 
     return entities
+
+
+def _match_tier(entity: IndexedEntity, basis: MatchBasis, term: str | None) -> int:
+    """Rank tier: an exact full name (or multi-word alias) outranks a word or prefix match.
+
+    Within a tier, prominence decides, so "vic" lists Victor Wembanyama (nickname "Vic")
+    before Vic Law (first name) and both before players who merely contain "vic" or have it
+    later in a nickname.
+    """
+    if basis == "exact" and (term is None or term == entity.display_name or " " in term):
+        return 0
+    if basis == "token_prefix" and term in entity.nicknames:
+        # A later word of a nickname ("Maple Jordan") is no stronger than a substring.
+        return 2
+    if basis in {"exact", "prefix", "token_prefix"}:
+        return 1
+    return 2 if basis == "substring" else 3
 
 
 def get_or_build_entity_index(
@@ -485,13 +531,27 @@ def lookup_entities(
                 k_rank = kind_rank_map.get(entity.kind, 4)
                 scored_candidates.append((match_score, k_rank, entity, match_basis, matched_term))
 
-        # Stable deterministic tie ordering:
-        # 1. match_score DESC
-        # 2. kind priority (player > team > page)
-        # 3. display_name ASC
-        # 4. id ASC
+        # Players in the scope's season (or the newest indexed season) come first within a tier.
+        current_season = season or max(
+            (s for e in index if e.kind == "player" for s in e.seasons[-1:]), default=None
+        )
+
+        # Stable deterministic ordering:
+        # 1. match tier (full name, then name/nickname word or prefix, substring, typo)
+        # 2. players in the current season, then most observed games
+        # 3. match_score DESC
+        # 4. kind priority (player > team > page)
+        # 5. display_name ASC, id ASC
         scored_candidates.sort(
-            key=lambda item: (-item[0], item[1], item[2].display_name_norm, item[2].id)
+            key=lambda item: (
+                _match_tier(item[2], item[3], item[4]),
+                current_season not in item[2].seasons,
+                -item[2].games,
+                -item[0],
+                item[1],
+                item[2].display_name_norm,
+                item[2].id,
+            )
         )
 
         total_matches = len(scored_candidates)
@@ -522,6 +582,11 @@ def lookup_entities(
                 status = "available"
                 sub = entity.subtitle
 
+            matched_nickname = entity.nicknames.get(matched_term or "")
+            # "The Greek Freak" is indexed twice (with and without "The"); list it once.
+            nicknames = list(dict.fromkeys(entity.nicknames.values()))
+            if matched_nickname:
+                nicknames = [matched_nickname, *(n for n in nicknames if n != matched_nickname)]
             items.append(
                 LookupItem(
                     id=entity.id,
@@ -531,7 +596,8 @@ def lookup_entities(
                     subtitle=sub,
                     match_basis=match_basis,
                     match_score=round(match_score, 4),
-                    matched_alias=matched_term,
+                    matched_alias=matched_nickname,
+                    nicknames=nicknames,
                     portrait_url=entity.portrait_url,
                     portrait_fallback=entity.portrait_fallback,
                     availability=LookupAvailability(

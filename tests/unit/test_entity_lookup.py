@@ -477,3 +477,115 @@ def test_empty_query_never_suggests_players(test_db_session: Session):
     players_only = lookup_entities(test_db_session, query="", kinds=["player"])
     assert players_only.items == [] and players_only.total_matches == 0
     assert lookup_entities(test_db_session, query="jok", kinds=["player"]).items
+
+
+def test_only_basketball_reference_nicknames_are_shown_as_aka(test_db_session: Session):
+    """Generated aliases match silently; a newest-profile nickname matches and is captioned."""
+    from datetime import UTC, datetime
+
+    from courtlens.reference_models import BbrefPlayerProfile
+    from courtlens.workbench_models import WorkbenchAcquisition
+
+    receipt = WorkbenchAcquisition(
+        source_name="basketball_reference",
+        resource="bbref_player_pages",
+        source_url="https://www.basketball-reference.com/players/j/jokicni01.html",
+        status="success",
+    )
+    test_db_session.add(receipt)
+    test_db_session.flush()
+    for when, version, profile in (
+        (datetime(2026, 1, 1, tzinfo=UTC), "bbref-player-v2", {"honours": []}),
+        (datetime(2026, 1, 1, tzinfo=UTC), "bbref-player-v3", {"nicknames": ["The Joker"]}),
+    ):
+        test_db_session.add(
+            BbrefPlayerProfile(
+                player_id="203999",
+                bbref_id="jokicni01",
+                match_basis="name+birth_date",
+                acquisition_id=receipt.id,
+                content_sha256="0" * 64,
+                parser_version=version,
+                observed_at=when,
+                profile=profile,
+            )
+        )
+    test_db_session.commit()
+
+    joker = lookup_entities(test_db_session, query="joker", kinds=["player"]).items[0]
+    assert (joker.display_name, joker.matched_alias) == ("Nikola Jokić", "The Joker")
+    # A leading "The" is optional: "joker" is the whole nickname, not one of its later words.
+    assert joker.match_basis == "exact"
+    # Accent-folded names, first names and stored identity aliases are not nicknames.
+    assert lookup_entities(test_db_session, query="jokic").items[0].matched_alias is None
+    assert lookup_entities(test_db_session, query="jalen").items[0].matched_alias is None
+    luka = lookup_entities(test_db_session, query="luka magic", kinds=["player"]).items[0]
+    assert (luka.display_name, luka.matched_alias) == ("Luka Dončić", None)
+
+
+def test_equally_good_matches_rank_current_then_most_games(monkeypatch: pytest.MonkeyPatch):
+    """A current star's nickname or first name beats rarely seen exact first names."""
+    from courtlens.domain.entity_lookup import IndexedEntity
+    from courtlens.services import entity_lookup as service
+
+    def player(
+        pid: str,
+        name: str,
+        seasons: tuple[str, ...],
+        games: int,
+        nicknames: dict[str, str] | None = None,
+    ) -> IndexedEntity:
+        nicknames = nicknames or {}
+        return IndexedEntity(
+            id=pid,
+            kind="player",
+            canonical_id=pid,
+            display_name=name,
+            display_name_norm=normalize_lookup_text(name),
+            aliases_norm=tuple(generate_player_aliases(name, list(nicknames.values()))),
+            tokens=tuple(tokenize_lookup_text(name)),
+            subtitle=None,
+            portrait_url=None,
+            portrait_fallback=None,
+            base_destination=f"/players/{pid}",
+            seasons=seasons,
+            games=games,
+            nicknames=nicknames,
+        )
+
+    index = [
+        player("1", "Vic Law", (), 0),
+        player("2", "Victor Alexander", ("1996-97",), 120),
+        player("3", "Victor Oladipo", ("2012-13", "2022-23"), 600),
+        player("4", "Aleksandar Radojevic", ("1999-00",), 3),
+        player(
+            "5",
+            "Victor Wembanyama",
+            ("2023-24", "2025-26"),
+            181,
+            nicknames={"wemby": "Wemby", "vic": "Vic", "alien": "Alien"},
+        ),
+        player(
+            "6", "Darko Milicic", ("2003-04",), 468, nicknames={"human victory": "Human Victory"}
+        ),
+    ]
+    monkeypatch.setattr(service, "get_or_build_entity_index", lambda *a, **k: index)
+    items = service.lookup_entities(None, query="vic", kinds=["player"]).items  # type: ignore[arg-type]
+    assert [i.display_name for i in items] == [
+        "Victor Wembanyama",
+        "Victor Oladipo",
+        "Victor Alexander",
+        "Vic Law",
+        "Darko Milicic",
+        "Aleksandar Radojevic",
+    ]
+    assert [i.matched_alias for i in items] == ["Vic", None, None, None, "Human Victory", None]
+    wemby = next(i for i in items if i.display_name == "Victor Wembanyama")
+    # Every nickname is listed, the matched one first; players without any list none.
+    assert wemby.nicknames == ["Vic", "Wemby", "Alien"]
+    assert next(i for i in items if i.display_name == "Vic Law").nicknames == []
+    wemby = service.lookup_entities(None, query="wembanyama", kinds=["player"]).items[0]  # type: ignore[arg-type]
+    assert (wemby.matched_alias, wemby.nicknames) == (None, ["Wemby", "Vic", "Alien"])
+    # An exact full name still outranks prominence.
+    law = service.lookup_entities(None, query="vic law", kinds=["player"]).items  # type: ignore[arg-type]
+    assert law[0].display_name == "Vic Law"

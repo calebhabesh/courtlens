@@ -649,6 +649,8 @@ export type LookupItem = {
   match_basis: "exact" | "prefix" | "token_prefix" | "substring" | "typo" | "suggestion";
   match_score: number;
   matched_alias?: string | null;
+  /** Every Basketball-Reference nickname, the matched one (if any) first. */
+  nicknames?: string[];
   portrait_url?: string | null;
   portrait_fallback?: string | null;
   availability: LookupAvailability;
