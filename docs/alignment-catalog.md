@@ -816,6 +816,10 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
     Lightened artwork (brightness 1.8, saturation 0.75) with a 1.5 px light edge at 50%: at least
     2.2:1 for all 30 teams, against 1.03 before. The share image matches.
     [Evidence](evidence/alignment/players/team-header/README.md#watermark-contrast-instruction-69).
+70. [x] On both the player page and PvP, enlarge the background team logo slightly so heads block
+    less of it; the team name and logo beside the name supplement it. (Owner screenshot,
+    2026-10-15.) 115% of the tile, centred a little above the middle; the share image matches.
+    [Evidence](evidence/alignment/players/team-header/README.md#larger-watermark-instruction-70).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

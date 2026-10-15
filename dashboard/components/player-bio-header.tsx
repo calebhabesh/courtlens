@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/kit";
-import { PlayerAvatar } from "./ui/identity";
+import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
 import { PageHeader } from "./ui/panel";
 import { honours } from "@/lib/awards";
@@ -29,6 +29,10 @@ function teamName(tricode: string): string {
   return catalog.teams.find(entry => entry.tricode === tricode)?.artwork_name ?? tricode;
 }
 
+function teamArtwork(tricode: string | undefined): string | null {
+  return tricode ? catalog.teams.find(entry => entry.tricode === tricode)?.asset ?? null : null;
+}
+
 function ordinalSuffix(value: number): string {
   const tens = value % 100;
   if (tens >= 11 && tens <= 13) return "th";
@@ -36,9 +40,10 @@ function ordinalSuffix(value: number): string {
 }
 
 /**
- * The player page header: Back to table (only when opened from Stats), then the photo, a hairline
- * divider and one left-aligned column: name with the current team's logo, team · position ·
- * jersey, bio facts, and the combine line. Listings are team-reported; the combine line holds
+ * The player page header: Back to table (only when opened from Stats), then the photo on the
+ * team's colour with its logo behind the head (as on PvP and ESPN), a hairline divider and one
+ * left-aligned column: name, a large team logo with team · position · jersey, bio facts, and
+ * the combine line. Listings are team-reported; the combine line holds
  * measured values and appears only when the player attended a combine.
  */
 export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, currentSeason, actions }: {
@@ -122,20 +127,31 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     ? { tricode: listedTeam, name: teamName(listedTeam) }
     : lastTeam ? { tricode: lastTeam, name: teamName(lastTeam) }
     : team ? { tricode: team.tricode, name: team.name } : null;
-  const identity = [headerTeam ? `${listedTeam ? "" : lastTeam ? "Last with " : "Observed with "}${headerTeam.name}` : null, bio?.listed_position, bio?.jersey ? `#${bio.jersey}` : null].filter((part): part is string => part != null);
-  const glow = teamBrandColor(headerTeam?.tricode);
+  const teamPrefix = listedTeam ? "" : lastTeam ? "Last with " : "Observed with ";
+  const details = [bio?.listed_position, bio?.jersey ? `#${bio.jersey}` : null].filter((part): part is string => part != null);
+  const tint = teamBrandColor(headerTeam?.tricode);
+  const watermark = teamArtwork(headerTeam?.tricode);
 
   return (
-    <div className="player-bio-header" style={glow ? { "--team-glow": glow } as CSSProperties : undefined}>
+    <div className="player-bio-header" style={tint ? { "--team-tint": tint } as CSSProperties : undefined}>
       {returnHref && <Button size="xs" variant="primary" icon="left" onClick={() => { markStatsRestore(); router.push(returnHref); }}>
         Back to table<kbd className="player-back-kbd" aria-hidden="true">Esc</kbd>
       </Button>}
-      <div className={`player-bio-main ${glow ? "has-glow" : ""}`}>
-        <PlayerAvatar playerId={playerId} name={name} portraitUrl={portraitUrl} team={headerTeam?.tricode ?? null} size="xl" className="player-bio-photo" />
+      <div className="player-bio-main">
+        <span className="player-bio-photo">
+          {/* eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, decorative */}
+          {watermark && <img className="player-bio-watermark" src={watermark} alt="" aria-hidden="true" />}
+          <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size="xl" className="player-bio-portrait" />
+        </span>
         <span className="player-bio-divider" aria-hidden="true" />
         <div className="player-bio-who">
           <PageHeader title={name} className="player-bio-name" />
-          {identity.length > 0 && <p className="player-bio-identity">{identity.map(part => <span key={part}>{part}</span>)}</p>}
+          {(headerTeam || details.length > 0) && <p className="player-bio-identity">
+            {headerTeam && <span className="player-bio-identity-team">
+              <TeamLogo team={headerTeam.tricode} size={36} />{teamPrefix}{headerTeam.name}
+            </span>}
+            {details.length > 0 && <span className="player-bio-identity-details">{details.map(part => <span key={part}>{part}</span>)}</span>}
+          </p>}
           <dl className="player-bio-facts">
             {facts.filter(fact => fact.value).map(fact => <div key={fact.label} title={fact.title}>
               <dt>{fact.label}</dt><dd><span>{fact.value}</span>{fact.detail && <small>{fact.detail}</small>}</dd>
