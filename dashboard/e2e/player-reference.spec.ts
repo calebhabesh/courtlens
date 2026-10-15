@@ -10,7 +10,7 @@ for (const width of [1440, 390]) {
     await expect(table.getByText("Salary History · 2 Seasons", { exact: true })).toBeVisible();
     for (const text of ["$2,000,000", "1.2%", "Player option", "Team option", "$0", "$1,000,000", "Signed extension."]) await expect(table).toContainText(text);
     await expect(table.getByRole("row", { name: /^Remaining Guaranteed/ }).getByRole("link", { name: "$123.45", exact: true })).toBeVisible();
-    const transactions = page.getByRole("region", { name: "Transactions", exact: true });
+    const transactions = page.getByRole("region", { name: "Transaction News", exact: true });
     await expect(transactions.locator("time").first()).toHaveAttribute("datetime", "2026-09-22");
     await transactions.getByText("Earlier Transactions · 1", { exact: true }).click();
     await expect(transactions.getByText("Drafted by Boston.")).toBeVisible();

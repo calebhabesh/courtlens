@@ -40,7 +40,7 @@ async function main() {
       await page.waitForFunction(() => document.fonts.status === 'loaded');
       const panels = page.locator('.player-open-section.player-glass');
       await expect(panels).toHaveCount(5);
-      await expect(panels.locator('h2')).toHaveText(['Player Impact', 'Recent Form', 'Contract', 'Transactions', 'Career Highs']);
+      await expect(panels.locator('h2')).toHaveText(['Player Impact', 'Recent Form', 'Contract', 'Transaction News', 'Career Highs']);
       await expect(page.getByRole('table', { name: 'Contract and salary history by season' })).toBeVisible();
       const measured = await page.evaluate(() => {
         const appearance = el => {
@@ -78,7 +78,7 @@ async function main() {
       const contract = page.getByRole('region', { name: 'Contract', exact: true });
       await contract.locator('summary').click();
       await expect(page.getByRole('table', { name: 'Reported salary history' })).toBeVisible();
-      const earlier = page.getByRole('region', { name: 'Transactions', exact: true }).locator('summary');
+      const earlier = page.getByRole('region', { name: 'Transaction News', exact: true }).locator('summary');
       if (await earlier.count()) await earlier.click();
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
       measured.expandedPageWidth = await page.evaluate(() => document.documentElement.scrollWidth);
