@@ -48,7 +48,10 @@ select
         then (idx.source_values ->> 'from_year')::integer end as from_year,
     case when (idx.source_values ->> 'to_year') ~ '^[0-9]{4}$'
         then (idx.source_values ->> 'to_year')::integer end as to_year,
-    nullif(idx.source_values ->> 'team_id', '0') as listed_team_id,
+    -- The team a player is on today. Only active-roster players have one: the index keeps a
+    -- retired player's last team, which is not a current listing.
+    case when (idx.source_values ->> 'roster_status') ~ '^1(\.0+)?$'
+        then nullif(idx.source_values ->> 'team_id', '0') end as listed_team_id,
     birth_dates.birth_date,
     idx.season as index_season,
     idx.dataset_id

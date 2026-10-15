@@ -462,6 +462,11 @@ Follow-up instruction (owner, 2026-10-14, from the player page's current team):
     34); the name column widens 300 → 312 px so names and the "now" pill keep their room, and the
     search box fills its header cell. Phones keep 32/20 in 46 px rows.
 
+77. [x] Team logos in the table a little larger. — 24 → 28 px on desktop (phones keep 20).
+    Found while scoping the Basketball-Reference crawl: the NBA index keeps a retired player's
+    last team, so `current_team` (Stats 72, row 2 27) named one for retired players; the mart's
+    `listed_team_id` now requires an active roster (616 players).
+
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
