@@ -84,10 +84,10 @@
 .stats-workspace .stats-identity-copy { flex: 1; min-width: 0; line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .player-cell-name { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal; font-size: var(--text-md); line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .player-cell-teams { display: block; font-size: var(--text-xs); color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Photos 40 px and logos 24 px, in 52 px rows (owner, 2026-10-14); phones keep 32/20 in 46 px rows. */
+/* Photos 40 px and logos 28 px, in 52 px rows (owner, 2026-10-14); phones keep 32/20 in 46 px rows. */
 .stats-workspace .dense-stats-table .stats-primary-portrait { width: 40px; height: 40px; min-width: 40px; min-height: 40px; border: 0; }
 .stats-workspace .dense-stats-table .team-logo-stack { flex-wrap: nowrap; flex-shrink: 0; }
-.stats-workspace .dense-stats-table .team-logo { width: 24px; height: 24px; min-width: 24px; }
+.stats-workspace .dense-stats-table .team-logo { width: 28px; height: 28px; min-width: 28px; }
 .stats-workspace .dense-stats-table .stats-guide-cell { width: 38px; padding: 0; border: 0; background: var(--color-surface-3); }
 .stats-workspace .stats-guide-cell .player-portrait, .stats-workspace .stats-guide-cell .player-portrait-fallback { width: 36px; height: 36px; min-width: 36px; min-height: 36px; border: 0; font-size: var(--text-xs); }
 .stats-workspace .dense-stats-table .stats-group-1 { background: var(--color-surface-2); }
