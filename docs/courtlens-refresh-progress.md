@@ -790,3 +790,17 @@ no page overflow. Scoped glance passes for contrast, padding and readable groupi
 against the composited gradient is at least 6.62:1. Dashboard lint/typecheck, Vitest 525/525,
 production webpack build and four existing player-page browser checks pass. Other player sections
 await any further owner direction. [Evidence](evidence/alignment/players/dark-glass/README.md).
+
+### Player follow-up: opaque Year cells during horizontal scroll (2026-10-14)
+
+Instruction 50 fixes metric values bleeding through the pinned Year column on hover. The career
+frame supplied its base colors but omitted `--table-row-hover` and `--table-data-hover`, which
+the shared Stats hover rules consume. The missing variable made the pinned cell transparent.
+The career frame now defines both opaque hover colors from its own surfaces, as Stats does.
+
+New browser cases compare the hovered Year cell's actual pixels at two horizontal offsets:
+both 1440/390 cases fail before the fix and pass after. All five career browser checks pass on
+the development and production sandbox; live Kawhi 2022–23 row comparisons also pass at both
+widths. Lint/typecheck, Vitest 525/525 and production webpack build pass. Scoped glance confirms
+legible pinned seasons, intact row separation and no page overflow.
+[Evidence](evidence/alignment/players/career-year-scroll/README.md).

@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Dark glass headline-stat cards ready for owner review |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Dark glass stats and career-table pinned Year fix ready for review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -673,6 +673,13 @@ Follow-up instructions (owner, 2026-10-14, parser → marts → presentation, in
     translucent gradient, 12 px backdrop blur, restrained hairline/inset highlight and rounded
     corners. Six cards on desktop, three by two on phone; live 2025–26 values and content fit
     verified. [Evidence](evidence/alignment/players/dark-glass/README.md).
+
+50. [x] Fix the player career table's horizontally scrolling metric values showing through the
+    pinned Year cell; Stats does not have this overlap. (Owner screenshot, 2026-10-14.) — career
+    frame lacked the shared hover colors, making its hovered pinned cells transparent. Both
+    colors now derive from its opaque table surfaces. Pixel-comparison regressions failed at
+    1440/390 before the fix and pass after, alongside live 2022–23 row verification.
+    [Evidence](evidence/alignment/players/career-year-scroll/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

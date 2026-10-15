@@ -3,7 +3,12 @@
   /* The view tabs sit as far above the table as the profile tabs sit above them (row 2, 31). */
   .player-career.stats-workspace { min-height: 0; background: transparent; display: flex; flex-direction: column; gap: var(--space-4); }
   .player-career .player-career-controls { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-  .player-career .stats-table-frame { --table-surface: var(--color-table-lift); --table-data: var(--color-table-well); }
+  .player-career .stats-table-frame {
+    --table-surface: var(--color-table-lift);
+    --table-data: var(--color-table-well);
+    --table-row-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-surface));
+    --table-data-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-data));
+  }
   .player-career .stats-controls-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
   .player-career .player-career-scroll { --year-width: 132px; }
   /* Outranks Stats' viewport-height rule whatever order the two stylesheets load in (client
