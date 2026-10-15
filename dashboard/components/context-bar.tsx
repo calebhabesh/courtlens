@@ -42,6 +42,8 @@ interface ContextBarProps {
   modes?: React.ReactNode;
   /** Short notes appended to season options, e.g. which compared players played it. */
   seasonNotes?: Record<string, string>;
+  /** Page parameters a season change clears, e.g. Compare's per-player seasons (global override). */
+  clearOnSeasonChange?: string[];
   /** Page-specific Data details rows (source routes, resolved context), after the catalog rows. */
   detailRows?: DataDetailRow[];
   /** Stats alignment: season picker flanked by previous/next buttons, phase as a segmented control. */
@@ -74,6 +76,7 @@ export function ContextBar({
   filters,
   modes,
   seasonNotes,
+  clearOnSeasonChange,
   detailRows = [],
   steppedScope = false,
   allowMultiSeason = false
@@ -109,9 +112,10 @@ export function ContextBar({
   const updateParam = useCallback(
     (key: ScopeKey, value: string) => {
       const params = applyScopeChange(searchParams?.toString() ?? "", key, value, { catalog, season, phase, releaseId, allowedPhases });
+      if (key === "season") clearOnSeasonChange?.forEach(name => params.delete(name));
       router.push(`${pathname}?${params.toString()}`);
     },
-    [router, pathname, searchParams, releaseId, catalog, phase, season, allowedPhases]
+    [router, pathname, searchParams, releaseId, catalog, phase, season, allowedPhases, clearOnSeasonChange]
   );
   // The phase indicator slides on click; the URL value takes over once the navigation commits.
   const [, startPhaseNavigation] = useTransition();

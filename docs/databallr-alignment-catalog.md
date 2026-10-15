@@ -946,6 +946,13 @@ Follow-up instructions (owner, 2026-10-15, seventh review):
     instead of age and team.
 40. [x] Move the card down a little: more padding above and below the scope console. — 8px above,
     16px below.
+Follow-up instructions (owner, 2026-10-15, eighth review):
+41. [x] Tighten the spacing around the scope console; the card sits too close to the bottom of the
+    page (owner screenshot). — console padding 4px/8px, page gap 8px, card section gap 12px: the
+    card and trend tab end about 40px higher (1,274px for a cross-season pair at 1440 wide).
+42. [x] Owner question: should the console's Season act as a global override that resets any
+    per-player season? — yes: changing it clears `seasonA`/`seasonB` (ContextBar
+    `clearOnSeasonChange`), so both players follow it; per-player menus remain for one-off picks.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
