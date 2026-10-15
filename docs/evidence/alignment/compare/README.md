@@ -84,3 +84,9 @@ collapsing scrolls back smoothly to the starting position before folding. The he
 longer moves when the tray collapses. Checks: lint/typecheck, Vitest, 148 browser tests; phone
 compare baselines regenerated. The phone search-modal baseline differs because of another
 session's uncommitted search alias change in the working tree, not this work.
+
+## Sixth review (instruction 37)
+
+The Trend lines drawer slides out of the card and retracts into it ([open](review6-trend-drawer-open.png)).
+Frame samples: drawer height 0, 96, 583, 648, 653px over 300ms with the page following; closing
+653, 382, 48, 0px while scrolling back to the start. 29 compare browser tests pass.

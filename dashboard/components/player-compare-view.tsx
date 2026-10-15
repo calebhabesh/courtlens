@@ -28,7 +28,6 @@ import { Button, IconButton, Segmented, Select } from "./ui/kit";
 export type { ComparePresetId } from "@/lib/comparison-metrics";
 
 const smooth = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
-const toEnd = () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: smooth() });
 
 /** Owner trial, row 3, 22: league percentiles hidden to keep the slim card on one screen. */
 const SHOW_PERCENTILES = false;
@@ -80,29 +79,38 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   const minutes = cohort?.table_cohort?.min_season_minutes ?? 500;
   const modeLabel = MODES.find(entry => entry.value === mode)?.label ?? "Per Game";
   const trends = params.get("compareView") === "lines";
-  // Opening Trend lines follows the drawer to the end of the page while its chart loads; closing
-  // scrolls smoothly back to where the reader was, then folds the drawer (31, 36).
-  const trayRef = useRef<HTMLDivElement>(null), returnTo = useRef<number | null>(null);
+  // Trend lines slide out of the card and retract into it (37): the drawer's height animates on
+  // open (CSS @starting-style) while the page follows it to the end (31, 36); on close it retracts
+  // while the page scrolls back, and the URL changes once the retraction ends.
+  const drawerRef = useRef<HTMLDivElement>(null), returnTo = useRef<number | null>(null);
+  const [closing, setClosing] = useState(false), closingRef = useRef(false);
   useEffect(() => {
-    const body = trayRef.current;
-    if (!trends || !body || returnTo.current == null) return;
-    toEnd();
-    const observer = new ResizeObserver(toEnd);
-    observer.observe(body);
+    const drawer = drawerRef.current;
+    if (!trends || !drawer || returnTo.current == null) return;
+    // Instant: the site scrolls smoothly by default, which would trail the growing drawer.
+    const follow = () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+    follow();
+    const observer = new ResizeObserver(follow);
+    observer.observe(drawer);
     const stop = window.setTimeout(() => observer.disconnect(), 2500);
     return () => { observer.disconnect(); window.clearTimeout(stop); };
   }, [trends]);
+  function finishClosing() {
+    if (!closingRef.current) return;
+    closingRef.current = false;
+    setClosing(false);
+    change({ compareView: "table" });
+  }
   function toggleTrends() {
+    if (closingRef.current) return;
     if (!trends) { returnTo.current = window.scrollY; change({ compareView: "lines" }); return; }
     const top = returnTo.current ?? window.scrollY;
     returnTo.current = null;
-    const close = () => change({ compareView: "table" });
-    if (Math.abs(window.scrollY - top) < 2 || smooth() === "auto") { window.scrollTo({ top }); close(); return; }
-    let done = false;
-    const finish = () => { if (done) return; done = true; window.removeEventListener("scrollend", finish); close(); };
-    window.addEventListener("scrollend", finish);
-    window.setTimeout(finish, 1200);
-    window.scrollTo({ top, behavior: "smooth" });
+    closingRef.current = true;
+    setClosing(true);
+    window.scrollTo({ top, behavior: smooth() });
+    // A fallback for when transitionend never fires (nothing left to animate).
+    window.setTimeout(finishClosing, 700);
   }
   const accolades = accoladeGroups(bios, [a?.championships, b?.championships], context.season, context.before_date);
 
@@ -227,11 +235,16 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
 
         {a && b && <div className="pvp-tray" data-open={trends || undefined}>
           <div className="pvp-tray-tab">
-            <Button size="sm" variant="ghost" icon="chart-line" iconAfter={trends ? "chevron-up" : "chevron-down"} aria-expanded={trends} aria-controls="pvp-trend-drawer"
+            <Button size="sm" variant="ghost" icon="chart-line" iconAfter={trends && !closing ? "chevron-up" : "chevron-down"} aria-expanded={trends && !closing} aria-controls="pvp-trend-drawer"
               onClick={toggleTrends}>Trend lines</Button>
           </div>
-          {trends && <div className="pvp-tray-body" id="pvp-trend-drawer" ref={trayRef}>
-            <MultiPlayerLinesView variant="embedded" playerIds={[a.id, b.id, ...additionalPlayerIds]} context={context} />
+          {trends && <div className="pvp-tray-drawer" data-open={!closing || undefined} ref={drawerRef}
+            onTransitionEnd={event => { if (event.target === event.currentTarget && event.propertyName === "grid-template-rows") finishClosing(); }}>
+            <div className="pvp-tray-clip">
+              <div className="pvp-tray-body" id="pvp-trend-drawer">
+                <MultiPlayerLinesView variant="embedded" playerIds={[a.id, b.id, ...additionalPlayerIds]} context={context} />
+              </div>
+            </div>
           </div>}
         </div>}
       </div>
