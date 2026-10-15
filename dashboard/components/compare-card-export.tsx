@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 import { leadingIdentity, toneColor } from "./charts/semantics";
-import { cardLabel, formatCardValue, isPercentUnit } from "@/lib/comparison-metrics";
+import { cardLabel, formatCardValue, isPercentUnit, isWholeCount } from "@/lib/comparison-metrics";
 import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
@@ -34,10 +34,11 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
     ...rows.map(row => {
       const a = typeof row.value_a === "number" ? row.value_a : null, b = typeof row.value_b === "number" ? row.value_b : null;
       const gap = a != null && b != null ? Math.abs(a - b) * (isPercentUnit(row.unit) ? 100 : 1) : null;
-      const leader = gap != null && Number(gap.toFixed(row.metric === "gp" ? 0 : 1)) > 0 ? leadingIdentity(a, b, direction(row.metric)) : null;
+      const precision = isWholeCount(row.metric) ? 0 : 1;
+      const leader = gap != null && Number(gap.toFixed(precision)) > 0 ? leadingIdentity(a, b, direction(row.metric)) : null;
       return { key: row.metric, label: cardLabel(row.metric, labels.get(row.metric)), leader,
         shown: [formatCardValue(row.value_a, row.unit, row.metric), formatCardValue(row.value_b, row.unit, row.metric)] as [string, string],
-        pill: leader && gap != null ? `+${gap.toFixed(row.metric === "gp" ? 0 : 1)}` : null };
+        pill: leader && gap != null ? `+${gap.toLocaleString("en-US", { minimumFractionDigits: precision, maximumFractionDigits: precision })}` : null };
     }),
     ...accolades.map(row => ({ key: row.key, label: row.label, shown: row.shown, leader: row.leader,
       pill: row.leader && row.a != null && row.b != null && !row.key.startsWith("season_") ? `+${Math.abs(row.a - row.b)}` : null }))

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "next/navigation";
 import { EntityField } from "./entity-picker";
 import { PlayerPortrait } from "./player-portrait";
@@ -43,6 +43,9 @@ export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: 
 }) {
   const params = useSearchParams();
   const [searching, setSearching] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+  // The revealed search takes focus so typing starts at once (26).
+  useEffect(() => { if (searching) searchRef.current?.querySelector<HTMLInputElement>('[role="combobox"]')?.focus(); }, [searching]);
   const label = `Player ${side.toUpperCase()}`;
   const teams = slotTeams(player);
   const latest = teams.at(-1);
@@ -60,11 +63,11 @@ export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: 
         <span className="pvp-change" aria-hidden="true"><Icon name="user-edit" size={16} /></span>
       </button>
       {teams.length > 0 && <span className="pvp-logos" data-count={teams.length} role="img" aria-label={`Teams: ${teams.join(", then ")}`} title={teams.join(" then ")}>
-        {teams.map(team => <span key={team} className="pvp-logo"><TeamLogo team={team} size={teams.length > 1 ? 30 : 36} /></span>)}
+        {teams.map(team => <span key={team} className="pvp-logo"><TeamLogo team={team} size={teams.length > 1 ? 30 : 34} /></span>)}
       </span>}
     </div>
     {searching
-      ? <div className="pvp-search">
+      ? <div className="pvp-search" ref={searchRef}>
           <EntityField label={label} value="" releaseId={params.get("releaseId") || params.get("release_id")} season={params.get("season")} phase={params.get("phase")} beforeDate={params.get("beforeDate") || params.get("before_date")}
             onChange={(id, items) => { if (id && items[0]) { setSearching(false); onPick({ id, name: items[0].display_name }); } }} />
         </div>
