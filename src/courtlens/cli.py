@@ -1378,6 +1378,25 @@ def acquire_bbref_bios_command(
         raise typer.Exit(1)
 
 
+@app.command("reparse-bbref")
+def reparse_bbref_command(
+    root: Path = typer.Option(Path("data/raw/bbref")),
+    player_id: list[str] | None = typer.Option(None, help="Only these NBA player IDs."),
+    limit: int | None = typer.Option(None, min=1, help="Parse at most this many retained pages."),
+    report: Path | None = typer.Option(None, help="Write the offline run summary JSON here."),
+) -> None:
+    """Append new player profiles from retained pages with the current parser. No network I/O."""
+    from courtlens.services.bbref_bio import reparse
+
+    with SessionLocal() as session:
+        summary = reparse(session, root, player_ids=player_id, limit=limit)
+    if report is not None:
+        report.write_text(json.dumps(summary, indent=2) + "\n")
+    typer.echo(json.dumps(summary))
+    if summary["failed"]:
+        raise typer.Exit(1)
+
+
 @app.command("refresh-darko")
 def refresh_darko_command(
     season: list[str] = typer.Option(["2023-24", "2024-25", "2025-26"], help="Seasons to fetch."),

@@ -1,4 +1,5 @@
 from datetime import UTC, date, datetime
+from pathlib import Path
 
 import pytest
 from sqlalchemy.orm import Session
@@ -141,3 +142,240 @@ def test_the_newest_profile_serves(session: Session) -> None:
     assert reference is not None and reference["honours"] == ["7x All Star"]
     assert reference["url"].endswith("/players/l/leonaka01.html")
     assert player_reference(session, "missing") is None
+
+
+def test_v2_salary_history_contract_options_and_dated_events() -> None:
+    raw = Path("tests/fixtures/bbref/player-v2.html").read_bytes()
+    profile = parse_player_page(raw, "sample01")
+    assert profile["parser"] == "bbref-player-v2"
+    assert profile["salary_history"] == [
+        {
+            "season": "2024-25",
+            "team": "LA Clippers",
+            "team_code": "LAC",
+            "league": "NBA",
+            "salary": "1000000",
+        },
+        {
+            "season": "2025-26",
+            "team": "LA Clippers",
+            "team_code": "LAC",
+            "league": "NBA",
+            "salary": None,
+        },
+    ]
+    assert profile["career_earnings"] == "1000000"
+    assert [(r["season"], r["salary"], r["option"]) for r in profile["current_contract"]] == [
+        ("2026-27", "2000000", None),
+        ("2027-28", "2100000", "player"),
+        ("2028-29", "2200000", "team"),
+    ]
+    assert profile["current_contract"][0]["team_code"] == "TOR"
+    assert [(r["date"], r["type"]) for r in profile["contract_events"]] == [
+        ("2025-09-22", "signed"),
+        ("2026-09-22", "extended"),
+        ("2026-09-14", "traded"),
+        (None, "other"),
+    ]
+    assert profile["contract_events"][2]["from_team_code"] == "LAC"
+    assert [
+        (r["date"], r["type"], r["from_team_code"], r["to_team_code"])
+        for r in profile["transactions"]
+    ] == [
+        ("2026-09-14", "traded", "LAC", "TOR"),
+        ("2026-09-22", "extended", None, "TOR"),
+        ("2026-09-23", "recalled", None, None),
+    ]
+
+
+def test_v2_highs_keep_phases_seasons_zero_missing_values_and_boxscore_dates() -> None:
+    profile = parse_player_page(
+        Path("tests/fixtures/bbref/player-v2.html").read_bytes(), "sample01"
+    )
+    highs = profile["game_highs"]
+    assert [(r["phase"], r["scope"], r["season"]) for r in highs] == [
+        ("regular_season", "season", "2025-26"),
+        ("regular_season", "career", None),
+        ("playoffs", "career", None),
+    ]
+    assert highs[0]["values"]["pts"] == {
+        "value": "42",
+        "url": "https://www.basketball-reference.com/boxscores/202601020TOR.html",
+        "date": "2026-01-02",
+    }
+    assert highs[0]["values"]["ast"]["value"] == "0"
+    assert highs[0]["values"]["blk"]["value"] is None
+    assert highs[1]["values"]["time_on_court"]["value"] == "48:30"
+    assert highs[2]["values"]["pts"]["date"] is None
+    assert highs[2]["values"]["ast"]["url"] is None
+    missing = parse_player_page(b'<div id="meta"><h1>Someone</h1></div>', "someo01")
+    assert (
+        missing["salary_history"]
+        == missing["current_contract"]
+        == missing["transactions"]
+        == missing["game_highs"]
+        == []
+    )
+    assert missing["career_earnings"] is None
+
+
+def test_v2_rejects_ambiguous_options_and_non_exact_salary() -> None:
+    raw = Path("tests/fixtures/bbref/player-v2.html").read_bytes()
+    with pytest.raises(ValueError, match="conflicting contract option"):
+        parse_player_page(
+            raw.replace(b'class="salary-pl"', b'class="salary-pl salary-tm"'), "sample01"
+        )
+    with pytest.raises(ValueError, match="unsupported exact monetary"):
+        parse_player_page(raw.replace(b"$2,000,000", b"$2M"), "sample01")
+
+
+def _retained_page(session: Session, root: Path, raw: bytes) -> BbrefPlayerProfile:
+    import hashlib
+
+    from courtlens.workbench_models import WorkbenchArtifact
+
+    digest = hashlib.sha256(raw).hexdigest()
+    (root / digest).write_bytes(raw)
+    artifact = WorkbenchArtifact(
+        sha256=digest,
+        resource="bbref_player_pages",
+        bytes=len(raw),
+        storage_path=digest,
+        mime_type="text/html",
+        source_attribution="Basketball-Reference.com",
+    )
+    session.add(artifact)
+    session.flush()
+    receipt = WorkbenchAcquisition(
+        source_name="basketball_reference",
+        resource="bbref_player_pages",
+        source_url="https://www.basketball-reference.com/players/s/sample01.html",
+        status="success",
+        content_sha256=digest,
+        artifact_id=artifact.id,
+    )
+    session.add(receipt)
+    session.flush()
+    old = BbrefPlayerProfile(
+        player_id="123",
+        bbref_id="sample01",
+        match_basis="name+birth_date",
+        acquisition_id=receipt.id,
+        content_sha256=digest,
+        parser_version="bbref-player-v1",
+        observed_at=datetime(2026, 10, 1, tzinfo=UTC),
+        profile={"honours": ["Old profile"]},
+    )
+    session.add(old)
+    session.commit()
+    return old
+
+
+def test_offline_reparse_preserves_lineage_and_is_idempotent(
+    session: Session, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import httpx
+    from sqlalchemy import select
+
+    from courtlens.services.bbref_bio import reparse
+
+    def no_network(*args: object, **kwargs: object) -> None:
+        raise AssertionError("offline reparsing must not use HTTP")
+
+    monkeypatch.setattr(httpx.Client, "send", no_network)
+    old = _retained_page(
+        session, tmp_path, Path("tests/fixtures/bbref/player-v2.html").read_bytes()
+    )
+    assert reparse(session, tmp_path) == {
+        "parser": "bbref-player-v2",
+        "profiles": 1,
+        "skipped": 0,
+        "failed": [],
+    }
+    assert reparse(session, tmp_path) == {
+        "parser": "bbref-player-v2",
+        "profiles": 0,
+        "skipped": 1,
+        "failed": [],
+    }
+    rows = list(session.scalars(select(BbrefPlayerProfile)))
+    assert len(rows) == 2
+    new = next(r for r in rows if r.parser_version == "bbref-player-v2")
+    assert (
+        new.acquisition_id,
+        new.content_sha256,
+        new.observed_at.replace(tzinfo=UTC),
+        new.match_basis,
+    ) == (
+        old.acquisition_id,
+        old.content_sha256,
+        old.observed_at.replace(tzinfo=UTC),
+        old.match_basis,
+    )
+    assert session.get(BbrefPlayerProfile, old.id).profile == {"honours": ["Old profile"]}
+    assert player_reference(session, "123")["honours"] == ["2x All Star", "NBA Champ"]
+
+
+def test_offline_reparse_rejects_corruption_and_can_resume(
+    session: Session, tmp_path: Path
+) -> None:
+    from courtlens.services.bbref_bio import reparse
+
+    raw = b'<div id="meta"><h1>Sample Player</h1></div>'
+    old = _retained_page(session, tmp_path, raw)
+    (tmp_path / old.content_sha256).write_bytes(b"corrupt")
+    result = reparse(session, tmp_path)
+    assert result["profiles"] == 0 and len(result["failed"]) == 1
+    assert "integrity" in result["failed"][0]["reason"]
+    (tmp_path / old.content_sha256).write_bytes(raw)
+    assert reparse(session, tmp_path)["profiles"] == 1
+
+
+def test_parser_upgrade_does_not_make_a_recent_acquisition_stale(
+    session: Session, tmp_path: Path
+) -> None:
+    from datetime import timedelta
+
+    from courtlens.services.bbref_bio import has_current_profile
+
+    old = _retained_page(session, tmp_path, PAGE)
+    # Freshness describes the acquisition, independently of which parser read it.
+    assert old.parser_version == "bbref-player-v1"
+    assert has_current_profile(session, "123", timedelta(days=300))
+
+
+def test_reparse_cli_reads_retained_pages_and_writes_summary(
+    session: Session, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import json
+    from contextlib import nullcontext
+
+    from typer.testing import CliRunner
+
+    from courtlens import cli
+
+    _retained_page(session, tmp_path, Path("tests/fixtures/bbref/player-v2.html").read_bytes())
+    monkeypatch.setattr(cli, "SessionLocal", lambda: nullcontext(session))
+    report = tmp_path / "report.json"
+    result = CliRunner().invoke(
+        cli.app,
+        ["reparse-bbref", "--root", str(tmp_path), "--player-id", "123", "--report", str(report)],
+    )
+    assert result.exit_code == 0, result.output
+    assert json.loads(report.read_text())["profiles"] == 1
+
+
+def test_reported_two_way_and_below_minimum_labels_preserve_unknown_amounts() -> None:
+    raw = Path("tests/fixtures/bbref/player-v2.html").read_bytes()
+    profile = parse_player_page(
+        raw.replace(b"$2,000,000", b"(TW)")
+        .replace(b"$2,100,000", b"&lt; $Minimum")
+        .replace(b"$1,000,000", b"$1,000,000 (TW)"),
+        "sample01",
+    )
+    assert profile["current_contract"][0]["salary"] is None
+    assert profile["current_contract"][0]["salary_note"] == "(TW)"
+    assert profile["current_contract"][1]["salary"] is None
+    assert profile["current_contract"][1]["salary_note"] == "< $Minimum"
+    assert profile["salary_history"][0]["salary"] == "1000000"
+    assert profile["salary_history"][0]["salary_note"] == "$1,000,000 (TW)"

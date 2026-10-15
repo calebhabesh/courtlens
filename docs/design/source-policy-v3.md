@@ -53,8 +53,24 @@ overlapping seasons; anything ambiguous stays unmatched), then fetches each matc
 serially at 4 s (above the 3 s Crawl-delay and the source's 20 requests a minute). robots.txt is read
 once per run and recorded on every receipt; a 403/429 ends the run. Pages are retained as
 content-addressed artifacts; parsed profiles (birthplace, high school, shooting hand, debut, honours,
-season awards) are appended to `bbref_player_profiles` and the newest per player serves the player
+season awards, salaries, contract options and notes, transactions, game highs) are appended to `bbref_player_profiles` and the newest per player serves the player
 page. Reruns resume: profiles newer than `--max-age-days` (300) are skipped.
+
+`courtlens reparse-bbref` applies `bbref-player-v2` to previously matched retained pages with no
+network access. It verifies the raw file's byte count, SHA-256 and acquisition lineage, then appends
+one profile per content hash, parser and NBA player ID. Reruns skip existing outputs. The original
+acquisition time remains `observed_at`; parsing today cannot make old evidence fresh. Serving orders
+by observation time, then parse creation time for an unchanged observation. Crawl freshness is
+independent of parser version, so an upgrade does not trigger another fetch. A crawl can continue
+while reparsing; rerun afterwards to include pages retained after the reparse input snapshot.
+
+Salary history and current contract seasons are separate. Options describe reported terms, not
+exercise decisions. The source's career salary total may be incomplete and is not verified cash
+earned. Transactions preserve the source's dated descriptions and explicit from/to team markings.
+Regular-season and playoff highs remain separate, with season and career scopes and box-score links
+where supplied. Missing sections and values remain unknown. These retrospective career references
+are independent of the page's historical basketball cutoff and never feed forecasts or sealed
+statistics.
 
 Refresh once a year after the awards season (late June, when MVP, All-NBA and Finals MVP are final):
 `--active-only` takes about 45 minutes. A full rerun picks up newly debuted players. Mid-season,
