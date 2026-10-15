@@ -768,3 +768,14 @@ the opaque table interior pixels and geometry. Text contrast at full stroke cove
 build and five existing header browser checks pass. Production-served asset parity and intrinsic
 sizing pass at desktop/phone widths. Owner visual approval remains pending.
 [Evidence](evidence/alignment/app-shell/coach-pattern-tuning/README.md).
+
+### App-shell follow-up: park the background pattern (2026-10-14)
+
+Owner instruction 11 removes the pattern because it made player-page information harder to see.
+The shell returns to solid `--color-bg`; the SVG, generator, npm command and pattern-only
+forced-colors override are removed. Prior commits and evidence retain the experiment for later.
+Live and production-fixture Stats/player checks at 1440/390 confirm `background-image: none`,
+the original blue fill, zero pattern requests and no page overflow. Player desktop/phone screenshots
+pass the scoped glance check for readable information on an uninterrupted blue surface.
+Dashboard lint/typecheck, Vitest 525/525 and five production header browser checks pass.
+[Evidence](evidence/alignment/app-shell/plain-backdrop/README.md).

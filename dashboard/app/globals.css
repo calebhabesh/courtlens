@@ -7,7 +7,7 @@
 @import "./styles/motion.css";
 /* Component styles live next to their components (UC05); this order is the cascade order. */
 @import "./styles/components.css";
-/* The app layout owns the page backdrop. */
+/* The app layout owns the plain blue page backdrop. */
 @import "./shell.css";
 @import "../components/brand.css";
 @import "../components/ui/header.css";

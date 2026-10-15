@@ -12,7 +12,7 @@ Rows are in working order.
 
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
-| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Denser, irregular coaching-board backdrop ready for owner review |
+| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
 | 2 | Dashboard (player) | `/players/[id]` | 👀 | Reference parser/marts and Contract, transactions, highs follow-up ready for review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
@@ -94,6 +94,11 @@ Instructions (owner, 2026-10-13):
     — 100 seeded, irregular positions on a 1152 px tile, at least 72 px apart including across
     seams, with small X-angle variations. Native SVG sizing preserves the marks. Generator
     reruns produce identical bytes. [Evidence](evidence/alignment/app-shell/coach-pattern-tuning/README.md).
+11. [x] Park the background pattern idea for now and remove it; it makes information on player
+    pages harder to see. (Owner, 2026-10-14.) Supersedes instructions 8–10. — plain blue shell
+    restored; SVG, generator and npm script removed. The experiment remains in Git history.
+    Live and production Stats/player checks at 1440/390 confirm no background image, no pattern
+    requests and no page overflow. [Evidence](evidence/alignment/app-shell/plain-backdrop/README.md).
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.

@@ -1,0 +1,73 @@
+{
+  "source": "Live local PostgreSQL/dashboard; read-only requests",
+  "results": [
+    {
+      "width": 1440,
+      "route": "/stats",
+      "backgroundImage": "none",
+      "backgroundColor": "rgb(21, 50, 90)",
+      "pageOverflow": false
+    },
+    {
+      "width": 1440,
+      "route": "/players/202695",
+      "backgroundImage": "none",
+      "backgroundColor": "rgb(21, 50, 90)",
+      "pageOverflow": false
+    },
+    {
+      "width": 390,
+      "route": "/stats",
+      "backgroundImage": "none",
+      "backgroundColor": "rgb(21, 50, 90)",
+      "pageOverflow": false
+    },
+    {
+      "width": 390,
+      "route": "/players/202695",
+      "backgroundImage": "none",
+      "backgroundColor": "rgb(21, 50, 90)",
+      "pageOverflow": false
+    }
+  ],
+  "patternRequests": 0,
+  "productionFixtureChecks": [
+    {
+      "width": 1440,
+      "route": "/stats",
+      "background": {
+        "image": "none",
+        "color": "rgb(21, 50, 90)"
+      },
+      "pageOverflow": false
+    },
+    {
+      "width": 1440,
+      "route": "/players/23",
+      "background": {
+        "image": "none",
+        "color": "rgb(21, 50, 90)"
+      },
+      "pageOverflow": false
+    },
+    {
+      "width": 390,
+      "route": "/stats",
+      "background": {
+        "image": "none",
+        "color": "rgb(21, 50, 90)"
+      },
+      "pageOverflow": false
+    },
+    {
+      "width": 390,
+      "route": "/players/23",
+      "background": {
+        "image": "none",
+        "color": "rgb(21, 50, 90)"
+      },
+      "pageOverflow": false
+    }
+  ],
+  "patternRuntimeReferences": 0
+}
