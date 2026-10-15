@@ -45,3 +45,16 @@ The fade is measured mid-animation after a swap.
 Checks: dashboard lint/typecheck; Vitest 537/537; Python 2,114 passed (ruff and format clean;
 mypy's two `gemini.py` errors predate this work); 198 affected browser tests plus a new tray test
 pass; the four compare baselines were regenerated and the others match.
+
+## Second review (instructions 18–21)
+
+The card is now 1040px wide so it fits an unscrolled 1440x900 page: [default 2025-26](review2-default-1440x900.png)
+and [2016-17](review2-2016-17-1440x900.png) end (trend tab included) at 866px, [Career](review2-career-1440x900.png)
+at 894px. Team logos ride the photo corner on opaque discs; only the leading value is heavier.
+Career aggregates every observed season through the compared one before the cutoff (Durant
+through 2016-17: 10 seasons, 702 games, 27.2 points per game). [Phone](review2-phone-390.png)
+stacks the band and tables; [share image](review2-share-image.png).
+
+Checks: dashboard lint/typecheck, Vitest 537/537; Python unit 1,530 passed and the career
+integration suite 11/11 (new cutoff test); 199 affected browser tests plus a new Career test pass;
+the four compare baselines regenerated, all others unchanged.

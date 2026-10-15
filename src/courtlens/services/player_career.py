@@ -173,6 +173,53 @@ def player_career(
     return PlayerCareer(context=base, phase=phase, seasons=rows, career=career)
 
 
+@dataclass(frozen=True)
+class CareerThrough:
+    seasons: list[str]
+    item: dict[str, Any] | None
+
+
+def career_through(
+    session: Session,
+    player_ids: list[str],
+    phase: str,
+    season: str,
+    before_date: date,
+    release_id: str | None = None,
+) -> dict[str, CareerThrough]:
+    """Each player's career aggregated through a comparison's cutoff (alignment row 3, 21).
+
+    The seasons are the player's observed seasons up to the compared one; games on or after the
+    cutoff are excluded, so a later game never changes the comparison. One aggregate Stats query
+    serves both players.
+    """
+    base = resolve_workbench_context(session, release_id=release_id, requested_phase=phase)
+    if base.dataset_type != "workbench":
+        raise HTTPException(status_code=422, detail="Career comparisons need a workbench release")
+    owned = {
+        player_id: [entry for entry in player_seasons(session, base, player_id) if entry <= season]
+        for player_id in player_ids
+    }
+    covered = sorted({entry for seasons in owned.values() for entry in seasons})
+    if not covered:
+        return {player_id: CareerThrough([], None) for player_id in player_ids}
+    query = career_query(base, season, before_date, seasons=covered)
+    found, _, _, _ = execute_stats_query(
+        session,
+        season_context(base, season, before_date),
+        query,
+        is_export=True,
+        max_export_rows=len(player_ids),
+        presentation=StatsPresentation(),
+        cohort_percentiles=False,
+        subject_player_ids=player_ids,
+    )
+    rows = {row["player_id"]: serving_item(row) for row in found}
+    return {
+        player_id: CareerThrough(owned[player_id], rows.get(player_id)) for player_id in player_ids
+    }
+
+
 def warm_stats_cohorts(
     session: Session, release_id: str | None = None, *, prune: bool = False
 ) -> dict[str, Any]:

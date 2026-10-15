@@ -1,34 +1,37 @@
 @layer pages {
-  /* Player Comparison (alignment row 3): a centred duel card after Databallr. Header, scope bar
-     and a 560px column of toolbar, card and notes. */
-  .pvp { --pvp-width: 560px; --pvp-photo: 184px; display: flex; flex-direction: column; align-items: center; gap: var(--space-4); min-width: 0; }
+  /* Player Comparison (alignment row 3): one duel card sized to fit an unscrolled desktop page
+     (19). A band of both players around the controls, then stats and accolades side by side. */
+  .pvp { --pvp-width: 1040px; --pvp-photo: 136px; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); min-width: 0; }
   .pvp-scope { display: flex; justify-content: center; width: 100%; min-width: 0; }
   .pvp-column { display: flex; flex-direction: column; gap: var(--space-3); width: min(100%, var(--pvp-width)); min-width: 0; }
+  .pvp-column:not([data-paired]) { width: min(100%, 560px); }
   /* Edit Metrics, Share Image and More sit in the scope console, left of Data details (13). */
   .pvp-actions { display: flex; align-items: center; gap: var(--space-2); }
 
   /* The card: the player page's glass panel, holding everything a share image carries. */
   .pvp-card {
-    display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-6) var(--space-6) var(--space-4);
+    display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5) var(--space-6) var(--space-3);
     background: color-mix(in srgb, var(--color-surface-0) 58%, transparent);
     border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-2);
     backdrop-filter: blur(20px) saturate(150%);
   }
   .pvp-stack { display: flex; flex-direction: column; align-items: center; min-width: 0; isolation: isolate; }
   .pvp-stack > .pvp-card { width: 100%; position: relative; z-index: var(--z-sticky); }
-  .pvp-players { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: var(--space-3); }
-  .pvp-swap { margin-top: calc(var(--pvp-photo) / 2 - var(--control-md) / 2); }
+  .pvp-band { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-6); }
+  .pvp-controls { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); min-width: 0; }
+  .pvp-switches { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-2); }
+  .pvp-players-empty { display: grid; grid-template-columns: repeat(2, minmax(0, var(--pvp-photo))); justify-content: center; gap: var(--space-8); }
 
-  /* One side: a square headshot on the team's colour, games badge, name and one bio line. */
-  .pvp-slot { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 0; text-align: center; }
-  .pvp-photo-frame { position: relative; width: 100%; max-width: var(--pvp-photo); }
+  /* One side: photo and name in a row, mirrored for B, so the band stays one photo tall. */
+  .pvp-slot { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
+  .pvp-slot[data-identity="b"] { flex-direction: row-reverse; text-align: right; }
+  .pvp-photo-frame { position: relative; flex: 0 0 var(--pvp-photo); width: var(--pvp-photo); }
   .pvp-photo {
     position: relative; display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 0;
     border-radius: var(--radius-md); overflow: hidden; cursor: pointer;
     background: radial-gradient(120% 100% at 50% 8%, var(--team-tint, var(--color-surface-3)), color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 35%, var(--color-surface-0)));
   }
-  .pvp-players-empty { justify-items: center; }
-  .pvp-photo-empty { background: var(--color-surface-2); cursor: default; }
+  .pvp-photo-empty { display: block; aspect-ratio: 1; border-radius: var(--radius-md); background: var(--color-surface-2); }
   .pvp-photo:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
   .pvp-photo .pvp-portrait { width: 100%; height: 100%; min-width: 0; min-height: 0; border-radius: 0; background: transparent; object-position: center bottom; }
   .pvp-silhouette { display: grid; place-items: center; width: 100%; height: 100%; color: var(--color-text-secondary); }
@@ -36,50 +39,50 @@
     position: absolute; right: var(--space-2); bottom: var(--space-2); padding: 1px var(--space-2); border-radius: var(--radius-sm);
     background: var(--color-text); color: var(--color-surface-0); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; font-variant-numeric: tabular-nums;
   }
-  /* A persistent change-player cue (12) and the scope's team logos, latest in front (8). */
+  /* A persistent change-player cue (12). */
   .pvp-change {
     position: absolute; top: var(--space-2); right: var(--space-2); display: grid; place-items: center; width: 28px; height: 28px;
     border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-surface-0) 72%, transparent); color: var(--color-text);
     transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
   .pvp-photo:is(:hover, :focus-visible) .pvp-change { background: var(--color-accent); color: var(--color-on-accent); }
-  .pvp-logos { position: absolute; top: var(--space-2); left: var(--space-2); display: flex; pointer-events: none; }
+  /* Team logos ride the photo's lower-left corner like the player page badge (8, 18): opaque
+     discs, latest team in front. */
+  .pvp-logos { position: absolute; left: calc(var(--space-2) * -1); bottom: calc(var(--space-2) * -1); display: flex; pointer-events: none; }
   .pvp-logo {
-    display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--color-surface-0) 60%, transparent); backdrop-filter: blur(6px);
+    display: grid; place-items: center; width: 48px; height: 48px; border-radius: var(--radius-pill);
+    background: var(--color-surface-3); box-shadow: var(--shadow-1); border: 2px solid var(--color-surface-1);
   }
-  .pvp-logos[data-count]:not([data-count="1"]) .pvp-logo { width: 30px; height: 30px; }
-  .pvp-logo + .pvp-logo { margin-left: calc(var(--space-2) * -1); box-shadow: -2px 0 0 color-mix(in srgb, var(--color-surface-0) 60%, transparent); }
-  .pvp-who { display: flex; flex-direction: column; align-items: center; gap: var(--space-0-5); min-width: 0; }
-  .pvp-name { justify-content: center; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+  .pvp-logos[data-count]:not([data-count="1"]) .pvp-logo { width: 42px; height: 42px; }
+  .pvp-logo + .pvp-logo { margin-left: calc(var(--space-3) * -1); }
+  .pvp-who { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+  .pvp-name { color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; text-decoration: none; overflow-wrap: anywhere; }
   .pvp-name:hover { text-decoration: underline; }
-  .pvp-bio { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
-  .pvp-search { width: 100%; min-width: 0; text-align: left; }
+  .pvp-bio { color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
+  .pvp-search { flex: 1 1 auto; min-width: 0; text-align: left; }
 
-  .pvp-modes { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 0; }
-  /* Five presets outgrow a phone card at touch size; they scroll rather than clip. */
   .pvp-presets { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
 
-  /* Mirrored rows: pill · value · label · value · pill, every value centred in its column. */
+  /* Stats and accolades side by side, each a mirrored table: pill · value · label · value · pill. */
+  .pvp-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-10); align-items: start; }
   .pvp-rows { width: 100%; table-layout: fixed; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-  .pvp-col-pill { width: 64px; }
-  .pvp-col-label { width: 108px; }
-  .pvp-rows :is(td, th) { padding: var(--space-0-5) 0; text-align: center; vertical-align: middle; }
-  .pvp-accolade { font-variant-numeric: tabular-nums; }
-  .pvp-accolade[data-leading] { font-weight: 700; }
-  .pvp-accolade[data-trailing] { color: var(--color-text-secondary); }
-  .pvp-pending td { padding-block: var(--space-1) var(--space-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
-  .pvp-value { height: 40px; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 500; }
+  .pvp-caption { padding-bottom: var(--space-2); color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600; }
+  .pvp-col-pill { width: 56px; }
+  .pvp-col-label { width: 96px; }
+  .pvp-rows :is(td, th) { padding: 0; text-align: center; vertical-align: middle; }
+  .pvp-plain[data-leading] { font-weight: 700; }
+  .pvp-pending td { padding-block: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .pvp-value { height: 28px; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 400; }
   .pvp-label { color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
-  .pvp-group th { padding-top: var(--space-3); color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .pvp-group th { padding-top: var(--space-2); height: 24px; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
   .pvp-rows tbody > .pvp-group:first-child th { padding-top: 0; }
   .pvp-pill {
-    display: inline-block; min-width: 52px; padding: 1px var(--space-2); border-radius: var(--radius-pill);
-    background: var(--color-identity-a); color: var(--color-on-accent); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600;
+    display: inline-block; min-width: 48px; padding: 0 var(--space-2); border-radius: var(--radius-pill);
+    background: var(--color-identity-a); color: var(--color-on-accent); font-size: var(--text-xs); line-height: var(--text-sm-lh); font-weight: 600;
   }
   .pvp-pill[data-identity="b"] { background: var(--color-identity-b); }
   /* The card closes on the wordmark alone (10). */
-  .pvp-foot { display: flex; justify-content: center; padding-top: var(--space-2); color: var(--color-accent); }
+  .pvp-foot { display: flex; justify-content: center; color: var(--color-accent); }
 
   /* Trend lines slide out from under the card as its drawer (17): a tab while closed, a tray
      tucked under the card's lower edge while open. */
@@ -122,13 +125,22 @@
   .pvp-drawer-group { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); margin: 0; padding: 0; border: 0; min-width: 0; }
   .pvp-drawer-group legend { margin-bottom: var(--space-2); padding: 0; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 
+  /* Narrower screens stack the band and the two tables. */
+  @media (width < 960px) {
+    .pvp-band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+    .pvp-controls { grid-column: 1 / -1; grid-row: 2; }
+    .pvp-slot, .pvp-slot[data-identity="b"] { flex-direction: column; text-align: center; gap: var(--space-3); }
+    .pvp-who { align-items: center; }
+    .pvp-body { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+  }
   @media (width < 600px) {
-    .pvp { --pvp-photo: 140px; }
+    .pvp { --pvp-photo: 132px; }
     .pvp-card { padding: var(--space-4) var(--space-3) var(--space-3); }
-    .pvp-col-pill { width: 52px; }
+    .pvp-col-pill { width: 48px; }
     .pvp-col-label { width: 84px; }
-    .pvp-pill { min-width: 44px; padding-inline: var(--space-1); font-size: var(--text-xs); }
-    .pvp-value { font-size: var(--text-md); line-height: var(--text-md-lh); }
+    .pvp-pill { min-width: 40px; padding-inline: var(--space-1); }
+    .pvp-name { font-size: var(--text-md); line-height: var(--text-md-lh); }
+    .pvp-value { height: 32px; }
     /* The five presets need about 350px: they borrow the card's side padding instead of scrolling. */
     .pvp-presets { max-width: calc(100% + var(--space-4)); margin-inline: calc(var(--space-2) * -1); }
   }

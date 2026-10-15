@@ -28,6 +28,16 @@ test("compare card: console actions, change cues, wordmark footer and trend tray
   await expect(page.getByText("Rolling statistic discipline:")).toHaveCount(0);
 });
 
+test("Career compares both players through the cutoff without league percentiles (row 3, 21)",async({page})=>{
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
+  await page.getByRole("radio",{name:"Career",exact:true}).click();await expect(page).toHaveURL(/span=career/);
+  const table=page.getByRole("table",{name:"Descriptive comparison"});
+  await expect(table.locator("caption")).toHaveText("Career through 2025-26");
+  await expect(table.getByRole("rowheader",{name:"Seasons",exact:true})).toBeVisible();
+  await expect(table.locator(".stat-pct-sublabel")).toHaveCount(0);
+  await expect(page.getByRole("table",{name:"Accolades"})).toBeVisible();
+});
+
 test("team comparison preserves unknown versus zero, unknown outcomes and scope across tabs",async({page})=>{
   await openWorkbench(page,"/team-compare?teamA=100&teamB=200&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
   const points=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Points Per Game",exact:true})});

@@ -31,12 +31,14 @@ export function slotTeams(player: Pick<ComparisonPlayer, "teams" | "teams_chrono
  * latest team's colour, its team logos (every team of the scope, latest in front), a games badge
  * and a change-player icon, then the name and one bio line. Pressing the photo opens search.
  */
-export function ComparePlayerSlot({ side, player, bio, season, onPick }: {
+export function ComparePlayerSlot({ side, player, bio, season, games, onPick }: {
   side: "a" | "b";
   player: CompareSlotPlayer;
   bio?: PlayerBio | null;
   /** The compared season: the photo is the player's headshot from it when one exists. */
   season?: string;
+  /** Career games when the card compares careers; the season's games otherwise. */
+  games?: number | null;
   onPick: (selection: CompareSelection) => void;
 }) {
   const params = useSearchParams();
@@ -52,11 +54,13 @@ export function ComparePlayerSlot({ side, player, bio, season, onPick }: {
       <button type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${label}, ${player.name}`} onClick={() => setSearching(open => !open)}>
         <PlayerPortrait playerId={player.id} name={player.name} portraitUrl={player.portrait_url} size="xl" className="pvp-portrait"
           era={season ? { season, team: latest } : null} />
-        <span className="pvp-badge" title={`${player.games_played} games · ${Math.round(player.total_minutes).toLocaleString("en-US")} minutes`}>{player.games_played} GP</span>
+        {games != null
+          ? <span className="pvp-badge" title={`${games.toLocaleString("en-US")} career games through ${season}`}>{games.toLocaleString("en-US")} GP</span>
+          : <span className="pvp-badge" title={`${player.games_played} games · ${Math.round(player.total_minutes).toLocaleString("en-US")} minutes`}>{player.games_played} GP</span>}
         <span className="pvp-change" aria-hidden="true"><Icon name="user-edit" size={16} /></span>
       </button>
       {teams.length > 0 && <span className="pvp-logos" data-count={teams.length} role="img" aria-label={`Teams: ${teams.join(", then ")}`} title={teams.join(" then ")}>
-        {teams.map(team => <span key={team} className="pvp-logo"><TeamLogo team={team} size={teams.length > 1 ? 22 : 28} /></span>)}
+        {teams.map(team => <span key={team} className="pvp-logo"><TeamLogo team={team} size={teams.length > 1 ? 30 : 36} /></span>)}
       </span>}
     </div>
     {searching

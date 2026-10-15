@@ -22,6 +22,8 @@ from courtlens.api.workbench_schemas import (
     CombineViewResponse,
     ComparePeriodsRequest,
     ComparePeriodsResponse,
+    ComparisonCareer,
+    ComparisonCareerResponse,
     CreateCustomViewRequest,
     CreateJobRequest,
     CreateRankingBoardRequest,
@@ -610,6 +612,55 @@ def get_player_career(
             for entry in career.seasons
         ],
         career=item(career.career, [entry.season for entry in career.seasons]),
+    )
+
+
+@router.get("/compare/career", response_model=ComparisonCareerResponse)
+def get_comparison_career(
+    player_a: str = Query(..., alias="playerA"),
+    player_b: str = Query(..., alias="playerB"),
+    season: str = Query(..., pattern=r"^\d{4}-\d{2}$"),
+    before_date: date = Query(..., alias="beforeDate"),
+    phase: Literal["regular_season", "playoffs"] = "regular_season",
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> ComparisonCareerResponse:
+    """Both players' careers through the comparison cutoff, for Compare's Career view."""
+    from courtlens.services.player_career import career_through
+
+    careers = career_through(session, [player_a, player_b], phase, season, before_date, release_id)
+
+    def entry(player_id: str) -> ComparisonCareer:
+        career = careers[player_id]
+        row = career.item
+        return ComparisonCareer(
+            player_id=player_id,
+            seasons=career.seasons,
+            item=PlayerResearchItem(
+                **{
+                    key: row.get(key)
+                    for key in (
+                        "player_id",
+                        "player_name",
+                        "teams",
+                        "stints_count",
+                        "games_played",
+                        "total_minutes",
+                        "metrics",
+                        "sample_sizes",
+                    )
+                }
+            )
+            if row is not None
+            else None,
+        )
+
+    return ComparisonCareerResponse(
+        season=season,
+        phase=phase,
+        before_date=before_date.isoformat(),
+        player_a=entry(player_a),
+        player_b=entry(player_b),
     )
 
 

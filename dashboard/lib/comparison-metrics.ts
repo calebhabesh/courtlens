@@ -1,4 +1,4 @@
-import type { MetricComparisonItem, MetricDefinition, PlayerComparisonResponse, WorkbenchQueryResponse } from "./types";
+import type { MetricComparisonItem, MetricDefinition, PlayerComparisonResponse, PlayerResearchItem } from "./types";
 
 export type ComparePresetId = "overall" | "offense" | "defense" | "sixfactor" | "custom";
 export type CompareCountingMode = "per_game" | "raw" | "per_75" | "per_100";
@@ -29,7 +29,12 @@ export function compareMetricKey(key: string, mode: CompareCountingMode) {
   return COUNTS.has(key) && mode !== "raw" ? `${key}_${mode}` : key;
 }
 
-export function comparisonRows(keys: string[], mode: CompareCountingMode, comparison: PlayerComparisonResponse, catalog: MetricDefinition[], cohort?: WorkbenchQueryResponse | null): MetricComparisonItem[] {
+/**
+ * Rows for the card. ``source`` holds each player's row (the season cohort, or careers through the
+ * cutoff). With ``strict`` (careers) a missing value stays unknown instead of reading the season's.
+ */
+export function comparisonRows(keys: string[], mode: CompareCountingMode, comparison: PlayerComparisonResponse, catalog: MetricDefinition[], source?: { items: PlayerResearchItem[] } | null, strict = false): MetricComparisonItem[] {
+  const cohort = source;
   const a = cohort?.items.find(row => row.player_id === comparison.player_a.id);
   const b = cohort?.items.find(row => row.player_id === comparison.player_b.id);
   return keys.map(key => {
@@ -37,12 +42,12 @@ export function comparisonRows(keys: string[], mode: CompareCountingMode, compar
     const definition = catalog.find(metric => metric.key === output) ?? catalog.find(metric => metric.key === key);
     const aligned = comparison.aligned_metrics.find(metric => metric.metric === output);
     // Server-owned values only. Unsupported normalizations never fall back to a different unit.
-    const valueA = a && Object.hasOwn(a.metrics, output) ? a.metrics[output] : aligned?.value_a ?? null;
-    const valueB = b && Object.hasOwn(b.metrics, output) ? b.metrics[output] : aligned?.value_b ?? null;
+    const valueA = a && Object.hasOwn(a.metrics, output) ? a.metrics[output] : strict ? null : aligned?.value_a ?? null;
+    const valueB = b && Object.hasOwn(b.metrics, output) ? b.metrics[output] : strict ? null : aligned?.value_b ?? null;
     return { metric: output, display_name: definition?.display_name ?? aligned?.display_name ?? key,
       unit: definition?.unit ?? aligned?.unit ?? "", value_a: valueA, value_b: valueB,
       diff: typeof valueA === "number" && typeof valueB === "number" ? valueA - valueB : null,
-      n_a: a?.sample_sizes[output] ?? aligned?.n_a ?? 0, n_b: b?.sample_sizes[output] ?? aligned?.n_b ?? 0 };
+      n_a: a?.sample_sizes[output] ?? (strict ? 0 : aligned?.n_a ?? 0), n_b: b?.sample_sizes[output] ?? (strict ? 0 : aligned?.n_b ?? 0) };
   });
 }
 

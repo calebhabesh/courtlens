@@ -910,9 +910,9 @@
   .pvp-header .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); }
   .pvp-header .ui-page-header-subtitle { color: var(--color-on-bg-secondary); }
   .pvp-scope .ui-filter-bar { border-bottom: 0; }
-  /* The leading value reads bold and bright, the other one recedes (row 3, 11); the
-     percentile cell's own text colour lives in this layer. */
-  .pvp-value .stat-main-value { font-weight: 500; }
-  .pvp-value[data-leading] .stat-main-value { font-weight: 700; color: var(--color-text); }
-  .pvp-value[data-trailing] .stat-main-value { color: var(--color-text-secondary); }
+  /* Like Stathead, the leading value only reads heavier (row 3, 11 and 20); the percentile sits
+     beside its value so rows stay one line tall (19). Its text rules live in this layer. */
+  .pvp-value .chart-percentile-text { display: inline-flex; align-items: baseline; gap: var(--space-1); }
+  .pvp-value .stat-main-value { font-weight: 400; }
+  .pvp-value[data-leading] .stat-main-value { font-weight: 700; }
 }

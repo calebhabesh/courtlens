@@ -354,6 +354,21 @@ class PlayerCareerResponse(BaseModel):
     career: PlayerResearchItem | None
 
 
+class ComparisonCareer(BaseModel):
+    player_id: str
+    # Observed seasons up to the compared one; the compared season stops at the cutoff.
+    seasons: list[str]
+    item: PlayerResearchItem | None
+
+
+class ComparisonCareerResponse(BaseModel):
+    season: str
+    phase: str
+    before_date: str
+    player_a: ComparisonCareer
+    player_b: ComparisonCareer
+
+
 class PlayerSeasonsResponse(BaseModel):
     phase: str
     # Seasons with at least one game row per player, ascending; a missing season is unknown.

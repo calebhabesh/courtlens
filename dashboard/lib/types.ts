@@ -1131,6 +1131,13 @@ export type ComparisonPlayer = {
   portrait_url?: string;
 };
 
+/** Both players' careers through the comparison cutoff (Compare's Career view). */
+export type ComparisonCareer = { player_id: string; seasons: string[]; item: PlayerResearchItem | null };
+export type ComparisonCareerResponse = {
+  season: string; phase: string; before_date: string;
+  player_a: ComparisonCareer; player_b: ComparisonCareer;
+};
+
 export type PlayerComparisonResponse = {
   context: Record<string, unknown>;
   player_a: ComparisonPlayer;
