@@ -75,3 +75,12 @@ numbers. Swaps mirror the card on the client (about 70ms). [Wembanyama 2023-24, 
 and the CDN's latest](review4-wembanyama-2023-24-to-latest.png): latest equals the 2026-27 folder.
 Checks: lint/typecheck, Vitest 537/537, affected browser specs (presentation defaults ×3 for the
 rounded touch-target check); compare baselines regenerated.
+
+## Fifth review (instructions 31–36)
+
+[Centred team watermark and team names with logos](review5-watermark-team-logos.png) (Durant 2022-23
+lists Brooklyn Nets and Phoenix Suns). [Trend lines open at the page end](review5-trend-open-at-end.png);
+collapsing scrolls back smoothly to the starting position before folding. The header indicator no
+longer moves when the tray collapses. Checks: lint/typecheck, Vitest, 148 browser tests; phone
+compare baselines regenerated. The phone search-modal baseline differs because of another
+session's uncommitted search alias change in the working tree, not this work.

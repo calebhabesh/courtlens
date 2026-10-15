@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
@@ -26,6 +26,9 @@ import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
 import type { AnalyticsCatalog, ComparisonCareerResponse, MetricComparisonItem, MetricDefinition, PlayerBio, PlayerComparisonResponse, PlayerResearchItem, WorkbenchCatalog, WorkbenchQueryResponse } from "@/lib/types";
 import { Button, IconButton, Segmented, Select } from "./ui/kit";
 export type { ComparePresetId } from "@/lib/comparison-metrics";
+
+const smooth = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+const toEnd = () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: smooth() });
 
 /** Owner trial, row 3, 22: league percentiles hidden to keep the slim card on one screen. */
 const SHOW_PERCENTILES = false;
@@ -77,6 +80,30 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   const minutes = cohort?.table_cohort?.min_season_minutes ?? 500;
   const modeLabel = MODES.find(entry => entry.value === mode)?.label ?? "Per Game";
   const trends = params.get("compareView") === "lines";
+  // Opening Trend lines follows the drawer to the end of the page while its chart loads; closing
+  // scrolls smoothly back to where the reader was, then folds the drawer (31, 36).
+  const trayRef = useRef<HTMLDivElement>(null), returnTo = useRef<number | null>(null);
+  useEffect(() => {
+    const body = trayRef.current;
+    if (!trends || !body || returnTo.current == null) return;
+    toEnd();
+    const observer = new ResizeObserver(toEnd);
+    observer.observe(body);
+    const stop = window.setTimeout(() => observer.disconnect(), 2500);
+    return () => { observer.disconnect(); window.clearTimeout(stop); };
+  }, [trends]);
+  function toggleTrends() {
+    if (!trends) { returnTo.current = window.scrollY; change({ compareView: "lines" }); return; }
+    const top = returnTo.current ?? window.scrollY;
+    returnTo.current = null;
+    const close = () => change({ compareView: "table" });
+    if (Math.abs(window.scrollY - top) < 2 || smooth() === "auto") { window.scrollTo({ top }); close(); return; }
+    let done = false;
+    const finish = () => { if (done) return; done = true; window.removeEventListener("scrollend", finish); close(); };
+    window.addEventListener("scrollend", finish);
+    window.setTimeout(finish, 1200);
+    window.scrollTo({ top, behavior: "smooth" });
+  }
   const accolades = accoladeGroups(bios, [a?.championships, b?.championships], context.season, context.before_date);
 
   function navigate(next: URLSearchParams, server: boolean) {
@@ -201,9 +228,9 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
         {a && b && <div className="pvp-tray" data-open={trends || undefined}>
           <div className="pvp-tray-tab">
             <Button size="sm" variant="ghost" icon="chart-line" iconAfter={trends ? "chevron-up" : "chevron-down"} aria-expanded={trends} aria-controls="pvp-trend-drawer"
-              onClick={() => change({ compareView: trends ? "table" : "lines" })}>Trend lines</Button>
+              onClick={toggleTrends}>Trend lines</Button>
           </div>
-          {trends && <div className="pvp-tray-body" id="pvp-trend-drawer">
+          {trends && <div className="pvp-tray-body" id="pvp-trend-drawer" ref={trayRef}>
             <MultiPlayerLinesView variant="embedded" playerIds={[a.id, b.id, ...additionalPlayerIds]} context={context} />
           </div>}
         </div>}

@@ -9,10 +9,10 @@ import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-
 import type { AccoladeRow } from "@/lib/compare-accolades";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { MetricComparisonItem, MetricDefinition } from "@/lib/types";
-import { slotTeams, type CompareSlotPlayer } from "./compare-player-slot";
+import { slotTeams, teamRecord, type CompareSlotPlayer } from "./compare-player-slot";
 import { BrandMark } from "./brand";
 
-const WIDTH = 560, PHOTO = 168, TOP = 24, ROW = 34, ROWS_TOP = TOP + PHOTO + 64, MARK = 20, LOGO = 24;
+const WIDTH = 560, PHOTO = 168, TOP = 24, ROW = 34, ROWS_TOP = TOP + PHOTO + 82, MARK = 20, LOGO = 24;
 
 type ExportRow = { key: string; label: string; shown: [string, string]; leader: "a" | "b" | null; pill: string | null };
 
@@ -58,10 +58,12 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
       return <g key={player.id}>
         <clipPath id={id}><rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" /></clipPath>
         <rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" fill={teamBrandColor(latest) ?? "var(--color-surface-3)"} />
+        {teamRecord(latest) && <image href={teamRecord(latest)!.asset} x={x + PHOTO * 0.04} y={TOP - PHOTO * 0.02} width={PHOTO * 0.92} height={PHOTO * 0.92} opacity="0.42" clipPath={`url(#${id})`} />}
         {source && <image href={source.src} x={x} y={TOP} width={PHOTO} height={PHOTO} clipPath={`url(#${id})`} preserveAspectRatio="xMidYMax slice" />}
         <rect x={x + PHOTO - 58} y={TOP + PHOTO - 30} width="52" height="24" rx="6" fill="var(--color-text)" />
         <text x={x + PHOTO - 32} y={TOP + PHOTO - 13} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-surface-0)">{`${player.games_played} GP`}</text>
         <text x={column(side as 0 | 1)} y={TOP + PHOTO + 26} textAnchor="middle" fontSize="15" fontWeight="600" fill="var(--color-text)">{player.name}</text>
+        <text x={column(side as 0 | 1)} y={TOP + PHOTO + 44} textAnchor="middle" fontSize="12" fill="var(--color-text-secondary)">{slotTeams(player).map(team => teamRecord(team)?.artwork_name ?? team).join(", ")}</text>
       </g>;
     })}
     {lines.map((line, index) => {
