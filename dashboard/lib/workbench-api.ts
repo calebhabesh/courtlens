@@ -4,6 +4,7 @@ import type { SavedDetail } from "./saved-operations";
 assertCurrentEnvironment();
 
 import type {
+  ComparisonCareerResponse,
   AssistantAnswer,
   PlayerBio,
   AssistantQueryRequest,
@@ -189,6 +190,13 @@ export async function getPlayerCareer(
   return wbFetch(`/api/workbench/players/${encodeURIComponent(id)}/career?${sp}`, {
     signal: AbortSignal.timeout(30000)
   });
+}
+
+/** Both players' careers through a comparison's cutoff; later games never count. */
+export async function getComparisonCareer(playerA: string, playerB: string, params: { season: string; beforeDate: string; phase: string; releaseId?: string }): Promise<ComparisonCareerResponse> {
+  const sp = new URLSearchParams({ playerA, playerB, season: params.season, beforeDate: params.beforeDate, phase: params.phase });
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  return wbFetch(`/api/workbench/compare/career?${sp}`, { signal: AbortSignal.timeout(30000) });
 }
 
 /** Seasons each player has game rows in for one phase; a stat trend plots only these. */

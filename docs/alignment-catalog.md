@@ -862,6 +862,20 @@ Follow-up instructions (owner, 2026-10-15, first review):
     outline around the players box and the rolling-discipline disclaimer. — a tab under the card
     opens a tray tucked beneath it; `MultiPlayerLinesView variant="embedded"` drops the frame,
     legend box and footnote (Stats keeps the panel).
+Follow-up instructions (owner, 2026-10-15, second review):
+18. [x] Team logos bigger and attached to the photo's edge like the player page badge, on an opaque
+    backdrop (owner screenshots of the compare photo and the player page ring badge). — 48px opaque
+    surface-3 discs (36px logo) riding the photo's lower-left corner; traded players overlap discs.
+19. [x] The whole comparison fits the unscrolled page; today it needs scrolling. — 1040px card: a
+    band of both players (photo + name side by side) around the controls, then stats and
+    accolades as two mirrored tables; one-line rows with the percentile beside the value. At
+    1440x900 the card and trend tab end at 866px (Season) and 894px (Career). Below 960px it stacks.
+20. [x] Drop the greyed trailing values; like Stathead, only the leading side is heavier.
+21. [x] A career stats comparison (owner screenshot of the Per Game menu). — a Season | Career
+    switch beside the counting mode (`span=career`). `GET /api/workbench/compare/career`
+    aggregates each player's observed seasons up to the compared one with games before the
+    cutoff only (`career_through`); career rows carry no league percentile, add a Seasons row and
+    the photo badge shows career games. Per 75/100 stay disabled in Career.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

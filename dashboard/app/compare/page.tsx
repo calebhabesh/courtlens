@@ -13,7 +13,7 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { PlayerIdentity } from "@/components/ui/identity";
 import { formatDate } from "@/lib/format-date";
 import { resolveStatsQuery } from "@/lib/stats-query";
-import { getMetricCatalog, getPlayerBio, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
+import { getComparisonCareer, getMetricCatalog, getPlayerBio, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
 import { comparePlayers } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerBio, PlayerComparisonResponse, WorkbenchCatalog } from "@/lib/types";
 import { ButtonLink } from "@/components/ui/kit";
@@ -35,6 +35,7 @@ export default async function ComparePage({ searchParams }: {
     releaseId?: string;
     release_id?: string;
     before_date?: string;
+    span?: string;
   }>;
 }) {
   const rawSelected = await searchParams;
@@ -45,6 +46,11 @@ export default async function ComparePage({ searchParams }: {
   const loaded = await loadComparison(selected);
   if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open players</ButtonLink>}>Comparison unavailable.</GatedNote></PageShell>;
   const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, bios } = loaded;
+  // Career view (alignment row 3, 21): both careers through the same cutoff, fetched on request.
+  const career = wbComparison && rawSelected.span === "career" ? await getComparisonCareer(wbComparison.player_a.id, wbComparison.player_b.id, {
+    season: String(wbComparison.context.season), beforeDate: String(wbComparison.context.before_date), phase: String(wbComparison.context.phase),
+    releaseId: wbComparison.context.release_id ? String(wbComparison.context.release_id) : undefined
+  }).catch(() => null) : null;
   const context = {
     season: String(wbComparison?.context?.season ?? selected.season ?? workbenchCatalog?.default_season ?? ""),
     phase: String(wbComparison?.context?.phase ?? selected.phase ?? workbenchCatalog?.default_phase ?? "regular_season"),
@@ -54,7 +60,7 @@ export default async function ComparePage({ searchParams }: {
   };
   // The legacy snapshot comparison keeps its form; everything else is the duel card.
   if(!comparison) return <PageShell template="compare" className="fo11-player-comparison">
-    <PlayerCompareView comparison={wbComparison} bios={bios} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
+    <PlayerCompareView comparison={wbComparison} bios={bios} career={career} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
       selector={<CompareSelector catalog={catalog} date={date} legacy={selected.snapshotId === "snapshot-browser-fixture"}
         initialA={targetA ? {id:targetA,name:`Player ${targetA}`} : null} initialB={targetB ? {id:targetB,name:`Player ${targetB}`} : null} />} />
   </PageShell>;

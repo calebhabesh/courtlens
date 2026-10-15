@@ -745,6 +745,16 @@ createServer(async (request, response) => {
   if (url.pathname.startsWith("/api/workbench/playoffs/series/")) {
     return json(response, 200, mockPlayoffSeriesDetail);
   }
+  // Careers through the comparison cutoff (alignment row 3, 21): the fixture's season rows doubled.
+  if (url.pathname === "/api/workbench/compare/career") {
+    const entry = id => {
+      const row = workbenchPlayers.items.find(item => item.player_id === id);
+      return { player_id: id, seasons: row ? ["2024-25", "2025-26"] : [], item: row ? { ...row, games_played: row.games_played * 2,
+        metrics: Object.fromEntries(Object.entries(row.metrics).map(([key, value]) => [key, typeof value === "number" && !/pct|per_game|ftr/.test(key) && key !== "gp" ? value * 2 : key === "gp" && typeof value === "number" ? value * 2 : value])) } : null };
+    };
+    return json(response, 200, { season: url.searchParams.get("season"), phase: url.searchParams.get("phase") ?? "regular_season",
+      before_date: url.searchParams.get("beforeDate"), player_a: entry(url.searchParams.get("playerA")), player_b: entry(url.searchParams.get("playerB")) });
+  }
   if (url.pathname === "/api/workbench/compare") {
     const pA = {
       id: "23",

@@ -340,3 +340,23 @@ def test_warm_stores_every_scope_once_and_prunes_other_releases(workbench_db: Se
     second = warm_stats_cohorts(workbench_db)
     assert (second["built"], second["existing"]) == (0, len(SEASONS))
     assert stored_entries(workbench_db) == len(SEASONS)
+
+
+def test_comparison_career_stops_at_the_compared_season_and_cutoff(client: TestClient) -> None:
+    catalog = client.get("/api/workbench/catalog").json()
+    cutoff = next(
+        s["default_before_date"]
+        for s in catalog["stats_scopes"]
+        if s["season"] == "2024-25" and s["phase"] == "regular_season"
+    )
+    response = client.get(
+        "/api/workbench/compare/career",
+        params={"playerA": PLAYER, "playerB": "nobody", "season": "2024-25", "beforeDate": cutoff},
+    ).json()
+    career = response["player_a"]
+    assert career["seasons"] == ["2023-24", "2024-25"]
+    # Alignment row 3, 21: the 2025-26 games after the compared season never count.
+    [expected] = stats_rows(client, "2024-25", seasons=["2023-24", "2024-25"], ranks=False)
+    for field in ("games_played", "total_minutes", "metrics"):
+        assert career["item"][field] == expected[field], field
+    assert response["player_b"] == {"player_id": "nobody", "seasons": [], "item": None}

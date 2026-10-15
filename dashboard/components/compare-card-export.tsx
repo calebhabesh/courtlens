@@ -65,15 +65,14 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
     {lines.map((line, index) => {
       const y = ROWS_TOP + index * ROW;
       const pillX = line.leader === "a" ? 20 : WIDTH - 72;
-      const tone = (side: "a" | "b") => line.leader && line.leader !== side ? "var(--color-text-secondary)" : "var(--color-text)";
       return <g key={line.key}>
         {line.leader && line.pill && <>
           <rect x={pillX} y={y - 15} width="52" height="20" rx="10" fill={toneColor(`identity-${line.leader}`)} />
           <text x={pillX + 26} y={y} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-on-accent)">{line.pill}</text>
         </>}
-        <text x={WIDTH * 0.3} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "a" ? 700 : 500} fill={tone("a")}>{line.shown[0]}</text>
+        <text x={WIDTH * 0.3} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "a" ? 700 : 500} fill="var(--color-text)">{line.shown[0]}</text>
         <text x={WIDTH / 2} y={y - 1} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{line.label}</text>
-        <text x={WIDTH * 0.7} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "b" ? 700 : 500} fill={tone("b")}>{line.shown[1]}</text>
+        <text x={WIDTH * 0.7} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "b" ? 700 : 500} fill="var(--color-text)">{line.shown[1]}</text>
       </g>;
     })}
     <path d={WORDMARK_PATH} fill="var(--color-accent)" transform={`translate(${(WIDTH - markWidth) / 2} ${height - 20 - MARK}) scale(${MARK / WORDMARK_HEIGHT})`} />
