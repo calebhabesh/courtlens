@@ -65,7 +65,7 @@ function ContractTable({ reference, contract, history, events }: {
     const seasonEvents = shown.has(salary.season) ? [] : bySeason.get(salary.season) ?? [];
     shown.add(salary.season);
     return <tr key={`${current ? "c" : "h"}:${salary.season}:${salary.team_code}:${i}`}>
-      <th scope="row" className="player-contract-season">{salary.season}</th>
+      <th scope="row" className="player-ref-grid-lead">{salary.season}</th>
       <td className="group-start player-contract-team"><SalaryTeam row={salary} /></td>
       <td><Salary row={salary} /></td>
       <td><CapShare row={salary} /></td>
@@ -74,25 +74,25 @@ function ContractTable({ reference, contract, history, events }: {
       <td className="group-start player-contract-events-cell">{seasonEvents.length ? <EventList events={seasonEvents} /> : "—"}</td>
     </tr>;
   };
-  return <div className="player-contract-frame">
-    <div className="player-contract-scroll" role="region" aria-label="Contract table scroll area" tabIndex={0}>
-      <table className="player-contract-table" aria-label="Contract and salary history by season">
+  return <div className="player-ref-grid-frame">
+    <div className="player-ref-grid-scroll" role="region" aria-label="Contract table scroll area" tabIndex={0}>
+      <table className="player-ref-grid" aria-label="Contract and salary history by season">
         {/* Fixed, equal data columns: each group label centers over its columns (row 2, 66). */}
         <colgroup>
-          <col className="player-contract-season-column" />
+          <col className="player-ref-grid-lead-column" />
           {[0, 1, 2, 3, 4].map(i => <col key={i} />)}
           <col className="player-contract-events-column" />
         </colgroup>
         <thead>
-          <tr className="player-contract-tier-1">
-            <th scope="colgroup" className="player-contract-season">Season</th>
+          <tr className="player-ref-grid-tier-1">
+            <th scope="colgroup" className="player-ref-grid-lead">Season</th>
             <th scope="colgroup" colSpan={3} className="group-start">Salary</th>
             <th scope="colgroup" colSpan={2} className="group-start">Terms</th>
             <th scope="colgroup" className="group-start">Events</th>
           </tr>
-          <tr className="player-contract-tier-2">
+          <tr className="player-ref-grid-tier-2">
             {/* The first section's label shares the column-label row (row 2, 66). */}
-            <th scope="rowgroup" className="player-contract-season">Current Contract</th>
+            <th scope="rowgroup" className="player-ref-grid-lead">Current Contract</th>
             <th scope="col" className="group-start player-contract-team">Team</th>
             <th scope="col">Salary</th>
             <th scope="col">% of Cap</th>
@@ -106,22 +106,22 @@ function ContractTable({ reference, contract, history, events }: {
             : <tr><td colSpan={7} className="player-contract-empty">No current contract listed in the retained report.</td></tr>}
         </tbody>
         {past.length > 0 && <tbody>
-          <tr className="player-contract-section"><th scope="rowgroup" className="player-contract-season" title={`${past.length} reported ${past.length === 1 ? "season" : "seasons"}`}>Salary History</th><td colSpan={6} /></tr>
+          <tr className="player-contract-section"><th scope="rowgroup" className="player-ref-grid-lead" title={`${past.length} reported ${past.length === 1 ? "season" : "seasons"}`}>Salary History</th><td colSpan={6} /></tr>
           {past.map((salary, i) => row(salary, i, false))}
         </tbody>}
         {unplaced.length > 0 && <tbody>
-          <tr className="player-contract-section"><th scope="rowgroup" className="player-contract-season">Other Contract Events</th><td colSpan={6} /></tr>
-          <tr><th scope="row" className="player-contract-season">—</th><td colSpan={5} className="group-start" /><td className="group-start player-contract-events-cell"><EventList events={unplaced} /></td></tr>
+          <tr className="player-contract-section"><th scope="rowgroup" className="player-ref-grid-lead">Other Contract Events</th><td colSpan={6} /></tr>
+          <tr><th scope="row" className="player-ref-grid-lead">—</th><td colSpan={5} className="group-start" /><td className="group-start player-contract-events-cell"><EventList events={unplaced} /></td></tr>
         </tbody>}
         {(reference.remaining_guaranteed || reference.career_earnings) && <tfoot>
           {reference.remaining_guaranteed && <tr className="player-contract-total">
-            <th scope="row" className="player-contract-season">Remaining Guaranteed</th>
+            <th scope="row" className="player-ref-grid-lead">Remaining Guaranteed</th>
             <td colSpan={3} className="group-start" />
             <td className="group-start" /><td><strong><Guarantee value={reference.remaining_guaranteed} /></strong></td>
             <td className="group-start" />
           </tr>}
           {reference.career_earnings && <tr className="player-contract-total">
-            <th scope="row" className="player-contract-season">Career Earnings</th>
+            <th scope="row" className="player-ref-grid-lead">Career Earnings</th>
             <td className="group-start" /><td><strong title="Reported salaries, not verified cash earned">{money(reference.career_earnings)}</strong></td><td />
             <td colSpan={2} className="group-start" />
             <td className="group-start" />
@@ -155,9 +155,11 @@ function Events({ events }: { events: PlayerReferenceEvent[] }) {
   </li>)}</ol>;
 }
 
-const HIGH_COLUMNS = [
-  ["pts", "PTS"], ["trb", "REB"], ["ast", "AST"], ["stl", "STL"], ["blk", "BLK"],
-  ["fg3", "3PM"], ["fg", "FGM"], ["ft", "FTM"], ["time_on_court", "MIN"], ["game_score", "GmSc"],
+/** Career highs grouped like the career table's columns (row 2, 67). */
+const HIGH_GROUPS: Array<{ label: string; columns: Array<[string, string]> }> = [
+  { label: "Scoring", columns: [["pts", "PTS"], ["fg", "FGM"], ["fg3", "3PM"], ["ft", "FTM"]] },
+  { label: "Counting", columns: [["trb", "REB"], ["ast", "AST"], ["stl", "STL"], ["blk", "BLK"]] },
+  { label: "Other", columns: [["time_on_court", "MIN"], ["game_score", "GmSc"]] },
 ];
 
 export function PlayerReferenceSections({ reference }: { reference: Reference }) {
@@ -181,13 +183,34 @@ export function PlayerReferenceSections({ reference }: { reference: Reference })
     </section>}
     {highs.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Career highs">
       <header className="player-open-heading"><h2><Icon name="trophy" size={20} />Career Highs</h2><span>Highest known single-game values</span></header>
-      <div className="player-reference-table" role="region" aria-label="Career highs table" tabIndex={0}><table>
-        <thead><tr><th scope="col">Phase</th>{HIGH_COLUMNS.map(([key, label]) => <th key={key} scope="col">{label}</th>)}</tr></thead>
-        <tbody>{highs.map(row => <tr key={row.phase}><th scope="row">{row.phase === "regular_season" ? "Regular season" : "Playoffs"}</th>{HIGH_COLUMNS.map(([key, label]) => {
-          const high = row.values[key];
-          return <td key={key}>{high?.value == null ? "—" : high.url ? <a href={high.url} target="_blank" rel="noreferrer" title={`${label}${high.date ? ` · ${formatDate(high.date)}` : " · Source game list"}`}>{high.value}</a> : high.value}</td>;
-        })}</tr>)}</tbody>
-      </table></div>
+      <div className="player-ref-grid-frame">
+        <div className="player-ref-grid-scroll" role="region" aria-label="Career highs table" tabIndex={0}>
+          <table className="player-ref-grid player-highs-grid" aria-label="Career highs by phase">
+            <colgroup>
+              <col className="player-ref-grid-lead-column" />
+              {HIGH_GROUPS.flatMap(group => group.columns).map(([key]) => <col key={key} />)}
+            </colgroup>
+            <thead>
+              <tr className="player-ref-grid-tier-1">
+                <th scope="colgroup" className="player-ref-grid-lead">Phase</th>
+                {HIGH_GROUPS.map(group => <th key={group.label} scope="colgroup" colSpan={group.columns.length} className="group-start">{group.label}</th>)}
+              </tr>
+              <tr className="player-ref-grid-tier-2">
+                <td className="player-ref-grid-lead" />
+                {HIGH_GROUPS.flatMap(group => group.columns.map(([key, label], index) =>
+                  <th key={key} scope="col" className={index === 0 ? "group-start" : undefined}>{label}</th>))}
+              </tr>
+            </thead>
+            <tbody>{highs.map(row => <tr key={row.phase}>
+              <th scope="row" className="player-ref-grid-lead">{row.phase === "regular_season" ? "Regular Season" : "Playoffs"}</th>
+              {HIGH_GROUPS.flatMap(group => group.columns.map(([key, label], index) => {
+                const high = row.values[key];
+                return <td key={key} className={index === 0 ? "group-start" : undefined}>{high?.value == null ? "—" : high.url ? <a href={high.url} target="_blank" rel="noreferrer" title={`${label}${high.date ? ` · ${formatDate(high.date)}` : " · Source game list"}`}>{high.value}</a> : high.value}</td>;
+              }))}
+            </tr>)}</tbody>
+          </table>
+        </div>
+      </div>
       <p className="player-reference-note">Each column can describe a different game. Missing values stay unknown; source game links are provided where available.</p>
       <Credit reference={reference} anchor="all_highs" />
     </section>}

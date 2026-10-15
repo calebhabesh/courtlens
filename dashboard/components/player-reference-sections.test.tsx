@@ -47,9 +47,11 @@ describe("player reference sections", () => {
   it("keeps phases separate, known zero visible and missing highs unknown", () => {
     render(<PlayerReferenceSections reference={reference} />);
     const table = screen.getByRole("region", { name: "Career highs table" });
-    const rows = within(table).getAllByRole("row");
-    expect(rows[1].textContent).toContain("Regular season42140");
-    expect(rows[2].textContent).toContain("Playoffs32—7");
+    const rows = within(table).getAllByRole("row").map(row => row.textContent ?? "");
+    // Grouped as Scoring (PTS, FGM, 3PM, FTM), Counting (REB, AST, STL, BLK), Other (MIN, GmSc).
+    expect(rows[0]).toBe("PhaseScoringCountingOther");
+    expect(rows).toContain(`Regular Season${["42", "—", "—", "—", "14", "0", "—", "—", "48:30", "—"].join("")}`);
+    expect(rows).toContain(`Playoffs${["32", "—", "—", "—", "—", "7", "—", "—", "—", "—"].join("")}`);
     expect(within(table).getByRole("link", { name: "42" }).getAttribute("title")).toContain("Jan 2, 2026");
     expect(screen.getAllByRole("link", { name: "Basketball-Reference.com" })).toHaveLength(3);
   });

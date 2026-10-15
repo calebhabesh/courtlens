@@ -768,6 +768,9 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
     header and the Salary sub-header are center-aligned. (Owner screenshot, 2026-10-15.)
     Current Contract moved into the column-label row; fixed, equal data columns; centers measured.
     [Evidence](evidence/alignment/players/contract-header/README.md).
+67. [x] Add a similar stats table to Career Highs. (Owner, 2026-10-15.) Shared reference-grid
+    styles; Phase lead column; Scoring / Counting / Other groups over equal columns.
+    [Evidence](evidence/alignment/players/career-highs-table/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run
