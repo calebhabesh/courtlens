@@ -924,6 +924,13 @@ Follow-up instructions (owner, 2026-10-15, fifth review):
     scrolls smoothly back up to the original position (refines 31). — follows the drawer to the
     page end while its chart loads (2.5s); closing scrolls back first, then folds the drawer
     (on `scrollend`, 1.2s fallback). Reduced motion jumps instead.
+Follow-up instructions (owner, 2026-10-15, sixth review):
+37. [x] Trend lines expand and collapse with a smooth animation of the drawer sliding out of and
+    retracting into the comparison card. — the drawer's height animates on grid rows (0fr to 1fr)
+    over `--dur-slow`, opening via `@starting-style`; the page follows it down instantly each
+    frame. Closing retracts it while the page scrolls back, and the URL changes after the
+    retraction (transitionend, 700ms fallback). Sampled per frame: open and close both settle
+    in about 350ms with no tab jump.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

@@ -94,12 +94,19 @@
   }
   .pvp-tray[data-open] { width: calc(100% - var(--space-4)); }
   .pvp-tray[data-open] .pvp-tray-tab { order: 2; }
+  /* The drawer's height slides between 0 and its content (37): grid rows animate where height:auto
+     cannot. @starting-style runs the slide on insertion; reduced motion collapses the duration. */
+  .pvp-tray-drawer {
+    display: grid; grid-template-rows: 0fr; width: 100%;
+    transition: grid-template-rows var(--dur-slow) var(--ease-out), opacity var(--dur-slow) var(--ease-out); opacity: 0.4;
+  }
+  .pvp-tray-drawer[data-open] { grid-template-rows: 1fr; opacity: 1; }
+  @starting-style { .pvp-tray-drawer[data-open] { grid-template-rows: 0fr; opacity: 0.4; } }
+  .pvp-tray-clip { min-height: 0; overflow: hidden; }
   .pvp-tray-body {
-    scroll-margin-top: calc(var(--header-height) + var(--space-4));
-    width: 100%; padding: var(--space-6) var(--space-5) var(--space-4); margin-top: calc(var(--space-4) * -1);
+    width: 100%; padding: var(--space-4) var(--space-5);
     background: color-mix(in srgb, var(--color-surface-0) 58%, transparent); border: 1px solid var(--color-hairline-strong); border-top: 0;
     border-radius: 0 0 var(--radius-lg) var(--radius-lg); backdrop-filter: blur(20px) saturate(150%);
-    animation: pvp-tray-open var(--dur-slow) var(--ease-out);
   }
   .pvp-tray-body .multi-player-lines-panel.is-embedded { padding: 0; background: transparent; border: 0; box-shadow: none; }
   .pvp-tray-body .lines-legend { padding: 0; background: transparent; border: 0; }
@@ -108,7 +115,6 @@
   /* Swaps render at once (29); the fade is a short settle, not a wait. */
   .pvp-fade { animation: pvp-fade-in var(--dur-base) var(--ease-out); }
   @keyframes pvp-fade-in { from { opacity: 0.35; } to { opacity: 1; } }
-  @keyframes pvp-tray-open { from { opacity: 0; transform: translateY(calc(var(--space-4) * -1)); } to { opacity: 1; transform: none; } }
 
   .pvp-notice { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); }
   /* The export card stays in the document (exports read its computed tokens) but off screen. */
