@@ -7,6 +7,7 @@
 @import "./styles/motion.css";
 /* Component styles live next to their components (UC05); this order is the cascade order. */
 @import "./styles/components.css";
+@import "./shell.css";
 @import "../components/brand.css";
 @import "../components/ui/header.css";
 @import "../components/lookup-input.css";

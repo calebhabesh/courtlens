@@ -1,0 +1,17 @@
+{
+  "svg_bytes": 339,
+  "tile": "0 0 384 384",
+  "stroke": "#b4c2dc",
+  "stroke_opacity": 0.04,
+  "painted_stroke_rgb": [
+    27.36,
+    55.76,
+    95.2
+  ],
+  "text_contrast_at_full_stroke": {
+    "color-text": 10.66,
+    "color-on-bg-secondary": 7.86,
+    "color-on-bg-tertiary": 6.59,
+    "color-accent": 8.21
+  }
+}

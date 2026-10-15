@@ -12,7 +12,7 @@ Rows are in working order.
 
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
-| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Switzer interface font verified; owner review pending |
+| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 🔧 | Coaching-board backdrop implemented; owner requested density/visibility tuning |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
 | 2 | Dashboard (player) | `/players/[id]` | 👀 | Reference parser/marts and Contract, transactions, highs follow-up ready for review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
@@ -53,7 +53,7 @@ Data-blocked: <Databallr elements we can't source>
 Evidence: docs/evidence/alignment/<page>/
 ```
 
-### 0 App shell — 👀 ready for review
+### 0 App shell — 🔧 in progress
 Instructions (owner, 2026-10-13):
 1. [x] On the site nav bar, move the wordmark closer to the actual logo so they look like one
    wordmark + logo; they look a little far apart from each other. — navbar gap 12px → 4px
@@ -77,6 +77,13 @@ Instructions (owner, 2026-10-13):
 7. [x] Add a little more padding around the round part of the magnifying glass in the favicon;
    it looks pressed against the edges (owner screenshot, 2026-10-14). — artwork scale 90% → 82%,
    adding 0.60px of top/left lens clearance at 16px; visual inspection and served v6 SVG pass.
+8. [x] Add a very subtle, non-distracting basketball-themed pattern to the blue site backdrop:
+   sparse coaching-board X's and O's, muted blue-gray at roughly 3–4% opacity, static, with solid
+   table/card backgrounds and a sleek appearance. Approved for implementation, 2026-10-14. — initial
+   384 px / 4% SVG preview implemented and measured; static shell background, transparent Stats
+   wrapper, no change to filled table pixels. [Evidence](evidence/alignment/app-shell/coach-pattern/README.md).
+   Owner preview feedback: "a little too infrequent, and subtle"; asked which parameters can be
+   adjusted. Density/opacity tuning is pending; app shell remains in progress.
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.

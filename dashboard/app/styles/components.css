@@ -43,16 +43,6 @@
   filter: brightness(0.92);
 }
 
-/* Application Layout: Replica Shell (Block B05) + Full-Width Content */
-.replica-shell {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  width: 100%;
-  background: var(--color-bg);
-  color: var(--color-text);
-}
-
 /* Skip-link target only: clicking blank page space focuses it, so suppress the browser ring. */
 .replica-main:focus { outline: none; }
 
