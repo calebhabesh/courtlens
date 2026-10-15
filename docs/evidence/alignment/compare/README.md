@@ -1,5 +1,8 @@
 # PvP duel card — 2026-10-15
 
+Latest follow-up: [honors copy and shaded counting-menu headings](honors-context/README.md),
+owner instructions 57 and 58. Empty honors use a dash, and the pending note is removed.
+
 Alignment row 3, instructions 1–6. `/compare` is one centred 560px card in Databallr's shape:
 square headshots on the team's brand colour with a games badge, name and one bio line
 (age · listed position · listed height), a swap button, the five presets, a counting-mode select,

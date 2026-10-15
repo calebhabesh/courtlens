@@ -15,7 +15,10 @@ function HonorStrip({ honors, name, side }: { honors: SeasonHonors; name: string
   return <div className="pvp-honors-side" data-identity={side} role="group" aria-label={label}>
     <div className="pvp-honors-strip">
       {badges?.map(badge => <HonorBadge key={badge.code} badge={badge} />)}
-      {(!badges || !badges.length) && <span className="pvp-honors-empty">{badges == null ? "—" : honors.pending ? "Pending" : "None recorded"}</span>}
+      {(!badges || !badges.length) && <span className="pvp-honors-empty">
+        <span aria-hidden="true">—</span>
+        <span className="sr-only">{badges == null ? "Honors unavailable" : "No honors recorded in this scope"}</span>
+      </span>}
     </div>
   </div>;
 }
@@ -28,6 +31,5 @@ export function CompareSeasonHonors({ honors, names }: { honors: [SeasonHonors, 
       <HonorStrip key={`a-${names[0]}-${honors[0].season}`} honors={honors[0]} name={names[0]} side="a" />
       <HonorStrip key={`b-${names[1]}-${honors[1].season}`} honors={honors[1]} name={names[1]} side="b" />
     </div>
-    {honors.some(entry => entry.pending) && <p className="pvp-honors-note">End-of-season awards pending at this cutoff.</p>}
   </section>;
 }

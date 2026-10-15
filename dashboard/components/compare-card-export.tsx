@@ -48,7 +48,7 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
   ];
   // Match the card: every honor stays visible in rows centered on its player's numeric column.
   const honorColumns = honors?.map(entry => {
-    const badges = entry.badges?.length ? entry.badges : [{ code: "EMPTY", label: entry.badges == null ? "—" : entry.pending ? "Pending" : "None recorded", win: false }];
+    const badges = entry.badges?.length ? entry.badges : [{ code: "EMPTY", label: "—", win: false }];
     const rowWidths = new Map<number, number>();
     let x = 0, y = 0;
     const placed = badges.map(badge => {
@@ -62,8 +62,7 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
   }) ?? [];
   const honorsTop = ROWS_TOP + lines.length * ROW;
   const honorsHeight = honors ? 34 + Math.max(0, ...honorColumns.flatMap(column => column.map(badge => badge.y))) + 28 : 0;
-  const pending = honors?.some(entry => entry.pending) ?? false;
-  const height = honorsTop + honorsHeight + (pending ? 20 : 0) + 56;
+  const height = honorsTop + honorsHeight + 56;
   const column = (side: 0 | 1) => side === 0 ? WIDTH * 0.25 : WIDTH * 0.75;
   const markWidth = MARK * WORDMARK_WIDTH / WORDMARK_HEIGHT;
   return <svg ref={ref} xmlns="http://www.w3.org/2000/svg" className="pvp-export-svg" role="img" aria-label={title} viewBox={`0 0 ${WIDTH} ${height}`} width={WIDTH} height={height}
@@ -108,7 +107,6 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
           <text x={badge.x + badge.width / 2} y={badge.y + 15} textAnchor="middle" fontSize="12" fill={badge.win || badge.code === "AS" ? "var(--color-accent)" : "var(--color-text-secondary)"}>{badge.label}</text>
         </g>)}
       </g>)}
-      {pending && <text x={WIDTH / 2} y={honorsTop + honorsHeight + 8} textAnchor="middle" fontSize="11" fill="var(--color-text-secondary)">End-of-season awards pending at this cutoff.</text>}
     </>}
     {/* The ball-lens logo beside the wordmark, as on the card (23). */}
     <g transform={`translate(${(WIDTH - markWidth - LOGO - 8) / 2} ${height - 22 - LOGO})`}><BrandMark size={LOGO} framed={false} /></g>

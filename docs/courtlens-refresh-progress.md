@@ -851,3 +851,12 @@ with a legend. Search fits full names. The counting menu keeps a fixed slot acro
 Lint, typecheck, 544 Vitest tests, 53 browser checks, and the production build pass. One browser
 test skips on the one-season fixture. Real 1440 and 390 captures and the scoped glance check
 pass. [Evidence](evidence/alignment/compare/season-honors/README.md). Owner alignment remains pending.
+
+## 2026-10-15: Comparison honors copy and menu headings
+
+Alignment instructions 57 and 58 remove the pending honors placeholder and cutoff footer from
+the card and export. Empty honors use a dash; award cutoffs remain. Counting-menu year headings
+have a darker fill and remain noninteractive. Live 1440 and 390 captures, numeric alignment,
+and scoped glance checks pass. Lint, typecheck, 544 Vitest tests, 29 browser checks, and the
+production build pass. One browser test skips on the one-season fixture.
+[Evidence](evidence/alignment/compare/honors-context/README.md). Owner alignment remains pending.

@@ -26,7 +26,6 @@ describe("comparison accolades", () => {
 
   it("holds back the compared season's awards until they were announced", () => {
     const groups = accoladeGroups([durant, lebron], [null, null], "2016-17", "2017-04-13");
-    expect(groups.season[0].pending).toBe(true);
     expect(groups.season[0].badges?.map(entry => entry.label)).toEqual(["All-Star"]);
     expect(groups.career.find(entry => entry.key === "all_nba")).toMatchObject({ a: 1, b: 1 });
   });
@@ -45,9 +44,9 @@ describe("comparison accolades", () => {
 
   it("reads each player's honours from their own season and cutoff when seasons differ", () => {
     const groups = accoladeGroups([durant, lebron], [null, null], ["2015-16", "2017-18"], ["2016-06-20", "2018-04-12"]);
-    expect(groups.season[0]).toMatchObject({ season: "2015-16", pending: false });
+    expect(groups.season[0].season).toBe("2015-16");
     expect(groups.season[0].badges?.map(entry => entry.label)).toEqual(["All-NBA 2nd", "All-Star", "MVP 5th"]);
-    expect(groups.season[1]).toMatchObject({ season: "2017-18", pending: true, badges: [{ label: "All-Star" }] });
+    expect(groups.season[1]).toMatchObject({ season: "2017-18", badges: [{ label: "All-Star" }] });
     expect(groups.career.find(entry => entry.key === "all_star")).toMatchObject({ a: 1, b: 3 });
   });
   it("includes the source's other awards and admitted championships, prioritizing wins", () => {

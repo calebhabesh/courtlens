@@ -29,7 +29,6 @@ export interface SeasonHonors {
   season: string;
   /** null means the reference source is unknown, not that the player earned no honors. */
   badges: SeasonHonorBadge[] | null;
-  pending: boolean;
 }
 
 export interface AccoladeGroups {
@@ -73,7 +72,7 @@ function titles(championships: ComparisonChampionships | null | undefined): numb
 }
 
 /** Reuse the player page's labels, with every supplied season code and admitted titles. */
-function seasonHonors(season: string, codes: Map<string, string[]> | null, championships: ComparisonChampionships | null | undefined, beforeDate: string): SeasonHonors {
+function seasonHonors(season: string, codes: Map<string, string[]> | null, championships: ComparisonChampionships | null | undefined): SeasonHonors {
   const known = codes?.get(season) ?? [];
   const badges = seasonAwardChips(known);
   if (known.includes("AS")) badges.push({ code: "AS", label: "All-Star", description: "All-Star selection", win: false });
@@ -82,7 +81,7 @@ function seasonHonors(season: string, codes: Map<string, string[]> | null, champ
   // breaks ties; gold denotes an earned award, never a winning side of the comparison.
   const priority = (badge: SeasonHonorBadge) => badge.win ? 0 : /^(NBA|DEF|ALLR)/.test(badge.code) ? 1 : badge.code === "AS" ? 2 : 3;
   badges.sort((a, b) => priority(a) - priority(b));
-  return { season, badges: codes || badges.length ? badges : null, pending: !announcedBefore(season, "MVP-1", beforeDate) };
+  return { season, badges: codes || badges.length ? badges : null };
 }
 
 /**
@@ -103,5 +102,5 @@ export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], champ
   ];
   // Like Stathead, honours neither player holds are left out; an unknown side keeps its row.
   const held = career.filter(row => !(row.a === 0 && row.b === 0));
-  return { career: (codesA || codesB || championships.some(Boolean)) ? held : [], season: [seasonHonors(seasonOfA, codesA, championships[0], cutA), seasonHonors(seasonOfB, codesB, championships[1], cutB)] };
+  return { career: (codesA || codesB || championships.some(Boolean)) ? held : [], season: [seasonHonors(seasonOfA, codesA, championships[0]), seasonHonors(seasonOfB, codesB, championships[1])] };
 }

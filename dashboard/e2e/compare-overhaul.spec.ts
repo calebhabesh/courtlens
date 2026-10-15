@@ -56,6 +56,14 @@ for(const width of [1440,390]) test(`counting menu keeps its slot across season 
   if(width===1440) expect(after?.y).toBeCloseTo(presets?.y??0,0);
   expect(await page.locator(".pvp-presets").evaluate(element=>element.scrollWidth<=element.clientWidth)).toBe(true);
   await trigger.click();await page.getByRole("menuitem",{name:"Per Game",exact:true}).click();await expect(trigger).toHaveText("Per Game");
+  await trigger.click();
+  const yearHeading=page.getByRole("group",{name:"2025-26",exact:true}).locator(".pvp-counting-group");
+  await expect(yearHeading).toHaveText("2025-26");
+  await expect(yearHeading).toHaveCSS("background-color","rgb(21, 23, 27)");
+  await expect(page.getByRole("menuitem",{name:"2025-26",exact:true})).toHaveCount(0);
+  await yearHeading.click();await expect(trigger).toHaveAttribute("aria-expanded","true");
+  await trigger.focus();await page.keyboard.press("ArrowDown");
+  await expect(page.getByRole("menuitem",{name:"Per Game",exact:true})).toBeFocused();
 });
 
 test("each player can be compared in their own season; seasons without games say so (row 3, 38-39)",async({page})=>{
@@ -114,6 +122,20 @@ for(const width of [1440,390]) test(`season honors show every badge in aligned r
   const star=page.getByRole("menuitem",{name:/2025-26 All-Star/}).locator(".pvp-season-honor-icons svg");
   expect(await star.evaluate(element=>getComputedStyle(element).color)).toBe("rgb(255, 209, 102)");
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});
+
+for(const width of [1440,390]) test(`midseason honors show badges and empty dashes without pending copy at ${width}px (row 3, 57)`,async({page})=>{
+  await page.setViewportSize({width,height:900});
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
+  const honors=page.getByRole("region",{name:"Season honors",exact:true});
+  await expect(honors.getByText("All-Star",{exact:true})).toBeVisible();
+  await expect(honors.locator('.pvp-honors-side[data-identity="a"] .pvp-honors-empty')).toContainText("—");
+  await expect(honors.locator('.pvp-honors-side[data-identity="a"]')).toContainText("Honors unavailable");
+  await expect(honors).not.toContainText(/Pending|awards pending|None recorded/i);
+  await expect(honors.getByText("DPOY Winner",{exact:true})).toHaveCount(0);
+  const exported=page.locator(".pvp-export-svg");
+  await expect(exported).toContainText("All-Star");
+  await expect(exported).not.toContainText(/Pending|awards pending|None recorded/i);
 });
 
 for(const width of [1440,390]) test(`player search shows full names in wider viewport-bounded results at ${width}px`,async({page})=>{
