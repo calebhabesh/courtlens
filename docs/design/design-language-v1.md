@@ -66,8 +66,12 @@ migration and are deleted in DL08.
 | `--focus-ring` | `0 0 0 2px var(--color-surface-0), 0 0 0 4px var(--color-accent)` | All focusable elements (`:focus-visible`) |
 
 The page backdrop uses a static, repeating coaching-board motif (owner, 2026-10-14): thin X's
-and O's in `#b4c2dc` at 4% stroke opacity, on a 384 px tile. Marks are approximately 18 px across
-and spaced roughly 192 px apart. The SVG is applied only to the app shell's blue background;
+and O's in `#b4c2dc` at 7% stroke opacity. A large 1152 px tile holds 100 irregularly scattered
+marks, with at least 72 px between centers (including across tile seams). Marks remain approximately
+18 px across with 1.5 px strokes; X's have slight angle variation. The fixed seed keeps the scatter
+stable. `npm --prefix dashboard run pattern:generate` rebuilds it from the settings in
+`scripts/generate-coach-pattern.mjs`. Native SVG dimensions set the tile size so CSS does not scale
+the marks. The SVG is applied only to the app shell's blue background;
 table, card, menu and sticky-filter surfaces retain their own fills. It has no animation, overlay
 element or interaction, and is disabled in forced-colors mode. `app/shell.css` owns the shell;
 `public/patterns/coach-marks.svg` owns the motif geometry and stroke.

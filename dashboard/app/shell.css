@@ -6,7 +6,6 @@
     width: 100%;
     background-color: var(--color-bg);
     background-image: url("/patterns/coach-marks.svg");
-    background-size: calc(var(--space-16) * 6);
     color: var(--color-text);
   }
 

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "pattern:generate": "node scripts/generate-coach-pattern.mjs",
     "fonts:ensure": "node scripts/ensure-local-fonts.mjs",
     "postinstall": "npm run fonts:ensure",
     "predev": "npm run fonts:ensure",
