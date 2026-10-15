@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Switzer interface font verified; owner review pending |
 | 1 | Stats | `/stats` | 🔧 | Instructions 1–71 done; 43f/43g data follow-ups deferred; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 🔧 | Retained-page parser, marts and Contract/timeline/highs follow-up in progress |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Reference parser/marts and Contract, transactions, highs follow-up ready for review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -481,7 +481,7 @@ Follow-up instructions (owner, 2026-10-14, retained-page data):
     NBA player-index refresh date to the tooltip.
 81. [ ] In-table Per Game / Regular controls should be 32px. Retained as a later follow-up.
 
-### 2 Dashboard (player) — 🔧 in progress
+### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
    that exact table state (scroll, search, sort, view). Esc acts only when no dialog/menu is open.
@@ -616,13 +616,18 @@ Follow-up instructions (owner, 2026-10-14, parser → marts → presentation, in
     with `../.venv/bin/dbt run --profiles-dir . --target-path $TMPDIR/dbt/target`; the Compose
     migrate image is stale. — five models build, 19 dbt tests and the actual-SQL PostgreSQL
     fixture pass. [Measured rows and semantics](evidence/alignment/players/reference-v2/README.md).
-46. [ ] Add an open Contract section: current contract by season (salary, % of cap, options and
+46. [x] Add an open Contract section: current contract by season (salary, % of cap, options and
     guaranteed amounts where existing finance data knows them), dated contract events, salary
     history and career earnings. Then a dated transactions timeline and career highs. Keep the
-    presentation organised and clear; credit the source on each.
-47. [ ] Header says "Last with <team>" when a player has no active NBA listing.
-48. [ ] Verify lint, typecheck, Vitest, pytest and sandbox Playwright, with screenshots at 1440
-    and 390. Commit one block at a time; do not push. Only the owner marks alignment.
+    presentation organised and clear; credit the source on each. — retained reports, separate
+    remaining guarantees, expandable history and earlier transactions; live 1440/390 evidence
+    and the glance test are in [the reference report](evidence/alignment/players/reference-v2/README.md).
+47. [x] Header says "Last with <team>" when a player has no active NBA listing. — latest index
+    last team, independent of selected season; retired/free-agent status is not inferred.
+48. [x] Verify lint, typecheck, Vitest, pytest and sandbox Playwright, with screenshots at 1440
+    and 390. Commit one block at a time; do not push. Only the owner marks alignment. — dashboard
+    checks and Ruff pass; Python 2,106; Vitest 524; focused browser 26 plus four baselines. Full
+    mypy retains two pre-existing Gemini SDK errors reproduced from HEAD (reference report).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

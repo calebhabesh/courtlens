@@ -301,6 +301,9 @@ class PlayerBioCurrentTeam(BaseModel):
     team_id: str
     team_tricode: str | None
     listing_season: str
+    index_refreshed_at: datetime | None = None
+    trade_date: date | None = None
+    trade_source_url: str | None = None
 
 
 class PlayerResearchItem(BaseModel):
@@ -575,6 +578,48 @@ class PlayerBioCombine(BaseModel):
     weight_lbs: float | None
 
 
+class PlayerGuarantee(BaseModel):
+    amount: str | None
+    status: Literal["full", "partial", "none"] | None
+    source_url: str
+    as_of: datetime
+
+
+class PlayerSalary(BaseModel):
+    season: str
+    team: str | None
+    team_code: str | None
+    salary: str | None
+    salary_note: str | None = None
+    league: str | None = None
+    option: Literal["player", "team"] | None = None
+    share_of_cap: float | None = None
+    cap_source_url: str | None = None
+    cap_as_of: datetime | None = None
+    guarantee: PlayerGuarantee | None = None
+
+
+class PlayerReferenceEvent(BaseModel):
+    date: date | None
+    type: str
+    description: str
+    from_team_code: str | None
+    to_team_code: str | None
+
+
+class PlayerGameHighValue(BaseModel):
+    value: str | None
+    url: str | None
+    date: date | None
+
+
+class PlayerGameHighs(BaseModel):
+    phase: Literal["regular_season", "playoffs"]
+    scope: Literal["career", "season"]
+    season: str | None
+    values: dict[str, PlayerGameHighValue]
+
+
 class PlayerBioReference(BaseModel):
     """Basketball-Reference biography and honours as of its last crawl (career-to-date facts)."""
 
@@ -589,6 +634,13 @@ class PlayerBioReference(BaseModel):
     # Season ("2015-16") -> award codes as the source lists them ("MVP-2", "AS", "NBA1").
     awards: dict[str, list[str]]
     all_star_seasons: list[str]
+    salary_history: list[PlayerSalary] = Field(default_factory=list)
+    career_earnings: str | None = None
+    current_contract: list[PlayerSalary] = Field(default_factory=list)
+    contract_events: list[PlayerReferenceEvent] = Field(default_factory=list)
+    transactions: list[PlayerReferenceEvent] = Field(default_factory=list)
+    game_highs: list[PlayerGameHighs] = Field(default_factory=list)
+    remaining_guaranteed: PlayerGuarantee | None = None
 
 
 class PlayerBioResponse(BaseModel):
@@ -611,6 +663,7 @@ class PlayerBioResponse(BaseModel):
     undrafted: bool
     combine: PlayerBioCombine | None
     current_team: PlayerBioCurrentTeam | None = None
+    last_team: PlayerBioCurrentTeam | None = None
     reference: PlayerBioReference | None = None
     limitations: list[str]
 

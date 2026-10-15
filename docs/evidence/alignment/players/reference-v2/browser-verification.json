@@ -1,0 +1,24 @@
+{
+  "base": "http://127.0.0.1:3180",
+  "widths": [
+    {
+      "width": 1440,
+      "pageWidth": 1440,
+      "sourceCredits": 3,
+      "contractText": "Contract\nReported salaries · USD\nCurrent contract\nSeason\tTeam\tSalary\t% of cap\tOption\tGuaranteed\n2026-27\t\nTOR\n\t$50,300,000\t30.5%\t—\t—\n2027-28\t\nTOR\n\t$56,097,561\t—\t—\t—\n2028-29\t\nTOR\n\t$58,902,439\t—\tPlayer option\t—\n\nRemaining guaranteed total\n$106,397,561\n\nOptions are reported terms. A dash means unknown; a salary without an option is not confirmed guaranteed. Cap shares use each season's retained official NBA threshold.\n\nContract events\nSep 22, 2026\n\nSigned extension.\n\nSep 14, 2026\n\nTraded from LAC to TOR.\n\nJan 10, 2024\n\nSigned 3-yr/$150M contract extension.\n\nReported career earnings\n$378,300,910\nSource total may be incomplete; reported salaries, not verified cash earned.\nSalary history · 15 entries\nSeason\tTeam\tSalary\t% of cap\n2025-26\t\nLAC\n\t$50,000,000\t—\n2024-25\t\nLAC\n\t$49,205,800\t—\n2023-24\t\nLAC\n\t$45,640,084\t—\n2022-23\t\nLAC\n\t$42,492,492\t—\n2021-22\t\nLAC\n\t$39,344,900\t—\n2020-21\t\nLAC\n\t$34,379,100\t—\n2019-20\t\nLAC\n\t$32,742,000\t—\n2018-19\t\nTOR\n\t$23,114,067\t—\n2017-18\t\nSAS\n\t$18,868,625\t—\n2016-17\t\nSAS\n\t$17,638,063\t—\n2015-16\t\nSAS\n\t$16,500,000\t—\n2014-15\t\nSAS\n\t$2,894,059\t—\n2013-14\t\nSAS\n\t$1,887,840\t—\n2012-13\t\nSAS\n\t$1,861,920\t—\n2011-12\t\nSAS\n\t$1,731,960\t—\n\nBasketball-Reference.com · As of Oct 15, 2026 · Career to date",
+      "playerCountingHeight": 32,
+      "tooltip": "Played 2025-26 for the LA Clippers. Now listed with the Toronto Raptors (NBA player index). Index refreshed Oct 13, 2026. Traded Sep 14, 2026 (Basketball-Reference).",
+      "statsCountingHeight": 32
+    },
+    {
+      "width": 390,
+      "pageWidth": 390,
+      "sourceCredits": 3,
+      "contractText": "Contract\nReported salaries · USD\nCurrent contract\nSeason\tTeam\tSalary\t% of cap\tOption\tGuaranteed\n2026-27\t\nTOR\n\t$50,300,000\t30.5%\t—\t—\n2027-28\t\nTOR\n\t$56,097,561\t—\t—\t—\n2028-29\t\nTOR\n\t$58,902,439\t—\tPlayer option\t—\n\nRemaining guaranteed total\n$106,397,561\n\nOptions are reported terms. A dash means unknown; a salary without an option is not confirmed guaranteed. Cap shares use each season's retained official NBA threshold.\n\nContract events\nSep 22, 2026\n\nSigned extension.\n\nSep 14, 2026\n\nTraded from LAC to TOR.\n\nJan 10, 2024\n\nSigned 3-yr/$150M contract extension.\n\nReported career earnings\n$378,300,910\nSource total may be incomplete; reported salaries, not verified cash earned.\nSalary history · 15 entries\nSeason\tTeam\tSalary\t% of cap\n2025-26\t\nLAC\n\t$50,000,000\t—\n2024-25\t\nLAC\n\t$49,205,800\t—\n2023-24\t\nLAC\n\t$45,640,084\t—\n2022-23\t\nLAC\n\t$42,492,492\t—\n2021-22\t\nLAC\n\t$39,344,900\t—\n2020-21\t\nLAC\n\t$34,379,100\t—\n2019-20\t\nLAC\n\t$32,742,000\t—\n2018-19\t\nTOR\n\t$23,114,067\t—\n2017-18\t\nSAS\n\t$18,868,625\t—\n2016-17\t\nSAS\n\t$17,638,063\t—\n2015-16\t\nSAS\n\t$16,500,000\t—\n2014-15\t\nSAS\n\t$2,894,059\t—\n2013-14\t\nSAS\n\t$1,887,840\t—\n2012-13\t\nSAS\n\t$1,861,920\t—\n2011-12\t\nSAS\n\t$1,731,960\t—\n\nBasketball-Reference.com · As of Oct 15, 2026 · Career to date",
+      "playerCountingHeight": 48,
+      "tooltip": "Played 2025-26 for the LA Clippers. Now listed with the Toronto Raptors (NBA player index). Index refreshed Oct 13, 2026. Traded Sep 14, 2026 (Basketball-Reference).",
+      "statsCountingHeight": 48
+    }
+  ],
+  "errors": []
+}

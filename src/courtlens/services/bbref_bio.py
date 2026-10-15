@@ -13,6 +13,7 @@ from __future__ import annotations
 import hashlib
 import string
 from collections.abc import Callable, Iterator
+from copy import deepcopy
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -335,8 +336,15 @@ def player_reference(session: Session, player_id: str) -> dict[str, Any] | None:
     )
     if row is None:
         return None
-    profile = row.profile
+    profile = deepcopy(row.profile)
     return {
+        "profile_id": row.id,
+        "salary_history": profile.get("salary_history") or [],
+        "career_earnings": profile.get("career_earnings"),
+        "current_contract": profile.get("current_contract") or [],
+        "contract_events": profile.get("contract_events") or [],
+        "transactions": profile.get("transactions") or [],
+        "game_highs": profile.get("game_highs") or [],
         "source": ATTRIBUTION,
         "url": player_url(row.bbref_id),
         "as_of": row.observed_at,

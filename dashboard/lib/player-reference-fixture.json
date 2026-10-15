@@ -1,0 +1,35 @@
+{
+  "source": "Basketball-Reference.com",
+  "url": "https://www.basketball-reference.com/players/f/fixture01.html",
+  "as_of": "2026-10-01T12:00:00Z",
+  "birthplace": null, "high_school": null, "shoots": null, "debut_date": null,
+  "honours": [], "awards": {}, "all_star_seasons": [],
+  "career_earnings": "1000000",
+  "salary_history": [
+    {"season": "2025-26", "team": "Boston Celtics", "team_code": "BOS", "salary": "1000000"},
+    {"season": "2024-25", "team": "Boston Celtics", "team_code": "BOS", "salary": "0"}
+  ],
+  "current_contract": [
+    {"season": "2026-27", "team": "Toronto Raptors", "team_code": "TOR", "salary": "2000000", "share_of_cap": 0.012124078, "cap_source_url": "https://www.nba.com/news/nba-salary-cap-2026-27-season", "cap_as_of": "2026-10-01T12:00:00Z"},
+    {"season": "2027-28", "team": "Toronto Raptors", "team_code": "TOR", "salary": "2100000", "option": "player"},
+    {"season": "2028-29", "team": "Toronto Raptors", "team_code": "TOR", "salary": null, "option": "team", "salary_note": "(TW)"}
+  ],
+  "remaining_guaranteed": {"amount": "123.45", "status": null, "source_url": "https://www.basketball-reference.com/contracts/TOR.html", "as_of": "2026-10-01T12:00:00Z"},
+  "contract_events": [
+    {"date": "2026-09-14", "type": "traded", "description": "Traded from BOS to TOR Monday, September 14, 2026.", "from_team_code": "BOS", "to_team_code": "TOR"},
+    {"date": "2026-09-22", "type": "extended", "description": "Signed extension Tuesday, September 22, 2026.", "from_team_code": null, "to_team_code": null}
+  ],
+  "transactions": [
+    {"date": "2020-06-20", "type": "drafted", "description": "Drafted by Boston.", "from_team_code": null, "to_team_code": "BOS"},
+    {"date": "2021-07-01", "type": "signed", "description": "Signed with Boston.", "from_team_code": null, "to_team_code": "BOS"},
+    {"date": "2022-07-01", "type": "assigned", "description": "Assigned to the G League.", "from_team_code": null, "to_team_code": null},
+    {"date": "2022-07-02", "type": "recalled", "description": "Recalled from the G League.", "from_team_code": null, "to_team_code": null},
+    {"date": "2024-07-01", "type": "extended", "description": "Extended with Boston.", "from_team_code": null, "to_team_code": "BOS"},
+    {"date": "2026-09-14", "type": "traded", "description": "Traded by Boston to Toronto.", "from_team_code": "BOS", "to_team_code": "TOR"},
+    {"date": "2026-09-22", "type": "extended", "description": "Signed an extension with Toronto.", "from_team_code": null, "to_team_code": "TOR"}
+  ],
+  "game_highs": [
+    {"phase": "regular_season", "scope": "career", "season": null, "values": {"pts": {"value": "42", "url": "https://www.basketball-reference.com/boxscores/202601020TOR.html", "date": "2026-01-02"}, "trb": {"value": "14", "url": null, "date": null}, "ast": {"value": "0", "url": null, "date": null}, "time_on_court": {"value": "48:30", "url": null, "date": null}}},
+    {"phase": "playoffs", "scope": "career", "season": null, "values": {"pts": {"value": "32", "url": null, "date": null}, "ast": {"value": "7", "url": null, "date": null}}}
+  ]
+}

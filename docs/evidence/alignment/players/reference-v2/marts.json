@@ -1,19 +1,19 @@
 {
   "awards": {
-    "rows": 1200,
-    "players": 184
+    "rows": 1250,
+    "players": 203
   },
   "honours": {
-    "rows": 540,
-    "players": 228
+    "rows": 576,
+    "players": 255
   },
   "salaries": {
-    "rows": 4305,
-    "players": 569
+    "rows": 5360,
+    "players": 733
   },
   "transactions": {
-    "rows": 5161,
-    "players": 569
+    "rows": 7732,
+    "players": 733
   },
   "salary_cap_coverage": [
     {
@@ -33,12 +33,27 @@
     },
     {
       "season": "2028-29",
-      "rows": 153,
+      "rows": 154,
       "cap_shares": 0
     },
     {
       "season": "2027-28",
-      "rows": 286,
+      "rows": 288,
+      "cap_shares": 0
+    },
+    {
+      "season": "2026-27",
+      "rows": 426,
+      "cap_shares": 426
+    },
+    {
+      "season": "2025-26",
+      "rows": 690,
+      "cap_shares": 0
+    },
+    {
+      "season": "2024-25",
+      "rows": 669,
       "cap_shares": 0
     }
   ],
