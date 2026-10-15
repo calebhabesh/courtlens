@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Contract table, career season totals and Rates (Per 36) removal ready for owner review |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Contract table, career totals, Per 36 cleanup and section headings ready for owner review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -735,6 +735,11 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
     Confirmed redundant: every Rates column is a per-36 value the Per 36 mode already shows
     through Overview, Shooting and Defense. The view is removed from both tables and the
     recoverable canonical presets; the `advanced` ID stays reserved so saved bundles validate.
+59. [x] Make the header text for the containers below the stats table larger, use applicable
+    Lucide icons beside these headers, and remove the divider line for a cleaner, less-is-more
+    look. (Owner, 2026-10-15.) 20 px headings with Activity, TrendingUp, Banknote,
+    ArrowLeftRight and Trophy icons; no heading hairline.
+    [Evidence](evidence/alignment/players/section-headings/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

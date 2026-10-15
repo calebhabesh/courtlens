@@ -1,4 +1,5 @@
 import { ButtonSummary } from "./ui/kit";
+import { Icon } from "./ui/icon";
 import { TeamLogo } from "./team-logo";
 import teamCatalog from "@/lib/team-branding.json";
 import { formatDate } from "@/lib/format-date";
@@ -161,19 +162,19 @@ export function PlayerReferenceSections({ reference }: { reference: Reference })
   const highs = (reference.game_highs ?? []).filter(row => row.scope === "career");
   return <>
     {(contract.length > 0 || history.length > 0 || events.length > 0) && <section className="player-open-section player-reference player-glass" aria-label="Contract">
-      <header className="player-open-heading"><h2>Contract</h2><span>Reported salaries · USD</span></header>
+      <header className="player-open-heading"><h2><Icon name="banknote" size={20} />Contract</h2><span>Reported salaries · USD</span></header>
       <ContractTable reference={reference} contract={contract} history={history} events={events} />
       <p className="player-reference-note">Options are reported terms. A dash means unknown; a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s retained official NBA threshold. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
       <Credit reference={reference} anchor="all_contract" />
     </section>}
     {transactions.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Transactions">
-      <header className="player-open-heading"><h2>Transactions</h2><span>{transactions.length} dated reports and notes</span></header>
+      <header className="player-open-heading"><h2><Icon name="swap" size={20} />Transactions</h2><span>{transactions.length} dated reports and notes</span></header>
       <Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(0, 6)} />
       {transactions.length > 6 && <details><ButtonSummary size="sm" variant="ghost" iconAfter="chevron-down">Earlier Transactions · {transactions.length - 6}</ButtonSummary><Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(6)} /></details>}
       <Credit reference={reference} anchor="all_transactions" />
     </section>}
     {highs.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Career highs">
-      <header className="player-open-heading"><h2>Career Highs</h2><span>Highest known single-game values</span></header>
+      <header className="player-open-heading"><h2><Icon name="trophy" size={20} />Career Highs</h2><span>Highest known single-game values</span></header>
       <div className="player-reference-table" role="region" aria-label="Career highs table" tabIndex={0}><table>
         <thead><tr><th scope="col">Phase</th>{HIGH_COLUMNS.map(([key, label]) => <th key={key} scope="col">{label}</th>)}</tr></thead>
         <tbody>{highs.map(row => <tr key={row.phase}><th scope="row">{row.phase === "regular_season" ? "Regular season" : "Playoffs"}</th>{HIGH_COLUMNS.map(([key, label]) => {
