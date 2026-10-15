@@ -205,10 +205,11 @@ Panels use surface-1 with no shadow, or `--shadow-1`. Menus and popovers use sur
 `--shadow-2`. Modals and drawers use surface-3 with `--shadow-3` over a scrim of
 `rgb(0 0 0 / 55%)` plus `backdrop-filter: blur(4px)`.
 
-Owner-approved exception (2026-10-14): the six player headline-stat cards use dark glass over
-the blue page: surface-3 at 88% through surface-1 at 92%, a 6% hairline and inset highlight,
-`--shadow-1`, and a static 12 px backdrop blur. Each card retains its own high-opacity fill when
-backdrop filters are unsupported. Other player sections retain their existing presentation.
+Owner-approved exception (2026-10-14, revised for uniform glass throughout): the six player
+headline-stat cards use surface-0 at 58% opacity across the entire face, a 10% rim, `--shadow-2`,
+and static 20 px backdrop blur with 150% saturation. There is no gradient or directional sheen.
+Only the backdrop is filtered; text stays sharp. The uniform tinted fill remains when backdrop
+filters are unsupported. Other player sections retain their existing presentation.
 
 ### Spacing
 

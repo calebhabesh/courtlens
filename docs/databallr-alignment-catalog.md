@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Dark glass stats and career-table pinned Year fix ready for review |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Uniform dark glass headline-stat cards ready for owner review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -680,6 +680,13 @@ Follow-up instructions (owner, 2026-10-14, parser → marts → presentation, in
     colors now derive from its opaque table surfaces. Pixel-comparison regressions failed at
     1440/390 before the fix and pass after, alongside live 2022–23 row verification.
     [Evidence](evidence/alignment/players/career-year-scroll/README.md).
+
+51. [x] Give the headline-stat containers a more pronounced dark glass look, with more emphasis
+    on the glass effect. Follow-up: "the glass effect should be throughout not like a highlight."
+    (Owner screenshot and clarification, 2026-10-14.) — uniform surface-0 tint at 58% opacity,
+    20 px backdrop blur / 150% saturation across the whole face, a 10% rim and soft shadow.
+    No gradient or directional reflection. Live desktop/phone values, content fit, contrast and
+    existing player browser checks pass. [Evidence](evidence/alignment/players/dark-glass-uniform/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

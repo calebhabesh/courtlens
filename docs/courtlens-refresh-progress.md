@@ -804,3 +804,15 @@ the development and production sandbox; live Kawhi 2022–23 row comparisons als
 widths. Lint/typecheck, Vitest 525/525 and production webpack build pass. Scoped glance confirms
 legible pinned seasons, intact row separation and no page overflow.
 [Evidence](evidence/alignment/players/career-year-scroll/README.md).
+
+### Player follow-up: uniform dark glass throughout each stat card (2026-10-14)
+
+Instruction 51 emphasizes the glass effect across the full card rather than a localized highlight.
+The cards now use one surface-0 tint at 58%, a 10% rim, `--shadow-2` and static 20 px backdrop blur
+with 150% saturation. There is no gradient or directional sheen; text is not filtered. Existing
+geometry, values, ranks and career comparisons are retained. Live 1440/390 screenshots and
+measurements verify six uniformly tinted cards, fitting content and no page overflow. Scoped
+glance passes for whole-surface tint, readable labels and quiet edges. Conservative text contrast
+with or without the backdrop filter is at least 7.49:1. Lint/typecheck, Vitest 525/525, production
+webpack build and six player-page browser checks pass, including the pinned-Year regression.
+[Evidence](evidence/alignment/players/dark-glass-uniform/README.md).
