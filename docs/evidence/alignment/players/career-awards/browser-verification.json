@@ -1,0 +1,355 @@
+{
+  "playerId": "202695",
+  "before": false,
+  "widths": [
+    {
+      "width": 1440,
+      "pageWidth": 1440,
+      "resting": "rgb(17, 22, 30)",
+      "hover": "color(srgb 0.122667 0.141098 0.170588)",
+      "metricHover": "color(srgb 0.122667 0.141098 0.170588)",
+      "rows": [
+        {
+          "season": "2025-26All-Star",
+          "width": 240,
+          "height": 52,
+          "lines": 2,
+          "labels": [
+            "MVP 7th",
+            "Clutch 10th",
+            "All-NBA 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2024-25",
+          "width": 240,
+          "height": 52,
+          "lines": 0,
+          "labels": [],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2023-24All-Star",
+          "width": 240,
+          "height": 52,
+          "lines": 1,
+          "labels": [
+            "All-NBA 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2022-23",
+          "width": 240,
+          "height": 52,
+          "lines": 0,
+          "labels": [],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2020-21All-Star",
+          "width": 240,
+          "height": 52,
+          "lines": 2,
+          "labels": [
+            "MVP 13th",
+            "All-NBA 1st",
+            "All-Def 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2019-20All-Star",
+          "width": 240,
+          "height": 52,
+          "lines": 2,
+          "labels": [
+            "MVP 5th",
+            "DPOY 8th",
+            "All-NBA 2nd",
+            "All-Def 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2018-19All-Star",
+          "width": 240,
+          "height": 52,
+          "lines": 2,
+          "labels": [
+            "MVP 9th",
+            "DPOY 6th",
+            "All-NBA 2nd",
+            "All-Def 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2017-18",
+          "width": 240,
+          "height": 52,
+          "lines": 0,
+          "labels": [],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2016-17All-Star",
+          "width": 240,
+          "height": 52,
+          "lines": 2,
+          "labels": [
+            "MVP 3rd",
+            "DPOY 3rd",
+            "All-NBA 1st",
+            "All-Def 1st"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2015-16All-Star",
+          "width": 240,
+          "height": 52,
+          "lines": 2,
+          "labels": [
+            "MVP 2nd",
+            "DPOY Winner",
+            "All-NBA 1st",
+            "All-Def 1st"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2014-15",
+          "width": 240,
+          "height": 52,
+          "lines": 2,
+          "labels": [
+            "MVP 10th",
+            "DPOY Winner",
+            "All-Def 1st"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2013-14",
+          "width": 240,
+          "height": 52,
+          "lines": 1,
+          "labels": [
+            "DPOY 11th",
+            "All-Def 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2012-13",
+          "width": 240,
+          "height": 52,
+          "lines": 0,
+          "labels": [],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2011-12",
+          "width": 240,
+          "height": 52,
+          "lines": 1,
+          "labels": [
+            "Rookie 4th"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "pageWidth": 390,
+      "resting": "rgb(17, 22, 30)",
+      "hover": "color(srgb 0.122667 0.141098 0.170588)",
+      "metricHover": "color(srgb 0.122667 0.141098 0.170588)",
+      "rows": [
+        {
+          "season": "2025-26All-Star",
+          "width": 240,
+          "height": 49,
+          "lines": 2,
+          "labels": [
+            "MVP 7th",
+            "Clutch 10th",
+            "All-NBA 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2024-25",
+          "width": 240,
+          "height": 49,
+          "lines": 0,
+          "labels": [],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2023-24All-Star",
+          "width": 240,
+          "height": 49,
+          "lines": 1,
+          "labels": [
+            "All-NBA 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2022-23",
+          "width": 240,
+          "height": 49,
+          "lines": 0,
+          "labels": [],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2020-21All-Star",
+          "width": 240,
+          "height": 49,
+          "lines": 2,
+          "labels": [
+            "MVP 13th",
+            "All-NBA 1st",
+            "All-Def 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2019-20All-Star",
+          "width": 240,
+          "height": 49,
+          "lines": 2,
+          "labels": [
+            "MVP 5th",
+            "DPOY 8th",
+            "All-NBA 2nd",
+            "All-Def 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2018-19All-Star",
+          "width": 240,
+          "height": 49,
+          "lines": 2,
+          "labels": [
+            "MVP 9th",
+            "DPOY 6th",
+            "All-NBA 2nd",
+            "All-Def 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2017-18",
+          "width": 240,
+          "height": 49,
+          "lines": 0,
+          "labels": [],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2016-17All-Star",
+          "width": 240,
+          "height": 49,
+          "lines": 2,
+          "labels": [
+            "MVP 3rd",
+            "DPOY 3rd",
+            "All-NBA 1st",
+            "All-Def 1st"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2015-16All-Star",
+          "width": 240,
+          "height": 49,
+          "lines": 2,
+          "labels": [
+            "MVP 2nd",
+            "DPOY Winner",
+            "All-NBA 1st",
+            "All-Def 1st"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2014-15",
+          "width": 240,
+          "height": 49,
+          "lines": 2,
+          "labels": [
+            "MVP 10th",
+            "DPOY Winner",
+            "All-Def 1st"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2013-14",
+          "width": 240,
+          "height": 49,
+          "lines": 1,
+          "labels": [
+            "DPOY 11th",
+            "All-Def 2nd"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2012-13",
+          "width": 240,
+          "height": 49,
+          "lines": 0,
+          "labels": [],
+          "contained": true,
+          "tableEdgeGap": 0
+        },
+        {
+          "season": "2011-12",
+          "width": 240,
+          "height": 49,
+          "lines": 1,
+          "labels": [
+            "Rookie 4th"
+          ],
+          "contained": true,
+          "tableEdgeGap": 0
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

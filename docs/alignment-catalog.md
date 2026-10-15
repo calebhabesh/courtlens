@@ -14,7 +14,7 @@ Rows are in working order.
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Plain blue backdrop restored; pattern idea parked; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Instructions through 83 done except deferred 43f/43g; owner review pending |
-| 2 | Dashboard (player) | `/players/[id]` | 👀 | Uniform dark glass headline-stat cards ready for owner review |
+| 2 | Dashboard (player) | `/players/[id]` | 👀 | Career awards column and clearer, wrapping badges ready for owner review |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
 | 5 | WOWY | `/wowy` | ⬜ | |
@@ -687,6 +687,20 @@ Follow-up instructions (owner, 2026-10-14, parser → marts → presentation, in
     20 px backdrop blur / 150% saturation across the whole face, a 10% rim and soft shadow.
     No gradient or directional reflection. Live desktop/phone values, content fit, contrast and
     existing player browser checks pass. [Evidence](evidence/alignment/players/dark-glass-uniform/README.md).
+
+Follow-up instructions (owner, 2026-10-14, career awards):
+52. [x] There is a bug with the awards section on the player page. Make the awards section its
+    own column like Profile / Impact / Counting, with a subcategory such as List / Accolades.
+    Currently the row highlight is broken around awards because we didn't create a proper section.
+    Fixed with a 240 px column, visible Awards / Accolades headers and the metric-cell background
+    and hover treatment. Dividers and highlighting now span the badges.
+53. [x] The badges aren't descriptive or clear enough: "NBA1" is unclear. Try stacking them to
+    use the row height more efficiently. Find a succinct visual/textual treatment that makes the
+    award badges clear without being verbose. Labels include "All-NBA 1st", "All-Def 2nd",
+    "MVP 2nd" and "DPOY Winner". Badges wrap, winners stay gold, and full names are available
+    to screen readers. Live Kawhi rows fit on at most two lines at 1440/390 with unchanged
+    row heights. Lint, types, 526 Vitest tests, production build and 15 player browser checks pass.
+    [Evidence](evidence/alignment/players/career-awards/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run
