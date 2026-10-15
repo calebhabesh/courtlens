@@ -17,6 +17,17 @@ test("player comparison uses shared scope, signed values and contextual URL mode
   await expect(page.locator('.pvp-slot .pvp-portrait')).toHaveCount(2);
 });
 
+test("compare card: console actions, change cues, wordmark footer and trend tray (alignment row 3)",async({page})=>{
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
+  const bar=page.getByRole("region",{name:"Research context controls"});
+  await expect(bar.getByRole("button",{name:"Edit Metrics",exact:true})).toBeVisible();await expect(bar.getByRole("button",{name:"Share Image",exact:true})).toBeVisible();
+  await expect(page.locator(".pvp-change")).toHaveCount(2);await expect(page.locator(".pvp-foot .courtlens-wordmark")).toBeVisible();
+  await expect(page.getByText("Descriptive differences under a shared scope.")).toHaveCount(0);
+  await page.getByRole("button",{name:"Trend lines",exact:true}).click();await expect(page).toHaveURL(/compareView=lines/);
+  await expect(page.locator(".pvp-tray-body").getByRole("region",{name:"Multi-Player Lines Progression Explorer"})).toBeVisible();
+  await expect(page.getByText("Rolling statistic discipline:")).toHaveCount(0);
+});
+
 test("team comparison preserves unknown versus zero, unknown outcomes and scope across tabs",async({page})=>{
   await openWorkbench(page,"/team-compare?teamA=100&teamB=200&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
   const points=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Points Per Game",exact:true})});

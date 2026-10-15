@@ -30,3 +30,18 @@ including the previously failing Compare export test. The full Playwright run ha
 checks on `/design` predate it (the kit's `text` variant, `92b91c0`), and one is the roster
 projection spec. The four compare baselines were regenerated, and the other 88 visual baselines,
 including the approved Stats and player pages, are unchanged.
+
+## First review (instructions 7–17)
+
+Season headshots (7): 6,129 team-season photos; the card and share image request the compared
+season. [Durant (BKN then PHX) vs LeBron, 2022-23](review1-traded-1440.png) shows both logos with
+the latest team in front, the change-player icon, bold leading values, the accolades block and a
+pending note for awards announced after the Apr 9 cutoff. [2016-17 through Jun 20](review1-2016-17-1440.png)
+shows that season's honours (MVP vote, All-NBA team) and Durant's first title. [Phone](review1-traded-390.png),
+[trend tray](review1-trend-tray-1440.png), [searchable Edit Metrics](review1-edit-metrics-search-1440.png)
+and [share image](review1-share-image.png). Edit Metrics, Share Image and More sit in the console.
+The fade is measured mid-animation after a swap.
+
+Checks: dashboard lint/typecheck; Vitest 537/537; Python 2,114 passed (ruff and format clean;
+mypy's two `gemini.py` errors predate this work); 198 affected browser tests plus a new tray test
+pass; the four compare baselines were regenerated and the others match.

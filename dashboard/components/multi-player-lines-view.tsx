@@ -14,6 +14,8 @@ import {
 } from "@/lib/image-export";
 
 interface MultiPlayerLinesViewProps {
+  /** `embedded`: inside the Compare card's drawer, without its own frame, legend box or footnote. */
+  variant?: "panel" | "embedded";
   playerIds?: string[];
   players?: PlayerResearchItem[];
   context: {
@@ -117,6 +119,7 @@ interface PlayerLogSeries {
 }
 
 export function MultiPlayerLinesView({
+  variant = "panel",
   playerIds: propPlayerIds,
   players,
   context
@@ -402,7 +405,7 @@ export function MultiPlayerLinesView({
   }
 
   return (
-    <div className="panel multi-player-lines-panel" role="region" aria-label="Multi-Player Lines Progression Explorer">
+    <div className={variant === "embedded" ? "multi-player-lines-panel is-embedded" : "panel multi-player-lines-panel"} role="region" aria-label="Multi-Player Lines Progression Explorer">
       {/* Top Header */}
       <div className="panel-header panel-header-wrap">
         <div>
@@ -722,9 +725,9 @@ export function MultiPlayerLinesView({
         ))}
       </div>
 
-      <p className="snapshot-footnote mt-2">
+      {variant === "panel" && <p className="snapshot-footnote mt-2">
         <strong>Rolling statistic discipline:</strong> Rolling averages are calculated strictly chronologically across confirmed active appearances prior to {context.before_date || "cutoff date"}. Gaps between games are preserved without zero-fill.
-      </p>
+      </p>}
 
       {/* Accessible Chart Data Table (F06) */}
       {showDataTable && (
