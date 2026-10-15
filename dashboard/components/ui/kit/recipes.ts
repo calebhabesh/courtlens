@@ -6,7 +6,7 @@ import type { IconSize } from "../icon";
  * so every class must appear as a complete literal string.
  */
 export type KitSize = "xs" | "sm" | "md" | "lg";
-export type KitVariant = "primary" | "secondary" | "ghost" | "danger";
+export type KitVariant = "primary" | "secondary" | "ghost" | "danger" | "text";
 /** `console`: the Stats/Databallr control console on the table lift; `onBackground`: ghost controls on the page background (header). */
 export type KitTone = "default" | "console" | "onBackground";
 
@@ -50,6 +50,7 @@ const variants: Record<KitVariant, string> = {
   secondary: "kit:bg-surface-2 kit:font-medium kit:text-text kit:hoverable:bg-surface-3",
   ghost: "kit:bg-transparent kit:font-medium kit:text-text-secondary kit:hoverable:bg-surface-hover kit:hoverable:text-text",
   danger: "kit:bg-surface-2 kit:font-medium kit:text-negative kit:hoverable:bg-danger-hover",
+  text: "kit:bg-transparent kit:font-medium kit:text-text-secondary kit:hoverable:text-text",
 };
 
 /** A tone replaces its variant's colours: `console` for secondary, `onBackground` for ghost. */
@@ -78,7 +79,7 @@ export function controlClasses({ size, variant, tone = "default", square = false
     pressable,
     sizes[size],
     tight ? "kit:gap-1" : "kit:gap-2",
-    square ? squares[size] : (dense ? densePaddings : paddings)[size],
+    square ? squares[size] : variant === "text" ? "kit:px-0" : (dense ? densePaddings : paddings)[size],
     tone === "default" ? variants[variant] : tones[tone],
     variant !== "primary" && selectedClasses,
   );

@@ -79,13 +79,12 @@ function ContractTable({ reference, contract, history, events }: {
       <table className="player-contract-table" aria-label="Contract and salary history by season">
         <thead>
           <tr className="player-contract-tier-1">
-            <th className="player-contract-season"><span className="sr-only">Season</span></th>
+            <th scope="col" rowSpan={2} className="player-contract-season">Season</th>
             <th scope="colgroup" colSpan={3} className="group-start">Salary</th>
             <th scope="colgroup" colSpan={2} className="group-start">Terms</th>
             <th scope="colgroup" className="group-start">Events</th>
           </tr>
           <tr className="player-contract-tier-2">
-            <th scope="col" className="player-contract-season">Season</th>
             <th scope="col" className="group-start player-contract-team">Team</th>
             <th scope="col">Salary</th>
             <th scope="col">% of Cap</th>
@@ -95,16 +94,16 @@ function ContractTable({ reference, contract, history, events }: {
           </tr>
         </thead>
         <tbody>
-          <tr className="player-contract-section"><th scope="rowgroup" colSpan={7}>Current Contract</th></tr>
+          <tr className="player-contract-section"><th scope="rowgroup" className="player-contract-season">Current Contract</th><td colSpan={6} /></tr>
           {contract.length > 0 ? contract.map((salary, i) => row(salary, i, true))
             : <tr><td colSpan={7} className="player-contract-empty">No current contract listed in the retained report.</td></tr>}
         </tbody>
         {past.length > 0 && <tbody>
-          <tr className="player-contract-section"><th scope="rowgroup" colSpan={7}>Salary History · {past.length} {past.length === 1 ? "Season" : "Seasons"}</th></tr>
+          <tr className="player-contract-section"><th scope="rowgroup" className="player-contract-season" title={`${past.length} reported ${past.length === 1 ? "season" : "seasons"}`}>Salary History</th><td colSpan={6} /></tr>
           {past.map((salary, i) => row(salary, i, false))}
         </tbody>}
         {unplaced.length > 0 && <tbody>
-          <tr className="player-contract-section"><th scope="rowgroup" colSpan={7}>Other Contract Events</th></tr>
+          <tr className="player-contract-section"><th scope="rowgroup" className="player-contract-season">Other Contract Events</th><td colSpan={6} /></tr>
           <tr><th scope="row" className="player-contract-season">—</th><td colSpan={5} className="group-start" /><td className="group-start player-contract-events-cell"><EventList events={unplaced} /></td></tr>
         </tbody>}
         {(reference.remaining_guaranteed || reference.career_earnings) && <tfoot>
@@ -170,7 +169,7 @@ export function PlayerReferenceSections({ reference }: { reference: Reference })
     {transactions.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Transaction News">
       <header className="player-open-heading"><h2><Icon name="swap" size={20} />Transaction News</h2><span>{transactions.length} dated reports and notes</span></header>
       <Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(0, 6)} />
-      {transactions.length > 6 && <details><ButtonSummary size="sm" variant="ghost" iconAfter="chevron-down">Earlier Transactions · {transactions.length - 6}</ButtonSummary><Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(6)} /></details>}
+      {transactions.length > 6 && <details><ButtonSummary size="sm" variant="text" iconAfter="chevron-down">Earlier Transactions · {transactions.length - 6}</ButtonSummary><Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(6)} /></details>}
       <Credit reference={reference} anchor="all_transactions" />
     </section>}
     {highs.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Career highs">

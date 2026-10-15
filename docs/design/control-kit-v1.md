@@ -78,6 +78,7 @@ inner radii and gaps between kit controls of one size. The controls themselves a
 | `secondary` | `--color-surface-2`, `--color-text` | `--color-surface-3` | console and default actions; `console` tone as above |
 | `ghost` | transparent, `--color-text-secondary` | `--color-surface-hover`, `--color-text` | toolbars, table rows, header (on the page background the text is `--color-on-bg-secondary`) |
 | `danger` | `--color-surface-2`, `--color-negative` text | negative mixed 15% into surface-2 | destructive actions |
+| `text` | transparent, `--color-text-secondary`, no inline padding | `--color-text` only, no fill | an inline disclosure that sits flush with the content it follows (player Earlier Transactions) |
 
 **Selected** (`aria-pressed`, `aria-checked`, `aria-selected` or `aria-current` true) applies to every
 variant except `primary`: `--color-accent-soft` fill, `--color-accent` text, a 1 px inset accent ring,

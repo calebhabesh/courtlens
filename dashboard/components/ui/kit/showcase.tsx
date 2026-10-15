@@ -11,7 +11,7 @@ import { Segmented } from "./segmented";
 import type { KitSize, KitVariant } from "./recipes";
 
 const sizes: readonly KitSize[] = ["xs", "sm", "md", "lg"];
-const variants: readonly KitVariant[] = ["primary", "secondary", "ghost", "danger"];
+const variants: readonly KitVariant[] = ["primary", "secondary", "ghost", "danger", "text"];
 const states = ["Rest", "Hover", "Press", "Focus", "Selected", "Disabled", "Loading"] as const;
 const selectSizes: readonly SelectSize[] = ["sm", "md", "lg"];
 const tones = ["default", "console"] as const;

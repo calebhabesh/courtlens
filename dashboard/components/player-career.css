@@ -38,6 +38,8 @@
   /* YEAR, each season's logo, CAREER and the footnote share the controls' 12px left edge (row 2, 40);
      outranks Stats' header-cell padding. */
   .player-career.stats-workspace .player-career-table th.pinned-col-year { padding-left: var(--space-3); }
+  /* The Year column label is centered over its column (row 2, 65); season rows keep their left edge. */
+  .player-career.stats-workspace .player-career-table thead th.pinned-col-year { padding-inline: var(--space-1); text-align: center; }
   .player-career .player-career-year { display: flex; align-items: center; gap: var(--space-2); }
   .player-career .player-career-year a { color: var(--color-text); text-decoration: none; font-variant-numeric: tabular-nums; }
   .player-career .player-career-year a:hover, .player-career .player-career-year a:focus-visible { color: var(--color-accent); }
