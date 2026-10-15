@@ -749,6 +749,10 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
     screenshot, 2026-10-15.) One 2px gold outline; the Stats override moved into the foundation
     layer so the shared offset ring no longer draws outside it.
     [Evidence](evidence/alignment/players/dpoy-trend-search/README.md).
+63. [x] On the player page, rename "Transactions" to "Transaction News"; the "Earlier
+    Transactions" drop-down looks oddly indented. (Owner screenshot, 2026-10-15.) Renamed; the
+    disclosure label now starts at the dates' edge, and the revealed list stays aligned.
+    [Evidence](evidence/alignment/players/transaction-news/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run

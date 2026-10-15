@@ -167,8 +167,8 @@ export function PlayerReferenceSections({ reference }: { reference: Reference })
       <p className="player-reference-note">Options are reported terms. A dash means unknown; a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s retained official NBA threshold. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
       <Credit reference={reference} anchor="all_contract" />
     </section>}
-    {transactions.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Transactions">
-      <header className="player-open-heading"><h2><Icon name="swap" size={20} />Transactions</h2><span>{transactions.length} dated reports and notes</span></header>
+    {transactions.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Transaction News">
+      <header className="player-open-heading"><h2><Icon name="swap" size={20} />Transaction News</h2><span>{transactions.length} dated reports and notes</span></header>
       <Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(0, 6)} />
       {transactions.length > 6 && <details><ButtonSummary size="sm" variant="ghost" iconAfter="chevron-down">Earlier Transactions · {transactions.length - 6}</ButtonSummary><Events events={[...transactions].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(6)} /></details>}
       <Credit reference={reference} anchor="all_transactions" />

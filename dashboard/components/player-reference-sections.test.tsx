@@ -66,7 +66,7 @@ describe("player reference sections", () => {
   });
   it("orders transactions newest first and omits absent sections", () => {
     const { container, unmount } = render(<PlayerReferenceSections reference={reference} />);
-    expect(container.querySelector('[aria-label="Transactions"] time')?.getAttribute("datetime")).toBe("2026-09-22");
+    expect(container.querySelector('[aria-label="Transaction News"] time')?.getAttribute("datetime")).toBe("2026-09-22");
     unmount();
     render(<PlayerReferenceSections reference={{ ...reference, salary_history: [], current_contract: [], contract_events: [], transactions: [], game_highs: [] }} />);
     expect(screen.queryByRole("heading", { name: "Contract" })).toBeNull();
