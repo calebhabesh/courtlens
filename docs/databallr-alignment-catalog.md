@@ -730,6 +730,7 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
 57. [x] At the bottom of the player stats table (e.g. Kawhi Leonard), put "Total = 14 Seasons",
     then the team logos with how many seasons he played for each team. Logos in first-team
     order with counts (Kawhi: SAS 7, TOR 1, LAC 6); a split season counts for each team.
+    Follow-up: "make the team logos larger" — 32 px logos (from 20), medium-size label and counts.
 58. [x] Rates (Per 36) and the Per 36 mode duplicate each other on Stats and the player table.
     Confirmed redundant: every Rates column is a per-36 value the Per 36 mode already shows
     through Overview, Shooting and Defense. The view is removed from both tables and the
