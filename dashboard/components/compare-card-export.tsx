@@ -5,61 +5,77 @@ import { leadingIdentity, toneColor } from "./charts/semantics";
 import { cardLabel, formatCardValue, isPercentUnit } from "@/lib/comparison-metrics";
 import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
+import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
+import type { AccoladeRow } from "@/lib/compare-accolades";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { MetricComparisonItem, MetricDefinition } from "@/lib/types";
-import type { CompareSlotPlayer } from "./compare-player-slot";
+import { slotTeams, type CompareSlotPlayer } from "./compare-player-slot";
 
-const WIDTH = 560, PHOTO = 168, TOP = 24, ROW = 34, ROWS_TOP = TOP + PHOTO + 64;
+const WIDTH = 560, PHOTO = 168, TOP = 24, ROW = 34, ROWS_TOP = TOP + PHOTO + 64, MARK = 20;
+
+type ExportRow = { key: string; label: string; shown: [string, string]; leader: "a" | "b" | null; pill: string | null };
 
 /**
- * The duel card as one SVG, for Share Image and Export SVG: the same portraits, values and
- * leading-side pills as the page card, drawn with tokens that export resolves to colours.
+ * The duel card as one SVG, for Share Image and Export SVG: the same portraits, values,
+ * leading-side pills, emphasis and accolades as the page card, closing on the wordmark. Drawn
+ * with tokens that export resolves to colours.
  */
 export const CompareCardExport = forwardRef<SVGSVGElement, {
   players: [CompareSlotPlayer, CompareSlotPlayer];
   rows: MetricComparisonItem[];
+  accolades?: AccoladeRow[];
   direction: (metric: string) => GoodDirection;
   labels: Map<string, MetricDefinition>;
   title: string;
-  footnote: string;
   season?: string;
-}>(function CompareCardExport({ players, rows, direction, labels, title, footnote, season }, ref) {
-  const height = ROWS_TOP + rows.length * ROW + 48;
+}>(function CompareCardExport({ players, rows, accolades = [], direction, labels, title, season }, ref) {
+  const lines: ExportRow[] = [
+    ...rows.map(row => {
+      const a = typeof row.value_a === "number" ? row.value_a : null, b = typeof row.value_b === "number" ? row.value_b : null;
+      const gap = a != null && b != null ? Math.abs(a - b) * (isPercentUnit(row.unit) ? 100 : 1) : null;
+      const leader = gap != null && Number(gap.toFixed(row.metric === "gp" ? 0 : 1)) > 0 ? leadingIdentity(a, b, direction(row.metric)) : null;
+      return { key: row.metric, label: cardLabel(row.metric, labels.get(row.metric)), leader,
+        shown: [formatCardValue(row.value_a, row.unit, row.metric), formatCardValue(row.value_b, row.unit, row.metric)] as [string, string],
+        pill: leader && gap != null ? `+${gap.toFixed(row.metric === "gp" ? 0 : 1)}` : null };
+    }),
+    ...accolades.map(row => ({ key: row.key, label: row.label, shown: row.shown, leader: row.leader,
+      pill: row.leader && row.a != null && row.b != null && !row.key.startsWith("season_") ? `+${Math.abs(row.a - row.b)}` : null }))
+  ];
+  const height = ROWS_TOP + lines.length * ROW + 56;
   const column = (side: 0 | 1) => side === 0 ? WIDTH * 0.25 : WIDTH * 0.75;
+  const markWidth = MARK * WORDMARK_WIDTH / WORDMARK_HEIGHT;
   return <svg ref={ref} xmlns="http://www.w3.org/2000/svg" className="pvp-export-svg" role="img" aria-label={title} viewBox={`0 0 ${WIDTH} ${height}`} width={WIDTH} height={height}
     fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
     <title>{title}</title>
     <rect width={WIDTH} height={height} rx="16" fill="var(--color-surface-1)" />
     {players.map((player, side) => {
       const x = column(side as 0 | 1) - PHOTO / 2;
-      const source = portraitSource(player.portrait_url, player.id, 288, season ? { season, team: player.teams[0] } : null);
+      const latest = slotTeams(player).at(-1);
+      const source = portraitSource(player.portrait_url, player.id, 288, season ? { season, team: latest } : null);
       const id = `pvp-export-clip-${side}`;
       return <g key={player.id}>
         <clipPath id={id}><rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" /></clipPath>
-        <rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" fill={teamBrandColor(player.teams[0]) ?? "var(--color-surface-3)"} />
+        <rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" fill={teamBrandColor(latest) ?? "var(--color-surface-3)"} />
         {source && <image href={source.src} x={x} y={TOP} width={PHOTO} height={PHOTO} clipPath={`url(#${id})`} preserveAspectRatio="xMidYMax slice" />}
         <rect x={x + PHOTO - 58} y={TOP + PHOTO - 30} width="52" height="24" rx="6" fill="var(--color-text)" />
         <text x={x + PHOTO - 32} y={TOP + PHOTO - 13} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-surface-0)">{`${player.games_played} GP`}</text>
         <text x={column(side as 0 | 1)} y={TOP + PHOTO + 26} textAnchor="middle" fontSize="15" fontWeight="600" fill="var(--color-text)">{player.name}</text>
       </g>;
     })}
-    {rows.map((row, index) => {
-      const a = typeof row.value_a === "number" ? row.value_a : null, b = typeof row.value_b === "number" ? row.value_b : null;
-      const leader = leadingIdentity(a, b, direction(row.metric));
+    {lines.map((line, index) => {
       const y = ROWS_TOP + index * ROW;
-      const gap = a != null && b != null ? Math.abs(a - b) * (isPercentUnit(row.unit) ? 100 : 1) : null;
-      const pillX = leader === "a" ? 20 : WIDTH - 72;
-      return <g key={row.metric}>
-        {leader && gap != null && <>
-          <rect x={pillX} y={y - 15} width="52" height="20" rx="10" fill={toneColor(`identity-${leader}`)} />
-          <text x={pillX + 26} y={y} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-on-accent)">{`+${gap.toFixed(row.metric === "gp" ? 0 : 1)}`}</text>
+      const pillX = line.leader === "a" ? 20 : WIDTH - 72;
+      const tone = (side: "a" | "b") => line.leader && line.leader !== side ? "var(--color-text-secondary)" : "var(--color-text)";
+      return <g key={line.key}>
+        {line.leader && line.pill && <>
+          <rect x={pillX} y={y - 15} width="52" height="20" rx="10" fill={toneColor(`identity-${line.leader}`)} />
+          <text x={pillX + 26} y={y} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-on-accent)">{line.pill}</text>
         </>}
-        <text x={WIDTH * 0.3} y={y} textAnchor="middle" fontSize="16" fontWeight="500" fill="var(--color-text)">{formatCardValue(row.value_a, row.unit, row.metric)}</text>
-        <text x={WIDTH / 2} y={y - 1} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{cardLabel(row.metric, labels.get(row.metric))}</text>
-        <text x={WIDTH * 0.7} y={y} textAnchor="middle" fontSize="16" fontWeight="500" fill="var(--color-text)">{formatCardValue(row.value_b, row.unit, row.metric)}</text>
+        <text x={WIDTH * 0.3} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "a" ? 700 : 500} fill={tone("a")}>{line.shown[0]}</text>
+        <text x={WIDTH / 2} y={y - 1} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{line.label}</text>
+        <text x={WIDTH * 0.7} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "b" ? 700 : 500} fill={tone("b")}>{line.shown[1]}</text>
       </g>;
     })}
-    <text x="20" y={height - 20} fontSize="11" fill="var(--color-text-secondary)">{footnote}</text>
-    <text x={WIDTH - 20} y={height - 20} textAnchor="end" fontSize="13" fontWeight="700" fill="var(--color-accent)">CourtLens</text>
+    <path d={WORDMARK_PATH} fill="var(--color-accent)" transform={`translate(${(WIDTH - markWidth) / 2} ${height - 20 - MARK}) scale(${MARK / WORDMARK_HEIGHT})`} />
   </svg>;
 });

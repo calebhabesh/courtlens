@@ -172,6 +172,7 @@ from courtlens.services.personal_state import (
     update_workspace_state,
 )
 from courtlens.services.player_bio import current_teams, player_bio
+from courtlens.services.player_honours import championships, teams_by_last_appearance
 from courtlens.services.portrait_derivatives import (
     PORTRAIT_DERIVATIVE_MIME,
     PORTRAIT_SIZES,
@@ -1310,10 +1311,25 @@ def compare_players_endpoint(
         window=context.window,
     )
 
+    ordered = teams_by_last_appearance(
+        session,
+        context.dataset_id,
+        context.season,
+        context.phase,
+        context.before_date,
+        [target_a, target_b],
+    )
+    titles = championships(session, context.dataset_id, context.before_date, [target_a, target_b])
+
     # API-only identity enrichment leaves analytical/saved serializers unchanged.
     def with_teams(player: dict[str, Any]) -> dict[str, Any]:
         association = associations.get(player["id"])
-        return {**player, "teams": association.teams if association else []}
+        return {
+            **player,
+            "teams": association.teams if association else [],
+            "teams_chronological": ordered.get(player["id"], []),
+            "championships": titles.get(player["id"]),
+        }
 
     return PlayerComparisonResponse(
         context=result["context"],

@@ -910,4 +910,9 @@
   .pvp-header .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); }
   .pvp-header .ui-page-header-subtitle { color: var(--color-on-bg-secondary); }
   .pvp-scope .ui-filter-bar { border-bottom: 0; }
+  /* The leading value reads bold and bright, the other one recedes (row 3, 11); the
+     percentile cell's own text colour lives in this layer. */
+  .pvp-value .stat-main-value { font-weight: 500; }
+  .pvp-value[data-leading] .stat-main-value { font-weight: 700; color: var(--color-text); }
+  .pvp-value[data-trailing] .stat-main-value { color: var(--color-text-secondary); }
 }

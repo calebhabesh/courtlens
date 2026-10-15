@@ -835,6 +835,33 @@ owner chose the recommendation and delegated the three open decisions):
    named team for traded seasons, falls back to the current headshot and names the served season
    in `X-Portrait-Season`. Compare portraits and the share image request the compared season.
    Hosted demo: needs the migration plus a refreshed dump and portrait rsync to show them.
+Follow-up instructions (owner, 2026-10-15, first review):
+8. [x] Team logo on or near each portrait; handle players with several teams in the scope. — logos
+   top-left of the photo, every team of the scope ordered by last appearance (`teams_chronological`),
+   latest in front; the photo and tint use the latest team.
+9. [x] Owner question: an accolades block like Stathead's that follows the compared season? — yes:
+   Accolades (titles, MVP, DPOY, All-NBA, All-Def, All-Star) counted through the cutoff, then
+   "<season> Honors" (MVP/DPOY vote, All-NBA/All-Def team, All-Star). Honours count once announced
+   (All-Star from Feb 15, awards from Jun 1 of the season's end year); titles from playoff box
+   scores (`services/player_honours.py`). Rows neither player holds are hidden; unknown is "—".
+10. [x] The card's bottom row is only the CourtLens wordmark, slightly larger. — 20px wordmark,
+    centred; source and GP moved to Data details.
+11. [x] Owner question: an extra indicator beyond the pill that makes the leading side clearer? —
+    the leading value is bold and bright, the other recedes to secondary text; gaps that round
+    to zero are ties (no pill, no emphasis). No tally or overall winner.
+12. [x] A visible Lucide icon on each portrait showing the player can be changed. — UserRoundPen
+    (`user-edit`) chip top-right, accent on hover/focus.
+13. [x] Move Edit Metrics / Share / More from above the card into the scope console, left of
+    Data details. — ContextBar `modes` slot (stays visible on phones).
+14. [x] Edit Metrics is searchable and lists abbreviation + term like the glossary. — search by
+    abbreviation, term, key or alias; glossary short names and terms in one column.
+15. [x] Smooth fade-in when players change or swap sides. — slots and rows re-key on the pair,
+    preset and mode and fade up over `--dur-slow` (reduced motion collapses it).
+16. [x] Remove the "Descriptive differences under a shared scope" note.
+17. [x] Trend lines open as a drawer extending from the card, not a separate block; remove the grey
+    outline around the players box and the rolling-discipline disclaimer. — a tab under the card
+    opens a tray tucked beneath it; `MultiPlayerLinesView variant="embedded"` drops the frame,
+    legend box and footnote (Stats keeps the panel).
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

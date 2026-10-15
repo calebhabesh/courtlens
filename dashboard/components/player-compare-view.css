@@ -4,7 +4,8 @@
   .pvp { --pvp-width: 560px; --pvp-photo: 184px; display: flex; flex-direction: column; align-items: center; gap: var(--space-4); min-width: 0; }
   .pvp-scope { display: flex; justify-content: center; width: 100%; min-width: 0; }
   .pvp-column { display: flex; flex-direction: column; gap: var(--space-3); width: min(100%, var(--pvp-width)); min-width: 0; }
-  .pvp-toolbar { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
+  /* Edit Metrics, Share Image and More sit in the scope console, left of Data details (13). */
+  .pvp-actions { display: flex; align-items: center; gap: var(--space-2); }
 
   /* The card: the player page's glass panel, holding everything a share image carries. */
   .pvp-card {
@@ -13,13 +14,16 @@
     border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-2);
     backdrop-filter: blur(20px) saturate(150%);
   }
+  .pvp-stack { display: flex; flex-direction: column; align-items: center; min-width: 0; isolation: isolate; }
+  .pvp-stack > .pvp-card { width: 100%; position: relative; z-index: var(--z-sticky); }
   .pvp-players { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: var(--space-3); }
   .pvp-swap { margin-top: calc(var(--pvp-photo) / 2 - var(--control-md) / 2); }
 
   /* One side: a square headshot on the team's colour, games badge, name and one bio line. */
   .pvp-slot { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); min-width: 0; text-align: center; }
+  .pvp-photo-frame { position: relative; width: 100%; max-width: var(--pvp-photo); }
   .pvp-photo {
-    position: relative; display: block; width: 100%; max-width: var(--pvp-photo); aspect-ratio: 1; padding: 0; border: 0;
+    position: relative; display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 0;
     border-radius: var(--radius-md); overflow: hidden; cursor: pointer;
     background: radial-gradient(120% 100% at 50% 8%, var(--team-tint, var(--color-surface-3)), color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 35%, var(--color-surface-0)));
   }
@@ -32,11 +36,20 @@
     position: absolute; right: var(--space-2); bottom: var(--space-2); padding: 1px var(--space-2); border-radius: var(--radius-sm);
     background: var(--color-text); color: var(--color-surface-0); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; font-variant-numeric: tabular-nums;
   }
-  .pvp-photo-hint {
-    position: absolute; top: var(--space-2); right: var(--space-2); display: grid; place-items: center; width: 24px; height: 24px; border-radius: var(--radius-pill);
-    background: color-mix(in srgb, var(--color-surface-0) 70%, transparent); color: var(--color-text); opacity: 0; transition: opacity var(--dur-fast) var(--ease-out);
+  /* A persistent change-player cue (12) and the scope's team logos, latest in front (8). */
+  .pvp-change {
+    position: absolute; top: var(--space-2); right: var(--space-2); display: grid; place-items: center; width: 28px; height: 28px;
+    border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-surface-0) 72%, transparent); color: var(--color-text);
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
-  .pvp-photo:is(:hover, :focus-visible) .pvp-photo-hint { opacity: 1; }
+  .pvp-photo:is(:hover, :focus-visible) .pvp-change { background: var(--color-accent); color: var(--color-on-accent); }
+  .pvp-logos { position: absolute; top: var(--space-2); left: var(--space-2); display: flex; pointer-events: none; }
+  .pvp-logo {
+    display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--color-surface-0) 60%, transparent); backdrop-filter: blur(6px);
+  }
+  .pvp-logos[data-count]:not([data-count="1"]) .pvp-logo { width: 30px; height: 30px; }
+  .pvp-logo + .pvp-logo { margin-left: calc(var(--space-2) * -1); box-shadow: -2px 0 0 color-mix(in srgb, var(--color-surface-0) 60%, transparent); }
   .pvp-who { display: flex; flex-direction: column; align-items: center; gap: var(--space-0-5); min-width: 0; }
   .pvp-name { justify-content: center; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
   .pvp-name:hover { text-decoration: underline; }
@@ -52,6 +65,10 @@
   .pvp-col-pill { width: 64px; }
   .pvp-col-label { width: 108px; }
   .pvp-rows :is(td, th) { padding: var(--space-0-5) 0; text-align: center; vertical-align: middle; }
+  .pvp-accolade { font-variant-numeric: tabular-nums; }
+  .pvp-accolade[data-leading] { font-weight: 700; }
+  .pvp-accolade[data-trailing] { color: var(--color-text-secondary); }
+  .pvp-pending td { padding-block: var(--space-1) var(--space-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
   .pvp-value { height: 40px; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 500; }
   .pvp-label { color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
   .pvp-group th { padding-top: var(--space-3); color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
@@ -61,19 +78,48 @@
     background: var(--color-identity-a); color: var(--color-on-accent); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600;
   }
   .pvp-pill[data-identity="b"] { background: var(--color-identity-b); }
-  .pvp-foot { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-1) var(--space-3); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
-  .pvp-wordmark { color: var(--color-accent); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700; }
+  /* The card closes on the wordmark alone (10). */
+  .pvp-foot { display: flex; justify-content: center; padding-top: var(--space-2); color: var(--color-accent); }
 
-  .pvp-notes { display: flex; flex-direction: column; gap: var(--space-3); }
+  /* Trend lines slide out from under the card as its drawer (17): a tab while closed, a tray
+     tucked under the card's lower edge while open. */
+  .pvp-tray { display: flex; flex-direction: column; align-items: center; width: calc(100% - var(--space-6)); margin-top: -1px; }
+  .pvp-tray-tab {
+    padding: 0 var(--space-2) var(--space-1); border-radius: 0 0 var(--radius-md) var(--radius-md);
+    background: color-mix(in srgb, var(--color-surface-0) 58%, transparent); border: 1px solid var(--color-hairline-strong); border-top: 0;
+  }
+  .pvp-tray[data-open] { width: calc(100% - var(--space-4)); }
+  .pvp-tray[data-open] .pvp-tray-tab { order: 2; }
+  .pvp-tray-body {
+    width: 100%; padding: var(--space-6) var(--space-5) var(--space-4); margin-top: calc(var(--space-4) * -1);
+    background: color-mix(in srgb, var(--color-surface-0) 58%, transparent); border: 1px solid var(--color-hairline-strong); border-top: 0;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg); backdrop-filter: blur(20px) saturate(150%);
+    animation: pvp-tray-open var(--dur-slow) var(--ease-out);
+  }
+  .pvp-tray-body .multi-player-lines-panel.is-embedded { padding: 0; background: transparent; border: 0; box-shadow: none; }
+  .pvp-tray-body .lines-legend { padding: 0; background: transparent; border: 0; }
+
+  /* Players and rows fade in when the pair, its order, the preset or the mode changes (15). */
+  .pvp-fade { animation: pvp-fade-in var(--dur-slow) var(--ease-out); }
+  @keyframes pvp-fade-in { from { opacity: 0; transform: translateY(var(--space-1)); } to { opacity: 1; transform: none; } }
+  @keyframes pvp-tray-open { from { opacity: 0; transform: translateY(calc(var(--space-4) * -1)); } to { opacity: 1; transform: none; } }
+
   .pvp-notice { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); }
   /* The export card stays in the document (exports read its computed tokens) but off screen. */
   .pvp-export { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 
+  /* Edit Metrics drawer: search, then glossary-style rows of abbreviation and term (14). */
+  /* SearchField draws its own clear button; the browser's search cancel would be a second one. */
+  .pvp-drawer-body input[type="search"]::-webkit-search-cancel-button { appearance: none; }
+  .pvp-drawer-empty { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); }
+  .pvp-drawer-term { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: baseline; gap: var(--space-3); }
+  .pvp-drawer-term abbr { color: var(--color-text); font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; text-decoration: none; }
+  .pvp-drawer-term span { color: var(--color-text-secondary); font-size: var(--text-sm); }
   /* Edit Metrics drawer. */
   .pvp-drawer-body { display: flex; flex-direction: column; gap: var(--space-5); }
   .pvp-drawer-tools { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
   .pvp-drawer-count { color: var(--color-text-secondary); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
-  .pvp-drawer-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-2) var(--space-4); margin: 0; padding: 0; border: 0; min-width: 0; }
+  .pvp-drawer-group { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); margin: 0; padding: 0; border: 0; min-width: 0; }
   .pvp-drawer-group legend { margin-bottom: var(--space-2); padding: 0; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 
   @media (width < 600px) {
@@ -83,7 +129,6 @@
     .pvp-col-label { width: 84px; }
     .pvp-pill { min-width: 44px; padding-inline: var(--space-1); font-size: var(--text-xs); }
     .pvp-value { font-size: var(--text-md); line-height: var(--text-md-lh); }
-    .pvp-toolbar { justify-content: center; }
     /* The five presets need about 350px: they borrow the card's side padding instead of scrolling. */
     .pvp-presets { max-width: calc(100% + var(--space-4)); margin-inline: calc(var(--space-2) * -1); }
   }

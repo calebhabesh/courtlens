@@ -1111,24 +1111,30 @@ export type MetricComparisonItem = {
   n_b: number;
 };
 
+/** Titles from admitted playoff box scores decided before the cutoff (alignment row 3). */
+export type ComparisonChampionships = {
+  seasons: string[];
+  coverage_from: string | null;
+  /** False when the career may predate the first admitted season: the count is not a total. */
+  complete: boolean;
+};
+
+export type ComparisonPlayer = {
+  id: string;
+  name: string;
+  teams: string[];
+  /** The scope's teams by last appearance: a traded player's latest team is last. */
+  teams_chronological?: string[];
+  championships?: ComparisonChampionships | null;
+  games_played: number;
+  total_minutes: number;
+  portrait_url?: string;
+};
+
 export type PlayerComparisonResponse = {
   context: Record<string, unknown>;
-  player_a: {
-    id: string;
-    name: string;
-    teams: string[];
-    games_played: number;
-    total_minutes: number;
-    portrait_url?: string;
-  };
-  player_b: {
-    id: string;
-    name: string;
-    teams: string[];
-    games_played: number;
-    total_minutes: number;
-    portrait_url?: string;
-  };
+  player_a: ComparisonPlayer;
+  player_b: ComparisonPlayer;
   aligned_metrics: MetricComparisonItem[];
   no_forced_winner_notice: string;
   warnings: string[];

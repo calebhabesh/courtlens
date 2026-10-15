@@ -24,7 +24,10 @@ test("Custom picks and exact counting units survive reload and Back/Forward; SVG
   await page.getByRole("button",{name:"Edit Metrics",exact:true}).click();
   const drawer=page.getByRole("dialog");await expect(drawer.getByRole("heading",{name:"Edit Metrics"})).toBeVisible();
   // The checkbox is controlled by the URL, which React 19.3 applies after the click event returns.
-  await drawer.getByText("Fouls Total",{exact:true}).click();await expect(drawer.getByRole("checkbox",{name:"Fouls Total",exact:true})).toBeChecked();
+  // Rows read abbreviation + term; the checkbox keeps the catalog name as its accessible name.
+  await drawer.locator("label").filter({has:page.getByRole("checkbox",{name:"Fouls Total",exact:true})}).click();
+  await drawer.getByRole("searchbox",{name:"Search metrics"}).fill("foul");await expect(drawer.getByRole("checkbox")).toHaveCount(1);
+  await drawer.getByRole("button",{name:"Clear search"}).click();await expect(drawer.getByRole("checkbox",{name:"Fouls Total",exact:true})).toBeChecked();
   await expect(page).toHaveURL(/preset=custom/);await expect(page).toHaveURL(/customMetrics=.*pf/);
   await page.keyboard.press("Escape");
   await page.reload();await expect(page.getByRole("radio",{name:"Custom",exact:true})).toHaveAttribute("aria-checked","true");
