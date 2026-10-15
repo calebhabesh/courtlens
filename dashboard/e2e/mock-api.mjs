@@ -640,7 +640,8 @@ createServer(async (request, response) => {
         table_cohort_sample_sizes: Object.fromEntries(Object.keys(row.metrics).map(key => [key, 2]))
       } : {})
     }));
-    const selected = rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
+    // name=traded: Fixture Guard as a two-team season (BOS / MIA), now listed with TOR.
+    const selected = query.name === "traded" ? rows.filter(row => row.player_id === "24").map(row => ({ ...row, teams: ["BOS", "MIA"] })) : rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
       (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)) &&
       (!body.presentation?.positions?.length || body.presentation.positions.includes(fixturePositions[row.player_id])) &&
       (!body.presentation?.draft_year || body.presentation.draft_year === fixtureDrafts[row.player_id]));

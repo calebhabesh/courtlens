@@ -1014,6 +1014,8 @@ export function WorkbenchPlayerExplorer({
               items.map((player) => {
                 const isCompared = comparedPlayers.some((p) => p.player_id === player.player_id);
                 const move = teamMove(player, rowSeason, latestSeason);
+                const inlineMove = move !== null && (player.teams?.length ?? 0) <= 1;
+                const moveChip = move && <span className="stats-team-move" title={move.title}><span className="stats-team-move-label">now</span><TeamLogo team={move.tricode} size={14} /><span>{move.tricode}</span></span>;
 
                 return (
                   <tr
@@ -1053,9 +1055,11 @@ export function WorkbenchPlayerExplorer({
                         })}`} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link"
                           onClick={rememberTablePosition}>
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
-                        <span className={`player-cell-teams ${move ? "has-move" : ""}`}>{player.teams?.join(" / ") || "Team unknown"}{player.position && <span className="player-cell-position"> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></span>} · {/* On a moved player's row the chip takes the season's place (every
-                          row shares the season; the chip's title names it) so it is never truncated. */}
-                          {move ? <span className="stats-team-move" title={move.title}><span className="stats-team-move-label">now</span><TeamLogo team={move.tricode} size={14} /><span>{move.tricode}</span></span> : seasonLabel}</span>
+                        <span className={`player-cell-teams ${inlineMove ? "has-move" : ""}`}>{player.teams?.join(" / ") || "Team unknown"}{player.position && <span className="player-cell-position"> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></span>} · {/* On a one-team row the chip takes the season's place (every row
+                          shares the season; the chip's title names it); a multi-team row keeps its season and puts
+                          the chip on a line of its own, so it is never truncated. */}
+                          {inlineMove ? moveChip : seasonLabel}</span>
+                        {move && !inlineMove && <span className="player-cell-move-line">{moveChip}</span>}
                         </Link>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>
