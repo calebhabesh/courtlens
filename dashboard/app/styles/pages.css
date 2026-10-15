@@ -141,9 +141,6 @@
 .fo11-team-splits dd {
   text-align: right;
 }
-.fo11-export-chart {
-  margin-block: var(--space-4);
-}
 .fo11-player-comparison .compare-date {
   flex: 0 1 200px;
 }

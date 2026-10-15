@@ -1,6 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
 
+// /compare opens on a resolved pair (alignment row 3); the fixture snapshot keeps the two-field picker.
+const PICKER = "/compare?snapshotId=snapshot-browser-fixture";
+
 async function choose(page: import("@playwright/test").Page, label: string, name: string) {
   const input = page.getByRole("combobox",{name:label,exact:true});
   await input.fill(name);
@@ -11,7 +14,7 @@ async function choose(page: import("@playwright/test").Page, label: string, name
 }
 
 test("two mounted pickers have distinct active descendants; ambiguous Enter never commits",async({page})=>{
-  await openWorkbench(page,"/compare");
+  await openWorkbench(page,PICKER);
   const a = page.getByRole("combobox",{name:"Player A",exact:true}), b = page.getByRole("combobox",{name:"Player B",exact:true});
   await a.fill("Fixture"); await expect(page.getByRole("option").filter({hasText:"Fixture Star"})).toBeVisible();
   await a.press("Enter"); await expect(page.locator('input[name="playerA"]')).toHaveValue("");
@@ -24,7 +27,7 @@ test("two mounted pickers have distinct active descendants; ambiguous Enter neve
 });
 
 test("editing and clear invalidate committed single ID; form never submits draft text",async({page})=>{
-  await openWorkbench(page,"/compare");await choose(page,"Player A","Fixture Star");await choose(page,"Player B","Fixture Guard");
+  await openWorkbench(page,PICKER);await choose(page,"Player A","Fixture Star");await choose(page,"Player B","Fixture Guard");
   await expect(page).toHaveURL(/playerA=23.*playerB=24/);
   await page.getByRole("combobox",{name:"Player A",exact:true}).fill("uncommitted");
   await expect(page.locator('input[name="playerA"]')).toHaveValue("");await expect(page.getByRole("button",{name:"Compare players"})).toHaveCount(0);
@@ -32,7 +35,7 @@ test("editing and clear invalidate committed single ID; form never submits draft
 });
 
 test("debounce and cache-hit paths reject delayed responses; empty input clears stale options",async({page})=>{
-  await openWorkbench(page,"/compare");const input=page.getByRole("combobox",{name:"Player A",exact:true});
+  await openWorkbench(page,PICKER);const input=page.getByRole("combobox",{name:"Player A",exact:true});
   await input.fill("Fixture Star");await expect(page.getByRole("option").filter({hasText:"Fixture Star"})).toBeVisible();
   let release!:()=>void;const pending=new Promise<void>(resolve=>release=resolve);
   await page.route("**/api/workbench/lookup?**",async route=>{const q=new URL(route.request().url()).searchParams.get("q");if(q === "slow") {await pending;await route.fulfill({json:{items:[{id:"slow",canonical_id:"slow",kind:"player",display_name:"Obsolete"}]}}).catch(()=>{});} else await route.continue();});
@@ -42,13 +45,13 @@ test("debounce and cache-hit paths reject delayed responses; empty input clears 
 });
 
 test("IME composition suppresses lookup and Enter; Tab closes and keeps natural focus",async({page})=>{
-  await openWorkbench(page,"/compare");const input=page.getByRole("combobox",{name:"Player A",exact:true});
+  await openWorkbench(page,PICKER);const input=page.getByRole("combobox",{name:"Player A",exact:true});
   await input.dispatchEvent("compositionstart");await input.fill("Fixture Star");await input.press("Enter");await page.waitForTimeout(180);await expect(page.locator('[role="option"]')).toHaveCount(0);await expect(page.locator('input[name="playerA"]')).toHaveValue("");
   await input.dispatchEvent("compositionend");await expect(page.getByRole("option").filter({hasText:"Fixture Star"})).toBeVisible();await input.press("Tab");await expect(input).not.toBeFocused();await expect(input).toHaveAttribute("aria-expanded","false");
 });
 
 test("API failure preserves text; retry and no-match states are distinct",async({page})=>{
-  await openWorkbench(page,"/compare");await page.route("**/api/workbench/lookup?**",route=>route.fulfill({status:503,json:{detail:"fixture failure"}}));
+  await openWorkbench(page,PICKER);await page.route("**/api/workbench/lookup?**",route=>route.fulfill({status:503,json:{detail:"fixture failure"}}));
   const input=page.getByRole("combobox",{name:"Player A",exact:true});await input.fill("retry question");await expect(page.getByText("Search is unavailable.",{exact:false}).first()).toBeVisible();await expect(input).toHaveValue("retry question");
   await page.unroute("**/api/workbench/lookup?**");await page.getByRole("button",{name:"Retry search"}).click();await expect(page.getByText("No matches for",{exact:false})).toBeVisible();
 });

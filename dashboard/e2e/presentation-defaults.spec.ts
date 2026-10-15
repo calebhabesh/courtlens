@@ -3,17 +3,17 @@ import { readFileSync } from "node:fs";
 import { openWorkbench } from "./workbench-navigation";
 import { firstLoadFixtures, offSeasonFixtures } from "./first-load-fixtures";
 
-for (const width of [1440,390]) test(`Compare starts on silhouette cards and a one-click observed suggestion at ${width}px`,async({page})=>{
+// Alignment row 3 (owner, 2026-10-15): Compare opens on a real pair written to the URL.
+for (const width of [1440,390]) test(`Compare opens on a resolved pair with percentiles and games badges at ${width}px`,async({page})=>{
   const errors:string[]=[];page.on("pageerror",error=>errors.push(error.message));
   await page.setViewportSize({width,height:900});await openWorkbench(page,"/compare");
-  await expect(page.locator(".pc04-identity-card[data-placeholder]")).toHaveCount(2);
-  await expect(page.getByRole("button",{name:"Top 2 by minutes",exact:true})).toBeEnabled();
-  await page.getByRole("button",{name:"Top 2 by minutes",exact:true}).click();
+  await expect(page).toHaveURL(/playerA=\w+&playerB=\w+/);
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
-  await expect(page.getByRole("radio",{name:"Per 75",exact:true})).toBeDisabled();
-  await expect(page.locator(".pc04-games-badge")).toHaveCount(2);
+  await expect(page.locator(".pvp-slot")).toHaveCount(2);await expect(page.locator(".pvp-badge")).toHaveCount(2);
+  await expect(page.getByRole("combobox",{name:"Counting mode",exact:true}).locator('option[value="per_75"]')).toBeDisabled();
+  await expect(page.locator(".pvp-rows .stat-pct-sublabel").first()).toBeVisible();
   if (width === 390) {
-    const sizes = await page.locator(".pc04-compare button:visible").evaluateAll(buttons => buttons.map(button => button.getBoundingClientRect().height));
+    const sizes = await page.locator(".pvp-card button:visible").evaluateAll(buttons => buttons.map(button => button.getBoundingClientRect().height));
     expect(Math.min(...sizes)).toBeGreaterThanOrEqual(40);
   }
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
@@ -21,21 +21,27 @@ for (const width of [1440,390]) test(`Compare starts on silhouette cards and a o
 
 test("Custom picks and exact counting units survive reload and Back/Forward; SVG carries current values",async({page})=>{
   await openWorkbench(page,"/compare?playerA=23&playerB=24&season=2025-26&phase=regular_season&releaseId=fixture-release&beforeDate=2026-04-13");
-  await page.getByRole("radio",{name:"Custom",exact:true}).click();
+  await page.getByRole("button",{name:"Edit Metrics",exact:true}).click();
+  const drawer=page.getByRole("dialog");await expect(drawer.getByRole("heading",{name:"Edit Metrics"})).toBeVisible();
   // The checkbox is controlled by the URL, which React 19.3 applies after the click event returns.
-  await page.getByRole("checkbox",{name:"Fouls Total",exact:true}).click();await expect(page.getByRole("checkbox",{name:"Fouls Total",exact:true})).toBeChecked();await expect(page).toHaveURL(/customMetrics=.*pf/);
-  await page.reload();await expect(page.getByRole("checkbox",{name:"Fouls Total",exact:true})).toBeChecked();
-  await page.getByRole("radio",{name:"Totals",exact:true}).click();
+  await drawer.getByText("Fouls Total",{exact:true}).click();await expect(drawer.getByRole("checkbox",{name:"Fouls Total",exact:true})).toBeChecked();
+  await expect(page).toHaveURL(/preset=custom/);await expect(page).toHaveURL(/customMetrics=.*pf/);
+  await page.keyboard.press("Escape");
+  await page.reload();await expect(page.getByRole("radio",{name:"Custom",exact:true})).toHaveAttribute("aria-checked","true");
+  await page.getByRole("button",{name:"Edit Metrics",exact:true}).click();await expect(page.getByRole("dialog").getByRole("checkbox",{name:"Fouls Total",exact:true})).toBeChecked();
+  await page.keyboard.press("Escape");
+  const mode=page.getByRole("combobox",{name:"Counting mode",exact:true});
+  await mode.selectOption("raw");
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("1960.0");
-  await page.goBack();await expect(page.getByRole("radio",{name:"Per Game",exact:true})).toHaveAttribute("aria-checked","true");
+  await page.goBack();await expect(mode).toHaveValue("per_game");
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("28.0");await page.goForward();
-  await expect(page.getByRole("radio",{name:"Totals",exact:true})).toHaveAttribute("aria-checked","true");
+  await expect(mode).toHaveValue("raw");
   await page.getByRole("button",{name:"More",exact:true}).click();const download=page.waitForEvent("download");await page.getByRole("menuitem",{name:"Export SVG",exact:true}).click();
   const exported = await download;
   expect(exported.suggestedFilename()).toMatch(/\.svg$/);
   const svg = readFileSync((await exported.path())!, "utf8");
-  expect(svg).toContain("1960.0");expect(svg).toContain("Fouls Total");expect(svg).not.toContain("var(--");
-  const image = page.waitForEvent("download");await page.getByRole("button",{name:"Share image",exact:true}).click();
+  expect(svg).toContain("1960.0");expect(svg).toContain("Fouls");expect(svg).not.toContain("var(--");
+  const image = page.waitForEvent("download");await page.getByRole("button",{name:"Share Image",exact:true}).click();
   const png = readFileSync((await (await image).path())!);
   expect(png.subarray(0,8).toString("hex")).toBe("89504e470d0a1a0a");
 });

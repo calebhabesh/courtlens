@@ -27,6 +27,8 @@ export interface ImageExportOptions {
   evidenceId?: string;
   filename: string;
   units?: string;
+  /** Embed `<image>` elements (headshots) as data URLs first; a blob SVG cannot load them itself. */
+  inlineImages?: boolean;
 }
 
 /** Resolve token-valued SVG attributes before detaching from the dashboard's CSS cascade. */
@@ -111,7 +113,7 @@ export async function exportSvgAsPng(
   svgElement: SVGSVGElement,
   options: ImageExportOptions
 ): Promise<void> {
-  const { title, subtitle, context, evidenceId, filename, units } = options;
+  const { title, subtitle, context, evidenceId, filename, units, inlineImages = false } = options;
 
   // Determine SVG dimensions
   const svgRect = svgElement.getBoundingClientRect();
@@ -121,7 +123,9 @@ export async function exportSvgAsPng(
   // Set up canvas dimensions with padding for CourtLens branded header and footer
   const dpr = typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 2, 2) : 2;
   const headerHeight = 90;
-  const footerHeight = 44;
+  // A narrow export (the 560px compare card) puts the notice on its own line above the evidence.
+  const narrow = rawWidth + 48 < 720;
+  const footerHeight = narrow ? 58 : 44;
   const paddingX = 24;
 
   const totalWidth = Math.round(rawWidth + paddingX * 2);
@@ -175,7 +179,7 @@ export async function exportSvgAsPng(
   ctx.stroke();
 
   // 3. Render SVG onto canvas
-  const svgXml = new XMLSerializer().serializeToString(resolveSvgTokens(svgElement));
+  const svgXml = new XMLSerializer().serializeToString(inlineImages ? await inlineSvgImages(svgElement) : resolveSvgTokens(svgElement));
   const svgBlob = new Blob([svgXml], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(svgBlob);
 
@@ -211,7 +215,7 @@ export async function exportSvgAsPng(
 
   const notice = "Strictly Historical · Zero Inferred Claims · No Forced Winner";
   const noticeWidth = ctx.measureText(notice).width;
-  ctx.fillText(notice, totalWidth - paddingX - noticeWidth, footerY);
+  ctx.fillText(notice, narrow ? paddingX : totalWidth - paddingX - noticeWidth, narrow ? footerY - 16 : footerY);
 
   // 5. Trigger download
   return new Promise<void>((resolve, reject) => {

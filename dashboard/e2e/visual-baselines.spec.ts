@@ -238,7 +238,7 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
   test.beforeEach(async ({page}) => {await page.setViewportSize({width:view.width,height:view.height});await stableWorkspace(page);await firstLoadFixtures(page);});
   for (const [name,path] of [["compare","/compare"],["stat-shift","/stat-line-shift"],["shot-profile","/similar-players/shot-profile"],["shot-aftermath","/research/shooting/aftermath"],["similar-players","/similar-players"],["recent-games","/last-games"],["operation-gallery","/research/operation"]]) test(name,async({page})=>{
     await openWorkbench(page,path);
-    if(path === "/compare") await expect(page.locator(".pc04-identity-card[data-placeholder]")).toHaveCount(2);
+    if(path === "/compare") await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
     else if(path === "/research/operation") await expect(page.getByRole("region",{name:"Available research operations"})).toBeVisible();
     else await expect(page.getByRole("region",{name:"Observed example context"})).toBeVisible();
     await settle(page);await expect(page).toHaveScreenshot(`first-load-${name}-${view.name}.png`,shot);
