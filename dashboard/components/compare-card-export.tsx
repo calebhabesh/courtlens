@@ -60,14 +60,8 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
       const id = `pvp-export-clip-${side}`;
       return <g key={player.id}>
         <clipPath id={id}><rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" /></clipPath>
-        {/* The card's watermark edge (player-compare-view.css), so logos stay readable on their colour. */}
-        <filter id={`${id}-edge`} colorInterpolationFilters="sRGB">
-          <feComponentTransfer><feFuncR type="linear" slope="1.8" /><feFuncG type="linear" slope="1.8" /><feFuncB type="linear" slope="1.8" /></feComponentTransfer>
-          <feColorMatrix type="saturate" values="0.75" />
-          <feDropShadow dx="0" dy="0" stdDeviation="0.75" floodColor="#FFFFFF" floodOpacity="0.8" />
-        </filter>
         <rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" fill={teamBrandColor(latest) ?? "var(--color-surface-3)"} />
-        {teamRecord(latest) && <image href={teamRecord(latest)!.asset} x={x - PHOTO * 0.075} y={TOP - PHOTO * 0.115} width={PHOTO * 1.15} height={PHOTO * 1.15} opacity="0.5" filter={`url(#${id}-edge)`} clipPath={`url(#${id})`} />}
+        {teamRecord(latest) && <image href={teamRecord(latest)!.asset} x={x - PHOTO * 0.075} y={TOP - PHOTO * 0.115} width={PHOTO * 1.15} height={PHOTO * 1.15} opacity="0.42" clipPath={`url(#${id})`} />}
         {source && <image href={source.src} x={x} y={TOP} width={PHOTO} height={PHOTO} clipPath={`url(#${id})`} preserveAspectRatio="xMidYMax slice" />}
         <rect x={x + PHOTO - 58} y={TOP + PHOTO - 30} width="52" height="24" rx="6" fill="var(--color-text)" />
         <text x={x + PHOTO - 32} y={TOP + PHOTO - 13} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-surface-0)">{`${player.games_played} GP`}</text>

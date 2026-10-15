@@ -69,3 +69,14 @@ Checks: dashboard lint, typecheck and Vitest 540/540; production webpack build i
 3181/4181. Two PvP phone baselines (FO11 player comparison, PC04 compare) changed only in the
 watermark and were regenerated; all 92 visual baselines then pass, as do compare and player
 profile specs.
+
+## Contrast treatment removed (instruction 71)
+
+Owner, 2026-10-15: now that the logos are larger they are easier to see, so undo the contrast
+effect from instruction 69. The watermark is back to the plain logo at 42% opacity, with no
+filter, at the 115% size from instruction 70; the share image drops its SVG filter too.
+[Jokić vs Gilgeous-Alexander and Leonard](watermark-115-plain.png). Red-on-red (Raptors) and
+navy-on-navy logos (76ers, Jazz) are fainter than with the treatment.
+
+Checks: dashboard lint, typecheck and Vitest 540/540; production webpack build in a sandbox on
+3182/4182; 100 visual, compare and player profile checks pass (1 skipped).
