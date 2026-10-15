@@ -3,6 +3,27 @@ import { openWorkbench } from "./workbench-navigation";
 
 // Alignment row 2: the player page melds Databallr's in-table career view into its own page.
 
+for (const width of [1440, 390]) {
+  test(`the pinned Year cell hides scrolling metrics while hovered at ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await openWorkbench(page, "/players/23");
+    const scroll = page.getByRole("region", { name: "Career table scroll area" });
+    const year = scroll.locator("tbody .pinned-col-year").first();
+    await scroll.scrollIntoViewIfNeeded();
+    const maximum = await scroll.evaluate(el => el.scrollWidth - el.clientWidth);
+    expect(maximum).toBeGreaterThan(0);
+    await scroll.evaluate((el, offset) => { el.scrollLeft = offset; }, maximum / 3);
+    await year.hover();
+    const firstPosition = await year.boundingBox();
+    const first = await year.screenshot({ animations: "disabled" });
+    await scroll.evaluate((el, offset) => { el.scrollLeft = offset; }, maximum * 2 / 3);
+    await year.hover();
+    expect(await year.boundingBox()).toEqual(firstPosition);
+    expect((await year.screenshot({ animations: "disabled" })).equals(first)).toBe(true);
+  });
+}
+
 test("a player opened from Stats offers Back to table, and Esc returns to the same table", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await openWorkbench(page, "/stats");
