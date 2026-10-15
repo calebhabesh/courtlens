@@ -11,7 +11,9 @@ Owner instructions 56–58, 2026-10-15.
   disclosure.
 - **Career totals (57).** Below the career table: "Total = N Seasons", then each team's logo
   with its season count in first-team order. The counts come from each season row's teams, so a
-  split season counts for each team, and the footnote says so when that happens.
+  split season counts for each team, and the footnote says so when that happens. Owner
+  follow-up: the logos are larger, 32 px (up from 20 px), and the label and counts use the
+  medium text size.
 - **Rates (Per 36) (58).** Removed from Stats, the player career table and the recoverable
   canonical presets. Each of its columns duplicates the Per 36 counting mode in Overview,
   Shooting or Defense, including the 3PA, FTA and PF rates. `advanced` stays a reserved
@@ -27,7 +29,7 @@ LAC 6.
 | View | Desktop | Phone |
 | --- | --- | --- |
 | Contract table | [1440](contract-1440.png) | [390](contract-390.png), [scrolled to events](contract-390-right.png) |
-| Career table footer | [1440](career-1440.png) | [390](career-390.png) |
+| Career table footer | [1440](career-1440.png), [32 px logos](career-footer-1440.png) | [390](career-390.png) |
 | Career view tabs without Rates (Per 36) | [1440](views-1440.png) | |
 
 Checks: dashboard lint (0 warnings) and typecheck pass, along with 527 Vitest tests and 47

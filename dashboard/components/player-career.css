@@ -62,9 +62,9 @@
   .player-career .player-career-award { white-space: nowrap; }
   /* "Total = N Seasons" and each team's logo with its season count (alignment row 2, 57). */
   .player-career .player-career-totals { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); padding: var(--space-3) var(--space-3) 0; }
-  .player-career .player-career-totals-label { color: var(--color-text); font-size: var(--text-sm); font-weight: 600; }
+  .player-career .player-career-totals-label { color: var(--color-text); font-size: var(--text-md); font-weight: 600; }
   .player-career .player-career-totals ul { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: 0; padding: 0; list-style: none; }
-  .player-career .player-career-totals li { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text); font-size: var(--text-sm); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .player-career .player-career-totals li { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text); font-size: var(--text-md); font-weight: 600; font-variant-numeric: tabular-nums; }
   .player-career .player-career-footnote { margin: 0; padding: var(--space-2) var(--space-3); color: var(--color-text-tertiary); font-size: var(--text-xs); }
   @media (max-width: 767px) {
     .player-career .player-career-scroll { --year-width: 104px; }

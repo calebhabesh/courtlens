@@ -240,7 +240,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
         {Boolean(seasons?.length) && <div className="player-career-totals">
           <span className="player-career-totals-label">Total = {seasons?.length} {seasons?.length === 1 ? "Season" : "Seasons"}</span>
           <ul aria-label="Seasons by team">{teamSeasons.map(([team, count]) => <li key={team} title={`${count} ${count === 1 ? "season" : "seasons"} with ${team}`}>
-            <TeamLogo team={team} size={20} /><span className="sr-only">{team}</span><span>{count}</span>
+            <TeamLogo team={team} size={32} /><span className="sr-only">{team}</span><span>{count}</span>
           </li>)}</ul>
         </div>}
         <p className="player-career-footnote">
