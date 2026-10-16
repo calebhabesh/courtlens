@@ -12,6 +12,7 @@ import { ComparePlayerSeasonPicker } from "./compare-player-season-picker";
 import { formatHeight } from "./player-bio-header";
 import { teamBrandColor } from "@/lib/team-colors";
 import type { ComparisonPlayer, PlayerBio } from "@/lib/types";
+import type { SeasonEnds } from "@/lib/compare-accolades";
 
 export type CompareSlotPlayer = ComparisonPlayer;
 export type CompareSelection = { id: string; name: string };
@@ -38,7 +39,9 @@ export function slotTeams(player: Pick<ComparisonPlayer, "teams" | "teams_chrono
  * latest team's colour, its team logos (every team of the scope, latest in front), a games badge
  * and a change-player icon, then the name and one bio line. Pressing the photo opens search.
  */
-export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games, playedSeasons = null, onSeason, onPick, excludedIds = [] }: {
+export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games, playedSeasons = null, onSeason, onPick, excludedIds = [], ends }: {
+  /** Completed seasons, for the season picker's award marks (75). */
+  ends?: SeasonEnds;
   /** Players already on the card: never offered as a replacement. */
   excludedIds?: string[];
   side: "a" | "b";
@@ -103,7 +106,7 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
             <TeamLogo team={team} size={16} />{teamRecord(team)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
           {onSeason && season && playedSeasons && <span className="pvp-season">
-            <ComparePlayerSeasonPicker label={label} season={season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} beforeDate={beforeDate} align={side === "a" ? "left" : "right"} onSelect={onSeason} />
+            <ComparePlayerSeasonPicker label={label} season={season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} beforeDate={beforeDate} ends={ends} align={side === "a" ? "left" : "right"} onSelect={onSeason} />
           </span>}
         </div>}
   </div>;

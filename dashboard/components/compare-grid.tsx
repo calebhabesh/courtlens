@@ -15,7 +15,7 @@ import { bioLine, teamRecord, type CompareSelection } from "./compare-player-slo
 import { comparisonFlags } from "./charts/semantics";
 import { teamBrandColor } from "@/lib/team-colors";
 import { bestColumns, MAX_GRID_PLAYERS } from "@/lib/compare-grid";
-import { ACCOLADE_KINDS, playerAccolades, type PlayerAccolades } from "@/lib/compare-accolades";
+import { ACCOLADE_KINDS, playerAccolades, type PlayerAccolades, type SeasonEnds } from "@/lib/compare-accolades";
 import { availabilityShare, cardLabel, compareMetricKey, formatCardValue, isPercentUnit, isWholeCount, overallGroupStart, type CompareCountingMode } from "@/lib/comparison-metrics";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { ComparisonGroupPlayer, MetricDefinition, PlayerBio } from "@/lib/types";
@@ -42,8 +42,10 @@ export type GridLine = {
  * The rows of a grid comparison, in card order: the preset's metrics, then Avail % (Overall),
  * Seasons (Career) and the career accolades. Values come only from each column's own row.
  */
-export function gridLines({ columns, keys, mode, overall, career, definitions }: {
+export function gridLines({ columns, keys, mode, overall, career, definitions, ends }: {
   columns: GridColumn[]; keys: string[]; mode: CompareCountingMode; overall: boolean; career: boolean; definitions: MetricDefinition[];
+  /** Completed seasons: their awards count although announced after the cutoff (75). */
+  ends?: SeasonEnds;
 }): { metrics: GridLine[]; accolades: GridLine[]; honors: PlayerAccolades[] } {
   const metrics: GridLine[] = keys.map(key => {
     const metric = compareMetricKey(key, mode);
@@ -69,7 +71,7 @@ export function gridLines({ columns, keys, mode, overall, career, definitions }:
     metrics.push({ key: "seasons", label: "Seasons", title: "Observed seasons through each player's compared season", direction: "high", digits: 0,
       values: seasons, shown: seasons.map(value => value == null ? "—" : String(value)) });
   }
-  const honors = columns.map(column => playerAccolades(column.bio, column.player.championships, column.season, column.beforeDate));
+  const honors = columns.map(column => playerAccolades(column.bio, column.player.championships, column.season, column.beforeDate, ends));
   // Like the duel, honours no player holds are left out; an unknown player keeps a row visible.
   const accolades = honors.some(entry => entry.known) ? ACCOLADE_KINDS.map(kind => {
     const values = honors.map(entry => entry.counts[kind.key] ?? null);
@@ -113,8 +115,8 @@ function Lines({ lines, columns, names, open }: { lines: GridLine[]; columns: nu
  * The grid's column header: the duel's tile at a smaller size, with a remove control. Pressing
  * the photo searches for a replacement in place.
  */
-function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds }: {
-  column: GridColumn; games?: number | null; excludedIds: string[];
+function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds, ends }: {
+  column: GridColumn; games?: number | null; excludedIds: string[]; ends?: SeasonEnds;
   onReplace: (selection: CompareSelection) => void; onRemove: () => void; onSeason: (season: string) => void;
 }) {
   const params = useSearchParams();
@@ -155,7 +157,7 @@ function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds }:
           {line && <span className="pvp-bio">{line}</span>}
           {column.played && <span className="pvp-season">
             <ComparePlayerSeasonPicker label={player.name} season={season} seasons={column.played} awards={column.bio?.reference?.awards}
-              championshipSeasons={player.championships?.seasons ?? []} beforeDate={column.beforeDate} onSelect={onSeason} />
+              championshipSeasons={player.championships?.seasons ?? []} beforeDate={column.beforeDate} ends={ends} onSelect={onSeason} />
           </span>}
         </div>}
   </div>;
@@ -166,7 +168,8 @@ function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds }:
  * and an open slot while fewer than five are chosen. Each row's best value reads heavier;
  * there is no overall winner or tally.
  */
-export function CompareGrid({ columns, lines, controls, career, onReplace, onRemove, onAdd, onSeason, footer, adding = true, onCloseAdd }: {
+export function CompareGrid({ columns, lines, controls, career, onReplace, onRemove, onAdd, onSeason, footer, adding = true, onCloseAdd, ends }: {
+  ends?: SeasonEnds;
   columns: GridColumn[]; lines: ReturnType<typeof gridLines>; controls: ReactNode; career: boolean;
   /** Whether the open "Add Player" tile shows; closing it leaves the toolbar's add button (67). */
   adding?: boolean; onCloseAdd?: () => void;
@@ -184,7 +187,7 @@ export function CompareGrid({ columns, lines, controls, career, onReplace, onRem
       <div className="pvp-grid-players" role="group" aria-label="Compared players">
         <span className="pvp-grid-corner" aria-hidden="true" />
         {columns.map((column, index) => <div key={`${column.player.player_id}-${column.season}`} className="pvp-grid-head">
-          <GridTile column={column} games={career ? column.player.item?.games_played : undefined} excludedIds={ids}
+          <GridTile column={column} games={career ? column.player.item?.games_played : undefined} excludedIds={ids} ends={ends}
             onReplace={selection => onReplace(index, selection)} onRemove={() => onRemove(index)} onSeason={season => onSeason(index, season)} />
         </div>)}
         {open && <div className="pvp-grid-head"><CompareEmptySlot side="a" label="Add Player" selection={null} excludedIds={ids} onPick={onAdd} onDismiss={onCloseAdd} /></div>}
