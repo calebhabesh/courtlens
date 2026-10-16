@@ -6,7 +6,7 @@ import { cardLabel, formatCardValue, isPercentUnit, isWholeCount, pillStrength, 
 import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
-import { honorRows, type AccoladeRow, type SeasonHonors } from "@/lib/compare-accolades";
+import { honorLead, honorRows, type AccoladeRow, type SeasonHonors } from "@/lib/compare-accolades";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { MetricComparisonItem, MetricDefinition } from "@/lib/types";
 import { slotTeams, teamRecord, type CompareSlotPlayer } from "./compare-player-slot";
@@ -109,9 +109,10 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
     })}
     {honors && <>
       <text x={WIDTH / 2} y={honorsTop + 10} textAnchor="middle" fontSize="10" fontWeight="600" fill="var(--color-text-secondary)">{[...new Set(honors.map(entry => entry.season))].join(" / ")} Honors</text>
-      {honorLines.map((row, index) => { const y = honorsTop + 30 + index * ROW + 14; return <g key={row.key}>
-        {row.cells.map((cell, side) => <text key={side} x={WIDTH * (side === 0 ? 0.3 : 0.7)} y={y} textAnchor="middle" fontSize="14" fontWeight={cell?.win || cell?.star ? 600 : 400}
-          fill={cell?.win || cell?.star ? "var(--color-accent)" : cell ? "var(--color-text)" : "var(--color-text-secondary)"}>{cell?.text ?? "—"}</text>)}
+      {honorLines.map((row, index) => { const y = honorsTop + 30 + index * ROW + 14; const lead = honorLead(row.cells); return <g key={row.key}>
+        {/* The row's better result in its player's colour, as on the card (80). */}
+        {row.cells.map((cell, side) => { const leads = lead?.leaders.includes(side); return <text key={side} x={WIDTH * (side === 0 ? 0.3 : 0.7)} y={y} textAnchor="middle" fontSize="14" fontWeight={leads ? 700 : 400}
+          fill={leads ? toneColor(`identity-${side === 0 ? "a" : "b"}`) : cell ? "var(--color-text)" : "var(--color-text-secondary)"}>{cell?.text ?? "—"}</text>; })}
         <text x={WIDTH / 2} y={y - 1} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{row.label}</text>
       </g>; })}
       {!honorLines.length && <text x={WIDTH / 2} y={honorsTop + 44} textAnchor="middle" fontSize="12" fill="var(--color-text-secondary)">—</text>}

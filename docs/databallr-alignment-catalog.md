@@ -1132,6 +1132,14 @@ Follow-up instructions (owner, 2026-10-16, honors layout):
     side. The grid uses the same rows; both share images draw them. Supersedes 52-56's wrapping.
 77. [x] Clear players reads at a glance: a "Clear" text button with the remove × (the same mark
     as each tile's remove) replaces the user-x icon, on the duel and in the grid toolbar.
+78. [x] The empty-slot silhouette reads as an athlete, framed like a headshot: a larger bald head,
+    angular jaw, short thick neck and straight shoulders cropped low (owner reference image).
+79. [x] "Clear" is a plain text button, without the ×.
+80. [x] Honor rows rank results (a win, title, All-Star or 1st Team over a 2nd Team; a lower vote
+    place over a higher one). The better result takes its player's colour in the stat pills'
+    tiers: one place apart slight, two or three clear, more large; against no honour the result
+    itself decides. Ties stay plain; the award icons still mark what was earned. The grid tints
+    each row's best in gold like its stats; both share images match (`honorLead`).
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

@@ -162,9 +162,12 @@ for(const width of [1440,390]) test(`season honors read as one row per award, al
   const row=(label:string)=>honors.getByRole("row",{name:new RegExp(`\\b${label}\\b`)});
   await expect(row("DPOY")).toContainText("Winner");await expect(row("MVP")).toContainText("2nd");
   await expect(row("All-NBA")).toContainText("1st Team");await expect(row("All-Star")).toContainText("Selected");
-  // Gold marks an earned award or All-Star, never a vote finish or a winning side.
-  await expect(row("All-Star").getByText("Selected",{exact:true})).toHaveCSS("color","rgb(255, 209, 102)");
-  await expect(row("MVP").getByText("2nd",{exact:true})).not.toHaveCSS("color","rgb(255, 209, 102)");
+  // The better result takes its player's colour, by how decisive it is (80): player A holds none,
+  // so B leads every row — a win or All-Star in full, a 2nd-place vote as a clear tint.
+  await expect(row("DPOY").locator(".pvp-honor-chip")).toHaveAttribute("data-identity","b");
+  await expect(row("DPOY").locator(".pvp-honor-chip")).toHaveAttribute("data-strength","3");
+  await expect(row("MVP").locator(".pvp-honor-chip")).toHaveAttribute("data-strength","2");
+  await expect(row("All-Star").locator(".pvp-honor-chip")).toHaveCSS("background-color","rgb(128, 191, 255)");
   await expect(honors.getByRole("button")).toHaveCount(0);
   const centers=await page.evaluate(()=>{
     const center=(element:Element)=>{const box=element.getBoundingClientRect();return box.x+box.width/2;};
