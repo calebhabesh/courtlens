@@ -209,10 +209,11 @@ export function CompareGrid({ columns, lines, controls, career, onReplace, onRem
           {honors.map(row => {
             // The row's better result takes the grid's gold best-value tint, like its stats (80).
             const lead = honorLead(row.cells);
+            const tied = !lead && row.cells.every(Boolean);
             return <tr key={row.key}>
               <th scope="row" className="pvp-label pvp-grid-label">{row.label}</th>
               {row.cells.map((cell, index) => <td key={index} className="pvp-grid-honors" data-best={lead?.leaders.includes(index) || undefined}>
-                <HonorChip cell={cell} category={row.label} lead={lead?.leaders.includes(index) ? { strength: lead.strength } : null} /></td>)}
+                <HonorChip cell={cell} category={row.label} lead={lead?.leaders.includes(index) ? { strength: lead.strength } : null} tied={tied} /></td>)}
               {open && <td aria-hidden="true" />}
             </tr>;
           })}
