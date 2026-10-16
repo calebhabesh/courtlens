@@ -233,7 +233,8 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
             <div className="pvp-pair-actions">
               <IconButton size="sm" variant="secondary" icon="swap" label="Swap players" onClick={swap} />
               <IconButton size="sm" variant="ghost" icon="plus" label="Add Player" onClick={addPlayer} />
-              <IconButton size="sm" variant="ghost" icon="user-clear" label="Clear players" onClick={clearPlayers} />
+              {/* A word and the remove ×, so clearing reads at a glance (77). */}
+      <Button size="sm" variant="ghost" icon="close" aria-label="Clear players" title="Clear all players" onClick={clearPlayers}>Clear</Button>
             </div>
             <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" ends={ends} player={b} excludedIds={[a.id, b.id]} bio={bios[1]} season={seasonOf("b")} beforeDate={cutoffOf("b")} playedSeasons={played?.b ?? null}
               onSeason={season => chooseSeason("b", season)} onPick={selection => pick("b", selection)}

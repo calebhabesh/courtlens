@@ -130,7 +130,8 @@ export function CompareGridView({ columns, span, context, workbenchCatalog, metr
       onChange={value => change(countingParams(value), true)} />
     <div className="pvp-grid-actions">
       {canAdd && !adding && <IconButton size="sm" variant="ghost" icon="plus" label="Add Player" onClick={() => setAdding(true)} />}
-      <IconButton size="sm" variant="ghost" icon="user-clear" label="Clear players" onClick={clearPlayers} />
+      {/* A word and the remove ×, so clearing reads at a glance (77). */}
+      <Button size="sm" variant="ghost" icon="close" aria-label="Clear players" title="Clear all players" onClick={clearPlayers}>Clear</Button>
     </div>
   </div>;
 
