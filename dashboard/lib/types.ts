@@ -1128,13 +1128,17 @@ export type ComparisonPlayer = {
   /** The scope's teams by last appearance: a traded player's latest team is last. */
   teams_chronological?: string[];
   championships?: ComparisonChampionships | null;
+  /** Season-to-date scopes only; other windows have no team-game span. */
+  availability?: ComparisonAvailability | null;
   games_played: number;
   total_minutes: number;
   portrait_url?: string;
 };
 
 /** Both players' careers through the comparison cutoff (Compare's Career view). */
-export type ComparisonCareer = { player_id: string; seasons: string[]; item: PlayerResearchItem | null };
+/** Games played and the teams' games over the same span, before the cutoff (row 3, 26). */
+export type ComparisonAvailability = { games: number; team_games: number };
+export type ComparisonCareer = { player_id: string; seasons: string[]; item: PlayerResearchItem | null; availability?: ComparisonAvailability | null };
 export type ComparisonCareerResponse = {
   season: string; phase: string; before_date: string;
   player_a: ComparisonCareer; player_b: ComparisonCareer;

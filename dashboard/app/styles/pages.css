@@ -111,6 +111,10 @@
   margin-block: var(--space-4);
   min-width: 0;
 }
+/* Compare's empty card: both pickers start at the top; one may carry a chip, the other a message. */
+.pvp-card .fo11-selectors {
+  align-items: start;
+}
 .fo11-selectors > .entity-field,
 .fo11-selectors > .compare-picker {
   flex: 1 1 240px;

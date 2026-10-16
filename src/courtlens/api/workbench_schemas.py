@@ -359,6 +359,8 @@ class ComparisonCareer(BaseModel):
     # Observed seasons up to the compared one; the compared season stops at the cutoff.
     seasons: list[str]
     item: PlayerResearchItem | None
+    # Games played and the teams' games over the same seasons, before the cutoff (row 3, 26).
+    availability: dict[str, int] | None = None
 
 
 class ComparisonCareerResponse(BaseModel):

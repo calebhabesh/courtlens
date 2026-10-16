@@ -28,6 +28,21 @@ test("compare card: console actions, change cues, wordmark footer and trend tray
   await expect(page.getByText("Rolling statistic discipline:")).toHaveCount(0);
 });
 
+test("Clear players opens both slots; each plus searches in place and a full pair loads (row 3, 24)",async({page})=>{
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13&preset=offense");
+  await page.getByRole("button",{name:"Clear players",exact:true}).click();
+  await expect(page).toHaveURL(/empty=1/);
+  const url=new URL(page.url());expect(url.searchParams.get("playerA")).toBeNull();expect(url.searchParams.get("preset")).toBe("offense");
+  // The cleared card stays open instead of reloading the default pair.
+  await page.reload();
+  await expect(page.getByRole("button",{name:"Add Player A",exact:true})).toBeVisible();
+  await expect(page.getByRole("button",{name:"Add Player B",exact:true})).toBeVisible();
+  const bar=page.getByRole("region",{name:"Research context controls"});
+  await expect(bar.getByRole("button",{name:"Edit Metrics",exact:true})).toBeDisabled();
+  await page.getByRole("button",{name:"Add Player A",exact:true}).click();
+  await expect(page.getByRole("combobox",{name:"Player A"})).toBeFocused();
+});
+
 test("Career compares both players through the cutoff without league percentiles (row 3, 21)",async({page})=>{
   await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
   await page.getByRole("button",{name:/^Counting mode,/}).click();await page.getByRole("menuitem",{name:"Career · Per Game",exact:true}).click();await expect(page).toHaveURL(/span=career/);

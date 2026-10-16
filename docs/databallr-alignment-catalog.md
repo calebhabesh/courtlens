@@ -1045,6 +1045,35 @@ Follow-up instructions (owner, 2026-10-15, honors copy and counting-menu context
     One browser test skips on the one-season fixture.
     [Evidence](evidence/alignment/compare/honors-context/README.md).
     Instructions 57 and 58 are ready for owner review; instruction 48 remains pending.
+Agent review (2026-10-15, owner asked for a polish pass):
+59. [x] Titles from playoff box scores named a conference champion as the season's champion
+    when the cutoff fell inside the playoffs (2024-05-28 named BOS; LeBron gained a 2016-17
+    title through 2017-05-27). A champion now wins every round: four best-of-seven series, or
+    three through 2002-03 (best-of-five first rounds). All 26 admitted seasons resolve to the
+    real champions. An unknown player ID now says so instead of a replay-date error.
+60. [x] Owner-delegated polish: no pills or emphasis on Seasons and accolades when a player is
+    compared in a season before their first game; per-player season labels ("2025-26 /
+    2016-17") on the Career menu, caption and share title; team logos stay on the first line of a
+    wrapped team name and both season pickers share a baseline on phones; Edit Metrics and More
+    are disabled without a pair. `app/styles/pages.css` closes `@layer pages` at line 40, so its
+    later rules are unlayered (left as found; needs its own pass).
+Follow-up instructions (owner, 2026-10-16, fantasy mock draft):
+61. [x] A Clear players control returns both sides to grey avatars; an open side shows a plus
+    that searches in place. — `user-clear` icon under Swap; `?empty=1` keeps the cleared card
+    from reloading the default pair; one chosen side stays while the other is open
+    (`compare-empty-slot.tsx`).
+62. [x] Pill intensity follows how decisive the lead is. — outline, tint, solid
+    (`pillStrength`): the stronger of the stat's own gap (relative, or percentage points for
+    rates) and the league percentile gap; contrast stays at 4.5:1 or better; the share image
+    matches.
+63. [x] A games-played category for durability. — Overall's last group is Availability (Minutes,
+    Games, Avail %). Avail % is games over the teams' games in the same span before the cutoff,
+    season-to-date and Career only (`player_honours.availability`). No roster feed: a first team
+    counts from the season's first game, a later team from the player's first game for it, and a
+    traded season is capped at the most games any of the player's teams played. A mid-season
+    signing therefore counts earlier team games as missed. Nothing says why a game was missed.
+64. [ ] Owner questions: more than two players on the card; pre-type search suggestions for
+    every player search. — proposals with the agent's recommendation, awaiting the owner.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

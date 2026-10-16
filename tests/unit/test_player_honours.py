@@ -3,6 +3,7 @@ from datetime import date
 from sqlalchemy.orm import Session
 
 from courtlens.services.player_honours import (
+    availability,
     championships,
     season_champions,
     teams_by_last_appearance,
@@ -111,3 +112,51 @@ def test_traded_player_teams_end_with_the_latest(session: Session) -> None:
         session, "d", "2022-23", "regular_season", date(2023, 2, 15), ["kd"]
     )
     assert early == {"kd": ["BKN"]}
+
+
+def _schedule(session: Session, team: str, days: list[date]) -> None:
+    for index, day in enumerate(days):
+        session.add(
+            WorkbenchTeamGame(
+                dataset_id="d",
+                game_id=f"{team}-{index}",
+                team_id=team,
+                opponent_id="X",
+                game_date=day,
+                season="2024-25",
+                phase="regular_season",
+                side="home",
+                points=100,
+                opponent_points=90,
+                stats_json={},
+                source_version_id="v",
+                source_observation_id="o",
+            )
+        )
+
+
+def _days(start: date, count: int) -> list[date]:
+    return [date.fromordinal(start.toordinal() + index * 2) for index in range(count)]
+
+
+def test_availability_counts_team_games_and_caps_a_traded_season(session: Session) -> None:
+    # DAL plays its 10 games early, LAL spreads 10 across the season: at the trade DAL has played
+    # more, so the two spans add up to more than a season and are capped at 10.
+    dal, lal = _days(date(2024, 10, 22), 10), _days(date(2024, 10, 23), 10)
+    _schedule(session, "DAL", dal)
+    _schedule(session, "LAL", lal)
+    session.add_all([
+        _player_game("luka", "DAL", "2024-25", "regular_season", dal[0], "L0"),
+        _player_game("luka", "DAL", "2024-25", "regular_season", dal[1], "L1"),
+        _player_game("luka", "LAL", "2024-25", "regular_season", lal[6], "L2"),
+        _player_game("luka", "LAL", "2024-25", "regular_season", lal[7], "L3"),
+        _player_game("bron", "LAL", "2024-25", "regular_season", lal[0], "B0"),
+    ])  # fmt: skip
+    session.commit()
+    found = availability(session, "d", "regular_season", None, ["luka", "bron", "none"], "2024-25")
+    assert found["luka"] == {"games": 4, "team_games": 10}
+    assert found["bron"] == {"games": 1, "team_games": 10}
+    assert found["none"] == {"games": 0, "team_games": 0}
+    # Games on or after the cutoff never count, for the player or the schedule.
+    before = availability(session, "d", "regular_season", lal[3], ["bron"], "2024-25")
+    assert before["bron"] == {"games": 1, "team_games": 3}

@@ -151,3 +151,90 @@ def championships(
             "complete": debut is not None and first_season is not None and debut > first_season,
         }
     return result
+
+
+def availability(
+    session: Session,
+    dataset_id: str | None,
+    phase: str | None,
+    before_date: date | None,
+    player_ids: list[str],
+    season: str | None = None,
+) -> dict[str, dict[str, int]]:
+    """Per player: games played and their teams' games over the same span, before the cutoff.
+
+    ``season`` limits the span to one season; without it every admitted season counts (a career
+    through the cutoff). There is no roster feed, so each team's span is estimated from
+    appearances: a player's first team of a season counts from the season's first game, and a
+    later team from the player's first game for it, which also closes the previous team's span.
+    A single-team season is exact; around a trade the split can be off by a game or two, and a
+    mid-season signing counts the team's earlier games as missed. A game with no appearance is
+    only "not played": nothing here says why.
+    """
+    if dataset_id is None or not player_ids:
+        return {}
+    appearances = (
+        select(
+            WorkbenchPlayerGame.player_id,
+            WorkbenchPlayerGame.season,
+            WorkbenchPlayerGame.team_id,
+            func.count(),
+            func.min(WorkbenchPlayerGame.game_date),
+        )
+        .where(
+            WorkbenchPlayerGame.dataset_id == dataset_id,
+            WorkbenchPlayerGame.player_id.in_(player_ids),
+            WorkbenchPlayerGame.appearance == "appeared",
+        )
+        .group_by(
+            WorkbenchPlayerGame.player_id, WorkbenchPlayerGame.season, WorkbenchPlayerGame.team_id
+        )
+    )
+    if season is not None:
+        appearances = appearances.where(WorkbenchPlayerGame.season == season)
+    if phase is not None:
+        appearances = appearances.where(WorkbenchPlayerGame.phase == phase)
+    if before_date is not None:
+        appearances = appearances.where(WorkbenchPlayerGame.game_date < before_date)
+    stints: dict[tuple[str, str], list[tuple[date, str, int]]] = {}
+    for player_id, stint_season, team, games, first in session.execute(appearances).all():
+        stints.setdefault((player_id, stint_season), []).append((first, team, games))
+    if not stints:
+        return {player_id: {"games": 0, "team_games": 0} for player_id in player_ids}
+    schedule = select(
+        WorkbenchTeamGame.season, WorkbenchTeamGame.team_id, WorkbenchTeamGame.game_date
+    ).where(
+        WorkbenchTeamGame.dataset_id == dataset_id,
+        WorkbenchTeamGame.season.in_({key[1] for key in stints}),
+        WorkbenchTeamGame.team_id.in_(
+            {team for entries in stints.values() for _, team, _ in entries}
+        ),
+        WorkbenchTeamGame.is_final.is_(True),
+    )
+    if phase is not None:
+        schedule = schedule.where(WorkbenchTeamGame.phase == phase)
+    if before_date is not None:
+        schedule = schedule.where(WorkbenchTeamGame.game_date < before_date)
+    dates: dict[tuple[str, str], list[date]] = {}
+    for team_season, team, day in session.execute(schedule).all():
+        dates.setdefault((team_season, team), []).append(day)
+    result = {player_id: {"games": 0, "team_games": 0} for player_id in player_ids}
+    for (player_id, stint_season), entries in stints.items():
+        ordered = sorted(entries)
+        played = sum(games for _, _, games in ordered)
+        spans = 0
+        for index, (first, team, _) in enumerate(ordered):
+            start = None if index == 0 else first
+            end = ordered[index + 1][0] if index + 1 < len(ordered) else None
+            spans += sum(
+                1
+                for day in dates.get((stint_season, team), [])
+                if (start is None or day >= start) and (end is None or day < end)
+            )
+        # Teams reach a trade date with different games played, so the spans can add up to more
+        # than a season: cap them at the most games any of the player's teams played. A game
+        # missing from the schedule never makes availability exceed 100%.
+        longest = max(len(dates.get((stint_season, team), [])) for _, team, _ in ordered)
+        result[player_id]["games"] += played
+        result[player_id]["team_games"] += max(min(spans, longest), played)
+    return result
