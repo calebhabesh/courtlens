@@ -1,5 +1,6 @@
 import type { ComparisonChampionships, PlayerBio } from "./types";
 import { seasonAwardChips } from "./awards";
+import type { PillStrength } from "./comparison-metrics";
 
 /**
  * The comparison card's accolades (alignment row 3, 9), dated to the compared cutoff.
@@ -145,8 +146,12 @@ export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], champ
   return { career: a.known || b.known ? held : [], season: [a.honors, b.honors] };
 }
 
-/** One player's result in an honour category: "Winner", "4th", "1st Team", "Selected". */
-export type HonorCell = { text: string; description: string; win: boolean; star: boolean };
+/**
+ * One player's result in an honour category: "Winner", "4th", "1st Team", "Selected". ``rank``
+ * orders results within the category, lower is better: a win, title, All-Star or 1st Team is 1,
+ * a vote finish its place, a 2nd Team 2.
+ */
+export type HonorCell = { text: string; description: string; win: boolean; star: boolean; rank: number };
 
 /** One honour category across every compared player, for a row-per-award section (76). */
 export type HonorRow = { key: string; label: string; cells: (HonorCell | null)[] };
@@ -157,16 +162,16 @@ const HONOR_LABELS: Record<string, string> = { TITLE: "Title", MVP: "MVP", DPOY:
 /** A badge's category and its short result, so each award reads on its own row. */
 function honorCategory(badge: SeasonHonorBadge): { key: string; cell: HonorCell } {
   const team = badge.code.match(/^(NBA|DEF)([123])$/);
-  if (team) return { key: team[1], cell: { text: `${["", "1st", "2nd", "3rd"][Number(team[2])]} Team`, description: badge.description, win: false, star: false } };
-  if (badge.code === "TITLE") return { key: "TITLE", cell: { text: "Champion", description: badge.description, win: true, star: false } };
-  if (badge.code === "AS") return { key: "AS", cell: { text: "Selected", description: badge.description, win: false, star: true } };
+  if (team) return { key: team[1], cell: { text: `${["", "1st", "2nd", "3rd"][Number(team[2])]} Team`, description: badge.description, win: false, star: false, rank: Number(team[2]) } };
+  if (badge.code === "TITLE") return { key: "TITLE", cell: { text: "Champion", description: badge.description, win: true, star: false, rank: 1 } };
+  if (badge.code === "AS") return { key: "AS", cell: { text: "Selected", description: badge.description, win: false, star: true, rank: 1 } };
   const vote = badge.code.match(/^([A-Z0-9]+)-([1-9]\d*)$/);
   if (vote) {
     const key = vote[1] === "SMOY" ? "6MOY" : vote[1];
     // "MVP Winner" / "MVP 4th": the category is the row label, the result is the cell.
-    return { key, cell: { text: badge.win ? "Winner" : badge.label.split(" ").at(-1) ?? badge.label, description: badge.description, win: badge.win, star: false } };
+    return { key, cell: { text: badge.win ? "Winner" : badge.label.split(" ").at(-1) ?? badge.label, description: badge.description, win: badge.win, star: false, rank: Number(vote[2]) } };
   }
-  return { key: badge.code, cell: { text: badge.label, description: badge.description, win: badge.win, star: false } };
+  return { key: badge.code, cell: { text: badge.label, description: badge.description, win: badge.win, star: false, rank: 1 } };
 }
 
 /**
@@ -186,4 +191,23 @@ export function honorRows(honors: SeasonHonors[]): HonorRow[] {
   });
   const rank = (key: string) => { const at = HONOR_ORDER.indexOf(key); return at < 0 ? HONOR_ORDER.length : at; };
   return [...rows.values()].sort((a, b) => rank(a.key) - rank(b.key));
+}
+
+/**
+ * Who holds the better result in an honour row (alignment row 3, 80), and how decisively, in
+ * the stat pills' three tiers: one place apart is slight, two or three clear, more is large.
+ * Against no honour at all the result itself decides: a win or 1st Team is large, a top-five
+ * vote or 2nd/3rd Team clear, a lower vote slight. Ties have no leader; this describes one row,
+ * never an overall verdict.
+ */
+export function honorLead(cells: (HonorCell | null)[]): { leaders: number[]; strength: PillStrength } | null {
+  const ranks = cells.map(cell => cell?.rank ?? Infinity);
+  const best = Math.min(...ranks);
+  const leaders = ranks.flatMap((rank, index) => rank === best ? [index] : []);
+  if (!Number.isFinite(best) || leaders.length === cells.length) return null;
+  const next = Math.min(...ranks.filter(rank => rank !== best));
+  const strength: PillStrength = Number.isFinite(next)
+    ? next - best <= 1 ? 1 : next - best <= 3 ? 2 : 3
+    : best === 1 ? 3 : best <= 5 ? 2 : 1;
+  return { leaders, strength };
 }

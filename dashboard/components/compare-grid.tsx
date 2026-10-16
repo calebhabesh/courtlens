@@ -15,7 +15,7 @@ import { bioLine, teamRecord, type CompareSelection } from "./compare-player-slo
 import { comparisonFlags } from "./charts/semantics";
 import { teamBrandColor } from "@/lib/team-colors";
 import { bestColumns, MAX_GRID_PLAYERS } from "@/lib/compare-grid";
-import { ACCOLADE_KINDS, honorRows, playerAccolades, type PlayerAccolades, type SeasonEnds } from "@/lib/compare-accolades";
+import { ACCOLADE_KINDS, honorLead, honorRows, playerAccolades, type PlayerAccolades, type SeasonEnds } from "@/lib/compare-accolades";
 import { availabilityShare, cardLabel, compareMetricKey, formatCardValue, isPercentUnit, isWholeCount, overallGroupStart, type CompareCountingMode } from "@/lib/comparison-metrics";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { ComparisonGroupPlayer, MetricDefinition, PlayerBio } from "@/lib/types";
@@ -206,11 +206,16 @@ export function CompareGrid({ columns, lines, controls, career, onReplace, onRem
           {!lines.accolades.length && <tr className="pvp-pending"><td colSpan={span}>No accolades on record for these players.</td></tr>}
           <GroupRow label="Season Honors" columns={columns.length} open={open} />
           {/* One row per award any player holds, each result in its player's column (76). */}
-          {honors.map(row => <tr key={row.key}>
-            <th scope="row" className="pvp-label pvp-grid-label">{row.label}</th>
-            {row.cells.map((cell, index) => <td key={index} className="pvp-grid-honors"><HonorChip cell={cell} category={row.label} /></td>)}
-            {open && <td aria-hidden="true" />}
-          </tr>)}
+          {honors.map(row => {
+            // The row's better result takes the grid's gold best-value tint, like its stats (80).
+            const lead = honorLead(row.cells);
+            return <tr key={row.key}>
+              <th scope="row" className="pvp-label pvp-grid-label">{row.label}</th>
+              {row.cells.map((cell, index) => <td key={index} className="pvp-grid-honors" data-best={lead?.leaders.includes(index) || undefined}>
+                <HonorChip cell={cell} category={row.label} lead={lead?.leaders.includes(index) ? { strength: lead.strength } : null} /></td>)}
+              {open && <td aria-hidden="true" />}
+            </tr>;
+          })}
           {!honors.length && <tr className="pvp-pending"><td colSpan={span}>No season honors for these players.</td></tr>}
         </tbody>
       </table>

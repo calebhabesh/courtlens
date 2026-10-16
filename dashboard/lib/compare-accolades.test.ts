@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { accoladeGroups, announcedBefore, completedSeasons, honorRows } from "./compare-accolades";
+import { accoladeGroups, announcedBefore, completedSeasons, honorLead, honorRows, type HonorCell } from "./compare-accolades";
 import type { PlayerBio } from "./types";
 
 const bio = (awards: Record<string, string[]>) => ({ reference: { awards } }) as unknown as PlayerBio;
@@ -102,6 +102,26 @@ describe("honorRows (alignment row 3, 76)", () => {
   });
   it("leaves a cell empty when only the other player holds the honour", () => {
     const rows = honorRows([{ season: "2016-17", badges: [{ code: "DEF2", label: "All-Def 2nd", description: "All-Defensive Second Team", win: false }] }, { season: "2016-17", badges: [] }]);
-    expect(rows).toEqual([{ key: "DEF", label: "All-Def", cells: [{ text: "2nd Team", description: "All-Defensive Second Team", win: false, star: false }, null] }]);
+    expect(rows).toEqual([{ key: "DEF", label: "All-Def", cells: [{ text: "2nd Team", description: "All-Defensive Second Team", win: false, star: false, rank: 2 }, null] }]);
+  });
+});
+
+describe("honorLead (alignment row 3, 80)", () => {
+  const cell = (rank: number) => ({ text: "", description: "", win: rank === 1, star: false, rank }) as HonorCell;
+  it("marks the better result, slight for one place, clear for two or three, large beyond", () => {
+    expect(honorLead([cell(1), cell(2)])).toEqual({ leaders: [0], strength: 1 });
+    expect(honorLead([cell(9), cell(8)])).toEqual({ leaders: [1], strength: 1 });
+    expect(honorLead([cell(4), cell(1)])).toEqual({ leaders: [1], strength: 2 });
+    expect(honorLead([cell(1), cell(9)])).toEqual({ leaders: [0], strength: 3 });
+  });
+  it("against no honour, the result itself decides how large the lead is", () => {
+    expect(honorLead([null, cell(1)])).toEqual({ leaders: [1], strength: 3 });
+    expect(honorLead([cell(4), null])).toEqual({ leaders: [0], strength: 2 });
+    expect(honorLead([cell(9), null])).toEqual({ leaders: [0], strength: 1 });
+  });
+  it("has no leader on a tie, across any number of players", () => {
+    expect(honorLead([cell(1), cell(1)])).toBeNull();
+    expect(honorLead([cell(1), cell(1), null])).toEqual({ leaders: [0, 1], strength: 3 });
+    expect(honorLead([cell(2), cell(2), cell(2)])).toBeNull();
   });
 });
