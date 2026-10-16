@@ -28,6 +28,18 @@ const jetBrainsMono = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://courtlens.calebhabesh.com"),
+  openGraph: {
+    type: "website",
+    siteName: "CourtLens",
+    title: "CourtLens · NBA Analytics",
+    description:
+      "NBA research workbench over 26 seasons and 882,849 player-games, with versioned data and scored forecasts.",
+    images: [
+      { url: "/og-image.png", width: 1280, height: 640, alt: "CourtLens NBA player statistics table" }
+    ]
+  },
+  twitter: { card: "summary_large_image" },
   title: {
     default: "CourtLens · NBA Analytics",
     template: "%s · CourtLens"
