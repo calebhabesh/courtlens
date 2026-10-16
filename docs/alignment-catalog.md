@@ -1140,6 +1140,8 @@ Follow-up instructions (owner, 2026-10-16, honors layout):
     tiers: one place apart slight, two or three clear, more large; against no honour the result
     itself decides. Ties stay plain; the award icons still mark what was earned. The grid tints
     each row's best in gold like its stats; both share images match (`honorLead`).
+81. [x] The silhouette is traced from the owner's reference image itself (row-by-row half-widths,
+    mirrored, simplified and smoothed), so its head, ears, neck and shoulder slope match it.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
