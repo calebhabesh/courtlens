@@ -46,6 +46,55 @@ from courtlens.workbench_models import (
 
 # Bounded LRU cache capacity for warm query responses
 LOOKUP_CACHE_MAX_ENTRIES = 1024
+# Season leaders offered before typing: alone in a player search, or ahead of pages and teams.
+LEADER_SUGGESTIONS = 8
+MIXED_LEADER_SUGGESTIONS = 5
+
+
+def season_leaders(
+    session: Session,
+    dataset_id: str | None,
+    season: str | None,
+    phase: str | None,
+    before_date: date | None,
+    limit: int,
+) -> list[str]:
+    """Player IDs by points per game in the scope, the Stats table's default sort.
+
+    Only players with at least half the scope's most games played qualify, so a short sample
+    never leads early in a season. Without a season the newest admitted one is used. These are
+    labelled season leaders, never "popular": there is no usage data behind them.
+    """
+    if dataset_id is None or limit <= 0:
+        return []
+    scope = [
+        WorkbenchPlayerGame.dataset_id == dataset_id,
+        WorkbenchPlayerGame.appearance == "appeared",
+        WorkbenchPlayerGame.phase == (phase or "regular_season"),
+    ]
+    if season is None:
+        season = session.scalar(select(func.max(WorkbenchPlayerGame.season)).where(*scope))
+        if season is None:
+            return []
+    scope.append(WorkbenchPlayerGame.season == season)
+    if before_date is not None:
+        scope.append(WorkbenchPlayerGame.game_date < before_date)
+    games = func.count()
+    points = func.sum(WorkbenchPlayerGame.points)
+    rows = session.execute(
+        select(WorkbenchPlayerGame.player_id, games, points)
+        .where(*scope)
+        .group_by(WorkbenchPlayerGame.player_id)
+    ).all()
+    if not rows:
+        return []
+    floor = max(row[1] for row in rows) / 2
+    ranked = sorted(
+        (row for row in rows if row[1] >= floor),
+        key=lambda row: (-(row[2] or 0) / row[1], -row[1], row[0]),
+    )
+    return [player_id for player_id, _, _ in ranked[:limit]]
+
 
 _index_lock = threading.RLock()
 _indices_by_dataset: dict[str, list[IndexedEntity]] = {}
@@ -468,14 +517,59 @@ def lookup_entities(
 
     # 1. Empty query -> Navigation suggestions
     if not norm_q:
-        # Players have no meaningful order before typing (identity rows would surface in
-        # storage order), so empty input suggests only pages and teams.
+        # Players have no order of their own before typing, so the scope's season leaders lead
+        # (row 3, 64); pages and teams follow when the search allows them.
+        if "player" in allowed_kinds:
+            players = {e.canonical_id: e for e in index if e.kind == "player"}
+            wanted = min(
+                clamped_limit,
+                LEADER_SUGGESTIONS if allowed_kinds == {"player"} else MIXED_LEADER_SUGGESTIONS,
+            )
+            for player_id in season_leaders(
+                session, dataset_id, season, phase, before_date, wanted
+            ):
+                entity = players.get(player_id)
+                if entity is None:
+                    continue
+                items.append(
+                    LookupItem(
+                        id=entity.id,
+                        kind="player",
+                        canonical_id=entity.canonical_id,
+                        display_name=entity.display_name,
+                        subtitle=entity.latest_tricode,
+                        match_basis="leader",
+                        match_score=0.0,
+                        matched_alias=None,
+                        # Nicknames help only once typed; untyped suggestions stay plain.
+                        nicknames=[],
+                        portrait_url=entity.portrait_url,
+                        portrait_fallback=entity.portrait_fallback,
+                        availability=LookupAvailability(
+                            has_current_season=True,
+                            status="available",
+                            seasons=list(entity.seasons),
+                            latest_team_id=entity.latest_team_id,
+                            latest_tricode=entity.latest_tricode,
+                            conference=entity.conference,
+                            division=entity.division,
+                        ),
+                        destination_url=build_destination_url(
+                            entity.base_destination,
+                            release_id=release_id,
+                            season=season,
+                            phase=phase,
+                            before_date=before_date.isoformat() if before_date else None,
+                        ),
+                        metadata=entity.metadata,
+                    )
+                )
         suggestion_entities = [e for e in index if e.kind in allowed_kinds and e.kind != "player"]
         # Prefer pages and prominent entities for empty suggestions
         suggestion_entities.sort(
             key=lambda e: 0 if e.kind == "page" else 1 if e.kind == "team" else 2
         )
-        for entity in suggestion_entities[:clamped_limit]:
+        for entity in suggestion_entities[: max(0, clamped_limit - len(items))]:
             items.append(
                 LookupItem(
                     id=entity.id,

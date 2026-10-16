@@ -4,6 +4,7 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { LookupInput } from "./lookup-input";
 import { queryLookup } from "@/lib/workbench-api";
 import type { LookupItem } from "@/lib/types";
+import { storageKeys } from "@/lib/storage-keys";
 
 vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams() }));
 vi.mock("@/lib/workbench-api", async importOriginal => ({
@@ -36,6 +37,33 @@ describe("LookupInput before typing", () => {
     await settle();
     expect(screen.queryByRole("listbox")).toBeNull();
     expect(screen.getByRole("combobox").getAttribute("aria-expanded")).toBe("false");
+  });
+
+  it("leads with recent picks, then the season leaders, and never repeats or offers an excluded player (row 3, 64)", async () => {
+    vi.useFakeTimers();
+    const leader = (id: string, name: string) => ({ ...jokic, id: `player:${id}`, canonical_id: id, display_name: name, match_basis: "leader" }) as unknown as LookupItem;
+    window.localStorage.setItem(storageKeys.recentSearches, JSON.stringify([jokic, { ...jokic, id: "player:23", canonical_id: "23", display_name: "Excluded Star" }]));
+    respond([leader("1628983", "Shai Gilgeous-Alexander"), leader("203999", "Nikola Jokić")]);
+    render(<LookupInput label="Search players" value="" season="2024-25" onChange={() => {}} onSelect={() => {}} kinds={["player"]} excludedIds={["23"]} />);
+    fireEvent.focus(screen.getByRole("combobox"));
+    await settle();
+    const list = screen.getByRole("listbox");
+    expect([...list.querySelectorAll(".lookup-group-header, .lookup-item-name")].map(node => node.textContent)).toEqual([
+      "Recent", "Nikola Jokić", "Season leaders · 2024-25", "Shai Gilgeous-Alexander"
+    ]);
+    window.localStorage.removeItem(storageKeys.recentSearches);
+  });
+
+  it("with openOnFocus off, focus alone keeps results closed until the field is pressed (row 3, 69)", async () => {
+    vi.useFakeTimers();
+    respond([{ ...jokic, match_basis: "leader" } as unknown as LookupItem]);
+    render(<LookupInput label="Search players" value="" season="2030-31" openOnFocus={false} onChange={() => {}} onSelect={() => {}} kinds={["player"]} />);
+    fireEvent.focus(screen.getByRole("combobox"));
+    await settle();
+    expect(screen.queryByRole("listbox")).toBeNull();
+    fireEvent.click(screen.getByRole("combobox"));
+    await settle();
+    expect(screen.getByRole("listbox").textContent).toContain("Nikola Jokić");
   });
 
   it("still shows matches once a name is typed", async () => {

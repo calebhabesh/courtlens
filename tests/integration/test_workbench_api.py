@@ -82,13 +82,17 @@ def test_workbench_metrics(client: TestClient) -> None:
 
 def test_workbench_lookup_endpoint(client: TestClient) -> None:
     """Incremental lookup endpoint discovers players, teams, and navigation pages."""
-    # 1. Empty query returns navigation suggestions
+    # 1. Empty query returns the season's leaders (row 3, 64), then navigation suggestions
     resp_empty = client.get("/api/workbench/lookup")
     assert resp_empty.status_code == 200
     data_empty = resp_empty.json()
     assert data_empty["catalog_version"] == "pf04-v2"
     assert len(data_empty["items"]) == 10
-    assert all(i["match_basis"] == "suggestion" for i in data_empty["items"])
+    bases = [i["match_basis"] for i in data_empty["items"]]
+    leaders = bases.count("leader")
+    assert 0 < leaders <= 5
+    assert bases == ["leader"] * leaders + ["suggestion"] * (10 - leaders)
+    assert all(i["kind"] == "player" for i in data_empty["items"][:leaders])
     destinations = [i["destination_url"] for i in data_empty["items"]]
     assert any("/stats" in d for d in destinations)
 

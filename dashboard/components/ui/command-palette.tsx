@@ -13,7 +13,7 @@ import { PlayerPortrait } from "../player-portrait";
 import { TeamLogo, TeamLogoStack } from "../team-logo";
 import { queryLookup } from "@/lib/workbench-api";
 import { defaultLookupCache, buildLookupCacheKey } from "@/lib/lookup-cache";
-import { clearRecentSearches, forgetRecentSearch, rememberRecentSearch, useRecentSearches } from "@/lib/recent-searches";
+import { clearRecentSearches, forgetRecentSearch, IDLE_SETTLE_MS, rememberRecentSearch, useRecentSearches, useScopedRecents } from "@/lib/recent-searches";
 import { nicknameCaption } from "@/lib/lookup-caption";
 import type { LookupItem, LookupAvailability } from "@/lib/types";
 
@@ -367,6 +367,28 @@ export function GlobalCommandPalette({
     return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, [isOpen, onClose]);
 
+  // Before typing (row 3, 64): the scope's season leaders, between recents and pages. A cached
+  // read shows at once; otherwise one request fills them in.
+  const leaderOptions = { query: "", releaseId, season, phase, beforeDate, kinds: ["player" as const], limit: 5 };
+  const leaderKey = buildLookupCacheKey(leaderOptions);
+  const [fetchedLeaders, setFetchedLeaders] = useState<{ key: string; items: LookupItem[] } | null>(null);
+  const [leadersSettled, setLeadersSettled] = useState<string | null>(null);
+  const leaders = defaultLookupCache.get(leaderKey)?.items ?? (fetchedLeaders?.key === leaderKey ? fetchedLeaders.items : []);
+  const leadersReady = Boolean(defaultLookupCache.get(leaderKey)) || leadersSettled === leaderKey;
+  useEffect(() => {
+    if (!isOpen || defaultLookupCache.get(leaderKey)) return;
+    const abort = new AbortController();
+    // A slow read never holds the empty state for long (72).
+    const timer = window.setTimeout(() => setLeadersSettled(leaderKey), IDLE_SETTLE_MS);
+    queryLookup({ ...leaderOptions, signal: AbortSignal.any([abort.signal, AbortSignal.timeout(5000)]) })
+      .then(response => { if (!abort.signal.aborted) { defaultLookupCache.set(leaderKey, response); setFetchedLeaders({ key: leaderKey, items: response.items }); } })
+      .catch(() => undefined)
+      .finally(() => { if (!abort.signal.aborted) setLeadersSettled(leaderKey); });
+    return () => { abort.abort(); window.clearTimeout(timer); };
+    // leaderKey holds every scope value of the request.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, leaderKey]);
+
   // Query API when query changes
   useEffect(() => {
     controller.current?.abort();
@@ -433,15 +455,20 @@ export function GlobalCommandPalette({
 
   // Result groupings
   const isQueryEmpty = query.trim() === "";
-  const recents = useRecentSearches();
+  // Recents read as ordinary results: the same team logo and caption in this scope (70).
+  const { items: recents, ready: recentsReady } = useScopedRecents(useRecentSearches(), { releaseId, season, phase, beforeDate }, isOpen && isQueryEmpty);
+  // The empty state appears once, complete: recents, leaders and pages together (72).
+  const idleReady = recentsReady && leadersReady;
+  const seasonLeaders = leaders.filter(item => item.match_basis === "leader" && !recents.some(entry => entry.kind === "player" && entry.canonical_id === item.canonical_id));
   const players = items.filter(i => i.kind === "player");
   const teams = items.filter(i => i.kind === "team");
   const pages = items.filter(i => i.kind === "page");
 
   // D8: one search with grouped results. The empty state shows bounded local recents, then pages.
   const displayGroups: { name: string; recent?: boolean; items: LookupItem[] }[] = isQueryEmpty
-    ? [
+    ? !idleReady ? [] : [
         ...(recents.length > 0 ? [{ name: "Recent", recent: true, items: recents }] : []),
+        ...(seasonLeaders.length > 0 ? [{ name: `Season leaders${season ? ` · ${season}` : ""}`, items: seasonLeaders }] : []),
         { name: "Pages", items: DEFAULT_QUICK_ACTIONS },
       ]
     : [
@@ -624,7 +651,7 @@ export function GlobalCommandPalette({
                       {group.items.map(item => {
                         const itemIndex = globalCounter++;
                         const isSelected = itemIndex === activeIndex;
-                        const caption = group.recent ? KIND_LABEL[item.kind] : compactCaption(item) ?? KIND_LABEL[item.kind];
+                        const caption = group.recent && item.kind !== "player" ? KIND_LABEL[item.kind] : compactCaption(item) ?? KIND_LABEL[item.kind];
 
                         return (
                           <div
@@ -678,7 +705,7 @@ export function GlobalCommandPalette({
                                 )}
                               </span>
                               <span className="lookup-item-subtitle ui-command-item-subtitle">
-                                {item.kind === "player" && !group.recent && (
+                                {item.kind === "player" && (
                                   <TeamLogoStack
                                     decorative
                                     size={16}

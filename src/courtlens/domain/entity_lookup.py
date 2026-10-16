@@ -203,7 +203,8 @@ class IndexedEntity:
     games: int = 0
 
 
-MatchBasis = Literal["exact", "prefix", "token_prefix", "substring", "typo", "suggestion"]
+# "leader": a season leader suggested before typing (alignment row 3, 64).
+MatchBasis = Literal["exact", "prefix", "token_prefix", "substring", "typo", "suggestion", "leader"]
 
 
 def score_entity_match(

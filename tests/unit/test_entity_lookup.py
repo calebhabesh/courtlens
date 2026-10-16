@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import concurrent.futures
 import time
+from datetime import date
 
 import pytest
 from sqlalchemy.orm import Session
@@ -20,9 +21,11 @@ from courtlens.services.entity_lookup import (
     clear_lookup_caches,
     get_or_build_entity_index,
     lookup_entities,
+    season_leaders,
 )
 from courtlens.workbench_models import (
     WorkbenchIdentity,
+    WorkbenchPlayerGame,
 )
 
 
@@ -589,3 +592,39 @@ def test_equally_good_matches_rank_current_then_most_games(monkeypatch: pytest.M
     # An exact full name still outranks prominence.
     law = service.lookup_entities(None, query="vic law", kinds=["player"]).items  # type: ignore[arg-type]
     assert law[0].display_name == "Vic Law"
+
+
+def _game(player: str, day: int, points: int) -> WorkbenchPlayerGame:
+    return WorkbenchPlayerGame(
+        dataset_id="d", game_id=f"{player}-{day}", player_id=player, team_id="DEN", opponent_id="X",
+        game_date=date(2025, 1, day), season="2024-25", phase="regular_season",
+        appearance="appeared", minutes_original="30:00", points=points, stats_json={},
+        source_version_id="v", source_observation_id="o",
+    )  # fmt: skip
+
+
+def test_empty_player_search_suggests_season_leaders(test_db_session: Session):
+    """Row 3, 64: before typing, a player search offers the scope's points-per-game leaders."""
+    test_db_session.add_all(
+        [_game("203999", day, 30) for day in range(1, 5)]
+        + [_game("1629029", day, 20) for day in range(1, 5)]
+        # One 50-point game is under half the scope's most games: never a leader.
+        + [_game("1631114", 1, 50)]
+    )
+    test_db_session.commit()
+    assert season_leaders(test_db_session, "d", "2024-25", "regular_season", None, 5) == [
+        "203999",
+        "1629029",
+    ]
+    res = lookup_entities(test_db_session, query="", dataset_id="d", kinds=["player"])
+    assert [(item.display_name, item.match_basis) for item in res.items] == [
+        ("Nikola Jokić", "leader"),
+        ("Luka Dončić", "leader"),
+    ]
+    assert all(not item.nicknames for item in res.items)
+    # The main search keeps its pages after the leaders, within the same limit.
+    mixed = lookup_entities(test_db_session, query="", dataset_id="d", limit=10)
+    assert [item.kind for item in mixed.items[:2]] == ["player", "player"]
+    assert len(mixed.items) == 10 and mixed.items[2].kind != "player"
+    # Games on or after the cutoff never count.
+    assert season_leaders(test_db_session, "d", None, None, date(2025, 1, 2), 5)[0] == "1631114"

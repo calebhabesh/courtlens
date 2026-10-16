@@ -646,7 +646,7 @@ export type LookupItem = {
   canonical_id: string;
   display_name: string;
   subtitle?: string | null;
-  match_basis: "exact" | "prefix" | "token_prefix" | "substring" | "typo" | "suggestion";
+  match_basis: "exact" | "prefix" | "token_prefix" | "substring" | "typo" | "suggestion" | "leader";
   match_score: number;
   matched_alias?: string | null;
   /** Every Basketball-Reference nickname, the matched one (if any) first. */
@@ -1139,6 +1139,22 @@ export type ComparisonPlayer = {
 /** Games played and the teams' games over the same span, before the cutoff (row 3, 26). */
 export type ComparisonAvailability = { games: number; team_games: number };
 export type ComparisonCareer = { player_id: string; seasons: string[]; item: PlayerResearchItem | null; availability?: ComparisonAvailability | null };
+/** One column of the multi-player grid (alignment row 3, 64). */
+export type ComparisonGroupPlayer = {
+  player_id: string; name: string;
+  /** The season row, or the career through the cutoff; null without games in the scope. */
+  item: PlayerResearchItem | null;
+  /** Career span only: observed seasons up to the compared one. */
+  seasons: string[] | null;
+  teams_chronological: string[];
+  championships: ComparisonChampionships | null;
+  availability: ComparisonAvailability | null;
+};
+export type ComparisonGroupResponse = {
+  context: { release_id: string; season: string; phase: string; before_date: string; window: string };
+  span: "season" | "career";
+  players: ComparisonGroupPlayer[];
+};
 export type ComparisonCareerResponse = {
   season: string; phase: string; before_date: string;
   player_a: ComparisonCareer; player_b: ComparisonCareer;

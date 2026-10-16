@@ -151,7 +151,7 @@ describe("Design Language v1 Header Component", () => {
 describe("FO02 search and drawer", () => {
   afterEach(() => window.localStorage.clear());
 
-  it("shows Recent above Pages in the empty search state once something was opened", () => {
+  it("shows Recent above Pages in the empty search state once something was opened", async () => {
     window.localStorage.setItem("courtlens-recent-searches-v1", JSON.stringify([{
       id: "team-bos", kind: "team", canonical_id: "1610612738", display_name: "Boston Celtics", match_basis: "exact",
       match_score: 1, destination_url: "/teams/1610612738", portrait_fallback: "BOS",
@@ -161,13 +161,15 @@ describe("FO02 search and drawer", () => {
     act(() => {
       fireEvent.click(screen.getByRole("searchbox", { name: "Search players, teams and pages" }));
     });
+    // The empty state appears once its recents and leaders have settled (row 3, 72).
+    await screen.findByRole("option", { name: /Boston Celtics/ });
     const headings = Array.from(document.querySelectorAll(".ui-command-group-heading > span:first-child")).map(node => node.textContent);
     expect(headings).toEqual(["Recent", "Pages"]);
     expect(screen.getByRole("option", { name: /Boston Celtics/ })).toBeDefined();
     expect(screen.getByRole("button", { name: "Close search" })).toBeDefined();
   });
 
-  it("removes one recent search, or clears them all", () => {
+  it("removes one recent search, or clears them all", async () => {
     const recent = (id: string, name: string) => ({
       id, kind: "player", canonical_id: id, display_name: name, match_basis: "exact", match_score: 1,
       destination_url: `/players/${id}`, availability: { has_current_season: true, status: "available", seasons: [] }
@@ -177,6 +179,7 @@ describe("FO02 search and drawer", () => {
     act(() => {
       fireEvent.click(screen.getByRole("searchbox", { name: "Search players, teams and pages" }));
     });
+    await screen.findByRole("option", { name: /Vic Law/ });
     // The remove button does not open the player.
     act(() => { fireEvent.click(screen.getByRole("button", { name: "Remove Vic Law from recent searches" })); });
     expect(screen.queryByRole("option", { name: /Vic Law/ })).toBeNull();
