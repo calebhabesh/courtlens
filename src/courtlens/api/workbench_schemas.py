@@ -363,6 +363,26 @@ class ComparisonCareer(BaseModel):
     availability: dict[str, int] | None = None
 
 
+class ComparisonGroupPlayer(BaseModel):
+    """One column of the multi-player comparison grid (alignment row 3, 64)."""
+
+    player_id: str
+    name: str
+    # The season row (or the career through the cutoff); None without games in the scope.
+    item: PlayerResearchItem | None
+    # Career span only: observed seasons up to the compared one.
+    seasons: list[str] | None = None
+    teams_chronological: list[str]
+    championships: dict[str, Any] | None
+    availability: dict[str, int] | None
+
+
+class ComparisonGroupResponse(BaseModel):
+    context: dict[str, Any]
+    span: Literal["season", "career"]
+    players: list[ComparisonGroupPlayer]
+
+
 class ComparisonCareerResponse(BaseModel):
     season: str
     phase: str

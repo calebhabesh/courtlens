@@ -12,6 +12,8 @@ for (const width of [1440,390]) test(`Compare opens on a resolved pair with perc
   await expect(page.locator(".pvp-slot")).toHaveCount(2);await expect(page.locator(".pvp-badge")).toHaveCount(2);
   await page.getByRole("button",{name:/^Counting mode,/}).click();
   await expect(page.getByRole("menuitem",{name:/^Per 75/})).toBeDisabled();await page.keyboard.press("Escape");
+  // Measure once the menu has finished closing: its items shrink as they animate out.
+  await expect(page.getByRole("menuitem")).toHaveCount(0);
   // Owner trial (row 3, 22): league percentiles are hidden to keep the slim card on one screen.
   await expect(page.locator(".pvp-rows .stat-pct-sublabel")).toHaveCount(0);
   if (width === 390) {

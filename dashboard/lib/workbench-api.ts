@@ -5,6 +5,7 @@ assertCurrentEnvironment();
 
 import type {
   ComparisonCareerResponse,
+  ComparisonGroupResponse,
   AssistantAnswer,
   PlayerBio,
   AssistantQueryRequest,
@@ -190,6 +191,15 @@ export async function getPlayerCareer(
   return wbFetch(`/api/workbench/players/${encodeURIComponent(id)}/career?${sp}`, {
     signal: AbortSignal.timeout(30000)
   });
+}
+
+/** Up to five players under one scope for Compare's grid: season rows or careers (row 3, 64). */
+export async function getComparisonGroup(playerIds: string[], params: { season: string; beforeDate?: string; phase: string; window?: string; span: "season" | "career"; releaseId?: string }): Promise<ComparisonGroupResponse> {
+  const sp = new URLSearchParams({ season: params.season, phase: params.phase, span: params.span, window: params.window ?? "season" });
+  playerIds.forEach(id => sp.append("playerId", id));
+  if (params.beforeDate) sp.set("beforeDate", params.beforeDate);
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  return wbFetch(`/api/workbench/compare/group?${sp}`, { signal: AbortSignal.timeout(30000) });
 }
 
 /** Both players' careers through a comparison's cutoff; later games never count. */

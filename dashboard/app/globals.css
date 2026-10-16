@@ -23,6 +23,7 @@
 @import "../components/threaded-assistant.css";
 @import "../components/agent-answer.css";
 @import "../components/player-portrait.css";
+@import "../components/player-silhouette.css";
 @import "../components/ui/input.css";
 @import "../components/ui/checkbox.css";
 @import "../components/ui/switch.css";
@@ -76,6 +77,7 @@
 @import "../components/player-bio-header.css";
 @import "../components/player-reference-sections.css";
 @import "../components/player-compare-view.css";
+@import "../components/compare-grid.css";
 @import "./styles/foundation.css";
 @import "./styles/charts.css";
 

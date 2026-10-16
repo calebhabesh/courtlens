@@ -368,3 +368,35 @@ def test_comparison_career_stops_at_the_compared_season_and_cutoff(client: TestC
         "item": None,
         "availability": None,
     }
+
+
+def test_comparison_group_columns_match_stats_rows_and_careers(client: TestClient) -> None:
+    catalog = client.get("/api/workbench/catalog").json()
+    cutoff = next(
+        s["default_before_date"]
+        for s in catalog["stats_scopes"]
+        if s["season"] == "2024-25" and s["phase"] == "regular_season"
+    )
+    params: dict[str, Any] = {"playerId": [PLAYER], "season": "2024-25", "beforeDate": cutoff}
+    season = client.get("/api/workbench/compare/group", params=params).json()
+    [column] = season["players"]
+    # Row 3, 64: a grid column is the player's Stats row for that season.
+    [expected] = stats_rows(client, "2024-25", ranks=False)
+    for field in ("games_played", "total_minutes", "metrics"):
+        assert column["item"][field] == expected[field], field
+    assert column["seasons"] is None
+    assert column["availability"]["games"] == expected["games_played"]
+    career = client.get("/api/workbench/compare/group", params={**params, "span": "career"}).json()[
+        "players"
+    ][0]
+    [through] = stats_rows(client, "2024-25", seasons=["2023-24", "2024-25"], ranks=False)
+    assert career["seasons"] == ["2023-24", "2024-25"]
+    assert career["item"]["games_played"] == through["games_played"]
+    unknown = client.get(
+        "/api/workbench/compare/group", params={**params, "playerId": [PLAYER, "nobody"]}
+    )
+    assert unknown.status_code == 404
+    six = client.get(
+        "/api/workbench/compare/group", params={**params, "playerId": [str(n) for n in range(6)]}
+    )
+    assert six.status_code == 422

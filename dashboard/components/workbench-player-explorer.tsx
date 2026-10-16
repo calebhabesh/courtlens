@@ -1,6 +1,7 @@
 "use client";
 
 import { readStoredValue, storageKeys } from "@/lib/storage-keys";
+import { MAX_GRID_PLAYERS } from "@/lib/compare-grid";
 import { saveStatsReturn, STATS_RETURN_PARAM, takeStatsRestore } from "@/lib/stats-return";
 
 import Link from "next/link";
@@ -430,8 +431,10 @@ export function WorkbenchPlayerExplorer({
   const openComparison = () => {
     if (comparedPlayers.length < 2) return;
     const params = new URLSearchParams({ season: query.season, phase: query.phase,
-      beforeDate: query.before_date, window: query.window,
-      playerA: comparedPlayers[0].player_id, playerB: comparedPlayers[1].player_id });
+      beforeDate: query.before_date, window: query.window });
+    // Two players open the duel card; three or more open the grid with the first five (row 3, 64).
+    if (comparedPlayers.length > 2) { params.set("layout", "grid"); params.set("players", comparedPlayers.slice(0, MAX_GRID_PLAYERS).map(player => player.player_id).join(",")); }
+    else { params.set("playerA", comparedPlayers[0].player_id); params.set("playerB", comparedPlayers[1].player_id); }
     if (query.release_id) params.set("releaseId", query.release_id);
     router.push(`/compare?${params}`);
   };
@@ -700,7 +703,7 @@ export function WorkbenchPlayerExplorer({
           <IconButton variant="secondary" icon="trend" label="Trend lines" pressed={viewMode === "lines"}
             onClick={() => setViewMode(viewMode === "lines" ? "table" : "lines")} />
           <IconButton variant="secondary" icon="users" label="Compare selected players (Z)" onClick={openComparison} disabled={comparedPlayers.length < 2}
-            title={comparedPlayers.length < 2 ? "Add two players with + to compare them" : "Compare the first two selected players (Z)"} />
+            title={comparedPlayers.length < 2 ? "Add two players with + to compare them" : comparedPlayers.length > MAX_GRID_PLAYERS ? `Compare the first ${MAX_GRID_PLAYERS} selected players (Z)` : "Compare the selected players (Z)"} />
         </div>
         <div className="stats-tool-group" role="group" aria-label="Table tools">
           <Menu className="stats-tool-menu" renderTrigger={props => <IconButton {...props} variant="secondary" icon="settings" label="Table settings" />}>

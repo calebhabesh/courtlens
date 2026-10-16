@@ -38,7 +38,9 @@ export function slotTeams(player: Pick<ComparisonPlayer, "teams" | "teams_chrono
  * latest team's colour, its team logos (every team of the scope, latest in front), a games badge
  * and a change-player icon, then the name and one bio line. Pressing the photo opens search.
  */
-export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games, playedSeasons = null, onSeason, onPick }: {
+export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games, playedSeasons = null, onSeason, onPick, excludedIds = [] }: {
+  /** Players already on the card: never offered as a replacement. */
+  excludedIds?: string[];
   side: "a" | "b";
   player: CompareSlotPlayer;
   bio?: PlayerBio | null;
@@ -90,7 +92,7 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
     {search !== "closed"
       ? <div className="pvp-search" ref={searchRef} data-closing={search === "closing" || undefined}
           onAnimationEnd={event => { if (event.animationName === "pvp-search-out") { setSearch("closed"); setReturned(true); } }}>
-          <EntityField label={label} value="" portalDropdown dropdownMinWidth={440} releaseId={params.get("releaseId") || params.get("release_id")} season={params.get("season")} phase={params.get("phase")} beforeDate={params.get("beforeDate") || params.get("before_date")}
+          <EntityField label={label} value="" excludedIds={excludedIds} portalDropdown openOnFocus={false} dropdownMinWidth={440} releaseId={params.get("releaseId") || params.get("release_id")} season={params.get("season")} phase={params.get("phase")} beforeDate={params.get("beforeDate") || params.get("before_date")}
             onChange={(id, items) => { if (id && items[0]) { setSearch("closing"); onPick({ id, name: items[0].display_name }); } }} />
         </div>
       : <div className="pvp-who" data-returned={returned || undefined}>

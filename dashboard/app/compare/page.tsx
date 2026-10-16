@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { CompareSelector } from "@/components/compare-selector";
 import { PlayerCompareView } from "@/components/player-compare-view";
+import { CompareGridView } from "@/components/compare-grid-view";
+import { duelParams, parseGrid } from "@/lib/compare-grid";
 import { AnalyticsApiError, getAnalyticsCatalog, getAnalyticsCompare } from "@/lib/api";
 import { ContextBar } from "@/components/context-bar";
 import { PageShell, CompareLayout } from "@/components/ui/page-shell";
@@ -13,9 +15,9 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { PlayerIdentity } from "@/components/ui/identity";
 import { formatDate } from "@/lib/format-date";
 import { resolveStatsQuery } from "@/lib/stats-query";
-import { getComparisonCareer, getMetricCatalog, getPlayerBio, getPlayerSeasons, queryLookup, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
+import { getComparisonCareer, getComparisonGroup, getMetricCatalog, getPlayerBio, getPlayerSeasons, queryLookup, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
 import { comparePlayers, WorkbenchApiError } from "@/lib/workbench-api";
-import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerBio, PlayerComparisonResponse, WorkbenchCatalog } from "@/lib/types";
+import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, ComparisonGroupPlayer, PlayerBio, PlayerComparisonResponse, WorkbenchCatalog } from "@/lib/types";
 import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +41,8 @@ export default async function ComparePage({ searchParams }: {
     seasonA?: string;
     seasonB?: string;
     empty?: string;
+    layout?: string;
+    seasons?: string;
   }>;
 }) {
   const rawSelected = await searchParams;
@@ -46,6 +50,17 @@ export default async function ComparePage({ searchParams }: {
   // Alignment row 3, 6: the page opens on a real pair, written to the URL (supersedes PC C5).
   const fallbackPair = await defaultPairUrl(rawSelected);
   if (fallbackPair) redirect(fallbackPair);
+  // One rule for every count (row 3, 72): three to five players, or two with the add tile open,
+  // are the grid; two are the duel card; one or none are the duel's open slots.
+  const listed = parseGrid(new URLSearchParams(Object.entries(rawSelected).filter((entry): entry is [string, string] => typeof entry[1] === "string")));
+  const gridAsked = rawSelected.layout === "grid";
+  if (gridAsked && listed.ids.length < 2) redirect(`/compare?${duelParams(new URLSearchParams(Object.entries(rawSelected).filter((entry): entry is [string, string] => typeof entry[1] === "string")), listed)}`);
+  if (listed.ids.length >= 3 || (gridAsked && listed.ids.length === 2)) {
+    const grid = await loadGrid(selected, rawSelected.span === "career" ? "career" : "season");
+    return <PageShell template="compare" className="fo11-player-comparison">
+      {grid ? <CompareGridView {...grid} /> : <><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open players</ButtonLink>}>Comparison unavailable.</GatedNote></>}
+    </PageShell>;
+  }
   const loaded = await loadComparison(selected);
   if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open players</ButtonLink>}>Comparison unavailable.</GatedNote></PageShell>;
   const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, bios, sides, played } = loaded;
@@ -90,6 +105,55 @@ export default async function ComparePage({ searchParams }: {
 
 type CompareSide = { season: string; before_date: string };
 
+/** The grid's columns: one Stats read per distinct season, in the URL's order (row 3, 64). */
+async function loadGrid(selected: Record<string, string | undefined>, span: "season" | "career") {
+  const workbenchCatalog = await getWorkbenchCatalog(selected.releaseId).catch(() => null);
+  if (!workbenchCatalog) return null;
+  const scope = resolveStatsQuery(selected, workbenchCatalog, "per_game");
+  const { ids, seasons } = parseGrid(new URLSearchParams(Object.entries(selected).filter((entry): entry is [string, string] => typeof entry[1] === "string")));
+  const sideOf = (season: string | null) => {
+    const own = season && season !== scope.season && workbenchCatalog.stats_scopes?.some(entry => entry.season === season)
+      ? resolveStatsQuery({ ...selected, beforeDate: undefined, season }, workbenchCatalog, "per_game") : scope;
+    return { season: own.season, before_date: own.before_date ?? scope.before_date ?? "" };
+  };
+  const sides = seasons.map(sideOf);
+  const params = (side: { season: string; before_date: string }) => ({ season: side.season, beforeDate: side.before_date || undefined, phase: scope.phase,
+    window: selected.window ?? "season", span, releaseId: scope.release_id ?? undefined });
+  let error: string | null = null;
+  const groups = new Map<string, { side: { season: string; before_date: string }; ids: string[] }>();
+  ids.forEach((id, index) => {
+    const key = `${sides[index].season}|${sides[index].before_date}`;
+    const group = groups.get(key) ?? { side: sides[index], ids: [] };
+    group.ids.push(id); groups.set(key, group);
+  });
+  const found = new Map<string, ComparisonGroupPlayer>();
+  await Promise.all([...groups.values()].map(async group => {
+    const read = await getComparisonGroup(group.ids, params(group.side)).catch(async reason => {
+      if (!(reason instanceof WorkbenchApiError && reason.status === 404)) throw reason;
+      // One unknown ID fails the read: keep the players this release knows, and say so.
+      error = "A selected player is not in this release.";
+      const single = await Promise.all(group.ids.map(id => getComparisonGroup([id], params(group.side)).catch(() => null)));
+      return { players: single.flatMap(entry => entry?.players ?? []) };
+    }).catch(() => { error = "Comparison is unavailable. Try again."; return { players: [] }; });
+    for (const player of read.players) found.set(player.player_id, player);
+  }));
+  const kept = ids.map((id, index) => ({ id, side: sides[index] })).filter(entry => found.has(entry.id));
+  const [metrics, played, bios] = await Promise.all([
+    getMetricCatalog().catch(() => null),
+    kept.length ? getPlayerSeasons(kept.map(entry => entry.id), scope.phase, scope.release_id ?? undefined).catch(() => null) : Promise.resolve(null),
+    Promise.all(kept.map(entry => getPlayerBio(entry.id, { season: entry.side.season, beforeDate: entry.side.before_date }).catch(() => null)))
+  ]);
+  return {
+    columns: kept.map((entry, index) => ({ player: found.get(entry.id)!, season: entry.side.season, beforeDate: entry.side.before_date,
+      bio: bios[index], played: played?.seasons[entry.id] ?? null })),
+    span,
+    context: { season: scope.season, phase: scope.phase, before_date: scope.before_date ?? "", window: selected.window ?? "season", release_id: scope.release_id ?? workbenchCatalog.release_id ?? "" },
+    workbenchCatalog,
+    metricDefinitions: metrics?.metrics ?? [],
+    error
+  };
+}
+
 /** A cross-season comparison from two reads: A's side from A's season, B's from B's (row 3, 38). */
 function mergeSides(inA: PlayerComparisonResponse, inB: PlayerComparisonResponse, context: PlayerComparisonResponse["context"]): PlayerComparisonResponse {
   const byMetric = new Map(inB.aligned_metrics.map(row => [row.metric, row]));
@@ -106,7 +170,7 @@ function mergeSides(inA: PlayerComparisonResponse, inB: PlayerComparisonResponse
 /** The season's top two scorers (points per game, 500+ minutes), else its two minutes leaders. */
 async function defaultPairUrl(raw: Record<string, string | undefined>): Promise<string | null> {
   // ``empty`` is a cleared card (row 3, 24): it stays open instead of reloading the default pair.
-  if (raw.playerA || raw.playerB || raw.players || raw.empty === "1" || raw.snapshotId === "snapshot-browser-fixture") return null;
+  if (raw.playerA || raw.playerB || raw.players || raw.empty === "1" || raw.layout === "grid" || raw.snapshotId === "snapshot-browser-fixture") return null;
   const workbenchCatalog: WorkbenchCatalog | null = await getWorkbenchCatalog(raw.releaseId ?? raw.release_id).catch(() => null);
   if (!workbenchCatalog) return null;
   const scope = resolveStatsQuery({ ...raw, beforeDate: raw.beforeDate ?? raw.before_date, releaseId: raw.releaseId ?? raw.release_id }, workbenchCatalog, "per_game");
