@@ -102,7 +102,7 @@ export function DesignFoundationShowcase() {
       <div className="ui-design-foundation-grid">
         <Panel title="Field (stacked) and icon inputs" compact>
           <Field label="Team" hint="Icon inputs reserve space; text never runs under the icon.">
-            <Input prefixIcon="search" placeholder="Search teams by name" aria-label="Example team search" />
+            <Input prefixIcon="search" placeholder="Search Teams" aria-label="Example team search" />
           </Field>
         </Panel>
 

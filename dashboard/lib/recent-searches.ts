@@ -1,6 +1,8 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { buildLookupCacheKey, defaultLookupCache } from "./lookup-cache";
+import { queryLookup } from "./workbench-api";
 import { readStoredValue, storageKeys } from "./storage-keys";
 import type { LookupItem } from "./types";
 
@@ -82,4 +84,57 @@ function subscribe(onChange: () => void): () => void {
 
 export function useRecentSearches(): LookupItem[] {
   return useSyncExternalStore(subscribe, readRecentSearches, () => EMPTY);
+}
+
+export interface RecentScope { releaseId?: string | null; season?: string | null; phase?: string | null; beforeDate?: string | null }
+
+/** How long an empty search waits for its recents and leaders before showing what it has. */
+export const IDLE_SETTLE_MS = 600;
+
+/**
+ * Recents as the current scope's own results (row 3, 70): each stored player or team is looked
+ * up again by ID, so it shows the same team logo and caption as any other result. ``ready`` turns
+ * true once every lookup has settled (or after ``IDLE_SETTLE_MS``), so a list can appear once,
+ * complete, instead of re-laying out as entries fill in (72). Pages need no lookup.
+ */
+export function useScopedRecents(items: LookupItem[], scope: RecentScope, enabled: boolean): { items: LookupItem[]; ready: boolean } {
+  const [fresh, setFresh] = useState<Record<string, LookupItem>>({});
+  const [settled, setSettled] = useState<Record<string, true>>({});
+  const [timedOut, setTimedOut] = useState<string | null>(null);
+  const optionsOf = (item: LookupItem) => ({ query: item.canonical_id, releaseId: scope.releaseId, season: scope.season, phase: scope.phase, beforeDate: scope.beforeDate, kinds: [item.kind], limit: 1 });
+  // Untyped suggestions stay plain, like the season leaders: no nickname list.
+  const matchOf = (item: LookupItem, found: LookupItem[] | undefined) => {
+    const match = found?.find(entry => entry.kind === item.kind && entry.canonical_id === item.canonical_id);
+    return match ? { ...match, matched_alias: null, nicknames: [] } : undefined;
+  };
+  const scoped = items.filter(item => item.kind !== "page");
+  const keys = scoped.map(item => buildLookupCacheKey(optionsOf(item)));
+  const wanted = keys.join("|");
+  useEffect(() => {
+    if (!enabled) return;
+    const abort = new AbortController();
+    const timer = window.setTimeout(() => setTimedOut(wanted), IDLE_SETTLE_MS);
+    scoped.forEach((item, index) => {
+      const options = optionsOf(item), key = keys[index];
+      if (defaultLookupCache.get(key)) return;
+      queryLookup({ ...options, signal: AbortSignal.any([abort.signal, AbortSignal.timeout(5000)]) }).then(response => {
+        if (abort.signal.aborted) return;
+        defaultLookupCache.set(key, response);
+        const match = matchOf(item, response.items);
+        if (match) setFresh(current => ({ ...current, [key]: match }));
+      }).catch(() => undefined).finally(() => { if (!abort.signal.aborted) setSettled(current => ({ ...current, [key]: true })); });
+    });
+    return () => { abort.abort(); window.clearTimeout(timer); };
+    // ``wanted`` holds every item and scope value of the requests.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, wanted]);
+  const ready = timedOut === wanted || keys.every(key => settled[key] || defaultLookupCache.get(key));
+  return {
+    ready,
+    items: items.map(item => {
+      if (item.kind === "page") return item;
+      const key = buildLookupCacheKey(optionsOf(item));
+      return matchOf(item, defaultLookupCache.get(key)?.items) ?? fresh[key] ?? item;
+    })
+  };
 }

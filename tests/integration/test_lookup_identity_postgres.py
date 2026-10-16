@@ -34,7 +34,7 @@ def facts() -> Iterator[Session]:
             text("""
             CREATE TEMP TABLE workbench_player_games (
                 dataset_id text, player_id text, team_id text, game_date date,
-                season text, phase text, appearance text
+                season text, phase text, appearance text, points integer
             ) ON COMMIT DROP
         """)
         )
@@ -50,7 +50,8 @@ def facts() -> Iterator[Session]:
             text("""
             INSERT INTO workbench_identities VALUES
                 ('identity', 'nba', 'p', NULL, 'player', 'Traded Player', '{}');
-            INSERT INTO workbench_player_games VALUES
+            INSERT INTO workbench_player_games
+                (dataset_id, player_id, team_id, game_date, season, phase, appearance) VALUES
                 ('dataset', 'p', 'NJN', '2011-01-01', '2010-11', 'regular_season', 'appeared'),
                 ('dataset', 'p', 'DAL', '2025-01-01', '2024-25', 'regular_season', 'appeared'),
                 ('dataset', 'p', '1610612747', '2025-02-02', '2024-25',
@@ -104,7 +105,7 @@ def test_empty_scope_suggestions_and_no_scope_fallback(facts: Session):
     empty = lookup_entities(
         facts, query="", kinds=["player"], dataset_id="dataset", season="2026-27"
     )
-    assert empty.items == []  # players are never suggested before typing
+    assert empty.items == []  # a season without games has no leaders to suggest
     result = lookup_entities(
         facts, query="Player", kinds=["player"], dataset_id="dataset", season="2026-27"
     )
