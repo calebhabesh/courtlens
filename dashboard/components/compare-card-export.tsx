@@ -17,8 +17,8 @@ const WIDTH = 560, PHOTO = 168, TOP = 24, ROW = 34, ROWS_TOP = TOP + PHOTO + 82,
 type ExportRow = { key: string; label: string; shown: [string, string]; leader: "a" | "b" | null; pill: string | null; strength: PillStrength };
 type ExportPlainLine = { a: number | null; b: number | null; quiet?: boolean; digits?: number };
 
-/** The card's three pill tiers: an outline, a tint and the solid colour. */
-const PILL_FILL: Record<PillStrength, number> = { 1: 0, 2: 0.24, 3: 1 };
+/** The card's three pill tiers: a faint tint, a stronger tint and the solid colour. */
+const PILL_FILL: Record<PillStrength, number> = { 1: 0.12, 2: 0.3, 3: 1 };
 
 function plainLine(key: string, label: string, line: ExportPlainLine): ExportRow {
   const digits = line.digits ?? 0;
@@ -111,8 +111,7 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
       const pillX = line.leader === "a" ? 20 : WIDTH - 72;
       return <g key={line.key}>
         {line.leader && line.pill && <>
-          <rect x={pillX} y={y - 15} width="52" height="20" rx="10" fill={toneColor(`identity-${line.leader}`)} fillOpacity={PILL_FILL[line.strength]}
-            stroke={line.strength === 1 ? toneColor(`identity-${line.leader}`) : "none"} strokeOpacity="0.55" />
+          <rect x={pillX} y={y - 15} width="52" height="20" rx="10" fill={toneColor(`identity-${line.leader}`)} fillOpacity={PILL_FILL[line.strength]} />
           <text x={pillX + 26} y={y} textAnchor="middle" fontSize="12" fontWeight="600" fill={line.strength === 3 ? "var(--color-on-accent)" : toneColor(`identity-${line.leader}`)}>{line.pill}</text>
         </>}
         <text x={WIDTH * 0.3} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "a" ? 700 : 500} fill="var(--color-text)">{line.shown[0]}</text>

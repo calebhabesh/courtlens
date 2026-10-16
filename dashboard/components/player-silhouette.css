@@ -1,0 +1,4 @@
+@layer components {
+  /* A neutral grey stand-in filling the tile from the bottom, like a headshot (row 3, 66). */
+  .player-silhouette { display: block; width: 100%; height: 100%; fill: color-mix(in srgb, var(--color-text-tertiary) 55%, var(--color-surface-2)); }
+}

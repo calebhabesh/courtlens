@@ -20,8 +20,8 @@
   /* Both sides stretch to the taller one so their season pickers share a baseline when a long
      name or team wraps on one side only. */
   .pvp-players { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: stretch; gap: var(--space-4); }
-  /* Swap, then Clear players (24), centred on the photos. */
-  .pvp-pair-actions { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); align-self: start; min-width: var(--control-sm); margin-top: calc(var(--pvp-photo) / 2 - var(--control-sm) - var(--space-1)); }
+  /* Swap, Add Player (64) and Clear players (24), centred on the photos. */
+  .pvp-pair-actions { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); align-self: start; min-width: var(--control-sm); margin-top: calc(var(--pvp-photo) / 2 - var(--control-sm) * 1.5 - var(--space-2)); }
   .pvp-controls { --pvp-counting-width: 160px; display: grid; grid-template-columns: minmax(0, 1fr) var(--pvp-counting-width); align-items: center; gap: var(--space-2); }
   .pvp-counting-menu { display: grid; width: var(--pvp-counting-width); justify-self: center; }
   .pvp-counting-group { margin: 0; padding: var(--space-2) var(--space-3); border-radius: var(--radius-xs); background: var(--color-surface-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
@@ -39,7 +39,6 @@
   .pvp-photo-empty { display: block; aspect-ratio: 1; border-radius: var(--radius-md); background: var(--color-surface-2); }
   .pvp-photo:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
   .pvp-photo .pvp-portrait { width: 100%; height: 100%; min-width: 0; min-height: 0; border-radius: 0; background: transparent; object-position: center bottom; }
-  .pvp-silhouette { display: grid; place-items: center; width: 100%; height: 100%; color: var(--color-text-secondary); }
   .pvp-badge {
     position: absolute; right: var(--space-2); bottom: var(--space-2); padding: 1px var(--space-2); border-radius: var(--radius-sm);
     background: var(--color-text); color: var(--color-surface-0); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; font-variant-numeric: tabular-nums;
@@ -58,7 +57,6 @@
     transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
   }
   .pvp-photo:is(:hover, :focus-visible) .pvp-add { background: var(--color-accent); color: var(--color-on-accent); }
-  .pvp-slot[data-empty] .pvp-silhouette { color: var(--color-text-tertiary); }
   /* The latest team's logo, large behind the head like Databallr's cards (33, 34), at 115% of the
      tile and a little above the middle so more of it shows around the head; the portrait paints
      above it. The player page tile and the share image match. */
@@ -81,7 +79,8 @@
   .pvp-slot[data-inactive] .pvp-photo { filter: grayscale(1) brightness(0.8); }
   .pvp-bio { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
   /* The search slides in under the photo (26) with its label centred above the field (27). */
-  .pvp-search { width: 100%; min-width: 0; text-align: left; animation: pvp-search-in var(--dur-base) var(--ease-out); }
+  /* Fast, so the plus feels immediate (74). */
+  .pvp-search { width: 100%; min-width: 0; text-align: left; animation: pvp-search-in var(--dur-fast) var(--ease-out); }
   .pvp-search .entity-label { display: block; text-align: center; }
   .pvp-search[data-closing] { animation: pvp-search-out var(--dur-fast) var(--ease-in) forwards; pointer-events: none; }
   .pvp-who[data-returned] { animation: pvp-search-in var(--dur-base) var(--ease-out); }
@@ -107,11 +106,11 @@
     background: var(--color-identity-a); color: var(--color-on-accent); font-size: var(--text-xs); line-height: var(--text-sm-lh); font-weight: 600;
   }
   .pvp-pill[data-identity="b"] { --pvp-pill-tone: var(--color-identity-b); }
-  /* The pill firms up with how decisive the lead is (25): an outline, a tint, then the solid
-     colour, with text contrast at 4.5:1 or better at every step. */
+  /* The pill fills in with how decisive the lead is (25): a faint tint, a stronger tint, then
+     the full colour; text contrast stays at 4.5:1 or better at every step. */
   .pvp-pill { --pvp-pill-tone: var(--color-identity-a); background: var(--pvp-pill-tone); }
-  .pvp-pill[data-strength="1"] { background: transparent; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--pvp-pill-tone) 55%, transparent); color: var(--pvp-pill-tone); }
-  .pvp-pill[data-strength="2"] { background: color-mix(in srgb, var(--pvp-pill-tone) 24%, transparent); color: var(--pvp-pill-tone); }
+  .pvp-pill[data-strength="1"] { background: color-mix(in srgb, var(--pvp-pill-tone) 12%, transparent); color: var(--pvp-pill-tone); }
+  .pvp-pill[data-strength="2"] { background: color-mix(in srgb, var(--pvp-pill-tone) 30%, transparent); color: var(--pvp-pill-tone); }
   .pvp-honors { display: grid; gap: var(--space-2); min-width: 0; }
   .pvp-honors h3 { margin: 0; text-align: center; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
   .pvp-honors-pair { display: grid; grid-template-columns: var(--pvp-pill-width) minmax(0, 1fr) var(--pvp-label-width) minmax(0, 1fr) var(--pvp-pill-width); align-items: start; }
@@ -171,6 +170,9 @@
     box-shadow: 0 0 0 2px var(--color-surface-2);
   }
   .pvp-mark[data-identity="b"] .pvp-mark-check { background: var(--color-identity-b); }
+  /* Grid columns have no side colour: a neutral check, and tighter marks for up to five (72). */
+  .pvp-mark:not([data-identity]) .pvp-mark-check { background: var(--color-text); }
+  .pvp-marks:has(> :nth-child(3)) { gap: var(--space-1); }
   .pvp-mark-check .ui-icon { width: 10px; height: 10px; stroke-width: 3; }
   .pvp-season-menu .ui-menu-panel { max-height: 360px; overflow-y: auto; }
   .pvp-season-current { color: var(--color-accent); font-weight: 600; }

@@ -84,6 +84,31 @@ function seasonHonors(season: string, codes: Map<string, string[]> | null, champ
   return { season, badges: codes || badges.length ? badges : null };
 }
 
+/** The career accolade rows, in card order; each counts one player's codes (or titles). */
+export const ACCOLADE_KINDS: { key: string; label: string; title: string; test?: (code: string) => boolean }[] = [
+  { key: "titles", label: "Titles", title: "NBA championships, from admitted playoff box scores" },
+  { key: "mvp", label: "MVP", title: "Most Valuable Player awards", test: code => code === "MVP-1" },
+  { key: "dpoy", label: "DPOY", title: "Defensive Player of the Year awards", test: code => code === "DPOY-1" },
+  { key: "all_nba", label: "All-NBA", title: "All-NBA team selections", test: code => /^NBA[123]$/.test(code) },
+  { key: "all_def", label: "All-Def", title: "All-Defensive team selections", test: code => /^DEF[12]$/.test(code) },
+  { key: "all_star", label: "All-Star", title: "All-Star selections", test: code => code === "AS" }
+];
+
+export interface PlayerAccolades {
+  /** Count per ``ACCOLADE_KINDS`` key through the cutoff; null is unknown, never zero. */
+  counts: Record<string, number | null>;
+  /** True when any source (awards or titles) is known for this player. */
+  known: boolean;
+  honors: SeasonHonors;
+}
+
+/** One player's accolades through the cutoff and their compared season's honors (row 3, 64). */
+export function playerAccolades(bio: PlayerBio | null, championships: ComparisonChampionships | null | undefined, season: string, beforeDate: string): PlayerAccolades {
+  const codes = seasonCodes(bio, beforeDate);
+  const counts = Object.fromEntries(ACCOLADE_KINDS.map(kind => [kind.key, kind.test ? count(codes, kind.test) : titles(championships)]));
+  return { counts, known: codes != null || championships != null, honors: seasonHonors(season, codes, championships) };
+}
+
 /**
  * ``season`` and ``beforeDate`` are one value for both players, or a pair when each player is
  * compared in their own season (alignment row 3, 38).
@@ -91,16 +116,9 @@ function seasonHonors(season: string, codes: Map<string, string[]> | null, champ
 export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], championships: [ComparisonChampionships | null | undefined, ComparisonChampionships | null | undefined], seasons: string | [string, string], beforeDates: string | [string, string]): AccoladeGroups {
   const [seasonOfA, seasonOfB] = typeof seasons === "string" ? [seasons, seasons] : seasons;
   const [cutA, cutB] = typeof beforeDates === "string" ? [beforeDates, beforeDates] : beforeDates;
-  const codesA = seasonCodes(bios[0], cutA), codesB = seasonCodes(bios[1], cutB);
-  const career = [
-    countRow("titles", "Titles", "NBA championships, from admitted playoff box scores", titles(championships[0]), titles(championships[1])),
-    countRow("mvp", "MVP", "Most Valuable Player awards", count(codesA, code => code === "MVP-1"), count(codesB, code => code === "MVP-1")),
-    countRow("dpoy", "DPOY", "Defensive Player of the Year awards", count(codesA, code => code === "DPOY-1"), count(codesB, code => code === "DPOY-1")),
-    countRow("all_nba", "All-NBA", "All-NBA team selections", count(codesA, code => /^NBA[123]$/.test(code)), count(codesB, code => /^NBA[123]$/.test(code))),
-    countRow("all_def", "All-Def", "All-Defensive team selections", count(codesA, code => /^DEF[12]$/.test(code)), count(codesB, code => /^DEF[12]$/.test(code))),
-    countRow("all_star", "All-Star", "All-Star selections", count(codesA, code => code === "AS"), count(codesB, code => code === "AS"))
-  ];
+  const a = playerAccolades(bios[0], championships[0], seasonOfA, cutA), b = playerAccolades(bios[1], championships[1], seasonOfB, cutB);
+  const career = ACCOLADE_KINDS.map(kind => countRow(kind.key, kind.label, kind.title, a.counts[kind.key], b.counts[kind.key]));
   // Like Stathead, honours neither player holds are left out; an unknown side keeps its row.
   const held = career.filter(row => !(row.a === 0 && row.b === 0));
-  return { career: (codesA || codesB || championships.some(Boolean)) ? held : [], season: [seasonHonors(seasonOfA, codesA, championships[0]), seasonHonors(seasonOfB, codesB, championships[1])] };
+  return { career: a.known || b.known ? held : [], season: [a.honors, b.honors] };
 }

@@ -1004,7 +1004,7 @@ Follow-up instructions (owner, 2026-10-15, tenth review):
     opened (inert while closed) and only its grid rows transition, so nothing unmounts or reorders
     at the end; the retraction eases in and out. Sampled: scroll and tab position hold steady
     after the drawer reaches 0.
-48. [ ] Search results drop verbose captions ("Observed in selected scope", "No observed appearances
+48. [x] Search results drop verbose captions ("Observed in selected scope", "No observed appearances
     in selected scope · No appearances in selected season"); picking a player gives their most
     recent valid version. Remove them wherever search results use them unless necessary.
 Follow-up instructions (owner, 2026-10-15, season honors):
@@ -1072,8 +1072,54 @@ Follow-up instructions (owner, 2026-10-16, fantasy mock draft):
     counts from the season's first game, a later team from the player's first game for it, and a
     traded season is capped at the most games any of the player's teams played. A mid-season
     signing therefore counts earlier team games as missed. Nothing says why a game was missed.
-64. [ ] Owner questions: more than two players on the card; pre-type search suggestions for
-    every player search. — proposals with the agent's recommendation, awaiting the owner.
+64. [x] Up to five players (owner approved the proposal, 2026-10-16). — `layout=grid` with
+    `players` (columns in order) and `seasons` (each column's own season): a label column and one
+    column per player, widening with the count; each row's best value reads heavier on a gold
+    tint (`bestColumns`: unknown never leads, all-way ties have none, no overall winner). Tiles
+    carry remove, change and season controls; a "+" tile adds until five. Add player on the duel
+    opens the grid; Duel card returns two columns to the duel. `GET
+    /api/workbench/compare/group` serves every column from one Stats read per season (season rows
+    or careers, titles, availability; unknown IDs 404, more than five 422). Phones scroll the
+    columns under a fixed label column. The Stats compare button and tray open the grid for three
+    or more. Share Image draws the grid.
+65. [x] Suggestions before typing in every player search and the main search. — the scope's
+    season leaders by points per game (the Stats default sort), from players with at least half
+    the scope's most games, labelled "Season leaders · <season>", never "popular"; up to three
+    recent picks lead in pickers, and players already on the card are never offered. Fixed
+    candidate lists (planner roster) keep to themselves. Instruction 48's captions are already
+    team codes only in every result list.
+Follow-up instructions (owner, 2026-10-16, grid and search review):
+66. [x] Empty slots show a headshot-sized, bald, neutral-grey head-and-shoulders silhouette
+    instead of the small user icon (`player-silhouette.tsx`).
+67. [x] The grid's open "Add player" tile can be closed like a player; a toolbar "+" reopens it.
+68. [x] Grid section headings (Counting, Efficiency, Accolades, Season Honors) are centred over
+    the player columns instead of left-aligned.
+69. [x] Pressing "+" focuses the search without opening results; results open when the field is
+    pressed, typed in or arrowed into (`openOnFocus={false}` on the compare searches).
+70. [x] Recent entries look like every other result: each is looked up again in the current
+    scope (`useScopedRecents`), with its team logo and code, in pickers and the main search.
+71. [x] Advantage pills drop the outline: a faint tint, a stronger tint, then the full colour
+    (12% / 30% / solid; text contrast 4.66:1 or better); the share image matches.
+Follow-up instructions (owner, 2026-10-16, transitions between player counts):
+72. [x] One layout per player count, with seamless steps between them. — 0-1 players: the duel
+    card with open slots; 2: the duel card; 2 with the add tile open, or 3-5: the grid. Removing to
+    two, or closing the tile with two, returns to the duel on its own (the "Duel card" button is
+    gone); a grid URL of one or none redirects to the duel form; `players=` of three or more is the
+    grid. Grid columns are 140px, so two players and the open tile are exactly the duel's 580px.
+    The grid keeps the duel's order (photos, presets, stats), one subtitle for every count, and the
+    console season picker shows every player's mark (`SeasonMark`). After a pick, focus returns to
+    the slot instead of the page. Phones keep the presets whole and headings on screen.
+73. [x] The empty search's dropdown appears once, complete: it waits for the season leaders and the
+    refreshed recents (at most 600 ms) instead of growing as entries fill in; the main search's
+    empty state waits the same way. Measured: one appearance at about 170 ms with every logo.
+Follow-up instructions (owner, 2026-10-16, polish):
+74. [x] No cramped side scroll: the grid fits the card's padding and border exactly (a 2px overflow
+    drew a needless bar), and a real overflow gets room under the last row. Title case for "Add
+    Player" and "Search Players" (every player search). Add Player on the duel draws the grid
+    from the pair already on screen (about 830 ms -> about 100 ms) and returns the same way; the
+    slot search slides in at the fast duration.
+75. [ ] Owner question: Shai's 2025-26 MVP is in the data but hidden, because season awards count
+    only once announced before the card's cutoff (the season's last regular-season day, Apr 12).
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

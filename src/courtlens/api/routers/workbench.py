@@ -24,6 +24,8 @@ from courtlens.api.workbench_schemas import (
     ComparePeriodsResponse,
     ComparisonCareer,
     ComparisonCareerResponse,
+    ComparisonGroupPlayer,
+    ComparisonGroupResponse,
     CreateCustomViewRequest,
     CreateJobRequest,
     CreateRankingBoardRequest,
@@ -643,21 +645,7 @@ def get_comparison_career(
             player_id=player_id,
             seasons=career.seasons,
             availability=available.get(player_id) if career.seasons else None,
-            item=PlayerResearchItem(
-                **{
-                    key: row.get(key)
-                    for key in (
-                        "player_id",
-                        "player_name",
-                        "teams",
-                        "stints_count",
-                        "games_played",
-                        "total_minutes",
-                        "metrics",
-                        "sample_sizes",
-                    )
-                }
-            )
+            item=PlayerResearchItem(**{key: row.get(key) for key in _RESEARCH_ITEM_FIELDS})
             if row is not None
             else None,
         )
@@ -668,6 +656,137 @@ def get_comparison_career(
         before_date=before_date.isoformat(),
         player_a=entry(player_a),
         player_b=entry(player_b),
+    )
+
+
+_RESEARCH_ITEM_FIELDS = (
+    "player_id",
+    "player_name",
+    "teams",
+    "stints_count",
+    "games_played",
+    "total_minutes",
+    "metrics",
+    "sample_sizes",
+)
+
+
+@router.get("/compare/group", response_model=ComparisonGroupResponse)
+def get_comparison_group(
+    player_ids: list[str] = Query(..., alias="playerId", min_length=1, max_length=5),
+    season: str | None = Query(None, pattern=r"^\d{4}-\d{2}$"),
+    phase: Literal["regular_season", "playoffs"] = "regular_season",
+    before_date: date | None = Query(None, alias="beforeDate"),
+    window: WindowKind = WindowKind.SEASON,
+    span: Literal["season", "career"] = "season",
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> ComparisonGroupResponse:
+    """Up to five players under one scope, one column each, for Compare's grid (row 3, 64).
+
+    Each column carries the player's Stats row (every counting mode), or their career through
+    the cutoff, with the card's extras: teams by last appearance, titles and availability.
+    One aggregate Stats query serves every player.
+    """
+    from courtlens.domain.query_spec import WindowSpec
+    from courtlens.domain.stats_presentation import StatsPresentation
+    from courtlens.services.player_career import career_query, career_through, serving_item
+    from courtlens.services.workbench_analytics import season_context
+
+    ids = list(dict.fromkeys(player_ids))
+    context = resolve_workbench_context(
+        session,
+        release_id=release_id,
+        requested_season=season,
+        requested_phase=phase,
+        requested_before_date=before_date,
+        requested_window=window.value,
+    )
+    if context.dataset_type != "workbench":
+        raise HTTPException(status_code=422, detail="Grid comparisons need a workbench release")
+    cutoff = context.before_date
+    rows: dict[str, dict[str, Any] | None] = {}
+    seasons: dict[str, list[str]] = {}
+    if span == "career":
+        for player_id, career in career_through(
+            session, ids, phase, context.season, cutoff, release_id
+        ).items():
+            rows[player_id], seasons[player_id] = career.item, career.seasons
+    else:
+        query = career_query(context, context.season, cutoff).model_copy(
+            update={"window": WindowSpec(kind=window)}
+        )
+        found, _, _, _ = execute_stats_query(
+            session,
+            season_context(context, context.season, cutoff),
+            query,
+            is_export=True,
+            max_export_rows=len(ids),
+            presentation=StatsPresentation(),
+            cohort_percentiles=False,
+            subject_player_ids=ids,
+        )
+        rows = {row["player_id"]: serving_item(row) for row in found}
+    ordered = teams_by_last_appearance(
+        session,
+        context.dataset_id,
+        None if span == "career" else context.season,
+        context.phase,
+        cutoff,
+        ids,
+    )
+    titles = championships(session, context.dataset_id, cutoff, ids)
+    # Availability needs the teams' schedule as its span: season-to-date, or the whole career.
+    available = (
+        availability(
+            session,
+            context.dataset_id,
+            context.phase,
+            cutoff,
+            ids,
+            None if span == "career" else context.season,
+        )
+        if span == "career" or window == WindowKind.SEASON
+        else {}
+    )
+    names: dict[str, str] = {
+        external_id: display_name
+        for external_id, display_name in session.execute(
+            select(WorkbenchIdentity.external_id, WorkbenchIdentity.display_name).where(
+                WorkbenchIdentity.kind == "player", WorkbenchIdentity.external_id.in_(ids)
+            )
+        ).all()
+    }
+
+    unknown = [player_id for player_id in ids if player_id not in names and player_id not in rows]
+    if unknown:
+        raise HTTPException(status_code=404, detail="player not found in snapshot")
+
+    def column(player_id: str) -> ComparisonGroupPlayer:
+        row = rows.get(player_id)
+        played = row is not None and bool(row.get("games_played"))
+        return ComparisonGroupPlayer(
+            player_id=player_id,
+            name=names.get(player_id) or (row or {}).get("player_name") or player_id,
+            item=PlayerResearchItem(**{key: row.get(key) for key in _RESEARCH_ITEM_FIELDS})
+            if row is not None
+            else None,
+            seasons=seasons.get(player_id) if span == "career" else None,
+            teams_chronological=ordered.get(player_id, []),
+            championships=titles.get(player_id),
+            availability=available.get(player_id) if played else None,
+        )
+
+    return ComparisonGroupResponse(
+        context={
+            "release_id": context.release_id,
+            "season": context.season,
+            "phase": context.phase,
+            "before_date": cutoff.isoformat(),
+            "window": window.value,
+        },
+        span=span,
+        players=[column(player_id) for player_id in ids],
     )
 
 

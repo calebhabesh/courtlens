@@ -3,7 +3,7 @@ import { openWorkbench } from "./workbench-navigation";
 
 
 test("player comparison uses shared scope, signed values and contextual URL modes",async({page})=>{
-  await openWorkbench(page,"/compare?playerA=23&playerB=24&players=23,24,1&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=last_10");
+  await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=last_10");
   await expect(page.getByRole("heading",{level:1})).toHaveText("Player Comparison");
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("28.0");
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
@@ -12,7 +12,7 @@ test("player comparison uses shared scope, signed values and contextual URL mode
   await page.getByRole("button",{name:"Swap players",exact:true}).click();
   await expect(page).toHaveURL(/playerA=24&playerB=23/);
   const url=new URL(page.url());expect(url.searchParams.get("releaseId")).toBe("fixture-release");expect(url.searchParams.get("window")).toBe("last_10");expect(url.searchParams.get("beforeDate")).toBe("2026-04-13");
-  expect(url.searchParams.get("players")).toBe("24,23,1");
+  expect(url.searchParams.get("players")).toBeNull();
   await expect(page.locator('.pvp-slot').first()).toContainText("Fixture Guard");
   await expect(page.locator('.pvp-slot .pvp-portrait')).toHaveCount(2);
 });
@@ -41,6 +41,50 @@ test("Clear players opens both slots; each plus searches in place and a full pai
   await expect(bar.getByRole("button",{name:"Edit Metrics",exact:true})).toBeDisabled();
   await page.getByRole("button",{name:"Add Player A",exact:true}).click();
   await expect(page.getByRole("combobox",{name:"Player A"})).toBeFocused();
+});
+
+test("three players open the grid: best values, remove, back to the duel and add again (row 3, 64)",async({page})=>{
+  await openWorkbench(page,"/compare?layout=grid&players=23,24,1627751&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
+  await expect(page.locator(".pvp-grid-tile")).toHaveCount(3);
+  await expect(page.getByRole("columnheader",{name:/Fixture Shooter/})).toBeVisible();
+  // One best value per row with a clear leader; there is no overall verdict.
+  const points=page.getByRole("row",{name:/^Points/});
+  await expect(points.locator("td[data-best]")).toHaveCount(1);
+  await expect(page.getByText(/winner/i)).toHaveCount(0);
+  await expect(page.getByRole("button",{name:"Add Player",exact:true})).toBeVisible();
+  // The plus reveals a focused search; results open only once the field itself is pressed (69).
+  await page.getByRole("button",{name:"Add Player",exact:true}).click();
+  await expect(page.getByRole("combobox",{name:"Add Player"})).toBeFocused();
+  await expect(page.getByRole("listbox")).toHaveCount(0);
+  // The open tile closes; the toolbar's plus brings it back (67).
+  await page.getByRole("button",{name:"Close Add Player"}).click();
+  await expect(page.locator(".pvp-grid-head .pvp-slot[data-empty]")).toHaveCount(0);
+  await page.locator(".pvp-grid-actions").getByRole("button",{name:"Add Player"}).click();
+  await expect(page.locator(".pvp-grid-head .pvp-slot[data-empty]")).toHaveCount(1);
+  // Two players are always the duel card (72): removing the third switches back on its own.
+  await page.getByRole("button",{name:"Remove Fixture Shooter"}).click();
+  await expect(page).toHaveURL(/playerA=23&playerB=24/);
+  await expect(page).not.toHaveURL(/layout=grid/);
+  await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
+  await page.getByRole("button",{name:"Add Player",exact:true}).click();
+  await expect(page).toHaveURL(/layout=grid/);
+  await expect(page.locator(".pvp-grid-tile")).toHaveCount(2);
+  const url=new URL(page.url());expect(url.searchParams.get("releaseId")).toBe("fixture-release");expect(url.searchParams.get("players")).toBe("23,24");
+  // Closing the open tile with two players leaves a duel; three or more listed players are the grid.
+  await page.getByRole("button",{name:"Close Add Player"}).click();
+  await expect(page).toHaveURL(/playerA=23&playerB=24/);
+  await openWorkbench(page,"/compare?players=23,24,1627751&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
+  await expect(page.locator(".pvp-grid-tile")).toHaveCount(3);
+  // A grid of one is the duel's open side.
+  await openWorkbench(page,"/compare?layout=grid&players=23&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
+  await expect(page).toHaveURL(/playerA=23/);
+  await expect(page.getByRole("button",{name:"Add Player B",exact:true})).toBeVisible();
+});
+
+test("an unknown grid player is dropped with a note; the rest still compare (row 3, 64)",async({page})=>{
+  await openWorkbench(page,"/compare?layout=grid&players=23,nobody,24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
+  await expect(page.locator(".pvp-grid-tile")).toHaveCount(2);
+  await expect(page.locator(".pvp-grid-card").getByRole("alert")).toContainText("A selected player is not in this release.");
 });
 
 test("Career compares both players through the cutoff without league percentiles (row 3, 21)",async({page})=>{

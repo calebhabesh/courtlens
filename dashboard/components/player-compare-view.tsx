@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
+import { Fragment, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
@@ -10,6 +10,13 @@ import { PercentileCell } from "./charts";
 import { CompareCardExport } from "./compare-card-export";
 import { ComparePlayerSlot, type CompareSelection } from "./compare-player-slot";
 import { CompareEmptySlot } from "./compare-empty-slot";
+import { PlayerSilhouette } from "./player-silhouette";
+import { COMPARE_SUBTITLE, COUNTING_MODES, CountingMenu, countingParams } from "./compare-counting-menu";
+import { CompareTrendTray } from "./compare-trend-tray";
+import { duelParams, gridFromDuel, gridParams, type GridSelection } from "@/lib/compare-grid";
+import { CompareGridView } from "./compare-grid-view";
+import type { GridColumn } from "./compare-grid";
+import { slotTeams } from "./compare-player-slot";
 import { CompareMetricsDrawer } from "./compare-metrics-drawer";
 import { CompareSeasonPicker } from "./compare-season-picker";
 import { CompareSeasonHonors } from "./compare-season-honors";
@@ -18,32 +25,25 @@ import { BrandMark } from "./brand";
 import { accoladeGroups, type AccoladeGroups } from "@/lib/compare-accolades";
 import { formatDate } from "@/lib/format-date";
 import { PageHeader } from "./ui/panel";
-import { Icon } from "./ui/icon";
 import { GatedNote } from "./ui/gated-note";
 import { Menu, MenuItem } from "./ui/menu";
 import { ContextBar } from "./context-bar";
-import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
 import { saveInvestigation } from "@/lib/workbench-api";
 import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
 import type { AnalyticsCatalog, ComparisonAvailability, ComparisonCareerResponse, MetricComparisonItem, MetricDefinition, PlayerBio, PlayerComparisonResponse, PlayerResearchItem, WorkbenchCatalog, WorkbenchQueryResponse } from "@/lib/types";
-import { Button, IconButton, MenuTrigger, Segmented } from "./ui/kit";
+import { Button, IconButton, Segmented } from "./ui/kit";
 export type { ComparePresetId } from "@/lib/comparison-metrics";
 
-const smooth = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 
 /** Owner trial, row 3, 22: league percentiles hidden to keep the slim card on one screen. */
 const SHOW_PERCENTILES = false;
 
 type Side = { season: string; before_date: string };
-const PER_PLAYER_SEASONS = ["seasonA", "seasonB"];
+const PER_PLAYER_SEASONS = ["seasonA", "seasonB", "seasons"];
 
 type Scope = { season: string; phase: string; before_date: string; window: string; release_id?: string };
 
-const MODES: { value: CompareCountingMode; label: string; rate?: boolean }[] = [
-  { value: "per_game", label: "Per Game" }, { value: "per_75", label: "Per 75", rate: true },
-  { value: "per_100", label: "Per 100", rate: true }, { value: "raw", label: "Totals" }
-];
 
 /**
  * Player Comparison (alignment row 3): one slim duel card in Databallr's shape (22). Both players,
@@ -91,32 +91,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   // Career rows carry no league percentile: each season ranks against its own league.
   const cohortRow = (id?: string) => careerView ? undefined : cohort?.items.find(row => row.player_id === id);
   const minutes = cohort?.table_cohort?.min_season_minutes ?? 500;
-  const modeLabel = MODES.find(entry => entry.value === mode)?.label ?? "Per Game";
-  const trends = params.get("compareView") === "lines";
-  // Trend lines slide out of the card and retract into it (37): once opened the drawer stays
-  // mounted and only its grid rows animate, so the retraction ends without a re-layout (47). The
-  // page follows it to the end on open (31, 36) and scrolls back as it retracts.
-  const drawerRef = useRef<HTMLDivElement>(null), returnTo = useRef<number | null>(null);
-  const [kept, setKept] = useState(trends);
-  if (trends && !kept) setKept(true);
-  useEffect(() => {
-    const drawer = drawerRef.current;
-    if (!trends || !drawer || returnTo.current == null) return;
-    // Instant: the site scrolls smoothly by default, which would trail the growing drawer.
-    const follow = () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
-    follow();
-    const observer = new ResizeObserver(follow);
-    observer.observe(drawer);
-    const stop = window.setTimeout(() => observer.disconnect(), 2500);
-    return () => { observer.disconnect(); window.clearTimeout(stop); };
-  }, [trends]);
-  function toggleTrends() {
-    if (!trends) { returnTo.current = window.scrollY; change({ compareView: "lines" }); return; }
-    const top = returnTo.current ?? window.scrollY;
-    returnTo.current = null;
-    change({ compareView: "table" });
-    window.scrollTo({ top, behavior: smooth() });
-  }
+  const modeLabel = COUNTING_MODES.find(entry => entry.value === mode)?.label ?? "Per Game";
   const seasonOf = (side: "a" | "b") => sides?.[side].season ?? context.season;
   const cutoffOf = (side: "a" | "b") => sides?.[side].before_date ?? context.before_date;
   const accolades = accoladeGroups(bios, [a?.championships, b?.championships], [seasonOf("a"), seasonOf("b")], [cutoffOf("a"), cutoffOf("b")]);
@@ -162,6 +137,18 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     setNotice("");
     navigate(next, true);
   }
+  /** A third player turns the duel into the grid (64): this pair, then an open slot. The pair's
+      data is already here, so the grid opens at once without a server read (74). */
+  function addPlayer() {
+    if (!a || !b) return;
+    navigate(gridParams(params, gridFromDuel(params, a.id, b.id, additionalPlayerIds)), false);
+  }
+  /** Back from that grid: the same pair is still on screen, anything else is a new read. */
+  function backToDuel(selection: GridSelection) {
+    const next = duelParams(params, selection);
+    const samePair = a && b && selection.ids.length === 2 && selection.ids.every(id => id === a.id || id === b.id);
+    navigate(next, !samePair);
+  }
   function swap() {
     if (!a || !b) return;
     const next = new URLSearchParams(params.toString());
@@ -193,11 +180,27 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   const availabilityOf = (side: "a" | "b"): ComparisonAvailability | null => careerView ? careerOf(side)?.availability ?? null : (side === "a" ? a : b)?.availability ?? null;
   const availabilityRow = active === "overall" ? availabilityLine(availabilityOf("a"), availabilityOf("b"), oneSided) : null;
 
+  // The URL asks for the grid while this page still holds the duel's pair: the duel opened the
+  // grid itself (Add Player), so it draws it from the data it already has.
+  if (params.get("layout") === "grid" && a && b) {
+    const column = (side: "a" | "b"): GridColumn => {
+      const player = side === "a" ? a : b, own = careerOf(side);
+      return { player: { player_id: player.id, name: player.name, teams_chronological: slotTeams(player), championships: player.championships ?? null,
+        item: careerView ? own?.item ?? null : cohort?.items.find(row => row.player_id === player.id) ?? null,
+        seasons: careerView ? own?.seasons ?? [] : null,
+        availability: careerView ? own?.availability ?? null : player.availability ?? null },
+        season: seasonOf(side), beforeDate: cutoffOf(side), bio: side === "a" ? bios[0] : bios[1], played: played ? played[side] : null };
+    };
+    return <CompareGridView columns={[column("a"), column("b")]} span={span} context={context} workbenchCatalog={workbenchCatalog} metricDefinitions={metricDefinitions} error={error} toDuel={backToDuel} />;
+  }
+
   return <div className="pvp" role="region" aria-label="Player Comparison Explorer">
-    <PageHeader className="pvp-header" icon="swap" title="Player Comparison" subtitle="Compare stats between any two NBA players" />
+    <PageHeader className="pvp-header" icon="swap" title="Player Comparison" subtitle={COMPARE_SUBTITLE} />
     <div className="pvp-scope">
       <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
-        renderSeason={played && a && b ? picker => <CompareSeasonPicker {...picker} played={played} players={[a, b]} /> : undefined}
+        renderSeason={played && a && b ? picker => <CompareSeasonPicker {...picker} marks={[
+          { id: a.id, name: a.name, portraitUrl: a.portrait_url, played: played.a, identity: "a" },
+          { id: b.id, name: b.name, portraitUrl: b.portrait_url, played: played.b, identity: "b" }]} /> : undefined}
         // The console's Season is a global override: it resets both players' own seasons (42).
         clearOnSeasonChange={PER_PLAYER_SEASONS}
         modes={<div className="pvp-actions">
@@ -222,14 +225,15 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
       <section className="pvp-card" aria-label="Comparison card">
         {a && b ? <>
           <div className="pvp-players">
-            <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" player={a} bio={bios[0]} season={seasonOf("a")} beforeDate={cutoffOf("a")} playedSeasons={played?.a ?? null}
+            <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" player={a} excludedIds={[a.id, b.id]} bio={bios[0]} season={seasonOf("a")} beforeDate={cutoffOf("a")} playedSeasons={played?.a ?? null}
               onSeason={season => chooseSeason("a", season)} onPick={selection => pick("a", selection)}
               games={careerView ? careerOf("a")?.item?.games_played : undefined} />
             <div className="pvp-pair-actions">
               <IconButton size="sm" variant="secondary" icon="swap" label="Swap players" onClick={swap} />
+              <IconButton size="sm" variant="ghost" icon="plus" label="Add Player" onClick={addPlayer} />
               <IconButton size="sm" variant="ghost" icon="user-clear" label="Clear players" onClick={clearPlayers} />
             </div>
-            <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" player={b} bio={bios[1]} season={seasonOf("b")} beforeDate={cutoffOf("b")} playedSeasons={played?.b ?? null}
+            <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" player={b} excludedIds={[a.id, b.id]} bio={bios[1]} season={seasonOf("b")} beforeDate={cutoffOf("b")} playedSeasons={played?.b ?? null}
               onSeason={season => chooseSeason("b", season)} onPick={selection => pick("b", selection)}
               games={careerView ? careerOf("b")?.item?.games_played : undefined} />
           </div>
@@ -238,18 +242,18 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
               options={Object.entries(COMPARE_PRESETS).map(([value, entry]) => ({ value: value as ComparePresetId, label: entry.label }))} /></div>
             {/* Season or career and the counting mode share one menu (21, 22): season values stay bare. */}
             <CountingMenu value={careerView ? `career:${careerMode}` : mode} season={seasonLabel} rates={rates}
-              onChange={value => { const [first, second] = value.split(":"); change(second ? { span: "career", countingMode: second } : { span: "season", countingMode: first }, true); }} />
+              onChange={value => change(countingParams(value), true)} />
           </div>
         </> : pending ? <div className="pvp-players">
           {/* No pair yet (24): an open slot per side, each a plus that searches in place. */}
-          <CompareEmptySlot side="a" selection={pending.a} onPick={selection => pickPending("a", selection)} />
+          <CompareEmptySlot side="a" selection={pending.a} excludedIds={pending.b ? [pending.b.id] : []} onPick={selection => pickPending("a", selection)} />
           <span className="pvp-pair-actions" aria-hidden="true" />
-          <CompareEmptySlot side="b" selection={pending.b} onPick={selection => pickPending("b", selection)} />
+          <CompareEmptySlot side="b" selection={pending.b} excludedIds={pending.a ? [pending.a.id] : []} onPick={selection => pickPending("b", selection)} />
         </div> : <>
           {/* Legacy snapshots keep their two-field picker. */}
           <div className="pvp-players-empty" aria-hidden="true">
-            <span className="pvp-photo pvp-photo-empty"><span className="pvp-silhouette"><Icon name="person" size={20} /></span></span>
-            <span className="pvp-photo pvp-photo-empty"><span className="pvp-silhouette"><Icon name="person" size={20} /></span></span>
+            <span className="pvp-photo pvp-photo-empty"><PlayerSilhouette className="pvp-portrait" /></span>
+            <span className="pvp-photo pvp-photo-empty"><PlayerSilhouette className="pvp-portrait" /></span>
           </div>
           {selector}
         </>}
@@ -283,19 +287,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
         </>}
       </section>
 
-        {a && b && <div className="pvp-tray">
-          {kept && <div className="pvp-tray-drawer" data-open={trends || undefined} ref={drawerRef} inert={!trends}>
-            <div className="pvp-tray-clip">
-              <div className="pvp-tray-body" id="pvp-trend-drawer">
-                <MultiPlayerLinesView variant="embedded" playerIds={[a.id, b.id, ...additionalPlayerIds]} context={context} />
-              </div>
-            </div>
-          </div>}
-          <div className="pvp-tray-tab">
-            <Button size="sm" variant="ghost" icon="chart-line" iconAfter={trends ? "chevron-up" : "chevron-down"} aria-expanded={trends} aria-controls="pvp-trend-drawer"
-              onClick={toggleTrends}>Trend lines</Button>
-          </div>
-        </div>}
+        {a && b && <CompareTrendTray playerIds={[a.id, b.id, ...additionalPlayerIds]} context={context} />}
       </div>
       {notice && <p className="pvp-notice" role="status">{notice} {notice === "Investigation saved." && <Link href="/investigations">Open saved investigations</Link>}</p>}
       {a && b && active === "sixfactor" && <GatedNote why="These are descriptive box-score proxies, not six-factor RAPM coefficients or defensive impact.">Box-score factor proxies.</GatedNote>}
@@ -310,26 +302,6 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   </div>;
 }
 
-type CountingChoice = CompareCountingMode | "career:per_game" | "career:raw";
-
-/** A stable trigger slot and the shared menu keep native option outlines out of the card. */
-function CountingMenu({ value, season, rates, onChange }: { value: CountingChoice; season: string; rates: string[]; onChange: (value: CountingChoice) => void }) {
-  const careerModes: { value: CountingChoice; label: string }[] = [{ value: "career:per_game", label: "Career · Per Game" }, { value: "career:raw", label: "Career · Totals" }];
-  const label = [...MODES, ...careerModes].find(entry => entry.value === value)?.label ?? "Per Game";
-  return <Menu className="pvp-counting-menu" align="right" renderTrigger={props => <MenuTrigger {...props} size="sm" aria-label={`Counting mode, ${label}`}>{label}</MenuTrigger>}>
-    <div role="group" aria-label={season}>
-      <p className="pvp-counting-group" aria-hidden="true">{season}</p>
-      {MODES.map(entry => <MenuItem key={entry.value} label={entry.rate && !rates.includes(entry.value) ? `${entry.label} (needs possession data)` : entry.label}
-        disabled={entry.rate && !rates.includes(entry.value)} icon={value === entry.value ? "check" : undefined}
-        className={value === entry.value ? "pvp-counting-current" : undefined} onClick={() => onChange(entry.value)} />)}
-    </div>
-    <div role="group" aria-label={`Career through ${season}`}>
-      <p className="pvp-counting-group" aria-hidden="true">Career through {season}</p>
-      {careerModes.map(entry => <MenuItem key={entry.value} label={entry.label} icon={value === entry.value ? "check" : undefined}
-        className={value === entry.value ? "pvp-counting-current" : undefined} onClick={() => onChange(entry.value)} />)}
-    </div>
-  </Menu>;
-}
 
 /** Fixed mirrored columns (pill · value · label · value · pill) with the player names for readers. */
 function Columns({ names }: { names: [string, string] }) {

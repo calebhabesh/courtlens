@@ -755,6 +755,28 @@ createServer(async (request, response) => {
     return json(response, 200, { season: url.searchParams.get("season"), phase: url.searchParams.get("phase") ?? "regular_season",
       before_date: url.searchParams.get("beforeDate"), player_a: entry(url.searchParams.get("playerA")), player_b: entry(url.searchParams.get("playerB")) });
   }
+  // Compare's grid (alignment row 3, 64): the two fixture rows plus a synthetic third player.
+  if (url.pathname === "/api/workbench/compare/group") {
+    const ids = url.searchParams.getAll("playerId");
+    const known = { "23": "Fixture Star", "24": "Fixture Guard", "1627751": "Fixture Shooter" };
+    if (ids.some(id => !known[id])) return json(response, 404, { detail: "player not found in snapshot" });
+    const career = url.searchParams.get("span") === "career";
+    const row = id => {
+      const base = workbenchPlayers.items.find(item => item.player_id === id);
+      if (base) return base;
+      const guard = workbenchPlayers.items[1];
+      return { ...guard, player_id: id, player_name: known[id], games_played: 60,
+        metrics: Object.fromEntries(Object.entries(guard.metrics).map(([key, value]) => [key, typeof value === "number" ? value * 0.9 : value])) };
+    };
+    return json(response, 200, {
+      context: { release_id: workbenchContext.release_id, season: url.searchParams.get("season") ?? "2025-26", phase: url.searchParams.get("phase") ?? "regular_season",
+        before_date: url.searchParams.get("beforeDate") ?? "2026-04-13", window: url.searchParams.get("window") ?? "season" },
+      span: career ? "career" : "season",
+      players: ids.map(id => { const item = row(id); return { player_id: id, name: known[id], item, seasons: career ? ["2024-25", "2025-26"] : null,
+        teams_chronological: id === "24" ? ["BOS"] : ["TOR"], championships: { seasons: [], coverage_from: "2015-16", complete: true },
+        availability: { games: item.games_played, team_games: 82 } }; })
+    });
+  }
   if (url.pathname === "/api/workbench/compare") {
     const pA = {
       id: "23",

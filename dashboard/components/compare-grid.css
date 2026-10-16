@@ -1,0 +1,55 @@
+@layer pages {
+  /* Compare's grid (alignment row 3, 64, 72): a label column and one column per player. Columns
+     are sized so two players and the open tile are exactly the duel card's width: adding a
+     third player never jumps the card. Phones scroll the columns under a fixed label. */
+  .pvp-grid-column {
+    --pvp-grid-label: 110px; --pvp-grid-col: 140px;
+    --pvp-grid-width: calc(var(--pvp-grid-label) + var(--pvp-grid-col) * var(--pvp-grid-count, 3));
+    /* The card's padding and 1px border: the grid fits inside without a stray scrollbar (74). */
+    width: min(100%, calc(var(--pvp-grid-width) + var(--space-12) + 2px));
+  }
+  .pvp-grid-column[data-columns="1"] { --pvp-grid-count: 1; }
+  .pvp-grid-column[data-columns="2"] { --pvp-grid-count: 2; }
+  .pvp-grid-column[data-columns="3"] { --pvp-grid-count: 3; }
+  .pvp-grid-column[data-columns="4"] { --pvp-grid-count: 4; }
+  .pvp-grid-column[data-columns="5"] { --pvp-grid-count: 5; }
+  /* A real overflow (five players on a narrow window, phones) scrolls with room under the last
+     row and a quiet thumb, instead of a bar pressed against the honors. */
+  .pvp-grid-scroll { min-width: 0; overflow-x: auto; scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--color-text-tertiary) 55%, transparent) transparent; padding-bottom: var(--space-3); }
+  /* The photo row and the stats table share one column template. */
+  .pvp-grid-players { display: grid; grid-template-columns: var(--pvp-grid-label) repeat(var(--pvp-grid-count, 3), var(--pvp-grid-col)); width: var(--pvp-grid-width); }
+  .pvp-grid { width: var(--pvp-grid-width); table-layout: fixed; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .pvp-grid-col-label { width: var(--pvp-grid-label); }
+  .pvp-grid :is(td, th) { padding: 0; text-align: center; vertical-align: middle; }
+  /* Grid items stretch to the tallest tile, so every season picker shares a baseline. */
+  .pvp-grid-head { --pvp-photo: 116px; display: flex; min-width: 0; padding: 0 var(--space-1); }
+  .pvp-grid-head > .pvp-slot { flex: 1; min-width: 0; }
+  .pvp-grid-tile .pvp-photo-frame, .pvp-grid-head .pvp-photo-frame { margin-inline: auto; }
+  .pvp-grid-tile .pvp-name { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  /* Remove sits on the photo's top-left corner, clear of the change cue at the top right. */
+  .pvp-grid-remove { position: absolute; top: calc(var(--space-1) * -1); left: calc(var(--space-1) * -1); z-index: var(--z-sticky); }
+  /* The presets sit between the photos and the stats, as on the duel card. */
+  .pvp-grid-controls { position: sticky; left: 0; padding-block: var(--space-3); }
+  .pvp-grid-toolbar { grid-template-columns: minmax(0, 1fr) var(--pvp-counting-width) auto; }
+  .pvp-grid-actions { display: flex; gap: var(--space-1); }
+  .pvp-grid-label { padding-inline: var(--space-2); text-align: left; }
+  .pvp-grid .pvp-grid-label { text-align: left; }
+  .pvp-grid-value { height: 30px; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+  .pvp-grid-value > span { display: inline-block; min-width: 56px; padding: 0 var(--space-2); border-radius: var(--radius-sm); }
+  /* Each row's best value reads heavier on a gold tint, the Stats colour for "high". */
+  .pvp-grid-value[data-best] > span { font-weight: 700; color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
+  .pvp-grid-honors { padding: var(--space-1); vertical-align: top; }
+  /* Phones scroll the columns under a fixed label column; the card turns opaque so the fixed
+     cells match it. */
+  @media (width < 768px) {
+    .pvp-grid-card { background: var(--color-surface-1); backdrop-filter: none; }
+    .pvp-grid-column { --pvp-grid-label: 88px; --pvp-grid-col: 128px; }
+    :is(.pvp-grid .pvp-grid-label, .pvp-grid-players .pvp-grid-corner) { position: sticky; left: 0; z-index: var(--z-sticky); background: var(--color-surface-1); }
+    /* The presets take their own row; the counting menu and actions share the next. */
+    .pvp-grid-toolbar { grid-template-columns: minmax(0, 1fr) auto; }
+    /* The duel lets its presets bleed into the card padding; the grid's scroller would clip that. */
+    .pvp-grid-toolbar > .pvp-presets { grid-column: 1 / -1; max-width: 100%; margin-inline: 0; }
+    /* Headings start over the first player column, so they stay on screen while columns scroll. */
+    .pvp-grid .pvp-group th { text-align: left; padding-inline: var(--space-3); }
+  }
+}

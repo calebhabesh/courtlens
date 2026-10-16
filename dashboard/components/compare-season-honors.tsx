@@ -3,7 +3,7 @@
 import type { SeasonHonorBadge, SeasonHonors } from "@/lib/compare-accolades";
 import { Badge } from "./ui/badge";
 
-function HonorBadge({ badge }: { badge: SeasonHonorBadge }) {
+export function HonorBadge({ badge }: { badge: SeasonHonorBadge }) {
   const icon = badge.code === "MVP-1" ? "medal" : badge.code === "TITLE" ? "trophy" : badge.code === "AS" ? "star" : undefined;
   return <Badge variant={badge.win || badge.code === "AS" ? "accent" : "default"} icon={icon} title={badge.description}>{badge.label}</Badge>;
 }
