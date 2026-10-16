@@ -6,8 +6,39 @@ export type CompareCountingMode = "per_game" | "raw" | "per_75" | "per_100";
 export const OVERALL_GROUPS = [
   { label: "Counting", metrics: ["pts", "reb", "ast", "stl", "blk", "tov"] },
   { label: "Efficiency", metrics: ["ts_pct", "efg_pct", "ftr"] },
-  { label: "Profile", metrics: ["min", "gp"] }
+  // Availability closes on the card's Avail % row, which needs the teams' games (row 3, 26).
+  { label: "Availability", metrics: ["min", "gp"] }
 ] as const;
+
+/** How decisively a side leads, for the pill's intensity: 1 slight, 2 clear, 3 large. */
+export type PillStrength = 1 | 2 | 3;
+
+/**
+ * The stronger of two readings of a gap: in the stat's own terms (relative to the larger value,
+ * or percentage points for a rate), and in league percentile when both players are ranked.
+ * Percentiles bunch at the top of the league, so they alone would call a 7-point scoring gap
+ * between two stars slight. Never a verdict: only how big a gap is.
+ */
+export function pillStrength(a: number, b: number, percentiles?: [number | null | undefined, number | null | undefined], unit = ""): PillStrength {
+  let own: PillStrength;
+  if (isPercentUnit(unit)) {
+    const points = Math.abs(a - b) * 100;
+    own = points < 2 ? 1 : points < 5 ? 2 : 3;
+  } else {
+    const scale = Math.max(Math.abs(a), Math.abs(b));
+    const relative = scale ? Math.abs(a - b) / scale : 0;
+    own = relative < 0.1 ? 1 : relative < 0.25 ? 2 : 3;
+  }
+  const [pa, pb] = percentiles ?? [];
+  if (typeof pa !== "number" || typeof pb !== "number") return own;
+  const gap = Math.abs(pa - pb);
+  return Math.max(own, gap < 15 ? 1 : gap < 35 ? 2 : 3) as PillStrength;
+}
+
+/** Games played over the teams' games in the same span; null while the span is unknown. */
+export function availabilityShare(availability: { games: number; team_games: number } | null | undefined): number | null {
+  return availability && availability.team_games > 0 ? availability.games / availability.team_games : null;
+}
 export const COMPARE_PRESETS = {
   overall: { label: "Overall", metrics: OVERALL_GROUPS.flatMap(group => [...group.metrics]) },
   offense: { label: "Offense", metrics: ["pts", "ast", "tov", "ts_pct", "efg_pct", "fg3_pct", "ft_pct", "ftr", "oreb"] },

@@ -13,8 +13,8 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { PlayerIdentity } from "@/components/ui/identity";
 import { formatDate } from "@/lib/format-date";
 import { resolveStatsQuery } from "@/lib/stats-query";
-import { getComparisonCareer, getMetricCatalog, getPlayerBio, getPlayerSeasons, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
-import { comparePlayers } from "@/lib/workbench-api";
+import { getComparisonCareer, getMetricCatalog, getPlayerBio, getPlayerSeasons, queryLookup, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
+import { comparePlayers, WorkbenchApiError } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerBio, PlayerComparisonResponse, WorkbenchCatalog } from "@/lib/types";
 import { ButtonLink } from "@/components/ui/kit";
 
@@ -38,6 +38,7 @@ export default async function ComparePage({ searchParams }: {
     span?: string;
     seasonA?: string;
     seasonB?: string;
+    empty?: string;
   }>;
 }) {
   const rawSelected = await searchParams;
@@ -56,6 +57,14 @@ export default async function ComparePage({ searchParams }: {
   const [careerA, careerB] = wbComparison && rawSelected.span === "career"
     ? await Promise.all(sides.a.season === sides.b.season ? [careerIn(sides.a)] : [careerIn(sides.a), careerIn(sides.b)]) : [null];
   const career = careerA ? { ...careerA, player_b: (careerB ?? careerA).player_b } : null;
+  // No pair yet (row 3, 24): name whichever side is already chosen; an unknown ID stays open.
+  const named = async (id: string | undefined) => {
+    if (!id) return null;
+    const found = await queryLookup({ query: id, kinds: ["player"], limit: 1, releaseId: selected.releaseId }).catch(() => null);
+    const item = found?.items.find(entry => entry.canonical_id === id);
+    return item ? { id, name: item.display_name } : null;
+  };
+  const pending = wbComparison || comparison ? null : await Promise.all([named(targetA), named(targetB === targetA ? undefined : targetB)]).then(([a, b]) => ({ a, b }));
   const context = {
     season: String(wbComparison?.context?.season ?? selected.season ?? workbenchCatalog?.default_season ?? ""),
     phase: String(wbComparison?.context?.phase ?? selected.phase ?? workbenchCatalog?.default_phase ?? "regular_season"),
@@ -65,7 +74,7 @@ export default async function ComparePage({ searchParams }: {
   };
   // The legacy snapshot comparison keeps its form; everything else is the duel card.
   if(!comparison) return <PageShell template="compare" className="fo11-player-comparison">
-    <PlayerCompareView comparison={wbComparison} bios={bios} career={career} sides={sides} played={played} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
+    <PlayerCompareView comparison={wbComparison} pending={selected.snapshotId === "snapshot-browser-fixture" ? null : pending} bios={bios} career={career} sides={sides} played={played} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
       selector={<CompareSelector catalog={catalog} date={date} legacy={selected.snapshotId === "snapshot-browser-fixture"}
         initialA={targetA ? {id:targetA,name:`Player ${targetA}`} : null} initialB={targetB ? {id:targetB,name:`Player ${targetB}`} : null} />} />
   </PageShell>;
@@ -96,7 +105,8 @@ function mergeSides(inA: PlayerComparisonResponse, inB: PlayerComparisonResponse
 
 /** The season's top two scorers (points per game, 500+ minutes), else its two minutes leaders. */
 async function defaultPairUrl(raw: Record<string, string | undefined>): Promise<string | null> {
-  if (raw.playerA || raw.playerB || raw.players || raw.snapshotId === "snapshot-browser-fixture") return null;
+  // ``empty`` is a cleared card (row 3, 24): it stays open instead of reloading the default pair.
+  if (raw.playerA || raw.playerB || raw.players || raw.empty === "1" || raw.snapshotId === "snapshot-browser-fixture") return null;
   const workbenchCatalog: WorkbenchCatalog | null = await getWorkbenchCatalog(raw.releaseId ?? raw.release_id).catch(() => null);
   if (!workbenchCatalog) return null;
   const scope = resolveStatsQuery({ ...raw, beforeDate: raw.beforeDate ?? raw.before_date, releaseId: raw.releaseId ?? raw.release_id }, workbenchCatalog, "per_game");
@@ -170,12 +180,13 @@ async function loadComparison(selected: {
               // The page scope keeps the page's season and cutoff; each side carries its own.
               wbComparison = mergeSides(inA, inB, { ...inA.context, season: scope?.season ?? inA.context.season, before_date: scope?.before_date ?? inA.context.before_date });
             }
-          } catch {
-            // Fall through to legacy comparison
+          } catch (reason) {
+            // An unknown player is final; other failures fall through to the legacy comparison.
+            if (reason instanceof WorkbenchApiError && reason.status === 404) error = "One selected player is not in this release.";
           }
         }
 
-        if (!wbComparison) {
+        if (!wbComparison && !error) {
           try {
             comparison = await getAnalyticsCompare(targetA, targetB, date, catalog.snapshot_id);
           } catch (reason) {

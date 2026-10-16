@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cardLabel, comparisonRows, customMetricKeys, formatCardValue, formatComparisonValue, overallGroupStart, pickerMetrics } from "./comparison-metrics";
+import { cardLabel, comparisonRows, customMetricKeys, formatCardValue, formatComparisonValue, overallGroupStart, pickerMetrics, pillStrength, availabilityShare } from "./comparison-metrics";
 import type { MetricDefinition, PlayerComparisonResponse } from "./types";
 const catalog = [{key:"pts",display_name:"Total Points",unit:"points",good_direction:"high"},{key:"pts_per_game",display_name:"Points Per Game",unit:"points",good_direction:"high"},{key:"ts_pct",display_name:"True Shooting",unit:"percentage",good_direction:"high"}] as MetricDefinition[];
 const comparison = {player_a:{id:"a",games_played:2},player_b:{id:"b",games_played:3},aligned_metrics:[{metric:"pts_per_game",value_a:0,value_b:null,n_a:2,n_b:0,unit:"points"},{metric:"pts",value_a:12,value_b:18,n_a:2,n_b:3,unit:"points"}]} as PlayerComparisonResponse;
@@ -18,5 +18,31 @@ describe("alignment row 3 duel card",()=>{
   it("leaves per-game twins, aliases and team factors out of Edit Metrics",()=>{
     const groups=pickerMetrics([{key:"pts",category:"scoring"},{key:"pts_per_game",category:"scoring"},{key:"reb",category:"rebounding"},{key:"reb_total",category:"rebounding"},{key:"fgm_per_game",category:"efficiency"},{key:"team_pace",category:"team_factors"}] as MetricDefinition[]);
     expect(groups.map(group=>[group.label,group.metrics.map(metric=>metric.key)])).toEqual([["Scoring",["pts"]],["Rebounding",["reb"]],["Efficiency",["fgm_per_game"]]]);
+  });
+});
+
+describe("pillStrength (alignment row 3, 25)", () => {
+  it("reads a gap relative to the larger value for counts", () => {
+    expect(pillStrength(1.2, 1.1)).toBe(1);
+    expect(pillStrength(28.2, 21.5)).toBe(2);
+    expect(pillStrength(8.2, 5.9)).toBe(3);
+  });
+  it("reads rates in percentage points", () => {
+    expect(pillStrength(0.554, 0.545, undefined, "percentage")).toBe(1);
+    expect(pillStrength(0.61, 0.58, undefined, "percentage")).toBe(2);
+    expect(pillStrength(0.409, 0.272, undefined, "percentage")).toBe(3);
+  });
+  it("takes the stronger of the stat's own gap and the league percentile gap", () => {
+    // Two top scorers bunch in percentile, so the relative gap carries the reading.
+    expect(pillStrength(28.2, 21.5, [98, 90])).toBe(2);
+    expect(pillStrength(1.2, 1.1, [80, 40])).toBe(3);
+  });
+});
+
+describe("availabilityShare", () => {
+  it("is games over team games, unknown without a span", () => {
+    expect(availabilityShare({ games: 50, team_games: 82 })).toBeCloseTo(0.6098, 3);
+    expect(availabilityShare({ games: 0, team_games: 0 })).toBeNull();
+    expect(availabilityShare(null)).toBeNull();
   });
 });

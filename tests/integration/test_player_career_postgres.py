@@ -359,4 +359,12 @@ def test_comparison_career_stops_at_the_compared_season_and_cutoff(client: TestC
     [expected] = stats_rows(client, "2024-25", seasons=["2023-24", "2024-25"], ranks=False)
     for field in ("games_played", "total_minutes", "metrics"):
         assert career["item"][field] == expected[field], field
-    assert response["player_b"] == {"player_id": "nobody", "seasons": [], "item": None}
+    # Row 3, 26: availability spans the same seasons, so it counts the same games played.
+    assert career["availability"]["games"] == expected["games_played"]
+    assert career["availability"]["team_games"] >= career["availability"]["games"]
+    assert response["player_b"] == {
+        "player_id": "nobody",
+        "seasons": [],
+        "item": None,
+        "availability": None,
+    }

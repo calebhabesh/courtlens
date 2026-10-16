@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 import { leadingIdentity, toneColor } from "./charts/semantics";
-import { cardLabel, formatCardValue, isPercentUnit, isWholeCount } from "@/lib/comparison-metrics";
+import { cardLabel, formatCardValue, isPercentUnit, isWholeCount, pillStrength, type PillStrength } from "@/lib/comparison-metrics";
 import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
@@ -14,7 +14,20 @@ import { BrandMark } from "./brand";
 
 const WIDTH = 560, PHOTO = 168, TOP = 24, ROW = 34, ROWS_TOP = TOP + PHOTO + 82, MARK = 20, LOGO = 24;
 
-type ExportRow = { key: string; label: string; shown: [string, string]; leader: "a" | "b" | null; pill: string | null };
+type ExportRow = { key: string; label: string; shown: [string, string]; leader: "a" | "b" | null; pill: string | null; strength: PillStrength };
+type ExportPlainLine = { a: number | null; b: number | null; quiet?: boolean; digits?: number };
+
+/** The card's three pill tiers: an outline, a tint and the solid colour. */
+const PILL_FILL: Record<PillStrength, number> = { 1: 0, 2: 0.24, 3: 1 };
+
+function plainLine(key: string, label: string, line: ExportPlainLine): ExportRow {
+  const digits = line.digits ?? 0;
+  const gap = line.a != null && line.b != null ? Number(Math.abs(line.a - line.b).toFixed(digits)) : 0;
+  const leader = !line.quiet && line.a != null && line.b != null && gap > 0 ? line.a > line.b ? "a" : "b" : null;
+  const shown = (value: number | null) => value == null ? "—" : value.toFixed(digits);
+  return { key, label, shown: [shown(line.a), shown(line.b)], leader, pill: leader ? `+${gap.toFixed(digits)}` : null,
+    strength: line.a != null && line.b != null ? pillStrength(line.a, line.b) : 1 };
+}
 
 /**
  * The duel card as one SVG, for Share Image and Export SVG: the same portraits, values,
@@ -32,7 +45,11 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
   season?: string;
   /** Each player's own season when they differ; the photo and caption follow it. */
   seasons?: [string, string];
-}>(function CompareCardExport({ players, rows, accolades = [], honors, direction, labels, title, season, seasons }, ref) {
+  /** The card's Avail % row (Overall only). */
+  availability?: ExportPlainLine | null;
+  /** Both players' ranked league percentiles for a metric, for the pill tiers; absent in Career. */
+  percentiles?: (metric: string) => [number | null, number | null];
+}>(function CompareCardExport({ players, rows, accolades = [], honors, direction, labels, title, season, seasons, availability, percentiles }, ref) {
   const lines: ExportRow[] = [
     ...rows.map(row => {
       const a = typeof row.value_a === "number" ? row.value_a : null, b = typeof row.value_b === "number" ? row.value_b : null;
@@ -41,10 +58,13 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
       const leader = gap != null && Number(gap.toFixed(precision)) > 0 ? leadingIdentity(a, b, direction(row.metric)) : null;
       return { key: row.metric, label: cardLabel(row.metric, labels.get(row.metric)), leader,
         shown: [formatCardValue(row.value_a, row.unit, row.metric), formatCardValue(row.value_b, row.unit, row.metric)] as [string, string],
-        pill: leader && gap != null ? `+${gap.toLocaleString("en-US", { minimumFractionDigits: precision, maximumFractionDigits: precision })}` : null };
+        pill: leader && gap != null ? `+${gap.toLocaleString("en-US", { minimumFractionDigits: precision, maximumFractionDigits: precision })}` : null,
+        strength: a != null && b != null ? pillStrength(a, b, percentiles?.(row.metric), row.unit) : 1 } satisfies ExportRow;
     }),
+    ...(availability ? [plainLine("availability", "Avail %", availability)] : []),
     ...accolades.map(row => ({ key: row.key, label: row.label, shown: row.shown, leader: row.leader,
-      pill: row.leader && row.a != null && row.b != null ? `+${Math.abs(row.a - row.b)}` : null }))
+      pill: row.leader && row.a != null && row.b != null ? `+${Math.abs(row.a - row.b)}` : null,
+      strength: row.a != null && row.b != null ? pillStrength(row.a, row.b) : 1 } satisfies ExportRow))
   ];
   // Match the card: every honor stays visible in rows centered on its player's numeric column.
   const honorColumns = honors?.map(entry => {
@@ -91,8 +111,9 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
       const pillX = line.leader === "a" ? 20 : WIDTH - 72;
       return <g key={line.key}>
         {line.leader && line.pill && <>
-          <rect x={pillX} y={y - 15} width="52" height="20" rx="10" fill={toneColor(`identity-${line.leader}`)} />
-          <text x={pillX + 26} y={y} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-on-accent)">{line.pill}</text>
+          <rect x={pillX} y={y - 15} width="52" height="20" rx="10" fill={toneColor(`identity-${line.leader}`)} fillOpacity={PILL_FILL[line.strength]}
+            stroke={line.strength === 1 ? toneColor(`identity-${line.leader}`) : "none"} strokeOpacity="0.55" />
+          <text x={pillX + 26} y={y} textAnchor="middle" fontSize="12" fontWeight="600" fill={line.strength === 3 ? "var(--color-on-accent)" : toneColor(`identity-${line.leader}`)}>{line.pill}</text>
         </>}
         <text x={WIDTH * 0.3} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "a" ? 700 : 500} fill="var(--color-text)">{line.shown[0]}</text>
         <text x={WIDTH / 2} y={y - 1} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{line.label}</text>

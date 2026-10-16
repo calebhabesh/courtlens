@@ -174,7 +174,11 @@ from courtlens.services.personal_state import (
     update_workspace_state,
 )
 from courtlens.services.player_bio import current_teams, player_bio
-from courtlens.services.player_honours import championships, teams_by_last_appearance
+from courtlens.services.player_honours import (
+    availability,
+    championships,
+    teams_by_last_appearance,
+)
 from courtlens.services.portrait_derivatives import (
     PORTRAIT_DERIVATIVE_MIME,
     PORTRAIT_SIZES,
@@ -629,6 +633,8 @@ def get_comparison_career(
     from courtlens.services.player_career import career_through
 
     careers = career_through(session, [player_a, player_b], phase, season, before_date, release_id)
+    base = resolve_workbench_context(session, release_id=release_id, requested_phase=phase)
+    available = availability(session, base.dataset_id, phase, before_date, [player_a, player_b])
 
     def entry(player_id: str) -> ComparisonCareer:
         career = careers[player_id]
@@ -636,6 +642,7 @@ def get_comparison_career(
         return ComparisonCareer(
             player_id=player_id,
             seasons=career.seasons,
+            availability=available.get(player_id) if career.seasons else None,
             item=PlayerResearchItem(
                 **{
                     key: row.get(key)
@@ -1371,6 +1378,19 @@ def compare_players_endpoint(
         [target_a, target_b],
     )
     titles = championships(session, context.dataset_id, context.before_date, [target_a, target_b])
+    # Availability needs the season's team schedule as its span, so only season-to-date has it.
+    available = (
+        availability(
+            session,
+            context.dataset_id,
+            context.phase,
+            context.before_date,
+            [target_a, target_b],
+            context.season,
+        )
+        if context.window == "season"
+        else {}
+    )
 
     # A player without games in the scope has no profile name; use the identity catalog's name
     # instead of echoing the ID (alignment row 3, 39).
@@ -1394,6 +1414,7 @@ def compare_players_endpoint(
             "teams": association.teams if association else [],
             "teams_chronological": ordered.get(player["id"], []),
             "championships": titles.get(player["id"]),
+            "availability": available.get(player["id"]),
         }
 
     return PlayerComparisonResponse(
