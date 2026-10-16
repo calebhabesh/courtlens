@@ -1130,6 +1130,8 @@ Follow-up instructions (owner, 2026-10-16, honors layout):
     the stats, each player's result in their column ("Winner", "4th", "1st Team", "Selected"; a
     dash when only the other holds it). Gold still marks an earned award or All-Star, never a
     side. The grid uses the same rows; both share images draw them. Supersedes 52-56's wrapping.
+77. [x] Clear players reads at a glance: a "Clear" text button with the remove × (the same mark
+    as each tile's remove) replaces the user-x icon, on the duel and in the grid toolbar.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
