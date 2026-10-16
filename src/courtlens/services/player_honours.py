@@ -2,8 +2,8 @@
 
 Team order lists a player's teams in the scope by last appearance (a traded player's current
 team last). Championships are counted from playoff team games: a season's champion is the team
-that won four games against its final playoff opponent, and a player shares the title when they
-appeared for that team in that postseason. Only titles decided strictly before the cutoff count.
+that won every playoff round, and a player shares the title when they appeared for that team in
+that postseason. Only titles decided strictly before the cutoff count.
 A player whose first admitted game is in the first admitted season may have earlier titles, so
 their count is marked incomplete rather than presented as a career total.
 """
@@ -18,6 +18,9 @@ from sqlalchemy.orm import Session
 
 from courtlens.domain.teams import resolve_team_tricode
 from courtlens.workbench_models import WorkbenchPlayerGame, WorkbenchTeamGame
+
+# Best-of-seven rounds a champion won while the first round was best-of-five (through 2002-03).
+_ROUNDS_BEST_OF_SEVEN_BEFORE_2004 = 3
 
 
 def teams_by_last_appearance(
@@ -75,19 +78,21 @@ def season_champions(session: Session, dataset_id: str, before_date: date | None
     )
     if before_date is not None:
         query = query.where(WorkbenchTeamGame.game_date < before_date)
-    last: dict[str, tuple[date, str, str]] = {}
     wins: dict[tuple[str, str, str], int] = {}
-    for season, team, opponent, day, points, opponent_points in session.execute(query).all():
+    for season, team, opponent, _, points, opponent_points in session.execute(query).all():
         if points > opponent_points:
             wins[(season, team, opponent)] = wins.get((season, team, opponent), 0) + 1
-            if season not in last or day > last[season][0]:
-                last[season] = (day, team, opponent)
-    # The last decided game of a season closes the Finals only when it gave its winner a 4th win
-    # over that opponent; a cutoff inside the Finals leaves the season without a champion.
+    # The champion has won every round: four best-of-seven series. Through 2002-03 the first
+    # round was best-of-five, so three best-of-seven wins complete the run. Winning a conference
+    # final is never enough, so a cutoff anywhere before the Finals end leaves no champion.
+    series_won: dict[tuple[str, str], int] = {}
+    for (season, team, _), count in wins.items():
+        if count >= 4:
+            series_won[(season, team)] = series_won.get((season, team), 0) + 1
     return {
         season: team
-        for season, (_, team, opponent) in last.items()
-        if wins.get((season, team, opponent), 0) >= 4
+        for (season, team), won in series_won.items()
+        if won >= (_ROUNDS_BEST_OF_SEVEN_BEFORE_2004 if season < "2003-04" else 4)
     }
 
 

@@ -10,10 +10,12 @@ from courtlens.services.player_honours import (
 from courtlens.workbench_models import WorkbenchPlayerGame, WorkbenchTeamGame
 
 
-def _team_game(game: str, day: date, team: str, opponent: str, won: bool) -> WorkbenchTeamGame:
+def _team_game(
+    game: str, day: date, team: str, opponent: str, won: bool, season: str = "2016-17"
+) -> WorkbenchTeamGame:
     return WorkbenchTeamGame(
         dataset_id="d", game_id=game, team_id=team, opponent_id=opponent, game_date=day,
-        season="2016-17", phase="playoffs", side="home", points=110 if won else 100,
+        season=season, phase="playoffs", side="home", points=110 if won else 100,
         opponent_points=100 if won else 110, stats_json={}, source_version_id="v",
         source_observation_id="o",
     )  # fmt: skip
@@ -29,8 +31,25 @@ def _player_game(
     )  # fmt: skip
 
 
+def _sweep(
+    session: Session, season: str, winner: str, loser: str, start: date, wins: int = 4
+) -> None:
+    for index in range(wins):
+        day = date.fromordinal(start.toordinal() + index * 2)
+        game = f"{season}-{winner}-{loser}-{index}"
+        session.add(_team_game(game, day, winner, loser, True, season))
+        session.add(_team_game(game, day, loser, winner, False, season))
+
+
 def _finals(session: Session) -> None:
-    """GSW beat CLE 4-1, finishing on June 12; both rows of every game are stored."""
+    """GSW swept three rounds, then beat CLE 4-1, finishing on June 12; CLE won the East on
+    May 25. Both rows of every game are stored."""
+    _sweep(session, "2016-17", "GSW", "POR", date(2017, 4, 16))
+    _sweep(session, "2016-17", "GSW", "UTA", date(2017, 5, 2))
+    _sweep(session, "2016-17", "GSW", "SAS", date(2017, 5, 14))
+    _sweep(session, "2016-17", "CLE", "IND", date(2017, 4, 15))
+    _sweep(session, "2016-17", "CLE", "TOR", date(2017, 5, 1))
+    _sweep(session, "2016-17", "CLE", "BOS", date(2017, 5, 17))
     results = [True, True, True, False, True]
     for index, gsw_won in enumerate(results):
         day = date(2017, 6, 1 + index * 3 if index < 4 else 12)
@@ -43,6 +62,24 @@ def test_champion_needs_a_fourth_win_before_the_cutoff(session: Session) -> None
     session.commit()
     assert season_champions(session, "d", None) == {"2016-17": "GSW"}
     assert season_champions(session, "d", date(2017, 6, 12)) == {}
+
+
+def test_a_conference_title_is_not_a_championship(session: Session) -> None:
+    _finals(session)
+    session.commit()
+    # Through May 28 CLE's East-clinching win is the season's latest decided series.
+    assert season_champions(session, "d", date(2017, 5, 28)) == {}
+
+
+def test_best_of_five_first_rounds_need_three_best_of_seven_wins(session: Session) -> None:
+    _sweep(session, "2001-02", "LAL", "POR", date(2002, 4, 21), wins=3)
+    _sweep(session, "2001-02", "LAL", "SAS", date(2002, 5, 5))
+    _sweep(session, "2001-02", "LAL", "SAC", date(2002, 5, 18))
+    session.commit()
+    assert season_champions(session, "d", None) == {}
+    _sweep(session, "2001-02", "LAL", "NJN", date(2002, 6, 5))
+    session.commit()
+    assert season_champions(session, "d", None) == {"2001-02": "LAL"}
 
 
 def test_titles_go_to_players_who_appeared_for_the_champion(session: Session) -> None:
