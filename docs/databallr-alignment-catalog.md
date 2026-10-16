@@ -1144,6 +1144,9 @@ Follow-up instructions (owner, 2026-10-16, honors layout):
     mirrored, simplified and smoothed), so its head, ears, neck and shoulder slope match it.
 82. [x] The silhouette is sized like a player headshot: enlarged 1.15x from the bottom centre, its
     head as high and as wide in the tile as a real portrait's.
+83. [x] A tied honour (both All-Stars, both 1st Team) reads as held equally: a brighter,
+    side-neutral chip (white semibold on a light tint), distinct from a lower result's plain grey
+    and from a lead's player colour; the share images match.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
