@@ -38,7 +38,7 @@
   .pvp-grid-value > span { display: inline-block; min-width: 56px; padding: 0 var(--space-2); border-radius: var(--radius-sm); }
   /* Each row's best value reads heavier on a gold tint, the Stats colour for "high". */
   .pvp-grid-value[data-best] > span { font-weight: 700; color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
-  .pvp-grid-honors { padding: var(--space-1); vertical-align: top; }
+  .pvp-grid-honors { height: 30px; padding: 0 var(--space-1); }
   /* Phones scroll the columns under a fixed label column; the card turns opaque so the fixed
      cells match it. */
   @media (width < 768px) {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { accoladeGroups, announcedBefore, completedSeasons } from "./compare-accolades";
+import { accoladeGroups, announcedBefore, completedSeasons, honorRows } from "./compare-accolades";
 import type { PlayerBio } from "./types";
 
 const bio = (awards: Record<string, string[]>) => ({ reference: { awards } }) as unknown as PlayerBio;
@@ -84,5 +84,24 @@ describe("completed seasons (alignment row 3, 75)", () => {
     const groups = accoladeGroups([shai, null], [null, null], "2025-26", "2026-04-13", ends);
     expect(groups.career.find(row => row.key === "mvp")?.a).toBe(2);
     expect(groups.season[0].badges?.map(entry => entry.code)).toContain("MVP-1");
+  });
+});
+
+describe("honorRows (alignment row 3, 76)", () => {
+  it("puts each honour category on one row with every player's result", () => {
+    const ends = { "2025-26": "2026-04-13" };
+    const luka = bio({ "2025-26": ["MVP-4", "CPOY-8", "NBA1", "AS"] });
+    const shai = bio({ "2025-26": ["MVP-1", "CPOY-1", "NBA1", "AS"] });
+    const { season } = accoladeGroups([luka, shai], [null, null], "2025-26", "2026-04-13", ends);
+    const rows = honorRows(season);
+    expect(rows.map(row => row.label)).toEqual(["MVP", "Clutch", "All-NBA", "All-Star"]);
+    expect(rows.map(row => row.cells.map(cell => cell?.text ?? "—"))).toEqual([
+      ["4th", "Winner"], ["8th", "Winner"], ["1st Team", "1st Team"], ["Selected", "Selected"]
+    ]);
+    expect(rows[0].cells[1]?.win).toBe(true);
+  });
+  it("leaves a cell empty when only the other player holds the honour", () => {
+    const rows = honorRows([{ season: "2016-17", badges: [{ code: "DEF2", label: "All-Def 2nd", description: "All-Defensive Second Team", win: false }] }, { season: "2016-17", badges: [] }]);
+    expect(rows).toEqual([{ key: "DEF", label: "All-Def", cells: [{ text: "2nd Team", description: "All-Defensive Second Team", win: false, star: false }, null] }]);
   });
 });

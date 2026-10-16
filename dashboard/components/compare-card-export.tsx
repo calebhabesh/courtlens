@@ -6,7 +6,7 @@ import { cardLabel, formatCardValue, isPercentUnit, isWholeCount, pillStrength, 
 import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
-import type { AccoladeRow, SeasonHonors } from "@/lib/compare-accolades";
+import { honorRows, type AccoladeRow, type SeasonHonors } from "@/lib/compare-accolades";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { MetricComparisonItem, MetricDefinition } from "@/lib/types";
 import { slotTeams, teamRecord, type CompareSlotPlayer } from "./compare-player-slot";
@@ -66,22 +66,10 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
       pill: row.leader && row.a != null && row.b != null ? `+${Math.abs(row.a - row.b)}` : null,
       strength: row.a != null && row.b != null ? pillStrength(row.a, row.b) : 1 } satisfies ExportRow))
   ];
-  // Match the card: every honor stays visible in rows centered on its player's numeric column.
-  const honorColumns = honors?.map(entry => {
-    const badges = entry.badges?.length ? entry.badges : [{ code: "EMPTY", label: "—", win: false }];
-    const rowWidths = new Map<number, number>();
-    let x = 0, y = 0;
-    const placed = badges.map(badge => {
-      const width = Math.min(192, badge.label.length * 7.5 + 16);
-      if (x && x + width > 192) { x = 0; y += 28; }
-      const item = { ...badge, x, y, width };
-      rowWidths.set(y, x + width); x += width + 4;
-      return item;
-    });
-    return placed.map(badge => ({ ...badge, x: badge.x + (192 - (rowWidths.get(badge.y) ?? 192)) / 2 }));
-  }) ?? [];
+  // Match the card (76): one row per award either player holds, under a section heading.
+  const honorLines = honors ? honorRows(honors) : [];
   const honorsTop = ROWS_TOP + lines.length * ROW;
-  const honorsHeight = honors ? 34 + Math.max(0, ...honorColumns.flatMap(column => column.map(badge => badge.y))) + 28 : 0;
+  const honorsHeight = honors ? 30 + Math.max(1, honorLines.length) * ROW : 0;
   const height = honorsTop + honorsHeight + 56;
   const column = (side: 0 | 1) => side === 0 ? WIDTH * 0.25 : WIDTH * 0.75;
   const markWidth = MARK * WORDMARK_WIDTH / WORDMARK_HEIGHT;
@@ -121,12 +109,12 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
     })}
     {honors && <>
       <text x={WIDTH / 2} y={honorsTop + 10} textAnchor="middle" fontSize="10" fontWeight="600" fill="var(--color-text-secondary)">{[...new Set(honors.map(entry => entry.season))].join(" / ")} Honors</text>
-      {honorColumns.map((column, side) => <g key={side} transform={`translate(${WIDTH * (side === 0 ? 0.3 : 0.7) - 96} ${honorsTop + 22})`}>
-        {column.map(badge => <g key={badge.code}>
-          <rect x={badge.x} y={badge.y} width={badge.width} height="22" rx="4" fill={badge.win || badge.code === "AS" ? "var(--color-accent-soft)" : "var(--color-surface-2)"} />
-          <text x={badge.x + badge.width / 2} y={badge.y + 15} textAnchor="middle" fontSize="12" fill={badge.win || badge.code === "AS" ? "var(--color-accent)" : "var(--color-text-secondary)"}>{badge.label}</text>
-        </g>)}
-      </g>)}
+      {honorLines.map((row, index) => { const y = honorsTop + 30 + index * ROW + 14; return <g key={row.key}>
+        {row.cells.map((cell, side) => <text key={side} x={WIDTH * (side === 0 ? 0.3 : 0.7)} y={y} textAnchor="middle" fontSize="14" fontWeight={cell?.win || cell?.star ? 600 : 400}
+          fill={cell?.win || cell?.star ? "var(--color-accent)" : cell ? "var(--color-text)" : "var(--color-text-secondary)"}>{cell?.text ?? "—"}</text>)}
+        <text x={WIDTH / 2} y={y - 1} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{row.label}</text>
+      </g>; })}
+      {!honorLines.length && <text x={WIDTH / 2} y={honorsTop + 44} textAnchor="middle" fontSize="12" fill="var(--color-text-secondary)">—</text>}
     </>}
     {/* The ball-lens logo beside the wordmark, as on the card (23). */}
     <g transform={`translate(${(WIDTH - markWidth - LOGO - 8) / 2} ${height - 22 - LOGO})`}><BrandMark size={LOGO} framed={false} /></g>

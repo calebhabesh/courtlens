@@ -4,6 +4,7 @@ import { forwardRef } from "react";
 import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
 import { bestColumns } from "@/lib/compare-grid";
+import { honorRows } from "@/lib/compare-accolades";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
 import { teamRecord } from "./compare-player-slot";
 import { BrandMark } from "./brand";
@@ -18,8 +19,10 @@ const LABEL = 120, COLUMN = 128, PHOTO = 96, TOP = 24, ROW = 30, MARK = 20, LOGO
 export const CompareGridExport = forwardRef<SVGSVGElement, { columns: GridColumn[]; lines: ReturnType<typeof gridLines>; title: string }>(function CompareGridExport({ columns, lines, title }, ref) {
   const width = PAD * 2 + LABEL + columns.length * COLUMN;
   const rows = [...lines.metrics, ...lines.accolades];
+  const honors = honorRows(lines.honors.map(entry => entry.honors));
   const rowsTop = TOP + PHOTO + 70;
-  const height = rowsTop + rows.length * ROW + 64;
+  const honorsTop = rowsTop + rows.length * ROW;
+  const height = honorsTop + (honors.length ? 24 + honors.length * ROW : 0) + 64;
   const x = (index: number) => PAD + LABEL + index * COLUMN + COLUMN / 2;
   const markWidth = MARK * WORDMARK_WIDTH / WORDMARK_HEIGHT;
   return <svg ref={ref} xmlns="http://www.w3.org/2000/svg" className="pvp-export-svg" role="img" aria-label={title} viewBox={`0 0 ${width} ${height}`} width={width} height={height}
@@ -50,6 +53,13 @@ export const CompareGridExport = forwardRef<SVGSVGElement, { columns: GridColumn
         </g>)}
       </g>;
     })}
+    {/* Season honours, one row per award, as on the card (76). */}
+    {honors.length > 0 && <text x={PAD} y={honorsTop + 8} fontSize="10" fontWeight="600" fill="var(--color-text-secondary)">SEASON HONORS</text>}
+    {honors.map((row, index) => { const y = honorsTop + 24 + index * ROW + 6; return <g key={row.key}>
+      <text x={PAD} y={y} fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{row.label}</text>
+      {row.cells.map((cell, column) => <text key={column} x={x(column)} y={y} textAnchor="middle" fontSize="13" fontWeight={cell?.win || cell?.star ? 600 : 400}
+        fill={cell?.win || cell?.star ? "var(--color-accent)" : cell ? "var(--color-text)" : "var(--color-text-secondary)"}>{cell?.text ?? "—"}</text>)}
+    </g>; })}
     <g transform={`translate(${(width - markWidth - LOGO - 8) / 2} ${height - 22 - LOGO})`}><BrandMark size={LOGO} framed={false} /></g>
     <path d={WORDMARK_PATH} fill="var(--color-accent)" transform={`translate(${(width - markWidth - LOGO - 8) / 2 + LOGO + 8} ${height - 20 - MARK}) scale(${MARK / WORDMARK_HEIGHT})`} />
   </svg>;

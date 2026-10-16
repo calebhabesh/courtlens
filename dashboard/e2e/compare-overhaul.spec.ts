@@ -152,28 +152,28 @@ test("the console Season is a global override that clears per-player seasons (ro
   expect(new URL(page.url()).searchParams.get("seasonA")).toBeNull();
 });
 
-for(const width of [1440,390]) test(`season honors show every badge in aligned rows at ${width}px (row 3, 49)`,async({page})=>{
+for(const width of [1440,390]) test(`season honors read as one row per award, aligned with the stats at ${width}px (row 3, 49, 76)`,async({page})=>{
   await page.emulateMedia({reducedMotion:"reduce"});
   await page.setViewportSize({width,height:900});
   await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-07-01");
-  const honors=page.getByRole("region",{name:"Season honors",exact:true});
-  await expect(honors).toContainText("DPOY Winner");
+  const honors=page.getByRole("table",{name:"Season honors",exact:true});
+  // Major awards first, then team selections and All-Star; each result sits in its player's column.
+  await expect(honors.locator("tbody th[scope=row]")).toHaveText(["MVP","DPOY","All-NBA","All-Def","All-Star"]);
+  const row=(label:string)=>honors.getByRole("row",{name:new RegExp(`\\b${label}\\b`)});
+  await expect(row("DPOY")).toContainText("Winner");await expect(row("MVP")).toContainText("2nd");
+  await expect(row("All-NBA")).toContainText("1st Team");await expect(row("All-Star")).toContainText("Selected");
+  // Gold marks an earned award or All-Star, never a vote finish or a winning side.
+  await expect(row("All-Star").getByText("Selected",{exact:true})).toHaveCSS("color","rgb(255, 209, 102)");
+  await expect(row("MVP").getByText("2nd",{exact:true})).not.toHaveCSS("color","rgb(255, 209, 102)");
+  await expect(honors.getByRole("button")).toHaveCount(0);
   const centers=await page.evaluate(()=>{
     const center=(element:Element)=>{const box=element.getBoundingClientRect();return box.x+box.width/2;};
-    return {values:Array.from(document.querySelectorAll('.pvp-rows[aria-label="Descriptive comparison"] tbody tr:not(.pvp-group) .pvp-value')).slice(0,2).map(center),honors:Array.from(document.querySelectorAll(".pvp-honors-side")).map(center)};
+    return {value:center(document.querySelectorAll('.pvp-rows[aria-label="Descriptive comparison"] tbody tr:not(.pvp-group) .pvp-value')[1]),
+      honors:Array.from(document.querySelectorAll('.pvp-honors tbody tr:not(.pvp-group) .pvp-honor-cell:nth-child(4) .ui-badge')).map(center)};
   });
-  centers.values.forEach((value,index)=>expect(centers.honors[index]).toBeCloseTo(value,0));
-  for(const label of ["DPOY Winner","All-NBA 1st","All-Def 1st","All-Star","MVP 2nd"]) await expect(honors.getByText(label,{exact:true})).toBeVisible();
-  await expect(honors.getByText("All-Star",{exact:true})).toHaveCSS("color","rgb(255, 209, 102)");
-  await expect(honors.getByRole("button")).toHaveCount(0);
-  const badgeRows=await honors.locator('.pvp-honors-side[data-identity="b"] .ui-badge').evaluateAll(elements=>{
-    const rows=new Map<number,{left:number;right:number;count:number}>();
-    for(const element of elements){const box=element.getBoundingClientRect(),row=rows.get(box.y);rows.set(box.y,{left:Math.min(row?.left??box.left,box.left),right:Math.max(row?.right??box.right,box.right),count:(row?.count??0)+1});}
-    return [...rows.values()];
-  });
-  expect(badgeRows.reduce((count,row)=>count+row.count,0)).toBe(5);
-  badgeRows.forEach(row=>expect((row.left+row.right)/2).toBeCloseTo(centers.values[1],0));
-  if(width===1440) expect(badgeRows.some(row=>row.count===2)).toBe(true);
+  expect(centers.honors).toHaveLength(5);
+  // Within 2px: chip widths round differently from the numeric cells.
+  centers.honors.forEach(center=>expect(Math.abs(center-centers.value)).toBeLessThan(2));
   await page.getByRole("button",{name:/^Player B season/}).click();
   await expect(page.getByRole("menuitem",{name:/2025-26 All-Star/})).toBeVisible();
   const legend=page.locator(".pvp-season-legend");
@@ -183,17 +183,18 @@ for(const width of [1440,390]) test(`season honors show every badge in aligned r
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 
-for(const width of [1440,390]) test(`midseason honors show badges and empty dashes without pending copy at ${width}px (row 3, 57)`,async({page})=>{
+for(const width of [1440,390]) test(`midseason honors keep the All-Star row with a dash for the unknown side at ${width}px (row 3, 57, 76)`,async({page})=>{
   await page.setViewportSize({width,height:900});
   await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
-  const honors=page.getByRole("region",{name:"Season honors",exact:true});
-  await expect(honors.getByText("All-Star",{exact:true})).toBeVisible();
-  await expect(honors.locator('.pvp-honors-side[data-identity="a"] .pvp-honors-empty')).toContainText("—");
-  await expect(honors.locator('.pvp-honors-side[data-identity="a"]')).toContainText("Honors unavailable");
-  await expect(honors).not.toContainText(/Pending|awards pending|None recorded/i);
-  await expect(honors.getByText("DPOY Winner",{exact:true})).toHaveCount(0);
+  const honors=page.getByRole("table",{name:"Season honors",exact:true});
+  // Mid-season (the fixture has no postseason yet): only the All-Star selection is announced.
+  await expect(honors.locator("tbody th[scope=row]")).toHaveText(["All-Star"]);
+  const allStar=honors.getByRole("row",{name:/All-Star/});
+  await expect(allStar.locator(".pvp-honor-cell").first()).toContainText("—");
+  await expect(allStar.locator(".pvp-honor-cell").last()).toContainText("Selected");
+  await expect(honors).not.toContainText(/Pending|awards pending|None recorded|Winner/i);
   const exported=page.locator(".pvp-export-svg");
-  await expect(exported).toContainText("All-Star");
+  await expect(exported).toContainText("Selected");
   await expect(exported).not.toContainText(/Pending|awards pending|None recorded/i);
 });
 

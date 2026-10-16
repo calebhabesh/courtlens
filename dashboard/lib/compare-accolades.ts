@@ -144,3 +144,46 @@ export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], champ
   const held = career.filter(row => !(row.a === 0 && row.b === 0));
   return { career: a.known || b.known ? held : [], season: [a.honors, b.honors] };
 }
+
+/** One player's result in an honour category: "Winner", "4th", "1st Team", "Selected". */
+export type HonorCell = { text: string; description: string; win: boolean; star: boolean };
+
+/** One honour category across every compared player, for a row-per-award section (76). */
+export type HonorRow = { key: string; label: string; cells: (HonorCell | null)[] };
+
+const HONOR_ORDER = ["TITLE", "MVP", "DPOY", "ROY", "6MOY", "MIP", "CPOY", "NBA", "DEF", "AS"];
+const HONOR_LABELS: Record<string, string> = { TITLE: "Title", MVP: "MVP", DPOY: "DPOY", ROY: "Rookie", "6MOY": "6th Man", MIP: "MIP", CPOY: "Clutch", NBA: "All-NBA", DEF: "All-Def", AS: "All-Star" };
+
+/** A badge's category and its short result, so each award reads on its own row. */
+function honorCategory(badge: SeasonHonorBadge): { key: string; cell: HonorCell } {
+  const team = badge.code.match(/^(NBA|DEF)([123])$/);
+  if (team) return { key: team[1], cell: { text: `${["", "1st", "2nd", "3rd"][Number(team[2])]} Team`, description: badge.description, win: false, star: false } };
+  if (badge.code === "TITLE") return { key: "TITLE", cell: { text: "Champion", description: badge.description, win: true, star: false } };
+  if (badge.code === "AS") return { key: "AS", cell: { text: "Selected", description: badge.description, win: false, star: true } };
+  const vote = badge.code.match(/^([A-Z0-9]+)-([1-9]\d*)$/);
+  if (vote) {
+    const key = vote[1] === "SMOY" ? "6MOY" : vote[1];
+    // "MVP Winner" / "MVP 4th": the category is the row label, the result is the cell.
+    return { key, cell: { text: badge.win ? "Winner" : badge.label.split(" ").at(-1) ?? badge.label, description: badge.description, win: badge.win, star: false } };
+  }
+  return { key: badge.code, cell: { text: badge.label, description: badge.description, win: badge.win, star: false } };
+}
+
+/**
+ * Season honours as rows (alignment row 3, 76): one row per category any player holds, in a
+ * fixed order (titles and major awards first), each player's result in their own column.
+ * A player whose honours are unknown has no cells, never an empty record.
+ */
+export function honorRows(honors: SeasonHonors[]): HonorRow[] {
+  const rows = new Map<string, HonorRow>();
+  honors.forEach((entry, index) => {
+    for (const badge of entry.badges ?? []) {
+      const { key, cell } = honorCategory(badge);
+      const row = rows.get(key) ?? { key, label: HONOR_LABELS[key] ?? key, cells: honors.map(() => null) };
+      row.cells[index] = cell;
+      rows.set(key, row);
+    }
+  });
+  const rank = (key: string) => { const at = HONOR_ORDER.indexOf(key); return at < 0 ? HONOR_ORDER.length : at; };
+  return [...rows.values()].sort((a, b) => rank(a.key) - rank(b.key));
+}

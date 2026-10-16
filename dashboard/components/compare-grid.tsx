@@ -10,12 +10,12 @@ import { Icon } from "./ui/icon";
 import { IconButton } from "./ui/kit";
 import { CompareEmptySlot } from "./compare-empty-slot";
 import { ComparePlayerSeasonPicker } from "./compare-player-season-picker";
-import { HonorBadge } from "./compare-season-honors";
+import { HonorChip } from "./compare-season-honors";
 import { bioLine, teamRecord, type CompareSelection } from "./compare-player-slot";
 import { comparisonFlags } from "./charts/semantics";
 import { teamBrandColor } from "@/lib/team-colors";
 import { bestColumns, MAX_GRID_PLAYERS } from "@/lib/compare-grid";
-import { ACCOLADE_KINDS, playerAccolades, type PlayerAccolades, type SeasonEnds } from "@/lib/compare-accolades";
+import { ACCOLADE_KINDS, honorRows, playerAccolades, type PlayerAccolades, type SeasonEnds } from "@/lib/compare-accolades";
 import { availabilityShare, cardLabel, compareMetricKey, formatCardValue, isPercentUnit, isWholeCount, overallGroupStart, type CompareCountingMode } from "@/lib/comparison-metrics";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { ComparisonGroupPlayer, MetricDefinition, PlayerBio } from "@/lib/types";
@@ -179,6 +179,7 @@ export function CompareGrid({ columns, lines, controls, career, onReplace, onRem
   const open = adding && columns.length < MAX_GRID_PLAYERS;
   const names = columns.map(column => column.player.name);
   const ids = columns.map(column => column.player.player_id);
+  const honors = honorRows(lines.honors.map(entry => entry.honors));
   const span = columns.length + 1 + (open ? 1 : 0);
   // Photos, then the presets, then the stats (72): the duel's order. Both rows share one column
   // template, so each photo sits over its column; phones scroll them together.
@@ -204,17 +205,13 @@ export function CompareGrid({ columns, lines, controls, career, onReplace, onRem
           <Lines lines={lines.accolades} columns={columns.length} names={names} open={open} />
           {!lines.accolades.length && <tr className="pvp-pending"><td colSpan={span}>No accolades on record for these players.</td></tr>}
           <GroupRow label="Season Honors" columns={columns.length} open={open} />
-          <tr>
-            <th scope="row" className="pvp-label pvp-grid-label">Honors</th>
-            {lines.honors.map((entry, index) => <td key={index} className="pvp-grid-honors" aria-label={`${names[index]}, ${entry.honors.season} honors`}>
-              <div className="pvp-honors-strip">
-                {entry.honors.badges?.map(badge => <HonorBadge key={badge.code} badge={badge} />)}
-                {!entry.honors.badges?.length && <span className="pvp-honors-empty"><span aria-hidden="true">—</span>
-                  <span className="sr-only">{entry.honors.badges == null ? "Honors unavailable" : "No honors recorded in this scope"}</span></span>}
-              </div>
-            </td>)}
+          {/* One row per award any player holds, each result in its player's column (76). */}
+          {honors.map(row => <tr key={row.key}>
+            <th scope="row" className="pvp-label pvp-grid-label">{row.label}</th>
+            {row.cells.map((cell, index) => <td key={index} className="pvp-grid-honors"><HonorChip cell={cell} category={row.label} /></td>)}
             {open && <td aria-hidden="true" />}
-          </tr>
+          </tr>)}
+          {!honors.length && <tr className="pvp-pending"><td colSpan={span}>No season honors for these players.</td></tr>}
         </tbody>
       </table>
     </div>
