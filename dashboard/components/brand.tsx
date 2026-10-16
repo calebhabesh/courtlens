@@ -23,8 +23,8 @@ export function BrandMark({ size = 24, framed = true }: { size?: number; framed?
       {/* Handle sits under the ring stroke: joined flush without entering the lens. */}
       <line x1="20.5" y1="20.5" x2="27.4" y2="27.4" stroke={silver} strokeWidth="3.4" strokeLinecap="butt" />
       <circle cx="27.4" cy="27.4" r="1.7" fill={silver} />
-      <circle cx="14" cy="14" r="7" fill="#ff7a2f" />
-      <path d="M7 14h14M14 7v14M9.2 9.2c2.6 2.6 2.6 7 0 9.6M18.8 9.2c-2.6 2.6-2.6 7 0 9.6" fill="none" stroke="#0c0d10" strokeWidth="1.2" />
+      <circle cx="14" cy="14" r="8.4" fill="#ff7a2f" />
+      <path d="M5.6 14h16.8M14 5.6v16.8M8.1 8.1c3.2 3.2 3.2 8.6 0 11.8M19.9 8.1c-3.2 3.2-3.2 8.6 0 11.8" fill="none" stroke="#0c0d10" strokeWidth="1.2" />
       <circle cx="14" cy="14" r="9.2" fill="none" stroke={silver} strokeWidth="2" />
     </svg>
   );
