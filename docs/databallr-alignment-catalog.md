@@ -1124,6 +1124,12 @@ Follow-up instructions (owner, 2026-10-16, polish):
     regular season (`completedSeasons`: only seasons whose play-in or playoffs exist, so one in
     progress never qualifies). A cutoff inside the season still hides them. Applies to the duel,
     the grid, the share image and the season picker's marks. Supersedes the timing in 9.
+Follow-up instructions (owner, 2026-10-16, honors layout):
+76. [x] Season honors read as a grid: one mirrored row per award either player holds (Title, MVP,
+    DPOY, Rookie, 6th Man, MIP, Clutch, All-NBA, All-Def, All-Star), labelled in the centre like
+    the stats, each player's result in their column ("Winner", "4th", "1st Team", "Selected"; a
+    dash when only the other holds it). Gold still marks an earned award or All-Star, never a
+    side. The grid uses the same rows; both share images draw them. Supersedes 52-56's wrapping.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

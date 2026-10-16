@@ -282,8 +282,8 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
               <Columns names={[a.name, b.name]} />
               <tbody><AccoladeRows groups={accolades} names={[a.name, b.name]} quiet={oneSided} /></tbody>
             </table>
+            <CompareSeasonHonors key={`${a.id}-${b.id}-${seasonOf("a")}-${seasonOf("b")}-honors`} honors={accolades.season} names={[a.name, b.name]} />
           </div>
-          <CompareSeasonHonors honors={accolades.season} names={[a.name, b.name]} />
           {!rows.length && <GatedNote action={<Button size="md" onClick={() => change({ preset: "custom", customMetrics: CUSTOM_DEFAULT.join(",") })}>Reset metrics</Button>}>No custom metrics selected.</GatedNote>}
           <footer className="pvp-foot"><BrandMark size={22} framed={false} /><CourtLensWordmark height={18} /></footer>
         </>}
