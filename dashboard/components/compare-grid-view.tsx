@@ -7,6 +7,7 @@ import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { COMPARE_PRESETS, CUSTOM_DEFAULT, customMetricKeys, type CompareCountingMode, type ComparePresetId } from "@/lib/comparison-metrics";
 import { duelParams, gridParams, parseGrid, MAX_GRID_PLAYERS, type GridSelection } from "@/lib/compare-grid";
 import { useWorkspace } from "@/lib/workspace-context";
+import { completedSeasons } from "@/lib/compare-accolades";
 import { saveInvestigation } from "@/lib/workbench-api";
 import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
 import type { MetricDefinition, WorkbenchCatalog } from "@/lib/types";
@@ -56,7 +57,9 @@ export function CompareGridView({ columns, span, context, workbenchCatalog, metr
   const shownMode: CompareCountingMode = career ? mode === "raw" ? "raw" : "per_game" : mode;
   const custom = customMetricKeys(params.get("customMetrics"), metricDefinitions);
   const keys = active === "custom" ? custom : COMPARE_PRESETS[active].metrics;
-  const lines = gridLines({ columns, keys, mode: shownMode, overall: active === "overall", career, definitions: metricDefinitions });
+  // A finished season shows its awards once the cutoff covers its whole regular season (75).
+  const ends = completedSeasons(workbenchCatalog?.stats_scopes);
+  const lines = gridLines({ columns, keys, mode: shownMode, overall: active === "overall", career, definitions: metricDefinitions, ends });
   const ids = columns.map(column => column.player.player_id);
   const seasons = [...new Set(columns.map(column => column.season))];
   const seasonLabel = seasons.length === 1 ? seasons[0] : seasons.length === 2 ? seasons.join(" / ") : "each player's season";
@@ -151,13 +154,13 @@ export function CompareGridView({ columns, span, context, workbenchCatalog, metr
           { label: "Best values", value: "Each row's best value reads heavier; unknown values never lead, and a row where every value ties has none. There is no overall winner." },
           { label: "Availability", value: "Games played out of the teams' games over the same span, before the cutoff. Without a roster feed a traded season's split is estimated; a mid-season signing counts earlier team games as missed." },
           { label: "Career", value: "Every observed season up to each player's compared one, with games before the cutoff only." },
-          { label: "Accolades", value: "Basketball-Reference season awards, counted once announced before the cutoff; titles from admitted playoff box scores." },
+          { label: "Accolades", value: "Basketball-Reference season awards, counted once announced before the cutoff, or once the cutoff covers that season's whole regular season; titles from admitted playoff box scores." },
           { label: "Resolved comparison context", value: JSON.stringify(context), mono: true }]} />
     </div>
     {columns.length > 0 && <AssistantPageSelection route="/compare" playerIds={ids} scope={context} label={columns.map(column => column.player.name).join(" / ")} />}
     <div className="pvp-column pvp-grid-column" data-columns={columns.length + (canAdd && adding ? 1 : 0)}>
       <div className="pvp-stack">
-        <CompareGrid columns={columns} lines={lines} controls={controls} career={career} adding={adding} onCloseAdd={closeAdd} onReplace={replace} onRemove={remove} onAdd={add} onSeason={chooseSeason}
+        <CompareGrid ends={ends} columns={columns} lines={lines} controls={controls} career={career} adding={adding} onCloseAdd={closeAdd} onReplace={replace} onRemove={remove} onAdd={add} onSeason={chooseSeason}
           footer={<>
             {error && <div role="alert"><GatedNote why={error}>Unable to compare.</GatedNote></div>}
             {!lines.metrics.length && <GatedNote action={<Button size="md" onClick={() => change({ preset: "custom", customMetrics: CUSTOM_DEFAULT.join(",") })}>Reset metrics</Button>}>No custom metrics selected.</GatedNote>}

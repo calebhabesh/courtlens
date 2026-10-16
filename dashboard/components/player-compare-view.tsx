@@ -22,7 +22,7 @@ import { CompareSeasonPicker } from "./compare-season-picker";
 import { CompareSeasonHonors } from "./compare-season-honors";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { BrandMark } from "./brand";
-import { accoladeGroups, type AccoladeGroups } from "@/lib/compare-accolades";
+import { accoladeGroups, completedSeasons, type AccoladeGroups } from "@/lib/compare-accolades";
 import { formatDate } from "@/lib/format-date";
 import { PageHeader } from "./ui/panel";
 import { GatedNote } from "./ui/gated-note";
@@ -94,7 +94,9 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   const modeLabel = COUNTING_MODES.find(entry => entry.value === mode)?.label ?? "Per Game";
   const seasonOf = (side: "a" | "b") => sides?.[side].season ?? context.season;
   const cutoffOf = (side: "a" | "b") => sides?.[side].before_date ?? context.before_date;
-  const accolades = accoladeGroups(bios, [a?.championships, b?.championships], [seasonOf("a"), seasonOf("b")], [cutoffOf("a"), cutoffOf("b")]);
+  // A finished season shows its awards once the cutoff covers its whole regular season (75).
+  const ends = completedSeasons(workbenchCatalog?.stats_scopes);
+  const accolades = accoladeGroups(bios, [a?.championships, b?.championships], [seasonOf("a"), seasonOf("b")], [cutoffOf("a"), cutoffOf("b")], ends);
   /** Compare one player in another season; the page season clears that player's override. */
   function chooseSeason(side: "a" | "b", season: string) {
     const next = new URLSearchParams(params.toString());
@@ -214,7 +216,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
         </div>}
         detailRows={[{ label: "Source", value: `${workbenchCatalog?.source ?? "Published box scores"}${a && b ? ` · ${a.games_played} / ${b.games_played} GP` : ""}` },
           { label: "Career", value: "Every observed season up to the compared one, with games before the cutoff only; no league percentiles." },
-          { label: "Accolades", value: "Basketball-Reference season awards, counted once announced before the cutoff; titles from admitted playoff box scores." },
+          { label: "Accolades", value: "Basketball-Reference season awards, counted once announced before the cutoff, or once the cutoff covers that season's whole regular season; titles from admitted playoff box scores." },
           { label: "Resolved comparison context", value: JSON.stringify(comparison?.context ?? context), mono: true },
           { label: "Percentile cohort", value: `${cohort?.table_cohort?.qualified_players ?? "Unknown"} league players with ${minutes}+ season minutes, same season and phase.` },
           { label: "Metric definitions", value: "Registered catalog directions; unavailable metrics stay unknown." }]} />
@@ -225,7 +227,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
       <section className="pvp-card" aria-label="Comparison card">
         {a && b ? <>
           <div className="pvp-players">
-            <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" player={a} excludedIds={[a.id, b.id]} bio={bios[0]} season={seasonOf("a")} beforeDate={cutoffOf("a")} playedSeasons={played?.a ?? null}
+            <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" ends={ends} player={a} excludedIds={[a.id, b.id]} bio={bios[0]} season={seasonOf("a")} beforeDate={cutoffOf("a")} playedSeasons={played?.a ?? null}
               onSeason={season => chooseSeason("a", season)} onPick={selection => pick("a", selection)}
               games={careerView ? careerOf("a")?.item?.games_played : undefined} />
             <div className="pvp-pair-actions">
@@ -233,7 +235,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
               <IconButton size="sm" variant="ghost" icon="plus" label="Add Player" onClick={addPlayer} />
               <IconButton size="sm" variant="ghost" icon="user-clear" label="Clear players" onClick={clearPlayers} />
             </div>
-            <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" player={b} excludedIds={[a.id, b.id]} bio={bios[1]} season={seasonOf("b")} beforeDate={cutoffOf("b")} playedSeasons={played?.b ?? null}
+            <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" ends={ends} player={b} excludedIds={[a.id, b.id]} bio={bios[1]} season={seasonOf("b")} beforeDate={cutoffOf("b")} playedSeasons={played?.b ?? null}
               onSeason={season => chooseSeason("b", season)} onPick={selection => pick("b", selection)}
               games={careerView ? careerOf("b")?.item?.games_played : undefined} />
           </div>

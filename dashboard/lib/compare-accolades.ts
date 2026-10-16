@@ -41,15 +41,37 @@ const AWARDS_KNOWN = "-06-01";
 
 function endYear(season: string) { return `${Number(season.slice(0, 4)) + 1}`; }
 
-/** True when the season's honours of this kind were announced strictly before the cutoff. */
-export function announcedBefore(season: string, code: string, beforeDate: string) {
+/**
+ * Completed regular seasons: season -> the exclusive cutoff that covers all of it. A season is
+ * complete only once the catalog has its play-in or playoffs, so one in progress never is.
+ */
+export type SeasonEnds = Record<string, string>;
+
+export function completedSeasons(scopes: { season: string; phase: string; default_before_date: string }[] | undefined): SeasonEnds {
+  const ends: SeasonEnds = {};
+  for (const scope of scopes ?? []) {
+    if (scope.phase !== "regular_season") continue;
+    if (scopes!.some(entry => entry.season === scope.season && (entry.phase === "playoffs" || entry.phase === "play_in"))) ends[scope.season] = scope.default_before_date;
+  }
+  return ends;
+}
+
+/**
+ * True when the season's honours of this kind count at the cutoff: announced strictly before
+ * it, or (alignment row 3, 75) the cutoff covers that season's whole regular season. Awards
+ * describe the regular season, so a comparison of a finished season shows them although they
+ * were announced after its last game; a cutoff inside the season still never does.
+ */
+export function announcedBefore(season: string, code: string, beforeDate: string, ends?: SeasonEnds) {
+  const end = ends?.[season];
+  if (end && beforeDate >= end) return true;
   return `${endYear(season)}${code === "AS" ? ALL_STAR_KNOWN : AWARDS_KNOWN}` < beforeDate;
 }
 
-function seasonCodes(bio: PlayerBio | null, beforeDate: string): Map<string, string[]> | null {
+function seasonCodes(bio: PlayerBio | null, beforeDate: string, ends?: SeasonEnds): Map<string, string[]> | null {
   const awards = bio?.reference?.awards;
   if (!awards) return null;
-  return new Map(Object.entries(awards).map(([season, codes]) => [season, codes.filter(code => announcedBefore(season, code, beforeDate))]));
+  return new Map(Object.entries(awards).map(([season, codes]) => [season, codes.filter(code => announcedBefore(season, code, beforeDate, ends))]));
 }
 
 function count(codes: Map<string, string[]> | null, test: (code: string) => boolean) {
@@ -103,8 +125,8 @@ export interface PlayerAccolades {
 }
 
 /** One player's accolades through the cutoff and their compared season's honors (row 3, 64). */
-export function playerAccolades(bio: PlayerBio | null, championships: ComparisonChampionships | null | undefined, season: string, beforeDate: string): PlayerAccolades {
-  const codes = seasonCodes(bio, beforeDate);
+export function playerAccolades(bio: PlayerBio | null, championships: ComparisonChampionships | null | undefined, season: string, beforeDate: string, ends?: SeasonEnds): PlayerAccolades {
+  const codes = seasonCodes(bio, beforeDate, ends);
   const counts = Object.fromEntries(ACCOLADE_KINDS.map(kind => [kind.key, kind.test ? count(codes, kind.test) : titles(championships)]));
   return { counts, known: codes != null || championships != null, honors: seasonHonors(season, codes, championships) };
 }
@@ -113,10 +135,10 @@ export function playerAccolades(bio: PlayerBio | null, championships: Comparison
  * ``season`` and ``beforeDate`` are one value for both players, or a pair when each player is
  * compared in their own season (alignment row 3, 38).
  */
-export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], championships: [ComparisonChampionships | null | undefined, ComparisonChampionships | null | undefined], seasons: string | [string, string], beforeDates: string | [string, string]): AccoladeGroups {
+export function accoladeGroups(bios: [PlayerBio | null, PlayerBio | null], championships: [ComparisonChampionships | null | undefined, ComparisonChampionships | null | undefined], seasons: string | [string, string], beforeDates: string | [string, string], ends?: SeasonEnds): AccoladeGroups {
   const [seasonOfA, seasonOfB] = typeof seasons === "string" ? [seasons, seasons] : seasons;
   const [cutA, cutB] = typeof beforeDates === "string" ? [beforeDates, beforeDates] : beforeDates;
-  const a = playerAccolades(bios[0], championships[0], seasonOfA, cutA), b = playerAccolades(bios[1], championships[1], seasonOfB, cutB);
+  const a = playerAccolades(bios[0], championships[0], seasonOfA, cutA, ends), b = playerAccolades(bios[1], championships[1], seasonOfB, cutB, ends);
   const career = ACCOLADE_KINDS.map(kind => countRow(kind.key, kind.label, kind.title, a.counts[kind.key], b.counts[kind.key]));
   // Like Stathead, honours neither player holds are left out; an unknown side keeps its row.
   const held = career.filter(row => !(row.a === 0 && row.b === 0));

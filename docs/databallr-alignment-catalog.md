@@ -1118,8 +1118,12 @@ Follow-up instructions (owner, 2026-10-16, polish):
     Player" and "Search Players" (every player search). Add Player on the duel draws the grid
     from the pair already on screen (about 830 ms -> about 100 ms) and returns the same way; the
     slot search slides in at the fast duration.
-75. [ ] Owner question: Shai's 2025-26 MVP is in the data but hidden, because season awards count
-    only once announced before the card's cutoff (the season's last regular-season day, Apr 12).
+75. [x] Shai's 2025-26 MVP was in the data but hidden: season awards counted only once announced
+    before the cutoff, and a finished season's default cutoff is its last regular-season day. Owner
+    chose option 1 (2026-10-16): a season's awards also count once the cutoff covers its whole
+    regular season (`completedSeasons`: only seasons whose play-in or playoffs exist, so one in
+    progress never qualifies). A cutoff inside the season still hides them. Applies to the duel,
+    the grid, the share image and the season picker's marks. Supersedes the timing in 9.
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/

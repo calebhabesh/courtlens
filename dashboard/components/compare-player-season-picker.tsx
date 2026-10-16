@@ -1,12 +1,14 @@
 "use client";
 
-import { announcedBefore } from "@/lib/compare-accolades";
+import { announcedBefore, type SeasonEnds } from "@/lib/compare-accolades";
 import type { PlayerBio } from "@/lib/types";
 import { Icon } from "./ui/icon";
 import { Menu, MenuItem } from "./ui/menu";
 import { MenuTrigger } from "./ui/kit";
 
-export function ComparePlayerSeasonPicker({ label, season, seasons, awards, championshipSeasons, beforeDate, align = "left", onSelect }: {
+export function ComparePlayerSeasonPicker({ label, season, seasons, awards, championshipSeasons, beforeDate, align = "left", onSelect, ends }: {
+  /** Completed seasons: their awards mark them although announced after the cutoff (75). */
+  ends?: SeasonEnds;
   label: string; season: string; seasons: string[]; awards: NonNullable<PlayerBio["reference"]>["awards"] | undefined;
   championshipSeasons: string[];
   align?: "left" | "right";
@@ -14,8 +16,8 @@ export function ComparePlayerSeasonPicker({ label, season, seasons, awards, cham
 }) {
   const markers = (entry: string) => {
     const codes = awards?.[entry] ?? [];
-    const mvp = codes.includes("MVP-1") && announcedBefore(entry, "MVP-1", beforeDate);
-    const star = codes.includes("AS") && announcedBefore(entry, "AS", beforeDate);
+    const mvp = codes.includes("MVP-1") && announcedBefore(entry, "MVP-1", beforeDate, ends);
+    const star = codes.includes("AS") && announcedBefore(entry, "AS", beforeDate, ends);
     const champion = championshipSeasons.includes(entry);
     const text = [mvp && "MVP winner", champion && "NBA champion", star && "All-Star"].filter(Boolean).join(", ");
     return { text, node: <span className="pvp-season-honor-icons" aria-hidden="true">

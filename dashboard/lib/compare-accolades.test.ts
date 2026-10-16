@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { accoladeGroups, announcedBefore } from "./compare-accolades";
+import { accoladeGroups, announcedBefore, completedSeasons } from "./compare-accolades";
 import type { PlayerBio } from "./types";
 
 const bio = (awards: Record<string, string[]>) => ({ reference: { awards } }) as unknown as PlayerBio;
@@ -62,4 +62,27 @@ describe("comparison accolades", () => {
     expect(announcedBefore("2024-25", "AS", "2025-02-15")).toBe(false);
   });
 
+});
+
+describe("completed seasons (alignment row 3, 75)", () => {
+  const scopes = [
+    { season: "2025-26", phase: "regular_season", default_before_date: "2026-04-13" },
+    { season: "2025-26", phase: "playoffs", default_before_date: "2026-06-14" },
+    // A season still in progress has no play-in or playoffs yet: never complete.
+    { season: "2026-27", phase: "regular_season", default_before_date: "2026-11-01" }
+  ];
+  it("knows a regular season is over only once its postseason exists", () => {
+    expect(completedSeasons(scopes)).toEqual({ "2025-26": "2026-04-13" });
+  });
+  it("counts a finished season's awards at its end-of-season cutoff, never mid-season", () => {
+    const ends = completedSeasons(scopes);
+    expect(announcedBefore("2025-26", "MVP-1", "2026-04-13")).toBe(false);
+    expect(announcedBefore("2025-26", "MVP-1", "2026-04-13", ends)).toBe(true);
+    expect(announcedBefore("2025-26", "MVP-1", "2026-03-01", ends)).toBe(false);
+    expect(announcedBefore("2026-27", "MVP-1", "2026-11-01", ends)).toBe(false);
+    const shai = bio({ "2024-25": ["MVP-1", "AS"], "2025-26": ["MVP-1", "AS", "NBA1"] });
+    const groups = accoladeGroups([shai, null], [null, null], "2025-26", "2026-04-13", ends);
+    expect(groups.career.find(row => row.key === "mvp")?.a).toBe(2);
+    expect(groups.season[0].badges?.map(entry => entry.code)).toContain("MVP-1");
+  });
 });
