@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { forwardRef, type AnchorHTMLAttributes, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
 import { Icon, type IconName } from "../icon";
-import { controlClasses, cx, kitIconSize, trailingChevronClasses, type KitSize, type KitTone, type KitVariant } from "./recipes";
+import { controlClasses, cx, disclosureIconClasses, disclosureOpenClasses, kitIconSize, trailingChevronClasses, type KitSize, type KitTone, type KitVariant } from "./recipes";
 
 interface ControlLookProps {
   size?: KitSize;
@@ -105,13 +105,19 @@ export interface IconButtonProps extends Omit<ButtonProps, "icon" | "iconAfter" 
   label: string;
   /** Filled glyph for an "on" toggle (for example a favourite star). */
   filled?: boolean;
+  /**
+   * A disclosure toggle (expanding row, accordion): sets `aria-expanded`, and the glyph (normally
+   * `chevron-down`) turns half a turn while open instead of swapping icons.
+   */
+  expanded?: boolean;
 }
 
 /** Square icon-only button. */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, className, type = "button", disabled, ...props },
+  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, expanded, className, type = "button", disabled, ...props },
   ref,
 ) {
+  const disclosure = expanded !== undefined && !loading;
   return (
     <button
       ref={ref}
@@ -121,11 +127,13 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       aria-pressed={pressed}
+      aria-expanded={expanded}
       data-kit="icon-button"
       className={cx(controlClasses({ size, variant, tone, square: true }), className)}
       {...props}
     >
-      <Icon name={loading ? "loader" : icon} size={kitIconSize[size]} filled={filled && !loading} className={loading ? "ui-spinner" : undefined} />
+      <Icon name={loading ? "loader" : icon} size={kitIconSize[size]} filled={filled && !loading}
+        className={loading ? "ui-spinner" : disclosure ? cx(disclosureIconClasses, expanded && disclosureOpenClasses) : undefined} />
     </button>
   );
 });
