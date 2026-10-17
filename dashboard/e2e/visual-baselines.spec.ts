@@ -200,7 +200,7 @@ for (const view of WIDTHS) test.describe(`FO11 baselines ${view.name}`,()=>{
   });
   for(const tab of ["overview","factors"])test(`team comparison ${tab}`,async({page})=>{
     await openWorkbench(page,`/team-compare?teamA=100&teamB=200&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13&tab=${tab}`);
-    await expect(page.locator(".ui-compare-sides")).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`team-comparison-${tab}-${view.name}.png`,shot);
+    await expect(page.locator(".tc-draft-card")).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`team-comparison-${tab}-${view.name}.png`,shot);
   });
 });
 

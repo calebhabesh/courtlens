@@ -1,115 +1,44 @@
-import { resolveStatsQuery } from "@/lib/stats-query";
-import { getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { Metadata } from "next";
 import { PageShell } from "@/components/ui/page-shell";
-import { PageHeader } from "@/components/ui/panel";
-import { GatedNote } from "@/components/ui/gated-note";
-import { TeamCompareView } from "@/components/team-compare-view";
-import {
-  getTeamsResearch,
-  getTeamDetail,
-  getTeamFourFactors,
-  getTeamSchedule,
-  getTeamPeers,
-} from "@/lib/workbench-api";
-import type {
-  TeamDetailResponse,
-  TeamFourFactorsResponse,
-  TeamScheduleResponse,
-  TeamPeersResponse,
-  TeamResearchResponse,
-} from "@/lib/types";
+import { getWorkbenchCatalog, getTeamDetail, getTeamFourFactors, getTeamSchedule, executeWorkbenchQuery } from "@/lib/workbench-api";
+import { TeamComparisonPrototype, type DraftSide } from "./team-comparison-prototype";
+import starterSnapshot from "./starter-evidence.bf09e1d964030a116b25996df57e53b051f5f45500e0343781a9d7784bc3d563.json";
 
-export const metadata: Metadata = {
-  title: "Team Comparison & Four Factors Analysis · CourtLens",
-  description:
-    "Head-to-head records, Dean Oliver Four Factors comparison, Feature F18 three-point variation modeling, and rotation participation cohorts.",
-};
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Team Comparison · CourtLens",
+  description: "Side-by-side team rotations, verified starting lineups, team stats, and season series game history.",
+};
 
-interface TeamComparePageProps {
-  searchParams: Promise<{
-    teamA?: string;
-    teamB?: string;
-    season?: string;
-    phase?: string;
-    beforeDate?: string;
-    releaseId?: string;
-    release_id?: string;
-    before_date?: string;
-  }>;
-}
-
-export default async function TeamComparePage({ searchParams }: TeamComparePageProps) {
+export default async function TeamComparePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const sp = await searchParams;
-  const catalog = await getWorkbenchCatalog(sp.releaseId || sp.release_id).catch(() => null);
-  const query = catalog ? resolveStatsQuery(sp, catalog, "per_game") : null;
-  const season = query?.season || sp.season || "";
-  const phase = query?.phase || sp.phase || "";
-  const beforeDate = query?.before_date || sp.beforeDate || sp.before_date || "";
-  const resolvedReleaseId = query?.release_id || sp.releaseId || sp.release_id;
-  const releaseId = resolvedReleaseId;
-
-  // Default to Boston Celtics (1610612738) and Dallas Mavericks (1610612742)
-  const teamAId = sp.teamA || "1610612738";
-  const teamBId = sp.teamB || "1610612742";
-
-  let teamsData: TeamResearchResponse | null = null;
-  let teamADetail: TeamDetailResponse | null = null;
-  let teamAFourFactors: TeamFourFactorsResponse | null = null;
-  let teamASchedule: TeamScheduleResponse | null = null;
-  let teamAPeers: TeamPeersResponse | null = null;
-
-  let teamBDetail: TeamDetailResponse | null = null;
-  let teamBFourFactors: TeamFourFactorsResponse | null = null;
-  let teamBSchedule: TeamScheduleResponse | null = null;
-  let teamBPeers: TeamPeersResponse | null = null;
-
-  let loadError: string | null = null;
-
-  try {
-    const [
-      teamsRes,
-      detailARes,
-      ffARes,
-      schedARes,
-      peersARes,
-      detailBRes,
-      ffBRes,
-      schedBRes,
-      peersBRes,
-    ] = await Promise.allSettled([
-      getTeamsResearch({ season, phase, beforeDate, releaseId }),
-      getTeamDetail(teamAId, { season, phase, beforeDate, releaseId }),
-      getTeamFourFactors(teamAId, { season, phase, beforeDate, releaseId }),
-      getTeamSchedule(teamAId, { season, phase, beforeDate, releaseId }),
-      getTeamPeers(teamAId, { season, phase, beforeDate, releaseId, limit: 5 }),
-      getTeamDetail(teamBId, { season, phase, beforeDate, releaseId }),
-      getTeamFourFactors(teamBId, { season, phase, beforeDate, releaseId }),
-      getTeamSchedule(teamBId, { season, phase, beforeDate, releaseId }),
-      getTeamPeers(teamBId, { season, phase, beforeDate, releaseId, limit: 5 }),
+  const requestedReleaseId = typeof sp.releaseId === "string" ? sp.releaseId : typeof sp.release_id === "string" ? sp.release_id : undefined;
+  const catalog = await getWorkbenchCatalog(requestedReleaseId);
+  const phase = sp.phase === "playoffs" ? "playoffs" : "regular_season";
+  const load = async (key: "A" | "B"): Promise<DraftSide> => {
+    const requestedSeason = sp[`season${key}`] ?? sp.season;
+    const season = typeof requestedSeason === "string" && catalog.seasons.includes(requestedSeason) ? requestedSeason : catalog.default_season;
+    const team = sp[`team${key}`];
+    const teamId = typeof team === "string" && /^\d+$/.test(team) ? team : key === "A" ? "1610612760" : "1610612738";
+    const requestedBefore = sp[`beforeDate${key}`] ?? sp.beforeDate ?? sp.before_date;
+    const beforeDate = typeof requestedBefore === "string" && /^\d{4}-\d{2}-\d{2}$/.test(requestedBefore)
+      ? requestedBefore
+      : catalog.stats_scopes?.find(scope => scope.season === season && scope.phase === phase)?.default_before_date ?? `${Number(season.slice(0, 4)) + 1}-07-01`;
+    const scope = { season, phase, beforeDate, releaseId: catalog.release_id };
+    const [detail, factors, schedule, players] = await Promise.all([
+      getTeamDetail(teamId, scope).catch(() => null),
+      getTeamFourFactors(teamId, scope).catch(() => null),
+      getTeamSchedule(teamId, scope).catch(() => null),
+      executeWorkbenchQuery({ release_id: catalog.release_id, season, phase, before_date: beforeDate, window: { kind: "season" },
+        team_scope: { team_id: teamId, participation_only: true },
+        metric_selectors: [{ key: "dpm" }, { key: "o_dpm" }, { key: "d_dpm" }, { key: "pts_per_game" }, { key: "min_per_game" }],
+        sort: [{ field: "dpm", direction: "desc" }], page: { limit: 100 } }).catch(() => null),
     ]);
-
-    if (teamsRes.status === "fulfilled") teamsData = teamsRes.value;
-    if (detailARes.status === "fulfilled") teamADetail = detailARes.value;
-    if (ffARes.status === "fulfilled") teamAFourFactors = ffARes.value;
-    if (schedARes.status === "fulfilled") teamASchedule = schedARes.value;
-    if (peersARes.status === "fulfilled") teamAPeers = peersARes.value;
-
-    if (detailBRes.status === "fulfilled") teamBDetail = detailBRes.value;
-    if (ffBRes.status === "fulfilled") teamBFourFactors = ffBRes.value;
-    if (schedBRes.status === "fulfilled") teamBSchedule = schedBRes.value;
-    if (peersBRes.status === "fulfilled") teamBPeers = peersBRes.value;
-  } catch (err) {
-    loadError = err instanceof Error ? err.message : "Failed to load comparison data";
-  }
-
-  return <PageShell template="compare" className="fo11-team-comparison">
-    <PageHeader title="Team Comparison" subtitle="Records, Four Factors and observed head-to-head games." />
-    {loadError && <GatedNote why={loadError}>Comparison data unavailable.</GatedNote>}
-    <TeamCompareView teamsList={teamsData?.teams ?? []} teamAId={teamAId} teamBId={teamBId}
-      teamADetail={teamADetail} teamAFourFactors={teamAFourFactors} teamASchedule={teamASchedule} teamAPeers={teamAPeers}
-      teamBDetail={teamBDetail} teamBFourFactors={teamBFourFactors} teamBSchedule={teamBSchedule} teamBPeers={teamBPeers}
-      season={season} phase={phase} beforeDate={beforeDate} catalog={catalog} releaseId={resolvedReleaseId} />
-  </PageShell>;
+    const observed = starterSnapshot.release_id === catalog.release_id && starterSnapshot.dataset_id === catalog.dataset_id
+      ? starterSnapshot.scopes.find(scope => scope.team === detail?.team.tricode && scope.season === season && scope.phase === phase && scope.before_date === beforeDate) : null;
+    const starterEvidence = observed && observed.unit_players.every(player => players?.items.some(item => item.player_id === player.player_id)) ? observed : null;
+    return { teamId, season, beforeDate, detail, factors, schedule, players, starterEvidence };
+  };
+  const [a, b] = await Promise.all([load("A"), load("B")]);
+  return <PageShell template="compare"><TeamComparisonPrototype a={a} b={b} catalog={catalog} phase={phase} /></PageShell>;
 }

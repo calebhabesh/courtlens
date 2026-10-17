@@ -642,7 +642,9 @@ createServer(async (request, response) => {
       } : {})
     }));
     // name=traded: Fixture Guard as a two-team season (BOS / MIA), now listed with TOR.
-    const selected = query.name === "traded" ? rows.filter(row => row.player_id === "24").map(row => ({ ...row, teams: ["BOS", "MIA"] })) : rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
+    const teamId = query.team_scope?.team_id;
+    const matchesTeam = (row) => !teamId || row.team_id === teamId || ((teamId === "1610612760" || teamId === "1610612761") && row.team_id === "100") || (teamId === "1610612738" && row.team_id === "200");
+    const selected = query.name === "traded" ? rows.filter(row => row.player_id === "24").map(row => ({ ...row, teams: ["BOS", "MIA"] })) : rows.filter((row) => matchesTeam(row) && (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
       (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)) &&
       (!body.presentation?.positions?.length || body.presentation.positions.includes(fixturePositions[row.player_id])) &&
       (!body.presentation?.draft_year || body.presentation.draft_year === fixtureDrafts[row.player_id]));
@@ -704,14 +706,17 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/players/23/games") return json(response, 200, workbenchPlayerGames("23"));
   if (url.pathname === "/api/workbench/players/24/games") return json(response, 200, workbenchPlayerGames("24"));
   // FO10: bounded synthetic detail fixtures cover tabs, known zero and unknown outcomes.
-  if (["/api/workbench/teams/100/four-factors", "/api/workbench/teams/200/four-factors"].includes(url.pathname)) return json(response, 200, {
-    team:workbenchTeamDetail.team,context:workbenchContext,games_played:72,pace:99.4,off_rating:115.4,def_rating:110.2,net_rating:5.2,
-    ratings:[["off_rating","Offensive Rating",115.4,113.0],["def_rating","Defensive Rating",110.2,113.0],["net_rating","Net Rating",5.2,0]].map(([key,display_name,value,league_avg]) => ({key,display_name,value,league_avg,unit:"rating",formula:"Synthetic UI fixture",total_teams:30})), shooting_percentages:{opp_fg_pct:0.437},league_averages:{},warnings:[],
-    offense_factors:[{key:"efg_pct",display_name:"Effective Field Goal %",value:0.54,league_avg:0.53,rank:8,percentile:74,total_teams:30,good_direction:"high",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
-    defense_factors:[{key:"opp_efg_pct",display_name:"Opponent eFG%",value:url.pathname.includes("/200/") ? 0.5 : null,league_avg:0.53,rank:url.pathname.includes("/200/") ? 4 : null,percentile:url.pathname.includes("/200/") ? 88.3 : null,total_teams:30,good_direction:"low",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
-    three_point_scenario:{observed_fg3m:12,observed_fg3a:32,observed_3p_pct:0.375,league_3p_pct:0.375,hypothetical_fg3m:12,delta_points:0,actual_ppg:115.4,hypothetical_ppg:115.4,delta_off_rating:0,delta_net_rating:0,disclaimer:"Synthetic what-if accounting fixture, not a causal effect."}
-  });
-  if (url.pathname === "/api/workbench/teams/100/schedule") return json(response,200,{
+  if (["/api/workbench/teams/100/four-factors", "/api/workbench/teams/200/four-factors", "/api/workbench/teams/1610612760/four-factors", "/api/workbench/teams/1610612738/four-factors"].includes(url.pathname)) {
+    const isBos = url.pathname.includes("/200/") || url.pathname.includes("/1610612738/");
+    return json(response, 200, {
+      team:workbenchTeamDetail.team,context:workbenchContext,games_played:72,pace:99.4,off_rating:isBos ? 118.2 : 115.4,def_rating:isBos ? 108.5 : 110.2,net_rating:isBos ? 9.7 : 5.2,
+      ratings:[["off_rating","Offensive Rating",115.4,113.0],["def_rating","Defensive Rating",110.2,113.0],["net_rating","Net Rating",5.2,0]].map(([key,display_name,value,league_avg]) => ({key,display_name,value,league_avg,unit:"rating",formula:"Synthetic UI fixture",total_teams:30})), shooting_percentages:{opp_fg_pct:0.437},league_averages:{},warnings:[],
+      offense_factors:[{key:"efg_pct",display_name:"Effective Field Goal %",value:isBos ? 0.56 : 0.54,league_avg:0.53,rank:8,percentile:74,total_teams:30,good_direction:"high",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
+      defense_factors:[{key:"opp_efg_pct",display_name:"Opponent eFG%",value:isBos ? 0.5 : null,league_avg:0.53,rank:isBos ? 4 : null,percentile:isBos ? 88.3 : null,total_teams:30,good_direction:"low",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
+      three_point_scenario:{observed_fg3m:12,observed_fg3a:32,observed_3p_pct:0.375,league_3p_pct:0.375,hypothetical_fg3m:12,delta_points:0,actual_ppg:115.4,hypothetical_ppg:115.4,delta_off_rating:0,delta_net_rating:0,disclaimer:"Synthetic what-if accounting fixture, not a causal effect."}
+    });
+  }
+  if (["/api/workbench/teams/100/schedule", "/api/workbench/teams/1610612760/schedule", "/api/workbench/teams/200/schedule", "/api/workbench/teams/1610612738/schedule"].includes(url.pathname)) return json(response,200,{
     team:workbenchTeamDetail.team,context:workbenchContext,overall_record:{...workbenchTeamDetail.record,current_streak:"W2",differential:5.2},
     home_split:{games_played:36,wins:24,losses:12,win_pct:0.667,ppg:115.4,opp_ppg:110.2,differential:5.2},away_split:{games_played:36,wins:21,losses:15,win_pct:0.583,ppg:115.4,opp_ppg:110.2,differential:5.2},
     rest_splits:[],back_to_back_summary:{},longest_homestand:4,longest_road_trip:3,warnings:[],
@@ -720,6 +725,8 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/teams/100/peers") return json(response,200,{team:workbenchTeamDetail.team,context:workbenchContext,dimensions:[],warnings:[],peers:[{team_id:"200",tricode:"BOS",name:"Boston Celtics",similarity_score:0.95,distance:0.1,conference:"Eastern"}]});
   if (url.pathname === "/api/workbench/teams") return json(response, 200, { ...workbenchTeams, teams: workbenchTeams.teams.map((team, index) => ({ ...team, table_percentiles: { wins: index ? 75 : 25, win_pct: index ? 75 : 25, ppg: index ? 75 : 25, opp_ppg: index ? 75 : 25, net_margin: index ? 75 : 25 }, table_cohort_sample_sizes: { wins: 2, win_pct: 2, ppg: 2, opp_ppg: 2, net_margin: 2 } })) });
   if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
+  if (url.pathname === "/api/workbench/teams/1610612760") return json(response, 200, { ...workbenchTeamDetail, team: { id: "1610612760", tricode: "OKC", name: "Oklahoma City Thunder" } });
+  if (url.pathname === "/api/workbench/teams/1610612738") return json(response, 200, { ...workbenchTeamDetail, team: { id: "1610612738", tricode: "BOS", name: "Boston Celtics" }, record: { games_played: 72, wins: 55, losses: 17, win_pct: 0.764 }, player_cohort: [{ player_id: "24", player_name: "Fixture Guard", games_played: 68, min_per_game: 33.5, total_minutes: 2278, points: 1500, pts_per_game: 22.0, reb_per_game: 4.5, ast_per_game: 6.0 }] });
   // FO11: one deliberately missing-data opponent for descriptive comparison guards.
   if (url.pathname === "/api/workbench/teams/200") return json(response,200,{
     ...workbenchTeamDetail,team:{id:"200",tricode:"BOS",name:"Boston Celtics"},production:{pts_per_game:null,fg_pct:0,fg3_pct:null,ft_pct:null},allowance:{pts_allowed_per_game:null},player_cohort:[]

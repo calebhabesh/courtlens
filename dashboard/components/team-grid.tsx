@@ -16,10 +16,11 @@ export interface TeamGridProps {
   selected?: string | null;
   onSelect: (teamId: string) => void;
   className?: string;
+  edgeHighlights?: boolean;
 }
 
 /** Team picker (D17): all 30 franchise logos plus a name/tricode filter. */
-export function TeamGrid({ selected, onSelect, className = "" }: TeamGridProps) {
+export function TeamGrid({ selected, onSelect, className = "", edgeHighlights = true }: TeamGridProps) {
   const [query, setQuery] = useState("");
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -27,7 +28,7 @@ export function TeamGrid({ selected, onSelect, className = "" }: TeamGridProps) 
   }, [query]);
 
   return (
-    <div className={`team-grid ${className}`}>
+    <div className={`team-grid ${className}`} data-edge-highlights={edgeHighlights}>
       <SearchField value={query} onChange={(event) => setQuery(event.target.value)} onClear={() => setQuery("")}
         placeholder="Filter teams" aria-label="Filter teams" wrapperClassName="team-grid-search" />
       {visible.length ? (
