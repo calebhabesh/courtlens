@@ -860,3 +860,14 @@ have a darker fill and remain noninteractive. Live 1440 and 390 captures, numeri
 and scoped glance checks pass. Lint, typecheck, 544 Vitest tests, 29 browser checks, and the
 production build pass. One browser test skips on the one-season fixture.
 [Evidence](evidence/alignment/compare/honors-context/README.md). Owner alignment remains pending.
+
+## 2026-10-17: Stats cold-load entrance
+
+Alignment follow-up 72 replaces the unfinished row cascade and timed global replay guard with
+one table-body fade after hydration, URL synchronization and saved-view restoration. Completion
+removes its animation class. Later table changes retain their settle animations. The blocked-script
+regression fails against the previous build and passes with the fix. The production build, lint,
+typecheck and 31 Stats browser checks pass. Live desktop and phone opens and refreshes each record
+one entrance, with no page overflow. Scoped glance checks pass. Vitest passes 568 tests but
+reports four unrelated header animation-cancellation errors, reproduced with the unchanged header
+test alone. [Evidence](evidence/alignment/stats/single-entrance/README.md). Owner review remains pending.

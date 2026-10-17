@@ -2,7 +2,7 @@ import { GatedNote } from "./ui/gated-note";
 import { ButtonLink } from "./ui/kit";
 import { PageHeader } from "./ui/panel";
 import "./stats-explorer.css";
-import { redirect } from "next/navigation";
+import { ReplaceUrl } from "./replace-url";
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer";
 import { executeWorkbenchQuery, getDraftClasses, getMetricCatalog, getWorkbenchCatalog } from "@/lib/workbench-api";
@@ -64,13 +64,16 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     querySpec.darko_manifest_sha256 = querySpec.darko_manifest_sha256 || catalog.darko.manifest_sha256;
   }
   const researchQuery = querySpecToLegacyQuery(querySpec);
-  // Bind inferred defaults into the URL so navigation, reload and cursors share one scope.
+  // Bind inferred defaults into the URL so navigation, reload and cursors share one scope. This
+  // response already renders them; the client writes the URL. A redirect loaded the page twice
+  // (skeleton, blank, skeleton, rows).
   const required: [string, string, string | null | undefined][] = [
     ["releaseId", "release_id", querySpec.release_id], ["season", "season", querySpec.season],
     ["phase", "phase", querySpec.phase], ["beforeDate", "before_date", querySpec.before_date],
     ["window", "window", querySpec.window?.kind], ["countingMode", "counting_mode", countingMode]
   ];
   if (querySpec.darko_manifest_sha256) required.push(["darkoManifest", "darko_manifest_sha256", querySpec.darko_manifest_sha256]);
+  let canonicalHref: string | null = null;
   if (required.some(([camel, snake]) => !params[camel] && !params[snake])) {
     const canonical = new URLSearchParams();
     for (const [key, value] of Object.entries(params)) {
@@ -79,7 +82,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     for (const [camel, snake, value] of required) {
       if (!canonical.get(camel) && !canonical.get(snake) && value) canonical.set(camel, value);
     }
-    redirect(`${basePath}?${canonical}`);
+    canonicalHref = `${basePath}?${canonical}`;
   }
 
 
@@ -124,6 +127,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   return (
     <ControlScope tone="console">
     <section className="stats-workspace">
+      {canonicalHref && <ReplaceUrl href={canonicalHref} />}
       <div className="workbench-content">
         <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <ButtonLink size="lg" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</ButtonLink> : undefined} />
         {!directory && <WhatsNewLine />}
@@ -169,7 +173,10 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
         {researchData && !directory && (
           <WorkbenchPlayerExplorer
             // The name search filters as you type, so it must not remount the table (or its field).
-            key={JSON.stringify({ querySpec: { ...querySpec, name: undefined }, favorites: params.favorites, positions: params.positions, draftYear })}
+            // Keys are sorted: the same scope must give the same key whether its defaults came from
+            // the URL or were filled in here, or the first search after a URL sync remounts the field.
+            key={stableKey({ querySpec: { ...querySpec, name: undefined }, favorites: params.favorites, positions: params.positions, draftYear })}
+            canonicalHref={canonicalHref}
             querySpec={querySpec}
             countingMode={countingMode}
             catalog={catalog}
@@ -183,6 +190,12 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     </section>
     </ControlScope>
   );
+}
+
+/** JSON with object keys sorted at every level, so equal values give equal strings. */
+function stableKey(value: unknown): string {
+  return JSON.stringify(value, (_, entry: unknown) => entry && typeof entry === "object" && !Array.isArray(entry)
+    ? Object.fromEntries(Object.entries(entry).sort(([a], [b]) => a.localeCompare(b))) : entry);
 }
 
 /** Databallr's "What's New" line: the latest patch note's date and title, linking to the notes. */

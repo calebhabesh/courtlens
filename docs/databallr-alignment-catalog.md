@@ -13,7 +13,7 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
-| 1 | Stats | `/stats` | ✅ | Owner approved first revision 2026-10-15; deferred 43f/43g remain open |
+| 1 | Stats | `/stats` | 👀 | Owner approved first revision 2026-10-15; cold-load animation follow-up ready for review; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
 | 3 | PvP | `/compare` | 🔄 in progress | Compare Export fixed (card export) |
 | 4 | Teams | `/teams` | ⬜ | |
@@ -135,7 +135,7 @@ Padding follow-up: lint/typecheck, Vitest 511/511, four header checks and favico
 pass; the broader search check has dev-server lookup/workspace timeouts. Evidence:
 docs/evidence/alignment/app-shell/favicon-padding/.
 
-### 1 Stats — ✅ aligned (first revision)
+### 1 Stats — 👀 ready for review (cold-load animation follow-up)
 
 Owner approval (2026-10-15): "I think I'm done the first solid revision of the main stats page
 and the player page. It's not a perfect version, but a presentable one now." Rows 0–2 are
@@ -448,6 +448,15 @@ Follow-up instructions (owner, 2026-10-14, control padding):
       offset it (site-wide), and Team Compare's remove × is centered in its hit area. Measured
       after: no select or chevron trigger off by 1 px or more on 13 pages.
       [Evidence](evidence/alignment/stats/control-padding/README.md).
+Follow-up instructions (owner, 2026-10-17, cold-load animation):
+72. [x] "The main nba player stats page is still doing the double animation. The player page
+    table doesn't do this." Clarification: "opening or refreshing" Stats.
+    - Done: one body fade after hydration, URL defaults and saved-view restoration settle.
+      Its class clears on completion. Removed the timed global replay guard and row cascade.
+      Production build, lint, typecheck and 31 Stats browser checks pass. Live 1440/390 opens and
+      refreshes each record one entrance. The full unit run has four unrelated header animation
+      cancellation errors, also reproduced with the unchanged header test alone.
+      [Evidence](evidence/alignment/stats/single-entrance/README.md).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.

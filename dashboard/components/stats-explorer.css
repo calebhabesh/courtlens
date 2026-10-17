@@ -82,12 +82,14 @@
 .stats-workspace .density-compact .dense-stats-table tbody td { height: 44px; padding: 0 var(--space-1); font-size: var(--text-sm); }
 .stats-workspace .dense-stats-table .player-cell { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
 .stats-workspace .stats-identity-copy { flex: 1; min-width: 0; line-height: var(--text-sm-lh); }
+.stats-workspace .stats-row-tools { display: flex; flex-shrink: 0; align-items: center; }
+/* A split-season row carries one more button: tighter gaps keep its caption whole. */
+.stats-workspace .dense-stats-table .player-cell.is-split { gap: var(--space-1); }
 .stats-workspace .dense-stats-table .player-cell-name { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; overflow-wrap: normal; font-size: var(--text-md); line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .player-cell-teams { display: block; margin-top: var(--space-0-5); font-size: var(--text-xs); color: var(--color-text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Photos 40 px and logos 28 px, in 52 px rows (owner, 2026-10-14); phones keep 32/20 in 46 px rows. */
 .stats-workspace .dense-stats-table .stats-primary-portrait { width: 40px; height: 40px; min-width: 40px; min-height: 40px; border: 0; }
-.stats-workspace .dense-stats-table .team-logo-stack { flex-wrap: nowrap; flex-shrink: 0; }
-.stats-workspace .dense-stats-table .team-logo { width: 28px; height: 28px; min-width: 28px; }
+.stats-workspace .dense-stats-table .team-logo-stack { --stack-logo: 28px; flex-shrink: 0; }
 .stats-workspace .dense-stats-table .stats-guide-cell { width: 38px; padding: 0; border: 0; background: var(--color-surface-3); }
 .stats-workspace .stats-guide-cell .player-portrait, .stats-workspace .stats-guide-cell .player-portrait-fallback { width: 36px; height: 36px; min-width: 36px; min-height: 36px; border: 0; font-size: var(--text-xs); }
 .stats-workspace .dense-stats-table .stats-group-1 { background: var(--color-surface-2); }
@@ -96,6 +98,10 @@
 .stats-workspace .dense-stats-table tbody tr.row-selected td { background: var(--color-surface-3); }
 .stats-workspace .dense-stats-table tbody tr:hover .player-cell-name,
 .stats-workspace .dense-stats-table tbody tr:focus-visible .player-cell-name { color: var(--color-accent); }
+/* Team rows under a split-season row: full Stats rows, set in under the season row's logos. */
+.stats-workspace .dense-stats-table .stats-stint-row .player-cell { padding-left: var(--space-4); }
+.stats-workspace .dense-stats-table .stats-stint-row .player-cell-name { font-size: var(--text-sm); color: var(--color-text-secondary); }
+.stats-workspace .dense-stats-table .stats-stint-status .pinned-col-name { font-size: var(--text-xs); color: var(--color-text-secondary); }
 .stats-workspace .dense-stats-table .stat-main-value { font-family: var(--font-sans), sans-serif; font-weight: 500; line-height: var(--text-sm-lh); }
 /* The search header spans both card columns; its compact field is centered within them. */
 .stats-workspace .dense-stats-table .pinned-col-search { left: 0; padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2); width: calc(28px + var(--identity-name-width)); min-width: calc(28px + var(--identity-name-width)); max-width: calc(28px + var(--identity-name-width)); text-align: left; text-transform: none; }
@@ -105,8 +111,15 @@
 .stats-workspace .stats-header-search input { width: 100%; min-width: 0; min-height: var(--control-sm); padding: 0; font-size: var(--text-sm); background: transparent; border: 0; border-radius: 0; }
 .stats-workspace .stats-header-search input::-webkit-search-cancel-button { display: none; }
 /* Typed searches keep the current rows, dimmed, until the filtered rows land. */
-.stats-workspace .dense-stats-table tbody { transition: opacity var(--dur-fast) var(--ease-out); }
 .stats-workspace .dense-stats-table tbody.stats-table-body-searching { opacity: 0.55; }
+.stats-table-body-pending { opacity: 0; }
+.stats-table-body-enter { animation: enterFade var(--dur-base) var(--ease-out) backwards; }
+@media (scripting: none) {
+  .stats-table-body-pending { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stats-table-body-enter { animation-duration: var(--dur-fast); }
+}
 .stats-workspace .stats-row-actions { text-align: center; white-space: nowrap; }
 .stats-workspace .stats-row-pin { display: inline-flex; vertical-align: middle; }
 .stats-workspace .stats-pagination-footer { margin: 0; padding: var(--space-1) var(--space-3); gap: var(--space-2); background: var(--color-surface-1); border-top: 1px solid var(--color-hairline); }
@@ -178,7 +191,7 @@
   .stats-workspace .stats-scroll-region { --identity-name-width: 196px; }
   .stats-workspace .dense-stats-table tbody td { height: 46px; }
   .stats-workspace .dense-stats-table .stats-primary-portrait { width: 32px; height: 32px; min-width: 32px; min-height: 32px; }
-  .stats-workspace .dense-stats-table .team-logo { width: 20px; height: 20px; min-width: 20px; }
+  .stats-workspace .dense-stats-table .team-logo-stack { --stack-logo: 20px; }
   .stats-workspace .stats-guide-cell .player-portrait, .stats-workspace .stats-guide-cell .player-portrait-fallback { width: 30px; height: 30px; min-width: 30px; min-height: 30px; }
   .stats-workspace .dense-stats-table .pinned-col-search { width: calc(var(--control-lg) + var(--identity-name-width)); min-width: calc(var(--control-lg) + var(--identity-name-width)); max-width: calc(var(--control-lg) + var(--identity-name-width)); }
   .stats-workspace .stats-controls-row, .stats-workspace .stats-table-tools { flex-wrap: wrap; }
@@ -405,7 +418,7 @@
    tokens, so reduced motion collapses them (Design Language v1). */
 @layer pages {
   .stats-workspace .filter-toolbar { animation: fadeInDropdown var(--dur-base) var(--ease-out); }
-  .stats-workspace .stats-table-row:not(.stats-skeleton-row) { animation: chart-crossfade var(--dur-base) var(--ease-out); }
+  /* The body fades in after hydration and settles in place on later changes. */
   .stats-header-tip { animation: chart-crossfade var(--dur-fast) var(--ease-out); }
   .stats-team-option .team-logo { transition: transform var(--dur-fast) var(--ease-out); }
   .stats-team-option:hover .team-logo { transform: scale(1.08); }
