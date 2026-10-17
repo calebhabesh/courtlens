@@ -39,6 +39,10 @@ class Settings(BaseSettings):
     impact_serving_manifest: Path | None = Path(
         "data/derived/impact-serving-v1/2cd9c98b2594d948edc2c574e082e1b8b06ff4d6bfeca294f87e8062eae76d48.json"
     )
+    # Per-team extras for team-filtered rows (scripts/build_impact_team_splits.py).
+    impact_team_splits_manifest: Path | None = Path(
+        "data/derived/impact-team-splits-v1/b78075aa43877cd2093a0d430421976427dfdf71fd30b1bbd854024069338395.json"
+    )
     position_estimates_manifest: Path | None = Path(
         "data/derived/position-estimates-v1/1f8c19f2f4f27e2322d80e59fbe1fa519d299bb970d6cdc60aa2d8febe572a00.json"
     )

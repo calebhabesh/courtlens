@@ -15,6 +15,7 @@ from courtlens.domain.impact_catalog import IMPACT_COLUMNS
 from courtlens.domain.impact_extras_catalog import RETIRED_METRICS, WAVE_TWO
 from courtlens.domain.query_spec import QuerySpec
 from courtlens.domain.teams import get_team_info
+from courtlens.services.impact_team_splits import team_split
 
 VERSION = "courtlens-impact-serving-v1"
 METHOD_URL = "/methodology#impact"
@@ -26,6 +27,9 @@ LIMITATIONS = [
     "On/off off-court references include team games without a player appearance.",
     "Multi-team on/off is unavailable without a selected team; team records remain separate.",
 ]
+TEAM_LIMITATION = (
+    "Ratings retain the full league fit; extras are the player's games with the selected team."
+)
 
 
 @lru_cache(maxsize=8)
@@ -132,12 +136,23 @@ def impact_artifacts(query: QuerySpec, cutoff: str) -> tuple[list[dict[str, Any]
     if store is None or query.window.kind.value != "season" or query.season_scope.seasons:
         return [], "unavailable"
     team_id = selected_team_id(query)
-    artifacts = [
-        {"sha256": entry["sha256"], **entry["scope"]}
-        for entry in selected_entries(store, query, cutoff)
-        if not (team_id and entry["kind"] == "extras")
-    ]
+    artifacts = []
+    for entry in selected_entries(store, query, cutoff):
+        bound = artifact_binding(entry, team_id)
+        if bound is not None:
+            artifacts.append(bound)
     return artifacts, "available" if artifacts else "unavailable"
+
+
+def artifact_binding(entry: dict[str, Any], team_id: str | None) -> dict[str, Any] | None:
+    """An entry's identity in a query; team-filtered extras bind the per-team split they use."""
+    if not (team_id and entry["kind"] == "extras"):
+        return {"sha256": entry["sha256"], **entry["scope"]}
+    split = team_split(entry["sha256"])
+    if split is None:
+        # Extras are full-season player aggregates, not a selected-team sample.
+        return None
+    return {"sha256": entry["sha256"], "team_split_sha256": split[0], **entry["scope"]}
 
 
 def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
@@ -173,14 +188,19 @@ def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
         return result
     team_id = selected_team_id(query)
     for entry in selected:
-        # Extras are full-season player aggregates, not a selected-team sample.
-        if team_id and entry["kind"] == "extras":
+        bound = artifact_binding(entry, team_id)
+        if bound is None:
             continue
-        result["artifacts"].append({"sha256": entry["sha256"], **entry["scope"]})
+        result["artifacts"].append(bound)
         for coverage in entry["coverage"]:
             if coverage not in result["coverage"]:
                 result["coverage"].append(coverage)
-        for pid, source in entry["players"].items():
+        players = entry["players"]
+        split = team_split(entry["sha256"]) if team_id and entry["kind"] == "extras" else None
+        if split is not None:
+            # Each player's extras over their games with the selected team only.
+            players = {pid: teams[team_id] for pid, teams in split[1].items() if team_id in teams}
+        for pid, source in players.items():
             row = result["players"].setdefault(pid, {"metrics": {}, "support": {}, "on_off": {}})
             # Sealed extras still carry retired metrics; they never leave the server.
             row["metrics"].update(
@@ -223,7 +243,7 @@ def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
     if team_id:
         result["limitations"] = [
             *LIMITATIONS,
-            "Ratings retain the full league fit; extras are unavailable in a team-filtered scope.",
+            TEAM_LIMITATION,
         ]
     return result
 
