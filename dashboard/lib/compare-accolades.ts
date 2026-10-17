@@ -211,3 +211,27 @@ export function honorLead(cells: (HonorCell | null)[]): { leaders: number[]; str
     : best === 1 ? 3 : best <= 5 ? 2 : 1;
   return { leaders, strength };
 }
+
+/** Selections several players can hold at once; the team (or selection) itself is the result. */
+const SHARED_HONORS = new Set(["AS", "NBA", "DEF"]);
+
+/**
+ * How each player's result in an honour row is coloured (owner, 2026-10-17), as stat-pill tiers
+ * in that player's colour, or null for plain:
+ * - Winning outright (an award, a title) is absolute: the winner is solid, whatever the others did.
+ * - Shared selections colour everyone selected, by the result itself: All-Star and a 1st Team are
+ *   solid, a 2nd Team the stronger tint, a 3rd Team the faint one.
+ * - Otherwise (vote finishes, nobody won) the better finish leads, as honorLead measures it, at
+ *   most the stronger tint: solid is kept for results that were won.
+ * ``tied`` is a row where everyone holds the same uncoloured result: shown as held equally.
+ */
+export function honorMarks(key: string, cells: (HonorCell | null)[]): { marks: (PillStrength | null)[]; tied: boolean } {
+  let marks: (PillStrength | null)[];
+  if (SHARED_HONORS.has(key)) marks = cells.map(cell => cell ? (cell.rank <= 1 ? 3 : cell.rank === 2 ? 2 : 1) : null);
+  else if (cells.some(cell => cell?.win)) marks = cells.map(cell => cell?.win ? 3 : null);
+  else {
+    const lead = honorLead(cells);
+    marks = cells.map((_, index) => lead?.leaders.includes(index) ? Math.min(lead.strength, 2) as PillStrength : null);
+  }
+  return { marks, tied: marks.every(mark => mark === null) && cells.every(Boolean) };
+}

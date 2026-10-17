@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { CompareSelector } from "@/components/compare-selector";
 import { PlayerCompareView } from "@/components/player-compare-view";
+import { ReplaceUrl } from "@/components/replace-url";
 import { CompareGridView } from "@/components/compare-grid-view";
 import { duelParams, parseGrid } from "@/lib/compare-grid";
 import { AnalyticsApiError, getAnalyticsCatalog, getAnalyticsCompare } from "@/lib/api";
@@ -45,11 +46,14 @@ export default async function ComparePage({ searchParams }: {
     seasons?: string;
   }>;
 }) {
-  const rawSelected = await searchParams;
-  const selected = { ...rawSelected, releaseId: rawSelected.releaseId ?? rawSelected.release_id, beforeDate: rawSelected.beforeDate ?? rawSelected.before_date };
+  const requested = await searchParams;
   // Alignment row 3, 6: the page opens on a real pair, written to the URL (supersedes PC C5).
-  const fallbackPair = await defaultPairUrl(rawSelected);
-  if (fallbackPair) redirect(fallbackPair);
+  // It renders in this response and the client writes the URL: a redirect cost a second request
+  // with nothing on screen while it ran.
+  const fallbackPair = await defaultPairUrl(requested);
+  const rawSelected: typeof requested = fallbackPair ? Object.fromEntries(new URLSearchParams(fallbackPair.split("?")[1])) : requested;
+  const selected = { ...rawSelected, releaseId: rawSelected.releaseId ?? rawSelected.release_id, beforeDate: rawSelected.beforeDate ?? rawSelected.before_date };
+  const urlSync = fallbackPair ? <ReplaceUrl href={fallbackPair} /> : null;
   // One rule for every count (row 3, 72): three to five players, or two with the add tile open,
   // are the grid; two are the duel card; one or none are the duel's open slots.
   const listed = parseGrid(new URLSearchParams(Object.entries(rawSelected).filter((entry): entry is [string, string] => typeof entry[1] === "string")));
@@ -89,6 +93,7 @@ export default async function ComparePage({ searchParams }: {
   };
   // The legacy snapshot comparison keeps its form; everything else is the duel card.
   if(!comparison) return <PageShell template="compare" className="fo11-player-comparison">
+    {urlSync}
     <PlayerCompareView comparison={wbComparison} pending={selected.snapshotId === "snapshot-browser-fixture" ? null : pending} bios={bios} career={career} sides={sides} played={played} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
       selector={<CompareSelector catalog={catalog} date={date} legacy={selected.snapshotId === "snapshot-browser-fixture"}
         initialA={targetA ? {id:targetA,name:`Player ${targetA}`} : null} initialB={targetB ? {id:targetB,name:`Player ${targetB}`} : null} />} />

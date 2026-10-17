@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
 import { bestColumns } from "@/lib/compare-grid";
-import { honorLead, honorRows } from "@/lib/compare-accolades";
+import { honorMarks, honorRows } from "@/lib/compare-accolades";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
 import { teamRecord } from "./compare-player-slot";
 import { BrandMark } from "./brand";
@@ -55,9 +55,9 @@ export const CompareGridExport = forwardRef<SVGSVGElement, { columns: GridColumn
     })}
     {/* Season honours, one row per award, as on the card (76). */}
     {honors.length > 0 && <text x={PAD} y={honorsTop + 8} fontSize="10" fontWeight="600" fill="var(--color-text-secondary)">SEASON HONORS</text>}
-    {honors.map((row, index) => { const y = honorsTop + 24 + index * ROW + 6; const lead = honorLead(row.cells); const tied = !lead && row.cells.every(Boolean); return <g key={row.key}>
+    {honors.map((row, index) => { const y = honorsTop + 24 + index * ROW + 6; const { marks, tied } = honorMarks(row.key, row.cells); return <g key={row.key}>
       <text x={PAD} y={y} fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{row.label}</text>
-      {row.cells.map((cell, column) => { const leads = lead?.leaders.includes(column); return <text key={column} x={x(column)} y={y} textAnchor="middle" fontSize="13" fontWeight={leads ? 700 : tied ? 600 : 400}
+      {row.cells.map((cell, column) => { const leads = Boolean(marks[column]); return <text key={column} x={x(column)} y={y} textAnchor="middle" fontSize="13" fontWeight={leads ? 700 : tied ? 600 : 400}
         fill={leads ? "var(--color-accent)" : cell ? "var(--color-text)" : "var(--color-text-secondary)"}>{cell?.text ?? "—"}</text>; })}
     </g>; })}
     <g transform={`translate(${(width - markWidth - LOGO - 8) / 2} ${height - 22 - LOGO})`}><BrandMark size={LOGO} framed={false} /></g>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { accoladeGroups, announcedBefore, completedSeasons, honorLead, honorRows, type HonorCell } from "./compare-accolades";
+import { accoladeGroups, announcedBefore, completedSeasons, honorLead, honorMarks, honorRows, type HonorCell } from "./compare-accolades";
 import type { PlayerBio } from "./types";
 
 const bio = (awards: Record<string, string[]>) => ({ reference: { awards } }) as unknown as PlayerBio;
@@ -123,5 +123,24 @@ describe("honorLead (alignment row 3, 80)", () => {
     expect(honorLead([cell(1), cell(1)])).toBeNull();
     expect(honorLead([cell(1), cell(1), null])).toEqual({ leaders: [0, 1], strength: 3 });
     expect(honorLead([cell(2), cell(2), cell(2)])).toBeNull();
+  });
+});
+
+describe("honorMarks (owner, 2026-10-17)", () => {
+  const vote = (rank: number) => ({ text: rank === 1 ? "Winner" : `${rank}th`, description: "", win: rank === 1, star: false, rank }) as HonorCell;
+  const team = (rank: number) => ({ text: `${rank} Team`, description: "", win: false, star: false, rank }) as HonorCell;
+  const star = { text: "Selected", description: "", win: false, star: true, rank: 1 } as HonorCell;
+  it("makes an outright win solid and leaves the other finish plain", () => {
+    expect(honorMarks("CPOY", [vote(8), vote(1)])).toEqual({ marks: [null, 3], tied: false });
+    expect(honorMarks("TITLE", [null, { ...vote(1), text: "Champion" }])).toEqual({ marks: [null, 3], tied: false });
+  });
+  it("compares vote finishes only when nobody won", () => {
+    expect(honorMarks("MVP", [vote(4), vote(8)])).toEqual({ marks: [2, null], tied: false });
+  });
+  it("colours everyone selected for a shared honour, by team", () => {
+    expect(honorMarks("AS", [star, star])).toEqual({ marks: [3, 3], tied: false });
+    expect(honorMarks("NBA", [team(1), team(1)])).toEqual({ marks: [3, 3], tied: false });
+    expect(honorMarks("NBA", [team(1), team(3)])).toEqual({ marks: [3, 1], tied: false });
+    expect(honorMarks("DEF", [team(2), null])).toEqual({ marks: [2, null], tied: false });
   });
 });
