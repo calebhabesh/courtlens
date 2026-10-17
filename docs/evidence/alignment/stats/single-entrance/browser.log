@@ -1,0 +1,39 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/stats-entrance.spec.ts e2e/stats-followups.spec.ts e2e/stats-readability-search.spec.ts e2e/stats-preview.spec.ts e2e/stats-darko.spec.ts e2e/stats-glossary.spec.ts --workers=2 --reporter=line --output=/home/ethioking/.cache/courtlens-tmp/stats-motion-debug/test-results
+
+
+Running 31 tests using 2 workers
+
+[1/31] e2e/stats-darko.spec.ts:22:5 › short windows keep DARKO ratings unknown
+[2/31] e2e/stats-darko.spec.ts:4:5 › Overview uses dated DARKO columns, sort, reset and stable counting modes
+[3/31] e2e/stats-darko.spec.ts:30:5 › DARKO source links are blue, highlighted and clickable from the header hover
+[4/31] e2e/stats-entrance.spec.ts:34:7 › opening and refreshing Stats enters once with standard density
+[5/31] e2e/stats-entrance.spec.ts:34:7 › opening and refreshing Stats enters once with compact density
+[6/31] e2e/stats-entrance.spec.ts:43:5 › streamed Stats waits for hydration before entering
+[7/31] e2e/stats-entrance.spec.ts:67:5 › Stats keeps a single opacity entrance with reduced motion
+[8/31] e2e/stats-entrance.spec.ts:75:5 › restoring a saved view joins the initial entrance
+[9/31] e2e/stats-followups.spec.ts:7:5 › the table frame fills the unscrolled page to just above its bottom
+[10/31] e2e/stats-followups.spec.ts:16:5 › Select Team opens a logo grid and filters by the chosen team
+[11/31] e2e/stats-followups.spec.ts:26:5 › position chips narrow the displayed players and rows show the position
+[12/31] e2e/stats-followups.spec.ts:39:5 › Draft Class narrows the table to one draft year
+[13/31] e2e/stats-followups.spec.ts:52:5 › hovering a column header describes the stat
+[14/31] e2e/stats-followups.spec.ts:60:5 › a stat cell opens its season trend and Escape returns to the table
+[15/31] e2e/stats-followups.spec.ts:72:5 › the name search spans the player cards and filters the table as you type
+[16/31] e2e/stats-followups.spec.ts:93:5 › Reset table clears every sort and filter, even mid-navigation
+[17/31] e2e/stats-followups.spec.ts:102:5 › hovering a stat cell highlights that stat in the player preview
+[18/31] e2e/stats-followups.spec.ts:114:5 › table and preview keep one height; selected players fit inside the frame
+[19/31] e2e/stats-followups.spec.ts:136:5 › trend points stay clear of the axes
+[20/31] e2e/stats-glossary.spec.ts:6:7 › Stats glossary filters, searches and reveals calculations at 1440px
+[21/31] e2e/stats-glossary.spec.ts:6:7 › Stats glossary filters, searches and reveals calculations at 390px
+[22/31] e2e/stats-preview.spec.ts:7:5 › hover and keyboard preview reuse table values without fetching or stealing focus
+[23/31] e2e/stats-preview.spec.ts:41:5 › pinning, collapsing and expanding preserve the preview and table geometry
+[24/31] e2e/stats-preview.spec.ts:64:5 › wide and smaller desktop columns align with stable pinned identity while scrolling
+[25/31] e2e/stats-preview.spec.ts:98:5 › mobile details, collapsed filters and submitted search remain accessible
+[26/31] e2e/stats-readability-search.spec.ts:5:5 › standard records are readable and portrait gutters center between metric groups
+[27/31] e2e/stats-readability-search.spec.ts:28:5 › header branding and secondary navigation align
+[28/31] e2e/stats-readability-search.spec.ts:41:5 › profile exports keep the same shared wordmark artwork
+[29/31] e2e/stats-readability-search.spec.ts:60:5 › global search clear button uses the right edge and concise player captions
+[30/31] e2e/stats-readability-search.spec.ts:88:5 › table search filters the rows as you type and keeps typing ahead of the URL
+[31/31] e2e/stats-readability-search.spec.ts:118:5 › phone table search filters immediately on Enter and Escape clears the draft
+  31 passed (14.8s)
