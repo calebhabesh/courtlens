@@ -1219,5 +1219,23 @@ Instructions (owner, 2026-10-17):
     `REB`, `AST`, `TOV`), and side-by-side compact player box-score tables (`Top 5` / `Full Box`)
     from `/api/live/historical`.
 
+Follow-up instructions (owner, 2026-10-17):
+11. [x] Fix free-throw comparison highlighting. — each side uses its own made/attempted totals;
+    live OKC 13/17 (76%) vs BOS 19/20 (95%) highlights BOS.
+12. [x] Preserve missing box-score totals as unknown instead of zero. — missing, blank or invalid
+    fields produce "—" for that total; observed zero and 0/0 shooting remain explicit.
+13. [x] Tighten mobile rotation rows without reducing name readability. — measured 84px rows
+    instead of 116px at 390px; default matchup names fit without truncation.
+14. [x] Select a game's box score directly from its scoreboard row. — full-width kit buttons
+    replace the duplicate game selector; mouse and keyboard selection verified with live G2.
+15. [x] Show FTR with useful precision and keep pace visually neutral. — FTR uses three decimal
+    places (0.261 vs 0.207 in the live scope); pace has no leading-side emphasis.
+16. [x] Include the year on game dates, which currently show only month and day. — full dates
+    on scoreboard rows and cross-season recent-game tables.
+17. [x] Center FG, 3P and FT labels between their paired values. — equal-width value columns
+    and shared grid rows; horizontal error ≤0.008px and vertical error ≤0.5px across all six totals.
+18. [x] Explicitly identify which team each game total belongs to. — every tile labels both
+    values with a team logo and abbreviation, plus accessible team/stat/value labels.
+
 Evidence: [docs/evidence/alignment/team-compare/README.md](evidence/alignment/team-compare/README.md)
 

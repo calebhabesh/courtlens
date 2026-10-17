@@ -1,0 +1,221 @@
+{
+  "widths": [
+    {
+      "width": 1440,
+      "client": 1440,
+      "scroll": 1440,
+      "rowHeights": [
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64
+      ],
+      "truncatedNames": [],
+      "totals": [
+        {
+          "metric": "FG",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "40-84(48%)",
+            "35-87(40%)"
+          ],
+          "deltaX": 0,
+          "deltaY": 0
+        },
+        {
+          "metric": "3P",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "11-44(25%)",
+            "13-42(31%)"
+          ],
+          "deltaX": 0.0078125,
+          "deltaY": 0
+        },
+        {
+          "metric": "FT",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "13-17(76%)",
+            "19-20(95%)"
+          ],
+          "deltaX": 0,
+          "deltaY": 0
+        },
+        {
+          "metric": "REB",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "39",
+            "44"
+          ],
+          "deltaX": 0.0078125,
+          "deltaY": 0.5
+        },
+        {
+          "metric": "AST",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "22",
+            "20"
+          ],
+          "deltaX": 0,
+          "deltaY": 0.5
+        },
+        {
+          "metric": "TOV",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "12",
+            "12"
+          ],
+          "deltaX": 0,
+          "deltaY": 0.5
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "client": 390,
+      "scroll": 390,
+      "rowHeights": [
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84,
+        84
+      ],
+      "truncatedNames": [],
+      "totals": [
+        {
+          "metric": "FG",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "40-84(48%)",
+            "35-87(40%)"
+          ],
+          "deltaX": 0.0078125,
+          "deltaY": 0
+        },
+        {
+          "metric": "3P",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "11-44(25%)",
+            "13-42(31%)"
+          ],
+          "deltaX": 0,
+          "deltaY": 0
+        },
+        {
+          "metric": "FT",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "13-17(76%)",
+            "19-20(95%)"
+          ],
+          "deltaX": 0.0078125,
+          "deltaY": 0
+        },
+        {
+          "metric": "REB",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "39",
+            "44"
+          ],
+          "deltaX": 0,
+          "deltaY": 0.5
+        },
+        {
+          "metric": "AST",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "22",
+            "20"
+          ],
+          "deltaX": 0.0078125,
+          "deltaY": 0.5
+        },
+        {
+          "metric": "TOV",
+          "teams": [
+            "OKC",
+            "BOS"
+          ],
+          "values": [
+            "12",
+            "12"
+          ],
+          "deltaX": 0.0078125,
+          "deltaY": 0.5
+        }
+      ]
+    }
+  ],
+  "interactions": {
+    "fullBoxCounts": [
+      11,
+      9
+    ],
+    "keyboardSelectsSecondGame": true,
+    "firstGameFtLeader": "BOS 19-20 (95%)",
+    "pace": [
+      "101.8",
+      "97.5"
+    ],
+    "ftr": [
+      "0.261",
+      "0.207"
+    ]
+  },
+  "errors": []
+}

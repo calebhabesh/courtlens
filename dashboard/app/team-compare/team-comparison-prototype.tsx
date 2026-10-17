@@ -1,6 +1,5 @@
 "use client";
 
-// One throwaway direction: Databallr's paired rotations in CourtLens's comparison-card language.
 import { Fragment, useEffect, useRef, useState, useTransition, type CSSProperties } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -78,6 +77,7 @@ type TeamMetricSpec = {
   label: string;
   group: string;
   lowBetter?: boolean;
+  neutral?: boolean;
   read: (side: DraftSide) => { num: number | null; text: string };
 };
 
@@ -88,7 +88,7 @@ const splitRecord = (split: { wins: number; losses: number; win_pct: number | nu
 const factorVal = (side: DraftSide, list: "offense_factors" | "defense_factors", key: string) => {
   const item = side.factors?.[list]?.find(m => m.key === key);
   const v = item?.value ?? null;
-  return { num: v, text: item?.unit === "percentage" ? percentage(v) : number(v) };
+  return { num: v, text: item?.unit === "percentage" ? percentage(v) : key.endsWith("ftr") ? v?.toFixed(3) ?? "—" : number(v) };
 };
 
 const TEAM_METRICS: TeamMetricSpec[] = [
@@ -107,7 +107,7 @@ const TEAM_METRICS: TeamMetricSpec[] = [
   { key: "off_rating", short: "ORTG", label: "Offensive Rating", group: "Pace & Efficiency", read: s => ({ num: s.factors?.off_rating ?? null, text: number(s.factors?.off_rating) }) },
   { key: "def_rating", short: "DRTG", label: "Defensive Rating", group: "Pace & Efficiency", lowBetter: true, read: s => ({ num: s.factors?.def_rating ?? null, text: number(s.factors?.def_rating) }) },
   { key: "net_rating", short: "NET", label: "Net Rating", group: "Pace & Efficiency", read: s => ({ num: s.factors?.net_rating ?? null, text: number(s.factors?.net_rating, true) }) },
-  { key: "pace", short: "PACE", label: "Pace", group: "Pace & Efficiency", read: s => ({ num: s.factors?.pace ?? null, text: number(s.factors?.pace) }) },
+  { key: "pace", short: "PACE", label: "Pace", group: "Pace & Efficiency", neutral: true, read: s => ({ num: s.factors?.pace ?? null, text: number(s.factors?.pace) }) },
   { key: "ppg", short: "PPG", label: "Points Per Game", group: "Scoring & Shooting", read: s => ({ num: s.detail?.production.pts_per_game ?? null, text: number(s.detail?.production.pts_per_game) }) },
   { key: "opp_ppg", short: "OPPG", label: "Opponent PPG Allowed", group: "Scoring & Shooting", lowBetter: true, read: s => ({ num: s.detail?.allowance.pts_allowed_per_game ?? null, text: number(s.detail?.allowance.pts_allowed_per_game) }) },
   { key: "fg_pct", short: "FG%", label: "Field Goal %", group: "Scoring & Shooting", read: s => ({ num: s.detail?.production.fg_pct ?? null, text: percentage(s.detail?.production.fg_pct) }) },
@@ -405,23 +405,27 @@ export function TeamComparisonPrototype({ a, b, catalog, phase }: { a: DraftSide
 const smoothScroll = (): ScrollBehavior => window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 
 type BoxTotals = {
-  fgm: number; fga: number; fg3m: number; fg3a: number; ftm: number; fta: number;
-  reb: number; ast: number; tov: number;
+  fgm: number | null; fga: number | null; fg3m: number | null; fg3a: number | null; ftm: number | null; fta: number | null;
+  reb: number | null; ast: number | null; tov: number | null;
 };
 
 function sumTeamBox(players: LivePlayer[]): BoxTotals {
-  const num = (v: string | null | undefined) => Number.isFinite(Number(v)) ? Number(v) : 0;
-  return players.reduce<BoxTotals>((acc, p) => ({
-    fgm: acc.fgm + num(p.statistics.field_goals_made),
-    fga: acc.fga + num(p.statistics.field_goals_attempted),
-    fg3m: acc.fg3m + num(p.statistics.three_pointers_made),
-    fg3a: acc.fg3a + num(p.statistics.three_pointers_attempted),
-    ftm: acc.ftm + num(p.statistics.free_throws_made),
-    fta: acc.fta + num(p.statistics.free_throws_attempted),
-    reb: acc.reb + num(p.statistics.rebounds_total),
-    ast: acc.ast + num(p.statistics.assists),
-    tov: acc.tov + num(p.statistics.turnovers),
-  }), { fgm: 0, fga: 0, fg3m: 0, fg3a: 0, ftm: 0, fta: 0, reb: 0, ast: 0, tov: 0 });
+  const sum = (field: keyof LivePlayer["statistics"]): number | null => {
+    if (!players.length) return null;
+    let total = 0;
+    for (const player of players) {
+      const value = player.statistics[field];
+      if (value == null || value.trim() === "" || !Number.isFinite(Number(value))) return null;
+      total += Number(value);
+    }
+    return total;
+  };
+  return {
+    fgm: sum("field_goals_made"), fga: sum("field_goals_attempted"),
+    fg3m: sum("three_pointers_made"), fg3a: sum("three_pointers_attempted"),
+    ftm: sum("free_throws_made"), fta: sum("free_throws_attempted"),
+    reb: sum("rebounds_total"), ast: sum("assists"), tov: sum("turnovers"),
+  };
 }
 
 function sortBoxPlayers(players: LivePlayer[], code: string): LivePlayer[] {
@@ -497,15 +501,19 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
   const shownA = boxDepth === "top5" ? boxA.slice(0, 5) : boxA;
   const shownB = boxDepth === "top5" ? boxB.slice(0, 5) : boxB;
 
-  const rateText = (m: number, att: number) => att > 0 ? `${m}-${att} (${((m / att) * 100).toFixed(0)}%)` : "—";
-  const rateVal = (m: number, att: number) => att > 0 ? m / att : null;
+  const shooting = (made: number | null, attempted: number | null) => ({
+    text: made != null && attempted != null ? `${made}-${attempted}` : "—",
+    percentage: made != null && attempted != null && attempted > 0 ? `(${((made / attempted) * 100).toFixed(0)}%)` : null,
+    num: made != null && attempted != null && attempted > 0 ? made / attempted : null,
+  });
+  const total = (value: number | null) => ({ text: value?.toString() ?? "—", percentage: null, num: value });
   const totalSpecs = [
-    { key: "fg", label: "FG", aText: rateText(totalsA.fgm, totalsA.fga), bText: rateText(totalsB.fgm, totalsB.fga), aNum: rateVal(totalsA.fgm, totalsA.fga), bNum: rateVal(totalsB.fgm, totalsB.fga) },
-    { key: "3p", label: "3P", aText: rateText(totalsA.fg3m, totalsA.fg3a), bText: rateText(totalsB.fg3m, totalsB.fg3a), aNum: rateVal(totalsA.fg3m, totalsA.fg3a), bNum: rateVal(totalsB.fg3m, totalsB.fg3a) },
-    { key: "ft", label: "FT", aText: rateText(totalsA.ftm, totalsA.fta), bText: rateText(totalsB.ftm, totalsB.fta), aNum: rateVal(totalsA.ftm, totalsA.fta), bNum: rateVal(totalsA.ftm, totalsB.fta) },
-    { key: "reb", label: "REB", aText: `${totalsA.reb}`, bText: `${totalsB.reb}`, aNum: totalsA.reb, bNum: totalsB.reb },
-    { key: "ast", label: "AST", aText: `${totalsA.ast}`, bText: `${totalsB.ast}`, aNum: totalsA.ast, bNum: totalsB.ast },
-    { key: "tov", label: "TOV", aText: `${totalsA.tov}`, bText: `${totalsB.tov}`, aNum: totalsA.tov, bNum: totalsB.tov, lowBetter: true },
+    { key: "fg", label: "FG", a: shooting(totalsA.fgm, totalsA.fga), b: shooting(totalsB.fgm, totalsB.fga) },
+    { key: "3p", label: "3P", a: shooting(totalsA.fg3m, totalsA.fg3a), b: shooting(totalsB.fg3m, totalsB.fg3a) },
+    { key: "ft", label: "FT", a: shooting(totalsA.ftm, totalsA.fta), b: shooting(totalsB.ftm, totalsB.fta) },
+    { key: "reb", label: "REB", a: total(totalsA.reb), b: total(totalsB.reb) },
+    { key: "ast", label: "AST", a: total(totalsA.ast), b: total(totalsB.ast) },
+    { key: "tov", label: "TOV", a: total(totalsA.tov), b: total(totalsB.tov), lowBetter: true },
   ];
 
   const renderPlayerBox = (players: LivePlayer[], side: DraftSide, sideKey: "a" | "b") => <div className="tc-history-box-side" data-side={sideKey}>
@@ -547,38 +555,35 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
       <div className="tc-draft-tray-clip">
         <div className="tc-draft-tray-body" id="tc-history-drawer">
           {series ? games.length > 0 ? <>
-            <table className="tc-history-scores" aria-label={`${series.label} game scores`}>
-              <thead className="sr-only"><tr><th>{teamName(a)}</th><th>Game</th><th>{teamName(b)}</th></tr></thead>
-              <tbody>
+            <div className="tc-history-scores" role="group" aria-label={`${series.label} game scores`}>
                 {games.map((g, idx) => {
                   const winA = g.is_win === true, winB = g.is_win === false;
                   const margin = (winA || winB) && g.team_points != null && g.opponent_points != null ? Math.abs(g.team_points - g.opponent_points) : null;
                   const venue = g.side === "home" ? `at ${codeA}` : `at ${codeB}`;
-                  return <tr key={g.game_id} data-active={activeGame?.game_id === g.game_id || undefined}>
-                    <td data-side="a" data-leading={winA || undefined}>
-                      <span className="tc-history-score-side">
-                        {winA && margin != null && <span className="tc-history-margin" data-side="a">+{margin}</span>}
-                        <strong className="tc-history-pts-val">{g.team_points ?? "—"}</strong>
+                  return <Button key={g.game_id} size="lg" variant="ghost" pressed={activeGame?.game_id === g.game_id}
+                    aria-label={`G${idx + 1} · ${formatDate(g.game_date)} · ${codeA} ${g.team_points ?? "—"}, ${codeB} ${g.opponent_points ?? "—"} · ${venue}${g.is_win === null ? " · Unknown" : ""}`}
+                    onClick={() => setSelectedId(g.game_id)}>
+                    <span className="tc-history-score-layout">
+                      <span className="tc-history-score-side" data-side="a" data-leading={winA || undefined}>
+                        <span className="tc-history-score-result">
+                          {winA && margin != null && <span className="tc-history-margin" data-side="a">+{margin}</span>}
+                          <strong className="tc-history-pts-val">{g.team_points ?? "—"}</strong>
+                        </span>
                         <span className="tc-history-team-tag"><TeamLogo team={codeA} size={18} /><span>{codeA}</span></span>
                       </span>
-                    </td>
-                    <th scope="row">
-                      <span className="tc-history-game-meta">G{idx + 1} · {formatDate(g.game_date, "compact")} · {venue}{g.is_win === null ? " · Unknown" : ""}</span>
-                    </th>
-                    <td data-side="b" data-leading={winB || undefined}>
-                      <span className="tc-history-score-side" data-side="b">
+                      <span className="tc-history-game-meta"><span>G{idx + 1} · {formatDate(g.game_date)}</span><span>{venue}{g.is_win === null ? " · Unknown" : ""}</span></span>
+                      <span className="tc-history-score-side" data-side="b" data-leading={winB || undefined}>
                         <span className="tc-history-team-tag"><TeamLogo team={codeB} size={18} /><span>{codeB}</span></span>
-                        <strong className="tc-history-pts-val">{g.opponent_points ?? "—"}</strong>
-                        {winB && margin != null && <span className="tc-history-margin" data-side="b">+{margin}</span>}
+                        <span className="tc-history-score-result">
+                          <strong className="tc-history-pts-val">{g.opponent_points ?? "—"}</strong>
+                          {winB && margin != null && <span className="tc-history-margin" data-side="b">+{margin}</span>}
+                        </span>
                       </span>
-                    </td>
-                  </tr>;
+                    </span>
+                  </Button>;
                 })}
-              </tbody>
-            </table>
+            </div>
             <div className="tc-history-controls">
-              <Segmented size="sm" dense label="Select game box score" value={activeGame?.game_id ?? ""} onChange={value => setSelectedId(value)}
-                options={games.map((g, idx) => ({ value: g.game_id, label: `G${idx + 1} · ${formatDate(g.game_date, "compact")}` }))} />
               <Segmented size="sm" dense label="Box score depth" value={boxDepth} onChange={value => setBoxDepth(value)}
                 options={[{ value: "top5", label: "Top 5" }, { value: "all", label: "Full Box" }]} />
             </div>
@@ -586,12 +591,18 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
               : boxA.length > 0 || boxB.length > 0 ? <>
                 <div className="tc-history-totals" role="group" aria-label="Selected game team totals">
                   {totalSpecs.map(item => {
-                    const lead = item.aNum != null && item.bNum != null && item.aNum !== item.bNum
-                      ? (item.lowBetter ? item.aNum < item.bNum : item.aNum > item.bNum) ? "a" : "b" : null;
-                    return <div key={item.key} className="tc-history-total-pill">
-                      <span data-leading={lead === "a" || undefined}>{item.aText}</span>
+                    const lead = item.a.num != null && item.b.num != null && item.a.num !== item.b.num
+                      ? (item.lowBetter ? item.a.num < item.b.num : item.a.num > item.b.num) ? "a" : "b" : null;
+                    return <div key={item.key} className="tc-history-total-pill" role="group" aria-label={`${item.label} team totals`}>
+                      <div className="tc-history-total-side" data-side="a" role="group" aria-label={`${codeA} ${item.label}: ${item.a.text}${item.a.percentage ? ` ${item.a.percentage}` : ""}`}>
+                        <span className="tc-history-total-team"><TeamLogo team={codeA} size={12} /><span>{codeA}</span></span>
+                        <span className="tc-history-total-value" data-leading={lead === "a" || undefined}>{item.a.text}{item.a.percentage && <span>{item.a.percentage}</span>}</span>
+                      </div>
                       <small>{item.label}</small>
-                      <span data-leading={lead === "b" || undefined}>{item.bText}</span>
+                      <div className="tc-history-total-side" data-side="b" role="group" aria-label={`${codeB} ${item.label}: ${item.b.text}${item.b.percentage ? ` ${item.b.percentage}` : ""}`}>
+                        <span className="tc-history-total-team"><TeamLogo team={codeB} size={12} /><span>{codeB}</span></span>
+                        <span className="tc-history-total-value" data-leading={lead === "b" || undefined}>{item.b.text}{item.b.percentage && <span>{item.b.percentage}</span>}</span>
+                      </div>
                     </div>;
                   })}
                 </div>
@@ -610,7 +621,7 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
                   <tbody>
                     {(side.schedule?.games.slice(-5).reverse() ?? []).map(g => <tr key={g.game_id}>
                       <th scope="row">{g.side === "home" ? "vs" : "@"} {g.opponent_tricode}</th>
-                      <td>{formatDate(g.game_date, "compact")}</td>
+                      <td>{formatDate(g.game_date)}</td>
                       <td className="tc-history-pts">{g.result ?? "—"} {g.team_points ?? "—"}–{g.opponent_points ?? "—"}</td>
                     </tr>)}
                   </tbody>
@@ -639,7 +650,7 @@ function TeamStats({ a, b, selectedKeys }: { a: DraftSide; b: DraftSide; selecte
         const valA = spec.read(a), valB = spec.read(b);
         const x = valA.num == null ? null : Number(valA.num.toFixed(4));
         const y = valB.num == null ? null : Number(valB.num.toFixed(4));
-        const leader = x != null && y != null && x !== y ? (spec.lowBetter ? x < y : x > y) ? "a" : "b" : null;
+        const leader = !spec.neutral && x != null && y != null && x !== y ? (spec.lowBetter ? x < y : x > y) ? "a" : "b" : null;
         return <Fragment key={spec.key}>
           {showGroup && <tr className="tc-draft-stats-group"><th colSpan={3} scope="colgroup">{spec.group}</th></tr>}
           <tr>
