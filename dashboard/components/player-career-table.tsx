@@ -19,11 +19,12 @@ import {
   type CountingMode,
   type PresetId
 } from "@/lib/stats-presets";
-import { getPlayerCareer, getPlayerProfile } from "@/lib/workbench-api";
+import { getPlayerCareer } from "@/lib/workbench-api";
+import { getTeamStints, useTeamStints } from "@/lib/team-stints";
 import { seasonAwardChips } from "@/lib/awards";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { StatsTrendDialog, type TrendTarget } from "./stats-trend-dialog";
-import type { PlayerCareerResponse, PlayerProfileStint, PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
+import type { PlayerCareerResponse, PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
 
 const PHASES = [{ id: "regular_season", label: "Regular" }, { id: "playoffs", label: "Playoffs" }] as const;
 
@@ -58,7 +59,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   const [presetId, setPresetId] = useState<PresetId>("overview");
   const [countingMode, setCountingMode] = useState<CountingMode>("per_game");
   const [trendTarget, setTrendTarget] = useState<TrendTarget | null>(null);
-  const [expanded, setExpanded] = useState<Record<string, PlayerProfileStint[] | "loading" | "failed">>({});
+  const { expanded, toggle } = useTeamStints();
 
   const preset = useMemo(() => {
     const base = ORDERED_PRESETS.find(p => p.id === presetId) ?? ORDERED_PRESETS[0];
@@ -111,16 +112,29 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   };
   const openSeason = (value: string) => router.push(scopeHref("season", value), { scroll: false });
 
-  const toggleStints = (value: string) => {
-    if (expanded[value]) { setExpanded(state => Object.fromEntries(Object.entries(state).filter(([key]) => key !== value))); return; }
-    setExpanded(state => ({ ...state, [value]: "loading" }));
-    const before = catalog.stats_scopes?.find(scope => scope.season === value && scope.phase === phase)?.default_before_date;
-    getPlayerProfile(playerId, { season: value, phase, beforeDate: before, releaseId: catalog.release_id })
-      .then(profile => setExpanded(state => ({ ...state, [value]: profile.stints ?? [] })))
-      .catch(() => setExpanded(state => ({ ...state, [value]: "failed" })));
-  };
+  // A split season opens one full row per team: the season's whole-season Stats scope with a
+  // team filter, ranked against that season's league reference like the season row.
+  const stintKey = (value: string) => `${requestKey}|${value}`;
+  const toggleStints = (value: string, teams: string[]) => toggle(stintKey(value), () => getTeamStints({
+    release_id: catalog.release_id, season: value, phase, window: { kind: "season" },
+    before_date: catalog.stats_scopes?.find(scope => scope.season === value && scope.phase === phase)?.default_before_date ?? null
+  }, playerId, teams, catalog.impact?.manifest_sha256));
+  // Seasons stagger in when they first arrive; a view, counting mode or phase change settles the
+  // body in place (DL Table / Loading).
+  const bodySignature = [seasons?.join() ?? "loading", presetId, countingMode, phase].join("|");
+  const rowsShown = Boolean(seasons?.length);
+  const [bodyMotion, setBodyMotion] = useState({ signature: bodySignature, version: 0, first: rowsShown ? bodySignature : null });
+  if (bodyMotion.signature !== bodySignature) {
+    setBodyMotion({ signature: bodySignature, version: bodyMotion.version + 1, first: bodyMotion.first ?? (rowsShown ? bodySignature : null) });
+  }
+  const bodyMotionClass = !rowsShown ? "" : (bodyMotion.first ?? bodySignature) === bodySignature ? "motion-stagger"
+    : bodyMotion.version % 2 ? "motion-settle-a" : "motion-settle-b";
+  // Any split season widens the Year column for the logo group and the expand arrow.
+  const hasSplits = Boolean(career?.seasons.some(entry => (entry.item?.teams?.length ?? 0) > 1));
 
-  const cell = (item: PlayerResearchItem | null, index: number, career = false) => {
+  /** A season, team (split-season) or Career row cell; only season cells open the trend dialog. */
+  const cell = (item: PlayerResearchItem | null, index: number, kind: "season" | "team" | "career" = "season") => {
+    const career = kind === "career";
     const column = preset.columns[index];
     const value = item ? item.metrics[column.key] ?? (column.key === "gp" ? item.games_played : column.key === "min" ? item.total_minutes : null) : null;
     const group = groups.findIndex(g => index >= g.start && index < g.start + g.colSpan) % 2;
@@ -131,7 +145,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
       label={column.label} cohort={`${item?.table_cohort_sample_sizes?.[column.key] ?? "Unknown"} valid league players that season`} />;
     return <td key={column.key} data-column={column.key} className={`stats-metric-cell stats-group-${group} ${column.num ? "num" : ""} ${divider(index)}`}>
       {/* Season cells open the Stats trend dialog for that stat, as on Stats; the Career row does not. */}
-      {!career && item && trendQuery ? <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player: item, columnKey: column.key })}
+      {kind === "season" && item && trendQuery ? <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player: item, columnKey: column.key })}
         aria-label={`${column.label} ${formatted ?? "unknown"} for ${item.player_name}. Open ${column.label} trend`}>{shown}</button> : shown}
     </td>;
   };
@@ -155,7 +169,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
         </div>
         <div className="table-wrapper stats-scroll-region player-career-scroll" role="region" aria-label="Career table scroll area" tabIndex={0}
           aria-busy={seasons === null}>
-          <table className={`data-table dense-stats-table player-career-table ${awardColumn ? "has-awards" : ""}`} aria-label="Career statistics by season"
+          <table className={`data-table dense-stats-table player-career-table ${awardColumn ? "has-awards" : ""} ${hasSplits ? "has-splits" : ""}`} aria-label="Career statistics by season"
             style={{ "--career-columns": preset.columns.length } as React.CSSProperties}>
             <colgroup>
               <col className="player-career-year-column" />
@@ -174,7 +188,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
                 {awardColumn && <th scope="col" className="group-start player-career-awards" title={`Season awards and voting finishes (${awards?.source})`}>Accolades</th>}
               </tr>
             </thead>
-            <tbody>
+            <tbody className={bodyMotionClass}>
               {seasons === null && <tr><td colSpan={span} className="player-career-status">Loading seasons…</td></tr>}
               {career === null && <tr><td colSpan={span} className="player-career-status">
                 Career table unavailable. Reload to retry.</td></tr>}
@@ -183,20 +197,20 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
               {seasons?.map(value => {
                 const item = rows.get(value) ?? null;
                 const teams = item?.teams ?? [];
-                const stints = expanded[value];
+                const stints = expanded[stintKey(value)];
                 const selected = value === season;
                 return <Fragment key={value}>
                   <tr className={`player-career-row ${selected ? "row-selected" : ""}`} aria-current={selected ? "true" : undefined}
                     onClick={event => { if (!(event.target as HTMLElement).closest("a, button")) openSeason(value); }}>
                     <th scope="row" className="pinned-col pinned-col-year">
                       <span className="player-career-year">
-                        <TeamLogoStack teams={teams} size={20} />
+                        <span className="player-career-logos"><TeamLogoStack teams={teams} size={24} /></span>
                         <a href={scopeHref("season", value)} onClick={event => { event.preventDefault(); openSeason(value); }}
                           title={`Show ${value}`}>{value}</a>
                         {awards?.allStarSeasons.includes(value) && phase === "regular_season" && <span className="player-career-star" title="All-Star"><Icon name="star" size={14} filled /><span className="sr-only">All-Star</span></span>}
-                        {teams.length > 1 && <IconButton size="xs" className="player-career-expand-slot" aria-expanded={Boolean(stints)}
-                          icon={stints ? "chevron-up" : "chevron-down"} label={`${stints ? "Hide" : "Show"} ${value} team stints`}
-                          onClick={() => toggleStints(value)} />}
+                        {teams.length > 1 && <IconButton size="xs" className="player-career-expand-slot" expanded={Boolean(stints)}
+                          icon="chevron-down" label={`${stints ? "Hide" : "Show"} ${value} team stints`}
+                          onClick={() => toggleStints(value, teams)} />}
                       </span>
                     </th>
                     {preset.columns.map((_, index) => cell(item, index))}
@@ -209,27 +223,29 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
                       </div>
                     </td>}
                   </tr>
-                  {stints && <tr className="player-career-stints">
-                    <td colSpan={span}>
-                      {stints === "loading" ? "Loading team stints…" : stints === "failed" ? "Team stints unavailable." :
-                        <ul aria-label={`${value} team stints`}>{stints.map(stint => <li key={stint.team_id}>
-                          <TeamLogoStack teams={[stint.team_tricode]} size={16} /><strong>{stint.team_tricode}</strong>
-                          <span>{stint.games_played} GP</span>
-                          <span>{formatOne(stint.metrics.min_per_game)} MPG</span>
-                          <span>{formatOne(stint.metrics.pts_per_game)} PTS</span>
-                          <span>{formatOne(stint.metrics.reb_total_per_game)} REB</span>
-                          <span>{formatOne(stint.metrics.ast_per_game)} AST</span>
-                          <span>{formatPct(stint.metrics.ts_pct)} TS%</span>
-                        </li>)}</ul>}
-                    </td>
+                  {(stints === "loading" || stints === "failed") && <tr className="player-career-stint-status motion-enter">
+                    <td colSpan={span}>{stints === "loading" ? "Loading team rows…" : "Team rows unavailable. Collapse and retry."}</td>
                   </tr>}
+                  {Array.isArray(stints) && stints.map((stint, index) => {
+                    const team = stint.teams?.[0] ?? "";
+                    return <tr key={team} className="player-career-stint motion-enter" style={{ "--motion-index": index } as React.CSSProperties}>
+                      <th scope="row" className="pinned-col pinned-col-year">
+                        <span className="player-career-year">
+                          <span className="player-career-logos"><TeamLogoStack teams={[team]} size={20} decorative /></span>
+                          <span className="player-career-stint-team">{team}<span className="sr-only">, {value}</span></span>
+                        </span>
+                      </th>
+                      {preset.columns.map((_, index) => cell(stint, index, "team"))}
+                      {awardColumn && <td className="stats-metric-cell group-start player-career-awards" />}
+                    </tr>;
+                  })}
                 </Fragment>;
               })}
             </tbody>
             {Boolean(seasons?.length) && <tfoot>
               <tr className="player-career-total">
                 <th scope="row" className="pinned-col pinned-col-year">{careerSince ? <>Career since <span className="player-career-since">{firstCoveredSeason}</span></> : "Career"}</th>
-                {preset.columns.map((_, index) => cell(career?.career ?? null, index, true))}
+                {preset.columns.map((_, index) => cell(career?.career ?? null, index, "career"))}
                 {awardColumn && <td className="group-start player-career-awards" />}
               </tr>
             </tfoot>}
@@ -251,12 +267,4 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
       </div>
     </section>
   );
-}
-
-function formatOne(value: number | null | undefined): string {
-  return value == null ? "—" : value.toFixed(1);
-}
-
-function formatPct(value: number | null | undefined): string {
-  return value == null ? "—" : `${(value * 100).toFixed(1)}%`;
 }

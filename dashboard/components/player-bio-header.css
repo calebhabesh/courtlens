@@ -99,6 +99,12 @@
 @layer foundation {
   /* The season line below has its own rule; a second one above it would sandwich it (row 2, 34). */
   .player-detail-container .ui-filter-bar { border-bottom: 0; }
+  /* The sticky scope bar spans the viewport like the header above it: it bleeds through the
+     page's side padding and carries that padding inside, so its controls stay on the content edge. */
+  .player-detail-container > .ui-filter-bar {
+    margin-inline: calc(-1 * var(--page-pad-inline));
+    padding-inline: var(--page-pad-inline);
+  }
   .player-bio-name .ui-page-header-title-row { min-height: 0; }
   .player-bio-name .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); letter-spacing: -0.01em; }
   @media (max-width: 767px) {
