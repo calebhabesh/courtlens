@@ -223,7 +223,7 @@ export function WorkbenchPlayerProfile({
   };
 
   return (
-    <PageShell template="profile" className="player-detail-container">
+    <PageShell template="profile" className="player-detail-container motion-stagger">
       <AssistantPageSelection route={`/players/${player.id}`} playerIds={[player.id]} scope={context} label={player.name} />
       <PlayerBioHeader name={player.name} playerId={player.id} portraitUrl={player.portrait_url}
         team={latest_team ? { id: latest_team.id, tricode: latest_team.tricode, name: latest_team.name } : null}
