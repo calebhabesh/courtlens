@@ -1,0 +1,21 @@
+{
+  "url": "http://localhost:3100/team-compare?history=1",
+  "css_url": "http://localhost:3100/_next/static/chunks/app_0xdip5djcnews._.css",
+  "css_sha256": "3f0bf8e17af7f6e3a7a109a7eac0223777d64e57688f925eb42dd48da42b4d21",
+  "selectors_present": {
+    ".tc-history-score-layout": false,
+    ".tc-history-total-side": false,
+    ".tc-history-total-value": false
+  },
+  "observed_display": {
+    ".tc-history-scores": "block",
+    ".tc-history-score-layout": "block",
+    ".tc-history-total-side": "block",
+    ".tc-history-total-value": "inline"
+  },
+  "observed_button_widths": [
+    171.703125,
+    170.296875
+  ],
+  "reproduction_exit_code": 1
+}

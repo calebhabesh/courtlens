@@ -590,21 +590,24 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
             {isLoading ? <p className="tc-history-empty" role="status">Loading game box score…</p>
               : boxA.length > 0 || boxB.length > 0 ? <>
                 <div className="tc-history-totals" role="group" aria-label="Selected game team totals">
-                  {totalSpecs.map(item => {
-                    const lead = item.a.num != null && item.b.num != null && item.a.num !== item.b.num
-                      ? (item.lowBetter ? item.a.num < item.b.num : item.a.num > item.b.num) ? "a" : "b" : null;
-                    return <div key={item.key} className="tc-history-total-pill" role="group" aria-label={`${item.label} team totals`}>
-                      <div className="tc-history-total-side" data-side="a" role="group" aria-label={`${codeA} ${item.label}: ${item.a.text}${item.a.percentage ? ` ${item.a.percentage}` : ""}`}>
-                        <span className="tc-history-total-team"><TeamLogo team={codeA} size={12} /><span>{codeA}</span></span>
-                        <span className="tc-history-total-value" data-leading={lead === "a" || undefined}>{item.a.text}{item.a.percentage && <span>{item.a.percentage}</span>}</span>
-                      </div>
-                      <small>{item.label}</small>
-                      <div className="tc-history-total-side" data-side="b" role="group" aria-label={`${codeB} ${item.label}: ${item.b.text}${item.b.percentage ? ` ${item.b.percentage}` : ""}`}>
-                        <span className="tc-history-total-team"><TeamLogo team={codeB} size={12} /><span>{codeB}</span></span>
-                        <span className="tc-history-total-value" data-leading={lead === "b" || undefined}>{item.b.text}{item.b.percentage && <span>{item.b.percentage}</span>}</span>
-                      </div>
-                    </div>;
-                  })}
+                  {[{ label: "Shooting team totals", items: totalSpecs.slice(0, 3) }, { label: "Rebounds, assists and turnovers", items: totalSpecs.slice(3) }].map(group =>
+                    <table key={group.label} className="tc-history-team-totals" aria-label={group.label}>
+                      <colgroup><col className="tc-history-team-col" /><col /><col /><col /></colgroup>
+                      <thead><tr><th scope="col">Team</th>{group.items.map(item => <th key={item.key} scope="col">{item.label}</th>)}</tr></thead>
+                      <tbody>{[{ key: "a", code: codeA }, { key: "b", code: codeB }].map(side =>
+                        <tr key={side.key}>
+                          <th scope="row"><span className="tc-history-total-team"><TeamLogo team={side.code} size={16} /><span>{side.code}</span></span></th>
+                          {group.items.map(item => {
+                            const value = side.key === "a" ? item.a : item.b;
+                            const lead = item.a.num != null && item.b.num != null && item.a.num !== item.b.num
+                              ? (item.lowBetter ? item.a.num < item.b.num : item.a.num > item.b.num) ? "a" : "b" : null;
+                            return <td key={item.key} aria-label={`${side.code} ${item.label}: ${value.text}${value.percentage ? ` ${value.percentage}` : ""}`}>
+                              <span className="tc-history-total-value" data-leading={lead === side.key || undefined}>{value.text}{value.percentage && <span>{value.percentage}</span>}</span>
+                            </td>;
+                          })}
+                        </tr>)}
+                      </tbody>
+                    </table>)}
                 </div>
                 <div className="tc-history-boxes">
                   {renderPlayerBox(shownA, a, "a")}

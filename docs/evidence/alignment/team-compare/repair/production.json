@@ -1,0 +1,83 @@
+{
+  "base": "http://localhost:3180",
+  "viewports": [
+    {
+      "width": 1440,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "maximumColumnOffset": 0,
+      "overflowing": [],
+      "teamLabels": [
+        "OKC",
+        "BOS",
+        "OKC",
+        "BOS"
+      ],
+      "gameWidths": [
+        447,
+        447
+      ],
+      "fullBoxRows": [
+        11,
+        9
+      ],
+      "topRows": [
+        5,
+        5
+      ],
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "clientWidth": 1024,
+      "scrollWidth": 1024,
+      "maximumColumnOffset": 0,
+      "overflowing": [],
+      "teamLabels": [
+        "OKC",
+        "BOS",
+        "OKC",
+        "BOS"
+      ],
+      "gameWidths": [
+        447,
+        447
+      ],
+      "fullBoxRows": [
+        11,
+        9
+      ],
+      "topRows": [
+        5,
+        5
+      ],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "maximumColumnOffset": 0,
+      "overflowing": [],
+      "teamLabels": [
+        "OKC",
+        "BOS",
+        "OKC",
+        "BOS"
+      ],
+      "gameWidths": [
+        332,
+        332
+      ],
+      "fullBoxRows": [
+        11,
+        9
+      ],
+      "topRows": [
+        5,
+        5
+      ],
+      "errors": []
+    }
+  ]
+}

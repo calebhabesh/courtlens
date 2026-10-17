@@ -1233,9 +1233,18 @@ Follow-up instructions (owner, 2026-10-17):
 16. [x] Include the year on game dates, which currently show only month and day. — full dates
     on scoreboard rows and cross-season recent-game tables.
 17. [x] Center FG, 3P and FT labels between their paired values. — equal-width value columns
-    and shared grid rows; horizontal error ≤0.008px and vertical error ≤0.5px across all six totals.
-18. [x] Explicitly identify which team each game total belongs to. — every tile labels both
-    values with a team logo and abbreviation, plus accessible team/stat/value labels.
+    initially centered paired tiles. Instruction 19 replaces those tiles with centered table columns.
+18. [x] Explicitly identify which team each game total belongs to. — team-logo/abbreviation row
+    headers and accessible team/stat/value cells. Instruction 19 removes repeated per-tile labels.
+19. [x] Repair the jumbled Game History on the owner's dev server and restructure the information
+    more efficiently. Replace repeated per-stat team badges with compact team totals tables,
+    give selectable games their own row, and verify the actual 3100 view as well as production.
+    — reproduced fresh markup with stale compiled CSS on 3100. Extracted the tray's styles into
+    `team-game-history.css`, registered its import in `globals.css`, and replaced six tiles with
+    shooting/counting tables. Games sit side by side on desktop and stack on phones. The rerunnable
+    `dashboard/scripts/verify-team-compare-layout.mjs` checks served grid styles, column centering,
+    overflow and game/depth selection against both 3100 and production 3180 at 1440/1024/390px.
+    Measured zero column offset, no clipping or page overflow, and no browser exceptions on either.
 
 Evidence: [docs/evidence/alignment/team-compare/README.md](evidence/alignment/team-compare/README.md)
 
