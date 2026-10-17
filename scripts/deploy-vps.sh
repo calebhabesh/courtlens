@@ -38,6 +38,7 @@ SERVING_DIRS=(
   artifacts/evaluation
   artifacts/analyses
   derived/impact-serving-v1
+  derived/impact-team-splits-v1
   derived/value-archetypes-v1/serving
   derived/wowy-v1
   cache/portraits

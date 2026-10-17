@@ -598,3 +598,28 @@ remain required. IM04 remains planned until measured completion is recorded belo
   100); `impact_rts` (Overview rTS%) and `impact_ast_per100` (possession denominator for
   offensive load, cTOV% and rim AST/100) stay. Re-measured: 2,064 Python and 460 Vitest tests
   pass; Ruff, format, mypy, dashboard lint and typecheck pass; the live API lists 0 retired keys.
+
+## Per-team extras for split seasons (2026-10-17)
+
+- Owner instruction: fill the team rows under a split season (Stats and player career tables)
+  wherever per-team data can be fitted.
+- `aggregate_by_team` in `domain/impact_extras.py` keys the committed IM05 per-game facts by
+  (player, team) and runs the unchanged `aggregate`; league references (league TS% for rTS)
+  still come from every player. `scripts/build_impact_team_splits.py` first checks that the
+  facts reproduce each sealed extras artifact (players and league) exactly, then writes a
+  separate content-addressed sidecar, `data/derived/impact-team-splits-v1/b78075aa….json`
+  (11.9 MB, 6 season-phases, built in about 5 s). No sealed artifact or serving manifest changed.
+- `impact_for_query` serves the sidecar's rows for the selected team instead of dropping extras
+  under a team filter, and binds `team_split_sha256` into the query's artifacts, so cohort and
+  cache keys change with it. A missing or altered sidecar leaves team-filtered extras unknown.
+  Ratings (RAPM, BPR, six-factor) stay full-league fits and team rows leave them blank; on/off
+  was already per team.
+- Not fillable: NBA tracking (OnBall%, PTS Created) has no free per-team source. hoopR mirrors
+  only league-wide `leaguedashptstats` files, and stats.nba.com is not admitted (it times out
+  here). DARKO is one rating per player, so DPM stays blank on team rows.
+- Measured: Harden 2025-26 rim assists split 91 (CLE) + 142 (LAC) = 233, the season value; rTS%
+  +5.7 / +1.6 against +2.9 for the season; cTOV% 10.2% / 9.7%. 2,128 Python tests pass (1
+  inherited skip, 24 deselected); Ruff, format and strict mypy pass; 565 Vitest tests pass
+  (the 4 animation errors from `header.test.tsx` predate this change); dashboard lint and
+  typecheck pass. The hosted demo needs the sidecar directory synced (added to
+  `scripts/deploy-vps.sh`, both Compose files and `deploy/pinned.env`).
