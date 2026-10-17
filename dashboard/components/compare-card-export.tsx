@@ -6,7 +6,7 @@ import { cardLabel, formatCardValue, isPercentUnit, isWholeCount, pillStrength, 
 import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
-import { honorLead, honorRows, type AccoladeRow, type SeasonHonors } from "@/lib/compare-accolades";
+import { honorMarks, honorRows, type AccoladeRow, type SeasonHonors } from "@/lib/compare-accolades";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { MetricComparisonItem, MetricDefinition } from "@/lib/types";
 import { slotTeams, teamRecord, type CompareSlotPlayer } from "./compare-player-slot";
@@ -109,9 +109,9 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
     })}
     {honors && <>
       <text x={WIDTH / 2} y={honorsTop + 10} textAnchor="middle" fontSize="10" fontWeight="600" fill="var(--color-text-secondary)">{[...new Set(honors.map(entry => entry.season))].join(" / ")} Honors</text>
-      {honorLines.map((row, index) => { const y = honorsTop + 30 + index * ROW + 14; const lead = honorLead(row.cells); const tied = !lead && row.cells.every(Boolean); return <g key={row.key}>
-        {/* The row's better result in its player's colour, as on the card (80). */}
-        {row.cells.map((cell, side) => { const leads = lead?.leaders.includes(side); return <text key={side} x={WIDTH * (side === 0 ? 0.3 : 0.7)} y={y} textAnchor="middle" fontSize="14" fontWeight={leads ? 700 : tied ? 600 : 400}
+      {honorLines.map((row, index) => { const y = honorsTop + 30 + index * ROW + 14; const { marks, tied } = honorMarks(row.key, row.cells); return <g key={row.key}>
+        {/* Wins, selections and the better vote finish in their player's colour, as on the card. */}
+        {row.cells.map((cell, side) => { const leads = Boolean(marks[side]); return <text key={side} x={WIDTH * (side === 0 ? 0.3 : 0.7)} y={y} textAnchor="middle" fontSize="14" fontWeight={leads ? 700 : tied ? 600 : 400}
           fill={leads ? toneColor(`identity-${side === 0 ? "a" : "b"}`) : cell ? "var(--color-text)" : "var(--color-text-secondary)"}>{cell?.text ?? "—"}</text>; })}
         <text x={WIDTH / 2} y={y - 1} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{row.label}</text>
       </g>; })}

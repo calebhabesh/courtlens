@@ -196,7 +196,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     return <CompareGridView columns={[column("a"), column("b")]} span={span} context={context} workbenchCatalog={workbenchCatalog} metricDefinitions={metricDefinitions} error={error} toDuel={backToDuel} />;
   }
 
-  return <div className="pvp" role="region" aria-label="Player Comparison Explorer">
+  return <div className="pvp motion-stagger" role="region" aria-label="Player Comparison Explorer">
     <PageHeader className="pvp-header" icon="swap" title="Player Comparison" subtitle={COMPARE_SUBTITLE} />
     <div className="pvp-scope">
       <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}

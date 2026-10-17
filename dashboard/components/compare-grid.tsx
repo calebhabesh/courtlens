@@ -15,7 +15,7 @@ import { bioLine, teamRecord, type CompareSelection } from "./compare-player-slo
 import { comparisonFlags } from "./charts/semantics";
 import { teamBrandColor } from "@/lib/team-colors";
 import { bestColumns, MAX_GRID_PLAYERS } from "@/lib/compare-grid";
-import { ACCOLADE_KINDS, honorLead, honorRows, playerAccolades, type PlayerAccolades, type SeasonEnds } from "@/lib/compare-accolades";
+import { ACCOLADE_KINDS, honorMarks, honorRows, playerAccolades, type PlayerAccolades, type SeasonEnds } from "@/lib/compare-accolades";
 import { availabilityShare, cardLabel, compareMetricKey, formatCardValue, isPercentUnit, isWholeCount, overallGroupStart, type CompareCountingMode } from "@/lib/comparison-metrics";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { ComparisonGroupPlayer, MetricDefinition, PlayerBio } from "@/lib/types";
@@ -207,13 +207,12 @@ export function CompareGrid({ columns, lines, controls, career, onReplace, onRem
           <GroupRow label="Season Honors" columns={columns.length} open={open} />
           {/* One row per award any player holds, each result in its player's column (76). */}
           {honors.map(row => {
-            // The row's better result takes the grid's gold best-value tint, like its stats (80).
-            const lead = honorLead(row.cells);
-            const tied = !lead && row.cells.every(Boolean);
+            // Wins, selections and the better vote finish take the grid's gold best-value tint (honorMarks).
+            const { marks, tied } = honorMarks(row.key, row.cells);
             return <tr key={row.key}>
               <th scope="row" className="pvp-label pvp-grid-label">{row.label}</th>
-              {row.cells.map((cell, index) => <td key={index} className="pvp-grid-honors" data-best={lead?.leaders.includes(index) || undefined}>
-                <HonorChip cell={cell} category={row.label} lead={lead?.leaders.includes(index) ? { strength: lead.strength } : null} tied={tied} /></td>)}
+              {row.cells.map((cell, index) => { const mark = marks[index]; return <td key={index} className="pvp-grid-honors" data-best={mark ? true : undefined}>
+                <HonorChip cell={cell} category={row.label} lead={mark ? { strength: mark } : null} tied={tied} /></td>; })}
               {open && <td aria-hidden="true" />}
             </tr>;
           })}
