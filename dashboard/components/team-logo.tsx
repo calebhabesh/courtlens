@@ -25,7 +25,13 @@ export function TeamLogo({ team, size = 24 }: { team: string; size?: number }) {
   );
 }
 
-/** Every represented team remains visible and named, independent of array order. */
+/**
+ * Every represented team remains visible and named, independent of array order.
+ *
+ * A season split between teams keeps one shape (owner rule): two logos side by side, three in a
+ * triangle, four in a 2x2 grid, each scaled down so the group fits the row a single logo fits.
+ * `size` is that single logo's size; tables may set `--stack-logo` instead.
+ */
 export function TeamLogoStack({ teams, label = "Teams represented in selected scope", decorative = false, size }: {
   teams: string[]; label?: string; decorative?: boolean; size?: number;
 }) {
@@ -33,6 +39,8 @@ export function TeamLogoStack({ teams, label = "Teams represented in selected sc
   if (represented.length === 0) return null;
   return (
     <span className="team-logo-stack" role="group" aria-hidden={decorative || undefined} tabIndex={decorative ? undefined : 0}
+      data-count={represented.length > 4 ? "many" : represented.length}
+      style={size ? { "--stack-logo": `${size}px` } as React.CSSProperties : undefined}
       aria-label={`${label}: ${represented.join(", ")}`} title={`${label}: ${represented.join(", ")}`}>
       {represented.map((team) => <TeamLogo key={team} team={team} size={size} />)}
     </span>

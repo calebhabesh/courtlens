@@ -91,3 +91,6 @@ export function controlClasses({ size, variant, tone = "default", square = false
  * (about 1 unit) and move 4; see select.tsx.
  */
 export const trailingChevronClasses = "kit:-me-[calc(var(--ui-icon-size)*3/24)]";
+/** A disclosure toggle's glyph turns half a turn when open (DL Accordion / expanding row). */
+export const disclosureIconClasses = "kit:transition-[rotate] kit:duration-(--dur-fast) kit:ease-out kit:motion-reduce:duration-(--dur-instant)";
+export const disclosureOpenClasses = "kit:rotate-180";

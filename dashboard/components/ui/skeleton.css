@@ -1,13 +1,22 @@
 @layer components {
 /* Skeleton */
+/* The shimmer is a highlight sliding across on transform alone, so it composites instead of
+   repainting every skeleton each frame (DL Loading: 1.2 s linear). */
 .ui-skeleton {
+  position: relative;
+  overflow: hidden;
   width: var(--skeleton-width, 100%);
   height: var(--skeleton-height, var(--space-4));
-  background: linear-gradient(90deg, var(--color-surface-2) 25%, var(--color-surface-3) 50%, var(--color-surface-2) 75%);
   background-color: var(--color-surface-2);
-  background-size: 200% 100%;
-  animation: shimmer calc(var(--dur-slow) * 4) linear infinite;
   border-radius: var(--radius-sm);
+}
+.ui-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-surface-3) 80%, transparent), transparent);
+  transform: translateX(-100%);
+  animation: skeletonSweep calc(var(--dur-slow) * 4) linear infinite;
 }
 
 .ui-skeleton-text {
