@@ -847,6 +847,10 @@ Operational instructions (owner, 2026-10-14):
 Evidence: docs/evidence/alignment/players/ ([README](evidence/alignment/players/README.md)).
 
 ### 3 PvP — 🔄 in progress
+
+Owner completion decision (2026-10-17): "I think we are done the player comparison page and
+will start on the next page." The next page in the ordered queue is Teams (`/teams`).
+
 Instructions (owner, 2026-10-15; concept board https://claude.ai/artifact/RE9bkpgam6NNnoVoEEvGcc,
 owner chose the recommendation and delegated the three open decisions):
 1. [x] Revamp /compare into a Databallr-style dual player card: one centered card holding square
