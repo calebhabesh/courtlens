@@ -13,3 +13,45 @@ Alignment row 15. `/team-compare` is a single centered 920px comparison card pai
 - Desktop with `Game History` open (`1440×900`): [team-compare-game-history-1440.png](team-compare-game-history-1440.png)
 - Phone (`390×844`): [team-compare-390.png](team-compare-390.png)
 - Measured layout and typography verification: [verification.json](verification.json)
+
+## Follow-up polish, 2026-10-17
+
+Game History rows now include calendar years and select the box score directly with a kit button.
+The separate game selector is removed. Each totals tile identifies both teams with their logo and
+abbreviation. Equal-width columns and shared grid rows center the metric between the values.
+
+Free-throw emphasis uses each team's own totals. Missing, blank and invalid fields produce "—"
+for the affected aggregate. Known zeroes remain zero, and known 0/0 shooting displays `0-0` without
+an undefined percentage. Team Stats shows FTR to three decimal places and gives pace no leading-side
+emphasis. Mobile rotation rows measure 84px, previously 116px, while the default matchup's full
+player names remain visible.
+
+- [Desktop Game History detail](team-compare-history-detail-1440.png)
+- [Phone Game History detail](team-compare-history-detail-390.png)
+- [Phone Team Stats](team-compare-stats-390.png)
+- [Final live measurements and interaction results](polish-verification.json)
+
+The live production sandbox at 3180 used a read-only proxy at 4180 to the owner's API. Both
+1440px and 390px captures have no page overflow. All six metric labels are within 0.008px of the
+horizontal midpoint of their paired values and within 0.5px vertically. Live keyboard selection
+loads G2's box score, Full Box shows 11/9 rows, and switching back to G1 correctly emphasizes
+Boston's 19/20 FT (95%) over OKC's 13/17 (76%). No browser exceptions occurred. The glance test
+confirms that the selected game, both teams and each value's team attribution are visible in the
+tray at both widths.
+
+Verification:
+
+- [Production build](polish-build.log), [ESLint/Stylelint](polish-lint.log) and
+  [TypeScript](polish-typecheck.log) pass.
+- [Playwright](polish-playwright.log): eight tests pass, including unknown versus zero,
+  missing/invalid totals, FT emphasis, team labels, date and metric centering, mobile density,
+  scope persistence and four visual baselines. The phone rotation baseline was updated for
+  the approved density change.
+- [Vitest](polish-vitest.log): all 568 tests pass, but the command exits with four unhandled
+  `AbortError: The animation was canceled` rejections in `components/ui/header.test.tsx`.
+  [The header test run alone](polish-vitest-header.log) reproduces all four rejections.
+  The header component and its tests are unchanged by this work.
+
+The original [verification.json](verification.json) records the first integration. The follow-up's
+current measurements are in [polish-verification.json](polish-verification.json). Row 15 remains
+ready for owner review.
