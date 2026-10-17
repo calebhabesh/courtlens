@@ -37,32 +37,28 @@ for (const width of [1440, 390]) {
     expect(dateOffset).toBeLessThan(1);
     await game.focus();
     await page.keyboard.press("Enter");
-    const ft = page.getByRole("group", { name: "FT team totals", exact: true });
-    await expect(ft.locator('[data-side="a"]')).toHaveAttribute("aria-label", "TOR FT: 13-17 (76%)");
-    await expect(ft.locator('[data-side="b"]')).toHaveAttribute("aria-label", "BOS FT: 19-20 (95%)");
-    await expect(ft.locator("[data-leading]")).toHaveText("19-20(95%)");
-    const zero = page.getByRole("group", { name: "3P team totals", exact: true });
-    await expect(zero.locator(".tc-history-total-value")).toHaveText(["0-0", "0-0"]);
-    for (const label of ["FG", "3P", "FT", "REB", "AST", "TOV"]) {
-      const tile = page.getByRole("group", { name: `${label} team totals`, exact: true });
-      await expect(tile.locator(".tc-history-total-team")).toHaveText(["TOR", "BOS"]);
-      const centers = await tile.evaluate(element => {
-        const textCenter = (node: Element) => {
+    await expect(page.locator(".tc-history-scores")).toHaveCSS("display", "grid");
+    await expect(game.locator(".tc-history-score-layout")).toHaveCSS("display", "grid");
+    await expect(page.getByRole("cell", { name: "TOR FT: 13-17 (76%)", exact: true }).locator("[data-leading]")).toHaveCount(0);
+    await expect(page.getByRole("cell", { name: "BOS FT: 19-20 (95%)", exact: true }).locator("[data-leading]")).toHaveText("19-20(95%)");
+    await expect(page.getByRole("cell", { name: "TOR 3P: 0-0", exact: true })).toHaveText("0-0");
+    await expect(page.getByRole("cell", { name: "BOS 3P: 0-0", exact: true })).toHaveText("0-0");
+    const totals = page.getByRole("group", { name: "Selected game team totals", exact: true });
+    await expect(totals.locator(".tc-history-total-team")).toHaveText(["TOR", "BOS", "TOR", "BOS"]);
+    for (const table of await totals.getByRole("table").all()) {
+      const offsets = await table.evaluate(element => {
+        const center = (node: Element) => {
           const range = document.createRange();
           range.selectNodeContents(node);
           const rect = range.getBoundingClientRect();
-          return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+          return rect.x + rect.width / 2;
         };
-        const [a, b] = element.querySelectorAll(".tc-history-total-value");
-        const label = element.querySelector("small");
-        if (!a || !b || !label) throw new Error("Missing game total cells");
-        const rect = element.getBoundingClientRect();
-        const centerA = textCenter(a), centerB = textCenter(b);
-        return { metric: textCenter(label), pair: { x: (centerA.x + centerB.x) / 2, y: (centerA.y + centerB.y) / 2 }, tile: rect.x + rect.width / 2 };
+        const headers = [...element.querySelectorAll("thead th")].slice(1);
+        return [...element.querySelectorAll("tbody tr")].flatMap(row =>
+          [...row.querySelectorAll(".tc-history-total-value")].map((value, index) => Math.abs(center(headers[index]) - center(value))));
       });
-      expect(Math.abs(centers.metric.x - centers.pair.x)).toBeLessThan(1);
-      expect(Math.abs(centers.metric.y - centers.pair.y)).toBeLessThan(1);
-      expect(Math.abs(centers.metric.x - centers.tile)).toBeLessThan(1);
+      expect(offsets).toHaveLength(6);
+      for (const offset of offsets) expect(offset).toBeLessThan(1);
     }
     const pageWidth = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(pageWidth.scroll).toBe(pageWidth.client);
@@ -81,10 +77,13 @@ test("team game totals preserve missing fields and known zeroes independently", 
   };
   await page.route("**/api/live/historical?*", route => route.fulfill({ json: slate }));
   await openWorkbench(page, scope);
-  const reb = page.getByRole("group", { name: "REB team totals", exact: true });
-  await expect(reb.locator(".tc-history-total-value")).toHaveText(["0", "—"]);
-  await expect(reb.locator("[data-leading]")).toHaveCount(0);
-  await expect(page.getByRole("group", { name: "FG team totals", exact: true }).locator(".tc-history-total-value")).toHaveText(["5-10(50%)", "—"]);
-  await expect(page.getByRole("group", { name: "FT team totals", exact: true }).locator(".tc-history-total-value")).toHaveText(["0-0", "—"]);
-  await expect(page.getByRole("group", { name: "AST team totals", exact: true }).locator(".tc-history-total-value")).toHaveText(["0", "0"]);
+  await expect(page.getByRole("cell", { name: "TOR REB: 0", exact: true })).toHaveText("0");
+  await expect(page.getByRole("cell", { name: "BOS REB: —", exact: true })).toHaveText("—");
+  await expect(page.getByRole("cell", { name: "BOS REB: —", exact: true }).locator("[data-leading]")).toHaveCount(0);
+  await expect(page.getByRole("cell", { name: "TOR FG: 5-10 (50%)", exact: true })).toHaveText("5-10(50%)");
+  await expect(page.getByRole("cell", { name: "BOS FG: —", exact: true })).toHaveText("—");
+  await expect(page.getByRole("cell", { name: "TOR FT: 0-0", exact: true })).toHaveText("0-0");
+  await expect(page.getByRole("cell", { name: "BOS FT: —", exact: true })).toHaveText("—");
+  await expect(page.getByRole("cell", { name: "TOR AST: 0", exact: true })).toHaveText("0");
+  await expect(page.getByRole("cell", { name: "BOS AST: 0", exact: true })).toHaveText("0");
 });
