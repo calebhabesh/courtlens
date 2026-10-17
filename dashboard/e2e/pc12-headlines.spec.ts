@@ -7,7 +7,6 @@ for (const width of [1440, 390]) {
   for (const [name, path, chart] of [
     ["Teams", "/teams", ".pc12-headline .chart-ranked"],
     ["Team profile", "/teams/100", ".pc12-headline .chart-pairs"],
-    ["Team Compare", "/team-compare", ".pc12-headline .chart-pairs"],
     ["Forecasts", "/forecasts", ".pc12-headline .chart-pairs"],
     ["Shooting", "/research/shooting", ".pc12-headline .chart-reliability"],
     ["RAPM", "/research/rapm", ".pc12-headline .chart-ranked"],

@@ -220,15 +220,22 @@ for(const width of [1440,390]) test(`player search shows full names in wider vie
 
 test("team comparison preserves unknown versus zero, unknown outcomes and scope across tabs",async({page})=>{
   await openWorkbench(page,"/team-compare?teamA=100&teamB=200&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
+  await expect(page.locator(".tc-draft-team h2")).toHaveText(["Toronto Raptors","Boston Celtics"]);
+  await expect(page.locator(".tc-draft-series-num")).toHaveText(["0","0"]);
+  await page.getByRole("radio",{name:"Team Stats",exact:true}).click();
+  await expect(page).toHaveURL(/view=stats/);
   const points=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Points Per Game",exact:true})});
-  await expect(points.getByRole("cell").nth(1)).toHaveText("—");
-  const fg=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Field Goal %",exact:true})});await expect(fg.getByRole("cell").nth(1)).toContainText("0.0%");
-  await expect(page.getByRole("cell",{name:"Unknown",exact:true})).toBeVisible();await expect(page.getByText("Team B win",{exact:true})).toHaveCount(0);
-  await page.getByRole("radio",{name:"Four Factors",exact:true}).focus();await page.keyboard.press("Space");
-  await expect(page).toHaveURL(/tab=factors/);await expect(page.getByText("74%ile",{exact:true})).toHaveCount(2);
-  const defense=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Opponent eFG%",exact:true})});
-  await expect(defense.getByRole("cell").nth(1)).toContainText("88%ile");
-  await page.reload();await expect(page.getByRole("radio",{name:"Four Factors",exact:true})).toHaveAttribute("aria-checked","true");
+  await expect(points.locator("td").first()).toHaveText("115.4");
+  await expect(points.locator("td").last()).toHaveText("—");
+  await page.getByRole("button",{name:"Edit Metrics",exact:true}).click();
+  await page.getByRole("dialog",{name:"Edit Metrics"}).locator("label",{hasText:"Field Goal %"}).click();
+  await page.keyboard.press("Escape");
+  const fg=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Field Goal %",exact:true})});
+  await expect(fg.locator("td").last()).toHaveText("0.0%");
+  await page.getByRole("button",{name:"Game History",exact:true}).click();
+  await expect(page.locator(".tc-history-scores")).toContainText("Unknown");
+  await expect(page.getByText("Team B win",{exact:true})).toHaveCount(0);
+  await page.reload();await expect(page.getByRole("radio",{name:"Team Stats",exact:true})).toHaveAttribute("aria-checked","true");
   expect(new URL(page.url()).searchParams.get("beforeDate")).toBe("2026-04-13");
 });
 

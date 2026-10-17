@@ -626,3 +626,8 @@ pass/fail per item in the block evidence.
   sufficient.
 - **`/design`:** a living style guide route, hidden from nav, showing every token, component and
   motion pattern. Agents use it to verify changes.
+
+
+## Team Comparison owner exception (2026-10-17)
+
+The owner requested team-brand gradients around the team logo panels and a team-tone fill on the side with the higher displayed player or team metric on `/team-compare`, following the provided Databallr references. This explicitly permits team color for per-row comparison shading on `/team-compare`. A tie or missing value stays unshaded; no team winner, total lead count or outcome probability. Actual metric values and source disclosures remain visible. All mechanics (tokens, CSS custom properties, control kit, reduced motion) remain enforced.

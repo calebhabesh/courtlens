@@ -27,7 +27,7 @@ Rows are in working order.
 | 12 | Roster Shapes | `/roster-shapes` | ⬜ | |
 | 13 | Stat Line Shift | `/stat-line-shift` | ⬜ | |
 | 14 | Contracts + Free Agency | `/contracts` | ⬜ | |
-| 15 | Team Compare | `/team-compare` | ⬜ | |
+| 15 | Team Compare | `/team-compare` | 👀 ready for review | Paired rotations, verified starting five, team stats, series score, Game History tray |
 | 16 | Matchup Matrix | `/matchups` | ⬜ | |
 | 17 | Shot Profile Twin | `/similar-players` | ⬜ | Partial overlap |
 | 18 | Six Factor RAPM | `/research` | ⬜ | |
@@ -1163,3 +1163,61 @@ Follow-up instructions (owner, 2026-10-16, honors layout):
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
+
+### 15 Team Compare — 👀 ready for review
+
+Owner queue override (2026-10-17): Team Comparison, Player Matchups, then Teams; prototype approved
+for integration into `databallr-alignment` on 2026-10-17.
+
+Instructions (owner, 2026-10-17):
+1. [x] Build a Databallr-style Team Comparison card using the existing shell, typography, colors and
+   controls, referencing Player Comparison and Databallr. — single centered 920px card
+   (`dashboard/app/team-compare/team-comparison-prototype.tsx` + `.css`) with paired player
+   rotations (`Rotations`) and team statistics (`Team Stats`), Regular Season / Playoffs toggle,
+   per-team season selectors, and swap button.
+2. [x] Team-colored gradients/accents on both team sides; larger logos borrowing Player Comparison's
+   identity treatment; remove team-picker edge highlights; taller Databallr-like rows; shade the
+   higher-value side of each pair; distinguish starters and bench. — 176×176 (112×112 on phone)
+   team-tinted logo panels with in-place franchise picker triggers (`TeamGrid edgeHighlights={false}`),
+   64px rotation rows, and team-toned leading cells.
+3. [x] Use reliable observed starter evidence rather than model-weighted estimates ("Josh Minott in
+   Estimated Starters is not a credible starter selection; investigate reliable start evidence and
+   Databallr's method"). — Databallr optimizes model values plus position fit (`docs/research/courtlens-observed-starters.md`).
+   CourtLens uses a release-bound read-only snapshot of actual most-used five-man starting units
+   from admitted raw NBA box-score `position` fields (`starter-evidence.bf09e1d964030a116b25996df57e53b051f5f45500e0343781a9d7784bc3d563.json`),
+   grouping `By Position` into **Most-used Starting Five** and **Bench & Alternate Starters** with
+   verified start counts (`GS`) and coverage disclosure.
+4. [x] Give each player metric value larger text aligned to its team's outer row edge inside the
+   shaded area, borrowing Player Comparison's heavier/lighter numeric hierarchy; then step the
+   number font size down one token step ("The number font size is a little too large"). — outer-edge
+   rating values sit at `20px` (`--text-xl`) on desktop and `16px` (`--text-lg`) on phones, `600`
+   weight on the leading side and `400` on the trailing side.
+5. [x] Add an "Edit Metrics" button to compare on applicable metrics similar to Player Comparison. —
+   `Edit Metrics` button in the scope console opens a searchable drawer with a `Rotation Metrics` /
+   `Team Stats` switch, grouped abbreviation + term checkboxes (20 rotation metrics, 25 team metrics),
+   and Reset.
+6. [x] Remove irrelevant info under the team comparison container ("through...", "copy link",
+   "DARKO snapshots...") and remove the line divider above the team comparison container so there is
+   clean padding between the comparison container and button console above. — removed footer
+   provenance/notes below `.tc-draft-card` (provenance stays in `Data details`) and removed the
+   bottom hairline on `.tc-draft-console .ui-filter-bar` in `foundation.css`.
+7. [x] Show the in-season (and playoff) series record above `vs`, simplified to large win numbers
+   with a hyphen center-aligned above `vs` and each team's series win number center-aligned between
+   its logo container and the center hyphen. — `32px` desktop / `24px` phone win counts centered on
+   each midpoint (`±0.01px` measured against the exact midpoint between `.tc-draft-team-art` and
+   `.tc-draft-series-sep`).
+8. [x] Remove the caption text under "Most-used Starting Five" (`Actual unit starts: ...`) and the
+   redundant team year/logo headers above the rotation rows, keeping `{metric} / Role` (or `Rank`)
+   above "Most-used Starting Five".
+9. [x] Use full team names with the city included (`Oklahoma City Thunder`, `Boston Celtics`, etc.)
+   instead of nickname-only headings. — centered single-line headings on desktop and balanced
+   wrapping with aligned selector rows on phones.
+10. [x] Add a docked `Game History` tray beneath the comparison card (like Player Comparison's
+    `Trend lines` tray) to view how the season's games went between the two teams. — expandable tray
+    docked under `.tc-draft-card` with head-to-head game scoreboard rows (`G1`, `G2`, … with date,
+    venue, scores, and winning margin badge), a 6-pill game team totals strip (`FG`, `3P`, `FT`,
+    `REB`, `AST`, `TOV`), and side-by-side compact player box-score tables (`Top 5` / `Full Box`)
+    from `/api/live/historical`.
+
+Evidence: [docs/evidence/alignment/team-compare/README.md](evidence/alignment/team-compare/README.md)
+
