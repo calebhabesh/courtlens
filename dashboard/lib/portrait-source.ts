@@ -5,6 +5,11 @@ export const PORTRAIT_WIDTHS = [64, 96, 128, 192, 288] as const;
 export type PortraitWidth = (typeof PORTRAIT_WIDTHS)[number];
 
 const PLAYER_PORTRAIT_PATH = /^\/api\/workbench\/players\/[^/]+\/portrait$/;
+/**
+ * Mirrors `PORTRAIT_CROP_VERSION` in the API. Derivatives are cached by browsers for a day, so a
+ * new crop needs a new URL; the API ignores the parameter. Change both together.
+ */
+export const PORTRAIT_CROP_VERSION = "face-v2";
 
 function absolute(path: string): string {
   return path.startsWith("/") ? `${browserApi.replace(/\/$/, "")}${path}` : path;
@@ -28,7 +33,8 @@ export function portraitSource(portraitUrl: string | null | undefined, playerId:
   const path = portraitUrl || (playerId ? `/api/workbench/players/${playerId}/portrait` : null);
   if (!path) return null;
   if (!PLAYER_PORTRAIT_PATH.test(path)) return { src: absolute(path) };
-  const extra = era?.season ? `&season=${encodeURIComponent(era.season)}${era.team ? `&team=${encodeURIComponent(era.team)}` : ""}` : "";
+  const extra = (era?.season ? `&season=${encodeURIComponent(era.season)}${era.team ? `&team=${encodeURIComponent(era.team)}` : ""}` : "")
+    + `&crop=${PORTRAIT_CROP_VERSION}`;
   return {
     src: absolute(`${path}?size=${fallbackWidth}${extra}`),
     srcSet: PORTRAIT_WIDTHS.map((width) => `${absolute(`${path}?size=${width}${extra}`)} ${width}w`).join(", ")

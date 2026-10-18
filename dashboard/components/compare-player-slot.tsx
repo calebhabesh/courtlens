@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { EntityField } from "./entity-picker";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
+import { TeamWatermark } from "./team-watermark";
 import { Icon } from "./ui/icon";
 import { ComparePlayerSeasonPicker } from "./compare-player-season-picker";
 import { formatHeight } from "./player-bio-header";
@@ -80,8 +81,7 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
     <div className="pvp-photo-frame">
       <button type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${label}, ${player.name}`} onClick={() => setSearch(state => state === "open" ? "closing" : "open")}>
         {/* The latest team's logo sits large behind the headshot, as Databallr does (33). */}
-        {/* eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, decorative */}
-        {record && <img className="pvp-watermark" src={record.asset} alt="" aria-hidden="true" />}
+        {record && <TeamWatermark asset={record.asset} />}
         <PlayerPortrait playerId={player.id} name={player.name} portraitUrl={player.portrait_url} size="xl" className="pvp-portrait"
           era={season ? { season, team: latest } : null} />
         {inactive
@@ -106,7 +106,7 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
             <TeamLogo team={team} season={season} size={16} />{teamRecord(team, season)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
           {onSeason && season && playedSeasons && <span className="pvp-season">
-            <ComparePlayerSeasonPicker label={label} season={season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} beforeDate={beforeDate} ends={ends} align={side === "a" ? "left" : "right"} onSelect={onSeason} />
+            <ComparePlayerSeasonPicker label={label} season={season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} recordedChampionships={player.championships?.all_seasons} beforeDate={beforeDate} ends={ends} align={side === "a" ? "left" : "right"} onSelect={onSeason} />
           </span>}
         </div>}
   </div>;

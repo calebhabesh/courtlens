@@ -35,6 +35,19 @@ def test_crop_frames_the_head_not_the_canvas(tmp_path: Path) -> None:
     assert 0 <= top < 20
 
 
+def test_crop_ignores_a_stray_speck_above_the_head(tmp_path: Path) -> None:
+    # Some CDN headshots carry a couple of opaque pixels in a corner; the crop must not chase them.
+    path = _headshot(tmp_path / "a.png")
+    with Image.open(path) as opened:
+        image = opened.convert("RGBA")
+    image.putpixel((88, 0), (255, 255, 255, 235))
+    image.putpixel((89, 0), (255, 255, 255, 235))
+    left, top, right, bottom = face_crop_box(image)
+    assert right - left == bottom - top == 695
+    assert (left + right) / 2 == pytest.approx(520, abs=1)
+    assert 0 <= top < 20
+
+
 def test_crop_without_transparency_uses_a_centred_square(tmp_path: Path) -> None:
     image = Image.new("RGB", (260, 190), (255, 255, 255))
     left, top, right, bottom = face_crop_box(image)
@@ -47,7 +60,7 @@ def test_derivative_is_a_square_webp_cached_on_disk(tmp_path: Path) -> None:
     content = portrait_derivative(source, "f" * 64, 96, tmp_path)
     with Image.open(io.BytesIO(content)) as image:
         assert (image.format, image.size, image.mode) == ("WEBP", (96, 96), "RGBA")
-    assert (tmp_path / "derived" / f"{'f' * 64}-face-v1-96.webp").read_bytes() == content
+    assert (tmp_path / "derived" / f"{'f' * 64}-face-v2-96.webp").read_bytes() == content
 
 
 def test_derivative_falls_back_to_memory_when_cache_is_read_only(tmp_path: Path) -> None:

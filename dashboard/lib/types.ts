@@ -1115,7 +1115,10 @@ export type MetricComparisonItem = {
 
 /** Titles from admitted playoff box scores decided before the cutoff (alignment row 3). */
 export type ComparisonChampionships = {
+  /** Titles before the comparison's cutoff. */
   seasons: string[];
+  /** Every title in the release, for the season picker's per-season marks. */
+  all_seasons?: string[];
   coverage_from: string | null;
   /** False when the career may predate the first admitted season: the count is not a total. */
   complete: boolean;

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { EntityField } from "./entity-picker";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
+import { TeamWatermark } from "./team-watermark";
 import { Icon } from "./ui/icon";
 import { IconButton } from "./ui/kit";
 import { CompareEmptySlot } from "./compare-empty-slot";
@@ -135,8 +136,7 @@ function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds, e
     style={tint ? ({ "--team-tint": tint } as CSSProperties) : undefined}>
     <div className="pvp-photo-frame">
       <button ref={photoRef} type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${player.name}`} onClick={() => setSearching(open => !open)}>
-        {/* eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, decorative */}
-        {record && <img className="pvp-watermark" src={record.asset} alt="" aria-hidden="true" />}
+        {record && <TeamWatermark asset={record.asset} />}
         <PlayerPortrait playerId={player.player_id} name={player.name} size="xl" className="pvp-portrait" era={{ season, team: latest }} />
         <span className="pvp-badge">{inactive ? "No Games" : `${shownGames.toLocaleString("en-US")} GP`}</span>
         <span className="pvp-change" aria-hidden="true"><Icon name="user-edit" size={16} /></span>
@@ -157,7 +157,7 @@ function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds, e
           {line && <span className="pvp-bio">{line}</span>}
           {column.played && <span className="pvp-season">
             <ComparePlayerSeasonPicker label={player.name} season={season} seasons={column.played} awards={column.bio?.reference?.awards}
-              championshipSeasons={player.championships?.seasons ?? []} beforeDate={column.beforeDate} ends={ends} onSelect={onSeason} />
+              championshipSeasons={player.championships?.seasons ?? []} recordedChampionships={player.championships?.all_seasons} beforeDate={column.beforeDate} ends={ends} onSelect={onSeason} />
           </span>}
         </div>}
   </div>;

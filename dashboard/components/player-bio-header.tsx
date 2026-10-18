@@ -13,6 +13,7 @@ import catalog from "@/lib/team-branding.json";
 import { teamBrandColor } from "@/lib/team-colors";
 import { readStatsReturn, STATS_RETURN_PARAM, markStatsRestore } from "@/lib/stats-return";
 import type { PlayerBio } from "@/lib/types";
+import { TeamWatermark } from "./team-watermark";
 
 /** Feet and inches with quarter-inch fractions: 79.25 → 6′7¼″. */
 export function formatHeight(inches: number | null | undefined): string | null {
@@ -139,8 +140,7 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
       </Button>}
       <div className="player-bio-main">
         <span className="player-bio-photo">
-          {/* eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, decorative */}
-          {watermark && <img className="player-bio-watermark" src={watermark} alt="" aria-hidden="true" />}
+          {watermark && <TeamWatermark asset={watermark} className="player-bio-watermark" />}
           <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size="xl" className="player-bio-portrait" />
         </span>
         <span className="player-bio-divider" aria-hidden="true" />

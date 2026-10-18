@@ -59,10 +59,13 @@
   .pvp-photo:is(:hover, :focus-visible) .pvp-add { background: var(--color-accent); color: var(--color-on-accent); }
   /* The latest team's logo, large behind the head like Databallr's cards (33, 34), at 115% of the
      tile and a little above the middle so more of it shows around the head; the portrait paints
-     above it. The player page tile and the share image match. */
+     above it. The player page tile and the share image match. A square box with `contain` centres
+     the few logos that are not square (the Rockets are tall, Vancouver wide) on the same point. */
   .pvp-watermark {
-    position: absolute; left: -7.5%; top: -11.5%; width: 115%; height: auto; opacity: 0.42;
+    position: absolute; left: -7.5%; top: -11.5%; width: 115%; height: 115%; object-fit: contain; opacity: 0.42;
     pointer-events: none; user-select: none;
+    /* Logos that lean to one side move so their weight sits behind the head (TeamWatermark). */
+    transform: translateX(calc(var(--logo-shift, 0) * 100%));
   }
   .pvp-photo .pvp-portrait { position: relative; }
   .pvp-who { display: flex; flex: 1; flex-direction: column; align-items: center; gap: var(--space-0-5); min-width: 0; }
