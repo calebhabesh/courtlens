@@ -14,10 +14,11 @@
     position: relative; display: block; width: var(--bio-photo); aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-md);
     background: radial-gradient(120% 100% at 50% 8%, var(--team-tint, var(--color-surface-3)), color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 35%, var(--color-surface-0)));
   }
-  /* The PvP watermark: the logo at 115% so more of it shows around the head. */
+  /* The PvP watermark: the logo at 115% so more of it shows around the head, in a square box so
+     non-square logos centre on the same point, shifted when its artwork leans (TeamWatermark). */
   .player-bio-watermark {
-    position: absolute; left: -7.5%; top: -11.5%; width: 115%; height: auto; opacity: 0.42;
-    pointer-events: none; user-select: none;
+    position: absolute; left: -7.5%; top: -11.5%; width: 115%; height: 115%; object-fit: contain; opacity: 0.42;
+    pointer-events: none; user-select: none; transform: translateX(calc(var(--logo-shift, 0) * 100%));
   }
   .player-bio-photo .player-bio-portrait {
     position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; border-radius: 0; background: transparent; object-position: center bottom;

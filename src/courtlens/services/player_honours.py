@@ -99,10 +99,17 @@ def season_champions(session: Session, dataset_id: str, before_date: date | None
 def championships(
     session: Session, dataset_id: str | None, before_date: date | None, player_ids: list[str]
 ) -> dict[str, dict[str, Any]]:
-    """Per player: titles won before the cutoff, and whether admitted seasons cover the career."""
+    """Per player: titles won before the cutoff, and whether admitted seasons cover the career.
+
+    ``all_seasons`` lists every title in the release, past the cutoff too. The season picker marks
+    each season with its own honours (alignment row 16, 13); counts and the card use ``seasons``.
+    """
     if dataset_id is None or not player_ids:
         return {}
-    champions = season_champions(session, dataset_id, before_date)
+    released = season_champions(session, dataset_id, None)
+    champions = (
+        released if before_date is None else season_champions(session, dataset_id, before_date)
+    )
     first_season = session.scalar(
         select(func.min(WorkbenchPlayerGame.season)).where(
             WorkbenchPlayerGame.dataset_id == dataset_id
@@ -120,7 +127,7 @@ def championships(
         ).all()
     }
     playoff_teams: dict[str, set[tuple[str, str]]] = {}
-    if champions:
+    if released:
         for player_id, season, team in session.execute(
             select(
                 WorkbenchPlayerGame.player_id,
@@ -132,7 +139,7 @@ def championships(
                 WorkbenchPlayerGame.player_id.in_(player_ids),
                 WorkbenchPlayerGame.phase == "playoffs",
                 WorkbenchPlayerGame.appearance == "appeared",
-                WorkbenchPlayerGame.season.in_(list(champions)),
+                WorkbenchPlayerGame.season.in_(list(released)),
             )
             .distinct()
         ).all():
@@ -147,6 +154,11 @@ def championships(
         debut = debuts.get(player_id)
         result[player_id] = {
             "seasons": seasons,
+            "all_seasons": sorted(
+                season
+                for season, team in playoff_teams.get(player_id, set())
+                if released.get(season) == team
+            ),
             "coverage_from": first_season,
             "complete": debut is not None and first_season is not None and debut > first_season,
         }

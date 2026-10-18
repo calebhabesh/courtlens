@@ -30,3 +30,14 @@ it("leaves missing sources unmarked and returns focus on Escape", () => {
   expect(trigger.getAttribute("aria-expanded")).toBe("false");
   expect(document.activeElement).toBe(trigger);
 });
+
+it("keeps later seasons' honours when an early season is compared", () => {
+  // Shai's rookie year: the cutoff ends 2018-19, yet the menu still marks his later seasons.
+  render(<ComparePlayerSeasonPicker {...props} season="2022-23" beforeDate="2023-04-10"
+    championshipSeasons={[]} recordedChampionships={["2023-24"]} />);
+  fireEvent.click(screen.getByRole("button", { name: "Player A season, 2022-23, All-Star" }));
+  expect(screen.getByRole("menuitem", { name: "2024-25 MVP winner, All-Star" })).toBeTruthy();
+  expect(screen.getByRole("menuitem", { name: "2023-24 MVP winner, NBA champion, All-Star" })).toBeTruthy();
+  // The compared season itself stays dated: its All-Star was announced before the cutoff.
+  expect(screen.getByRole("menuitem", { name: "2022-23 All-Star, selected" })).toBeTruthy();
+});

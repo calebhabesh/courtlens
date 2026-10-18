@@ -97,7 +97,9 @@ def test_titles_go_to_players_who_appeared_for_the_champion(session: Session) ->
     assert titles["lbj"]["seasons"] == []
     # The first admitted season could hide earlier titles for a player who debuted in it.
     assert titles["lbj"]["complete"] is False
-    assert championships(session, "d", date(2017, 6, 10), ["kd"])["kd"]["seasons"] == []
+    # Before the clinching game the title does not count, but the season picker still sees it.
+    early = championships(session, "d", date(2017, 6, 10), ["kd"])["kd"]
+    assert early["seasons"] == [] and early["all_seasons"] == ["2016-17"]
 
 
 def test_traded_player_teams_end_with_the_latest(session: Session) -> None:
