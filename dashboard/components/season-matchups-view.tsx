@@ -10,14 +10,15 @@ import { PlayerPortrait } from "./player-portrait";
 import { CompareEmptySlot } from "./compare-empty-slot";
 import { teamRecord } from "./compare-player-slot";
 import { TeamLogo } from "./team-logo";
+import { TeamWatermark } from "./team-watermark";
 import { BrandMark } from "./brand";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { SortHeader } from "./table-ui";
-import { ExampleNote, FeedDetails, FeedFailure, FeedScopeFields, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
+import { FeedDetails, FeedFailure, FeedScopeFields, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { FilterBar } from "./ui/filter-bar";
 import { Icon } from "./ui/icon";
 import { PageHeader } from "./ui/panel";
-import { Button, IconButton, Segmented } from "./ui/kit";
+import { Button, IconButton, Segmented, Select } from "./ui/kit";
 import { teamBrandColor } from "@/lib/team-colors";
 import { fmt, getSeasonMatchups, pct, type FeedPhase, type MatchupDetail, type MatchupPair, type MatchupRow } from "@/lib/stats-feeds";
 
@@ -28,42 +29,39 @@ type Column = { key: string; label: string; title: string; value: (row: MatchupR
 const made = (m: number | null | undefined, a: number | null | undefined) => m == null || a == null ? "—" : `${fmt(m, 0)}/${fmt(a, 0)}`;
 const GROUPS: { label: string; columns: Column[] }[] = [
   { label: "Exposure", columns: [
-    { key: "games", label: "GP", title: "Games with this matchup", value: r => r.games, text: r => fmt(r.games, 0) },
-    { key: "matchup_minutes", label: "MIN", title: "Matchup minutes", value: r => r.matchup_minutes, text: r => fmt(r.matchup_minutes) },
-    { key: "partial_possessions", label: "POSS", title: "Partial possessions: each matchup weighted by time together", value: r => r.partial_possessions, text: r => fmt(r.partial_possessions) },
+    { key: "games", label: "GP", title: "Games in which the two were matched up", value: r => r.games, text: r => fmt(r.games, 0) },
+    { key: "matchup_minutes", label: "MIN", title: "Minutes the defender spent guarding the offensive player", value: r => r.matchup_minutes, text: r => fmt(r.matchup_minutes) },
+    { key: "partial_possessions", label: "POSS", title: "Possessions, each weighted by the share of it the two were matched up", value: r => r.partial_possessions, text: r => fmt(r.partial_possessions) },
   ] },
   { label: "Scoring", columns: [
-    { key: "player_points", label: "PTS", title: "Points scored in the matchup", value: r => r.player_points, text: r => fmt(r.player_points, 0) },
-    { key: "points_per_100", label: "PTS/100", title: "Points per 100 partial possessions", value: r => r.points_per_100, text: r => fmt(r.points_per_100) },
+    { key: "player_points", label: "PTS", title: "Points the offensive player scored while guarded by the defender", value: r => r.player_points, text: r => fmt(r.player_points, 0) },
+    { key: "points_per_100", label: "PTS/100", title: "The offensive player's points per 100 matchup possessions", value: r => r.points_per_100, text: r => fmt(r.points_per_100) },
   ] },
   { label: "Shooting", columns: [
-    { key: "fga", label: "FG", title: "Field goals made / attempted", value: r => r.fga, text: r => made(r.fgm, r.fga) },
-    { key: "fg_pct", label: "FG%", title: "Field goal percentage", value: r => r.fg_pct, text: r => pct(r.fg_pct) },
-    { key: "fg3a", label: "3P", title: "Threes made / attempted", value: r => r.fg3a, text: r => made(r.fg3m, r.fg3a) },
-    { key: "fta", label: "FT", title: "Free throws made / attempted", value: r => r.fta ?? null, text: r => made(r.ftm, r.fta) },
+    { key: "fga", label: "FG", title: "The offensive player's field goals made / attempted", value: r => r.fga, text: r => made(r.fgm, r.fga) },
+    { key: "fg_pct", label: "FG%", title: "The offensive player's field goal percentage", value: r => r.fg_pct, text: r => pct(r.fg_pct) },
+    { key: "fg3a", label: "3P", title: "The offensive player's threes made / attempted", value: r => r.fg3a, text: r => made(r.fg3m, r.fg3a) },
+    { key: "fta", label: "FT", title: "The offensive player's free throws made / attempted", value: r => r.fta ?? null, text: r => made(r.ftm, r.fta) },
   ] },
   { label: "Playmaking", columns: [
-    { key: "assists", label: "AST", title: "Assists in the matchup", value: r => r.assists, text: r => fmt(r.assists, 0) },
-    { key: "turnovers", label: "TOV", title: "Turnovers in the matchup", value: r => r.turnovers, text: r => fmt(r.turnovers, 0) },
+    { key: "assists", label: "AST", title: "The offensive player's assists in the matchup", value: r => r.assists, text: r => fmt(r.assists, 0) },
+    { key: "turnovers", label: "TOV", title: "The offensive player's turnovers in the matchup", value: r => r.turnovers, text: r => fmt(r.turnovers, 0) },
   ] },
 ];
 const COLUMNS = GROUPS.flatMap(group => group.columns);
+/** Possession floors for ranking by rate; a handful of possessions makes PTS/100 noise. */
+const FLOORS = [0, 10, 25, 50, 100] as const;
+const RATE_FLOOR = 25;
+type Ranking = "matched" | "best" | "worst";
+
+/** Case- and accent-insensitive, so "doncic" finds Dončić. */
+const fold = (text: string) => text.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
 const GROUP_STARTS = new Set(GROUPS.slice(1).map(group => group.columns[0].key));
 
-/** Pair rows: the same measures, read as "with the ball against the other player". */
-const PAIR_ROWS: { label: string; title: string; value: (row: MatchupRow) => number | null; text: (row: MatchupRow) => string; compare?: boolean }[] = [
-  { label: "GP", title: "Games with this matchup", value: r => r.games, text: r => fmt(r.games, 0) },
-  { label: "MIN", title: "Matchup minutes", value: r => r.matchup_minutes, text: r => fmt(r.matchup_minutes) },
-  { label: "POSS", title: "Partial possessions", value: r => r.partial_possessions, text: r => fmt(r.partial_possessions) },
-  { label: "PTS", title: "Points scored", value: r => r.player_points, text: r => fmt(r.player_points, 0) },
-  { label: "PTS/100", title: "Points per 100 partial possessions", value: r => r.points_per_100, text: r => fmt(r.points_per_100), compare: true },
-  { label: "FG", title: "Field goals made / attempted", value: r => r.fga, text: r => made(r.fgm, r.fga) },
-  { label: "FG%", title: "Field goal percentage", value: r => r.fg_pct, text: r => pct(r.fg_pct), compare: true },
-  { label: "3P", title: "Threes made / attempted", value: r => r.fg3a, text: r => made(r.fg3m, r.fg3a) },
-  { label: "FT", title: "Free throws made / attempted", value: r => r.fta ?? null, text: r => made(r.ftm, r.fta) },
-  { label: "AST", title: "Assists", value: r => r.assists, text: r => fmt(r.assists, 0) },
-  { label: "TOV", title: "Turnovers", value: r => r.turnovers, text: r => fmt(r.turnovers, 0) },
-];
+/** Pair rows: the table's measures, one column per direction. */
+type PairRow = Omit<Column, "key"> & { compare: boolean };
+const PAIR_ROWS: PairRow[] = COLUMNS.map(({ label, title, value, text }) =>
+  ({ label, title, value, text, compare: label === "PTS/100" || label === "FG%" }));
 
 /**
  * Player Matchups (alignment row 16): Player Comparison's card. The player's slot, an optional
@@ -91,8 +89,24 @@ export function SeasonMatchupsView() {
       return (sortDir === "asc" ? vx - vy : vy - vx) || x.player_name.localeCompare(y.player_name);
     });
   }, [detail, sortKey, sortDir]);
-  const sort = (key: string) => set({ sort: key === "partial_possessions" ? null : key, dir: key === sortKey && sortDir === "desc" ? "asc" : null });
+  // The name search filters locally, like the Stats table's; a new player or side starts it empty.
+  const tableKey = `${detail?.player_id}-${side}`;
+  const [search, setSearch] = useState({ key: tableKey, text: "" });
+  const searchText = search.key === tableKey ? search.text : "";
+  const needle = fold(searchText.trim());
   const guardedBy = side === "offense";
+  // Best and worst rank by PTS/100: the player's offense (Guarded By) is best where they scored
+  // most, their defense (Guarding) where opponents scored least. The presets only set the sort,
+  // so a header click and a preset never disagree. A rate sort applies a possession floor.
+  const bestDir = guardedBy ? "desc" : "asc";
+  const ranking: Ranking | "" = sortKey === "partial_possessions" && sortDir === "desc" ? "matched"
+    : sortKey === "points_per_100" ? sortDir === bestDir ? "best" : "worst" : "";
+  const floorParam = Number(get("minPoss"));
+  const floor = FLOORS.includes(floorParam as (typeof FLOORS)[number]) && get("minPoss") != null ? floorParam : sortKey === "points_per_100" ? RATE_FLOOR : 0;
+  const shown = rows.filter(row => (!needle || fold(row.player_name).includes(needle)) && (!floor || (row.partial_possessions ?? 0) >= floor));
+  const sort = (key: string) => set({ sort: key === "partial_possessions" ? null : key, dir: key === sortKey && sortDir === "desc" ? "asc" : null });
+  const rank = (value: Ranking) => value === "matched" ? set({ sort: null, dir: null })
+    : set({ sort: "points_per_100", dir: (value === "best") === (bestDir === "desc") ? null : "asc" });
 
   return <div className="pvp mu" role="region" aria-label="Player Matchups">
     <PageHeader className="pvp-header" icon="swap" title="Player Matchups" subtitle="Who guarded whom, from NBA tracking." />
@@ -111,16 +125,32 @@ export function SeasonMatchupsView() {
           <div className="pvp-pair-actions">
             <IconButton size="sm" variant="secondary" icon="swap" label="Swap players" disabled={!pair}
               onClick={() => pair && set({ playerId: pair.player_id, opponentId: detail.player_id })} />
-            {pair && <Button size="sm" variant="ghost" aria-label="Clear matchup player" onClick={() => set({ opponentId: null })}>Clear</Button>}
+            {pair && <Button size="sm" variant="ghost" aria-label="Clear matchup player" title="Clear the matchup player; the player whose matchups are listed stays" onClick={() => set({ opponentId: null })}>Clear</Button>}
           </div>
           {pair
             ? <MatchupSlot side="b" pair={pair} excludedIds={[detail.player_id]} onPick={id => set({ opponentId: id })} />
             : <CompareEmptySlot side="b" label="Add a matchup" selection={null} excludedIds={[detail.player_id]} onPick={selection => set({ opponentId: selection.id })} />}
         </div>
-        <ExampleNote name={detail.player_name} rule={data.focus_rule} />
+        {/* A player picked by rule says so (C3), centred under the slots it explains. */}
+        {data.focus_rule && <p className="mu-default">Shown by default · {data.focus_rule}</p>}
         {pair && <PairRows player={detail} pair={pair} />}
         <section className="stats-workspace mu-table" aria-label={guardedBy ? `Who guarded ${detail.player_name}` : `Who ${detail.player_name} guarded`}>
-          <h2 className="mu-table-title">{guardedBy ? `Guarded By` : `Guarding`} <span>{detail.opponents.toLocaleString("en-US")} {guardedBy ? "defenders" : "players"}</span></h2>
+          <div className="mu-table-head">
+            <h2 className="mu-table-title">{guardedBy ? `Guarded By` : `Guarding`} <span>{shown.length !== rows.length ? `${shown.length.toLocaleString("en-US")} of ` : ""}{detail.opponents.toLocaleString("en-US")} {guardedBy
+              ? `defenders · ${detail.player_name}'s offense against each one`
+              : `players · each one's offense against ${detail.player_name}`}</span></h2>
+            <div className="mu-table-tools">
+              <Segmented<Ranking | ""> size="sm" label="Rank matchups" value={ranking} onChange={value => value && rank(value)} options={[
+                { value: "matched", label: "Most Matched", title: guardedBy ? `Defenders who guarded ${detail.player_name} for the most possessions` : `Players ${detail.player_name} guarded for the most possessions` },
+                { value: "best", label: guardedBy ? "Scored Best" : "Defended Best", title: guardedBy ? `Defenders ${detail.player_name} scored the most points per 100 possessions against` : `Players who scored the fewest points per 100 possessions against ${detail.player_name}` },
+                { value: "worst", label: guardedBy ? "Scored Worst" : "Defended Worst", title: guardedBy ? `Defenders ${detail.player_name} scored the fewest points per 100 possessions against` : `Players who scored the most points per 100 possessions against ${detail.player_name}` },
+              ]} />
+              <Select size="sm" aria-label="Minimum matchup possessions" value={String(floor)}
+                onChange={event => set({ minPoss: event.target.value })}>
+                {FLOORS.map(value => <option key={value} value={value}>{value ? `${value}+ POSS` : "Any POSS"}</option>)}
+              </Select>
+            </div>
+          </div>
           <div className="stats-table-frame is-table">
             <div className="table-wrapper stats-scroll-region mu-scroll" role="region" aria-label="Matchup table scroll area" tabIndex={0}>
               <table className="data-table dense-stats-table mu-grid" aria-label={guardedBy ? `Defenders who guarded ${detail.player_name}` : `Players ${detail.player_name} guarded`}>
@@ -131,13 +161,27 @@ export function SeasonMatchupsView() {
                     {GROUPS.map((group, index) => <th key={group.label} colSpan={group.columns.length} scope="colgroup" className={`stats-group-th ${index > 0 ? "group-start" : ""}`}>{group.label}</th>)}
                   </tr>
                   <tr className="stats-header-tier-2">
-                    <th scope="col" className="pinned-col mu-name">{guardedBy ? "Defender" : "Player"}</th>
+                    <th scope="col" className="pinned-col mu-name">
+                      <div className="stats-header-search" role="search">
+                        <div className="lookup-input-wrapper">
+                          <Icon name="search" className="lookup-search-icon" />
+                          <input type="search" className="lookup-input" aria-label={guardedBy ? "Filter defenders by name" : "Filter offensive players by name"}
+                            placeholder={guardedBy ? "Search defenders…" : "Search players…"} autoComplete="off" spellCheck={false} value={searchText}
+                            onChange={event => setSearch({ key: tableKey, text: event.target.value })}
+                            onKeyDown={event => { if (event.key === "Escape" && searchText) { event.preventDefault(); setSearch({ key: tableKey, text: "" }); } }} />
+                          {searchText && <IconButton size="sm" icon="close" label="Clear name search" onClick={() => setSearch({ key: tableKey, text: "" })} />}
+                        </div>
+                      </div>
+                    </th>
                     {COLUMNS.map(column => <SortHeader key={column.key} label={column.label} metric={column.key} description={column.title}
                       active={sortKey === column.key} direction={sortDir} onSort={sort} className={`num ${GROUP_STARTS.has(column.key) ? "group-start" : ""}`} />)}
                   </tr>
                 </thead>
                 <tbody key={`${detail.player_id}-${side}`} className="pvp-fade">
-                  {rows.map(row => <tr key={row.player_id} className="mu-row" data-selected={row.player_id === pair?.player_id || undefined}
+                  {shown.length === 0 && <tr><td colSpan={COLUMNS.length + 1} className="stats-empty-cell">
+                    No {guardedBy ? "defender" : "player"} {needle ? <>matches &ldquo;{searchText.trim()}&rdquo;{floor ? ` with ${floor}+ possessions` : ""}</> : `has ${floor}+ possessions`}
+                  </td></tr>}
+                  {shown.map(row => <tr key={row.player_id} className="mu-row" data-selected={row.player_id === pair?.player_id || undefined}
                     onClick={event => { if (!(event.target as HTMLElement).closest("a, button")) set({ opponentId: row.player_id }); }}>
                     <th scope="row" className="pinned-col mu-name">
                       <span className="mu-identity">
@@ -146,13 +190,13 @@ export function SeasonMatchupsView() {
                         {row.team_tricode && <TeamLogo team={row.team_tricode} season={data.season} size={16} />}
                       </span>
                     </th>
-                    {COLUMNS.map(column => <td key={column.key} className={`num ${GROUP_STARTS.has(column.key) ? "group-start" : ""}`}>{column.text(row)}</td>)}
+                    {COLUMNS.map(column => <td key={column.key} className={`stats-metric-cell num ${GROUP_STARTS.has(column.key) ? "group-start" : ""}`}>{column.text(row)}</td>)}
                   </tr>)}
                 </tbody>
               </table>
             </div>
           </div>
-          <p className="mu-note">Partial possessions weight each matchup by time together. Choose a row to see that matchup both ways. An absent pairing is unobserved, not zero.</p>
+          <p className="mu-note">NBA tracking assigns each offensive player a primary defender, moment to moment. MIN is time matched up; POSS weights each possession by the share of it the two were matched up. Best and worst rank by PTS/100 among matchups with at least the chosen possessions (25 unless changed). Choose a row to see that matchup both ways. A missing pairing was never observed, not zero.</p>
         </section>
         <footer className="pvp-foot"><BrandMark size={22} framed={false} /><CourtLensWordmark height={18} /></footer>
       </section>
@@ -165,12 +209,12 @@ function PairRows({ player, pair }: { player: MatchupDetail; pair: MatchupPair }
   const a = pair.player_on_offense, b = pair.opponent_on_offense;
   const cell = (row: MatchupRow | null, spec: (typeof PAIR_ROWS)[number], leading: boolean) =>
     <td className="pvp-value pvp-plain" data-leading={leading || undefined}>{row ? spec.text(row) : "—"}</td>;
-  return <table className="pvp-rows mu-pair" aria-label={`${player.player_name} and ${pair.player_name}, each with the ball`}>
+  return <table className="pvp-rows mu-pair" aria-label={`${player.player_name} and ${pair.player_name}, each guarded by the other`}>
     <colgroup><col /><col className="pvp-col-label" /><col /></colgroup>
     <thead><tr>
-      <th scope="col" className="mu-pair-head">{player.player_name} with the ball</th>
+      <PairHead offense={player.player_name} defense={pair.player_name} />
       <th scope="col"><span className="sr-only">Measure</span></th>
-      <th scope="col" className="mu-pair-head">{pair.player_name} with the ball</th>
+      <PairHead offense={pair.player_name} defense={player.player_name} />
     </tr></thead>
     <tbody>
       {PAIR_ROWS.map(spec => {
@@ -183,9 +227,14 @@ function PairRows({ player, pair }: { player: MatchupDetail; pair: MatchupPair }
           {cell(b, spec, lead === "b")}
         </tr>;
       })}
-      {(!a || !b) && <tr className="pvp-pending"><td colSpan={3}>{!a && !b ? "Neither direction was observed" : `${(a ? pair.player_name : player.player_name)} was never observed with the ball against ${(a ? player.player_name : pair.player_name)}`} in this scope; unobserved, not zero.</td></tr>}
+      {(!a || !b) && <tr className="pvp-pending"><td colSpan={3}>{!a && !b ? "Neither direction was observed" : `${(a ? pair.player_name : player.player_name)} was never observed on offense against ${(a ? player.player_name : pair.player_name)}`} in this scope; unobserved, not zero.</td></tr>}
     </tbody>
   </table>;
+}
+
+/** Whose numbers a pair column holds: the offensive player's, while the other guarded them. */
+function PairHead({ offense, defense }: { offense: string; defense: string }) {
+  return <th scope="col" className="mu-pair-head"><strong>{offense} On Offense</strong><span>Guarded By {defense}</span></th>;
 }
 
 /** One side of the card in Player Comparison's slot: photo on the team's colour, then who. */
@@ -205,10 +254,9 @@ function MatchupSlot({ side, detail, pair, guardedBy = true, excludedIds, onPick
   return <div className="pvp-slot pvp-fade" data-identity={side} style={tint ? ({ "--team-tint": tint } as CSSProperties) : undefined}>
     <div className="pvp-photo-frame">
       <button type="button" className="pvp-photo" aria-expanded={searching} aria-label={`Change ${label}, ${name}`} onClick={() => setSearching(open => !open)}>
-        {/* eslint-disable-next-line @next/next/no-img-element -- static SVG artwork, decorative */}
-        {record && <img className="pvp-watermark" src={record.asset} alt="" aria-hidden="true" />}
+        {record && <TeamWatermark asset={record.asset} />}
         <PlayerPortrait playerId={id} name={name} size="xl" className="pvp-portrait" era={season && team ? { season, team } : null} />
-        {detail?.matchup_minutes != null && <span className="pvp-badge" title={`${fmt(detail.matchup_minutes, 0)} matchup minutes`}>{fmt(detail.matchup_minutes, 0)} MIN</span>}
+        {detail?.matchup_minutes != null && <span className="pvp-badge" title={`${fmt(detail.matchup_minutes, 0)} minutes ${guardedBy ? "guarded, all defenders" : "guarding, all players"}`}>{fmt(detail.matchup_minutes, 0)} MIN</span>}
         <span className="pvp-change" aria-hidden="true"><Icon name="user-edit" size={16} /></span>
       </button>
     </div>
@@ -221,7 +269,7 @@ function MatchupSlot({ side, detail, pair, guardedBy = true, excludedIds, onPick
       : <div className="pvp-who">
           <Link className="pvp-name" href={`/players/${id}`}>{name}</Link>
           {team && <span className="pvp-team"><span className="pvp-team-entry"><TeamLogo team={team} season={season} size={16} />{record?.artwork_name ?? team}</span></span>}
-          {detail && <span className="pvp-bio">{guardedBy ? "Scored" : "Allowed"} {fmt(detail.points_per_100)} pts/100 · {pct(detail.fg_pct)} FG</span>}
+          {detail && <span className="pvp-bio mu-bio">{guardedBy ? "Scored" : "Allowed"} {fmt(detail.points_per_100)} pts/100 · {pct(detail.fg_pct)} FG<span>{guardedBy ? "against all defenders" : "guarding all players"}</span></span>}
         </div>}
   </div>;
 }
