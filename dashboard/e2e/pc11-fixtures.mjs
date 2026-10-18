@@ -10,10 +10,11 @@ const NAMES = ["Fixture Anchor", "Fixture Wing", "Fixture Guard", "Fixture Big",
 const pcts = keys => Object.fromEntries(keys.map((key, i) => [key, 90 - i * 10]));
 
 function matchupRows(side) {
-  return NAMES.slice(1).map((name, i) => ({ player_id: `9910${i}`, player_name: `${name} ${side === "offense" ? "D" : "O"}`, games: 4 - i, matchup_minutes: 20 - i * 3,
-    partial_possessions: 90 - i * 15, player_points: 30 - i * 4, points_per_100: 33.3 - i, fgm: 12 - i, fga: 25 - i, fg_pct: 0.48, fg3m: 3, fg3a: 8, assists: 2, turnovers: 1 }));
+  return NAMES.slice(1).map((name, i) => ({ player_id: `9910${i}`, player_name: `${name} ${side === "offense" ? "D" : "O"}`, team_tricode: "BOS", games: 4 - i, matchup_minutes: 20 - i * 3,
+    partial_possessions: 90 - i * 15, player_points: 30 - i * 4, points_per_100: 33.3 - i, fgm: 12 - i, fga: 25 - i, fg_pct: 0.48, fg3m: 3, fg3a: 8, fg3_pct: 0.375,
+    ftm: 2, fta: 3, assists: 2, turnovers: 1, blocks: 0 }));
 }
-const detail = (id, name, side) => ({ player_id: id, player_name: name, side, opponents: 4, matchup_minutes: 62, partial_possessions: 300,
+const detail = (id, name, side) => ({ player_id: id, player_name: name, team_tricode: "TOR", side, opponents: 4, matchup_minutes: 62, partial_possessions: 300,
   player_points: 100, points_per_100: 33.3, fg_pct: 0.47, rows: matchupRows(side) });
 
 export function defense(url) {
@@ -32,8 +33,13 @@ export function defense(url) {
 
 export function seasonMatchups(url) {
   const side = url.searchParams.get("side") === "defense" ? "defense" : "offense";
-  const id = url.searchParams.get("playerId");
-  return { ...envelope(), side, focus_rule: id ? null : "Most matchup possessions in this scope", detail: detail(id ?? "99000", id ? "Fixture Picked" : NAMES[0], side), sources: sources("matchups") };
+  const id = url.searchParams.get("playerId"), opponent = url.searchParams.get("opponentId");
+  const focus = detail(id ?? "99000", id ? "Fixture Picked" : NAMES[0], side);
+  // A pairing observed one way only: the other direction is null (unobserved), never zeros.
+  const row = matchupRows("offense").find(entry => entry.player_id === opponent);
+  const pair = opponent ? { player_id: opponent, player_name: row?.player_name ?? "Fixture Opponent", team_tricode: "BOS",
+    player_on_offense: row ? { ...row, player_id: opponent } : null, opponent_on_offense: null } : null;
+  return { ...envelope(), side, focus_rule: id ? null : "Most matchup possessions in this scope", detail: focus, pair, sources: sources("matchups") };
 }
 
 export function playTypes(url) {

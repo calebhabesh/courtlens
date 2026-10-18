@@ -21,12 +21,13 @@ export interface Defender {
   qualified: boolean; percentiles: Percentiles;
 }
 export interface MatchupRow {
-  player_id: string; player_name: string; games: number | null; matchup_minutes: number | null; partial_possessions: number | null;
+  player_id: string; player_name: string; team_tricode?: string | null; games: number | null; matchup_minutes: number | null; partial_possessions: number | null;
   player_points: number | null; points_per_100: number | null; fgm: number | null; fga: number | null; fg_pct: number | null;
-  fg3m: number | null; fg3a: number | null; assists: number | null; turnovers: number | null;
+  fg3m: number | null; fg3a: number | null; fg3_pct?: number | null; ftm?: number | null; fta?: number | null;
+  assists: number | null; turnovers: number | null; blocks?: number | null;
 }
 export interface MatchupDetail {
-  player_id: string; player_name: string; side: "offense" | "defense"; opponents: number;
+  player_id: string; player_name: string; team_tricode?: string | null; side: "offense" | "defense"; opponents: number;
   matchup_minutes: number | null; partial_possessions: number | null; player_points: number | null;
   points_per_100: number | null; fg_pct: number | null; rows: MatchupRow[];
 }
@@ -34,7 +35,12 @@ export interface DefenseView extends FeedEnvelope {
   category: string; categories: { value: string; label: string }[]; matchups_observed: boolean;
   focus_rule: string | null; players: Defender[]; detail: MatchupDetail | null;
 }
-export interface MatchupsView extends FeedEnvelope { side: "offense" | "defense"; focus_rule: string | null; detail: MatchupDetail }
+/** Two players' direct matchup both ways; a direction never observed is null, not zero. */
+export interface MatchupPair {
+  player_id: string; player_name: string; team_tricode: string | null;
+  player_on_offense: MatchupRow | null; opponent_on_offense: MatchupRow | null;
+}
+export interface MatchupsView extends FeedEnvelope { side: "offense" | "defense"; focus_rule: string | null; detail: MatchupDetail; pair?: MatchupPair | null }
 
 export interface PlayTypeBreakdown {
   play_type: string; label: string; possessions: number; share: number | null; points_per_possession: number | null;
@@ -108,7 +114,7 @@ async function getJson<T>(path: string, params: Record<string, string | number |
 
 export const getDefense = (p: { season?: string | null; phase?: string | null; category?: string | null; playerId?: string | null }, signal?: AbortSignal) =>
   getJson<DefenseView>("defense", p, signal);
-export const getSeasonMatchups = (p: { season?: string | null; phase?: string | null; playerId?: string | null; side?: string | null }, signal?: AbortSignal) =>
+export const getSeasonMatchups = (p: { season?: string | null; phase?: string | null; playerId?: string | null; side?: string | null; limit?: number | null; opponentId?: string | null }, signal?: AbortSignal) =>
   getJson<MatchupsView>("season-matchups", p, signal);
 export const getPlayTypes = (p: { season?: string | null; phase?: string | null; side?: string | null; playerId?: string | null }, signal?: AbortSignal) =>
   getJson<PlayTypesView>("play-types", p, signal);

@@ -111,6 +111,26 @@ def _names(session: Session, ids: Iterable[str]) -> dict[str, str]:
     return {str(pid): name for pid, name in rows}
 
 
+def _teams(session: Session, season: str, phase: str, ids: Iterable[str]) -> dict[str, str | None]:
+    """Each player's team code in a scope, from the one-row-per-player defense feed."""
+    wanted = sorted({str(pid) for pid in ids if pid})
+    if not wanted:
+        return {}
+    rows = _rows(
+        session,
+        f"""
+        SELECT DISTINCT ON (player_id) player_id, team_id
+        FROM {_mart("mart_stats_player_defense")}
+        WHERE season = :season AND season_type = :phase AND player_id IN :ids
+        ORDER BY player_id, category
+        """,
+        season=season,
+        phase=phase,
+        ids=wanted,
+    )
+    return {str(r["player_id"]): team_tricode(r["team_id"]) for r in rows}
+
+
 def _sources(session: Session, dataset_ids: Iterable[str]) -> list[dict[str, Any]]:
     ids = sorted({str(d) for d in dataset_ids if d})
     if not ids:
@@ -348,7 +368,10 @@ MATCHUP_LIMITATIONS = [
 
 
 def shape_matchups(
-    rows: Sequence[Mapping[str, Any]], names: Mapping[str, str], other: str
+    rows: Sequence[Mapping[str, Any]],
+    names: Mapping[str, str],
+    other: str,
+    teams: Mapping[str, str | None] | None = None,
 ) -> list[dict[str, Any]]:
     result = []
     for row in rows:
@@ -360,6 +383,7 @@ def shape_matchups(
             {
                 "player_id": pid,
                 "player_name": names.get(pid) or f"NBA player {pid}",
+                "team_tricode": (teams or {}).get(pid),
                 "games": int(row["games"]) if row["games"] is not None else None,
                 "matchup_minutes": _ratio(_num(row["matchup_seconds"]), 60),
                 "partial_possessions": poss,
@@ -370,8 +394,12 @@ def shape_matchups(
                 "fg_pct": _ratio(_num(row["fgm"]), fga),
                 "fg3m": _num(row["fg3m"]),
                 "fg3a": _num(row["fg3a"]),
+                "fg3_pct": _ratio(_num(row["fg3m"]), _num(row["fg3a"])),
+                "ftm": _num(row["ftm"]),
+                "fta": _num(row["fta"]),
                 "assists": _num(row["assists"]),
                 "turnovers": _num(row["turnovers"]),
+                "blocks": _num(row["blocks"]),
             }
         )
     return result
@@ -400,7 +428,9 @@ def matchup_detail(
         phase=phase,
         player_id=player_id,
     )
-    names = _names(session, [player_id, *(r[other] for r in rows[:limit])])
+    shown = [player_id, *(str(r[other]) for r in rows[:limit])]
+    names = _names(session, shown)
+    teams = _teams(session, season, phase, shown)
     totals = {
         key: sum(_num(r[key]) or 0.0 for r in rows)
         for key in ("matchup_seconds", "partial_possessions", "player_points", "fgm", "fga")
@@ -408,6 +438,7 @@ def matchup_detail(
     return {
         "player_id": player_id,
         "player_name": names.get(player_id) or f"NBA player {player_id}",
+        "team_tricode": teams.get(player_id),
         "side": side,
         "opponents": len(rows),
         "matchup_minutes": totals["matchup_seconds"] / 60 if rows else None,
@@ -417,12 +448,55 @@ def matchup_detail(
         if rows
         else None,
         "fg_pct": _ratio(totals["fgm"], totals["fga"]) if rows else None,
-        "rows": shape_matchups(rows[:limit], names, other),
+        "rows": shape_matchups(rows[:limit], names, other, teams),
+    }
+
+
+def matchup_pair(
+    session: Session, season: str, phase: str, player_id: str, opponent_id: str
+) -> dict[str, Any]:
+    """Two players' direct matchup both ways; an unobserved direction is null, not zero."""
+    rows = _rows(
+        session,
+        f"""
+        SELECT * FROM {_mart("mart_stats_season_matchups")}
+        WHERE season = :season AND season_type = :phase
+          AND off_player_id IN (:a, :b) AND def_player_id IN (:a, :b)
+          AND off_player_id <> def_player_id
+        """,
+        season=season,
+        phase=phase,
+        a=player_id,
+        b=opponent_id,
+    )
+    names = _names(session, [player_id, opponent_id])
+    teams = _teams(session, season, phase, [player_id, opponent_id])
+
+    def guarded(offense: str, defense: str) -> dict[str, Any] | None:
+        row = next(
+            (r for r in rows if r["off_player_id"] == offense and r["def_player_id"] == defense),
+            None,
+        )
+        return shape_matchups([row], names, "def_player_id", teams)[0] if row else None
+
+    return {
+        "player_id": opponent_id,
+        "player_name": names.get(opponent_id) or f"NBA player {opponent_id}",
+        "team_tricode": teams.get(opponent_id),
+        "player_on_offense": guarded(player_id, opponent_id),
+        "opponent_on_offense": guarded(opponent_id, player_id),
     }
 
 
 def matchups_view(
-    session: Session, season: str | None, phase: str | None, player_id: str | None, side: str
+    session: Session,
+    season: str | None,
+    phase: str | None,
+    player_id: str | None,
+    side: str,
+    *,
+    limit: int = 15,
+    opponent_id: str | None = None,
 ) -> dict[str, Any]:
     if side not in ("offense", "defense"):
         raise HTTPException(422, "side must be offense or defense.")
@@ -439,12 +513,18 @@ def matchups_view(
         rule = "Most matchup possessions in this scope"
     if player_id is None:
         raise HTTPException(404, "No matchups were observed in this scope.")
-    detail = matchup_detail(session, season, phase, player_id, side=side, limit=15)
+    detail = matchup_detail(session, season, phase, player_id, side=side, limit=limit)
+    pair = (
+        matchup_pair(session, season, phase, player_id, opponent_id)
+        if opponent_id and opponent_id != player_id
+        else None
+    )
     return {
         **_envelope(season, phase, scopes, MATCHUP_LIMITATIONS),
         "side": side,
         "focus_rule": rule,
         "detail": detail,
+        "pair": pair,
         "sources": _sources(session, totals[player_id]["dataset_ids"] or []),
     }
 

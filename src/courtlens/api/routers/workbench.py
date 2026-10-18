@@ -488,10 +488,15 @@ def get_season_matchups(
     phase: FeedPhase | None = None,
     player_id: str | None = Query(None, alias="playerId", max_length=20),
     side: Literal["offense", "defense"] = "offense",
+    limit: int = Query(15, ge=1, le=500),
+    opponent_id: str | None = Query(None, alias="opponentId", max_length=20),
     session: Session = Depends(get_db),
 ) -> MatchupsViewResponse:
-    """PC11 Player Matchups from NBA tracking season matchups (who guarded whom)."""
-    view = matchups_view(session, season, phase, player_id, side)
+    """PC11 Player Matchups from NBA tracking season matchups (who guarded whom), optionally with
+    one opponent's direct matchup both ways."""
+    view = matchups_view(
+        session, season, phase, player_id, side, limit=limit, opponent_id=opponent_id
+    )
     return MatchupsViewResponse.model_validate(rounded(view))
 
 
