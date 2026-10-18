@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cardLabel, comparisonRows, customMetricKeys, formatCardValue, formatComparisonValue, overallGroupStart, pickerMetrics, pillStrength, availabilityShare } from "./comparison-metrics";
+import { cardLabel, comparisonRows, customMetricKeys, fantasyMetricKeys, formatCardValue, formatComparisonValue, overallGroupStart, pickerMetrics, pillStrength, availabilityShare } from "./comparison-metrics";
 import type { MetricDefinition, PlayerComparisonResponse } from "./types";
 const catalog = [{key:"pts",display_name:"Total Points",unit:"points",good_direction:"high"},{key:"pts_per_game",display_name:"Points Per Game",unit:"points",good_direction:"high"},{key:"ts_pct",display_name:"True Shooting",unit:"percentage",good_direction:"high"}] as MetricDefinition[];
 const comparison = {player_a:{id:"a",games_played:2},player_b:{id:"b",games_played:3},aligned_metrics:[{metric:"pts_per_game",value_a:0,value_b:null,n_a:2,n_b:0,unit:"points"},{metric:"pts",value_a:12,value_b:18,n_a:2,n_b:3,unit:"points"}]} as PlayerComparisonResponse;
@@ -45,4 +45,10 @@ describe("availabilityShare", () => {
     expect(availabilityShare({ games: 0, team_games: 0 })).toBeNull();
     expect(availabilityShare(null)).toBeNull();
   });
+});
+describe("Edit Metrics fantasy category presets",()=>{
+  const box=["pts","reb","ast","stl","blk","tov","fg_pct","ft_pct","fg3m","fg3m_per_game","fga","fga_per_game","fta","fta_per_game"].map(key=>({key}) as MetricDefinition);
+  it("picks the 9-cat categories with per-game shooting makes outside Totals",()=>{expect(fantasyMetricKeys("9cat","per_game",box)).toEqual(["fg_pct","ft_pct","fg3m_per_game","pts","reb","ast","stl","blk","tov"]);});
+  it("reads shooting makes and attempts as season totals in Totals mode",()=>{expect(fantasyMetricKeys("9cat_volume","raw",box)).toEqual(["fg_pct","fga","ft_pct","fta","fg3m","pts","reb","ast","stl","blk","tov"]);});
+  it("leaves turnovers out of 8-cat and drops categories the catalog lacks",()=>{expect(fantasyMetricKeys("8cat","per_game",box)).not.toContain("tov");expect(fantasyMetricKeys("9cat","raw",box.filter(metric=>metric.key!=="ft_pct"))).not.toContain("ft_pct");});
 });
