@@ -1342,3 +1342,124 @@ while hoopR spells them `matchup_fg3_m`/`matchup_fg3_a`; the model accepts both 
 league-wide, no row with 3PA > FGA). Rows and the pair now carry team codes, 3P%, FT and blocks.
 Evidence: `docs/evidence/alignment/matchups/` (default and paired, 1440 and 390;
 `verification.jsonl`, no page overflow or browser errors). `pc11-player-matchups` baselines refreshed.
+
+Follow-up instructions (owner, 2026-10-18):
+5. [x] Explain what a matchup means and make the page more explicit, clear and unambiguous ("can
+   you explain what this matchup means? Can we be even more explicit/clear/unambiguous … I feel
+   like it's a bit confusing"). — every number is the offensive player's, while that defender was
+   their primary defender. The page now says whose. Pair columns read "Amen Thompson on offense /
+   guarded by Luka Dončić" instead of "with the ball" (tracking assigns a defender off the ball
+   too). The table subtitle reads "393 defenders · Amen Thompson's offense against each one"
+   (Guarding: "each one's offense against …"; name column "Offensive player"). The slot bio
+   adds "against all defenders" / "guarding all players". Column tooltips name the offensive
+   player, and the note defines MIN and POSS. Pair rows now reuse the table's column specs.
+6. [x] The numbers in the opponent table are not centered under their columns. — body cells lacked
+   `stats-metric-cell`, so `.data-table td.num` right-aligned them. Measured value-to-label center
+   offset ≤0.5px at 1440 and 390 in all three states (default, pair, guarding).
+7. [x] Make the player name on offense/defense headings title case. — "Amen Thompson On Offense /
+   Guarded By Luka Dončić", matching the page's Guarded By toggle.
+8. [x] The Guarded By table should be searchable like any stats table. — the Stats table's header
+   search (`stats-header-search`) replaces the Defender / Offensive player label in the
+   column-label row. It filters locally, ignores case and accents ("doncic" finds Dončić), and
+   clears with × or Escape. A new player or side starts it empty. The subtitle reads "5 of 393
+   defenders", and no match says so in the table.
+9. [x] Some Player Comparison player pictures/team logos are not centered in the
+   foreground/background (Chris Bosh, 2019-20 "No Games"). "Is there something we can do about
+   this, or should we leave it alone?" — two causes, both fixed. (a) Portraits: the server's face
+   crop took the top opaque rows as the head, and 34 of the 8,092 cached NBA headshots (Bosh among
+   them) carry a stray speck of a couple of opaque pixels in a corner, so the crop slid to an edge.
+   `face_crop_box` now re-measures only when the found head is more than 5% off centre (CDN
+   headshots sit within ~3%), dropping opaque blobs under 1% of the largest. Exactly those 34
+   crops change, each now within 2% of centre; the other 8,058 are byte-identical
+   (`PORTRAIT_CROP_VERSION` face-v2; derivatives rebuild lazily, stale face-v1 files in
+   `data/cache/portraits/derived` can be deleted). This touches every avatar of those 34 players
+   app-wide, approved pages included, and only fixes them. (b) Logos: logos are centred in their
+   artwork, but three assets are not square (Rockets 151×200, Vancouver wide, Sonics). With
+   `height: auto` the Rockets watermark centred at 64.5% of the tile instead of 46%. `.pvp-watermark`
+   now has a square 115% box with `object-fit: contain`, so every logo's drawn centre is 46%;
+   square logos are unchanged and no PvP baseline moved. The approved player page header
+   (`.player-bio-watermark`) has the same geometry and was left for the owner.
+   Evidence: `portraits/` (Bosh 2019-20 and 2012-13, Rockets tiles, before/after sheet of the 34,
+   `recropped.jsonl`).
+10. [x] "Chris Bosh is still showing weirdly off center. Are you sure the issue is solved?" — the
+    server already served the new crop (head centre 0.495–0.497 at every size); browsers kept
+    the old one because the URL was unchanged and the API sends `max-age=86400`. Portrait URLs
+    now carry `&crop=face-v2` (`PORTRAIT_CROP_VERSION` in `lib/portrait-source.ts`, mirrored
+    by the API constant of the same name, which documents bumping both). Verified on 3100: face
+    centre at 0.494 of the tile.
+11. [x] "Make sure that the raptors logo behind it is a little centered properly like the other
+    logos. Make sure the older logos are centered." — Basketball-Reference's era logos are
+    crops whose box is centred but whose artwork leans: the 2001-09 Raptors badge sat 7.3% left
+    because the ball touches one edge and the tail the other. `scripts/measure-logo-centres.mjs`
+    measures each older logo's alpha-weighted horizontal centre and writes the 20 shifts over
+    3% to `lib/team-logo-centring.json` (Raptors 2001-15, Mavericks 2001-02, Wizards ×3, Pacers
+    ×2, Cavaliers ×3, Bobcats/Hornets ×3, Nets, Warriors 2001, Blazers 2003, Magic 2001,
+    Clippers 2011, Jazz 2023-25). `TeamWatermark` (`components/team-watermark.tsx`) replaces the three copies
+    of the watermark `<img>` (PvP slot, grid, Matchups) and moves them by `--logo-shift`.
+    Vertical offsets stay as drawn. Full Playwright 491/491 (item 12 extends this to current
+    logos).
+    Evidence: `portraits/logos-*.png`, `portraits/pvp-bosh-2025-dev3100.png`.
+12. [x] "Yes, you should correct all logos/player photos where applicable" (answering whether to
+    centre the six leaning current logos too). — the measuring script now covers every logo: 26
+    shifts, adding the current Cavaliers, Heat, Magic, Suns, Raptors and Jazz marks. The approved
+    player page header (`.player-bio-watermark`) now uses `TeamWatermark` and the same square
+    `contain` box, so the Rockets centre and leaning logos shift there too. Applicable means a
+    logo behind a player photo; logos shown on their own (Team Compare panels, inline team logos)
+    keep their drawn placement. Player photos: every display derivative comes from the server
+    crop fixed in item 9, so none remain off centre. Full Playwright 489 passed, 2 known flakes
+    (planner league navigation, methodology catalog) pass on rerun; no baseline changed.
+    Evidence: `portraits/logos-current-*.png`.
+13. [x] Player Comparison bug: choosing a player's earliest seasons makes the accolade badges in the
+    season dropdown disappear (Shai Gilgeous-Alexander 2018-19 shows none, though 2025-26 shows
+    MVP/All-Star and 2024-25 MVP/Title/All-Star). "Comparison between players (past and present,
+    retired and active) should be seamless and functional." — the menu dated every row to the
+    comparison's cutoff, which moves to the end of the picked season, so a rookie year hid every
+    later award; titles came from the cutoff-bound championship list too. Now each row marks its
+    own season's honours as recorded in the release; only the compared season stays dated to the
+    cutoff, as the card's accolades are (row 3, 75). The API's `championships` adds
+    `all_seasons` (every title in the release) beside the cutoff's `seasons`; the PvP slot and
+    grid pickers use it. Live on 3100: Shai 2018-19 marks 2025-26 MVP/All-Star, 2024-25
+    MVP/Title/All-Star, 2023-24 and 2022-23 All-Star; Bosh 2003-04 and LeBron 2003-04 mark every
+    later title, MVP and All-Star. Vitest 579 (new regression test), Python 2,135, Playwright
+    489 + 2 flakes that pass on rerun. Evidence: `portraits/season-picker-*.png`.
+14. [x] "You should figure out the weird text here. The text 'Example: Amen Thompson / Most
+    matchup possessions in this scope' is spilling weirdly here." (Owner, 2026-10-18: "I think we
+    are ready for review and finished the compare pages.") — the shared research-page `ExampleNote`
+    is a left-aligned flex row, so inside the card's centred column it sat as stray text and
+    wrapped unevenly on phones; "Example:" also read oddly once a pair was chosen. Matchups now
+    shows one centred, muted line, only while the player is the rule's default (C3 disclosure
+    kept): "Shown by default · Most matchup possessions in this scope". Measured live on 3100:
+    centred on the slots (0px) on one line at 1440 and 390; absent with a chosen `playerId`.
+    `pc11-player-matchups` baselines refreshed. Evidence: `default-note-*.png`,
+    `chosen-player-*.png`.
+15. [x] "In this matchup table, how can we filter/sort for results that give us who the player played
+    the best against (destroyed) and worst against (who he got clamped by)." — sorting PTS/100
+    alone ranks one-possession matchups first, so ranking needs a sample floor. Beside the table
+    title: ranking presets (renamed in 16) and a possession
+    floor (Any, 10+, 25+, 50+, 100+ POSS, URL `minPoss`). The presets only set `sort`/`dir`, so
+    a header sort and a preset never disagree; any PTS/100 sort applies a 25-possession floor
+    unless one is chosen, and the note says so. The subtitle counts what is shown ("53 of 351").
+    Live, Luka Dončić: best against Kuzma 76.0, Collier 69.2; clamped by Amen Thompson 13.6,
+    Cason Wallace 14.2 (25+); at 50+ Thompson, Herbert Jones 19.3, Banchero 20.5. Also checked:
+    Guarded By and Guarding both read 351 for Luka (393 for Thompson) because matchups are nearly
+    symmetric, not a bug (349 shared, 2 unique each way). Evidence: `rank-*.png`.
+16. [x] "You don't need to necessarily use the terminology clamped by and most guarded. You can use
+    more precise, accurate terminology." — the presets name the sort they apply, the same in both
+    modes: Most POSS / Highest PTS/100 / Lowest PTS/100. Tooltips say what each means for the
+    player ("Defenders Luka Dončić scored the fewest points per 100 possessions against";
+    Guarding: "Players who scored the fewest points per 100 possessions against Luka Dončić").
+    Superseded by 17.
+17. [x] "You can use more understandable terminology. Instead of highest pts/100, lowest pts/100."
+    — plain words per mode, the metric kept in each tooltip and the note: Guarded By reads Most
+    matched / Scored best / Scored worst; Guarding reads Most matched / Defended best / Defended
+    worst (best = opponents' lowest PTS/100). Live for Luka Dončić: scored worst vs Amen Thompson
+    13.6; defended best vs Cason Wallace 4.8, Christian Braun 8.0 (25+ POSS). Fits at 390 with no
+    overflow. Evidence: `rank-scored-worst-*.png`, `rank-defended-best-*.png`.
+18. [x] "Can we use title case for the sort/filter console terms." — Most Matched / Scored Best /
+    Scored Worst (Guarding: Defended Best / Defended Worst); the floor already reads "25+ POSS".
+    Evidence: `console-*.png`.
+19. [x] "Clear doesn't clear both sides, is that intentional, and better for now?" — intentional,
+    kept. Unlike Player Comparison, the left player is the table's subject and can't be empty:
+    without one the page falls back to the default (most matchup possessions), so clearing it
+    would look like nothing happened. Clear removes only the matchup player; its tooltip now says
+    so.

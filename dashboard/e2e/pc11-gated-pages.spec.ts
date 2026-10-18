@@ -29,9 +29,32 @@ test.describe("PC11 populated pages", () => {
   test("Player Matchups switches sides and opens a matchup both ways", async ({ page }) => {
     await openWorkbench(page, "/matchups");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Player Matchups");
+    // The default player says why it was chosen, once, under the slots.
+    await expect(page.locator(".mu-default")).toHaveText(/^Shown by default · /);
     const table = page.getByRole("table", { name: "Defenders who guarded Fixture Anchor" });
     await expect(table).toBeVisible();
     await expect(table.getByRole("row", { name: /Fixture Wing D/ })).toContainText("3/8");
+    // The name search filters the table locally, like the Stats table's.
+    const search = table.getByRole("searchbox", { name: "Filter defenders by name" });
+    await search.fill("wing");
+    await expect(table.locator("tbody tr")).toHaveCount(1);
+    await expect(table.locator("tbody tr")).toContainText("Fixture Wing D");
+    await search.fill("nobody");
+    await expect(table.locator("tbody")).toContainText("No defender matches");
+    await table.getByRole("button", { name: "Clear name search" }).click();
+    await expect(search).toHaveValue("");
+    // The presets rank by PTS/100 above a possession floor the reader can change.
+    await page.getByRole("radio", { name: "Scored Worst" }).click();
+    await expect(page).toHaveURL(/sort=points_per_100&dir=asc/);
+    await expect(table.locator("tbody tr").first()).toContainText("Fixture Rookie D");
+    await page.getByRole("combobox", { name: "Minimum matchup possessions" }).selectOption("50");
+    await expect(table.locator("tbody tr")).toHaveCount(3);
+    await expect(table.locator("tbody tr").first()).toContainText("Fixture Big D");
+    await page.getByRole("radio", { name: "Scored Best" }).click();
+    await expect(table.locator("tbody tr").first()).toContainText("Fixture Wing D");
+    await page.getByRole("radio", { name: "Most Matched" }).click();
+    await page.getByRole("combobox", { name: "Minimum matchup possessions" }).selectOption("0");
+    await expect(table.locator("tbody tr")).toHaveCount(4);
     // Sorting is local: GP ascending puts the fewest games first.
     await table.getByRole("button", { name: "Sort by GP" }).click();
     await expect(page).toHaveURL(/sort=games/);
@@ -41,7 +64,10 @@ test.describe("PC11 populated pages", () => {
     // A row opens that matchup both ways; the unobserved direction is said, not zeroed.
     await table.locator("tbody tr", { hasText: "Fixture Wing D" }).locator("td").first().click();
     await expect(page).toHaveURL(/opponentId=99100/);
-    const pair = page.getByRole("table", { name: "Fixture Anchor and Fixture Wing D, each with the ball" });
+    const pair = page.getByRole("table", { name: "Fixture Anchor and Fixture Wing D, each guarded by the other" });
+    // Each column names whose offense it holds and who was guarding.
+    await expect(pair.getByRole("columnheader", { name: "Fixture Anchor On Offense Guarded By Fixture Wing D" })).toBeVisible();
+    await expect(pair.getByRole("columnheader", { name: "Fixture Wing D On Offense Guarded By Fixture Anchor" })).toBeVisible();
     await expect(pair).toContainText("33.3");
     await expect(pair).toContainText("unobserved, not zero");
     await page.getByRole("button", { name: "Clear matchup player" }).click();
@@ -49,6 +75,10 @@ test.describe("PC11 populated pages", () => {
     await page.getByRole("radio", { name: "Guarding" }).click();
     await expect(page).toHaveURL(/side=defense/);
     await expect(page.getByRole("table", { name: "Players Fixture Anchor guarded" })).toBeVisible();
+    // On defense, best means opponents scored least: the lowest PTS/100 first.
+    await page.getByRole("radio", { name: "Defended Best" }).click();
+    await expect(page).toHaveURL(/sort=points_per_100/);
+    await expect(page).toHaveURL(/dir=asc/);
     await noPhoneOverflow(page);
   });
 
