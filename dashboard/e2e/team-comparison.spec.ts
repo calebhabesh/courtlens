@@ -63,7 +63,7 @@ for (const width of [1440, 390]) {
     const pageWidth = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
     expect(pageWidth.scroll).toBe(pageWidth.client);
     if (width === 390) {
-      const heights = await page.locator(".tc-draft-matchup").evaluateAll(rows => rows.map(row => row.getBoundingClientRect().height));
+      const heights = await page.locator(".tc-matchup").evaluateAll(rows => rows.map(row => row.getBoundingClientRect().height));
       expect(heights.length).toBeGreaterThan(0);
       for (const height of heights) expect(height).toBeLessThanOrEqual(88);
     }

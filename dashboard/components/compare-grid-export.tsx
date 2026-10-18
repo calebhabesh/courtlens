@@ -35,11 +35,11 @@ export const CompareGridExport = forwardRef<SVGSVGElement, { columns: GridColumn
       const left = x(index) - PHOTO / 2, id = `pvp-grid-export-clip-${index}`;
       return <g key={column.player.player_id}>
         <clipPath id={id}><rect x={left} y={TOP} width={PHOTO} height={PHOTO} rx="10" /></clipPath>
-        <rect x={left} y={TOP} width={PHOTO} height={PHOTO} rx="10" fill={teamBrandColor(latest) ?? "var(--color-surface-3)"} />
-        {teamRecord(latest) && <image href={teamRecord(latest)!.asset} x={left - PHOTO * 0.075} y={TOP - PHOTO * 0.115} width={PHOTO * 1.15} height={PHOTO * 1.15} opacity="0.42" clipPath={`url(#${id})`} />}
+        <rect x={left} y={TOP} width={PHOTO} height={PHOTO} rx="10" fill={teamBrandColor(latest, column.season) ?? "var(--color-surface-3)"} />
+        {teamRecord(latest, column.season) && <image href={teamRecord(latest, column.season)!.asset} x={left - PHOTO * 0.075} y={TOP - PHOTO * 0.115} width={PHOTO * 1.15} height={PHOTO * 1.15} opacity="0.42" clipPath={`url(#${id})`} />}
         {source && <image href={source.src} x={left} y={TOP} width={PHOTO} height={PHOTO} clipPath={`url(#${id})`} preserveAspectRatio="xMidYMax slice" />}
         <text x={x(index)} y={TOP + PHOTO + 22} textAnchor="middle" fontSize="13" fontWeight="600" fill="var(--color-text)">{column.player.name.length > 18 ? `${column.player.name.slice(0, 17)}…` : column.player.name}</text>
-        <text x={x(index)} y={TOP + PHOTO + 40} textAnchor="middle" fontSize="11" fill="var(--color-text-secondary)">{/* Columns are narrow: the team's code keeps each caption inside its column. */}{[column.season, teamRecord(latest)?.tricode ?? latest].filter(Boolean).join(" · ")}</text>
+        <text x={x(index)} y={TOP + PHOTO + 40} textAnchor="middle" fontSize="11" fill="var(--color-text-secondary)">{/* Columns are narrow: the team's code keeps each caption inside its column. */}{[column.season, teamRecord(latest, column.season)?.tricode ?? latest].filter(Boolean).join(" · ")}</text>
       </g>;
     })}
     {rows.map((line, row) => {

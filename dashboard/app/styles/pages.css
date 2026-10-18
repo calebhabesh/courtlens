@@ -126,30 +126,10 @@
 .fo11-matchups .ui-filter-bar input {
   min-height: 40px;
 }
-.fo11-team-splits {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
-}
-.fo11-team-splits h3 {
-  display: flex;
-  gap: var(--space-2);
-  align-items: center;
-}
-.fo11-team-splits dl {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--space-2);
-  font-variant-numeric: tabular-nums;
-}
-.fo11-team-splits dd {
-  text-align: right;
-}
 .fo11-player-comparison .compare-date {
   flex: 0 1 200px;
 }
 .fo11-player-comparison .compare-picker,
-.fo11-team-comparison .entity-field,
 .fo11-matchups .entity-field,
 .fo11-wowy .entity-field {
   min-width: 0;
@@ -158,18 +138,13 @@
   gap: var(--space-4);
 }
 @media (width < 768px) {
-  .fo11-team-splits {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .fo11-selectors {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
   }
 
   .fo11-player-comparison .control-pill,
-  .fo11-player-comparison .button,
-  .fo11-team-comparison .button {
+  .fo11-player-comparison .button {
     min-height: 40px;
   }
 
@@ -182,10 +157,6 @@
 .fo11-selectors > .form-hint:empty {
   display: none;
 }
-.fo11-team-body > .ui-filter-bar {
-  margin-inline: 0;
-}
-.fo11-team-body .fo11-selectors,
 .fo11-matchups .fo11-selectors,
 .fo11-wowy .fo11-selectors {
   margin-block: var(--space-2) 0;

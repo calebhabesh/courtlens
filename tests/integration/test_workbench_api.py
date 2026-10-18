@@ -490,6 +490,11 @@ def test_workbench_forecasts_ledger(client: TestClient) -> None:
         assert "features_hash" in item
 
 
+def test_unknown_team_detail_is_not_found(client: TestClient) -> None:
+    """An unknown team id is not a real team with zero games."""
+    assert client.get("/api/workbench/teams/999").status_code == 404
+
+
 def test_workbench_forecast_detail(client: TestClient) -> None:
     """Forecast detail endpoint returns features, evidence, and append-only scores."""
     # 404 for unknown issuance

@@ -2,6 +2,7 @@
 // most recognizable brand color, keyed by the tricodes in team-branding.json. Decorative only:
 // like the logos, they describe current franchise branding, not era-specific identity.
 import catalog from "./team-branding.json";
+import { teamEra } from "./team-era";
 
 const BRAND: Record<string, string> = {
   ATL: "#E03A3E", BOS: "#007A33", BKN: "#000000", CHA: "#00788C", CHI: "#CE1141", CLE: "#860038",
@@ -9,6 +10,13 @@ const BRAND: Record<string, string> = {
   LAC: "#C8102E", LAL: "#552583", MEM: "#5D76A9", MIA: "#98002E", MIL: "#00471B", MIN: "#236192",
   NOP: "#0C2340", NYK: "#F58426", OKC: "#007AC1", ORL: "#0077C0", PHI: "#006BB6", PHX: "#E56020",
   POR: "#E03A3E", SAC: "#5A2D81", SAS: "#C4CED4", TOR: "#CE1141", UTA: "#002B5C", WAS: "#E31837"
+};
+
+// Earlier identities, keyed by era name because the Bobcats share Charlotte's current code.
+const ERA_BRAND: Record<string, string> = {
+  "Seattle SuperSonics": "#00653A", "New Jersey Nets": "#002A60", "Vancouver Grizzlies": "#00B2A9",
+  "Charlotte Hornets": "#00778B", "New Orleans Hornets": "#00778B", "New Orleans/Oklahoma City Hornets": "#00778B",
+  "Charlotte Bobcats": "#1D5BA6"
 };
 
 // --color-bg in tokens.css. Accents are lightened toward white until they reach 3:1 against it,
@@ -47,22 +55,25 @@ function displayAccent(hex: string): string {
   return "#FFFFFF";
 }
 
-const accents = new Map(Object.entries(BRAND).map(([tricode, hex]) => [tricode, displayAccent(hex)]));
-
-/** Display accent for a team ID or tricode, or null when the team is not in the current catalog. */
-export function teamAccent(team: string | null | undefined): string | null {
+/**
+ * Brand color for a team ID or code, or null when the catalog has neither the team nor its era.
+ * Era codes (`SEA`) use their era's color; with a season, a franchise uses the identity it had then.
+ */
+export function teamBrandColor(team: string | null | undefined, season?: string | null): string | null {
   if (!team) return null;
-  const record = catalog.teams.find((entry) => entry.team_id === team || entry.tricode === team);
-  return record ? accents.get(record.tricode) ?? null : null;
-}
-
-export function teamBrandColor(team: string | null | undefined): string | null {
-  if (!team) return null;
+  const era = teamEra(team, season);
+  if (era) return ERA_BRAND[era.artwork_name] ?? null;
   const record = catalog.teams.find((entry) => entry.team_id === team || entry.tricode === team);
   return record ? BRAND[record.tricode] ?? null : null;
 }
 
-/** True when an exact catalog ID or code has logo artwork, so callers can skip the text fallback. */
+/** Display accent (3:1 on the background) for the same lookup as teamBrandColor. */
+export function teamAccent(team: string | null | undefined, season?: string | null): string | null {
+  const brand = teamBrandColor(team, season);
+  return brand ? displayAccent(brand) : null;
+}
+
+/** True when an exact catalog ID or code (current or era) has logo artwork, so callers can skip the text fallback. */
 export function hasTeamLogo(team: string): boolean {
-  return catalog.teams.some((entry) => entry.team_id === team || entry.tricode === team);
+  return teamEra(team) != null || catalog.teams.some((entry) => entry.team_id === team || entry.tricode === team);
 }

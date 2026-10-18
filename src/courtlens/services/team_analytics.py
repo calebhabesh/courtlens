@@ -24,7 +24,12 @@ from courtlens.domain.team_analytics import (
     compute_team_similarity,
     compute_three_point_variation,
 )
-from courtlens.domain.teams import get_team_info, resolve_team_label, resolve_team_tricode
+from courtlens.domain.teams import (
+    get_team_info,
+    resolve_team_label,
+    resolve_team_tricode,
+    team_identity,
+)
 from courtlens.services.workbench_analytics import ResolvedContext
 from courtlens.workbench_models import WorkbenchTeamGame
 
@@ -117,9 +122,11 @@ def load_context_team_games(
     return results
 
 
-def _resolve_team_canonical_id_and_tricode(team_id: str) -> tuple[str, str, str]:
-    """Resolve (canonical_id, tricode, name) for any team id or tricode."""
-    info = get_team_info(team_id)
+def _resolve_team_canonical_id_and_tricode(
+    team_id: str, season: str | None = None
+) -> tuple[str, str, str]:
+    """Resolve (canonical_id, tricode, name) for any team id or tricode in its season."""
+    info = team_identity(team_id, season)
     if info:
         return info.team_id, info.tricode, info.name
     # Fallback
@@ -200,7 +207,7 @@ def get_team_four_factors(
     team_id: str,
 ) -> dict[str, Any]:
     """Retrieve complete Dean Oliver Four Factors, ratings, and league rankings for a team."""
-    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id)
+    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id, context.season)
 
     all_team_factors, league_averages, team_rankings = _compute_all_team_four_factors(
         session, context
@@ -213,7 +220,7 @@ def get_team_four_factors(
 
     if team_key is None or team_key not in all_team_factors:
         # Check if team is known
-        info = get_team_info(team_id)
+        info = team_identity(team_id, context.season)
         if not info:
             raise HTTPException(status_code=404, detail="team not found in snapshot")
         # Empty factors if team played 0 games before cutoff
@@ -290,7 +297,7 @@ def get_team_four_factors(
         league_3p_pct=league_3p_pct,
     )
 
-    team_info_obj = get_team_info(team_id)
+    team_info_obj = team_identity(team_id, context.season)
 
     return {
         "team": {
@@ -330,11 +337,11 @@ def get_team_schedule(
     team_id: str,
 ) -> dict[str, Any]:
     """Retrieve full chronological schedule, rest days, back-to-backs, and splits for a team."""
-    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id)
+    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id, context.season)
     raw_games = load_context_team_games(session, context, team_id=team_id)
 
     if not raw_games:
-        info = get_team_info(team_id)
+        info = team_identity(team_id, context.season)
         if not info:
             raise HTTPException(status_code=404, detail="team not found in snapshot")
 
@@ -342,7 +349,7 @@ def get_team_schedule(
     enriched: list[dict[str, Any]] = []
     for g in raw_games:
         opp_id = g.get("opponent_id", "")
-        opp_info = get_team_info(opp_id)
+        opp_info = team_identity(opp_id, context.season)
         enriched.append(
             {
                 "game_id": g["game_id"],
@@ -357,7 +364,7 @@ def get_team_schedule(
         )
 
     sched_context = compute_team_schedule_context(enriched)
-    team_info_obj = get_team_info(team_id)
+    team_info_obj = team_identity(team_id, context.season)
 
     return {
         "team": {
@@ -388,13 +395,13 @@ def get_team_peers(
     limit: int = 10,
 ) -> dict[str, Any]:
     """Retrieve statistically similar teams based on Four Factors, tempo, and ratings."""
-    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id)
+    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id, context.season)
 
     all_team_factors, _, _ = _compute_all_team_four_factors(session, context)
     team_key = tricode if tricode in all_team_factors else can_id
 
     if team_key not in all_team_factors:
-        info = get_team_info(team_id)
+        info = team_identity(team_id, context.season)
         if not info:
             raise HTTPException(status_code=404, detail="team not found in snapshot")
         return {
@@ -411,7 +418,7 @@ def get_team_peers(
     enriched_peers: list[dict[str, Any]] = []
     for p in raw_peers:
         p_id = p["team_id"]
-        p_info = get_team_info(p_id)
+        p_info = team_identity(p_id, context.season)
         enriched_peers.append(
             {
                 "team_id": p_info.team_id if p_info else p_id,

@@ -7,6 +7,7 @@ import { portraitSource } from "@/lib/portrait-source";
 import { teamBrandColor } from "@/lib/team-colors";
 import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
 import { honorMarks, honorRows, type AccoladeRow, type SeasonHonors } from "@/lib/compare-accolades";
+import { honorSeasons, honorsNone } from "./compare-season-honors";
 import type { GoodDirection } from "@/lib/percentile-display";
 import type { MetricComparisonItem, MetricDefinition } from "@/lib/types";
 import { slotTeams, teamRecord, type CompareSlotPlayer } from "./compare-player-slot";
@@ -68,8 +69,13 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
   ];
   // Match the card (76): one row per award either player holds, under a section heading.
   const honorLines = honors ? honorRows(honors) : [];
-  const honorsTop = ROWS_TOP + lines.length * ROW;
-  const honorsHeight = honors ? 30 + Math.max(1, honorLines.length) * ROW : 0;
+  const noAwards = honors ? accolades.length === 0 && honorsNone(honors) : false;
+  const seasonsLabel = honors ? honorSeasons(honors) : "";
+  const unknownHonors = honors ? honors.every(entry => entry.badges == null) : false;
+  const missingAccolades = accolades.length === 0 && !noAwards;
+  const missingAccoladesHeight = missingAccolades ? 26 : 0;
+  const honorsTop = ROWS_TOP + lines.length * ROW + missingAccoladesHeight;
+  const honorsHeight = honors ? (honorLines.length > 0 ? 30 + honorLines.length * ROW : 28) : 0;
   const height = honorsTop + honorsHeight + 56;
   const column = (side: 0 | 1) => side === 0 ? WIDTH * 0.25 : WIDTH * 0.75;
   const markWidth = MARK * WORDMARK_WIDTH / WORDMARK_HEIGHT;
@@ -85,13 +91,13 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
       const id = `pvp-export-clip-${side}`;
       return <g key={player.id}>
         <clipPath id={id}><rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" /></clipPath>
-        <rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" fill={teamBrandColor(latest) ?? "var(--color-surface-3)"} />
-        {teamRecord(latest) && <image href={teamRecord(latest)!.asset} x={x - PHOTO * 0.075} y={TOP - PHOTO * 0.115} width={PHOTO * 1.15} height={PHOTO * 1.15} opacity="0.42" clipPath={`url(#${id})`} />}
+        <rect x={x} y={TOP} width={PHOTO} height={PHOTO} rx="12" fill={teamBrandColor(latest, own) ?? "var(--color-surface-3)"} />
+        {teamRecord(latest, own) && <image href={teamRecord(latest, own)!.asset} x={x - PHOTO * 0.075} y={TOP - PHOTO * 0.115} width={PHOTO * 1.15} height={PHOTO * 1.15} opacity="0.42" clipPath={`url(#${id})`} />}
         {source && <image href={source.src} x={x} y={TOP} width={PHOTO} height={PHOTO} clipPath={`url(#${id})`} preserveAspectRatio="xMidYMax slice" />}
         <rect x={x + PHOTO - 58} y={TOP + PHOTO - 30} width="52" height="24" rx="6" fill="var(--color-text)" />
         <text x={x + PHOTO - 32} y={TOP + PHOTO - 13} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-surface-0)">{`${player.games_played} GP`}</text>
         <text x={column(side as 0 | 1)} y={TOP + PHOTO + 26} textAnchor="middle" fontSize="15" fontWeight="600" fill="var(--color-text)">{player.name}</text>
-        <text x={column(side as 0 | 1)} y={TOP + PHOTO + 44} textAnchor="middle" fontSize="12" fill="var(--color-text-secondary)">{[seasons && seasons[0] !== seasons[1] ? seasons[side] : null, ...slotTeams(player).map(team => teamRecord(team)?.artwork_name ?? team)].filter(Boolean).join(" · ")}</text>
+        <text x={column(side as 0 | 1)} y={TOP + PHOTO + 44} textAnchor="middle" fontSize="12" fill="var(--color-text-secondary)">{[seasons && seasons[0] !== seasons[1] ? seasons[side] : null, ...slotTeams(player).map(team => teamRecord(team, own)?.artwork_name ?? team)].filter(Boolean).join(" · ")}</text>
       </g>;
     })}
     {lines.map((line, index) => {
@@ -107,16 +113,36 @@ export const CompareCardExport = forwardRef<SVGSVGElement, {
         <text x={WIDTH * 0.7} y={y} textAnchor="middle" fontSize="16" fontWeight={line.leader === "b" ? 700 : 500} fill="var(--color-text)">{line.shown[1]}</text>
       </g>;
     })}
-    {honors && <>
-      <text x={WIDTH / 2} y={honorsTop + 10} textAnchor="middle" fontSize="10" fontWeight="600" fill="var(--color-text-secondary)">{[...new Set(honors.map(entry => entry.season))].join(" / ")} Honors</text>
-      {honorLines.map((row, index) => { const y = honorsTop + 30 + index * ROW + 14; const { marks, tied } = honorMarks(row.key, row.cells); return <g key={row.key}>
-        {/* Wins, selections and the better vote finish in their player's colour, as on the card. */}
-        {row.cells.map((cell, side) => { const leads = Boolean(marks[side]); return <text key={side} x={WIDTH * (side === 0 ? 0.3 : 0.7)} y={y} textAnchor="middle" fontSize="14" fontWeight={leads ? 700 : tied ? 600 : 400}
-          fill={leads ? toneColor(`identity-${side === 0 ? "a" : "b"}`) : cell ? "var(--color-text)" : "var(--color-text-secondary)"}>{cell?.text ?? "—"}</text>; })}
-        <text x={WIDTH / 2} y={y - 1} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{row.label}</text>
-      </g>; })}
-      {!honorLines.length && <text x={WIDTH / 2} y={honorsTop + 44} textAnchor="middle" fontSize="12" fill="var(--color-text-secondary)">—</text>}
-    </>}
+    {missingAccolades && <text x={WIDTH / 2} y={ROWS_TOP + lines.length * ROW + 16} textAnchor="middle" fontSize="10" fontWeight="600" letterSpacing="0.08em" fill="var(--color-text-secondary)">ACCOLADES<tspan fill="var(--color-text-tertiary)"> · NONE</tspan></text>}
+    {honors && (
+      noAwards ? (
+        <text x={WIDTH / 2} y={honorsTop + 14} textAnchor="middle" fontSize="10" fontWeight="600" letterSpacing="0.08em" fill="var(--color-text-secondary)">
+          {`ACCOLADES · ${seasonsLabel.toUpperCase()} HONORS`}
+          <tspan fill="var(--color-text-tertiary)"> · NONE</tspan>
+        </text>
+      ) : honorLines.length === 0 ? (
+        <text x={WIDTH / 2} y={honorsTop + 14} textAnchor="middle" fontSize="10" fontWeight="600" letterSpacing="0.08em" fill="var(--color-text-secondary)">
+          {`${seasonsLabel.toUpperCase()} HONORS`}
+          <tspan fill="var(--color-text-tertiary)">{unknownHonors ? " · UNAVAILABLE" : " · NONE"}</tspan>
+        </text>
+      ) : (
+        <>
+          <text x={WIDTH / 2} y={honorsTop + 10} textAnchor="middle" fontSize="10" fontWeight="600" letterSpacing="0.08em" fill="var(--color-text-secondary)">{seasonsLabel.toUpperCase()} HONORS</text>
+          {honorLines.map((row, index) => {
+            const y = honorsTop + 30 + index * ROW + 14;
+            const { marks, tied } = honorMarks(row.key, row.cells);
+            return <g key={row.key}>
+              {row.cells.map((cell, side) => {
+                const leads = Boolean(marks[side]);
+                return <text key={side} x={WIDTH * (side === 0 ? 0.3 : 0.7)} y={y} textAnchor="middle" fontSize="14" fontWeight={leads ? 700 : tied ? 600 : 400}
+                  fill={leads ? toneColor(`identity-${side === 0 ? "a" : "b"}`) : cell ? "var(--color-text)" : "var(--color-text-secondary)"}>{cell?.text ?? "—"}</text>;
+              })}
+              <text x={WIDTH / 2} y={y - 1} textAnchor="middle" fontSize="11" fontWeight="600" fill="var(--color-text-secondary)">{row.label}</text>
+            </g>;
+          })}
+        </>
+      )
+    )}
     {/* The ball-lens logo beside the wordmark, as on the card (23). */}
     <g transform={`translate(${(WIDTH - markWidth - LOGO - 8) / 2} ${height - 22 - LOGO})`}><BrandMark size={LOGO} framed={false} /></g>
     <path d={WORDMARK_PATH} fill="var(--color-accent)" transform={`translate(${(WIDTH - markWidth - LOGO - 8) / 2 + LOGO + 8} ${height - 20 - MARK}) scale(${MARK / WORDMARK_HEIGHT})`} />
