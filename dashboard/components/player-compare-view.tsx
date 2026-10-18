@@ -19,7 +19,7 @@ import type { GridColumn } from "./compare-grid";
 import { slotTeams } from "./compare-player-slot";
 import { CompareMetricsDrawer } from "./compare-metrics-drawer";
 import { CompareSeasonPicker } from "./compare-season-picker";
-import { CompareSeasonHonors } from "./compare-season-honors";
+import { CompareSeasonHonors, EmptySectionHeading, honorSeasons, honorsNone } from "./compare-season-honors";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { BrandMark } from "./brand";
 import { accoladeGroups, completedSeasons, type AccoladeGroups } from "@/lib/compare-accolades";
@@ -97,6 +97,8 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   // A finished season shows its awards once the cutoff covers its whole regular season (75).
   const ends = completedSeasons(workbenchCatalog?.stats_scopes);
   const accolades = accoladeGroups(bios, [a?.championships, b?.championships], [seasonOf("a"), seasonOf("b")], [cutoffOf("a"), cutoffOf("b")], ends);
+  // Nothing to count and no season honour: both sections fold into one heading line.
+  const noAwards = !accolades.career.length && honorsNone(accolades.season);
   /** Compare one player in another season; the page season clears that player's override. */
   function chooseSeason(side: "a" | "b", season: string) {
     const next = new URLSearchParams(params.toString());
@@ -281,9 +283,11 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
             <table key={`${a.id}-${b.id}-accolades`} className="pvp-rows pvp-fade" aria-label="Accolades">
               <caption className="sr-only">{`Accolades through ${formatDate(context.before_date)}`}</caption>
               <Columns names={[a.name, b.name]} />
-              <tbody><AccoladeRows groups={accolades} names={[a.name, b.name]} quiet={oneSided} /></tbody>
+              <tbody>{noAwards
+                ? <EmptySectionHeading label={`Accolades · ${honorSeasons(accolades.season)} Honors`} spoken={`No accolades or ${honorSeasons(accolades.season)} honors for either player.`} />
+                : <AccoladeRows groups={accolades} names={[a.name, b.name]} quiet={oneSided} />}</tbody>
             </table>
-            <CompareSeasonHonors key={`${a.id}-${b.id}-${seasonOf("a")}-${seasonOf("b")}-honors`} honors={accolades.season} names={[a.name, b.name]} />
+            {!noAwards && <CompareSeasonHonors key={`${a.id}-${b.id}-${seasonOf("a")}-${seasonOf("b")}-honors`} honors={accolades.season} names={[a.name, b.name]} />}
           </div>
           {!rows.length && <GatedNote action={<Button size="md" onClick={() => change({ preset: "custom", customMetrics: CUSTOM_DEFAULT.join(",") })}>Reset metrics</Button>}>No custom metrics selected.</GatedNote>}
           <footer className="pvp-foot"><BrandMark size={22} framed={false} /><CourtLensWordmark height={18} /></footer>
@@ -300,7 +304,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
       <CompareCardExport ref={svgRef} season={context.season} seasons={[seasonOf("a"), seasonOf("b")]} players={[a, b]} rows={rows} availability={availabilityRow}
       percentiles={careerView ? undefined : metric => [cohortRow(a.id), cohortRow(b.id)].map(row => row?.table_qualified ? row.table_percentiles?.[metric] ?? null : null) as [number | null, number | null]} accolades={accolades.career} honors={accolades.season} direction={direction} labels={new Map(metricDefinitions.map(entry => [entry.key, entry]))} title={`${exportTitle} · ${spanLabel} · ${COMPARE_PRESETS[active].label}`} />
     </div>}
-    <CompareMetricsDrawer open={editing} onClose={() => setEditing(false)} selected={custom} catalog={metricDefinitions} views={views}
+    <CompareMetricsDrawer open={editing} onClose={() => setEditing(false)} selected={custom} catalog={metricDefinitions} views={views} mode={careerView ? careerMode : mode}
       onChange={next => change({ preset: "custom", customMetrics: next.join(",") })} />
   </div>;
 }
@@ -383,7 +387,7 @@ function Pill({ side, strength, title, children }: { side: "a" | "b"; strength: 
 
 /** Career accolade counts through the cutoff; season honors use their own badge strips. */
 function AccoladeRows({ groups, names, quiet = false }: { groups: AccoladeGroups; names: [string, string]; quiet?: boolean }) {
-  if (!groups.career.length) return <tr className="pvp-pending"><td colSpan={5}>No accolades on record for either player.</td></tr>;
+  if (!groups.career.length) return <EmptySectionHeading label="Accolades" spoken="No accolades on record for either player." />;
   const row = (counted: AccoladeGroups["career"][number]) => {
     const entry = quiet ? { ...counted, leader: null } : counted;
     const gap = entry.a != null && entry.b != null ? Math.abs(entry.a - entry.b) : null;

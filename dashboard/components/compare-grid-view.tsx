@@ -175,7 +175,7 @@ export function CompareGridView({ columns, span, context, workbenchCatalog, metr
     {columns.length > 0 && <div className="pvp-export" aria-hidden="true">
       <CompareGridExport ref={svgRef} columns={columns} lines={lines} title={`${title} · ${spanLabel} · ${COMPARE_PRESETS[active].label}`} />
     </div>}
-    <CompareMetricsDrawer open={editing} onClose={() => setEditing(false)} selected={custom} catalog={metricDefinitions} views={views}
+    <CompareMetricsDrawer open={editing} onClose={() => setEditing(false)} selected={custom} catalog={metricDefinitions} views={views} mode={shownMode}
       onChange={next => change({ preset: "custom", customMetrics: next.join(",") })} />
   </div>;
 }

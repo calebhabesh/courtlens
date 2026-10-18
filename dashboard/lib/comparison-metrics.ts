@@ -49,6 +49,39 @@ export const COMPARE_PRESETS = {
 export const CUSTOM_DEFAULT = ["pts", "ast", "reb", "ts_pct", "efg_pct"];
 const COUNTS = new Set(["pts", "reb", "oreb", "dreb", "ast", "stl", "blk", "tov", "pf", "min"]);
 
+/** Shooting volume the counting mode does not rate; these have registered per-game twins. */
+const SHOT_COUNTS = new Set(["fgm", "fga", "fg3m", "fg3a", "ftm", "fta"]);
+
+export type FantasyPresetId = "8cat" | "9cat" | "9cat_volume";
+
+/**
+ * Head-to-head category leagues (Edit Metrics quick picks). Each one replaces the Custom picks with
+ * the league's scoring categories; the "volume" variant adds the attempts behind FG% and FT%,
+ * which decide how much a percentage moves a fantasy team.
+ */
+export const FANTASY_PRESETS: { id: FantasyPresetId; label: string; description: string; metrics: string[] }[] = [
+  { id: "8cat", label: "8-Cat", description: "FG%, FT%, 3PM, PTS, REB, AST, STL, BLK",
+    metrics: ["fg_pct", "ft_pct", "fg3m", "pts", "reb", "ast", "stl", "blk"] },
+  { id: "9cat", label: "9-Cat", description: "8-Cat plus turnovers (fewer is better)",
+    metrics: ["fg_pct", "ft_pct", "fg3m", "pts", "reb", "ast", "stl", "blk", "tov"] },
+  { id: "9cat_volume", label: "9-Cat + volume", description: "9-Cat plus FGA and FTA, the volume behind each percentage",
+    metrics: ["fg_pct", "fga", "ft_pct", "fta", "fg3m", "pts", "reb", "ast", "stl", "blk", "tov"] }
+];
+
+/**
+ * A fantasy preset's Custom keys. Box counts follow the counting mode on the card already; shooting
+ * makes and attempts read as season totals in Totals mode and as their per-game twins otherwise.
+ */
+export function fantasyMetricKeys(id: FantasyPresetId, mode: CompareCountingMode, catalog: MetricDefinition[]) {
+  const preset = FANTASY_PRESETS.find(entry => entry.id === id);
+  if (!preset) return [];
+  const known = new Set(catalog.map(metric => metric.key));
+  return preset.metrics.map(key => {
+    const rated = `${key}_per_game`;
+    return SHOT_COUNTS.has(key) && mode !== "raw" && known.has(rated) ? rated : key;
+  }).filter(key => known.has(key));
+}
+
 export function customMetricKeys(value: string | null | undefined, catalog: MetricDefinition[]) {
   if (value == null) return CUSTOM_DEFAULT;
   const known = new Set(catalog.map(metric => metric.key));

@@ -101,6 +101,8 @@
   .pvp-label { color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
   .pvp-group th { height: 26px; padding-top: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
   .pvp-rows tbody > .pvp-group:first-child th { height: 22px; padding-top: 0; }
+  /* An empty section's suffix ("Accolades · None"), quieter than the heading it closes. */
+  .pvp-group-note { color: var(--color-text-tertiary); }
   .pvp-pill {
     display: inline-block; min-width: 52px; padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-pill);
     background: var(--color-identity-a); color: var(--color-on-accent); font-size: var(--text-xs); line-height: var(--text-sm-lh); font-weight: 600;
@@ -212,7 +214,8 @@
   .pvp-drawer-tools { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
   .pvp-drawer-count { color: var(--color-text-secondary); font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
   .pvp-drawer-group { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); margin: 0; padding: 0; border: 0; min-width: 0; }
-  .pvp-drawer-group legend { margin-bottom: var(--space-2); padding: 0; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .pvp-drawer-group legend, .pvp-drawer-legend { margin-bottom: var(--space-2); padding: 0; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .pvp-drawer-presets { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
   @media (width < 600px) {
     .pvp { --pvp-photo: 132px; --pvp-pill-width: 48px; --pvp-label-width: 84px; }
