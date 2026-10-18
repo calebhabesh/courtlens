@@ -1,4 +1,4 @@
-# CourtLens
+# <img src="dashboard/public/icon.svg" width="34" height="34" align="absmiddle" alt="" /> CourtLens
 
 [![CI](https://github.com/calebhabesh/courtlens/actions/workflows/ci.yml/badge.svg)](https://github.com/calebhabesh/courtlens/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
