@@ -30,7 +30,12 @@ from courtlens.domain.metrics import (
     compute_metrics,
 )
 from courtlens.domain.team_analytics import compute_team_schedule_context
-from courtlens.domain.teams import get_team_info, resolve_team_label, resolve_team_tricode
+from courtlens.domain.teams import (
+    get_team_info,
+    resolve_team_label,
+    resolve_team_tricode,
+    team_identity,
+)
 from courtlens.models import new_uuid, utc_now
 from courtlens.services.publication import DEFAULT_CHANNEL
 from courtlens.services.workbench_forecasts import get_player_prospective_forecast
@@ -974,7 +979,7 @@ def get_teams_research(
             ),
         }
 
-        team_info = get_team_info(tid)
+        team_info = team_identity(tid, context.season)
         canonical_id = team_info.team_id if team_info else tid
         tricode = team_info.tricode if team_info else resolve_team_tricode(tid)
         name = team_info.name if team_info else resolve_team_label(tid)
@@ -1043,11 +1048,9 @@ def get_team_detail(
 ) -> dict[str, Any]:
     """Retrieve team details, past games, and participation-scoped player cohort."""
     team_games = _load_team_games(session, context, team_id=team_id)
-    if not team_games:
-        # Check if team is known
-        info = resolve_team_label(team_id)
-        if not info:
-            raise HTTPException(status_code=404, detail="team not found in snapshot")
+    # A team with no games is still known when the catalog names it
+    if not team_games and team_identity(team_id, context.season) is None:
+        raise HTTPException(status_code=404, detail="team not found in snapshot")
 
     gp = len(team_games)
     wins = sum(
@@ -1110,7 +1113,7 @@ def get_team_detail(
         for g in sorted(team_games, key=lambda x: (x["game_date"], x["game_id"]), reverse=True)[:10]
     ]
 
-    team_info = get_team_info(team_id)
+    team_info = team_identity(team_id, context.season)
     canonical_id = team_info.team_id if team_info else team_id
     tricode = team_info.tricode if team_info else resolve_team_tricode(team_id)
     name = team_info.name if team_info else resolve_team_label(team_id)

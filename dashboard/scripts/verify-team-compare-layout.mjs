@@ -13,7 +13,7 @@ try {
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
     await page.goto(new URL("/team-compare?history=1", base).href, { waitUntil: "networkidle" });
-    await expect(page.locator(".tc-draft-tray-drawer")).toHaveAttribute("data-open", "true");
+    await expect(page.locator(".tc-tray-drawer")).toHaveAttribute("data-open", "true");
     await expect(page.locator(".tc-history-scores")).toHaveCSS("display", "grid");
     await expect(page.locator(".tc-history-score-layout").first()).toHaveCSS("display", "grid");
     await expect(page.locator(".tc-history-team-totals")).toHaveCount(2);
@@ -63,7 +63,7 @@ try {
     report.viewports.push({ width, ...geometry, fullBoxRows, topRows, errors });
     if (output) {
       await page.evaluate(() => document.activeElement?.blur());
-      await page.locator(".tc-draft-tray").screenshot({
+      await page.locator(".tc-tray").screenshot({
         path: path.join(output, `history-${width}.png`), animations: "disabled",
         style: ".skip-link:not(:focus) { visibility: hidden; }",
       });

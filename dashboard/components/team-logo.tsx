@@ -1,18 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import catalog from "@/lib/team-branding.json";
+import { teamArtwork } from "@/lib/team-era";
 
-/** Only exact catalog IDs/codes resolve. Historical codes never migrate silently. */
-export function TeamLogo({ team, size = 24 }: { team: string; size?: number }) {
-  const record = catalog.teams.find((entry) => entry.team_id === team || entry.tricode === team);
+/**
+ * Only exact catalog IDs/codes resolve. Era codes (`SEA`) show their era's artwork; with a season,
+ * a team shows the identity and logo it had then (the Thunder in 2005-06 are the Sonics, the
+ * 2000-01 Raptors their first logo).
+ */
+export function TeamLogo({ team, size = 24, season }: { team: string; size?: number; season?: string | null }) {
+  const record = teamArtwork(team, season);
   const [failedAsset, setFailedAsset] = useState<string | null>(null);
   const abbreviation = record?.tricode ?? team;
   return (
     <span
       className="team-logo"
       style={{ "--logo-size": `${size}px` } as React.CSSProperties}
-      title={`${abbreviation}${record ? ` · ${record.artwork_name} artwork (current franchise)` : " · Artwork unavailable"}`}
+      title={`${abbreviation}${record ? ` · ${record.caption}` : " · Artwork unavailable"}`}
       aria-label={abbreviation}
       role="img"
     >

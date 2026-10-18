@@ -126,8 +126,8 @@ function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds, e
   const { player, season } = column;
   const teams = player.teams_chronological;
   const latest = teams.at(-1);
-  const tint = teamBrandColor(latest);
-  const record = teamRecord(latest);
+  const tint = teamBrandColor(latest, season);
+  const record = teamRecord(latest, season);
   const inactive = column.played ? !column.played.includes(season) : !player.item?.games_played;
   const line = inactive ? null : bioLine(column.bio);
   const shownGames = games ?? player.item?.games_played ?? 0;
@@ -153,7 +153,7 @@ function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds, e
           <Link className="pvp-name" href={`/players/${player.player_id}`}>{player.name}</Link>
           {inactive && <span className="pvp-dnp">No Games in {season}</span>}
           {!inactive && teams.length > 0 && <span className="pvp-team">{teams.map(team => <span key={team} className="pvp-team-entry">
-            <TeamLogo team={team} size={16} />{teamRecord(team)?.artwork_name ?? team}</span>)}</span>}
+            <TeamLogo team={team} season={season} size={16} />{teamRecord(team, season)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
           {column.played && <span className="pvp-season">
             <ComparePlayerSeasonPicker label={player.name} season={season} seasons={column.played} awards={column.bio?.reference?.awards}

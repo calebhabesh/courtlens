@@ -25,8 +25,11 @@ import type starterSnapshot from "./starter-evidence.bf09e1d964030a116b25996df57
 
 type StarterEvidence = (typeof starterSnapshot.scopes)[number];
 
-export type DraftSide = {
+export type TeamSide = {
+  /** Franchise id: the selection the URL, picker and swap keep. */
   teamId: string;
+  /** The id this season's games are stored under (SEA for the Thunder in 2005-06). */
+  dataTeamId: string;
   season: string;
   beforeDate: string;
   detail: TeamDetailResponse | null;
@@ -78,14 +81,14 @@ type TeamMetricSpec = {
   group: string;
   lowBetter?: boolean;
   neutral?: boolean;
-  read: (side: DraftSide) => { num: number | null; text: string };
+  read: (side: TeamSide) => { num: number | null; text: string };
 };
 
 const number = (n: number | null | undefined, signed = false) => n == null ? "—" : `${signed && n > 0 ? "+" : ""}${n.toFixed(1)}`;
 const percentage = (n: number | null | undefined) => n == null ? "—" : `${(n * 100).toFixed(1)}%`;
 const splitRecord = (split: { wins: number; losses: number; win_pct: number | null } | null | undefined) =>
   split ? { num: split.win_pct ?? (split.wins + split.losses > 0 ? split.wins / (split.wins + split.losses) : null), text: `${split.wins}–${split.losses}` } : { num: null, text: "—" };
-const factorVal = (side: DraftSide, list: "offense_factors" | "defense_factors", key: string) => {
+const factorVal = (side: TeamSide, list: "offense_factors" | "defense_factors", key: string) => {
   const item = side.factors?.[list]?.find(m => m.key === key);
   const v = item?.value ?? null;
   return { num: v, text: item?.unit === "percentage" ? percentage(v) : key.endsWith("ftr") ? v?.toFixed(3) ?? "—" : number(v) };
@@ -130,8 +133,10 @@ const TEAM_METRICS: TeamMetricSpec[] = [
 const DEFAULT_TEAM_KEYS = ["record", "ppg", "opp_ppg", "off_rating", "def_rating", "net_rating", "pace", "efg_pct", "tov_pct", "oreb_pct", "ftr"];
 const TEAM_LIMIT = 25;
 
-const tricode = (side: DraftSide) => side.detail?.team.tricode ?? "—";
-const teamName = (side: DraftSide) => side.detail?.team.name ?? "Team unavailable";
+const tricode = (side: TeamSide) => side.detail?.team.tricode ?? "—";
+/** The season's own code (SEA, or CHA for the Bobcats with the season) for artwork and colours. */
+const brandKey = (side: TeamSide) => side.detail?.team.tricode ?? side.teamId;
+const teamName = (side: TeamSide) => side.detail?.team.name ?? "Team unavailable";
 const POSITIONS = ["PG", "SG", "SF", "PF", "C"];
 type TeamTheme = CSSProperties & { "--tc-team-a": string; "--tc-team-b": string; "--tc-brand-a": string; "--tc-brand-b": string };
 
@@ -152,10 +157,10 @@ type SeriesSummary = {
   games: TeamScheduleGameItem[];
 };
 
-function seriesSummary(a: DraftSide, b: DraftSide, phase: string): SeriesSummary | null {
+function seriesSummary(a: TeamSide, b: TeamSide, phase: string): SeriesSummary | null {
   if (a.season !== b.season || a.teamId === b.teamId || !a.schedule) return null;
   const codeA = tricode(a), codeB = tricode(b);
-  const games = a.schedule.games.filter(g => g.opponent_id === b.teamId || (codeB !== "—" && g.opponent_tricode === codeB));
+  const games = a.schedule.games.filter(g => g.opponent_id === b.dataTeamId || (codeB !== "—" && g.opponent_tricode === codeB));
   const winsA = games.filter(g => g.is_win === true).length;
   const winsB = games.filter(g => g.is_win === false).length;
   const winner: "a" | "b" | null = winsA > winsB ? "a" : winsB > winsA ? "b" : null;
@@ -166,17 +171,24 @@ function seriesSummary(a: DraftSide, b: DraftSide, phase: string): SeriesSummary
   return { label, winsA, winsB, winner, text: `${codeA} ${winsA}–${winsB} ${codeB}`, detail, games };
 }
 
-export function TeamComparisonPrototype({ a, b, catalog, phase }: { a: DraftSide; b: DraftSide; catalog: WorkbenchCatalog; phase: string }) {
+export function TeamComparison({ a, b, catalog, phase }: { a: TeamSide; b: TeamSide; catalog: WorkbenchCatalog; phase: string }) {
   const router = useRouter(), params = useSearchParams();
   const [pending, startTransition] = useTransition();
   const view = params.get("view") === "stats" || params.get("tab") === "factors" ? "stats" : "rotations";
-  const order = params.get("order") === "rank" ? "rank" : "position";
+  // Verified starters exist only at a phase's end; without them on both sides, order by rank.
+  const observedUnit = [a, b].every(side => side.starterEvidence?.unit_players.length === 5);
+  const order = params.get("order") === "rank" || !observedUnit ? "rank" : "position";
   const depth = params.get("depth") === "8" ? "8" : params.get("depth") === "all" ? "all" : "12";
   const parsedRotKeys = (params.get("rotMetrics")?.split(",") ?? []).filter(k => ROTATION_METRICS.some(m => m.value === k));
   const rotKeys = parsedRotKeys.length > 0 ? parsedRotKeys : DEFAULT_ROTATION_KEYS;
-  const rotOptions = ROTATION_METRICS.filter(m => rotKeys.includes(m.value));
+  // DARKO is its forecast at the phase's last game date, so an earlier Through has none to show.
+  const darkoOff = [a, b].some(side => side.players?.darko?.status === "unavailable");
+  const rotOptions = ROTATION_METRICS.filter(m => rotKeys.includes(m.value)).map(m => {
+    const disabled = darkoOff && m.group === "Impact";
+    return { ...m, disabled, title: disabled ? `${m.title}: published for the end of the ${phase === "playoffs" ? "playoffs" : "regular season"} only` : m.title };
+  });
   const requestedMetric = params.get("metric");
-  const activeSpec = ROTATION_METRICS.find(m => m.value === requestedMetric && rotKeys.includes(m.value)) ?? rotOptions[0] ?? ROTATION_METRICS[0];
+  const activeSpec = rotOptions.find(m => m.value === requestedMetric && !m.disabled) ?? rotOptions.find(m => !m.disabled) ?? ROTATION_METRICS.find(m => m.value === "pts_per_game")!;
   const metric = activeSpec.value;
   const parsedTeamKeys = (params.get("teamMetrics")?.split(",") ?? []).filter(k => TEAM_METRICS.some(m => m.key === k));
   const teamKeys = parsedTeamKeys.length > 0 ? parsedTeamKeys : DEFAULT_TEAM_KEYS;
@@ -188,10 +200,10 @@ export function TeamComparisonPrototype({ a, b, catalog, phase }: { a: DraftSide
   const metricLabel = activeSpec.label;
   const series = seriesSummary(a, b, phase);
   const theme: TeamTheme = {
-    "--tc-team-a": teamAccent(a.teamId) ?? "var(--color-identity-a)",
-    "--tc-team-b": teamAccent(b.teamId) ?? "var(--color-identity-b)",
-    "--tc-brand-a": teamBrandColor(a.teamId) ?? "var(--color-surface-3)",
-    "--tc-brand-b": teamBrandColor(b.teamId) ?? "var(--color-surface-3)",
+    "--tc-team-a": teamAccent(brandKey(a), a.season) ?? "var(--color-identity-a)",
+    "--tc-team-b": teamAccent(brandKey(b), b.season) ?? "var(--color-identity-b)",
+    "--tc-brand-a": teamBrandColor(brandKey(a), a.season) ?? "var(--color-surface-3)",
+    "--tc-brand-b": teamBrandColor(brandKey(b), b.season) ?? "var(--color-surface-3)",
   };
   const presentation = (values: Record<string, string>) => {
     const url = new URL(window.location.href);
@@ -208,7 +220,7 @@ export function TeamComparisonPrototype({ a, b, catalog, phase }: { a: DraftSide
     Object.entries(values).forEach(([key, value]) => next.set(key, value));
     startTransition(() => router.push(`/team-compare?${next}`, { scroll: false }));
   };
-  function rows(side: DraftSide) {
+  function rows(side: TeamSide) {
     // Membership, box scores and minutes come from the team's actual participation cohort.
     // DARKO remains a player-season model value, never a team-stint estimate.
     const ranked = (side.players?.items ?? []).map<PlayerResearchItem>(player => {
@@ -237,32 +249,31 @@ export function TeamComparisonPrototype({ a, b, catalog, phase }: { a: DraftSide
   }
   const playersA = rows(a), playersB = rows(b);
   const count = Math.max(playersA.length, playersB.length);
-  const observedUnit = [a, b].every(side => side.starterEvidence?.unit_players.length === 5);
-  const startsLabel = (side: DraftSide, player: PlayerResearchItem) => {
+  const startsLabel = (side: TeamSide, player: PlayerResearchItem) => {
     const entry = side.starterEvidence?.players.find(row => row.player_id === player.player_id);
     return entry?.starts == null ? "— GS" : `${entry.starts}${entry.unknown_appearances ? "+" : ""} GS`;
   };
-  const unitRole = (side: DraftSide, player: PlayerResearchItem | undefined) => side.starterEvidence?.unit_players.find(row => row.player_id === player?.player_id)?.position ?? "—";
-  const seasonPicker = (side: DraftSide, key: "a" | "b") => <Select size="sm" aria-label={`Team ${key.toUpperCase()} season`} value={side.season}
+  const unitRole = (side: TeamSide, player: PlayerResearchItem | undefined) => side.starterEvidence?.unit_players.find(row => row.player_id === player?.player_id)?.position ?? "—";
+  const seasonPicker = (side: TeamSide, key: "a" | "b") => <Select size="sm" aria-label={`Team ${key.toUpperCase()} season`} value={side.season}
     onChange={e => change({ [key === "a" ? "seasonA" : "seasonB"]: e.target.value })}>
     {[...catalog.seasons].reverse().map(season => <option key={season}>{season}</option>)}
   </Select>;
-  const teamSlot = (side: DraftSide, key: "a" | "b") => <div className="tc-draft-team" data-side={key}>
-    <div className="tc-draft-team-art"><TeamLogo team={side.detail?.team.tricode ?? side.teamId} size={144} />
-      <span className="tc-draft-team-edit"><IconButton size="sm" variant="ghost" icon="search" label={`Choose ${key === "a" ? "left" : "right"} team`} onClick={() => setPicker(key)} /></span>
+  const teamSlot = (side: TeamSide, key: "a" | "b") => <div className="tc-team" data-side={key}>
+    <div className="tc-team-art"><TeamLogo team={brandKey(side)} season={side.season} size={144} />
+      <span className="tc-team-edit"><IconButton size="sm" variant="ghost" icon="search" label={`Choose ${key === "a" ? "left" : "right"} team`} onClick={() => setPicker(key)} /></span>
     </div>
     <h2>{teamName(side)}</h2>
-    <div className="tc-draft-team-controls"><Button size="xs" variant="ghost" iconAfter="chevron-down" aria-label={`Change Team ${key.toUpperCase()}: ${teamName(side)}`} onClick={() => setPicker(key)}>{tricode(side)}</Button>{seasonPicker(side, key)}</div>
+    <div className="tc-team-controls"><Button size="xs" variant="ghost" iconAfter="chevron-down" aria-label={`Change Team ${key.toUpperCase()}: ${teamName(side)}`} onClick={() => setPicker(key)}>{tricode(side)}</Button>{seasonPicker(side, key)}</div>
     <p>{side.detail ? `${side.detail.record.wins}–${side.detail.record.losses} · ${side.detail.record.games_played} GP` : "No games in this scope"}</p>
   </div>;
-  const playerCell = (player: PlayerResearchItem | undefined, side: DraftSide, key: "a" | "b", leading: boolean, gap: number | null) => <td className="tc-draft-player-cell" data-side={key} data-leading={leading || undefined}>
-    {player ? <div className="tc-draft-player">
+  const playerCell = (player: PlayerResearchItem | undefined, side: TeamSide, key: "a" | "b", leading: boolean, gap: number | null) => <td className="tc-player-cell" data-side={key} data-leading={leading || undefined}>
+    {player ? <div className="tc-player">
       <PlayerPortrait playerId={player.player_id} name={player.player_name} portraitUrl={player.portrait_url} era={{ season: side.season, team: tricode(side) }} size="md" />
-      <div className="tc-draft-player-name"><Link href={`/players/${player.player_id}?season=${side.season}&phase=${phase}&beforeDate=${side.beforeDate}`} title={player.player_name}><span className="tc-draft-player-label">{player.player_name}</span></Link>
-        <span><span title="Estimated position">{player.position ?? "Position unknown"}</span><span className="tc-draft-games"> · {player.games_played} GP</span><span className="tc-draft-starts" title="Verified starts in games with a complete starting five. A plus means additional appearances have unknown start status.">{startsLabel(side, player)}</span></span>
+      <div className="tc-player-name"><Link href={`/players/${player.player_id}?season=${side.season}&phase=${phase}&beforeDate=${side.beforeDate}`} title={player.player_name}><span className="tc-player-label">{player.player_name}</span></Link>
+        <span><span title="Estimated position">{player.position ?? "Position unknown"}</span><span className="tc-games"> · {player.games_played} GP</span><span className="tc-starts" title="Verified starts in games with a complete starting five. A plus means additional appearances have unknown start status.">{startsLabel(side, player)}</span></span>
         {leading && gap != null && <span className="sr-only">{activeSpec.lowBetter ? "Lower" : "Higher"} {metricLabel} in this pair by {gap.toFixed(1)}.</span>}</div>
-      <strong className="tc-draft-rating" title={`${player.player_name}: ${metricLabel}`}>{formatPlayerMetric(activeSpec, player.metrics[metric])}</strong>
-    </div> : <span className="tc-draft-unknown">—</span>}
+      <strong className="tc-rating" title={`${player.player_name}: ${metricLabel}`}>{formatPlayerMetric(activeSpec, player.metrics[metric])}</strong>
+    </div> : <span className="tc-unknown">—</span>}
   </td>;
 
   const needle = metricQuery.trim().toLowerCase();
@@ -275,26 +286,26 @@ export function TeamComparisonPrototype({ a, b, catalog, phase }: { a: DraftSide
     items: TEAM_METRICS.filter(m => m.group === group && (!needle || [m.short, m.label, m.key].some(t => t.toLowerCase().includes(needle)))),
   })).filter(g => g.items.length > 0);
 
-  return <div className="tc-draft" aria-busy={pending} style={theme}>
+  return <div className="tc-page" aria-busy={pending} style={theme}>
     <PageHeader icon="swap" title="Team Comparison" subtitle="Two team seasons. One side-by-side view." />
-    <div className="tc-draft-console"><FilterBar label="Team comparison controls" summary={phase === "playoffs" ? "Playoffs" : "Regular Season"}
+    <div className="tc-console"><FilterBar label="Team comparison controls" summary={phase === "playoffs" ? "Playoffs" : "Regular Season"}
       scope={<Segmented size="sm" label="Season phase" value={phase} options={[{ value: "regular_season", label: "Regular Season" }, { value: "playoffs", label: "Playoffs" }]} onChange={value => change({ phase: value })} />}
-      modes={<div className="tc-draft-modes">
+      modes={<div className="tc-modes">
         <Segmented size="sm" label="Comparison view" value={view} onChange={value => presentation({ view: value })} options={[{ value: "rotations", label: "Rotations" }, { value: "stats", label: "Team Stats" }]} />
         <Button size="sm" variant="primary" icon="sliders" onClick={() => { setDrawerScope(view); setEditing(true); }}>Edit Metrics</Button>
       </div>}
       details={<Button size="sm" variant="ghost" icon="info" onClick={() => setDetails(true)}>Data details</Button>} />
     </div>
-    <div className="tc-draft-column">
-      <div className="tc-draft-stack">
-        <section className="tc-draft-card" aria-label="Team comparison" data-pending={pending || undefined}>
-          <div className="tc-draft-teams">{teamSlot(a, "a")}
-            <div className="tc-draft-versus">
-              {series && <div className="tc-draft-series" title={series.detail}>
+    <div className="tc-column">
+      <div className="tc-stack">
+        <section className="tc-card" aria-label="Team comparison" data-pending={pending || undefined}>
+          <div className="tc-teams">{teamSlot(a, "a")}
+            <div className="tc-versus">
+              {series && <div className="tc-series" title={series.detail}>
                 <span className="sr-only">{series.label}: {series.text}</span>
-                <strong className="tc-draft-series-num" data-side="a" data-leading={series.winner === "a" || undefined} aria-hidden="true">{series.winsA}</strong>
-                <span className="tc-draft-series-sep" aria-hidden="true">-</span>
-                <strong className="tc-draft-series-num" data-side="b" data-leading={series.winner === "b" || undefined} aria-hidden="true">{series.winsB}</strong>
+                <strong className="tc-series-num" data-side="a" data-leading={series.winner === "a" || undefined} aria-hidden="true">{series.winsA}</strong>
+                <span className="tc-series-sep" aria-hidden="true">-</span>
+                <strong className="tc-series-num" data-side="b" data-leading={series.winner === "b" || undefined} aria-hidden="true">{series.winsB}</strong>
               </div>}
               <span>vs</span>
               <IconButton icon="swap" label="Swap teams and seasons" size="sm" onClick={() => change({ teamA: b.teamId, teamB: a.teamId, seasonA: b.season, seasonB: a.season })} />
@@ -302,13 +313,13 @@ export function TeamComparisonPrototype({ a, b, catalog, phase }: { a: DraftSide
             {teamSlot(b, "b")}
           </div>
           {view === "rotations" ? <>
-            <div className="tc-draft-options"><Segmented size="sm" dense label="Rotation metric" value={metric} onChange={value => presentation({ metric: value })} options={rotOptions} />
-              <div className="tc-draft-order"><Segmented size="sm" dense label="Rotation order" value={order} onChange={value => presentation({ order: value })} options={[{ value: "rank", label: "By Rank" }, { value: "position", label: "By Position" }]} />
+            <div className="tc-options"><Segmented size="sm" dense label="Rotation metric" value={metric} onChange={value => presentation({ metric: value })} options={rotOptions} />
+              <div className="tc-order"><Segmented size="sm" dense label="Rotation order" value={order} onChange={value => presentation({ order: value })} options={[{ value: "rank", label: "By Rank" }, { value: "position", label: "By Position", disabled: !observedUnit, title: observedUnit ? undefined : "Verified starting fives are only available at the end of a phase" }]} />
                 <Select size="sm" aria-label="Rotation depth" value={depth} onChange={e => presentation({ depth: e.target.value })}><option value="8">Top 8</option><option value="12">Top 12</option><option value="all">All Players</option></Select></div>
             </div>
-            <table className="tc-draft-rotations" aria-label="Paired player rotations"><colgroup><col /><col className="tc-draft-rank-col" /><col /></colgroup>
+            <table className="tc-rotations" aria-label="Paired player rotations"><colgroup><col /><col className="tc-rank-col" /><col /></colgroup>
               <thead><tr><th scope="col" aria-label={teamName(a)} /><th scope="col">{metricLabel === "DARKO" ? "DPM" : metricLabel}<br />{order === "rank" ? "Rank" : "Role"}</th><th scope="col" aria-label={teamName(b)} /></tr></thead>
-              <tbody key={`${a.teamId}-${b.teamId}-${a.season}-${b.season}-${metric}-${order}-${depth}`} className="tc-draft-fade">
+              <tbody key={`${a.teamId}-${b.teamId}-${a.season}-${b.season}-${metric}-${order}-${depth}`} className="tc-fade">
                 {Array.from({ length: count }, (_, i) => {
                   const first = playersA[i]?.metrics[metric], second = playersB[i]?.metrics[metric];
                   const scale = activeSpec.unit === "pct" ? 100 : 1;
@@ -317,16 +328,16 @@ export function TeamComparisonPrototype({ a, b, catalog, phase }: { a: DraftSide
                   const leader = x != null && y != null && x !== y ? (activeSpec.lowBetter ? x < y : x > y) ? "a" : "b" : null;
                   const gap = x != null && y != null ? Math.abs(x - y) : null;
                   return <Fragment key={i}>
-                    {order === "position" && observedUnit && (i === 0 || i === 5) && <tr className="tc-draft-section"><th colSpan={3} scope="colgroup"><span>{i === 0 ? "Most-used Starting Five" : "Bench & Alternate Starters"}</span></th></tr>}
-                    <tr className="tc-draft-matchup">{playerCell(playersA[i], a, "a", leader === "a", gap)}<th scope="row"><span>{order === "position" && observedUnit && i < 5 ? unitRole(a, playersA[i]) === unitRole(b, playersB[i]) ? unitRole(a, playersA[i]) : `${unitRole(a, playersA[i])}/${unitRole(b, playersB[i])}` : `#${i + 1}`}</span></th>{playerCell(playersB[i], b, "b", leader === "b", gap)}</tr>
+                    {order === "position" && observedUnit && (i === 0 || i === 5) && <tr className="tc-section"><th colSpan={3} scope="colgroup"><span>{i === 0 ? "Most-used Starting Five" : "Bench & Alternate Starters"}</span></th></tr>}
+                    <tr className="tc-matchup">{playerCell(playersA[i], a, "a", leader === "a", gap)}<th scope="row"><span>{order === "position" && observedUnit && i < 5 ? unitRole(a, playersA[i]) === unitRole(b, playersB[i]) ? unitRole(a, playersA[i]) : `${unitRole(a, playersA[i])}/${unitRole(b, playersB[i])}` : `#${i + 1}`}</span></th>{playerCell(playersB[i], b, "b", leader === "b", gap)}</tr>
                   </Fragment>;
                 })}
                 {!count && <tr><td colSpan={3}>No player data in this scope. Try another season or phase.</td></tr>}
               </tbody>
             </table>
           </> : <TeamStats a={a} b={b} selectedKeys={teamKeys} />}
-          {view === "rotations" && <p className="tc-draft-coverage">Verified starting lineups: {tricode(a)} {a.starterEvidence?.verified_games ?? "—"}/{a.starterEvidence?.team_games ?? a.detail?.record.games_played ?? "—"} games · {tricode(b)} {b.starterEvidence?.verified_games ?? "—"}/{b.starterEvidence?.team_games ?? b.detail?.record.games_played ?? "—"} games{!observedUnit ? " · Starting unit unavailable in this scope." : ""}</p>}
-          <footer className="tc-draft-footer"><BrandMark size={20} framed={false} /><CourtLensWordmark height={16} /></footer>
+          {view === "rotations" && <p className="tc-coverage">Verified starting lineups: {tricode(a)} {a.starterEvidence?.verified_games ?? "—"}/{a.starterEvidence?.team_games ?? a.detail?.record.games_played ?? "—"} games · {tricode(b)} {b.starterEvidence?.verified_games ?? "—"}/{b.starterEvidence?.team_games ?? b.detail?.record.games_played ?? "—"} games{!observedUnit ? " · Starting unit unavailable in this scope." : ""}{darkoOff ? " · DARKO is published for the end of the phase only." : ""}</p>}
+          <footer className="tc-footer"><BrandMark size={20} framed={false} /><CourtLensWordmark height={16} /></footer>
         </section>
         <TeamGameHistoryTray a={a} b={b} phase={phase} releaseId={catalog.release_id} series={series} onUrlChange={presentation} />
       </div>
@@ -382,7 +393,7 @@ export function TeamComparisonPrototype({ a, b, catalog, phase }: { a: DraftSide
       </div>
     </Drawer>
     <Modal className="roster-picker-modal" isOpen={picker !== null} onClose={() => setPicker(null)} title={`Choose Team ${picker?.toUpperCase() ?? ""}`} description="Choose a franchise, then set its season on the card.">
-      <TeamGrid edgeHighlights={false} selected={picker === "a" ? a.teamId : b.teamId} onSelect={teamId => { if (picker) change({ [picker === "a" ? "teamA" : "teamB"]: teamId }); setPicker(null); }} />
+      <TeamGrid edgeHighlights={false} season={picker === "b" ? b.season : a.season} selected={picker === "a" ? a.teamId : b.teamId} onSelect={teamId => { if (picker) change({ [picker === "a" ? "teamA" : "teamB"]: teamId }); setPicker(null); }} />
     </Modal>
     <DataDetails open={details} onClose={() => setDetails(false)} scope={{ releaseId: catalog.release_id, phase }} rows={[
       { label: "Team A", value: `${teamName(a)} · ${a.season} · Through ${formatDate(throughDateFromBefore(a.beforeDate))}` },
@@ -436,7 +447,7 @@ function sortBoxPlayers(players: LivePlayer[], code: string): LivePlayer[] {
 }
 
 function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
-  a: DraftSide; b: DraftSide; phase: string; releaseId: string; series: SeriesSummary | null;
+  a: TeamSide; b: TeamSide; phase: string; releaseId: string; series: SeriesSummary | null;
   onUrlChange: (values: Record<string, string>) => void;
 }) {
   const params = useSearchParams();
@@ -516,11 +527,11 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
     { key: "tov", label: "TOV", a: total(totalsA.tov), b: total(totalsB.tov), lowBetter: true },
   ];
 
-  const renderPlayerBox = (players: LivePlayer[], side: DraftSide, sideKey: "a" | "b") => <div className="tc-history-box-side" data-side={sideKey}>
+  const renderPlayerBox = (players: LivePlayer[], side: TeamSide, sideKey: "a" | "b") => <div className="tc-history-box-side" data-side={sideKey}>
     <table className="tc-history-box-table" aria-label={`${teamName(side)} game box score`}>
       <thead>
         <tr>
-          <th scope="col"><span className="tc-history-box-team"><TeamLogo team={tricode(side)} size={16} /><span>{tricode(side)}</span></span></th>
+          <th scope="col"><span className="tc-history-box-team"><TeamLogo team={tricode(side)} season={side.season} size={16} /><span>{tricode(side)}</span></span></th>
           <th scope="col">MIN</th>
           <th scope="col">PTS</th>
           <th scope="col">REB</th>
@@ -550,10 +561,10 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
     </table>
   </div>;
 
-  return <div className="tc-draft-tray">
-    {kept && <div className="tc-draft-tray-drawer" data-open={open || undefined} ref={drawerRef} inert={!open}>
-      <div className="tc-draft-tray-clip">
-        <div className="tc-draft-tray-body" id="tc-history-drawer">
+  return <div className="tc-tray">
+    {kept && <div className="tc-tray-drawer" data-open={open || undefined} ref={drawerRef} inert={!open}>
+      <div className="tc-tray-clip">
+        <div className="tc-tray-body" id="tc-history-drawer">
           {series ? games.length > 0 ? <>
             <div className="tc-history-scores" role="group" aria-label={`${series.label} game scores`}>
                 {games.map((g, idx) => {
@@ -569,11 +580,11 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
                           {winA && margin != null && <span className="tc-history-margin" data-side="a">+{margin}</span>}
                           <strong className="tc-history-pts-val">{g.team_points ?? "—"}</strong>
                         </span>
-                        <span className="tc-history-team-tag"><TeamLogo team={codeA} size={18} /><span>{codeA}</span></span>
+                        <span className="tc-history-team-tag"><TeamLogo team={codeA} season={a.season} size={18} /><span>{codeA}</span></span>
                       </span>
                       <span className="tc-history-game-meta"><span>G{idx + 1} · {formatDate(g.game_date)}</span><span>{venue}{g.is_win === null ? " · Unknown" : ""}</span></span>
                       <span className="tc-history-score-side" data-side="b" data-leading={winB || undefined}>
-                        <span className="tc-history-team-tag"><TeamLogo team={codeB} size={18} /><span>{codeB}</span></span>
+                        <span className="tc-history-team-tag"><TeamLogo team={codeB} season={b.season} size={18} /><span>{codeB}</span></span>
                         <span className="tc-history-score-result">
                           <strong className="tc-history-pts-val">{g.opponent_points ?? "—"}</strong>
                           {winB && margin != null && <span className="tc-history-margin" data-side="b">+{margin}</span>}
@@ -594,9 +605,9 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
                     <table key={group.label} className="tc-history-team-totals" aria-label={group.label}>
                       <colgroup><col className="tc-history-team-col" /><col /><col /><col /></colgroup>
                       <thead><tr><th scope="col">Team</th>{group.items.map(item => <th key={item.key} scope="col">{item.label}</th>)}</tr></thead>
-                      <tbody>{[{ key: "a", code: codeA }, { key: "b", code: codeB }].map(side =>
+                      <tbody>{[{ key: "a", code: codeA, season: a.season }, { key: "b", code: codeB, season: b.season }].map(side =>
                         <tr key={side.key}>
-                          <th scope="row"><span className="tc-history-total-team"><TeamLogo team={side.code} size={16} /><span>{side.code}</span></span></th>
+                          <th scope="row"><span className="tc-history-total-team"><TeamLogo team={side.code} season={side.season} size={16} /><span>{side.code}</span></span></th>
                           {group.items.map(item => {
                             const value = side.key === "a" ? item.a : item.b;
                             const lead = item.a.num != null && item.b.num != null && item.a.num !== item.b.num
@@ -635,7 +646,7 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
         </div>
       </div>
     </div>}
-    <div className="tc-draft-tray-tab">
+    <div className="tc-tray-tab">
       <Button size="sm" variant="ghost" icon="history" iconAfter={open ? "chevron-up" : "chevron-down"} aria-expanded={open} aria-controls="tc-history-drawer" onClick={toggle}>
         Game History
       </Button>
@@ -643,11 +654,11 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
   </div>;
 }
 
-function TeamStats({ a, b, selectedKeys }: { a: DraftSide; b: DraftSide; selectedKeys: string[] }) {
+function TeamStats({ a, b, selectedKeys }: { a: TeamSide; b: TeamSide; selectedKeys: string[] }) {
   const specs = TEAM_METRICS.filter(m => selectedKeys.includes(m.key));
-  return <table className="tc-draft-stats" aria-label="Team statistics">
+  return <table className="tc-stats" aria-label="Team statistics">
     <thead className="sr-only"><tr><th>{teamName(a)}</th><th>Metric</th><th>{teamName(b)}</th></tr></thead>
-    <tbody className="tc-draft-fade">
+    <tbody className="tc-fade">
       {specs.map((spec, index) => {
         const showGroup = index === 0 || specs[index - 1].group !== spec.group;
         const valA = spec.read(a), valB = spec.read(b);
@@ -655,7 +666,7 @@ function TeamStats({ a, b, selectedKeys }: { a: DraftSide; b: DraftSide; selecte
         const y = valB.num == null ? null : Number(valB.num.toFixed(4));
         const leader = !spec.neutral && x != null && y != null && x !== y ? (spec.lowBetter ? x < y : x > y) ? "a" : "b" : null;
         return <Fragment key={spec.key}>
-          {showGroup && <tr className="tc-draft-stats-group"><th colSpan={3} scope="colgroup">{spec.group}</th></tr>}
+          {showGroup && <tr className="tc-stats-group"><th colSpan={3} scope="colgroup">{spec.group}</th></tr>}
           <tr>
             <td data-leading={leader === "a" || undefined}>{valA.text}</td>
             <th scope="row">{spec.label}</th>

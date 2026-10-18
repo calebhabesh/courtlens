@@ -5,12 +5,12 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "next/navigation";
 import { EntityField } from "./entity-picker";
 import { PlayerPortrait } from "./player-portrait";
-import teamBranding from "@/lib/team-branding.json";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 import { ComparePlayerSeasonPicker } from "./compare-player-season-picker";
 import { formatHeight } from "./player-bio-header";
 import { teamBrandColor } from "@/lib/team-colors";
+import { teamArtwork } from "@/lib/team-era";
 import type { ComparisonPlayer, PlayerBio } from "@/lib/types";
 import type { SeasonEnds } from "@/lib/compare-accolades";
 
@@ -24,9 +24,9 @@ export function bioLine(bio: PlayerBio | null | undefined): string | null {
   return parts.length ? parts.join(" · ") : null;
 }
 
-/** A team's catalog record (full name and logo artwork); null for codes without artwork. */
-export function teamRecord(team: string | undefined) {
-  return team ? teamBranding.teams.find(entry => entry.tricode === team || entry.team_id === team) ?? null : null;
+/** A team's name and logo as they were in the season (the Sonics' in 2007-08); null without artwork. */
+export function teamRecord(team: string | undefined, season?: string | null) {
+  return teamArtwork(team, season);
 }
 
 /** The scope's teams oldest first; a traded player's latest team (the photo, tint) is last. */
@@ -68,12 +68,12 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
   const label = `Player ${side.toUpperCase()}`;
   const teams = slotTeams(player);
   const latest = teams.at(-1);
-  const tint = teamBrandColor(latest);
+  const tint = teamBrandColor(latest, season);
   // No Games in the compared season (39, 43): say so plainly instead of an empty identity.
   const inactive = season != null && (playedSeasons ? !playedSeasons.includes(season) : player.games_played === 0);
   const line = inactive ? null : bioLine(bio);
   const span = playedSeasons?.length ? `${playedSeasons[0]} – ${playedSeasons.at(-1)}` : null;
-  const record = teamRecord(latest);
+  const record = teamRecord(latest, season);
 
   return <div className="pvp-slot pvp-fade" data-identity={side} data-inactive={inactive || undefined}
     style={tint ? ({ "--team-tint": tint } as CSSProperties) : undefined}>
@@ -103,7 +103,7 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
           {/* Full team names with small logos, oldest first: "Brooklyn Nets, Phoenix Suns" (32, 35). */}
           {inactive && <span className="pvp-dnp">No Games in {season}{span ? <><br />Played {span}</> : null}</span>}
           {!inactive && teams.length > 0 && <span className="pvp-team">{teams.map(team => <span key={team} className="pvp-team-entry">
-            <TeamLogo team={team} size={16} />{teamRecord(team)?.artwork_name ?? team}</span>)}</span>}
+            <TeamLogo team={team} season={season} size={16} />{teamRecord(team, season)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
           {onSeason && season && playedSeasons && <span className="pvp-season">
             <ComparePlayerSeasonPicker label={label} season={season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} beforeDate={beforeDate} ends={ends} align={side === "a" ? "left" : "right"} onSelect={onSeason} />

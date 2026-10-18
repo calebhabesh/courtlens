@@ -19,8 +19,17 @@ describe("team accents", () => {
     expect(teamAccent("NOP")).not.toBe(teamBrandColor("NOP"));
   });
 
-  it("returns null for unknown or historical codes instead of guessing", () => {
-    expect(teamAccent("SEA")).toBeNull();
+  it("returns null for unknown codes instead of guessing", () => {
+    expect(teamAccent("XYZ")).toBeNull();
     expect(teamAccent(null)).toBeNull();
+  });
+
+  it("colors era codes and franchises by the identity they had that season", () => {
+    expect(teamBrandColor("SEA")).toBe("#00653A");
+    expect(teamBrandColor("1610612760", "2005-06")).toBe("#00653A");
+    expect(teamBrandColor("1610612760", "2010-11")).toBe(teamBrandColor("OKC"));
+    expect(teamBrandColor("CHA", "2008-09")).toBe("#1D5BA6");
+    expect(teamBrandColor("CHA")).toBe(teamBrandColor("1610612766"));
+    for (const era of catalog.eras) expect(contrastRatio(teamAccent(era.code, era.last_season)!, "#0C0D10")).toBeGreaterThanOrEqual(3);
   });
 });

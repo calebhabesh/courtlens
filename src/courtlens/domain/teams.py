@@ -98,6 +98,209 @@ NBA_TEAMS: dict[str, TeamInfo] = {
 TRICODE_TO_TEAM: dict[str, TeamInfo] = {team.tricode: team for team in NBA_TEAMS.values()}
 
 
+@dataclass(frozen=True)
+class TeamEra:
+    """A franchise's earlier identity (Seattle SuperSonics for the Thunder) over inclusive seasons.
+
+    Releases key the games of most eras by their own code (``SEA``) instead of the franchise id;
+    ``stored_as_code`` is False for eras kept under the franchise id (the Charlotte Bobcats).
+    """
+
+    code: str
+    franchise_id: str
+    name: str
+    city: str
+    conference: str
+    division: str
+    first_season: str
+    last_season: str
+    stored_as_code: bool = True
+
+    def covers(self, season: str) -> bool:
+        return (
+            _season_start(self.first_season)
+            <= _season_start(season)
+            <= _season_start(self.last_season)
+        )
+
+
+# Lineage follows the NBA's franchise records: the 1988-2002 Hornets belong to Charlotte and the
+# New Orleans Hornets to the Pelicans. Eras split where the 2004-05 realignment moved a team.
+TEAM_ERAS: tuple[TeamEra, ...] = (
+    TeamEra(
+        "SEA",
+        "1610612760",
+        "Seattle SuperSonics",
+        "Seattle",
+        "Western",
+        "Pacific",
+        "1967-68",
+        "2003-04",
+    ),
+    TeamEra(
+        "SEA",
+        "1610612760",
+        "Seattle SuperSonics",
+        "Seattle",
+        "Western",
+        "Northwest",
+        "2004-05",
+        "2007-08",
+    ),
+    TeamEra(
+        "NJN",
+        "1610612751",
+        "New Jersey Nets",
+        "New Jersey",
+        "Eastern",
+        "Atlantic",
+        "1977-78",
+        "2011-12",
+    ),
+    TeamEra(
+        "VAN",
+        "1610612763",
+        "Vancouver Grizzlies",
+        "Vancouver",
+        "Western",
+        "Midwest",
+        "1995-96",
+        "2000-01",
+    ),
+    TeamEra(
+        "CHH",
+        "1610612766",
+        "Charlotte Hornets",
+        "Charlotte",
+        "Eastern",
+        "Central",
+        "1988-89",
+        "2001-02",
+    ),
+    TeamEra(
+        "NOH",
+        "1610612740",
+        "New Orleans Hornets",
+        "New Orleans",
+        "Eastern",
+        "Central",
+        "2002-03",
+        "2003-04",
+    ),
+    TeamEra(
+        "NOH",
+        "1610612740",
+        "New Orleans Hornets",
+        "New Orleans",
+        "Western",
+        "Southwest",
+        "2004-05",
+        "2004-05",
+    ),
+    TeamEra(
+        "NOK",
+        "1610612740",
+        "New Orleans/Oklahoma City Hornets",
+        "New Orleans/Oklahoma City",
+        "Western",
+        "Southwest",
+        "2005-06",
+        "2006-07",
+    ),
+    TeamEra(
+        "NOH",
+        "1610612740",
+        "New Orleans Hornets",
+        "New Orleans",
+        "Western",
+        "Southwest",
+        "2007-08",
+        "2012-13",
+    ),
+    TeamEra(
+        "CHA",
+        "1610612766",
+        "Charlotte Bobcats",
+        "Charlotte",
+        "Eastern",
+        "Southeast",
+        "2004-05",
+        "2013-14",
+        stored_as_code=False,
+    ),
+)
+
+
+# Seasons a current franchise fielded no team: New Orleans began in 2002-03 (the Hornets' earlier
+# seasons belong to Charlotte), and Charlotte sat out 2002-03 and 2003-04. ``None`` is unbounded.
+FRANCHISE_GAPS: tuple[tuple[str, str | None, str | None], ...] = (
+    ("1610612740", None, "2001-02"),
+    ("1610612766", "2002-03", "2003-04"),
+)
+
+
+def franchise_active(franchise_id: str, season: str) -> bool:
+    start = _season_start(season)
+    return not any(
+        team == franchise_id
+        and (first is None or _season_start(first) <= start)
+        and (last is None or start <= _season_start(last))
+        for team, first, last in FRANCHISE_GAPS
+    )
+
+
+def _season_start(season: str) -> int:
+    return int(season[:4])
+
+
+def team_era(team_id: str, season: str | None = None) -> TeamEra | None:
+    """The era a team id names in a season: an era code (``SEA``), or a franchise id whose games
+    that season belong to an era kept under the franchise id. Without a season only codes match,
+    to their latest era."""
+    matches = [
+        era
+        for era in TEAM_ERAS
+        if (season is None or era.covers(season))
+        and (
+            (era.stored_as_code and team_id.upper() == era.code)
+            or (season is not None and not era.stored_as_code and team_id == era.franchise_id)
+        )
+    ]
+    return matches[-1] if matches else None
+
+
+def team_identity(team_id: str, season: str | None = None) -> TeamInfo | None:
+    """Season-aware identity: the era's name and code when one applies, else the franchise."""
+    era = team_era(team_id, season)
+    if era is None:
+        return get_team_info(team_id)
+    return TeamInfo(
+        era.code if era.stored_as_code else era.franchise_id,
+        era.code,
+        era.name,
+        era.city,
+        era.conference,
+        era.division,
+    )
+
+
+def season_team_id(franchise_id: str, season: str) -> str:
+    """The id a release keys a franchise's games by in a season (``SEA`` for OKC in 2005-06)."""
+    for era in TEAM_ERAS:
+        if era.stored_as_code and era.franchise_id == franchise_id and era.covers(season):
+            return era.code
+    return franchise_id
+
+
+def franchise_of(team_id: str) -> str | None:
+    """The current franchise a team id or era code belongs to."""
+    era = team_era(team_id)
+    if era is not None:
+        return era.franchise_id
+    info = get_team_info(team_id)
+    return info.team_id if info else None
+
+
 def get_team_info(team_id: str) -> TeamInfo | None:
     """Retrieve canonical team info by team ID or 3-letter tricode."""
     return NBA_TEAMS.get(team_id) or TRICODE_TO_TEAM.get(team_id.upper())
@@ -113,6 +316,9 @@ def resolve_team_label(team_id: str, default: str | None = None) -> str:
     info = get_team_info(team_id)
     if info:
         return info.name
+    era = team_era(team_id)
+    if era:
+        return era.name
     return default or team_id
 
 

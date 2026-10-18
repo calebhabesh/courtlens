@@ -220,8 +220,8 @@ for(const width of [1440,390]) test(`player search shows full names in wider vie
 
 test("team comparison preserves unknown versus zero, unknown outcomes and scope across tabs",async({page})=>{
   await openWorkbench(page,"/team-compare?teamA=100&teamB=200&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
-  await expect(page.locator(".tc-draft-team h2")).toHaveText(["Toronto Raptors","Boston Celtics"]);
-  await expect(page.locator(".tc-draft-series-num")).toHaveText(["0","0"]);
+  await expect(page.locator(".tc-team h2")).toHaveText(["Toronto Raptors","Boston Celtics"]);
+  await expect(page.locator(".tc-series-num")).toHaveText(["0","0"]);
   await page.getByRole("radio",{name:"Team Stats",exact:true}).click();
   await expect(page).toHaveURL(/view=stats/);
   const points=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Points Per Game",exact:true})});
