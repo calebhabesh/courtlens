@@ -28,7 +28,7 @@ Rows are in working order.
 | 13 | Stat Line Shift | `/stat-line-shift` | ⬜ | |
 | 14 | Contracts + Free Agency | `/contracts` | ⬜ | |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
-| 16 | Matchup Matrix | `/matchups` | 👀 ready for review | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
+| 16 | Matchup Matrix | `/matchups` | ✅ aligned (first revision) | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
 | 17 | Shot Profile Twin | `/similar-players` | ⬜ | Partial overlap |
 | 18 | Six Factor RAPM | `/research` | ⬜ | |
 | 19 | Wingspan | `/wingspan` | ⬜ | |
@@ -1306,7 +1306,11 @@ pass on rerun; team-comparison phone baseline refreshed for the disabled By Posi
 Evidence: [docs/evidence/alignment/team-compare/README.md](evidence/alignment/team-compare/README.md)
 
 
-### 16 Matchup Matrix — 👀 ready for review
+### 16 Matchup Matrix — ✅ aligned (first revision)
+
+Owner approval (2026-10-18): "I think we are ready for review and finished the compare pages,"
+then, after the polish was pushed (`dd3fb45`), "you can set it now." The `pc11-player-matchups`
+Playwright baselines in `dashboard/e2e/visual-baselines.spec.ts` are the approved screenshots.
 
 Owner start (2026-10-18): "Let's do that and begin on the next page" (queue override: Player
 Matchups after Team Comparison).
