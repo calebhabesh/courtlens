@@ -551,6 +551,7 @@ class MatchupsViewResponse(StatsFeedScopeView):
     side: Literal["offense", "defense"]
     focus_rule: str | None
     detail: dict[str, Any]
+    pair: dict[str, Any] | None = None
 
 
 class PlayTypesViewResponse(StatsFeedScopeView):

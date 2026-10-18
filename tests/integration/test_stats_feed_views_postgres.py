@@ -101,6 +101,16 @@ def test_defense_and_matchup_views_aggregate_in_sql(marts):
     assert view["focus_rule"] == "Most makes below expected (qualified)"
     offense = views.matchups_view(marts, None, None, "99003", "offense")
     assert offense["detail"]["rows"][0]["player_id"] == "99001" and offense["focus_rule"] is None
+    first_row = offense["detail"]["rows"][0]
+    assert (first_row["fg3m"], first_row["fg3a"], first_row["fta"]) == (4, 10, 5)
+    assert first_row["fg3_pct"] == pytest.approx(0.4)
+    assert offense["pair"] is None
+    capped = views.matchups_view(marts, None, None, "99001", "defense", limit=1)
+    assert len(capped["detail"]["rows"]) == 1 and capped["detail"]["opponents"] == 2
+    paired = views.matchups_view(marts, None, None, "99003", "offense", opponent_id="99001")
+    assert paired["pair"]["player_on_offense"]["player_points"] == 40
+    # 99001 never had the ball against 99003: unobserved, not a zero row.
+    assert paired["pair"]["opponent_on_offense"] is None
     defense = views.matchups_view(marts, None, None, None, "defense")
     assert defense["detail"]["player_id"] == "99001" and defense["focus_rule"]
     with pytest.raises(HTTPException, match="422"):

@@ -27,8 +27,8 @@ Rows are in working order.
 | 12 | Roster Shapes | `/roster-shapes` | ⬜ | |
 | 13 | Stat Line Shift | `/stat-line-shift` | ⬜ | |
 | 14 | Contracts + Free Agency | `/contracts` | ⬜ | |
-| 15 | Team Compare | `/team-compare` | 👀 ready for review | Paired rotations, verified starting five, team stats, series score, Game History tray |
-| 16 | Matchup Matrix | `/matchups` | ⬜ | |
+| 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
+| 16 | Matchup Matrix | `/matchups` | 👀 ready for review | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
 | 17 | Shot Profile Twin | `/similar-players` | ⬜ | Partial overlap |
 | 18 | Six Factor RAPM | `/research` | ⬜ | |
 | 19 | Wingspan | `/wingspan` | ⬜ | |
@@ -1164,7 +1164,11 @@ Guardrails kept: no overall winner or lead tally; unknown values show "—" with
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
 
-### 15 Team Compare — 👀 ready for review
+### 15 Team Compare — ✅ aligned (first revision)
+
+Owner approval (2026-10-18): "I think it's finished," then approved the closing review: rename the
+prototype code and check edge states before moving to Player Matchups. The `team-comparison`
+Playwright baselines in `dashboard/e2e/visual-baselines.spec.ts` are the approved screenshots.
 
 Owner queue override (2026-10-17): Team Comparison, Player Matchups, then Teams; prototype approved
 for integration into `databallr-alignment` on 2026-10-17.
@@ -1246,5 +1250,95 @@ Follow-up instructions (owner, 2026-10-17):
     overflow and game/depth selection against both 3100 and production 3180 at 1440/1024/390px.
     Measured zero column offset, no clipping or page overflow, and no browser exceptions on either.
 
+Closing review (2026-10-18):
+- [x] Prototype naming removed: `TeamComparison`, `TeamSide`, `team-comparison.tsx/.css`, and
+  `tc-*` classes (root `.tc-page`). No class collisions; the visual baselines pass unchanged.
+- [x] An unknown team id returns 404 from `/api/workbench/teams/{id}` (the existence check used a
+  label helper that is never empty) and the card reads "Team unavailable" instead of a team named
+  "999". Same team on both sides hides the series score; a team without playoff games shows
+  0–0 · 0 GP; different seasons explain the missing head-to-head.
+- [x] Historical franchises (owner, 2026-10-18: "add identities for these older teams … if you
+  select thunder and go back enough years, then it changes to the sonics logo"). Before 2013-14 the
+  release stores relocated or renamed teams under their own codes (SEA, NJN, VAN, CHH, NOH, NOK);
+  the Bobcats (2004-05 → 2013-14) sit under Charlotte's id. `courtlens.domain.teams.TEAM_ERAS`
+  names each era with its franchise, seasons and conference/division (split at the 2004-05
+  realignment); `team_identity(id, season)` serves era names from the team list, detail, schedule
+  opponents, peers and four-factors, and `resolve_team_label` names era codes everywhere. Ingestion,
+  finance and assistant lookups keep `get_team_info` (current franchises only). Team Compare keeps the
+  picked franchise and reads the season's stored id (`seasonTeamId`), so Thunder + 2000-01 is the
+  Seattle SuperSonics, 44–38, with Sonics artwork and green; `teamA=SEA` links resolve to the
+  franchise. The picker shows each franchise as it was that season and disables New Orleans before
+  2002-03 and Charlotte in 2002-04 (`FRANCHISE_GAPS`). Era artwork: Wikipedia SVGs (Sonics,
+  Vancouver) and Basketball-Reference era PNGs (Nets, Hornets ×3, Bobcats; 125 px, so slightly soft
+  at the 144 px panel) with edge-connected white cleared; `scripts/team_branding_assets.py
+  --acquire-eras` records source URL, source hash, derivation and asset hash. Every stored team id
+  in all 26 seasons matches the table. Older seasons show 0 verified starts (no raw starter
+  positions), so they order by rank.
+- [x] Mid-season scope (owner: "use your best judgement"). DARKO is its forecast at a phase's last
+  game date, so when either side's DARKO is unavailable the DARKO/ODPM/DDPM options are disabled
+  with the reason and the card falls back to the first available metric (PPG by default); "By
+  Position" is disabled without verified starting fives on both sides; the coverage line says both.
+- [x] Removed the unused `components/team-compare-view.tsx`/`.css` and the `fo11-team-*` rules only it used.
+- [x] Season logos (owner, 2026-10-18: use each team's logo from that year, as Player Comparison
+  uses that year's photos, and show it behind a player in that season — "kevin durant in his sonics
+  seasons has the sonics background"). NBA.com publishes current logos only (its CDN's `primary` and
+  `global` paths; year paths 403, old stats.nba.com paths 404), so `scripts/team_branding_assets.py
+  --acquire-season-logos` reads every franchise-season 2000-01 → 2025-26 from Basketball-Reference's
+  logo CDN (BKN→BRK, CHA→CHO, PHX→PHO) and groups identical seasons into 100 spans in
+  `team-branding.json` `season_logos`: 30 match today's logo and keep NBA.com's SVG, 7 match an era
+  SVG or era asset, 63 are distinct older logos stored once as background-cleared PNGs (about 0.98 MB
+  of artwork in all). `teamArtwork(team, season)` (`lib/team-era.ts`) gives the season's name, code
+  and logo from any franchise id, current code or era code; `TeamLogo season`, Player Comparison's
+  `teamRecord` (tile watermark, tint, team names; duel, grid and both share exports), Team Compare,
+  its picker and Player Matchups use it. Durant 2007-08 shows the Sonics behind him with "Seattle
+  SuperSonics"; LeBron 2007-08 the 2003-10 Cavaliers logo; the 2000-01 Raptors the original logo.
+  Not applied to the approved player page's career table (row 2); that waits for the owner.
+  Evidence: `docs/evidence/alignment/team-logos/` (all 63 older logos, PvP, Team Compare, picker).
+  Full Playwright 490 passed with no baseline changes (planner sign-in flaky, passes on rerun);
+  Vitest 578/578.
+
+Evidence: `docs/evidence/alignment/team-compare/eras/` (Sonics 2000-01, `teamA=SEA` link,
+Bobcats vs New Orleans/Oklahoma City Hornets with Game History, mid-season, 2000-01 picker;
+`verification.jsonl`). Python 2,134 passed; Vitest 572/572 (the 4 header animation rejections
+predate this work); full Playwright 489 passed, 2 flaky (planner sign-in, methodology catalog) that
+pass on rerun; team-comparison phone baseline refreshed for the disabled By Position.
+
 Evidence: [docs/evidence/alignment/team-compare/README.md](evidence/alignment/team-compare/README.md)
 
+
+### 16 Matchup Matrix — 👀 ready for review
+
+Owner start (2026-10-18): "Let's do that and begin on the next page" (queue override: Player
+Matchups after Team Comparison).
+
+Starting state (survey, 2026-10-18): `/matchups` renders `components/season-matchups-view.tsx`, the
+pre-alignment research layout: three stat tiles, a top-15 partial-possession bar chart and a table
+repeating the same 15 rows. Data is `mart_stats_season_matchups` (season aggregates per pairing:
+games, matchup minutes, partial possessions, points, points/100, FGM/FGA/FG%, 3PM/3PA, assists,
+turnovers) with one served scope, 2025-26 regular season; the 3P column is "—" on every default
+row. Per-game matchups (`shufinskiy/nba_data` `matchups_*`, 2017-18 on) are admitted and verified
+for 2023-24 → 2025-26 through IM01/IM05 but not served to this page.
+Instructions (owner, 2026-10-18; approving the start-of-page proposal):
+1. [x] Keep the same format as Player Comparison and Team Compare so the page reuses their UI
+   components and logic: a centered card with a player identity header, an On offense ("Guarded
+   by") / On defense ("Guarded") switch, and season/phase scope. — the PvP card (`pvp` root,
+   `pvp-card`, `pvp-slot` photo on the team colour with logo watermark, `CompareEmptySlot` "Add a
+   matchup", swap and Clear) widened to 1040px; console with Season/Phase, Guarded By / Guarding and
+   Data details; `components/season-matchups-view.tsx` + `.css`, in the compare page shell.
+2. [x] One sortable matchup table in the approved Stats table style, grouped Exposure / Scoring /
+   Shooting / Playmaking; drop the bar chart and stat tiles that repeat it. — every opponent
+   (`limit` up to 500; 393 for the default), Stats table classes as the career table uses them,
+   pinned name column with portrait and team logo, GP MIN POSS | PTS PTS/100 | FG FG% 3P FT | AST TOV,
+   local sort in the URL (`sort`, `dir`), default by partial possessions.
+3. [x] An optional second player showing their direct matchup both ways (A guarding B and B guarding A).
+   — `opponentId` on `/api/workbench/season-matchups` returns `pair` (each direction or null); a
+   table row or the empty slot sets it; mirrored rows "X with the ball" with the higher PTS/100 and
+   FG% in bold only when both directions were observed; an unobserved direction says so.
+4. [x] Matchup PBP stays data-blocked (no free possession-level matchup feed). Game-by-game logs and
+   more seasons need the admitted per-game matchups served first; separate data block.
+
+Found while building: 3P was "—" on every row because the mart read `matchup_fg3m`/`matchup_fg3a`
+while hoopR spells them `matchup_fg3_m`/`matchup_fg3_a`; the model accepts both (31,492/88,750 3P
+league-wide, no row with 3PA > FGA). Rows and the pair now carry team codes, 3P%, FT and blocks.
+Evidence: `docs/evidence/alignment/matchups/` (default and paired, 1440 and 390;
+`verification.jsonl`, no page overflow or browser errors). `pc11-player-matchups` baselines refreshed.

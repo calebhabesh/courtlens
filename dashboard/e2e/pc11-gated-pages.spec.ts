@@ -26,13 +26,29 @@ test.describe("PC11 populated pages", () => {
     await noPhoneOverflow(page);
   });
 
-  test("Player Matchups switches sides in the URL", async ({ page }) => {
+  test("Player Matchups switches sides and opens a matchup both ways", async ({ page }) => {
     await openWorkbench(page, "/matchups");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Player Matchups");
-    await expect(page.getByRole("figure", { name: "Who guarded Fixture Anchor" })).toBeVisible();
-    await page.getByRole("radio", { name: "On defense" }).click();
+    const table = page.getByRole("table", { name: "Defenders who guarded Fixture Anchor" });
+    await expect(table).toBeVisible();
+    await expect(table.getByRole("row", { name: /Fixture Wing D/ })).toContainText("3/8");
+    // Sorting is local: GP ascending puts the fewest games first.
+    await table.getByRole("button", { name: "Sort by GP" }).click();
+    await expect(page).toHaveURL(/sort=games/);
+    await table.getByRole("button", { name: "Sort by GP" }).click();
+    await expect(page).toHaveURL(/dir=asc/);
+    await expect(table.locator("tbody tr").first()).toContainText("Fixture Rookie D");
+    // A row opens that matchup both ways; the unobserved direction is said, not zeroed.
+    await table.locator("tbody tr", { hasText: "Fixture Wing D" }).locator("td").first().click();
+    await expect(page).toHaveURL(/opponentId=99100/);
+    const pair = page.getByRole("table", { name: "Fixture Anchor and Fixture Wing D, each with the ball" });
+    await expect(pair).toContainText("33.3");
+    await expect(pair).toContainText("unobserved, not zero");
+    await page.getByRole("button", { name: "Clear matchup player" }).click();
+    await expect(page).not.toHaveURL(/opponentId=/);
+    await page.getByRole("radio", { name: "Guarding" }).click();
     await expect(page).toHaveURL(/side=defense/);
-    await expect(page.getByRole("figure", { name: "Who was guarded by Fixture Anchor" })).toBeVisible();
+    await expect(page.getByRole("table", { name: "Players Fixture Anchor guarded" })).toBeVisible();
     await noPhoneOverflow(page);
   });
 

@@ -76,6 +76,7 @@
 @import "../components/player-bio-header.css";
 @import "../components/player-reference-sections.css";
 @import "../components/player-compare-view.css";
+@import "../components/season-matchups-view.css";
 @import "../components/compare-grid.css";
 @import "./team-compare/team-comparison.css";
 @import "./team-compare/team-game-history.css";

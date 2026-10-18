@@ -1,0 +1,45 @@
+@layer pages {
+  /* Player Matchups (alignment row 16): Player Comparison's card, widened for the opponent table;
+     the slots and the both-ways rows keep the duel card's 580px measure. */
+  .mu { --pvp-width: 1040px; --mu-duel: 580px; }
+  .mu-console { display: flex; justify-content: center; width: 100%; min-width: 0; padding-block: var(--space-1) var(--space-2); }
+  .mu-card { gap: var(--space-4); }
+  .mu-card > :is(.pvp-players, .mu-pair, .feed-example) { width: min(100%, var(--mu-duel)); align-self: center; }
+  .mu-pair-head { padding-bottom: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
+
+  /* Every opponent in the Stats table's look, as the career table does. */
+  .mu-table.stats-workspace { min-height: 0; background: transparent; display: flex; flex-direction: column; gap: var(--space-2); }
+  .mu-table .stats-table-frame {
+    --table-surface: var(--color-table-lift);
+    --table-data: var(--color-table-well);
+    --table-row-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-surface));
+    --table-data-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-data));
+  }
+  .mu-table-title { display: flex; align-items: baseline; gap: var(--space-2); margin: 0; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 600; }
+  .mu-table-title span { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 500; }
+  .mu-table.stats-workspace .mu-scroll.stats-scroll-region { height: auto; max-height: min(60dvh, 640px); }
+  .mu-grid { --mu-name-width: 236px; --table-min-width: calc(var(--mu-name-width) + 11 * 64px); }
+  .mu-grid .mu-name-column { width: var(--mu-name-width); }
+  .mu-grid .group-start { border-left: 1px solid var(--color-hairline-strong); }
+  .mu-table .mu-name, .mu-table .mu-name-group {
+    position: sticky; left: 0; z-index: var(--z-sticky);
+    width: var(--mu-name-width); min-width: var(--mu-name-width); max-width: var(--mu-name-width);
+    background: var(--color-table-lift); text-align: left;
+  }
+  .mu-table thead :is(.mu-name, .mu-name-group) { z-index: var(--z-sticky-corner); }
+  .mu-table.stats-workspace .mu-grid thead th.mu-name { padding-left: var(--space-3); }
+  .mu-table tbody th.mu-name { padding: var(--space-1) var(--space-2); font-weight: 600; font-size: var(--text-sm); text-transform: none; letter-spacing: 0; }
+  .mu-identity { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+  .mu-identity a { min-width: 0; overflow: hidden; color: var(--color-text); text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }
+  .mu-identity a:is(:hover, :focus-visible) { color: var(--color-accent); }
+  .mu-identity > .team-logo { flex: 0 0 auto; margin-left: auto; }
+  .mu-row { cursor: pointer; }
+  .mu-row[data-selected] th.mu-name { box-shadow: inset 2px 0 0 var(--color-accent); }
+  .mu-row[data-selected] .mu-identity a { color: var(--color-accent); }
+  .mu-note { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  @media (width < 768px) {
+    .mu-grid { --mu-name-width: 168px; }
+    .mu-identity > .team-logo { display: none; }
+  }
+}
