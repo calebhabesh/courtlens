@@ -1,17 +1,19 @@
 "use client";
 
-import { forwardRef, useMemo } from "react";
+import { forwardRef, useMemo, useState } from "react";
 import { BoxShapes, ShapeBox, tone, type BoxEntry } from "./roster-shape-box";
 import { chartVars } from "./charts";
+import { LookupInput } from "./lookup-input";
 import { Icon } from "./ui/icon";
 import { teamStyle } from "./ui/identity";
-import { Button, Select } from "./ui/kit";
+import { Button } from "./ui/kit";
 import { teamAccent } from "@/lib/team-colors";
 import {
   BOX, fitLine, missingStyles, one, sandboxRoster, seasonChanges, signed, whiteAsPlayer,
   type RosterShapes, type ShapeMode, type ShapePlayer, type ShapeTeam
 } from "@/lib/roster-shapes";
 import type { SixFactorTeam } from "@/lib/team-six-factors";
+import type { LookupItem } from "@/lib/types";
 
 const pct = (value: number) => `${Math.round(value * 100)}%`;
 const boxPct = (size: number | null, capacity: number) => size === null ? "—" : `${(size / capacity * 100).toFixed(1)}%`;
@@ -45,30 +47,46 @@ export function Missing({ entries, data, detailed = false }: { entries: BoxEntry
   </div>;
 }
 
-/** Trade sandbox: add players from any other roster or remove this team's, and redraw the box. */
+/** A roster player as a local search candidate: found by name, team name or code; captioned with team, DPM and minutes. */
+function candidate(player: ShapePlayer, team: ShapeTeam): LookupItem {
+  return {
+    id: player.player_id, canonical_id: player.player_id, kind: "player", display_name: player.player_name,
+    subtitle: `${team.team_name} ${team.team_tricode}`, match_basis: "suggestion", match_score: 1,
+    availability: { has_current_season: true, status: "available", seasons: [] },
+    team_association: { basis: "selected_scope", teams: [team.team_tricode], observed_through: null, season: null, phase: null, before_date: null },
+    destination_url: `/players/${player.player_id}`,
+    metadata: { caption: `${team.team_tricode} · ${signed(player.dpm)} DPM · ${one(player.minutes_uncapped ?? player.minutes_per_game)} min` },
+  };
+}
+
+/** Trade sandbox: search any other roster's players to add or this team's to remove, and redraw the box. */
 export function Sandbox({ team, data, mode, add, drop, onChange }: {
   team: ShapeTeam; data: RosterShapes; mode: ShapeMode; add: string[]; drop: string[]; onChange: (add: string[], drop: string[]) => void;
 }) {
   const entries = useMemo(() => sandboxRoster(team, data.teams, add, drop, mode, data), [team, data, add, drop, mode]);
   const before = mode === "playoff" ? team.fill_playoff : team.fill;
   const after = fillOf(entries, data.capacity);
-  const others = useMemo(() => [...data.teams].filter(t => t.team_tricode !== team.team_tricode).sort((a, b) => a.team_name.localeCompare(b.team_name)), [data.teams, team]);
+  // Before typing, the biggest shapes first: the players most likely to change the box.
+  const addable = useMemo(() => data.teams.filter(t => t.team_tricode !== team.team_tricode)
+    .flatMap(t => t.roster.filter(p => p.dpm !== null && (p.minutes_uncapped ?? p.minutes_per_game) !== null).map(p => ({ p, t })))
+    .sort((a, b) => (b.p.size ?? 0) - (a.p.size ?? 0) || a.p.player_name.localeCompare(b.p.player_name))
+    .map(({ p, t }) => candidate(p, t)), [data.teams, team]);
+  const removable = useMemo(() => [...team.roster].sort((a, b) => (b.size ?? -1) - (a.size ?? -1)).map(p => candidate(p, team)), [team]);
+  const [addText, setAddText] = useState(""), [dropText, setDropText] = useState("");
   const byId = new Map(data.teams.flatMap(t => t.roster.map(p => [p.player_id, { player: p, team: t }] as const)));
   const changed = add.length + drop.length > 0;
   return <section className="player-open-section player-glass shapes-sandbox" aria-label="Trade sandbox">
     <header className="player-open-heading"><h2><Icon name="swap" size={20} />Trade Sandbox</h2>
       <span>{changed ? <>Fill {pct(before)} to <strong data-tone={after > before ? "up" : after < before ? "down" : undefined}>{pct(after)}</strong> ({signed((after - before) * 100)})</> : "Add or remove players to redraw the box"}</span></header>
     <div className="shapes-sandbox-controls">
-      <Select size="md" aria-label="Add a player" value="" onChange={event => event.target.value && onChange([...add, event.target.value], drop)}>
-        <option value="">Add a player…</option>
-        {others.map(t => <optgroup key={t.team_id} label={t.team_name}>
-          {t.roster.filter(p => p.dpm !== null && p.minutes_per_game !== null && !add.includes(p.player_id)).map(p => <option key={p.player_id} value={p.player_id}>{p.player_name} · {signed(p.dpm)} DPM · {one(p.minutes_per_game)} min</option>)}
-        </optgroup>)}
-      </Select>
-      <Select size="md" aria-label="Remove a player" value="" onChange={event => event.target.value && onChange(add, [...drop, event.target.value])}>
-        <option value="">Remove a player…</option>
-        {team.roster.filter(p => !drop.includes(p.player_id)).map(p => <option key={p.player_id} value={p.player_id}>{p.player_name}</option>)}
-      </Select>
+      <div className="shapes-sandbox-search">
+        <LookupInput label="Add a player" placeholder="Add a player: search name or team" value={addText} onChange={setAddText} candidates={addable} excludedIds={add} limit={12}
+          portalDropdown dropdownMinWidth={340} onSelect={item => { setAddText(""); onChange([...add, item.canonical_id], drop); }} />
+      </div>
+      <div className="shapes-sandbox-search">
+        <LookupInput label="Remove a player" placeholder={`Remove a ${team.team_tricode} player`} value={dropText} onChange={setDropText} candidates={removable} excludedIds={drop} limit={20}
+          portalDropdown dropdownMinWidth={340} onSelect={item => { setDropText(""); onChange(add, [...drop, item.canonical_id]); }} />
+      </div>
       {changed && <Button size="md" variant="ghost" icon="reset" onClick={() => onChange([], [])}>Reset</Button>}
     </div>
     {changed && <ul className="shapes-sandbox-changes" aria-label="Sandbox changes">
