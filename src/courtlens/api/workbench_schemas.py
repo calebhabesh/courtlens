@@ -811,6 +811,76 @@ class TeamResearchResponse(BaseModel):
     league_averages: dict[str, Any] | None = None
 
 
+class TeamStandingsItem(BaseModel):
+    """Record over every game in scope; streak is +n wins or -n losses."""
+
+    wins: int
+    losses: int
+    last10_wins: int
+    last10_losses: int
+    streak: int
+
+
+class TeamTrendPoint(BaseModel):
+    date: str
+    net: float
+
+
+class TeamSixFactorsItem(BaseModel):
+    team_id: str
+    tricode: str
+    name: str
+    conference: str | None = None
+    division: str | None = None
+    games_played: int
+    wins: int
+    losses: int
+    possessions: float
+    opp_possessions: float
+    points: float
+    opp_points: float
+    ortg: float | None = None
+    drtg: float | None = None
+    net: float | None = None
+    off: float | None = None
+    o_ts: float | None = None
+    o_tov: float | None = None
+    o_orb: float | None = None
+    # `def` is a Python keyword; the wire name stays "def".
+    def_: float | None = Field(None, alias="def")
+    d_ts: float | None = None
+    d_tov: float | None = None
+    d_drb: float | None = None
+    net_eff: float | None = None
+    net_poss: float | None = None
+    off_luck: float
+    def_luck: float
+    league_rating: float | None = None
+    rates: dict[str, float | None]
+    sos: float | None = None
+    adj_net: float | None = None
+    expected_wins: float | None = None
+    win_luck: float | None = None
+    close_wins: int = 0
+    close_losses: int = 0
+    standings: TeamStandingsItem
+    trend: list[TeamTrendPoint]
+
+    model_config = ConfigDict(populate_by_name=True, serialize_by_alias=True)
+
+
+class TeamSixFactorsResponse(BaseModel):
+    context: dict[str, Any]
+    teams: list[TeamSixFactorsItem]
+    league: dict[str, float | None]
+    window: dict[str, Any]
+    venue: str | None = None
+    luck: dict[str, float]
+    method_version: str
+    context_method_version: str
+    warnings: list[str]
+
+
 class TeamDetailResponse(BaseModel):
     team: dict[str, str]
     context: dict[str, Any]

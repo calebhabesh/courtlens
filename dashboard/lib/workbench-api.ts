@@ -1,4 +1,5 @@
 import { assertCurrentEnvironment } from "./server-env";
+import type { SixFactorsResponse } from "./team-six-factors";
 import type { SavedDetail } from "./saved-operations";
 
 assertCurrentEnvironment();
@@ -285,6 +286,17 @@ export async function getTeamsResearch(params?: {
   if (params?.beforeDate) sp.set("beforeDate", params.beforeDate);
 
   return wbFetch<TeamResearchResponse>(`/api/workbench/teams?${sp}`);
+}
+
+/** Every team's six factors (alignment row 4), for server-rendered pages. */
+export async function getTeamsSixFactors(params: { season?: string; phase?: string; beforeDate?: string; releaseId?: string; venue?: "home" | "away" }): Promise<SixFactorsResponse> {
+  const sp = new URLSearchParams();
+  if (params.venue) sp.set("venue", params.venue);
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  if (params.season) sp.set("season", params.season);
+  if (params.phase) sp.set("phase", params.phase);
+  if (params.beforeDate) sp.set("beforeDate", params.beforeDate);
+  return wbFetch<SixFactorsResponse>(`/api/workbench/teams/six-factors?${sp}`);
 }
 
 export async function getTeamDetail(

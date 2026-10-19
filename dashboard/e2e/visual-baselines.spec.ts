@@ -126,15 +126,15 @@ for (const view of WIDTHS) {
       await expect(page).toHaveScreenshot(`recent-games-${view.name}.png`, shot);
     });
 
-    // FO10: team explorer/profile, stat shift and finance pages.
+    // Teams (alignment row 4): the six-factor table and the team profile; stat shift and finance pages.
     test("team stats", async ({ page }) => {
       await openWorkbench(page, "/teams?season=2025-26&beforeDate=2026-04-13");
-      await expect(page.locator("tbody tr")).toHaveCount(2);
+      await expect(page.locator(".teams-grid tbody tr")).toHaveCount(2);
       await settle(page);await expect(page).toHaveScreenshot(`team-stats-${view.name}.png`, shot);
     });
     test("team profile", async ({ page }) => {
       await openWorkbench(page, "/teams/100?season=2025-26&beforeDate=2026-04-13");
-      await expect(page.getByLabel("Team summary")).toBeVisible();
+      await expect(page.getByRole("region", { name: "Six factors table" })).toBeVisible();
       await settle(page);await expect(page).toHaveScreenshot(`team-profile-${view.name}.png`, shot);
     });
     test("teammate stat shift", async ({ page }) => {

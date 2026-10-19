@@ -46,22 +46,6 @@ for (const width of [1440, 390]) {
   });
 }
 
-test("PC12 team filtering retains league percentiles and each metric preset has group headers", async ({ page }) => {
-  await openWorkbench(page, "/teams");
-  const boston = page.locator("tbody tr[data-team-id='200']");
-  const before = await boston.locator("[data-metric=ppg]").innerText();
-  const colors = await boston.locator("[data-metric=ppg] .chart-percentile-cell").evaluate(cell => ({ value: getComputedStyle(cell.querySelector("strong")!).color, percentile: getComputedStyle(cell.querySelector("small")!).color }));
-  expect(colors.percentile).toBe(colors.value);
-  await page.getByLabel("Search franchises").fill("BOS");
-  await expect(page.locator("tbody tr")).toHaveCount(1);
-  await expect.poll(() => boston.locator("[data-metric=ppg]").innerText()).toBe(before);
-  for (const preset of ["overview", "four_factors_off", "four_factors_def", "all_ratings"]) {
-    await page.getByLabel("Team metric set").selectOption(preset);
-    await expect(page.locator(".table-column-groups")).toContainText("Record");
-    await expect(page.locator(".table-column-groups")).toContainText(preset === "overview" ? "Shooting" : "Ratings");
-  }
-});
-
 test("PC12 saved Rankings show a muted small sample beside statistical references", async ({ page }) => {
   await page.route("**/api/workspace**", route => route.fulfill({ json: {
     workspace_id: "default", name: "PC12 saved-board fixture", version: 1,

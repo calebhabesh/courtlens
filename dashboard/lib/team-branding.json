@@ -1734,5 +1734,36 @@
       "sha256": "cf2c99a2d619f635920a94b69e20b2efb2babb992d5a821c22b0129e0cc57f46"
     }
   ],
-  "season_logos_semantics": "Each franchise's logo by season (Basketball-Reference team-season logos), grouped into spans; 'current' and 'era' spans reuse the sharper NBA.com and Wikipedia SVGs."
+  "season_logos_semantics": "Each franchise's logo by season (Basketball-Reference team-season logos), grouped into spans; 'current' and 'era' spans reuse the sharper NBA.com and Wikipedia SVGs.",
+  "conferences": [
+    {
+      "conference": "East",
+      "artwork_name": "Eastern Conference",
+      "asset": "/team-logos/eastern-conference-4fc4154b051fa146.png",
+      "sha256": "4fc4154b051fa1460b14b731ebbdf291c1a1c72dae0f193530cf0b83bc6b927f",
+      "bytes": 13802,
+      "width": 173,
+      "height": 96,
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/9/96/Eastern_Conference_%28NBA%29_logo_2018.png",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Eastern_Conference_(NBA)_logo_2018.png",
+      "last_modified": "Wed, 28 Mar 2018 05:34:47 GMT",
+      "source_sha256": "947c49b5b0218873ffdd57bdc51c94b3d4ee17cab2d709ce39c5e002a82c28f6",
+      "derivation": "transparent margins trimmed, resized to 96 px tall (Lanczos), PNG optimized"
+    },
+    {
+      "conference": "West",
+      "artwork_name": "Western Conference",
+      "asset": "/team-logos/western-conference-cbc760e9865c8f3e.png",
+      "sha256": "cbc760e9865c8f3eb99085925ccd80d567a264db31f580839fcca196e6470290",
+      "bytes": 14404,
+      "width": 175,
+      "height": 96,
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/4/45/Western_Conference_%28NBA%29_logo_2018.png",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Western_Conference_(NBA)_logo_2018.png",
+      "last_modified": "Sat, 12 May 2018 10:34:18 GMT",
+      "source_sha256": "113c5cb8eca85a8bb503fc6aad434b68828c559b1cd4fc3c1a8b51d1b6500ffb",
+      "derivation": "transparent margins trimmed, resized to 96 px tall (Lanczos), PNG optimized"
+    }
+  ],
+  "conferences_semantics": "The NBA's Eastern and Western Conference marks (2018 wordmarks), for conference filters. Source: Wikimedia Commons file pages."
 }

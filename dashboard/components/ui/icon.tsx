@@ -5,7 +5,8 @@ import {
   CornerDownLeft, History, FileText, ArrowLeftRight, Lock, Plus, User, Table2, BarChart3, TrendingUp, LayoutGrid,
   Save, Scale, RefreshCw, Camera, Zap, RotateCcw, ExternalLink, HelpCircle, Maximize2, Keyboard, Eye, EyeOff, Columns3,
   ChartNoAxesColumn, ChartNoAxesCombined, ChartScatter, Minimize2, Pin, PinOff, UserRound, Users, CirclePlus, CircleCheck,
-  GraduationCap, ArrowDownAZ, ArrowDownZA, Activity, Banknote, Trophy, Medal, UserRoundPen
+  GraduationCap, ArrowDownAZ, ArrowDownZA, Activity, Banknote, Trophy, Medal, UserRoundPen,
+  Building2, Shapes, DollarSign, House
 } from "lucide-react";
 
 // D26: Lucide only, always through this wrapper (lint bans `lucide-react` elsewhere). One stroke
@@ -25,7 +26,7 @@ const icons = {
   collapse: Minimize2, pin: Pin, unpin: PinOff, person: UserRound, users: Users, "circle-plus": CirclePlus,
   "circle-check": CircleCheck, graduation: GraduationCap,
   "sort-az": ArrowDownAZ, "sort-za": ArrowDownZA, activity: Activity, banknote: Banknote, trophy: Trophy,
-  medal: Medal, "user-edit": UserRoundPen
+  medal: Medal, "user-edit": UserRoundPen, building: Building2, shapes: Shapes, dollar: DollarSign, home: House
 };
 
 export type IconName = keyof typeof icons;

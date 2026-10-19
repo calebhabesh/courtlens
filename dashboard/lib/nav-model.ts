@@ -2,9 +2,14 @@
 // Groups follow the FO07 targets. A merged page (lib/route-consolidation.ts) appears once, under its
 // page title; its tabs are reached on the page and through search.
 
+import type { IconName } from "@/components/ui/icon";
+
 export interface NavItem {
   label: string;
   href: string;
+  /** A menu whose items all carry an icon and a one-line description shows them as rich rows (Teams, alignment row 4). */
+  icon?: IconName;
+  description?: string;
 }
 
 export interface NavGroup {
@@ -47,10 +52,10 @@ export const NAV_MENUS: NavMenu[] = [
     id: "teams",
     label: "Teams",
     groups: [{ items: [
-      { label: "Team Stats & Cohorts", href: "/teams" },
-      { label: "Roster Shapes", href: "/roster-shapes" },
-      { label: "Teammate Stat Shift", href: "/stat-line-shift" },
-      { label: "Contracts & Payroll", href: "/contracts" },
+      { label: "Teams", href: "/teams", icon: "building", description: "Team ratings, six factors and rankings" },
+      { label: "Roster Shapes", href: "/roster-shapes", icon: "shapes", description: "Every NBA roster as shapes in a box" },
+      { label: "Stat Line Shift", href: "/stat-line-shift", icon: "chart-column", description: "How a player's stat line changes with and without a teammate" },
+      { label: "Contracts", href: "/contracts", icon: "dollar", description: "Salary cap analysis and contract details" },
     ] }],
   },
   {

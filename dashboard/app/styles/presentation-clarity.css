@@ -132,8 +132,6 @@
   .pc12-headline .chart-ranked-label .ui-identity-name { font-size: var(--text-sm); }
   .pc12-trend-change { color: var(--color-text); }
   .pc12-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
-  .team-rating-headline { grid-column: 1 / -1; padding: 0; }
-  .team-profile-page .ui-page-header-title, .team-profile-page .ui-identity-name { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
   .pc12-profile-trajectory .research-trend-section { margin: 0; padding: var(--space-4); }
   .pc12-public-findings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
   .pc12-public-finding { padding: var(--space-4); min-width: 0; }

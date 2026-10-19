@@ -326,10 +326,13 @@ export function Header() {
                               href={item.href}
                               role="menuitem"
                               aria-current={isCurrent(item.href) ? "page" : undefined}
-                              className={`courtlens-dropdown-item ${isCurrent(item.href) ? "active" : ""}`}
+                              className={`courtlens-dropdown-item ${item.icon ? "courtlens-dropdown-rich" : ""} ${isCurrent(item.href) ? "active" : ""}`}
                               onClick={() => setOpenDropdown(null)}
                             >
-                              <span>{item.label}</span>
+                              {item.icon ? <>
+                                <span className="courtlens-dropdown-icon" aria-hidden="true"><Icon name={item.icon} size={20} /></span>
+                                <span className="courtlens-dropdown-text"><span>{item.label}</span>{item.description && <small>{item.description}</small>}</span>
+                              </> : <span>{item.label}</span>}
                             </Link>
                           ))}
                         </div>
@@ -535,7 +538,7 @@ export function Header() {
                           className={`courtlens-mobile-sublink ${isCurrent(item.href) ? "active" : ""}`}
                           onClick={closeDrawer}
                         >
-                          {item.label}
+                          {item.icon ? <span className="courtlens-mobile-sublink-label"><Icon name={item.icon} size={16} />{item.label}</span> : item.label}
                         </Link>
                       ))}
                     </div>
