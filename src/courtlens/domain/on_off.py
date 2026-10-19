@@ -8,7 +8,9 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-OPERATION_VERSION = "courtload-shared-floor-v1"
+# v1 (frozen) read stints only from the release dataset and had no rate metrics.
+OPERATION_VERSION_V1 = "courtload-shared-floor-v1"
+OPERATION_VERSION = "courtlens-shared-floor-v2"
 STAT_KEYS = (
     "points",
     "fgm",
@@ -25,6 +27,8 @@ STAT_KEYS = (
     "tov",
     "pf",
 )
+# Focal ratios of summed fields; the possession and game gates come from the cell.
+RATE_METRICS = ("usage_pct", "ts_pct", "fg3_pct")
 
 
 class SharedFloorRequest(BaseModel):
@@ -195,3 +199,54 @@ def linear_ratio_interval(
     return UncertaintyInterval(
         games=n, lower=estimate - 1.959963984540054 * se, upper=estimate + 1.959963984540054 * se
     )
+
+
+class StatShiftRosterRequest(BaseModel):
+    """Every teammate's stat shift with one subject on the floor versus off it.
+
+    Without a team it returns only the scopes (the page before a team is picked); without a
+    season it uses the latest season with admitted stints.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    team_id: str | None = Field(default=None, min_length=1, max_length=100)
+    release_id: str | None = None
+    season: str | None = None
+    phase: (
+        Literal["preseason", "regular_season", "play_in", "playoffs", "cup_final", "summer_league"]
+        | None
+    ) = None
+    before_date: date | None = None
+    lower_date: date | None = None
+    subject_id: str | None = Field(default=None, min_length=1, max_length=100)
+    min_possessions: float = Field(default=100.0, ge=1, le=10000, allow_inf_nan=False)
+    min_games: int = Field(default=5, ge=1, le=82)
+
+    @model_validator(mode="after")
+    def validate_dates(self) -> StatShiftRosterRequest:
+        if self.lower_date and self.before_date and self.lower_date >= self.before_date:
+            raise ValueError("lower_date must precede exclusive before_date")
+        return self
+
+
+class RosterPlayer(BaseModel):
+    player_id: str
+    name: str | None
+    games: int
+    minutes: float
+
+
+class StatShiftRosterResponse(BaseModel):
+    operation_version: str = OPERATION_VERSION
+    context: dict[str, Any]
+    team_id: str | None
+    subject_id: str | None
+    coverage_status: Literal["available", "partial", "source_blocked"]
+    expected_games: int
+    observed_games: int
+    excluded_stints: int
+    # Season/phase pairs with admitted stints; other scopes are source-blocked.
+    available_scopes: list[dict[str, str]]
+    roster: list[RosterPlayer]
+    shifts: list[SharedFloorResponse]
