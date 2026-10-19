@@ -78,9 +78,12 @@ function HoverCard({ entry, mode, capacity }: { entry: BoxEntry; mode: ShapeMode
 /** The square box: shapes packed by area share, white is what a perfect team would add. In team view
  * (`onActive`), hovering or focusing a shape highlights that player here and in the panel's table,
  * and shows his card; the grid and comparison boxes keep the plain tooltip. */
-export function ShapeBox({ entries, mode, capacity, label, large = false, active = null, onActive }: {
+export function ShapeBox({ entries, mode, capacity, label, large = false, active = null, card: showCard = true, onActive }: {
   entries: BoxEntry[]; mode: ShapeMode; capacity: number; label: string; large?: boolean;
-  active?: string | null; onActive?: (id: string | null) => void;
+  active?: string | null;
+  /** Show the card for `active` (false when the highlight comes from the table). */
+  card?: boolean;
+  onActive?: (id: string | null) => void;
 }) {
   const frame = useRef<HTMLSpanElement>(null);
   const card = useRef<HTMLSpanElement>(null);
@@ -105,7 +108,8 @@ export function ShapeBox({ entries, mode, capacity, label, large = false, active
   const onHover = (id: string | null, event?: PointerEvent<SVGGElement> | FocusEvent<SVGGElement>) => {
     const box = frame.current?.getBoundingClientRect();
     onActive?.(id);
-    if (!id || !box || !event) { setHover(null); return; }
+    // Leaving keeps the last point: the card goes with the highlight, after its short pause.
+    if (!id || !box || !event) return;
     const point = "clientX" in event ? { x: event.clientX, y: event.clientY } : (() => { const r = event.currentTarget.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })();
     setHover({ id, x: point.x - box.left, y: point.y - box.top, flip: point.x - box.left > box.width / 2 });
   };
@@ -113,7 +117,7 @@ export function ShapeBox({ entries, mode, capacity, label, large = false, active
     <svg className={`shapes-box-graphic ${large ? "is-large" : ""}`} viewBox={`0 0 ${BOX} ${BOX}`} role="img" aria-label={label} data-active={active ? "" : undefined}>
       <BoxShapes entries={entries} mode={mode} capacity={capacity} large={large} focusable={!!onActive} active={active} onHover={onActive && onHover} />
     </svg>
-    {hover && entry && hover.id === active && <span ref={card} className="shapes-hover" role="tooltip">
+    {showCard && hover && entry && hover.id === active && <span ref={card} className="shapes-hover" role="tooltip">
       <HoverCard entry={entry} mode={mode} capacity={capacity} />
     </span>}
   </span>;

@@ -13,7 +13,10 @@ export interface ShapeArchetype {
 export interface ShapePlayer {
   player_id: string; player_name: string; listed_position: string | null;
   dpm: number | null; o_dpm: number | null; d_dpm: number | null; playoff_shift: number | null; playoff_games: number;
-  minutes_per_game: number | null; games: number | null; size: number | null; size_playoff: number | null;
+  minutes_per_game: number | null;
+  /** Before the rotation cap at 240 a game; absent from older payloads. */
+  minutes_uncapped?: number | null;
+  games: number | null; size: number | null; size_playoff: number | null;
   archetype: ShapeArchetype | null; fit_ease: number | null; fit_band: number | null;
   continuity: ShapeContinuity; previous_teams: string[]; unknown_reasons: string[];
 }
@@ -111,19 +114,33 @@ export function sizeOf(dpm: number | null, minutes: number | null, scale: SizeSc
 export interface SandboxEntry { player: ShapePlayer; size: number | null; minutes: number | null; added: boolean }
 
 /**
+ * The server's rotation cap: in order of minutes, each player keeps his own until the team reaches
+ * 240 a game, the next gets what is left and the rest none. Ties go by player id.
+ */
+export function rotationCap(minutes: Map<string, number>): Map<string, number> {
+  let left = TEAM_MINUTES;
+  const out = new Map<string, number>();
+  for (const [id, value] of [...minutes].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))) {
+    out.set(id, Math.min(value, left));
+    left -= out.get(id)!;
+  }
+  return out;
+}
+
+/**
  * A what-if roster: the team without `drop`, plus `add` (players from any other roster in the
- * same response), each at his own minutes; if they add up to more than 240 a game, every
- * player's minutes scale down to 240, as projected rosters do.
+ * same response), each at his own uncapped minutes, then capped at 240 a game by rotation as
+ * projected rosters are.
  */
 export function sandboxRoster(team: ShapeTeam, teams: ShapeTeam[], add: string[], drop: string[], mode: ShapeMode, scale: SizeScale): SandboxEntry[] {
   const kept = team.roster.filter(p => !drop.includes(p.player_id)).map(player => ({ player, added: false }));
   const pool = new Map(teams.flatMap(t => t.team_tricode === team.team_tricode ? [] : t.roster.map(p => [p.player_id, p] as const)));
   const added = add.filter(id => !team.roster.some(p => p.player_id === id)).flatMap(id => pool.has(id) ? [{ player: pool.get(id)!, added: true }] : []);
   const roster = [...kept, ...added];
-  const total = roster.reduce((sum, { player }) => sum + (player.minutes_per_game ?? 0), 0);
-  const factor = total > TEAM_MINUTES ? TEAM_MINUTES / total : 1;
+  const own = (player: ShapePlayer) => player.minutes_uncapped ?? player.minutes_per_game;
+  const capped = rotationCap(new Map(roster.flatMap(({ player }) => { const m = own(player); return m === null ? [] : [[player.player_id, m] as const]; })));
   return roster.map(({ player, added }) => {
-    const minutes = player.minutes_per_game === null ? null : player.minutes_per_game * factor;
+    const minutes = capped.get(player.player_id) ?? null;
     const dpm = player.dpm === null ? null : player.dpm + (mode === "playoff" ? player.playoff_shift ?? 0 : 0);
     return { player, minutes, added, size: sizeOf(dpm, minutes, scale) };
   });

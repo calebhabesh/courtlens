@@ -66,12 +66,14 @@ def minutes_note(projected: bool, expected: bool) -> str:
     if expected:
         return (
             "Projected minutes are DARKO's expected minutes per game (2025-26 minutes over 82 "
-            "games where DARKO has none), scaled so no roster plays more than 240 a game. No "
-            "2026-27 minute has been played."
+            "games where DARKO has none). Where a roster adds up to more than 240 a game, players "
+            "keep theirs in order of minutes until the team reaches 240 and the bench gets what is "
+            "left. No 2026-27 minute has been played."
         )
     return (
-        "Projected rosters use 2025-26 minutes over 82 games; a roster whose minutes add up to "
-        "more than 240 a game is scaled down to 240. No 2026-27 minute has been played."
+        "Projected rosters use 2025-26 minutes over 82 games; where a roster adds up to more than "
+        "240 a game, players keep theirs in order of minutes until the team reaches 240 and the "
+        "bench gets what is left. No 2026-27 minute has been played."
     )
 
 
@@ -87,11 +89,15 @@ def shape_size(dpm: float | None, minutes_per_game: float | None) -> float | Non
 
 
 def rebalance(minutes: dict[str, float]) -> dict[str, float]:
-    """Scale a projected roster's minutes per game down to 240 when they add up to more."""
-    total = sum(minutes.values())
-    if total <= TEAM_MINUTES:
-        return dict(minutes)
-    return {pid: value * TEAM_MINUTES / total for pid, value in minutes.items()}
+    """Cap a roster at 240 minutes a game by rotation: in order of minutes, each player keeps his
+    own until the team reaches 240, the next gets what is left and the rest none. Stars keep their
+    real minutes; a proportional scale would shrink them most."""
+    left = TEAM_MINUTES
+    out: dict[str, float] = {}
+    for pid, value in sorted(minutes.items(), key=lambda item: (-item[1], item[0])):
+        out[pid] = min(value, left)
+        left -= out[pid]
+    return out
 
 
 def percentile_ranks(values: dict[str, float]) -> dict[str, float]:
@@ -358,8 +364,11 @@ def roster_shapes(
         }
     )
 
-    # Each roster row: (player id, name, listed position, minutes per team game, games).
-    rosters: dict[str, list[tuple[str, str, str | None, float | None, int | None]]] = {}
+    # Each roster row: (player id, name, listed position, minutes per team game, games, minutes
+    # before the 240 cap).
+    rosters: dict[
+        str, list[tuple[str, str, str | None, float | None, int | None, float | None]]
+    ] = {}
     roster_context: dict[str, Any] | None = None
     label = f"{season} · projected" if projected else season
     if projected:
@@ -391,6 +400,7 @@ def roster_shapes(
                     row.get("listed_position"),
                     balanced.get(row["team_tricode"], {}).get(row["player_id"]),
                     int(games) if games is not None else None,
+                    by_team.get(row["team_tricode"], {}).get(row["player_id"]),
                 )
             )
     else:
@@ -401,14 +411,21 @@ def roster_shapes(
             if info is None or not team_games.get(team_id):
                 continue
             rosters.setdefault(info.tricode, []).append(
-                (pid, name, None, minutes / team_games[team_id], games)
+                (
+                    pid,
+                    name,
+                    None,
+                    minutes / team_games[team_id],
+                    games,
+                    minutes / team_games[team_id],
+                )
             )
 
     capacity = box_capacity()
     teams = []
     for info in sorted(NBA_TEAMS.values(), key=lambda t: t.tricode):
         players: list[dict[str, Any]] = []
-        for pid, name, position, mpg, games in rosters.get(info.tricode, []):
+        for pid, name, position, mpg, games, uncapped in rosters.get(info.tricode, []):
             rating = ratings.get(pid)
             dpm = float(rating["dpm"]) if rating and rating.get("dpm") is not None else None
             shift, playoff_games = shifts.get(pid, (0.0, 0))
@@ -427,6 +444,7 @@ def roster_shapes(
                     "playoff_shift": shift if dpm is not None else None,
                     "playoff_games": playoff_games,
                     "minutes_per_game": mpg,
+                    "minutes_uncapped": uncapped,
                     "games": games,
                     "size": shape_size(dpm, mpg),
                     "size_playoff": shape_size(None if dpm is None else dpm + shift, mpg),

@@ -474,6 +474,9 @@ class RosterShapePlayerResponse(BaseModel):
     playoff_shift: float | None
     playoff_games: int
     minutes_per_game: float | None
+    # Before the rotation cap at 240 a game (equal to minutes_per_game for played seasons); the
+    # trade sandbox re-applies the cap from these.
+    minutes_uncapped: float | None = None
     games: int | None
     size: float | None
     size_playoff: float | None

@@ -92,12 +92,16 @@ describe("roster shapes", () => {
     expect(sizeOf(3, 30, scale)).toBeCloseTo(5 ** 2.2 * 30, 9);
     expect([sizeOf(-3, 30, scale), sizeOf(null, 30, scale), sizeOf(1, null, scale)]).toEqual([0, null, null]);
   });
-  it("sandbox adds and drops players and scales an over-full roster to 240 minutes", () => {
+  it("sandbox adds and drops players and caps an over-full roster at 240 minutes by rotation", () => {
     const home = roster("AAA", [p("1", 4, 120), p("2", 1, 100)]), away = roster("BBB", [p("3", 2, 60)]);
     const entries = sandboxRoster(home, [home, away], ["3"], [], "regular", scale);
     expect(entries.map(e => [e.player.player_id, e.added])).toEqual([["1", false], ["2", false], ["3", true]]);
-    expect(entries.reduce((sum, e) => sum + e.minutes!, 0)).toBeCloseTo(240, 9);
-    expect(entries[0].size).toBeCloseTo(sizeOf(4, 120 * 240 / 280, scale)!, 9);
+    // The two biggest minutes keep theirs; the least-used player gets what is left.
+    expect(entries.map(e => e.minutes)).toEqual([120, 100, 20]);
+    expect(entries[0].size).toBeCloseTo(sizeOf(4, 120, scale)!, 9);
+    // The cap starts from uncapped minutes when the payload has them.
+    const uncapped = sandboxRoster(roster("DDD", [{ ...p("5", 3, 30), minutes_uncapped: 38 }]), [], [], [], "regular", scale);
+    expect(uncapped[0].minutes).toBe(38);
     const dropped = sandboxRoster(home, [home, away], [], ["2"], "regular", scale);
     expect(dropped.map(e => [e.player.player_id, e.minutes])).toEqual([["1", 120]]);
     // Playoff-adjusted adds each player's shift; an id from no other roster is ignored.

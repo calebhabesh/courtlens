@@ -77,7 +77,7 @@ export function Sandbox({ team, data, mode, add, drop, onChange }: {
       {drop.map(id => byId.get(id) && <li key={`drop-${id}`}><Button size="sm" variant="secondary" iconAfter="close" aria-label={`Undo removing ${byId.get(id)!.player.player_name}`}
         onClick={() => onChange(add, drop.filter(x => x !== id))}>− {byId.get(id)!.player.player_name}</Button></li>)}
     </ul>}
-    <p className="player-reference-note">Added players keep their own minutes and DPM; when the roster adds up to more than 240 minutes a game, everyone&apos;s minutes scale down to 240. Added shapes are outlined in the box above. A what-if, not a forecast.</p>
+    <p className="player-reference-note">Added players bring their own minutes and DPM; when the roster adds up to more than 240 minutes a game, players keep theirs in order of minutes until the team reaches 240 and the bench gets what is left. Added shapes are outlined in the box above. A what-if, not a forecast.</p>
   </section>;
 }
 
