@@ -1,0 +1,153 @@
+@layer pages {
+  /* Stat Line Shift (alignment row 13): Databallr's teammate with/without table, pair cards and roster tray. */
+  .sls-page { display: flex; flex-direction: column; gap: var(--space-4); width: min(100%, 1240px); margin-inline: auto; min-width: 0; }
+  /* Above the sticky roster tray, so Customize Stats and the filter sheet open over it. */
+  .sls-console { position: relative; z-index: var(--z-sticky-corner); display: flex; justify-content: center; width: 100%; min-width: 0; }
+  .sls-empty p { margin: 0; }
+  .sls-empty {
+    display: grid; justify-items: center; gap: var(--space-4);
+    margin: 0; padding: var(--space-8) var(--space-4);
+    color: var(--color-on-bg-secondary); font-size: var(--text-base); line-height: var(--text-base-lh); text-align: center;
+  }
+  .sls-coverage { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; }
+
+  /* Customize Stats: Databallr's dialog, grouped checkboxes two a row over a fixed action bar. */
+  .sls-customize-dialog { width: min(480px, calc(100vw - 2 * var(--space-4))); }
+  .sls-customize-groups { display: grid; gap: var(--space-5); }
+  .sls-customize-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3) var(--space-4); margin: 0; padding: 0; border: 0; }
+  .sls-customize-group legend {
+    width: 100%; margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline);
+    color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 600;
+  }
+  .sls-customize-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline); }
+  .sls-customize-spacer { flex: 1; }
+
+  /* Databallr's Select Team: a narrow dialog of logos. */
+  .sls-team-modal { width: min(520px, calc(100vw - 2 * var(--space-4))); }
+  .sls-team-clear { margin-top: var(--space-3); }
+
+  .sls-crumbs, .sls-full-tables { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  /* The single-player table: Stats table look, two-line cells (without → with, then the change). */
+  .sls-table { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); padding: var(--space-4); }
+  .sls-table-head { display: flex; justify-content: center; align-items: center; gap: var(--space-3); }
+  .sls-table-head h2 { min-width: 0; margin: 0; color: var(--color-text-secondary); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 500; }
+  .sls-table-head h2 strong { color: var(--color-text); font-weight: 700; }
+  .sls-grid { --grid-min-width: calc(var(--lead-width) + var(--columns, 9) * 104px); }
+  /* Contains the cells' absolutely positioned screen-reader text, which otherwise widens the page. */
+  .sls-table .player-ref-grid-scroll { --lead-width: 248px; position: relative; }
+  .sls-grid tbody td, .sls-grid tbody th { height: 56px; }
+  /* "55.3% › 58.3%" needs the cell's width; 12 px padding pushed it off its column centre. */
+  .sls-grid tbody td { padding-inline: var(--space-1); }
+  .sls-grid tbody tr[data-small] td { opacity: 0.6; }
+  .sls-sort {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1); padding: 0; border: 0; background: none;
+    color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer;
+  }
+  .sls-sort[aria-pressed="true"] { color: var(--color-accent); }
+  .sls-sort:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: var(--radius-sm); }
+  .sls-lead-sub { text-align: left; }
+  .sls-lead-sub .sls-sort { justify-content: flex-start; text-transform: none; letter-spacing: 0; }
+  .sls-player { text-align: left; }
+  .sls-player-button {
+    display: flex; align-items: center; gap: var(--space-3); width: 100%; min-width: 0; padding: 0; border: 0; background: none;
+    color: inherit; font: inherit; text-align: left; cursor: pointer;
+  }
+  .sls-player-button > span:last-child { display: grid; min-width: 0; }
+  .sls-player-button strong { overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+  .sls-player-button:hover strong { color: var(--color-accent); }
+  .sls-player-button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: var(--radius-sm); }
+  .sls-player small { overflow: hidden; text-overflow: ellipsis; color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 400; }
+  .sls-cell { display: grid; justify-items: center; gap: var(--space-1); }
+  .sls-pair, .sls-player small { display: inline-flex; align-items: center; }
+  .sls-to { flex: none; color: var(--color-text-secondary); }
+  .sls-pair { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .sls-pair strong { color: var(--color-text); font-weight: 600; }
+  .sls-single { font-weight: 600; }
+  .sls-delta { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 700; }
+  .sls-delta[data-tone="up"] { color: var(--color-identity-a); }
+  .sls-delta[data-tone="down"] { color: var(--color-identity-b); }
+  /* A 95% interval that excludes zero. */
+  /* Out of flow, so the figure itself stays centred under its column label. */
+  .sls-delta { position: relative; }
+  .sls-clear { position: absolute; top: 50%; left: calc(100% + var(--space-1)); width: 5px; height: 5px; border-radius: 50%; background: currentColor; translate: 0 -50%; }
+  .sls-cells { display: grid; gap: var(--space-3); }
+  .sls-cells summary { width: fit-content; color: var(--color-text-secondary); font-size: var(--text-sm); cursor: pointer; }
+  .sls-cell-grid { --grid-min-width: 760px; }
+
+  /* Two players: Databallr's pair of cards. */
+  .sls-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 400px)); justify-content: center; gap: var(--space-8); }
+  .sls-card { display: grid; gap: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-5); border-radius: var(--radius-lg); background: var(--color-table-lift); }
+  .sls-card-head { position: relative; display: grid; justify-items: center; gap: var(--space-1); text-align: center; }
+  .sls-card-brand { position: absolute; top: 0; left: 0; color: var(--color-accent); font-weight: 700; }
+  .sls-card-season { position: absolute; top: 0; right: 0; font-size: var(--text-sm); font-weight: 700; }
+  .sls-card-faces { position: relative; display: inline-flex; margin-bottom: var(--space-2); }
+  .sls-card-other { position: absolute; right: calc(-1 * var(--space-5)); bottom: calc(-1 * var(--space-1)); }
+  .sls-card-head h3 { margin: 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+  .sls-card-head p { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); }
+  .sls-card-sides { display: grid; grid-template-columns: 1fr 1fr; text-align: center; font-size: var(--text-sm); font-weight: 600; }
+  .sls-card-side { display: grid; }
+  .sls-card-side[data-side="with"] { color: var(--color-identity-a); }
+  .sls-card-side[data-side="without"] { color: var(--color-identity-b); }
+  .sls-card-side small { color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 400; }
+  .sls-card-rows { display: grid; gap: var(--space-2); margin: 0; }
+  .sls-card-row { display: grid; grid-template-columns: 56px 1fr 56px 1fr 56px; align-items: center; font-variant-numeric: tabular-nums; }
+  .sls-card-row dd { margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; text-align: center; }
+  .sls-card-row dt { color: var(--color-text-secondary); font-size: var(--text-sm); text-align: center; }
+  .sls-pill-slot { display: flex; justify-content: center; }
+  .sls-pill {
+    --pill: var(--color-identity-a);
+    padding: 0 var(--space-2); border-radius: var(--radius-pill); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700;
+    color: var(--color-bg); background: var(--pill);
+  }
+  .sls-pill[data-side="without"] { --pill: var(--color-identity-b); }
+  /* A clear (interval excludes zero) change keeps its fill; a noisy one is an outline. */
+  .sls-pill:not([data-clear]) { color: var(--pill); background: transparent; box-shadow: inset 0 0 0 1px var(--pill); }
+
+  /* Roster tray: sticky at the foot of the page with no frame; the page fades into it (follow-up 9). */
+  /* Fixed across the foot of the screen like Databallr's, its faces centred in the page width; the
+     page keeps that much space below its content so nothing sits under the drawer. */
+  .sls-page, .sls-tray { --sls-tray-open: min(40dvh, 400px); --sls-tray-closed: 52px; }
+  .sls-page[data-tray="open"] { padding-bottom: calc(var(--sls-tray-open) + var(--space-4)); }
+  .sls-page[data-tray="closed"] { padding-bottom: calc(var(--sls-tray-closed) + var(--space-4)); }
+  .sls-tray {
+    position: fixed; inset: auto 0 0 0; z-index: var(--z-sticky); height: var(--sls-tray-closed);
+    border-top: 1px solid var(--color-hairline); background: var(--color-bg);
+    transition: height var(--dur-base) var(--ease-out);
+  }
+  .sls-tray[data-open] { height: var(--sls-tray-open); }
+  .sls-tray-inner { display: grid; grid-template-rows: auto minmax(0, 1fr); gap: var(--space-2); width: min(100% - 2 * var(--space-4), 1240px); height: 100%; margin-inline: auto; padding-block: var(--space-2) var(--space-3); }
+  .sls-tray-head { display: flex; align-items: center; gap: var(--space-2); min-width: 0; font-size: var(--text-sm); }
+  .sls-tray-head strong { font-weight: 600; white-space: nowrap; }
+  .sls-tray-change { margin-inline-start: auto; }
+  .sls-tray-hint { min-width: 0; overflow: hidden; color: var(--color-text-secondary); font-size: var(--text-xs); text-overflow: ellipsis; white-space: nowrap; }
+  .sls-tray:not([data-open]) .sls-tray-toggle svg { rotate: 180deg; }
+  .sls-tray-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)); gap: var(--space-2);
+    align-content: start; min-height: 0; margin: 0; padding: 0; overflow-y: auto; list-style: none; scrollbar-width: thin;
+  }
+  .sls-tray-item {
+    display: grid; justify-items: center; gap: var(--space-1); width: 100%; padding: var(--space-2) var(--space-1);
+    border: 0; border-radius: var(--radius-md); background: none; color: var(--color-text); cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .sls-tray-item:hover { background: var(--color-surface-hover); }
+  .sls-tray-item:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+  .sls-tray-item[aria-pressed="true"] .ui-identity { border-radius: 50%; box-shadow: 0 0 0 3px var(--color-bg), 0 0 0 6px var(--color-accent); }
+  .sls-tray-name { max-width: 100%; overflow: hidden; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); text-overflow: ellipsis; white-space: nowrap; }
+  .sls-tray-item[aria-pressed="true"] .sls-tray-name { color: var(--color-text); font-weight: 600; }
+
+  @media (max-width: 767px) {
+    .sls-cards { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+    .sls-table { padding: var(--space-3) 0 0; }
+    .sls-table .player-ref-grid-scroll { --lead-width: 168px; }
+    .sls-table-head h2 { font-size: var(--text-base); line-height: var(--text-base-lh); }
+    .sls-tray-hint { display: none; }
+    .sls-page, .sls-tray { --sls-tray-open: 40dvh; }
+    .sls-tray-grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
+    .sls-tray-name { font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+    .sls-customize-actions .sls-customize-spacer { flex-basis: 100%; }
+    .sls-card-row { grid-template-columns: 52px 1fr 48px 1fr 52px; }
+    .sls-card-row dd { font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+  }
+}

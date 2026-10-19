@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import catalog from "../../lib/team-branding.json";
 import { teamAccent } from "../../lib/team-colors";
+import type { PortraitEra } from "@/lib/portrait-source";
 import { PlayerPortrait } from "../player-portrait";
 import { TeamLogo } from "../team-logo";
 
@@ -28,11 +29,11 @@ function Name({ href, children }: { href?: string; children: ReactNode }) {
   return href ? <Link className="ui-identity-name" href={href}>{children}</Link> : <span className="ui-identity-name">{children}</span>;
 }
 
-function IdentityMedia({ playerId, name, team, size, portraitUrl }: { playerId?: string; name: string; team?: string | null; size: IdentitySize; portraitUrl?: string | null }) {
+function IdentityMedia({ playerId, name, team, size, portraitUrl, era }: { playerId?: string; name: string; team?: string | null; size: IdentitySize; portraitUrl?: string | null; era?: PortraitEra | null }) {
   return (
     <span className="ui-identity-media">
-      <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size={size} className="ui-identity-portrait" />
-      {team && <span className="ui-identity-badge"><TeamLogo team={team} size={LOGO_SIZE[size]} /></span>}
+      <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size={size} era={era} className="ui-identity-portrait" />
+      {team && <span className="ui-identity-badge"><TeamLogo team={team} season={era?.season} size={LOGO_SIZE[size]} /></span>}
     </span>
   );
 }
@@ -41,12 +42,13 @@ function IdentityMedia({ playerId, name, team, size, portraitUrl }: { playerId?:
  * The identity photo on its own: the team-colour ring with the team logo badge, as in Compare,
  * for headers that lay out the name themselves.
  */
-export function PlayerAvatar({ playerId, name, team, size = "xl", portraitUrl, className = "" }: {
-  playerId?: string; name: string; team?: string | null; size?: IdentitySize; portraitUrl?: string | null; className?: string;
+/** `era` shows the player's headshot from that team-season (2015-16 on), else the current one. */
+export function PlayerAvatar({ playerId, name, team, size = "xl", portraitUrl, era, className = "" }: {
+  playerId?: string; name: string; team?: string | null; size?: IdentitySize; portraitUrl?: string | null; era?: PortraitEra | null; className?: string;
 }) {
   return (
     <span className={`ui-identity ui-identity-${size} ${team ? "has-team" : ""} ${className}`} style={teamStyle(team)}>
-      <IdentityMedia playerId={playerId} name={name} team={team} size={size} portraitUrl={portraitUrl} />
+      <IdentityMedia playerId={playerId} name={name} team={team} size={size} portraitUrl={portraitUrl} era={era} />
     </span>
   );
 }

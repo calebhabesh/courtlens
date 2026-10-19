@@ -19,7 +19,8 @@ test("release availability agrees across desktop and mobile and never carries th
 });
 
 test("catalog scope options keep unavailable context explicit and synchronize navigation", async ({ page }) => {
-  await openWorkbench(page, "/stat-line-shift?season=2000-01&phase=summer_league&beforeDate=2001-01-01");
+  // Stat Line Shift (row 13) left the catalog scope fields; the shot profile page still uses them.
+  await openWorkbench(page, "/similar-players/shot-profile?season=2000-01&phase=summer_league&beforeDate=2001-01-01");
   const season = page.getByLabel("Season", { exact: true });
   await expect(season).toHaveValue("2000-01");
   await expect(season.locator("option:checked")).toContainText("Unavailable");
@@ -27,7 +28,7 @@ test("catalog scope options keep unavailable context explicit and synchronize na
   await expect(page.getByLabel("Phase", { exact: true })).toHaveValue("regular_season");
   // The picker shows the last included day; the URL keeps the exclusive cutoff (2026-06-30).
   await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-06-29");
-  await openWorkbench(page, "/stat-line-shift?season=2025-26&phase=regular_season&beforeDate=2026-04-01");
+  await openWorkbench(page, "/similar-players/shot-profile?season=2025-26&phase=regular_season&beforeDate=2026-04-01");
   await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-03-31");
 });
 

@@ -24,7 +24,7 @@ const OPERATION_PAGES = [
   { title: "Shot Profile", href: "/similar-players/shot-profile", icon: "chart" as const, description: "Observed shooting zones and profile peers." },
   { title: "Shot Aftermath", href: "/research/shooting/aftermath", icon: "trend" as const, description: "Possession outcomes following mapped shots." },
   { title: "WOWY", href: "/wowy", icon: "person" as const, description: "Team exposure with and without selected players." },
-  { title: "Teammate Stat Shift", href: "/stat-line-shift", icon: "table" as const, description: "Observed production across teammate conditions." },
+  { title: "Stat Line Shift", href: "/stat-line-shift", icon: "chart-column" as const, description: "How a player's stat line changes with and without a teammate." },
   { title: "Player Matchups", href: "/matchups", icon: "swap" as const, description: "Explicit source assignments between offense and defense." },
   { title: "Recent Games", href: "/last-games", icon: "calendar" as const, description: "Confirmed appearances, trends and game logs." },
 ];

@@ -500,6 +500,14 @@ the main result except at most one one-line `GatedNote`.
   **Dense tables get logos only, no headshots**, except where the existing group-guide rules place
   portraits.
 - Team logos and headshots are content, not icons.
+- **Photos match the season under analysis** (owner, 2026-10-19, a site-wide rule): wherever a
+  page analyses a season (a stat line, a roster, a comparison, a matchup, a playoff series), each
+  headshot is the player's photo from that team-season, and the team badge uses that season's logo.
+  Pass the season and team to the portrait: `PlayerAvatar` / `PlayerPortrait` `era={{ season, team }}`,
+  which requests `/api/workbench/players/{id}/portrait?season=…&team=…` (season headshots from
+  `courtlens acquire-season-portraits`, 2015-16 on). When the NBA has no photo for that
+  team-season the current one shows; never a different season's team photo by guess. Only pages
+  about the player now (search, the player page header, Live) use the current photo.
 
 ### Dates and numbers (D11, D20)
 
@@ -519,7 +527,9 @@ the main result except at most one one-line `GatedNote`.
   value, rank and a percentile bar. Exports produce the same card as the screen.
 - **Logo-grid picker (FO05):** `TeamGrid`: all 30 logos with tricode and name plus a name/tricode
   filter; inline when nothing is chosen, otherwise in a modal (6 × 5 at desktop, no scrolling). The
-  choice lives in the URL.
+  choice lives in the URL. No team-colour edges on the tiles (owner, 2026-10-19: "tacky"); the choice is the
+  accent outline. `variant="compact"` is Databallr's Select Team dialog: logo and tricode, five a row,
+  no filter.
 - **Depth chart (FO05):** an Unassigned pool across the top (everyone starts there), then the five
   position lanes as equal columns; each lane shows count, minutes, share % and a share bar
   (`role="meter"`). Chips carry a headshot, name and minutes.

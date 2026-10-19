@@ -82,3 +82,59 @@ export function floorCsv(results: FloorResponse[]): string {
   }
   return rows.map(row => row.map(v => `"${String(v ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
 }
+
+export interface StatShiftRosterRequest {
+  team_id?: string | null; release_id?: string | null; season?: string | null; phase?: string | null;
+  before_date?: string | null; lower_date?: string | null; subject_id?: string | null;
+  min_possessions: number; min_games: number;
+}
+export interface RosterPlayer { player_id: string; name: string | null; games: number; minutes: number }
+export interface StatShiftRosterResponse {
+  operation_version: string; context: Record<string, unknown>; team_id: string | null; subject_id: string | null;
+  coverage_status: "available" | "partial" | "source_blocked"; expected_games: number; observed_games: number;
+  excluded_stints: number; available_scopes: { season: string; phase: string }[];
+  roster: RosterPlayer[]; shifts: FloorResponse[];
+}
+
+/** A Stat Line Shift column: per-100 rates read per 75 possessions; percentages read as they are. */
+export interface ShiftStat { key: string; label: string; title: string; metric: string; scale: number; percent?: boolean; digits: number }
+export const SHIFT_STATS: ShiftStat[] = [
+  { key: "usg", label: "USG", title: "Usage rate: (FGA + 0.44 FTA + TOV) over all five players' on the floor", metric: "usage_pct", scale: 1, percent: true, digits: 1 },
+  { key: "pts", label: "PTS", title: "Points per 75 possessions", metric: "points_per_100", scale: 0.75, digits: 1 },
+  { key: "ast", label: "AST", title: "Assists per 75 possessions", metric: "ast_per_100", scale: 0.75, digits: 1 },
+  { key: "reb", label: "REB", title: "Rebounds per 75 possessions (offensive per offensive, defensive per defensive possession)", metric: "reb_per_100", scale: 0.75, digits: 1 },
+  { key: "tov", label: "TOV", title: "Turnovers per 75 possessions", metric: "tov_per_100", scale: 0.75, digits: 1 },
+  { key: "fta", label: "FTA", title: "Free-throw attempts per 75 possessions", metric: "fta_per_100", scale: 0.75, digits: 1 },
+  { key: "fga", label: "FGA", title: "Field-goal attempts per 75 possessions", metric: "fga_per_100", scale: 0.75, digits: 1 },
+  { key: "3pa", label: "3PA", title: "Three-point attempts per 75 possessions", metric: "fg3a_per_100", scale: 0.75, digits: 1 },
+  { key: "oreb", label: "OREB", title: "Offensive rebounds per 75 offensive possessions", metric: "oreb_per_100", scale: 0.75, digits: 1 },
+  { key: "dreb", label: "DREB", title: "Defensive rebounds per 75 defensive possessions", metric: "dreb_per_100", scale: 0.75, digits: 1 },
+  { key: "ts", label: "TS%", title: "True shooting: PTS ÷ 2(FGA + 0.44 FTA)", metric: "ts_pct", scale: 1, percent: true, digits: 1 },
+  { key: "3p", label: "3P%", title: "Three-point percentage", metric: "fg3_pct", scale: 1, percent: true, digits: 1 },
+  { key: "pm", label: "+/-", title: "Team net points per 75 possessions with the player on the floor", metric: "net_rating", scale: 0.75, digits: 1 },
+  { key: "ortg", label: "ORTG", title: "Team points per 100 possessions with the player on the floor", metric: "offensive_rating", scale: 1, digits: 1 },
+  { key: "drtg", label: "DRTG", title: "Opponent points per 100 possessions with the player on the floor", metric: "defensive_rating", scale: 1, digits: 1 },
+];
+// Databallr's nine, ordered so each group label spans one run of columns.
+export const DEFAULT_SHIFT_STATS = ["usg", "pts", "ast", "reb", "tov", "fta", "ts", "3p", "pm"];
+
+export interface ShiftValue { without: number | null; with: number | null; difference: number | null; lower: number | null; upper: number | null; reason: string | null }
+/** With = the selected cell (subject on the floor); without = its complement. Unknown stays null. */
+export function shiftValue(result: FloorResponse, stat: ShiftStat): ShiftValue {
+  const shift = result.shifts.find(s => s.metric === stat.metric);
+  const scale = (value: number | null | undefined) => value == null ? null : value * stat.scale;
+  return {
+    with: scale(shift?.selected_value), without: scale(shift?.complement_value), difference: scale(shift?.difference),
+    lower: scale(shift?.interval.lower), upper: scale(shift?.interval.upper), reason: shift?.interval.reason ?? null,
+  };
+}
+export function formatShift(value: number | null, stat: ShiftStat, signed = false): string {
+  if (value == null) return "—";
+  const text = Math.abs(value).toFixed(stat.digits);
+  // Sign the rounded figure, so a change that rounds to zero never reads as −0.0.
+  const rounded = Number(text) === 0 ? 0 : value;
+  const sign = rounded < 0 ? "−" : signed && rounded > 0 ? "+" : "";
+  return `${sign}${text}${stat.percent && !signed ? "%" : ""}`;
+}
+/** A difference whose 95% interval excludes zero. */
+export const clearShift = (v: ShiftValue) => v.difference != null && v.lower != null && v.upper != null && (v.lower > 0 || v.upper < 0);

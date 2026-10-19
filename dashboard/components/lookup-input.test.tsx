@@ -88,3 +88,27 @@ describe("LookupInput before typing", () => {
     expect(captions).toEqual(["aka Joker, The Big Honey"]);
   });
 });
+
+describe("LookupInput scope changes", () => {
+  afterEach(() => { cleanup(); vi.useRealTimers(); vi.mocked(queryLookup).mockReset(); });
+
+  // Moved from the Stat Line Shift e2e spec (row 13): a slower answer for an old season never lands.
+  it("discards an obsolete response for the same text after the season changes", async () => {
+    vi.useFakeTimers();
+    let release!: () => void;
+    const pending = new Promise<void>(resolve => { release = resolve; });
+    vi.mocked(queryLookup).mockImplementation(async ({ season }) => {
+      if (season === "2023-24") await pending;
+      return { items: [{ ...jokic, id: `scope:${season}`, canonical_id: `scope-${season}`, display_name: `Scope ${season}` }], total_matches: 1 } as never;
+    });
+    const view = render(<LookupInput label="Search players" value="scope" season="2023-24" onChange={() => {}} onSelect={() => {}} kinds={["player"]} />);
+    fireEvent.focus(screen.getByRole("combobox"));
+    await settle();
+    view.rerender(<LookupInput label="Search players" value="scope" season="2025-26" onChange={() => {}} onSelect={() => {}} kinds={["player"]} />);
+    await settle();
+    expect(screen.getByRole("listbox").textContent).toContain("Scope 2025-26");
+    release();
+    await settle();
+    expect(screen.getByRole("listbox").textContent).not.toContain("Scope 2023-24");
+  });
+});

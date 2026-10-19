@@ -1,29 +1,10 @@
 // The /wowy operation UI was replaced in PC11 by stint-derived pair splits (e2e/pc11-gated-pages.spec.ts);
-// these checks cover the operation that Teammate Stat Shift still uses.
+// these checks cover the shared-floor operations, including Stat Line Shift's.
 import { expect, test } from "@playwright/test";
+import { firstLoadFixtures } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
 import { readFileSync } from "node:fs";
 const empty = JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json", "utf8")).response;
-
-async function pick(page: import("@playwright/test").Page, label: string, ids: string, replace = false) {
-  const group=page.getByRole("group",{name:label,exact:true});
-  // A resolved query changes lookup scope; wait for its selected identities before replacing.
-  await expect(group.locator("..").getByRole("status").filter({hasText:/^Resolving/})).toHaveCount(0);
-  if(replace) {
-    const chips=group.getByRole("button",{name:/^Remove/});
-    let remaining=await chips.count();
-    while(remaining) {
-      await chips.first().click();
-      // Scope retention can briefly hide every chip while the remaining IDs resolve.
-      await expect(chips).toHaveCount(--remaining);
-    }
-  }
-  for(const id of ids.split(",")) {
-    const name=id === "other" ? "Fixture Guard" : `Fixture Player ${id}`;
-    await page.getByRole("combobox",{name:label,exact:true}).fill(name);
-    await page.getByRole("option").filter({hasText:name}).click();
-  }
-}
 
 test.beforeEach(async ({ page }) => {
   await page.route("**/api/workbench/operations/*", async route => {
@@ -43,15 +24,81 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test("stat shifts reject focal contradictions and request per-possession production", async ({ page }) => {
+// Stat Line Shift (row 13 follow-up 6): the page opens on Select Team; closing it leaves the page
+// unfilled, and picking a team from there loads the roster in the latest season.
+test("stat line shift opens on the team picker and can start unfilled", async ({ page }) => {
+  await firstLoadFixtures(page);
   await openWorkbench(page, "/stat-line-shift");
-  await pick(page,"Focal player","1");
-  await pick(page,"Together players","1");
-  await expect(page.locator(".shared-floor").getByRole("alert")).toContainText("separate");
-  await pick(page,"Together players","2",true);
-  await expect(page.getByRole("heading", { name: "Observed Stat Shift" })).toBeVisible();
-  await expect(page.locator(".floor-result")).toContainText("finalized games reconstructed");
-  await expect(page.getByRole("button", { name: "Run shared-floor analysis" })).toHaveCount(0);
+  const dialog = page.getByRole("dialog", { name: "Select Team" });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("button", { name: /close/i }).first().click();
+  await expect(page.getByText("Select a team to begin")).toBeVisible();
+  await expect(page.locator(".sls-tray")).toHaveCount(0);
+  await page.locator(".sls-empty").getByRole("button", { name: "Select Team" }).click();
+  await page.getByRole("dialog", { name: "Select Team" }).getByRole("button", { name: "Toronto Raptors" }).click();
+  await expect(page).toHaveURL(/team=TOR/);
+  await expect(page.locator(".sls-tray-item")).toHaveCount(20);
+  await expect(page.getByLabel("Season", { exact: true })).toHaveValue("2025-26");
+});
+
+// Follow-ups 12–13: the roster drawer spans the screen's foot; picking the chosen team again, or
+// Clear Team, returns to the unfilled page and empties the drawer.
+test("stat line shift drawer spans the screen and a team can be deselected", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await firstLoadFixtures(page);
+  await openWorkbench(page, "/stat-line-shift?team=TOR&season=2025-26");
+  const drawer = page.getByRole("complementary", { name: "Roster" });
+  const box = (await drawer.boundingBox())!;
+  expect([box.x, box.x + box.width, box.y + box.height]).toEqual([0, 1440, 900]);
+  await drawer.getByRole("button", { name: "Change Team" }).click();
+  await page.getByRole("dialog", { name: "Select Team" }).getByRole("button", { name: "Toronto Raptors" }).click();
+  await expect(page.getByText("Select a team to begin")).toBeVisible();
+  await expect(drawer).toHaveCount(0);
+  await page.locator(".sls-empty").getByRole("button", { name: "Select Team" }).click();
+  await page.getByRole("dialog", { name: "Select Team" }).getByRole("button", { name: "Toronto Raptors" }).click();
+  await expect(page.locator(".sls-tray-item")).toHaveCount(20);
+  await drawer.getByRole("button", { name: "Change Team" }).click();
+  await page.getByRole("dialog", { name: "Select Team" }).getByRole("button", { name: "Clear Team" }).click();
+  await expect(drawer).toHaveCount(0);
+  await expect(page).not.toHaveURL(/team=/);
+});
+
+// Customize Stats (follow-up 8) applies only on Save Changes.
+test("customize stats saves grouped column choices", async ({ page }) => {
+  await firstLoadFixtures(page);
+  await openWorkbench(page, "/stat-line-shift?team=TOR&season=2025-26&players=1630567");
+  await page.getByRole("button", { name: "Customize Stats" }).click();
+  const dialog = page.getByRole("dialog", { name: "Customize Stats" });
+  await dialog.getByText("ORTG", { exact: true }).click();
+  await dialog.getByRole("button", { name: "Cancel" }).click();
+  await expect(page).not.toHaveURL(/stats=/);
+  await page.getByRole("button", { name: "Customize Stats" }).click();
+  await dialog.getByRole("button", { name: "Clear All" }).click();
+  await expect(dialog.getByRole("button", { name: "Save Changes" })).toBeDisabled();
+  await dialog.getByText("PTS", { exact: true }).click();
+  await dialog.getByText("ORTG", { exact: true }).click();
+  await dialog.getByRole("button", { name: "Save Changes" }).click();
+  await expect(page).toHaveURL(/stats=pts%2Cortg|stats=pts,ortg/);
+  await expect(page.getByRole("region", { name: "Teammate stat shifts" }).locator("thead")).toContainText("ORTG");
+});
+
+// Stat Line Shift (alignment row 13): one subject's teammate table and the two-player cards.
+test("stat line shift shows each teammate without and with the subject, then the pair cards", async ({ page }) => {
+  await firstLoadFixtures(page);
+  await openWorkbench(page, "/stat-line-shift?team=TOR&season=2025-26");
+  await expect(page.getByText("Select one or two players")).toBeVisible();
+  const tray = page.getByRole("complementary", { name: "Roster" });
+  await tray.getByRole("button", { name: /Scottie Barnes/ }).click();
+  await expect(page).toHaveURL(/players=1630567/);
+  const table = page.getByRole("region", { name: "Teammate stat shifts" });
+  await expect(table.locator("tbody tr")).toHaveCount(8);
+  await expect(table.locator("tbody tr").first()).toContainText("Brandon Ingram");
+  await expect(table.locator("thead")).toContainText("USG");
+  await tray.getByRole("button", { name: /Immanuel Quickley/ }).click();
+  await expect(page.locator(".sls-card")).toHaveCount(2);
+  await expect(page.locator(".sls-card").first()).toContainText("With Immanuel");
+  await page.locator(".sls-full-tables").getByRole("button", { name: "Scottie Barnes" }).click();
+  await expect(page).toHaveURL(/players=1630567(&|$)/);
 });
 
 test("Stats on/off preset opens served per-team rating columns", async ({ page }) => {

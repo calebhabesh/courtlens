@@ -393,7 +393,7 @@ export function TeamComparison({ a, b, catalog, phase }: { a: TeamSide; b: TeamS
       </div>
     </Drawer>
     <Modal className="roster-picker-modal" isOpen={picker !== null} onClose={() => setPicker(null)} title={`Choose Team ${picker?.toUpperCase() ?? ""}`} description="Choose a franchise, then set its season on the card.">
-      <TeamGrid edgeHighlights={false} season={picker === "b" ? b.season : a.season} selected={picker === "a" ? a.teamId : b.teamId} onSelect={teamId => { if (picker) change({ [picker === "a" ? "teamA" : "teamB"]: teamId }); setPicker(null); }} />
+      <TeamGrid season={picker === "b" ? b.season : a.season} selected={picker === "a" ? a.teamId : b.teamId} onSelect={teamId => { if (picker) change({ [picker === "a" ? "teamA" : "teamB"]: teamId }); setPicker(null); }} />
     </Modal>
     <DataDetails open={details} onClose={() => setDetails(false)} scope={{ releaseId: catalog.release_id, phase }} rows={[
       { label: "Team A", value: `${teamName(a)} · ${a.season} · Through ${formatDate(throughDateFromBefore(a.beforeDate))}` },

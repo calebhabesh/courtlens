@@ -1,6 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
 import { mockContracts, mockFinance, mockRosterShapes, initial as financeInitial } from "./finance-fixture";
-import { readFileSync } from "node:fs";
 import { firstLoadFixtures, offSeasonFixtures } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
 import research from "./fixtures/research-negative-result.json";
@@ -138,11 +137,10 @@ for (const view of WIDTHS) {
       await expect(page.getByRole("region", { name: "Six factors table" })).toBeVisible();
       await settle(page);await expect(page).toHaveScreenshot(`team-profile-${view.name}.png`, shot);
     });
-    test("teammate stat shift", async ({ page }) => {
-      const empty = JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json", "utf8")).response;
-      await page.route("**/api/workbench/operations/stat-shift", route => route.fulfill({json:{...empty,operation:"stat-shift",request:{...empty.request,...route.request().postDataJSON()}}}));
-      await openWorkbench(page, "/stat-line-shift?player_id=1&together=2&season=2025-26&beforeDate=2026-04-13");
-      await expect(page.getByRole("heading",{name:"Observed Stat Shift"})).toBeVisible();
+    test("stat line shift", async ({ page }) => {
+      await firstLoadFixtures(page);
+      await openWorkbench(page, "/stat-line-shift?team=TOR&season=2025-26&players=1630567");
+      await expect(page.locator(".sls-grid tbody tr")).toHaveCount(8);
       await settle(page);await expect(page).toHaveScreenshot(`stat-shift-${view.name}.png`, shot);
     });
     test("finance contracts/books", async ({ page }) => {
@@ -237,7 +235,7 @@ for (const view of WIDTHS) test.describe(`FO13 baselines ${view.name}`, () => {
 // PC04: every entry is opened without parameters; canonical defaults are written by the page.
 for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.name}`, () => {
   test.beforeEach(async ({page}) => {await page.setViewportSize({width:view.width,height:view.height});await stableWorkspace(page);await firstLoadFixtures(page);});
-  for (const [name,path] of [["compare","/compare"],["stat-shift","/stat-line-shift"],["shot-profile","/similar-players/shot-profile"],["shot-aftermath","/research/shooting/aftermath"],["similar-players","/similar-players"],["recent-games","/last-games"],["operation-gallery","/research/operation"]]) test(name,async({page})=>{
+  for (const [name,path] of [["compare","/compare"],["shot-profile","/similar-players/shot-profile"],["shot-aftermath","/research/shooting/aftermath"],["similar-players","/similar-players"],["recent-games","/last-games"],["operation-gallery","/research/operation"]]) test(name,async({page})=>{
     await openWorkbench(page,path);
     if(path === "/compare") await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
     else if(path === "/research/operation") await expect(page.getByRole("region",{name:"Available research operations"})).toBeVisible();
@@ -247,6 +245,8 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
   test("live off-season",async({page})=>{await offSeasonFixtures(page);await openWorkbench(page,"/live");await expect(page.getByRole("region",{name:"Top performers"})).toContainText("28 PTS");await settle(page);await expect(page).toHaveScreenshot(`first-load-live-${view.name}.png`,shot);});
   // PC08: Contracts first load from the latest admitted refresh (real captured responses).
   // PC10: Roster Shapes first load and team detail from the captured real response.
+  // Stat Line Shift (row 13) opens like Databallr: on its Select Team dialog, no team chosen.
+  test("first-load stat-line-shift",async({page})=>{await openWorkbench(page,"/stat-line-shift");await expect(page.getByRole("dialog",{name:"Select Team"}).getByRole("button",{name:"Toronto Raptors"})).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-stat-shift-${view.name}.png`,shot);});
   for(const [route,name] of [["roster-shapes","roster-shapes"],["roster-shapes?team=DEN","roster-shapes-DEN"]]) test(`first-load ${route}`,async({page})=>{await mockRosterShapes(page);await openWorkbench(page,`/${route}`);await expect(page.locator(".shapes-box-graphic").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${name}-${view.name}.png`,shot);});
   for(const route of ["contracts","contracts/DEN"]) test(`first-load ${route}`,async({page})=>{await mockContracts(page);await openWorkbench(page,`/${route}`);await expect(page.getByRole("figure").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route.replace("/","-")}-${view.name}.png`,shot);});
 });

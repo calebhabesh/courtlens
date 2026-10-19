@@ -25,7 +25,7 @@ Rows are in working order.
 | 10 | Rankings | `/rankings` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
 | 11 | Tier List | `/tierlist` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
 | 12 | Roster Shapes | `/roster-shapes` | ✅ | Owner approved first revision 2026-10-19; Databallr side-by-side team view with linked hover, season-by-season fill, rotation-capped minutes, searchable trade sandbox |
-| 13 | Stat Line Shift | `/stat-line-shift` | ⬜ | |
+| 13 | Stat Line Shift | `/stat-line-shift` | ✅ | Owner approved first revision 2026-10-19; opens on Select Team, full-width roster drawer with season photos, per-75 without → with table, pair cards, Customize Stats dialog; IM03 stints + stint box (shared-floor v2) |
 | 14 | Contracts + Free Agency | `/contracts` | ⬜ | |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
 | 16 | Matchup Matrix | `/matchups` | ✅ aligned (first revision) | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
@@ -1619,6 +1619,242 @@ Follow-up after approval (owner, 2026-10-19; screenshot of the 2025-26 grid):
     so 1–30 line up; 20px on a large card. Measured on :3100 at 1440 / 390: no card header clipped,
     no overflow. Lint clean; Roster Shapes and visual-baseline specs 103 passed, the four
     first-load baselines within tolerance (none rewritten).
+
+### 13 Stat Line Shift — ✅ aligned (first revision)
+
+Owner approval (2026-10-19): "Alright, I think we can mark this page finished." Approved after
+follow-up 17 (uncommitted at approval). The `stat-shift` and `first-load-stat-shift` Playwright
+baselines (desktop and phone) in `dashboard/e2e/visual-baselines.spec.ts` are the approved
+screenshots. Site-wide rule set during this page: player photos match the season under analysis
+(Design Language, Identity; alignment plan, Photos).
+
+Owner start (2026-10-19): "Let's begin the revamp for Stat Line Shift (alignment catalog row 13,
+`/stat-line-shift`), the next page under the Teams menu", with four Databallr references (empty
+state with a team roster tray, the Select Team modal, one selected player's table and the
+two-player cards). "Remember we replicate, then improve/iterate on what Databallr has done."
+Analytical contracts stay: only the focal player's stints, the predicate against its logical
+complement, all 2^n presence/absence cells, unknown is never zero. Back navigation and Title Case
+labels follow Design Language.
+
+Starting state (survey, 2026-10-19): `/stat-line-shift` (`components/team-stat-shift-view.tsx`,
+contract `docs/design/shared-floor-v1.md`) is titled "Teammate Stat Shift" with WOWY and Export CSV
+buttons; a console (Season, Phase, Through, Change Team, From, Possessions, Games, Data Details); an
+example-subject card (HOU, Amen Thompson · Kevin Durant, box-score points/rebounds/assists bars);
+Focal / Together / Apart player pickers; then "Observed Stat Shift": a coverage line, a 17-row
+metric table (Selected raw, Complement raw, Eligible difference, 95% interval) in per-100 units,
+the exposure table, two disclosures and Pin / Reopen buttons. Live it reads
+"source_blocked · 0 / 82 finalized games": `workbench_lineup_stints` is empty in the owner's
+database. IM03's 202,063 accepted stints (2023-24 to 2025-26, regular season and playoffs) were
+only ever loaded into a disposable proof database; the six sealed bundles remain in
+`data/derived/impact-event-gate/bundles`. The operation also reads stints only from the release's
+own dataset ("no arbitrary-dataset substitution under a release label"), so loading the bundles
+alone would not unblock it.
+Databallr: centred icon title and explainer ("Analyze how individual player stats change when
+playing with or without specific teammates"); Season, team, Reg Season and gold Customize Stats
+controls; a Select Team modal (6 × 5 logo grid); a bottom roster tray of headshots ("Change Team"
+first, a gold ring on picked players, collapsible). One player picked: "Per 75 stats without and
+with <player>", one row per teammate (minutes without → with) and USG, PTS, AST, REB, TOV, TS%,
+FTA, 3P%, +/- each as without → with and the difference, gold up and blue down; a Without / With /
+Difference breadcrumb and sortable columns. Two players: "View full table for" both, and two cards,
+each "With <other> / Without <other>" with minutes and the nine stats, a gold or blue pill on the
+side that is higher. Evidence: `docs/evidence/alignment/stat-line-shift/before/` (1440: 2,083px;
+390: 2,999px; no overflow, no browser errors).
+
+Instructions (owner, 2026-10-19; answering the start-of-page proposal):
+1. [x] Data: "Load IM03 stints (Recommended)" — append the six sealed IM03 bundles (2023-24 to
+   2025-26, regular season and playoffs) to the owner database as new datasets, and revise the
+   contract (shared-floor v2) so stat-shift reads the sealed stint dataset for the season and
+   phase. Additive; no published snapshot changes. Seasons before 2023-24 stay data-blocked.
+   — Six datasets admitted (all `ready`, code and contract hashes matched first; no pointer
+   moved). [Shared-floor v2](design/shared-floor-v2.md) (`courtlens-shared-floor-v2`, v1 frozen)
+   reads the sealed dataset for the season and phase, joined by game id to the release's
+   finalized schedule, so IM02's excluded games read as partial coverage. It also accepts the
+   82,142 zero-duration IM03 instants under policy v2 (v1's rule dropped every game). New
+   read-only `POST /api/workbench/operations/stat-shift-roster` (inside the demo's
+   `operations/*` allowance): one stint read, every teammate's stat shift, the roster and the
+   scopes with stints. A dropped team-id canonicalisation (caught by `test_b21_api`) was restored.
+2. [x] Layout: "Replicate + improve (Rec.)" — centred icon title and explainer; console with
+   Season, team (logo Select Team modal), phase and gold Customize Stats (picks columns);
+   collapsible bottom roster tray. One pick: per-75 teammate table (without → with, difference
+   in gold or blue). Two picks: Databallr's two cards. Improvements: a 95% interval and gate
+   marker on each difference, a sample-size cue, and the 2^n cells in a disclosure. Example card,
+   old pickers and the per-100 dump removed.
+   — Centred chart-column title with Databallr's explainer (wraps); console: Season (scopes with
+   stints), team button (logo + tricode) opening "Select Team · 30 NBA teams" (shared
+   TeamGrid), phase, gold Customize Stats (15 columns in a popover, nine by default, `stats=` in
+   the URL) and Data Details (coverage, gates, stint dataset, method, CSV and evidence JSON).
+   Empty state "Select one or two players to analyze their combined statistics". Sticky
+   bottom tray: Change Team, then the roster by minutes, gold ring on picks (two at most; a
+   third replaces the oldest), collapsible from a gold handle. One pick: "Per 75 stats without
+   and with <player>" in the Stats table look (Profile · Counting · Scoring · Impact; the nine
+   are ordered so each group is one run), each row "848 min w/o → 1,756 min with", each cell
+   without → with over the change in gold (up) or blue (down); Difference / Stats w/o / Stats
+   w/ views; names open that player's table; headers sort by the change (`sort=`), the lead
+   header by minutes with. Two picks: "View full table for" both and Databallr's two cards
+   (CourtLens · season, the player's face with the other's, With / Without with minutes, a
+   pill on the higher side). Improvements: differences show only when both sides pass the
+   gates (else "—" with the reason); a dot marks a 95% game-cluster interval that excludes
+   zero (filled pill on the cards, outline otherwise); hovering shows the interval; rows under
+   the gates fade with "small sample"; "Presence/Absence Cells" lists both cells per teammate
+   (games, stints, minutes, possessions, gate). Removed: example card, Focal/Together/Apart
+   pickers, per-100 dump, Pin/Reopen, `shared-floor-view.tsx` (no users left); the operation
+   gallery entry is renamed Stat Line Shift.
+3. [x] Metrics: "Standard formulas (Rec.)" — USG% = (FGA + 0.44 FTA + TOV) ÷ the same total for
+   all five players on the floor; TS% and 3P% from summed makes and attempts; +/- = net rating ×
+   0.75; counts per 75 = per 100 × 0.75; all from the focal player's stints, each with its own
+   game-cluster interval.
+   — `usage_pct`, `ts_pct`, `fg3_pct` and a combined `reb_per_100` (value and interval as the
+   linear combination of its parts, like net rating); rates are gated by the cells, not by
+   100 attempts. Live TOR 2025-26 with Scottie Barnes against Databallr: Quickley PTS 21.9 →
+   18.1 (Databallr 21.9 → 18.1), AST 6.9 → 6.8 (6.8 → 6.8); Ingram USG 30.4 → 25.5 (30.5 →
+   25.2), TS% 55.3 → 58.3 (54.4 → 58.6), minutes 848 / 1,756 (828 / 1,709).
+
+Data finding (2026-10-19, while building 1): the sealed IM03 stints (loaded into the owner database
+as six new `courtlens-impact` datasets) carry per-player **points only**; shots, free throws,
+rebounds and turnovers are stored per team per stint, and possession records keep raw-row locators
+without the acting player. Every IM03 stint is `patched` under `possession-policy-v2`, which v1 of
+the operation rejects (`valid` and v1 only). From the sealed data alone, minutes, PTS and +/- per 75
+are available; USG, AST, REB, TOV, FTA, TS% and 3P% need a per-player stint box derived from the raw
+play-by-play through those locators (IM05's `impact_extras.py` already reads the actors). Asked the
+owner how to proceed.
+
+Instructions (owner, 2026-10-19; answering the data finding):
+4. [x] Player box: "Derive stint box (Rec.)" — attribute every raw play-by-play action (shooter,
+   assister, rebounder, turnover, free throw, three-point attempt) to its stint through the sealed
+   locators, reusing IM05's actor reads; verified by conservation (each player's stint totals equal
+   his box score in every game); sealed as a hashed artifact and logged as an impact-metrics block;
+   then the page shows all nine columns.
+   — [Stint box v1](design/stint-box-v1.md) (`courtlens-stint-box-v1`): all 3,901 games in 202.5 s;
+   the replay reproduces every sealed stint's player points; points and shooting known in every
+   team-game, AST / OREB / DREB / TOV in ≥ 99.6% (the rest are box-score disagreements, unknown
+   for that team and game). 30 MB of content-addressed artifacts, manifest pinned in settings.
+   Logged as SB01 in the impact metrics progress log; evidence
+   `docs/evidence/stint-box-v1/`.
+5. [x] Acceptance: "Accept patched/v2 (Rec.)" — shared-floor v2 accepts IM02-repaired (`patched`)
+   stints under `possession-policy-v2`, the same stints IM04's RAPM and on/off use; recorded in the
+   contract and Data Details.
+   — `valid` or `patched`, policy v1 or v2; recorded in shared-floor v2 and the Data Details
+   method notes.
+
+Verification (2026-10-19): owner's :3100 with live data (`verification.jsonl`): no overflow and no
+browser errors in 6 views × 1440 / 390 (empty; TOR with Barnes, sorted by PTS; TOR pair; DEN
+playoffs with Jokić; OKC 2023-24 with Gilgeous-Alexander); group labels ≤ 0.01px from their
+columns, label bottoms 0px apart, every value ≤ 0.5px from its column centre with no cell
+overflowing; pills inside their cards; Customize Stats opens above the tray. Python 2,166 passed
+(new `test_stint_box.py` and rate/combined/unknown-usage tests in `test_on_off.py`); ruff, format
+and mypy clean. Dashboard lint and typecheck clean; Vitest 598/598 (the 4 known `header.test.tsx`
+aborts); the chip and lookup scope-race checks moved from e2e to Vitest (`entity-picker.test.tsx`,
+`lookup-input.test.tsx`), and the catalog-scope and example-default e2e tests moved to the shot
+profile page. Playwright on the mock sandbox (fixture `e2e/fixtures/stat-line-shift-v1.json`, real
+TOR responses): full suite 487 passed, 28 skipped; `fo13-pages:112` failed (known planner flake,
+1 of 3 alone); in the previous full run `live:79` and `table-interactions:63` failed and passed
+alone (8/8, 3/3). Only the four Stat Line Shift baselines changed.
+Data-blocked: seasons before 2023-24 (no accepted stints); Databallr's own minutes basis differs
+slightly from IM03's reconstruction. Hosting: the demo's frozen snapshot does not yet carry the
+six IM03 datasets or `data/derived/stint-box-v1/`; PC13 hosting is parked.
+Evidence: `docs/evidence/alignment/stat-line-shift/` (`before/` holds the survey).
+
+Follow-up instructions (owner, 2026-10-19; "Nice first pass", with Databallr's first-load team
+picker, its empty page, its Customize Stats dialog and screenshots of ours):
+6. [x] "You shouldn't choose the immediate default team to be Toronto. Databallr launches a team
+   picker where you can choose the team first before actually beginning the stat line shift. You
+   can also choose to not pick a team and press the X button and be sent to the Stat Line Shift
+   page which is unfilled. Make this initial setup flow smooth."
+   — No default team: `/stat-line-shift` opens on Databallr's "Select Team · 30 NBA teams"
+   dialog. X leaves the page unfilled: the console's team button reads "Team", the page says
+   "Select a team to begin" with a gold Select Team button (on phones the console sits in the
+   Filters sheet), and no tray. Picking a team writes `team=<tricode>` and loads the roster; the
+   tray's Change Team reopens the dialog. The roster operation now runs without a team (scopes
+   only), so the season list is ready before a team is picked.
+7. [x] "Make sure we are on the most recent valid season."
+   — Without a `season`, the roster operation now uses the latest season with admitted stints for
+   the phase (2025-26), not the release's default (it resolved 2023-24). Recorded in
+   shared-floor v2.
+8. [x] "Customize stats or edit metrics. Menu should be much cleaner instead of a drop down. Either
+   be a sidebar or a pop-up menu like databallr" (grouped checkboxes; Defaults, Clear All, Cancel,
+   Save Changes).
+   — A dialog like Databallr's: General (PTS, AST, REB, TOV, USG, +/-), Shooting (TS%, 3P%, FTA,
+   FGA, 3PA), Rebounding (OREB, DREB), Team on Court (ORTG, DRTG), two a row under ruled group
+   labels; Defaults, Clear All, Cancel and Save Changes (disabled with nothing checked).
+   Choices apply only on Save. Databallr's STL, BLK, rim/mid-range, shot-quality, frequency
+   and ORB%/DRB% columns are not offered: the stint box has no steals, blocks or shot location.
+9. [x] "Current player selector looks kind of weird. Can we make it a little bit more seamless and
+   minimal/clean, I don't like the box around all the player, and the weird placement of the
+   up/collapse arrow."
+   — No frame: the tray has no border, shadow, radius or panel fill; the page fades into it. One
+   header line: team logo and name, "Pick one or two players" / "1 of 2 picked", then Change
+   Team and a small chevron to collapse, both at the right. The Change Team tile is gone;
+   picks keep a gold ring.
+10. [x] "I don't like this team picker where we have the edge highlights on the teams. I think this
+    is tacky and looks vibe coded. Can we remove this from all team pickers that have it including
+    this one."
+    — The team-colour bottom edge is gone from the shared `TeamGrid` everywhere (team profile
+    depth chart, design showcase, Team Compare, this page); the `edgeHighlights` prop is removed.
+    Selection is the accent outline. This page uses its new `compact` variant: Databallr's five
+    a row of logo and code, no filter. The Stats team dialog never had edges.
+11. [x] "can you bold "without" here too" (the table heading "Per 75 stats without and with …").
+    — "Per 75 stats **without** and **with Scottie Barnes**".
+
+Verification (follow-ups 6–11): owner's :3100 with live data (`follow-up-1/verification.jsonl`,
+captures 1–5 at 1440 / 390): picker open on load, 0 of 30 tiles with an edge, X leaves an unfilled
+2025-26 page, TOR loads 20 players, tray frame 0px / none, no overflow or browser errors. Python
+shared-floor tests 32 passed, ruff and mypy clean; dashboard lint, typecheck, Vitest 598/598;
+Playwright full suite 489 passed, 28 skipped (`fo13-pages:47` failed once, 3/3 alone); new
+first-load and Customize Stats tests; only the four Stat Line Shift baselines changed.
+
+Follow-up instructions (owner, 2026-10-19; Databallr's page with its roster drawer, and our empty page):
+12. [x] "The player selection drawer should stretch the width of the bottom screen and be on the
+    bottom half like data ballr"
+    — Fixed across the foot of the screen, full width (0–1440 at 1440), 36% of the viewport
+    (max 360px; 40% on phones), faces centred in the 1240px page width, a hairline on top, no
+    other frame. It renders at `document.body` (the route's enter transform had anchored
+    `fixed` to the page). The page keeps that much space below its content, so the last row
+    clears the drawer; collapsed, the drawer is its 52px header line.
+13. [x] "For some reason deselecting a team in the franchise select is not working. It still keeps
+    it's players in the drawer"
+    — Picking the selected team again now deselects it (no team, picks cleared, drawer gone,
+    "Select a team to begin"); the dialog also shows a Clear Team button whenever a team is set.
+14. [x] "remove the large black container from around the select a team to begin, it doesn't look
+    good."
+    — Both prompts are plain text on the page (no panel fill); "Select a team to begin" keeps its
+    gold Select Team button.
+
+Verification (follow-ups 12–14): owner's :3100 with live data (`follow-up-2/verification.jsonl`,
+captures 1–5 at 1440 / 390): drawer fixed to the screen's foot edge to edge, last content above
+it when scrolled to the end, 52px collapsed; deselect by repicking TOR and Clear Team both return
+to the unfilled page with no drawer; no overflow or browser errors. Dashboard lint, typecheck,
+Vitest 598/598; Playwright full suite 491 passed, 28 skipped, no failures; new drawer/deselect
+test; only the four Stat Line Shift baselines changed.
+
+Follow-up instruction (owner, 2026-10-19; Databallr's roster drawer):
+15. [x] "Can you size up the player portraits in the drawer much more. databallr does better with this."
+    — Portraits 48 → 80px (the `lg` avatar), names 12 → 14px (12px on phones) so full names fit,
+    136px columns (8 a row at 1440, 3 on phones), a wider gold ring on picks, drawer 36 → 40% of
+    the screen (max 400px). Measured on :3100 with live data: 80px portraits, no overflow or
+    browser errors at 1440 / 390 (`follow-up-3/`). Lint clean; Stat Line Shift, baseline,
+    defaults and route specs 113 passed; only the four Stat Line Shift baselines refreshed.
+
+Follow-up instruction (owner, 2026-10-19):
+16. [x] "Can you make sure that the photos in the player drawer for the team correspond to the year
+    for which we are analyzing stat line shift." — every headshot on the page (drawer, table
+    heading and rows, both pair cards) now asks for that team-season's photo
+    (`?season=…&team=…`, the season headshots from `courtlens acquire-season-portraits`), and the
+    team badges use that season's logo. `PlayerAvatar` gained an optional `era` prop (no change
+    where it is absent). Where the NBA CDN has no photo for that team-season the current one shows:
+    measured on :3100, TOR 2023-24 serves 26 of 30 from 2023-24 (Ramsey, M. Williams, K. Simmons,
+    Carton fall back; recorded CDN misses for two-way and short contracts), TOR 2025-26 19 of 20
+    (Fultz falls back) (`follow-up-4/verification.jsonl`). Lint, typecheck, Vitest 598/598;
+    Playwright full suite 489 passed, 28 skipped (`fo13-pages:93` and `:112`, the planner flake,
+    6/6 alone); only the four Stat Line Shift baselines refreshed.
+
+Follow-up instruction (owner, 2026-10-19; screenshot of the table header):
+17. [x] "on the stats w/ and w/o tables we don't need the yellow text guide correct. That yellow text
+    guide refers to the difference table." (the gold "Min w/o › Min w/ S. Barnes" header)
+    — The "w/o → w/" guide now shows only on Difference. On "Stats w/o S. Barnes" the gold header
+    reads "Min w/o S. Barnes", each row "848 min without" and the heading "Per 75 stats **without
+    Scottie Barnes**"; on "Stats w/" the same with "with" (1,756 min with). The default sort there
+    is by that side's minutes. Measured on :3100 at 1440 / 390, no overflow or browser errors
+    (`follow-up-5/`); lint, typecheck, Vitest 598/598.
 
 ### 15 Team Compare — ✅ aligned (first revision)
 
