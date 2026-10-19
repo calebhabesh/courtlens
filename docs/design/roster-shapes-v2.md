@@ -25,8 +25,11 @@ Databallr's Roster Shapes. They carry no forecast, winner or verdict and fit not
   data date, `x_minutes` kept), each player is drawn from that DPM and DARKO's expected minutes per
   game (2025-26 minutes ÷ 82 where DARKO has none), and the playoff shift stops at 2024-25 because
   the latest ratings already carry the 2025-26 playoffs. Without it: end-of-regular-season DPM and
-  2025-26 minutes ÷ 82. Either way minutes scale down to 240 a game when a roster adds up to more
-  (`minutes_source`). The `current` entry never serves a Stats scope (`darko_scope` matches the
+  2025-26 minutes ÷ 82 (`minutes_source`). Either way a roster over 240 a game is capped by
+  rotation: in order of minutes each player keeps his own until the team reaches 240, the next
+  gets what is left and the rest none, so stars keep their real minutes (a proportional scale
+  shrank Wembanyama from DARKO's 35.1 to 27.0). `minutes_uncapped` carries the minutes before the
+  cap. Databallr does not cap (its San Antonio adds up to about 320). The `current` entry never serves a Stats scope (`darko_scope` matches the
   query's phase; the catalog lists only regular season and playoffs). DARKO had not published
   2026-27 projections on 2026-10-19 (its newest season is 2025-26), so none are used.
 - **2025-26**: every player who appeared for each team; minutes per team game = his minutes with
@@ -70,8 +73,8 @@ area equals size). Deterministic.
   as one starter: the DPM d with (d + 2)^2.2 × 34 = white, or "more than any one player adds" when
   d exceeds the league's best DPM.
 - **Trade sandbox** (`add`, `drop` in the URL): the team without `drop` plus `add` from any other
-  roster in the response, each at his own minutes and DPM (plus his shift when Playoff-adjusted);
-  over 240 minutes a game, every player scales down to 240. Added shapes are outlined. A what-if.
+  roster in the response, each at his own uncapped minutes and DPM (plus his shift when
+  Playoff-adjusted), then capped at 240 a game by the same rotation rule. Added shapes are outlined. A what-if.
 - **Since last season** (projected team view): 2025-26 and 2026-27 boxes side by side; departures
   dashed and faded, arrivals outlined; lists with each player's box share.
 - **Fill vs results** (league view): 2025-26 fill against 2025-26 regular-season net rating

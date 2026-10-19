@@ -1519,6 +1519,35 @@ Follow-up instructions (owner, 2026-10-19; Databallr's San Antonio view beside o
     `header.test.tsx` animation aborts also occur on HEAD); Playwright full suite 492 passed,
     28 skipped; only the DEN team-view desktop baseline refreshed.
 
+Committed `3618daa` (owner: "Commit and push").
+
+Follow-up instructions (owner, 2026-10-19; header screenshot at 2000px):
+18. [x] "go with the rotation cap" (projected minutes) — a roster over 240 minutes a game is capped
+    by rotation: in order of minutes each player keeps his own until the team reaches 240, the
+    next gets what is left, the rest none (was: everyone scaled down in proportion). The payload
+    adds `minutes_uncapped` and the trade sandbox re-applies the same cap from it. San Antonio:
+    54% → 67% (Databallr 71%), Wembanyama 27.0 → 35.1 mpg (DARKO's own); DARKO's San Antonio
+    minutes add up to about 314, so Harper gets the last 10.4 and six bench players 0. League top:
+    DEN 82, OKC 73, SAS 67. Unit test for the cap (Python and the sandbox in Vitest).
+19. [x] "can we make the buttons/menu/text on the nav bar larger, it seems like they are a little
+    small" — header 56 → 64px; menu labels 13 → 16px with 16px chevrons and wider padding; wordmark
+    16 → 20px with a 28px mark; search pill 32 → 36px with 14px text; Ask and `⋯` sm → md (36px).
+    Ask's label stays 13px: the control kit sets 13px for every button size. Fits at 1280 (nav ends
+    756px, pill 772–1126, actions from 1142), no overflow at 1280 / 1440 / 2000.
+20. [x] "The hover states in the per team diagrams are working. Can you make it slightly smoother.
+    It seems like it's not triggering on the bounds of the shapes, and is a little abrupt when
+    moving from shape to shape." — leaving a shape or row clears the highlight only after 140ms,
+    and entering another cancels that, so crossing the white between shapes never flashes the box
+    back to full colour (0 drops over 30 samples crossing a gap); shapes fade over 200ms, rows over
+    140ms, and the card fades in and glides between positions. Each shape's hit area extends
+    about 8px past its edge (a transparent 2-unit stroke; Chromium does not hit-test `stroke:
+    none`), measured hits at 2–8px past the right edge.
+    Verification: owner's :3100 with live data (`follow-up-5/verification.jsonl`, header captures).
+    Python 2,159 passed, ruff and mypy clean; dashboard lint, typecheck, Vitest 593/593; Playwright
+    full suite 491 passed, 28 skipped, 102 screenshot baselines refreshed for the taller header;
+    `fo13-pages:47` (planner sign-in, two Email fields) fails intermittently, also 3 of 8 runs on
+    `3618daa`.
+
 ### 15 Team Compare — ✅ aligned (first revision)
 
 Owner approval (2026-10-18): "I think it's finished," then approved the closing review: rename the

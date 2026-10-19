@@ -147,6 +147,7 @@
   .shapes-panel-table tbody th { display: flex; align-items: center; gap: var(--space-2); font-weight: 600; }
   .shapes-panel-table tbody th a { overflow: hidden; color: var(--color-text); text-overflow: ellipsis; text-decoration: none; }
   .shapes-panel-table tbody th a:is(:hover, :focus-visible) { color: var(--color-accent); }
+  .shapes-panel-table tbody tr { transition: background-color var(--dur-fast) var(--ease-out); }
   .shapes-panel-table tbody tr.is-active { background: var(--color-surface-press); }
   .shapes-panel-table tbody tr:last-child :is(th, td) { border-bottom: 0; }
   .shapes-panel-table td[data-tone="up"] { color: var(--color-identity-a); }
@@ -166,7 +167,12 @@
   .shapes-box-frame { position: relative; display: block; width: 100%; height: 100%; }
   .shapes-shape { outline: none; }
   /* Team view: the highlighted player's shape outlined, the others faded (Databallr's linked hover). */
+  .shapes-box-graphic.is-large .shapes-shape { transition: opacity var(--dur-base) var(--ease-out); }
   .shapes-box-graphic[data-active] .shapes-shape:not(.is-active) { opacity: 0.32; }
+  /* Hit area: a transparent 2-unit stroke (about 8px past the edge on a desktop box; Chromium does
+     not hit-test `stroke: none`) so the edges and the smallest shapes trigger; marked paths and
+     the active outline keep their own strokes. */
+  .shapes-box-graphic.is-large .shapes-shape:not(.is-active) path:not([class]) { stroke: transparent; stroke-width: 2; }
   .shapes-shape.is-active path { stroke: var(--color-on-accent); stroke-width: 0.5; }
   .shapes-shape.is-active:focus-visible path { stroke: var(--color-accent); stroke-width: 0.8; }
   .shapes-hover {
@@ -175,7 +181,11 @@
     display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3) var(--space-2) var(--space-2);
     border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-sm); background: var(--color-surface-0);
     box-shadow: var(--shadow-3); color: var(--color-text); width: max-content; max-width: min(300px, 100%); pointer-events: none;
+    /* Glides between shapes rather than jumping, and fades in. */
+    transition: top var(--dur-fast) var(--ease-out), left var(--dur-fast) var(--ease-out);
+    animation: shapes-hover-in var(--dur-fast) var(--ease-out);
   }
+  @keyframes shapes-hover-in { from { opacity: 0; } }
   .shapes-hover-photo { flex: 0 0 auto; border-radius: var(--radius-xs); }
   .shapes-hover-text { display: grid; gap: 1px; font-size: var(--text-xs); line-height: var(--text-xs-lh); }
   .shapes-hover-text strong { font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }

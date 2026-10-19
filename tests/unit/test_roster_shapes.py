@@ -43,11 +43,16 @@ def test_box_is_a_team_of_240_minutes_at_its_per_player_dpm() -> None:
     assert box_capacity() == pytest.approx(shape_size(BOX_NET / 5, TEAM_MINUTES))
 
 
-def test_rebalance_scales_only_rosters_over_240_minutes() -> None:
+def test_rebalance_caps_rosters_over_240_minutes_by_rotation() -> None:
     assert rebalance({"a": 100.0, "b": 100.0}) == {"a": 100.0, "b": 100.0}
-    scaled = rebalance({"a": 200.0, "b": 100.0})
-    assert sum(scaled.values()) == pytest.approx(TEAM_MINUTES)
-    assert scaled["a"] == pytest.approx(2 * scaled["b"])
+    # In order of minutes: the stars keep theirs, the next gets what is left, the rest none.
+    capped = rebalance(
+        {"bench": 20.0, "star": 36.0, "c": 34.0, "d": 30.0} | {f"r{i}": 25.0 for i in range(6)}
+    )
+    assert sum(capped.values()) == pytest.approx(TEAM_MINUTES)
+    assert (capped["star"], capped["c"], capped["d"]) == (36.0, 34.0, 30.0)
+    assert [capped[f"r{i}"] for i in range(6)] == [25.0, 25.0, 25.0, 25.0, 25.0, 15.0]
+    assert capped["bench"] == 0.0
 
 
 def test_percentile_ranks_use_mid_ranks_for_ties() -> None:

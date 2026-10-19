@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ShapeIcon, tone, type BoxEntry } from "./roster-shape-box";
 import {
   fullestAverage, missingStyles, one, shapeKind, signed, styleShares, teamFill, valueAbove, whiteAsPlayer,
@@ -8,6 +9,28 @@ import {
 } from "@/lib/roster-shapes";
 
 const pct = (value: number) => `${Math.round(value * 100)}%`;
+
+/** Where a team-view highlight came from: a shape (which also shows the player's card) or a table row. */
+export interface LinkedHover { id: string; from: "box" | "table" }
+
+/**
+ * The player highlighted in team view, shared by the box and the panel's table. Leaving a shape or
+ * row clears it only after `delay` ms, and entering another cancels that, so moving between
+ * neighbours (across the white between shapes) never flashes the whole box back to full colour.
+ */
+export function useLinkedHover(delay = 140) {
+  const [linked, setLinked] = useState<LinkedHover | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const set = useCallback((source: LinkedHover["from"], id: string | null) => {
+    clearTimeout(timer.current);
+    if (id) setLinked(prev => prev?.id === id && prev.from === source ? prev : { id, from: source });
+    else timer.current = setTimeout(() => setLinked(null), delay);
+  }, [delay]);
+  const box = useCallback((id: string | null) => set("box", id), [set]);
+  const table = useCallback((id: string | null) => set("table", id), [set]);
+  return { linked, box, table };
+}
 const ordinalOf = (n: number, of: number) => `${n} of ${of}`;
 
 /** Databallr's side panel: fill and value, fit, what fills the box (lacking styles flagged), the drawn

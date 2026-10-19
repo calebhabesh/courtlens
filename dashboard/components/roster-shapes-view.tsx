@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { chartVars } from "./charts";
 import { ShapeBox, ShapeIcon, tone, type BoxEntry } from "./roster-shape-box";
 import { FillVsResults, Missing, Sandbox, ShareCard, SinceLastSeason, teamEntries } from "./roster-shapes-sections";
-import { SeasonStrip, TeamPanel } from "./roster-shapes-team";
+import { SeasonStrip, TeamPanel, useLinkedHover } from "./roster-shapes-team";
 import { TeamLogo } from "./team-logo";
 import { useFeed, useUrlState } from "./stats-feed-ui";
 import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
@@ -90,8 +90,8 @@ function Legend({ data }: { data: RosterShapes }) {
 function Note({ data }: { data: RosterShapes }) {
   return <p className="shapes-note">{data.projected
     ? <><strong>Projected.</strong> Rosters come from the NBA player index{data.roster_context ? ` observed ${formatDate(data.roster_context.observed_at)}` : ""}. {data.minutes_source === "darko_expected"
-      ? <>Each player is drawn from his latest DARKO DPM and DARKO&apos;s expected minutes per game (ratings through {formatDate(data.dpm.data_date)}), scaled to 240 a game where a roster adds up to more.</>
-      : <>Minutes per game are each player&apos;s {data.reference_season} minutes over 82 games, scaled to 240 a game where a roster adds up to more; each player is drawn from his {data.reference_season} DPM.</>} Nobody has played a {data.season} minute yet.</>
+      ? <>Each player is drawn from his latest DARKO DPM and DARKO&apos;s expected minutes per game (ratings through {formatDate(data.dpm.data_date)}); where a roster adds up to more than 240 a game, players keep theirs in order of minutes until the team reaches 240 and the bench gets what is left.</>
+      : <>Minutes per game are each player&apos;s {data.reference_season} minutes over 82 games, capped at 240 a game in order of minutes; each player is drawn from his {data.reference_season} DPM.</>} Nobody has played a {data.season} minute yet.</>
     : <><strong>{data.season}.</strong> Everyone who played for each team in the regular season, sized by his minutes per team game there and his end-of-season DPM. A traded player appears on each of his teams.</>}</p>;
 }
 
@@ -196,7 +196,8 @@ export function RosterShapesView() {
     } finally { setSharing(false); }
   };
   // The player highlighted in team view, shared by the box and the panel's table.
-  const [active, setActive] = useState<string | null>(null);
+  const hover = useLinkedHover();
+  const active = hover.linked?.id ?? null;
   const history = useFeed([releaseId, team ? "team" : "league"], signal => team ? getRosterShapeHistory({ releaseId }, signal) : Promise.resolve(null));
   const previous = past.data && team ? past.data.teams.find(t => t.team_tricode === team.team_tricode) ?? null : null;
   return <div className="shapes-page" role="region" aria-label="Roster Shapes">
@@ -231,11 +232,11 @@ export function RosterShapesView() {
         <div className="shapes-team">
           <div className="shapes-team-main">
             <span className="shapes-box is-large" style={teamStyle(team.team_id)}>
-              <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large active={active} onActive={setActive} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn`} />
+              <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large active={active} card={hover.linked?.from === "box"} onActive={hover.box} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn`} />
             </span>
             {history.data && <SeasonStrip team={team} history={history.data} data={data} mode={mode} />}
           </div>
-          <TeamPanel team={team} entries={entries} data={data} mode={mode} active={active} onActive={setActive} />
+          <TeamPanel team={team} entries={entries} data={data} mode={mode} active={active} onActive={hover.table} />
         </div>
         <ShareCard ref={card} team={team} entries={entries} data={data} mode={mode} season={data.label} />
         <Sandbox team={team} data={data} mode={mode} add={add} drop={drop} onChange={(nextAdd, nextDrop) => set({ add: nextAdd.join(",") || null, drop: nextDrop.join(",") || null })} />
