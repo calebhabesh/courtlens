@@ -24,7 +24,7 @@ Rows are in working order.
 | 9 | Showcase | `/showcase` | ⬜ | |
 | 10 | Rankings | `/rankings` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
 | 11 | Tier List | `/tierlist` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
-| 12 | Roster Shapes | `/roster-shapes` | ⬜ | |
+| 12 | Roster Shapes | `/roster-shapes` | 👀 | DPM sizing, fit-estimate shapes, white boxes, team select, 2025-26, Playoff-adjusted; depth chart on the team profile |
 | 13 | Stat Line Shift | `/stat-line-shift` | ⬜ | |
 | 14 | Contracts + Free Agency | `/contracts` | ⬜ | |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
@@ -1336,6 +1336,76 @@ Follow-up instruction (owner, 2026-10-19):
     size (9px of room). No overflow at 1440 or 390; Teams specs and visual baselines pass, and only
     the `team-stats` desktop baseline changed (refreshed). Evidence:
     `docs/evidence/alignment/teams/follow-up-3/`.
+
+### 12 Roster Shapes — 👀 ready for review
+
+Owner start (2026-10-19): "Let's begin the revamp for Roster Shapes (alignment catalog row 12,
+`/roster-shapes`), the next page under the Teams menu", with Databallr Roster Shapes references
+(2D grid; "the 3D view isn't necessary"). "Remember we replicate, then improve/iterate on what
+databallr has done."
+
+Starting state (survey, 2026-10-19): `/roster-shapes` (`components/roster-shapes-view.tsx`, PC10
+contract `docs/design/roster-shapes-v1.md`) is a plain title, four stat tiles (fullest roster,
+most returning value, players drawn, unknown), a legend panel, a Fullest / Best fit / A–Z
+segmented control and 30 dark cards, each a dark circle of packed circles with no names: area =
+BPR value over replacement, colour = derived archetype, stroke dash = returning / new arrival /
+no sample, white space = gap to the fullest roster. `/roster-shapes/[team]` adds a large circle,
+four tiles, an old `data-table` roster and a Depth chart tab. Databallr: icon title, explainer and
+@taylormetrics credit, season (2026-27 projected and past seasons), All teams, Regular season /
+Playoff-adjusted, a gold "Projected" note, one-line legend (Size, Outline, Colour, White), "30
+rosters. The box is a +17.4 team.", Fullest / Best fit / A–Z, and white square boxes with
+team-colour borders holding packed shapes (size = (DPM + 2.0)^2.2 × minutes per game; squarer =
+plugs in anywhere, spikier = hardest to fit; names on large shapes), each headed by rank, team
+and fill %. Evidence: `docs/evidence/alignment/roster-shapes/before/` (league and SAS at 1440:
+2,131 / 2,343px tall; 390: 5,230 / 3,142px; no overflow).
+
+Instructions (owner, 2026-10-19; answering the start-of-page proposal: centred icon title with
+explainer and credit, console FilterBar, Projected note, one-line legend, summary line + sort,
+grid of white square team-bordered boxes headed rank · logo + name · fill %, shapes packed with
+names and tooltips; stat tiles and legend panel removed; our six archetypes keep the colours):
+1. [x] Size: "DARKO DPM (Recommended)" — Databallr's (DPM + 2.0)^2.2 × minutes per game, as a share
+   of a box that is a +17.4 team (240 minutes at +3.48 DPM), so fills read like Databallr's. DPM is
+   DARKO's 2025-26 end-of-regular-season snapshot. Projected minutes are 2025-26 minutes ÷ 82,
+   scaled to 240 a game where a roster adds up to more. Live: OKC 58%, DEN 58%, TOR 48%, SAS 47% …
+   SAC 1% (Databallr 68 / 65 / — / 71 … 2%; it uses 2026-27 depth-chart minutes we don't have).
+   Contract: `docs/design/roster-shapes-v2.md` (`courtlens-roster-shapes-v2`, v1 superseded).
+2. [x] Shape: "Fit estimate (Recommended)" — ease of fit = mean league percentile of DPM, DDPM,
+   three-point rate and 1 − usage, in eight equal bands drawn squircle → circle → octagon → hexagon
+   → pentagon → diamond → four-point star → burst; labelled an estimate on the page, in the key and
+   in Data details. Continuity moved to the table's Status column and the tooltip. Shapes are packed
+   on their real outlines (rasterised), so spiky shapes nest and every drawn area equals its size:
+   no roster in either season or mode needs shrinking. Sparse rosters sit on an even grid, largest
+   in the centre, like Databallr's emptier boxes.
+3. [x] Extras: "Use best judgement here, whatever you think is best." — all four built: Season
+   (2026-27 · projected and 2025-26 actual; earlier seasons are not offered because archetypes start
+   in 2023-24 and the sealed records are mostly 2025-26, so older boxes would use later data);
+   Team select (All teams / one team); Regular season / Playoff-adjusted (each player moved by his
+   games-weighted DARKO playoff ODPM change, shrunk by 10 games, a labelled proxy; cards show the
+   fill change); Fullest / Best fit (size-weighted ease) / A–Z on the summary line.
+4. [x] Team page: "Fold into team select (Recommended)" — `/roster-shapes?team=SAS` shows the
+   560px box and a Roster section (player-glass, `player-ref-grid`: Profile — Style, Status;
+   Impact — DPM, ODPM, DDPM, PO shift in Playoff-adjusted; Shape — MPG, Box %, Fit). Old
+   `/roster-shapes/SAS` redirects there; `?view=depth` opens `/teams/[id]`, whose new Depth Chart
+   section is the FO05 allocation view (its own scope bar is hidden when embedded; the profile owns
+   the scope). The profile canonicalises its URL on load, so the `#depth-chart` hash is dropped.
+   Page: centred icon title with Databallr's explainer (wraps; foundation override), credit line,
+   console (Season, Team, phase, Data details), gold Projected note, one-line key, summary + sort,
+   4 / 2 / 1 boxes per row at ≥1024 / ≥600 / phone, white boxes with team-colour borders headed
+   rank · season logo · name · fill %, names on shapes ≥ 240px boxes, tooltips on every shape. The
+   stat tiles, legend panel and old dark circles are gone (`ShapeGlyph`/`ShapePack` stay for /design).
+
+Verification (2026-10-19): production 3180 with live data through the read-only proxy — no
+overflow and no browser errors on 7 views × 1440 / 390; every shape inside its box; boxes square;
+fill % flush with the box edge (0px); roster table values ≤ 0.5px from their label centres, group
+labels ≤ 0.01px from their columns, label bottoms 0px apart (`verification.jsonl`). Python 2,155
+passed (rewritten `tests/unit/test_roster_shapes.py`); ruff and mypy clean. Dashboard lint and
+typecheck clean; Vitest 589/589 (packer, shapes and sorts tested; the 4 known header rejections).
+Playwright: full suite 490 passed, 28 skipped, 0 flaky, on the mock sandbox; rewritten
+`roster-shapes.spec.ts` (fixture `e2e/fixtures/roster-shapes-v2.json`, the real v2 responses); the
+six Roster Shapes / depth chart baselines refreshed, no other baseline changed.
+Data-blocked: Databallr's 2026-27 depth-chart minutes and its fit model; replaced by 2025-26 minutes
+and the published fit estimate above.
+Evidence: `docs/evidence/alignment/roster-shapes/` (`before/` holds the survey).
 
 ### 15 Team Compare — ✅ aligned (first revision)
 

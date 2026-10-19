@@ -6,6 +6,7 @@ import { ButtonLink, ButtonSummary } from "./ui/kit";
 import { formatDate } from "@/lib/format-date";
 import { ALL_COLUMNS, TEAM_VIEWS, columnRanks, formatValue, type SixFactorTeam, type SixFactorsResponse, type TeamColumnGroup } from "@/lib/team-six-factors";
 import { NetTrend } from "./team-trend";
+import { RosterAllocationView, type RosterAllocationViewProps } from "./roster-allocation-view";
 import type { TeamPeersResponse, TeamScheduleGameItem } from "@/lib/types";
 
 const column = (key: string) => ALL_COLUMNS.find(entry => entry.key === key)!;
@@ -186,6 +187,14 @@ export function TeamGameLogSection({ games, season, scopeParams }: { games: Team
     <header className="player-open-heading"><h2><Icon name="calendar" size={20} />Game Log</h2><span>{games.length} games · most recent first</span></header>
     {ordered.length ? table(ordered.slice(0, RECENT_GAMES), "Recent games table") : <p className="player-open-empty">No games in this scope.</p>}
     {ordered.length > RECENT_GAMES && <details><ButtonSummary size="sm" variant="text" iconAfter="chevron-down">Earlier Games · {ordered.length - RECENT_GAMES}</ButtonSummary>{table(ordered.slice(RECENT_GAMES), "Earlier games table")}</details>}
+  </section>;
+}
+
+/** The depth chart (moved from Roster Shapes in alignment row 12): minutes by position for this scope. */
+export function TeamDepthSection({ catalog, teamId, scope }: Omit<RosterAllocationViewProps, "embedded">) {
+  return <section id="depth-chart" className="player-open-section player-glass team-profile-section" aria-label="Depth chart">
+    <header className="player-open-heading"><h2><Icon name="shapes" size={20} />Depth Chart</h2><span>Observed minutes by position · drag players to project</span></header>
+    <RosterAllocationView catalog={catalog} teamId={teamId} scope={scope} embedded />
   </section>;
 }
 

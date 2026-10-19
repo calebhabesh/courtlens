@@ -468,14 +468,19 @@ class RosterShapePlayerResponse(BaseModel):
     player_id: str
     player_name: str
     listed_position: str | None
-    value: float | None
-    value_qualified: bool
-    value_percentile: float | None
-    reference_minutes: float | None
-    reference_games: int | None
-    vor: float | None
+    dpm: float | None
+    o_dpm: float | None
+    d_dpm: float | None
+    playoff_shift: float | None
+    playoff_games: int
+    minutes_per_game: float | None
+    games: int | None
+    size: float | None
+    size_playoff: float | None
     archetype: dict[str, Any] | None
-    fit: Literal["returning", "new", "unknown"]
+    fit_ease: float | None
+    fit_band: int | None
+    continuity: Literal["returning", "new", "unknown"]
     previous_teams: list[str]
     unknown_reasons: list[str]
 
@@ -484,29 +489,35 @@ class RosterShapeTeamResponse(BaseModel):
     team_id: str
     team_tricode: str
     team_name: str
+    conference: str
     players: int
     sized_players: int
     below_replacement_players: int
     unknown_players: int
-    total_vor: float
-    returning_share: float | None
-    archetype_mix: list[dict[str, Any]]
+    size: float
+    size_playoff: float
+    fill: float
+    fill_playoff: float
+    fit_ease: float | None
     roster: list[RosterShapePlayerResponse]
 
 
 class RosterShapesResponse(BaseModel):
     version: str
     season: str
+    seasons: list[dict[str, Any]]
+    projected: bool
     label: str
-    projected_note: str
     reference_season: str
-    phase: Literal["regular_season"]
     replacement_level: float
-    full_season_minutes: int
+    exponent: float
+    box_net: float
     capacity: float
-    value: dict[str, Any]
+    fit_bands: int
+    playoff_prior_games: int
+    dpm: dict[str, Any]
     archetypes: dict[str, Any]
-    roster_context: dict[str, Any]
+    roster_context: dict[str, Any] | None
     statistics_release_id: str | None
     credit: str
     limitations: list[str]

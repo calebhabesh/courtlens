@@ -461,10 +461,13 @@ def get_impact(
 def get_roster_shapes(
     dataset_id: str | None = Query(None, alias="datasetId"),
     release_id: str | None = Query(None, alias="releaseId"),
+    season: str | None = Query(None, pattern=r"^\d{4}-\d{2}$"),
     session: Session = Depends(get_db),
 ) -> RosterShapesResponse:
-    """PC10: 2026-27 projected rosters sized by sealed BPR value over replacement."""
-    return RosterShapesResponse.model_validate(roster_shapes(session, dataset_id, release_id))
+    """Roster Shapes v2: rosters sized by DARKO DPM, shaped by an estimated ease of fit."""
+    return RosterShapesResponse.model_validate(
+        roster_shapes(session, dataset_id, release_id, season)
+    )
 
 
 SEASON_PATTERN = r"^\d{4}-\d{2}$"
