@@ -24,7 +24,7 @@ Rows are in working order.
 | 9 | Showcase | `/showcase` | ⬜ | |
 | 10 | Rankings | `/rankings` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
 | 11 | Tier List | `/tierlist` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
-| 12 | Roster Shapes | `/roster-shapes` | 👀 | DPM sizing, fit-estimate shapes, white boxes, team select, 2025-26, Playoff-adjusted; depth chart on the team profile |
+| 12 | Roster Shapes | `/roster-shapes` | ✅ | Owner approved first revision 2026-10-19; Databallr side-by-side team view with linked hover, season-by-season fill, rotation-capped minutes, searchable trade sandbox |
 | 13 | Stat Line Shift | `/stat-line-shift` | ⬜ | |
 | 14 | Contracts + Free Agency | `/contracts` | ⬜ | |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
@@ -1337,7 +1337,12 @@ Follow-up instruction (owner, 2026-10-19):
     the `team-stats` desktop baseline changed (refreshed). Evidence:
     `docs/evidence/alignment/teams/follow-up-3/`.
 
-### 12 Roster Shapes — 👀 ready for review
+### 12 Roster Shapes — ✅ aligned (first revision)
+
+Owner approval (2026-10-19): "I think we are good for now, and finished with the roster shapes
+page. We can mark it done." Approved at `b74be3c`. The `first-load-roster-shapes` Playwright
+baselines (league and `?team=DEN`, desktop and phone) in `dashboard/e2e/visual-baselines.spec.ts`
+are the approved screenshots.
 
 Owner start (2026-10-19): "Let's begin the revamp for Roster Shapes (alignment catalog row 12,
 `/roster-shapes`), the next page under the Teams menu", with Databallr Roster Shapes references
