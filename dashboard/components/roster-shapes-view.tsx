@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { chartVars } from "./charts";
 import { ShapeBox, ShapeIcon, tone, type BoxEntry } from "./roster-shape-box";
 import { FillVsResults, Missing, Sandbox, ShareCard, SinceLastSeason, teamEntries } from "./roster-shapes-sections";
+import { SeasonStrip, TeamPanel } from "./roster-shapes-team";
 import { TeamLogo } from "./team-logo";
 import { useFeed, useUrlState } from "./stats-feed-ui";
 import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
@@ -21,7 +22,7 @@ import { exportSvgAsPng } from "@/lib/image-export";
 import { getTeamSixFactors } from "@/lib/team-six-factors";
 import {
   CONTINUITY_LABELS, FIT_LABELS, FIT_SHAPES, MODES, SORTS, category, getRosterShapes, one, parseMode, parseSort,
-  playerSize, sandboxRoster, shapeKind, signed, sortTeams,
+  getRosterShapeHistory, playerSize, sandboxRoster, shapeKind, signed, sortTeams,
   type RosterShapes, type ShapeMode, type ShapeSort, type ShapeTeam
 } from "@/lib/roster-shapes";
 
@@ -59,7 +60,7 @@ function TeamCard({ team, entries, rank, mode, data, href, large = false, action
   const delta = (team.fill_playoff - team.fill) * 100;
   const head = <span className="shapes-card-head">
     <span className="shapes-card-rank">{rank}</span>
-    <TeamLogo team={team.team_tricode} season={data.reference_season} size={large ? 32 : 24} />
+    <TeamLogo team={team.team_tricode} season={data.reference_season} size={large ? 44 : 32} />
     <strong>{team.team_name}</strong>
     {mode === "playoff" && <span className="shapes-card-delta" data-tone={Math.abs(delta) < 0.05 ? undefined : delta > 0 ? "up" : "down"} title="Change in fill from the playoff adjustment, in points of the box">{signed(delta)}</span>}
     <span className="shapes-card-fill" title="Share of the box filled">{Math.round(fill * 100)}%</span>
@@ -194,9 +195,14 @@ export function RosterShapesView() {
         context: { season: data.season, release_id: data.statistics_release_id ?? undefined }, evidenceId: data.dpm.raw_sha256, filename: `courtlens-roster-shape-${team.team_tricode.toLowerCase()}-${data.season}` });
     } finally { setSharing(false); }
   };
+  // The player highlighted in team view, shared by the box and the panel's table.
+  const [active, setActive] = useState<string | null>(null);
+  const history = useFeed([releaseId, team ? "team" : "league"], signal => team ? getRosterShapeHistory({ releaseId }, signal) : Promise.resolve(null));
   const previous = past.data && team ? past.data.teams.find(t => t.team_tricode === team.team_tricode) ?? null : null;
   return <div className="shapes-page" role="region" aria-label="Roster Shapes">
-    <PageHeader className="pvp-header" icon="shapes" title="Roster Shapes" subtitle={BLURB} />
+    {team && data
+      ? <PageHeader className="pvp-header shapes-team-header" title={<><TeamLogo team={team.team_tricode} season={data.reference_season} size={48} />{team.team_name}</>} />
+      : <PageHeader className="pvp-header" icon="shapes" title="Roster Shapes" subtitle={BLURB} />}
     <p className="shapes-credit">Also known as <strong>Wyman Diagrams</strong>. Created by <a href="https://www.tiktok.com/@taylormetrics" target="_blank" rel="noreferrer">@taylormetrics</a> on TikTok, where they became a viral trend.</p>
     <div className="shapes-console"><FilterBar label="Roster Shapes controls" summary={[shownSeason, selected ?? "All teams", mode === "playoff" ? "Playoff-adjusted" : null].filter(Boolean).join(" · ")}
       scope={<>
@@ -222,9 +228,15 @@ export function RosterShapesView() {
       </div>
       {selected && !team && <p className="shapes-note">No {selected} roster in {data.season}.</p>}
       {team ? <>
-        <ul className="shapes-grid is-single" aria-label="Team roster shapes">
-          <TeamCard team={team} entries={entries} rank={teams.indexOf(team) + 1} mode={mode} data={data} large />
-        </ul>
+        <div className="shapes-team">
+          <div className="shapes-team-main">
+            <span className="shapes-box is-large" style={teamStyle(team.team_id)}>
+              <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large active={active} onActive={setActive} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn`} />
+            </span>
+            {history.data && <SeasonStrip team={team} history={history.data} data={data} mode={mode} />}
+          </div>
+          <TeamPanel team={team} entries={entries} data={data} mode={mode} active={active} onActive={setActive} />
+        </div>
         <ShareCard ref={card} team={team} entries={entries} data={data} mode={mode} season={data.label} />
         <Sandbox team={team} data={data} mode={mode} add={add} drop={drop} onChange={(nextAdd, nextDrop) => set({ add: nextAdd.join(",") || null, drop: nextDrop.join(",") || null })} />
         {data.projected && <SinceLastSeason team={team} previous={previous} data={data} mode={mode} />}

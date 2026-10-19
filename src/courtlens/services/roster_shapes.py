@@ -16,7 +16,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from courtlens.archive_models import ArchivePlayerGame
-from courtlens.domain.teams import NBA_TEAMS, get_team_info
+from courtlens.domain.teams import NBA_TEAMS, franchise_of, get_team_info
 from courtlens.services.darko import ATTRIBUTION as DARKO_ATTRIBUTION
 from courtlens.services.darko import CURRENT, load_darko_store
 from courtlens.services.player_context import context_catalog, projected_roster
@@ -511,4 +511,45 @@ def roster_shapes(
         "teams": teams,
     }
     _cache[key] = result
+    return result
+
+
+_history_cache: dict[tuple[str | None, str | None], dict[str, Any]] = {}
+
+
+def roster_shape_history(session: Session, statistics_release_id: str | None) -> dict[str, Any]:
+    """Every franchise's actual box fill in each regular season with a sealed DARKO snapshot.
+
+    The same size as the season view (end-of-regular-season DPM, minutes per team game with that
+    team); historical team ids fold into their current franchise. Colour is not needed, so this
+    reaches back past the archetype seasons.
+    """
+    darko = load_darko_store()
+    if darko is None:
+        raise HTTPException(503, "No sealed DARKO bundle installed.")
+    release_id = statistics_release_id or resolve_workbench_context(session).release_id
+    key = (release_id, darko.get("sealed_at"))
+    if key in _history_cache:
+        return _history_cache[key]
+    capacity = box_capacity()
+    seasons = []
+    for entry in sorted(
+        (e for e in darko["entries"] if e["phase"] == "regular_season"), key=lambda e: e["season"]
+    ):
+        try:
+            _, minutes_rows, team_games = _season_minutes(session, release_id, entry["season"])
+        except HTTPException:
+            continue
+        fills: dict[str, float] = {}
+        for (pid, team_id), (minutes, _games, _name) in minutes_rows.items():
+            franchise = franchise_of(team_id)
+            rating = entry["players"].get(pid)
+            if franchise is None or not team_games.get(team_id) or rating is None:
+                continue
+            size = shape_size(rating.get("dpm"), minutes / team_games[team_id])
+            fills[franchise] = fills.get(franchise, 0.0) + (size or 0.0) / capacity
+        if fills:
+            seasons.append({"season": entry["season"], "fills": fills})
+    result = {"version": VERSION, "box_net": BOX_NET, "seasons": seasons}
+    _history_cache[key] = result
     return result

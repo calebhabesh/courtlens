@@ -525,6 +525,17 @@ class RosterShapesResponse(BaseModel):
     teams: list[RosterShapeTeamResponse]
 
 
+class RosterShapeHistorySeason(BaseModel):
+    season: str
+    fills: dict[str, float]
+
+
+class RosterShapeHistoryResponse(BaseModel):
+    version: str
+    box_net: float
+    seasons: list[RosterShapeHistorySeason]
+
+
 class StatsFeedSource(BaseModel):
     dataset_id: str
     feed: str
