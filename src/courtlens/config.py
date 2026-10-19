@@ -48,7 +48,7 @@ class Settings(BaseSettings):
     )
     # Sealed by `courtlens refresh-darko`; absent means DPM columns stay unknown.
     darko_manifest: Path | None = Path(
-        "data/derived/darko-dpm-v2/0c9163ac92984be3efa962264bc1d2c6c9fba438b041008ef682d89051c84781.json"
+        "data/derived/darko-dpm-v2/01e072c35b2a6dd2f0fe468dce9b0a3df0261e0f36689a8c27c3713e5ee45cf0.json"
     )
     value_archetypes_manifest: Path | None = Path(
         "data/derived/value-archetypes-v1/serving/5caeb935e21fce5842fb5ebb33c7ad515cb550eb2021b88886ca3e7b5b6e2f7e.json"

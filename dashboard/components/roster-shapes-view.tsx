@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
-import { chartVars, toneColor } from "./charts";
+import { chartVars } from "./charts";
+import { ShapeBox, ShapeIcon, tone, type BoxEntry } from "./roster-shape-box";
+import { FillVsResults, Missing, Sandbox, ShareCard, SinceLastSeason, teamEntries } from "./roster-shapes-sections";
 import { TeamLogo } from "./team-logo";
-import { useUrlState } from "./stats-feed-ui";
+import { useFeed, useUrlState } from "./stats-feed-ui";
 import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
 import { FilterBar } from "./ui/filter-bar";
 import { GatedNote } from "./ui/gated-note";
@@ -15,10 +17,12 @@ import { PageHeader } from "./ui/panel";
 import { Skeleton } from "./ui/skeleton";
 import { Button, Segmented, Select } from "./ui/kit";
 import { formatDate } from "@/lib/format-date";
+import { exportSvgAsPng } from "@/lib/image-export";
+import { getTeamSixFactors } from "@/lib/team-six-factors";
 import {
-  BOX, CONTINUITY_LABELS, FIT_LABELS, FIT_SHAPES, MODES, SORTS, category, getRosterShapes, one, packShapes, parseMode, parseSort,
-  playerSize, shapeGeometry, shapeKind, shapePath, signed, sortTeams, surname, teamFill,
-  type RosterShapes, type ShapeKind, type ShapeMode, type ShapePlayer, type ShapeSort, type ShapeTeam
+  CONTINUITY_LABELS, FIT_LABELS, FIT_SHAPES, MODES, SORTS, category, getRosterShapes, one, parseMode, parseSort,
+  playerSize, sandboxRoster, shapeKind, signed, sortTeams,
+  type RosterShapes, type ShapeMode, type ShapeSort, type ShapeTeam
 } from "@/lib/roster-shapes";
 
 /** Pins the resolved player index in the URL (C3) so a shared link reproduces the same rosters. */
@@ -48,49 +52,10 @@ function useShapes(season: string | null) {
   return { data: matches ? loaded.data : null, error: matches ? loaded.error : "", retry: () => { setLoaded(null); setAttempt(n => n + 1); } };
 }
 
-const tone = (cluster: number | null | undefined) => { const key = category(cluster); return key ? toneColor(`category-${key}`) : "var(--color-status-unknown)"; };
-
-/** One shape at legend or table size. */
-function ShapeIcon({ kind, color = "currentColor", size = 14 }: { kind: ShapeKind; color?: string; size?: number }) {
-  return <svg className="shapes-icon" width={size} height={size} viewBox="-1.1 -1.1 2.2 2.2" aria-hidden="true">
-    <path d={`${shapeGeometry(kind).points.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(3)} ${y.toFixed(3)}`).join("")}Z`} fill={color} />
-  </svg>;
-}
-
-function describe(player: ShapePlayer, mode: ShapeMode, capacity: number): string {
-  const size = playerSize(player, mode);
-  return [
-    player.player_name,
-    `${player.archetype?.primary_name ?? "Style unknown"} · ${player.fit_band === null ? "fit unknown" : FIT_LABELS[player.fit_band].toLowerCase()}`,
-    `DPM ${signed(mode === "playoff" && player.dpm !== null ? player.dpm + (player.playoff_shift ?? 0) : player.dpm)}${mode === "playoff" && player.playoff_games ? ` (playoff shift ${signed(player.playoff_shift)} over ${player.playoff_games} games)` : ""} · ${one(player.minutes_per_game)} min per game`,
-    `${size === null ? "—" : `${(size / capacity * 100).toFixed(1)}%`} of the box · ${CONTINUITY_LABELS[player.continuity].toLowerCase()}`,
-  ].join("\n");
-}
-
-/** The square box: shapes packed by area share, white is what a perfect team would add. */
-function ShapeBox({ team, mode, capacity, large = false }: { team: ShapeTeam; mode: ShapeMode; capacity: number; large?: boolean }) {
-  const players = useMemo(() => new Map(team.roster.map(p => [p.player_id, p])), [team]);
-  const packed = useMemo(() => packShapes(team.roster.flatMap(p => {
-    const size = playerSize(p, mode);
-    return size && size > 0 ? [{ id: p.player_id, area: size / capacity * BOX * BOX, kind: shapeKind(p.fit_band) }] : [];
-  })), [team, mode, capacity]);
-  return <svg className={`shapes-box-graphic ${large ? "is-large" : ""}`} viewBox={`0 0 ${BOX} ${BOX}`} role="img"
-    aria-label={`${team.team_name}: ${packed.shapes.length} players drawn, ${Math.round(teamFill(team, mode) * 100)}% of the box filled`}>
-    {packed.shapes.map(shape => {
-      const player = players.get(shape.id)!;
-      const name = surname(player.player_name);
-      const font = Math.min(large ? 3.4 : 5, (shape.side * 0.82) / (name.length * 0.56));
-      return <g key={shape.id} data-shape-id={shape.id} data-fit-band={player.fit_band ?? "unknown"}>
-        <path d={shapePath(shape)} fill={tone(player.archetype?.primary)} className={shape.kind === "unknown" ? "shapes-unknown-fit" : undefined} />
-        {font >= (large ? 1.6 : 2.6) && <text className="shapes-label" x={shape.x + shape.side / 2} y={shape.y + shape.side / 2} fontSize={font} textAnchor="middle" dominantBaseline="central">{name}</text>}
-        <title>{describe(player, mode, capacity)}</title>
-      </g>;
-    })}
-  </svg>;
-}
-
-function TeamCard({ team, rank, mode, data, href, large = false }: { team: ShapeTeam; rank: number; mode: ShapeMode; data: RosterShapes; href?: string; large?: boolean }) {
-  const fill = teamFill(team, mode);
+function TeamCard({ team, entries, rank, mode, data, href, large = false, actions }: {
+  team: ShapeTeam; entries: BoxEntry[]; rank: number; mode: ShapeMode; data: RosterShapes; href?: string; large?: boolean; actions?: ReactNode;
+}) {
+  const fill = entries.reduce((sum, e) => sum + (e.size ?? 0), 0) / data.capacity;
   const delta = (team.fill_playoff - team.fill) * 100;
   const head = <span className="shapes-card-head">
     <span className="shapes-card-rank">{rank}</span>
@@ -99,9 +64,13 @@ function TeamCard({ team, rank, mode, data, href, large = false }: { team: Shape
     {mode === "playoff" && <span className="shapes-card-delta" data-tone={Math.abs(delta) < 0.05 ? undefined : delta > 0 ? "up" : "down"} title="Change in fill from the playoff adjustment, in points of the box">{signed(delta)}</span>}
     <span className="shapes-card-fill" title="Share of the box filled">{Math.round(fill * 100)}%</span>
   </span>;
-  const box = <span className="shapes-box" style={teamStyle(team.team_id)}><ShapeBox team={team} mode={mode} capacity={data.capacity} large={large} /></span>;
+  const box = <span className="shapes-box" style={teamStyle(team.team_id)}>
+    <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large={large} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn, ${Math.round(fill * 100)}% of the box filled`} />
+  </span>;
   return <li className={`shapes-card ${large ? "is-large" : ""}`}>
     {href ? <Link href={href} className="shapes-card-link" aria-label={`${team.team_name}: ${Math.round(fill * 100)}% of the box filled, rank ${rank}`}>{head}{box}</Link> : <div className="shapes-card-link">{head}{box}</div>}
+    <Missing entries={entries} data={data} detailed={large} />
+    {actions}
   </li>;
 }
 
@@ -109,7 +78,7 @@ function Legend({ data }: { data: RosterShapes }) {
   return <section className="shapes-legend" aria-label="How to read the shapes">
     <span><strong>Size</strong> DPM over replacement × minutes</span>
     <span className="shapes-legend-fit"><strong>Outline</strong> Plugs in anywhere
-      {FIT_SHAPES.map(kind => <ShapeIcon key={kind} kind={kind} color="var(--color-status-unknown)" />)} Hardest to fit</span>
+      {FIT_SHAPES.map(kind => <ShapeIcon key={kind} kind={kind} size={18} color="var(--color-status-unknown)" />)} Hardest to fit</span>
     <span className="shapes-legend-colour"><strong>Colour</strong>
       {data.archetypes.clusters.filter(c => category(c.cluster)).map(c => <span key={c.cluster} title={c.description}><span className="shapes-swatch" style={chartVars({ "--chart-tone": tone(c.cluster) })} aria-hidden="true" />{c.name}</span>)}
       <span><span className="shapes-swatch" style={chartVars({ "--chart-tone": tone(null) })} aria-hidden="true" />Unknown</span></span>
@@ -119,7 +88,9 @@ function Legend({ data }: { data: RosterShapes }) {
 
 function Note({ data }: { data: RosterShapes }) {
   return <p className="shapes-note">{data.projected
-    ? <><strong>Projected.</strong> Rosters come from the NBA player index{data.roster_context ? ` observed ${formatDate(data.roster_context.observed_at)}` : ""}; minutes per game are each player&apos;s {data.reference_season} minutes over 82 games, scaled to 240 a game where a roster adds up to more. Each player is drawn from his {data.reference_season} DPM; nobody has played a {data.season} minute yet.</>
+    ? <><strong>Projected.</strong> Rosters come from the NBA player index{data.roster_context ? ` observed ${formatDate(data.roster_context.observed_at)}` : ""}. {data.minutes_source === "darko_expected"
+      ? <>Each player is drawn from his latest DARKO DPM and DARKO&apos;s expected minutes per game (ratings through {formatDate(data.dpm.data_date)}), scaled to 240 a game where a roster adds up to more.</>
+      : <>Minutes per game are each player&apos;s {data.reference_season} minutes over 82 games, scaled to 240 a game where a roster adds up to more; each player is drawn from his {data.reference_season} DPM.</>} Nobody has played a {data.season} minute yet.</>
     : <><strong>{data.season}.</strong> Everyone who played for each team in the regular season, sized by his minutes per team game there and his end-of-season DPM. A traded player appears on each of his teams.</>}</p>;
 }
 
@@ -166,11 +137,13 @@ function RosterTable({ team, data, mode }: { team: ShapeTeam; data: RosterShapes
 
 function details(data: RosterShapes): DataDetailRow[] {
   return [
-    { label: "Scope", value: data.projected ? `${data.label}: rosters from the NBA player index; minutes and DPM from ${data.reference_season}` : `${data.season} regular season, every player who appeared for each team` },
+    { label: "Scope", value: data.projected ? `${data.label}: rosters from the NBA player index; ${data.minutes_source === "darko_expected" ? "DARKO's latest DPM and expected minutes" : `minutes and DPM from ${data.reference_season}`}` : `${data.season} regular season, every player who appeared for each team` },
     ...(data.roster_context ? [{ label: "Player index", value: `${formatDate(data.roster_context.observed_at)} · ${data.roster_context.dataset_id}`, mono: true }] : []),
     { label: "Statistics release", value: data.statistics_release_id ?? "Unavailable", mono: true },
     { label: "Size", value: `(DPM − (${data.replacement_level.toFixed(1)}))^${data.exponent} × minutes per team game, as a share of the box: a +${data.box_net} team, whose 240 minutes are all played by +${(data.box_net / 5).toFixed(2)} DPM players.` },
-    { label: "DPM", value: `${data.dpm.source}, ${data.dpm.season} regular season as of ${formatDate(data.dpm.as_of)}` },
+    { label: "DPM", value: data.dpm.phase === "current"
+      ? `${data.dpm.source}: latest ratings (through ${formatDate(data.dpm.data_date)}) and expected minutes, sealed ${formatDate(data.dpm.as_of)}`
+      : `${data.dpm.source}, ${data.dpm.season} regular season as of ${formatDate(data.dpm.as_of)}` },
     { label: "Shape", value: `Ease of fit, an estimate: the mean league percentile of DPM, defensive DPM, three-point rate and 1 − usage, in ${data.fit_bands} equal bands from plugs in anywhere to hardest to fit.` },
     { label: "Playoff-adjusted", value: `Each player moves by his DARKO offensive DPM change across the playoffs he played, weighted by playoff games and shrunk by ${data.playoff_prior_games} games toward none.` },
     { label: "Colour", value: `Derived archetype (${data.archetypes.names_status === "confirmed" ? "names confirmed by the owner" : "proposed names"})` },
@@ -182,6 +155,8 @@ function details(data: RosterShapes): DataDetailRow[] {
 
 const BLURB = "Every roster is a box to fill. Bigger shapes are better players, squarer shapes are easier to build around, and the white is what a perfect team would add.";
 
+const ids = (value: string | null) => value ? value.split(",").filter(Boolean) : [];
+
 /** Roster Shapes (alignment row 12): Databallr's 2D Wyman diagrams, one white box per roster. */
 export function RosterShapesView() {
   const { get, set } = useUrlState();
@@ -190,21 +165,45 @@ export function RosterShapesView() {
   const sort = parseSort(get("sort"));
   const mode = parseMode(get("mode"));
   const selected = get("team")?.toUpperCase() ?? null;
+  const addKey = get("add"), dropKey = get("drop");
+  const add = useMemo(() => ids(addKey), [addKey]), drop = useMemo(() => ids(dropKey), [dropKey]);
   const teams = data ? sortTeams(data.teams, sort, mode) : [];
   const team = selected ? teams.find(t => t.team_tricode === selected) ?? null : null;
   const carry = new URLSearchParams();
   for (const key of ["season", "index", "releaseId", "mode", "sort"]) { const value = get(key); if (value) carry.set(key, value); }
   const teamHref = (tricode: string) => { const next = new URLSearchParams(carry); next.set("team", tricode); return `/roster-shapes?${next}`; };
   const shownSeason = data?.season ?? season ?? "2026-27";
+  // The last full season backs "Since last season" and "Fill vs results"; reuse the page's data when it is that season.
+  const reference = data?.reference_season ?? null;
+  const releaseId = get("releaseId");
+  const past = useFeed([reference, releaseId, data && !data.projected ? "same" : "fetch"], signal => data && !data.projected
+    ? Promise.resolve(data) : reference ? getRosterShapes({ season: reference, releaseId }, signal) : Promise.resolve(null));
+  const factors = useFeed([reference, releaseId, team ? "team" : "league"], signal => !team && reference
+    ? getTeamSixFactors({ season: reference, phase: "regular_season", releaseId }, signal) : Promise.resolve(null));
+  const sandboxed = add.length + drop.length > 0;
+  const entries: BoxEntry[] = !team || !data ? [] : sandboxed
+    ? sandboxRoster(team, data.teams, add, drop, mode, data).map(e => ({ ...e, mark: e.added ? "added" as const : undefined }))
+    : teamEntries(team, mode);
+  const card = useRef<SVGSVGElement>(null);
+  const [sharing, setSharing] = useState(false);
+  const share = async () => {
+    if (!card.current || !team || !data) return;
+    setSharing(true);
+    try {
+      await exportSvgAsPng(card.current, { title: `${team.team_name} roster shape`, subtitle: `${data.label}${mode === "playoff" ? " · Playoff-adjusted" : ""}${sandboxed ? " · sandbox" : ""}`,
+        context: { season: data.season, release_id: data.statistics_release_id ?? undefined }, evidenceId: data.dpm.raw_sha256, filename: `courtlens-roster-shape-${team.team_tricode.toLowerCase()}-${data.season}` });
+    } finally { setSharing(false); }
+  };
+  const previous = past.data && team ? past.data.teams.find(t => t.team_tricode === team.team_tricode) ?? null : null;
   return <div className="shapes-page" role="region" aria-label="Roster Shapes">
     <PageHeader className="pvp-header" icon="shapes" title="Roster Shapes" subtitle={BLURB} />
     <p className="shapes-credit">Also known as <strong>Wyman Diagrams</strong>. Created by <a href="https://www.tiktok.com/@taylormetrics" target="_blank" rel="noreferrer">@taylormetrics</a> on TikTok, where they became a viral trend.</p>
     <div className="shapes-console"><FilterBar label="Roster Shapes controls" summary={[shownSeason, selected ?? "All teams", mode === "playoff" ? "Playoff-adjusted" : null].filter(Boolean).join(" · ")}
       scope={<>
-        <Select size="md" aria-label="Season" value={shownSeason} onChange={event => set({ season: event.target.value === "2026-27" ? null : event.target.value, index: null })}>
+        <Select size="md" aria-label="Season" value={shownSeason} onChange={event => set({ season: event.target.value === "2026-27" ? null : event.target.value, index: null, add: null, drop: null })}>
           {(data?.seasons ?? [{ season: shownSeason, label: shownSeason, projected: true }]).map(entry => <option key={entry.season} value={entry.season}>{entry.label}</option>)}
         </Select>
-        <Select size="md" aria-label="Team" value={selected ?? ""} onChange={event => set({ team: event.target.value || null })}>
+        <Select size="md" aria-label="Team" value={selected ?? ""} onChange={event => set({ team: event.target.value || null, add: null, drop: null })}>
           <option value="">All teams</option>
           {[...(data?.teams ?? [])].sort((a, b) => a.team_name.localeCompare(b.team_name)).map(t => <option key={t.team_id} value={t.team_tricode}>{t.team_name}</option>)}
         </Select>
@@ -219,20 +218,27 @@ export function RosterShapesView() {
       <div className="shapes-summary">
         <p>{data.season}, {team ? team.team_name : `${data.teams.length} rosters`}. The box is a +{data.box_net} team.</p>
         {!team && <Segmented<ShapeSort> size="md" label="Sort rosters" value={sort} onChange={value => set({ sort: value === "fullest" ? null : value })} options={SORTS} />}
+        {team && <Button size="md" icon="download" disabled={sharing} onClick={() => void share()}>{sharing ? "Exporting…" : "Share Image"}</Button>}
       </div>
       {selected && !team && <p className="shapes-note">No {selected} roster in {data.season}.</p>}
       {team ? <>
         <ul className="shapes-grid is-single" aria-label="Team roster shapes">
-          <TeamCard team={team} rank={teams.indexOf(team) + 1} mode={mode} data={data} large />
+          <TeamCard team={team} entries={entries} rank={teams.indexOf(team) + 1} mode={mode} data={data} large />
         </ul>
+        <ShareCard ref={card} team={team} entries={entries} data={data} mode={mode} season={data.label} />
+        <Sandbox team={team} data={data} mode={mode} add={add} drop={drop} onChange={(nextAdd, nextDrop) => set({ add: nextAdd.join(",") || null, drop: nextDrop.join(",") || null })} />
+        {data.projected && <SinceLastSeason team={team} previous={previous} data={data} mode={mode} />}
         <section className="player-open-section player-glass shapes-roster" aria-label="Roster">
           <header className="player-open-heading"><h2><Icon name="users" size={20} />Roster</h2>
             <span>{team.sized_players} drawn · {team.below_replacement_players} at replacement · {team.unknown_players} unknown</span></header>
           <RosterTable team={team} data={data} mode={mode} />
         </section>
-      </> : <ul className="shapes-grid" aria-label="Team roster shapes">
-        {teams.map((t, i) => <TeamCard key={t.team_id} team={t} rank={i + 1} mode={mode} data={data} href={teamHref(t.team_tricode)} />)}
-      </ul>}
+      </> : <>
+        <ul className="shapes-grid" aria-label="Team roster shapes">
+          {teams.map((t, i) => <TeamCard key={t.team_id} team={t} entries={teamEntries(t, mode)} rank={i + 1} mode={mode} data={data} href={teamHref(t.team_tricode)} />)}
+        </ul>
+        {past.data && factors.data && <FillVsResults shapes={past.data} factors={factors.data.teams} />}
+      </>}
       <p className="shapes-footnote">This version follows Taylormetrics&apos; Wyman Diagram and Databallr&apos;s Roster Shapes. Size is DARKO DPM above a −2.0 replacement level to the power 2.2, times minutes per game. Shapes are an estimate of ease of fit (DPM, defensive DPM, three-point rate and usage), so read them as a lean, not a stat. Playoff-adjusted moves each player by his career playoff offense change in DARKO. Players without a DPM or minutes are not drawn, never zero. {data.credit}</p>
     </>}
   </div>;

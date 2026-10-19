@@ -1407,6 +1407,49 @@ Data-blocked: Databallr's 2026-27 depth-chart minutes and its fit model; replace
 and the published fit estimate above.
 Evidence: `docs/evidence/alignment/roster-shapes/` (`before/` holds the survey).
 
+Committed `c38378a` (owner: "You can commit and push it now").
+
+Follow-up instructions (owner, 2026-10-19; "I like all your ideas to take it past databallr, you
+can implement every one"):
+5. [x] (screenshot of the key) "can you make the size/colour legend a little larger so that it can
+   be seen." — 12 → 14px text (13px on phones), swatches 10 → 14px, shape icons 14 → 18px, wider
+   gaps.
+6. [x] What's missing: under each box, the archetypes the roster lacks and what the white space adds
+   up to. — "Lacks Stretch big · Rim runner" (styles under 2% of the box) under every box; team view
+   adds the white as one starter ("White is a +6.8 DPM starter at 34 minutes").
+7. [x] Trade sandbox: in team view, add or remove players and redraw the box live. — Trade Sandbox
+   section (Add a player / Remove a player selects, undo chips, Reset; `add` / `drop` in the URL),
+   added shapes outlined, header "Fill 37% to 60% (+23.4)"; minutes rescale to 240 when over.
+8. [x] Change since last season: per team, 2025-26 vs 2026-27 with arrivals outlined and departures
+   shown. — "Since 2025-26" section in projected team view: both boxes side by side (departures
+   dashed and faded, arrivals outlined), fill change, and both lists with box shares.
+9. [x] Fill vs actual results: a scatter of box fill against 2025-26 net rating. — "Fill vs Results"
+   on the league view: 30 teams, least-squares line, r = 0.87 live, with the note that DPM learned
+   from the same games (description, not prediction).
+10. [x] Better projections: DARKO's own current projections and a free depth-chart source, to close
+    the gap with Databallr at the top. — DARKO has not published 2026-27 projections yet (its newest
+    season on 2026-10-19 is 2025-26, ratings through 2026-06-03). Its dated board carries each
+    player's latest DPM and `x_minutes` (expected minutes per game), which serve as the depth-chart
+    minutes: `courtlens refresh-darko-current` seals it as a `current` entry (bundle `01e072c3…`,
+    547 players, all with minutes; config updated). The projection now uses those, scaled to 240
+    per roster. Live: OKC 63% (Databallr 68), DEN 58% (65), SAS 54% (71), NYK 43% (52), BOS 37% —
+    Tatum is drawn at DARKO's 21.0 expected minutes instead of his injury-shortened season. Real
+    2026-27 projections remain data-blocked until DARKO publishes them; rerun the command then.
+11. [x] Share card: export a team's box as an image, like the PvP card. — "Share Image" in team
+    view: a 560 × 680 card (name, fill, box, what's missing, colour key) through the PvP card's
+    exporter, `courtlens-roster-shape-<team>-<season>.png`.
+    Also: sparse boxes now lay out in even rows (largest mid-row), as Databallr's emptier boxes do,
+    instead of the packer's stretched diagonal.
+
+Verification (2026-10-19, follow-ups): production 3180 with live data — no overflow, no browser
+errors and no shape outside its box on league, 2025-26, SAS, BOS sandbox (+Jokić −Tatum) and DEN
+Playoff-adjusted at 1440 and 390; roster table alignment unchanged (≤ 0.5px, 0.01px, 0px)
+(`follow-up-1/verification.jsonl`). Python: new DARKO and roster-shape unit tests (current refresh,
+expected minutes); ruff and mypy clean. Dashboard lint and typecheck clean; Vitest 593/593.
+Playwright: full suite 484 passed, 28 skipped; `fo13-pages:93`, `:112` and `live:79` failed in the
+full run and passed 3/3 on rerun; the four Roster Shapes first-load baselines refreshed, no other
+baseline changed. Evidence: `docs/evidence/alignment/roster-shapes/follow-up-1/`.
+
 ### 15 Team Compare — ✅ aligned (first revision)
 
 Owner approval (2026-10-18): "I think it's finished," then approved the closing review: rename the

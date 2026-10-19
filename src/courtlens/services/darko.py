@@ -33,6 +33,9 @@ RESOURCE = "darko"
 ATTRIBUTION = "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app)"
 INTERVAL_SECONDS = 5.0
 PHASES = ("regular_season", "playoffs")
+# The latest published ratings and expected minutes, sealed on demand between seasons; serves
+# Roster Shapes' projection only, never a Stats scope.
+CURRENT = "current"
 LIMITATIONS = [
     "DARKO's retrospective pregame forecast at the phase's last admitted game date; not a "
     "season average or a CourtLens estimate. Higher is better for DPM, ODPM and DDPM.",
@@ -154,6 +157,65 @@ def refresh(
     return path, results
 
 
+def refresh_current(
+    session: Session,
+    root: Path,
+    client: httpx.Client,
+    season: str,
+    as_of: date,
+    output: Path,
+    carry_forward: Path | None = None,
+) -> tuple[Path, dict[str, Any]]:
+    """Seal DARKO's dated board at `as_of` as the season's `current` entry (latest ratings and
+    expected minutes); it replaces that season's earlier `current` entry and nothing else."""
+    context = resolve_workbench_context(session)
+    url = snapshot_url(as_of)
+    receipt = DarkoFetcher(session, root, client).fetch(SOURCE, url, season)
+    session.commit()
+    if receipt.status != "success" or not receipt.artifact_id or receipt.finished_at is None:
+        raise ValueError(f"DARKO current {season}: {receipt.error_summary}; no bundle sealed")
+    artifact = session.get(WorkbenchArtifact, receipt.artifact_id)
+    if artifact is None:
+        raise ValueError("DARKO receipt lost its retained artifact")
+    raw = (root / artifact.storage_path).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != artifact.sha256:
+        raise ValueError("retained DARKO bytes changed")
+    board = parse_leaderboard(raw)
+    if board["season"] != season or board["as_of"] != as_of.isoformat():
+        raise ValueError("DARKO returned a different season or snapshot date")
+    entry = {
+        **board,
+        "phase": CURRENT,
+        "url": url,
+        "raw_sha256": artifact.sha256,
+        "acquisition_id": str(receipt.id),
+        "observed_at": receipt.finished_at.isoformat(),
+        "dataset_id": context.dataset_id,
+    }
+    entries = merge_carried([entry], carry_forward) if carry_forward is not None else [entry]
+    sealed = {
+        "version": VERSION,
+        "source": {
+            "name": ATTRIBUTION,
+            "host": "www.darko.app",
+            "policy": "courtlens-source-policy-v3",
+            "limitations": LIMITATIONS,
+        },
+        "sealed_at": datetime.now(UTC).isoformat(),
+        "entries": entries,
+    }
+    path, _ = write_artifact(output, sealed)
+    return path, {
+        "season": season,
+        "phase": CURRENT,
+        "as_of": board["as_of"],
+        "data_date": board["data_date"],
+        "players": len(board["players"]),
+        "with_minutes": sum(p.get("x_minutes") is not None for p in board["players"].values()),
+        "url": url,
+    }
+
+
 def merge_carried(entries: list[dict[str, Any]], carry_forward: Path) -> list[dict[str, Any]]:
     """Fresh entries plus the sealed bundle's entries for every other season/phase, verbatim."""
     raw = carry_forward.read_bytes()
@@ -245,6 +307,7 @@ def darko_catalog_scope() -> dict[str, Any]:
         "scopes": [
             {key: entry[key] for key in ("season", "phase", "as_of", "data_date")}
             for entry in (store or {}).get("entries", [])
+            if entry["phase"] in PHASES
         ],
     }
 

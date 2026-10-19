@@ -184,3 +184,39 @@ def test_history_refresh_carries_sealed_seasons_verbatim(tmp_path: Path) -> None
     base.write_text("{}")
     with pytest.raises(ValueError, match="changed"):
         darko.merge_carried([fresh], base)
+
+
+def test_dated_leaderboard_keeps_expected_minutes() -> None:
+    assert parse_leaderboard(FIXTURE.read_bytes())["players"]["203999"]["x_minutes"] == 40.9576
+
+
+def test_current_refresh_replaces_only_the_seasons_current_entry(
+    session, tmp_path, monkeypatch
+) -> None:
+    monkeypatch.setattr("courtlens.services.source_acquisition.time.sleep", lambda _: None)
+    monkeypatch.setattr(
+        darko, "resolve_workbench_context", lambda _session: type("C", (), {"dataset_id": "d"})()
+    )
+    sealed = {"season": "2024-25", "phase": "regular_season", "as_of": "2025-04-13"}
+    stale = {"season": "2024-25", "phase": "current", "as_of": "2025-05-01"}
+    base, _ = write_artifact(
+        tmp_path / "base", {"version": darko.VERSION, "entries": [sealed, stale]}
+    )
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/robots.txt":
+            return httpx.Response(404)
+        return httpx.Response(200, content=FIXTURE.read_bytes())
+
+    with httpx.Client(transport=httpx.MockTransport(respond)) as client:
+        path, result = darko.refresh_current(
+            session, tmp_path / "raw", client, "2024-25", date(2025, 5, 18), tmp_path / "out", base
+        )
+    assert result["phase"] == "current" and result["with_minutes"] == 3
+    entries = json.loads(path.read_bytes())["entries"]
+    assert [(e["phase"], e["as_of"]) for e in entries] == [
+        ("current", "2025-05-18"),
+        ("regular_season", "2025-04-13"),
+    ]
+    # Stats scopes never list the projection-only entry.
+    assert darko.PHASES == ("regular_season", "playoffs")

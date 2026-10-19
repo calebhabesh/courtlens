@@ -250,3 +250,37 @@ def test_roster_shapes_without_manifests_is_unavailable(missing: str) -> None:
     ):
         roster_shapes(MagicMock(), None, None)
     assert err.value.status_code == 503
+
+
+def test_projection_prefers_darko_current_ratings_and_expected_minutes() -> None:
+    current = {
+        **DARKO["entries"][0],
+        "phase": "current",
+        "as_of": "2026-10-19",
+        "players": {
+            "1": {"dpm": 5.0, "o_dpm": 3.5, "d_dpm": 1.5, "career_games": 320, "x_minutes": 30.0},
+            "2": {"dpm": -1.0, "o_dpm": -1.0, "d_dpm": 0.0, "career_games": 60, "x_minutes": None},
+        },
+    }
+    roster = {
+        "context": MagicMock(model_dump=lambda mode: {"dataset_id": "idx"}),
+        "label": "2026-27 · projected",
+        "statistics_release_id": "rel",
+        "players": [index_row("1", "DEN", 82 * 10.0), index_row("2", "DEN", 82 * 20.0)],
+    }
+    with (
+        patch.object(rs, "load_value_store", return_value=STORE),
+        patch.object(
+            rs, "load_darko_store", return_value={**DARKO, "entries": [*DARKO["entries"], current]}
+        ),
+        patch.object(rs, "projected_roster", return_value=roster),
+        patch.object(rs, "_previous_teams", return_value={}),
+    ):
+        body = roster_shapes(MagicMock(), "idx", "rel")
+    assert body["minutes_source"] == "darko_expected" and body["dpm"]["phase"] == "current"
+    den = next(t for t in body["teams"] if t["team_tricode"] == "DEN")
+    star, bench = den["roster"]
+    # Expected minutes where DARKO has them, else reference minutes over 82 games.
+    assert star["minutes_per_game"] == pytest.approx(30.0) and star["dpm"] == 5.0
+    assert bench["minutes_per_game"] == pytest.approx(20.0)
+    assert "DARKO's expected minutes" in body["limitations"][0]

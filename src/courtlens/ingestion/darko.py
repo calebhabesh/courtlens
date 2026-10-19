@@ -16,6 +16,8 @@ from typing import Any
 HOST = "www.darko.app"
 URL_PATTERN = re.compile(r"^https://www\.darko\.app/__data\.json\?asof=(\d{4}-\d{2}-\d{2})$")
 FIELDS = ("dpm", "o_dpm", "d_dpm", "box_dpm", "on_off_dpm")
+# Kept when the board publishes them: DARKO's expected minutes per game (Roster Shapes v2).
+OPTIONAL_FIELDS = ("x_minutes",)
 _SPECIAL = {-1: None, -2: None, -3: float("nan"), -4: float("inf"), -5: float("-inf"), -6: -0.0}
 
 
@@ -86,6 +88,7 @@ def parse_leaderboard(body: bytes) -> dict[str, Any]:
             raise ValueError("invalid or duplicate DARKO NBA identity")
         players[pid] = {
             **{field: _number(row.get(field)) for field in FIELDS},
+            **{field: _number(row.get(field)) for field in OPTIONAL_FIELDS if field in keys},
             "career_games": row.get("career_game_num"),
             "name": row.get("player_name"),
         }

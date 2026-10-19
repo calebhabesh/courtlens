@@ -1,7 +1,17 @@
 import { describe, expect, it } from "vitest";
 import {
-  BOX, FIT_SHAPES, category, packShapes, parseMode, parseSort, shapeGeometry, shapeKind, signed, sortTeams, surname, type ShapeKind, type ShapeTeam
+  BOX, FIT_SHAPES, category, fitLine, missingStyles, packShapes, parseMode, parseSort, sandboxRoster, seasonChanges, shapeGeometry, shapeKind, signed, sizeOf,
+  sortTeams, surname, whiteAsPlayer, type ShapeCluster, type ShapeKind, type ShapePlayer, type ShapeTeam
 } from "./roster-shapes";
+
+const scale = { replacement_level: -2, exponent: 2.2 };
+const p = (id: string, dpm: number | null, minutes: number | null, cluster: number | null = 0, shift = 0): ShapePlayer => ({
+  player_id: id, player_name: `Player ${id}`, listed_position: null, dpm, o_dpm: null, d_dpm: null, playoff_shift: shift, playoff_games: shift ? 10 : 0,
+  minutes_per_game: minutes, games: 82, size: sizeOf(dpm, minutes, scale), size_playoff: sizeOf(dpm === null ? null : dpm + shift, minutes, scale),
+  archetype: cluster === null ? null : { season: "2025-26", minutes: 1, games: 1, small_sample: false, primary: cluster, primary_name: "x", membership: [] },
+  fit_ease: 0.5, fit_band: 3, continuity: "returning", previous_teams: [], unknown_reasons: []
+});
+const roster = (tricode: string, players: ShapePlayer[]): ShapeTeam => ({ ...team(tricode, tricode, 0, null), roster: players });
 
 const team = (tricode: string, name: string, fill: number, ease: number | null, fillPlayoff = fill): ShapeTeam => ({
   team_id: tricode, team_tricode: tricode, team_name: name, conference: "West", players: 0, sized_players: 0, below_replacement_players: 0,
@@ -68,14 +78,48 @@ describe("roster shapes", () => {
     // Deterministic: the same roster always draws the same picture.
     expect(packShapes(items)).toEqual(packShapes([...items].reverse()));
   });
-  it("lays a sparse roster on an even grid, largest in the centre", () => {
+  it("lays a sparse roster in even rows, largest in the middle", () => {
     const items = [2, 1, 0.5, 0.4, 0.3].map((share, i) => ({ id: `s${i}`, area: share / 100 * BOX * BOX, kind: "circle" as const }));
     const { shapes } = packShapes(items);
     const centre = (id: string) => { const s = shapes.find(x => x.id === id)!; return [s.x + s.side / 2, s.y + s.side / 2]; };
     expect(shapes).toHaveLength(5);
-    // Three columns, two rows: the largest sits in a middle-column cell.
-    expect(centre("s0")[0]).toBeCloseTo(50, 6);
+    // Two rows of three or fewer: the largest sits mid-row, nearer the centre than any other shape.
+    expect(Math.abs(centre("s0")[0] - 50)).toBeLessThan(5);
+    for (const id of ["s1", "s2", "s3", "s4"]) expect(Math.hypot(centre(id)[0] - 50, centre(id)[1] - 50)).toBeGreaterThan(Math.abs(centre("s0")[0] - 50));
     for (let i = 0; i < shapes.length; i++) for (let j = i + 1; j < shapes.length; j++) expect(overlaps(shapes[i], shapes[j])).toBe(false);
+  });
+  it("sizes like the server: (DPM − replacement)^2.2 × minutes, unknown stays unknown", () => {
+    expect(sizeOf(3, 30, scale)).toBeCloseTo(5 ** 2.2 * 30, 9);
+    expect([sizeOf(-3, 30, scale), sizeOf(null, 30, scale), sizeOf(1, null, scale)]).toEqual([0, null, null]);
+  });
+  it("sandbox adds and drops players and scales an over-full roster to 240 minutes", () => {
+    const home = roster("AAA", [p("1", 4, 120), p("2", 1, 100)]), away = roster("BBB", [p("3", 2, 60)]);
+    const entries = sandboxRoster(home, [home, away], ["3"], [], "regular", scale);
+    expect(entries.map(e => [e.player.player_id, e.added])).toEqual([["1", false], ["2", false], ["3", true]]);
+    expect(entries.reduce((sum, e) => sum + e.minutes!, 0)).toBeCloseTo(240, 9);
+    expect(entries[0].size).toBeCloseTo(sizeOf(4, 120 * 240 / 280, scale)!, 9);
+    const dropped = sandboxRoster(home, [home, away], [], ["2"], "regular", scale);
+    expect(dropped.map(e => [e.player.player_id, e.minutes])).toEqual([["1", 120]]);
+    // Playoff-adjusted adds each player's shift; an id from no other roster is ignored.
+    const shifted = sandboxRoster(roster("CCC", [p("4", 1, 30, 0, 0.5)]), [], ["nobody"], [], "playoff", scale);
+    expect(shifted).toHaveLength(1);
+    expect(shifted[0].size).toBeCloseTo(sizeOf(1.5, 30, scale)!, 9);
+  });
+  it("names the styles under 2% of the box and the white space as one starter", () => {
+    const clusters: ShapeCluster[] = ["A", "B", "C"].map((name, cluster) => ({ cluster, name, short: name, description: "", color_token: null }));
+    const capacity = 1000;
+    expect(missingStyles([{ player: p("1", 0, 0, 0), size: 500 }, { player: p("2", 0, 0, 1), size: 10 }], capacity, clusters)).toEqual(["B", "C"]);
+    const white = whiteAsPlayer(0.5, capacity, scale, 10)!;
+    expect(sizeOf(white, 10, scale)).toBeCloseTo(500, 6);
+    expect(whiteAsPlayer(1, capacity, scale)).toBeNull();
+  });
+  it("finds arrivals and departures, and a least-squares fit", () => {
+    const { arrivals, departures } = seasonChanges(roster("A", [p("1", 0, 0), p("2", 0, 0)]), roster("A", [p("2", 0, 0), p("3", 0, 0)]));
+    expect([arrivals.map(x => x.player_id), departures.map(x => x.player_id)]).toEqual([["3"], ["1"]]);
+    expect(seasonChanges(null, roster("A", [p("9", 0, 0)])).arrivals).toHaveLength(1);
+    const fit = fitLine([{ x: 0, y: 1 }, { x: 1, y: 3 }, { x: 2, y: 5 }])!;
+    expect([fit.r, fit.a, fit.b].map(v => +v.toFixed(9))).toEqual([1, 1, 2]);
+    expect(fitLine([{ x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 }])).toBeNull();
   });
   it("draws nothing for zero or unknown sizes", () => {
     expect(packShapes([{ id: "a", area: 0, kind: "circle" }]).shapes).toEqual([]);

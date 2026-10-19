@@ -28,7 +28,8 @@ export interface RosterShapes {
   version: string; season: string; seasons: { season: string; label: string; projected: boolean }[]; projected: boolean;
   label: string; reference_season: string; replacement_level: number; exponent: number; box_net: number; capacity: number;
   fit_bands: number; playoff_prior_games: number;
-  dpm: { season: string; as_of: string; data_date: string; raw_sha256: string; source: string };
+  dpm: { season: string; phase: string; as_of: string; data_date: string; raw_sha256: string; source: string };
+  minutes_source: "darko_expected" | "reference" | "season";
   archetypes: { artifact_sha256: string; names_status: string; clusters: ShapeCluster[] };
   roster_context: { dataset_id: string; observed_at: string; source_url: string; content_sha256: string } | null;
   statistics_release_id: string | null; credit: string; limitations: string[]; teams: ShapeTeam[];
@@ -95,6 +96,72 @@ export function signed(value: number | null | undefined, digits = 1): string {
   return `${shown > 0 ? "+" : shown < 0 ? "−" : ""}${Math.abs(shown).toFixed(digits)}`;
 }
 export const percent = (value: number | null | undefined) => value === null || value === undefined ? "—" : `${Math.round(value * 100)}%`;
+
+/* ---------- Beyond Databallr: sandbox, what's missing, season changes, fill vs results ---------- */
+
+const TEAM_MINUTES = 240;
+type SizeScale = Pick<RosterShapes, "replacement_level" | "exponent">;
+
+/** The server's size formula, for rosters the sandbox redraws: (DPM − replacement)^exponent × minutes. */
+export function sizeOf(dpm: number | null, minutes: number | null, scale: SizeScale): number | null {
+  if (dpm === null || minutes === null) return null;
+  return Math.max(0, dpm - scale.replacement_level) ** scale.exponent * Math.max(0, minutes);
+}
+
+export interface SandboxEntry { player: ShapePlayer; size: number | null; minutes: number | null; added: boolean }
+
+/**
+ * A what-if roster: the team without `drop`, plus `add` (players from any other roster in the
+ * same response), each at his own minutes; if they add up to more than 240 a game, every
+ * player's minutes scale down to 240, as projected rosters do.
+ */
+export function sandboxRoster(team: ShapeTeam, teams: ShapeTeam[], add: string[], drop: string[], mode: ShapeMode, scale: SizeScale): SandboxEntry[] {
+  const kept = team.roster.filter(p => !drop.includes(p.player_id)).map(player => ({ player, added: false }));
+  const pool = new Map(teams.flatMap(t => t.team_tricode === team.team_tricode ? [] : t.roster.map(p => [p.player_id, p] as const)));
+  const added = add.filter(id => !team.roster.some(p => p.player_id === id)).flatMap(id => pool.has(id) ? [{ player: pool.get(id)!, added: true }] : []);
+  const roster = [...kept, ...added];
+  const total = roster.reduce((sum, { player }) => sum + (player.minutes_per_game ?? 0), 0);
+  const factor = total > TEAM_MINUTES ? TEAM_MINUTES / total : 1;
+  return roster.map(({ player, added }) => {
+    const minutes = player.minutes_per_game === null ? null : player.minutes_per_game * factor;
+    const dpm = player.dpm === null ? null : player.dpm + (mode === "playoff" ? player.playoff_shift ?? 0 : 0);
+    return { player, minutes, added, size: sizeOf(dpm, minutes, scale) };
+  });
+}
+
+/** Archetypes with under `threshold` of the box among a roster's drawn players, in cluster order. */
+export function missingStyles(entries: { player: ShapePlayer; size: number | null }[], capacity: number, clusters: ShapeCluster[], threshold = 0.02): string[] {
+  const share = new Map<number, number>();
+  for (const { player, size } of entries) if (size && player.archetype) share.set(player.archetype.primary, (share.get(player.archetype.primary) ?? 0) + size / capacity);
+  return clusters.filter(c => category(c.cluster) && (share.get(c.cluster) ?? 0) < threshold).map(c => c.name);
+}
+
+/** The white space as one player: the DPM that fills it at `minutes` a game (null when the box is full). */
+export function whiteAsPlayer(fill: number, capacity: number, scale: SizeScale, minutes = 34): number | null {
+  const white = (1 - fill) * capacity;
+  return white <= 0 ? null : (white / minutes) ** (1 / scale.exponent) + scale.replacement_level;
+}
+
+/** Players on `next` but not `previous` (arrivals) and the reverse (departures). */
+export function seasonChanges(previous: ShapeTeam | null, next: ShapeTeam) {
+  const before = new Set(previous?.roster.map(p => p.player_id) ?? []), after = new Set(next.roster.map(p => p.player_id));
+  return {
+    arrivals: next.roster.filter(p => !before.has(p.player_id)),
+    departures: previous?.roster.filter(p => !after.has(p.player_id)) ?? [],
+  };
+}
+
+/** Pearson r and the least-squares line y = a + b·x. */
+export function fitLine(points: { x: number; y: number }[]): { r: number; a: number; b: number } | null {
+  const n = points.length;
+  if (n < 3) return null;
+  const mx = points.reduce((s, p) => s + p.x, 0) / n, my = points.reduce((s, p) => s + p.y, 0) / n;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (const p of points) { sxy += (p.x - mx) * (p.y - my); sxx += (p.x - mx) ** 2; syy += (p.y - my) ** 2; }
+  if (sxx === 0 || syy === 0) return null;
+  const b = sxy / sxx;
+  return { r: sxy / Math.sqrt(sxx * syy), a: my - b * mx, b };
+}
 
 /* ---------- Shapes: squarer plugs in anywhere, spikier is harder to fit ---------- */
 
@@ -200,8 +267,8 @@ class Grid {
  * where its outline, kept GAP cells clear, touches no other outline, so spiky shapes can nest into
  * each other's corners. If one does not fit anywhere, every shape shrinks 3% and packing restarts
  * (`scale` reports it). The cluster is then spread across the box when that keeps every outline clear.
- * A sparse roster whose shapes each fit a cell of an even grid is laid out on that grid instead,
- * largest in the most central cells, as Databallr draws its emptier boxes.
+ * A sparse roster whose shapes fit in even rows is laid out in those rows instead, largest in the
+ * middle, as Databallr draws its emptier boxes.
  */
 export function packShapes(items: PackItem[]): { shapes: PackedShape[]; scale: number } {
   const sized = items.filter(item => item.area > 0)
@@ -217,14 +284,37 @@ export function packShapes(items: PackItem[]): { shapes: PackedShape[]; scale: n
   return { shapes: [], scale: 0 };
 }
 
+/**
+ * Even rows for sparse rosters: shapes dealt round-robin across rows (middle row first), each row
+ * centred-out (its largest shape in the middle), rows and shapes spaced evenly. Used when every row's
+ * footprints fit side by side and the rows fit top to bottom; otherwise the packer runs.
+ */
 function gridLayout(items: (PackItem & { side: number })[]): PackedShape[] | null {
   if (items.length === 0) return [];
-  const cols = Math.ceil(Math.sqrt(items.length)), rows = Math.ceil(items.length / cols);
-  const cellW = BOX / cols, cellH = BOX / rows;
-  if (items[0].side > Math.min(cellW, cellH) - 2 * GAP - 2) return null;
-  const cells = Array.from({ length: cols * rows }, (_, i) => ({ cx: (i % cols + 0.5) * cellW, cy: (Math.floor(i / cols) + 0.5) * cellH }))
-    .sort((a, b) => Math.hypot(a.cx - BOX / 2, a.cy - BOX / 2) - Math.hypot(b.cx - BOX / 2, b.cy - BOX / 2) || a.cy - b.cy || a.cx - b.cx);
-  return items.map((item, i) => ({ ...item, x: cells[i].cx - item.side / 2, y: cells[i].cy - item.side / 2 }));
+  for (let cols = Math.ceil(Math.sqrt(items.length)); cols <= items.length; cols++) {
+    const count = Math.ceil(items.length / cols);
+    const order = Array.from({ length: count }, (_, i) => i).sort((a, b) => Math.abs(a - (count - 1) / 2) - Math.abs(b - (count - 1) / 2) || a - b);
+    const rows: (PackItem & { side: number })[][] = Array.from({ length: count }, () => []);
+    items.forEach((item, i) => rows[order[i % count]].push(item));
+    const heights = rows.map(row => Math.max(...row.map(item => item.side)));
+    const fits = rows.every(row => row.reduce((sum, item) => sum + item.side + 4 * GAP, 0) <= BOX)
+      && heights.reduce((sum, h) => sum + h + 4 * GAP, 0) <= BOX;
+    if (!fits) continue;
+    const vSpace = (BOX - heights.reduce((sum, h) => sum + h, 0)) / count;
+    const placed: PackedShape[] = [];
+    let y = vSpace / 2;
+    rows.forEach((row, r) => {
+      // Centre-out: largest in the middle, the rest alternating either side.
+      const line: typeof row = [];
+      row.forEach((item, i) => { if (i % 2) line.unshift(item); else line.push(item); });
+      const hSpace = (BOX - line.reduce((sum, item) => sum + item.side, 0)) / line.length;
+      let x = hSpace / 2;
+      for (const item of line) { placed.push({ ...item, x, y: y + (heights[r] - item.side) / 2 }); x += item.side + hSpace; }
+      y += heights[r] + vSpace;
+    });
+    return placed;
+  }
+  return null;
 }
 
 function place(items: (PackItem & { side: number })[]): PackedShape[] | null {

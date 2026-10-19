@@ -1447,6 +1447,28 @@ def refresh_darko_command(
     typer.echo(f"sealed {path}  (set COURTLENS_DARKO_MANIFEST or config.darko_manifest)")
 
 
+@app.command("refresh-darko-current")
+def refresh_darko_current_command(
+    season: str = typer.Option("2025-26", help="DARKO's latest published season."),
+    as_of: str | None = typer.Option(None, help="Snapshot date (default today)."),
+    root: Path = typer.Option(Path("data/raw/darko")),
+    output: Path = typer.Option(Path("data/derived/darko-dpm-v2")),
+) -> None:
+    """Operator run: seal DARKO's latest ratings and expected minutes for Roster Shapes."""
+    from datetime import date
+
+    import httpx
+
+    from courtlens.services.darko import refresh_current
+
+    base = get_settings().darko_manifest
+    when = date.fromisoformat(as_of) if as_of else date.today()
+    with SessionLocal() as session, httpx.Client() as client:
+        path, result = refresh_current(session, root, client, season, when, output, base)
+    typer.echo(json.dumps(result))
+    typer.echo(f"sealed {path}  (set COURTLENS_DARKO_MANIFEST or config.darko_manifest)")
+
+
 @app.command("import-stats-feed")
 def import_stats_feed_command(
     acquisition_id: str, root: Path = typer.Option(Path("data/raw/stats-feeds"))

@@ -15,13 +15,20 @@ Databallr's Roster Shapes. They carry no forecast, winner or verdict and fit not
 | --- | --- |
 | Pinned 2026-27 NBA player index (`index` in the URL) | Projected rosters, listed position |
 | Published statistics release | 2025-26 regular-season minutes and games; teams appeared for (continuity) |
-| Sealed DARKO bundle | 2025-26 end-of-regular-season DPM, ODPM, DDPM; every playoff snapshot for the playoff shift |
+| Sealed DARKO bundle | 2025-26 end-of-regular-season DPM, ODPM, DDPM; every playoff snapshot for the playoff shift; the `current` entry (latest ratings and expected minutes) for the projection |
 | PC09 archetype manifest | Colour (primary derived archetype); `usg_pct` and `three_rate` for fit |
 
 ## Seasons
 
-- **2026-27 · projected** (default): index rosters; minutes per game = 2025-26 regular-season
-  minutes ÷ 82, scaled down to 240 a game when a roster adds up to more.
+- **2026-27 · projected** (default): index rosters. With a sealed `current` DARKO entry
+  (`courtlens refresh-darko-current`: the dated board at the run date, ratings through the latest
+  data date, `x_minutes` kept), each player is drawn from that DPM and DARKO's expected minutes per
+  game (2025-26 minutes ÷ 82 where DARKO has none), and the playoff shift stops at 2024-25 because
+  the latest ratings already carry the 2025-26 playoffs. Without it: end-of-regular-season DPM and
+  2025-26 minutes ÷ 82. Either way minutes scale down to 240 a game when a roster adds up to more
+  (`minutes_source`). The `current` entry never serves a Stats scope (`darko_scope` matches the
+  query's phase; the catalog lists only regular season and playoffs). DARKO had not published
+  2026-27 projections on 2026-10-19 (its newest season is 2025-26), so none are used.
 - **2025-26**: every player who appeared for each team; minutes per team game = his minutes with
   that team ÷ the team's games. A traded player appears on each of his teams.
 - Earlier seasons are not served: archetypes (rim rate needs the shot dataset) start in 2023-24 and
@@ -52,10 +59,28 @@ Databallr's Roster Shapes. They carry no forecast, winner or verdict and fit not
 
 Shapes are placed largest first at the top-most, then left-most spot where the outline,
 rasterised one cell per box unit and kept one cell clear, touches no other outline, so spiky shapes
-nest into corners. The cluster is spread over the box when every outline stays clear. A roster
-whose shapes each fit a cell of an even grid is laid on that grid, largest in the centre. If a
+nest into corners. The cluster is spread over the box when every outline stays clear. A sparse
+roster is laid in even rows instead (see Sparse layout below). If a
 shape fits nowhere all shrink 3% and packing restarts (never needed for the sealed data, so drawn
 area equals size). Deterministic.
+
+## Beyond Databallr (row 12, follow-ups 6–11)
+
+- **What's missing:** under each box, the archetypes under 2% of the box; in team view the white
+  as one starter: the DPM d with (d + 2)^2.2 × 34 = white, or "more than any one player adds" when
+  d exceeds the league's best DPM.
+- **Trade sandbox** (`add`, `drop` in the URL): the team without `drop` plus `add` from any other
+  roster in the response, each at his own minutes and DPM (plus his shift when Playoff-adjusted);
+  over 240 minutes a game, every player scales down to 240. Added shapes are outlined. A what-if.
+- **Since last season** (projected team view): 2025-26 and 2026-27 boxes side by side; departures
+  dashed and faded, arrivals outlined; lists with each player's box share.
+- **Fill vs results** (league view): 2025-26 fill against 2025-26 regular-season net rating
+  (`/api/workbench/teams/six-factors`), Pearson r and the least-squares line. DPM learned from the
+  same games, so it describes, not predicts (r = 0.87 live).
+- **Share image:** the team's box with name, fill, what's missing and the colour key, exported as a
+  PNG through `lib/image-export` (the PvP card's exporter).
+- **Sparse layout:** a roster whose footprints fit in even rows is dealt across rows (middle row
+  first, largest mid-row), rows and shapes spaced evenly; otherwise the outline packer runs.
 
 ## Serving
 
