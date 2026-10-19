@@ -76,6 +76,11 @@ and no hover fill.
 keep their source link and tooltip, but read as figures in the text color, not as blue links.
 Totals read plainly, as in "Total = 14 Seasons" with team logos and counts.
 
+**Photos.** A player photo shows the player in the season the page analyses: pass `era={{ season,
+team }}` (Design Language, Identity). Row 13 introduced it (owner: "an important macro rule for all
+pages"); apply it to every page that analyses a season, and fall back to the current photo only
+where the NBA has none for that team-season.
+
 **Less is more.** The owner removes dividers, double outlines and extra fills on sight. A focus
 state is one solid outline. When the owner asks "should we…?", give a recommendation, make the
 change and say why.

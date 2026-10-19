@@ -889,6 +889,25 @@ export async function runSharedFloor(
   return response.json();
 }
 
+export async function runStatShiftRoster(
+  request: import("./shared-floor").StatShiftRosterRequest,
+  signal?: AbortSignal
+): Promise<import("./shared-floor").StatShiftRosterResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/stat-shift-roster`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request), cache: "no-store",
+    signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(30000)]) : AbortSignal.timeout(30000)
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    const detail = body?.detail;
+    throw new WorkbenchApiError(response.status,
+      typeof detail === "string" ? detail : JSON.stringify(detail ?? body ?? "Stat Line Shift request failed"));
+  }
+  return response.json();
+}
+
 export async function runShooting(
   operation: import("./shooting-types").ShootingOperation,
   request: import("./shooting-types").ShootingInput,
