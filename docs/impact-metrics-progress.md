@@ -28,6 +28,7 @@ Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`, 
 | IM06 | verified | [Serving and UI evidence](evidence/im06/README.md): identical immutable bundle from 18 sealed artifacts; 68 metrics joined before SQL filters/paging/cohorts, pinned saved replay, ungated presets, profile/research cards. 166,260 real values/nulls match source artifacts across six scopes. 1,778 Python, 285 Vitest, 229 fixture + 12 real browser passes; 14 desktop/mobile screenshots; Ruff/format/mypy/lint/types/build pass. |
 | IM07 | verified | [Agent/eval evidence](evidence/im07/README.md): v3 catalog through existing tools, warehouse-first prompt, pinned impact evidence/units and bounded conflict audits. New development revision preserves every frozen holdout; 48/48 real-data exact replays, zero missed overrides. 1,795 Python, 286 Vitest, 231 browser passes; two Ask screenshots. Live Gemini stopped on quota; no language-quality claim. |
 | IM08 | verified | [Browser fetcher/source assessment](evidence/im08/README.md): 18 fixed targets accounted for; 15 Stats timeouts, two CDN HTTP/2 protocol failures, terms HTTP 403. All direct capabilities remain `source_blocked`, with a separate consent gate. Two exact readbacks, independent 1,230-game/582-player scope, 10 actual Chromium controls; 1,844 Python and 286 Vitest passes. Ruff/format/mypy/lint/types pass. No data admission, provider call or deployment. |
+| SB01 | verified | [Stint box evidence](evidence/stint-box-v1/README.md): per-player stint box for all 3,901 accepted IM03 games (alignment row 13). Replay reproduces every sealed stint's player points; each field conserves to the box score in ≥ 99.6% of team-games, the rest unknown. Six IM03 datasets admitted to the owner database; shared-floor v2 serves them. |
 
 ## IM01 — 2026-10-07
 
@@ -623,3 +624,10 @@ remain required. IM04 remains planned until measured completion is recorded belo
   (the 4 animation errors from `header.test.tsx` predate this change); dashboard lint and
   typecheck pass. The hosted demo needs the sidecar directory synced (added to
   `scripts/deploy-vps.sh`, both Compose files and `deploy/pinned.env`).
+
+## 2026-10-19 — SB01 verified: stint box for Stat Line Shift
+
+Alignment row 13 needed per-player shots, free throws, rebounds, assists and turnovers per stint;
+the sealed IM03 stints carry player points only. The owner chose to derive them
+([stint box v1](design/stint-box-v1.md)) and to admit the six IM03 bundles to the owner database.
+Evidence: [stint box](evidence/stint-box-v1/README.md). Consumer: [shared-floor v2](design/shared-floor-v2.md).

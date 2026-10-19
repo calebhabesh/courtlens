@@ -56,6 +56,11 @@ class Settings(BaseSettings):
     wowy_manifest: Path | None = Path(
         "data/derived/wowy-v1/89ebf089f98a06422ccb51b3a0cb253a4b09eb355b0f758c6a2b067192ad49f4.json"
     )
+    # Sealed by `courtlens.evaluation.stint_box_runner`; absent means focal stats beyond points
+    # stay unknown for IM03 stints.
+    stint_box_manifest: Path | None = Path(
+        "data/derived/stint-box-v1/manifest/1badc23c325051d543d9c730ca068b84038777fea2b2432a83c1a304cb79523e.json"
+    )
     portraits_cache_path: Path = Path("data/cache/portraits")
     operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
     live_enabled: bool = False

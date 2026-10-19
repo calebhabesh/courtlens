@@ -222,3 +222,72 @@ def test_production_shifts_gate_on_jointly_valid_exposure() -> None:
     assert result.cells[0].event_totals["points"] == 2
     assert result.cells[0].event_totals["ast"] is None
     assert next(s for s in result.shifts if s.metric == "points_per_100").difference is None
+
+
+def shift_rows() -> list[dict]:
+    """Two games; focal f with teammate a on and off the floor; every lineup field is known."""
+
+    def stats(fga: int, fta: int, tov: int, points: int, fg3a: int = 0, fg3m: int = 0) -> dict:
+        return {"fga": fga, "fta": fta, "tov": tov, "points": points, "fg3a": fg3a, "fg3m": fg3m}
+
+    out = []
+    for game in ("g1", "g2", "g3", "g4", "g5", "g6"):
+        for together, off in ((True, 30.0), (False, 20.0)):
+            lineup = ["a", "f", "x", "y", "z"] if together else ["b", "f", "x", "y", "z"]
+            focal = stats(6, 2, 1, 8, 2, 1) if together else stats(6, 4, 2, 10, 3, 1)
+            mate = stats(4, 0, 1, 4)
+            out.append(
+                {
+                    "game_id": game,
+                    "lineup": lineup,
+                    "seconds": 600,
+                    "off": off,
+                    "def": off,
+                    "points": 30,
+                    "allowed": 28,
+                    "stats": focal,
+                    "player_stats": {p: focal if p == "f" else mate for p in lineup},
+                    "team_plays": 0.0,
+                }
+            )
+            out[-1]["team_plays"] = sum(
+                s["fga"] + 0.44 * s["fta"] + s["tov"] for s in out[-1]["player_stats"].values()
+            )
+    return out
+
+
+def test_rate_metrics_are_ratios_of_sums_and_gate_on_the_cells() -> None:
+    req = SharedFloorRequest(team_id="T", player_id="f", together=["a"], min_possessions=50)
+    result = aggregate_shared_floor(shift_rows(), req, "stat-shift", context(), 6)
+    shifts = {s.metric: s for s in result.shifts}
+    usage_with = 100 * (6 + 0.88 + 1) / (6 + 0.88 + 1 + 4 * 5)
+    assert shifts["usage_pct"].selected_value == pytest.approx(usage_with)
+    assert shifts["ts_pct"].selected_value == pytest.approx(100 * 8 / (2 * (6 + 0.88)))
+    assert shifts["fg3_pct"].selected_value == pytest.approx(50.0)
+    assert shifts["fg3_pct"].complement_value == pytest.approx(100 / 3)
+    # Three-point attempts never reach 50, yet the difference shows: the cells pass the gates.
+    assert shifts["fg3_pct"].difference == pytest.approx(50.0 - 100 / 3)
+
+
+def test_rebounds_combine_both_directions_with_one_interval() -> None:
+    data = shift_rows()
+    for r in data:
+        r["stats"] = {**r["stats"], "oreb": 1, "dreb": 2}
+    req = SharedFloorRequest(team_id="T", player_id="f", together=["a"], min_possessions=50)
+    result = aggregate_shared_floor(data, req, "stat-shift", context(), 6)
+    shifts = {s.metric: s for s in result.shifts}
+    assert shifts["reb_per_100"].selected_value == pytest.approx(100 * 3 / 30)
+    assert shifts["reb_per_100"].complement_value == pytest.approx(100 * 3 / 20)
+    assert shifts["reb_per_100"].difference == pytest.approx(
+        shifts["oreb_per_100"].difference + shifts["dreb_per_100"].difference
+    )
+
+
+def test_unknown_team_plays_drop_a_stint_from_usage_only() -> None:
+    data = shift_rows()
+    data[0]["team_plays"] = None
+    req = SharedFloorRequest(team_id="T", player_id="f", together=["a"], min_possessions=50)
+    result = aggregate_shared_floor(data, req, "stat-shift", context(), 6)
+    selected = result.cells[0]
+    assert selected.metric_valid_stints["usage_pct"] == 5
+    assert selected.metric_valid_stints["ts_pct"] == 6
