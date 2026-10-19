@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 from courtlens.archive_models import ArchivePlayerGame
 from courtlens.domain.teams import NBA_TEAMS, get_team_info
 from courtlens.services.darko import ATTRIBUTION as DARKO_ATTRIBUTION
-from courtlens.services.darko import load_darko_store
+from courtlens.services.darko import CURRENT, load_darko_store
 from courtlens.services.player_context import context_catalog, projected_roster
 from courtlens.services.value_archetypes import _archetype, load_value_store
 from courtlens.services.workbench_analytics import _load_player_games, resolve_workbench_context
@@ -44,8 +44,6 @@ CREDIT = (
 LIMITATIONS = [
     "Size is (DPM + 2.0)^2.2 x minutes per team game. It is descriptive, not a forecast, a team "
     "rating or a verdict; DPM is a model estimate under lineup confounding, not causal.",
-    "Projected rosters use 2025-26 minutes over 82 games; a roster whose minutes add up to more "
-    "than 240 a game is scaled down to 240. No 2026-27 minute has been played.",
     "Shape is an estimate of ease of fit: the mean league percentile of DPM, defensive DPM, "
     "three-point rate and inverse usage, in eight equal bands. Read it as a lean, not a stat.",
     "Playoff-adjusted moves each player by his DARKO offensive DPM change across the playoffs "
@@ -57,6 +55,24 @@ LIMITATIONS = [
     "bounds.",
     "White is the gap to the box, a +17.4 team: what a perfect team would add, not cap space.",
 ]
+
+
+def minutes_note(projected: bool, expected: bool) -> str:
+    if not projected:
+        return (
+            "Minutes are each player's minutes per team game with that team; a traded player "
+            "appears on each of his teams."
+        )
+    if expected:
+        return (
+            "Projected minutes are DARKO's expected minutes per game (2025-26 minutes over 82 "
+            "games where DARKO has none), scaled so no roster plays more than 240 a game. No "
+            "2026-27 minute has been played."
+        )
+    return (
+        "Projected rosters use 2025-26 minutes over 82 games; a roster whose minutes add up to "
+        "more than 240 a game is scaled down to 240. No 2026-27 minute has been played."
+    )
 
 
 def box_capacity() -> float:
@@ -311,8 +327,21 @@ def roster_shapes(
     )
     if entry is None:
         raise HTTPException(503, f"No {reference_season} DARKO regular-season snapshot sealed.")
-    ratings: dict[str, dict[str, Any]] = entry["players"]
-    shifts = playoff_shifts(darko["entries"], reference_season)
+    # A projection prefers DARKO's latest sealed ratings and expected minutes (`current`), which
+    # already carry the reference season's playoffs, so its playoff shift stops a season earlier.
+    current = next(
+        (
+            e
+            for e in darko["entries"]
+            if projected and e["season"] == reference_season and e["phase"] == CURRENT
+        ),
+        None,
+    )
+    rated = current or entry
+    ratings: dict[str, dict[str, Any]] = rated["players"]
+    shifts = playoff_shifts(
+        darko["entries"], _prior(reference_season) if current else reference_season
+    )
     archetypes = store["archetypes"]["players"]
     clusters = store["archetypes"]["names"]["clusters"]
     ease = fit_ease(
@@ -344,7 +373,10 @@ def roster_shapes(
         for row in roster["players"]:
             reference = row["reference"]
             minutes = reference["metrics"].get("min") if reference else None
-            if minutes is not None:
+            expected = ratings.get(row["player_id"], {}).get("x_minutes") if current else None
+            if expected is not None:
+                by_team.setdefault(row["team_tricode"], {})[row["player_id"]] = float(expected)
+            elif minutes is not None:
                 by_team.setdefault(row["team_tricode"], {})[row["player_id"]] = (
                     float(minutes) / PROJECTED_GAMES
                 )
@@ -450,12 +482,14 @@ def roster_shapes(
         "fit_bands": FIT_BANDS,
         "playoff_prior_games": PLAYOFF_PRIOR_GAMES,
         "dpm": {
-            "season": entry["season"],
-            "as_of": entry["as_of"],
-            "data_date": entry["data_date"],
-            "raw_sha256": entry["raw_sha256"],
+            "season": rated["season"],
+            "phase": rated["phase"],
+            "as_of": rated["as_of"],
+            "data_date": rated["data_date"],
+            "raw_sha256": rated["raw_sha256"],
             "source": DARKO_ATTRIBUTION,
         },
+        "minutes_source": "darko_expected" if current else "reference" if projected else "season",
         "archetypes": {
             "artifact_sha256": store["archetypes"]["sha256"],
             "names_status": store["archetypes"]["names"]["status"],
@@ -473,7 +507,7 @@ def roster_shapes(
         "roster_context": roster_context,
         "statistics_release_id": release_id,
         "credit": CREDIT,
-        "limitations": LIMITATIONS,
+        "limitations": [minutes_note(projected, current is not None), *LIMITATIONS],
         "teams": teams,
     }
     _cache[key] = result

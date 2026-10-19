@@ -87,6 +87,38 @@ test.describe("Roster Shapes", () => {
     await expect(page.getByRole("list", { name: "Team roster shapes" }).getByRole("listitem")).toHaveCount(30);
   });
 
+  test("team view: what's missing, a trade sandbox, changes since last season and a share image", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await mockShapes(page);
+    await openWorkbench(page, "/roster-shapes?team=SAS");
+    const card = page.getByRole("list", { name: "Team roster shapes" }).getByRole("listitem");
+    await expect(card.locator(".shapes-missing")).toContainText("White is");
+    const fill = async () => Number((await card.locator(".shapes-card-fill").textContent())!.replace("%", ""));
+    const before = await fill();
+
+    // Sandbox: add the league's biggest shape from another roster, then remove it again.
+    const sandbox = page.getByRole("region", { name: "Trade sandbox" });
+    await sandbox.getByRole("combobox", { name: "Add a player" }).selectOption("203999");
+    await expect(page).toHaveURL(/add=203999/);
+    await expect(card.locator('[data-mark="added"]')).toHaveCount(1);
+    expect(await fill()).toBeGreaterThan(before);
+    await sandbox.getByRole("combobox", { name: "Remove a player" }).selectOption("1641705");
+    await expect(page).toHaveURL(/drop=1641705/);
+    await sandbox.getByRole("button", { name: "Reset" }).click();
+    await expect(page).not.toHaveURL(/add=|drop=/);
+    expect(await fill()).toBe(before);
+
+    // Since last season: two boxes, arrivals outlined in the projected one.
+    const since = page.getByRole("region", { name: "Since last season" });
+    await expect(since.locator("figure")).toHaveCount(2);
+    await expect(since).toContainText("Arrivals");
+    await expect(since).toContainText("Departures");
+
+    const download = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Share Image" }).click();
+    expect((await download).suggestedFilename()).toBe("courtlens-roster-shape-sas-2026-27.png");
+  });
+
   test("2025-26 shows the season's actual rosters", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await mockShapes(page);

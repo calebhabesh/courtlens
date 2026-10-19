@@ -516,6 +516,7 @@ class RosterShapesResponse(BaseModel):
     fit_bands: int
     playoff_prior_games: int
     dpm: dict[str, Any]
+    minutes_source: Literal["darko_expected", "reference", "season"]
     archetypes: dict[str, Any]
     roster_context: dict[str, Any] | None
     statistics_release_id: str | None
