@@ -1,5 +1,6 @@
 "use client";
 
+import { BackButton, useNavLabel } from "./ui/back-button";
 import { Icon } from "./ui/icon";
 import { useState, useMemo } from "react";
 import Link from "next/link";
@@ -33,6 +34,7 @@ interface PlayoffsSeriesViewProps {
 export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProps) {
   const { team1, team2, game_cards, team1_players, team2_players } = detail;
   const searchParams = useSearchParams();
+  useNavLabel(`${team1.team_name} vs ${team2.team_name}`);
 
   // Player roster tab
   const [playerTab, setPlayerTab] = useState<"all" | "team1" | "team2">("all");
@@ -117,13 +119,11 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
 
   return (
     <div className="playoffs-view-container">
+      <BackButton parent={{ href: buildPreservedContextUrl("/playoffs", searchParams), label: "Playoffs" }} />
       <PageHeader
         title={`${team1.team_name} vs ${team2.team_name}`}
         subtitle={`${detail.season} Postseason · ${detail.round_name}${detail.conference ? ` · ${detail.conference}` : ""}`}
         actions={<>
-          <ButtonLink size="lg" href={buildPreservedContextUrl("/playoffs", searchParams)}>
-            <Icon name="left" size={14} />Playoffs
-          </ButtonLink>
           <ButtonLink size="lg"
             href={`/team-compare?teamA=${team1.team_id}&teamB=${team2.team_id}&season=${detail.season}&phase=playoffs`}>
             Compare teams

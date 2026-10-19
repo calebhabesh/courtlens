@@ -278,7 +278,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
                   <div className="roster-lanes">{POSITION_LANES.map(lane)}</div>
                 </>} />
               </section>
-              <AccordionItem title={`All players (${rows.length})`} className="roster-table">
+              <AccordionItem title={`All Players (${rows.length})`} className="roster-table">
                 <Table density="compact" aria-label="Player allocation inputs">
                   <TableHeader>
                     <TableRow>

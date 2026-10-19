@@ -58,7 +58,7 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
 
   const filters = activeTab === "bracket" ? <>
     <Segmented<RoundFilter> size="lg" label="Round" value={roundFilter} onChange={setRoundFilter} options={[
-      { value: "all", label: "All rounds" }, { value: "1", label: "Round 1" }, { value: "2", label: "Semis" },
+      { value: "all", label: "All Rounds" }, { value: "1", label: "Round 1" }, { value: "2", label: "Semis" },
       { value: "3", label: "Conf Finals" }, { value: "4", label: "Finals" }
     ]} />
     <Segmented<ConferenceFilter> size="lg" label="Conference" value={conferenceFilter} onChange={setConferenceFilter} options={[

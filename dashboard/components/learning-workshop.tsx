@@ -20,7 +20,7 @@ export function LearningWorkshop({release,season,before}:{release:string;season:
       <EntityField label="Lesson player" value={player} onChange={setPlayer} releaseId={release} season={season} phase="regular_season" beforeDate={before} />
       <Field label="Appearance window"><Select aria-label="Appearance window" value={window} onChange={e=>setWindow(Number(e.target.value))}>{[5,10,20].map(n=><option key={n} value={n}>Last {n}</option>)}</Select></Field>
     </div>
-    {player.trim() && <div className="ui-article-actions"><ButtonLink size="sm" variant="primary" href={href}>Run this pinned distribution without AI</ButtonLink></div>}
+    {player.trim() && <div className="ui-article-actions"><ButtonLink size="sm" variant="primary" href={href}>Run This Pinned Distribution Without AI</ButtonLink></div>}
     <p>Open exact evidence, inspect inputs and samples, then use Ask CourtLens to execute and explicitly save a selected operation.</p>
   </ArticleSection>;
 }

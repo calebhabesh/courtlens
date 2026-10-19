@@ -14,6 +14,7 @@ import { DataDetailsButton } from "./ui/data-details";
 import { GatedNote } from "./ui/gated-note";
 import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
+import { BackButton } from "./ui/back-button";
 import { StatTile } from "./ui/stat-tile";
 import { TemplateSkeleton } from "./ui/template-skeleton";
 import { useToast } from "./ui/toast";
@@ -48,9 +49,10 @@ export function SavedOperationDetail({ id }: { id: string }) {
       busy.current = false; setVerifying(false);
     }
   }
-  const back = <ButtonLink size="lg" href="/investigations">All Investigations</ButtonLink>;
+  const back = <BackButton parent={{ href: "/investigations", label: "Saved Investigations" }} />;
   if (error) return <PageShell template="research" className="research-view saved-operation-detail">
-    <PageHeader title="Saved Investigation" actions={back} />
+    {back}
+    <PageHeader title="Saved Investigation" />
     <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => { setError(null); setRetry(value => value + 1); }}>Retry saved detail</Button>}>{error}</GatedNote></div>
   </PageShell>;
   if (!detail) return <><p role="status" className="sr-only">Loading retained evidence…</p><TemplateSkeleton template="research" /></>;
@@ -59,8 +61,8 @@ export function SavedOperationDetail({ id }: { id: string }) {
   const entry = publicInvestigation(detail);
   const primary = manifest.results.find(result => result.operation === "distribution");
   return <PageShell template="research" className="research-view saved-operation-detail">
+    {back}
     <PageHeader title={entry?.title ?? detail.title} subtitle={`Saved ${formatDate(detail.created_at.slice(0, 10))} · retained analytical evidence`} actions={<>
-      {back}
       <Button size="lg" variant="primary" aria-label="Verify reproduction without AI" disabled={verifying} onClick={() => void verify()}>{verifying ? "Reproducing…" : "Verify Without AI"}</Button>
       <ButtonLink size="lg" href={operationExportUrl(id, "json")}>Export JSON</ButtonLink>
       <ButtonLink size="lg" href={operationExportUrl(id, "csv")}>Export CSV</ButtonLink>

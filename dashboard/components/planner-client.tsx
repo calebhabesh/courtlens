@@ -238,7 +238,7 @@ export function PlannerClient({ fixtureMode, defaultWeek }: { fixtureMode: boole
         <EntityField label="Add candidate" value={addId} onChange={setAddId} candidates={plannerCandidates(watchlist)} required />
         <Field label="Candidate slots"><Input aria-label="Candidate eligible slots" onChange={(event) => setAddEligibleSlots(event.target.value)} placeholder="G, UTIL" required value={addEligibleSlots} /></Field>
         <Field label="Effective date"><DatePicker label="Effective date" value={effectiveDate} min={weekStart} max={plan.week_end} onChange={setEffectiveDate} /></Field>
-        <Button size="sm" variant="primary" loading={busy} disabled={!watchlist.length} type="submit">Compare scenario</Button>
+        <Button size="sm" variant="primary" loading={busy} disabled={!watchlist.length} type="submit">Compare Scenario</Button>
       </form>
     </section>
   ) : undefined;

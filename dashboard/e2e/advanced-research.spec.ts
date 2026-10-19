@@ -24,7 +24,7 @@ test("completed negative report shows amended identity, honest horizons, metrics
   await expect(region).toContainText("Final error report opened: no");
   // FO12: one display date format (D11); the sealed ISO horizons sit in Data details.
   await expect(region).toContainText("Apr 14, 2024"); await expect(region).toContainText("Jan 15, 2025");
-  await page.getByText("Selection reliability bins and samples",{exact:true}).click();
+  await page.getByText("Selection Reliability Bins and Samples",{exact:true}).click();
   await expect(page.getByRole("region",{name:"Reliability bins"})).toContainText("—");
   const pending=page.waitForEvent("download");await page.getByRole("button",{name:"Export verified report JSON"}).click();
   const download=await pending; const {readFileSync}=await import("node:fs");

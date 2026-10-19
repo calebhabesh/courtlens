@@ -55,9 +55,9 @@ interface ContextBarProps {
 const SHORT_PHASES: Record<string, string> = { regular_season: "Regular", playoffs: "Playoffs", play_in: "Play-In", cup_final: "Cup Final" };
 
 const WINDOWS = [
-  { value: "season", label: "Season-to-date" },
-  { value: "last_10", label: "Last 10 appearances" },
-  { value: "last_5", label: "Last 5 appearances" }
+  { value: "season", label: "Season-to-Date" },
+  { value: "last_10", label: "Last 10 Appearances" },
+  { value: "last_5", label: "Last 5 Appearances" }
 ];
 
 export function ContextBar({
@@ -147,7 +147,7 @@ export function ContextBar({
 
   const seasonSelect = renderSeason ? renderSeason({ season, seasons, onSelect: (value) => updateParam("season", value) }) : (
     <Select value={season} onChange={(e) => updateParam("season", e.target.value)} aria-label="Filter by season">
-      {!seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
+      {!seasons.includes(season) && <option value={season}>{season} · Unavailable</option>}
       {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
     </Select>
   );
@@ -194,11 +194,11 @@ export function ContextBar({
         <Segmented label="Filter by competition phase" size="sm" value={shownPhase}
           onChange={selectPhase}
           options={phaseSegments.map((value) => ({ value, disabled: !phases.includes(value),
-            label: `${SHORT_PHASES[value] ?? phaseLabel(value)}${value === phase && !phases.includes(value) ? " · unavailable" : ""}` }))} />
+            label: `${SHORT_PHASES[value] ?? phaseLabel(value)}${value === phase && !phases.includes(value) ? " · Unavailable" : ""}` }))} />
       ) : (
         <Field label="Phase" layout="inline">
           <Select value={phase} onChange={(e) => updateParam("phase", e.target.value)} aria-label="Filter by competition phase">
-            {!phases.includes(phase) && <option value={phase}>{phaseLabel(phase)} · unavailable</option>}
+            {!phases.includes(phase) && <option value={phase}>{phaseLabel(phase)} · Unavailable</option>}
             {phases.map((value) => <option key={value} value={value}>{phaseLabel(value)}</option>)}
           </Select>
         </Field>
@@ -215,7 +215,7 @@ export function ContextBar({
       {showWindow && (
         <Field label="Window" layout="inline">
           <Select value={windowParam} onChange={(e) => updateParam("window", e.target.value)} aria-label="Analysis window">
-            {!windows.includes(windowParam) && <option value={windowParam}>{windowParam} · unavailable</option>}
+            {!windows.includes(windowParam) && <option value={windowParam}>{windowParam} · Unavailable</option>}
             {WINDOWS.filter((w) => windows.includes(w.value)).map((w) => <option key={w.value} value={w.value}>{w.label}</option>)}
           </Select>
         </Field>

@@ -183,7 +183,7 @@ def clear_cache() -> None:
 def test_projected_shapes_assemble_thirty_teams_with_unknowns_kept() -> None:
     roster = {
         "context": MagicMock(model_dump=lambda mode: {"dataset_id": "idx"}),
-        "label": "2026-27 · projected",
+        "label": "2026-27 · Projected",
         "statistics_release_id": "rel",
         "players": [
             index_row("1", "DEN", 82 * 30.0),
@@ -269,7 +269,7 @@ def test_projection_prefers_darko_current_ratings_and_expected_minutes() -> None
     }
     roster = {
         "context": MagicMock(model_dump=lambda mode: {"dataset_id": "idx"}),
-        "label": "2026-27 · projected",
+        "label": "2026-27 · Projected",
         "statistics_release_id": "rel",
         "players": [index_row("1", "DEN", 82 * 10.0), index_row("2", "DEN", 82 * 20.0)],
     }

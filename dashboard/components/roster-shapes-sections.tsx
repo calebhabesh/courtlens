@@ -166,7 +166,7 @@ export const ShareCard = forwardRef<SVGSVGElement, { team: ShapeTeam; entries: B
   return <svg ref={ref} className="shapes-share-card" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 680" width={560} height={680} aria-hidden="true">
     <rect width="560" height="680" rx="12" fill="var(--color-surface-1)" />
     <text x={x} y={36} fill="var(--color-text)" fontSize="22" fontWeight="700" fontFamily="system-ui, sans-serif">{team.team_name}</text>
-    <text x={x} y={56} fill="var(--color-text-secondary)" fontSize="13" fontFamily="system-ui, sans-serif">{season}{mode === "playoff" ? " · Playoff-adjusted" : ""} · the box is a +{data.box_net} team</text>
+    <text x={x} y={56} fill="var(--color-text-secondary)" fontSize="13" fontFamily="system-ui, sans-serif">{season}{mode === "playoff" ? " · Playoff-Adjusted" : ""} · the box is a +{data.box_net} team</text>
     <text x={x + size} y={44} fill="var(--color-text)" fontSize="30" fontWeight="700" textAnchor="end" fontFamily="system-ui, sans-serif">{pct(fill)}</text>
     <rect x={x} y={y} width={size} height={size} fill="var(--color-white)" stroke={teamAccent(team.team_tricode) ?? "var(--color-status-unknown)"} strokeWidth="6" />
     <svg x={x + 3} y={y + 3} width={size - 6} height={size - 6} viewBox={`0 0 ${BOX} ${BOX}`}>

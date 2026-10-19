@@ -25,7 +25,7 @@ VERSION = "courtlens-stats-feed-views-v1"
 MART_SCHEMA = "analytics_marts"
 SOURCE = "NBA Stats via the hoopR-nba-stats-raw mirror (CC BY 4.0)"
 PHASES = ("regular_season", "playoffs")
-PHASE_LABELS = {"regular_season": "Regular season", "playoffs": "Playoffs"}
+PHASE_LABELS = {"regular_season": "Regular Season", "playoffs": "Playoffs"}
 SEASON_TOTALS_NOTE = (
     "Season totals as published by NBA Stats, with no per-game dates; they are never joined "
     "into point-in-time features or date-windowed Stats queries."
@@ -198,7 +198,7 @@ def _envelope(
 # --- Defense --------------------------------------------------------------------------------
 
 DEFENSE_CATEGORIES = {
-    "overall": "All shots",
+    "overall": "All Shots",
     "3-pointers": "Threes",
     "2-pointers": "Twos",
     "less-than-6ft": "Under 6 ft",
@@ -705,16 +705,16 @@ TRACKING_GROUPS: dict[str, dict[str, Any]] = {
         "label": "Drives",
         "stats": [
             ("drives", "Drives", "total", True),
-            ("drive_pts", "Drive points", "total", True),
+            ("drive_pts", "Drive Points", "total", True),
             ("drive_fga", "Drive FGA", "total", True),
             ("drive_fg_pct", "Drive FG%", "pct", True),
-            ("drive_passes_pct", "Pass rate", "pct", None),
-            ("drive_ast", "Drive assists", "total", True),
-            ("drive_tov", "Drive turnovers", "total", None),
+            ("drive_passes_pct", "Pass Rate", "pct", None),
+            ("drive_ast", "Drive Assists", "total", True),
+            ("drive_tov", "Drive Turnovers", "total", None),
         ],
     },
     "catchshoot": {
-        "label": "Catch & shoot",
+        "label": "Catch & Shoot",
         "stats": [
             ("catch_shoot_fga", "C&S FGA", "total", True),
             ("catch_shoot_pts", "C&S points", "total", True),
@@ -770,7 +770,7 @@ TRACKING_GROUPS: dict[str, dict[str, Any]] = {
         ],
     },
     "speeddistance": {
-        "label": "Speed & distance",
+        "label": "Speed & Distance",
         "stats": [
             ("dist_miles", "Miles", "total", True),
             ("dist_miles_off", "Miles on offense", "total", True),
@@ -781,7 +781,7 @@ TRACKING_GROUPS: dict[str, dict[str, Any]] = {
         ],
     },
     "defense": {
-        "label": "Rim defense",
+        "label": "Rim Defense",
         "stats": [
             ("def_rim_fga", "Rim FGA defended", "total", True),
             ("def_rim_fgm", "Rim FGM allowed", "total", None),

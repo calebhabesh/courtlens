@@ -20,7 +20,7 @@ function CompactResult({ result }: { result: Result }) {
   const name = `${result.operation.replaceAll("_", " ")} results`;
   if (!view) return <p className="text-muted">No rows were returned for this {result.operation.replaceAll("_", " ")}.</p>;
   if (view.kind === "facts") return <div role="region" aria-label={name}><dl className="ask-facts">{view.entries.map(([key, value]) => <div key={key}><dt>{key}</dt><dd title={cellText(value)}>{cellText(value)}</dd></div>)}</dl></div>;
-  return <div className="ask-table" role="region" aria-label={name} tabIndex={0}><table className="data-table"><caption>{view.total > view.rows.length ? `Top ${view.rows.length} of ${view.total} rows. All rows are in "How I got this".` : `${view.total} rows`}</caption><thead><tr>{view.columns.map(key => <th scope="col" key={key}>{key}</th>)}</tr></thead><tbody>{view.rows.map((row, index) => <tr key={index}>{view.columns.map(key => <td key={key} title={cellText(row[key])}>{row[key] === undefined ? "—" : cellText(row[key])}</td>)}</tr>)}</tbody></table></div>;
+  return <div className="ask-table" role="region" aria-label={name} tabIndex={0}><table className="data-table"><caption>{view.total > view.rows.length ? `Top ${view.rows.length} of ${view.total} rows. All rows are in "How I Got This".` : `${view.total} rows`}</caption><thead><tr>{view.columns.map(key => <th scope="col" key={key}>{key}</th>)}</tr></thead><tbody>{view.rows.map((row, index) => <tr key={index}>{view.columns.map(key => <td key={key} title={cellText(row[key])}>{row[key] === undefined ? "—" : cellText(row[key])}</td>)}</tr>)}</tbody></table></div>;
 }
 
 export function HybridAnswer({ answer, onChoice, onRetry, busy }: {
@@ -59,11 +59,11 @@ export function HybridAnswer({ answer, onChoice, onRetry, busy }: {
       const href = safeAnswerUrl(source.url);
       return <li key={source.source_id}>{href ? <a href={href} target="_blank" rel="noopener noreferrer">{source.title}</a> : <strong>{source.title}</strong>}<p className="text-muted">{source.publisher} · {source.verification}{source.updated_on ? ` · updated ${source.updated_on}` : ""}{source.retrieved_at ? ` · retrieved ${source.retrieved_at}` : ""}{source.period ? ` · ${source.period}` : ""}</p><blockquote>{source.excerpt}</blockquote></li>;
     })}</ul></details>}
-    <details className="ask-disclosure ask-how"><summary>How I got this</summary>
+    <details className="ask-disclosure ask-how"><summary>How I Got This</summary>
       {answer.scope && <><p>Scope: {answer.scope.label}. Resolved on {answer.scope.as_of}. This turn keeps its original inputs.</p>{answer.scope.assumptions?.map(text => <p key={text}>{text}</p>)}</>}
       {results.map(result => <ConversationResult key={result.step_id} result={result} />)}
       {answer.saveable && <p className="text-muted">Chat history is retained separately. Rerun the pinned operation without AI to save analytical evidence.</p>}
-      <details><summary>Evidence details</summary><pre>{JSON.stringify({ request_id: answer.request_id, turn_id: answer.turn_id, status: answer.status, scope: answer.scope, accounting: answer.accounting, sources: answer.sources }, null, 2)}</pre></details>
+      <details><summary>Evidence Details</summary><pre>{JSON.stringify({ request_id: answer.request_id, turn_id: answer.turn_id, status: answer.status, scope: answer.scope, accounting: answer.accounting, sources: answer.sources }, null, 2)}</pre></details>
     </details>
   </div>;
 }

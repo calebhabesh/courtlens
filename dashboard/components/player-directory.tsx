@@ -58,7 +58,7 @@ export function PlayerDirectory({ data, catalog }: { data: PlayerResearchRespons
         </tbody>
       </table>
     </div>
-    {data.has_more && data.next_cursor && <ButtonLink size="lg" href={`${pathname}?${new URLSearchParams({ ...Object.fromEntries(params), cursor: data.next_cursor })}`}>Next players</ButtonLink>}
+    {data.has_more && data.next_cursor && <ButtonLink size="lg" href={`${pathname}?${new URLSearchParams({ ...Object.fromEntries(params), cursor: data.next_cursor })}`}>Next Players</ButtonLink>}
   </section>;
 }
 
@@ -71,7 +71,7 @@ function DirectoryFilters({ search, team, hasName, onSearchChange, onSearch, onT
   return <form className="directory-filters" onSubmit={event => { event.preventDefault(); onSearch(); }}>
     <Field label="Find player" htmlFor={nameId} layout="inline"><Input id={nameId} type="search" value={search} placeholder="Name" onChange={event => onSearchChange(event.target.value)} /></Field>
     <Button size="lg" tone="console" type="submit">Search</Button>
-    <Field label="Team" layout="inline"><Select aria-label="Directory team" value={team} onChange={event => onTeamChange(event.target.value)}><option value="">All teams</option>{NBA_TEAMS.map(team => <option key={team.tricode} value={team.tricode}>{team.name}</option>)}</Select></Field>
-    {hasName && <Button size="lg" variant="ghost" onClick={onClear}>Clear search</Button>}
+    <Field label="Team" layout="inline"><Select aria-label="Directory team" value={team} onChange={event => onTeamChange(event.target.value)}><option value="">All Teams</option>{NBA_TEAMS.map(team => <option key={team.tricode} value={team.tricode}>{team.name}</option>)}</Select></Field>
+    {hasName && <Button size="lg" variant="ghost" onClick={onClear}>Clear Search</Button>}
   </form>;
 }

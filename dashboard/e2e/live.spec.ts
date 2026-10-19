@@ -41,7 +41,7 @@ test("offline retains last observation; capacity and disabled acquisition stay u
 
 async function expectReleaseInDetails(page: Page, release: string) {
   // D5: the research release lives in Data details, not the main flow.
-  await page.getByRole("button",{name:"Data details"}).click();const details=page.getByRole("dialog");await expect(details).toContainText(release);await page.keyboard.press("Escape");
+  await page.getByRole("button",{name:"Data Details"}).click();const details=page.getByRole("dialog");await expect(details).toContainText(release);await page.keyboard.press("Escape");
 }
 
 test("historical final detail has no demand and pins resolved release in links",async({page})=>{

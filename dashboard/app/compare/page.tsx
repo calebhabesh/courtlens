@@ -62,11 +62,11 @@ export default async function ComparePage({ searchParams }: {
   if (listed.ids.length >= 3 || (gridAsked && listed.ids.length === 2)) {
     const grid = await loadGrid(selected, rawSelected.span === "career" ? "career" : "season");
     return <PageShell template="compare" className="fo11-player-comparison">
-      {grid ? <CompareGridView {...grid} /> : <><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open players</ButtonLink>}>Comparison unavailable.</GatedNote></>}
+      {grid ? <CompareGridView {...grid} /> : <><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open Players</ButtonLink>}>Comparison unavailable.</GatedNote></>}
     </PageShell>;
   }
   const loaded = await loadComparison(selected);
-  if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open players</ButtonLink>}>Comparison unavailable.</GatedNote></PageShell>;
+  if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open Players</ButtonLink>}>Comparison unavailable.</GatedNote></PageShell>;
   const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, bios, sides, played } = loaded;
   // Career view (alignment row 3, 21): both careers through the same cutoff, fetched on request.
   const careerIn = (side: CompareSide) => wbComparison ? getComparisonCareer(wbComparison.player_a.id, wbComparison.player_b.id, {

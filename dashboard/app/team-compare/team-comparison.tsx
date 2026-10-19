@@ -294,7 +294,7 @@ export function TeamComparison({ a, b, catalog, phase }: { a: TeamSide; b: TeamS
         <Segmented size="sm" label="Comparison view" value={view} onChange={value => presentation({ view: value })} options={[{ value: "rotations", label: "Rotations" }, { value: "stats", label: "Team Stats" }]} />
         <Button size="sm" variant="primary" icon="sliders" onClick={() => { setDrawerScope(view); setEditing(true); }}>Edit Metrics</Button>
       </div>}
-      details={<Button size="sm" variant="ghost" icon="info" onClick={() => setDetails(true)}>Data details</Button>} />
+      details={<Button size="sm" variant="ghost" icon="info" onClick={() => setDetails(true)}>Data Details</Button>} />
     </div>
     <div className="tc-column">
       <div className="tc-stack">

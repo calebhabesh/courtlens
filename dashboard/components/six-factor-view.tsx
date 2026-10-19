@@ -18,12 +18,12 @@ import { Segmented } from "./ui/kit";
 
 /** The six favorable-sign factors: positive always helps the player's team. Not additive. */
 export const SIX_FACTORS = [
-  { key: "o_ts", label: "Offensive shooting", short: "oTS", side: "offense", help: "Team true shooting with the player on offense" },
-  { key: "o_tov", label: "Offensive ball security", short: "oTOV", side: "offense", help: "Fewer team turnovers with the player on offense" },
-  { key: "o_reb", label: "Offensive rebounding", short: "oREB", side: "offense", help: "Team offensive rebound share with the player on" },
-  { key: "d_ts", label: "Shooting defense", short: "dTS", side: "defense", help: "Lower opponent true shooting with the player on defense" },
-  { key: "d_tov", label: "Forcing turnovers", short: "dTOV", side: "defense", help: "More opponent turnovers with the player on defense" },
-  { key: "d_reb", label: "Defensive rebounding", short: "dREB", side: "defense", help: "Lower opponent offensive rebound share with the player on" },
+  { key: "o_ts", label: "Offensive Shooting", short: "oTS", side: "offense", help: "Team true shooting with the player on offense" },
+  { key: "o_tov", label: "Offensive Ball Security", short: "oTOV", side: "offense", help: "Fewer team turnovers with the player on offense" },
+  { key: "o_reb", label: "Offensive Rebounding", short: "oREB", side: "offense", help: "Team offensive rebound share with the player on" },
+  { key: "d_ts", label: "Shooting Defense", short: "dTS", side: "defense", help: "Lower opponent true shooting with the player on defense" },
+  { key: "d_tov", label: "Forcing Turnovers", short: "dTOV", side: "defense", help: "More opponent turnovers with the player on defense" },
+  { key: "d_reb", label: "Defensive Rebounding", short: "dREB", side: "defense", help: "Lower opponent offensive rebound share with the player on" },
 ] as const;
 type FactorKey = (typeof SIX_FACTORS)[number]["key"];
 type Player = ImpactResponse["players"][number];
@@ -51,10 +51,10 @@ export function SixFactorView() {
   const coverage = data?.coverage.find(row => row.season === season && row.phase === phase);
   const fit = data?.artifacts.find(a => a.years === 1 && a.season === season && a.phase === phase);
   return <>
-    <FilterBar label="Six-Factor filters" summary={`${season} · ${phase === "playoffs" ? "Playoffs" : "Regular season"}`}
+    <FilterBar label="Six-Factor filters" summary={`${season} · ${phase === "playoffs" ? "Playoffs" : "Regular Season"}`}
       scope={<>
         <Field label="Season" layout="inline"><Select aria-label="Season" value={season} onChange={e => set({ season: e.target.value })}>{SCOPES.map(s => <option key={s.season} value={s.season}>{s.label}</option>)}</Select></Field>
-        <Field label="Phase" layout="inline"><Select aria-label="Phase" value={phase} onChange={e => set({ phase: e.target.value === "playoffs" ? "playoffs" : null })}><option value="regular_season">Regular season</option><option value="playoffs">Playoffs</option></Select></Field>
+        <Field label="Phase" layout="inline"><Select aria-label="Phase" value={phase} onChange={e => set({ phase: e.target.value === "playoffs" ? "playoffs" : null })}><option value="regular_season">Regular Season</option><option value="playoffs">Playoffs</option></Select></Field>
       </>}
       filters={<Field label="Factor" layout="inline"><Select aria-label="Factor" value={factor} onChange={e => setFactor(e.target.value)}>
         {SIX_FACTORS.map(f => <option key={f.key} value={f.key}>{f.short} · {f.label}</option>)}</Select></Field>}

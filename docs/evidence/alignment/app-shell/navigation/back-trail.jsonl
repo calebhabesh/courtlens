@@ -1,0 +1,15 @@
+{"path":"grid","url":"/roster-shapes?sort=fit","back":null}
+{"path":"grid -> team view","url":"/roster-shapes?sort=fit&team=CHA","back":"Back to Roster Shapes"}
+{"path":"team view -> player (shape table)","url":"/players/1631217","back":"Back to Charlotte Hornets Roster Shape"}
+{"path":"player Back","url":"/roster-shapes?sort=fit&team=CHA","back":"Back to Roster Shapes"}
+{"path":"team view Esc","url":"/roster-shapes?sort=fit","back":null}
+{"path":"teams -> team","url":"/teams/<id>","back":"Back to Teams"}
+{"direct":"/teams/1610612743","back":"Back to Teams"}
+{"direct":"/players/203999","back":"Back to Player Directory"}
+{"direct":"/contracts/DEN","back":"Back to Contracts"}
+{"direct":"/contracts/books","back":"Back to Contracts"}
+{"direct":"/stats/glossary","back":"Back to Stats"}
+{"direct":"/roster-shapes?team=DEN","back":"Back to Roster Shapes"}
+{"direct":"/playoffs -> series","back":"Back to Playoffs"}
+{"direct":"/playoffs","back":null}
+{"direct":"/investigations","back":null}

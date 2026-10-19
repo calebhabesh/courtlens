@@ -82,7 +82,7 @@ function Body({ data }: { data: CombineData }) {
     <section className="research-section" aria-label="Combine measurements">
       <div className="feed-section-head"><h2>Measurements</h2>
         <Field label="Sort" layout="inline"><Select aria-label="Sort measurements" value={sortKey} onChange={e => setSortKey(e.target.value === "pick_overall" ? "pick_overall" : "span_minus_height")}>
-          <option value="span_minus_height">Span over height</option><option value="pick_overall">Draft pick</option></Select></Field>
+          <option value="span_minus_height">Span Over Height</option><option value="pick_overall">Draft Pick</option></Select></Field>
       </div>
       <div className="table-wrapper research-table" role="region" aria-label="Combine measurement table" tabIndex={0}>
         <table className="data-table feed-percentile-table">
@@ -116,9 +116,9 @@ export function CombineView() {
     <PageHeader title="Combine & Wingspan" subtitle="Official NBA Draft Combine measurements. Missing drills stay unknown, never zero."
       actions={data && <DataDetailsButton rows={[{ label: "Source", value: data.source }, { label: "Cohort", value: `${data.cohort.players.toLocaleString("en-US")} combine participants, ${data.cohort.first_year}–${data.cohort.last_year}; ${data.cohort.measured.toLocaleString("en-US")} with height and wingspan` }, ...sourceRows(data.sources)]}>
         <ul className="feed-limitations">{data.limitations.map(item => <li key={item}>{item}</li>)}</ul></DataDetailsButton>} />
-    {data && <FilterBar label="Combine filters" summary={`${data.draft_year} combine`}
+    {data && <FilterBar label="Combine filters" summary={`${data.draft_year} Combine`}
       scope={<Field label="Draft class" layout="inline"><Select aria-label="Draft class" value={String(data.draft_year ?? "")} onChange={e => set({ draftYear: e.target.value, playerId: null })}>
-        {data.draft_years.map(y => <option key={y.year} value={y.year}>{y.year} · {y.players} players</option>)}</Select></Field>}
+        {data.draft_years.map(y => <option key={y.year} value={y.year}>{y.year} · {y.players} Players</option>)}</Select></Field>}
       filters={<PlayerLookup label="Find a player's combine" onPick={id => set({ playerId: id, draftYear: null })} />}
       count={<CountChip>{data.rows.length} players</CountChip>} />}
     {error && <FeedFailure error={error} retry={retry} what="Combine measurements" />}

@@ -135,13 +135,13 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
       {canonicalHref && <ReplaceUrl href={canonicalHref} />}
       <div className="workbench-content">
         {team?.header}
-        {!team && <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <ButtonLink size="lg" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</ButtonLink> : undefined} />}
+        {!team && <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <ButtonLink size="lg" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore All Stats</ButtonLink> : undefined} />}
         {!directory && !team && <WhatsNewLine />}
         {!directory && !team && <StatsHelpRow />}
         {staleRelease && latestHref && (
           <GatedNote tone="warning" className="stats-stale-release"
             // A full load: switching releases must not reuse the pinned page's client state.
-            action={<ButtonLink size="lg" href={latestHref}>Switch to latest data</ButtonLink>}>
+            action={<ButtonLink size="lg" href={latestHref}>Switch to Latest Data</ButtonLink>}>
             This link is pinned to an older data release ({catalog.seasons?.length ?? 0} {catalog.seasons?.length === 1 ? "season" : "seasons"}). The latest release covers {staleRelease.seasons?.length ?? 0} seasons.
           </GatedNote>
         )}

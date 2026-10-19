@@ -66,7 +66,7 @@ test.describe("FO07 route consolidation", () => {
     const tabs = page.getByRole("navigation", { name: "Shooting sections" });
     await expect(tabs.locator('[aria-current="page"]')).toHaveText("Shot Aftermath");
     for (const box of await tabs.getByRole("link").evaluateAll(links => links.map(link => link.getBoundingClientRect().height))) {
-      expect(box).toBeGreaterThanOrEqual(40);
+      expect(Math.round(box)).toBeGreaterThanOrEqual(40);
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });

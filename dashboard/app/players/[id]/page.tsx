@@ -214,7 +214,7 @@ function ProfileView({
               {catalogDates.map((value) => <option key={value} value={value}>{value}</option>)}
             </select>
           </label>
-          <Button size="lg" type="submit">Change date</Button>
+          <Button size="lg" type="submit">Change Date</Button>
         </form>}
       />
 
@@ -282,7 +282,7 @@ function ProfileView({
       </section>
 
       <details className="calculation-details">
-        <summary>How this was calculated</summary>
+        <summary>How This Was Calculated</summary>
         <dl className="context-list">
           <div><dt>Snapshot</dt><dd>{profile.snapshot_id}</dd></div>
           <div><dt>Dataset</dt><dd>{profile.dataset_id}</dd></div>
@@ -351,7 +351,7 @@ function PlayerError({ error, id, date }: { error: unknown; id: string; date?: s
         <span className="empty-code">{apiError?.status ?? "ERROR"}</span>
         <p>{unsupported ? `${date ?? "This date"} is outside the available replay dates.` : `CourtLens could not open player ${id} from this snapshot.`}</p>
         {Array.isArray(detail?.nearest_supported_dates) && <p>Nearest dates: {(detail.nearest_supported_dates as string[]).join(" or ")}</p>}
-        <ButtonLink size="lg" href="/players">Return to player search</ButtonLink>
+        <ButtonLink size="lg" href="/players">Return to Player Search</ButtonLink>
       </div>
     </PageShell>
   );

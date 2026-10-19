@@ -49,7 +49,7 @@ function DetailList({ rows }: { rows: DataDetailRow[] }) {
 const SCOPE_LABELS: Record<string, string> = {
   regular_season: "Regular Season", playoffs: "Playoffs", play_in: "Play-In", preseason: "Preseason",
   cup_final: "NBA Cup Final", summer_league: "Summer League", season: "Season to date",
-  last_10: "Last 10 appearances", last_5: "Last 5 appearances"
+  last_10: "Last 10 Appearances", last_5: "Last 5 Appearances"
 };
 const scopeLabel = (value: string) => SCOPE_LABELS[value] ?? value.replaceAll("_", " ");
 
@@ -81,7 +81,7 @@ export function DataDetails({ open, onClose, scope, rows = [], kicker, children 
       isOpen={open}
       onClose={onClose}
       className="ui-data-details"
-      title={<>{kicker && <span className="ui-data-details-kicker">{kicker}</span>}Data details</>}
+      title={<>{kicker && <span className="ui-data-details-kicker">{kicker}</span>}Data Details</>}
     >
       {scoped.length > 0 && (
         <section className="ui-data-details-section" aria-label="Scope">
@@ -101,7 +101,7 @@ export function DataDetails({ open, onClose, scope, rows = [], kicker, children 
 }
 
 /** Trigger for page-level Data details, placed at the right of the filter bar or page header. */
-export function DataDetailsButton({ scope, rows, children, label = "Data details" }: { scope?: DataScope; rows?: DataDetailRow[]; children?: ReactNode; label?: string }) {
+export function DataDetailsButton({ scope, rows, children, label = "Data Details" }: { scope?: DataScope; rows?: DataDetailRow[]; children?: ReactNode; label?: string }) {
   const [open, setOpen] = useState(false);
   // On the console it is a filled control at the placement's size (the filter bar's 32 px);
   // elsewhere a ghost with the xs label. Filter bars have no slack at 1024 px, so neither may grow

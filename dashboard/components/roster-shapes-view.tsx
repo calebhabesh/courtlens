@@ -8,6 +8,7 @@ import { ShapeBox, ShapeIcon, tone, type BoxEntry } from "./roster-shape-box";
 import { FillVsResults, Missing, Sandbox, ShareCard, SinceLastSeason, teamEntries } from "./roster-shapes-sections";
 import { SeasonStrip, TeamPanel, useLinkedHover } from "./roster-shapes-team";
 import { TeamLogo } from "./team-logo";
+import { BackButton, useNavLabel } from "./ui/back-button";
 import { useFeed, useUrlState } from "./stats-feed-ui";
 import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
 import { FilterBar } from "./ui/filter-bar";
@@ -146,7 +147,7 @@ function details(data: RosterShapes): DataDetailRow[] {
       ? `${data.dpm.source}: latest ratings (through ${formatDate(data.dpm.data_date)}) and expected minutes, sealed ${formatDate(data.dpm.as_of)}`
       : `${data.dpm.source}, ${data.dpm.season} regular season as of ${formatDate(data.dpm.as_of)}` },
     { label: "Shape", value: `Ease of fit, an estimate: the mean league percentile of DPM, defensive DPM, three-point rate and 1 − usage, in ${data.fit_bands} equal bands from plugs in anywhere to hardest to fit.` },
-    { label: "Playoff-adjusted", value: `Each player moves by his DARKO offensive DPM change across the playoffs he played, weighted by playoff games and shrunk by ${data.playoff_prior_games} games toward none.` },
+    { label: "Playoff-Adjusted", value: `Each player moves by his DARKO offensive DPM change across the playoffs he played, weighted by playoff games and shrunk by ${data.playoff_prior_games} games toward none.` },
     { label: "Colour", value: `Derived archetype (${data.archetypes.names_status === "confirmed" ? "names confirmed by the owner" : "proposed names"})` },
     { label: "Archetype artifact", value: data.archetypes.artifact_sha256, mono: true },
     { label: "DARKO snapshot", value: data.dpm.raw_sha256, mono: true },
@@ -200,18 +201,20 @@ export function RosterShapesView() {
   const active = hover.linked?.id ?? null;
   const history = useFeed([releaseId, team ? "team" : "league"], signal => team ? getRosterShapeHistory({ releaseId }, signal) : Promise.resolve(null));
   const previous = past.data && team ? past.data.teams.find(t => t.team_tricode === team.team_tricode) ?? null : null;
+  useNavLabel(team ? `${team.team_name} Roster Shape` : null);
   return <div className="shapes-page" role="region" aria-label="Roster Shapes">
+    {selected && <BackButton parent={{ href: `/roster-shapes${carry.size ? `?${carry}` : ""}`, label: "Roster Shapes" }} />}
     {team && data
       ? <PageHeader className="pvp-header shapes-team-header" title={<><TeamLogo team={team.team_tricode} season={data.reference_season} size={48} />{team.team_name}</>} />
       : <PageHeader className="pvp-header" icon="shapes" title="Roster Shapes" subtitle={BLURB} />}
     <p className="shapes-credit">Also known as <strong>Wyman Diagrams</strong>. Created by <a href="https://www.tiktok.com/@taylormetrics" target="_blank" rel="noreferrer">@taylormetrics</a> on TikTok, where they became a viral trend.</p>
-    <div className="shapes-console"><FilterBar label="Roster Shapes controls" summary={[shownSeason, selected ?? "All teams", mode === "playoff" ? "Playoff-adjusted" : null].filter(Boolean).join(" · ")}
+    <div className="shapes-console"><FilterBar label="Roster Shapes controls" summary={[shownSeason, selected ?? "All Teams", mode === "playoff" ? "Playoff-Adjusted" : null].filter(Boolean).join(" · ")}
       scope={<>
         <Select size="md" aria-label="Season" value={shownSeason} onChange={event => set({ season: event.target.value === "2026-27" ? null : event.target.value, index: null, add: null, drop: null })}>
           {(data?.seasons ?? [{ season: shownSeason, label: shownSeason, projected: true }]).map(entry => <option key={entry.season} value={entry.season}>{entry.label}</option>)}
         </Select>
         <Select size="md" aria-label="Team" value={selected ?? ""} onChange={event => set({ team: event.target.value || null, add: null, drop: null })}>
-          <option value="">All teams</option>
+          <option value="">All Teams</option>
           {[...(data?.teams ?? [])].sort((a, b) => a.team_name.localeCompare(b.team_name)).map(t => <option key={t.team_id} value={t.team_tricode}>{t.team_name}</option>)}
         </Select>
         <Segmented size="md" label="Season phase" value={mode} onChange={value => set({ mode: value === "playoff" ? "playoff" : null })} options={MODES} />

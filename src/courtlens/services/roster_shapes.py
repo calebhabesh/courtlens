@@ -370,7 +370,7 @@ def roster_shapes(
         str, list[tuple[str, str, str | None, float | None, int | None, float | None]]
     ] = {}
     roster_context: dict[str, Any] | None = None
-    label = f"{season} · projected" if projected else season
+    label = f"{season} · Projected" if projected else season
     if projected:
         assert index_id is not None
         roster = projected_roster(session, index_id, None, release_id)
@@ -487,7 +487,7 @@ def roster_shapes(
         "version": VERSION,
         "season": season,
         "seasons": [
-            {"season": SEASON, "label": f"{SEASON} · projected", "projected": True},
+            {"season": SEASON, "label": f"{SEASON} · Projected", "projected": True},
             {"season": reference_season, "label": reference_season, "projected": False},
         ],
         "projected": projected,

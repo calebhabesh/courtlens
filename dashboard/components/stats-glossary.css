@@ -1,8 +1,6 @@
 /* Stats glossary (Databallr alignment, Stats instruction 5). Design Language v1 tokens. */
 @layer pages {
   .glossary-page { padding: var(--space-6); max-width: 1440px; margin: 0 auto; }
-  .glossary-back { display: inline-flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-6); color: var(--color-text-secondary); font-size: var(--text-md); text-decoration: none; }
-  .glossary-back:hover { color: var(--color-text); }
   .glossary-search { display: flex; align-items: center; gap: var(--space-2); width: min(320px, 100%); min-height: var(--control-lg); padding: 0 var(--space-3); border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); }
   .glossary-search input { flex: 1; min-width: 0; min-height: var(--control-lg); padding: 0; border: 0; background: transparent; color: var(--color-text); font-size: var(--text-md); }
   .glossary-search input:focus { outline: 0; }

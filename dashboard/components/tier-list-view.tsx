@@ -362,12 +362,12 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
         title="Tier Lists"
         subtitle="Your own player tiers, arranged by drag and drop or keyboard."
         actions={<>
-          {activeList && <Button size="sm" variant="secondary" icon="plus" onClick={handleAddTierRow}>Add tier row</Button>}
-          <Button size="sm" variant="primary" icon="plus" onClick={() => setIsCreatingList(true)}>New tier list</Button>
+          {activeList && <Button size="sm" variant="secondary" icon="plus" onClick={handleAddTierRow}>Add Tier Row</Button>}
+          <Button size="sm" variant="primary" icon="plus" onClick={() => setIsCreatingList(true)}>New Tier List</Button>
         </>}
       />
 
-      {tierLists.length > 0 && <Button size="sm" variant="secondary" pressed={!activeList} onClick={() => setActiveTierListId(activeList ? EXAMPLE_BOARD_ID : null)}>{activeList ? "View minutes example" : "My tier lists"}</Button>}
+      {tierLists.length > 0 && <Button size="sm" variant="secondary" pressed={!activeList} onClick={() => setActiveTierListId(activeList ? EXAMPLE_BOARD_ID : null)}>{activeList ? "View Minutes Example" : "My tier lists"}</Button>}
       {activeList && <GatedNote why="Tier allocations reflect personal subjective categorizations. Cards support HTML5 drag-and-drop as well as accessible keyboard controls (move up/down buttons or tier dropdown).">
         Tiers are personal categorizations.
       </GatedNote>}

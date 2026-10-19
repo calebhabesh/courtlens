@@ -158,8 +158,8 @@ export function SimilarityInvestigationView() {
               setWindowMode(val);
               updateUrl(playerId, val, topK);
             }}>
-              <option value="last_10">Last 10 games</option>
-              <option value="season">Full season</option>
+              <option value="last_10">Last 10 Games</option>
+              <option value="season">Full Season</option>
             </Select>
           </Field>
         </>}
@@ -302,7 +302,7 @@ export function SimilarityInvestigationView() {
                 Closest Statistical Peers (Top {data.peers.length})
               </h3>
               <div className="similarity-actions">
-                <Button variant="secondary" size="xs" icon={copiedUrl ? "check" : "copy"} onClick={handleCopyUrl}>{copiedUrl ? "Copied" : "Share link"}</Button>
+                <Button variant="secondary" size="xs" icon={copiedUrl ? "check" : "copy"} onClick={handleCopyUrl}>{copiedUrl ? "Copied" : "Share Link"}</Button>
                 <ButtonLink size="xs" href={buildPreservedContextUrl("/stats", searchParams)}>Open in Stats</ButtonLink>
               </div>
             </div>

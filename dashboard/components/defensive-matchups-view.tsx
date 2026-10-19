@@ -95,7 +95,7 @@ function Body({ data, setFocus, scope }: { data: DefenseView; setFocus: (id: str
           </tr>)}</tbody>
         </table>
       </div>
-      {data.players.length > TABLE_LIMIT && <Button size="lg" onClick={() => setAll(v => !v)}>{all ? `Show first ${TABLE_LIMIT}` : `Show all ${data.players.length} defenders`}</Button>}
+      {data.players.length > TABLE_LIMIT && <Button size="lg" onClick={() => setAll(v => !v)}>{all ? `Show First ${TABLE_LIMIT}` : `Show All ${data.players.length} Defenders`}</Button>}
     </section>
   </ResearchLayout>;
 }

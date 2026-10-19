@@ -20,7 +20,7 @@ test("data status keeps release identities and job IDs in Data details, not on t
   const visible = await page.locator(".ui-page").innerText();
   expect(visible).not.toMatch(/\b[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}\b/i);
   expect(visible).not.toMatch(/\b\d{4}-\d{2}-\d{2}\b/);
-  await page.getByRole("region", { name: "Published release" }).getByRole("button", { name: "Data details" }).click();
+  await page.getByRole("region", { name: "Published release" }).getByRole("button", { name: "Data Details" }).click();
   await expect(page.getByRole("dialog")).toContainText("Snapshot ID");
 });
 
@@ -75,7 +75,7 @@ test("planner applies a week change immediately, keeps it in the URL and signs i
   expect(signIns).toBe(1);
   // Snapshot and rules versions are in Data details, not on the page.
   await expect(page.getByText("fixture-rules")).toHaveCount(0);
-  await page.getByRole("region", { name: "Planner scope" }).getByRole("button", { name: "Data details" }).click();
+  await page.getByRole("region", { name: "Planner scope" }).getByRole("button", { name: "Data Details" }).click();
   await expect(page.getByRole("dialog")).toContainText("fixture-rules");
 });
 

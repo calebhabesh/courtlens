@@ -79,15 +79,15 @@ export function StatsTeamSelect() {
             </button>
           ))}
         </div>
-        {selected && <button type="button" className="stats-team-clear" onClick={() => choose(null)}>Show all teams</button>}
+        {selected && <button type="button" className="stats-team-clear" onClick={() => choose(null)}>Show All Teams</button>}
       </Modal>
     </>
   );
 }
 
 const POSITIONS = [
-  { value: "PG", label: "Point guards" }, { value: "SG", label: "Shooting guards" },
-  { value: "SF", label: "Small forwards" }, { value: "PF", label: "Power forwards" }, { value: "C", label: "Centers" }
+  { value: "PG", label: "Point Guards" }, { value: "SG", label: "Shooting Guards" },
+  { value: "SF", label: "Small Forwards" }, { value: "PF", label: "Power Forwards" }, { value: "C", label: "Centers" }
 ] as const;
 
 /**

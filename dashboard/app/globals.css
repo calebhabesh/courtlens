@@ -11,6 +11,7 @@
 @import "./shell.css";
 @import "../components/brand.css";
 @import "../components/ui/header.css";
+@import "../components/ui/back-button.css";
 @import "../components/lookup-input.css";
 @import "../components/hotkeys-modal.css";
 @import "../components/manage-views-modal.css";

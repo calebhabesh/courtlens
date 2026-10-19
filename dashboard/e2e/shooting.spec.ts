@@ -43,8 +43,8 @@ test("court and table preserve zero versus unknown; exports and peer zones agree
   await expect(page.getByText("Source video unavailable: no admitted exact", { exact: false })).toBeVisible();
   // Peer links keep the resolved release; the release itself lives in Data details (D5).
   await page.getByRole("link", { name: "Fixture Player 2", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Shot-profile twins · Fixture Player 2" })).toBeVisible(); await expect(page).toHaveURL(/player_id=2.*release_id=fixture-release|release_id=fixture-release.*player_id=2/);
-  await page.goBack(); await expect(page.getByRole("heading", { name: "Shot-profile twins · Fixture Player 1" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Shot-Profile Twins · Fixture Player 2" })).toBeVisible(); await expect(page).toHaveURL(/player_id=2.*release_id=fixture-release|release_id=fixture-release.*player_id=2/);
+  await page.goBack(); await expect(page.getByRole("heading", { name: "Shot-Profile Twins · Fixture Player 1" })).toBeVisible();
 });
 test("aftermath keeps branch samples, unknown membership and censoring distinct", async ({ page }) => {
   await page.route("**/api/workbench/operations/shot-aftermath", async route => {
@@ -55,7 +55,7 @@ test("aftermath keeps branch samples, unknown membership and censoring distinct"
   });
   await openWorkbench(page, "/research/shooting/aftermath?player_id=1");
   await expect(page.getByRole("region", { name: "Aftermath branches" })).toContainText("insufficient_sample");
-  await page.getByText("Sequence evidence · 2 anchors / unknown candidates", { exact: true }).click();
+  await page.getByText("Sequence Evidence · 2 Anchors / Unknown Candidates", { exact: true }).click();
   await expect(page.getByRole("region", { name: "Sequence evidence" })).toContainText("censored"); await expect(page.getByRole("region", { name: "Sequence evidence" })).toContainText("—");
   const pending = page.waitForEvent("download"); await page.getByRole("button", { name: "Export evidence CSV" }).click();
   expect(readFileSync((await (await pending).path())!, "utf8")).toContain('""first_chance_points"":null');
@@ -74,16 +74,16 @@ test("typing after the observed default never runs another analysis; selecting a
   page.on("request", r => { if (r.url().includes("/operations/")) calls++; });
   await page.route("**/api/workbench/lookup?*", route => route.fulfill({ json: { items: [{ kind: "player", canonical_id: "1627751", display_name: "Fixture Shooter" }] } }));
   await openWorkbench(page, "/similar-players/shot-profile");
-  await expect(page.getByRole("heading", { name: /^Shot-profile twins · / })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^Shot-Profile Twins · / })).toBeVisible();
   const defaultCalls = calls;
   await page.getByRole("combobox",{name:"Player",exact:true}).fill("Shooter");
   await expect(page.getByRole("option").filter({hasText:"Fixture Shooter"})).toBeVisible();
   expect(calls).toBe(defaultCalls);
   await page.getByRole("option").filter({hasText:"Fixture Shooter"}).click();
-  await expect(page.getByRole("heading", { name: "Shot-profile twins · Fixture Shooter" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Shot-Profile Twins · Fixture Shooter" })).toBeVisible();
   await expect(page.getByRole("combobox",{name:"Player",exact:true})).toHaveAttribute("placeholder", "Player: Fixture Shooter");
-  await page.getByRole("radio", { name: "Shooting profile", exact: true }).click();
-  await expect(page.getByRole("heading", { name: /^Shooting profile · / })).toBeVisible();
+  await page.getByRole("radio", { name: "Shooting Profile", exact: true }).click();
+  await expect(page.getByRole("heading", { name: /^Shooting Profile · / })).toBeVisible();
   await expect(page).toHaveURL(/operation=shot-profile/);
 });
 

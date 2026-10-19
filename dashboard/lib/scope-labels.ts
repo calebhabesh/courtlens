@@ -5,8 +5,8 @@ export const PHASES = [
   { value: "regular_season", label: "Regular Season" },
   { value: "playoffs", label: "Playoffs" },
   { value: "preseason", label: "Preseason" },
-  { value: "play_in", label: "Play-in" },
-  { value: "cup_final", label: "NBA Cup final" }
+  { value: "play_in", label: "Play-In" },
+  { value: "cup_final", label: "NBA Cup Final" }
 ];
 
 export function phaseLabel(value: string): string {

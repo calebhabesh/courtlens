@@ -354,6 +354,22 @@ with 14px text, and md (36px) Ask and `⋯` controls:
   `OverlayPortal`, so a blurred sticky header never becomes their containing block.
 - The header has no bottom border; the scrolled state uses the sticky-header pattern.
 
+## Back navigation and control labels
+
+- **Back:** every page reached by opening an item from another page (a team's roster shape, a
+  player, a team, a team's contracts, a playoff series, a Live game, a saved investigation, the
+  glossary) starts with `BackButton` (`components/ui/back-button.tsx`): a gold `xs` button, left
+  chevron, "Back to …", and an Esc hint, on its own row above the page header. It returns to the
+  page this one was opened from in the tab (the trail in `lib/nav-trail.ts`), named by that page
+  (`useNavLabel` / `NavLabel`) or the nav, else to the page's logical parent. A merged page's tabs
+  are siblings, not drill-ins, and get no Back. Esc goes back only when no field is focused and no
+  dialog, menu or listbox was open when the key went down.
+- **Control labels use Title Case:** buttons, select options, segmented and radio options, menu
+  triggers and items, disclosure summaries, filter summaries and server-made labels shown in them
+  ("2026-27 · Projected", "Regular Season", "Copy to My Boards"). Small words (a, and, of, to, …)
+  stay lower inside a label; units, abbreviations and parenthetical notes keep their case. Prose,
+  table cells and data-details row labels are not controls.
+
 ## Components (`dashboard/components/ui/`)
 
 DL02 built these primitives around `ui/icon.tsx`; the controls among them are now the kit in

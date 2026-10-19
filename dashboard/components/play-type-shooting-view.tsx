@@ -75,7 +75,7 @@ function Body({ data, scope, setFocus }: { data: PlayTypesView; scope: string; s
           </tr>)}</tbody>
         </table>
       </div>
-      {data.players.length > TABLE_LIMIT && <Button size="lg" onClick={() => setAll(v => !v)}>{all ? `Show first ${TABLE_LIMIT}` : `Show all ${data.players.length} players`}</Button>}
+      {data.players.length > TABLE_LIMIT && <Button size="lg" onClick={() => setAll(v => !v)}>{all ? `Show First ${TABLE_LIMIT}` : `Show All ${data.players.length} Players`}</Button>}
     </section>
   </ResearchLayout>;
 }
