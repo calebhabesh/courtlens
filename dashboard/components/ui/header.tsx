@@ -298,7 +298,7 @@ export function Header() {
                   className={`courtlens-nav-dropdown-btn ${activeSection === menu.id ? "active" : ""}`}
                 >
                   <span>{menu.label}</span>
-                  <Icon name="chevron-down" size={14} className="courtlens-nav-chevron" />
+                  <Icon name="chevron-down" size={16} className="courtlens-nav-chevron" />
                   {activeSection === menu.id && indicator}
                 </button>
 
@@ -378,7 +378,7 @@ export function Header() {
         {!isHostedDemo && <Button
           variant="ghost"
           tone="onBackground"
-          size="sm"
+          size="md"
           disabled={pageSupportsPanel && !assistantPage}
           aria-haspopup={assistantPage ? "dialog" : undefined}
           onClick={() => {
@@ -396,7 +396,7 @@ export function Header() {
             icon="more-horizontal"
             label="More options"
             tone="onBackground"
-            size="sm"
+            size="md"
             aria-haspopup="menu"
             aria-expanded={moreMenuOpen}
             onClick={() => setMoreMenuOpen(prev => !prev)}
