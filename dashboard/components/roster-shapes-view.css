@@ -41,7 +41,18 @@
 
   /* The box: white is what a perfect team would add; the border takes the team's colour. */
   .shapes-box { --team-color: var(--color-status-unknown); display: block; aspect-ratio: 1; background: var(--color-white); border: 3px solid var(--team-color); border-radius: var(--radius-xs); container-type: inline-size; }
-  .shapes-card-link:hover .shapes-box { box-shadow: var(--shadow-2); }
+  /* Grid cards respond as one target (row 12, 22): the box lifts with a team-colour glow, the name
+     takes the accent, the other boxes recede a little, and a press settles it. */
+  .shapes-card-link .shapes-box { transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+  .shapes-card-link .shapes-card-head strong { transition: color var(--dur-fast) var(--ease-out); }
+  a.shapes-card-link:is(:hover, :focus-visible) .shapes-box {
+    transform: translateY(-4px);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--team-color) 40%, transparent), var(--shadow-3);
+  }
+  a.shapes-card-link:is(:hover, :focus-visible) .shapes-card-head strong { color: var(--color-accent); }
+  a.shapes-card-link:active .shapes-box { transform: translateY(-1px); transition-duration: var(--dur-instant); }
+  .shapes-grid .shapes-card { transition: opacity var(--dur-base) var(--ease-out); }
+  .shapes-grid:has(a.shapes-card-link:hover) .shapes-card:not(:has(a.shapes-card-link:hover)) { opacity: 0.8; }
   .shapes-box-graphic { display: block; width: 100%; height: 100%; }
   .shapes-box-graphic path { stroke: none; }
   .shapes-box-graphic .shapes-unknown-fit { stroke: var(--color-on-accent); stroke-width: 0.4; stroke-dasharray: 1.2 0.8; }
