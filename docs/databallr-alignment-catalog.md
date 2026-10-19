@@ -1569,6 +1569,16 @@ Follow-up instructions (owner, 2026-10-19; screenshot of the Trade Sandbox):
     skipped, no baseline changed; `saved-operations:52` (methodology rendered twice) failed once in
     the full run, then the Roster Shapes spec and it passed 108/108 across three repeat runs.
 
+Follow-up after approval (owner, 2026-10-19; screenshot of the 2025-26 grid):
+22. [x] "can we have hover/selection highlights for the roster shape diagrams (not for each of the
+    players, just for simply hovering over a diagram). They don't feel responsive/interactive in
+    this way." — each grid card responds as one target on hover and keyboard focus: the box lifts
+    4px with a 4px glow in the team's colour and `--shadow-3`, the team name takes the accent, the
+    other cards recede to 80% opacity, and a press settles the box to 1px (all on motion tokens,
+    so reduced motion collapses them). Measured on :3100 at 1440 / 390: hovered box translateY
+    −4px, others 0.8; focus gives the same lift; no overflow (`follow-up-7/`). Lint clean;
+    Roster Shapes and visual-baseline specs 103 passed, no baseline changed.
+
 ### 15 Team Compare — ✅ aligned (first revision)
 
 Owner approval (2026-10-18): "I think it's finished," then approved the closing review: rename the
