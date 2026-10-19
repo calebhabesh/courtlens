@@ -1578,6 +1578,11 @@ Follow-up after approval (owner, 2026-10-19; screenshot of the 2025-26 grid):
     so reduced motion collapses them). Measured on :3100 at 1440 / 390: hovered box translateY
     −4px, others 0.8; focus gives the same lift; no overflow (`follow-up-7/`). Lint clean;
     Roster Shapes and visual-baseline specs 103 passed, no baseline changed.
+23. [x] "make the number next to the team name and logo larger/more prominent. It's kind of hard to
+    see." — the rank is 16px bold in the full text colour (was 12px tertiary), right-aligned in 2ch
+    so 1–30 line up; 20px on a large card. Measured on :3100 at 1440 / 390: no card header clipped,
+    no overflow. Lint clean; Roster Shapes and visual-baseline specs 103 passed, the four
+    first-load baselines within tolerance (none rewritten).
 
 ### 15 Team Compare — ✅ aligned (first revision)
 
