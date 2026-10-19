@@ -119,6 +119,19 @@ Instructions (owner, 2026-10-13):
 16. [x] List all of a player's nicknames in the results, and allow clearing recent searches (clear
     all and per player). (Owner screenshot, 2026-10-15.)
     [Evidence](evidence/alignment/app-shell/search-nicknames/README.md).
+
+Follow-up instructions (owner, 2026-10-19, during Teams; reopen row 0 for this change only):
+17. [x] Nav dropdowns, with Databallr's Teams and Compare menus as reference: "can we try little to
+    no highlight on the drop down container, and little to no outline, like data ballr." — the
+    nav panels drop their 1px hairline border, and nav and kit menus/popovers swap `--shadow-2`
+    (with its inset rim highlight) for the new `--shadow-menu` drop shadow (Design Language
+    updated). Measured: border 0px, shadow `0 8px 24px rgb(0 0 0 / 35%)` on the Teams, Compare
+    and 3P Luck menus.
+18. [x] "we are also missing the icons/etc on the pages we finished under compare" — the Compare
+    menu (Player Comparison, Team Comparison, Player Matchups) gets the Teams menu's icon and
+    one-line description rows. — icons swap, scale and swords (Lucide `Swords` added); each
+    description is the page's own subtitle. Header, motion, Teams and visual-baseline specs pass
+    (114/114, no baseline changed). Evidence: `docs/evidence/alignment/app-shell/menus/`.
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.

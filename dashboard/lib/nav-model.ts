@@ -62,9 +62,9 @@ export const NAV_MENUS: NavMenu[] = [
     id: "compare",
     label: "Compare",
     groups: [{ items: [
-      { label: "Player Comparison", href: "/compare" },
-      { label: "Team Comparison", href: "/team-compare" },
-      { label: "Player Matchups", href: "/matchups" },
+      { label: "Player Comparison", href: "/compare", icon: "swap", description: "Compare stats between up to five NBA players" },
+      { label: "Team Comparison", href: "/team-compare", icon: "scale", description: "Two team seasons side by side: rotations and team stats" },
+      { label: "Player Matchups", href: "/matchups", icon: "swords", description: "Who guarded whom, from NBA tracking" },
     ] }],
   },
   {

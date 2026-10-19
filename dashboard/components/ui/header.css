@@ -209,10 +209,11 @@
   z-index: var(--z-dropdown);
   background: var(--color-surface-3);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-2);
+  /* No outline or rim highlight, like Databallr's menus (alignment row 0, 17). */
+  box-shadow: var(--shadow-menu);
   padding: var(--space-1);
   min-width: 210px;
-  border: 1px solid var(--color-hairline);
+  border: 0;
   animation: fadeInDropdown var(--dur-fast) var(--ease-out);
 }
 

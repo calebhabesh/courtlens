@@ -199,10 +199,11 @@ resolve token attributes before leaving the page's CSS cascade.
 | --- | --- |
 | `--shadow-1` | `0 1px 2px rgb(0 0 0 / 40%)` |
 | `--shadow-2` | `0 4px 16px rgb(0 0 0 / 35%), inset 0 1px 0 rgb(255 255 255 / 3%)` |
+| `--shadow-menu` | `0 8px 24px rgb(0 0 0 / 35%)` |
 | `--shadow-3` | `0 16px 48px rgb(0 0 0 / 55%), inset 0 1px 0 rgb(255 255 255 / 4%)` |
 
 Panels use surface-1 with no shadow, or `--shadow-1`. Menus and popovers use surface-3 with
-`--shadow-2`. Modals and drawers use surface-3 with `--shadow-3` over a scrim of
+`--shadow-menu` and no border or rim highlight (Databallr alignment row 0, instruction 17). Modals and drawers use surface-3 with `--shadow-3` over a scrim of
 `rgb(0 0 0 / 55%)` plus `backdrop-filter: blur(4px)`.
 
 Owner-approved exception (2026-10-14, extended 2026-10-15): the six player headline-stat cards

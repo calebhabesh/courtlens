@@ -78,6 +78,8 @@
     /* Elevation Tokens */
     --shadow-1: 0 1px 2px rgb(0 0 0 / 40%);
     --shadow-2: 0 4px 16px rgb(0 0 0 / 35%), inset 0 1px 0 rgb(255 255 255 / 3%);
+    /* Menus and popovers (alignment row 0, 17): Databallr's flat panel, a drop shadow without the rim highlight. */
+    --shadow-menu: 0 8px 24px rgb(0 0 0 / 35%);
     --shadow-3: 0 16px 48px rgb(0 0 0 / 55%), inset 0 1px 0 rgb(255 255 255 / 4%);
 
     /* Spacing Tokens */
