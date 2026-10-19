@@ -243,7 +243,7 @@ Standard placements:
 
 Controls: four kit sizes, `xs` 28 / `sm` 32 / `md` 36 / `lg` 40 px (`--control-sm`, `--control-md`,
 `--kit-control-md`, `--control-lg`); every control is 40 px on phones. Header: `--header-height:
-56px`. Hit targets are at least 32px on desktop and 40px below 640px. See [Controls](#controls-ui-consolidation).
+64px`. Hit targets are at least 32px on desktop and 40px below 640px. See [Controls](#controls-ui-consolidation).
 
 ### Typography
 
@@ -324,7 +324,9 @@ Rules:
 
 ## Header
 
-One 56px sticky row (`components/ui/header.tsx`, nav items from `lib/nav-model.ts`):
+One 64px sticky row (`components/ui/header.tsx`, nav items from `lib/nav-model.ts`). Scale (owner,
+2026-10-19): 16px menu labels and chevrons, a 20px wordmark with a 28px mark, a 36px search pill
+with 14px text, and md (36px) Ask and `⋯` controls:
 
 ```
 [CourtLens] [Stats] [Live] [Players] [Teams] [Compare] [Research]      [Search players, teams…  ⌘K]      [Ask] [⋯]

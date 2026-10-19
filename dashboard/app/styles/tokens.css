@@ -107,7 +107,7 @@
     --control-sm: 28px;
     --control-md: 32px;
     --control-lg: 40px;
-    --header-height: 56px;
+    --header-height: 64px;
 
     /* Control kit v1 (docs/design/control-kit-v1.md): xs/sm/md/lg heights and state colours.
        The legacy --control-sm/md/lg names keep their values until UC05. */

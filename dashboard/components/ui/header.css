@@ -45,7 +45,18 @@
 }
 
 .courtlens-header .brand {
-  gap: var(--space-1);
+  gap: var(--space-2);
+  font-size: var(--text-xl);
+}
+
+/* Header scale (owner, 2026-10-19: "a little small"): 16px menus, 28px mark, 36px search pill. */
+.courtlens-header .brand-mark-svg svg {
+  width: 28px;
+  height: 28px;
+}
+
+.courtlens-header .brand-title {
+  line-height: var(--text-xl-lh);
 }
 
 .courtlens-nav {
@@ -68,9 +79,10 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-2) var(--space-3);
   color: var(--color-on-bg-secondary);
-  font-size: var(--text-sm);
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
   font-weight: 500;
   border-radius: var(--radius-sm);
   border: none;
@@ -107,8 +119,8 @@
 .courtlens-nav-indicator {
   position: absolute;
   bottom: 0;
-  left: var(--space-2);
-  right: var(--space-2);
+  left: var(--space-3);
+  right: var(--space-3);
   height: 2px;
   background: var(--color-accent);
   border-radius: var(--radius-xs);
@@ -131,8 +143,8 @@
   align-items: center;
   gap: var(--space-2);
   width: 100%;
-  height: var(--control-md);
-  padding: 0 var(--space-3);
+  height: var(--kit-control-md);
+  padding: 0 var(--space-4);
   border-radius: var(--radius-pill);
   background: var(--color-surface-2);
   border: 1px solid transparent;
@@ -162,7 +174,7 @@
 .courtlens-search-pill-label {
   flex: 1;
   text-align: left;
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   color: var(--color-text-tertiary);
   overflow: hidden;
   text-overflow: ellipsis;
