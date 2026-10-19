@@ -61,9 +61,8 @@ uppercase group labels over column labels, a pinned leftmost column, and gold up
   shares the column-label row. In the player page that's Season, then Current Contract.
 - Pick group names from the career table's vocabulary (Profile, Impact, Counting, Scoring,
   Other).
-- `player-ref-grid` in `dashboard/components/player-reference-sections.css` implements the
-  smaller reference tables (Contract, Career Highs). Move it to a shared file before using it on
-  another page.
+- `player-ref-grid` in `dashboard/components/ref-grid.css` (shared since row 4) implements the
+  smaller reference tables (Contract, Career Highs, the team profile's Six Factors and Game Log).
 
 **Views and modes.** Don't add a view that repeats a counting mode. Rates (Per 36) was removed
 because Per 36 covers it.

@@ -257,3 +257,48 @@ def test_team_endpoints_not_found(client: TestClient) -> None:
 
     resp_sched = client.get("/api/workbench/teams/999999999/schedule?season=2023-24")
     assert resp_sched.status_code == 404
+
+
+@pytest.mark.requires_published_data
+def test_teams_six_factors_endpoint(client: TestClient) -> None:
+    """GET /api/workbench/teams/six-factors splits every team's ratings exactly."""
+    resp = client.get("/api/workbench/teams/six-factors?season=2023-24")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["teams"] and data["method_version"] == "courtlens-team-six-factors-v1"
+    for team in data["teams"]:
+        assert team["off"] + team["def"] == pytest.approx(team["net"])
+        assert team["net_eff"] + team["net_poss"] == pytest.approx(team["net"])
+    assert {t["conference"] for t in data["teams"]} == {"Eastern", "Western"}
+    nets = [t["net"] for t in data["teams"]]
+    assert nets == sorted(nets, reverse=True)
+
+    window = client.get("/api/workbench/teams/six-factors?season=2023-24&windowDays=14").json()
+    assert window["window"]["days"] == 14
+    assert window["window"]["games"] < data["window"]["games"]
+
+    lucky = client.get(
+        "/api/workbench/teams/six-factors?season=2023-24&offenseLuck=1&defenseLuck=0.5"
+    ).json()
+    assert lucky["luck"] == {"offense": 1.0, "defense": 0.5}
+    assert sum(t["off_luck"] * t["possessions"] for t in lucky["teams"]) == pytest.approx(
+        0.0, abs=1e-6
+    )
+    assert client.get("/api/workbench/teams/six-factors?offenseLuck=2").status_code == 422
+
+    assert data["context_method_version"] == "courtlens-team-context-v1"
+    for team in data["teams"]:
+        assert team["adj_net"] == pytest.approx(team["net"] + team["sos"])
+        assert team["standings"]["wins"] + team["standings"]["losses"] >= team["games_played"]
+        assert team["close_wins"] + team["close_losses"] <= team["games_played"]
+    assert sum(t["win_luck"] for t in data["teams"]) == pytest.approx(0.0, abs=3.0)
+
+    home = client.get("/api/workbench/teams/six-factors?season=2023-24&venue=home").json()
+    away = client.get("/api/workbench/teams/six-factors?season=2023-24&venue=away").json()
+    assert home["venue"] == "home"
+    played = {t["team_id"]: t["games_played"] for t in data["teams"]}
+    for team in home["teams"]:
+        other = next(t for t in away["teams"] if t["team_id"] == team["team_id"])
+        assert team["games_played"] + other["games_played"] == played[team["team_id"]]
+    assert home["league"] == data["league"]
+    assert client.get("/api/workbench/teams/six-factors?venue=neutral").status_code == 422

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { GatedNote } from "./ui/gated-note";
 import { ButtonLink } from "./ui/kit";
 import { PageHeader } from "./ui/panel";
@@ -23,12 +24,16 @@ import Link from "next/link";
 import { ControlScope } from "./ui/control-scope";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 
-export async function StatsWorkspace({ params: rawParams, basePath = "/stats", title = "Stats" }: {
+export async function StatsWorkspace({ params: rawParams, basePath = "/stats", title = "Stats", team }: {
   params: Record<string, string | string[] | undefined>;
   basePath?: string;
   title?: string;
+  /** A team profile's roster (alignment row 4): the table fixed to one team under that page's header. */
+  team?: { id: string; header: ReactNode };
 }) {
   const params = Object.fromEntries(Object.entries(rawParams).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value]));
+  // The team filter is the page's own, not a URL value, so it never lands in canonical links.
+  const queryParams = team ? { ...params, teamId: team.id, team_id: undefined } : params;
   const directory = basePath === "/players";
   // Independent reads run together; every sort or filter re-renders this page.
   const [catalogResult, workspaceResult] = await Promise.allSettled([
@@ -52,7 +57,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   const countingMode = (directory ? "per_game" : params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
   const presetId = params.viewId || params.view_id || params.preset || workspace?.preferences.default_view_id || "overview";
   const preset = getPresetById(presetId, workspace?.views);
-  const querySpec = resolveStatsQuery(params, catalog, countingMode, !directory && preset.id === "overview" ? "dpm" : "pts");
+  const querySpec = resolveStatsQuery(queryParams, catalog, countingMode, !directory && preset.id === "overview" ? "dpm" : "pts");
   if (directory && !params.sortMetric && !params.sort_metric && !params.sort) querySpec.sort = [{ field: "player_name", direction: "asc" }];
   querySpec.view_state = { ...querySpec.view_state, view_id: directory ? "directory" : presetId,
     columns: directory ? ["gp", "min_per_game", "pts_per_game", "reb_per_game", "ast_per_game", "ts_pct"] : preset.columns.map(column => normalizedColumn(column, countingMode).key) };
@@ -129,9 +134,10 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     <section className="stats-workspace">
       {canonicalHref && <ReplaceUrl href={canonicalHref} />}
       <div className="workbench-content">
-        <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <ButtonLink size="lg" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</ButtonLink> : undefined} />
-        {!directory && <WhatsNewLine />}
-        {!directory && <StatsHelpRow />}
+        {team?.header}
+        {!team && <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <ButtonLink size="lg" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</ButtonLink> : undefined} />}
+        {!directory && !team && <WhatsNewLine />}
+        {!directory && !team && <StatsHelpRow />}
         {staleRelease && latestHref && (
           <GatedNote tone="warning" className="stats-stale-release"
             // A full load: switching releases must not reuse the pinned page's client state.
@@ -160,7 +166,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
             { label: "DARKO raw snapshot", value: researchData.darko.raw_sha256 ?? "Unknown", mono: true },
             { label: "DARKO interpretation", value: researchData.darko.limitations.join(" ") }
           ] : []}
-          filters={<><StatsTeamSelect /><StatsPositionChips /><StatsDraftClassSelect classes={draftClasses} /></>}
+          filters={team ? <StatsPositionChips /> : <><StatsTeamSelect /><StatsPositionChips /><StatsDraftClassSelect classes={draftClasses} /></>}
         />}
 
         {loadError && (

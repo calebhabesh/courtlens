@@ -30,7 +30,6 @@
   .directory-table { min-width: 800px; }
   .directory-table tbody tr { height: calc(var(--space-16) + var(--space-2)); }
   .directory-player { min-width: 240px; }
-  .team-statistics-table { min-width: 1040px; }
   .rankings-table { min-width: 960px; }
   .rankings-table th:nth-child(2), .rankings-table td:nth-child(2) { min-width: 200px; }
   .ranking-board-panel .table-percentile-legend { padding: var(--space-3); }

@@ -282,6 +282,20 @@
   font-weight: 600;
 }
 
+/* Rich rows (Teams menu, alignment row 4): Databallr's icon tile, label and one-line description. */
+.courtlens-dropdown-group:has(.courtlens-dropdown-rich) { width: 320px; padding: var(--space-1); }
+.courtlens-dropdown-item.courtlens-dropdown-rich { justify-content: flex-start; gap: var(--space-3); padding: var(--space-2); }
+.courtlens-dropdown-icon {
+  display: inline-grid; place-items: center; flex: 0 0 auto; width: 36px; height: 36px;
+  border-radius: var(--radius-sm); color: var(--color-text-secondary);
+}
+.courtlens-dropdown-text { display: flex; flex-direction: column; gap: var(--space-0); min-width: 0; }
+.courtlens-dropdown-text > span { font-weight: 600; }
+.courtlens-dropdown-text small { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 400; white-space: normal; }
+.courtlens-dropdown-rich:is(:hover, :focus) .courtlens-dropdown-icon,
+.courtlens-dropdown-rich.active .courtlens-dropdown-icon { background: var(--color-accent-soft); color: var(--color-accent); }
+.courtlens-mobile-sublink-label { display: inline-flex; align-items: center; gap: var(--space-2); }
+
 .courtlens-dropdown-item-disabled {
   opacity: 0.6;
   cursor: default;

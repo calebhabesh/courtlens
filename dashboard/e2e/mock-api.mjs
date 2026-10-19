@@ -198,6 +198,40 @@ const workbenchPlayers = {
   warnings: ["Historical reconstruction from completed records."]
 };
 
+// Alignment row 4: the six-factor team table. BOS's DEF is unknown, so unknowns stay "—" and sort last.
+const sixFactorRates = (ts, tov) => ({ ts_pct: ts, tov_per_100: tov, orb_pct: 0.27, ftr: 0.26, fg3a_per_100: 37.1, fg3_pct: 0.362, opp_ts_pct: 0.571, opp_tov_per_100: 13.9, drb_pct: 0.73, opp_ftr: 0.25, opp_fg3a_per_100: 35.2, opp_fg3_pct: 0.351 });
+// Context fields (instruction 9): a ten-point rolling trend; BOS's net is unknown, so its Adj Net is too.
+const sixFactorTrend = (start) => Array.from({ length: 12 }, (_, i) => ({ date: `2026-03-${String(i + 1).padStart(2, "0")}`, net: Math.round((start + Math.sin(i / 2) * 6) * 10) / 10 }));
+const workbenchSixFactors = (url) => {
+  const luck = Number(url.searchParams.get("offenseLuck") || 0);
+  const windowDays = Number(url.searchParams.get("windowDays")) || null;
+  const venue = url.searchParams.get("venue");
+  return {
+    context: workbenchContext,
+    teams: [
+      { team_id: "100", tricode: "TOR", name: "Toronto Raptors", conference: "Eastern", division: "Atlantic", games_played: windowDays ? 12 : 72, wins: windowDays ? 8 : 45, losses: windowDays ? 4 : 27,
+        possessions: 7100, opp_possessions: 7080, points: 8190, opp_points: 7800, ortg: 115.4 - luck, drtg: 110.2, net: 5.2 - luck,
+        off: 1.9 - luck, o_ts: 1.2 - luck, o_tov: 0.9, o_orb: -0.2, def: 3.3, d_ts: 2.1, d_tov: 0.4, d_drb: 0.8, net_eff: 3.3 - luck, net_poss: 1.9,
+        off_luck: -luck, def_luck: 0, league_rating: 113.5, rates: sixFactorRates(0.584, 12.8),
+        sos: 0.4, adj_net: 5.6 - luck, expected_wins: 46.2, win_luck: -1.2, close_wins: 9, close_losses: 7,
+        standings: { wins: 45, losses: 27, last10_wins: 7, last10_losses: 3, streak: 3 }, trend: sixFactorTrend(4) },
+      { team_id: "200", tricode: "BOS", name: "Boston Celtics", conference: "Eastern", division: "Atlantic", games_played: 72, wins: 55, losses: 17,
+        possessions: 7000, opp_possessions: 7020, points: 8260, opp_points: 7900, ortg: 118.0, drtg: null, net: null,
+        off: 4.5, o_ts: 2.0, o_tov: 1.5, o_orb: 1.0, def: null, d_ts: null, d_tov: null, d_drb: null, net_eff: null, net_poss: null,
+        off_luck: 0, def_luck: 0, league_rating: 113.5, rates: sixFactorRates(0.592, 11.9),
+        sos: -0.3, adj_net: null, expected_wins: null, win_luck: null, close_wins: 6, close_losses: 2,
+        standings: { wins: 55, losses: 17, last10_wins: 8, last10_losses: 2, streak: -1 }, trend: sixFactorTrend(-1) },
+    ],
+    league: { rating: 113.5, ts_pct: 0.578, tov_per_100: 13.4, orb_pct: 0.26, ftr: 0.26, fg3a_per_100: 36.3, fg3_pct: 0.36 },
+    window: { days: windowDays, start: windowDays ? "2026-03-14" : null, first_game: windowDays ? "2026-03-14" : "2025-10-21", last_game: "2026-04-12", games: windowDays ? 40 : 1230, excluded_games: 0 },
+    venue: venue === "home" || venue === "away" ? venue : null,
+    luck: { offense: luck, defense: Number(url.searchParams.get("defenseLuck") || 0) },
+    method_version: "courtlens-team-six-factors-v1",
+    context_method_version: "courtlens-team-context-v1",
+    warnings: [],
+  };
+};
+
 const workbenchTeams = {
   context: workbenchContext,
   teams: [
@@ -723,6 +757,7 @@ createServer(async (request, response) => {
     games:[{game_id:"fo10-unknown",game_date:"2026-03-01",opponent_tricode:"BOS",opponent_name:"Boston Celtics",side:"home",team_points:0,opponent_points:null,is_win:null,rest_days:0,is_back_to_back:true,rest_bucket:"0_days_rest"}]
   });
   if (url.pathname === "/api/workbench/teams/100/peers") return json(response,200,{team:workbenchTeamDetail.team,context:workbenchContext,dimensions:[],warnings:[],peers:[{team_id:"200",tricode:"BOS",name:"Boston Celtics",similarity_score:0.95,distance:0.1,conference:"Eastern"}]});
+  if (url.pathname === "/api/workbench/teams/six-factors") return json(response, 200, workbenchSixFactors(url));
   if (url.pathname === "/api/workbench/teams") return json(response, 200, { ...workbenchTeams, teams: workbenchTeams.teams.map((team, index) => ({ ...team, table_percentiles: { wins: index ? 75 : 25, win_pct: index ? 75 : 25, ppg: index ? 75 : 25, opp_ppg: index ? 75 : 25, net_margin: index ? 75 : 25 }, table_cohort_sample_sizes: { wins: 2, win_pct: 2, ppg: 2, opp_ppg: 2, net_margin: 2 } })) });
   if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
   if (url.pathname === "/api/workbench/teams/1610612760") return json(response, 200, { ...workbenchTeamDetail, team: { id: "1610612760", tricode: "OKC", name: "Oklahoma City Thunder" } });

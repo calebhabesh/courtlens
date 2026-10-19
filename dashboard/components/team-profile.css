@@ -1,0 +1,41 @@
+@layer pages {
+  /* Team profile (alignment row 4): the season's logo and era name over the team's Stats table,
+     then six factors, game log and similar teams in the player page's glass sections. */
+  .team-profile-head { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
+  .team-profile-head > .team-profile-title { flex: 1 1 auto; min-width: 0; }
+  /* The sections line up with the Stats table's content edge above them. */
+  .team-profile-sections { display: flex; flex-direction: column; gap: var(--space-6); min-width: 0; padding: 0 var(--space-6) var(--space-8); }
+  .team-profile-section td[data-tone="up"] { color: var(--color-identity-a); }
+  .team-profile-section td[data-tone="down"] { color: var(--color-identity-b); }
+
+  .team-factors-grid { --grid-min-width: 820px; }
+  .team-factors-grid tbody td { height: 52px; }
+  .team-factor-value { font-weight: 600; }
+  .team-standing-grid { --grid-min-width: 820px; }
+  .team-standing-grid tbody td, .team-venue-grid tbody td { height: 52px; }
+  .team-venue-grid { --grid-min-width: 960px; }
+  .team-games-grid { --grid-min-width: 520px; }
+  /* One header row, so it sticks at the top rather than under a group tier. */
+  .team-games-grid .player-ref-grid-tier-2 th { top: 0; }
+  .team-games-grid .team-games-opponent { width: 30%; }
+  .team-games-opponent-cell { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text-secondary); }
+  .team-games-opponent-cell a { color: var(--color-text); text-decoration: none; font-weight: 600; }
+  .team-games-opponent-cell a:is(:hover, :focus-visible) { color: var(--color-accent); }
+  .team-profile-section details { display: flex; flex-direction: column; gap: var(--space-3); }
+  .team-profile-section details[open] > .player-ref-grid-frame { margin-top: var(--space-3); }
+
+  .team-peers { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .team-peer { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-table-lift); color: var(--color-text); text-decoration: none; }
+  .team-peer:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--color-white) 6%, var(--color-table-lift)); }
+  .team-peer > span { display: flex; flex-direction: column; min-width: 0; }
+  .team-peer strong { overflow: hidden; font-size: var(--text-sm); text-overflow: ellipsis; white-space: nowrap; }
+  .team-peer small { color: var(--color-text-secondary); font-size: var(--text-xs); }
+
+  @media (width < 768px) {
+    .team-profile-head { align-items: flex-start; }
+    .team-factors-grid, .team-games-grid, .team-standing-grid, .team-venue-grid { --lead-width: 112px; }
+    /* Wide enough that no column label overflows its cell; the grid scrolls inside its frame. */
+    .team-factors-grid { --grid-min-width: 1000px; }
+    .team-profile-sections { padding-inline: var(--space-2); }
+  }
+}

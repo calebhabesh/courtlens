@@ -16,7 +16,7 @@ Rows are in working order.
 | 1 | Stats | `/stats` | 👀 | Owner approved first revision 2026-10-15; cold-load animation follow-up ready for review; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
 | 3 | PvP | `/compare` | 🔄 in progress | Compare Export fixed (card export) |
-| 4 | Teams | `/teams` | ⬜ | |
+| 4 | Teams | `/teams`, `/teams/[id]` | 👀 | Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
 | 5 | WOWY | `/wowy` | ⬜ | |
 | 6 | Last X Games | `/last-games` | ⬜ | |
 | 7 | Live | `/live` | ⬜ | |
@@ -1163,6 +1163,166 @@ Follow-up instructions (owner, 2026-10-16, honors layout):
 Guardrails kept: no overall winner or lead tally; unknown values show "—" with no pill; Per 75 /
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
+
+### 4 Teams — 👀 ready for review (instruction 8 awaits the owner's conference list)
+
+Owner start (2026-10-18): "Let's begin the revamp for the teams pages", with Databallr references
+for Teams, the Teams menu, Roster Shapes, Stat Line Shift, Contracts (overview, roster table, pies)
+and Free Agency ("some things aren't absolutely necessary like the 3d view for roster shape").
+
+Starting state (survey, 2026-10-18): `/teams` (`components/team-explorer-view.tsx`) is the
+pre-alignment "Team Stats & Cohorts" page: context bar, Net rating leaders chart, three stat
+tiles, a gated ordering note and `TeamStatisticsTable` with percentile pills ("98 pct") and
+Compare/Profile buttons per row; Cards and Efficiency Plot views. At 390px the table starts
+~1,300px down and shows two columns. `/teams/[id]` has paired rating bars, eight stat tiles and
+Overview (participation cohort, statistical peers) / Four Factors / Schedule tabs in the old
+`data-table` style, without season logos. Databallr's six factors are three per side in points
+per 100 relative to league: OFF = oTS + oTOV + ORB, DEF = dTS + dTOV + DRB, Net = OFF + DEF =
+NetEff (oTS + dTS) + NetPoss (the four possession terms); every input is in the admitted team
+box scores. Evidence: `docs/evidence/alignment/teams/before/`.
+
+Instructions (owner, 2026-10-18; answering the start-of-page proposal):
+1. [x] Scope: work row 4 (`/teams` and `/teams/[id]`) now; Roster Shapes, Stat Line Shift and
+   Contracts + Free Agency (rows 12–14) follow one page at a time ("Go with your
+   recommendation"). — only row 4 and the Teams menu changed; rows 12–14 keep their pages and
+   page titles ("Teammate Stat Shift", "Contracts & Payroll") until their own passes.
+2. [x] `/teams` follows Databallr's NBA Team Stats: centred icon title and "Six Factor Analysis ·
+   <season>" subtitle; a console card (season, phase, 3P Luck, time window, Overall / Offense /
+   Defense, Table / Cards, Per 100 / Totals); one table in the approved Stats look with Rk (top
+   three badged), Team (season logo + code), ORTG, DRTG, Net, then Offense (OFF, oTS, oTOV, ORB),
+   Defense (DEF, dTS, dTOV, DRB) and Net (NetEff, NetPoss) groups, signed values coloured by sign
+   with the league rank under each. The leaders chart, stat tiles, inline notes and per-row
+   buttons go. — `components/teams-six-factor-view.tsx` + `.css` over the new
+   `GET /api/workbench/teams/six-factors`. Databallr's bundle (`teamStatsCalculations`) splits
+   play-by-play first- and second-chance points, which the admitted team box scores lack, so
+   CourtLens uses an exact box-score identity: with Poss = FGA + 0.44 FTA − OREB + TOV,
+   rating = 200 × TS% × (1 − TOV/poss + OREB/poss), and the midpoint split of the gap to league
+   gives TS, TOV and REB points per 100 with no residual (OFF + DEF = Net; NetEff + NetPoss = Net;
+   `courtlens.domain.team_six_factors`, `courtlens-team-six-factors-v1`). Live 2025-26: OKC ORTG
+   117.0, DRTG 105.7, Net +11.3, oTS +3.5 / oTOV +2.1 / ORB −2.1 (Databallr +2.5 / +1.8 / −1.5),
+   identity residual ≤ 3e-14. Gold above league, blue below (identity tokens); column labels keep
+   Databallr's casing. Offense / Defense views add the underlying rates (TS%, TOV/100, ORB%/DRB%,
+   FTr, 3PA/100, 3P%); Totals turns each term into points over the span. Cards show each team's
+   six factors as diverging bars on one league-wide scale. Old explorer, its table, and the
+   `.teams-page` leftovers in `pages.css` were removed. Era names and logos follow the season
+   (2000-01 lists 29 teams with the SuperSonics).
+3. [x] The team profile reuses the Stats table filtered to the team (owner: "Your
+   recommendation"), under a logo + full era name header, with the team's six-factor ranks, game
+   log and similar teams as sections below. — `StatsWorkspace` takes `team` (the season's stored
+   id as the table's team scope, never written to the URL) and the profile's header in place of
+   the Stats title. Header: season logo + era name via `PageHeader`, "2025-26 Regular Season ·
+   64–18 · Net +11.3 (#1)", Compare Team / All Teams. Sections in `player-glass`: Six Factors
+   (Offense / Defense rows: rating, total, TS, TOV, REB and rates, each with #rank), Game Log (10
+   most recent, earlier games under a disclosure; unknown scores stay "—") and Similar Teams.
+   `player-ref-grid` moved unchanged to the shared `components/ref-grid.css`, as the plan asks.
+   The old tabs, paired bars, eight tiles, participation cohort and rest splits were removed.
+   `/teams/1610612760?season=2000-01` reads "Seattle SuperSonics" with the Sonics roster.
+4. [x] Time windows and 3P Luck: "Use your best judgement here." — both built. Windows (Full
+   Season, Last 60 Days, Last 30 Days, Last 2 Weeks) end at the scope's last game, so a finished
+   season reads its final stretch; league average is recomputed over the same games. 3P Luck is a
+   menu per end (own / opponent 3P%: Actual, 50% to League, League 3P%), regressing makes at fixed
+   attempts, 2.7 points each (Databallr's 3 × 0.9). It moves ratings and shooting terms only and
+   nets to zero across the league (−1.3e-10 live).
+5. [x] Teams menu: rename items to Databallr's and add an icon and one-line description per item
+   (touches the approved app shell, row 0): "Sounds good. Use your best judgement and optimal
+   design here." — Teams, Roster Shapes, Stat Line Shift, Contracts, each with a Lucide icon
+   (building, shapes, chart-column, dollar) in a 36px tile and a one-line description; the
+   active and hovered tile takes the accent. `NavItem` gains optional `icon` / `description`, so
+   only the Teams menu changes; the phone drawer shows the icon beside each label. Free Agency
+   stays inside Contracts (`/free-agency` redirects there) until row 14. Other menus can adopt
+   the rich rows if you want them everywhere.
+
+Verification (2026-10-18): measured on production 3180 with live data — value-to-label centre
+offset ≤ 0.5px, group labels within 0.6px of their columns' centre, column-label bottoms 0px
+apart, six-factor values ≤ 0.5px, no page overflow and no browser errors at 1440 and 390
+(`verification.jsonl`). Python 2,142 passed (new unit + integration six-factor tests); ruff, mypy clean. Dashboard lint,
+typecheck, Vitest 584/584 (the 4 header animation rejections predate this work); Playwright 485
+passed, `presentation-defaults.spec.ts:58` flaky (passes 3/3 on rerun); the four
+`team-stats` / `team-profile` baselines refreshed, no approved page's baseline changed.
+Data-blocked: none. Databallr's play-by-play first/second-chance split is replaced by the exact
+box-score split above, so values differ slightly from Databallr's.
+Evidence: `docs/evidence/alignment/teams/` (`before/` holds the survey).
+
+Follow-up instructions (owner, 2026-10-18; "Looks good. We can use databallr as a baseline and
+iterate further"):
+6. [x] "The team logos look pretty small next to the team text. I think we either slightly make the
+   rows taller so that we can fit a larger logo or we can just enlarge the logos as they are in
+   place." — enlarged in place: 20 → 28px in the table (rows already 52px desktop / 49px phone,
+   unchanged; logo centred within 0.5px of the row), 36 → 44px on cards.
+7. [x] "Having a split by conference into the Western and Eastern conference might be good. Use the
+   canonical east/west logos in the sliding selector for this if we add it." — League / East /
+   West segmented selector (`conf=east|west`) with the NBA's 2018 Eastern and Western Conference
+   wordmarks (Wikimedia Commons; `scripts/team_branding_assets.py --acquire-conferences` records
+   source URL, source SHA-1 check, SHA-256 and derivation in `team-branding.json` `conferences`;
+   trimmed, 96px tall). They keep their colours on a small light plate (the blue mark disappeared
+   on the dark control). A conference ranks its own teams (Rk, #ranks); values stay relative to
+   the league average, and the note says so. Conferences follow the season's identity
+   (`/api/workbench/teams/six-factors` now returns `conference` / `division`; the 2000-01 West
+   has 14 teams). The console is now Databallr's two rows: scope (season, phase, conference,
+   window, 3P Luck), then view modes and Data details. On phones "Last" drops from the window
+   labels so all four fit the Filters sheet.
+8. [ ] "I have some more conference specific things if you think that could be useful." (awaiting
+   the owner's list)
+9. [x] "Is there anything else that databallr doesn't have that we could add that you think would
+   be beneficial and optimal?" — recommended in chat (2026-10-18): schedule-adjusted net rating
+   (SRS-style), expected wins and luck (point-margin record vs actual, close-game record),
+   conference standings columns (seed, games back, last 10, streak), a rolling 10-game net-rating
+   trend on cards and the profile, and a home/away six-factor split. Owner (2026-10-19): "You can
+   implement all of these. I like all the ideas."
+   - [x] a. Schedule-adjusted net rating — SOS and AdjNet columns. Every team's strength is solved
+     jointly as its net rating plus its opponents' average strength (Basketball-Reference's SRS on
+     net rating per 100), pinned to a game-weighted league mean of zero; SOS is the average solved
+     strength of the opponents faced, so AdjNet = Net + SOS exactly. Live 2025-26: OKC +11.3 /
+     −0.1 / +11.2; DET's −0.6 is the softest schedule.
+   - [x] b. Expected wins and luck — xW = games × PF¹⁴ / (PF¹⁴ + PA¹⁴), Luck = W − xW, Close =
+     record in games decided by five points or fewer (OKC 65.5 / −1.5 / 9–7).
+   - [x] c. Standings — Seed (win percentage among the teams shown, ties by net; the NBA's
+     tiebreakers are not modelled, and the tooltip and Data details say so), W–L, GB, L10, Strk.
+     They cover every game in scope whatever the window or venue; the conference selector seeds
+     within the conference.
+   - [x] d. Trend — ten-game net rating after each game (from the tenth), as a sparkline on every
+     card and a full chart section on the profile, gold above the league-average rule, blue below.
+   - [x] e. Home/away — an All Games / Home / Away selector (`venue=home|away`) on the second
+     console row; a venue's teams read against the league average over every game. The profile
+     gains a Home and Away section (All, Home, Away rows over ratings and six factors, each
+     #ranked among teams at that venue).
+   All of it in a new Standings view (Standings: Seed, W–L, GB, L10, Strk; Schedule: Net, SOS,
+   AdjNet; Expected: xW, Luck, Close) and on the profile (header "64–18 · 1st in the West · Net
+   +11.3 (#1)"; Standing, Six Factors, Home and Away, Net Rating Trend, Game Log, Similar Teams).
+   Backend: `courtlens.domain.team_context` (`courtlens-team-context-v1`), returned by
+   `/api/workbench/teams/six-factors` with the new `venue` parameter.
+
+Follow-up instructions (owner, 2026-10-19):
+10. [x] "Make the team logos a little larger" — 28 → 32px in the table (rows unchanged at 52px
+    desktop / 49px phone, logo centred within 0.5px), 44 → 48px on cards.
+11. [ ] (screenshot of the League / East / West selector with East selected) "the highlight around
+    the easter/western conference buttons is a little weird. It doesn't look natural" — the white
+    plate is gone. Each wordmark is drawn as a mask in the segment's text colour (22px tall), so it
+    behaves like the "League" label: secondary at rest, gold inside the selected highlight. The
+    league's wordmark shapes are kept; their blue and red are not, since the blue mark disappears
+    on the dark control.
+    Also fixed: the six-factor column labels were uppercased again by the Stats sort-button rule
+    ("OTS"); Databallr's casing (oTS, dTOV, NetEff) is back.
+
+Verification (2026-10-19): production 3180 with live data — no overflow and no browser errors on
+the table, Standings (league and West), Home, cards and profile at 1440 and 390; logos 32px, 0.5px
+off the row centre; conference marks 22px; values within 0.51px of their label centres
+(`follow-up-2/verification.jsonl`). Python 2,148 passed (new `tests/unit/test_team_context.py`;
+the endpoint test covers the venue split and AdjNet = Net + SOS); ruff and mypy clean. Dashboard
+lint and typecheck clean; Vitest 585/585 (the 4 known header rejections). Playwright: Teams 7/7
+(new Standings/venue test), visual baselines 92/92, workbench and pc12 specs pass; only the
+`team-stats` phone baseline changed (refreshed).
+Evidence: `docs/evidence/alignment/teams/follow-up-2/`.
+
+Follow-up instruction (owner, 2026-10-19):
+12. [x] "can you make the eastern/western conference selector a little bigger. It seems like when
+    the selector is east/west, it's still a little too small to fit." — the Teams console moves
+    from the 32px to the 36px control size (every control in both rows, so they stay level), and
+    the segment items grow from 24 to 28px. The 22px wordmark now has 3px of room above and below
+    inside the selected highlight (was 1px) and 12px at each side. Phones keep their 48px touch
+    size (9px of room). No overflow at 1440 or 390; Teams specs and visual baselines pass, and only
+    the `team-stats` desktop baseline changed (refreshed). Evidence:
+    `docs/evidence/alignment/teams/follow-up-3/`.
 
 ### 15 Team Compare — ✅ aligned (first revision)
 

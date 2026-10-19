@@ -909,7 +909,14 @@
   .pvp-header .ui-page-header-title-row { justify-content: center; }
   .pvp-header .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); }
   .pvp-header .ui-page-header-subtitle { color: var(--color-on-bg-secondary); }
-  .pvp-scope .ui-filter-bar, .tc-console .ui-filter-bar, .mu-console .ui-filter-bar { border-bottom: 0; }
+  .pvp-scope .ui-filter-bar, .tc-console .ui-filter-bar, .mu-console .ui-filter-bar, .teams-console .ui-filter-bar { border-bottom: 0; }
+  /* Team Stats (row 4): Databallr's two-row console. Scope controls fill the first row; the view
+     modes and Data details take the second, so no single control wraps onto a row of its own. */
+  @media (min-width: 768px) {
+    .teams-console .ui-filter-bar { flex-wrap: wrap; row-gap: var(--space-2); }
+    .teams-console .ui-filter-bar-controls { flex: 1 1 100%; }
+    .teams-console .ui-filter-bar-modes { padding-left: 0; border-left: 0; }
+  }
   /* Like Stathead, the leading value only reads heavier (row 3, 11 and 20); the percentile sits
      beside its value so rows stay one line tall (19). Its text rules live in this layer. */
   .pvp-value .chart-percentile-text { display: inline-flex; align-items: baseline; gap: var(--space-1); }

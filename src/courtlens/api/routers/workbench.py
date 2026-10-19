@@ -93,6 +93,7 @@ from courtlens.api.workbench_schemas import (
     TeamResearchItem,
     TeamResearchResponse,
     TeamScheduleResponse,
+    TeamSixFactorsResponse,
     ThreePointVariationResponse,
     TierListDefinition,
     TrackingViewResponse,
@@ -219,6 +220,7 @@ from courtlens.services.team_analytics import (
     get_team_peers,
     get_team_schedule,
     get_team_three_point_variation,
+    get_teams_six_factors,
 )
 from courtlens.services.value_archetypes import (
     load_value_store,
@@ -1282,6 +1284,37 @@ def get_teams(
         ),
         league_averages=league_averages,
     )
+
+
+@router.get("/teams/six-factors", response_model=TeamSixFactorsResponse)
+def get_teams_six_factors_endpoint(
+    release_id: str | None = Query(None, alias="releaseId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    window_days: int | None = Query(None, alias="windowDays", ge=1, le=366),
+    offense_luck: float = Query(0.0, alias="offenseLuck", ge=0.0, le=1.0),
+    defense_luck: float = Query(0.0, alias="defenseLuck", ge=0.0, le=1.0),
+    venue: Literal["home", "away"] | None = Query(None),
+    session: Session = Depends(get_db),
+) -> TeamSixFactorsResponse:
+    """Every team's six factors (per 100 relative to league), schedule, luck and standings."""
+    context = resolve_workbench_context(
+        session,
+        release_id=release_id,
+        requested_season=season,
+        requested_phase=phase,
+        requested_before_date=before_date,
+    )
+    result = get_teams_six_factors(
+        session,
+        context,
+        window_days=window_days,
+        offense_luck=offense_luck,
+        defense_luck=defense_luck,
+        venue=venue,
+    )
+    return TeamSixFactorsResponse(**result)
 
 
 @router.get("/teams/{id}", response_model=TeamDetailResponse)

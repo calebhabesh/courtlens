@@ -205,6 +205,51 @@ BBREF_LOGO = "https://cdn.ssref.net/req/{version}/tlogo/bbr/{code}-{year}.png"
 ERA_SVG_SEASONS = {"Seattle SuperSonics": ("SEA", 2008), "Vancouver Grizzlies": ("VAN", 2001)}
 
 
+# The league's conference marks (the 2018 wordmarks NBA.com uses), from Wikimedia Commons.
+CONFERENCE_ARTWORK: dict[str, str] = {
+    "East": "Eastern_Conference_(NBA)_logo_2018.png",
+    "West": "Western_Conference_(NBA)_logo_2018.png",
+}
+CONFERENCE_HEIGHT = 96
+CONFERENCE_DERIVATION = (
+    f"transparent margins trimmed, resized to {CONFERENCE_HEIGHT} px tall (Lanczos), PNG optimized"
+)
+
+
+def _acquire_conference(conference: str) -> dict[str, object]:
+    title = CONFERENCE_ARTWORK[conference]
+    api = (
+        "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&iiprop=url|sha1"
+        f"&format=json&titles=File:{title}"
+    )
+    info = next(iter(json.loads(_get(api)[0])["query"]["pages"].values()))["imageinfo"][0]
+    source = info["url"].split("?")[0]
+    data, content_type, modified = _get(source)
+    assert content_type == "image/png" and data.startswith(PNG_MAGIC), source
+    assert len(data) <= MAX_BYTES and hashlib.sha1(data).hexdigest() == info["sha1"], source
+    image = Image.open(io.BytesIO(data)).convert("RGBA")
+    image = image.crop(image.getbbox())
+    width = round(image.width * CONFERENCE_HEIGHT / image.height)
+    image = image.resize((width, CONFERENCE_HEIGHT), Image.Resampling.LANCZOS)
+    out = io.BytesIO()
+    image.save(out, format="PNG", optimize=True)
+    asset, digest = _store(f"{conference.lower()}ern-conference", out.getvalue(), "png")
+    return {
+        "conference": conference,
+        "artwork_name": f"{conference}ern Conference",
+        "asset": asset,
+        "sha256": digest,
+        "bytes": len(out.getvalue()),
+        "width": width,
+        "height": CONFERENCE_HEIGHT,
+        "source_url": source,
+        "source_page": f"https://commons.wikimedia.org/wiki/File:{title}",
+        "last_modified": modified,
+        "source_sha256": hashlib.sha256(data).hexdigest(),
+        "derivation": CONFERENCE_DERIVATION,
+    }
+
+
 def _bbref_code(franchise_id: str, season: str) -> str:
     era = next((e for e in TEAM_ERAS if e.franchise_id == franchise_id and e.covers(season)), None)
     if era is not None:
@@ -315,6 +360,11 @@ def main() -> None:
         help="Fetch every franchise-season's Basketball-Reference logo and rewrite season spans",
     )
     parser.add_argument(
+        "--acquire-conferences",
+        action="store_true",
+        help="Fetch the East and West conference marks and rewrite the conference records",
+    )
+    parser.add_argument(
         "--first-season", type=int, default=2000, help="Start year of the first season"
     )
     parser.add_argument(
@@ -396,11 +446,24 @@ def main() -> None:
             "into spans; 'current' and 'era' spans reuse the sharper NBA.com and Wikipedia SVGs."
         )
         CATALOG.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n")
+    if args.acquire_conferences:
+        catalog = json.loads(CATALOG.read_text())
+        catalog["conferences"] = [_acquire_conference(name) for name in CONFERENCE_ARTWORK]
+        catalog["conferences_semantics"] = (
+            "The NBA's Eastern and Western Conference marks (2018 wordmarks), for conference "
+            "filters. Source: Wikimedia Commons file pages."
+        )
+        CATALOG.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n")
     catalog = json.loads(CATALOG.read_text())
     assert len(catalog["teams"]) == len(NBA_TEAMS) == 30
     eras = catalog.get("eras", [])
     assert len(eras) == len(TEAM_ERAS)
-    for record in [*catalog["teams"], *eras, *catalog.get("season_logos", [])]:
+    for record in [
+        *catalog["teams"],
+        *eras,
+        *catalog.get("season_logos", []),
+        *catalog.get("conferences", []),
+    ]:
         data = (PUBLIC / record["asset"].lstrip("/")).read_bytes()
         assert hashlib.sha256(data).hexdigest() == record["sha256"]
         assert len(data) == record.get("bytes", len(data)) <= MAX_BYTES

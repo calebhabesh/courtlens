@@ -74,3 +74,11 @@ export function teamArtwork(team: string | null | undefined, season?: string | n
     caption: span ? `${name} logo (${span.first_season}–${span.last_season})` : era ? `${name} artwork (${era.first_season}–${era.last_season})` : `${name} artwork (current franchise)`,
   };
 }
+
+export type ConferenceMark = NonNullable<(typeof catalog)["conferences"]>[number];
+/** The league's conference mark ("East" / "West", or the full "Eastern" / "Western" name). */
+export function conferenceMark(conference: string | null | undefined): ConferenceMark | null {
+  if (!conference) return null;
+  const key = conference.toLowerCase().startsWith("east") ? "East" : conference.toLowerCase().startsWith("west") ? "West" : null;
+  return catalog.conferences.find(entry => entry.conference === key) ?? null;
+}
