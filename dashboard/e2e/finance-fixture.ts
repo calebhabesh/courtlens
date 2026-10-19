@@ -31,8 +31,8 @@ export async function mockContracts(page:Page) {
   });
 }
 
-// PC10: the real Roster Shapes response captured from the local API (docs/evidence/pc10).
-const shapes=JSON.parse(fs.readFileSync(path.resolve(process.cwd(),"../docs/evidence/pc10/roster-shapes.json"),"utf8"));
+// Roster Shapes v2 (alignment row 12): the real responses captured from the local API, by season.
+const shapes=JSON.parse(fs.readFileSync(path.resolve(process.cwd(),"e2e/fixtures/roster-shapes-v2.json"),"utf8"));
 export async function mockRosterShapes(page:Page) {
-  await page.route("**/api/workbench/roster-shapes*",r => r.fulfill({json:shapes}));
+  await page.route("**/api/workbench/roster-shapes*",r => r.fulfill({json:shapes[new URL(r.request().url()).searchParams.get("season") ?? "2026-27"]}));
 }

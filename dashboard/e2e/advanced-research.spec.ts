@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import result from "./fixtures/research-negative-result.json";
 import { openWorkbench } from "./workbench-navigation";
 const run = result.run;
+const BOS = "1610612738";
 const registry = [
   {experiment:run.experiment, status:run.status, run_id:run.run_id, protocol_sha256:run.protocol_sha256, gate:null},
   {experiment:"courtload-rapm-v1",status:"source_blocked",run_id:null,protocol_sha256:"rapm-fixture",gate:"requires complete reconciled stint and possession seasons"},
@@ -60,10 +61,11 @@ test("calculator rejects invalid scenarios and shows checked finite differences 
   await page.screenshot({path:test.info().outputPath("b27-calculator-mobile.png"),fullPage:true});
 });
 test("roster keeps observed and projected inputs separate and exports context",async ({page}) => {
-  await page.route("**/api/workbench/teams/fixture?*",route => { expect(new URL(route.request().url()).searchParams.get("phase")).toBe("regular_season"); return route.fulfill({json:{team:{id:"fixture",name:"Fixture Team",tricode:"FIX"},context:{release_id:"fixture-release",season:"2025-26",phase:"regular",before_date:"2026-07-01"},record:{games_played:1},player_cohort:[{player_id:"1",player_name:"Fixture Player",games_played:1,total_minutes:30,points:0,points_per_game:0}],warnings:["Fixture scope only"]}}); });
+  await page.route(`**/api/workbench/teams/${BOS}?*`,route => { expect(new URL(route.request().url()).searchParams.get("phase")).toBe("regular_season"); return route.fulfill({json:{team:{id:"fixture",name:"Fixture Team",tricode:"FIX"},context:{release_id:"fixture-release",season:"2025-26",phase:"regular",before_date:"2026-07-01"},record:{games_played:1},player_cohort:[{player_id:"1",player_name:"Fixture Player",games_played:1,total_minutes:30,points:0,points_per_game:0}],warnings:["Fixture scope only"]}}); });
   // FO05: no form or Load button; the team loads from the URL as soon as it is chosen.
-  await openWorkbench(page, "/roster-shapes/fixture?season=2025-26&phase=regular_season&view=depth");
-  const chart = page.getByRole("region",{name:"Roster allocations",exact:true});
+  // The depth chart is a team profile section since alignment row 12.
+  await openWorkbench(page, `/teams/${BOS}?season=2025-26&phase=regular_season`);
+  const chart = page.locator("#depth-chart").getByRole("region",{name:"Roster allocations",exact:true});
   await expect(page.locator(".roster-team")).toContainText("30 observed minutes");
   await expect(chart.getByRole("region",{name:"Unassigned lane"})).toContainText("30 min · 100.0%");
   await page.getByRole("button",{name:"All players (1)"}).click();

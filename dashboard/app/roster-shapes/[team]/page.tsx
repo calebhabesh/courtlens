@@ -1,41 +1,24 @@
-import type { Metadata } from "next";
-import { Suspense } from "react";
-import { RosterShapesTeam } from "@/components/roster-shapes-view";
-import { resolveStatsQuery } from "@/lib/stats-query";
-import { getWorkbenchCatalog } from "@/lib/workbench-api";
-import type { WorkbenchCatalog } from "@/lib/types";
+import { redirect } from "next/navigation";
+import { FINANCE_TEAMS } from "@/lib/finance-teams";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Roster Shapes · CourtLens"
-};
 
 interface RosterShapesTeamPageProps {
   params: Promise<{ team: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
+/**
+ * Alignment row 12 folded the team page into the team select (`/roster-shapes?team=SAS`); the
+ * depth chart moved to the team profile, so old `?view=depth` links open it there.
+ */
 export default async function RosterShapesTeamPage({ params, searchParams }: RosterShapesTeamPageProps) {
   const [{ team }, query] = await Promise.all([params, searchParams]);
-  const view = query.view === "depth" ? "depth" : "shape";
-  const releaseId = typeof query.releaseId === "string" ? query.releaseId : typeof query.release_id === "string" ? query.release_id : undefined;
-
-  // The depth chart keeps the Stats scope defaults, so its filter bar shows what the team request uses.
-  let catalog: WorkbenchCatalog | null = null;
-  if (view === "depth") {
-    try {
-      catalog = await getWorkbenchCatalog(releaseId);
-    } catch {
-      catalog = null;
-    }
-  }
-  const resolved = catalog ? resolveStatsQuery(query, catalog, "per_game") : null;
-  const scope = {
-    releaseId: releaseId ?? resolved?.release_id ?? undefined,
-    season: resolved?.season ?? (typeof query.season === "string" ? query.season : undefined),
-    phase: resolved?.phase ?? (typeof query.phase === "string" ? query.phase : undefined),
-    beforeDate: resolved?.before_date ?? (typeof query.beforeDate === "string" ? query.beforeDate : undefined)
-  };
-
-  return <Suspense fallback={null}><RosterShapesTeam key={`${team}:${view}`} team={decodeURIComponent(team)} view={view} depth={{ catalog, scope }} /></Suspense>;
+  const code = decodeURIComponent(team);
+  const info = FINANCE_TEAMS.find(t => t.tricode === code.toUpperCase() || t.id === code);
+  const next = new URLSearchParams();
+  for (const [key, value] of Object.entries(query)) if (key !== "view" && key !== "team" && typeof value === "string") next.set(key, value);
+  if (query.view === "depth") redirect(`/teams/${info?.id ?? code}${next.size ? `?${next}` : ""}#depth-chart`);
+  if (info) next.set("team", info.tricode);
+  redirect(`/roster-shapes${next.size ? `?${next}` : ""}`);
 }

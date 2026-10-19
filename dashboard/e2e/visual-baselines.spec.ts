@@ -72,13 +72,14 @@ for (const view of WIDTHS) {
 
     test("roster shapes depth chart", async ({ page }) => {
       await page.route(`**/api/workbench/teams/${BOS}?*`, (route) => route.fulfill({ json: roster }));
-      await openWorkbench(page, `/roster-shapes/${BOS}?view=depth&season=2025-26&phase=regular_season`);
-      await page.getByRole("button", { name: "Move Fixture Guard" }).click();
+      await openWorkbench(page, `/teams/${BOS}?season=2025-26&phase=regular_season`);
+      const depth = page.locator("#depth-chart");
+      await depth.getByRole("button", { name: "Move Fixture Guard" }).click();
       await page.getByRole("menuitem", { name: /^Move to PG/ }).click();
-      await expect(page.getByRole("region", { name: "PG lane" })).toContainText("Fixture Guard");
-      await page.evaluate(() => scrollTo(0, 0));
+      await expect(depth.getByRole("region", { name: "PG lane" })).toContainText("Fixture Guard");
       await settle(page);
-      await expect(page).toHaveScreenshot(`roster-chart-${view.name}.png`, shot);
+      // The depth chart is a team profile section since alignment row 12; capture the section.
+      await expect(depth).toHaveScreenshot(`roster-chart-${view.name}.png`, shot);
     });
 
     test("search modal", async ({ page }) => {
@@ -246,7 +247,7 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
   test("live off-season",async({page})=>{await offSeasonFixtures(page);await openWorkbench(page,"/live");await expect(page.getByRole("region",{name:"Top performers"})).toContainText("28 PTS");await settle(page);await expect(page).toHaveScreenshot(`first-load-live-${view.name}.png`,shot);});
   // PC08: Contracts first load from the latest admitted refresh (real captured responses).
   // PC10: Roster Shapes first load and team detail from the captured real response.
-  for(const route of ["roster-shapes","roster-shapes/DEN"]) test(`first-load ${route}`,async({page})=>{await mockRosterShapes(page);await openWorkbench(page,`/${route}`);await expect(page.locator(".chart-pack").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route.replace("/","-")}-${view.name}.png`,shot);});
+  for(const [route,name] of [["roster-shapes","roster-shapes"],["roster-shapes?team=DEN","roster-shapes-DEN"]]) test(`first-load ${route}`,async({page})=>{await mockRosterShapes(page);await openWorkbench(page,`/${route}`);await expect(page.locator(".shapes-box-graphic").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${name}-${view.name}.png`,shot);});
   for(const route of ["contracts","contracts/DEN"]) test(`first-load ${route}`,async({page})=>{await mockContracts(page);await openWorkbench(page,`/${route}`);await expect(page.getByRole("figure").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route.replace("/","-")}-${view.name}.png`,shot);});
 });
 

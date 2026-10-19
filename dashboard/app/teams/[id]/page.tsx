@@ -9,7 +9,7 @@ import { PageHeader } from "@/components/ui/panel";
 import { GatedNote } from "@/components/ui/gated-note";
 import { ButtonLink } from "@/components/ui/kit";
 import { StatsWorkspace } from "@/components/stats-workspace";
-import { TeamGameLogSection, TeamPeersSection, TeamProfileHeader, TeamSixFactorsSection, TeamStandingSection, TeamTrendSection, TeamVenueSection } from "@/components/team-profile";
+import { TeamDepthSection, TeamGameLogSection, TeamPeersSection, TeamProfileHeader, TeamSixFactorsSection, TeamStandingSection, TeamTrendSection, TeamVenueSection } from "@/components/team-profile";
 
 export const metadata: Metadata = { title: "Team Profile · CourtLens" };
 export const dynamic = "force-dynamic";
@@ -64,6 +64,7 @@ export default async function TeamDetailPage({ params, searchParams }: {
       {factors && factorTeam && <TeamVenueSection all={factors} home={home} away={away} team={factorTeam} />}
       {factorTeam && <TeamTrendSection team={factorTeam} />}
       {schedule && <TeamGameLogSection games={schedule.games} season={season} scopeParams={scopeParams} />}
+      <TeamDepthSection catalog={catalog} teamId={dataTeamId} scope={{ releaseId, season, phase, beforeDate: beforeDate || undefined }} />
       {peers && <TeamPeersSection peers={peers} season={season} scopeParams={scopeParams} />}
     </div>
   </PageShell>;

@@ -32,7 +32,7 @@ export interface RosterAllocationViewProps {
   catalog: WorkbenchCatalog | null;
   teamId: string | null;
   scope: { releaseId?: string; season?: string; phase?: string; beforeDate?: string };
-  /** PC10: rendered as the Depth chart tab inside a Roster Shapes team page. */
+  /** Rendered as a section inside another page (the team profile since alignment row 12). */
   embedded?: boolean;
 }
 
@@ -207,6 +207,8 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
     <>
       {embedded ? <div className="roster-embedded-actions">
         <p className="roster-embedded-intro">Place players into a depth chart and see how {scope.season ?? "observed"} minutes split by position.</p>
+        <Segmented<AllocationMode> size="sm" label="roster-basis" value={mode} onChange={setMode}
+          options={[{ value: "observed", label: "Observed" }, { value: "projected", label: "Projected" }]} />
         <Button size="sm" variant="primary" icon="download" disabled={exportDisabled}
           onClick={() => data && downloadResearch(ALLOCATION_EXPORT_FILENAME, allocationExport(data, mode, allocations))}>Export JSON</Button>
       </div> : <PageHeader
@@ -215,7 +217,8 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
         actions={actions}
       />}
 
-      <ContextBar
+      {/* Embedded, the host page owns the scope controls. */}
+      {!embedded && <ContextBar
         catalog={catalog ?? undefined}
         sampleNoun="players"
         initialReleaseId={scope.releaseId}
@@ -233,7 +236,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
           ...(data.warnings ?? []).map((warning, index) => ({ label: `Source warning ${index + 1}`, value: warning })),
           { label: "Resolved context", value: <pre className="roster-context">{JSON.stringify(data.context, null, 2)}</pre> }
         ] : []}
-      />
+      />}
 
       {!teamId ? (
         <section className="roster-picker" aria-label="Choose a team">
