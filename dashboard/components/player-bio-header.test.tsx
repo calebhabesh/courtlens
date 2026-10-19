@@ -4,7 +4,7 @@ import { afterEach, expect, it, vi } from "vitest";
 import { PlayerBioHeader } from "./player-bio-header";
 import type { PlayerBio } from "@/lib/types";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }), useSearchParams: () => new URLSearchParams() }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }), useSearchParams: () => new URLSearchParams(), usePathname: () => "/players/24" }));
 afterEach(cleanup);
 
 const bio: PlayerBio = {

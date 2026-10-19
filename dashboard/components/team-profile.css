@@ -1,6 +1,7 @@
 @layer pages {
   /* Team profile (alignment row 4): the season's logo and era name over the team's Stats table,
      then six factors, game log and similar teams in the player page's glass sections. */
+  .team-profile-top { display: grid; gap: var(--space-3); min-width: 0; }
   .team-profile-head { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
   .team-profile-head > .team-profile-title { flex: 1 1 auto; min-width: 0; }
   /* The sections line up with the Stats table's content edge above them. */

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { TeamLogo } from "./team-logo";
+import { BackButton, NavLabel } from "./ui/back-button";
 import { Icon } from "./ui/icon";
 import { PageHeader } from "./ui/panel";
 import { ButtonLink, ButtonSummary } from "./ui/kit";
@@ -98,12 +99,15 @@ export function TeamProfileHeader({ name, tricode, season, phaseLabel, team, net
 }) {
   const seed = team?.seed && team.conference ? ` · ${ordinal(team.seed)} in the ${team.conference.replace("ern", "")}` : "";
   const record = team ? ` · ${team.wins}–${team.losses}${seed} · Net ${formatValue(team.net, "signed", "per_100")}${netRank ? ` (#${netRank})` : ""}` : "";
-  return <div className="team-profile-head">
-    <TeamLogo team={tricode} season={season} size={72} />
-    <PageHeader className="team-profile-title" title={name} subtitle={`${season} ${phaseLabel}${record}`} actions={<>
-      <ButtonLink size="sm" href={compareHref} icon="swap">Compare Team</ButtonLink>
-      <ButtonLink size="sm" variant="ghost" href={teamsHref} icon="left">All Teams</ButtonLink>
-    </>} />
+  return <div className="team-profile-top">
+    <BackButton parent={{ href: teamsHref, label: "Teams" }} />
+    <NavLabel label={name} />
+    <div className="team-profile-head">
+      <TeamLogo team={tricode} season={season} size={72} />
+      <PageHeader className="team-profile-title" title={name} subtitle={`${season} ${phaseLabel}${record}`} actions={
+        <ButtonLink size="sm" href={compareHref} icon="swap">Compare Team</ButtonLink>
+      } />
+    </div>
   </div>;
 }
 

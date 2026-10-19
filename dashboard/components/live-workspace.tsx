@@ -17,6 +17,7 @@ import { CountChip, FilterBar } from "./ui/filter-bar";
 import { GatedNote } from "./ui/gated-note";
 import { Icon } from "./ui/icon";
 import { PageShell } from "./ui/page-shell";
+import { BackButton } from "./ui/back-button";
 import { PlayerIdentity } from "./ui/identity";
 import { Button, ButtonLink } from "./ui/kit";
 
@@ -304,12 +305,13 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
   const countChip = loaded && !gameId ? <CountChip>{games.length} {games.length === 1 ? "game" : "games"}</CountChip> : undefined;
 
   return <PageShell template="board" className="live-workspace">
+    {gameId && valid && <BackButton parent={{ href: href(slate), label: historical ? "Finals" : "Live" }} />}
     <LiveBoardHeader
       section={section}
       slate={valid ? slate : undefined}
       subtitle={params.get("fallbackFrom") ? `Most recent finals · ${formatDate(slate)} · ${params.get("fallbackReason") === "empty" ? "No games today" : "Live unavailable"}.` : historical ? `Admitted finals for ${valid ? formatDate(slate) : "the selected date"}.` : `Provisional scores for ${valid ? formatDate(slate) : "the selected date"}, Eastern slate.`}
       // Pausing only applies to Live demand; finalized research never polls.
-      actions={historical ? undefined : <Button size="sm" variant="secondary" onClick={() => setPaused(!paused)} pressed={paused} icon={paused ? "play" : "pause"}>{paused ? "Resume updates" : "Pause updates"}</Button>}
+      actions={historical ? undefined : <Button size="sm" variant="secondary" onClick={() => setPaused(!paused)} pressed={paused} icon={paused ? "play" : "pause"}>{paused ? "Resume Updates" : "Pause Updates"}</Button>}
     />
     {historical
       ? <ContextBar
@@ -354,7 +356,7 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
           <div className="live-team-boxes">{awayFirst(selected).map(t => <div key={t.source_id} className="live-team-box">
             <span className="live-team-box-head"><TeamMark team={t} /><strong>{t.name}</strong><strong className="live-team-score">{t.score ?? "Unknown"}</strong></span>
             <p>{historical ? "Admitted team score" : "Provisional observed team score"}</p>
-            {historical && t.statistics && <details><summary>Finalized team box statistics</summary><dl>{Object.entries(t.statistics).map(([key,value]) => <div key={key}><dt>{key}</dt><dd>{value ?? "—"}</dd></div>)}</dl></details>}
+            {historical && t.statistics && <details><summary>Finalized Team Box Statistics</summary><dl>{Object.entries(t.statistics).map(([key,value]) => <div key={key}><dt>{key}</dt><dd>{value ?? "—"}</dd></div>)}</dl></details>}
           </div>)}</div>
           {!historical && (box?.data?.team_sections?.length ? box.data.team_sections.map((section,i) => <div key={i} className="live-table-scroll" role="region" aria-label={`${section.team.displayName ?? section.team.id} team statistics`} tabIndex={0}><table className="data-table"><caption>{section.team.displayName ?? section.team.id} · Source-labelled team box</caption><tbody>{section.statistics?.map((stat,j) => <tr key={j}><th scope="row">{stat.label ?? stat.name ?? "Unknown statistic"}</th><td>{stat.displayValue ?? "—"}</td></tr>)}</tbody></table></div>) : <p className="live-muted">Additional team box statistics unknown.</p>)}
           <PlayerBoxes players={historical ? history?.players : box?.data?.players} games={[selected]} />

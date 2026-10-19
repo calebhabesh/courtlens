@@ -56,7 +56,7 @@ export function WorkbenchPortraitSettings({
     <ArticleSection
       id="portraits"
       title="Player portraits"
-      actions={<Button size="xs" variant="primary" icon="camera" onClick={handleAcquire} loading={loading}>{loading ? "Queuing…" : "Acquire more portraits"}</Button>}
+      actions={<Button size="xs" variant="primary" icon="camera" onClick={handleAcquire} loading={loading}>{loading ? "Queuing…" : "Acquire More Portraits"}</Button>}
     >
       <p>Headshots are cached locally on a best-effort basis. A missing photo never excludes a player from analytics.</p>
       <dl className="ui-article-facts">
@@ -66,7 +66,7 @@ export function WorkbenchPortraitSettings({
       </dl>
       {msg && <p role="status">{msg}</p>}
       <details className="ui-why">
-        <ButtonSummary>Source and storage</ButtonSummary>
+        <ButtonSummary>Source and Storage</ButtonSummary>
         <dl className="ui-why-body ui-article-facts">
           <div><dt>Local cache path</dt><dd className="font-mono">{storagePath}</dd></div>
           <div><dt>Source CDN</dt><dd className="font-mono">cdn.nba.com/headshots/nba/latest/1040x760/</dd></div>

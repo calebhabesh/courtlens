@@ -255,7 +255,7 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
 for (const view of WIDTHS) test.describe(`PC11 populated pages ${view.name}`, () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
   for (const [name, path, ready] of [["defensive-matchups", "/research/defensive-matchups", "Makes below expected, top 12"], ["player-matchups", "/matchups", "Exposure"],
-    ["adjusted-shooting", "/research/shooting/adjusted", "Points per 100 above the play-type expectation"], ["six-factor", "/research/rapm/six-factor", "Offensive shooting (oTS), top 15"],
+    ["adjusted-shooting", "/research/shooting/adjusted", "Points per 100 above the play-type expectation"], ["six-factor", "/research/rapm/six-factor", "Offensive Shooting (oTS), top 15"],
     ["combine", "/wingspan", "Wingspan versus barefoot height"], ["wowy", "/wowy", "Fixture Anchor and Fixture Wing: net rating by who was on the floor"],
     ["stats-tracking", "/stats/tracking", "Drives per game, top 12"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);

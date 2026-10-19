@@ -24,7 +24,7 @@ export function AssistantHistorySettings() {
     <p>{assistantPrivacyNotice}</p>
     {confirming
       ? <div role="alert" className="ui-article-actions"><p>Delete all local conversations? Saved findings remain available.</p><Button size="sm" disabled={busy} onClick={() => void clear()}>Confirm deletion</Button><Button size="sm" disabled={busy} onClick={() => setConfirming(false)}>Keep history</Button></div>
-      : <div className="ui-article-actions"><Button size="sm" onClick={() => { setConfirming(true); setStatus(null); }}>Clear history</Button></div>}
+      : <div className="ui-article-actions"><Button size="sm" onClick={() => { setConfirming(true); setStatus(null); }}>Clear History</Button></div>}
     {status && <p role="status">{status}</p>}
   </ArticleSection>;
 }

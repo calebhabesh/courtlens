@@ -39,7 +39,7 @@ export default async function AskPage({ searchParams }: AskPageProps) {
       <PageHeader
         title="Ask CourtLens"
         subtitle="Ask follow-up questions or run manual research against a pinned release, with exact results and evidence."
-        actions={<ButtonLink size="xs" href="/research/ask">Open assistant</ButtonLink>}
+        actions={<ButtonLink size="xs" href="/research/ask">Open Assistant</ButtonLink>}
       />
       <AskCourtLens
         initialReleaseId={releaseId}

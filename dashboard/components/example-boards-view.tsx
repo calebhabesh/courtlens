@@ -49,7 +49,7 @@ export function ExampleBoardsView({ data, kind, onCopy, copying, copyError, copy
     </GatedNote> : <section className="pc12-example-board" aria-label="Season minutes example board">
       <div className="pc12-example-header">
         <div><h2>{kind === "rankings" ? "Season Minutes Leaders" : "Season Minutes Groups"}</h2><p>Source: published box scores · {data.items.length} of {data.total_eligible_players} observed players</p></div>
-        <Button size="sm" icon="copy" variant="secondary" disabled={copying || copyDisabled} onClick={onCopy}>{copying ? "Copying…" : "Copy to my boards"}</Button>
+        <Button size="sm" icon="copy" variant="secondary" disabled={copying || copyDisabled} onClick={onCopy}>{copying ? "Copying…" : "Copy to My Boards"}</Button>
       </div>
       {copyError && <p role="alert">{copyError}</p>}
       {kind === "rankings" ? <>

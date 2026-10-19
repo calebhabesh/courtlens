@@ -47,7 +47,7 @@ function monthGrid(month: string): string[] {
  * Styled, keyboard-accessible date picker (D11). Arrow keys move by day/week, PageUp/PageDown by
  * month, Home/End to the week's start/end, Enter or Space selects, Escape closes and returns focus.
  */
-export function DatePicker({ value, onChange, label, min, max, isDateDisabled, placeholder = "Select a date", disabled = false, className = "" }: DatePickerProps) {
+export function DatePicker({ value, onChange, label, min, max, isDateDisabled, placeholder = "Select a Date", disabled = false, className = "" }: DatePickerProps) {
   const [open, setOpen] = useState(false);
   const placement = useControlScope();
   const fallback = value || max || toIsoDate(new Date());

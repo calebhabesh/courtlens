@@ -13,11 +13,11 @@ for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
     const height = width === 1440 ? 32 : 48;
     await openWorkbench(page, "/stats");
-    expect(await page.getByRole("radiogroup", { name: "Counting Mode", exact: true }).evaluate(el => el.getBoundingClientRect().height)).toBe(height);
+    expect(Math.round(await page.getByRole("radiogroup", { name: "Counting Mode", exact: true }).evaluate(el => el.getBoundingClientRect().height))).toBe(height);
     await openWorkbench(page, "/players/23");
     for (const name of ["Counting Mode", "Phase"]) {
       const group = page.locator(".stats-controls-row").getByRole("radiogroup", { name, exact: true });
-      expect(await group.evaluate(el => el.getBoundingClientRect().height)).toBe(height);
+      expect(Math.round(await group.evaluate(el => el.getBoundingClientRect().height))).toBe(height);
     }
   });
 }

@@ -99,7 +99,7 @@ export interface WowyView {
   artifact_sha256: string; inputs: { acceptance_sha256: string; datasets: Record<string, string> }; source: string; limitations: string[];
 }
 
-export const PHASE_LABELS: Record<FeedPhase, string> = { regular_season: "Regular season", playoffs: "Playoffs" };
+export const PHASE_LABELS: Record<FeedPhase, string> = { regular_season: "Regular Season", playoffs: "Playoffs" };
 
 async function getJson<T>(path: string, params: Record<string, string | number | null | undefined>, signal?: AbortSignal): Promise<T> {
   const query = new URLSearchParams();

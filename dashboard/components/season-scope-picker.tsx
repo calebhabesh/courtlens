@@ -70,15 +70,15 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
           value={mode}
           onChange={setMode}
           options={[
-            { value: "single", label: "Single season" },
-            { value: "multi", label: "Multi-season", disabled: seasons.length < 2 }
+            { value: "single", label: "Single Season" },
+            { value: "multi", label: "Multi-Season", disabled: seasons.length < 2 }
           ]}
         />
         {mode === "single" ? (
           <Field label="Season">
             <Select value={range ? "" : season} onChange={(e) => apply(null, e.target.value)} aria-label="Season">
-              {range && <option value="" disabled>Choose a season</option>}
-              {!range && !seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
+              {range && <option value="" disabled>Choose a Season</option>}
+              {!range && !seasons.includes(season) && <option value={season}>{season} · Unavailable</option>}
               {newestFirst.map((s) => <option key={s} value={s}>{s}</option>)}
             </Select>
           </Field>

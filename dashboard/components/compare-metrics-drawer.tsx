@@ -60,7 +60,7 @@ export function CompareMetricsDrawer({ open, onClose, selected, catalog, views, 
       {views.length > 0 && <Select size="md" aria-label="Personal custom view" value="" onChange={event => {
         const view = views.find(entry => entry.id === event.target.value);
         if (view) onChange(view.columns.slice(0, LIMIT));
-      }}><option value="">Apply a saved view</option>{views.map(view => <option key={view.id} value={view.id}>{view.name}</option>)}</Select>}
+      }}><option value="">Apply a Saved View</option>{views.map(view => <option key={view.id} value={view.id}>{view.name}</option>)}</Select>}
       {groups.map(group => <fieldset key={group.label} className="pvp-drawer-group">
         <legend>{group.label}</legend>
         {group.metrics.map(metric => {

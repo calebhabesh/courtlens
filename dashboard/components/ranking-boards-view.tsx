@@ -303,13 +303,13 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
         subtitle="Your own player rankings, with notes, reordering and aggregation."
         actions={<>
           <Button size="sm" variant="secondary" icon="scale" pressed={showAggSection} onClick={() => setShowAggSection((prev) => !prev)}>
-            {showAggSection ? "Hide aggregator" : "Aggregate boards"}
+            {showAggSection ? "Hide Aggregator" : "Aggregate Boards"}
           </Button>
-          <Button size="sm" variant="primary" icon="plus" onClick={() => setIsCreatingBoard(true)}>New board</Button>
+          <Button size="sm" variant="primary" icon="plus" onClick={() => setIsCreatingBoard(true)}>New Board</Button>
         </>}
       />
 
-      {rankingBoards.length > 0 && <Button size="sm" variant="secondary" pressed={!activeBoard} onClick={() => setActiveBoardId(activeBoard ? EXAMPLE_BOARD_ID : null)}>{activeBoard ? "View minutes example" : "My ranking boards"}</Button>}
+      {rankingBoards.length > 0 && <Button size="sm" variant="secondary" pressed={!activeBoard} onClick={() => setActiveBoardId(activeBoard ? EXAMPLE_BOARD_ID : null)}>{activeBoard ? "View Minutes Example" : "My ranking boards"}</Button>}
       {activeBoard && <GatedNote why={<>Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.</>}>
         Boards are personal rankings, never a consensus.
       </GatedNote>}

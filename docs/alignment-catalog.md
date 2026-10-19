@@ -132,6 +132,42 @@ Follow-up instructions (owner, 2026-10-19, during Teams; reopen row 0 for this c
     one-line description rows. — icons swap, scale and swords (Lucide `Swords` added); each
     description is the page's own subtitle. Header, motion, Teams and visual-baseline specs pass
     (114/114, no baseline changed). Evidence: `docs/evidence/alignment/app-shell/menus/`.
+19. [x] "make sure that navigating between the different pages, there are back buttons and logical
+    navigation paths when moving between pages. … If we press on a roster and see their roster
+    shape, there should be a back button to go back to the main page. We are kind of already doing
+    this … on the player pages … 'Back to table'." (2026-10-19) — one shared `BackButton`
+    (`components/ui/back-button.tsx`) in the player page's style: a gold xs button, left chevron,
+    "Back to …" and an Esc hint, on its own row above the page header. A per-tab trail
+    (`lib/nav-trail.ts`, session storage) records each page — a path plus identity parameters
+    (Roster Shapes' `team`), filter changes update the entry and returning pops it — so Back goes
+    to the page this one was opened from, named by that page ("Back to Charlotte Hornets Roster
+    Shape", "Back to Nikola Jokić") or by the nav; opened directly, it goes to the logical parent.
+    On: the Roster Shapes team view (→ Roster Shapes, keeping season, mode and sort), player pages
+    (Stats keeps its own "Back to table" with scroll restore; otherwise → Player Directory), team
+    profiles (→ Teams, replacing "All Teams"), team contracts and source books (→ Contracts,
+    replacing "All teams" / "Contracts & Payroll"), playoff series (→ Playoffs), a Live game
+    (→ its slate), saved investigations (→ Saved Investigations) and the Stats glossary (→ Stats).
+    Esc only goes back when no field is focused and no dialog, menu or listbox was open when the key
+    went down (checked in the capture phase, so closing a drawer never also leaves the page — the
+    Stats "Back to table" uses the same guard now).
+20. [x] "Can you scan the entire site an make sure drop down buttons/selectors/etc. are using title
+    case. I don't like seeing 'projected' lowercase, it looks sloppy." (2026-10-19) — a Playwright
+    scan of every route's controls (buttons, select options, segmented and radio options, menu
+    triggers, disclosure summaries) found ~100 distinct sentence-case labels; all are Title Case now
+    ("2026-27 · Projected", "Regular Season", "Playoff-Adjusted", "Best Fit", "All Teams",
+    "Data Details", "Season-to-Date", "Last 10 Appearances", "NBA Cup Final", "Play-In", …),
+    including server-made labels (Roster Shapes and projected-context season labels, tracking
+    views and columns, feed phase labels), finance amount kinds (a label map instead of the raw
+    code) and `humanLabel`'s fallback for unmapped codes. Small words stay lower ("Copy to My
+    Boards"), units and abbreviations unchanged ("Under 6 ft", "dREB"), parenthetical notes stay
+    as notes. Out of scope: prose (Ask example questions, glossary definitions, percentile notes),
+    data-details row labels, table-of-contents entries and count chips ("21 players"). The rescan
+    leaves only "Over/Under N ft".
+    Verification: owner's :3100 and :8000 with live data — trail paths grid → team view → player →
+    Back → Esc, and direct entries to eight pages (evidence, both scans and captures in
+    `docs/evidence/alignment/app-shell/navigation/`). Dashboard lint, typecheck, Vitest 596/596;
+    Playwright full suite passes after label updates in 18 specs, 14 screenshot baselines refreshed
+    (pages that gained a Back row or a relabelled control).
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.

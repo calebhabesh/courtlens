@@ -25,7 +25,8 @@ describe("release-bound route availability", () => {
     expect(result.reason).not.toContain("unavailable");
   });
   it("maps enum labels without changing canonical values", () => {
-    expect(humanLabel("regular_season")).toBe("Regular season");
-    expect(humanLabel("selection_failed_negative_result")).toContain("negative result");
+    expect(humanLabel("regular_season")).toBe("Regular Season");
+    expect(humanLabel("selection_failed_negative_result")).toContain("Negative Result");
+    expect(humanLabel("failed_or_limited")).toBe("Failed or Limited");
   });
 });

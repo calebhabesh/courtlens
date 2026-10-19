@@ -42,7 +42,7 @@ export default async function TeamDetailPage({ params, searchParams }: {
     getTeamsSixFactors({ ...scope, venue: "away" }).catch(() => null),
   ]);
   if (detail instanceof Error) return <PageShell template="profile"><PageHeader title="Team Profile" />
-    <GatedNote why={detail.message || "Team not found in this release."} action={<ButtonLink size="lg" href="/teams">Return to all teams</ButtonLink>}>Team details are unavailable.</GatedNote></PageShell>;
+    <GatedNote why={detail.message || "Team not found in this release."} action={<ButtonLink size="lg" href="/teams">Return to All Teams</ButtonLink>}>Team details are unavailable.</GatedNote></PageShell>;
 
   const { team } = detail;
   const artwork = teamArtwork(team.tricode, season);

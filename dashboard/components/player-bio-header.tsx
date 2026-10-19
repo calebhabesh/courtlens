@@ -12,6 +12,7 @@ import { formatDate } from "@/lib/format-date";
 import catalog from "@/lib/team-branding.json";
 import { teamBrandColor } from "@/lib/team-colors";
 import { readStatsReturn, STATS_RETURN_PARAM, markStatsRestore } from "@/lib/stats-return";
+import { BackButton, onBareEscape, useNavLabel } from "./ui/back-button";
 import type { PlayerBio } from "@/lib/types";
 import { TeamWatermark } from "./team-watermark";
 
@@ -61,6 +62,7 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   const searchParams = useSearchParams();
   const fromStats = searchParams?.get(STATS_RETURN_PARAM) === "stats";
   const [returnHref, setReturnHref] = useState<string | null>(null);
+  useNavLabel(name);
   useEffect(() => {
     // Session storage is browser-only, so the button appears after hydration.
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -70,17 +72,7 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   // A layout effect attaches Esc before the browser paints the button, so it never shows dead.
   useLayoutEffect(() => {
     if (!returnHref) return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key !== "Escape" || event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
-      const target = event.target as HTMLElement | null;
-      if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
-      if (document.querySelector("[role='dialog'], [role='menu'], [role='listbox']")) return;
-      event.preventDefault();
-      markStatsRestore();
-      router.push(returnHref);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return onBareEscape(() => { markStatsRestore(); router.push(returnHref); });
   }, [returnHref, router]);
 
   const listed = [formatHeight(bio?.listed_height_inches), bio?.listed_weight_lbs != null ? `${Math.round(bio.listed_weight_lbs)} lb` : null].filter(Boolean).join(" · ");
@@ -135,9 +127,10 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
 
   return (
     <div className="player-bio-header" style={tint ? { "--team-tint": tint } as CSSProperties : undefined}>
-      {returnHref && <Button size="xs" variant="primary" icon="left" onClick={() => { markStatsRestore(); router.push(returnHref); }}>
+      {/* From the Stats table: back to its exact rows and scroll; from anywhere else, the shared Back. */}
+      {returnHref ? <Button size="xs" variant="primary" icon="left" onClick={() => { markStatsRestore(); router.push(returnHref); }}>
         Back to table<kbd className="player-back-kbd" aria-hidden="true">Esc</kbd>
-      </Button>}
+      </Button> : !fromStats && <BackButton parent={{ href: "/players", label: "Player Directory" }} />}
       <div className="player-bio-main">
         <span className="player-bio-photo">
           {watermark && <TeamWatermark asset={watermark} className="player-bio-watermark" />}

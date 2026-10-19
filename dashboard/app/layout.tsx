@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Suspense } from "react";
 import { ReplicaNav } from "@/components/replica-nav";
+import { NavTrailRecorder } from "@/components/ui/back-button";
 import { WorkspaceProvider } from "@/lib/workspace-context";
 import { AssistantPageProvider } from "@/lib/assistant-page-context";
 import { ToastProvider } from "@/components/ui/toast";
@@ -57,6 +58,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <div className="replica-shell">
             <Suspense fallback={<div className="header-suspense-fallback" />}>
               <ReplicaNav />
+            </Suspense>
+            {/* Before the page in the tree, so each page is on the trail before its Back reads it. */}
+            <Suspense fallback={null}>
+              <NavTrailRecorder />
             </Suspense>
             <main id="content" className="replica-main" tabIndex={-1}>
               <Suspense fallback={null}>

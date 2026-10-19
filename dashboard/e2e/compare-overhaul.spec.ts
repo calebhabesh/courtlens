@@ -23,7 +23,7 @@ test("compare card: console actions, change cues, wordmark footer and trend tray
   await expect(bar.getByRole("button",{name:"Edit Metrics",exact:true})).toBeVisible();await expect(bar.getByRole("button",{name:"Share Image",exact:true})).toBeVisible();
   await expect(page.locator(".pvp-change")).toHaveCount(2);await expect(page.locator(".pvp-foot .courtlens-wordmark")).toBeVisible();
   await expect(page.getByText("Descriptive differences under a shared scope.")).toHaveCount(0);
-  await page.getByRole("button",{name:"Trend lines",exact:true}).click();await expect(page).toHaveURL(/compareView=lines/);
+  await page.getByRole("button",{name:"Trend Lines",exact:true}).click();await expect(page).toHaveURL(/compareView=lines/);
   await expect(page.locator(".pvp-tray-body").getByRole("region",{name:"Multi-Player Lines Progression Explorer"})).toBeVisible();
   await expect(page.getByText("Rolling statistic discipline:")).toHaveCount(0);
 });

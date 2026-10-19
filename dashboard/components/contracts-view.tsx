@@ -7,6 +7,7 @@ import { Donut, Sankey, ThresholdBar, TimelineGrid } from "./charts";
 import { PayrollBoard, thresholdLines } from "./contracts-payroll-board";
 import { PageShell, ProfileLayout, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
+import { BackButton, useNavLabel } from "./ui/back-button";
 import { StatTile } from "./ui/stat-tile";
 import { GatedNote } from "./ui/gated-note";
 import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
@@ -18,7 +19,7 @@ import { TeamLogo } from "./team-logo";
 import { getSharedCatalog } from "@/lib/route-availability";
 import { FINANCE_TEAMS } from "@/lib/finance-teams";
 import { formatDate } from "@/lib/format-date";
-import { Button, ButtonLink } from "./ui/kit";
+import { Button } from "./ui/kit";
 import {
   POSITION_LABELS, UNKNOWN_REASONS, centsMoney, dollars, earnerDonut, getLeaguePayrolls, getTeamContracts, money,
   nextOption, payrollFlow, positionDonut, resolveRefresh, timelineRows, yearsListed,
@@ -163,6 +164,7 @@ export function ContractsTeam({ team }: { team: string }) {
     return () => abort.abort();
   }, [refresh, team, releaseParam, key]);
   const data = loaded?.key === key ? loaded.data : null;
+  useNavLabel(data ? `${data.team_name} Contracts` : null);
   const error = loaded?.key === key ? loaded.error : "";
   const query = refresh ? `?refresh=${encodeURIComponent(refresh)}` : "";
   const failure = refreshError || error;
@@ -177,8 +179,9 @@ export function ContractsTeam({ team }: { team: string }) {
     {FINANCE_TEAMS.map(t => <option key={t.id} value={t.tricode}>{t.tricode} · {t.name}</option>)}
   </Select></Field>;
   return <PageShell template="profile" className="contracts-page">
+    <BackButton parent={{ href: `/contracts${query}`, label: "Contracts" }} />
     <PageHeader title="Contracts & Payroll" subtitle={data ? `${data.team_name} · ${data.context.label} · as of ${formatDate(data.context.observed_at)}` : "2026-27 · reported salaries"}
-      actions={<>{switcher}<ButtonLink size="lg" href={`/contracts${query}`}>All teams</ButtonLink>{data && <DataDetailsButton rows={[...contextRows(data.context),
+      actions={<>{switcher}{data && <DataDetailsButton rows={[...contextRows(data.context),
         { label: "Reference statistics release", value: data.statistics_release_id ?? "Unavailable", mono: true },
         { label: "Impact model", value: data.impact_version ?? "Unavailable" }]}>
         <Limitations items={data.limitations} />

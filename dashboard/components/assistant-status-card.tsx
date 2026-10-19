@@ -13,6 +13,6 @@ export function AssistantStatusCard({ status }: { status: AssistantStatusRespons
       <div><dt>Limits per turn</dt><dd>{limits?.max_steps != null ? `${limits.max_steps} steps · ${limits.max_web_searches ?? "unavailable"} searches · ${limits.max_tokens?.toLocaleString("en-US") ?? "unavailable"} tokens · ${limits.turn_timeout_seconds ?? "unavailable"}s deadline` : "Agent limits unavailable"}</dd></div>
     </dl>
     <p>Manual research needs no provider key. Configuration alone does not establish provider availability or answer accuracy.</p>
-    {status ? <details className="ui-why"><ButtonSummary>Configuration details</ButtonSummary><div className="ui-why-body"><p>{status.setup_instructions}</p><p>Prompt: {status.prompt_version ?? "Unavailable"}</p><p>{status.privacy_notice}</p></div></details> : <p role="status">Assistant configuration is unavailable.</p>}
+    {status ? <details className="ui-why"><ButtonSummary>Configuration Details</ButtonSummary><div className="ui-why-body"><p>{status.setup_instructions}</p><p>Prompt: {status.prompt_version ?? "Unavailable"}</p><p>{status.privacy_notice}</p></div></details> : <p role="status">Assistant configuration is unavailable.</p>}
   </ArticleSection>;
 }

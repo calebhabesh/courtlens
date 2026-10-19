@@ -206,12 +206,12 @@ export function WorkbenchPlayerProfile({
   const scopeParams = `season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`;
   const contextLine = scopeContextLine(context.season, context.phase, context.before_date);
   const explore: { label: string; href: string; icon: IconName }[] = [
-    { label: "Recent games", href: `/last-games?playerId=${player.id}&${scopeParams}`, icon: "history" },
-    { label: "Workload trends", href: `/research/trends?playerId=${player.id}&${scopeParams}`, icon: "trend" },
+    { label: "Recent Games", href: `/last-games?playerId=${player.id}&${scopeParams}`, icon: "history" },
+    { label: "Workload Trends", href: `/research/trends?playerId=${player.id}&${scopeParams}`, icon: "trend" },
     { label: "Distributions", href: `/research/distributions?playerId=${player.id}&${scopeParams}`, icon: "chart" },
-    { label: "Similar players", href: `/similar-players?playerId=${player.id}&${scopeParams}`, icon: "person" },
-    { label: "Shot profile", href: `/similar-players/shot-profile?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`, icon: "scatter" },
-    { label: "Compare head to head", href: `/compare?playerA=${player.id}&${scopeParams}`, icon: "swap" },
+    { label: "Similar Players", href: `/similar-players?playerId=${player.id}&${scopeParams}`, icon: "person" },
+    { label: "Shot Profile", href: `/similar-players/shot-profile?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`, icon: "scatter" },
+    { label: "Compare Head to Head", href: `/compare?playerA=${player.id}&${scopeParams}`, icon: "swap" },
     { label: "Wingspan", href: `/wingspan?playerId=${player.id}`, icon: "scale" },
   ];
 

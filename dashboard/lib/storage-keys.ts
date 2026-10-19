@@ -6,7 +6,8 @@ export const storageKeys = {
   activeThread: "courtlens-assistant-active-thread-v2",
   advancedMode: "courtlens-advanced-mode-v1",
   recentSearches: "courtlens-recent-searches-v1",
-  statsReturn: "courtlens-stats-return-v1"
+  statsReturn: "courtlens-stats-return-v1",
+  navTrail: "courtlens-nav-trail-v1"
 } as const;
 
 const legacyKeys: ReadonlyArray<readonly [string, string]> = [

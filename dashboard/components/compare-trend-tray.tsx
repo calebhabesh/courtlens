@@ -52,7 +52,7 @@ export function CompareTrendTray({ playerIds, context }: { playerIds: string[]; 
     </div>}
     <div className="pvp-tray-tab">
       <Button size="sm" variant="ghost" icon="chart-line" iconAfter={trends ? "chevron-up" : "chevron-down"} aria-expanded={trends} aria-controls="pvp-trend-drawer"
-        onClick={toggle}>Trend lines</Button>
+        onClick={toggle}>Trend Lines</Button>
     </div>
   </div>;
 }

@@ -40,12 +40,12 @@ export interface RosterShapes {
 
 export const SORTS: { value: ShapeSort; label: string; title: string }[] = [
   { value: "fullest", label: "Fullest", title: "Most of the box filled first" },
-  { value: "fit", label: "Best fit", title: "Highest size-weighted ease of fit first" },
+  { value: "fit", label: "Best Fit", title: "Highest size-weighted ease of fit first" },
   { value: "az", label: "A–Z", title: "Alphabetical by team" }
 ];
 export const MODES: { value: ShapeMode; label: string; title: string }[] = [
-  { value: "regular", label: "Regular season", title: "Each player at his regular-season DPM" },
-  { value: "playoff", label: "Playoff-adjusted", title: "Each player moved by his career DARKO playoff offense change" }
+  { value: "regular", label: "Regular Season", title: "Each player at his regular-season DPM" },
+  { value: "playoff", label: "Playoff-Adjusted", title: "Each player moved by his career DARKO playoff offense change" }
 ];
 export const CONTINUITY_LABELS: Record<ShapeContinuity, string> = { returning: "Returning", new: "New arrival", unknown: "No sample" };
 /** Fit bands, 0 = plugs in anywhere ... 7 = hardest to fit. */

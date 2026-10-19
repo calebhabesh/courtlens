@@ -97,11 +97,11 @@ test.describe("PC11 populated pages", () => {
 
   test("Six-Factor ranks one factor at a time with shaded percentiles", async ({ page }) => {
     await openWorkbench(page, "/research/rapm/six-factor");
-    await expect(page.getByRole("figure", { name: /Offensive shooting \(oTS\), top 15/ })).toBeVisible();
+    await expect(page.getByRole("figure", { name: /Offensive Shooting \(oTS\), top 15/ })).toBeVisible();
     await expect(page.getByRole("region", { name: "Six-factor ratings" }).locator(".chart-percentile-cell").first()).toBeVisible();
     await page.getByRole("radio", { name: "Defense" }).click();
     await expect(page).toHaveURL(/factor=d_ts/);
-    await expect(page.getByRole("figure", { name: /Shooting defense \(dTS\)/ })).toBeVisible();
+    await expect(page.getByRole("figure", { name: /Shooting Defense \(dTS\)/ })).toBeVisible();
     await noPhoneOverflow(page);
   });
 

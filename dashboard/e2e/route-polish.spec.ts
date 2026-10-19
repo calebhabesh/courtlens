@@ -22,7 +22,7 @@ test("catalog scope options keep unavailable context explicit and synchronize na
   await openWorkbench(page, "/stat-line-shift?season=2000-01&phase=summer_league&beforeDate=2001-01-01");
   const season = page.getByLabel("Season", { exact: true });
   await expect(season).toHaveValue("2000-01");
-  await expect(season.locator("option:checked")).toContainText("unavailable");
+  await expect(season.locator("option:checked")).toContainText("Unavailable");
   await season.selectOption("2025-26");
   await expect(page.getByLabel("Phase", { exact: true })).toHaveValue("regular_season");
   // The picker shows the last included day; the URL keeps the exclusive cutoff (2026-06-30).
@@ -38,7 +38,7 @@ test("settings distinguishes configured key from provider health and hides opera
   const card = page.getByRole("region", { name: "Assistant configuration", exact: true });
   await expect(card).toContainText("Configuration alone does not establish provider availability or answer accuracy");
   await expect(card).toContainText("Limits per turn");
-  const details = card.locator("details").filter({ has: page.getByText("Configuration details", { exact: true }) });
+  const details = card.locator("details").filter({ has: page.getByText("Configuration Details", { exact: true }) });
   // Wait for React's hidden streamed copy to be revealed or discarded before strict lookup.
   await expect(details).toHaveCount(1);
   await expect(details).not.toHaveAttribute("open", "");

@@ -41,7 +41,7 @@ for (const width of [1440, 768, 390, 375]) for (const route of ["rankings", "tie
     if (width >= 1280) expect((await page.locator(".pc12-example-board").boundingBox())!.y).toBeLessThan(400);
     if (width < 768) {
       expect((await page.getByRole("button", { name: "Copy to my boards" }).boundingBox())!.height).toBeGreaterThanOrEqual(40);
-      await page.getByRole("button", { name: "Data details", exact: true }).click();
+      await page.getByRole("button", { name: "Data Details", exact: true }).click();
       await expect(page.getByRole("dialog")).toContainText("canonical player ID");
     }
   });

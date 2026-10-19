@@ -1,0 +1,441 @@
+{"route":"/contracts/books","kind":"button","text":"Select a date","bad":["date"]}
+{"route":"/design","kind":"button","text":"Change values","bad":["values"]}
+{"route":"/design","kind":"button","text":"Show small sample","bad":["small","sample"]}
+{"route":"/design","kind":"button","text":"Find player","bad":["player"]}
+{"route":"/design","kind":"button","text":"What is the CourtLens temporal discipline rule?","bad":["is","temporal","discipline","rule?"]}
+{"route":"/design","kind":"button","text":"Why are absent rows not treated as zero?","bad":["are","absent","rows","not","treated","zero?"]}
+{"route":"/design","kind":"button","text":"xs current link","bad":["xs","current","link"]}
+{"route":"/design","kind":"button","text":"xs disclosure","bad":["xs","disclosure"]}
+{"route":"/design","kind":"button","text":"On background","bad":["background"]}
+{"route":"/design","kind":"button","text":"sm current link","bad":["sm","current","link"]}
+{"route":"/design","kind":"button","text":"sm disclosure","bad":["sm","disclosure"]}
+{"route":"/design","kind":"button","text":"md current link","bad":["md","current","link"]}
+{"route":"/design","kind":"button","text":"md disclosure","bad":["md","disclosure"]}
+{"route":"/design","kind":"button","text":"lg current link","bad":["lg","current","link"]}
+{"route":"/design","kind":"button","text":"lg disclosure","bad":["lg","disclosure"]}
+{"route":"/design","kind":"select","text":"sm default · Regular Playoffs","bad":["sm","default"]}
+{"route":"/design","kind":"option","text":"sm default · Regular","bad":["sm","default"]}
+{"route":"/design","kind":"select","text":"sm console · Regular Playoffs","bad":["sm","console"]}
+{"route":"/design","kind":"option","text":"sm console · Regular","bad":["sm","console"]}
+{"route":"/design","kind":"select","text":"md default · Regular Playoffs","bad":["md","default"]}
+{"route":"/design","kind":"option","text":"md default · Regular","bad":["md","default"]}
+{"route":"/design","kind":"select","text":"md console · Regular Playoffs","bad":["md","console"]}
+{"route":"/design","kind":"option","text":"md console · Regular","bad":["md","console"]}
+{"route":"/design","kind":"select","text":"lg default · Regular Playoffs","bad":["lg","default"]}
+{"route":"/design","kind":"option","text":"lg default · Regular","bad":["lg","default"]}
+{"route":"/design","kind":"select","text":"lg console · Regular Playoffs","bad":["lg","console"]}
+{"route":"/design","kind":"option","text":"lg console · Regular","bad":["lg","console"]}
+{"route":"/design","kind":"menu-trigger","text":"xs secondary menu","bad":["xs","secondary","menu"]}
+{"route":"/design","kind":"menu-trigger","text":"Selected popover","bad":["popover"]}
+{"route":"/design","kind":"menu-trigger","text":"Expanded state","bad":["state"]}
+{"route":"/design","kind":"menu-trigger","text":"xs ghost menu","bad":["xs","ghost","menu"]}
+{"route":"/design","kind":"menu-trigger","text":"sm secondary menu","bad":["sm","secondary","menu"]}
+{"route":"/design","kind":"menu-trigger","text":"sm ghost menu","bad":["sm","ghost","menu"]}
+{"route":"/design","kind":"menu-trigger","text":"md secondary menu","bad":["md","secondary","menu"]}
+{"route":"/design","kind":"menu-trigger","text":"md ghost menu","bad":["md","ghost","menu"]}
+{"route":"/design","kind":"menu-trigger","text":"lg secondary menu","bad":["lg","secondary","menu"]}
+{"route":"/design","kind":"menu-trigger","text":"lg ghost menu","bad":["lg","ghost","menu"]}
+{"route":"/design","kind":"menu-trigger","text":"xs console choice","bad":["xs","console","choice"]}
+{"route":"/design","kind":"menu-trigger","text":"sm console choice","bad":["sm","console","choice"]}
+{"route":"/design","kind":"menu-trigger","text":"md console choice","bad":["md","console","choice"]}
+{"route":"/design","kind":"menu-trigger","text":"lg console choice","bad":["lg","console","choice"]}
+{"route":"/design","kind":"segmented","text":"xs Table","bad":["xs"]}
+{"route":"/design","kind":"radio","text":"xs Table","bad":["xs"]}
+{"route":"/design","kind":"segmented","text":"sm Table","bad":["sm"]}
+{"route":"/design","kind":"radio","text":"sm Table","bad":["sm"]}
+{"route":"/design","kind":"segmented","text":"md Table","bad":["md"]}
+{"route":"/design","kind":"radio","text":"md Table","bad":["md"]}
+{"route":"/design","kind":"segmented","text":"lg Table","bad":["lg"]}
+{"route":"/design","kind":"radio","text":"lg Table","bad":["lg"]}
+{"route":"/design","kind":"chip","text":"xs default toggle","bad":["xs","default","toggle"]}
+{"route":"/design","kind":"chip","text":"xs console toggle","bad":["xs","console","toggle"]}
+{"route":"/design","kind":"chip","text":"sm default toggle","bad":["sm","default","toggle"]}
+{"route":"/design","kind":"chip","text":"sm console toggle","bad":["sm","console","toggle"]}
+{"route":"/design","kind":"chip","text":"md default toggle","bad":["md","default","toggle"]}
+{"route":"/design","kind":"chip","text":"md console toggle","bad":["md","console","toggle"]}
+{"route":"/design","kind":"chip","text":"lg default toggle","bad":["lg","default","toggle"]}
+{"route":"/design","kind":"chip","text":"lg console toggle","bad":["lg","console","toggle"]}
+{"route":"/matchups","kind":"button","text":"Filters 2025-26 · Regular season","bad":["season"]}
+{"route":"/research/ask","kind":"button","text":"New chat","bad":["chat"]}
+{"route":"/research/ask","kind":"button","text":"Who is the best defender in the NBA?","bad":["is","best","defender"]}
+{"route":"/research/ask","kind":"button","text":"Which player had the most blocks last season.a","bad":["player","had","most","blocks","last","season.a"]}
+{"route":"/research/ask","kind":"button","text":"What was Victor Wembanyama's RAPM last season?","bad":["was","last","season?"]}
+{"route":"/research/ask","kind":"button","text":"Who won mvp last season?","bad":["won","mvp","last","season?"]}
+{"route":"/research/ask","kind":"button","text":"Who were the top 10 centers in ppg last season","bad":["were","top","centers","ppg","last","season"]}
+{"route":"/research/ask","kind":"button","text":"Who won mvp last season","bad":["won","mvp","last","season"]}
+{"route":"/research/ask","kind":"button","text":"Impact What was Victor Wembanyama's RAPM last season?","bad":["was","last","season?"]}
+{"route":"/research/ask","kind":"button","text":"Defense Who is the best defender in the NBA?","bad":["is","best","defender"]}
+{"route":"/research/ask","kind":"button","text":"Awards Who won MVP last season?","bad":["won","last","season?"]}
+{"route":"/research/ask","kind":"button","text":"Concepts Explain pick and roll","bad":["pick","roll"]}
+{"route":"/research/ask","kind":"button","text":"Using CourtLens How do I compare two players here?","bad":["do","compare","two","players","here?"]}
+{"route":"/research/ask","kind":"summary","text":"Scope: Default scope · Edit scope for the next question","bad":["scope","scope","next","question"]}
+{"route":"/research/defensive-matchups","kind":"select","text":"All Shots Threes Twos Under 6 ft Under 10 ft Over 15 ft","bad":["ft","ft","ft"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Under 6 ft","bad":["ft"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Under 10 ft","bad":["ft"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Over 15 ft","bad":["ft"]}
+{"route":"/research/defensive-matchups","kind":"button","text":"Filters 2025-26 · Regular season","bad":["season"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Tristan da Silva","bad":["da"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"A.J. Lawson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Adama Bal (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Adou Thiero (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Alex Antetokounmpo (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Alex Morales (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Alijah Martin (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Alondes Williams (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Amari Williams (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Andersson Garcia (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Antonio Reeves (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Bez Mbeng (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Bismack Biyombo (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Blake Hinson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Blake Wesley (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Bobi Klintman (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Bradley Beal (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Brandon Clarke (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Buddy Boeheim (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Caleb Houstan (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Cameron Payne (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Chaney Johnson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Charles Bassey (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Chaz Lanier (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Chris Boucher (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Chris Livingston (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Chris Mañon (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Chris Paul (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Chris Youngblood (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Chucky Hepburn (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"CJ Huntley (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Cody Martin (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Colin Castleton (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Cormac Ryan (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Curtis Jones (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Dalano Banton (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"DaQuan Jeffries (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Dario Šarić (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Dariq Whitehead (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"David Jones Garcia (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"David Roddy (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"DeAndre Jordan (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"DeJon Jarreau (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Dejounte Murray (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Dereck Lively II (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Dillon Jones (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Domantas Sabonis (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Drew Peterson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Emanuel Miller (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Enrique Freeman (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Eric Gordon (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Garrett Temple (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Garrison Mathews (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Grant Nelson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Harrison Ingram (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Hayden Gray (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Haywood Highsmith (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Hunter Dickinson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Hunter Sallis (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Hunter Tyson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Isaac Jones (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Isaiah Crawford (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Isaiah Stevens (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Jacob Toppin (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Jahmir Young (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Jahmyl Telfort (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Jalen Slawson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"James Wiseman (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Javonte Cooke (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Jayson Kent (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Jayson Tatum (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"JD Davison (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Jeff Green (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Joe Ingles (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"John Poulakidas (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"John Tonje (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Johni Broome (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Johnny Juzang (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Jonathan Mogbo (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Jordan McLaughlin (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Josh Oduro (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Julian Reese (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Kadary Richmond (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Kennedy Chandler (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Keshad Johnson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Keshon Gilbert (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Kevin McCullar Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"KJ Simpson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Kobe Bufkin (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Koby Brea (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Kyle Lowry (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Lawson Lovering (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Leaky Black (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Lindy Waters III (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"LJ Cryer (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Lucas Williamson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Luke Travers (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Mac McClung (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Malachi Smith (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Malaki Branham (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Malevy Leons (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"MarJon Beauchamp (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Mark Sears (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Markelle Fultz (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Mason Plumlee (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Max Shulga (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Max Strus (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Miles Kelly (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Mo Bamba (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Monté Morris (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Mouhamadou Gueye (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"N'Faly Dante (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Nate Williams (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Nigel Hayes-Davis (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Nikola Topić (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Noa Essengue (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Norchad Omier (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Olivier Sarr (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Omer Yurtseven (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Orlando Robinson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Pacôme Dadiet (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Pat Connaughton (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Patrick Baldwin Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Payton Sandfort (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"PJ Hall (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"RayJ Dennis (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Riley Minix (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Rocco Zikarsky (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Ron Harper Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Scotty Pippen Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Sean Pedulla (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Seth Curry (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Skal Labissiere (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Stanley Umude (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Taj Gibson (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Thanasis Antetokounmpo (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Toby Okani (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Tolu Smith (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Tosan Evbuomwan (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Trae Young (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Trentyn Flowers (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Trevon Scott (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Trevor Keels (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Trey Alexander (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Trey Jemison III (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Tristan Enaruna (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Tristen Newton (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Ty Jerome (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Tyler Burton (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Tyler Smith (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"TyTy Washington Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Vladislav Goldin (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Walker Kessler (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Wendell Moore Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Xavier Tillman (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Yuki Kawamura (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Zach Collins (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Zach Edey (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"option","text":"Zyon Pullin (small sample)","bad":["small","sample"]}
+{"route":"/research/defensive-matchups","kind":"button","text":"Show All 580 defenders","bad":["defenders"]}
+{"route":"/research/distributions","kind":"option","text":"Last 10 games","bad":["games"]}
+{"route":"/research/distributions","kind":"option","text":"Last 20 games","bad":["games"]}
+{"route":"/research/distributions","kind":"option","text":"Last 30 games","bad":["games"]}
+{"route":"/research/distributions","kind":"option","text":"Last 50 games","bad":["games"]}
+{"route":"/research/rapm/six-factor","kind":"option","text":"oTS · Offensive Shooting","bad":["oTS"]}
+{"route":"/research/rapm/six-factor","kind":"option","text":"oTOV · Offensive Ball Security","bad":["oTOV"]}
+{"route":"/research/rapm/six-factor","kind":"option","text":"oREB · Offensive Rebounding","bad":["oREB"]}
+{"route":"/research/rapm/six-factor","kind":"option","text":"dTS · Shooting Defense","bad":["dTS"]}
+{"route":"/research/rapm/six-factor","kind":"option","text":"dTOV · Forcing Turnovers","bad":["dTOV"]}
+{"route":"/research/rapm/six-factor","kind":"option","text":"dREB · Defensive Rebounding","bad":["dREB"]}
+{"route":"/research/shooting/adjusted","kind":"button","text":"Filters 2025-26 · Regular season","bad":["season"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Tristan da Silva","bad":["da"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"AJ Johnson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Amir Coffey (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Anthony Gill (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Asa Newell (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Blake Hinson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Blake Wesley (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Bogdan Bogdanović (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Bradley Beal (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Branden Carlson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Caleb Martin (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Cam Whitmore (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Cameron Payne (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Chaney Johnson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Chris Paul (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Christian Koloko (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Cormac Ryan (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Dalen Terry (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Dalton Knecht (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"DeAndre Jordan (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"DeJon Jarreau (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Dejounte Murray (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Dorian Finney-Smith (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Doug McDermott (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Drew Eubanks (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Dwight Powell (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Dylan Cardwell (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"E.J. Liddell (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Elijah Harkless (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Eric Gordon (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Ethan Thompson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Gabe Vincent (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Gary Harris (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Grant Williams (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Guerschon Yabusele (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Isaiah Jackson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jaden Ivey (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jahmai Mashack (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jalen Pickett (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jalen Slawson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jamal Cain (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jamaree Bouyea (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jase Richardson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jeremiah Robinson-Earl (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jeremy Sochan (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jett Howard (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jevon Carter (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"John Konchar (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"John Poulakidas (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Johnny Furphy (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Jonathan Isaac (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Josh Green (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Josh Minott (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Julian Reese (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Kam Jones (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Keaton Wallace (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Keon Ellis (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Kevin Love (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Kevon Looney (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Killian Hayes (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"KJ Simpson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Kobe Brown (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Kyle Anderson (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Larry Nance Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Leaky Black (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Leonard Miller (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Liam McNeeley (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"LJ Cryer (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Lonzo Ball (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Mac McClung (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Malevy Leons (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Marcus Sasser (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Marvin Bagley III (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Matisse Thybulle (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Max Strus (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Maxi Kleber (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Micah Potter (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Mike Conley (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Moritz Wagner (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Moussa Cisse (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Nick Richards (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Nick Smith Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Nicolas Batum (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Nikola Topić (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Noah Penda (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Obi Toppin (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Ochai Agbaji (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Oscar Tshiebwe (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Pete Nance (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"PJ Hall (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Rasheer Fleming (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Rayan Rupert (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"RayJ Dennis (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Ron Harper Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Scotty Pippen Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Seth Curry (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Steven Adams (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Taelon Peter (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Taurean Prince (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Taylor Hendricks (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Terrence Shannon Jr. (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Tidjane Salaün (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Tony Bradley (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Trae Young (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Trayce Jackson-Davis (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Trey Alexander (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Ty Jerome (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Tyler Burton (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Tyrese Martin (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Tyson Etienne (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Tyus Jones (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Walker Kessler (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Yanic Konan Niederhäuser (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Yuki Kawamura (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Zach Collins (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Zach Edey (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"option","text":"Zeke Nnaji (small sample)","bad":["small","sample"]}
+{"route":"/research/shooting/adjusted","kind":"button","text":"Show All 439 players","bad":["players"]}
+{"route":"/research/shooting/aftermath","kind":"button","text":"Select a date","bad":["date"]}
+{"route":"/research/shooting/aftermath","kind":"summary","text":"Sequence evidence · 0 anchors / unknown candidates","bad":["evidence","anchors","unknown","candidates"]}
+{"route":"/research/trends","kind":"select","text":"Last 5 games Last 10 games Last 15 games Last 20 games","bad":["games","games","games","games"]}
+{"route":"/research/trends","kind":"option","text":"Last 5 games","bad":["games"]}
+{"route":"/research/trends","kind":"option","text":"Last 10 games","bad":["games"]}
+{"route":"/research/trends","kind":"option","text":"Last 15 games","bad":["games"]}
+{"route":"/research/trends","kind":"option","text":"Last 20 games","bad":["games"]}
+{"route":"/research/trends","kind":"select","text":"Prior 5 games Prior 10 games Prior 15 games Prior 20 games","bad":["games","games","games","games"]}
+{"route":"/research/trends","kind":"option","text":"Prior 5 games","bad":["games"]}
+{"route":"/research/trends","kind":"option","text":"Prior 10 games","bad":["games"]}
+{"route":"/research/trends","kind":"option","text":"Prior 15 games","bad":["games"]}
+{"route":"/research/trends","kind":"option","text":"Prior 20 games","bad":["games"]}
+{"route":"/similar-players/shot-profile","kind":"button","text":"Select a date","bad":["date"]}
+{"route":"/stat-line-shift","kind":"button","text":"Select a date","bad":["date"]}
+{"route":"/stats/glossary","kind":"button","text":"Two-point field goal attempts. How it's calculated","bad":["field","goal","attempts.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Three-point field goals made. How it's calculated","bad":["field","goals","made.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Points allowed per 100 possessions. How it's calculated","bad":["allowed","possessions.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Fantasy-style composite per game. How it's calculated","bad":["composite","game.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Free throws attempted. How it's calculated","bad":["throws","attempted.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Free throws made. How it's calculated","bad":["throws","made.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Free throws made, averaged per game. How it's calculated","bad":["throws","made","averaged","game.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Minutes played. How it's calculated","bad":["played.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Minutes played per game appeared in. How it's calculated","bad":["played","game","appeared","in.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Points scored per 100 possessions. How it's calculated","bad":["scored","possessions.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Personal fouls committed. How it's calculated","bad":["fouls","committed.","it's","calculated"]}
+{"route":"/stats/glossary","kind":"button","text":"Offensive plus defensive rebounds. How it's calculated","bad":["plus","defensive","rebounds.","it's","calculated"]}
+{"route":"/stats/tracking","kind":"button","text":"Filters 2025-26 · Regular season","bad":["season"]}
+{"route":"/stats/tracking","kind":"button","text":"Drive points","bad":["points"]}
+{"route":"/stats/tracking","kind":"button","text":"Pass rate","bad":["rate"]}
+{"route":"/stats/tracking","kind":"button","text":"Drive assists","bad":["assists"]}
+{"route":"/stats/tracking","kind":"button","text":"Drive turnovers","bad":["turnovers"]}
+{"route":"/stats/tracking","kind":"button","text":"Show All 582 players","bad":["players"]}
+{"route":"/team-compare","kind":"button","text":"Data details","bad":["details"]}
+{"route":"/teams","kind":"button","text":"oTS","bad":["oTS"]}
+{"route":"/teams","kind":"button","text":"oTOV","bad":["oTOV"]}
+{"route":"/teams","kind":"button","text":"dTS","bad":["dTS"]}
+{"route":"/teams","kind":"button","text":"dTOV","bad":["dTOV"]}
+{"route":"/wingspan","kind":"option","text":"2026 · 78 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2025 · 79 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2024 · 83 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2023 · 81 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2022 · 83 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2021 · 74 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2020 · 45 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2019 · 77 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2018 · 69 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2017 · 64 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2016 · 56 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2015 · 58 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2014 · 56 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2013 · 63 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2012 · 61 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2011 · 54 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2010 · 52 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2009 · 46 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2008 · 76 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2007 · 77 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2006 · 76 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2005 · 81 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2004 · 81 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2003 · 78 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2002 · 82 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2001 · 78 players","bad":["players"]}
+{"route":"/wingspan","kind":"option","text":"2000 · 65 players","bad":["players"]}
+{"route":"/wingspan","kind":"button","text":"Filters 2026 combine","bad":["combine"]}
+{"route":"/players/203999","kind":"button","text":"— OnBall%; 0 valid league players that season; unknown.","bad":["valid","league","players","that","season;","unknown."]}
+{"route":"/players/203999","kind":"button","text":"— PTS Created; 0 valid league players that season; unknown.","bad":["valid","league","players","that","season;","unknown."]}
+{"route":"/players/203999","kind":"button","text":"— Rim AST; 0 valid league players that season; unknown.","bad":["valid","league","players","that","season;","unknown."]}
+{"route":"/players/203999","kind":"button","text":"— rTS%; 0 valid league players that season; unknown.","bad":["rTS%;","valid","league","players","that","season;","unknown."]}
+{"route":"/players/203999","kind":"button","text":"— cTOV%; 0 valid league players that season; unknown.","bad":["cTOV%;","valid","league","players","that","season;","unknown."]}
+{"route":"/stats/tracking","kind":"button","text":"Filters 2025-26 · Regular season","bad":["season"]}
+{"route":"/stats/tracking","kind":"button","text":"Drive points","bad":["points"]}
+{"route":"/stats/tracking","kind":"button","text":"Pass rate","bad":["rate"]}
+{"route":"/stats/tracking","kind":"button","text":"Drive assists","bad":["assists"]}
+{"route":"/stats/tracking","kind":"button","text":"Drive turnovers","bad":["turnovers"]}
+{"route":"/stats/tracking","kind":"button","text":"Show All 582 players","bad":["players"]}

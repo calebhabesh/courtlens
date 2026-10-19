@@ -37,7 +37,7 @@ for (const width of [1440, 768, 390, 375]) {
     await expect(page.getByText(/B35[ab]/)).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
     if (width === 1440 || width === 390) await expect(page).toHaveScreenshot(`pc12-c-saved-${width}.png`, { animations: "disabled", maxDiffPixelRatio: 0.01 });
-    await page.getByRole("button", { name: "Data details", exact: true }).first().click();
+    await page.getByRole("button", { name: "Data Details", exact: true }).first().click();
     await expect(page.getByRole("dialog")).toContainText(retained.title);
     await expect(page.getByRole("dialog")).toContainText(retained.manifest_sha256);
   });
