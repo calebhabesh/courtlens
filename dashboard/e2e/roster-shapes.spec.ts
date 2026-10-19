@@ -111,11 +111,20 @@ test.describe("Roster Shapes", () => {
 
     // Sandbox: add the league's biggest shape from another roster, then remove it again.
     const sandbox = page.getByRole("region", { name: "Trade sandbox" });
-    await sandbox.getByRole("combobox", { name: "Add a player" }).selectOption("203999");
+    // Searchable: before typing the biggest shapes lead; typing a name (accents ignored) narrows it.
+    const addField = sandbox.getByRole("combobox", { name: "Add a player" });
+    await addField.click();
+    const suggestions = page.getByRole("listbox", { name: "Add a player suggestions" }).getByRole("option");
+    await expect(suggestions.first()).toContainText("Nikola Jokić");
+    await expect(suggestions.first()).toContainText(/DEN · \+\d\.\d DPM · \d+\.\d min/);
+    await addField.fill("jokic");
+    await expect(suggestions).toHaveCount(1);
+    await suggestions.first().click();
     await expect(page).toHaveURL(/add=203999/);
     await expect(card.locator('[data-mark="added"]')).toHaveCount(1);
     expect(await fill()).toBeGreaterThan(before);
-    await sandbox.getByRole("combobox", { name: "Remove a player" }).selectOption("1641705");
+    await sandbox.getByRole("combobox", { name: "Remove a player" }).fill("wemb");
+    await page.getByRole("listbox", { name: "Remove a player suggestions" }).getByRole("option", { name: /Victor Wembanyama/ }).click();
     await expect(page).toHaveURL(/drop=1641705/);
     await sandbox.getByRole("button", { name: "Reset" }).click();
     await expect(page).not.toHaveURL(/add=|drop=/);

@@ -86,7 +86,8 @@
   .shapes-box-graphic .shapes-mark-added { stroke: var(--color-on-accent); stroke-width: 0.8; }
   .shapes-box-graphic .shapes-mark-left { stroke: var(--color-on-accent); stroke-width: 0.6; stroke-dasharray: 1.6 1; fill-opacity: 0.45; }
 
-  .shapes-sandbox-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+  .shapes-sandbox-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+  .shapes-sandbox-search { flex: 1 1 280px; max-width: 380px; min-width: 0; }
   .shapes-sandbox-changes { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
   .shapes-sandbox-changes small { color: var(--color-text-tertiary); }
   .shapes-sandbox .player-open-heading strong[data-tone="up"] { color: var(--color-identity-a); }

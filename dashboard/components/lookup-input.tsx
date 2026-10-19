@@ -39,6 +39,8 @@ export function useLookupScope(scope: LookupScope) {
     "observed in selected scope" wording; picking one gives their latest valid season. */
 function playerCaption(item: LookupItem) {
   if (item.kind !== "player") return item.subtitle;
+  // A local candidate list may carry its own caption (Roster Shapes' sandbox: team, DPM, minutes).
+  if (typeof item.metadata?.caption === "string") return item.metadata.caption;
   const teams = item.team_association?.teams ?? [];
   return teams.length ? teams.join(" / ") : undefined;
 }

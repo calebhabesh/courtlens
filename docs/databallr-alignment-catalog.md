@@ -1548,6 +1548,22 @@ Follow-up instructions (owner, 2026-10-19; header screenshot at 2000px):
     `fo13-pages:47` (planner sign-in, two Email fields) fails intermittently, also 3 of 8 runs on
     `3618daa`.
 
+Committed `8a1bd98` and `28273d8` (owner: "Commit and push").
+
+Follow-up instructions (owner, 2026-10-19; screenshot of the Trade Sandbox):
+21. [x] "The trade sandbox is less than optimal. Adding a player should be searchable instead of a
+    simply just a drop down filter." — both sandbox pickers are search fields (the shared
+    `LookupInput` over the page's own rosters, no request): "Add a player" searches every other
+    roster by name (accents ignored) or team name/code, each result with headshot, team logo and
+    "DEN · +7.4 DPM · 38.3 min" (uncapped minutes); before typing it lists the 12 biggest shapes
+    in the league. "Remove a player" searches this roster, biggest first. Picking adds the same
+    URL `add=` / `drop=` ids and chips as before. `LookupInput` gained an optional
+    `metadata.caption` for local candidate lists. Verification: owner's :3100 with live data at
+    1440 / 390 (search "jokic" → `add=203999`, fill 67% → 117%), no overflow or browser errors
+    (`follow-up-6/`). Lint, typecheck, Vitest 593/593; Playwright full suite 491 passed, 28
+    skipped, no baseline changed; `saved-operations:52` (methodology rendered twice) failed once in
+    the full run, then the Roster Shapes spec and it passed 108/108 across three repeat runs.
+
 ### 15 Team Compare — ✅ aligned (first revision)
 
 Owner approval (2026-10-18): "I think it's finished," then approved the closing review: rename the
