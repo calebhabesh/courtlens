@@ -284,3 +284,29 @@ def test_projection_prefers_darko_current_ratings_and_expected_minutes() -> None
     assert star["minutes_per_game"] == pytest.approx(30.0) and star["dpm"] == 5.0
     assert bench["minutes_per_game"] == pytest.approx(20.0)
     assert "DARKO's expected minutes" in body["limitations"][0]
+
+
+def test_history_folds_era_ids_into_franchises_by_season() -> None:
+    entries = [
+        {"season": "2005-06", "phase": "regular_season", "players": {"1": {"dpm": 3.0}}},
+        {"season": "2005-06", "phase": "playoffs", "players": {"1": {"dpm": 9.0}}},
+        {"season": "2025-26", "phase": "regular_season", "players": {"2": {"dpm": 1.0}}},
+    ]
+    minutes = {
+        "2005-06": ("rel", {("1", "SEA"): (82 * 30.0, 82, "P1")}, {"SEA": 82}),
+        "2025-26": ("rel", {("2", "1610612760"): (41 * 20.0, 41, "P2")}, {"1610612760": 82}),
+    }
+    rs._history_cache.clear()
+    with (
+        patch.object(rs, "load_darko_store", return_value={"sealed_at": "h", "entries": entries}),
+        patch.object(rs, "_season_minutes", side_effect=lambda _s, _r, season: minutes[season]),
+    ):
+        body = rs.roster_shape_history(MagicMock(), "rel")
+    assert [s["season"] for s in body["seasons"]] == ["2005-06", "2025-26"]
+    # SEA's 2005-06 games belong to the Thunder franchise; playoff snapshots are not used.
+    assert body["seasons"][0]["fills"] == {
+        "1610612760": pytest.approx(shape_size(3.0, 30.0) / box_capacity())
+    }
+    assert body["seasons"][1]["fills"]["1610612760"] == pytest.approx(
+        shape_size(1.0, 10.0) / box_capacity()
+    )

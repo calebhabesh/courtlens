@@ -78,6 +78,7 @@ from courtlens.api.workbench_schemas import (
     RankOperationResponse,
     ReorderViewsRequest,
     ResearchQuerySchema,
+    RosterShapeHistoryResponse,
     RosterShapesResponse,
     SavedInvestigationResponse,
     SaveInvestigationRequest,
@@ -193,7 +194,7 @@ from courtlens.services.position_estimates import (
     position_player_ids,
     season_positions,
 )
-from courtlens.services.roster_shapes import roster_shapes
+from courtlens.services.roster_shapes import roster_shape_history, roster_shapes
 from courtlens.services.schedule_dates import schedule_dates
 from courtlens.services.season_portraits import find_season_portrait
 from courtlens.services.stats_catalog import stats_catalog_scope
@@ -468,6 +469,15 @@ def get_roster_shapes(
     return RosterShapesResponse.model_validate(
         roster_shapes(session, dataset_id, release_id, season)
     )
+
+
+@router.get("/roster-shapes/history", response_model=RosterShapeHistoryResponse)
+def get_roster_shape_history(
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> RosterShapeHistoryResponse:
+    """Every franchise's box fill in each season with a sealed DARKO snapshot."""
+    return RosterShapeHistoryResponse.model_validate(roster_shape_history(session, release_id))
 
 
 SEASON_PATTERN = r"^\d{4}-\d{2}$"

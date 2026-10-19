@@ -1450,6 +1450,75 @@ Playwright: full suite 484 passed, 28 skipped; `fo13-pages:93`, `:112` and `live
 full run and passed 3/3 on rerun; the four Roster Shapes first-load baselines refreshed, no other
 baseline changed. Evidence: `docs/evidence/alignment/roster-shapes/follow-up-1/`.
 
+Committed `9325528` (owner: "Yes you can commit and push").
+
+Follow-up instructions (owner, 2026-10-19; screenshot of the first four boxes):
+12. [x] "make the team logos larger." — 24 → 32px on cards, 32 → 44px in team view, centred on
+    the header row (0px off).
+13. [x] "Can you make the "Lacks" caption under the shapes look more aesthetic, I feel like we can
+    make them look better, kind of hard to see/read." — an uppercase LACKS label, then one pill per
+    missing style tinted with that archetype's colour (14% fill, 40% border, colour dot), 12px
+    semibold in the text colour (13px in team view, centred); "Every style drawn" as a gold pill
+    with a check. The team view's white-space line is its own 14px line with the DPM in bold.
+    Verification: production 3180 with live data, no overflow or browser errors at 1440 / 390, no
+    chip past its card (`follow-up-2/verification.jsonl`); lint, typecheck, Vitest 593/593;
+    Playwright 490 passed (`saved-operations:29` failed once, 3/3 on rerun); the four Roster Shapes
+    baselines refreshed, no other baseline changed.
+
+Follow-up instructions (owner, 2026-10-19; Databallr's San Antonio team view and its 3D hover card):
+14. [x] "databallr has a nicer side by side view for the roster shapes." (team view: logo + name
+    title, the box beside a panel of fill and value, "What fills the box" bars with a top-five tick,
+    a compact player table and "Not drawn"; "Season by season" fill bars under the box) — the team
+    view is now Databallr's: season logo + team name as the title, the 808px box beside a 400px
+    panel (stacked below 1024px). Panel: "54% of the box filled, 3 of 30. 14 players in the box,
+    worth 17.5 per 100 above replacement" (Σ (DPM + 2) × minutes ÷ 48) and, in place of Databallr's
+    first-unit fit (its own model), our box-weighted ease of fit with its rank; the lacks chips and
+    white line; "What fills the box" (share by style, tick = average of the five fullest rosters);
+    a compact table (shape icon, Player, MPG, DPM, Fit, Box) and "Not drawn" with reasons. Under the
+    box, "Season by season": the franchise's actual fill every season 2000-01 → 2025-26 plus the
+    dashed projection, current season gold, a dashed full-box line when a season passes 100% (the
+    2002-03 and 2006-07 Spurs reach 111–112%). New `GET /api/workbench/roster-shapes/history`
+    (end-of-season DARKO DPM × minutes per team game, era ids folded into franchises; 1.6s cold,
+    cached). The Trade Sandbox, Since 2025-26 and Roster sections follow.
+15. [x] "I think we should also have hover states for each of the player shapes in the roster shape
+    diagram showing key metrics, and a small photo, kind of like databallr has for their 3d viewer
+    (we are doing 2d though)." — every shape, in the grid and the team view, shows a card on hover:
+    headshot, name, "DPM +6.2 · 27.0 mpg · 27.4% of box", then style and fit (and "added" /
+    "departed" in the sandbox and season boxes). The shape gets a dark outline. In team view each
+    shape also takes keyboard focus and shows the same card. The card sits beside the pointer away
+    from the nearer edge, or above/below it when that would leave a phone-width box, always inside.
+    Verification: production 3180 with live data — side by side at 1440 (panel top level with the
+    box), stacked at 390; box square; 27 season bars (26 for 2025-26); hover card with photo inside
+    the viewport at 1440 and 390; no overflow or browser errors (`follow-up-3/verification.jsonl`,
+    hover captures `*-hover-*.png`). Python: history unit test, ruff and mypy clean. Dashboard lint,
+    typecheck, Vitest 593/593; Playwright full suite 490 passed (new hover and side-by-side tests),
+    the two team-view baselines refreshed, no other baseline changed.
+
+Follow-up instructions (owner, 2026-10-19; Databallr's San Antonio view beside ours, and its hover):
+16. [x] "We are still not emulating the side by side roster shape diagram and stats on the left and
+    right respectively. Databallr seems to do this in a more space efficient manner." — the owner's
+    :3100 dev server had been serving a stale `roster-shapes-view.css` (no team-view rules at all),
+    so the team view rendered stacked at every width; cleared by removing and re-adding the import.
+    The layout now uses Databallr's proportions: box and panel at 2.2 : 1 (831px box beside a 378px
+    panel at 1440; Databallr 820 / 375), side by side from 900px (701 / 319 at 1100, 540 / 280 at
+    900), stacked below. The panel is shorter than the box column (893 vs 986px at 1440): the Lacks
+    block folds into "What fills the box" as a "Lacks" tag on each style under 2%, the white-space
+    line moves above "Not drawn", and table rows tighten to 4px × 8px padding.
+17. [x] "When I said I wanted hover state for the diagrams. I meant when you click on a diagram …
+    and it opens the dedicated team page, you can hover your cursor over the shapes and get a
+    highlight on the table on the right and around the shape like databallr does (or even a hover
+    info container on the player, with their picture). What we are currently doing … with hover
+    states in the Roster Shapes page … is not intended." — the grid and Since-last-season boxes
+    lose the hover card and outline (back to the native tooltip). In team view, hovering or
+    focusing a shape outlines it, fades the others to 32% and highlights its table row, and shows
+    the photo card; hovering a table row highlights its shape (no card).
+    Verification: owner's :3100 with live data — side by side at 1440 / 1100 / 900, stacked at 390,
+    no overflow or browser errors; shape hover → 1 active row + card; row hover → 1 active shape, no
+    card; grid hover → no card, no highlight (`follow-up-4/verification.jsonl`, captures
+    `team-sas-*.png`). Dashboard lint, typecheck, Vitest 593/593 (the 4 unhandled
+    `header.test.tsx` animation aborts also occur on HEAD); Playwright full suite 492 passed,
+    28 skipped; only the DEN team-view desktop baseline refreshed.
+
 ### 15 Team Compare — ✅ aligned (first revision)
 
 Owner approval (2026-10-18): "I think it's finished," then approved the closing review: rename the

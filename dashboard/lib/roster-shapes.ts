@@ -151,6 +151,42 @@ export function seasonChanges(previous: ShapeTeam | null, next: ShapeTeam) {
   };
 }
 
+/** Share of the box per archetype (key −1 for unknown) for a roster's drawn players. */
+export function styleShares(entries: { player: ShapePlayer; size: number | null }[], capacity: number): Map<number, number> {
+  const shares = new Map<number, number>();
+  for (const { player, size } of entries) if (size && size > 0) {
+    const key = player.archetype?.primary ?? -1;
+    shares.set(key, (shares.get(key) ?? 0) + size / capacity);
+  }
+  return shares;
+}
+
+/** Average archetype shares of the season's `count` fullest rosters: the tick on "What fills the box". */
+export function fullestAverage(teams: ShapeTeam[], mode: ShapeMode, capacity: number, count = 5): Map<number, number> {
+  const top = sortTeams(teams, "fullest", mode).slice(0, count);
+  const sum = new Map<number, number>();
+  for (const team of top) for (const [key, share] of styleShares(team.roster.map(player => ({ player, size: playerSize(player, mode) })), capacity)) sum.set(key, (sum.get(key) ?? 0) + share / top.length);
+  return sum;
+}
+
+/** Points per 100 above replacement the drawn players add: Σ (DPM − replacement) × minutes ÷ 48. */
+export function valueAbove(entries: { player: ShapePlayer; size: number | null; minutes?: number | null }[], mode: ShapeMode, scale: SizeScale): number {
+  return entries.reduce((sum, { player, size, minutes }) => {
+    if (!size || player.dpm === null) return sum;
+    const dpm = player.dpm + (mode === "playoff" ? player.playoff_shift ?? 0 : 0);
+    return sum + Math.max(0, dpm - scale.replacement_level) * ((minutes ?? player.minutes_per_game ?? 0) / 48);
+  }, 0);
+}
+
+export interface ShapeHistory { version: string; box_net: number; seasons: { season: string; fills: Record<string, number> }[] }
+
+export async function getRosterShapeHistory(params: { releaseId?: string | null }, signal?: AbortSignal): Promise<ShapeHistory> {
+  const query = params.releaseId ? `?${new URLSearchParams({ releaseId: params.releaseId })}` : "";
+  const response = await fetch(`${browserApi}/api/workbench/roster-shapes/history${query}`, { cache: "no-store", signal });
+  if (!response.ok) throw new Error(`Roster Shapes history failed (${response.status}).`);
+  return response.json();
+}
+
 /** Pearson r and the least-squares line y = a + b·x. */
 export function fitLine(points: { x: number; y: number }[]): { r: number; a: number; b: number } | null {
   const n = points.length;

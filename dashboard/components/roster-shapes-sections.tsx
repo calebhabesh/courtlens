@@ -25,15 +25,24 @@ export function teamEntries(team: ShapeTeam, mode: ShapeMode, mark?: (p: ShapePl
 /** What's missing: archetypes under 2% of the box; in team view, the white space as one starter. */
 export function Missing({ entries, data, detailed = false }: { entries: BoxEntry[]; data: RosterShapes; detailed?: boolean }) {
   const missing = missingStyles(entries, data.capacity, data.archetypes.clusters);
+  const lacking = data.archetypes.clusters.filter(c => missing.includes(c.name));
   const fill = fillOf(entries, data.capacity);
   const best = Math.max(...data.teams.flatMap(t => t.roster.map(p => p.dpm ?? -Infinity)));
   const white = whiteAsPlayer(fill, data.capacity, data);
-  return <p className="shapes-missing">
-    {missing.length ? <><span>Lacks</span> {missing.map((name, i) => <span key={name} className="shapes-missing-style">{i > 0 && " · "}{name}</span>)}</> : <span>Every style drawn</span>}
-    {detailed && white !== null && <span className="shapes-missing-white"> · White is {white > best
-      ? `more than any one player adds (the league's best is ${signed(best)} DPM)`
-      : `a ${signed(white)} DPM starter at 34 minutes`}</span>}
-  </p>;
+  // Each missing style is a chip tinted with its archetype colour, so the caption reads like the key.
+  return <div className="shapes-missing">
+    <div className="shapes-missing-row">
+      {lacking.length ? <>
+        <span className="shapes-missing-label">Lacks</span>
+        <ul className="shapes-missing-chips" aria-label="Styles this roster lacks">
+          {lacking.map(c => <li key={c.cluster} className="shapes-chip" title={c.description} style={chartVars({ "--chart-tone": tone(c.cluster) })}>{c.name}</li>)}
+        </ul>
+      </> : <span className="shapes-chip is-complete"><Icon name="check" size={14} />Every style drawn</span>}
+    </div>
+    {detailed && white !== null && <p className="shapes-missing-white">White is {white > best
+      ? <>more than any one player adds (the league&apos;s best is <strong>{signed(best)} DPM</strong>)</>
+      : <>a <strong>{signed(white)} DPM</strong> starter at 34 minutes</>}</p>}
+  </div>;
 }
 
 /** Trade sandbox: add players from any other roster or remove this team's, and redraw the box. */

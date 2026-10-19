@@ -27,7 +27,9 @@ async function mockTeam(page: Page) {
 // Roster Shapes (alignment row 12): the real v2 responses (2026-27 projected and 2025-26), captured
 // from the local API into e2e/fixtures/roster-shapes-v2.json.
 const shapes = JSON.parse(readFileSync(path.resolve(process.cwd(), "e2e/fixtures/roster-shapes-v2.json"), "utf8")) as Record<string, { roster_context: { dataset_id: string } | null; teams: { team_tricode: string; roster: unknown[] }[] }>;
+const history = JSON.parse(readFileSync(path.resolve(process.cwd(), "e2e/fixtures/roster-shapes-history.json"), "utf8"));
 async function mockShapes(page: Page) {
+  await page.route("**/api/workbench/roster-shapes/history*", (route) => route.fulfill({ json: history }));
   await page.route("**/api/workbench/roster-shapes*", (route) => {
     const season = new URL(route.request().url()).searchParams.get("season") ?? "2026-27";
     return shapes[season] ? route.fulfill({ json: shapes[season] }) : route.fulfill({ status: 422, json: { detail: "unsupported season" } });
@@ -44,10 +46,12 @@ test.describe("Roster Shapes", () => {
     await expect(page.getByRole("heading", { level: 1, name: "Roster Shapes" })).toBeVisible();
     await expect(page).toHaveURL(new RegExp(`index=${index}`));
     const grid = page.getByRole("list", { name: "Team roster shapes" });
-    await expect(grid.getByRole("listitem")).toHaveCount(30);
+    await expect(grid.locator(":scope > li")).toHaveCount(30);
     await expect(page.locator("main")).toContainText("Created by @taylormetrics");
     await expect(page.locator("main")).toContainText("The box is a +17.4 team.");
     await expect(page.getByRole("region", { name: "How to read the shapes" })).toContainText("Hardest to fit");
+    // What's missing reads as chips tinted with each style's colour.
+    await expect(grid.locator(":scope > li").first().getByRole("list", { name: "Styles this roster lacks" }).getByRole("listitem").first()).toBeVisible();
     // Fullest first: fills descend down the grid.
     const fills = await grid.locator(".shapes-card-fill").allTextContents();
     const values = fills.map(text => Number(text.replace("%", "")));
@@ -55,11 +59,11 @@ test.describe("Roster Shapes", () => {
     // Unknown and replacement-level players are listed, never drawn.
     const first = shapes["2026-27"].teams.find(t => t.team_tricode === "OKC")!;
     const drawn = (first.roster as { size: number | null }[]).filter(p => p.size !== null && p.size > 0).length;
-    await expect(grid.getByRole("listitem").first().locator("[data-shape-id]")).toHaveCount(drawn);
+    await expect(grid.locator(":scope > li").first().locator("[data-shape-id]")).toHaveCount(drawn);
 
     await page.getByRole("radio", { name: "A–Z" }).click();
     await expect(page).toHaveURL(/sort=az/);
-    await expect(grid.getByRole("listitem").first()).toContainText("Atlanta Hawks");
+    await expect(grid.locator(":scope > li").first()).toContainText("Atlanta Hawks");
     await page.getByRole("radio", { name: "Best fit" }).click();
     await expect(page).toHaveURL(/sort=fit/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -73,7 +77,15 @@ test.describe("Roster Shapes", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await mockShapes(page);
     await openWorkbench(page, "/roster-shapes?team=SAS");
-    await expect(page.getByRole("list", { name: "Team roster shapes" }).getByRole("listitem")).toHaveCount(1);
+    // Databallr's side by side: the team as the title, its box beside the summary panel.
+    await expect(page.getByRole("heading", { level: 1, name: "San Antonio Spurs" })).toBeVisible();
+    await expect(page.locator(".shapes-team-main .shapes-box [data-shape-id]").first()).toBeVisible();
+    const panel = page.getByRole("complementary", { name: "San Antonio Spurs roster summary" });
+    await expect(panel).toContainText("of the box filled");
+    await expect(panel.getByRole("region", { name: "What fills the box" })).toContainText("Stretch big");
+    await expect(page.getByRole("region", { name: "Season by season" }).locator("rect")).toHaveCount(27);
+    const box = (await page.locator(".shapes-team-main .shapes-box").boundingBox())!, side = (await panel.boundingBox())!;
+    expect(side.x).toBeGreaterThan(box.x + box.width);
     await expect(page.getByRole("combobox", { name: "Team" })).toHaveValue("SAS");
     const sas = shapes["2026-27"].teams.find(t => t.team_tricode === "SAS")!;
     const table = page.getByRole("region", { name: "San Antonio Spurs roster" });
@@ -84,16 +96,17 @@ test.describe("Roster Shapes", () => {
     await expect(page).toHaveURL(/mode=playoff/);
     await expect(table.locator("thead")).toContainText("PO shift");
     await page.getByRole("combobox", { name: "Team" }).selectOption("");
-    await expect(page.getByRole("list", { name: "Team roster shapes" }).getByRole("listitem")).toHaveCount(30);
+    await expect(page.getByRole("list", { name: "Team roster shapes" }).locator(":scope > li")).toHaveCount(30);
   });
 
   test("team view: what's missing, a trade sandbox, changes since last season and a share image", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await mockShapes(page);
     await openWorkbench(page, "/roster-shapes?team=SAS");
-    const card = page.getByRole("list", { name: "Team roster shapes" }).getByRole("listitem");
-    await expect(card.locator(".shapes-missing")).toContainText("White is");
-    const fill = async () => Number((await card.locator(".shapes-card-fill").textContent())!.replace("%", ""));
+    const card = page.locator(".shapes-team-main");
+    await expect(page.locator(".shapes-panel")).toContainText("White is");
+    await expect(page.locator(".shapes-panel-fills .shapes-fill-lacks").first()).toHaveText("Lacks");
+    const fill = async () => Number((await page.locator(".shapes-panel-figures strong").first().textContent())!.replace("%", ""));
     const before = await fill();
 
     // Sandbox: add the league's biggest shape from another roster, then remove it again.
@@ -119,6 +132,35 @@ test.describe("Roster Shapes", () => {
     expect((await download).suggestedFilename()).toBe("courtlens-roster-shape-sas-2026-27.png");
   });
 
+  test("team view: hovering a shape highlights its table row and shows the player's card", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await mockShapes(page);
+    await openWorkbench(page, "/roster-shapes?team=SAS");
+    await page.locator('.shapes-team-main [data-shape-id="1641705"] path').hover();
+    const card = page.getByRole("tooltip");
+    await expect(card).toContainText("Victor Wembanyama");
+    await expect(card).toContainText(/DPM \+\d\.\d · \d+\.\d mpg · \d+\.\d% of box/);
+    await expect(card.locator("img, .player-portrait-fallback")).toHaveCount(1);
+    // Linked: the shape outlined, the others faded, its table row highlighted.
+    const table = page.locator(".shapes-panel-table");
+    await expect(page.locator(".shapes-team-main .shapes-shape.is-active")).toHaveAttribute("data-shape-id", "1641705");
+    await expect(table.locator("tr.is-active")).toContainText("Victor Wembanyama");
+    // And the reverse: hovering a row highlights its shape, without the card.
+    await table.locator("tbody tr").nth(1).hover();
+    await expect(page.locator(".shapes-team-main .shapes-shape.is-active")).toHaveCount(1);
+    await expect(table.locator("tr.is-active")).toHaveCount(1);
+    // Keyboard: each shape in team view takes focus and shows the same card.
+    await page.mouse.move(0, 0);
+    await expect(card).toHaveCount(0);
+    await page.locator('.shapes-team-main [data-shape-id="1641705"]').focus();
+    await expect(page.getByRole("tooltip")).toContainText("Victor Wembanyama");
+    // The grid's boxes have no hover card or highlight.
+    await openWorkbench(page, "/roster-shapes");
+    await page.locator('.shapes-grid [data-shape-id="1641705"] path').hover();
+    await expect(page.getByRole("tooltip")).toHaveCount(0);
+    await expect(page.locator(".shapes-grid .shapes-shape.is-active")).toHaveCount(0);
+  });
+
   test("2025-26 shows the season's actual rosters", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await mockShapes(page);
@@ -133,7 +175,7 @@ test.describe("Roster Shapes", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await mockShapes(page);
     await openWorkbench(page, "/roster-shapes");
-    const cards = page.getByRole("list", { name: "Team roster shapes" }).getByRole("listitem");
+    const cards = page.getByRole("list", { name: "Team roster shapes" }).locator(":scope > li");
     await expect(cards).toHaveCount(30);
     const [a, b] = [await cards.nth(0).boundingBox(), await cards.nth(1).boundingBox()];
     expect(b!.y).toBeGreaterThan(a!.y + a!.height - 1);

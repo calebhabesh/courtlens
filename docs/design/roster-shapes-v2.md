@@ -82,10 +82,26 @@ area equals size). Deterministic.
 - **Sparse layout:** a roster whose footprints fit in even rows is dealt across rows (middle row
   first, largest mid-row), rows and shapes spaced evenly; otherwise the outline packer runs.
 
+## Team view and hover (row 12, follow-ups 14–17)
+
+The team view follows Databallr's: the box beside a panel at about 2.2 : 1 (side by side from 900px,
+stacked below), the panel holding fill and rank; value above replacement Σ (DPM + 2) × minutes ÷ 48;
+box-weighted ease of fit and rank; share of the box by style with a tick at the five fullest
+rosters' average, styles under 2% flagged "Lacks"; a compact player table; what the white space is
+worth; players not drawn. "Season by season" sits under the box: the franchise's actual fill each
+season from `/roster-shapes/history` plus the projection.
+
+Hover is linked and lives only in team view: hovering or focusing a shape outlines it, fades the
+other shapes and highlights its table row, with a card (headshot, DPM, minutes, box share, style,
+fit) beside the pointer; hovering a table row highlights its shape without the card. The league
+grid and the Since-last-season boxes have no hover state beyond the native tooltip.
+
 ## Serving
 
 `GET /api/workbench/roster-shapes` (`season`, `datasetId`, `releaseId`) returns 30 teams with
 fills, both sizes per player and the method constants; 422 for other seasons, 503 without the
 archetype manifest or DARKO bundle. Responses are cached per (season, index, release, DARKO seal).
+`GET /api/workbench/roster-shapes/history` (`releaseId`) returns every franchise's fill for each
+regular season with a sealed DARKO snapshot (2000-01 → 2025-26), keyed by current franchise id.
 `/roster-shapes/{TEAM}` redirects to `/roster-shapes?team=TEAM`; `?view=depth` opens the team
 profile, whose Depth Chart section is the FO05 allocation view.
