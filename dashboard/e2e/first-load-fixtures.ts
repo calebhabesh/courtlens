@@ -31,3 +31,18 @@ export async function offSeasonFixtures(page: Page) {
     return route.fulfill({json:{namespace:"espn",status:"observed",data:{games:[]},paused:false,stale:false,age_seconds:0,error:null}});
   });
 }
+
+// Last X Games (alignment row 6): real Shai Gilgeous-Alexander 2025-26 regular season (68 games,
+// +/- from accepted stints). Other players fall through to the mock API; earlier seasons have no games.
+export const lastGames=JSON.parse(readFileSync("e2e/fixtures/last-games-v1.json","utf8"));
+export const SGA="1628983";
+export async function lastGamesFixtures(page: Page) {
+  await page.route(`**/api/workbench/players/${SGA}/games?*`,route=>{
+    const url=new URL(route.request().url());
+    if(url.searchParams.get("season")!=="2025-26"||url.searchParams.get("phase")!=="regular_season") return route.fulfill({status:404,json:{detail:"player not found in snapshot"}});
+    return route.fulfill({json:lastGames.regular_season});
+  });
+  // Follow-ups 25 and 28: OKC's real schedule (result, score, rest) and every team's defensive rating.
+  await page.route("**/api/workbench/teams/OKC/schedule?*",route=>route.fulfill({json:lastGames.team_schedule}));
+  await page.route("**/api/workbench/teams?*",route=>route.fulfill({json:lastGames.teams}));
+}

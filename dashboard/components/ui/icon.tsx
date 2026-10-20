@@ -7,7 +7,8 @@ import {
   ChartNoAxesColumn, ChartNoAxesCombined, ChartScatter, Minimize2, Pin, PinOff, UserRound, Users, CirclePlus, CircleCheck,
   GraduationCap, ArrowDownAZ, ArrowDownZA, Activity, Banknote, Trophy, Medal, UserRoundPen,
   Building2, Shapes, DollarSign, House, Swords, ChartPie, Split, UserCheck,
-  ChartLine, Crown, FingerprintPattern, LayoutDashboard, ListOrdered, Rows3
+  ChartLine, Crown, FingerprintPattern, LayoutDashboard, ListOrdered, Rows3,
+  Heart, TrendingDown, BookOpen, Minus
 } from "lucide-react";
 
 // D26: Lucide only, always through this wrapper (lint bans `lucide-react` elsewhere). One stroke
@@ -30,7 +31,8 @@ const icons = {
   medal: Medal, "user-edit": UserRoundPen, building: Building2, shapes: Shapes, dollar: DollarSign, home: House, swords: Swords,
   pie: ChartPie, split: Split, "user-check": UserCheck,
   "chart-trend": ChartLine, crown: Crown, fingerprint: FingerprintPattern, dashboard: LayoutDashboard,
-  "list-ordered": ListOrdered, tiers: Rows3
+  "list-ordered": ListOrdered, tiers: Rows3,
+  heart: Heart, "trend-down": TrendingDown, book: BookOpen, minus: Minus
 };
 
 export type IconName = keyof typeof icons;
