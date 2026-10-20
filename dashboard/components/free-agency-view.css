@@ -22,8 +22,9 @@
   .fa-summary-notes { grid-column: 6; display: grid; }
   .fa-summary-note { display: flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
   .fa-summary-note[data-stale] { color: var(--color-brand); }
-  .fa-market { grid-column: 1 / 6; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-  .fa-market strong { color: var(--color-accent); font-size: var(--text-sm); letter-spacing: 0; }
+  /* The bar stops a gap short of its number, which reads at body size (owner, follow-up 27). */
+  .fa-market { grid-column: 1 / 6; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3) var(--space-5); padding-right: var(--space-6); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .fa-market strong { color: var(--color-accent); font-size: var(--text-lg); line-height: var(--text-lg-lh); letter-spacing: 0; font-variant-numeric: tabular-nums; }
   .fa-market-track { position: relative; height: var(--space-1); overflow: hidden; border-radius: var(--radius-pill); background: var(--color-surface-2); }
   .fa-market-track span { position: absolute; inset-block: 0; left: 0; width: var(--moved); border-radius: inherit; background: var(--color-accent); }
 
@@ -43,10 +44,12 @@
   }
   .fa-table.stats-workspace .fa-scroll.stats-scroll-region { height: auto; max-height: min(75dvh, 880px); }
   /* Sized to the page's 1240px: the source note takes what the fixed columns leave. */
-  .fa-grid { --fa-name-width: 232px; --table-min-width: calc(var(--fa-name-width) + 7 * 64px + 112px + 236px + 200px); }
+  /* Movement gets the room (owner, follow-up 26): 124px status and 300px team, from narrower number
+     columns. Text in the table wraps instead of clipping when a note is still longer. */
+  .fa-grid { --fa-name-width: 220px; --table-min-width: calc(var(--fa-name-width) + 7 * 56px + 124px + 300px + 204px); }
   .fa-grid .fa-name-column { width: var(--fa-name-width); }
-  .fa-grid col:not(.fa-name-column, .fa-col-status, .fa-col-team, .fa-col-source) { width: 64px; }
-  .fa-grid .fa-col-status { width: 112px; } .fa-grid .fa-col-team { width: 236px; }
+  .fa-grid col:not(.fa-name-column, .fa-col-status, .fa-col-team, .fa-col-source) { width: 56px; }
+  .fa-grid .fa-col-status { width: 124px; } .fa-grid .fa-col-team { width: 300px; }
   .fa-grid .group-start { border-left: 1px solid var(--color-hairline-strong); }
   .fa-table :is(th.fa-name) {
     position: sticky; left: 0; z-index: var(--z-sticky);
@@ -56,12 +59,14 @@
   .fa-table thead th.fa-name { z-index: var(--z-sticky-corner); }
   .fa-table tbody th.fa-name { padding: var(--space-1) var(--space-2); font-weight: 600; font-size: var(--text-sm); text-transform: none; letter-spacing: 0; }
   .fa-table .player-cell > .team-logo, .fa-logo-gap { flex: 0 0 20px; }
+  /* Never clipped here: long names and tag lines wrap (owner, follow-up 26). */
+  .fa-table.stats-workspace .fa-grid :is(.player-cell-name, .player-cell-teams) { overflow: visible; white-space: normal; text-overflow: clip; }
   .fa-player { display: block; min-width: 0; color: var(--color-text); text-decoration: none; }
   .fa-player:is(:hover, :focus-visible) .player-cell-name { color: var(--color-accent); }
 
   /* Text cells: a value over a quieter second line, as Stats puts a percentile under its value. */
   .fa-grid tbody td.stats-metric-cell:is(.fa-status-cell, .fa-move-cell) small,
-  .fa-move-note { display: block; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
+  .fa-move-note { display: block; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-wrap: balance; }
   .fa-status { font-weight: 600; color: var(--color-text-secondary); }
   .fa-status[data-status="signed"] { color: var(--color-accent); }
   .fa-status[data-status="returned"] { color: var(--color-info); }
@@ -70,15 +75,15 @@
   .fa-move strong { color: var(--color-text); font-weight: 600; }
   .fa-move > span { color: var(--color-text-secondary); }
   /* A change from NBA.com adds an icon and a label, never colour alone. */
-  .fa-roster-flag { display: flex; align-items: center; justify-content: center; gap: var(--space-1); color: var(--color-brand); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; white-space: nowrap; }
+  .fa-roster-flag { display: flex; align-items: center; justify-content: center; gap: var(--space-1); color: var(--color-brand); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-wrap: balance; }
   .fa-roster-flag svg { flex: none; }
   .fa-terms { color: var(--color-text-tertiary); }
   /* Linked notes read as figures in the text colour, keeping their link and tooltip. */
-  .fa-source { overflow: hidden; }
-  .fa-source span { display: block; min-width: 0; overflow: hidden; color: var(--color-text-secondary); text-overflow: ellipsis; white-space: nowrap; }
+  .fa-source span { display: block; min-width: 0; color: var(--color-text-secondary); text-wrap: balance; }
   .fa-source a { display: flex; align-items: center; justify-content: center; gap: var(--space-1); min-width: 0; text-decoration: none; }
   .fa-source a span, .fa-source a { color: var(--color-text); }
-  .fa-source a svg { flex: none; }
+  /* The link icon trails the last word, so a wrapped note keeps it beside the text. */
+  .fa-source a svg { display: inline; margin-left: var(--space-1); vertical-align: -2px; }
   .fa-source a:hover :is(span, svg) { color: var(--color-accent); }
   .fa-provenance { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
 

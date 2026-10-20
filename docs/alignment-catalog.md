@@ -2228,6 +2228,22 @@ Follow-up instructions (owner, 2026-10-20; Free Agency screenshots, the Stats ta
     visual baselines 109/111, then the two Free Agency baselines refreshed (desktop was already
     stale from follow-ups 15–21). Evidence: `docs/evidence/alignment/contracts/free-agency-table/`.
 
+Follow-up instructions (owner, 2026-10-20; screenshots of the table and summary card):
+26. [x] "I'm noticing text clipping for the amber text. We need to extend the horizontal space for
+    'Movement' section, and never let text clip, instead if we run out of space after this
+    extension, just wrap." — Movement widened to 124px status + 300px team (from 112 + 236),
+    paid for by 56px number columns (from 64) and a 220px name column (from 232). Nothing in
+    the table truncates any more: move notes, NBA.com flags, source notes, names and tag lines
+    wrap (balanced); a wrapped source note keeps its link icon after the last word.
+27. [x] "The market moved end of bar number is too small. Shorten the bar so we can get a slightly
+    bigger number." — the percentage is 16px (`--text-lg`, from ~11px) and the bar ends 20px
+    before it, with extra room before the captions column.
+    Verification: production sandbox 3180 with live data through the read-only proxy; a DOM scan
+    of every body cell found 0 clipped or spilling elements at 1440, 1308 (the owner's width) and
+    390, and no page overflow. Free Agency spec passes on the mock; lint, typecheck, Vitest
+    603/603; the two Free Agency visual baselines refreshed, all others unchanged.
+    Evidence: `docs/evidence/alignment/contracts/free-agency-wrap/`.
+
 ### 15 Team Compare — ✅ aligned (first revision)
 
 Owner approval (2026-10-18): "I think it's finished," then approved the closing review: rename the

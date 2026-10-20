@@ -97,7 +97,7 @@ function Row({ player, roster, moves }: { player: FreeAgent; roster: RosterIndex
     <td className="stats-metric-cell num">{player.experience ?? "—"}</td>
     <td className="stats-metric-cell group-start fa-terms" title="Deal terms are not on the source">—</td>
     <td className="stats-metric-cell fa-source">{player.note && player.note_url
-      ? <a href={player.note_url} target="_blank" rel="noreferrer" title={player.note}><span>{player.note}</span><Icon name="external" size={14} /></a>
+      ? <a href={player.note_url} target="_blank" rel="noreferrer" title={player.note}><span>{player.note}<Icon name="external" size={14} /></span></a>
       : <span>{player.note ?? "NBA tracker"}</span>}</td>
   </tr>;
 }
