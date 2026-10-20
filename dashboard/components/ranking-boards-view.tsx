@@ -1,6 +1,7 @@
 "use client";
 
 import { GatedNote } from "./ui/gated-note";
+import { seasonEra } from "@/lib/portrait-source";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { LookupInput } from "./lookup-input";
@@ -631,6 +632,7 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
                                 playerId={entry.player_id}
                                 name={entry.player_name || `Player #${entry.player_id}`}
                                 size="sm"
+                                era={seasonEra(referenceData?.query.season, referencePlayers.get(entry.player_id)?.teams)}
                               />
                               <div>
                                 <Link

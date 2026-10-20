@@ -36,31 +36,35 @@ class Settings(BaseSettings):
     bdl_requests_per_minute: int = Field(default=5, ge=1, le=600)
     raw_store_path: Path = Path("data/raw")
     artifacts_root: Path = Path("data/artifacts")
-    impact_serving_manifest: Path | None = Path(
-        "data/derived/impact-serving-v1/2cd9c98b2594d948edc2c574e082e1b8b06ff4d6bfeca294f87e8062eae76d48.json"
-    )
-    # Per-team extras for team-filtered rows (scripts/build_impact_team_splits.py).
-    impact_team_splits_manifest: Path | None = Path(
-        "data/derived/impact-team-splits-v1/b78075aa43877cd2093a0d430421976427dfdf71fd30b1bbd854024069338395.json"
-    )
+    # A directory serves its `.current` bundle (moved by the weekly provisional impact run) or its
+    # only one; a file pins one (services/served_bundle.py).
+    impact_serving_manifest: Path | None = Path("data/derived/impact-serving-v1")
+    # Per-team extras for team-filtered rows (scripts/build_impact_team_splits.py), resolved alike.
+    impact_team_splits_manifest: Path | None = Path("data/derived/impact-team-splits-v1")
     position_estimates_manifest: Path | None = Path(
         "data/derived/position-estimates-v1/1f8c19f2f4f27e2322d80e59fbe1fa519d299bb970d6cdc60aa2d8febe572a00.json"
     )
-    # Sealed by `courtlens refresh-darko`; absent means DPM columns stay unknown.
-    darko_manifest: Path | None = Path(
-        "data/derived/darko-dpm-v2/01e072c35b2a6dd2f0fe468dce9b0a3df0261e0f36689a8c27c3713e5ee45cf0.json"
+    # Sealed by `courtlens refresh-darko` and the daily `refresh-darko-daily`; a directory serves
+    # its newest bundle, a file pins one. Absent means DPM columns stay unknown.
+    darko_manifest: Path | None = Path("data/derived/darko-dpm-v2")
+    # `courtlens refresh-espn-rosters` seals here; the newest intact bundle is served.
+    espn_rosters_dir: Path | None = Path("data/derived/espn-rosters-v1")
+    # `courtlens refresh-contracts` records here when it last confirmed the newest refresh.
+    contracts_check_dir: Path | None = Path("data/derived/contracts-checks")
+    # `courtlens refresh-wikipedia-transactions` seals here; Free Agency reads the newest bundle.
+    wikipedia_transactions_dir: Path | None = Path("data/derived/wikipedia-transactions-v1")
+    # Sealed by `courtlens refresh-free-agency`; absent means the tracker reads not_configured.
+    free_agency_manifest: Path | None = Path(
+        "data/derived/free-agency-v1/9af16a45e65bd0ac876c635afe65e856545415c27538da8077d6212b136fda58.json"
     )
     value_archetypes_manifest: Path | None = Path(
         "data/derived/value-archetypes-v1/serving/5caeb935e21fce5842fb5ebb33c7ad515cb550eb2021b88886ca3e7b5b6e2f7e.json"
     )
-    wowy_manifest: Path | None = Path(
-        "data/derived/wowy-v1/89ebf089f98a06422ccb51b3a0cb253a4b09eb355b0f758c6a2b067192ad49f4.json"
-    )
+    # Directories resolve like impact serving (services/served_bundle.py); a file pins one.
+    wowy_manifest: Path | None = Path("data/derived/wowy-v1")
     # Sealed by `courtlens.evaluation.stint_box_runner`; absent means focal stats beyond points
     # stay unknown for IM03 stints.
-    stint_box_manifest: Path | None = Path(
-        "data/derived/stint-box-v1/manifest/1badc23c325051d543d9c730ca068b84038777fea2b2432a83c1a304cb79523e.json"
-    )
+    stint_box_manifest: Path | None = Path("data/derived/stint-box-v1/manifest")
     portraits_cache_path: Path = Path("data/cache/portraits")
     operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
     live_enabled: bool = False

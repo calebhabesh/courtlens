@@ -26,8 +26,11 @@ from courtlens.services.player_context_ingestion import (
     ContextFetcher,
     admit_context,
     capture_local,
+    latest_index,
+    refresh_player_index,
     source_url,
 )
+from courtlens.workbench_models import WorkbenchAcquisition
 
 HEADERS = [
     "PERSON_ID",
@@ -350,3 +353,42 @@ def test_pdf_extraction_preserves_report_columns() -> None:
     body += f"trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode()
     parsed = parse_injury_text(pdf_text(body), "2026-27")
     assert len(parsed.rows) == 2 and parsed.rows[0][1]["status"] == "Out"
+
+
+def test_scheduled_index_refresh_admits_only_changed_roster_rows(
+    session: Session, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr("courtlens.services.source_acquisition.time.sleep", lambda _: None)
+    state = {"revision": "a" * 40, "body": index_body()}
+    fetched: list[str] = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        if request.url.host == "api.github.com":
+            assert request.url.params["path"] == "nba_stats/json/playerindex/2027.json"
+            return httpx.Response(200, json=[{"sha": state["revision"]}])
+        if request.url.path == "/robots.txt":
+            return httpx.Response(404)
+        fetched.append(request.url.path)
+        return httpx.Response(200, content=state["body"])
+
+    root = tmp_path / "store"
+    with httpx.Client(transport=httpx.MockTransport(respond)) as client:
+        first = refresh_player_index(session, root, client, "2026-27")
+        # Same hoopR commit: nothing is downloaded.
+        same = refresh_player_index(session, root, client, "2026-27")
+        # A new commit whose roster rows match (only PTS moved) admits nothing, keeps no bytes.
+        state |= {"revision": "b" * 40, "body": index_body(pts=25)}
+        stats_only = refresh_player_index(session, root, client, "2026-27")
+        state |= {"revision": "c" * 40, "body": index_body(1610612738, "BOS")}
+        moved = refresh_player_index(session, root, client, "2026-27")
+    assert first["changed"] and moved["changed"] and moved["dataset_id"] != first["dataset_id"]
+    assert (same["changed"], same["fetched"]) == (False, False)
+    assert (stats_only["changed"], stats_only["fetched"]) == (False, True)
+    assert stats_only["dataset_id"] == first["dataset_id"] and len(fetched) == 3
+    assert session.scalar(select(func.count()).select_from(PlayerContextDataset)) == 2
+    kept = session.scalars(
+        select(WorkbenchAcquisition).where(WorkbenchAcquisition.resource == "player_context")
+    ).all()
+    assert sorted(r.artifact_id is not None for r in kept) == [False, True, True]
+    latest = latest_index(session, "2026-27")
+    assert latest is not None and dataset_rows(session, latest)[0]["team_tricode"] == "BOS"

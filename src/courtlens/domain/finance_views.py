@@ -40,12 +40,27 @@ class TeamContractPlayer(QueryModel):
     source_url: str | None
     source_locator: str | None
     reference: ReferenceImpact | None
+    # DARKO's latest board (Small vs Big): its market value in whole dollars and its DPM.
+    darko_value_dollars: int | None = None
+    darko_dpm: float | None = None
+
+
+class DarkoValueContext(QueryModel):
+    """The sealed DARKO board the market values come from; never a CourtLens estimate."""
+
+    season: str
+    as_of: str
+    data_date: str
+    source: str
+    raw_sha256: str
 
 
 class RefreshContext(QueryModel):
     refresh_id: str
     season: str
     observed_at: datetime
+    # When the daily refresh last confirmed this is still the newest contracts data.
+    checked_at: datetime | None = None
     state: Literal["partial", "verification_blocked"]
     book_id: str | None
     roster_dataset_id: str
@@ -70,6 +85,7 @@ class TeamContractsResponse(QueryModel):
     reference_season: str
     statistics_release_id: str | None
     impact_version: str | None
+    darko: DarkoValueContext | None = None
     limitations: tuple[str, ...]
 
 

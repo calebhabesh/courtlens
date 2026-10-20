@@ -117,6 +117,7 @@ DL01 verified this with `scripts/verify-contrast.py`; v1.3 (blue background) re-
 | `--color-identity-a-soft` / `--color-identity-b-soft` | 12% of the corresponding identity color | Identity backgrounds |
 | `--color-percentile-1` … `-5` | `#172d43`, `#20415e`, `#2b567c`, `#386b96`, `#3e729b` | Increasing already-oriented percentile, five bands of 20; 100 uses band 5 |
 | `--color-category-1` … `-6` | `#ffd166`, `#80bfff`, `#c5a3ff`, `#79d4c6`, `#f6a5c0`, `#d0d788` | Labeled categories such as archetypes; no rank |
+| `--color-trend-1` … `-8` | `#3987e5`, `#d95926`, `#199e70`, `#c98500`, `#d55181`, `#008300`, `#9085e9`, `#e66767` | Chart series in fixed order (dataviz reference dark slots; validated on surface-2 and the glass panel). Use these when slices or series sit side by side: the pastel categories are too close in hue (owner, alignment row 14). Slots 1-3 alone pass all-pairs; past eight, fold into Other |
 | `--color-status-guaranteed` | `#80bfff` | Guaranteed contract |
 | `--color-status-reported` | `#d0d788` | Reported salary without an option marker; guarantee state unknown (PC08) |
 | `--color-status-player-option` | `#c5a3ff` | Player option |

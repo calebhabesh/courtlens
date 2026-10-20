@@ -8,15 +8,18 @@ itself refuses (HTTP 403/429) still stops the run; nothing here evades a refusal
 from __future__ import annotations
 
 import hashlib
+import json
+import os
 import time
 from collections.abc import Callable
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from typing import Any
 from urllib.parse import urlsplit
 from urllib.robotparser import RobotFileParser
 
 import httpx
-from sqlalchemy import select, text
+from sqlalchemy import delete, select, text
 from sqlalchemy.orm import Session
 
 from courtlens.domain.source_policy import POLICY_VERSION, USER_AGENT
@@ -24,6 +27,10 @@ from courtlens.models import utc_now
 from courtlens.workbench_models import WorkbenchAcquisition, WorkbenchArtifact
 
 MAX_BYTES = 16_000_000
+# Scheduled refreshes keep bytes only when the data changed, then prune bounded history after
+# this many days (hosted on a shared VPS within its block-storage budget: docs/deployment.md).
+KEEP_DAYS = 30
+HEARTBEAT = ".checked"
 
 
 def retain(
@@ -71,9 +78,19 @@ class ScheduledFetcher:
         kinds: dict[str, str],
         validate_url: Callable[[str, str, str], float],
         max_bytes: int = MAX_BYTES,
+        robots_optional_hosts: frozenset[str] = frozenset(),
+        retain_bodies: bool = True,
     ) -> None:
         self.session, self.root, self.client = session, root, client
         self.max_bytes = max_bytes
+        # Hosts that serve no robots.txt to any client (an edge 403 on that one path). Policy v3
+        # records robots but never refuses on it, so these continue; a 403/429 on the resource
+        # itself still stops the host.
+        self.robots_optional_hosts = robots_optional_hosts
+        # False: the receipt records each body's SHA-256 and size, and the caller retains only
+        # the bodies it keeps (`bodies` holds this run's bytes by receipt id).
+        self.retain_bodies = retain_bodies
+        self.bodies: dict[str, bytes] = {}
         self.resource, self.kinds, self.validate_url = resource, kinds, validate_url
         self.last_start: dict[str, float] = {}
         self.stopped: set[str] = set()
@@ -183,8 +200,11 @@ class ScheduledFetcher:
             }
             receipt.metadata_json = meta
             if robots.status_code not in (200, 404, 410):
-                self.stopped.add(host)
-                raise ValueError(f"robots.txt unavailable: HTTP {robots.status_code}")
+                if host not in self.robots_optional_hosts:
+                    self.stopped.add(host)
+                    raise ValueError(f"robots.txt unavailable: HTTP {robots.status_code}")
+                self.stopped.discard(host)
+                meta = {**meta, "robots_unavailable": True}
             previous = self.session.scalar(
                 select(WorkbenchAcquisition)
                 .where(
@@ -209,16 +229,22 @@ class ScheduledFetcher:
             interval = max(interval, float(parser.crawl_delay(USER_AGENT) or 0))
             response = self._get(url, interval)
             receipt.http_status = response.status_code
-            artifact = retain(
-                response.content,
-                self.root,
-                self.resource,
-                source,
-                self.session,
-                response.headers.get("content-type", "application/octet-stream"),
-            )
-            receipt.artifact_id, receipt.bytes = artifact.id, artifact.bytes
-            receipt.content_sha256 = artifact.sha256
+            if self.retain_bodies:
+                artifact = retain(
+                    response.content,
+                    self.root,
+                    self.resource,
+                    source,
+                    self.session,
+                    response.headers.get("content-type", "application/octet-stream"),
+                )
+                receipt.artifact_id, receipt.bytes = artifact.id, artifact.bytes
+                receipt.content_sha256 = artifact.sha256
+            else:
+                receipt.bytes = len(response.content)
+                receipt.content_sha256 = hashlib.sha256(response.content).hexdigest()
+                self.session.flush()
+                self.bodies[receipt.id] = response.content
             if response.status_code != 200:
                 raise ValueError(f"source HTTP {response.status_code}; no retry")
             receipt.metadata_json = {
@@ -232,3 +258,52 @@ class ScheduledFetcher:
         receipt.finished_at = utc_now()
         self.session.flush()
         return receipt
+
+
+def keep_body(fetcher: ScheduledFetcher, receipt: WorkbenchAcquisition, mime: str) -> None:
+    """Retain a store-on-change run's body and point its receipt at it (caller commits)."""
+    artifact = retain(
+        fetcher.bodies[receipt.id],
+        fetcher.root,
+        fetcher.resource,
+        receipt.source_name,
+        fetcher.session,
+        mime,
+    )
+    receipt.artifact_id = artifact.id
+
+
+def write_heartbeat(directory: Path, payload: dict[str, Any]) -> None:
+    """Overwrite a few hundred bytes each run: when the served data was last confirmed."""
+    directory.mkdir(parents=True, exist_ok=True)
+    tmp = directory / f"{HEARTBEAT}.tmp"
+    tmp.write_text(json.dumps(payload, sort_keys=True))
+    os.replace(tmp, directory / HEARTBEAT)
+
+
+def read_heartbeat(directory: Path) -> dict[str, Any] | None:
+    try:
+        beat = json.loads((directory / HEARTBEAT).read_text())
+    except (OSError, ValueError):
+        return None
+    return beat if isinstance(beat, dict) else None
+
+
+def prune_receipts(session: Session, source: str, keep_days: int, now: datetime) -> int:
+    """Drop one source's receipts of unchanged runs (no retained bytes) older than the window.
+
+    Receipts of changed runs keep pointing at what was sealed from them; an unchanged run's
+    receipts only said "still the same", which the newer heartbeat already says.
+    """
+    result = session.execute(
+        delete(WorkbenchAcquisition)
+        .where(
+            WorkbenchAcquisition.source_name == source,
+            WorkbenchAcquisition.artifact_id.is_(None),
+            WorkbenchAcquisition.finished_at < now - timedelta(days=keep_days),
+        )
+        # SQL decides; the in-memory evaluator cannot compare SQLite's naive timestamps.
+        .execution_options(synchronize_session=False)
+    )
+    session.commit()
+    return int(getattr(result, "rowcount", 0) or 0)

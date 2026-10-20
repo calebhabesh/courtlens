@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime
+from datetime import date as Date
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -300,10 +301,31 @@ class PlayerBioCurrentTeam(BaseModel):
 
     team_id: str
     team_tricode: str | None
-    listing_season: str
+    listing_season: str | None = None
     index_refreshed_at: datetime | None = None
+    # The roster source that places the player: ESPN rosters, the NBA player index or Wikipedia.
+    listing_source: str | None = None
     trade_date: date | None = None
     trade_source_url: str | None = None
+
+
+class PlayerCurrentMove(BaseModel):
+    """The player's latest Wikipedia move (offseason transactions page)."""
+
+    kind: str
+    date: Date | None = None  # the field name shadows the type inside the class body
+    club: str | None = None
+    country: str | None = None
+    team_tricode: str | None = None
+
+
+class PlayerCurrentStatus(BaseModel):
+    """A player the sources place on no NBA roster today (the free-agency tracker's evidence)."""
+
+    state: Literal["free_agent", "abroad", "retired"]
+    source: str | None = None
+    as_of: datetime | None = None
+    move: PlayerCurrentMove | None = None
 
 
 class PlayerResearchItem(BaseModel):
@@ -326,6 +348,8 @@ class PlayerResearchItem(BaseModel):
     position: Literal["PG", "SG", "SF", "PF", "C"] | None = None
     # Who the player is listed with today (active players); the row's teams stay its games' teams.
     current_team: PlayerBioCurrentTeam | None = None
+    # Set instead when the player is on no NBA roster today (free agent, abroad or retired).
+    current_status: PlayerCurrentStatus | None = None
 
 
 class DraftClass(BaseModel):
@@ -727,6 +751,7 @@ class PlayerBioResponse(BaseModel):
     undrafted: bool
     combine: PlayerBioCombine | None
     current_team: PlayerBioCurrentTeam | None = None
+    current_status: PlayerCurrentStatus | None = None
     last_team: PlayerBioCurrentTeam | None = None
     reference: PlayerBioReference | None = None
     limitations: list[str]

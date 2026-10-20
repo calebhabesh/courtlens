@@ -72,6 +72,10 @@ Clusters = dict[str, dict[str, tuple[float, float]]]
 RowValue = Callable[[FloorRow], float | None]
 
 
+# Sealed IM03 seasons and the weekly provisional current season (services/season_impact.py).
+IMPACT_NAMESPACES = ("courtlens-impact", "courtlens-impact-provisional")
+
+
 def _stat(key: str) -> RowValue:
     def read(r: FloorRow) -> float | None:
         value = r.get("stats", {}).get(key)
@@ -378,20 +382,25 @@ def stint_dataset_id(session: Session, context: ResolvedContext) -> str | None:
     )
     if own is not None:
         return context.dataset_id
-    sealed = sorted(
-        (
-            d
-            for d in session.scalars(
-                select(WorkbenchDataset).where(
-                    WorkbenchDataset.source_namespace == "courtlens-impact",
-                    WorkbenchDataset.status == "ready",
-                )
+    candidates = [
+        d
+        for d in session.scalars(
+            select(WorkbenchDataset).where(
+                WorkbenchDataset.source_namespace.in_(IMPACT_NAMESPACES),
+                WorkbenchDataset.status == "ready",
             )
-            if d.seasons_json == [context.season] and d.phases_json == [context.phase]
-        ),
+        )
+        if d.seasons_json == [context.season] and d.phases_json == [context.phase]
+    ]
+    # A sealed season wins; an in-progress season serves its newest weekly provisional run.
+    sealed = sorted(
+        (d for d in candidates if d.source_namespace == "courtlens-impact"),
         key=lambda d: d.content_sha256,
     )
-    return sealed[0].id if sealed else None
+    if sealed:
+        return sealed[0].id
+    provisional = max(candidates, key=lambda d: d.created_at, default=None)
+    return provisional.id if provisional else None
 
 
 def load_floor_rows(
@@ -486,7 +495,7 @@ def load_floor_rows(
     # Sealed IM03 stints carry player points only; the stint box supplies the rest.
     boxes = (
         stint_box_games(stint_dataset.content_sha256)
-        if stint_dataset is not None and stint_dataset.source_namespace == "courtlens-impact"
+        if stint_dataset is not None and stint_dataset.source_namespace in IMPACT_NAMESPACES
         else None
     )
     rows: list[FloorRow] = []
@@ -648,7 +657,7 @@ def stat_shift_roster(session: Session, request: StatShiftRosterRequest) -> Stat
 def stint_scopes(session: Session) -> list[dict[str, str]]:
     datasets = session.scalars(
         select(WorkbenchDataset).where(
-            WorkbenchDataset.source_namespace == "courtlens-impact",
+            WorkbenchDataset.source_namespace.in_(IMPACT_NAMESPACES),
             WorkbenchDataset.status == "ready",
         )
     )

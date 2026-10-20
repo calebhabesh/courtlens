@@ -16,6 +16,7 @@ from courtlens.domain.impact_extras_catalog import RETIRED_METRICS, WAVE_TWO
 from courtlens.domain.query_spec import QuerySpec
 from courtlens.domain.teams import get_team_info
 from courtlens.services.impact_team_splits import team_split
+from courtlens.services.served_bundle import resolve
 
 VERSION = "courtlens-impact-serving-v1"
 METHOD_URL = "/methodology#impact"
@@ -27,6 +28,10 @@ LIMITATIONS = [
     "On/off off-court references include team games without a player appearance.",
     "Multi-team on/off is unavailable without a selected team; team records remain separate.",
 ]
+PROVISIONAL_NOTE = (
+    "Provisional in-season fit, refreshed weekly from one play-by-play source; games it cannot "
+    "reconstruct are excluded and shot-detail columns stay unknown until the season is sealed."
+)
 TEAM_LIMITATION = (
     "Ratings retain the full league fit; extras are the player's games with the selected team."
 )
@@ -43,10 +48,13 @@ def _decode(raw: bytes) -> dict[str, Any]:
 _verified: dict[Path, tuple[tuple[int, int, int], dict[str, Any]]] = {}
 
 
+def served_path(manifest_sha256: str | None = None) -> Path | None:
+    """The configured file, or the directory's current bundle (weekly runs move it)."""
+    return resolve(get_settings().impact_serving_manifest, manifest_sha256)
+
+
 def load_impact_store(manifest_sha256: str | None = None) -> dict[str, Any] | None:
-    path = get_settings().impact_serving_manifest
-    if manifest_sha256 and path:
-        path = path.parent / f"{manifest_sha256}.json"
+    path = served_path(manifest_sha256)
     if path is None or not path.exists():
         return None
     try:
@@ -72,7 +80,7 @@ def load_impact_store(manifest_sha256: str | None = None) -> dict[str, Any] | No
 
 def impact_catalog_scope() -> dict[str, Any]:
     store = load_impact_store()
-    path = get_settings().impact_serving_manifest
+    path = served_path()
     return {
         "status": "available" if store else "source_blocked",
         "source": "CourtLens model",
@@ -146,19 +154,20 @@ def impact_artifacts(query: QuerySpec, cutoff: str) -> tuple[list[dict[str, Any]
 
 def artifact_binding(entry: dict[str, Any], team_id: str | None) -> dict[str, Any] | None:
     """An entry's identity in a query; team-filtered extras bind the per-team split they use."""
+    flag = {"provisional": True} if entry.get("provisional") else {}
     if not (team_id and entry["kind"] == "extras"):
-        return {"sha256": entry["sha256"], **entry["scope"]}
+        return {"sha256": entry["sha256"], **entry["scope"], **flag}
     split = team_split(entry["sha256"])
     if split is None:
         # Extras are full-season player aggregates, not a selected-team sample.
         return None
-    return {"sha256": entry["sha256"], "team_split_sha256": split[0], **entry["scope"]}
+    return {"sha256": entry["sha256"], "team_split_sha256": split[0], **entry["scope"], **flag}
 
 
 def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
     """Select only sealed fits fully observable before this exclusive cutoff."""
     store = load_impact_store(query.impact_manifest_sha256)
-    path = get_settings().impact_serving_manifest
+    path = served_path()
     result: dict[str, Any] = {
         "status": "unavailable",
         "source": "CourtLens model",
@@ -192,6 +201,11 @@ def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
         if bound is None:
             continue
         result["artifacts"].append(bound)
+        if entry.get("provisional"):
+            result["provisional"] = {
+                "last_included_date": entry["scope"]["last_included_date"],
+                "note": PROVISIONAL_NOTE,
+            }
         for coverage in entry["coverage"]:
             if coverage not in result["coverage"]:
                 result["coverage"].append(coverage)

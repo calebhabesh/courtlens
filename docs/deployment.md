@@ -38,8 +38,11 @@ same-origin.
 
 ### Disk budget
 
-The VPS boot volume is 50 GB. The demo needs about 1.2 GB of images, about 6 GB of
-Postgres and about 1.4 GB of serving files. The data snapshot is frozen, so the database
+The VPS boot volume is 193 GB, nearly all of the Always Free 200 GB block-storage allowance
+(measured 2026-10-19: 21 GB used across CourtLens, LineWatchTO and the portfolio; Docker images
+4.8 GB, volumes 8.3 GB). Outbound transfer is free up to 10 TB a month and inbound is free, and
+Caddy compresses responses (`encode zstd gzip`). The demo needs about 1.2 GB of images, about 6 GB
+of Postgres and about 1.4 GB of serving files. The data snapshot is frozen, so the database
 does not grow. Deploys never build on the VPS. Each deploy removes CourtLens images other
 than the current and previous release. Container logs rotate at 3 × 10 MB, and journald
 is capped at 200 MB.
@@ -51,8 +54,39 @@ or serving code has not stored yet (about 40 s locally for 62 seasons) and delet
 other releases. If it fails the deploy still completes; each season is then computed and stored
 on its first view.
 
-Scheduled refresh (C22) is not enabled. Publication is append-only, so turning it on
-also needs a retention job that keeps only the last few ready snapshots on the VPS.
+The statistics release refreshes daily (`courtlens refresh-season-stats`, a `refresh-daily` step;
+source policy v3, "Daily season statistics"): when hoopR has published new or corrected box
+scores, a new full release is sealed (past seasons re-imported unchanged from their frozen
+files), published and its Stats cohorts warmed; daily-built releases other than the published
+one and the newest two are retired. Measured locally on 2026-10-20: a run takes about 3 minutes
+(1 minute of CPU), and each release holds about 920 MB in Postgres, so the database levels off at
+two to three daily releases and Postgres reuses retired rows' space rather than growing. The three
+full hand-built releases sealed on 2026-10-13 were retired with `courtlens retire-release` (owner
+approved, 2026-10-20); it refuses the published release, impact datasets and cited releases.
+
+Operational inputs refresh on timers (`scripts/install_data_refresh.sh`; not yet installed on the
+VPS): ESPN rosters every 6 hours, and `courtlens refresh-daily` at 13:30 UTC for the hoopR player
+index, Basketball-Reference contracts, DARKO's current ratings and Wikipedia's transactions
+article (source policy v3, "Daily refresh"). Each stores bytes only when its data changed and prunes unchanged runs' receipts after
+30 days. Measured locally on 2026-10-20:
+
+| Run | Disk | Database |
+| --- | --- | --- |
+| Rosters, changed / unchanged | +2.7 MB / under 4 KB | about 23 KB of receipts |
+| Player index, changed / unchanged | +1.1 MB / nothing | +1.7 MB / about 1 KB |
+| Contracts, changed / unchanged | up to +5.6 MB / nothing | +8.3 MB / about 23 KB |
+| DARKO, changed / unchanged | +3.5 MB bundle, +180 KB raw / under 1 KB | about 1 KB |
+| Wikipedia transactions, changed / unchanged | +2 MB raw, +76 KB bundle / nothing | about 1 KB |
+| Season stats, games played / none | +25 KB per new game; a new release (about 920 MB, older daily releases retired) / nothing | about 1 KB per game fetched |
+| Season impact, weekly | about 58 MB served bundle (3 kept), working files pruned to what they cite; raw per-game documents about 0.6 GB a season (box, play-by-play, matchups) | one provisional dataset kept per run, the newest two retained |
+
+Roster, DARKO and Wikipedia bundles are pruned after 30 days. Impact serving, team splits, WOWY
+and stint-box configs name directories that serve their `.current` bundle; `deploy/pinned.env`
+still pins the sealed files, so the VPS keeps serving sealed seasons until it switches to the
+directories. Player-index datasets, contract refreshes and
+finance books are sealed and never pruned, so they grow only on days the data changes: in the
+worst case, every day, about 5 GB a year, roughly 3% of the free disk. Egress is
+unaffected because refreshes only download.
 
 ## Deploy
 

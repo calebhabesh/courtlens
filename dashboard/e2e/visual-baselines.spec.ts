@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { mockContracts, mockFinance, mockRosterShapes, initial as financeInitial } from "./finance-fixture";
+import { mockContracts, mockFreeAgency, mockFinance, mockRosterShapes, initial as financeInitial } from "./finance-fixture";
 import { firstLoadFixtures, offSeasonFixtures } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
 import research from "./fixtures/research-negative-result.json";
@@ -248,7 +248,10 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
   // Stat Line Shift (row 13) opens like Databallr: on its Select Team dialog, no team chosen.
   test("first-load stat-line-shift",async({page})=>{await openWorkbench(page,"/stat-line-shift");await expect(page.getByRole("dialog",{name:"Select Team"}).getByRole("button",{name:"Toronto Raptors"})).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-stat-shift-${view.name}.png`,shot);});
   for(const [route,name] of [["roster-shapes","roster-shapes"],["roster-shapes?team=DEN","roster-shapes-DEN"]]) test(`first-load ${route}`,async({page})=>{await mockRosterShapes(page);await openWorkbench(page,`/${route}`);await expect(page.locator(".shapes-box-graphic").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${name}-${view.name}.png`,shot);});
-  for(const route of ["contracts","contracts/DEN"]) test(`first-load ${route}`,async({page})=>{await mockContracts(page);await openWorkbench(page,`/${route}`);await expect(page.getByRole("figure").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route.replace("/","-")}-${view.name}.png`,shot);});
+  // Contracts (row 14) opens like Databallr on Select Team; the DEN book from the captured response.
+  test("first-load contracts",async({page})=>{await mockContracts(page);await openWorkbench(page,"/contracts");await expect(page.getByRole("dialog",{name:"Select Team"}).getByRole("button",{name:"Denver Nuggets"})).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-contracts-${view.name}.png`,shot);});
+  test("first-load contracts DEN",async({page})=>{await mockContracts(page);await openWorkbench(page,"/contracts?team=DEN&tab=small-big");await expect(page.getByRole("region",{name:"Contract threshold"})).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-contracts-DEN-${view.name}.png`,shot);});
+  test("first-load free-agency",async({page})=>{await mockFreeAgency(page);await openWorkbench(page,"/free-agency");await expect(page.getByRole("region",{name:"Tracker summary"})).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-free-agency-${view.name}.png`,shot);});
 });
 
 // PC11: former gate pages on first load with no URL parameters (fictional e2e/pc11-fixtures.mjs).

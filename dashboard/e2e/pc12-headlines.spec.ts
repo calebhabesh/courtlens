@@ -1,6 +1,5 @@
 import { expect, test } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
-import { mockContracts } from "./finance-fixture";
 import research from "./fixtures/research-negative-result.json";
 
 for (const width of [1440, 390]) {
@@ -50,15 +49,4 @@ for (const width of [1440, 390]) {
       if (duration !== "0s") expect(parseFloat(duration)).toBeLessThanOrEqual(.001);
     });
   }
-  test(`PC12 Others preserves the full Contracts roster at ${width}px`, async ({ page }) => {
-    await page.setViewportSize({width, height: 900});
-    await mockContracts(page);
-    await openWorkbench(page, "/contracts/DEN");
-    const flow = page.getByRole("figure", {name: "Where the known salary goes"});
-    await expect(flow).toContainText("Others");
-    await expect(flow).toContainText("Top five known roster salaries");
-    await expect(page.getByRole("region", {name: "Roster contracts and impact"})).toContainText("Nikola Jokić");
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
-    await expect(page).toHaveScreenshot(`pc12-b-contracts-${width}.png`, {animations: "disabled", caret: "hide", maxDiffPixelRatio: .01});
-  });
 }

@@ -1,4 +1,4 @@
-.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python test-published lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark clean-scratch install-scratch-cleanup test-kernel-limits preview
+.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python test-published lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark clean-scratch install-scratch-cleanup refresh-rosters refresh-daily install-data-refresh test-kernel-limits preview
 
 # Scratch goes to disk, not RAM-backed /tmp (tmpfs); see scripts/clean_scratch.sh.
 export TMPDIR ?= $(HOME)/.cache/courtlens-tmp
@@ -110,6 +110,15 @@ clean-scratch:
 
 install-scratch-cleanup:
 	scripts/install_scratch_cleanup.sh
+
+refresh-rosters:
+	.venv/bin/courtlens refresh-espn-rosters
+
+refresh-daily:
+	.venv/bin/courtlens refresh-daily
+
+install-data-refresh:
+	scripts/install_data_refresh.sh
 
 clean:
 	rm -rf .pytest_cache .ruff_cache .mypy_cache htmlcov warehouse/target warehouse/logs dashboard/.next

@@ -192,6 +192,7 @@ def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine
         "team_tricode": "TOR",
         "listing_season": "2026-27",
         "index_refreshed_at": datetime(2026, 10, 1, tzinfo=UTC),
+        "listing_source": "NBA player index",
         "trade_date": None,
         "trade_source_url": None,
     }
@@ -202,6 +203,8 @@ def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine
     undrafted = player_bio(marts, "99003", "2025-26", date(2026, 4, 13))
     assert undrafted["undrafted"] and undrafted["draft"] is None and undrafted["age"] is None
     assert undrafted["current_team"] is None  # No team in the index: a free agent or retired.
+    # Without roster or Wikipedia sources nothing places them, so no off-roster status is claimed.
+    assert undrafted["current_status"] is None
     # Stats rows read the same listing; players without a team are left out.
     assert current_teams(marts, ["99001", "99003", "missing"]) == {
         "99001": {
@@ -209,6 +212,7 @@ def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine
             "team_tricode": "TOR",
             "listing_season": "2026-27",
             "index_refreshed_at": datetime(2026, 10, 1, tzinfo=UTC),
+            "listing_source": "NBA player index",
             "trade_date": None,
             "trade_source_url": None,
         }

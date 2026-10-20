@@ -10,15 +10,17 @@ import hashlib
 import re
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 import httpx
 from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 
 from courtlens.domain.rich_sources import compute_payload_hash
-from courtlens.domain.source_policy import POLICY_VERSION
+from courtlens.domain.source_policy import POLICY_VERSION, USER_AGENT
 from courtlens.ingestion.player_context import (
     PARSER_VERSION,
+    ParsedContext,
     parse_espn_injuries,
     parse_injury_text,
     parse_player_index,
@@ -32,7 +34,15 @@ from courtlens.player_context_models import (
     PlayerContextMember,
     PlayerContextVersion,
 )
-from courtlens.services.source_acquisition import MAX_BYTES, ScheduledFetcher, retain
+from courtlens.services.player_context import aware
+from courtlens.services.source_acquisition import (
+    KEEP_DAYS,
+    MAX_BYTES,
+    ScheduledFetcher,
+    keep_body,
+    prune_receipts,
+    retain,
+)
 from courtlens.workbench_models import (
     WorkbenchAcquisition,
     WorkbenchArtifact,
@@ -76,7 +86,9 @@ def source_url(source: str, url: str, season: str) -> float:
 
 
 class ContextFetcher(ScheduledFetcher):
-    def __init__(self, session: Session, root: Path, client: httpx.Client) -> None:
+    def __init__(
+        self, session: Session, root: Path, client: httpx.Client, *, retain_bodies: bool = True
+    ) -> None:
         super().__init__(
             session,
             root,
@@ -84,6 +96,7 @@ class ContextFetcher(ScheduledFetcher):
             resource="player_context",
             kinds=SOURCE_KINDS,
             validate_url=source_url,
+            retain_bodies=retain_bodies,
         )
 
 
@@ -123,6 +136,27 @@ def capture_local(
     session.add(receipt)
     session.flush()
     return receipt
+
+
+def row_hashes(parsed: ParsedContext) -> list[tuple[str, str]]:
+    return [
+        (payload["entity_key"], compute_payload_hash({"parser": PARSER_VERSION, **payload}))
+        for _, payload in parsed.rows
+    ]
+
+
+def content_sha256(source: str, kind: str, season: str, parsed: ParsedContext) -> str:
+    """A dataset's content address: equal for equal admitted rows whatever the raw bytes."""
+    return compute_payload_hash(
+        {
+            "source": source,
+            "kind": kind,
+            "season": season,
+            "parser": PARSER_VERSION,
+            "rows": sorted(row_hashes(parsed)),
+            "coverage": parsed.coverage,
+        }
+    )
 
 
 def admit_context(session: Session, acquisition_id: str, root: Path) -> PlayerContextDataset:
@@ -189,10 +223,7 @@ def admit_context(session: Session, acquisition_id: str, root: Path) -> PlayerCo
         parsed.coverage["unresolved_players"] = sum(
             p.get("player_id") is None and p.get("name") is not None for _, p in parsed.rows
         )
-    content = [
-        (payload["entity_key"], compute_payload_hash({"parser": PARSER_VERSION, **payload}))
-        for _, payload in parsed.rows
-    ]
+    content = row_hashes(parsed)
     member_hash = compute_payload_hash(
         {
             "artifact_sha256": artifact.sha256,
@@ -220,16 +251,7 @@ def admit_context(session: Session, acquisition_id: str, root: Path) -> PlayerCo
         source_name=source,
         kind=kind,
         season=season,
-        content_sha256=compute_payload_hash(
-            {
-                "source": source,
-                "kind": kind,
-                "season": season,
-                "parser": PARSER_VERSION,
-                "rows": sorted(content),
-                "coverage": parsed.coverage,
-            }
-        ),
+        content_sha256=content_sha256(source, kind, season, parsed),
         membership_sha256=member_hash,
         parser_version=PARSER_VERSION,
         observed_at=observed,
@@ -273,3 +295,86 @@ def admit_context(session: Session, acquisition_id: str, root: Path) -> PlayerCo
         )
     session.flush()
     return dataset
+
+
+HOOPR_REPO = "sportsdataverse/hoopR-nba-stats-raw"
+
+
+def hoopr_index_url(revision: str, season: str) -> str:
+    return (
+        f"https://raw.githubusercontent.com/{HOOPR_REPO}/{revision}"
+        f"/nba_stats/json/playerindex/{int(season[:4]) + 1}.json"
+    )
+
+
+def latest_hoopr_revision(client: httpx.Client, season: str) -> str:
+    """The newest hoopR commit touching the season's player index (it updates daily ~12:10 UTC).
+
+    The fetched URL stays pinned to that commit, so a dataset names exactly the bytes it read.
+    """
+    path = f"nba_stats/json/playerindex/{int(season[:4]) + 1}.json"
+    response = client.get(
+        f"https://api.github.com/repos/{HOOPR_REPO}/commits",
+        params={"path": path, "per_page": 1},
+        headers={"User-Agent": USER_AGENT, "Accept": "application/vnd.github+json"},
+        timeout=30,
+    )
+    response.raise_for_status()
+    commits = response.json()
+    revision = commits[0]["sha"] if isinstance(commits, list) and commits else None
+    if not isinstance(revision, str) or not re.fullmatch(r"[0-9a-f]{40}", revision):
+        raise ValueError("hoopR returned no player index revision")
+    return revision
+
+
+def latest_index(session: Session, season: str) -> PlayerContextDataset | None:
+    return session.scalars(
+        select(PlayerContextDataset)
+        .where(PlayerContextDataset.kind == "player_index", PlayerContextDataset.season == season)
+        .order_by(
+            PlayerContextDataset.observed_at.desc(), PlayerContextDataset.observation_order.desc()
+        )
+        .limit(1)
+    ).first()
+
+
+def refresh_player_index(
+    session: Session,
+    root: Path,
+    client: httpx.Client,
+    season: str,
+    keep_days: int = KEEP_DAYS,
+) -> dict[str, Any]:
+    """Scheduled run: admit hoopR's newest player index only when its admitted rows changed.
+
+    The same commit as the newest dataset skips the download. A new commit whose rows match
+    (hoopR republishes daily; most days no roster field moves) keeps only the receipt, which
+    is pruned after the window; player context datasets are sealed and never pruned.
+    """
+    source = "hoopr_player_index"
+    current = latest_index(session, season)
+    revision = latest_hoopr_revision(client, season)
+    url = hoopr_index_url(revision, season)
+    summary: dict[str, Any] = {"season": season, "revision": revision}
+    if current is not None:
+        acquired = session.get(WorkbenchAcquisition, current.acquisition_id)
+        if acquired is not None and acquired.source_url == url:
+            return {**summary, "changed": False, "dataset_id": current.id, "fetched": False}
+    fetcher = ContextFetcher(session, root, client, retain_bodies=False)
+    receipt = fetcher.fetch(source, url, season)
+    session.commit()
+    body = fetcher.bodies.get(receipt.id)
+    if receipt.status != "success" or body is None or receipt.finished_at is None:
+        raise ValueError(f"hoopR player index: {receipt.error_summary}; nothing admitted")
+    parsed = parse_player_index(body, season)
+    pruned = prune_receipts(session, source, keep_days, aware(receipt.finished_at))
+    summary |= {"active_players": parsed.coverage["active_players"], "pruned": pruned}
+    if current is not None and current.content_sha256 == content_sha256(
+        source, SOURCE_KINDS[source], season, parsed
+    ):
+        return {**summary, "changed": False, "dataset_id": current.id, "fetched": True}
+    keep_body(fetcher, receipt, "application/json")
+    session.commit()
+    dataset = admit_context(session, receipt.id, root)
+    session.commit()
+    return {**summary, "changed": True, "dataset_id": dataset.id, "fetched": True}

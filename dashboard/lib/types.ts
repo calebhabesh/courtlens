@@ -607,8 +607,10 @@ export type PlayerResearchItem = {
   cohort_sample_sizes?: Record<string, number> | null;
   // Estimated position for the queried season (Stats query only).
   position?: EstimatedPosition | null;
-  /** Who the NBA player index lists the player with today; the row's teams stay its games' teams. */
+  /** Who the player is on a roster with today; the row's teams stay its games' teams. */
   current_team?: PlayerCurrentTeam | null;
+  /** Set instead of current_team when the player is on no NBA roster today. */
+  current_status?: PlayerCurrentStatus | null;
 };
 
 /** A player's career table in one read: each season ranked against its own league (newest first). */
@@ -766,6 +768,8 @@ export type ImpactDisclosureData = {
   limitations: string[];
   unavailable_columns: Record<string, string>;
   reason?: string | null;
+  /** Present when an in-season weekly fit (not a sealed season) supplied these values. */
+  provisional?: { last_included_date: string; note: string } | null;
 };
 export type ImpactResponse = ImpactDisclosureData & {
   total_players: number;
@@ -2240,8 +2244,18 @@ export interface ScheduleDatesResponse {
 }
 
 export type PlayerCurrentTeam = {
-  team_id: string; team_tricode: string | null; listing_season: string;
+  team_id: string; team_tricode: string | null; listing_season?: string | null;
   index_refreshed_at?: string | null; trade_date?: string | null; trade_source_url?: string | null;
+  /** The roster source that places the player (ESPN rosters, the NBA player index or Wikipedia). */
+  listing_source?: string | null;
+};
+
+/** A player the free-agency tracker's sources place on no NBA roster today. */
+export type PlayerCurrentStatus = {
+  state: "free_agent" | "abroad" | "retired";
+  source?: string | null;
+  as_of?: string | null;
+  move?: { kind: string; date?: string | null; club?: string | null; country?: string | null; team_tricode?: string | null } | null;
 };
 
 export type PlayerGuarantee = {
@@ -2293,6 +2307,7 @@ export type PlayerBio = {
   } | null;
   /** The latest NBA player index listing: who the player plays for today, not a season's team. */
   current_team?: PlayerCurrentTeam | null;
+  current_status?: PlayerCurrentStatus | null;
   last_team?: PlayerCurrentTeam | null;
   /** Basketball-Reference biography and honours as of its last crawl (whole career to date). */
   reference?: {

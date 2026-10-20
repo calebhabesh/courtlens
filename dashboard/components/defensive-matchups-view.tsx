@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { seasonEra } from "@/lib/portrait-source";
 import { useState } from "react";
 import { PercentileCell, RankedBars } from "./charts";
 import { ExampleNote, FeedDetails, FeedFailure, FeedScopeFields, FeedSkeleton, PlayerPicker, useFeed, useUrlState } from "./stats-feed-ui";
@@ -64,6 +65,7 @@ function Body({ data, setFocus, scope }: { data: DefenseView; setFocus: (id: str
       <h2>Who {data.detail.player_name} guarded</h2>
       <div className="feed-subject">
         <PlayerIdentity playerId={data.detail.player_id} name={data.detail.player_name} href={`/players/${data.detail.player_id}?${scope}`}
+          era={seasonEra(data.season, data.players.find(p => p.player_id === data.detail!.player_id)?.team_tricode)}
           subtitle={data.players.find(p => p.player_id === data.detail!.player_id)?.team_tricode ?? undefined} />
         <ExampleNote name={data.detail.player_name} rule={data.focus_rule} />
       </div>

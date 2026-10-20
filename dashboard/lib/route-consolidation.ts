@@ -100,8 +100,7 @@ export const COMPATIBILITY_REDIRECTS: { source: string; destination: string }[] 
  */
 export const HIDDEN_REDIRECTS: { source: string; destination: string }[] = [
   { source: "/schedule", destination: "/live" },
-  // PC08 (D3, 2026-10-12): no admitted free free-agent source; the tracker is removed, not gated.
-  { source: "/free-agency", destination: "/contracts" },
+  // Free Agency returned with NBA.com's tracker (alignment row 14, 2026-10-19).
   // PC11 (C14): EPV needs non-public player-location tracking, so the page is removed, not gated.
   { source: "/research/epv", destination: "/research/rapm" },
 ];

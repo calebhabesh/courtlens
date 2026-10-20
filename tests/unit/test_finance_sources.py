@@ -26,6 +26,8 @@ from courtlens.services.finance_refresh import (
     FinanceFetcher,
     admit_refresh,
     import_thresholds,
+    last_checked,
+    refresh_contracts,
     refresh_info,
     threshold_info,
     verify_refresh,
@@ -277,3 +279,50 @@ def test_local_observation_without_robots_does_not_claim_a_policy_change(session
     )
     session.commit()
     assert finance_capture(session, tmp_path).status == "success"
+
+
+def test_scheduled_contracts_refresh_admits_only_when_contracts_change(session, tmp_path):
+    roster_capture(session, tmp_path)
+    pages = {"salary": "100.01", "refuse": None}
+
+    def respond(request):
+        if request.url.path == "/robots.txt":
+            return httpx.Response(200, text="User-agent: *\nAllow: /\n")
+        if request.url.path == pages["refuse"]:
+            return httpx.Response(429)
+        salary = pages["salary"] if request.url.path.endswith("/TOR.html") else "100.01"
+        return httpx.Response(200, content=bref_body(salary))
+
+    raw, staging, state = tmp_path / "raw", tmp_path / "staging", tmp_path / "state"
+
+    def run():
+        with httpx.Client(transport=httpx.MockTransport(respond)) as client:
+            return refresh_contracts(session, raw, client, "2026-27", staging, state)
+
+    first = run()
+    assert first["changed"] and first["pages"] == 30
+    # The book's bytes live in the database; the staged copy is gone.
+    assert not any((staging / "finance-refresh").iterdir())
+    again = run()
+    assert not again["changed"] and again["refresh_id"] == first["refresh_id"]
+    assert last_checked(state, first["refresh_id"]) is not None
+    unretained = session.scalars(
+        select(WorkbenchAcquisition).where(
+            WorkbenchAcquisition.source_name == "bref_contracts",
+            WorkbenchAcquisition.artifact_id.is_(None),
+        )
+    ).all()
+    assert len(unretained) == 30
+    pages["salary"] = "200.02"
+    moved = run()
+    assert moved["changed"] and moved["refresh_id"] != first["refresh_id"]
+    assert last_checked(state, first["refresh_id"]) is None
+    salaries = {
+        r.player_id: r.salary_cents for r in refresh_info(session, moved["refresh_id"]).coverage
+    }
+    assert salaries["99001"] == "20002"
+    # One refused page ends the run: nothing admitted, the newest refresh still served.
+    pages |= {"salary": "300.03", "refuse": "/contracts/MIA.html"}
+    with pytest.raises(ValueError, match="no refresh admitted"):
+        run()
+    assert session.scalar(select(func.count()).select_from(FinanceRefresh)) == 2

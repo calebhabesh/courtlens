@@ -26,7 +26,7 @@ Rows are in working order.
 | 11 | Tier List | `/tierlist` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
 | 12 | Roster Shapes | `/roster-shapes` | ✅ | Owner approved first revision 2026-10-19; Databallr side-by-side team view with linked hover, season-by-season fill, rotation-capped minutes, searchable trade sandbox |
 | 13 | Stat Line Shift | `/stat-line-shift` | ✅ | Owner approved first revision 2026-10-19; opens on Select Team, full-width roster drawer with season photos, per-75 without → with table, pair cards, Customize Stats dialog; IM03 stints + stint box (shared-floor v2) |
-| 14 | Contracts + Free Agency | `/contracts` | ⬜ | |
+| 14 | Contracts + Free Agency | `/contracts`, `/free-agency` | 👀 | Select Team flow, Overview (payroll, cap bar, full flow, bar timeline, roster Stats table, pies), Small vs Big on DARKO values; Free Agency restored from NBA.com's tracker |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
 | 16 | Matchup Matrix | `/matchups` | ✅ aligned (first revision) | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
 | 17 | Shot Profile Twin | `/similar-players` | ⬜ | Partial overlap |
@@ -168,6 +168,12 @@ Follow-up instructions (owner, 2026-10-19, during Teams; reopen row 0 for this c
     `docs/evidence/alignment/app-shell/navigation/`). Dashboard lint, typecheck, Vitest 596/596;
     Playwright full suite passes after label updates in 18 specs, 14 screenshot baselines refreshed
     (pages that gained a Back row or a relabelled control).
+21. [x] "There is one thing about the bottom highlight bar for the nav bar items. It seems like it's not
+    balanced on the arrow side (the highlight stretches out farther on that side). It's probably
+    correct logically, however, optically it doesn't look right." (2026-10-19, screenshot of Teams)
+    — The bar was inset 12px from both button edges: on the left that is the text, on the right the
+    chevron's 16px box, whose glyph ends ~3.3px inside it. On menu items with a chevron the bar now
+    ends 4px further in, at the arrow's ink; Stats (no chevron) is unchanged.
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.
@@ -1855,6 +1861,332 @@ Follow-up instruction (owner, 2026-10-19; screenshot of the table header):
     Scottie Barnes**"; on "Stats w/" the same with "with" (1,756 min with). The default sort there
     is by that side's minutes. Measured on :3100 at 1440 / 390, no overflow or browser errors
     (`follow-up-5/`); lint, typecheck, Vitest 598/598.
+
+### 14 Contracts + Free Agency — 👀 ready for review
+
+Owner start (2026-10-19): "Let's begin the revamp for Contracts + Free Agency (alignment catalog row
+14, `/contracts`), the next page under the Teams menu", with Databallr references: the Teams menu
+(Contracts, "NBA salary cap analysis and contract details"; Free Agency, "Self-updating 2026 NBA
+free agency tracker"), the Contracts empty state, the Select Team dialog, Toronto's Overview, the
+roster Stats table below it, the two pie charts and the Free Agency tracker ("free agency tracker is
+simply a large table"). "Remember we replicate, then improve/iterate on what Databallr has done."
+Finance and contract data follow the presentation-clarity plan and source policy v3 (free sources,
+zero recurring cost). Photos follow the season rule (`era={{ season, team }}`); team pickers use
+`TeamGrid variant="compact"`.
+
+Starting state (survey, 2026-10-19): `/contracts` (`components/contracts-view.tsx`) is a league
+board titled "Contracts & Payroll": four stat tiles, a known-payroll bar per team with threshold
+lines, a limitations note and a 30-row team payroll table linking to `/contracts/<TEAM>`. The team
+page has a Back to Contracts button, a TOR · Toronto Raptors native select and Data Details; a
+full-width cap-utilization bar (cap, tax, aprons); the team identity and four tiles (known salary
+$202.5M, 15 / 21 known, highest $50.3M, known minus cap +$37.6M); a Sankey (top five named, others
+by position) with its flow table; two donuts (by position, high earners); a six-season contract
+timeline grid with status words in every cell (Reported salary, Player option, Team option,
+Unknown hatching, Not listed); and an 11-column roster table (salary, years listed, remaining
+guaranteed, 2025-26 GP/MPG/PTS/REB/AST/RAPM). `/contracts/books` is the retained-books workspace.
+`/free-agency` redirects to `/contracts` (removed in PC08, D3, for want of a free source). Data:
+one admitted finance refresh (2026-27, observed 2026-10-12, 464 of 622 index players with a
+reported Basketball-Reference salary; TOR 15 of 21, the six blanks are two-way/camp deals) and the
+official 2026-27 thresholds; no other seasons. Evidence: `docs/evidence/alignment/contracts/before/`
+(league 1440: 3,596px, 390: 3,976px; TOR 1440: 4,301px, 390: 6,702px; no overflow, no browser
+errors).
+Databallr: Contracts opens on a centred "$ Contracts · NBA Salary Cap Analysis" with Select Team,
+a season chip (2022-23 to 2028-29) and Overview / Small vs Big tabs, then "Select a Team" with a
+gold Choose Team button (the 6 × 5 Select Team dialog). Team view: logo title "Toronto Raptors
+Contracts · 2026-27 Salary Cap Analysis"; a "Roster-aware salary data" banner; Total Payroll
+($201.2M, Below 1st Apron by $7.8M, Below 2nd Apron by $20.5M); Cap Utilization (a focused-range
+bar with Cap, Tax, 1st and 2nd Apron ticks); Payroll Flow (Total → Guards / Forwards / Centers →
+every player, a full Sankey); Contract Timeline (abbreviated names, an info icon, DPM, one gold bar
+per season shaded by salary, FA marker after the last year; legend Guaranteed, Player option, Team
+option, Total DPM, Free agent); the team's roster in the Stats table; "People Wanted Pie Charts So
+Here's Some Pie Charts": a two-ring payroll pie (positions inside, players outside) with position
+shares, and a High-Earners pie ($8M+, faces around it). Free Agency: "2026 NBA Offseason · Free
+Agency Tracker", source freshness and NBA source link; Tracked / Unsigned / Signed-Returned / In
+Review tiles and a Market Moved bar; status chips with counts (All, Unsigned, Signed, Returned,
+Option, Two-way, Review), search, team select, All / UFA / RFA, refresh; one large table: player
+(face, position, UFA/RFA, option), status pill, old team → new team or Open market, 2025-26
+PTS/REB/AST, age and experience, terms, source note link.
+Free source found (2026-10-19): NBA.com's free-agent tracker page
+(`nba.com/players/free-agent-tracker/2026`) embeds all 238 players in its page data: position,
+old and new team ids, PPG/RPG/APG, age, experience, UFA/RFA, player/team option and two-way flags,
+availability (69 unsigned, 169 signed) and an article link; no deal terms. Databallr's
+tracker reads this same source.
+
+Instructions (owner, 2026-10-19; answering the start-of-page proposal):
+1. [x] Layout (proposal, not objected): replicate Databallr's Contracts. Open on the Select Team
+   dialog (X leaves an empty page with Choose Team); team view with Total Payroll, Cap
+   Utilization, the full Payroll Flow, the bar Contract Timeline, the team's roster in the Stats
+   table with season photos, and the two pies. The league board goes.
+   — One route, `/contracts?team=TOR` (`components/contracts-view.tsx`, `contracts-view.css`):
+   opens on "Select Team · 30 NBA teams" (shared `TeamGrid variant="compact"`; Clear Team, and
+   repicking deselects); X leaves "$ Contracts · NBA Salary Cap Analysis", Select Team / season /
+   Overview · Small vs Big and the "Select a Team" prompt with a gold Choose Team. Team view: logo
+   title "<Team> Contracts · 2026-27 Salary Cap Analysis"; a Roster-aware salary data banner that
+   names every blank salary; Total Payroll (known salary, each apron line's side and distance);
+   Cap Utilization (Databallr's focused range, blue to the cap, gold beyond, tax and apron ticks);
+   Payroll Flow (Total, then Guards / Forwards / Centers, then every known salary, coloured by
+   group); Contract Timeline (short names, an info tooltip with every season, DARKO DPM, one bar a
+   season shaded by salary with the amount, dashed gold player and dashed blue team options, FA
+   after the last listed season); the roster in the Stats table (`StatsWorkspace` fixed to the
+   team, its own 2025-26 scope; a frame that starts below the fold is now one screen tall,
+   unchanged where the table starts on screen); Payroll Pies (two rings: positions inside,
+   players outside, with position shares; High Earners at $8M+ with faces around the ring).
+   `/contracts/<TEAM>` redirects to `?team=`; the league board, the old roster table and
+   `contracts-payroll-board.tsx` are removed (`/contracts/books` stays under Data Details).
+   Photos: the roster table follows the Stats table; the pies show current photos, since the
+   page analyses the current (2026-27) roster.
+2. [x] Free Agency: "Restore /free-agency (Rec.)": ingest NBA.com's tracker page as dated,
+   content-addressed observations (operator run); Databallr's one large table, tiles, Market
+   Moved bar, status chips, team and UFA/RFA filters and search; terms stay "—" (unknown); back
+   under the Teams menu.
+   — `courtlens refresh-free-agency` (scheduled fetch, 3 s, robots recorded) and
+   `courtlens import-free-agency <file> --observed-at` (operator import) seal
+   `courtlens-free-agency-v1` bundles (`ingestion/free_agency.py`, `services/free_agency.py`,
+   pinned as `config.free_agency_manifest`); `GET /api/workbench/operations/free-agency`. Source
+   policy v3 lists NBA.com's tracker. NBA.com answered CourtLens' identifying user agent with
+   HTTP 403 (the run ended, no evasion); the installed bundle (`9af16a45…`) is the page fetched
+   during the survey at 2026-10-19 17:09 UTC, sealed as an operator import: 238 players, 69
+   unsigned, 71 signed, 98 returned (Databallr: 239 / 69 / 169). The owner can replace it with a
+   browser-saved page. `/free-agency` (`components/free-agency-view.tsx`): "2026 NBA Offseason ·
+   Free Agency Tracker", Source current / stale (7 days), Updated time, NBA source link and Data
+   Details; Tracked / Unsigned / Signed / Returned tiles and Market Moved (71%); All, Unsigned,
+   Signed, Returned, Option, Two-way chips with counts; search (player, team, source note), team
+   select, All / UFA / RFA; one table (Player · Movement · 2025-26 · Profile · Deal): face, name,
+   position, class and option or two-way; status pill; old logo to new logo or Open market;
+   NBA.com PTS / REB / AST; age and experience; Terms "—"; the source note link or "NBA tracker".
+   Sortable Name, Status, Stats (default) and Age. Databallr's "In Review" is not replicated: it
+   is Databallr's manual override; a reported deal NBA.com has not recorded stays Unsigned with
+   its note (Lonnie Walker IV). The Teams menu lists Free Agency again; the PC08 redirect is gone.
+3. [x] Seasons: "2026-27 + future (Rec.)": later seasons from the same book's multi-year salary
+   columns, labelled projected; threshold lines only for 2026-27 (no official later figures).
+   — The season select offers 2026-27 and up to four later book seasons with a listed salary
+   ("2027-28 · projected"); a later season keeps only players with a listed salary, the payroll
+   card says "Projected from the 2026-27 book", and Cap Utilization says the league has no figures
+   for it yet. The timeline starts at the chosen season.
+4. [x] Apron copy: "Databallr wording, caveated (Rec.)": "Below 1st Apron · by $X" on known
+   salaries, with a "known salaries only, N unknown" cue when any are missing; unknown is never $0.
+   The finance contract's wording is updated.
+   — "Below 1st Apron · Below by $6.5M" (TOR), "Above 1st Apron · Over by $12.1M" (DEN), then
+   "Known salaries only: N blank on the source page, not counted as $0". The finance views'
+   limitation and the replica analytics contract say this is arithmetic on known salaries.
+5. [x] Small vs Big (owner's reference sent mid-build): DARKO's market value per player.
+   — DARKO's board already carries `sal_market_fixed`; the parser keeps it and the `current`
+   entry was re-sealed (`6f6f3a2b…`, same raw bytes, only the new field; Roster Shapes unchanged).
+   The team contracts response adds `darko_value_dollars`, `darko_dpm` and the board's context.
+   The tab: DARKO credit and "12 of 15 contracts have a DARKO value; value, surplus and ROI use
+   those rows only"; a summary (season, salary, mapped value, surplus, ROI); Small and Big lists
+   (salary and surplus, gold up, blue down, N/A without a value); Contract Threshold with a $1M to
+   $40M slider (`split=`, default $12M); two cards with Salary Paid, Mapped Value, Mapped Surplus
+   and a gold Mapped ROI (surplus over the mapped players' salary). TOR: small +214%, big +7%
+   (Databallr +216%, +20%; its DARKO board is newer than the sealed Jun 3 one). Always the
+   current season's salaries.
+
+Verification (2026-10-19): production sandbox at 3180 behind a read-only proxy on 4180 to the
+owner's API (`verification.jsonl`, 1440 / 390): Select Team, empty, TOR Overview, TOR Small vs Big,
+DEN Overview, DEN 2027-28, Free Agency and its Signed filter; no page overflow and no browser errors
+in any; Free Agency group labels 0px from their columns' centres and column-label text bottoms 0px
+apart (the sort chevron hangs left of its label). The owner's :3100 needs a restart to drop the old
+`/free-agency` redirect (next.config). Python 2,172 passed (new `test_free_agency.py`; the
+source-policy doc test caught the missing registry row); ruff, format and mypy clean. Dashboard
+lint and typecheck clean; Vitest 600/600 (the 4 known `header.test.tsx` aborts); new
+`contracts.test.ts`. Playwright on the mock sandbox (fixtures `e2e/fixtures/contracts-v2.json`
+and `free-agency-v1.json`, real DEN / TOR and tracker responses): full suite 495 passed, 28
+skipped, 1 failed: `roster-shapes:194` (two `.roster-team` during the team profile's URL
+canonicalisation); alone it passes 6/6 on this build and fails 5/6 on a clean HEAD build, so it is
+a pre-existing flake. New `contracts.spec.ts` and `free-agency.spec.ts`; the PC12 Contracts test
+and its two baselines are removed; the first-load Contracts baselines are replaced (Select Team,
+DEN Small vs Big) and Free Agency's added.
+Data-blocked: seasons before 2026-27 (no historical book); deal terms (not on NBA.com's tracker);
+Databallr's manual "In Review" overrides.
+Evidence: `docs/evidence/alignment/contracts/` (`before/` holds the survey).
+
+Follow-up instructions (owner, 2026-10-19; "Nice first pass", with screenshots of the roster Stats
+console, the pies and the season menu):
+6. [x] "Yes you can run the photo sweep" (the optional sweep: pages that analyse a past season but
+   still show current photos: Stats drawers, Playoffs series, Roster Shapes hover card, depth
+   chart, Showcase, Rankings, Tier List, Last X Games, Defensive Matchups).
+   — `seasonEra(season, team)` (`lib/portrait-source.ts`: the row's team, the last listed for a
+   traded player; none for a multi-season scope) and an `era` prop on `PlayerIdentity` and
+   `GroupGuide`. Now season photos: the Stats table rows, group-guide photos, preview rail and
+   player drawer (also the team profile's and Contracts' roster tables); Playoffs series players;
+   the Roster Shapes hover card for past seasons (the box's team-season; Since Last Season's left
+   box uses the reference season; projected rosters keep current photos); the depth chart;
+   Showcase (current player and roster); Rankings and Tier List boards (their reference season)
+   and the shared example boards; Last X Games; Defensive Matchups. The Stats trend dialog spans
+   seasons, so it keeps current photos. Measured on the 3180 sandbox against the owner's API
+   (`follow-up-1/verification.jsonl`): every portrait on these pages asks for the season and the
+   API served the season photo for all but 2 of 28 on the BOS 2023-24 depth chart (CDN misses).
+7. [x] "There is a weirdly placed divider next to pg/sg/sf/pf/c" (the roster Stats console).
+   — The filter bar's page-group divider separates it from scope controls on the same line; a
+   team-fixed table has only the chips there, on their own line. Removed for Contracts' and the
+   team profile's tables (`foundation.css`, which outranks the Stats sheet's own reset); Stats
+   keeps its look. Measured 0px.
+8. [x] "Padding under 'Roster Stats' seems tight compared to the other section headers."
+   — 16px under it, the same gap as Payroll Pies (measured 16 / 16).
+9. [x] "We can use more colors for the high earners pie, and for charts in general. It seems like
+   the colors we are using are too similar. We can add variety in this regard."
+   — Chart series tokens `--color-trend-1` … `-8` (the dataviz reference's eight dark slots;
+   Stats trends already used 1-4), validated on the glass panel: adjacent CVD ΔE ≥ 8.4,
+   normal-vision ≥ 19.3, all ≥ 3:1; slots 1-3 pass all-pairs. Recorded in Design Language.
+   High Earners: one colour per player in salary order (a ninth and later fold into Other), each
+   face ringed in its slice's colour. Positions (pies, flow, timeline key): blue, orange, aqua.
+   The breakdown's outer ring alternates two steps of each group's hue. Other charts can adopt the
+   tokens page by page.
+10. [x] "Remember our macro rule for title case in all buttons/drop downs/etc." (the season menu's
+    "2027-28 · projected").
+    — "2027-28 · Projected"; on Free Agency "All Teams" and the "Two-Way" chip.
+
+Verification (follow-ups 6–10): production sandbox at 3180 behind the read-only proxy
+(`follow-up-1/`: the sweep pages, the roster console, the pies, TOR and Free Agency at 1440 / 390);
+no overflow or browser errors. Dashboard lint and typecheck clean; Vitest 600/600; Playwright on
+the mock sandbox: full suite 496 passed, 28 skipped, no failures; no baseline changed.
+
+Follow-up instruction (owner, 2026-10-19; screenshot of Payroll Flow and Contract Timeline):
+11. [x] "Is there any way for us to include the player photos in the payroll flow and contract
+    timeline? Don't worry you can increase the width/size of the margins to accommodate this nicely."
+    — Payroll Flow: a 30px photo between each player's node and name (HTML over the SVG, placed
+    from the layout), the chart widened (640 units) and given 54 units a player with 38 between
+    nodes, so the stacked small salaries no longer collide; on phones it keeps full scale and
+    scrolls in its region. Contract Timeline: the photo before each short name, a wider name column
+    and 8px between rows. Photos ask for the book's season (2026-27), falling back to current.
+    Measured on :3100 with live data (`follow-up-2/`): 15 photos in each, 0 overlapping one
+    another, 0 touching a name, no overflow or browser errors at 1440 / 390. Contracts, Free Agency
+    and their first-load baselines: 39 passed on a fresh build.
+
+Follow-up instructions (owner, 2026-10-19; screenshot of the two panels):
+12. [x] "The payroll flow shouldn't be scrollable here. Just make it fit to the internal contents."
+    — The photos are now drawn inside the SVG (clipped headshots, initials only if one fails), so
+    the whole chart scales to its panel at every width; the scroll region and its 640px phone
+    minimum are gone (the scrollbar was the HTML photos overhanging the chart's edges).
+13. [x] "The contract timeline photos are cut off on the left for some weird reason."
+    — The timeline's sideways-scroll box clipped the photos' 2px rings at its edge; it now has a
+    4px inner inset (photos measure 4px inside it).
+14. [x] "Should the photo rings be team colored like on player pages/etc.?"
+    — Recommended and done: the player pages' team ring (70% team colour, team-tinted backing) on
+    the flow and timeline photos, without the logo badge (the page is one team and the title
+    carries its logo; the badge reset lives in `foundation.css`, which outranks page CSS). High
+    Earners keeps its slice-coloured rings, which tie each face to its slice.
+    Verified on :3100 with live data (`follow-up-3/`): flow inside its panel with nothing
+    scrolling at 1440 / 390, 15 photos each, red (TOR) rings on both, no overflow or browser
+    errors; Contracts, Free Agency and all visual baselines 103 passed on a fresh build.
+
+Follow-up instructions (owner, 2026-10-19; Free Agency screenshot):
+15. [x] "Why does D'Angelo Russell display as signed, when he is currently playing on the Shanghai
+    Sharks. The Memphis Grizzlies waived him… What do you suggest?" Answered: NBA.com's tracker
+    records each player's offseason move once and never revisits it (Russell's entry is the July
+    trade to MEM). Against the NBA player index (Oct 12), 4 signed/returned players are on no NBA
+    roster and 24 unsigned players are on one. Owner chose the recommended roster cross-check:
+    keep NBA.com's status, show where the official roster index disagrees, a "Roster Changed"
+    filter; no parsing of news reports.
+    — The free-agency response checks every row against the latest NBA player index
+    (`roster_check`: agrees, not_on_roster, other_team, on_roster; unknown when the index lacks
+    the player) with the index's date. A disagreement shows under the move, in orange with an
+    alert icon: "Not on an NBA roster" (Russell, Andre Jackson Jr., Hunter Dickinson) or "On NYK
+    roster" (Bruce Brown and 23 other unsigned players); NBA.com's status stays as published. New
+    Roster Changed tile and chip (27); Data Details names the index (observed Oct 11).
+16. [x] "Even Westbrook, he has retired. So isn't even supposed to be there either."
+    — Retired when NBA.com's own note says so (Westbrook, Lowry): out of the tracked counts, the
+    Market Moved share and every chip but a new Retired one (2), where the pill reads Retired.
+    Tracked 236, unsigned 68, signed 70, returned 98.
+    Verified on the owner's :3100 with live data (`follow-up-4/`, 1440 / 390, all / Roster
+    Changed / Retired): no overflow or browser errors. Python free-agency tests 8 passed (roster
+    check both ways, unknown never agrees); ruff and mypy clean; Contracts, Free Agency and all
+    visual baselines 103 passed on a fresh build (Free Agency's first-load baseline refreshed).
+17. [x] "It says Bruce Brown is on the NYK… he was just waived a couple days ago (same as Agbaji).
+    So how often/up to date are we keeping this?" Answered: only as fresh as the last manual
+    index refresh (Oct 11); nothing was scheduled, and cdn.nba.com now answers CourtLens' user
+    agent with 403, so the index can't be fetched on a schedule.
+18. [x] "Can we not do periodic fetch to make sure this data is up to date at all times?" Owner
+    approved ESPN team rosters every 6 hours, local only ("build it comprehensively").
+    — New source `espn_team_rosters` (`site.api.espn.com`, 5 s, source policy v3):
+    `courtlens refresh-espn-rosters` fetches the 30 team rosters, retains each response and seals
+    a `courtlens-espn-rosters-v1` bundle only when all 30 succeed (a 403/429 ends the run; the page
+    keeps the last good rosters). ESPN ids map to NBA ids by verified crosswalk, else a normalized
+    name unique in the NBA player index (or unique on the same team); ambiguous or unmatched
+    players are listed and never read as off a roster. The newest bundle in
+    `data/derived/espn-rosters-v1/` is served (no config change per run); the roster check uses it
+    when it is newer than the NBA player index. The API host serves robots.txt as an edge 403 to
+    every client, so the fetcher's new `robots_optional_hosts` records it and continues.
+    `scripts/install_roster_refresh.sh` (now `scripts/install_data_refresh.sh`) installed a systemd user
+    timer, 00/06/12/18 h with catch-up after sleep; `--remove` uninstalls it.
+    Page: "Rosters as of …" under Roster Changed (orange with an alert icon after 24 h without a
+    run); Data Details, the flag tooltips and the footer name the roster source; Data Details
+    lists unmatched roster players.
+    First runs (manual and under systemd, 2026-10-19): 30 teams, 524 players, 524 matched.
+    Roster Changed 27 → 16: Bruce Brown and Agbaji now agree (unsigned, on no roster); new flags
+    include Connaughton (waived by CHA in preseason), Sochan (non-guaranteed with POR) and
+    Highsmith. Verified on the owner's :3100 (`follow-up-5/`, 1440 / 390). Python roster and
+    free-agency tests 16 passed; ruff and mypy clean; dashboard lint and typecheck clean; Free
+    Agency, Contracts and visual baselines passed on a fresh build (Free Agency's first-load
+    baselines refreshed; its fixture pins the clock so the 24 h line stays stable).
+
+19. [x] "We have to make sure that it's economical on my Oracle VPS and within its limits… prevent
+    bloat, consider the egress limits for free PAYG, and the block storage limit." Measured on the
+    VPS (read-only): 193 GB boot volume (nearly all of the 200 GB Always Free block allowance),
+    21 GB used, 4 OCPU / 24 GB. Egress is unaffected: the refresh only downloads (inbound is free)
+    and Caddy compresses what the page serves.
+    — The refresh now retains bytes and seals a bundle only when the rosters change (team, ESPN
+    id, name, NBA id, player index); an unchanged run rewrites the `.checked` heartbeat, which the
+    page reads as "Rosters as of". `--keep-days 30` prunes older bundles, their raw responses and
+    unchanged runs' receipts, never the newest bundle. Real runs: changed +2.7 MB, unchanged
+    under 4 KB on disk and about 23 KB of receipts. `docs/deployment.md` corrected (193 GB, egress
+    and compression); source policy v3 records the bounded-retention exception.
+20. [x] "Schedule other data ingests so we prevent stale data from accumulating on our site. I want
+    it to be up to date." Before this, only rosters were scheduled; contracts dated from Oct 12,
+    the player index from Oct 11 and DARKO from Oct 19, each refreshed by hand.
+    — `courtlens refresh-daily` (timer `courtlens-daily-refresh`, 13:30 UTC, after hoopR's
+    ~12:10 UTC republish) runs three independent store-on-change steps: the hoopR player index
+    (newest commit via GitHub's API; admitted only when roster rows change), Basketball-Reference
+    contracts (30 pages; a new refresh only when the parsed contracts, the index, thresholds or
+    crosswalks change; staging copy deleted after admission) and DARKO's current board (sealed
+    only when the ratings change; `darko_manifest` now names the directory and serves the newest
+    bundle; superseded bundles past 30 days are pruned and aliased, so saved investigations
+    still resolve). Contracts' Data Details shows "Last checked". `scripts/install_data_refresh.sh`
+    installs both timers. Statistics (C22) are still frozen; see the deployment guide.
+    First real runs (2026-10-20): player index admitted (526 active; Bruce Brown and Connaughton
+    now off rosters); contracts admitted against it (526 expected, 433 with salaries, up from
+    464 of 622 camp-roster players); DARKO unchanged (data date 2026-06-03, offseason).
+21. [x] "Why are we blocked on NBA for the free-agent tracker?" → not a rate limit: Akamai's bot filter
+    answers every non-browser client (ours and a bare curl, one recorded request) with 403. Owner:
+    check for a free site, else disguise. Compared NBA.com's sealed class (238) with Wikipedia's
+    "List of 2026–27 NBA season transactions": 141 shared; Wikipedia lacks class, options, age and
+    stats but is edited within hours, while NBA.com's own tracker already lagged (Tony Bradley,
+    Connaughton, Dickinson). Owner: "pick the direction with the most accurate, up-to-date data."
+    — NBA.com stays the class (browser-saved import per offseason); `courtlens
+    refresh-wikipedia-transactions` (daily, a `refresh-daily` step; `en.wikipedia.org/wiki/`, which
+    robots.txt allows) seals dated moves from six tables (signings, two-way, abroad, waived, camp
+    cuts, retirements) when they change. Each player's status = NBA.com, then their latest
+    Wikipedia move, then ESPN's roster (unless Wikipedia's move is the roster's day or the day
+    before). Page: current status with "NBA.com: …" when it differs, a dated move note under the
+    team (flagged when changed), Abroad status/tile/chip, "Changed Since Tracker" (replaces Roster
+    Changed), "Wikipedia as of", Data Details and footer sources.
+    Real data (revision 1381121598): 579 moves; of 234 tracked, 46 changed since NBA.com: 29 signed
+    abroad (Russell to Shanghai, Valančiūnas to Žalgiris), Bradley signed by UTA, Connaughton and
+    Dickinson waived, Timme claimed by PHX; ESPN decided 6 that Wikipedia had not caught.
+    Python unit suite 1608 passed; Free Agency, Contracts and visual baselines 17 passed (Free
+    Agency baselines refreshed; fixture recaptured).
+22. [x] Daily game stats (owner approved the season overlay, then "use your recommended optimal").
+    A true overlay meant rewriting ~600 single-dataset reads and the dbt models, so each daily
+    release is a full dataset again with old daily releases retired (same pages, bounded storage).
+    — `courtlens refresh-season-stats` (second `refresh-daily` step): hoopR's newest commit →
+    the season schedule and each final game's `boxscoretraditionalv3` (pinned; recent 3 days
+    rechecked for stat corrections; retained when new or changed) → flattened into
+    SportsDataverse's release CSV columns (`ingestion/hoopr_boxscores.py`; identical to the
+    2025-26 assets on 30 games / 856 rows) → `import_workbench_data(builder="season-refresh")` →
+    `publish_workbench_release` → Stats cohorts warmed → `retire_releases` keeps the published
+    and newest two daily datasets (admin-mutation delete; impact, hand-built and cited datasets
+    never touched). Timer timeout raised to 2 h.
+    First real run (2026-10-20, no 2026-27 games final yet; the schedule changed): 3 min 4 s,
+    dbt 93/93 passed, release d7c91cef… published, 62 cohorts warmed; all 26 past seasons
+    identical to the previous release (row counts, points, content hash); database +919 MB.
+    Main API endpoints 200 on the new release. Python unit suite 1612 passed. Not yet observed:
+    a run with 2026-27 games (first final games tonight; the 13:30 UTC timer picks them up).
+23. [x] Retired the three hand-built Oct 13 releases (owner: "Yes you can retire them";
+    `courtlens retire-release`). Weekly current-season impact (owner approved provisional
+    datasets, "Sounds good go ahead"): `courtlens refresh-season-impact`, Mondays 14:30 UTC, from
+    the start gate of 10 games per team; see `docs/season-impact-plan.md` for the build and its
+    2025-26 validation (59 games equal to sealed stints and possessions; ~4% expected
+    exclusions without the CDN stream). Impact disclosure shows a Provisional badge.
 
 ### 15 Team Compare — ✅ aligned (first revision)
 

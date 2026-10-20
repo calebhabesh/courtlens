@@ -127,6 +127,10 @@
   pointer-events: none;
 }
 
+/* The chevron's glyph ends ~3.3px inside its 16px box (Lucide draws it from 6 to 18 of 24); end the
+   bar at the ink, not the box, so it overhangs the arrow no more than the text (row 0, instr. 21). */
+.courtlens-nav-dropdown-btn .courtlens-nav-indicator { right: calc(var(--space-3) + var(--space-1)); }
+
 /* Center search pill */
 .courtlens-header-center {
   display: flex;

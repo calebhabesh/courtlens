@@ -1,6 +1,7 @@
 "use client";
 
 import { GatedNote } from "./ui/gated-note";
+import { seasonEra, type PortraitEra } from "@/lib/portrait-source";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { LookupInput } from "./lookup-input";
@@ -60,7 +61,7 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
   }, [tierLists, activeTierListId]);
 
   const assignedIds = JSON.stringify((activeList?.tiers.flatMap(tier => tier.player_ids) ?? []).sort());
-  const [identities, setIdentities] = useState<{ key: string; names: Record<string, string> } | null>(null);
+  const [identities, setIdentities] = useState<{ key: string; names: Record<string, string>; eras: Record<string, PortraitEra | null> } | null>(null);
   useEffect(() => {
     const ids: string[] = JSON.parse(assignedIds);
     if (!ids.length) return;
@@ -76,7 +77,9 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
         response = await executeWorkbenchQuery(query, { player_ids: ids });
         players.push(...response.items);
       }
-      if (active) setIdentities({ key: assignedIds, names: Object.fromEntries(players.map(player => [player.player_id, player.player_name])) });
+      if (active) setIdentities({ key: assignedIds, names: Object.fromEntries(players.map(player => [player.player_id, player.player_name])),
+        // The reference season's team photo (Design Language, Identity).
+        eras: Object.fromEntries(players.map(player => [player.player_id, seasonEra(query.season, player.teams)])) });
     })().catch(() => {});
     return () => { active = false; };
   }, [assignedIds, catalog]);
@@ -546,7 +549,7 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
                               onDragStart={() => handleDragStart(pid, tier.tier_id)}
                               className="tier-player-chip"
                             >
-                              <PlayerPortrait playerId={pid} name={playerName(pid)} size="sm" />
+                              <PlayerPortrait playerId={pid} name={playerName(pid)} size="sm" era={identities?.key === assignedIds ? identities.eras[pid] : null} />
                               <div>
                                 <Link
                                   href={`/players/${pid}`}

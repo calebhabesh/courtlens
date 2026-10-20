@@ -1,6 +1,7 @@
 "use client";
 
 import { readStoredValue, storageKeys } from "@/lib/storage-keys";
+import { seasonEra } from "@/lib/portrait-source";
 import { MAX_GRID_PLAYERS } from "@/lib/compare-grid";
 import { saveStatsReturn, STATS_RETURN_PARAM, takeStatsRestore } from "@/lib/stats-return";
 
@@ -599,7 +600,9 @@ export function WorkbenchPlayerExplorer({
     const fit = () => {
       const top = frame.getBoundingClientRect().top + window.scrollY;
       // The bottom edge lands on a whole pixel (16px above the fold) whatever the top's fraction.
-      frame.style.setProperty("--stats-frame-height", `${window.innerHeight - 16 - top}px`);
+      // A frame that starts below the fold (Contracts' roster, under its charts) is one screen tall.
+      const height = top >= window.innerHeight ? window.innerHeight - 32 : window.innerHeight - 16 - top;
+      frame.style.setProperty("--stats-frame-height", `${height}px`);
     };
     // Anything above the frame can settle after mount (fonts, menus, notices). The workspace has a
     // min-height that hides such changes, so watch each ancestor and everything before it instead.
@@ -683,7 +686,7 @@ export function WorkbenchPlayerExplorer({
       cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />;
     return <Fragment key={col.key}>
       {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" data-guide-index={index} style={guideGeometry(index)} aria-hidden="true">
-        <span className="stats-guide-marker"><GroupGuide mode={identityMode} player={player} /></span>
+        <span className="stats-guide-marker"><GroupGuide mode={identityMode} player={player} era={seasonEra(rowSeason, player.teams)} /></span>
       </td>}
       <td data-column={col.key}
         className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}>
@@ -1085,7 +1088,7 @@ export function WorkbenchPlayerExplorer({
                 const isCompared = comparedPlayers.some((p) => p.player_id === player.player_id);
                 const move = teamMove(player, rowSeason, latestSeason);
                 const inlineMove = move !== null && (player.teams?.length ?? 0) <= 1;
-                const moveChip = move && <span className="stats-team-move" title={move.title}><span className="stats-team-move-label">now</span><TeamLogo team={move.tricode} size={14} /><span>{move.tricode}</span></span>;
+                const moveChip = move && <span className={`stats-team-move ${move.tricode ? "" : "is-off-roster"}`} title={move.title}><span className="stats-team-move-label">now</span>{move.tricode && <TeamLogo team={move.tricode} size={14} />}<span>{move.label}</span></span>;
                 const split = querySpec && (player.teams?.length ?? 0) > 1;
                 const stintKey = `${stintScope}|${player.player_id}`;
                 const stints = stintRows[stintKey];
@@ -1120,7 +1123,7 @@ export function WorkbenchPlayerExplorer({
                       <div className={`player-cell ${split ? "is-split" : ""}`}>
                         <TeamLogoStack teams={player.teams ?? []} />
                         <PlayerPortrait key={player.player_id} playerId={player.player_id} name={player.player_name}
-                          portraitUrl={player.portrait_url} size="sm" className="stats-primary-portrait" />
+                          portraitUrl={player.portrait_url} size="sm" era={seasonEra(rowSeason, player.teams)} className="stats-primary-portrait" />
                         <div className="stats-identity-copy"><Link href={`/players/${player.player_id}?${new URLSearchParams({
                           season: query.season, phase: query.phase, beforeDate: query.before_date,
                           window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {}),

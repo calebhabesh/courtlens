@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { seasonEra } from "@/lib/portrait-source";
 import { usePathname, useSearchParams } from "next/navigation";
 import { exampleBoardScope, exampleTierGroups } from "@/lib/example-boards";
 import type { WorkbenchQueryResponse } from "@/lib/types";
@@ -60,7 +61,7 @@ export function ExampleBoardsView({ data, kind, onCopy, copying, copyError, copy
             <thead><tr className="table-column-groups"><th colSpan={2} scope="colgroup">Minutes order</th><th colSpan={3} scope="colgroup">Participation</th><th scope="colgroup">Scoring reference</th></tr>
               <tr><th scope="col">#</th><th scope="col">Player</th><th scope="col" className="num">MIN</th><th scope="col" className="num">GP</th><th scope="col" className="num">MPG</th><th scope="col" className="num">PPG</th></tr></thead>
             <tbody>{data.items.map((player, index) => <tr key={player.player_id}>
-              <td className="num">{index + 1}</td><th scope="row"><PlayerIdentity playerId={player.player_id} name={player.player_name} team={player.teams.length === 1 ? player.teams[0] : undefined} size="sm" href={`/players/${player.player_id}?releaseId=${data.query.release_id}&season=${data.query.season}&phase=${data.query.phase}&beforeDate=${data.query.before_date}`} subtitle={player.teams.length > 1 ? "Multiple observed teams" : undefined} />{player.table_qualified === false && <span className="table-small-sample">Small sample</span>}</th>
+              <td className="num">{index + 1}</td><th scope="row"><PlayerIdentity playerId={player.player_id} name={player.player_name} era={seasonEra(data.query.season, player.teams)} team={player.teams.length === 1 ? player.teams[0] : undefined} size="sm" href={`/players/${player.player_id}?releaseId=${data.query.release_id}&season=${data.query.season}&phase=${data.query.phase}&beforeDate=${data.query.before_date}`} subtitle={player.teams.length > 1 ? "Multiple observed teams" : undefined} />{player.table_qualified === false && <span className="table-small-sample">Small sample</span>}</th>
               {["min", "gp", "min_per_game", "pts_per_game"].map(key => <td key={key} className="num"><PercentileCell compact value={player.metrics[key] == null ? null : player.metrics[key]!.toLocaleString("en-US", { maximumFractionDigits: key === "gp" ? 0 : 1 })} percentile={player.table_percentiles?.[key] ?? null} qualified={player.table_qualified === true} label={key} cohort={`${player.table_cohort_sample_sizes?.[key] ?? "Unknown"} valid league players; 500+ season minutes`} /></td>)}
             </tr>)}</tbody>
           </table>
@@ -70,7 +71,7 @@ export function ExampleBoardsView({ data, kind, onCopy, copying, copyError, copy
         <div className="pc12-example-tiers">{groups.map((group, index) => <section key={group.tier_id} className={`pc12-example-tier pc12-example-category-${index + 1}`} aria-label={group.label}>
           <h3>{group.label}<span>{group.player_ids.length} players</span></h3>
           <div>{data.items.slice(index * 5, index * 5 + 5).map(player => <div className="pc12-example-player" key={player.player_id}>
-            <PlayerIdentity playerId={player.player_id} name={player.player_name} team={player.teams.length === 1 ? player.teams[0] : undefined} subtitle={player.teams.length > 1 ? "Multiple observed teams" : undefined} size="sm" href={`/players/${player.player_id}?releaseId=${data.query.release_id}&season=${data.query.season}&phase=${data.query.phase}&beforeDate=${data.query.before_date}`} />
+            <PlayerIdentity playerId={player.player_id} name={player.player_name} era={seasonEra(data.query.season, player.teams)} team={player.teams.length === 1 ? player.teams[0] : undefined} subtitle={player.teams.length > 1 ? "Multiple observed teams" : undefined} size="sm" href={`/players/${player.player_id}?releaseId=${data.query.release_id}&season=${data.query.season}&phase=${data.query.phase}&beforeDate=${data.query.before_date}`} />
             <span>{player.total_minutes.toLocaleString("en-US", { maximumFractionDigits: 1 })} min · {player.games_played} GP</span>
           </div>)}{!group.player_ids.length && <p>No selected players in this group.</p>}</div>
         </section>)}</div>

@@ -1,11 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { centsMoney, dollars, earnerDonut, money, nextOption, payrollFlow, positionDonut, seasonStatus, timelineRows, type ContractPlayer } from "./contracts";
+import {
+  bookYears, centsMoney, dollars, groupTotals, lineStatus, money, nextOption, payrollSlices, smallVsBig, thresholdLines, timelineMarks, yearRoster,
+  type ContractPlayer, type TeamContracts, type Thresholds,
+} from "./contracts";
 
-const player = (id: string, cents: string | null, group: ContractPlayer["position_group"], seasons: ContractPlayer["seasons"] = [], roster = true): ContractPlayer => ({
-  player_id: id, name: `P${id}`, on_index_roster: roster, listed_position: group === "unlisted" ? null : group, position_group: group,
+const SEASONS = ["2026-27", "2027-28", "2028-29", "2029-30"];
+const player = (id: string, cents: string | null, group: ContractPlayer["position_group"], later: (string | null)[] = [], options: (ContractPlayer["seasons"][number]["option"])[] = [], extra: Partial<ContractPlayer> = {}): ContractPlayer => ({
+  player_id: id, name: `Player ${id}`, on_index_roster: true, listed_position: group === "unlisted" ? null : group, position_group: group,
   current_salary_cents: cents, unknown_reason: cents === null ? "salary_blank_in_source" : null, remaining_guaranteed_cents: null,
-  seasons, source_url: null, source_locator: null, reference: null,
+  seasons: SEASONS.map((season, i) => ({ season, salary_cents: i === 0 ? cents : later[i - 1] ?? null, option: options[i] ?? null })),
+  source_url: null, source_locator: null, reference: null, ...extra,
 });
+const book = (players: ContractPlayer[]) => ({ seasons: SEASONS, players } as unknown as TeamContracts);
 
 describe("contracts money", () => {
   it("keeps unknown distinct from an observed zero", () => {
@@ -14,45 +20,59 @@ describe("contracts money", () => {
   });
 });
 
-describe("contract timeline", () => {
-  it("marks options, hatches a blank current season and leaves later blanks as not listed", () => {
-    const rows = timelineRows([
-      player("1", "100", "G", [{ season: "2026-27", salary_cents: "100", option: null }, { season: "2027-28", salary_cents: "200", option: "player" }, { season: "2028-29", salary_cents: null, option: null }]),
-      player("2", null, "F", [{ season: "2026-27", salary_cents: null, option: null }, { season: "2027-28", salary_cents: null, option: null }]),
-      player("3", null, "C"),
-    ]);
-    expect(rows).toHaveLength(2);
-    expect(rows[0].cells.map(c => c.status)).toEqual(["reported", "player-option"]);
-    expect(rows[1].cells).toEqual([{ period: "2026-27", value: null, status: "unknown" }]);
-    expect(seasonStatus({ season: "2026-27", salary_cents: "1", option: "team" })).toBe("team-option");
-    expect(nextOption(player("1", "1", "G", [{ season: "2027-28", salary_cents: "1", option: "team" }]))).toBe("Team option 2027-28");
+describe("book years", () => {
+  const data = book([player("1", "1000000000", "G", ["1100000000"]), player("2", null, "F")]);
+  it("offers the current season and later seasons with a listed salary only", () => {
+    expect(bookYears(data)).toEqual(["2026-27", "2027-28"]);
+  });
+  it("keeps every roster player now and only listed players later", () => {
+    expect(yearRoster(data, "2026-27").map(p => p.player_id)).toEqual(["1", "2"]);
+    expect(yearRoster(data, "2027-28").map(p => p.player_id)).toEqual(["1"]);
   });
 });
 
-describe("payroll shares", () => {
-  const players = [player("1", "300", "G"), player("2", "100", "F"), player("3", null, "F"), player("4", "50", "C", [], false)];
-  it("flows only known roster salary through position groups", () => {
-    const { nodes, links } = payrollFlow(players);
-    expect(links.find(l => l.target === "group:G")?.value).toBe(3);
-    expect(links.find(l => l.target === "group:F")?.value).toBe(1);
-    expect(nodes.some(n => n.id === "player:3" || n.id === "player:4")).toBe(false);
+describe("apron status", () => {
+  const lines = thresholdLines({ cap_cents: "16496100000", tax_cents: "20042800000", first_apron_cents: "20901500000", second_apron_cents: "22168600000" } as Thresholds);
+  it("reads Databallr's below/above and distance on known salary", () => {
+    expect(lines.map(l => l.label)).toEqual(["Cap", "Tax", "1st Apron", "2nd Apron"]);
+    expect(lineStatus(202_546_651, lines[2])).toEqual({ below: true, label: "Below 1st Apron", by: 6_468_349 });
+    expect(lineStatus(230_000_000, lines[3])).toMatchObject({ below: false, label: "Above 2nd Apron" });
+    expect(thresholdLines(null)).toEqual([]);
   });
-  it("labels known counts by position and keeps one unknown earner row with no slice value", () => {
-    expect(positionDonut(players).map(i => i.label)).toEqual(["Guards · 1/1 known", "Forwards · 1/2 known"]);
-    const earners = earnerDonut(players);
-    expect(earners.at(-1)).toMatchObject({ id: "unknown", value: null, label: "1 unknown salaries" });
+});
+
+describe("payroll slices", () => {
+  it("orders by position then salary and leaves unknown salaries out", () => {
+    const slices = payrollSlices([player("1", "100", "F"), player("2", "300", "G"), player("3", null, "G"), player("4", "200", "F")], "2026-27", "2026-27");
+    expect(slices.map(s => s.player.player_id)).toEqual(["2", "4", "1"]);
+    expect(groupTotals(slices)).toEqual([{ group: "G", value: 3, players: 1 }, { group: "F", value: 3, players: 2 }]);
   });
-  it("conserves known payroll when smaller earners become Others, with deterministic ties", () => {
-    const roster = Array.from({length: 9}, (_, i) => player(String(i), "10000", i % 2 ? "F" : "G"));
-    roster.push(player("unknown", null, "C"), player("elsewhere", "990000", "G", [], false));
-    const flow = payrollFlow([...roster].reverse());
-    expect(flow.nodes.filter(n => n.id.startsWith("player:")).map(n => n.id).sort()).toEqual(["player:0", "player:1", "player:2", "player:3", "player:4"]);
-    expect(flow.nodes.filter(n => n.id.startsWith("others:")).map(n => n.label)).toEqual(["Others · Guards (2)", "Others · Forwards (2)"]);
-    expect(flow.nodes.some(n => /unknown|elsewhere/.test(n.id))).toBe(false);
-    const groupLinks = flow.links.filter(l => l.source === "total");
-    expect(groupLinks.reduce((total, l) => total + l.value!, 0)).toBe(900);
-    for (const group of groupLinks) {
-      expect(flow.links.filter(l => l.source === group.target).reduce((total, l) => total + l.value!, 0)).toBe(group.value);
-    }
+});
+
+describe("small vs big", () => {
+  const roster = [
+    player("1", "4000000000", "F", [], [], { darko_value_dollars: 50_000_000 }),
+    player("2", "300000000", "G", [], [], { darko_value_dollars: 20_000_000 }),
+    player("3", "400000000", "C", [], [], { darko_value_dollars: null }),
+    player("4", null, "G", [], [], { darko_value_dollars: 9_000_000 }),
+  ];
+  it("splits reported salaries at the threshold; unmapped players count as paid, not as value", () => {
+    const { small, big, all } = smallVsBig(roster, 12_000_000);
+    expect(small.rows.map(r => r.player.player_id)).toEqual(["2", "3"]);
+    expect(small.rows[1].surplus).toBeNull();
+    expect(small).toMatchObject({ salary: 7_000_000, mappedSalary: 3_000_000, value: 20_000_000, surplus: 17_000_000, mapped: 1 });
+    expect(small.roi).toBeCloseTo(17 / 3);
+    expect(big).toMatchObject({ salary: 40_000_000, surplus: 10_000_000, roi: 0.25 });
+    // An unknown salary is never a $0 contract.
+    expect(all.rows.some(r => r.player.player_id === "4")).toBe(false);
+  });
+});
+
+describe("contract timeline", () => {
+  it("marks options, then FA in the season after the last listed one", () => {
+    const p = player("1", "100", "G", ["200", null], [null, "player"]);
+    expect(timelineMarks(p, SEASONS, "2026-27").map(c => c.mark)).toEqual(["guaranteed", "player-option", "free-agent", "none"]);
+    expect(timelineMarks(player("2", null, "F"), SEASONS, "2026-27").map(c => c.mark)).toEqual(["none", "none", "none", "none"]);
+    expect(nextOption(p)).toBe("Player option 2027-28");
   });
 });

@@ -179,8 +179,13 @@ def import_workbench_data(
     session: Session,
     ending_years: list[int] | None = None,
     raw_root: Path | None = None,
+    builder: str | None = None,
 ) -> WorkbenchDataset:
-    """Parse, reconcile, and import SportsDataverse seasons into immutable workbench tables."""
+    """Parse, reconcile, and import SportsDataverse seasons into immutable workbench tables.
+
+    `builder` names the job that sealed the dataset in its manifest (the daily season refresh
+    marks its datasets so it can retire superseded ones); it is not part of the content hash.
+    """
     years = ending_years or DEFAULT_WORKBENCH_SEASONS
     root = raw_root or get_settings().raw_store_path
 
@@ -347,7 +352,11 @@ def import_workbench_data(
             quality_version="reconciliation-v1",
             seasons_json=seasons_meta,
             phases_json=["regular_season", "preseason", "playoffs", "play_in", "cup_final"],
-            manifest_json={"admitted_years": years, "file_count": len(files_to_hash)},
+            manifest_json={
+                "admitted_years": years,
+                "file_count": len(files_to_hash),
+                **({"builder": builder} if builder else {}),
+            },
             coverage_json=coverage_summary,
             exclusions_json=exclusions_summary,
             status="candidate",

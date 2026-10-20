@@ -166,6 +166,8 @@
    Rows are 52px (44 compact) so the 18px pill has room on the subtitle line (Stats 73). */
 .stats-workspace .stats-team-move { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; gap: var(--space-1); height: 18px; padding: 0 var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-press); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 55%, transparent); color: var(--color-text); line-height: 1; vertical-align: middle; }
 .stats-workspace .stats-team-move > span:not(.team-logo) { display: block; line-height: 1; }
+/* On no NBA roster (free agent, abroad, retired): a neutral ring, so a move to a team keeps the accent. */
+.stats-workspace .stats-team-move.is-off-roster { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-text-tertiary) 55%, transparent); color: var(--color-text-secondary); }
 /* Multi-team rows: the pill sits on its own line under the teams; only those rows grow taller. */
 .stats-workspace .dense-stats-table .player-cell-move-line { display: block; margin-top: var(--space-0-5); line-height: var(--text-sm-lh); }
 /* Center the pill with its neighboring text instead of the font's inline middle baseline. */
