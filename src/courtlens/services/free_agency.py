@@ -10,7 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -183,11 +183,17 @@ def _tricode(team_id: str | None) -> str | None:
     return info.tricode if info else None
 
 
-_index_teams: dict[Any, dict[str, str | None]] = {}
+@dataclass(frozen=True)
+class _IndexPeople:
+    teams: dict[str, str | None]
+    # Active players' names: the population a Wikipedia name is checked against.
+    active: dict[str, str]
 
 
-def _player_index(session: Session) -> tuple[dict[str, str | None], dict[str, Any] | None]:
-    """The latest NBA player index: each listed player's roster team (None when on no roster)."""
+_index_cache: dict[Any, _IndexPeople] = {}
+
+
+def _latest_index(session: Session) -> tuple[_IndexPeople, dict[str, Any] | None]:
     index = session.scalars(
         select(PlayerContextDataset)
         .where(PlayerContextDataset.kind == "player_index")
@@ -197,19 +203,32 @@ def _player_index(session: Session) -> tuple[dict[str, str | None], dict[str, An
         .limit(1)
     ).first()
     if index is None:
-        return {}, None
-    teams = _index_teams.get(index.id)
-    if teams is None:
+        return _IndexPeople({}, {}), None
+    people = _index_cache.get(index.id)
+    if people is None:
         # Datasets are immutable, so one read per sealed index serves every request.
         rows = dataset_rows(session, index)
-        teams = {str(r["player_id"]): r.get("team_id") or None for r in rows}
-        _index_teams.clear()
-        _index_teams[index.id] = teams
-    return teams, {
+        people = _IndexPeople(
+            teams={str(r["player_id"]): r.get("team_id") or None for r in rows},
+            active={
+                str(r["player_id"]): r["name"]
+                for r in rows
+                if r.get("roster_status") == "active" and r.get("name")
+            },
+        )
+        _index_cache.clear()
+        _index_cache[index.id] = people
+    return people, {
         "source": "NBA player index",
         "dataset_id": index.id,
         "observed_at": index.observed_at.isoformat(),
     }
+
+
+def _player_index(session: Session) -> tuple[dict[str, str | None], dict[str, Any] | None]:
+    """The latest NBA player index: each listed player's roster team (None when on no roster)."""
+    people, info = _latest_index(session)
+    return people.teams, info
 
 
 @dataclass(frozen=True)
@@ -312,12 +331,14 @@ class Moves:
     events: dict[str, list[dict[str, Any]]]
     ambiguous: frozenset[str]
     info: dict[str, Any] | None
+    # Each Wikipedia player (article key) by normalized name, for the nickname fallback.
+    by_key: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
 
 
 def moves_index() -> Moves:
     latest = load_latest_moves()
     if latest is None:
-        return Moves({}, frozenset(), None)
+        return Moves({}, frozenset(), None, {})
     path, body = latest
     entry = body["entry"]
     keys: dict[str, set[str]] = {}
@@ -339,7 +360,129 @@ def moves_index() -> Moves:
             "sealed_at": entry["observed_at"],
             "events": len(entry["events"]),
         },
+        by_key={normalize_name(key): events for key, events in by_key.items()},
     )
+
+
+# Given names that are the same person but neither starts with the other (prefixes such as
+# Herb/Herbert, Nic/Nicolas or Cam/Cameron already match).
+NICKNAMES = frozenset(
+    frozenset(pair)
+    for pair in (
+        ("moe", "moritz"),
+        ("bub", "carlton"),
+        ("nick", "nicolas"),
+        ("kenny", "kenneth"),
+        ("mike", "michael"),
+        ("jimmy", "james"),
+        ("jim", "james"),
+        ("bill", "william"),
+        ("bob", "robert"),
+        ("bobby", "robert"),
+        ("tony", "anthony"),
+    )
+)
+
+
+def _same_given_name(a: str, b: str) -> bool:
+    """Whether two first names can be one person: equal, a nickname prefix, or a known pair."""
+    if a == b or frozenset((a, b)) in NICKNAMES:
+        return True
+    short, long = sorted((a, b), key=len)
+    return len(short) >= 3 and long.startswith(short)
+
+
+def _given_and_surname(name: str) -> tuple[str, str] | None:
+    tokens = name.split()
+    return (tokens[0], " ".join(tokens[1:])) if len(tokens) >= 2 else None
+
+
+@dataclass(frozen=True)
+class MoveMatch:
+    """Wikipedia events per NBA player id, and the names left unmatched as ambiguous."""
+
+    events: dict[str, list[dict[str, Any]]]
+    ambiguous: list[str]
+
+
+def match_moves(
+    moves: Moves,
+    players: dict[str, str],
+    population: dict[str, str],
+    teams: dict[str, set[str]],
+) -> MoveMatch:
+    """Give each player (id -> name) their Wikipedia moves, never someone else's.
+
+    Wikipedia has no NBA ids, so moves match by name, guarded both ways:
+    - Same name, two players: `population` (id -> name: active players, the tracker class and
+      the requested players) holds everyone a name could mean. When it names more than one,
+      the moves go to the one whose `teams` (roster and tracker teams) a move names; otherwise
+      to no one, and the name is reported.
+    - Spelling: with no exact name, a nickname of the same surname (Herb/Herbert, Moe/Moritz)
+      matches only when exactly one Wikipedia player and exactly one person in the population
+      fit, so a guess between two people is never made.
+    """
+    by_name: dict[str, set[str]] = {}
+    by_surname: dict[str, list[tuple[str, str]]] = {}
+    for pid, name in {**population, **players}.items():
+        norm = normalize_name(name)
+        by_name.setdefault(norm, set()).add(pid)
+        if parts := _given_and_surname(norm):
+            by_surname.setdefault(parts[1], []).append((pid, parts[0]))
+    wiki_by_surname: dict[str, list[tuple[str, str]]] = {}
+    for norm in moves.by_key:
+        if norm not in moves.ambiguous and (parts := _given_and_surname(norm)):
+            wiki_by_surname.setdefault(parts[1], []).append((norm, parts[0]))
+
+    found: dict[str, list[dict[str, Any]]] = {}
+    ambiguous: list[str] = []
+    for pid, name in players.items():
+        norm = normalize_name(name)
+        if norm in moves.ambiguous:
+            ambiguous.append(name)
+            continue
+        events = moves.events.get(norm)
+        if events is None and (parts := _given_and_surname(norm)):
+            given, surname = parts
+            fits = [w for w, g in wiki_by_surname.get(surname, []) if _same_given_name(given, g)]
+            if len(fits) == 1 and fits[0] not in by_name:
+                wiki_given = fits[0].split()[0]
+                people = {
+                    p for p, g in by_surname.get(surname, []) if _same_given_name(g, wiki_given)
+                }
+                if people == {pid}:
+                    events = moves.by_key[fits[0]]
+        if events is None:
+            continue
+        rivals = by_name.get(norm, set()) - {pid}
+        if rivals:
+            named = {e["team_id"] for e in events if e.get("team_id")}
+            if not (teams.get(pid, set()) & named) or any(
+                teams.get(r, set()) & named for r in rivals
+            ):
+                ambiguous.append(name)
+                continue
+        found[pid] = events
+    return MoveMatch(found, ambiguous)
+
+
+def _player_moves(
+    session: Session,
+    moves: Moves,
+    rosters: Rosters,
+    tracker: list[dict[str, Any]],
+    names: dict[str, str],
+) -> MoveMatch:
+    """`match_moves` with the population and team evidence both pages share."""
+    people, _ = _latest_index(session)
+    population = {**people.active, **{str(p["player_id"]): p["name"] for p in tracker}}
+    teams: dict[str, set[str]] = {}
+    for pid in {**population, **names}:
+        team = rosters.teams.get(pid) or people.teams.get(pid)
+        teams[pid] = {team} if team else set()
+    for p in tracker:
+        teams[str(p["player_id"])] |= {t for t in (p["old_team_id"], p["new_team_id"]) if t}
+    return match_moves(moves, names, population, teams)
 
 
 def _recent(move: dict[str, Any] | None, rosters: Rosters) -> bool:
@@ -395,14 +538,17 @@ def free_agency_view(session: Session) -> dict[str, Any]:
     rosters = roster_index(session)
     moves = moves_index()
     players = []
-    unmatched = []
+    matched = _player_moves(
+        session,
+        moves,
+        rosters,
+        entry["players"],
+        {str(p["player_id"]): p["name"] for p in entry["players"]},
+    )
+    unmatched = matched.ambiguous if moves.info is not None else []
     for p in entry["players"]:
         _, team = roster_team(p, rosters)
-        name = normalize_name(p["name"])
-        events = moves.events.get(name, [])
-        if moves.info is not None and name in moves.ambiguous:
-            unmatched.append(p["name"])
-        move = latest_move(events)
+        move = latest_move(matched.events.get(str(p["player_id"]), []))
         now = current_status(p, move, rosters)
         players.append(
             {
@@ -489,9 +635,10 @@ def current_placements(session: Session, names: dict[str, str]) -> dict[str, dic
     except HTTPException:
         store = None
     tracker = {str(p["player_id"]): p for p in store["entry"]["players"]} if store else {}
+    matched = _player_moves(session, moves, rosters, list(tracker.values()), names)
     found: dict[str, dict[str, Any]] = {}
     for player_id, name in names.items():
-        move = latest_move(moves.events.get(normalize_name(name), []))
+        move = latest_move(matched.events.get(player_id, []))
         tracked = tracker.get(player_id)
         if tracked is not None:
             now = current_status(tracked, move, rosters)
