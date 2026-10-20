@@ -9,7 +9,7 @@ import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Recent Games"
+  title: "Last X Games"
 };
 
 interface LastGamesPageProps {
@@ -70,7 +70,7 @@ export default async function LastGamesPage({ searchParams }: LastGamesPageProps
   if (!profile || !gameLog) {
     return (
       <PageShell template="profile">
-        <PageHeader title="Recent Games" />
+        <PageHeader title="Last X Games" />
         <div className="empty-state tall" role="alert">
           <span className="empty-code">RECENT GAMES</span>
           <h2>Player not found in this snapshot</h2>
