@@ -41,6 +41,16 @@ def normalize_name(name: str) -> str:
     # "A.J." and "AJ", "D'Angelo" and "DAngelo" are spellings, not different people.
     text = re.sub(r"[.'\u2019]", "", text)
     tokens = [t for t in re.split(r"[^a-z0-9]+", text) if t]
+    # Spaced initials ("A. J. Lawson", Wikipedia's style) are the same spelling as "A.J.".
+    joined: list[str] = []
+    initials = False
+    for token in tokens:
+        if len(token) == 1 and initials:
+            joined[-1] += token
+        else:
+            joined.append(token)
+            initials = len(token) == 1
+    tokens = joined
     while len(tokens) > 2 and tokens[-1] in SUFFIXES:
         tokens.pop()
     return " ".join(tokens)
