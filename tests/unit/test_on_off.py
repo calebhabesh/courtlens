@@ -2,6 +2,7 @@
 
 from dataclasses import replace
 from datetime import date
+from typing import Any
 
 import pytest
 from pydantic import ValidationError
@@ -291,3 +292,43 @@ def test_unknown_team_plays_drop_a_stint_from_usage_only() -> None:
     selected = result.cells[0]
     assert selected.metric_valid_stints["usage_pct"] == 5
     assert selected.metric_valid_stints["ts_pct"] == 6
+
+
+def test_game_plus_minus_sums_on_floor_margin_and_keeps_unknowns(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from types import SimpleNamespace
+
+    import courtlens.services.on_off as on_off
+
+    def stint(game: str, home: list[str], away: list[str], hp: int, ap: int, **kw: object) -> Any:
+        base = dict(
+            game_id=game,
+            home_lineup_json=home,
+            away_lineup_json=away,
+            home_points=hp,
+            away_points=ap,
+            status="valid",
+            policy_version="possession-policy-v2",
+            duration_seconds=60.0,
+            home_possessions=2.0,
+            away_possessions=2.0,
+        )
+        return SimpleNamespace(**(base | kw))
+
+    home, away = ["p", "b", "c", "d", "e"], ["v", "w", "x", "y", "z"]
+    bench = ["q", "b", "c", "d", "e"]
+    stints = [
+        stint("g1", home, away, 10, 4),  # p on, +6
+        stint("g1", bench, away, 0, 9),  # p off
+        stint("g2", away, home, 3, 5),  # p away side, +2
+        stint("g3", home, away, 5, 5, status="rejected"),  # any rejected stint: unknown
+        stint("g4", bench, away, 2, 0),  # minutes but never on: unknown
+    ]
+    session = SimpleNamespace(scalars=lambda _query: SimpleNamespace(all=lambda: stints))
+    monkeypatch.setattr(on_off, "stint_dataset_id", lambda _s, _c: "stints")
+    games = [("g1", True), ("g2", True), ("g3", True), ("g4", True), ("g5", True)]
+    result = on_off.game_plus_minus(session, context(), "p", games)  # type: ignore[arg-type]
+    assert result == {"g1": 6, "g2": 2, "g3": None, "g4": None, "g5": None}
+    monkeypatch.setattr(on_off, "stint_dataset_id", lambda _s, _c: None)
+    assert on_off.game_plus_minus(session, context(), "p", games) == {}  # type: ignore[arg-type]
