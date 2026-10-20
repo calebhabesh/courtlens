@@ -34,7 +34,7 @@ test.describe("FO09 Players", () => {
   test("recent games: window, exposure and layout are separate 40px controls", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await openWorkbench(page, "/last-games?playerId=23");
-    await expect(page.locator("h1")).toHaveText("Recent Games");
+    await expect(page.locator("h1")).toHaveText("Last X Games");
     for (const name of ["Appearance window", "Exposure", "Layout"]) {
       const group = page.getByRole("radiogroup", { name });
       await expect(group).toBeVisible();
@@ -49,10 +49,10 @@ test.describe("FO09 Players", () => {
 
   test("ranking boards and tier lists use the nav labels and one-line notes", async ({ page }) => {
     await openWorkbench(page, "/rankings");
-    await expect(page.locator("h1")).toHaveText("Ranking Boards");
+    await expect(page.locator("h1")).toHaveText("Rankings");
     await expect(page.locator(".notice-box")).toHaveCount(0);
     await openWorkbench(page, "/tierlist");
-    await expect(page.locator("h1")).toHaveText("Tier Lists");
+    await expect(page.locator("h1")).toHaveText("Tier List");
     await expect(page.locator(".notice-box")).toHaveCount(0);
   });
 

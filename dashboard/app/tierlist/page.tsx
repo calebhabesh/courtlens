@@ -4,7 +4,7 @@ import { getWorkbenchCatalog } from "@/lib/workbench-api";
 import { loadExampleBoard } from "@/lib/example-boards";
 
 export const metadata: Metadata = {
-  title: "Tier Lists",
+  title: "Tier List",
   description: "Create, customize, and organize personal NBA player tier lists with drag-and-drop and accessible keyboard allocation."
 };
 

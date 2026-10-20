@@ -56,7 +56,7 @@ test("partial source keeps tools primary; service failure remains a distinct ava
   });
   await openWorkbench(page, "/calculator?season=2025-26&phase=regular_season");
   await page.getByRole("button", { name: "Players", exact: true }).click();
-  await expect(page.getByRole("menuitem", { name: "Recent Games", exact: true })).toBeVisible();
+  await expect(page.getByRole("menuitem", { name: /^Last X Games/ })).toBeVisible();
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "More options", exact: true }).click();
   await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
@@ -67,7 +67,7 @@ test("partial source keeps tools primary; service failure remains a distinct ava
   await page.reload(); await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: "More options", exact: true }).click();
   await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
-  await expect(page.getByRole("menuitem", { name: /Recent Games/ })).toContainText("could not be verified");
+  await expect(page.getByRole("menuitem", { name: /Last X Games/ })).toContainText("could not be verified");
   await expect(page.getByRole("region", { name: "Scenario output" })).toBeVisible();
 });
 

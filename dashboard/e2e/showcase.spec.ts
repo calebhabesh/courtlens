@@ -7,7 +7,7 @@ test.describe("FO04 Player Showcase", () => {
   test("board shows a ranked, percentile card with centered playback and one context line", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await openWorkbench(page, "/showcase");
-    await expect(page.getByRole("heading", { level: 1, name: "Player Showcase" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Showcase" })).toBeVisible();
     const card = page.locator(".showcase-card-svg");
     await expect(card).toHaveAttribute("aria-label", /Fixture Star/);
     await expect(card).toContainText("2025-26 Regular Season · Through Jun 29, 2026");

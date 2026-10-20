@@ -82,7 +82,7 @@ describe("Design Language v1 Header Component", () => {
     expect(playersBtn?.getAttribute("aria-expanded")).toBe("true");
 
     // Menu should contain directory link
-    expect(screen.getByRole("menuitem", { name: "Ranking Boards" })).toBeDefined();
+    expect(screen.getByRole("menuitem", { name: /^Rankings/ })).toBeDefined();
 
     // Escape closes dropdown
     act(() => {

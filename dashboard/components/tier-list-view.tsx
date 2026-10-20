@@ -362,7 +362,7 @@ export function TierListView({ catalog, example = null }: { catalog?: WorkbenchC
   return (
     <PageShell template="board" className="tier-workspace-wrapper">
       <PageHeader
-        title="Tier Lists"
+        title="Tier List"
         subtitle="Your own player tiers, arranged by drag and drop or keyboard."
         actions={<>
           {activeList && <Button size="sm" variant="secondary" icon="plus" onClick={handleAddTierRow}>Add Tier Row</Button>}

@@ -4,7 +4,7 @@ import { getWorkbenchCatalog } from "@/lib/workbench-api";
 import { loadExampleBoard } from "@/lib/example-boards";
 
 export const metadata: Metadata = {
-  title: "Ranking Boards",
+  title: "Rankings",
   description: "Create, reorder, and mathematically aggregate personal player ranking boards with transparent missingness rules."
 };
 
