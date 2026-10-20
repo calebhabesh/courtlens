@@ -10,15 +10,19 @@
   .fa-fresh[data-stale] { border-color: color-mix(in srgb, var(--color-negative) 55%, transparent); color: var(--color-negative); }
   .fa-method { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
 
-  .fa-summary { display: grid; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md); background: var(--color-table-lift); }
-  .fa-summary dl { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-4); margin: 0; }
+  /* Six tiles over one foot row: the market bar spans the first five columns and the last tile's
+     source captions sit beside it (owner, row 14 follow-up 25), so the card stays two rows tall. */
+  .fa-summary { --fa-tiles: repeat(6, minmax(0, 1fr)); display: grid; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md); background: var(--color-table-lift); }
+  .fa-summary dl, .fa-summary-foot { display: grid; grid-template-columns: var(--fa-tiles); column-gap: var(--space-4); margin: 0; }
   .fa-summary dt { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
   .fa-summary dd { margin: 0; font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-weight: 600; font-variant-numeric: tabular-nums; }
   .fa-summary dd[data-tone="accent"] { color: var(--color-accent); }
   .fa-summary dd[data-tone="flag"] { color: var(--color-brand); }
-  .fa-summary-note { display: flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .fa-summary-foot { align-items: center; }
+  .fa-summary-notes { grid-column: 6; display: grid; }
+  .fa-summary-note { display: flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
   .fa-summary-note[data-stale] { color: var(--color-brand); }
-  .fa-market { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .fa-market { grid-column: 1 / 6; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
   .fa-market strong { color: var(--color-accent); font-size: var(--text-sm); letter-spacing: 0; }
   .fa-market-track { position: relative; height: var(--space-1); overflow: hidden; border-radius: var(--radius-pill); background: var(--color-surface-2); }
   .fa-market-track span { position: absolute; inset-block: 0; left: 0; width: var(--moved); border-radius: inherit; background: var(--color-accent); }
@@ -28,69 +32,62 @@
   .fa-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
   .fa-search { flex: 1 1 320px; min-width: 0; }
 
-  /* One large table in the Stats look: group labels over column labels, a pinned player column. */
-  .fa-table-wrap { overflow-x: auto; border-radius: var(--radius-md); background: var(--color-table-lift); min-width: 0; }
-  .fa-table { width: 100%; min-width: 1240px; table-layout: fixed; border-collapse: collapse; font-size: var(--text-sm); line-height: var(--text-sm-lh); }
-  .fa-col-player { width: 260px; } .fa-col-status { width: 120px; } .fa-col-team { width: 320px; } .fa-col-stats { width: 170px; }
-  .fa-col-age { width: 96px; } .fa-col-terms { width: 72px; } .fa-col-source { width: auto; }
-  /* Headers center over their columns; only the pinned player column reads from the left. */
-  .fa-table thead th { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-align: center; }
-  .fa-table thead th:first-child { text-align: left; }
-  /* A group label sits over a hairline bracket that spans exactly its columns, so a two-column
-     group (Movement, Deal) reads as covering both rather than floating between them. */
-  .fa-groups th { position: relative; height: 32px; padding: 0 var(--space-4) var(--space-2); vertical-align: bottom; }
-  .fa-groups th:not(:first-child)::after { content: ""; position: absolute; inset-inline: var(--space-3); bottom: 0; height: 1px; background: var(--color-hairline-strong); }
-  .fa-columns th { height: 40px; padding: 0 var(--space-4); vertical-align: bottom; padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline); }
-  .fa-table th:first-child { position: sticky; left: 0; z-index: var(--z-sticky); background: var(--color-table-lift); }
-  .fa-sort { display: inline-flex; align-items: flex-end; gap: var(--space-1); padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
-  .fa-sort { position: relative; }
-  /* The sort chevron hangs left of its label, so the active label keeps the shared bottom edge. */
-  .fa-sort svg { position: absolute; right: calc(100% + var(--space-1)); bottom: 0; }
-  .fa-sort[data-active] { color: var(--color-text); }
-  .fa-sort:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: var(--radius-xs); }
-  .fa-table tbody tr { border-bottom: 1px solid var(--color-hairline); }
-  .fa-table tbody tr:hover { background: var(--color-surface-hover); }
-  .fa-table tbody th, .fa-table tbody td { height: 64px; padding: var(--space-2) var(--space-4); text-align: center; font-weight: 400; }
-  .fa-table tbody th { text-align: left; }
-  .fa-table tbody th { background: var(--color-table-lift); }
-  .fa-table tbody tr:hover th { background: color-mix(in srgb, var(--color-white) 4%, var(--color-table-lift)); }
-  .fa-player { display: flex; align-items: center; gap: var(--space-3); min-width: 0; color: var(--color-text); text-decoration: none; }
-  .fa-player > span:last-child { display: grid; min-width: 0; }
-  .fa-player strong { overflow: hidden; font-size: var(--text-md); font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
-  .fa-player small, .fa-stats small, .fa-age small { color: var(--color-text-tertiary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); }
-  .fa-player:hover strong { color: var(--color-accent); }
-  .fa-status { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-0-5) var(--space-3); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-pill); color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 600; }
-  .fa-status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentcolor; }
-  .fa-status[data-status="signed"] { border-color: color-mix(in srgb, var(--color-accent) 55%, transparent); color: var(--color-accent); }
-  .fa-status[data-status="returned"] { border-color: color-mix(in srgb, var(--color-info) 55%, transparent); color: var(--color-info); }
-  .fa-status[data-status="abroad"] { border-color: color-mix(in srgb, var(--color-text-tertiary) 55%, transparent); color: var(--color-text-tertiary); }
-  .fa-status[data-status="retired"] { color: var(--color-text-tertiary); }
-  .fa-status[data-status="retired"]::before { display: none; }
-  /* The latest move under the team; a change from NBA.com adds an icon and a label, never colour alone.
-     Notes stay on one line: the column is sized for the longest club abroad (owner, row 14). */
-  .fa-move-cell { display: grid; justify-items: center; gap: var(--space-1); min-width: 0; }
-  .fa-move-note { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
-  .fa-status-cell { display: grid; justify-items: center; gap: var(--space-1); }
-  .fa-status-cell small { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
-  .fa-roster-flag { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-brand); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; white-space: nowrap; }
-  .fa-roster-flag svg { flex: none; }
+  /* The Stats table look (owner, row 14 follow-up 24): shared frame, header tiers and cells from
+     stats-explorer.css, as on Teams and Matchups. Only widths and the text cells are set here. */
+  .fa-table.stats-workspace { min-height: 0; background: transparent; }
+  .fa-table .stats-table-frame {
+    --table-surface: var(--color-table-lift);
+    --table-data: var(--color-table-well);
+    --table-row-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-surface));
+    --table-data-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-data));
+  }
+  .fa-table.stats-workspace .fa-scroll.stats-scroll-region { height: auto; max-height: min(75dvh, 880px); }
+  /* Sized to the page's 1240px: the source note takes what the fixed columns leave. */
+  .fa-grid { --fa-name-width: 232px; --table-min-width: calc(var(--fa-name-width) + 7 * 64px + 112px + 236px + 200px); }
+  .fa-grid .fa-name-column { width: var(--fa-name-width); }
+  .fa-grid col:not(.fa-name-column, .fa-col-status, .fa-col-team, .fa-col-source) { width: 64px; }
+  .fa-grid .fa-col-status { width: 112px; } .fa-grid .fa-col-team { width: 236px; }
+  .fa-grid .group-start { border-left: 1px solid var(--color-hairline-strong); }
+  .fa-table :is(th.fa-name) {
+    position: sticky; left: 0; z-index: var(--z-sticky);
+    width: var(--fa-name-width); min-width: var(--fa-name-width); max-width: var(--fa-name-width);
+    background: var(--color-table-lift); text-align: left;
+  }
+  .fa-table thead th.fa-name { z-index: var(--z-sticky-corner); }
+  .fa-table tbody th.fa-name { padding: var(--space-1) var(--space-2); font-weight: 600; font-size: var(--text-sm); text-transform: none; letter-spacing: 0; }
+  .fa-table .player-cell > .team-logo, .fa-logo-gap { flex: 0 0 20px; }
+  .fa-player { display: block; min-width: 0; color: var(--color-text); text-decoration: none; }
+  .fa-player:is(:hover, :focus-visible) .player-cell-name { color: var(--color-accent); }
+
+  /* Text cells: a value over a quieter second line, as Stats puts a percentile under its value. */
+  .fa-grid tbody td.stats-metric-cell:is(.fa-status-cell, .fa-move-cell) small,
+  .fa-move-note { display: block; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
+  .fa-status { font-weight: 600; color: var(--color-text-secondary); }
+  .fa-status[data-status="signed"] { color: var(--color-accent); }
+  .fa-status[data-status="returned"] { color: var(--color-info); }
+  .fa-status:is([data-status="abroad"], [data-status="retired"]) { color: var(--color-text-tertiary); }
   .fa-move { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text-tertiary); }
   .fa-move strong { color: var(--color-text); font-weight: 600; }
-  .fa-move-open { color: var(--color-text-secondary); }
-  .fa-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); text-align: center; }
-  .fa-stats span, .fa-age { display: grid; }
-  .fa-stats strong, .fa-age strong { font-size: var(--text-md); font-weight: 600; font-variant-numeric: tabular-nums; }
-  .fa-age { text-align: center; }
-  .fa-terms { color: var(--color-text-tertiary); text-align: center; }
-  .fa-source a { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-info); text-decoration: none; }
-  .fa-source a:hover { text-decoration: underline; }
-  .fa-source span { color: var(--color-text-tertiary); }
-  .fa-empty { margin: 0; padding: var(--space-8); color: var(--color-text-tertiary); text-align: center; }
+  .fa-move > span { color: var(--color-text-secondary); }
+  /* A change from NBA.com adds an icon and a label, never colour alone. */
+  .fa-roster-flag { display: flex; align-items: center; justify-content: center; gap: var(--space-1); color: var(--color-brand); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; white-space: nowrap; }
+  .fa-roster-flag svg { flex: none; }
+  .fa-terms { color: var(--color-text-tertiary); }
+  /* Linked notes read as figures in the text colour, keeping their link and tooltip. */
+  .fa-source { overflow: hidden; }
+  .fa-source span { display: block; min-width: 0; overflow: hidden; color: var(--color-text-secondary); text-overflow: ellipsis; white-space: nowrap; }
+  .fa-source a { display: flex; align-items: center; justify-content: center; gap: var(--space-1); min-width: 0; text-decoration: none; }
+  .fa-source a span, .fa-source a { color: var(--color-text); }
+  .fa-source a svg { flex: none; }
+  .fa-source a:hover :is(span, svg) { color: var(--color-accent); }
   .fa-provenance { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
 
   @media (width < 640px) {
-    .fa-summary dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .fa-col-player { width: 200px; }
+    .fa-summary { --fa-tiles: repeat(2, minmax(0, 1fr)); }
+    .fa-summary dl { row-gap: var(--space-4); }
+    .fa-market { grid-column: 1 / -1; }
+    .fa-summary-notes { grid-column: 1 / -1; margin-top: var(--space-2); }
+    .fa-grid { --fa-name-width: 180px; }
     .fa-filters > * { flex: 1 1 100%; }
   }
 }
