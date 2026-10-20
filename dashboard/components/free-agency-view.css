@@ -24,7 +24,7 @@
   .fa-summary-note[data-stale] { color: var(--color-brand); }
   /* The bar stops a gap short of its number, which reads at body size (owner, follow-up 27). */
   .fa-market { grid-column: 1 / 6; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3) var(--space-5); padding-right: var(--space-6); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-  .fa-market strong { color: var(--color-accent); font-size: var(--text-lg); line-height: var(--text-lg-lh); letter-spacing: 0; font-variant-numeric: tabular-nums; }
+  .fa-market strong { color: var(--color-accent); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; letter-spacing: 0; font-variant-numeric: tabular-nums; }
   .fa-market-track { position: relative; height: var(--space-1); overflow: hidden; border-radius: var(--radius-pill); background: var(--color-surface-2); }
   .fa-market-track span { position: absolute; inset-block: 0; left: 0; width: var(--moved); border-radius: inherit; background: var(--color-accent); }
 
