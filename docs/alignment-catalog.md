@@ -2244,6 +2244,22 @@ Follow-up instructions (owner, 2026-10-20; screenshots of the table and summary 
     603/603; the two Free Agency visual baselines refreshed, all others unchanged.
     Evidence: `docs/evidence/alignment/contracts/free-agency-wrap/`.
 
+Follow-up instructions (owner, 2026-10-20):
+28. [x] "The number at the end of the bar is a little too thick, make it slightly less bold and a
+    little larger." — 20px (`--text-xl`, from 16px) at weight 600 (from 700).
+29. [x] Owner question: D'Angelo Russell was traded to Memphis and then released without playing for
+    them; his logo is the Wizards'. "What do you think is the correct team logo (and general rule)?"
+    — Recommendation, applied: keep the Wizards. Rule: the name cell's logo is the team the
+    player is a free agent from (NBA.com's old team, whose 2025-26 stats the row shows); where he
+    went, including a team that held his rights without him playing, reads in Movement. Signed
+    players therefore keep their old team in the name cell (LeBron: LAL, Movement LAL › PHI)
+    instead of showing the new team twice.
+    Verification: live data on 3180 (Russell WAS in name and Movement; LeBron LAL, then LAL › PHI;
+    number 20px/600); Free Agency spec passes; Vitest 603/603; Free Agency baselines refreshed.
+    Evidence: `docs/evidence/alignment/contracts/free-agency-logo/`.
+    Found, not fixed: NBA.com's tracker gives 0.0 PTS/REB/AST for 185 of 238 players (mostly
+    signed ones), which the table shows as zeros; awaiting the owner's call.
+
 ### 15 Team Compare — ✅ aligned (first revision)
 
 Owner approval (2026-10-18): "I think it's finished," then approved the closing review: rename the

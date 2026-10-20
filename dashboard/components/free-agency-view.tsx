@@ -71,7 +71,9 @@ const num = (value: number | null) => <td className="stats-metric-cell num">{sta
 /** One free agent in the Stats table's row: identity, then one value per column. */
 function Row({ player, roster, moves }: { player: FreeAgent; roster: RosterIndex | null; moves: MovesIndex | null }) {
   const tags = [player.position, player.class.toUpperCase(), player.two_way ? "Two-Way" : player.option ? OPTION_LABELS[player.option] : null].filter(Boolean);
-  const team = player.current_team_id ?? player.old_team_id;
+  // The team he is a free agent from (NBA.com's old team, whose 2025-26 stats the row shows); where he
+  // went, or a team that held his rights without him playing, reads in Movement (row 14 follow-up 29).
+  const team = player.old_team_id ?? player.current_team_id;
   return <tr>
     <th scope="row" className="pinned-col fa-name">
       <span className="player-cell">
