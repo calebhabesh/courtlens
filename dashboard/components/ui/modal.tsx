@@ -40,6 +40,8 @@ export function Modal({
       triggerElementRef.current = document.activeElement as HTMLElement;
       // Focus the modal or first focusable child
       requestAnimationFrame(() => {
+        // A child that focused itself (autoFocus, e.g. a search field) keeps it.
+        if (panelRef.current?.contains(document.activeElement)) return;
         const firstFocusable = panelRef.current?.querySelector<HTMLElement>(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
         );

@@ -31,22 +31,6 @@ test.describe("FO09 Players", () => {
     await noSidewaysScroll(page);
   });
 
-  test("recent games: window, exposure and layout are separate 40px controls", async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await openWorkbench(page, "/last-games?playerId=23");
-    await expect(page.locator("h1")).toHaveText("Last X Games");
-    for (const name of ["Appearance window", "Exposure", "Layout"]) {
-      const group = page.getByRole("radiogroup", { name });
-      await expect(group).toBeVisible();
-      expect((await group.boundingBox())!.height).toBeGreaterThanOrEqual(38);
-    }
-    await page.getByRole("radiogroup", { name: "Appearance window" }).getByRole("radio", { name: "Last 5" }).click();
-    await expect(page.getByLabel("Window summary")).toContainText("PTS");
-    await expect(page.getByRole("button", { name: /^Load/ })).toHaveCount(0);
-    await page.setViewportSize({ width: 390, height: 844 });
-    await noSidewaysScroll(page);
-  });
-
   test("ranking boards and tier lists use the nav labels and one-line notes", async ({ page }) => {
     await openWorkbench(page, "/rankings");
     await expect(page.locator("h1")).toHaveText("Rankings");

@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { mockContracts, mockFreeAgency, mockFinance, mockRosterShapes, initial as financeInitial } from "./finance-fixture";
-import { firstLoadFixtures, offSeasonFixtures } from "./first-load-fixtures";
+import { firstLoadFixtures, lastGamesFixtures, offSeasonFixtures, SGA } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
 import research from "./fixtures/research-negative-result.json";
 
@@ -119,9 +119,11 @@ for (const view of WIDTHS) {
       await expect(page).toHaveScreenshot(`player-profile-${view.name}.png`, shot);
     });
 
+    // Last X Games (alignment row 6): real Shai Gilgeous-Alexander regular season.
     test("recent games", async ({ page }) => {
-      await openWorkbench(page, "/last-games?playerId=23");
-      await expect(page.getByLabel("Window summary")).toBeVisible();
+      await lastGamesFixtures(page);
+      await openWorkbench(page, `/last-games?playerId=${SGA}&season=2025-26`);
+      await expect(page.locator(".lg-log tbody tr")).toHaveCount(68);
       await settle(page);
       await expect(page).toHaveScreenshot(`recent-games-${view.name}.png`, shot);
     });
@@ -239,6 +241,7 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
     await openWorkbench(page,path);
     if(path === "/compare") await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
     else if(path === "/research/operation") await expect(page.getByRole("region",{name:"Available research operations"})).toBeVisible();
+    else if(path === "/last-games") await expect(page.locator(".lg-compare")).toBeVisible();
     else await expect(page.getByRole("region",{name:"Observed example context"})).toBeVisible();
     await settle(page);await expect(page).toHaveScreenshot(`first-load-${name}-${view.name}.png`,shot);
   });

@@ -56,7 +56,14 @@ test("Custom picks and exact counting units survive reload and Back/Forward; SVG
 
 // PC11: /matchups and /wowy resolve their example server-side by a labeled rule (e2e/pc11-gated-pages.spec.ts).
 // Stat Line Shift (row 13) opens like Databallr, on a team roster and a pick prompt, so it has no example.
-for(const [path,parameter] of [["/similar-players/shot-profile","player_id"],["/research/shooting/aftermath","player_id"],["/similar-players","playerId"],["/last-games","playerId"]]) test(`parameter-free ${path} resolves a named observed example`,async({page})=>{
+// Last X Games (alignment row 6, follow-up 9) opens on the Stats table's top player and says so.
+test("parameter-free /last-games resolves the Stats table leader and says so",async({page})=>{
+  await openWorkbench(page,"/last-games");
+  await expect(page.locator(".feed-example")).toContainText("Example: Fixture Star");
+  await expect(page.locator(".feed-example")).toContainText("Top of the Stats table (DPM) in 2025-26");
+  await expect.poll(()=>new URL(page.url()).searchParams.get("playerId")).toBe("23");
+});
+for(const [path,parameter] of [["/similar-players/shot-profile","player_id"],["/research/shooting/aftermath","player_id"],["/similar-players","playerId"]]) test(`parameter-free ${path} resolves a named observed example`,async({page})=>{
   await firstLoadFixtures(page);await openWorkbench(page,path);
   await expect(page.getByRole("region",{name:"Observed example context"})).toContainText("Example: Fixture Star");
   await expect.poll(()=>new URL(page.url()).searchParams.get(parameter)).toBeTruthy();

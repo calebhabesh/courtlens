@@ -18,7 +18,7 @@ Rows are in working order.
 | 3 | PvP | `/compare` | 🔄 in progress | Compare Export fixed (card export) |
 | 4 | Teams | `/teams`, `/teams/[id]` | 👀 | Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
 | 5 | WOWY | `/wowy` | ⬜ | |
-| 6 | Last X Games | `/last-games` | ⬜ | Next page (owner, 2026-10-20); awaiting instructions. Menu and title renamed from Recent Games (row 0 instr. 22) |
+| 6 | Last X Games | `/last-games` | ✅ | Owner approved first revision 2026-10-20; Databallr's window card, comparison and game logs, then stretch verdicts, game context, opponent defence, Since windows, linked panels and a four-stat rolling chart; +/- from accepted stints |
 | 7 | Live | `/live` | ⬜ | |
 | 8 | Playoffs | `/playoffs` | ⬜ | |
 | 9 | Showcase | `/showcase` | ⬜ | |
@@ -2563,3 +2563,342 @@ Follow-up instructions (owner, 2026-10-18):
     without one the page falls back to the default (most matchup possessions), so clearing it
     would look like nothing happened. Clear removes only the matchup player; its tooltip now says
     so.
+
+### 6 Last X Games — ✅ aligned (first revision)
+
+Owner approval (2026-10-20): "Alright, looks good. This page is considered finished now." The
+`recent-games` and `first-load-recent-games` Playwright baselines (desktop and phone) in
+`dashboard/e2e/visual-baselines.spec.ts` are the approved screenshots. Parked for the accounts
+work after the last page: favourites and Databallr's Favorite Players sidebar (follow-up 37).
+Open, outside this page: the lineage endpoint ignores the fact id (follow-up 8); late-playoff
++/- waits for a fresh stint run.
+
+Owner start (2026-10-20): "Next alignment page: row 6, Last X Games (/last-games), the first item
+in the Players menu", with three Databallr references (the page under the open Players menu, the
+page itself, and a close-up of the window card, comparison table, Game Logs and Rolling Trend
+Chart). Asked for numbered instructions, the owner replied: "I'm essentially asking you to do what
+we have been doing in the past. Which is replicate databallr, and then we iterate on databallr's
+design to improve it and add little features." The list below is the agent's replicate-then-improve
+proposal under that instruction; the owner's review revises it.
+
+Starting state (survey, 2026-10-20): `/last-games` (`app/last-games/page.tsx`,
+`components/recent-games-view.tsx`) is the pre-alignment layout: a left-aligned "Last X Games"
+header with a Switch player lookup, star / compare-tray / Profile / Export buttons; the shared
+ContextBar (season, phase, cutoff) with Last 5 / 10 / 20 / All, Per Game / Per 36 and Table / Cards;
+an example-subject card; a hero with six stat tiles; a points trajectory SVG; and an "Appearance
+Game Log" (date, team, opponent, status, MIN, PTS … TS%, fantasy, a Lineage button per row) or game
+cards; then a "missing games are unknown" note. One phase at a time, 50 games at most. Data: the
+workbench box scores carry PTS, REB (O/D), AST, STL, BLK, TOV, PF, FGM/A, 3PM/A, FTM/A and minutes,
+but no plus-minus; IM03's sealed stints (2023-24 to 2025-26) can supply a per-game +/-.
+Databallr: centred chart-line icon title "<Player> Last Games Stats" and "Track player performance
+trends over their most recent games"; Per Game / Per 36 Min; a heart, a gradient Choose Stats
+button and Glossary; Table View / Card View. Left: the player photo beside a "Last 5 Games" stepper
+(−1, −5, +5, +1), then "First 78 Games · Per Game · Last 5 Games" for PTS AST REB TS% 2P% 3P% FT%
+FTA TOV STL BLK MPG +/- FG2A FG3A FTR, each window value with an arrow and the change (gold when
+better, blue when worse; TOV up is blue) and a wordmark. Right: "Game Logs" with an expand button,
+"+ Add Season Data", a "2026 (RS + PO)" chip and a scrolling table (DATE sortable, OPP logo and
+tricode, then the same stats). Below: "Rolling Trend Chart (5-game moving average)", Stat 1 /
+Stat 2 / Rolling Avg controls and a smoothed two-axis line chart (gold and blue) over the season.
+Databallr's Favorite Players sidebar belongs to its app shell, which row 0 approved without it.
+
+Instructions (owner, 2026-10-20; "replicate databallr, and then we iterate"):
+1. [x] Header: the centred chart-line icon title "<Player> Last Games Stats" with Databallr's
+   explainer; below it Per Game / Per 36 Min, a favourite heart, a gold Choose Stats button
+   (Databallr's grouped-checkbox dialog, `stats=` in the URL), Glossary (the Stats glossary
+   definitions for the chosen stats) and Table View / Card View. A Change Player lookup and the
+   season and phase controls sit in one console with Data Details (scope, cutoff, sample, method,
+   CSV, copy link). Phase defaults to Regular Season + Playoffs when the season has playoff games.
+   — One console: Season, phase (Regular Season + Playoffs by default, `phase=` otherwise), Per
+   Game / Per 36 Min (`mode=`), heart (workspace favourites), Choose Stats (Counting / Scoring /
+   Other, Defaults, Clear All, Save Changes), Glossary (a dialog defining every stat, the chosen
+   ones first; the page's stats are box-score formulas, so the definitions live with them rather
+   than in the metric catalog), Table View / Card View (`view=`), Data Details (player, scope,
+   each phase's cutoff, games, window, release, method notes, Export CSV, Copy Link). The photo is
+   the Change Player control, as on Player Comparison. Without a player the minutes leader is the
+   default and a one-line note says so ("Example: … Most minutes in 2025-26"). On phones the scope
+   goes into the Filters sheet and the mode controls wrap, centred.
+2. [x] Window card: the season photo (`era`) beside a "Last N Games" stepper (−1, −5, +5, +1,
+   bounded by the games played; `window=` in the URL).
+   — 1 to games − 1; buttons disable at the bounds; the photo sits on the team colour with its logo.
+3. [x] Comparison: "First K Games · Per Game · Last N Games" for the chosen stats, each window value
+   with an arrow and the change, gold when better and blue when worse; the CourtLens wordmark under
+   it. Improvements: rates come from summed makes and attempts, not averaged percentages; a change
+   with an unknown side reads "—".
+   — Live SGA 2025-26 (RS + PO, last 5) matches Databallr on all fifteen box-score rows (PTS 30.8 →
+   25.4, TS% 65.7% → 56.7%, FTR 47.0% → 55.6% …). MPG reads 35.2 where Databallr shows 35 (it
+   rounds each game's minutes first). TOV and PF rises read blue. Also: when +/- is known in only
+   some games, a line under the table says so ("+/- known in 3 of the last 11").
+4. [x] Game Logs: the Stats table look (table-lift frame, pinned Date column, sortable headers,
+   OPP as logo + tricode with vs / @) in a scrolling panel with a sticky header; the season-phase
+   chip; expand opens it full width; "+ Add Season Data" appends the previous season's games.
+   Improvement: the window's games carry a gold edge, so the table shows what the comparison
+   averages.
+   — Game · Counting · Scoring · Other group labels; every header sorts (`sort=`, again for
+   ascending); chips per season ("2025-26 (RS + PO)"), added seasons removable. Add Season Data is a
+   menu of the catalog's earlier seasons (up to four, `add=`); a season without games says "no
+   games". Added seasons join the log and the trend chart; the comparison stays on the chosen
+   season. A note under the table explains the gold edge.
+5. [x] Rolling Trend Chart: "(N-game moving average)" title and explainer, Stat 1 / Stat 2 selects
+   and a Rolling Avg input; smoothed gold and blue lines on two axes with date ticks, a legend and
+   the wordmark. Improvements: the last-N window is shaded on the chart, and hovering shows the
+   game (date, opponent) with both values.
+   — `s1=`, `s2=`, `roll=` (1–20); the Stats trend dialog's monotone curve (never overshoots a
+   point); rates from each window's sums; drawn at the plot's pixel width so tick text keeps its
+   size on phones; season breaks marked when seasons are added. The shape matches Databallr's
+   SGA chart.
+6. [x] Card View: one card per game in the window with the chosen stats.
+7. [x] Data: a per-game +/- from IM03's accepted stints (2023-24 on, the player's on-floor points
+   minus points allowed; unknown when the game's stints are incomplete, never zero), served with
+   the game log. Earlier seasons show "—" for +/-.
+   — `game_plus_minus` in `services/on_off.py` (the stint acceptance rule factored out as
+   `accepted_stint`, shared with shared-floor v2), added to `stats.plus_minus` by
+   `GET /api/workbench/players/{id}/games`; read-only, no dataset or snapshot change. Checked: the
+   five home players' +/- sum to five times the final margin (game 0022500001). SGA: all 68
+   regular-season games known; 7 of 15 playoff games (the stint runs end before the late rounds).
+8. [x] Removed: the ContextBar, example-subject card, stat tiles, trajectory SVG, Status and
+   Fantasy columns and per-row Lineage buttons (lineage stays reachable from Data Details); the
+   "missing games are unknown" rule moves into Data Details.
+   — Done, except lineage: `GET /api/workbench/lineage?factType=player_game` ignores the fact id
+   and returns the same unrelated facts (an October 2000 game) for every game, so no per-game
+   lineage is offered until the endpoint is fixed (it was wrong on the old page too). The unused
+   recent-games helpers in `lib/player-pages.ts` and their tests went with the old view.
+
+Verification (2026-10-20): 3180 production sandbox, read-only proxy at 4180 to the owner's API:
+SGA (default, window 11 + Per 36, Card View, 2024-25 added with TS% / +/- in the chart), Jokić and
+the parameter-free default, 1440 and 390: no overflow and no browser errors. Clicked through the
+stepper, Per 36, Card View, sorting, Add Season Data, chart hover, Choose Stats, Glossary, expand
+and Change Player. Dashboard lint, typecheck and stylelint clean; Vitest 609/609 (new
+`lib/last-games.test.ts`). Python: new `test_game_plus_minus_sums_on_floor_margin_and_keeps_unknowns`;
+ruff, format and mypy clean. Playwright on the mock sandbox (fixture `e2e/fixtures/last-games-v1.json`,
+real SGA 2025-26 regular season): new `e2e/last-games.spec.ts` 6/6 (18/18 over three repeats);
+full suite 500 passed, 28 skipped, 1 failed: `stats-team-move-dates:4` expects the tooltip's older
+"Index refreshed" wording where the page now says "Checked" (unrelated). Only the four
+`recent-games` / `first-load-recent-games` baselines changed.
+Data-blocked: +/- before 2023-24 and in playoff games after the last stint run (SGA's last 8);
+per-game lineage (endpoint bug above).
+Evidence: docs/evidence/alignment/last-games/ (`before/` holds the survey).
+
+Follow-up instructions (owner, 2026-10-20; "Good first pass"):
+9. [x] "The default player needs to be more popular. Either take the top player from the top of the
+   main stats table, or the mvp from the prior year."
+   — The Stats table's top row as it opens (Overview, DARKO DPM, regular season of the season in
+   scope): Nikola Jokić for 2025-26. Chosen over the MVP because it works for every season the Stats
+   table covers and matches what people see on Stats; the MVP list is the assistant's name-only
+   registry. Falls back to the minutes leader when a season has no DARKO values. The note reads
+   "Example: Nikola Jokić · Top of the Stats table (DPM) in 2025-26".
+10. [ ] "The table on the left (first 80 games/per games/last 5), should stretch to the height of the
+    "Game Logs" container to the right (for a proper bento/puzzle fit). It's probably more
+    beneficial as it gives us more space to make the text numbers larger and add a little bit more
+    spacing."
+    — At 1100px and wider the left column stretches to the row; the comparison card fills it and its
+    rows share the height. Numbers and labels went from 16 to 20px (`--text-xl`), headers and changes
+    to 14px (`--text-md`), the name 20px, more padding; the column is 440px. (The first pass used an
+    undefined `--text-base` token; replaced. Stat Line Shift's CSS uses it too.) The owner's :3100 kept
+    serving the stale stylesheet until the import line was toggled. The log scrolls inside the Game Logs panel, so the
+    comparison sets the row height (480px at least). Measured on :3100: both end at the same pixel (SGA 1102,
+    Jokić 1096), no clipped cells; a new e2e test pins it. Narrower screens keep the stacked layout.
+11. [ ] "For our improvement/iteration do you have any suggestions/recommendations to make this page
+    much more optimal? What do you think would make this page better than it already is, or what
+    we can change about it to make it clearer."
+    — Proposed, awaiting the owner's pick (recommended first three):
+    a. "Is this a real change?": rank the window against every N-game stretch of the season, e.g.
+       "lowest 5-game TS% of the season" or "within his normal range", and mute changes inside the
+       middle 80%. Empirical, no model; tells a slump from noise.
+    b. Linked panels: clicking a comparison row plots that stat on the chart; hovering a log row
+       marks its point on the chart, and the reverse.
+    c. Game context in the log: result and score (W 118–109) and rest (back-to-back, days off) from
+       the schedule, to explain dips.
+    d. Window presets beside the stepper: Last 5 / 10 / 20 and "Since…" a date (trade, return from
+       injury).
+    e. Opponent defence in the log (opponent defensive rating) and an "against top-10 defences"
+       split.
+    f. A ten-game sparkline per comparison row.
+
+Follow-up instructions (owner, 2026-10-20; "Nice."):
+12. [x] "Can we make the player portrait larger. It seems like it's larger on databallr"
+    — 120 → 168px on desktop (88px on phones, where the chooser needs the width).
+13. [x] "I feel like we can make number of games chooser much more intuitive and better ui/ux" (the
+    Last N stepper)
+    — The four chevron buttons (±1, ±5) became one sentence and two tools: "Last [−] 5 [+] Games";
+    a slider across the season (gold to the thumb, "1" and "82 · 83 played" at its ends; arrows,
+    Page Up/Down and End work); and L5 / L10 / L15 / L20 quick picks (lit when the window matches).
+    Same `window=` URL state and bounds.
+14. [x] "This table should maybe be formatted like our other tables. It's lacking shading
+    segmentation that make it easier to read the table." (the comparison table)
+    — The Stats table look: table-lift frame and uppercase column labels, the stat-name column on
+    table-lift between table-well value columns, hairline rows with hover, and a Counting /
+    Scoring / Other band before each group. Values stay 20px. Measured on :3100 and 3180: the
+    comparison and Game Logs still end on one line (1114 / 1124px); no clipped cells; no overflow
+    at 390.
+
+Follow-up instructions (owner, 2026-10-20; screenshots of :3100):
+15. [x] "It still looks very rough. Is there something I'm missing?" — and: "In "game logs" table
+    "Game" should be centered over date. And "Date" should also be centered over it's column"
+    — Nothing was missing on the owner's side: their :3100 still served the stylesheet from two
+    rounds earlier (old stepper rules, none of the chooser, slider or group bands). Turbopack does
+    not watch the files `globals.css` imports (Tailwind's PostCSS plugin inlines them), and the
+    chunk keeps its name, so a hard refresh is needed as well. Toggled the import line and checked the
+    served chunk for the new selectors. Game Logs: "Game", "Date" and the dates are centred on the
+    date column (0px off its centre, measured with `Range`).
+
+Follow-up instructions (owner, 2026-10-20):
+16. [x] "counting/scoring/other should be centered in their columns" (the comparison table's group bands)
+    — Centred; each band sits 0px off the stat-name column's centre (measured with `Range`).
+17. [ ] "we have to find a way to cleanly be able to launch the search from here. It currently
+    overlaps, and looks sloppy." (the Change player search under the photo)
+    — Pressing the photo opens a "Change Player" dialog (like Select Team on Stat Line Shift): the
+    search is focused, the season's leaders and recent picks show before typing, and results list
+    inside the dialog under the field instead of floating over the cards. Picking a player loads
+    them and closes it; Esc closes. Shared Modal change: a child that focused itself (autoFocus)
+    keeps focus instead of the close button taking it a frame later; no other dialog uses
+    autoFocus. Full Playwright 502 passed, 28 skipped, 1 failed (the known
+    `stats-team-move-dates:4` wording test).
+
+Follow-up instructions (owner, 2026-10-20):
+18. [x] "can we make the "Last ... X... Games" centered in the container for a more harmonious look.
+    It kind of looks like it's off center. Keep it centered"
+    — The line is a five-column grid with equal outer columns ("Last" right-aligned, "Games"
+    left-aligned), so − N + sits on the card's centre whatever the words' widths: the number is
+    0px off centre at 1440 and 390.
+19. [x] "The numbers in the 3 column table are a little large compared to the text size used in the
+    container. We should make it look a little more balanced."
+    — Values 20 → 16px, stat names 16 → 14px, changes 14 → 13px with a 14px arrow; row heights and
+    the bento fit are unchanged (both columns end at 1114 / 1124px).
+
+Follow-up instructions (owner, 2026-10-20; Rolling Trend Chart and the games chooser):
+20. [x] "give opportunity to add more stats (up to a certain limit) if the user prefers"
+    — Up to four (`trend=pts,ast,ts,pm`; old `s1`/`s2` links still read). Each stat is a compact
+    picker with its line colour and a remove button; "Add Stat" offers the next useful one (REB,
+    TS%, +/-, MPG …) until four. Two stats keep Databallr's one-axis-each look, ticks now in their
+    line's colour; three or four share an axis per unit (counts left, rates right), each shared axis
+    named ("PTS · AST · +/-", "TS%"). Lines 3 and 4 use the green and pink trend tokens.
+21. [x] "Why is the rolling average drop down box taller than the stats drop downs next to it."
+    — It was a text input from a different component family than the kit dropdowns, and it kept
+    its own height regardless of the small size asked for. It is gone (22); every picker in the
+    row is now 32px (40px touch size on phones).
+22. [x] "Should the rolling average number be linked to the "last x games" container. Choose whatever
+    is logical."
+    — Linked: the moving average follows the games window. The chart's last point then equals the
+    table's "Last N Games" value (SGA: PTS 25.4 at L5, 26.1 at L10) and the shaded band is those
+    N games, so chart and table never disagree. The title says "(N-game moving average)". A unit test
+    checks the endpoint equals the window value for counts, rates and +/-.
+
+Follow-up instructions (owner, 2026-10-20):
+23. [x] "The 'x' don't look clear next to the stats, can we make it more clear which stat they belong to."
+    — Each stat is one chip: its line-colour swatch, picker and × on the picker's own surface-2
+    fill, chips 12px apart, so every × sits inside its stat. Only the wrapper is page CSS; the
+    picker and × stay kit controls. No overflow at 390 (the chips wrap).
+
+Follow-up instructions (owner, 2026-10-20; "You can do all of them if you think they will improve
+the page", answering the agent's six proposals):
+24. [x] Unusual or normal: rank the window against every N-game stretch of the season and say so
+    ("lowest 5-game TS% of the season", "within his normal range"); mute changes inside the middle
+    80%.
+    — `stretchVerdict` ranks the window among every run of N consecutive played games (at least 10
+    runs, else "too few stretches to judge"). Outside the middle 80% the change keeps its gold or
+    blue; inside it turns grey; a dot marks the season's highest or lowest stretch; hovering gives
+    the verdict ("Lowest 28-game MPG of the season", "Within his normal range…"), also in screen
+    reader text. A key under the table explains it. A change that rounds to zero has no colour or
+    sign ("+0", not "-0"). SGA last 5: 6 unusual, 10 normal; Dončić since the trade: 3 extremes.
+25. [x] Game context in the log: result and score, and rest (back-to-back, days off).
+    — A Context group after Date: Opp (now with vs / @ from the schedule), Result ("W 140–109",
+    green or red), Rest ("1 day", gold "B2B") and Opp DEF (below). Read from the existing team
+    schedule endpoint per team and phase, joined by game id; a failed read leaves "—", never
+    hides the log. Card View shows the result too. The comparison's Context band adds W–L.
+26. [x] Linked panels: a comparison row puts its stat on the chart; hovering a game in the log marks
+    it on the chart, and the reverse.
+    — Each stat name in the comparison is a button: it adds the stat to the chart (replacing the
+    last at four) or removes it; plotted names show their line's colour. Hovering a log row marks
+    that game on the chart with the tooltip; hovering the chart tints the matching log row. The
+    hover is shared only when the game changes and the lines are memoised (40 moves in ~720ms).
+    In-season team changes are marked on the chart ("Joined LAL").
+27. [x] "Since…" windows beside L5 / L10 / L15 / L20: a trade, the start of the playoffs, the end of
+    a long gap, or a picked date.
+    — A "Since…" menu under the quick picks lists facts from the log only: "Since joining LAL
+    (Feb 10)", "Since the playoffs began", "Since a 12-day gap" (a gap is named by its length,
+    never as an injury), newest first, one per date; "Pick a Date…" opens a calendar limited to
+    days he played (the first game excluded, so one earlier game remains). `since=` in the URL;
+    the button reads "Since Feb 10, 2025" with a clear button; the stepper, slider and quick picks
+    clear it. Dončić 2024-25 since the trade: 28 games.
+28. [x] Opponent strength: the opponent's defensive rating in the log and the window's average
+    opponent defence against the season's.
+    — Opp DEF in the log is the opponent's regular-season defensive-rating rank ("5th"; the rating
+    on hover), from `/teams` for the season through its cutoff. The comparison's Context band
+    shows the average opponent rank for the first K and last N games and says "tougher" or
+    "easier"; W–L sits beside it.
+29. [ ] A ten-game sparkline per comparison row — not built: once 26 puts any row's stat on the
+    chart, a sparkline repeats it at lower fidelity, and a fourth column would shrink the values the
+    owner asked to keep readable (follow-up 19).
+
+Verification (follow-ups 24–28, 2026-10-20): 3180 sandbox with the read-only proxy (SGA 2025-26,
+Dončić 2024-25 since the trade, phone): no overflow, no browser errors. Unit tests for the verdict,
+anchors and context summary (Vitest 613/613). Playwright: four new Last X Games tests with the
+fixture extended by OKC's real schedule and every team's defensive rating; the page's specs 24/24
+over two repeats; full suite 506 passed, 28 skipped, 1 failed (the known `stats-team-move-dates:4`
+wording test). Lint and typecheck clean. Evidence: `followup6-*`.
+
+Follow-up instructions (owner, 2026-10-20; "Nice."):
+30. [x] "You can add the sparkline if you please, if it's not a useful addition leave it off." — Left
+    off, for the reason under 29: clicking a stat already plots it at full size.
+31. [x] "increase player portrait size to match height of container beside it."
+    — The portrait measures the chooser and takes its height (206px square, tops aligned). The
+    left column went 440 → 468px and the chooser's side padding 16 → 12px so the full "Last − N +
+    Games" line still fits beside it. Phones keep the 88px portrait.
+32. [x] "Change "Since..." to simply "Since"" — Done; the menu keeps the trade, playoff and gap starts.
+33. [x] "Just use a standard calendar picker (with valid dates only). The current calendar picker is
+    terrible."
+    — No more Since menu → "Pick a Date…" → dialog → button → calendar. A date button sits beside
+    "Since" and opens the app's standard month calendar in place; only days he played (after his
+    first game) can be chosen, others are disabled. The browser's native date input was not used:
+    it can bound the range but cannot disable the days he did not play.
+34. [x] "also the caption at the bottom of the 3 column stats table is too wordy, try to keep it more
+    succint and take up less space."
+    — One line: "Colour = unusual for his 5-game stretches · ● season high or low" (plus "+/- known
+    in 44 of first 45" when it applies); phrases never break mid-way. The verdict stays on hover.
+
+Follow-up instructions (owner, 2026-10-20):
+35. [x] "in card view make sure the numbers can actually fit in the boxes"
+    — Cards are at least 260px wide (three a row at 1440), so every value fits its box, "100.0%"
+    included; measured with no clipped value at 1440, 1100 and 390. The result sits on the date line.
+36. [x] "in glossary why are the terms at, and below, oreb grey compared to white/grey like the other
+    terms."
+    — They were the stats not currently shown, dimmed to set them apart, which read as disabled.
+    Now two labelled lists in normal colour: "On This Page" and "More in Choose Stats".
+37. [x] "Not sure how the heart feature works here. databallr has a sidebar for your favorite
+    players. I imagine this is useful once you setup accounts/auth for users and persist across
+    sessions. Thoughts? Courtlens is not meant to be scaled for public use (more of a project meant
+    for resume, that recruiters/manager/myself/select few friends/family can use) but still
+    publically hosted, however, we can add very simple auth/accounts after we finish all pages. That
+    way these preferences (favorite players) can be hooked up/linked to something."
+    — Agreed, and the heart is removed from this page until then. It wrote to one install-wide
+    workspace list that no page reads, and on the read-only demo the write is refused, so it lit up
+    and quietly reverted. Parked for after the last page (owner's plan): simple invite-only
+    accounts; favourites per account; Databallr's Favorite Players sidebar in the app shell (a row 0
+    change) and a Favorites filter on Stats; the demo's Caddy allowlist then needs the account and
+    favourites writes.
+
+Follow-up instructions (owner, 2026-10-20):
+38. [x] ""Last ... x ... Games" is still not centered in the container."
+    — Follow-up 18 centred the number, but "Games" is longer than "Last", so the phrase overhung
+    to the right (5px of room). Now the whole phrase is centred with equal space either side, and
+    "Last" / "Games" are 14px (the number stays large): 22.5px from each edge at 1440, 1100 and
+    for L5 and L15; 34.5px at 390.
+
+Follow-up instructions (owner, 2026-10-20):
+39. [x] "should we use a different colour or a better way to describe this? Yellow = high Blue = low,
+    why are we only using yellow" (the comparison's colour key)
+    — The changes already used gold for better and blue for worse (a rise in TOV is blue), but the
+    key showed only a gold "Colour", so it read as gold = unusual. The key now names all three
+    tones in their colours: "Gold better · Blue worse · Grey his usual range · ● season best or
+    worst". The dot keeps its change's tone, and the verdict says "(best)" or "(worst)", since a
+    season-high TOV is the worst. One line at 1440.
+40. [x] "Can we be more succint with the caption under the rolling trend chart title. It's very wordy."
+    — "Uses your games window: each line ends on the table's Last 5 value." The early-points and
+    colour rules moved into Data Details.
+
+Follow-up instructions (owner, 2026-10-20):
+41. [x] "use colons after the "Gold" "Blue", also what is "season best or worst" mean here?"
+    — "Gold: better · Blue: worse · Grey: his usual range", then on its own line "●: his best or
+    worst 5-game stretch this season". The dot marks a stat whose last N games are his best or worst
+    run of that length all season (Jokić's MPG over his last 5 is his most minutes in any 5-game
+    stretch); the old wording did not say that.

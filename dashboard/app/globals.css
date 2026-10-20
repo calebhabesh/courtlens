@@ -57,7 +57,7 @@
 @import "./styles/route-surfaces.css";
 @import "../components/planner-client.css";
 @import "./design/design.css";
-@import "../components/recent-games-view.css";
+@import "../components/last-games-view.css";
 @import "../components/playoffs-bracket-view.css";
 @import "../components/playoffs-series-view.css";
 @import "../components/distributions-investigation-view.css";

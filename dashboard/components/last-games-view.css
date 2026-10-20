@@ -1,0 +1,244 @@
+@layer pages {
+  /* Last X Games (alignment row 6): Databallr's window card, comparison, game logs and rolling trend. */
+  .lg-page { display: flex; flex-direction: column; gap: var(--space-4); width: min(100%, 1360px); margin-inline: auto; min-width: 0; }
+  .lg-page .feed-example { justify-content: center; }
+  .lg-console { position: relative; z-index: var(--z-sticky-corner); display: flex; justify-content: center; width: 100%; min-width: 0; }
+  .lg-empty { margin: 0; padding: var(--space-8) var(--space-4); color: var(--color-on-bg-secondary); font-size: var(--text-lg); line-height: var(--text-lg-lh); text-align: center; }
+
+  /* Choose Stats and Glossary dialogs. */
+  .lg-dialog { width: min(520px, calc(100vw - 2 * var(--space-4))); }
+  .lg-choose-groups { display: grid; gap: var(--space-5); }
+  .lg-choose-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3) var(--space-4); margin: 0; padding: 0; border: 0; }
+  .lg-choose-group legend {
+    width: 100%; margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline);
+    color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 600;
+  }
+  .lg-choose-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline); }
+  .lg-spacer { flex: 1; }
+  /* Change Player (follow-up 17): results list inside the dialog, under the field, never floating
+     over other cards; a steady height so the dialog does not jump as results arrive. */
+  .lg-player-dialog .ui-modal-body { min-height: 440px; }
+  .lg-player-dialog .lookup-dropdown { position: static; width: 100%; min-width: 0; max-width: none; margin-top: var(--space-2); box-shadow: none; }
+  .lg-glossary { display: grid; gap: var(--space-3); margin: 0; }
+  .lg-glossary div { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: var(--space-3); }
+  .lg-glossary-section + .lg-glossary-section { margin-top: var(--space-5); }
+  .lg-glossary-section h3 { margin: 0 0 var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline); color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 600; }
+  .lg-glossary dt { font-weight: 700; }
+  .lg-glossary dd { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .lg-method { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-4); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+
+  /* Left column (window card and comparison) beside the game logs. */
+  .lg-grid { display: grid; grid-template-columns: 468px minmax(0, 1fr); gap: var(--space-4); align-items: start; }
+  .lg-side { display: grid; gap: var(--space-3); min-width: 0; }
+
+  /* Follow-up 31: the square portrait takes the chooser's measured height (--photo). */
+  .lg-window { display: grid; grid-template-columns: var(--photo, 168px) minmax(0, 1fr); align-items: start; gap: var(--space-3); }
+  .lg-photo-frame { position: relative; }
+  .lg-photo { width: var(--photo, 168px); }
+  /* The games chooser (follow-up 13): the window in words, a season-long slider, common lengths. */
+  .lg-chooser {
+    display: grid; align-content: center; gap: var(--space-3); min-width: 0;
+    padding: var(--space-3); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-surface-0) 58%, transparent);
+  }
+  /* Follow-up 38: the whole phrase is centred, equal space either side ("Games" is longer than
+     "Last", so centring only the number pushed the phrase right). */
+  .lg-chooser-line { display: flex; align-items: center; justify-content: center; gap: var(--space-2); white-space: nowrap; color: var(--color-text-secondary); font-size: var(--text-md); line-height: var(--text-md-lh); }
+  .lg-chooser-value { min-width: 2ch; color: var(--color-text); font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-weight: 700; font-variant-numeric: tabular-nums; text-align: center; }
+  .lg-chooser-range { display: grid; gap: var(--space-1); }
+  .lg-chooser-range p { display: flex; justify-content: space-between; margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .lg-since { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--control-sm); }
+  .lg-range { width: 100%; height: var(--space-5); min-height: 0; margin: 0; padding: 0; border: 0; background: transparent; appearance: none; cursor: pointer; }
+  .lg-range::-webkit-slider-runnable-track { height: var(--space-2); border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) var(--fill), var(--color-surface-3) var(--fill)); }
+  .lg-range::-moz-range-track { height: var(--space-2); border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) var(--fill), var(--color-surface-3) var(--fill)); }
+  .lg-range::-webkit-slider-thumb { width: var(--space-4); height: var(--space-4); margin-top: calc(-1 * var(--space-1)); border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-surface-0); appearance: none; }
+  .lg-range::-moz-range-thumb { width: var(--space-4); height: var(--space-4); border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-surface-0); }
+  .lg-range:focus, .lg-range:focus-visible { outline: none; }
+  .lg-range:focus-visible::-webkit-slider-thumb { box-shadow: var(--focus-ring); }
+  .lg-range:focus-visible::-moz-range-thumb { box-shadow: var(--focus-ring); }
+
+  /* First K · Per Game · Last N, Databallr's three columns in the Stats table look (follow-up 14):
+     table-lift header and label column, table-well cells, hairline rows, one band per group. */
+  .lg-compare { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); }
+  .lg-compare h2 { margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; text-align: center; }
+  .lg-compare-frame { display: flex; flex: 1; flex-direction: column; border-radius: var(--radius-md); background: var(--color-table-lift); overflow: clip; }
+  /* Rows share the card's height, so a taller card spaces them out rather than leaving a gap. */
+  .lg-compare-table { flex: 1; width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; font-variant-numeric: tabular-nums; }
+  .lg-compare-table thead th {
+    height: 32px; padding: var(--space-1) var(--space-3); background: var(--color-table-lift); color: var(--color-text-secondary);
+    font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-transform: uppercase; vertical-align: bottom;
+  }
+  .lg-compare-table thead th:first-child { text-align: right; }
+  .lg-compare-table thead th:last-child { text-align: left; }
+  .lg-compare-table th:nth-child(2) { width: 100px; text-align: center; }
+  .lg-compare-group th {
+    height: 24px; padding: 0 var(--space-3); background: var(--color-table-lift); color: var(--color-text);
+    font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.04em; text-align: center; text-transform: uppercase;
+  }
+  .lg-compare-table tbody tr:not(.lg-compare-group) th { padding: 0; border-bottom: 1px solid var(--color-hairline-strong); background: var(--color-table-lift); font-size: var(--text-md); line-height: var(--text-lg-lh); font-weight: 600; }
+  .lg-compare-table tbody td { padding: 0 var(--space-3); border-bottom: 1px solid var(--color-hairline-strong); background: var(--color-table-well); font-size: var(--text-lg); line-height: var(--text-lg-lh); white-space: nowrap; }
+  .lg-compare-table tbody :is(td, th) { padding-block: var(--space-0-5); }
+  .lg-compare-table tbody td:first-child { text-align: right; }
+  .lg-compare-table tbody tr:not(.lg-compare-group):hover td { background: color-mix(in srgb, var(--color-white) 6%, var(--color-table-well)); }
+  .lg-compare-table tbody tr:not(.lg-compare-group):hover th { background: color-mix(in srgb, var(--color-white) 6%, var(--color-table-lift)); }
+  .lg-compare-table tbody:last-child tr:last-child :is(th, td) { border-bottom: 0; }
+  .lg-now { font-weight: 500; }
+  .lg-change { display: inline-flex; align-items: center; gap: var(--space-1); margin-left: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .lg-change[data-tone="up"] { color: var(--color-identity-a); }
+  .lg-change[data-tone="down"] { color: var(--color-identity-b); }
+  .lg-coverage { margin: 0; padding: 0 var(--space-3); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; }
+  /* Follow-up 24: a change inside his normal range is grey; a dot marks a season high or low. */
+  .lg-change[data-normal] { color: var(--color-text-tertiary); }
+  .lg-extreme { display: inline-block; width: 6px; height: 6px; margin-left: var(--space-1); border-radius: 50%; background: currentColor; }
+  .lg-extreme-inline { margin: 0 var(--space-0-5); color: var(--color-text-secondary); vertical-align: middle; }
+  .lg-phrase { white-space: nowrap; }
+  .lg-key-line { display: block; }
+  /* Follow-up 39: the key names all three tones, as the changes use them. */
+  .lg-key { color: var(--color-text-tertiary); font-weight: 600; }
+  .lg-key[data-tone="up"] { color: var(--color-identity-a); }
+  .lg-key[data-tone="down"] { color: var(--color-identity-b); }
+  /* Follow-up 26: a stat name adds or removes its line; plotted names carry the line's colour. */
+  .lg-plot {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1); width: 100%; padding: 0; border: 0; background: none;
+    color: inherit; font: inherit; cursor: pointer;
+  }
+  .lg-plot:hover { color: var(--color-accent); }
+  .lg-plot:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; border-radius: var(--radius-sm); }
+  .lg-plot[data-series="1"] { --series: var(--color-identity-a); }
+  .lg-plot[data-series="2"] { --series: var(--color-identity-b); }
+  .lg-plot[data-series="3"] { --series: var(--color-trend-3); }
+  .lg-plot[data-series="4"] { --series: var(--color-trend-5); }
+  .lg-plot[data-series]::before { content: ""; width: 10px; height: 3px; border-radius: var(--radius-sm); background: var(--series); }
+  .lg-wordmark { display: flex; justify-content: center; color: var(--color-accent); }
+
+  /* Game Logs: the Stats table look in a scrolling panel. */
+  .lg-logs { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; padding: var(--space-4); }
+  .lg-logs-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); }
+  .lg-logs-head h2 { margin: 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .lg-logs-head p { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .lg-logs-actions { display: flex; align-items: center; gap: var(--space-3); }
+  .lg-chips { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+  .lg-chip { display: inline-flex; align-items: center; height: var(--control-sm); padding: 0 var(--space-3); border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-sm); }
+  .lg-chip-note { color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .lg-log { --grid-min-width: calc(var(--lead-width) + 88px + 104px + 72px + 80px + var(--columns, 16) * 64px); }
+  /* Follow-up 25 and 28: result, rest and opponent defence beside the opponent. */
+  .lg-result-column { width: 104px; }
+  .lg-rest-column { width: 72px; }
+  .lg-def-column { width: 80px; }
+  .lg-result { font-weight: 600; }
+  .lg-result[data-result="W"] { color: var(--color-positive); }
+  .lg-result[data-result="L"] { color: var(--color-negative); }
+  .lg-rest[data-b2b] { color: var(--color-accent); font-weight: 600; }
+  /* Follow-up 26: the game hovered here or on the chart. */
+  .lg-log tbody tr[data-linked] td { background: color-mix(in srgb, var(--color-accent) 12%, var(--color-table-well)); }
+  .lg-log tbody tr[data-linked] th.player-ref-grid-lead { background: color-mix(in srgb, var(--color-accent) 12%, var(--color-table-lift)); }
+  .lg-card header small { margin-left: var(--space-2); font-size: var(--text-xs); }
+  .lg-log-scroll { --lead-width: 128px; max-height: 560px; }
+  .lg-log-scroll[data-expanded] { max-height: 72dvh; }
+  .lg-opp-column { width: 88px; }
+  .lg-log tbody td, .lg-log tbody th { height: 40px; }
+  .lg-log tbody td { padding-inline: var(--space-1); }
+  /* Game and Date sit centred over the date column, like every other label (follow-up 15). */
+  .lg-log .player-ref-grid-lead { text-align: center; }
+  /* The window's games: a gold edge on the pinned date. */
+  .lg-log tbody tr[data-window] th.player-ref-grid-lead { box-shadow: inset 3px 0 0 var(--color-accent); }
+  .lg-sort {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1); padding: 0; border: 0; background: none;
+    color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer;
+  }
+  .lg-sort[aria-pressed="true"] { color: var(--color-accent); }
+  .lg-sort:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: var(--radius-sm); }
+  .lg-opp { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1); font-weight: 600; }
+  .lg-note { display: flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .lg-swatch { width: 3px; height: 14px; border-radius: var(--radius-sm); background: var(--color-accent); }
+  .lg-expand { width: min(1400px, calc(100vw - 2 * var(--space-4))); }
+
+  /* Card View: one card per game in the window. */
+  /* Follow-up 35: cards wide enough that "100.0%" fits its box. */
+  .lg-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .lg-card { display: grid; gap: var(--space-3); padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-table-lift); }
+  .lg-card header { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); font-size: var(--text-sm); font-weight: 600; }
+  .lg-card dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); margin: 0; }
+  .lg-card dl div { display: grid; justify-items: center; gap: var(--space-1); min-width: 0; padding: var(--space-1) var(--space-0-5); border-radius: var(--radius-sm); background: var(--color-table-well); }
+  .lg-card dt { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
+  .lg-card dd { margin: 0; font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* Rolling Trend Chart. */
+  .lg-trend { display: grid; gap: var(--space-3); padding: var(--space-4); }
+  .lg-trend [data-series="1"] { --series: var(--color-identity-a); }
+  .lg-trend [data-series="2"] { --series: var(--color-identity-b); }
+  .lg-trend [data-series="3"] { --series: var(--color-trend-3); }
+  .lg-trend [data-series="4"] { --series: var(--color-trend-5); }
+  .lg-trend-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--space-3); }
+  .lg-trend-head h2 { margin: 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .lg-trend-head p { max-width: 80ch; margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  /* Follow-up 20: one compact picker per line, its colour beside it, then Add Stat. */
+  .lg-trend-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  /* Follow-up 23: swatch, picker and its × form one chip on the picker's own fill, so each × reads
+     as part of its stat; chips are spaced apart. */
+  .lg-trend-stat { display: flex; align-items: center; gap: 0; padding-left: var(--space-2); border-radius: var(--radius-sm); background: var(--color-surface-2); }
+  .lg-trend-swatch { flex: none; width: 14px; height: 3px; border-radius: var(--radius-sm); background: var(--series); }
+  .lg-trend-grid[data-series] text { fill: var(--series); }
+  .lg-trend-axis-name { fill: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 600; }
+  .lg-trend-figure { display: grid; gap: var(--space-2); margin: 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--color-surface-0); }
+  .lg-trend-caption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: var(--space-2); }
+  .lg-trend-brand { display: grid; gap: var(--space-1); color: var(--color-accent); }
+  .lg-trend-brand span { color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
+  .lg-trend-legend { display: flex; gap: var(--space-4); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .lg-trend-legend span { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .lg-trend-legend span::before { content: ""; width: 14px; height: 2px; border-radius: 1px; background: var(--series); }
+  .lg-trend-plot { position: relative; }
+  .lg-trend-plot svg { display: block; width: 100%; height: auto; touch-action: pan-y; }
+  .lg-trend-grid line { stroke: var(--color-hairline); stroke-width: 1; stroke-dasharray: 4 4; }
+  .lg-trend-grid text, .lg-trend-grid, .lg-trend-axis { fill: var(--color-text-secondary); font-size: var(--text-xs); }
+  .lg-trend-series path { fill: none; stroke: var(--series); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+  .lg-trend-window rect { fill: color-mix(in srgb, var(--color-accent) 8%, transparent); }
+  .lg-trend-window text { fill: var(--color-accent); font-size: var(--text-xs); font-weight: 600; }
+  .lg-trend-break line { stroke: var(--color-hairline-strong); stroke-width: 1; }
+  .lg-trend-break text { fill: var(--color-text-secondary); font-size: var(--text-xs); }
+  .lg-trend-hover line { stroke: var(--color-text-secondary); stroke-width: 1; }
+  .lg-trend-hover circle { fill: var(--series); stroke: var(--color-surface-0); stroke-width: 2; }
+  .lg-trend-capture { fill: transparent; cursor: crosshair; }
+  .lg-trend-tip {
+    position: absolute; top: var(--space-2); left: var(--x); display: grid; gap: var(--space-1); padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm); background: var(--color-surface-3); box-shadow: var(--shadow-2); pointer-events: none;
+    font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; translate: var(--space-3) 0;
+  }
+  .lg-trend-tip[data-side="left"] { translate: calc(-100% - var(--space-3)) 0; }
+  .lg-trend-tip span { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .lg-trend-tip span::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--series); }
+
+  @media (max-width: 1099px) {
+    .lg-grid { grid-template-columns: minmax(0, 1fr); }
+    .lg-side { grid-template-columns: minmax(0, 468px); justify-content: center; }
+  }
+  @media (max-width: 767px) {
+    .lg-window { grid-template-columns: 88px minmax(0, 1fr); }
+    .lg-photo { width: 88px; }
+    .lg-chooser { gap: var(--space-2); padding: var(--space-2) var(--space-3); }
+    .lg-chooser-line { gap: var(--space-1); font-size: var(--text-md); }
+    .lg-chooser-value { font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
+    .lg-compare { padding: var(--space-3); }
+    /* The change takes its own line under the value, so the last column never clips. */
+    .lg-compare-table tbody td:last-child .lg-change { display: flex; margin-left: 0; }
+    .lg-side { grid-template-columns: minmax(0, 1fr); }
+    .lg-logs, .lg-trend { padding: var(--space-3); }
+    .lg-log-scroll { --lead-width: 112px; }
+    .lg-trend-controls { width: 100%; }
+    .lg-trend-figure { padding: var(--space-2); }
+    .lg-choose-group { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .lg-choose-actions .lg-spacer { flex-basis: 100%; }
+  }
+  /* Bento fit (follow-up 10): the left column and Game Logs share one height. The comparison sets
+     it; the log scrolls inside, so its rows never push the row taller. */
+  @media (min-width: 1100px) {
+    .lg-grid { align-items: stretch; }
+    .lg-side { display: flex; flex-direction: column; }
+    .lg-side .lg-compare { flex: 1; }
+    .lg-logs { display: flex; flex-direction: column; min-height: 480px; }
+    .lg-logs > .player-ref-grid-frame, .lg-logs > .lg-cards { flex: 1 1 auto; height: 0; min-height: 0; }
+    .lg-logs > .player-ref-grid-frame { display: flex; flex-direction: column; }
+    .lg-logs .lg-log-scroll:not([data-expanded]) { flex: 1; max-height: none; }
+    .lg-logs > .lg-cards { overflow: auto; align-content: start; }
+  }
+}
