@@ -65,12 +65,17 @@ export function matchesSearch(player: FreeAgent, query: string): boolean {
   if (!needle) return true;
   return [player.name, player.old_team_tricode, player.current_team_tricode, player.latest_move?.club, player.note].some(text => text?.toLowerCase().includes(needle));
 }
-export type FreeAgencySort = "stats" | "name" | "age" | "status";
+/** "stats" is points per game (the default, and the key older links carry). */
+export type FreeAgencySort = "stats" | "reb" | "ast" | "name" | "age" | "exp" | "status";
 const STATUS_ORDER: Record<CurrentStatus, number> = { unsigned: 0, signed: 1, returned: 2, abroad: 3 };
-/** Unknown values sort last in either direction; never as zero. */
+const SORT_KEY: Record<FreeAgencySort, (p: FreeAgent) => number | string | null> = {
+  stats: p => p.points_per_game, reb: p => p.rebounds_per_game, ast: p => p.assists_per_game,
+  age: p => p.age, exp: p => p.experience, status: p => STATUS_ORDER[p.current_status], name: p => p.name,
+};
+/** Text sorts ascending, numbers descending; unknown values sort last in either direction, never as zero. */
 export function sortAgents(players: FreeAgent[], sort: FreeAgencySort): FreeAgent[] {
-  const key = (p: FreeAgent): number | string | null => sort === "stats" ? p.points_per_game : sort === "age" ? p.age : sort === "status" ? STATUS_ORDER[p.current_status] : p.name;
-  const descending = sort === "stats" || sort === "age";
+  const key = SORT_KEY[sort];
+  const descending = sort !== "name" && sort !== "status";
   return [...players].sort((a, b) => {
     const x = key(a), y = key(b);
     if (x === null || y === null) return x === y ? a.name.localeCompare(b.name) : x === null ? 1 : -1;
