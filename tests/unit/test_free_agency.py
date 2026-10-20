@@ -231,6 +231,7 @@ def test_current_placements_match_the_tracker_and_place_everyone_else(monkeypatc
         },
         ambiguous=frozenset(),
         info={},
+        by_key={"tony bradley": [{**cut, "date": None}], "sam abroad": [abroad]},
     )
     # The roster still lists a stale team for nobody; Bradley and Abroad are on no roster.
     rosters = _rosters({"1": None, "2": None, "3": TOR})
@@ -238,6 +239,9 @@ def test_current_placements_match_the_tracker_and_place_everyone_else(monkeypatc
     monkeypatch.setattr(free_agency, "roster_index", lambda session: rosters)
     monkeypatch.setattr(free_agency, "moves_index", lambda: moves)
     monkeypatch.setattr(free_agency, "load_free_agency_store", lambda: tracker)
+    monkeypatch.setattr(
+        free_agency, "_latest_index", lambda session: (free_agency._IndexPeople({}, {}), None)
+    )
     found = free_agency.current_placements(
         None,  # type: ignore[arg-type]
         {"1": "Tony Bradley", "2": "Sam Abroad", "3": "Rostered Guy", "4": "Nobody Known"},
@@ -253,3 +257,52 @@ def test_current_placements_match_the_tracker_and_place_everyone_else(monkeypatc
     unknown = free_agency.Rosters(teams={}, complete=False, unresolved=frozenset(), info=None)
     monkeypatch.setattr(free_agency, "roster_index", lambda session: unknown)
     assert "4" not in free_agency.current_placements(None, {"4": "Nobody Known"})  # type: ignore[arg-type]
+
+
+def _moves(*events: dict) -> free_agency.Moves:
+    by_key: dict[str, list[dict]] = {}
+    for event in events:
+        by_key.setdefault(free_agency.normalize_name(event["key"]), []).append(event)
+    return free_agency.Moves(events=by_key, ambiguous=frozenset(), info={}, by_key=by_key)
+
+
+def _ev(name: str, kind: str = "abroad", team: str | None = None) -> dict:
+    return {"key": name, "name": name, "kind": kind, "team_id": team, "date": "2026-07-20"}
+
+
+def test_same_name_players_get_a_move_only_when_its_team_says_whose() -> None:
+    # Two active Nate Williams: the waiver names Toronto, which only one of them played for.
+    waived = _moves(_ev("Nate Williams", "waived", TOR))
+    population = {"10": "Nate Williams", "11": "Nate Williams"}
+    teams = {"10": {TOR}, "11": {NYK}}
+    found = free_agency.match_moves(waived, {"10": "Nate Williams"}, population, teams)
+    assert "10" in found.events
+    assert free_agency.match_moves(waived, {"11": "Nate Williams"}, population, teams).events == {}
+    # A move abroad names no NBA team: whose it is stays unknown, and the name is reported.
+    abroad = free_agency.match_moves(
+        _moves(_ev("Nate Williams")), {"10": "Nate Williams"}, population, teams
+    )
+    assert abroad.events == {} and abroad.ambiguous == ["Nate Williams"]
+    # A retired namesake outside the population (father and son) does not block the match.
+    son = free_agency.match_moves(
+        _moves(_ev("Gary Payton II")), {"12": "Gary Payton II"}, {"12": "Gary Payton II"}, {}
+    )
+    assert "12" in son.events
+
+
+def test_nicknames_match_only_one_person_with_one_wikipedia_entry() -> None:
+    def match(wiki: list[str], name: str, population: dict[str, str]):
+        moves = _moves(*(_ev(w) for w in wiki))
+        return free_agency.match_moves(moves, {"1": name}, {"1": name, **population}, {}).events
+
+    assert "1" in match(["Herb Jones"], "Herbert Jones", {})
+    assert "1" in match(["Moe Wagner"], "Moritz Wagner", {})
+    assert "1" in match(["Nic Claxton"], "Nicolas Claxton", {})
+    # Two Wikipedia entries could be him, or another active Jones could be the Herb: no guess.
+    assert match(["Nic Claxton", "Nico Claxton"], "Nicolas Claxton", {}) == {}
+    assert match(["Herb Jones"], "Herbert Jones", {"2": "Herbie Jones"}) == {}
+    # A Wikipedia name that is exactly another player's is theirs, never a nickname of this one.
+    assert match(["Cam Johnson"], "Cameron Johnson", {"2": "Cam Johnson"}) == {}
+    # Unrelated first names and two-letter prefixes never match.
+    assert match(["Jalen Green"], "Josh Green", {}) == {}
+    assert match(["Al Horford"], "Alexander Horford", {}) == {}
