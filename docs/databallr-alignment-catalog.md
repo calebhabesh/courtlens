@@ -2206,6 +2206,28 @@ Follow-up instructions (owner, 2026-10-19; Free Agency screenshot):
     2025-26 validation (59 games equal to sealed stints and possessions; ~4% expected
     exclusions without the CDN stream). Impact disclosure shows a Provisional badge.
 
+Follow-up instructions (owner, 2026-10-20; Free Agency screenshots, the Stats table as reference):
+24. [x] "The free agent tracker table looks weird. Just use our regular table design. I feel like we
+    overly tweaked it. We already have good established table designs." — the bespoke `fa-table`
+    is gone; the tracker uses the shared Stats table (`stats-workspace` / `stats-table-frame` /
+    `dense-stats-table`, as Teams and Matchups do): table-lift name column, table-well data,
+    Player · Movement · 2025-26 · Profile · Deal group labels with a rule at each group start,
+    shared sort headers. One value per column: PTS, REB and AST split (each sortable; `sort=stats`
+    still means PTS), Age and Exp split. The name cell is the Stats one (team logo, season-agnostic
+    photo, name over a position · class · option line). Status pills and group brackets removed;
+    status is toned text. Source notes read in the text colour with their link icon, cut with an
+    ellipsis. Fits 1240px without horizontal scroll; 52px rows.
+25. [x] "…move the market moved bar to be in line with the caption text for 'changed since
+    tracker'…" — the captions left the last tile; a foot row on the tiles' six-column grid holds
+    the market bar (columns 1–5) beside the Rosters/Wikipedia captions (column 6). Measured: bar
+    and captions share a centre line (y 317), card 132px tall. Phone: bar, then captions, full
+    width.
+    Verification: production sandbox 3180 with live data through the read-only proxy (centres of
+    group labels equal their cells; all 10 column labels share one bottom edge; no page overflow
+    at 1440 or 390); Free Agency spec passes on the mock; lint, typecheck, Vitest 603/603;
+    visual baselines 109/111, then the two Free Agency baselines refreshed (desktop was already
+    stale from follow-ups 15–21). Evidence: `docs/evidence/alignment/contracts/free-agency-table/`.
+
 ### 15 Team Compare — ✅ aligned (first revision)
 
 Owner approval (2026-10-18): "I think it's finished," then approved the closing review: rename the

@@ -1,0 +1,46 @@
+{
+  "summaryHeight": 132,
+  "marketCenterY": 317,
+  "notesCenterY": 317,
+  "groups": [
+    {
+      "label": "Player",
+      "cellCenter": 216,
+      "textCenter": 216
+    },
+    {
+      "label": "Movement",
+      "cellCenter": 506,
+      "textCenter": 506
+    },
+    {
+      "label": "2025-26",
+      "cellCenter": 776,
+      "textCenter": 776
+    },
+    {
+      "label": "Profile",
+      "cellCenter": 936,
+      "textCenter": 936
+    },
+    {
+      "label": "Deal",
+      "cellCenter": 1170,
+      "textCenter": 1170
+    }
+  ],
+  "labelBottoms": [
+    530,
+    530,
+    530,
+    530,
+    530,
+    530,
+    530,
+    530,
+    530,
+    530
+  ],
+  "rowHeight": 52,
+  "pageOverflow": false
+}

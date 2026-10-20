@@ -8,12 +8,14 @@ import {
   FILTERS, OPTION_LABELS, getFreeAgency, isRosterStale, isStale, matchesFilter, matchesSearch, sortAgents,
   type CurrentStatus, type FreeAgencyFilter, type FreeAgencySort, type FreeAgent, type MovesIndex, type RosterIndex,
 } from "@/lib/free-agency";
+import "./stats-explorer.css";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
+import { PlayerPortrait } from "./player-portrait";
+import { SortHeader } from "./table-ui";
 import { DataDetailsButton } from "./ui/data-details";
 import { GatedNote } from "./ui/gated-note";
 import { PageHeader } from "./ui/panel";
-import { PlayerAvatar } from "./ui/identity";
 import { Icon } from "./ui/icon";
 import { SearchField } from "./ui/input";
 import { Chip, Segmented, Select } from "./ui/kit";
@@ -22,20 +24,13 @@ const TEAMS = [...branding.teams].sort((a, b) => a.artwork_name.localeCompare(b.
 type Klass = "all" | "ufa" | "rfa";
 const CLASSES: { value: Klass; label: string }[] = [{ value: "all", label: "All" }, { value: "ufa", label: "UFA" }, { value: "rfa", label: "RFA" }];
 const STATUS_LABEL: Record<CurrentStatus, string> = { unsigned: "Unsigned", signed: "Signed", returned: "Returned", abroad: "Abroad" };
-const SORTS: { key: FreeAgencySort; label: string }[] = [{ key: "name", label: "Name" }, { key: "status", label: "Status" }, { key: "stats", label: "Stats" }, { key: "age", label: "Age" }];
+const SORTS: FreeAgencySort[] = ["stats", "reb", "ast", "name", "age", "exp", "status"];
+/** Text columns sort A–Z, numbers highest first (lib/free-agency sortAgents). */
+const sortDirection = (sort: FreeAgencySort) => sort === "name" || sort === "status" ? "asc" : "desc";
 const stat = (value: number | null) => value === null ? "—" : Number.isInteger(value) ? String(value) : value.toFixed(1);
 const observedLabel = (iso: string) => new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 /** A calendar date from the page (no time zone shift): "Oct 17". */
 const dayLabel = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
-
-function SortHeader({ sort, current, onSort, className }: { sort: FreeAgencySort; current: FreeAgencySort; onSort: (sort: FreeAgencySort) => void; className?: string }) {
-  const label = SORTS.find(s => s.key === sort)!.label;
-  return <th scope="col" className={className} aria-sort={current === sort ? (sort === "stats" || sort === "age" ? "descending" : "ascending") : undefined}>
-    <button type="button" className="fa-sort" data-active={current === sort || undefined} onClick={() => onSort(sort)}>
-      {current === sort && <Icon name="chevron-down" size={14} />}{label}
-    </button>
-  </th>;
-}
 
 /** Why the current status reads as it does: Wikipedia's latest move or the roster, flagged when it differs from NBA.com. */
 function MoveNote({ player, roster, moves }: { player: FreeAgent; roster: RosterIndex | null; moves: MovesIndex | null }) {
@@ -63,39 +58,56 @@ function MoveNote({ player, roster, moves }: { player: FreeAgent; roster: Roster
 
 function Movement({ player }: { player: FreeAgent }) {
   return <span className="fa-move">
-    {player.old_team_id ? <TeamLogo team={player.old_team_id} size={20} /> : <span className="fa-move-none">—</span>}
+    {player.old_team_id ? <TeamLogo team={player.old_team_id} size={20} /> : <span>—</span>}
     <Icon name="right" size={14} />
     {player.current_team_id
       ? <><TeamLogo team={player.current_team_id} size={20} /><strong>{player.current_team_tricode}</strong></>
-      : <span className="fa-move-open">{player.current_status === "abroad" ? "Abroad" : "Open market"}</span>}
+      : <span>{player.current_status === "abroad" ? "Abroad" : "Open market"}</span>}
   </span>;
 }
 
+const num = (value: number | null) => <td className="stats-metric-cell num">{stat(value)}</td>;
+
+/** One free agent in the Stats table's row: identity, then one value per column. */
 function Row({ player, roster, moves }: { player: FreeAgent; roster: RosterIndex | null; moves: MovesIndex | null }) {
-  const tags = [player.position, player.class.toUpperCase(), player.two_way ? "Two-Way Free Agent" : player.option ? OPTION_LABELS[player.option] : null].filter(Boolean);
+  const tags = [player.position, player.class.toUpperCase(), player.two_way ? "Two-Way" : player.option ? OPTION_LABELS[player.option] : null].filter(Boolean);
+  const team = player.current_team_id ?? player.old_team_id;
   return <tr>
-    <th scope="row"><Link className="fa-player" href={`/players/${player.player_id}`}>
-      <PlayerAvatar playerId={player.player_id} name={player.name} team={player.current_team_id ?? player.old_team_id} size="md" />
-      <span><strong>{player.name}</strong><small>{tags.join(" · ")}</small></span>
-    </Link></th>
-    <td>{player.retired
+    <th scope="row" className="pinned-col fa-name">
+      <span className="player-cell">
+        {team ? <TeamLogo team={team} size={20} /> : <span className="fa-logo-gap" />}
+        <PlayerPortrait playerId={player.player_id} name={player.name} size="sm" />
+        <span className="stats-identity-copy"><Link className="stats-player-link fa-player" href={`/players/${player.player_id}`} title={player.name}>
+          <span className="player-cell-name font-semibold">{player.name}</span>
+          <span className="player-cell-teams">{tags.join(" · ")}</span>
+        </Link></span>
+      </span>
+    </th>
+    <td className="stats-metric-cell group-start fa-status-cell">{player.retired
       ? <span className="fa-status" data-status="retired" title="NBA.com's note on this player says he retired">Retired</span>
-      : <span className="fa-status-cell">
+      : <>
         <span className="fa-status" data-status={player.current_status}>{STATUS_LABEL[player.current_status]}</span>
         {player.changed && <small>NBA.com: {STATUS_LABEL[player.status]}</small>}
-      </span>}</td>
-    <td><span className="fa-move-cell"><Movement player={player} /><MoveNote player={player} roster={roster} moves={moves} /></span></td>
-    <td><span className="fa-stats">
-      {([["PTS", player.points_per_game], ["REB", player.rebounds_per_game], ["AST", player.assists_per_game]] as const).map(([label, value]) =>
-        <span key={label}><strong>{stat(value)}</strong><small>{label}</small></span>)}
-    </span></td>
-    <td><span className="fa-age"><strong>{player.age ?? "—"}</strong><small>{player.experience === null ? "" : `${player.experience} yr exp`}</small></span></td>
-    <td className="fa-terms" title="Deal terms are not on the source">—</td>
-    <td className="fa-source">{player.note && player.note_url
-      ? <a href={player.note_url} target="_blank" rel="noreferrer">{player.note}<Icon name="external" size={14} /></a>
+      </>}</td>
+    <td className="stats-metric-cell fa-move-cell"><Movement player={player} /><MoveNote player={player} roster={roster} moves={moves} /></td>
+    <td className="stats-metric-cell num group-start">{stat(player.points_per_game)}</td>
+    {num(player.rebounds_per_game)}
+    {num(player.assists_per_game)}
+    <td className="stats-metric-cell num group-start">{player.age ?? "—"}</td>
+    <td className="stats-metric-cell num">{player.experience ?? "—"}</td>
+    <td className="stats-metric-cell group-start fa-terms" title="Deal terms are not on the source">—</td>
+    <td className="stats-metric-cell fa-source">{player.note && player.note_url
+      ? <a href={player.note_url} target="_blank" rel="noreferrer" title={player.note}><span>{player.note}</span><Icon name="external" size={14} /></a>
       : <span>{player.note ?? "NBA tracker"}</span>}</td>
   </tr>;
 }
+
+const GROUPS: { label: string; columns: { key: string; label: string; sort?: FreeAgencySort; title?: string }[] }[] = [
+  { label: "Movement", columns: [{ key: "status", label: "Status", sort: "status" }, { key: "team", label: "Team", title: "Team before, then team now" }] },
+  { label: "2025-26", columns: [{ key: "pts", label: "PTS", sort: "stats", title: "Points per game (NBA.com)" }, { key: "reb", label: "REB", sort: "reb", title: "Rebounds per game (NBA.com)" }, { key: "ast", label: "AST", sort: "ast", title: "Assists per game (NBA.com)" }] },
+  { label: "Profile", columns: [{ key: "age", label: "Age", sort: "age" }, { key: "exp", label: "Exp", sort: "exp", title: "Years of NBA experience" }] },
+  { label: "Deal", columns: [{ key: "terms", label: "Terms", title: "Deal terms are not on the source" }, { key: "source", label: "Source" }] },
+];
 
 /** Free Agency (alignment row 14): NBA.com's 2026 tracker in Databallr's one large table. */
 export function FreeAgencyView() {
@@ -104,7 +116,8 @@ export function FreeAgencyView() {
   const klass = (CLASSES.find(c => c.value === get("class"))?.value ?? "all") as Klass;
   const team = get("team");
   const query = get("q") ?? "";
-  const sort = (SORTS.find(s => s.key === get("sort"))?.key ?? "stats") as FreeAgencySort;
+  const sort = SORTS.find(key => key === get("sort")) ?? "stats";
+  const onSort = (next: string) => set({ sort: next === "stats" ? null : next });
   const feed = useFeed([], signal => getFreeAgency(signal));
   const data = feed.data;
   const players = data?.status === "available" ? data.players : [];
@@ -151,14 +164,19 @@ export function FreeAgencyView() {
           <div><dt>Signed</dt><dd data-tone="accent">{count("signed")}</dd></div>
           <div><dt>Returned</dt><dd data-tone="accent">{count("returned")}</dd></div>
           <div><dt>Abroad</dt><dd>{count("abroad")}</dd></div>
-          <div><dt title="Current status or team differs from NBA.com's tracker">Changed Since Tracker</dt><dd data-tone="flag">{market.filter(p => p.changed).length}</dd>
+          <div><dt title="Current status or team differs from NBA.com's tracker">Changed Since Tracker</dt><dd data-tone="flag">{market.filter(p => p.changed).length}</dd></div>
+        </dl>
+        {/* The market bar shares a line with the last tile's source captions, so the card stays two rows. */}
+        <div className="fa-summary-foot">
+          <div className="fa-market"><span>Market Moved</span><span className="fa-market-track" role="img" aria-label={`${Math.round(moved * 100)}% signed or returned`}>
+            <span style={{ "--moved": `${(moved * 100).toFixed(2)}%` } as CSSProperties} /></span><strong>{Math.round(moved * 100)}%</strong></div>
+          <div className="fa-summary-notes">
             {data.roster_index && <p className="fa-summary-note" data-stale={isRosterStale(data.roster_index.observed_at) || undefined}>
               {isRosterStale(data.roster_index.observed_at) && <Icon name="alert" size={14} />}Rosters as of {observedLabel(data.roster_index.observed_at)}</p>}
             {data.moves && <p className="fa-summary-note" data-stale={isRosterStale(data.moves.observed_at) || undefined}>
-              {isRosterStale(data.moves.observed_at) && <Icon name="alert" size={14} />}Wikipedia as of {observedLabel(data.moves.observed_at)}</p>}</div>
-        </dl>
-        <div className="fa-market"><span>Market Moved</span><span className="fa-market-track" role="img" aria-label={`${Math.round(moved * 100)}% signed or returned`}>
-          <span style={{ "--moved": `${(moved * 100).toFixed(2)}%` } as CSSProperties} /></span><strong>{Math.round(moved * 100)}%</strong></div>
+              {isRosterStale(data.moves.observed_at) && <Icon name="alert" size={14} />}Wikipedia as of {observedLabel(data.moves.observed_at)}</p>}
+          </div>
+        </div>
       </section>
       <div className="fa-chips" role="group" aria-label="Status">
         {FILTERS.map(f => <Chip key={f.value} size="sm" pressed={filter === f.value} onClick={() => set({ status: f.value === "all" ? null : f.value })}>
@@ -174,24 +192,30 @@ export function FreeAgencyView() {
         </Select>
         <Segmented<Klass> size="lg" label="Free-agent class" value={klass} onChange={value => set({ class: value === "all" ? null : value })} options={CLASSES} />
       </div>
-      <div className="fa-table-wrap" role="region" aria-label="Free agents" tabIndex={0}>
-        <table className="fa-table">
-          <colgroup><col className="fa-col-player" /><col className="fa-col-status" /><col className="fa-col-team" /><col className="fa-col-stats" /><col className="fa-col-age" /><col className="fa-col-terms" /><col className="fa-col-source" /></colgroup>
-          <thead>
-            <tr className="fa-groups"><th scope="colgroup">Player</th><th scope="colgroup" colSpan={2}>Movement</th><th scope="colgroup">2025-26</th><th scope="colgroup">Profile</th><th scope="colgroup" colSpan={2}>Deal</th></tr>
-            <tr className="fa-columns">
-              <SortHeader sort="name" current={sort} onSort={next => set({ sort: next })} className="fa-lead" />
-              <SortHeader sort="status" current={sort} onSort={next => set({ sort: next })} />
-              <th scope="col">Team</th>
-              <SortHeader sort="stats" current={sort} onSort={next => set({ sort: next === "stats" ? null : next })} />
-              <SortHeader sort="age" current={sort} onSort={next => set({ sort: next })} />
-              <th scope="col">Terms</th><th scope="col">Source</th>
-            </tr>
-          </thead>
-          <tbody>{rows.map(player => <Row key={player.player_id} player={player} roster={data.roster_index} moves={data.moves} />)}</tbody>
-        </table>
-        {!rows.length && <p className="fa-empty">No free agents match these filters.</p>}
-      </div>
+      <section className="stats-workspace fa-table" aria-label="Free agents">
+        <div className="stats-table-frame is-table">
+          <div className="table-wrapper stats-scroll-region fa-scroll" role="region" aria-label="Free agent table scroll area" tabIndex={0}>
+            <table className="data-table dense-stats-table fa-grid">
+              <colgroup><col className="fa-name-column" />{GROUPS.flatMap(group => group.columns.map(column => <col key={column.key} className={`fa-col-${column.key}`} />))}</colgroup>
+              <thead>
+                <tr className="stats-header-tier-1">
+                  <th className="pinned-col fa-name">Player</th>
+                  {GROUPS.map(group => <th key={group.label} colSpan={group.columns.length} scope="colgroup" className="stats-group-th group-start">{group.label}</th>)}
+                </tr>
+                <tr className="stats-header-tier-2">
+                  <SortHeader label="Name" metric="name" active={sort === "name"} direction="asc" onSort={onSort} className="pinned-col fa-name" />
+                  {GROUPS.flatMap(group => group.columns.map((column, index) => <SortHeader key={column.key} label={column.label} metric={column.sort ?? column.key} description={column.title}
+                    sortable={Boolean(column.sort)} active={sort === column.sort} direction={sortDirection(sort)} onSort={onSort} className={`num ${index === 0 ? "group-start" : ""}`} />))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map(player => <Row key={player.player_id} player={player} roster={data.roster_index} moves={data.moves} />)}
+                {!rows.length && <tr><td colSpan={11} className="stats-empty-cell">No free agents match these filters.</td></tr>}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
       <p className="fa-provenance">Sources: NBA.com free-agent tracker (class, profile and stats), observed {formatDate(data.observed_at)}{data.moves && <>; {data.moves.source}, checked {observedLabel(data.moves.observed_at)}</>}{data.roster_index && `; ${data.roster_index.source}, ${observedLabel(data.roster_index.observed_at)}`}. Returned means the same team before and after (re-signed or option exercised). Stats are NBA.com&apos;s per-game figures.</p>
     </>}
   </div>;
