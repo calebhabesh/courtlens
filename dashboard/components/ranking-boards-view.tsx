@@ -300,7 +300,7 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
   return (
     <PageShell template="explorer" className="ranking-boards-container">
       <PageHeader
-        title="Ranking Boards"
+        title="Rankings"
         subtitle="Your own player rankings, with notes, reordering and aggregation."
         actions={<>
           <Button size="sm" variant="secondary" icon="scale" pressed={showAggSection} onClick={() => setShowAggSection((prev) => !prev)}>

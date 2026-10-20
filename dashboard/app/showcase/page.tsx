@@ -9,7 +9,7 @@ import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Player Showcase · CourtLens"
+  title: "Showcase"
 };
 
 const ROSTER_SIZE = 25;

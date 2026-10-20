@@ -165,7 +165,7 @@ export function RecentGamesView({
   return (
     <PageShell template="profile" className="recent-games-container">
       <PageHeader
-        title="Recent Games"
+        title="Last X Games"
         subtitle={[player.name, latest_team?.name, last_observed_date ? `Last game ${formatDate(last_observed_date)}` : null].filter(Boolean).join(" · ")}
         actions={<>
           <div className="player-lookup-box">

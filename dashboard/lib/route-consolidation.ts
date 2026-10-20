@@ -25,7 +25,7 @@ export const TABBED_PAGES = {
     ],
   },
   similarPlayers: {
-    title: "Similar Players",
+    title: "Player Twins",
     subtitle: "Players with the closest box-score or shot profiles.",
     tabs: [
       { label: "Box Score", href: "/similar-players" },

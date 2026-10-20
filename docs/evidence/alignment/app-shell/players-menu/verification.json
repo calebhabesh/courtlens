@@ -1,0 +1,84 @@
+{
+  "Players": [
+    {
+      "text": "Last X GamesPlayer performance over their most recent games",
+      "href": "/last-games",
+      "icon": true
+    },
+    {
+      "text": "ShowcasePlayer cards for a season, team or position",
+      "href": "/showcase",
+      "icon": true
+    },
+    {
+      "text": "Player TwinsPlayer-seasons with the closest box-score or shot profiles",
+      "href": "/similar-players",
+      "icon": true
+    },
+    {
+      "text": "Player DirectoryFind any player and open their dashboard",
+      "href": "/players",
+      "icon": true
+    },
+    {
+      "text": "RankingsBuild player ranking boards and combine them into a consensus",
+      "href": "/rankings",
+      "icon": true
+    }
+  ],
+  "Compare": [
+    {
+      "text": "Player ComparisonCompare stats between up to five NBA players",
+      "href": "/compare",
+      "icon": true
+    },
+    {
+      "text": "Team ComparisonTwo team seasons side by side: rotations and team stats",
+      "href": "/team-compare",
+      "icon": true
+    },
+    {
+      "text": "Player MatchupsWho guarded whom, from NBA tracking",
+      "href": "/matchups",
+      "icon": true
+    },
+    {
+      "text": "Tier ListDrag players into tiers and save your lists",
+      "href": "/tierlist",
+      "icon": true
+    }
+  ],
+  "backLabel": "Last X Games · CourtLens",
+  "drawer": [
+    "Stats",
+    "Live",
+    "Live",
+    "Finals",
+    "Playoffs",
+    "Players",
+    "Last X Games",
+    "Showcase",
+    "Player Twins",
+    "Player Directory",
+    "Rankings",
+    "Teams",
+    "Teams",
+    "Roster Shapes",
+    "Stat Line Shift",
+    "Contracts",
+    "Free Agency",
+    "Compare",
+    "Player Comparison",
+    "Team Comparison",
+    "Player Matchups",
+    "Tier List",
+    "Research",
+    "Impact",
+    "RAPM Research",
+    "WOWY",
+    "Defensive Matchups",
+    "Shooting",
+    "Shooting",
+    "Trends & Distributions"
+  ]
+}

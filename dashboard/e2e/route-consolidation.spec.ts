@@ -38,12 +38,12 @@ test.describe("FO07 route consolidation", () => {
   test("tabs switch in place and carry the scope and player", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await openWorkbench(page, "/similar-players?season=2024-25&playerId=1627751");
-    const tabs = page.getByRole("navigation", { name: "Similar Players sections" });
+    const tabs = page.getByRole("navigation", { name: "Player Twins sections" });
     await tabs.getByRole("link", { name: "Shot Profile" }).click();
     await expect(page).toHaveURL(url => url.pathname === "/similar-players/shot-profile"
       && url.searchParams.get("season") === "2024-25" && url.searchParams.get("playerId") === "1627751");
     await expect(tabs.locator('[aria-current="page"]')).toHaveText("Shot Profile");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Similar Players");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Player Twins");
     // The embedded view drops its own title; the page has exactly one h1.
     await expect(page.locator("h1")).toHaveCount(1);
   });

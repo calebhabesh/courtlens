@@ -18,18 +18,18 @@ Rows are in working order.
 | 3 | PvP | `/compare` | 🔄 in progress | Compare Export fixed (card export) |
 | 4 | Teams | `/teams`, `/teams/[id]` | 👀 | Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
 | 5 | WOWY | `/wowy` | ⬜ | |
-| 6 | Last X Games | `/last-games` | ⬜ | |
+| 6 | Last X Games | `/last-games` | ⬜ | Next page (owner, 2026-10-20); awaiting instructions. Menu and title renamed from Recent Games (row 0 instr. 22) |
 | 7 | Live | `/live` | ⬜ | |
 | 8 | Playoffs | `/playoffs` | ⬜ | |
 | 9 | Showcase | `/showcase` | ⬜ | |
 | 10 | Rankings | `/rankings` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
-| 11 | Tier List | `/tierlist` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
+| 11 | Tier List | `/tierlist` | ⬜ | PC12 D partial example boards (`53ee4d6`); now under Compare |
 | 12 | Roster Shapes | `/roster-shapes` | ✅ | Owner approved first revision 2026-10-19; Databallr side-by-side team view with linked hover, season-by-season fill, rotation-capped minutes, searchable trade sandbox |
 | 13 | Stat Line Shift | `/stat-line-shift` | ✅ | Owner approved first revision 2026-10-19; opens on Select Team, full-width roster drawer with season photos, per-75 without → with table, pair cards, Customize Stats dialog; IM03 stints + stint box (shared-floor v2) |
 | 14 | Contracts + Free Agency | `/contracts`, `/free-agency` | 👀 | Select Team flow, Overview (payroll, cap bar, full flow, bar timeline, roster Stats table, pies), Small vs Big on DARKO values; Free Agency restored from NBA.com's tracker |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
 | 16 | Matchup Matrix | `/matchups` | ✅ aligned (first revision) | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
-| 17 | Shot Profile Twin | `/similar-players` | ⬜ | Partial overlap |
+| 17 | Shot Profile Twin | `/similar-players` | ⬜ | Partial overlap; titled Player Twins (row 0 instr. 22) |
 | 18 | Six Factor RAPM | `/research` | ⬜ | |
 | 19 | Wingspan | `/wingspan` | ⬜ | |
 | 20 | Offensive Calculator | `/calculator` | ⬜ | |
@@ -174,6 +174,24 @@ Follow-up instructions (owner, 2026-10-19, during Teams; reopen row 0 for this c
     — The bar was inset 12px from both button edges: on the left that is the text, on the right the
     chevron's 16px box, whose glyph ends ~3.3px inside it. On menu items with a chevron the bar now
     ends 4px further in, at the arrow's ink; Stats (no chevron) is unchanged.
+
+Follow-up instructions (owner, 2026-10-20, opening the Players pages; Databallr Players menu as
+reference). Owner answers: Tier List moves to Compare as on Databallr; Similar Players keeps its
+method under a new honest name (a shot-profile-only rebuild waits for row 17); Last X Games is the
+first Players page.
+22. [x] Players menu like Databallr's. — rich rows (icon + one-line description) in Databallr's
+    order: Last X Games (chart-line), Showcase (crown), Player Twins (fingerprint), Player Directory
+    (layout-dashboard; Databallr's "Dashboard" slot, kept as Player Directory because it opens the
+    directory), Rankings (list-ordered). Tier List (rows) is the fourth Compare item. Page titles
+    follow the menu labels so Back buttons and tabs match: Recent Games → Last X Games, Player
+    Showcase → Showcase, Similar Players → Player Twins, Ranking Boards → Rankings, Tier Lists →
+    Tier List. Not changed: link labels inside the approved player page's tools row and the
+    Research landing cards still use the old names (ask before touching row 2).
+    Verification: production sandbox 3180 with the live API through a read-only proxy; the menus
+    list 5 and 4 rich rows with icons and the drawer lists the same; lint, typecheck, Vitest
+    603/603; 117/118 affected Playwright specs pass. The failure is the Free Agency first-load
+    baseline, which went stale with row 14's table change and is unrelated to the menu.
+    Evidence: docs/evidence/alignment/app-shell/players-menu/.
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.

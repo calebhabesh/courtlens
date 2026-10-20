@@ -138,7 +138,7 @@ export function PlayerShowcaseView({
   return (
     <PageShell template="board" className="showcase-page">
       <PageHeader
-        title="Player Showcase"
+        title="Showcase"
         subtitle="Shareable stat cards with league percentiles and ranks."
         actions={<>
           <div className="showcase-search">
