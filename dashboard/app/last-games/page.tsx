@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { PageShell } from "@/components/ui/page-shell";
-import { PageHeader } from "@/components/ui/panel";
-import { RecentGamesView } from "@/components/recent-games-view";
-import { getPlayerGameLog, getPlayerProfile, getWorkbenchCatalog } from "@/lib/workbench-api";
-import type { PlayerGameLogResponse, PlayerProfile, WorkbenchCatalog } from "@/lib/types";
+import { LastGamesView, type LastGamesScope } from "@/components/last-games-view";
+import { executeWorkbenchQuery, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { resolveStatsQuery } from "@/lib/stats-query";
+import type { WorkbenchCatalog } from "@/lib/types";
 import { loadExampleSubject } from "@/lib/example-subject";
-import { ButtonLink } from "@/components/ui/kit";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -13,83 +13,43 @@ export const metadata: Metadata = {
 };
 
 interface LastGamesPageProps {
-  searchParams: Promise<{
-    playerId?: string;
-    id?: string;
-    season?: string;
-    phase?: string;
-    beforeDate?: string;
-    window?: string;
-    releaseId?: string;
-    [key: string]: string | string[] | undefined;
-  }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
+type Example = { id: string; name: string; season: string; rule: string };
+
+/** The first row of the Stats table as it opens (Overview, by DARKO DPM), for the season in scope. */
+async function statsLeader(params: Record<string, string>, catalog: WorkbenchCatalog): Promise<Example | null> {
+  if (!catalog.darko?.manifest_sha256) return null;
+  const query = resolveStatsQuery(params, catalog, "per_game", "dpm");
+  query.page = { limit: 1 };
+  query.darko_manifest_sha256 = catalog.darko.manifest_sha256;
+  const leader = (await executeWorkbenchQuery(query)).items[0];
+  return leader ? { id: leader.player_id, name: leader.player_name, season: query.season, rule: `Top of the Stats table (DPM) in ${query.season}.` } : null;
+}
+
+/**
+ * Last X Games (alignment row 6). The server resolves only the defaults: the season scopes and,
+ * without a player, the example subject: the Stats table's top player (follow-up 9), else the
+ * season's minutes leader. The view loads the games itself.
+ */
 export default async function LastGamesPage({ searchParams }: LastGamesPageProps) {
   const params = await searchParams;
-
-  let catalog: WorkbenchCatalog | null = null;
-  try {
-    catalog = await getWorkbenchCatalog(params.releaseId);
-  } catch {
-    // Graceful fallback if catalog fetch fails
+  const text = (name: string) => typeof params[name] === "string" ? params[name] as string : undefined;
+  const releaseId = text("releaseId");
+  const catalog = await getWorkbenchCatalog(releaseId).catch(() => null);
+  const scopes: LastGamesScope[] = (catalog?.stats_scopes ?? [])
+    .filter(scope => scope.phase === "regular_season" || scope.phase === "playoffs")
+    .map(scope => ({ season: scope.season, phase: scope.phase, beforeDate: scope.default_before_date }));
+  const explicit = text("playerId") || text("id");
+  const strings = Object.fromEntries(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string"));
+  let example: Example | null = null;
+  if (!explicit && catalog) example = await statsLeader(strings, catalog).catch(() => null);
+  if (!explicit && !example) {
+    const busiest = await loadExampleSubject(new URLSearchParams(strings), "player").catch(() => null);
+    const leader = busiest?.players[0];
+    if (busiest && leader) example = { id: leader.player_id, name: leader.player_name, season: busiest.scope.season, rule: `Most minutes in ${busiest.scope.season}.` };
   }
-
-  const example = !params.playerId && !params.id || params.exampleSubject ? await loadExampleSubject(new URLSearchParams(Object.entries(params).filter((entry): entry is [string,string] => typeof entry[1] === "string")), "player").catch(() => null) : null;
-  const season = params.season || example?.scope.season || catalog?.default_season || "";
-  const phase = params.phase || catalog?.default_phase || "regular_season";
-  const beforeDate = params.beforeDate || example?.scope.beforeDate || catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase)?.default_before_date || catalog?.default_before_date || "";
-  const playerId = params.playerId || params.id || example?.players[0]?.player_id || "";
-
-  let profile: PlayerProfile | null = null;
-  let gameLog: PlayerGameLogResponse | null = null;
-  let loadError: string | null = null;
-
-  try {
-    const [p, l] = await Promise.all([
-      getPlayerProfile(playerId, {
-        season,
-        phase,
-        beforeDate,
-        releaseId: params.releaseId
-      }),
-      getPlayerGameLog(playerId, {
-        season,
-        phase,
-        beforeDate,
-        releaseId: params.releaseId,
-        limit: 50
-      })
-    ]);
-    profile = p;
-    gameLog = l;
-  } catch (err) {
-    loadError = err instanceof Error ? err.message : "Failed to load player game log";
-  }
-
-  if (!profile || !gameLog) {
-    return (
-      <PageShell template="profile">
-        <PageHeader title="Last X Games" />
-        <div className="empty-state tall" role="alert">
-          <span className="empty-code">RECENT GAMES</span>
-          <h2>Player not found in this snapshot</h2>
-          <p>{loadError ?? `Could not find confirmed appearances for player ID ${playerId}.`}</p>
-          <div className="empty-state-actions">
-            <ButtonLink size="lg" href="/players">
-              Browse Players Directory
-            </ButtonLink>
-          </div>
-        </div>
-      </PageShell>
-    );
-  }
-
-  return (
-    <RecentGamesView
-      initialProfile={profile}
-      initialGames={gameLog.games}
-      defaultExample={example?.players[0]?.player_id === playerId ? example : null}
-    />
-  );
+  return <PageShell template="explorer"><Suspense fallback={null}><LastGamesView scopes={scopes}
+    defaultSeason={example?.season || catalog?.default_season || scopes.at(-1)?.season || ""} example={example} /></Suspense></PageShell>;
 }
