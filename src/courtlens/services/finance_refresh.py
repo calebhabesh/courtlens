@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
 from datetime import UTC, datetime
 from decimal import Decimal
 from pathlib import Path
@@ -15,15 +16,17 @@ from typing import Any
 
 import httpx
 from fastapi import HTTPException
-from sqlalchemy import select, text
+from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 
 from courtlens.domain.finance import FinanceManifest, FinanceRow, export_csv
 from courtlens.domain.finance_context import RefreshInfo, ThresholdInfo, ThresholdInput
 from courtlens.domain.source_policy import POLICY_VERSION
+from courtlens.domain.teams import NBA_TEAMS
 from courtlens.finance_context_models import FinanceRefresh, FinanceRefreshSource, FinanceThreshold
 from courtlens.finance_models import FinanceRelease
 from courtlens.ingestion.finance_sources import (
+    BREF_CODES,
     MAX_HTML_BYTES,
     PARSER_VERSION,
     SOURCE_KINDS,
@@ -34,7 +37,15 @@ from courtlens.ingestion.finance_sources import (
 from courtlens.models import utc_now
 from courtlens.services.finance_import import admit_bundle, bounded_read, digest, verify_release
 from courtlens.services.player_context import aware, dataset_rows, resolve_dataset
-from courtlens.services.source_acquisition import ScheduledFetcher
+from courtlens.services.player_context_ingestion import latest_index
+from courtlens.services.source_acquisition import (
+    KEEP_DAYS,
+    ScheduledFetcher,
+    keep_body,
+    prune_receipts,
+    read_heartbeat,
+    write_heartbeat,
+)
 from courtlens.workbench_models import (
     WorkbenchAcquisition,
     WorkbenchArtifact,
@@ -44,9 +55,17 @@ from courtlens.workbench_models import (
 
 
 class FinanceFetcher(ScheduledFetcher):
-    def __init__(self, session: Session, root: Path, client: httpx.Client) -> None:
+    def __init__(
+        self, session: Session, root: Path, client: httpx.Client, *, retain_bodies: bool = True
+    ) -> None:
         super().__init__(
-            session, root, client, resource="finance", kinds=SOURCE_KINDS, validate_url=source_url
+            session,
+            root,
+            client,
+            resource="finance",
+            kinds=SOURCE_KINDS,
+            validate_url=source_url,
+            retain_bodies=retain_bodies,
         )
 
 
@@ -627,3 +646,121 @@ def verify_refresh(session: Session, refresh_id: str, root: Path) -> dict[str, A
         "expected_players": info.expected_players,
         "salary_observed_players": info.salary_observed_players,
     }
+
+
+def bref_contract_urls() -> list[str]:
+    codes = sorted({BREF_CODES.get(t.tricode, t.tricode) for t in NBA_TEAMS.values()})
+    return [f"https://www.basketball-reference.com/contracts/{code}.html" for code in codes]
+
+
+def refresh_contracts(
+    session: Session,
+    root: Path,
+    client: httpx.Client,
+    season: str,
+    staging_root: Path,
+    state: Path,
+    keep_days: int = KEEP_DAYS,
+) -> dict[str, Any]:
+    """Scheduled run: admit a new refresh only when the reported contracts or its inputs changed.
+
+    All 30 Basketball-Reference pages are fetched serially without keeping their bytes. The
+    parsed rows, the newest player index, the pinned thresholds and the crosswalk revision form
+    one digest; when it matches the newest refresh's (recorded in `state`'s heartbeat) the run
+    keeps only receipts, pruned after the window, and refreshes the "last checked" time. A
+    changed run retains the pages (content-addressed, so unchanged teams cost nothing) and
+    admits through `admit_refresh`; refreshes and books are sealed and never pruned, so growth
+    is bounded by how often contracts actually change. A page that fails ends the run with
+    nothing admitted: a missing team would read as unknown salaries.
+    """
+    roster = latest_index(session, season)
+    if roster is None:
+        raise ValueError(f"no {season} player index admitted; nothing to pin contracts to")
+    threshold = session.scalars(
+        select(FinanceThreshold)
+        .where(FinanceThreshold.season == season)
+        .order_by(FinanceThreshold.observed_at.desc())
+        .limit(1)
+    ).first()
+    crosswalks = session.scalar(select(func.max(WorkbenchIdentityCrosswalk.updated_at)))
+    fetcher = FinanceFetcher(session, root, client, retain_bodies=False)
+    receipts: list[WorkbenchAcquisition] = []
+    pages: list[tuple[str, list[dict[str, Any]]]] = []
+    for url in bref_contract_urls():
+        receipt = fetcher.fetch("bref_contracts", url, season)
+        session.commit()
+        body = fetcher.bodies.get(receipt.id)
+        if receipt.status != "success" or body is None or receipt.finished_at is None:
+            raise ValueError(f"{url}: {receipt.error_summary}; no refresh admitted")
+        pages.append((url, parse_bref(body, season, url)))
+        receipts.append(receipt)
+    checked = max(aware(r.finished_at) for r in receipts if r.finished_at is not None)
+    contracts = digest(
+        {
+            "parser": PARSER_VERSION,
+            "identity_rules": IDENTITY_RULES,
+            "roster": roster.content_sha256,
+            "threshold": threshold.content_sha256 if threshold else None,
+            "crosswalks": crosswalks.isoformat() if crosswalks else None,
+            "pages": [[url, sorted(rows, key=digest)] for url, rows in pages],
+        }
+    )
+    pruned = prune_receipts(session, "bref_contracts", keep_days, checked)
+    newest = session.scalars(
+        select(FinanceRefresh)
+        .where(FinanceRefresh.season == season)
+        .order_by(FinanceRefresh.observed_at.desc(), FinanceRefresh.id)
+        .limit(1)
+    ).first()
+    beat = read_heartbeat(state)
+    summary: dict[str, Any] = {
+        "season": season,
+        "pages": len(pages),
+        "rows": sum(len(rows) for _, rows in pages),
+        "roster_dataset_id": roster.id,
+        "pruned": {"receipts": pruned},
+    }
+    if (
+        newest is not None
+        and beat is not None
+        and beat.get("refresh_id") == newest.id
+        and beat.get("contracts_sha256") == contracts
+    ):
+        write_heartbeat(state, beat | {"checked_at": checked.isoformat()})
+        return {**summary, "changed": False, "refresh_id": newest.id}
+    for receipt in receipts:
+        keep_body(fetcher, receipt, "text/html")
+    session.commit()
+    refresh = admit_refresh(
+        session,
+        [r.id for r in receipts],
+        roster.id,
+        threshold.id if threshold else None,
+        root,
+        staging_root,
+    )
+    session.commit()
+    # The book's bytes now live in the database; the staged copy only fed the admission.
+    shutil.rmtree(staging_root / "finance-refresh" / refresh.input_sha256, ignore_errors=True)
+    write_heartbeat(
+        state,
+        {
+            "refresh_id": refresh.id,
+            "contracts_sha256": contracts,
+            "checked_at": checked.isoformat(),
+        },
+    )
+    return {
+        **summary,
+        "changed": True,
+        "refresh_id": refresh.id,
+        "salary_observed_players": refresh.payload_json["salary_observed_players"],
+    }
+
+
+def last_checked(state: Path | None, refresh_id: str) -> datetime | None:
+    """When a scheduled run last confirmed this refresh is current; None if it never has."""
+    beat = read_heartbeat(state) if state is not None else None
+    if beat is None or beat.get("refresh_id") != refresh_id:
+        return None
+    return datetime.fromisoformat(beat["checked_at"])

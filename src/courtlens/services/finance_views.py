@@ -9,9 +9,11 @@ from typing import Any
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
+from courtlens.config import get_settings
 from courtlens.domain.finance_context import RefreshInfo
 from courtlens.domain.finance_views import (
     ContractSeason,
+    DarkoValueContext,
     LeaguePayrollResponse,
     PositionGroup,
     ReferenceImpact,
@@ -23,8 +25,9 @@ from courtlens.domain.finance_views import (
 from courtlens.domain.query_spec import QuerySpec
 from courtlens.domain.teams import NBA_TEAMS, get_team_info
 from courtlens.finance_context_models import FinanceThreshold
+from courtlens.services.darko import ATTRIBUTION, CURRENT, load_darko_store
 from courtlens.services.finance_import import release_rows
-from courtlens.services.finance_refresh import refresh_info, threshold_info
+from courtlens.services.finance_refresh import last_checked, refresh_info, threshold_info
 from courtlens.services.impact_serving import impact_for_query
 from courtlens.services.player_context import dataset_rows, projected_roster, resolve_dataset
 
@@ -34,7 +37,11 @@ LIMITATIONS = (
     "Effective dates are not on the source page and stay unknown.",
     "Option markers do not establish exercise or guarantee state; a salary without an option "
     "marker is reported, not confirmed guaranteed.",
-    "Threshold lines are official markers; no cap room, tax bill or apron compliance is claimed.",
+    "Threshold lines are official markers. Above or below a line is arithmetic on known "
+    "salaries (a lower bound while any are unknown); no tax bill or legal apron compliance is "
+    "claimed.",
+    "DARKO values are DARKO's market value from its latest published board; surplus is that "
+    "value minus the reported salary, only for players DARKO lists.",
     "An unknown salary is excluded from known totals and is never zero.",
     "Players on a team's source page but on another roster in the index (for example waived "
     "players) are listed separately.",
@@ -54,6 +61,7 @@ def _context(session: Session, info: RefreshInfo) -> RefreshContext:
         refresh_id=info.refresh_id,
         season=info.season,
         observed_at=info.observed_at,
+        checked_at=last_checked(get_settings().contracts_check_dir, info.refresh_id),
         state=info.state,
         book_id=info.book_id,
         roster_dataset_id=info.roster_dataset_id,
@@ -144,6 +152,21 @@ def _impact(reference_season: str) -> tuple[dict[str, float | None], str | None]
     return rapm, str(result["version"])
 
 
+def _darko_current() -> tuple[dict[str, dict[str, Any]], DarkoValueContext | None]:
+    """The latest season's `current` DARKO board; absent means values stay unknown."""
+    entries = [e for e in (load_darko_store() or {}).get("entries", []) if e["phase"] == CURRENT]
+    if not entries:
+        return {}, None
+    entry = max(entries, key=lambda e: e["season"])
+    return entry["players"], DarkoValueContext(
+        season=entry["season"],
+        as_of=entry["as_of"],
+        data_date=entry["data_date"],
+        source=ATTRIBUTION,
+        raw_sha256=entry["raw_sha256"],
+    )
+
+
 def team_contracts(
     session: Session, refresh_id: str, team: str, statistics_release_id: str | None
 ) -> TeamContractsResponse:
@@ -164,6 +187,11 @@ def team_contracts(
         references = {p["player_id"]: p["reference"] for p in roster["players"]}
         release_id = roster["statistics_release_id"]
     rapm, impact_version = _impact(reference_season)
+    darko_players, darko = _darko_current()
+
+    def value(player_id: str) -> int | None:
+        dollars = darko_players.get(player_id, {}).get("sal_market_fixed")
+        return round(dollars) if dollars is not None else None
 
     def reference(player_id: str) -> ReferenceImpact | None:
         stats = references.get(player_id)
@@ -209,6 +237,8 @@ def team_contracts(
                 source_url=c.source_url,
                 source_locator=c.source_locator,
                 reference=reference(c.player_id),
+                darko_value_dollars=value(c.player_id),
+                darko_dpm=darko_players.get(c.player_id, {}).get("dpm"),
             )
         )
     on_roster = {p.player_id for p in players}
@@ -257,5 +287,6 @@ def team_contracts(
         reference_season=reference_season,
         statistics_release_id=release_id,
         impact_version=impact_version,
+        darko=darko,
         limitations=LIMITATIONS,
     )

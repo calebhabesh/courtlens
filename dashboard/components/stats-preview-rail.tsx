@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { seasonEra } from "@/lib/portrait-source";
 import { Icon } from "./ui/icon";
 import { Button, IconButton } from "./ui/kit";
 
@@ -57,7 +58,7 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
     {!collapsed && (player ? <>
       <div className="stats-preview-identity">
         <PlayerPortrait key={player.player_id} playerId={player.player_id} name={player.player_name}
-          portraitUrl={player.portrait_url} size="md" />
+          portraitUrl={player.portrait_url} size="md" era={seasonEra(season, player.teams)} />
         <div><h2>{player.player_name}</h2><span className="stats-preview-subtitle">
           <TeamLogoStack teams={player.teams ?? []} decorative />
           {player.teams?.join(" / ") || "Team unknown"} · {season}

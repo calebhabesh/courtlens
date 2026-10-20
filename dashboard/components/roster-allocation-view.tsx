@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { seasonEra } from "@/lib/portrait-source";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent } from "react";
 import { ContextBar } from "./context-bar";
@@ -127,7 +128,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
       <li key={row.player_id} className={`roster-chip ${mode === "projected" ? "is-projected" : ""}`} data-player-id={row.player_id} draggable
         onDragStart={(event) => { event.dataTransfer.setData(DRAG_TYPE, row.player_id); event.dataTransfer.effectAllowed = "move"; }}
         onDragEnd={() => setDropLane(null)}>
-        <PlayerPortrait playerId={row.player_id} name={row.player_name} size="sm" />
+        <PlayerPortrait playerId={row.player_id} name={row.player_name} size="sm" era={seasonEra(scope.season, teamId)} />
         <span className="roster-chip-text">
           <span className="roster-chip-name" title={row.player_name}>{row.player_name}</span>
           <span className="roster-chip-meta">{mode === "projected" && row.games_played > 0 && row.total_minutes !== null

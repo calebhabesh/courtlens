@@ -177,7 +177,7 @@ from courtlens.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
-from courtlens.services.player_bio import current_teams, player_bio
+from courtlens.services.player_bio import current_listings, player_bio
 from courtlens.services.player_honours import (
     availability,
     championships,
@@ -970,7 +970,11 @@ def execute_query_endpoint(
 
         table_cohort = annotate_players(session, context, spec, items_raw)
 
-    listings = current_teams(session, [r["player_id"] for r in items_raw])
+    listings, statuses = current_listings(
+        session,
+        [r["player_id"] for r in items_raw],
+        {r["player_id"]: r["player_name"] for r in items_raw},
+    )
     items = [
         PlayerResearchItem(
             player_id=r["player_id"],
@@ -996,6 +1000,7 @@ def execute_query_endpoint(
             table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),
             position=positions.get(r["player_id"]),
             current_team=listings.get(r["player_id"]),
+            current_status=statuses.get(r["player_id"]),
         )
         for r in items_raw
     ]

@@ -1,6 +1,7 @@
 "use client";
 
 import { ValueDot, valueDotsFit } from "./charts/value-dot";
+import { seasonEra } from "@/lib/portrait-source";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { exampleParams, type ExampleSubject } from "@/lib/example-subject";
 import { ExampleSubjectCard } from "./example-subject";
@@ -223,7 +224,7 @@ export function RecentGamesView({
       {/* Hero: who, then the window's averages. */}
       <div className="player-hero" style={teamStyle(latest_team?.id)}>
         <div className="player-hero-identity">
-          <PlayerIdentity playerId={player.id} name={player.name} team={latest_team?.id} portraitUrl={player.portrait_url}
+          <PlayerIdentity playerId={player.id} name={player.name} team={latest_team?.id} portraitUrl={player.portrait_url} era={seasonEra(context.season, latest_team?.id)}
             href={`/players/${player.id}?${scopeParams}`} subtitle={`${windowLabel} · ${summary.sampleSize} games`} size="lg" />
         </div>
         <div className="player-hero-tiles" role="group" aria-label="Window summary">

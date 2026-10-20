@@ -12,6 +12,7 @@ from courtlens.config import get_settings
 from courtlens.domain.stint_box import VERSION
 from courtlens.evaluation.impact_rating_inputs import write_artifact
 from courtlens.ingestion.native_reconstruction import content_hash
+from courtlens.services.served_bundle import resolve
 
 
 @lru_cache(maxsize=8)
@@ -33,7 +34,7 @@ def _manifest(path: str) -> dict[str, Any]:
 
 def stint_box_games(bundle_content_sha256: str | None) -> dict[str, Any] | None:
     """Per-game stint boxes for a bundle, or None when none is installed or it fails its hash."""
-    path = get_settings().stint_box_manifest
+    path = resolve(get_settings().stint_box_manifest)
     if bundle_content_sha256 is None or path is None or not path.exists():
         return None
     try:

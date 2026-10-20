@@ -55,7 +55,8 @@ export const NAV_MENUS: NavMenu[] = [
       { label: "Teams", href: "/teams", icon: "building", description: "Team ratings, six factors and rankings" },
       { label: "Roster Shapes", href: "/roster-shapes", icon: "shapes", description: "Every NBA roster as shapes in a box" },
       { label: "Stat Line Shift", href: "/stat-line-shift", icon: "chart-column", description: "How a player's stat line changes with and without a teammate" },
-      { label: "Contracts", href: "/contracts", icon: "dollar", description: "Salary cap analysis and contract details" },
+      { label: "Contracts", href: "/contracts", icon: "dollar", description: "NBA salary cap analysis and contract details" },
+      { label: "Free Agency", href: "/free-agency", icon: "user-check", description: "The 2026 NBA free agency tracker" },
     ] }],
   },
   {

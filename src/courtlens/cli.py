@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import tempfile
+from collections.abc import Callable
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
@@ -1437,14 +1438,14 @@ def refresh_darko_command(
     """Operator run: seal dated DARKO snapshots at each phase's last admitted game date."""
     import httpx
 
-    from courtlens.services.darko import refresh
+    from courtlens.services.darko import darko_path, refresh
 
-    base = get_settings().darko_manifest if carry_forward else None
+    base = darko_path() if carry_forward else None
     with SessionLocal() as session, httpx.Client() as client:
         path, results = refresh(session, root, client, season, output, phase, base)
     for result in results:
         typer.echo(json.dumps(result))
-    typer.echo(f"sealed {path}  (set COURTLENS_DARKO_MANIFEST or config.darko_manifest)")
+    typer.echo(f"sealed {path}  (served as the newest bundle in {output})")
 
 
 @app.command("refresh-darko-current")
@@ -1459,14 +1460,281 @@ def refresh_darko_current_command(
 
     import httpx
 
-    from courtlens.services.darko import refresh_current
+    from courtlens.services.darko import darko_path, refresh_current
 
-    base = get_settings().darko_manifest
+    base = darko_path()
     when = date.fromisoformat(as_of) if as_of else date.today()
     with SessionLocal() as session, httpx.Client() as client:
         path, result = refresh_current(session, root, client, season, when, output, base)
     typer.echo(json.dumps(result))
-    typer.echo(f"sealed {path}  (set COURTLENS_DARKO_MANIFEST or config.darko_manifest)")
+    typer.echo(f"sealed {path}  (served as the newest bundle in {output})")
+
+
+@app.command("refresh-free-agency")
+def refresh_free_agency_command(
+    year: int = typer.Option(2026, help="Free-agent class (the offseason year)."),
+    root: Path = typer.Option(Path("data/raw/free-agency")),
+    output: Path = typer.Option(Path("data/derived/free-agency-v1")),
+) -> None:
+    """Operator run: seal NBA.com's free-agent tracker for one class."""
+    import httpx
+
+    from courtlens.services.free_agency import refresh
+
+    with SessionLocal() as session, httpx.Client() as client:
+        path, result = refresh(session, root, client, year, output)
+    typer.echo(json.dumps(result))
+    typer.echo(f"sealed {path}  (set COURTLENS_FREE_AGENCY_MANIFEST)")
+
+
+@app.command("import-free-agency")
+def import_free_agency_command(
+    page: Path = typer.Argument(..., help="The tracker page saved from a browser."),
+    observed_at: str = typer.Option(..., help="When it was saved, ISO 8601 with a timezone."),
+    year: int = typer.Option(2026, help="Free-agent class (the offseason year)."),
+    root: Path = typer.Option(Path("data/raw/free-agency")),
+    output: Path = typer.Option(Path("data/derived/free-agency-v1")),
+) -> None:
+    """Operator import: seal a browser-saved NBA.com free-agent tracker page."""
+    from datetime import datetime
+
+    from courtlens.services.free_agency import import_page
+
+    with SessionLocal() as session:
+        path, result = import_page(
+            session, root, page, year, datetime.fromisoformat(observed_at), output
+        )
+    typer.echo(json.dumps(result))
+    typer.echo(f"sealed {path}  (set COURTLENS_FREE_AGENCY_MANIFEST)")
+
+
+@app.command("refresh-espn-rosters")
+def refresh_espn_rosters_command(
+    root: Path = typer.Option(Path("data/raw/espn-rosters")),
+    output: Path = typer.Option(Path("data/derived/espn-rosters-v1")),
+    keep_days: int = typer.Option(30, help="Prune bundles and raw responses older than this."),
+) -> None:
+    """Scheduled run: seal ESPN's 30 team rosters when they change (free-agency roster check)."""
+    import httpx
+
+    from courtlens.services.espn_rosters import refresh
+
+    with SessionLocal() as session, httpx.Client() as client:
+        path, result = refresh(session, root, client, output, keep_days)
+    typer.echo(json.dumps(result))
+    verb = "sealed" if result["changed"] else "unchanged; confirmed"
+    typer.echo(f"{verb} {path}  (served as the newest bundle in {output})")
+
+
+@app.command("refresh-player-index")
+def refresh_player_index_command(
+    season: str | None = typer.Option(None, help="Default: the season under way today."),
+    root: Path = typer.Option(Path("data/raw/player-context")),
+    keep_days: int = typer.Option(30, help="Prune unchanged runs' receipts older than this."),
+) -> None:
+    """Scheduled run: admit hoopR's newest NBA player index when its roster rows change."""
+    import httpx
+
+    from courtlens.services.darko import season_of
+    from courtlens.services.player_context_ingestion import refresh_player_index
+
+    with SessionLocal() as session, httpx.Client() as client:
+        result = refresh_player_index(
+            session, root, client, season or season_of(date.today()), keep_days
+        )
+    typer.echo(json.dumps(result))
+
+
+@app.command("refresh-contracts")
+def refresh_contracts_command(
+    season: str | None = typer.Option(None, help="Default: the season under way today."),
+    root: Path = typer.Option(Path("data/raw/finance")),
+    keep_days: int = typer.Option(30, help="Prune unchanged runs' receipts older than this."),
+) -> None:
+    """Scheduled run: admit a contracts refresh when Basketball-Reference's pages change."""
+    import httpx
+
+    from courtlens.services.darko import season_of
+    from courtlens.services.finance_refresh import refresh_contracts
+
+    settings = get_settings()
+    if settings.contracts_check_dir is None:
+        raise typer.BadParameter("COURTLENS_CONTRACTS_CHECK_DIR is unset")
+    with SessionLocal() as session, httpx.Client() as client:
+        result = refresh_contracts(
+            session,
+            root,
+            client,
+            season or season_of(date.today()),
+            settings.artifacts_root,
+            settings.contracts_check_dir,
+            keep_days,
+        )
+    typer.echo(json.dumps(result))
+
+
+@app.command("refresh-darko-daily")
+def refresh_darko_daily_command(
+    root: Path = typer.Option(Path("data/raw/darko")),
+    output: Path = typer.Option(Path("data/derived/darko-dpm-v2")),
+    keep_days: int = typer.Option(30, help="Prune superseded bundles older than this."),
+) -> None:
+    """Scheduled run: seal DARKO's latest ratings as `current` when they change."""
+    import httpx
+
+    from courtlens.services.darko import refresh_daily
+
+    with SessionLocal() as session, httpx.Client() as client:
+        path, result = refresh_daily(session, root, client, output, date.today(), keep_days)
+    typer.echo(json.dumps(result))
+    verb = "sealed" if result["changed"] else "unchanged; confirmed"
+    typer.echo(f"{verb} {path}  (served as the newest bundle in {output})")
+
+
+@app.command("refresh-wikipedia-transactions")
+def refresh_wikipedia_transactions_command(
+    season: str | None = typer.Option(None, help="Default: the season under way today."),
+    root: Path = typer.Option(Path("data/raw/wikipedia-transactions")),
+    output: Path = typer.Option(Path("data/derived/wikipedia-transactions-v1")),
+    keep_days: int = typer.Option(30, help="Prune bundles and raw pages older than this."),
+) -> None:
+    """Scheduled run: seal Wikipedia's dated signings and waivers when they change."""
+    import httpx
+
+    from courtlens.services.darko import season_of
+    from courtlens.services.wikipedia_transactions import refresh
+
+    with SessionLocal() as session, httpx.Client() as client:
+        path, result = refresh(
+            session, root, client, output, season or season_of(date.today()), keep_days
+        )
+    typer.echo(json.dumps(result))
+    verb = "sealed" if result["changed"] else "unchanged; confirmed"
+    typer.echo(f"{verb} {path}  (served as the newest bundle in {output})")
+
+
+@app.command("refresh-season-stats")
+def refresh_season_stats_command(
+    season: str | None = typer.Option(None, help="Default: the season under way today."),
+    store: Path = typer.Option(Path("data/raw/season-boxscores")),
+    keep_releases: int = typer.Option(2, help="Daily-built releases kept besides the published."),
+    force: bool = typer.Option(False, help="Publish even when the season's files are unchanged."),
+) -> None:
+    """Scheduled run: fetch the season's new box scores; publish and retire releases on change."""
+    import httpx
+
+    from courtlens.services.darko import season_of
+    from courtlens.services.season_refresh import acquire_season, publish_season, retire_releases
+
+    settings = get_settings()
+    end_year = int((season or season_of(date.today()))[:4]) + 1
+    with SessionLocal() as session, httpx.Client(timeout=30) as client:
+        result = acquire_season(
+            session, settings.raw_store_path, store, client, end_year, date.today()
+        )
+        typer.echo(json.dumps(result))
+        if result["changed"] or force:
+            typer.echo(json.dumps(publish_season(session, settings.raw_store_path)))
+        typer.echo(json.dumps({"retired": retire_releases(session, keep_releases)}))
+
+
+@app.command("refresh-season-impact")
+def refresh_season_impact_command(
+    season: str | None = typer.Option(None, help="Default: the season under way today."),
+    store: Path = typer.Option(Path("data/raw/season-boxscores")),
+    work: Path = typer.Option(Path("data/derived/season-impact")),
+    force: bool = typer.Option(False, help="Run before every team has played 10 games."),
+) -> None:
+    """Scheduled weekly run: provisional current-season impact numbers (RAPM, BPR, extras,
+    on/off, WOWY), served beside the sealed seasons and retired after two newer runs."""
+    from courtlens.services.darko import season_of
+    from courtlens.services.season_impact import refresh_season_impact
+
+    settings = get_settings()
+    dirs = {
+        "serving_dir": settings.impact_serving_manifest,
+        "splits_dir": settings.impact_team_splits_manifest,
+        "wowy_dir": settings.wowy_manifest,
+        "stint_box_dir": settings.stint_box_manifest,
+    }
+    pinned = [name for name, path in dirs.items() if path is None or not path.is_dir()]
+    if pinned:
+        raise typer.BadParameter(f"these configs pin a file, not a directory: {pinned}")
+    end_year = int((season or season_of(date.today()))[:4]) + 1
+    with SessionLocal() as session:
+        result = refresh_season_impact(
+            session,
+            raw_root=settings.raw_store_path,
+            store=store,
+            end_year=end_year,
+            today=date.today(),
+            work_root=work,
+            force=force,
+            **{k: v for k, v in dirs.items() if v is not None},
+        )
+    typer.echo(json.dumps(result, default=str))
+
+
+@app.command("retire-release")
+def retire_release_command(dataset_id: list[str] = typer.Argument(...)) -> None:
+    """Delete superseded statistics release datasets (never the published, impact or cited)."""
+    from courtlens.services.season_refresh import retire_dataset
+
+    with SessionLocal() as session:
+        for value in dataset_id:
+            try:
+                retire_dataset(session, value)
+            except ValueError as error:
+                session.rollback()
+                raise typer.BadParameter(f"{value}: {error}") from error
+            typer.echo(f"retired {value}")
+
+
+@app.command("refresh-daily")
+def refresh_daily_command(
+    keep_days: int = typer.Option(30, help="Retention window passed to every step."),
+) -> None:
+    """Scheduled daily run: player index, season stats, contracts, DARKO, Wikipedia moves.
+
+    Each step runs even when an earlier one fails (contracts then pin the previous index);
+    the run exits non-zero if any step failed so the timer's journal records it.
+    """
+    failed = []
+    steps: tuple[tuple[str, Callable[[], None]], ...] = (
+        (
+            "player index",
+            lambda: refresh_player_index_command(None, Path("data/raw/player-context"), keep_days),
+        ),
+        (
+            "season stats",
+            lambda: refresh_season_stats_command(None, Path("data/raw/season-boxscores"), 2, False),
+        ),
+        ("contracts", lambda: refresh_contracts_command(None, Path("data/raw/finance"), keep_days)),
+        (
+            "darko",
+            lambda: refresh_darko_daily_command(
+                Path("data/raw/darko"), Path("data/derived/darko-dpm-v2"), keep_days
+            ),
+        ),
+        (
+            "wikipedia transactions",
+            lambda: refresh_wikipedia_transactions_command(
+                None,
+                Path("data/raw/wikipedia-transactions"),
+                Path("data/derived/wikipedia-transactions-v1"),
+                keep_days,
+            ),
+        ),
+    )
+    for name, step in steps:
+        typer.echo(f"== {name}")
+        try:
+            step()
+        except Exception as error:  # one source's failure must not stop the rest
+            typer.echo(f"{name} failed: {error}", err=True)
+            failed.append(name)
+    if failed:
+        raise typer.Exit(1)
 
 
 @app.command("import-stats-feed")

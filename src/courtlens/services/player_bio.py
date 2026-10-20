@@ -59,19 +59,62 @@ def _current_team(bio: dict[str, Any]) -> dict[str, Any] | None:
 
 
 def current_teams(session: Session, player_ids: list[str]) -> dict[str, dict[str, Any]]:
-    """The latest NBA index listing for each player that has a team (active players only).
+    """The team each player is on today (players on no roster are left out)."""
+    return current_listings(session, player_ids)[0]
 
-    The listing names who a player plays for today; it never re-attributes a season's games.
+
+def current_listings(
+    session: Session, player_ids: list[str], names: dict[str, str] | None = None
+) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+    """(teams, statuses): where each player is today, by the free-agency tracker's evidence.
+
+    `teams` holds players on an NBA roster; `statuses` holds players the sources place on no
+    roster (`free_agent`, `abroad`, `retired`). The newest roster source and Wikipedia's dated
+    moves decide (see free_agency.current_placements); without them the NBA index mart's
+    listing serves. A listing names who a player plays for today; it never re-attributes a
+    season's games. `names` covers players the index mart does not list.
     """
-    if not player_ids or not _available(session, "mart_player_bio"):
-        return {}
-    rows = _rows(
-        session,
-        f"""SELECT * FROM {_mart("mart_player_bio")}
-        WHERE player_id IN :ids""",
-        ids=player_ids,
-    )
-    if _available(session, "mart_player_transactions"):
+    from courtlens.services.free_agency import current_placements
+
+    if not player_ids:
+        return {}, {}
+    rows: list[dict[str, Any]] = []
+    if _available(session, "mart_player_bio"):
+        rows = _rows(
+            session,
+            f"""SELECT * FROM {_mart("mart_player_bio")}
+            WHERE player_id IN :ids""",
+            ids=player_ids,
+        )
+    by_id = {row["player_id"]: row for row in rows}
+    known_names = {
+        pid: name
+        for pid in player_ids
+        if (name := (names or {}).get(pid) or (by_id.get(pid) or {}).get("source_player_name"))
+    }
+    placements = current_placements(session, known_names)
+    teams: dict[str, dict[str, Any]] = {}
+    statuses: dict[str, dict[str, Any]] = {}
+    for pid in player_ids:
+        row = by_id.get(pid)
+        place = placements.get(pid)
+        if place is not None and place["state"] != "team":
+            statuses[pid] = {k: place[k] for k in ("state", "source", "as_of", "move")}
+            continue
+        if place is not None:
+            teams[pid] = {
+                "team_id": place["team_id"],
+                "team_tricode": place["team_tricode"],
+                "listing_season": row["index_season"] if row else None,
+                "index_refreshed_at": place["as_of"]
+                or (row.get("index_observed_at") if row else None),
+                "listing_source": place["source"],
+                "trade_date": None,
+                "trade_source_url": None,
+            }
+        elif row is not None and (listed := _current_team(row)) is not None:
+            teams[pid] = {**listed, "listing_source": "NBA player index"}
+    if teams and _available(session, "mart_player_transactions"):
         trades = _rows(
             session,
             f"""SELECT DISTINCT ON (player_id)
@@ -80,18 +123,17 @@ def current_teams(session: Session, player_ids: list[str]) -> dict[str, dict[str
                 AND type IN ('traded', 'signed', 'claimed', 'waived', 'released', 'retired')
                 AND date IS NOT NULL
             ORDER BY player_id, date DESC, entry_number DESC""",
-            ids=player_ids,
+            ids=list(teams),
         )
         by_team = {(r["player_id"], r["to_team"]): r for r in trades}
-        for row in rows:
-            tricode = team_tricode(row["listed_team_id"]) if row["listed_team_id"] else None
+        for pid, team in teams.items():
+            tricode = team["team_tricode"]
             code = {"BKN": "BRK", "CHA": "CHO", "PHX": "PHO"}.get(tricode or "", tricode)
-            trade = by_team.get((row["player_id"], code))
+            trade = by_team.get((pid, code))
             if trade and trade["type"] == "traded":
-                row["trade_date"] = trade["date"]
-                row["trade_source_url"] = trade["source_url"]
-    found = {row["player_id"]: _current_team(row) for row in rows}
-    return {player_id: team for player_id, team in found.items() if team is not None}
+                team["trade_date"] = trade["date"]
+                team["trade_source_url"] = trade["source_url"]
+    return teams, statuses
 
 
 def player_bio(session: Session, player_id: str, season: str, before_date: date) -> dict[str, Any]:
@@ -166,16 +208,22 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
             "weight_lbs": _number(row["weight_lbs"]),
         }
 
-    current_team = _current_team(bio) if bio is not None else None
+    teams, statuses = current_listings(
+        session, [player_id], {player_id: bio["source_player_name"]} if bio else None
+    )
+    current_team = teams.get(player_id)
+    current_status = statuses.get(player_id)
 
     reference = player_reference(session, player_id)
     if reference is not None:
         enrich_contracts(session, player_id, reference)
     last_team = None
-    if bio and not current_team and bio.get("last_team_id"):
+    # Off every roster now: the index's last team, or its (older) listed team.
+    last_id = bio and (bio.get("last_team_id") or bio.get("listed_team_id"))
+    if bio and not current_team and last_id:
         last_team = {
-            "team_id": bio["last_team_id"],
-            "team_tricode": team_tricode(bio["last_team_id"]),
+            "team_id": last_id,
+            "team_tricode": team_tricode(last_id),
             "listing_season": bio["index_season"],
             "index_refreshed_at": bio.get("index_observed_at"),
         }
@@ -200,6 +248,7 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
         "undrafted": bool(bio and bio["draft_year"] is None and draft is None),
         "combine": combine,
         "current_team": current_team,
+        "current_status": current_status,
         "last_team": last_team,
         "reference": reference,
         "limitations": LIMITATIONS,

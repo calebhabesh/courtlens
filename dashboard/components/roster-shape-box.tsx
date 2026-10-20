@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useMemo, useRef, useState, type FocusEvent, type PointerEvent } from "react";
+import type { PortraitEra } from "@/lib/portrait-source";
 import { toneColor } from "./charts";
 import { PlayerPortrait } from "./player-portrait";
 import {
@@ -58,11 +59,11 @@ export function BoxShapes({ entries, mode, capacity, large = false, focusable = 
 }
 
 /** The hover card: photo, name, DPM, minutes and share of the box, then style and fit. */
-function HoverCard({ entry, mode, capacity }: { entry: BoxEntry; mode: ShapeMode; capacity: number }) {
+function HoverCard({ entry, mode, capacity, era }: { entry: BoxEntry; mode: ShapeMode; capacity: number; era?: PortraitEra | null }) {
   const { player, size, minutes } = entry;
   const dpm = player.dpm === null ? null : player.dpm + (mode === "playoff" ? player.playoff_shift ?? 0 : 0);
   return <>
-    <PlayerPortrait playerId={player.player_id} name={player.player_name} size="sm" className="shapes-hover-photo" />
+    <PlayerPortrait playerId={player.player_id} name={player.player_name} size="sm" era={era} className="shapes-hover-photo" />
     <span className="shapes-hover-text">
       <strong>{player.player_name}</strong>
       <span>DPM {signed(dpm)} · {one(minutes ?? player.minutes_per_game)} mpg · {size === null ? "—" : `${(size / capacity * 100).toFixed(1)}%`} of box</span>
@@ -78,8 +79,10 @@ function HoverCard({ entry, mode, capacity }: { entry: BoxEntry; mode: ShapeMode
 /** The square box: shapes packed by area share, white is what a perfect team would add. In team view
  * (`onActive`), hovering or focusing a shape highlights that player here and in the panel's table,
  * and shows his card; the grid and comparison boxes keep the plain tooltip. */
-export function ShapeBox({ entries, mode, capacity, label, large = false, active = null, card: showCard = true, onActive }: {
+export function ShapeBox({ entries, mode, capacity, label, large = false, active = null, card: showCard = true, onActive, era }: {
   entries: BoxEntry[]; mode: ShapeMode; capacity: number; label: string; large?: boolean;
+  /** The box's team-season, for the hover card's photo (none for a projected roster: current photos). */
+  era?: PortraitEra | null;
   active?: string | null;
   /** Show the card for `active` (false when the highlight comes from the table). */
   card?: boolean;
@@ -118,7 +121,7 @@ export function ShapeBox({ entries, mode, capacity, label, large = false, active
       <BoxShapes entries={entries} mode={mode} capacity={capacity} large={large} focusable={!!onActive} active={active} onHover={onActive && onHover} />
     </svg>
     {showCard && hover && entry && hover.id === active && <span ref={card} className="shapes-hover" role="tooltip">
-      <HoverCard entry={entry} mode={mode} capacity={capacity} />
+      <HoverCard entry={entry} mode={mode} capacity={capacity} era={era} />
     </span>}
   </span>;
 }

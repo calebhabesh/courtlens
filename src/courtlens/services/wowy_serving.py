@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 from fastapi import HTTPException
@@ -15,6 +16,7 @@ from courtlens.config import get_settings
 from courtlens.domain.context import CapabilityEntry, CapabilityStatus
 from courtlens.domain.teams import get_team_info
 from courtlens.domain.wowy import CELLS, MIN_POSSESSIONS, VERSION, ratings
+from courtlens.services.served_bundle import resolve
 from courtlens.workbench_models import WorkbenchIdentity
 
 SOURCE = "CourtLens stints reconstructed from public NBA play-by-play (IM03, event-accepted)"
@@ -37,8 +39,13 @@ def _decode(raw: bytes) -> dict[str, Any]:
     return body
 
 
+def wowy_path() -> Path | None:
+    """The configured artifact, or the directory's current one (moved by the weekly run)."""
+    return resolve(get_settings().wowy_manifest)
+
+
 def load_wowy() -> dict[str, Any]:
-    path = get_settings().wowy_manifest
+    path = wowy_path()
     if path is None or not path.exists():
         raise HTTPException(503, "No WOWY artifact has been built for this deployment.")
     try:
@@ -166,7 +173,7 @@ def wowy_view(
         "default_rule": rule,
         "min_possessions": MIN_POSSESSIONS,
         # load_wowy verified that the file name is the content hash.
-        "artifact_sha256": get_settings().wowy_manifest.stem,  # type: ignore[union-attr]
+        "artifact_sha256": wowy_path().stem,  # type: ignore[union-attr]
         "inputs": store["inputs"],
         "source": SOURCE,
         "limitations": LIMITATIONS,

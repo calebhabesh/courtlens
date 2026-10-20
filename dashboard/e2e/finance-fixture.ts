@@ -19,16 +19,24 @@ export async function mockFinance(page:Page, variant="retained") {
   });
 }
 
-// PC08: real responses captured from the pinned refresh (docs/evidence/pc08), not fabricated values.
-const pc08=(name:string)=>JSON.parse(fs.readFileSync(path.resolve(process.cwd(),`../docs/evidence/pc08/${name}.json`),"utf8"));
-export const contractsRefresh=pc08("refreshes")[0].refresh_id as string;
+// Contracts (alignment row 14): real responses captured from the local API on 2026-10-19 (DEN, TOR).
+const contracts=JSON.parse(fs.readFileSync(path.resolve(process.cwd(),"e2e/fixtures/contracts-v2.json"),"utf8"));
+export const contractsRefresh=contracts.refreshes[0].refresh_id as string;
 export async function mockContracts(page:Page) {
-  await page.route("**/api/workbench/operations/finance/refreshes?*",r => r.fulfill({json:pc08("refreshes")}));
-  await page.route(`**/api/workbench/operations/finance/refreshes/${contractsRefresh}/teams`,r => r.fulfill({json:pc08("league")}));
+  await page.route("**/api/workbench/operations/finance/refreshes?*",r => r.fulfill({json:contracts.refreshes}));
   await page.route(`**/api/workbench/operations/finance/refreshes/${contractsRefresh}/teams/*`,r => {
     const team=new URL(r.request().url()).pathname.split("/").at(-1)!;
-    return ["DEN","MIL"].includes(team) ? r.fulfill({json:pc08(`team-${team}`)}) : r.fulfill({status:422,json:{detail:"unknown NBA team"}});
+    return contracts.teams[team] ? r.fulfill({json:contracts.teams[team]}) : r.fulfill({status:422,json:{detail:"unknown NBA team"}});
   });
+}
+
+// Free Agency (row 14): the sealed NBA.com tracker as the local API served it on 2026-10-19.
+const freeAgency=JSON.parse(fs.readFileSync(path.resolve(process.cwd(),"e2e/fixtures/free-agency-v1.json"),"utf8"));
+export async function mockFreeAgency(page:Page, configured=true) {
+  // The roster and Wikipedia lines turn stale a day after their runs; pin "now" to two hours after the later one.
+  const newest = Math.max(Date.parse(freeAgency.roster_index.observed_at), Date.parse(freeAgency.moves.observed_at));
+  await page.clock.setFixedTime(new Date(newest + 2 * 3600 * 1000));
+  await page.route("**/api/workbench/operations/free-agency",r => r.fulfill({json:configured ? freeAgency : {status:"not_configured",source:freeAgency.source,limitations:freeAgency.limitations}}));
 }
 
 // Roster Shapes v2 (alignment row 12): the real responses captured from the local API, by season.

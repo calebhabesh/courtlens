@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { seasonEra } from "@/lib/portrait-source";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { chartVars } from "./charts";
@@ -67,7 +68,7 @@ function TeamCard({ team, entries, rank, mode, data, href, large = false, action
     <span className="shapes-card-fill" title="Share of the box filled">{Math.round(fill * 100)}%</span>
   </span>;
   const box = <span className="shapes-box" style={teamStyle(team.team_id)}>
-    <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large={large} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn, ${Math.round(fill * 100)}% of the box filled`} />
+    <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large={large} era={data.projected ? null : seasonEra(data.season, team.team_id)} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn, ${Math.round(fill * 100)}% of the box filled`} />
   </span>;
   return <li className={`shapes-card ${large ? "is-large" : ""}`}>
     {href ? <Link href={href} className="shapes-card-link" aria-label={`${team.team_name}: ${Math.round(fill * 100)}% of the box filled, rank ${rank}`}>{head}{box}</Link> : <div className="shapes-card-link">{head}{box}</div>}
@@ -235,7 +236,7 @@ export function RosterShapesView() {
         <div className="shapes-team">
           <div className="shapes-team-main">
             <span className="shapes-box is-large" style={teamStyle(team.team_id)}>
-              <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large active={active} card={hover.linked?.from === "box"} onActive={hover.box} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn`} />
+              <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large era={data.projected ? null : seasonEra(data.season, team.team_id)} active={active} card={hover.linked?.from === "box"} onActive={hover.box} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn`} />
             </span>
             {history.data && <SeasonStrip team={team} history={history.data} data={data} mode={mode} />}
           </div>

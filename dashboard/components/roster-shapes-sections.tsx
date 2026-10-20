@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, useMemo, useState } from "react";
+import { seasonEra } from "@/lib/portrait-source";
 import { BoxShapes, ShapeBox, tone, type BoxEntry } from "./roster-shape-box";
 import { chartVars } from "./charts";
 import { LookupInput } from "./lookup-input";
@@ -116,10 +117,10 @@ export function SinceLastSeason({ team, previous, data, mode }: { team: ShapeTea
     <header className="player-open-heading"><h2><Icon name="history" size={20} />Since {data.reference_season}</h2>
       <span>Fill {pct(fillThen)} to {pct(fillNow)} ({signed((fillNow - fillThen) * 100)}) · departures dashed, arrivals outlined</span></header>
     <div className="shapes-since-boxes">
-      {[{ label: data.reference_season, entries: then, fill: fillThen }, { label: data.label, entries: now, fill: fillNow }].map(box => <figure key={box.label}>
+      {[{ label: data.reference_season, entries: then, fill: fillThen, era: seasonEra(data.reference_season, team.team_id) }, { label: data.label, entries: now, fill: fillNow, era: data.projected ? null : seasonEra(data.season, team.team_id) }].map(box => <figure key={box.label}>
         <figcaption><span>{box.label}</span><strong>{pct(box.fill)}</strong></figcaption>
         <span className="shapes-box" style={teamStyle(team.team_id)}>
-          <ShapeBox entries={box.entries} mode={mode} capacity={data.capacity} label={`${team.team_name} ${box.label}: ${pct(box.fill)} of the box`} />
+          <ShapeBox entries={box.entries} mode={mode} capacity={data.capacity} era={box.era} label={`${team.team_name} ${box.label}: ${pct(box.fill)} of the box`} />
         </span>
       </figure>)}
     </div>

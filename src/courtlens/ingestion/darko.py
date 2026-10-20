@@ -16,8 +16,9 @@ from typing import Any
 HOST = "www.darko.app"
 URL_PATTERN = re.compile(r"^https://www\.darko\.app/__data\.json\?asof=(\d{4}-\d{2}-\d{2})$")
 FIELDS = ("dpm", "o_dpm", "d_dpm", "box_dpm", "on_off_dpm")
-# Kept when the board publishes them: DARKO's expected minutes per game (Roster Shapes v2).
-OPTIONAL_FIELDS = ("x_minutes",)
+# Kept when the board publishes them: DARKO's expected minutes per game (Roster Shapes v2) and
+# its market value in dollars (Contracts' Small vs Big).
+OPTIONAL_FIELDS = ("x_minutes", "sal_market_fixed")
 _SPECIAL = {-1: None, -2: None, -3: float("nan"), -4: float("inf"), -5: float("-inf"), -6: -0.0}
 
 

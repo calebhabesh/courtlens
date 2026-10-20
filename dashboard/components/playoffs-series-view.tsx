@@ -1,6 +1,7 @@
 "use client";
 
 import { BackButton, useNavLabel } from "./ui/back-button";
+import { seasonEra } from "@/lib/portrait-source";
 import { Icon } from "./ui/icon";
 import { useState, useMemo } from "react";
 import Link from "next/link";
@@ -344,7 +345,7 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
                   <td className="num font-mono text-muted text-xs">{idx + 1}</td>
                   <td>
                     <div className="player-cell">
-                      <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" />
+                      <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" era={seasonEra(detail.season, p.team_tricode)} />
                       <Link
                         href={`/players/${p.player_id}?season=${detail.season}&phase=playoffs`}
                         className="player-cell-name text-accent font-semibold"

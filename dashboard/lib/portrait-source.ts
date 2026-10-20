@@ -40,3 +40,14 @@ export function portraitSource(portraitUrl: string | null | undefined, playerId:
     srcSet: PORTRAIT_WIDTHS.map((width) => `${absolute(`${path}?size=${width}${extra}`)} ${width}w`).join(", ")
   };
 }
+
+/**
+ * The era for a row that analyses one season (Design Language, Identity): its team when it lists one,
+ * the last listed team for a traded player, season-only when the team is unknown. Multi-season
+ * scopes pass no season and keep the current photo.
+ */
+export function seasonEra(season: string | null | undefined, team?: string | readonly string[] | null): PortraitEra | null {
+  if (!season || !/^\d{4}-\d{2}$/.test(season)) return null;
+  const last = Array.isArray(team) ? team.at(-1) : team;
+  return { season, team: (last as string | undefined) || null };
+}

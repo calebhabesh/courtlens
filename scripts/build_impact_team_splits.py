@@ -14,23 +14,11 @@ from pathlib import Path
 from typing import Any
 
 from courtlens.domain.impact_extras import aggregate, aggregate_by_team
-from courtlens.domain.impact_extras_catalog import RETIRED_METRICS
 from courtlens.evaluation.impact_rating_inputs import checked, write_artifact
+from courtlens.evaluation.impact_serving_build import project_team_split as project
 from courtlens.ingestion.impact_population import read_json
 from courtlens.ingestion.native_reconstruction import content_hash
 from courtlens.services.impact_team_splits import VERSION
-
-
-def project(row: dict[str, Any], digest: str, cutoff: str, team_id: str) -> dict[str, Any]:
-    """The serving projection of one extras row (as build_impact_serving), for one team."""
-    served = {k: s for k, s in row["metrics"].items() if k not in RETIRED_METRICS}
-    return {
-        "metrics": {k: s["value"] for k, s in served.items()},
-        "support": {
-            k: {**s, "artifact_sha256": digest, "cutoff": cutoff, "team_id": team_id}
-            for k, s in served.items()
-        },
-    }
 
 
 def build(evidence_root: Path, output: Path) -> tuple[Path, str]:

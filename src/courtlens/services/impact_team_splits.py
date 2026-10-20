@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from courtlens.config import get_settings
+from courtlens.services.served_bundle import resolve
 
 VERSION = "courtlens-impact-team-splits-v1"
 
@@ -21,7 +22,7 @@ _verified: dict[Path, tuple[tuple[int, int, int], dict[str, Any]]] = {}
 
 def load_team_splits() -> tuple[str, dict[str, Any]] | None:
     """(content address, body) of the installed sidecar, or None when absent or changed."""
-    path = get_settings().impact_team_splits_manifest
+    path = resolve(get_settings().impact_team_splits_manifest)
     if path is None or not path.exists():
         return None
     stat = path.stat()

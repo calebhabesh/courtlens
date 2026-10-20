@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { seasonEra } from "@/lib/portrait-source";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ContextBar } from "./context-bar";
 import { LookupInput } from "./lookup-input";
@@ -197,7 +198,7 @@ export function PlayerShowcaseView({
         rail={<>
           <section className="showcase-rail-card" aria-label="Current player">
             <PlayerIdentity size="lg" playerId={player.player_id} name={player.player_name} team={currentTeam}
-              portraitUrl={player.portrait_url} subtitle={`${player.games_played} games`}
+              portraitUrl={player.portrait_url} era={seasonEra(season, player.teams)} subtitle={`${player.games_played} games`}
               href={buildPreservedContextUrl(`/players/${player.player_id}`, searchParams)} />
             <div className="showcase-rail-actions">
               <IconButton size="sm" icon="star" label={isFavorite ? "Remove from favorites" : "Add to favorites"} variant="secondary" filled={isFavorite}
@@ -217,7 +218,7 @@ export function PlayerShowcaseView({
                 return <li key={entry.player_id}>
                   <button type="button" className={`showcase-roster-item ${position === index ? "is-active" : ""}`}
                     aria-current={position === index ? "true" : undefined} onClick={() => setIndex(position)}>
-                    <PlayerPortrait playerId={entry.player_id} name={entry.player_name} portraitUrl={entry.portrait_url} size="sm" />
+                    <PlayerPortrait playerId={entry.player_id} name={entry.player_name} portraitUrl={entry.portrait_url} size="sm" era={seasonEra(season, team)} />
                     <span className="showcase-roster-name">{entry.player_name}</span>
                     {team && <TeamLogo team={team} size={16} />}
                   </button>

@@ -121,7 +121,11 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     : lastTeam ? { tricode: lastTeam, name: teamName(lastTeam) }
     : team ? { tricode: team.tricode, name: team.name } : null;
   const teamPrefix = listedTeam ? "" : lastTeam ? "Last with " : "Observed with ";
-  const details = [bio?.listed_position, bio?.jersey ? `#${bio.jersey}` : null].filter((part): part is string => part != null);
+  // Off every NBA roster today (the free-agency tracker's evidence): the state leads the details.
+  const status = bio?.current_status;
+  const state = status?.state === "abroad" ? `Abroad${status.move?.club ? ` · ${status.move.club}` : ""}`
+    : status?.state === "retired" ? "Retired" : status?.state === "free_agent" ? "Free agent" : null;
+  const details = [state, bio?.listed_position, bio?.jersey && !status ? `#${bio.jersey}` : null].filter((part): part is string => part != null);
   const tint = teamBrandColor(headerTeam?.tricode);
   const watermark = teamArtwork(headerTeam?.tricode);
 

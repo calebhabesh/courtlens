@@ -62,6 +62,8 @@ export interface PlayerIdentityProps {
   size?: IdentitySize;
   href?: string;
   portraitUrl?: string | null;
+  /** The team-season under analysis (Design Language, Identity); the current photo when absent. */
+  era?: PortraitEra | null;
   className?: string;
 }
 
@@ -69,10 +71,10 @@ export interface PlayerIdentityProps {
  * A player as a primary subject (D10): headshot with a team-logo badge and a team-color accent.
  * A missing photo falls back to initials on the team color; identity is never removed.
  */
-export function PlayerIdentity({ playerId, name, team, subtitle, size = "md", href, portraitUrl, className = "" }: PlayerIdentityProps) {
+export function PlayerIdentity({ playerId, name, team, subtitle, size = "md", href, portraitUrl, era, className = "" }: PlayerIdentityProps) {
   return (
     <div className={`ui-identity ui-identity-${size} ${team ? "has-team" : ""} ${className}`} style={teamStyle(team)}>
-      <IdentityMedia playerId={playerId} name={name} team={team} size={size} portraitUrl={portraitUrl} />
+      <IdentityMedia playerId={playerId} name={name} team={team} size={size} portraitUrl={portraitUrl} era={era} />
       <span className="ui-identity-text">
         <Name href={href}>{name}</Name>
         {(team || subtitle) && (

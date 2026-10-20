@@ -1,0 +1,85 @@
+{
+ "timestamp": "2026-10-19T20:39:04Z",
+ "status": "success",
+ "season": {
+  "year": 2027,
+  "displayName": "2026-27",
+  "type": 2,
+  "name": "Regular Season"
+ },
+ "team": {
+  "id": "18",
+  "abbreviation": "NY",
+  "location": "New York",
+  "name": "Knicks",
+  "displayName": "New York Knicks"
+ },
+ "athletes": [
+  {
+   "id": "3147657",
+   "firstName": "Mikal",
+   "lastName": "Bridges",
+   "fullName": "Mikal Bridges",
+   "displayName": "Mikal Bridges",
+   "shortName": "M. Bridges",
+   "jersey": "25",
+   "position": {
+    "id": "3",
+    "name": "Guard",
+    "displayName": "Guard",
+    "abbreviation": "G",
+    "leaf": false
+   },
+   "status": {
+    "id": "1",
+    "name": "Active",
+    "type": "active",
+    "abbreviation": "Active"
+   }
+  },
+  {
+   "id": "3934672",
+   "firstName": "Jalen",
+   "lastName": "Brunson",
+   "fullName": "Jalen Brunson",
+   "displayName": "Jalen Brunson",
+   "shortName": "J. Brunson",
+   "jersey": "11",
+   "position": {
+    "id": "3",
+    "name": "Guard",
+    "displayName": "Guard",
+    "abbreviation": "G",
+    "leaf": false
+   },
+   "status": {
+    "id": "1",
+    "name": "Active",
+    "type": "active",
+    "abbreviation": "Active"
+   }
+  },
+  {
+   "id": "3136195",
+   "firstName": "Karl-Anthony",
+   "lastName": "Towns",
+   "fullName": "Karl-Anthony Towns",
+   "displayName": "Karl-Anthony Towns",
+   "shortName": "K. Towns",
+   "jersey": "32",
+   "position": {
+    "id": "9",
+    "name": "Center",
+    "displayName": "Center",
+    "abbreviation": "C",
+    "leaf": false
+   },
+   "status": {
+    "id": "1",
+    "name": "Active",
+    "type": "active",
+    "abbreviation": "Active"
+   }
+  }
+ ]
+}
