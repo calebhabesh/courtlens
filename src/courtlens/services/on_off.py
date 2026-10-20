@@ -403,6 +403,64 @@ def stint_dataset_id(session: Session, context: ResolvedContext) -> str | None:
     return provisional.id if provisional else None
 
 
+def accepted_stint(s: WorkbenchLineupStint) -> bool:
+    """Accepted status and policy, two distinct lineups of five, no negative time or possessions."""
+    return not (
+        s.status not in ACCEPTED_STATUSES
+        or s.policy_version not in ACCEPTED_POLICIES
+        or len(set(s.home_lineup_json)) != 5
+        or len(s.home_lineup_json) != 5
+        or len(set(s.away_lineup_json)) != 5
+        or len(s.away_lineup_json) != 5
+        or set(s.home_lineup_json) & set(s.away_lineup_json)
+        # IM03 keeps zero-duration instants (events at a substitution); v1 required time.
+        or s.duration_seconds < 0
+        or (s.duration_seconds == 0 and s.policy_version == "possession-policy-v1")
+        or min(s.home_possessions, s.away_possessions) < 0
+    )
+
+
+def game_plus_minus(
+    session: Session, context: ResolvedContext, player_id: str, games: list[tuple[str, bool]]
+) -> dict[str, int | None]:
+    """Per-game +/- from accepted stints: points scored minus allowed while the player was on.
+
+    `games` pairs each game id with whether the player logged minutes. A game with no stints,
+    any rejected stint, or minutes but no stint for the player is unknown (None), never zero.
+    """
+    if context.dataset_type != "workbench" or not games:
+        return {}
+    stints_from = stint_dataset_id(session, context)
+    if stints_from is None:
+        return {}
+    stints = session.scalars(
+        select(WorkbenchLineupStint).where(
+            WorkbenchLineupStint.dataset_id == stints_from,
+            WorkbenchLineupStint.game_id.in_([game_id for game_id, _ in games]),
+        )
+    ).all()
+    by_game: dict[str, list[WorkbenchLineupStint]] = {}
+    for stint in stints:
+        by_game.setdefault(stint.game_id, []).append(stint)
+    result: dict[str, int | None] = {}
+    for game_id, played in games:
+        rows = by_game.get(game_id)
+        if not rows or not all(accepted_stint(s) for s in rows):
+            result[game_id] = None
+            continue
+        on = [s for s in rows if player_id in s.home_lineup_json or player_id in s.away_lineup_json]
+        if played and not on:
+            result[game_id] = None
+            continue
+        result[game_id] = sum(
+            s.home_points - s.away_points
+            if player_id in s.home_lineup_json
+            else s.away_points - s.home_points
+            for s in on
+        )
+    return result
+
+
 def load_floor_rows(
     session: Session, request: Scope
 ) -> tuple[list[FloorRow], ResolvedContext, int, int, str | None]:
@@ -501,19 +559,7 @@ def load_floor_rows(
     rows: list[FloorRow] = []
     invalid_games: set[str] = set()
     for s in stints:
-        if (
-            s.status not in ACCEPTED_STATUSES
-            or s.policy_version not in ACCEPTED_POLICIES
-            or len(set(s.home_lineup_json)) != 5
-            or len(s.home_lineup_json) != 5
-            or len(set(s.away_lineup_json)) != 5
-            or len(s.away_lineup_json) != 5
-            or set(s.home_lineup_json) & set(s.away_lineup_json)
-            # IM03 keeps zero-duration instants (events at a substitution); v1 required time.
-            or s.duration_seconds < 0
-            or (s.duration_seconds == 0 and s.policy_version == "possession-policy-v1")
-            or min(s.home_possessions, s.away_possessions) < 0
-        ):
+        if not accepted_stint(s):
             invalid_games.add(s.game_id)
             continue
         home = s.home_team_id in team_aliases

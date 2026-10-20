@@ -152,6 +152,7 @@ from courtlens.services.measurements import (
     get_player_measurements_detail_service,
     query_measurements_service,
 )
+from courtlens.services.on_off import game_plus_minus
 from courtlens.services.personal_state import (
     VersionConflictError,
     add_custom_view,
@@ -1257,6 +1258,12 @@ def get_player_games_endpoint(
         session, context, player_id=id, limit=limit, cursor=cursor
     )
 
+    # +/- is not in the box score; accepted stints supply it, unknown elsewhere.
+    plus_minus = game_plus_minus(
+        session, context, id, [(g["game_id"], bool(g["minutes"])) for g in log_items]
+    )
+    for g in log_items:
+        g["stats"]["plus_minus"] = plus_minus.get(g["game_id"])
     games = [PlayerGameLogItem(**g) for g in log_items]
 
     return PlayerGameLogResponse(
