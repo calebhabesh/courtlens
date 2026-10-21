@@ -2,11 +2,15 @@ from datetime import UTC, date, datetime
 from pathlib import Path
 
 import pytest
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from courtlens.ingestion.bbref_players import (
     IndexEntry,
     NbaPlayer,
+    confirms_legal_name,
+    legal_name,
+    match_by_seasons,
     match_players,
     normalize_name,
     parse_index,
@@ -402,3 +406,117 @@ def test_reported_two_way_and_below_minimum_labels_preserve_unknown_amounts() ->
     assert profile["current_contract"][1]["salary_note"] == "< $Minimum"
     assert profile["salary_history"][0]["salary"] == "1000000"
     assert profile["salary_history"][0]["salary_note"] == "$1,000,000 (TW)"
+
+
+def _old_page(display: str, legal: str, nicknames: str = "") -> bytes:
+    faq = (
+        f"<div class='faq'><h3>What are {display}'s nicknames?</h3>"
+        f"<p>{nicknames} are nicknames for {display}.</p></div>"
+        if nicknames
+        else ""
+    )
+    return (
+        f"<html><body><div id='meta'><div><h1><span>{display}</span></h1>"
+        f"<p><strong><strong>{legal}</strong></strong></p>"
+        f"<p><strong>Position:</strong> Guard</p></div></div>{faq}</body></html>"
+    ).encode()
+
+
+def _entry(bbref_id: str, name: str, first: int, last: int) -> IndexEntry:
+    return IndexEntry(bbref_id, name, first, last, None)
+
+
+def test_season_matches_need_one_surname_with_the_exact_career_span() -> None:
+    entries = [
+        _entry("attleal01", "Al Attles", 1961, 1971),
+        _entry("davisdw01", "Dwight Davis", 1973, 1977),
+        _entry("davisjo01", "Johnny Davis", 1977, 1990),
+        _entry("smithjo01", "Joe Smith", 1960, 1962),
+        _entry("smithja01", "Jack Smith", 1960, 1962),
+        _entry("takenxx01", "Ed Taken", 1950, 1951),
+    ]
+    players = [
+        NbaPlayer("1", "Alvin Attles", None, 1960, 1970),
+        NbaPlayer("2", "Edward Davis", None, 1972, 1976),
+        NbaPlayer("3", "John Smith", None, 1959, 1961),  # two Smiths share the span
+        NbaPlayer("4", "Al Attles", None, 1960, 1969),  # span differs
+        NbaPlayer("5", "Edgar Taken", None, 1949, 1950),  # page already matched elsewhere
+    ]
+    assert match_by_seasons(entries, players, {"takenxx01"}) == {
+        "1": "attleal01",
+        "2": "davisdw01",
+    }
+
+
+def test_a_provisional_match_needs_the_legal_name_on_the_page() -> None:
+    attles = _old_page("Al Attles", "Alvin A. Attles Jr.")
+    assert legal_name(attles) == "Alvin A. Attles Jr."
+    assert confirms_legal_name("Alvin Attles", attles, parse_player_page(attles, "attleal01"))
+    tiny = _old_page("Tiny Archibald", "Nathaniel Archibald", "Tiny")
+    assert confirms_legal_name("Nate Archibald", tiny, parse_player_page(tiny, "archina01"))
+    bud = _old_page("Bud Acton", "Charles Ray Acton", "Bud")
+    assert confirms_legal_name("Charles Acton", bud, parse_player_page(bud, "actonbu01"))
+    other = _old_page("Ralph Johnson", "Ralph Edward Johnson")
+    assert not confirms_legal_name("David Johnson", other, parse_player_page(other, "johnsra01"))
+    renamed = _old_page("Dwight Davis", "Dwight Edward Davis")
+    assert confirms_legal_name("Edward Davis", renamed, parse_player_page(renamed, "davisdw01"))
+    wrong_surname = _old_page("Al Attles", "Alvin Attlesworth")
+    assert not confirms_legal_name("Alvin Attles", wrong_surname, {"name": "Al Attles"})
+    assert legal_name(PAGE) is None
+
+
+def test_history_crawl_confirms_provisional_matches_and_rereads_unconfirmed_pages(
+    session: Session, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import httpx
+
+    from courtlens.services import bbref_bio
+
+    index = b"""<html><body><table id="players"><tbody>
+<tr><th data-stat="player" data-append-csv="attleal01"><a>Al Attles</a></th>
+<td data-stat="year_min">1961</td><td data-stat="year_max">1971</td>
+<td data-stat="birth_date" csk="">-</td></tr>
+<tr><th data-stat="player" data-append-csv="aaronxx01"><a>Ed Aaronson</a></th>
+<td data-stat="year_min">1950</td><td data-stat="year_max">1951</td>
+<td data-stat="birth_date" csk="">-</td></tr>
+</tbody></table></body></html>"""
+    pages = {
+        "/players/a/": index,
+        "/players/a/attleal01.html": _old_page("Al Attles", "Alvin A. Attles Jr."),
+        "/players/a/aaronxx01.html": _old_page("Ed Aaronson", "Edward Aaronson"),
+    }
+    requested: list[str] = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/robots.txt":
+            return httpx.Response(404)
+        requested.append(request.url.path)
+        return httpx.Response(200, content=pages[request.url.path])
+
+    players = [
+        (NbaPlayer("76", "Alvin Attles", None, 1960, 1970), False),
+        (NbaPlayer("77", "Gerald Aaronson", None, 1949, 1950), False),
+    ]
+    monkeypatch.setattr(bbref_bio, "candidate_players", lambda _s, history: players)
+    monkeypatch.setattr("courtlens.services.source_acquisition.time.sleep", lambda _: None)
+
+    def run() -> dict[str, object]:
+        with httpx.Client(transport=httpx.MockTransport(respond)) as client:
+            return bbref_bio.crawl(
+                session,
+                bbref_bio.BbrefFetcher(session, tmp_path, client),
+                tmp_path,
+                history=True,
+                letters="a",
+            )
+
+    summary = run()
+    assert summary["provisional"] == 2 and summary["profiles"] == 1
+    assert summary["unconfirmed"] == [{"player_id": "77", "bbref_id": "aaronxx01"}]
+    profile = session.scalars(select(BbrefPlayerProfile)).one()
+    assert (profile.player_id, profile.match_basis) == ("76", "surname+exact_seasons+legal_name")
+
+    requested.clear()
+    summary = run()
+    assert requested == ["/players/a/"] and summary["skipped"] == 1
+    assert len(summary["unconfirmed"]) == 1  # type: ignore[arg-type]

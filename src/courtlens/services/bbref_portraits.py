@@ -171,8 +171,9 @@ def recut_bbref_portraits(engine: Engine, cache_dir: Path) -> int:
 
 def portrait_targets(session: Session, root: Path) -> list[tuple[str, str, str]]:
     """(player_id, bbref_id, headshot URL) for mapped players without a Basketball-Reference
-    portrait who need one (a season before 2015-16, or no NBA.com photo), most career minutes
-    first, newest profile per player, read from the retained pages."""
+    portrait who need one (a season before 2015-16, no NBA.com photo, or no CourtLens game rows:
+    careers before 2000-01), most career minutes first, newest profile per player, read from the
+    retained pages."""
     have = set(
         session.scalars(
             select(PlayerPortrait.player_id).where(
@@ -193,10 +194,11 @@ def portrait_targets(session: Session, root: Path) -> list[tuple[str, str, str]]
                 SELECT DISTINCT player_id FROM player_portraits
                 WHERE status = 'active' AND source_name <> :source)
             SELECT p.player_id, p.bbref_id, p.acquisition_id
-            FROM profiles p JOIN careers c USING (player_id)
-            WHERE c.first_season < :from_season
+            FROM profiles p LEFT JOIN careers c USING (player_id)
+            WHERE c.player_id IS NULL
+                OR c.first_season < :from_season
                 OR p.player_id NOT IN (SELECT player_id FROM nba)
-            ORDER BY c.seconds DESC, p.player_id"""
+            ORDER BY c.seconds DESC NULLS LAST, p.player_id"""
         ),
         {"source": BBREF_PORTRAIT_SOURCE, "from_season": NBA_TEAM_SEASON_FROM},
     ).all()
