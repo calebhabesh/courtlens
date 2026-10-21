@@ -916,7 +916,7 @@
   .pvp-header .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); }
   .pvp-header .ui-page-header-subtitle { color: var(--color-on-bg-secondary); }
   /* Roster Shapes' and Stat Line Shift's explainers are the page's key, so they wrap (rows 12, 13). */
-  .shapes-page .pvp-header .ui-page-header-subtitle, .sls-page .pvp-header .ui-page-header-subtitle, .lg-page .pvp-header .ui-page-header-subtitle, .sc-page .pvp-header .ui-page-header-subtitle { max-width: 72ch; margin-inline: auto; white-space: normal; }
+  .shapes-page .pvp-header .ui-page-header-subtitle, .sls-page .pvp-header .ui-page-header-subtitle, .lg-page .pvp-header .ui-page-header-subtitle, .sc-page .pvp-header .ui-page-header-subtitle, .tw-page .pvp-header .ui-page-header-subtitle { max-width: 72ch; margin-inline: auto; white-space: normal; }
   .fa-page .fa-title .ui-page-header-subtitle { max-width: 72ch; color: var(--color-on-bg-secondary); white-space: normal; }
   .pvp-scope .ui-filter-bar, .tc-console .ui-filter-bar, .mu-console .ui-filter-bar, .teams-console .ui-filter-bar { border-bottom: 0; }
   /* Last X Games (row 6): five mode controls wrap, centred, instead of widening a phone page. */

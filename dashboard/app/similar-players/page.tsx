@@ -1,16 +1,14 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
-import { SimilarityInvestigationView } from "@/components/similarity-investigation-view";
+import { Suspense } from "react";
+import { PlayerTwinsView } from "@/components/player-twins-view";
+import { PageShell } from "@/components/ui/page-shell";
+import { TemplateSkeleton } from "@/components/ui/template-skeleton";
 
 export const metadata: Metadata = {
   title: "Player Twins",
-  description: "Standardized Euclidean distance player twins across production and workload dimensions."
+  description: "Closest player-seasons by league-relative shot profile or box-score profile.",
 };
 
-export default function SimilarityPage() {
-  return (
-    <Suspense fallback={null}>
-      <SimilarityInvestigationView />
-    </Suspense>
-  );
+export default function Page() {
+  return <Suspense fallback={<TemplateSkeleton template="compare" />}><PageShell template="compare"><PlayerTwinsView /></PageShell></Suspense>;
 }

@@ -24,14 +24,6 @@ export const TABBED_PAGES = {
       { label: "Six-Factor", href: "/research/rapm/six-factor" },
     ],
   },
-  similarPlayers: {
-    title: "Player Twins",
-    subtitle: "Players with the closest box-score or shot profiles.",
-    tabs: [
-      { label: "Box Score", href: "/similar-players" },
-      { label: "Shot Profile", href: "/similar-players/shot-profile" },
-    ],
-  },
   shooting: {
     title: "Shooting",
     subtitle: "Expected-shot and adjusted-shooting research, and what follows a shot.",
@@ -72,8 +64,6 @@ export const STATS_TABS: readonly RouteTab[] = [
  */
 export const CONSOLIDATED_REDIRECTS: { source: string; destination: string }[] = [
   { source: "/six-factor-rapm", destination: "/research/rapm/six-factor" },
-  { source: "/research/similarity", destination: "/similar-players" },
-  { source: "/shot-profile-twin", destination: "/similar-players/shot-profile" },
   { source: "/research/expected-shots", destination: "/research/shooting" },
   { source: "/research/adjusted-shooting", destination: "/research/shooting/adjusted" },
   { source: "/shot-aftermath", destination: "/research/shooting/aftermath" },
@@ -84,6 +74,10 @@ export const CONSOLIDATED_REDIRECTS: { source: string; destination: string }[] =
 
 /** Replica-era aliases that predate FO07. */
 export const COMPATIBILITY_REDIRECTS: { source: string; destination: string }[] = [
+  // Row 17 made Player Twins one page; its Shot Profile tab is the default mode.
+  { source: "/research/similarity", destination: "/similar-players" },
+  { source: "/shot-profile-twin", destination: "/similar-players" },
+  { source: "/similar-players/shot-profile", destination: "/similar-players" },
   { source: "/pvp", destination: "/compare" },
   { source: "/StatLineShift", destination: "/stat-line-shift" },
   { source: "/zts", destination: "/research/shooting/adjusted" },

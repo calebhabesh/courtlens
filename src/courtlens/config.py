@@ -65,6 +65,8 @@ class Settings(BaseSettings):
     # Sealed by `courtlens.evaluation.stint_box_runner`; absent means focal stats beyond points
     # stay unknown for IM03 stints.
     stint_box_manifest: Path | None = Path("data/derived/stint-box-v1/manifest")
+    # Sealed by `courtlens acquire-shot-zones` (Player Twins); a file pins one bundle.
+    shot_zones_manifest: Path | None = Path("data/derived/shot-zones-v1")
     portraits_cache_path: Path = Path("data/cache/portraits")
     operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
     live_enabled: bool = False
