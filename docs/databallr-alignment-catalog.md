@@ -21,7 +21,7 @@ Rows are in working order.
 | 6 | Last X Games | `/last-games` | ✅ | Owner approved first revision 2026-10-20; Databallr's window card, comparison and game logs, then stretch verdicts, game context, opponent defence, Since windows, linked panels and a four-stat rolling chart; +/- from accepted stints |
 | 7 | Live | `/live` | ⬜ | |
 | 8 | Playoffs | `/playoffs` | ⬜ | |
-| 9 | Showcase | `/showcase` | 👀 | Databallr's season card grid (DPM leaders), player dialog and season slideshow, then improvements |
+| 9 | Showcase | `/showcase` | ✅ | Owner approved first revision 2026-10-21; Databallr's season card grid (DPM leaders), player dialog and season slideshow; NBA.com-first photos with matted career photos, top-100 rank changes with tooltips, slideshow keys, compare tray |
 | 10 | Rankings | ~~`/rankings`~~ | ✂️ cut | Owner cut 2026-10-20: built for social sharing, not CourtLens's data/ML/statistics focus. Page and Players menu item removed |
 | 11 | Tier List | ~~`/tierlist`~~ | ✂️ cut | Owner cut 2026-10-20: "It doesn't serve any purpose." Page, Compare menu item and example boards removed |
 | 12 | Roster Shapes | `/roster-shapes` | ✅ | Owner approved first revision 2026-10-19; Databallr side-by-side team view with linked hover, season-by-season fill, rotation-capped minutes, searchable trade sandbox |
@@ -2903,7 +2903,7 @@ Follow-up instructions (owner, 2026-10-20):
     run of that length all season (Jokić's MPG over his last 5 is his most minutes in any 5-game
     stretch); the old wording did not say that.
 
-### 9 Showcase — 👀 ready for review
+### 9 Showcase — ✅ aligned (first revision)
 
 Owner start (2026-10-20): "Next alignment page: row 9, Showcase (/showcase), the second item in the
 Players menu", with two Databallr references (the page, and the player dialog a card opens) and the
@@ -3092,4 +3092,14 @@ Follow-up instructions (owner, 2026-10-20; "Good first pass, now edits"):
     Browser suite: 503 passed, 3 failed outside this page (`saved-operations` passed on rerun;
     `stats-team-move-dates` expects "Index refreshed" where the committed tooltip says "Checked";
     `fo13-pages:93` finds two "Email" fields), visual baselines unchanged.
+21. [x] "make the player portrait in the expanded view a little larger, and keep the team color/logo
+    in the background" — the dialog header shows the card's photo treatment at 112 px (team tint and
+    logo watermark, season photo) instead of the 80 px avatar.
+22. [x] "remove the caption under the image. It's not providing key information." — the dialog's
+    description line is gone.
+23. [x] "make it so that it's an integrated component on the site, most people don't know about the
+    browser small context box" — the badge's native title became a styled tooltip in the shared
+    tooltip's look (`.sc-tip`, shown on hovering the badge or focusing the card, inside the photo,
+    wrapping to its width); list-view rank changes use the shared `Tooltip`.
+24. [x] "I think we are now finished this page" (2026-10-21) — row 9 ✅ aligned (first revision).
 

@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition, type CSSProperties } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { executeWorkbenchQuery } from "@/lib/workbench-api";
 import { useReducedMotion, DURATIONS } from "@/lib/motion";
 import { formatDate } from "@/lib/format-date";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import { formatColumnValue } from "@/lib/stats-presets";
+import { teamBrandColor } from "@/lib/team-colors";
 import {
   CARD_EXTRAS, COMPARE_DEPTH, DEFAULT_EXTRAS, DEFAULT_MIN_MINUTES, GAME_FLOORS, MAX_SHOWN, MINUTE_FLOORS, MODES, PAGE_SIZE,
   CARD_STATS, baseStat, statId, cardStats, changeText, nextSeason, phasesFor, previousSeason, rankChanges, showcaseQuery, stateParams, statGroups,
@@ -17,6 +18,8 @@ import { ShowcaseCard } from "./showcase-card";
 import { PercentileCell } from "./charts/percentile-cell";
 import { PlayerCareerTable } from "./player-career-table";
 import { PlayerPortrait } from "./player-portrait";
+import { TeamWatermark } from "./team-watermark";
+import { teamRecord } from "./compare-player-slot";
 import { TeamLogo } from "./team-logo";
 import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
@@ -26,6 +29,7 @@ import { Modal } from "./ui/modal";
 import { Checkbox } from "./ui/checkbox";
 import { ControlScope } from "./ui/control-scope";
 import { Icon } from "./ui/icon";
+import { Tooltip } from "./ui/tooltip";
 import { Button, ButtonLink, IconButton, Segmented, Select } from "./ui/kit";
 import { CompareTray, compareHref } from "./compare-tray";
 
@@ -458,8 +462,9 @@ function ShowcaseList({ players, stats, changes, onOpen, found, compared }: {
 
 function ChangeMark({ change }: { change: RankChange }) {
   if (!change || change.kind === "same") return null;
-  if (change.kind === "new") return <span className="sc-list-change" data-tone="new" title={changeText(change) ?? undefined}>New</span>;
-  return <span className="sc-list-change" data-tone={change.kind} title={changeText(change) ?? undefined}><Icon name={change.kind === "up" ? "up" : "down"} size={14} />{change.by}</span>;
+  const mark = change.kind === "new" ? <span className="sc-list-change" data-tone="new">New</span>
+    : <span className="sc-list-change" data-tone={change.kind}><Icon name={change.kind === "up" ? "up" : "down"} size={14} />{change.by}</span>;
+  return <Tooltip content={changeText(change)}>{mark}</Tooltip>;
 }
 
 /** The sort stat leads every card; pick the three stats that follow it. */
@@ -494,6 +499,18 @@ function ChooseStats({ onClose, sort, extras, onSave }: {
 }
 
 /** Databallr's player dialog: photo, name and the player page's career table, phase kept local. */
+/** The card's photo treatment, larger than an avatar: the season photo on its team colour and logo. */
+function DialogPhoto({ player, season }: { player: { id: string; name: string; team: string | null }; season: string }) {
+  const record = teamRecord(player.team ?? undefined, season);
+  const tint = teamBrandColor(player.team, season);
+  return (
+    <span className="sc-photo sc-dialog-photo" style={tint ? ({ "--team-tint": tint } as CSSProperties) : undefined}>
+      {record && <TeamWatermark asset={record.asset} />}
+      <PlayerPortrait playerId={player.id} name={player.name} size="xl" className="sc-portrait" era={{ season, team: player.team }} />
+    </span>
+  );
+}
+
 function PlayerDialog({ player, catalog, season, phase, onClose, onSeason, searchParams, inCompare, onCompare }: {
   player: { id: string; name: string; team: string | null } | null; catalog: WorkbenchCatalog; season: string; phase: string;
   onClose: () => void; onSeason: (season: string) => void; searchParams: URLSearchParams;
@@ -504,10 +521,9 @@ function PlayerDialog({ player, catalog, season, phase, onClose, onSeason, searc
   return (
     <Modal isOpen={Boolean(player)} onClose={onClose} className="sc-player-dialog"
       title={player ? <span className="sc-player-title">
-        <PlayerPortrait playerId={player.id} name={player.name} size="lg" era={{ season, team: player.team }} />
+        <DialogPhoto player={player} season={season} />
         <span>{player.name}</span>
-      </span> : undefined}
-      description={player ? `Every season on file; percentiles against that season's league. Click a year to show its board.` : undefined}>
+      </span> : undefined}>
       {player && <>
         <PlayerCareerTable playerId={player.id} catalog={catalog} season={season} phase={careerPhase} firstCoveredSeason={catalog.seasons?.[0] ?? null}
           draftYear={null} onPhaseChange={setCareerPhase} onSeasonOpen={onSeason} />

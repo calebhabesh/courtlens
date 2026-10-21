@@ -55,12 +55,18 @@ export function ShowcaseCard({ player, rank, season, stats, change, highlighted 
   );
 }
 
+/**
+ * The rank-change badge and its tooltip. The card is a button, so the tooltip is a styled span shown
+ * on hovering the badge or focusing the card, not the shared Tooltip (a div); the card's accessible
+ * name already carries the same text, so the tooltip is hidden from assistive technology.
+ */
 function ChangeBadge({ change }: { change: RankChange }) {
   if (!change) return null;
-  const title = changeText(change) ?? undefined;
-  if (change.kind === "new") return <span className="sc-badge sc-change" data-tone="new" title={title}>New</span>;
-  if (change.kind === "same") return <span className="sc-badge sc-change" data-tone="same" title={title}><Icon name="minus" size={14} /></span>;
-  return <span className="sc-badge sc-change" data-tone={change.kind} title={title}>
-    <Icon name={change.kind === "up" ? "up" : "down"} size={14} />{change.by}
-  </span>;
+  const mark = change.kind === "new" ? "New"
+    : change.kind === "same" ? <Icon name="minus" size={14} />
+    : <><Icon name={change.kind === "up" ? "up" : "down"} size={14} />{change.by}</>;
+  return <>
+    <span className="sc-badge sc-change" data-tone={change.kind}>{mark}</span>
+    <span className="sc-tip" aria-hidden="true">{changeText(change)}</span>
+  </>;
 }
