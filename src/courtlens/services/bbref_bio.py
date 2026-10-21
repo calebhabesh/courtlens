@@ -31,7 +31,9 @@ from courtlens.ingestion.bbref_players import (
     PLAYER_PATH,
     IndexEntry,
     NbaPlayer,
+    confirms_legal_name,
     index_url,
+    match_by_seasons,
     match_players,
     parse_index,
     parse_player_page,
@@ -82,17 +84,23 @@ def _body(session: Session, receipt: WorkbenchAcquisition, root: Path) -> bytes:
     return (root / artifact.storage_path).read_bytes()
 
 
-def candidate_players(session: Session) -> list[tuple[NbaPlayer, bool]]:
-    """Players CourtLens has seasons for, active-roster players first, then newest careers."""
+def candidate_players(session: Session, history: bool = False) -> list[tuple[NbaPlayer, bool]]:
+    """Players CourtLens has seasons for, active-roster players first, then newest careers.
+
+    ``history`` adds every other player in the NBA.com player index (careers before 2000-01,
+    docs/full-history-plan.md) after them.
+    """
+    roster = f"SELECT DISTINCT player_id FROM {_mart('mart_player_roster_seasons')}"
     rows = session.execute(
         text(
             f"""SELECT bio.player_id, bio.source_player_name, bio.birth_date, bio.from_year,
-                bio.to_year, bio.listed_team_id IS NOT NULL AS active
+                bio.to_year, bio.listed_team_id IS NOT NULL AS active,
+                bio.player_id IN ({roster}) AS rostered
             FROM {_mart("mart_player_bio")} AS bio
-            WHERE bio.player_id IN (
-                SELECT DISTINCT player_id FROM {_mart("mart_player_roster_seasons")})
-            ORDER BY active DESC, bio.to_year DESC NULLS LAST, bio.player_id"""
-        )
+            WHERE :history OR bio.player_id IN ({roster})
+            ORDER BY rostered DESC, active DESC, bio.to_year DESC NULLS LAST, bio.player_id"""
+        ),
+        {"history": history},
     ).all()
     return [
         (
@@ -134,6 +142,7 @@ def crawl(
     *,
     limit: int | None = None,
     active_only: bool = False,
+    history: bool = False,
     max_age: timedelta = timedelta(days=300),
     letters: str = string.ascii_lowercase,
     log: Callable[[CrawlEvent], None] = lambda event: None,
@@ -154,25 +163,41 @@ def crawl(
         entries.extend(found)
         log(CrawlEvent("index", receipt.source_url, "success", {"players": len(found)}))
 
-    players = candidate_players(session)
+    players = candidate_players(session, history)
     matched = match_players(entries, [player for player, _ in players])
-    plan = [(p, active) for p, active in players if p.player_id in matched]
+    provisional = (
+        match_by_seasons(
+            entries,
+            [player for player, _ in players if player.player_id not in matched],
+            set(matched.values()),
+        )
+        if history
+        else {}
+    )
+    chosen = matched | provisional
+    plan = [(p, active) for p, active in players if p.player_id in chosen]
     if active_only:
         plan = [(p, active) for p, active in plan if active]
     summary: dict[str, Any] = {
         "index_players": len(entries),
         "candidates": len(players),
         "matched": len(matched),
-        "unmatched": [p.player_id for p, _ in players if p.player_id not in matched][:50],
-        "unmatched_count": len(players) - len(matched),
+        "provisional": len(provisional),
+        "unmatched": [p.player_id for p, _ in players if p.player_id not in chosen][:50],
+        "unmatched_count": len(players) - len(chosen),
         "profiles": 0,
+        "unconfirmed": [],
         "skipped": 0,
         "failed": 0,
         "stopped": False,
     }
     for player, _ in _limited(plan, limit, session, max_age, summary):
-        bbref_id = matched[player.player_id]
-        receipt = fetcher.fetch(SOURCE, player_url(bbref_id), "all")
+        bbref_id = matched.get(player.player_id) or provisional[player.player_id]
+        receipt = (
+            retained_receipt(session, player_url(bbref_id))
+            if player.player_id in provisional
+            else None
+        ) or fetcher.fetch(SOURCE, player_url(bbref_id), "all")
         if receipt.status != "success":
             session.commit()
             summary["failed"] += 1
@@ -192,11 +217,21 @@ def crawl(
             summary["failed"] += 1
             log(CrawlEvent("player", receipt.source_url, "rejected", {"reason": str(error)}))
             continue
+        if player.player_id in matched:
+            basis = "name+birth_date" if player.birth_date else "name+seasons"
+        elif confirms_legal_name(player.name, _body(session, receipt, root), profile):
+            basis = "surname+exact_seasons+legal_name"
+        else:
+            # Kept as a raw page only; a rerun re-reads it instead of fetching again.
+            session.commit()
+            summary["unconfirmed"].append({"player_id": player.player_id, "bbref_id": bbref_id})
+            log(CrawlEvent("player", receipt.source_url, "unconfirmed", {"name": player.name}))
+            continue
         session.add(
             BbrefPlayerProfile(
                 player_id=player.player_id,
                 bbref_id=bbref_id,
-                match_basis="name+birth_date" if player.birth_date else "name+seasons",
+                match_basis=basis,
                 acquisition_id=receipt.id,
                 content_sha256=receipt.content_sha256 or "",
                 parser_version=PARSER_VERSION,
@@ -208,6 +243,21 @@ def crawl(
         summary["profiles"] += 1
         log(CrawlEvent("player", receipt.source_url, "success", {"player_id": player.player_id}))
     return summary
+
+
+def retained_receipt(session: Session, url: str) -> WorkbenchAcquisition | None:
+    """The newest successful retained fetch of a page, so an unconfirmed match is re-read."""
+    return session.scalar(
+        select(WorkbenchAcquisition)
+        .where(
+            WorkbenchAcquisition.resource == RESOURCE,
+            WorkbenchAcquisition.source_url == url,
+            WorkbenchAcquisition.status == "success",
+            WorkbenchAcquisition.artifact_id.is_not(None),
+        )
+        .order_by(WorkbenchAcquisition.finished_at.desc())
+        .limit(1)
+    )
 
 
 def _limited(
