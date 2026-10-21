@@ -19,7 +19,6 @@ import ContractsBooksLoading from "@/app/contracts/books/loading";
 import DataStatusLoading from "@/app/data-status/loading";
 import ForecastsLoading from "@/app/forecasts/loading";
 import SettingsLoading from "@/app/settings/loading";
-import TierListLoading from "@/app/tierlist/loading";
 import InvestigationsLoading from "@/app/investigations/loading";
 
 describe("Route Loading Skeletons", () => {
@@ -41,7 +40,6 @@ describe("Route Loading Skeletons", () => {
     { name: "DataStatusLoading", component: DataStatusLoading },
     { name: "ForecastsLoading", component: ForecastsLoading },
     { name: "SettingsLoading", component: SettingsLoading },
-    { name: "TierListLoading", component: TierListLoading },
     { name: "InvestigationsLoading", component: InvestigationsLoading },
   ];
 

@@ -103,6 +103,10 @@ export const HIDDEN_REDIRECTS: { source: string; destination: string }[] = [
   // Free Agency returned with NBA.com's tracker (alignment row 14, 2026-10-19).
   // PC11 (C14): EPV needs non-public player-location tracking, so the page is removed, not gated.
   { source: "/research/epv", destination: "/research/rapm" },
+  // Alignment row 10 (owner, 2026-10-20): Rankings was built for social sharing, so it is cut.
+  { source: "/rankings", destination: "/showcase" },
+  // Alignment row 11 (owner, 2026-10-20): Tier List is cut for the same reason.
+  { source: "/tierlist", destination: "/compare" },
 ];
 
 /** PC11: removed from the hosted demo only (see HOSTED_DEMO_HIDDEN in lib/nav-model.ts). */

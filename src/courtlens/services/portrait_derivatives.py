@@ -27,7 +27,10 @@ logger = logging.getLogger(__name__)
 # Bump when the crop or encoding changes so cached derivatives are not reused, together with
 # PORTRAIT_CROP_VERSION in dashboard/lib/portrait-source.ts, which puts it in the portrait URL
 # so browsers (which keep a derivative for a day) fetch the new crop.
-PORTRAIT_CROP_VERSION = "face-v2"
+# face-v3 (2026-10-20): same crop; pre-2015-16 seasons now serve Basketball-Reference career
+# photos at the same URLs, so the version moves to retire day-old browser copies.
+# face-v4 (2026-10-20): same crop; the career photos' outlines are matted (no white halo).
+PORTRAIT_CROP_VERSION = "face-v4"
 # Covers 28-144px avatars at 1x-2x device pixel ratios.
 PORTRAIT_SIZES = (64, 96, 128, 192, 288)
 PORTRAIT_DERIVATIVE_MIME = "image/webp"

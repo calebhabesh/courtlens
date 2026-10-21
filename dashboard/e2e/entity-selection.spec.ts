@@ -71,26 +71,6 @@ for(const route of ["trends","distributions","similarity"]) {
   });
 }
 
-for(const [route,label] of [["rankings","Add player to board"],["tierlist","Add player to tier"]]) {
-  test(`${route} picker adds canonical named selection to its explicit personal target`,async({page})=>{
-    const workspace={workspace_id:"default",name:"Fixture",version:1,views:[],favorites:[],compare_tray:[],ranking_boards:[{id:"board",title:"Fixture board",board_type:"overall",entries:[]}],tier_lists:[{id:"tiers",title:"Fixture tiers",tiers:[{tier_id:"a",label:"First tier",player_ids:[]},{tier_id:"b",label:"Second tier",player_ids:[]}]}],preferences:{density:"standard",identity_mode:"photos",counting_mode:"per_game",default_view_id:"overview",table_expanded:false,theme:"dark"},created_at:"2026-10-05",updated_at:"2026-10-05"};
-    const saves: Record<string,unknown>[]=[];
-    await page.route("**/api/workspace**",async request=>{
-      if(request.request().method() !== "GET") {const body=request.request().postDataJSON();saves.push(body);workspace.version++;if(route === "rankings") workspace.ranking_boards[0]={...workspace.ranking_boards[0],...body};else workspace.tier_lists[0]={...workspace.tier_lists[0],...body};}
-      await request.fulfill({json:workspace});
-    });
-    await openWorkbench(page,`/${route}`);
-    if(route === "tierlist") {await page.getByRole("radio",{name:/Fixture tiers/}).click();await page.getByRole("combobox",{name:"Assign to tier",exact:true}).selectOption("b");}
-    const input=page.getByRole("combobox",{name:label,exact:true});await input.fill("Fixture Star");await page.getByRole("option").filter({hasText:"Fixture Star"}).click();
-    await expect.poll(()=>saves.length).toBe(1);
-    if(route === "rankings") expect(saves[0]).toMatchObject({entries:[{player_id:"23",player_name:"Fixture Star"}]});
-    else expect(saves[0]).toMatchObject({tiers:[{tier_id:"a",player_ids:[]},{tier_id:"b",player_ids:["23"]}]});
-    if(route === "rankings") await expect(page.getByRole("button",{name:"Remove Fixture Star from board",exact:true})).toBeVisible();
-    else await expect(page.getByText("1 total assigned player(s)",{exact:false})).toBeVisible();
-    await input.fill("Fixture Star");await expect(page.getByText("No matches for",{exact:false})).toBeVisible();
-  });
-}
-
 test("planner selections stay within roster/watchlist and never query the public catalog",async({page})=>{
   let lookups=0;page.on("request",request=>{if(request.url().includes("/lookup?")) lookups++;});
   const cors={"Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type, Authorization","Access-Control-Allow-Methods":"GET, POST, OPTIONS"};
