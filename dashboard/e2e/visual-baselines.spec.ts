@@ -64,7 +64,7 @@ for (const view of WIDTHS) {
 
     test("player showcase", async ({ page }) => {
       await openWorkbench(page, "/showcase");
-      await expect(page.locator(".showcase-card-svg")).toBeVisible();
+      await expect(page.locator(".sc-card").first()).toBeVisible();
       await settle(page);
       await expect(page).toHaveScreenshot(`showcase-${view.name}.png`, shot);
     });
