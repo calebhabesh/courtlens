@@ -3102,4 +3102,10 @@ Follow-up instructions (owner, 2026-10-20; "Good first pass, now edits"):
     tooltip's look (`.sc-tip`, shown on hovering the badge or focusing the card, inside the photo,
     wrapping to its width); list-view rank changes use the shared `Tooltip`.
 24. [x] "I think we are now finished this page" (2026-10-21) — row 9 ✅ aligned (first revision).
+25. [x] "should we make default card width wider to fit longer names like antetokounmpo and shai, or
+    should we stack longer names in the same card. Your call?" — stacked: wider cards drop the
+    eight-a-row grid at 1440 and still clip "Giannis Antetokounmpo". Long names wrap at their spaces
+    only (each word stays whole: "Shai / Gilgeous-Alexander"), every card in a row takes the row's
+    height with its name strip growing, and a small-sample stat (no percentile) keeps the full cell
+    height. 96-card board at 1440, 1280 and 390: no name clipped, every row's stats level.
 

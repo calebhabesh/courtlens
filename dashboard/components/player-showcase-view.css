@@ -53,9 +53,10 @@
 
   /* Card grid: eight to a row at 1440. */
   .sc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
-  .sc-cell { min-width: 0; }
+  /* Cards in a row share one height, so a two-line name in one card keeps the row's stats aligned. */
+  .sc-cell { display: flex; min-width: 0; }
   .sc-card {
-    display: flex; flex-direction: column; width: 100%; padding: 0; overflow: hidden; text-align: center; cursor: pointer;
+    display: flex; flex-direction: column; width: 100%; height: 100%; padding: 0; overflow: hidden; text-align: center; cursor: pointer;
     border: 2px solid var(--team-tint, var(--color-hairline-strong)); border-radius: var(--radius-md);
     background: color-mix(in srgb, var(--team-tint, var(--color-surface-2)) 28%, var(--color-surface-1)); color: var(--color-text);
     transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
@@ -89,17 +90,21 @@
     transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
   }
   .sc-change:hover + .sc-tip, .sc-card:focus-visible .sc-tip { opacity: 1; transform: none; }
+  /* Long names wrap at their spaces onto two lines; the strip grows with the row so the stats below stay level. */
   .sc-name {
-    display: block; padding: var(--space-1) var(--space-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    display: flex; flex: 1 0 auto; align-items: center; justify-content: center; padding: var(--space-1) var(--space-2);
+    overflow-wrap: break-word; text-wrap: balance;
     background: color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 55%, var(--color-surface-0));
     font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700;
   }
+  .sc-name-word { white-space: nowrap; }
   .sc-stats { display: grid; grid-template-columns: 1fr 1fr; }
   .sc-stat { display: grid; justify-items: center; gap: 1px; padding: var(--space-2) var(--space-1); border-top: 1px solid var(--color-hairline); }
   .sc-stat:nth-child(odd) { border-right: 1px solid var(--color-hairline); }
   .sc-stat-label { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
   .sc-stat[data-lead] .sc-stat-label { color: var(--color-accent); font-weight: 600; }
-  .sc-stat .chart-percentile-text { display: grid; justify-items: center; }
+  /* Value plus percentile line; a small-sample value (no percentile) keeps the same height so cards stay level. */
+  .sc-stat .chart-percentile-text { display: grid; justify-items: center; align-content: start; min-height: var(--space-8); }
   .sc-stat .stat-main-value { font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
 
   /* The fixed compare tray must not cover the last row or the Load More button. */

@@ -40,7 +40,8 @@ export function ShowcaseCard({ player, rank, season, stats, change, highlighted 
         <span className="sc-badge sc-season">{seasonBadge(season)}</span>
         <ChangeBadge change={change} />
       </span>
-      <span className="sc-name">{player.player_name}</span>
+      {/* Words stay whole, so a long name breaks at a space ("Shai / Gilgeous-Alexander"), never at its hyphen. */}
+      <span className="sc-name"><span>{player.player_name.split(" ").map((word, index) => <span key={index}>{index ? " " : ""}<span className="sc-name-word">{word}</span></span>)}</span></span>
       <span className="sc-stats">
         {values.map(({ stat, value }, index) => (
           <span key={stat.key} className="sc-stat" data-lead={index === 0 || undefined}>
