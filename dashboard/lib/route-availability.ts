@@ -10,7 +10,7 @@ const requirements: Record<string, string> = {
   "/research/distributions": "core_stats", "/similar-players": "core_stats",
   "/roster-shapes": "core_stats", "/playoffs": "core_stats",
   "/wowy": "wowy", "/stat-line-shift": "on_off",
-  "/similar-players/shot-profile": "shots", "/research/shooting/aftermath": "shots", "/matchups": "matchups",
+  "/research/shooting/aftermath": "shots", "/matchups": "matchups",
   "/research/shooting/adjusted": "play_types", "/stats/tracking": "tracking",
   "/research/defensive-matchups": "defensive_tracking",
 };

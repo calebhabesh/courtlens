@@ -20,8 +20,7 @@ import { ButtonLink } from "./ui/kit";
 
 const OPERATION_PAGES = [
   { title: "Player Comparison", href: "/compare", icon: "swap" as const, description: "Aligned production, efficiency and per-metric differences." },
-  { title: "Similar Players", href: "/similar-players", icon: "person" as const, description: "Closest observed production profiles and their sample support." },
-  { title: "Shot Profile", href: "/similar-players/shot-profile", icon: "chart" as const, description: "Observed shooting zones and profile peers." },
+  { title: "Player Twins", href: "/similar-players", icon: "fingerprint" as const, description: "Closest player-seasons by shot profile or box-score profile." },
   { title: "Shot Aftermath", href: "/research/shooting/aftermath", icon: "trend" as const, description: "Possession outcomes following mapped shots." },
   { title: "WOWY", href: "/wowy", icon: "person" as const, description: "Team exposure with and without selected players." },
   { title: "Stat Line Shift", href: "/stat-line-shift", icon: "chart-column" as const, description: "How a player's stat line changes with and without a teammate." },

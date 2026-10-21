@@ -517,6 +517,38 @@ def get_season_matchups(
     return MatchupsViewResponse.model_validate(rounded(view))
 
 
+@router.get("/player-twins")
+def get_player_twins(
+    mode: Literal["shot", "box"] = "shot",
+    season: str | None = Query(None, pattern=SEASON_PATTERN),
+    player_id: str | None = Query(None, alias="playerId", max_length=20),
+    pool: Literal["same", "all"] = "all",
+    from_season: str | None = Query(None, alias="from", pattern=SEASON_PATTERN),
+    to_season: str | None = Query(None, alias="to", pattern=SEASON_PATTERN),
+    min_possessions: int = Query(1000, alias="minPoss", ge=0, le=6000),
+    exclude_own: bool = Query(False, alias="excludeOwn"),
+    versus: str | None = Query(None, alias="vs", max_length=40),
+    limit: int = Query(12, ge=1, le=100),
+) -> dict[str, Any]:
+    """Row 17 Player Twins: nearest player-seasons by shot profile or box profile (pbpstats)."""
+    from courtlens.services.player_twins import player_twins_view
+
+    view = player_twins_view(
+        mode=mode,
+        season=season,
+        player_id=player_id,
+        pool=pool,
+        from_season=from_season,
+        to_season=to_season,
+        min_possessions=min_possessions,
+        exclude_own=exclude_own,
+        versus=versus,
+        limit=limit,
+    )
+    result: dict[str, Any] = rounded(view)
+    return result
+
+
 @router.get("/play-types", response_model=PlayTypesViewResponse)
 def get_play_types(
     season: str | None = Query(None, pattern=SEASON_PATTERN),

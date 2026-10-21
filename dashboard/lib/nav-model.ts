@@ -43,7 +43,7 @@ export const NAV_MENUS: NavMenu[] = [
       // Databallr's Players menu order (Rankings and Tier List cut, alignment rows 10–11).
       { label: "Last X Games", href: "/last-games", icon: "chart-trend", description: "Player performance over their most recent games" },
       { label: "Showcase", href: "/showcase", icon: "crown", description: "Each season's leaders as player cards, with a season slideshow" },
-      { label: "Player Twins", href: "/similar-players", icon: "fingerprint", description: "Player-seasons with the closest box-score or shot profiles" },
+      { label: "Player Twins", href: "/similar-players", icon: "fingerprint", description: "Player-seasons with the closest shot or box-score profiles, since 1996-97" },
       { label: "Player Directory", href: "/players", icon: "dashboard", description: "Find any player and open their dashboard" },
     ] }],
   },

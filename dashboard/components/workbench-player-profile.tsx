@@ -209,8 +209,7 @@ export function WorkbenchPlayerProfile({
     { label: "Recent Games", href: `/last-games?playerId=${player.id}&${scopeParams}`, icon: "history" },
     { label: "Workload Trends", href: `/research/trends?playerId=${player.id}&${scopeParams}`, icon: "trend" },
     { label: "Distributions", href: `/research/distributions?playerId=${player.id}&${scopeParams}`, icon: "chart" },
-    { label: "Similar Players", href: `/similar-players?playerId=${player.id}&${scopeParams}`, icon: "person" },
-    { label: "Shot Profile", href: `/similar-players/shot-profile?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`, icon: "scatter" },
+    { label: "Player Twins", href: `/similar-players?playerId=${player.id}&season=${context.season}`, icon: "fingerprint" },
     { label: "Compare Head to Head", href: `/compare?playerA=${player.id}&${scopeParams}`, icon: "swap" },
     { label: "Wingspan", href: `/wingspan?playerId=${player.id}`, icon: "scale" },
   ];

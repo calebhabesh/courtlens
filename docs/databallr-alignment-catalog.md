@@ -29,7 +29,7 @@ Rows are in working order.
 | 14 | Contracts + Free Agency | `/contracts`, `/free-agency` | 👀 | Select Team flow, Overview (payroll, cap bar, full flow, bar timeline, roster Stats table, pies), Small vs Big on DARKO values; Free Agency restored from NBA.com's tracker |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
 | 16 | Matchup Matrix | `/matchups` | ✅ aligned (first revision) | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
-| 17 | Shot Profile Twin | `/similar-players` | ⬜ | Partial overlap; titled Player Twins (row 0 instr. 22) |
+| 17 | Shot Profile Twin | `/similar-players` | 👀 | NBA only; Databallr's twin cards and closest-matches table on pbpstats zone totals, then Box Score mode, pool filters, distance drivers |
 | 18 | Six Factor RAPM | `/research` | ⬜ | |
 | 19 | Wingspan | `/wingspan` | ⬜ | |
 | 20 | Offensive Calculator | `/calculator` | ⬜ | |
@@ -3108,4 +3108,101 @@ Follow-up instructions (owner, 2026-10-20; "Good first pass, now edits"):
     only (each word stays whole: "Shai / Gilgeous-Alexander"), every card in a row takes the row's
     height with its name strip growing, and a small-sample stat (no percentile) keeps the full cell
     height. 96-card board at 1440, 1280 and 390: no name clipped, every row's stats level.
+
+### 17 Player Twins — 👀 ready for review
+
+Owner start (2026-10-21): row 17 with two Databallr references (Shot Profile Twin: the twin cards,
+and the Closest matches table). "databallr covers the wnba, however, courtlens is not covering the
+wnba at all. So we can skip that info. So we can build out the core nba-based functionality." The
+list below is the agent's replicate-then-improve proposal; owner: "Build all extras beyond databallr
+that you believe would improve the page", and the agent runs the pbpstats acquisition.
+
+Starting state (survey, 2026-10-21): `/similar-players` is the research-template TabbedPage with
+Box Score (per-36 Euclidean twins within one season, `statistical_peers_service`) and Shot Profile
+(`ShootingView` on `workbench_shots`, which holds two shots, so it shows nothing). pbpstats player
+totals carry AtRim / ShortMidRange / LongMidRange / FG3 / FTA / FtPoints / OffPoss, but only
+2025-26 is retained and the player feed caps at 500 rows.
+Databallr: League (dropped here), Season, Player and Match pool (Cross / Same / All, All seasons);
+"Shot Profile Twin" with the selected player-season and the #1 twin side by side (photo, team,
+Selected / match badge, PTS, TS%), FT / RIM / MID / 3P blocks of VOL (attempts per 100 offensive
+possessions) and EFF bars diverging from the possession-weighted league-season average with a LG AVG
+column; Closest matches table (rank, player-season, Match, relative VOL / EFF per zone; a row click
+compares from that player-season); "Similarity equally weights each available league-season
+standardized dimension. At least six of eight dimensions must overlap."
+
+Instructions (owner, 2026-10-21; "replicate Databallr, then improve", NBA only):
+1. [x] Console: a ‹ season › stepper over the seasons on file (read from the data), Player search,
+   Match pool Same season / All seasons. All state in the URL.
+   — Two consoles as on Showcase: Shot Profile / Box Score, a ‹ season › stepper over the bundle's
+   seasons (1996-97 to 2025-26; nothing hard-coded), Player search over that season's roster;
+   Same / All Seasons with a from–to range, possession floor, Own Seasons / Others Only. URL:
+   `mode=`, `season=`, `playerId=`, `pool=`, `from=`, `to=`, `minPoss=`, `own=`, `vs=`, `rows=`.
+   A season the player didn't play falls back to that season's busiest player and says so.
+2. [x] Header and twin cards: "Shot Profile Twin" header; the selected player-season beside the
+   #1 match (season photo `era`, team, Selected / match badge, PTS, TS%); FT / RIM / MID / 3P blocks
+   of VOL and EFF bars diverging from the league average, LG AVG column, footnote.
+   — Eyebrow "NBA · Shot Profile", wordmark and blurb; round season photos with the team logo;
+   bars sized by the standardized value (three SDs fill a side), volume blue, efficiency green or
+   red, the value on the far side of the centre. Live 2025-26 LeBron James reproduces Databallr's
+   card exactly (FT 7.8 / 4.7, 73.7% / 78.3%; rim 8.4, 75.5%; mid 8.3, 41.5%; 3P 6.0, 31.7%) and
+   the same #1 twin, 2023-24 Jonathan Kuminga (98.4%).
+3. [x] Closest matches: Stats-look table (rank, player-season with photo, Match, relative VOL / EFF
+   per zone); a row click puts that player-season on the right card; Load More.
+   — Group labels measured 0 px off their two columns; the twin's row is marked; Load 12 More up to
+   96. Players with only pre-2000 seasons often show initials (no portrait on file; the
+   Basketball-Reference portrait backfill covered seasons from 2000-01).
+4. [x] Method: eight league-season-standardized dimensions, equal weights, at least six of eight
+   overlapping, a minimum of offensive possessions; regular season.
+   — `domain/player_twins.py`: league average pooled over every player in the season
+   (possession-weighted rates, attempt-weighted percentages); z-scores within each season among
+   500+ possession player-seasons (fixed, so the visitor's floor never moves a distance);
+   percentages need 20 attempts; RMS distance over shared measures, six of eight required;
+   Match = 100 − 10 × distance. Default floor 1,000 offensive possessions.
+5. [x] Data: pbpstats per-team player totals for every season on pbpstats (2000-01 on), at the
+   existing 5 s pace, and a zone-totals serving read.
+   — `courtlens acquire-shot-zones` (`services/shot_zones.py`): 900 team-season requests
+   (1996-97, pbpstats' first season, to 2025-26), each retained; resumable; seals
+   `data/derived/shot-zones-v1/<sha>.json` (6.5 MB, `shot_zones_manifest`) only when complete.
+   Traded players' team rows are summed; a team-season returned twice is refused. Three read
+   timeouts on 2026-10-21 were resumed without refetching. Mid-range = short + long mid-range.
+   Hosted demo: needs the bundle synced (it lives under `data/`).
+6. [x] Improvement: Box Score mode — today's per-36 box-score twins in the same cards and table.
+   — Cross-season, from the same bundle: PTS and TS%, AST and TOV, OREB and DREB, STL and BLK per 100
+   offensive (defensive for DREB, STL, BLK) possessions. The old per-36 single-season page and its
+   Shot Profile tab are gone; `/similar-players/shot-profile` and `/shot-profile-twin` redirect.
+7. [x] Improvement: pool filters — season range, minimum possessions, exclude the player's own
+   seasons.
+   — Range selects disable on Same Season; the table header states the pool and how many
+   player-seasons qualify (10,045 for all seasons at 1,000+).
+8. [x] Improvement: each match row shows the zones driving the distance, and a Compare link for the
+   pair.
+   — Biggest Gap names the furthest measure and its size in SDs (tooltip in words); each row has
+   "show beside" (keyboard path to the twin card) and Compare, which opens `/compare` with
+   `playerA`/`seasonA` and `playerB`/`seasonB`.
+
+Follow-up instructions (owner, 2026-10-21):
+9. [x] "can you put percent sign after the number match '95.8 Match'." — the twin card's badge
+   reads "95.8% Match" (its tooltip "95.8% match over 8 of 8 shared measures").
+10. [ ] "I want to fill in the gaps where possible" (photos). After the owner's Basketball-Reference
+    history crawl and its photo step finish (not before 2026-10-21 ~9:30 PM EDT; never start or
+    touch that crawl): count the players in the twins data (and Stats seasons) still without any
+    active portrait, then fill what free sources allow, Wikimedia Commons first (license and
+    source recorded per photo, labelled as such), initials for the rest. Confirmed gaps today:
+    LaPhonso Ellis (`ellisla01`) and Chris Gatling (`gatlich01`) have no NBA.com photo
+    (silhouette) and no Basketball-Reference headshot; Ike Austin and Isaiah Rider have no
+    Basketball-Reference profile on file yet.
+
+Verification (2026-10-21): live (owner's :3100 on the sealed bundle) 1440 and 390, Shot and Box:
+no overflow, no browser errors. Ruff, mypy, dashboard lint and typecheck clean; pytest 2,238
+passed (new `tests/unit/test_player_twins.py`); Vitest 618/618 (new `lib/player-twins.test.ts`;
+`make test` still exits 1 on the 4 known header.test.tsx AbortErrors). Playwright on the mock
+(real captured answers, `e2e/fixtures/player-twins-v1.json`): new `e2e/player-twins.spec.ts` 5/5;
+full suite 493 passed, 7 failed: fixed and re-run green, `entity-selection` (similarity picker
+gone), `route-polish:21` (passes alone; aftermath date race under load) and the operation-gallery
+phone baseline (7 cards now); not this page, `stats-team-move-dates:4` and `fo13-pages` 47/93/112
+(two "Email" fields on /planner). Removed the shot-profile and similar-players first-load
+baselines; the Shot Profile tab's ShootingView tests went with it (aftermath keeps ShootingView).
+
+Data-blocked: none (WNBA out of scope).
+Evidence: docs/evidence/alignment/similar-players/
 

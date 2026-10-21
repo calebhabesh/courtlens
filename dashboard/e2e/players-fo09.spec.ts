@@ -37,13 +37,4 @@ test.describe("FO09 Players", () => {
     await openWorkbench(page, "/tierlist");
     await expect(page).toHaveURL(/\/compare/);
   });
-
-  test("similar players: a 40px filter bar and the evidence hash only in Data details", async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await openWorkbench(page, "/similar-players?playerId=23");
-    const bar = page.getByRole("region", { name: "Similar players controls" });
-    await expect(bar).toBeVisible();
-    expect((await bar.boundingBox())!.height).toBeLessThanOrEqual(60);
-    expect(await page.locator("main").innerText()).not.toMatch(/SHA-256/);
-  });
 });
