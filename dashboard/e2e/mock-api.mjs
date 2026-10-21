@@ -6,6 +6,17 @@ import { pc11Response, sixFactor } from "./pc11-fixtures.mjs";
 // Recorded real retained finding, no question/provider prose. Other public examples stay
 // unavailable in this fixture, exercising the partial-library state without fabricated results.
 const retainedDistribution = JSON.parse(readFileSync(new URL("./fixtures/pc12-retained-distribution.json", import.meta.url), "utf8"));
+// Player Twins (row 17): real API answers for 2025-26 (default, the #2 match picked, Box Score).
+const playerTwins = JSON.parse(readFileSync(new URL("./fixtures/player-twins-v1.json", import.meta.url), "utf8"));
+function playerTwinsView(url) {
+  const mode = url.searchParams.get("mode") === "box" ? "box" : "shot";
+  const vs = url.searchParams.get("vs");
+  const base = structuredClone(mode === "box" ? playerTwins.box : vs ? playerTwins.picked : playerTwins.shot);
+  const pool = url.searchParams.get("pool") === "same" ? "same" : "all";
+  base.pool = { ...base.pool, scope: pool, ...(pool === "same" ? { from_season: base.season, to_season: base.season } : {}) };
+  base.matches = base.matches.slice(0, Number(url.searchParams.get("limit")) || 12);
+  return base;
+}
 
 const snapshotId = "snapshot-browser-fixture";
 const catalog = {
@@ -648,6 +659,7 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/assistant/operations") return json(response, 200, [
     { name: "workload_shifts", description: "Historical workload changes", parameters: { type: "object" } }
   ]);
+  if (url.pathname === "/api/workbench/player-twins") return json(response, 200, playerTwinsView(url));
   if (url.pathname === "/api/workbench/catalog") return json(response, 200, {
     ...workbenchContext, snapshot_id: snapshotId, seasons: ["2025-26"], phases: ["regular_season"],
     default_season: "2025-26", default_phase: "regular_season", default_before_date: "2026-06-30",

@@ -333,7 +333,7 @@ def test_merged_pages_resolve_to_their_fo07_tabs(test_db_session: Session):
         "patch notes": "whats-new",
         "six factor": "research/rapm",
         "shot aftermath": "research/shooting",
-        "shot profile twin": "similar-players/shot-profile",
+        "shot profile twin": "similar-players",
         "statistical peers": "similar-players",
         "learning": "learning",
     }

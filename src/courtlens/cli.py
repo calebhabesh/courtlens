@@ -1535,6 +1535,31 @@ def refresh_darko_command(
     typer.echo(f"sealed {path}  (served as the newest bundle in {output})")
 
 
+@app.command("acquire-shot-zones")
+def acquire_shot_zones_command(
+    season: list[str] = typer.Option(
+        [], help="Seasons to fetch (default: every season from 1996-97 to the latest on file)."
+    ),
+    root: Path = typer.Option(Path("data/raw/pbpstats-shot-zones")),
+    output: Path = typer.Option(Path("data/derived/shot-zones-v1")),
+) -> None:
+    """Operator run: pbpstats regular-season shot-zone totals, team by team, then seal."""
+    import httpx
+
+    from courtlens.services.shot_zones import FIRST_SEASON, acquire, season_label
+    from courtlens.workbench_models import WorkbenchPlayerGame
+
+    with SessionLocal() as session, httpx.Client() as client:
+        if not season:
+            newest = session.scalar(select(func.max(WorkbenchPlayerGame.season)))
+            if newest is None:
+                raise typer.BadParameter("no admitted seasons; pass --season")
+            latest = int(newest[:4])
+            season = [season_label(year) for year in range(FIRST_SEASON, latest + 1)]
+        path = acquire(session, root, client, season, output, log=typer.echo)
+    typer.echo(f"sealed {path}")
+
+
 @app.command("refresh-darko-current")
 def refresh_darko_current_command(
     season: str = typer.Option("2025-26", help="DARKO's latest published season."),

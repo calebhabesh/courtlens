@@ -59,7 +59,8 @@ test("API failure preserves text; retry and no-match states are distinct",async(
 // The multi-player chip and lookup scope-race checks moved to Vitest (entity-picker.test.tsx,
 // lookup-input.test.tsx) when Stat Line Shift (row 13) dropped its condition pickers.
 
-for(const route of ["trends","distributions","similarity"]) {
+// Similarity left for Player Twins (row 17), which picks from its own season roster.
+for(const route of ["trends","distributions"]) {
   test(`${route} selection preserves release, phase, cutoff and window context`,async({page})=>{
     const requests: Record<string, unknown>[]=[];
     page.on("request",request=>{if(request.method() === "POST" && request.url().includes("/operations/")) requests.push(request.postDataJSON());});

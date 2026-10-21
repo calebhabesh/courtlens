@@ -63,7 +63,7 @@ test("parameter-free /last-games resolves the Stats table leader and says so",as
   await expect(page.locator(".feed-example")).toContainText("Top of the Stats table (DPM) in 2025-26");
   await expect.poll(()=>new URL(page.url()).searchParams.get("playerId")).toBe("23");
 });
-for(const [path,parameter] of [["/similar-players/shot-profile","player_id"],["/research/shooting/aftermath","player_id"],["/similar-players","playerId"]]) test(`parameter-free ${path} resolves a named observed example`,async({page})=>{
+for(const [path,parameter] of [["/research/shooting/aftermath","player_id"]]) test(`parameter-free ${path} resolves a named observed example`,async({page})=>{
   await firstLoadFixtures(page);await openWorkbench(page,path);
   await expect(page.getByRole("region",{name:"Observed example context"})).toContainText("Example: Fixture Star");
   await expect.poll(()=>new URL(page.url()).searchParams.get(parameter)).toBeTruthy();
@@ -72,10 +72,10 @@ for(const [path,parameter] of [["/similar-players/shot-profile","player_id"],["/
 });
 
 test("explicit subject is retained and the operation menu issues no conversation request",async({page})=>{
-  await firstLoadFixtures(page);await openWorkbench(page,"/similar-players/shot-profile?player_id=24&season=2025-26&beforeDate=2026-04-13");
+  await firstLoadFixtures(page);await openWorkbench(page,"/research/shooting/aftermath?player_id=24&season=2025-26&beforeDate=2026-04-13");
   await expect(page.locator(".floor-result")).toBeVisible();expect(new URL(page.url()).searchParams.get("player_id")).toBe("24");await expect(page.getByText(/^Example:/)).toHaveCount(0);
   const requests:string[]=[];page.on("request",request=>{if(request.method()==="POST")requests.push(request.url());});
-  await openWorkbench(page,"/research/operation");await expect(page.getByRole("region",{name:"Available research operations"}).getByRole("link")).toHaveCount(8);expect(requests).toEqual([]);
+  await openWorkbench(page,"/research/operation");await expect(page.getByRole("region",{name:"Available research operations"}).getByRole("link")).toHaveCount(7);expect(requests).toEqual([]);
 });
 
 test("Live empty landing resolves the latest final day, points leaders and next scheduled date",async({page})=>{
@@ -94,7 +94,7 @@ test("typing a focal selection cancels a pending default without losing the look
     const response=await route.fetch();await new Promise(resolve=>setTimeout(resolve,800));
     await route.fulfill({response});
   });
-  await openWorkbench(page,"/similar-players/shot-profile");
+  await openWorkbench(page,"/research/shooting/aftermath");
   await expect(page.getByRole("status",{name:"Loading observed example"})).toBeVisible();
   const input=page.getByRole("combobox",{name:"Player",exact:true});
   await input.fill("Fixture Player 1");
