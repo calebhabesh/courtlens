@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import tempfile
 from collections.abc import Callable
-from datetime import date, timedelta
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -1386,6 +1386,9 @@ def acquire_player_bio_command(
 def acquire_bbref_bios_command(
     limit: int | None = typer.Option(None, help="Fetch at most this many player pages."),
     active_only: bool = typer.Option(False, help="Only players on an active roster."),
+    history: bool = typer.Option(
+        False, help="Also every earlier player in the NBA.com index (full-history plan)."
+    ),
     max_age_days: int = typer.Option(300, help="Re-fetch profiles older than this."),
     letters: str = typer.Option("abcdefghijklmnopqrstuvwxyz", help="Index pages to read."),
     root: Path = typer.Option(Path("data/raw/bbref")),
@@ -1418,8 +1421,67 @@ def acquire_bbref_bios_command(
             root,
             limit=limit,
             active_only=active_only,
+            history=history,
             max_age=timedelta(days=max_age_days),
             letters=letters,
+            log=log,
+        )
+    if report is not None:
+        report.write_text(json.dumps(summary, indent=2, default=str) + "\n")
+    typer.echo(json.dumps(summary, default=str))
+    if summary.get("stopped"):
+        raise typer.Exit(1)
+
+
+@app.command("acquire-bbref-history")
+def acquire_bbref_history_command(
+    phase: list[str] = typer.Option(["league", "gamelogs"], help="league and/or gamelogs."),
+    first_season: int = typer.Option(1947, help="First league season, by end year."),
+    last_season: int = typer.Option(2026, help="Last league season, by end year."),
+    first_gamelog_season: int = typer.Option(1984, help="First game-log season, by end year."),
+    last_gamelog_season: int = typer.Option(2000, help="Last game-log season, by end year."),
+    limit: int | None = typer.Option(None, min=1, help="Fetch at most this many pages."),
+    root: Path = typer.Option(Path("data/raw/bbref")),
+    report: Path | None = typer.Option(None, help="Write the run summary JSON here."),
+) -> None:
+    """Basketball-Reference league seasons and pre-2000-01 game logs (operator run, resumable).
+
+    Raw pages only, about 4 s each. A 403/429 ends the run; rerunning skips every page already
+    retained (or answered 404). Game logs come from the players on retained totals pages.
+    """
+    import httpx
+
+    from courtlens.services.bbref_history import PHASES, CrawlEvent, HistoryFetcher, crawl
+
+    if unknown := set(phase) - set(PHASES):
+        raise typer.BadParameter(f"unknown phase: {', '.join(sorted(unknown))}")
+
+    def log(event: CrawlEvent) -> None:
+        typer.echo(
+            json.dumps(
+                {
+                    "at": datetime.now(UTC).isoformat(timespec="seconds"),
+                    "kind": event.kind,
+                    "url": event.url,
+                    "status": event.status,
+                    **event.detail,
+                },
+                default=str,
+            ),
+            err=True,
+        )
+
+    with SessionLocal() as session, httpx.Client() as client:
+        summary = crawl(
+            session,
+            HistoryFetcher(session, root, client),
+            root,
+            phases=tuple(p for p in PHASES if p in phase),
+            first_season=first_season,
+            last_season=last_season,
+            first_gamelog_season=first_gamelog_season,
+            last_gamelog_season=last_gamelog_season,
+            limit=limit,
             log=log,
         )
     if report is not None:
