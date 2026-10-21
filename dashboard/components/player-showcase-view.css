@@ -79,6 +79,16 @@
   .sc-change { bottom: var(--space-1); left: var(--space-1); background: color-mix(in srgb, var(--color-surface-0) 82%, transparent); color: var(--color-text-secondary); }
   .sc-change[data-tone="up"] { color: var(--color-identity-a); }
   .sc-change[data-tone="down"] { color: var(--color-identity-b); }
+  /* The badge's tooltip: the shared tooltip's look, above the badge and inside the photo, wrapping to its width. */
+  .sc-tip {
+    position: absolute; left: var(--space-1); bottom: calc(var(--space-1) + 20px + var(--space-1)); z-index: var(--z-tooltip);
+    width: max-content; max-width: calc(100% - 2 * var(--space-1)); padding: var(--space-1) var(--space-2); border-radius: var(--radius-xs);
+    background: var(--color-surface-3); color: var(--color-text); box-shadow: var(--shadow-1);
+    font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-align: left;
+    opacity: 0; transform: translateY(2px); pointer-events: none;
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .sc-change:hover + .sc-tip, .sc-card:focus-visible .sc-tip { opacity: 1; transform: none; }
   .sc-name {
     display: block; padding: var(--space-1) var(--space-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     background: color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 55%, var(--color-surface-0));
@@ -129,7 +139,9 @@
   .sc-choose-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline); }
   .sc-spacer { flex: 1; }
   .sc-player-dialog { width: min(1180px, calc(100vw - 2 * var(--space-4))); }
-  .sc-player-title { display: inline-flex; align-items: center; gap: var(--space-3); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
+  .sc-player-title { display: inline-flex; align-items: center; gap: var(--space-4); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
+  /* The card's photo, framed larger than the 80px avatar it replaced. */
+  .sc-dialog-photo { flex: none; width: 112px; border-radius: var(--radius-md); }
 
   @media (max-width: 767px) {
     .sc-consoles { flex-direction: column; }

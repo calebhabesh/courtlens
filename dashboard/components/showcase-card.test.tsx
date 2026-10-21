@@ -29,7 +29,7 @@ describe("ShowcaseCard (alignment row 9)", () => {
     expect(text).toContain("27.7");
     expect(container.querySelector(".sc-change")?.getAttribute("data-tone")).toBe("up");
     expect(getByRole("button").getAttribute("aria-label")).toMatch(/^1\. Nikola Jokić, DPM \+7\.5/);
-    expect(container.querySelector(".sc-change")?.getAttribute("title")).toBe("Up 2: 5th in 2024-25");
+    expect(container.querySelector(".sc-tip")?.textContent).toBe("Up 2: 5th in 2024-25");
     expect(getByRole("button").getAttribute("aria-label")).toContain("Up 2: 5th in 2024-25.");
   });
 
