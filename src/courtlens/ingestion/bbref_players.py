@@ -135,6 +135,72 @@ def match_players(entries: list[IndexEntry], players: list[NbaPlayer]) -> dict[s
     return {pid: bid for pid, bid in matched.items() if counts[bid] == 1}
 
 
+def match_by_seasons(
+    entries: list[IndexEntry], players: list[NbaPlayer], taken: set[str]
+) -> dict[str, str]:
+    """Provisional matches for players the name rules leave out, to confirm from the page.
+
+    NBA.com lists many early players by legal name ("Alvin Attles") where Basketball-Reference
+    uses the playing name ("Al Attles"). A candidate is the only index player with the same
+    surname and exactly the same first and last season. Never serve one before
+    ``confirms_legal_name`` accepts the fetched page.
+    """
+    by_surname: dict[str, list[IndexEntry]] = {}
+    for entry in entries:
+        if entry.bbref_id not in taken and (words := normalize_name(entry.name).split()):
+            by_surname.setdefault(words[-1], []).append(entry)
+    found: dict[str, str] = {}
+    for player in players:
+        words = normalize_name(player.name).split()
+        if not words or player.from_year is None or player.to_year is None:
+            continue
+        candidates = [
+            entry
+            for entry in by_surname.get(words[-1], [])
+            if entry.year_min == player.from_year + 1 and entry.year_max == player.to_year + 1
+        ]
+        if len(candidates) == 1:
+            found[player.player_id] = candidates[0].bbref_id
+    counts: dict[str, int] = {}
+    for bbref_id in found.values():
+        counts[bbref_id] = counts.get(bbref_id, 0) + 1
+    return {pid: bid for pid, bid in found.items() if counts[bid] == 1}
+
+
+def legal_name(raw: bytes) -> str | None:
+    """The full name the page's bio block shows in bold under the heading, if any."""
+    parser = PlayerPageParser()
+    parser.feed(raw.decode("utf-8-sig"))
+    meta = next((node for node in parser.root.walk("div") if node.attrs.get("id") == "meta"), None)
+    if meta is None:
+        return None
+    for paragraph in meta.walk("p"):
+        for strong in paragraph.walk("strong"):
+            if any(isinstance(child, Node) and child.tag == "strong" for child in strong.children):
+                return strong.text() or None
+    return None
+
+
+def confirms_legal_name(nba_name: str, raw: bytes, profile: dict[str, Any]) -> bool:
+    """The page names the same person: NBA.com's surname is in the legal name, and its first
+    name matches a given name, the playing name or a nickname (or shares 3+ leading letters,
+    so "Nate" confirms "Nathaniel")."""
+    nba = normalize_name(nba_name).split()
+    legal = normalize_name(legal_name(raw) or "").split()
+    if len(nba) < 2 or nba[-1] not in legal:
+        return False
+    given = set(legal[:-1])
+    for name in [profile.get("name") or "", *(profile.get("nicknames") or [])]:
+        words = normalize_name(name).split()
+        if words:
+            given.add(words[0])
+    first = nba[0]
+    return any(
+        word == first or (len(word) >= 3 and len(first) >= 3 and word[:3] == first[:3])
+        for word in given
+    )
+
+
 def _strong_value(meta: Node, label: str) -> Node | None:
     """The paragraph whose bold label is ``label`` (for example "High School:")."""
     for paragraph in meta.walk("p"):
