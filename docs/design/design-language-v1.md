@@ -509,6 +509,12 @@ the main result except at most one one-line `GatedNote`.
   `courtlens acquire-season-portraits`, 2015-16 on). When the NBA has no photo for that
   team-season the current one shows; never a different season's team photo by guess. Only pages
   about the player now (search, the player page header, Live) use the current photo.
+  Before 2015-16 the NBA has no team-season photos, so its current (late-career) photo shows, as
+  on Databallr. Where that photo is a silhouette or shows the player after his career (Steve
+  Nash's coaching photo; `POST_CAREER_NBA_PHOTOS`), the player's Basketball-Reference career photo
+  shows instead: 120x180, background cut out with a matted edge (`courtlens
+  acquire-bbref-portraits`; owner, 2026-10-20). Either photo is from his playing career, not
+  necessarily that team or season.
 
 ### Dates and numbers (D11, D20)
 

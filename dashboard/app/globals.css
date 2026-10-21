@@ -62,13 +62,11 @@
 @import "../components/playoffs-series-view.css";
 @import "../components/distributions-investigation-view.css";
 @import "../components/similarity-investigation-view.css";
-@import "../components/ranking-boards-view.css";
 @import "../components/case-studies-view.css";
 @import "../components/scatter-plot-view.css";
 @import "./styles/page-fallbacks.css";
 @import "../components/data-status-view.css";
 @import "./methodology/methodology.css";
-@import "../components/tier-list-view.css";
 @import "../components/player-showcase-view.css";
 @import "../components/roster-allocation-view.css";
 @import "../components/workbench-player-profile.css";

@@ -760,6 +760,31 @@ def acquire_season_portraits_command(
     typer.echo(json.dumps(summary.__dict__, indent=2))
 
 
+@app.command("acquire-bbref-portraits")
+def acquire_bbref_portraits_command(
+    root: Path = typer.Option(Path("data/raw/bbref"), help="Retained Basketball-Reference pages."),
+    limit: int | None = typer.Option(None, min=1, help="Maximum headshots to request this run."),
+    recut: bool = typer.Option(
+        False, "--recut", help="Cut the retained originals again instead of requesting any."
+    ),
+) -> None:
+    """Career headshots from Basketball-Reference for seasons before 2015-16 (resumable)."""
+    from courtlens.services.bbref_portraits import acquire_bbref_portraits, recut_bbref_portraits
+
+    if recut:
+        changed = recut_bbref_portraits(engine, get_settings().portraits_cache_path)
+        typer.echo(json.dumps({"recut": changed}))
+        return
+    summary = acquire_bbref_portraits(
+        engine,
+        root,
+        get_settings().portraits_cache_path,
+        limit=limit,
+        progress=lambda done: typer.echo(json.dumps(done.__dict__), err=True),
+    )
+    typer.echo(json.dumps(summary.__dict__, indent=2))
+
+
 @app.command("acquire-rich-sources")
 def acquire_rich_sources_command(
     season: int = typer.Option(2024, help="Season ending year (e.g. 2024 for 2023-24)."),

@@ -37,7 +37,7 @@ const PHASES = [{ id: "regular_season", label: "Regular" }, { id: "playoffs", la
  * Every row arrives in one read of stored season cohorts (usually with the page) and carries
  * every column, so views and counting modes switch without another request.
  */
-export function PlayerCareerTable({ playerId, catalog, season, phase, firstCoveredSeason, draftYear, initialCareer = null, awards = null, trendQuery = null, hints = {} }: {
+export function PlayerCareerTable({ playerId, catalog, season, phase, firstCoveredSeason, draftYear, initialCareer = null, awards = null, trendQuery = null, hints = {}, onPhaseChange, onSeasonOpen }: {
   playerId: string;
   catalog: WorkbenchCatalog;
   season: string;
@@ -52,6 +52,9 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   /** The page's Stats query: season cells open the Stats trend dialog with it, as on Stats. */
   trendQuery?: QuerySpec | null;
   hints?: Record<string, MetricHint>;
+  /** Inside a dialog (Showcase): phase and season picks call these instead of changing the page URL. */
+  onPhaseChange?: (phase: string) => void;
+  onSeasonOpen?: (season: string) => void;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -110,7 +113,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
       { catalog, season, phase, releaseId: catalog.release_id });
     return `${pathname}?${params}`;
   };
-  const openSeason = (value: string) => router.push(scopeHref("season", value), { scroll: false });
+  const openSeason = (value: string) => onSeasonOpen ? onSeasonOpen(value) : router.push(scopeHref("season", value), { scroll: false });
 
   // A split season opens one full row per team: the season's whole-season Stats scope with a
   // team filter, ranked against that season's league reference like the season row.
@@ -165,7 +168,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
           <Segmented label="Phase" size="sm" deferChange
             options={PHASES.map(p => ({ value: p.id, label: p.label, title: `${p.label} games`,
               disabled: !catalog.stats_scopes?.some(scope => scope.phase === p.id) }))}
-            value={phase} onChange={value => router.push(scopeHref("phase", value), { scroll: false })} />
+            value={phase} onChange={value => onPhaseChange ? onPhaseChange(value) : router.push(scopeHref("phase", value), { scroll: false })} />
         </div>
         <div className="table-wrapper stats-scroll-region player-career-scroll" role="region" aria-label="Career table scroll area" tabIndex={0}
           aria-busy={seasons === null}>

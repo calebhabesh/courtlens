@@ -52,15 +52,16 @@ test.describe("DL03 Header and Command Palette", () => {
     await openWorkbench(page, "/stats");
     await page.waitForLoadState("networkidle");
 
-    const playersTrigger = page.locator('[data-dropdown-id="players"]');
-    await expect(playersTrigger).toBeVisible();
+    // Live's items need no catalog capability, so the menu has items on the fixture catalog.
+    const liveTrigger = page.locator('[data-dropdown-id="live"]');
+    await expect(liveTrigger).toBeVisible();
 
     // Focus trigger and press ArrowDown
-    await playersTrigger.focus();
+    await liveTrigger.focus();
     await page.keyboard.press("ArrowDown");
 
     // Dropdown panel opens and menuitem is focused
-    const dropdown = page.locator('[data-dropdown-panel="players"]');
+    const dropdown = page.locator('[data-dropdown-panel="live"]');
     await expect(dropdown).toBeVisible();
 
     const firstItem = dropdown.locator('[role="menuitem"]').first();
@@ -74,7 +75,7 @@ test.describe("DL03 Header and Command Palette", () => {
     // Escape closes dropdown and returns focus to trigger
     await page.keyboard.press("Escape");
     await expect(dropdown).toBeHidden();
-    await expect(playersTrigger).toBeFocused();
+    await expect(liveTrigger).toBeFocused();
   });
 
   test("command palette opens via shortcut, searches global lookup, supports arrow traversal, and restores focus", async ({ page }) => {

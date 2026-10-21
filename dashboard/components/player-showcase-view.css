@@ -1,52 +1,147 @@
 @layer pages {
-/* ---------- Player Showcase (FO04, Board template, D15/D16) ---------- */
-.showcase-search { flex: 0 1 280px; min-width: 0; }
-.showcase-stage { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); }
-/* The card scales with the viewport height so the card and its playback controls share one screen
-   at 1440x900, but never below 420px wide (or the column width on phones). */
-.showcase-card-frame {
-  width: min(100%, max(420px, min(560px, calc((100dvh - 300px) * 0.8))));
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-2);
-}
-.showcase-card-svg { display: block; width: 100%; height: auto; }
-.showcase-playback { display: flex; align-items: center; justify-content: center; gap: var(--space-2); }
-.showcase-counter {
-  min-width: var(--space-12);
-  font-family: var(--font-mono), monospace;
-  font-size: var(--text-sm);
-  font-variant-numeric: tabular-nums;
-  color: var(--color-text-secondary);
-  text-align: center;
-}
-.showcase-footnote { max-width: 560px; margin: 0; font-size: var(--text-xs); color: var(--color-text-tertiary); text-align: center; }
-.showcase-rail-card { display: flex; flex-direction: column; gap: var(--space-3); }
-.showcase-rail-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.showcase-roster { display: flex; flex-direction: column; gap: var(--space-2); padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); }
-.showcase-roster-title { display: flex; align-items: baseline; gap: var(--space-2); margin: 0; font-size: var(--text-sm); font-weight: 600; }
-.showcase-roster-title span { color: var(--color-text-tertiary); font-weight: 400; }
-.showcase-roster-list { display: flex; flex-direction: column; gap: var(--space-0-5); max-height: 520px; margin: 0; padding: 0; overflow-y: auto; list-style: none; }
-.showcase-roster-item {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--space-2);
-  width: 100%;
-  min-height: var(--control-lg);
-  padding: var(--space-1) var(--space-2);
-  border: 0;
-  border-radius: var(--radius-sm);
-  background: transparent;
-  color: var(--color-text-secondary);
-  font-size: var(--text-sm);
-  text-align: left;
-  cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
-}
-.showcase-roster-item:hover { background: var(--color-surface-hover); color: var(--color-text); }
-.showcase-roster-item.is-active { background: var(--color-surface-2); color: var(--color-text); font-weight: 600; }
-.showcase-roster-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-@media (max-width: 767px) {
-  .showcase-search { flex: 1 1 auto; }
-}
+  /* Player Showcase (alignment row 9): Databallr's consoles, season banner and card grid. */
+  .sc-page { display: flex; flex-direction: column; gap: var(--space-4); width: min(100%, 1360px); margin-inline: auto; min-width: 0; }
+  .sc-page[aria-busy="true"] .sc-grid, .sc-page[aria-busy="true"] .sc-list { opacity: 0.6; transition: opacity var(--dur-fast) var(--ease-out); }
+
+  /* Two consoles side by side and centred, as on Databallr; each a tidy grid of equal controls. */
+  .sc-consoles { position: relative; z-index: var(--z-sticky-corner); display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch; gap: var(--space-4); }
+  .sc-console {
+    display: grid; align-items: center; gap: var(--space-3) var(--space-4); padding: var(--space-4);
+    border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--color-surface-0) 58%, transparent);
+  }
+  .sc-console-scope { grid-template-columns: repeat(3, minmax(0, auto)); justify-items: stretch; }
+  .sc-console-scope > * { min-width: 0; }
+  .sc-console-order { grid-template-columns: auto minmax(0, 1fr); }
+  .sc-console-label { color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); text-align: right; }
+  .sc-search { width: 180px; }
+  .sc-season-step { display: flex; align-items: center; justify-content: center; gap: var(--space-1); }
+  .sc-sort, .sc-play { display: flex; align-items: center; gap: var(--space-2); }
+  /* Follow-up 13: the Stats chips carry no gap outside Stats; space them here. */
+  .sc-console-order .stats-position-chips { display: inline-flex; flex-wrap: wrap; gap: var(--space-2); }
+  .sc-console-order > :nth-child(even) { justify-self: start; }
+  .sc-console-order > .sc-console-label { justify-self: end; }
+
+  /* Banner: the season in gold, the board's title centred, the wordmark at the right. */
+  .sc-banner {
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--space-4);
+    padding: var(--space-3) var(--space-5); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg);
+    background: var(--color-surface-1);
+  }
+  .sc-banner-season { color: var(--color-accent); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sc-banner-title { margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; text-align: center; }
+  .sc-banner-mark { justify-self: end; display: inline-flex; color: var(--color-accent); }
+
+  /* Season timeline: every season on file, the one shown lit. */
+  .sc-timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(32px, 1fr)); gap: var(--space-1); }
+  .sc-tick {
+    min-height: var(--control-sm); padding: 0; border: 0; border-radius: var(--radius-sm); background: var(--color-surface-1);
+    color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .sc-tick:hover { background: var(--color-surface-hover); color: var(--color-text); }
+  .sc-tick[aria-pressed="true"] { background: var(--color-accent); color: var(--color-surface-0); font-weight: 700; }
+  .sc-tick:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+
+  /* One-line key that names every tone. */
+  .sc-key { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-1) var(--space-4); margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .sc-key-tone { display: inline-flex; align-items: center; gap: var(--space-1); }
+  .sc-key-tone[data-tone="up"] { color: var(--color-identity-a); }
+  .sc-key-tone[data-tone="down"] { color: var(--color-identity-b); }
+  .sc-note, .sc-empty { margin: 0; color: var(--color-on-bg-secondary); text-align: center; }
+  .sc-empty { padding: var(--space-8) var(--space-4); font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+
+  /* Card grid: eight to a row at 1440. */
+  .sc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .sc-cell { min-width: 0; }
+  .sc-card {
+    display: flex; flex-direction: column; width: 100%; padding: 0; overflow: hidden; text-align: center; cursor: pointer;
+    border: 2px solid var(--team-tint, var(--color-hairline-strong)); border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--team-tint, var(--color-surface-2)) 28%, var(--color-surface-1)); color: var(--color-text);
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .sc-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); }
+  .sc-card:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .sc-card[data-highlighted] { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  /* In the compare selection: a dashed accent ring, apart from the solid search-match ring. */
+  .sc-card[data-compared] { outline: 2px dashed var(--color-accent); outline-offset: 3px; }
+  .sc-photo {
+    position: relative; display: block; aspect-ratio: 1; overflow: hidden;
+    background: radial-gradient(120% 100% at 50% 8%, var(--team-tint, var(--color-surface-3)), color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 35%, var(--color-surface-0)));
+  }
+  .sc-photo .sc-portrait { position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; border-radius: 0; background: transparent; object-position: center bottom; }
+  .sc-badge {
+    position: absolute; display: inline-flex; align-items: center; gap: 1px; min-width: 22px; height: 20px; padding: 0 var(--space-1);
+    justify-content: center; border-radius: var(--radius-pill); font-size: var(--text-xs); line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums;
+  }
+  .sc-rank { top: var(--space-1); left: var(--space-1); background: var(--color-text); color: var(--color-surface-0); }
+  .sc-season { top: var(--space-1); right: var(--space-1); background: color-mix(in srgb, var(--color-surface-0) 78%, transparent); color: var(--color-text); }
+  .sc-change { bottom: var(--space-1); left: var(--space-1); background: color-mix(in srgb, var(--color-surface-0) 82%, transparent); color: var(--color-text-secondary); }
+  .sc-change[data-tone="up"] { color: var(--color-identity-a); }
+  .sc-change[data-tone="down"] { color: var(--color-identity-b); }
+  .sc-name {
+    display: block; padding: var(--space-1) var(--space-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    background: color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 55%, var(--color-surface-0));
+    font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700;
+  }
+  .sc-stats { display: grid; grid-template-columns: 1fr 1fr; }
+  .sc-stat { display: grid; justify-items: center; gap: 1px; padding: var(--space-2) var(--space-1); border-top: 1px solid var(--color-hairline); }
+  .sc-stat:nth-child(odd) { border-right: 1px solid var(--color-hairline); }
+  .sc-stat-label { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .sc-stat[data-lead] .sc-stat-label { color: var(--color-accent); font-weight: 600; }
+  .sc-stat .chart-percentile-text { display: grid; justify-items: center; }
+  .sc-stat .stat-main-value { font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  /* The fixed compare tray must not cover the last row or the Load More button. */
+  .sc-page[data-comparing] { padding-block-end: calc(var(--space-16) + var(--space-6)); }
+  /* The page gap above the button, repeated below it so the page never ends flush on it. */
+  .sc-more { display: flex; justify-content: center; padding-block-end: var(--space-4); }
+
+  /* List view in the Stats table look. */
+  .sc-list-table { table-layout: fixed; width: 100%; }
+  .sc-col-rank { width: 72px; }
+  .sc-col-player { width: 280px; }
+  .sc-list-table th, .sc-list-table td { text-align: center; }
+  .sc-list-table .sc-list-player { text-align: left; }
+  .sc-list-rank { white-space: nowrap; }
+  .sc-list-change { display: inline-flex; align-items: center; margin-left: var(--space-1); font-size: var(--text-xs); color: var(--color-text-tertiary); }
+  .sc-list-change[data-tone="up"] { color: var(--color-identity-a); }
+  .sc-list-change[data-tone="down"] { color: var(--color-identity-b); }
+  .sc-list-name { display: inline-flex; align-items: center; gap: var(--space-2); max-width: 100%; padding: 0; border: 0; background: none; color: var(--color-text); font: inherit; font-weight: 600; cursor: pointer; }
+  .sc-list-name span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .sc-list-name:hover span { text-decoration: underline; }
+  .sc-list-table tr[data-compared] td,
+  .sc-list-table tr[data-highlighted] td { box-shadow: inset 0 0 0 9999px color-mix(in srgb, var(--color-accent) 12%, transparent); }
+
+  /* Dialogs. */
+  .sc-dialog { width: min(560px, calc(100vw - 2 * var(--space-4))); }
+  .sc-dialog-foot { display: flex; justify-content: flex-end; margin: var(--space-4) 0 0; }
+  .sc-glossary { display: grid; gap: var(--space-3); max-height: 60vh; margin: 0; overflow-y: auto; }
+  .sc-glossary div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--space-3); }
+  .sc-glossary dt { font-weight: 700; }
+  .sc-glossary dd { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .sc-filters { display: grid; gap: var(--space-4); }
+  .sc-filters label { display: grid; gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-sm); }
+  .sc-help { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-4); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .sc-choose-groups { display: grid; gap: var(--space-5); }
+  .sc-choose-group { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3) var(--space-4); margin: 0; padding: 0; border: 0; }
+  .sc-choose-group legend { width: 100%; margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline); color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 600; }
+  .sc-choose-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline); }
+  .sc-spacer { flex: 1; }
+  .sc-player-dialog { width: min(1180px, calc(100vw - 2 * var(--space-4))); }
+  .sc-player-title { display: inline-flex; align-items: center; gap: var(--space-3); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
+
+  @media (max-width: 767px) {
+    .sc-consoles { flex-direction: column; }
+    .sc-console-scope { grid-template-columns: 1fr 1fr; grid-auto-flow: row dense; }
+    .sc-view { grid-column: 1 / -1; }
+    .sc-search { width: auto; grid-column: 1 / -1; }
+    .sc-season-step { grid-column: 1 / -1; }
+    .sc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sc-banner { grid-template-columns: auto 1fr; padding: var(--space-3); }
+    .sc-banner-title { text-align: right; font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+    .sc-banner-mark { display: none; }
+    .sc-timeline { grid-template-columns: repeat(9, minmax(0, 1fr)); }
+    .sc-col-player { width: 180px; }
+  }
 }

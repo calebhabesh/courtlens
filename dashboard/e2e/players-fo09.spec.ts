@@ -31,13 +31,11 @@ test.describe("FO09 Players", () => {
     await noSidewaysScroll(page);
   });
 
-  test("ranking boards and tier lists use the nav labels and one-line notes", async ({ page }) => {
+  test("Rankings and Tier List are cut and redirect", async ({ page }) => {
     await openWorkbench(page, "/rankings");
-    await expect(page.locator("h1")).toHaveText("Rankings");
-    await expect(page.locator(".notice-box")).toHaveCount(0);
+    await expect(page).toHaveURL(/\/showcase/);
     await openWorkbench(page, "/tierlist");
-    await expect(page.locator("h1")).toHaveText("Tier List");
-    await expect(page.locator(".notice-box")).toHaveCount(0);
+    await expect(page).toHaveURL(/\/compare/);
   });
 
   test("similar players: a 40px filter bar and the evidence hash only in Data details", async ({ page }) => {

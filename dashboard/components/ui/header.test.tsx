@@ -71,24 +71,24 @@ describe("Design Language v1 Header Component", () => {
 
   it("opens dropdown menu on click and closes on Escape", () => {
     const { container } = render(<Header />);
-    const playersBtn = container.querySelector<HTMLButtonElement>('[data-dropdown-id="players"]');
-    expect(playersBtn).not.toBeNull();
-    expect(playersBtn?.getAttribute("aria-expanded")).toBe("false");
+    const liveBtn = container.querySelector<HTMLButtonElement>('[data-dropdown-id="live"]');
+    expect(liveBtn).not.toBeNull();
+    expect(liveBtn?.getAttribute("aria-expanded")).toBe("false");
 
     // Click to open
     act(() => {
-      fireEvent.click(playersBtn!);
+      fireEvent.click(liveBtn!);
     });
-    expect(playersBtn?.getAttribute("aria-expanded")).toBe("true");
+    expect(liveBtn?.getAttribute("aria-expanded")).toBe("true");
 
-    // Menu should contain directory link
-    expect(screen.getByRole("menuitem", { name: /^Rankings/ })).toBeDefined();
+    // Live needs no catalog capability, so it shows while the mocked catalog gates the rest.
+    expect(screen.getByRole("menuitem", { name: /^Finals/ })).toBeDefined();
 
     // Escape closes dropdown
     act(() => {
       fireEvent.keyDown(document, { key: "Escape" });
     });
-    expect(playersBtn?.getAttribute("aria-expanded")).toBe("false");
+    expect(liveBtn?.getAttribute("aria-expanded")).toBe("false");
   });
 
   it("opens More (⋯) menu with the D9 support links", () => {

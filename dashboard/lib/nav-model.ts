@@ -40,12 +40,11 @@ export const NAV_MENUS: NavMenu[] = [
     id: "players",
     label: "Players",
     groups: [{ items: [
-      // Databallr's Players menu order; Tier Lists sits under Compare, as on Databallr.
+      // Databallr's Players menu order (Rankings and Tier List cut, alignment rows 10–11).
       { label: "Last X Games", href: "/last-games", icon: "chart-trend", description: "Player performance over their most recent games" },
-      { label: "Showcase", href: "/showcase", icon: "crown", description: "Player cards for a season, team or position" },
+      { label: "Showcase", href: "/showcase", icon: "crown", description: "Each season's leaders as player cards, with a season slideshow" },
       { label: "Player Twins", href: "/similar-players", icon: "fingerprint", description: "Player-seasons with the closest box-score or shot profiles" },
       { label: "Player Directory", href: "/players", icon: "dashboard", description: "Find any player and open their dashboard" },
-      { label: "Rankings", href: "/rankings", icon: "list-ordered", description: "Build player ranking boards and combine them into a consensus" },
     ] }],
   },
   {
@@ -66,7 +65,6 @@ export const NAV_MENUS: NavMenu[] = [
       { label: "Player Comparison", href: "/compare", icon: "swap", description: "Compare stats between up to five NBA players" },
       { label: "Team Comparison", href: "/team-compare", icon: "scale", description: "Two team seasons side by side: rotations and team stats" },
       { label: "Player Matchups", href: "/matchups", icon: "swords", description: "Who guarded whom, from NBA tracking" },
-      { label: "Tier List", href: "/tierlist", icon: "tiers", description: "Drag players into tiers and save your lists" },
     ] }],
   },
   {

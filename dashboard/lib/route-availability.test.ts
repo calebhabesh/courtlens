@@ -8,7 +8,7 @@ describe("release-bound route availability", () => {
   it("keeps partial data and independent research evidence accessible", () => {
     expect(routeAvailability("/stats", catalog).secondary).toBe(false);
     expect(routeAvailability("/research/rapm", null).secondary).toBe(false);
-    expect(routeAvailability("/rankings", null).secondary).toBe(false);
+    expect(routeAvailability("/methodology", null).secondary).toBe(false);
   });
   it("separates missing source, unsupported context and unavailable backend", () => {
     expect(routeAvailability("/wowy", catalog).reason).toContain("not declared");

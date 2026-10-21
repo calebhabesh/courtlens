@@ -135,6 +135,7 @@ from courtlens.services.analytical_ops import (
 )
 from courtlens.services.assistant.service import run_assistant_query
 from courtlens.services.assistant.status import get_assistant_status
+from courtlens.services.bbref_portraits import BBREF_PORTRAIT_SOURCE, prefers_bbref
 from courtlens.services.darko import darko_catalog_scope, darko_disclosure
 from courtlens.services.entity_lookup import (
     lookup_entities,
@@ -1834,7 +1835,10 @@ def get_player_portrait(
     season: str | None = Query(
         None,
         pattern=r"^\d{4}-\d{2}$",
-        description="Prefer the player's headshot from this season (2015-16 on).",
+        description=(
+            "Prefer the player's headshot from this season (NBA.com team-season photos, "
+            "2015-16 on)."
+        ),
     ),
     team: str | None = Query(
         None,
@@ -1847,18 +1851,30 @@ def get_player_portrait(
 
     With ``season`` the team-season headshot is served when one was acquired; otherwise the
     current one. ``X-Portrait-Season`` names the season actually served (absent for current).
+    The Basketball-Reference career photo is the fallback when NBA.com has no photo, and comes
+    first for players whose NBA.com photo is from after their career (a coaching photo), so a
+    player is never shown out of uniform (alignment row 9, follow-ups 15 and 16).
     """
     if size is not None and size not in PORTRAIT_SIZES:
         raise HTTPException(status_code=422, detail=f"size must be one of {PORTRAIT_SIZES}")
-    seasonal = find_season_portrait(session, id, season, team) if season else None
-    portrait: PlayerPortrait | PlayerSeasonPortrait | None = seasonal or session.scalar(
-        select(PlayerPortrait)
-        .where(
-            PlayerPortrait.player_id == id,
-            PlayerPortrait.status == "active",
+
+    def current(career: bool) -> PlayerPortrait | None:
+        source = PlayerPortrait.source_name == BBREF_PORTRAIT_SOURCE
+        return session.scalar(
+            select(PlayerPortrait)
+            .where(
+                PlayerPortrait.player_id == id,
+                PlayerPortrait.status == "active",
+                source if career else ~source,
+            )
+            .order_by(PlayerPortrait.acquired_at.desc())
+            .limit(1)
         )
-        .order_by(PlayerPortrait.acquired_at.desc())
-        .limit(1)
+
+    seasonal = find_season_portrait(session, id, season, team) if season else None
+    order = (True, False) if prefers_bbref(id) else (False, True)
+    portrait: PlayerPortrait | PlayerSeasonPortrait | None = (
+        seasonal or current(order[0]) or current(order[1])
     )
     if portrait is None or portrait.storage_path is None or portrait.content_sha256 is None:
         raise HTTPException(status_code=404, detail="Portrait not found for player")

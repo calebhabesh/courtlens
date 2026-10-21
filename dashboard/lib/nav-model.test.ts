@@ -23,16 +23,16 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
     expect(new Set(hrefs).size).toBe(hrefs.length);
   });
 
-  it("groups Research by the FO07 targets; Players and Compare follow Databallr (Tier List under Compare)", () => {
+  it("groups Research by the FO07 targets; Players and Compare follow Databallr", () => {
     const research = NAV_MENUS.find(menu => menu.id === "research")!;
     expect(research.groups.map(group => group.title)).toEqual(["Impact", "Shooting", "Trends & Distributions", "Forecasts & Evaluation", "Tools"]);
     expect(research.groups[0].items.map(item => item.href)).toEqual(["/research/rapm", "/wowy", "/research/defensive-matchups"]);
     expect(research.groups[1].items.map(item => item.href)).toEqual(["/research/shooting"]);
     expect(research.groups[3].items.map(item => item.label)).toEqual(["Points Forecasts", "Evaluation Archive", "Case Studies", "Saved Investigations"]);
     const players = NAV_MENUS.find(menu => menu.id === "players")!.groups.flatMap(group => group.items.map(item => item.href));
-    expect(players).toEqual(["/last-games", "/showcase", "/similar-players", "/players", "/rankings"]);
+    expect(players).toEqual(["/last-games", "/showcase", "/similar-players", "/players"]);
     const compare = NAV_MENUS.find(menu => menu.id === "compare")!.groups.flatMap(group => group.items.map(item => item.href));
-    expect(compare).toEqual(["/compare", "/team-compare", "/matchups", "/tierlist"]);
+    expect(compare).toEqual(["/compare", "/team-compare", "/matchups"]);
   });
 
   it("keeps the D9 support links in the More menu", () => {
@@ -48,7 +48,6 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
   it("resolves the active top-level entry from the pathname", () => {
     expect(activeNavSection("/")).toBe("stats");
     expect(activeNavSection("/wowy")).toBe("research");
-    expect(activeNavSection("/tierlist")).toBe("compare");
     expect(activeNavSection("/players/2544")).toBe("players");
     expect(activeNavSection("/teams/1610612738")).toBe("teams");
     expect(activeNavSection("/live/2026-04-12")).toBe("live");

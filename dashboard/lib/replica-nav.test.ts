@@ -101,7 +101,6 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/players",
     "/similar-players",
     "/similar-players/shot-profile",
-    "/rankings",
     "/teams",
     "/roster-shapes",
     "/stat-line-shift",
@@ -109,7 +108,6 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/compare",
     "/team-compare",
     "/matchups",
-    "/tierlist",
     "/investigations",
     "/research/ask",
     "/forecasts",
@@ -136,7 +134,7 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
   it("contains every canonical replica route once (EPV removed in PC11)", () => {
     const set = new Set(CANONICAL_ROUTES);
     expect(set.size).toBe(CANONICAL_ROUTES.length);
-    expect(CANONICAL_ROUTES.length).toBe(38);
+    expect(CANONICAL_ROUTES.length).toBe(36);
   });
 
   it("maps all compatibility and consolidation redirects to valid canonical routes", () => {

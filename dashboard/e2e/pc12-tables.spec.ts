@@ -45,28 +45,3 @@ for (const width of [1440, 390]) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
   });
 }
-
-test("PC12 saved Rankings show a muted small sample beside statistical references", async ({ page }) => {
-  await page.route("**/api/workspace**", route => route.fulfill({ json: {
-    workspace_id: "default", name: "PC12 saved-board fixture", version: 1,
-    views: [], favorites: [], compare_tray: [], tier_lists: [],
-    ranking_boards: [{ id: "pc12-saved", title: "Saved board", board_type: "overall", entries: [
-      { rank: 1, player_id: "23", player_name: "Fixture Star", notes: null, tags: [] },
-      { rank: 2, player_id: "24", player_name: "Fixture Peer", notes: null, tags: [] }
-    ] }], preferences: { density: "standard", identity_mode: "photos", counting_mode: "per_game", default_view_id: "overview", theme: "dark" }, created_at: "", updated_at: ""
-  } }));
-  await page.route("**/api/workbench/query", async route => {
-    const response = await route.fetch();
-    const body = await response.json();
-    body.items[0].table_qualified = false;
-    await route.fulfill({ response, json: body });
-  });
-  await openWorkbench(page, "/rankings");
-  const table = page.getByRole("table", { name: "Rankings for Saved board" });
-  await expect(table.locator(".chart-percentile-cell")).toHaveCount(6);
-  await expect(table.locator(".table-small-sample")).toHaveText("Small sample");
-  await expect(table.locator(".chart-percentile-cell[data-qualified=false]")).toHaveCount(3);
-  await expect(table.locator(".chart-percentile-cell[data-qualified=false]").first()).toContainText("pct · small");
-  await expect(table.locator("thead tr").first()).toContainText("Personal order");
-  await expect(table.locator("caption")).toContainText("Personal board order remains subjective");
-});

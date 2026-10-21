@@ -4,7 +4,7 @@ Work queue for the [alignment handoff](databallr-alignment-plan.md). Pairings co
 [Databallr route map](research/databallr-replica-findings.md); wrong pairings are corrected during
 owner review.
 
-Status: ⬜ not started · 🔧 in progress · 👀 ready for review · ✅ aligned (owner only)
+Status: ⬜ not started · 🔧 in progress · 👀 ready for review · ✅ aligned (owner only) · ✂️ cut (owner only)
 
 ## Overview
 
@@ -21,9 +21,9 @@ Rows are in working order.
 | 6 | Last X Games | `/last-games` | ✅ | Owner approved first revision 2026-10-20; Databallr's window card, comparison and game logs, then stretch verdicts, game context, opponent defence, Since windows, linked panels and a four-stat rolling chart; +/- from accepted stints |
 | 7 | Live | `/live` | ⬜ | |
 | 8 | Playoffs | `/playoffs` | ⬜ | |
-| 9 | Showcase | `/showcase` | ⬜ | |
-| 10 | Rankings | `/rankings` | ⬜ | PC12 D partial example boards (`53ee4d6`) |
-| 11 | Tier List | `/tierlist` | ⬜ | PC12 D partial example boards (`53ee4d6`); now under Compare |
+| 9 | Showcase | `/showcase` | 👀 | Databallr's season card grid (DPM leaders), player dialog and season slideshow, then improvements |
+| 10 | Rankings | ~~`/rankings`~~ | ✂️ cut | Owner cut 2026-10-20: built for social sharing, not CourtLens's data/ML/statistics focus. Page and Players menu item removed |
+| 11 | Tier List | ~~`/tierlist`~~ | ✂️ cut | Owner cut 2026-10-20: "It doesn't serve any purpose." Page, Compare menu item and example boards removed |
 | 12 | Roster Shapes | `/roster-shapes` | ✅ | Owner approved first revision 2026-10-19; Databallr side-by-side team view with linked hover, season-by-season fill, rotation-capped minutes, searchable trade sandbox |
 | 13 | Stat Line Shift | `/stat-line-shift` | ✅ | Owner approved first revision 2026-10-19; opens on Select Team, full-width roster drawer with season photos, per-75 without → with table, pair cards, Customize Stats dialog; IM03 stints + stint box (shared-floor v2) |
 | 14 | Contracts + Free Agency | `/contracts`, `/free-agency` | 👀 | Select Team flow, Overview (payroll, cap bar, full flow, bar timeline, roster Stats table, pies), Small vs Big on DARKO values; Free Agency restored from NBA.com's tracker |
@@ -38,7 +38,7 @@ Rows are in working order.
 **CourtLens-only (one sweep at the end, no checkbox):** `/forecasts`, `/evaluation`,
 `/investigations`, `/data-status`, `/settings`, `/planner`, `/design`.
 
-**Databallr-only, not replicated:** Home game, WNBA, zTS, ShotQuality, D-ShotQuality,
+**Databallr-only, not replicated:** Rankings and Tier List (owner cuts, 2026-10-20), Home game, WNBA, zTS, ShotQuality, D-ShotQuality,
 Shot Aftermath, EPV Replays, Kawhi Files, Blog, NBA Draft.
 
 ## Page instructions
@@ -2902,3 +2902,194 @@ Follow-up instructions (owner, 2026-10-20):
     worst 5-game stretch this season". The dot marks a stat whose last N games are his best or worst
     run of that length all season (Jokić's MPG over his last 5 is his most minutes in any 5-game
     stretch); the old wording did not say that.
+
+### 9 Showcase — 👀 ready for review
+
+Owner start (2026-10-20): "Next alignment page: row 9, Showcase (/showcase), the second item in the
+Players menu", with two Databallr references (the page, and the player dialog a card opens) and the
+slideshow described in words: "the slideshow starts on the current year, then wraps to the earliest
+year on file, 2001, then does a shuffle animation for the player cards, as the years increment and
+player shuffle around." Approach as on row 6: replicate Databallr, then iterate past it. The list
+below is the agent's replicate-then-improve proposal under that instruction.
+
+Same message, Rankings (row 10): "I think we bin this 'Rankings' page … some of these pages are
+exclusively catered towards social media sharing. When our project is more focusing on data
+engineering / applied ml / statistics." Row 10 is cut: the page and its Players menu item go.
+
+Starting state (survey, 2026-10-20): `/showcase` is the FO04 single-card page: a left-aligned
+"Showcase" header with Find player and an Export menu (PNG / SVG); the shared ContextBar (season,
+phase, Through, Overall / Scoring / Playmaking & Defense / Per 36 focus); one 560×700 SVG card
+(circle portrait, six stat tiles with rank pill, percentile and bar); Previous / Play / Next with
+"1 / 25"; a percentile footnote; a right rail with the player, star / compare-tray / three link
+buttons and a 25-player roster sorted by PPG. One season at a time; the slideshow cycles players,
+not seasons. Data: DARKO DPM exists for every season on file (2000-01 to 2025-26, the same span as
+Databallr's slideshow); the Stats query gives estimated positions, minutes filters, team filter and
+league percentiles; the player page's career table can serve the dialog.
+Databallr: centred grid-icon title "Player Showcase" and "Explore player statistics with
+customizable visualizations". Two consoles: (left) Per Game, Minutes > 400, grid / list toggle,
+Search, Choose Stats, Regular, Team, a ‹ 2026 › season stepper, Glossary; (right) Position G / F / C,
+Sort by DPM with a direction button, Filters, a green Play Slideshow and a help button. A banner
+"2026 · DARKO DPM Leaders · databallr", then 24 cards eight to a row (rank and '26 badges, photo on
+the team colour with its logo, name strip, DPM / Points / Assists / TS% in a 2×2 grid, team-colour
+border) and Load 10 More. A card opens a dialog: photo, name, Regular Season / Playoffs, Overview /
+Shooting / Impact / Advanced tabs, Percentile (Positional) toggle, Per Game / Per 75 / Per 100 /
+Totals and the career table with ranks and percentiles.
+
+Instructions (owner, 2026-10-20; "replicate Databallr first, then iterate past it"):
+1. [x] Header: the centred icon title "Player Showcase" with a one-line explainer.
+   — Grid icon, "Each season's leaders as player cards, ranked by the stat you choose"; title 0px off
+   the page centre at 1440 and 390, the explainer wraps on phones.
+2. [x] Consoles: two centred, balanced consoles as on Databallr. Scope: counting mode (Per Game /
+   Per 36 / Totals), Minutes > N (default 400), Card / List view, Search, Choose Stats, Regular /
+   Playoffs, Select Team (the Stats team dialog), a ‹ season › stepper over every season on file,
+   Glossary. Order: Stats' position chips, Sort by (any card stat, DPM by default) with a direction
+   button, Filters (minimum games, draft class), Play Slideshow and its help. All state in the URL;
+   no dead controls.
+   — `mode=`, `minMinutes=` (a menu of floors; playoffs default to 100 because they are shorter),
+   `view=`, `phase=`, `teamId=`, `season=`, `positions=`, `sort=`, `dir=asc`, `minGames=`,
+   `draftYear=`, `stats=`, `show=`. Search, Select Team and the position chips are the Stats
+   controls. Glossary lists the card stats first, then every sortable stat, and links the Stats
+   glossary. Both consoles 198px tall and centred under the title (0px off); on phones they stack
+   and the scope console pairs its controls two a row.
+3. [x] Banner: the season in gold, "<Sort stat> Leaders" (DARKO DPM Leaders by default) and the
+   CourtLens wordmark.
+   — "Lowest" replaces "Leaders" when the direction is ascending. Title 0px off the banner centre.
+4. [x] Card grid: 24 cards, eight to a row at 1440: rank and season badges, the season photo
+   (`era`) on its team colour with the logo, a name strip, the sort stat plus three chosen stats in
+   a 2×2 grid (default DPM, PTS, AST, TS%), team-colour border. "Load More" adds the next 24.
+   — `components/showcase-card.tsx` (HTML now; the old SVG card is gone). The sort stat's label is
+   gold. Load 24 More up to 96. Live 2025-26 opens on Jokić, Wembanyama, Leonard, Gilgeous-Alexander,
+   Antetokounmpo, Edwards, Dončić, Mitchell (DPM +7.5 … +4.6). Players without any NBA portrait
+   (Jason Kidd, Andrei Kirilenko in 2003-04) show initials: the portrait endpoint has none for them.
+5. [x] List view: the same players in a Stats-look table (rank, player, the card stats).
+   — Rank with its change, photo, name and logo (opens the dialog), the four stats with percentiles.
+6. [x] Player dialog: a card opens the photo, name, Regular Season / Playoffs and the player page's
+   career table (views, counting modes, percentiles), with a link to the full player page.
+   — `PlayerCareerTable` gained optional `onPhaseChange` / `onSeasonOpen` so inside the dialog the
+   phase is local and a year click shows that season's board; the approved player page passes
+   neither and is unchanged. "Open Player Dashboard" keeps the season and phase.
+7. [x] Slideshow: Play starts on the season shown, steps one season every few seconds, wraps from
+   the latest season to 2000-01, and cards shuffle to their new ranks (a player who stays keeps his
+   card and slides; newcomers fade in). Pause stops it; reduced motion swaps without the shuffle.
+   — Holds each season 3.2s after its cards land and prefetches the next one (a season query takes
+   about 2.4s). Live run: 2025-26 → 2000-01 → 2001-02 → 2002-03 → 2003-04; Pause wrote
+   `season=2003-04` to the URL and the board stayed. Each season keeps the filters. A failed season
+   stops the show with a one-line note.
+8. [x] Improvement: a small league percentile under each card value, coloured like Stats, with a
+   key that names every tone.
+   — The Stats percentile number (gold high, grey middle, blue low). Key line: scope ("Regular
+   season through Apr 13, 2026 · over 400 minutes"), "Small number: league percentile", "Gold: up
+   from last season", "Blue: down", "New: not on last season's board".
+9. [x] Improvement: during the slideshow (and on any season), each card shows its rank change from
+   the previous season ("▲3", "New"), and a season scrubber (2000-01 … 2025-26) lets you jump to or
+   pause on a year.
+   — The change compares with the previous season's board of the same size and filters (a dash for
+   the same rank); the first season on file has none. A '01 … '26 timeline under the banner lights
+   the season shown; a click jumps there and pauses.
+10. [x] Improvement: Search finds a player in the grid (scrolls to and highlights his card) or, when
+    he is outside it, opens his dialog.
+11. [x] Removed: the ContextBar, the single SVG card and its Export, the focus presets, the roster
+    rail, star and compare-tray buttons (favourites are parked for accounts, row 6 follow-up 37).
+12. [x] Rankings (row 10) cut: route, Players menu item, its view and tests; Tier List keeps the
+    shared example boards.
+    — `/rankings` redirects to `/showcase`. Removed `ranking-boards-view.tsx/.css`, its e2e
+    cases and the nav entry. The workspace API's ranking-board endpoints and
+    `lib/workspace-client.ts` helpers are left in place (backend, unused by any page now).
+
+Verification (2026-10-20): 3180 production sandbox with the read-only proxy at 4180 (2025-26
+default, 2015-16 by PTS, list view, slideshow, dialog, 1440 and 390): no overflow, no browser
+errors. Measured: page title, consoles and banner title 0px off centre; consoles 198 / 198px; card
+labels and values 0px apart. Lint, stylelint and typecheck clean; Vitest 619/619 (new
+`lib/showcase.test.ts`, rewritten `showcase-card.test.tsx`). Playwright on the mock: new
+`e2e/showcase.spec.ts` 5/5 (twice); full suite 504 passed, 28 skipped, 3 failed: two relied on
+Rankings being the only ungated Players item (header keyboard test, Rankings picker; fixed and
+re-run green) and the known `stats-team-move-dates:4` wording test. Visual baselines updated:
+`showcase-desktop`, `showcase-phone` and `search-desktop` (the search modal is captured over this
+page).
+Evidence: docs/evidence/alignment/showcase/ (`before/` holds the survey).
+
+Follow-up instructions (owner, 2026-10-20; "Good first pass, now edits"):
+13. [x] "give some seperation between the position buttons they are too close to each other."
+    — They had no gap at all: Stats' 4px rule is scoped to the Stats page. Showcase now spaces them
+    8px (measured 8 / 8 / 8 / 8 on :3100); the approved Stats page is unchanged.
+14. [x] "Yes, you can cut tier list. It doesn't serve any purpose." (row 11)
+    — `/tierlist` redirects to `/compare`; removed the page, its Compare menu item, the example
+    boards (only Rankings and Tier List used them), their CSS and tests. Header tests that opened a
+    menu now use Live, whose items need no catalog capability. The workspace API's tier-list and
+    ranking-board endpoints are left in place, unused.
+15. [x] "There are some players with no pictures. Is there anything we can do for this? … Are you sure
+    there are no db's we can fetch some player images from? It even shows 'Steve Nash' with his coach
+    photo … What should we do in cases like this?" — owner chose "BRef before 2015-16".
+    — Cause: both photo sources were NBA.com: one "latest" headshot per person (Nash's is his Nets
+    coaching photo; Kidd, Marion, Battier, Kirilenko get NBA.com's silhouette, which we reject) and
+    team-season headshots, which only exist from 2015-16. Of 2,000 players with a 400-minute season
+    since 2000-01, 600 had no photo; 562 of them have a Basketball-Reference headshot.
+    New `courtlens acquire-bbref-portraits` (`services/bbref_portraits.py`): reads each player's
+    retained Basketball-Reference page for his own headshot URL, fetches serially at the source's
+    4 s pace (stops on 403/429; a rerun resumes), keeps the JPEG byte-for-byte and stores a PNG with
+    the white studio background cut out (`player_portraits`, source `bbref_headshot`; no
+    migration). Targets: players with a season before 2015-16 or no NBA.com photo, most career
+    minutes first (954). The portrait endpoint now serves, for a season before 2015-16, the
+    career photo first and NBA.com's current photo second; otherwise NBA.com team-season, then
+    current, then the career photo. Portrait URLs moved to `crop=face-v3` (API and dashboard) so
+    browsers drop day-old copies. Design Language's photo rule records it. Tests:
+    `tests/unit/test_bbref_portraits.py` (URL extraction, cut-out keeps a white jersey, refusal
+    stops the run, endpoint order). The photo is from his career, not necessarily that team or
+    season. Hosted demo: needs the new portrait rows and files synced.
+    Run (2026-10-20): 954 of 954 acquired, none refused, about 65 minutes at 4 s; 36 MB of cut-outs
+    and 11 MB of originals. Live 2005-06 board: every one of the 24 cards has a photo (Kidd,
+    Marion, Battier, Kirilenko; Nash in a Suns jersey). Evidence: `photos-2005-06-1440.png`.
+16. [x] "Compared to databallr, our images are much worse/rougher around the edges … don't have the
+    weird white edge artifact … they also have a better image of john stockton … they are using the
+    nba.com version which is much better. So maybe if there is an nba.com result we keep it?" — owner
+    chose "NBA.com first".
+    — Cause: every Basketball-Reference headshot is 120x180 (NBA.com's are 1040x760), shown about 2.5x
+    enlarged on a card, and the cut-out's hard mask left the outline pixels (half subject, half white
+    studio) opaque: a light halo on team colours.
+    Edges: `cut_out` now mattes a 2 px outline: each outline pixel takes the nearest interior colour
+    and the alpha of its own mix of that colour and white. `courtlens acquire-bbref-portraits
+    --recut` re-derives the PNGs from the retained JPEGs without a request (952 of 959 changed; the
+    rest have no white background). Order: NBA.com's current photo now comes before the career
+    photo for every season; the career photo stays the fallback for silhouettes and first for 22
+    players whose only NBA.com photo is post-career (coach or staff, out of uniform), listed in
+    `POST_CAREER_NBA_PHOTOS` after a review of all 617 players who have both photos (Nash, Billups,
+    Avery Johnson, Redick, Prigioni, Splitter, Jason Terry, Kemba Walker…). Portrait URLs moved to
+    `crop=face-v4`. Design Language's photo rule records it. Tests: outline matte, recut, endpoint
+    order (Nash career photo everywhere, Duncan NBA.com for 2000-01). Live API: Duncan and Stockton
+    from NBA.com for 2000-01, Nash and Kidd from Basketball-Reference without the halo. Evidence:
+    `photos-2000-01-nba-first-1440.png`. Hosted demo:
+    needs the re-cut portrait files and rows synced.
+17. [x] "The 'Load x More' at the bottom of the cards is not showing enough. should be able to see the
+    entire button" and "Padding above/below this button should be equal".
+    — The page ended on the button's bottom edge. `.sc-more` repeats the page gap (`--space-4`) below
+    it: 16 px above and below at 1440x900.
+18. [x] "what does the 'New Badge' mean in this context?" … "That would be too large to put in the
+    images. Can we have something clearer more succint." and "Why don't we put 'Blue: down from last
+    season'?"
+    — "New" meant "not on last season's 24-card board", so players ranked 25th and lower showed it.
+    Rank changes now compare with the previous season's top 100 (`COMPARE_DEPTH`, the API's page
+    limit), on the server and in every slideshow step (each step compares with that season's top
+    100, not the cards on screen). The 2025-26 board: Durant ↑24, Cunningham ↑37, Adebayo ↑43; New
+    is left on LaMelo Ball only. Legend: "Blue: down from last season", "New: outside last season's
+    top 100".
+19. [x] "Is there anything else you would suggest/recommend to improve the page past what databallr
+    does" — owner: "complete all the three additions".
+    — Badge hover: each badge's title names last season's rank ("Up 37: 48th in 2024-25", "New:
+    outside the top 100 in 2024-25"), in the card's accessible name too (`changeText`).
+    — Keys: Space plays or pauses the slideshow, ← and → step a season. Typing, a select, a focused
+    button's own Space, the list's scroll area and open dialogs keep their keys. The slideshow help
+    lists them.
+    — Compare: the card dialog's "Add to Compare (season)" fills the shared compare tray (up to 8);
+    picked cards wear a dashed accent ring and the page leaves room so the tray never covers the
+    last row. The tray's Compare or Z opens Compare for that season (the duel for two, the grid for
+    more). A card from another season starts a new selection. `compareHref` is shared with Stats.
+    Tests: `lib/showcase.test.ts` (ranks, badge text), `showcase-card.test.tsx` (title, name),
+    `e2e/showcase.spec.ts` (Space and a focused search box; two cards to the tray, the tray clears
+    the last row, Z opens `/compare` with the pair and season). Live: ← and → step 2025-26 to
+    2024-25 and back; Space plays and pauses; Jokić and Wembanyama open the 2025-26 duel.
+20. [x] Finish: the old Basketball-Reference cut-outs no row names (951 files, 36 MB) and 2,059
+    stale display copies removed from the local portrait cache; every active row's file is present.
+    Browser suite: 503 passed, 3 failed outside this page (`saved-operations` passed on rerun;
+    `stats-team-move-dates` expects "Index refreshed" where the committed tooltip says "Checked";
+    `fo13-pages:93` finds two "Email" fields), visual baselines unchanged.
+

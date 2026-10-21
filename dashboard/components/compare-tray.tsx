@@ -8,7 +8,7 @@ import { Button, ButtonLink, IconButton } from "./ui/kit";
 import { PlayerPortrait } from "./player-portrait";
 import type { PlayerResearchItem } from "@/lib/types";
 
-interface CompareTrayProps {
+export interface CompareTrayProps {
   selectedPlayers: PlayerResearchItem[];
   onRemovePlayer: (playerId: string) => void;
   onClearAll: () => void;
@@ -21,14 +21,8 @@ interface CompareTrayProps {
   };
 }
 
-export function CompareTray({
-  selectedPlayers,
-  onRemovePlayer,
-  onClearAll,
-  context
-}: CompareTrayProps) {
-  if (selectedPlayers.length === 0) return null;
-
+/** The Compare page for a selection: the duel for two players, the grid (first five) for more. */
+export function compareHref(selectedPlayers: Pick<PlayerResearchItem, "player_id">[], context: CompareTrayProps["context"]): string {
   const playerA = selectedPlayers[0]?.player_id;
   const playerB = selectedPlayers[1]?.player_id;
 
@@ -50,7 +44,18 @@ export function CompareTray({
     if (playerB) queryParams.set("playerB", playerB);
   }
 
-  const compareHref = `/compare?${queryParams.toString()}`;
+  return `/compare?${queryParams.toString()}`;
+}
+
+export function CompareTray({
+  selectedPlayers,
+  onRemovePlayer,
+  onClearAll,
+  context
+}: CompareTrayProps) {
+  if (selectedPlayers.length === 0) return null;
+
+  const href = compareHref(selectedPlayers, context);
   const canCompare = selectedPlayers.length >= 2;
 
   return (
@@ -83,7 +88,7 @@ export function CompareTray({
           <ButtonLink
             size="xs"
             variant="primary"
-            href={compareHref}
+            href={href}
             onClick={event => { if (!canCompare) event.preventDefault(); }}
             aria-disabled={!canCompare}
             tabIndex={canCompare ? 0 : -1}
