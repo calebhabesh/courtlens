@@ -35,6 +35,7 @@ data/backups/*
 !data/backups/.gitkeep
 data/cache/*
 !data/cache/.gitkeep
+data/logs/
 data/*.db
 data/derived/
 logs/
