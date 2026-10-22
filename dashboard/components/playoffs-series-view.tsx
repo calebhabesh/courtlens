@@ -102,15 +102,21 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
   });
 
 
+  // A finished series' length follows from its winner (best-of-3 and -5 rounds before 2003);
+  // the current season lists all seven possible games.
+  const bestOf = detail.winner_team_id ? 2 * Math.max(team1.wins, team2.wins) - 1 : Math.max(game_cards.length, 7);
+  const boxScores = team1_players.length + team2_players.length > 0;
+
   const renderTeam = (team: typeof team1, side: "left" | "right") => {
     const winner = detail.winner_team_id === team.team_id;
     return (
       <div className={`playoff-series-team-card ${winner ? "winner" : ""}`} data-side={side}>
         <TeamIdentity
           team={team.team_id}
+          season={detail.season}
           name={team.team_name}
           href={`/teams/${team.team_id}?season=${detail.season}&phase=playoffs`}
-          subtitle={`Seed ${team.seed ?? "—"} · ${team.wins}–${team.losses}`}
+          subtitle={`${team.seed != null ? `Seed ${team.seed} · ` : ""}${team.wins}–${team.losses}`}
           size="lg"
         />
         <span className={`playoff-series-team-score ${winner ? "winner" : ""}`}>{team.wins}</span>
@@ -139,7 +145,7 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
           {renderTeam(team1, "left")}
           <div className="playoff-series-score-center">
             <span className={`badge ${statusBadge.badgeClass} playoff-series-hero-badge`}>{statusBadge.label}</span>
-            <span className="text-xs text-muted">Best of 7 · {team1.games_played} played</span>
+            <span className="text-xs text-muted">Best of {bestOf} · {team1.games_played} played</span>
           </div>
           {renderTeam(team2, "right")}
         </div>
@@ -154,12 +160,14 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
       <div className="panel">
         <div className="panel-header">
           <div>
-            <h2 className="panel-title">7-Game Schedule & Outcomes</h2>
+            <h2 className="panel-title">Series Games & Outcomes</h2>
             <p className="text-muted text-xs playoffs-round-subtitle">
-              NBA 2-2-1-1-1 host sequence. Unplayed games in completed series retain placeholder status and are excluded from aggregates.
+              {bestOf === 7 && game_cards.length === 7
+                ? "NBA 2-2-1-1-1 host sequence. Unplayed games in completed series retain placeholder status and are excluded from aggregates."
+                : `Best of ${bestOf}, each game at the home team it was played at.`}
             </p>
           </div>
-          <span className="badge font-mono">7 Games Scheduled</span>
+          <span className="badge font-mono">{game_cards.length} Games</span>
         </div>
 
         <div className="playoff-games-grid">
@@ -187,7 +195,7 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
                   {/* Away team */}
                   <div className={`playoff-game-card-team-row ${isAwayWinner ? "winner" : ""}`}>
                     <span className="playoff-game-card-team">
-                      {hasTeamLogo(card.away_team_id) && <TeamLogo team={card.away_team_id} size={16} />}{card.away_team_tricode} <span className="text-muted">(Away)</span>
+                      {hasTeamLogo(card.away_team_id) && <TeamLogo team={card.away_team_id} season={detail.season} size={16} />}{card.away_team_tricode} <span className="text-muted">(Away)</span>
                     </span>
                     <span className="font-mono font-bold playoff-game-card-score">
                       {card.away_score !== null ? card.away_score : "—"}
@@ -197,7 +205,7 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
                   {/* Home team */}
                   <div className={`playoff-game-card-team-row ${isHomeWinner ? "winner" : ""}`}>
                     <span className="playoff-game-card-team">
-                      {hasTeamLogo(card.home_team_id) && <TeamLogo team={card.home_team_id} size={16} />}{card.home_team_tricode} <span className="text-muted">(Home)</span>
+                      {hasTeamLogo(card.home_team_id) && <TeamLogo team={card.home_team_id} season={detail.season} size={16} />}{card.home_team_tricode} <span className="text-muted">(Home)</span>
                     </span>
                     <span className="font-mono font-bold playoff-game-card-score">
                       {card.home_score !== null ? card.home_score : "—"}
@@ -306,7 +314,9 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
           <div>
             <h2 className="panel-title">Player Series Statistics & Box Scores</h2>
             <p className="text-muted text-xs playoffs-round-subtitle">
-              Per-game averages strictly over played games. Unplayed placeholder games do not dilute denominators.
+              {boxScores
+                ? "Per-game averages strictly over played games. Unplayed placeholder games do not dilute denominators."
+                : `Player box scores start in 1983-84; the ${detail.season} playoffs have game scores only.`}
             </p>
           </div>
           <Segmented size="lg" label="Series players" value={playerTab} onChange={setPlayerTab} options={[
