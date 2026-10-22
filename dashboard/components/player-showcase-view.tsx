@@ -12,8 +12,10 @@ import {
   CARD_EXTRAS, COMPARE_DEPTH, DEFAULT_EXTRAS, DEFAULT_MIN_MINUTES, GAME_FLOORS, MAX_SHOWN, MINUTE_FLOORS, MODES, PAGE_SIZE,
   CARD_STATS, baseStat, statId, cardStats, changeText, nextSeason, phasesFor, previousSeason, rankChanges, showcaseQuery, stateParams, statGroups,
   type RankChange, type ShowcaseMode, type ShowcaseState, type ShowcaseView,
+  defaultSort,
 } from "@/lib/showcase";
 import type { PlayerResearchItem, WorkbenchCatalog } from "@/lib/types";
+import { seasonOptionLabel } from "@/lib/season-basis";
 import { ShowcaseCard } from "./showcase-card";
 import { PercentileCell } from "./charts/percentile-cell";
 import { PlayerCareerTable } from "./player-career-table";
@@ -75,7 +77,7 @@ export function PlayerShowcaseView({ catalog, state, board, previous, draftClass
   }, [pathname, router, searchParams]);
 
   // Dialogs and the player the search found.
-  const [open, setOpen] = useState<{ id: string; name: string; team: string | null } | null>(null);
+  const [open, setOpen] = useState<{ id: string; name: string; team: string | null; position?: string | null } | null>(null);
   const [choosing, setChoosing] = useState(false);
   const [glossary, setGlossary] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -200,7 +202,7 @@ export function PlayerShowcaseView({ catalog, state, board, previous, draftClass
   const seasonIndex = seasons.indexOf(shown.season);
   const phases = phasesFor(catalog, board.season);
   const leaders = `${sortStat.key in { dpm: 1, o_dpm: 1, d_dpm: 1 } ? "DARKO " : ""}${sortStat.label} ${state.ascending ? "Lowest" : "Leaders"}`;
-  const openPlayer = (player: PlayerResearchItem) => setOpen({ id: player.player_id, name: player.player_name, team: player.teams.at(-1) ?? null });
+  const openPlayer = (player: PlayerResearchItem) => setOpen({ id: player.player_id, name: player.player_name, team: player.teams.at(-1) ?? null, position: player.position ?? null });
 
   const filtersCount = (state.minGames ? 1 : 0) + (state.draftYear ? 1 : 0);
   const sortOptions = CARD_STATS.map(column => ({ value: statId(column), label: column.label }));
@@ -241,7 +243,7 @@ export function PlayerShowcaseView({ catalog, state, board, previous, draftClass
           <div className="sc-season-step" role="group" aria-label="Season">
             <IconButton size="sm" icon="left" label="Previous season" disabled={seasonIndex <= 0} onClick={() => goSeason(seasons[seasonIndex - 1])} />
             <Select size="sm" aria-label="Season" value={shown.season} onChange={event => goSeason(event.target.value)}>
-              {[...seasons].reverse().map(season => <option key={season} value={season}>{season}</option>)}
+              {[...seasons].reverse().map(season => <option key={season} value={season}>{seasonOptionLabel(season)}</option>)}
             </Select>
             <IconButton size="sm" icon="right" label="Next season" disabled={seasonIndex >= seasons.length - 1} onClick={() => goSeason(seasons[seasonIndex + 1])} />
           </div>
@@ -253,7 +255,7 @@ export function PlayerShowcaseView({ catalog, state, board, previous, draftClass
           <StatsPositionChips />
           <span className="sc-console-label">Sort by</span>
           <div className="sc-sort">
-            <Select size="sm" aria-label="Sort by" value={state.sort} onChange={event => set({ sort: event.target.value === "dpm" ? null : event.target.value, show: null })}>
+            <Select size="sm" aria-label="Sort by" value={state.sort} onChange={event => set({ sort: event.target.value === defaultSort(catalog, state.season) ? null : event.target.value, show: null })}>
               {sortOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
             </Select>
             <IconButton size="sm" icon={state.ascending ? "up" : "down"} label={state.ascending ? "Lowest first. Show highest first" : "Highest first. Show lowest first"}
@@ -512,7 +514,7 @@ function DialogPhoto({ player, season }: { player: { id: string; name: string; t
 }
 
 function PlayerDialog({ player, catalog, season, phase, onClose, onSeason, searchParams, inCompare, onCompare }: {
-  player: { id: string; name: string; team: string | null } | null; catalog: WorkbenchCatalog; season: string; phase: string;
+  player: { id: string; name: string; team: string | null; position?: string | null } | null; catalog: WorkbenchCatalog; season: string; phase: string;
   onClose: () => void; onSeason: (season: string) => void; searchParams: URLSearchParams;
   /** Add or remove the player from the compare selection; absent when the card is not on the board. */
   inCompare: boolean; onCompare?: () => void;
@@ -522,7 +524,7 @@ function PlayerDialog({ player, catalog, season, phase, onClose, onSeason, searc
     <Modal isOpen={Boolean(player)} onClose={onClose} className="sc-player-dialog"
       title={player ? <span className="sc-player-title">
         <DialogPhoto player={player} season={season} />
-        <span>{player.name}</span>
+        <span>{player.name}{(player.team || player.position) && <small className="sc-player-who" title="Team and estimated position this season">{[player.team, player.position].filter(Boolean).join(" · ")}</small>}</span>
       </span> : undefined}>
       {player && <>
         <PlayerCareerTable playerId={player.id} catalog={catalog} season={season} phase={careerPhase} firstCoveredSeason={catalog.seasons?.[0] ?? null}

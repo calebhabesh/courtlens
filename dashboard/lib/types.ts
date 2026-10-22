@@ -344,7 +344,8 @@ export type WorkbenchCatalog = {
   source: string;
   seasons: string[];
   phases: string[];
-  stats_scopes?: { season: string; phase: string; coverage_start: string; coverage_end: string; default_before_date: string }[];
+  /** `basis` "season_totals": a season before the 1983-84 game logs, served as whole-season totals. */
+  stats_scopes?: { season: string; phase: string; coverage_start: string; coverage_end: string; default_before_date: string; basis?: "games" | "season_totals" }[];
   stats_windows?: string[];
   stats_normalizations?: string[];
   stats_sort_fields?: string[];
@@ -637,6 +638,8 @@ export type LookupTeamAssociation = {
   basis: "selected_scope" | "last_observed";
   teams: string[];
   observed_through: string | null;
+  /** Careers before the 1983-84 game logs: the last season played (no game dates). */
+  last_season?: string | null;
   season: string | null;
   phase: string | null;
   before_date: string | null;
@@ -843,7 +846,7 @@ export type PlayerGameLogItem = {
 };
 
 export type PlayerGameLogResponse = {
-  player: { id: string; name: string };
+  player: { id: string; name: string; position?: string };
   context: Record<string, unknown>;
   games: PlayerGameLogItem[];
   next_cursor: string | null;
@@ -1001,9 +1004,10 @@ export type TeamScheduleResponse = {
     wins: number;
     losses: number;
     win_pct: number | null;
-    differential: number;
+    differential: number | null;
     current_streak?: string | null;
   };
+  /** Null for a season served as totals (before 1983-84): no games, so no home or away record. */
   home_split: {
     games_played: number;
     wins: number;
@@ -1012,7 +1016,7 @@ export type TeamScheduleResponse = {
     ppg: number | null;
     opp_ppg: number | null;
     differential: number;
-  };
+  } | null;
   away_split: {
     games_played: number;
     wins: number;
@@ -1021,7 +1025,7 @@ export type TeamScheduleResponse = {
     ppg: number | null;
     opp_ppg: number | null;
     differential: number;
-  };
+  } | null;
   rest_splits: TeamRestSplitItem[];
   back_to_back_summary: TeamBackToBackSummary;
   longest_homestand: number;
@@ -2319,5 +2323,44 @@ export type PlayerBio = {
     contract_events?: PlayerReferenceEvent[]; transactions?: PlayerReferenceEvent[];
     game_highs?: PlayerGameHighs[];
   } | null;
+  limitations: string[];
+};
+
+/** Player Dashboard tracking cells (alignment row 22): one player-season's NBA tracking measures. */
+export type PlayerDashboardFeedValues = Record<string, number | null>;
+
+export type PlayerDashboardPlayFamily = {
+  family: "creation" | "spacing" | "transition" | "finishing";
+  label: string;
+  possessions: number;
+  frequency: number | null;
+  points_per_possession: number | null;
+  league_points_per_possession: number | null;
+  relative_per_100: number | null;
+  percentiles: { frequency: number | null; relative_per_100: number | null };
+};
+
+export type PlayerDashboardFeeds = {
+  version: string;
+  player_id: string;
+  season: string;
+  phase: "regular_season" | "playoffs";
+  label: string;
+  source: string;
+  qualification: Record<string, number>;
+  observed: { tracking: boolean; defense: boolean; hustle: boolean; play_types: boolean };
+  first_seasons: { tracking: string; defense: string; hustle: string; play_types: string };
+  metrics: { key: string; label: string; definition: string; higher_is_better: boolean; counting: boolean }[];
+  player: {
+    games: number | null;
+    minutes: number | null;
+    qualified: boolean;
+    defense_qualified: boolean;
+    per_game: PlayerDashboardFeedValues;
+    per_36: PlayerDashboardFeedValues;
+    percentiles: { per_game: PlayerDashboardFeedValues; per_36: PlayerDashboardFeedValues };
+  } | null;
+  play_types: PlayerDashboardPlayFamily[] | null;
+  cohort: { qualified_players: number; rule: string };
   limitations: string[];
 };

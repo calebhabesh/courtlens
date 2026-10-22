@@ -394,7 +394,11 @@ def test_lookup_performance_cardinality_and_payload_budget(test_db_session: Sess
     cold_build_ms = (time.perf_counter() - t_start) * 1000
 
     player_count = sum(1 for e in index if e.kind == "player")
-    team_count = sum(1 for e in index if e.kind == "team")
+    team_count = sum(1 for e in index if e.kind == "team" and not e.id.startswith("team:"))
+    # Earlier names (Seattle SuperSonics) and folded teams (Chicago Stags), one entry per name.
+    era_names = [e.display_name for e in index if e.kind == "team" and e.id.startswith("team:")]
+    assert "Seattle SuperSonics" in era_names and "Chicago Stags" in era_names
+    assert len(era_names) == len(set(era_names)) + era_names.count("Baltimore Bullets") - 1
     page_count = sum(1 for e in index if e.kind == "page")
     total_cardinality = len(index)
 

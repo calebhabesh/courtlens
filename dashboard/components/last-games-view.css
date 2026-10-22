@@ -61,6 +61,7 @@
      table-lift header and label column, table-well cells, hairline rows, one band per group. */
   .lg-compare { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); }
   .lg-compare h2 { margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; text-align: center; }
+  .lg-compare-who { display: block; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
   .lg-compare-frame { display: flex; flex: 1; flex-direction: column; border-radius: var(--radius-md); background: var(--color-table-lift); overflow: clip; }
   /* Rows share the card's height, so a taller card spaces them out rather than leaving a gap. */
   .lg-compare-table { flex: 1; width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; font-variant-numeric: tabular-nums; }

@@ -77,6 +77,7 @@
   }
   .sc-rank { top: var(--space-1); left: var(--space-1); background: var(--color-text); color: var(--color-surface-0); }
   .sc-season { top: var(--space-1); right: var(--space-1); background: color-mix(in srgb, var(--color-surface-0) 78%, transparent); color: var(--color-text); }
+  .sc-position { bottom: var(--space-1); right: var(--space-1); background: color-mix(in srgb, var(--color-surface-0) 82%, transparent); color: var(--color-text); }
   .sc-change { bottom: var(--space-1); left: var(--space-1); background: color-mix(in srgb, var(--color-surface-0) 82%, transparent); color: var(--color-text-secondary); }
   .sc-change[data-tone="up"] { color: var(--color-identity-a); }
   .sc-change[data-tone="down"] { color: var(--color-identity-b); }
@@ -144,6 +145,7 @@
   .sc-choose-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline); }
   .sc-spacer { flex: 1; }
   .sc-player-dialog { width: min(1180px, calc(100vw - 2 * var(--space-4))); }
+  .sc-player-who { display: block; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
   .sc-player-title { display: inline-flex; align-items: center; gap: var(--space-4); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
   /* The card's photo, framed larger than the 80px avatar it replaced. */
   .sc-dialog-photo { flex: none; width: 112px; border-radius: var(--radius-md); }

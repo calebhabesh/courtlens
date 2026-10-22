@@ -140,7 +140,27 @@ def _compute_file_sha256(path: Path) -> str:
     return hasher.hexdigest()
 
 
-def workbench_content_sha256(years: list[int], root: Path) -> tuple[str, list[str], list[Path]]:
+def history_file(root: Path) -> Path | None:
+    """The sealed Basketball-Reference game logs (1983-84 to 1999-00) the last seal wrote."""
+    from courtlens.services.bbref_history_seal import GAMELOG_PREFIX, newest_sealed
+
+    return newest_sealed(root, GAMELOG_PREFIX)
+
+
+def history_totals_sha(root: Path) -> str | None:
+    """SHA-256 of the sealed season totals the last seal wrote, when they are loaded."""
+    from courtlens.services.bbref_history_seal import SEASONS_PREFIX, newest_sealed
+
+    path = newest_sealed(root, SEASONS_PREFIX)
+    if path is None:
+        return None
+    manifest = path.with_suffix("").with_suffix(".manifest.json")
+    return str(json.loads(manifest.read_text())["sha256"]) if manifest.is_file() else None
+
+
+def workbench_content_sha256(
+    years: list[int], root: Path, history: Path | None = None
+) -> tuple[str, list[str], list[Path]]:
     """Aggregate raw-file hash that identifies a workbench dataset's content."""
     content_hasher = hashlib.sha256()
     files_to_hash: list[Path] = []
@@ -172,6 +192,11 @@ def workbench_content_sha256(years: list[int], root: Path) -> tuple[str, list[st
     for f_path in sorted(files_to_hash):
         content_hasher.update(f_path.name.encode())
         content_hasher.update(_compute_file_sha256(f_path).encode())
+    if history is not None:
+        # Hashed after the season files, so a dataset without history keeps its old hash.
+        content_hasher.update(history.name.encode())
+        content_hasher.update(_compute_file_sha256(history).encode())
+        files_to_hash.append(history)
     return content_hasher.hexdigest(), seasons_meta, files_to_hash
 
 
@@ -188,9 +213,27 @@ def import_workbench_data(
     """
     years = ending_years or DEFAULT_WORKBENCH_SEASONS
     root = raw_root or get_settings().raw_store_path
+    # The full default range carries the sealed pre-2000-01 history (full-history FH03/FH04);
+    # an explicit list of years (a backfill batch) imports only those seasons.
+    history = history_file(root) if ending_years is None else None
+    totals_sha = history_totals_sha(root) if history is not None else None
+    history_records: dict[str, list[dict[str, Any]]] = {}
+    if history is not None:
+        from courtlens.services.bbref_history_seal import read_sealed
+
+        history_records = read_sealed(history)
 
     # 1. Compute aggregate content hash across raw files
-    overall_content_sha256, seasons_meta, files_to_hash = workbench_content_sha256(years, root)
+    overall_content_sha256, seasons_meta, files_to_hash = workbench_content_sha256(
+        years, root, history
+    )
+    if totals_sha is not None:
+        # The pinned season totals (1946-47 on) are part of what the release serves.
+        overall_content_sha256 = hashlib.sha256(
+            f"{overall_content_sha256}:season-totals:{totals_sha}".encode()
+        ).hexdigest()
+    history_seasons = sorted({row["season"] for row in history_records.get("schedule", [])})
+    seasons_meta = history_seasons + seasons_meta
     membership_sha256 = hashlib.sha256(
         f"{overall_content_sha256}:{','.join(sorted(seasons_meta))}:{WORKBENCH_PARSER_VERSION}".encode()
     ).hexdigest()
@@ -326,6 +369,29 @@ def import_workbench_data(
                         }
                     )
 
+    history_names: dict[str, str] = {}
+    if history_records:
+        for row in history_records.get("schedule", []):
+            all_schedules.append({**row, "date_precision": "date", "tipoff_utc": None})
+        for row in history_records.get("team_game", []):
+            all_team_games.append(
+                {**row, "date_precision": "date", "tipoff_utc": None, "is_final": True}
+            )
+            team_identities.setdefault(row["team_id"], row["team_id"])
+        for row in history_records.get("player_game", []):
+            all_player_games.append({**row, "date_precision": "date", "tipoff_utc": None})
+        for row in history_records.get("identity", []):
+            history_names[row["external_id"]] = row["display_name"]
+            player_identities.setdefault(row["external_id"], row["display_name"])
+        coverage_summary["history"] = {
+            "source": "basketball_reference",
+            "file": history.name if history else None,
+            "seasons": history_seasons,
+            "team_stats_basis": "player_sum",
+            "game_id_basis": "courtlens_sequence",
+            "season_totals_sha256": totals_sha,
+        }
+
     coverage_summary["total_team_games"] = len(all_team_games)
     coverage_summary["total_player_games"] = len(all_player_games)
     coverage_summary["total_schedules"] = len(all_schedules)
@@ -366,24 +432,28 @@ def import_workbench_data(
         session.flush()
 
         # Insert / update identities
+        known_players = set(
+            session.scalars(
+                select(WorkbenchIdentity.external_id).where(WorkbenchIdentity.kind == "player")
+            )
+        )
         for pid, name in player_identities.items():
-            existing_ident = session.scalar(
-                select(WorkbenchIdentity).where(
-                    WorkbenchIdentity.namespace == "nba",
-                    WorkbenchIdentity.external_id == pid,
-                    WorkbenchIdentity.kind == "player",
+            if pid in known_players:
+                continue
+            # Unmatched pre-2000-01 players keep their Basketball-Reference ID (never guessed).
+            namespace = "basketball_reference" if pid.startswith("bbref:") else "nba"
+            session.add(
+                WorkbenchIdentity(
+                    namespace=namespace,
+                    external_id=pid,
+                    kind="player",
+                    display_name=name,
+                    metadata_json={
+                        "aliases": [name],
+                        **({"name_source": "basketball_reference"} if pid in history_names else {}),
+                    },
                 )
             )
-            if existing_ident is None:
-                session.add(
-                    WorkbenchIdentity(
-                        namespace="nba",
-                        external_id=pid,
-                        kind="player",
-                        display_name=name,
-                        metadata_json={"aliases": [name]},
-                    )
-                )
 
         for tid, orig_id in team_identities.items():
             existing_ident = session.scalar(

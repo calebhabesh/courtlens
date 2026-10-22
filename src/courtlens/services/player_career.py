@@ -25,7 +25,8 @@ from sqlalchemy.orm import Session
 from courtlens.domain.impact_catalog import IMPACT_COLUMNS
 from courtlens.domain.query_spec import QuerySpec, SeasonScope, ViewState, WindowKind, WindowSpec
 from courtlens.domain.stats_presentation import StatsPresentation
-from courtlens.domain.stats_v4_catalog import DARKO_METRICS, TRACKING_METRICS
+from courtlens.domain.stats_v4_catalog import BBREF_METRICS, DARKO_METRICS, TRACKING_METRICS
+from courtlens.reference_models import BbrefPlayerSeason
 from courtlens.services import stats_cohort_store
 from courtlens.services.darko import darko_catalog_scope
 from courtlens.services.impact_serving import impact_catalog_scope
@@ -40,7 +41,9 @@ from courtlens.services.workbench_analytics import (
 )
 from courtlens.workbench_models import WorkbenchPlayerGame
 
-JOINED_COLUMNS = sorted(IMPACT_COLUMNS.keys() | TRACKING_METRICS.keys() | DARKO_METRICS.keys())
+JOINED_COLUMNS = sorted(
+    IMPACT_COLUMNS.keys() | TRACKING_METRICS.keys() | DARKO_METRICS.keys() | BBREF_METRICS.keys()
+)
 
 
 @dataclass(frozen=True)
@@ -82,7 +85,7 @@ def career_query(
 
 
 def player_seasons(session: Session, context: ResolvedContext, player_id: str) -> list[str]:
-    return sorted(
+    seasons = set(
         session.scalars(
             select(WorkbenchPlayerGame.season)
             .where(
@@ -93,6 +96,22 @@ def player_seasons(session: Session, context: ResolvedContext, player_id: str) -
             .distinct()
         ).all()
     )
+    if context.totals_seasons:
+        seasons |= {
+            season
+            for season in session.scalars(
+                select(BbrefPlayerSeason.season)
+                .where(
+                    BbrefPlayerSeason.source_sha256 == context.totals_sha,
+                    BbrefPlayerSeason.phase == context.phase,
+                    BbrefPlayerSeason.player_id == player_id,
+                    BbrefPlayerSeason.games > 0,
+                )
+                .distinct()
+            )
+            if season in context.totals_seasons
+        }
+    return sorted(seasons)
 
 
 def serving_item(row: dict[str, Any]) -> dict[str, Any]:
