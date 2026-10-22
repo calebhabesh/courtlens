@@ -9,7 +9,7 @@ const PLAYER_PORTRAIT_PATH = /^\/api\/workbench\/players\/[^/]+\/portrait$/;
  * Mirrors `PORTRAIT_CROP_VERSION` in the API. Derivatives are cached by browsers for a day, so a
  * new crop needs a new URL; the API ignores the parameter. Change both together.
  */
-export const PORTRAIT_CROP_VERSION = "face-v4";
+export const PORTRAIT_CROP_VERSION = "face-v6";
 
 function absolute(path: string): string {
   return path.startsWith("/") ? `${browserApi.replace(/\/$/, "")}${path}` : path;

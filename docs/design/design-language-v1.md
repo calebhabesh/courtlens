@@ -507,10 +507,18 @@ the main result except at most one one-line `GatedNote`.
   Pass the season and team to the portrait: `PlayerAvatar` / `PlayerPortrait` `era={{ season, team }}`,
   which requests `/api/workbench/players/{id}/portrait?season=…&team=…` (season headshots from
   `courtlens acquire-season-portraits`, 2015-16 on). When the NBA has no photo for that
-  team-season the current one shows; never a different season's team photo by guess. Only pages
+  team-season the current one shows; never a different team's photo by guess. Only pages
   about the player now (search, the player page header, Live) use the current photo.
-  Before 2015-16 the NBA has no team-season photos, so its current (late-career) photo shows, as
-  on Databallr. Where that photo is a silhouette or shows the player after his career (Steve
+  Before 2015-16 the NBA has no team-season photos. A freely licensed Wikimedia Commons photo
+  from that season and team shows when one was found (`courtlens acquire-commons-portraits`:
+  matched to the player's own headshot by face, in uniform only (bare arms of a sleeveless
+  jersey; no off-court settings), cropped to head and shoulders, credited on
+  Methodology, Photo credits; LeBron James's 2010-11 Heat season). Otherwise the player's
+  nearest season photo with the same franchise (Anthony Davis's 2012-13 Hornets season: his
+  2015-16 Pelicans photo; owner, 2026-10-21, row 17), else his nearest season photo with any
+  team (LeBron 2010-11 before a Heat photo existed: his 2015-16 Cavaliers photo, not his 2026-27
+  Sixers one; owner, 2026-10-21); with no season photo at all, the current (late-career) photo,
+  as on Databallr. Where that photo is a silhouette or shows the player after his career (Steve
   Nash's coaching photo; `POST_CAREER_NBA_PHOTOS`), the player's Basketball-Reference career photo
   shows instead: 120x180, background cut out with a matted edge (`courtlens
   acquire-bbref-portraits`; owner, 2026-10-20). Either photo is from his playing career, not

@@ -41,6 +41,8 @@ dev = [
   "types-PyYAML>=6.0,<7",
 ]
 warehouse = ["dbt-postgres>=1.9,<2"]
+# Face matching for the Wikimedia Commons photo acquisition; the API never imports it.
+photos = ["opencv-python-headless>=4.13,<5"]
 
 [project.scripts]
 courtlens = "courtlens.cli:app"
