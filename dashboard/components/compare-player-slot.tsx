@@ -14,6 +14,7 @@ import { teamBrandColor } from "@/lib/team-colors";
 import { teamArtwork } from "@/lib/team-era";
 import type { ComparisonPlayer, PlayerBio } from "@/lib/types";
 import type { SeasonEnds } from "@/lib/compare-accolades";
+import type { BestSeason } from "@/lib/landing-season";
 
 export type CompareSlotPlayer = ComparisonPlayer;
 export type CompareSelection = { id: string; name: string };
@@ -40,7 +41,9 @@ export function slotTeams(player: Pick<ComparisonPlayer, "teams" | "teams_chrono
  * latest team's colour, its team logos (every team of the scope, latest in front), a games badge
  * and a change-player icon, then the name and one bio line. Pressing the photo opens search.
  */
-export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games, playedSeasons = null, onSeason, onPick, excludedIds = [], ends }: {
+export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games, playedSeasons = null, best = null, onSeason, onPick, excludedIds = [], ends }: {
+  /** The player's best full season, marked in the season menu (owner, 2026-10-22). */
+  best?: BestSeason | null;
   /** Completed seasons, for the season picker's award marks (75). */
   ends?: SeasonEnds;
   /** Players already on the card: never offered as a replacement. */
@@ -106,7 +109,7 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
             <TeamLogo team={team} season={season} size={16} />{teamRecord(team, season)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
           {onSeason && season && playedSeasons && <span className="pvp-season">
-            <ComparePlayerSeasonPicker label={label} season={season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} recordedChampionships={player.championships?.all_seasons} beforeDate={beforeDate} ends={ends} align={side === "a" ? "left" : "right"} onSelect={onSeason} />
+            <ComparePlayerSeasonPicker label={label} playerId={player.id} best={best} season={season} seasons={playedSeasons} awards={bio?.reference?.awards} championshipSeasons={player.championships?.seasons ?? []} recordedChampionships={player.championships?.all_seasons} beforeDate={beforeDate} ends={ends} align={side === "a" ? "left" : "right"} onSelect={onSeason} />
           </span>}
         </div>}
   </div>;
