@@ -1,7 +1,7 @@
 import { browserApi } from "./workbench-api";
 import { formatDate } from "./format-date";
 import type { ImpactResponse } from "./types";
-import type { TwinsView } from "./player-twins";
+import type { TwinsPlayerIndex, TwinsView } from "./player-twins";
 
 /** PC11 read-only views over the PC07 NBA Stats feeds and the WOWY artifact. */
 export type FeedPhase = "regular_season" | "playoffs";
@@ -130,6 +130,7 @@ export const getWowy = (p: { season?: string | null; phase?: string | null; team
 
 export const getPlayerTwins = (p: Record<string, string | number | null | undefined>, signal?: AbortSignal) =>
   getJson<TwinsView>("player-twins", p, signal);
+export const getPlayerTwinsPlayers = (signal?: AbortSignal) => getJson<TwinsPlayerIndex>("player-twins/players", {}, signal);
 
 export const getSixFactor = (p: { season: string; phase: string; beforeDate: string; sortMetric: string; limit?: number }, signal?: AbortSignal) =>
   getJson<ImpactResponse>("impact", { ...p, limit: p.limit ?? 25 }, signal);
