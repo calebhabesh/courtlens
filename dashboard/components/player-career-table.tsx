@@ -207,7 +207,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
                     onClick={event => { if (!(event.target as HTMLElement).closest("a, button")) openSeason(value); }}>
                     <th scope="row" className="pinned-col pinned-col-year">
                       <span className="player-career-year">
-                        <span className="player-career-logos"><TeamLogoStack teams={teams} size={24} /></span>
+                        <span className="player-career-logos"><TeamLogoStack teams={teams} size={24} season={value} /></span>
                         <a href={scopeHref("season", value)} onClick={event => { event.preventDefault(); openSeason(value); }}
                           title={`Show ${value}`}>{value}</a>
                         {awards?.allStarSeasons.includes(value) && phase === "regular_season" && <span className="player-career-star" title="All-Star"><Icon name="star" size={14} filled /><span className="sr-only">All-Star</span></span>}
@@ -234,7 +234,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
                     return <tr key={team} className="player-career-stint motion-enter" style={{ "--motion-index": index } as React.CSSProperties}>
                       <th scope="row" className="pinned-col pinned-col-year">
                         <span className="player-career-year">
-                          <span className="player-career-logos"><TeamLogoStack teams={[team]} size={20} decorative /></span>
+                          <span className="player-career-logos"><TeamLogoStack teams={[team]} size={20} decorative season={value} /></span>
                           <span className="player-career-stint-team">{team}<span className="sr-only">, {value}</span></span>
                         </span>
                       </th>

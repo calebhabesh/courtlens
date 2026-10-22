@@ -2,7 +2,20 @@
 // `courtlens.domain.teams.TEAM_ERAS` into team-branding.json by scripts/team_branding_assets.py.
 import catalog from "./team-branding.json";
 
-export type TeamEra = (typeof catalog.eras)[number];
+/** An earlier identity. `franchise_id` is null for a team that folded; `asset` is absent when no
+ * free source has its logo. `brand_color` is the logo's own main color, for eras without a
+ * hand-picked one. */
+export interface TeamEra {
+  code: string;
+  franchise_id: string | null;
+  artwork_name: string;
+  first_season: string;
+  last_season: string;
+  stored_as_code: boolean;
+  asset?: string;
+  brand_color?: string;
+}
+const ERAS = catalog.eras as TeamEra[];
 
 const start = (season: string) => Number(season.slice(0, 4));
 const covers = (span: { first_season: string | null; last_season: string | null }, season: string) =>
@@ -17,7 +30,7 @@ const covers = (span: { first_season: string | null; last_season: string | null 
 export function teamEra(team: string | null | undefined, season?: string | null): TeamEra | null {
   if (!team) return null;
   const code = team.toUpperCase();
-  const matches = catalog.eras.filter(era => season
+  const matches = ERAS.filter(era => season
     ? covers(era, season) && (era.franchise_id === team || era.code === code)
     : era.stored_as_code && era.code === code);
   return matches.at(-1) ?? null;
@@ -25,7 +38,7 @@ export function teamEra(team: string | null | undefined, season?: string | null)
 
 /** The id a release stores a franchise's games under in a season (`SEA` for the Thunder in 2005-06). */
 export function seasonTeamId(franchiseId: string, season: string): string {
-  return catalog.eras.find(era => era.stored_as_code && era.franchise_id === franchiseId && covers(era, season))?.code ?? franchiseId;
+  return ERAS.find(era => era.stored_as_code && era.franchise_id === franchiseId && covers(era, season))?.code ?? franchiseId;
 }
 
 /** The current franchise id for a franchise id, current tricode or era code. */
@@ -33,6 +46,11 @@ export function franchiseOf(team: string): string | null {
   const era = teamEra(team);
   if (era) return era.franchise_id;
   return catalog.teams.find(entry => entry.team_id === team || entry.tricode === team.toUpperCase())?.team_id ?? null;
+}
+
+/** Teams that folded (the Chicago Stags), as they played in a season: their code is their id. */
+export function foldedTeams(season: string): TeamEra[] {
+  return ERAS.filter(era => era.franchise_id == null && covers(era, season));
 }
 
 /** False for seasons a franchise fielded no team (New Orleans before 2002-03). */
@@ -60,6 +78,12 @@ export interface TeamArtwork {
  */
 export function teamArtwork(team: string | null | undefined, season?: string | null): TeamArtwork | null {
   if (!team) return null;
+  const own = (season ? teamEra(team, season) : null) ?? teamEra(team);
+  if (own && own.franchise_id == null) {
+    // A team that folded: its one logo when a free source has it.
+    return own.asset ? { tricode: own.code, artwork_name: own.artwork_name, asset: own.asset,
+      caption: `${own.artwork_name} logo (${own.first_season}–${own.last_season})` } : null;
+  }
   const current = catalog.teams.find(entry => entry.team_id === team || entry.tricode === team);
   const franchise = teamEra(team, season)?.franchise_id ?? teamEra(team)?.franchise_id ?? current?.team_id ?? null;
   if (!franchise) return null;
@@ -67,12 +91,22 @@ export function teamArtwork(team: string | null | undefined, season?: string | n
   const era = season ? teamEra(franchise, season) : teamEra(team);
   const span = season ? SEASON_LOGOS.find(entry => entry.franchise_id === franchise && covers(entry, season)) : undefined;
   const name = era?.artwork_name ?? now.artwork_name;
+  const asset = span?.asset ?? (era ? era.asset : now.asset);
+  if (!asset) return null;
   return {
     tricode: era?.code ?? now.tricode,
     artwork_name: name,
-    asset: span?.asset ?? era?.asset ?? now.asset,
+    asset,
     caption: span ? `${name} logo (${span.first_season}–${span.last_season})` : era ? `${name} artwork (${era.first_season}–${era.last_season})` : `${name} artwork (current franchise)`,
   };
+}
+
+/** A team's full name that season (the Philadelphia Warriors in 1961-62), logo or not. */
+export function teamNameAt(team: string | null | undefined, season?: string | null): string | null {
+  if (!team) return null;
+  const own = (season ? teamEra(team, season) : null) ?? teamEra(team);
+  if (own && own.franchise_id == null) return own.artwork_name;
+  return teamArtwork(team, season)?.artwork_name ?? null;
 }
 
 export type ConferenceMark = NonNullable<(typeof catalog)["conferences"]>[number];

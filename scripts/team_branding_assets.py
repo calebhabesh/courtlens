@@ -9,9 +9,10 @@ import json
 import os
 import re
 import time
-from collections import deque
+from collections import Counter, deque
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 from xml.etree import ElementTree
 
@@ -70,26 +71,51 @@ def _clear_background(data: bytes) -> bytes:
     return out.getvalue()
 
 
-# One artwork per era identity. Wikipedia hosts SVGs for two; Basketball-Reference's team pages
-# carry an era logo for every season (125 px PNG), so the rest use the era's last season.
-ERA_ARTWORK: dict[str, tuple[str, str]] = {
-    "Seattle SuperSonics": (
-        "wikipedia",
-        "https://en.wikipedia.org/wiki/File:Seattle_SuperSonics_logo.svg",
-    ),
-    "Vancouver Grizzlies": (
-        "wikipedia",
-        "https://en.wikipedia.org/wiki/File:Vancouver_Grizzlies_logo.svg",
-    ),
-    "New Jersey Nets": ("bbref", "https://www.basketball-reference.com/teams/NJN/2012.html"),
-    "Charlotte Hornets": ("bbref", "https://www.basketball-reference.com/teams/CHH/2002.html"),
-    "New Orleans Hornets": ("bbref", "https://www.basketball-reference.com/teams/NOH/2013.html"),
-    "New Orleans/Oklahoma City Hornets": (
-        "bbref",
-        "https://www.basketball-reference.com/teams/NOK/2007.html",
-    ),
-    "Charlotte Bobcats": ("bbref", "https://www.basketball-reference.com/teams/CHA/2014.html"),
+# One artwork per era identity, keyed by code (two different teams were the Baltimore Bullets).
+# Wikipedia hosts SVGs for two; Basketball-Reference has a logo for every team-season (125 px
+# PNG), so every other era uses its last season's.
+ERA_WIKIPEDIA: dict[str, str] = {
+    "SEA": "https://en.wikipedia.org/wiki/File:Seattle_SuperSonics_logo.svg",
+    "VAN": "https://en.wikipedia.org/wiki/File:Vancouver_Grizzlies_logo.svg",
+    # Folded teams Basketball-Reference has no logo for. Six others have none on either source.
+    "AND": "https://en.wikipedia.org/wiki/File:Anderson_Packers_logo.PNG",
+    "INO": "https://en.wikipedia.org/wiki/File:Indianapolis_Olympians_logo.svg",
 }
+
+
+def _logo_color(asset: str) -> str | None:
+    """A logo's main color: the most common saturated color (black, white and greys ignored),
+    for era accents nobody picked by hand. None when the logo has no saturated color."""
+    data = (PUBLIC / asset.lstrip("/")).read_bytes()
+    pixels: Counter[tuple[int, int, int]] = Counter()
+    if asset.endswith(".svg"):
+        for value in re.findall(rb"#([0-9a-fA-F]{6})\b", data):
+            rgb = bytes.fromhex(value.decode())
+            pixels[(rgb[0], rgb[1], rgb[2])] += 1
+    else:
+        image = Image.open(io.BytesIO(data)).convert("RGBA")
+        for (r, g, b, alpha), n in Counter(image.getdata()).items():
+            if alpha >= 200:
+                pixels[(r, g, b)] += n
+    # Group similar shades, pick the largest group and report its pixels' average color.
+    groups: dict[tuple[int, int, int], Counter[tuple[int, int, int]]] = {}
+    for rgb, n in pixels.items():
+        if max(rgb) >= 40 and (max(rgb) - min(rgb)) / max(rgb) >= 0.3:
+            groups.setdefault((rgb[0] // 32, rgb[1] // 32, rgb[2] // 32), Counter())[rgb] += n
+    if not groups:
+        return None
+    largest = max(groups.values(), key=lambda group: sum(group.values()))
+    total = sum(largest.values())
+    r, g, b = (round(sum(rgb[i] * n for rgb, n in largest.items()) / total) for i in range(3))
+    return f"#{r:02X}{g:02X}{b:02X}"
+
+
+def _era_last_years() -> dict[str, int]:
+    """Each era code's last season, by end year (its Basketball-Reference logo year)."""
+    years: dict[str, int] = {}
+    for era in TEAM_ERAS:
+        years[era.code] = max(years.get(era.code, 0), int(era.last_season[:4]) + 1)
+    return years
 
 
 def _get(url: str) -> tuple[bytes, str, str | None]:
@@ -123,28 +149,45 @@ def _store(stem: str, data: bytes, extension: str) -> tuple[str, str]:
     return asset, digest
 
 
-def _acquire_era(name: str) -> dict[str, object]:
-    kind, page = ERA_ARTWORK[name]
-    if kind == "wikipedia":
+def _logo_version() -> str:
+    page = _get("https://www.basketball-reference.com/teams/TOR/2026.html")[0].decode()
+    found = re.search(r"cdn\.ssref\.net/req/(\d+)/tlogo/bbr/", page)
+    assert found, "Basketball-Reference logo path not found"
+    return found.group(1)
+
+
+def _acquire_era(code: str, name: str, version: str) -> dict[str, object] | None:
+    """The era's artwork, or None when the source has no logo for it."""
+    if code in ERA_WIKIPEDIA:
+        page = ERA_WIKIPEDIA[code]
         title = page.rsplit("/", 1)[1]
         api = (
             "https://en.wikipedia.org/w/api.php?action=query&prop=imageinfo&iiprop=url"
-            f"&format=json&titles={title}"
+            f"&iiurlwidth=250&format=json&titles={title}"
         )
         info = json.loads(_get(api)[0])
-        source = next(iter(info["query"]["pages"].values()))["imageinfo"][0]["url"].split("?")[0]
+        image = next(iter(info["query"]["pages"].values()))["imageinfo"][0]
+        # SVGs as they are; raster files as Wikimedia's 250 px rendering.
+        original = image["url"].split("?")[0]
+        source = original if original.endswith(".svg") else image["thumburl"].split("?")[0]
     else:
-        html = _get(page)[0].decode("utf-8", "replace")
-        match = re.search(r"https://cdn\.ssref\.net/req/\d+/tlogo/bbr/[A-Z]{3}-\d{4}\.png", html)
-        assert match, page
-        source = match.group(0)
-    data, content_type, modified = _get(source)
+        year = _era_last_years()[code]
+        page = f"https://www.basketball-reference.com/teams/{code}/{year}.html"
+        source = BBREF_LOGO.format(version=version, code=code, year=year)
+    try:
+        data, content_type, modified = _get(source)
+    except HTTPError as error:
+        if error.code == 404:
+            return None
+        raise
     assert len(data) <= MAX_BYTES, source
     if source.endswith(".svg"):
         assert content_type == "image/svg+xml", source
         _check_svg(data, source)
         extension = "svg"
     stem = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+    if code in {"BLB", "DNN"}:  # Names a later franchise also used.
+        stem = f"{stem}-{code.lower()}"
     derived: dict[str, object] = {}
     if not source.endswith(".svg"):
         assert content_type == "image/png" and data.startswith(PNG_MAGIC), source
@@ -163,8 +206,8 @@ def _acquire_era(name: str) -> dict[str, object]:
 
 
 def _era_records(previous: list[dict[str, object]]) -> list[dict[str, object]]:
-    artwork: dict[str, dict[str, object]] = {
-        str(record["artwork_name"]): {
+    artwork: dict[str, dict[str, object] | None] = {
+        str(record["code"]): {
             key: record[key]
             for key in (
                 "asset",
@@ -179,10 +222,13 @@ def _era_records(previous: list[dict[str, object]]) -> list[dict[str, object]]:
             if key in record
         }
         for record in previous
+        if "asset" in record
     }
-    for name in ERA_ARTWORK:
-        if name not in artwork:
-            artwork[name] = _acquire_era(name)
+    version: str | None = None
+    for era in TEAM_ERAS:
+        if era.code not in artwork:
+            version = version or _logo_version()
+            artwork[era.code] = _acquire_era(era.code, era.name, version)
             time.sleep(3)  # Basketball-Reference asks for at most one request every few seconds.
     return [
         {
@@ -192,7 +238,12 @@ def _era_records(previous: list[dict[str, object]]) -> list[dict[str, object]]:
             "first_season": era.first_season,
             "last_season": era.last_season,
             "stored_as_code": era.stored_as_code,
-            **artwork[era.name],
+            **(artwork[era.code] or {}),
+            **(
+                {"brand_color": color}
+                if (art := artwork[era.code]) and (color := _logo_color(str(art["asset"])))
+                else {}
+            ),
         }
         for era in TEAM_ERAS
     ]
@@ -202,7 +253,7 @@ def _era_records(previous: list[dict[str, object]]) -> list[dict[str, object]]:
 BBREF_CODES = {"BKN": "BRK", "CHA": "CHO", "PHX": "PHO"}
 BBREF_LOGO = "https://cdn.ssref.net/req/{version}/tlogo/bbr/{code}-{year}.png"
 # Era SVGs stand in for the Basketball-Reference season whose logo they show.
-ERA_SVG_SEASONS = {"Seattle SuperSonics": ("SEA", 2008), "Vancouver Grizzlies": ("VAN", 2001)}
+ERA_SVG_SEASONS = {"SEA": 2008, "VAN": 2001}
 
 
 # The league's conference marks (the 2018 wordmarks NBA.com uses), from Wikimedia Commons.
@@ -258,45 +309,56 @@ def _bbref_code(franchise_id: str, season: str) -> str:
     return BBREF_CODES.get(tricode, tricode)
 
 
-def _bbref_logo(version: str, code: str, year: int, cache: Path) -> tuple[str, bytes]:
-    """One season's logo, from the local cache when an earlier run fetched it."""
+def _bbref_logo(version: str, code: str, year: int, cache: Path) -> tuple[str, bytes | None]:
+    """One season's logo, from the local cache when an earlier run fetched it; None when the
+    source has none (a 404, remembered as an empty cache file)."""
     url = BBREF_LOGO.format(version=version, code=code, year=year)
     path = cache / f"{code}-{year}.png"
     if not path.exists():
-        data, content_type, _ = _get(url)
+        try:
+            data, content_type, _ = _get(url)
+        except HTTPError as error:
+            if error.code != 404:
+                raise
+            path.write_bytes(b"")
+            time.sleep(1)
+            return url, None
         assert content_type == "image/png" and data.startswith(PNG_MAGIC), url
         assert len(data) <= MAX_BYTES, url
         path.write_bytes(data)
         time.sleep(1)
-    return url, path.read_bytes()
+    return url, path.read_bytes() or None
 
 
 def _season_logo_records(
-    catalog: dict[str, object], first: int, last: int, cache: Path
+    catalog: dict[str, object], first: int, last: int, current_year: int, cache: Path
 ) -> list[dict[str, object]]:
-    """Every franchise-season's logo, grouped into spans of identical artwork.
+    """Every franchise-season's logo from ``first`` to ``last`` (start years), grouped into spans
+    of identical artwork. A season the source has no logo for gets no span.
 
-    A span whose logo is the franchise's current one uses NBA.com's SVG; one matching an era SVG
-    uses that; any other gets one background-cleared Basketball-Reference PNG per distinct logo.
+    A span whose logo is the franchise's current one (``current_year``'s) uses NBA.com's SVG; one
+    matching an era's artwork uses that; any other gets one background-cleared
+    Basketball-Reference PNG per distinct logo.
     """
-    page = _get("https://www.basketball-reference.com/teams/TOR/2026.html")[0].decode()
-    found = re.search(r"cdn\.ssref\.net/req/(\d+)/tlogo/bbr/", page)
-    assert found, "Basketball-Reference logo path not found"
-    version = found.group(1)
+    version = _logo_version()
     cache.mkdir(parents=True, exist_ok=True)
     teams = {str(t["team_id"]): t for t in catalog["teams"]}  # type: ignore[union-attr]
     eras = catalog["eras"]  # type: ignore[index]
-    latest = f"{last}-{str(last + 1)[-2:]}"
+    latest = f"{current_year}-{str(current_year + 1)[-2:]}"
     stand_ins: dict[str, dict[str, object]] = {}
-    for name, (code, year) in ERA_SVG_SEASONS.items():
-        record = next(e for e in eras if e["artwork_name"] == name)  # type: ignore[union-attr]
-        stand_ins[hashlib.sha256(_bbref_logo(version, code, year, cache)[1]).hexdigest()] = record
+    for code, year in ERA_SVG_SEASONS.items():
+        record = next(e for e in eras if e["code"] == code)  # type: ignore[union-attr]
+        logo = _bbref_logo(version, code, year, cache)[1]
+        assert logo is not None, code
+        stand_ins[hashlib.sha256(logo).hexdigest()] = record
     for era in eras:  # type: ignore[union-attr]
         if "source_sha256" in era:
             stand_ins.setdefault(str(era["source_sha256"]), era)
     records: list[dict[str, object]] = []
     for franchise_id, team in teams.items():
-        current = _bbref_logo(version, _bbref_code(franchise_id, latest), last + 1, cache)[1]
+        code = _bbref_code(franchise_id, latest)
+        current = _bbref_logo(version, code, current_year + 1, cache)[1]
+        assert current is not None, code
         current_hash = hashlib.sha256(current).hexdigest()
         spans: list[dict[str, object]] = []
         for start in range(first, last + 1):
@@ -305,6 +367,8 @@ def _season_logo_records(
                 continue
             code = _bbref_code(franchise_id, season)
             url, data = _bbref_logo(version, code, start + 1, cache)
+            if data is None:
+                continue
             source_hash = hashlib.sha256(data).hexdigest()
             previous = spans[-1] if spans else None
             if (
@@ -344,6 +408,38 @@ def _season_logo_records(
     return records
 
 
+def _merge_spans(
+    kept: list[dict[str, object]], fetched: list[dict[str, object]], first: int, last: int
+) -> list[dict[str, object]]:
+    """Replace the spans inside ``first``..``last`` with ``fetched`` and keep the rest, joining
+    a franchise's spans that meet with the same logo (1999-00 into 2000-01)."""
+
+    def start(span: dict[str, object], key: str) -> int:
+        return int(str(span[key])[:4])
+
+    outside = [
+        s for s in kept if start(s, "last_season") < first or start(s, "first_season") > last
+    ]
+    assert all(
+        start(s, "first_season") > last or start(s, "last_season") < first for s in outside
+    ), "a kept span straddles the fetched range"
+    merged: list[dict[str, object]] = []
+    for span in sorted(
+        [*outside, *fetched], key=lambda s: (str(s["franchise_id"]), start(s, "first_season"))
+    ):
+        previous = merged[-1] if merged else None
+        if (
+            previous
+            and previous["franchise_id"] == span["franchise_id"]
+            and previous["source_sha256"] == span["source_sha256"]
+            and start(previous, "last_season") + 1 == start(span, "first_season")
+        ):
+            previous["last_season"] = span["last_season"]
+            continue
+        merged.append(dict(span))
+    return merged
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -369,6 +465,12 @@ def main() -> None:
     )
     parser.add_argument(
         "--last-season", type=int, default=2025, help="Start year of the last season"
+    )
+    parser.add_argument(
+        "--current-season",
+        type=int,
+        default=2025,
+        help="Start year of the season whose logo is each franchise's current one",
     )
     args = parser.parse_args()
     if args.acquire:
@@ -438,8 +540,11 @@ def main() -> None:
         cache = (
             Path(os.environ.get("TMPDIR") or Path.home() / ".cache/courtlens-tmp") / "bbref-logos"
         )
-        catalog["season_logos"] = _season_logo_records(
-            catalog, args.first_season, args.last_season, cache
+        fetched = _season_logo_records(
+            catalog, args.first_season, args.last_season, args.current_season, cache
+        )
+        catalog["season_logos"] = _merge_spans(
+            catalog.get("season_logos", []), fetched, args.first_season, args.last_season
         )
         catalog["season_logos_semantics"] = (
             "Each franchise's logo by season (Basketball-Reference team-season logos), grouped "
@@ -460,7 +565,7 @@ def main() -> None:
     assert len(eras) == len(TEAM_ERAS)
     for record in [
         *catalog["teams"],
-        *eras,
+        *(era for era in eras if "asset" in era),
         *catalog.get("season_logos", []),
         *catalog.get("conferences", []),
     ]:
@@ -474,6 +579,7 @@ def main() -> None:
                     {
                         r["asset"]
                         for r in [*catalog["teams"], *eras, *catalog.get("season_logos", [])]
+                        if "asset" in r
                     }
                 ),
                 "season_spans": len(catalog.get("season_logos", [])),
@@ -482,6 +588,7 @@ def main() -> None:
                     for asset in {
                         r["asset"]
                         for r in [*catalog["teams"], *eras, *catalog.get("season_logos", [])]
+                        if "asset" in r
                     }
                 ),
             }

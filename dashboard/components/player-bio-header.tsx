@@ -9,8 +9,8 @@ import { PageHeader } from "./ui/panel";
 import { honours } from "@/lib/awards";
 import { countryFlag } from "@/lib/country-flags";
 import { formatDate } from "@/lib/format-date";
-import catalog from "@/lib/team-branding.json";
 import { teamBrandColor } from "@/lib/team-colors";
+import { teamArtwork, teamNameAt } from "@/lib/team-era";
 import { readStatsReturn, STATS_RETURN_PARAM, markStatsRestore } from "@/lib/stats-return";
 import { BackButton, onBareEscape, useNavLabel } from "./ui/back-button";
 import type { PlayerBio } from "@/lib/types";
@@ -27,12 +27,9 @@ export function formatHeight(inches: number | null | undefined): string | null {
   return `${feet}′${whole}${fraction}″`;
 }
 
-function teamName(tricode: string): string {
-  return catalog.teams.find(entry => entry.tricode === tricode)?.artwork_name ?? tricode;
-}
-
-function teamArtwork(tricode: string | undefined): string | null {
-  return tricode ? catalog.teams.find(entry => entry.tricode === tricode)?.asset ?? null : null;
+/** The team's name in that season (the Philadelphia Warriors in 1961-62), else today's. */
+function teamName(tricode: string, season?: string | null): string {
+  return teamNameAt(tricode, season) ?? tricode;
 }
 
 function ordinalSuffix(value: number): string {
@@ -116,25 +113,27 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   // the page's observed season team, explicitly labelled as observed.
   const listedTeam = bio?.current_team?.team_tricode ?? null;
   const lastTeam = bio?.last_team?.team_tricode;
+  // A last team is drawn as it was in the season he last played for it (the 1961-62 Warriors).
+  const lastSeason = bio?.last_team?.listing_season ?? null;
   const headerTeam = listedTeam
-    ? { tricode: listedTeam, name: teamName(listedTeam) }
-    : lastTeam ? { tricode: lastTeam, name: teamName(lastTeam) }
-    : team ? { tricode: team.tricode, name: team.name } : null;
+    ? { tricode: listedTeam, name: teamName(listedTeam), season: null }
+    : lastTeam ? { tricode: lastTeam, name: teamName(lastTeam, lastSeason), season: lastSeason }
+    : team ? { tricode: team.tricode, name: team.name, season: null } : null;
   const teamPrefix = listedTeam ? "" : lastTeam ? "Last with " : "Observed with ";
   // Off every NBA roster today (the free-agency tracker's evidence): the state leads the details.
   const status = bio?.current_status;
   const state = status?.state === "abroad" ? `Abroad${status.move?.club ? ` · ${status.move.club}` : ""}`
     : status?.state === "retired" ? "Retired" : status?.state === "free_agent" ? "Free agent" : null;
   const details = [state, bio?.listed_position, bio?.jersey && !status ? `#${bio.jersey}` : null].filter((part): part is string => part != null);
-  const tint = teamBrandColor(headerTeam?.tricode);
-  const watermark = teamArtwork(headerTeam?.tricode);
+  const tint = teamBrandColor(headerTeam?.tricode, headerTeam?.season);
+  const watermark = teamArtwork(headerTeam?.tricode, headerTeam?.season)?.asset ?? null;
 
   return (
     <div className="player-bio-header" style={tint ? { "--team-tint": tint } as CSSProperties : undefined}>
       {/* From the Stats table: back to its exact rows and scroll; from anywhere else, the shared Back. */}
       {returnHref ? <Button size="xs" variant="primary" icon="left" onClick={() => { markStatsRestore(); router.push(returnHref); }}>
         Back to table<kbd className="player-back-kbd" aria-hidden="true">Esc</kbd>
-      </Button> : !fromStats && <BackButton parent={{ href: "/players", label: "Player Directory" }} />}
+      </Button> : !fromStats && <BackButton parent={{ href: "/players", label: "Player Dashboard" }} />}
       <div className="player-bio-main">
         <span className="player-bio-photo">
           {watermark && <TeamWatermark asset={watermark} className="player-bio-watermark" />}
@@ -145,7 +144,7 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
           <PageHeader title={name} className="player-bio-name" />
           {(headerTeam || details.length > 0) && <p className="player-bio-identity">
             {headerTeam && <span className="player-bio-identity-team">
-              <TeamLogo team={headerTeam.tricode} size={36} />{teamPrefix}{headerTeam.name}
+              <TeamLogo team={headerTeam.tricode} season={headerTeam.season} size={36} />{teamPrefix}{headerTeam.name}
             </span>}
             {details.length > 0 && <span className="player-bio-identity-details">{details.map(part => <span key={part}>{part}</span>)}</span>}
           </p>}
