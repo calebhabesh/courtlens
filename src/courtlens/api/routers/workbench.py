@@ -1598,11 +1598,14 @@ def get_playoffs_endpoint(
         None, description="Optional temporal replay cutoff date (YYYY-MM-DD)"
     ),
     cutoffDate: date | None = Query(None, description="CamelCase alias for cutoff_date"),
+    release_id: str | None = Query(None, alias="releaseId"),
     session: Session = Depends(get_db),
 ) -> PlayoffBracketResponse:
     """Retrieve canonical playoff bracket hierarchy, rounds 1-4, and seed evidence."""
     effective_cutoff = cutoff_date or cutoffDate
-    return get_playoff_bracket(session, season=season, cutoff_date=effective_cutoff)
+    return get_playoff_bracket(
+        session, season=season, cutoff_date=effective_cutoff, release_id=release_id
+    )
 
 
 @router.get("/playoffs/series/{series_id}", response_model=PlayoffSeriesDetailResponse)
@@ -1612,12 +1615,13 @@ def get_playoff_series_detail_endpoint(
         None, description="Optional temporal replay cutoff date (YYYY-MM-DD)"
     ),
     cutoffDate: date | None = Query(None, description="CamelCase alias for cutoff_date"),
+    release_id: str | None = Query(None, alias="releaseId"),
     session: Session = Depends(get_db),
 ) -> PlayoffSeriesDetailResponse:
     """Retrieve playoff series detail with 7-game cards, Four Factors, and player stats."""
     effective_cutoff = cutoff_date or cutoffDate
     return get_playoff_series_detail(
-        session, series_id_or_slug=series_id, cutoff_date=effective_cutoff
+        session, series_id_or_slug=series_id, cutoff_date=effective_cutoff, release_id=release_id
     )
 
 
