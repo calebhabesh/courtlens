@@ -50,6 +50,14 @@ from courtlens.domain.teams import (
     resolve_team_tricode,
     team_identity,
 )
+from courtlens.services.history_teams import (
+    SEASON_TOTALS_NOTE,
+    find_team,
+    history_four_factors,
+    history_record,
+    history_six_factors,
+    season_teams,
+)
 from courtlens.services.workbench_analytics import ResolvedContext
 from courtlens.workbench_models import WorkbenchTeamGame
 
@@ -160,6 +168,11 @@ def _compute_all_team_four_factors(
     context: ResolvedContext,
 ) -> tuple[dict[str, dict[str, Any]], dict[str, float], dict[str, dict[str, dict[str, Any]]]]:
     """Internal helper to compute four factors, pace, and rankings for all teams in context."""
+    history = season_teams(session, context)
+    if history is not None:
+        # A season served as totals (before 1983-84): the same factors from season totals.
+        totals_factors = history_four_factors(history)
+        return totals_factors, *compute_league_rankings(totals_factors)
     all_games = load_context_team_games(session, context)
 
     # Index by (game_id, team_id) -> game
@@ -325,8 +338,8 @@ def get_team_four_factors(
             "tricode": tricode,
             "name": name,
             "city": team_info_obj.city if team_info_obj else "",
-            "conference": team_info_obj.conference if team_info_obj else "",
-            "division": team_info_obj.division if team_info_obj else "",
+            "conference": (team_info_obj.conference or "") if team_info_obj else "",
+            "division": (team_info_obj.division or "") if team_info_obj else "",
         },
         "context": context.to_dict(),
         "games_played": factors.get("games_played", 0),
@@ -364,6 +377,8 @@ def get_team_schedule(
         info = team_identity(team_id, context.season)
         if not info:
             raise HTTPException(status_code=404, detail="team not found in snapshot")
+    history = season_teams(session, context)
+    totals_team = find_team(history, team_id, context.season) if history else None
 
     # Enrich each game with opponent details
     enriched: list[dict[str, Any]] = []
@@ -392,19 +407,25 @@ def get_team_schedule(
             "tricode": tricode,
             "name": name,
             "city": team_info_obj.city if team_info_obj else "",
-            "conference": team_info_obj.conference if team_info_obj else "",
-            "division": team_info_obj.division if team_info_obj else "",
+            "conference": (team_info_obj.conference or "") if team_info_obj else "",
+            "division": (team_info_obj.division or "") if team_info_obj else "",
         },
         "context": context.to_dict(),
-        "overall_record": sched_context["overall_record"],
-        "home_split": sched_context["home_split"],
-        "away_split": sched_context["away_split"],
+        # A season served as totals has its record but no games: no splits, never 0-0.
+        "overall_record": history_record(totals_team)
+        if totals_team
+        else sched_context["overall_record"],
+        "home_split": None if history is not None else sched_context["home_split"],
+        "away_split": None if history is not None else sched_context["away_split"],
         "rest_splits": sched_context["rest_splits"],
         "back_to_back_summary": sched_context["back_to_back_summary"],
         "longest_homestand": sched_context["longest_homestand"],
         "longest_road_trip": sched_context["longest_road_trip"],
         "games": sched_context["games"],
-        "warnings": list(context.warnings),
+        "warnings": [
+            *context.warnings,
+            *([SEASON_TOTALS_NOTE.format(season=context.season)] if history is not None else []),
+        ],
     }
 
 
@@ -445,7 +466,7 @@ def get_team_peers(
                 "tricode": p_info.tricode if p_info else resolve_team_tricode(p_id),
                 "name": p_info.name if p_info else resolve_team_label(p_id),
                 "city": p_info.city if p_info else "",
-                "conference": p_info.conference if p_info else "",
+                "conference": (p_info.conference or "") if p_info else "",
                 "distance": p["distance"],
                 "similarity_score": p["similarity_score"],
                 "dimension_diffs": p["dimension_diffs"],
@@ -503,6 +524,16 @@ def get_teams_six_factors(
     and the rolling trend always cover every game in scope; schedule strength is solved over the
     window's games.
     """
+    history = season_teams(session, context)
+    if history is not None:
+        return history_six_factors(
+            context,
+            history,
+            window_days=window_days,
+            offense_luck=offense_luck,
+            defense_luck=defense_luck,
+            venue=venue,
+        )
     all_games = load_context_team_games(session, context)
     last_game = max((g["game_date"] for g in all_games), default=None)
     window_start = None
