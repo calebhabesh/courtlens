@@ -436,3 +436,79 @@ def parse_team_records(raw: bytes) -> list[dict[str, Any]]:
             count(cells["attendance"].text.replace(",", "")) if "attendance" in cells else None
         )
     return list(records.values())
+
+
+_SERIES_ROW = re.compile(
+    r"<tr>\s*<td>(?:(?!</td>).)*?<strong>(?P<round>[^<]+)</strong>(?:(?!</td>).)*?</td>"
+    r"\s*<td>(?P<teams>.*?)</td>",
+    re.S,
+)
+_SERIES_RESULT = re.compile(r"\((\d+)-(\d+)\)")
+_SERIES_GAME = re.compile(
+    r'<a href="/boxscores/(?P<stamp>\d{8})0(?P<home>[A-Z]{3})\.html">Game (?P<number>\d+)</a>'
+    r".*?<td>(?P<visitor_pts>\d*)</td>.*?<td>(?P<home_pts>\d*)</td>",
+    re.S,
+)
+
+
+def _playoff_block(page: str) -> str | None:
+    """The playoff series table, nested game tables included (they close before it does)."""
+    start = page.find('id="all_playoffs"')
+    if start < 0:
+        return None
+    start = page.rfind("<table", 0, start)
+    depth, at = 0, start
+    for tag in re.finditer(r"<(/?)table\b", page[start:]):
+        depth += -1 if tag.group(1) else 1
+        if depth == 0:
+            at = start + tag.end()
+            break
+    return page[start:at]
+
+
+def parse_playoff_series(raw: bytes) -> list[dict[str, Any]]:
+    """Every playoff series on a league season page, as the source lists them (latest round first).
+
+    Each series has the round's name, the winner and loser codes (source codes, ``PHO``), the
+    series result and its games: number, date, home code and both scores. A series the page
+    lists without games keeps an empty list.
+    """
+    block = _playoff_block(raw.decode("utf-8"))
+    if block is None:
+        return []
+    series: list[dict[str, Any]] = []
+    # Each series row is followed by its toggleable games row (until the next series row).
+    rows = list(_SERIES_ROW.finditer(block))
+    for index, row in enumerate(rows):
+        end = rows[index + 1].start() if index + 1 < len(rows) else len(block)
+        teams = _TEAM_LINK.findall(row.group("teams"))
+        result = _SERIES_RESULT.search(row.group("teams"))
+        if len(teams) != 2 or result is None:
+            continue
+        winner, loser = teams[0][0], teams[1][0]
+        games = []
+        for game in _SERIES_GAME.finditer(block[row.end() : end]):
+            home = game.group("home")
+            visitor = loser if home == winner else winner
+            stamp = game.group("stamp")
+            games.append(
+                {
+                    "number": int(game.group("number")),
+                    "date": f"{stamp[:4]}-{stamp[4:6]}-{stamp[6:]}",
+                    "home": home,
+                    "visitor": visitor,
+                    "home_points": count(game.group("home_pts")),
+                    "visitor_points": count(game.group("visitor_pts")),
+                }
+            )
+        series.append(
+            {
+                "round": html.unescape(row.group("round")).strip(),
+                "winner": winner,
+                "loser": loser,
+                "winner_wins": int(result.group(1)),
+                "loser_wins": int(result.group(2)),
+                "games": games,
+            }
+        )
+    return series

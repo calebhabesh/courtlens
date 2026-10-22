@@ -97,14 +97,16 @@ export interface TeamIdentityProps {
   size?: IdentitySize;
   href?: string;
   className?: string;
+  /** Draw the team as it was this season (the 1965-66 Celtics' logo). */
+  season?: string | null;
 }
 
 /** A team as a primary subject: logo, name and team-color accent. */
-export function TeamIdentity({ team, name, subtitle, size = "md", href, className = "" }: TeamIdentityProps) {
+export function TeamIdentity({ team, name, subtitle, size = "md", href, className = "", season }: TeamIdentityProps) {
   const logo = { sm: 20, md: 32, lg: 56, xl: 80 }[size];
   return (
     <div className={`ui-identity ui-identity-team ui-identity-${size} ${className}`} style={teamStyle(team)}>
-      <span className="ui-identity-media"><TeamLogo team={team} size={logo} /></span>
+      <span className="ui-identity-media"><TeamLogo team={team} season={season} size={logo} /></span>
       <span className="ui-identity-text">
         <Name href={href}>{name ?? teamName(team)}</Name>
         {subtitle && <span className="ui-identity-subtitle">{subtitle}</span>}

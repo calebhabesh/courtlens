@@ -9,6 +9,7 @@ Implements Block B17:
 
 from __future__ import annotations
 
+import re
 from datetime import date
 from typing import Any
 
@@ -41,6 +42,14 @@ from courtlens.domain.workbench_playoffs import (
     parse_season_param,
     reconstruct_regular_season_seeds,
 )
+from courtlens.services.playoff_series import (
+    FIRST_RECONSTRUCTED_SEEDS,
+    find_series,
+    season_series,
+    series_bracket,
+    series_detail,
+)
+from courtlens.services.workbench_analytics import resolve_workbench_context
 from courtlens.workbench_models import (
     WorkbenchIdentity,
     WorkbenchPlayerGame,
@@ -54,6 +63,7 @@ def load_reconstructed_seeds(
     canonical_season: str,
     playoff_start_date: date | None = None,
     cutoff_date: date | None = None,
+    dataset_id: str | None = None,
 ) -> tuple[dict[str, list[PlayoffSeedEvidence]], dict[str, int]]:
     """Compute reconstructed regular-season seedings strictly prior to playoff tipoff.
 
@@ -69,6 +79,9 @@ def load_reconstructed_seeds(
         WorkbenchTeamGame.season == canonical_season,
         WorkbenchTeamGame.phase == "regular_season",
     )
+    # One release's games only: every published dataset holds the same seasons.
+    if dataset_id is not None:
+        query = query.where(WorkbenchTeamGame.dataset_id == dataset_id)
 
     effective_cutoff = cutoff_date
     if playoff_start_date is not None:
@@ -122,14 +135,35 @@ def get_playoff_bracket(
     session: Session,
     season: int | str = 2024,
     cutoff_date: date | None = None,
+    release_id: str | None = None,
 ) -> PlayoffBracketResponse:
     """Retrieve full playoff bracket hierarchy (rounds 1-4) with series summaries."""
     canonical_season, ending_year, start_yy = parse_season_param(season)
+    dataset_id = resolve_workbench_context(session, release_id=release_id).dataset_id
 
-    # 1. Query playoff schedules for this season
+    # A completed season: its series from the season page, games linked to this release.
+    completed = season_series(session, dataset_id, canonical_season)
+    if completed is not None:
+        starts = [g.date for s in completed for g in s.games]
+        seeds, seed_lookup = (
+            load_reconstructed_seeds(
+                session,
+                canonical_season=canonical_season,
+                playoff_start_date=min(starts) if starts else None,
+                cutoff_date=cutoff_date,
+                dataset_id=dataset_id,
+            )
+            if canonical_season >= FIRST_RECONSTRUCTED_SEEDS
+            else ({}, {})
+        )
+        return series_bracket(canonical_season, completed, cutoff_date, seeds, seed_lookup)
+
+    # 1. Query playoff schedules for this season (this release only)
     schedules = session.scalars(
         select(WorkbenchSchedule)
         .where(
+            WorkbenchSchedule.dataset_id == dataset_id,
+            WorkbenchSchedule.season == canonical_season,
             WorkbenchSchedule.game_id.like(f"004{start_yy}%"),
         )
         .order_by(WorkbenchSchedule.game_id.asc())
@@ -143,6 +177,7 @@ def get_playoff_bracket(
         canonical_season=canonical_season,
         playoff_start_date=playoff_start_date,
         cutoff_date=cutoff_date,
+        dataset_id=dataset_id,
     )
 
     if not schedules:
@@ -159,7 +194,10 @@ def get_playoff_bracket(
     # 3. Query all team games for these playoff schedules
     playoff_game_ids = [s.game_id for s in schedules]
     team_games = session.scalars(
-        select(WorkbenchTeamGame).where(WorkbenchTeamGame.game_id.in_(playoff_game_ids))
+        select(WorkbenchTeamGame).where(
+            WorkbenchTeamGame.dataset_id == dataset_id,
+            WorkbenchTeamGame.game_id.in_(playoff_game_ids),
+        )
     ).all()
 
     # Map team games by (game_id, team_id)
@@ -317,6 +355,7 @@ def get_playoff_bracket(
 def resolve_series_identifier(
     session: Session,
     identifier: str,
+    dataset_id: str | None = None,
 ) -> tuple[str, int, str]:
     """Resolve raw series ID, 10-digit game ID, or slug alias into (series_id, year, season)."""
     raw = identifier.strip()
@@ -345,11 +384,10 @@ def resolve_series_identifier(
 
     for y in candidate_years:
         _, ending_year, start_yy = parse_season_param(y)
-        scheds = session.scalars(
-            select(WorkbenchSchedule)
-            .where(WorkbenchSchedule.game_id.like(f"004{start_yy}%"))
-            .order_by(WorkbenchSchedule.game_id.asc())
-        ).all()
+        query = select(WorkbenchSchedule).where(WorkbenchSchedule.game_id.like(f"004{start_yy}%"))
+        if dataset_id is not None:
+            query = query.where(WorkbenchSchedule.dataset_id == dataset_id)
+        scheds = session.scalars(query.order_by(WorkbenchSchedule.game_id.asc())).all()
 
         series_map: dict[str, list[WorkbenchSchedule]] = {}
         for s in scheds:
@@ -375,18 +413,62 @@ def resolve_series_identifier(
     raise HTTPException(status_code=404, detail=f"Playoff series '{identifier}' not found.")
 
 
+def _identifier_season(identifier: str) -> str | None:
+    """The season a slug ("1991-finals-chi-lal"), history id ("1991-4-L0") or NBA id names."""
+    raw = identifier.strip()
+    year = re.match(r"^(\d{4})-", raw)
+    if year:
+        ending = int(year.group(1))
+        return f"{ending - 1}-{ending % 100:02d}"
+    if raw.startswith("004") and len(raw) in (9, 10):
+        try:
+            return parse_playoff_game_id(raw if len(raw) == 10 else f"{raw}1").canonical_season
+        except ValueError:
+            return None
+    return None
+
+
 def get_playoff_series_detail(
     session: Session,
     series_id_or_slug: str,
     cutoff_date: date | None = None,
+    release_id: str | None = None,
 ) -> PlayoffSeriesDetailResponse:
     """Retrieve playoff series detail with 7-game cards, Four Factors, and player stats."""
-    series_id, ending_year, canonical_season = resolve_series_identifier(session, series_id_or_slug)
+    dataset_id = resolve_workbench_context(session, release_id=release_id).dataset_id
+    season = _identifier_season(series_id_or_slug)
+    completed = season_series(session, dataset_id, season) if season else None
+    if completed is not None:
+        found = find_series(completed, series_id_or_slug)
+        if found is None:
+            raise HTTPException(
+                status_code=404, detail=f"Playoff series '{series_id_or_slug}' not found."
+            )
+        starts = [g.date for s in completed for g in s.games]
+        _, seed_lookup = (
+            load_reconstructed_seeds(
+                session,
+                canonical_season=found.season,
+                playoff_start_date=min(starts) if starts else None,
+                cutoff_date=cutoff_date,
+                dataset_id=dataset_id,
+            )
+            if found.season >= FIRST_RECONSTRUCTED_SEEDS
+            else ({}, {})
+        )
+        return series_detail(session, dataset_id, found, cutoff_date, seed_lookup)
 
-    # 1. Query schedules for this series
+    series_id, ending_year, canonical_season = resolve_series_identifier(
+        session, series_id_or_slug, dataset_id
+    )
+
+    # 1. Query schedules for this series (this release only)
     schedules = session.scalars(
         select(WorkbenchSchedule)
-        .where(WorkbenchSchedule.game_id.like(f"{series_id}%"))
+        .where(
+            WorkbenchSchedule.dataset_id == dataset_id,
+            WorkbenchSchedule.game_id.like(f"{series_id}%"),
+        )
         .order_by(WorkbenchSchedule.game_id.asc())
     ).all()
 
@@ -419,6 +501,7 @@ def get_playoff_series_detail(
         canonical_season=canonical_season,
         playoff_start_date=schedules[0].game_date,
         cutoff_date=cutoff_date,
+        dataset_id=dataset_id,
     )
     t1_seed = seed_lookup.get(team1_id)
     t2_seed = seed_lookup.get(team2_id)
@@ -426,7 +509,10 @@ def get_playoff_series_detail(
     # 3. Query all team games for this series
     all_game_ids = [s.game_id for s in schedules]
     team_games = session.scalars(
-        select(WorkbenchTeamGame).where(WorkbenchTeamGame.game_id.in_(all_game_ids))
+        select(WorkbenchTeamGame).where(
+            WorkbenchTeamGame.dataset_id == dataset_id,
+            WorkbenchTeamGame.game_id.in_(all_game_ids),
+        )
     ).all()
 
     team_games_map: dict[tuple[str, str], WorkbenchTeamGame] = {
@@ -583,7 +669,10 @@ def get_playoff_series_detail(
     # 6. Player series statistics aggregation
     player_games = (
         session.scalars(
-            select(WorkbenchPlayerGame).where(WorkbenchPlayerGame.game_id.in_(completed_game_ids))
+            select(WorkbenchPlayerGame).where(
+                WorkbenchPlayerGame.dataset_id == dataset_id,
+                WorkbenchPlayerGame.game_id.in_(completed_game_ids),
+            )
         ).all()
         if completed_game_ids
         else []
