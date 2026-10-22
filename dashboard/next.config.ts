@@ -13,7 +13,9 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   devIndicators: false,
   experimental: {
-    typedEnv: true
+    typedEnv: true,
+    // Upgraded by `next upgrade --agent=security` (16.4.0 to 16.4.2).
+    agentUpgrade: "security"
   },
   async headers() {
     return [
