@@ -3,7 +3,8 @@ import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import { franchiseOf, seasonTeamId, teamArtwork } from "@/lib/team-era";
 import { getTeamDetail, getTeamPeers, getTeamSchedule, getTeamsSixFactors, getWorkbenchCatalog } from "@/lib/workbench-api";
-import { ALL_COLUMNS, columnRanks, withStandings } from "@/lib/team-six-factors";
+import { ALL_COLUMNS, columnRanks, standingGroup, withStandings } from "@/lib/team-six-factors";
+import { FIRST_GAME_LOG_SEASON, isTotalsSeason } from "@/lib/season-basis";
 import { PageShell } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
 import { GatedNote } from "@/components/ui/gated-note";
@@ -48,8 +49,11 @@ export default async function TeamDetailPage({ params, searchParams }: {
   const artwork = teamArtwork(team.tricode, season);
   const name = artwork?.artwork_name ?? team.name;
   const found = factors?.teams.find(entry => entry.tricode === team.tricode || entry.team_id === team.id);
-  // Seed and games back within the team's conference.
-  const factorTeam = found && factors ? withStandings(factors.teams.filter(entry => entry.conference === found.conference)).find(entry => entry.team_id === found.team_id) ?? found : null;
+  // Seed and games back within the team's conference (its division before 1970-71).
+  const group = found ? standingGroup(found)?.key : undefined;
+  const factorTeam = found && factors ? withStandings(factors.teams.filter(entry => standingGroup(entry)?.key === group)).find(entry => entry.team_id === found.team_id) ?? found : null;
+  // Before the game logs a season is whole-season totals: no games, so no trend or game log.
+  const totals = isTotalsSeason(catalog, season);
   const netRank = factors && factorTeam ? columnRanks(factors.teams, ALL_COLUMNS.find(entry => entry.key === "net")!, "per_100").get(factorTeam.team_id) : undefined;
   const scopeParams = new URLSearchParams({ season, phase, ...(beforeDate ? { beforeDate } : {}), ...(releaseId ? { releaseId } : {}) }).toString();
   const header = <TeamProfileHeader name={name} tricode={team.tricode} season={season} phaseLabel={phase === "playoffs" ? "Playoffs" : "Regular Season"}
@@ -62,8 +66,9 @@ export default async function TeamDetailPage({ params, searchParams }: {
       {factors && factorTeam && <TeamStandingSection data={factors} team={factorTeam} />}
       {factors && factorTeam && <TeamSixFactorsSection data={factors} team={factorTeam} />}
       {factors && factorTeam && <TeamVenueSection all={factors} home={home} away={away} team={factorTeam} />}
-      {factorTeam && <TeamTrendSection team={factorTeam} />}
-      {schedule && <TeamGameLogSection games={schedule.games} season={season} scopeParams={scopeParams} />}
+      {factorTeam && factorTeam.trend.length > 0 && <TeamTrendSection team={factorTeam} />}
+      {schedule && <TeamGameLogSection games={schedule.games} season={season} scopeParams={scopeParams}
+        empty={totals ? `Game logs start in ${FIRST_GAME_LOG_SEASON}; ${season} has season totals only.` : undefined} />}
       <TeamDepthSection catalog={catalog} teamId={dataTeamId} scope={{ releaseId, season, phase, beforeDate: beforeDate || undefined }} />
       {peers && <TeamPeersSection peers={peers} season={season} scopeParams={scopeParams} />}
     </div>

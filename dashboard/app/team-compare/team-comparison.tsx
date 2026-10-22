@@ -1,11 +1,13 @@
 "use client";
 
+import { FIRST_GAME_LOG_SEASON, isTotalsSeason, seasonOptionLabel } from "@/lib/season-basis";
 import { Fragment, useEffect, useRef, useState, useTransition, type CSSProperties } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { HistoricalSlate, LivePlayer } from "@/lib/live";
 import { liveRequest } from "@/lib/live";
 import type { PlayerResearchItem, TeamDetailResponse, TeamFourFactorsResponse, TeamScheduleGameItem, TeamScheduleResponse, WorkbenchCatalog, WorkbenchQueryResponse } from "@/lib/types";
+import type { TeamStarterEvidence } from "@/lib/workbench-api";
 import { formatDate, throughDateFromBefore } from "@/lib/format-date";
 import { teamAccent, teamBrandColor } from "@/lib/team-colors";
 import { TeamLogo } from "@/components/team-logo";
@@ -21,9 +23,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { SearchField } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { Button, IconButton, Select, Segmented } from "@/components/ui/kit";
-import type starterSnapshot from "./starter-evidence.bf09e1d964030a116b25996df57e53b051f5f45500e0343781a9d7784bc3d563.json";
 
-type StarterEvidence = (typeof starterSnapshot.scopes)[number];
+type StarterEvidence = TeamStarterEvidence;
 
 export type TeamSide = {
   /** Franchise id: the selection the URL, picker and swap keep. */
@@ -198,7 +199,10 @@ export function TeamComparison({ a, b, catalog, phase }: { a: TeamSide; b: TeamS
   const [drawerScope, setDrawerScope] = useState<"rotations" | "stats">("rotations");
   const [metricQuery, setMetricQuery] = useState("");
   const metricLabel = activeSpec.label;
-  const series = seriesSummary(a, b, phase);
+  // A season before the game logs (season totals only) has no games to make a series from.
+  const gameless = [a, b].map(side => side.season).filter(season => isTotalsSeason(catalog, season));
+  const series = gameless.length ? null : seriesSummary(a, b, phase);
+  const gamelessNote = gameless.length ? `Game logs start in ${FIRST_GAME_LOG_SEASON}; ${[...new Set(gameless)].join(" and ")} ${gameless.length > 1 && gameless[0] !== gameless[1] ? "have" : "has"} season totals only, so there are no games to show.` : null;
   const theme: TeamTheme = {
     "--tc-team-a": teamAccent(brandKey(a), a.season) ?? "var(--color-identity-a)",
     "--tc-team-b": teamAccent(brandKey(b), b.season) ?? "var(--color-identity-b)",
@@ -256,7 +260,7 @@ export function TeamComparison({ a, b, catalog, phase }: { a: TeamSide; b: TeamS
   const unitRole = (side: TeamSide, player: PlayerResearchItem | undefined) => side.starterEvidence?.unit_players.find(row => row.player_id === player?.player_id)?.position ?? "—";
   const seasonPicker = (side: TeamSide, key: "a" | "b") => <Select size="sm" aria-label={`Team ${key.toUpperCase()} season`} value={side.season}
     onChange={e => change({ [key === "a" ? "seasonA" : "seasonB"]: e.target.value })}>
-    {[...catalog.seasons].reverse().map(season => <option key={season}>{season}</option>)}
+    {[...catalog.seasons].reverse().map(season => <option key={season} value={season}>{seasonOptionLabel(season)}</option>)}
   </Select>;
   const teamSlot = (side: TeamSide, key: "a" | "b") => <div className="tc-team" data-side={key}>
     <div className="tc-team-art"><TeamLogo team={brandKey(side)} season={side.season} size={144} />
@@ -339,7 +343,7 @@ export function TeamComparison({ a, b, catalog, phase }: { a: TeamSide; b: TeamS
           {view === "rotations" && <p className="tc-coverage">Verified starting lineups: {tricode(a)} {a.starterEvidence?.verified_games ?? "—"}/{a.starterEvidence?.team_games ?? a.detail?.record.games_played ?? "—"} games · {tricode(b)} {b.starterEvidence?.verified_games ?? "—"}/{b.starterEvidence?.team_games ?? b.detail?.record.games_played ?? "—"} games{!observedUnit ? " · Starting unit unavailable in this scope." : ""}{darkoOff ? " · DARKO is published for the end of the phase only." : ""}</p>}
           <footer className="tc-footer"><BrandMark size={20} framed={false} /><CourtLensWordmark height={16} /></footer>
         </section>
-        <TeamGameHistoryTray a={a} b={b} phase={phase} releaseId={catalog.release_id} series={series} onUrlChange={presentation} />
+        <TeamGameHistoryTray a={a} b={b} phase={phase} releaseId={catalog.release_id} series={series} gamelessNote={gamelessNote} onUrlChange={presentation} />
       </div>
     </div>
     <Drawer isOpen={editing} onClose={() => setEditing(false)} title="Edit Metrics" className="pvp-drawer">
@@ -446,8 +450,10 @@ function sortBoxPlayers(players: LivePlayer[], code: string): LivePlayer[] {
     .sort((x, y) => num(y.statistics.points) - num(x.statistics.points) || num(y.statistics.minutes_seconds) - num(x.statistics.minutes_seconds) || x.name.localeCompare(y.name));
 }
 
-function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
+function TeamGameHistoryTray({ a, b, phase, releaseId, series, gamelessNote = null, onUrlChange }: {
   a: TeamSide; b: TeamSide; phase: string; releaseId: string; series: SeriesSummary | null;
+  /** Why there are no games at all (a season before the game logs); null when games exist. */
+  gamelessNote?: string | null;
   onUrlChange: (values: Record<string, string>) => void;
 }) {
   const params = useSearchParams();
@@ -565,7 +571,7 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, onUrlChange }: {
     {kept && <div className="tc-tray-drawer" data-open={open || undefined} ref={drawerRef} inert={!open}>
       <div className="tc-tray-clip">
         <div className="tc-tray-body" id="tc-history-drawer">
-          {series ? games.length > 0 ? <>
+          {gamelessNote ? <p className="tc-history-empty">{gamelessNote}</p> : series ? games.length > 0 ? <>
             <div className="tc-history-scores" role="group" aria-label={`${series.label} game scores`}>
                 {games.map((g, idx) => {
                   const winA = g.is_win === true, winB = g.is_win === false;

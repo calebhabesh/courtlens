@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ALL_COLUMNS, TEAM_VIEWS, columnRanks, formatValue, sortTeams, viewColumns, withStandings, type SixFactorTeam } from "./team-six-factors";
+import { ALL_COLUMNS, TEAM_VIEWS, columnRanks, formatValue, sortTeams, standingGroup, viewColumns, withStandings, type SixFactorTeam } from "./team-six-factors";
 
 const rates = { ts_pct: 0.58, tov_per_100: 13, orb_pct: 0.26, ftr: 0.26, fg3a_per_100: 36, fg3_pct: 0.36, opp_ts_pct: 0.57, opp_tov_per_100: 14, drb_pct: 0.74, opp_ftr: 0.25, opp_fg3a_per_100: 35, opp_fg3_pct: 0.35 };
 const team = (id: string, net: number | null, extra: Partial<SixFactorTeam> = {}): SixFactorTeam => ({
@@ -55,5 +55,25 @@ describe("team six factors", () => {
     expect(formatValue(0.5814, "pct", "per_100")).toBe("58.1%");
     expect(formatValue(0.2614, "ratio", "totals")).toBe("0.261");
     expect(formatValue(null, "signed", "per_100")).toBe("—");
+  });
+});
+
+describe("seasons served as totals", () => {
+  it("seed a season before conferences by its division", () => {
+    expect(standingGroup({ conference: "Eastern", division: "Atlantic" })).toMatchObject({ label: "Eastern Conference", short: "East" });
+    expect(standingGroup({ conference: null, division: "Western" })).toMatchObject({ label: "Western Division", short: "Western Division" });
+    expect(standingGroup({ conference: null, division: null })).toBeNull();
+  });
+
+  it("show unknown last ten, streak, close games and totals as a dash, never zero", () => {
+    const old = team("BOS", 4, { possessions: null, close_wins: null, close_losses: null, o_ts: null,
+      standings: { wins: 54, losses: 26, last10_wins: null, last10_losses: null, streak: null } });
+    expect(column("last10").display!(old)).toBe("—");
+    expect(column("streak").display!(old)).toBe("—");
+    expect(column("close").display!(old)).toBe("—");
+    expect(column("close").value(old, "per_100")).toBeNull();
+    expect(column("win_pct").display!(old)).toBe("54–26");
+    // A relative term over unknown possessions has no total.
+    expect(column("o_ts").value(team("X", 1, { possessions: null }), "totals")).toBeNull();
   });
 });
