@@ -27,7 +27,7 @@ import httpx
 from sqlalchemy import Engine, select
 from sqlalchemy.orm import Session
 
-from courtlens.domain.teams import get_team_by_tricode, get_team_info
+from courtlens.domain.teams import franchise_of, get_team_by_tricode, get_team_info
 from courtlens.models import utc_now
 from courtlens.services.workbench_jobs import PLACEHOLDER_PORTRAIT_SHA256
 from courtlens.workbench_models import PlayerSeasonPortrait, WorkbenchPlayerGame
@@ -228,21 +228,48 @@ def find_season_portrait(
     session: Session, player_id: str, season: str, team: str | None = None
 ) -> PlayerSeasonPortrait | None:
     """The player's photo for that season: the named team's when it exists, else the season's
-    latest-acquired one (a traded player's other team)."""
+    latest-acquired one (a traded player's other team). A season before NBA.com's season photos
+    with none of its own takes the nearest season's photo, the same franchise's first."""
     rows = session.scalars(
         select(PlayerSeasonPortrait)
         .where(
             PlayerSeasonPortrait.player_id == player_id,
-            PlayerSeasonPortrait.season == season,
             PlayerSeasonPortrait.status == "active",
         )
         .order_by(PlayerSeasonPortrait.acquired_at.desc())
     ).all()
-    if not rows:
-        return None
+    same = [row for row in rows if row.season == season]
+    if not same:
+        return _nearest_portrait(list(rows), season, team)
     resolved = resolve_team(team) if team else None
     if resolved is not None:
-        for row in rows:
+        for row in same:
             if row.team_id == resolved[0]:
                 return row
-    return rows[0]
+    return same[0]
+
+
+# NBA.com's team-season headshots begin in 2015-16 (earlier seasons answer 403).
+SEASON_PHOTOS_FROM = "2015-16"
+
+
+def _nearest_portrait(
+    rows: list[PlayerSeasonPortrait], season: str, team: str | None
+) -> PlayerSeasonPortrait | None:
+    """For a season before NBA.com's season photos: the nearest season's photo with the same
+    franchise (Anthony Davis's 2012-13 Hornets season gets his 2015-16 Pelicans photo), else the
+    nearest season's photo with any team (LeBron's 2010-11 Heat season gets his 2015-16 Cavaliers
+    photo rather than a current one from a decade later). None when the player has none."""
+    if season >= SEASON_PHOTOS_FROM or not rows:
+        return None
+    franchise = franchise_of(team) if team else None
+    year = int(season[:4])
+    return min(
+        rows,
+        key=lambda row: (
+            row.team_id != franchise,
+            abs(int(row.season[:4]) - year),
+            row.source_name != SEASON_PORTRAIT_SOURCE,
+            row.season,
+        ),
+    )

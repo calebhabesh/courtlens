@@ -126,7 +126,17 @@ def test_traded_season_prefers_the_named_team(session: Session, tmp_path: Path) 
     by_id = find_season_portrait(session, "201142", "2022-23", "1610612756")
     assert named is not None and named.team_tricode == "BKN"
     assert by_id is not None and by_id.team_tricode == "PHX"
-    assert find_season_portrait(session, "201142", "2014-15") is None
+    assert find_season_portrait(session, "201142", "2016-17") is None
+    # A pre-2015-16 season takes the same franchise's nearest season photo (NJN → Nets' 2022-23).
+    nearest = find_season_portrait(session, "201142", "2010-11", "NJN")
+    assert nearest is not None and nearest.team_tricode == "BKN"
+    # Without one, the nearest season's photo with any team, never None when photos exist.
+    session.add(_season_row(tmp_path / "okc.png", "1610612760", "OKC", "2015-16"))
+    session.commit()
+    other = find_season_portrait(session, "201142", "2010-11", "LAL")
+    assert other is not None and other.season == "2015-16"
+    assert find_season_portrait(session, "201142", "2010-11", "BKN").team_tricode == "BKN"
+    assert find_season_portrait(session, "999", "2010-11", "LAL") is None
 
 
 def test_endpoint_serves_the_season_headshot_and_falls_back_to_current(
@@ -151,8 +161,18 @@ def test_endpoint_serves_the_season_headshot_and_falls_back_to_current(
         "/api/workbench/players/201142/portrait", params={"season": "2015-16", "size": 64}
     )
     assert served.status_code == 200 and served.headers["x-portrait-season"] == "2015-16"
+    # Before NBA.com's season photos, the same franchise's nearest season photo (era codes too).
+    nearest = api_client.get(
+        "/api/workbench/players/201142/portrait", params={"season": "2007-08", "team": "SEA"}
+    )
+    assert nearest.status_code == 200 and nearest.headers["x-portrait-season"] == "2015-16"
+    # Another franchise: still the nearest season's photo, not the current one.
+    other = api_client.get(
+        "/api/workbench/players/201142/portrait", params={"season": "2010-11", "team": "GSW"}
+    )
+    assert other.status_code == 200 and other.headers["x-portrait-season"] == "2015-16"
     fallback = api_client.get(
-        "/api/workbench/players/201142/portrait", params={"season": "2010-11", "team": "OKC"}
+        "/api/workbench/players/201142/portrait", params={"season": "2017-18", "team": "GSW"}
     )
     assert fallback.status_code == 200 and "x-portrait-season" not in fallback.headers
     assert fallback.content == current.read_bytes()

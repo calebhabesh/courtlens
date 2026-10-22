@@ -192,7 +192,7 @@ def portrait_targets(session: Session, root: Path) -> list[tuple[str, str, str]]
                 FROM workbench_player_games GROUP BY player_id),
             nba AS (
                 SELECT DISTINCT player_id FROM player_portraits
-                WHERE status = 'active' AND source_name <> :source)
+                WHERE status = 'active' AND source_name NOT IN (:source, :commons))
             SELECT p.player_id, p.bbref_id, p.acquisition_id
             FROM profiles p LEFT JOIN careers c USING (player_id)
             WHERE c.player_id IS NULL
@@ -200,7 +200,12 @@ def portrait_targets(session: Session, root: Path) -> list[tuple[str, str, str]]
                 OR p.player_id NOT IN (SELECT player_id FROM nba)
             ORDER BY c.seconds DESC NULLS LAST, p.player_id"""
         ),
-        {"source": BBREF_PORTRAIT_SOURCE, "from_season": NBA_TEAM_SEASON_FROM},
+        # The Wikidata career photo (services/wikidata_portraits.py) is not an NBA.com photo.
+        {
+            "source": BBREF_PORTRAIT_SOURCE,
+            "commons": "wikidata_commons",
+            "from_season": NBA_TEAM_SEASON_FROM,
+        },
     ).all()
     targets: list[tuple[str, str, str]] = []
     for row in rows:

@@ -60,7 +60,7 @@ def test_derivative_is_a_square_webp_cached_on_disk(tmp_path: Path) -> None:
     content = portrait_derivative(source, "f" * 64, 96, tmp_path)
     with Image.open(io.BytesIO(content)) as image:
         assert (image.format, image.size, image.mode) == ("WEBP", (96, 96), "RGBA")
-    assert (tmp_path / "derived" / f"{'f' * 64}-face-v4-96.webp").read_bytes() == content
+    assert (tmp_path / "derived" / f"{'f' * 64}-face-v6-96.webp").read_bytes() == content
 
 
 def test_derivative_falls_back_to_memory_when_cache_is_read_only(tmp_path: Path) -> None:

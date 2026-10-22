@@ -30,7 +30,9 @@ logger = logging.getLogger(__name__)
 # face-v3 (2026-10-20): same crop; pre-2015-16 seasons now serve Basketball-Reference career
 # photos at the same URLs, so the version moves to retire day-old browser copies.
 # face-v4 (2026-10-20): same crop; the career photos' outlines are matted (no white halo).
-PORTRAIT_CROP_VERSION = "face-v4"
+# face-v5 (2026-10-21): same crop; seasons before 2015-16 may now get a same-franchise season photo.
+# face-v6 (2026-10-21): same crop; without a same-franchise photo, the nearest season's photo.
+PORTRAIT_CROP_VERSION = "face-v6"
 # Covers 28-144px avatars at 1x-2x device pixel ratios.
 PORTRAIT_SIZES = (64, 96, 128, 192, 288)
 PORTRAIT_DERIVATIVE_MIME = "image/webp"
