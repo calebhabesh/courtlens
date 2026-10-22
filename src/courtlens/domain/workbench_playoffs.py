@@ -26,7 +26,7 @@ from courtlens.domain.team_analytics import (
     compute_team_pace,
     compute_tov_pct,
 )
-from courtlens.domain.teams import get_team_info, resolve_team_tricode
+from courtlens.domain.teams import resolve_team_tricode, team_identity
 
 PLAYOFF_GAME_ID_PREFIX = "004"
 
@@ -511,19 +511,23 @@ def aggregate_player_series_stats(
 
 def reconstruct_regular_season_seeds(
     team_records: list[dict[str, Any]],
+    season: str | None = None,
 ) -> dict[str, list[dict[str, Any]]]:
     """Compute reconstructed regular-season seedings by conference strictly prior to playoff tipoff.
 
     Includes explicit tie notes to respect the zero-inferred-claims rule:
     ties in record ordering do not establish official conference placement
-    without tiebreaker evidence.
+    without tiebreaker evidence. Conferences are the season's (realignments); a team whose
+    conference is unknown is left out rather than placed in one.
     """
     by_conf: dict[str, list[dict[str, Any]]] = {"Eastern": [], "Western": []}
 
     for row in team_records:
         team_id = row["team_id"]
-        info = get_team_info(team_id)
-        conf = info.conference if info else "Eastern"
+        info = team_identity(team_id, season)
+        if info is None or info.conference is None:
+            continue
+        conf = info.conference
         if conf not in by_conf:
             by_conf[conf] = []
 
@@ -535,8 +539,8 @@ def reconstruct_regular_season_seeds(
         by_conf[conf].append(
             {
                 "team_id": team_id,
-                "tricode": info.tricode if info else team_id,
-                "team_name": info.name if info else team_id,
+                "tricode": info.tricode,
+                "team_name": info.name,
                 "conference": conf,
                 "wins": wins,
                 "losses": losses,

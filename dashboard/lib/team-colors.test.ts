@@ -30,6 +30,14 @@ describe("team accents", () => {
     expect(teamBrandColor("1610612760", "2010-11")).toBe(teamBrandColor("OKC"));
     expect(teamBrandColor("CHA", "2008-09")).toBe("#1D5BA6");
     expect(teamBrandColor("CHA")).toBe(teamBrandColor("1610612766"));
-    for (const era of catalog.eras) expect(contrastRatio(teamAccent(era.code, era.last_season)!, "#0C0D10")).toBeGreaterThanOrEqual(3);
+    for (const era of catalog.eras as { code: string; last_season: string; asset?: string }[]) {
+      if (era.asset) expect(contrastRatio(teamAccent(era.code, era.last_season)!, "#0C0D10")).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it("colors older identities by their logo and leaves logo-less folded teams uncolored", () => {
+    expect(teamBrandColor("PHW")).toMatch(/^#[0-9A-F]{6}$/);
+    expect(teamBrandColor("1610612737", "1960-61")).toBe(teamBrandColor("STL"));
+    expect(teamBrandColor("WSC")).toBeNull();
   });
 });

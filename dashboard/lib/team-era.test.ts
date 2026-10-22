@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import catalog from "./team-branding.json";
-import { franchiseActive, franchiseOf, seasonTeamId, teamArtwork, teamEra } from "./team-era";
+import { foldedTeams, franchiseActive, franchiseOf, seasonTeamId, teamArtwork, teamEra, teamNameAt } from "./team-era";
 
 const THUNDER = "1610612760", CHARLOTTE = "1610612766", PELICANS = "1610612740";
 
@@ -51,12 +51,43 @@ describe("team artwork by season", () => {
     expect(teamArtwork("TOR")!.asset).toBe(current("1610612761"));
   });
 
-  it("covers every active franchise-season with one span and no overlaps", () => {
-    for (const team of catalog.teams) for (let start = 2000; start <= 2025; start++) {
+  it("names and draws older identities and teams that folded", () => {
+    const warriors = teamArtwork("PHW", "1961-62")!;
+    expect([warriors.tricode, warriors.artwork_name]).toEqual(["PHW", "Philadelphia Warriors"]);
+    expect(teamArtwork("GSW", "1955-56")?.tricode).toBe("PHW");
+    expect(teamArtwork("1610612744", "1965-66")?.artwork_name).toBe("San Francisco Warriors");
+    expect(teamArtwork("LAC", "1990-91")?.artwork_name).toBe("Los Angeles Clippers");
+    expect(teamArtwork("LAC", "2016-17")?.artwork_name).toBe("LA Clippers");
+    const bullets = teamArtwork("BLB", "1950-51")!;
+    expect([bullets.tricode, bullets.artwork_name]).toEqual(["BLB", "Baltimore Bullets"]);
+    expect(bullets.asset).not.toBe(teamArtwork("BAL", "1965-66")!.asset);
+    // No free source has the Washington Capitols' logo: no artwork rather than another team's.
+    expect(teamArtwork("WSC", "1947-48")).toBeNull();
+    expect(teamNameAt("WSC", "1947-48")).toBe("Washington Capitols");
+    expect(teamNameAt("PHW", "1961-62")).toBe("Philadelphia Warriors");
+    expect(teamNameAt("BOS", "1961-62")).toBe("Boston Celtics");
+    expect(franchiseOf("AND")).toBeNull();
+    expect(franchiseOf("STL")).toBe("1610612737");
+    expect(franchiseActive("1610612761", "1990-91")).toBe(false);
+    expect(franchiseActive("1610612761", "1995-96")).toBe(true);
+  });
+
+  it("covers every active franchise-season with at most one span and no overlaps", () => {
+    for (const team of catalog.teams) for (let start = 1946; start <= 2025; start++) {
       const season = `${start}-${String(start + 1).slice(-2)}`;
       const spans = (catalog as { season_logos?: { franchise_id: string; first_season: string; last_season: string }[] }).season_logos!.filter(span => span.franchise_id === team.team_id
         && Number(span.first_season.slice(0, 4)) <= start && start <= Number(span.last_season.slice(0, 4)));
-      expect(spans.length).toBe(franchiseActive(team.team_id, season) ? 1 : 0);
+      // A season the source has no logo for has no span (and falls back to the era or current logo).
+      expect(spans.length).toBeLessThanOrEqual(franchiseActive(team.team_id, season) ? 1 : 0);
+      if (start >= 2000) expect(spans.length).toBe(franchiseActive(team.team_id, season) ? 1 : 0);
     }
+  });
+});
+
+describe("folded teams", () => {
+  it("join the seasons they played, by code", () => {
+    expect(foldedTeams("1946-47").map(era => era.code)).toContain("CHS");
+    expect(foldedTeams("1950-51").map(era => era.code)).not.toContain("CHS");
+    expect(foldedTeams("1990-91")).toEqual([]);
   });
 });

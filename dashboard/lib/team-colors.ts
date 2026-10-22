@@ -12,11 +12,11 @@ const BRAND: Record<string, string> = {
   POR: "#E03A3E", SAC: "#5A2D81", SAS: "#C4CED4", TOR: "#CE1141", UTA: "#002B5C", WAS: "#E31837"
 };
 
-// Earlier identities, keyed by era name because the Bobcats share Charlotte's current code.
+// Earlier identities picked by hand, keyed by era code (kept apart from BRAND because the Bobcats
+// share Charlotte's current code). Other eras use their logo's own main color (`brand_color`).
 const ERA_BRAND: Record<string, string> = {
-  "Seattle SuperSonics": "#00653A", "New Jersey Nets": "#002A60", "Vancouver Grizzlies": "#00B2A9",
-  "Charlotte Hornets": "#00778B", "New Orleans Hornets": "#00778B", "New Orleans/Oklahoma City Hornets": "#00778B",
-  "Charlotte Bobcats": "#1D5BA6"
+  SEA: "#00653A", NJN: "#002A60", VAN: "#00B2A9", CHH: "#00778B", NOH: "#00778B", NOK: "#00778B",
+  CHA: "#1D5BA6", WSB: "#E31837", KCK: "#0B4EA2", SDC: "#ED174C", LAC: "#C8102E"
 };
 
 // --color-bg in tokens.css. Accents are lightened toward white until they reach 3:1 against it,
@@ -62,7 +62,7 @@ function displayAccent(hex: string): string {
 export function teamBrandColor(team: string | null | undefined, season?: string | null): string | null {
   if (!team) return null;
   const era = teamEra(team, season);
-  if (era) return ERA_BRAND[era.artwork_name] ?? null;
+  if (era) return ERA_BRAND[era.code] ?? era.brand_color ?? null;
   const record = catalog.teams.find((entry) => entry.team_id === team || entry.tricode === team);
   return record ? BRAND[record.tricode] ?? null : null;
 }
@@ -75,5 +75,5 @@ export function teamAccent(team: string | null | undefined, season?: string | nu
 
 /** True when an exact catalog ID or code (current or era) has logo artwork, so callers can skip the text fallback. */
 export function hasTeamLogo(team: string): boolean {
-  return teamEra(team) != null || catalog.teams.some((entry) => entry.team_id === team || entry.tricode === team);
+  return Boolean(teamEra(team)?.asset) || catalog.teams.some((entry) => entry.team_id === team || entry.tricode === team);
 }
