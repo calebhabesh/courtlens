@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from fastapi import HTTPException
 
 from courtlens.domain.player_twins import (
     BASE_POSSESSIONS,
@@ -10,7 +11,12 @@ from courtlens.domain.player_twins import (
     MIN_ATTEMPTS,
     compare,
     league_average,
+    min_overlap,
     nearest,
+    next_season,
+    percentile,
+    projection,
+    same_position,
     season_table,
 )
 from courtlens.evaluation.impact_rating_inputs import write_artifact
@@ -181,3 +187,135 @@ def test_view_defaults_and_versus(tmp_path: Path, monkeypatch: pytest.MonkeyPatc
     assert {m["season"] for m in same["matches"]} == {"2005-06"}
     versus = player_twins.player_twins_view(player_id="1", versus="9:2004-05", min_possessions=0)
     assert versus["twin"]["player_id"] == "9" and versus["twin"]["season"] == "2004-05"
+
+
+def test_same_position_is_exact_for_estimates_and_by_group_for_listings() -> None:
+    table = season_table("shot", "2005-06", [_row("1"), _row("2", 1.1), _row("3", 1.3)])
+    a, b, c = (table.profiles[pid] for pid in ("1", "2", "3"))
+    a.position, a.position_basis = "SF", "estimated"
+    b.position, b.position_basis = "SF", "estimated"
+    c.position, c.position_basis = "F", "listed"
+    assert same_position(a, b) and not same_position(a, c)
+    assert same_position(c, a)
+    b.position = "PF"
+    assert not same_position(a, b) and same_position(c, b)
+    found = nearest(a, [b, c], min_possessions=0, exclude_own=False, by_position=True)
+    assert found == []
+
+
+def test_weights_drop_or_double_a_measure_and_scale_the_overlap_floor() -> None:
+    rows = [_row("1"), _row("2", 1.2), _row("3", 1.5), _row("4", 0.8, fg3a=400)]
+    table = season_table("shot", "2005-06", rows)
+    a, d = table.profiles["1"], table.profiles["4"]
+    plain = compare(a, d)
+    no_threes = compare(a, d, {"three_vol": 0, "three_eff": 0})
+    assert plain is not None and no_threes is not None
+    assert "three_vol" not in no_threes.gaps and no_threes.overlap == 6
+    assert no_threes.distance < plain.distance
+    doubled = compare(a, d, {"three_vol": 2})
+    assert doubled is not None and doubled.distance > plain.distance
+    assert min_overlap(DIMENSIONS["shot"]) == 6 and min_overlap(a.z, {"ft_vol": 0}) == 6
+    assert min_overlap([d.key for d in DIMENSIONS["all"]]) == 12
+    assert min_overlap(["a", "b", "c", "d"], {"a": 0, "b": 0, "c": 0}) == 1
+
+
+def test_the_vector_ranking_matches_pairwise_compare() -> None:
+    rows = [_row(str(i), 0.6 + i / 10, fg3a=100 + 13 * i) for i in range(1, 12)]
+    table = season_table("all", "2005-06", rows)
+    target = table.profiles["3"]
+    weights = {"ft_eff": 0, "blk": 2, "pts": 0.5}
+    ranked = nearest(
+        target, table.profiles.values(), min_possessions=0, exclude_own=False, weights=weights
+    )
+    pairwise = sorted(
+        (
+            m
+            for p in table.profiles.values()
+            if p is not target
+            if (m := compare(target, p, weights)) is not None
+        ),
+        key=lambda m: (m.distance, m.profile.player_id),
+    )
+    assert [m.profile.player_id for m in ranked] == [m.profile.player_id for m in pairwise]
+    for left, right in zip(ranked, pairwise, strict=True):
+        assert left.distance == pytest.approx(right.distance)
+        assert left.gaps == pytest.approx(right.gaps)
+
+
+def test_combined_mode_reads_all_sixteen_measures() -> None:
+    table = season_table("all", "2005-06", [_row("1"), _row("2", 1.3)])
+    assert len(table.profiles["1"].values) == 16
+    assert table.profiles["1"].values["pts"] == pytest.approx(50.0)
+
+
+def test_percentile_counts_ties_half_and_unknown_stays_unknown() -> None:
+    assert percentile([1.0, 2.0, 3.0, 4.0], 4.0) == pytest.approx(87.5)
+    assert percentile([1.0, 2.0, 2.0, 3.0], 2.0) == pytest.approx(50.0)
+    assert percentile([1.0], None) is None and percentile([], 1.0) is None
+    table = season_table("shot", "2005-06", [_row("1"), _row("2", 1.5), _row("3", 2.0)])
+    assert table.profiles["3"].percentile["rim_vol"] == pytest.approx(5 / 6 * 100)
+
+
+def test_next_season_and_projection_axes() -> None:
+    assert next_season("1999-00") == "2000-01" and next_season("2012-13") == "2013-14"
+    rows = [_row(str(i), 0.6 + i / 10, fg3a=100 + 37 * (i % 4)) for i in range(1, 9)]
+    table = season_table("shot", "2005-06", rows)
+    base = list(table.profiles.values())
+    fitted = projection(base, [d.key for d in DIMENSIONS["shot"]])
+    assert fitted is not None and len(fitted.explained) == 2
+    assert 0 < fitted.explained[1] <= fitted.explained[0] <= 1
+    xs = [fitted.at(p)[0] for p in base]
+    assert sum(xs) == pytest.approx(0.0, abs=1e-9)
+    # Fewer than two weighted measures can't make a plane.
+    assert projection(base, ["rim_vol", "ft_vol"], {"ft_vol": 0}) is None
+
+
+def test_view_weights_career_next_and_map(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    bundle = {
+        "version": shot_zones.VERSION,
+        "source": shot_zones.ATTRIBUTION,
+        "sealed_at": "2026-10-21T01:00:00+00:00",
+        "seasons": {
+            "2004-05": {
+                "raw_sha256": [],
+                "players": [_row("1", off_poss=3000.0), _row("9", 1.1), _row("8", 1.9)],
+            },
+            "2005-06": {
+                "raw_sha256": [],
+                "players": [
+                    _row("1", off_poss=3000.0, points=1400),
+                    _row("2", 1.1),
+                    _row("3", 1.9),
+                ],
+            },
+        },
+    }
+    path, _ = write_artifact(tmp_path, bundle)
+    monkeypatch.setattr(shot_zones.get_settings(), "shot_zones_manifest", path)
+    view = player_twins.player_twins_view(player_id="1", season="2004-05", weights="ft_eff:0")
+    assert view["weights"] == {"ft_eff": 0.0} and view["method"]["measures"] == 7
+    assert view["player"]["next"]["status"] == "recorded"
+    assert view["player"]["next"]["pts_change"] == pytest.approx(400 / 60)
+    assert {m["next"]["status"] for m in view["matches"]} <= {
+        "beyond_data",
+        "no_record",
+        "recorded",
+    }
+    assert [c["season"] for c in view["career"]] == ["2004-05", "2005-06"]
+    assert all(c["twin"] is None or c["twin"]["player_id"] != "1" for c in view["career"])
+    assert view["map"]["player"]["player_id"] == "1"
+    assert all(p["player_id"] != "1" for p in view["map"]["points"])
+    index = {p["player_id"]: p for p in player_twins.player_index()["players"]}
+    assert index["1"] | {} == {
+        "player_id": "1", "name": "Player 1", "first_season": "2004-05",
+        "last_season": "2005-06", "last_team": "LAL", "seasons": 2,
+    }  # fmt: skip
+    assert index["9"]["last_season"] == "2004-05"
+    later = player_twins.player_twins_view(player_id="1", season="2005-06")
+    assert later["player"]["next"] == {"season": "2006-07", "status": "beyond_data"}
+    for bad in ("nope:1", "ft_eff:3", "ft_eff:x"):
+        with pytest.raises(HTTPException):
+            player_twins.player_twins_view(weights=bad)
+    everything_off = ",".join(f"{d.key}:0" for d in DIMENSIONS["shot"])
+    with pytest.raises(HTTPException):
+        player_twins.player_twins_view(weights=everything_off)

@@ -9,12 +9,21 @@ const retainedDistribution = JSON.parse(readFileSync(new URL("./fixtures/pc12-re
 // Player Twins (row 17): real API answers for 2025-26 (default, the #2 match picked, Box Score).
 const playerTwins = JSON.parse(readFileSync(new URL("./fixtures/player-twins-v1.json", import.meta.url), "utf8"));
 function playerTwinsView(url) {
-  const mode = url.searchParams.get("mode") === "box" ? "box" : "shot";
+  // Captured answers: Shot Profile (and a picked row), Box Score, Combined and one weighting. The
+  // roster and the shot map are stored once and shared.
+  const mode = ["box", "all"].includes(url.searchParams.get("mode")) ? url.searchParams.get("mode") : "shot";
   const vs = url.searchParams.get("vs");
-  const base = structuredClone(mode === "box" ? playerTwins.box : vs ? playerTwins.picked : playerTwins.shot);
+  const weighted = mode === "shot" && url.searchParams.get("w");
+  const source = mode !== "shot" ? playerTwins[mode] : weighted ? playerTwins.weighted : vs ? playerTwins.picked : playerTwins.shot;
+  const base = structuredClone(source);
+  base.roster ??= playerTwins.shot.roster;
+  base.map ??= structuredClone(playerTwins.shot.map);
   const pool = url.searchParams.get("pool") === "same" ? "same" : "all";
-  base.pool = { ...base.pool, scope: pool, ...(pool === "same" ? { from_season: base.season, to_season: base.season } : {}) };
+  base.pool = { ...base.pool, scope: pool, by_position: url.searchParams.get("position") === "same", exclude_own: url.searchParams.get("excludeOwn") === "true", ...(pool === "same" ? { from_season: base.season, to_season: base.season } : {}) };
+  // The weighted answer stands in for any weighting; the weights echo the request.
+  if (weighted) base.weights = Object.fromEntries(weighted.split(",").map(part => [part.split(":")[0], Number(part.split(":")[1])]));
   base.matches = base.matches.slice(0, Number(url.searchParams.get("limit")) || 12);
+  base.map.twins = base.map.twins.slice(0, base.matches.length);
   return base;
 }
 
@@ -659,6 +668,15 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/assistant/operations") return json(response, 200, [
     { name: "workload_shifts", description: "Historical workload changes", parameters: { type: "object" } }
   ]);
+  if (url.pathname === "/api/workbench/player-twins/players") {
+    // This season's roster, plus the captured matches' players at their latest captured season.
+    const players = new Map(playerTwins.shot.roster.map(p => [p.player_id, { player_id: p.player_id, name: p.name, first_season: "2025-26", last_season: "2025-26", last_team: p.team, seasons: 1 }]));
+    for (const m of playerTwins.shot.matches) {
+      const known = players.get(m.player_id);
+      if (!known || known.last_season < m.season) players.set(m.player_id, { player_id: m.player_id, name: m.name, first_season: m.season, last_season: known?.last_season > m.season ? known.last_season : m.season, last_team: m.team, seasons: 1 });
+    }
+    return json(response, 200, { players: [...players.values()] });
+  }
   if (url.pathname === "/api/workbench/player-twins") return json(response, 200, playerTwinsView(url));
   if (url.pathname === "/api/workbench/catalog") return json(response, 200, {
     ...workbenchContext, snapshot_id: snapshotId, seasons: ["2025-26"], phases: ["regular_season"],
@@ -722,6 +740,25 @@ createServer(async (request, response) => {
     return json(response, 200, { player_id: careerMatch[1], release_id: url.searchParams.get("releaseId") ?? workbenchContext.release_id,
       phase, seasons: row && phase === "regular_season" ? [{ season: "2025-26", item: ranked }] : [],
       career: row && phase === "regular_season" ? row : null });
+  }
+  if (url.pathname === "/api/workbench/player-dashboard/feeds") {
+    // Tracking cells for the two fixture players: player 23 leads, 24 trails; play types for 23 only.
+    const id = url.searchParams.get("playerId"), lead = id === "23";
+    const values = { potential_ast: lead ? 9.2 : 4.1, defended_fga: lead ? 12.4 : 8.0, rim_defended_fga: lead ? 6.1 : 2.2, contested_shots: lead ? 11 : 6,
+      deflections: lead ? 2.4 : 1.1, loose_balls: lead ? 0.6 : 0.3, charges_drawn: lead ? 0.2 : 0.1 };
+    const ratios = { ast_efg: lead ? 0.71 : 0.64, potential_ast_per_min: lead ? 2.4 : 1.6, defended_diff: lead ? -0.06 : 0.02, rim_defended_diff: lead ? -0.09 : 0.03 };
+    const ranks = Object.fromEntries([...Object.keys(values), ...Object.keys(ratios)].map(key => [key, lead ? 75 : 25]));
+    const family = (key, label, share, rel) => ({ family: key, label, possessions: 200 * share, frequency: share, points_per_possession: 1 + rel / 100,
+      league_points_per_possession: 1, relative_per_100: rel, percentiles: { frequency: 60, relative_per_100: rel > 0 ? 80 : 30 } });
+    return json(response, 200, {
+      version: "courtlens-player-dashboard-feeds-v1", player_id: id, season: url.searchParams.get("season"), phase: url.searchParams.get("phase") ?? "regular_season",
+      label: "2025-26 · Regular Season", source: "NBA Stats (fixture)", qualification: { minutes: 500 },
+      observed: { tracking: true, defense: true, hustle: true, play_types: lead },
+      first_seasons: { tracking: "2013-14", defense: "2013-14", hustle: "2015-16", play_types: "2015-16" }, metrics: [],
+      player: { games: 70, minutes: 2400, qualified: true, defense_qualified: true, per_game: { ...values, ...ratios }, per_36: { ...values, ...ratios },
+        percentiles: { per_game: ranks, per_36: ranks } },
+      play_types: lead ? [family("creation", "Creation", 0.3, 4.2), family("spacing", "Spacing", 0.25, -1.5), family("transition", "Transition", 0.15, 7.1), family("finishing", "Finishing", 0.3, 9.0)] : null,
+      cohort: { qualified_players: 2, rule: "500+ tracked minutes" }, limitations: [], sources: [] });
   }
   if (url.pathname === "/api/workbench/player-seasons") return json(response, 200, {
     phase: url.searchParams.get("phase") ?? "regular_season",
@@ -875,6 +912,11 @@ createServer(async (request, response) => {
       ]
     });
   }
+  if (url.pathname === "/api/workbench/portrait-credits") return json(response, 200, { commons: [{
+    player_id: "2544", name: "LeBron James", season: "2010-11", team: "MIA",
+    credit: "Photo: Keith Allison from Owings Mills, USA, CC BY-SA 2.0, via Wikimedia Commons (Dwyane Wade and LeBron James.jpg)",
+    source_url: "https://commons.wikimedia.org/wiki/File:Dwyane_Wade_and_LeBron_James.jpg"
+  }] });
   if (url.pathname === "/api/workbench/metrics") return json(response, 200, { version: "courtlens-stats-v3", metrics: ["pts","reb","ast","stl","blk","tov","pf","min","gp","ts_pct","efg_pct","ftr"].flatMap(key => {
     const count = !["gp","ts_pct","efg_pct","ftr"].includes(key);
     return [key, ...(count ? [`${key}_per_game`] : [])].map(name => ({ key:name, version:"courtlens-stats-v3",short_name:key,category:count ? "counting" : "efficiency",formula:"Synthetic UI fixture",denominator:null,phase_scope:["regular_season"],default_sort_direction:"desc",limitations:["Synthetic UI fixture"],validity_definition:"Observed synthetic appearances", display_name:({pts:"Points",reb:"Rebounds",ast:"Assists",stl:"Steals",blk:"Blocks",tov:"Turnovers",pf:"Fouls",min:"Minutes",gp:"Games Played",ts_pct:"True Shooting Percentage",efg_pct:"Effective Field Goal %",ftr:"Free Throw Rate"})[key]+(name.endsWith("_per_game") ? " Per Game" : count ? " Total" : ""), unit:["ts_pct","efg_pct","ftr"].includes(key) ? "percentage" : "",good_direction:["tov","pf"].includes(key) ? "low" : ["min","gp"].includes(key) ? null : "high" }));
