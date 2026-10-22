@@ -5,7 +5,7 @@ import { Icon } from "./ui/icon";
 import { PageHeader } from "./ui/panel";
 import { ButtonLink, ButtonSummary } from "./ui/kit";
 import { formatDate } from "@/lib/format-date";
-import { ALL_COLUMNS, TEAM_VIEWS, columnRanks, formatValue, type SixFactorTeam, type SixFactorsResponse, type TeamColumnGroup } from "@/lib/team-six-factors";
+import { ALL_COLUMNS, TEAM_VIEWS, columnRanks, formatValue, standingGroup, type SixFactorTeam, type SixFactorsResponse, type TeamColumnGroup } from "@/lib/team-six-factors";
 import { NetTrend } from "./team-trend";
 import { RosterAllocationView, type RosterAllocationViewProps } from "./roster-allocation-view";
 import type { TeamPeersResponse, TeamScheduleGameItem } from "@/lib/types";
@@ -57,9 +57,9 @@ function TeamRowsGrid({ label, groups, lead, rows, className }: {
 export function TeamStandingSection({ data, team }: { data: SixFactorsResponse; team: SixFactorTeam }) {
   return <section className="player-open-section player-glass team-profile-section" aria-label="Standing">
     <header className="player-open-heading"><h2><Icon name="trophy" size={20} />Standing</h2>
-      <span>Seed and GB within the {team.conference ?? "league"}{team.conference ? " Conference" : ""} · other #ranks of {data.teams.length}</span></header>
+      <span>Seed and GB within the {standingGroup(team)?.label ?? "league"} · other #ranks of {data.teams.length}</span></header>
     <TeamRowsGrid label="Standing table" groups={TEAM_VIEWS.standings} lead="Team" className="team-standing-grid" rows={[{ label: team.tricode, team, ranks: ranksOf(data.teams) }]} />
-    <p className="player-reference-note">Seed orders the conference by win percentage, ties by net rating, not the NBA&apos;s tiebreakers. Adj Net = Net + SOS, where SOS is the average schedule-adjusted net rating of the opponents faced. xW is the record the point margin predicts; Luck = wins − xW.</p>
+    <p className="player-reference-note">Seed orders the conference (before 1970-71, the division) by win percentage, ties by net rating, not the NBA&apos;s tiebreakers. Adj Net = Net + SOS, where SOS is the average schedule-adjusted net rating of the opponents faced. xW is the record the point margin predicts; Luck = wins − xW.</p>
   </section>;
 }
 
@@ -97,7 +97,8 @@ export function TeamTrendSection({ team }: { team: SixFactorTeam }) {
 export function TeamProfileHeader({ name, tricode, season, phaseLabel, team, netRank, compareHref, teamsHref }: {
   name: string; tricode: string; season: string; phaseLabel: string; team: SixFactorTeam | null; netRank?: number; compareHref: string; teamsHref: string;
 }) {
-  const seed = team?.seed && team.conference ? ` · ${ordinal(team.seed)} in the ${team.conference.replace("ern", "")}` : "";
+  const group = team ? standingGroup(team) : null;
+  const seed = team?.seed && group ? ` · ${ordinal(team.seed)} in the ${group.short}` : "";
   const record = team ? ` · ${team.wins}–${team.losses}${seed} · Net ${formatValue(team.net, "signed", "per_100")}${netRank ? ` (#${netRank})` : ""}` : "";
   return <div className="team-profile-top">
     <BackButton parent={{ href: teamsHref, label: "Teams" }} />
@@ -164,7 +165,7 @@ export function TeamSixFactorsSection({ data, team }: { data: SixFactorsResponse
 }
 
 /** Results, most recent first; earlier games fold under a disclosure. */
-export function TeamGameLogSection({ games, season, scopeParams }: { games: TeamScheduleGameItem[]; season: string; scopeParams: string }) {
+export function TeamGameLogSection({ games, season, scopeParams, empty = "No games in this scope." }: { games: TeamScheduleGameItem[]; season: string; scopeParams: string; /** Why there are no games. */ empty?: string }) {
   const ordered = [...games].sort((a, b) => b.game_date.localeCompare(a.game_date) || b.game_id.localeCompare(a.game_id));
   const table = (rows: TeamScheduleGameItem[], label: string) => <div className="player-ref-grid-frame">
     <div className="player-ref-grid-scroll" role="region" aria-label={label} tabIndex={0}>
@@ -189,7 +190,7 @@ export function TeamGameLogSection({ games, season, scopeParams }: { games: Team
   </div>;
   return <section className="player-open-section player-glass team-profile-section" aria-label="Game log">
     <header className="player-open-heading"><h2><Icon name="calendar" size={20} />Game Log</h2><span>{games.length} games · most recent first</span></header>
-    {ordered.length ? table(ordered.slice(0, RECENT_GAMES), "Recent games table") : <p className="player-open-empty">No games in this scope.</p>}
+    {ordered.length ? table(ordered.slice(0, RECENT_GAMES), "Recent games table") : <p className="player-open-empty">{empty}</p>}
     {ordered.length > RECENT_GAMES && <details><ButtonSummary size="sm" variant="text" iconAfter="chevron-down">Earlier Games · {ordered.length - RECENT_GAMES}</ButtonSummary>{table(ordered.slice(RECENT_GAMES), "Earlier games table")}</details>}
   </section>;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { FIRST_GAME_LOG_SEASON, isTotalsSeason, seasonOptionLabel } from "@/lib/season-basis";
 import { useMemo, type CSSProperties } from "react";
 import Link from "next/link";
 // The Stats table look, as the career and matchup tables borrow it.
@@ -40,11 +41,13 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
   const { get, set } = useUrlState();
   const season = get("season") || catalog?.default_season || "";
   const phase = get("phase") === "playoffs" ? "playoffs" : "regular_season";
-  const windowValue = WINDOWS.find(entry => entry.value === get("window"))?.value ?? "";
+  // Seasons before the game logs come as whole-season totals: no windows, no home and away.
+  const totals = isTotalsSeason(catalog, season);
+  const windowValue = totals ? "" : WINDOWS.find(entry => entry.value === get("window"))?.value ?? "";
   const windowDays = WINDOWS.find(entry => entry.value === windowValue)?.days ?? null;
   const offenseLuck = share(get("offenseLuck")), defenseLuck = share(get("defenseLuck"));
   const view: TeamView = VIEW_OPTIONS.find(entry => entry.value === get("view"))?.value ?? "overall";
-  const venue: TeamVenue | null = get("venue") === "home" || get("venue") === "away" ? get("venue") as TeamVenue : null;
+  const venue: TeamVenue | null = !totals && (get("venue") === "home" || get("venue") === "away") ? get("venue") as TeamVenue : null;
   const layout = get("layout") === "cards" ? "cards" : "table";
   const conference = get("conf") === "east" ? "Eastern" : get("conf") === "west" ? "Western" : null;
   const counting: TeamCounting = get("counting") === "totals" ? "totals" : "per_100";
@@ -58,7 +61,8 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
   const { data, error, loading, retry } = useFeed([season, phase, beforeDate, releaseId, String(windowDays), String(offenseLuck), String(defenseLuck), venue ?? ""],
     signal => getTeamSixFactors({ season, phase, beforeDate, releaseId, windowDays, offenseLuck, defenseLuck, venue }, signal));
   // A conference ranks and seeds its own teams; every value stays relative to the league average.
-  const shownTeams = useMemo(() => data ? withStandings(data.teams.filter(team => !conference || team.conference === conference)) : [], [data, conference]);
+  // Before 1970-71 there were no conferences: East and West are the Eastern and Western Divisions.
+  const shownTeams = useMemo(() => data ? withStandings(data.teams.filter(team => !conference || (team.conference ?? team.division) === conference)) : [], [data, conference]);
   const teams = useMemo(() => sortTeams(shownTeams, sortColumn, sortDir, counting), [shownTeams, sortColumn, sortDir, counting]);
   const ranks = useMemo(() => new Map(ALL_COLUMNS.map(column => [column.key, columnRanks(shownTeams, column, counting)])), [shownTeams, counting]);
   const scopeParams = new URLSearchParams({ season, phase, ...(beforeDate ? { beforeDate } : {}) }).toString();
@@ -72,13 +76,14 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
   const luckActive = offenseLuck > 0 || defenseLuck > 0;
   const windowLabel = WINDOWS.find(entry => entry.value === windowValue)!.label;
   const venueLabel = VENUES.find(entry => entry.value === (venue ?? ""))!.label;
+  const estimated = totals && data != null && data.teams.length > 0 && data.teams.every(team => team.o_ts == null);
 
   return <div className="teams-page" role="region" aria-label="NBA Team Stats">
     <PageHeader className="pvp-header" icon="users" title="NBA Team Stats" subtitle={`Six Factor Analysis · ${season} Season`} />
     <div className="teams-console"><FilterBar label="Team stats controls" summary={[season, phase === "playoffs" ? "Playoffs" : "Regular Season", conference && conference.slice(0, 4), windowDays && windowLabel, venue && venueLabel].filter(Boolean).join(" · ")}
       scope={<>
         <Select size="md" aria-label="Season" value={season} onChange={event => set({ season: event.target.value, beforeDate: null, before_date: null })}>
-          {[...catalog?.seasons ?? [season]].reverse().map(entry => <option key={entry} value={entry}>{entry}</option>)}
+          {[...(catalog?.seasons ?? [season])].reverse().map(entry => <option key={entry} value={entry}>{seasonOptionLabel(entry)}</option>)}
         </Select>
         <Select size="md" aria-label="Season phase" value={phase} onChange={event => set({ phase: event.target.value === "playoffs" ? "playoffs" : null, beforeDate: null, before_date: null })}>
           {phases.map(entry => <option key={entry.value} value={entry.value}>{entry.label}</option>)}
@@ -88,8 +93,8 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
           options={[{ value: "league", label: "League", title: "All teams, ranked across the league" },
             { value: "east", label: <ConferenceMark conference="East" />, title: "Eastern Conference, ranked within the conference" },
             { value: "west", label: <ConferenceMark conference="West" />, title: "Western Conference, ranked within the conference" }]} />
-        <Segmented size="md" label="Time window" value={windowValue} onChange={value => set({ window: value || null })}
-          options={WINDOWS.map(entry => ({ value: entry.value, label: entry.days ? <><span className="teams-window-last">Last </span>{entry.label.replace("Last ", "")}</> : entry.label, title: entry.days ? `Games in the ${entry.days} days ending at the last game in scope` : "Every game in scope" }))} />
+        {!totals && <Segmented size="md" label="Time window" value={windowValue} onChange={value => set({ window: value || null })}
+          options={WINDOWS.map(entry => ({ value: entry.value, label: entry.days ? <><span className="teams-window-last">Last </span>{entry.label.replace("Last ", "")}</> : entry.label, title: entry.days ? `Games in the ${entry.days} days ending at the last game in scope` : "Every game in scope" }))} />}
         <Menu align="left" renderTrigger={props => <MenuTrigger {...props} size="md" icon="sliders" selected={luckActive}
         aria-label={`3P luck: offense ${luckLabel(offenseLuck)}, defense ${luckLabel(defenseLuck)}`}>3P Luck</MenuTrigger>}>
         {(["offense", "defense"] as const).map(sideKey => <div key={sideKey} role="group" aria-label={`${sideKey === "offense" ? "Offense" : "Defense"} 3P%`}>
@@ -104,8 +109,8 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
       </>}
       modes={<>
         <Segmented size="md" label="Team view" value={view} onChange={value => set({ view: value === "overall" ? null : value, sort: null, dir: null })} options={VIEW_OPTIONS} />
-        <Segmented size="md" label="Venue" value={venue ?? ""} onChange={value => set({ venue: value || null })}
-          options={VENUES.map(entry => ({ value: entry.value, label: entry.label, title: entry.value ? `${entry.label} games only, against the league average over every game` : "Home and away games" }))} />
+        {!totals && <Segmented size="md" label="Venue" value={venue ?? ""} onChange={value => set({ venue: value || null })}
+          options={VENUES.map(entry => ({ value: entry.value, label: entry.label, title: entry.value ? `${entry.label} games only, against the league average over every game` : "Home and away games" }))} />}
         <Segmented size="md" label="Layout" value={layout} onChange={value => set({ layout: value === "cards" ? "cards" : null })}
           options={[{ value: "table", label: "Table", icon: "table" }, { value: "cards", label: "Cards", icon: "cards" }]} />
         <Segmented size="md" label="Counting" value={counting} onChange={value => set({ counting: value === "totals" ? "totals" : null })}
@@ -121,6 +126,8 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
         { label: "Source", value: "CourtLens admitted team box scores (descriptive; not a forecast). Databallr's version reads play-by-play first- and second-chance points, so values differ slightly." },
         ...data.warnings.map(value => ({ label: "Source warning", value })),
       ]} /> : undefined} /></div>
+    {totals && <p className="teams-note">{season} has season totals only (game logs start in {FIRST_GAME_LOG_SEASON}): records come from the standings, and last ten, streaks, close games, the trend, schedule strength and home and away need games.
+      {estimated && " Turnovers and offensive rebounds were not kept before 1973-74, so ratings are Basketball-Reference's estimates and the six factors are unknown."}</p>}
     {error && <FeedFailure error={error} retry={retry} what="team stats" />}
     {loading && !data && <FeedSkeleton label="Loading team stats" />}
     {data && !teams.length && <p className="teams-empty">{conference ? `No ${conference} Conference teams in this scope.` : "No team games in this scope."}</p>}

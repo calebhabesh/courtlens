@@ -11,7 +11,8 @@ export interface SixFactorRates {
 }
 export interface SixFactorTeam {
   team_id: string; tricode: string; name: string; conference?: string | null; division?: string | null; games_played: number; wins: number; losses: number;
-  possessions: number; opp_possessions: number; points: number; opp_points: number;
+  /** Before 1973-74 the source's estimate (points / rating), null without a rating. */
+  possessions: number | null; opp_possessions: number | null; points: number; opp_points: number;
   ortg: number | null; drtg: number | null; net: number | null;
   off: number | null; o_ts: number | null; o_tov: number | null; o_orb: number | null;
   def: number | null; d_ts: number | null; d_tov: number | null; d_drb: number | null;
@@ -20,9 +21,10 @@ export interface SixFactorTeam {
   /** Schedule (`courtlens-team-context-v1`): opponents' average solved strength; adj_net = net + sos. */
   sos: number | null; adj_net: number | null;
   /** Pythagorean expected wins (exponent 14) and actual minus expected; close = final margin ≤ 5. */
-  expected_wins: number | null; win_luck: number | null; close_wins: number; close_losses: number;
-  /** Every game in scope, whatever the window or venue; streak is +n wins / −n losses. */
-  standings: { wins: number; losses: number; last10_wins: number; last10_losses: number; streak: number };
+  /** Null for seasons served as totals (before 1983-84): no game margins. */
+  expected_wins: number | null; win_luck: number | null; close_wins: number | null; close_losses: number | null;
+  /** Every game in scope, whatever the window or venue; streak is +n wins / −n losses (null without games). */
+  standings: { wins: number; losses: number; last10_wins: number | null; last10_losses: number | null; streak: number | null };
   /** Net rating over the latest ten games, after each game from the tenth. */
   trend: { date: string; net: number }[];
   /** Derived in the browser over the teams shown (`withStandings`). */
@@ -73,8 +75,8 @@ export interface TeamColumn {
 export interface TeamColumnGroup { label: string; columns: TeamColumn[] }
 
 /** A per-100 relative term over the side's own possessions, for Totals. */
-const scaled = (value: number | null, possessions: number, counting: TeamCounting) =>
-  value == null ? null : counting === "totals" ? value * possessions / 100 : value;
+const scaled = (value: number | null, possessions: number | null, counting: TeamCounting) =>
+  value == null ? null : counting === "totals" ? possessions == null ? null : value * possessions / 100 : value;
 const sum = (...values: (number | null)[]) => values.some(v => v == null) ? null : values.reduce<number>((total, v) => total + (v as number), 0);
 const offTerm = (pick: (t: SixFactorTeam) => number | null) => (t: SixFactorTeam, c: TeamCounting) => scaled(pick(t), t.possessions, c);
 const defTerm = (pick: (t: SixFactorTeam) => number | null) => (t: SixFactorTeam, c: TeamCounting) => scaled(pick(t), t.opp_possessions, c);
@@ -99,8 +101,8 @@ const NET_EFF: TeamColumn = { key: "net_eff", label: "NetEff", title: "Shooting 
 const NET_POSS: TeamColumn = { key: "net_poss", label: "NetPoss", title: "Possession battle on both ends: oTOV + ORB + dTOV + DRB", higherBetter: true, format: "signed", signed: true,
   value: (t, c) => sum(scaled(t.o_tov, t.possessions, c), scaled(t.o_orb, t.possessions, c), scaled(t.d_tov, t.opp_possessions, c), scaled(t.d_drb, t.opp_possessions, c)) };
 
-const record = (wins: number, losses: number) => `${wins}–${losses}`;
-const winPct = (wins: number, losses: number) => wins + losses ? wins / (wins + losses) : null;
+const record = (wins: number | null, losses: number | null) => wins == null || losses == null ? "—" : `${wins}–${losses}`;
+const winPct = (wins: number | null, losses: number | null) => wins != null && losses != null && wins + losses ? wins / (wins + losses) : null;
 const STANDINGS_NOTE = " Every game in scope, whatever the window or venue.";
 const SEED: TeamColumn = { key: "seed", label: "Seed", title: `Order by win percentage among the teams shown (league or conference), ties by net rating; not the NBA's tiebreakers.${STANDINGS_NOTE}`,
   higherBetter: false, format: "count", unranked: true, value: t => t.seed ?? null, display: t => t.seed == null ? "—" : String(t.seed) };
@@ -199,6 +201,16 @@ export function sortTeams(teams: SixFactorTeam[], column: TeamColumn, direction:
 }
 
 /** Seed and games back among the teams shown: win percentage, then net rating, then name. */
+/**
+ * The group a team is seeded in: its conference, or before 1970-71 (no conferences) its division,
+ * the Eastern and Western Divisions of those seasons. Null when the season names neither.
+ */
+export function standingGroup(team: Pick<SixFactorTeam, "conference" | "division">): { key: string; label: string; short: string } | null {
+  if (team.conference) return { key: team.conference, label: `${team.conference} Conference`, short: team.conference.replace("ern", "") };
+  if (team.division) return { key: `division:${team.division}`, label: `${team.division} Division`, short: `${team.division} Division` };
+  return null;
+}
+
 export function withStandings(teams: SixFactorTeam[]): SixFactorTeam[] {
   const pct = (t: SixFactorTeam) => winPct(t.standings.wins, t.standings.losses) ?? -1;
   const ordered = [...teams].sort((a, b) => pct(b) - pct(a) || (b.net ?? -Infinity) - (a.net ?? -Infinity) || a.name.localeCompare(b.name));

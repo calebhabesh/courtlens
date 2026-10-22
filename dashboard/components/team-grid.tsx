@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import catalog from "@/lib/team-branding.json";
-import { franchiseActive, teamEra } from "@/lib/team-era";
+import { foldedTeams, franchiseActive, teamEra } from "@/lib/team-era";
 import { TeamLogo } from "./team-logo";
 import { SearchField } from "./ui/input";
 
@@ -25,11 +25,14 @@ export interface TeamGridProps {
 /** Team picker (D17): all 30 franchise logos plus a name/tricode filter. Selection is always the franchise id. */
 export function TeamGrid({ selected, onSelect, className = "", variant = "default", season }: TeamGridProps) {
   const [query, setQuery] = useState("");
-  const tiles = useMemo(() => TEAMS.map((team) => {
+  const tiles = useMemo(() => [...TEAMS.map((team) => {
     const era = teamEra(team.team_id, season);
     return { team_id: team.team_id, tricode: era?.code ?? team.tricode, name: era?.artwork_name ?? team.artwork_name,
       active: !season || franchiseActive(team.team_id, season) };
-  }).sort((a, b) => a.name.localeCompare(b.name)), [season]);
+  }),
+  // Teams that folded join the season they played (the 1946-47 Chicago Stags); their code is their id.
+  ...(season ? foldedTeams(season).map(era => ({ team_id: era.code, tricode: era.code, name: era.artwork_name, active: true })) : [])]
+    .sort((a, b) => a.name.localeCompare(b.name)), [season]);
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return needle ? tiles.filter((team) => team.name.toLowerCase().includes(needle) || team.tricode.toLowerCase().startsWith(needle)) : tiles;
