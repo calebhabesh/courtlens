@@ -17,6 +17,7 @@ import { CompareMetricsDrawer } from "./compare-metrics-drawer";
 import { COUNTING_MODES, CountingMenu, countingParams } from "./compare-counting-menu";
 import { CompareTrendTray } from "./compare-trend-tray";
 import { CompareSeasonPicker } from "./compare-season-picker";
+import { fetchLandingSeason, newestSeason } from "@/lib/landing-season";
 import { COMPARE_SUBTITLE } from "./compare-counting-menu";
 import type { CompareSelection } from "./compare-player-slot";
 import { ContextBar } from "./context-bar";
@@ -84,17 +85,30 @@ export function CompareGridView({ columns, span, context, workbenchCatalog, metr
     if (selection.ids.length <= 2) { if (toDuel) toDuel(selection); else navigate(duelParams(params, selection)); return; }
     navigate(gridParams(params, selection));
   }
-  function add(selection: CompareSelection) {
+  /** A picked player's column season (owner, 2026-10-22; rule in lib/landing-season): the
+      season the other columns share, when they share one; null follows the page season. */
+  async function landing(playerId: string, others: GridColumn[]) {
+    const shared = [...new Set(others.map(column => column.season))];
+    const season = await fetchLandingSeason(playerId, { phase: context.phase, releaseId: context.release_id, page: context.season,
+      other: shared.length === 1 ? shared[0] : null, newest: newestSeason(workbenchCatalog) });
+    return season && season !== context.season ? season : null;
+  }
+  async function add(selection: CompareSelection) {
+    if (parseGrid(params).ids.includes(selection.id)) { setNotice(`${selection.name} is already compared.`); return; }
+    const season = await landing(selection.id, columns);
     edit(current => {
       if (current.ids.includes(selection.id)) { setNotice(`${selection.name} is already compared.`); return null; }
       if (current.ids.length >= MAX_GRID_PLAYERS) return null;
-      return { ids: [...current.ids, selection.id], seasons: [...current.seasons, null] };
+      return { ids: [...current.ids, selection.id], seasons: [...current.seasons, season] };
     });
   }
-  function replace(index: number, selection: CompareSelection) {
+  async function replace(index: number, selection: CompareSelection) {
+    const before = parseGrid(params);
+    if (before.ids.includes(selection.id)) { setNotice(`${selection.name} is already compared.`); return; }
+    const season = await landing(selection.id, columns.filter((_, at) => at !== index));
     edit(current => {
       if (current.ids.includes(selection.id)) { setNotice(`${selection.name} is already compared.`); return null; }
-      current.ids[index] = selection.id; current.seasons[index] = null;
+      current.ids[index] = selection.id; current.seasons[index] = season;
       return current;
     });
   }

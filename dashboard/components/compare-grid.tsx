@@ -10,6 +10,7 @@ import { TeamWatermark } from "./team-watermark";
 import { Icon } from "./ui/icon";
 import { IconButton } from "./ui/kit";
 import { CompareEmptySlot } from "./compare-empty-slot";
+import type { BestSeason } from "@/lib/landing-season";
 import { ComparePlayerSeasonPicker } from "./compare-player-season-picker";
 import { HonorChip } from "./compare-season-honors";
 import { bioLine, teamRecord, type CompareSelection } from "./compare-player-slot";
@@ -29,6 +30,8 @@ export type GridColumn = {
   bio: PlayerBio | null;
   /** Seasons the player has games in, this phase; null while unknown. */
   played: string[] | null;
+  /** The player's best full season, marked in the season menu; null when none qualifies. */
+  best?: BestSeason | null;
 };
 
 /** A grid row: the shown text per column, the numbers it compares, and its direction. */
@@ -156,7 +159,7 @@ function GridTile({ column, games, onReplace, onRemove, onSeason, excludedIds, e
             <TeamLogo team={team} season={season} size={16} />{teamRecord(team, season)?.artwork_name ?? team}</span>)}</span>}
           {line && <span className="pvp-bio">{line}</span>}
           {column.played && <span className="pvp-season">
-            <ComparePlayerSeasonPicker label={player.name} season={season} seasons={column.played} awards={column.bio?.reference?.awards}
+            <ComparePlayerSeasonPicker label={player.name} playerId={player.player_id} best={column.best} season={season} seasons={column.played} awards={column.bio?.reference?.awards}
               championshipSeasons={player.championships?.seasons ?? []} recordedChampionships={player.championships?.all_seasons} beforeDate={column.beforeDate} ends={ends} onSelect={onSeason} />
           </span>}
         </div>}

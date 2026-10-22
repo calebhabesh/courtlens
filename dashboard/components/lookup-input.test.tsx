@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { LookupInput } from "./lookup-input";
+import { LookupInput, playerCaption } from "./lookup-input";
 import { queryLookup } from "@/lib/workbench-api";
 import type { LookupItem } from "@/lib/types";
 import { storageKeys } from "@/lib/storage-keys";
@@ -110,5 +110,16 @@ describe("LookupInput scope changes", () => {
     release();
     await settle();
     expect(screen.getByRole("listbox").textContent).not.toContain("Scope 2023-24");
+  });
+});
+
+describe("playerCaption", () => {
+  it("names the teams in scope, then the career span", () => {
+    const tatum = { ...jokic, team_association: { basis: "selected_scope", teams: ["BOS"] }, availability: { ...jokic.availability, seasons: ["2026-27", "2017-18"] } } as unknown as LookupItem;
+    expect(playerCaption(tatum)).toBe("BOS · 2017-18 – 2026-27");
+  });
+  it("shows only the span for a player outside the scope", () => {
+    const jordan = { ...jokic, team_association: { basis: "selected_scope", teams: [] }, availability: { ...jokic.availability, seasons: ["1984-85", "2002-03"] } } as unknown as LookupItem;
+    expect(playerCaption(jordan)).toBe("1984-85 – 2002-03");
   });
 });

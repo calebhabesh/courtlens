@@ -19,6 +19,7 @@ import type { GridColumn } from "./compare-grid";
 import { slotTeams } from "./compare-player-slot";
 import { CompareMetricsDrawer } from "./compare-metrics-drawer";
 import { CompareSeasonPicker } from "./compare-season-picker";
+import { fetchLandingSeason, newestSeason, type BestSeason } from "@/lib/landing-season";
 import { CompareSeasonHonors, EmptySectionHeading, honorSeasons, honorsNone } from "./compare-season-honors";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { BrandMark } from "./brand";
@@ -50,7 +51,7 @@ type Scope = { season: string; phase: string; before_date: string; window: strin
  * one row of presets and the span/counting menu, then mirrored one-line rows for the stats and the
  * accolades. Pills mark the leading side per metric, which also reads heavier; there is no verdict.
  */
-export function PlayerCompareView({ comparison: served, bios: servedBios = [null, null], career: servedCareer = null, sides: servedSides = null, played: servedPlayed = null, span = "season", cohort, metricDefinitions = [], workbenchCatalog, additionalPlayerIds = [], context, selector, pending = null, error = null }: {
+export function PlayerCompareView({ comparison: served, bios: servedBios = [null, null], career: servedCareer = null, sides: servedSides = null, played: servedPlayed = null, best: servedBest = null, span = "season", cohort, metricDefinitions = [], workbenchCatalog, additionalPlayerIds = [], context, selector, pending = null, error = null }: {
   comparison: PlayerComparisonResponse | null; bios?: [PlayerBio | null, PlayerBio | null]; catalog?: AnalyticsCatalog; cohort?: WorkbenchQueryResponse | null;
   /** Both careers through the cutoff; present when ``span`` is career. */
   career?: ComparisonCareerResponse | null; span?: "season" | "career";
@@ -58,6 +59,8 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   sides?: { a: Side; b: Side } | null;
   /** Seasons each player has games in, this phase. */
   played?: { a: string[]; b: string[] } | null;
+  /** Each player's best full season, marked in their season menu. */
+  best?: { a: BestSeason | null; b: BestSeason | null } | null;
   metricDefinitions?: MetricDefinition[]; workbenchCatalog?: WorkbenchCatalog | null; additionalPlayerIds?: string[];
   context: Scope; selector?: ReactNode; error?: string | null;
   /** Before a pair resolves: the player already chosen for each side, if any (24). */
@@ -72,6 +75,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
   const career = servedCareer && flipped ? { ...servedCareer, player_a: servedCareer.player_b, player_b: servedCareer.player_a } : servedCareer;
   const sides = servedSides && flipped ? { a: servedSides.b, b: servedSides.a } : servedSides;
   const played = servedPlayed && flipped ? { a: servedPlayed.b, b: servedPlayed.a } : servedPlayed;
+  const best = servedBest && flipped ? { a: servedBest.b, b: servedBest.a } : servedBest;
   const { views } = useWorkspace();
   const [exporting, setExporting] = useState(false), [notice, setNotice] = useState(""), [editing, setEditing] = useState(false);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -116,20 +120,32 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
     for (const [key, value] of Object.entries(values)) next.set(key, value);
     navigate(next, server);
   }
-  function pick(side: "a" | "b", selection: CompareSelection) {
+  /** A picked player lands in a season they played (owner, 2026-10-22; rule in
+      lib/landing-season): the other player's season first, so both compare in the same year. */
+  async function land(next: URLSearchParams, side: "a" | "b", playerId: string) {
+    const otherSide = side === "a" ? "b" : "a";
+    const paired = side === "a" ? b ?? pending?.b : a ?? pending?.a;
+    const season = await fetchLandingSeason(playerId, { phase: context.phase, releaseId: context.release_id, page: context.season,
+      other: paired ? seasonOf(otherSide) : null, newest: newestSeason(workbenchCatalog) });
+    const key = side === "a" ? "seasonA" : "seasonB";
+    if (season === context.season) next.delete(key); else if (season) next.set(key, season);
+  }
+  async function pick(side: "a" | "b", selection: CompareSelection) {
     const other = side === "a" ? b?.id : a?.id;
     if (selection.id === other) { setNotice("Choose two different players."); return; }
     const next = new URLSearchParams(params.toString());
     next.set(side === "a" ? "playerA" : "playerB", selection.id); next.delete("players");
+    await land(next, side, selection.id);
     navigate(next, true);
   }
   /** Fill one open side; the other side's choice (if any) stays, and a full pair loads (24). */
-  function pickPending(side: "a" | "b", selection: CompareSelection) {
+  async function pickPending(side: "a" | "b", selection: CompareSelection) {
     const other = side === "a" ? pending?.b : pending?.a;
     if (selection.id === other?.id) { setNotice("Choose two different players."); return; }
     const next = new URLSearchParams(params.toString());
     next.set(side === "a" ? "playerA" : "playerB", selection.id); next.delete("players"); next.delete("empty");
     setNotice("");
+    await land(next, side, selection.id);
     navigate(next, true);
   }
   /** Clear players (24): both sides return to open slots; the scope, preset and mode stay. */
@@ -229,7 +245,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
       <section className="pvp-card" aria-label="Comparison card">
         {a && b ? <>
           <div className="pvp-players">
-            <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" ends={ends} player={a} excludedIds={[a.id, b.id]} bio={bios[0]} season={seasonOf("a")} beforeDate={cutoffOf("a")} playedSeasons={played?.a ?? null}
+            <ComparePlayerSlot key={`a-${a.id}-${seasonOf("a")}`} side="a" ends={ends} player={a} excludedIds={[a.id, b.id]} bio={bios[0]} season={seasonOf("a")} beforeDate={cutoffOf("a")} playedSeasons={played?.a ?? null} best={best?.a}
               onSeason={season => chooseSeason("a", season)} onPick={selection => pick("a", selection)}
               games={careerView ? careerOf("a")?.item?.games_played : undefined} />
             <div className="pvp-pair-actions">
@@ -238,7 +254,7 @@ export function PlayerCompareView({ comparison: served, bios: servedBios = [null
               {/* A plain word reads at a glance (77, 79). */}
       <Button size="sm" variant="ghost" aria-label="Clear players" title="Clear all players" onClick={clearPlayers}>Clear</Button>
             </div>
-            <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" ends={ends} player={b} excludedIds={[a.id, b.id]} bio={bios[1]} season={seasonOf("b")} beforeDate={cutoffOf("b")} playedSeasons={played?.b ?? null}
+            <ComparePlayerSlot key={`b-${b.id}-${seasonOf("b")}`} side="b" ends={ends} player={b} excludedIds={[a.id, b.id]} bio={bios[1]} season={seasonOf("b")} beforeDate={cutoffOf("b")} playedSeasons={played?.b ?? null} best={best?.b}
               onSeason={season => chooseSeason("b", season)} onPick={selection => pick("b", selection)}
               games={careerView ? careerOf("b")?.item?.games_played : undefined} />
           </div>
