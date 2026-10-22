@@ -10,7 +10,8 @@ import { Tabs, TabsContent, TabsList, TabTrigger } from "./ui/tabs";
 import { PlayerCombinePanel, PlayerTrackingPanel } from "./player-feed-panels";
 import { Tooltip } from "./ui/tooltip";
 import { ControlScope } from "./ui/control-scope";
-import catalogBranding from "@/lib/team-branding.json";
+import { FIRST_GAME_LOG_SEASON, isTotalsSeason } from "@/lib/season-basis";
+import { teamNameAt } from "@/lib/team-era";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { ImpactPlayerCard } from "./impact-player-card";
@@ -73,8 +74,9 @@ function formTrend(value: number | null, season: number | null): "up" | "down" |
   return delta > 0 ? "up" : delta < 0 ? "down" : null;
 }
 
-function teamName(tricode: string): string {
-  return catalogBranding.teams.find(entry => entry.tricode === tricode)?.artwork_name ?? tricode;
+/** The team's name that season (the Philadelphia Warriors in 1961-62), else its code. */
+function teamName(tricode: string, season: string): string {
+  return teamNameAt(tricode, season) ?? tricode;
 }
 
 /** The summary's career figure: the Career row's value, or the best season for season-only DPM. */
@@ -205,6 +207,7 @@ export function WorkbenchPlayerProfile({
 
   const scopeParams = `season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`;
   const contextLine = scopeContextLine(context.season, context.phase, context.before_date);
+  const totalsSeason = isTotalsSeason(catalog, context.season);
   const explore: { label: string; href: string; icon: IconName }[] = [
     { label: "Recent Games", href: `/last-games?playerId=${player.id}&${scopeParams}`, icon: "history" },
     { label: "Workload Trends", href: `/research/trends?playerId=${player.id}&${scopeParams}`, icon: "trend" },
@@ -254,9 +257,9 @@ export function WorkbenchPlayerProfile({
               <span className="player-season-summary-info" tabIndex={0} role="img" aria-label="How percentiles are ranked"><Icon name="info" size={14} /></span>
             </Tooltip>}
             {showSeasonTeam && <span className="player-season-team">
-              {seasonSummary?.gp != null ? `${seasonSummary.gp} games with` : "Played for"}
-              <TeamLogoStack teams={seasonTeams} size={18} decorative />
-              {seasonTeams.map(teamName).join(" / ")}
+              {totalsSeason && hero?.item ? `${hero.item.metrics.gp} games with` : seasonSummary?.gp != null ? `${seasonSummary.gp} games with` : "Played for"}
+              <TeamLogoStack teams={seasonTeams} size={18} decorative season={context.season} />
+              {seasonTeams.map(team => teamName(team, context.season)).join(" / ")}
             </span>}
           </div>
           <dl className="player-summary-strip" role="group" aria-label="Season summary">
@@ -321,7 +324,9 @@ export function WorkbenchPlayerProfile({
           <div>
             <h2 className="panel-title">Prior Appearance Game Log</h2>
             <p className="text-muted text-xs panel-subtitle-margin">
-              {contextLine}. Lineage shows each game&apos;s source observations.
+              {totalsSeason
+                ? `Game logs start in ${FIRST_GAME_LOG_SEASON}. ${context.season} is recorded as season totals only (the career table and Stats show them).`
+                : <>{contextLine}. Lineage shows each game&apos;s source observations.</>}
             </p>
           </div>
 

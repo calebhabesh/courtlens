@@ -38,7 +38,7 @@ What a current player has, and how an older player gets it.
 | Game logs and per-game +/- | hoopR games, stints | FH01 game logs (1983-84 to 1999-00), then FH03. +/- from 1996-97. |
 | Play-by-play metrics: RAPM, on/off, six factors, WOWY, stint box, shot charts | IM01–IM06, SB01 | 1996-97 to 1999-00 only, from the same public archive (FH06) |
 | DARKO DPM, contracts and cap, combine measurements, tracking, hustle, play types, injuries | Various | Not applicable: these don't exist for those seasons. Showcase uses WS or BPM (H2). |
-| Team logos by season, defunct franchises | NBA.com team assets | Open question for FH05: needs a free source for historical logos. |
+| Team logos by season, defunct franchises | NBA.com team assets | Basketball-Reference team-season logos from 1946-47 (Wikipedia for two folded teams); six folded teams have no free logo (FH05 team identities, 2026-10-22). |
 
 ## Source facts (checked 2026-10-21)
 
