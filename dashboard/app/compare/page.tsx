@@ -20,6 +20,7 @@ import { getComparisonCareer, getComparisonGroup, getMetricCatalog, getPlayerBio
 import { comparePlayers, WorkbenchApiError } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, ComparisonGroupPlayer, PlayerBio, PlayerComparisonResponse, WorkbenchCatalog } from "@/lib/types";
 import { ButtonLink } from "@/components/ui/kit";
+import type { BestSeason } from "@/lib/landing-season";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Comparison · CourtLens" };
@@ -67,7 +68,7 @@ export default async function ComparePage({ searchParams }: {
   }
   const loaded = await loadComparison(selected);
   if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<ButtonLink size="lg" href="/players">Open Players</ButtonLink>}>Comparison unavailable.</GatedNote></PageShell>;
-  const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, bios, sides, played } = loaded;
+  const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, bios, sides, played, best } = loaded;
   // Career view (alignment row 3, 21): both careers through the same cutoff, fetched on request.
   const careerIn = (side: CompareSide) => wbComparison ? getComparisonCareer(wbComparison.player_a.id, wbComparison.player_b.id, {
     season: side.season, beforeDate: side.before_date, phase: String(wbComparison.context.phase),
@@ -94,7 +95,7 @@ export default async function ComparePage({ searchParams }: {
   // The legacy snapshot comparison keeps its form; everything else is the duel card.
   if(!comparison) return <PageShell template="compare" className="fo11-player-comparison">
     {urlSync}
-    <PlayerCompareView comparison={wbComparison} pending={selected.snapshotId === "snapshot-browser-fixture" ? null : pending} bios={bios} career={career} sides={sides} played={played} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
+    <PlayerCompareView comparison={wbComparison} pending={selected.snapshotId === "snapshot-browser-fixture" ? null : pending} bios={bios} career={career} sides={sides} played={played} best={best} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
       selector={<CompareSelector catalog={catalog} date={date} legacy={selected.snapshotId === "snapshot-browser-fixture"}
         initialA={targetA ? {id:targetA,name:`Player ${targetA}`} : null} initialB={targetB ? {id:targetB,name:`Player ${targetB}`} : null} />} />
   </PageShell>;
@@ -109,6 +110,12 @@ export default async function ComparePage({ searchParams }: {
 }
 
 type CompareSide = { season: string; before_date: string };
+
+/** A player's best full season from the seasons read (owner, 2026-10-22); null when none qualifies. */
+function bestOf(read: { peak?: Record<string, string | null>; peak_basis?: Record<string, string | null> }, id: string): BestSeason | null {
+  const season = read.peak?.[id];
+  return season ? { season, basis: read.peak_basis?.[id] ?? "bpm" } : null;
+}
 
 /** The grid's columns: one Stats read per distinct season, in the URL's order (row 3, 64). */
 async function loadGrid(selected: Record<string, string | undefined>, span: "season" | "career") {
@@ -150,7 +157,7 @@ async function loadGrid(selected: Record<string, string | undefined>, span: "sea
   ]);
   return {
     columns: kept.map((entry, index) => ({ player: found.get(entry.id)!, season: entry.side.season, beforeDate: entry.side.before_date,
-      bio: bios[index], played: played?.seasons[entry.id] ?? null })),
+      bio: bios[index], played: played?.seasons[entry.id] ?? null, best: played ? bestOf(played, entry.id) : null })),
     span,
     context: { season: scope.season, phase: scope.phase, before_date: scope.before_date ?? "", window: selected.window ?? "season", release_id: scope.release_id ?? workbenchCatalog.release_id ?? "" },
     workbenchCatalog,
@@ -280,11 +287,13 @@ async function loadComparison(selected: {
       : Promise.resolve([null, null] as [PlayerBio | null, PlayerBio | null]),
       wbComparison ? getPlayerSeasons(ids, String(wbComparison.context.phase ?? scope?.phase ?? "regular_season"), scope?.release_id ?? undefined).catch(() => null) : Promise.resolve(null)]);
     const played = wbComparison && playedSeasons ? { a: playedSeasons.seasons[ids[0]] ?? [], b: playedSeasons.seasons[ids[1]] ?? [] } : null;
+    const best = wbComparison && playedSeasons ? { a: bestOf(playedSeasons, ids[0]), b: bestOf(playedSeasons, ids[1]) } : null;
     return {
       metricDefinitions: metrics?.metrics ?? [],
       bios,
       sides,
       played,
+      best,
       catalog,
       workbenchCatalog,
       cohort,

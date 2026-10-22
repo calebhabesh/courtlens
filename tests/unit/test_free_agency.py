@@ -242,9 +242,17 @@ def test_current_placements_match_the_tracker_and_place_everyone_else(monkeypatc
     monkeypatch.setattr(
         free_agency, "_latest_index", lambda session: (free_agency._IndexPeople({}, {}), None)
     )
+    # Only player 4 played this season or last; player 5 last played decades ago.
+    monkeypatch.setattr(free_agency, "played_lately", lambda session, ids: {"4"})
     found = free_agency.current_placements(
         None,  # type: ignore[arg-type]
-        {"1": "Tony Bradley", "2": "Sam Abroad", "3": "Rostered Guy", "4": "Nobody Known"},
+        {
+            "1": "Tony Bradley",
+            "2": "Sam Abroad",
+            "3": "Rostered Guy",
+            "4": "Nobody Known",
+            "5": "Wilt Chamberlain",
+        },
     )
     # Tracker player: NBA.com's signing, then the camp cut, then the roster: a free agent.
     assert found["1"]["state"] == "free_agent" and found["1"]["team_id"] is None
@@ -254,6 +262,8 @@ def test_current_placements_match_the_tracker_and_place_everyone_else(monkeypatc
     assert (found["3"]["state"], found["3"]["team_tricode"]) == ("team", "TOR")
     # The roster is complete, so an unlisted player is on no roster; unknown sources say nothing.
     assert found["4"]["state"] == "free_agent"
+    # On no roster but long gone: nothing says he is looking for a team, so he is not placed.
+    assert "5" not in found
     unknown = free_agency.Rosters(teams={}, complete=False, unresolved=frozenset(), info=None)
     monkeypatch.setattr(free_agency, "roster_index", lambda session: unknown)
     assert "4" not in free_agency.current_placements(None, {"4": "Nobody Known"})  # type: ignore[arg-type]

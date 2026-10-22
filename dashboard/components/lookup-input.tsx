@@ -35,14 +35,16 @@ export function useLookupScope(scope: LookupScope) {
   };
 }
 
-/** A player reads as their team code(s) only, in every result list (owner, 2026-10-15): no
-    "observed in selected scope" wording; picking one gives their latest valid season. */
-function playerCaption(item: LookupItem) {
+/** A player reads as their team code(s) in scope (owner, 2026-10-15), then their career span
+    (2026-10-22), so a player from another era shows when he played: "1984-85 – 2002-03". */
+export function playerCaption(item: LookupItem) {
   if (item.kind !== "player") return item.subtitle;
   // A local candidate list may carry its own caption (Roster Shapes' sandbox: team, DPM, minutes).
   if (typeof item.metadata?.caption === "string") return item.metadata.caption;
   const teams = item.team_association?.teams ?? [];
-  return teams.length ? teams.join(" / ") : undefined;
+  const played = [...(item.availability?.seasons ?? [])].sort();
+  const span = played.length > 1 ? `${played[0]} – ${played.at(-1)}` : played[0];
+  return [teams.join(" / "), span].filter(Boolean).join(" · ") || undefined;
 }
 
 export function LookupIdentity({ item, committed = false }: { item: LookupItem; committed?: boolean; /** Kept for callers; captions are the same everywhere. */ compact?: boolean }) {

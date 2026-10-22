@@ -57,6 +57,9 @@ export type MenuProps = OverlayTrigger & {
   align?: "left" | "right";
   hoverIntent?: boolean;
   className?: string;
+  /** Controlled mode: the owner opens the menu itself (a season menu after a pick). */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   children: ReactNode;
 }
 
@@ -65,9 +68,17 @@ export function Menu({
   align = "left",
   hoverIntent = false,
   className = "",
+  open,
+  onOpenChange,
   children,
 }: MenuProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [ownOpen, setOwnOpen] = useState(false);
+  const isOpen = open ?? ownOpen;
+  const setIsOpen = useCallback((value: boolean | ((prev: boolean) => boolean)) => {
+    const next = typeof value === "function" ? value(isOpen) : value;
+    if (open === undefined) setOwnOpen(next);
+    onOpenChange?.(next);
+  }, [isOpen, open, onOpenChange]);
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const setTriggerRef = useCallback((node: HTMLButtonElement | null) => { triggerRef.current = node; }, []);
@@ -137,7 +148,8 @@ export function Menu({
     if (!isOpen) return;
     const handleOutsideClick = (e: globalThis.MouseEvent) => {
       if (containerRef.current && e.target instanceof Node && !containerRef.current.contains(e.target)) {
-        closeMenu();
+        if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+        setIsOpen(false);
       }
     };
     document.addEventListener("mousedown", handleOutsideClick);

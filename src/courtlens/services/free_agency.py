@@ -637,6 +637,7 @@ def current_placements(session: Session, names: dict[str, str]) -> dict[str, dic
     tracker = {str(p["player_id"]): p for p in store["entry"]["players"]} if store else {}
     matched = _player_moves(session, moves, rosters, list(tracker.values()), names)
     found: dict[str, dict[str, Any]] = {}
+    recent: set[str] | None = None
     for player_id, name in names.items():
         move = latest_move(matched.events.get(player_id, []))
         tracked = tracker.get(player_id)
@@ -668,8 +669,43 @@ def current_placements(session: Session, names: dict[str, str]) -> dict[str, dic
             continue
         if team is not None:
             found[player_id] = _placement("team", team, "roster", move, rosters)
-        else:
-            # Off every roster: an older move abroad or into retirement says where they went.
-            state = {"abroad": "abroad", "retired": "retired"}.get(kind or "", "free_agent")
-            found[player_id] = _placement(state, None, "roster", move, rosters)
+            continue
+        state = {"abroad": "abroad", "retired": "retired"}.get(kind or "", "free_agent")
+        # Off every roster with no move: a free agent only if they played lately. Wilt
+        # Chamberlain is on no roster either, but nothing says he is looking for a team.
+        if state == "free_agent":
+            if recent is None:
+                recent = played_lately(session, list(names))
+            if player_id not in recent:
+                continue
+        # Off every roster: an older move abroad or into retirement says where they went.
+        found[player_id] = _placement(state, None, "roster", move, rosters)
     return found
+
+
+def played_lately(session: Session, player_ids: list[str], today: date | None = None) -> set[str]:
+    """Players with NBA games this season or last (by today's date): who can be a free agent."""
+    from courtlens.reference_models import BbrefPlayerSeason
+    from courtlens.workbench_models import WorkbenchPlayerGame
+
+    today = today or datetime.now(UTC).date()
+    # A season is named for the autumn it starts in; from August the next one is current.
+    start = today.year if today.month >= 8 else today.year - 1
+    since = f"{start - 1}-{str(start % 100).zfill(2)}"
+    found = set(
+        session.scalars(
+            select(BbrefPlayerSeason.player_id)
+            .where(BbrefPlayerSeason.player_id.in_(player_ids), BbrefPlayerSeason.season >= since)
+            .distinct()
+        )
+    )
+    found |= set(
+        session.scalars(
+            select(WorkbenchPlayerGame.player_id)
+            .where(
+                WorkbenchPlayerGame.player_id.in_(player_ids), WorkbenchPlayerGame.season >= since
+            )
+            .distinct()
+        )
+    )
+    return {str(pid) for pid in found}
