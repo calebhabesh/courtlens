@@ -28,6 +28,9 @@ test("methodology and what's new use the Article template with anchored sections
   await openWorkbench(page, "/methodology");
   await expect(page.locator(".ui-page")).toHaveAttribute("data-template", "article");
   await expect(page.getByRole("navigation", { name: "On this page" }).getByRole("link", { name: "Metric catalog" })).toHaveAttribute("href", "#catalog");
+  // Commons photos carry the credit their licences require, linked to the file page.
+  await expect(page.getByRole("link", { name: /Keith Allison.*CC BY-SA 2\.0.*Wikimedia Commons/ }))
+    .toHaveAttribute("href", "https://commons.wikimedia.org/wiki/File:Dwyane_Wade_and_LeBron_James.jpg");
   await openWorkbench(page, "/whats-new");
   await expect(page.getByText("Oct 4, 2026 · CourtLens local workbench", { exact: false })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "On this page" }).getByRole("link", { name: "Open gates" })).toHaveAttribute("href", "#open-gates");

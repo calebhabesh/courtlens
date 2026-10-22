@@ -17,31 +17,4 @@ for (const width of [1440, 390]) {
     await expect(page.locator(".stats-group-th")).toHaveCount(6);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
   });
-
-  test(`PC12 directory search preserves scope and keeps the identity column at ${width}px`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
-    await openWorkbench(page, "/players");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Player Directory");
-    await expect(page.locator(".directory-table tbody tr")).toHaveCount(2);
-    await page.getByRole("button", { name: "Sort by PPG", exact: true }).click();
-    await expect(page).toHaveURL(/sortDirection=desc/);
-    await page.getByRole("button", { name: "Sort by PPG", exact: true }).click();
-    await expect(page).toHaveURL(/sortDirection=asc/);
-    await expect(page.getByRole("tablist", { name: "Stats sections" })).toHaveCount(0);
-    if (width < 768) await page.getByRole("button", { name: /^Filters/ }).click();
-    await page.getByRole("searchbox", { name: "Find player", exact: true }).fill("Star");
-    await page.getByRole("button", { name: "Search", exact: true }).click();
-    await expect(page.locator(".directory-table tbody tr")).toHaveCount(1);
-    await expect(page).toHaveURL(/name=Star/);
-    if (width < 768) await page.getByRole("button", { name: "Close drawer" }).click();
-    await expect(page.locator(".directory-player a")).toHaveAttribute("href", /season=2025-26/);
-    if (width < 768) {
-      const identity = page.locator(".directory-player");
-      const before = await identity.boundingBox();
-      await page.getByRole("region", { name: "Player directory scroll area" }).evaluate(el => { el.scrollLeft = 400; });
-      const after = await identity.boundingBox();
-      expect(Math.abs(after!.x - before!.x)).toBeLessThan(2);
-    }
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
-  });
 }

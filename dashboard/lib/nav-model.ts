@@ -44,7 +44,7 @@ export const NAV_MENUS: NavMenu[] = [
       { label: "Last X Games", href: "/last-games", icon: "chart-trend", description: "Player performance over their most recent games" },
       { label: "Showcase", href: "/showcase", icon: "crown", description: "Each season's leaders as player cards, with a season slideshow" },
       { label: "Player Twins", href: "/similar-players", icon: "fingerprint", description: "Player-seasons with the closest shot or box-score profiles, since 1996-97" },
-      { label: "Player Directory", href: "/players", icon: "dashboard", description: "Find any player and open their dashboard" },
+      { label: "Player Dashboard", href: "/players", icon: "dashboard", description: "Player panels side by side, from the DARKO leaders or search" },
     ] }],
   },
   {

@@ -15,8 +15,8 @@ Rows are in working order.
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
 | 1 | Stats | `/stats` | 👀 | Owner approved first revision 2026-10-15; cold-load animation follow-up ready for review; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
-| 3 | PvP | `/compare` | 🔄 in progress | Compare Export fixed (card export) |
-| 4 | Teams | `/teams`, `/teams/[id]` | 👀 | Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
+| 3 | PvP | `/compare` | ✅ | Owner approved 2026-10-21 (Compare menu tentatively done); Compare Export fixed (card export) |
+| 4 | Teams | `/teams`, `/teams/[id]` | ✅ | Owner approved 2026-10-21 (Teams menu tentatively done); Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
 | 5 | WOWY | `/wowy` | ⬜ | |
 | 6 | Last X Games | `/last-games` | ✅ | Owner approved first revision 2026-10-20; Databallr's window card, comparison and game logs, then stretch verdicts, game context, opponent defence, Since windows, linked panels and a four-stat rolling chart; +/- from accepted stints |
 | 7 | Live | `/live` | ⬜ | |
@@ -26,10 +26,11 @@ Rows are in working order.
 | 11 | Tier List | ~~`/tierlist`~~ | ✂️ cut | Owner cut 2026-10-20: "It doesn't serve any purpose." Page, Compare menu item and example boards removed |
 | 12 | Roster Shapes | `/roster-shapes` | ✅ | Owner approved first revision 2026-10-19; Databallr side-by-side team view with linked hover, season-by-season fill, rotation-capped minutes, searchable trade sandbox |
 | 13 | Stat Line Shift | `/stat-line-shift` | ✅ | Owner approved first revision 2026-10-19; opens on Select Team, full-width roster drawer with season photos, per-75 without → with table, pair cards, Customize Stats dialog; IM03 stints + stint box (shared-floor v2) |
-| 14 | Contracts + Free Agency | `/contracts`, `/free-agency` | 👀 | Select Team flow, Overview (payroll, cap bar, full flow, bar timeline, roster Stats table, pies), Small vs Big on DARKO values; Free Agency restored from NBA.com's tracker |
+| 14 | Contracts + Free Agency | `/contracts`, `/free-agency` | ✅ | Owner approved 2026-10-21 (Teams menu tentatively done); Select Team flow, Overview (payroll, cap bar, full flow, bar timeline, roster Stats table, pies), Small vs Big on DARKO values; Free Agency restored from NBA.com's tracker |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
 | 16 | Matchup Matrix | `/matchups` | ✅ aligned (first revision) | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
-| 17 | Shot Profile Twin | `/similar-players` | 👀 | NBA only; Databallr's twin cards and closest-matches table on pbpstats zone totals, then Box Score mode, pool filters, distance drivers |
+| 17 | Shot Profile Twin | `/similar-players` | ✅ | Owner approved first revision 2026-10-21 (Player Twins); NBA only; Databallr's twin cards and closest-matches table on pbpstats zone totals, then Box Score mode, pool filters, distance drivers; table headers centered over their values |
+| 22 | Player Dashboard | `/players` | 👀 | Databallr's `/dashboard` (Top 50 DARKO DPM card carousel, compact player panels, head-to-head panel). Row 2's "Dashboard" pairing was wrong: row 2 is our player page, kept as approved. Replaces the Player Directory table |
 | 18 | Six Factor RAPM | `/research` | ⬜ | |
 | 19 | Wingspan | `/wingspan` | ⬜ | |
 | 20 | Offensive Calculator | `/calculator` | ⬜ | |
@@ -919,7 +920,7 @@ Operational instructions (owner, 2026-10-14):
   the crawl is writing.
 Evidence: docs/evidence/alignment/players/ ([README](evidence/alignment/players/README.md)).
 
-### 3 PvP — 🔄 in progress
+### 3 PvP — ✅ aligned (first revision)
 
 Owner completion decision (2026-10-17): "I think we are done the player comparison page and
 will start on the next page." The next page in the ordered queue is Teams (`/teams`).
@@ -1237,7 +1238,7 @@ Guardrails kept: no overall winner or lead tally; unknown values show "—" with
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
 
-### 4 Teams — 👀 ready for review (instruction 8 awaits the owner's conference list)
+### 4 Teams — ✅ aligned (first revision; instruction 8 still awaits the owner's conference list)
 
 Owner start (2026-10-18): "Let's begin the revamp for the teams pages", with Databallr references
 for Teams, the Teams menu, Roster Shapes, Stat Line Shift, Contracts (overview, roster table, pies)
@@ -1880,7 +1881,7 @@ Follow-up instruction (owner, 2026-10-19; screenshot of the table header):
     is by that side's minutes. Measured on :3100 at 1440 / 390, no overflow or browser errors
     (`follow-up-5/`); lint, typecheck, Vitest 598/598.
 
-### 14 Contracts + Free Agency — 👀 ready for review
+### 14 Contracts + Free Agency — ✅ aligned (first revision)
 
 Owner start (2026-10-19): "Let's begin the revamp for Contracts + Free Agency (alignment catalog row
 14, `/contracts`), the next page under the Teams menu", with Databallr references: the Teams menu
@@ -2345,6 +2346,15 @@ Follow-up instructions (owner, 2026-10-17):
     `dashboard/scripts/verify-team-compare-layout.mjs` checks served grid styles, column centering,
     overflow and game/depth selection against both 3100 and production 3180 at 1440/1024/390px.
     Measured zero column offset, no clipping or page overflow, and no browser exceptions on either.
+20. [x] "A bit of a reversion back to an old page … Why isn't 'By Position' clickable on Team
+    Comparison" (2026-10-21, during row 17). — The observed starting fives were a sealed file
+    pinned to the 2026-10-17 release; the 2026-10-20 publication made every scope fail its
+    release check, so By Position disabled itself. `services/starter_evidence.py` now applies the
+    same method live (`GET /api/workbench/teams/{id}/starters`), reproducing all 1,192 sealed
+    scopes exactly (the unit's G/F/C = each player's most common label across its starts); the
+    sealed file moved to `docs/evidence/alignment/team-compare/`. Tests:
+    `tests/unit/test_starter_evidence.py`. Like the Stats starting-position labels, it still
+    refuses while a daily refresh has changed raw files that the release hasn't republished.
 
 Closing review (2026-10-18):
 - [x] Prototype naming removed: `TeamComparison`, `TeamSide`, `team-comparison.tsx/.css`, and
@@ -3109,7 +3119,7 @@ Follow-up instructions (owner, 2026-10-20; "Good first pass, now edits"):
     height with its name strip growing, and a small-sample stat (no percentile) keeps the full cell
     height. 96-card board at 1440, 1280 and 390: no name clipped, every row's stats level.
 
-### 17 Player Twins — 👀 ready for review
+### 17 Player Twins — ✅ aligned (first revision)
 
 Owner start (2026-10-21): row 17 with two Databallr references (Shot Profile Twin: the twin cards,
 and the Closest matches table). "databallr covers the wnba, however, courtlens is not covering the
@@ -3191,6 +3201,134 @@ Follow-up instructions (owner, 2026-10-21):
     LaPhonso Ellis (`ellisla01`) and Chris Gatling (`gatlich01`) have no NBA.com photo
     (silhouette) and no Basketball-Reference headshot; Ike Austin and Isaiah Rider have no
     Basketball-Reference profile on file yet.
+11. [x] "remove this weird 2 yellow lines around the column" — the selected match row's accent
+    edges.
+    — The selected row's inset accent edges are gone; the name stays gold.
+12. [x] "we add an option to compare it to the players position match instead of simply a general
+    match."
+    — Any Position / "<pos> Only" under the player (`position=same`). A season with an estimate
+    (CourtLens' Stats estimate, 2000-01 on) matches only the identical estimate; a season before
+    2000-01 uses NBA.com's listed position and matches its G/F/C group (shown with *). LeBron
+    2025-26: 1,995 SF player-seasons qualify; Kuminga stays #1.
+13. [x] "courtlens wordmark should be in courtlens color + remove the verbose captioning under the
+    wordmark, it doesn't have any purpose"
+    — Gold (`--color-accent`, as on Showcase's banner), 18 px; the caption is removed.
+14. [x] "Indicate the positions of the players. I feel like we are lacking this for a number of
+    different pages under 'Players'" (with the Players menu: Last X Games, Showcase, Player Twins,
+    Player Directory).
+    — Player Twins: a position badge on both cards, in each match row and in the player search.
+    Showcase: a position badge at the photo's bottom right and "TEAM · POS" in the player
+    dialog. Last X Games: "DEN · C" under the name (the game log API now returns the season's
+    estimated position). Player Directory: "TOR · SG" like the Stats table. All are the Stats
+    page's estimated positions.
+16. [x] "use team color themed circles. Also, make sure the photo used is from the season
+    highlighted. We should be using the 2012-13 anthony davis photo here, if he has one
+    available."
+    — Both avatars take that season's team colour as ring and backing (`teamBrandColor`, era
+    colours included: 2012-13 Hornets teal). No 2012-13 Davis photo exists: NBA.com's season
+    headshots start in 2015-16 (2012-14 URLs answer 403) and Basketball-Reference has one
+    career photo. The portrait endpoint now gives a pre-2015-16 season the player's nearest
+    season photo with the same franchise (era codes resolve: NOH → Pelicans), so Davis shows in
+    his 2015-16 Pelicans photo instead of his current Dallas one; site-wide (Design Language,
+    Identity). Different franchise → unchanged. Portrait URLs moved to `crop=face-v5`.
+    Tests: `tests/unit/test_season_portraits.py`.
+15. [x] "like we've pretty much comprehensively implemented this page do you have any suggestions
+    recommendations for additions to make improve the page over the databallr baseline?"
+    — Proposed (2026-10-21): career twin strip; "what came next"; measure weights; a percentile
+    per bar; a combined shot + box mode; a twin map. 17–22 build them.
+17. [x] "You can build all of those out." — Career twins: a strip of every season the player has in
+    the data, each with its nearest *other* player under the current pool rules (seasons, floor,
+    position, weights; Same Season means that season only). Selecting a card opens that season.
+18. [x] What came next — each match row's Next Season cell (the twin's following season, PTS per
+    game change, tooltip with TS% and games), both cards' "Next season" line, and a summary under
+    the table (how many shown twins have a next season on record, median PTS/G and TS% change,
+    beside the player's own next season when recorded). Missing is unknown and says why ("not in
+    the data yet" or "no 2013-14 record"), never retired or zero; labelled "a record of what
+    happened, not a forecast".
+19. [x] Measure weights — a Measure Weights disclosure under the consoles: Off / ½× / 1× / 2× per
+    measure (`w=ft_vol:0,three_vol:2`), Equal Weights resets. Distance becomes the weighted RMS
+    over shared weighted measures; the overlap floor is three quarters of the weighted measures
+    (6 of 8, 12 of 16, 5 of 6). The last weighted measure can't be turned off; an all-off
+    request is a 422. Off measures dim in the cards and the table.
+20. [x] Percentile per bar — a PCTL column in each group: the season's rank among player-seasons
+    with 500+ offensive possessions (the standardization pool), ties counted half.
+21. [x] Combined mode — "Combined" in the profile switch (`mode=all`): all 16 measures, eight
+    groups, 12 of 16 shared to qualify. Davis 2012-13's combined #1 is Derrick Favors 2013-14.
+22. [x] Twin map — the season's player-seasons (at the pool's possession floor) on the first two
+    principal components of the weighted z-scores, fitted on the season's 500+ pool, equal
+    scale on both axes; shown twins (any season) on the same axes, numbered by rank, the current
+    twin ringed gold; the player in gold. Whole Season / Zoom to Twins. Hover names a point;
+    a twin opens beside the player, another dot opens its twins. Axis notes name the top
+    loadings and share of spread, and say a 2-D distance is a summary, not the match.
+    Ranking moved to one NumPy pass (`Index`/`Ranking`; same order and distances as pairwise
+    `compare`, tested), so a request with the career strip takes ~0.05–0.35 s.
+23. [x] "I selected 2009-10 lebron whose comp is luka doncic. Why doesn't the comp show luka
+    doncic?" — The strip leaves out the player's own seasons; the panel follows Own Seasons /
+    Others Only (default Own Seasons, so LeBron 2008-09 is #1 at 98.3%). A career card now opens
+    its season with that twin beside the player (`vs`), so the panel shows the card's twin
+    (Luka 2019-20, #5 Match, 95.2%), and the caption says own seasons are left out.
+24. [x] "It chose lebron's sixers photo instead of his 2010-11 photo?" — No 2010-11 Heat photo
+    existed: NBA.com's season photos start in 2015-16 (he left Miami in 2014) and none was with
+    the Heat franchise, so the current photo showed, and the 2026-27 release has him on the 76ers.
+    Owner chose (2026-10-21): the nearest season's photo (any team) when the franchise has none
+    (LeBron 2010-11: 2015-16 Cavaliers), and a Wikimedia Commons acquisition for team-era photos.
+    Crop version `face-v6`.
+25. [x] Wikimedia Commons team-era photos (`courtlens acquire-commons-portraits`, the `photos`
+    extra; `services/commons_portraits.py`). Each pre-2015-16 player-franchise era (SuperSonics
+    and Thunder apart) searches `"<player>" <nickname>`; a file qualifies with a free licence
+    (CC BY, CC BY-SA, CC0, public domain), the team and the player's surname in its text, no
+    All-Star/Olympic/national-team words, and a full date inside one of the era's seasons (the
+    photo's season). OpenCV YuNet finds the faces and SFace keeps the one matching the player's
+    own NBA.com/Basketball-Reference headshot (cosine >= 0.45, 0.15 clear of any other face, 100px
+    wide), so a teammate, opponent or fan is never shown as him; then a head-and-shoulders square
+    (<= 576px JPEG). Rows carry author, licence and file page; Methodology lists them under Photo
+    credits (`/api/workbench/portrait-credits`). Resumable (each era season ends active or
+    missing); 1 request a second. Trial: LeBron 2010-11 Heat (Keith Allison, CC BY-SA 2.0),
+    2012-13 Heat, 2007-08/2009-10/2014-15 Cavaliers; Durant, Iverson, Ray Allen, Chris Paul,
+    Deron Williams eras all correct by eye. Hosted demo: needs the new portrait rows and
+    `data/cache/portraits` files synced.
+    Full run (2026-10-21, ~3 h, 4,020 eras): 762 season photos for 450 players, mostly 2007-08 to
+    2014-15 (Commons' Flickr era; 2010-11 leads with 153); 5,411 era seasons without a usable
+    match; 1,079 eras skipped for want of any headshot to match against (older players; a rerun
+    after the owner's photo step picks them up); 1 transient error left for a rerun. A random
+    36-photo sample was the named player in every case by eye.
+31. [x] "Yes, uniform photos" (owner, 2026-10-21, after some Commons photos showed players in
+    t-shirts, warm-ups or at events). Two checks now gate a Commons photo: its title and
+    description name no off-court setting (`OFF_COURT`: press conference, parade, signing,
+    party, visit, charity, practice, ceremony…), and the photo shows bare upper arms in his skin
+    tone beside and below the face (`bare_arm_share` >= 0.15, chroma in YCbCr; a sleeveless
+    jersey), else the next candidate is tried (six per season). Applied to the 762 stored
+    photos: 19 failed the text check and 179 the arm check; their rows and files were removed
+    and their seasons searched again (38 uniform replacements). Now 602 photos for 378 players.
+    A random 40 by eye: about 37 in game uniform; a few still pass with covered arms where the
+    arm region picks up hardwood or a neighbour's skin.
+26. [x] "should we have a toggle on the table to switch from tables that include the player
+    themself, and only other players? And should the table also have a year label." — The
+    own-seasons switch moved from the pool console to the table header ("With <player>" /
+    "Other Players Only", same `own=exclude`); the title names the target ("Closest Matches to
+    2025-26 Amen Thompson"); a Season column follows the player (team · position stay under
+    the name). Columns narrowed so the table fits 1100px exactly at 1440.
+27. [x] "You can put the team logo next to the full name" — each card's name is followed by that
+    season's team logo (era logos included); the photo keeps its corner badge.
+28. [x] "all players should be searchable … when you press that player it returns their most
+    recent season or … some type of clever UI UX" — the player search covers every player in the
+    data (`/api/workbench/player-twins/players`, loaded once). The selected season's players come
+    first and keep that season ("1999-00 · LAL · SG · …"); everyone else follows by latest season
+    and opens there ("Opens 2015-16 · LAL · 1996-97 to 2015-16"). Wembanyama searched from
+    1999-00 opens 2025-26.
+29. [x] "There is a lot of grey caption text on the page around tables and graphs. Can we minimize
+    this." — Gone: both cards' footnotes, "Select a row…", the method paragraph, the Career
+    Twins sentence, the map's subtitle and axis paragraph. Their content sits behind an info
+    button beside each heading (bars, matches, career twins, map). Kept: the pool line over the
+    table and a one-line source credit. What Came Next is one line ("Next season · 11 of 12 twins
+    on record · median +1.5 PTS, +1.2 TS% · Scottie Barnes −1.2 PTS, +5.4 TS%"; "not a forecast"
+    on hover); the table's column reads "Next".
+30. [x] "The Twin Map is a little unclear, can we make it a little more conspicuous." — Opens on
+    a Twins Close-Up (Whole Season one click away; the close-up spans at least 1.6 units so a
+    tight cluster keeps context); a line joins the player to each numbered twin; the closest three
+    are named ("Flagg 2025-26"); each edge says in plain words what that direction means, from
+    the axis's two strongest measures ("More rim attempts, fewer threes" / "Fewer rim attempts,
+    more threes"); the legend is three short keys.
 
 Verification (2026-10-21): live (owner's :3100 on the sealed bundle) 1440 and 390, Shot and Box:
 no overflow, no browser errors. Ruff, mypy, dashboard lint and typecheck clean; pytest 2,238
@@ -3203,6 +3341,115 @@ phone baseline (7 cards now); not this page, `stats-team-move-dates:4` and `fo13
 (two "Email" fields on /planner). Removed the shot-profile and similar-players first-load
 baselines; the Shot Profile tab's ShootingView tests went with it (aftermath keeps ShootingView).
 
+Verification of 17–22 (2026-10-21): pytest 2,248 passed (6 new in `test_player_twins.py`:
+weights, vector ranking equals pairwise compare, combined, percentile, next season and map axes,
+the view end to end); Vitest 622/622; ruff, mypy, lint and typecheck clean. The fixture was
+recaptured from the real API (Shot, picked row, Box, Combined, one weighting). Playwright:
+`player-twins.spec.ts` 7/7 (new: Combined + weights; percentiles, next, career, map + zoom);
+full suite 500 passed, 1 failed (known `stats-team-move-dates:4`). Live :8000 serves the new
+fields.
+
 Data-blocked: none (WNBA out of scope).
 Evidence: docs/evidence/alignment/similar-players/
 
+### 22 Player Dashboard — 👀 ready for review
+
+Owner start (2026-10-21): "The 'Player Directory' is similar to databallr's 'Player Dashboard' page
+where there is a slideshow of player cards, that you can select, and pit players against each other
+in a more compact view." Last page of the Players menu (Last X Games, Showcase, Player Twins done).
+The list below is the agent's replicate-then-improve proposal. Owner approved it on 2026-10-21:
+backfill NBA tracking as far back as the free mirror goes; write CourtLens formulas for Databallr's
+undefined metrics (drop any not derivable); build all extras (8–10).
+
+Starting state (survey, 2026-10-21): `/players` renders `StatsWorkspace` with a six-column
+`PlayerDirectory` table (GP, MPG, PPG, RPG, APG, TS%), a name search and a team filter, which the
+Stats table already covers. Databallr: title + ‹ season › stepper + Team filter; "Top 50 DARKO DPM"
+card carousel (rank, DPM, season photo on a team-colour card); "Search from N players…" with a
+palette toggle and favourites; up to N compact panels (photo, position, share / favourite / swap /
+close; season, RS/PO, Advanced, Rate; DARKO O/D/DPM, MP, 3-year O/D/RAPM; six-factor impact
+oTS/oTOV/oREB and dTS/dTOV/dREB with dots; Scoring, ORB, Playmaking; Playtypes freq + rTS for
+Creation / Spacing / Transition / Finishing; Contesting, DRB, D-Playmaking; percentile bar under
+every value); swapping two panels adds a head-to-head panel showing each difference coloured by
+the leader with the leader's name; an Add Player slot ("Press 1").
+
+Data survey: on file for every season with impact data: DPM family, MIN, 1/2/3-year RAPM, six
+factors (o_ts … d_reb), rTS, 3PR, 3P%, FTR, self-miss / teammate-miss ORB%, bad-pass turnovers,
+rim assists, cTOV%, STL, BLK, DRB%, foul frequency, charges. NBA tracking (hoopR mirror, admitted
+2023-24 to 2025-26 only): potential assists, on-ball %, defended FGA and DIFF (overall and under
+6 ft), hustle deflections and loose balls, Synergy play types.
+
+Instructions (proposal approved by the owner, 2026-10-21):
+1. [x] Page: "Player Dashboard", ‹ season › stepper over seasons on file, Team filter; all state in
+   the URL. The Player Directory table goes away; header search still finds anyone.
+   — `/players` (`components/player-dashboard-view.tsx`, `lib/player-dashboard.ts`). Menu label
+   "Player Dashboard", not the proposed "Dashboard": the player page's back button and the command
+   palette name it too, and a bare "Dashboard" read as the player page. URL: `season=`, `teamId=`
+   (the shared Select Team), `p=<id>.<season>.<rs|po>[.b][g]` joined by `_` (dots and underscores
+   survive URLSearchParams unencoded), `vs=<a>.<b>`. Opens on the latest season with 30+ days of
+   regular-season games (2025-26 while 2026-27 is a day old). `PlayerDirectory` and the Stats
+   workspace's `/players` branch are deleted; its two Playwright tests went with it.
+2. [x] Carousel: Top 50 DARKO DPM for the season (Team filter narrows it): season photo on a team-
+   colour card with rank and DPM; arrows scroll; clicking a card adds that player.
+   — 400+ minutes as Databallr (the floor drops when a team is chosen); a card already on the page
+   is ringed; cards disable at four panels.
+3. [x] Search adds a panel. Favourites wait for accounts; the palette toggle is dropped.
+   — "Search <season> Players…" (LookupInput over the season); key 1 focuses it from anywhere.
+4. [x] Panels: DARKO, MP, RAPM; six-factor impact with dots; Scoring / ORB / Playmaking; Play
+   Types; Contesting / DRB / D-Playmaking; percentile bar and number under each value. Per-panel
+   season (the player's own seasons), RS/PO, Advanced (else a Basic box-score view) and Per 36 /
+   Per Game; copy link and close; up to four panels; Add Player slot with key 1.
+   — Bars use the Stats percentile scale (gold high → gray → blue low), never red/green (Design
+   Language). RAPM shows the longest window on file (3, 2 or 1 year) and says which.
+5. [x] Head-to-head: swap on two panels opens Databallr's comparison panel; each value is the
+   leader's margin in their identity colour (A gold, B blue) with their surname beneath; a third
+   swap replaces the older pick; closing a panel shifts or ends the pair.
+   — Play types compare possession share and rPPP per family (Synergy has no FTA, so no TSA/TS).
+6. [x] Definitions in every tooltip. Databallr's undefined metrics:
+   — ASTEFG = points created by assists ÷ (2 × potential assists); PA/1M = potential assists per
+   minute of possession (both CourtLens formulas, said so in the tooltip). SHOTS → Offensive Load
+   (LOAD), sTOV% → cTOV%, PASSTOV → AST: each a defined catalog stat in that slot, labelled with
+   its own name. STOP% and rFTOV are dropped (no derivation with a league percentile); the second
+   D-Playmaking row is CONTEST, OFFD, LBALLS and the DRB column adds DREB. Play-type efficiency
+   is rPPP (points per 100 above the league's rate for that family; Synergy has no FTA, so no TS).
+   Families as Databallr: Creation = isolation + P&R ball handler + post-up; Spacing = spot-up +
+   off-screen + handoff; Transition; Finishing = cut + roll man + putbacks.
+6b. [x] Backfill hoopR tracking, defense, hustle and Synergy to their first seasons.
+   — `courtlens acquire-stats-feeds --no-pbpstats` for 2013-14 to 2022-23 (reports in
+   `data/logs/stats-feeds-backfill-*.json`): tracking and defense from 2013-14, hustle and play
+   types from 2015-16 (the mirror has nothing earlier). The mirror's isolation files declare only
+   the start year ("2016"); admission now accepts that for play types as for matchups, proven by
+   every row's SEASON_ID (`START_YEAR_ENDPOINTS`, test updated). Still rejected by design: 2013-14
+   and 2017-18 regular-season defense (one traded player listed twice under one team ID) and the
+   mirror's mislabelled lineup files (not used here). `mart_stats_player_defense` read only the
+   overall columns, so every zone category (under 6 ft, threes …) was null, on the Defense page
+   too; it now coalesces each zone's own columns.
+7. [x] Seasons without a feed show "—" with a note naming the feed and its first season; seasons
+   before 2023-24 note that RAPM, six factors and the play-by-play rates start in 2023-24.
+8. [x] Panels for any season on file (2000-01 onward in the Stats release; DARKO and box score
+   throughout, tracking from 2013-14, impact from 2023-24). Box-score panels before 2000-01 wait
+   for the full-history Stats data (FH02).
+9. [x] The name opens the player page; icons open Player Twins and Player Comparison; the
+   head-to-head opens both players in Player Comparison.
+10. [x] Each value's tooltip names its percentile cohort and size ("74th percentile among 412
+    qualified players (500+ season minutes)"; tracking: "… 380 players with 500+ tracked
+    minutes").
+
+Data-blocked: STOP%, rFTOV (dropped); Databallr's exact SHOTS / sTOV% / PASSTOV definitions
+(stand-ins above); play-type TS (Synergy has no FTA).
+Evidence: docs/evidence/alignment/player-dashboard/
+
+
+Round 2 (owner, 2026-10-21): "On databallr the player carousel/slideshow is perpetual motion sliding
+through all the players (not scrollable) moving from right to left. And when you hover over a player
+the slideshow stops and gives you a small hover state of info on the player card." "Make our cards
+much bigger similar to databallr's size." "Our compact cards are a little worse compared to
+databallr's … improvements to coloring/segmentation."
+
+1. [x] Carousel is a right-to-left marquee (two copies, the second `inert` and `aria-hidden`); hover
+   or focus pauses it; a strip that fits the width stands still. Reduced motion: no drift, the
+   strip scrolls instead. Arrow buttons removed.
+2. [x] Cards 148px wide (phone 120px), 3:4 photo with the name over a bottom fade; hover/focus
+   overlay shows name, DPM rank, DPM, team and "Click to add".
+3. [x] Panels: slate `--color-table-lift` body, brighter group strips, hairlines between groups,
+   16px values, 4px bars on a visible track, six-factor and play types in inset wells,
+   team-colour avatar ring and position badge; head-to-head play types as one well with dividers.

@@ -21,7 +21,7 @@ describe("nav trail", () => {
   it("names pages from the nav, merged pages and drill-in paths", () => {
     expect(pageLabel("/roster-shapes?season=2025-26")).toBe("Roster Shapes");
     expect(pageLabel("/stats?season=2025-26")).toBe("Stats");
-    expect(pageLabel("/players")).toBe("Player Directory");
+    expect(pageLabel("/players")).toBe("Player Dashboard");
     expect(pageLabel("/research/shooting/adjusted")).toBe("Shooting");
     expect(pageLabel("/live?live_mode=history")).toBe("Finals");
     expect(pageLabel("/teams/1610612759")).toBe("Team");

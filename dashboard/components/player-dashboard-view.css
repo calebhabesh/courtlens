@@ -1,0 +1,202 @@
+@layer pages {
+  /* Player Dashboard (alignment row 22): Databallr's /dashboard. Scope, card carousel, search, then
+     compact player panels and the head-to-head panel in a wrapping row. */
+  .pd-page { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); min-width: 0; }
+  .pd-scope { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-2); }
+  .pd-season-step { display: flex; align-items: center; gap: var(--space-1); }
+
+  /* Carousel: Databallr's marquee. The track holds the cards twice and drifts left by one copy, so
+     the loop is seamless; hover or focus stops it. A strip that fits stands still and centred. */
+  .pd-carousel { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); width: 100%; min-width: 0; }
+  .pd-carousel-title { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .pd-marquee { position: relative; width: 100%; overflow: hidden; padding-block: var(--space-2); }
+  .pd-marquee[data-loop] { mask-image: linear-gradient(90deg, transparent, var(--color-white) 3%, var(--color-white) 97%, transparent); }
+  .pd-marquee-track { display: flex; justify-content: center; }
+  .pd-marquee-group { display: flex; flex: 0 0 auto; gap: var(--space-3); padding-inline: var(--space-1); }
+  .pd-marquee[data-loop] .pd-marquee-track { justify-content: flex-start; width: max-content; animation: pd-marquee calc(var(--pd-marquee-seconds, 150) * 1s) linear infinite; }
+  .pd-marquee[data-loop] .pd-marquee-group { padding-inline: 0 var(--space-3); }
+  .pd-marquee[data-loop]:is(:hover, :focus-within) .pd-marquee-track { animation-play-state: paused; }
+  @keyframes pd-marquee { to { transform: translateX(-50%); } }
+  .pd-card-item { flex: 0 0 auto; }
+  .pd-card {
+    --pd-card-edge: color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 60%, var(--color-white));
+    display: block; width: 148px; padding: 0; overflow: hidden; cursor: pointer; text-align: center;
+    border: 2px solid var(--pd-card-edge); border-radius: var(--radius-lg);
+    background: var(--team-tint, var(--color-surface-2)); color: var(--color-white); font: inherit;
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .pd-card:hover:not(:disabled) { transform: translateY(-3px); box-shadow: var(--shadow-2); }
+  .pd-card:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .pd-card[data-chosen] { border-color: var(--color-accent); box-shadow: 0 0 0 2px var(--color-accent); }
+  .pd-card:disabled { cursor: not-allowed; opacity: 0.55; }
+  .pd-card-photo {
+    position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden;
+    background: radial-gradient(120% 100% at 50% 8%, var(--team-tint, var(--color-surface-3)), color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 45%, var(--color-surface-0)));
+  }
+  .pd-card-photo .pvp-watermark { opacity: 0.4; }
+  .pd-card-photo .pd-card-portrait { position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; border-radius: 0; background: transparent; object-fit: cover; object-position: center bottom; }
+  .pd-card-badge {
+    position: absolute; top: var(--space-2); display: inline-flex; align-items: center; height: 20px; padding: 0 var(--space-2);
+    border-radius: var(--radius-pill); background: var(--color-scrim); color: var(--color-white);
+    font-size: var(--text-xs); line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums;
+  }
+  .pd-card-rank { left: var(--space-2); }
+  .pd-card-dpm { right: var(--space-2); }
+  .pd-card-name {
+    position: absolute; inset: auto 0 0; display: flex; align-items: flex-end; justify-content: center; min-height: 52px; padding: var(--space-4) var(--space-1) var(--space-2);
+    background: linear-gradient(transparent, color-mix(in srgb, var(--team-tint, var(--color-surface-0)) 35%, var(--color-surface-0)) 80%);
+    font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700; text-wrap: balance;
+  }
+  /* Hover/focus info: Databallr's faded card with the name, DPM rank and DPM over it. */
+  .pd-card-info {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-0-5); padding: var(--space-2);
+    background: color-mix(in srgb, var(--team-tint, var(--color-surface-2)) 55%, var(--color-scrim)); backdrop-filter: blur(3px);
+    color: var(--color-white); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; font-variant-numeric: tabular-nums;
+    opacity: 0; transition: opacity var(--dur-fast) var(--ease-out); pointer-events: none;
+  }
+  .pd-card-info strong { margin-bottom: var(--space-1); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 700; text-wrap: balance; }
+  .pd-card-info small { margin-top: var(--space-1); color: var(--color-on-bg-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
+  .pd-card:is(:hover, :focus-visible) .pd-card-info { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .pd-marquee[data-loop] { overflow-x: auto; mask-image: none; scrollbar-width: thin; }
+    .pd-marquee[data-loop] .pd-marquee-track { animation: none; }
+    .pd-marquee-group[aria-hidden="true"] { display: none; }
+  }
+  .pd-empty { margin: 0; padding: var(--space-6); color: var(--color-text-secondary); font-size: var(--text-sm); }
+
+  .pd-search { width: min(100%, 420px); }
+  .pd-note { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); }
+
+  /* Panels: fixed 380px columns that wrap, Databallr's measure. */
+  .pd-panels { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: var(--space-4); width: 100%; }
+  .pd-panel {
+    --pd-panel-width: 420px;
+    /* Databallr's segmentation: a slate panel, brighter group strips, inset wells for play types. */
+    --pd-strip: color-mix(in srgb, var(--color-white) 13%, var(--color-table-lift));
+    --pd-track: color-mix(in srgb, var(--color-white) 9%, var(--color-table-lift));
+    display: flex; flex-direction: column; gap: var(--space-2); width: min(100%, var(--pd-panel-width)); min-width: 0; padding: var(--space-3);
+    border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg);
+    background: var(--color-table-lift); box-shadow: var(--shadow-2);
+  }
+  .pd-panel[data-swapped] { border-color: var(--color-accent); }
+  /* Actions sit beside the name, and drop under it when the name needs the room. */
+  .pd-panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2); }
+  .pd-panel-avatar { position: relative; display: inline-flex; }
+  .pd-panel-avatar .pd-panel-portrait { width: 60px; height: 60px; border: 3px solid var(--team-tint, var(--color-hairline-strong)); border-radius: 50%; background: color-mix(in srgb, var(--team-tint, var(--color-surface-2)) 40%, var(--color-surface-0)); }
+  .pd-panel-position {
+    position: absolute; right: -2px; bottom: -2px; display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 18px; padding: 0 var(--space-1);
+    border-radius: var(--radius-pill); background: var(--team-tint, var(--color-surface-3)); box-shadow: 0 0 0 2px var(--color-table-lift); color: var(--color-white); font-size: var(--text-2xs); line-height: 1; font-weight: 700;
+  }
+  .pd-panel-who { display: flex; flex: 1 1 140px; flex-direction: column; min-width: 0; }
+  .pd-panel-who h3 { margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; text-wrap: balance; }
+  .pd-panel-who h3 a { color: var(--color-text); text-decoration: none; }
+  .pd-panel-who h3 a:hover { color: var(--color-accent); }
+  .pd-panel-team { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
+  .pd-panel-actions { display: flex; align-items: center; gap: var(--space-0-5); padding: var(--space-0-5); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-md); background: var(--color-table-well); }
+  .pd-panel-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
+  .pd-help { display: inline-flex; color: var(--color-text-secondary); cursor: help; }
+  .pd-help:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: var(--radius-sm); }
+  .pd-panel-loading, .pd-panel-empty, .pd-panel-note { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .pd-panel-loading { padding: var(--space-8) 0; text-align: center; }
+
+  /* Blocks: uppercase group strips over a seven-column grid of cells. */
+  .pd-block { display: flex; flex-direction: column; gap: var(--space-1); }
+  .pd-block-groups, .pd-block-row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); column-gap: var(--space-1); }
+  .pd-block-group, .pd-strip-label {
+    margin: 0; padding: var(--space-0-5) var(--space-1); border-radius: var(--radius-sm); background: var(--pd-strip);
+    color: var(--color-text); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.06em; text-align: center; text-transform: uppercase;
+  }
+  .pd-block-group[data-span="1"] { grid-column: span 1; }
+  .pd-block-group[data-span="3"] { grid-column: span 3; }
+  .pd-block-row > .ui-tooltip-wrapper { display: grid; }
+  .pd-cell { position: relative; display: grid; justify-items: center; gap: 1px; min-width: 0; padding: var(--space-0-5) 0; border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; }
+  .pd-cell:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+  /* A hairline between groups (DARKO | MP | RAPM), centred in the column gap. */
+  .pd-cell[data-edge]::after { content: ""; position: absolute; inset: var(--space-1) calc(var(--space-1) / -2 - 0.5px) var(--space-1) auto; width: 1px; background: var(--color-hairline-strong); }
+  .pd-cell-label { max-width: 100%; overflow: hidden; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; letter-spacing: -0.02em; text-overflow: ellipsis; white-space: nowrap; }
+  .pd-cell-value { color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; }
+  /* The percentile bar and number: Stats' gold (high) → gray → blue (low), never red/green. */
+  .pd-cell-bar { --pct-high: clamp(0%, calc((var(--pct, 50) - 50) * 2%), 100%); --pct-low: clamp(0%, calc((50 - var(--pct, 50)) * 2%), 100%);
+    --pct-color: color-mix(in oklab, var(--color-percentile-text-high) var(--pct-high), color-mix(in oklab, var(--color-percentile-text-low) var(--pct-low), var(--color-percentile-text-mid)));
+    position: relative; display: block; width: 88%; height: 4px; overflow: hidden; border-radius: var(--radius-pill); background: var(--pd-track); }
+  .pd-cell-bar > span { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: inherit; background: var(--pct-color); }
+  :is(.pd-cell, .pd-cell-bar)[data-ranked] .pd-cell-bar > span, .pd-cell-bar[data-ranked] > span { width: calc(var(--pct) * 1%); }
+  .pd-cell-pct { --pct-high: clamp(0%, calc((var(--pct, 50) - 50) * 2%), 100%); --pct-low: clamp(0%, calc((50 - var(--pct, 50)) * 2%), 100%);
+    min-height: var(--text-2xs-lh); color: color-mix(in oklab, var(--color-percentile-text-high) var(--pct-high), color-mix(in oklab, var(--color-percentile-text-low) var(--pct-low), var(--color-percentile-text-mid)));
+    font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 500; }
+
+  /* Six-factor impact: offense left, defense right, dots per point. */
+  .pd-factors { display: flex; flex-direction: column; gap: var(--space-1); }
+  .pd-strip-label { display: flex; justify-content: space-between; }
+  .pd-strip-label.pd-strip-center { justify-content: center; }
+  .pd-factors-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); padding-inline: var(--space-2); }
+  .pd-factors-side { display: flex; flex-direction: column; gap: var(--space-0-5); }
+  .pd-factor { display: grid; grid-template-columns: 40px 44px minmax(0, 1fr); align-items: center; gap: var(--space-1); border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; }
+  .pd-factor:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+  .pd-factor-label { color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.06em; }
+  .pd-factor-value { font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700; text-align: right; }
+  .pd-factor-value[data-tone="high"], .pd-play-rel[data-tone="high"] { color: var(--color-percentile-text-high); }
+  .pd-factor-value[data-tone="low"], .pd-play-rel[data-tone="low"] { color: var(--color-percentile-text-low); }
+  .pd-dots { display: flex; gap: var(--space-1); }
+  .pd-dots > span { width: 9px; height: 9px; border-radius: 50%; background: var(--color-percentile-text-high); }
+  .pd-dots[data-tone="low"] > span { background: var(--color-percentile-text-low); }
+
+  /* Play types: share bar, share, family, relative points per 100 and its percentile. */
+  .pd-plays { display: flex; flex-direction: column; gap: var(--space-1); }
+  .pd-plays > .ui-tooltip-wrapper { display: block; }
+  .pd-plays-body { display: flex; flex-direction: column; gap: var(--space-1); }
+  .pd-plays-body > .ui-tooltip-wrapper { display: block; }
+  .pd-plays-body, .pd-factors-body { padding: var(--space-2) var(--space-1); border: 1px solid var(--color-hairline); border-radius: var(--radius-md); background: var(--color-table-well); }
+  .pd-play { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 36px 92px 44px minmax(0, 1fr); align-items: center; gap: var(--space-2); padding: 1px var(--space-1); border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; }
+  .pd-play:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+  .pd-play-bar { position: relative; display: block; height: 8px; overflow: hidden; border-radius: var(--radius-pill); background: var(--pd-track); }
+  .pd-play-bar > span { position: absolute; inset: 0 auto 0 0; width: calc(var(--share, 0) * 1%); border-radius: inherit; background: var(--color-info); }
+  .pd-play-share, .pd-play-rel { font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; text-align: right; }
+  .pd-play-label { color: var(--color-text); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.1em; text-align: center; text-transform: uppercase; }
+  .pd-play-rank.pd-cell-bar { width: 100%; height: 8px; }
+
+  /* Add Player: a dashed slot the size of a panel header. */
+  .pd-add {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); width: min(100%, 380px); min-height: 172px;
+    border: 1px dashed var(--color-hairline-strong); border-radius: var(--radius-lg); background: transparent; color: var(--color-text-secondary);
+    font: inherit; font-size: var(--text-sm); cursor: pointer;
+  }
+  .pd-add:hover { color: var(--color-text); border-color: var(--color-accent); }
+  .pd-add:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .pd-add-icon { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--color-surface-2); color: var(--color-accent); }
+  .pd-add kbd { padding: 1px var(--space-1); border-radius: var(--radius-sm); background: var(--color-surface-2); font-family: var(--font-mono); font-size: var(--text-2xs); }
+
+  /* Head-to-head: the leader's margin in their identity colour (A gold, B blue) with their name. */
+  .pd-vs { border-color: var(--color-accent); }
+  .pd-vs-head { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-2); }
+  .pd-vs-actions { display: flex; align-items: center; gap: var(--space-0-5); }
+  .pd-vs-side { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+  .pd-vs-side[data-side="a"] { justify-content: flex-end; text-align: right; }
+  .pd-vs-side > span { display: flex; flex-direction: column; min-width: 0; }
+  .pd-vs-side strong { font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700; }
+  .pd-vs-side[data-side="a"] strong { color: var(--color-identity-a); }
+  .pd-vs-side[data-side="b"] strong { color: var(--color-identity-b); }
+  .pd-vs-side small { color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
+  .pd-vs-side .pd-vs-portrait { width: 40px; height: 40px; }
+  .pd-vs-word { color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 700; }
+  .pd-vs-key { margin: 0; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
+  .pd-vs-key [data-side="a"] { color: var(--color-identity-a); font-weight: 700; }
+  .pd-vs-key [data-side="b"] { color: var(--color-identity-b); font-weight: 700; }
+  .pd-vs-bar { display: block; width: 88%; height: 4px; border-radius: var(--radius-pill); background: var(--pd-track); }
+  .pd-vs-name { max-width: 100%; overflow: hidden; color: var(--color-text-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); text-overflow: ellipsis; white-space: nowrap; }
+  [data-leader="a"] :is(.pd-cell-value, .pd-vs-value) { color: var(--color-identity-a); }
+  [data-leader="b"] :is(.pd-cell-value, .pd-vs-value) { color: var(--color-identity-b); }
+  [data-leader="a"] .pd-vs-bar { background: var(--color-identity-a); }
+  [data-leader="b"] .pd-vs-bar { background: var(--color-identity-b); }
+  .pd-vs .pd-factor { grid-template-columns: 40px 52px minmax(0, 1fr); }
+  .pd-vs-play-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-1); }
+  .pd-vs-play-grid { padding: var(--space-1); border: 1px solid var(--color-hairline); border-radius: var(--radius-md); background: var(--color-table-well); gap: 0; }
+  .pd-vs-play { display: grid; gap: var(--space-1); padding: var(--space-1); }
+  .pd-vs-play + .pd-vs-play { border-left: 1px solid var(--color-hairline-strong); }
+  .pd-vs-play-label { color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.08em; text-align: center; text-transform: uppercase; }
+
+  @media (max-width: 640px) {
+    .pd-panel, .pd-add { width: 100%; }
+    .pd-card { width: 120px; }
+  }
+}

@@ -24,7 +24,7 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
   };
 
   if (items.length === 0) {
-    return <GatedNote action={<ButtonLink size="lg" href="/players">Explore Players</ButtonLink>}>No legacy investigations. Save reproducible queries from the Player Directory.</GatedNote>;
+    return <GatedNote action={<ButtonLink size="lg" href="/stats">Open Stats</ButtonLink>}>No legacy investigations. Save reproducible queries from Stats.</GatedNote>;
   }
 
   return (
