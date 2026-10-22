@@ -314,12 +314,17 @@ def _declared(params: dict[str, Any], *names: str) -> Any:
     return None
 
 
+# Endpoints whose files sometimes declare only the start year; their rows carry SEASON_ID.
+START_YEAR_ENDPOINTS = frozenset({"leagueseasonmatchups", "synergyplaytypes"})
+
+
 def _check_declared(scope: FeedScope, spec: FeedSpec, params: dict[str, Any]) -> bool:
     """The payload's own parameters must match the scope its URL claims.
 
     Returns True when the declared season is only a start year (as in the 2025-26
-    regular-season matchup file, "2025"); the caller must then prove the season from
-    every row's NBA SEASON_ID instead.
+    regular-season matchup file, "2025", and the mirror's isolation play-type files for
+    2015-16 to 2024-25); the caller must then prove the season from every row's NBA
+    SEASON_ID instead.
     """
     if spec.bio_scope:
         # The index declares "2026-27" (older files the start year); rosters the start year.
@@ -336,7 +341,7 @@ def _check_declared(scope: FeedScope, spec: FeedSpec, params: dict[str, Any]) ->
             raise ValueError("payload declares a different draft year")
         return False
     season = _declared(params, "Season", "SeasonYear")
-    rows_must_prove = season == scope.season[:4] and spec.endpoint == "leagueseasonmatchups"
+    rows_must_prove = season == scope.season[:4] and spec.endpoint in START_YEAR_ENDPOINTS
     if season != scope.season and not rows_must_prove:
         raise ValueError("payload declares a different season")
     if params.get("SeasonType") != PHASES[scope.season_type.replace("_", "-")]:
