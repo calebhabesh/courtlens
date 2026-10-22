@@ -27,3 +27,12 @@ The export contains 1,192 team-phase scopes across the retained 26 seasons. Its 
 ## Verification
 
 `reproduce-starters.cjs` was red on the prior live preview: the first-five proxy included Josh Minott. `verify-observed-starters.cjs` checks exact membership against the sealed evidence, stability under metric/depth changes, separate playoff context, coverage/GS labels and the desktop/phone browser. Export and build logs and screenshots are retained in the sandbox. Production checkout remains untouched.
+
+## Live read (2026-10-21)
+
+The sealed file pinned one release, so the 2026-10-20 publication switched `By Position` off.
+`services/starter_evidence.py` now applies the same method live (`GET
+/api/workbench/teams/{id}/starters`). It reproduces all 1,192 sealed scopes exactly; the unit's
+G/F/C labels are each player's most common label across the unit's starts. The sealed file moved
+to `docs/evidence/alignment/team-compare/` as the reference it was checked against.
+
