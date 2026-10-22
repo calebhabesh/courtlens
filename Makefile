@@ -7,7 +7,7 @@ $(shell mkdir -p $(TMPDIR))
 install:
 	python3 -m venv .venv
 	.venv/bin/pip install --upgrade pip
-	.venv/bin/pip install -e '.[dev,warehouse]'
+	.venv/bin/pip install -e '.[dev,warehouse,photos]'
 
 install-locked:
 	python3 -m venv .venv
