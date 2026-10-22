@@ -27,7 +27,7 @@ from courtlens.api.workbench_schemas import (
     TeamSeriesHeader,
     TeamSeriesStats,
 )
-from courtlens.domain.teams import get_team_info, resolve_team_label, resolve_team_tricode
+from courtlens.domain.teams import resolve_team_label, resolve_team_tricode, team_identity
 from courtlens.domain.workbench_playoffs import (
     PLAYOFF_CAPABILITIES,
     PLAYOFF_DISCLAIMERS,
@@ -90,7 +90,7 @@ def load_reconstructed_seeds(
         elif pts < opp_pts:
             rec["losses"] += 1
 
-    seeds_raw = reconstruct_regular_season_seeds(list(records_by_team.values()))
+    seeds_raw = reconstruct_regular_season_seeds(list(records_by_team.values()), canonical_season)
 
     seeds_pydantic: dict[str, list[PlayoffSeedEvidence]] = {}
     seed_lookup: dict[str, int] = {}
@@ -183,8 +183,8 @@ def get_playoff_bracket(
         team1_id = g1.home_team_id
         team2_id = g1.away_team_id
 
-        team1_info = get_team_info(team1_id)
-        team2_info = get_team_info(team2_id)
+        team1_info = team_identity(team1_id, canonical_season)
+        team2_info = team_identity(team2_id, canonical_season)
 
         t1_tricode = team1_info.tricode if team1_info else team1_id
         t2_tricode = team2_info.tricode if team2_info else team2_id
@@ -401,8 +401,8 @@ def get_playoff_series_detail(
     team1_id = g1.home_team_id
     team2_id = g1.away_team_id
 
-    team1_info = get_team_info(team1_id)
-    team2_info = get_team_info(team2_id)
+    team1_info = team_identity(team1_id, canonical_season)
+    team2_info = team_identity(team2_id, canonical_season)
 
     t1_tricode = team1_info.tricode if team1_info else team1_id
     t2_tricode = team2_info.tricode if team2_info else team2_id

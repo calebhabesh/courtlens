@@ -36,8 +36,10 @@ export function TeamLogo({ team, size = 24, season }: { team: string; size?: num
  * triangle, four in a 2x2 grid, each scaled down so the group fits the row a single logo fits.
  * `size` is that single logo's size; tables may set `--stack-logo` instead.
  */
-export function TeamLogoStack({ teams, label = "Teams represented in selected scope", decorative = false, size }: {
+export function TeamLogoStack({ teams, label = "Teams represented in selected scope", decorative = false, size, season }: {
   teams: string[]; label?: string; decorative?: boolean; size?: number;
+  /** Draw each team as it was this season (its logo then). */
+  season?: string | null;
 }) {
   const represented = [...new Set(teams)].sort();
   if (represented.length === 0) return null;
@@ -46,7 +48,7 @@ export function TeamLogoStack({ teams, label = "Teams represented in selected sc
       data-count={represented.length > 4 ? "many" : represented.length}
       style={size ? { "--stack-logo": `${size}px` } as React.CSSProperties : undefined}
       aria-label={`${label}: ${represented.join(", ")}`} title={`${label}: ${represented.join(", ")}`}>
-      {represented.map((team) => <TeamLogo key={team} team={team} size={size} />)}
+      {represented.map((team) => <TeamLogo key={team} team={team} size={size} season={season} />)}
     </span>
   );
 }

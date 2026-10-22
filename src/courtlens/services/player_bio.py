@@ -13,12 +13,17 @@ from __future__ import annotations
 from datetime import date, timedelta
 from typing import Any
 
-from sqlalchemy import text
+from fastapi import HTTPException
+from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
+from courtlens.domain.teams import franchise_of, team_identity
+from courtlens.reference_models import BbrefPlayerSeason
 from courtlens.services.bbref_bio import player_reference
 from courtlens.services.player_contracts import enrich_contracts
 from courtlens.services.stats_feed_views import _mart, _rows, team_tricode
+from courtlens.services.workbench_analytics import resolve_workbench_context
+from courtlens.workbench_models import WorkbenchPlayerGame
 
 LIMITATIONS = [
     "Listed height and weight are team-reported (shoes on) and can differ from combine "
@@ -218,15 +223,19 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
     if reference is not None:
         enrich_contracts(session, player_id, reference)
     last_team = None
-    # Off every roster now: the index's last team, or its (older) listed team.
+    # Off every roster now: the team of his final season, else the index's last (or listed) team.
     last_id = bio and (bio.get("last_team_id") or bio.get("listed_team_id"))
-    if bio and not current_team and last_id:
-        last_team = {
-            "team_id": last_id,
-            "team_tricode": team_tricode(last_id),
-            "listing_season": bio["index_season"],
-            "index_refreshed_at": bio.get("index_observed_at"),
-        }
+    if not current_team:
+        final = final_season_team(session, player_id, str(last_id) if last_id else None)
+        if final is not None:
+            last_team = final
+        elif bio and last_id and not played_any_season(session, player_id):
+            last_team = {
+                "team_id": last_id,
+                "team_tricode": team_tricode(last_id),
+                "listing_season": bio["index_season"],
+                "index_refreshed_at": bio.get("index_observed_at"),
+            }
 
     source = listing or bio
     birth_date = bio["birth_date"] if bio else listing["birth_date"] if listing else None
@@ -253,3 +262,73 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
         "reference": reference,
         "limitations": LIMITATIONS,
     }
+
+
+def played_any_season(session: Session, player_id: str) -> bool:
+    return (
+        session.scalar(
+            select(BbrefPlayerSeason.id).where(BbrefPlayerSeason.player_id == player_id).limit(1)
+        )
+        is not None
+    )
+
+
+def final_season_team(
+    session: Session, player_id: str, index_team_id: str | None
+) -> dict[str, Any] | None:
+    """The team of a player's final season in the league's season totals.
+
+    The NBA.com index's team for a retired player is often not his last (about half of players
+    whose careers ended before 2000-01). One team that season is his last; a traded player's is
+    his playoff team, else the team of his last game (game logs start in 1983-84), else the
+    index's team when he played for it that season. Otherwise None: the season totals' row
+    order does not say which team came last, so nothing is claimed.
+    """
+    rows = session.execute(
+        select(BbrefPlayerSeason.season, BbrefPlayerSeason.phase, BbrefPlayerSeason.team_id)
+        .where(BbrefPlayerSeason.player_id == player_id, BbrefPlayerSeason.is_summary.is_(False))
+        .order_by(BbrefPlayerSeason.season.desc())
+    ).all()
+    if not rows:
+        return None
+    season = rows[0].season
+    regular = {r.team_id for r in rows if r.season == season and r.phase == "regular_season"}
+    playoffs = {r.team_id for r in rows if r.season == season and r.phase == "playoffs"}
+    if len(regular) == 1:
+        code = next(iter(regular))
+    elif len(playoffs) == 1:
+        code = next(iter(playoffs))
+    elif (last_game := _last_game_team(session, player_id, season)) is not None:
+        code = last_game
+    else:
+        matches = [c for c in regular if index_team_id and franchise_of(c) == index_team_id]
+        if len(matches) != 1:
+            return None
+        code = matches[0]
+    identity = team_identity(code, season)
+    return {
+        "team_id": franchise_of(code) or code,
+        "team_tricode": identity.tricode if identity else code,
+        "listing_season": season,
+        "listing_source": "season_totals",
+    }
+
+
+def _last_game_team(session: Session, player_id: str, season: str) -> str | None:
+    """The team of a player's last appearance that season in the published release, if any."""
+    try:
+        dataset_id = resolve_workbench_context(session).dataset_id
+    except HTTPException:
+        return None
+    team = session.scalar(
+        select(WorkbenchPlayerGame.team_id)
+        .where(
+            WorkbenchPlayerGame.dataset_id == dataset_id,
+            WorkbenchPlayerGame.player_id == player_id,
+            WorkbenchPlayerGame.season == season,
+            WorkbenchPlayerGame.appearance == "appeared",
+        )
+        .order_by(WorkbenchPlayerGame.game_date.desc())
+        .limit(1)
+    )
+    return str(team) if team else None
