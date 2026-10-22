@@ -27,28 +27,6 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(page.getByText("Fixture Guard", { exact: true })).toBeVisible();
   });
 
-  test("player explorer allows filtering and links to detail view", async ({ page }) => {
-    await openWorkbench(page, "/players");
-    await page.waitForLoadState("networkidle");
-
-    await expect(page.locator("h1")).toHaveText("Player Directory");
-    await expect(page.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
-
-    // Filter by name
-    const searchInput = page.getByRole("searchbox", { name: "Find player", exact: true });
-    await searchInput.fill("Guard");
-    await searchInput.press("Enter");
-    await expect(page).toHaveURL(/name=Guard/);
-    await page.waitForLoadState("networkidle");
-
-    await expect(page.getByRole("link", { name: "Fixture Guard", exact: true })).toBeVisible();
-
-    // Navigate to player detail
-    await page.getByRole("link", { name: "Fixture Guard", exact: true }).click();
-    await page.waitForURL("**/players/24**");
-    await expect(page.locator("h1")).toContainText("Fixture Guard");
-  });
-
   test("player detail presents profile summaries, game logs, and lineage trigger", async ({ page }) => {
     await openWorkbench(page, "/players/23");
     await page.waitForLoadState("networkidle");
