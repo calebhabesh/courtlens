@@ -8,6 +8,7 @@ import { Button, Chip, MenuTrigger, Segmented } from "@/components/ui/kit";
 import { Popover } from "@/components/ui/menu";
 import { Select } from "@/components/ui/select";
 import { QUICK_RANGES, quickRangeFrom, seasonScopeLabel, seasonsBetween } from "@/lib/season-range";
+import { seasonOptionLabel } from "@/lib/season-basis";
 import { useControlScope } from "@/components/ui/control-scope";
 
 type Mode = "single" | "multi";
@@ -79,7 +80,7 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
             <Select value={range ? "" : season} onChange={(e) => apply(null, e.target.value)} aria-label="Season">
               {range && <option value="" disabled>Choose a Season</option>}
               {!range && !seasons.includes(season) && <option value={season}>{season} · Unavailable</option>}
-              {newestFirst.map((s) => <option key={s} value={s}>{s}</option>)}
+              {newestFirst.map((s) => <option key={s} value={s}>{seasonOptionLabel(s)}</option>)}
             </Select>
           </Field>
         ) : (
@@ -88,13 +89,13 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
               <Field label="From">
                 <Select value={from} aria-label="From season"
                   onChange={(e) => { setFrom(e.target.value); if (e.target.value > through) setThrough(e.target.value); }}>
-                  {newestFirst.map((s) => <option key={s} value={s}>{s}</option>)}
+                  {newestFirst.map((s) => <option key={s} value={s}>{seasonOptionLabel(s)}</option>)}
                 </Select>
               </Field>
               <Field label="Through">
                 <Select value={through} aria-label="Through season"
                   onChange={(e) => { setThrough(e.target.value); if (e.target.value < from) setFrom(e.target.value); }}>
-                  {newestFirst.map((s) => <option key={s} value={s}>{s}</option>)}
+                  {newestFirst.map((s) => <option key={s} value={s}>{seasonOptionLabel(s)}</option>)}
                 </Select>
               </Field>
             </div>

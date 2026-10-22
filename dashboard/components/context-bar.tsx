@@ -1,5 +1,6 @@
 "use client";
 
+import { isTotalsSeason, seasonOptionLabel } from "@/lib/season-basis";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback, useEffect, useOptimistic, useState, useTransition } from "react";
 
@@ -106,7 +107,8 @@ export function ContextBar({
   const seasons = catalog?.seasons ?? [initialSeason];
   const observedPhases = catalog?.stats_scopes?.filter((scope) => scope.season === season).map((scope) => scope.phase) ?? catalog?.phases;
   const phases = allowedPhases ?? observedPhases ?? [initialPhase];
-  const windows = catalog?.stats_windows ?? WINDOWS.map((w) => w.value);
+  // Seasons before 1983-84 are whole-season totals: there are no recent games to window.
+  const windows = isTotalsSeason(catalog, season) ? ["season"] : catalog?.stats_windows ?? WINDOWS.map((w) => w.value);
   const coverage = catalog?.stats_scopes?.find((scope) => scope.season === season && scope.phase === phase);
 
   const updateParam = useCallback(
@@ -148,7 +150,7 @@ export function ContextBar({
   const seasonSelect = renderSeason ? renderSeason({ season, seasons, onSelect: (value) => updateParam("season", value) }) : (
     <Select value={season} onChange={(e) => updateParam("season", e.target.value)} aria-label="Filter by season">
       {!seasons.includes(season) && <option value={season}>{season} · Unavailable</option>}
-      {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
+      {seasons.map((s) => <option key={s} value={s}>{seasonOptionLabel(s)}</option>)}
     </Select>
   );
   const chronological = [...seasons].sort();

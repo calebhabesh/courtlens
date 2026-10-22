@@ -34,9 +34,16 @@ from courtlens.domain.query_spec import (
     WindowKind,
 )
 from courtlens.domain.stats_presentation import StatsPresentation
-from courtlens.domain.stats_v4_catalog import BOX_METRICS, DARKO_METRICS, TRACKING_METRICS
+from courtlens.domain.stats_v4_catalog import (
+    BBREF_FIELDS,
+    BBREF_METRICS,
+    BOX_METRICS,
+    DARKO_METRICS,
+    TRACKING_METRICS,
+)
 from courtlens.domain.teams import get_team_info, resolve_team_tricode
 from courtlens.services.darko import darko_binding, darko_sql_rows
+from courtlens.services.history_totals import season_end_date, totals_seasons_in_scope
 from courtlens.services.impact_serving import (
     impact_artifacts,
     impact_for_query,
@@ -114,6 +121,7 @@ COLUMN_MAP.update({key: key for key in IMPACT_CATALOG})
 COLUMN_MAP.update({key: key for key in BOX_METRICS})
 COLUMN_MAP.update({key: key for key in TRACKING_METRICS})
 COLUMN_MAP.update({key: key for key in DARKO_METRICS})
+COLUMN_MAP.update({key: key for key in BBREF_METRICS})
 
 # Only implemented numeric catalog columns participate; metadata is never ranked.
 PERCENTILE_COLUMNS = {
@@ -123,6 +131,7 @@ PERCENTILE_COLUMNS = {
     and key not in IMPACT_CATALOG
     and key not in TRACKING_METRICS
     and key not in DARKO_METRICS
+    and key not in BBREF_METRICS
 }
 TRACKING_MART = "analytics_marts.mart_stats_player_tracking"
 MAX_SEASON_RANGE = 30
@@ -153,6 +162,56 @@ def tracking_query_fields(query: QuerySpec) -> set[str]:
 
 def darko_query_fields(query: QuerySpec) -> set[str]:
     return query_fields(query) & DARKO_METRICS.keys()
+
+
+def bbref_query_fields(query: QuerySpec) -> set[str]:
+    return query_fields(query) & BBREF_METRICS.keys()
+
+
+def _bbref_sql(
+    params: dict[str, Any],
+    query: QuerySpec,
+    context: ResolvedContext,
+    table_name: str,
+    is_sqlite: bool,
+) -> str:
+    """Join Basketball-Reference's season values once the whole season-phase is in scope.
+
+    One value per player-season (the combined row of a traded player): whole seasons only, never
+    a season range or a recent-games window, and only when the cutoff is past the season's last
+    game (or, for a season served as totals, past its end).
+    """
+    if is_sqlite or not context.totals_sha or not darko_applies(context, query):
+        nulls = ", ".join(f"CAST(NULL AS REAL) AS {key}" for key in BBREF_METRICS)
+        return f"aggregated AS (SELECT t.*, {nulls} FROM aggregated_bbref t)"
+    season = query.season or context.season
+    params["bbref_sha"] = context.totals_sha
+    params["bbref_season"] = season
+    params["bbref_season_end"] = season_end_date(season)
+    values = ", ".join(
+        f"(b.advanced_json::jsonb->>'{field}')::double precision AS {key}"
+        for key, field in BBREF_FIELDS.items()
+    )
+    complete = (
+        "CAST(:before_date AS date) > CAST(:bbref_season_end AS date)"
+        if season in context.totals_seasons
+        else f"""CAST(:before_date AS date) > (
+            SELECT max(g.game_date) FROM {table_name} g
+            WHERE g.dataset_id = :dataset_id AND g.season = :bbref_season AND g.phase = :phase
+        )"""
+    )
+    return f"""bbref AS MATERIALIZED (
+        SELECT DISTINCT ON (b.player_id) b.player_id, {values}
+        FROM bbref_player_seasons b
+        WHERE b.source_sha256 = :bbref_sha AND b.season = :bbref_season AND b.phase = :phase
+            AND {complete}
+        ORDER BY b.player_id, b.is_summary DESC
+    ),
+    aggregated AS (
+        SELECT t.*, {", ".join(f"v.{key}" for key in BBREF_METRICS)}
+        FROM aggregated_bbref t
+        LEFT JOIN bbref v ON v.player_id = t.player_id
+    )"""
 
 
 def darko_applies(context: ResolvedContext, query: QuerySpec) -> bool:
@@ -414,7 +473,7 @@ def _rate_per_36_sql(stat_col: str, alias: str, *, paired: bool = False) -> str:
             (sum({stat_col}) FILTER (WHERE {valid}))::numeric * 2160
             / (sum(minutes_seconds) FILTER (WHERE {valid}))::numeric, 1
         ) else null end as {alias},
-        count(*) FILTER (WHERE {valid}) AS n_{alias}"""
+        coalesce(sum(w) FILTER (WHERE {valid}), 0) AS n_{alias}"""
     return f"""case when sum(minutes_seconds) FILTER (
         WHERE minutes_seconds > 0 AND {stat_col} IS NOT NULL
     ) > 0
@@ -426,7 +485,8 @@ def _rate_per_36_sql(stat_col: str, alias: str, *, paired: bool = False) -> str:
         )) * 36.0,
         1
     ) else null end as {alias},
-    count(*) FILTER (WHERE minutes_seconds > 0 AND {stat_col} IS NOT NULL) AS n_{alias}"""
+    coalesce(sum(w) FILTER (WHERE minutes_seconds > 0 AND {stat_col} IS NOT NULL), 0)
+        AS n_{alias}"""
 
 
 def _offensive_load_sql(is_sqlite: bool) -> str:
@@ -741,8 +801,9 @@ def build_stats_query_sql(
     paired_rates = presentation is not None
     paired_fg2 = "fgm IS NOT NULL AND fga IS NOT NULL AND fg3m IS NOT NULL AND fg3a IS NOT NULL"
     per_game_shots = ",\n            ".join(
-        f"round(avg({col}) FILTER (WHERE {col} IS NOT NULL), 1) AS {col}_per_game, "
-        f"count({col}) AS n_{col}_per_game"
+        f"round((sum({col}) FILTER (WHERE {col} IS NOT NULL))::numeric"
+        f" / nullif(sum(w) FILTER (WHERE {col} IS NOT NULL), 0), 1) AS {col}_per_game, "
+        f"coalesce(sum(w) FILTER (WHERE {col} IS NOT NULL), 0) AS n_{col}_per_game"
         for col in ("fgm", "fga", "fg3m", "fg3a", "ftm", "fta")
     )
     # Postgres: parse each row's json stats once (OFFSET 0 keeps the subquery from being
@@ -751,9 +812,59 @@ def build_stats_query_sql(
     fact_source = (
         table_name
         if is_sqlite
-        else f"(SELECT wpg.*, wpg.stats_json::jsonb AS sj FROM {table_name} wpg "
+        else f"(SELECT wpg.*, wpg.stats_json::jsonb AS sj, 1 AS w FROM {table_name} wpg "
         f"WHERE {fact_filters} OFFSET 0)"
     )
+    weight = "1" if is_sqlite else "wpg.w"
+    totals = totals_seasons_in_scope(context, query) if is_workbench and not is_sqlite else []
+    if totals:
+        # Seasons before the game logs (1946-47 to 1982-83) are season totals: one row per
+        # player-team, weighted by its games so every per-game and rate value aggregates exactly
+        # as game rows do. A row counts only once its whole season is before the cutoff.
+        keys = []
+        for idx, season in enumerate(totals):
+            params[f"totals_season_{idx}"] = season
+            params[f"totals_end_{idx}"] = season_end_date(season)
+            keys.append(f":totals_season_{idx}")
+        params["totals_sha"] = context.totals_sha
+        totals_filters = [
+            f.replace("wpg.game_date", "wpg.season_end")
+            for f in candidate_filters
+            if f.startswith("wpg.") and not f.startswith(("wpg.season", "wpg.dataset_id"))
+        ]
+        totals_where = " AND ".join(
+            [
+                "wpg.source_sha256 = :totals_sha",
+                "NOT wpg.is_summary",
+                "coalesce(wpg.games, 0) > 0",
+                f"wpg.season IN ({', '.join(keys)})",
+                *totals_filters,
+            ]
+        )
+        season_end_case = " ".join(
+            f"WHEN :totals_season_{idx} THEN CAST(:totals_end_{idx} AS date)"
+            for idx in range(len(totals))
+        )
+        columns = (
+            "dataset_id, player_id, team_id, opponent_id, game_id, game_date, season, phase, "
+            "appearance, minutes_seconds, points, stats_json, sj, w"
+        )
+        fact_source = f"""(SELECT {columns} FROM (
+            SELECT wpg.dataset_id, wpg.player_id, wpg.team_id, wpg.opponent_id, wpg.game_id,
+                wpg.game_date, wpg.season, wpg.phase, wpg.appearance, wpg.minutes_seconds,
+                wpg.points, wpg.stats_json, wpg.sj, wpg.w
+            FROM {fact_source} wpg
+            UNION ALL
+            SELECT CAST(:dataset_id AS varchar), wpg.player_id, wpg.team_id, NULL,
+                'S' || wpg.season || ':' || wpg.team_id, wpg.season_end, wpg.season, wpg.phase,
+                'appeared', wpg.minutes * 60, wpg.points, wpg.stats_json,
+                wpg.stats_json::jsonb, wpg.games
+            FROM (
+                SELECT b.*, CASE b.season {season_end_case} END AS season_end
+                FROM bbref_player_seasons b
+            ) wpg
+            WHERE {totals_where}
+        ) unioned OFFSET 0)"""
     cte_sql = f"""WITH ranked_games AS (
         SELECT
             wpg.player_id,
@@ -763,6 +874,7 @@ def build_stats_query_sql(
             wpg.game_date,
             wpg.appearance,
             wpg.minutes_seconds,
+            {weight} AS w,
             {pts_expr} AS points,
             {reb_expr} AS rebounds_total,
             {oreb_expr} AS rebounds_offensive,
@@ -795,70 +907,96 @@ def build_stats_query_sql(
             max(player_name) AS player_name,
             {teams_agg} AS teams,
             count(distinct team_id) AS stints_count,
-            count(*) FILTER (WHERE appearance = 'appeared') AS games_played,
+            coalesce(sum(w) FILTER (WHERE appearance = 'appeared'), 0) AS games_played,
             round(coalesce(sum(minutes_seconds), 0)::numeric / 60.0, 1) AS total_minutes,
             round(
-                avg(minutes_seconds::numeric / 60.0)
-                FILTER (WHERE appearance = 'appeared' AND minutes_seconds IS NOT NULL),
+                (sum(minutes_seconds)
+                    FILTER (WHERE appearance = 'appeared' AND minutes_seconds IS NOT NULL)
+                )::numeric / 60.0
+                / nullif(sum(w)
+                    FILTER (WHERE appearance = 'appeared' AND minutes_seconds IS NOT NULL), 0),
                 1
             ) AS min_per_game,
             sum(points) AS pts,
-            count(points) AS n_pts,
-            round(avg(points) FILTER (WHERE points IS NOT NULL), 1) AS pts_per_game,
-            sum(rebounds_total) AS reb,
-            count(rebounds_total) AS n_reb,
+            coalesce(sum(w) FILTER (WHERE points IS NOT NULL), 0) AS n_pts,
             round(
-                avg(rebounds_total) FILTER (WHERE rebounds_total IS NOT NULL),
+                (sum(points) FILTER (WHERE points IS NOT NULL))::numeric
+                / nullif(sum(w) FILTER (WHERE points IS NOT NULL), 0),
+                1
+            ) AS pts_per_game,
+            sum(rebounds_total) AS reb,
+            coalesce(sum(w) FILTER (WHERE rebounds_total IS NOT NULL), 0) AS n_reb,
+            round(
+                (sum(rebounds_total) FILTER (WHERE rebounds_total IS NOT NULL))::numeric
+                / nullif(sum(w) FILTER (WHERE rebounds_total IS NOT NULL), 0),
                 1
             ) AS reb_per_game,
             sum(rebounds_offensive) AS oreb,
-            count(rebounds_offensive) AS n_oreb,
+            coalesce(sum(w) FILTER (WHERE rebounds_offensive IS NOT NULL), 0) AS n_oreb,
             round(
-                avg(rebounds_offensive) FILTER (WHERE rebounds_offensive IS NOT NULL),
+                (sum(rebounds_offensive) FILTER (WHERE rebounds_offensive IS NOT NULL))::numeric
+                / nullif(sum(w) FILTER (WHERE rebounds_offensive IS NOT NULL), 0),
                 1
             ) AS oreb_per_game,
             sum(rebounds_defensive) AS dreb,
-            count(rebounds_defensive) AS n_dreb,
+            coalesce(sum(w) FILTER (WHERE rebounds_defensive IS NOT NULL), 0) AS n_dreb,
             round(
-                avg(rebounds_defensive) FILTER (WHERE rebounds_defensive IS NOT NULL),
+                (sum(rebounds_defensive) FILTER (WHERE rebounds_defensive IS NOT NULL))::numeric
+                / nullif(sum(w) FILTER (WHERE rebounds_defensive IS NOT NULL), 0),
                 1
             ) AS dreb_per_game,
             sum(assists) AS ast,
-            count(assists) AS n_ast,
-            round(avg(assists) FILTER (WHERE assists IS NOT NULL), 1) AS ast_per_game,
-            sum(steals) AS stl,
-            count(steals) AS n_stl,
-            round(avg(steals) FILTER (WHERE steals IS NOT NULL), 1) AS stl_per_game,
-            sum(blocks) AS blk,
-            count(blocks) AS n_blk,
-            round(avg(blocks) FILTER (WHERE blocks IS NOT NULL), 1) AS blk_per_game,
-            sum(turnovers) AS tov,
-            count(turnovers) AS n_tov,
-            round(avg(turnovers) FILTER (WHERE turnovers IS NOT NULL), 1) AS tov_per_game,
-            sum(fouls_personal) AS pf,
-            count(fouls_personal) AS n_pf,
+            coalesce(sum(w) FILTER (WHERE assists IS NOT NULL), 0) AS n_ast,
             round(
-                avg(fouls_personal) FILTER (WHERE fouls_personal IS NOT NULL),
+                (sum(assists) FILTER (WHERE assists IS NOT NULL))::numeric
+                / nullif(sum(w) FILTER (WHERE assists IS NOT NULL), 0),
+                1
+            ) AS ast_per_game,
+            sum(steals) AS stl,
+            coalesce(sum(w) FILTER (WHERE steals IS NOT NULL), 0) AS n_stl,
+            round(
+                (sum(steals) FILTER (WHERE steals IS NOT NULL))::numeric
+                / nullif(sum(w) FILTER (WHERE steals IS NOT NULL), 0),
+                1
+            ) AS stl_per_game,
+            sum(blocks) AS blk,
+            coalesce(sum(w) FILTER (WHERE blocks IS NOT NULL), 0) AS n_blk,
+            round(
+                (sum(blocks) FILTER (WHERE blocks IS NOT NULL))::numeric
+                / nullif(sum(w) FILTER (WHERE blocks IS NOT NULL), 0),
+                1
+            ) AS blk_per_game,
+            sum(turnovers) AS tov,
+            coalesce(sum(w) FILTER (WHERE turnovers IS NOT NULL), 0) AS n_tov,
+            round(
+                (sum(turnovers) FILTER (WHERE turnovers IS NOT NULL))::numeric
+                / nullif(sum(w) FILTER (WHERE turnovers IS NOT NULL), 0),
+                1
+            ) AS tov_per_game,
+            sum(fouls_personal) AS pf,
+            coalesce(sum(w) FILTER (WHERE fouls_personal IS NOT NULL), 0) AS n_pf,
+            round(
+                (sum(fouls_personal) FILTER (WHERE fouls_personal IS NOT NULL))::numeric
+                / nullif(sum(w) FILTER (WHERE fouls_personal IS NOT NULL), 0),
                 1
             ) AS pf_per_game,
             sum(fgm) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) AS fgm,
             sum(fga) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) AS fga,
-            count(*) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) AS n_fg,
+            coalesce(sum(w) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL), 0) AS n_fg,
             case when sum(fga) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) > 0
                  then round(sum(fgm)::numeric / sum(fga)::numeric, 4) else null end as fg_pct,
             sum(fg3m) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) AS fg3m,
             sum(fg3a) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) AS fg3a,
-            count(*) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) AS n_fg3,
+            coalesce(sum(w) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL), 0) AS n_fg3,
             case when sum(fg3a) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) > 0
                  then round(sum(fg3m)::numeric / sum(fg3a)::numeric, 4) else null end as fg3_pct,
             sum(ftm) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) AS ftm,
             sum(fta) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) AS fta,
-            count(*) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) AS n_ft,
+            coalesce(sum(w) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL), 0) AS n_ft,
             case when sum(fta) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) > 0
                  then round(sum(ftm)::numeric / sum(fta)::numeric, 4) else null end as ft_pct,
-            count(*) FILTER (
-                WHERE fgm IS NOT NULL AND fg3m IS NOT NULL AND fga IS NOT NULL
-            ) AS n_efg,
+            coalesce(sum(w) FILTER (WHERE fgm IS NOT NULL AND fg3m IS NOT NULL AND fga IS NOT NULL
+            ), 0) AS n_efg,
             case when sum(fga) FILTER (
                 WHERE fgm IS NOT NULL AND fg3m IS NOT NULL AND fga IS NOT NULL
             ) > 0
@@ -866,9 +1004,8 @@ def build_stats_query_sql(
                      (sum(fgm)::numeric + 0.5 * sum(fg3m)::numeric) / sum(fga)::numeric,
                      4
                  ) else null end as efg_pct,
-            count(*) FILTER (
-                WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
-            ) AS n_ts,
+            coalesce(sum(w) FILTER (WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
+            ), 0) AS n_ts,
             case when (
                 sum(fga) FILTER (WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL)
                 + 0.44 * sum(fta) FILTER (
@@ -888,7 +1025,7 @@ def build_stats_query_sql(
                  ) else null end as ts_pct,
             sum(fgm - fg3m) FILTER (WHERE {paired_fg2}) AS fg2m,
             sum(fga - fg3a) FILTER (WHERE {paired_fg2}) AS fg2a,
-            count(*) FILTER (WHERE {paired_fg2}) AS n_fg2,
+            coalesce(sum(w) FILTER (WHERE {paired_fg2}), 0) AS n_fg2,
             case when sum(fga - fg3a) FILTER (WHERE {paired_fg2}) > 0
                  then round(
                      sum(fgm - fg3m) FILTER (WHERE {paired_fg2})::numeric
@@ -896,7 +1033,7 @@ def build_stats_query_sql(
                      4
                  ) else null end as fg2_pct,
             {per_game_shots},
-            count(*) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) AS n_ftr,
+            coalesce(sum(w) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL), 0) AS n_ftr,
             case when sum(fga) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) > 0
                  then round(sum(fta)::numeric / sum(fga)::numeric, 4) else null end as ftr,
             {_rate_per_36_sql("points", "pts_per_36", paired=paired_rates)},
@@ -912,7 +1049,7 @@ def build_stats_query_sql(
             {_rate_per_36_sql("fg3a", "fg3a_per_36", paired=paired_rates)},
             {_rate_per_36_sql("fta", "fta_per_36", paired=paired_rates)},
             round(
-                avg(
+                (sum(
                     points + 1.2 * rebounds_total + 1.5 * assists
                     + 3.0 * steals + 3.0 * blocks - turnovers
                 ) FILTER (
@@ -922,17 +1059,23 @@ def build_stats_query_sql(
                     AND steals IS NOT NULL
                     AND blocks IS NOT NULL
                     AND turnovers IS NOT NULL
-                ),
+                ))::numeric / nullif(sum(w) FILTER (
+                    WHERE points IS NOT NULL
+                    AND rebounds_total IS NOT NULL
+                    AND assists IS NOT NULL
+                    AND steals IS NOT NULL
+                    AND blocks IS NOT NULL
+                    AND turnovers IS NOT NULL
+                ), 0),
                 1
             ) AS legacy_fantasy_score_per_game,
-            count(*) FILTER (
-                WHERE points IS NOT NULL
+            coalesce(sum(w) FILTER (WHERE points IS NOT NULL
                 AND rebounds_total IS NOT NULL
                 AND assists IS NOT NULL
                 AND steals IS NOT NULL
                 AND blocks IS NOT NULL
                 AND turnovers IS NOT NULL
-            ) AS n_legacy_fantasy_score_per_game
+            ), 0) AS n_legacy_fantasy_score_per_game
         FROM candidate_games
         GROUP BY player_id
     )"""
@@ -981,8 +1124,13 @@ def build_stats_query_sql(
             params, query, context, table_name, is_sqlite, darko_applies(context, query)
         )
 
+    if bbref_query_fields(query):
+        cte_sql = cte_sql.replace("aggregated AS (", f"aggregated_bbref AS{materialized} (")
+        cte_sql += ", " + _bbref_sql(params, query, context, table_name, is_sqlite)
+
     percentile_columns = dict(PERCENTILE_COLUMNS)
     percentile_columns.update({key: key for key in sorted(darko_query_fields(query))})
+    percentile_columns.update({key: key for key in sorted(bbref_query_fields(query))})
     if query_uses_impact(query):
         percentile_columns.update({key: key for key in sorted(impact_query_fields(query))})
     percentile_columns.update({key: key for key in sorted(tracking_query_fields(query))})
@@ -1173,7 +1321,7 @@ def parse_player_row(row_dict: dict[str, Any]) -> dict[str, Any]:
         metrics[key] = _cast_num(row_dict.get(key))
         n_key = "n_fg2" if key.startswith("fg2") else f"n_{key}"
         sample_sizes[key] = int(row_dict.get(n_key) or 0)
-    for key in (*TRACKING_METRICS, *DARKO_METRICS):
+    for key in (*TRACKING_METRICS, *DARKO_METRICS, *BBREF_METRICS):
         if key in row_dict:
             metrics[key] = _cast_num(row_dict.get(key))
             sample_sizes[key] = gp if metrics[key] is not None else 0
@@ -1443,6 +1591,7 @@ def stats_cohort_summary(
                 *sorted(impact_query_fields(query)),
                 *sorted(tracking_query_fields(query)),
                 *sorted(darko_query_fields(query)),
+                *sorted(bbref_query_fields(query)),
             ]
         },
     }

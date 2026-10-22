@@ -13,4 +13,9 @@
 .methodology-metric-key, .methodology-denominator { display: block; margin-top: var(--space-1); color: var(--color-text-tertiary); font-family: var(--font-mono), ui-monospace, monospace; font-size: var(--text-xs); }
 .methodology-code { font-family: var(--font-mono), ui-monospace, monospace; font-size: var(--text-xs); overflow-wrap: anywhere; }
 .methodology-limitations { color: var(--color-text-secondary); }
+.methodology-credits .data-table { min-width: 640px; }
+.methodology-credits :is(th, td) { vertical-align: top; white-space: normal; overflow-wrap: anywhere; font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+.methodology-credits tbody th { text-align: left; text-transform: none; letter-spacing: normal; font-weight: 500; background: none; }
+.methodology-credits thead th:nth-child(1) { width: 24%; }
+.methodology-credits thead th:nth-child(2) { width: 18%; }
 }

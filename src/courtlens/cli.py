@@ -785,6 +785,100 @@ def acquire_bbref_portraits_command(
     typer.echo(json.dumps(summary.__dict__, indent=2))
 
 
+@app.command("acquire-commons-portraits")
+def acquire_commons_portraits_command(
+    player: list[str] | None = typer.Option(None, help="Only these NBA player IDs; repeatable."),
+    limit: int | None = typer.Option(None, min=1, help="Maximum stints to search this run."),
+    delay: float = typer.Option(1.0, min=0.5, max=10.0, help="Seconds between requests."),
+    models: Path = typer.Option(Path("data/cache/models"), help="Face model cache."),
+) -> None:
+    """Team-era photos from Wikimedia Commons for stints before 2015-16 (resumable). Needs the
+    `photos` extra (OpenCV)."""
+    from courtlens.services.commons_portraits import acquire_commons_portraits
+
+    summary = acquire_commons_portraits(
+        engine,
+        get_settings().portraits_cache_path,
+        models,
+        player_ids=set(player) if player else None,
+        limit=limit,
+        delay_seconds=delay,
+        progress=lambda done: typer.echo(json.dumps(done.__dict__), err=True),
+    )
+    typer.echo(json.dumps(summary.__dict__, indent=2))
+
+
+@app.command("acquire-wikidata-portraits")
+def acquire_wikidata_portraits_command(
+    player: list[str] | None = typer.Option(None, help="Only these NBA player IDs; repeatable."),
+    limit: int | None = typer.Option(None, min=1, help="Maximum players to try this run."),
+    delay: float = typer.Option(1.0, min=0.5, max=10.0, help="Seconds between requests."),
+    models: Path = typer.Option(Path("data/cache/models"), help="Face model cache."),
+) -> None:
+    """Career photos from Wikimedia Commons, linked through Wikidata, for players with no photo
+    from any other source (resumable). Needs the `photos` extra (OpenCV)."""
+    from courtlens.services.wikidata_portraits import acquire_wikidata_portraits
+
+    summary = acquire_wikidata_portraits(
+        engine,
+        get_settings().portraits_cache_path,
+        models,
+        player_ids=set(player) if player else None,
+        limit=limit,
+        delay_seconds=delay,
+        progress=lambda done: typer.echo(json.dumps(done.__dict__), err=True),
+    )
+    typer.echo(json.dumps(summary.__dict__, indent=2))
+
+
+@app.command("gather-portrait-candidates")
+def gather_portrait_candidates_command(
+    out: Path = typer.Option(..., help="Review file to write (JSON with small previews)."),
+    min_points: int = typer.Option(5000, min=0, help="Career regular-season points floor."),
+    delay: float = typer.Option(1.0, min=0.5, max=10.0, help="Seconds between requests."),
+    models: Path = typer.Option(Path("data/cache/models"), help="Face model cache."),
+) -> None:
+    """Candidate photos for notable players with none, for the owner to review (FH01d)."""
+    from courtlens.services.portrait_review import gather_candidates, write_review
+
+    with SessionLocal() as session:
+        reviews = gather_candidates(
+            session,
+            min_points=min_points,
+            model_dir=models,
+            delay_seconds=delay,
+            progress=lambda done, total: typer.echo(f"{done}/{total}", err=True),
+        )
+    write_review(reviews, out)
+    typer.echo(
+        json.dumps(
+            {
+                "players": len(reviews),
+                "with_candidates": sum(1 for r in reviews if r.faces),
+                "candidates": sum(len(r.faces) for r in reviews),
+            }
+        )
+    )
+
+
+@app.command("apply-portrait-review")
+def apply_portrait_review_command(
+    review: Path = typer.Option(..., help="Review file from gather-portrait-candidates."),
+    choices: Path = typer.Option(..., help="JSON object: player ID -> chosen candidate key."),
+) -> None:
+    """Store the owner's reviewed picks as career photos (FH01d)."""
+    from courtlens.services.portrait_review import apply_review
+
+    picked = {
+        player: key
+        for player, key in json.loads(choices.read_text()).items()
+        if key and key != "none"
+    }
+    typer.echo(
+        json.dumps(apply_review(engine, review, picked, get_settings().portraits_cache_path))
+    )
+
+
 @app.command("acquire-rich-sources")
 def acquire_rich_sources_command(
     season: int = typer.Option(2024, help="Season ending year (e.g. 2024 for 2023-24)."),
@@ -1489,6 +1583,36 @@ def acquire_bbref_history_command(
     typer.echo(json.dumps(summary, default=str))
     if summary.get("stopped"):
         raise typer.Exit(1)
+
+
+@app.command("seal-bbref-history")
+def seal_bbref_history_command(
+    root: Path = typer.Option(Path("data/raw/bbref"), help="Retained Basketball-Reference pages."),
+    workers: int = typer.Option(8, min=1, help="Parallel page parsers."),
+    report: Path | None = typer.Option(None, help="Write the run summary JSON here."),
+) -> None:
+    """Parse the retained history crawl into sealed files and load the season rows (offline).
+
+    Writes the 1983-84 to 1999-00 game logs and every season's totals under
+    data/raw/bbref_history_sealed; the next workbench import (`refresh-season-stats` or
+    `import-workbench`) folds them into a new release. No network I/O.
+    """
+    from courtlens.services.bbref_history_seal import (
+        SEASONS_PREFIX,
+        load_seasons,
+        newest_sealed,
+        seal_history,
+    )
+
+    raw_root = get_settings().raw_store_path
+    with SessionLocal() as session:
+        summary = seal_history(session, root, raw_root, workers=workers)
+        seasons = newest_sealed(raw_root, SEASONS_PREFIX)
+        assert seasons is not None
+        summary["seasons"]["load"] = load_seasons(session, seasons)
+    if report is not None:
+        report.write_text(json.dumps(summary, indent=2, default=str) + "\n")
+    typer.echo(json.dumps(summary, default=str))
 
 
 @app.command("reparse-bbref")

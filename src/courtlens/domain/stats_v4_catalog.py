@@ -310,9 +310,95 @@ DARKO_METRICS: dict[str, MetricDefinition] = {
     )
 }
 
+BBREF_LIMITS = [
+    "Basketball-Reference's published season value (full-history FH04), imported under source "
+    "policy v3; not a CourtLens estimate. One value per player-season, for the whole season: "
+    "unknown in shorter windows, season ranges and seasons still in progress. A traded player's "
+    "value is his combined season. BPM, VORP and the usage-based rates start in 1973-74, when the "
+    "source records the box score they need; PER and Win Shares go back to 1946-47 with the "
+    "stats each season recorded. CourtLens computes its own league percentiles.",
+]
+
+BBREF_METRICS: dict[str, MetricDefinition] = {
+    m.key: m
+    for m in (
+        _metric(
+            key,
+            name,
+            short,
+            "external_impact",
+            unit,
+            formula,
+            None,
+            BBREF_LIMITS,
+            recipe="external",
+            validity="Player listed in the source's season advanced table for the scope.",
+            capability="external_bbref",
+            classification="modeled",
+            phases=["regular_season", "playoffs"],
+        )
+        for key, name, short, unit, formula in (
+            (
+                "bbref_bpm",
+                "Box Plus/Minus",
+                "BPM",
+                "points per 100 possessions",
+                "Basketball-Reference BPM 2.0",
+            ),
+            (
+                "bbref_obpm",
+                "Offensive Box Plus/Minus",
+                "OBPM",
+                "points per 100 possessions",
+                "Basketball-Reference offensive BPM",
+            ),
+            (
+                "bbref_dbpm",
+                "Defensive Box Plus/Minus",
+                "DBPM",
+                "points per 100 possessions",
+                "Basketball-Reference defensive BPM",
+            ),
+            ("bbref_ws", "Win Shares", "WS", "wins", "Basketball-Reference Win Shares"),
+            (
+                "bbref_ws_per_48",
+                "Win Shares per 48 Minutes",
+                "WS/48",
+                "wins per 48 minutes",
+                "Basketball-Reference Win Shares per 48 minutes",
+            ),
+            (
+                "bbref_per",
+                "Player Efficiency Rating",
+                "PER",
+                "rating (league average 15)",
+                "Hollinger PER as Basketball-Reference publishes it",
+            ),
+            (
+                "bbref_vorp",
+                "Value Over Replacement Player",
+                "VORP",
+                "points per 100 team possessions over a season",
+                "Basketball-Reference VORP",
+            ),
+        )
+    )
+}
+# Basketball-Reference's advanced-table field for each column.
+BBREF_FIELDS = {
+    "bbref_bpm": "bpm",
+    "bbref_obpm": "obpm",
+    "bbref_dbpm": "dbpm",
+    "bbref_ws": "ws",
+    "bbref_ws_per_48": "ws_per_48",
+    "bbref_per": "per",
+    "bbref_vorp": "vorp",
+}
+
 STATS_V4_CATALOG: dict[str, MetricDefinition] = {
     **BOX_METRICS,
     **IMPACT_DERIVED,
     **TRACKING_METRICS,
     **DARKO_METRICS,
+    **BBREF_METRICS,
 }

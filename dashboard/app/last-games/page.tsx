@@ -38,7 +38,9 @@ export default async function LastGamesPage({ searchParams }: LastGamesPageProps
   const text = (name: string) => typeof params[name] === "string" ? params[name] as string : undefined;
   const releaseId = text("releaseId");
   const catalog = await getWorkbenchCatalog(releaseId).catch(() => null);
+  // Game logs start in 1983-84; earlier seasons are season totals only.
   const scopes: LastGamesScope[] = (catalog?.stats_scopes ?? [])
+    .filter(scope => scope.basis !== "season_totals")
     .filter(scope => scope.phase === "regular_season" || scope.phase === "playoffs")
     .map(scope => ({ season: scope.season, phase: scope.phase, beforeDate: scope.default_before_date }));
   const explicit = text("playerId") || text("id");

@@ -34,7 +34,7 @@ from courtlens.domain.entity_lookup import (
     score_entity_match,
     tokenize_lookup_text,
 )
-from courtlens.domain.teams import NBA_TEAMS, get_team_info, resolve_team_tricode
+from courtlens.domain.teams import NBA_TEAMS, TEAM_ERAS, get_team_info, resolve_team_tricode
 from courtlens.reference_models import BbrefPlayerProfile
 from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot
 from courtlens.workbench_models import (
@@ -145,6 +145,26 @@ def resolve_lookup_binding(
     raise HTTPException(status_code=404, detail="snapshot or dataset not found")
 
 
+def _destination(
+    entity: IndexedEntity,
+    release_id: str | None,
+    season: str | None,
+    phase: str | None,
+    before_date: date | None,
+) -> str:
+    """An entity's link in the search scope; an earlier team name opens its own last season."""
+    fixed = entity.metadata.get("season")
+    if entity.kind == "team" and isinstance(fixed, str):
+        return build_destination_url(entity.base_destination, release_id=release_id, season=fixed)
+    return build_destination_url(
+        entity.base_destination,
+        release_id=release_id,
+        season=season,
+        phase=phase,
+        before_date=before_date.isoformat() if before_date else None,
+    )
+
+
 def build_entity_index(session: Session, dataset_id: str | None = None) -> list[IndexedEntity]:
     """Build in-memory searchable entity index from database identities, teams, and pages."""
     entities: list[IndexedEntity] = []
@@ -194,6 +214,30 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
     except Exception:
         # Fallback if table is not accessible or dataset does not exist
         pass
+
+    # Seasons before the game logs (season totals pinned by the dataset).
+    try:
+        from courtlens.services.history_totals import (
+            dataset_totals,
+            player_team_seasons,
+            season_end_date,
+        )
+
+        totals_sha, totals_seasons = dataset_totals(session, dataset_id)
+        for pid, season, _phase, team_id, games in player_team_seasons(
+            session, totals_sha, totals_seasons
+        ):
+            entry = player_summaries.setdefault(
+                pid, {"seasons": set(), "latest_date": None, "latest_team_id": None, "games": 0}
+            )
+            entry["seasons"].add(season)
+            entry["games"] += games if _phase == "regular_season" else 0
+            ended = season_end_date(season)
+            if entry["latest_date"] is None or ended > entry["latest_date"]:
+                entry["latest_date"] = ended
+                entry["latest_team_id"] = team_id
+    except Exception:
+        session.rollback()
 
     # 3. Basketball-Reference nicknames from each player's newest parsed profile
     nicknames: dict[str, list[str]] = {}
@@ -293,6 +337,41 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
                 conference=team.conference,
                 division=team.division,
                 metadata={"tricode": team.tricode, "city": team.city},
+            )
+        )
+
+    # 3b. Earlier team names (Seattle SuperSonics, Syracuse Nationals) and teams that folded
+    # (Chicago Stags), each opening its last season; the season is fixed, not the search scope's.
+    # Eras split only by a realignment (the Sonics' 2004-05) are one name: one entry, whole span.
+    spans: dict[tuple[str, str], list[Any]] = {}
+    for era in TEAM_ERAS:
+        spans.setdefault((era.name, era.franchise_id or era.code), []).append(era)
+    for (name, owner), group in spans.items():
+        group.sort(key=lambda e: e.first_season)
+        era, first_season = group[-1], group[0].first_season
+        now = NBA_TEAMS.get(era.franchise_id) if era.franchise_id else None
+        if now is not None and now.name == name:
+            continue  # The franchise's own entry already has this name.
+        era_aliases = [normalize_lookup_text(era.name), era.code.casefold()]
+        entities.append(
+            IndexedEntity(
+                id=f"team:{owner}:{first_season}",
+                kind="team",
+                canonical_id=era.franchise_id or era.code,
+                display_name=era.name,
+                display_name_norm=normalize_lookup_text(era.name),
+                aliases_norm=tuple(dict.fromkeys(a for a in era_aliases if a)),
+                tokens=tuple(tokenize_lookup_text(era.name)),
+                subtitle=f"{first_season} to {era.last_season} · "
+                + (f"Now the {now.name}" if now else "Folded"),
+                portrait_url=None,
+                portrait_fallback=era.code,
+                base_destination=f"/teams/{era.franchise_id or era.code}",
+                latest_team_id=era.franchise_id or era.code,
+                latest_tricode=era.code,
+                conference=era.conference,
+                division=era.division,
+                metadata={"tricode": era.code, "city": era.city, "season": era.last_season},
             )
         )
 
@@ -442,6 +521,25 @@ def scoped_team_associations(
         grouped: dict[str, list[tuple[str, date]]] = {}
         for player_id, team_id, latest in session.execute(query).all():
             grouped.setdefault(player_id, []).append((team_id, latest))
+        # Seasons served as totals (before 1983-84) stand at their season end, whole seasons only.
+        unseen = [player_id for player_id in missing if player_id not in grouped]
+        totals_dates: set[date] = set()
+        if unseen and window == "season":
+            from courtlens.services.history_totals import (
+                dataset_totals,
+                player_team_seasons,
+                season_end_date,
+            )
+
+            totals_sha, totals_seasons = dataset_totals(session, dataset_id)
+            in_scope = [s for s in totals_seasons if season is None or s == season]
+            for player_id, totals_season, _, team_id, _ in player_team_seasons(
+                session, totals_sha, in_scope, player_ids=unseen, phase=phase
+            ):
+                ended = season_end_date(totals_season)
+                if before_date is None or ended < before_date:
+                    grouped.setdefault(player_id, []).append((team_id, ended))
+                    totals_dates.add(ended)
         for player_id in missing:
             rows = grouped.get(player_id, [])
             if not rows:
@@ -456,10 +554,12 @@ def scoped_team_associations(
             teams = sorted(
                 {resolve_team_tricode(team) for team, day in rows if scoped or day == latest}
             )
+            from_totals = latest in totals_dates
             result[player_id] = LookupTeamAssociation(
                 basis="selected_scope" if scoped else "last_observed",
                 teams=teams,
-                observed_through=latest,
+                observed_through=None if from_totals else latest,
+                last_season=f"{latest.year - 1}-{latest.year % 100:02d}" if from_totals else None,
                 season=season,
                 phase=phase,
                 before_date=before_date,
@@ -554,12 +654,8 @@ def lookup_entities(
                             conference=entity.conference,
                             division=entity.division,
                         ),
-                        destination_url=build_destination_url(
-                            entity.base_destination,
-                            release_id=release_id,
-                            season=season,
-                            phase=phase,
-                            before_date=before_date.isoformat() if before_date else None,
+                        destination_url=_destination(
+                            entity, release_id, season, phase, before_date
                         ),
                         metadata=entity.metadata,
                     )
@@ -598,13 +694,7 @@ def lookup_entities(
                         conference=entity.conference,
                         division=entity.division,
                     ),
-                    destination_url=build_destination_url(
-                        entity.base_destination,
-                        release_id=release_id,
-                        season=season,
-                        phase=phase,
-                        before_date=before_date.isoformat() if before_date else None,
-                    ),
+                    destination_url=_destination(entity, release_id, season, phase, before_date),
                     metadata=entity.metadata,
                 )
             )
@@ -703,13 +793,7 @@ def lookup_entities(
                         conference=entity.conference,
                         division=entity.division,
                     ),
-                    destination_url=build_destination_url(
-                        entity.base_destination,
-                        release_id=release_id,
-                        season=season,
-                        phase=phase,
-                        before_date=before_date.isoformat() if before_date else None,
-                    ),
+                    destination_url=_destination(entity, release_id, season, phase, before_date),
                     metadata=entity.metadata,
                 )
             )
@@ -738,6 +822,8 @@ def lookup_entities(
             item.subtitle = (
                 f"{label} · Observed in selected scope"
                 if scoped and label
+                else f"{label} · Last season {association.last_season}"
+                if label and association.last_season
                 else f"{label} · Last observed {association.observed_through}"
                 if label
                 else "No observed appearances in selected scope"

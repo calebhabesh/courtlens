@@ -198,6 +198,18 @@ export const DARKO_COLUMNS: Record<string, ColumnDefinition> = Object.fromEntrie
   }])
 );
 
+/** Basketball-Reference's published season values: whole seasons only, every era (FH04). */
+export const BBREF_COLUMNS: Record<string, ColumnDefinition> = Object.fromEntries(
+  ([["bbref_bpm", "BPM", "Box Plus/Minus", formatSignedValue], ["bbref_obpm", "OBPM", "Offensive Box Plus/Minus", formatSignedValue],
+    ["bbref_dbpm", "DBPM", "Defensive Box Plus/Minus", formatSignedValue], ["bbref_ws", "WS", "Win Shares", oneDecimal],
+    ["bbref_ws_per_48", "WS/48", "Win Shares per 48 minutes", (v: number | null | undefined) => formatStatValue(v, 3)],
+    ["bbref_per", "PER", "Player Efficiency Rating", oneDecimal], ["bbref_vorp", "VORP", "Value Over Replacement Player", oneDecimal]
+  ] as const).map(([key, label, name, format]) => [key, {
+    key, label, group: "Impact", num: true, sortMetric: key, format, keepLabel: true,
+    tooltip: `${name}: Basketball-Reference's published value for the whole season (every era; BPM and VORP from 1973-74). Blank in shorter windows and season ranges.`
+  }])
+);
+
 /**
  * courtlens-stats-v4 columns. Impact-derived ones need the sealed impact manifest like
  * IMPACT_COLUMNS; tracking ones are full-season NBA tracking totals (null in shorter scopes).
@@ -235,7 +247,7 @@ export function usesImpactManifest(key: string): boolean {
 
 /** Columns only in courtlens-stats-v4 (custom views that use them save under v4). */
 export function isV4Column(key: string): boolean {
-  return key in V4_IMPACT_COLUMNS || key in TRACKING_COLUMNS || key in V4_BOX_COLUMNS || key in DARKO_COLUMNS;
+  return key in V4_IMPACT_COLUMNS || key in TRACKING_COLUMNS || key in V4_BOX_COLUMNS || key in DARKO_COLUMNS || key in BBREF_COLUMNS;
 }
 
 function impactColumns(keys: string[], group: string): ColumnDefinition[] {
@@ -514,6 +526,7 @@ export const ALL_CATALOG_METRICS: Record<string, ColumnDefinition> = {
   ...V4_IMPACT_COLUMNS,
   ...TRACKING_COLUMNS,
   ...DARKO_COLUMNS,
+  ...BBREF_COLUMNS,
   ...V4_BOX_COLUMNS,
 
   // Gated / Unavailable Metrics

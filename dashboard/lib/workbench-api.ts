@@ -7,6 +7,7 @@ assertCurrentEnvironment();
 import type {
   ComparisonCareerResponse,
   ComparisonGroupResponse,
+  PlayerDashboardFeeds,
   AssistantAnswer,
   PlayerBio,
   AssistantQueryRequest,
@@ -121,6 +122,16 @@ export async function getMetricCatalog(): Promise<MetricCatalog> {
   return wbFetch<MetricCatalog>("/api/workbench/metrics?version=courtlens-stats-v4");
 }
 
+/** Wikimedia Commons photos in use, with the credit their licences require. */
+export interface PortraitCredits {
+  /** Team-season photos, then career photos (season and team null). */
+  commons: { player_id: string; name: string; season: string | null; team: string | null; credit: string; source_url: string | null }[];
+}
+
+export async function getPortraitCredits(): Promise<PortraitCredits> {
+  return wbFetch<PortraitCredits>("/api/workbench/portrait-credits");
+}
+
 export async function getDraftClasses(): Promise<DraftClassesResponse> {
   return wbFetch<DraftClassesResponse>("/api/workbench/draft-classes");
 }
@@ -210,12 +221,18 @@ export async function getComparisonCareer(playerA: string, playerB: string, para
   return wbFetch(`/api/workbench/compare/career?${sp}`, { signal: AbortSignal.timeout(30000) });
 }
 
+/** Player Dashboard tracking cells for one player-season (row 22). */
+export async function getPlayerDashboardFeeds(playerId: string, season: string, phase: string): Promise<PlayerDashboardFeeds> {
+  const sp = new URLSearchParams({ playerId, season, phase });
+  return wbFetch(`/api/workbench/player-dashboard/feeds?${sp}`);
+}
+
 /** Seasons each player has game rows in for one phase; a stat trend plots only these. */
 export async function getPlayerSeasons(
   playerIds: string[],
   phase: string,
   releaseId?: string
-): Promise<{ phase: string; seasons: Record<string, string[]> }> {
+): Promise<{ phase: string; seasons: Record<string, string[]>; peak?: Record<string, string | null>; peak_basis?: Record<string, string | null>; active?: Record<string, boolean | null> }> {
   const sp = new URLSearchParams({ phase });
   playerIds.forEach(id => sp.append("playerId", id));
   if (releaseId) sp.set("releaseId", releaseId);
@@ -357,6 +374,23 @@ export async function getTeamFourFactors(
   return wbFetch<TeamFourFactorsResponse>(
     `/api/workbench/teams/${encodeURIComponent(id)}/four-factors?${sp}`
   );
+}
+
+/** Team Comparison's By Position: the most-used observed starting five (box-score positions). */
+export interface TeamStarterEvidence {
+  method: string; release_id: string; dataset_id: string; season: string; phase: string; before_date: string;
+  team_games: number; verified_games: number; unknown_games: number; unit_games: number; unit_ties: number;
+  unit_players: { player_id: string; position: string }[];
+  players: { player_id: string; starts: number | null; bench_appearances: number | null; unknown_appearances: number }[];
+}
+
+export async function getTeamStarters(
+  id: string,
+  params: { season: string; phase: string; beforeDate: string; releaseId?: string | null }
+): Promise<TeamStarterEvidence> {
+  const sp = new URLSearchParams({ season: params.season, phase: params.phase, beforeDate: params.beforeDate });
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  return wbFetch<TeamStarterEvidence>(`/api/workbench/teams/${encodeURIComponent(id)}/starters?${sp}`);
 }
 
 export async function getTeamPeers(

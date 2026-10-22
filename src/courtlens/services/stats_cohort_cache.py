@@ -23,7 +23,7 @@ from courtlens.domain.impact_catalog import IMPACT_COLUMNS
 from courtlens.domain.metrics import resolve_metric_alias
 from courtlens.domain.query_spec import MAX_PAGE_SIZE, PagingSpec, QuerySpec, SortSpec, ViewState
 from courtlens.domain.stats_presentation import StatsPresentation
-from courtlens.domain.stats_v4_catalog import DARKO_METRICS, TRACKING_METRICS
+from courtlens.domain.stats_v4_catalog import BBREF_METRICS, DARKO_METRICS, TRACKING_METRICS
 from courtlens.services.impact_serving import (
     SQL_SUPPORT_FIELDS,
     impact_for_query,
@@ -104,7 +104,12 @@ def cohort_query(query: QuerySpec) -> QuerySpec:
     Sort, name and paging run in memory. Views that join impact or tracking values share one
     cohort carrying every joined column; plain box-score views share a lighter one.
     """
-    external = IMPACT_COLUMNS.keys() | TRACKING_METRICS.keys() | DARKO_METRICS.keys()
+    external = (
+        IMPACT_COLUMNS.keys()
+        | TRACKING_METRICS.keys()
+        | DARKO_METRICS.keys()
+        | BBREF_METRICS.keys()
+    )
     joined = bool(query_fields(query) & external)
     view = ViewState(columns=sorted(external)) if joined else None
     return query.model_copy(

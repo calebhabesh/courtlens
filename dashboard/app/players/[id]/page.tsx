@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { isTotalsSeason } from "@/lib/season-basis";
 import Link from "next/link";
 import { TrendChart } from "@/components/trend-chart";
 import {
@@ -73,9 +74,7 @@ export default async function PlayerPage({
   // Modern Workbench Research Mode
   const catalog = await getWorkbenchCatalog(selected.releaseId).catch(() => null);
 
-  const season = selected.season || catalog?.default_season || "2024-25";
   const phase = selected.phase || catalog?.default_phase || "regular_season";
-  const beforeDate = selected.beforeDate || catalog?.default_before_date || "2026-06-30";
   const windowParam = selected.window || "season";
 
   let wbLoaded: { profile: PlayerProfile; log: PlayerGameLogResponse } | null = null;
@@ -83,6 +82,13 @@ export default async function PlayerPage({
   const careerRequest = catalog
     ? getPlayerCareer(id, { phase, releaseId: catalog.release_id }).catch(() => null)
     : Promise.resolve(null);
+  // Without a season in the link, a player who did not play the default season opens on his
+  // latest season (careers reach back to 1946-47), not on an empty one.
+  const played = selected.season ? [] : ((await careerRequest)?.seasons ?? []).map(entry => entry.season);
+  const fallback = catalog?.default_season || "2024-25";
+  const season = selected.season || (played.length && !played.includes(fallback) ? played[0] : fallback);
+  const seasonScope = catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase);
+  const beforeDate = selected.beforeDate || (season !== fallback ? seasonScope?.default_before_date : null) || catalog?.default_before_date || "2026-06-30";
 
   try {
     const [profile, log] = await Promise.all([
@@ -109,7 +115,7 @@ export default async function PlayerPage({
   if (wbLoaded) {
     const [impact, hero, bio, career, metricCatalog] = await Promise.all([
       getImpact({ season, phase, beforeDate, playerId: id, window: windowParam }).catch(() => null),
-      catalog ? heroStats(id, selected, catalog) : null,
+      catalog ? heroStats(id, { ...selected, season, phase, beforeDate }, catalog) : null,
       getPlayerBio(id, { season, beforeDate }).catch(() => null),
       careerRequest,
       // Header hover text for the career table's trend dialog; failing only hides it.
@@ -133,7 +139,7 @@ export default async function PlayerPage({
           initialBeforeDate={beforeDate}
           initialWindow={windowParam}
           // Games the player appeared in for the chosen window, not the game log's 50-row page.
-          sampleSize={windowGames(wbLoaded.profile, windowParam)}
+          sampleSize={isTotalsSeason(catalog, season) ? hero?.item?.metrics.gp ?? undefined : windowGames(wbLoaded.profile, windowParam)}
           lastIncludedDate={wbLoaded.profile.last_observed_date}
           detailRows={[{ label: "Player", value: id, mono: true }]}
         />}

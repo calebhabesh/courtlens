@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "next/navigation";
-import { getPlayerGameLog, getTeamSchedule, getTeamsResearch, WorkbenchApiError } from "@/lib/workbench-api";
+import { getPlayerGameLog, getPlayerSeasons, getTeamSchedule, getTeamsResearch, WorkbenchApiError } from "@/lib/workbench-api";
+import { landing } from "@/lib/landing-season";
 import type { PlayerGameLogItem } from "@/lib/types";
 import {
   LAST_GAMES_STATS, DEFAULT_LAST_GAMES_STATS, changeTone, chosenStats, clampWindow, formatChange, formatStat, gamesCsv,
@@ -35,7 +36,7 @@ export type LastGamesScope = { season: string; phase: string; beforeDate: string
 type Phase = "all" | "regular_season" | "playoffs";
 type View = "table" | "cards";
 type Loaded = {
-  season: string; name: string | null; releaseId: string | null; games: PlayerGameLogItem[]; through: Record<string, string>;
+  season: string; name: string | null; position: string | null; releaseId: string | null; games: PlayerGameLogItem[]; through: Record<string, string>;
   /** Follow-up 25: result, score, venue and rest per game, from the team schedules. */
   context: Record<string, GameContext>;
   /** Follow-up 28: each team's regular-season defensive rating and rank, by team id and tricode. */
@@ -49,19 +50,19 @@ const ADD_LIMIT = 4;
 /** Every page of one phase's prior-only log. A phase the player has no games in is empty, not an error. */
 async function loadPhase(player: string, season: string, phase: string, beforeDate: string, releaseId: string | null) {
   const games: PlayerGameLogItem[] = [];
-  let cursor: string | undefined, name: string | null = null, release: string | null = null;
+  let cursor: string | undefined, name: string | null = null, release: string | null = null, position: string | null = null;
   try {
     for (let page = 0; page < 4; page++) {
       const response = await getPlayerGameLog(player, { season, phase, beforeDate, releaseId: releaseId ?? undefined, limit: 100, cursor });
       games.push(...response.games);
-      name = response.player.name; release = typeof response.context.release_id === "string" ? response.context.release_id : null;
+      name = response.player.name; position = response.player.position ?? position; release = typeof response.context.release_id === "string" ? response.context.release_id : null;
       if (!response.has_more || !response.next_cursor) break;
       cursor = response.next_cursor;
     }
   } catch (error) {
     if (!(error instanceof WorkbenchApiError && error.status === 404)) throw error;
   }
-  return { games, name, release };
+  return { games, name, release, position };
 }
 
 function seasonPhases(scopes: LastGamesScope[], season: string, phase: Phase) {
@@ -88,7 +89,7 @@ async function loadSeason(player: string, season: string, phase: Phase, scopes: 
   const rated = (teams?.teams ?? []).filter(t => typeof t.ratings?.def_rating === "number").sort((a, b) => a.ratings!.def_rating! - b.ratings!.def_rating!);
   const defence: Record<string, OpponentDefence> = {};
   rated.forEach((t, i) => { const entry = { rating: t.ratings!.def_rating!, rank: i + 1 }; defence[t.team_id] = entry; defence[t.tricode] = entry; });
-  return { season, name: results.find(r => r.name)?.name ?? null, releaseId: results.find(r => r.release)?.release ?? null, games, through, context, defence };
+  return { season, name: results.find(r => r.name)?.name ?? null, position: results.find(r => r.position)?.position ?? null, releaseId: results.find(r => r.release)?.release ?? null, games, through, context, defence };
 }
 
 /** Query state written with replaceState, so a toggle never re-renders the server page. */
@@ -236,8 +237,8 @@ function WindowCard({ playerId, name, team, season, size, played, onSize, onPick
  * adds or removes its stat on the chart, and plotted rows show their line's colour. Follow-up 28:
  * a Context band compares opponents' defence and the record.
  */
-function Comparison({ name, games, first, last, stats, mode, plotted, onPlot, context, defence }: {
-  name: string; games: PlayerGameLogItem[]; first: PlayerGameLogItem[]; last: PlayerGameLogItem[]; stats: LastGamesStat[]; mode: Exposure;
+function Comparison({ name, who, games, first, last, stats, mode, plotted, onPlot, context, defence }: {
+  name: string; who?: string; games: PlayerGameLogItem[]; first: PlayerGameLogItem[]; last: PlayerGameLogItem[]; stats: LastGamesStat[]; mode: Exposure;
   plotted: string[]; onPlot: (key: string) => void; context: Record<string, GameContext>; defence: (game: PlayerGameLogItem) => OpponentDefence | null;
 }) {
   const a = totals(first), b = totals(last);
@@ -253,7 +254,7 @@ function Comparison({ name, games, first, last, stats, mode, plotted, onPlot, co
   const rank = (value: number | null) => value === null ? "—" : value.toFixed(1);
   const record = (s: typeof now) => s.wins + s.losses ? `${s.wins}–${s.losses}` : "—";
   return <section className="lg-compare player-glass" aria-label={`${name}: first ${first.length} against last ${last.length} games`}>
-    <h2>{name}</h2>
+    <h2>{name}{who && <small className="lg-compare-who" title="Team and estimated position this season">{who}</small>}</h2>
     <div className="lg-compare-frame">
     <table className="lg-compare-table">
       <thead><tr>
@@ -417,6 +418,7 @@ export function LastGamesView({ scopes, defaultSeason, example }: {
   const [glossary, setGlossary] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [moved, setMoved] = useState<{ player: string; season: string } | null>(null);
 
   // The default subject is written into the URL, so a shared link names the player.
   useEffect(() => {
@@ -460,13 +462,24 @@ export function LastGamesView({ scopes, defaultSeason, example }: {
   const exampleActive = example && get("exampleSubject") === player && example.id === player;
   const earlier = seasons.filter(s => s < season && !added.includes(s));
 
-  const pick = (id: string) => set({ playerId: id, id: null, exampleSubject: null, window: null, add: null, since: null });
+  // A picked player lands in a season with their game logs (owner, 2026-10-22): this season if
+  // they played it, else their latest; logs start in 1983-84, so peak seasons do not apply.
+  const pick = async (id: string) => {
+    const read = await getPlayerSeasons([id], "regular_season", releaseId ?? undefined).catch(() => null);
+    const landed = read ? landing((read.seasons[id] ?? []).filter(s => seasons.includes(s)), { page: season }) : null;
+    const next = landed?.season ?? season;
+    // Say why the season moved, for as long as this player and season stay on screen.
+    setMoved(landed && landed.kind !== "kept" ? { player: id, season: next } : null);
+    set({ playerId: id, id: null, exampleSubject: null, window: null, add: null, since: null, season: next === defaultSeason ? null : next });
+  };
   const onSort = (key: string) => set({ sort: sort.key === key ? (sort.dir === "desc" ? `-${key}` : key === "date" ? null : key) : key === "date" ? null : key });
   const copyLink = async () => { if (await copyCanonicalQueryUrl("/last-games", Object.fromEntries(new URLSearchParams(window.location.search)))) { setCopied(true); setTimeout(() => setCopied(false), 2000); } };
   const label = (s: string) => `${s} (${phaseLabel(phase)})`;
 
   return <div className="lg-page" role="region" aria-label="Last X Games">
     <PageHeader className="pvp-header" icon="chart-trend" title={data?.name ? `${data.name} Last Games Stats` : "Last X Games"} subtitle={BLURB} />
+    {moved && moved.player === player && moved.season === season && <p className="feed-example"><span><strong>{name}</strong></span>
+      <span className="feed-example-rule">No games in the season you were viewing. Showing their latest season with game logs; change it with Season.</span></p>}
     {exampleActive && <ExampleNote name={example.name} rule={`${example.rule} Press the photo to change player.`} />}
     <div className="lg-console"><FilterBar label="Last X Games controls" summary={[season, phaseLabel(phase), mode === "per_36" ? "Per 36" : "Per Game"].join(" · ")}
       scope={<>
@@ -519,7 +532,7 @@ export function LastGamesView({ scopes, defaultSeason, example }: {
           <WindowCard playerId={player} name={name} team={team} season={season} size={size} played={games.length}
             onSize={n => set({ window: n === DEFAULT_WINDOW ? null : String(n), since: null })} onPick={pick}
             anchors={anchors} since={since} dates={dates} onSince={date => set({ since: date, window: null })} />
-          <Comparison name={name} games={games} first={first} last={last} stats={stats} mode={mode} plotted={plotted} onPlot={plot} context={context} defence={defence} />
+          <Comparison name={name} who={[team, data?.position].filter(Boolean).join(" · ") || undefined} games={games} first={first} last={last} stats={stats} mode={mode} plotted={plotted} onPlot={plot} context={context} defence={defence} />
         </div>
         <section className="lg-logs player-glass" aria-label="Game Logs">
           <header className="lg-logs-head">

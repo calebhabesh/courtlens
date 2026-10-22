@@ -5,6 +5,7 @@ from dataclasses import replace
 from courtlens.domain.impact_extras_catalog import IMPACT_EXTRAS_CATALOG, RETIRED_METRICS
 from courtlens.domain.metrics import METRIC_CATALOG_V2, MetricDefinition
 from courtlens.domain.stats_v4_catalog import (
+    BBREF_METRICS,
     BOX_METRICS,
     DARKO_METRICS,
     IMPACT_DERIVED,
@@ -106,5 +107,6 @@ SERVING_CATALOG = {
     **IMPACT_DERIVED,
     **TRACKING_METRICS,
     **DARKO_METRICS,
+    **BBREF_METRICS,
 }
 SERVING_VERSIONS = {VERSION: V3_CATALOG, V4_VERSION: SERVING_CATALOG}

@@ -250,6 +250,8 @@ class StatsScopeSchema(BaseModel):
     coverage_start: str
     coverage_end: str
     default_before_date: str
+    # "games" (per-game rows) or "season_totals" (seasons before 1983-84: whole seasons only).
+    basis: str = "games"
 
 
 class WorkbenchCatalogResponse(BaseModel):
@@ -419,6 +421,13 @@ class PlayerSeasonsResponse(BaseModel):
     phase: str
     # Seasons with at least one game row per player, ascending; a missing season is unknown.
     seasons: dict[str, list[str]]
+    # Each player's best regular season (BPM, else WS/48, else WS) among those seasons; None when
+    # no season qualifies.
+    peak: dict[str, str | None] = Field(default_factory=dict)
+    # The measure that chose it: "bpm", "ws_per_48" or "ws".
+    peak_basis: dict[str, str | None] = Field(default_factory=dict)
+    # On an NBA roster today (True), placed off every roster (False), or no source speaks (None).
+    active: dict[str, bool | None] = Field(default_factory=dict)
 
 
 class PlayerResearchResponse(BaseModel):
@@ -625,6 +634,26 @@ class PlayerTrackingResponse(StatsFeedScopeView):
     observed: bool
     player: dict[str, Any] | None
     groups: list[dict[str, Any]]
+
+
+class PlayerDashboardFeedsResponse(BaseModel):
+    """Alignment row 22: one player-season's NBA tracking cells with season percentiles."""
+
+    version: str
+    player_id: str
+    season: str
+    phase: Literal["regular_season", "playoffs"]
+    label: str
+    source: str
+    qualification: dict[str, int]
+    observed: dict[str, bool]
+    first_seasons: dict[str, str]
+    metrics: list[dict[str, Any]]
+    player: dict[str, Any] | None
+    play_types: list[dict[str, Any]] | None
+    cohort: dict[str, Any]
+    limitations: list[str]
+    sources: list[StatsFeedSource]
 
 
 class WowyViewResponse(BaseModel):
@@ -867,9 +896,10 @@ class TeamStandingsItem(BaseModel):
 
     wins: int
     losses: int
-    last10_wins: int
-    last10_losses: int
-    streak: int
+    # None for a season served as totals: no games to take the last ten or a streak from.
+    last10_wins: int | None = None
+    last10_losses: int | None = None
+    streak: int | None = None
 
 
 class TeamTrendPoint(BaseModel):
@@ -886,8 +916,9 @@ class TeamSixFactorsItem(BaseModel):
     games_played: int
     wins: int
     losses: int
-    possessions: float
-    opp_possessions: float
+    # The source's estimate (points / rating) before 1973-74; None when it has no rating.
+    possessions: float | None = None
+    opp_possessions: float | None = None
     points: float
     opp_points: float
     ortg: float | None = None
@@ -912,8 +943,9 @@ class TeamSixFactorsItem(BaseModel):
     adj_net: float | None = None
     expected_wins: float | None = None
     win_luck: float | None = None
-    close_wins: int = 0
-    close_losses: int = 0
+    # None for a season served as totals (no game margins).
+    close_wins: int | None = 0
+    close_losses: int | None = 0
     standings: TeamStandingsItem
     trend: list[TeamTrendPoint]
 
@@ -993,8 +1025,9 @@ class TeamScheduleResponse(BaseModel):
     team: dict[str, str]
     context: dict[str, Any]
     overall_record: dict[str, Any]
-    home_split: dict[str, Any]
-    away_split: dict[str, Any]
+    # None for a season served as totals: no games, so no home or away record.
+    home_split: dict[str, Any] | None = None
+    away_split: dict[str, Any] | None = None
     rest_splits: list[TeamRestSplitItem]
     back_to_back_summary: TeamBackToBackSummary
     longest_homestand: int
@@ -1398,6 +1431,8 @@ class LookupTeamAssociation(BaseModel):
     basis: Literal["selected_scope", "last_observed"]
     teams: list[str] = Field(default_factory=list)
     observed_through: date | None = None
+    # Careers before the 1983-84 game logs have no game dates: the last season played instead.
+    last_season: str | None = None
     season: str | None = None
     phase: str | None = None
     before_date: date | None = None

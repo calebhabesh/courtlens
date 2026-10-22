@@ -1,7 +1,7 @@
 // Player Showcase (alignment row 9): Databallr's season card grid. One query shape serves the
 // server render and the season slideshow, so both show the same cohort for a season.
 
-import { DARKO_COLUMNS, STATS_PRESETS, usesImpactManifest, type ColumnDefinition, type CountingMode } from "./stats-presets";
+import { BBREF_COLUMNS, DARKO_COLUMNS, STATS_PRESETS, usesImpactManifest, type ColumnDefinition, type CountingMode } from "./stats-presets";
 import { normalizedColumn } from "./stats-query";
 import type { EstimatedPosition, PlayerResearchItem, QuerySpec, StatsPresentation, WorkbenchCatalog } from "./types";
 
@@ -27,7 +27,9 @@ const POSITIONS: EstimatedPosition[] = ["PG", "SG", "SF", "PF", "C"];
 /** Card stats come from the Stats Overview view: its curated groups, labels and formats. */
 const OVERVIEW = STATS_PRESETS.find(preset => preset.id === "overview")!;
 const GROUP_LABELS = OVERVIEW.groupLabels ?? {};
-export const CARD_STATS: ColumnDefinition[] = OVERVIEW.columns.filter(column => !["gp", "min"].includes(column.key));
+// BPM and WS rate every era; DPM starts in 2000-01, so older seasons sort by BPM (full history H2).
+export const CARD_STATS: ColumnDefinition[] = OVERVIEW.columns.filter(column => !["gp", "min"].includes(column.key))
+  .flatMap(column => column.key === "d_dpm" ? [column, BBREF_COLUMNS.bbref_bpm, BBREF_COLUMNS.bbref_ws] : [column]);
 /** A card stat's URL id: the Overview key without its counting-mode suffix (pts_per_game → pts). */
 export function statId(column: Pick<ColumnDefinition, "key">): string {
   return column.key.replace(/_per_game$/, "");
@@ -89,6 +91,12 @@ export function phasesFor(catalog: WorkbenchCatalog | null, season: string): str
   return ["regular_season", "playoffs"].filter(phase => phases.includes(phase));
 }
 
+/** DPM where DARKO rates the season; before 2000-01, Basketball-Reference's BPM (full history H2). */
+export function defaultSort(catalog: WorkbenchCatalog | null, season: string): string {
+  const rated = (catalog?.darko?.scopes ?? []).some(scope => scope.season === season);
+  return rated || !catalog?.darko?.scopes?.length ? DEFAULT_SORT : "bbref_bpm";
+}
+
 export function readShowcaseState(params: Params, catalog: WorkbenchCatalog | null): ShowcaseState {
   const get = reader(params);
   const seasons = catalog?.seasons ?? [];
@@ -96,7 +104,7 @@ export function readShowcaseState(params: Params, catalog: WorkbenchCatalog | nu
   const phases = phasesFor(catalog, season);
   const phase = get("phase") && phases.includes(get("phase")!) ? get("phase")! : phases[0] ?? "regular_season";
   const mode = (MODES.find(entry => entry.value === get("mode"))?.value ?? "per_game") as ShowcaseMode;
-  const sort = get("sort") && BASE_KEYS.has(get("sort")!) ? get("sort")! : DEFAULT_SORT;
+  const sort = get("sort") && BASE_KEYS.has(get("sort")!) ? get("sort")! : defaultSort(catalog, season);
   const extras = (get("stats") ?? "").split(",").filter(key => BASE_KEYS.has(key));
   const positions = (get("positions") ?? "").split(",").filter((value): value is EstimatedPosition => POSITIONS.includes(value as EstimatedPosition));
   return {
