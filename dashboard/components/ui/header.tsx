@@ -15,7 +15,7 @@ import { AskDrawer } from "../ask-drawer";
 import { HotkeysModal } from "../hotkeys-modal";
 import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
 import type { WorkbenchCatalog } from "@/lib/types";
-import { MORE_LINKS, NAV_MENUS, STATS_LINK, activeNavSection, analyticalNavItems } from "@/lib/nav-model";
+import { DIRECT_LINKS, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems } from "@/lib/nav-model";
 import { mergedPagePath } from "@/lib/route-consolidation";
 import { isHostedDemo } from "@/lib/hosted";
 
@@ -57,8 +57,9 @@ export function Header() {
   const catalog = catalogState?.releaseId === releaseId ? catalogState?.catalog ?? null : null;
   const availability = useCallback(
     (href: string) =>
-      // Judged at each destination's own default scope: navigation never carries this page's.
-      routeAvailability(href, catalog, undefined, undefined),
+      // Listed when the destination's source is up at all: navigation carries no season, and each
+      // page opens on a season its source covers.
+      routeAvailability(href, catalog, undefined, undefined, { anySeason: true }),
     [catalog]
   );
 
@@ -269,15 +270,17 @@ export function Header() {
         <Brand />
 
         <nav className="courtlens-nav" aria-label="Workspace Navigation">
-          <div className="courtlens-nav-item">
-            <Link
-              href={STATS_LINK.href}
-              className={`courtlens-nav-link ${activeSection === "stats" ? "active" : ""}`}
-            >
-              {STATS_LINK.label}
-              {activeSection === "stats" && indicator}
-            </Link>
-          </div>
+          {DIRECT_LINKS.map(({ id, item }) => (
+            <div key={id} className="courtlens-nav-item">
+              <Link
+                href={item.href}
+                className={`courtlens-nav-link ${activeSection === id ? "active" : ""}`}
+              >
+                {item.label}
+                {activeSection === id && indicator}
+              </Link>
+            </div>
+          ))}
 
           {visibleMenus.map(menu => {
             const multi = menu.groups.length > 1;
@@ -509,14 +512,17 @@ export function Header() {
       >
         <nav className="courtlens-mobile-drawer-body" aria-label="Drawer navigation">
           <div className="courtlens-mobile-direct-links">
-            <Link
-              href={STATS_LINK.href}
-              aria-current={activeSection === "stats" ? "page" : undefined}
-              className={`courtlens-mobile-link ${activeSection === "stats" ? "active" : ""}`}
-              onClick={closeDrawer}
-            >
-              {STATS_LINK.label}
-            </Link>
+            {DIRECT_LINKS.map(({ id, item }) => (
+              <Link
+                key={id}
+                href={item.href}
+                aria-current={activeSection === id ? "page" : undefined}
+                className={`courtlens-mobile-link ${activeSection === id ? "active" : ""}`}
+                onClick={closeDrawer}
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
 
           <Accordion>

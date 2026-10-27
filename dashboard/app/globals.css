@@ -34,6 +34,7 @@
 @import "../components/ui/table.css";
 @import "../components/ui/menu.css";
 @import "../components/ui/tooltip.css";
+@import "../components/ui/hover-card.css";
 @import "../components/ui/modal.css";
 @import "../components/ui/command-palette.css";
 @import "../components/ui/toast.css";
@@ -54,6 +55,7 @@
 @import "../components/possession-calculator-view.css";
 @import "../components/finance-workspace.css";
 @import "../components/live-workspace.css";
+@import "../components/live-game.css";
 @import "./styles/route-surfaces.css";
 @import "../components/planner-client.css";
 @import "./design/design.css";
@@ -81,6 +83,7 @@
 @import "../components/team-profile.css";
 @import "../components/roster-shapes-view.css";
 @import "../components/team-stat-shift-view.css";
+@import "../components/wowy-view.css";
 @import "../components/contracts-view.css";
 @import "../components/free-agency-view.css";
 @import "../components/compare-grid.css";

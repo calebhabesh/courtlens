@@ -371,10 +371,7 @@ def refresh_season_impact(
 ) -> dict[str, Any]:
     """One weekly run; returns a summary. Waits until every team has `MIN_TEAM_GAMES` games."""
     from courtlens.domain.impact_extras import aggregate_by_team
-    from courtlens.domain.stint_box import VERSION as STINT_BOX_VERSION
-    from courtlens.domain.stint_box import stint_box
     from courtlens.domain.wowy import cohort_splits, team_stints
-    from courtlens.evaluation.impact_rating_inputs import checked, write_artifact
     from courtlens.evaluation.impact_serving_build import (
         project_extras,
         project_rating,
@@ -385,37 +382,15 @@ def refresh_season_impact(
         fit_ratings,
         provisional_cohort,
     )
-    from courtlens.ingestion.hoopr_boxscores import playbyplay_rows
     from courtlens.ingestion.impact_repair_audit import retained_boxes
-    from courtlens.ingestion.season_impact import (
-        prepare_bundles,
-        provisional_schedule,
-        season_candidates,
-    )
     from courtlens.services.season_refresh import season_documents
 
-    season = f"{end_year - 1}-{end_year % 100:02d}"
-    schedule_path = raw_root / f"sportsdataverse_{end_year}" / f"schedule_{end_year}.json"
-    schedule = provisional_schedule(schedule_path.read_bytes(), end_year)
-    played = team_games(schedule)
-    fewest = min(played.values(), default=0) if len(played) == 30 else 0
+    season = season_label(end_year)
+    fewest = fewest_team_games(raw_root, end_year)
     if fewest < MIN_TEAM_GAMES and not force:
         return {"season": season, "status": "waiting", "fewest_team_games": fewest}
-    playbyplay = season_documents(store, end_year, "playbyplayv3")
+    playbyplay, report, bundles = _prepare(raw_root, store, end_year, work_root)
     matchups = season_documents(store, end_year, "boxscorematchupsv3")
-    report = season_candidates(
-        raw_root=raw_root,
-        playbyplay=playbyplay,
-        end_year=end_year,
-        candidate_root=work_root / "candidates",
-    )
-    bundles = prepare_bundles(
-        report=report,
-        raw_root=raw_root,
-        playbyplay=playbyplay,
-        end_year=end_year,
-        output_root=work_root,
-    )
     cutoff = today.isoformat()
     populated: list[dict[str, Any]] = []
     serving_entries: list[dict[str, Any]] = []
@@ -473,39 +448,7 @@ def refresh_season_impact(
             "teams": cohort_splits(team_stints(cohort["stints"])),
             "provisional": True,
         }
-        bundle = checked(bundle_path)
-        games = {}
-        for gid, member in sorted(bundle["members"].items()):
-            rows = [
-                {**r, "_row_index": str(i)}
-                for i, r in enumerate(playbyplay_rows(playbyplay[gid], gid))
-            ]
-            games[gid] = stint_box(
-                checked(Path(member["path"]), member["content_sha256"]),
-                checked(Path(member["candidate_path"]), member["candidate_sha256"]),
-                players[gid],
-                rows,
-                [],
-            )
-        box_path, box_sha = write_artifact(
-            stint_box_dir.parent,
-            {
-                "version": STINT_BOX_VERSION,
-                "season": bundle["season"],
-                "phase": bundle["phase"],
-                "bundle_content_sha256": bundle["content_sha256"],
-                "provisional": True,
-                "attribution": "NBA Stats via hoopR (MIT); local non-commercial research",
-                "games": games,
-            },
-        )
-        stint_boxes[bundle["content_sha256"]] = {
-            "sha256": box_sha,
-            "path": box_path.name,
-            "season": bundle["season"],
-            "phase": bundle["phase"],
-            "provisional": True,
-        }
+        stint_boxes.update(_stint_box(bundle_path, playbyplay, players, stint_box_dir))
         phases[key] = {
             "dataset_id": result["dataset_id"],
             "ratings": [r["sha256"] for r in receipts],
@@ -546,17 +489,7 @@ def refresh_season_impact(
         },
         meta,
     )
-    boxes, pruned_boxes = _serve(
-        stint_box_dir,
-        lambda base: {
-            **base,
-            "artifacts": {
-                **{k: v for k, v in base["artifacts"].items() if not v.get("provisional")},
-                **stint_boxes,
-            },
-        },
-        meta,
-    )
+    boxes, pruned_boxes = _serve_stint_boxes(stint_box_dir, stint_boxes, meta)
     retired = retire_provisional(session)
     work_pruned = prune_work(session, work_root, serving_dir, splits_dir)
     return {
@@ -576,6 +509,150 @@ def refresh_season_impact(
             "wowy": pruned_wowy,
             "stint_box": pruned_boxes,
         },
+        "retired": retired,
+        "work_pruned": work_pruned,
+    }
+
+
+def season_label(end_year: int) -> str:
+    return f"{end_year - 1}-{end_year % 100:02d}"
+
+
+def fewest_team_games(raw_root: Path, end_year: int) -> int:
+    """The fewest regular-season games any team has played (0 until all 30 have played)."""
+    from courtlens.ingestion.season_impact import provisional_schedule
+
+    schedule_path = raw_root / f"sportsdataverse_{end_year}" / f"schedule_{end_year}.json"
+    played = team_games(provisional_schedule(schedule_path.read_bytes(), end_year))
+    return min(played.values(), default=0) if len(played) == 30 else 0
+
+
+def _prepare(
+    raw_root: Path, store: Path, end_year: int, work_root: Path
+) -> tuple[dict[str, Any], dict[str, Any], list[Path]]:
+    """The season's play-by-play, its IM02 candidate report and the IM03 bundles to populate."""
+    from courtlens.ingestion.season_impact import prepare_bundles, season_candidates
+    from courtlens.services.season_refresh import season_documents
+
+    playbyplay = season_documents(store, end_year, "playbyplayv3")
+    report = season_candidates(
+        raw_root=raw_root,
+        playbyplay=playbyplay,
+        end_year=end_year,
+        candidate_root=work_root / "candidates",
+    )
+    bundles = prepare_bundles(
+        report=report,
+        raw_root=raw_root,
+        playbyplay=playbyplay,
+        end_year=end_year,
+        output_root=work_root,
+    )
+    return playbyplay, report, bundles
+
+
+def _stint_box(
+    bundle_path: Path,
+    playbyplay: dict[str, Any],
+    players: dict[str, Any],
+    stint_box_dir: Path,
+) -> dict[str, dict[str, Any]]:
+    """Write one bundle's provisional stint box; its entry for the served stint-box bundle."""
+    from courtlens.domain.stint_box import VERSION as STINT_BOX_VERSION
+    from courtlens.domain.stint_box import stint_box
+    from courtlens.evaluation.impact_rating_inputs import checked, write_artifact
+    from courtlens.ingestion.hoopr_boxscores import playbyplay_rows
+
+    bundle = checked(bundle_path)
+    games = {}
+    for gid, member in sorted(bundle["members"].items()):
+        rows = [
+            {**r, "_row_index": str(i)} for i, r in enumerate(playbyplay_rows(playbyplay[gid], gid))
+        ]
+        games[gid] = stint_box(
+            checked(Path(member["path"]), member["content_sha256"]),
+            checked(Path(member["candidate_path"]), member["candidate_sha256"]),
+            players[gid],
+            rows,
+            [],
+        )
+    box_path, box_sha = write_artifact(
+        stint_box_dir.parent,
+        {
+            "version": STINT_BOX_VERSION,
+            "season": bundle["season"],
+            "phase": bundle["phase"],
+            "bundle_content_sha256": bundle["content_sha256"],
+            "provisional": True,
+            "attribution": "NBA Stats via hoopR (MIT); local non-commercial research",
+            "games": games,
+        },
+    )
+    return {
+        bundle["content_sha256"]: {
+            "sha256": box_sha,
+            "path": box_path.name,
+            "season": bundle["season"],
+            "phase": bundle["phase"],
+            "provisional": True,
+        }
+    }
+
+
+def _serve_stint_boxes(
+    stint_box_dir: Path, stint_boxes: dict[str, Any], meta: dict[str, Any]
+) -> tuple[Path, list[str]]:
+    return _serve(
+        stint_box_dir,
+        lambda base: {
+            **base,
+            "artifacts": {
+                **{k: v for k, v in base["artifacts"].items() if not v.get("provisional")},
+                **stint_boxes,
+            },
+        },
+        meta,
+    )
+
+
+def refresh_season_lineups(
+    session: Session,
+    *,
+    raw_root: Path,
+    store: Path,
+    end_year: int,
+    today: date,
+    work_root: Path,
+    serving_dir: Path,
+    splits_dir: Path,
+    stint_box_dir: Path,
+) -> dict[str, Any]:
+    """Daily, from the first game: provisional stints and stint box for WOWY, Stat Line Shift
+    and on/off. No start gate and no fits; `refresh_season_impact` keeps both."""
+    from courtlens.ingestion.impact_repair_audit import retained_boxes
+
+    season = season_label(end_year)
+    playbyplay, report, bundles = _prepare(raw_root, store, end_year, work_root)
+    if not bundles:
+        return {"season": season, "status": "no_games"}
+    players, _, _ = retained_boxes(raw_root, end_year)
+    populated: list[dict[str, Any]] = []
+    stint_boxes: dict[str, Any] = {}
+    for bundle_path in bundles:
+        populated.append(populate_provisional(session, bundle_path))
+        session.commit()
+        stint_boxes.update(_stint_box(bundle_path, playbyplay, players, stint_box_dir))
+    meta = {"season": season, "cutoff": today.isoformat(), "im02_sha256": report["content_sha256"]}
+    boxes, pruned_boxes = _serve_stint_boxes(stint_box_dir, stint_boxes, meta)
+    retired = retire_provisional(session)
+    work_pruned = prune_work(session, work_root, serving_dir, splits_dir)
+    return {
+        "season": season,
+        "status": "published",
+        "quality": {k: v["summary"]["quality_counts"] for k, v in report["seasons"].items()},
+        "populated": populated,
+        "stint_box": boxes.stem,
+        "pruned": {"stint_box": pruned_boxes},
         "retired": retired,
         "work_pruned": work_pruned,
     }

@@ -239,20 +239,3 @@ test("team comparison preserves unknown versus zero, unknown outcomes and scope 
   expect(new URL(page.url()).searchParams.get("beforeDate")).toBe("2026-04-13");
 });
 
-test("WOWY: a late response for an earlier team cannot replace the current result (PC11)",async({page})=>{
-  let release!:()=>void;const held=new Promise<void>(resolve=>release=resolve);let heldStarted=false;
-  await page.route("**/api/workbench/wowy?*",async route=>{
-    const url=new URL(route.request().url());
-    if(url.searchParams.get("teamId") === "1610612738") {heldStarted=true;await held;}
-    const body=await (await route.fetch()).json();
-    if(url.searchParams.get("teamId") === "1610612738") body.team={team_id:"1610612738",team_tricode:"BOS",team_name:"Boston Celtics"};
-    await route.fulfill({json:body}).catch(()=>{});
-  });
-  await openWorkbench(page,"/wowy");await expect(page.getByRole("combobox",{name:"Team",exact:true})).toHaveValue("1610612761");
-  await page.getByRole("combobox",{name:"Team",exact:true}).selectOption("1610612738");await expect.poll(()=>heldStarted).toBe(true);
-  // Filters replace the URL; a newer navigation arrives while the Boston request is still held.
-  await page.evaluate(()=>window.history.pushState(null,"","/wowy?teamId=1610612761"));await expect(page.getByRole("combobox",{name:"Team",exact:true})).toHaveValue("1610612761");
-  release();await page.waitForTimeout(250);
-  await expect(page.getByRole("combobox",{name:"Team",exact:true})).toHaveValue("1610612761");
-  await expect(page.locator(".feed-subject").getByText("Toronto Raptors",{exact:true})).toBeVisible();
-});

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { forwardRef, type AnchorHTMLAttributes, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
 import { Icon, type IconName } from "../icon";
-import { controlClasses, cx, disclosureIconClasses, disclosureOpenClasses, kitIconSize, trailingChevronClasses, type KitSize, type KitTone, type KitVariant } from "./recipes";
+import { controlClasses, cx, disclosureIconClasses, disclosureOpenClasses, kitIconSize, trailingChevronClasses, type KitIdentity, type KitSize, type KitTone, type KitVariant } from "./recipes";
 
 interface ControlLookProps {
   size?: KitSize;
@@ -110,11 +110,15 @@ export interface IconButtonProps extends Omit<ButtonProps, "icon" | "iconAfter" 
    * `chevron-down`) turns half a turn while open instead of swapping icons.
    */
   expanded?: boolean;
+  /** A comparison side's toggle: selected in identity A (gold) or B (blue) instead of the accent. */
+  identity?: KitIdentity;
+  /** Pulses to invite the next press (the second pick of a pair); still ring under reduced motion. */
+  beckon?: boolean;
 }
 
 /** Square icon-only button. */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, expanded, className, type = "button", disabled, ...props },
+  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, expanded, identity, beckon = false, className, type = "button", disabled, ...props },
   ref,
 ) {
   const disclosure = expanded !== undefined && !loading;
@@ -129,7 +133,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       aria-pressed={pressed}
       aria-expanded={expanded}
       data-kit="icon-button"
-      className={cx(controlClasses({ size, variant, tone, square: true }), className)}
+      className={cx(controlClasses({ size, variant, tone, square: true, identity, beckon: beckon && !pressed && !disabled }), className)}
       {...props}
     >
       <Icon name={loading ? "loader" : icon} size={kitIconSize[size]} filled={filled && !loading}

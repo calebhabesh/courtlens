@@ -63,6 +63,25 @@ const tones: Record<Exclude<KitTone, "default">, string> = {
 export const selectedClasses =
   "kit:selected:bg-accent-soft kit:selected:text-accent kit:selected:font-semibold kit:selected:inset-ring kit:selected:inset-ring-accent";
 
+/** Comparison sides: a toggle that stands for player A or B takes that side's identity colour
+ *  (Design Language identity-a gold / identity-b blue) in place of the accent. */
+export type KitIdentity = "a" | "b";
+const identitySelected: Record<KitIdentity, string> = {
+  a: "kit:selected:bg-identity-a-soft kit:selected:text-identity-a kit:selected:font-semibold kit:selected:inset-ring kit:selected:inset-ring-identity-a",
+  b: "kit:selected:bg-identity-b-soft kit:selected:text-identity-b kit:selected:font-semibold kit:selected:inset-ring kit:selected:inset-ring-identity-b",
+};
+
+/**
+ * Beckon: a control pulses (ring and soft fill, `kit-beckon` in tailwind.css) to say "press me next",
+ * in its identity colour (else the accent). Under reduced motion it holds a still ring instead.
+ * Like a tone, it replaces the variant's colours.
+ */
+const beckonClasses: Record<KitIdentity | "accent", string> = {
+  a: "kit:bg-transparent kit:font-semibold kit:text-identity-a kit:[--kit-beckon:var(--color-identity-a)] kit:animate-beckon kit:motion-reduce:animate-none kit:motion-reduce:inset-ring kit:motion-reduce:inset-ring-identity-a",
+  b: "kit:bg-transparent kit:font-semibold kit:text-identity-b kit:[--kit-beckon:var(--color-identity-b)] kit:animate-beckon kit:motion-reduce:animate-none kit:motion-reduce:inset-ring kit:motion-reduce:inset-ring-identity-b",
+  accent: "kit:bg-transparent kit:font-semibold kit:text-accent kit:[--kit-beckon:var(--color-accent)] kit:animate-beckon kit:motion-reduce:animate-none kit:motion-reduce:inset-ring kit:motion-reduce:inset-ring-accent",
+};
+
 export interface ControlClassOptions {
   size: KitSize;
   variant: KitVariant;
@@ -72,16 +91,18 @@ export interface ControlClassOptions {
   tight?: boolean;
   /** One 4 px step less inline padding. */
   dense?: boolean;
+  identity?: KitIdentity;
+  beckon?: boolean;
 }
 
-export function controlClasses({ size, variant, tone = "default", square = false, tight = false, dense = false }: ControlClassOptions) {
+export function controlClasses({ size, variant, tone = "default", square = false, tight = false, dense = false, identity, beckon = false }: ControlClassOptions) {
   return cx(
     pressable,
     sizes[size],
     tight ? "kit:gap-1" : "kit:gap-2",
     square ? squares[size] : variant === "text" ? "kit:px-0" : (dense ? densePaddings : paddings)[size],
-    tone === "default" ? variants[variant] : tones[tone],
-    variant !== "primary" && selectedClasses,
+    beckon ? beckonClasses[identity ?? "accent"] : tone === "default" ? variants[variant] : tones[tone],
+    variant !== "primary" && (identity ? identitySelected[identity] : selectedClasses),
   );
 }
 

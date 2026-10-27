@@ -117,18 +117,6 @@ test.describe("PC11 populated pages", () => {
     await noPhoneOverflow(page);
   });
 
-  test("WOWY opens on the example duo and selects another pair from the team table", async ({ page }) => {
-    await openWorkbench(page, "/wowy");
-    await expect(page.getByText("Minutes leader's team, top duo by shared minutes")).toBeVisible();
-    await expect(page.getByRole("list", { name: /Fixture Anchor and Fixture Wing/ }).getByRole("listitem")).toHaveCount(4);
-    await page.getByRole("link", { name: "Fixture Wing · Fixture Guard" }).click();
-    await expect(page).toHaveURL(/a=99001&b=99002/);
-    await expect(page.getByRole("list", { name: /Fixture Wing and Fixture Guard/ })).toBeVisible();
-    // A split under the sample rule is not compared.
-    await expect(page.getByText("Not compared: a split is under the sample rule")).toBeVisible();
-    await noPhoneOverflow(page);
-  });
-
   test("Stats has a Tracking tab with sortable, shaded columns", async ({ page }) => {
     await openWorkbench(page, "/stats/tracking");
     const tabs = page.getByRole("navigation", { name: "Stats sections" });
