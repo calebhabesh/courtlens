@@ -1,5 +1,9 @@
 # B32 Live interface v1
 
+> **Superseded 2026-10-27** by [Live service v2](shared-live-v2.md) (alignment row 7): the API now
+> reads ESPN on demand; leases, heartbeats, the opt-in worker and the seven-day window are gone.
+> Kept as history.
+
 The [B31 shared service](shared-live-v1.md) remains authoritative for source facts,
 leases and upstream budgets. The interface does not establish genuine in-game acceptance.
 Implementation choice: current Codex session, no delegated agents or model override,

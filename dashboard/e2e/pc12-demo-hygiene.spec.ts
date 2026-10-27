@@ -15,7 +15,6 @@ for (const width of [1440, 768, 390, 375]) {
 
     await openWorkbench(page, "/playoffs");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Playoffs");
-    await expect(page.getByRole("navigation", { name: "Live sections" }).locator('[aria-current="page"]')).toHaveText("Playoffs");
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
 
     await openWorkbench(page, "/investigations");

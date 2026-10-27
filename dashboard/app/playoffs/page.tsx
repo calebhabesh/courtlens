@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LiveBoardHeader } from "@/components/live-board";
+import { PageHeader } from "@/components/ui/panel";
 import { PlayoffsBracketView } from "@/components/playoffs-bracket-view";
 import { PageShell } from "@/components/ui/page-shell";
 import { getWorkbenchCatalog, getPlayoffBracket } from "@/lib/workbench-api";
@@ -45,7 +45,7 @@ export default async function PlayoffsPage({ searchParams }: PlayoffsPageProps) 
 
   return (
     <PageShell template="board">
-      <LiveBoardHeader section="playoffs" subtitle={`Postseason series for ${season || "the selected season"}.`} />
+      <PageHeader title="Playoffs" subtitle={`Postseason series for ${season || "the selected season"}.`} />
       <PlayoffsBracketView
         bracket={bracketData}
         season={season}

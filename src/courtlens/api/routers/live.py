@@ -1,80 +1,53 @@
-"""Live GETs only read cache. Protected mutations express bounded view demand."""
+"""Live reads: GETs that fetch ESPN on demand when the cached copy is stale (alignment row 7)."""
 
 from datetime import date, timedelta
 from typing import Any
-from urllib.parse import urlsplit
-from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy.orm import Session
 
-from courtlens.api.routers.workbench import verify_workspace_operator_access
-from courtlens.config import get_settings
 from courtlens.database import get_db
-from courtlens.domain.live import LiveCache, LiveLeaseResult, LiveSubscription
+from courtlens.domain.live import LiveCache
 from courtlens.domain.live_history import HistoricalSlate
-from courtlens.services.live import cached, release, subscribe
+from courtlens.services.live import read, with_injury_counts
 from courtlens.services.live_history import historical_slate
+from courtlens.services.live_provider import ESPNLiveProvider
 from courtlens.services.workbench_analytics import resolve_workbench_context
 
 router = APIRouter(prefix="/live", tags=["live"])
 
 
-def protect_demand(request: Request) -> None:
-    origin = request.headers.get("origin")
-    if origin:
-        parsed = urlsplit(origin)
-        if origin not in get_settings().cors_origins and (
-            parsed.netloc != request.headers.get("host") or parsed.scheme not in {"http", "https"}
-        ):
-            raise HTTPException(403, "Cross-origin Live demand rejected")
+def get_provider() -> ESPNLiveProvider:
+    return ESPNLiveProvider()
 
 
 @router.get("", response_model=LiveCache)
-def live_cache(
-    slate_date: date, response: Response, session: Session = Depends(get_db)
+def live_slate(
+    slate_date: date,
+    response: Response,
+    session: Session = Depends(get_db),
+    provider: ESPNLiveProvider = Depends(get_provider),
 ) -> dict[str, Any]:
     response.headers["Cache-Control"] = "no-store"
-    return cached(session, slate_date, enabled=get_settings().live_enabled)
+    result = read(session, provider, slate_date)
+    games = (result.get("data") or {}).get("games") or []
+    if any(game["status"] == "scheduled" for game in games):
+        result = with_injury_counts(result, read(session, provider, None))
+    return result
 
 
 @router.get("/games/{game_id}", response_model=LiveCache)
-def game_cache(
-    game_id: str, slate_date: date, response: Response, session: Session = Depends(get_db)
+def live_game(
+    game_id: str,
+    slate_date: date,
+    response: Response,
+    session: Session = Depends(get_db),
+    provider: ESPNLiveProvider = Depends(get_provider),
 ) -> dict[str, Any]:
     if not game_id.isdigit() or len(game_id) > 20:
         raise HTTPException(422, "Invalid ESPN game ID")
     response.headers["Cache-Control"] = "no-store"
-    return cached(session, slate_date, game_id, enabled=get_settings().live_enabled)
-
-
-@router.post(
-    "/subscriptions",
-    response_model=LiveLeaseResult,
-    dependencies=[Depends(verify_workspace_operator_access), Depends(protect_demand)],
-)
-def activate(payload: LiveSubscription, session: Session = Depends(get_db)) -> dict[str, Any]:
-    return subscribe(session, payload)
-
-
-@router.post(
-    "/subscriptions/{lease_id}/heartbeat",
-    response_model=LiveLeaseResult,
-    dependencies=[Depends(verify_workspace_operator_access), Depends(protect_demand)],
-)
-def heartbeat(
-    lease_id: UUID, payload: LiveSubscription, session: Session = Depends(get_db)
-) -> dict[str, Any]:
-    return subscribe(session, payload, str(lease_id))
-
-
-@router.delete(
-    "/subscriptions/{lease_id}",
-    status_code=204,
-    dependencies=[Depends(verify_workspace_operator_access), Depends(protect_demand)],
-)
-def deactivate(lease_id: UUID, session: Session = Depends(get_db)) -> None:
-    release(session, str(lease_id))
+    return read(session, provider, slate_date, game_id)
 
 
 @router.get("/historical", response_model=HistoricalSlate)

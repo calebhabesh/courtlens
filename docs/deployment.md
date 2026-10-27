@@ -30,11 +30,18 @@ to writes. The hosted demo removes that in two layers:
 2. Caddy refuses every non-GET request except `POST /api/workbench/query` and
    `POST /api/workbench/operations/*`, which compute results without writing.
 
-Workspace changes (favorites, boards, saved views), jobs, live leases, saved analyses
+Workspace changes (favorites, boards, saved views), jobs, saved analyses
 and the assistant are therefore unavailable. The dashboard image is built with
 `NEXT_PUBLIC_COURTLENS_HOSTED=true`, which hides the Ask button and replaces the Ask page
 with a note, and with an empty `NEXT_PUBLIC_COURTLENS_API_URL`, so browser calls are
 same-origin.
+
+### Live
+
+Live works on the demo: its endpoints are GETs, and the API container fetches ESPN when a cached
+read is stale ([Live service v2](design/shared-live-v2.md)). That needs outbound HTTPS from the API
+container. Final games are kept as hashed evidence (about 0.7 MB each, capped at 4 GiB), the one
+part of the demo database that grows after deploy.
 
 ### Disk budget
 
