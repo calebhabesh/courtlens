@@ -332,3 +332,24 @@ def test_game_plus_minus_sums_on_floor_margin_and_keeps_unknowns(
     assert result == {"g1": 6, "g2": 2, "g3": None, "g4": None, "g5": None}
     monkeypatch.setattr(on_off, "stint_dataset_id", lambda _s, _c: None)
     assert on_off.game_plus_minus(session, context(), "p", games) == {}  # type: ignore[arg-type]
+
+
+def test_accepted_stints_include_im03_clean_and_patched() -> None:
+    from types import SimpleNamespace
+
+    from courtlens.services.on_off import accepted_stint
+
+    def stint(status: str) -> Any:
+        return SimpleNamespace(
+            status=status,
+            policy_version="possession-policy-v2",
+            home_lineup_json=["a", "b", "c", "d", "e"],
+            away_lineup_json=["v", "w", "x", "y", "z"],
+            duration_seconds=60.0,
+            home_possessions=2.0,
+            away_possessions=2.0,
+        )
+
+    # IM03 marks games needing no repair "clean"; dropping them lost whole games (2026-27).
+    assert all(accepted_stint(stint(s)) for s in ("valid", "clean", "patched"))
+    assert not accepted_stint(stint("excluded"))

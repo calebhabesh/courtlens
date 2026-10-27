@@ -5,6 +5,9 @@
 #                             republish: the hoopR player index; the season's box scores (a new
 #                             statistics release when games were played); Basketball-Reference
 #                             contracts; DARKO's latest ratings; Wikipedia's transactions.
+#   courtlens-lineups-refresh 14:05 UTC daily `courtlens refresh-season-lineups`, after the daily
+#                             refresh: provisional current-season lineup stints and stint box
+#                             (WOWY, Stat Line Shift, on/off) from the first game; fits nothing.
 #   courtlens-impact-refresh  Mondays 14:30 UTC `courtlens refresh-season-impact`: provisional
 #                             current-season impact numbers (waits until teams have 10 games).
 # Every run stores bytes only when the data changed and prunes bounded history (docs/deployment.md).
@@ -14,7 +17,7 @@ set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
 units="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
-names=(courtlens-roster-refresh courtlens-daily-refresh courtlens-impact-refresh)
+names=(courtlens-roster-refresh courtlens-daily-refresh courtlens-lineups-refresh courtlens-impact-refresh)
 
 if [[ "${1:-}" == "--remove" ]]; then
   for name in "${names[@]}"; do
@@ -59,6 +62,8 @@ unit courtlens-roster-refresh "Seal ESPN team rosters for the CourtLens free-age
   refresh-espn-rosters 15min "*-*-* 00/6:00:00"
 unit courtlens-daily-refresh "Refresh the CourtLens player index, contracts and DARKO ratings" \
   refresh-daily 2h "*-*-* 13:30:00 UTC"
+unit courtlens-lineups-refresh "Refresh CourtLens provisional current-season lineup stints" \
+  refresh-season-lineups 1h "*-*-* 14:05:00 UTC"
 unit courtlens-impact-refresh "Refresh CourtLens provisional current-season impact numbers" \
   refresh-season-impact 2h "Mon *-*-* 14:30:00 UTC"
 
