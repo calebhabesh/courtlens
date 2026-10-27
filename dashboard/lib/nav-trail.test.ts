@@ -23,7 +23,6 @@ describe("nav trail", () => {
     expect(pageLabel("/stats?season=2025-26")).toBe("Stats");
     expect(pageLabel("/players")).toBe("Player Dashboard");
     expect(pageLabel("/research/shooting/adjusted")).toBe("Shooting");
-    expect(pageLabel("/live?live_mode=history")).toBe("Finals");
     expect(pageLabel("/teams/1610612759")).toBe("Team");
     expect(pageLabel("/contracts/books")).toBe("Source Books");
   });

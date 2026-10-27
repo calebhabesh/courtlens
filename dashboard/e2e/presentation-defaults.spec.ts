@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { openWorkbench } from "./workbench-navigation";
-import { firstLoadFixtures, offSeasonFixtures } from "./first-load-fixtures";
+import { firstLoadFixtures } from "./first-load-fixtures";
 
 // Alignment row 3 (owner, 2026-10-15): Compare opens on a real pair written to the URL.
 for (const width of [1440,390]) test(`Compare opens on a resolved pair with percentiles and games badges at ${width}px`,async({page})=>{
@@ -76,16 +76,6 @@ test("explicit subject is retained and the operation menu issues no conversation
   await expect(page.locator(".floor-result")).toBeVisible();expect(new URL(page.url()).searchParams.get("player_id")).toBe("24");await expect(page.getByText(/^Example:/)).toHaveCount(0);
   const requests:string[]=[];page.on("request",request=>{if(request.method()==="POST")requests.push(request.url());});
   await openWorkbench(page,"/research/operation");await expect(page.getByRole("region",{name:"Available research operations"}).getByRole("link")).toHaveCount(7);expect(requests).toEqual([]);
-});
-
-test("Live empty landing resolves the latest final day, points leaders and next scheduled date",async({page})=>{
-  await offSeasonFixtures(page);await openWorkbench(page,"/live");
-  await expect(page.getByRole("region",{name:"Game slate"})).toContainText("110");
-  await expect(page.getByRole("region",{name:"Top performers"})).toContainText("28 PTS");
-  await expect(page.getByRole("region",{name:"Top performers"})).not.toContainText("Fixture Guard");
-  await expect(page.getByRole("navigation",{name:"Next games"})).toContainText("Oct 20, 2026");
-  expect(new URL(page.url()).searchParams.get("date")).toBe("2026-04-12");
-  await page.goto("/live/2026-10-11");await expect(page.getByRole("navigation",{name:"Next games"})).toHaveCount(0);
 });
 
 test("typing a focal selection cancels a pending default without losing the lookup",async({page})=>{

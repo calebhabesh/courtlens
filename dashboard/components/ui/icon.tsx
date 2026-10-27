@@ -8,7 +8,7 @@ import {
   GraduationCap, ArrowDownAZ, ArrowDownZA, Activity, Banknote, Trophy, Medal, UserRoundPen,
   Building2, Shapes, DollarSign, House, Swords, ChartPie, Split, UserCheck,
   ChartLine, Crown, FingerprintPattern, LayoutDashboard, ListOrdered, Rows3,
-  Heart, TrendingDown, BookOpen, Minus
+  Heart, TrendingDown, BookOpen, Minus, Radio, ArrowLeft
 } from "lucide-react";
 
 // D26: Lucide only, always through this wrapper (lint bans `lucide-react` elsewhere). One stroke
@@ -32,7 +32,7 @@ const icons = {
   pie: ChartPie, split: Split, "user-check": UserCheck,
   "chart-trend": ChartLine, crown: Crown, fingerprint: FingerprintPattern, dashboard: LayoutDashboard,
   "list-ordered": ListOrdered, tiers: Rows3,
-  heart: Heart, "trend-down": TrendingDown, book: BookOpen, minus: Minus
+  heart: Heart, "trend-down": TrendingDown, book: BookOpen, minus: Minus, broadcast: Radio, back: ArrowLeft
 };
 
 export type IconName = keyof typeof icons;
