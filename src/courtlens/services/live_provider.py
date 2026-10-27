@@ -1,7 +1,8 @@
-"""Ordinary opt-in ESPN consumer access, with no retries or access-control bypass."""
+"""Ordinary ESPN consumer access, with no retries or access-control bypass."""
 
 import asyncio
 import json
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from email.utils import parsedate_to_datetime
@@ -9,7 +10,7 @@ from typing import Any
 
 import httpx
 
-from courtlens.domain.live import parse_scoreboard, parse_summary
+from courtlens.domain.live import parse_injury_feed, parse_scoreboard, parse_summary
 
 BASE_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
 
@@ -44,12 +45,35 @@ class ESPNLiveProvider:
         self.transport = transport
 
     def fetch(self, slate: date, game_id: str | None = None) -> LiveFetch:
-        return asyncio.run(self._fetch(slate, game_id))
+        if game_id:
+            return asyncio.run(
+                self._get(
+                    "/summary",
+                    {"event": game_id},
+                    2 * 1024 * 1024,
+                    lambda p: parse_summary(p, slate, game_id),
+                )
+            )
+        return asyncio.run(
+            self._get(
+                "/scoreboard",
+                {"dates": slate.strftime("%Y%m%d")},
+                512 * 1024,
+                lambda p: parse_scoreboard(p, slate),
+            )
+        )
 
-    async def _fetch(self, slate: date, game_id: str | None) -> LiveFetch:
-        cap = 2 * 1024 * 1024 if game_id else 512 * 1024
-        url = BASE_URL + ("/summary" if game_id else "/scoreboard")
-        params = {"event": game_id} if game_id else {"dates": slate.strftime("%Y%m%d")}
+    def fetch_injuries(self) -> LiveFetch:
+        return asyncio.run(self._get("/injuries", {}, 2 * 1024 * 1024, parse_injury_feed))
+
+    async def _get(
+        self,
+        path: str,
+        params: dict[str, str],
+        cap: int,
+        parse: Callable[[dict[str, Any]], dict[str, Any]],
+    ) -> LiveFetch:
+        url = BASE_URL + path
         body = bytearray()
         try:
             async with (
@@ -76,11 +100,7 @@ class ESPNLiveProvider:
                     body.extend(chunk)
                 raw = bytes(body)
                 payload = json.loads(raw)
-                normalized = (
-                    parse_summary(payload, slate, game_id)
-                    if game_id
-                    else parse_scoreboard(payload, slate)
-                )
+                normalized = parse(payload)
                 source_time = payload.get("lastUpdated")
                 return LiveFetch(
                     raw,

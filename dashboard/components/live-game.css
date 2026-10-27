@@ -1,0 +1,195 @@
+@layer pages {
+  /* Live game view (alignment row 7): Databallr's banner and tabs, X's summary panels. */
+  .live-game { display: grid; gap: var(--space-4); }
+  .live-banner {
+    position: relative; display: grid; grid-template-columns: 1fr auto 1fr; grid-template-areas: "back status hotkey" "teams teams teams";
+    align-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-5); border-radius: var(--radius-md); overflow: hidden;
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--live-away-brand) 18%, transparent), transparent 40%, transparent 60%, color-mix(in srgb, var(--live-home-brand) 18%, transparent)),
+      var(--color-surface-1);
+    box-shadow: var(--shadow-1);
+  }
+  /* Databallr's bar: each half in its team's own brand colour. */
+  .live-banner::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, var(--live-away-brand) 50%, var(--live-home-brand) 50%); }
+  .live-banner-back { grid-area: back; justify-self: start; }
+  .live-banner-status { grid-area: status; display: inline-flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 600; }
+  .live-banner-hotkey { grid-area: hotkey; justify-self: end; }
+  .live-banner-hotkey .live-hotkey { padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-xs); background: var(--color-surface-2); text-transform: uppercase; }
+  .live-banner-teams { grid-area: teams; margin: 0; }
+  .live-banner-row { display: flex; align-items: center; justify-content: center; gap: var(--space-3); }
+  .live-banner-team { display: inline-flex; align-items: center; gap: var(--space-3); }
+  .live-banner-team[data-align="end"] { flex-direction: row; }
+  .live-banner-team[data-align="start"] { flex-direction: row-reverse; }
+  .live-banner-code { color: var(--color-text-secondary); font-size: var(--text-lg); font-weight: 700; }
+  .live-banner-score { color: var(--color-text); font-size: var(--text-3xl); line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .live-banner-team[data-lost] .live-banner-score { color: var(--color-text-secondary); font-weight: 600; }
+  .live-banner-dash { color: var(--color-text-tertiary); font-size: var(--text-lg); }
+
+  .live-tabs-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); border-bottom: 1px solid var(--color-hairline); }
+  .live-tabs-bar .ui-tabs-list { border-bottom: 0; }
+  .live-hotkeys { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); margin: 0; color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 700; text-transform: uppercase; }
+  .live-hotkeys kbd { background: var(--color-surface-2); }
+  .live-tabs .ui-tabs-content { padding-top: var(--space-4); }
+
+  .live-panel { display: grid; gap: var(--space-3); align-content: start; min-width: 0; padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-surface-1); box-shadow: var(--shadow-1); }
+  .live-panel-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+  .live-panel-head h2 { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-text); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; }
+  .live-muted { color: var(--color-text-tertiary); }
+  .live-italic { font-style: italic; }
+  .live-empty, .live-note { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .live-note { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .live-table-scroll { max-width: 100%; overflow-x: auto; border-radius: var(--radius-sm); }
+
+  /* Summary: line score and leaders, then the shot chart beside the team stats, then game info. */
+  .live-summary { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--space-4); align-items: start; }
+  .live-summary-shots { grid-row: span 2; }
+  .live-linescore { width: 100%; border-collapse: separate; border-spacing: var(--space-1); font-variant-numeric: tabular-nums; }
+  .live-linescore th, .live-linescore td { padding: var(--space-1) var(--space-2); text-align: center; font-size: var(--text-sm); }
+  .live-linescore thead th { color: var(--color-text-tertiary); font-size: var(--text-xs); font-weight: 600; }
+  .live-linescore tbody td { border-radius: var(--radius-xs); background: var(--color-table-well); }
+  .live-linescore tbody th { text-align: start; }
+  .live-linescore .live-linescore-total { background: var(--color-surface-3); font-weight: 800; }
+  .live-linescore tr[data-lost] .live-linescore-total { color: var(--color-text-secondary); font-weight: 600; }
+  .live-team-cell { display: inline-flex; align-items: center; gap: var(--space-2); font-weight: 700; }
+
+  .live-leaders, .live-teamstats { display: grid; gap: var(--space-2); }
+  .live-leaders-teams { display: flex; justify-content: space-between; color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 700; }
+  .live-leaders-teams span { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .live-leaders-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-3); padding-block: var(--space-2); border-top: 1px solid var(--color-hairline); }
+  .live-leaders-label { color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .live-leader { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+  .live-leader[data-align="end"] { flex-direction: row-reverse; text-align: end; }
+  .live-leader-text { display: grid; min-width: 0; }
+  .live-leader-value { font-size: var(--text-2xl); line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .live-leader-name { overflow: hidden; color: var(--color-text); font-size: var(--text-sm); font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+  .live-leader-name a { color: inherit; text-decoration: none; }
+  .live-leader-name a:hover { text-decoration: underline; }
+  .live-leader-position { color: var(--color-text-tertiary); font-size: var(--text-2xs); }
+
+  .live-teamstats-list { display: grid; gap: var(--space-3); margin: 0; }
+  /* Label centred between the two values, the split bar under them (X's team stats). */
+  .live-teamstat { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .live-teamstat dt { grid-area: 1 / 1; align-self: center; justify-self: center; color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .live-teamstat-values { grid-area: 1 / 1; display: flex; justify-content: space-between; margin: 0; font-size: var(--text-sm); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .live-teamstat-bar { display: grid; grid-template-columns: var(--share) 1fr; gap: var(--space-0-5); height: 6px; margin: 0; }
+  .live-teamstat-bar span { border-radius: var(--radius-pill); }
+  .live-teamstat-bar [data-side="away"] { background: var(--live-away); }
+  .live-teamstat-bar [data-side="home"] { background: var(--live-home); }
+
+  .live-info { display: grid; gap: var(--space-3); margin: 0; }
+  .live-info dt { color: var(--color-text-tertiary); font-size: var(--text-xs); }
+  .live-info dd { margin: 0; color: var(--color-text); font-size: var(--text-sm); }
+
+  /* Shot chart: a tonal court; made dots and missed crosses in team colours. */
+  .live-shots { display: grid; gap: var(--space-3); }
+  .live-shots-teams { display: flex; justify-content: space-between; font-size: var(--text-sm); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .live-shots-team { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .live-swatch { width: 10px; height: 10px; border-radius: 50%; }
+  .live-shots-team[data-side="away"] .live-swatch { background: var(--live-away); }
+  .live-shots-team[data-side="home"] .live-swatch { background: var(--live-home); }
+  .live-court { width: 100%; height: auto; border-radius: var(--radius-sm); background: var(--color-surface-2); }
+  .live-court-lines { fill: none; stroke: var(--color-hairline-strong); stroke-width: 0.25; }
+  .live-shot circle { stroke: var(--color-surface-2); stroke-width: 0.2; }
+  .live-shot path { fill: none; stroke-width: 0.35; stroke-linecap: round; }
+  .live-shot[data-side="away"] circle { fill: var(--live-away); }
+  .live-shot[data-side="home"] circle { fill: var(--live-home); }
+  .live-shot[data-side="away"] path { stroke: var(--live-away); }
+  .live-shot[data-side="home"] path { stroke: var(--live-home); }
+  .live-shots-legend { display: flex; justify-content: center; gap: var(--space-4); margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .live-shots-legend > span { display: inline-flex; align-items: center; gap: var(--space-1); }
+  .live-legend-made { width: 8px; height: 8px; border-radius: 50%; background: var(--color-text-secondary); }
+  .live-legend-missed { font-weight: 700; }
+
+  /* Box score: both teams side by side, starters then bench, a gold team total. */
+  .live-boxscore { display: grid; gap: var(--space-4); }
+  .live-box-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .live-box-team { display: grid; gap: var(--space-2); align-content: start; min-width: 0; border-radius: var(--radius-md); }
+  .live-box-team:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+  .live-box-title { display: flex; align-items: center; gap: var(--space-2); margin: 0; font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.02em; }
+  .live-box-press { color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 600; }
+  .live-box-press kbd { color: var(--color-info); background: transparent; }
+  .live-box { width: 100%; min-width: 560px; border-collapse: collapse; table-layout: fixed; background: var(--color-table-lift); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+  .live-box-col-player { width: 116px; }
+  .live-box th, .live-box td { height: 24px; padding: 0 var(--space-1); text-align: center; white-space: nowrap; }
+  .live-box thead th { height: 40px; vertical-align: bottom; padding-bottom: var(--space-1); color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 700; }
+  .live-box thead th:first-child, .live-box tbody th, .live-box tfoot th { position: sticky; left: 0; z-index: var(--z-base); text-align: start; padding-inline: var(--space-2); background: var(--color-table-lift); }
+  .live-box tbody td { background: var(--color-table-well); border-bottom: 1px solid var(--color-hairline); }
+  .live-box tbody th { border-bottom: 1px solid var(--color-hairline); font-weight: 600; }
+  .live-box-sub { color: var(--color-text-tertiary); font-weight: 400; }
+  .live-box-group th { height: 28px; padding-top: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--color-table-lift); }
+  .live-box-player { display: inline-flex; align-items: baseline; gap: var(--space-1); max-width: 100%; overflow: hidden; }
+  .live-box-player a, .live-box-player > span:first-child { overflow: hidden; color: var(--color-text); text-decoration: none; text-overflow: ellipsis; }
+  .live-box-player a:hover { text-decoration: underline; }
+  .live-box-position { color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 400; }
+  .live-box [data-tone="high"] { color: var(--color-accent); }
+  .live-box [data-tone="low"] { color: var(--color-info); }
+  .live-box [data-tone="positive"] { color: var(--color-positive); }
+  .live-box [data-tone="negative"] { color: var(--color-negative); }
+  .live-box tr[data-dnp] th { color: var(--color-text-tertiary); font-weight: 400; }
+  .live-box td.live-box-dnp { color: var(--color-text-tertiary); font-style: italic; text-align: start; }
+  .live-box-total th, .live-box-total td { height: 30px; color: var(--color-accent); font-weight: 700; text-transform: uppercase; background: var(--color-table-lift); }
+
+  /* Plays: clock, logo, score with the scoring side lit, description; scoring plays get a gold edge. */
+  .live-recent { display: grid; gap: var(--space-2); max-width: 600px; }
+  .live-recent-head { display: flex; align-items: center; justify-content: space-between; }
+  .live-recent-head h2 { margin: 0; color: var(--color-text-secondary); font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .live-link { display: inline-flex; align-items: center; gap: var(--space-1); padding: 0; border: 0; background: none; color: var(--color-accent); font-size: var(--text-xs); font-weight: 600; line-height: 1; cursor: pointer; }
+  .live-link:hover { text-decoration: underline; }
+  .live-plays { display: grid; margin: 0; padding: 0; list-style: none; }
+  .live-play {
+    display: grid; grid-template-columns: 40px 20px 128px minmax(0, 1fr); align-items: center; gap: var(--space-2);
+    min-height: 24px; padding: var(--space-0-5) var(--space-2); border-left: 2px solid transparent; color: var(--color-text-secondary); font-size: var(--text-xs);
+  }
+  .live-play[data-scoring] { border-left-color: var(--color-accent); background: var(--color-surface-1); color: var(--color-text); font-weight: 600; }
+  .live-play-clock { color: var(--color-text-tertiary); font: var(--text-2xs) / 1 var(--font-mono, ui-monospace, monospace); text-align: end; }
+  .live-play-logo { display: grid; place-items: center; }
+  .live-play-score { display: inline-flex; gap: var(--space-1); color: var(--color-text-tertiary); font: 600 var(--text-2xs) / 1 var(--font-mono, ui-monospace, monospace); white-space: nowrap; }
+  .live-play-score b { color: var(--color-text-secondary); }
+  .live-play-score [data-lit], .live-play-score [data-lit] b { color: var(--color-accent); }
+  .live-play-text { min-width: 0; }
+
+  .live-pbp { display: grid; gap: var(--space-3); max-width: 600px; }
+  .live-pbp-tools { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .live-pbp-tools .ui-input-wrap, .live-pbp-tools > :first-child { flex: 0 1 300px; }
+  .live-pbp-count { color: var(--color-text-tertiary); font-size: var(--text-xs); white-space: nowrap; }
+  .live-plays-all { max-height: min(70dvh, 720px); overflow-y: auto; border-radius: var(--radius-sm); background: var(--color-table-well); scrollbar-width: thin; }
+
+  /* Pre-game: injuries, then Databallr's three line tiles. */
+  .live-pregame { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr); gap: var(--space-4); align-items: start; }
+  .live-injury-team { display: grid; gap: var(--space-2); padding-bottom: var(--space-3); }
+  .live-injury-team + .live-injury-team { padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); }
+  .live-injury-team h3 { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; font-size: var(--text-sm); font-weight: 700; }
+  .live-injury-team ul { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  .live-injury-team li { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; gap: var(--space-2); min-height: 28px; font-size: var(--text-sm); }
+  .live-injury-team p { margin: 0; font-size: var(--text-sm); }
+  .live-injury-position { color: var(--color-text-tertiary); font-size: var(--text-2xs); }
+  .live-injury-name a { color: var(--color-text); text-decoration: none; }
+  .live-injury-status { padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-xs); background: var(--color-surface-3); color: var(--color-text-secondary); font-size: var(--text-2xs); font-weight: 700; }
+  .live-injury-status[data-status="out"] { background: color-mix(in srgb, var(--color-negative) 22%, transparent); color: var(--color-negative); }
+  .live-lines { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+  .live-line-tile { display: grid; align-content: start; justify-items: center; gap: var(--space-1); padding: var(--space-3); border-radius: var(--radius-sm); background: var(--color-table-well); text-align: center; }
+  .live-line-label { color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .live-line-value { color: var(--color-text); font-size: var(--text-md); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .live-line-note { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  @media (max-width: 1024px) {
+    .live-summary, .live-pregame, .live-box-pair { grid-template-columns: minmax(0, 1fr); }
+    .live-summary-shots { grid-row: auto; }
+  }
+  @media (max-width: 640px) {
+    .live-banner { grid-template-areas: "back hotkey" "status status" "teams teams"; grid-template-columns: 1fr auto; padding-inline: var(--space-3); }
+    .live-banner-status { justify-self: center; }
+    .live-banner-score { font-size: var(--text-2xl); }
+    .live-banner-code { font-size: var(--text-md); }
+    .live-banner-team { gap: var(--space-2); }
+    .live-hotkeys { display: none; }
+    .live-lines { grid-template-columns: minmax(0, 1fr); }
+    .live-play { grid-template-columns: 32px 16px 112px minmax(0, 1fr); gap: var(--space-1); }
+    .live-pbp-tools { flex-wrap: wrap; }
+    /* Leaders stack photo over value and name so full names fit. */
+    .live-leaders-row { gap: var(--space-2); }
+    .live-leader, .live-leader[data-align="end"] { flex-direction: column; align-items: flex-start; gap: var(--space-1); }
+    .live-leader[data-align="end"] { align-items: flex-end; }
+    .live-leader-name { white-space: normal; }
+  }
+}

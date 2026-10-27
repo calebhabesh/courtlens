@@ -5,7 +5,6 @@ from __future__ import annotations
 import logging
 import signal
 import sys
-import threading
 import time
 from datetime import UTC, datetime
 from typing import Any
@@ -123,19 +122,6 @@ class CourtLensWorker:
             logger.error("Error executing job %s: %s", job_id, exc)
             return True
 
-    def _live_loop(self, stop: threading.Event) -> None:
-        """Isolated sessions and thread keep Live responsive during blocking pipeline jobs."""
-        from courtlens.services.live import poll_once
-        from courtlens.services.live_provider import ESPNLiveProvider
-
-        provider = ESPNLiveProvider()
-        while not stop.is_set():
-            try:
-                poll_once(engine, provider)
-            except Exception:
-                logger.exception("Live cycle interrupted; durable rate reservation retained")
-            stop.wait(5)
-
     def run_loop(self) -> None:
         """Main worker execution loop."""
         self.startup()
@@ -146,30 +132,19 @@ class CourtLensWorker:
 
         logger.info("Worker %s ready. Listening for jobs...", self.worker_id)
 
-        live_stop = threading.Event()
-        live_thread = None
-        if self.settings.live_enabled:
-            live_thread = threading.Thread(target=self._live_loop, args=(live_stop,), daemon=True)
-            live_thread.start()
+        while not self.should_stop:
+            # Check scheduled refresh
+            if self._is_refresh_due():
+                logger.info("Scheduled refresh due; enqueuing refresh job")
+                with SessionLocal() as session:
+                    enqueue_job(session, "refresh")
+                self._last_refresh_date = datetime.now(UTC).strftime("%Y-%m-%d")
 
-        try:
-            while not self.should_stop:
-                # Check scheduled refresh
-                if self._is_refresh_due():
-                    logger.info("Scheduled refresh due; enqueuing refresh job")
-                    with SessionLocal() as session:
-                        enqueue_job(session, "refresh")
-                    self._last_refresh_date = datetime.now(UTC).strftime("%Y-%m-%d")
+            # Process queued job if available
+            processed = self.run_next_job()
+            if not processed:
+                time.sleep(self.settings.worker_poll_interval_seconds)
 
-                # Process queued job if available
-                processed = self.run_next_job()
-                if not processed:
-                    time.sleep(self.settings.worker_poll_interval_seconds)
-
-        finally:
-            live_stop.set()
-            if live_thread:
-                live_thread.join(timeout=45)
         logger.info("Worker %s shut down cleanly", self.worker_id)
 
 

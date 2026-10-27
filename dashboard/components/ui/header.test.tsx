@@ -82,7 +82,7 @@ describe("Design Language v1 Header Component", () => {
     expect(liveBtn?.getAttribute("aria-expanded")).toBe("true");
 
     // Live needs no catalog capability, so it shows while the mocked catalog gates the rest.
-    expect(screen.getByRole("menuitem", { name: /^Finals/ })).toBeDefined();
+    expect(screen.getByRole("menuitem", { name: /^Live Live NBA scores/ })).toBeDefined();
 
     // Escape closes dropdown
     act(() => {

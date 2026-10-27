@@ -27,7 +27,6 @@ export function pageLabel(href: string): string {
   const path = url.pathname;
   const items = [...analyticalNavItems(), ...moreLinks(false)];
   const exact = items.find(item => item.href.split("?")[0] === path);
-  if (path === "/live" && url.searchParams.get("live_mode") === "history") return "Finals";
   if (path === "/roster-shapes") return "Roster Shapes";
   if (exact) return exact.label;
   const tabbed = Object.values(TABBED_PAGES).find(page => page.tabs.some(tab => tab.href === path));

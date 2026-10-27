@@ -1,91 +1,222 @@
+import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
-import { easternToday, type LiveCache, type LiveGame, shiftSlate } from "../lib/live";
+import type { LiveGameData, LiveRead, LiveSlateData } from "../lib/live";
 
-const slate = easternToday();
-const id = "11111111-1111-4111-8111-111111111111";
-const game: LiveGame = { source_id: "123", canonical_id: null, identity_status: "unmapped", namespace: "espn", slate_date: slate, event_time: `${slate}T23:00:00Z`, status: "in_progress", period: 5, clock: null, provisional: true, teams: [{source_id:"1",canonical_id:null,identity_status:"unmapped",name:"Boston Celtics",side:"home",score:0},{source_id:"2",canonical_id:null,identity_status:"unmapped",name:"Toronto Raptors",side:"away",score:null}] };
-const cache: LiveCache = {namespace:"espn",provisional:true,client_poll_seconds:60,capability:"not_yet_observed",status:"observed",paused:false,active_leases:2,stale:false,age_seconds:31,last_success_at:`${slate}T19:00:00Z`,last_poll_at:null,next_poll_at:null,error:null,observation_id:"observed-fixture",acquired_at:`${slate}T19:00:00Z`,source_time:null,http_date:null,content_sha256:"a".repeat(64),data:{games:[game]}};
-async function mock(page: Page) {
-  const calls: {method:string; path:string}[] = [];
+// Real reads of ESPN through the CourtLens API (2026-10-26 finals, 2026-10-27 upcoming).
+const fixture = <T,>(name: string): LiveRead<T> => JSON.parse(readFileSync(`e2e/fixtures/live-${name}.json`, "utf8"));
+const finals = fixture<LiveSlateData>("slate-2026-10-26");
+const upcoming = fixture<LiveSlateData>("slate-2026-10-27");
+const games: Record<string, LiveRead<LiveGameData>> = { "401909869": fixture("game-401909869"), "401909870": fixture("game-401909870"), "401909877": fixture("game-401909877") };
+
+async function mock(page: Page, overrides: Record<string, (url: URL) => unknown> = {}) {
+  const calls: string[] = [];
   await page.route("**/api/live**", async route => {
-    const request=route.request();const url=new URL(request.url());calls.push({method:request.method(),path:url.pathname});
-    if (request.method()==="DELETE") return route.fulfill({status:204});
-    if(request.method()==="POST") return route.fulfill({json:{id,expires_at:"later",heartbeat_seconds:60}});
-    if(url.pathname.includes("historical")) return route.fulfill({json:{context:{release_id:"sealed-history",dataset_id:"historical-dataset",season:"2024-25",phase:"regular_season",before_date:"2025-04-16"},games:[{...game,source_id:"0022401190",slate_date:"2025-04-15",status:"final",provisional:false,identity_status:"admitted_research"}],players:null,status:"admitted_finals",warnings:["Missing rows remain unknown"]}});
-    if(url.pathname.includes("/games/")) return route.fulfill({json:{...cache,stale:true,status:"source_error",error:"Provider temporarily unavailable",data:{game,players:[{source_id:"11",team_source_id:"1",name:"Observed Player",canonical_id:null,identity_status:"unmapped",reported_nonappearance:false,statistics:{PTS:"0",MIN:null}},{source_id:"12",team_source_id:"1",name:"Reported DNP",canonical_id:null,identity_status:"unmapped",reported_nonappearance:true,statistics:{PTS:"0",MIN:"0"}}],team_sections:null}}});
-    return route.fulfill({json:cache});
+    const url = new URL(route.request().url());
+    calls.push(`${url.pathname}${url.search}`);
+    for (const [key, respond] of Object.entries(overrides)) if (`${url.pathname}${url.search}`.includes(key)) return route.fulfill({ json: respond(url) });
+    const id = url.pathname.match(/games\/(\d+)/)?.[1];
+    if (id) return games[id] ? route.fulfill({ json: games[id] }) : route.fulfill({ status: 502, json: { detail: "Live service unavailable" } });
+    const day = url.searchParams.get("slate_date");
+    return route.fulfill({ json: day === "2026-10-27" ? upcoming : day === "2026-10-26" ? finals : { ...finals, resource: `slate:${day}`, data: { games: [], calendar: finals.data!.calendar } } });
   });
   return calls;
 }
 
-test("selected source boxes keep zero, missingness, clock and errors explicit",async({page})=>{
-  await mock(page);await page.goto(`/live/games/123?date=${slate}&releaseId=retained-stats&season=2024-25`);
-  const selected=page.getByRole("region",{name:"Selected game details"});await expect(selected).toContainText("OT 1 · Clock unknown");await expect(selected).toContainText("Stale");await expect(selected).toContainText("Provider temporarily unavailable");await expect(selected).toContainText("Actual slate:");
-  const rows=selected.getByRole("row");await expect(rows.filter({hasText:"Observed Player"})).toContainText("0");await expect(rows.filter({hasText:"Observed Player"})).toContainText("—");await expect(rows.filter({hasText:"Reported DNP"})).not.toContainText("0");await expect(rows.filter({hasText:"Reported DNP"})).toContainText("Reported nonappearance");
-  expect(new URL(page.url()).searchParams.get("releaseId")).toBe("retained-stats");
+const slate = (page: Page) => page.getByRole("region", { name: "Game slate" });
+
+test("board: centred date strip, four-across final cards, hotkeys open a game", async ({ page }) => {
+  await mock(page);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/live/2026-10-26");
+  const strip = page.getByRole("navigation", { name: "Live dates" });
+  await expect(strip.locator('[aria-current="date"]')).toContainText("26");
+  await expect(strip.getByRole("link")).toHaveCount(9);
+  await expect(slate(page).getByRole("link")).toHaveCount(9);
+  const card = slate(page).getByRole("link").nth(1);
+  await expect(card).toContainText("Final/OT");
+  await expect(card).toContainText("MIN");
+  await expect(card).toContainText("125");
+  await expect(card).toContainText("127");
+  await expect(card.locator(".live-card-team[data-lost]")).toContainText("MIN");
+  const tops = await slate(page).getByRole("link").evaluateAll(cards => cards.slice(0, 5).map(c => Math.round(c.getBoundingClientRect().top)));
+  expect(new Set(tops.slice(0, 4)).size).toBe(1);
+  expect(tops[4]).toBeGreaterThan(tops[0]);
+  await page.keyboard.press("2");
+  await expect(page).toHaveURL(/\/live\/games\/401909869\?date=2026-10-26$/);
 });
 
-test("pause, visibility and navigation release leases and prevent hidden renewals",async({page})=>{
-  await page.clock.install();const calls=await mock(page);await page.goto(`/live/${slate}`);await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");await expect.poll(()=>calls.filter(c=>c.method==="POST").length).toBeGreaterThan(0);
-  await page.getByRole("button",{name:"Pause updates"}).click();await expect.poll(()=>calls.filter(c=>c.method==="DELETE").length).toBeGreaterThan(0);const count=calls.length;await page.clock.fastForward(180000);expect(calls.length).toBe(count);
-  await page.getByRole("button",{name:"Resume updates"}).click();await expect(page.getByRole("status").filter({hasText:"Visible"})).toBeVisible();await expect.poll(()=>calls.length).toBeGreaterThan(count);
-  await page.evaluate(()=>{Object.defineProperty(document,"visibilityState",{configurable:true,value:"hidden"});document.dispatchEvent(new Event("visibilitychange"));});await expect(page.getByRole("status").filter({hasText:"Hidden"})).toBeVisible();const hiddenCount=calls.length;await page.clock.fastForward(180000);expect(calls.length).toBe(hiddenCount);
-  await page.evaluate(()=>{Object.defineProperty(document,"visibilityState",{configurable:true,value:"visible"});document.dispatchEvent(new Event("visibilitychange"));});await expect.poll(()=>calls.length).toBeGreaterThan(hiddenCount);
-  await page.goto("/definitions");await expect.poll(()=>calls.filter(c=>c.method==="DELETE").length).toBeGreaterThan(1);
+test("upcoming cards carry the free line and injury counts", async ({ page }) => {
+  await mock(page);
+  await page.goto("/live/2026-10-27");
+  const card = slate(page).getByRole("link").first();
+  await expect(card).toContainText("PM ED");
+  await expect(card).toContainText("BOS by 12.5");
+  await expect(card.getByText("BOS by 12.5")).toHaveAttribute("title", "Spread (DraftKings): Boston Celtics favored by 12.5 points");
+  await expect(card).toContainText("O/U 222.5");
+  await expect(card).toContainText("1 OUT");
+  await expect(card.locator(".live-card-score").first()).toHaveText("0");
 });
 
-test("offline retains last observation; capacity and disabled acquisition stay usable",async({page,context})=>{
-  await mock(page);await page.route("**/api/live/subscriptions",r=>r.fulfill({status:429,json:{detail:"capacity"}}));await page.goto(`/live/${slate}`);await expect(page.getByRole("alert").filter({hasText:"capacity"})).toBeVisible();await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");
-  await context.setOffline(true);await expect(page.getByRole("status").filter({hasText:"Offline"})).toBeVisible();await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");await context.setOffline(false);
+test("the shortcut is a key cap, not HK; an upcoming game opens on Pre-Game", async ({ page }) => {
+  await mock(page);
+  await page.goto("/live/2026-10-27");
+  const card = slate(page).getByRole("link").first();
+  await expect(card).not.toContainText("HK");
+  await expect(card.locator("kbd.live-card-key")).toHaveAttribute("title", "Press 1 to open this game");
+  await page.keyboard.press("1");
+  await expect(page).toHaveURL(/\/live\/games\/401909877\?date=2026-10-27$/);
+  await expect(page.getByRole("tab", { name: "Pre-Game" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("region", { name: "Betting Lines" })).toContainText("BOS −12.5");
+  // A tab the viewer picks still wins, and Summary is the one that needs the URL now.
+  await page.getByRole("tab", { name: "Summary" }).click();
+  await expect(page).toHaveURL(/tab=summary/);
+  await page.getByRole("tab", { name: "Pre-Game" }).click();
+  await expect(page).not.toHaveURL(/tab=/);
+  // A final game still opens on Summary.
+  await page.goto("/live/games/401909869?date=2026-10-26");
+  await expect(page.getByRole("tab", { name: "Summary" })).toHaveAttribute("aria-selected", "true");
 });
 
-async function expectReleaseInDetails(page: Page, release: string) {
-  // D5: the research release lives in Data details, not the main flow.
-  await page.getByRole("button",{name:"Data Details"}).click();const details=page.getByRole("dialog");await expect(details).toContainText(release);await page.keyboard.press("Escape");
+test("summary: line score, leaders, shot chart and team stats", async ({ page }) => {
+  await mock(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/live/games/401909869?date=2026-10-26");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Minnesota Timberwolves at Cleveland Cavaliers");
+  const banner = page.locator(".live-banner");
+  await expect(banner).toContainText("Final/OT");
+  await expect(banner.locator("[data-lost]")).toContainText("125");
+  const line = page.getByRole("region", { name: "Line score" });
+  await expect(line.getByRole("row").nth(1)).toContainText("31292627");
+  await expect(line.getByRole("columnheader", { name: "OT1" })).toBeVisible();
+  await expect(page.getByRole("group", { name: "Points" })).toContainText("Anthony Edwards");
+  await expect(page.getByRole("group", { name: "Points" })).toContainText("47");
+  const court = page.getByRole("img", { name: /Shot chart, all periods/ });
+  await expect(court).toHaveAttribute("aria-label", /MIN 49-102, CLE 46-104 field goals/);
+  expect(await court.locator(".live-shot").count()).toBe(206);
+  await page.getByRole("radiogroup", { name: "Shot chart period" }).getByText("OT1").click().catch(async () => page.getByRole("button", { name: "OT1" }).click());
+  await expect(page.getByRole("img", { name: /Shot chart, OT1/ })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Team Stats" })).toContainText("48.0% (49/102)");
+  await expect(page.getByRole("region", { name: "Game Info" })).toContainText("Rocket Arena");
+});
+
+test("box score: Databallr's columns, starters and bench, Q and W", async ({ page }) => {
+  await mock(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/live/games/401909869?date=2026-10-26&tab=box");
+  const away = page.getByRole("region", { name: "Minnesota Timberwolves box score" });
+  await expect(away.getByRole("columnheader")).toContainText(["Player", "MIN", "PTS", "TS%", "REB(OFF)", "AST", "STL", "BLK", "PF", "TO", "2P", "3PT", "FT", "+/-"]);
+  const edwards = away.getByRole("row").filter({ hasText: "A. Edwards" });
+  await expect(edwards).toContainText("47");
+  // ESPN's box: 19-34 FG, 5-15 3PT, 4-6 FT.
+  await expect(edwards.locator('[data-tone="high"]')).toHaveText("64.1");
+  await expect(edwards).toContainText("14/19");
+  await expect(away.getByRole("rowheader", { name: "Starters" })).toBeVisible();
+  await expect(away.getByRole("rowheader", { name: "Bench" })).toBeVisible();
+  await expect(away.locator("tfoot")).toContainText("125");
+  await page.locator("body").click({ position: { x: 5, y: 5 } });
+  await page.keyboard.press("w");
+  await expect(page.locator("#live-box-home")).toBeFocused();
+  await expect(page.getByRole("region", { name: "Recent plays" })).toContainText("End of Game");
+  await page.getByRole("button", { name: "View all plays" }).click();
+  await expect(page).toHaveURL(/tab=plays/);
+});
+
+test("play-by-play: newest first, scoring sums, search and periods", async ({ page }) => {
+  await mock(page);
+  await page.goto("/live/games/401909869?date=2026-10-26&tab=plays");
+  const plays = page.getByRole("list", { name: "Plays, newest first" }).getByRole("listitem");
+  await expect(page.getByRole("status").filter({ hasText: "of 561 plays" })).toHaveText("561 of 561 plays");
+  await expect(plays.first()).toContainText("End of Game");
+  // The running score sums scoring plays (ESPN's own lags): 122-127 before Edwards' three.
+  const three = plays.filter({ hasText: "Anthony Edwards makes 28-foot three pointer" });
+  await expect(three).toHaveAttribute("data-scoring", "true");
+  await expect(three).toContainText("MIN 125");
+  await expect(plays.nth(3)).toContainText("122");
+  await expect(plays.nth(3)).toContainText("127 CLE");
+  await page.getByRole("searchbox", { name: "Search play-by-play" }).fill("Gobert");
+  await expect(page.getByRole("status").filter({ hasText: "of 561 plays" })).not.toHaveText("561 of 561 plays");
+  for (const text of await plays.allTextContents()) expect(text).toContain("Gobert");
+});
+
+test("pre-game: injury report and the one free line", async ({ page }) => {
+  await mock(page);
+  await page.goto("/live/games/401909869?date=2026-10-26&tab=pregame");
+  const injuries = page.getByRole("region", { name: "Injury Report" });
+  await expect(injuries).toContainText("Donte DiVincenzo");
+  await expect(injuries.locator('[data-status="out"]')).toHaveText("Out");
+  await expect(injuries).toContainText("No injuries reported");
+  const lines = page.getByRole("region", { name: "Betting Lines" });
+  await expect(lines).toContainText("CLE −3.5");
+  await expect(lines).toContainText("Cleveland Cavaliers favored by 3.5 points");
+  await expect(lines).toContainText("Cleveland Cavaliers favored to win");
+  await expect(lines).toContainText("About 234.5 points combined");
+  await expect(lines).toContainText("CLE -155 · MIN +130");
+  await expect(lines).toContainText("O/U 234.5");
+  await expect(lines).toContainText("DraftKings via ESPN");
+});
+
+test("game hotkeys and the All Games rail", async ({ page }) => {
+  await mock(page);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/live/games/401909869?date=2026-10-26");
+  const rail = page.getByRole("navigation", { name: "All games" });
+  await expect(rail.getByRole("link")).toHaveCount(9);
+  await expect(rail.locator('[aria-current="page"]')).toContainText("MIN");
+  const box = await rail.boundingBox();
+  expect(Math.round(box!.y + box!.height)).toBe(900);
+  await page.keyboard.press("3");
+  await expect(page).toHaveURL(/games\/401909870/);
+  await expect(page.locator(".live-banner")).toContainText("BOS");
+  await page.keyboard.press("Tab");
+  await expect(page).toHaveURL(/tab=box/);
+  await page.keyboard.press("Shift+Tab");
+  await expect(page).not.toHaveURL(/tab=/);
+  await page.keyboard.press("Escape");
+  await expect(page).toHaveURL(/\/live\/2026-10-26$/);
+});
+
+test("an empty landing opens the nearest game date; explicit dates stay put", async ({ page }) => {
+  await mock(page);
+  await page.goto("/live/2026-10-01");
+  await expect(page.locator("main")).toContainText("No games on");
+  await expect(page).toHaveURL(/\/live\/2026-10-01$/);
+  await page.clock.setFixedTime(new Date("2026-10-02T16:00:00Z"));
+  await page.goto("/live");
+  await expect(page).toHaveURL(/\/live\/2026-10-0[1-9]|\/live\/2026-09/);
+});
+
+test("in-progress reads refresh on the API's cadence; finals read once", async ({ page }) => {
+  await page.clock.install();
+  const live = { ...finals, final: false, refresh_seconds: 20, data: { ...finals.data!, games: finals.data!.games.map(g => ({ ...g, status: "in_progress" as const, period: 3, clock: "4:21" })) } };
+  const calls = await mock(page, { "slate_date=2026-10-26": () => live });
+  await page.goto("/live/2026-10-26");
+  await expect(slate(page)).toContainText("Q3 4:21");
+  const first = calls.length;
+  await page.clock.fastForward(21_000);
+  await expect.poll(() => calls.length).toBeGreaterThan(first);
+  await page.unrouteAll();
+  const finalCalls = await mock(page);
+  await page.goto("/live/2026-10-25");
+  await page.goto("/live/2026-10-26");
+  await expect(slate(page)).toContainText("Final");
+  const settled = finalCalls.length;
+  await page.clock.fastForward(120_000);
+  expect(finalCalls.length).toBe(settled);
+});
+
+test("a game ESPN can't serve says so", async ({ page }) => {
+  await mock(page);
+  await page.goto("/live/games/999?date=2026-10-26");
+  await expect(page.locator("main")).toContainText("isn't available from ESPN right now");
+});
+
+for (const view of [{ name: "board", path: "/live/2026-10-26" }, { name: "game", path: "/live/games/401909869?date=2026-10-26&tab=box" }, { name: "summary", path: "/live/games/401909869?date=2026-10-26" }]) {
+  test(`phone ${view.name} has no page overflow`, async ({ page }) => {
+    await mock(page);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(view.path);
+    await expect(page.locator(".live-page")).toBeVisible();
+    await page.waitForTimeout(300);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
 }
-
-test("historical final detail has no demand and pins resolved release in links",async({page})=>{
-  const calls=await mock(page);await page.goto("/live/2025-04-15?season=2024-25");await expect(page.getByRole("region",{name:"Game slate"}).getByRole("link")).toHaveCount(1);await expectReleaseInDetails(page,"sealed-history");expect(calls.some(c=>c.method==="POST")).toBe(false);
-  await page.getByRole("region",{name:"Game slate"}).getByRole("link").click();await expect.poll(()=>new URL(page.url()).searchParams.get("releaseId")).toBe("sealed-history");await expect(page.getByRole("region",{name:"Selected game details"})).toContainText("Finalized research");await expect(page.getByRole("region",{name:"Selected game details"})).toContainText("Player boxes unknown");expect(calls.some(c=>c.method==="POST")).toBe(false);
-  await page.reload();await expect(page.getByRole("region",{name:"Selected game details"})).toContainText("Finalized research");await expectReleaseInDetails(page,"sealed-history");
-});
-
-test("mobile and landscape source box regions contain overflow and keyboard focus",async({page})=>{
-  await mock(page);await page.setViewportSize({width:375,height:812});await page.emulateMedia({reducedMotion:"reduce"});await page.goto(`/live/games/123?date=${slate}`);await expect(page.getByRole("region",{name:"Selected game details"})).toContainText("Observed Player");expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-  const table=page.getByRole("region",{name:"Boston Celtics player box table"});await table.focus();await expect(table).toBeFocused();await page.screenshot({path:test.info().outputPath("live-mobile.png"),fullPage:true});await page.setViewportSize({width:812,height:375});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-});
-
-test("a delayed old selection cannot overwrite new date observations",async({page})=>{
-  await mock(page);let resolveOld:()=>void=()=>{};await page.route(`**/api/live?slate_date=${slate}`,async route=>{await new Promise<void>(r=>{resolveOld=r;});await route.fulfill({json:cache}).catch(()=>{});});
-  await page.goto(`/live/${slate}`);await expect(page.getByRole("status").filter({hasText:"Visible"})).toBeVisible();const next=shiftSlate(slate,1);await page.getByRole("navigation",{name:"Live dates"}).locator(`a[href^="/live/${next}"]`).click();await expect(page).toHaveURL(new RegExp(`/live/${next}`));await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");resolveOld();await expect(page).toHaveURL(new RegExp(`/live/${next}`));await expect(page.getByRole("button",{name:/^Slate date:/})).toHaveAttribute("data-value",next);
-});
-
-test("disabled acquisition, observed empty slate and invalid dates stay distinct", async({page}) => {
-  // Unknown is never zero: an unobserved slate shows no game count.
-  const calls = await mock(page);
-  await page.route("**/api/live?slate_date=*", route => route.fulfill({json:{...cache,status:"not_configured",capability:"not_configured",paused:true,data:null,age_seconds:null}}));
-  await page.goto(`/live/${slate}`);
-  await expect(page.locator("main")).toContainText("not configured");
-  await expect(page.locator("main")).toContainText("Awaiting a cached slate");
-  await expect(page.locator(".ui-count-chip")).toHaveCount(0);
-  await page.unroute("**/api/live?slate_date=*");
-  await page.route("**/api/live?slate_date=*", route => route.fulfill({json:{...cache,data:{games:[]}}}));
-  await page.reload(); await expect(page.locator("main")).toContainText("No games in the observed source slate");
-  await expect(page.locator(".ui-count-chip")).toHaveText("0 games");
-  await page.goto("/live/2026-02-30");await expect(page.getByRole("status").filter({hasText:"Invalid date"})).toBeVisible();
-  const count=calls.length; await page.getByRole("button",{name:"Pause updates"}).click();expect(calls.length).toBe(count);
-});
-
-test("FO08 board: one title, Live tabs, date strip counts and nearest-date jumps",async({page})=>{
-  await mock(page);await page.route("**/api/live?slate_date=*", route => route.fulfill({json:{...cache,data:{games:[]}}}));
-  await page.setViewportSize({width:1440,height:900});await page.goto(`/live/${slate}`);
-  await expect(page.locator("h1")).toHaveText("Live");
-  const tabs=page.getByRole("navigation",{name:"Live sections"});await expect(tabs.getByRole("link")).toHaveText(["Live","Finals","Playoffs"]);await expect(tabs.locator('[aria-current="page"]')).toHaveText("Live");
-  const strip=page.getByRole("navigation",{name:"Live dates"});await expect(strip.locator(".live-date")).toHaveCount(15);await expect(strip.locator('[aria-current="date"]')).toContainText("Today");
-  expect(await strip.locator(".live-date").evaluateAll(links=>links.every(link=>(link.getAttribute("data-empty")!==null)===(link.querySelector(".live-date-count")?.textContent==="0")))).toBe(true);
-  await expect(page.getByRole("button",{name:/^Load/})).toHaveCount(0);await expect(page.locator('input[type="date"]')).toHaveCount(0);
-  const empty=page.getByRole("note").filter({hasText:"No games on"});await expect(empty.getByRole("link")).toHaveCount(2);
-  await empty.getByRole("link").last().click();await expect(page).toHaveURL(new RegExp(`/live/${shiftSlate(slate,1)}`));
-  await tabs.getByRole("link",{name:"Finals"}).click();await expect(page).toHaveURL(/live_mode=history/);await expect(tabs.locator('[aria-current="page"]')).toHaveText("Finals");
-  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-});

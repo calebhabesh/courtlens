@@ -602,6 +602,8 @@ const mockPlayoffSeriesDetail = {
 createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
+  // Live (alignment row 7): an observed empty date; e2e/live.spec.ts routes real ESPN reads itself.
+  if (url.pathname === "/api/live") return json(response, 200, { namespace: "espn", resource: `slate:${url.searchParams.get("slate_date")}`, status: "observed", final: false, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: 600, error: null, observation_id: null, content_sha256: null, data: { games: [], calendar: [] } });
   // Browser JSON POSTs (for example Showcase rank queries) send a CORS preflight, as the real API allows.
   if (request.method === "OPTIONS") {
     response.writeHead(204, {

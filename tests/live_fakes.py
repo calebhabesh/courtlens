@@ -1,4 +1,4 @@
-"""Shared deterministic provider for Live call-count and relational tests."""
+"""Deterministic ESPN provider for Live call-count and relational tests."""
 
 import copy
 import json
@@ -62,3 +62,10 @@ class FakeProvider:
             payload = {"events": copy.deepcopy(self.events)}
             normalized = parse_scoreboard(payload, slate)
         return LiveFetch(json.dumps(payload).encode(), normalized, "http-date", None)
+
+    def fetch_injuries(self):
+        self.calls.append((None, "injuries"))
+        if self.error:
+            raise self.error
+        payload = {"injuries": []}
+        return LiveFetch(json.dumps(payload).encode(), {"teams": {}}, "http-date", None)

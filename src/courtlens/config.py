@@ -69,7 +69,6 @@ class Settings(BaseSettings):
     shot_zones_manifest: Path | None = Path("data/derived/shot-zones-v1")
     portraits_cache_path: Path = Path("data/cache/portraits")
     operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
-    live_enabled: bool = False
     worker_refresh_time_utc: str = "09:00"
     worker_poll_interval_seconds: int = Field(default=5, ge=1, le=300)
     worker_heartbeat_interval_seconds: int = Field(default=15, ge=2, le=300)
