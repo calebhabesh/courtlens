@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   QUERY_KEYS, cellValue, factorDots, formatCell, formatDifference, panelsParam, parsePanels, rapmYears, readDashboardState,
-  surname, toggleVersus, versusAfterRemove, versusCell, type CellDef,
+  findPanel, samePanel, surname, toggleVersus, versusAfterRemove, versusCell, versusLabels, type CellDef,
 } from "./player-dashboard";
 import type { PlayerDashboardFeeds, PlayerResearchItem, WorkbenchCatalog } from "./types";
 
@@ -23,6 +23,14 @@ describe("panel URL state", () => {
   it("drops malformed entries and caps the panel count", () => {
     expect(parsePanels("abc.2024-25_1.bad", "2025-26")).toEqual([{ playerId: "1", season: "2025-26", phase: "regular_season", advanced: true, rate: "per_36" }]);
     expect(parsePanels("1_2_3_4_5", "2025-26")).toHaveLength(4);
+  });
+
+  it("keeps one card per player, season and phase", () => {
+    const panels = parsePanels("1.2025-26.rs_2.2025-26.rs_1.2025-26.rs.g_1.2024-25.rs_1.2025-26.po_3_4", "2025-26");
+    expect(panels.map(panel => `${panel.playerId}.${panel.season}.${panel.phase}`)).toEqual(["1.2025-26.regular_season", "2.2025-26.regular_season", "1.2024-25.regular_season", "1.2025-26.playoffs"]);
+    expect(samePanel(panels[0], { playerId: "1", season: "2025-26", phase: "regular_season" })).toBe(true);
+    expect(findPanel(panels, { playerId: "1", season: "2024-25", phase: "regular_season" })).toBe(2);
+    expect(findPanel(panels, panels[2], 2)).toBe(-1);
   });
 
   it("opens on the latest season with a month of regular-season games", () => {
@@ -106,5 +114,14 @@ describe("cells", () => {
 
   it("names a player by surname, skipping suffixes", () => {
     expect([surname("Victor Wembanyama"), surname("Jaren Jackson Jr."), surname("Nenê")]).toEqual(["Wembanyama", "Jackson", "Nenê"]);
+  });
+});
+
+describe("head-to-head labels", () => {
+  it("adds the season, then the phase, when both sides share a surname", () => {
+    const tatum = (season: string, phase: "regular_season" | "playoffs" = "regular_season") => ({ name: "Jayson Tatum", season, phase });
+    expect(versusLabels({ name: "Jaylen Brown", season: "2025-26", phase: "regular_season" }, tatum("2025-26"))).toEqual({ a: "Brown", b: "Tatum" });
+    expect(versusLabels(tatum("2024-25"), tatum("2025-26"))).toEqual({ a: "Tatum 24-25", b: "Tatum 25-26" });
+    expect(versusLabels(tatum("2025-26"), tatum("2025-26", "playoffs"))).toEqual({ a: "Tatum RS", b: "Tatum PO" });
   });
 });

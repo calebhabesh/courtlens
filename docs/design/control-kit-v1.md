@@ -52,7 +52,7 @@ Owner decisions (2026-10-14):
 | Component | Sizes | Notes |
 | --- | --- | --- |
 | `Button` | xs–lg | Leading `icon`, trailing `iconAfter`; `ButtonLink` renders Next `Link` with `href`, and `ButtonSummary` renders native `<summary>`, sharing the same recipe. `stretch` fills the row, lead-aligns and truncates the label (the phone Filters toggle). |
-| `IconButton` | xs–lg | `label` is required and becomes the tooltip and `aria-label`. `expanded` makes it a disclosure toggle: it sets `aria-expanded`, and the glyph (normally `chevron-down`) turns half a turn over `--dur-fast` while open instead of swapping icons. |
+| `IconButton` | xs–lg | `label` is required and becomes the tooltip and `aria-label`. `expanded` makes it a disclosure toggle: it sets `aria-expanded`, and the glyph (normally `chevron-down`) turns half a turn over `--dur-fast` while open instead of swapping icons. `identity` (`a`/`b`) selects in a comparison side's identity colour (gold/blue) instead of the accent; `beckon` pulses ring and fill in that colour to invite the next press (`kit-beckon`, 1.2 s; a still ring under reduced motion) and, like a tone, replaces the variant's colours. Added 2026-10-23 for Player Dashboard pairing. |
 | `IconButtonLink` | xs–lg | Square icon-only Next `Link` (added in UC04 batch 4 for rail shortcuts); `label` as for `IconButton`. |
 | `Select` | sm–lg | Native select with the built-in chevron (below). |
 | `Segmented` | xs–lg | Generalises `SegmentedControl` and `StatsChoicePills`; the active indicator is `SlidingIndicator`. Radio semantics and roving focus, optional `deferChange` for an expensive owner update. Existing callers migrate in UC04. |

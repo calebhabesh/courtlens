@@ -15,6 +15,14 @@ describe("release-bound route availability", () => {
     expect(routeAvailability("/stats", catalog, "2020-21").reason).toContain("season or phase");
     expect(routeAvailability("/stats", null).reason).toContain("could not be verified");
   });
+  it("lists a menu page whose source lacks the default season (the header's anySeason)", () => {
+    const newSeason = { ...catalog, default_season: "2026-27", capabilities: { ...catalog.capabilities,
+      on_off: { status: "partial", seasons: ["2025-26"], phases: ["regular_season"], limitations: [] } } } as unknown as WorkbenchCatalog;
+    expect(routeAvailability("/stat-line-shift", newSeason).secondary).toBe(true);
+    expect(routeAvailability("/stat-line-shift", newSeason, undefined, undefined, { anySeason: true }).secondary).toBe(false);
+    // A missing source still hides it.
+    expect(routeAvailability("/wowy", newSeason, undefined, undefined, { anySeason: true }).secondary).toBe(true);
+  });
   it("reports admitted-but-pending sources by their limitation, not as blocked", () => {
     const pending = { ...catalog, capabilities: { ...catalog.capabilities, defensive_tracking: {
       status: "not_yet_observed", seasons: [], phases: [],

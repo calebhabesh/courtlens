@@ -24,16 +24,26 @@ export interface NavMenu {
 }
 
 export const STATS_LINK: NavItem = { label: "Stats", href: "/stats" };
+/** A top-level link after Stats, as on Databallr (alignment row 5). */
+export const WOWY_LINK: NavItem = { label: "WOWY", href: "/wowy" };
+/** After WOWY, as on Databallr (alignment row 13, follow-up 18); no longer under Teams. */
+export const STAT_LINE_SHIFT_LINK: NavItem = { label: "Stat Line Shift", href: "/stat-line-shift" };
+
+/** Top-level links without a menu, keyed by their section id. */
+export const DIRECT_LINKS: { id: string; item: NavItem }[] = [
+  { id: "stats", item: STATS_LINK },
+  { id: "wowy", item: WOWY_LINK },
+  { id: "stat-line-shift", item: STAT_LINE_SHIFT_LINK },
+];
 
 export const NAV_MENUS: NavMenu[] = [
   {
     id: "live",
     label: "Live",
     groups: [{ items: [
-      // The Live page's tabs (D19); every entry opens the page titled "Live".
-      { label: "Live", href: "/live" },
-      { label: "Finals", href: "/live?live_mode=history" },
-      { label: "Playoffs", href: "/playoffs" },
+      // Databallr's Live menu (alignment row 7): past dates on Live show their finals.
+      { label: "Live", href: "/live", icon: "broadcast", description: "Live NBA scores, box scores and play-by-play" },
+      { label: "Playoffs", href: "/playoffs", icon: "trophy", description: "The playoff bracket, with series and team comparisons" },
     ] }],
   },
   {
@@ -53,7 +63,6 @@ export const NAV_MENUS: NavMenu[] = [
     groups: [{ items: [
       { label: "Teams", href: "/teams", icon: "building", description: "Team ratings, six factors and rankings" },
       { label: "Roster Shapes", href: "/roster-shapes", icon: "shapes", description: "Every NBA roster as shapes in a box" },
-      { label: "Stat Line Shift", href: "/stat-line-shift", icon: "chart-column", description: "How a player's stat line changes with and without a teammate" },
       { label: "Contracts", href: "/contracts", icon: "dollar", description: "NBA salary cap analysis and contract details" },
       { label: "Free Agency", href: "/free-agency", icon: "user-check", description: "The 2026 NBA free agency tracker" },
     ] }],
@@ -73,7 +82,6 @@ export const NAV_MENUS: NavMenu[] = [
     groups: [
       { title: "Impact", items: [
         { label: "RAPM Research", href: "/research/rapm" },
-        { label: "WOWY", href: "/wowy" },
         { label: "Defensive Matchups", href: "/research/defensive-matchups" },
       ] },
       { title: "Shooting", items: [
@@ -120,7 +128,7 @@ export const MORE_LINKS: NavItem[] = moreLinks();
 
 /** Every analytical destination whose availability is checked against the catalog. */
 export function analyticalNavItems(): NavItem[] {
-  return [STATS_LINK, ...NAV_MENUS.flatMap(menu => menu.groups.flatMap(group => group.items))];
+  return [...DIRECT_LINKS.map(link => link.item), ...NAV_MENUS.flatMap(menu => menu.groups.flatMap(group => group.items))];
 }
 
 function pathOf(href: string): string {
@@ -130,6 +138,7 @@ function pathOf(href: string): string {
 /** The top-level entry that owns a pathname: "stats", a menu id, or "" when none does. */
 export function activeNavSection(pathname: string): string {
   if (pathname === "/" || pathname === "/stats" || pathname.startsWith("/stats/")) return "stats";
+  for (const { id, item } of DIRECT_LINKS) if (id !== "stats" && (pathname === item.href || pathname.startsWith(`${item.href}/`))) return id;
   for (const menu of NAV_MENUS) {
     for (const group of menu.groups) {
       // A merged page's tabs live under its path (FO07), so they belong to the same menu.

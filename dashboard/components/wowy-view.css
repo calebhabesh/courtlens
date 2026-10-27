@@ -1,0 +1,186 @@
+@layer pages {
+  /* WOWY (alignment row 5): a left rail of players and filters beside Databallr's WOWY Combos card. */
+  .wowy-page { display: flex; flex-direction: column; gap: var(--space-4); width: min(100%, 1480px); margin-inline: auto; min-width: 0; }
+  .wowy-console { display: flex; justify-content: center; width: 100%; min-width: 0; }
+  .wowy-team-modal { width: min(520px, calc(100vw - 2 * var(--space-4))); }
+  .wowy-team-clear { margin-top: var(--space-3); }
+  .wowy-empty {
+    display: grid; justify-items: center; gap: var(--space-3);
+    padding: var(--space-8) var(--space-4);
+    color: var(--color-on-bg-secondary); font-size: var(--text-md); line-height: var(--text-md-lh); text-align: center;
+  }
+  .wowy-empty p { margin: 0; }
+
+  /* Players | table | filters (follow-up 11); the table column takes what the rails leave. */
+  .wowy-layout {
+    display: grid; grid-template-columns: 340px minmax(0, 1fr) 300px; grid-template-areas: "players main filters";
+    gap: var(--space-6); align-items: start;
+  }
+  .wowy-rail-players { grid-area: players; }
+  .wowy-main { grid-area: main; }
+  .wowy-rail-filters { grid-area: filters; }
+  .wowy-layout[aria-busy="true"] .wowy-main { opacity: 0.6; transition: opacity var(--dur-fast) var(--ease-out); }
+  /* The rail is part of the page and scrolls with it (follow-up 8). */
+  .wowy-rail { display: grid; gap: var(--space-6); min-width: 0; }
+  .wowy-main { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+
+  .wowy-panel { display: grid; gap: var(--space-3); min-width: 0; }
+  .wowy-panel-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+  .wowy-panel-head h2 { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 700; }
+  .wowy-count { color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .wowy-badge { color: var(--color-accent); font-size: var(--text-sm); font-weight: 700; }
+  .wowy-hint { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .wowy-hint strong { color: var(--color-text); font-weight: 600; }
+
+  .wowy-roster { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .wowy-roster-row {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "photo text action" "photo picker picker";
+    align-items: center; gap: 0 var(--space-3); min-height: 68px; padding-inline: var(--space-1);
+  }
+  .wowy-roster-photo { grid-area: photo; }
+  .wowy-roster-text { grid-area: text; }
+  .wowy-roster-action { grid-area: action; display: inline-flex; }
+  .wowy-roster-picker { grid-area: picker; min-width: 0; margin-top: var(--space-1); }
+  .wowy-roster-text { display: grid; justify-items: start; gap: var(--space-1); min-width: 0; }
+  .wowy-roster-name { max-width: 100%; overflow: hidden; color: var(--color-text); font-size: var(--text-md); text-overflow: ellipsis; white-space: nowrap; }
+  .wowy-roster-row[data-role] { padding-block: var(--space-2); }
+  .wowy-roster-row[data-role] .wowy-roster-name { font-weight: 600; }
+  .wowy-roster-meta { color: var(--color-text-secondary); font-size: var(--text-xs); }
+
+  /* The lineup setup (follow-up 9): what each chosen player does to the table, in plain words. */
+  .wowy-setup { display: grid; gap: var(--space-3); padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-surface-1); }
+  .wowy-setup-group { display: grid; gap: var(--space-2); }
+  .wowy-setup-group + .wowy-setup-group { padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); }
+  .wowy-setup-head { display: grid; gap: var(--space-0-5); }
+  .wowy-setup-title { color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }
+  .wowy-setup-empty { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); font-style: italic; }
+  .wowy-setup-result { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-accent); font-size: var(--text-sm); font-weight: 600; }
+
+  .wowy-filter { display: grid; gap: var(--space-2); min-width: 0; margin: 0; padding: var(--space-3) 0 0; border: 0; border-top: 1px solid var(--color-hairline); }
+  .wowy-filter legend { float: left; width: 100%; margin-bottom: var(--space-1); color: var(--color-text); font-size: var(--text-sm); font-weight: 600; }
+  .wowy-filter legend + * { clear: both; }
+  /* Selectors keep their options' width rather than the column's (follow-up 13). */
+  .wowy-filter > [role="radiogroup"] { justify-self: start; }
+  .wowy-dates, .wowy-minutes { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .wowy-chips { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .wowy-custom-clock { display: grid; gap: var(--space-2); }
+  .wowy-tier { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .wowy-tier li { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+  .wowy-team-picks { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-1); }
+  .wowy-team-pick {
+    display: grid; justify-items: center; gap: var(--space-1); padding: var(--space-1) 0; border: 0; border-radius: var(--radius-sm); background: none;
+    color: var(--color-text-secondary); font: inherit; font-size: var(--text-xs); cursor: pointer;
+  }
+  .wowy-team-pick:hover { background: var(--color-surface-hover); color: var(--color-text); }
+  .wowy-team-pick[aria-pressed="true"] { background: var(--color-accent-soft); color: var(--color-accent); font-weight: 600; outline: 1px solid var(--color-accent); outline-offset: -1px; }
+  .wowy-team-pick:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 0; }
+  .wowy-method { margin: 0; padding-left: var(--space-5); }
+
+  .wowy-toolbar { max-width: 760px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .wowy-games, .wowy-legend { color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .wowy-legend { margin: 0; }
+
+  /* Databallr's WOWY Combos card (follow-up 4): branded header, then one row per on/off mix. */
+  .wowy-card { width: 100%; max-width: 760px; overflow: hidden; border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); background: var(--color-table-lift); }
+  .wowy-card-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-hairline); }
+  .wowy-card-brand { color: var(--color-accent); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 800; letter-spacing: -0.02em; }
+  .wowy-card-scope { display: grid; justify-items: end; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: right; }
+  .wowy-card-scroll { overflow-x: auto; }
+  .wowy-table { width: 100%; min-width: 560px; border-collapse: collapse; color: var(--color-text); font-variant-numeric: tabular-nums; }
+  .wowy-table th, .wowy-table td { padding: var(--space-2) var(--space-3); text-align: center; white-space: nowrap; }
+  .wowy-card[data-wide] { max-width: none; }
+  .wowy-table thead th { padding-block: var(--space-3); border-bottom: 1px solid var(--color-hairline); color: var(--color-text); font-size: var(--text-sm); font-weight: 700; text-transform: uppercase; }
+  .wowy-table tbody tr + tr > * { border-top: 1px solid var(--color-hairline); }
+  .wowy-table tbody tr[data-small] > :not(.wowy-lead) { opacity: 0.55; }
+  .wowy-lead { width: 1%; }
+  .wowy-lead-label { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .wowy-lineup-tip { display: block; }
+  .wowy-lineup {
+    display: inline-flex; justify-content: center; gap: var(--space-3); min-width: 100%; padding: var(--space-1); border: 0; border-radius: var(--radius-md);
+    background: none; color: inherit; font: inherit; cursor: pointer;
+  }
+  .wowy-lineup:hover { background: var(--color-surface-hover); }
+  .wowy-lineup[aria-expanded="true"] { background: var(--color-accent-soft); }
+  .wowy-lineup:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 0; }
+  /* Large photos as on Databallr: a team-colour disc, lit when on, dimmed with OFF when not. */
+  .wowy-face { display: grid; justify-items: center; gap: var(--space-1); width: 72px; }
+  .wowy-face-photo { position: relative; display: inline-grid; place-items: center; }
+  .wowy-face-off {
+    position: absolute; padding: 0 var(--space-1); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--color-surface-0) 70%, transparent);
+    color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .wowy-face-name { max-width: 100%; overflow: hidden; color: var(--color-text); font-size: var(--text-sm); font-weight: 600; text-overflow: ellipsis; }
+  .wowy-face[data-off] .wowy-face-name { color: var(--color-text-secondary); }
+  .wowy-value { display: grid; justify-items: center; line-height: 1.25; }
+  .wowy-value strong { font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .wowy-value small { font-size: var(--text-xs); font-weight: 600; }
+  .wowy-value .wowy-value-sub { margin-top: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-2xs); font-weight: 500; }
+  .wowy-net { font-size: var(--text-lg); font-weight: 700; }
+  /* Databallr's colours: gold for the better side, blue for the worse (as Stat Line Shift). */
+  :is(.wowy-value small, .wowy-value strong, .wowy-net)[data-tone="better"] { color: var(--color-identity-a); }
+  :is(.wowy-value small, .wowy-value strong, .wowy-net)[data-tone="worse"] { color: var(--color-identity-b); }
+  .wowy-onoff > * { padding-block: var(--space-4); }
+  .wowy-onoff th { color: var(--color-text); font-size: var(--text-md); font-weight: 700; text-transform: uppercase; }
+  .wowy-about { display: grid; max-width: 760px; }
+  .wowy-about p { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+
+  /* Databallr's lineup composition dialog (follow-up 7). */
+  .wowy-composition-modal { width: min(620px, calc(100vw - 2 * var(--space-4))); }
+  .wowy-composition { display: grid; gap: var(--space-4); font-variant-numeric: tabular-nums; }
+  .wowy-composition h3 { margin: 0; color: var(--color-text); font-size: var(--text-md); font-weight: 700; text-align: center; }
+  .wowy-composition-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--space-3); }
+  .wowy-composition-title { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text); font-size: var(--text-lg); font-weight: 700; }
+  .wowy-composition-season { justify-self: end; color: var(--color-text-secondary); font-size: var(--text-sm); }
+  .wowy-composition-faces { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); }
+  .wowy-help-disc {
+    display: grid; place-items: center; width: 64px; height: 64px; border-radius: var(--radius-pill);
+    box-shadow: inset 0 0 0 2px var(--color-identity-b); color: var(--color-text); font-size: var(--text-md); font-weight: 700;
+  }
+  .wowy-help-disc[data-tone="better"] { color: var(--color-identity-a); }
+  .wowy-help-disc[data-tone="worse"] { color: var(--color-identity-b); }
+  .wowy-stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: var(--space-2); }
+  .wowy-stat { display: grid; justify-items: center; line-height: 1.25; }
+  .wowy-stat-label { color: var(--color-text-secondary); font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; }
+  .wowy-stat strong { color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .wowy-stat small { font-size: var(--text-xs); font-weight: 600; }
+  .wowy-composition-ends { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--color-hairline); }
+  .wowy-composition-ends section { display: grid; gap: var(--space-2); }
+  .wowy-composition-ends section + section { padding-left: var(--space-4); border-left: 1px solid var(--color-hairline); }
+  .wowy-help { display: grid; justify-items: center; gap: var(--space-1); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--color-surface-2); text-align: center; }
+  .wowy-help-sum { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); }
+  .wowy-help-sum strong { color: var(--color-text); font-size: var(--text-md); }
+  .wowy-mates ul { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4) var(--space-2); margin: var(--space-3) 0 0; padding: 0; list-style: none; }
+  /* Share, photo, name, DARKO stacked in one column per teammate (follow-up 15). */
+  .wowy-mate { display: grid; justify-items: center; align-content: start; gap: var(--space-1); width: 88px; text-align: center; }
+  .wowy-mate-share { color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }
+  .wowy-mate-name { max-width: 100%; color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); overflow-wrap: break-word; }
+  .wowy-mate-dpm { font-size: var(--text-sm); font-weight: 600; }
+  :is(.wowy-stat strong, .wowy-stat small, .wowy-help-sum strong, .wowy-mate-dpm)[data-tone="better"] { color: var(--color-identity-a); }
+  :is(.wowy-stat strong, .wowy-stat small, .wowy-help-sum strong, .wowy-mate-dpm)[data-tone="worse"] { color: var(--color-identity-b); }
+  .wowy-composition-foot { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; }
+
+  /* Phones: every column in view, so photos and padding shrink rather than the table scrolling. */
+  @media (max-width: 640px) {
+    .wowy-table { min-width: 0; }
+    .wowy-table th, .wowy-table td { padding: var(--space-2) var(--space-1); }
+    .wowy-table thead th { font-size: var(--text-xs); }
+    .wowy-lineup { gap: var(--space-1); }
+    .wowy-face { width: 44px; }
+    .wowy-face-name { font-size: var(--text-2xs); }
+    .wowy-value strong, .wowy-net { font-size: var(--text-sm); }
+    .wowy-card-head { padding-inline: var(--space-3); }
+    .wowy-composition > .wowy-stat-row { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: var(--space-3); }
+    .wowy-composition-ends { grid-template-columns: minmax(0, 1fr); }
+    .wowy-composition-ends section + section { padding: var(--space-4) 0 0; border-left: 0; border-top: 1px solid var(--color-hairline); }
+    .wowy-help-disc { width: 40px; height: 40px; font-size: var(--text-xs); }
+  }
+
+  /* Too narrow for three columns: the filters move under the table. */
+  @media (max-width: 1279px) {
+    .wowy-layout { grid-template-columns: 340px minmax(0, 1fr); grid-template-areas: "players main" "players filters"; }
+  }
+  /* One column: players, then the table, then the filters. */
+  @media (max-width: 1023px) {
+    .wowy-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "players" "main" "filters"; }
+  }
+}

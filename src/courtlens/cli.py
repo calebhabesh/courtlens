@@ -1911,6 +1911,40 @@ def refresh_season_impact_command(
     typer.echo(json.dumps(result, default=str))
 
 
+@app.command("refresh-season-lineups")
+def refresh_season_lineups_command(
+    season: str | None = typer.Option(None, help="Default: the season under way today."),
+    store: Path = typer.Option(Path("data/raw/season-boxscores")),
+    work: Path = typer.Option(Path("data/derived/season-impact")),
+) -> None:
+    """Scheduled daily run: provisional current-season lineup stints and stint box (WOWY, Stat
+    Line Shift, on/off) from the first game. Fits nothing; RAPM and BPR wait for the weekly run."""
+    from courtlens.services.darko import season_of
+    from courtlens.services.season_impact import refresh_season_lineups
+
+    settings = get_settings()
+    dirs = {
+        "serving_dir": settings.impact_serving_manifest,
+        "splits_dir": settings.impact_team_splits_manifest,
+        "stint_box_dir": settings.stint_box_manifest,
+    }
+    pinned = [name for name, path in dirs.items() if path is None or not path.is_dir()]
+    if pinned:
+        raise typer.BadParameter(f"these configs pin a file, not a directory: {pinned}")
+    end_year = int((season or season_of(date.today()))[:4]) + 1
+    with SessionLocal() as session:
+        result = refresh_season_lineups(
+            session,
+            raw_root=settings.raw_store_path,
+            store=store,
+            end_year=end_year,
+            today=date.today(),
+            work_root=work,
+            **{k: v for k, v in dirs.items() if v is not None},
+        )
+    typer.echo(json.dumps(result, default=str))
+
+
 @app.command("retire-release")
 def retire_release_command(dataset_id: list[str] = typer.Argument(...)) -> None:
     """Delete superseded statistics release datasets (never the published, impact or cited)."""

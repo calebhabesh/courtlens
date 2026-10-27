@@ -13,24 +13,24 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
-| 1 | Stats | `/stats` | 👀 | Owner approved first revision 2026-10-15; cold-load animation follow-up ready for review; deferred 43f/43g remain open |
+| 1 | Stats | `/stats` | ✅ | Owner approved first revision 2026-10-15; cold-load animation follow-up approved 2026-10-25; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
 | 3 | PvP | `/compare` | ✅ | Owner approved 2026-10-21 (Compare menu tentatively done); Compare Export fixed (card export) |
 | 4 | Teams | `/teams`, `/teams/[id]` | ✅ | Owner approved 2026-10-21 (Teams menu tentatively done); Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
-| 5 | WOWY | `/wowy` | ⬜ | |
+| 5 | WOWY | `/wowy` | 👀 | Top-level nav link after Stats; Select Team on arrival; Databallr's WOWY Combos lineup table (Combo / On / Off roles, every on/off mix with large lit / OFF photos, ON − OFF row, Overview / Offense / Defense) with date, game-clock, garbage-time, common-games, opponent and player-vs-player filters (`courtlens-wowy-combos-v1`) |
 | 6 | Last X Games | `/last-games` | ✅ | Owner approved first revision 2026-10-20; Databallr's window card, comparison and game logs, then stretch verdicts, game context, opponent defence, Since windows, linked panels and a four-stat rolling chart; +/- from accepted stints |
-| 7 | Live | `/live` | ⬜ | |
+| 7 | Live | `/live` | 👀 | Owner started 2026-10-27: Databallr's date strip, game cards and game view (Box Score / Play-by-Play / Pre-Game, All Games rail, hotkeys) plus X's game summary (line score, shot chart, team stats, leaders, game info) |
 | 8 | Playoffs | `/playoffs` | ⬜ | |
 | 9 | Showcase | `/showcase` | ✅ | Owner approved first revision 2026-10-21; Databallr's season card grid (DPM leaders), player dialog and season slideshow; NBA.com-first photos with matted career photos, top-100 rank changes with tooltips, slideshow keys, compare tray |
 | 10 | Rankings | ~~`/rankings`~~ | ✂️ cut | Owner cut 2026-10-20: built for social sharing, not CourtLens's data/ML/statistics focus. Page and Players menu item removed |
 | 11 | Tier List | ~~`/tierlist`~~ | ✂️ cut | Owner cut 2026-10-20: "It doesn't serve any purpose." Page, Compare menu item and example boards removed |
 | 12 | Roster Shapes | `/roster-shapes` | ✅ | Owner approved first revision 2026-10-19; Databallr side-by-side team view with linked hover, season-by-season fill, rotation-capped minutes, searchable trade sandbox |
-| 13 | Stat Line Shift | `/stat-line-shift` | ✅ | Owner approved first revision 2026-10-19; opens on Select Team, full-width roster drawer with season photos, per-75 without → with table, pair cards, Customize Stats dialog; IM03 stints + stint box (shared-floor v2) |
+| 13 | Stat Line Shift | `/stat-line-shift` | 👀 | Top-level link after WOWY (follow-up 18, review); first revision approved 2026-10-19; opens on Select Team, full-width roster drawer with season photos, per-75 without → with table, pair cards, Customize Stats dialog; IM03 stints + stint box (shared-floor v2) |
 | 14 | Contracts + Free Agency | `/contracts`, `/free-agency` | ✅ | Owner approved 2026-10-21 (Teams menu tentatively done); Select Team flow, Overview (payroll, cap bar, full flow, bar timeline, roster Stats table, pies), Small vs Big on DARKO values; Free Agency restored from NBA.com's tracker |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
 | 16 | Matchup Matrix | `/matchups` | ✅ aligned (first revision) | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
 | 17 | Shot Profile Twin | `/similar-players` | ✅ | Owner approved first revision 2026-10-21 (Player Twins); NBA only; Databallr's twin cards and closest-matches table on pbpstats zone totals, then Box Score mode, pool filters, distance drivers; table headers centered over their values |
-| 22 | Player Dashboard | `/players` | 👀 | Databallr's `/dashboard` (Top 50 DARKO DPM card carousel, compact player panels, head-to-head panel). Row 2's "Dashboard" pairing was wrong: row 2 is our player page, kept as approved. Replaces the Player Directory table |
+| 22 | Player Dashboard | `/players` | ✅ | Owner approved first revision 2026-10-25; Databallr's `/dashboard` (Top 50 DARKO DPM card carousel, compact player panels, head-to-head panel). Row 2's "Dashboard" pairing was wrong: row 2 is our player page, kept as approved. Replaces the Player Directory table |
 | 18 | Six Factor RAPM | `/research` | ⬜ | |
 | 19 | Wingspan | `/wingspan` | ⬜ | |
 | 20 | Offensive Calculator | `/calculator` | ⬜ | |
@@ -209,7 +209,7 @@ Padding follow-up: lint/typecheck, Vitest 511/511, four header checks and favico
 pass; the broader search check has dev-server lookup/workspace timeouts. Evidence:
 docs/evidence/alignment/app-shell/favicon-padding/.
 
-### 1 Stats — 👀 ready for review (cold-load animation follow-up)
+### 1 Stats — ✅ aligned (first revision; deferred 43f/43g remain open)
 
 Owner approval (2026-10-15): "I think I'm done the first solid revision of the main stats page
 and the player page. It's not a perfect version, but a presentable one now." Rows 0–2 are
@@ -627,6 +627,9 @@ Follow-up instructions (owner, 2026-10-14, retained-page data):
     (Owner screenshot and spacing adjustment, 2026-10-14.) — 2 px subtitle top margin using
     `--space-0-5`, reduced from the initial 4 px. Measured at 1440/390 in both densities; row heights
     and centered pill alignment retained. [Evidence](evidence/alignment/stats/name-subtitle-spacing/README.md).
+
+Owner approval (2026-10-25): "Yes, you can approve/check of row 1" — the cold-load animation
+follow-up is approved and row 1 is ✅ aligned again. Deferred 43f and 43g remain open.
 
 ### 2 Dashboard (player) — ✅ aligned (first revision)
 
@@ -1645,7 +1648,7 @@ Follow-up after approval (owner, 2026-10-19; screenshot of the 2025-26 grid):
     no overflow. Lint clean; Roster Shapes and visual-baseline specs 103 passed, the four
     first-load baselines within tolerance (none rewritten).
 
-### 13 Stat Line Shift — ✅ aligned (first revision)
+### 13 Stat Line Shift — 👀 owner review (follow-up 18; first revision was ✅)
 
 Owner approval (2026-10-19): "Alright, I think we can mark this page finished." Approved after
 follow-up 17 (uncommitted at approval). The `stat-shift` and `first-load-stat-shift` Playwright
@@ -1880,6 +1883,15 @@ Follow-up instruction (owner, 2026-10-19; screenshot of the table header):
     Scottie Barnes**"; on "Stats w/" the same with "with" (1,756 min with). The default sort there
     is by that side's minutes. Measured on :3100 at 1440 / 390, no overflow or browser errors
     (`follow-up-5/`); lint, typecheck, Vitest 598/598.
+
+Follow-up instruction (owner, 2026-10-27; screenshots of the Databallr and CourtLens top bars):
+18. [x] "I think stat line shift should be it's own page like it is on databallr" (Databallr's top
+    bar: Home, Stats, WOWY, Stat Line Shift, Live, Players, Teams, Compare, Research).
+    — Stat Line Shift is a top-level link after WOWY (`STAT_LINE_SHIFT_LINK` in
+    `DIRECT_LINKS`, so the phone drawer lists it too) and is gone from the Teams menu (Teams, Roster
+    Shapes, Contracts, Free Agency). It's highlighted on `/stat-line-shift`. Measured on :3100:
+    top bar Stats | WOWY | Stat Line Shift | Live …, no phone overflow. Evidence:
+    `docs/evidence/alignment/stat-line-shift/top-level-nav-1440.png`.
 
 ### 14 Contracts + Free Agency — ✅ aligned (first revision)
 
@@ -3352,7 +3364,7 @@ fields.
 Data-blocked: none (WNBA out of scope).
 Evidence: docs/evidence/alignment/similar-players/
 
-### 22 Player Dashboard — 👀 ready for review
+### 22 Player Dashboard — ✅ aligned (first revision)
 
 Owner start (2026-10-21): "The 'Player Directory' is similar to databallr's 'Player Dashboard' page
 where there is a slideshow of player cards, that you can select, and pit players against each other
@@ -3453,3 +3465,424 @@ databallr's … improvements to coloring/segmentation."
 3. [x] Panels: slate `--color-table-lift` body, brighter group strips, hairlines between groups,
    16px values, 4px bars on a visible track, six-factor and play types in inset wells,
    team-colour avatar ring and position badge; head-to-head play types as one well with dividers.
+
+Round 3 (owner, 2026-10-23): "add the player's team logo behind their picture like in databallr";
+in the head-to-head "add the team logo + name like databallr has in the comparison. Also remove that
+weird 'Each value…' caption text … make sure the 2 players take up the top part of the card …
+for some reason the 6-factor impact stats are null".
+
+1. [x] Panel avatar: the season team's logo (`TeamWatermark`) behind the headshot inside the
+   team-colour ring.
+2. [x] Head-to-head top row holds only the two players, each with team logo and code under the
+   name. The second row, as Databallr's, carries each side's season · phase (identity colours),
+   Per 36 / Per Game and the compare / close actions. The "Each value is the leader's margin"
+   caption is gone; the surname under every value already says who leads.
+3. [x] Six factors: not a page bug. The one-season impact fit has no row for Jayson Tatum in
+   2025-26 (16 games, 522 minutes), so his o_ts … d_reb are null in the release while his 2- and
+   3-year RAPM exist. The head-to-head now names whoever has no six-factor estimate.
+
+Round 4 (owner, 2026-10-23): "The comparison card doesn't have the colored ring / team logo bg";
+Databallr's "flashing animation once you press the start comparison button on one of the cards
+where it will start flashing the start comparison button on another card in a different color blue
+and highlight the outer buttons".
+
+1. [x] `RingPhoto` (team logo behind the headshot in a team-colour ring) is shared by the panels
+   and the head-to-head header.
+2. [x] Pairing: the first swap press makes that panel side A (gold border, gold pressed swap); every
+   other panel holds a solid blue border and only its swap button pulses blue (kit `IconButton`
+   `identity` + `beckon`, added to control kit v1). Owner follow-up: "all cards have a solid border
+   then the comparison buttons starts to smoothly flash". Once paired, A stays gold and B blue.
+   Reduced motion holds a still blue ring on the button.
+
+Round 5 (owner, 2026-10-24): "You shouldn't be able to add the same card twice. Are there any edge
+cases and common sense changes … we should consider."
+
+1. [x] One card per player, season and phase (`samePanel` / `findPanel`); the same player in another
+   season or phase is still a new card. Picking a shown card from the carousel or search scrolls to
+   and flashes it instead of adding it (the carousel card says "Already added · Click to view").
+2. [x] A panel's season options and RS/PO chip that would duplicate another panel are disabled
+   ("· on another panel"). A link with repeated cards keeps the first copy and the URL is rewritten
+   to the cards shown.
+3. [x] Head-to-head labels add the season (then the phase) when both sides share a surname
+   ("Tatum 24-25" / "Tatum 25-26"). Esc cancels a half-made pair; with one panel the note says to
+   add another player.
+4. [x] Owner left the open questions to the agent ("use your best judgement"): the head-to-head has
+   its own Per 36 / Per Game chip (`vr=g|36`, starting from side A's panel; dropped when the pair
+   closes), so both players always share one rate. A fresh pairing scrolls to the head-to-head once
+   both sides load (not on a reload). Search stays enabled with four panels: a shown player is
+   jumped to, a new one gets "Up to 4 players: close a panel to add another."
+
+Round 6 (owner, 2026-10-24): "databallr also has hover info containers when you hover over any of
+the stats."
+
+1. [x] New shared `HoverCard` (`components/ui/hover-card.tsx`): portalled to document.body, placed
+   below the stat (above when there is no room) and kept inside the viewport; opens after 250 ms on
+   hover and at once on keyboard focus; Esc, leaving, blur, scroll and resize close it.
+2. [x] Every panel stat: "Dashboard stat" eyebrow, rate pill on counting stats, name, definition,
+   and a note with the player, season and value, the rate basis ("Per 36 minutes across 2.4k
+   minutes") and the percentile cohort. Six factors: name, plain reading, and a Method note (unit,
+   one-season ridge fit, display floor, not additive to RAPM, not causal). Play types: family
+   definition, Freq and rPPP with percentile. Head-to-head cells: both players' values and the lead.
+3. [x] Correction: six-factor tooltips said "points per 100 possessions"; the contract
+   (impact-ratings-v1) reports percentage points of the team's rate. The cards say so.
+
+Round 7 (owner, 2026-10-24): "Can we make the photos in the cards larger like in databallr".
+
+1. [x] Panel avatar 60 → 76 px (portrait `lg`, sharp at 2×), position badge 22 px, name at
+   `--text-2xl`; head-to-head photos 44 → 56 px.
+2. [x] Header as Databallr: the actions float at the top right inside the name block, so a long name
+   wraps beside them and continues full width below; names never split mid-word.
+
+Owner approval (2026-10-25): approved as a first revision when asked whether row 22 should be marked ✅.
+
+### 7 Live — 👀 ready for review
+
+Owner start (2026-10-27): "Let's work on the pages under 'Live'." Owner screenshots of Databallr's
+Live page and of X's game summary: "we can also draw inspiration from [X] (note this is in a
+smaller sidebar of the X site, ours would occupy a full page)."
+
+Databallr (`/live/<date>`, owner screenshots 2026-10-27): the Live menu holds Live ("Live NBA scores
+and box scores") and Playoffs. A centred seven-day strip (month over day, selected day in a gold
+box, ‹ › arrows), a "Tip: Press 1-9 to open a game. In detail view, 1-9 jumps between games." hint,
+and a four-across grid of game cards: status or tipoff time ("FINAL", "8:00 PM EDT"), a hotkey
+badge, spread and O/U chips before tipoff, a chevron; per team logo, abbreviation, record, injury
+count ("2 OUT") and score, the winner bold with a marker. Game view: a banner with All Games, status,
+logos, abbreviations and scores (loser dimmed), a hotkey badge; tabs Box Score / Play-by-Play /
+Pre-Game with a hotkey legend (Q, W, Esc, Tab, Shift+Tab). Box Score: both teams side by side (Press
+Q / W), PLAYER, MIN (m:ss), PTS, TS% (coloured high / low), REB (OFF), AST, STL, BLK, PF, TO, 2P,
+3PT, +/-; Recent Plays under it with "View all plays". Play-by-Play: search, "549 of 549 plays",
+All / Q1–Q4 / OT chips, rows of clock, team logo, score with the scoring side lit, description,
+scoring plays bold with a gold edge. Pre-Game: Injury Report per team (position, name, Out badge;
+"No injuries reported") and Betting Lines (spread, moneyline, total and a per-book table). A fixed
+All Games rail at the bottom (numbered mini cards, the open game outlined).
+
+X game summary (owner screenshots 2026-10-27): Stats / Plays tabs; a period line score with totals;
+a shot chart (All / 1–4 periods, made dots and missed crosses per team colour, team FG counts);
+team stats as paired bars (FG, 3P, FT with makes-attempts, rebounds, assists, steals, blocks,
+turnovers, points in the paint, fast-break points); a per-team box score split into Starters and
+Bench (name, position, MIN, PTS, FG, 3PT, FT, REB…; DNP rows as dashes; a Team row); Game
+Leaders (points, rebounds, assists with photos, both teams); When / Where / Watch.
+
+Sources (survey 2026-10-27): ESPN's free summary, already the Live provider's game read, carries
+plays (561 for MIN–CLE, every field-goal attempt with court coordinates), period line scores,
+starters and positions, team stats (paint, fast-break, largest lead, lead changes), leaders,
+injuries, venue, broadcasts and one sportsbook line (DraftKings). Databallr's per-book odds table
+has no free source.
+
+Instructions (owner, 2026-10-27):
+1. [x] Replicate Databallr's Live page (date strip, game cards, game view with Box Score /
+   Play-by-Play / Pre-Game, All Games rail, hotkeys), drawing on X's game summary for a full-page
+   game view. — See "Done" below.
+
+Owner decisions (2026-10-27, on the agent's proposals):
+- Game view: tabs **Summary / Box Score / Play-by-Play / Pre-Game**. Summary (the default) holds
+  X's pieces: line score, shot chart, team stat bars, game leaders, When / Where / Watch. Box
+  Score is Databallr's side-by-side table, split into Starters and Bench as on X.
+- Betting: the one free line (DraftKings via ESPN) as Databallr's spread / moneyline / total
+  tiles, labelled with the book, and spread / O/U chips on upcoming cards. No per-book table.
+- Menu: as on Databallr, the Live menu holds **Live** and **Playoffs** (owner screenshot of
+  Databallr's menu with descriptions). Finals merges into Live: past dates show final games and
+  open the same game view; the Live / Finals / Playoffs route tabs go.
+- Scope: Live first; Playoffs (row 8) after the owner reviews Live.
+- Source: **the API reads ESPN on demand**, like Databallr's "backend live cache". Opening a date
+  or game fetches ESPN when the cached copy is stale (seconds for games in progress; a final game
+  is fetched once and kept). No worker, opt-in flag, leases or seven-day limit; works on the hosted
+  demo. Hashed, append-only storage stays. This retires the lease machinery and revises
+  `docs/design/shared-live-v1.md`.
+
+Done (instruction 1, 2026-10-27):
+- Source (`docs/design/shared-live-v2.md`): `GET /api/live` and `GET /api/live/games/{id}` read
+  ESPN when the cached copy is stale (20 s in progress, 60 s near tipoff, 10 min upcoming, never
+  once final), one shared fetch per resource. Finals are appended as hashed evidence; in-progress
+  reads only replace the new mutable `live_current` row. Migration `19b810a4f017` drops the
+  leases and worker state; the worker's Live thread, `COURTLENS_LIVE_ENABLED`, the lease
+  endpoints and the B31/B32 lease verification scripts are gone. Parser `espn-live-v4` adds
+  records, line scores, the season calendar, starters, positions, DNP reasons, team totals,
+  plays with court spots, leaders, injuries, the line and venue / attendance / officials /
+  broadcasts. Players map to NBA IDs (crosswalk, sealed ESPN rosters, unique name): all 28 in
+  MIN–CLE 2026-10-26. ESPN's per-play running score lags (one free throw moved it 120 → 123), so
+  plays carry the scoring-play sums when those reach the final.
+- Menu: Live ("Live NBA scores, box scores and play-by-play") and Playoffs, with icons. The Finals
+  entry, the Live / Finals / Playoffs route tabs and the Finals breadcrumb are gone; Playoffs keeps
+  its own title.
+- Board: Databallr's centred seven-day strip (gold box on the open day, today in gold, days the
+  season calendar has no games dimmed), a date picker for older dates, the hotkey tip, and a
+  four-across card grid in a 1,088 px column: status or tipoff ("8:00 PM EDT"), HK badge, spread
+  and O/U chips before tipoff, logo, code, record, "n OUT", score, winner bold with a marker and
+  the loser dimmed. An empty landing day opens the nearest earlier game date (else the next);
+  explicit dates stay put. This replaces the PC first-load "Top performers" / "Next games" panel.
+- Game view: Databallr's banner (All Games, status, logos, scores with the loser dimmed, hotkey)
+  and tabs Summary / Box Score / Play-by-Play / Pre-Game with the hotkey legend; the tab is in
+  the URL (`?tab=`). Summary (X): line score with OT, Game Leaders (points, rebounds, assists with
+  season photos), a full-court shot chart (period filter, made dots and missed crosses in team
+  colours, plotted makes-attempts), Team Stats as split bars (FG, 3P, FT with decimals from makes
+  and attempts, rebounds, assists, steals, blocks, turnovers, paint, fast break, largest lead) and
+  Game Info (when, where, watch, attendance, officials). Box Score: both teams side by side
+  ("Press Q / W"), Starters and Bench, MIN, PTS, TS% (gold ≥ 60, blue < 52), REB (OFF), AST, STL,
+  BLK, PF, TO, 2P, 3PT, FT, +/- (green / red), DNP rows with ESPN's reason, a gold Team total, then
+  Recent Plays with "View all plays". Play-by-Play: search, "n of N plays", All / Q1–Q4 / OT
+  chips, newest first, scoring plays bold with a gold edge and the scoring side's score lit.
+  Pre-Game: Injury Report per team (position, name, injury, Out badge, "No injuries reported")
+  and Betting Lines as Databallr's spread / moneyline / total tiles, labelled "DraftKings via
+  ESPN… Market prices, not a CourtLens forecast".
+- All Games rail pinned to the bottom of the viewport, numbered mini cards, the open game outlined.
+- Hotkeys: 1–9 open or jump between games; Esc back to All Games; Q / W focus the away / home box
+  (switching to Box Score); Tab / Shift+Tab cycle the views only while nothing is focused, so
+  keyboard focus still moves normally.
+- Verified 2026-10-27: ruff, mypy, pytest (2,321 passed; `tests/unit/test_live.py`,
+  `tests/integration/test_live_postgres.py` on a disposable PostgreSQL), dashboard lint,
+  typecheck, Vitest (668), `e2e/live.spec.ts` (13, on real ESPN reads saved as fixtures) and the
+  FO14 phone-target check; no page overflow at 1920, 1440 or 390 px. Full browser suite: 491
+  passed; the remaining failures predate Live (Stats move dates, PC12 directory and FO06 recent-games
+  baselines) or come from the uncommitted Player Dashboard work, plus the `playoffs bracket`
+  baselines, which differ only because the Live / Finals / Playoffs tabs are gone (not refreshed). The old Live visual baselines
+  (`live-finals-*`, `first-load-live-*`) were removed; Live gets new ones once approved.
+
+Data-blocked: Databallr's per-book odds table (no free multi-book source); minutes as m:ss
+(ESPN gives whole minutes; NBA.com's live CDN refuses this machine). Shot counts come from the
+plays with a court spot, which can differ from the box by an attempt or two (CLE 46-104 vs
+46-102 on 2026-10-26).
+
+Evidence: docs/evidence/alignment/live/
+
+Follow-ups (owner, 2026-10-27):
+2. [x] "Make the date picker squares a little larger, they are a little small, and give them
+   slightly more interior padding." — 52 × 56 px days (were 40 × 40) with 4 px padding, larger
+   month and day type; 40 × 52 on phones.
+3. [x] "Then make the game containers slightly larger." — 16 px padding (20 at the foot), 32 px
+   logos, 40 px team rows, larger codes, records and scores (263 × 164 px at 1440).
+4. [x] "For some reason the number beside \"HK\" is not center or bottom aligned with it (it seems
+   raised)." — Why: the number was a monospace `kbd` box 16 px tall, centred, so its digit sat
+   higher than the label's text. It now uses the label's font on a shared baseline: bottoms and
+   centres measured equal (also the banner's "Hotkey:" badge). Evidence: `board-1440.png`,
+   `board-390.png`.
+
+Follow-up (owner, 2026-10-27, second pass):
+5. [x] "Are you sure the team colors are accurate on the page? The celtics should be green, but they
+   are cool blue … databallr doesn't do this." (owner screenshots: BKN–BOS game view with a blue
+   Boston edge; Databallr's banner bar black on the Nets' half, green on the Celtics'.)
+   — Why: the Nets' brand black is brightened to grey (#666) so it shows on the dark page, and my
+   clash check compared brightness only, so grey and Celtics green read as a clash and Boston was
+   swapped to the generic identity blue. Fix: each team always keeps its own colour. The banner's
+   top bar is split in halves in the true brand colours (#000 / #007A33), as on Databallr, with a
+   faint brand tint at each end; shot marks and stat bars use the brightened accents. Only two
+   near-identical colours (two reds, by RGB distance) change, and then the away team takes a
+   lighter tint of its own colour. Tests: `components/live-game.test.ts`. Evidence:
+   `colors-bkn-bos-1440.png`, `colors-min-cle-1440.png`.
+
+Follow-ups (owner, 2026-10-27, third pass):
+6. [x] "What does the HK and numbers mean in the game cards?" (owner screenshot of an upcoming card:
+   "HK 1", then the -12.5 and O/U 222.5 chips.) — Answer: HK is Databallr's "hotkey"; the number is
+   the key that opens the game (1 for the first card through 9). The chips are the home spread and
+   the total. Change: "HK" was jargon, so a card shows just the number as an outlined key cap
+   (thicker bottom edge, set apart from the line chips) with a "Press 1 to open this game" tooltip
+   and screen-reader text, as the All Games rail already did. The banner keeps "Hotkey: 2".
+   Evidence: `card-keycap.png`.
+7. [x] "If the game hasn't started yet, shouldn't [it] open in Pre-Game instead of Summary?" — Yes:
+   a scheduled, postponed or cancelled game opens on Pre-Game; started and final games on Summary.
+   A tab the viewer picks wins and stays in the URL while 1–9 jumps between games; with no pick,
+   each game opens on its own default. Evidence: `upcoming-opens-pregame-1440.png`.
+
+Follow-up (owner, 2026-10-27, fourth pass):
+8. [x] "Why doesn't the betting numbers on the game cards reference the actual teams? … I don't bet,
+   so can it be understood who the favorite here is?" (owner screenshot: BKN at BOS card with
+   "-12.5" and "O/U 222.5" chips.) — Why: the chip showed ESPN's bare spread, which is the home
+   team's line (negative = home favored), so "-12.5" never said it meant Boston. ESPN's own text
+   also uses its codes ("NY -4.5", "SA -18.5"). Fix (`lineFavourite` in `lib/live.ts`): the
+   favourite comes from the spread's sign and our team codes. Cards end with their own row, "BOS by
+   12.5 · O/U 222.5", with tooltips ("Boston Celtics favored by 12.5 points", "about 222.5 points
+   combined"); the header keeps just the time, key and arrow, so nothing wraps. Pre-Game tiles name
+   the team ("BOS −12.5") with a plain line under each: "Boston Celtics favored by 12.5 points",
+   "Boston Celtics favored to win", "About 222.5 points combined"; tiles align from the top.
+   Evidence: `cards-favorite.png`, `pregame-lines-favorite.png`.
+
+
+### 5 WOWY — 👀 ready for review
+
+Owner start (2026-10-25): "On databallr it has its own nav bar entry. We don't have a nav bar entry
+for it." "When you press the WOWY nav bar entry, it gives you a team prompt." "Databallr's WOWY
+current implementation is quite bad UI wise. Broken layouts etc., the idea is good though. I feel
+like we can reorganize and restructure the data (visually speaking) in a better way."
+
+Starting state (survey, 2026-10-25): `/wowy` lives under Research → Impact. It shows one duo from a
+team's ten highest-minute players: four split tiles, a ranked net-rating bar chart, a split table
+and an every-duo table, with Team / Player A / Player B selects. The shared-floor endpoint
+(`POST /api/workbench/operations/wowy`) already takes up to five players as together / apart
+conditions and a date range; IM03 stints carry period and opponent, so game-clock and opponent
+filters are derivable.
+
+Databallr (`/nba/wowy`, owner screenshots 2026-10-25): top-level WOWY link after Stats; arrival opens
+a Select Team dialog (30 logos, 5 × 6). Then "WOWY Combos": team, Players (n), season and phase
+chips; Overview / Offense / Defense / Expanded tabs; Pad, Luck, export, share. A left Players list
+gives each player a Combo / On / Off segment (up to 5 combo players; On and Off hold for every
+row). The table has one row per on/off mix of the combo players (2^n rows, by minutes): big photos
+dimmed "OFF", MIN, OFF and DEF ratings with a change vs a baseline and 3P%, NET; one player adds an
+ON − OFF row. Filters: dates inside the season, game clock (Full game, halves, quarters, OT, last 5
+of Q4 + OT, Custom), exclude garbage time, common games only, opponents (all, by tier on offense /
+defense / net top / mid / bottom 10, pick teams), player vs player. A roster drawer at the bottom
+repeats the player list.
+
+Instructions (owner, 2026-10-25):
+1. [x] WOWY gets its own top-level nav bar entry, as on Databallr. — `DIRECT_LINKS` in
+   `lib/nav-model.ts` (Stats, WOWY), rendered by the header and the phone drawer; removed from
+   Research → Impact.
+2. [x] Opening WOWY prompts for a team (Databallr's Select Team dialog). — Stat Line Shift's Select
+   Team modal; closing it leaves "Select a team to begin".
+3. [x] Keep Databallr's idea (combo players split into every on/off mix, with On / Off conditions
+   and filters) but reorganize and restructure the data visually so it reads better than
+   Databallr's layout.
+
+Owner decisions (2026-10-25, on the agent's proposal):
+- Layout: **combo matrix**. Each combo player gets a narrow on/off dot column under a small face in
+  the header, so each mix is one compact row: MIN, ORtg and DRtg with their change vs the team's
+  season rating, and NET with a diverging bar. An On − Off card per combo player sits above the
+  table, and rows under the sample rule are muted. There's no duplicate bottom roster drawer.
+- Nav: WOWY moves to a top-level link right after Stats and leaves Research → Impact.
+- Filters: "Use your best judgment here. I want good comprehensive coverage." Agent scope: dates
+  inside the season; game clock (full game, halves, quarters, OT, last 5 of Q4 + OT, custom);
+  exclude garbage time (documented rule); common games only; opponents (all, by tier, pick teams);
+  player vs player where the stints support it.
+
+Done (instruction 3): new `GET /api/workbench/operations/wowy-combos` (contract
+`docs/design/wowy-combos-v1.md`, `domain/wowy_combos.py`, `services/wowy_combos.py`; GET, so the
+hosted demo's Caddy allowlist is unchanged). `load_floor_rows(detail=True)` adds the clock, start
+margin and both sides' box totals without changing shared-floor hashes. Page `components/wowy-view.tsx`:
+- Left rail: Players (Combo / On / Off per player, search, top 12 + All) and Filters (dates; game
+  clock presets + custom periods and minutes; exclude garbage time; common games; opponents all /
+  by tier with ranked logos / pick teams; player vs player on, off or as a split column). Reset
+  and an active-filter count. On phones: Players, then the table, then Filters.
+- Main: Overview / Offense / Defense tabs, an "Every row: …" line for held conditions, an On − Off
+  card per combo player (net with its ORtg / DRtg parts), and the combo matrix: dot columns under
+  small season photos, Min, ratings with the change against the filtered team total, Net with a
+  diverging bar, then shooting or four factors; muted rows under the sample gates; a gold Team
+  Total foot. Export CSV and evidence JSON in Data Details.
+- Verified 2026-10-25: ruff, mypy, pytest (`tests/unit/test_wowy_combos.py`), dashboard lint,
+  typecheck, Vitest (`lib/wowy.test.ts`), Playwright `e2e/wowy.spec.ts` plus the touched suites;
+  live TOR 2025-26 calls answer in under a second.
+- Open: the FO06 `recent games` desktop baseline differs in the header (new WOWY link) and also
+  in its console and stat card, drift not from this page; not refreshed. The PC12 directory
+  baselines already fail since row 22 replaced the directory table.
+Evidence: docs/evidence/alignment/wowy/
+
+Follow-ups (owner, 2026-10-25, after the first build):
+4. [x] "I really like the databallr implementation. We should try to replicate it. It's very clear."
+   Replicate Databallr's lineup table (owner screenshot): a branded card header ("WOWY Combos •
+   season • phase"), LINEUP with the team logo, one row per mix with large photos (on players lit,
+   off players dimmed with an OFF label, last names below), MIN, OFF (ORtg, its change, 3P%), DEF
+   (DRtg, its change, opponent 3P%), NET in the good/bad colour, and an ON − OFF row for one
+   player. This replaces the combo matrix chosen earlier. — `LineupTable` in
+   `components/wowy-view.tsx`: CourtLens wordmark card ("WOWY Combos • season • phase", the held
+   conditions or "All Games" beneath), LINEUP with the team logo, 64 px team-colour photos (on
+   first, off dimmed with OFF), MIN with the "3P%:" label, OFF / DEF with the change against the
+   league average (served as `league_rating`, as Databallr's baseline) and 3P% / opponent 3P%, NET;
+   gold for the better side and blue for the worse, as on Databallr and Stat Line Shift. One combo
+   player adds ON − OFF. Clicking a lineup opens its games, stints, possessions and net interval
+   (Databallr's "click a lineup cell"). Offense / Defense keep the four-factor columns. The On − Off
+   cards, the dot matrix and the team-total row are gone. Photos shrink to 40 px on phones so all
+   five columns fit at 390 px. Photo overrides live in `app/styles/foundation.css` (foundation
+   outranks pages).
+5. [x] The player photos and entries in the Players list should be much larger; they are much too
+   small. — 48 px photos (no logo badge), 56 px rows, `--text-md` names and `sm` role buttons; the
+   rail is 360 px wide.
+
+Follow-ups (owner, 2026-10-25, second pass):
+6. [x] "The player entries are still clipped off on the left. They should also be slightly larger"
+   (owner screenshot of the Players rail: the photo rings are cut at the rail's left edge). — The
+   rail's scroll box clipped the rings; it now has inline padding. 56 px photos, 68 px rows, a
+   380 px rail.
+7. [x] "Try to replicate databallr more." Owner screenshots of Databallr's WOWY Combos card (a
+   compact card, Overview / Offense / Defense / Expanded tabs, a "Click for lineup composition"
+   hint on the lineup cell, short names such as "CMB" for long ones, "Click a lineup cell for
+   detailed information about that lineup combination", "Data sources" and "What is NBA WOWY
+   analysis?" disclosures). "There are also lineup compositions you can expand into": Databallr's
+   Lineups dialog (brand, team logo, season; the lineup's photos plus a Team Help circle; MIN, NET,
+   OFF, DEF, O-3P%, D-3P% with changes; Offensive TS%, TOV%, ORB% and Defensive D-TS%, D-TOV%,
+   D-ORB% with changes; shot location; Teammate Help: weighted average DARKO of the other
+   teammates on the floor, NET = OFF + DEF; shared floor with the lineup % and DARKO per teammate).
+   — The card is Databallr-width (760 px; Offense / Defense / Expanded widen it), with smaller
+   column heads, bold short names (initials such as "CMB" for long or hyphenated last names), an
+   Expanded tab (both ends' factors), the "Click for lineup composition" hint, Databallr's footer
+   line and the two disclosures. A lineup cell opens the composition dialog: brand, team logo,
+   "Lineups", season; the photos and a Team Help disc; MIN, NET, OFF, DEF, O-3P%, D-3P%; Offensive
+   TS%, TOV%, ORB% and Defensive D-TS%, D-TOV%, D-ORB%, each with its change against the league
+   (`league_factors`); Teammate Help (minutes-weighted DARKO of the other teammates, NET = OFF +
+   DEF, from the sealed DARKO phase rating); shared floor % with each teammate's DPM; games,
+   stints, possessions and the net interval. TOV% here is turnovers per 100 possessions, matching
+   the league baseline. Not built: shot location (rim / mid / 3P / corner 3), because the stint
+   box has no shot zones.
+
+Follow-ups (owner, 2026-10-25, third pass):
+8. [x] "The left sidebar should be a part of the page, not isolated as scrollable." — The rail is no longer
+   sticky or scrollable on its own; it scrolls with the page.
+9. [x] "The combo/on/off buttons are a little unintuitive when trying to setup. Can we come up with
+   something more intuitive to use/setup for the resulting chart." — The Players panel opens on a "Your
+   lineups" box with three named groups in plain words: Compare n/5 ("Each player splits the table
+   into lineups with and without them"), Always on ("Every lineup has them on the floor") and
+   Always off ("…on the bench"). Each lists its players as removable chips and ends with the
+   result ("2 players compared: 4 lineup rows"). Each roster row shows minutes and games with one
+   Add button, which adds the player to Compare. An added player's row swaps that for a Compare /
+   Always on / Always off picker and a remove button. Compare is disabled at five. Evidence:
+   `wowy-setup-1440.png`, `wowy-setup-390.png`.
+
+Follow-up (owner, 2026-10-25, fourth pass):
+10. [x] "Can we make the pairing determinstic (like binary or whatever), I'm noticing we don't order
+    it the same every time. What is a good way to order?" (owner screenshots: rows ordered by
+    minutes and photos on-first, so a player's photo changes column between rows.)
+    — Rows follow a truth table: everyone on first, then counting down in binary with the last
+    added player switching fastest (two players: both, first only, second only, neither). Minutes
+    no longer reorder them. Each player keeps one photo column in every row, in the order they
+    were added, so their photo stays in the same place and only lights or dims. The composition
+    dialog uses the same order. Evidence: `wowy-order-1440.png`.
+
+Follow-up (owner, 2026-10-25, fifth pass):
+11. [x] "maybe we can put the players section on the left (as is) and all the other filters sections
+    on the right side with the actual WOWY table in the middle."
+    — Three columns: Players (340 px) left, the table in the middle, Filters (300 px) right, on a
+    page up to 1480 px wide so the Databallr-width card sits between the rails. From 1024 to
+    1279 px the filters move under the table. Below 1024 px it's one column: players, table, then
+    filters. No page overflow at 1920, 1440, 1200 or 390 px. Evidence: `wowy-three-column-*.png`.
+
+Follow-ups (owner, 2026-10-27, sixth pass):
+12. [x] "this sliding selector needs to give a little more breathing room to the entries" (owner
+    screenshot: the Compare / Always on / Always off picker on an added player's row). — The picker
+    uses the kit's standard (not dense) spacing, so each option has its own padding and a gap
+    between options (220 px, still inside the 340 px rail). Evidence: `wowy-role-picker-1440.png`.
+13. [x] "the opponents sliding selector needs to be tapered to the actual options." (owner
+    screenshot: All Teams / By Tier / Pick Teams stretched across the Filters column.) — The Filters
+    column's selectors keep their options' width instead of stretching (Opponents, Rank by and Tier).
+    Evidence: `wowy-filters-1440.png`.
+14. [x] "\"always off\" is clipped on it's right. Why?" (owner screenshot of the role picker.)
+    — Why: the kit's Segmented is capped at its container's width and scrolls when wider. With
+    follow-up 12's spacing its content was 229 px in a 220 px column (between the photo and ×), so
+    "Always off" was cut off. My follow-up 12 check measured the box, not its content. Fix: the
+    picker sits on its own line under both the name and × (about 264 px), measured at 229 / 229 px
+    (content / box) at 1440, 1200 and 390 px. Added rows get a little vertical padding.
+    Evidence: `wowy-role-picker-1440.png`.
+15. [x] "title case for header. Shared floor linkup is squished. If you need to expand spacing for a
+    more optimal fit, do it." (owner screenshot of the lineup composition dialog.)
+    — Title case: the dialog title is "Lineup Composition", and the section headers are no longer
+    forced to capitals ("Offensive", "Defensive", "Teammate Help (16)", "Shared Floor with Lineup %
+    · DARKO"). Squish cause: the teammate photos reused the Players list's photo class, which
+    follow-up 14 had given a grid position, so each photo was pushed into a column beside its
+    name. They now have their own class. Each teammate is an 88 px column (share %, 56 px photo,
+    full name, DARKO) with more space between them, in a 620 px dialog (six per row on desktop).
+    Also: a change that rounds to zero shows "0.0", not "−0.0". Evidence:
+    `wowy-composition-1440.png`, `wowy-composition-390.png`.
+16. [x] "WOWY is currently not updated to show the current season. Any reason why?" then, after
+    "Databallr has data for the 2026-2027 even with this minimal data": owner chose "Daily, run now"
+    (2026-10-27). — Three causes:
+    - The weekly current-season job waited for 10 games per team before building anything. The
+      new `refresh-season-lineups` (daily 14:05 UTC, `courtlens-lineups-refresh`) builds
+      provisional stints and the stint box from the first game; RAPM / BPR still wait.
+    - On/off accepted stint statuses `valid` and `patched` but not IM03's `clean`, so every game
+      needing no repair was dropped. That emptied 2026-27 and also dropped clean games from the
+      sealed 2025-26 playoffs. `clean` is now accepted.
+    - WOWY defaulted the phase only when no season was named.
+    First run: 46 of 52 games accepted (6 excluded by the play-by-play checks), 12 s. TOR
+    Barrett / Barnes give 60 / 33 / 31 / 21 min, as on Databallr. The card says "Provisional", and
+    Teammate Help uses DARKO's current board for a season under way.
+    Also (owner "Yes"): header menus no longer hide a page whose source lacks the default season,
+    which had dropped Stat Line Shift, Player Matchups, Adjusted Shooting, Tracking and
+    Defensive Matchups once the default became 2026-27. Evidence: `wowy-2026-27-1440.png`,
+    `teams-menu-1440.png`.
+

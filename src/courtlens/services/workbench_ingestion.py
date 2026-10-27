@@ -200,6 +200,24 @@ def workbench_content_sha256(
     return content_hasher.hexdigest(), seasons_meta, files_to_hash
 
 
+def dataset_content_sha256(
+    years: list[int], root: Path, history: Path | None
+) -> tuple[str, list[str], list[Path]]:
+    """The content hash a workbench dataset is sealed with: raw seasons, then any history.
+
+    Anything that re-verifies a dataset against the raw store must use this, not the bare
+    season hash, or every release that carries the pre-2000-01 history fails to verify.
+    """
+    content_sha256, seasons_meta, files_to_hash = workbench_content_sha256(years, root, history)
+    totals_sha = history_totals_sha(root) if history is not None else None
+    if totals_sha is not None:
+        # The pinned season totals (1946-47 on) are part of what the release serves.
+        content_sha256 = hashlib.sha256(
+            f"{content_sha256}:season-totals:{totals_sha}".encode()
+        ).hexdigest()
+    return content_sha256, seasons_meta, files_to_hash
+
+
 def import_workbench_data(
     session: Session,
     ending_years: list[int] | None = None,
@@ -224,14 +242,9 @@ def import_workbench_data(
         history_records = read_sealed(history)
 
     # 1. Compute aggregate content hash across raw files
-    overall_content_sha256, seasons_meta, files_to_hash = workbench_content_sha256(
+    overall_content_sha256, seasons_meta, files_to_hash = dataset_content_sha256(
         years, root, history
     )
-    if totals_sha is not None:
-        # The pinned season totals (1946-47 on) are part of what the release serves.
-        overall_content_sha256 = hashlib.sha256(
-            f"{overall_content_sha256}:season-totals:{totals_sha}".encode()
-        ).hexdigest()
     history_seasons = sorted({row["season"] for row in history_records.get("schedule", [])})
     seasons_meta = history_seasons + seasons_meta
     membership_sha256 = hashlib.sha256(

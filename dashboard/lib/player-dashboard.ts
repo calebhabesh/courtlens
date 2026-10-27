@@ -49,13 +49,25 @@ function reader(params: Params) {
  *  Dots and underscores survive URLSearchParams unencoded. */
 export function parsePanels(value: string | null, fallbackSeason: string): PanelSpec[] {
   if (!value) return [];
-  return value.split("_").map(entry => entry.split(".")).filter(([id]) => /^\d{1,12}$/.test(id ?? "")).slice(0, MAX_PANELS).map(([playerId, season, phase, flags = ""]) => ({
+  const panels = value.split("_").map(entry => entry.split(".")).filter(([id]) => /^\d{1,12}$/.test(id ?? "")).map(([playerId, season, phase, flags = ""]): PanelSpec => ({
     playerId,
     season: season && SEASON.test(season) ? season : fallbackSeason,
     phase: PHASE_CODES[phase ?? ""] ?? "regular_season",
     advanced: !flags.includes("b"),
     rate: flags.includes("g") ? "per_game" : "per_36",
   }));
+  // A hand-edited or old link may repeat a card; the first copy wins.
+  return panels.filter((panel, at) => findPanel(panels, panel) === at).slice(0, MAX_PANELS);
+}
+
+/** One card per player, season and phase: the same player in another season or phase is a new card. */
+export function samePanel(a: Pick<PanelSpec, "playerId" | "season" | "phase">, b: Pick<PanelSpec, "playerId" | "season" | "phase">): boolean {
+  return a.playerId === b.playerId && a.season === b.season && a.phase === b.phase;
+}
+
+/** The index of the card that `spec` would duplicate, ignoring the card at `except`; -1 if none. */
+export function findPanel(panels: PanelSpec[], spec: Pick<PanelSpec, "playerId" | "season" | "phase">, except = -1): number {
+  return panels.findIndex((panel, at) => at !== except && samePanel(panel, spec));
 }
 
 export function panelsParam(panels: PanelSpec[]): string | null {
@@ -166,17 +178,44 @@ export const RATING_GROUPS: CellGroup[] = [
   { label: "MP", cells: [[q("min", "MIN", "min", "thousands", "Minutes played in the season and phase.")]] },
 ];
 
-export const SIX_FACTORS = {
+/** Six-factor RAPM (docs/design/impact-ratings-v1.md): three rate regressions, offence and defence.
+ *  Values are percentage points of the team's rate with the player on court; positive is favourable. */
+export interface SixFactorDef { id: string; label: string; key: string; name: string; tip: string; about: string; rate: string }
+
+export const SIX_FACTORS: { offense: SixFactorDef[]; defense: SixFactorDef[] } = {
   offense: [
-    { id: "o_ts", label: "OTS", key: "o_ts", tip: "Offensive true-shooting impact: points per 100 possessions from shooting efficiency." },
-    { id: "o_tov", label: "OTOV", key: "o_tov", tip: "Offensive turnover impact." },
-    { id: "o_reb", label: "OREB", key: "o_reb", tip: "Offensive rebounding impact." },
+    { id: "o_ts", label: "OTS", key: "o_ts", name: "Offensive shooting impact", rate: "true-shooting rate",
+      tip: "How much the team's true shooting rises with the player on offense.",
+      about: "The true-shooting rate of his lineups on offense, estimated jointly with the other nine players on the floor. It describes the shots his lineups take, not only his own." },
+    { id: "o_tov", label: "OTOV", key: "o_tov", name: "Offensive turnover impact", rate: "turnover share",
+      tip: "How much the team's turnover share falls with the player on offense.",
+      about: "Turnovers per shooting possession in his offensive stints, estimated jointly with the other nine players. Positive means his lineups turned it over less." },
+    { id: "o_reb", label: "OREB", key: "o_reb", name: "Offensive rebounding impact", rate: "offensive-rebound share",
+      tip: "How much the team's offensive-rebound share rises with the player on offense.",
+      about: "The share of their own misses his lineups rebound, estimated jointly with the other nine players: a lineup-level measure, not his own rebound count." },
   ],
   defense: [
-    { id: "d_ts", label: "DTS", key: "d_ts", tip: "Defensive true-shooting impact: opponents' shooting efficiency." },
-    { id: "d_tov", label: "DTOV", key: "d_tov", tip: "Defensive turnover impact: turnovers forced." },
-    { id: "d_reb", label: "DREB", key: "d_reb", tip: "Defensive rebounding impact." },
+    { id: "d_ts", label: "DTS", key: "d_ts", name: "Defensive shooting impact", rate: "opponent true-shooting rate",
+      tip: "How much opponents' true shooting falls with the player on defense.",
+      about: "Opponents' true-shooting rate in his defensive stints, estimated jointly with the other nine players. Positive means opponents shot worse with him on the floor." },
+    { id: "d_tov", label: "DTOV", key: "d_tov", name: "Defensive turnover impact", rate: "opponent turnover share",
+      tip: "How much opponents' turnover share rises with the player on defense.",
+      about: "Opponent turnovers per shooting possession in his defensive stints, estimated jointly with the other nine players. Positive means opponents turned it over more." },
+    { id: "d_reb", label: "DREB", key: "d_reb", name: "Defensive rebounding impact", rate: "opponent offensive-rebound share",
+      tip: "How much opponents' offensive-rebound share falls with the player on defense.",
+      about: "The share of their misses opponents rebound in his defensive stints, estimated jointly with the other nine players. Positive means opponents got fewer second chances." },
   ],
+};
+
+/** The method line under every six-factor card. */
+export const SIX_FACTOR_METHOD = "CourtLens one-season ridge fit over every stint; shown from 20 games and 1,000 opportunities on each end. Not additive to RAPM. A descriptive estimate under lineup confounding, not a causal effect.";
+
+/** Play-type families as Databallr groups Synergy's play types. */
+export const PLAY_FAMILY_ABOUT: Record<string, string> = {
+  creation: "Isolation, pick-and-roll ball handler and post-ups: possessions the player creates for himself.",
+  spacing: "Spot-ups, off-screen and handoffs: shots created by movement and the defense's attention elsewhere.",
+  transition: "Possessions finished before the defense is set.",
+  finishing: "Cuts, pick-and-roll roll man and putbacks: finishing what teammates or misses create.",
 };
 
 /** Scoring, offensive rebounding and playmaking: two rows of seven, as Databallr lays them out. */
@@ -338,6 +377,16 @@ export function compareLink(panels: PanelSpec[]): string {
   const params = new URLSearchParams({ season: a.season, phase: a.phase, playerA: a.playerId });
   if (b) params.set("playerB", b.playerId);
   return `/compare?${params}`;
+}
+
+/** The head-to-head's leader labels: surnames, plus the season when both sides share one
+ *  (Tatum 2024-25 against Tatum 2025-26), plus the phase when even that matches. */
+export function versusLabels(a: { name: string; season: string; phase: Phase }, b: { name: string; season: string; phase: Phase }): { a: string; b: string } {
+  const one = surname(a.name);
+  const two = surname(b.name);
+  if (one !== two) return { a: one, b: two };
+  if (a.season !== b.season) return { a: `${one} ${a.season.slice(2)}`, b: `${two} ${b.season.slice(2)}` };
+  return { a: `${one} ${CODES[a.phase].toUpperCase()}`, b: `${two} ${CODES[b.phase].toUpperCase()}` };
 }
 
 export function surname(name: string): string {

@@ -29,6 +29,7 @@ from courtlens.domain.on_off import (
 )
 from courtlens.domain.stint_box import stint_player_stats
 from courtlens.domain.teams import get_team_info
+from courtlens.domain.wowy_combos import side_totals
 from courtlens.services.stint_box_serving import stint_box_games
 from courtlens.services.workbench_analytics import (
     ResolvedContext,
@@ -49,7 +50,8 @@ COMBINED: dict[str, tuple[tuple[str, float], ...]] = {
     "reb_per_100": (("oreb_per_100", 1.0), ("dreb_per_100", 1.0)),
 }
 # v2 admits IM02-repaired stints under the IM03 possession method, as IM04's ratings do.
-ACCEPTED_STATUSES = frozenset({"valid", "patched"})
+# Native reconstruction writes "valid"; IM03 writes "clean" (no repair needed) or "patched".
+ACCEPTED_STATUSES = frozenset({"valid", "clean", "patched"})
 ACCEPTED_POLICIES = frozenset({"possession-policy-v1", "possession-policy-v2"})
 DISCLOSURES = [
     "Shared-floor splits describe lineup, opponent and role context; "
@@ -462,9 +464,13 @@ def game_plus_minus(
 
 
 def load_floor_rows(
-    session: Session, request: Scope
+    session: Session, request: Scope, *, detail: bool = False
 ) -> tuple[list[FloorRow], ResolvedContext, int, int, str | None]:
-    """Bounded team-side stints in scope, joined to the release's finalized schedule."""
+    """Bounded team-side stints in scope, joined to the release's finalized schedule.
+
+    `detail` adds the clock, start margin and both sides' summed box fields (WOWY combos). It is
+    off for the shared-floor operations, whose input hashes cover the row facts.
+    """
     if request.team_id is None:
         raise ValueError("a team is required to load stints")
     team = get_team_info(request.team_id)
@@ -574,30 +580,49 @@ def load_floor_rows(
             else {p: (s.player_stats_json or {}).get(p, {}) for p in lineup}
         )
         lineup_plays = [plays(player_stats[p]) for p in lineup]
-        rows.append(
-            {
-                "game_id": s.game_id,
-                "game_date": game_dates[s.game_id],
-                "team_id": team.team_id if team else request.team_id,
-                "opponent_team_id": s.away_team_id if home else s.home_team_id,
-                "index": s.stint_index,
-                "period": s.period,
-                "lineup": lineup,
-                "opponent_lineup": sorted(s.away_lineup_json if home else s.home_lineup_json),
-                "seconds": s.duration_seconds,
-                "off": s.home_possessions if home else s.away_possessions,
-                "def": s.away_possessions if home else s.home_possessions,
-                "points": s.home_points if home else s.away_points,
-                "allowed": s.away_points if home else s.home_points,
-                "stats": player_stats.get(focal, {}) if focal else {},
-                "player_stats": player_stats,
-                # Unknown when any of the five has an unrecorded play field.
-                "team_plays": None
-                if any(v is None for v in lineup_plays)
-                else sum(v for v in lineup_plays if v is not None),
-                "policy": s.policy_version,
+        row: FloorRow = {
+            "game_id": s.game_id,
+            "game_date": game_dates[s.game_id],
+            "team_id": team.team_id if team else request.team_id,
+            "opponent_team_id": s.away_team_id if home else s.home_team_id,
+            "index": s.stint_index,
+            "period": s.period,
+            "lineup": lineup,
+            "opponent_lineup": sorted(s.away_lineup_json if home else s.home_lineup_json),
+            "seconds": s.duration_seconds,
+            "off": s.home_possessions if home else s.away_possessions,
+            "def": s.away_possessions if home else s.home_possessions,
+            "points": s.home_points if home else s.away_points,
+            "allowed": s.away_points if home else s.home_points,
+            "stats": player_stats.get(focal, {}) if focal else {},
+            "player_stats": player_stats,
+            # Unknown when any of the five has an unrecorded play field.
+            "team_plays": None
+            if any(v is None for v in lineup_plays)
+            else sum(v for v in lineup_plays if v is not None),
+            "policy": s.policy_version,
+        }
+        if detail:
+            opponent = sorted(s.away_lineup_json if home else s.home_lineup_json)
+            opponent_team = s.away_team_id if home else s.home_team_id
+            opponent_stats = (
+                stint_player_stats(boxes[s.game_id], s.stint_index, opponent, opponent_team)
+                if boxes is not None and s.game_id in boxes
+                else {p: (s.player_stats_json or {}).get(p, {}) for p in opponent}
+            )
+            own_score, other_score = (
+                (s.start_home_score, s.start_away_score)
+                if home
+                else (s.start_away_score, s.start_home_score)
+            )
+            row |= {
+                "start_remaining": s.start_seconds_remaining,
+                "end_remaining": s.end_seconds_remaining,
+                "start_margin": own_score - other_score,
+                "totals": side_totals(player_stats, lineup),
+                "opp_totals": side_totals(opponent_stats, opponent),
             }
-        )
+        rows.append(row)
     # One invalid segment makes that game's shared-floor partitions incomplete.
     rows = [r for r in rows if r["game_id"] not in invalid_games]
     excluded = sum(s.game_id in invalid_games for s in stints)

@@ -168,7 +168,10 @@ refresh-season-impact` (timer `courtlens-impact-refresh`, Mondays 14:30 UTC) reb
 to IM05 chain for the current season from them, with one event stream (cdn.nba.com refuses
 non-browser clients), and seals the result as `courtlens-impact-provisional`, which the
 append-only triggers do not cover: the newest two are kept, older ones retired. Pages label the
-values provisional ([plan](../season-impact-plan.md)).
+values provisional ([plan](../season-impact-plan.md)). The weekly run waits until every team has
+played 10 games. `courtlens refresh-season-lineups` (timer `courtlens-lineups-refresh`, daily
+14:05 UTC) doesn't wait: from the first game it rebuilds IM02 candidates, IM03 stints and the
+stint box under the same namespace, with no fits, for WOWY, Stat Line Shift and on/off.
 
 ## Daily refresh: player index, contracts and DARKO
 

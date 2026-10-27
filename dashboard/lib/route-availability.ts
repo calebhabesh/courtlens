@@ -14,7 +14,12 @@ const requirements: Record<string, string> = {
   "/research/shooting/adjusted": "play_types", "/stats/tracking": "tracking",
   "/research/defensive-matchups": "defensive_tracking",
 };
-export function routeAvailability(href: string, catalog: WorkbenchCatalog | null, season?: string, phase?: string) {
+/**
+ * Whether a route's release-bound source can serve it. `anySeason` (the header's menus) asks
+ * only whether the source is up: a menu has no season, and each page's season picker lands on
+ * one it covers, so a page whose source lacks the default season is still listed.
+ */
+export function routeAvailability(href: string, catalog: WorkbenchCatalog | null, season?: string, phase?: string, { anySeason = false } = {}) {
   const route = href.split("?")[0];
   const requirement = requirements[route];
   if (!requirement) return { secondary: false, reason: "" };
@@ -22,6 +27,7 @@ export function routeAvailability(href: string, catalog: WorkbenchCatalog | null
   const capability = catalog.capabilities?.[requirement];
   if (!capability) return { secondary: true, reason: "Required source is not declared in this release. Try Stats or inspect Data status." };
   if (!["available", "partial"].includes(capability.status)) return { secondary: true, reason: capability.limitations[0] ?? "Required inputs are unavailable in this release. Try Stats." };
+  if (anySeason) return { secondary: false, reason: capability.status === "partial" ? "Partial source coverage; inspect the tool’s sample and limitations." : "" };
   const selectedSeason = season ?? catalog.default_season;
   const selectedPhase = phase ?? catalog.default_phase;
   if ((capability.seasons.length && !capability.seasons.includes(selectedSeason)) ||

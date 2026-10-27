@@ -2,7 +2,10 @@
 
 Status: SI01–SI04 built and verified on 2025-26 inputs, SI05 built; first real run waits for the
 start gate (about mid-November). Owner approved the weekly recompute and the provisional storage
-rule below on 2026-10-20 ("Sounds good go ahead"). Builds on the
+rule below on 2026-10-20 ("Sounds good go ahead"). On 2026-10-27 the owner chose to build current-season lineup stints daily from the first
+game ("Daily, run now"), after noticing Databallr's WOWY serves 2026-27 at three games. The
+10-game start gate now holds only the fits (RAPM, BPR, extras, team splits); see "Daily lineups"
+below. Builds on the
 [impact metrics handoff](impact-metrics-plan.md) (IM01–IM07, sealed for 2023-24 to 2025-26) and
 the daily statistics release ([source policy v3](design/source-policy-v3.md), "Daily season
 statistics"). Plans are not runtime evidence.
@@ -103,3 +106,13 @@ are kept (sealed origin, previous, current); working files keep only what kept b
 reconstructions are content-addressed (about 75 MB a season). The raw per-game documents
 the daily run retains are larger: about 20 KB of box score, 300 KB of play-by-play and 150 KB of
 matchups per game, roughly 0.6 GB a season, kept like other raw acquisitions.
+
+## Daily lineups (owner, 2026-10-27)
+
+`refresh-season-lineups` runs after the daily refresh with no start gate. It does the weekly
+job's population half: IM02 candidates, IM03 bundles, `populate_provisional`, and a provisional
+stint box served beside the sealed ones. That is what WOWY, Stat Line Shift and on/off read. It
+fits nothing. `refresh-season-impact` keeps the 10-game gate for RAPM, BPR, extras and team
+splits, and repopulates the same way when it runs. Small samples stay visible but muted under
+the pages' existing sample gates (100 possessions each way, 5 games). Retirement keeps the newest
+two provisional datasets per season and phase, as before.

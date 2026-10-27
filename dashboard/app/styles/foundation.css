@@ -446,6 +446,20 @@
   /* Contracts' timeline: the team ring as on player pages, without the logo badge (the whole page is
      one team; alignment row 14, follow-up 14). */
   .ctr-timeline-name .ui-identity-badge { display: none; }
+  /* WOWY's lineup photos (alignment row 5, follow-up 4): Databallr's 64 px team-colour discs without
+     the logo badge (an opponent keeps it); off-floor players dimmed. Here because foundation outranks pages. */
+  .wowy-face .ui-identity-lg { --identity-media: 64px; }
+  .wowy-face .ui-identity-badge, .wowy-roster-photo .ui-identity-badge, .wowy-mate-photo .ui-identity-badge { display: none; }
+  .wowy-face[data-opponent] .ui-identity-badge { display: inline-grid; }
+  .wowy-face .ui-identity-media :is(.player-portrait, .player-portrait-fallback) {
+    background: color-mix(in srgb, var(--team-color) 75%, var(--color-surface-2));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--team-color) 45%, var(--color-white)), 0 0 12px color-mix(in srgb, var(--team-color) 45%, transparent);
+  }
+  .wowy-face[data-opponent] .ui-identity-media :is(.player-portrait, .player-portrait-fallback) { box-shadow: 0 0 0 2px var(--color-identity-b); }
+  .wowy-face[data-off] .ui-identity-media :is(.player-portrait, .player-portrait-fallback) { filter: grayscale(0.5) brightness(0.4); box-shadow: none; }
+  @media (max-width: 640px) { .wowy-face .ui-identity-lg { --identity-media: 40px; } }
+  /* The Players rail (follow-up 6): 56 px photos. */
+  .wowy-roster-photo.ui-identity-md, .wowy-mate-photo.ui-identity-md { --identity-media: 56px; }
 
   .ui-identity-text { display: flex; flex-direction: column; min-width: 0; }
 

@@ -129,3 +129,56 @@ def test_retirement_keeps_newest_provisional_and_never_sealed(session) -> None:
     assert season_impact.retire_provisional(session, keep=2) == [old.id]
     left = set(session.scalars(select(WorkbenchDataset.id)))
     assert left == {sealed.id, middle.id, new.id}
+
+
+def test_daily_lineups_populate_from_the_first_game_and_fit_nothing(
+    session, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # No schedule on disk: the daily step never consults the 10-game gate.
+    calls: list[str] = []
+    bundle = tmp_path / "bundle.json.gz"
+    monkeypatch.setattr(
+        season_impact,
+        "_prepare",
+        lambda *a: ({}, {"content_sha256": "im02", "seasons": {}}, [bundle]),
+    )
+    monkeypatch.setattr(
+        "courtlens.ingestion.impact_repair_audit.retained_boxes", lambda *a: ({}, None, None)
+    )
+
+    def populate(_session, path: Path) -> dict:
+        calls.append(f"populate:{path.name}")
+        return {"dataset_id": "d1"}
+
+    monkeypatch.setattr(season_impact, "populate_provisional", populate)
+    monkeypatch.setattr(
+        season_impact, "_stint_box", lambda *a: calls.append("box") or {"b1": {"provisional": True}}
+    )
+    monkeypatch.setattr(
+        season_impact,
+        "_serve_stint_boxes",
+        lambda _dir, boxes, meta: (
+            calls.append(f"serve:{sorted(boxes)}") or tmp_path / "s.json",
+            [],
+        ),
+    )
+    monkeypatch.setattr(season_impact, "retire_provisional", lambda _s: ["old"])
+    monkeypatch.setattr(season_impact, "prune_work", lambda *a: 0)
+    for fit in ("fit_ratings", "build_extras"):
+        monkeypatch.setattr(
+            f"courtlens.evaluation.season_impact_fits.{fit}",
+            lambda *a, **k: pytest.fail("the daily step must not fit"),
+        )
+    result = season_impact.refresh_season_lineups(
+        session,
+        raw_root=tmp_path / "raw",
+        store=tmp_path / "store",
+        end_year=2027,
+        today=date(2026, 10, 27),
+        work_root=tmp_path / "work",
+        serving_dir=tmp_path / "serving",
+        splits_dir=tmp_path / "splits",
+        stint_box_dir=tmp_path / "stint-box",
+    )
+    assert calls == ["populate:bundle.json.gz", "box", "serve:['b1']"]
+    assert result["status"] == "published" and result["retired"] == ["old"]

@@ -1,0 +1,36 @@
+@layer components {
+  /* HoverCard (Databallr's stat cards). The anchor keeps its child's layout; the card is fixed at
+     document.body, placed by the component through --hover-x / --hover-y. */
+  .ui-hover-anchor { display: inline-flex; min-width: 0; }
+
+  .ui-hover-card {
+    position: fixed; top: 0; left: 0; z-index: var(--z-tooltip);
+    display: flex; flex-direction: column; gap: var(--space-2); width: min(360px, calc(100vw - var(--space-4)));
+    padding: var(--space-4); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg);
+    background: var(--color-surface-3); box-shadow: var(--shadow-3); color: var(--color-text);
+    pointer-events: none; visibility: hidden;
+  }
+  .ui-hover-card[data-placed] {
+    visibility: visible; transform: translate(var(--hover-x), var(--hover-y));
+    animation: ui-hover-card-in var(--dur-fast) var(--ease-out);
+  }
+  @keyframes ui-hover-card-in { from { opacity: 0; } }
+
+  .ui-hover-card-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+  .ui-hover-card-eyebrow { color: var(--color-accent); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .ui-hover-card-pill {
+    flex: none; padding: var(--space-0-5) var(--space-2); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-pill);
+    background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .ui-hover-card-title { font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .ui-hover-card-lead { margin: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ui-hover-card p { margin: 0; }
+  .ui-hover-card-text { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  /* An inset note: what the tile is showing, or the method behind the value. */
+  .ui-hover-card-note {
+    display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md);
+    background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh);
+  }
+  .ui-hover-card-note > strong { color: var(--color-accent); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); letter-spacing: 0.1em; text-transform: uppercase; }
+  .ui-hover-card-note > em { color: var(--color-text); font-style: normal; font-weight: 600; }
+}

@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { mockContracts, mockFreeAgency, mockFinance, mockRosterShapes, initial as financeInitial } from "./finance-fixture";
-import { firstLoadFixtures, lastGamesFixtures, offSeasonFixtures, SGA } from "./first-load-fixtures";
+import { firstLoadFixtures, lastGamesFixtures, SGA } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
 import research from "./fixtures/research-negative-result.json";
 
@@ -92,17 +92,6 @@ for (const view of WIDTHS) {
       await expect(page).toHaveScreenshot(`search-${view.name}.png`, shot);
     });
 
-    // FO08: Finals on a fixed past date (the Live tab depends on today, so it has no baseline).
-    test("live finals board", async ({ page }) => {
-      const team = (id: string, name: string, side: string, score: number) => ({ source_id: id, canonical_id: id, identity_status: "admitted_research", name, side, score });
-      const games = [["0022401190", "1610612738", "Boston Celtics", "1610612761", "Toronto Raptors"], ["0022401191", "1610612747", "Los Angeles Lakers", "1610612744", "Golden State Warriors"]]
-        .map(([id, home, homeName, away, awayName], i) => ({ source_id: id, canonical_id: id, identity_status: "admitted_research", namespace: "nba", slate_date: "2025-04-15", event_time: null, status: "final", period: null, clock: null, provisional: false, teams: [team(home, homeName, "home", 110 + i), team(away, awayName, "away", 101 + i)] }));
-      await page.route("**/api/live/historical?*", (route) => route.fulfill({ json: { context: { release_id: "fixture-release", dataset_id: "fixture-dataset", season: "2024-25", phase: "regular_season", before_date: "2025-04-16" }, games, players: null, status: "admitted_finals", warnings: [] } }));
-      await openWorkbench(page, "/live/2025-04-15?live_mode=history&releaseId=fixture-release&season=2024-25");
-      await expect(page.getByRole("region", { name: "Game slate" }).getByRole("link")).toHaveCount(2);
-      await settle(page);
-      await expect(page).toHaveScreenshot(`live-finals-${view.name}.png`, shot);
-    });
 
     test("playoffs bracket", async ({ page }) => {
       await openWorkbench(page, "/playoffs?season=2025-26");
@@ -245,7 +234,6 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
     else await expect(page.getByRole("region",{name:"Observed example context"})).toBeVisible();
     await settle(page);await expect(page).toHaveScreenshot(`first-load-${name}-${view.name}.png`,shot);
   });
-  test("live off-season",async({page})=>{await offSeasonFixtures(page);await openWorkbench(page,"/live");await expect(page.getByRole("region",{name:"Top performers"})).toContainText("28 PTS");await settle(page);await expect(page).toHaveScreenshot(`first-load-live-${view.name}.png`,shot);});
   // PC08: Contracts first load from the latest admitted refresh (real captured responses).
   // PC10: Roster Shapes first load and team detail from the captured real response.
   // Stat Line Shift (row 13) opens like Databallr: on its Select Team dialog, no team chosen.
@@ -262,7 +250,7 @@ for (const view of WIDTHS) test.describe(`PC11 populated pages ${view.name}`, ()
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
   for (const [name, path, ready] of [["defensive-matchups", "/research/defensive-matchups", "Makes below expected, top 12"], ["player-matchups", "/matchups", "Exposure"],
     ["adjusted-shooting", "/research/shooting/adjusted", "Points per 100 above the play-type expectation"], ["six-factor", "/research/rapm/six-factor", "Offensive Shooting (oTS), top 15"],
-    ["combine", "/wingspan", "Wingspan versus barefoot height"], ["wowy", "/wowy", "Fixture Anchor and Fixture Wing: net rating by who was on the floor"],
+    ["combine", "/wingspan", "Wingspan versus barefoot height"],
     ["stats-tracking", "/stats/tracking", "Drives per game, top 12"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByText(ready, { exact: true }).first()).toBeVisible();

@@ -78,17 +78,41 @@
     border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg);
     background: var(--color-table-lift); box-shadow: var(--shadow-2);
   }
-  .pd-panel[data-swapped] { border-color: var(--color-accent); }
-  /* Actions sit beside the name, and drop under it when the name needs the room. */
-  .pd-panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2); }
-  .pd-panel-avatar { position: relative; display: inline-flex; }
-  .pd-panel-avatar .pd-panel-portrait { width: 60px; height: 60px; border: 3px solid var(--team-tint, var(--color-hairline-strong)); border-radius: 50%; background: color-mix(in srgb, var(--team-tint, var(--color-surface-2)) 40%, var(--color-surface-0)); }
-  .pd-panel-position {
-    position: absolute; right: -2px; bottom: -2px; display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 18px; padding: 0 var(--space-1);
-    border-radius: var(--radius-pill); background: var(--team-tint, var(--color-surface-3)); box-shadow: 0 0 0 2px var(--color-table-lift); color: var(--color-white); font-size: var(--text-2xs); line-height: 1; font-weight: 700;
+  /* Head-to-head sides in their identity colours. While A waits, the other panels hold a solid blue
+     (B) border and only their swap buttons pulse (kit `beckon`). */
+  .pd-panel[data-pair="a"] { border-color: var(--color-identity-a); }
+  .pd-panel:is([data-pair="b"], [data-pair="candidate"]) { border-color: var(--color-identity-b); }
+  /* A card picked again is shown, not duplicated: it flashes the accent once. */
+  .pd-panel:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .pd-panel[data-flash] { animation: pd-flash 1.2s var(--ease-out); }
+  @keyframes pd-flash {
+    0%, 60% { box-shadow: 0 0 0 3px var(--color-accent), var(--shadow-2); }
+    100% { box-shadow: var(--shadow-2); }
   }
-  .pd-panel-who { display: flex; flex: 1 1 140px; flex-direction: column; min-width: 0; }
-  .pd-panel-who h3 { margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; text-wrap: balance; }
+  @media (prefers-reduced-motion: reduce) {
+    .pd-panel[data-flash] { animation: none; box-shadow: 0 0 0 3px var(--color-accent), var(--shadow-2); }
+  }
+  /* Actions sit beside the name, and drop under it when the name needs the room. */
+  /* Databallr's header: photo, the name wrapping beside it, the actions held at the top right. */
+  .pd-panel-head { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: var(--space-3); }
+  .pd-panel-avatar { position: relative; display: inline-flex; }
+  /* RingPhoto: the team's logo behind the headshot inside a team-colour ring (panels, head-to-head). */
+  .pd-ring {
+    position: relative; display: block; flex: none; overflow: hidden; border: 3px solid var(--team-tint, var(--color-hairline-strong)); border-radius: 50%;
+    background: color-mix(in srgb, var(--team-tint, var(--color-surface-2)) 40%, var(--color-surface-0));
+  }
+  .pd-ring .pvp-watermark { opacity: 0.45; }
+  .pd-ring .pd-ring-portrait { position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; border-radius: 0; background: transparent; }
+  /* Databallr-sized avatar (owner, 2026-10-24: "make the photos in the cards larger"). */
+  .pd-panel-photo { width: 76px; height: 76px; }
+  .pd-panel-position {
+    position: absolute; right: -2px; bottom: -2px; display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 22px; padding: 0 var(--space-1);
+    border-radius: var(--radius-pill); background: var(--team-tint, var(--color-surface-3)); box-shadow: 0 0 0 2px var(--color-table-lift); color: var(--color-white); font-size: var(--text-xs); line-height: 1; font-weight: 700;
+  }
+  .pd-panel-who { display: flow-root; min-width: 0; }
+  .pd-panel-who > .pd-panel-actions { float: right; margin-inline-start: var(--space-2); }
+  .pd-panel-who > .pd-panel-team { display: block; }
+  .pd-panel-who h3 { margin: 0; font-size: var(--text-2xl); line-height: var(--text-xl-lh); font-weight: 700; }
   .pd-panel-who h3 a { color: var(--color-text); text-decoration: none; }
   .pd-panel-who h3 a:hover { color: var(--color-accent); }
   .pd-panel-team { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
@@ -108,7 +132,7 @@
   }
   .pd-block-group[data-span="1"] { grid-column: span 1; }
   .pd-block-group[data-span="3"] { grid-column: span 3; }
-  .pd-block-row > .ui-tooltip-wrapper { display: grid; }
+  .pd-block-row > .ui-hover-anchor { display: grid; }
   .pd-cell { position: relative; display: grid; justify-items: center; gap: 1px; min-width: 0; padding: var(--space-0-5) 0; border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; }
   .pd-cell:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
   /* A hairline between groups (DARKO | MP | RAPM), centred in the column gap. */
@@ -131,6 +155,7 @@
   .pd-strip-label.pd-strip-center { justify-content: center; }
   .pd-factors-body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); padding-inline: var(--space-2); }
   .pd-factors-side { display: flex; flex-direction: column; gap: var(--space-0-5); }
+  .pd-factors-side > .ui-hover-anchor { display: grid; }
   .pd-factor { display: grid; grid-template-columns: 40px 44px minmax(0, 1fr); align-items: center; gap: var(--space-1); border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; }
   .pd-factor:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
   .pd-factor-label { color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.06em; }
@@ -143,9 +168,9 @@
 
   /* Play types: share bar, share, family, relative points per 100 and its percentile. */
   .pd-plays { display: flex; flex-direction: column; gap: var(--space-1); }
-  .pd-plays > .ui-tooltip-wrapper { display: block; }
+  .pd-plays > .ui-hover-anchor { display: block; }
   .pd-plays-body { display: flex; flex-direction: column; gap: var(--space-1); }
-  .pd-plays-body > .ui-tooltip-wrapper { display: block; }
+  .pd-plays-body > .ui-hover-anchor { display: block; }
   .pd-plays-body, .pd-factors-body { padding: var(--space-2) var(--space-1); border: 1px solid var(--color-hairline); border-radius: var(--radius-md); background: var(--color-table-well); }
   .pd-play { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 36px 92px 44px minmax(0, 1fr); align-items: center; gap: var(--space-2); padding: 1px var(--space-1); border-radius: var(--radius-sm); font-variant-numeric: tabular-nums; }
   .pd-play:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 1px; }
@@ -168,20 +193,26 @@
 
   /* Head-to-head: the leader's margin in their identity colour (A gold, B blue) with their name. */
   .pd-vs { border-color: var(--color-accent); }
-  .pd-vs-head { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-2); }
-  .pd-vs-actions { display: flex; align-items: center; gap: var(--space-0-5); }
+  .pd-vs-head { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-2); }
+  /* Second row, as Databallr's: each side's season, the rate, then the actions at the end. */
+  .pd-vs-scope { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
+  .pd-vs-tag {
+    display: inline-flex; align-items: center; height: var(--control-sm); padding: 0 var(--space-2); border-radius: var(--radius-sm);
+    background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; white-space: nowrap;
+  }
+  .pd-vs-tag[data-side="a"] { color: var(--color-identity-a); }
+  .pd-vs-tag[data-side="b"] { color: var(--color-identity-b); }
+  .pd-vs-actions { display: flex; align-items: center; gap: var(--space-0-5); margin-inline-start: auto; }
   .pd-vs-side { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
   .pd-vs-side[data-side="a"] { justify-content: flex-end; text-align: right; }
   .pd-vs-side > span { display: flex; flex-direction: column; min-width: 0; }
   .pd-vs-side strong { font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700; }
   .pd-vs-side[data-side="a"] strong { color: var(--color-identity-a); }
   .pd-vs-side[data-side="b"] strong { color: var(--color-identity-b); }
-  .pd-vs-side small { color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
-  .pd-vs-side .pd-vs-portrait { width: 40px; height: 40px; }
+  .pd-vs-team { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
+  .pd-vs-side[data-side="a"] .pd-vs-team { justify-content: flex-end; }
+  .pd-vs-photo { width: 56px; height: 56px; }
   .pd-vs-word { color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 700; }
-  .pd-vs-key { margin: 0; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
-  .pd-vs-key [data-side="a"] { color: var(--color-identity-a); font-weight: 700; }
-  .pd-vs-key [data-side="b"] { color: var(--color-identity-b); font-weight: 700; }
   .pd-vs-bar { display: block; width: 88%; height: 4px; border-radius: var(--radius-pill); background: var(--pd-track); }
   .pd-vs-name { max-width: 100%; overflow: hidden; color: var(--color-text-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); text-overflow: ellipsis; white-space: nowrap; }
   [data-leader="a"] :is(.pd-cell-value, .pd-vs-value) { color: var(--color-identity-a); }
@@ -192,7 +223,12 @@
   .pd-vs-play-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-1); }
   .pd-vs-play-grid { padding: var(--space-1); border: 1px solid var(--color-hairline); border-radius: var(--radius-md); background: var(--color-table-well); gap: 0; }
   .pd-vs-play { display: grid; gap: var(--space-1); padding: var(--space-1); }
-  .pd-vs-play + .pd-vs-play { border-left: 1px solid var(--color-hairline-strong); }
+  .pd-vs-play-grid > .pd-play-anchor { display: grid; }
+  .pd-vs-play-grid > .pd-play-anchor + .pd-play-anchor { border-left: 1px solid var(--color-hairline-strong); }
+  /* Hover cards: both sides' values in their identity colours. */
+  .pd-vs-note b { font-weight: 700; }
+  .pd-vs-note b[data-side="a"] { color: var(--color-identity-a); }
+  .pd-vs-note b[data-side="b"] { color: var(--color-identity-b); }
   .pd-vs-play-label { color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.08em; text-align: center; text-transform: uppercase; }
 
   @media (max-width: 640px) {
