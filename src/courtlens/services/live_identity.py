@@ -104,6 +104,10 @@ def bind_identities(session: Session, normalized: dict[str, Any]) -> dict[str, A
                 team["canonical_id"], team["identity_status"] = None, "unmapped"
             if tricode:
                 tricodes[team["source_id"]] = tricode
+    # Division standings rows carry ESPN team IDs; the fixed table gives their codes (logos).
+    for division in normalized.get("standings") or []:
+        for row in division.get("entries") or []:
+            row["tricode"] = ESPN_TEAMS.get(row["team_source_id"], (None, None))[1]
     entities = _players(normalized)
     if not entities:
         return normalized

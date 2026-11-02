@@ -56,11 +56,13 @@
 @import "../components/finance-workspace.css";
 @import "../components/live-workspace.css";
 @import "../components/live-game.css";
+@import "../components/standings-view.css";
 @import "./styles/route-surfaces.css";
 @import "../components/planner-client.css";
 @import "./design/design.css";
 @import "../components/last-games-view.css";
 @import "../components/playoffs-bracket-view.css";
+@import "../components/playoffs-bracket.css";
 @import "../components/playoffs-series-view.css";
 @import "../components/distributions-investigation-view.css";
 @import "../components/case-studies-view.css";

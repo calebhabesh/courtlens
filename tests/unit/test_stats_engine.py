@@ -175,7 +175,8 @@ class TestSQLGenerationAndCompilation:
         )
         sql, _ = build_stats_query_sql(sample_context, query, limit=50, offset=0)
         expected_order = (
-            "ORDER BY pts_per_game DESC NULLS LAST, min_per_game ASC NULLS LAST, player_id ASC"
+            "ORDER BY pts_per_game DESC NULLS LAST, min_per_game ASC NULLS LAST, "
+            "total_minutes DESC NULLS LAST, player_id ASC"
         )
         assert expected_order in sql
 

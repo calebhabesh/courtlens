@@ -7,6 +7,10 @@ import { pc11Response, sixFactor } from "./pc11-fixtures.mjs";
 // unavailable in this fixture, exercising the partial-library state without fabricated results.
 const retainedDistribution = JSON.parse(readFileSync(new URL("./fixtures/pc12-retained-distribution.json", import.meta.url), "utf8"));
 // Player Twins (row 17): real API answers for 2025-26 (default, the #2 match picked, Box Score).
+// Real 2025-26 playoffs (alignment row 8) and seasons whose formats test the bracket's byes.
+const playoffBrackets = Object.fromEntries(["2025-26", "1975-76", "1965-66", "1949-50"].map(season =>
+  [season, JSON.parse(readFileSync(new URL(`./fixtures/playoffs-bracket-${season}.json`, import.meta.url), "utf8"))]));
+const okcPhx = JSON.parse(readFileSync(new URL("./fixtures/playoffs-series-2026-r1-okc-phx.json", import.meta.url), "utf8"));
 const playerTwins = JSON.parse(readFileSync(new URL("./fixtures/player-twins-v1.json", import.meta.url), "utf8"));
 function playerTwinsView(url) {
   // Captured answers: Shot Profile (and a picked row), Box Score, Combined and one weighting. The
@@ -833,7 +837,10 @@ createServer(async (request, response) => {
     return json(response, 200, { release_id: workbenchContext.release_id, dataset_id: "fixture-dataset", start: url.searchParams.get("start"), end: url.searchParams.get("end"), phase: url.searchParams.get("phase"), before_date: url.searchParams.get("beforeDate"), focus, days, nearest_scheduled: nearest, nearest_finals: nearest, warnings: [] });
   }
   if (url.pathname === "/api/workbench/playoffs") {
-    return json(response, 200, mockPlayoffBracket);
+    return json(response, 200, playoffBrackets[url.searchParams.get("season")] ?? mockPlayoffBracket);
+  }
+  if (url.pathname === "/api/workbench/playoffs/series/2026-r1-okc-phx") {
+    return json(response, 200, okcPhx);
   }
   if (url.pathname.startsWith("/api/workbench/playoffs/series/")) {
     return json(response, 200, mockPlayoffSeriesDetail);

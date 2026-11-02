@@ -10,9 +10,15 @@ from typing import Any
 
 import httpx
 
-from courtlens.domain.live import parse_injury_feed, parse_scoreboard, parse_summary
+from courtlens.domain.live import (
+    parse_injury_feed,
+    parse_scoreboard,
+    parse_standings,
+    parse_summary,
+)
 
 BASE_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
+STANDINGS_URL = "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings"
 
 
 class LiveProviderError(Exception):
@@ -66,14 +72,26 @@ class ESPNLiveProvider:
     def fetch_injuries(self) -> LiveFetch:
         return asyncio.run(self._get("/injuries", {}, 2 * 1024 * 1024, parse_injury_feed))
 
+    def fetch_standings(self, year: int) -> LiveFetch:
+        return asyncio.run(
+            self._get(
+                "",
+                {"season": str(year), "level": "3"},
+                1024 * 1024,
+                lambda p: parse_standings(p, year),
+                url=STANDINGS_URL,
+            )
+        )
+
     async def _get(
         self,
         path: str,
         params: dict[str, str],
         cap: int,
         parse: Callable[[dict[str, Any]], dict[str, Any]],
+        url: str | None = None,
     ) -> LiveFetch:
-        url = BASE_URL + path
+        url = url or BASE_URL + path
         body = bytearray()
         try:
             async with (

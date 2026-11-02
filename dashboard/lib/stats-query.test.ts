@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizedColumn, normalizedSortMetric, resolveStatsQuery } from "./stats-query";
+import { darkoRates, normalizedColumn, normalizedSortMetric, overviewSortMetric, resolveStatsQuery } from "./stats-query";
 import { ALL_CATALOG_METRICS } from "./stats-presets";
 import { buildPreservedContextUrl } from "./query-url";
 import type { WorkbenchCatalog } from "./types";
@@ -54,5 +54,37 @@ describe("PF01b Stats scope and normalization", () => {
     expect(params.get("fromDate")).toBe("2024-11-01");
     expect(params.get("toDate")).toBe("2024-12-01");
     expect(params.get("windowN")).toBe("7");
+  });
+});
+
+describe("Overview default sort follows what DARKO rates", () => {
+  const rated = {
+    ...catalog, default_season: "2026-27", stats_scopes: [
+      { season: "1949-50", phase: "regular_season", default_before_date: "1950-03-20" },
+      { season: "1999-00", phase: "regular_season", default_before_date: "2000-04-20" },
+      { season: "2025-26", phase: "regular_season", default_before_date: "2026-04-13" },
+      { season: "2025-26", phase: "playoffs", default_before_date: "2026-06-14" },
+      { season: "2026-27", phase: "regular_season", default_before_date: "2026-10-29" }
+    ],
+    darko: { status: "available", manifest_sha256: "m", scopes: [
+      { season: "2025-26", phase: "regular_season", as_of: "2026-04-12", data_date: "2026-04-12" },
+      { season: "2025-26", phase: "current", as_of: "2026-10-19", data_date: "2026-06-03" },
+      { season: "2026-27", phase: "current", as_of: "2026-10-29", data_date: "2026-10-27" }
+    ] }
+  } as WorkbenchCatalog;
+  const sortFor = (params: Record<string, string>) => resolveStatsQuery(params, rated, "per_game", overviewSortMetric(rated)).sort?.[0]?.field;
+
+  it("ranks a season in progress by DPM once the daily board precedes the cutoff", () => {
+    expect(sortFor({})).toBe("dpm");
+    expect(darkoRates(rated, { season: "2026-27", phase: "regular_season", before_date: "2026-10-27" })).toBe(false);
+    expect(sortFor({ before_date: "2026-10-27" })).toBe("min");
+  });
+  it("uses sealed boards for finished phases and never the daily board for playoffs", () => {
+    expect(sortFor({ season: "2025-26" })).toBe("dpm");
+    expect(sortFor({ season: "2025-26", phase: "playoffs" })).toBe("min");
+  });
+  it("falls back to minutes, or points before minutes were recorded", () => {
+    expect(sortFor({ season: "1999-00" })).toBe("min");
+    expect(sortFor({ season: "1949-50" })).toBe("pts_per_game");
   });
 });

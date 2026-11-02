@@ -62,6 +62,7 @@ export const NAV_MENUS: NavMenu[] = [
     label: "Teams",
     groups: [{ items: [
       { label: "Teams", href: "/teams", icon: "building", description: "Team ratings, six factors and rankings" },
+      { label: "Standings", href: "/standings", icon: "list-ordered", description: "ESPN's NBA standings by league, conference and division" },
       { label: "Roster Shapes", href: "/roster-shapes", icon: "shapes", description: "Every NBA roster as shapes in a box" },
       { label: "Contracts", href: "/contracts", icon: "dollar", description: "NBA salary cap analysis and contract details" },
       { label: "Free Agency", href: "/free-agency", icon: "user-check", description: "The 2026 NBA free agency tracker" },
