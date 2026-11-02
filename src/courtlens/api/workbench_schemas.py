@@ -1331,6 +1331,8 @@ class AssistantStatusResponse(BaseModel):
     limited_mode: bool = True
     prompt_version: str | None = None
     limits: dict[str, Any]
+    # Ordered provider pool with this process's quota memory (no keys, no request text).
+    providers: list[dict[str, Any]] = Field(default_factory=list)
     allowed_tools: list[str]
     privacy_notice: str
     setup_instructions: str
@@ -1681,6 +1683,10 @@ class TeamSeriesHeader(BaseModel):
     name: str
     seed: int | None = None
     wins: int = 0
+    # Regular season before the playoffs began; None where the release lacks the games.
+    record_wins: int | None = None
+    record_losses: int | None = None
+    season_series_wins: int | None = None
 
 
 class PlayoffSeriesSummary(BaseModel):
@@ -1758,6 +1764,73 @@ class TeamSeriesStats(BaseModel):
     oreb_pct: float | None = None
     ftr: float | None = None
     totals: dict[str, Any] = Field(default_factory=dict)
+    record_wins: int | None = None
+    record_losses: int | None = None
+    season_series_wins: int | None = None
+
+
+class SeasonSeriesGame(BaseModel):
+    """A regular-season game between the series' teams (the season series)."""
+
+    game_id: str
+    game_date: str
+    home_team_id: str
+    home_tricode: str
+    away_team_id: str
+    away_tricode: str
+    home_score: int
+    away_score: int
+    winner_team_id: str | None = None
+
+
+class SeriesMatchupRow(BaseModel):
+    """One offensive player against one defender, summed over a phase's games (NBA.com)."""
+
+    phase: str  # "playoffs" | "regular_season"
+    off_player_id: str
+    off_player_name: str
+    off_team_id: str
+    def_player_id: str
+    def_player_name: str
+    games: int
+    possessions: float
+    seconds: float
+    points: int
+    fgm: int
+    fga: int
+    fg3m: int
+    fg3a: int
+    ftm: int
+    fta: int
+    assists: int
+    turnovers: int
+
+
+class SeriesMatchups(BaseModel):
+    playoff_games: int
+    playoff_games_played: int
+    regular_season_games: int
+    source: str
+    rows: list[SeriesMatchupRow] = Field(default_factory=list)
+
+
+class SeriesImpactPlayer(BaseModel):
+    player_id: str
+    player_name: str
+    team_id: str
+    total: float | None = None
+    offense: float | None = None
+    defense: float | None = None
+
+
+class SeriesImpactBoard(BaseModel):
+    """A model's ratings for the players who appeared in the series."""
+
+    metric: str  # "darko" | "rapm"
+    label: str
+    as_of: str | None = None
+    note: str
+    players: list[SeriesImpactPlayer] = Field(default_factory=list)
 
 
 class PlayerSeriesStats(BaseModel):
@@ -1817,6 +1890,9 @@ class PlayoffSeriesDetailResponse(BaseModel):
     game_cards: list[PlayoffGameCard] = Field(default_factory=list)
     team1_players: list[PlayerSeriesStats] = Field(default_factory=list)
     team2_players: list[PlayerSeriesStats] = Field(default_factory=list)
+    season_series: list[SeasonSeriesGame] = Field(default_factory=list)
+    matchups: SeriesMatchups | None = None
+    impact: list[SeriesImpactBoard] = Field(default_factory=list)
     capabilities: dict[str, str] = Field(default_factory=dict)
     disclaimers: list[str] = Field(default_factory=list)
 

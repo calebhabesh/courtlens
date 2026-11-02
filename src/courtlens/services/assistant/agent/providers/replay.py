@@ -48,8 +48,17 @@ def request_record(
 class RecordingProvider:
     def __init__(self, provider: AgentProvider) -> None:
         self.provider = provider
-        self.model = provider.model
         self.records: list[RecordedStep] = []
+
+    @property
+    def model(self) -> str:
+        # A provider pool reports the member that answered the latest step.
+        return self.provider.model
+
+    @property
+    def provider_name(self) -> str | None:
+        name = getattr(self.provider, "provider_name", None)
+        return name if isinstance(name, str) else None
 
     def step(
         self,

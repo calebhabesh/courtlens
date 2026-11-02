@@ -1,4 +1,4 @@
-import type { AssistantStatusResponse } from "@/lib/types";
+import type { AssistantProviderStatus, AssistantStatusResponse } from "@/lib/types";
 import { ArticleSection } from "./ui/article-layout";
 import { ButtonSummary } from "./ui/kit";
 
@@ -9,10 +9,20 @@ export function AssistantStatusCard({ status }: { status: AssistantStatusRespons
     <dl className="ui-article-facts">
       <div><dt>Provider</dt><dd>{status?.provider ?? "Unavailable"}</dd></div>
       <div><dt>Model</dt><dd>{status?.model ?? "Unavailable"}</dd></div>
+      {status?.providers && status.providers.length > 1 ? <div><dt>Provider pool</dt><dd>{status.providers.map(providerLine).join(" · ")}</dd></div> : null}
       <div><dt>Limited mode</dt><dd>{status ? (status.limited_mode ?? !status.configured) ? "Yes" : "No" : "Unavailable"}</dd></div>
       <div><dt>Limits per turn</dt><dd>{limits?.max_steps != null ? `${limits.max_steps} steps · ${limits.max_web_searches ?? "unavailable"} searches · ${limits.max_tokens?.toLocaleString("en-US") ?? "unavailable"} tokens · ${limits.turn_timeout_seconds ?? "unavailable"}s deadline` : "Agent limits unavailable"}</dd></div>
     </dl>
     <p>Manual research needs no provider key. Configuration alone does not establish provider availability or answer accuracy.</p>
     {status ? <details className="ui-why"><ButtonSummary>Configuration Details</ButtonSummary><div className="ui-why-body"><p>{status.setup_instructions}</p><p>Prompt: {status.prompt_version ?? "Unavailable"}</p><p>{status.privacy_notice}</p></div></details> : <p role="status">Assistant configuration is unavailable.</p>}
   </ArticleSection>;
+}
+
+export function providerLine(member: AssistantProviderStatus): string {
+  const label = `${member.provider} (${member.model})`;
+  if (member.state !== "cooling_down") return `${label}: ready`;
+  const until = member.available_at ? new Date(member.available_at) : null;
+  return until && !Number.isNaN(until.getTime())
+    ? `${label}: rate-limited until ${until.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "UTC" })} UTC`
+    : `${label}: rate-limited`;
 }

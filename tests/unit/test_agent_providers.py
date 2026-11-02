@@ -27,6 +27,7 @@ from courtlens.services.assistant.agent.providers.base import (
     DEFAULT_MODELS,
     AgentMessage,
     ProviderFailure,
+    ToolCall,
     ToolDeclaration,
     ToolResult,
     Usage,
@@ -65,8 +66,18 @@ def isolated_keys(monkeypatch: pytest.MonkeyPatch) -> None:
         "ANTHROPIC_API_KEY",
         "COURTLENS_OPENAI_API_KEY",
         "OPENAI_API_KEY",
+        "COURTLENS_GROQ_API_KEY",
+        "GROQ_API_KEY",
+        "COURTLENS_ASSISTANT_PROVIDERS",
     ):
         monkeypatch.delenv(key, raising=False)
+
+
+@pytest.fixture(autouse=True)
+def gemini_search_reset() -> None:
+    from courtlens.services.assistant.agent.providers.gemini import reset_search_blocks
+
+    reset_search_blocks()
 
 
 def raw_response(name: str) -> dict[str, Any]:
@@ -176,7 +187,68 @@ def test_sdk_failures_are_safe_and_not_retried(name: str, failure: str, status: 
         assert error.value.kind == failure
         assert str(error.value) == failure
         assert error.value.retry_after == (17 if status == 429 else None)
-        assert len(requests) == 1
+        if name == "gemini" and status == 429:
+            # An unnamed Gemini quota with search offered is retried once without search.
+            assert len(requests) == 2
+            assert "googleSearch" in requests[0].content.decode()
+            assert "googleSearch" not in requests[1].content.decode()
+        else:
+            assert len(requests) == 1
+    finally:
+        provider._client.close()
+
+
+def test_gemini_search_refusal_falls_back_to_plain_generation() -> None:
+    from courtlens.services.assistant.agent.providers.gemini import search_available
+
+    requests = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requests.append(json.loads(request.content))
+        if "googleSearch" in json.dumps(requests[-1]):
+            return httpx.Response(
+                429,
+                json={"error": {"code": 429, "status": "RESOURCE_EXHAUSTED", "details": []}},
+            )
+        return httpx.Response(200, json=raw_response("gemini"))
+
+    provider = adapter("gemini", httpx.MockTransport(respond))
+    try:
+        step = provider.step("NBA only.", MESSAGES, [TOOL], **OPTIONS)
+        assert step.provider_calls == 2 and step.search_errors == ["search_unavailable"]
+        assert not search_available(provider.model)
+        # Later steps skip search without spending a refused request.
+        provider.step("NBA only.", MESSAGES, [TOOL], **OPTIONS)
+        assert len(requests) == 3 and "googleSearch" not in json.dumps(requests[2])
+    finally:
+        provider._client.close()
+
+
+def test_gemini_named_quota_is_not_retried() -> None:
+    requests = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        return httpx.Response(
+            429,
+            json={
+                "error": {
+                    "code": 429,
+                    "details": [
+                        {
+                            "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+                            "violations": [{"quotaId": "GenerateRequestsPerDayPerProjectPerModel"}],
+                        }
+                    ],
+                }
+            },
+        )
+
+    provider = adapter("gemini", httpx.MockTransport(respond))
+    try:
+        with pytest.raises(ProviderFailure) as error:
+            provider.step("NBA only.", MESSAGES, [TOOL], **OPTIONS)
+        assert error.value.quota_scope == "day" and len(requests) == 1
     finally:
         provider._client.close()
 
@@ -560,3 +632,31 @@ def test_gemini_idless_calls_keep_local_ids_out_of_signed_sdk_history() -> None:
         assert "id" not in requests[1]["contents"][2]["parts"][0]["functionResponse"]
     finally:
         provider._client.close()
+
+
+def test_gemini_tool_free_step_after_tool_use_disables_function_calls() -> None:
+    requests = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requests.append(json.loads(request.content))
+        return httpx.Response(200, json=raw_response("gemini"))
+
+    provider = adapter("gemini", httpx.MockTransport(respond))
+    history = [
+        *MESSAGES,
+        AgentMessage(
+            role="assistant",
+            tool_calls=[ToolCall(id="c1", name=TOOL.name, arguments={"metric": "bpm"})],
+        ),
+        AgentMessage(
+            role="tool",
+            tool_results=[ToolResult(call_id="c1", name=TOOL.name, payload={"value": 1})],
+        ),
+    ]
+    try:
+        provider.step("NBA only.", history, [], **{**OPTIONS, "remaining_web_searches": 0})
+        provider.step("NBA only.", MESSAGES, [], **{**OPTIONS, "remaining_web_searches": 0})
+    finally:
+        provider._client.close()
+    assert requests[0]["toolConfig"] == {"functionCallingConfig": {"mode": "NONE"}}
+    assert "toolConfig" not in requests[1]
