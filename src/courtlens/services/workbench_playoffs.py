@@ -42,13 +42,18 @@ from courtlens.domain.workbench_playoffs import (
     parse_season_param,
     reconstruct_regular_season_seeds,
 )
+from courtlens.services.playoff_context import impact_boards, regular_season
 from courtlens.services.playoff_series import (
     FIRST_RECONSTRUCTED_SEEDS,
+    context_before,
     find_series,
+    franchise,
     season_series,
     series_bracket,
     series_detail,
+    with_context,
 )
+from courtlens.services.series_matchups import series_matchups
 from courtlens.services.workbench_analytics import resolve_workbench_context
 from courtlens.workbench_models import (
     WorkbenchIdentity,
@@ -156,7 +161,10 @@ def get_playoff_bracket(
             if canonical_season >= FIRST_RECONSTRUCTED_SEEDS
             else ({}, {})
         )
-        return series_bracket(canonical_season, completed, cutoff_date, seeds, seed_lookup)
+        context = regular_season(
+            session, dataset_id, canonical_season, context_before(starts, cutoff_date)
+        )
+        return series_bracket(canonical_season, completed, cutoff_date, seeds, seed_lookup, context)
 
     # 1. Query playoff schedules for this season (this release only)
     schedules = session.scalars(
@@ -190,6 +198,13 @@ def get_playoff_bracket(
             capabilities=dict(PLAYOFF_CAPABILITIES),
             disclaimers=list(PLAYOFF_DISCLAIMERS),
         )
+
+    context = regular_season(
+        session,
+        dataset_id,
+        canonical_season,
+        context_before([s.game_date for s in schedules], cutoff_date),
+    )
 
     # 3. Query all team games for these playoff schedules
     playoff_game_ids = [s.game_id for s in schedules]
@@ -316,6 +331,7 @@ def get_playoff_bracket(
             is_sweep=is_sweep,
             summary_text=summary_text,
         )
+        with_context(summary, context)
         series_summaries_by_id[series_id] = summary
 
     # Group into rounds 1..4
@@ -506,6 +522,16 @@ def get_playoff_series_detail(
     t1_seed = seed_lookup.get(team1_id)
     t2_seed = seed_lookup.get(team2_id)
 
+    context = regular_season(
+        session,
+        dataset_id,
+        canonical_season,
+        context_before([s.game_date for s in schedules], cutoff_date),
+    )
+    t1_record = context.record(team1_id)
+    t2_record = context.record(team2_id)
+    t1_meetings, t2_meetings = context.series_wins(team1_id, team2_id)
+
     # 3. Query all team games for this series
     all_game_ids = [s.game_id for s in schedules]
     team_games = session.scalars(
@@ -642,6 +668,9 @@ def get_playoff_series_detail(
         oreb_pct=t1_factors["oreb_pct"],
         ftr=t1_factors["ftr"],
         totals=t1_factors["totals"],
+        record_wins=t1_record[0],
+        record_losses=t1_record[1],
+        season_series_wins=t1_meetings,
     )
 
     team2_stats = TeamSeriesStats(
@@ -664,6 +693,9 @@ def get_playoff_series_detail(
         oreb_pct=t2_factors["oreb_pct"],
         ftr=t2_factors["ftr"],
         totals=t2_factors["totals"],
+        record_wins=t2_record[0],
+        record_losses=t2_record[1],
+        season_series_wins=t2_meetings,
     )
 
     # 6. Player series statistics aggregation
@@ -774,6 +806,18 @@ def get_playoff_series_detail(
         game_cards=game_cards,
         team1_players=t1_player_stats,
         team2_players=t2_player_stats,
+        season_series=context.season_series(team1_id, team2_id),
+        matchups=series_matchups(
+            canonical_season,
+            lambda code: {franchise(team1_id): team1_id, franchise(team2_id): team2_id}.get(
+                franchise(code)
+            ),
+            completed_game_ids,
+            [g[0] for g in context.between(team1_id, team2_id)],
+        ),
+        impact=impact_boards(
+            canonical_season, t1_player_stats + t2_player_stats, (team1_id, team2_id)
+        ),
         capabilities=dict(PLAYOFF_CAPABILITIES),
         disclaimers=list(PLAYOFF_DISCLAIMERS),
     )

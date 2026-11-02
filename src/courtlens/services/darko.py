@@ -41,8 +41,9 @@ RESOURCE = "darko"
 ATTRIBUTION = "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app)"
 INTERVAL_SECONDS = 5.0
 PHASES = ("regular_season", "playoffs")
-# The latest published ratings and expected minutes, sealed on demand between seasons; serves
-# Roster Shapes' projection only, never a Stats scope.
+# The latest published ratings and expected minutes, refreshed daily. Roster Shapes' projection
+# reads it; Stats reads it only for a regular season with no sealed snapshot yet (the season in
+# progress), when its ratings end before the cutoff and inside the regular season.
 CURRENT = "current"
 # Pruned bundles' successors (sha -> sha), so a saved investigation pinned to a pruned bundle
 # still resolves: pruning only drops bundles whose dated entries the successor carries verbatim.
@@ -54,6 +55,8 @@ LIMITATIONS = [
     "versions are unavailable. Never used as CourtLens forecasting features.",
     "Different dates or model revisions can differ from Databallr. Percentiles are CourtLens "
     "league ranks, not DARKO or Databallr percentiles.",
+    "During a season in progress, Stats shows DARKO's latest daily board, dated by the games its "
+    "ratings include; early-season ratings lean on DARKO's priors and are not season-end values.",
 ]
 
 
@@ -454,17 +457,37 @@ def load_darko_store(manifest_sha256: str | None = None) -> dict[str, Any] | Non
 
 
 def darko_scope(query: QuerySpec, cutoff: date) -> dict[str, Any] | None:
-    """One phase-specific dated snapshot wholly before the exclusive cutoff."""
+    """One phase-specific dated snapshot wholly before the exclusive cutoff.
+
+    A regular season with no sealed snapshot (the season in progress) falls back to the daily
+    `current` board when its ratings end before the cutoff; SQL also requires that they end
+    inside the regular season (after its first game, before any play-in or playoff game).
+    """
     if query.window.kind.value != "season" or query.season_scope.seasons:
         return None
-    store = load_darko_store(query.darko_manifest_sha256)
-    return next(
+    entries = (load_darko_store(query.darko_manifest_sha256) or {}).get("entries", [])
+    sealed = next(
         (
             entry
-            for entry in (store or {}).get("entries", [])
+            for entry in entries
             if entry["season"] == query.season
             and entry["phase"] == query.phase
             and entry["as_of"] < cutoff.isoformat()
+        ),
+        None,
+    )
+    if sealed is not None or query.phase != "regular_season":
+        return sealed
+    if any(e["season"] == query.season and e["phase"] == query.phase for e in entries):
+        # A sealed board exists but postdates the cutoff: a daily board is never newer evidence.
+        return None
+    return next(
+        (
+            entry
+            for entry in entries
+            if entry["season"] == query.season
+            and entry["phase"] == CURRENT
+            and entry["data_date"] < cutoff.isoformat()
         ),
         None,
     )
@@ -490,10 +513,11 @@ def darko_catalog_scope() -> dict[str, Any]:
         "version": VERSION,
         "manifest_sha256": path.stem if store and path else None,
         "limitations": LIMITATIONS,
+        # Sealed phase boards, plus each season's daily `current` board (Stats uses it for a
+        # regular season in progress).
         "scopes": [
             {key: entry[key] for key in ("season", "phase", "as_of", "data_date")}
             for entry in (store or {}).get("entries", [])
-            if entry["phase"] in PHASES
         ],
     }
 
@@ -518,14 +542,23 @@ def darko_disclosure(query: QuerySpec, cutoff: date) -> dict[str, Any]:
     }
 
 
-def darko_sql_rows(query: QuerySpec, cutoff: date) -> tuple[str, str | None]:
-    """Rows and snapshot horizon; SQL also checks the bound dataset's phase coverage."""
-    entry = darko_scope(query, cutoff)
-    players = (entry or {}).get("players", {})
-    return json.dumps(
-        [
-            {"player_id": pid, "dpm": row["dpm"], "o_dpm": row["o_dpm"], "d_dpm": row["d_dpm"]}
-            for pid, row in players.items()
-        ],
-        separators=(",", ":"),
-    ), (entry or {}).get("as_of")
+def darko_sql_rows(query: QuerySpec, cutoff: date) -> tuple[str, str | None, bool]:
+    """Rows, snapshot horizon and whether it is the daily board; SQL checks phase coverage.
+
+    A sealed board's horizon is its requested date; the daily board's is its data date (the
+    last games its ratings include), since it is requested after the cutoff on most days.
+    """
+    entry = darko_scope(query, cutoff) or {}
+    daily = entry.get("phase") == CURRENT
+    players = entry.get("players", {})
+    return (
+        json.dumps(
+            [
+                {"player_id": pid, "dpm": row["dpm"], "o_dpm": row["o_dpm"], "d_dpm": row["d_dpm"]}
+                for pid, row in players.items()
+            ],
+            separators=(",", ":"),
+        ),
+        entry.get("data_date" if daily else "as_of"),
+        daily,
+    )

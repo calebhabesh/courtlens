@@ -13,14 +13,14 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
-| 1 | Stats | `/stats` | ✅ | Owner approved first revision 2026-10-15; cold-load animation follow-up approved 2026-10-25; deferred 43f/43g remain open |
+| 1 | Stats | `/stats` | 👀 | Follow-up 84 (in-season default sort, empty columns) ready for review; first revision approved 2026-10-15, cold-load follow-up 2026-10-25; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
 | 3 | PvP | `/compare` | ✅ | Owner approved 2026-10-21 (Compare menu tentatively done); Compare Export fixed (card export) |
 | 4 | Teams | `/teams`, `/teams/[id]` | ✅ | Owner approved 2026-10-21 (Teams menu tentatively done); Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
 | 5 | WOWY | `/wowy` | 👀 | Top-level nav link after Stats; Select Team on arrival; Databallr's WOWY Combos lineup table (Combo / On / Off roles, every on/off mix with large lit / OFF photos, ON − OFF row, Overview / Offense / Defense) with date, game-clock, garbage-time, common-games, opponent and player-vs-player filters (`courtlens-wowy-combos-v1`) |
 | 6 | Last X Games | `/last-games` | ✅ | Owner approved first revision 2026-10-20; Databallr's window card, comparison and game logs, then stretch verdicts, game context, opponent defence, Since windows, linked panels and a four-stat rolling chart; +/- from accepted stints |
 | 7 | Live | `/live` | 👀 | Owner started 2026-10-27: Databallr's date strip, game cards and game view (Box Score / Play-by-Play / Pre-Game, All Games rail, hotkeys) plus X's game summary (line score, shot chart, team stats, leaders, game info) |
-| 8 | Playoffs | `/playoffs` | ⬜ | |
+| 8 | Playoffs | `/playoffs` | 👀 | Owner started 2026-10-30: mirrored bracket with a Finals centre card, season series, Databallr series page (hero, trajectory, comparison bars, averages, matchups, DARKO / RAPM face-off) |
 | 9 | Showcase | `/showcase` | ✅ | Owner approved first revision 2026-10-21; Databallr's season card grid (DPM leaders), player dialog and season slideshow; NBA.com-first photos with matted career photos, top-100 rank changes with tooltips, slideshow keys, compare tray |
 | 10 | Rankings | ~~`/rankings`~~ | ✂️ cut | Owner cut 2026-10-20: built for social sharing, not CourtLens's data/ML/statistics focus. Page and Players menu item removed |
 | 11 | Tier List | ~~`/tierlist`~~ | ✂️ cut | Owner cut 2026-10-20: "It doesn't serve any purpose." Page, Compare menu item and example boards removed |
@@ -31,6 +31,7 @@ Rows are in working order.
 | 16 | Matchup Matrix | `/matchups` | ✅ aligned (first revision) | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
 | 17 | Shot Profile Twin | `/similar-players` | ✅ | Owner approved first revision 2026-10-21 (Player Twins); NBA only; Databallr's twin cards and closest-matches table on pbpstats zone totals, then Box Score mode, pool filters, distance drivers; table headers centered over their values |
 | 22 | Player Dashboard | `/players` | ✅ | Owner approved first revision 2026-10-25; Databallr's `/dashboard` (Top 50 DARKO DPM card carousel, compact player panels, head-to-head panel). Row 2's "Dashboard" pairing was wrong: row 2 is our player page, kept as approved. Replaces the Player Directory table |
+| 23 | — (ESPN Standings, owner request) | `/standings` | 👀 | Owner request 2026-10-29 (from row 7): ESPN's NBA Standings page under the Teams menu, plus standings on the game page and team pages |
 | 18 | Six Factor RAPM | `/research` | ⬜ | |
 | 19 | Wingspan | `/wingspan` | ⬜ | |
 | 20 | Offensive Calculator | `/calculator` | ⬜ | |
@@ -209,7 +210,7 @@ Padding follow-up: lint/typecheck, Vitest 511/511, four header checks and favico
 pass; the broader search check has dev-server lookup/workspace timeouts. Evidence:
 docs/evidence/alignment/app-shell/favicon-padding/.
 
-### 1 Stats — ✅ aligned (first revision; deferred 43f/43g remain open)
+### 1 Stats — 👀 owner review (follow-up 84; first revision was ✅; deferred 43f/43g remain open)
 
 Owner approval (2026-10-15): "I think I'm done the first solid revision of the main stats page
 and the player page. It's not a perfect version, but a presentable one now." Rows 0–2 are
@@ -630,6 +631,41 @@ Follow-up instructions (owner, 2026-10-14, retained-page data):
 
 Owner approval (2026-10-25): "Yes, you can approve/check of row 1" — the cold-load animation
 follow-up is approved and row 1 is ✅ aligned again. Deferred 43f and 43g remain open.
+
+Follow-up instruction (owner, 2026-10-29, with a 2026-27 screenshot of DPM "—" for every row and
+Tyus Jones, Karl-Anthony Towns, Kelly Oubre Jr. on top): "When certain stats aren't available to
+appropriately rank players (DARKO), should we have a better default sort list … I don't like random
+players just being at the top … For stats that don't have any result '--' should we just hide them,
+until they have valid results?" After the recommendation: "Yes, comprehensively implement your
+suggested optimal fixes."
+
+84. [x] In-season DARKO, a minutes fallback and hidden empty columns. — Cause: Overview sorted by DPM
+    for any season from 2000-01, but Stats read only sealed end-of-phase DARKO boards, so 2026-27 had
+    none; every DPM was unknown and the `player_id` tiebreak set the order. DARKO is not end-of-season:
+    it updates daily, and `refresh-darko-daily` already seals its board as `current`.
+    - A regular season with no sealed board (the season in progress) reads the daily board when its
+      ratings end before the cutoff (`data_date < before_date`). SQL also requires them to end on or
+      after the season's first game and before any play-in or playoff game. A sealed season never
+      falls back, and playoffs never read it. Footer and Data Details show "DARKO · through Oct 27,
+      2026" (the board's data date); a fourth limitation says in-season ratings lean on priors.
+    - DARKO values join only players with an appearance in scope (Ben Simmons, 0 GP, no longer ranks
+      by projection).
+    - Every Stats order ends with total minutes, then `player_id` (SQL and the in-memory cohort
+      sort), unless the sort already names minutes.
+    - Overview's default sort is DPM where DARKO rates the scope (`darkoRates`, mirroring the server),
+      otherwise MIN; seasons before 1951-52 (no minutes recorded) use PTS. A season range uses MIN.
+      Picking the Overview tab now takes this default instead of forcing DPM.
+    - The query response's cohort lists `empty_fields`: view columns the scope computes but that are
+      unknown for every player. Stats hides them (never the sorted column, never every column) and an
+      eye button after Reset table shows them, with the hidden columns named in its tooltip. 2026-27
+      Overview hides OnBall%, PTS Created, Rim AST, rTS% and cTOV%. Before Oct 26, Impact (no rating
+      yet) hides too and the table ranks by MIN.
+    - Measured on the owner's servers: 2026-27 through Oct 28 opens Jokić, Wembanyama,
+      Gilgeous-Alexander, Leonard, Dončić; through Oct 25 Maxey, J. Brown, LaVine (MIN); 1999-00 by MIN;
+      2025-26 unchanged (sealed board). Ruff/format/mypy clean; pytest 2,325 passed plus new
+      unit/Postgres tests; dashboard lint/typecheck clean, Vitest 684/684; Stats browser specs 36/37
+      (the "Index refreshed" tooltip spec fails identically without this change).
+      [Evidence](evidence/alignment/stats/default-sort/README.md).
 
 ### 2 Dashboard (player) — ✅ aligned (first revision)
 
@@ -1400,6 +1436,16 @@ Follow-up instruction (owner, 2026-10-19):
     size (9px of room). No overflow at 1440 or 390; Teams specs and visual baselines pass, and only
     the `team-stats` desktop baseline changed (refreshed). Evidence:
     `docs/evidence/alignment/teams/follow-up-3/`.
+
+Follow-up instruction (owner, 2026-10-29, from row 23): "I really like the "Standings" page on
+ESPN.com we should integrate it onto the relevant pages on our site"; placement left to Claude's
+judgement.
+13. [x] Team pages show the team's division standings (ESPN's official table, the team highlighted),
+    linking to the new Standings page (row 23). — Done (2026-10-29): a "<Division> Division" section
+    after Standing (W, L, PCT, GB, HOME, AWAY, STRK, L10), the team's row highlighted (matched by
+    franchise, so era codes find it), for regular-season views from 1984-85 on. The existing
+    Standing section (seed without tiebreakers, SOS, xW) is unchanged. Evidence:
+    `docs/evidence/alignment/standings/team-division-1440.png`.
 
 ### 12 Roster Shapes — ✅ aligned (first revision)
 
@@ -3695,6 +3741,174 @@ Follow-up (owner, 2026-10-27, fourth pass):
    the team ("BOS −12.5") with a plain line under each: "Boston Celtics favored by 12.5 points",
    "Boston Celtics favored to win", "About 222.5 points combined"; tiles align from the top.
    Evidence: `cards-favorite.png`, `pregame-lines-favorite.png`.
+9. [x] "can you make it more like a bento box or structured. The data doesn't look like it was
+   thoughtfully arranged." (owner screenshot: MIN at CLE Summary, two uneven columns with gaps
+   under Line Score and beside Game Info.) — Summary is now a 12-column bento whose rows line up
+   and whose panels share heights: Line Score (7) beside a two-column Game Info (5); Game Leaders
+   across as three equal tiles (Points, Rebounds, Assists), each listing both teams' leaders with
+   team · position and the higher value emphasised; Shot Chart (7) beside Team Stats (5), the
+   stat rows spread to the chart's height. Without plotted shots, Team Stats spans the row. Below
+   1024px panels stack; on phones the leader tiles stack. Evidence: `summary-bento-1440.png`,
+   `summary-bento-1100.png`, `summary-bento-390.png`.
+10. [x] "You can make the "Line Score" rows slightly larger. They are a little too small." — Cells
+    use `--space-3` padding and `--text-md` (headers `--text-sm`, logos 24px); phones keep the
+    tighter size so all six columns fit without scrolling.
+11. [x] "for all games we should label who is at home and who is away. You can also put the team logo
+    somewhere in the "Where" field" (owner screenshot: Game Info panel). — Game Info lists Away and
+    Home with each team's logo and full name on every game (scheduled games too), and Where leads
+    with the home team's logo, since the venue is theirs. Evidence: `summary-home-away-1440.png`,
+    `summary-home-away-390.png`.
+12. [x] Banner (owner screenshot): "should we put home/away grey text labels or use "at" for the
+    middle, bottom aligned." Recommended grey labels under each team code (the dash keeps reading as
+    a score), with the same tag on game cards and the All Games rail; owner: "Yes, you can do this."
+    — A small grey uppercase AWAY / HOME (`.live-side`) sits under each code in the banner (the
+    code stays level with the score), on the second line of each card (beside "2 OUT" before
+    tipoff), and after the code on rail cards, now 136px wide so it clears the score. The banner's
+    screen-reader label says "(away)" and "(home)". Evidence: `home-away-banner-1440.png`,
+    `home-away-banner-390.png`, `home-away-cards-1440.png`, `home-away-cards-390.png`,
+    `home-away-upcoming-1440.png`, `home-away-upcoming-390.png`, `home-away-rail-1440.png`,
+    `home-away-rail-390.png`.
+13. [x] "make the text thinner." — The AWAY / HOME labels use regular weight (400) instead of bold,
+    on the banner, cards and rail.
+14. [x] "You can give more horizontal space to game info container." (owner screenshot: ORL at TOR,
+    "Scotiabank Arena · Toronto, ON" wrapping.) — The top row splits evenly: Line Score and Game Info
+    span 6 of 12 columns each (was 7 / 5); Shot Chart and Team Stats stay 7 / 5. Evidence:
+    `summary-even-top-1440.png`.
+15. [x] "In the linescore the stats are so far from the team names and logos." — The full-width table
+    shared spare width with the team column; it now shrinks to its logo and code and the quarter
+    cells take the rest. Evidence: `linescore-tight-1440.png`, `linescore-tight-390.png`.
+16. [x] "can box score be same height?" (owner screenshot: ORL at TOR, Toronto's table one row
+    longer.) — Side by side, each section (Starters, Bench) pads the shorter team with blank rows to
+    the longer team's count, so both tables share a height and their TEAM rows line up. Fillers are
+    hidden from screen readers and dropped when the tables stack (below 1024px). Evidence:
+    `box-same-height-1440.png`.
+17. [x] "In the game header can we put the record of the team somewhere under the logo or somewhere
+    close … We have the records in the game containers, it should be included again." — Each
+    team's record sits under its logo in the banner, in the grey tag style and level with AWAY /
+    HOME (screen readers hear "Record 1–4"). Evidence: `banner-record-1440.png`,
+    `banner-record-390.png`.
+18. [x] "why do the record numbers look weird, is that a consequence of the font at this zoom
+    level? … "2-3" here looks weird." — Not the zoom: ESPN sends records with a hyphen, which at
+    `--text-xs` is short and thin beside the digits. Records now use an en dash ("2–3", `formatRecord`
+    in `lib/live.ts`), as Roster Allocation and the rest of CourtLens already do. Evidence:
+    `cards-record-dash-1440.png`.
+19. [x] "no, i mean "2-3" here looks weird. The "3" looks larger than the 2." — Measured: Switzer's
+    digits are lining, but the round ones (0, 3, 5, 6, 8, 9) overshoot the baseline and cap height by
+    12 units in 655; at 12px the browser rounds that to a whole pixel above and below, so "3" renders
+    taller than the flat-based "2" (checked enlarged at 1x and 1.25x; 13–14px and weight 500 only
+    soften it). Records on cards and in the banner now use JetBrains Mono 500, as the line chips
+    already do, whose digits share one height. Evidence: `record-digits-1440.png`.
+20. [x] "what should we do for player's names that are too long in box score?" (owner screenshot:
+    "G. Antetokoun…", "N. Alexander-…", the +/- column cut off.) — Recommended and done: columns
+    sized to their contents (single-digit counts 24px, shooting splits 34–38px) so each half-width
+    table fits without its scrollbar, and the player column grows from 116 to 136px, enough for
+    "G. Antetokounmpo F". A rarer longer name still ends in an ellipsis, with the full name in the
+    tooltip and behind the player link. Evidence: `box-names-1440.png`.
+21. [x] "Make sure we are using the team color profile pictures, the ring and the team background like
+    the player page" (owner screenshots: Game Leaders with plain grey avatars; Player page photo on
+    the Heat's colour with its logo). — Leaders use the player page's photo: the season team's
+    logo watermark behind the headshot on its brand tint, in a team-colour ring. Evidence:
+    `leaders-ring-1440.png`.
+22. [x] "I feel like our score card could be made better. Use espn as strong inspiration. I really
+    like their format" (owner screenshot: ESPN's OKC at DAL header). — The banner follows ESPN:
+    64px logos at the outer edges on a wash of each team's brand colour; the full name with
+    "record, venue record Away/Home" ("3–1, 2–1 Away") beside each score; the status over a compact
+    line score (periods and T) in the middle; an arrow beside the winner's score pointing at it,
+    the loser's name and score dimmed. Databallr's split colour bar, All Games and the hotkey stay.
+    The venue record is new data: ESPN lists each competitor's home record (home team) or road
+    record (away team); `LiveTeam.venue_record`, parser `espn-live-v5` so cached reads refetch.
+    Phones show logo over code and records with the score beside; the line score stays on Summary.
+    Evidence: `banner-espn-1440.png`, `banner-espn-1100.png`, `banner-espn-390.png`,
+    `banner-espn-live-1440.png`, `banner-espn-upcoming-1440.png`.
+
+Follow-up instructions (owner, 2026-10-29, ESPN Gamecast screenshots: Game Leaders with stat lines
+and jersey numbers, Team Stats, Game Information with icons and a venue photo, Probabilities &
+Game Flow, Shot Chart with quarter / play type / player filters, Game Odds, Matchups, Standings,
+NBA News, the recap headline and the full Team Stats tab):
+23. [x] "You can remove the panel if you think that's best." (the Summary Line Score panel, now
+    repeated by the banner's line score)
+24. [x] "There is even more data that we could include on game pages" — Game Leaders: each
+    leader's stat line under the name (points: FG and FT; rebounds: defensive and offensive;
+    assists: turnovers and minutes) and jersey number.
+25. [x] Win probability (ESPN Analytics, labelled as theirs) and game flow (both teams' scores over
+    the game, lead changes) in one panel.
+26. [x] Shot chart filters: quarters, play types (2PT / 3PT made and missed) and players by team.
+27. [x] The full team stats list (offensive and defensive rebounds, points conceded off turnovers, fouls,
+    technical and flagrant fouls, as ESPN's Team Stats tab).
+28. [x] Matchups: the season series (who leads, each meeting's score or date and broadcasts).
+29. [x] Standings: both teams' divisions with W, L, PCT, GB and STRK, the two teams highlighted.
+30. [x] The recap headline and NBA news from the game feed, linking to the source.
+31. [x] "I like how they use icons for their game information container. I feel like icons in
+    description/context containers adds character and vibrance to pages." — Game Information with
+    an icon per line (date, venue, attendance, broadcasts, officials) and the venue photo.
+
+    Done (2026-10-29), parser `espn-live-v6` (cached reads refetch once). The game feed already
+    carried everything; nothing here costs anything. Summary is a new bento: Game Leaders across;
+    Probabilities & Game Flow (7) beside Team Stats (5); Shot Chart (7) beside Matchups over Game
+    Information (5); Recap & News (7) beside Standings (5). Below 1024px panels stack.
+    - 23: the Line Score panel is gone; the banner's line score is the only one.
+    - 24: under each leader, ESPN's line from the box (points "19/34 FG, 4/6 FT"; rebounds "12 DREB,
+      8 OREB"; assists "7 TO, 31 MIN") and the jersey number beside position.
+    - 25: a Win Probability / Game Flow switch. Win probability is ESPN Analytics' series (one point
+      per play, sorted into game order: ESPN lists it out of order), the area above the 50 line in
+      the away colour and below in the home colour, the latest chance for each team, and a note that
+      it is ESPN's model, not a CourtLens forecast. Game flow draws both scores over game time (away
+      dashed) with the lead-change count. ESPN's Cover Probability has no free source and is left out.
+    - 26: All Quarters / All Play Types / All Players checkbox menus (nothing ticked = all, Reset);
+      Players switches teams and lists starters and bench with jersey numbers; the home logo sits at
+      centre court; counts and the chart's label follow the filters.
+    - 27: Team Stats keeps its eleven rows and a "Show all" toggle adds offensive and defensive
+      rebounds, points conceded off turnovers (ESPN's wording: off the team's own turnovers), fouls,
+      technical and flagrant fouls and percent led. Evidence: `espn-team-stats-all-1440.png`.
+    - 28: Matchups: who leads the season series, then each meeting (final score with the winner's
+      arrow and date, or the date and time of games to come with both records); this game highlighted.
+    - 29: Standings: each team's division (W, L, PCT, GB, STRK, logos), the two teams highlighted,
+      a link to the full Standings page (row 23), noted as ESPN's standings when the game was read.
+    - 30: Recap & News: the AP recap (photo, headline, summary, time) and up to three NBA stories
+      from the feed, each linking to ESPN in a new tab; video items are skipped.
+    - 31: Game Information: an icon per line (calendar, map pin, people, home, TV, flag), the
+      venue photo under Where, broadcasts as chips. Unstarted games show Game Information, Matchups,
+      Standings and News on Summary.
+    Evidence: `espn-summary-1440.png`, `espn-summary-1100.png`, `espn-summary-390.png`,
+    `espn-win-probability-1440.png`, `espn-game-flow-1440.png`, `espn-shot-filters-1440.png`,
+    `espn-summary-upcoming-1440.png`.
+
+Follow-up instructions (owner, 2026-10-29):
+32. [x] "increase the font size for the game leaders and their details caption text for each player,
+    it is hard to read." (owner screenshot: MIA at ATL Game Leaders)
+33. [x] "hatched line is not showing for the data trace in the graph, like espn" (owner screenshots:
+    our win probability, ESPN's with a dotted line while the away team leads and a solid one while
+    the home team does)
+34. [x] "add player pictures next to the players in the shot chart drop down."
+35. [x] "Is there a way to arrange the containers so as to make sure that the containers don't have
+    dead space in them. We will probably have to move away from the bento box layout, and do
+    something else. ESPN avoids these dead spaces by simply choosing a different layout. I don't
+    like that we have dead space in the shot chart container. The page should layout information
+    thoughtfully without dead space." (owner screenshots: ESPN Gamecast's three columns)
+    Done (2026-10-29):
+    - 32: leader names 14 → 16px, team · position · jersey 10 → 12px, the stat line 10 → 14px.
+    - 33: the win probability trace is dotted in the away team's colour while it sits above 50 and
+      solid in the home colour below, as ESPN draws it; the shading under it is lighter.
+    - 34: each player in the shot chart's Players menu has a round photo for that season and team.
+    - 35: Summary drops the bento grid for ESPN Gamecast's three columns. Each column stacks its
+      panels at their natural height, so no panel stretches to match a neighbour: Game Leaders (now
+      one tile per category, stacked) and Team Stats; Recap (text beside a small photo, ESPN's
+      text-first card), Probabilities & Game Flow, Shot Chart and NBA News; Matchups, Standings and
+      Game Information (one item per line). The game view widens from 1088 to 1320px so three
+      columns fit (the board keeps 1088). Columns measure 1203 / 1472 / 1435px for MIN at CLE, so
+      they end close together. Under 1100px the middle column runs full width on top with the other
+      two side by side below; under 640px everything stacks. A new test checks three columns at
+      1440 and that no panel ends more than its padding below its content.
+    Evidence: `columns-summary-1440.png`, `columns-summary-1100.png`, `columns-summary-390.png`,
+    `columns-win-probability-1440.png`, `columns-leaders-1440.png`, `columns-player-menu-1440.png`
+    (headshots show as initials there: the test data has no photos).
+36. [x] "Can we try moving the team logos closer to the names. I think it would look better compared to
+    what espn does." (owner screenshot: MIA at ATL banner, logos at the far edges)
+    — Each team's logo, name and score now pack toward the line score as one block (the logo beside
+    the name instead of at the banner's edge), and a soft glow of the team's brand colour sits behind
+    each logo; the banner's colour wash at the edges stays. Phones keep logo over code. Evidence:
+    `banner-logos-inward-1440.png`, `banner-logos-inward-1100.png`, `banner-logos-inward-390.png`,
+    `banner-logos-inward-1440-upcoming.png`.
 
 
 ### 5 WOWY — 👀 ready for review
@@ -3886,3 +4100,185 @@ Follow-ups (owner, 2026-10-27, sixth pass):
     Defensive Matchups once the default became 2026-27. Evidence: `wowy-2026-27-1440.png`,
     `teams-menu-1440.png`.
 
+
+### 23 Standings — 👀 ready for review
+
+Owner request (2026-10-29, during row 7): "I really like the "Standings" page on ESPN.com we should
+integrate it onto the relevant pages on our site" (screenshot: ESPN's NBA Standings 2026-27,
+Standings tab, League / Conference / Division selector, season and Regular Season selectors,
+conference tables with W, L, PCT, GB, HOME, AWAY, DIV, CONF, PPG, OPP PPG, DIFF, STRK, L10 and the
+playoff and play-in lines). Owner answers: the page lives in the Teams menu (recommended); where
+else standings appear: "Use your best judgement here, on what would be optimal for what the site
+is." Claude's call: the game page (row 7, follow-up 29) and team pages (row 4, follow-up 13); not
+the Live board (already dense) and not Playoffs yet (row 8, not started; its seeding view belongs
+there).
+
+Source: ESPN's free standings feed (`/apis/v2/sports/basketball/nba/standings`, by season, with
+divisions and clinch marks), read on demand through the Live cache. The Teams page's own Standings
+view (row 4, computed from game logs, seeds without NBA tiebreakers) is unchanged.
+
+1. [x] ESPN's Standings page at `/standings` under Teams: League / Conference / Division, season
+   selector, columns W, L, PCT, GB, HOME, AWAY, DIV, CONF, PPG, OPP PPG, DIFF, STRK, L10, sortable
+   headers, the playoff (6) and play-in (10) lines in Conference view, clinch marks.
+   — Done (2026-10-29). "Standings" sits second in the Teams menu. `GET /api/live/standings`
+   reads ESPN's feed at division level through the Live cache (current season every 10 minutes, a
+   past season once, kept as hashed evidence). Conference (default) and Division tables follow
+   ESPN's playoff seed, which applies the NBA's tiebreakers; League sorts by record. GB is
+   recomputed against each table's leader. Lines after the 6th and 10th from 2020-21 (the play-in),
+   after the 8th before. Sortable W, L, PCT, GB, PPG, OPP PPG, DIFF and STRK (click again to reverse,
+   a third time back to seed order; lines show in seed order only); DIFF green or red; clinch marks
+   with a legend; teams link to their team page for that season; records use the en dash. The
+   season selector covers 1984-85 to now (ESPN lists 23 teams that season; earlier seasons are
+   missing or partial in its feed). Verified against ESPN's own page for 2026-27 (East: DET, PHI,
+   TOR, BOS, CLE…). Evidence (`docs/evidence/alignment/standings/`): `standings-conference-1440.png`,
+   `standings-division-1440.png`, `standings-league-1440.png`, `standings-2018-19-east-1440.png`,
+   `standings-conference-390.png`.
+2. [x] "I noticed there is no data hooked up to the "NBA Standings" page. Is the data hooked up?"
+   (owner screenshot: "Live data unavailable" on /standings) — The API served standings, but the
+   dashboard's Live proxy (`app/api/live/[[...path]]/route.ts`) allowed only slates, games and
+   historical reads, so `/api/live/standings` got a 404 (team pages' division tables too). The
+   browser tests missed it because they answered the read in the browser. Fix: the proxy admits
+   `standings` and forwards only `season`; a Vitest case now goes through the proxy. Checked on the
+   owner's :3100: 30 teams for 2026-27.
+3. [x] "I feel like we can layout the tables better given the horizontal space we have. Example, we
+   can list the conference tables side by side, instead of on top of each other (all data without
+   having to scroll),"
+   — From 1280px wide, Conference shows East and West side by side and Division shows two columns
+   (Atlantic, Central, Southeast left; Northwest, Pacific, Southwest right); League stays one
+   full-width table. Every column fits without scrolling: side by side the tables use the short team
+   name ("Pistons"; the full name stays for screen readers, the tooltip and the link), 12px text,
+   tighter cells and two-line headers ("OPP / PPG"). Measured: no table scrolls sideways at 1280,
+   1440 or 1920; Conference fits one 1000px screen, Division 1096px. Below 1280px the tables stack as
+   before. Evidence: `side-by-side-conference-1440.png`, `side-by-side-division-1440.png`.
+4. [x] "Padding on the left and right of the tables should be equal … why is it squished."
+   — The last column sat 8px from the right edge, while the rank was right-aligned in a 2-digit slot,
+   which pushed "1" about 20px in from the left. The outer cells now share one inset (16px; 12px side
+   by side), and the rank slot is two digits wide only in tables with 10 or more teams. Measured rank
+   to left edge and L10 to right edge: 16/16 for Division at 1140 and League at 1440, 12/12 for
+   Conference and Division at 1440. No table scrolls. Evidence: `equal-edges-division-1140.png`.
+
+
+### 8 Playoffs — 👀 ready for review (follow-ups 13–14)
+Instructions (owner, 2026-10-30; four Databallr screenshots of `/playoffs` and a series page,
+2025-26 Finals SAS vs NYK and West First Round OKC vs PHX):
+1. [x] Replace the round panels with a mirrored bracket instead of Databallr's flat West / East
+   "path" lists (owner chose the bracket: "the better optimized version"): West rounds on the left,
+   East on the right, connector lines from each series to the one its winner played next, and the
+   Finals as a large centre card (logos, city and team name, seed, best-of pips) that opens the
+   series. Each series is a compact slot (seed, logo, tricode, series wins; loser dimmed) linking to
+   its series page. Phones show one side at a time (West / Finals / East). Seasons whose format
+   does not fit a two-conference tree (division playoffs, byes beyond the tree, three groups) fall
+   back to round columns without connectors.
+   — `lib/playoffs-bracket.ts` builds each side top-down from the Finals: a series sits under the
+   one its winner played next, the higher seed's path on top (2025-26 East: DET-ORL, CLE-TOR,
+   BOS-PHI, NYK-ATL, so DET meets CLE). Rounds not yet played are TBD slots filled in standard seed
+   order; a team that skipped a round leaves an empty "bye" slot with a half connector (1975-76,
+   1965-66 division playoffs). 1949-50 (three division groups, a league semifinal) keeps the round
+   columns. The East runs right to left through `direction: rtl`, so one set of logical rules draws
+   both sides. Centred "2026 NBA Playoffs" title (year in gold) with a one-line Finals result.
+   Below 1180px a West / Finals / East switch shows one part; 390 shows a side's three rounds with
+   no sideways scroll. Before a season's playoffs start (2026-27 now), the page opens on the latest
+   playoffs. Round / conference filters show only on the round-column fallback.
+2. [x] Season series for context — Regular-season head-to-head from the release's games before
+   the playoffs (or the cutoff): the series hero reads "Regular season: OKC 3–2" and expands to the
+   five meetings (date, away @ home, scores, winner bold); bracket slots show it with both records
+   in a popover on hover or keyboard focus; the Finals card shows it in its footer. Teams that never
+   met show no season series (unknown, not 0–0). API: `record_wins`, `record_losses`,
+   `season_series_wins` on each team and `season_series` on the series
+   (`services/playoff_context.py`).
+3. [x] Series hero — logos on a team-colour glow, city over the uppercase nickname in team colour,
+   seed chip, regular-season record and conference, 48px series wins (loser greyed), "Series winner
+   OKC" badge with a trophy (or "OKC leads 3–1" / "Series tied"), conference and round kicker, and
+   a two-colour rule along the bottom. Compare teams stays as a ghost link beside Back.
+4. [x] Series Trajectory — one card per game (away over home, winner's score bright, "Final · date")
+   and dashed "Not played" placeholders up to the series length; placeholders never count.
+5. [x] Team Comparison (ORTG, DRTG, NET) and Four Factors (eFG%, TOV%, OREB%, FTR%) — paired bars in
+   two panels side by side (stacked below 900px); the better side's bar and value in its colour,
+   lower-is-better for DRTG and TOV%, NET centred on zero.
+6. [x] Series Averages — Basic / Advanced above the panel, Both / OKC / PHX inside, "4 of 4 games"
+   chip, per-game table in the shared reference-grid look with group labels (Basic: Profile,
+   Scoring, Counting, Shooting; Advanced: Profile, Efficiency, Rebounding, Playmaking, Defense),
+   pinned player column and sortable headers (sorted column in gold).
+7. [x] Matchups — `scripts/series_matchups.py` extracts the retained NBA.com matchup archives
+   (`matchups_po_<year>`, and the regular-season games between teams that met in those playoffs)
+   into `data/derived/series-matchups-v1/<season>.json.gz` (≈250 KB each, 2023-24 to 2025-26;
+   added to the VPS serving dirs). The panel has team, On Offense / On Defense and Playoffs /
+   Regular Season / All switches, a scrolling player strip by possessions, the focus card
+   ("Faced PHX defenders across 317 possessions in 4 games") and the opponent table with a share
+   bar in the opponent's colour, POSS, PTS, eFG% (green / red), PTS/75, FTA, AST, TOV and a gold
+   Total row. Matches Databallr exactly for SGA: Brooks 87.2 poss, 21 pts, 58%, 18.1; total 317.2,
+   164, 62%, 38.8. Seasons without matchup files hide the section.
+8. [x] Impact face-off — DARKO / RAPM switch, then DPM / ODPM / DDPM (RAPM / ORAPM / DRAPM): the top
+   12 of each team who appeared in the series, ranked side by side around a rank spine, season
+   photos, signed values in green / red. DARKO is the board at the end of the regular season
+   (Apr 12, 2026), so later rounds never leak into a first-round view; RAPM is the longest
+   regular-season fit for the season (3-year).
+9. [x] "I feel like we can use more of the vertical screen real estate here. Increase the size of
+   the bracket matchup containers, the team logos/text/seed. It just seems a little too small."
+   (owner screenshot at about 2000×1135: the bracket filled the top half, the rest empty)
+   — The rounds now stretch to the screen height left below the title (`100dvh − 392px`, never
+   less than the slots need), and everything is larger: slots 64 → 92px tall with more padding,
+   team logos 18 → 28px, codes 13 → 16px, seeds 10 → 13px, series wins 13 → 20px, round labels
+   10 → 12px; the Finals card column widens to 440px, with 104px logos in a 136px ring, 32px
+   nicknames and 48px series wins. Below 1700px wide a mid step (22px logos, 14px codes, Finals
+   column 24vw) keeps every code whole; phones keep their compact size. Measured: no clipped team
+   code and no sideways scroll at 2000, 1920, 1440, 1280, 1180 and 390; no vertical scroll at
+   2000×1135, 1920×1080 or 1440×900; slots 228×92 at 2000, 154×92 at 1440. `e2e/playoffs.spec.ts`
+   4/4. Evidence superseded by follow-up 10.
+10. [x] "Make the team logos/names/text much larger. Also we should maybe use the full team names."
+   — From 1960px wide each team reads as its full name, city (12px caps) over nickname
+   (18–20px, scaling with width), with a 44px logo, 24px series wins and 132px slots; the seed
+   moved to a small badge on the logo corner to make room. Between 1180 and 1960px the slots keep
+   the large codes (20px, 36px logos; 16px and 28px below 1400px), because full names would be cut
+   off there; phones keep codes at 14px with 26px logos. The Finals column narrows to 19vw (max
+   400px) so the sides get the width. Measured: no clipped name or code at 2560, 2000, 1920, 1900,
+   1800, 1600, 1440, 1280, 1180 or 390 (2025-26), and at 2000 in 1975-76, 1978-79, 1985-86,
+   1996-97, 2004-05, 2011-12, 2021-22 (SuperSonics, Trail Blazers, Timberwolves); no vertical scroll
+   at 2000×1135, 1920×1080 or 1440×900. `e2e/playoffs.spec.ts` 4/4. Evidence:
+   `bracket-full-names-2000.png`, `bracket-codes-1440.png` (other bracket evidence refreshed).
+11. [x] "No need for container around series winner. Just put the team logo and full team name in
+   the middle." (owner screenshot: the boxed "Series winner CLE" badge in the series hero)
+   — The hero's centre is now the winner's 56px logo over its full name in team colour, with no
+   box ("Series winner" stays for screen readers). A series still under way shows plain text
+   ("OKC leads 3–1", "Series tied 2–2"). Evidence: `series-winner-hero-2000.png`,
+   `series-winner-hero-390.png`.
+12. [x] "Why isn't there any shading for the players that won their side? What determines whether a
+   player's side gets shaded." (owner screenshot: DARKO face-off, CLE rows shaded, TOR rows never)
+   — Answer: the shading was decoration: a team-colour gradient behind every row of the left team
+   only, copied from Databallr's look, tied to no value. Recommended and built: shade the side that
+   wins each rank (higher value in the selected component), ties unshaded.
+   Each rank's winner gets a team-colour gradient that fades toward the edge on its side; a rank
+   only one team fills goes to that player. The note under the board says what the shading means.
+   Switching DPM / ODPM / DDPM (or the RAPM components) re-ranks and re-shades. CLE vs TOR DPM:
+   CLE ahead at ranks 1–5 and 8–12, TOR at 6 (Walter +0.63 vs Wade +0.59) and 7.
+   `e2e/playoffs.spec.ts` 4/4. Evidence: `faceoff-rank-shading-2000.png`.
+13. [x] "It should show winner or something here" (owner screenshot: the hero centre with only the
+   Cavaliers logo and name) — A gold "Series winner" label with a trophy sits over the winner's
+   logo and full name, still unboxed. Evidence: `series-logos-2000.png`.
+14. [x] "I've found that on many pages we are missing team logos/player faces when we could add them
+   to provide better visibility/parseability for people viewing. A lot of these could have the
+   team logo next to them, "TOR" and "CLE" can be difficult to scan for. Even in sliding
+   selectors." (owner screenshots: Series Trajectory rows, Team Comparison / Four Factors headers,
+   the Both / CLE / TOR selector)
+   — On the series page every team code now carries its logo (`TeamCode`): Series Trajectory rows,
+   Team Comparison and Four Factors headers, the Both / CLE / TOR selector, the matchup team
+   selector, the matchup card's "Faced TOR defenders" and the season-series meetings. Bracket
+   slots, the hero, averages rows and the face-off already had logos or photos. Recorded as the
+   "Logos and faces beside codes" pattern in the alignment handoff so later pages apply it by
+   default; other pages wait for the owner's go-ahead (several are approved). Measured on CLE–TOR:
+   14 logos in game rows, 2 in the selector, no sideways scroll at 2000 or 390.
+   `e2e/playoffs.spec.ts` 4/4. Evidence: `series-logos-2000.png`, `series-logos-390.png`.
+Removed: the two "gated" placeholder panels (matchup matrix, rotation stints) — the first is now
+real data; the second was an ad for data the page does not show.
+Data-blocked: Databallr's "Time Decay RAPM" (we serve multi-year RAPM, labelled as such); positions
+under the face-off names; matchup data exists only for 2023-24 to 2025-26 (NBA.com
+`boxscorematchupsv3` archives).
+Verified: pytest (new `tests/unit/test_playoff_context.py`, playoff series, B17/B21 API), ruff,
+mypy; Vitest 691/691 (new `lib/playoffs-bracket.test.ts` on real 1949-50, 1965-66, 1975-76 and
+2025-26 brackets); dashboard lint and typecheck; new `e2e/playoffs.spec.ts` 4/4 on the mock API
+(real fixtures) and on live data, repeat-each 2; `table-interactions` playoffs case updated to the
+new table. The `playoffs bracket` visual baselines differ by design and are left for refresh at
+approval; the other failing baselines (recent games, roster shapes, team profile, directory,
+settings) differ in the nav bar from the uncommitted Live/Standings nav work, not this page.
+Evidence (`docs/evidence/alignment/playoffs/`): `bracket-1440.png`, `bracket-finals-390.png`,
+`bracket-west-390.png`, `bracket-1975-76-1440.png`, `series-1440.png`, `series-390.png`.

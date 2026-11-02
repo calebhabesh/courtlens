@@ -26,9 +26,9 @@ interface PlayoffsPageProps {
 export default async function PlayoffsPage({ searchParams }: PlayoffsPageProps) {
   const params = await searchParams;
   const catalog = await getWorkbenchCatalog(params.releaseId).catch(() => null);
-  const season = params.season || catalog?.default_season || "";
+  let season = params.season || catalog?.default_season || "";
   // The shared filter bar writes `beforeDate`; older links used `cutoff_date`.
-  const cutoffDate = params.beforeDate || params.cutoff_date || params.cutoffDate || catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === "playoffs")?.default_before_date;
+  let cutoffDate = params.beforeDate || params.cutoff_date || params.cutoffDate || catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === "playoffs")?.default_before_date;
 
   let bracketData: PlayoffBracketResponse | null = null;
   let loadError: string | null = null;
@@ -39,13 +39,24 @@ export default async function PlayoffsPage({ searchParams }: PlayoffsPageProps) 
       cutoffDate,
       releaseId: params.releaseId
     });
+    // Before a season's playoffs begin, the page opens on the latest playoffs instead.
+    if (!params.season && /^\d{4}-\d{2}$/.test(season) && !bracketData.rounds.some(round => round.series.length)) {
+      const start = Number(season.slice(0, 4)) - 1;
+      const previous = `${start}-${String((start + 1) % 100).padStart(2, "0")}`;
+      const earlier = await getPlayoffBracket({ season: previous, releaseId: params.releaseId });
+      if (earlier.rounds.some(round => round.series.length)) {
+        bracketData = earlier;
+        season = previous;
+        cutoffDate = catalog?.stats_scopes?.find(scope => scope.season === previous && scope.phase === "playoffs")?.default_before_date;
+      }
+    }
   } catch (err) {
     loadError = err instanceof Error ? err.message : "Failed to load playoff bracket";
   }
 
   return (
     <PageShell template="board">
-      <PageHeader title="Playoffs" subtitle={`Postseason series for ${season || "the selected season"}.`} />
+      {!bracketData && <PageHeader title="Playoffs" subtitle={`Postseason series for ${season || "the selected season"}.`} />}
       <PlayoffsBracketView
         bracket={bracketData}
         season={season}

@@ -85,18 +85,42 @@ test("summary: line score, leaders, shot chart and team stats", async ({ page })
   const banner = page.locator(".live-banner");
   await expect(banner).toContainText("Final/OT");
   await expect(banner.locator("[data-lost]")).toContainText("125");
-  const line = page.getByRole("region", { name: "Line score" });
-  await expect(line.getByRole("row").nth(1)).toContainText("31292627");
-  await expect(line.getByRole("columnheader", { name: "OT1" })).toBeVisible();
+  // The line score lives in the banner now (follow-up 23).
+  const lines = banner.getByRole("table", { name: "Points by period" });
+  await expect(lines.getByRole("row").nth(1)).toContainText("MIN3129262712125");
+  await expect(lines.getByRole("columnheader", { name: "OT1" })).toBeVisible();
   await expect(page.getByRole("group", { name: "Points" })).toContainText("Anthony Edwards");
   await expect(page.getByRole("group", { name: "Points" })).toContainText("47");
   const court = page.getByRole("img", { name: /Shot chart, all periods/ });
   await expect(court).toHaveAttribute("aria-label", /MIN 49-102, CLE 46-104 field goals/);
   expect(await court.locator(".live-shot").count()).toBe(206);
-  await page.getByRole("radiogroup", { name: "Shot chart period" }).getByText("OT1").click().catch(async () => page.getByRole("button", { name: "OT1" }).click());
+  // Follow-up 26: ESPN's filters; nothing ticked is everything.
+  await page.getByRole("button", { name: "Quarters: All Quarters" }).click();
+  await page.getByRole("group", { name: "Quarters" }).getByText("OT1").click();
   await expect(page.getByRole("img", { name: /Shot chart, OT1/ })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "Play Types: All Play Types" }).click();
+  await page.getByRole("group", { name: "Play Types" }).getByText("3PT Made").click();
+  await expect(page.getByRole("img", { name: /Shot chart, OT1, 3PT Made/ })).toBeVisible();
+  await page.keyboard.press("Escape");
+  // Follow-ups 24–31.
+  await expect(page.getByRole("group", { name: "Points" })).toContainText("FG");
+  await expect(page.getByRole("region", { name: "Probabilities & Game Flow" })).toContainText("ESPN Analytics");
+  await expect(page.getByRole("region", { name: "Matchups" })).toContainText("CLE leads season");
+  await expect(page.getByRole("region", { name: "Game Information" })).toContainText("Where to Watch");
   await expect(page.getByRole("region", { name: "Team Stats" })).toContainText("48.0% (49/102)");
-  await expect(page.getByRole("region", { name: "Game Info" })).toContainText("Rocket Arena");
+  await expect(page.getByRole("region", { name: "Game Information" })).toContainText("Rocket Arena");
+  await expect(page.getByRole("region", { name: /Standings/ })).toContainText("Minnesota");
+  await expect(page.getByRole("region", { name: "Recap" })).toContainText("Mitchell scores 26");
+  await expect(page.getByRole("region", { name: "NBA News" })).toBeVisible();
+  // Follow-up 35: three columns, each panel at its natural height (no stretched dead space).
+  const columns = await page.locator(".live-col").evaluateAll(cols => cols.map(c => c.getBoundingClientRect().x));
+  expect(new Set(columns.map(Math.round)).size).toBe(3);
+  const gaps = await page.locator(".live-col > .live-panel").evaluateAll(panels => panels.map(p => {
+    const last = p.lastElementChild!.getBoundingClientRect(), box = p.getBoundingClientRect();
+    return box.bottom - last.bottom;
+  }));
+  expect(Math.max(...gaps)).toBeLessThan(40);
 });
 
 test("box score: Databallr's columns, starters and bench, Q and W", async ({ page }) => {

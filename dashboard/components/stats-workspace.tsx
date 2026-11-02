@@ -9,7 +9,7 @@ import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer"
 import { executeWorkbenchQuery, getDraftClasses, getMetricCatalog, getWorkbenchCatalog } from "@/lib/workbench-api";
 import { metricHints, type MetricHint } from "@/lib/stats-glossary";
 import { querySpecToLegacyQuery } from "@/lib/query-url";
-import { resolveStatsQuery, normalizedColumn } from "@/lib/stats-query";
+import { resolveStatsQuery, normalizedColumn, overviewSortMetric } from "@/lib/stats-query";
 import { getPresetById, usesImpactManifest, type CountingMode } from "@/lib/stats-presets";
 import { getWorkspace } from "@/lib/workspace-client";
 import type { DraftClassesResponse, EstimatedPosition, PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
@@ -53,11 +53,8 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   const countingMode = (params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
   const presetId = params.viewId || params.view_id || params.preset || workspace?.preferences.default_view_id || "overview";
   const preset = getPresetById(presetId, workspace?.views);
-  // Overview sorts by DPM; seasons before DARKO's first (2000-01) have no rating, so by points.
-  const season = typeof params.season === "string" ? params.season : catalog.default_season;
-  const firstRated = catalog.darko?.scopes?.map(scope => scope.season).sort()[0];
-  const darkoRated = !firstRated || season >= firstRated;
-  const querySpec = resolveStatsQuery(queryParams, catalog, countingMode, preset.id === "overview" && darkoRated ? "dpm" : "pts");
+  // Overview ranks by DPM where DARKO rates the scope, otherwise by minutes (stats-query.ts).
+  const querySpec = resolveStatsQuery(queryParams, catalog, countingMode, preset.id === "overview" ? overviewSortMetric(catalog) : "pts");
   querySpec.view_state = { ...querySpec.view_state, view_id: presetId,
     columns: preset.columns.map(column => normalizedColumn(column, countingMode).key) };
   if (preset.columns.some(column => usesImpactManifest(normalizedColumn(column, countingMode).key)) && catalog.impact?.manifest_sha256) {

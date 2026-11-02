@@ -26,6 +26,8 @@ export function StatsHelpRow() {
           <li>Small numbers under each value are league percentiles among qualified players; Rules above the table gives the cutoff.</li>
           <li>Hover or focus a row to preview a player. Use + to add players to a comparison.</li>
           <li>Click a column header to sort. The filter button sets minimum games and minutes.</li>
+          <li>Overview ranks by DARKO DPM when it rates the season (daily during the season), otherwise by minutes.</li>
+          <li>Columns with no values yet for the season are hidden; the eye button shows them.</li>
         </ul>
       </Modal>
       <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />

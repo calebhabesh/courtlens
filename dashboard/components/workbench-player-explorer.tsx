@@ -264,11 +264,24 @@ export function WorkbenchPlayerExplorer({
   const stintScope = querySpec ? JSON.stringify([querySpec.release_id, querySpec.season, querySpec.phase,
     querySpec.before_date, querySpec.window, querySpec.season_scope]) : "";
 
-  const preset = useMemo(() => {
+  // Columns unknown for every player in scope (a source not yet published, e.g. early in a
+  // season) are hidden until they have values; the footer says so and can show them. The sorted
+  // column always stays.
+  const [showEmptyColumns, setShowEmptyColumns] = useState(false);
+  const emptyFields = data.cohort?.empty_fields;
+  const { preset, hiddenColumns } = useMemo(() => {
     const base = getPresetById(activePresetId, views);
-    const columns = base.columns.map((column) => normalizedColumn(column, countingMode));
-    return { ...base, columns: columns.filter((column, index) => columns.findIndex(candidate => candidate.key === column.key) === index) };
-  }, [activePresetId, views, countingMode]);
+    const normalized = base.columns.map((column) => normalizedColumn(column, countingMode));
+    const columns = normalized.filter((column, index) => normalized.findIndex(candidate => candidate.key === column.key) === index);
+    const empty = new Set(emptyFields ?? []);
+    const hidden = columns.filter(column => empty.has(column.key) && column.sortMetric !== currentSortMetric);
+    // A view whose every column is empty keeps them: an empty table explains nothing.
+    const hidable = hidden.length < columns.length ? hidden : [];
+    return {
+      preset: { ...base, columns: showEmptyColumns ? columns : columns.filter(column => !hidable.includes(column)) },
+      hiddenColumns: hidable
+    };
+  }, [activePresetId, views, countingMode, emptyFields, currentSortMetric, showEmptyColumns]);
 
   // Retained Comparison Tray derived from workspace compare_tray (F05)
   const comparedPlayers = useMemo<PlayerResearchItem[]>(() => {
@@ -361,9 +374,11 @@ export function WorkbenchPlayerExplorer({
   };
 
   const handlePresetSelect = (id: PresetId) => {
-    const metric = id === "overview" ? "dpm" : id === "impact" ? "rapm" : id === "onoff" ? "onoff_net_rating" : id === "sixfactor" ? "rapm" : "pts_per_game";
+    // Overview takes the page default: DPM where DARKO rates the scope, minutes otherwise.
+    const metric = id === "impact" ? "rapm" : id === "onoff" ? "onoff_net_rating" : id === "sixfactor" ? "rapm" : "pts_per_game";
     updateParam({ viewId: id === "overview" ? null : id, preset: null, view_id: null,
-      sortMetric: normalizedSortMetric(metric, countingMode), sort: null, sort_metric: null, cursor: null }, { presetId: id });
+      sortMetric: id === "overview" ? null : normalizedSortMetric(metric, countingMode),
+      ...(id === "overview" ? { sortDirection: null } : {}), sort: null, sort_metric: null, cursor: null }, { presetId: id });
   };
 
   const handleCountingModeSelect = (mode: CountingMode) => {
@@ -792,6 +807,11 @@ export function WorkbenchPlayerExplorer({
               : updateParam({ sortMetric: "player_name", sortDirection: "asc" })}
             title={nameSorted && currentSortDirection === "asc" ? "Sort players Z–A" : "Sort players A–Z"} />
           <IconButton variant="secondary" icon="reset" label="Reset table" title="Reset sort and filters" onClick={resetTable} />
+          {/* Columns with no values anywhere in scope stay hidden until their source publishes. */}
+          {hiddenColumns.length > 0 && <IconButton variant="secondary" icon={showEmptyColumns ? "eye" : "eye-off"} pressed={showEmptyColumns}
+            label={`${showEmptyColumns ? "Hide" : "Show"} ${hiddenColumns.length} empty ${hiddenColumns.length === 1 ? "column" : "columns"}`}
+            title={`${hiddenColumns.length} empty ${hiddenColumns.length === 1 ? "column" : "columns"} ${showEmptyColumns ? "shown" : "hidden"}: no ${data.context.season} values yet for ${hiddenColumns.map(column => column.label).join(", ")}. ${showEmptyColumns ? "Click to hide" : "Click to show"}.`}
+            onClick={() => setShowEmptyColumns(shown => !shown)} />}
         </div>
         <span className="stats-expand-action">
           <IconButton icon={isExpanded ? "collapse" : "expand"} label={isExpanded ? "Standard height" : "Expand table"} title="Expand table (T)"

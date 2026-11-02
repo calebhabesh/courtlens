@@ -303,3 +303,29 @@ def test_prune_drops_only_superseded_bundles_and_aliases_their_pins(tmp_path: Pa
         # A saved investigation pinned to the pruned bundle reads the same dated entries.
         assert darko.darko_path(superseded.stem) == newest
         assert darko.load_darko_store(superseded.stem)["entries"][0]["as_of"] == "2025-04-13"
+
+
+def test_season_in_progress_falls_back_to_the_daily_board() -> None:
+    daily = {
+        "season": "2026-27",
+        "phase": "current",
+        "as_of": "2026-10-29",
+        "data_date": "2026-10-27",
+    }
+    query = QuerySpec(season="2026-27")
+    with patch("courtlens.services.darko.load_darko_store", return_value={"entries": [daily]}):
+        # Through Oct 28: ratings end Oct 27, before the exclusive Oct 29 cutoff.
+        assert darko.darko_scope(query, date(2026, 10, 29)) == daily
+        assert darko.darko_sql_rows(query, date(2026, 10, 29))[1:] == ("2026-10-27", True)
+        assert darko.darko_scope(query, date(2026, 10, 27)) is None
+        assert (
+            darko.darko_scope(query.model_copy(update={"phase": "playoffs"}), date(2026, 10, 29))
+            is None
+        )
+    sealed = {**daily, "phase": "regular_season", "as_of": "2027-04-11", "data_date": "2027-04-11"}
+    with patch(
+        "courtlens.services.darko.load_darko_store", return_value={"entries": [daily, sealed]}
+    ):
+        # A sealed season never falls back, even to a cutoff only the daily board precedes.
+        assert darko.darko_scope(query, date(2026, 10, 29)) is None
+        assert darko.darko_scope(query, date(2027, 4, 12)) == sealed

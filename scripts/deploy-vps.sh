@@ -41,6 +41,7 @@ SERVING_DIRS=(
   derived/impact-team-splits-v1
   derived/value-archetypes-v1/serving
   derived/wowy-v1
+  derived/series-matchups-v1
   cache/portraits
 )
 for dir in "${SERVING_DIRS[@]}"; do

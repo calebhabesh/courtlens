@@ -3,15 +3,19 @@
 import Link from "next/link";
 import { useDeferredValue, useState, type CSSProperties, type ReactNode } from "react";
 import {
-  awayFirst, gameStatus, lineFavourite, madeAttempted, moneyline, periodLabel, seasonOf, shootingTone, STAT_KEYS, teamCode, trueShooting, twoPoint,
+  awayFirst, formatRecord, gameStatus, lineFavourite, madeAttempted, moneyline, periodLabel, seasonOf, shootingTone, STAT_KEYS, teamCode, trueShooting, twoPoint,
   type LiveGame, type LiveGameData, type LiveInjury, type LiveLeader, type LiveOdds, type LivePlay, type LivePlayer, type LiveTeam,
 } from "@/lib/live";
 import { teamAccent, teamBrandColor } from "@/lib/team-colors";
 import { ShotChart } from "./live-shot-chart";
+import { logoTeam, Panel } from "./live-panel";
+import { DivisionStandings, GameFlow, Matchups, NewsPanel } from "./live-game-extras";
 import { HotkeyBadge } from "./live-board";
 import { TeamLogo } from "./team-logo";
-import { Icon } from "./ui/icon";
-import { PlayerAvatar } from "./ui/identity";
+import { Icon, type IconName } from "./ui/icon";
+import { PlayerPortrait } from "./player-portrait";
+import { teamRecord } from "./compare-player-slot";
+import { TeamWatermark } from "./team-watermark";
 import { PageHeader } from "./ui/panel";
 import { SearchField } from "./ui/input";
 import { ButtonLink, Segmented } from "./ui/kit";
@@ -56,88 +60,133 @@ export function teamColors(teams: readonly LiveTeam[], season: string): CSSPrope
   });
 }
 
-function logoTeam(team: LiveTeam) { return team.tricode ?? team.canonical_id ?? teamCode(team); }
 
-function Panel({ title, icon, children, className = "", action }: { title: string; icon?: Parameters<typeof Icon>[0]["name"]; children: ReactNode; className?: string; action?: ReactNode }) {
-  return <section className={`live-panel ${className}`} aria-label={title}>
-    <header className="live-panel-head"><h2>{icon && <Icon name={icon} size={20} />}{title}</h2>{action}</header>
-    {children}
-  </section>;
-}
 
-/** Databallr's banner: All Games, status, both teams with the loser dimmed, the game's hotkey. */
+/**
+ * Follow-up 22: ESPN's scorecard. Big logos at the edges on a wash of each team's colour, the full
+ * name with its record and venue record beside the score, and the status over a compact line score
+ * in the middle. An arrow points at the winner's score; the loser's dims.
+ */
 export function GameBanner({ game, index, backHref }: { game: LiveGame; index: number; backHref: string }) {
   const [away, home] = awayFirst(game.teams);
   const season = seasonOf(game.slate_date);
   const played = game.status === "in_progress" || game.status === "final";
-  const side = (team: LiveTeam, align: "start" | "end") => <span className="live-banner-team" data-align={align} data-lost={(game.status === "final" && team.winner === false) || undefined}>
-    <TeamLogo team={logoTeam(team)} season={season} size={40} />
-    <span className="live-banner-code">{teamCode(team)}</span>
-    <strong className="live-banner-score">{played ? team.score ?? "—" : ""}</strong>
-  </span>;
+  const periods = Math.max(4, ...game.teams.map(t => t.linescores?.length ?? 0));
+  const won = (team: LiveTeam) => game.status === "final" && team.winner === true;
+  const lost = (team: LiveTeam) => game.status === "final" && team.winner === false;
+  const side = (team: LiveTeam) => {
+    const venue = formatRecord(team.venue_record);
+    const label = team.side === "home" ? "Home" : "Away";
+    return <div className="live-banner-team" data-side={team.side} data-lost={lost(team) || undefined}>
+      <span className="live-banner-logo"><TeamLogo team={logoTeam(team)} season={season} size={64} /></span>
+      <span className="live-banner-name">
+        <span className="live-banner-full">{team.name}</span>
+        <span className="live-banner-code">{teamCode(team)}</span>
+        <span className="live-banner-meta">
+          {team.record && <span className="live-banner-record"><span className="sr-only">Record </span>{formatRecord(team.record)}</span>}
+          {team.record && <span aria-hidden="true">, </span>}
+          {venue ? <span><span className="live-banner-record">{venue}</span> {label}</span> : <span>{label}</span>}
+        </span>
+      </span>
+      {played && <strong className="live-banner-score">
+        {won(team) && <span className="live-banner-win" aria-hidden="true" />}
+        {team.score ?? "—"}
+        {won(team) && <span className="sr-only"> (winner)</span>}
+      </strong>}
+    </div>;
+  };
   return <header className="live-banner">
     <div className="sr-only"><PageHeader title={`${away.name} at ${home.name}`} subtitle={`${gameStatus(game)} · ${game.slate_date}`} /></div>
     <ButtonLink href={backHref} size="sm" variant="secondary" icon="back" className="live-banner-back">All Games</ButtonLink>
-    <p className="live-banner-status">{game.status === "in_progress" && <span className="live-dot" aria-hidden="true" />}{gameStatus(game)}</p>
-    <div className="live-banner-teams" aria-label={`${away.name} ${played ? away.score ?? "" : ""}, ${home.name} ${played ? home.score ?? "" : ""}`} role="group">
-      <span aria-hidden="true" className="live-banner-row">{side(away, "end")}<span className="live-banner-dash">–</span>{side(home, "start")}</span>
-    </div>
     <span className="live-banner-hotkey"><HotkeyBadge n={index + 1} label="Hotkey:" /></span>
+    <div className="live-banner-board">
+      {side(away)}
+      <div className="live-banner-center">
+        <p className="live-banner-status">{game.status === "in_progress" && <span className="live-dot" aria-hidden="true" />}{gameStatus(game)}</p>
+        {played && <table className="live-banner-lines">
+          <caption className="sr-only">Points by period</caption>
+          <thead><tr><th scope="col"><span className="sr-only">Team</span></th>{Array.from({ length: periods }, (_, i) => <th scope="col" key={i}>{i < 4 ? i + 1 : periodLabel(i + 1)}</th>)}<th scope="col">T</th></tr></thead>
+          <tbody>{[away, home].map(team => <tr key={team.source_id} data-dim={lost(team) || undefined}>
+            <th scope="row">{teamCode(team)}</th>
+            {Array.from({ length: periods }, (_, i) => <td key={i}>{team.linescores?.[i] ?? "—"}</td>)}
+            <td className="live-banner-lines-total">{team.score ?? "—"}</td>
+          </tr>)}</tbody>
+        </table>}
+      </div>
+      {side(home)}
+    </div>
   </header>;
 }
 
 // ---------------------------------------------------------------- Summary (X's game summary)
 
-function LineScore({ game }: { game: LiveGame }) {
-  const teams = awayFirst(game.teams);
-  const periods = Math.max(4, ...teams.map(t => t.linescores?.length ?? 0));
-  const season = seasonOf(game.slate_date);
-  return <div className="live-table-scroll" role="region" aria-label="Line score" tabIndex={0}>
-    <table className="live-linescore">
-      <thead><tr><th scope="col"><span className="sr-only">Team</span></th>{Array.from({ length: periods }, (_, i) => <th scope="col" key={i}>{i < 4 ? i + 1 : periodLabel(i + 1)}</th>)}<th scope="col">T</th></tr></thead>
-      <tbody>{teams.map(team => <tr key={team.source_id} data-lost={(game.status === "final" && team.winner === false) || undefined}>
-        <th scope="row"><span className="live-team-cell"><TeamLogo team={logoTeam(team)} season={season} size={20} />{teamCode(team)}</span></th>
-        {Array.from({ length: periods }, (_, i) => <td key={i}>{team.linescores?.[i] ?? "—"}</td>)}
-        <td className="live-linescore-total">{team.score ?? "—"}</td>
-      </tr>)}</tbody>
-    </table>
-  </div>;
-}
-
-function LeaderCell({ leader, season, team, align }: { leader?: LiveLeader; season: string; team?: LiveTeam; align: "start" | "end" }) {
-  if (!leader) return <span className="live-leader" data-align={align}><span className="live-muted">—</span></span>;
-  const name = leader.canonical_id ? <Link href={`/players/${leader.canonical_id}?season=${season}`}>{leader.name}</Link> : leader.name;
-  return <span className="live-leader" data-align={align}>
-    <PlayerAvatar playerId={leader.canonical_id ?? undefined} name={leader.name} size="md" era={{ season, team: team?.tricode ?? null }} />
-    <span className="live-leader-text">
-      <strong className="live-leader-value">{leader.value}</strong>
-      <span className="live-leader-name">{name}</span>
-      {leader.position && <span className="live-leader-position">{leader.position}</span>}
-    </span>
+/** Follow-up 21: the player page's photo, the season team's logo behind the headshot in a team-colour ring. */
+function RingPhoto({ playerId, name, team, season }: { playerId?: string; name: string; team: LiveTeam; season: string }) {
+  const tint = teamBrandColor(team.tricode ?? null, season);
+  const art = teamRecord(team.tricode ?? undefined, season);
+  return <span className="live-ring" style={tint ? vars({ "--team-tint": tint }) : undefined}>
+    {art && <TeamWatermark asset={art.asset} />}
+    <PlayerPortrait playerId={playerId} name={name} size="md" className="live-ring-portrait" era={{ season, team: team.tricode ?? null }} />
   </span>;
 }
 
+/** One team's leader in a category: photo, name with team and position, the value. */
+/** Follow-up 24: ESPN's line under a leader (points: FG and FT; rebounds: DREB and OREB; assists: TO and MIN). */
+export function leaderLine(category: string, stats: Record<string, string | null> | undefined): string | null {
+  if (!stats) return null;
+  const slash = (key: string) => stats[key]?.replace("-", "/") ?? null;
+  const parts = category === "points" ? [slash(STAT_KEYS.fg) && `${slash(STAT_KEYS.fg)} FG`, slash(STAT_KEYS.ft) && `${slash(STAT_KEYS.ft)} FT`]
+    : category === "rebounds" ? [stats.defensiveRebounds != null && `${stats.defensiveRebounds} DREB`, stats[STAT_KEYS.oreb] != null && `${stats[STAT_KEYS.oreb]} OREB`]
+    : category === "assists" ? [stats[STAT_KEYS.to] != null && `${stats[STAT_KEYS.to]} TO`, stats[STAT_KEYS.min] != null && `${stats[STAT_KEYS.min]} MIN`]
+    : [];
+  const text = parts.filter(Boolean).join(", ");
+  return text || null;
+}
+
+function LeaderLine({ leader, season, team, top, player }: { leader?: LiveLeader; season: string; team: LiveTeam; top: boolean; player?: LivePlayer }) {
+  const meta = [teamCode(team), leader?.position, player?.jersey && `#${player.jersey}`].filter(Boolean).join(" · ");
+  const line = leader ? leaderLine(leader.category, player?.statistics) : null;
+  if (!leader) return <li className="live-leader"><span className="live-leader-photo"><TeamLogo team={logoTeam(team)} season={season} size={20} /></span><span className="live-leader-text"><span className="live-leader-name live-muted">No leader listed</span><span className="live-leader-meta">{teamCode(team)}</span></span><span className="live-leader-value live-muted">—</span></li>;
+  const name = leader.canonical_id ? <Link href={`/players/${leader.canonical_id}?season=${season}`}>{leader.name}</Link> : leader.name;
+  return <li className="live-leader" data-top={top || undefined}>
+    <RingPhoto playerId={leader.canonical_id ?? undefined} name={leader.name} team={team} season={season} />
+    <span className="live-leader-text">
+      <span className="live-leader-name">{name}</span>
+      <span className="live-leader-meta">{meta}</span>
+      {line && <span className="live-leader-line">{line}</span>}
+    </span>
+    <strong className="live-leader-value">{leader.value}</strong>
+  </li>;
+}
+
+/** Follow-up 9: three equal category tiles, each listing both teams' leaders, the higher one first in weight. */
 function Leaders({ data }: { data: LiveGameData }) {
   const [away, home] = awayFirst(data.game.teams);
   const season = seasonOf(data.game.slate_date);
   const categories = [["points", "Points"], ["rebounds", "Rebounds"], ["assists", "Assists"]] as const;
   const find = (team: LiveTeam, category: string) => data.leaders?.find(l => l.team_source_id === team.source_id && l.category === category);
+  const value = (leader?: LiveLeader) => Number(leader?.value ?? Number.NaN);
+  const player = (leader?: LiveLeader) => leader ? data.players?.find(p => p.source_id === leader.source_id) : undefined;
   return <Panel title="Game Leaders" icon="crown">
     <div className="live-leaders">
-      <div className="live-leaders-teams" aria-hidden="true">
-        <span><TeamLogo team={logoTeam(away)} season={season} size={20} />{teamCode(away)}</span>
-        <span>{teamCode(home)}<TeamLogo team={logoTeam(home)} season={season} size={20} /></span>
-      </div>
-      {categories.map(([key, label]) => <div className="live-leaders-row" key={key} role="group" aria-label={label}>
-        <LeaderCell leader={find(away, key)} season={season} team={away} align="start" />
-        <span className="live-leaders-label">{label}</span>
-        <LeaderCell leader={find(home, key)} season={season} team={home} align="end" />
-      </div>)}
+      {categories.map(([key, label]) => {
+        const a = find(away, key), h = find(home, key);
+        const top = Math.max(value(a), value(h));
+        return <section className="live-leaders-tile" key={key} role="group" aria-label={label}>
+          <h3 className="live-leaders-label">{label}</h3>
+          <ol className="live-leaders-list">
+            <LeaderLine leader={a} season={season} team={away} top={value(a) === top} player={player(a)} />
+            <LeaderLine leader={h} season={season} team={home} top={value(h) === top} player={player(h)} />
+          </ol>
+        </section>;
+      })}
     </div>
   </Panel>;
 }
 
-const TEAM_STATS: { label: string; name?: string; made?: string }[] = [
+type TeamStatRow = { label: string; name?: string; made?: string; suffix?: string };
+
+const TEAM_STATS: TeamStatRow[] = [
   { label: "Field Goals", made: "fieldGoalsMade-fieldGoalsAttempted" },
   { label: "3-Pointers", made: "threePointFieldGoalsMade-threePointFieldGoalsAttempted" },
   { label: "Free Throws", made: "freeThrowsMade-freeThrowsAttempted" },
@@ -151,11 +200,23 @@ const TEAM_STATS: { label: string; name?: string; made?: string }[] = [
   { label: "Largest Lead", name: "largestLead" },
 ];
 
+/** Follow-up 27: the rest of ESPN's Team Stats tab, behind "Show all". */
+const MORE_TEAM_STATS: (TeamStatRow & { name: string })[] = [
+  { label: "Offensive Rebounds", name: "offensiveRebounds" },
+  { label: "Defensive Rebounds", name: "defensiveRebounds" },
+  { label: "Points Conceded Off Turnovers", name: "turnoverPoints" },
+  { label: "Fouls", name: "fouls" },
+  { label: "Technical Fouls", name: "totalTechnicalFouls" },
+  { label: "Flagrant Fouls", name: "flagrantFouls" },
+  { label: "Percent Led", name: "leadPercentage", suffix: "%" },
+];
+
 function TeamStats({ data }: { data: LiveGameData }) {
+  const [all, setAll] = useState(false);
   const [away, home] = awayFirst(data.game.teams);
   const season = seasonOf(data.game.slate_date);
   const stat = (team: LiveTeam, name: string) => data.team_sections?.find(s => String(s.team.id) === team.source_id)?.statistics?.find(s => s.name === name)?.displayValue ?? null;
-  const rows = TEAM_STATS.map(row => {
+  const rows = [...TEAM_STATS, ...(all ? MORE_TEAM_STATS : [])].map(row => {
     const value = (team: LiveTeam) => {
       if (row.made) {
         // ESPN rounds its percentages to whole numbers; makes and attempts give the decimal.
@@ -164,12 +225,14 @@ function TeamStats({ data }: { data: LiveGameData }) {
         return { text: ma && pct != null ? `${pct.toFixed(1)}% (${ma[0]}/${ma[1]})` : null, n: pct };
       }
       const raw = stat(team, row.name!);
-      return { text: raw, n: raw != null && Number.isFinite(Number(raw)) ? Number(raw) : null };
+      return { text: raw != null ? `${raw}${row.suffix ?? ""}` : null, n: raw != null && Number.isFinite(Number(raw)) ? Number(raw) : null };
     };
     return { label: row.label, away: value(away), home: value(home) };
   }).filter(row => row.away.text != null || row.home.text != null);
   if (!rows.length) return null;
-  return <Panel title="Team Stats" icon="chart-column">
+  const more = MORE_TEAM_STATS.some(row => stat(away, row.name) != null || stat(home, row.name) != null);
+  return <Panel title="Team Stats" icon="chart-column"
+    action={more ? <button type="button" className="live-link" aria-expanded={all} onClick={() => setAll(v => !v)}>{all ? "Show less" : "Show all"}<Icon name={all ? "chevron-up" : "chevron-down"} size={14} /></button> : undefined}>
     <div className="live-teamstats">
       <div className="live-leaders-teams" aria-hidden="true">
         <span><TeamLogo team={logoTeam(away)} season={season} size={20} />{teamCode(away)}</span>
@@ -188,32 +251,66 @@ function TeamStats({ data }: { data: LiveGameData }) {
   </Panel>;
 }
 
-function GameInfo({ data }: { data: LiveGameData }) {
+/** Follow-up 31: ESPN's Game Information, an icon on every line and the venue photo under Where. */
+function GameInfo({ data, className = "" }: { data: LiveGameData; className?: string }) {
   const info = data.info;
   const when = data.game.event_time ? new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/New_York", timeZoneName: "short" }).format(new Date(data.game.event_time)) : null;
-  const rows = [
-    ["When", when],
-    ["Where", info?.venue ? [info.venue, [info.city, info.state].filter(Boolean).join(", ")].filter(Boolean).join(" · ") : null],
-    ["Watch", info?.broadcasts.length ? info.broadcasts.join(", ") : null],
-    ["Attendance", info?.attendance ? info.attendance.toLocaleString("en-US") : null],
-    ["Officials", info?.officials.length ? info.officials.join(", ") : null],
-  ].filter((row): row is [string, string] => row[1] != null);
-  if (!rows.length) return null;
-  return <Panel title="Game Info" icon="calendar">
-    <dl className="live-info">{rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+  const [away, home] = awayFirst(data.game.teams);
+  const season = seasonOf(data.game.slate_date);
+  // Follow-up 11: every game says who is home and away; the venue carries the home team's logo.
+  const team = (t: LiveTeam) => <span className="live-info-team"><TeamLogo team={logoTeam(t)} season={season} size={20} />{t.name}</span>;
+  const place = [info?.city, info?.state].filter(Boolean).join(", ");
+  const rows: { label: string; icon: IconName; value: ReactNode | null; wide?: boolean }[] = [
+    { label: "When", icon: "calendar", value: when },
+    { label: "Where", icon: "map-pin", wide: true, value: info?.venue ? <span className="live-info-venue">
+      <span className="live-info-team"><TeamLogo team={logoTeam(home)} season={season} size={20} />{info.venue}{place && <span className="live-muted"> · {place}</span>}</span>
+      {info.venue_image && /* eslint-disable-next-line @next/next/no-img-element -- ESPN's venue photo */
+        <img className="live-info-photo" src={info.venue_image} alt={`${info.venue}`} loading="lazy" />}
+    </span> : null },
+    { label: "Away", icon: "users", value: away ? team(away) : null },
+    { label: "Home", icon: "home", value: home ? team(home) : null },
+    { label: "Attendance", icon: "users", value: info?.attendance ? info.attendance.toLocaleString("en-US") : null },
+    { label: "Where to Watch", icon: "tv", value: info?.broadcasts.length ? <span className="live-info-chips">{info.broadcasts.map(b => <span key={b} className="live-chip">{b}</span>)}</span> : null },
+    { label: "Officials", icon: "flag", wide: true, value: info?.officials.length ? info.officials.join(", ") : null },
+  ];
+  const shown = rows.filter(row => row.value != null && row.value !== "");
+  if (!shown.length) return null;
+  return <Panel title="Game Information" icon="info" className={className}>
+    <dl className="live-info">{shown.map(row => <div key={row.label} data-wide={row.wide || undefined}>
+      <dt><Icon name={row.icon} size={16} />{row.label}</dt><dd>{row.value}</dd>
+    </div>)}</dl>
   </Panel>;
 }
 
+/**
+ * Follow-up 35: ESPN Gamecast's three columns. Each column stacks its panels at their natural
+ * height, so no panel stretches to match a neighbour and none holds dead space: leaders and team
+ * stats; recap, probabilities, the shot chart and news; matchups, standings and game information
+ * (balanced so the columns end close together). Tablets keep the middle column on top; phones
+ * stack all three.
+ */
 export function SummaryTab({ data }: { data: LiveGameData }) {
   const played = data.game.status === "in_progress" || data.game.status === "final";
   const periods = Math.max(4, ...data.game.teams.map(t => t.linescores?.length ?? 0));
-  if (!played) return <div className="live-summary"><p className="live-empty">The game summary starts at tipoff. Injuries and the line are on Pre-Game.</p><GameInfo data={data} /></div>;
+  const season = seasonOf(data.game.slate_date);
+  if (!played) return <div className="live-summary">
+    <div className="live-col" data-col="left"><GameInfo data={data} /></div>
+    <div className="live-col" data-col="center">
+      <p className="live-empty live-panel">The game summary starts at tipoff. Injuries and the line are on Pre-Game.</p>
+      <NewsPanel data={data} part="stories" />
+    </div>
+    <div className="live-col" data-col="right"><Matchups data={data} /><DivisionStandings data={data} /></div>
+  </div>;
+  const shots = data.plays?.some(p => p.shot === "field_goal" && p.x != null);
   return <div className="live-summary">
-    <Panel title="Line Score" icon="table" className="live-summary-linescore"><LineScore game={data.game} /></Panel>
-    <Leaders data={data} />
-    {data.plays?.some(p => p.shot === "field_goal" && p.x != null) && <Panel title="Shot Chart" icon="scatter" className="live-summary-shots"><ShotChart plays={data.plays} teams={data.game.teams} periods={periods} /></Panel>}
-    <TeamStats data={data} />
-    <GameInfo data={data} />
+    <div className="live-col" data-col="left"><Leaders data={data} /><TeamStats data={data} /></div>
+    <div className="live-col" data-col="center">
+      <NewsPanel data={data} part="recap" />
+      <GameFlow data={data} />
+      {shots && <Panel title="Shot Chart" icon="scatter"><ShotChart plays={data.plays!} teams={data.game.teams} periods={periods} players={data.players ?? []} season={season} /></Panel>}
+      <NewsPanel data={data} part="stories" />
+    </div>
+    <div className="live-col" data-col="right"><Matchups data={data} /><DivisionStandings data={data} /><GameInfo data={data} /></div>
   </div>;
 }
 
@@ -268,24 +365,33 @@ function PlayerRow({ player, season }: { player: LivePlayer; season: string }) {
   </tr>;
 }
 
-function TeamBox({ data, team, hotkey }: { data: LiveGameData; team: LiveTeam; hotkey: string }) {
-  const season = seasonOf(data.game.slate_date);
+function teamPlayers(data: LiveGameData, team: LiveTeam) {
   const players = (data.players ?? []).filter(p => p.team_source_id === team.source_id);
-  const starters = players.filter(p => p.starter === true);
-  const bench = players.filter(p => p.starter !== true);
+  return { players, starters: players.filter(p => p.starter === true), bench: players.filter(p => p.starter !== true) };
+}
+
+/** Follow-up 16: blank rows that pad the shorter team's section so both tables end level. */
+function FillerRows({ count }: { count: number }) {
+  return Array.from({ length: Math.max(0, count) }, (_, i) => <tr key={`filler-${i}`} className="live-box-filler" aria-hidden="true"><th />{BOX_COLUMNS.map(c => <td key={c.key} />)}</tr>);
+}
+
+function TeamBox({ data, team, hotkey, rows: target }: { data: LiveGameData; team: LiveTeam; hotkey: string; rows?: { starters: number; bench: number } }) {
+  const season = seasonOf(data.game.slate_date);
+  const { players, starters, bench } = teamPlayers(data, team);
   const totals = data.team_totals?.[team.source_id];
-  const group = (label: string, rows: LivePlayer[]) => rows.length ? <tbody key={label}>
+  const group = (label: string, rows: LivePlayer[], pad: number) => rows.length ? <tbody key={label}>
     <tr className="live-box-group"><th scope="rowgroup" colSpan={BOX_COLUMNS.length + 1}>{label}</th></tr>
     {rows.map(p => <PlayerRow key={p.source_id} player={p} season={season} />)}
+    <FillerRows count={pad - rows.length} />
   </tbody> : null;
   return <section className="live-box-team" aria-label={`${team.name} box score`} id={`live-box-${team.side}`} tabIndex={-1}>
     <h2 className="live-box-title"><TeamLogo team={logoTeam(team)} season={season} size={20} />{team.name.toUpperCase()}<span className="live-box-press">Press <kbd>{hotkey}</kbd></span></h2>
     {players.length ? <div className="live-table-scroll" role="region" aria-label={`${team.name} player box table`} tabIndex={0}>
       <table className="live-box">
-        <colgroup><col className="live-box-col-player" />{BOX_COLUMNS.map(c => <col key={c.key} />)}</colgroup>
+        <colgroup><col className="live-box-col-player" />{BOX_COLUMNS.map(c => <col key={c.key} className={`live-box-col-${c.key}`} />)}</colgroup>
         <thead><tr><th scope="col">Player</th>{BOX_COLUMNS.map(c => <th scope="col" key={c.key} title={c.title}>{c.label}</th>)}</tr></thead>
-        {group("Starters", starters)}
-        {group(starters.length ? "Bench" : "Players", bench)}
+        {group("Starters", starters, target?.starters ?? 0)}
+        {group(starters.length ? "Bench" : "Players", bench, target?.bench ?? 0)}
         {totals && <tfoot><tr className="live-box-total"><th scope="row">Team</th>{BOX_COLUMNS.map(c => <td key={c.key}>{cells(totals, true)[c.key]}</td>)}</tr></tfoot>}
       </table>
     </div> : <p className="live-empty">No player box yet. Missing rows don&apos;t mean a player sat out.</p>}
@@ -311,10 +417,15 @@ function PlayRow({ play, game }: { play: LivePlay; game: LiveGame }) {
 export function BoxScoreTab({ data, onAllPlays }: { data: LiveGameData; onAllPlays: () => void }) {
   const [away, home] = awayFirst(data.game.teams);
   const recent = [...(data.plays ?? [])].reverse().slice(0, 5);
+  const a = teamPlayers(data, away), h = teamPlayers(data, home);
+  // Side by side, the shorter team's sections pad to the longer's so the tables share a height.
+  const rows = a.players.length && h.players.length && (a.starters.length > 0) === (h.starters.length > 0)
+    ? { starters: Math.max(a.starters.length, h.starters.length), bench: Math.max(a.bench.length, h.bench.length) }
+    : undefined;
   return <div className="live-boxscore">
     <div className="live-box-pair">
-      <TeamBox data={data} team={away} hotkey="Q" />
-      <TeamBox data={data} team={home} hotkey="W" />
+      <TeamBox data={data} team={away} hotkey="Q" rows={rows} />
+      <TeamBox data={data} team={home} hotkey="W" rows={rows} />
     </div>
     {recent.length > 0 && <section className="live-recent" aria-label="Recent plays">
       <header className="live-recent-head"><h2>Recent Plays</h2><button type="button" className="live-link" onClick={onAllPlays}>View all plays <Icon name="right" size={14} /></button></header>

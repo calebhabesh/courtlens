@@ -112,3 +112,32 @@ def test_only_whole_season_league_scopes_carry_table_ranks() -> None:
     )
     predicate = PredicateGroup(predicates=[PredicateLeaf(field="pts", op="gt", value=1)])
     assert not carries_table_ranks(BOX.model_copy(update={"predicates": predicate}))
+
+
+def test_sort_ties_and_unknown_columns_fall_back_to_minutes() -> None:
+    from courtlens.domain.query_spec import QuerySpec, SortSpec, ViewState
+    from courtlens.services.stats_cohort_cache import empty_fields, sort_rows
+
+    def row(pid: str, minutes: float | None, dpm: float | None = None) -> dict[str, object]:
+        return {
+            "player_id": pid,
+            "player_name": pid,
+            "total_minutes": minutes,
+            "metrics": {"dpm": dpm, "on_ball_pct": None, "pts": 1.0},
+        }
+
+    rows = [row("1", 10), row("2", None), row("3", 120), row("4", 40, dpm=1.5)]
+    order = [r["player_id"] for r in sort_rows(rows, [SortSpec(field="dpm")])]
+    assert order == ["4", "3", "1", "2"]
+    ascending = sort_rows(rows, [SortSpec(field="min", direction="asc")])
+    assert [r["player_id"] for r in ascending] == ["1", "4", "3", "2"]
+
+    view = ViewState(columns=["dpm", "on_ball_pct", "pts", "not_computed"])
+    assert empty_fields(rows, QuerySpec(view_state=view, sort=[SortSpec(field="pts")])) == [
+        "on_ball_pct"
+    ]
+    # The sorted column stays, and an empty scope hides nothing.
+    assert (
+        empty_fields(rows, QuerySpec(view_state=view, sort=[SortSpec(field="on_ball_pct")])) == []
+    )
+    assert empty_fields([], QuerySpec(view_state=view)) == []

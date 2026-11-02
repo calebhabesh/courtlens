@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel
 
-LIVE_PARSER_VERSION = "espn-live-v4"
+LIVE_PARSER_VERSION = "espn-live-v6"
 # ESPN shot coordinates are feet from the basket (x 0-50 across, basket at x=25); free throws
 # and unknown spots carry a large sentinel instead.
 MAX_COORDINATE = 100
@@ -23,6 +23,8 @@ class LiveTeam(BaseModel):
     score: int | None
     abbreviation: str | None = None
     record: str | None = None
+    # The team's record at this game's venue type: home record for the home team, road for the away.
+    venue_record: str | None = None
     # Points per period as the source reports them; None where a period is unknown.
     linescores: list[int | None] | None = None
     winner: bool | None = None
@@ -79,6 +81,7 @@ def parse_game(event: dict[str, Any], slate: date) -> LiveGame:
                 score=score,
                 abbreviation=c["team"].get("abbreviation"),
                 record=_record(c),
+                venue_record=_venue_record(c),
                 linescores=[_int(x.get("displayValue", x.get("value"))) for x in c["linescores"]]
                 if played and isinstance(c.get("linescores"), list)
                 else None,
@@ -145,6 +148,17 @@ def _record(competitor: dict[str, Any]) -> str | None:
         return None
     total = next((r for r in records if r.get("type") == "total"), records[0] if records else None)
     value = (total or {}).get("summary") or (total or {}).get("displayValue")
+    return value if isinstance(value, str) else None
+
+
+def _venue_record(competitor: dict[str, Any]) -> str | None:
+    """ESPN's home record for the home team and road record for the away team, when listed."""
+    records = competitor.get("records") or competitor.get("record")
+    if not isinstance(records, list):
+        return None
+    wanted = "home" if competitor.get("homeAway") == "home" else "road"
+    entry = next((r for r in records if isinstance(r, dict) and r.get("type") == wanted), None)
+    value = (entry or {}).get("summary") or (entry or {}).get("displayValue")
     return value if isinstance(value, str) else None
 
 
@@ -319,8 +333,13 @@ def parse_info(payload: dict[str, Any]) -> dict[str, Any]:
         name = _athlete(row.get("media")).get("shortName") or row.get("station")
         if isinstance(name, str) and name not in broadcasts:
             broadcasts.append(name)
+    image = next(
+        (i.get("href") for i in venue.get("images") or [] if isinstance(i, dict) and i.get("href")),
+        None,
+    )
     return {
         "venue": venue.get("fullName"),
+        "venue_image": image if isinstance(image, str) and image.startswith("https://") else None,
         "city": address.get("city"),
         "state": address.get("state"),
         "attendance": _int(info.get("attendance")) or None,
@@ -330,6 +349,190 @@ def parse_info(payload: dict[str, Any]) -> dict[str, Any]:
             if isinstance(o, dict) and o.get("displayName")
         ],
         "broadcasts": broadcasts,
+    }
+
+
+def parse_win_probability(rows: Any, play_ids: set[str]) -> list[dict[str, Any]] | None:
+    """ESPN Analytics' home win chance after each play (their model, shown as theirs)."""
+    if not isinstance(rows, list) or not rows:
+        return None
+    points = []
+    for row in rows[:MAX_PLAYS]:
+        home = _num(_athlete(row).get("homeWinPercentage"))
+        play = str(_athlete(row).get("playId"))
+        if home is not None and 0 <= home <= 1 and play in play_ids:
+            points.append({"play_id": play, "home": round(home, 4)})
+    return points or None
+
+
+def parse_season_series(entries: Any, team_ids: set[str]) -> dict[str, Any] | None:
+    """The regular-season series: who leads, and each meeting (score once played)."""
+    if not isinstance(entries, list):
+        return None
+    series = next((e for e in entries if isinstance(e, dict) and e.get("type") == "season"), None)
+    if not series:
+        return None
+    games = []
+    for event in series.get("events") or []:
+        teams = []
+        for c in event.get("competitors") or []:
+            team_id = str(_athlete(c.get("team")).get("id"))
+            if team_id not in team_ids:
+                return None
+            teams.append(
+                {
+                    "source_id": team_id,
+                    "side": c.get("homeAway"),
+                    "score": _int(c.get("score")),
+                    "winner": c.get("winner") if isinstance(c.get("winner"), bool) else None,
+                }
+            )
+        state = _athlete(event.get("statusType")).get("state")
+        games.append(
+            {
+                "source_id": str(event.get("id")),
+                "date": event.get("date"),
+                "state": state if state in {"pre", "in", "post"} else None,
+                "detail": _athlete(event.get("statusType")).get("shortDetail"),
+                "teams": teams,
+            }
+        )
+    return {
+        "summary": series.get("summary"),
+        "short_summary": series.get("shortSummary"),
+        "score": series.get("seriesScore"),
+        "total": _int(series.get("totalCompetitions")),
+        "games": games[:10],
+    }
+
+
+STANDING_COLUMNS = {"W": "wins", "L": "losses", "PCT": "pct", "GB": "gb", "STRK": "streak"}
+
+
+def parse_game_standings(payload: Any) -> list[dict[str, Any]] | None:
+    """The two teams' divisions as the game feed lists them."""
+    groups = _athlete(payload).get("groups")
+    if not isinstance(groups, list):
+        return None
+    out = []
+    for group in groups[:4]:
+        entries = []
+        for entry in _athlete(_athlete(group).get("standings")).get("entries") or []:
+            stats = {
+                STANDING_COLUMNS[x["abbreviation"]]: x.get("displayValue")
+                for x in entry.get("stats") or []
+                if isinstance(x, dict) and x.get("abbreviation") in STANDING_COLUMNS
+            }
+            entries.append(
+                {"team_source_id": str(entry.get("id")), "name": entry.get("team"), **stats}
+            )
+        out.append(
+            {
+                "division": group.get("divisionHeader"),
+                "conference": group.get("conferenceHeader"),
+                "entries": entries[:8],
+            }
+        )
+    return out or None
+
+
+def _web_link(item: dict[str, Any]) -> str | None:
+    href = _athlete(_athlete(item.get("links")).get("web")).get("href")
+    if isinstance(href, str) and href.startswith("http://www.espn.com/"):
+        href = "https://" + href[len("http://") :]
+    return href if isinstance(href, str) and href.startswith("https://") else None
+
+
+def _story(item: Any) -> dict[str, Any] | None:
+    item = _athlete(item)
+    if not isinstance(item.get("headline"), str):
+        return None
+    image = next(
+        (i.get("url") for i in item.get("images") or [] if isinstance(i, dict) and i.get("url")),
+        None,
+    )
+    return {
+        "headline": item["headline"],
+        "description": item.get("description"),
+        "published": item.get("published"),
+        "source": item.get("source"),
+        "type": item.get("type"),
+        "link": _web_link(item),
+        "image": image if isinstance(image, str) and image.startswith("https://") else None,
+    }
+
+
+def parse_news(payload: dict[str, Any]) -> dict[str, Any]:
+    """The game's recap and the feed's NBA stories (links go to the source)."""
+    recap = _story(payload.get("article"))
+    stories = [
+        story
+        for story in (_story(a) for a in _athlete(payload.get("news")).get("articles") or [])
+        if story and story["type"] != "Media"
+    ]
+    return {"recap": recap, "stories": stories[:3]}
+
+
+# ESPN's standings feed: stat name -> our column. GB is recomputed per grouping on the page.
+STANDINGS_STATS = {
+    "wins": "wins",
+    "losses": "losses",
+    "winPercent": "pct",
+    "gamesBehind": "gb",
+    "playoffSeed": "seed",
+    "clincher": "clincher",
+    "Home": "home",
+    "Road": "away",
+    "vs. Div.": "div",
+    "vs. Conf.": "conf",
+    "avgPointsFor": "ppg",
+    "avgPointsAgainst": "opp_ppg",
+    "differential": "diff",
+    "streak": "streak",
+    "Last Ten Games": "l10",
+}
+# The first season ESPN's feed lists every team (23 teams in 1984-85).
+FIRST_STANDINGS_YEAR = 1985
+
+
+def parse_standings(payload: dict[str, Any], year: int) -> dict[str, Any]:
+    """ESPN's standings for the season ending in `year`: divisions within conferences."""
+    divisions = []
+    for conference in payload.get("children") or []:
+        for division in _athlete(conference).get("children") or []:
+            entries = []
+            for entry in _athlete(_athlete(division).get("standings")).get("entries") or []:
+                team = _athlete(entry.get("team"))
+                stats = {
+                    STANDINGS_STATS[name]: stat.get("displayValue")
+                    for stat in entry.get("stats") or []
+                    if isinstance(stat, dict)
+                    and (name := stat.get("name") or stat.get("type")) in STANDINGS_STATS
+                }
+                entries.append(
+                    {
+                        "team_source_id": str(team.get("id")),
+                        "name": team.get("displayName"),
+                        "short_name": team.get("shortDisplayName") or team.get("location"),
+                        "abbreviation": team.get("abbreviation"),
+                        **stats,
+                    }
+                )
+            if len(entries) > 10:
+                raise ValueError("too many teams in a division")
+            divisions.append(
+                {
+                    "division": division.get("name"),
+                    "conference": conference.get("name"),
+                    "entries": entries,
+                }
+            )
+    if len(divisions) > 8:
+        raise ValueError("too many divisions")
+    return {
+        "season": f"{year - 1}-{str(year)[-2:]}",
+        "year": year,
+        "standings": divisions or None,
     }
 
 
@@ -478,6 +681,14 @@ def parse_summary(payload: dict[str, Any], slate: date, game_id: str) -> dict[st
         "injuries": parse_injuries(payload.get("injuries"), team_ids),
         "odds": _odds(payload.get("pickcenter"), game.teams),
         "info": parse_info(payload),
+        "win_probability": parse_win_probability(
+            payload.get("winprobability"), {p["id"] for p in plays or []}
+        )
+        if played
+        else None,
+        "season_series": parse_season_series(payload.get("seasonseries"), team_ids),
+        "standings": parse_game_standings(payload.get("standings")),
+        "news": parse_news(payload),
     }
 
 

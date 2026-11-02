@@ -81,6 +81,12 @@ team }}` (Design Language, Identity). Row 13 introduced it (owner: "an important
 pages"); apply it to every page that analyses a season, and fall back to the current photo only
 where the NBA has none for that team-season.
 
+**Logos and faces beside codes.** Owner, 2026-10-30 (row 8, 14): "TOR" and "CLE" are hard to
+scan for. Wherever a page names a team by its code (table headers, game cards, comparison
+headers, segmented options), put the team logo beside it; wherever it names a player, prefer the
+photo. Segmented options take a logo too (their `label` accepts a node). This joins the photos rule
+above, so season-correct logos and photos still apply.
+
 **Less is more.** The owner removes dividers, double outlines and extra fills on sight. A focus
 state is one solid outline. When the owner asks "should we…?", give a recommendation, make the
 change and say why.

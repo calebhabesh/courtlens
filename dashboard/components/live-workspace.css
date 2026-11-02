@@ -76,7 +76,11 @@
   .live-card-team-text { display: grid; min-width: 0; }
   .live-card-team-line { display: flex; align-items: baseline; gap: var(--space-1); min-width: 0; }
   .live-card-code { font-size: var(--text-md); font-weight: 700; }
-  .live-card-record { color: var(--color-text-tertiary); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+  /* Follow-up 19: Switzer's round 3, 5, 6, 8, 9 overshoot and render a pixel taller than 2 at 12px; mono digits share one height. */
+  .live-card-record { color: var(--color-text-tertiary); font: 500 var(--text-xs) / 1 var(--font-mono, ui-monospace, monospace); }
+  /* Follow-up 12: the grey Away / Home tag (cards, rail and banner). */
+  .live-side { color: var(--color-text-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; }
+  .live-card-sub { display: flex; align-items: center; gap: var(--space-2); }
   .live-card-out { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-info); font-size: var(--text-2xs); font-weight: 600; }
   .live-card-out-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
   .live-card-winner { width: 8px; height: 8px; border-radius: var(--radius-xs); background: var(--color-info); opacity: 0.8; }
@@ -97,7 +101,7 @@
   .live-rail-title { color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
   .live-rail-list { display: flex; gap: var(--space-2); max-width: 100%; margin: 0; padding: 0 0 var(--space-1); list-style: none; overflow-x: auto; scrollbar-width: thin; }
   .live-rail-card {
-    display: grid; gap: var(--space-0-5); width: 108px; padding: var(--space-1) var(--space-2); border: 1px solid transparent; border-radius: var(--radius-sm);
+    display: grid; gap: var(--space-0-5); width: 136px; padding: var(--space-1) var(--space-2); border: 1px solid transparent; border-radius: var(--radius-sm);
     background: var(--color-surface-1); color: var(--color-text); text-decoration: none;
   }
   .live-rail-card:hover { background: var(--color-surface-2); }
@@ -106,6 +110,8 @@
   .live-rail-card[aria-current="page"] kbd { background: var(--color-accent); color: var(--color-on-accent); }
   .live-rail-card .live-card-team { grid-template-columns: 16px minmax(0, 1fr) auto; min-height: 18px; gap: var(--space-1); }
   .live-rail-card .live-card-code { font-size: var(--text-2xs); }
+  .live-rail-card .live-card-team-line { gap: var(--space-1); }
+  .live-rail-card .live-side { letter-spacing: 0.02em; }
   .live-rail-card .live-card-score { font-size: var(--text-xs); min-width: 0; }
 
   @media (max-width: 1100px) { .live-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

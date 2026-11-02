@@ -9,7 +9,7 @@ export interface LiveOdds {
 }
 export interface LiveTeam {
   source_id: string; canonical_id: string | null; tricode?: string | null; identity_status: string; name: string;
-  side: "home" | "away"; score: number | null; abbreviation?: string | null; record?: string | null;
+  side: "home" | "away"; score: number | null; abbreviation?: string | null; record?: string | null; venue_record?: string | null;
   linescores?: (number | null)[] | null; winner?: boolean | null;
   /** Players ESPN's injury report lists as Out (upcoming games only). */
   out?: number;
@@ -38,7 +38,16 @@ export interface LiveLeader {
   position: string | null; canonical_id: string | null; identity_status: string;
 }
 export interface LiveInjury { source_id: string; name: string; position: string | null; status: string | null; detail?: string | null; canonical_id: string | null }
-export interface LiveInfo { venue: string | null; city: string | null; state: string | null; attendance: number | null; officials: string[]; broadcasts: string[] }
+export interface LiveInfo { venue: string | null; venue_image?: string | null; city: string | null; state: string | null; attendance: number | null; officials: string[]; broadcasts: string[] }
+export interface LiveWinPoint { play_id: string; home: number }
+export interface LiveSeriesGame {
+  source_id: string; date: string | null; state: "pre" | "in" | "post" | null; detail: string | null;
+  teams: { source_id: string; side: "home" | "away" | null; score: number | null; winner: boolean | null }[];
+}
+export interface LiveSeries { summary: string | null; short_summary: string | null; score: string | null; total: number | null; games: LiveSeriesGame[] }
+export interface LiveStandingRow { team_source_id: string; tricode?: string | null; name: string | null; wins?: string | null; losses?: string | null; pct?: string | null; gb?: string | null; streak?: string | null }
+export interface LiveDivision { division: string | null; conference: string | null; entries: LiveStandingRow[] }
+export interface LiveStory { headline: string; description: string | null; published: string | null; source: string | null; type: string | null; link: string | null; image: string | null }
 export interface LiveTeamSection { team: { id: string }; statistics?: { name?: string; label?: string; displayValue?: string | null }[] }
 
 export interface LiveSlateData { games: LiveGame[]; calendar?: string[] | null }
@@ -47,6 +56,8 @@ export interface LiveGameData {
   team_sections: LiveTeamSection[] | null; plays?: LivePlay[] | null; play_scores?: "scoring_plays" | "source" | null;
   leaders?: LiveLeader[] | null; injuries?: { team_source_id: string; players: LiveInjury[] }[] | null;
   odds?: LiveOdds | null; info?: LiveInfo | null;
+  win_probability?: LiveWinPoint[] | null; season_series?: LiveSeries | null; standings?: LiveDivision[] | null;
+  news?: { recap: LiveStory | null; stories: LiveStory[] } | null;
 }
 export interface LiveRead<T> {
   namespace: "espn"; resource: string; status: "observed" | "source_error" | "unavailable"; final: boolean; stale: boolean;
@@ -95,6 +106,12 @@ export function awayFirst<T extends { side: "home" | "away" }>(teams: readonly T
 }
 
 /** The team's short code: our tricode when the ESPN team maps, else ESPN's abbreviation. */
+/** A win-loss record with an en dash, as elsewhere on CourtLens ("2-3" from ESPN becomes "2–3"). */
+export function formatRecord(record: string | null | undefined): string | null {
+  if (!record) return null;
+  return /^\d+-\d+$/.test(record) ? record.replace("-", "–") : record;
+}
+
 export function teamCode(team: Pick<LiveTeam, "tricode" | "abbreviation" | "name">): string {
   return team.tricode ?? team.abbreviation ?? team.name.slice(0, 3).toUpperCase();
 }

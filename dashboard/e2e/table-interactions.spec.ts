@@ -101,7 +101,7 @@ test("selection failure remains actionable and does not change the selected row"
 
 test("playoff player table shares native keyboard sorting", async ({ page }) => {
   await personalFixture(page); await openWorkbench(page, "/playoffs/fixture-series"); await page.waitForLoadState("networkidle");
-  const sort = page.getByRole("button", { name: "Sort by PPG", exact: true });
+  const sort = page.getByRole("button", { name: "Sort by PTS", exact: true });
   await expect(sort.locator("..")).toHaveAttribute("aria-sort", "descending");
   await sort.focus(); await sort.press("Space");
   await expect(sort.locator("..")).toHaveAttribute("aria-sort", "ascending");

@@ -14,8 +14,15 @@ All Live endpoints are GETs, so the hosted demo's Caddy allowlist is unchanged.
   each team's count of players ESPN's injury report lists as Out.
 - `GET /api/live/games/{espn_game_id}?slate_date=YYYY-MM-DD`: one game's summary: line scores,
   player boxes (starter, position, DNP reason), team totals and team stats, every play with its
-  court spot on field-goal attempts, leaders, injuries, the line, venue, attendance, officials and
-  broadcasts.
+  court spot on field-goal attempts, leaders, injuries, the line, venue (with its photo),
+  attendance, officials and broadcasts; ESPN Analytics' win probability after each play (their
+  model, shown as theirs); the season series; both teams' divisions in the standings as of the
+  read; and the recap and NBA stories (headline, summary, time, photo, link to ESPN).
+- `GET /api/live/standings?season=YYYY-YY`: ESPN's standings for a season (1984-85, the first
+  ESPN lists in full, to the current one; default current): divisions within conferences, each
+  team's W, L, PCT, playoff seed (NBA tiebreakers), clinch mark, home, away, division and
+  conference records, PPG, opponent PPG, differential, streak and last ten. GB is recomputed per
+  grouping on the page, since ESPN's column doesn't say which grouping it measures.
 - `GET /api/live/historical` is unchanged (admitted research finals; Team Compare uses it).
 
 The response (`LiveCache` in `domain/live.py`) carries `status` (observed, source_error,
@@ -34,12 +41,14 @@ that finds it taken serves the cached copy (or `unavailable` before the first re
 | A game tips within the hour | 60 s |
 | Upcoming games later | 10 min |
 | League injury report | 10 min |
+| Current season's standings | 10 min |
+| A past season's standings | never |
 | Every game final, postponed or cancelled; or a past empty date | never |
 
 A newer parser version refetches a cached read, finals included. Failures keep the last good copy
 and back off per resource (30, 60, 120, then 300 s). Provider transport is unchanged from v1:
-no redirects or retries, identity encoding, 10 s deadline, size caps (512 KiB scoreboard, 2 MiB
-summary and injury report).
+no redirects or retries, identity encoding, 10 s deadline, size caps (512 KiB scoreboard, 1 MiB
+standings, 2 MiB summary and injury report).
 
 Clients read again after `refresh_seconds` while visible and stop when hidden or final.
 

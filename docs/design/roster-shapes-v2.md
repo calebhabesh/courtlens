@@ -29,8 +29,8 @@ Databallr's Roster Shapes. They carry no forecast, winner or verdict and fit not
   rotation: in order of minutes each player keeps his own until the team reaches 240, the next
   gets what is left and the rest none, so stars keep their real minutes (a proportional scale
   shrank Wembanyama from DARKO's 35.1 to 27.0). `minutes_uncapped` carries the minutes before the
-  cap. Databallr does not cap (its San Antonio adds up to about 320). The `current` entry never serves a Stats scope (`darko_scope` matches the
-  query's phase; the catalog lists only regular season and playoffs). DARKO had not published
+  cap. Databallr does not cap (its San Antonio adds up to about 320). Stats reads the `current` entry only for a regular season with no sealed board
+  (the season in progress; alignment catalog row 1, follow-up 84), never for a finished season. DARKO had not published
   2026-27 projections on 2026-10-19 (its newest season is 2025-26), so none are used.
 - **2025-26**: every player who appeared for each team; minutes per team game = his minutes with
   that team ÷ the team's games. A traded player appears on each of his teams.

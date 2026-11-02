@@ -1,15 +1,15 @@
 """Live reads: GETs that fetch ESPN on demand when the cached copy is stale (alignment row 7)."""
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy.orm import Session
 
 from courtlens.database import get_db
-from courtlens.domain.live import LiveCache
+from courtlens.domain.live import FIRST_STANDINGS_YEAR, LiveCache
 from courtlens.domain.live_history import HistoricalSlate
-from courtlens.services.live import read, with_injury_counts
+from courtlens.services.live import EASTERN, read, season_end_year, with_injury_counts
 from courtlens.services.live_history import historical_slate
 from courtlens.services.live_provider import ESPNLiveProvider
 from courtlens.services.workbench_analytics import resolve_workbench_context
@@ -48,6 +48,23 @@ def live_game(
         raise HTTPException(422, "Invalid ESPN game ID")
     response.headers["Cache-Control"] = "no-store"
     return read(session, provider, slate_date, game_id)
+
+
+@router.get("/standings", response_model=LiveCache)
+def live_standings(
+    response: Response,
+    season: str | None = Query(None, pattern=r"^[0-9]{4}-[0-9]{2}$"),
+    session: Session = Depends(get_db),
+    provider: ESPNLiveProvider = Depends(get_provider),
+) -> dict[str, Any]:
+    """ESPN's standings for a season (1984-85 on, the first ESPN lists in full); default current."""
+    today = datetime.now(EASTERN).date()
+    current = season_end_year(today)
+    year = int(season[:4]) + 1 if season else current
+    if not FIRST_STANDINGS_YEAR <= year <= current:
+        raise HTTPException(422, "Standings cover 1984-85 to the current season")
+    response.headers["Cache-Control"] = "no-store"
+    return read(session, provider, None, standings_year=year)
 
 
 @router.get("/historical", response_model=HistoricalSlate)

@@ -80,6 +80,9 @@
   }
 
   .ui-page-header-icon { display: inline-flex; color: var(--color-accent); }
+  /* Playoffs (alignment row 8): Databallr's centred season title over the bracket. */
+  .ui-page-header.pb-head { align-items: center; text-align: center; }
+  .ui-page-header.pb-head .ui-page-header-title-row { justify-content: center; }
 
   .ui-page-header-title {
     margin: 0;

@@ -1,0 +1,733 @@
+{
+ "season": "1975-76",
+ "season_year": 1976,
+ "cutoff_date": null,
+ "rounds": [
+  {
+   "round_number": 1,
+   "round_name": "First Round",
+   "eastern_series": [
+    {
+     "series_id": "1976-1-E0",
+     "slug": "1976-r1-phi-buf",
+     "season": "1975-76",
+     "round_number": 1,
+     "round_name": "First Round",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612755",
+      "tricode": "PHI",
+      "name": "Philadelphia 76ers",
+      "seed": null,
+      "wins": 1,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "BUF",
+      "tricode": "BUF",
+      "name": "Buffalo Braves",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BUF wins 2-1",
+     "status": "finished",
+     "winner_team_id": "BUF",
+     "winner_tricode": "BUF",
+     "games_count": 3,
+     "total_scheduled": 3,
+     "is_sweep": false,
+     "summary_text": "Buffalo Braves won series 2-1"
+    }
+   ],
+   "western_series": [
+    {
+     "series_id": "1976-1-W0",
+     "slug": "1976-r1-mil-det",
+     "season": "1975-76",
+     "round_number": 1,
+     "round_name": "First Round",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612749",
+      "tricode": "MIL",
+      "name": "Milwaukee Bucks",
+      "seed": null,
+      "wins": 1,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612765",
+      "tricode": "DET",
+      "name": "Detroit Pistons",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "DET wins 2-1",
+     "status": "finished",
+     "winner_team_id": "1610612765",
+     "winner_tricode": "DET",
+     "games_count": 3,
+     "total_scheduled": 3,
+     "is_sweep": false,
+     "summary_text": "Detroit Pistons won series 2-1"
+    }
+   ],
+   "finals_series": [],
+   "series": [
+    {
+     "series_id": "1976-1-E0",
+     "slug": "1976-r1-phi-buf",
+     "season": "1975-76",
+     "round_number": 1,
+     "round_name": "First Round",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612755",
+      "tricode": "PHI",
+      "name": "Philadelphia 76ers",
+      "seed": null,
+      "wins": 1,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "BUF",
+      "tricode": "BUF",
+      "name": "Buffalo Braves",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BUF wins 2-1",
+     "status": "finished",
+     "winner_team_id": "BUF",
+     "winner_tricode": "BUF",
+     "games_count": 3,
+     "total_scheduled": 3,
+     "is_sweep": false,
+     "summary_text": "Buffalo Braves won series 2-1"
+    },
+    {
+     "series_id": "1976-1-W0",
+     "slug": "1976-r1-mil-det",
+     "season": "1975-76",
+     "round_number": 1,
+     "round_name": "First Round",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612749",
+      "tricode": "MIL",
+      "name": "Milwaukee Bucks",
+      "seed": null,
+      "wins": 1,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612765",
+      "tricode": "DET",
+      "name": "Detroit Pistons",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "DET wins 2-1",
+     "status": "finished",
+     "winner_team_id": "1610612765",
+     "winner_tricode": "DET",
+     "games_count": 3,
+     "total_scheduled": 3,
+     "is_sweep": false,
+     "summary_text": "Detroit Pistons won series 2-1"
+    }
+   ]
+  },
+  {
+   "round_number": 2,
+   "round_name": "Conference Semifinals",
+   "eastern_series": [
+    {
+     "series_id": "1976-2-E0",
+     "slug": "1976-r2-bos-buf",
+     "season": "1975-76",
+     "round_number": 2,
+     "round_name": "Conference Semifinals",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "BUF",
+      "tricode": "BUF",
+      "name": "Buffalo Braves",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-2"
+    },
+    {
+     "series_id": "1976-2-E1",
+     "slug": "1976-r2-cle-wsb",
+     "season": "1975-76",
+     "round_number": 2,
+     "round_name": "Conference Semifinals",
+     "conference": "Eastern",
+     "matchup_index": 1,
+     "team1": {
+      "team_id": "1610612739",
+      "tricode": "CLE",
+      "name": "Cleveland Cavaliers",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "WSB",
+      "tricode": "WSB",
+      "name": "Washington Bullets",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "CLE wins 4-3",
+     "status": "finished",
+     "winner_team_id": "1610612739",
+     "winner_tricode": "CLE",
+     "games_count": 7,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Cleveland Cavaliers won series 4-3"
+    }
+   ],
+   "western_series": [
+    {
+     "series_id": "1976-2-W0",
+     "slug": "1976-r2-gsw-det",
+     "season": "1975-76",
+     "round_number": 2,
+     "round_name": "Conference Semifinals",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612744",
+      "tricode": "GSW",
+      "name": "Golden State Warriors",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612765",
+      "tricode": "DET",
+      "name": "Detroit Pistons",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "GSW wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612744",
+     "winner_tricode": "GSW",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Golden State Warriors won series 4-2"
+    },
+    {
+     "series_id": "1976-2-W1",
+     "slug": "1976-r2-sea-phx",
+     "season": "1975-76",
+     "round_number": 2,
+     "round_name": "Conference Semifinals",
+     "conference": "Western",
+     "matchup_index": 1,
+     "team1": {
+      "team_id": "SEA",
+      "tricode": "SEA",
+      "name": "Seattle SuperSonics",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612756",
+      "tricode": "PHX",
+      "name": "Phoenix Suns",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "PHX wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612756",
+     "winner_tricode": "PHX",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Phoenix Suns won series 4-2"
+    }
+   ],
+   "finals_series": [],
+   "series": [
+    {
+     "series_id": "1976-2-E0",
+     "slug": "1976-r2-bos-buf",
+     "season": "1975-76",
+     "round_number": 2,
+     "round_name": "Conference Semifinals",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "BUF",
+      "tricode": "BUF",
+      "name": "Buffalo Braves",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-2"
+    },
+    {
+     "series_id": "1976-2-E1",
+     "slug": "1976-r2-cle-wsb",
+     "season": "1975-76",
+     "round_number": 2,
+     "round_name": "Conference Semifinals",
+     "conference": "Eastern",
+     "matchup_index": 1,
+     "team1": {
+      "team_id": "1610612739",
+      "tricode": "CLE",
+      "name": "Cleveland Cavaliers",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "WSB",
+      "tricode": "WSB",
+      "name": "Washington Bullets",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "CLE wins 4-3",
+     "status": "finished",
+     "winner_team_id": "1610612739",
+     "winner_tricode": "CLE",
+     "games_count": 7,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Cleveland Cavaliers won series 4-3"
+    },
+    {
+     "series_id": "1976-2-W0",
+     "slug": "1976-r2-gsw-det",
+     "season": "1975-76",
+     "round_number": 2,
+     "round_name": "Conference Semifinals",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612744",
+      "tricode": "GSW",
+      "name": "Golden State Warriors",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612765",
+      "tricode": "DET",
+      "name": "Detroit Pistons",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "GSW wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612744",
+     "winner_tricode": "GSW",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Golden State Warriors won series 4-2"
+    },
+    {
+     "series_id": "1976-2-W1",
+     "slug": "1976-r2-sea-phx",
+     "season": "1975-76",
+     "round_number": 2,
+     "round_name": "Conference Semifinals",
+     "conference": "Western",
+     "matchup_index": 1,
+     "team1": {
+      "team_id": "SEA",
+      "tricode": "SEA",
+      "name": "Seattle SuperSonics",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612756",
+      "tricode": "PHX",
+      "name": "Phoenix Suns",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "PHX wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612756",
+     "winner_tricode": "PHX",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Phoenix Suns won series 4-2"
+    }
+   ]
+  },
+  {
+   "round_number": 3,
+   "round_name": "Conference Finals",
+   "eastern_series": [
+    {
+     "series_id": "1976-3-E0",
+     "slug": "1976-ecf-bos-cle",
+     "season": "1975-76",
+     "round_number": 3,
+     "round_name": "Conference Finals",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612739",
+      "tricode": "CLE",
+      "name": "Cleveland Cavaliers",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-2"
+    }
+   ],
+   "western_series": [
+    {
+     "series_id": "1976-3-W0",
+     "slug": "1976-wcf-gsw-phx",
+     "season": "1975-76",
+     "round_number": 3,
+     "round_name": "Conference Finals",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612744",
+      "tricode": "GSW",
+      "name": "Golden State Warriors",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612756",
+      "tricode": "PHX",
+      "name": "Phoenix Suns",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "PHX wins 4-3",
+     "status": "finished",
+     "winner_team_id": "1610612756",
+     "winner_tricode": "PHX",
+     "games_count": 7,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Phoenix Suns won series 4-3"
+    }
+   ],
+   "finals_series": [],
+   "series": [
+    {
+     "series_id": "1976-3-E0",
+     "slug": "1976-ecf-bos-cle",
+     "season": "1975-76",
+     "round_number": 3,
+     "round_name": "Conference Finals",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612739",
+      "tricode": "CLE",
+      "name": "Cleveland Cavaliers",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-2"
+    },
+    {
+     "series_id": "1976-3-W0",
+     "slug": "1976-wcf-gsw-phx",
+     "season": "1975-76",
+     "round_number": 3,
+     "round_name": "Conference Finals",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612744",
+      "tricode": "GSW",
+      "name": "Golden State Warriors",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612756",
+      "tricode": "PHX",
+      "name": "Phoenix Suns",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "PHX wins 4-3",
+     "status": "finished",
+     "winner_team_id": "1610612756",
+     "winner_tricode": "PHX",
+     "games_count": 7,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Phoenix Suns won series 4-3"
+    }
+   ]
+  },
+  {
+   "round_number": 4,
+   "round_name": "NBA Finals",
+   "eastern_series": [],
+   "western_series": [],
+   "finals_series": [
+    {
+     "series_id": "1976-4-L0",
+     "slug": "1976-finals-bos-phx",
+     "season": "1975-76",
+     "round_number": 4,
+     "round_name": "NBA Finals",
+     "conference": null,
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612756",
+      "tricode": "PHX",
+      "name": "Phoenix Suns",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-2"
+    }
+   ],
+   "series": [
+    {
+     "series_id": "1976-4-L0",
+     "slug": "1976-finals-bos-phx",
+     "season": "1975-76",
+     "round_number": 4,
+     "round_name": "NBA Finals",
+     "conference": null,
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612756",
+      "tricode": "PHX",
+      "name": "Phoenix Suns",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-2",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 6,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-2"
+    }
+   ]
+  }
+ ],
+ "seeds": {},
+ "capabilities": {
+  "box_scores": "admitted",
+  "series_facts": "admitted",
+  "seed_evidence": "reconstructed_regular_season",
+  "play_by_play": "gated_b19",
+  "wowy_on_off": "gated_b21",
+  "defensive_matchups": "gated_b23",
+  "playoff_forecasts": "not_admitted_inferred_claims_forbidden"
+ },
+ "disclaimers": [
+  "Rounds, matchups and results come from Basketball-Reference's season page. Series before 1983-84 have game scores only (no box scores); seeds are not shown before 2000-01.",
+  "Scheduled or unplayed games retain placeholder status and are strictly excluded from statistical outcomes, ratings, and player denominators.",
+  "Seeds are reconstructed from regular-season records strictly prior to playoff tipoff. Record ties do not establish official conference placement without tiebreaker evidence.",
+  "CourtLens provides descriptive completed-game facts only. Subjective win probabilities and automated playoff forecast models are prohibited by domain guardrails.",
+  "Advanced play-by-play, rotation/lineup tracking, and defensive matchup matrix capabilities are gated to Blocks B19-B25."
+ ]
+}

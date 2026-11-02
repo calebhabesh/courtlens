@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { awayFirst, easternToday, gameStatus, lineFavourite, seasonOf, shiftSlate, teamCode, type LiveGame, type LiveTeam } from "@/lib/live";
+import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, seasonOf, shiftSlate, teamCode, type LiveGame, type LiveTeam } from "@/lib/live";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 
@@ -71,9 +71,14 @@ function TeamRow({ team, game, season, compact }: { team: LiveTeam; game: LiveGa
     <span className="live-card-team-text">
       <span className="live-card-team-line">
         <span className="live-card-code">{teamCode(team)}</span>
-        {!compact && team.record && <span className="live-card-record">{team.record}</span>}
+        {compact && <span className="live-side">{team.side === "home" ? "Home" : "Away"}</span>}
+        {!compact && team.record && <span className="live-card-record">{formatRecord(team.record)}</span>}
       </span>
-      {!compact && game.status === "scheduled" && team.out != null && team.out > 0 && <span className="live-card-out"><span className="live-card-out-dot" aria-hidden="true" />{team.out} OUT</span>}
+      {/* Follow-up 12: who is home and away, in grey under the code. */}
+      {!compact && <span className="live-card-sub">
+        <span className="live-side">{team.side === "home" ? "Home" : "Away"}</span>
+        {game.status === "scheduled" && team.out != null && team.out > 0 && <span className="live-card-out"><span className="live-card-out-dot" aria-hidden="true" />{team.out} OUT</span>}
+      </span>}
     </span>
     {game.status === "final" && team.winner && !compact && <span className="live-card-winner"><span className="sr-only">Winner</span></span>}
     <strong className="live-card-score">{played ? team.score ?? "—" : compact ? "" : "0"}</strong>

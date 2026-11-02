@@ -38,6 +38,7 @@ IN_PROGRESS_SECONDS = 20
 SOON_SECONDS = 60
 UPCOMING_SECONDS = 600
 INJURY_SECONDS = 600
+STANDINGS_SECONDS = 600
 RETRY_SECONDS = (30, 60, 120, 300)
 EASTERN = ZoneInfo("America/New_York")
 SETTLED = {"final", "postponed", "cancelled"}
@@ -47,6 +48,8 @@ class Provider(Protocol):
     def fetch(self, slate: date, game_id: str | None = None) -> LiveFetch: ...
 
     def fetch_injuries(self) -> LiveFetch: ...
+
+    def fetch_standings(self, year: int) -> LiveFetch: ...
 
 
 def aware(value: datetime) -> datetime:
@@ -65,8 +68,15 @@ def _games(data: dict[str, Any] | None) -> list[dict[str, Any]]:
     return [g for g in data.get("games") or [data.get("game")] if g]
 
 
+def season_end_year(today: date) -> int:
+    """The current season's end year: 2027 for October 2026, 2026 for May 2026."""
+    return today.year + 1 if today.month >= 8 else today.year
+
+
 def is_final(resource: str, data: dict[str, Any] | None, today: date) -> bool:
     """Nothing left to change: every game settled, or an empty date that has passed."""
+    if resource.startswith("standings:"):
+        return data is not None and int(resource[10:]) < season_end_year(today)
     if resource == "injuries" or data is None:
         return False
     games = _games(data)
@@ -82,6 +92,8 @@ def refresh_seconds(resource: str, data: dict[str, Any] | None, now: datetime) -
     today = now.astimezone(EASTERN).date()
     if resource == "injuries":
         return INJURY_SECONDS
+    if resource.startswith("standings:"):
+        return None if is_final(resource, data, today) else STANDINGS_SECONDS
     if data is None:
         return SOON_SECONDS
     if is_final(resource, data, today):
@@ -184,6 +196,12 @@ def _retain(
     return observation.id, digest
 
 
+def _fetch(provider: Provider, resource: str, slate: date | None, game_id: str | None) -> LiveFetch:
+    if resource.startswith("standings:"):
+        return provider.fetch_standings(int(resource[10:]))
+    return provider.fetch_injuries() if slate is None else provider.fetch(slate, game_id)
+
+
 def _refresh(
     session: Session,
     resource: str,
@@ -196,7 +214,7 @@ def _refresh(
     session.add(current)
     current.attempted_at = now
     try:
-        result = provider.fetch_injuries() if slate is None else provider.fetch(slate, game_id)
+        result = _fetch(provider, resource, slate, game_id)
     except LiveProviderError as exc:
         current.failures = (current.failures or 0) + 1
         current.error = str(exc)[:100]
@@ -230,10 +248,11 @@ def read(
     game_id: str | None = None,
     *,
     now: datetime | None = None,
+    standings_year: int | None = None,
 ) -> dict[str, Any]:
     """The cached read of one resource, fetched first when stale."""
     now = now or datetime.now(UTC)
-    resource = resource_name(slate, game_id)
+    resource = f"standings:{standings_year}" if standings_year else resource_name(slate, game_id)
     current = session.get(LiveCurrent, resource)
     if _due(current, now):
         with resource_lock(session.get_bind().engine, resource) as locked:

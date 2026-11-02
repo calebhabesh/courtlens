@@ -1,186 +1,151 @@
 @layer pages {
-/* Playoff Series Detail View */
+  /* Playoff series page (alignment row 8), after Databallr's: hero, trajectory, paired bars,
+     series averages, matchups and an impact face-off. Sections use the player-glass panel. */
+  .ps-page { gap: var(--space-6); }
+  .ps-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .ps-panel { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; padding: var(--space-5); }
+  .ps-panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-1) var(--space-3); }
+  .ps-panel-head h2 { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-text); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 650; }
+  .ps-panel-head > span { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .ps-panel-head-centred { flex-direction: column; justify-content: center; text-align: center; }
+  .ps-chip { display: inline-flex; align-items: center; gap: var(--space-1); padding: 0 var(--space-2); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-pill);
+    color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .ps-chip::before { content: ""; width: var(--space-1); height: var(--space-1); border-radius: var(--radius-pill); background: var(--color-accent); }
+  .ps-switch { display: flex; justify-content: center; }
 
-.playoff-series-hero-panel {
-  padding: var(--space-5);
-  background: var(--color-surface-1);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-hairline);
-  box-shadow: var(--shadow-1);
-}
-
-.playoff-series-hero-badge {
-  font-size: var(--text-sm);
-  padding: var(--space-1) var(--space-2-5, var(--space-3));
-}
-
-.playoff-series-hero-grid {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: var(--space-5);
-  padding: var(--space-4) 0;
-}
-
-@media (max-width: 640px) {
-  .playoff-series-hero-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
+  /* Hero: both teams in their colours with the series score between them. */
+  .ps-hero {
+    position: relative; display: flex; flex-direction: column; gap: var(--space-3); overflow: hidden; padding: var(--space-4) var(--space-5) var(--space-5);
+    border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-2);
+    background:
+      radial-gradient(60% 120% at 0% 0%, color-mix(in srgb, var(--team-a) 16%, transparent), transparent 70%),
+      radial-gradient(60% 120% at 100% 0%, color-mix(in srgb, var(--team-b) 16%, transparent), transparent 70%),
+      var(--color-surface-1);
   }
-}
+  .ps-hero::after { content: ""; position: absolute; inset: auto 0 0; height: 3px; background: linear-gradient(90deg, var(--team-a), transparent 45%, transparent 55%, var(--team-b)); }
+  .ps-kicker { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.14em; text-align: center; text-transform: uppercase; }
+  .ps-kicker strong { color: var(--color-text); }
+  .ps-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-4); }
+  .ps-hero-team { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); min-width: 0; text-align: center; }
+  .ps-hero-logo { display: grid; place-items: center; width: 112px; height: 112px; margin-bottom: var(--space-2); border-radius: var(--radius-pill);
+    background: radial-gradient(circle, color-mix(in srgb, var(--team-color, var(--color-white)) 26%, transparent), transparent 70%); }
+  .ps-hero-city { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+  .ps-hero-name { max-width: 100%; overflow: hidden; color: var(--team-color, var(--color-text)); font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-weight: 800; text-decoration: none; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+  .ps-hero-name:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .ps-hero-meta { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ps-hero-meta strong { color: var(--color-text); font-variant-numeric: tabular-nums; }
+  .ps-hero-seed { padding: 0 var(--space-2); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--team-color, var(--color-white)) 22%, transparent); color: var(--team-color, var(--color-text)); font-weight: 700; }
+  .ps-hero-wins { margin-top: var(--space-1); color: var(--team-color, var(--color-text)); font-size: calc(var(--text-3xl) * 1.5); line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .ps-hero-team.is-out .ps-hero-wins { color: var(--color-text-secondary); }
+  .ps-hero-team.is-out :is(.ps-hero-logo, .ps-hero-name) { opacity: 0.7; }
+  .ps-hero-centre { display: flex; flex-direction: column; align-items: center; }
+  /* The series winner between the two teams: its logo and full name, no box. */
+  .ps-hero-winner { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); max-width: 200px; text-align: center; }
+  .ps-hero-winner-label { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-accent); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .ps-hero-winner strong { color: var(--team-color, var(--color-text)); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 800; }
+  .ps-hero-status { color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
-.playoff-series-team-card {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  border-radius: var(--radius-md);
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-hairline);
-}
+  /* Season series: one line, expanding to the regular-season meetings. */
+  .ps-meetings { display: flex; flex-direction: column; align-items: center; }
+  .ps-meetings-none { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); text-align: center; }
+  .ps-meetings-list { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); margin: var(--space-2) 0 0; padding: 0; list-style: none; }
+  .ps-meetings-list li { display: inline-flex; align-items: baseline; gap: var(--space-2); padding: var(--space-1) var(--space-3); border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
+  .ps-meetings-list .is-winner { color: var(--color-text); font-weight: 700; }
+  .ps-meetings-date, .ps-meetings-at { color: var(--color-on-bg-tertiary); }
 
-/* FO08 hero: identity on the outside, series wins facing the center. */
-.playoff-series-team-card { justify-content: space-between; min-width: 0; }
-.playoff-series-team-card[data-side="right"] { flex-direction: row-reverse; }
-.playoff-series-team-card[data-side="right"] .ui-identity { flex-direction: row-reverse; text-align: right; }
-.playoff-series-team-score { font-size: var(--text-2xl); font-weight: 600; font-variant-numeric: tabular-nums; }
-.playoff-series-score-center { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); }
-.playoff-game-card-team { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--text-xs); }
-.playoff-series-team-card.winner {
-  background: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface-2));
-  border-color: var(--color-accent);
-}
+  /* Series Trajectory: one card per game, unplayed games as dashed placeholders. */
+  .ps-games { display: grid; grid-template-columns: repeat(var(--ps-games), minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .ps-game { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; padding: var(--space-3); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-md); background: var(--color-surface-1); }
+  .ps-game.is-unplayed { border-style: dashed; background: transparent; }
+  .ps-game-number { margin-bottom: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .ps-game-row { display: flex; justify-content: space-between; gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
+  .ps-game-row .ps-team-code { color: color-mix(in srgb, var(--team-color, var(--color-text)) 70%, var(--color-text-secondary)); font-weight: 700; }
+  .ps-game-row.is-winner strong { color: var(--color-text); }
+  .ps-game-row:not(.is-winner) { opacity: 0.72; }
+  .ps-game-foot, .ps-game-empty { margin-top: var(--space-1); color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); letter-spacing: 0.06em; text-align: center; text-transform: uppercase; }
 
-.playoff-series-team-score {
-  font-size: var(--text-3xl);
-  line-height: 1;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  font-family: var(--font-mono), monospace;
-  color: var(--color-text);
-}
+  /* Team Comparison and Four Factors: paired bars, the better side in its colour. */
+  .ps-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+  .ps-bars { width: 100%; border-collapse: collapse; table-layout: fixed; font-variant-numeric: tabular-nums; }
+  .ps-bars thead .ps-team-code { justify-content: center; }
+  .ps-bars thead th { padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline); color: var(--team-color, var(--color-text)); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.06em; }
+  .ps-bars th, .ps-bars td { padding: var(--space-2) var(--space-1); }
+  .ps-bars tbody th { width: 64px; color: var(--color-text-secondary); font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.08em; text-align: center; }
+  .ps-bars thead th:nth-child(3) { width: 64px; }
+  .ps-bars thead th:is(:nth-child(2), :nth-child(4)) { width: 76px; }
+  .ps-bars-value { color: var(--color-text-secondary); font-size: var(--text-lg); line-height: var(--text-lg-lh); text-align: center; }
+  .ps-bars-value.is-better { color: var(--team-color, var(--color-text)); font-weight: 700; }
+  .ps-bars-track i { display: block; width: calc(var(--fill, 0) * 100%); height: var(--space-2); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-white) 10%, transparent); }
+  .ps-bars-track[data-side="left"] i { margin-inline-start: auto; }
+  .ps-bars-track i.is-better { background: var(--team-color, var(--color-accent)); }
 
-.playoff-series-team-score.winner {
-  color: var(--color-accent);
-}
+  /* Series Averages: the shared reference grid; player names in the text colour. */
+  .ps-averages-scroll { max-height: min(70dvh, 640px); }
+  .ps-player { display: flex; align-items: center; gap: var(--space-2); min-width: 0; text-align: start; }
+  .ps-player a { overflow: hidden; color: var(--color-text); text-decoration: none; text-overflow: ellipsis; }
+  .ps-player a:hover { text-decoration: underline; }
+  .ps-averages tbody td.is-sorted { color: var(--color-accent); font-weight: 700; }
 
-.playoff-series-score-center {
-  text-align: center;
-}
+  /* Matchups: controls, a player strip, the focus card and the opponent table. */
+  .ps-mu-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); }
+  .ps-team-code { display: inline-flex; align-items: center; gap: var(--space-1); vertical-align: middle; }
+  .ps-mu-strip { display: flex; justify-content: safe center; overflow-x: auto; padding-bottom: var(--space-1); scrollbar-color: var(--color-hairline-strong) transparent; }
+  .ps-mu-card { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-3) var(--space-4); border-inline-start: 3px solid var(--team-color, var(--color-accent)); border-radius: var(--radius-md); background: var(--color-surface-1); }
+  .ps-mu-card p { margin: var(--space-0-5) 0 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .ps-mu-card p strong { color: var(--team-color, var(--color-text)); }
+  .ps-mu-name { color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; text-decoration: none; }
+  .ps-mu-name:hover { text-decoration: underline; }
+  .ps-mu-table .ps-mu-lead { text-align: start; }
+  /* One header row: it sticks at the top, not under a group tier. */
+  .ps-mu-table .player-ref-grid-tier-2 th { top: 0; }
+  .ps-mu-bar { position: absolute; inset: var(--space-1) auto var(--space-1) 0; width: calc(var(--share) * 100%); border-inline-start: 3px solid var(--team-color, var(--color-brand)); background: color-mix(in srgb, var(--team-color, var(--color-brand)) 30%, transparent); }
+  .ps-mu-label { position: relative; }
+  .ps-mu-table tfoot :is(th, td) { color: var(--color-accent); font-weight: 700; text-transform: uppercase; }
+  .ps-mu-table td.is-good { color: var(--color-positive); }
+  .ps-mu-table td.is-bad { color: var(--color-negative); }
+  .ps-footnotes { display: flex; flex-direction: column; gap: var(--space-0-5); margin: 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); background: var(--color-surface-1); color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); list-style: none; }
 
-.playoff-games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--space-3);
-  padding: var(--space-4);
-}
+  /* Impact face-off: each team's players ranked side by side around a rank spine. */
+  .ps-impact { position: relative; overflow: hidden; }
+  .ps-impact::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, var(--team-a) 50%, var(--team-b) 50%); }
+  .ps-impact-head { display: grid; grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr); align-items: center; gap: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline); }
+  .ps-impact-head > span { display: flex; align-items: center; gap: var(--space-2); min-width: 0; color: var(--team-color, var(--color-text)); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .ps-impact-head > span:first-child { justify-content: flex-end; }
+  .ps-impact-head .ps-impact-rank-head { justify-content: center; color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); letter-spacing: 0.1em; text-align: center; text-transform: uppercase; }
+  .ps-impact-rows { display: flex; flex-direction: column; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .ps-impact-row { display: grid; grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr); align-items: center; gap: var(--space-3); }
+  .ps-impact-rank { color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
+  .ps-impact-cell { display: flex; align-items: center; gap: var(--space-3); min-width: 0; min-height: 56px; padding: var(--space-1) var(--space-3); border-radius: var(--radius-md); }
+  .ps-impact-cell[data-side="left"] { flex-direction: row-reverse; text-align: end; }
+  /* The side that wins its rank (higher value in the chosen component) carries its team colour. */
+  .ps-impact-cell.is-ahead[data-side="left"] { background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--team-color, var(--color-info)) 30%, transparent)); }
+  .ps-impact-cell.is-ahead[data-side="right"] { background: linear-gradient(90deg, color-mix(in srgb, var(--team-color, var(--color-brand)) 30%, transparent), transparent); }
+  .ps-impact-cell.is-empty { background: transparent; }
+  .ps-impact-text { display: flex; flex-direction: column; min-width: 0; }
+  .ps-impact-text a { overflow: hidden; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700; text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }
+  .ps-impact-text a:hover { text-decoration: underline; }
+  .ps-impact-text span { font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ps-impact-text .is-good { color: var(--color-positive); }
+  .ps-impact-text .is-bad { color: var(--color-negative); }
+  .ps-impact-note { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
 
-.playoff-game-card {
-  padding: var(--space-3);
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface-2);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.playoff-game-card.unplayed {
-  background: var(--color-surface-1);
-  border-style: dashed;
-  opacity: 0.75;
-}
-
-.playoff-game-card.winner {
-  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-hairline));
-}
-
-.playoff-game-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: var(--text-xs);
-}
-
-.playoff-game-card-teams {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  margin: var(--space-1) 0;
-}
-
-.playoff-game-card-team-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-0-5) 0;
-  font-size: var(--text-sm);
-}
-
-.playoff-game-card-team-row.winner {
-  font-weight: 700;
-  color: var(--color-accent);
-}
-
-.playoff-game-card-score {
-  font-size: var(--text-md);
-  font-family: var(--font-mono), monospace;
-  font-weight: 700;
-}
-
-.playoff-game-card-footer {
-  margin-top: auto;
-  border-top: 1px solid var(--color-hairline);
-  padding-top: var(--space-1-5, var(--space-2));
-  font-size: var(--text-xs);
-}
-
-.playoff-factors-col-metric {
-  width: 25%;
-}
-
-.playoff-factors-col-num {
-  width: 25%;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.playoff-factors-col-adv {
-  width: 20%;
-  text-align: center;
-}
-
-.playoff-factors-adv-cell {
-  text-align: center;
-}
-
-.playoff-table-col-action {
-  text-align: right;
-}
-
-.playoffs-gated-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
-  gap: var(--space-5);
-}
-
-.playoffs-gated-panel {
-  padding: var(--space-5);
-}
-
-.playoffs-gated-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-  margin-bottom: var(--space-2);
-}
-
-.playoffs-gated-title {
-  font-size: var(--text-md);
-}
-
-.playoffs-gated-desc {
-  line-height: 1.5;
-}
+  @media (width < 900px) {
+    .ps-pair { grid-template-columns: minmax(0, 1fr); }
+    .ps-games { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+  }
+  @media (width < 560px) {
+    .ps-panel { padding: var(--space-3); }
+    .ps-hero { padding-inline: var(--space-3); }
+    .ps-hero-grid { gap: var(--space-2); }
+    .ps-hero-logo { width: 64px; height: 64px; }
+    .ps-hero-logo img, .ps-hero-logo svg { width: 48px; height: 48px; }
+    .ps-hero-name { font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+    .ps-hero-wins { font-size: var(--text-3xl); }
+    .ps-hero-winner { max-width: 96px; }
+    .ps-hero-winner strong { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+    .ps-impact-head, .ps-impact-row { grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr); gap: var(--space-1); }
+    .ps-impact-head > span { font-size: var(--text-xs); }
+    .ps-impact-cell { padding-inline: var(--space-1); gap: var(--space-2); }
+    .ps-impact-cell .ui-identity { display: none; }
+  }
 }

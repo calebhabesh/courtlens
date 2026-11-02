@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 import * as route from "../app/api/live/[[...path]]/route";
-import { gameStatus, lineFavourite, madeAttempted, nearestGameDate, periodLabel, seasonOf, shiftSlate, shootingTone, trueShooting, twoPoint, validSlate, type LiveGame, type LiveTeam } from "./live";
+import { formatRecord, gameStatus, lineFavourite, madeAttempted, nearestGameDate, periodLabel, seasonOf, shiftSlate, shootingTone, trueShooting, twoPoint, validSlate, type LiveGame, type LiveTeam } from "./live";
 
 const context = (path: string[] = []) => ({ params: Promise.resolve({ path }) });
 const request = (path: string) => new NextRequest(`http://localhost:3000/api/live${path}`);
@@ -10,7 +10,7 @@ afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 describe("Live proxy", () => {
   it("is read-only: GET only, fixed routes and query keys", async () => {
     expect(Object.keys(route).sort()).toEqual(["GET"]);
-    const fetch = vi.fn().mockResolvedValue(Response.json({ data: null })); vi.stubGlobal("fetch", fetch);
+    const fetch = vi.fn().mockImplementation(async () => Response.json({ data: null })); vi.stubGlobal("fetch", fetch);
     expect((await route.GET(request("/jobs"), context(["jobs"]))).status).toBe(404);
     expect((await route.GET(request("/subscriptions"), context(["subscriptions"]))).status).toBe(404);
     const read = await route.GET(request("?slate_date=2026-10-03&target=http://other.test"), context());
@@ -19,6 +19,10 @@ describe("Live proxy", () => {
     expect(fetch.mock.calls[0][0].search).toBe("?slate_date=2026-10-03");
     await route.GET(request("/games/401909869?slate_date=2026-10-26"), context(["games", "401909869"]));
     expect(fetch.mock.calls[1][0].pathname).toBe("/api/live/games/401909869");
+    // Standings (row 23) pass through with their season and nothing else.
+    expect((await route.GET(request("/standings?season=2026-27&slate_date=2026-10-26"), context(["standings"]))).status).toBe(200);
+    expect(fetch.mock.calls[2][0].pathname).toBe("/api/live/standings");
+    expect(fetch.mock.calls[2][0].search).toBe("?season=2026-27");
   });
   it("passes status codes without upstream bodies and fails closed on network errors", async () => {
     const fetch = vi.fn().mockResolvedValue(Response.json({ detail: "private upstream payload" }, { status: 422 })); vi.stubGlobal("fetch", fetch);
@@ -75,4 +79,11 @@ describe("line favourite (follow-up 8)", () => {
     expect(lineFavourite({ spread: null }, teams)).toBeNull();
     expect(lineFavourite(null, teams)).toBeNull();
   });
+});
+
+it("records read with an en dash", () => {
+  expect(formatRecord("2-3")).toBe("2–3");
+  expect(formatRecord("10-0")).toBe("10–0");
+  expect(formatRecord(null)).toBeNull();
+  expect(formatRecord("2-3-1")).toBe("2-3-1");
 });
