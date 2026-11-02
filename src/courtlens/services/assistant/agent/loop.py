@@ -414,7 +414,8 @@ def run_turn(
             provider.verify_tools(tools_run)
         accounting = answer.accounting.model_copy(
             update={
-                "provider": settings.resolved_assistant_provider
+                "provider": (recording.provider_name if recording else None)
+                or settings.resolved_assistant_provider
                 if provider is None
                 else type(provider).__name__,
                 "model": recording.model if recording else answer.accounting.model,
@@ -515,9 +516,10 @@ def run_turn(
         nonlocal steps, calls, retried_busy, usage
         remaining = deadline - time.monotonic()
         # Bound output by remaining allowance; finalization is the one explicit extra call.
-        output_tokens = max(
-            1, min(4096 if not final else 1024, settings.assistant_max_tokens - usage.total_tokens)
-        )
+        remaining_tokens = settings.assistant_max_tokens - usage.total_tokens
+        # The finalization call always gets room to write: a turn that spent its budget on tools
+        # must still answer (the overshoot is reported in accounting.token_overshoot).
+        output_tokens = 1024 if final else max(1, min(4096, remaining_tokens))
         if on_step:
             on_step(
                 "writing" if final else "thinking",

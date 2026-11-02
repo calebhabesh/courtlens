@@ -84,7 +84,8 @@ def main() -> int:
                 key: value
                 for key, value in os.environ.items()
                 if not key.startswith("COURTLENS_")
-                and key not in {"GEMINI_API_KEY", "ANTHROPIC_API_KEY", "OPENAI_API_KEY"}
+                and key
+                not in {"GEMINI_API_KEY", "GROQ_API_KEY", "ANTHROPIC_API_KEY", "OPENAI_API_KEY"}
             }
             environment.update(
                 PYTHONPATH=str(root / "src"),

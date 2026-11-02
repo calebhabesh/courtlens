@@ -570,6 +570,8 @@ export type WorkbenchQueryResponse = {
     eligible_players: number;
     formula: string;
     good_directions: Record<string, "high" | "low" | null>;
+    /** View columns unknown for every player in scope; null when the scope was not checked. */
+    empty_fields?: string[] | null;
   } | null;
   items: PlayerResearchItem[];
   next_cursor: string | null;
@@ -1460,9 +1462,22 @@ export type AssistantStatusResponse = {
     max_total_rows: number;
     timeout_seconds: number;
   };
+  providers?: AssistantProviderStatus[];
   allowed_tools: string[];
   privacy_notice: string;
   setup_instructions: string;
+};
+
+export type AssistantProviderStatus = {
+  provider: string;
+  model: string;
+  state: "ready" | "cooling_down";
+  available_at?: string | null;
+  requests_last_minute?: number;
+  requests_today?: number;
+  provider_requests_remaining?: number;
+  provider_tokens_per_minute?: number;
+  last_quota?: { scope?: string | null; quota_id?: string | null; limit?: number | null; at?: string } | null;
 };
 
 export type AssistantQueryRequest = {
@@ -2084,6 +2099,11 @@ export interface TeamSeriesHeader {
   name: string;
   seed: number | null;
   wins: number;
+  /** Regular season before the playoffs; absent where the release lacks the games. */
+  record_wins?: number | null;
+  record_losses?: number | null;
+  /** Wins in the regular-season meetings with the opponent; null when they never met. */
+  season_series_wins?: number | null;
 }
 
 export interface PlayoffSeriesSummary {
@@ -2161,6 +2181,69 @@ export interface TeamSeriesStats {
   oreb_pct: number | null;
   ftr: number | null;
   totals: Record<string, unknown>;
+  record_wins?: number | null;
+  record_losses?: number | null;
+  season_series_wins?: number | null;
+}
+
+/** A regular-season meeting of the series' teams (the season series). */
+export interface SeasonSeriesGame {
+  game_id: string;
+  game_date: string;
+  home_team_id: string;
+  home_tricode: string;
+  away_team_id: string;
+  away_tricode: string;
+  home_score: number;
+  away_score: number;
+  winner_team_id: string | null;
+}
+
+/** One offensive player against one defender over a phase's games (NBA.com matchups). */
+export interface SeriesMatchupRow {
+  phase: "playoffs" | "regular_season";
+  off_player_id: string;
+  off_player_name: string;
+  off_team_id: string;
+  def_player_id: string;
+  def_player_name: string;
+  games: number;
+  possessions: number;
+  seconds: number;
+  points: number;
+  fgm: number;
+  fga: number;
+  fg3m: number;
+  fg3a: number;
+  ftm: number;
+  fta: number;
+  assists: number;
+  turnovers: number;
+}
+
+export interface SeriesMatchups {
+  playoff_games: number;
+  playoff_games_played: number;
+  regular_season_games: number;
+  source: string;
+  rows: SeriesMatchupRow[];
+}
+
+export interface SeriesImpactPlayer {
+  player_id: string;
+  player_name: string;
+  team_id: string;
+  total: number | null;
+  offense: number | null;
+  defense: number | null;
+}
+
+export interface SeriesImpactBoard {
+  metric: "darko" | "rapm" | string;
+  label: string;
+  as_of: string | null;
+  note: string;
+  players: SeriesImpactPlayer[];
 }
 
 export interface PlayerSeriesStats {
@@ -2220,6 +2303,9 @@ export interface PlayoffSeriesDetailResponse {
   game_cards: PlayoffGameCard[];
   team1_players: PlayerSeriesStats[];
   team2_players: PlayerSeriesStats[];
+  season_series?: SeasonSeriesGame[];
+  matchups?: SeriesMatchups | null;
+  impact?: SeriesImpactBoard[];
   capabilities: Record<string, string>;
   disclaimers: string[];
 }
