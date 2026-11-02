@@ -1,0 +1,426 @@
+{
+ "season": "1965-66",
+ "season_year": 1966,
+ "cutoff_date": null,
+ "rounds": [
+  {
+   "round_number": 2,
+   "round_name": "Division Semifinals",
+   "eastern_series": [
+    {
+     "series_id": "1966-2-E0",
+     "slug": "1966-r2-bos-cin",
+     "season": "1965-66",
+     "round_number": 2,
+     "round_name": "Division Semifinals",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "CIN",
+      "tricode": "CIN",
+      "name": "Cincinnati Royals",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 3-2",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 5,
+     "total_scheduled": 5,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 3-2"
+    }
+   ],
+   "western_series": [
+    {
+     "series_id": "1966-2-W0",
+     "slug": "1966-r2-bal-stl",
+     "season": "1965-66",
+     "round_number": 2,
+     "round_name": "Division Semifinals",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "BAL",
+      "tricode": "BAL",
+      "name": "Baltimore Bullets",
+      "seed": null,
+      "wins": 0,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "STL",
+      "tricode": "STL",
+      "name": "St. Louis Hawks",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "STL wins 3-0",
+     "status": "finished",
+     "winner_team_id": "STL",
+     "winner_tricode": "STL",
+     "games_count": 3,
+     "total_scheduled": 5,
+     "is_sweep": true,
+     "summary_text": "St. Louis Hawks won series 3-0"
+    }
+   ],
+   "finals_series": [],
+   "series": [
+    {
+     "series_id": "1966-2-E0",
+     "slug": "1966-r2-bos-cin",
+     "season": "1965-66",
+     "round_number": 2,
+     "round_name": "Division Semifinals",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "CIN",
+      "tricode": "CIN",
+      "name": "Cincinnati Royals",
+      "seed": null,
+      "wins": 2,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 3-2",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 5,
+     "total_scheduled": 5,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 3-2"
+    },
+    {
+     "series_id": "1966-2-W0",
+     "slug": "1966-r2-bal-stl",
+     "season": "1965-66",
+     "round_number": 2,
+     "round_name": "Division Semifinals",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "BAL",
+      "tricode": "BAL",
+      "name": "Baltimore Bullets",
+      "seed": null,
+      "wins": 0,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "STL",
+      "tricode": "STL",
+      "name": "St. Louis Hawks",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "STL wins 3-0",
+     "status": "finished",
+     "winner_team_id": "STL",
+     "winner_tricode": "STL",
+     "games_count": 3,
+     "total_scheduled": 5,
+     "is_sweep": true,
+     "summary_text": "St. Louis Hawks won series 3-0"
+    }
+   ]
+  },
+  {
+   "round_number": 3,
+   "round_name": "Division Finals",
+   "eastern_series": [
+    {
+     "series_id": "1966-3-E0",
+     "slug": "1966-ecf-phi-bos",
+     "season": "1965-66",
+     "round_number": 3,
+     "round_name": "Division Finals",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612755",
+      "tricode": "PHI",
+      "name": "Philadelphia 76ers",
+      "seed": null,
+      "wins": 1,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-1",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 5,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-1"
+    }
+   ],
+   "western_series": [
+    {
+     "series_id": "1966-3-W0",
+     "slug": "1966-wcf-lal-stl",
+     "season": "1965-66",
+     "round_number": 3,
+     "round_name": "Division Finals",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612747",
+      "tricode": "LAL",
+      "name": "Los Angeles Lakers",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "STL",
+      "tricode": "STL",
+      "name": "St. Louis Hawks",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "LAL wins 4-3",
+     "status": "finished",
+     "winner_team_id": "1610612747",
+     "winner_tricode": "LAL",
+     "games_count": 7,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Los Angeles Lakers won series 4-3"
+    }
+   ],
+   "finals_series": [],
+   "series": [
+    {
+     "series_id": "1966-3-E0",
+     "slug": "1966-ecf-phi-bos",
+     "season": "1965-66",
+     "round_number": 3,
+     "round_name": "Division Finals",
+     "conference": "Eastern",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612755",
+      "tricode": "PHI",
+      "name": "Philadelphia 76ers",
+      "seed": null,
+      "wins": 1,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-1",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 5,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-1"
+    },
+    {
+     "series_id": "1966-3-W0",
+     "slug": "1966-wcf-lal-stl",
+     "season": "1965-66",
+     "round_number": 3,
+     "round_name": "Division Finals",
+     "conference": "Western",
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612747",
+      "tricode": "LAL",
+      "name": "Los Angeles Lakers",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "STL",
+      "tricode": "STL",
+      "name": "St. Louis Hawks",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "LAL wins 4-3",
+     "status": "finished",
+     "winner_team_id": "1610612747",
+     "winner_tricode": "LAL",
+     "games_count": 7,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Los Angeles Lakers won series 4-3"
+    }
+   ]
+  },
+  {
+   "round_number": 4,
+   "round_name": "NBA Finals",
+   "eastern_series": [],
+   "western_series": [],
+   "finals_series": [
+    {
+     "series_id": "1966-4-L0",
+     "slug": "1966-finals-bos-lal",
+     "season": "1965-66",
+     "round_number": 4,
+     "round_name": "NBA Finals",
+     "conference": null,
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612747",
+      "tricode": "LAL",
+      "name": "Los Angeles Lakers",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-3",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 7,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-3"
+    }
+   ],
+   "series": [
+    {
+     "series_id": "1966-4-L0",
+     "slug": "1966-finals-bos-lal",
+     "season": "1965-66",
+     "round_number": 4,
+     "round_name": "NBA Finals",
+     "conference": null,
+     "matchup_index": 0,
+     "team1": {
+      "team_id": "1610612738",
+      "tricode": "BOS",
+      "name": "Boston Celtics",
+      "seed": null,
+      "wins": 4,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "team2": {
+      "team_id": "1610612747",
+      "tricode": "LAL",
+      "name": "Los Angeles Lakers",
+      "seed": null,
+      "wins": 3,
+      "record_wins": null,
+      "record_losses": null,
+      "season_series_wins": null
+     },
+     "series_score": "BOS wins 4-3",
+     "status": "finished",
+     "winner_team_id": "1610612738",
+     "winner_tricode": "BOS",
+     "games_count": 7,
+     "total_scheduled": 7,
+     "is_sweep": false,
+     "summary_text": "Boston Celtics won series 4-3"
+    }
+   ]
+  }
+ ],
+ "seeds": {},
+ "capabilities": {
+  "box_scores": "admitted",
+  "series_facts": "admitted",
+  "seed_evidence": "reconstructed_regular_season",
+  "play_by_play": "gated_b19",
+  "wowy_on_off": "gated_b21",
+  "defensive_matchups": "gated_b23",
+  "playoff_forecasts": "not_admitted_inferred_claims_forbidden"
+ },
+ "disclaimers": [
+  "Rounds, matchups and results come from Basketball-Reference's season page. Series before 1983-84 have game scores only (no box scores); seeds are not shown before 2000-01.",
+  "Scheduled or unplayed games retain placeholder status and are strictly excluded from statistical outcomes, ratings, and player denominators.",
+  "Seeds are reconstructed from regular-season records strictly prior to playoff tipoff. Record ties do not establish official conference placement without tiebreaker evidence.",
+  "CourtLens provides descriptive completed-game facts only. Subjective win probabilities and automated playoff forecast models are prohibited by domain guardrails.",
+  "Advanced play-by-play, rotation/lineup tracking, and defensive matchup matrix capabilities are gated to Blocks B19-B25."
+ ]
+}

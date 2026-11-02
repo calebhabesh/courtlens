@@ -10,6 +10,7 @@ import { PageHeader } from "@/components/ui/panel";
 import { GatedNote } from "@/components/ui/gated-note";
 import { ButtonLink } from "@/components/ui/kit";
 import { StatsWorkspace } from "@/components/stats-workspace";
+import { TeamDivisionStandings } from "@/components/team-division-standings";
 import { TeamDepthSection, TeamGameLogSection, TeamPeersSection, TeamProfileHeader, TeamSixFactorsSection, TeamStandingSection, TeamTrendSection, TeamVenueSection } from "@/components/team-profile";
 
 export const metadata: Metadata = { title: "Team Profile · CourtLens" };
@@ -64,6 +65,7 @@ export default async function TeamDetailPage({ params, searchParams }: {
     <StatsWorkspace params={raw} basePath={`/teams/${id}`} team={{ id: dataTeamId, header }} />
     <div className="team-profile-sections">
       {factors && factorTeam && <TeamStandingSection data={factors} team={factorTeam} />}
+      {phase !== "playoffs" && <TeamDivisionStandings tricode={team.tricode} season={season} />}
       {factors && factorTeam && <TeamSixFactorsSection data={factors} team={factorTeam} />}
       {factors && factorTeam && <TeamVenueSection all={factors} home={home} away={away} team={factorTeam} />}
       {factorTeam && factorTeam.trend.length > 0 && <TeamTrendSection team={factorTeam} />}

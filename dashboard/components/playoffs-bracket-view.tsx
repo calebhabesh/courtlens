@@ -8,10 +8,14 @@ import { getSeriesStatusBadge } from "@/lib/playoffs";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import type { WorkbenchCatalog } from "@/lib/types";
 import { ContextBar } from "./context-bar";
+import { PageHeader } from "./ui/panel";
 import { hasTeamLogo } from "@/lib/team-colors";
 import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
 import { ButtonLink, Segmented } from "./ui/kit";
+import { buildBracket } from "@/lib/playoffs-bracket";
+import { splitTeamName } from "@/lib/playoffs";
+import { PlayoffsBracket } from "./playoffs-bracket";
 
 interface PlayoffsBracketViewProps {
   bracket: PlayoffBracketResponse | null;
@@ -52,12 +56,22 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
       .filter((r) => r.series.length > 0);
   }, [bracket?.rounds, roundFilter, conferenceFilter]);
 
+  // The mirrored bracket where the season fits two conference trees; round columns otherwise.
+  const layout = useMemo(() => bracket ? buildBracket(bracket.rounds) : null, [bracket]);
+  const year = bracket?.season_year ?? (season ? Number(season.slice(0, 4)) + 1 : null);
+  const finals = layout?.finals;
+  const subtitle = finals
+    ? finals.winner_tricode
+      ? `${splitTeamName(finals.winner_tricode === finals.team1.tricode ? finals.team1.name : finals.team2.name).nickname} won the Finals ${Math.max(finals.team1.wins, finals.team2.wins)}–${Math.min(finals.team1.wins, finals.team2.wins)} over the ${splitTeamName(finals.winner_tricode === finals.team1.tricode ? finals.team2.name : finals.team1.name).nickname}.`
+      : `Finals: ${splitTeamName(finals.team1.name).nickname} vs ${splitTeamName(finals.team2.name).nickname}.`
+    : "Open any matchup for the full series breakdown.";
+
   // Seed Evidence
   const seeded = Object.values(bracket?.seeds ?? {}).some(list => list.length > 0);
   const eastSeeds = bracket?.seeds?.East ?? [];
   const westSeeds = bracket?.seeds?.West ?? [];
 
-  const filters = activeTab === "bracket" ? <>
+  const filters = activeTab === "bracket" && !layout ? <>
     <Segmented<RoundFilter> size="lg" label="Round" value={roundFilter} onChange={setRoundFilter} options={[
       { value: "all", label: "All Rounds" }, { value: "1", label: "Round 1" }, { value: "2", label: "Semis" },
       { value: "3", label: "Conf Finals" }, { value: "4", label: "Finals" }
@@ -92,12 +106,21 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
         Completed games only; no winner projections.
       </GatedNote>}
 
-      {/* TAB 1: TOURNAMENT BRACKET */}
-      {bracket && activeTab === "bracket" && (
+      {bracket && year && (
+        <PageHeader className="pb-head" subtitle={subtitle}
+          title={<span className="pb-title"><span>{year}</span> {Number(season.slice(0, 4)) < 1948 ? "BAA" : "NBA"} Playoffs</span>} />
+      )}
+
+      {bracket && activeTab === "bracket" && layout && (
+        <PlayoffsBracket layout={layout} season={bracket.season} seeded={seeded} href={seriesHref} />
+      )}
+
+      {/* Round columns for seasons the bracket cannot draw (three division groups, 1949-50). */}
+      {bracket && activeTab === "bracket" && !layout && (
         <div className="playoffs-bracket-content">
           {displayedRounds.length === 0 ? (
             <div className="panel playoffs-empty-panel">
-              <p className="text-muted">No playoff series match the current round and conference.</p>
+              <p className="text-muted">{bracket.rounds.some(r => r.series.length) ? "No playoff series match the current round and conference." : `The ${season} playoffs have not started.`}</p>
             </div>
           ) : (
             displayedRounds.map((rnd) => (

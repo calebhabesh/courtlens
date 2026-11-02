@@ -188,6 +188,62 @@ def test_darko_phase_cutoff_sort_percentiles_and_missingness(facts, tmp_path) ->
         )
 
 
+def test_season_in_progress_reads_the_daily_board_inside_the_regular_season(
+    facts, tmp_path
+) -> None:
+    from courtlens.config import Settings
+    from courtlens.evaluation.impact_rating_inputs import write_artifact
+    from courtlens.services.darko import VERSION
+
+    session, context = facts
+    # E is rostered with only a DNP: no appearance, so no season rating even though DARKO has one.
+    session.execute(
+        text("""
+        INSERT INTO workbench_player_games VALUES
+        ('dataset', 'e', 'TOR', 'dnp-e', '2024-01-01', '2023-24',
+         'regular_season', 'did_not_play', 0, 0, '{}');
+        INSERT INTO workbench_identities VALUES ('e', 'player', 'Player E');
+    """)
+    )
+    rating = {"dpm": 2.0, "o_dpm": 1.0, "d_dpm": 1.0}
+    daily = {
+        "season": "2023-24",
+        "phase": "current",
+        # Requested after the cutoff, as the daily run usually is; its ratings end on Jan 15.
+        "as_of": "2024-02-05",
+        "data_date": "2024-01-15",
+        "raw_sha256": "b" * 64,
+        "players": {"a": {**rating, "dpm": 3.0}, "b": rating, "e": {**rating, "dpm": 9.0}},
+    }
+    path, _ = write_artifact(tmp_path, {"version": VERSION, "entries": [daily]})
+    query = QuerySpec(season="2023-24", sort=[SortSpec(field="dpm")])
+    with patch("courtlens.services.darko.get_settings", return_value=Settings(darko_manifest=path)):
+        rows = execute_stats_query(session, context, query, presentation=StatsPresentation())[0]
+        dpm = {row["player_id"]: row["metrics"]["dpm"] for row in rows}
+        assert dpm == {"a": 3, "b": 2, "c": None, "d": None, "e": None}
+        assert [row["player_id"] for row in rows][:2] == ["a", "b"]
+        # Ratings that end on or after the cutoff are later evidence: unknown.
+        early = replace(context, before_date=date(2024, 1, 15))
+        assert all(
+            row["metrics"]["dpm"] is None for row in execute_stats_query(session, early, query)[0]
+        )
+        # Playoffs never feed a regular-season view, and the daily board never serves them.
+        playoffs = query.model_copy(update={"phase": "playoffs"})
+        assert all(
+            row["metrics"]["dpm"] is None
+            for row in execute_stats_query(session, context, playoffs)[0]
+        )
+        session.execute(
+            text("""
+            INSERT INTO workbench_player_games VALUES ('dataset', 'a', 'TOR', 'po', '2024-01-10',
+                '2023-24', 'playoffs', 'appeared', 1800, 10, '{}')
+        """)
+        )
+        assert all(
+            row["metrics"]["dpm"] is None for row in execute_stats_query(session, context, query)[0]
+        )
+
+
 @pytest.mark.parametrize(
     "metric, expected",
     [

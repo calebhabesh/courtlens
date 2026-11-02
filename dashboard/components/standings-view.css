@@ -1,0 +1,57 @@
+@layer pages {
+  /* ESPN's NBA Standings (alignment row 23). */
+  .standings-view { display: grid; gap: var(--space-4); }
+  .standings-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+  .standings-table { display: grid; gap: var(--space-2); }
+  .standings-title { margin: 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .standings-scroll { max-width: 100%; overflow-x: auto; border-radius: var(--radius-md); background: var(--color-surface-1); box-shadow: var(--shadow-1); }
+  .standings-scroll table { width: 100%; min-width: 880px; border-collapse: collapse; font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+  .standings-scroll th, .standings-scroll td { height: 36px; padding: 0 var(--space-2); border-bottom: 1px solid var(--color-hairline); text-align: end; white-space: nowrap; }
+  .standings-scroll thead th { height: 36px; color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 700; }
+  .standings-scroll .standings-team-col { position: sticky; left: 0; z-index: var(--z-base); width: 1%; min-width: 220px; text-align: start; background: var(--color-surface-1); }
+  .standings-team { display: inline-flex; align-items: center; gap: var(--space-2); font-weight: 600; }
+  .standings-team a { color: var(--color-text); text-decoration: none; }
+  .standings-team a:hover { text-decoration: underline; }
+  /* The same inset at both edges: the rank is as wide as its digits, so "1" is not pushed in. */
+  .standings-scroll :is(th, td):first-child { padding-inline-start: var(--space-4); }
+  .standings-scroll :is(th, td):last-child { padding-inline-end: var(--space-4); }
+  .standings-rank { min-width: 1ch; color: var(--color-text-tertiary); font-size: var(--text-xs); text-align: end; }
+  .standings-scroll table[data-wide-rank] .standings-rank { min-width: 2ch; }
+  .standings-clinch { color: var(--color-text-tertiary); font-size: var(--text-xs); text-decoration: none; cursor: help; }
+  .standings-scroll td[data-tone="positive"] { color: var(--color-positive); }
+  .standings-scroll td[data-tone="negative"] { color: var(--color-negative); }
+  /* Seeding lines: after the 6th (playoffs) and 10th (play-in), as ESPN draws them. */
+  .standings-scroll tr[data-line] th, .standings-scroll tr[data-line] td { border-bottom: 2px solid var(--color-hairline-strong); }
+  .standings-scroll tbody tr:hover th, .standings-scroll tbody tr:hover td { background: var(--color-surface-2); }
+  .standings-name-short { display: none; }
+  .standings-grid { display: grid; gap: var(--space-4); }
+  /* Follow-up 3: side by side when there is room, every column in view (no scrolling). */
+  @media (min-width: 1280px) {
+    .standings-grid:not([data-group="league"]) { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+    .standings-grid[data-group="division"] { grid-template-rows: repeat(3, auto); grid-auto-flow: column; }
+    .standings-grid:not([data-group="league"]) .standings-scroll table { min-width: 0; table-layout: fixed; font-size: var(--text-xs); }
+    .standings-grid:not([data-group="league"]) .standings-scroll th,
+    .standings-grid:not([data-group="league"]) .standings-scroll td { padding: 0 var(--space-1); }
+    .standings-grid:not([data-group="league"]) .standings-scroll thead th { height: 40px; white-space: normal; line-height: 1.15; }
+    .standings-grid:not([data-group="league"]) .standings-scroll :is(th, td):first-child { padding-inline-start: var(--space-3); }
+    .standings-grid:not([data-group="league"]) .standings-scroll :is(th, td):last-child { padding-inline-end: var(--space-3); }
+    .standings-grid:not([data-group="league"]) .standings-team-col { width: 150px; min-width: 0; }
+    .standings-grid:not([data-group="league"]) .standings-name-short { display: inline; }
+    /* The full name stays for screen readers and the tooltip. */
+    .standings-grid:not([data-group="league"]) .standings-name-full { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  }
+  .standings-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); }
+  .standings-note { margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  /* Team pages (row 4 follow-up 13): the team's division in ESPN's standings. */
+  .team-division-link { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-accent); font-size: var(--text-sm); font-weight: 600; text-decoration: none; }
+  .team-division-scroll { max-width: 100%; overflow-x: auto; }
+  .team-division-table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+  .team-division-table th, .team-division-table td { height: 36px; padding: 0 var(--space-2); border-bottom: 1px solid var(--color-hairline); text-align: end; white-space: nowrap; }
+  .team-division-table thead th { color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 700; text-transform: uppercase; }
+  .team-division-table thead th:first-child, .team-division-table tbody th { text-align: start; }
+  .team-division-team { display: inline-flex; align-items: center; gap: var(--space-2); font-weight: 600; }
+  .team-division-team a { color: var(--color-text); text-decoration: none; }
+  .team-division-team a:hover { text-decoration: underline; }
+  .team-division-table tr[data-current] th, .team-division-table tr[data-current] td { background: var(--color-accent-soft); font-weight: 700; }
+}

@@ -45,7 +45,7 @@ def test_final_is_fetched_once_and_retained(session):
     assert len(provider.calls) == 1
     observation = session.scalar(select(LiveObservation))
     content = session.get(LiveContent, observation.content_sha256)
-    assert content.parser_version == "espn-live-v4"
+    assert content.parser_version == "espn-live-v6"
     assert observation.resource == f"slate:{SLATE}"
 
 
@@ -280,10 +280,18 @@ def test_scheduled_scoreboard_keeps_the_free_line_and_record():
             "spread": -3.5,
         }
     ]
-    e["competitions"][0]["competitors"][0]["records"] = [{"type": "total", "summary": "2-1"}]
+    e["competitions"][0]["competitors"][0]["records"] = [
+        {"type": "total", "summary": "2-1"},
+        {"type": "home", "summary": "1-0"},
+        {"type": "road", "summary": "1-1"},
+    ]
     game = parse_scoreboard({"events": [e]}, SLATE)["games"][0]
     assert game["odds"]["provider"] == "DraftKings" and game["odds"]["over_under"] == 220.5
-    assert game["teams"][0]["record"] == "2-1"
+    first = game["teams"][0]
+    assert first["record"] == "2-1"
+    # The venue record follows the team's side: home record at home, road record away.
+    assert first["venue_record"] == ("1-0" if first["side"] == "home" else "1-1")
+    assert game["teams"][1]["venue_record"] is None
     e["status"]["type"].update(state="in", name="STATUS_IN_PROGRESS")
     assert parse_scoreboard({"events": [e]}, SLATE)["games"][0]["odds"] is None
 
@@ -427,3 +435,127 @@ def test_scoreboard_calendar_lists_eastern_game_dates():
         ],
     }
     assert parse_scoreboard(payload, SLATE)["calendar"] == ["2026-10-03", "2026-10-05"]
+
+
+def test_win_probability_keeps_known_plays_in_range():
+    from courtlens.domain.live import parse_win_probability
+
+    rows = [
+        {"homeWinPercentage": 0.45, "playId": "1"},
+        {"homeWinPercentage": 1.5, "playId": "2"},
+        {"homeWinPercentage": 0.6, "playId": "unknown"},
+        {"homeWinPercentage": None, "playId": "3"},
+    ]
+    assert parse_win_probability(rows, {"1", "2", "3"}) == [{"play_id": "1", "home": 0.45}]
+    assert parse_win_probability([], {"1"}) is None
+
+
+def test_season_series_rejects_foreign_teams_and_keeps_meetings():
+    from courtlens.domain.live import parse_season_series
+
+    meeting = {
+        "id": "9",
+        "date": "2026-10-26T23:00:00Z",
+        "statusType": {"state": "post", "shortDetail": "Final/OT"},
+        "competitors": [
+            {"homeAway": "home", "score": "127", "winner": True, "team": {"id": "5"}},
+            {"homeAway": "away", "score": "125", "winner": False, "team": {"id": "16"}},
+        ],
+    }
+    series = [
+        {
+            "type": "season",
+            "summary": "CLE leads series 1-0",
+            "seriesScore": "1-0",
+            "totalCompetitions": 2,
+            "events": [meeting],
+        }
+    ]
+    parsed = parse_season_series(series, {"5", "16"})
+    assert parsed["summary"] == "CLE leads series 1-0" and parsed["total"] == 2
+    assert parsed["games"][0]["teams"][0] == {
+        "source_id": "5",
+        "side": "home",
+        "score": 127,
+        "winner": True,
+    }
+    assert parse_season_series(series, {"5", "1"}) is None
+
+
+def test_game_standings_and_news():
+    from courtlens.domain.live import parse_game_standings, parse_news
+
+    standings = {
+        "groups": [
+            {
+                "divisionHeader": "Central",
+                "conferenceHeader": "Eastern Conference",
+                "standings": {
+                    "entries": [
+                        {
+                            "id": "5",
+                            "team": "Cleveland",
+                            "stats": [
+                                {"abbreviation": "W", "displayValue": "3"},
+                                {"abbreviation": "GB", "displayValue": "-"},
+                                {"abbreviation": "OTHER", "displayValue": "x"},
+                            ],
+                        }
+                    ]
+                },
+            }
+        ]
+    }
+    assert parse_game_standings(standings) == [
+        {
+            "division": "Central",
+            "conference": "Eastern Conference",
+            "entries": [{"team_source_id": "5", "name": "Cleveland", "wins": "3", "gb": "-"}],
+        }
+    ]
+    news = parse_news(
+        {
+            "article": {
+                "headline": "Recap",
+                "type": "Recap",
+                "source": "AP",
+                "links": {"web": {"href": "http://www.espn.com/nba/recap?gameId=1"}},
+            },
+            "news": {
+                "articles": [
+                    {"headline": "Clip", "type": "Media"},
+                    {"headline": "Story", "type": "Story", "images": [{"url": "http://insecure"}]},
+                ]
+            },
+        }
+    )
+    assert news["recap"]["link"] == "https://www.espn.com/nba/recap?gameId=1"
+    assert [s["headline"] for s in news["stories"]] == ["Story"]
+    assert news["stories"][0]["image"] is None
+
+
+def test_standings_parse_refresh_and_api(session):
+    from courtlens.services.live import is_final, refresh_seconds, season_end_year
+
+    assert season_end_year(date(2026, 10, 29)) == 2027 and season_end_year(date(2026, 5, 1)) == 2026
+    data = {"standings": []}
+    # The current season refreshes every ten minutes; a past one never changes.
+    assert refresh_seconds("standings:2027", data, NOW) == 600
+    assert refresh_seconds("standings:2025", data, NOW) is None
+    assert is_final("standings:2025", data, NOW.date()) and not is_final(
+        "standings:2027", data, NOW.date()
+    )
+    app = create_app()
+    provider = FakeProvider()
+    app.dependency_overrides[get_db] = lambda: session
+    app.dependency_overrides[get_provider] = lambda: provider
+    with TestClient(app) as client:
+        response = client.get("/api/live/standings", params={"season": "2024-25"})
+        assert response.status_code == 200 and response.json()["resource"] == "standings:2025"
+        body = response.json()["data"]
+        assert body["season"] == "2024-25"
+        row = body["standings"][0]["entries"][0]
+        assert row["home"] == "2-0" and row["tricode"] == "TOR"
+        assert client.get("/api/live/standings", params={"season": "1979-80"}).status_code == 422
+        assert client.get("/api/live/standings", params={"season": "2030-31"}).status_code == 422
+    assert (None, "standings:2025") in provider.calls

@@ -10,7 +10,7 @@ slugs, so existing links resolve. The current season, not yet in the file, keeps
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, timedelta
 from typing import Any
 
 from sqlalchemy import select
@@ -37,6 +37,12 @@ from courtlens.domain.workbench_playoffs import (
     build_series_slug,
     parse_playoff_game_id,
 )
+from courtlens.services.playoff_context import (
+    RegularSeason,
+    impact_boards,
+    regular_season,
+)
+from courtlens.services.series_matchups import series_matchups
 from courtlens.workbench_models import (
     WorkbenchIdentity,
     WorkbenchPlayerGame,
@@ -204,8 +210,30 @@ def _wins(series: SeasonSeries, games: list[SeriesGame]) -> tuple[int, int]:
     return won1, len(games) - won1
 
 
+def context_before(starts: list[date], cutoff: date | None) -> date | None:
+    """Regular-season context ends where the playoffs began, or after the cutoff if earlier."""
+    start = min(starts) if starts else None
+    after_cutoff = cutoff + timedelta(days=1) if cutoff is not None else None
+    if start is None or after_cutoff is None:
+        return start or after_cutoff
+    return min(start, after_cutoff)
+
+
+def with_context(summary: PlayoffSeriesSummary, context: RegularSeason | None) -> None:
+    """Add both teams' regular-season records and season-series wins to a summary."""
+    if context is None:
+        return
+    one, two = summary.team1, summary.team2
+    one.record_wins, one.record_losses = context.record(one.team_id)
+    two.record_wins, two.record_losses = context.record(two.team_id)
+    one.season_series_wins, two.season_series_wins = context.series_wins(one.team_id, two.team_id)
+
+
 def _summary(
-    series: SeasonSeries, cutoff: date | None, seeds: dict[str, int]
+    series: SeasonSeries,
+    cutoff: date | None,
+    seeds: dict[str, int],
+    context: RegularSeason | None = None,
 ) -> PlayoffSeriesSummary:
     games = _played(series, cutoff)
     w1, w2 = _wins(series, games)
@@ -226,7 +254,7 @@ def _summary(
         text = f"Series tied {w1}-{w2}" if w1 == w2 else score
     else:
         status, score, text = "scheduled", f"{t1} vs {t2}", "Series scheduled"
-    return PlayoffSeriesSummary(
+    summary = PlayoffSeriesSummary(
         series_id=series.series_id,
         slug=series.slug,
         season=series.season,
@@ -249,6 +277,8 @@ def _summary(
         is_sweep=bool(winner) and min(w1, w2) == 0,
         summary_text=text,
     )
+    with_context(summary, context)
+    return summary
 
 
 def series_bracket(
@@ -257,9 +287,10 @@ def series_bracket(
     cutoff: date | None,
     seeds: dict[str, list[PlayoffSeedEvidence]],
     seed_lookup: dict[str, int],
+    context: RegularSeason | None = None,
 ) -> PlayoffBracketResponse:
     """The bracket of a season from its series, grouped by round as the page shows them."""
-    summaries = [_summary(s, cutoff, seed_lookup) for s in series]
+    summaries = [_summary(s, cutoff, seed_lookup, context) for s in series]
     rounds: list[PlayoffRoundResponse] = []
     for number in sorted({s.round_number for s in summaries}):
         listed = sorted(
@@ -316,7 +347,10 @@ def series_detail(
     seed_lookup: dict[str, int],
 ) -> PlayoffSeriesDetailResponse:
     """One series: its games, team factors and player totals where the release has box scores."""
-    summary = _summary(series, cutoff, seed_lookup)
+    context = regular_season(
+        session, dataset_id, series.season, context_before([g.date for g in series.games], cutoff)
+    )
+    summary = _summary(series, cutoff, seed_lookup, context)
     played = _played(series, cutoff)
     sides = {
         franchise(series.team1): summary.team1.team_id,
@@ -404,6 +438,9 @@ def series_detail(
                 oreb_pct=factors["oreb_pct"],
                 ftr=factors["ftr"],
                 totals=factors["totals"],
+                record_wins=header.record_wins,
+                record_losses=header.record_losses,
+                season_series_wins=header.season_series_wins,
             )
         )
     players: list[list[PlayerSeriesStats]] = [[], []]
@@ -461,6 +498,18 @@ def series_detail(
         game_cards=cards,
         team1_players=players[0],
         team2_players=players[1],
+        season_series=context.season_series(summary.team1.team_id, summary.team2.team_id),
+        matchups=series_matchups(
+            series.season,
+            lambda code: sides.get(franchise(code)),
+            linked,
+            [g[0] for g in context.between(summary.team1.team_id, summary.team2.team_id)],
+        ),
+        impact=impact_boards(
+            series.season,
+            players[0] + players[1],
+            (summary.team1.team_id, summary.team2.team_id),
+        ),
         capabilities=dict(PLAYOFF_CAPABILITIES),
         disclaimers=disclaimers,
     )

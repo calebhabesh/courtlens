@@ -122,10 +122,22 @@ def cohort_query(query: QuerySpec) -> QuerySpec:
     )
 
 
-def sort_value(row: dict[str, Any], field: str) -> Any:
-    """The value SQL would order by: unqualified impact values sort as unknown."""
+_MISSING = object()
+
+
+def _field_value(row: dict[str, Any], field: str) -> Any:
+    """A row's value for a field, or _MISSING when the row does not carry the field at all."""
     from courtlens.services.stats_engine import map_field_to_sql_column
 
+    metrics = row["metrics"]
+    for key in (field, resolve_metric_alias(field), map_field_to_sql_column(field)):
+        if key in metrics:
+            return metrics[key]
+    return row.get(map_field_to_sql_column(field), _MISSING)
+
+
+def sort_value(row: dict[str, Any], field: str) -> Any:
+    """The value SQL would order by: unqualified impact values sort as unknown."""
     if field in IMPACT_COLUMNS:
         support = (row.get("impact_support") or {}).get(field) or {}
         if support.get("qualified") is not True:
@@ -133,17 +145,42 @@ def sort_value(row: dict[str, Any], field: str) -> Any:
     if field in ("player_name", "name"):
         # Code-point order, as the database's C collation orders names (AJ before Aaron).
         return str(row["player_name"])
-    metrics = row["metrics"]
-    for key in (field, resolve_metric_alias(field), map_field_to_sql_column(field)):
-        if key in metrics:
-            return metrics[key]
-    return row.get(map_field_to_sql_column(field))
+    value = _field_value(row, field)
+    return None if value is _MISSING else value
+
+
+def empty_fields(rows: list[dict[str, Any]], query: QuerySpec) -> list[str]:
+    """The view's columns that the scope computes and that are unknown for every player.
+
+    A column is listed only when its field is on the rows and null on all of them (a source not
+    yet published for the scope), never because a row lacks the field. Sorted columns are kept.
+    """
+    columns = query.view_state.columns if query.view_state else []
+    if not rows:
+        return []
+    sorted_fields = {spec.field for spec in query.sort}
+    empty = []
+    for field in dict.fromkeys(columns):
+        if field in sorted_fields or field in ("player_name", "name"):
+            continue
+        values = [_field_value(row, field) for row in rows]
+        if any(value is not _MISSING for value in values) and all(
+            value is None or value is _MISSING for value in values
+        ):
+            empty.append(field)
+    return empty
 
 
 def sort_rows(rows: list[dict[str, Any]], sort: list[SortSpec]) -> list[dict[str, Any]]:
-    """ORDER BY each sort key (nulls first or last as declared), then player_id ascending."""
+    """ORDER BY each sort key (nulls first or last as declared), then total minutes descending
+    (unless a key names them) and player_id ascending, as the SQL path orders."""
+    from courtlens.services.stats_engine import TIEBREAK_FIELDS
+
     ordered = sorted(rows, key=lambda row: str(row["player_id"]))
-    for spec in reversed(sort):
+    keys = list(sort)
+    if not any(spec.field in TIEBREAK_FIELDS for spec in sort):
+        keys.append(SortSpec(field="min", direction="desc"))
+    for spec in reversed(keys):
         known = [row for row in ordered if sort_value(row, spec.field) is not None]
         unknown = [row for row in ordered if sort_value(row, spec.field) is None]
         known.sort(key=lambda row: sort_value(row, spec.field), reverse=spec.direction == "desc")
@@ -216,11 +253,12 @@ def presentation_page(
     context: ResolvedContext,
     query: QuerySpec,
     presentation: StatsPresentation,
-) -> tuple[list[dict[str, Any]], int, str | None, bool, int] | None:
+) -> tuple[list[dict[str, Any]], int, str | None, bool, int, list[str]] | None:
     """One page of a presentation query from the cached cohort.
 
-    Returns (items, shown_count, next_cursor, has_more, eligible_count), or None when the cohort
-    exceeds the in-memory bound and the SQL path must run instead.
+    Returns (items, shown_count, next_cursor, has_more, eligible_count, empty_fields), or None
+    when the cohort exceeds the in-memory bound and the SQL path must run instead. Empty fields
+    come from the whole cohort, so search, favorites and paging never change them.
     """
     from courtlens.services.stats_engine import (
         decode_cursor,
@@ -256,4 +294,4 @@ def presentation_page(
                 row["impact_support"] = full[row["player_id"]]["support"]
     has_more = offset + len(page) < len(shown)
     next_cursor = encode_cursor(context_hash, offset + len(page)) if has_more else None
-    return page, len(shown), next_cursor, has_more, eligible
+    return page, len(shown), next_cursor, has_more, eligible, empty_fields(rows, query)

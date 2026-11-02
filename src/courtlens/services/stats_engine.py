@@ -60,6 +60,10 @@ from courtlens.services.workbench_analytics import (
     compute_query_context_hash,
 )
 
+# Every Stats order ends with total minutes (unless the sort already names them), then player_id:
+# a column unknown for everyone in scope reads as the most-used players first, not id order.
+TIEBREAK_FIELDS = frozenset({"min", "total_minutes"})
+
 COLUMN_MAP: dict[str, str] = {
     "gp": "games_played",
     "games_played": "games_played",
@@ -231,27 +235,41 @@ def _darko_sql(
     is_sqlite: bool,
     applies: bool,
 ) -> str:
-    """Join the sealed DARKO season ratings when every game of the season-phase is in scope."""
+    """Join DARKO's season ratings for the players who appeared in scope.
+
+    A sealed board must cover every game of the season-phase. The daily board (a regular season
+    in progress) must end inside the regular season: on or after its first game and before any
+    play-in or playoff game, so a regular-season view never inherits postseason updates.
+    """
     if is_sqlite or not applies:
         nulls = ", ".join(f"CAST(NULL AS REAL) AS {key}" for key in DARKO_METRICS)
         return f"aggregated AS (SELECT t.*, {nulls} FROM aggregated_darko t)"
     season = query.season or context.season
     params["darko_season"] = season
-    params["darko_rows"], params["darko_as_of"] = darko_sql_rows(query, context.before_date)
+    params["darko_rows"], params["darko_as_of"], daily = darko_sql_rows(query, context.before_date)
+    games = f"""FROM {table_name} g
+            WHERE g.dataset_id = :dataset_id AND g.season = :darko_season"""
+    coverage = (
+        f"""CAST(:darko_as_of AS date) >= (SELECT min(g.game_date) {games} AND g.phase = :phase)
+        AND NOT EXISTS (SELECT 1 {games} AND g.phase IN ('play_in', 'playoffs')
+            AND g.game_date <= CAST(:darko_as_of AS date))"""
+        if daily
+        else f"""CAST(:darko_as_of AS date) >= (
+            SELECT max(g.game_date) {games} AND g.phase = :phase
+        )"""
+    )
     return f"""darko AS MATERIALIZED (
         SELECT s.player_id, s.dpm, s.o_dpm, s.d_dpm
         FROM jsonb_to_recordset(CAST(:darko_rows AS jsonb))
             AS s(player_id text, dpm double precision, o_dpm double precision,
                  d_dpm double precision)
-        WHERE CAST(:darko_as_of AS date) >= (
-            SELECT max(g.game_date) FROM {table_name} g
-            WHERE g.dataset_id = :dataset_id AND g.season = :darko_season AND g.phase = :phase
-        )
+        WHERE {coverage}
     ),
     aggregated AS (
         SELECT t.*, d.dpm, d.o_dpm, d.d_dpm
         FROM aggregated_darko t
-        LEFT JOIN darko d ON d.player_id = t.player_id
+        -- A player with no appearance in scope has no season to rate: his row stays unknown.
+        LEFT JOIN darko d ON d.player_id = t.player_id AND t.games_played > 0
     )"""
 
 
@@ -793,7 +811,9 @@ def build_stats_query_sql(
         nulls = "NULLS LAST" if sort_item.nulls_last else "NULLS FIRST"
         sort_clauses.append(f"{col} {direction} {nulls}")
 
-    # Deterministic tie-breaker
+    # Ties (and a column unknown for everyone) fall back to minutes, then player_id.
+    if not any(item.field in TIEBREAK_FIELDS for item in query.sort):
+        sort_clauses.append("total_minutes DESC NULLS LAST")
     sort_clauses.append("player_id ASC")
     order_by_clause = "ORDER BY " + ", ".join(sort_clauses)
 

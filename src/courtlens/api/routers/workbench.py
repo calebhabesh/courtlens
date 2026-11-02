@@ -1038,14 +1038,16 @@ def execute_query_endpoint(
         else None
     )
     eligible: int | None = None
+    empty: list[str] | None = None
     if cached is not None:
-        items_raw, total_count, next_cursor, has_more, eligible = cached
+        items_raw, total_count, next_cursor, has_more, eligible, empty = cached
     else:
         items_raw, total_count, next_cursor, has_more = execute_stats_query(
             session, context, spec, presentation=payload.presentation
         )
     cohort = (
         stats_cohort_summary(session, context, spec, payload.presentation, eligible)
+        | {"empty_fields": empty}
         if payload.presentation is not None
         else None
     )
