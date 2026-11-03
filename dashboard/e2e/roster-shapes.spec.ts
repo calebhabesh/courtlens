@@ -201,7 +201,8 @@ test.describe("Roster Shapes", () => {
     // The profile canonicalises its URL on load (dropping the #depth-chart hash), so check the path and section.
     await expect(page).toHaveURL(new RegExp(`/teams/${BOS}\\?.*season=2025-26`));
     const chart = page.locator("#depth-chart").getByRole("region", { name: "Roster allocations" });
-    await expect(page.locator("#depth-chart .roster-team")).toContainText("56–26 · 3 players");
+    // A hidden streamed copy of the section can coexist briefly; check the visible one.
+    await expect(page.locator("#depth-chart .roster-team").filter({ visible: true })).toContainText("56–26 · 3 players");
     await expect(chart.getByRole("region", { name: "Unassigned lane" }).locator(".roster-chip")).toHaveCount(3);
     for (const lane of ["PG", "SG", "SF", "PF", "C"]) await expect(chart.getByRole("region", { name: `${lane} lane` })).toContainText("Drop players here");
     // Required caveats stay rendered behind Why? (D14); no code-like rules in the main flow.
