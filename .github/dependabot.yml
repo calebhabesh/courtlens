@@ -12,6 +12,21 @@ updates:
       # dbt-adapters pins mashumaro below 3.18; let dbt upgrades move it.
       - dependency-name: mashumaro
         versions: [">=3.18"]
+      # dbt-common pins agate below 1.10 and pathspec below 1.1.
+      - dependency-name: agate
+        versions: [">=1.10"]
+      - dependency-name: pathspec
+        versions: [">=1.1"]
+      # google-genai pins tenacity below 9.2; metricflow pins more-itertools below 11.
+      - dependency-name: tenacity
+        versions: [">=9.2"]
+      - dependency-name: more-itertools
+        versions: [">=11"]
+      # Pinned: the frozen, hashed evaluation artifacts were produced with 1.6.1.
+      - dependency-name: scikit-learn
+      # 2.1 is a typing migration (89 strict-mypy errors); take it as its own change.
+      - dependency-name: sqlalchemy
+        versions: [">=2.1"]
   - package-ecosystem: npm
     directory: /dashboard
     schedule: {interval: weekly}
@@ -19,6 +34,10 @@ updates:
       dashboard-dependencies:
         patterns: ["*"]
         update-types: [minor, patch]
+    ignore:
+      # Types follow the Node runtime major (node:24 in the Dockerfile and CI).
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule: {interval: monthly}
