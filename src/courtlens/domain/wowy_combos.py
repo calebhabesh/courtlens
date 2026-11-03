@@ -21,7 +21,7 @@ MAX_COMBO = 5
 MAX_HELD = 10
 
 Clock = Literal["full", "h1", "h2", "q1", "q2", "q3", "q4", "ot", "clutch", "custom"]
-Phase = Literal["preseason", "regular_season", "play_in", "playoffs", "cup_final", "summer_league"]
+Phase = Literal["regular_season", "playoffs", "preseason", "play_in", "cup_final", "summer_league"]
 TierMetric = Literal["offense", "defense", "net"]
 Tier = Literal["top", "mid", "bottom"]
 VsState = Literal["on", "off", "split"]

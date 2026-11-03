@@ -38,7 +38,7 @@ class SharedFloorRequest(BaseModel):
     release_id: str | None = None
     season: str | None = None
     phase: (
-        Literal["preseason", "regular_season", "play_in", "playoffs", "cup_final", "summer_league"]
+        Literal["regular_season", "playoffs", "preseason", "play_in", "cup_final", "summer_league"]
         | None
     ) = None
     before_date: date | None = None
@@ -214,7 +214,7 @@ class StatShiftRosterRequest(BaseModel):
     release_id: str | None = None
     season: str | None = None
     phase: (
-        Literal["preseason", "regular_season", "play_in", "playoffs", "cup_final", "summer_league"]
+        Literal["regular_season", "playoffs", "preseason", "play_in", "cup_final", "summer_league"]
         | None
     ) = None
     before_date: date | None = None
