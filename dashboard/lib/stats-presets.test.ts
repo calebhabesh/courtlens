@@ -21,14 +21,14 @@ import { normalizedColumn } from "./stats-query";
 import type { PlayerResearchItem, CustomViewDefinition } from "./types";
 
 describe("stats-presets", () => {
-  it("defines all 10 standard presets including gated disclosures", () => {
-    expect(STATS_PRESETS.length).toBe(10);
+  it("defines all 9 standard presets including gated disclosures", () => {
+    expect(STATS_PRESETS.length).toBe(9);
     const ids = STATS_PRESETS.map((p) => p.id);
     expect(ids).toContain("overview");
     expect(ids).toContain("shooting");
     expect(ids).toContain("defense");
     expect(ids).toContain("trueshooting");
-    expect(ids).toContain("advanced");
+    expect(ids).not.toContain("advanced");
     expect(ids).toContain("playmaking");
     expect(ids).toContain("rebounding");
     expect(ids).toContain("impact");

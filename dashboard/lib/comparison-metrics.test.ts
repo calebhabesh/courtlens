@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { comparisonRows, customMetricKeys, formatComparisonValue } from "./comparison-metrics";
+import { cardLabel, comparisonRows, customMetricKeys, fantasyMetricKeys, formatCardValue, formatComparisonValue, overallGroupStart, pickerMetrics, pillStrength, availabilityShare } from "./comparison-metrics";
 import type { MetricDefinition, PlayerComparisonResponse } from "./types";
 const catalog = [{key:"pts",display_name:"Total Points",unit:"points",good_direction:"high"},{key:"pts_per_game",display_name:"Points Per Game",unit:"points",good_direction:"high"},{key:"ts_pct",display_name:"True Shooting",unit:"percentage",good_direction:"high"}] as MetricDefinition[];
 const comparison = {player_a:{id:"a",games_played:2},player_b:{id:"b",games_played:3},aligned_metrics:[{metric:"pts_per_game",value_a:0,value_b:null,n_a:2,n_b:0,unit:"points"},{metric:"pts",value_a:12,value_b:18,n_a:2,n_b:3,unit:"points"}]} as PlayerComparisonResponse;
@@ -10,4 +10,45 @@ describe("PC04 comparison units and persisted custom metrics",()=>{
   it("keeps an explicitly selected rate independent of the counting toggle",()=>{expect(comparisonRows(["pts_per_game"],"raw",comparison,catalog)[0].value_a).toBe(0);});
   it("deduplicates and bounds custom picks, removes unregistered keys and preserves empty selections",()=>{expect(customMetricKeys("pts,unknown,pts,ts_pct",catalog)).toEqual(["pts","ts_pct"]);expect(customMetricKeys("",catalog)).toEqual([]);expect(customMetricKeys(Array.from({length:30},(_,i)=>`m${i}`).join(","),Array.from({length:30},(_,i)=>({key:`m${i}`} as MetricDefinition)))).toHaveLength(25);});
   it("formats ratios from their registered fractional unit, even above 100%",()=>{expect(formatComparisonValue(1.2,"ratio")).toBe("120.0%");expect(formatComparisonValue(null,"percentage")).toBe("—");});
+});
+describe("alignment row 3 duel card",()=>{
+  it("labels counts by word in every mode and others by catalog short name",()=>{expect(cardLabel("pts_per_game")).toBe("Points");expect(cardLabel("tov")).toBe("Turnovers");expect(cardLabel("ts_pct",{short_name:"TS%",display_name:"True Shooting"})).toBe("TS%");});
+  it("reads percentages without a sign, games whole and unknown as a dash",()=>{expect(formatCardValue(0.665,"percentage")).toBe("66.5");expect(formatCardValue(68,"games","gp")).toBe("68");expect(formatCardValue(14984.0,"points","pts")).toBe("14,984");expect(formatCardValue(31.14,"points","pts_per_game")).toBe("31.1");expect(formatCardValue(null,"points")).toBe("—");});
+  it("opens Overall groups on each group's first metric in any counting mode",()=>{expect(overallGroupStart("pts_per_75")).toBe("Counting");expect(overallGroupStart("ts_pct")).toBe("Efficiency");expect(overallGroupStart("reb_per_game")).toBeNull();});
+  it("leaves per-game twins, aliases and team factors out of Edit Metrics",()=>{
+    const groups=pickerMetrics([{key:"pts",category:"scoring"},{key:"pts_per_game",category:"scoring"},{key:"reb",category:"rebounding"},{key:"reb_total",category:"rebounding"},{key:"fgm_per_game",category:"efficiency"},{key:"team_pace",category:"team_factors"}] as MetricDefinition[]);
+    expect(groups.map(group=>[group.label,group.metrics.map(metric=>metric.key)])).toEqual([["Scoring",["pts"]],["Rebounding",["reb"]],["Efficiency",["fgm_per_game"]]]);
+  });
+});
+
+describe("pillStrength (alignment row 3, 25)", () => {
+  it("reads a gap relative to the larger value for counts", () => {
+    expect(pillStrength(1.2, 1.1)).toBe(1);
+    expect(pillStrength(28.2, 21.5)).toBe(2);
+    expect(pillStrength(8.2, 5.9)).toBe(3);
+  });
+  it("reads rates in percentage points", () => {
+    expect(pillStrength(0.554, 0.545, undefined, "percentage")).toBe(1);
+    expect(pillStrength(0.61, 0.58, undefined, "percentage")).toBe(2);
+    expect(pillStrength(0.409, 0.272, undefined, "percentage")).toBe(3);
+  });
+  it("takes the stronger of the stat's own gap and the league percentile gap", () => {
+    // Two top scorers bunch in percentile, so the relative gap carries the reading.
+    expect(pillStrength(28.2, 21.5, [98, 90])).toBe(2);
+    expect(pillStrength(1.2, 1.1, [80, 40])).toBe(3);
+  });
+});
+
+describe("availabilityShare", () => {
+  it("is games over team games, unknown without a span", () => {
+    expect(availabilityShare({ games: 50, team_games: 82 })).toBeCloseTo(0.6098, 3);
+    expect(availabilityShare({ games: 0, team_games: 0 })).toBeNull();
+    expect(availabilityShare(null)).toBeNull();
+  });
+});
+describe("Edit Metrics fantasy category presets",()=>{
+  const box=["pts","reb","ast","stl","blk","tov","fg_pct","ft_pct","fg3m","fg3m_per_game","fga","fga_per_game","fta","fta_per_game"].map(key=>({key}) as MetricDefinition);
+  it("picks the 9-cat categories with per-game shooting makes outside Totals",()=>{expect(fantasyMetricKeys("9cat","per_game",box)).toEqual(["fg_pct","ft_pct","fg3m_per_game","pts","reb","ast","stl","blk","tov"]);});
+  it("reads shooting makes and attempts as season totals in Totals mode",()=>{expect(fantasyMetricKeys("9cat_volume","raw",box)).toEqual(["fg_pct","fga","ft_pct","fta","fg3m","pts","reb","ast","stl","blk","tov"]);});
+  it("leaves turnovers out of 8-cat and drops categories the catalog lacks",()=>{expect(fantasyMetricKeys("8cat","per_game",box)).not.toContain("tov");expect(fantasyMetricKeys("9cat","raw",box.filter(metric=>metric.key!=="ft_pct"))).not.toContain("ft_pct");});
 });

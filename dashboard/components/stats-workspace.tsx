@@ -1,18 +1,18 @@
+import type { ReactNode } from "react";
 import { GatedNote } from "./ui/gated-note";
 import { ButtonLink } from "./ui/kit";
 import { PageHeader } from "./ui/panel";
 import "./stats-explorer.css";
-import { redirect } from "next/navigation";
+import { ReplaceUrl } from "./replace-url";
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer";
 import { executeWorkbenchQuery, getDraftClasses, getMetricCatalog, getWorkbenchCatalog } from "@/lib/workbench-api";
 import { metricHints, type MetricHint } from "@/lib/stats-glossary";
 import { querySpecToLegacyQuery } from "@/lib/query-url";
-import { resolveStatsQuery, normalizedColumn } from "@/lib/stats-query";
+import { resolveStatsQuery, normalizedColumn, overviewSortMetric } from "@/lib/stats-query";
 import { getPresetById, usesImpactManifest, type CountingMode } from "@/lib/stats-presets";
 import { getWorkspace } from "@/lib/workspace-client";
 import type { DraftClassesResponse, EstimatedPosition, PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
-import { PlayerDirectory } from "./player-directory";
 import { StatsDraftClassSelect, StatsHelpRow, StatsPositionChips, StatsTeamSelect } from "./stats-page-controls";
 import { DarkoSourceLink } from "./darko-source-link";
 
@@ -21,15 +21,16 @@ import { Icon } from "./ui/icon";
 import { readPublication } from "@/lib/original-content";
 import Link from "next/link";
 import { ControlScope } from "./ui/control-scope";
-import { buildPreservedContextUrl } from "@/lib/query-url";
 
-export async function StatsWorkspace({ params: rawParams, basePath = "/stats", title = "Stats" }: {
+export async function StatsWorkspace({ params: rawParams, basePath = "/stats", team }: {
   params: Record<string, string | string[] | undefined>;
   basePath?: string;
-  title?: string;
+  /** A team profile's roster (alignment row 4): the table fixed to one team under that page's header. */
+  team?: { id: string; header: ReactNode };
 }) {
   const params = Object.fromEntries(Object.entries(rawParams).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value]));
-  const directory = basePath === "/players";
+  // The team filter is the page's own, not a URL value, so it never lands in canonical links.
+  const queryParams = team ? { ...params, teamId: team.id, team_id: undefined } : params;
   // Independent reads run together; every sort or filter re-renders this page.
   const [catalogResult, workspaceResult] = await Promise.allSettled([
     getWorkbenchCatalog(String(params.releaseId || params.release_id || "") || undefined),
@@ -49,28 +50,31 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   const workspace = workspaceResult.status === "fulfilled" ? workspaceResult.value : undefined;
   // A favorites request must never silently become an unfiltered query.
   if (!workspace && params.favorites === "1") return <div role="alert">Favorites unavailable. Try again.</div>;
-  const countingMode = (directory ? "per_game" : params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
+  const countingMode = (params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
   const presetId = params.viewId || params.view_id || params.preset || workspace?.preferences.default_view_id || "overview";
   const preset = getPresetById(presetId, workspace?.views);
-  const querySpec = resolveStatsQuery(params, catalog, countingMode, !directory && preset.id === "overview" ? "dpm" : "pts");
-  if (directory && !params.sortMetric && !params.sort_metric && !params.sort) querySpec.sort = [{ field: "player_name", direction: "asc" }];
-  querySpec.view_state = { ...querySpec.view_state, view_id: directory ? "directory" : presetId,
-    columns: directory ? ["gp", "min_per_game", "pts_per_game", "reb_per_game", "ast_per_game", "ts_pct"] : preset.columns.map(column => normalizedColumn(column, countingMode).key) };
-  if (!directory && preset.columns.some(column => usesImpactManifest(normalizedColumn(column, countingMode).key)) && catalog.impact?.manifest_sha256) {
+  // Overview ranks by DPM where DARKO rates the scope, otherwise by minutes (stats-query.ts).
+  const querySpec = resolveStatsQuery(queryParams, catalog, countingMode, preset.id === "overview" ? overviewSortMetric(catalog) : "pts");
+  querySpec.view_state = { ...querySpec.view_state, view_id: presetId,
+    columns: preset.columns.map(column => normalizedColumn(column, countingMode).key) };
+  if (preset.columns.some(column => usesImpactManifest(normalizedColumn(column, countingMode).key)) && catalog.impact?.manifest_sha256) {
     querySpec.impact_manifest_sha256 = querySpec.impact_manifest_sha256 || catalog.impact.manifest_sha256;
   }
-  if (!directory && (preset.columns.some(column => ["dpm", "o_dpm", "d_dpm"].includes(column.key)) ||
+  if ((preset.columns.some(column => ["dpm", "o_dpm", "d_dpm"].includes(column.key)) ||
       querySpec.sort?.some(sort => ["dpm", "o_dpm", "d_dpm"].includes(sort.field))) && catalog.darko?.manifest_sha256) {
     querySpec.darko_manifest_sha256 = querySpec.darko_manifest_sha256 || catalog.darko.manifest_sha256;
   }
   const researchQuery = querySpecToLegacyQuery(querySpec);
-  // Bind inferred defaults into the URL so navigation, reload and cursors share one scope.
+  // Bind inferred defaults into the URL so navigation, reload and cursors share one scope. This
+  // response already renders them; the client writes the URL. A redirect loaded the page twice
+  // (skeleton, blank, skeleton, rows).
   const required: [string, string, string | null | undefined][] = [
     ["releaseId", "release_id", querySpec.release_id], ["season", "season", querySpec.season],
     ["phase", "phase", querySpec.phase], ["beforeDate", "before_date", querySpec.before_date],
     ["window", "window", querySpec.window?.kind], ["countingMode", "counting_mode", countingMode]
   ];
   if (querySpec.darko_manifest_sha256) required.push(["darkoManifest", "darko_manifest_sha256", querySpec.darko_manifest_sha256]);
+  let canonicalHref: string | null = null;
   if (required.some(([camel, snake]) => !params[camel] && !params[snake])) {
     const canonical = new URLSearchParams();
     for (const [key, value] of Object.entries(params)) {
@@ -79,7 +83,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     for (const [camel, snake, value] of required) {
       if (!canonical.get(camel) && !canonical.get(snake) && value) canonical.set(camel, value);
     }
-    redirect(`${basePath}?${canonical}`);
+    canonicalHref = `${basePath}?${canonical}`;
   }
 
 
@@ -87,7 +91,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   const draftYear = Number(params.draftYear) || null;
   // Draft classes and header hints load beside the table query; either failing only hides
   // the Draft Class menu or the header hover text.
-  const extras = directory ? null : Promise.allSettled([getDraftClasses(), getMetricCatalog()]);
+  const extras = Promise.allSettled([getDraftClasses(), getMetricCatalog()]);
 
   let researchData: PlayerResearchResponse | null = null;
   let loadError: string | null = null;
@@ -115,28 +119,28 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   }
   let draftClasses: DraftClassesResponse["classes"] = [];
   let hints: Record<string, MetricHint> = {};
-  if (extras) {
-    const [classes, metrics] = await extras;
-    if (classes.status === "fulfilled") draftClasses = classes.value.classes;
-    if (metrics.status === "fulfilled") hints = metricHints(metrics.value.metrics);
-  }
+  const [classes, metrics] = await extras;
+  if (classes.status === "fulfilled") draftClasses = classes.value.classes;
+  if (metrics.status === "fulfilled") hints = metricHints(metrics.value.metrics);
 
   return (
     <ControlScope tone="console">
     <section className="stats-workspace">
+      {canonicalHref && <ReplaceUrl href={canonicalHref} />}
       <div className="workbench-content">
-        <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <ButtonLink size="lg" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</ButtonLink> : undefined} />
-        {!directory && <WhatsNewLine />}
-        {!directory && <StatsHelpRow />}
+        {team?.header}
+        {!team && <PageHeader icon="chart-column" title="NBA Player Statistics" />}
+        {!team && <WhatsNewLine />}
+        {!team && <StatsHelpRow />}
         {staleRelease && latestHref && (
           <GatedNote tone="warning" className="stats-stale-release"
             // A full load: switching releases must not reuse the pinned page's client state.
-            action={<ButtonLink size="lg" href={latestHref}>Switch to latest data</ButtonLink>}>
+            action={<ButtonLink size="lg" href={latestHref}>Switch to Latest Data</ButtonLink>}>
             This link is pinned to an older data release ({catalog.seasons?.length ?? 0} {catalog.seasons?.length === 1 ? "season" : "seasons"}). The latest release covers {staleRelease.seasons?.length ?? 0} seasons.
           </GatedNote>
         )}
 
-        {!directory && <ContextBar
+        <ContextBar
           catalog={catalog}
           sampleNoun="eligible players"
           initialReleaseId={querySpec.release_id ?? undefined}
@@ -156,8 +160,8 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
             { label: "DARKO raw snapshot", value: researchData.darko.raw_sha256 ?? "Unknown", mono: true },
             { label: "DARKO interpretation", value: researchData.darko.limitations.join(" ") }
           ] : []}
-          filters={<><StatsTeamSelect /><StatsPositionChips /><StatsDraftClassSelect classes={draftClasses} /></>}
-        />}
+          filters={team ? <StatsPositionChips /> : <><StatsTeamSelect /><StatsPositionChips /><StatsDraftClassSelect classes={draftClasses} /></>}
+        />
 
         {loadError && (
           <GatedNote tone="warning" action={<ButtonLink size="sm" href={`${basePath}?${new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string"))}`}>Retry</ButtonLink>}>
@@ -165,11 +169,13 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           </GatedNote>
         )}
 
-        {researchData && directory && <PlayerDirectory catalog={catalog} data={researchData} />}
-        {researchData && !directory && (
+        {researchData && (
           <WorkbenchPlayerExplorer
             // The name search filters as you type, so it must not remount the table (or its field).
-            key={JSON.stringify({ querySpec: { ...querySpec, name: undefined }, favorites: params.favorites, positions: params.positions, draftYear })}
+            // Keys are sorted: the same scope must give the same key whether its defaults came from
+            // the URL or were filled in here, or the first search after a URL sync remounts the field.
+            key={stableKey({ querySpec: { ...querySpec, name: undefined }, favorites: params.favorites, positions: params.positions, draftYear })}
+            canonicalHref={canonicalHref}
             querySpec={querySpec}
             countingMode={countingMode}
             catalog={catalog}
@@ -183,6 +189,12 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     </section>
     </ControlScope>
   );
+}
+
+/** JSON with object keys sorted at every level, so equal values give equal strings. */
+function stableKey(value: unknown): string {
+  return JSON.stringify(value, (_, entry: unknown) => entry && typeof entry === "object" && !Array.isArray(entry)
+    ? Object.fromEntries(Object.entries(entry).sort(([a], [b]) => a.localeCompare(b))) : entry);
 }
 
 /** Databallr's "What's New" line: the latest patch note's date and title, linking to the notes. */

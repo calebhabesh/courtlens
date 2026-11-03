@@ -8,6 +8,11 @@ from typing import Any, Literal
 from pydantic import AliasChoices, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+AssistantProviderName = Literal["gemini", "groq", "anthropic", "openai"]
+ASSISTANT_PROVIDERS: tuple[AssistantProviderName, ...] = ("gemini", "groq", "anthropic", "openai")
+# Providers whose keys may be pooled automatically: free-tier quotas, no metered charge.
+FREE_TIER_PROVIDERS: tuple[AssistantProviderName, ...] = ("gemini", "groq")
+
 
 class Settings(BaseSettings):
     """Runtime settings loaded from environment variables or a local .env file."""
@@ -36,25 +41,41 @@ class Settings(BaseSettings):
     bdl_requests_per_minute: int = Field(default=5, ge=1, le=600)
     raw_store_path: Path = Path("data/raw")
     artifacts_root: Path = Path("data/artifacts")
-    impact_serving_manifest: Path | None = Path(
-        "data/derived/impact-serving-v1/2cd9c98b2594d948edc2c574e082e1b8b06ff4d6bfeca294f87e8062eae76d48.json"
-    )
+    # A directory serves its `.current` bundle (moved by the weekly provisional impact run) or its
+    # only one; a file pins one (services/served_bundle.py).
+    impact_serving_manifest: Path | None = Path("data/derived/impact-serving-v1")
+    # Per-team extras for team-filtered rows (scripts/build_impact_team_splits.py), resolved alike.
+    impact_team_splits_manifest: Path | None = Path("data/derived/impact-team-splits-v1")
     position_estimates_manifest: Path | None = Path(
         "data/derived/position-estimates-v1/1f8c19f2f4f27e2322d80e59fbe1fa519d299bb970d6cdc60aa2d8febe572a00.json"
     )
-    # Sealed by `courtlens refresh-darko`; absent means DPM columns stay unknown.
-    darko_manifest: Path | None = Path(
-        "data/derived/darko-dpm-v2/0c9163ac92984be3efa962264bc1d2c6c9fba438b041008ef682d89051c84781.json"
+    # Sealed by `courtlens refresh-darko` and the daily `refresh-darko-daily`; a directory serves
+    # its newest bundle, a file pins one. Absent means DPM columns stay unknown.
+    darko_manifest: Path | None = Path("data/derived/darko-dpm-v2")
+    # `courtlens refresh-espn-rosters` seals here; the newest intact bundle is served.
+    espn_rosters_dir: Path | None = Path("data/derived/espn-rosters-v1")
+    # `courtlens refresh-contracts` records here when it last confirmed the newest refresh.
+    contracts_check_dir: Path | None = Path("data/derived/contracts-checks")
+    # `courtlens refresh-wikipedia-transactions` seals here; Free Agency reads the newest bundle.
+    wikipedia_transactions_dir: Path | None = Path("data/derived/wikipedia-transactions-v1")
+    # Sealed by `courtlens refresh-free-agency`; absent means the tracker reads not_configured.
+    free_agency_manifest: Path | None = Path(
+        "data/derived/free-agency-v1/9af16a45e65bd0ac876c635afe65e856545415c27538da8077d6212b136fda58.json"
     )
     value_archetypes_manifest: Path | None = Path(
         "data/derived/value-archetypes-v1/serving/5caeb935e21fce5842fb5ebb33c7ad515cb550eb2021b88886ca3e7b5b6e2f7e.json"
     )
-    wowy_manifest: Path | None = Path(
-        "data/derived/wowy-v1/89ebf089f98a06422ccb51b3a0cb253a4b09eb355b0f758c6a2b067192ad49f4.json"
-    )
+    # Directories resolve like impact serving (services/served_bundle.py); a file pins one.
+    wowy_manifest: Path | None = Path("data/derived/wowy-v1")
+    # Sealed by `courtlens.evaluation.stint_box_runner`; absent means focal stats beyond points
+    # stay unknown for IM03 stints.
+    stint_box_manifest: Path | None = Path("data/derived/stint-box-v1/manifest")
+    # Sealed by `courtlens acquire-shot-zones` (Player Twins); a file pins one bundle.
+    shot_zones_manifest: Path | None = Path("data/derived/shot-zones-v1")
+    # Written by `scripts/series_matchups.py` from the retained NBA.com matchup archives.
+    series_matchups_dir: Path | None = Path("data/derived/series-matchups-v1")
     portraits_cache_path: Path = Path("data/cache/portraits")
     operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
-    live_enabled: bool = False
     worker_refresh_time_utc: str = "09:00"
     worker_poll_interval_seconds: int = Field(default=5, ge=1, le=300)
     worker_heartbeat_interval_seconds: int = Field(default=15, ge=2, le=300)
@@ -82,7 +103,27 @@ class Settings(BaseSettings):
         default=None,
         validation_alias=AliasChoices("COURTLENS_OPENAI_API_KEY", "OPENAI_API_KEY"),
     )
-    assistant_provider: Literal["gemini", "anthropic", "openai", "none"] | None = None
+    groq_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices("COURTLENS_GROQ_API_KEY", "GROQ_API_KEY"),
+    )
+    # Comma-separated. Groq free-tier limits are per model, so each model is its own pool member
+    # (about 8,000 tokens/minute each); the first is the preferred one.
+    groq_model: str = Field(
+        default="openai/gpt-oss-120b,qwen/qwen3.8-27b",
+        min_length=1,
+        max_length=256,
+        validation_alias=AliasChoices("COURTLENS_GROQ_MODEL", "GROQ_MODEL"),
+    )
+    assistant_provider: AssistantProviderName | Literal["none"] | None = None
+    # Ordered, comma-separated provider pool ("gemini,groq"). Unset pools every configured
+    # free-tier provider; paid providers join only when listed here or selected above.
+    assistant_providers: str | None = Field(default=None, max_length=128)
+    # Optional local pacing for providers that publish no rate-limit headers (Gemini). Unset
+    # means unknown: the pool then relies on the provider's own 429 quota details.
+    gemini_requests_per_minute: int | None = Field(default=None, ge=1, le=100_000)
+    gemini_tokens_per_minute: int | None = Field(default=None, ge=1000, le=100_000_000)
+    gemini_requests_per_day: int | None = Field(default=None, ge=1, le=10_000_000)
     assistant_model: str | None = Field(default=None, min_length=1, max_length=128)
     assistant_max_steps: int = Field(default=6, ge=1, le=20)
     assistant_max_web_searches: int = Field(default=3, ge=0, le=20)
@@ -117,38 +158,90 @@ class Settings(BaseSettings):
     def normalize_assistant_selection(cls, value: str | None) -> str | None:
         return value.strip() if value and value.strip() else None
 
-    @field_validator("gemini_api_key", "anthropic_api_key", "openai_api_key", mode="before")
+    @field_validator("assistant_providers", mode="before")
+    @classmethod
+    def normalize_provider_pool(cls, value: str | None) -> str | None:
+        if value is None or not str(value).strip():
+            return None
+        names = [name.strip().lower() for name in str(value).split(",") if name.strip()]
+        unknown = sorted(set(names) - set(ASSISTANT_PROVIDERS))
+        if unknown:
+            raise ValueError(f"unknown assistant providers: {', '.join(unknown)}")
+        return ",".join(dict.fromkeys(names))
+
+    @field_validator(
+        "gemini_api_key", "anthropic_api_key", "openai_api_key", "groq_api_key", mode="before"
+    )
     @classmethod
     def normalize_assistant_key(cls, value: str | SecretStr | None) -> str | SecretStr | None:
         raw = value.get_secret_value() if isinstance(value, SecretStr) else value
         return raw.strip() if raw and raw.strip() else None
 
+    def provider_key(self, provider: str) -> SecretStr | None:
+        key = getattr(self, f"{provider}_api_key", None)
+        return key if isinstance(key, SecretStr) else None
+
     @property
-    def resolved_assistant_provider(self) -> Literal["gemini", "anthropic", "openai", "none"]:
+    def resolved_assistant_providers(self) -> list[AssistantProviderName]:
+        """Ordered pool with keys. Paid providers are never added implicitly."""
+        if self.assistant_provider == "none":
+            return []
+        if self.assistant_providers is not None:
+            listed = [p for p in ASSISTANT_PROVIDERS if p in self.assistant_providers.split(",")]
+            order = sorted(listed, key=self.assistant_providers.split(",").index)
+            return [p for p in order if self.provider_key(p) is not None]
         if self.assistant_provider is not None:
-            return self.assistant_provider
-        for provider in ("gemini", "anthropic", "openai"):
-            if getattr(self, f"{provider}_api_key") is not None:
-                return provider
-        return "none"
+            return [self.assistant_provider]
+        free = [p for p in FREE_TIER_PROVIDERS if self.provider_key(p) is not None]
+        if free:
+            return free
+        for provider in ("anthropic", "openai"):
+            if self.provider_key(provider) is not None:
+                return [provider]
+        return []
 
     @property
-    def resolved_assistant_model(self) -> str:
-        from courtlens.services.assistant.agent.providers.base import DEFAULT_MODELS
+    def resolved_assistant_provider(self) -> AssistantProviderName | Literal["none"]:
+        if self.assistant_provider is not None and self.assistant_providers is None:
+            return self.assistant_provider
+        pool = self.resolved_assistant_providers
+        return pool[0] if pool else "none"
 
-        provider = self.resolved_assistant_provider
-        if provider == "none":
-            return "none"
-        if self.assistant_model is not None:
+    def assistant_model_for(self, provider: str) -> str:
+        from courtlens.services.assistant.agent.providers.base import PROVIDER_DEFAULT_MODELS
+
+        # ASSISTANT_MODEL names the primary provider's model; pool members use their own.
+        if self.assistant_model is not None and provider == self.resolved_assistant_provider:
             return self.assistant_model
         if provider == "gemini" and "gemini_model" in self.model_fields_set:
             return self.gemini_model
-        return DEFAULT_MODELS[provider]
+        if provider == "groq":
+            return self.groq_models[0]
+        return PROVIDER_DEFAULT_MODELS[provider]
+
+    @property
+    def groq_models(self) -> list[str]:
+        models = [m.strip() for m in self.groq_model.split(",") if m.strip()]
+        return list(dict.fromkeys(models)) or ["openai/gpt-oss-120b"]
+
+    def assistant_models_for(self, provider: str) -> list[str]:
+        """Pool members for one provider: every configured Groq model, else one model."""
+        if provider == "groq":
+            primary = self.assistant_model_for("groq")
+            return list(dict.fromkeys([primary, *self.groq_models]))
+        return [self.assistant_model_for(provider)]
+
+    @property
+    def resolved_assistant_model(self) -> str:
+        provider = self.resolved_assistant_provider
+        if provider == "none":
+            return "none"
+        return self.assistant_model_for(provider)
 
     @property
     def assistant_configured(self) -> bool:
         provider = self.resolved_assistant_provider
-        return provider != "none" and getattr(self, f"{provider}_api_key") is not None
+        return provider != "none" and self.provider_key(provider) is not None
 
     @field_validator("environment")
     @classmethod

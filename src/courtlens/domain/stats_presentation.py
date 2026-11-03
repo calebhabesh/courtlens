@@ -55,3 +55,6 @@ class StatsCohort(BaseModel):
     eligible_players: int
     formula: str
     good_directions: dict[str, Literal["high", "low"] | None]
+    # View columns unknown for every player in scope (e.g. a source not yet published); null
+    # when the scope was not checked (the SQL fallback path).
+    empty_fields: list[str] | None = None

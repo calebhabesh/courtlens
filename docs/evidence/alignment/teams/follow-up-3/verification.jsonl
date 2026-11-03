@@ -1,0 +1,6 @@
+{"width":1440,"conf":"league","groupHeight":36,"itemHeight":28,"mark":null,"rowHeights":[36,36,36,36,36],"overflow":0}
+{"width":1440,"conf":"east","groupHeight":36,"itemHeight":28,"mark":{"h":22,"w":39.6,"gapTop":3,"gapBottom":3,"gapLeft":12,"gapRight":12},"rowHeights":[36,36,36,36,36],"overflow":0}
+{"width":1440,"conf":"west","groupHeight":36,"itemHeight":28,"mark":{"h":22,"w":40.1,"gapTop":3,"gapBottom":3,"gapLeft":12,"gapRight":12},"rowHeights":[36,36,36,36,36],"overflow":0}
+{"width":390,"conf":"league","groupHeight":48,"itemHeight":40,"mark":null,"rowHeights":[40,40,48,48,40],"overflow":0}
+{"width":390,"conf":"east","groupHeight":48,"itemHeight":40,"mark":{"h":22,"w":39.6,"gapTop":9,"gapBottom":9,"gapLeft":8,"gapRight":8},"rowHeights":[40,40,48,48,40],"overflow":0}
+{"width":390,"conf":"west","groupHeight":48,"itemHeight":40,"mark":{"h":22,"w":40.1,"gapTop":9,"gapBottom":9,"gapLeft":8,"gapRight":8},"rowHeights":[40,40,48,48,40],"overflow":0}

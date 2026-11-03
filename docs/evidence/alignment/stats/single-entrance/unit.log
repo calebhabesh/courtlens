@@ -1,0 +1,81 @@
+
+> courtlens-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/ethioking/dev/courtlens/dashboard
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 4 unhandled errors during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+AbortError: The animation was canceled.
+ ❯ Animation.cancel node_modules/happy-dom/lib/animation/Animation.js:161:32
+ ❯ NativeAnimationExtended.cancel node_modules/motion-dom/dist/es/animation/NativeAnimation.mjs:75:28
+ ❯ NativeAnimationExtended.stop node_modules/motion-dom/dist/es/animation/NativeAnimation.mjs:94:18
+ ❯ AsyncMotionValueAnimation.stop node_modules/motion-dom/dist/es/animation/AsyncMotionValueAnimation.mjs:21:33
+ ❯ MotionValue.stop node_modules/motion-dom/dist/es/value/index.mjs:325:28
+ ❯ node_modules/motion-dom/dist/es/value/index.mjs:160:22
+ ❯ triggerCallback node_modules/motion-dom/dist/es/frameloop/render-step.mjs:31:9
+ ❯ Object.process node_modules/motion-dom/dist/es/frameloop/render-step.mjs:72:23
+ ❯ processBatch node_modules/motion-dom/dist/es/frameloop/batcher.mjs:34:14
+
+This error originated in "components/ui/header.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "removes one recent search, or clears them all". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+AbortError: The animation was canceled.
+ ❯ Animation.cancel node_modules/happy-dom/lib/animation/Animation.js:161:32
+ ❯ NativeAnimationExtended.cancel node_modules/motion-dom/dist/es/animation/NativeAnimation.mjs:75:28
+ ❯ NativeAnimationExtended.stop node_modules/motion-dom/dist/es/animation/NativeAnimation.mjs:94:18
+ ❯ AsyncMotionValueAnimation.stop node_modules/motion-dom/dist/es/animation/AsyncMotionValueAnimation.mjs:21:33
+ ❯ MotionValue.stop node_modules/motion-dom/dist/es/value/index.mjs:325:28
+ ❯ node_modules/motion-dom/dist/es/value/index.mjs:160:22
+ ❯ triggerCallback node_modules/motion-dom/dist/es/frameloop/render-step.mjs:31:9
+ ❯ Object.process node_modules/motion-dom/dist/es/frameloop/render-step.mjs:72:23
+ ❯ processBatch node_modules/motion-dom/dist/es/frameloop/batcher.mjs:34:14
+
+This error originated in "components/ui/header.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The latest test that might've caused the error is "removes one recent search, or clears them all". It might mean one of the following:
+- The error was thrown, while Vitest was running this test.
+- If the error occurred after the test had been completed, this was the last documented test before it was thrown.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+AbortError: The animation was canceled.
+ ❯ Animation.cancel node_modules/happy-dom/lib/animation/Animation.js:161:32
+ ❯ NativeAnimationExtended.cancel node_modules/motion-dom/dist/es/animation/NativeAnimation.mjs:75:28
+ ❯ NativeAnimationExtended.stop node_modules/motion-dom/dist/es/animation/NativeAnimation.mjs:94:18
+ ❯ AsyncMotionValueAnimation.stop node_modules/motion-dom/dist/es/animation/AsyncMotionValueAnimation.mjs:21:33
+ ❯ MotionValue.stop node_modules/motion-dom/dist/es/value/index.mjs:325:28
+ ❯ node_modules/motion-dom/dist/es/value/index.mjs:160:22
+ ❯ triggerCallback node_modules/motion-dom/dist/es/frameloop/render-step.mjs:31:9
+ ❯ Object.process node_modules/motion-dom/dist/es/frameloop/render-step.mjs:72:23
+ ❯ processBatch node_modules/motion-dom/dist/es/frameloop/batcher.mjs:34:14
+
+This error originated in "components/ui/header.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+
+⎯⎯⎯⎯ Unhandled Rejection ⎯⎯⎯⎯⎯
+AbortError: The animation was canceled.
+ ❯ Animation.cancel node_modules/happy-dom/lib/animation/Animation.js:161:32
+ ❯ NativeAnimationExtended.cancel node_modules/motion-dom/dist/es/animation/NativeAnimation.mjs:75:28
+ ❯ NativeAnimationExtended.stop node_modules/motion-dom/dist/es/animation/NativeAnimation.mjs:94:18
+ ❯ AsyncMotionValueAnimation.stop node_modules/motion-dom/dist/es/animation/AsyncMotionValueAnimation.mjs:21:33
+ ❯ MotionValue.stop node_modules/motion-dom/dist/es/value/index.mjs:325:28
+ ❯ node_modules/motion-dom/dist/es/value/index.mjs:160:22
+ ❯ triggerCallback node_modules/motion-dom/dist/es/frameloop/render-step.mjs:31:9
+ ❯ Object.process node_modules/motion-dom/dist/es/frameloop/render-step.mjs:72:23
+ ❯ processBatch node_modules/motion-dom/dist/es/frameloop/batcher.mjs:34:14
+
+This error originated in "components/ui/header.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  86 passed (86)
+      Tests  568 passed (568)
+     Errors  4 errors
+   Start at  08:10:33
+   Duration  3.24s (transform 5.05s, setup 0ms, import 13.69s, tests 6.07s, environment 4.65s)

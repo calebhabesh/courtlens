@@ -1,0 +1,196 @@
+@layer pages {
+  /* Contracts (alignment row 14): Databallr's Select Team flow, Overview panels and Small vs Big. */
+  .ctr-page {
+    /* Positions take chart series 1-3 (blue, orange, aqua: they pass all-pairs, so pies stay legible). */
+    --ctr-guard: var(--color-trend-1); --ctr-forward: var(--color-trend-2); --ctr-center: var(--color-trend-3); --ctr-unlisted: var(--color-status-unknown);
+    display: flex; flex-direction: column; gap: var(--space-4); width: min(100%, 1240px); margin-inline: auto; min-width: 0;
+  }
+  .ctr-page [data-tone="guard"], .ctr-page [data-group="G"] { --ctr-tone: var(--ctr-guard); }
+  .ctr-page [data-tone="forward"], .ctr-page [data-group="F"] { --ctr-tone: var(--ctr-forward); }
+  .ctr-page [data-tone="center"], .ctr-page [data-group="C"] { --ctr-tone: var(--ctr-center); }
+  .ctr-page [data-tone="unlisted"], .ctr-page [data-group="unlisted"] { --ctr-tone: var(--ctr-unlisted); }
+  .ctr-page [data-group="total"] { --ctr-tone: var(--color-text-tertiary); }
+  /* High Earners: one series colour per player, in salary order (fixed slots, never cycled). */
+  .ctr-page [data-series="1"] { --ctr-tone: var(--color-trend-1); } .ctr-page [data-series="2"] { --ctr-tone: var(--color-trend-2); }
+  .ctr-page [data-series="3"] { --ctr-tone: var(--color-trend-3); } .ctr-page [data-series="4"] { --ctr-tone: var(--color-trend-4); }
+  .ctr-page [data-series="5"] { --ctr-tone: var(--color-trend-5); } .ctr-page [data-series="6"] { --ctr-tone: var(--color-trend-6); }
+  .ctr-page [data-series="7"] { --ctr-tone: var(--color-trend-7); } .ctr-page [data-series="8"] { --ctr-tone: var(--color-trend-8); }
+  .ctr-page [data-series="other"] { --ctr-tone: var(--color-status-unknown); }
+
+  .ctr-header .ui-page-header-title { display: inline-flex; align-items: center; gap: var(--space-3); }
+  .ctr-console { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .ctr-tabs { align-self: flex-start; }
+  .ctr-team-modal { width: min(520px, calc(100vw - 2 * var(--space-4))); }
+  .ctr-team-clear { margin-top: var(--space-3); }
+
+  .ctr-empty { display: grid; justify-items: center; gap: var(--space-3); padding: var(--space-16) var(--space-4); text-align: center; }
+  .ctr-empty-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: var(--radius-lg); background: var(--color-surface-1); color: var(--color-text-tertiary); }
+  .ctr-empty h2 { margin: 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+  .ctr-empty p { max-width: 46ch; margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+
+  .ctr-banner { display: grid; gap: var(--space-1); padding: var(--space-3) var(--space-4); border-left: 2px solid var(--color-positive); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--color-positive) 8%, var(--color-surface-0)); }
+  .ctr-banner strong { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ctr-banner p { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+
+  .ctr-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); align-items: start; }
+  .ctr-panel { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; padding: var(--space-5); }
+  .ctr-panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+  .ctr-panel-head h2 { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; }
+  .ctr-panel-aside { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
+  .ctr-note, .ctr-provenance { margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .ctr-provenance { color: var(--color-on-bg-tertiary); }
+  .ctr-section-title { margin: var(--space-4) 0 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; }
+  /* Inside the Stats workspace the heading sits on its console; give it the page gap the other headings get. */
+  .ctr-stats .ctr-section-title { margin-bottom: var(--space-4); }
+  .ctr-method { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+
+  /* The roster's Stats table: no viewport min-height below the charts, flush with the panels. */
+  .ctr-stats .stats-workspace { min-height: 0; }
+  .ctr-stats .stats-workspace .workbench-content { padding-inline: 0; }
+
+  /* Total Payroll: the figure, then each apron line's side and distance. */
+  .ctr-total-value { margin: 0; font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ctr-apron { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); margin: 0; padding: 0; list-style: none; }
+  .ctr-apron li { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-negative); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ctr-apron li[data-below] { color: var(--color-positive); }
+  .ctr-apron span { color: var(--color-text-tertiary); font-size: var(--text-xs); }
+
+  /* Cap Utilization: Databallr's focused-range bar, blue to the cap, gold beyond, ticks at the lines. */
+  .ctr-cap { display: grid; gap: var(--space-2); padding-bottom: var(--space-2); }
+  .ctr-cap-track { position: relative; height: 24px; overflow: hidden; border-radius: var(--radius-pill); background: var(--color-surface-2); }
+  .ctr-cap-fill { position: absolute; inset-block: 0; left: var(--from, 0%); width: calc(var(--to) - var(--from, 0%)); background: var(--color-info); }
+  .ctr-cap-fill.is-over { background: var(--color-accent); }
+  .ctr-cap-tick { position: absolute; inset-block: 0; left: var(--at); width: 1px; background: var(--color-text-tertiary); }
+  .ctr-cap-labels { position: relative; height: 36px; margin: 0; padding: 0; list-style: none; }
+  .ctr-cap-labels li { position: absolute; left: var(--at); display: grid; justify-items: center; transform: translateX(-50%); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
+  .ctr-cap-labels li[data-line="cap"] strong { color: var(--color-info); }
+  .ctr-cap-labels li[data-line="tax"] strong { color: var(--color-accent); }
+  .ctr-cap-labels li[data-line="first_apron"] strong, .ctr-cap-labels li[data-line="second_apron"] strong { color: var(--color-brand); }
+  .ctr-cap-labels li:last-child { transform: translateX(-85%); }
+  .ctr-cap-labels span { color: var(--color-text-tertiary); }
+
+  /* Payroll Flow: links take their position group's colour. */
+  .ctr-flow-figure { min-width: 0; }
+  .ctr-flow { display: block; width: 100%; height: auto; }
+  /* The player photos: the identity look (team tint behind, a 2px team ring) drawn in SVG units. */
+  .ctr-flow-face-bg { fill: color-mix(in srgb, var(--team-color, var(--color-surface-3)) 22%, var(--color-surface-2)); }
+  .ctr-flow-face-ring { fill: none; stroke: color-mix(in srgb, var(--team-color, var(--color-surface-3)) 70%, transparent); stroke-width: 2; }
+  .ctr-flow-face-initials { fill: var(--color-text); font-size: var(--text-xs); font-weight: 700; }
+  .ctr-flow-link { fill: none; stroke: var(--ctr-tone); stroke-opacity: 0.4; }
+  .ctr-flow-link:hover { stroke-opacity: 0.7; }
+  .ctr-flow-node rect { fill: var(--ctr-tone); }
+  .ctr-flow-node text { fill: var(--color-text); font-size: var(--text-sm); }
+  .ctr-flow-name { font-weight: 600; }
+  .ctr-flow-detail { fill: var(--color-text-tertiary); font-size: var(--text-xs); }
+
+  /* Contract Timeline: one bar per season, brighter for larger salaries; options outlined. */
+  .ctr-timeline { --name: minmax(176px, 1.4fr); display: grid; grid-template-columns: var(--name) 44px repeat(var(--years), minmax(0, 1fr)); gap: var(--space-2); min-width: 0; }
+  /* The scroll box clips: inset the photos' 2px rings from its edge (follow-up 13). */
+  .ctr-timeline-scroll { overflow-x: auto; min-width: 0; padding: var(--space-1); margin: calc(-1 * var(--space-1)); }
+  .ctr-timeline-head, .ctr-timeline-row { display: contents; }
+  .ctr-timeline-head span { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; white-space: nowrap; padding-bottom: var(--space-2); }
+  .ctr-timeline-head span:first-child { text-align: left; }
+  .ctr-timeline-head span[data-current] { color: var(--color-accent); font-weight: 600; }
+  .ctr-timeline-name { display: flex; align-items: center; gap: var(--space-2); min-width: 0; font-size: var(--text-sm); font-weight: 600; }
+  .ctr-timeline-name .ui-identity { flex: none; }
+  .ctr-timeline-name a { overflow: hidden; color: var(--color-text); text-decoration: none; text-overflow: ellipsis; white-space: nowrap; }
+  .ctr-timeline-name a:hover { color: var(--color-accent); }
+  .ctr-timeline-info { display: inline-flex; color: var(--color-text-tertiary); cursor: help; }
+  .ctr-timeline-dpm { align-self: center; color: var(--color-text-secondary); font-size: var(--text-xs); text-align: center; font-variant-numeric: tabular-nums; }
+  .ctr-timeline-cell {
+    display: grid; place-items: center; align-self: center; height: 30px; border-radius: var(--radius-xs);
+    color: var(--color-on-accent); font-size: var(--text-xs); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden;
+  }
+  .ctr-timeline-cell[data-mark="guaranteed"] { background: color-mix(in srgb, var(--color-accent) calc(var(--level) * 100%), var(--color-surface-2)); }
+  .ctr-timeline-cell[data-mark="player-option"] { border: 1px dashed var(--color-accent); background: var(--color-accent-soft); color: var(--color-accent); }
+  .ctr-timeline-cell[data-mark="team-option"] { border: 1px dashed var(--color-info); background: color-mix(in srgb, var(--color-info) 12%, transparent); color: var(--color-info); }
+  .ctr-timeline-cell[data-mark="free-agent"] { color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 500; }
+  .ctr-legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); margin: 0; padding: 0; list-style: none; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .ctr-legend li { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .ctr-key { display: inline-block; width: 12px; height: 12px; border-radius: var(--radius-xs); background: var(--ctr-tone, var(--color-accent)); }
+  .ctr-key[data-mark="player-option"] { border: 1px dashed var(--color-accent); background: transparent; }
+  .ctr-key[data-mark="team-option"] { border: 1px dashed var(--color-info); background: transparent; }
+  .ctr-key-text { color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 600; }
+
+  /* Pies: ring slices in the position colours; faces sit around the High Earners ring. */
+  .ctr-pie { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--space-4); align-items: start; }
+  .ctr-pie svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .ctr-pie-slice { fill: var(--ctr-tone); stroke: var(--color-surface-1); stroke-width: 1; }
+  /* Players in the outer ring alternate two steps of their group's hue, so neighbours separate. */
+  .ctr-pie-slice.is-outer { fill: color-mix(in oklab, var(--ctr-tone) 82%, var(--color-surface-0)); }
+  .ctr-pie-slice.is-outer[data-shade="light"] { fill: color-mix(in oklab, var(--ctr-tone) 72%, var(--color-white)); }
+  .ctr-pie-slice:hover { fill: color-mix(in srgb, var(--ctr-tone) 80%, var(--color-white)); }
+  .ctr-pie-label { fill: var(--color-text); font-size: var(--text-xs); font-weight: 600; }
+  .ctr-pie-center-label { fill: var(--color-text-tertiary); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.04em; }
+  .ctr-pie-center-value { fill: var(--color-text); font-size: var(--text-2xl); font-weight: 700; }
+  .ctr-pie-figure { position: relative; }
+  .ctr-pie-face { position: absolute; left: var(--x); top: var(--y); border-radius: 50%; box-shadow: 0 0 0 2px var(--ctr-tone); transform: translate(-50%, -50%); }
+  .ctr-pie-legend h3 { margin: 0 0 var(--space-3); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .ctr-pie-legend ul { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .ctr-pie-legend li { display: grid; grid-template-columns: 12px minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ctr-pie-legend strong { color: var(--color-text); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  /* Small vs Big: two contract lists around the threshold and the two ROI cards. */
+  .ctr-sv { display: grid; gap: var(--space-4); }
+  .ctr-sv-source { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2) var(--space-4); margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-style: italic; }
+  .ctr-sv-source a { color: inherit; }
+  .ctr-sv-hero { display: grid; justify-items: center; gap: var(--space-3); padding: var(--space-5); text-align: center; }
+  .ctr-sv-hero h2 { display: inline-flex; align-items: center; gap: var(--space-3); margin: 0; font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
+  .ctr-sv-hero dl { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2) var(--space-6); margin: 0; }
+  .ctr-sv-hero dl div { display: inline-flex; gap: var(--space-2); }
+  .ctr-sv-hero dt { color: var(--color-text-secondary); }
+  .ctr-sv-hero dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ctr-surplus[data-sign="up"] { color: var(--color-accent); }
+  .ctr-surplus[data-sign="down"] { color: var(--color-info); }
+  .ctr-sv-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--space-4); align-items: start; }
+  .ctr-sv-list { display: grid; gap: var(--space-3); padding: var(--space-4); min-width: 0; }
+  .ctr-sv-list h3, .ctr-sv-card h3 { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+  .ctr-sv-list h3 span { color: var(--color-text-secondary); font-weight: 400; }
+  .ctr-sv-table { width: 100%; border-collapse: separate; border-spacing: 0 var(--space-1); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ctr-sv-table thead th { padding: 0 var(--space-3); color: var(--color-text-tertiary); font-size: var(--text-xs); font-weight: 500; text-align: left; }
+  .ctr-sv-table tbody th, .ctr-sv-table td { padding: var(--space-2) var(--space-3); background: var(--color-surface-1); }
+  .ctr-sv-table tbody th { border-radius: var(--radius-sm) 0 0 var(--radius-sm); text-align: left; font-weight: 600; }
+  .ctr-sv-table td:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-weight: 700; }
+  .ctr-sv-table .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ctr-sv-table td.num:not(.ctr-surplus) { color: var(--color-text-secondary); }
+  .ctr-sv-table a { color: var(--color-text); text-decoration: none; }
+  .ctr-sv-table a:hover { color: var(--color-accent); }
+  .ctr-sv-empty { color: var(--color-text-tertiary); text-align: center; }
+  .ctr-sv-middle { display: grid; gap: var(--space-4); min-width: 0; }
+  .ctr-sv-threshold { display: grid; gap: var(--space-3); padding: var(--space-4) var(--space-5); }
+  .ctr-sv-threshold h3 { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 600; }
+  .ctr-sv-split { margin: 0; color: var(--color-text-tertiary); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); text-align: center; }
+  .ctr-sv-split span { color: var(--color-text-secondary); }
+  .ctr-sv-split strong { color: var(--color-text); }
+  .ctr-sv-range { display: flex; justify-content: space-between; margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); }
+  /* Gold to the split, blue beyond, like Databallr's threshold slider. */
+  .ctr-range { width: 100%; height: var(--space-5); min-height: 0; margin: 0; padding: 0; border: 0; background: transparent; appearance: none; cursor: pointer; }
+  .ctr-range::-webkit-slider-runnable-track { height: var(--space-2); border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) var(--fill), var(--color-info) var(--fill)); }
+  .ctr-range::-moz-range-track { height: var(--space-2); border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) var(--fill), var(--color-info) var(--fill)); }
+  .ctr-range::-webkit-slider-thumb { width: var(--space-4); height: var(--space-4); margin-top: calc(-1 * var(--space-1)); border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-surface-0); appearance: none; }
+  .ctr-range::-moz-range-thumb { width: var(--space-4); height: var(--space-4); border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-surface-0); }
+  .ctr-range:focus, .ctr-range:focus-visible { outline: none; }
+  .ctr-range:focus-visible::-webkit-slider-thumb { box-shadow: var(--focus-ring); }
+  .ctr-sv-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .ctr-sv-card { display: grid; gap: var(--space-3); padding: var(--space-4); min-width: 0; }
+  .ctr-sv-detail { margin: calc(-1 * var(--space-2)) 0 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .ctr-sv-card dl { display: grid; gap: var(--space-2); margin: 0; font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ctr-sv-card dl div { display: flex; justify-content: space-between; gap: var(--space-2); }
+  .ctr-sv-card dt { color: var(--color-text-secondary); }
+  .ctr-sv-card dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ctr-sv-roi { display: grid; justify-items: center; gap: var(--space-1); padding: var(--space-4) var(--space-2); border: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent); border-radius: var(--radius-md); background: var(--color-accent-soft); }
+  .ctr-sv-roi span { font-size: var(--text-xs); font-weight: 600; }
+  .ctr-sv-roi strong { color: var(--color-accent); font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-variant-numeric: tabular-nums; }
+
+  @media (width < 1100px) {
+    .ctr-grid, .ctr-sv-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (width < 640px) {
+    .ctr-pie { grid-template-columns: minmax(0, 1fr); }
+    .ctr-sv-cards { grid-template-columns: minmax(0, 1fr); }
+    .ctr-timeline { --name: minmax(152px, 1fr); grid-template-columns: var(--name) 36px repeat(var(--years), minmax(56px, 1fr)); }
+    .ctr-timeline-cell { font-size: var(--text-2xs); }
+    .ctr-cap-labels { height: 72px; }
+    .ctr-cap-labels li:nth-child(even) { top: 36px; }
+  }
+}

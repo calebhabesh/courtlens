@@ -72,6 +72,7 @@ services:
     volumes:
       - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
       - ./data/derived/impact-serving-v1:/app/data/derived/impact-serving-v1:ro
+      - ./data/derived/impact-team-splits-v1:/app/data/derived/impact-team-splits-v1:ro
       - ./data/derived/value-archetypes-v1/serving:/app/data/derived/value-archetypes-v1/serving:ro
       - ./data/derived/wowy-v1:/app/data/derived/wowy-v1:ro
       - ./data/artifacts/analyses:/app/data/artifacts/analyses:ro

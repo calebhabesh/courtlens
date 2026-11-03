@@ -7,6 +7,13 @@ from sqlalchemy import func, literal, select
 from sqlalchemy.orm import Session
 
 from courtlens.archive_models import ArchivePlayerGame
+from courtlens.services.history_totals import (
+    BASIS_GAMES,
+    BASIS_TOTALS,
+    season_end_date,
+    season_start_date,
+    totals_scopes,
+)
 from courtlens.services.stats_engine import COLUMN_MAP
 from courtlens.services.workbench_analytics import ResolvedContext, dataset_fingerprint
 from courtlens.workbench_models import WorkbenchDataset, WorkbenchPlayerGame
@@ -55,9 +62,23 @@ def stats_catalog_scope(session: Session, context: ResolvedContext) -> dict[str,
             "coverage_start": start.isoformat(),
             "coverage_end": end.isoformat(),
             "default_before_date": (end + timedelta(days=1)).isoformat(),
+            "basis": BASIS_GAMES,
         }
         for season, observed_phase, start, end in _observed_scopes(session, context)
     ]
+    # Seasons before the game logs: whole-season totals only.
+    scopes = [
+        {
+            "season": season,
+            "phase": phase,
+            "coverage_start": season_start_date(season).isoformat(),
+            "coverage_end": season_end_date(season).isoformat(),
+            "default_before_date": (season_end_date(season) + timedelta(days=1)).isoformat(),
+            "basis": BASIS_TOTALS,
+        }
+        for season, phase in totals_scopes(session, context.totals_sha)
+        if season in context.totals_seasons
+    ] + scopes
     seasons = sorted({scope["season"] for scope in scopes})
     phases = sorted({scope["phase"] for scope in scopes})
     latest = [scope for scope in scopes if scope["season"] == seasons[-1]] if seasons else []

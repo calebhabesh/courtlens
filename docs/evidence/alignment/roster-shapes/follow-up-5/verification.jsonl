@@ -1,0 +1,7 @@
+{"check":"header","width":2000,"height":64,"nav_font":"16px","nav_right":756,"search_pill":[810,1190,36],"actions_left":1862,"overflow_px":0}
+{"check":"header","width":1440,"height":64,"nav_font":"16px","nav_right":756,"search_pill":[772,1152,36],"actions_left":1302,"overflow_px":0}
+{"check":"header","width":1280,"height":64,"nav_font":"16px","nav_right":756,"search_pill":[772,1126,36],"actions_left":1142,"overflow_px":0}
+{"check":"hover_cross_gap","team":"SAS","width":1440,"from":"1641705","to":"1642264","samples":30,"highlight_dropped":0,"active_after":"1642264"}
+{"check":"hover_edge","team":"SAS","width":1440,"shape":"1641705","px_past_right_edge":{"2":"hit","4":"hit","6":"hit","8":"hit","10":"miss","14":"miss"}}
+{"check":"hover_leave","team":"SAS","width":1440,"after_300ms":{"active":0,"card":0}}
+{"check":"rotation_cap","team":"SAS","season":"2026-27","fill_before":0.54,"fill_after":0.667,"minutes_total":240.0,"wembanyama_mpg":35.1,"harper_mpg":10.4,"zero_minute_players":6,"top_fills":[["DEN",82],["OKC",73],["SAS",67],["TOR",58],["CLE",55]]}

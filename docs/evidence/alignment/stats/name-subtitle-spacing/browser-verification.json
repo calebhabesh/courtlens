@@ -1,0 +1,208 @@
+{
+  "results": [
+    {
+      "source": "live local data",
+      "width": 1440,
+      "density": "standard",
+      "playersChecked": 10,
+      "gaps": [
+        2
+      ],
+      "rowHeights": [
+        52
+      ],
+      "movedPlayers": [
+        {
+          "name": "Kawhi Leonard",
+          "gap": 2,
+          "rowHeight": 52,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        },
+        {
+          "name": "Giannis Antetokounmpo",
+          "gap": 2,
+          "rowHeight": 52,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        }
+      ],
+      "pageOverflow": false
+    },
+    {
+      "source": "live local data",
+      "width": 1440,
+      "density": "compact",
+      "playersChecked": 10,
+      "gaps": [
+        2
+      ],
+      "rowHeights": [
+        44
+      ],
+      "movedPlayers": [
+        {
+          "name": "Kawhi Leonard",
+          "gap": 2,
+          "rowHeight": 44,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        },
+        {
+          "name": "Giannis Antetokounmpo",
+          "gap": 2,
+          "rowHeight": 44,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        }
+      ],
+      "pageOverflow": false
+    },
+    {
+      "source": "live local data",
+      "width": 390,
+      "density": "standard",
+      "playersChecked": 10,
+      "gaps": [
+        2
+      ],
+      "rowHeights": [
+        46
+      ],
+      "movedPlayers": [
+        {
+          "name": "Kawhi Leonard",
+          "gap": 2,
+          "rowHeight": 46,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        },
+        {
+          "name": "Giannis Antetokounmpo",
+          "gap": 2,
+          "rowHeight": 46,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        }
+      ],
+      "pageOverflow": false
+    },
+    {
+      "source": "live local data",
+      "width": 390,
+      "density": "compact",
+      "playersChecked": 10,
+      "gaps": [
+        2
+      ],
+      "rowHeights": [
+        44
+      ],
+      "movedPlayers": [
+        {
+          "name": "Kawhi Leonard",
+          "gap": 2,
+          "rowHeight": 44,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        },
+        {
+          "name": "Giannis Antetokounmpo",
+          "gap": 2,
+          "rowHeight": 44,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        }
+      ],
+      "pageOverflow": false
+    },
+    {
+      "source": "production fixture",
+      "width": 1440,
+      "density": "standard",
+      "playersChecked": 2,
+      "gaps": [
+        2
+      ],
+      "rowHeights": [
+        52
+      ],
+      "movedPlayers": [
+        {
+          "name": "Fixture Guard",
+          "gap": 2,
+          "rowHeight": 52,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        }
+      ],
+      "pageOverflow": false
+    },
+    {
+      "source": "production fixture",
+      "width": 1440,
+      "density": "compact",
+      "playersChecked": 2,
+      "gaps": [
+        2
+      ],
+      "rowHeights": [
+        44
+      ],
+      "movedPlayers": [
+        {
+          "name": "Fixture Guard",
+          "gap": 2,
+          "rowHeight": 44,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        }
+      ],
+      "pageOverflow": false
+    },
+    {
+      "source": "production fixture",
+      "width": 390,
+      "density": "standard",
+      "playersChecked": 2,
+      "gaps": [
+        2
+      ],
+      "rowHeights": [
+        46
+      ],
+      "movedPlayers": [
+        {
+          "name": "Fixture Guard",
+          "gap": 2,
+          "rowHeight": 46,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        }
+      ],
+      "pageOverflow": false
+    },
+    {
+      "source": "production fixture",
+      "width": 390,
+      "density": "compact",
+      "playersChecked": 2,
+      "gaps": [
+        2
+      ],
+      "rowHeights": [
+        44
+      ],
+      "movedPlayers": [
+        {
+          "name": "Fixture Guard",
+          "gap": 2,
+          "rowHeight": 44,
+          "pillCenterOffset": 0,
+          "pillFits": true
+        }
+      ],
+      "pageOverflow": false
+    }
+  ]
+}

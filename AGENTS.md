@@ -24,6 +24,8 @@ For any work that makes a CourtLens page look or behave like its Databallr count
 
 For any button, icon button, select, segmented group, menu trigger or chip, use the control kit in `dashboard/components/ui/kit` as specified in [control kit v1](docs/design/control-kit-v1.md) and the Controls section of Design Language; never style a control with page CSS or a bespoke class. The [UI consolidation handoff](docs/ui-consolidation-plan.md) that built it is complete (UC00–UC05; history in the [consolidation progress log](docs/ui-consolidation-progress.md)). Component and page CSS lives next to the component or route that owns it and is imported from `dashboard/app/globals.css` in cascade order inside its layer; add a new file there in the position where its rules must apply.
 
+For seasons before 2000-01 (the Basketball-Reference history crawl, historical season totals and 1983-84 to 1999-00 game logs, and how old seasons appear on pages), read the [full history handoff](docs/full-history-plan.md) first and record evidence in the [full history progress log](docs/full-history-progress.md). The owner runs the long crawl in their own pane; never start it from a Claude session.
+
 For the hosted read-only demo at courtlens.calebhabesh.com (production Compose stack, Caddy read-only boundary, arm64 images, VPS deploys and disk budget), read [the deployment guide](docs/deployment.md) first. Any new non-GET endpoint the demo should allow must be added to the Caddy allowlist there.
 
 ## Architecture and Stack

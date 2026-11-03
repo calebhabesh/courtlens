@@ -15,8 +15,7 @@ import { AskDrawer } from "../ask-drawer";
 import { HotkeysModal } from "../hotkeys-modal";
 import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
 import type { WorkbenchCatalog } from "@/lib/types";
-import { buildPreservedContextUrl } from "@/lib/query-url";
-import { MORE_LINKS, NAV_MENUS, STATS_LINK, activeNavSection, analyticalNavItems } from "@/lib/nav-model";
+import { DIRECT_LINKS, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems } from "@/lib/nav-model";
 import { mergedPagePath } from "@/lib/route-consolidation";
 import { isHostedDemo } from "@/lib/hosted";
 
@@ -58,21 +57,14 @@ export function Header() {
   const catalog = catalogState?.releaseId === releaseId ? catalogState?.catalog ?? null : null;
   const availability = useCallback(
     (href: string) =>
-      routeAvailability(
-        href,
-        catalog,
-        searchParams.get("season") ?? undefined,
-        searchParams.get("phase") ?? undefined
-      ),
-    [catalog, searchParams]
+      // Listed when the destination's source is up at all: navigation carries no season, and each
+      // page opens on a season its source covers.
+      routeAvailability(href, catalog, undefined, undefined, { anySeason: true }),
+    [catalog]
   );
 
-  const preserveContextUrl = useCallback(
-    // Navigation always opens the current release; only shared or saved links stay pinned, so
-    // an old link can never trap the whole site on retired data (2026-10-13: 3-season picker).
-    (targetHref: string) => buildPreservedContextUrl(targetHref, searchParams, { dropPins: true }),
-    [searchParams]
-  );
+  // Every page keeps its own season, phase and cutoff (owner, 2026-10-15): navigation links are
+  // plain hrefs, so each destination opens at its own defaults, not this page's scope or pin.
 
   const navRef = useRef<HTMLElement>(null);
   const searchPillRef = useRef<HTMLButtonElement>(null);
@@ -258,6 +250,9 @@ export function Header() {
   const indicator = (
     <motion.span
       layoutId="header-active-indicator"
+      // Measure only when the active section changes: the header is sticky and re-renders on
+      // in-page URL changes, and a scroll between renders would otherwise read as a move.
+      layoutDependency={activeSection}
       className="courtlens-nav-indicator"
       transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
     />
@@ -275,15 +270,17 @@ export function Header() {
         <Brand />
 
         <nav className="courtlens-nav" aria-label="Workspace Navigation">
-          <div className="courtlens-nav-item">
-            <Link
-              href={preserveContextUrl(STATS_LINK.href)}
-              className={`courtlens-nav-link ${activeSection === "stats" ? "active" : ""}`}
-            >
-              {STATS_LINK.label}
-              {activeSection === "stats" && indicator}
-            </Link>
-          </div>
+          {DIRECT_LINKS.map(({ id, item }) => (
+            <div key={id} className="courtlens-nav-item">
+              <Link
+                href={item.href}
+                className={`courtlens-nav-link ${activeSection === id ? "active" : ""}`}
+              >
+                {item.label}
+                {activeSection === id && indicator}
+              </Link>
+            </div>
+          ))}
 
           {visibleMenus.map(menu => {
             const multi = menu.groups.length > 1;
@@ -304,7 +301,7 @@ export function Header() {
                   className={`courtlens-nav-dropdown-btn ${activeSection === menu.id ? "active" : ""}`}
                 >
                   <span>{menu.label}</span>
-                  <Icon name="chevron-down" size={14} className="courtlens-nav-chevron" />
+                  <Icon name="chevron-down" size={16} className="courtlens-nav-chevron" />
                   {activeSection === menu.id && indicator}
                 </button>
 
@@ -329,13 +326,16 @@ export function Header() {
                           {group.items.map(item => (
                             <Link
                               key={item.href}
-                              href={preserveContextUrl(item.href)}
+                              href={item.href}
                               role="menuitem"
                               aria-current={isCurrent(item.href) ? "page" : undefined}
-                              className={`courtlens-dropdown-item ${isCurrent(item.href) ? "active" : ""}`}
+                              className={`courtlens-dropdown-item ${item.icon ? "courtlens-dropdown-rich" : ""} ${isCurrent(item.href) ? "active" : ""}`}
                               onClick={() => setOpenDropdown(null)}
                             >
-                              <span>{item.label}</span>
+                              {item.icon ? <>
+                                <span className="courtlens-dropdown-icon" aria-hidden="true"><Icon name={item.icon} size={20} /></span>
+                                <span className="courtlens-dropdown-text"><span>{item.label}</span>{item.description && <small>{item.description}</small>}</span>
+                              </> : <span>{item.label}</span>}
                             </Link>
                           ))}
                         </div>
@@ -381,12 +381,12 @@ export function Header() {
         {!isHostedDemo && <Button
           variant="ghost"
           tone="onBackground"
-          size="sm"
+          size="md"
           disabled={pageSupportsPanel && !assistantPage}
           aria-haspopup={assistantPage ? "dialog" : undefined}
           onClick={() => {
             if (assistantPage) setAskOpen(true);
-            else router.push(preserveContextUrl("/research/ask"));
+            else router.push("/research/ask");
           }}
         >
           <Icon name="message" size={16} className="courtlens-ask-icon" />
@@ -399,7 +399,7 @@ export function Header() {
             icon="more-horizontal"
             label="More options"
             tone="onBackground"
-            size="sm"
+            size="md"
             aria-haspopup="menu"
             aria-expanded={moreMenuOpen}
             onClick={() => setMoreMenuOpen(prev => !prev)}
@@ -420,7 +420,7 @@ export function Header() {
                 {MORE_LINKS.map(item => (
                   <Link
                     key={item.href}
-                    href={preserveContextUrl(item.href)}
+                    href={item.href}
                     role="menuitem"
                     aria-current={isCurrent(item.href) ? "page" : undefined}
                     className={`courtlens-dropdown-item ${isCurrent(item.href) ? "active" : ""}`}
@@ -451,7 +451,7 @@ export function Header() {
                         {unavailableItems.map(item => (
                           <Link
                             key={item.href}
-                            href={preserveContextUrl(item.href)}
+                            href={item.href}
                             role="menuitem"
                             className="courtlens-dropdown-item"
                             onClick={() => setMoreMenuOpen(false)}
@@ -512,14 +512,17 @@ export function Header() {
       >
         <nav className="courtlens-mobile-drawer-body" aria-label="Drawer navigation">
           <div className="courtlens-mobile-direct-links">
-            <Link
-              href={preserveContextUrl(STATS_LINK.href)}
-              aria-current={activeSection === "stats" ? "page" : undefined}
-              className={`courtlens-mobile-link ${activeSection === "stats" ? "active" : ""}`}
-              onClick={closeDrawer}
-            >
-              {STATS_LINK.label}
-            </Link>
+            {DIRECT_LINKS.map(({ id, item }) => (
+              <Link
+                key={id}
+                href={item.href}
+                aria-current={activeSection === id ? "page" : undefined}
+                className={`courtlens-mobile-link ${activeSection === id ? "active" : ""}`}
+                onClick={closeDrawer}
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
 
           <Accordion>
@@ -536,12 +539,12 @@ export function Header() {
                       {group.items.map(item => (
                         <Link
                           key={item.href}
-                          href={preserveContextUrl(item.href)}
+                          href={item.href}
                           aria-current={isCurrent(item.href) ? "page" : undefined}
                           className={`courtlens-mobile-sublink ${isCurrent(item.href) ? "active" : ""}`}
                           onClick={closeDrawer}
                         >
-                          {item.label}
+                          {item.icon ? <span className="courtlens-mobile-sublink-label"><Icon name={item.icon} size={16} />{item.label}</span> : item.label}
                         </Link>
                       ))}
                     </div>
@@ -557,7 +560,7 @@ export function Header() {
                   {unavailableItems.map(item => (
                     <Link
                       key={item.href}
-                      href={preserveContextUrl(item.href)}
+                      href={item.href}
                       className="courtlens-mobile-sublink"
                       onClick={closeDrawer}
                     >
@@ -580,7 +583,7 @@ export function Header() {
             {MORE_LINKS.map(item => (
               <Link
                 key={item.href}
-                href={preserveContextUrl(item.href)}
+                href={item.href}
                 aria-current={isCurrent(item.href) ? "page" : undefined}
                 className={`courtlens-mobile-link ${isCurrent(item.href) ? "active" : ""}`}
                 onClick={closeDrawer}

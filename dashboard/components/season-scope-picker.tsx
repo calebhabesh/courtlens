@@ -8,6 +8,8 @@ import { Button, Chip, MenuTrigger, Segmented } from "@/components/ui/kit";
 import { Popover } from "@/components/ui/menu";
 import { Select } from "@/components/ui/select";
 import { QUICK_RANGES, quickRangeFrom, seasonScopeLabel, seasonsBetween } from "@/lib/season-range";
+import { seasonOptionLabel } from "@/lib/season-basis";
+import { useControlScope } from "@/components/ui/control-scope";
 
 type Mode = "single" | "multi";
 
@@ -24,6 +26,7 @@ interface SeasonScopePickerProps {
 
 /** Databallr-style season control: one season, or a From–Through range with quick ranges. */
 export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: SeasonScopePickerProps) {
+  const placement = useControlScope();
   const newestFirst = [...seasons].sort().reverse();
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<Mode>(seasonFrom ? "multi" : "single");
@@ -54,7 +57,7 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
       className="season-scope-popover"
       triggerLabel={`Season: ${label}`}
       renderTrigger={props => (
-        <MenuTrigger {...props} size="lg">
+        <MenuTrigger {...props} size={placement.size ?? "lg"}>
           <Icon name="calendar" size={16} className="season-scope-icon" />
           <span className="season-scope-value">{label}</span>
         </MenuTrigger>
@@ -68,16 +71,16 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
           value={mode}
           onChange={setMode}
           options={[
-            { value: "single", label: "Single season" },
-            { value: "multi", label: "Multi-season", disabled: seasons.length < 2 }
+            { value: "single", label: "Single Season" },
+            { value: "multi", label: "Multi-Season", disabled: seasons.length < 2 }
           ]}
         />
         {mode === "single" ? (
           <Field label="Season">
             <Select value={range ? "" : season} onChange={(e) => apply(null, e.target.value)} aria-label="Season">
-              {range && <option value="" disabled>Choose a season</option>}
-              {!range && !seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
-              {newestFirst.map((s) => <option key={s} value={s}>{s}</option>)}
+              {range && <option value="" disabled>Choose a Season</option>}
+              {!range && !seasons.includes(season) && <option value={season}>{season} · Unavailable</option>}
+              {newestFirst.map((s) => <option key={s} value={s}>{seasonOptionLabel(s)}</option>)}
             </Select>
           </Field>
         ) : (
@@ -86,13 +89,13 @@ export function SeasonScopePicker({ seasons, season, seasonFrom, onApply }: Seas
               <Field label="From">
                 <Select value={from} aria-label="From season"
                   onChange={(e) => { setFrom(e.target.value); if (e.target.value > through) setThrough(e.target.value); }}>
-                  {newestFirst.map((s) => <option key={s} value={s}>{s}</option>)}
+                  {newestFirst.map((s) => <option key={s} value={s}>{seasonOptionLabel(s)}</option>)}
                 </Select>
               </Field>
               <Field label="Through">
                 <Select value={through} aria-label="Through season"
                   onChange={(e) => { setThrough(e.target.value); if (e.target.value < from) setFrom(e.target.value); }}>
-                  {newestFirst.map((s) => <option key={s} value={s}>{s}</option>)}
+                  {newestFirst.map((s) => <option key={s} value={s}>{seasonOptionLabel(s)}</option>)}
                 </Select>
               </Field>
             </div>

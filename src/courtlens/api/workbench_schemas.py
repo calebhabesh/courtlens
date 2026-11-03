@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
+from datetime import date as Date
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -249,6 +250,8 @@ class StatsScopeSchema(BaseModel):
     coverage_start: str
     coverage_end: str
     default_before_date: str
+    # "games" (per-game rows) or "season_totals" (seasons before 1983-84: whole seasons only).
+    basis: str = "games"
 
 
 class WorkbenchCatalogResponse(BaseModel):
@@ -295,6 +298,38 @@ class ResearchQuerySchema(BaseModel):
     cursor: str | None = None
 
 
+class PlayerBioCurrentTeam(BaseModel):
+    """The team the latest NBA player index lists; not the team a season's games belong to."""
+
+    team_id: str
+    team_tricode: str | None
+    listing_season: str | None = None
+    index_refreshed_at: datetime | None = None
+    # The roster source that places the player: ESPN rosters, the NBA player index or Wikipedia.
+    listing_source: str | None = None
+    trade_date: date | None = None
+    trade_source_url: str | None = None
+
+
+class PlayerCurrentMove(BaseModel):
+    """The player's latest Wikipedia move (offseason transactions page)."""
+
+    kind: str
+    date: Date | None = None  # the field name shadows the type inside the class body
+    club: str | None = None
+    country: str | None = None
+    team_tricode: str | None = None
+
+
+class PlayerCurrentStatus(BaseModel):
+    """A player the sources place on no NBA roster today (the free-agency tracker's evidence)."""
+
+    state: Literal["free_agent", "abroad", "retired"]
+    source: str | None = None
+    as_of: datetime | None = None
+    move: PlayerCurrentMove | None = None
+
+
 class PlayerResearchItem(BaseModel):
     player_id: str
     player_name: str
@@ -313,6 +348,10 @@ class PlayerResearchItem(BaseModel):
     table_cohort_sample_sizes: dict[str, int] | None = None
     # Estimated five-position label for the queried season (position-estimates-v1).
     position: Literal["PG", "SG", "SF", "PF", "C"] | None = None
+    # Who the player is listed with today (active players); the row's teams stay its games' teams.
+    current_team: PlayerBioCurrentTeam | None = None
+    # Set instead when the player is on no NBA roster today (free agent, abroad or retired).
+    current_status: PlayerCurrentStatus | None = None
 
 
 class DraftClass(BaseModel):
@@ -325,10 +364,70 @@ class DraftClassesResponse(BaseModel):
     classes: list[DraftClass]
 
 
+class PlayerCareerSeason(BaseModel):
+    season: str
+    # None when the player has no row in that season's Stats cohort.
+    item: PlayerResearchItem | None
+
+
+class PlayerCareerResponse(BaseModel):
+    player_id: str
+    release_id: str
+    phase: str
+    # Covered seasons with observed games, newest first; each ranked against its own league.
+    seasons: list[PlayerCareerSeason]
+    # Aggregated over the same seasons; season-only joins and ranks stay unknown.
+    career: PlayerResearchItem | None
+
+
+class ComparisonCareer(BaseModel):
+    player_id: str
+    # Observed seasons up to the compared one; the compared season stops at the cutoff.
+    seasons: list[str]
+    item: PlayerResearchItem | None
+    # Games played and the teams' games over the same seasons, before the cutoff (row 3, 26).
+    availability: dict[str, int] | None = None
+
+
+class ComparisonGroupPlayer(BaseModel):
+    """One column of the multi-player comparison grid (alignment row 3, 64)."""
+
+    player_id: str
+    name: str
+    # The season row (or the career through the cutoff); None without games in the scope.
+    item: PlayerResearchItem | None
+    # Career span only: observed seasons up to the compared one.
+    seasons: list[str] | None = None
+    teams_chronological: list[str]
+    championships: dict[str, Any] | None
+    availability: dict[str, int] | None
+
+
+class ComparisonGroupResponse(BaseModel):
+    context: dict[str, Any]
+    span: Literal["season", "career"]
+    players: list[ComparisonGroupPlayer]
+
+
+class ComparisonCareerResponse(BaseModel):
+    season: str
+    phase: str
+    before_date: str
+    player_a: ComparisonCareer
+    player_b: ComparisonCareer
+
+
 class PlayerSeasonsResponse(BaseModel):
     phase: str
     # Seasons with at least one game row per player, ascending; a missing season is unknown.
     seasons: dict[str, list[str]]
+    # Each player's best regular season (BPM, else WS/48, else WS) among those seasons; None when
+    # no season qualifies.
+    peak: dict[str, str | None] = Field(default_factory=dict)
+    # The measure that chose it: "bpm", "ws_per_48" or "ws".
+    peak_basis: dict[str, str | None] = Field(default_factory=dict)
+    # On an NBA roster today (True), placed off every roster (False), or no source speaks (None).
+    active: dict[str, bool | None] = Field(default_factory=dict)
 
 
 class PlayerResearchResponse(BaseModel):
@@ -402,14 +501,22 @@ class RosterShapePlayerResponse(BaseModel):
     player_id: str
     player_name: str
     listed_position: str | None
-    value: float | None
-    value_qualified: bool
-    value_percentile: float | None
-    reference_minutes: float | None
-    reference_games: int | None
-    vor: float | None
+    dpm: float | None
+    o_dpm: float | None
+    d_dpm: float | None
+    playoff_shift: float | None
+    playoff_games: int
+    minutes_per_game: float | None
+    # Before the rotation cap at 240 a game (equal to minutes_per_game for played seasons); the
+    # trade sandbox re-applies the cap from these.
+    minutes_uncapped: float | None = None
+    games: int | None
+    size: float | None
+    size_playoff: float | None
     archetype: dict[str, Any] | None
-    fit: Literal["returning", "new", "unknown"]
+    fit_ease: float | None
+    fit_band: int | None
+    continuity: Literal["returning", "new", "unknown"]
     previous_teams: list[str]
     unknown_reasons: list[str]
 
@@ -418,33 +525,51 @@ class RosterShapeTeamResponse(BaseModel):
     team_id: str
     team_tricode: str
     team_name: str
+    conference: str
     players: int
     sized_players: int
     below_replacement_players: int
     unknown_players: int
-    total_vor: float
-    returning_share: float | None
-    archetype_mix: list[dict[str, Any]]
+    size: float
+    size_playoff: float
+    fill: float
+    fill_playoff: float
+    fit_ease: float | None
     roster: list[RosterShapePlayerResponse]
 
 
 class RosterShapesResponse(BaseModel):
     version: str
     season: str
+    seasons: list[dict[str, Any]]
+    projected: bool
     label: str
-    projected_note: str
     reference_season: str
-    phase: Literal["regular_season"]
     replacement_level: float
-    full_season_minutes: int
+    exponent: float
+    box_net: float
     capacity: float
-    value: dict[str, Any]
+    fit_bands: int
+    playoff_prior_games: int
+    dpm: dict[str, Any]
+    minutes_source: Literal["darko_expected", "reference", "season"]
     archetypes: dict[str, Any]
-    roster_context: dict[str, Any]
+    roster_context: dict[str, Any] | None
     statistics_release_id: str | None
     credit: str
     limitations: list[str]
     teams: list[RosterShapeTeamResponse]
+
+
+class RosterShapeHistorySeason(BaseModel):
+    season: str
+    fills: dict[str, float]
+
+
+class RosterShapeHistoryResponse(BaseModel):
+    version: str
+    box_net: float
+    seasons: list[RosterShapeHistorySeason]
 
 
 class StatsFeedSource(BaseModel):
@@ -485,6 +610,7 @@ class MatchupsViewResponse(StatsFeedScopeView):
     side: Literal["offense", "defense"]
     focus_rule: str | None
     detail: dict[str, Any]
+    pair: dict[str, Any] | None = None
 
 
 class PlayTypesViewResponse(StatsFeedScopeView):
@@ -508,6 +634,26 @@ class PlayerTrackingResponse(StatsFeedScopeView):
     observed: bool
     player: dict[str, Any] | None
     groups: list[dict[str, Any]]
+
+
+class PlayerDashboardFeedsResponse(BaseModel):
+    """Alignment row 22: one player-season's NBA tracking cells with season percentiles."""
+
+    version: str
+    player_id: str
+    season: str
+    phase: Literal["regular_season", "playoffs"]
+    label: str
+    source: str
+    qualification: dict[str, int]
+    observed: dict[str, bool]
+    first_seasons: dict[str, str]
+    metrics: list[dict[str, Any]]
+    player: dict[str, Any] | None
+    play_types: list[dict[str, Any]] | None
+    cohort: dict[str, Any]
+    limitations: list[str]
+    sources: list[StatsFeedSource]
 
 
 class WowyViewResponse(BaseModel):
@@ -549,6 +695,71 @@ class PlayerBioCombine(BaseModel):
     weight_lbs: float | None
 
 
+class PlayerGuarantee(BaseModel):
+    amount: str | None
+    status: Literal["full", "partial", "none"] | None
+    source_url: str
+    as_of: datetime
+
+
+class PlayerSalary(BaseModel):
+    season: str
+    team: str | None
+    team_code: str | None
+    salary: str | None
+    salary_note: str | None = None
+    league: str | None = None
+    option: Literal["player", "team"] | None = None
+    share_of_cap: float | None = None
+    cap_source_url: str | None = None
+    cap_as_of: datetime | None = None
+    guarantee: PlayerGuarantee | None = None
+
+
+class PlayerReferenceEvent(BaseModel):
+    date: date | None
+    type: str
+    description: str
+    from_team_code: str | None
+    to_team_code: str | None
+
+
+class PlayerGameHighValue(BaseModel):
+    value: str | None
+    url: str | None
+    date: date | None
+
+
+class PlayerGameHighs(BaseModel):
+    phase: Literal["regular_season", "playoffs"]
+    scope: Literal["career", "season"]
+    season: str | None
+    values: dict[str, PlayerGameHighValue]
+
+
+class PlayerBioReference(BaseModel):
+    """Basketball-Reference biography and honours as of its last crawl (career-to-date facts)."""
+
+    source: str
+    url: str
+    as_of: datetime
+    birthplace: str | None
+    high_school: str | None
+    shoots: str | None
+    debut_date: date | None
+    honours: list[str]
+    # Season ("2015-16") -> award codes as the source lists them ("MVP-2", "AS", "NBA1").
+    awards: dict[str, list[str]]
+    all_star_seasons: list[str]
+    salary_history: list[PlayerSalary] = Field(default_factory=list)
+    career_earnings: str | None = None
+    current_contract: list[PlayerSalary] = Field(default_factory=list)
+    contract_events: list[PlayerReferenceEvent] = Field(default_factory=list)
+    transactions: list[PlayerReferenceEvent] = Field(default_factory=list)
+    game_highs: list[PlayerGameHighs] = Field(default_factory=list)
+    remaining_guaranteed: PlayerGuarantee | None = None
+
+
 class PlayerBioResponse(BaseModel):
     """Profile header listings as of the page scope; combine values are measured."""
 
@@ -568,6 +779,10 @@ class PlayerBioResponse(BaseModel):
     draft: PlayerBioDraft | None
     undrafted: bool
     combine: PlayerBioCombine | None
+    current_team: PlayerBioCurrentTeam | None = None
+    current_status: PlayerCurrentStatus | None = None
+    last_team: PlayerBioCurrentTeam | None = None
+    reference: PlayerBioReference | None = None
     limitations: list[str]
 
 
@@ -676,6 +891,83 @@ class TeamResearchResponse(BaseModel):
     league_averages: dict[str, Any] | None = None
 
 
+class TeamStandingsItem(BaseModel):
+    """Record over every game in scope; streak is +n wins or -n losses."""
+
+    wins: int
+    losses: int
+    # None for a season served as totals: no games to take the last ten or a streak from.
+    last10_wins: int | None = None
+    last10_losses: int | None = None
+    streak: int | None = None
+
+
+class TeamTrendPoint(BaseModel):
+    date: str
+    net: float
+
+
+class TeamSixFactorsItem(BaseModel):
+    team_id: str
+    tricode: str
+    name: str
+    conference: str | None = None
+    division: str | None = None
+    games_played: int
+    wins: int
+    losses: int
+    # The source's estimate (points / rating) before 1973-74; None when it has no rating.
+    possessions: float | None = None
+    opp_possessions: float | None = None
+    points: float
+    opp_points: float
+    ortg: float | None = None
+    drtg: float | None = None
+    net: float | None = None
+    off: float | None = None
+    o_ts: float | None = None
+    o_tov: float | None = None
+    o_orb: float | None = None
+    # `def` is a Python keyword; the wire name stays "def".
+    def_: float | None = Field(None, alias="def")
+    d_ts: float | None = None
+    d_tov: float | None = None
+    d_drb: float | None = None
+    net_eff: float | None = None
+    net_poss: float | None = None
+    off_luck: float
+    def_luck: float
+    league_rating: float | None = None
+    rates: dict[str, float | None]
+    sos: float | None = None
+    adj_net: float | None = None
+    expected_wins: float | None = None
+    win_luck: float | None = None
+    # None for a season served as totals (no game margins).
+    close_wins: int | None = 0
+    close_losses: int | None = 0
+    standings: TeamStandingsItem
+    trend: list[TeamTrendPoint]
+    # NBA Stats team Misc totals and pace (`courtlens-team-scoring-v1`); None when they do not
+    # cover exactly the games in scope.
+    scoring: dict[str, float | int | None] | None = None
+
+    model_config = ConfigDict(populate_by_name=True, serialize_by_alias=True)
+
+
+class TeamSixFactorsResponse(BaseModel):
+    context: dict[str, Any]
+    teams: list[TeamSixFactorsItem]
+    league: dict[str, float | None]
+    window: dict[str, Any]
+    venue: str | None = None
+    luck: dict[str, float]
+    method_version: str
+    context_method_version: str
+    warnings: list[str]
+    scoring: dict[str, Any] | None = None
+
+
 class TeamDetailResponse(BaseModel):
     team: dict[str, str]
     context: dict[str, Any]
@@ -737,8 +1029,9 @@ class TeamScheduleResponse(BaseModel):
     team: dict[str, str]
     context: dict[str, Any]
     overall_record: dict[str, Any]
-    home_split: dict[str, Any]
-    away_split: dict[str, Any]
+    # None for a season served as totals: no games, so no home or away record.
+    home_split: dict[str, Any] | None = None
+    away_split: dict[str, Any] | None = None
     rest_splits: list[TeamRestSplitItem]
     back_to_back_summary: TeamBackToBackSummary
     longest_homestand: int
@@ -1042,6 +1335,8 @@ class AssistantStatusResponse(BaseModel):
     limited_mode: bool = True
     prompt_version: str | None = None
     limits: dict[str, Any]
+    # Ordered provider pool with this process's quota memory (no keys, no request text).
+    providers: list[dict[str, Any]] = Field(default_factory=list)
     allowed_tools: list[str]
     privacy_notice: str
     setup_instructions: str
@@ -1142,6 +1437,8 @@ class LookupTeamAssociation(BaseModel):
     basis: Literal["selected_scope", "last_observed"]
     teams: list[str] = Field(default_factory=list)
     observed_through: date | None = None
+    # Careers before the 1983-84 game logs have no game dates: the last season played instead.
+    last_season: str | None = None
     season: str | None = None
     phase: str | None = None
     before_date: date | None = None
@@ -1156,6 +1453,8 @@ class LookupItem(BaseModel):
     match_basis: str
     match_score: float
     matched_alias: str | None = None
+    # Every Basketball-Reference nickname, the matched one (if any) first.
+    nicknames: list[str] = Field(default_factory=list)
     portrait_url: str | None = None
     portrait_fallback: str | None = None
     availability: LookupAvailability = Field(default_factory=LookupAvailability)
@@ -1388,6 +1687,10 @@ class TeamSeriesHeader(BaseModel):
     name: str
     seed: int | None = None
     wins: int = 0
+    # Regular season before the playoffs began; None where the release lacks the games.
+    record_wins: int | None = None
+    record_losses: int | None = None
+    season_series_wins: int | None = None
 
 
 class PlayoffSeriesSummary(BaseModel):
@@ -1465,6 +1768,73 @@ class TeamSeriesStats(BaseModel):
     oreb_pct: float | None = None
     ftr: float | None = None
     totals: dict[str, Any] = Field(default_factory=dict)
+    record_wins: int | None = None
+    record_losses: int | None = None
+    season_series_wins: int | None = None
+
+
+class SeasonSeriesGame(BaseModel):
+    """A regular-season game between the series' teams (the season series)."""
+
+    game_id: str
+    game_date: str
+    home_team_id: str
+    home_tricode: str
+    away_team_id: str
+    away_tricode: str
+    home_score: int
+    away_score: int
+    winner_team_id: str | None = None
+
+
+class SeriesMatchupRow(BaseModel):
+    """One offensive player against one defender, summed over a phase's games (NBA.com)."""
+
+    phase: str  # "playoffs" | "regular_season"
+    off_player_id: str
+    off_player_name: str
+    off_team_id: str
+    def_player_id: str
+    def_player_name: str
+    games: int
+    possessions: float
+    seconds: float
+    points: int
+    fgm: int
+    fga: int
+    fg3m: int
+    fg3a: int
+    ftm: int
+    fta: int
+    assists: int
+    turnovers: int
+
+
+class SeriesMatchups(BaseModel):
+    playoff_games: int
+    playoff_games_played: int
+    regular_season_games: int
+    source: str
+    rows: list[SeriesMatchupRow] = Field(default_factory=list)
+
+
+class SeriesImpactPlayer(BaseModel):
+    player_id: str
+    player_name: str
+    team_id: str
+    total: float | None = None
+    offense: float | None = None
+    defense: float | None = None
+
+
+class SeriesImpactBoard(BaseModel):
+    """A model's ratings for the players who appeared in the series."""
+
+    metric: str  # "darko" | "rapm"
+    label: str
+    as_of: str | None = None
+    note: str
+    players: list[SeriesImpactPlayer] = Field(default_factory=list)
 
 
 class PlayerSeriesStats(BaseModel):
@@ -1524,6 +1894,9 @@ class PlayoffSeriesDetailResponse(BaseModel):
     game_cards: list[PlayoffGameCard] = Field(default_factory=list)
     team1_players: list[PlayerSeriesStats] = Field(default_factory=list)
     team2_players: list[PlayerSeriesStats] = Field(default_factory=list)
+    season_series: list[SeasonSeriesGame] = Field(default_factory=list)
+    matchups: SeriesMatchups | None = None
+    impact: list[SeriesImpactBoard] = Field(default_factory=list)
     capabilities: dict[str, str] = Field(default_factory=dict)
     disclaimers: list[str] = Field(default_factory=list)
 

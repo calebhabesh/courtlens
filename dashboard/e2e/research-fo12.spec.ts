@@ -31,7 +31,7 @@ test("trends runs from the URL, formats shooting percentages and keeps the evide
   await expect(page).toHaveURL(/periodAN=5/);
   await expect.poll(() => requests.at(-1)?.period_a_n).toBe(5);
   await expect(page.getByText(hash)).toHaveCount(0);
-  await page.getByRole("button", { name: "Data details" }).click();
+  await page.getByRole("button", { name: "Data Details" }).click();
   await expect(page.getByRole("dialog")).toContainText(hash);
 });
 
@@ -62,9 +62,9 @@ test("a research operation deep link reruns without AI and keeps its context in 
   await openWorkbench(page, `/research/operation?${params}`);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Research Operation");
   await expect(page.getByRole("region", { name: "Key findings" })).toContainText("Answered");
-  await expect(page.getByText("2024-25 · Regular season · Through Apr 14, 2025")).toBeVisible();
+  await expect(page.getByText("2024-25 · Regular Season · Through Apr 14, 2025")).toBeVisible();
   await expect(page.getByText("retained-release")).toHaveCount(0);
-  await page.getByRole("button", { name: "Data details" }).click();
+  await page.getByRole("button", { name: "Data Details" }).click();
   await expect(page.getByRole("dialog")).toContainText("retained-release");
 });
 
@@ -72,8 +72,8 @@ test("saved investigations list scope in words and keep each record's hash behin
   await page.route("**/api/workbench/assistant/investigations?**", route => route.fulfill({ json: [{ id: "record-1", title: "Retained scoring", created_at: "2026-10-04T12:00:00Z", manifest_sha256: hash, context: { release_id: "retained-release", season: "2024-25", phase: "regular_season", before_date: "2025-04-15" }, operations: ["compare_periods"], question_saved: false }] }));
   await openWorkbench(page, "/investigations?view=personal");
   const table = page.getByRole("region", { name: "Saved operations table" });
-  await expect(table.getByRole("row", { name: /Retained scoring/ })).toContainText("2024-25 · Regular season · Through Apr 14, 2025");
-  await expect(table).toContainText("compare periods");
+  await expect(table.getByRole("row", { name: /Retained scoring/ })).toContainText("2024-25 · Regular Season · Through Apr 14, 2025");
+  await expect(table).toContainText("Compare Periods");
   await expect(page.getByText(hash)).toHaveCount(0);
   await table.getByRole("button", { name: "Details" }).click();
   await expect(page.getByRole("dialog")).toContainText(hash);

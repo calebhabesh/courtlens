@@ -45,7 +45,18 @@
 }
 
 .courtlens-header .brand {
-  gap: var(--space-1);
+  gap: var(--space-2);
+  font-size: var(--text-xl);
+}
+
+/* Header scale (owner, 2026-10-19: "a little small"): 16px menus, 28px mark, 36px search pill. */
+.courtlens-header .brand-mark-svg svg {
+  width: 28px;
+  height: 28px;
+}
+
+.courtlens-header .brand-title {
+  line-height: var(--text-xl-lh);
 }
 
 .courtlens-nav {
@@ -68,9 +79,10 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-2) var(--space-3);
   color: var(--color-on-bg-secondary);
-  font-size: var(--text-sm);
+  font-size: var(--text-lg);
+  line-height: var(--text-lg-lh);
   font-weight: 500;
   border-radius: var(--radius-sm);
   border: none;
@@ -107,13 +119,17 @@
 .courtlens-nav-indicator {
   position: absolute;
   bottom: 0;
-  left: var(--space-2);
-  right: var(--space-2);
+  left: var(--space-3);
+  right: var(--space-3);
   height: 2px;
   background: var(--color-accent);
   border-radius: var(--radius-xs);
   pointer-events: none;
 }
+
+/* The chevron's glyph ends ~3.3px inside its 16px box (Lucide draws it from 6 to 18 of 24); end the
+   bar at the ink, not the box, so it overhangs the arrow no more than the text (row 0, instr. 21). */
+.courtlens-nav-dropdown-btn .courtlens-nav-indicator { right: calc(var(--space-3) + var(--space-1)); }
 
 /* Center search pill */
 .courtlens-header-center {
@@ -131,8 +147,8 @@
   align-items: center;
   gap: var(--space-2);
   width: 100%;
-  height: var(--control-md);
-  padding: 0 var(--space-3);
+  height: var(--kit-control-md);
+  padding: 0 var(--space-4);
   border-radius: var(--radius-pill);
   background: var(--color-surface-2);
   border: 1px solid transparent;
@@ -162,7 +178,7 @@
 .courtlens-search-pill-label {
   flex: 1;
   text-align: left;
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   color: var(--color-text-tertiary);
   overflow: hidden;
   text-overflow: ellipsis;
@@ -209,10 +225,11 @@
   z-index: var(--z-dropdown);
   background: var(--color-surface-3);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-2);
+  /* No outline or rim highlight, like Databallr's menus (alignment row 0, 17). */
+  box-shadow: var(--shadow-menu);
   padding: var(--space-1);
   min-width: 210px;
-  border: 1px solid var(--color-hairline);
+  border: 0;
   animation: fadeInDropdown var(--dur-fast) var(--ease-out);
 }
 
@@ -281,6 +298,20 @@
   color: var(--color-accent);
   font-weight: 600;
 }
+
+/* Rich rows (Teams menu, alignment row 4): Databallr's icon tile, label and one-line description. */
+.courtlens-dropdown-group:has(.courtlens-dropdown-rich) { width: 320px; padding: var(--space-1); }
+.courtlens-dropdown-item.courtlens-dropdown-rich { justify-content: flex-start; gap: var(--space-3); padding: var(--space-2); }
+.courtlens-dropdown-icon {
+  display: inline-grid; place-items: center; flex: 0 0 auto; width: 36px; height: 36px;
+  border-radius: var(--radius-sm); color: var(--color-text-secondary);
+}
+.courtlens-dropdown-text { display: flex; flex-direction: column; gap: var(--space-0); min-width: 0; }
+.courtlens-dropdown-text > span { font-weight: 600; }
+.courtlens-dropdown-text small { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 400; white-space: normal; }
+.courtlens-dropdown-rich:is(:hover, :focus) .courtlens-dropdown-icon,
+.courtlens-dropdown-rich.active .courtlens-dropdown-icon { background: var(--color-accent-soft); color: var(--color-accent); }
+.courtlens-mobile-sublink-label { display: inline-flex; align-items: center; gap: var(--space-2); }
 
 .courtlens-dropdown-item-disabled {
   opacity: 0.6;

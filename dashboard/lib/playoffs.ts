@@ -3,6 +3,7 @@ import type {
   PlayoffRoundResponse,
   PlayoffSeriesSummary,
   PlayerSeriesStats,
+  SeriesMatchupRow,
   TeamSeriesStats
 } from "./types";
 
@@ -264,4 +265,164 @@ export function sortPlayerSeriesStats(
     const strB = String(valB).toLowerCase();
     return direction === "asc" ? strA.localeCompare(strB) : strB.localeCompare(strA);
   });
+}
+
+const TWO_WORD_NICKNAMES = ["Trail Blazers"];
+
+/** "Oklahoma City Thunder" → city "Oklahoma City", nickname "Thunder" (the hero's two lines). */
+export function splitTeamName(name: string): { city: string; nickname: string } {
+  const two = TWO_WORD_NICKNAMES.find(nickname => name.endsWith(` ${nickname}`));
+  const nickname = two ?? name.split(" ").at(-1) ?? name;
+  return { city: name.slice(0, name.length - nickname.length).trim(), nickname };
+}
+
+/** A paired bar row: each side's share of its bar, where the better side reads full. */
+export interface ComparisonBar {
+  key: string;
+  label: string;
+  team1: number | null;
+  team2: number | null;
+  /** 0–1 bar fill for each side. */
+  fill1: number;
+  fill2: number;
+  better: "team1" | "team2" | null;
+  format: (value: number | null) => string;
+}
+
+function bar(key: string, label: string, team1: number | null, team2: number | null, lowerIsBetter: boolean, format: (value: number | null) => string, signed = false): ComparisonBar {
+  let fill1 = 0;
+  let fill2 = 0;
+  if (team1 != null && team2 != null) {
+    if (signed) {
+      const scale = Math.max(Math.abs(team1), Math.abs(team2)) || 1;
+      fill1 = (team1 + scale) / (2 * scale);
+      fill2 = (team2 + scale) / (2 * scale);
+    } else if (lowerIsBetter) {
+      const best = Math.min(team1, team2);
+      fill1 = team1 > 0 ? best / team1 : 0;
+      fill2 = team2 > 0 ? best / team2 : 0;
+    } else {
+      const best = Math.max(team1, team2) || 1;
+      fill1 = team1 / best;
+      fill2 = team2 / best;
+    }
+  }
+  const advantage = evaluateFactorAdvantage(team1, team2, lowerIsBetter);
+  return { key, label, team1, team2, fill1, fill2, better: advantage === "team1" || advantage === "team2" ? advantage : null, format };
+}
+
+const rating = (value: number | null) => formatStat(value, 1);
+const signedRating = (value: number | null) => value == null ? "—" : `${value > 0 ? "+" : ""}${value.toFixed(1)}`;
+
+/** Team Comparison (ORTG, DRTG, NET) and Four Factors rows, as Databallr's series page shows. */
+export function seriesComparison(team1: TeamSeriesStats, team2: TeamSeriesStats): { ratings: ComparisonBar[]; factors: ComparisonBar[] } {
+  return {
+    ratings: [
+      bar("ortg", "ORTG", team1.off_rating, team2.off_rating, false, rating),
+      bar("drtg", "DRTG", team1.def_rating, team2.def_rating, true, rating),
+      bar("net", "NET", team1.net_rating, team2.net_rating, false, signedRating, true)
+    ],
+    factors: [
+      bar("efg", "eFG%", team1.efg_pct, team2.efg_pct, false, value => formatPercent(value)),
+      bar("tov", "TOV%", team1.tov_pct, team2.tov_pct, true, value => formatPercent(value)),
+      bar("oreb", "OREB%", team1.oreb_pct, team2.oreb_pct, false, value => formatPercent(value)),
+      bar("ftr", "FTR%", team1.ftr, team2.ftr, false, value => formatPercent(value))
+    ]
+  };
+}
+
+export type MatchupPhase = "playoffs" | "regular_season" | "all";
+export type MatchupSide = "offense" | "defense";
+
+/** One opponent of the focus player, summed over the chosen phases. */
+export interface MatchupLine {
+  player_id: string;
+  player_name: string;
+  possessions: number;
+  points: number;
+  fgm: number;
+  fga: number;
+  fg3m: number;
+  fg3a: number;
+  fta: number;
+  assists: number;
+  turnovers: number;
+}
+
+function emptyLine(player_id: string, player_name: string): MatchupLine {
+  return { player_id, player_name, possessions: 0, points: 0, fgm: 0, fga: 0, fg3m: 0, fg3a: 0, fta: 0, assists: 0, turnovers: 0 };
+}
+
+function addTo(line: MatchupLine, row: SeriesMatchupRow): void {
+  line.possessions += row.possessions;
+  line.points += row.points;
+  line.fgm += row.fgm;
+  line.fga += row.fga;
+  line.fg3m += row.fg3m;
+  line.fg3a += row.fg3a;
+  line.fta += row.fta;
+  line.assists += row.assists;
+  line.turnovers += row.turnovers;
+}
+
+/**
+ * The team's players by matchup possessions in the chosen role: on offense the possessions they
+ * had against the opponent's defenders, on defense the opponent possessions they were assigned.
+ */
+export function matchupPlayers(rows: SeriesMatchupRow[], team: string, side: MatchupSide, phase: MatchupPhase): MatchupLine[] {
+  const players = new Map<string, MatchupLine>();
+  for (const row of rows) {
+    if (phase !== "all" && row.phase !== phase) continue;
+    const offense = row.off_team_id === team;
+    if (side === "offense" ? !offense : offense) continue;
+    const [id, name] = side === "offense" ? [row.off_player_id, row.off_player_name] : [row.def_player_id, row.def_player_name];
+    const line = players.get(id) ?? emptyLine(id, name);
+    addTo(line, row);
+    players.set(id, line);
+  }
+  return [...players.values()].sort((a, b) => b.possessions - a.possessions);
+}
+
+/** The focus player's opponents (defenders on offense, scorers on defense), most possessions first. */
+export function matchupOpponents(rows: SeriesMatchupRow[], player: string, side: MatchupSide, phase: MatchupPhase): MatchupLine[] {
+  const opponents = new Map<string, MatchupLine>();
+  for (const row of rows) {
+    if (phase !== "all" && row.phase !== phase) continue;
+    if ((side === "offense" ? row.off_player_id : row.def_player_id) !== player) continue;
+    const [id, name] = side === "offense" ? [row.def_player_id, row.def_player_name] : [row.off_player_id, row.off_player_name];
+    const line = opponents.get(id) ?? emptyLine(id, name);
+    addTo(line, row);
+    opponents.set(id, line);
+  }
+  return [...opponents.values()].sort((a, b) => b.possessions - a.possessions);
+}
+
+export function matchupTotal(lines: MatchupLine[]): MatchupLine {
+  const total = emptyLine("total", "Total");
+  for (const line of lines) {
+    total.possessions += line.possessions;
+    total.points += line.points;
+    total.fgm += line.fgm;
+    total.fga += line.fga;
+    total.fg3m += line.fg3m;
+    total.fg3a += line.fg3a;
+    total.fta += line.fta;
+    total.assists += line.assists;
+    total.turnovers += line.turnovers;
+  }
+  return total;
+}
+
+export function matchupEfg(line: MatchupLine): number | null {
+  return line.fga ? (line.fgm + 0.5 * line.fg3m) / line.fga : null;
+}
+
+export function pointsPer75(line: MatchupLine): number | null {
+  return line.possessions > 0 ? (line.points / line.possessions) * 75 : null;
+}
+
+/** "J. Brooks" style short name for dense rows. */
+export function shortName(name: string): string {
+  const parts = name.split(" ");
+  return parts.length > 1 ? `${parts[0][0]}. ${parts.slice(1).join(" ")}` : name;
 }

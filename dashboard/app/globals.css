@@ -7,8 +7,11 @@
 @import "./styles/motion.css";
 /* Component styles live next to their components (UC05); this order is the cascade order. */
 @import "./styles/components.css";
+/* The app layout owns the plain blue page backdrop. */
+@import "./shell.css";
 @import "../components/brand.css";
 @import "../components/ui/header.css";
+@import "../components/ui/back-button.css";
 @import "../components/lookup-input.css";
 @import "../components/hotkeys-modal.css";
 @import "../components/manage-views-modal.css";
@@ -21,6 +24,7 @@
 @import "../components/threaded-assistant.css";
 @import "../components/agent-answer.css";
 @import "../components/player-portrait.css";
+@import "../components/player-silhouette.css";
 @import "../components/ui/input.css";
 @import "../components/ui/checkbox.css";
 @import "../components/ui/switch.css";
@@ -30,6 +34,7 @@
 @import "../components/ui/table.css";
 @import "../components/ui/menu.css";
 @import "../components/ui/tooltip.css";
+@import "../components/ui/hover-card.css";
 @import "../components/ui/modal.css";
 @import "../components/ui/command-palette.css";
 @import "../components/ui/toast.css";
@@ -37,9 +42,6 @@
 @import "../components/ui/empty-state.css";
 @import "../components/ui/accordion.css";
 @import "../components/workbench-compare-view.css";
-@import "./teams/[id]/team-detail.css";
-@import "../components/team-explorer-view.css";
-@import "../components/team-compare-view.css";
 /* Page styles live next to their views and routes (UC05); this order is the cascade order. */
 @import "./styles/pages.css";
 @import "../components/research-trend-charts.css";
@@ -53,25 +55,43 @@
 @import "../components/possession-calculator-view.css";
 @import "../components/finance-workspace.css";
 @import "../components/live-workspace.css";
+@import "../components/live-game.css";
+@import "../components/standings-view.css";
 @import "./styles/route-surfaces.css";
 @import "../components/planner-client.css";
 @import "./design/design.css";
-@import "../components/recent-games-view.css";
+@import "../components/last-games-view.css";
 @import "../components/playoffs-bracket-view.css";
+@import "../components/playoffs-bracket.css";
 @import "../components/playoffs-series-view.css";
 @import "../components/distributions-investigation-view.css";
-@import "../components/similarity-investigation-view.css";
-@import "../components/ranking-boards-view.css";
 @import "../components/case-studies-view.css";
 @import "../components/scatter-plot-view.css";
 @import "./styles/page-fallbacks.css";
 @import "../components/data-status-view.css";
 @import "./methodology/methodology.css";
-@import "../components/tier-list-view.css";
 @import "../components/player-showcase-view.css";
 @import "../components/roster-allocation-view.css";
 @import "../components/workbench-player-profile.css";
 @import "../components/player-bio-header.css";
+@import "../components/ref-grid.css";
+@import "../components/player-reference-sections.css";
+@import "../components/player-compare-view.css";
+@import "../components/season-matchups-view.css";
+@import "../components/player-twins-view.css";
+@import "../components/player-dashboard-view.css";
+@import "../components/team-trend.css";
+@import "../components/teams-six-factor-view.css";
+@import "../components/team-profile.css";
+@import "../components/team-schedule.css";
+@import "../components/roster-shapes-view.css";
+@import "../components/team-stat-shift-view.css";
+@import "../components/wowy-view.css";
+@import "../components/contracts-view.css";
+@import "../components/free-agency-view.css";
+@import "../components/compare-grid.css";
+@import "./team-compare/team-comparison.css";
+@import "./team-compare/team-game-history.css";
 @import "./styles/foundation.css";
 @import "./styles/charts.css";
 

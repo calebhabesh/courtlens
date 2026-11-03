@@ -52,7 +52,7 @@ function Body({ data, sort, setSort }: { data: TrackingView; sort: string; setSo
         </tr>)}</tbody>
       </table>
     </div>
-    {sorted.length > TABLE_LIMIT && <Button size="lg" onClick={() => setAll(v => !v)}>{all ? `Show first ${TABLE_LIMIT}` : `Show all ${sorted.length} players`}</Button>}
+    {sorted.length > TABLE_LIMIT && <Button size="lg" onClick={() => setAll(v => !v)}>{all ? `Show First ${TABLE_LIMIT}` : `Show All ${sorted.length} Players`}</Button>}
   </ResearchLayout>;
 }
 

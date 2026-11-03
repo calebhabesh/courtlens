@@ -14,7 +14,7 @@ test("standard records are readable and portrait gutters center between metric g
         (cell.previousElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().right +
          cell.nextElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().left) / 2) };
   });
-  expect(geometry.height).toBeCloseTo(42, 1);
+  expect(geometry.height).toBeCloseTo(52, 1);
   expect(geometry.font).toBe("14px");
   geometry.offsets.forEach(offset => expect(Math.abs(offset)).toBeLessThan(1));
   expect(geometry.offsets).toHaveLength(5);
@@ -22,7 +22,7 @@ test("standard records are readable and portrait gutters center between metric g
     main: row.querySelector(".stats-primary-portrait")!.getBoundingClientRect().width,
     guides: [...row.querySelectorAll(".stats-guide-marker > *")].map(image => image.getBoundingClientRect().width)
   }));
-  expect(portraits).toEqual({ main: 32, guides: [30, 30, 30, 30, 30] });
+  expect(portraits).toEqual({ main: 40, guides: [36, 36, 36, 36, 36] });
 });
 
 test("header branding and secondary navigation align", async ({ page }) => {
@@ -78,9 +78,11 @@ test("global search clear button uses the right edge and concise player captions
     element.querySelector("input")!.getBoundingClientRect().right - element.querySelector("button[aria-label=\"Clear search\"]")!.getBoundingClientRect().right);
   expect(gap).toBeLessThanOrEqual(8);
   await expect(page.locator(".ui-command-palette").getByRole("option")).toHaveCount(3);
-  await expect(page.locator(".ui-command-palette .lookup-alias-badge")).toHaveCount(0);
+  // matched_alias is only a verified Basketball-Reference nickname, so it is captioned beside the name.
+  await expect(page.locator(".ui-command-palette .lookup-alias-badge")).toHaveText(["aka star", "aka star"]);
   const captions = await page.locator(".ui-command-palette .lookup-item-subtitle").allTextContents();
-  expect(captions).toEqual(["TOR · 2025-26", "No stats in selected scope", "BOS · Last observed team"]);
+  // Team code(s) only: no scope wording in search results (owner, 2026-10-15).
+  expect(captions).toEqual(["TOR", "TOR", "BOS"]);
 });
 
 test("table search filters the rows as you type and keeps typing ahead of the URL", async ({ page }) => {

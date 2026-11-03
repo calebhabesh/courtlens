@@ -231,7 +231,7 @@ def projected_roster(
         )
     return {
         "context": dataset_info(session, dataset),
-        "label": f"{dataset.season} · projected",
+        "label": f"{dataset.season} · Projected",
         "reference_season": reference_season,
         "statistics_release_id": release_id,
         "current_season_appearances_in_release": current_appearances,

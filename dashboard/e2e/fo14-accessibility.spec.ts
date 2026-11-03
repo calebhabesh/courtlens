@@ -74,7 +74,7 @@ test("phone table links meet the target without stretching Stats rows", async ({
     const links = page.locator(".data-table a");
     const short = await links.evaluateAll(elements => elements.filter(e => e.checkVisibility()).filter(e => e.getBoundingClientRect().height < 39.5).map(e => e.textContent));
     expect(short).toEqual([]);
-    if (route === "/stats") expect(await page.locator(".stats-table-row").first().evaluate(e => e.getBoundingClientRect().height)).toBe(42);
+    if (route === "/stats") expect(await page.locator(".stats-table-row").first().evaluate(e => e.getBoundingClientRect().height)).toBe(46);
   }
 });
 

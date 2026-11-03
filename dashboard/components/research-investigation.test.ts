@@ -17,7 +17,7 @@ describe("FO12 research helpers", () => {
 
   it("states a retained scope with the shared through-date format, never the raw cutoff", () => {
     const line = contextLine({ release_id: "r", season: "2024-25", phase: "regular_season", before_date: "2025-04-15" });
-    expect(line).toBe("2024-25 · Regular season · Through Apr 14, 2025");
+    expect(line).toBe("2024-25 · Regular Season · Through Apr 14, 2025");
     expect(line).not.toContain("2025-04-15");
     expect(contextLine({ season: "2024-25" })).toBe("2024-25");
   });

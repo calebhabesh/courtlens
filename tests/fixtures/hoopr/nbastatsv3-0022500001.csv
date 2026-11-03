@@ -1,0 +1,81 @@
+actionNumber,clock,period,teamId,teamTricode,personId,playerName,playerNameI,xLegacy,yLegacy,shotDistance,shotResult,isFieldGoal,scoreHome,scoreAway,pointsTotal,location,description,actionType,subType,videoAvailable,shotValue,actionId,gameId
+2,PT12M00.00S,1,0,,0,,,0,0,0,,0,0,0,0,,Start of 1st Period (7:44 PM EST),period,start,1,0,1,22500001
+4,PT12M00.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,0,0,0,,0,,,0,h,Jump Ball Holmgren vs. Adams: Tip to Thompson,Jump Ball,,1,0,2,22500001
+8,PT11M36.00S,1,1610612745,HOU,1630578,Sengun,A. Sengun,-179,179,25,Missed,1,,,0,v,MISS Sengun 25' 3PT Jump Shot,Missed Shot,Jump Shot,1,3,3,22500001
+9,PT11M31.00S,1,1610612760,OKC,1641717,Wallace,C. Wallace,0,0,0,,0,,,0,h,Wallace REBOUND (Off:0 Def:1),Rebound,Unknown,1,0,4,22500001
+10,PT11M26.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,0,13,1,Made,1,2,0,2,h,Holmgren 1' Cutting Layup Shot (2 PTS) (Dort 1 AST),Made Shot,Cutting Layup Shot,1,2,5,22500001
+12,PT11M26.00S,1,1610612745,HOU,1631095,Smith Jr.,J. Smith Jr.,0,0,0,,0,,,0,v,Smith Jr. S.FOUL (P1.T1) (E.Dalen),Foul,Shooting,1,0,6,22500001
+14,PT11M26.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,0,0,0,,0,3,0,3,h,Holmgren Free Throw 1 of 1 (3 PTS),Free Throw,Free Throw 1 of 1,1,0,7,22500001
+15,PT11M08.00S,1,1610612745,HOU,1641708,Thompson,A. Thompson,233,0,0,Missed,1,,,0,v,MISS Thompson 3PT Jump Shot,Missed Shot,Jump Shot,1,3,8,22500001
+16,PT11M04.00S,1,1610612745,HOU,1631095,Smith Jr.,J. Smith Jr.,0,0,0,,0,,,0,v,Smith Jr. REBOUND (Off:1 Def:0),Rebound,Unknown,1,0,9,22500001
+17,PT11M02.00S,1,1610612745,HOU,1631095,Smith Jr.,J. Smith Jr.,-7,-5,1,Made,1,3,2,5,v,Smith Jr. 1' Putback Layup (2 PTS),Made Shot,Putback Layup Shot,1,2,10,22500001
+18,PT10M50.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,64,39,7,Made,1,5,2,7,h,Holmgren 7' Floating Jump Shot (5 PTS) (Wallace 1 AST),Made Shot,Floating Jump shot,1,2,11,22500001
+20,PT10M40.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,0,0,0,,0,,,0,h,Holmgren Violation:Kicked Ball (Z.Zarba),Violation,Kicked Ball,0,0,12,22500001
+21,PT10M24.00S,1,1610612745,HOU,1630578,Sengun,A. Sengun,72,126,15,Missed,1,,,0,v,MISS Sengun 15' Pullup Jump Shot,Missed Shot,Pullup Jump shot,1,2,13,22500001
+23,PT10M24.00S,1,0,,1610612745,,,0,0,0,,0,,,0,v,Rockets Rebound,Rebound,Unknown,0,0,14,22500001
+24,PT10M24.00S,1,0,,1610612745,,,0,0,0,,0,,,0,v,Rockets Turnover: Shot Clock (T#1),Turnover,Shot Clock Turnover,1,0,15,22500001
+25,PT10M11.00S,1,1610612760,OKC,1628983,Gilgeous-Alexander,S. Gilgeous-Alexander,0,0,0,,0,,,0,h,Gilgeous-Alexander Bad Pass Turnover (P1.T1),Turnover,Bad Pass,1,0,16,22500001
+25,PT10M11.00S,1,1610612745,HOU,1630578,Sengun,A. Sengun,0,0,0,,0,,,0,v,Sengun STEAL (1 STL),,,1,0,17,22500001
+27,PT10M07.00S,1,1610612745,HOU,201142,Durant,K. Durant,0,-1,0,Made,1,5,4,9,v,Durant Running Dunk (2 PTS) (Thompson 1 AST),Made Shot,Running Dunk Shot,1,2,18,22500001
+29,PT09M52.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,59,116,13,Made,1,7,4,11,h,Holmgren 13' Turnaround Fadeaway (7 PTS),Made Shot,Turnaround Fadeaway shot,1,2,19,22500001
+30,PT09M35.00S,1,1610612745,HOU,1631095,Smith Jr.,J. Smith Jr.,164,201,26,Made,1,7,7,14,v,Smith Jr. 26' 3PT Jump Shot (5 PTS) (Thompson 2 AST),Made Shot,Jump Shot,1,3,20,22500001
+32,PT09M21.00S,1,1610612760,OKC,1641717,Wallace,C. Wallace,74,251,26,Missed,1,,,0,h,MISS Wallace 26' 3PT Jump Shot,Missed Shot,Jump Shot,1,3,21,22500001
+33,PT09M17.00S,1,1610612745,HOU,1630578,Sengun,A. Sengun,0,0,0,,0,,,0,v,Sengun REBOUND (Off:0 Def:1),Rebound,Unknown,1,0,22,22500001
+34,PT09M06.00S,1,1610612745,HOU,201142,Durant,K. Durant,85,37,9,Missed,1,,,0,v,MISS Durant 9' Pullup Jump Shot,Missed Shot,Pullup Jump shot,1,2,23,22500001
+35,PT09M04.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,0,0,0,,0,,,0,h,Holmgren REBOUND (Off:0 Def:1),Rebound,Unknown,1,0,24,22500001
+36,PT08M57.00S,1,1610612760,OKC,1628983,Gilgeous-Alexander,S. Gilgeous-Alexander,-217,132,25,Missed,1,,,0,h,MISS Gilgeous-Alexander 25' 3PT Step Back Jump Shot,Missed Shot,Step Back Jump shot,1,3,25,22500001
+37,PT08M54.00S,1,1610612760,OKC,1628392,Hartenstein,I. Hartenstein,0,0,0,,0,,,0,h,Hartenstein REBOUND (Off:1 Def:0),Rebound,Unknown,1,0,26,22500001
+38,PT08M49.00S,1,1610612760,OKC,1629652,Dort,L. Dort,-10,11,1,Made,1,9,7,16,h,Dort 1' Driving Dunk (2 PTS),Made Shot,Driving Dunk Shot,1,2,27,22500001
+39,PT08M20.00S,1,1610612745,HOU,1641708,Thompson,A. Thompson,227,38,0,Missed,1,,,0,v,MISS Thompson 3PT Jump Shot,Missed Shot,Jump Shot,1,3,28,22500001
+40,PT08M18.00S,1,1610612745,HOU,203500,Adams,S. Adams,0,0,0,,0,,,0,v,Adams REBOUND (Off:1 Def:0),Rebound,Unknown,1,0,29,22500001
+41,PT08M17.00S,1,1610612745,HOU,1641708,Thompson,A. Thompson,5,35,4,Made,1,9,9,18,v,Thompson 4' Pullup Jump Shot (2 PTS) (Adams 1 AST),Made Shot,Pullup Jump shot,1,2,30,22500001
+43,PT08M17.00S,1,1610612760,OKC,1641717,Wallace,C. Wallace,0,0,0,,0,,,0,h,Wallace S.FOUL (P1.T1) (Z.Zarba),Foul,Shooting,1,0,31,22500001
+45,PT08M17.00S,1,1610612745,HOU,1641708,Thompson,A. Thompson,0,0,0,,0,9,10,19,v,Thompson Free Throw 1 of 1 (3 PTS),Free Throw,Free Throw 1 of 1,1,0,32,22500001
+46,PT08M07.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,0,0,0,,0,,,0,h,Holmgren Lost Ball Turnover (P1.T2),Turnover,Lost Ball,1,0,33,22500001
+46,PT08M07.00S,1,1610612745,HOU,1630578,Sengun,A. Sengun,0,0,0,,0,,,0,v,Sengun STEAL (2 STL),,,1,0,34,22500001
+48,PT08M03.00S,1,1610612745,HOU,1631095,Smith Jr.,J. Smith Jr.,168,203,26,Missed,1,,,0,v,MISS Smith Jr. 26' 3PT Running Pull-Up Jump Shot,Missed Shot,Running Pull-Up Jump Shot,1,3,35,22500001
+49,PT08M00.00S,1,1610612760,OKC,1628392,Hartenstein,I. Hartenstein,0,0,0,,0,,,0,h,Hartenstein REBOUND (Off:1 Def:1),Rebound,Unknown,1,0,36,22500001
+50,PT07M49.00S,1,1610612760,OKC,1628392,Hartenstein,I. Hartenstein,9,115,12,Missed,1,,,0,h,MISS Hartenstein 12' Driving Floating Jump Shot,Missed Shot,Driving Floating Jump Shot,1,2,37,22500001
+51,PT07M47.00S,1,1610612760,OKC,1628392,Hartenstein,I. Hartenstein,0,0,0,,0,,,0,h,Hartenstein REBOUND (Off:2 Def:1),Rebound,Unknown,1,0,38,22500001
+52,PT07M45.00S,1,1610612760,OKC,1628392,Hartenstein,I. Hartenstein,-76,33,8,Missed,1,,,0,h,MISS Hartenstein 8' Jump Shot,Missed Shot,Jump Shot,1,2,39,22500001
+53,PT07M44.00S,1,0,,1610612760,,,0,0,0,,0,,,0,h,THUNDER Rebound,Rebound,Unknown,0,0,40,22500001
+55,PT07M42.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,211,97,23,Made,1,11,10,21,h,Holmgren 23' Jump Shot (9 PTS) (Dort 2 AST),Made Shot,Jump Shot,1,2,41,22500001
+57,PT07M26.00S,1,1610612745,HOU,1641708,Thompson,A. Thompson,-1,231,23,Made,1,11,12,23,v,Thompson 23' Pullup Jump Shot (5 PTS),Made Shot,Pullup Jump shot,1,2,42,22500001
+58,PT07M10.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,-4,139,14,Made,1,13,12,25,h,Holmgren 14' Jump Shot (11 PTS) (Gilgeous-Alexander 1 AST),Made Shot,Jump Shot,1,2,43,22500001
+60,PT07M10.00S,1,0,,1610612745,,,0,0,0,,0,,,0,v,Rockets Timeout: Regular (Reg.1 Short 0),Timeout,Regular,0,0,44,22500001
+61,PT07M10.00S,1,0,,57,Christie,D. Christie,0,0,0,,0,13,12,25,,Instant Replay1st Period (7:53 PM EST),Instant Replay,Replay Center,0,0,45,22500001
+62,PT06M52.00S,1,1610612745,HOU,1630578,Sengun,A. Sengun,-4,-10,1,Made,1,13,14,27,v,Sengun 1' Driving Layup (2 PTS),Made Shot,Driving Layup Shot,1,2,46,22500001
+64,PT06M40.00S,1,1610612745,HOU,1631095,Smith Jr.,J. Smith Jr.,0,0,0,,0,,,0,v,Smith Jr. S.FOUL (P2.T2) (J.Goldenberg),Foul,Shooting,1,0,47,22500001
+66,PT06M40.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,0,0,0,,0,14,14,28,h,Holmgren Free Throw 1 of 2 (12 PTS),Free Throw,Free Throw 1 of 2,1,0,48,22500001
+67,PT06M40.00S,1,1610612745,HOU,1631095,Smith Jr.,J. Smith Jr.,0,0,0,,0,,,0,v,SUB: Eason FOR Smith Jr.,Substitution,,0,0,49,22500001
+69,PT06M40.00S,1,1610612760,OKC,1631096,Holmgren,C. Holmgren,0,0,0,,0,15,14,29,h,Holmgren Free Throw 2 of 2 (13 PTS),Free Throw,Free Throw 2 of 2,1,0,50,22500001
+70,PT06M29.00S,1,1610612745,HOU,1641708,Thompson,A. Thompson,21,130,13,Made,1,15,16,31,v,Thompson 13' Driving Floating Jump Shot (7 PTS),Made Shot,Driving Floating Jump Shot,1,2,51,22500001
+71,PT06M29.00S,1,1610612760,OKC,1628392,Hartenstein,I. Hartenstein,0,0,0,,0,,,0,h,Hartenstein S.FOUL (P1.T2) (E.Dalen),Foul,Shooting,1,0,52,22500001
+73,PT06M29.00S,1,1610612745,HOU,1641708,Thompson,A. Thompson,0,0,0,,0,15,17,32,v,Thompson Free Throw 1 of 1 (8 PTS),Free Throw,Free Throw 1 of 1,1,0,53,22500001
+74,PT06M16.00S,1,1610612760,OKC,1629652,Dort,L. Dort,99,248,27,Missed,1,,,0,h,MISS Dort 27' 3PT Jump Shot,Missed Shot,Jump Shot,1,3,54,22500001
+75,PT06M15.00S,1,0,,1610612745,,,0,0,0,,0,,,0,v,Rockets Rebound,Rebound,Unknown,0,0,55,22500001
+76,PT06M15.00S,1,1610612760,OKC,1628392,Hartenstein,I. Hartenstein,0,0,0,,0,,,0,h,Hartenstein L.B.FOUL (P2.T3) (E.Dalen),Foul,Loose Ball,1,0,56,22500001
+79,PT06M15.00S,1,1610612760,OKC,1628392,Hartenstein,I. Hartenstein,0,0,0,,0,,,0,h,SUB: Williams FOR Hartenstein,Substitution,,0,0,57,22500001
+81,PT05M56.00S,1,1610612745,HOU,201142,Durant,K. Durant,7,53,5,Made,1,15,19,34,v,Durant 5' Driving Floating Jump Shot (4 PTS),Made Shot,Driving Floating Jump Shot,1,2,58,22500001
+82,PT05M43.00S,1,1610612760,OKC,1631119,Williams,J. Williams,-168,8,17,Made,1,17,19,36,h,Williams 17' Pullup Jump Shot (2 PTS) (Wallace 2 AST),Made Shot,Pullup Jump shot,1,2,59,22500001
+84,PT05M31.00S,1,1610612745,HOU,1641708,Thompson,A. Thompson,11,-6,1,Made,1,17,21,38,v,Thompson 1' Cutting Layup Shot (10 PTS) (Sengun 1 AST),Made Shot,Cutting Layup Shot,1,2,60,22500001
+86,PT05M31.00S,1,0,,1610612760,,,0,0,0,,0,,,0,h,THUNDER Timeout: Regular (Full 1 Short 0),Timeout,Regular,0,0,61,22500001
+87,PT05M31.00S,1,1610612745,HOU,1630578,Sengun,A. Sengun,0,0,0,,0,,,0,v,SUB: Sheppard FOR Sengun,Substitution,,0,0,62,22500001
+89,PT05M15.00S,1,1610612745,HOU,201142,Durant,K. Durant,0,0,0,,0,,,0,v,Durant S.FOUL (P1.T3) (J.Goldenberg),Foul,Shooting,1,0,63,22500001
+91,PT05M15.00S,1,1610612760,OKC,1629652,Dort,L. Dort,0,0,0,,0,18,21,39,h,Dort Free Throw 1 of 2 (3 PTS),Free Throw,Free Throw 1 of 2,1,0,64,22500001
+92,PT05M15.00S,1,1610612760,OKC,1629652,Dort,L. Dort,0,0,0,,0,19,21,40,h,Dort Free Throw 2 of 2 (4 PTS),Free Throw,Free Throw 2 of 2,1,0,65,22500001
+93,PT04M53.00S,1,1610612745,HOU,201142,Durant,K. Durant,-195,157,25,Missed,1,,,0,v,MISS Durant 25' 3PT Jump Shot,Missed Shot,Jump Shot,1,3,66,22500001
+94,PT04M47.00S,1,1610612760,OKC,1641717,Wallace,C. Wallace,0,0,0,,0,,,0,h,Wallace REBOUND (Off:0 Def:2),Rebound,Unknown,1,0,67,22500001
+95,PT04M39.00S,1,1610612760,OKC,1628983,Gilgeous-Alexander,S. Gilgeous-Alexander,16,13,2,Made,1,21,21,42,h,Gilgeous-Alexander 2' Driving Finger Roll Layup (2 PTS) (Williams 1 AST),Made Shot,Driving Finger Roll Layup Shot,1,2,68,22500001
+97,PT04M25.00S,1,1610612745,HOU,201142,Durant,K. Durant,82,78,11,Missed,1,,,0,v,MISS Durant 11' Fadeaway Jumper,Missed Shot,Fadeaway Jump Shot,1,2,69,22500001
+98,PT04M23.00S,1,1610612760,OKC,1629652,Dort,L. Dort,0,0,0,,0,,,0,h,Dort REBOUND (Off:0 Def:1),Rebound,Unknown,1,0,70,22500001
+99,PT04M17.00S,1,1610612760,OKC,1629652,Dort,L. Dort,11,8,1,Made,1,23,21,44,h,Dort 1' Driving Layup (6 PTS),Made Shot,Driving Layup Shot,1,2,71,22500001
+100,PT04M08.00S,1,1610612760,OKC,1631119,Williams,J. Williams,0,0,0,,0,,,0,h,Williams P.FOUL (P1.T4) (E.Dalen),Foul,Personal,1,0,72,22500001
+102,PT04M08.00S,1,1610612745,HOU,203500,Adams,S. Adams,0,0,0,,0,,,0,v,SUB: Capela FOR Adams,Substitution,,0,0,73,22500001
+104,PT04M03.00S,1,1610612760,OKC,1629652,Dort,L. Dort,0,0,0,,0,,,0,h,Dort P.FOUL (P1.PN) (E.Dalen),Foul,Personal,1,0,74,22500001
+106,PT04M03.00S,1,1610612745,HOU,201142,Durant,K. Durant,0,0,0,,0,23,22,45,v,Durant Free Throw 1 of 2 (5 PTS),Free Throw,Free Throw 1 of 2,1,0,75,22500001
+107,PT04M03.00S,1,1610612760,OKC,1641717,Wallace,C. Wallace,0,0,0,,0,,,0,h,SUB: Wiggins FOR Wallace,Substitution,,0,0,76,22500001
+109,PT04M03.00S,1,1610612745,HOU,201142,Durant,K. Durant,0,0,0,,0,23,23,46,v,Durant Free Throw 2 of 2 (6 PTS),Free Throw,Free Throw 2 of 2,1,0,77,22500001
+110,PT03M43.00S,1,1610612760,OKC,1630598,Wiggins,A. Wiggins,223,2,0,Missed,1,,,0,h,MISS Wiggins 3PT Jump Shot,Missed Shot,Jump Shot,1,3,78,22500001
+111,PT03M39.00S,1,1610612745,HOU,201142,Durant,K. Durant,0,0,0,,0,,,0,v,Durant REBOUND (Off:0 Def:1),Rebound,Unknown,1,0,79,22500001
+112,PT03M33.00S,1,1610612745,HOU,1641708,Thompson,A. Thompson,0,0,0,,0,,,0,v,Thompson Out of Bounds - Bad Pass Turnover Turnover (P1.T2),Turnover,Out of Bounds - Bad Pass Turnover,1,0,80,22500001

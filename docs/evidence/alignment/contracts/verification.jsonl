@@ -1,0 +1,16 @@
+{"name":"select-team","width":1440,"path":"/contracts","height":900,"overflow":false,"timelineRows":0,"errors":[]}
+{"name":"select-team","width":390,"path":"/contracts","height":844,"overflow":false,"timelineRows":0,"errors":[]}
+{"name":"empty","width":1440,"path":"/contracts","height":900,"overflow":false,"timelineRows":0,"errors":[]}
+{"name":"empty","width":390,"path":"/contracts","height":844,"overflow":false,"timelineRows":0,"errors":[]}
+{"name":"tor-overview","width":1440,"path":"/contracts?team=TOR","height":2960,"overflow":false,"totalPayroll":"Total Payroll $202.5M Below 1st Apron Below by $6.5M Below 2nd Apron Below by $19.1M Known salaries only: 6 blank on the source page, not counted as $0","statsRowsVisible":679,"timelineRows":15,"errors":[]}
+{"name":"tor-overview","width":390,"path":"/contracts?team=TOR","height":4873,"overflow":false,"totalPayroll":"Total Payroll $202.5M Below 1st Apron Below by $6.5M Below 2nd Apron Below by $19.1M Known salaries only: 6 blank on the source page, not counted as $0","statsRowsVisible":480,"timelineRows":15,"errors":[]}
+{"name":"tor-small-big","width":1440,"path":"/contracts?team=TOR&tab=small-big","height":1123,"overflow":false,"timelineRows":0,"errors":[]}
+{"name":"tor-small-big","width":390,"path":"/contracts?team=TOR&tab=small-big","height":2811,"overflow":false,"timelineRows":0,"errors":[]}
+{"name":"den-overview","width":1440,"path":"/contracts?team=DEN","height":2922,"overflow":false,"totalPayroll":"Total Payroll $221.1M Above 1st Apron Over by $12.1M Below 2nd Apron Below by $617K Known salaries only: 7 blank on the source page, not counted as $0","statsRowsVisible":679,"timelineRows":14,"errors":[]}
+{"name":"den-overview","width":390,"path":"/contracts?team=DEN","height":4817,"overflow":false,"totalPayroll":"Total Payroll $221.1M Above 1st Apron Over by $12.1M Below 2nd Apron Below by $617K Known salaries only: 7 blank on the source page, not counted as $0","statsRowsVisible":480,"timelineRows":14,"errors":[]}
+{"name":"den-2027-28","width":1440,"path":"/contracts?team=DEN&year=2027-28","height":2734,"overflow":false,"totalPayroll":"Total Payroll $195.0M Projected from the 2026-27 book: salaries listed for 2027-28","statsRowsVisible":679,"timelineRows":7,"errors":[]}
+{"name":"den-2027-28","width":390,"path":"/contracts?team=DEN&year=2027-28","height":4242,"overflow":false,"totalPayroll":"Total Payroll $195.0M Projected from the 2026-27 book: salaries listed for 2027-28","statsRowsVisible":480,"timelineRows":7,"errors":[]}
+{"name":"free-agency","width":1440,"path":"/free-agency","height":16072,"overflow":false,"faGroupOffsets":{"2025-26":0,"Profile":0},"faLabelBottomSpread":1,"faRows":238,"timelineRows":0,"errors":[]}
+{"name":"free-agency","width":390,"path":"/free-agency","height":17449,"overflow":false,"faGroupOffsets":{"2025-26":0,"Profile":0},"faLabelBottomSpread":1,"faRows":238,"timelineRows":0,"errors":[]}
+{"name":"free-agency-signed","width":1440,"path":"/free-agency?status=signed","height":5217,"overflow":false,"faGroupOffsets":{"2025-26":0,"Profile":0},"faLabelBottomSpread":1,"faRows":71,"timelineRows":0,"errors":[]}
+{"name":"free-agency-signed","width":390,"path":"/free-agency?status=signed","height":5877,"overflow":false,"faGroupOffsets":{"2025-26":0,"Profile":0},"faLabelBottomSpread":1,"faRows":71,"timelineRows":0,"errors":[]}

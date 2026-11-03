@@ -9,6 +9,7 @@ Implements Block B15:
 from __future__ import annotations
 
 from collections import defaultdict
+from datetime import timedelta
 from typing import Any
 
 from fastapi import HTTPException
@@ -24,7 +25,39 @@ from courtlens.domain.team_analytics import (
     compute_team_similarity,
     compute_three_point_variation,
 )
-from courtlens.domain.teams import get_team_info, resolve_team_label, resolve_team_tricode
+from courtlens.domain.team_context import METHOD_VERSION as CONTEXT_METHOD
+from courtlens.domain.team_context import (
+    TeamGame,
+    close_record,
+    expected_wins,
+    net_rating,
+    rolling_net,
+    schedule_adjusted,
+    standings,
+)
+from courtlens.domain.team_six_factors import (
+    METHOD_VERSION as SIX_FACTOR_METHOD,
+)
+from courtlens.domain.team_six_factors import (
+    box_totals,
+    league_rates,
+    sum_totals,
+    team_six_factors,
+)
+from courtlens.domain.teams import (
+    get_team_info,
+    resolve_team_label,
+    resolve_team_tricode,
+    team_identity,
+)
+from courtlens.services.history_teams import (
+    SEASON_TOTALS_NOTE,
+    find_team,
+    history_four_factors,
+    history_record,
+    history_six_factors,
+    season_teams,
+)
 from courtlens.services.workbench_analytics import ResolvedContext
 from courtlens.workbench_models import WorkbenchTeamGame
 
@@ -117,9 +150,11 @@ def load_context_team_games(
     return results
 
 
-def _resolve_team_canonical_id_and_tricode(team_id: str) -> tuple[str, str, str]:
-    """Resolve (canonical_id, tricode, name) for any team id or tricode."""
-    info = get_team_info(team_id)
+def _resolve_team_canonical_id_and_tricode(
+    team_id: str, season: str | None = None
+) -> tuple[str, str, str]:
+    """Resolve (canonical_id, tricode, name) for any team id or tricode in its season."""
+    info = team_identity(team_id, season)
     if info:
         return info.team_id, info.tricode, info.name
     # Fallback
@@ -133,6 +168,11 @@ def _compute_all_team_four_factors(
     context: ResolvedContext,
 ) -> tuple[dict[str, dict[str, Any]], dict[str, float], dict[str, dict[str, dict[str, Any]]]]:
     """Internal helper to compute four factors, pace, and rankings for all teams in context."""
+    history = season_teams(session, context)
+    if history is not None:
+        # A season served as totals (before 1983-84): the same factors from season totals.
+        totals_factors = history_four_factors(history)
+        return totals_factors, *compute_league_rankings(totals_factors)
     all_games = load_context_team_games(session, context)
 
     # Index by (game_id, team_id) -> game
@@ -200,7 +240,7 @@ def get_team_four_factors(
     team_id: str,
 ) -> dict[str, Any]:
     """Retrieve complete Dean Oliver Four Factors, ratings, and league rankings for a team."""
-    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id)
+    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id, context.season)
 
     all_team_factors, league_averages, team_rankings = _compute_all_team_four_factors(
         session, context
@@ -213,7 +253,7 @@ def get_team_four_factors(
 
     if team_key is None or team_key not in all_team_factors:
         # Check if team is known
-        info = get_team_info(team_id)
+        info = team_identity(team_id, context.season)
         if not info:
             raise HTTPException(status_code=404, detail="team not found in snapshot")
         # Empty factors if team played 0 games before cutoff
@@ -290,7 +330,7 @@ def get_team_four_factors(
         league_3p_pct=league_3p_pct,
     )
 
-    team_info_obj = get_team_info(team_id)
+    team_info_obj = team_identity(team_id, context.season)
 
     return {
         "team": {
@@ -298,8 +338,8 @@ def get_team_four_factors(
             "tricode": tricode,
             "name": name,
             "city": team_info_obj.city if team_info_obj else "",
-            "conference": team_info_obj.conference if team_info_obj else "",
-            "division": team_info_obj.division if team_info_obj else "",
+            "conference": (team_info_obj.conference or "") if team_info_obj else "",
+            "division": (team_info_obj.division or "") if team_info_obj else "",
         },
         "context": context.to_dict(),
         "games_played": factors.get("games_played", 0),
@@ -330,19 +370,21 @@ def get_team_schedule(
     team_id: str,
 ) -> dict[str, Any]:
     """Retrieve full chronological schedule, rest days, back-to-backs, and splits for a team."""
-    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id)
+    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id, context.season)
     raw_games = load_context_team_games(session, context, team_id=team_id)
 
     if not raw_games:
-        info = get_team_info(team_id)
+        info = team_identity(team_id, context.season)
         if not info:
             raise HTTPException(status_code=404, detail="team not found in snapshot")
+    history = season_teams(session, context)
+    totals_team = find_team(history, team_id, context.season) if history else None
 
     # Enrich each game with opponent details
     enriched: list[dict[str, Any]] = []
     for g in raw_games:
         opp_id = g.get("opponent_id", "")
-        opp_info = get_team_info(opp_id)
+        opp_info = team_identity(opp_id, context.season)
         enriched.append(
             {
                 "game_id": g["game_id"],
@@ -357,7 +399,7 @@ def get_team_schedule(
         )
 
     sched_context = compute_team_schedule_context(enriched)
-    team_info_obj = get_team_info(team_id)
+    team_info_obj = team_identity(team_id, context.season)
 
     return {
         "team": {
@@ -365,19 +407,25 @@ def get_team_schedule(
             "tricode": tricode,
             "name": name,
             "city": team_info_obj.city if team_info_obj else "",
-            "conference": team_info_obj.conference if team_info_obj else "",
-            "division": team_info_obj.division if team_info_obj else "",
+            "conference": (team_info_obj.conference or "") if team_info_obj else "",
+            "division": (team_info_obj.division or "") if team_info_obj else "",
         },
         "context": context.to_dict(),
-        "overall_record": sched_context["overall_record"],
-        "home_split": sched_context["home_split"],
-        "away_split": sched_context["away_split"],
+        # A season served as totals has its record but no games: no splits, never 0-0.
+        "overall_record": history_record(totals_team)
+        if totals_team
+        else sched_context["overall_record"],
+        "home_split": None if history is not None else sched_context["home_split"],
+        "away_split": None if history is not None else sched_context["away_split"],
         "rest_splits": sched_context["rest_splits"],
         "back_to_back_summary": sched_context["back_to_back_summary"],
         "longest_homestand": sched_context["longest_homestand"],
         "longest_road_trip": sched_context["longest_road_trip"],
         "games": sched_context["games"],
-        "warnings": list(context.warnings),
+        "warnings": [
+            *context.warnings,
+            *([SEASON_TOTALS_NOTE.format(season=context.season)] if history is not None else []),
+        ],
     }
 
 
@@ -388,13 +436,13 @@ def get_team_peers(
     limit: int = 10,
 ) -> dict[str, Any]:
     """Retrieve statistically similar teams based on Four Factors, tempo, and ratings."""
-    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id)
+    can_id, tricode, name = _resolve_team_canonical_id_and_tricode(team_id, context.season)
 
     all_team_factors, _, _ = _compute_all_team_four_factors(session, context)
     team_key = tricode if tricode in all_team_factors else can_id
 
     if team_key not in all_team_factors:
-        info = get_team_info(team_id)
+        info = team_identity(team_id, context.season)
         if not info:
             raise HTTPException(status_code=404, detail="team not found in snapshot")
         return {
@@ -411,14 +459,14 @@ def get_team_peers(
     enriched_peers: list[dict[str, Any]] = []
     for p in raw_peers:
         p_id = p["team_id"]
-        p_info = get_team_info(p_id)
+        p_info = team_identity(p_id, context.season)
         enriched_peers.append(
             {
                 "team_id": p_info.team_id if p_info else p_id,
                 "tricode": p_info.tricode if p_info else resolve_team_tricode(p_id),
                 "name": p_info.name if p_info else resolve_team_label(p_id),
                 "city": p_info.city if p_info else "",
-                "conference": p_info.conference if p_info else "",
+                "conference": (p_info.conference or "") if p_info else "",
                 "distance": p["distance"],
                 "similarity_score": p["similarity_score"],
                 "dimension_diffs": p["dimension_diffs"],
@@ -452,4 +500,150 @@ def get_team_three_point_variation(
         "context": factors_data["context"],
         "scenario": factors_data["three_point_scenario"],
         "warnings": factors_data["warnings"],
+    }
+
+
+def get_teams_six_factors(
+    session: Session,
+    context: ResolvedContext,
+    *,
+    window_days: int | None = None,
+    offense_luck: float = 0.0,
+    defense_luck: float = 0.0,
+    venue: str | None = None,
+) -> dict[str, Any]:
+    """Every team's ratings, six factors and context in the scope, optionally over a recent window.
+
+    A window keeps games in the `window_days` days ending at the scope's last game (the cutoff
+    bounds that game, so a finished phase ends at its final game rather than an empty stretch
+    after it). A game counts only when both teams' box scores are present, so the pooled league
+    total covers the same games on both ends; the rest are reported as exclusions, never zeros.
+
+    `venue` ("home" or "away") keeps only each team's games at that venue. The league baseline
+    stays every game in the window, so a home split reads against the whole league. Standings
+    and the rolling trend always cover every game in scope; schedule strength is solved over the
+    window's games.
+    """
+    history = season_teams(session, context)
+    if history is not None:
+        return history_six_factors(
+            context,
+            history,
+            window_days=window_days,
+            offense_luck=offense_luck,
+            defense_luck=defense_luck,
+            venue=venue,
+        )
+    all_games = load_context_team_games(session, context)
+    last_game = max((g["game_date"] for g in all_games), default=None)
+    window_start = None
+    if window_days and last_game is not None:
+        window_start = last_game - timedelta(days=window_days - 1)
+
+    by_game: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for g in all_games:
+        by_game[str(g["game_id"])].append(g)
+
+    season_games: dict[str, list[TeamGame]] = defaultdict(list)
+    excluded_ids: set[str] = set()
+    for game_id, rows in by_game.items():
+        if len(rows) != 2 or not all(r.get("stats") for r in rows):
+            excluded_ids.add(game_id)
+            continue
+        first, second = rows
+        box_a = box_totals(first["stats"], first.get("points"))
+        box_b = box_totals(second["stats"], second.get("points"))
+        for row, own, opp, other in ((first, box_a, box_b, second), (second, box_b, box_a, first)):
+            season_games[str(row["team_id"])].append(
+                TeamGame(
+                    game_id=game_id,
+                    game_date=row["game_date"],
+                    venue=str(row.get("side") or ""),
+                    opponent=str(other["team_id"]),
+                    own=own,
+                    opp=opp,
+                )
+            )
+
+    def in_window(g: TeamGame) -> bool:
+        return window_start is None or g.game_date >= window_start
+
+    window_games = {tid: [g for g in gs if in_window(g)] for tid, gs in season_games.items()}
+    window_games = {tid: gs for tid, gs in window_games.items() if gs}
+    league = sum_totals(g.own for gs in window_games.values() for g in gs)
+    strength = schedule_adjusted(
+        {
+            tid: net
+            for tid, gs in window_games.items()
+            if (net := net_rating(sum_totals(g.own for g in gs), sum_totals(g.opp for g in gs)))
+            is not None
+        },
+        {tid: [g.opponent for g in gs] for tid, gs in window_games.items()},
+    )
+
+    teams: list[dict[str, Any]] = []
+    for tid, gs in window_games.items():
+        shown = [g for g in gs if not venue or g.venue == venue]
+        if not shown:
+            continue
+        team = sum_totals(g.own for g in shown)
+        opponents = sum_totals(g.opp for g in shown)
+        canonical_id, tricode, name = _resolve_team_canonical_id_and_tricode(tid, context.season)
+        identity = team_identity(tid, context.season)
+        wins = sum(1 for g in shown if g.won)
+        factors = team_six_factors(
+            team, opponents, league, offense_luck=offense_luck, defense_luck=defense_luck
+        )
+        faced = [strength[g.opponent] for g in shown if g.opponent in strength]
+        sos = sum(faced) / len(faced) if faced else None
+        x_wins = expected_wins(team.pts, opponents.pts, len(shown))
+        close_wins, close_losses = close_record(shown)
+        teams.append(
+            {
+                "team_id": canonical_id,
+                "tricode": tricode,
+                "name": name,
+                "conference": identity.conference if identity else None,
+                "division": identity.division if identity else None,
+                "games_played": len(shown),
+                "wins": wins,
+                "losses": len(shown) - wins,
+                **factors,
+                "sos": sos,
+                "adj_net": factors["net"] + sos
+                if factors["net"] is not None and sos is not None
+                else None,
+                "expected_wins": x_wins,
+                "win_luck": wins - x_wins if x_wins is not None else None,
+                "close_wins": close_wins,
+                "close_losses": close_losses,
+                "standings": standings(season_games[tid]),
+                "trend": rolling_net(season_games[tid]),
+            }
+        )
+    teams.sort(key=lambda t: (t["net"] is None, -(t["net"] or 0.0), t["team_id"]))
+    dates = [g.game_date for gs in window_games.values() for g in gs]
+    window_ids = {g.game_id for gs in window_games.values() for g in gs}
+    excluded = {
+        gid
+        for gid in excluded_ids
+        if window_start is None or by_game[gid][0]["game_date"] >= window_start
+    }
+    return {
+        "context": context.to_dict(),
+        "teams": teams,
+        "league": league_rates(league),
+        "window": {
+            "days": window_days,
+            "start": window_start.isoformat() if window_start else None,
+            "first_game": min(dates).isoformat() if dates else None,
+            "last_game": max(dates).isoformat() if dates else None,
+            "games": len(window_ids),
+            "excluded_games": len(excluded),
+        },
+        "venue": venue,
+        "luck": {"offense": offense_luck, "defense": defense_luck},
+        "method_version": SIX_FACTOR_METHOD,
+        "context_method_version": CONTEXT_METHOD,
+        "warnings": list(context.warnings),
     }

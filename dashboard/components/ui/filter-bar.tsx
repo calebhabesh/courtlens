@@ -49,8 +49,9 @@ export function FilterBar({ scope, filters, modes, count, details, summary, labe
     return () => query.removeEventListener("change", onChange);
   }, [sheetOpen]);
 
+  // Slim 32 px controls on desktop; the kit keeps its 40 px hit area on phones (owner, 2026-10-14).
   return (
-    <ControlScope size="lg">
+    <ControlScope size="sm">
     <div className={`ui-filter-bar ${modes ? "has-modes" : ""} ${collapsible ? "" : "is-fixed-scope"} ${className}`} role="region" aria-label={label}>
       <div className="ui-filter-bar-controls">
         <div className="ui-filter-bar-scope">{scope}</div>

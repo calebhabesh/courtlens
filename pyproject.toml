@@ -19,6 +19,7 @@ dependencies = [
   "google-genai>=2.0.0,<3",
   "httpx>=0.27,<1",
   "openai>=2.54,<3",
+  "pillow>=11,<13",
   "prometheus-client>=0.21,<1",
   "psycopg[binary]>=3.2,<4",
   "pydantic-settings>=2.8,<3",
@@ -40,6 +41,8 @@ dev = [
   "types-PyYAML>=6.0,<7",
 ]
 warehouse = ["dbt-postgres>=1.9,<2"]
+# Face matching for the Wikimedia Commons photo acquisition; the API never imports it.
+photos = ["opencv-python-headless>=4.13,<5"]
 
 [project.scripts]
 courtlens = "courtlens.cli:app"
@@ -72,3 +75,8 @@ python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
 files = ["src/courtlens"]
+
+# OpenCV is the optional `photos` extra (portrait face matching); CI type-checks without it.
+[[tool.mypy.overrides]]
+module = ["cv2", "cv2.*"]
+ignore_missing_imports = true

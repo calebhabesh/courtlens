@@ -1,46 +1,114 @@
 @layer pages {
-  .player-bio-header { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
-  .player-back-kbd { padding: 0 var(--space-1); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--color-black) 18%, transparent); font-size: var(--text-2xs); }
+  /* Player header: photo, hairline divider, then one left-aligned column (alignment row 2, 20). */
+  .player-bio-header { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+  .player-back-kbd { padding: 0 var(--space-1); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--color-surface-0) 18%, transparent); font-size: var(--text-2xs); }
   .player-bio-main {
-    display: grid; grid-template-columns: auto minmax(0, 0.9fr) minmax(0, 2fr) auto; gap: var(--space-3) var(--space-5);
-    align-items: center; width: 100%;
+    position: relative; isolation: isolate;
+    display: grid; grid-template-columns: auto 1px minmax(0, 1fr) auto; gap: var(--space-6) var(--space-8);
+    align-items: start; width: 100%;
   }
-  .player-bio-identity { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
-  .player-bio-identity .ui-page-header { min-width: 0; margin: 0; padding: 0; border: 0; }
-  .player-bio-identity .ui-page-header-subtitle { margin-top: var(--space-1); }
-  .player-bio-facts {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: var(--space-2) var(--space-3); margin: 0;
+  /* The headshot on the team's colour with the logo large behind the head, as on the PvP card
+     and ESPN; without a known team it sits on a plain surface. */
+  .player-bio-main { --bio-photo: 168px; }
+  .player-bio-photo {
+    position: relative; display: block; width: var(--bio-photo); aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-md);
+    background: radial-gradient(120% 100% at 50% 8%, var(--team-tint, var(--color-surface-3)), color-mix(in srgb, var(--team-tint, var(--color-surface-3)) 35%, var(--color-surface-0)));
   }
+  /* The PvP watermark: the logo at 115% so more of it shows around the head, in a square box so
+     non-square logos centre on the same point, shifted when its artwork leans (TeamWatermark). */
+  .player-bio-watermark {
+    position: absolute; left: -7.5%; top: -11.5%; width: 115%; height: 115%; object-fit: contain; opacity: 0.42;
+    pointer-events: none; user-select: none; transform: translateX(calc(var(--logo-shift, 0) * 100%));
+  }
+  .player-bio-photo .player-bio-portrait {
+    position: relative; width: 100%; height: 100%; min-width: 0; min-height: 0; border-radius: 0; background: transparent; object-position: center bottom;
+  }
+  .player-bio-divider { align-self: stretch; background: var(--color-hairline-strong); }
+  .player-bio-who { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .player-bio-identity { display: flex; flex-wrap: wrap; align-items: center; margin: calc(var(--space-2) * -1) 0 0; color: var(--color-on-bg-secondary); font-size: var(--text-md); }
+  .player-bio-identity-details > span + span::before,
+  .player-bio-identity-team + .player-bio-identity-details::before { content: "·"; margin: 0 var(--space-2); color: var(--color-on-bg-tertiary); }
+  /* The team leads the line with its logo large beside the name. */
+  .player-bio-identity-team { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text); font-weight: 500; }
+  .player-bio-facts { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-10); margin: 0; }
   .player-bio-facts > div { display: flex; flex-direction: column; gap: var(--space-0-5); min-width: 0; }
-  .player-bio-facts dt { color: var(--color-text-tertiary); font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.06em; }
-  .player-bio-facts dd { margin: 0; color: var(--color-text-primary); font-size: var(--text-sm); font-weight: 500; font-variant-numeric: tabular-nums; }
-  .player-bio-facts .player-bio-combine { grid-column: 1 / -1; }
-  .player-bio-combine dd { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
-  .player-bio-combine-label { color: var(--color-text-secondary); font-weight: 400; }
-  .player-bio-actions { display: flex; align-items: center; gap: var(--space-2); justify-self: end; }
-  .player-season-summary {
-    display: flex; flex-direction: column; gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
-    border-radius: var(--radius-md);
-    background: var(--color-surface-1);
+  /* Labels recede (dimmer, medium weight) and values lead (white, semibold), as on ESPN and
+     Basketball-Reference (row 2, 38). The label grey keeps about 4.7:1 against the page. */
+  .player-bio-facts dt,
+  .player-bio-combine dt { color: color-mix(in srgb, var(--color-on-bg-tertiary) 75%, var(--color-bg)); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+  .player-bio-facts dd { display: flex; flex-direction: column; gap: var(--space-0-5); margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .player-bio-facts dd small { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 400; }
+  .player-bio-team { display: inline-flex; align-items: center; gap: var(--space-1); vertical-align: top; }
+  .player-bio-country { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .player-bio-country img { flex: none; border-radius: calc(var(--radius-xs) / 2); box-shadow: 0 0 0 1px var(--color-hairline-strong); }
+  .player-bio-combine { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-4); margin: 0; }
+  .player-bio-combine dd { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .player-bio-combine strong { color: var(--color-text); font-weight: 600; }
+  .player-bio-actions { display: flex; align-items: center; gap: var(--space-2); }
+  /* Career honours (Basketball-Reference): titles and major awards in gold, the rest neutral. */
+  .player-bio-honours { display: flex; flex-wrap: wrap; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  .player-bio-honours li { padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-pill); background: var(--color-surface-hover);
+    color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
+  .player-bio-honours li.is-top { background: var(--color-accent-soft); color: var(--color-accent); font-weight: 600; }
+
+  /* Season summary: open on the page ground, split by faint rules (row 2, 22–23). */
+  .player-season-summary { display: flex; flex-direction: column; gap: var(--space-4); }
+  .player-season-summary-heading { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2);
+    padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-season-summary-heading h2 { margin: 0; font-size: var(--text-sm); font-weight: 600; color: var(--color-on-bg-secondary); }
+  .player-season-summary-info { display: inline-flex; color: var(--color-on-bg-tertiary); cursor: help; }
+  .player-season-team { display: inline-flex; align-items: center; gap: var(--space-1); margin-left: var(--space-2); color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .player-summary-strip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+  .player-summary-stat {
+    display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; padding: var(--space-4);
   }
-  .player-season-summary-heading { display: flex; align-items: center; gap: var(--space-2); }
-  .player-season-summary-heading h2 { margin: 0; font-size: var(--text-sm); font-weight: 600; color: var(--color-text-secondary); }
-  .player-season-summary-info { display: inline-flex; color: var(--color-text-tertiary); cursor: help; }
-  .player-season-summary .player-hero-tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .player-summary-stat dt { display: flex; justify-content: space-between; gap: var(--space-2); color: var(--color-text-secondary);
+    font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .player-summary-rank { color: var(--color-accent); letter-spacing: 0; text-transform: none; }
+  .player-summary-stat dd { display: contents; }
+  .player-summary-value { color: var(--color-text); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); font-weight: 650; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .player-summary-bar { position: relative; height: 3px; overflow: hidden; border-radius: var(--radius-pill); background: var(--color-hairline-strong); }
+  .player-summary-bar::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--pct); border-radius: inherit; background: var(--color-accent); }
+  .player-summary-career { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
+  .player-summary-career strong { color: var(--color-text); font-weight: 600; }
+
   @media (max-width: 1199px) {
-    .player-bio-main { grid-template-columns: auto minmax(0, 1fr) auto; }
-    .player-bio-facts { grid-column: 1 / -1; }
-    .player-season-summary .player-hero-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .player-bio-main { grid-template-columns: auto 1px minmax(0, 1fr); }
+    .player-bio-actions { grid-column: 3; }
+    .player-summary-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (max-width: 767px) {
-    .player-bio-main { grid-template-columns: auto minmax(0, 1fr); }
-    .player-bio-actions { grid-column: 1 / -1; justify-self: start; }
-    .player-bio-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .player-season-summary { padding: var(--space-3); }
-    .player-season-summary .player-hero-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+    .player-bio-main { grid-template-columns: auto minmax(0, 1fr); gap: var(--space-4); }
+    .player-bio-divider { display: none; }
+    .player-bio-main { --bio-photo: 104px; }
+    /* The team and its logo take their own line; position and jersey follow without a lead dot. */
+    .player-bio-identity { row-gap: var(--space-1); }
+    .player-bio-identity-team { flex-basis: 100%; }
+    .player-bio-identity-team + .player-bio-identity-details::before { content: none; }
+    .player-bio-actions { grid-column: 1 / -1; }
+    .player-bio-facts { gap: var(--space-3) var(--space-6); }
+    .player-bio-facts dd { white-space: normal; }
+    .player-summary-stat { padding: var(--space-3); }
   }
+
   .similarity-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
   .similarity-target-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
   .similarity-target-lookup { width: 240px; min-width: 0; }
+}
+
+/* These share the foundation layer with PageHeader and FilterBar so the overrides apply. */
+@layer foundation {
+  /* The season line below has its own rule; a second one above it would sandwich it (row 2, 34). */
+  .player-detail-container .ui-filter-bar { border-bottom: 0; }
+  /* The sticky scope bar spans the viewport like the header above it: it bleeds through the
+     page's side padding and carries that padding inside, so its controls stay on the content edge. */
+  .player-detail-container > .ui-filter-bar {
+    margin-inline: calc(-1 * var(--page-pad-inline));
+    padding-inline: var(--page-pad-inline);
+  }
+  .player-bio-name .ui-page-header-title-row { min-height: 0; }
+  .player-bio-name .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); letter-spacing: -0.01em; }
+  @media (max-width: 767px) {
+    .player-bio-name .ui-page-header-title { font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
+  }
 }

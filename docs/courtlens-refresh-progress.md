@@ -720,3 +720,154 @@ responsive overflow checks pass. Dashboard lint/types and Vitest 511/511 pass; f
 header checks pass. A broader search test fails on live lookup, and its rerun times out during
 workspace initialization on the active dev server. Scoped glance passes for favicon identity,
 readability and padding. [Evidence](evidence/alignment/app-shell/favicon-padding/README.md).
+
+### Stats follow-up: center the current-team pill (2026-10-14)
+
+Owner instruction 82 centers the "now" pill with its neighboring subtitle text and dot using a
+flex row. Live Kawhi Leonard cards at 1440/390 have zero vertical center difference, no clipped
+pill outline and no page overflow. Production fixture measurements agree. The name and subtitle
+retain their existing spacing. Scoped glance passes for subtitle alignment, readability and
+spacing. Dashboard lint/typecheck, Vitest 525/525, production webpack build and all six existing
+moved-team/date browser checks pass. Stats remains ready for owner review.
+[Evidence](evidence/alignment/stats/now-pill-centering/README.md).
+
+### Stats follow-up: name/subtitle spacing (2026-10-14)
+
+Owner instruction 83 adds a 2 px gap below player names, reduced from 4 px after the owner's
+"A smidgen less" follow-up. Live and production-fixture browser measurements at 1440/390 confirm
+the gap in standard and compact density, existing row heights and centered, unclipped move pills.
+Scoped glance passes for spacing and pill readability; no page overflow. Dashboard lint/typecheck,
+Vitest 525/525, production webpack build and six moved-team/date browser checks pass. Stats remains
+ready for owner review. [Evidence](evidence/alignment/stats/name-subtitle-spacing/README.md).
+
+### App-shell follow-up: coaching-board backdrop preview (2026-10-14)
+
+Instruction 8 adds a static 339-byte SVG tile with sparse X's and O's, initially 384 px at 4%
+stroke opacity. The Stats wrapper is transparent so the shell backdrop is visible. At 1440,
+2400 and 390, toggling the pattern changes the exposed background while the measured table pixels
+and geometry remain identical. Player/Settings previews pass the scoped glance check; on-background
+text contrast is at least 6.59:1 at full stroke coverage. Forced colors hides the motif.
+Dashboard lint/typecheck, Vitest 525/525 and production webpack build pass. The 11 existing header
+and moved-team/date browser checks pass with one final-run phone height precision flake passing
+its isolated rerun (47.99993896484375 vs 48). The production-served SVG matches the source.
+Owner finds the initial preview too sparse and faint and requested the tuning parameters;
+density/opacity refinement remains open. [Evidence](evidence/alignment/app-shell/coach-pattern/README.md).
+
+### App-shell follow-up: denser irregular coaching-board scatter (2026-10-14)
+
+Instructions 9–10 raise opacity to 7% and replace the small repeated arrangement with 100 seeded
+positions across a 1152 px tile. Marks retain their size and 1.5 px strokes, with slight X-angle
+variation. Measured minimum center separation is 72.28 px, including across seams. All 100 x
+coordinates and 99 y coordinates are distinct. The generator reruns byte-identically; SVG uses
+native dimensions so CSS does not scale the marks.
+
+Live 1440/2400/390 captures and player-header inspection pass the scoped glance check: irregular
+spacing, more visible marks, legible labels and no page overflow. Toggling the pattern preserves
+the opaque table interior pixels and geometry. Text contrast at full stroke coverage is at least
+6.18:1; forced colors still hides the pattern. Lint/typecheck, Vitest 525/525, production webpack
+build and five existing header browser checks pass. Production-served asset parity and intrinsic
+sizing pass at desktop/phone widths. Owner visual approval remains pending.
+[Evidence](evidence/alignment/app-shell/coach-pattern-tuning/README.md).
+
+### App-shell follow-up: park the background pattern (2026-10-14)
+
+Owner instruction 11 removes the pattern because it made player-page information harder to see.
+The shell returns to solid `--color-bg`; the SVG, generator, npm command and pattern-only
+forced-colors override are removed. Prior commits and evidence retain the experiment for later.
+Live and production-fixture Stats/player checks at 1440/390 confirm `background-image: none`,
+the original blue fill, zero pattern requests and no page overflow. Player desktop/phone screenshots
+pass the scoped glance check for readable information on an uninterrupted blue surface.
+Dashboard lint/typecheck, Vitest 525/525 and five production header browser checks pass.
+[Evidence](evidence/alignment/app-shell/plain-backdrop/README.md).
+
+### Player follow-up: dark glass headline stats (2026-10-14)
+
+Owner instruction 49 gives each of the six headline stats a dark translucent gradient, restrained
+hairline/inset highlight, token-based radius and spacing, and a static 12 px backdrop blur. Labels
+and career comparisons use container text colors. Live 2025–26 Kawhi Leonard captures at 1440/390
+verify current values, six-column desktop and three-by-two phone layouts, fitting content and
+no page overflow. Scoped glance passes for contrast, padding and readable grouping. Text contrast
+against the composited gradient is at least 6.62:1. Dashboard lint/typecheck, Vitest 525/525,
+production webpack build and four existing player-page browser checks pass. Other player sections
+await any further owner direction. [Evidence](evidence/alignment/players/dark-glass/README.md).
+
+### Player follow-up: opaque Year cells during horizontal scroll (2026-10-14)
+
+Instruction 50 fixes metric values bleeding through the pinned Year column on hover. The career
+frame supplied its base colors but omitted `--table-row-hover` and `--table-data-hover`, which
+the shared Stats hover rules consume. The missing variable made the pinned cell transparent.
+The career frame now defines both opaque hover colors from its own surfaces, as Stats does.
+
+New browser cases compare the hovered Year cell's actual pixels at two horizontal offsets:
+both 1440/390 cases fail before the fix and pass after. All five career browser checks pass on
+the development and production sandbox; live Kawhi 2022–23 row comparisons also pass at both
+widths. Lint/typecheck, Vitest 525/525 and production webpack build pass. Scoped glance confirms
+legible pinned seasons, intact row separation and no page overflow.
+[Evidence](evidence/alignment/players/career-year-scroll/README.md).
+
+### Player follow-up: uniform dark glass throughout each stat card (2026-10-14)
+
+Instruction 51 emphasizes the glass effect across the full card rather than a localized highlight.
+The cards now use one surface-0 tint at 58%, a 10% rim, `--shadow-2` and static 20 px backdrop blur
+with 150% saturation. There is no gradient or directional sheen; text is not filtered. Existing
+geometry, values, ranks and career comparisons are retained. Live 1440/390 screenshots and
+measurements verify six uniformly tinted cards, fitting content and no page overflow. Scoped
+glance passes for whole-surface tint, readable labels and quiet edges. Conservative text contrast
+with or without the backdrop filter is at least 7.49:1. Lint/typecheck, Vitest 525/525, production
+webpack build and six player-page browser checks pass, including the pinned-Year regression.
+[Evidence](evidence/alignment/players/dark-glass-uniform/README.md).
+
+### Player follow-up: complete career awards column (2026-10-14)
+
+Instructions 52–53 give awards a visible group and Accolades subheader, a fixed 240 px column,
+and the metric-cell background and hover treatment. Badges now wrap with readable labels such
+as All-NBA 1st, MVP 2nd and DPOY Winner. Full names are available to screen readers.
+The former overflow reproduces on the old code. All 14 retained Kawhi rows fit at 1440/390,
+with at most two badge lines and unchanged 52/49 px rows. Scoped glance and pinned-Year checks
+pass. Lint/typecheck, Vitest 526/526, production webpack build and 15 player browser checks pass.
+[Evidence](evidence/alignment/players/career-awards/README.md). Owner alignment remains pending.
+
+### Player follow-up: centered Accolades subheader (2026-10-15)
+
+Instruction 54 centers Accolades under Awards and matches its 4 px bottom padding to the stat
+headers. Both text centers match exactly at 1440/390. Badges remain left-aligned and scoped
+glance passes. Lint/typecheck, 526 Vitest tests, production build and seven career browser checks
+pass. [Evidence](evidence/alignment/players/career-awards/README.md#centered-subheader-follow-up-2026-10-15).
+
+### Player follow-up: glass sections below the career table (2026-10-15)
+
+Instruction 55 extends the uniform glass to Player Impact, Recent Form, Contract, Transactions
+and Career Highs. The six headline cards and five lower panels share one appearance rule.
+Section and subsection headings use title case. Live desktop/phone appearance parity, scoped
+glance, expanded content fit and sampled text contrast of at least 5.88:1 pass. Lint/typecheck,
+526 Vitest tests, production build and 15 player browser checks pass.
+[Evidence](evidence/alignment/players/overview-glass/README.md). Owner alignment remains pending.
+
+## 2026-10-15: Comparison honors and stable selectors
+
+Alignment instructions 49 through 56 show every recorded season honor in centered, wrapping
+badge groups. All-Star is gold. Per-player season menus show medal, trophy, and star markers
+with a legend. Search fits full names. The counting menu keeps a fixed slot across mode changes.
+Lint, typecheck, 544 Vitest tests, 53 browser checks, and the production build pass. One browser
+test skips on the one-season fixture. Real 1440 and 390 captures and the scoped glance check
+pass. [Evidence](evidence/alignment/compare/season-honors/README.md). Owner alignment remains pending.
+
+## 2026-10-15: Comparison honors copy and menu headings
+
+Alignment instructions 57 and 58 remove the pending honors placeholder and cutoff footer from
+the card and export. Empty honors use a dash; award cutoffs remain. Counting-menu year headings
+have a darker fill and remain noninteractive. Live 1440 and 390 captures, numeric alignment,
+and scoped glance checks pass. Lint, typecheck, 544 Vitest tests, 29 browser checks, and the
+production build pass. One browser test skips on the one-season fixture.
+[Evidence](evidence/alignment/compare/honors-context/README.md). Owner alignment remains pending.
+
+## 2026-10-17: Stats cold-load entrance
+
+Alignment follow-up 72 replaces the unfinished row cascade and timed global replay guard with
+one table-body fade after hydration, URL synchronization and saved-view restoration. Completion
+removes its animation class. Later table changes retain their settle animations. The blocked-script
+regression fails against the previous build and passes with the fix. The production build, lint,
+typecheck and 31 Stats browser checks pass. Live desktop and phone opens and refreshes each record
+one entrance, with no page overflow. Scoped glance checks pass. Vitest passes 568 tests but
+reports four unrelated header animation-cancellation errors, reproduced with the unchanged header
+test alone. [Evidence](evidence/alignment/stats/single-entrance/README.md). Owner review remains pending.

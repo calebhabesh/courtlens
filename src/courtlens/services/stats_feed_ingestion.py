@@ -28,6 +28,7 @@ from courtlens.ingestion.stats_feeds import (
     PHASES,
     PLAY_TYPES,
     SPECS,
+    TEAM_MEASURES,
     TRACKING,
     FeedScope,
     hoopr_bio_url,
@@ -89,6 +90,7 @@ def run_plan(
             ("leaguedashptstats", TRACKING),
             ("leaguedashptdefend", DEFENSE),
             ("leaguedashlineups", LINEUP_MEASURES),
+            ("leaguedashteamstats", TEAM_MEASURES),
         ):
             for variant in variants:
                 file = f"{phase}_{variant}_totals"
@@ -107,6 +109,22 @@ def run_plan(
             for team_id in sorted(NBA_TEAMS):
                 url = pbpstats_url(season, "regular_season", "Lineup", team_id)
                 plan.append((PBPSTATS_SOURCE, url, season))
+    return plan
+
+
+def team_scoring_plan(revision: str, seasons: list[str]) -> list[tuple[str, str, str]]:
+    """Team Misc totals (fast-break, paint, second-chance, off-turnover points) per season.
+
+    Both phases of each season; the mirror starts at 1996-97. A phase not yet played has no
+    file, so its fetch fails and is reported rather than read as zero.
+    """
+    plan: list[tuple[str, str, str]] = []
+    for season in seasons:
+        label = int(valid_season(season)[:4]) + 1
+        for phase in PHASES:
+            for variant in TEAM_MEASURES:
+                url = hoopr_url(revision, "leaguedashteamstats", label, f"{phase}_{variant}_totals")
+                plan.append((HOOPR_SOURCE, url, season))
     return plan
 
 
@@ -410,5 +428,6 @@ __all__ = [
     "feed_capabilities",
     "latest_datasets",
     "run_plan",
+    "team_scoring_plan",
     "verify_feed",
 ]

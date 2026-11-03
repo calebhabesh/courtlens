@@ -1,0 +1,189 @@
+lint.log
+
+> courtlens-dashboard@0.1.0 lint
+> eslint . && stylelint '**/*.css'
+
+
+
+typecheck.log
+
+> courtlens-dashboard@0.1.0 typecheck
+> tsc --noEmit
+
+
+
+vitest.log
+
+> courtlens-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/ethioking/dev/courtlens/dashboard
+
+
+ Test Files  82 passed (82)
+      Tests  526 passed (526)
+   Start at  23:20:01
+   Duration  4.72s (transform 10.26s, setup 0ms, import 23.23s, tests 8.13s, environment 5.46s)
+
+
+
+build.log
+
+> courtlens-dashboard@0.1.0 prebuild
+> npm run fonts:ensure
+
+
+> courtlens-dashboard@0.1.0 fonts:ensure
+> node scripts/ensure-local-fonts.mjs
+
+
+> courtlens-dashboard@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.4.0 (webpack)
+✓ Running next.config.ts took 14ms
+- Experiments (use with caution):
+  ✓ typedEnv
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.6s
+  Running TypeScript ...
+  Finished TypeScript in 1245ms ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/29) ...
+  Generating static pages using 15 workers (7/29)
+  Generating static pages using 15 workers (14/29)
+  Generating static pages using 15 workers (21/29)
+✓ Generating static pages using 15 workers (29/29) in 319ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+⚠ 27 traced files were not included in the standalone output
+because their paths are outside of `outputFileTracingRoot`.
+First 100 skipped files:
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/compiled/jest-worker/processChild.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/compiled/jest-worker/threadChild.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/lib/start-server.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/next-server.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/next.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/require-hook.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/module.compiled.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/app-router-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/entrypoints.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/head-manager-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/hooks-client-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/image-config-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/router-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/server-inserted-html.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/module.compiled.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/app-router-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/entrypoints.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/head-manager-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/hooks-client-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/html-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/image-config-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/loadable-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/loadable.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/router-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/server-inserted-html.js
+  - ../../../../dev/courtlens/dashboard/node_modules/styled-jsx/index.js
+  - ../../../../dev/courtlens/dashboard/node_modules/styled-jsx/style.js
+Set `outputFileTracingRoot` to a common parent directory
+to include these files.
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /api/assistant-v2/[[...path]]
+├ ƒ /api/finance-import
+├ ƒ /api/jobs
+├ ƒ /api/jobs/[id]
+├ ƒ /api/live/[[...path]]
+├ ƒ /api/workspace/[[...path]]
+├ ○ /calculator
+├ ƒ /compare
+├ ○ /contracts
+├ ƒ /contracts/[team]
+├ ○ /contracts/books
+├ ƒ /data-status
+├ ○ /design
+├ ƒ /evaluation
+├ ƒ /forecasts
+├ ○ /icon.svg
+├ ƒ /investigations
+├ ƒ /investigations/saved/[id]
+├ ƒ /last-games
+├ ○ /live
+├ ƒ /live/[date]
+├ ƒ /live/games/[id]
+├ ○ /manifest.webmanifest
+├ ○ /matchups
+├ ƒ /methodology
+├ ƒ /methodology/learning
+├ ƒ /planner
+├ ƒ /players
+├ ƒ /players/[id]
+├ ƒ /playoffs
+├ ƒ /playoffs/[seriesId]
+├ ƒ /rankings
+├ ƒ /research/ask
+├ ○ /research/case-studies
+├ ○ /research/defensive-matchups
+├ ○ /research/distributions
+├ ○ /research/operation
+├ ƒ /research/rapm
+├ ○ /research/rapm/six-factor
+├ ○ /research/shooting
+├ ○ /research/shooting/adjusted
+├ ○ /research/shooting/aftermath
+├ ○ /research/trends
+├ ƒ /roster-shapes
+├ ƒ /roster-shapes/[team]
+├ ƒ /settings
+├ ƒ /showcase
+├ ○ /similar-players
+├ ○ /similar-players/shot-profile
+├ ƒ /stat-line-shift
+├ ƒ /stats
+├ ƒ /stats/glossary
+├ ○ /stats/tracking
+├ ƒ /team-compare
+├ ƒ /teams
+├ ƒ /teams/[id]
+├ ƒ /tierlist
+├ ○ /whats-new
+├ ○ /whats-new/blog
+├ ○ /wingspan
+└ ○ /wowy
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+
+browser-production.log
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test player-career.spec.ts player-reference.spec.ts player-profile.spec.ts players-fo09.spec.ts --workers=2
+
+
+Running 15 tests using 2 workers
+
+  ✓   2 e2e/player-career.spec.ts:7:7 › awards form a complete column with wrapping badges and continuous row highlighting at 1440 (631ms)
+  ✓   1 e2e/player-career.spec.ts:45:7 › the pinned Year cell hides scrolling metrics while hovered at 1440 (696ms)
+  ✓   3 e2e/player-career.spec.ts:7:7 › awards form a complete column with wrapping badges and continuous row highlighting at 390 (486ms)
+  ✓   4 e2e/player-career.spec.ts:45:7 › the pinned Year cell hides scrolling metrics while hovered at 390 (718ms)
+  ✓   6 e2e/player-career.spec.ts:83:5 › the header summarises the player and the summary card has no accent edge (470ms)
+  ✓   5 e2e/player-career.spec.ts:65:5 › a player opened from Stats offers Back to table, and Esc returns to the same table (1.1s)
+  ✓   7 e2e/player-career.spec.ts:100:5 › the career table lists played seasons with a Career row, and phase links the page (579ms)
+  ✓   9 e2e/player-profile.spec.ts:19:5 › unsupported replay date keeps the input and offers recovery (180ms)
+  ✓   8 e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date (681ms)
+  ✓  10 e2e/player-reference.spec.ts:5:7 › reference sections preserve terms and expand retained history at 1440 (611ms)
+  ✓  11 e2e/player-reference.spec.ts:5:7 › reference sections preserve terms and expand retained history at 390 (621ms)
+  ✓  12 e2e/players-fo09.spec.ts:10:7 › FO09 Players › profile: one title, hero tiles, tabs in the URL, one Export menu (672ms)
+  ✓  13 e2e/players-fo09.spec.ts:34:7 › FO09 Players › recent games: window, exposure and layout are separate 40px controls (545ms)
+  ✓  15 e2e/players-fo09.spec.ts:59:7 › FO09 Players › similar players: a 40px filter bar and the evidence hash only in Data details (222ms)
+  ✓  14 e2e/players-fo09.spec.ts:50:7 › FO09 Players › ranking boards and tier lists use the nav labels and one-line notes (500ms)
+
+  15 passed (4.9s)

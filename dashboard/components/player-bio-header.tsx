@@ -1,14 +1,20 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/kit";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
 import { PageHeader } from "./ui/panel";
+import { honours } from "@/lib/awards";
+import { countryFlag } from "@/lib/country-flags";
 import { formatDate } from "@/lib/format-date";
+import { teamBrandColor } from "@/lib/team-colors";
+import { teamArtwork, teamNameAt } from "@/lib/team-era";
 import { readStatsReturn, STATS_RETURN_PARAM, markStatsRestore } from "@/lib/stats-return";
+import { BackButton, onBareEscape, useNavLabel } from "./ui/back-button";
 import type { PlayerBio } from "@/lib/types";
+import { TeamWatermark } from "./team-watermark";
 
 /** Feet and inches with quarter-inch fractions: 79.25 → 6′7¼″. */
 export function formatHeight(inches: number | null | undefined): string | null {
@@ -21,6 +27,11 @@ export function formatHeight(inches: number | null | undefined): string | null {
   return `${feet}′${whole}${fraction}″`;
 }
 
+/** The team's name in that season (the Philadelphia Warriors in 1961-62), else today's. */
+function teamName(tricode: string, season?: string | null): string {
+  return teamNameAt(tricode, season) ?? tricode;
+}
+
 function ordinalSuffix(value: number): string {
   const tens = value % 100;
   if (tens >= 11 && tens <= 13) return "th";
@@ -28,9 +39,11 @@ function ordinalSuffix(value: number): string {
 }
 
 /**
- * The player page header: Back to table (only when opened from Stats), photo, name, team,
- * position and jersey, then a compact bio grid. Listings are team-reported; the combine line
- * holds measured values and appears only when the player attended a combine.
+ * The player page header: Back to table (only when opened from Stats), then the photo on the
+ * team's colour with its logo behind the head (as on PvP and ESPN), a hairline divider and one
+ * left-aligned column: name, a large team logo with team · position · jersey, bio facts, and
+ * the combine line. Listings are team-reported; the combine line holds
+ * measured values and appears only when the player attended a combine.
  */
 export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, currentSeason, actions }: {
   name: string;
@@ -46,43 +59,46 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   const searchParams = useSearchParams();
   const fromStats = searchParams?.get(STATS_RETURN_PARAM) === "stats";
   const [returnHref, setReturnHref] = useState<string | null>(null);
+  useNavLabel(name);
   useEffect(() => {
     // Session storage is browser-only, so the button appears after hydration.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (fromStats) setReturnHref(readStatsReturn()?.href ?? null);
   }, [fromStats]);
 
-  useEffect(() => {
+  // A layout effect attaches Esc before the browser paints the button, so it never shows dead.
+  useLayoutEffect(() => {
     if (!returnHref) return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key !== "Escape" || event.defaultPrevented || event.metaKey || event.ctrlKey || event.altKey) return;
-      const target = event.target as HTMLElement | null;
-      if (target?.closest("input, textarea, select, [contenteditable='true']")) return;
-      if (document.querySelector("[role='dialog'], [role='menu'], [role='listbox']")) return;
-      event.preventDefault();
-      markStatsRestore();
-      router.push(returnHref);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return onBareEscape(() => { markStatsRestore(); router.push(returnHref); });
   }, [returnHref, router]);
 
   const listed = [formatHeight(bio?.listed_height_inches), bio?.listed_weight_lbs != null ? `${Math.round(bio.listed_weight_lbs)} lb` : null].filter(Boolean).join(" · ");
   const datedAge = bio?.age != null && currentSeason != null && bio.season !== currentSeason;
-  const draft = bio?.draft
-    ? [String(bio.draft.year), bio.draft.round != null && bio.draft.pick != null ? `R${bio.draft.round}, #${bio.draft.pick}` : null, bio.draft.team_tricode].filter(Boolean).join(" · ")
-    : bio?.undrafted ? "Undrafted" : null;
+  const draftTeam = bio?.draft?.team_tricode ?? null;
+  const draftPick = bio?.draft ? [String(bio.draft.year), bio.draft.round != null && bio.draft.pick != null ? `R${bio.draft.round} #${bio.draft.pick}` : null].filter(Boolean).join(" · ") : null;
   const experience = bio?.prior_seasons == null ? null : bio.prior_seasons === 0 ? "Rookie"
     : `${bio.prior_seasons + 1}${ordinalSuffix(bio.prior_seasons + 1)} season`;
-  const origin = bio?.draft?.organization ?? bio?.college;
-  const facts: { label: string; value: string | null; title?: string }[] = [
-    { label: "Age", value: bio?.age != null ? `${bio.age}${datedAge ? ` (as of ${formatDate(bio.as_of)})` : ""}` : null,
-      title: bio?.birth_date ? `Born ${formatDate(bio.birth_date)}` : undefined },
-    { label: "Listed", value: listed || null, title: "Team-reported height (in shoes) and weight" },
-    { label: "Experience", value: experience },
-    { label: "Draft", value: draft },
-    { label: "Pre-draft", value: origin ?? null },
-    { label: "Country", value: bio?.country ?? null },
+  const origin = bio?.draft?.organization ?? bio?.college ?? null;
+  const flag = countryFlag(bio?.country);
+  // Born carries the age; outside the current season the age is dated to the page's cutoff.
+  const ref = bio?.reference ?? null;
+  const born = bio?.birth_date
+    ? { label: "Born", value: `${formatDate(bio.birth_date)}${bio.age != null && !datedAge ? ` (${bio.age})` : ""}`,
+      detail: [ref?.birthplace, datedAge ? `Age ${bio.age} on ${formatDate(bio.as_of)}` : null].filter(Boolean).join(" · ") || null }
+    : { label: "Age", value: bio?.age != null ? String(bio.age) : null, detail: datedAge ? `On ${formatDate(bio?.as_of ?? "")}` : null };
+  // "King in Riverside, California" -> school "King", place "Riverside, California".
+  const school = ref?.high_school?.match(/^(.*?)\s+in\s+(.+)$/) ?? null;
+  const facts: { label: string; value: ReactNode; detail?: string | null; title?: string }[] = [
+    born,
+    { label: "Listed", value: listed || null, detail: ref?.shoots ? `Shoots ${ref.shoots.toLowerCase()}` : null,
+      title: "Team-reported height (in shoes) and weight" },
+    { label: "Draft", value: bio?.draft ? <>{draftPick}{draftTeam && <> · <span className="player-bio-team">
+      <TeamLogo team={draftTeam} size={18} />{draftTeam}</span></>}</> : bio?.undrafted ? "Undrafted" : null, detail: origin },
+    { label: "Experience", value: experience, detail: ref?.debut_date ? `Debut ${formatDate(ref.debut_date)}` : null },
+    { label: "High school", value: school ? school[1] : ref?.high_school ?? null, detail: school ? school[2] : null },
+    { label: "Country", value: bio?.country ? <span className="player-bio-country">
+      {/* eslint-disable-next-line @next/next/no-img-element -- a 1 KB static flag needs no image optimisation */}
+      {flag && <img src={flag} width={20} height={15} alt="" />}{bio.country}</span> : null },
   ];
   const combine = bio?.combine;
   const measured = combine ? [
@@ -92,28 +108,60 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     ["Reach", formatHeight(combine.standing_reach_inches)],
     ["Weight", combine.weight_lbs != null ? `${Math.round(combine.weight_lbs)} lb` : null],
   ].filter((entry): entry is [string, string] => entry[1] != null) : [];
-  const identity = [team?.name, bio?.listed_position, bio?.jersey ? `#${bio.jersey}` : null].filter(Boolean).join(" · ");
+  // The header names who the player plays for today; without a current listing (free agents,
+  // retired players) it uses the index's last team. Missing index evidence falls back to
+  // the page's observed season team, explicitly labelled as observed.
+  const listedTeam = bio?.current_team?.team_tricode ?? null;
+  const lastTeam = bio?.last_team?.team_tricode;
+  // A last team is drawn as it was in the season he last played for it (the 1961-62 Warriors).
+  const lastSeason = bio?.last_team?.listing_season ?? null;
+  const headerTeam = listedTeam
+    ? { tricode: listedTeam, name: teamName(listedTeam), season: null }
+    : lastTeam ? { tricode: lastTeam, name: teamName(lastTeam, lastSeason), season: lastSeason }
+    : team ? { tricode: team.tricode, name: team.name, season: null } : null;
+  const teamPrefix = listedTeam ? "" : lastTeam ? "Last with " : "Observed with ";
+  // Off every NBA roster today (the free-agency tracker's evidence): the state leads the details.
+  const status = bio?.current_status;
+  const state = status?.state === "abroad" ? `Abroad${status.move?.club ? ` · ${status.move.club}` : ""}`
+    : status?.state === "retired" ? "Retired" : status?.state === "free_agent" ? "Free agent" : null;
+  const details = [state, bio?.listed_position, bio?.jersey && !status ? `#${bio.jersey}` : null].filter((part): part is string => part != null);
+  const tint = teamBrandColor(headerTeam?.tricode, headerTeam?.season);
+  const watermark = teamArtwork(headerTeam?.tricode, headerTeam?.season)?.asset ?? null;
 
   return (
-    <div className="player-bio-header">
-      {returnHref && <Button size="xs" variant="primary" icon="left" onClick={() => { markStatsRestore(); router.push(returnHref); }}>
+    <div className="player-bio-header" style={tint ? { "--team-tint": tint } as CSSProperties : undefined}>
+      {/* From the Stats table: back to its exact rows and scroll; from anywhere else, the shared Back. */}
+      {returnHref ? <Button size="xs" variant="primary" icon="left" onClick={() => { markStatsRestore(); router.push(returnHref); }}>
         Back to table<kbd className="player-back-kbd" aria-hidden="true">Esc</kbd>
-      </Button>}
+      </Button> : !fromStats && <BackButton parent={{ href: "/players", label: "Player Dashboard" }} />}
       <div className="player-bio-main">
-        <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl ?? undefined} size="lg" />
-        <div className="player-bio-identity">
-          <PageHeader title={name} subtitle={identity || undefined} className="player-bio-title" />
-          {team && <TeamLogo team={team.tricode} size={20} />}
-        </div>
-        <dl className="player-bio-facts">
-          {facts.filter(fact => fact.value).map(fact => <div key={fact.label} title={fact.title}>
-            <dt>{fact.label}</dt><dd>{fact.value}</dd>
-          </div>)}
-          {combine && measured.length > 0 && <div className="player-bio-combine" title="Official NBA Draft Combine measurements">
+        <span className="player-bio-photo">
+          {watermark && <TeamWatermark asset={watermark} className="player-bio-watermark" />}
+          <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size="xl" className="player-bio-portrait" />
+        </span>
+        <span className="player-bio-divider" aria-hidden="true" />
+        <div className="player-bio-who">
+          <PageHeader title={name} className="player-bio-name" />
+          {(headerTeam || details.length > 0) && <p className="player-bio-identity">
+            {headerTeam && <span className="player-bio-identity-team">
+              <TeamLogo team={headerTeam.tricode} season={headerTeam.season} size={36} />{teamPrefix}{headerTeam.name}
+            </span>}
+            {details.length > 0 && <span className="player-bio-identity-details">{details.map(part => <span key={part}>{part}</span>)}</span>}
+          </p>}
+          <dl className="player-bio-facts">
+            {facts.filter(fact => fact.value).map(fact => <div key={fact.label} title={fact.title}>
+              <dt>{fact.label}</dt><dd><span>{fact.value}</span>{fact.detail && <small>{fact.detail}</small>}</dd>
+            </div>)}
+          </dl>
+          {combine && measured.length > 0 && <dl className="player-bio-combine" title="Official NBA Draft Combine measurements">
             <dt>{combine.draft_year} Combine</dt>
-            <dd>{measured.map(([label, value]) => <span key={label}><span className="player-bio-combine-label">{label}</span> {value}</span>)}</dd>
-          </div>}
-        </dl>
+            {measured.map(([label, value]) => <dd key={label}>{label} <strong>{value}</strong></dd>)}
+          </dl>}
+          {ref && ref.honours.length > 0 && <ul className="player-bio-honours" aria-label="Career honours"
+            title={`Career honours from ${ref.source}, as of ${formatDate(ref.as_of)}`}>
+            {honours(ref.honours).map(item => <li key={item.label} className={item.top ? "is-top" : undefined}>{item.label}</li>)}
+          </ul>}
+        </div>
         <div className="player-bio-actions">{actions}</div>
       </div>
     </div>

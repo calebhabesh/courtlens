@@ -1,6 +1,7 @@
 """B29 bounded read-only finance operation shared by manual and future tool clients."""
 
 from datetime import datetime
+from typing import Any
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
@@ -22,6 +23,7 @@ from courtlens.services.finance_catalog import (
 from courtlens.services.finance_query import finance_query
 from courtlens.services.finance_refresh import refresh_info, threshold_info
 from courtlens.services.finance_views import league_payrolls, team_contracts
+from courtlens.services.free_agency import free_agency_view
 
 router = APIRouter(prefix="/workbench/operations", tags=["finance"])
 
@@ -82,6 +84,13 @@ def finance_team_contracts(
 ) -> TeamContractsResponse:
     release = str(statistics_release_id) if statistics_release_id else None
     return team_contracts(session, str(refresh_id), team, release)
+
+
+@router.get("/free-agency")
+def free_agency(session: Session = Depends(get_db)) -> dict[str, Any]:
+    """The sealed NBA.com tracker snapshot, checked against the latest roster index; never
+    fetched on a visitor request."""
+    return free_agency_view(session)
 
 
 @router.get("/finance/thresholds", response_model=tuple[ThresholdInfo, ...])

@@ -80,6 +80,9 @@
   }
 
   .ui-page-header-icon { display: inline-flex; color: var(--color-accent); }
+  /* Playoffs (alignment row 8): Databallr's centred season title over the bracket. */
+  .ui-page-header.pb-head { align-items: center; text-align: center; }
+  .ui-page-header.pb-head .ui-page-header-title-row { justify-content: center; }
 
   .ui-page-header-title {
     margin: 0;
@@ -219,7 +222,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    min-height: calc(var(--control-lg) + var(--space-4));
+    min-height: calc(var(--kit-control-sm) + var(--space-4));
     padding-block: var(--space-2);
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-hairline);
@@ -234,6 +237,9 @@
   }
 
   .ui-filter-bar-page, .ui-filter-bar-modes { padding-left: var(--space-3); border-left: 1px solid var(--color-hairline); }
+  /* A team-fixed Stats table (Contracts, team profile) has only the position chips there, on their own
+     line: no divider (alignment row 14, follow-up 7). */
+  .ctr-stats .ui-filter-bar-page, .team-profile-page .stats-workspace .ui-filter-bar-page { padding-left: 0; border-left: 0; }
   /* Modes never clip on desktop; scope and filters wrap first. Below 768px they take their own row. */
   .ui-filter-bar-modes { display: flex; flex-shrink: 0; align-items: center; gap: var(--space-2); min-width: 0; }
   /* The shared select fills its container (forms, sheets) except in the filter bar row. */
@@ -440,6 +446,23 @@
     background: var(--color-surface-3);
     box-shadow: var(--shadow-1);
   }
+  /* Contracts' timeline: the team ring as on player pages, without the logo badge (the whole page is
+     one team; alignment row 14, follow-up 14). */
+  .ctr-timeline-name .ui-identity-badge { display: none; }
+  /* WOWY's lineup photos (alignment row 5, follow-up 4): Databallr's 64 px team-colour discs without
+     the logo badge (an opponent keeps it); off-floor players dimmed. Here because foundation outranks pages. */
+  .wowy-face .ui-identity-lg { --identity-media: 64px; }
+  .wowy-face .ui-identity-badge, .wowy-roster-photo .ui-identity-badge, .wowy-mate-photo .ui-identity-badge { display: none; }
+  .wowy-face[data-opponent] .ui-identity-badge { display: inline-grid; }
+  .wowy-face .ui-identity-media :is(.player-portrait, .player-portrait-fallback) {
+    background: color-mix(in srgb, var(--team-color) 75%, var(--color-surface-2));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--team-color) 45%, var(--color-white)), 0 0 12px color-mix(in srgb, var(--team-color) 45%, transparent);
+  }
+  .wowy-face[data-opponent] .ui-identity-media :is(.player-portrait, .player-portrait-fallback) { box-shadow: 0 0 0 2px var(--color-identity-b); }
+  .wowy-face[data-off] .ui-identity-media :is(.player-portrait, .player-portrait-fallback) { filter: grayscale(0.5) brightness(0.4); box-shadow: none; }
+  @media (max-width: 640px) { .wowy-face .ui-identity-lg { --identity-media: 40px; } }
+  /* The Players rail (follow-up 6): 56 px photos. */
+  .wowy-roster-photo.ui-identity-md, .wowy-mate-photo.ui-identity-md { --identity-media: 56px; }
 
   .ui-identity-text { display: flex; flex-direction: column; min-width: 0; }
 
@@ -543,7 +566,8 @@
     border-radius: var(--radius-sm);
   }
 
-  .lookup-input-wrapper:focus-within { border-color: var(--color-accent); box-shadow: var(--focus-ring); }
+  /* Every lookup search: one solid 2px gold outline (border plus a flush 1px ring), no offset ring. */
+  .lookup-input-wrapper:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 1px var(--color-accent); }
   .lookup-input-wrapper .lookup-search-icon { position: static; flex-shrink: 0; width: var(--space-4); height: var(--space-4); }
 
   .lookup-input-wrapper .lookup-input {
@@ -587,6 +611,7 @@
     border: 0;
     border-bottom: 1px solid var(--color-hairline);
     border-radius: 0;
+    box-shadow: none;
   }
   .ui-command-palette .ui-command-input { padding: 0; font-size: var(--text-md); }
   .ui-command-palette .lookup-group-header { background: transparent; }
@@ -900,4 +925,34 @@
       justify-content: center;
     }
   }
+
+  /* Player Comparison (alignment row 3): the title sits centred over the duel card, Databallr's
+     size; header rules live in this layer, so the page's override does too. */
+  .ui-page-header.pvp-header { align-items: center; text-align: center; }
+  .pvp-header .ui-page-header-title-row { justify-content: center; }
+  .pvp-header .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); }
+  .pvp-header .ui-page-header-subtitle { color: var(--color-on-bg-secondary); }
+  /* Roster Shapes' and Stat Line Shift's explainers are the page's key, so they wrap (rows 12, 13). */
+  .shapes-page .pvp-header .ui-page-header-subtitle, .sls-page .pvp-header .ui-page-header-subtitle, .lg-page .pvp-header .ui-page-header-subtitle, .sc-page .pvp-header .ui-page-header-subtitle, .tw-page .pvp-header .ui-page-header-subtitle { max-width: 72ch; margin-inline: auto; white-space: normal; }
+  .fa-page .fa-title .ui-page-header-subtitle { max-width: 72ch; color: var(--color-on-bg-secondary); white-space: normal; }
+  .pvp-scope .ui-filter-bar, .tc-console .ui-filter-bar, .mu-console .ui-filter-bar, .teams-console .ui-filter-bar { border-bottom: 0; }
+  /* Last X Games (row 6): five mode controls wrap, centred, instead of widening a phone page. */
+  @media (max-width: 767px) {
+    .lg-console .ui-filter-bar { width: 100%; }
+    .lg-console .ui-filter-bar-modes { flex-wrap: wrap; justify-content: center; }
+  }
+  /* Team Stats (row 4): Databallr's two-row console. Scope controls fill the first row; the view
+     modes and Data details take the second, so no single control wraps onto a row of its own. */
+  @media (min-width: 768px) {
+    .teams-console .ui-filter-bar { flex-wrap: wrap; row-gap: var(--space-2); }
+    .teams-console .ui-filter-bar-controls { flex: 1 1 100%; }
+    .teams-console .ui-filter-bar-modes { padding-left: 0; border-left: 0; }
+  }
+  /* Like Stathead, the leading value only reads heavier (row 3, 11 and 20); the percentile sits
+     beside its value so rows stay one line tall (19). Its text rules live in this layer. */
+  .pvp-value .chart-percentile-text { display: inline-flex; align-items: baseline; gap: var(--space-1); }
+  .pvp-value .stat-main-value { font-weight: 400; }
+  /* Unranked values (careers, small samples) keep the text colour instead of the cell's muted one (28). */
+  .pvp-value .chart-percentile-text[data-qualified] { color: var(--color-text); }
+  .pvp-value[data-leading] .stat-main-value { font-weight: 700; }
 }

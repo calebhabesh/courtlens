@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import logging
 import math
+import threading
 import time
 from collections.abc import Sequence
 from contextlib import nullcontext
@@ -25,6 +27,28 @@ from courtlens.services.assistant.agent.providers.base import (
     citation,
     map_failure,
 )
+
+logger = logging.getLogger(__name__)
+# Grounding with Google Search can be unavailable on a free-tier project even while plain
+# generation has quota: Gemini then answers 429 with no QuotaFailure detail. Re-probe hourly.
+SEARCH_COOLDOWN_SECONDS = 3600
+_search_lock = threading.Lock()
+_search_blocked_until: dict[str, float] = {}
+
+
+def search_available(model: str) -> bool:
+    with _search_lock:
+        return _search_blocked_until.get(model, 0.0) <= time.monotonic()
+
+
+def block_search(model: str, seconds: float = SEARCH_COOLDOWN_SECONDS) -> None:
+    with _search_lock:
+        _search_blocked_until[model] = time.monotonic() + seconds
+
+
+def reset_search_blocks() -> None:
+    with _search_lock:
+        _search_blocked_until.clear()
 
 
 class WebSearchArguments(BaseModel):
@@ -58,6 +82,60 @@ class GeminiProvider:
     ) -> AgentStep:
         check_budget(timeout_seconds, max_output_tokens, remaining_web_searches)
         started = time.monotonic()
+        searches = remaining_web_searches if search_available(self.model) else 0
+        try:
+            return self._step(
+                system_prompt,
+                messages,
+                tools,
+                timeout_seconds=timeout_seconds,
+                max_output_tokens=max_output_tokens,
+                remaining_web_searches=searches,
+                on_delta=on_delta,
+            )
+        except ProviderFailure as failure:
+            # A quota 429 without a named quota while search was offered: retry once without
+            # search, and stop offering it for an hour. A named quota is a real limit.
+            remaining = timeout_seconds - (time.monotonic() - started)
+            if (
+                failure.kind != "provider_quota"
+                or not searches
+                or failure.quota_id
+                or remaining <= 1
+            ):
+                raise
+            block_search(self.model)
+            logger.warning(
+                "gemini search grounding refused (429 without quota detail); "
+                "continuing without web search for %s seconds: model=%s",
+                SEARCH_COOLDOWN_SECONDS,
+                self.model,
+            )
+            step = self._step(
+                system_prompt,
+                messages,
+                tools,
+                timeout_seconds=remaining,
+                max_output_tokens=max_output_tokens,
+                remaining_web_searches=0,
+                on_delta=on_delta,
+            )
+            step.provider_calls += 1
+            step.search_errors.append("search_unavailable")
+            return step
+
+    def _step(
+        self,
+        system_prompt: str,
+        messages: Sequence[AgentMessage],
+        tools: Sequence[ToolDeclaration],
+        *,
+        timeout_seconds: float,
+        max_output_tokens: int,
+        remaining_web_searches: int,
+        on_delta: DeltaCallback | None = None,
+    ) -> AgentStep:
+        started = time.monotonic()
         combined = self.model.startswith("gemini-3")
         separate_search = bool(tools and remaining_web_searches and not combined)
         if separate_search:
@@ -68,7 +146,7 @@ class GeminiProvider:
             for part in message.native_content
             if part.get("function_call") and not part["function_call"].get("id")
         }
-        contents: list[types.Content] = []
+        contents: list[types.ContentUnionDict] = []
         for message in messages:
             if message.role == "tool":
                 parts = [
@@ -120,6 +198,14 @@ class GeminiProvider:
             automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
             tool_config=types.ToolConfig(include_server_side_tool_invocations=True)
             if declarations and combined
+            # A tool-free step after tool use (finalization or repair) must write prose: without
+            # this, Gemini can imitate the earlier calls and return no answer text.
+            else types.ToolConfig(
+                function_calling_config=types.FunctionCallingConfig(
+                    mode=types.FunctionCallingConfigMode.NONE
+                )
+            )
+            if not declarations and any(m.tool_calls or m.tool_results for m in messages)
             else None,
         )
         try:

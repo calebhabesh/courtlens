@@ -1,0 +1,8 @@
+
+Running 4 tests using 2 workers
+
+[1/4] e2e/visual-baselines.spec.ts:197:7 › FO11 baselines phone › player comparison
+[2/4] e2e/visual-baselines.spec.ts:197:7 › FO11 baselines desktop › player comparison
+[3/4] e2e/visual-baselines.spec.ts:239:306 › PC04 parameter-free baselines desktop › compare
+[4/4] e2e/visual-baselines.spec.ts:239:306 › PC04 parameter-free baselines phone › compare
+  4 passed (2.3s)

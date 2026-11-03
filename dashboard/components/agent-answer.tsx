@@ -93,7 +93,7 @@ export function AgentResult({ block, answer }: { block: AgentResultBlock; answer
       : <><div className="ask-table" role="region" aria-label={`${name} table`} tabIndex={0}><table className="data-table"><caption>{expanded ? `All ${view.total} returned rows` : `${Math.min(10, view.total)} of ${view.total} returned rows`}</caption><thead><tr>{view.columns.map(key => <th scope="col" key={key}>{resultColumnLabel(key, result)}</th>)}</tr></thead><tbody>{(expanded ? view.rows : view.rows.slice(0, 10)).map((row, i) => <tr key={i}>{view.columns.map(key => <td key={key} title={agentCellText(row[key])}>{agentCellText(row[key])}</td>)}</tr>)}</tbody></table></div>{view.total > 10 && <button type="button" className="ask-chip" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? "Show fewer" : `Show all ${view.total} rows`}</button>}</>}
     {result.limitations?.map((text, i) => <p key={i} className="text-muted ask-limitation">{text}</p>)}
     <div className="ask-chips">{href && <AnswerLink className="ask-chip" href={href}>Open equivalent analysis</AnswerLink>}{review && <Link className="ask-chip" href={review}>Review and save {result.operation.replaceAll("_", " ")}</Link>}</div>
-    <details className="ask-disclosure"><summary>Returned fields and exact evidence</summary><pre>{JSON.stringify({ data: result.data, rows: result.rows, evidence: result.evidence, context: block.context }, null, 2)}</pre></details>
+    <details className="ask-disclosure"><summary>Returned Fields and Exact Evidence</summary><pre>{JSON.stringify({ data: result.data, rows: result.rows, evidence: result.evidence, context: block.context }, null, 2)}</pre></details>
   </section>;
 }
 
@@ -117,7 +117,7 @@ export function AgentAnswer({ answer, busy, onChoice, onRetry }: { answer: Agent
       return href ? <AnswerLink key={i} className="ask-chip" href={href}>{action.label}</AnswerLink> : null;
     })}{retryable && <button type="button" className="ask-chip" disabled={busy} onClick={onRetry}>Retry question</button>}</div>
     {!!sources.length && <details className="ask-disclosure agent-sources"><summary>Sources ({sources.length})</summary><ul className="hybrid-sources">{sources.map(source => <li key={source.source_id}><SourceChip source={source} answer={answer} /><p>{sourceDetails(source)}</p>{source.excerpt && <blockquote>{source.excerpt}</blockquote>}</li>)}</ul></details>}
-    <details className="ask-disclosure ask-how"><summary>How I got this</summary>
+    <details className="ask-disclosure ask-how"><summary>How I Got This</summary>
       <ol className="agent-trace">{answer.trace?.map((step, i) => <li key={i}><strong>{step.tool}</strong> · {step.status} · {step.elapsed_ms} ms{step.rows != null ? ` · ${step.rows} rows` : ""}{step.hits != null ? ` · ${step.hits} hits` : ""}<code>{JSON.stringify(step.arguments ?? {})}</code></li>)}</ol>
       <dl className="ask-facts">
         {[["Provider / model", `${accounting.provider} · ${accounting.model}`], ["Prompt version", accounting.prompt_version], ["Tokens (input / output)", `${accounting.input_tokens ?? 0} / ${accounting.output_tokens ?? 0}`], ["Estimated cost (USD)", accounting.est_cost_usd == null ? "Cost unknown" : `$${accounting.est_cost_usd.toFixed(6)} (estimate)`], ["Elapsed", `${accounting.elapsed_ms ?? 0} ms`], ["Steps / provider calls / searches", `${accounting.steps ?? 0} / ${accounting.provider_calls ?? 0} / ${accounting.web_searches ?? 0}`]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
@@ -126,7 +126,7 @@ export function AgentAnswer({ answer, busy, onChoice, onRetry }: { answer: Agent
       {!!accounting.web_search_overshoot && <p>Reported searches exceeded the limit by {accounting.web_search_overshoot}.</p>}
       {!!accounting.token_overshoot && <p>Reported tokens exceeded the limit by {accounting.token_overshoot}.</p>}
       {answer.saveable && <p className="text-muted">Review and rerun a pinned operation to save analytical evidence. Web prose stays in chat history.</p>}
-      <details><summary>Evidence details</summary><pre>{JSON.stringify({ turn_id: answer.turn_id, accounting, provenance: answer.provenance, transcript: answer.transcript }, null, 2)}</pre></details>
+      <details><summary>Evidence Details</summary><pre>{JSON.stringify({ turn_id: answer.turn_id, accounting, provenance: answer.provenance, transcript: answer.transcript }, null, 2)}</pre></details>
     </details>
   </div>;
 }

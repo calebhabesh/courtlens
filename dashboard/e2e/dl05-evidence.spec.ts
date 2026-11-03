@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { test, type Page } from "@playwright/test";
-import { easternToday, type LiveCache, type LiveGame } from "../lib/live";
+import { easternToday, type LiveGame, type LiveRead, type LiveSlateData } from "../lib/live";
 import { openWorkbench } from "./workbench-navigation";
 
 const slate = easternToday();
@@ -15,32 +15,26 @@ const game: LiveGame = {
   status: "in_progress",
   period: 4,
   clock: "2:45",
-  provisional: true,
   teams: [
     { source_id: "1", canonical_id: null, identity_status: "unmapped", name: "Boston Celtics", side: "home", score: 108 },
     { source_id: "2", canonical_id: null, identity_status: "unmapped", name: "Miami Heat", side: "away", score: 102 }
   ]
 };
 
-const cache: LiveCache = {
+const cache: LiveRead<LiveSlateData> = {
   namespace: "espn",
-  provisional: true,
-  client_poll_seconds: 60,
-  capability: "not_yet_observed",
+  resource: `slate:${slate}`,
   status: "observed",
-  paused: false,
-  active_leases: 1,
+  final: false,
   stale: false,
   age_seconds: 15,
-  last_success_at: `${slate}T23:00:00Z`,
-  last_poll_at: null,
-  next_poll_at: null,
-  error: null,
-  observation_id: "observed-fixture-dl05",
   acquired_at: `${slate}T23:00:00Z`,
   source_time: null,
   http_date: null,
-  content_sha256: "b".repeat(64),
+  refresh_seconds: 20,
+  error: null,
+  observation_id: null,
+  content_sha256: null,
   data: { games: [game] }
 };
 

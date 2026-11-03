@@ -291,3 +291,12 @@ sources:
                   arguments:
                     to: source('operational', 'stats_feed_versions')
                     field: id
+      - name: bbref_player_profiles
+        description: Append-only player pages parsed from retained Basketball-Reference acquisitions.
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: player_id
+            data_tests: [not_null]
+      - name: finance_thresholds
+        description: Immutable official NBA cap thresholds with actual local observation times.

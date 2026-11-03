@@ -532,7 +532,7 @@ export function ManageViewsModal({
                       Built-in Presets
                     </strong>
                     <p className="text-xs text-muted mt-1">
-                      Canonical presets (Overview, Shooting, Defense, True Shooting, Rates Per 36, Playmaking, Rebounding, Impact, On-Off, Six Factor) are recoverable at any time.
+                      Canonical presets (Overview, Shooting, Defense, True Shooting, Playmaking, Rebounding, Impact, On-Off, Six Factor) are recoverable at any time.
                     </p>
                   </div>
                   <Button

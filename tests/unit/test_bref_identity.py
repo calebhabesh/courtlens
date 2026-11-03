@@ -62,6 +62,9 @@ def duplicate_name_roster(session, root):
     ("left", "right"),
     [
         ("A.J. Green", "AJ Green"),
+        # Wikipedia spaces initials; NBA.com does not (A.J. Lawson was missed abroad).
+        ("A. J. Lawson", "A.J. Lawson"),
+        ("O. G. Anunoby", "OG Anunoby"),
         ("Nikola Jokić", "Nikola Jokic"),
         ("Bobby Portis", "Bobby Portis Jr."),
         ("Ernest Udeh Jr.", "Ernest Udeh, Jr."),

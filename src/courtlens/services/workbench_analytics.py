@@ -7,7 +7,7 @@ import csv
 import hashlib
 import io
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import UTC, date, datetime, time
 from pathlib import Path
 from typing import Any, Literal
@@ -30,8 +30,20 @@ from courtlens.domain.metrics import (
     compute_metrics,
 )
 from courtlens.domain.team_analytics import compute_team_schedule_context
-from courtlens.domain.teams import get_team_info, resolve_team_label, resolve_team_tricode
+from courtlens.domain.teams import (
+    get_team_info,
+    resolve_team_label,
+    resolve_team_tricode,
+    team_identity,
+)
 from courtlens.models import new_uuid, utc_now
+from courtlens.services.history_totals import (
+    pinned_sha,
+    season_end_date,
+    season_start_date,
+    summary_rows,
+    totals_scopes,
+)
 from courtlens.services.publication import DEFAULT_CHANNEL
 from courtlens.services.workbench_forecasts import get_player_prospective_forecast
 from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot
@@ -68,6 +80,9 @@ class ResolvedContext:
     supported_dates: list[str]
     published_at: str | None
     warnings: list[str]
+    # Seasons served as season totals (before the game logs) and the sealed file they come from.
+    totals_sha: str | None = None
+    totals_seasons: tuple[str, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -227,7 +242,20 @@ def _dataset_facts(session: Session, dataset: WorkbenchDataset) -> dict[str, Any
         "min_date": min((row[1] for row in rows), default=None),
         "max_date": max((row[2] for row in rows), default=None),
         "season_max": {row[0]: row[2] for row in rows},
+        "totals_sha": None,
+        "totals_seasons": (),
     }
+    sha = pinned_sha(dataset)
+    totals = sorted({season for season, _ in totals_scopes(session, sha)} - set(facts["seasons"]))
+    # The pinned file also carries every season's advanced values (BPM, WS...), so it is kept
+    # even when the dataset has game rows for all of its seasons.
+    facts["totals_sha"] = sha
+    if totals:
+        facts["totals_seasons"] = tuple(totals)
+        facts["seasons"] = sorted([*facts["seasons"], *totals])
+        facts["season_max"].update({season: season_end_date(season) for season in totals})
+        first = season_start_date(totals[0])
+        facts["min_date"] = min(facts["min_date"] or first, first)
     if dataset.status == "ready":
         _READY_DATASET_FACTS[key] = facts
     return facts
@@ -300,6 +328,8 @@ def resolve_workbench_context(
     dataset_type: Literal["archive", "workbench"] = (
         "workbench" if wb_dataset is not None else "archive"
     )
+    totals_sha: str | None = None
+    totals_seasons: tuple[str, ...] = ()
     warnings = [
         "Historical reconstruction from completed records.",
         "Prior-day boundary: game_date < before_date is strictly enforced.",
@@ -312,6 +342,7 @@ def resolve_workbench_context(
         mode = "workbench_recent"
         source = wb_dataset.source_namespace
         facts = _dataset_facts(session, wb_dataset)
+        totals_sha, totals_seasons = facts["totals_sha"], facts["totals_seasons"]
         observed_seasons = facts["seasons"]
         seasons = (
             list(observed_seasons) if observed_seasons else (wb_dataset.seasons_json or ["2023-24"])
@@ -418,6 +449,26 @@ def resolve_workbench_context(
         supported_dates=supported_dates,
         published_at=published_at,
         warnings=warnings,
+        totals_sha=totals_sha,
+        totals_seasons=totals_seasons,
+    )
+
+
+def season_context(context: ResolvedContext, season: str, before_date: date) -> ResolvedContext:
+    """The context of another season of the same release and phase at an explicit cutoff.
+
+    Equal to resolve_workbench_context(release, season, phase, before_date) for a workbench
+    context resolved with an explicit cutoff and the season window, without re-reading the
+    dataset: a player's career resolves once instead of once per season.
+    """
+    if context.dataset_type != "workbench" or context.window != "season":
+        raise ValueError("season_context derives whole-season workbench contexts only")
+    return replace(
+        context,
+        season=season,
+        before_date=before_date,
+        cutoff_utc=_cutoff_utc(before_date),
+        default_before_date=context.coverage_end,
     )
 
 
@@ -703,24 +754,48 @@ def get_player_profile(
                 )
                 .limit(1)
             )
+        if exists is None and context.totals_sha:
+            # A player whose career predates the game logs exists through season totals.
+            from courtlens.reference_models import BbrefPlayerSeason
+
+            exists = session.scalar(
+                select(BbrefPlayerSeason.id)
+                .where(
+                    BbrefPlayerSeason.source_sha256 == context.totals_sha,
+                    BbrefPlayerSeason.player_id == player_id,
+                )
+                .limit(1)
+            )
         if exists is None:
             raise HTTPException(status_code=404, detail="player not found in snapshot")
 
     p_name = all_games[0]["player_name"] if all_games else player_id
+    if not all_games:
+        p_name = (
+            session.scalar(
+                select(WorkbenchIdentity.display_name).where(
+                    WorkbenchIdentity.external_id == player_id,
+                    WorkbenchIdentity.kind == "player",
+                )
+            )
+            or player_id
+        )
     all_games.sort(key=lambda x: (x["game_date"], x["game_id"]))
     appeared = [g for g in all_games if g.get("appearance") == "appeared"]
 
-    season_metrics, season_samples = compute_metrics(all_games)
+    # Seasons before the 1983-84 game logs summarise their season totals (never a game log).
+    totals_rows = summary_rows(session, context, player_id) if not all_games else []
+    season_metrics, season_samples = compute_metrics(all_games or totals_rows)
     last_5_metrics, last_5_samples = compute_metrics(appeared[-5:])
     last_10_metrics, last_10_samples = compute_metrics(appeared[-10:])
 
     # Multi-team stint breakdown (for traded players)
-    teams_observed: set[str] = set(g["team_id"] for g in all_games)
+    teams_observed: set[str] = set(g["team_id"] for g in all_games or totals_rows)
     stints: list[dict[str, Any]] = []
 
     if len(teams_observed) > 1:
         for tid in sorted(teams_observed):
-            team_games = [g for g in all_games if g["team_id"] == tid]
+            team_games = [g for g in all_games or totals_rows if g["team_id"] == tid]
             t_metrics, _ = compute_metrics(team_games)
             stints.append(
                 {
@@ -743,8 +818,18 @@ def get_player_profile(
             "name": resolve_team_label(last_g["team_id"]),
         }
 
+    if totals_rows and latest_team is None:
+        last_team = totals_rows[-1]["team_id"]
+        latest_team = {
+            "id": last_team,
+            "tricode": resolve_team_tricode(last_team),
+            "name": resolve_team_label(last_team),
+        }
+
     warnings = list(context.warnings)
-    if not appeared:
+    if totals_rows:
+        warnings.append(f"{context.season} is served as season totals: game logs start in 1983-84.")
+    elif not appeared:
         warnings.append("Player has zero confirmed active appearances before the cutoff date.")
 
     if context.dataset_type == "workbench":
@@ -794,6 +879,15 @@ def get_player_game_log(
 ) -> tuple[dict[str, str], list[dict[str, Any]], str | None, bool]:
     """Retrieve prior-only game log for a player."""
     all_games = _load_player_games(session, context, player_id=player_id)
+    if not all_games and context.season in context.totals_seasons:
+        # Seasons before the 1983-84 game logs have no games to list: an empty log, not a 404.
+        name = session.scalar(
+            select(WorkbenchIdentity.display_name).where(
+                WorkbenchIdentity.external_id == player_id, WorkbenchIdentity.kind == "player"
+            )
+        )
+        if name is not None:
+            return {"id": player_id, "name": name}, [], None, False
     if not all_games:
         raise HTTPException(status_code=404, detail="player not found in snapshot")
 
@@ -956,7 +1050,7 @@ def get_teams_research(
             ),
         }
 
-        team_info = get_team_info(tid)
+        team_info = team_identity(tid, context.season)
         canonical_id = team_info.team_id if team_info else tid
         tricode = team_info.tricode if team_info else resolve_team_tricode(tid)
         name = team_info.name if team_info else resolve_team_label(tid)
@@ -1024,12 +1118,18 @@ def get_team_detail(
     team_id: str,
 ) -> dict[str, Any]:
     """Retrieve team details, past games, and participation-scoped player cohort."""
+    from courtlens.services.history_teams import find_team, history_team_detail, season_teams
+
+    history = season_teams(session, context)
+    if history is not None:
+        # A season served as totals (before 1983-84): its record and players, no games.
+        found = find_team(history, team_id, context.season)
+        if found is not None:
+            return history_team_detail(session, context, found)
     team_games = _load_team_games(session, context, team_id=team_id)
-    if not team_games:
-        # Check if team is known
-        info = resolve_team_label(team_id)
-        if not info:
-            raise HTTPException(status_code=404, detail="team not found in snapshot")
+    # A team with no games is still known when the catalog names it
+    if not team_games and team_identity(team_id, context.season) is None:
+        raise HTTPException(status_code=404, detail="team not found in snapshot")
 
     gp = len(team_games)
     wins = sum(
@@ -1092,7 +1192,7 @@ def get_team_detail(
         for g in sorted(team_games, key=lambda x: (x["game_date"], x["game_id"]), reverse=True)[:10]
     ]
 
-    team_info = get_team_info(team_id)
+    team_info = team_identity(team_id, context.season)
     canonical_id = team_info.team_id if team_info else team_id
     tricode = team_info.tricode if team_info else resolve_team_tricode(team_id)
     name = team_info.name if team_info else resolve_team_label(team_id)

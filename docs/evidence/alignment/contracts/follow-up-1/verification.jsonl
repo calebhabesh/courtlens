@@ -1,0 +1,11 @@
+{"name":"stats-2023-24","path":"/stats?season=2023-24","portraits":9,"askedSeason":9,"servedSeason":9,"seasons":["2023-24"],"errors":[]}
+{"name":"stats-drawer-2023-24","path":"/stats?season=2023-24","portraits":10,"askedSeason":9,"servedSeason":9,"seasons":["2023-24"],"errors":[]}
+{"name":"playoffs-2024-bos-mia","path":"/playoffs/2024-r1-bos-mia?season=2023-24","portraits":24,"askedSeason":24,"servedSeason":24,"seasons":["2023-24"],"errors":[]}
+{"name":"roster-shapes-2025-26-BOS","path":"/roster-shapes?season=2025-26&team=BOS","portraits":1,"askedSeason":1,"servedSeason":1,"seasons":["2025-26"],"errors":[]}
+{"name":"depth-chart-BOS-2023-24","path":"/teams/1610612738?season=2023-24#depth-chart","portraits":28,"askedSeason":28,"servedSeason":26,"seasons":["2023-24"],"errors":[]}
+{"name":"showcase-2023-24","path":"/showcase?season=2023-24","portraits":26,"askedSeason":25,"servedSeason":25,"seasons":["2023-24"],"errors":[]}
+{"name":"rankings","path":"/rankings","portraits":15,"askedSeason":15,"servedSeason":15,"seasons":["2025-26"],"errors":[]}
+{"name":"tierlist-example","path":"/tierlist","portraits":15,"askedSeason":15,"servedSeason":15,"seasons":["2025-26"],"errors":[]}
+{"name":"last-games-2023-24","path":"/last-games?season=2023-24","portraits":2,"askedSeason":1,"servedSeason":1,"seasons":["2023-24"],"errors":[]}
+{"name":"defensive-matchups","path":"/research/defensive-matchups","portraits":1,"askedSeason":1,"servedSeason":1,"seasons":["2025-26"],"errors":[]}
+{"name":"contracts-TOR","path":"/contracts?team=TOR","portraits":18,"askedSeason":13,"servedSeason":13,"seasons":["2025-26"],"chipsDivider":"0px","rosterStatsGap":16,"pyramidPiesGap":16,"highEarnerFills":["rgb(57, 135, 229)","rgb(217, 89, 38)","rgb(25, 158, 112)","rgb(201, 133, 0)","rgb(213, 81, 129)"],"distinctHighEarnerFills":5,"seasonOptions":["2026-27","2027-28 · Projected","2028-29 · Projected","2029-30 · Projected"],"errors":[]}

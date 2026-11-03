@@ -1,0 +1,43 @@
+{
+  "base": "http://127.0.0.1:3182",
+  "api": "http://127.0.0.1:8000",
+  "source": "Live local PostgreSQL data; read-only Stats requests",
+  "results": [
+    {
+      "width": 1440,
+      "name": "Kawhi Leonard",
+      "text": "LAC · SF · nowTOR",
+      "centerOffset": 0,
+      "nameToSubtitleGap": 0,
+      "subtitleHeight": 18,
+      "pillHeight": 18,
+      "pillFullyVisible": true,
+      "subtitleFits": true,
+      "pageWidth": 1440
+    },
+    {
+      "width": 390,
+      "name": "Kawhi Leonard",
+      "text": "LAC · SF · nowTOR",
+      "centerOffset": 0,
+      "nameToSubtitleGap": 0,
+      "subtitleHeight": 18,
+      "pillHeight": 18,
+      "pillFullyVisible": true,
+      "subtitleFits": true,
+      "pageWidth": 390
+    }
+  ],
+  "productionFixtureChecks": [
+    {
+      "width": 1440,
+      "centerOffset": 0,
+      "subtitleFits": true
+    },
+    {
+      "width": 390,
+      "centerOffset": 0,
+      "subtitleFits": true
+    }
+  ]
+}

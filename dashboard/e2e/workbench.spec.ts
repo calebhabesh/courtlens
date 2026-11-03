@@ -27,28 +27,6 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(page.getByText("Fixture Guard", { exact: true })).toBeVisible();
   });
 
-  test("player explorer allows filtering and links to detail view", async ({ page }) => {
-    await openWorkbench(page, "/players");
-    await page.waitForLoadState("networkidle");
-
-    await expect(page.locator("h1")).toHaveText("Player Directory");
-    await expect(page.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
-
-    // Filter by name
-    const searchInput = page.getByRole("searchbox", { name: "Find player", exact: true });
-    await searchInput.fill("Guard");
-    await searchInput.press("Enter");
-    await expect(page).toHaveURL(/name=Guard/);
-    await page.waitForLoadState("networkidle");
-
-    await expect(page.getByRole("link", { name: "Fixture Guard", exact: true })).toBeVisible();
-
-    // Navigate to player detail
-    await page.getByRole("link", { name: "Fixture Guard", exact: true }).click();
-    await page.waitForURL("**/players/24**");
-    await expect(page.locator("h1")).toContainText("Fixture Guard");
-  });
-
   test("player detail presents profile summaries, game logs, and lineage trigger", async ({ page }) => {
     await openWorkbench(page, "/players/23");
     await page.waitForLoadState("networkidle");
@@ -69,22 +47,11 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(page.getByText("Source Lineage")).toBeVisible();
   });
 
-  test("team research lists cohorts and navigates to team detail", async ({ page }) => {
-    await page.goto("/teams");
-    await page.waitForLoadState("networkidle");
-
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Team Stats & Cohorts");
-    // The headline ranking also names teams, so check the table's own team links.
-    await expect(page.getByRole("link", { name: "Toronto Raptors", exact: true })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Boston Celtics", exact: true })).toBeVisible();
-
-    // Standings notice
-    await expect(page.getByText("Record order is descriptive; ties have no official placement.")).toBeVisible();
-    await page.getByText("Why?", { exact: true }).click();
-    await expect(page.getByText(/Ties in record ordering/)).toBeVisible();
-
-    // Navigate to team detail
-    await page.locator("a[href*='/teams/100']").first().click();
+  test("team stats list every team and navigate to team detail", async ({ page }) => {
+    await openWorkbench(page, "/teams");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("NBA Team Stats");
+    await expect(page.locator(".teams-grid tbody tr")).toHaveCount(2);
+    await page.getByRole("link", { name: "TOR", exact: true }).click();
     await page.waitForURL("**/teams/100**");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Toronto Raptors");
   });
@@ -162,7 +129,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(card.getByRole("heading", { name: "Assistant", exact: true })).toBeVisible();
     await expect(card).toContainText("Limited mode");
     await expect(card).toContainText("Manual research needs no provider key");
-    await card.getByText("Configuration details", { exact: true }).click();
+    await card.getByText("Configuration Details", { exact: true }).click();
     await expect(card).toContainText("server-side Gemini key");
   });
 });

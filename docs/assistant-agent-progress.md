@@ -309,3 +309,78 @@ cross-reference does not advance AG source/evaluation statuses or claim owner vi
   planning, prose, streaming, threads and provider behavior remain unchanged. No provider call ran.
 - Dashboard 439 unit tests and 54 affected browser checks pass, including legacy conversations,
   manual Research Operation, saved exports/reproduction and failure states. This is PC12 C only.
+
+## 2026-10-15 — Gemini SDK content input typing
+
+Strict mypy rejected `list[Content]` at both Gemini generation calls because the SDK accepts
+an invariant list of its broader content union. The adapter now declares
+`list[types.ContentUnionDict]`, using the SDK's input type for streaming and regular calls.
+The request contents and runtime behavior stay the same.
+
+Verification: all 40 provider adapter tests pass through offline SDK transports; strict mypy
+passes for 252 source files; Ruff and its format check pass. Pytest reports one deprecation
+warning from the installed Google SDK on Python 3.14. No live provider call ran.
+
+## 2026-11-02 — Free-tier provider pool (Gemini + Groq) and the Gemini search 429
+
+Owner request: pool the Gemini and Groq free tiers so Ask works within free limits.
+
+Diagnosis, measured live against the owner's keys:
+
+- Ask turns did not run out of Gemini quota: all 13 retained turns were small. Since 2026-10-08,
+  every turn failed on its **first** call. A request with Grounding with Google Search gets a
+  `429 RESOURCE_EXHAUSTED` that names no quota (only a Help link). The same request without
+  search succeeds (15,495 input tokens). The owner's project has no free search grounding, and
+  every non-final step offered search, so every turn hit the 429.
+- Free-tier limits named in Gemini's own 429 details for `gemini-3.5-flash-lite`:
+  `GenerateRequestsPerMinutePerProjectPerModel-FreeTier` = 15 and
+  `GenerateContentInputTokensPerModelPerMinute-FreeTier` = 250,000. A tool turn sends
+  roughly 15–25K input tokens per step, so 3–5 steps cost 50–90K tokens.
+- Groq free plan, from response headers: 1,000 requests/day and 8,000 tokens/minute per model
+  (`openai/gpt-oss-120b`, `qwen/qwen3.8-27b`). Groq counts actual tokens, not `max_tokens`.
+- Tests do not spend quota: an import hook logged every SDK client that the unit suite built.
+  All of them used `test` keys with mock transports. `scripts/test_python.py` strips provider
+  keys, now including `GROQ_API_KEY`.
+
+Changes:
+
+- `agent/providers/pool.py`: `PooledProvider` runs each step on the first member with quota room
+  and hands it to the next on quota, busy or error. It never hands off after streamed text or
+  on a timeout, and waits once on a short per-minute 429. A process-wide `QuotaLedger` records
+  cooldowns (Gemini daily quotas until midnight Pacific), Groq header buckets, optional local
+  Gemini RPM/TPM/RPD, oversized requests and a learned token-estimate calibration. Tool history
+  produced by another member is flattened to text, because signed native content stays with its
+  producer. Quota 429s are logged with provider, scope, quota id and limit.
+- `agent/providers/groq.py`: OpenAI-compatible Chat Completions. It sends a compact profile:
+  no glossary or site map (list_metrics and site_help serve those), a flat `query_stats` with
+  an argument guide (Groq rejects union mismatches before CourtLens sees them; the server still
+  validates the full schema), and tool payloads truncated to 6,000 characters. Reasoning is
+  `low` and never stored. There is one feedback retry on a `tool_use_failed` 400, and no web
+  search.
+- Gemini: a 429 without a named quota while search is offered is retried once without search,
+  and search stays off for that model for an hour. A named quota is never retried. Tool-free
+  steps after tool use send function-calling mode `NONE`; before this, Gemini could imitate a
+  call and return no answer text.
+- Loop: finalization always gets 1,024 output tokens. Before, a turn that spent its token
+  budget finalized with 1 token and showed "did not supply an answer".
+- `map_failure` reads Google `RetryInfo`/`QuotaFailure` and treats Groq's 413
+  `rate_limit_exceeded` as a request that is too large.
+- Config: `COURTLENS_GROQ_API_KEY`/`GROQ_API_KEY`, `COURTLENS_GROQ_MODEL` (comma list, default
+  `openai/gpt-oss-120b,qwen/qwen3.8-27b`), `COURTLENS_ASSISTANT_PROVIDERS` (ordered pool) and
+  optional `COURTLENS_GEMINI_REQUESTS_PER_MINUTE`/`_TOKENS_PER_MINUTE`/`_REQUESTS_PER_DAY`.
+  Free-tier keys (Gemini, Groq) pool automatically. Paid keys join only when listed, or when no
+  free key exists. `/assistant/status` adds `providers` (per-member state, no keys), and the
+  status card shows the pool.
+
+Live results (owner keys, `run_turn` against the local warehouse, 2026-11-02):
+
+- Gemini first, Groq overflow: DRAPM leader (Wembanyama +6.69, 3 steps, 6.7 s), blocks leader
+  (2 steps, 3.5 s) and RAPM vs on/off (2 steps, 3.3 s) all answered. "Compare Jokic and Embiid
+  by RAPM" now writes a final answer; flash-lite still struggles to build the RAPM query.
+- Groq alone answers short turns (RAPM vs on/off, 48 s). Multi-step warehouse turns usually
+  exceed the 60 s deadline at 8K tokens/minute per model, so Groq is overflow, not primary.
+
+Verification: 64 offline provider/pool unit tests (new `tests/unit/test_agent_provider_pool.py`
+plus updated adapter tests), the full `make test-python` run, strict mypy, Ruff, dashboard lint,
+typecheck and the status-card unit test. This does not change any AG block status or eval
+evidence; no eval corpus or sealed artifact changed.

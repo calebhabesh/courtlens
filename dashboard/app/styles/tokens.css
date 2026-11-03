@@ -54,11 +54,17 @@
     --color-percentile-text-high: #ffd166;
     --color-percentile-text-mid: #8a919c;
     --color-percentile-text-low: #5d9cf0;
-    /* Stats trend series: dataviz reference dark slots 1-4, validated on surface-2 (CVD ΔE ≥ 8.4). */
+    /* Chart series: the dataviz reference's eight dark slots in fixed order, validated on surface-2
+       and the glass panel (#141b27): adjacent CVD ΔE ≥ 8.4, normal-vision ≥ 19.3, all ≥ 3:1. Slots 1-3
+       also pass all-pairs (pies, scatter). Stats trends use 1-4; Contracts' charts use all eight. */
     --color-trend-1: #3987e5;
     --color-trend-2: #d95926;
     --color-trend-3: #199e70;
     --color-trend-4: #c98500;
+    --color-trend-5: #d55181;
+    --color-trend-6: #008300;
+    --color-trend-7: #9085e9;
+    --color-trend-8: #e66767;
     --color-category-1: #ffd166;
     --color-category-2: #80bfff;
     --color-category-3: #c5a3ff;
@@ -78,6 +84,8 @@
     /* Elevation Tokens */
     --shadow-1: 0 1px 2px rgb(0 0 0 / 40%);
     --shadow-2: 0 4px 16px rgb(0 0 0 / 35%), inset 0 1px 0 rgb(255 255 255 / 3%);
+    /* Menus and popovers (alignment row 0, 17): Databallr's flat panel, a drop shadow without the rim highlight. */
+    --shadow-menu: 0 8px 24px rgb(0 0 0 / 35%);
     --shadow-3: 0 16px 48px rgb(0 0 0 / 55%), inset 0 1px 0 rgb(255 255 255 / 4%);
 
     /* Spacing Tokens */
@@ -105,7 +113,7 @@
     --control-sm: 28px;
     --control-md: 32px;
     --control-lg: 40px;
-    --header-height: 56px;
+    --header-height: 64px;
 
     /* Control kit v1 (docs/design/control-kit-v1.md): xs/sm/md/lg heights and state colours.
        The legacy --control-sm/md/lg names keep their values until UC05. */

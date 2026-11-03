@@ -46,6 +46,14 @@
   font-size: var(--text-2xl);
 }
 
+.player-portrait-xl {
+  width: 144px;
+  height: 144px;
+  min-width: 144px;
+  min-height: 144px;
+  font-size: var(--text-3xl);
+}
+
 .brand-title { display: flex; align-items: center; min-height: 24px; }
 .courtlens-wordmark { display: block; flex-shrink: 0; }
 }

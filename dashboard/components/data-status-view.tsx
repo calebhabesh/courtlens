@@ -82,8 +82,8 @@ export function DataStatusView({ status, initialJobs, error }: { status: Workben
   ];
   const actions = (
     <>
-      <Button size="xs" variant="primary" icon="refresh" loading={submitting === "refresh"} disabled={submitting !== null} onClick={() => void trigger("refresh")}>Refresh workbench</Button>
-      <Menu align="right" renderTrigger={props => <MenuTrigger {...props} size="xs">More jobs</MenuTrigger>}>
+      <Button size="xs" variant="primary" icon="refresh" loading={submitting === "refresh"} disabled={submitting !== null} onClick={() => void trigger("refresh")}>Refresh Workbench</Button>
+      <Menu align="right" renderTrigger={props => <MenuTrigger {...props} size="xs">More Jobs</MenuTrigger>}>
         <MenuItem icon="camera" label="Acquire portraits" disabled={submitting !== null} onClick={() => void trigger("portraits")} />
         <MenuItem icon="zap" label="Run bootstrap" disabled={submitting !== null} onClick={() => void trigger("bootstrap")} />
       </Menu>

@@ -31,7 +31,7 @@ for (const width of [1440, 390]) {
     await expect(cards.first().locator(".glossary-card-detail")).toContainText("Formula");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
 
-    await page.getByRole("link", { name: "Back to Stats" }).click();
+    await page.getByRole("button", { name: /^Back to Stats/ }).click();
     await expect(page).toHaveURL(/\/stats/);
   });
 }

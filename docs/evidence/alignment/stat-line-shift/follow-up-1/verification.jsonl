@@ -1,0 +1,10 @@
+{"step":"first load","width":1440,"pickerOpen":true,"tiles":30,"tilesWithEdges":0,"url":""}
+{"step":"closed with X","width":1440,"unfilled":true,"tray":0,"season":"2025-26"}
+{"step":"picked TOR","width":1440,"url":"?team=TOR","trayPlayers":20,"trayFrame":{"border":"0px","shadow":"none","radius":"0px"}}
+{"step":"picked Barnes","width":1440,"heading":"Per 75 stats <strong>without</strong> and <strong>with Scottie Barnes</strong>","overflow":false}
+{"step":"customize","width":1440,"groups":["General","Shooting","Rebounding","Team on Court"],"errors":[]}
+{"step":"first load","width":390,"pickerOpen":true,"tiles":30,"tilesWithEdges":0,"url":""}
+{"step":"closed with X","width":390,"unfilled":true,"tray":0,"season":"2025-26"}
+{"step":"picked TOR","width":390,"url":"?team=TOR","trayPlayers":20,"trayFrame":{"border":"0px","shadow":"none","radius":"0px"}}
+{"step":"picked Barnes","width":390,"heading":"Per 75 stats <strong>without</strong> and <strong>with Scottie Barnes</strong>","overflow":false}
+{"step":"customize","width":390,"groups":["General","Shooting","Rebounding","Team on Court"],"errors":[]}

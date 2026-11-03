@@ -73,16 +73,16 @@ test("PC03 prerendered SVG titles contain a single descriptive string", async ({
 
 test("PC03 Compare exports retain resolved token colors in SVG and PNG", async ({ page }) => {
   await openWorkbench(page, "/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13");
-  await page.getByText("Export chart preview", { exact: true }).click();
-  // PC04 moved SVG export into the More menu and PNG export to Share image.
+  // The duel card exports itself (alignment row 3): SVG from the More menu, PNG from Share Image.
   await page.getByRole("button", { name: "More", exact: true }).click();
   const pendingSvg = page.waitForEvent("download");
   await page.getByRole("menuitem", { name: "Export SVG" }).click();
   const svg = readFileSync((await (await pendingSvg).path())!, "utf8");
   expect(svg).not.toContain("var(--");
-  expect(svg).toContain("#80bfff"); expect(svg).toContain("#ffd166");
+  // Fixture Star leads points, so the gold identity pill and wordmark resolve; Guard leads nothing.
+  expect(svg).toContain("#ffd166"); expect(svg).toContain('fill="#15171b"');
   const pendingPng = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Share image", exact: true }).click();
+  await page.getByRole("button", { name: "Share Image", exact: true }).click();
   const png = readFileSync((await (await pendingPng).path())!);
   expect(png.subarray(1, 4).toString()).toBe("PNG");
 });

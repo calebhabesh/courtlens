@@ -65,6 +65,10 @@ migration and are deleted in DL08.
 | `--color-positive` / `--color-negative` / `--color-info` | `#60d394` / `#ff6b6b` / `#67aaf9` | Data semantics |
 | `--focus-ring` | `0 0 0 2px var(--color-surface-0), 0 0 0 4px var(--color-accent)` | All focusable elements (`:focus-visible`) |
 
+The page backdrop is solid `--color-bg`, owned by `app/shell.css`. The owner parked the decorative
+X/O pattern on 2026-10-14 because it made player-page information harder to read. The experiment
+remains in Git history; it has no active asset, generator or background-image rule.
+
 All text and surface pairs used for essential text must meet WCAG AA (4.5:1, or 3:1 at 18px+).
 DL01 verified this with `scripts/verify-contrast.py`; v1.3 (blue background) re-measured ratios:
 
@@ -113,6 +117,7 @@ DL01 verified this with `scripts/verify-contrast.py`; v1.3 (blue background) re-
 | `--color-identity-a-soft` / `--color-identity-b-soft` | 12% of the corresponding identity color | Identity backgrounds |
 | `--color-percentile-1` … `-5` | `#172d43`, `#20415e`, `#2b567c`, `#386b96`, `#3e729b` | Increasing already-oriented percentile, five bands of 20; 100 uses band 5 |
 | `--color-category-1` … `-6` | `#ffd166`, `#80bfff`, `#c5a3ff`, `#79d4c6`, `#f6a5c0`, `#d0d788` | Labeled categories such as archetypes; no rank |
+| `--color-trend-1` … `-8` | `#3987e5`, `#d95926`, `#199e70`, `#c98500`, `#d55181`, `#008300`, `#9085e9`, `#e66767` | Chart series in fixed order (dataviz reference dark slots; validated on surface-2 and the glass panel). Use these when slices or series sit side by side: the pastel categories are too close in hue (owner, alignment row 14). Slots 1-3 alone pass all-pairs; past eight, fold into Other |
 | `--color-status-guaranteed` | `#80bfff` | Guaranteed contract |
 | `--color-status-reported` | `#d0d788` | Reported salary without an option marker; guarantee state unknown (PC08) |
 | `--color-status-player-option` | `#c5a3ff` | Player option |
@@ -195,11 +200,21 @@ resolve token attributes before leaving the page's CSS cascade.
 | --- | --- |
 | `--shadow-1` | `0 1px 2px rgb(0 0 0 / 40%)` |
 | `--shadow-2` | `0 4px 16px rgb(0 0 0 / 35%), inset 0 1px 0 rgb(255 255 255 / 3%)` |
+| `--shadow-menu` | `0 8px 24px rgb(0 0 0 / 35%)` |
 | `--shadow-3` | `0 16px 48px rgb(0 0 0 / 55%), inset 0 1px 0 rgb(255 255 255 / 4%)` |
 
 Panels use surface-1 with no shadow, or `--shadow-1`. Menus and popovers use surface-3 with
-`--shadow-2`. Modals and drawers use surface-3 with `--shadow-3` over a scrim of
+`--shadow-menu` and no border or rim highlight (Databallr alignment row 0, instruction 17). Modals and drawers use surface-3 with `--shadow-3` over a scrim of
 `rgb(0 0 0 / 55%)` plus `backdrop-filter: blur(4px)`.
+
+Owner-approved exception (2026-10-14, extended 2026-10-15): the six player headline-stat cards
+and the Overview sections below the career table (Player Impact, Recent Form, Contract,
+Transactions and Career Highs) share `player-glass`: surface-0 at 58% opacity, a 10% rim, `--shadow-2`,
+and static 20 px backdrop blur with 150% saturation. There is no gradient or directional sheen.
+Only the backdrop is filtered; text stays sharp. The uniform tinted fill remains when backdrop
+filters are unsupported. Each lower section has one glass container with 20 px padding on
+desktop and 16 px on phone. Nested tables and lists remain inside that container. Section
+headings and subsection labels use title case. Other player sections retain their presentation.
 
 ### Spacing
 
@@ -229,7 +244,7 @@ Standard placements:
 
 Controls: four kit sizes, `xs` 28 / `sm` 32 / `md` 36 / `lg` 40 px (`--control-sm`, `--control-md`,
 `--kit-control-md`, `--control-lg`); every control is 40 px on phones. Header: `--header-height:
-56px`. Hit targets are at least 32px on desktop and 40px below 640px. See [Controls](#controls-ui-consolidation).
+64px`. Hit targets are at least 32px on desktop and 40px below 640px. See [Controls](#controls-ui-consolidation).
 
 ### Typography
 
@@ -310,7 +325,9 @@ Rules:
 
 ## Header
 
-One 56px sticky row (`components/ui/header.tsx`, nav items from `lib/nav-model.ts`):
+One 64px sticky row (`components/ui/header.tsx`, nav items from `lib/nav-model.ts`). Scale (owner,
+2026-10-19): 16px menu labels and chevrons, a 20px wordmark with a 28px mark, a 36px search pill
+with 14px text, and md (36px) Ask and `⋯` controls:
 
 ```
 [CourtLens] [Stats] [Live] [Players] [Teams] [Compare] [Research]      [Search players, teams…  ⌘K]      [Ask] [⋯]
@@ -337,6 +354,22 @@ One 56px sticky row (`components/ui/header.tsx`, nav items from `lib/nav-model.t
 - **Overlays** (search modal, drawers, modals, the Filters sheet) render at `document.body` through
   `OverlayPortal`, so a blurred sticky header never becomes their containing block.
 - The header has no bottom border; the scrolled state uses the sticky-header pattern.
+
+## Back navigation and control labels
+
+- **Back:** every page reached by opening an item from another page (a team's roster shape, a
+  player, a team, a team's contracts, a playoff series, a Live game, a saved investigation, the
+  glossary) starts with `BackButton` (`components/ui/back-button.tsx`): a gold `xs` button, left
+  chevron, "Back to …", and an Esc hint, on its own row above the page header. It returns to the
+  page this one was opened from in the tab (the trail in `lib/nav-trail.ts`), named by that page
+  (`useNavLabel` / `NavLabel`) or the nav, else to the page's logical parent. A merged page's tabs
+  are siblings, not drill-ins, and get no Back. Esc goes back only when no field is focused and no
+  dialog, menu or listbox was open when the key went down.
+- **Control labels use Title Case:** buttons, select options, segmented and radio options, menu
+  triggers and items, disclosure summaries, filter summaries and server-made labels shown in them
+  ("2026-27 · Projected", "Regular Season", "Copy to My Boards"). Small words (a, and, of, to, …)
+  stay lower inside a label; units, abbreviations and parenthetical notes keep their case. Prose,
+  table cells and data-details row labels are not controls.
 
 ## Components (`dashboard/components/ui/`)
 
@@ -468,6 +501,28 @@ the main result except at most one one-line `GatedNote`.
   **Dense tables get logos only, no headshots**, except where the existing group-guide rules place
   portraits.
 - Team logos and headshots are content, not icons.
+- **Photos match the season under analysis** (owner, 2026-10-19, a site-wide rule): wherever a
+  page analyses a season (a stat line, a roster, a comparison, a matchup, a playoff series), each
+  headshot is the player's photo from that team-season, and the team badge uses that season's logo.
+  Pass the season and team to the portrait: `PlayerAvatar` / `PlayerPortrait` `era={{ season, team }}`,
+  which requests `/api/workbench/players/{id}/portrait?season=…&team=…` (season headshots from
+  `courtlens acquire-season-portraits`, 2015-16 on). When the NBA has no photo for that
+  team-season the current one shows; never a different team's photo by guess. Only pages
+  about the player now (search, the player page header, Live) use the current photo.
+  Before 2015-16 the NBA has no team-season photos. A freely licensed Wikimedia Commons photo
+  from that season and team shows when one was found (`courtlens acquire-commons-portraits`:
+  matched to the player's own headshot by face, in uniform only (bare arms of a sleeveless
+  jersey; no off-court settings), cropped to head and shoulders, credited on
+  Methodology, Photo credits; LeBron James's 2010-11 Heat season). Otherwise the player's
+  nearest season photo with the same franchise (Anthony Davis's 2012-13 Hornets season: his
+  2015-16 Pelicans photo; owner, 2026-10-21, row 17), else his nearest season photo with any
+  team (LeBron 2010-11 before a Heat photo existed: his 2015-16 Cavaliers photo, not his 2026-27
+  Sixers one; owner, 2026-10-21); with no season photo at all, the current (late-career) photo,
+  as on Databallr. Where that photo is a silhouette or shows the player after his career (Steve
+  Nash's coaching photo; `POST_CAREER_NBA_PHOTOS`), the player's Basketball-Reference career photo
+  shows instead: 120x180, background cut out with a matted edge (`courtlens
+  acquire-bbref-portraits`; owner, 2026-10-20). Either photo is from his playing career, not
+  necessarily that team or season.
 
 ### Dates and numbers (D11, D20)
 
@@ -487,7 +542,9 @@ the main result except at most one one-line `GatedNote`.
   value, rank and a percentile bar. Exports produce the same card as the screen.
 - **Logo-grid picker (FO05):** `TeamGrid`: all 30 logos with tricode and name plus a name/tricode
   filter; inline when nothing is chosen, otherwise in a modal (6 × 5 at desktop, no scrolling). The
-  choice lives in the URL.
+  choice lives in the URL. No team-colour edges on the tiles (owner, 2026-10-19: "tacky"); the choice is the
+  accent outline. `variant="compact"` is Databallr's Select Team dialog: logo and tricode, five a row,
+  no filter.
 - **Depth chart (FO05):** an Unassigned pool across the top (everyone starts there), then the five
   position lanes as equal columns; each lane shows count, minutes, share % and a share bar
   (`role="meter"`). Chips carry a headshot, name and minutes.
@@ -613,3 +670,8 @@ pass/fail per item in the block evidence.
   sufficient.
 - **`/design`:** a living style guide route, hidden from nav, showing every token, component and
   motion pattern. Agents use it to verify changes.
+
+
+## Team Comparison owner exception (2026-10-17)
+
+The owner requested team-brand gradients around the team logo panels and a team-tone fill on the side with the higher displayed player or team metric on `/team-compare`, following the provided Databallr references. This explicitly permits team color for per-row comparison shading on `/team-compare`. A tie or missing value stays unshaded; no team winner, total lead count or outcome probability. Actual metric values and source disclosures remain visible. All mechanics (tokens, CSS custom properties, control kit, reduced motion) remain enforced.

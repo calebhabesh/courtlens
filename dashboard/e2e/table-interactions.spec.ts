@@ -101,18 +101,19 @@ test("selection failure remains actionable and does not change the selected row"
 
 test("playoff player table shares native keyboard sorting", async ({ page }) => {
   await personalFixture(page); await openWorkbench(page, "/playoffs/fixture-series"); await page.waitForLoadState("networkidle");
-  const sort = page.getByRole("button", { name: "Sort by PPG", exact: true });
+  const sort = page.getByRole("button", { name: "Sort by PTS", exact: true });
   await expect(sort.locator("..")).toHaveAttribute("aria-sort", "descending");
   await sort.focus(); await sort.press("Space");
   await expect(sort.locator("..")).toHaveAttribute("aria-sort", "ascending");
   await sort.press("Enter"); await expect(sort.locator("..")).toHaveAttribute("aria-sort", "descending");
 });
 
-test("a larger tray names the two-player comparison action accurately", async ({ page }) => {
+test("a larger tray names its comparison accurately and opens the grid (row 3, 64)", async ({ page }) => {
   await personalFixture(page, ["23", "24", "1630567"]); await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
-  const action = page.getByRole("link", { name: "Compare first 2", exact: true });
+  const action = page.getByRole("link", { name: "Compare (3)", exact: true });
   await expect(action).toBeVisible();
   const target = new URL((await action.getAttribute("href"))!, "http://localhost");
-  expect(target.searchParams.get("playerA")).toBe("23"); expect(target.searchParams.get("playerB")).toBe("24");
+  expect(target.searchParams.get("layout")).toBe("grid"); expect(target.searchParams.get("players")).toBe("23,24,1630567");
+  expect(target.searchParams.get("playerA")).toBeNull();
   await expect(page.locator(".compare-tray-chip-name").last()).toHaveText("Scottie Barnes");
 });

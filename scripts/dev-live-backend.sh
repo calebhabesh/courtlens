@@ -38,6 +38,8 @@ host = sys.argv[1]
 port = int(sys.argv[2])
 family = socket.AF_INET6 if ":" in host else socket.AF_INET
 with socket.socket(family, socket.SOCK_STREAM) as probe:
+    # Match Uvicorn so recently closed connections do not block a restart.
+    probe.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     probe.bind((host, port))
 PY
 }

@@ -21,6 +21,12 @@ describe("impact serving presentation", () => {
     expect(screen.getByText(/exclusive fit cutoff 2026-07-01/)).toBeTruthy();
     expect(screen.getByRole("link", { name: "Methodology and definitions" }).getAttribute("href")).toBe("/methodology#impact");
   });
+  it("labels an in-season weekly fit as provisional", () => {
+    const note = "Provisional in-season fit, refreshed weekly from one play-by-play source.";
+    render(<ImpactDisclosure data={{ ...fixture, provisional: { last_included_date: "2026-11-16", note } }} />);
+    expect(screen.getByText("Provisional")).toBeTruthy();
+    expect(screen.getByText(/Games through 2026-11-16/)).toBeTruthy();
+  });
   it("retains null BPR and shows unsupported prior reason", () => {
     const unsupported = structuredClone(fixture);
     unsupported.players[0].metrics.bpr = null;

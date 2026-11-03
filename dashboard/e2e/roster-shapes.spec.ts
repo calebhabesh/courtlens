@@ -1,9 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
 import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { openWorkbench } from "./workbench-navigation";
-import { FINANCE_TEAMS } from "../lib/finance-teams";
 
-// FO05 Roster Shapes prototype (D17/D18): logo-grid picker, depth chart, drag and menu moves,
+// FO05 depth chart (on the team profile since alignment row 12): drag and menu moves,
 // Observed/Projected, the 240-minute gauge and the byte-compatible JSON export.
 const BOS = "1610612738";
 const detail = {
@@ -23,107 +24,195 @@ async function mockTeam(page: Page) {
   await page.route(`**/api/workbench/teams/${BOS}?*`, (route) => route.fulfill({ json: detail }));
 }
 
-// PC10 Roster Shapes: 30 team shapes on first load, Fullest / Best fit / A–Z, team detail with
-// the FO05 depth chart as a tab. Unknown players are listed, never drawn as zero.
-const clusters = ["Lead creator", "Spacing wing", "Two-way connector", "Stretch big", "Interior hub", "Rim runner"]
-  .map((name, cluster) => ({ cluster, name, short: name.toLowerCase(), description: `${name} fixture`, color_token: `--color-category-${cluster + 1}` }));
-const shapePlayer = (id: string, name: string, vor: number | null, fit: "returning" | "new" | "unknown", cluster: number | null) => ({
-  player_id: id, player_name: name, listed_position: "G", value: vor === null ? null : vor * 2 - 2, value_qualified: true, value_percentile: 50,
-  reference_minutes: vor === null ? null : 1968, reference_games: vor === null ? null : 60, vor,
-  archetype: cluster === null ? null : { season: "2025-26", minutes: 1968, games: 60, small_sample: false, primary: cluster, primary_name: clusters[cluster].name, membership: [{ cluster, name: clusters[cluster].short, probability: 0.9 }] },
-  fit, previous_teams: fit === "new" ? ["DAL"] : fit === "returning" ? ["X"] : [], unknown_reasons: vor === null ? ["No stints in the BPR window; value is unknown."] : []
-});
-function shapeTeam(team: { id: string; tricode: string; name: string }, index: number) {
-  const roster = team.tricode === "BOS"
-    ? [shapePlayer("11", "Fixture Guard", 6, "returning", 0), shapePlayer("12", "Fixture Wing", 2, "new", 1), shapePlayer("13", "Fixture Bench", -0.5, "returning", 2), shapePlayer("14", "Fixture Rookie", null, "unknown", null)]
-    : [shapePlayer(`${team.tricode}1`, `${team.tricode} Starter`, 1 + index / 10, index % 2 ? "returning" : "new", index % 6)];
-  const sized = roster.filter(p => p.vor !== null && p.vor > 0);
-  const total = sized.reduce((sum, p) => sum + p.vor!, 0);
-  const returning = sized.filter(p => p.fit === "returning").reduce((sum, p) => sum + p.vor!, 0);
-  return { team_id: team.id, team_tricode: team.tricode, team_name: team.name, players: roster.length, sized_players: sized.length,
-    below_replacement_players: roster.filter(p => p.vor !== null && p.vor <= 0).length, unknown_players: roster.filter(p => p.vor === null).length,
-    total_vor: total, returning_share: total ? returning / total : null, archetype_mix: [], roster };
-}
-const shapes = {
-  version: "courtlens-roster-shapes-v1", season: "2026-27", label: "2026-27 · projected", projected_note: "Projected: no 2026-27 minutes played yet.",
-  reference_season: "2025-26", phase: "regular_season", replacement_level: -2, full_season_minutes: 3936, capacity: 8,
-  value: { label: "Box-prior RAPM (BPR)", unit: "points per 100", artifact_sha256: "v".repeat(64), scope: { seasons: ["2024-25", "2025-26"], phase: "regular_season", cutoff: "2026-07-01" } },
-  archetypes: { artifact_sha256: "a".repeat(64), names_status: "confirmed", clusters },
-  roster_context: { dataset_id: "fixture-index", observed_at: "2026-10-11T22:43:18Z", source_url: "https://example.test", content_sha256: "c".repeat(64) },
-  statistics_release_id: "fixture-release", credit: "Roster shape diagrams after Wyman diagrams by @taylormetrics.", limitations: ["Fixture limitation"],
-  teams: FINANCE_TEAMS.map(shapeTeam)
-};
+// Roster Shapes (alignment row 12): the real v2 responses (2026-27 projected and 2025-26), captured
+// from the local API into e2e/fixtures/roster-shapes-v2.json.
+const shapes = JSON.parse(readFileSync(path.resolve(process.cwd(), "e2e/fixtures/roster-shapes-v2.json"), "utf8")) as Record<string, { roster_context: { dataset_id: string } | null; teams: { team_tricode: string; roster: unknown[] }[] }>;
+const history = JSON.parse(readFileSync(path.resolve(process.cwd(), "e2e/fixtures/roster-shapes-history.json"), "utf8"));
 async function mockShapes(page: Page) {
-  await page.route("**/api/workbench/roster-shapes*", (route) => route.fulfill({ json: shapes }));
+  await page.route("**/api/workbench/roster-shapes/history*", (route) => route.fulfill({ json: history }));
+  await page.route("**/api/workbench/roster-shapes*", (route) => {
+    const season = new URL(route.request().url()).searchParams.get("season") ?? "2026-27";
+    return shapes[season] ? route.fulfill({ json: shapes[season] }) : route.fulfill({ status: 422, json: { detail: "unsupported season" } });
+  });
 }
+const index = shapes["2026-27"].roster_context!.dataset_id;
+const depth = `/teams/${BOS}?season=2025-26&phase=regular_season`;
 
-test.describe("PC10 Roster Shapes", () => {
-  test("opens on 30 team shapes with a legend, pinned index and sorting", async ({ page }) => {
+test.describe("Roster Shapes", () => {
+  test("opens on 30 boxes with the key, a pinned index and sorting", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await mockShapes(page);
     await openWorkbench(page, "/roster-shapes");
     await expect(page.getByRole("heading", { level: 1, name: "Roster Shapes" })).toBeVisible();
-    await expect(page).toHaveURL(/index=fixture-index/);
+    await expect(page).toHaveURL(new RegExp(`index=${index}`));
     const grid = page.getByRole("list", { name: "Team roster shapes" });
-    await expect(grid.getByRole("listitem")).toHaveCount(30);
-    await expect(grid.getByRole("listitem").first()).toContainText("Boston Celtics");
-    await expect(page.locator("main")).toContainText("Wyman diagrams by @taylormetrics");
-    await expect(page.getByRole("region", { name: "How to read the shapes" })).toContainText("Interior hub");
-    // Unknown and below-replacement players are listed, never drawn.
-    const bos = grid.getByRole("listitem").first();
-    await expect(bos.locator("[data-shape-id]")).toHaveCount(2);
-    await expect(bos.locator('[data-shape-id="12"]')).toHaveAttribute("data-fit", "projected");
-    await expect(bos).toContainText("1 unknown");
+    await expect(grid.locator(":scope > li")).toHaveCount(30);
+    await expect(page.locator("main")).toContainText("Created by @taylormetrics");
+    await expect(page.locator("main")).toContainText("The box is a +17.4 team.");
+    await expect(page.getByRole("region", { name: "How to read the shapes" })).toContainText("Hardest to fit");
+    // What's missing reads as chips tinted with each style's colour.
+    await expect(grid.locator(":scope > li").first().getByRole("list", { name: "Styles this roster lacks" }).getByRole("listitem").first()).toBeVisible();
+    // Fullest first: fills descend down the grid.
+    const fills = await grid.locator(".shapes-card-fill").allTextContents();
+    const values = fills.map(text => Number(text.replace("%", "")));
+    expect(values).toEqual([...values].sort((a, b) => b - a));
+    // Unknown and replacement-level players are listed, never drawn.
+    const first = shapes["2026-27"].teams.find(t => t.team_tricode === "OKC")!;
+    const drawn = (first.roster as { size: number | null }[]).filter(p => p.size !== null && p.size > 0).length;
+    await expect(grid.locator(":scope > li").first().locator("[data-shape-id]")).toHaveCount(drawn);
 
     await page.getByRole("radio", { name: "A–Z" }).click();
     await expect(page).toHaveURL(/sort=az/);
-    await expect(grid.getByRole("listitem").first()).toContainText("Atlanta Hawks");
+    await expect(grid.locator(":scope > li").first()).toContainText("Atlanta Hawks");
     await page.getByRole("radio", { name: "Best fit" }).click();
     await expect(page).toHaveURL(/sort=fit/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 
     await grid.getByRole("link", { name: /^Boston Celtics/ }).click();
-    await expect(page).toHaveURL(/\/roster-shapes\/BOS\?index=fixture-index/);
+    await expect(page).toHaveURL(/team=BOS/);
+    await expect(page.getByRole("region", { name: "Boston Celtics roster" })).toBeVisible();
   });
 
-  test("team detail shows the large shape, tiles and roster with unknowns kept", async ({ page }) => {
+  test("a team shows its large box and full roster; Playoff-adjusted adds the shift", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await mockShapes(page);
+    await openWorkbench(page, "/roster-shapes?team=SAS");
+    // Databallr's side by side: the team as the title, its box beside the summary panel.
+    await expect(page.getByRole("heading", { level: 1, name: "San Antonio Spurs" })).toBeVisible();
+    await expect(page.locator(".shapes-team-main .shapes-box [data-shape-id]").first()).toBeVisible();
+    const panel = page.getByRole("complementary", { name: "San Antonio Spurs roster summary" });
+    await expect(panel).toContainText("of the box filled");
+    await expect(panel.getByRole("region", { name: "What fills the box" })).toContainText("Stretch big");
+    await expect(page.getByRole("region", { name: "Season by season" }).locator("rect")).toHaveCount(27);
+    const box = (await page.locator(".shapes-team-main .shapes-box").boundingBox())!, side = (await panel.boundingBox())!;
+    expect(side.x).toBeGreaterThan(box.x + box.width);
+    await expect(page.getByRole("combobox", { name: "Team" })).toHaveValue("SAS");
+    const sas = shapes["2026-27"].teams.find(t => t.team_tricode === "SAS")!;
+    const table = page.getByRole("region", { name: "San Antonio Spurs roster" });
+    await expect(table.locator("tbody tr")).toHaveCount(sas.roster.length);
+    await expect(table.getByRole("row", { name: /Victor Wembanyama/ })).toContainText("Stretch big");
+    await expect(table.locator("thead")).not.toContainText("PO shift");
+    await page.getByRole("radio", { name: "Playoff-adjusted" }).click();
+    await expect(page).toHaveURL(/mode=playoff/);
+    await expect(table.locator("thead")).toContainText("PO shift");
+    await page.getByRole("combobox", { name: "Team" }).selectOption("");
+    await expect(page.getByRole("list", { name: "Team roster shapes" }).locator(":scope > li")).toHaveCount(30);
+  });
+
+  test("team view: what's missing, a trade sandbox, changes since last season and a share image", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await mockShapes(page);
+    await openWorkbench(page, "/roster-shapes?team=SAS");
+    const card = page.locator(".shapes-team-main");
+    await expect(page.locator(".shapes-panel")).toContainText("White is");
+    await expect(page.locator(".shapes-panel-fills .shapes-fill-lacks").first()).toHaveText("Lacks");
+    const fill = async () => Number((await page.locator(".shapes-panel-figures strong").first().textContent())!.replace("%", ""));
+    const before = await fill();
+
+    // Sandbox: add the league's biggest shape from another roster, then remove it again.
+    const sandbox = page.getByRole("region", { name: "Trade sandbox" });
+    // Searchable: before typing the biggest shapes lead; typing a name (accents ignored) narrows it.
+    const addField = sandbox.getByRole("combobox", { name: "Add a player" });
+    await addField.click();
+    const suggestions = page.getByRole("listbox", { name: "Add a player suggestions" }).getByRole("option");
+    await expect(suggestions.first()).toContainText("Nikola Jokić");
+    await expect(suggestions.first()).toContainText(/DEN · \+\d\.\d DPM · \d+\.\d min/);
+    await addField.fill("jokic");
+    await expect(suggestions).toHaveCount(1);
+    await suggestions.first().click();
+    await expect(page).toHaveURL(/add=203999/);
+    await expect(card.locator('[data-mark="added"]')).toHaveCount(1);
+    expect(await fill()).toBeGreaterThan(before);
+    await sandbox.getByRole("combobox", { name: "Remove a player" }).fill("wemb");
+    await page.getByRole("listbox", { name: "Remove a player suggestions" }).getByRole("option", { name: /Victor Wembanyama/ }).click();
+    await expect(page).toHaveURL(/drop=1641705/);
+    await sandbox.getByRole("button", { name: "Reset" }).click();
+    await expect(page).not.toHaveURL(/add=|drop=/);
+    expect(await fill()).toBe(before);
+
+    // Since last season: two boxes, arrivals outlined in the projected one.
+    const since = page.getByRole("region", { name: "Since last season" });
+    await expect(since.locator("figure")).toHaveCount(2);
+    await expect(since).toContainText("Arrivals");
+    await expect(since).toContainText("Departures");
+
+    const download = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Share Image" }).click();
+    expect((await download).suggestedFilename()).toBe("courtlens-roster-shape-sas-2026-27.png");
+  });
+
+  test("team view: hovering a shape highlights its table row and shows the player's card", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await mockShapes(page);
+    await openWorkbench(page, "/roster-shapes?team=SAS");
+    await page.locator('.shapes-team-main [data-shape-id="1641705"] path').hover();
+    const card = page.getByRole("tooltip");
+    await expect(card).toContainText("Victor Wembanyama");
+    await expect(card).toContainText(/DPM \+\d\.\d · \d+\.\d mpg · \d+\.\d% of box/);
+    await expect(card.locator("img, .player-portrait-fallback")).toHaveCount(1);
+    // Linked: the shape outlined, the others faded, its table row highlighted.
+    const table = page.locator(".shapes-panel-table");
+    await expect(page.locator(".shapes-team-main .shapes-shape.is-active")).toHaveAttribute("data-shape-id", "1641705");
+    await expect(table.locator("tr.is-active")).toContainText("Victor Wembanyama");
+    // And the reverse: hovering a row highlights its shape, without the card.
+    await table.locator("tbody tr").nth(1).hover();
+    await expect(page.locator(".shapes-team-main .shapes-shape.is-active")).toHaveCount(1);
+    await expect(table.locator("tr.is-active")).toHaveCount(1);
+    // Keyboard: each shape in team view takes focus and shows the same card.
+    await page.mouse.move(0, 0);
+    await expect(card).toHaveCount(0);
+    await page.locator('.shapes-team-main [data-shape-id="1641705"]').focus();
+    await expect(page.getByRole("tooltip")).toContainText("Victor Wembanyama");
+    // The grid's boxes have no hover card or highlight.
+    await openWorkbench(page, "/roster-shapes");
+    await page.locator('.shapes-grid [data-shape-id="1641705"] path').hover();
+    await expect(page.getByRole("tooltip")).toHaveCount(0);
+    await expect(page.locator(".shapes-grid .shapes-shape.is-active")).toHaveCount(0);
+  });
+
+  test("2025-26 shows the season's actual rosters", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await mockShapes(page);
+    await openWorkbench(page, "/roster-shapes");
+    await page.getByRole("combobox", { name: "Season" }).selectOption("2025-26");
+    await expect(page).toHaveURL(/season=2025-26/);
+    await expect(page.locator(".shapes-note")).toContainText("A traded player appears on each of his teams.");
+    await expect(page.locator("main")).toContainText("2025-26, 30 rosters.");
+  });
+
+  test("phone shows one box per row with no sideways scroll", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await mockShapes(page);
+    await openWorkbench(page, "/roster-shapes");
+    const cards = page.getByRole("list", { name: "Team roster shapes" }).locator(":scope > li");
+    await expect(cards).toHaveCount(30);
+    const [a, b] = [await cards.nth(0).boundingBox(), await cards.nth(1).boundingBox()];
+    expect(b!.y).toBeGreaterThan(a!.y + a!.height - 1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+
+  test("old team links open the team select, and the depth chart on the team profile", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await mockShapes(page);
     await mockTeam(page);
-    await openWorkbench(page, "/roster-shapes/BOS");
-    await expect(page.locator(".ui-stat-tile").first()).toContainText("8.0");
-    await expect(page.locator(".ui-stat-tile").first()).toContainText("1st");
-    const table = page.getByRole("region", { name: "Boston Celtics roster" });
-    await expect(table.getByRole("row")).toHaveCount(5);
-    await expect(table.getByRole("row", { name: /Fixture Rookie/ })).toContainText("Unknown");
-    await expect(table.getByRole("row", { name: /Fixture Bench/ })).toContainText("below replacement");
-    await expect(table.getByRole("row", { name: /Fixture Wing/ })).toContainText("DAL in 2025-26");
-    await expect(page.getByRole("figure", { name: "Boston Celtics roster shape" }).locator("[data-shape-id]")).toHaveCount(2);
-
-    await page.getByRole("link", { name: "Depth chart" }).click();
-    await expect(page).toHaveURL(/view=depth/);
-    await expect(page.getByRole("region", { name: "Roster allocations" })).toBeVisible();
-  });
-
-  test("old ?team= links open the depth chart tab", async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await mockTeam(page);
-    await openWorkbench(page, `/roster-shapes?team=${BOS}&season=2025-26&phase=regular_season`);
-    await expect(page).toHaveURL(new RegExp(`/roster-shapes/${BOS}\\?.*view=depth`));
-    const chart = page.getByRole("region", { name: "Roster allocations" });
-    await expect(page.locator(".roster-team")).toContainText("56–26 · 3 players");
+    await openWorkbench(page, "/roster-shapes/SAS");
+    await expect(page).toHaveURL(/\/roster-shapes\?team=SAS/);
+    await openWorkbench(page, `/roster-shapes/BOS?view=depth&season=2025-26&phase=regular_season`);
+    // The profile canonicalises its URL on load (dropping the #depth-chart hash), so check the path and section.
+    await expect(page).toHaveURL(new RegExp(`/teams/${BOS}\\?.*season=2025-26`));
+    const chart = page.locator("#depth-chart").getByRole("region", { name: "Roster allocations" });
+    await expect(page.locator("#depth-chart .roster-team")).toContainText("56–26 · 3 players");
     await expect(chart.getByRole("region", { name: "Unassigned lane" }).locator(".roster-chip")).toHaveCount(3);
     for (const lane of ["PG", "SG", "SF", "PF", "C"]) await expect(chart.getByRole("region", { name: `${lane} lane` })).toContainText("Drop players here");
     // Required caveats stay rendered behind Why? (D14); no code-like rules in the main flow.
-    await expect(page.locator(".ui-why-body")).toContainText("Missing participation is not a confirmed zero or roster exclusion.");
-    await expect(page.locator("main")).not.toContainText("game_date");
-    expect(await page.getByRole("button", { name: /^Load/ }).count()).toBe(0);
+    await expect(page.locator("#depth-chart .ui-why-body")).toContainText("Missing participation is not a confirmed zero or roster exclusion.");
+    await expect(page.locator("#depth-chart")).not.toContainText("game_date");
   });
 
   test("moves players by drag and by keyboard menu, with lane shares", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await mockTeam(page);
-    await openWorkbench(page, `/roster-shapes?team=${BOS}`);
+    await openWorkbench(page, depth);
     const chart = page.getByRole("region", { name: "Roster allocations" });
     const lane = (name: string) => chart.getByRole("region", { name: `${name} lane` });
     await expect(lane("Unassigned").locator(".roster-chip")).toHaveCount(3);
@@ -147,7 +236,7 @@ test.describe("PC10 Roster Shapes", () => {
   test("projected minutes drive the 240 gauge and the export stays v1", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await mockTeam(page);
-    await openWorkbench(page, `/roster-shapes?team=${BOS}`);
+    await openWorkbench(page, depth);
     await page.getByRole("button", { name: "Move Fixture Guard" }).click();
     await page.getByRole("menuitem", { name: /^Move to PG/ }).click();
     await page.getByRole("radio", { name: "Projected" }).click();
@@ -181,14 +270,13 @@ test.describe("PC10 Roster Shapes", () => {
     expect(text).toBe(JSON.stringify(payload, null, 2));
   });
 
-  test("phone layout stacks the board with 40px targets and no sideways scroll", async ({ page }) => {
+  test("depth chart on a phone stacks the board with 40px targets and no sideways scroll", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await mockTeam(page);
-    await openWorkbench(page, `/roster-shapes?team=${BOS}`);
+    await openWorkbench(page, depth);
     await expect(page.getByRole("region", { name: "Roster allocations" })).toBeVisible();
-    await expect(page.getByRole("button", { name: /^Filters/ })).toBeVisible();
-    // Gate 2 (Design Language v1.1): the mode switch stays visible outside the Filters sheet.
-    const projected = page.getByRole("radio", { name: "Projected" });
+    const projected = page.locator("#depth-chart").getByRole("radio", { name: "Projected" });
+    await projected.scrollIntoViewIfNeeded();
     await expect(projected).toBeVisible();
     // Sub-pixel tolerance: a settling transform can report 39.9999px for a 40px target.
     expect((await projected.boundingBox())!.height).toBeGreaterThanOrEqual(39.99);
@@ -197,14 +285,13 @@ test.describe("PC10 Roster Shapes", () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const heights = await page.locator(".roster-chip-menu > button").evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
     expect(Math.min(...heights)).toBeGreaterThanOrEqual(39.99);
-    await expect(page.getByRole("combobox", { name: "Choose team" })).toHaveValue("BOS");
   });
 
   test("players with only reported non-appearances render unknown minutes, not a crash", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     const inactive = { player_id: "14", player_name: "Fixture Inactive", games_played: 0, total_minutes: null, pts_per_game: null, reb_per_game: null, ast_per_game: null };
     await page.route(`**/api/workbench/teams/${BOS}?*`, (route) => route.fulfill({ json: { ...detail, player_cohort: [...detail.player_cohort, inactive] } }));
-    await openWorkbench(page, `/roster-shapes?team=${BOS}`);
+    await openWorkbench(page, depth);
     const unassigned = page.getByRole("region", { name: "Roster allocations" }).getByRole("region", { name: "Unassigned lane" });
     await expect(unassigned.locator(".roster-chip")).toHaveCount(4);
     await expect(unassigned.locator(".roster-chip", { hasText: "Fixture Inactive" })).toContainText("— min · 0 GP");

@@ -167,14 +167,14 @@ export default async function ForecastsPage() {
               </tr>)}</tbody>
             </table>
           </div>
-          <details><summary>Chronological splits</summary>
-            <div className="table-wrapper research-table" role="region" aria-label="Chronological splits" tabIndex={0}>
+          <details><summary>Chronological Splits</summary>
+            <div className="table-wrapper research-table" role="region" aria-label="Chronological Splits" tabIndex={0}>
               <table className="data-table"><thead><tr><th>Split</th><th>Dates</th><th>Purpose</th><th>Status</th></tr></thead>
                 <tbody>{SPLITS.map(([split, start, end, purpose, state]) => <tr key={split}><th scope="row" className="font-mono">{split}</th><td>{formatDate(start)} – {formatDate(end)}</td><td>{purpose}</td><td>{state}</td></tr>)}</tbody>
               </table>
             </div>
           </details>
-          {evaluation.model_card_markdown && <details><summary>Model card</summary><pre className="research-document">{evaluation.model_card_markdown}</pre></details>}
+          {evaluation.model_card_markdown && <details><summary>Model Card</summary><pre className="research-document">{evaluation.model_card_markdown}</pre></details>}
         </section>
 
         <section className="panel research-section" aria-label="Prospective issuance">

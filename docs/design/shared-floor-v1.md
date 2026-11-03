@@ -1,5 +1,8 @@
 # B21 shared-floor API v1
 
+> Superseded by [shared-floor v2](shared-floor-v2.md) (2026-10-19): sealed IM03 stints, patched
+> and zero-duration v2 stints, the stint box, rate metrics and the roster operation.
+
 Implemented 2026-10-03. Parent: [replica analytics contract](replica-analytics-contract.md).
 
 Three read-only POST operations under `/api/workbench/operations`: `on-off`, `wowy`, and `stat-shift`. Pydantic/OpenAPI contracts live in `src/courtlens/domain/on_off.py`; the operation identity is `courtload-shared-floor-v1`. No query writes, acquisition, training, leverage filtering, or shrinkage occurs.

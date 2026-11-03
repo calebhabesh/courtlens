@@ -1,7 +1,12 @@
 // @vitest-environment happy-dom
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup, act } from "@testing-library/react";
+import { MotionGlobalConfig } from "motion/react";
 import { Header } from "./header";
+
+// happy-dom cancels in-flight animations when rows unmount and rejects their `finished`
+// promises, which motion leaves unhandled; these tests check behaviour, not motion.
+MotionGlobalConfig.skipAnimations = true;
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/stats",
@@ -71,24 +76,24 @@ describe("Design Language v1 Header Component", () => {
 
   it("opens dropdown menu on click and closes on Escape", () => {
     const { container } = render(<Header />);
-    const playersBtn = container.querySelector<HTMLButtonElement>('[data-dropdown-id="players"]');
-    expect(playersBtn).not.toBeNull();
-    expect(playersBtn?.getAttribute("aria-expanded")).toBe("false");
+    const liveBtn = container.querySelector<HTMLButtonElement>('[data-dropdown-id="live"]');
+    expect(liveBtn).not.toBeNull();
+    expect(liveBtn?.getAttribute("aria-expanded")).toBe("false");
 
     // Click to open
     act(() => {
-      fireEvent.click(playersBtn!);
+      fireEvent.click(liveBtn!);
     });
-    expect(playersBtn?.getAttribute("aria-expanded")).toBe("true");
+    expect(liveBtn?.getAttribute("aria-expanded")).toBe("true");
 
-    // Menu should contain directory link
-    expect(screen.getByRole("menuitem", { name: "Ranking Boards" })).toBeDefined();
+    // Live needs no catalog capability, so it shows while the mocked catalog gates the rest.
+    expect(screen.getByRole("menuitem", { name: /^Live Live NBA scores/ })).toBeDefined();
 
     // Escape closes dropdown
     act(() => {
       fireEvent.keyDown(document, { key: "Escape" });
     });
-    expect(playersBtn?.getAttribute("aria-expanded")).toBe("false");
+    expect(liveBtn?.getAttribute("aria-expanded")).toBe("false");
   });
 
   it("opens More (⋯) menu with the D9 support links", () => {
@@ -151,7 +156,7 @@ describe("Design Language v1 Header Component", () => {
 describe("FO02 search and drawer", () => {
   afterEach(() => window.localStorage.clear());
 
-  it("shows Recent above Pages in the empty search state once something was opened", () => {
+  it("shows Recent above Pages in the empty search state once something was opened", async () => {
     window.localStorage.setItem("courtlens-recent-searches-v1", JSON.stringify([{
       id: "team-bos", kind: "team", canonical_id: "1610612738", display_name: "Boston Celtics", match_basis: "exact",
       match_score: 1, destination_url: "/teams/1610612738", portrait_fallback: "BOS",
@@ -161,10 +166,37 @@ describe("FO02 search and drawer", () => {
     act(() => {
       fireEvent.click(screen.getByRole("searchbox", { name: "Search players, teams and pages" }));
     });
-    const headings = Array.from(document.querySelectorAll(".ui-command-group-heading")).map(node => node.textContent);
+    // The empty state appears once its recents and leaders have settled (row 3, 72).
+    await screen.findByRole("option", { name: /Boston Celtics/ });
+    const headings = Array.from(document.querySelectorAll(".ui-command-group-heading > span:first-child")).map(node => node.textContent);
     expect(headings).toEqual(["Recent", "Pages"]);
     expect(screen.getByRole("option", { name: /Boston Celtics/ })).toBeDefined();
     expect(screen.getByRole("button", { name: "Close search" })).toBeDefined();
+  });
+
+  it("removes one recent search, or clears them all", async () => {
+    const recent = (id: string, name: string) => ({
+      id, kind: "player", canonical_id: id, display_name: name, match_basis: "exact", match_score: 1,
+      destination_url: `/players/${id}`, availability: { has_current_season: true, status: "available", seasons: [] }
+    });
+    window.localStorage.setItem("courtlens-recent-searches-v1", JSON.stringify([recent("1", "Vic Law"), recent("2", "Boban Marjanović"), recent("3", "Victor Wembanyama")]));
+    render(<Header />);
+    act(() => {
+      fireEvent.click(screen.getByRole("searchbox", { name: "Search players, teams and pages" }));
+    });
+    await screen.findByRole("option", { name: /Vic Law/ });
+    // The remove button does not open the player.
+    act(() => { fireEvent.click(screen.getByRole("button", { name: "Remove Vic Law from recent searches" })); });
+    expect(screen.queryByRole("option", { name: /Vic Law/ })).toBeNull();
+    expect(screen.getByRole("dialog")).toBeDefined();
+    // Delete removes the arrowed-to recent (the first row is active).
+    act(() => { fireEvent.keyDown(screen.getByRole("combobox", { name: "Search players, teams and pages" }), { key: "Delete" }); });
+    expect(screen.queryByRole("option", { name: /Boban/ })).toBeNull();
+    expect(screen.getByRole("option", { name: /Victor Wembanyama/ })).toBeDefined();
+    act(() => { fireEvent.click(screen.getByRole("button", { name: "Clear all" })); });
+    expect(screen.queryByRole("option", { name: /Victor Wembanyama/ })).toBeNull();
+    expect(document.querySelector(".ui-command-group-heading")?.textContent).toBe("Pages");
+    expect(window.localStorage.getItem("courtlens-recent-searches-v1")).toBeNull();
   });
 
   it("drawer lists the same Research groups as the desktop menu, and collapsed sections are inert", () => {

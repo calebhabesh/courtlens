@@ -15,6 +15,8 @@ from courtlens.domain.impact_catalog import IMPACT_COLUMNS
 from courtlens.domain.impact_extras_catalog import RETIRED_METRICS, WAVE_TWO
 from courtlens.domain.query_spec import QuerySpec
 from courtlens.domain.teams import get_team_info
+from courtlens.services.impact_team_splits import team_split
+from courtlens.services.served_bundle import resolve
 
 VERSION = "courtlens-impact-serving-v1"
 METHOD_URL = "/methodology#impact"
@@ -26,6 +28,13 @@ LIMITATIONS = [
     "On/off off-court references include team games without a player appearance.",
     "Multi-team on/off is unavailable without a selected team; team records remain separate.",
 ]
+PROVISIONAL_NOTE = (
+    "Provisional in-season fit, refreshed weekly from one play-by-play source; games it cannot "
+    "reconstruct are excluded and shot-detail columns stay unknown until the season is sealed."
+)
+TEAM_LIMITATION = (
+    "Ratings retain the full league fit; extras are the player's games with the selected team."
+)
 
 
 @lru_cache(maxsize=8)
@@ -39,10 +48,13 @@ def _decode(raw: bytes) -> dict[str, Any]:
 _verified: dict[Path, tuple[tuple[int, int, int], dict[str, Any]]] = {}
 
 
+def served_path(manifest_sha256: str | None = None) -> Path | None:
+    """The configured file, or the directory's current bundle (weekly runs move it)."""
+    return resolve(get_settings().impact_serving_manifest, manifest_sha256)
+
+
 def load_impact_store(manifest_sha256: str | None = None) -> dict[str, Any] | None:
-    path = get_settings().impact_serving_manifest
-    if manifest_sha256 and path:
-        path = path.parent / f"{manifest_sha256}.json"
+    path = served_path(manifest_sha256)
     if path is None or not path.exists():
         return None
     try:
@@ -68,7 +80,7 @@ def load_impact_store(manifest_sha256: str | None = None) -> dict[str, Any] | No
 
 def impact_catalog_scope() -> dict[str, Any]:
     store = load_impact_store()
-    path = get_settings().impact_serving_manifest
+    path = served_path()
     return {
         "status": "available" if store else "source_blocked",
         "source": "CourtLens model",
@@ -108,10 +120,54 @@ def query_uses_impact(query: QuerySpec) -> bool:
     return bool(impact_query_fields(query))
 
 
+def selected_entries(store: dict[str, Any], query: QuerySpec, cutoff: str) -> list[dict[str, Any]]:
+    return [
+        e
+        for e in store["entries"]
+        if e["scope"]["season"] == query.season
+        and e["scope"]["phase"] == query.phase
+        and e["scope"]["last_included_date"] < cutoff
+    ]
+
+
+def selected_team_id(query: QuerySpec) -> str | None:
+    team = get_team_info(query.team_scope.team_id) if query.team_scope.team_id else None
+    return team.team_id if team else query.team_scope.team_id
+
+
+def impact_artifacts(query: QuerySpec, cutoff: str) -> tuple[list[dict[str, Any]], str]:
+    """impact_for_query's artifacts and status without assembling every player's values.
+
+    Query hashes bind these; building the player rows for each hash cost milliseconds a call.
+    """
+    store = load_impact_store(query.impact_manifest_sha256)
+    if store is None or query.window.kind.value != "season" or query.season_scope.seasons:
+        return [], "unavailable"
+    team_id = selected_team_id(query)
+    artifacts = []
+    for entry in selected_entries(store, query, cutoff):
+        bound = artifact_binding(entry, team_id)
+        if bound is not None:
+            artifacts.append(bound)
+    return artifacts, "available" if artifacts else "unavailable"
+
+
+def artifact_binding(entry: dict[str, Any], team_id: str | None) -> dict[str, Any] | None:
+    """An entry's identity in a query; team-filtered extras bind the per-team split they use."""
+    flag = {"provisional": True} if entry.get("provisional") else {}
+    if not (team_id and entry["kind"] == "extras"):
+        return {"sha256": entry["sha256"], **entry["scope"], **flag}
+    split = team_split(entry["sha256"])
+    if split is None:
+        # Extras are full-season player aggregates, not a selected-team sample.
+        return None
+    return {"sha256": entry["sha256"], "team_split_sha256": split[0], **entry["scope"], **flag}
+
+
 def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
     """Select only sealed fits fully observable before this exclusive cutoff."""
     store = load_impact_store(query.impact_manifest_sha256)
-    path = get_settings().impact_serving_manifest
+    path = served_path()
     result: dict[str, Any] = {
         "status": "unavailable",
         "source": "CourtLens model",
@@ -133,29 +189,32 @@ def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
             "short/date/career windows are unavailable."
         )
         return result
-    selected = [
-        e
-        for e in store["entries"]
-        if e["scope"]["season"] == query.season
-        and e["scope"]["phase"] == query.phase
-        and e["scope"]["last_included_date"] < cutoff
-    ]
+    selected = selected_entries(store, query, cutoff)
     if not selected:
         result["reason"] = (
             "No sealed fit is wholly before this cutoff; later outcomes are never used."
         )
         return result
-    team = get_team_info(query.team_scope.team_id) if query.team_scope.team_id else None
-    team_id = team.team_id if team else query.team_scope.team_id
+    team_id = selected_team_id(query)
     for entry in selected:
-        # Extras are full-season player aggregates, not a selected-team sample.
-        if team_id and entry["kind"] == "extras":
+        bound = artifact_binding(entry, team_id)
+        if bound is None:
             continue
-        result["artifacts"].append({"sha256": entry["sha256"], **entry["scope"]})
+        result["artifacts"].append(bound)
+        if entry.get("provisional"):
+            result["provisional"] = {
+                "last_included_date": entry["scope"]["last_included_date"],
+                "note": PROVISIONAL_NOTE,
+            }
         for coverage in entry["coverage"]:
             if coverage not in result["coverage"]:
                 result["coverage"].append(coverage)
-        for pid, source in entry["players"].items():
+        players = entry["players"]
+        split = team_split(entry["sha256"]) if team_id and entry["kind"] == "extras" else None
+        if split is not None:
+            # Each player's extras over their games with the selected team only.
+            players = {pid: teams[team_id] for pid, teams in split[1].items() if team_id in teams}
+        for pid, source in players.items():
             row = result["players"].setdefault(pid, {"metrics": {}, "support": {}, "on_off": {}})
             # Sealed extras still carry retired metrics; they never leave the server.
             row["metrics"].update(
@@ -198,7 +257,7 @@ def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
     if team_id:
         result["limitations"] = [
             *LIMITATIONS,
-            "Ratings retain the full league fit; extras are unavailable in a team-filtered scope.",
+            TEAM_LIMITATION,
         ]
     return result
 
@@ -236,12 +295,14 @@ def derive_extras(row: dict[str, Any]) -> None:
 SQL_SUPPORT_FIELDS = ("qualified", "covered_games", "denominator")
 
 
-def impact_sql_rows(impact: dict[str, Any]) -> str:
+def impact_sql_rows(impact: dict[str, Any], player_ids: list[str] | None = None) -> str:
     """Bounded coefficient/support payload, never raw play-by-play or game facts.
 
     Support is slimmed to SQL_SUPPORT_FIELDS: round-tripping every player's full support (about
-    22 KB each) through the query and back dominated cold Stats requests.
+    22 KB each) through the query and back dominated cold Stats requests. player_ids limits the
+    payload to the players a query reads (the join is per player).
     """
+    wanted = set(player_ids) if player_ids is not None else None
     return json.dumps(
         [
             {
@@ -253,6 +314,7 @@ def impact_sql_rows(impact: dict[str, Any]) -> str:
                 },
             }
             for pid, row in sorted(impact["players"].items())
+            if wanted is None or pid in wanted
         ],
         separators=(",", ":"),
         allow_nan=False,

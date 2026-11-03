@@ -108,10 +108,10 @@ test("standalone defaults, reload, new chat, history and deletion keep durable q
   await page.getByRole("button",{name:"Delete chat",exact:true}).click(); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toContainText("Saved findings remain");
   await page.getByRole("button",{name:"Confirm deletion"}).click(); await expect.poll(()=>state.records.size).toBe(1);
   // AR06 moved clearing all history and the privacy notice to Settings.
-  await expect(page.getByRole("button",{name:"Clear history"})).toHaveCount(0);
+  await expect(page.getByRole("button",{name:"Clear History"})).toHaveCount(0);
   await page.getByRole("link",{name:"History and privacy settings"}).click(); const settings = page.getByRole("region",{name:"Assistant history and privacy"});
   await expect(settings).toContainText("History stays in this local installation");
-  await settings.getByRole("button",{name:"Clear history",exact:true}).click(); await settings.getByRole("button",{name:"Confirm deletion"}).click();
+  await settings.getByRole("button",{name:"Clear History",exact:true}).click(); await settings.getByRole("button",{name:"Confirm deletion"}).click();
   await expect(settings.getByRole("status")).toContainText("deleted"); expect(state.records.size).toBe(0);
 });
 
@@ -204,11 +204,11 @@ test("typing a next question during execution preserves the new draft", async ({
 test("verified local results preserve zero, unknown, scope and equivalent actions",async({page})=>{
   await mock(page,{response:()=>({intent:"local_analysis",scope:scope(),saveable:true,blocks:[{kind:"local_summary",operation_hash:hash,text:"The selected observations are shown below with their sample and scope."},{kind:"result",result:{step_id:"manual",operation:"query",operation_version:"fixture",arguments:{},operation_hash:hash,result_hash:hash,data:{},rows:[{player_name:"Scottie Barnes",points:0},{player_name:"Unknown sample",points:null}],evidence:[],open_url:"/stats?season=2024-25",eligible_count:2,limitations:["Available cohort only"]}}],actions:[{kind:"executed_operation",label:"Open in Stats",url:"/stats?season=2024-25",operation_hash:hash}]})});
   await openPage(page, path); await send(page,"Show local observations");
-  // The compact table is visible in the answer; the full result is behind "How I got this".
+  // The compact table is visible in the answer; the full result is behind "How I Got This".
   const table=page.getByRole("region",{name:"query results",exact:true}); await expect(table).toContainText("Unknown"); await expect(table).toContainText("0");
   // Limitations/approximations sit beside the answer, before any disclosure is opened.
   await expect(page.locator(".ask-limitation").first()).toHaveText("Available cohort only"); await expect(page.locator(".ask-limitation").first()).toBeVisible();
-  await page.getByText("How I got this",{exact:true}).click(); await expect(page.getByRole("region",{name:"query data table",exact:true})).toContainText("Unknown");
+  await page.getByText("How I Got This",{exact:true}).click(); await expect(page.getByRole("region",{name:"query data table",exact:true})).toContainText("Unknown");
   await expect(page.getByRole("link",{name:"Open in Stats"}).first()).toHaveAttribute("href","/stats?season=2024-25");
   await expect(messages(page)).toContainText("Chat history is retained separately"); await expect(messages(page)).toContainText("2024-25");
 });
@@ -312,7 +312,7 @@ test("checked narrative renders above its supporting result and survives reload"
   const prose = messages(page).locator(".hybrid-narrative");
   await expect(prose).toHaveText("Nikola Jokić led the 2025-26 regular season with 10.7 assists per game.");
   await expect(page.getByRole("region", { name: "query results", exact: true })).toContainText("10.7");
-  await expect(page.getByText("How I got this", { exact: true })).toBeVisible();
+  await expect(page.getByText("How I Got This", { exact: true })).toBeVisible();
   await reloadPage(page);
   await expect(prose).toBeVisible();
 });
@@ -428,7 +428,7 @@ test("clearing history in Settings empties an open chat in another tab", async (
   await expect(messages(page)).toContainText("pairs a screen");
   const settings = await context.newPage(); await settings.route("**/api/assistant-v2/**", route => route.fulfill({ json: { cleared: true } }));
   await openPage(settings, "/settings"); const panel = settings.getByRole("region", { name: "Assistant history and privacy" });
-  await panel.getByRole("button", { name: "Clear history", exact: true }).click();
+  await panel.getByRole("button", { name: "Clear History", exact: true }).click();
   // The other tab re-reads history as soon as the change is announced; the server is already empty.
   state.headers.length = 0; state.records.clear();
   await panel.getByRole("button", { name: "Confirm deletion" }).click(); await expect(panel.getByRole("status")).toContainText("deleted");
@@ -534,7 +534,7 @@ for (const width of [1440, 375]) {
     const review = answer.getByRole("link", { name: "Review and save query" });
     const params = new URL((await review.getAttribute("href"))!, "https://fixture.local").searchParams;
     expect(params.get("release_id")).toBe("retained-ag05"); expect(params.get("before_date")).toBe("2026-07-01");
-    await answer.getByText("How I got this", { exact: true }).click(); await expect(answer.locator(".agent-trace")).toContainText("query_stats"); await expect(answer.locator(".ask-how")).toContainText("1000 / 150"); await expect(answer.locator(".ask-how")).toContainText("$0.004500 (estimate)"); await expect(answer.locator(".ask-how")).toContainText("Stopped at the searches limit");
+    await answer.getByText("How I Got This", { exact: true }).click(); await expect(answer.locator(".agent-trace")).toContainText("query_stats"); await expect(answer.locator(".ask-how")).toContainText("1000 / 150"); await expect(answer.locator(".ask-how")).toContainText("$0.004500 (estimate)"); await expect(answer.locator(".ask-how")).toContainText("Stopped at the searches limit");
     await answer.getByText("Sources (2)", { exact: true }).click(); await expect(answer.locator(".agent-sources")).toContainText("Synthetic RAPM report");
     await reloadPage(page); await expect(messages(page).locator(".agent-assumption")).toContainText("Reading best defender");
     await messages(page).getByRole("button", { name: "Rank defenders by steals", exact: true }).click();
@@ -548,7 +548,7 @@ for (const width of [1440, 375]) {
     const dialog = page.getByRole("dialog"); await composer(dialog).fill("Explain RAPM"); await dialog.getByRole("button", { name: "Send question", exact: true }).click();
     const answer = messages(dialog).locator(".agent-answer"); await expect(answer.locator(".agent-limited")).toContainText("add a provider key"); await expect(answer).toContainText("Retry after 60 seconds");
     await expect(answer.locator("table")).toHaveCount(0); await expect(answer.getByRole("link", { name: /Review and save/ })).toHaveCount(0);
-    await answer.getByText("How I got this", { exact: true }).click(); await expect(answer.locator(".ask-how")).toContainText("Cost unknown");
+    await answer.getByText("How I Got This", { exact: true }).click(); await expect(answer.locator(".ask-how")).toContainText("Cost unknown");
     await page.screenshot({ path: test.info().outputPath(`ag05-panel-limited-${width}.png`) });
     await answer.getByRole("button", { name: "Retry question" }).click(); await expect.poll(() => state.requests.length).toBe(2); expect(state.requests[1].retry_of).toBe(state.requests[0].request_id);
   });

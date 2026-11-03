@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Icon, type IconName } from "./ui/icon";
 import { Chip } from "./ui/kit";
 import { PageHeader } from "./ui/panel";
+import { BackButton } from "./ui/back-button";
 import "./stats-glossary.css";
 import { GLOSSARY_GROUPS, type GlossaryEntry, type GlossaryGroup } from "@/lib/stats-glossary";
 import { DARKO_COLUMNS } from "@/lib/stats-presets";
@@ -27,7 +27,7 @@ export function StatsGlossaryView({ entries, available }: { entries: GlossaryEnt
 
   return (
     <div className="glossary-page">
-      <Link href="/stats" className="glossary-back"><Icon name="left" size={16} />Back to Stats</Link>
+      <BackButton parent={{ href: "/stats", label: "Stats" }} />
       <PageHeader className="glossary-header" icon="page" title="Stats Glossary" subtitle={`Definitions for ${entries.length} NBA statistics`}
         actions={<label className="glossary-search">
           <Icon name="search" size={16} />

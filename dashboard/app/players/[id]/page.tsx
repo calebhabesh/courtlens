@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { isTotalsSeason } from "@/lib/season-basis";
 import Link from "next/link";
 import { TrendChart } from "@/components/trend-chart";
 import {
@@ -21,7 +22,8 @@ import { formatDate } from "@/lib/format-date";
 import type { GoodDirection } from "@/lib/percentile-display";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import type { WorkbenchCatalog } from "@/lib/types";
-import { executeWorkbenchQuery, getPlayerBio, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact } from "@/lib/workbench-api";
+import { executeWorkbenchQuery, getPlayerBio, getPlayerCareer, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact, getMetricCatalog } from "@/lib/workbench-api";
+import { metricHints } from "@/lib/stats-glossary";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Profile" };
@@ -72,12 +74,21 @@ export default async function PlayerPage({
   // Modern Workbench Research Mode
   const catalog = await getWorkbenchCatalog(selected.releaseId).catch(() => null);
 
-  const season = selected.season || catalog?.default_season || "2024-25";
   const phase = selected.phase || catalog?.default_phase || "regular_season";
-  const beforeDate = selected.beforeDate || catalog?.default_before_date || "2026-06-30";
   const windowParam = selected.window || "season";
 
   let wbLoaded: { profile: PlayerProfile; log: PlayerGameLogResponse } | null = null;
+  // The career table arrives with the page: one stored read, started beside the profile.
+  const careerRequest = catalog
+    ? getPlayerCareer(id, { phase, releaseId: catalog.release_id }).catch(() => null)
+    : Promise.resolve(null);
+  // Without a season in the link, a player who did not play the default season opens on his
+  // latest season (careers reach back to 1946-47), not on an empty one.
+  const played = selected.season ? [] : ((await careerRequest)?.seasons ?? []).map(entry => entry.season);
+  const fallback = catalog?.default_season || "2024-25";
+  const season = selected.season || (played.length && !played.includes(fallback) ? played[0] : fallback);
+  const seasonScope = catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase);
+  const beforeDate = selected.beforeDate || (season !== fallback ? seasonScope?.default_before_date : null) || catalog?.default_before_date || "2026-06-30";
 
   try {
     const [profile, log] = await Promise.all([
@@ -102,10 +113,13 @@ export default async function PlayerPage({
   }
 
   if (wbLoaded) {
-    const [impact, hero, bio] = await Promise.all([
+    const [impact, hero, bio, career, metricCatalog] = await Promise.all([
       getImpact({ season, phase, beforeDate, playerId: id, window: windowParam }).catch(() => null),
-      catalog ? heroStats(id, selected, catalog) : null,
+      catalog ? heroStats(id, { ...selected, season, phase, beforeDate }, catalog) : null,
       getPlayerBio(id, { season, beforeDate }).catch(() => null),
+      careerRequest,
+      // Header hover text for the career table's trend dialog; failing only hides it.
+      getMetricCatalog().catch(() => null),
     ]);
 
     return (
@@ -116,13 +130,16 @@ export default async function PlayerPage({
         bio={bio}
         impact={impact}
         hero={hero}
+        career={career}
+        metricHints={metricCatalog ? metricHints(metricCatalog.metrics) : {}}
         filterBar={<ContextBar
           key="filter-bar"
           initialSeason={season}
           initialPhase={phase}
           initialBeforeDate={beforeDate}
           initialWindow={windowParam}
-          sampleSize={wbLoaded.log.games.length}
+          // Games the player appeared in for the chosen window, not the game log's 50-row page.
+          sampleSize={isTotalsSeason(catalog, season) ? hero?.item?.metrics.gp ?? undefined : windowGames(wbLoaded.profile, windowParam)}
           lastIncludedDate={wbLoaded.profile.last_observed_date}
           detailRows={[{ label: "Player", value: id, mono: true }]}
         />}
@@ -152,6 +169,11 @@ export default async function PlayerPage({
   }
 
   return <PlayerError error={loadError} id={id} date={selected.date} />;
+}
+
+function windowGames(profile: PlayerProfile, window: string): number | undefined {
+  const summary = window === "last_10" ? profile.summaries.last_10 : window === "last_5" ? profile.summaries.last_5 : profile.summaries.season;
+  return summary?.gp ?? undefined;
 }
 
 /**
@@ -198,7 +220,7 @@ function ProfileView({
               {catalogDates.map((value) => <option key={value} value={value}>{value}</option>)}
             </select>
           </label>
-          <Button size="lg" type="submit">Change date</Button>
+          <Button size="lg" type="submit">Change Date</Button>
         </form>}
       />
 
@@ -266,7 +288,7 @@ function ProfileView({
       </section>
 
       <details className="calculation-details">
-        <summary>How this was calculated</summary>
+        <summary>How This Was Calculated</summary>
         <dl className="context-list">
           <div><dt>Snapshot</dt><dd>{profile.snapshot_id}</dd></div>
           <div><dt>Dataset</dt><dd>{profile.dataset_id}</dd></div>
@@ -335,7 +357,7 @@ function PlayerError({ error, id, date }: { error: unknown; id: string; date?: s
         <span className="empty-code">{apiError?.status ?? "ERROR"}</span>
         <p>{unsupported ? `${date ?? "This date"} is outside the available replay dates.` : `CourtLens could not open player ${id} from this snapshot.`}</p>
         {Array.isArray(detail?.nearest_supported_dates) && <p>Nearest dates: {(detail.nearest_supported_dates as string[]).join(" or ")}</p>}
-        <ButtonLink size="lg" href="/players">Return to player search</ButtonLink>
+        <ButtonLink size="lg" href="/players">Return to Player Search</ButtonLink>
       </div>
     </PageShell>
   );

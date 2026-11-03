@@ -19,9 +19,9 @@ import { Button, ButtonLink, Segmented } from "./ui/kit";
 type Tab = "distribution" | "splits" | "opponent" | "rank";
 type Loaded<T> = { key: string; value?: T; error?: string } | null;
 const TABS: { value: Tab; label: string }[] = [{ value: "distribution", label: "Distribution" }, { value: "splits", label: "Venue & Rest" }, { value: "opponent", label: "Opponent Context" }, { value: "rank", label: "Dispersion Ranking" }];
-const METRICS = [["pts", "Points"], ["reb", "Rebounds"], ["ast", "Assists"], ["min", "Minutes"], ["fg3m", "3-pointers made"], ["fga", "Field goals attempted"], ["fta", "Free throws attempted"]] as const;
+const METRICS = [["pts", "Points"], ["reb", "Rebounds"], ["ast", "Assists"], ["min", "Minutes"], ["fg3m", "3-Pointers Made"], ["fga", "Field Goals Attempted"], ["fta", "Free Throws Attempted"]] as const;
 const RANK_METRICS = METRICS.slice(0, 4);
-const WINDOWS = [[10, "Last 10 games"], [20, "Last 20 games"], [30, "Last 30 games"], [50, "Last 50 games"], [82, "Full season (up to 82)"]] as const;
+const WINDOWS = [[10, "Last 10 Games"], [20, "Last 20 Games"], [30, "Last 30 Games"], [50, "Last 50 Games"], [82, "Full Season (up to 82)"]] as const;
 const pct = (value: number | null | undefined) => value ? `${(value * 100).toFixed(1)}%` : "—";
 const metricLabel = (key: string) => METRICS.find(([value]) => value === key)?.[1] ?? key;
 
@@ -98,8 +98,8 @@ export function DistributionsInvestigationView() {
   const lookup = <PlayerLookup label="Target player" prefix="Target" name={playerName} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onSelect={id => set({ playerId: id, player_id: null })} />;
   const filters = tab === "splits" ? lookup : tab === "distribution" ? <>{lookup}{metricField(METRICS)}<Field label="Games" layout="inline"><Select aria-label="Window (games)" value={String(windowN)} onChange={e => set({ windowN: e.target.value, window: null })}>{WINDOWS.map(([n, label]) => <option key={n} value={n}>{label}</option>)}</Select></Field></>
     : tab === "rank" ? <>{metricField(RANK_METRICS)}
-      <Field label="Measure" layout="inline"><Select aria-label="Dispersion measure" value={measure} onChange={e => set({ measure: e.target.value })}><option value="iqr">Interquartile range</option><option value="population_sd">Standard deviation</option></Select></Field>
-      <Field label="Order" layout="inline"><Select aria-label="Sort order" value={direction} onChange={e => set({ rankDirection: e.target.value })}><option value="desc">Highest dispersion (most volatile)</option><option value="asc">Lowest dispersion (most consistent)</option></Select></Field></>
+      <Field label="Measure" layout="inline"><Select aria-label="Dispersion measure" value={measure} onChange={e => set({ measure: e.target.value })}><option value="iqr">Interquartile Range</option><option value="population_sd">Standard Deviation</option></Select></Field>
+      <Field label="Order" layout="inline"><Select aria-label="Sort order" value={direction} onChange={e => set({ rankDirection: e.target.value })}><option value="desc">Highest Dispersion (most volatile)</option><option value="asc">Lowest Dispersion (most consistent)</option></Select></Field></>
     : undefined;
   const failed = active?.error && <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => setRetry(v => v + 1)}>Retry</Button>}>{TABS.find(t => t.value === tab)?.label} unavailable: {active.error}</GatedNote></div>;
   const loading = !active && (tab === "opponent" || tab === "rank" || playerId) && <ResearchBodySkeleton tiles={tab === "distribution" ? 4 : 3} />;

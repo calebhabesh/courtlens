@@ -1,10 +1,35 @@
 import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
+const playerReference = JSON.parse(readFileSync(new URL("../lib/player-reference-fixture.json", import.meta.url), "utf8"));
 import { pc11Response, sixFactor } from "./pc11-fixtures.mjs";
 
 // Recorded real retained finding, no question/provider prose. Other public examples stay
 // unavailable in this fixture, exercising the partial-library state without fabricated results.
 const retainedDistribution = JSON.parse(readFileSync(new URL("./fixtures/pc12-retained-distribution.json", import.meta.url), "utf8"));
+// Player Twins (row 17): real API answers for 2025-26 (default, the #2 match picked, Box Score).
+// Real 2025-26 playoffs (alignment row 8) and seasons whose formats test the bracket's byes.
+const playoffBrackets = Object.fromEntries(["2025-26", "1975-76", "1965-66", "1949-50"].map(season =>
+  [season, JSON.parse(readFileSync(new URL(`./fixtures/playoffs-bracket-${season}.json`, import.meta.url), "utf8"))]));
+const okcPhx = JSON.parse(readFileSync(new URL("./fixtures/playoffs-series-2026-r1-okc-phx.json", import.meta.url), "utf8"));
+const playerTwins = JSON.parse(readFileSync(new URL("./fixtures/player-twins-v1.json", import.meta.url), "utf8"));
+function playerTwinsView(url) {
+  // Captured answers: Shot Profile (and a picked row), Box Score, Combined and one weighting. The
+  // roster and the shot map are stored once and shared.
+  const mode = ["box", "all"].includes(url.searchParams.get("mode")) ? url.searchParams.get("mode") : "shot";
+  const vs = url.searchParams.get("vs");
+  const weighted = mode === "shot" && url.searchParams.get("w");
+  const source = mode !== "shot" ? playerTwins[mode] : weighted ? playerTwins.weighted : vs ? playerTwins.picked : playerTwins.shot;
+  const base = structuredClone(source);
+  base.roster ??= playerTwins.shot.roster;
+  base.map ??= structuredClone(playerTwins.shot.map);
+  const pool = url.searchParams.get("pool") === "same" ? "same" : "all";
+  base.pool = { ...base.pool, scope: pool, by_position: url.searchParams.get("position") === "same", exclude_own: url.searchParams.get("excludeOwn") === "true", ...(pool === "same" ? { from_season: base.season, to_season: base.season } : {}) };
+  // The weighted answer stands in for any weighting; the weights echo the request.
+  if (weighted) base.weights = Object.fromEntries(weighted.split(",").map(part => [part.split(":")[0], Number(part.split(":")[1])]));
+  base.matches = base.matches.slice(0, Number(url.searchParams.get("limit")) || 12);
+  base.map.twins = base.map.twins.slice(0, base.matches.length);
+  return base;
+}
 
 const snapshotId = "snapshot-browser-fixture";
 const catalog = {
@@ -168,6 +193,8 @@ const workbenchPlayers = {
       sample_sizes: { gp: 70 },
       stints: [{ team_id: "100", tricode: "TOR", name: "Toronto Raptors", games_played: 70 }],
       metrics: { ...playerMetrics, dpm: 6.2, o_dpm: 4.1, d_dpm: 2.1 },
+      // Listed with the team he played for: no "now" chip.
+      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27", index_refreshed_at: "2026-10-01T12:00:00Z", trade_date: "2026-09-14" },
       portrait_available: true,
       lineage_url: "/api/workbench/lineage?playerId=23"
     },
@@ -184,6 +211,8 @@ const workbenchPlayers = {
       sample_sizes: { gp: 68 },
       stints: [{ team_id: "200", tricode: "BOS", name: "Boston Celtics", games_played: 68 }],
       metrics: { ...playerMetrics, pts: 1500, pts_per_game: 22.0, dpm: 2.4, o_dpm: 1.7, d_dpm: 0.7 },
+      // Played the season for Boston, listed with Toronto since: the row shows "now TOR".
+      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27", index_refreshed_at: "2026-10-01T12:00:00Z", trade_date: "2026-09-14" },
       portrait_available: false,
       lineage_url: "/api/workbench/lineage?playerId=24"
     }
@@ -191,6 +220,51 @@ const workbenchPlayers = {
   next_cursor: null,
   has_more: false,
   warnings: ["Historical reconstruction from completed records."]
+};
+
+// Alignment row 4: the six-factor team table. BOS's DEF is unknown, so unknowns stay "—" and sort last.
+const sixFactorRates = (ts, tov) => ({ ts_pct: ts, tov_per_100: tov, orb_pct: 0.27, ftr: 0.26, fg3a_per_100: 37.1, fg3_pct: 0.362, opp_ts_pct: 0.571, opp_tov_per_100: 13.9, drb_pct: 0.73, opp_ftr: 0.25, opp_fg3a_per_100: 35.2, opp_fg3_pct: 0.351 });
+// Context fields (instruction 9): a ten-point rolling trend; BOS's net is unknown, so its Adj Net is too.
+const sixFactorTrend = (start) => Array.from({ length: 12 }, (_, i) => ({ date: `2026-03-${String(i + 1).padStart(2, "0")}`, net: Math.round((start + Math.sin(i / 2) * 6) * 10) / 10 }));
+// Team scoring (NBA Stats Misc totals): season totals, so unknown for a window or a venue.
+const teamScoring = (pace, fb, paint, second, offTov, oppFb, oppPaint, oppSecond, oppOffTov) =>
+  ({ games: 72, minutes: 3466, pace, pts_fb: fb, pts_paint: paint, pts_2nd_chance: second, pts_off_tov: offTov,
+    opp_pts_fb: oppFb, opp_pts_paint: oppPaint, opp_pts_2nd_chance: oppSecond, opp_pts_off_tov: oppOffTov });
+const workbenchSixFactors = (url) => {
+  const luck = Number(url.searchParams.get("offenseLuck") || 0);
+  const windowDays = Number(url.searchParams.get("windowDays")) || null;
+  const venue = url.searchParams.get("venue");
+  const season = !windowDays && !venue;
+  return {
+    context: workbenchContext,
+    teams: [
+      { team_id: "100", tricode: "TOR", name: "Toronto Raptors", conference: "Eastern", division: "Atlantic", games_played: windowDays ? 12 : 72, wins: windowDays ? 8 : 45, losses: windowDays ? 4 : 27,
+        possessions: 7100, opp_possessions: 7080, points: 8190, opp_points: 7800, ortg: 115.4 - luck, drtg: 110.2, net: 5.2 - luck,
+        off: 1.9 - luck, o_ts: 1.2 - luck, o_tov: 0.9, o_orb: -0.2, def: 3.3, d_ts: 2.1, d_tov: 0.4, d_drb: 0.8, net_eff: 3.3 - luck, net_poss: 1.9,
+        off_luck: -luck, def_luck: 0, league_rating: 113.5, rates: sixFactorRates(0.584, 12.8),
+        sos: 0.4, adj_net: 5.6 - luck, expected_wins: 46.2, win_luck: -1.2, close_wins: 9, close_losses: 7,
+        standings: { wins: 45, losses: 27, last10_wins: 7, last10_losses: 3, streak: 3 }, trend: sixFactorTrend(4),
+        scoring: season ? teamScoring(99.2, 1065, 3550, 994, 1349, 852, 3398, 1062, 1133) : null },
+      { team_id: "200", tricode: "BOS", name: "Boston Celtics", conference: "Eastern", division: "Atlantic", games_played: 72, wins: 55, losses: 17,
+        possessions: 7000, opp_possessions: 7020, points: 8260, opp_points: 7900, ortg: 118.0, drtg: null, net: null,
+        off: 4.5, o_ts: 2.0, o_tov: 1.5, o_orb: 1.0, def: null, d_ts: null, d_tov: null, d_drb: null, net_eff: null, net_poss: null,
+        off_luck: 0, def_luck: 0, league_rating: 113.5, rates: sixFactorRates(0.592, 11.9),
+        sos: -0.3, adj_net: null, expected_wins: null, win_luck: null, close_wins: 6, close_losses: 2,
+        standings: { wins: 55, losses: 17, last10_wins: 8, last10_losses: 2, streak: -1 }, trend: sixFactorTrend(-1),
+        scoring: season ? teamScoring(97.8, 1120, 3360, 1050, 1260, 910, 3510, null, 1190) : null },
+    ],
+    league: { rating: 113.5, ts_pct: 0.578, tov_per_100: 13.4, orb_pct: 0.26, ftr: 0.26, fg3a_per_100: 36.3, fg3_pct: 0.36 },
+    window: { days: windowDays, start: windowDays ? "2026-03-14" : null, first_game: windowDays ? "2026-03-14" : "2025-10-21", last_game: "2026-04-12", games: windowDays ? 40 : 1230, excluded_games: 0 },
+    venue: venue === "home" || venue === "away" ? venue : null,
+    luck: { offense: luck, defense: Number(url.searchParams.get("defenseLuck") || 0) },
+    method_version: "courtlens-team-six-factors-v1",
+    context_method_version: "courtlens-team-context-v1",
+    warnings: [],
+    scoring: { method_version: "courtlens-team-scoring-v1", status: season ? "complete" : "unavailable", teams: season ? 2 : 0,
+      reason: season ? null : venue ? "Season totals cannot be split by venue." : "Season totals cannot be cut to a recent-game window.",
+      dataset_ids: season ? ["fixture-team-misc"] : [], observed_at: season ? "2026-04-13T10:00:00+00:00" : null, upstream_revisions: [],
+      limitations: ["Fixture team scoring totals."] },
+  };
 };
 
 const workbenchTeams = {
@@ -543,6 +617,22 @@ const mockPlayoffSeriesDetail = {
 createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
+  // Live (alignment row 7): an observed empty date; e2e/live.spec.ts routes real ESPN reads itself.
+  if (url.pathname === "/api/live") return json(response, 200, { namespace: "espn", resource: `slate:${url.searchParams.get("slate_date")}`, status: "observed", final: false, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: 600, error: null, observation_id: null, content_sha256: null, data: { games: [], calendar: [] } });
+  // Standings (row 23): no ESPN standings in the fixture; standings specs route their own. Answering
+  // (rather than leaving the request open) lets pages that show division standings settle.
+  if (url.pathname === "/api/live/standings") return json(response, 200, { namespace: "espn", resource: `standings:${url.searchParams.get("season") ?? "current"}`, status: "observed", final: true, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: null, error: null, observation_id: null, content_sha256: null, data: { season: url.searchParams.get("season"), standings: null } });
+  // Team schedule (row 4 follow-up): ESPN's season for the team page calendar.
+  if (/^\/api\/live\/teams\/[A-Za-z0-9]+\/schedule$/.test(url.pathname)) {
+    const side = (id, tricode, home, score, winner) => ({ source_id: id, canonical_id: null, identity_status: "verified", tricode, name: tricode, side: home ? "home" : "away", score, winner });
+    const game = (id, day, status, teams, note = null) => ({ source_id: id, canonical_id: null, identity_status: "unmapped", namespace: "espn", slate_date: day, event_time: `${day}T23:30:00Z`, status, period: status === "final" ? 4 : null, clock: null, teams, provisional: true, status_detail: status === "final" ? "Final" : null, odds: null, note });
+    return json(response, 200, { namespace: "espn", resource: "schedule:28:2026:2", status: "observed", final: true, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: null, error: null, observation_id: null, content_sha256: null,
+      data: { team_source_id: "28", season: "2025-26", year: 2026, season_type: 2, dropped_events: 1, games: [
+        game("401000001", "2026-03-01", "final", [side("28", "TOR", true, 112, true), side("2", "BOS", false, 104, false)]),
+        game("401000002", "2026-03-03", "final", [side("18", "NYK", true, 120, true), side("28", "TOR", false, 99, false)]),
+        game("401000003", "2026-04-12", "postponed", [side("28", "TOR", true, null, null), side("14", "MIA", false, null, null)], "NBA Cup - Group Play"),
+      ] } });
+  }
   // Browser JSON POSTs (for example Showcase rank queries) send a CORS preflight, as the real API allows.
   if (request.method === "OPTIONS") {
     response.writeHead(204, {
@@ -609,6 +699,16 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/assistant/operations") return json(response, 200, [
     { name: "workload_shifts", description: "Historical workload changes", parameters: { type: "object" } }
   ]);
+  if (url.pathname === "/api/workbench/player-twins/players") {
+    // This season's roster, plus the captured matches' players at their latest captured season.
+    const players = new Map(playerTwins.shot.roster.map(p => [p.player_id, { player_id: p.player_id, name: p.name, first_season: "2025-26", last_season: "2025-26", last_team: p.team, seasons: 1 }]));
+    for (const m of playerTwins.shot.matches) {
+      const known = players.get(m.player_id);
+      if (!known || known.last_season < m.season) players.set(m.player_id, { player_id: m.player_id, name: m.name, first_season: m.season, last_season: known?.last_season > m.season ? known.last_season : m.season, last_team: m.team, seasons: 1 });
+    }
+    return json(response, 200, { players: [...players.values()] });
+  }
+  if (url.pathname === "/api/workbench/player-twins") return json(response, 200, playerTwinsView(url));
   if (url.pathname === "/api/workbench/catalog") return json(response, 200, {
     ...workbenchContext, snapshot_id: snapshotId, seasons: ["2025-26"], phases: ["regular_season"],
     default_season: "2025-26", default_phase: "regular_season", default_before_date: "2026-06-30",
@@ -636,7 +736,10 @@ createServer(async (request, response) => {
         table_cohort_sample_sizes: Object.fromEntries(Object.keys(row.metrics).map(key => [key, 2]))
       } : {})
     }));
-    const selected = rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
+    // name=traded: Fixture Guard as a two-team season (BOS / MIA), now listed with TOR.
+    const teamId = query.team_scope?.team_id;
+    const matchesTeam = (row) => !teamId || row.team_id === teamId || ((teamId === "1610612760" || teamId === "1610612761") && row.team_id === "100") || (teamId === "1610612738" && row.team_id === "200");
+    const selected = query.name === "traded" ? rows.filter(row => row.player_id === "24").map(row => ({ ...row, teams: ["BOS", "MIA"] })) : rows.filter((row) => matchesTeam(row) && (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
       (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)) &&
       (!body.presentation?.positions?.length || body.presentation.positions.includes(fixturePositions[row.player_id])) &&
       (!body.presentation?.draft_year || body.presentation.draft_year === fixtureDrafts[row.player_id]));
@@ -654,6 +757,40 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/draft-classes") return json(response, 200, {
     source: "NBA draft history (fixture)", classes: [2020, 2019, 2018].map(year => ({ year, players: 58 }))
   });
+  const careerMatch = url.pathname.match(/^\/api\/workbench\/players\/([^/]+)\/career$/);
+  if (careerMatch) {
+    // One played fixture season, ranked against its two-player league, and its Career row.
+    const index = workbenchPlayers.items.findIndex(row => row.player_id === careerMatch[1]);
+    const row = workbenchPlayers.items[index];
+    const phase = url.searchParams.get("phase") ?? "regular_season";
+    const ranked = row && {
+      ...row, table_qualified: true,
+      table_percentiles: Object.fromEntries(Object.keys(row.metrics).map(key => [key, index === 0 ? 75 : 25])),
+      table_cohort_sample_sizes: Object.fromEntries(Object.keys(row.metrics).map(key => [key, 2]))
+    };
+    return json(response, 200, { player_id: careerMatch[1], release_id: url.searchParams.get("releaseId") ?? workbenchContext.release_id,
+      phase, seasons: row && phase === "regular_season" ? [{ season: "2025-26", item: ranked }] : [],
+      career: row && phase === "regular_season" ? row : null });
+  }
+  if (url.pathname === "/api/workbench/player-dashboard/feeds") {
+    // Tracking cells for the two fixture players: player 23 leads, 24 trails; play types for 23 only.
+    const id = url.searchParams.get("playerId"), lead = id === "23";
+    const values = { potential_ast: lead ? 9.2 : 4.1, defended_fga: lead ? 12.4 : 8.0, rim_defended_fga: lead ? 6.1 : 2.2, contested_shots: lead ? 11 : 6,
+      deflections: lead ? 2.4 : 1.1, loose_balls: lead ? 0.6 : 0.3, charges_drawn: lead ? 0.2 : 0.1 };
+    const ratios = { ast_efg: lead ? 0.71 : 0.64, potential_ast_per_min: lead ? 2.4 : 1.6, defended_diff: lead ? -0.06 : 0.02, rim_defended_diff: lead ? -0.09 : 0.03 };
+    const ranks = Object.fromEntries([...Object.keys(values), ...Object.keys(ratios)].map(key => [key, lead ? 75 : 25]));
+    const family = (key, label, share, rel) => ({ family: key, label, possessions: 200 * share, frequency: share, points_per_possession: 1 + rel / 100,
+      league_points_per_possession: 1, relative_per_100: rel, percentiles: { frequency: 60, relative_per_100: rel > 0 ? 80 : 30 } });
+    return json(response, 200, {
+      version: "courtlens-player-dashboard-feeds-v1", player_id: id, season: url.searchParams.get("season"), phase: url.searchParams.get("phase") ?? "regular_season",
+      label: "2025-26 · Regular Season", source: "NBA Stats (fixture)", qualification: { minutes: 500 },
+      observed: { tracking: true, defense: true, hustle: true, play_types: lead },
+      first_seasons: { tracking: "2013-14", defense: "2013-14", hustle: "2015-16", play_types: "2015-16" }, metrics: [],
+      player: { games: 70, minutes: 2400, qualified: true, defense_qualified: true, per_game: { ...values, ...ratios }, per_36: { ...values, ...ratios },
+        percentiles: { per_game: ranks, per_36: ranks } },
+      play_types: lead ? [family("creation", "Creation", 0.3, 4.2), family("spacing", "Spacing", 0.25, -1.5), family("transition", "Transition", 0.15, 7.1), family("finishing", "Finishing", 0.3, 9.0)] : null,
+      cohort: { qualified_players: 2, rule: "500+ tracked minutes" }, limitations: [], sources: [] });
+  }
   if (url.pathname === "/api/workbench/player-seasons") return json(response, 200, {
     phase: url.searchParams.get("phase") ?? "regular_season",
     seasons: Object.fromEntries(url.searchParams.getAll("playerId").map(id => [id, ["2025-26"]]))
@@ -674,29 +811,37 @@ createServer(async (request, response) => {
       ? { jersey: "7", listed_position: "F", listed_height_inches: 80, listed_weight_lbs: 220, prior_seasons: 6, birth_date: "1998-02-10", age: 28, country: "Fixtureland", college: "Fixture State", draft: { year: 2018, round: 1, pick: 9, team_id: "100", team_tricode: "TOR", organization: "Fixture State" }, undrafted: false }
       : { jersey: null, listed_position: "G", listed_height_inches: 75, listed_weight_lbs: 190, prior_seasons: 0, birth_date: null, age: null, country: null, college: null, draft: null, undrafted: true };
     return json(response, 200, { player_id: bioMatch[1], season: url.searchParams.get("season") ?? "2025-26", as_of: "2026-04-12",
-      listing_source: "season_roster", combine: null, limitations: ["Synthetic UI fixture."], ...fixture });
+      listing_source: "season_roster", combine: null,
+      current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27", index_refreshed_at: "2026-10-01T12:00:00Z" },
+      reference: bioMatch[1] === "24" ? playerReference : null, limitations: ["Synthetic UI fixture."], ...fixture });
   }
   if (url.pathname === "/api/workbench/players/23") return json(response, 200, workbenchPlayerProfile("23"));
   if (url.pathname === "/api/workbench/players/24") return json(response, 200, workbenchPlayerProfile("24"));
   if (url.pathname === "/api/workbench/players/23/games") return json(response, 200, workbenchPlayerGames("23"));
   if (url.pathname === "/api/workbench/players/24/games") return json(response, 200, workbenchPlayerGames("24"));
   // FO10: bounded synthetic detail fixtures cover tabs, known zero and unknown outcomes.
-  if (["/api/workbench/teams/100/four-factors", "/api/workbench/teams/200/four-factors"].includes(url.pathname)) return json(response, 200, {
-    team:workbenchTeamDetail.team,context:workbenchContext,games_played:72,pace:99.4,off_rating:115.4,def_rating:110.2,net_rating:5.2,
-    ratings:[["off_rating","Offensive Rating",115.4,113.0],["def_rating","Defensive Rating",110.2,113.0],["net_rating","Net Rating",5.2,0]].map(([key,display_name,value,league_avg]) => ({key,display_name,value,league_avg,unit:"rating",formula:"Synthetic UI fixture",total_teams:30})), shooting_percentages:{opp_fg_pct:0.437},league_averages:{},warnings:[],
-    offense_factors:[{key:"efg_pct",display_name:"Effective Field Goal %",value:0.54,league_avg:0.53,rank:8,percentile:74,total_teams:30,good_direction:"high",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
-    defense_factors:[{key:"opp_efg_pct",display_name:"Opponent eFG%",value:url.pathname.includes("/200/") ? 0.5 : null,league_avg:0.53,rank:url.pathname.includes("/200/") ? 4 : null,percentile:url.pathname.includes("/200/") ? 88.3 : null,total_teams:30,good_direction:"low",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
-    three_point_scenario:{observed_fg3m:12,observed_fg3a:32,observed_3p_pct:0.375,league_3p_pct:0.375,hypothetical_fg3m:12,delta_points:0,actual_ppg:115.4,hypothetical_ppg:115.4,delta_off_rating:0,delta_net_rating:0,disclaimer:"Synthetic what-if accounting fixture, not a causal effect."}
-  });
-  if (url.pathname === "/api/workbench/teams/100/schedule") return json(response,200,{
+  if (["/api/workbench/teams/100/four-factors", "/api/workbench/teams/200/four-factors", "/api/workbench/teams/1610612760/four-factors", "/api/workbench/teams/1610612738/four-factors"].includes(url.pathname)) {
+    const isBos = url.pathname.includes("/200/") || url.pathname.includes("/1610612738/");
+    return json(response, 200, {
+      team:workbenchTeamDetail.team,context:workbenchContext,games_played:72,pace:99.4,off_rating:isBos ? 118.2 : 115.4,def_rating:isBos ? 108.5 : 110.2,net_rating:isBos ? 9.7 : 5.2,
+      ratings:[["off_rating","Offensive Rating",115.4,113.0],["def_rating","Defensive Rating",110.2,113.0],["net_rating","Net Rating",5.2,0]].map(([key,display_name,value,league_avg]) => ({key,display_name,value,league_avg,unit:"rating",formula:"Synthetic UI fixture",total_teams:30})), shooting_percentages:{opp_fg_pct:0.437},league_averages:{},warnings:[],
+      offense_factors:[{key:"efg_pct",display_name:"Effective Field Goal %",value:isBos ? 0.56 : 0.54,league_avg:0.53,rank:8,percentile:74,total_teams:30,good_direction:"high",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
+      defense_factors:[{key:"opp_efg_pct",display_name:"Opponent eFG%",value:isBos ? 0.5 : null,league_avg:0.53,rank:isBos ? 4 : null,percentile:isBos ? 88.3 : null,total_teams:30,good_direction:"low",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
+      three_point_scenario:{observed_fg3m:12,observed_fg3a:32,observed_3p_pct:0.375,league_3p_pct:0.375,hypothetical_fg3m:12,delta_points:0,actual_ppg:115.4,hypothetical_ppg:115.4,delta_off_rating:0,delta_net_rating:0,disclaimer:"Synthetic what-if accounting fixture, not a causal effect."}
+    });
+  }
+  if (["/api/workbench/teams/100/schedule", "/api/workbench/teams/1610612760/schedule", "/api/workbench/teams/200/schedule", "/api/workbench/teams/1610612738/schedule"].includes(url.pathname)) return json(response,200,{
     team:workbenchTeamDetail.team,context:workbenchContext,overall_record:{...workbenchTeamDetail.record,current_streak:"W2",differential:5.2},
     home_split:{games_played:36,wins:24,losses:12,win_pct:0.667,ppg:115.4,opp_ppg:110.2,differential:5.2},away_split:{games_played:36,wins:21,losses:15,win_pct:0.583,ppg:115.4,opp_ppg:110.2,differential:5.2},
     rest_splits:[],back_to_back_summary:{},longest_homestand:4,longest_road_trip:3,warnings:[],
     games:[{game_id:"fo10-unknown",game_date:"2026-03-01",opponent_tricode:"BOS",opponent_name:"Boston Celtics",side:"home",team_points:0,opponent_points:null,is_win:null,rest_days:0,is_back_to_back:true,rest_bucket:"0_days_rest"}]
   });
   if (url.pathname === "/api/workbench/teams/100/peers") return json(response,200,{team:workbenchTeamDetail.team,context:workbenchContext,dimensions:[],warnings:[],peers:[{team_id:"200",tricode:"BOS",name:"Boston Celtics",similarity_score:0.95,distance:0.1,conference:"Eastern"}]});
+  if (url.pathname === "/api/workbench/teams/six-factors") return json(response, 200, workbenchSixFactors(url));
   if (url.pathname === "/api/workbench/teams") return json(response, 200, { ...workbenchTeams, teams: workbenchTeams.teams.map((team, index) => ({ ...team, table_percentiles: { wins: index ? 75 : 25, win_pct: index ? 75 : 25, ppg: index ? 75 : 25, opp_ppg: index ? 75 : 25, net_margin: index ? 75 : 25 }, table_cohort_sample_sizes: { wins: 2, win_pct: 2, ppg: 2, opp_ppg: 2, net_margin: 2 } })) });
   if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
+  if (url.pathname === "/api/workbench/teams/1610612760") return json(response, 200, { ...workbenchTeamDetail, team: { id: "1610612760", tricode: "OKC", name: "Oklahoma City Thunder" } });
+  if (url.pathname === "/api/workbench/teams/1610612738") return json(response, 200, { ...workbenchTeamDetail, team: { id: "1610612738", tricode: "BOS", name: "Boston Celtics" }, record: { games_played: 72, wins: 55, losses: 17, win_pct: 0.764 }, player_cohort: [{ player_id: "24", player_name: "Fixture Guard", games_played: 68, min_per_game: 33.5, total_minutes: 2278, points: 1500, pts_per_game: 22.0, reb_per_game: 4.5, ast_per_game: 6.0 }] });
   // FO11: one deliberately missing-data opponent for descriptive comparison guards.
   if (url.pathname === "/api/workbench/teams/200") return json(response,200,{
     ...workbenchTeamDetail,team:{id:"200",tricode:"BOS",name:"Boston Celtics"},production:{pts_per_game:null,fg_pct:0,fg3_pct:null,ft_pct:null},allowance:{pts_allowed_per_game:null},player_cohort:[]
@@ -717,10 +862,45 @@ createServer(async (request, response) => {
     return json(response, 200, { release_id: workbenchContext.release_id, dataset_id: "fixture-dataset", start: url.searchParams.get("start"), end: url.searchParams.get("end"), phase: url.searchParams.get("phase"), before_date: url.searchParams.get("beforeDate"), focus, days, nearest_scheduled: nearest, nearest_finals: nearest, warnings: [] });
   }
   if (url.pathname === "/api/workbench/playoffs") {
-    return json(response, 200, mockPlayoffBracket);
+    return json(response, 200, playoffBrackets[url.searchParams.get("season")] ?? mockPlayoffBracket);
+  }
+  if (url.pathname === "/api/workbench/playoffs/series/2026-r1-okc-phx") {
+    return json(response, 200, okcPhx);
   }
   if (url.pathname.startsWith("/api/workbench/playoffs/series/")) {
     return json(response, 200, mockPlayoffSeriesDetail);
+  }
+  // Careers through the comparison cutoff (alignment row 3, 21): the fixture's season rows doubled.
+  if (url.pathname === "/api/workbench/compare/career") {
+    const entry = id => {
+      const row = workbenchPlayers.items.find(item => item.player_id === id);
+      return { player_id: id, seasons: row ? ["2024-25", "2025-26"] : [], item: row ? { ...row, games_played: row.games_played * 2,
+        metrics: Object.fromEntries(Object.entries(row.metrics).map(([key, value]) => [key, typeof value === "number" && !/pct|per_game|ftr/.test(key) && key !== "gp" ? value * 2 : key === "gp" && typeof value === "number" ? value * 2 : value])) } : null };
+    };
+    return json(response, 200, { season: url.searchParams.get("season"), phase: url.searchParams.get("phase") ?? "regular_season",
+      before_date: url.searchParams.get("beforeDate"), player_a: entry(url.searchParams.get("playerA")), player_b: entry(url.searchParams.get("playerB")) });
+  }
+  // Compare's grid (alignment row 3, 64): the two fixture rows plus a synthetic third player.
+  if (url.pathname === "/api/workbench/compare/group") {
+    const ids = url.searchParams.getAll("playerId");
+    const known = { "23": "Fixture Star", "24": "Fixture Guard", "1627751": "Fixture Shooter" };
+    if (ids.some(id => !known[id])) return json(response, 404, { detail: "player not found in snapshot" });
+    const career = url.searchParams.get("span") === "career";
+    const row = id => {
+      const base = workbenchPlayers.items.find(item => item.player_id === id);
+      if (base) return base;
+      const guard = workbenchPlayers.items[1];
+      return { ...guard, player_id: id, player_name: known[id], games_played: 60,
+        metrics: Object.fromEntries(Object.entries(guard.metrics).map(([key, value]) => [key, typeof value === "number" ? value * 0.9 : value])) };
+    };
+    return json(response, 200, {
+      context: { release_id: workbenchContext.release_id, season: url.searchParams.get("season") ?? "2025-26", phase: url.searchParams.get("phase") ?? "regular_season",
+        before_date: url.searchParams.get("beforeDate") ?? "2026-04-13", window: url.searchParams.get("window") ?? "season" },
+      span: career ? "career" : "season",
+      players: ids.map(id => { const item = row(id); return { player_id: id, name: known[id], item, seasons: career ? ["2024-25", "2025-26"] : null,
+        teams_chronological: id === "24" ? ["BOS"] : ["TOR"], championships: { seasons: [], coverage_from: "2015-16", complete: true },
+        availability: { games: item.games_played, team_games: 82 } }; })
+    });
   }
   if (url.pathname === "/api/workbench/compare") {
     const pA = {
@@ -766,6 +946,11 @@ createServer(async (request, response) => {
       ]
     });
   }
+  if (url.pathname === "/api/workbench/portrait-credits") return json(response, 200, { commons: [{
+    player_id: "2544", name: "LeBron James", season: "2010-11", team: "MIA",
+    credit: "Photo: Keith Allison from Owings Mills, USA, CC BY-SA 2.0, via Wikimedia Commons (Dwyane Wade and LeBron James.jpg)",
+    source_url: "https://commons.wikimedia.org/wiki/File:Dwyane_Wade_and_LeBron_James.jpg"
+  }] });
   if (url.pathname === "/api/workbench/metrics") return json(response, 200, { version: "courtlens-stats-v3", metrics: ["pts","reb","ast","stl","blk","tov","pf","min","gp","ts_pct","efg_pct","ftr"].flatMap(key => {
     const count = !["gp","ts_pct","efg_pct","ftr"].includes(key);
     return [key, ...(count ? [`${key}_per_game`] : [])].map(name => ({ key:name, version:"courtlens-stats-v3",short_name:key,category:count ? "counting" : "efficiency",formula:"Synthetic UI fixture",denominator:null,phase_scope:["regular_season"],default_sort_direction:"desc",limitations:["Synthetic UI fixture"],validity_definition:"Observed synthetic appearances", display_name:({pts:"Points",reb:"Rebounds",ast:"Assists",stl:"Steals",blk:"Blocks",tov:"Turnovers",pf:"Fouls",min:"Minutes",gp:"Games Played",ts_pct:"True Shooting Percentage",efg_pct:"Effective Field Goal %",ftr:"Free Throw Rate"})[key]+(name.endsWith("_per_game") ? " Per Game" : count ? " Total" : ""), unit:["ts_pct","efg_pct","ftr"].includes(key) ? "percentage" : "",good_direction:["tov","pf"].includes(key) ? "low" : ["min","gp"].includes(key) ? null : "high" }));

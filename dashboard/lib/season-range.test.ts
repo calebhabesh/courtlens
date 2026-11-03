@@ -30,7 +30,7 @@ describe("43e multi-season scope", () => {
       seasons: all, stats_scopes: [{ season: "2025-26", phase: "regular_season", default_before_date: "2026-04-13" }] } as WorkbenchCatalog;
     const range = resolveStatsQuery({ season: "2025-26", seasonFrom: "2024-25" }, catalog, "per_game", "dpm");
     expect(range.season_scope).toEqual({ seasons: ["2024-25", "2025-26"], aggregate_multi_season: true });
-    expect(range.sort).toEqual([{ field: "pts_per_game", direction: "desc" }]);
+    expect(range.sort).toEqual([{ field: "min", direction: "desc" }]);
     const single = resolveStatsQuery({ season: "2025-26" }, catalog, "per_game", "dpm");
     expect(single.season_scope).toBeUndefined();
     expect(single.sort).toEqual([{ field: "dpm", direction: "desc" }]);

@@ -1,0 +1,52 @@
+[
+  {
+    "width": 1440,
+    "initial": {
+      "entrances": [
+        {
+          "animation": "enterFade",
+          "at": 669.1000000238419
+        }
+      ],
+      "bodyAnimation": "none",
+      "rowAnimation": "none",
+      "overflow": false,
+      "tableTop": 347.5,
+      "rowCount": 50
+    },
+    "refresh": {
+      "entrances": [
+        {
+          "animation": "enterFade",
+          "at": 780.8999999761581
+        }
+      ],
+      "bodyAnimation": "none"
+    }
+  },
+  {
+    "width": 390,
+    "initial": {
+      "entrances": [
+        {
+          "animation": "enterFade",
+          "at": 691.1999999880791
+        }
+      ],
+      "bodyAnimation": "none",
+      "rowAnimation": "none",
+      "overflow": false,
+      "tableTop": 483.5,
+      "rowCount": 50
+    },
+    "refresh": {
+      "entrances": [
+        {
+          "animation": "enterFade",
+          "at": 549.6999999880791
+        }
+      ],
+      "bodyAnimation": "none"
+    }
+  }
+]

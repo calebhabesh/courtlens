@@ -89,7 +89,7 @@ Confirmed by the owner on 2026-10-12 after PC06/PC07 source evidence. These amen
 | --- | --- |
 | D1 Identity | Basketball-Reference players map to NBA ids by the **name-and-team rule**: exact normalized name plus same current team in the pinned NBA index, unique on both sides, recorded as `name_team_unique` with evidence ([finance refresh v1](design/finance-refresh-v1.md)). Nicknames, ties and collisions stay unresolved. |
 | D2 Spotrac/HoopsHype | Spotrac stays stopped (robots 403). HoopsHype was probed once: its robots.txt disallows Anthropic agents, so it is not used. BRef remains the only contract source. |
-| D3 Free Agency | **Removed** under C14: no admitted free source. Players with expiring contracts are never labeled free agents. PC08 removes the page with a redirect to Contracts. |
+| D3 Free Agency | *Superseded 2026-10-19 (alignment row 14): restored from NBA.com's free-agent tracker under source policy v3.* **Removed** under C14: no admitted free source. Players with expiring contracts are never labeled free agents. PC08 removes the page with a redirect to Contracts. |
 | D4 WOWY | Derived in PC11 from lineup data (existing stints or hoopR lineups); pbpstats WOWY is not ingested. |
 | D5 Seasons | Season feeds beyond 2025-26 are fetched only when PC09 needs them. |
 

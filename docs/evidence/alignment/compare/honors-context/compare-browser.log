@@ -1,0 +1,20 @@
+
+Running 15 tests using 2 workers
+
+[1/15] e2e/compare-overhaul.spec.ts:20:5 › compare card: console actions, change cues, wordmark footer and trend tray (alignment row 3)
+[2/15] e2e/compare-overhaul.spec.ts:5:5 › player comparison uses shared scope, signed values and contextual URL modes
+[3/15] e2e/compare-overhaul.spec.ts:31:5 › Career compares both players through the cutoff without league percentiles (row 3, 21)
+[4/15] e2e/compare-overhaul.spec.ts:41:36 › counting menu keeps its slot across season and career modes at 1440px
+[5/15] e2e/compare-overhaul.spec.ts:41:36 › counting menu keeps its slot across season and career modes at 390px
+[6/15] e2e/compare-overhaul.spec.ts:69:5 › each player can be compared in their own season; seasons without games say so (row 3, 38-39)
+[7/15] e2e/compare-overhaul.spec.ts:85:5 › the console Season is a global override that clears per-player seasons (row 3, 42)
+[8/15] e2e/compare-overhaul.spec.ts:96:36 › season honors show every badge in aligned rows at 1440px (row 3, 49)
+[9/15] e2e/compare-overhaul.spec.ts:96:36 › season honors show every badge in aligned rows at 390px (row 3, 49)
+[10/15] e2e/compare-overhaul.spec.ts:127:36 › midseason honors show badges and empty dashes without pending copy at 1440px (row 3, 57)
+[11/15] e2e/compare-overhaul.spec.ts:127:36 › midseason honors show badges and empty dashes without pending copy at 390px (row 3, 57)
+[12/15] e2e/compare-overhaul.spec.ts:141:36 › player search shows full names in wider viewport-bounded results at 1440px
+[13/15] e2e/compare-overhaul.spec.ts:141:36 › player search shows full names in wider viewport-bounded results at 390px
+[14/15] e2e/compare-overhaul.spec.ts:158:5 › team comparison preserves unknown versus zero, unknown outcomes and scope across tabs
+[15/15] e2e/compare-overhaul.spec.ts:172:5 › WOWY: a late response for an earlier team cannot replace the current result (PC11)
+  1 skipped
+  14 passed (5.4s)

@@ -1,7 +1,8 @@
-"""Ordinary opt-in ESPN consumer access, with no retries or access-control bypass."""
+"""Ordinary ESPN consumer access, with no retries or access-control bypass."""
 
 import asyncio
 import json
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from email.utils import parsedate_to_datetime
@@ -9,9 +10,16 @@ from typing import Any
 
 import httpx
 
-from courtlens.domain.live import parse_scoreboard, parse_summary
+from courtlens.domain.live import (
+    parse_injury_feed,
+    parse_scoreboard,
+    parse_standings,
+    parse_summary,
+    parse_team_schedule,
+)
 
 BASE_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
+STANDINGS_URL = "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings"
 
 
 class LiveProviderError(Exception):
@@ -44,12 +52,58 @@ class ESPNLiveProvider:
         self.transport = transport
 
     def fetch(self, slate: date, game_id: str | None = None) -> LiveFetch:
-        return asyncio.run(self._fetch(slate, game_id))
+        if game_id:
+            return asyncio.run(
+                self._get(
+                    "/summary",
+                    {"event": game_id},
+                    2 * 1024 * 1024,
+                    lambda p: parse_summary(p, slate, game_id),
+                )
+            )
+        return asyncio.run(
+            self._get(
+                "/scoreboard",
+                {"dates": slate.strftime("%Y%m%d")},
+                512 * 1024,
+                lambda p: parse_scoreboard(p, slate),
+            )
+        )
 
-    async def _fetch(self, slate: date, game_id: str | None) -> LiveFetch:
-        cap = 2 * 1024 * 1024 if game_id else 512 * 1024
-        url = BASE_URL + ("/summary" if game_id else "/scoreboard")
-        params = {"event": game_id} if game_id else {"dates": slate.strftime("%Y%m%d")}
+    def fetch_injuries(self) -> LiveFetch:
+        return asyncio.run(self._get("/injuries", {}, 2 * 1024 * 1024, parse_injury_feed))
+
+    def fetch_standings(self, year: int) -> LiveFetch:
+        return asyncio.run(
+            self._get(
+                "",
+                {"season": str(year), "level": "3"},
+                1024 * 1024,
+                lambda p: parse_standings(p, year),
+                url=STANDINGS_URL,
+            )
+        )
+
+    def fetch_team_schedule(self, team_source_id: str, year: int, season_type: int) -> LiveFetch:
+        # About 0.85 MB for a full regular season (ESPN embeds logos and leaders per game).
+        return asyncio.run(
+            self._get(
+                f"/teams/{team_source_id}/schedule",
+                {"season": str(year), "seasontype": str(season_type)},
+                4 * 1024 * 1024,
+                lambda p: parse_team_schedule(p, team_source_id, year, season_type),
+            )
+        )
+
+    async def _get(
+        self,
+        path: str,
+        params: dict[str, str],
+        cap: int,
+        parse: Callable[[dict[str, Any]], dict[str, Any]],
+        url: str | None = None,
+    ) -> LiveFetch:
+        url = url or BASE_URL + path
         body = bytearray()
         try:
             async with (
@@ -76,11 +130,7 @@ class ESPNLiveProvider:
                     body.extend(chunk)
                 raw = bytes(body)
                 payload = json.loads(raw)
-                normalized = (
-                    parse_summary(payload, slate, game_id)
-                    if game_id
-                    else parse_scoreboard(payload, slate)
-                )
+                normalized = parse(payload)
                 source_time = payload.get("lastUpdated")
                 return LiveFetch(
                     raw,

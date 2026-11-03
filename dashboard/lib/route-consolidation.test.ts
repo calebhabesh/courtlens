@@ -62,7 +62,7 @@ describe("FO07 route consolidation (D3)", () => {
     const nav = [...analyticalNavItems(), ...MORE_LINKS];
     for (const page of Object.values(TABBED_PAGES)) {
       const entries = nav.filter(item => page.tabs.some(tab => tab.href === item.href.split("?")[0]));
-      expect(entries, page.title).toEqual([{ label: page.title, href: page.tabs[0].href }]);
+      expect(entries.map(({ label, href }) => ({ label, href })), page.title).toEqual([{ label: page.title, href: page.tabs[0].href }]);
     }
     expect(nav.some(item => item.href.startsWith("/design")), "/design stays internal").toBe(false);
     const removed = new Set(CONSOLIDATED_REDIRECTS.map(r => r.source));

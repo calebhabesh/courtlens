@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArticleLayout, ArticleSection } from "@/components/ui/article-layout";
 import { CountChip } from "@/components/ui/filter-bar";
-import { getMetricCatalog } from "@/lib/workbench-api";
+import { getMetricCatalog, getPortraitCredits, type PortraitCredits } from "@/lib/workbench-api";
 import type { MetricCatalog } from "@/lib/types";
 import { DarkoSourceLink } from "@/components/darko-source-link";
 
@@ -14,6 +14,7 @@ const TOC = [
   { id: "tracking-feeds", label: "Tracking, play types and WOWY" },
   { id: "catalog", label: "Metric catalog" },
   { id: "prospective", label: "Historical and prospective" },
+  { id: "photo-credits", label: "Photo credits" },
   { id: "related", label: "Related pages" },
 ];
 
@@ -28,6 +29,13 @@ export default async function MethodologyPage() {
     catalog = await getMetricCatalog();
   } catch {
     // The catalog section states that the catalog is unavailable.
+  }
+
+  let credits: PortraitCredits | null = null;
+  try {
+    credits = await getPortraitCredits();
+  } catch {
+    // The credits section states that the list is unavailable.
   }
 
   const metrics = catalog?.metrics ?? [];
@@ -107,7 +115,27 @@ export default async function MethodologyPage() {
 
       <ArticleSection id="prospective" title="Historical and prospective">
         <p>Historical analysis uses verified completed game logs from open archives. Opponent matchups are reconstructed from schedule outcomes; they are not real-time roster announcements.</p>
+        <p>Seasons from 1983-84 to 1999-00 come from Basketball-Reference&apos;s player game logs. Each game is assembled from both teams&apos; players, so a team&apos;s box score is the sum of its players (team-only rebounds and turnovers are not included). Every game&apos;s player points match its final score. Seasons from 1946-47 to 1982-83 are Basketball-Reference&apos;s season totals: whole seasons only, with no game logs or recent-game windows. A stat the league did not record yet (blocks and steals before 1973-74, three-pointers before 1979-80, minutes before 1951-52) is unknown, never zero. BPM, Win Shares, PER and VORP are Basketball-Reference&apos;s published season values.</p>
+        <p>Team pages for those seasons take each team&apos;s record from the season&apos;s standings and its box totals from the same season tables. From 1973-74, when turnovers and offensive rebounds were first kept on both ends, ratings and six factors use the same box-score method as later seasons, on season totals. Before that, possessions cannot be counted: ratings and pace are Basketball-Reference&apos;s own estimates (its formula differs from ours, so ratings shift by a few points at 1973-74), and the six factors are unknown. Last ten, streaks, close games, the net-rating trend, schedule strength and home and away splits need games, so they are unknown for every season before 1983-84. From 1983-84 the standings records equal CourtLens&apos;s own game logs for all 1,223 team-seasons.</p>
         <p>Prospective forecasts are issued before tipoff and recorded in append-only storage. Until in-season outcomes are played, prospective accuracy is reported as <strong>not yet observed</strong>.</p>
+      </ArticleSection>
+
+      <ArticleSection id="photo-credits" title="Photo credits">
+        <p>Player photos are NBA.com&apos;s team-season headshots (2015-16 on) and current headshots, and Basketball-Reference&apos;s career headshots. For seasons before 2015-16, freely licensed photos from Wikimedia Commons show players in that season&apos;s uniform. Each was matched to the player&apos;s own headshot by face, then cropped. Players with no headshot from either site get a career photo from Commons, linked to them through Wikidata by their NBA.com or Basketball-Reference ID: a game photo when one matches their face, otherwise their Wikidata image. The authors and licences are below.</p>
+        {credits === null ? <p className="text-muted">Photo credits unavailable. Restore the local API connection to list them.</p>
+          : credits.commons.length === 0 ? <p className="text-muted">No Wikimedia Commons photos are in use yet.</p>
+          : <div className="table-wrapper methodology-credits">
+            <table className="data-table">
+              <thead><tr><th scope="col">Player</th><th scope="col">Season</th><th scope="col">Credit</th></tr></thead>
+              <tbody>
+                {credits.commons.map(row => <tr key={`${row.player_id}-${row.season}-${row.team}`}>
+                  <th scope="row"><Link href={row.season ? `/players/${row.player_id}?season=${row.season}` : `/players/${row.player_id}`}>{row.name}</Link></th>
+                  <td>{row.season ? `${row.season} · ${row.team ?? ""}` : "Career photo"}</td>
+                  <td>{row.source_url ? <a href={row.source_url} target="_blank" rel="noreferrer">{row.credit}</a> : row.credit}</td>
+                </tr>)}
+              </tbody>
+            </table>
+          </div>}
       </ArticleSection>
 
       <ArticleSection id="related" title="Related pages">

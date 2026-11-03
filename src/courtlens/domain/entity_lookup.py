@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 from urllib.parse import quote
 
-LOOKUP_CATALOG_VERSION = "pf04-v1"
+LOOKUP_CATALOG_VERSION = "pf04-v2"
 LOOKUP_NORMALIZATION_VERSION = "v1"
 
 # Suffixes commonly present in player names
@@ -196,9 +196,15 @@ class IndexedEntity:
     conference: str | None = None
     division: str | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
+    # Basketball-Reference nicknames, normalized form to the page's spelling. Only these are
+    # shown as "aka"; generated aliases (accents, tokens, suffixes) match silently.
+    nicknames: dict[str, str] = field(default_factory=dict)
+    # Observed games in the indexed dataset: the tie-break for equally good matches.
+    games: int = 0
 
 
-MatchBasis = Literal["exact", "prefix", "token_prefix", "substring", "typo", "suggestion"]
+# "leader": a season leader suggested before typing (alignment row 3, 64).
+MatchBasis = Literal["exact", "prefix", "token_prefix", "substring", "typo", "suggestion", "leader"]
 
 
 def score_entity_match(
@@ -253,7 +259,7 @@ def score_entity_match(
     for alias in entity.aliases_norm:
         for a_tok in alias.split():
             if a_tok.startswith(norm_query):
-                return ("token_prefix", 0.70, a_tok)
+                return ("token_prefix", 0.70, alias)
 
     # 5. Substring match (only allowed for query length >= 2)
     if q_len >= 2:
@@ -388,20 +394,21 @@ STATIC_NAVIGATION_PAGES: list[dict[str, Any]] = [
     {
         "id": "page_similarity",
         "canonical_id": "similar-players",
-        "display_name": "Similar Players",
-        "subtitle": "Navigation · Statistical similarity and player twins",
+        "display_name": "Player Twins",
+        "subtitle": "Navigation · Closest player-seasons by shot or box-score profile",
         "base_destination": "/similar-players",
         "portrait_fallback": "SIM",
-        "aliases": ["similarity", "peers", "statistical peers", "similar players", "twins"],
-    },
-    {
-        "id": "page_shot_twins",
-        "canonical_id": "similar-players/shot-profile",
-        "display_name": "Shot Profile Twins",
-        "subtitle": "Navigation · Similar Players · Shot location similarity",
-        "base_destination": "/similar-players/shot-profile",
-        "portrait_fallback": "SHT",
-        "aliases": ["shot twins", "shot profile twin", "shooting peers", "shot similarity"],
+        "aliases": [
+            "similarity",
+            "peers",
+            "statistical peers",
+            "similar players",
+            "twins",
+            "shot twins",
+            "shot profile twin",
+            "shooting peers",
+            "shot similarity",
+        ],
     },
     {
         "id": "page_rapm",

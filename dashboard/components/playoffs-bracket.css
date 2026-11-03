@@ -1,0 +1,156 @@
+@layer pages {
+  /* Mirrored playoff bracket (alignment row 8): West rounds left, East mirrored right, Finals in
+     the centre. Each column has twice the slots of the next; connectors join each pair of series
+     to the series their winners played. The East side runs right to left via `direction`, so one
+     set of logical rules draws both sides. */
+  .pb-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-weight: 750; }
+  .pb-title > span { color: var(--color-accent); }
+
+  .pb-bracket { --pb-gap: var(--space-5); --pb-slot: 132px; display: flex; flex-direction: column; gap: var(--space-4); }
+  .pb-switch { display: none; justify-content: center; }
+  .pb-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, min(400px, 19vw)) minmax(0, 1fr); column-gap: var(--pb-gap); align-items: stretch; }
+
+  .pb-side {
+    display: grid; grid-template-columns: repeat(var(--pb-columns), minmax(0, 1fr)); grid-template-rows: auto auto minmax(max(calc(var(--pb-rows) * var(--pb-slot) * 1.1), calc(100dvh - 392px)), 1fr);
+    column-gap: var(--pb-gap); row-gap: var(--space-2);
+  }
+  .pb-side[data-side="Eastern"] { direction: rtl; }
+  .pb-side > * { direction: ltr; }
+  .pb-side-title { grid-column: 1 / -1; margin: 0; color: var(--color-accent); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.12em; text-align: center; text-transform: uppercase; }
+  .pb-side[data-side="Eastern"] .pb-side-title { color: var(--color-info); }
+  .pb-round-name { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.08em; text-align: center; text-transform: uppercase; }
+
+  .pb-col { display: flex; flex-direction: column; min-width: 0; }
+  .pb-side[data-side="Eastern"] .pb-col { direction: rtl; }
+  .pb-pair { position: relative; display: flex; flex: 1; flex-direction: column; }
+  .pb-cell { position: relative; display: flex; flex: 1; align-items: center; }
+
+  /* Connectors: a stub out of every slot, a vertical joining each pair, a stub into the next. */
+  .pb-cell::after, .pb-cell::before, .pb-pair::before { content: ""; position: absolute; border-color: var(--color-hairline-strong); border-style: solid; border-width: 0; pointer-events: none; }
+  .pb-cell::after { inset-inline-end: calc(var(--pb-gap) / -2); top: 50%; width: calc(var(--pb-gap) / 2); border-top-width: 1px; }
+  .pb-pair:not([data-single])::before { inset-inline-end: calc(var(--pb-gap) / -2); top: 25%; bottom: 25%; border-inline-end-width: 1px; }
+  .pb-pair[data-bye="top"]::before { top: 50%; }
+  .pb-pair[data-bye="bottom"]::before { bottom: 50%; }
+  .pb-pair[data-bye="both"]::before, .pb-cell.is-bye::after, .pb-cell[data-unfed]::before { display: none; }
+  .pb-col + .pb-col .pb-cell::before { inset-inline-start: calc(var(--pb-gap) / -2); top: 50%; width: calc(var(--pb-gap) / 2); border-top-width: 1px; }
+  /* The conference final runs straight into the Finals card. */
+  .pb-col[data-inner] .pb-cell::after { inset-inline-end: calc(var(--pb-gap) * -1); width: var(--pb-gap); }
+
+  .pb-slot {
+    position: relative; display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); width: 100%; min-height: var(--pb-slot);
+    padding: var(--space-3); border: 1px solid var(--color-hairline); border-radius: var(--radius-md);
+    background: var(--color-surface-1); color: var(--color-text); text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  a.pb-slot:hover, a.pb-slot:focus-visible { border-color: var(--color-hairline-strong); background: var(--color-surface-2); }
+  a.pb-slot:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  .pb-slot { direction: ltr; }
+  .pb-slot.is-tbd { align-items: center; border-style: dashed; background: transparent; color: var(--color-on-bg-tertiary); font-size: var(--text-sm); letter-spacing: 0.08em; }
+  .pb-slot.is-bye { visibility: hidden; }
+  /* Wide screens: a 44px logo with its seed as a badge, the city over a large nickname, big wins. */
+  .pb-team { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: var(--space-2) var(--space-3); min-width: 0; font-variant-numeric: tabular-nums; }
+  .pb-logo { position: relative; display: grid; place-items: center; }
+  .pb-seed { position: absolute; inset-inline-start: calc(var(--space-1) * -1); bottom: calc(var(--space-1) * -1); min-width: var(--space-4); padding: 0 var(--space-1); border-radius: var(--radius-pill);
+    background: var(--color-surface-3); color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); font-weight: 800; text-align: center; }
+  .pb-name { display: flex; flex-direction: column; min-width: 0; }
+  .pb-name small { overflow: hidden; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.08em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+  .pb-name strong { overflow: hidden; color: var(--color-text); font-size: clamp(var(--text-lg), 0.9vw, var(--text-xl)); line-height: var(--text-xl-lh); font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
+  .pb-team.is-winner .pb-name strong { color: var(--team-color, var(--color-text)); }
+  .pb-code { display: none; overflow: hidden; font-weight: 800; letter-spacing: 0.04em; text-overflow: ellipsis; white-space: nowrap; }
+  .pb-team.is-winner .pb-code { color: var(--team-color, var(--color-text)); }
+  .pb-wins { min-width: var(--space-5); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); font-weight: 800; text-align: end; }
+  .pb-team.is-out { opacity: 0.42; }
+
+  /* Season series on hover or focus, above the slot. */
+  .pb-pop {
+    position: absolute; inset-inline-start: 50%; bottom: calc(100% + var(--space-2)); z-index: var(--z-tooltip); display: none; flex-direction: column; gap: var(--space-0-5);
+    width: max-content; max-width: 240px; padding: var(--space-2) var(--space-3); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-sm);
+    background: var(--color-surface-3); box-shadow: var(--shadow-3); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); transform: translateX(-50%);
+  }
+  .pb-pop strong { color: var(--color-text); }
+  a.pb-slot:is(:hover, :focus-visible) .pb-pop { display: flex; }
+
+  /* Finals: Databallr's centre card with both teams, the series score and best-of pips. */
+  .pb-finals { display: flex; flex-direction: column; justify-content: center; align-items: stretch; gap: var(--space-2); min-width: 0; text-align: center; }
+  .pb-finals-kicker { color: var(--color-accent); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .pb-finals-title { display: flex; justify-content: center; align-items: baseline; gap: var(--space-2); margin: 0; font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-weight: 800; text-transform: uppercase; }
+  .pb-finals-title span { color: var(--team-color, var(--color-text)); }
+  .pb-finals-title small { color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .pb-finals-card {
+    display: flex; flex-direction: column; overflow: hidden; border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent); border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, var(--color-surface-2), var(--color-surface-1)); box-shadow: 0 12px 48px color-mix(in srgb, var(--color-accent) 16%, transparent), var(--shadow-2);
+    color: var(--color-text); text-decoration: none; transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .pb-finals-card:hover { border-color: var(--color-accent); }
+  .pb-finals-card:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+  .pb-finals-card.is-tbd { min-height: 200px; align-items: center; justify-content: center; border-style: dashed; border-color: var(--color-hairline-strong); background: transparent; box-shadow: none; color: var(--color-on-bg-tertiary); font-size: var(--text-sm); }
+  .pb-finals-teams { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; padding: var(--space-5) var(--space-3) var(--space-4); }
+  .pb-finals-vs { display: grid; place-items: center; width: var(--space-8); height: var(--space-8); border-radius: var(--radius-pill); background: var(--color-surface-3); color: var(--color-text-secondary); font-size: var(--text-2xs); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+  .pb-finals-team { display: flex; flex-direction: column; align-items: center; gap: var(--space-0-5); min-width: 0; }
+  .pb-finals-team.is-out { opacity: 0.55; }
+  .pb-finals-logo { display: grid; place-items: center; width: 136px; height: 136px; margin-bottom: var(--space-2); border: 1px solid var(--color-hairline); border-radius: var(--radius-pill);
+    background: radial-gradient(circle, color-mix(in srgb, var(--team-color, var(--color-white)) 22%, transparent), var(--color-surface-1) 70%); }
+  .pb-finals-city { color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .pb-finals-name { max-width: 100%; overflow: hidden; color: var(--team-color, var(--color-text)); font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-weight: 800; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+  .pb-finals-meta { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700; letter-spacing: 0.06em; }
+  .pb-finals-seed { padding: 0 var(--space-1); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--team-color, var(--color-white)) 20%, var(--color-surface-3)); color: var(--color-text); }
+  .pb-finals-record { color: var(--color-on-bg-tertiary); font-weight: 600; }
+  .pb-finals-wins { margin-top: var(--space-2); color: var(--team-color, var(--color-text)); font-size: calc(var(--text-3xl) * 1.5); line-height: 1; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .pb-finals-team.is-out .pb-finals-wins { color: var(--color-text-secondary); }
+  .pb-finals-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); padding: var(--space-3) var(--space-4); background: color-mix(in srgb, var(--color-bg) 45%, transparent); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .pb-finals-status { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-accent); font-weight: 700; }
+  .pb-finals-meetings { color: var(--color-text-secondary); }
+  .pb-finals-pips { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .pb-finals-pips i { width: var(--space-4); height: var(--space-1); border-radius: var(--radius-pill); background: var(--color-surface-3); }
+  .pb-finals-pips i.is-played { background: var(--color-accent); }
+  .pb-finals-hint { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* Below 1960px the full names no longer fit: large codes instead, the same logo badge. */
+  @media (width < 1960px) {
+    .pb-bracket { --pb-slot: 108px; }
+    .pb-grid { grid-template-columns: minmax(0, 1fr) minmax(300px, 24vw) minmax(0, 1fr); }
+    .pb-slot { gap: var(--space-2); padding: var(--space-2); }
+    .pb-team { grid-template-columns: 36px minmax(0, 1fr) auto; }
+    .pb-team :is(.team-logo, img) { width: 36px; height: 36px; min-width: 36px; }
+    .pb-name { display: none; }
+    .pb-code { display: block; font-size: var(--text-xl); line-height: var(--text-xl-lh); }
+    .pb-wins { font-size: var(--text-xl); line-height: var(--text-xl-lh); }
+    .pb-finals-logo { width: 112px; height: 112px; }
+    .pb-finals-logo :is(.team-logo, img) { width: 84px; height: 84px; min-width: 84px; }
+  }
+
+  @media (width < 1400px) {
+    .pb-bracket { --pb-gap: var(--space-4); --pb-slot: 96px; }
+    .pb-team { grid-template-columns: 28px minmax(0, 1fr) auto; gap: var(--space-2); }
+    .pb-team :is(.team-logo, img) { width: 28px; height: 28px; min-width: 28px; }
+    .pb-code, .pb-wins { font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+  }
+
+  /* Below 1180px one part at a time: a side's rounds left to right, or the Finals card. */
+  @media (width < 1180px) {
+    .pb-switch { display: flex; }
+    .pb-grid { grid-template-columns: minmax(0, 1fr); }
+    .pb-bracket[data-focus="finals"] .pb-side, .pb-bracket[data-focus="Western"] :is(.pb-finals, .pb-side[data-side="Eastern"]), .pb-bracket[data-focus="Eastern"] :is(.pb-finals, .pb-side[data-side="Western"]) { display: none; }
+    .pb-side[data-side="Eastern"] { direction: ltr; }
+    .pb-side[data-side="Eastern"] .pb-col { direction: ltr; }
+    .pb-col[data-inner] .pb-cell::after { display: none; }
+    /* One side at a time needs no screen-height stretch. */
+    .pb-side { grid-template-rows: auto auto minmax(calc(var(--pb-rows) * var(--pb-slot) * 1.1), 1fr); }
+    .pb-bracket[data-focus="finals"] .pb-finals { justify-self: center; width: min(100%, 420px); }
+  }
+  @media (width < 560px) {
+    .pb-bracket { --pb-gap: var(--space-3); --pb-slot: 84px; }
+    .pb-title { font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
+
+    .pb-slot { padding-inline: var(--space-1); }
+    .pb-team { grid-template-columns: 26px minmax(0, 1fr) auto; gap: var(--space-1); }
+    .pb-team :is(.team-logo, img) { width: 26px; height: 26px; min-width: 26px; }
+    .pb-code { font-size: var(--text-md); line-height: var(--text-md-lh); }
+    .pb-seed { display: none; }
+    .pb-wins { font-size: var(--text-md); line-height: var(--text-md-lh); }
+    .pb-finals-logo { width: 96px; height: 96px; }
+    .pb-finals-logo :is(.team-logo, img) { width: 72px; height: 72px; min-width: 72px; }
+    .pb-finals-name { font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
+    .pb-pop { display: none; }
+  }
+}

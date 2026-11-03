@@ -1,9 +1,13 @@
 import { assertCurrentEnvironment } from "./server-env";
+import type { SixFactorsResponse } from "./team-six-factors";
 import type { SavedDetail } from "./saved-operations";
 
 assertCurrentEnvironment();
 
 import type {
+  ComparisonCareerResponse,
+  ComparisonGroupResponse,
+  PlayerDashboardFeeds,
   AssistantAnswer,
   PlayerBio,
   AssistantQueryRequest,
@@ -26,6 +30,7 @@ import type {
   MetricCatalog,
   OpponentContextRequest,
   OpponentContextResponse,
+  PlayerCareerResponse,
   PlayerComparisonResponse,
   PlayerGameLogResponse,
   PlayerMeasurementsDetailResponse,
@@ -117,6 +122,16 @@ export async function getMetricCatalog(): Promise<MetricCatalog> {
   return wbFetch<MetricCatalog>("/api/workbench/metrics?version=courtlens-stats-v4");
 }
 
+/** Wikimedia Commons photos in use, with the credit their licences require. */
+export interface PortraitCredits {
+  /** Team-season photos, then career photos (season and team null). */
+  commons: { player_id: string; name: string; season: string | null; team: string | null; credit: string; source_url: string | null }[];
+}
+
+export async function getPortraitCredits(): Promise<PortraitCredits> {
+  return wbFetch<PortraitCredits>("/api/workbench/portrait-credits");
+}
+
 export async function getDraftClasses(): Promise<DraftClassesResponse> {
   return wbFetch<DraftClassesResponse>("/api/workbench/draft-classes");
 }
@@ -175,12 +190,49 @@ export async function executeWorkbenchQuery(
   });
 }
 
+/**
+ * Every season row of a player's career table with its league ranks, plus the Career row, in one
+ * read from stored season cohorts. A season not stored yet is computed once, so allow longer.
+ */
+export async function getPlayerCareer(
+  id: string,
+  params: { phase: string; releaseId?: string }
+): Promise<PlayerCareerResponse> {
+  const sp = new URLSearchParams({ phase: params.phase });
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  return wbFetch(`/api/workbench/players/${encodeURIComponent(id)}/career?${sp}`, {
+    signal: AbortSignal.timeout(30000)
+  });
+}
+
+/** Up to five players under one scope for Compare's grid: season rows or careers (row 3, 64). */
+export async function getComparisonGroup(playerIds: string[], params: { season: string; beforeDate?: string; phase: string; window?: string; span: "season" | "career"; releaseId?: string }): Promise<ComparisonGroupResponse> {
+  const sp = new URLSearchParams({ season: params.season, phase: params.phase, span: params.span, window: params.window ?? "season" });
+  playerIds.forEach(id => sp.append("playerId", id));
+  if (params.beforeDate) sp.set("beforeDate", params.beforeDate);
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  return wbFetch(`/api/workbench/compare/group?${sp}`, { signal: AbortSignal.timeout(30000) });
+}
+
+/** Both players' careers through a comparison's cutoff; later games never count. */
+export async function getComparisonCareer(playerA: string, playerB: string, params: { season: string; beforeDate: string; phase: string; releaseId?: string }): Promise<ComparisonCareerResponse> {
+  const sp = new URLSearchParams({ playerA, playerB, season: params.season, beforeDate: params.beforeDate, phase: params.phase });
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  return wbFetch(`/api/workbench/compare/career?${sp}`, { signal: AbortSignal.timeout(30000) });
+}
+
+/** Player Dashboard tracking cells for one player-season (row 22). */
+export async function getPlayerDashboardFeeds(playerId: string, season: string, phase: string): Promise<PlayerDashboardFeeds> {
+  const sp = new URLSearchParams({ playerId, season, phase });
+  return wbFetch(`/api/workbench/player-dashboard/feeds?${sp}`);
+}
+
 /** Seasons each player has game rows in for one phase; a stat trend plots only these. */
 export async function getPlayerSeasons(
   playerIds: string[],
   phase: string,
   releaseId?: string
-): Promise<{ phase: string; seasons: Record<string, string[]> }> {
+): Promise<{ phase: string; seasons: Record<string, string[]>; peak?: Record<string, string | null>; peak_basis?: Record<string, string | null>; active?: Record<string, boolean | null> }> {
   const sp = new URLSearchParams({ phase });
   playerIds.forEach(id => sp.append("playerId", id));
   if (releaseId) sp.set("releaseId", releaseId);
@@ -253,6 +305,17 @@ export async function getTeamsResearch(params?: {
   return wbFetch<TeamResearchResponse>(`/api/workbench/teams?${sp}`);
 }
 
+/** Every team's six factors (alignment row 4), for server-rendered pages. */
+export async function getTeamsSixFactors(params: { season?: string; phase?: string; beforeDate?: string; releaseId?: string; venue?: "home" | "away" }): Promise<SixFactorsResponse> {
+  const sp = new URLSearchParams();
+  if (params.venue) sp.set("venue", params.venue);
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  if (params.season) sp.set("season", params.season);
+  if (params.phase) sp.set("phase", params.phase);
+  if (params.beforeDate) sp.set("beforeDate", params.beforeDate);
+  return wbFetch<SixFactorsResponse>(`/api/workbench/teams/six-factors?${sp}`);
+}
+
 export async function getTeamDetail(
   id: string,
   params?: {
@@ -311,6 +374,23 @@ export async function getTeamFourFactors(
   return wbFetch<TeamFourFactorsResponse>(
     `/api/workbench/teams/${encodeURIComponent(id)}/four-factors?${sp}`
   );
+}
+
+/** Team Comparison's By Position: the most-used observed starting five (box-score positions). */
+export interface TeamStarterEvidence {
+  method: string; release_id: string; dataset_id: string; season: string; phase: string; before_date: string;
+  team_games: number; verified_games: number; unknown_games: number; unit_games: number; unit_ties: number;
+  unit_players: { player_id: string; position: string }[];
+  players: { player_id: string; starts: number | null; bench_appearances: number | null; unknown_appearances: number }[];
+}
+
+export async function getTeamStarters(
+  id: string,
+  params: { season: string; phase: string; beforeDate: string; releaseId?: string | null }
+): Promise<TeamStarterEvidence> {
+  const sp = new URLSearchParams({ season: params.season, phase: params.phase, beforeDate: params.beforeDate });
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  return wbFetch<TeamStarterEvidence>(`/api/workbench/teams/${encodeURIComponent(id)}/starters?${sp}`);
 }
 
 export async function getTeamPeers(
@@ -843,6 +923,25 @@ export async function runSharedFloor(
   return response.json();
 }
 
+export async function runStatShiftRoster(
+  request: import("./shared-floor").StatShiftRosterRequest,
+  signal?: AbortSignal
+): Promise<import("./shared-floor").StatShiftRosterResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/stat-shift-roster`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request), cache: "no-store",
+    signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(30000)]) : AbortSignal.timeout(30000)
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    const detail = body?.detail;
+    throw new WorkbenchApiError(response.status,
+      typeof detail === "string" ? detail : JSON.stringify(detail ?? body ?? "Stat Line Shift request failed"));
+  }
+  return response.json();
+}
+
 export async function runShooting(
   operation: import("./shooting-types").ShootingOperation,
   request: import("./shooting-types").ShootingInput,
@@ -875,4 +974,19 @@ export async function getScheduleDates(params: {
   if (params.beforeDate) sp.set("beforeDate", params.beforeDate);
   if (params.focus) sp.set("focus", params.focus);
   return wbFetch<ScheduleDatesResponse>(`/api/workbench/schedule/dates?${sp}`);
+}
+
+/**
+ * The ESPN game id of one of our games, read from that date's Live slate: the game ESPN's
+ * identity mapping ties to our id, else the one game with both our teams (by id or tricode,
+ * as the slate carries either). Null when ESPN has none.
+ */
+export async function findLiveGameId(p: { date: string; gameId: string; teams: string[][] }): Promise<string | null> {
+  const read = await wbFetch<{ data: { games: { source_id: string; canonical_id: string | null; teams: { canonical_id: string | null; tricode?: string | null }[] }[] } | null }>(`/api/live?slate_date=${p.date}`);
+  const games = read.data?.games ?? [];
+  const mapped = games.find(game => game.canonical_id === p.gameId);
+  if (mapped) return mapped.source_id;
+  const plays = (game: (typeof games)[number], keys: string[]) => game.teams.some(team => keys.some(key => key === team.canonical_id || key === team.tricode));
+  const both = p.teams.length === 2 ? games.filter(game => p.teams.every(keys => plays(game, keys))) : [];
+  return both.length === 1 ? both[0].source_id : null;
 }

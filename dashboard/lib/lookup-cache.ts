@@ -71,7 +71,7 @@ export function buildLookupCacheKey(options: {
   kinds?: Array<"player" | "team" | "page">;
   limit?: number;
 }): string {
-  return JSON.stringify(["pf04-v1", (options.query || "").trim().toLowerCase(), options.releaseId || "", options.season || "", options.phase || "", options.beforeDate || "", options.kinds ? [...options.kinds].sort() : "all", options.limit ?? 10]);
+  return JSON.stringify(["pf04-v2", (options.query || "").trim().toLowerCase(), options.releaseId || "", options.season || "", options.phase || "", options.beforeDate || "", options.kinds ? [...options.kinds].sort() : "all", options.limit ?? 10]);
 }
 
 export const defaultLookupCache = new LookupCache(64);

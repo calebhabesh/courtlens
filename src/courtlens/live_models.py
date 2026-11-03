@@ -1,36 +1,31 @@
-"""Independent provisional Live cache; never part of a research release."""
+"""Live ESPN cache and retained final evidence; never part of a research release."""
 
 from datetime import datetime
 from typing import Any
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Integer, LargeBinary, String
+from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, LargeBinary, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from courtlens.database import Base
 from courtlens.models import new_uuid, utc_now
 
 
-class LiveFeed(Base):
-    __tablename__ = "live_feeds"
-    namespace: Mapped[str] = mapped_column(String(30), primary_key=True)
-    next_poll_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    last_poll_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    last_success_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    status: Mapped[str] = mapped_column(String(40), default="awaiting_first_observation")
+class LiveCurrent(Base):
+    """Latest read of one ESPN resource. Mutable cache, not evidence: final reads are also
+    appended to `live_contents` / `live_observations`."""
+
+    __tablename__ = "live_current"
+    resource: Mapped[str] = mapped_column(String(80), primary_key=True)
+    normalized_json: Mapped[dict[str, Any] | None] = mapped_column(JSON)
+    final: Mapped[bool] = mapped_column(Boolean, default=False)
+    acquired_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    source_time: Mapped[str | None] = mapped_column(String(80))
+    http_date: Mapped[str | None] = mapped_column(String(80))
+    observation_id: Mapped[str | None] = mapped_column(String(36))
+    content_sha256: Mapped[str | None] = mapped_column(String(64))
+    attempted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     failures: Mapped[int] = mapped_column(Integer, default=0)
-    requests: Mapped[int] = mapped_column(Integer, default=0)
-    bytes_received: Mapped[int] = mapped_column(Integer, default=0)
-    cycles: Mapped[int] = mapped_column(Integer, default=0)
     error: Mapped[str | None] = mapped_column(String(100))
-
-
-class LiveLease(Base):
-    __tablename__ = "live_leases"
-    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
-    slate_date: Mapped[str] = mapped_column(String(10), index=True)
-    game_id: Mapped[str | None] = mapped_column(String(30))
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
-    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
 
 
 class LiveContent(Base):

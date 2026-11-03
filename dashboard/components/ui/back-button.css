@@ -1,0 +1,6 @@
+@layer components {
+  /* Back navigation (app shell row 0, 24): one left-aligned row above a drill-in page's header.
+     The row keeps the button's height while the trail resolves after hydration, so nothing shifts. */
+  .back-button-row { display: flex; align-items: center; justify-content: flex-start; min-height: var(--control-sm); }
+  .back-button-kbd { padding: 0 var(--space-1); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--color-surface-0) 18%, transparent); font-size: var(--text-2xs); }
+}

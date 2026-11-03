@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { seasonEra } from "@/lib/portrait-source";
 import { TeamLogoStack } from "./team-logo";
 import { Icon } from "./ui/icon";
 import { Button, ButtonLink } from "./ui/kit";
@@ -97,6 +98,7 @@ export function StatsDetailDrawer({
               name={player.player_name}
               portraitUrl={player.portrait_url}
               size="lg"
+              era={seasonEra(context.season, player.teams)}
             />
             <div className="stats-drawer-title-group">
               <h2 id="player-drawer-title" className="stats-drawer-name">

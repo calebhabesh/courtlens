@@ -1,4 +1,4 @@
-"""Real PostgreSQL migration, feed ownership, demand concurrency and sealed evidence."""
+"""Real PostgreSQL migrations, shared on-demand fetches and sealed final evidence."""
 
 import importlib.util
 import os
@@ -11,16 +11,22 @@ from uuid import uuid4
 import pytest
 from alembic.migration import MigrationContext
 from alembic.operations import Operations
-from fastapi import HTTPException
-from live_fakes import NOW, SLATE, FakeProvider
+from live_fakes import NOW, SLATE, FakeProvider, event
 from sqlalchemy import create_engine, func, select, text
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 
 from courtlens.database import Base
-from courtlens.domain.live import LiveSubscription
-from courtlens.live_models import LiveFeed, LiveLease, LiveObservation
-from courtlens.services.live import poll_once, subscribe
+from courtlens.live_models import LiveCurrent, LiveObservation
+from courtlens.services.live import read
+
+
+def migration(name):
+    spec = importlib.util.spec_from_file_location(name, Path(f"migrations/versions/{name}.py"))
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 @pytest.fixture
@@ -29,33 +35,26 @@ def live_engine():
     if not url:
         pytest.skip("disposable PostgreSQL URL required")
     root = create_engine(url)
-    schema = "b31_" + uuid4().hex
+    schema = "live_" + uuid4().hex
     with root.begin() as conn:
         conn.execute(text(f"CREATE SCHEMA {schema}"))
     engine = create_engine(
         url, connect_args={"options": f"-csearch_path={schema}"}, isolation_level="REPEATABLE READ"
     )
     Base.metadata.create_all(engine)
-    spec = importlib.util.spec_from_file_location(
-        "b31", Path("migrations/versions/31b810a4f002_shared_live.py")
+    shared, on_demand = (
+        migration("31b810a4f002_shared_live"),
+        migration("19b810a4f017_live_on_demand"),
     )
-    assert spec and spec.loader
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    # Exercise actual migration up/down/up over disposable relational dependencies.
+    # Exercise both migrations up/down/up over disposable relational dependencies.
     with engine.begin() as conn:
-        for table in (
-            "live_reconciliations",
-            "live_observations",
-            "live_contents",
-            "live_leases",
-            "live_feeds",
-        ):
+        for table in ("live_reconciliations", "live_observations", "live_contents", "live_current"):
             conn.execute(text(f"DROP TABLE {table}"))
         with Operations.context(MigrationContext.configure(conn)):
-            module.upgrade()
-            module.downgrade()
-            module.upgrade()
+            shared.upgrade()
+            on_demand.upgrade()
+            on_demand.downgrade()
+            on_demand.upgrade()
     try:
         yield engine
     finally:
@@ -65,9 +64,8 @@ def live_engine():
         root.dispose()
 
 
-def test_shared_feed_lock_survives_competing_worker(live_engine):
-    entered = Event()
-    finish = Event()
+def test_concurrent_readers_share_one_fetch(live_engine):
+    entered, finish = Event(), Event()
 
     class Blocking(FakeProvider):
         def fetch(self, *args):
@@ -75,34 +73,23 @@ def test_shared_feed_lock_survives_competing_worker(live_engine):
             assert finish.wait(5)
             return super().fetch(*args)
 
-    with Session(live_engine) as session:
-        subscribe(session, LiveSubscription(slate_date=SLATE), now=NOW)
-    provider = Blocking()
+    provider = Blocking([event("1", "in")])
+
+    def reader():
+        with Session(live_engine) as session:
+            return read(session, provider, SLATE, now=NOW)
+
     with ThreadPoolExecutor(max_workers=2) as pool:
-        first = pool.submit(poll_once, live_engine, provider, now=NOW)
+        first = pool.submit(reader)
         assert entered.wait(5)
-        assert poll_once(live_engine, FakeProvider(), now=NOW) == 0
+        # The lock is taken: the second reader serves the (empty) cache instead of fetching.
+        assert reader()["status"] == "unavailable"
         finish.set()
-        assert first.result(timeout=5) == 1
-    assert poll_once(live_engine, FakeProvider(), now=NOW + timedelta(seconds=59)) == 0
-    assert poll_once(live_engine, FakeProvider(), now=NOW + timedelta(seconds=60)) == 1
-
-
-def test_many_concurrent_leases_remain_bounded(live_engine):
-    def add(_):
-        try:
-            with Session(live_engine) as session:
-                subscribe(session, LiveSubscription(slate_date=SLATE), now=NOW)
-            return True
-        except HTTPException as e:
-            assert e.status_code == 429
-            return False
-
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        results = list(pool.map(add, range(80)))
-    assert sum(results) == 64
+        assert first.result(timeout=5)["status"] == "observed"
+    assert len(provider.calls) == 1
     with Session(live_engine) as session:
-        assert session.scalar(select(func.count()).select_from(LiveLease)) == 64
+        assert read(session, provider, SLATE, now=NOW)["data"]["games"][0]["source_id"] == "1"
+        assert session.scalar(select(func.count()).select_from(LiveCurrent)) == 1
 
 
 @pytest.mark.parametrize(
@@ -114,29 +101,23 @@ def test_many_concurrent_leases_remain_bounded(live_engine):
         "UPDATE live_reconciliations SET result_json='{}'",
     ],
 )
-def test_source_evidence_is_database_sealed(live_engine, statement):
+def test_final_evidence_is_database_sealed(live_engine, statement):
     with Session(live_engine) as session:
-        subscribe(session, LiveSubscription(slate_date=SLATE), now=NOW)
-    assert poll_once(live_engine, FakeProvider(), now=NOW) == 1
+        read(
+            session, FakeProvider([event("1", "post", completed=True, score="100")]), SLATE, now=NOW
+        )
+        assert session.scalar(select(func.count()).select_from(LiveObservation)) == 1
     with live_engine.connect() as conn, pytest.raises(DBAPIError, match="append-only"):
         conn.execute(text(statement))
 
 
-def test_crashed_cycle_reservation_prevents_restart_burst(live_engine):
+def test_current_cache_is_mutable(live_engine):
+    provider = FakeProvider([event("1", "in")])
     with Session(live_engine) as session:
-        subscribe(session, LiveSubscription(slate_date=SLATE), now=NOW)
-
-    class Crashed(FakeProvider):
-        def fetch(self, *args):
-            raise RuntimeError("worker process interruption")
-
-    with pytest.raises(RuntimeError, match="interruption"):
-        poll_once(live_engine, Crashed(), now=NOW)
-    assert poll_once(live_engine, FakeProvider(), now=NOW + timedelta(seconds=60)) == 0
-    assert poll_once(live_engine, FakeProvider(), now=NOW + timedelta(seconds=100)) == 1
-    with Session(live_engine) as session:
-        assert session.get(LiveFeed, "espn").requests == 2
-        assert session.scalar(select(func.count()).select_from(LiveObservation)) == 1
+        read(session, provider, SLATE, now=NOW)
+        read(session, provider, SLATE, now=NOW.replace(minute=5))
+        assert len(provider.calls) == 2
+        assert session.scalar(select(func.count()).select_from(LiveObservation)) == 0
 
 
 def test_foreign_key_rejects_orphan_observation(live_engine):
@@ -298,9 +279,9 @@ def test_final_reconciles_to_independently_admitted_facts(
                 )
             )
         session.commit()
-        subscribe(session, LiveSubscription(slate_date=SLATE, game_id="1"), now=NOW)
     provider = FakeProvider([event("1", "post", completed=True, score="100")])
-    assert poll_once(live_engine, provider, now=NOW) == 2
+    with Session(live_engine) as session:
+        assert read(session, provider, SLATE, "1", now=NOW)["final"] is True
     with Session(live_engine) as session:
         observation = session.scalar(
             select(LiveObservation).where(LiveObservation.resource == "game:1")
@@ -313,51 +294,3 @@ def test_final_reconciles_to_independently_admitted_facts(
             session.scalar(select(WorkbenchTeamGame.points).where(WorkbenchTeamGame.side == "home"))
             == points
         )
-
-
-def test_blocking_pipeline_cannot_stop_live_observations(live_engine, monkeypatch):
-    import courtlens.services.live as service
-    import courtlens.services.live_provider as provider_module
-    import courtlens.worker as worker_module
-    from courtlens.worker import CourtLensWorker
-
-    job_started = Event()
-    release_job = Event()
-    source_completed = Event()
-
-    class IndependentProvider(FakeProvider):
-        def fetch(self, *args):
-            assert job_started.wait(5)
-            result = super().fetch(*args)
-            source_completed.set()
-            return result
-
-    with Session(live_engine) as session:
-        subscribe(session, LiveSubscription(slate_date=SLATE), now=NOW)
-    monkeypatch.setattr(worker_module, "engine", live_engine)
-    monkeypatch.setattr(provider_module, "ESPNLiveProvider", IndependentProvider)
-    real_poll = service.poll_once
-    monkeypatch.setattr(service, "poll_once", lambda e, p: real_poll(e, p, now=NOW))
-    monkeypatch.setattr(worker_module.signal, "signal", lambda *a: None)
-    worker = CourtLensWorker("b31-blocking-pipeline")
-    worker.settings = worker.settings.model_copy(update={"live_enabled": True})
-    monkeypatch.setattr(worker, "startup", lambda: None)
-    monkeypatch.setattr(worker, "_is_refresh_due", lambda: False)
-
-    def blocking_job():
-        job_started.set()
-        assert release_job.wait(5)
-        worker.should_stop = True
-        return True
-
-    monkeypatch.setattr(worker, "run_next_job", blocking_job)
-    with ThreadPoolExecutor(max_workers=1) as pool:
-        running = pool.submit(worker.run_loop)
-        try:
-            assert source_completed.wait(5)
-            assert not running.done()
-        finally:
-            release_job.set()
-        running.result(timeout=5)
-    with Session(live_engine) as session:
-        assert session.scalar(select(func.count()).select_from(LiveObservation)) == 1

@@ -11,7 +11,7 @@ from sqlalchemy import func, select
 from courtlens.api.app import create_app
 from courtlens.database import get_db
 from courtlens.domain.live_history import HistoricalSlate
-from courtlens.live_models import LiveLease, LiveObservation
+from courtlens.live_models import LiveCurrent, LiveObservation
 from courtlens.services.live_history import historical_slate
 from courtlens.services.workbench_analytics import ResolvedContext
 from courtlens.workbench_models import WorkbenchDataset, WorkbenchPlayerGame, WorkbenchTeamGame
@@ -137,7 +137,7 @@ def test_final_history_context_missingness_and_no_mutations(session):
     assert output.players[0].reported_nonappearance is None
     assert output.players[1].reported_nonappearance is True
     assert all(value is None for value in output.players[1].statistics.values())
-    assert session.scalar(select(func.count()).select_from(LiveLease)) == 0
+    assert session.scalar(select(func.count()).select_from(LiveCurrent)) == 0
     assert session.scalar(select(func.count()).select_from(LiveObservation)) == 0
     assert len(historical_slate(session, context, DAY)["games"]) == 1
     assert historical_slate(session, replace(context, before_date=DAY), DAY)["games"] == []

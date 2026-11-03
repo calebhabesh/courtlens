@@ -1,0 +1,12 @@
+
+Running 8 tests using 2 workers
+
+[1/8] e2e/visual-baselines.spec.ts:115:9 › FO06 baselines phone › player profile
+[2/8] e2e/visual-baselines.spec.ts:115:9 › FO06 baselines desktop › player profile
+[3/8] e2e/visual-baselines.spec.ts:180:7 › FO14 baselines desktop › stats
+[4/8] e2e/visual-baselines.spec.ts:180:7 › FO14 baselines phone › stats
+[5/8] e2e/visual-baselines.spec.ts:197:7 › FO11 baselines desktop › player comparison
+[6/8] e2e/visual-baselines.spec.ts:197:7 › FO11 baselines phone › player comparison
+[7/8] e2e/visual-baselines.spec.ts:239:306 › PC04 parameter-free baselines desktop › compare
+[8/8] e2e/visual-baselines.spec.ts:239:306 › PC04 parameter-free baselines phone › compare
+  8 passed (4.9s)

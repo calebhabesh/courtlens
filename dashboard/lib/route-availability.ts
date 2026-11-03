@@ -10,11 +10,16 @@ const requirements: Record<string, string> = {
   "/research/distributions": "core_stats", "/similar-players": "core_stats",
   "/roster-shapes": "core_stats", "/playoffs": "core_stats",
   "/wowy": "wowy", "/stat-line-shift": "on_off",
-  "/similar-players/shot-profile": "shots", "/research/shooting/aftermath": "shots", "/matchups": "matchups",
+  "/research/shooting/aftermath": "shots", "/matchups": "matchups",
   "/research/shooting/adjusted": "play_types", "/stats/tracking": "tracking",
   "/research/defensive-matchups": "defensive_tracking",
 };
-export function routeAvailability(href: string, catalog: WorkbenchCatalog | null, season?: string, phase?: string) {
+/**
+ * Whether a route's release-bound source can serve it. `anySeason` (the header's menus) asks
+ * only whether the source is up: a menu has no season, and each page's season picker lands on
+ * one it covers, so a page whose source lacks the default season is still listed.
+ */
+export function routeAvailability(href: string, catalog: WorkbenchCatalog | null, season?: string, phase?: string, { anySeason = false } = {}) {
   const route = href.split("?")[0];
   const requirement = requirements[route];
   if (!requirement) return { secondary: false, reason: "" };
@@ -22,6 +27,7 @@ export function routeAvailability(href: string, catalog: WorkbenchCatalog | null
   const capability = catalog.capabilities?.[requirement];
   if (!capability) return { secondary: true, reason: "Required source is not declared in this release. Try Stats or inspect Data status." };
   if (!["available", "partial"].includes(capability.status)) return { secondary: true, reason: capability.limitations[0] ?? "Required inputs are unavailable in this release. Try Stats." };
+  if (anySeason) return { secondary: false, reason: capability.status === "partial" ? "Partial source coverage; inspect the tool’s sample and limitations." : "" };
   const selectedSeason = season ?? catalog.default_season;
   const selectedPhase = phase ?? catalog.default_phase;
   if ((capability.seasons.length && !capability.seasons.includes(selectedSeason)) ||
@@ -44,10 +50,14 @@ export function getSharedCatalog(releaseId?: string) {
 }
 
 const labels: Record<string, string> = {
-  regular_season: "Regular season", play_in: "Play-in", cup_final: "Cup final",
-  summer_league: "Summer league", playoffs: "Playoffs", preseason: "Preseason",
-  season_to_date: "Season to date", season: "Season to date", last_10: "Last 10 appearances",
-  last_5: "Last 5 appearances", source_blocked: "Source unavailable",
-  selection_failed_negative_result: "Completed negative result · selection failed",
+  regular_season: "Regular Season", play_in: "Play-In", cup_final: "Cup Final",
+  summer_league: "Summer League", playoffs: "Playoffs", preseason: "Preseason",
+  season_to_date: "Season to Date", season: "Season to Date", last_10: "Last 10 Appearances",
+  last_5: "Last 5 Appearances", source_blocked: "Source Unavailable",
+  selection_failed_negative_result: "Completed Negative Result · Selection Failed",
 };
-export function humanLabel(value: string) { return labels[value] ?? value.replaceAll("_", " "); }
+const SMALL_WORDS = new Set(["a", "an", "and", "as", "at", "by", "for", "in", "of", "on", "or", "the", "to", "vs"]);
+/** A code value as a Title Case label ("failed_or_limited" → "Failed or Limited"). */
+export function humanLabel(value: string) {
+  return labels[value] ?? value.split("_").map((word, i) => i > 0 && SMALL_WORDS.has(word) ? word : word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+}

@@ -17,8 +17,15 @@ select
     {{ json_number('rows.source_values', 'matchup_blk') }} as blocks,
     {{ json_number('rows.source_values', 'matchup_fgm') }} as fgm,
     {{ json_number('rows.source_values', 'matchup_fga') }} as fga,
-    {{ json_number('rows.source_values', 'matchup_fg3m') }} as fg3m,
-    {{ json_number('rows.source_values', 'matchup_fg3a') }} as fg3a,
+    -- hoopR's season matchups spell these matchup_fg3_m / matchup_fg3_a; accept both spellings.
+    coalesce(
+        {{ json_number('rows.source_values', 'matchup_fg3_m') }},
+        {{ json_number('rows.source_values', 'matchup_fg3m') }}
+    ) as fg3m,
+    coalesce(
+        {{ json_number('rows.source_values', 'matchup_fg3_a') }},
+        {{ json_number('rows.source_values', 'matchup_fg3a') }}
+    ) as fg3a,
     {{ json_number('rows.source_values', 'matchup_ftm') }} as ftm,
     {{ json_number('rows.source_values', 'matchup_fta') }} as fta,
     {{ json_number('rows.source_values', 'help_blk') }} as help_blocks,

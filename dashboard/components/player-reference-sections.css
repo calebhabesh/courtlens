@@ -1,0 +1,45 @@
+@layer pages {
+  .player-reference-team { display: inline-flex; align-items: center; gap: var(--space-1); }
+  .player-contract-option { font-size: var(--text-xs); }
+  .player-contract-option.is-player { color: var(--color-status-player-option); }
+  .player-contract-option.is-team { color: var(--color-status-team-option); }
+  .player-contract-events-column { width: 32%; }
+  /* Career highs: ten equal value columns; values read as figures, linked to the source game. */
+  .player-highs-grid { --grid-min-width: 760px; }
+  .player-highs-grid tbody th.player-ref-grid-lead { white-space: normal; }
+  .player-reference .player-highs-grid td a { color: var(--color-text); }
+  .player-ref-grid .player-reference-team { justify-content: center; vertical-align: middle; }
+  .player-ref-grid .player-contract-events-cell { white-space: normal; }
+  /* Section labels sit centered in the Season column; the rest of the row stays empty. */
+  .player-contract-section th, .player-contract-section td { border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-contract-section th.player-ref-grid-lead { padding-block: var(--space-2) var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; white-space: normal; }
+  .player-ref-grid tbody .player-contract-section td { height: auto; background: var(--color-table-lift); }
+  .player-contract-empty { color: var(--color-text-secondary); text-align: left; }
+  .player-contract-total th, .player-contract-total td { height: 36px; padding-block: var(--space-1); }
+  .player-contract-total th.player-ref-grid-lead { z-index: var(--z-sticky-corner); color: var(--color-accent); font-size: var(--text-xs); letter-spacing: 0.05em; text-transform: uppercase; }
+  .player-contract-total strong { font-weight: 650; }
+  /* Each season's events form one block centered under Contract Events, read left to right. */
+  .player-contract-events { display: inline-grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; text-align: left; vertical-align: middle; }
+  .player-contract-events li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: var(--space-3); }
+  .player-contract-events time, .player-contract-events .player-event-undated { color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .player-reference-note, .player-reference-credit { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .player-reference-note { margin-top: var(--space-3); }
+  .player-reference a { color: var(--color-info); text-underline-offset: var(--space-1); }
+  .player-reference a:hover { text-decoration: underline; }
+  .player-reference-events { display: grid; gap: var(--space-4); padding: 0; margin: 0; list-style: none; }
+  .player-reference-events li { display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: var(--space-4); }
+  .player-reference-events time, .player-event-undated { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
+  .player-reference-events p { margin: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); overflow-wrap: anywhere; }
+  .player-reference details[open] > .player-reference-events { margin-top: var(--space-4); }
+  @media (max-width: 767px) {
+    .player-ref-grid-scroll { --lead-width: 112px; }
+    .player-contract-total th.player-ref-grid-lead { white-space: normal; line-height: var(--text-xs-lh); }
+    /* Wrapped labels make the rows uneven, so the totals follow the table on phones. */
+    .player-ref-grid tfoot td { position: static; }
+    .player-ref-grid tfoot th { bottom: auto; }
+    .player-contract-events-column { width: 200px; }
+    .player-ref-grid-tier-2 th.player-ref-grid-lead { white-space: normal; }
+    .player-contract-events li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .player-reference-events li { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  }
+}

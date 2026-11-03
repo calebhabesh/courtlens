@@ -1,0 +1,131 @@
+
+> courtlens-dashboard@0.1.0 prebuild
+> npm run fonts:ensure
+
+
+> courtlens-dashboard@0.1.0 fonts:ensure
+> node scripts/ensure-local-fonts.mjs
+
+
+> courtlens-dashboard@0.1.0 build
+> next build --webpack
+
+▲ Next.js 16.4.0 (webpack)
+✓ Running next.config.ts took 15ms
+- Experiments (use with caution):
+  ✓ typedEnv
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 7.9s
+  Running TypeScript ...
+  Finished TypeScript in 6.2s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/29) ...
+  Generating static pages using 15 workers (7/29) 
+  Generating static pages using 15 workers (14/29) 
+  Generating static pages using 15 workers (21/29) 
+✓ Generating static pages using 15 workers (29/29) in 357ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+⚠ 27 traced files were not included in the standalone output
+because their paths are outside of `outputFileTracingRoot`.
+First 100 skipped files:
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/compiled/jest-worker/processChild.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/compiled/jest-worker/threadChild.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/lib/start-server.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/next-server.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/next.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/require-hook.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/module.compiled.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/app-router-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/entrypoints.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/head-manager-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/hooks-client-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/image-config-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/router-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/app-page/vendored/contexts/server-inserted-html.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/module.compiled.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/app-router-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/entrypoints.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/head-manager-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/hooks-client-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/html-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/image-config-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/loadable-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/loadable.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/router-context.js
+  - ../../../../dev/courtlens/dashboard/node_modules/next/dist/server/route-modules/pages/vendored/contexts/server-inserted-html.js
+  - ../../../../dev/courtlens/dashboard/node_modules/styled-jsx/index.js
+  - ../../../../dev/courtlens/dashboard/node_modules/styled-jsx/style.js
+Set `outputFileTracingRoot` to a common parent directory
+to include these files.
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /api/assistant-v2/[[...path]]
+├ ƒ /api/finance-import
+├ ƒ /api/jobs
+├ ƒ /api/jobs/[id]
+├ ƒ /api/live/[[...path]]
+├ ƒ /api/workspace/[[...path]]
+├ ○ /calculator
+├ ƒ /compare
+├ ○ /contracts
+├ ƒ /contracts/[team]
+├ ○ /contracts/books
+├ ƒ /data-status
+├ ○ /design
+├ ƒ /evaluation
+├ ƒ /forecasts
+├ ○ /icon.svg
+├ ƒ /investigations
+├ ƒ /investigations/saved/[id]
+├ ƒ /last-games
+├ ○ /live
+├ ƒ /live/[date]
+├ ƒ /live/games/[id]
+├ ○ /manifest.webmanifest
+├ ○ /matchups
+├ ƒ /methodology
+├ ƒ /methodology/learning
+├ ƒ /planner
+├ ƒ /players
+├ ƒ /players/[id]
+├ ƒ /playoffs
+├ ƒ /playoffs/[seriesId]
+├ ƒ /rankings
+├ ƒ /research/ask
+├ ○ /research/case-studies
+├ ○ /research/defensive-matchups
+├ ○ /research/distributions
+├ ○ /research/operation
+├ ƒ /research/rapm
+├ ○ /research/rapm/six-factor
+├ ○ /research/shooting
+├ ○ /research/shooting/adjusted
+├ ○ /research/shooting/aftermath
+├ ○ /research/trends
+├ ƒ /roster-shapes
+├ ƒ /roster-shapes/[team]
+├ ƒ /settings
+├ ƒ /showcase
+├ ○ /similar-players
+├ ○ /similar-players/shot-profile
+├ ƒ /stat-line-shift
+├ ƒ /stats
+├ ƒ /stats/glossary
+├ ○ /stats/tracking
+├ ƒ /team-compare
+├ ƒ /teams
+├ ƒ /teams/[id]
+├ ƒ /tierlist
+├ ○ /whats-new
+├ ○ /whats-new/blog
+├ ○ /wingspan
+└ ○ /wowy
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

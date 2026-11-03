@@ -20,6 +20,6 @@ export function InstallInterface() {
   return <ArticleSection id="install" title="Install CourtLens" actions={prompt && !installed ? <Button size="xs" icon="download" onClick={()=>void install()}>Install local app</Button> : undefined}>
     <p role="status">{installed ? "Running as a standalone app" : "Local browser interface"}{message ? ` · ${message}` : ""}</p>
     <p>On supported browsers, use Install app or Add to Home Screen in the browser menu. Installation needs a secure origin (HTTPS or localhost).</p>
-    <details className="ui-why"><ButtonSummary>Local service requirements</ButtonSummary><div className="ui-why-body"><p>The icon and app metadata are local assets. Analytical pages, saved evidence, Live and exports require the local API and database. No service worker or offline write synchronization is registered. Browser static-asset caching does not establish current source coverage; analytical fetches use no-store. Inspect Data Status for freshness.</p></div></details>
+    <details className="ui-why"><ButtonSummary>Local Service Requirements</ButtonSummary><div className="ui-why-body"><p>The icon and app metadata are local assets. Analytical pages, saved evidence, Live and exports require the local API and database. No service worker or offline write synchronization is registered. Browser static-asset caching does not establish current source coverage; analytical fetches use no-store. Inspect Data Status for freshness.</p></div></details>
   </ArticleSection>;
 }

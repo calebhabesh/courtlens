@@ -1,6 +1,8 @@
 "use client";
 
 import { readStoredValue, storageKeys } from "@/lib/storage-keys";
+import { seasonEra } from "@/lib/portrait-source";
+import { MAX_GRID_PLAYERS } from "@/lib/compare-grid";
 import { saveStatsReturn, STATS_RETURN_PARAM, takeStatsRestore } from "@/lib/stats-return";
 
 import Link from "next/link";
@@ -17,7 +19,8 @@ import { PercentileCell } from "./charts/percentile-cell";
 import { Skeleton } from "./ui/skeleton";
 import { Field } from "./ui/field";
 import { Button, IconButton, Segmented } from "./ui/kit";
-import { TeamLogoStack } from "./team-logo";
+import { TeamLogo, TeamLogoStack } from "./team-logo";
+import { latestStatsSeason, teamMove } from "@/lib/current-team";
 import { PlayerPortrait } from "./player-portrait";
 import { StatsDetailDrawer } from "./stats-detail-drawer";
 import { CompareTray } from "./compare-tray";
@@ -28,6 +31,7 @@ import { ScatterPlotView } from "./scatter-plot-view";
 import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
 import { saveInvestigation } from "@/lib/workbench-api";
+import { getTeamStints, useTeamStints } from "@/lib/team-stints";
 import {
   IMPACT_COLUMNS,
   DARKO_COLUMNS,
@@ -59,6 +63,7 @@ interface WorkbenchPlayerExplorerProps {
   currentSortDirection?: string;
   /** Full name and description per metric key, shown when a column header is hovered. */
   metricHints?: Record<string, MetricHint>;
+  canonicalHref?: string | null;
 }
 
 const LOCAL_STORAGE_DENSITY_KEY = storageKeys.density;
@@ -71,6 +76,17 @@ const NAME_SEARCH_DEBOUNCE_MS = 250;
 // Display order of the counting-mode buttons: Totals last, as on Databallr.
 
 type GuideGeometry = React.CSSProperties & { "--guide-offset": string };
+/**
+ * The caption's teams: up to two by code; three or more as a count, since the logos and the
+ * expandable team rows name each one and the full list would push the season out of view.
+ */
+function teamsCaption(teams: string[] | undefined): string {
+  if (!teams?.length) return "Team unknown";
+  return teams.length > 2 ? `${teams.length} teams` : teams.join(" / ");
+}
+
+/** Staggers sibling enters 20 ms apart (motion.css .motion-enter). */
+const motionIndex = (index: number): React.CSSProperties & { "--motion-index": number } => ({ "--motion-index": index });
 const guideGeometry = (index: number): GuideGeometry => ({
   "--guide-offset": `var(--group-guide-offset-${index}, 0px)`
 });
@@ -87,12 +103,16 @@ export function WorkbenchPlayerExplorer({
   catalog,
   currentSortMetric = "pts",
   currentSortDirection = "desc",
-  metricHints = {}
+  metricHints = {},
+  canonicalHref = null
 }: WorkbenchPlayerExplorerProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const seasonLabel = seasonScopeLabel(querySpec?.season_scope?.seasons ?? null, querySpec?.season ?? data?.context?.season ?? "");
+  // A single-season view can flag players who have since moved teams; season ranges cannot.
+  const rowSeason = querySpec?.season_scope?.seasons?.length ? null : querySpec?.season ?? data?.context?.season ?? null;
+  const latestSeason = useMemo(() => latestStatsSeason(catalog), [catalog]);
 
   const {
     views,
@@ -104,6 +124,7 @@ export function WorkbenchPlayerExplorer({
     removeCompare,
     clearCompare,
     defaultViewId,
+    isLoading: workspaceLoading,
     preferences,
     updatePreferences
   } = useWorkspace();
@@ -218,12 +239,49 @@ export function WorkbenchPlayerExplorer({
 
   const query = data.query;
   const items = data.items;
+  // A split-season row opens one full row per team (the same scope filtered to that team).
+  const { expanded: stintRows, toggle: toggleStintRows } = useTeamStints();
+  // The body fades in on first load; later changes (skeleton handoff, sort, filter, page, view or
+  // counting mode) settle the body in place instead of remounting the rows (DL Table / Loading).
+  const bodySignature = [loadingRows, items.map(player => player.player_id).join(), activePresetId, countingMode,
+    currentSortMetric, currentSortDirection].join("|");
+  const [bodyMotion, setBodyMotion] = useState({ signature: bodySignature, version: 0 });
+  if (bodyMotion.signature !== bodySignature) setBodyMotion({ signature: bodySignature, version: bodyMotion.version + 1 });
+  // Server HTML can paint before hydration restores the URL and saved view. Hold the entrance
+  // until they settle, then retire its class so revealing cached content cannot replay it.
+  const [entrance, setEntrance] = useState<
+    { kind: "pending" } | { kind: "entering" } | { kind: "done"; version: number }
+  >({ kind: "pending" });
+  const entranceReady = !workspaceLoading && (!canonicalHref || canonicalHref === `${pathname}?${searchParams}`);
+  useEffect(() => {
+    if (!entranceReady || entrance.kind !== "pending") return;
+    const frame = requestAnimationFrame(() => setEntrance({ kind: "entering" }));
+    return () => cancelAnimationFrame(frame);
+  }, [entranceReady, entrance.kind]);
+  const bodyMotionClass = entrance.kind === "pending" ? "stats-table-body-pending"
+    : entrance.kind === "entering" ? "stats-table-body-enter"
+    : entrance.version === bodyMotion.version ? "" : bodyMotion.version % 2 ? "motion-settle-a" : "motion-settle-b";
+  const stintScope = querySpec ? JSON.stringify([querySpec.release_id, querySpec.season, querySpec.phase,
+    querySpec.before_date, querySpec.window, querySpec.season_scope]) : "";
 
-  const preset = useMemo(() => {
+  // Columns unknown for every player in scope (a source not yet published, e.g. early in a
+  // season) are hidden until they have values; the footer says so and can show them. The sorted
+  // column always stays.
+  const [showEmptyColumns, setShowEmptyColumns] = useState(false);
+  const emptyFields = data.cohort?.empty_fields;
+  const { preset, hiddenColumns } = useMemo(() => {
     const base = getPresetById(activePresetId, views);
-    const columns = base.columns.map((column) => normalizedColumn(column, countingMode));
-    return { ...base, columns: columns.filter((column, index) => columns.findIndex(candidate => candidate.key === column.key) === index) };
-  }, [activePresetId, views, countingMode]);
+    const normalized = base.columns.map((column) => normalizedColumn(column, countingMode));
+    const columns = normalized.filter((column, index) => normalized.findIndex(candidate => candidate.key === column.key) === index);
+    const empty = new Set(emptyFields ?? []);
+    const hidden = columns.filter(column => empty.has(column.key) && column.sortMetric !== currentSortMetric);
+    // A view whose every column is empty keeps them: an empty table explains nothing.
+    const hidable = hidden.length < columns.length ? hidden : [];
+    return {
+      preset: { ...base, columns: showEmptyColumns ? columns : columns.filter(column => !hidable.includes(column)) },
+      hiddenColumns: hidable
+    };
+  }, [activePresetId, views, countingMode, emptyFields, currentSortMetric, showEmptyColumns]);
 
   // Retained Comparison Tray derived from workspace compare_tray (F05)
   const comparedPlayers = useMemo<PlayerResearchItem[]>(() => {
@@ -316,9 +374,11 @@ export function WorkbenchPlayerExplorer({
   };
 
   const handlePresetSelect = (id: PresetId) => {
-    const metric = id === "overview" ? "dpm" : id === "impact" ? "rapm" : id === "onoff" ? "onoff_net_rating" : id === "sixfactor" ? "rapm" : "pts_per_game";
+    // Overview takes the page default: DPM where DARKO rates the scope, minutes otherwise.
+    const metric = id === "impact" ? "rapm" : id === "onoff" ? "onoff_net_rating" : id === "sixfactor" ? "rapm" : "pts_per_game";
     updateParam({ viewId: id === "overview" ? null : id, preset: null, view_id: null,
-      sortMetric: normalizedSortMetric(metric, countingMode), sort: null, sort_metric: null, cursor: null }, { presetId: id });
+      sortMetric: id === "overview" ? null : normalizedSortMetric(metric, countingMode),
+      ...(id === "overview" ? { sortDirection: null } : {}), sort: null, sort_metric: null, cursor: null }, { presetId: id });
   };
 
   const handleCountingModeSelect = (mode: CountingMode) => {
@@ -426,8 +486,10 @@ export function WorkbenchPlayerExplorer({
   const openComparison = () => {
     if (comparedPlayers.length < 2) return;
     const params = new URLSearchParams({ season: query.season, phase: query.phase,
-      beforeDate: query.before_date, window: query.window,
-      playerA: comparedPlayers[0].player_id, playerB: comparedPlayers[1].player_id });
+      beforeDate: query.before_date, window: query.window });
+    // Two players open the duel card; three or more open the grid with the first five (row 3, 64).
+    if (comparedPlayers.length > 2) { params.set("layout", "grid"); params.set("players", comparedPlayers.slice(0, MAX_GRID_PLAYERS).map(player => player.player_id).join(",")); }
+    else { params.set("playerA", comparedPlayers[0].player_id); params.set("playerB", comparedPlayers[1].player_id); }
     if (query.release_id) params.set("releaseId", query.release_id);
     router.push(`/compare?${params}`);
   };
@@ -553,7 +615,9 @@ export function WorkbenchPlayerExplorer({
     const fit = () => {
       const top = frame.getBoundingClientRect().top + window.scrollY;
       // The bottom edge lands on a whole pixel (16px above the fold) whatever the top's fraction.
-      frame.style.setProperty("--stats-frame-height", `${window.innerHeight - 16 - top}px`);
+      // A frame that starts below the fold (Contracts' roster, under its charts) is one screen tall.
+      const height = top >= window.innerHeight ? window.innerHeight - 32 : window.innerHeight - 16 - top;
+      frame.style.setProperty("--stats-frame-height", `${height}px`);
     };
     // Anything above the frame can settle after mount (fonts, menus, notices). The workspace has a
     // min-height that hides such changes, so watch each ancestor and everything before it instead.
@@ -626,12 +690,35 @@ export function WorkbenchPlayerExplorer({
   };
 
 
+  // Metric cells of a player row, or of one of its team rows (team set): those open no trend.
+  const metricCells = (player: PlayerResearchItem, team: string | null = null) => preset.columns.map((col, index) => {
+    const metricKey = col.key;
+    const formatted = formatColumnValue(col, player);
+    const shown = <PercentileCell variant="text" showPercentile={showPercentiles}
+      value={player.metrics[metricKey] == null ? null : formatted}
+      percentile={player.table_percentiles?.[metricKey] ?? null}
+      qualified={player.table_qualified === true && player.impact_support?.[metricKey]?.qualified !== false} label={col.label}
+      cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />;
+    return <Fragment key={col.key}>
+      {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" data-guide-index={index} style={guideGeometry(index)} aria-hidden="true">
+        <span className="stats-guide-marker"><GroupGuide mode={identityMode} player={player} era={seasonEra(rowSeason, player.teams)} /></span>
+      </td>}
+      <td data-column={col.key}
+        className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}>
+        {team === null ? <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player, columnKey: col.key })}
+          aria-label={`${col.label} ${player.metrics[metricKey] == null ? "unknown" : formatted} for ${player.player_name}. Open ${col.label} trend`}>
+          {shown}
+        </button> : shown}
+      </td>
+    </Fragment>;
+  });
+
   return (
     <div className={`player-explorer-container ${isExpanded ? "table-expanded" : ""}`}>
       {/* Preset Tabs Row (F02 & F04) */}
       <div className="stats-preset-tabs-wrapper">
         {/* Built-in presets, then personal custom views (F04). */}
-        <Segmented label="Stats Explorer Presets" size="lg" tone="console" dense value={activePresetId as string}
+        <Segmented label="Stats Explorer Presets" size="sm" tone="console" dense value={activePresetId as string}
           onChange={id => handlePresetSelect(id as PresetId)}
           options={[
             ...ORDERED_PRESETS.map(p => ({ value: p.id as string, title: p.description,
@@ -643,14 +730,14 @@ export function WorkbenchPlayerExplorer({
           ]} />
 
         <Field label="Table Divider" layout="inline" className="stats-divider-field">
-          <Segmented label="Table Divider" size="lg" tone="console" deferChange
+          <Segmented label="Table Divider" size="sm" tone="console" deferChange
             options={IDENTITY_MODES.map(im => ({ value: im.id, label: im.label, title: im.tooltip }))}
             value={identityMode} onChange={handleIdentityModeSelect} />
         </Field>
         <div className="stats-view-actions">
-          <Button size="lg" tone="console" icon="columns" onClick={() => { setManageStartsNew(true); setIsManageViewsOpen(true); }}
+          <Button size="sm" tone="console" icon="columns" onClick={() => { setManageStartsNew(true); setIsManageViewsOpen(true); }}
             title="Create a personal view from any catalog columns">Add View</Button>
-          <Button size="lg" tone="console" icon="settings" onClick={() => { setManageStartsNew(false); setIsManageViewsOpen(true); }}
+          <Button size="sm" tone="console" icon="settings" onClick={() => { setManageStartsNew(false); setIsManageViewsOpen(true); }}
             title="Manage custom views, default view, and import/export">Manage</Button>
         </div>
       </div>
@@ -686,7 +773,7 @@ export function WorkbenchPlayerExplorer({
       <div className={`stats-table-frame ${viewMode === "table" ? "is-table" : ""}`}>
       <div className="stats-controls-row">
         <strong className="stats-table-brand"><CourtLensWordmark height={16} /></strong>
-        <Segmented label="Counting Mode" size="md" deferChange
+        <Segmented label="Counting Mode" size="sm" deferChange
           options={ORDERED_COUNTING_MODES.map(cm => ({ value: cm.id, label: cm.label, title: cm.tooltip,
             disabled: catalog?.stats_normalizations ? !catalog.stats_normalizations.includes(cm.id) : cm.gated }))}
           value={countingMode} onChange={handleCountingModeSelect} />
@@ -696,7 +783,7 @@ export function WorkbenchPlayerExplorer({
           <IconButton variant="secondary" icon="trend" label="Trend lines" pressed={viewMode === "lines"}
             onClick={() => setViewMode(viewMode === "lines" ? "table" : "lines")} />
           <IconButton variant="secondary" icon="users" label="Compare selected players (Z)" onClick={openComparison} disabled={comparedPlayers.length < 2}
-            title={comparedPlayers.length < 2 ? "Add two players with + to compare them" : "Compare the first two selected players (Z)"} />
+            title={comparedPlayers.length < 2 ? "Add two players with + to compare them" : comparedPlayers.length > MAX_GRID_PLAYERS ? `Compare the first ${MAX_GRID_PLAYERS} selected players (Z)` : "Compare the selected players (Z)"} />
         </div>
         <div className="stats-tool-group" role="group" aria-label="Table tools">
           <Menu className="stats-tool-menu" renderTrigger={props => <IconButton {...props} variant="secondary" icon="settings" label="Table settings" />}>
@@ -720,6 +807,11 @@ export function WorkbenchPlayerExplorer({
               : updateParam({ sortMetric: "player_name", sortDirection: "asc" })}
             title={nameSorted && currentSortDirection === "asc" ? "Sort players Z–A" : "Sort players A–Z"} />
           <IconButton variant="secondary" icon="reset" label="Reset table" title="Reset sort and filters" onClick={resetTable} />
+          {/* Columns with no values anywhere in scope stay hidden until their source publishes. */}
+          {hiddenColumns.length > 0 && <IconButton variant="secondary" icon={showEmptyColumns ? "eye" : "eye-off"} pressed={showEmptyColumns}
+            label={`${showEmptyColumns ? "Hide" : "Show"} ${hiddenColumns.length} empty ${hiddenColumns.length === 1 ? "column" : "columns"}`}
+            title={`${hiddenColumns.length} empty ${hiddenColumns.length === 1 ? "column" : "columns"} ${showEmptyColumns ? "shown" : "hidden"}: no ${data.context.season} values yet for ${hiddenColumns.map(column => column.label).join(", ")}. ${showEmptyColumns ? "Click to hide" : "Click to show"}.`}
+            onClick={() => setShowEmptyColumns(shown => !shown)} />}
         </div>
         <span className="stats-expand-action">
           <IconButton icon={isExpanded ? "collapse" : "expand"} label={isExpanded ? "Standard height" : "Expand table"} title="Expand table (T)"
@@ -991,7 +1083,12 @@ export function WorkbenchPlayerExplorer({
               ))}
             </tbody>
           ) : (
-          <tbody className={`stats-table-body-enter ${searchingRows ? "stats-table-body-searching" : ""}`}>
+          <tbody className={`${bodyMotionClass} ${searchingRows ? "stats-table-body-searching" : ""}`}
+            onAnimationEnd={event => {
+              if (event.target === event.currentTarget && event.animationName === "enterFade") {
+                setEntrance({ kind: "done", version: bodyMotion.version });
+              }
+            }}>
             {items.length === 0 ? (
               <tr>
                 <td
@@ -1009,10 +1106,16 @@ export function WorkbenchPlayerExplorer({
             ) : (
               items.map((player) => {
                 const isCompared = comparedPlayers.some((p) => p.player_id === player.player_id);
+                const move = teamMove(player, rowSeason, latestSeason);
+                const inlineMove = move !== null && (player.teams?.length ?? 0) <= 1;
+                const moveChip = move && <span className={`stats-team-move ${move.tricode ? "" : "is-off-roster"}`} title={move.title}><span className="stats-team-move-label">now</span>{move.tricode && <TeamLogo team={move.tricode} size={14} />}<span>{move.label}</span></span>;
+                const split = querySpec && (player.teams?.length ?? 0) > 1;
+                const stintKey = `${stintScope}|${player.player_id}`;
+                const stints = stintRows[stintKey];
 
                 return (
+                  <Fragment key={player.player_id}>
                   <tr
-                    key={player.player_id}
                     className={`stats-table-row ${isCompared ? "row-selected" : ""}`}
                     onMouseEnter={() => previewRow(player)}
                     onFocus={() => previewRow(player)}
@@ -1037,53 +1140,39 @@ export function WorkbenchPlayerExplorer({
 
                     {/* Pinned Col 3: Players */}
                     <td className="pinned-col pinned-col-name">
-                      <div className="player-cell">
+                      <div className={`player-cell ${split ? "is-split" : ""}`}>
                         <TeamLogoStack teams={player.teams ?? []} />
                         <PlayerPortrait key={player.player_id} playerId={player.player_id} name={player.player_name}
-                          portraitUrl={player.portrait_url} size="sm" className="stats-primary-portrait" />
+                          portraitUrl={player.portrait_url} size="sm" era={seasonEra(rowSeason, player.teams)} className="stats-primary-portrait" />
                         <div className="stats-identity-copy"><Link href={`/players/${player.player_id}?${new URLSearchParams({
                           season: query.season, phase: query.phase, beforeDate: query.before_date,
                           window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {}),
                           [STATS_RETURN_PARAM]: "stats"
-                        })}`} title={player.player_name} aria-label={player.player_name} className="stats-player-link"
+                        })}`} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link"
                           onClick={rememberTablePosition}>
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
-                        <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"}{player.position && <> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></>} · {seasonLabel}</span>
+                        <span className={`player-cell-teams ${inlineMove ? "has-move" : ""}`} title={player.teams?.join(" / ")}><span>{teamsCaption(player.teams)}{player.position && <span className="player-cell-position"> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></span>} ·</span>{" "}{/* On a one-team row the chip takes the season's place (every row
+                          shares the season; the chip's title names it); a multi-team row keeps its season and puts
+                          the chip on a line of its own, so it is never truncated. */}
+                          {inlineMove ? moveChip : seasonLabel}</span>
+                        {move && !inlineMove && <span className="player-cell-move-line">{moveChip}</span>}
                         </Link>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>
-                        <IconButton size="xs" icon="cards" label={`Open details for ${player.player_name}`} title="Open full player details"
-                          onClick={() => setSelectedPlayerForDrawer(player)} />
+                        {/* A split season's expand arrow sits flush with the details button, so the
+                            caption keeps its room (season and teams stay readable). */}
+                        <span className="stats-row-tools">
+                          {split && <IconButton size="xs" icon="chevron-down" expanded={Boolean(stints)}
+                            label={`${stints ? "Hide" : "Show"} ${player.player_name}'s rows by team`} title={stints ? "Hide rows by team" : "Show a row for each team"}
+                            onClick={() => toggleStintRows(stintKey, () => getTeamStints(querySpec, player.player_id, player.teams ?? [], querySpec.impact_manifest_sha256 || catalog?.impact?.manifest_sha256))} />}
+                          <IconButton size="xs" icon="cards" label={`Open details for ${player.player_name}`} title="Open full player details"
+                            onClick={() => setSelectedPlayerForDrawer(player)} />
+                        </span>
                       </div>
                     </td>
 
                     {/* Scrollable Metric Cells */}
-                    {preset.columns.map((col, index) => {
-                      const metricKey = col.key;
-                      const formatted = formatColumnValue(col, player);
-
-                      const pct = player.table_percentiles?.[metricKey] ?? null;
-                      const qualified = player.table_qualified === true && player.impact_support?.[metricKey]?.qualified !== false;
-
-                      return (
-                        <Fragment key={col.key}>
-                          {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" data-guide-index={index} style={guideGeometry(index)} aria-hidden="true">
-                            <span className="stats-guide-marker"><GroupGuide mode={identityMode} player={player} /></span>
-                          </td>}
-                        <td data-column={col.key}
-                          className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}
-                        >
-                          <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player, columnKey: col.key })}
-                            aria-label={`${col.label} ${player.metrics[metricKey] == null ? "unknown" : formatted} for ${player.player_name}. Open ${col.label} trend`}>
-                            <PercentileCell variant="text" showPercentile={showPercentiles}
-                              value={player.metrics[metricKey] == null ? null : formatted}
-                              percentile={pct} qualified={qualified} label={col.label}
-                              cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />
-                          </button>
-                        </td>
-                        </Fragment>
-                      );
-                    })}
+                    {metricCells(player)}
 
                     {/* Actions Cell */}
                     <td className="stats-row-actions">
@@ -1093,6 +1182,29 @@ export function WorkbenchPlayerExplorer({
                       </span>
                     </td>
                   </tr>
+                  {(stints === "loading" || stints === "failed") && <tr className="stats-table-row stats-stint-status motion-enter">
+                    <td className="pinned-col pinned-col-select" />
+                    <td className="pinned-col pinned-col-name">{stints === "loading" ? "Loading rows by team…" : "Rows by team unavailable. Collapse and retry."}</td>
+                    <td colSpan={preset.columns.length + guideCount + 1} />
+                  </tr>}
+                  {Array.isArray(stints) && stints.map((stint, index) => {
+                    const team = stint.teams?.[0] ?? "";
+                    return <tr key={team} className="stats-table-row stats-stint-row motion-enter" style={motionIndex(index)}>
+                      <td className="pinned-col pinned-col-select" />
+                      <td className="pinned-col pinned-col-name">
+                        <div className="player-cell">
+                          <TeamLogoStack teams={[team]} decorative />
+                          <div className="stats-identity-copy">
+                            <span className="player-cell-name">{team}<span className="sr-only">, {player.player_name}</span></span>
+                            <span className="player-cell-teams">{stint.games_played} GP · {seasonLabel}</span>
+                          </div>
+                        </div>
+                      </td>
+                      {metricCells(stint, team)}
+                      <td className="stats-row-actions" />
+                    </tr>;
+                  })}
+                  </Fragment>
                 );
               })
             )}

@@ -1,0 +1,98 @@
+@layer pages {
+  /* Free Agency (alignment row 14): Databallr's tracker, tiles over status chips and one large table. */
+  .fa-page { display: flex; flex-direction: column; gap: var(--space-4); width: min(100%, 1240px); margin-inline: auto; min-width: 0; }
+  .fa-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-3) var(--space-6); padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-hairline); }
+  .fa-header > div:first-child { flex: 1 1 360px; min-width: 0; }
+  .fa-eyebrow { margin: 0 0 var(--space-1); color: var(--color-accent); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+  .fa-freshness { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .fa-freshness a { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-info); text-decoration: none; }
+  .fa-fresh { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-1) var(--space-3); border: 1px solid color-mix(in srgb, var(--color-positive) 55%, transparent); border-radius: var(--radius-pill); color: var(--color-positive); }
+  .fa-fresh[data-stale] { border-color: color-mix(in srgb, var(--color-negative) 55%, transparent); color: var(--color-negative); }
+  .fa-method { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+
+  /* Six tiles over one foot row: the market bar spans the first five columns and the last tile's
+     source captions sit beside it (owner, row 14 follow-up 25), so the card stays two rows tall. */
+  .fa-summary { --fa-tiles: repeat(6, minmax(0, 1fr)); display: grid; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md); background: var(--color-table-lift); }
+  .fa-summary dl, .fa-summary-foot { display: grid; grid-template-columns: var(--fa-tiles); column-gap: var(--space-4); margin: 0; }
+  .fa-summary dt { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .fa-summary dd { margin: 0; font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .fa-summary dd[data-tone="accent"] { color: var(--color-accent); }
+  .fa-summary dd[data-tone="flag"] { color: var(--color-brand); }
+  .fa-summary-foot { align-items: center; }
+  .fa-summary-notes { grid-column: 6; display: grid; }
+  .fa-summary-note { display: flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
+  .fa-summary-note[data-stale] { color: var(--color-brand); }
+  /* The bar stops a gap short of its number, which reads at body size (owner, follow-up 27). */
+  .fa-market { grid-column: 1 / 6; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3) var(--space-5); padding-right: var(--space-6); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .fa-market strong { color: var(--color-accent); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+  .fa-market-track { position: relative; height: var(--space-1); overflow: hidden; border-radius: var(--radius-pill); background: var(--color-surface-2); }
+  .fa-market-track span { position: absolute; inset-block: 0; left: 0; width: var(--moved); border-radius: inherit; background: var(--color-accent); }
+
+  .fa-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .fa-chip-count { margin-left: var(--space-1); color: var(--color-text-tertiary); font-size: var(--text-2xs); font-variant-numeric: tabular-nums; }
+  .fa-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .fa-search { flex: 1 1 320px; min-width: 0; }
+
+  /* The Stats table look (owner, row 14 follow-up 24): shared frame, header tiers and cells from
+     stats-explorer.css, as on Teams and Matchups. Only widths and the text cells are set here. */
+  .fa-table.stats-workspace { min-height: 0; background: transparent; }
+  .fa-table .stats-table-frame {
+    --table-surface: var(--color-table-lift);
+    --table-data: var(--color-table-well);
+    --table-row-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-surface));
+    --table-data-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-data));
+  }
+  .fa-table.stats-workspace .fa-scroll.stats-scroll-region { height: auto; max-height: min(75dvh, 880px); }
+  /* Sized to the page's 1240px: the source note takes what the fixed columns leave. */
+  /* Movement gets the room (owner, follow-up 26): 124px status and 300px team, from narrower number
+     columns. Text in the table wraps instead of clipping when a note is still longer. */
+  .fa-grid { --fa-name-width: 220px; --table-min-width: calc(var(--fa-name-width) + 7 * 56px + 124px + 300px + 204px); }
+  .fa-grid .fa-name-column { width: var(--fa-name-width); }
+  .fa-grid col:not(.fa-name-column, .fa-col-status, .fa-col-team, .fa-col-source) { width: 56px; }
+  .fa-grid .fa-col-status { width: 124px; } .fa-grid .fa-col-team { width: 300px; }
+  .fa-grid .group-start { border-left: 1px solid var(--color-hairline-strong); }
+  .fa-table :is(th.fa-name) {
+    position: sticky; left: 0; z-index: var(--z-sticky);
+    width: var(--fa-name-width); min-width: var(--fa-name-width); max-width: var(--fa-name-width);
+    background: var(--color-table-lift); text-align: left;
+  }
+  .fa-table thead th.fa-name { z-index: var(--z-sticky-corner); }
+  .fa-table tbody th.fa-name { padding: var(--space-1) var(--space-2); font-weight: 600; font-size: var(--text-sm); text-transform: none; letter-spacing: 0; }
+  .fa-table .player-cell > .team-logo, .fa-logo-gap { flex: 0 0 20px; }
+  /* Never clipped here: long names and tag lines wrap (owner, follow-up 26). */
+  .fa-table.stats-workspace .fa-grid :is(.player-cell-name, .player-cell-teams) { overflow: visible; white-space: normal; text-overflow: clip; }
+  .fa-player { display: block; min-width: 0; color: var(--color-text); text-decoration: none; }
+  .fa-player:is(:hover, :focus-visible) .player-cell-name { color: var(--color-accent); }
+
+  /* Text cells: a value over a quieter second line, as Stats puts a percentile under its value. */
+  .fa-grid tbody td.stats-metric-cell:is(.fa-status-cell, .fa-move-cell) small,
+  .fa-move-note { display: block; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-wrap: balance; }
+  .fa-status { font-weight: 600; color: var(--color-text-secondary); }
+  .fa-status[data-status="signed"] { color: var(--color-accent); }
+  .fa-status[data-status="returned"] { color: var(--color-info); }
+  .fa-status:is([data-status="abroad"], [data-status="retired"]) { color: var(--color-text-tertiary); }
+  .fa-move { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text-tertiary); }
+  .fa-move strong { color: var(--color-text); font-weight: 600; }
+  .fa-move > span { color: var(--color-text-secondary); }
+  /* A change from NBA.com adds an icon and a label, never colour alone. */
+  .fa-roster-flag { display: flex; align-items: center; justify-content: center; gap: var(--space-1); color: var(--color-brand); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-wrap: balance; }
+  .fa-roster-flag svg { flex: none; }
+  .fa-terms { color: var(--color-text-tertiary); }
+  /* Linked notes read as figures in the text colour, keeping their link and tooltip. */
+  .fa-source span { display: block; min-width: 0; color: var(--color-text-secondary); text-wrap: balance; }
+  .fa-source a { display: flex; align-items: center; justify-content: center; gap: var(--space-1); min-width: 0; text-decoration: none; }
+  .fa-source a span, .fa-source a { color: var(--color-text); }
+  /* The link icon trails the last word, so a wrapped note keeps it beside the text. */
+  .fa-source a svg { display: inline; margin-left: var(--space-1); vertical-align: -2px; }
+  .fa-source a:hover :is(span, svg) { color: var(--color-accent); }
+  .fa-provenance { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  @media (width < 640px) {
+    .fa-summary { --fa-tiles: repeat(2, minmax(0, 1fr)); }
+    .fa-summary dl { row-gap: var(--space-4); }
+    .fa-market { grid-column: 1 / -1; }
+    .fa-summary-notes { grid-column: 1 / -1; margin-top: var(--space-2); }
+    .fa-grid { --fa-name-width: 180px; }
+    .fa-filters > * { flex: 1 1 100%; }
+  }
+}

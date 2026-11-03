@@ -1,6 +1,7 @@
 "use client";
 
 import type { IdentityDensity } from "@/lib/stats-presets";
+import type { PortraitEra } from "@/lib/portrait-source";
 import type { PlayerResearchItem } from "@/lib/types";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogoStack } from "./team-logo";
@@ -24,9 +25,9 @@ export function SortHeader({ label, metric, active, direction, onSort, sortable 
 }
 
 /** Decorative repeat of the primary identity; never a metric or focus stop. */
-export function GroupGuide({ mode, player }: { mode: IdentityDensity; player: PlayerResearchItem }) {
+export function GroupGuide({ mode, player, era }: { mode: IdentityDensity; player: PlayerResearchItem; era?: PortraitEra | null }) {
   if (mode === "photos") return <PlayerPortrait playerId={player.player_id} name={player.player_name}
-    portraitUrl={player.portrait_url} size="sm" />;
+    portraitUrl={player.portrait_url} size="sm" era={era} />;
   if (mode === "logos") return <TeamLogoStack teams={player.teams ?? []} decorative />;
   if (mode === "initials") return <span className="stats-guide-initials">{player.player_name.trim().split(/\s+/).map(word => word[0]).slice(0, 2).join("")}</span>;
   return null;

@@ -121,6 +121,19 @@ models:
         data_tests: [not_null]
       - name: play_type
         data_tests: [not_null]
+  - name: mart_stats_team_scoring
+    description: >-
+      NBA Stats team Misc season totals (fast-break, paint, second-chance and off-turnover
+      points, scored and allowed) per team-season-phase; null values are unknown.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: team_id
+        data_tests: [not_null]
+      - name: season
+        data_tests: [not_null]
   - name: mart_stats_player_tracking
     description: Tracking dashboards in long form; omitted values are unknown.
     config:

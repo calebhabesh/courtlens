@@ -1,0 +1,314 @@
+{
+  "playerId": "202695",
+  "widths": [
+    {
+      "width": 1440,
+      "pageWidth": 1440,
+      "colors": {
+        "--color-bg": "#15325a",
+        "--color-surface-0": "#0e1013",
+        "--color-text": "#f2f3f5",
+        "--color-text-secondary": "#a9afb9",
+        "--color-accent": "#ffd166",
+        "--color-info": "#67aaf9",
+        "--color-status-player-option": "#c5a3ff",
+        "--color-status-team-option": "#79d4c6",
+        "--color-percentile-text-high": "#ffd166",
+        "--color-percentile-text-low": "#5d9cf0"
+      },
+      "headline": {
+        "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+        "image": "none",
+        "border": "rgba(255, 255, 255, 0.1)",
+        "radius": "14px",
+        "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+        "backdrop": "blur(20px) saturate(1.5)"
+      },
+      "panels": [
+        {
+          "heading": "Player Impact",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "20px",
+          "width": 547.1875,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": []
+        },
+        {
+          "heading": "Recent Form",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "20px",
+          "width": 820.8125,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": [
+            {
+              "client": 779,
+              "scroll": 779
+            }
+          ]
+        },
+        {
+          "heading": "Contract",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "20px",
+          "width": 1392,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": [
+            {
+              "client": 786,
+              "scroll": 786
+            },
+            {
+              "client": 1350,
+              "scroll": 1350
+            }
+          ]
+        },
+        {
+          "heading": "Transactions",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "20px",
+          "width": 1392,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": []
+        },
+        {
+          "heading": "Career Highs",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "20px",
+          "width": 1392,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": [
+            {
+              "client": 1350,
+              "scroll": 1350
+            }
+          ]
+        }
+      ],
+      "contrast": [
+        {
+          "mode": "filtered",
+          "ratios": {
+            "--color-text": 14.874257320298463,
+            "--color-text-secondary": 7.4862385332219334,
+            "--color-accent": 11.453267196025955,
+            "--color-info": 6.837425412250584,
+            "--color-status-player-option": 7.908847178575871,
+            "--color-status-team-option": 9.472920728291509,
+            "--color-percentile-text-high": 11.453267196025955,
+            "--color-percentile-text-low": 5.881593752101636
+          }
+        },
+        {
+          "mode": "fallback",
+          "ratios": {
+            "--color-text": 15.055156186209427,
+            "--color-text-secondary": 7.5772852343402946,
+            "--color-accent": 11.592560405906687,
+            "--color-info": 6.920581328959044,
+            "--color-status-player-option": 8.005033593430687,
+            "--color-status-team-option": 9.58812921095463,
+            "--color-percentile-text-high": 11.592560405906687,
+            "--color-percentile-text-low": 5.953124963145848
+          }
+        }
+      ],
+      "expandedPageWidth": 1440
+    },
+    {
+      "width": 390,
+      "pageWidth": 390,
+      "colors": {
+        "--color-bg": "#15325a",
+        "--color-surface-0": "#0e1013",
+        "--color-text": "#f2f3f5",
+        "--color-text-secondary": "#a9afb9",
+        "--color-accent": "#ffd166",
+        "--color-info": "#67aaf9",
+        "--color-status-player-option": "#c5a3ff",
+        "--color-status-team-option": "#79d4c6",
+        "--color-percentile-text-high": "#ffd166",
+        "--color-percentile-text-low": "#5d9cf0"
+      },
+      "headline": {
+        "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+        "image": "none",
+        "border": "rgba(255, 255, 255, 0.1)",
+        "radius": "14px",
+        "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+        "backdrop": "blur(20px) saturate(1.5)"
+      },
+      "panels": [
+        {
+          "heading": "Player Impact",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "16px",
+          "width": 366,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": []
+        },
+        {
+          "heading": "Recent Form",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "16px",
+          "width": 366,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": [
+            {
+              "client": 332,
+              "scroll": 395
+            }
+          ]
+        },
+        {
+          "heading": "Contract",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "16px",
+          "width": 366,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": [
+            {
+              "client": 332,
+              "scroll": 472
+            },
+            {
+              "client": 332,
+              "scroll": 332
+            }
+          ]
+        },
+        {
+          "heading": "Transactions",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "16px",
+          "width": 366,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": []
+        },
+        {
+          "heading": "Career Highs",
+          "appearance": {
+            "fill": "color(srgb 0.054902 0.0627451 0.0745098 / 0.58)",
+            "image": "none",
+            "border": "rgba(255, 255, 255, 0.1)",
+            "radius": "14px",
+            "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+            "backdrop": "blur(20px) saturate(1.5)"
+          },
+          "padding": "16px",
+          "width": 366,
+          "nestedGlass": 0,
+          "contentFilter": "none",
+          "overflow": [
+            {
+              "client": 332,
+              "scroll": 583
+            }
+          ]
+        }
+      ],
+      "contrast": [
+        {
+          "mode": "filtered",
+          "ratios": {
+            "--color-text": 14.874257320298463,
+            "--color-text-secondary": 7.4862385332219334,
+            "--color-accent": 11.453267196025955,
+            "--color-info": 6.837425412250584,
+            "--color-status-player-option": 7.908847178575871,
+            "--color-status-team-option": 9.472920728291509,
+            "--color-percentile-text-high": 11.453267196025955,
+            "--color-percentile-text-low": 5.881593752101636
+          }
+        },
+        {
+          "mode": "fallback",
+          "ratios": {
+            "--color-text": 15.055156186209427,
+            "--color-text-secondary": 7.5772852343402946,
+            "--color-accent": 11.592560405906687,
+            "--color-info": 6.920581328959044,
+            "--color-status-player-option": 8.005033593430687,
+            "--color-status-team-option": 9.58812921095463,
+            "--color-percentile-text-high": 11.592560405906687,
+            "--color-percentile-text-low": 5.953124963145848
+          }
+        }
+      ],
+      "expandedPageWidth": 390
+    }
+  ],
+  "errors": []
+}

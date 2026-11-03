@@ -1,0 +1,234 @@
+@layer pages {
+  /* Roster Shapes (alignment row 12): Databallr's 2D Wyman diagrams, one white box per roster. */
+  .shapes-page { display: flex; flex-direction: column; gap: var(--space-4); width: min(100%, 1240px); margin-inline: auto; min-width: 0; }
+  .shapes-credit { margin: calc(-1 * var(--space-2)) 0 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); text-align: center; }
+  .shapes-credit strong, .shapes-credit a { color: var(--color-text); font-weight: 600; }
+  .shapes-console { display: flex; justify-content: center; width: 100%; min-width: 0; }
+  .shapes-loading { display: grid; gap: var(--space-4); }
+
+  .shapes-note {
+    margin: 0; padding: var(--space-1) 0 var(--space-1) var(--space-3); border-left: 3px solid var(--color-accent);
+    color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh);
+  }
+  .shapes-note strong { color: var(--color-text); }
+
+  /* One line per encoding, as Databallr's key reads; sized to be read at a glance (row 12, 5). */
+  .shapes-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-8); color: var(--color-on-bg-secondary); font-size: var(--text-md); line-height: var(--text-md-lh); }
+  .shapes-legend > span { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); }
+  .shapes-legend strong { color: var(--color-text); font-weight: 650; }
+  .shapes-legend-colour > span { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .shapes-legend-colour > span[title] { cursor: help; }
+  .shapes-legend .shapes-swatch { width: 14px; height: 14px; }
+  .shapes-swatch { display: inline-block; flex: 0 0 auto; width: 10px; height: 10px; border-radius: var(--radius-xs); background: var(--chart-tone); }
+  .shapes-icon { flex: 0 0 auto; }
+
+  .shapes-summary { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+  .shapes-summary p { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-md); line-height: var(--text-md-lh); }
+
+  .shapes-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-6) var(--space-4); margin: 0; padding: 0; list-style: none; }
+  .shapes-grid.is-single { grid-template-columns: minmax(0, 560px); justify-content: center; }
+  .shapes-card { min-width: 0; }
+  .shapes-card-link { display: grid; gap: var(--space-2); color: var(--color-text); text-decoration: none; border-radius: var(--radius-xs); }
+  .shapes-card-link:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+  .shapes-card-head { display: flex; align-items: center; gap: var(--space-2); min-width: 0; font-size: var(--text-md); line-height: var(--text-md-lh); }
+  .shapes-card.is-large .shapes-card-head { font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+  .shapes-card-head strong { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 650; }
+  /* The rank reads at a glance (row 12, 23): the card's own text size, bold, full text colour. */
+  .shapes-card-rank { min-width: 2ch; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+  .shapes-card.is-large .shapes-card-rank { font-size: var(--text-xl); line-height: var(--text-xl-lh); }
+  .shapes-card-fill { font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .shapes-card-delta { color: var(--color-text-tertiary); font-size: var(--text-xs); font-weight: 600; font-variant-numeric: tabular-nums; }
+  :is(.shapes-card-delta, .shapes-roster-grid td)[data-tone="up"] { color: var(--color-identity-a); }
+  :is(.shapes-card-delta, .shapes-roster-grid td)[data-tone="down"] { color: var(--color-identity-b); }
+
+  /* The box: white is what a perfect team would add; the border takes the team's colour. */
+  .shapes-box { --team-color: var(--color-status-unknown); display: block; aspect-ratio: 1; background: var(--color-white); border: 3px solid var(--team-color); border-radius: var(--radius-xs); container-type: inline-size; }
+  /* Grid cards respond as one target (row 12, 22): the box lifts with a team-colour glow, the name
+     takes the accent, the other boxes recede a little, and a press settles it. */
+  .shapes-card-link .shapes-box { transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); }
+  .shapes-card-link .shapes-card-head strong { transition: color var(--dur-fast) var(--ease-out); }
+  a.shapes-card-link:is(:hover, :focus-visible) .shapes-box {
+    transform: translateY(-4px);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--team-color) 40%, transparent), var(--shadow-3);
+  }
+  a.shapes-card-link:is(:hover, :focus-visible) .shapes-card-head strong { color: var(--color-accent); }
+  a.shapes-card-link:active .shapes-box { transform: translateY(-1px); transition-duration: var(--dur-instant); }
+  .shapes-grid .shapes-card { transition: opacity var(--dur-base) var(--ease-out); }
+  .shapes-grid:has(a.shapes-card-link:hover) .shapes-card:not(:has(a.shapes-card-link:hover)) { opacity: 0.8; }
+  .shapes-box-graphic { display: block; width: 100%; height: 100%; }
+  .shapes-box-graphic path { stroke: none; }
+  .shapes-box-graphic .shapes-unknown-fit { stroke: var(--color-on-accent); stroke-width: 0.4; stroke-dasharray: 1.2 0.8; }
+  .shapes-label { fill: var(--color-on-accent); font-weight: 500; pointer-events: none; }
+  /* Names stay legible: below a 240px box they would be under 10px, so the tooltip carries them. */
+  @container (max-width: 239px) { .shapes-label { display: none; } }
+
+  /* Every roster row shows; the page scrolls, not the table. */
+  .shapes-roster .player-ref-grid-scroll { --lead-width: 200px; max-height: none; }
+  .shapes-roster-grid { --grid-min-width: 1120px; }
+  .shapes-roster-grid .shapes-style-column { width: 168px; }
+  .shapes-roster-grid .shapes-fit-column { width: 192px; }
+  .shapes-roster-grid .player-ref-grid-lead { text-align: left; }
+  .shapes-roster-grid tbody th.player-ref-grid-lead { overflow: hidden; text-overflow: ellipsis; }
+  .shapes-roster-grid tbody th a { color: var(--color-text); text-decoration: none; }
+  .shapes-roster-grid tbody th a:is(:hover, :focus-visible) { color: var(--color-accent); }
+  .shapes-style, .shapes-fit-cell > span { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .shapes-limitations { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-4); }
+
+  /* What's missing, under each box. */
+  /* What's missing: chips tinted with each archetype's colour, like the key (row 12, 13). */
+  .shapes-missing { display: grid; gap: var(--space-2); margin-top: var(--space-3); }
+  .shapes-missing-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+  .shapes-missing-label { color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase; }
+  .shapes-missing-chips { display: contents; margin: 0; padding: 0; list-style: none; }
+  .shapes-chip {
+    display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-0-5) var(--space-2);
+    border: 1px solid color-mix(in srgb, var(--chart-tone) 40%, transparent); border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--chart-tone) 16%, transparent);
+    color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; white-space: nowrap;
+  }
+  .shapes-chip::before { content: ""; width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--chart-tone); }
+  .shapes-chip[title] { cursor: help; }
+  .shapes-chip.is-complete { --chart-tone: var(--color-identity-a); }
+  .shapes-chip.is-complete::before { display: none; }
+  .shapes-missing-white { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .shapes-missing-white strong { color: var(--color-text); font-weight: 650; }
+  .shapes-card.is-large :is(.shapes-missing-row, .shapes-missing-white) { justify-content: center; text-align: center; }
+  .shapes-card.is-large .shapes-chip { font-size: var(--text-sm); line-height: var(--text-sm-lh); padding: var(--space-0-5) var(--space-3); }
+
+  /* Marked shapes: sandbox additions and arrivals outlined, departures dashed and faded. */
+  .shapes-box-graphic .shapes-mark-added { stroke: var(--color-on-accent); stroke-width: 0.8; }
+  .shapes-box-graphic .shapes-mark-left { stroke: var(--color-on-accent); stroke-width: 0.6; stroke-dasharray: 1.6 1; fill-opacity: 0.45; }
+
+  .shapes-sandbox-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+  .shapes-sandbox-search { flex: 1 1 280px; max-width: 380px; min-width: 0; }
+  .shapes-sandbox-changes { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .shapes-sandbox-changes small { color: var(--color-text-tertiary); }
+  .shapes-sandbox .player-open-heading strong[data-tone="up"] { color: var(--color-identity-a); }
+  .shapes-sandbox .player-open-heading strong[data-tone="down"] { color: var(--color-identity-b); }
+
+  .shapes-since-boxes { display: grid; grid-template-columns: repeat(2, minmax(0, 360px)); justify-content: center; gap: var(--space-6); }
+  .shapes-since-boxes figure { display: grid; gap: var(--space-2); margin: 0; }
+  .shapes-since-boxes figcaption { display: flex; justify-content: space-between; color: var(--color-text-secondary); font-size: var(--text-sm); }
+  .shapes-since-boxes figcaption strong { color: var(--color-text); font-size: var(--text-lg); }
+  .shapes-change-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
+  .shapes-change-list h3 { margin: 0 0 var(--space-2); color: var(--color-text); font-size: var(--text-md); font-weight: 650; }
+  .shapes-change-list ul { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; font-size: var(--text-sm); }
+  .shapes-change-list li { display: flex; align-items: center; gap: var(--space-2); }
+  .shapes-change-list li small { margin-left: auto; color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+  .shapes-change-unknown { color: var(--color-text-tertiary); }
+
+  .shapes-results-chart { display: block; width: 100%; max-width: 760px; height: auto; margin-inline: auto; }
+  .shapes-axis-grid { stroke: var(--color-hairline-strong); }
+  .shapes-axis-zero { stroke: var(--color-text-tertiary); }
+  .shapes-axis-label, .shapes-axis-title { fill: var(--color-text-tertiary); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+  .shapes-axis-title { fill: var(--color-text-secondary); }
+  .shapes-fit-line { stroke: var(--color-accent); stroke-width: 1.5; stroke-dasharray: 5 4; }
+  .shapes-results-code { fill: var(--color-text-secondary); font-size: var(--text-2xs); }
+
+  /* Team view (row 12, 14): Databallr's side by side, the box beside its summary panel. */
+  .shapes-team-header .ui-page-header-title { display: inline-flex; align-items: center; gap: var(--space-3); }
+  /* Databallr's proportions: the box about 2.2× the panel's width, side by side down to tablet width. */
+  .shapes-team { display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(280px, 1fr); gap: var(--space-8); align-items: start; }
+  .shapes-team-main { display: grid; gap: var(--space-6); min-width: 0; }
+  .shapes-box.is-large { width: 100%; }
+
+  .shapes-panel { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .shapes-panel-figures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .shapes-panel-figures p { display: grid; gap: var(--space-1); margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .shapes-panel-figures p strong { color: var(--color-text); font-size: var(--text-3xl); line-height: var(--text-3xl-lh); font-weight: 750; font-variant-numeric: tabular-nums; }
+  .shapes-panel-figures b, .shapes-panel-undrawn b { color: var(--color-text); font-weight: 650; }
+
+  .shapes-panel-fills h3, .shapes-strip h3 { margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 650; }
+  .shapes-panel-fills > p { margin: var(--space-1) 0 var(--space-3); color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .shapes-panel-fills dl { display: grid; gap: var(--space-1); margin: 0; }
+  .shapes-panel-fills dl > div { display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 10fr); align-items: center; gap: var(--space-3); }
+  .shapes-panel-fills dt { display: flex; align-items: center; gap: var(--space-2); min-width: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
+  .shapes-fill-lacks {
+    padding: 0 var(--space-1); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--color-identity-b) 18%, transparent);
+    color: var(--color-text); font-size: var(--text-2xs); font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .shapes-panel-fills dd { display: flex; align-items: center; gap: var(--space-3); margin: 0; }
+  .shapes-panel-fills svg { flex: 1; min-width: 0; height: 10px; overflow: visible; }
+  .shapes-panel-fills dd span { width: 4ch; color: var(--color-text); font-size: var(--text-xs); text-align: right; font-variant-numeric: tabular-nums; }
+  .shapes-fill-track { fill: var(--color-surface-2); }
+  .shapes-fill-tick { stroke: var(--color-text); stroke-width: 2; vector-effect: non-scaling-stroke; }
+
+  .shapes-panel-table { overflow-x: auto; border-radius: var(--radius-md); background: var(--color-table-lift); }
+  .shapes-panel-table table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); font-variant-numeric: tabular-nums; }
+  .shapes-panel-table th, .shapes-panel-table td { padding: var(--space-1) var(--space-2); text-align: right; white-space: nowrap; border-bottom: 1px solid var(--color-hairline-strong); }
+  .shapes-panel-table thead th { color: var(--color-text-secondary); font-size: var(--text-2xs); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .shapes-panel-table :is(thead th:first-child, tbody th) { text-align: left; }
+  .shapes-panel-table tbody th { display: flex; align-items: center; gap: var(--space-2); font-weight: 600; }
+  .shapes-panel-table tbody th a { overflow: hidden; color: var(--color-text); text-overflow: ellipsis; text-decoration: none; }
+  .shapes-panel-table tbody th a:is(:hover, :focus-visible) { color: var(--color-accent); }
+  .shapes-panel-table tbody tr { transition: background-color var(--dur-fast) var(--ease-out); }
+  .shapes-panel-table tbody tr.is-active { background: var(--color-surface-press); }
+  .shapes-panel-table tbody tr:last-child :is(th, td) { border-bottom: 0; }
+  .shapes-panel-table td[data-tone="up"] { color: var(--color-identity-a); }
+  .shapes-panel-table td[data-tone="down"] { color: var(--color-identity-b); }
+  .shapes-panel-undrawn { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  .shapes-strip { display: grid; gap: var(--space-3); }
+  .shapes-strip svg { display: block; width: 100%; height: 80px; }
+  .shapes-strip-bar { fill: color-mix(in srgb, var(--color-status-unknown) 55%, transparent); }
+  .shapes-strip-bar.is-current { fill: var(--color-accent); }
+  .shapes-strip-bar.is-projected { fill: transparent; stroke: var(--color-text-secondary); stroke-width: 1; stroke-dasharray: 3 2; vector-effect: non-scaling-stroke; }
+  .shapes-strip-bar.is-projected.is-current { fill: color-mix(in srgb, var(--color-accent) 30%, transparent); stroke: var(--color-accent); }
+  .shapes-strip-full { stroke: var(--color-text-tertiary); stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
+  .shapes-strip-axis { display: flex; justify-content: space-between; margin: calc(-1 * var(--space-2)) 0 0; color: var(--color-text-tertiary); font-size: var(--text-2xs); }
+
+  /* Hover card (row 12, 15): photo, name and key numbers beside the pointer. */
+  .shapes-box-frame { position: relative; display: block; width: 100%; height: 100%; }
+  .shapes-shape { outline: none; }
+  /* Team view: the highlighted player's shape outlined, the others faded (Databallr's linked hover). */
+  .shapes-box-graphic.is-large .shapes-shape { transition: opacity var(--dur-base) var(--ease-out); }
+  .shapes-box-graphic[data-active] .shapes-shape:not(.is-active) { opacity: 0.32; }
+  /* Hit area: a transparent 2-unit stroke (about 8px past the edge on a desktop box; Chromium does
+     not hit-test `stroke: none`) so the edges and the smallest shapes trigger; marked paths and
+     the active outline keep their own strokes. */
+  .shapes-box-graphic.is-large .shapes-shape:not(.is-active) path:not([class]) { stroke: transparent; stroke-width: 2; }
+  .shapes-shape.is-active path { stroke: var(--color-on-accent); stroke-width: 0.5; }
+  .shapes-shape.is-active:focus-visible path { stroke: var(--color-accent); stroke-width: 0.8; }
+  .shapes-hover {
+    /* Placed by ShapeBox inside the box: beside the pointer, or above / below it on narrow boxes. */
+    position: absolute; top: var(--chart-cell, 0); left: var(--chart-position, 0); z-index: var(--z-tooltip);
+    display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3) var(--space-2) var(--space-2);
+    border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-sm); background: var(--color-surface-0);
+    box-shadow: var(--shadow-3); color: var(--color-text); width: max-content; max-width: min(300px, 100%); pointer-events: none;
+    /* Glides between shapes rather than jumping, and fades in. */
+    transition: top var(--dur-fast) var(--ease-out), left var(--dur-fast) var(--ease-out);
+    animation: shapes-hover-in var(--dur-fast) var(--ease-out);
+  }
+  @keyframes shapes-hover-in { from { opacity: 0; } }
+  .shapes-hover-photo { flex: 0 0 auto; border-radius: var(--radius-xs); }
+  .shapes-hover-text { display: grid; gap: 1px; font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .shapes-hover-text strong { font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
+  .shapes-hover-text > span { color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+  .shapes-hover-style { display: inline-flex; align-items: center; gap: var(--space-1); }
+  .shapes-hover-dot { width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--color-status-unknown); }
+  .shapes-hover-dot[data-cluster="1"] { background: var(--color-category-1); }
+  .shapes-hover-dot[data-cluster="2"] { background: var(--color-category-2); }
+  .shapes-hover-dot[data-cluster="3"] { background: var(--color-category-3); }
+  .shapes-hover-dot[data-cluster="4"] { background: var(--color-category-4); }
+  .shapes-hover-dot[data-cluster="5"] { background: var(--color-category-5); }
+  .shapes-hover-dot[data-cluster="6"] { background: var(--color-category-6); }
+
+  /* Drawn off-screen so the export can measure and serialise it. */
+  .shapes-share-card { position: fixed; top: 0; left: -10000px; pointer-events: none; }
+
+  .shapes-footnote { margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  @media (max-width: 1023px) {
+    .shapes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 899px) {
+    .shapes-team { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 599px) {
+    .shapes-roster .player-ref-grid-scroll { --lead-width: 136px; }
+    .shapes-since-boxes, .shapes-change-lists { grid-template-columns: minmax(0, 1fr); }
+    .shapes-legend { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+    .shapes-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+    .shapes-legend { gap: var(--space-2) var(--space-4); }
+  }
+}

@@ -207,7 +207,7 @@ def test_merge_overflow_is_rejected_without_truncation(
 def test_reset_recovers_builtins_and_unknown_schema_fails(api_client: TestClient) -> None:
     root = "/api/workbench/workspace"
     presets = api_client.get(f"{root}/presets").json()
-    assert len(presets) == 10
+    assert len(presets) == 9
     assert {p["id"] for p in presets} >= {"overview", "impact", "onoff", "sixfactor"}
     response = api_client.post(
         f"{root}/views?expectedVersion=1",

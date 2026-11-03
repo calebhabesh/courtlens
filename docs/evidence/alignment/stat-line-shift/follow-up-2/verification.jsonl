@@ -1,0 +1,10 @@
+{"step":"drawer","width":1440,"viewport":[1440,900],"left":0,"right":1440,"top":576,"bottom":900,"heightShare":36,"gridWidth":1240,"fixedToScreen":true}
+{"step":"scrolled to end","width":1440,"lastContentBottom":483,"drawerTop":576,"clearOfDrawer":true}
+{"step":"collapsed","width":1440,"drawerHeight":52}
+{"step":"deselected TOR by picking it again","width":1440,"url":"","drawer":0,"unfilled":true,"emptyBackground":"rgba(0, 0, 0, 0)"}
+{"step":"Clear Team","width":1440,"bosPlayers":21,"url":"","drawer":0,"overflow":false,"errors":[]}
+{"step":"drawer","width":390,"viewport":[390,844],"left":0,"right":390,"top":506,"bottom":844,"heightShare":40,"gridWidth":358,"fixedToScreen":true}
+{"step":"scrolled to end","width":390,"lastContentBottom":430,"drawerTop":506,"clearOfDrawer":true}
+{"step":"collapsed","width":390,"drawerHeight":52}
+{"step":"deselected TOR by picking it again","width":390,"url":"","drawer":0,"unfilled":true,"emptyBackground":"rgba(0, 0, 0, 0)"}
+{"step":"Clear Team","width":390,"bosPlayers":21,"url":"","drawer":0,"overflow":false,"errors":[]}

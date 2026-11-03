@@ -21,6 +21,23 @@
   white-space: nowrap;
   text-align: center;
 }
-.team-logo-stack { display: inline-flex; align-items: center; gap: var(--space-0-5); flex-wrap: wrap; }
+/* Multi-team seasons (owner rule): 2 side by side, 3 in a triangle, 4 in a 2x2 grid, each logo
+   scaled so the group fits the box one logo fills. --stack-logo is that one logo's size. */
+.team-logo-stack {
+  --stack-logo: 24px;
+  --stack-each: var(--stack-logo);
+  display: inline-grid;
+  grid-auto-flow: row;
+  place-items: center;
+  flex: 0 0 auto;
+  gap: 1px;
+  vertical-align: middle;
+}
+.team-logo-stack > .team-logo { width: var(--stack-each); height: var(--stack-each); min-width: var(--stack-each); }
+.team-logo-stack[data-count="2"] { --stack-each: calc(var(--stack-logo) * 0.85); grid-template-columns: repeat(2, auto); gap: var(--space-0-5); }
+.team-logo-stack[data-count="3"],
+.team-logo-stack[data-count="4"] { --stack-each: calc(var(--stack-logo) * 0.72); grid-template-columns: repeat(2, auto); }
+.team-logo-stack[data-count="3"] > .team-logo:first-child { grid-column: 1 / -1; }
+.team-logo-stack[data-count="many"] { --stack-each: calc(var(--stack-logo) * 0.6); grid-template-columns: repeat(3, auto); }
 .lookup-item-leading { gap: var(--space-1); }
 }

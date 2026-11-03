@@ -10,7 +10,7 @@ export const examplePrompts = [
   { label: "Impact", prompt: "What was Victor Wembanyama's RAPM last season?" },
   { label: "Defense", prompt: "Who is the best defender in the NBA?" },
   { label: "Awards", prompt: "Who won MVP last season?" },
-  { label: "League leaders", prompt: "Who led the league in assists per game last season?" },
+  { label: "League Leaders", prompt: "Who led the league in assists per game last season?" },
   { label: "Forecast", prompt: "Show the registered points forecast for Nikola Jokić." },
   { label: "Compare", prompt: "Compare Nikola Jokić and Victor Wembanyama last season." },
   { label: "Concepts", prompt: "Explain pick and roll" },

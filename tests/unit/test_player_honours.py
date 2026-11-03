@@ -1,0 +1,164 @@
+from datetime import date
+
+from sqlalchemy.orm import Session
+
+from courtlens.services.player_honours import (
+    availability,
+    championships,
+    season_champions,
+    teams_by_last_appearance,
+)
+from courtlens.workbench_models import WorkbenchPlayerGame, WorkbenchTeamGame
+
+
+def _team_game(
+    game: str, day: date, team: str, opponent: str, won: bool, season: str = "2016-17"
+) -> WorkbenchTeamGame:
+    return WorkbenchTeamGame(
+        dataset_id="d", game_id=game, team_id=team, opponent_id=opponent, game_date=day,
+        season=season, phase="playoffs", side="home", points=110 if won else 100,
+        opponent_points=100 if won else 110, stats_json={}, source_version_id="v",
+        source_observation_id="o",
+    )  # fmt: skip
+
+
+def _player_game(
+    player: str, team: str, season: str, phase: str, day: date, game: str
+) -> WorkbenchPlayerGame:
+    return WorkbenchPlayerGame(
+        dataset_id="d", game_id=game, player_id=player, team_id=team, opponent_id="X",
+        game_date=day, season=season, phase=phase, appearance="appeared",
+        minutes_original="30:00", stats_json={}, source_version_id="v", source_observation_id="o",
+    )  # fmt: skip
+
+
+def _sweep(
+    session: Session, season: str, winner: str, loser: str, start: date, wins: int = 4
+) -> None:
+    for index in range(wins):
+        day = date.fromordinal(start.toordinal() + index * 2)
+        game = f"{season}-{winner}-{loser}-{index}"
+        session.add(_team_game(game, day, winner, loser, True, season))
+        session.add(_team_game(game, day, loser, winner, False, season))
+
+
+def _finals(session: Session) -> None:
+    """GSW swept three rounds, then beat CLE 4-1, finishing on June 12; CLE won the East on
+    May 25. Both rows of every game are stored."""
+    _sweep(session, "2016-17", "GSW", "POR", date(2017, 4, 16))
+    _sweep(session, "2016-17", "GSW", "UTA", date(2017, 5, 2))
+    _sweep(session, "2016-17", "GSW", "SAS", date(2017, 5, 14))
+    _sweep(session, "2016-17", "CLE", "IND", date(2017, 4, 15))
+    _sweep(session, "2016-17", "CLE", "TOR", date(2017, 5, 1))
+    _sweep(session, "2016-17", "CLE", "BOS", date(2017, 5, 17))
+    results = [True, True, True, False, True]
+    for index, gsw_won in enumerate(results):
+        day = date(2017, 6, 1 + index * 3 if index < 4 else 12)
+        session.add(_team_game(f"F{index}", day, "GSW", "CLE", gsw_won))
+        session.add(_team_game(f"F{index}", day, "CLE", "GSW", not gsw_won))
+
+
+def test_champion_needs_a_fourth_win_before_the_cutoff(session: Session) -> None:
+    _finals(session)
+    session.commit()
+    assert season_champions(session, "d", None) == {"2016-17": "GSW"}
+    assert season_champions(session, "d", date(2017, 6, 12)) == {}
+
+
+def test_a_conference_title_is_not_a_championship(session: Session) -> None:
+    _finals(session)
+    session.commit()
+    # Through May 28 CLE's East-clinching win is the season's latest decided series.
+    assert season_champions(session, "d", date(2017, 5, 28)) == {}
+
+
+def test_best_of_five_first_rounds_need_three_best_of_seven_wins(session: Session) -> None:
+    _sweep(session, "2001-02", "LAL", "POR", date(2002, 4, 21), wins=3)
+    _sweep(session, "2001-02", "LAL", "SAS", date(2002, 5, 5))
+    _sweep(session, "2001-02", "LAL", "SAC", date(2002, 5, 18))
+    session.commit()
+    assert season_champions(session, "d", None) == {}
+    _sweep(session, "2001-02", "LAL", "NJN", date(2002, 6, 5))
+    session.commit()
+    assert season_champions(session, "d", None) == {"2001-02": "LAL"}
+
+
+def test_titles_go_to_players_who_appeared_for_the_champion(session: Session) -> None:
+    _finals(session)
+    session.add_all([
+        _player_game("lbj", "CLE", "2014-15", "regular_season", date(2015, 1, 1), "R0"),
+        _player_game("kd", "OKC", "2015-16", "regular_season", date(2016, 1, 1), "R1"),
+        _player_game("kd", "GSW", "2016-17", "playoffs", date(2017, 6, 1), "F0"),
+        _player_game("lbj", "CLE", "2016-17", "playoffs", date(2017, 6, 1), "F0"),
+    ])  # fmt: skip
+    session.commit()
+    titles = championships(session, "d", date(2017, 7, 1), ["kd", "lbj"])
+    assert titles["kd"]["seasons"] == ["2016-17"] and titles["kd"]["complete"] is True
+    assert titles["lbj"]["seasons"] == []
+    # The first admitted season could hide earlier titles for a player who debuted in it.
+    assert titles["lbj"]["complete"] is False
+    # Before the clinching game the title does not count, but the season picker still sees it.
+    early = championships(session, "d", date(2017, 6, 10), ["kd"])["kd"]
+    assert early["seasons"] == [] and early["all_seasons"] == ["2016-17"]
+
+
+def test_traded_player_teams_end_with_the_latest(session: Session) -> None:
+    session.add_all([
+        _player_game("kd", "BKN", "2022-23", "regular_season", date(2023, 2, 1), "G1"),
+        _player_game("kd", "PHX", "2022-23", "regular_season", date(2023, 3, 1), "G2"),
+    ])  # fmt: skip
+    session.commit()
+    order = teams_by_last_appearance(session, "d", "2022-23", "regular_season", None, ["kd"])
+    assert order == {"kd": ["BKN", "PHX"]}
+    early = teams_by_last_appearance(
+        session, "d", "2022-23", "regular_season", date(2023, 2, 15), ["kd"]
+    )
+    assert early == {"kd": ["BKN"]}
+
+
+def _schedule(session: Session, team: str, days: list[date]) -> None:
+    for index, day in enumerate(days):
+        session.add(
+            WorkbenchTeamGame(
+                dataset_id="d",
+                game_id=f"{team}-{index}",
+                team_id=team,
+                opponent_id="X",
+                game_date=day,
+                season="2024-25",
+                phase="regular_season",
+                side="home",
+                points=100,
+                opponent_points=90,
+                stats_json={},
+                source_version_id="v",
+                source_observation_id="o",
+            )
+        )
+
+
+def _days(start: date, count: int) -> list[date]:
+    return [date.fromordinal(start.toordinal() + index * 2) for index in range(count)]
+
+
+def test_availability_counts_team_games_and_caps_a_traded_season(session: Session) -> None:
+    # DAL plays its 10 games early, LAL spreads 10 across the season: at the trade DAL has played
+    # more, so the two spans add up to more than a season and are capped at 10.
+    dal, lal = _days(date(2024, 10, 22), 10), _days(date(2024, 10, 23), 10)
+    _schedule(session, "DAL", dal)
+    _schedule(session, "LAL", lal)
+    session.add_all([
+        _player_game("luka", "DAL", "2024-25", "regular_season", dal[0], "L0"),
+        _player_game("luka", "DAL", "2024-25", "regular_season", dal[1], "L1"),
+        _player_game("luka", "LAL", "2024-25", "regular_season", lal[6], "L2"),
+        _player_game("luka", "LAL", "2024-25", "regular_season", lal[7], "L3"),
+        _player_game("bron", "LAL", "2024-25", "regular_season", lal[0], "B0"),
+    ])  # fmt: skip
+    session.commit()
+    found = availability(session, "d", "regular_season", None, ["luka", "bron", "none"], "2024-25")
+    assert found["luka"] == {"games": 4, "team_games": 10}
+    assert found["bron"] == {"games": 1, "team_games": 10}
+    assert found["none"] == {"games": 0, "team_games": 0}
+    # Games on or after the cutoff never count, for the player or the schedule.
+    before = availability(session, "d", "regular_season", lal[3], ["bron"], "2024-25")
+    assert before["bron"] == {"games": 1, "team_games": 3}
