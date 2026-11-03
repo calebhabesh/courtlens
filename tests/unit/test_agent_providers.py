@@ -10,7 +10,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-import httpx
+import httpx2
 import pytest
 from anthropic import Anthropic
 from fastapi.testclient import TestClient
@@ -84,8 +84,8 @@ def raw_response(name: str) -> dict[str, Any]:
     return json.loads((FIXTURES / f"{name}.json").read_text())
 
 
-def adapter(name: str, transport: httpx.MockTransport) -> Any:
-    client = httpx.Client(transport=transport)
+def adapter(name: str, transport: httpx2.MockTransport) -> Any:
+    client = httpx2.Client(transport=transport)
     if name == "gemini":
         sdk = genai.Client(
             api_key="test-secret",
@@ -105,11 +105,11 @@ def adapter(name: str, transport: httpx.MockTransport) -> Any:
 def test_tools_citations_usage_and_exact_continuation(name: str) -> None:
     requests = []
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         requests.append(json.loads(request.content))
-        return httpx.Response(200, json=raw_response(name))
+        return httpx2.Response(200, json=raw_response(name))
 
-    provider = adapter(name, httpx.MockTransport(respond))
+    provider = adapter(name, httpx2.MockTransport(respond))
     try:
         step = provider.step("NBA only.", MESSAGES, [TOOL], **OPTIONS)
         assert step.tool_calls[0].arguments == {"metric": "blk_per_game"}
@@ -165,9 +165,9 @@ def test_tools_citations_usage_and_exact_continuation(name: str) -> None:
 def test_sdk_failures_are_safe_and_not_retried(name: str, failure: str, status: int) -> None:
     requests = []
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         requests.append(request)
-        return httpx.Response(
+        return httpx2.Response(
             status,
             headers={"retry-after": "17"},
             json={
@@ -180,7 +180,7 @@ def test_sdk_failures_are_safe_and_not_retried(name: str, failure: str, status: 
             },
         )
 
-    provider = adapter(name, httpx.MockTransport(respond))
+    provider = adapter(name, httpx2.MockTransport(respond))
     try:
         with pytest.raises(ProviderFailure) as error:
             provider.step("NBA only.", MESSAGES, [TOOL], **OPTIONS)
@@ -203,16 +203,16 @@ def test_gemini_search_refusal_falls_back_to_plain_generation() -> None:
 
     requests = []
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         requests.append(json.loads(request.content))
         if "googleSearch" in json.dumps(requests[-1]):
-            return httpx.Response(
+            return httpx2.Response(
                 429,
                 json={"error": {"code": 429, "status": "RESOURCE_EXHAUSTED", "details": []}},
             )
-        return httpx.Response(200, json=raw_response("gemini"))
+        return httpx2.Response(200, json=raw_response("gemini"))
 
-    provider = adapter("gemini", httpx.MockTransport(respond))
+    provider = adapter("gemini", httpx2.MockTransport(respond))
     try:
         step = provider.step("NBA only.", MESSAGES, [TOOL], **OPTIONS)
         assert step.provider_calls == 2 and step.search_errors == ["search_unavailable"]
@@ -227,9 +227,9 @@ def test_gemini_search_refusal_falls_back_to_plain_generation() -> None:
 def test_gemini_named_quota_is_not_retried() -> None:
     requests = []
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         requests.append(request)
-        return httpx.Response(
+        return httpx2.Response(
             429,
             json={
                 "error": {
@@ -244,7 +244,7 @@ def test_gemini_named_quota_is_not_retried() -> None:
             },
         )
 
-    provider = adapter("gemini", httpx.MockTransport(respond))
+    provider = adapter("gemini", httpx2.MockTransport(respond))
     try:
         with pytest.raises(ProviderFailure) as error:
             provider.step("NBA only.", MESSAGES, [TOOL], **OPTIONS)
@@ -257,11 +257,11 @@ def test_gemini_named_quota_is_not_retried() -> None:
 def test_sdk_deadline_and_exhausted_search_budget(name: str) -> None:
     requests = []
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         requests.append(json.loads(request.content))
-        raise httpx.ReadTimeout("sensitive message", request=request)
+        raise httpx2.ReadTimeout("sensitive message", request=request)
 
-    provider = adapter(name, httpx.MockTransport(respond))
+    provider = adapter(name, httpx2.MockTransport(respond))
     try:
         with pytest.raises(ProviderFailure, match="provider_timeout"):
             provider.step("NBA only.", MESSAGES, [TOOL], **{**OPTIONS, "remaining_web_searches": 0})
@@ -358,8 +358,8 @@ def test_native_streaming_callbacks_and_final_response(name: str) -> None:
         stream_data = "".join(sse(event["type"], event) for event in events)
     provider = adapter(
         name,
-        httpx.MockTransport(
-            lambda request: httpx.Response(
+        httpx2.MockTransport(
+            lambda request: httpx2.Response(
                 200, headers={"content-type": "text/event-stream"}, content=stream_data
             )
         ),
@@ -377,7 +377,7 @@ def test_native_streaming_callbacks_and_final_response(name: str) -> None:
 @pytest.mark.parametrize("name", DEFAULT_MODELS)
 def test_record_replay_and_tool_payload_drift(name: str, tmp_path: Path) -> None:
     provider = adapter(
-        name, httpx.MockTransport(lambda request: httpx.Response(200, json=raw_response(name)))
+        name, httpx2.MockTransport(lambda request: httpx2.Response(200, json=raw_response(name)))
     )
     try:
         recording = RecordingProvider(provider)
@@ -412,7 +412,7 @@ def test_record_replay_and_tool_payload_drift(name: str, tmp_path: Path) -> None
 def test_gemini_old_model_native_search_subcall() -> None:
     requests = []
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         requests.append(json.loads(request.content))
         raw = raw_response("gemini")
         if len(requests) == 1:
@@ -432,9 +432,9 @@ def test_gemini_old_model_native_search_subcall() -> None:
             }
         else:
             raw["candidates"][0]["content"]["parts"] = [{"text": "Wembanyama had +8.8 RAPM."}]
-        return httpx.Response(200, json=raw)
+        return httpx2.Response(200, json=raw)
 
-    provider = adapter("gemini", httpx.MockTransport(respond))
+    provider = adapter("gemini", httpx2.MockTransport(respond))
     provider.model = "gemini-2.5-flash"
     try:
         step = provider.step("NBA only.", MESSAGES, [TOOL], **OPTIONS)
@@ -543,7 +543,7 @@ def test_status_never_returns_keys(monkeypatch: pytest.MonkeyPatch) -> None:
 def test_retry_after_http_date_and_safe_errors() -> None:
     error = RuntimeError("secret")
     error.status_code = 429
-    error.response = httpx.Response(429, headers={"retry-after": "not-a-date"})
+    error.response = httpx2.Response(429, headers={"retry-after": "not-a-date"})
     assert map_failure(error).retry_after == 60
 
 
@@ -583,8 +583,8 @@ def test_gemini_stream_merges_text_before_applying_grounding_spans() -> None:
     last["candidates"][0]["content"]["parts"] = [{"text": "had +8.8 RAPM."}]
     provider = adapter(
         "gemini",
-        httpx.MockTransport(
-            lambda request: httpx.Response(
+        httpx2.MockTransport(
+            lambda request: httpx2.Response(
                 200,
                 headers={"content-type": "text/event-stream"},
                 content=sse(None, first) + sse(None, last),
@@ -604,11 +604,11 @@ def test_gemini_idless_calls_keep_local_ids_out_of_signed_sdk_history() -> None:
     raw = raw_response("gemini")
     raw["candidates"][0]["content"]["parts"][1]["functionCall"].pop("id")
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         requests.append(json.loads(request.content))
-        return httpx.Response(200, json=raw)
+        return httpx2.Response(200, json=raw)
 
-    provider = adapter("gemini", httpx.MockTransport(respond))
+    provider = adapter("gemini", httpx2.MockTransport(respond))
     try:
         step = provider.step("NBA only.", MESSAGES, [TOOL], **OPTIONS)
         call = step.tool_calls[0]
@@ -637,11 +637,11 @@ def test_gemini_idless_calls_keep_local_ids_out_of_signed_sdk_history() -> None:
 def test_gemini_tool_free_step_after_tool_use_disables_function_calls() -> None:
     requests = []
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         requests.append(json.loads(request.content))
-        return httpx.Response(200, json=raw_response("gemini"))
+        return httpx2.Response(200, json=raw_response("gemini"))
 
-    provider = adapter("gemini", httpx.MockTransport(respond))
+    provider = adapter("gemini", httpx2.MockTransport(respond))
     history = [
         *MESSAGES,
         AgentMessage(
