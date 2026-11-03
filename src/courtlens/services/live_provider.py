@@ -15,6 +15,7 @@ from courtlens.domain.live import (
     parse_scoreboard,
     parse_standings,
     parse_summary,
+    parse_team_schedule,
 )
 
 BASE_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba"
@@ -80,6 +81,17 @@ class ESPNLiveProvider:
                 1024 * 1024,
                 lambda p: parse_standings(p, year),
                 url=STANDINGS_URL,
+            )
+        )
+
+    def fetch_team_schedule(self, team_source_id: str, year: int, season_type: int) -> LiveFetch:
+        # About 0.85 MB for a full regular season (ESPN embeds logos and leaders per game).
+        return asyncio.run(
+            self._get(
+                f"/teams/{team_source_id}/schedule",
+                {"season": str(year), "seasontype": str(season_type)},
+                4 * 1024 * 1024,
+                lambda p: parse_team_schedule(p, team_source_id, year, season_type),
             )
         )
 

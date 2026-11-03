@@ -70,6 +70,16 @@ class FakeProvider:
         payload = {"injuries": []}
         return LiveFetch(json.dumps(payload).encode(), {"teams": {}}, "http-date", None)
 
+    def fetch_team_schedule(self, team_source_id, year, season_type):
+        self.calls.append((None, f"schedule:{team_source_id}:{year}:{season_type}"))
+        if self.error:
+            raise self.error
+        from courtlens.domain.live import parse_team_schedule
+
+        payload = {"events": copy.deepcopy(self.events)}
+        normalized = parse_team_schedule(payload, team_source_id, year, season_type)
+        return LiveFetch(json.dumps(payload).encode(), normalized, "http-date", None)
+
     def fetch_standings(self, year):
         self.calls.append((None, f"standings:{year}"))
         if self.error:

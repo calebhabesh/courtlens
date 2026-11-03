@@ -1,0 +1,54 @@
+@layer pages {
+  /* Team schedule (row 4 follow-up): the season as a month calendar beside the Game Log. */
+  .team-schedule { container: team-schedule / inline-size; }
+  .team-schedule-tools { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-3); }
+  .team-schedule-summary { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
+  .team-cal-months { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
+  .team-cal-title { display: inline-flex; align-items: baseline; gap: var(--space-2); min-width: 9.5em; margin: 0; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 600; text-align: center; justify-content: center; }
+  .team-cal-title span { color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .team-cal-month-picker { margin-left: auto; }
+  .team-cal-scroll { min-width: 0; }
+  .team-cal { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: var(--space-1); }
+  .team-cal th { padding-bottom: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .team-cal th abbr { text-decoration: none; }
+  .team-cal td { position: relative; height: 104px; padding: var(--space-1); overflow: hidden; border-radius: var(--radius-sm); background: var(--color-surface-1); vertical-align: top; isolation: isolate; }
+  .team-cal td[data-outside] { background: transparent; }
+  /* A game date takes its opponent's brand colour, strong at the top left and fading into the
+     surface, with the opponent's logo large and faded at the right, like the comparison cards. */
+  .team-cal td[data-themed] { background: linear-gradient(135deg, color-mix(in srgb, var(--team-tint) 62%, var(--color-surface-1)), color-mix(in srgb, var(--team-tint) 22%, var(--color-surface-0)) 75%); }
+  .team-cal-watermark { position: absolute; right: -14%; bottom: -26%; width: 72%; aspect-ratio: 1; object-fit: contain; opacity: 0.28; pointer-events: none; user-select: none; transform: translateX(calc(var(--logo-shift, 0) * 100%)); }
+  .team-cal td[data-today] { box-shadow: inset 0 0 0 2px var(--color-accent); }
+  .team-cal-day, .team-cal-game { position: relative; }
+  .team-cal-day { display: block; padding: 0 var(--space-1); color: var(--color-text-tertiary); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .team-cal td[data-game] .team-cal-day { color: var(--color-text); font-weight: 700; text-shadow: 0 1px 2px color-mix(in srgb, var(--color-surface-0) 50%, transparent); }
+  .team-cal td[data-today] .team-cal-day { color: var(--color-accent); font-weight: 600; }
+  .team-cal-game { text-shadow: 0 1px 2px color-mix(in srgb, var(--color-surface-0) 55%, transparent); display: flex; flex-direction: column; gap: var(--space-0-5); margin-top: var(--space-1); padding: var(--space-1); border-radius: var(--radius-sm); color: var(--color-text); text-decoration: none; }
+  .team-cal-game:is(:hover, :focus-visible) { background: color-mix(in srgb, var(--color-surface-0) 22%, transparent); }
+  .team-cal-opponent { display: inline-flex; align-items: center; gap: var(--space-1); min-width: 0; font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .team-cal-opponent strong { overflow: hidden; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+  .team-cal-venue { color: color-mix(in srgb, var(--color-text) 75%, transparent); }
+  .team-cal-status { display: flex; align-items: center; gap: var(--space-1); overflow: hidden; color: color-mix(in srgb, var(--color-text) 85%, transparent); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; text-overflow: ellipsis; white-space: nowrap; }
+  /* A played game's result stands off: a large green W or red L beside a bold score. */
+  .team-cal-status b { font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 800; }
+  .team-cal-score { color: var(--color-text); font-size: var(--text-md); font-weight: 700; }
+  /* Results read in the conventional green and red. */
+  .team-cal-game[data-result="win"] .team-cal-status b { color: var(--color-positive); }
+  .team-cal-game[data-result="loss"] .team-cal-status b { color: var(--color-negative); }
+  .team-cal-game[data-live] .team-cal-status { color: var(--color-negative); font-weight: 600; }
+  .team-cal-note { align-self: flex-start; padding: 0 var(--space-1); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--color-surface-0) 40%, transparent); color: var(--color-text); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-shadow: none; }
+  .team-games-log-count { margin: 0 0 var(--space-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  /* Narrow: each date keeps the opponent's logo and the W/L or tip-off; the rest is in the title. */
+  @container team-schedule (width < 640px) {
+    .team-cal { border-spacing: var(--space-0-5); }
+    .team-cal td { height: 68px; padding: var(--space-0-5); }
+    .team-cal-watermark { right: -30%; bottom: -30%; width: 100%; opacity: 0.22; }
+    .team-cal-game { align-items: center; margin-top: 0; padding: var(--space-0-5) 0; }
+    .team-cal-venue, .team-cal-opponent strong, .team-cal-score, .team-cal-note { display: none; }
+    .team-cal-day { font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+    .team-cal-status { font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
+    .team-cal-status b { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+    .team-cal-month-picker { display: none; }
+    .team-cal-months { justify-content: center; }
+  }
+}

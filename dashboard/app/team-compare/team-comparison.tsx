@@ -10,6 +10,7 @@ import type { PlayerResearchItem, TeamDetailResponse, TeamFourFactorsResponse, T
 import type { TeamStarterEvidence } from "@/lib/workbench-api";
 import { formatDate, throughDateFromBefore } from "@/lib/format-date";
 import { teamAccent, teamBrandColor } from "@/lib/team-colors";
+import { ALL_COLUMNS, columnRanks, formatValue, type SixFactorsResponse, type SixFactorTeam, type TeamColumn } from "@/lib/team-six-factors";
 import { TeamLogo } from "@/components/team-logo";
 import { TeamGrid } from "@/components/team-grid";
 import { PlayerPortrait } from "@/components/player-portrait";
@@ -38,6 +39,8 @@ export type TeamSide = {
   schedule: TeamScheduleResponse | null;
   players: WorkbenchQueryResponse | null;
   starterEvidence: StarterEvidence | null;
+  /** Every team in this side's scope (the Teams page read), for league ranks. */
+  league?: SixFactorsResponse | null;
 };
 
 type RotationMetricSpec = {
@@ -83,6 +86,24 @@ type TeamMetricSpec = {
   lowBetter?: boolean;
   neutral?: boolean;
   read: (side: TeamSide) => { num: number | null; text: string };
+  /** The league column this stat ranks by (#1 = best, or fastest for pace); none where no league read has it. */
+  rank?: TeamColumn;
+};
+
+const column = (key: string) => ALL_COLUMNS.find(c => c.key === key)!;
+/** A per-game column the Teams page doesn't show: points, points allowed and margin. */
+const perGame = (key: string, title: string, higherBetter: boolean, pick: (t: SixFactorTeam) => number): TeamColumn =>
+  ({ key, label: key, title, higherBetter, format: "rating", value: t => t.games_played ? pick(t) / t.games_played : null });
+const PPG_RANK = perGame("ppg", "Points per game", true, t => t.points);
+const OPPG_RANK = perGame("opp_ppg", "Points allowed per game", false, t => t.opp_points);
+const MOV_RANK = perGame("mov", "Scoring margin per game", true, t => t.points - t.opp_points);
+/** This side's own row in its league read (era ids such as SEA stay the stored id). */
+const leagueRow = (side: TeamSide) => side.league?.teams.find(t => t.team_id === side.dataTeamId || t.team_id === side.teamId || (!!side.detail && t.tricode === side.detail.team.tricode)) ?? null;
+/** A stat read straight from the league row, so value and rank are the same number. */
+const fromLeague = (key: string, short: string, label: string, group: string, options: { neutral?: boolean } = {}): TeamMetricSpec => {
+  const c = column(key);
+  return { key, short, label, group, lowBetter: !c.higherBetter, neutral: options.neutral, rank: c,
+    read: s => { const row = leagueRow(s); const v = row ? c.value(row, "per_100") : null; return { num: v, text: formatValue(v, c.format, "per_100") }; } };
 };
 
 const number = (n: number | null | undefined, signed = false) => n == null ? "—" : `${signed && n > 0 ? "+" : ""}${n.toFixed(1)}`;
@@ -96,11 +117,11 @@ const factorVal = (side: TeamSide, list: "offense_factors" | "defense_factors", 
 };
 
 const TEAM_METRICS: TeamMetricSpec[] = [
-  { key: "record", short: "REC", label: "Record", group: "Overview & Record",
+  { key: "record", rank: column("win_pct"), short: "REC", label: "Record", group: "Overview & Record",
     read: s => s.detail ? { num: s.detail.record.win_pct ?? s.detail.record.wins, text: `${s.detail.record.wins}–${s.detail.record.losses}` } : { num: null, text: "—" } },
-  { key: "win_pct", short: "WIN%", label: "Win Percentage", group: "Overview & Record",
+  { key: "win_pct", rank: column("win_pct"), short: "WIN%", label: "Win Percentage", group: "Overview & Record",
     read: s => ({ num: s.detail?.record.win_pct ?? null, text: percentage(s.detail?.record.win_pct) }) },
-  { key: "mov", short: "MOV", label: "Net Scoring Margin", group: "Overview & Record",
+  { key: "mov", rank: MOV_RANK, short: "MOV", label: "Net Scoring Margin", group: "Overview & Record",
     read: s => {
       const v = s.detail?.production.pts_per_game != null && s.detail.allowance.pts_allowed_per_game != null
         ? s.detail.production.pts_per_game - s.detail.allowance.pts_allowed_per_game : null;
@@ -108,30 +129,50 @@ const TEAM_METRICS: TeamMetricSpec[] = [
     } },
   { key: "home", short: "HOME", label: "Home Record", group: "Overview & Record", read: s => splitRecord(s.detail?.home_split ?? s.schedule?.home_split) },
   { key: "away", short: "AWAY", label: "Away Record", group: "Overview & Record", read: s => splitRecord(s.detail?.away_split ?? s.schedule?.away_split) },
-  { key: "off_rating", short: "ORTG", label: "Offensive Rating", group: "Pace & Efficiency", read: s => ({ num: s.factors?.off_rating ?? null, text: number(s.factors?.off_rating) }) },
-  { key: "def_rating", short: "DRTG", label: "Defensive Rating", group: "Pace & Efficiency", lowBetter: true, read: s => ({ num: s.factors?.def_rating ?? null, text: number(s.factors?.def_rating) }) },
-  { key: "net_rating", short: "NET", label: "Net Rating", group: "Pace & Efficiency", read: s => ({ num: s.factors?.net_rating ?? null, text: number(s.factors?.net_rating, true) }) },
-  { key: "pace", short: "PACE", label: "Pace", group: "Pace & Efficiency", neutral: true, read: s => ({ num: s.factors?.pace ?? null, text: number(s.factors?.pace) }) },
-  { key: "ppg", short: "PPG", label: "Points Per Game", group: "Scoring & Shooting", read: s => ({ num: s.detail?.production.pts_per_game ?? null, text: number(s.detail?.production.pts_per_game) }) },
-  { key: "opp_ppg", short: "OPPG", label: "Opponent PPG Allowed", group: "Scoring & Shooting", lowBetter: true, read: s => ({ num: s.detail?.allowance.pts_allowed_per_game ?? null, text: number(s.detail?.allowance.pts_allowed_per_game) }) },
+  { key: "off_rating", rank: column("ortg"), short: "ORTG", label: "Offensive Rating", group: "Pace & Efficiency", read: s => ({ num: s.factors?.off_rating ?? null, text: number(s.factors?.off_rating) }) },
+  { key: "def_rating", rank: column("drtg"), short: "DRTG", label: "Defensive Rating", group: "Pace & Efficiency", lowBetter: true, read: s => ({ num: s.factors?.def_rating ?? null, text: number(s.factors?.def_rating) }) },
+  { key: "net_rating", rank: column("net"), short: "NET", label: "Net Rating", group: "Pace & Efficiency", read: s => ({ num: s.factors?.net_rating ?? null, text: number(s.factors?.net_rating, true) }) },
+  { key: "pace", rank: column("pace"), short: "PACE", label: "Pace", group: "Pace & Efficiency", neutral: true, read: s => ({ num: s.factors?.pace ?? null, text: number(s.factors?.pace) }) },
+  { key: "ppg", rank: PPG_RANK, short: "PPG", label: "Points Per Game", group: "Scoring & Shooting", read: s => ({ num: s.detail?.production.pts_per_game ?? null, text: number(s.detail?.production.pts_per_game) }) },
+  { key: "opp_ppg", rank: OPPG_RANK, short: "OPPG", label: "Opponent PPG Allowed", group: "Scoring & Shooting", lowBetter: true, read: s => ({ num: s.detail?.allowance.pts_allowed_per_game ?? null, text: number(s.detail?.allowance.pts_allowed_per_game) }) },
   { key: "fg_pct", short: "FG%", label: "Field Goal %", group: "Scoring & Shooting", read: s => ({ num: s.detail?.production.fg_pct ?? null, text: percentage(s.detail?.production.fg_pct) }) },
-  { key: "fg3_pct", short: "3P%", label: "Three-Point %", group: "Scoring & Shooting", read: s => ({ num: s.detail?.production.fg3_pct ?? null, text: percentage(s.detail?.production.fg3_pct) }) },
+  { key: "fg3_pct", rank: column("fg3_pct"), short: "3P%", label: "Three-Point %", group: "Scoring & Shooting", read: s => ({ num: s.detail?.production.fg3_pct ?? null, text: percentage(s.detail?.production.fg3_pct) }) },
   { key: "ft_pct", short: "FT%", label: "Free Throw %", group: "Scoring & Shooting", read: s => ({ num: s.detail?.production.ft_pct ?? null, text: percentage(s.detail?.production.ft_pct) }) },
   { key: "opp_fg_pct", short: "OFG%", label: "Opponent FG % Allowed", group: "Scoring & Shooting", lowBetter: true,
     read: s => ({ num: s.factors?.shooting_percentages.opp_fg_pct ?? null, text: percentage(s.factors?.shooting_percentages.opp_fg_pct) }) },
-  { key: "opp_fg3_pct", short: "O3P%", label: "Opponent 3P % Allowed", group: "Scoring & Shooting", lowBetter: true,
+  { key: "opp_fg3_pct", rank: column("opp_fg3_pct"), short: "O3P%", label: "Opponent 3P % Allowed", group: "Scoring & Shooting", lowBetter: true,
     read: s => ({ num: s.factors?.shooting_percentages.opp_fg3_pct ?? null, text: percentage(s.factors?.shooting_percentages.opp_fg3_pct) }) },
   { key: "efg_pct", short: "eFG%", label: "Effective FG %", group: "Four Factors (Offense)", read: s => factorVal(s, "offense_factors", "efg_pct") },
   { key: "tov_pct", short: "TOV%", label: "Turnover %", group: "Four Factors (Offense)", lowBetter: true, read: s => factorVal(s, "offense_factors", "tov_pct") },
-  { key: "oreb_pct", short: "ORB%", label: "Offensive Rebound %", group: "Four Factors (Offense)", read: s => factorVal(s, "offense_factors", "oreb_pct") },
-  { key: "ftr", short: "FTR", label: "Free Throw Rate", group: "Four Factors (Offense)", read: s => factorVal(s, "offense_factors", "ftr") },
+  { key: "oreb_pct", rank: column("orb_pct"), short: "ORB%", label: "Offensive Rebound %", group: "Four Factors (Offense)", read: s => factorVal(s, "offense_factors", "oreb_pct") },
+  { key: "ftr", rank: column("ftr"), short: "FTR", label: "Free Throw Rate", group: "Four Factors (Offense)", read: s => factorVal(s, "offense_factors", "ftr") },
   { key: "opp_efg_pct", short: "OeFG%", label: "Opponent Effective FG %", group: "Four Factors (Defense)", lowBetter: true, read: s => factorVal(s, "defense_factors", "opp_efg_pct") },
   { key: "opp_tov_pct", short: "OTOV%", label: "Opponent Turnover % Forced", group: "Four Factors (Defense)", read: s => factorVal(s, "defense_factors", "opp_tov_pct") },
-  { key: "dreb_pct", short: "DRB%", label: "Defensive Rebound %", group: "Four Factors (Defense)", read: s => factorVal(s, "defense_factors", "dreb_pct") },
+  { key: "dreb_pct", rank: column("drb_pct"), short: "DRB%", label: "Defensive Rebound %", group: "Four Factors (Defense)", read: s => factorVal(s, "defense_factors", "dreb_pct") },
   { key: "opp_oreb_pct", short: "OORB%", label: "Opponent Offensive Rebound %", group: "Four Factors (Defense)", lowBetter: true, read: s => factorVal(s, "defense_factors", "opp_oreb_pct") },
-  { key: "opp_ftr", short: "OFTR", label: "Opponent Free Throw Rate", group: "Four Factors (Defense)", lowBetter: true, read: s => factorVal(s, "defense_factors", "opp_ftr") },
+  { key: "opp_ftr", rank: column("opp_ftr"), short: "OFTR", label: "Opponent Free Throw Rate", group: "Four Factors (Defense)", lowBetter: true, read: s => factorVal(s, "defense_factors", "opp_ftr") },
+  fromLeague("ts_pct", "TS%", "True Shooting %", "Shooting Profile"),
+  fromLeague("opp_ts_pct", "OTS%", "Opponent True Shooting %", "Shooting Profile"),
+  fromLeague("fg3a_per_100", "3PA", "Three-Point Attempts / 100", "Shooting Profile", { neutral: true }),
+  fromLeague("opp_fg3a_per_100", "O3PA", "Opponent 3PA / 100", "Shooting Profile", { neutral: true }),
+  fromLeague("tov_per_100", "TOV", "Turnovers / 100", "Shooting Profile"),
+  fromLeague("opp_tov_per_100", "OTOV", "Opponent Turnovers / 100", "Shooting Profile"),
+  fromLeague("pts_fb", "FB", "Fast-Break Points / 100", "Scoring Types"),
+  fromLeague("pts_paint", "PAINT", "Paint Points / 100", "Scoring Types"),
+  fromLeague("pts_2nd_chance", "2ND", "Second-Chance Points / 100", "Scoring Types"),
+  fromLeague("pts_off_tov", "OFFTO", "Points Off Turnovers / 100", "Scoring Types"),
+  fromLeague("opp_pts_fb", "OFB", "Fast-Break Points Allowed / 100", "Scoring Types Allowed"),
+  fromLeague("opp_pts_paint", "OPAINT", "Paint Points Allowed / 100", "Scoring Types Allowed"),
+  fromLeague("opp_pts_2nd_chance", "O2ND", "Second-Chance Points Allowed / 100", "Scoring Types Allowed"),
+  fromLeague("opp_pts_off_tov", "OOFFTO", "Points Allowed Off Turnovers / 100", "Scoring Types Allowed"),
+  fromLeague("off", "OFF", "Offense vs League (Six Factors)", "Six Factors"),
+  fromLeague("def", "DEF", "Defense vs League (Six Factors)", "Six Factors"),
+  fromLeague("sos", "SOS", "Strength of Schedule", "Schedule & Luck", { neutral: true }),
+  fromLeague("adj_net", "ADJNET", "Schedule-Adjusted Net Rating", "Schedule & Luck"),
+  fromLeague("expected_wins", "XW", "Expected Wins", "Schedule & Luck"),
+  fromLeague("win_luck", "LUCK", "Wins Above Expected", "Schedule & Luck"),
 ];
-const DEFAULT_TEAM_KEYS = ["record", "ppg", "opp_ppg", "off_rating", "def_rating", "net_rating", "pace", "efg_pct", "tov_pct", "oreb_pct", "ftr"];
+const DEFAULT_TEAM_KEYS = ["record", "ppg", "opp_ppg", "off_rating", "def_rating", "net_rating", "pace", "efg_pct", "tov_pct", "oreb_pct", "ftr", "pts_fb", "pts_paint", "opp_pts_fb", "opp_pts_paint"];
 const TEAM_LIMIT = 25;
 
 const tricode = (side: TeamSide) => side.detail?.team.tricode ?? "—";
@@ -660,8 +701,27 @@ function TeamGameHistoryTray({ a, b, phase, releaseId, series, gamelessNote = nu
   </div>;
 }
 
+/** League rank of a side for one stat, from its own scope's league read. */
+function leagueRank(side: TeamSide, spec: TeamMetricSpec): { rank: number; of: number } | null {
+  const row = leagueRow(side), teams = side.league?.teams;
+  if (!spec.rank || !row || !teams) return null;
+  const rank = columnRanks(teams, spec.rank, "per_100").get(row.team_id);
+  return rank == null ? null : { rank, of: teams.length };
+}
+
 function TeamStats({ a, b, selectedKeys }: { a: TeamSide; b: TeamSide; selectedKeys: string[] }) {
   const specs = TEAM_METRICS.filter(m => selectedKeys.includes(m.key));
+  const cell = (side: TeamSide, key: "a" | "b", spec: TeamMetricSpec, text: string, leading: boolean) => {
+    const place = leagueRank(side, spec);
+    // Top and bottom five tone like the team page's rank strip; pace and volume have no better end.
+    const tone = !place || spec.neutral || place.of < 10 ? undefined : place.rank <= 5 ? "up" : place.rank > place.of - 5 ? "down" : undefined;
+    return <td data-side={key} data-leading={leading || undefined}>
+      <span className="tc-stat">
+        <span className="tc-stat-value">{text}</span>
+        {place && <span className="tc-stat-rank" data-tone={tone} title={`${teamName(side)}: #${place.rank} of ${place.of} in ${side.season}${spec.key === "pace" ? " (#1 is the fastest)" : ""}`}>#{place.rank}</span>}
+      </span>
+    </td>;
+  };
   return <table className="tc-stats" aria-label="Team statistics">
     <thead className="sr-only"><tr><th>{teamName(a)}</th><th>Metric</th><th>{teamName(b)}</th></tr></thead>
     <tbody className="tc-fade">
@@ -674,13 +734,12 @@ function TeamStats({ a, b, selectedKeys }: { a: TeamSide; b: TeamSide; selectedK
         return <Fragment key={spec.key}>
           {showGroup && <tr className="tc-stats-group"><th colSpan={3} scope="colgroup">{spec.group}</th></tr>}
           <tr>
-            <td data-leading={leader === "a" || undefined}>{valA.text}</td>
+            {cell(a, "a", spec, valA.text, leader === "a")}
             <th scope="row">{spec.label}</th>
-            <td data-leading={leader === "b" || undefined}>{valB.text}</td>
+            {cell(b, "b", spec, valB.text, leader === "b")}
           </tr>
         </Fragment>;
       })}
     </tbody>
   </table>;
 }
-

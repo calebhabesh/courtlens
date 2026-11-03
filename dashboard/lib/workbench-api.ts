@@ -975,3 +975,18 @@ export async function getScheduleDates(params: {
   if (params.focus) sp.set("focus", params.focus);
   return wbFetch<ScheduleDatesResponse>(`/api/workbench/schedule/dates?${sp}`);
 }
+
+/**
+ * The ESPN game id of one of our games, read from that date's Live slate: the game ESPN's
+ * identity mapping ties to our id, else the one game with both our teams (by id or tricode,
+ * as the slate carries either). Null when ESPN has none.
+ */
+export async function findLiveGameId(p: { date: string; gameId: string; teams: string[][] }): Promise<string | null> {
+  const read = await wbFetch<{ data: { games: { source_id: string; canonical_id: string | null; teams: { canonical_id: string | null; tricode?: string | null }[] }[] } | null }>(`/api/live?slate_date=${p.date}`);
+  const games = read.data?.games ?? [];
+  const mapped = games.find(game => game.canonical_id === p.gameId);
+  if (mapped) return mapped.source_id;
+  const plays = (game: (typeof games)[number], keys: string[]) => game.teams.some(team => keys.some(key => key === team.canonical_id || key === team.tricode));
+  const both = p.teams.length === 2 ? games.filter(game => p.teams.every(keys => plays(game, keys))) : [];
+  return both.length === 1 ? both[0].source_id : null;
+}
