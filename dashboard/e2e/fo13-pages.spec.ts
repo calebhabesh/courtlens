@@ -65,9 +65,7 @@ test("planner applies a week change immediately, keeps it in the URL and signs i
     return route.fulfill({ headers: cors, json: [league] });
   });
   await page.goto("/planner?week=2026-10-05");
-  await page.getByLabel("Email", { exact: true }).fill("fixture@courtlens.local");
-  await page.getByLabel("Password", { exact: true }).fill("fixture-only");
-  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await signInPlanner(page);
   await expect.poll(() => weeks).toEqual(["2026-10-05"]);
   await expect(page.getByRole("region", { name: "Key findings" })).toContainText("Scheduled Games");
   await page.getByRole("button", { name: "Week starts: Oct 5, 2026" }).click();
@@ -88,8 +86,10 @@ function emptyPlan(id: string, week: string) {
   return { league: plannerLeagues.find(league => league.id === id)!, week_start: week, week_end: week, week_state: { acquisitions_used: 0, acquisitions_remaining: 4 }, dates: [], players: [], days: [], summary: { scheduled_player_games: id === "first" ? 11 : 22, startable_player_games: 0, lineup_conflicts: 0, light_slate_threshold: 5 }, data_snapshot: { classification: "fixture", id: "fixture-snapshot" }, caveats: [] };
 }
 async function signInPlanner(page: Page) {
-  await page.getByLabel("Email", { exact: true }).fill("fixture@courtlens.local");
-  await page.getByLabel("Password", { exact: true }).fill("fixture-only");
+  // React streams a hidden copy of the page (<div hidden id="S:…">) before swapping it in, so
+  // the form can briefly exist twice; act on the visible one.
+  await page.getByLabel("Email", { exact: true }).filter({ visible: true }).fill("fixture@courtlens.local");
+  await page.getByLabel("Password", { exact: true }).filter({ visible: true }).fill("fixture-only");
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
 }
 
