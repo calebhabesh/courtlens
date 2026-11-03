@@ -141,7 +141,7 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
         </Select>
       </div>
       <div className="stats-trend-body" aria-busy={!current}>
-        <h3 className="stats-trend-title">{column.label} progression</h3>
+        <h3 className="stats-trend-title">{column.label} Progression</h3>
         {current?.error ? <p role="alert" className="stats-trend-note">{current.error}</p>
           : current?.rows ? <TrendChart column={column} players={players} rows={current.rows} />
           : <p className="stats-trend-note" role="status">Loading seasons…</p>}
@@ -174,7 +174,7 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
 type Point = { season: string; x: number; y: number; value: number; label: string };
 
 /** 1, 2, 2.5 or 5 times a power of ten: the round step nearest the raw step. */
-function niceStep(raw: number): number {
+export function niceStep(raw: number): number {
   if (!(raw > 0)) return 1;
   const power = 10 ** Math.floor(Math.log10(raw));
   const fraction = raw / power;
@@ -193,7 +193,7 @@ function seasonTick(season: string): string {
  * A smooth line through the points that never overshoots them (monotone cubic, Fritsch-Carlson),
  * so a curve between two seasons never suggests a value neither season had.
  */
-function smoothPath(points: { x: number; y: number }[]): string {
+export function smoothPath(points: { x: number; y: number }[]): string {
   if (points.length < 2) return "";
   const n = points.length;
   const slopes = points.slice(1).map((point, index) => (point.y - points[index].y) / (point.x - points[index].x));

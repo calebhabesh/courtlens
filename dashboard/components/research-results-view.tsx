@@ -78,7 +78,7 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
       { label: "Resource accounting", value: JSON.stringify(result.resource_accounting), mono: true }
     ] : [])
   ];
-  const exportButton = result && <Button size="lg" onClick={() => downloadResearch(`courtlens-research-${result.run.run_id}.json`, result)}>Export verified report JSON</Button>;
+  const exportButton = result && <Button size="lg" onClick={() => downloadResearch(`courtlens-research-${result.run.run_id}.json`, result)}>Export Verified Report JSON</Button>;
   const details = <DataDetailsButton rows={detailRows} />;
   const runPicker = runs.length > 1 && <Field label="Run" layout="inline"><Select aria-label="Registered run" value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map((r, index) => <option key={r.run_id} value={r.run_id}>Run {runs.length - index} · {humanLabel(r.status)}</option>)}</Select></Field>;
   const status = result ? (result.run.status === "selection_failed_negative_result" ? "Completed negative result" : humanLabel(result.run.status)) : entry ? humanLabel(entry.status) : null;
@@ -121,14 +121,14 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
       {selection ? <>
         <h4>Selection Metrics · Lower Is Better</h4>
         <div className="table-wrapper" tabIndex={0} role="region" aria-label="Selection metrics"><table className="data-table"><thead><tr><th>Metric</th><th className="num">Baseline</th><th className="num">Candidate</th></tr></thead><tbody>{([["Brier", "brier"], ["Log loss", "log_loss"], ["Expected-point MAE", "expected_points_mae"], ["ECE", "ece"], ["Shots", "rows"]] as const).map(([label, key]) => <tr key={key}><th>{label}</th><td className="num">{key === "rows" ? selection.baseline[key].toLocaleString("en-US") : fmt(selection.baseline[key])}</td><td className="num">{key === "rows" ? selection.candidate[key].toLocaleString("en-US") : fmt(selection.candidate[key])}</td></tr>)}</tbody></table></div>
-        <details><summary>Selection reliability bins and samples</summary><div className="table-wrapper" tabIndex={0} role="region" aria-label="Reliability bins"><table className="data-table"><thead><tr><th>Model</th><th>Bin</th><th className="num">Shots</th><th className="num">Mean probability</th><th className="num">Observed make rate</th></tr></thead><tbody>{(["baseline", "candidate"] as const).flatMap(model => selection[model].calibration_bins.map((bin, i) => <tr key={`${model}-${i}`}><th>{model}</th><td>{bin.lower}–{bin.upper}</td><td className="num">{bin.rows}</td><td className="num">{fmt(bin.mean_probability)}</td><td className="num">{fmt(bin.observed_rate)}</td></tr>))}</tbody></table></div></details>
+        <details><summary>Selection Reliability Bins and Samples</summary><div className="table-wrapper" tabIndex={0} role="region" aria-label="Reliability bins"><table className="data-table"><thead><tr><th>Model</th><th>Bin</th><th className="num">Shots</th><th className="num">Mean probability</th><th className="num">Observed make rate</th></tr></thead><tbody>{(["baseline", "candidate"] as const).flatMap(model => selection[model].calibration_bins.map((bin, i) => <tr key={`${model}-${i}`}><th>{model}</th><td>{bin.lower}–{bin.upper}</td><td className="num">{bin.rows}</td><td className="num">{fmt(bin.mean_probability)}</td><td className="num">{fmt(bin.observed_rate)}</td></tr>))}</tbody></table></div></details>
       </> : <GatedNote>No selection metrics recorded for this run.</GatedNote>}
       <GatedNote why={<>
         <p>Classification: {result.run.classification}. Previously exposed final history: {yesNo(result.run.final_previously_exposed)}. Final error report opened: {yesNo(result.run.final_report_opened)}. Prospective promotion authorized: {yesNo(result.run.prospective_promotion_authorized)}.</p>
         {selection && <p>These are selection errors, not final-test performance. Brier/log loss measure make-probability error; MAE measures expected-point error per shot; ECE uses ten fixed probability bins. Relative Brier improvement: {improvement ?? "—"}. Registered selection gate: see model card. Selection passed: {yesNo(result.evaluation?.selection_passed)}.</p>}
         <ExperimentLimits />
       </>}>Selection metrics are research evidence, not final-test performance.</GatedNote>
-      <details><summary>Model card · definitions, sources and stopping rule</summary><pre className="research-document">{result.model_card}</pre></details>
+      <details><summary>Model Card · Definitions, Sources and Stopping Rule</summary><pre className="research-document">{result.model_card}</pre></details>
     </section>;
   }
 

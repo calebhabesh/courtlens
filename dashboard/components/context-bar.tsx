@@ -1,5 +1,6 @@
 "use client";
 
+import { isTotalsSeason, seasonOptionLabel } from "@/lib/season-basis";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback, useEffect, useOptimistic, useState, useTransition } from "react";
 
@@ -40,6 +41,10 @@ interface ContextBarProps {
   filters?: React.ReactNode;
   /** View/mode switches that stay visible on phones (see `FilterBar` `modes`). */
   modes?: React.ReactNode;
+  /** Replaces the season select (e.g. Compare's picker showing who played); it must call onSelect. */
+  renderSeason?: (props: { season: string; seasons: string[]; onSelect: (season: string) => void }) => React.ReactNode;
+  /** Page parameters a season change clears, e.g. Compare's per-player seasons (global override). */
+  clearOnSeasonChange?: string[];
   /** Page-specific Data details rows (source routes, resolved context), after the catalog rows. */
   detailRows?: DataDetailRow[];
   /** Stats alignment: season picker flanked by previous/next buttons, phase as a segmented control. */
@@ -51,9 +56,9 @@ interface ContextBarProps {
 const SHORT_PHASES: Record<string, string> = { regular_season: "Regular", playoffs: "Playoffs", play_in: "Play-In", cup_final: "Cup Final" };
 
 const WINDOWS = [
-  { value: "season", label: "Season-to-date" },
-  { value: "last_10", label: "Last 10 appearances" },
-  { value: "last_5", label: "Last 5 appearances" }
+  { value: "season", label: "Season-to-Date" },
+  { value: "last_10", label: "Last 10 Appearances" },
+  { value: "last_5", label: "Last 5 Appearances" }
 ];
 
 export function ContextBar({
@@ -71,6 +76,8 @@ export function ContextBar({
   showThrough = true,
   filters,
   modes,
+  renderSeason,
+  clearOnSeasonChange,
   detailRows = [],
   steppedScope = false,
   allowMultiSeason = false
@@ -100,15 +107,17 @@ export function ContextBar({
   const seasons = catalog?.seasons ?? [initialSeason];
   const observedPhases = catalog?.stats_scopes?.filter((scope) => scope.season === season).map((scope) => scope.phase) ?? catalog?.phases;
   const phases = allowedPhases ?? observedPhases ?? [initialPhase];
-  const windows = catalog?.stats_windows ?? WINDOWS.map((w) => w.value);
+  // Seasons before 1983-84 are whole-season totals: there are no recent games to window.
+  const windows = isTotalsSeason(catalog, season) ? ["season"] : catalog?.stats_windows ?? WINDOWS.map((w) => w.value);
   const coverage = catalog?.stats_scopes?.find((scope) => scope.season === season && scope.phase === phase);
 
   const updateParam = useCallback(
     (key: ScopeKey, value: string) => {
       const params = applyScopeChange(searchParams?.toString() ?? "", key, value, { catalog, season, phase, releaseId, allowedPhases });
+      if (key === "season") clearOnSeasonChange?.forEach(name => params.delete(name));
       router.push(`${pathname}?${params.toString()}`);
     },
-    [router, pathname, searchParams, releaseId, catalog, phase, season, allowedPhases]
+    [router, pathname, searchParams, releaseId, catalog, phase, season, allowedPhases, clearOnSeasonChange]
   );
   // The phase indicator slides on click; the URL value takes over once the navigation commits.
   const [, startPhaseNavigation] = useTransition();
@@ -138,10 +147,10 @@ export function ContextBar({
     [router, pathname, searchParams, catalog, season, phase, releaseId, allowedPhases]
   );
 
-  const seasonSelect = (
+  const seasonSelect = renderSeason ? renderSeason({ season, seasons, onSelect: (value) => updateParam("season", value) }) : (
     <Select value={season} onChange={(e) => updateParam("season", e.target.value)} aria-label="Filter by season">
-      {!seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
-      {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
+      {!seasons.includes(season) && <option value={season}>{season} · Unavailable</option>}
+      {seasons.map((s) => <option key={s} value={s}>{seasonOptionLabel(s)}</option>)}
     </Select>
   );
   const chronological = [...seasons].sort();
@@ -164,7 +173,7 @@ export function ContextBar({
     <>
       {steppedScope ? (
         <div className="context-season-stepper" role="group" aria-label="Season">
-          <IconButton size="lg" icon="left" disabled={!stepBack}
+          <IconButton size="sm" icon="left" disabled={!stepBack}
             onClick={() => stepBack && stepBack()}
             label={seasonFrom
               ? (earlierRange ? `Earlier range, ${earlierRange.from} – ${earlierRange.through}` : "No earlier range")
@@ -174,7 +183,7 @@ export function ContextBar({
           ) : (
             <span className="context-season-picker"><Icon name="calendar" size={14} />{seasonSelect}</span>
           )}
-          <IconButton size="lg" icon="right" disabled={!stepForward}
+          <IconButton size="sm" icon="right" disabled={!stepForward}
             onClick={() => stepForward && stepForward()}
             label={seasonFrom
               ? (laterRange ? `Later range, ${laterRange.from} – ${laterRange.through}` : "No later range")
@@ -184,14 +193,14 @@ export function ContextBar({
         <Field label="Season" layout="inline">{seasonSelect}</Field>
       )}
       {steppedScope ? (
-        <Segmented label="Filter by competition phase" size="lg" value={shownPhase}
+        <Segmented label="Filter by competition phase" size="sm" value={shownPhase}
           onChange={selectPhase}
           options={phaseSegments.map((value) => ({ value, disabled: !phases.includes(value),
-            label: `${SHORT_PHASES[value] ?? phaseLabel(value)}${value === phase && !phases.includes(value) ? " · unavailable" : ""}` }))} />
+            label: `${SHORT_PHASES[value] ?? phaseLabel(value)}${value === phase && !phases.includes(value) ? " · Unavailable" : ""}` }))} />
       ) : (
         <Field label="Phase" layout="inline">
           <Select value={phase} onChange={(e) => updateParam("phase", e.target.value)} aria-label="Filter by competition phase">
-            {!phases.includes(phase) && <option value={phase}>{phaseLabel(phase)} · unavailable</option>}
+            {!phases.includes(phase) && <option value={phase}>{phaseLabel(phase)} · Unavailable</option>}
             {phases.map((value) => <option key={value} value={value}>{phaseLabel(value)}</option>)}
           </Select>
         </Field>
@@ -208,7 +217,7 @@ export function ContextBar({
       {showWindow && (
         <Field label="Window" layout="inline">
           <Select value={windowParam} onChange={(e) => updateParam("window", e.target.value)} aria-label="Analysis window">
-            {!windows.includes(windowParam) && <option value={windowParam}>{windowParam} · unavailable</option>}
+            {!windows.includes(windowParam) && <option value={windowParam}>{windowParam} · Unavailable</option>}
             {WINDOWS.filter((w) => windows.includes(w.value)).map((w) => <option key={w.value} value={w.value}>{w.label}</option>)}
           </Select>
         </Field>

@@ -1,0 +1,26 @@
+{
+  "390": {
+    "clipped": [],
+    "clippedCount": 0,
+    "numberFont": "16px",
+    "barToNumberGap": 20,
+    "barWidth": 124,
+    "overflow": false
+  },
+  "1308": {
+    "clipped": [],
+    "clippedCount": 0,
+    "numberFont": "16px",
+    "barToNumberGap": 20,
+    "barWidth": 795,
+    "overflow": false
+  },
+  "1440": {
+    "clipped": [],
+    "clippedCount": 0,
+    "numberFont": "16px",
+    "barToNumberGap": 20,
+    "barWidth": 795,
+    "overflow": false
+  }
+}

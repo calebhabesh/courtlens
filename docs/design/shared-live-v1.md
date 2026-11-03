@@ -1,5 +1,9 @@
 # B31 shared provisional Live service v1
 
+> **Superseded 2026-10-27** by [Live service v2](shared-live-v2.md) (alignment row 7): the API now
+> reads ESPN on demand; leases, heartbeats, the opt-in worker and the seven-day window are gone.
+> Kept as history.
+
 Bounded backend handoff to B32. [B32a](../evidence/b32-active-acceptance.md) records actual
 changing preseason scores/clocks and populated two-box measurements. Independent final
 reconciliation and actual correction acceptance remain `not_yet_observed`.

@@ -1,0 +1,81 @@
+{
+  "source": "Live local dashboard/PostgreSQL; read-only browser requests",
+  "results": [
+    {
+      "width": 1440,
+      "style": {
+        "image": "url(\"http://127.0.0.1:3100/patterns/coach-marks.svg\")",
+        "size": "384px auto",
+        "color": "rgb(21, 50, 90)",
+        "repeat": "repeat"
+      },
+      "patternVisible": true,
+      "opaqueTablePixelsUnchanged": true,
+      "tableGeometryUnchanged": true,
+      "pageOverflow": false,
+      "forcedColorsPatternHidden": true
+    },
+    {
+      "width": 2400,
+      "style": {
+        "image": "url(\"http://127.0.0.1:3100/patterns/coach-marks.svg\")",
+        "size": "384px auto",
+        "color": "rgb(21, 50, 90)",
+        "repeat": "repeat"
+      },
+      "patternVisible": true,
+      "opaqueTablePixelsUnchanged": true,
+      "tableGeometryUnchanged": true,
+      "pageOverflow": false,
+      "forcedColorsPatternHidden": true
+    },
+    {
+      "width": 390,
+      "style": {
+        "image": "url(\"http://127.0.0.1:3100/patterns/coach-marks.svg\")",
+        "size": "384px auto",
+        "color": "rgb(21, 50, 90)",
+        "repeat": "repeat"
+      },
+      "patternVisible": true,
+      "opaqueTablePixelsUnchanged": true,
+      "tableGeometryUnchanged": true,
+      "pageOverflow": false,
+      "forcedColorsPatternHidden": true
+    }
+  ],
+  "pattern_pixel_comparison": [
+    {
+      "width": 1440,
+      "changed_pixels": 1179,
+      "fraction_of_image": 0.00091,
+      "largest_channel_change": 6
+    },
+    {
+      "width": 2400,
+      "changed_pixels": 3078,
+      "fraction_of_image": 0.00095,
+      "largest_channel_change": 6
+    },
+    {
+      "width": 390,
+      "changed_pixels": 681,
+      "fraction_of_image": 0.001224,
+      "largest_channel_change": 6
+    }
+  ],
+  "productionFixtureChecks": [
+    {
+      "width": 1440,
+      "assetMatchesSource": true,
+      "patternApplied": true,
+      "statsBackdropTransparent": true
+    },
+    {
+      "width": 390,
+      "assetMatchesSource": true,
+      "patternApplied": true,
+      "statsBackdropTransparent": true
+    }
+  ]
+}

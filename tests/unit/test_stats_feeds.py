@@ -234,9 +234,21 @@ def test_start_year_declaration_must_be_proven_by_row_season_ids() -> None:
     for body in (matchup_body("2025", "22024"), matchup_body("2025", "42025")):
         with pytest.raises(ValueError, match="different season"):
             parse_feed(body, scope)
-    # Only the matchup endpoint has this declaration form; others stay strict.
+    # The mirror's isolation play-type files use the same form; their rows must prove it too.
+    iso = scope_for_url(HOOPR_SOURCE, ISO_URL, "2025-26")
+    proven = parse_feed(synergy_body(SeasonYear="2025"), iso)
+    assert proven.coverage["declared_parameters"]["season_established_by"] == "row SEASON_ID"
+    stale = [["22024", 99001, "Fictional One", 1610612761, 100, 98, None]]
     with pytest.raises(ValueError, match="different season"):
-        parse_feed(synergy_body(SeasonYear="2025"), scope_for_url(HOOPR_SOURCE, ISO_URL, "2025-26"))
+        parse_feed(synergy_body(rows=stale, SeasonYear="2025"), iso)
+    # Other endpoints stay strict.
+    tracking = scope_for_url(
+        HOOPR_SOURCE,
+        hoopr_url(REV, "leaguedashptstats", 2026, "regular-season_passing_totals"),
+        "2025-26",
+    )
+    with pytest.raises(ValueError, match="different season"):
+        parse_feed(matchup_body("2025", "22025"), tracking)
 
 
 def test_combine_placeholder_identity_stays_unknown_not_name_matched() -> None:

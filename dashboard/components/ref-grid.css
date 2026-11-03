@@ -1,0 +1,36 @@
+@layer pages {
+  /* Shared reference grid (alignment pattern "Tables"): the player page's Contract and Career Highs
+     tables and the team profile's tables. Moved from player-reference-sections.css unchanged. */
+  /* Reference grids (Contract, Career Highs) in the career table's look (alignment row 2, 56, 67):
+     table-lift frame and headers, table-well data cells, uppercase group tier, a pinned lead column. */
+  .player-ref-grid-frame { background: var(--color-table-lift); border-radius: var(--radius-md); overflow: clip; }
+  .player-ref-grid-scroll { --lead-width: 184px; max-height: min(70dvh, 760px); overflow: auto; scrollbar-color: var(--color-hairline-strong) var(--color-table-lift); }
+  .player-ref-grid { width: 100%; min-width: var(--grid-min-width, 880px); table-layout: fixed; border-collapse: separate; border-spacing: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; }
+  .player-ref-grid th, .player-ref-grid td { padding: var(--space-2) var(--space-3); text-align: center; white-space: nowrap; background: var(--color-table-lift); }
+  .player-ref-grid thead :is(th, td) { position: sticky; z-index: var(--z-sticky); }
+  .player-ref-grid-tier-2 td { top: 28px; }
+  /* Header rows match the career table's: 28 px group labels over 40 px column labels (row 2, 65). */
+  .player-ref-grid-tier-1 th { top: 0; height: 28px; padding: var(--space-1) var(--space-2); font-size: var(--text-sm); line-height: 1.5; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .player-ref-grid-tier-2 th { top: 28px; height: 40px; padding: var(--space-1); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-transform: uppercase; vertical-align: bottom; }
+  .player-ref-grid tbody td { height: 44px; background: var(--color-table-well); border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-ref-grid tbody tr:hover td { background: color-mix(in srgb, var(--color-white) 6%, var(--color-table-well)); }
+  .player-ref-grid tbody tr:hover th.player-ref-grid-lead { background: color-mix(in srgb, var(--color-white) 6%, var(--color-table-lift)); }
+  .player-ref-grid .group-start { border-left: 1px solid var(--color-hairline-strong); }
+  .player-ref-grid .player-ref-grid-lead {
+    position: sticky; left: 0; z-index: var(--z-sticky);
+    width: var(--lead-width); min-width: var(--lead-width); max-width: var(--lead-width);
+    font-weight: 600;
+  }
+  .player-ref-grid-lead-column { width: var(--lead-width); }
+  /* Season is a group label like Salary / Terms / Events (row 2, 64). */
+  .player-ref-grid-tier-1 th.player-ref-grid-lead { font-weight: 700; }
+  /* Group labels need no rules between them; the body keeps its column-group rules. */
+  .player-ref-grid thead .group-start { border-left: 0; }
+  .player-ref-grid thead .player-ref-grid-lead { z-index: var(--z-sticky-corner); }
+  .player-ref-grid tbody th.player-ref-grid-lead { border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-ref-grid td small { display: block; color: var(--color-text-secondary); font-size: var(--text-xs); }
+  /* Gold total rows stay at the scroll area's foot like the career row; two rows stack. */
+  .player-ref-grid tfoot tr:first-child:not(:last-child) { --foot-bottom: 36px; }
+  .player-ref-grid tfoot th, .player-ref-grid tfoot td { position: sticky; bottom: var(--foot-bottom, 0); border-top: 1px solid var(--color-hairline-strong); }
+  .player-ref-grid tfoot tr + tr th, .player-ref-grid tfoot tr + tr td { border-top: 0; }
+}

@@ -75,7 +75,7 @@ describe("AG05 answer components", () => {
     expect(rendered).toMatch(/disabled=""[^>]*>Rank by steals/);
     expect(rendered).toContain("query_stats"); expect(rendered).toContain("100 / 20"); expect(rendered).toContain("$0.002000 (estimate)");
     expect(rendered).toContain("Stopped at the searches limit"); expect(rendered).toContain("replay · synthetic");
-    expect(rendered).toContain('<details class="ask-disclosure ask-how"><summary>How I got this');
+    expect(rendered).toContain('<details class="ask-disclosure ask-how"><summary>How I Got This');
     expect(html({ accounting: { ...response.accounting, est_cost_usd: null } })).toContain("Cost unknown");
   });
 

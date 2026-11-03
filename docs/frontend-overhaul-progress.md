@@ -477,3 +477,47 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - Dashboard lint/types, Vitest 511/511, four header checks and favicon browser verification pass.
   The broader live search check has lookup/workspace timeouts, recorded in the evidence.
 - [Evidence](evidence/alignment/app-shell/favicon-padding/README.md). Owner alignment remains pending.
+
+## 2026-10-14 — Player career awards column
+
+- Owner instructions 52–53 add visible Awards / Accolades headers, a 240 px column and the same
+  background and hover colors as metric cells. Badges wrap with explicit team names and vote places.
+- Scoped glance passes at 1440/390. All 14 retained Kawhi rows fit, with two badge lines at most,
+  unchanged row heights, intact dividers and no page overflow. The pinned-Year checks pass.
+- Lint/typecheck, Vitest 526/526, production webpack build and 15 affected browser checks pass.
+- [Evidence](evidence/alignment/players/career-awards/README.md). Owner alignment remains pending.
+
+## 2026-10-15 — Centered career Accolades subheader
+
+- Instruction 54 centers Accolades under Awards and gives it the same 4 px bottom padding as
+  metric headers. Exact text-center measurements and scoped glance pass at 1440/390.
+- Lint/typecheck, 526 Vitest tests, production build and seven career browser checks pass.
+- [Evidence](evidence/alignment/players/career-awards/README.md#centered-subheader-follow-up-2026-10-15).
+
+## 2026-10-15 — Glass panels below the player career table
+
+- Instruction 55 adds the headline cards' uniform glass to Player Impact, Recent Form, Contract,
+  Transactions and Career Highs, with title-case section and subsection headings.
+- Live 1440/390 appearance parity, scoped glance, expanded content fit and contrast pass.
+  Tables scroll within the panels, and page widths match the viewports.
+- Lint/typecheck, 526 Vitest tests, production build and 15 player browser checks pass.
+- [Evidence](evidence/alignment/players/overview-glass/README.md). Owner alignment remains pending.
+
+## 2026-10-15: Comparison honors and selector follow-up
+
+The alignment handoff controls this page. Instructions 49 through 56 replace season award rows
+with badge groups that show every honor, centered on each player's values. Badges wrap when space runs
+out. Season menus use distinct gold honor icons. Search results fit full names. The counting
+selector uses the shared menu and stays in its slot. The 1440 and 390 scoped glance checks pass.
+Lint, typecheck, 544 Vitest tests, 53 browser checks, and the production build pass, with one
+browser skip due to the fixture catalog. [Evidence](evidence/alignment/compare/season-honors/README.md).
+Owner alignment remains pending.
+
+## 2026-10-15: Comparison honors copy and fixed year context
+
+Alignment instructions 57 and 58 remove pending honors copy from the card and export. Empty
+honors use a dash. Year headings in the counting menu have a darker fill and remain labels
+that keyboard navigation skips. Live 1440 and 390 captures, exact honor alignment, and the
+scoped glance check pass. Lint, typecheck, 544 Vitest tests, 29 browser checks, and the production
+build pass. One browser test skips on the one-season fixture.
+[Evidence](evidence/alignment/compare/honors-context/README.md). Owner alignment remains pending.

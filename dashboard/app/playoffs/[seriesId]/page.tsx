@@ -70,7 +70,7 @@ export default async function PlayoffSeriesDetailPage({
           allowedPhases={["playoffs"]}
           initialSeason={detail.season}
           initialPhase="playoffs"
-          initialBeforeDate={cutoffDate || detail.cutoff_date || undefined}
+          initialBeforeDate={cutoffDate || detail.cutoff_date || dayAfter(detail.game_cards.map(card => card.game_date).filter((value): value is string => Boolean(value)).sort().at(-1))}
           showWindow={false}
           sampleSize={detail.team1.games_played}
           detailRows={[{ label: "Series", value: detail.series_id, mono: true }]}
@@ -78,4 +78,12 @@ export default async function PlayoffSeriesDetailPage({
       />
     </PageShell>
   );
+}
+
+/** The day after a series' last game: its scope runs through that game. */
+function dayAfter(day: string | undefined): string | undefined {
+  if (!day) return undefined;
+  const next = new Date(`${day}T00:00:00Z`);
+  next.setUTCDate(next.getUTCDate() + 1);
+  return next.toISOString().slice(0, 10);
 }

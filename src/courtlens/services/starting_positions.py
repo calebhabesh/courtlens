@@ -61,14 +61,22 @@ def _stat(path: Path) -> tuple[str, int, int]:
 
 
 def _verify(dataset: WorkbenchDataset, years: list[int], root: Path) -> None:
-    from courtlens.services.workbench_ingestion import workbench_content_sha256
+    from courtlens.services.workbench_ingestion import dataset_content_sha256, history_file
 
-    files = tuple(sorted(_stat(p) for p in root.glob("sportsdataverse_*/*") if p.is_file()))
+    patterns = ("sportsdataverse_*/*", "bbref_history_sealed/*")
+    raw = [p for pattern in patterns for p in root.glob(pattern)]
+    files = tuple(sorted(_stat(p) for p in raw if p.is_file()))
     key = (dataset.id, files)
     with _lock:
         verified = _verified.get(key)
     if verified is None:
-        verified = workbench_content_sha256(years, root)[0] == dataset.content_sha256
+        # A dataset sealed with the pre-2000-01 history names its game-log file; it must still be
+        # the newest seal, as it was when the dataset was imported.
+        sealed_with = ((dataset.coverage_json or {}).get("history") or {}).get("file")
+        history = history_file(root) if sealed_with else None
+        verified = (not sealed_with or (history is not None and history.name == sealed_with)) and (
+            dataset_content_sha256(years, root, history)[0] == dataset.content_sha256
+        )
         with _lock:
             if len(_verified) > 16:
                 _verified.clear()

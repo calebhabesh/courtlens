@@ -87,18 +87,18 @@ export function TrendsInvestigationView() {
   const exportCsv = () => result && downloadCsv(`courtlens_trends_${result.player_name.toLowerCase().replace(/\s+/g, "_")}_${result.season}.csv`,
     ["Metric", "Display Name", `Period A (${result.period_a.label})`, `Period B (${result.period_b.label})`, "Absolute Delta", "Percentage Delta (%)", "Period A Sample", "Period B Sample"],
     result.deltas.map(d => [d.metric_key, d.display_name, d.period_a_value ?? "", d.period_b_value ?? "", d.absolute_delta ?? "", d.percentage_delta ?? "", d.period_a_n, d.period_b_n]));
-  const periodSelect = (label: string, key: "periodAN" | "periodBN", current: number, prefix: string) => <Field label={label} layout="inline"><Select aria-label={label} value={String(current)} onChange={e => set({ [key]: e.target.value })}>{[5, 10, 15, 20].map(n => <option key={n} value={n}>{prefix} {n} games</option>)}</Select></Field>;
+  const periodSelect = (label: string, key: "periodAN" | "periodBN", current: number, prefix: string) => <Field label={label} layout="inline"><Select aria-label={label} value={String(current)} onChange={e => set({ [key]: e.target.value })}>{[5, 10, 15, 20].map(n => <option key={n} value={n}>{prefix} {n} Games</option>)}</Select></Field>;
   const rangePicker = (label: string, from: "periodAFrom" | "periodBFrom", to: "periodATo" | "periodBTo") => <>
     <Field label={`${label} from`} layout="inline"><DatePicker label={`${label} from`} value={range[from === "periodAFrom" ? "aFrom" : "bFrom"]} onChange={v => set({ [from]: v })} placeholder="Start" /></Field>
     <Field label="to" layout="inline"><DatePicker label={`${label} to`} value={range[to === "periodATo" ? "aTo" : "bTo"]} onChange={v => set({ [to]: v })} placeholder="End" /></Field>
   </>;
   const filters = view === "player" ? <>
     <PlayerLookup label="Target player" prefix="Target" name={data?.value?.player_name} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onSelect={id => { exampleState.cancelDefault(); set({ playerId: id, player_id: null, exampleSubject: null }); }} />
-    <Field label="Windows" layout="inline"><Select aria-label="Slicing mode" value={mode} onChange={e => set({ mode: e.target.value })}><option value="appearances">Consecutive appearances</option><option value="date_range">Calendar dates</option></Select></Field>
+    <Field label="Windows" layout="inline"><Select aria-label="Slicing mode" value={mode} onChange={e => set({ mode: e.target.value })}><option value="appearances">Consecutive Appearances</option><option value="date_range">Calendar Dates</option></Select></Field>
     {mode === "appearances" ? <>{periodSelect("Period A", "periodAN", periodAN, "Last")}{periodSelect("Period B", "periodBN", periodBN, "Prior")}</> : <>{rangePicker("Period A", "periodAFrom", "periodATo")}{rangePicker("Period B", "periodBFrom", "periodBTo")}</>}
   </> : <>
     <Field label="Metric" layout="inline"><Select aria-label="Metric" value={rankMetric} onChange={e => set({ rankMetric: e.target.value })}>{RANK_METRICS.map(([key, label]) => <option key={key} value={key}>{label}</option>)}</Select></Field>
-    <Field label="Order" layout="inline"><Select aria-label="Direction" value={rankDirection} onChange={e => set({ rankDirection: e.target.value })}><option value="desc">Largest increases</option><option value="asc">Largest drops</option></Select></Field>
+    <Field label="Order" layout="inline"><Select aria-label="Direction" value={rankDirection} onChange={e => set({ rankDirection: e.target.value })}><option value="desc">Largest Increases</option><option value="asc">Largest Drops</option></Select></Field>
   </>;
   const highlights = result?.deltas.filter(d => KEY_DELTAS.includes(d.metric_key)).sort((a, b) => KEY_DELTAS.indexOf(a.metric_key) - KEY_DELTAS.indexOf(b.metric_key)).slice(0, 4) ?? [];
   const leader = ranked?.value?.items[0];

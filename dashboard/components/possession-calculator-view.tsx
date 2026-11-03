@@ -22,8 +22,8 @@ export function PossessionCalculatorView() {
   const scenario = result;
   return <PageShell template="research" className="research-view calculator-view">
     <PageHeader title="Hypothetical Calculator" subtitle="Offensive rating from your own possession assumptions; nothing here is observed data." actions={<>
-      <Button size="lg" onClick={() => setInputs(defaults())}>Reset hypothetical defaults</Button>
-      {scenario && <Button size="lg" variant="primary" onClick={() => downloadResearch("courtlens-hypothetical-flow.json", { model: flowVersion, classification: "hypothetical_design_model", source: "user_assumptions", inputs: values, result: scenario, sensitivities: flowSensitivities(values) })}>Export scenario JSON</Button>}
+      <Button size="lg" onClick={() => setInputs(defaults())}>Reset Hypothetical Defaults</Button>
+      {scenario && <Button size="lg" variant="primary" onClick={() => downloadResearch("courtlens-hypothetical-flow.json", { model: flowVersion, classification: "hypothetical_design_model", source: "user_assumptions", inputs: values, result: scenario, sensitivities: flowSensitivities(values) })}>Export Scenario JSON</Button>}
     </>} />
     <FilterBar collapsible={false} label="Calculator model" summary="Hypothetical model" scope={<span className="research-scope-label">Independent repeated-chance design model · user assumptions</span>}
       details={<DataDetailsButton rows={[{ label: "Model", value: flowVersion, mono: true }, { label: "Classification", value: "Hypothetical design model" }, { label: "Source", value: "User assumptions" }]}>

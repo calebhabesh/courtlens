@@ -593,3 +593,28 @@ def aggregate(games: dict[str, dict[str, Any]], cutoff: str) -> dict[str, Any]:
             gid: g["facts"]["matchup_offensive_fga_deltas"] for gid, g in selected.items()
         },
     }
+
+
+def aggregate_by_team(games: dict[str, dict[str, Any]], cutoff: str) -> dict[str, Any]:
+    """Each player's extras per team: the same aggregation over one team's games at a time.
+
+    Every fact row already names the player's team in that game, so rows are keyed by
+    (player, team) and aggregated exactly as the season result is. League references (league
+    TS% for rTS) still come from every player's rows, as in the season result.
+    """
+    keyed = {
+        gid: {
+            **g,
+            "facts": {
+                **g["facts"],
+                "players": {f"{p}|{r['team']}": r for p, r in g["facts"]["players"].items()},
+            },
+        }
+        for gid, g in games.items()
+    }
+    body = aggregate(keyed, cutoff)
+    players: dict[str, dict[str, Any]] = defaultdict(dict)
+    for key, row in body["players"].items():
+        player_id, team_id = key.split("|")
+        players[player_id][team_id] = row
+    return {"cutoff": body["cutoff"], "league": body["league"], "players": dict(players)}

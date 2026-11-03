@@ -22,6 +22,10 @@ from courtlens.api.workbench_schemas import (
     CombineViewResponse,
     ComparePeriodsRequest,
     ComparePeriodsResponse,
+    ComparisonCareer,
+    ComparisonCareerResponse,
+    ComparisonGroupPlayer,
+    ComparisonGroupResponse,
     CreateCustomViewRequest,
     CreateJobRequest,
     CreateRankingBoardRequest,
@@ -53,7 +57,10 @@ from courtlens.api.workbench_schemas import (
     PeriodMode,
     PersonalWorkspaceState,
     PlayerBioResponse,
+    PlayerCareerResponse,
+    PlayerCareerSeason,
     PlayerComparisonResponse,
+    PlayerDashboardFeedsResponse,
     PlayerGameLogItem,
     PlayerGameLogResponse,
     PlayerMeasurementsDetailResponse,
@@ -72,6 +79,7 @@ from courtlens.api.workbench_schemas import (
     RankOperationResponse,
     ReorderViewsRequest,
     ResearchQuerySchema,
+    RosterShapeHistoryResponse,
     RosterShapesResponse,
     SavedInvestigationResponse,
     SaveInvestigationRequest,
@@ -87,6 +95,7 @@ from courtlens.api.workbench_schemas import (
     TeamResearchItem,
     TeamResearchResponse,
     TeamScheduleResponse,
+    TeamSixFactorsResponse,
     ThreePointVariationResponse,
     TierListDefinition,
     TrackingViewResponse,
@@ -127,12 +136,14 @@ from courtlens.services.analytical_ops import (
 )
 from courtlens.services.assistant.service import run_assistant_query
 from courtlens.services.assistant.status import get_assistant_status
+from courtlens.services.bbref_portraits import BBREF_PORTRAIT_SOURCE, prefers_bbref
 from courtlens.services.darko import darko_catalog_scope, darko_disclosure
 from courtlens.services.entity_lookup import (
     lookup_entities,
     resolve_lookup_binding,
     scoped_team_associations,
 )
+from courtlens.services.history_totals import peak_seasons, player_team_seasons
 from courtlens.services.identity_crosswalk import resolve_crosswalk
 from courtlens.services.impact_serving import (
     impact_catalog_scope,
@@ -144,6 +155,7 @@ from courtlens.services.measurements import (
     get_player_measurements_detail_service,
     query_measurements_service,
 )
+from courtlens.services.on_off import game_plus_minus
 from courtlens.services.personal_state import (
     VersionConflictError,
     add_custom_view,
@@ -169,15 +181,26 @@ from courtlens.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
-from courtlens.services.player_bio import player_bio
+from courtlens.services.player_bio import current_listings, player_bio
+from courtlens.services.player_honours import (
+    availability,
+    championships,
+    teams_by_last_appearance,
+)
+from courtlens.services.portrait_derivatives import (
+    PORTRAIT_DERIVATIVE_MIME,
+    PORTRAIT_SIZES,
+    portrait_derivative,
+)
 from courtlens.services.position_estimates import (
     draft_class_player_ids,
     draft_classes,
     position_player_ids,
     season_positions,
 )
-from courtlens.services.roster_shapes import roster_shapes
+from courtlens.services.roster_shapes import roster_shape_history, roster_shapes
 from courtlens.services.schedule_dates import schedule_dates
+from courtlens.services.season_portraits import find_season_portrait
 from courtlens.services.stats_catalog import stats_catalog_scope
 from courtlens.services.stats_cohort_cache import presentation_page
 from courtlens.services.stats_engine import (
@@ -202,7 +225,9 @@ from courtlens.services.team_analytics import (
     get_team_peers,
     get_team_schedule,
     get_team_three_point_variation,
+    get_teams_six_factors,
 )
+from courtlens.services.team_scoring import attach_team_scoring, load_team_scoring
 from courtlens.services.value_archetypes import (
     load_value_store,
     unknown_row,
@@ -210,6 +235,7 @@ from courtlens.services.value_archetypes import (
     value_archetypes_capability,
     value_archetypes_summary,
 )
+from courtlens.services.wikidata_portraits import WIKIDATA_PORTRAIT_SOURCE, file_page
 from courtlens.services.workbench_analytics import (
     ResearchQuery,
     compare_players,
@@ -239,6 +265,7 @@ from courtlens.services.wowy_serving import wowy_capability, wowy_view
 from courtlens.workbench_models import (
     ModelPolicyActivation,
     PlayerPortrait,
+    PlayerSeasonPortrait,
     SavedInvestigation,
     WorkbenchIdentity,
     WorkbenchJob,
@@ -441,10 +468,22 @@ def get_impact(
 def get_roster_shapes(
     dataset_id: str | None = Query(None, alias="datasetId"),
     release_id: str | None = Query(None, alias="releaseId"),
+    season: str | None = Query(None, pattern=r"^\d{4}-\d{2}$"),
     session: Session = Depends(get_db),
 ) -> RosterShapesResponse:
-    """PC10: 2026-27 projected rosters sized by sealed BPR value over replacement."""
-    return RosterShapesResponse.model_validate(roster_shapes(session, dataset_id, release_id))
+    """Roster Shapes v2: rosters sized by DARKO DPM, shaped by an estimated ease of fit."""
+    return RosterShapesResponse.model_validate(
+        roster_shapes(session, dataset_id, release_id, season)
+    )
+
+
+@router.get("/roster-shapes/history", response_model=RosterShapeHistoryResponse)
+def get_roster_shape_history(
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> RosterShapeHistoryResponse:
+    """Every franchise's box fill in each season with a sealed DARKO snapshot."""
+    return RosterShapeHistoryResponse.model_validate(roster_shape_history(session, release_id))
 
 
 SEASON_PATTERN = r"^\d{4}-\d{2}$"
@@ -470,11 +509,62 @@ def get_season_matchups(
     phase: FeedPhase | None = None,
     player_id: str | None = Query(None, alias="playerId", max_length=20),
     side: Literal["offense", "defense"] = "offense",
+    limit: int = Query(15, ge=1, le=500),
+    opponent_id: str | None = Query(None, alias="opponentId", max_length=20),
     session: Session = Depends(get_db),
 ) -> MatchupsViewResponse:
-    """PC11 Player Matchups from NBA tracking season matchups (who guarded whom)."""
-    view = matchups_view(session, season, phase, player_id, side)
+    """PC11 Player Matchups from NBA tracking season matchups (who guarded whom), optionally with
+    one opponent's direct matchup both ways."""
+    view = matchups_view(
+        session, season, phase, player_id, side, limit=limit, opponent_id=opponent_id
+    )
     return MatchupsViewResponse.model_validate(rounded(view))
+
+
+@router.get("/player-twins/players")
+def get_player_twins_players() -> dict[str, Any]:
+    """Row 17: every player in the Player Twins data, for the all-seasons player search."""
+    from courtlens.services.player_twins import player_index
+
+    return player_index()
+
+
+@router.get("/player-twins")
+def get_player_twins(
+    mode: Literal["shot", "box", "all"] = "shot",
+    season: str | None = Query(None, pattern=SEASON_PATTERN),
+    player_id: str | None = Query(None, alias="playerId", max_length=20),
+    pool: Literal["same", "all"] = "all",
+    from_season: str | None = Query(None, alias="from", pattern=SEASON_PATTERN),
+    to_season: str | None = Query(None, alias="to", pattern=SEASON_PATTERN),
+    min_possessions: int = Query(1000, alias="minPoss", ge=0, le=6000),
+    exclude_own: bool = Query(False, alias="excludeOwn"),
+    position: Literal["any", "same"] = "any",
+    weights: str | None = Query(None, alias="w", max_length=400),
+    versus: str | None = Query(None, alias="vs", max_length=40),
+    limit: int = Query(12, ge=1, le=100),
+    session: Session = Depends(get_db),
+) -> dict[str, Any]:
+    """Row 17 Player Twins: nearest player-seasons by shot, box or combined profile (pbpstats)."""
+    from courtlens.services.player_twins import player_twins_view
+
+    view = player_twins_view(
+        session,
+        mode=mode,
+        season=season,
+        player_id=player_id,
+        pool=pool,
+        from_season=from_season,
+        to_season=to_season,
+        min_possessions=min_possessions,
+        exclude_own=exclude_own,
+        by_position=position == "same",
+        weights=weights,
+        versus=versus,
+        limit=limit,
+    )
+    result: dict[str, Any] = rounded(view)
+    return result
 
 
 @router.get("/play-types", response_model=PlayTypesViewResponse)
@@ -500,6 +590,20 @@ def get_tracking(
     """PC11 league tracking table (season totals; never joined into date-windowed Stats)."""
     view = tracking_view(session, season, phase, group)
     return TrackingViewResponse.model_validate(rounded(view))
+
+
+@router.get("/player-dashboard/feeds", response_model=PlayerDashboardFeedsResponse)
+def get_player_dashboard_feeds(
+    player_id: str = Query(..., alias="playerId", max_length=20),
+    season: str = Query(..., pattern=SEASON_PATTERN),
+    phase: FeedPhase = "regular_season",
+    session: Session = Depends(get_db),
+) -> PlayerDashboardFeedsResponse:
+    """Player Dashboard tracking cells: passing, defended shots, hustle and play-type families."""
+    from courtlens.services.player_dashboard import player_dashboard_feeds
+
+    view = player_dashboard_feeds(session, player_id, season, phase)
+    return PlayerDashboardFeedsResponse.model_validate(rounded(view))
 
 
 @router.get("/players/{player_id}/tracking", response_model=PlayerTrackingResponse)
@@ -555,6 +659,223 @@ def get_draft_classes(session: Session = Depends(get_db)) -> DraftClassesRespons
     return DraftClassesResponse(classes=draft_classes(session))
 
 
+@router.get("/players/{player_id}/career", response_model=PlayerCareerResponse)
+def get_player_career(
+    player_id: str,
+    phase: Literal["regular_season", "playoffs"] = "regular_season",
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> PlayerCareerResponse:
+    """Player page career table in one read: every season row with its league table ranks."""
+    from courtlens.services.player_career import player_career
+
+    career = player_career(session, player_id, phase, release_id)
+
+    def item(row: dict[str, Any] | None, season: str | list[str]) -> PlayerResearchItem | None:
+        if row is None:
+            return None
+        return PlayerResearchItem(
+            **{
+                key: row.get(key)
+                for key in (
+                    "player_id",
+                    "player_name",
+                    "teams",
+                    "stints_count",
+                    "games_played",
+                    "total_minutes",
+                    "metrics",
+                    "sample_sizes",
+                    "impact_support",
+                    "table_qualified",
+                    "table_percentiles",
+                    "table_cohort_sample_sizes",
+                )
+            },
+            position=season_positions(season).get(player_id),
+        )
+
+    return PlayerCareerResponse(
+        player_id=player_id,
+        release_id=career.context.release_id,
+        phase=career.phase,
+        seasons=[
+            PlayerCareerSeason(season=entry.season, item=item(entry.item, entry.season))
+            for entry in career.seasons
+        ],
+        career=item(career.career, [entry.season for entry in career.seasons]),
+    )
+
+
+@router.get("/compare/career", response_model=ComparisonCareerResponse)
+def get_comparison_career(
+    player_a: str = Query(..., alias="playerA"),
+    player_b: str = Query(..., alias="playerB"),
+    season: str = Query(..., pattern=r"^\d{4}-\d{2}$"),
+    before_date: date = Query(..., alias="beforeDate"),
+    phase: Literal["regular_season", "playoffs"] = "regular_season",
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> ComparisonCareerResponse:
+    """Both players' careers through the comparison cutoff, for Compare's Career view."""
+    from courtlens.services.player_career import career_through
+
+    careers = career_through(session, [player_a, player_b], phase, season, before_date, release_id)
+    base = resolve_workbench_context(session, release_id=release_id, requested_phase=phase)
+    available = availability(session, base.dataset_id, phase, before_date, [player_a, player_b])
+
+    def entry(player_id: str) -> ComparisonCareer:
+        career = careers[player_id]
+        row = career.item
+        return ComparisonCareer(
+            player_id=player_id,
+            seasons=career.seasons,
+            availability=available.get(player_id) if career.seasons else None,
+            item=PlayerResearchItem(**{key: row.get(key) for key in _RESEARCH_ITEM_FIELDS})
+            if row is not None
+            else None,
+        )
+
+    return ComparisonCareerResponse(
+        season=season,
+        phase=phase,
+        before_date=before_date.isoformat(),
+        player_a=entry(player_a),
+        player_b=entry(player_b),
+    )
+
+
+_RESEARCH_ITEM_FIELDS = (
+    "player_id",
+    "player_name",
+    "teams",
+    "stints_count",
+    "games_played",
+    "total_minutes",
+    "metrics",
+    "sample_sizes",
+)
+
+
+@router.get("/compare/group", response_model=ComparisonGroupResponse)
+def get_comparison_group(
+    player_ids: list[str] = Query(..., alias="playerId", min_length=1, max_length=5),
+    season: str | None = Query(None, pattern=r"^\d{4}-\d{2}$"),
+    phase: Literal["regular_season", "playoffs"] = "regular_season",
+    before_date: date | None = Query(None, alias="beforeDate"),
+    window: WindowKind = WindowKind.SEASON,
+    span: Literal["season", "career"] = "season",
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> ComparisonGroupResponse:
+    """Up to five players under one scope, one column each, for Compare's grid (row 3, 64).
+
+    Each column carries the player's Stats row (every counting mode), or their career through
+    the cutoff, with the card's extras: teams by last appearance, titles and availability.
+    One aggregate Stats query serves every player.
+    """
+    from courtlens.domain.query_spec import WindowSpec
+    from courtlens.domain.stats_presentation import StatsPresentation
+    from courtlens.services.player_career import career_query, career_through, serving_item
+    from courtlens.services.workbench_analytics import season_context
+
+    ids = list(dict.fromkeys(player_ids))
+    context = resolve_workbench_context(
+        session,
+        release_id=release_id,
+        requested_season=season,
+        requested_phase=phase,
+        requested_before_date=before_date,
+        requested_window=window.value,
+    )
+    if context.dataset_type != "workbench":
+        raise HTTPException(status_code=422, detail="Grid comparisons need a workbench release")
+    cutoff = context.before_date
+    rows: dict[str, dict[str, Any] | None] = {}
+    seasons: dict[str, list[str]] = {}
+    if span == "career":
+        for player_id, career in career_through(
+            session, ids, phase, context.season, cutoff, release_id
+        ).items():
+            rows[player_id], seasons[player_id] = career.item, career.seasons
+    else:
+        query = career_query(context, context.season, cutoff).model_copy(
+            update={"window": WindowSpec(kind=window)}
+        )
+        found, _, _, _ = execute_stats_query(
+            session,
+            season_context(context, context.season, cutoff),
+            query,
+            is_export=True,
+            max_export_rows=len(ids),
+            presentation=StatsPresentation(),
+            cohort_percentiles=False,
+            subject_player_ids=ids,
+        )
+        rows = {row["player_id"]: serving_item(row) for row in found}
+    ordered = teams_by_last_appearance(
+        session,
+        context.dataset_id,
+        None if span == "career" else context.season,
+        context.phase,
+        cutoff,
+        ids,
+    )
+    titles = championships(session, context.dataset_id, cutoff, ids)
+    # Availability needs the teams' schedule as its span: season-to-date, or the whole career.
+    available = (
+        availability(
+            session,
+            context.dataset_id,
+            context.phase,
+            cutoff,
+            ids,
+            None if span == "career" else context.season,
+        )
+        if span == "career" or window == WindowKind.SEASON
+        else {}
+    )
+    names: dict[str, str] = {
+        external_id: display_name
+        for external_id, display_name in session.execute(
+            select(WorkbenchIdentity.external_id, WorkbenchIdentity.display_name).where(
+                WorkbenchIdentity.kind == "player", WorkbenchIdentity.external_id.in_(ids)
+            )
+        ).all()
+    }
+
+    unknown = [player_id for player_id in ids if player_id not in names and player_id not in rows]
+    if unknown:
+        raise HTTPException(status_code=404, detail="player not found in snapshot")
+
+    def column(player_id: str) -> ComparisonGroupPlayer:
+        row = rows.get(player_id)
+        played = row is not None and bool(row.get("games_played"))
+        return ComparisonGroupPlayer(
+            player_id=player_id,
+            name=names.get(player_id) or (row or {}).get("player_name") or player_id,
+            item=PlayerResearchItem(**{key: row.get(key) for key in _RESEARCH_ITEM_FIELDS})
+            if row is not None
+            else None,
+            seasons=seasons.get(player_id) if span == "career" else None,
+            teams_chronological=ordered.get(player_id, []),
+            championships=titles.get(player_id),
+            availability=available.get(player_id) if played else None,
+        )
+
+    return ComparisonGroupResponse(
+        context={
+            "release_id": context.release_id,
+            "season": context.season,
+            "phase": context.phase,
+            "before_date": cutoff.isoformat(),
+            "window": window.value,
+        },
+        span=span,
+        players=[column(player_id) for player_id in ids],
+    )
+
+
 @router.get("/player-seasons", response_model=PlayerSeasonsResponse)
 def get_player_seasons(
     player_ids: list[str] = Query(..., alias="playerId", min_length=1, max_length=8),
@@ -562,9 +883,12 @@ def get_player_seasons(
     release_id: str | None = Query(None, alias="releaseId"),
     session: Session = Depends(get_db),
 ) -> PlayerSeasonsResponse:
-    """Seasons each player has game rows in, so a stat trend queries only those seasons."""
+    """Seasons each player played (game rows or season totals), so a trend queries only those."""
     context = resolve_workbench_context(session, release_id=release_id, requested_phase=phase)
     seasons: dict[str, list[str]] = {pid: [] for pid in player_ids}
+    peaks: dict[str, str | None] = dict.fromkeys(player_ids)
+    peak_basis: dict[str, str | None] = dict.fromkeys(player_ids)
+    active: dict[str, bool | None] = dict.fromkeys(player_ids)
     if context.dataset_type == "workbench":
         rows = session.execute(
             select(WorkbenchPlayerGame.player_id, WorkbenchPlayerGame.season)
@@ -577,10 +901,28 @@ def get_player_seasons(
         ).all()
         for pid, season in rows:
             seasons[pid].append(season)
+        # Seasons before the game logs, served as season totals.
+        for pid, season, _, _, _ in player_team_seasons(
+            session, context.totals_sha, context.totals_seasons, player_ids=player_ids, phase=phase
+        ):
+            if season not in seasons[pid]:
+                seasons[pid].append(season)
+        # The landing season when a player is picked outside the seasons they played.
+        for pid, peak in peak_seasons(session, context.totals_sha, player_ids).items():
+            if peak is not None and peak[0] in seasons[pid]:
+                peaks[pid], peak_basis[pid] = peak
+        # Active means on an NBA roster today; a source placing them off every roster says no.
+        teams, statuses = current_listings(session, player_ids)
+        for pid in player_ids:
+            active[pid] = True if pid in teams else False if pid in statuses else None
     else:
         seasons = {pid: [context.season] for pid in player_ids}
     return PlayerSeasonsResponse(
-        phase=phase, seasons={pid: sorted(values) for pid, values in seasons.items()}
+        phase=phase,
+        seasons={pid: sorted(values) for pid, values in seasons.items()},
+        peak=peaks,
+        peak_basis=peak_basis,
+        active=active,
     )
 
 
@@ -697,14 +1039,16 @@ def execute_query_endpoint(
         else None
     )
     eligible: int | None = None
+    empty: list[str] | None = None
     if cached is not None:
-        items_raw, total_count, next_cursor, has_more, eligible = cached
+        items_raw, total_count, next_cursor, has_more, eligible, empty = cached
     else:
         items_raw, total_count, next_cursor, has_more = execute_stats_query(
             session, context, spec, presentation=payload.presentation
         )
     cohort = (
         stats_cohort_summary(session, context, spec, payload.presentation, eligible)
+        | {"empty_fields": empty}
         if payload.presentation is not None
         else None
     )
@@ -715,6 +1059,11 @@ def execute_query_endpoint(
 
         table_cohort = annotate_players(session, context, spec, items_raw)
 
+    listings, statuses = current_listings(
+        session,
+        [r["player_id"] for r in items_raw],
+        {r["player_id"]: r["player_name"] for r in items_raw},
+    )
     items = [
         PlayerResearchItem(
             player_id=r["player_id"],
@@ -739,6 +1088,8 @@ def execute_query_endpoint(
             table_percentiles=r.get("table_percentiles"),
             table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),
             position=positions.get(r["player_id"]),
+            current_team=listings.get(r["player_id"]),
+            current_status=statuses.get(r["player_id"]),
         )
         for r in items_raw
     ]
@@ -995,7 +1346,19 @@ def get_player_games_endpoint(
         session, context, player_id=id, limit=limit, cursor=cursor
     )
 
+    # +/- is not in the box score; accepted stints supply it, unknown elsewhere.
+    plus_minus = game_plus_minus(
+        session, context, id, [(g["game_id"], bool(g["minutes"])) for g in log_items]
+    )
+    for g in log_items:
+        g["stats"]["plus_minus"] = plus_minus.get(g["game_id"])
     games = [PlayerGameLogItem(**g) for g in log_items]
+    # The season's estimated position (the Stats table's), when one exists.
+    from courtlens.services.position_estimates import season_positions
+
+    position = season_positions(context.season).get(id)
+    if position:
+        player_dict = {**player_dict, "position": position}
 
     return PlayerGameLogResponse(
         player=player_dict,
@@ -1042,6 +1405,39 @@ def get_teams(
     )
 
 
+@router.get("/teams/six-factors", response_model=TeamSixFactorsResponse)
+def get_teams_six_factors_endpoint(
+    release_id: str | None = Query(None, alias="releaseId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    window_days: int | None = Query(None, alias="windowDays", ge=1, le=366),
+    offense_luck: float = Query(0.0, alias="offenseLuck", ge=0.0, le=1.0),
+    defense_luck: float = Query(0.0, alias="defenseLuck", ge=0.0, le=1.0),
+    venue: Literal["home", "away"] | None = Query(None),
+    session: Session = Depends(get_db),
+) -> TeamSixFactorsResponse:
+    """Every team's six factors (per 100 relative to league), schedule, luck and standings."""
+    context = resolve_workbench_context(
+        session,
+        release_id=release_id,
+        requested_season=season,
+        requested_phase=phase,
+        requested_before_date=before_date,
+    )
+    result = get_teams_six_factors(
+        session,
+        context,
+        window_days=window_days,
+        offense_luck=offense_luck,
+        defense_luck=defense_luck,
+        venue=venue,
+    )
+    scoring_rows = load_team_scoring(session, context.season, context.phase)
+    attach_team_scoring(result, scoring_rows, window_days=window_days, venue=venue)
+    return TeamSixFactorsResponse(**result)
+
+
 @router.get("/teams/{id}", response_model=TeamDetailResponse)
 def get_team_detail_endpoint(
     id: str,
@@ -1062,6 +1458,32 @@ def get_team_detail_endpoint(
 
     detail = get_team_detail(session, context, team_id=id)
     return TeamDetailResponse(**detail)
+
+
+@router.get("/teams/{id}/starters")
+def get_team_starters_endpoint(
+    id: str,
+    release_id: str | None = Query(None, alias="releaseId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    session: Session = Depends(get_db),
+) -> dict[str, Any]:
+    """Most-used observed starting five from admitted box-score positions (Team Comparison)."""
+    from courtlens.services.starter_evidence import team_starters
+    from courtlens.services.starting_positions import PositionEvidenceUnavailable
+
+    context = resolve_workbench_context(
+        session,
+        release_id=release_id,
+        requested_season=season,
+        requested_phase=phase,
+        requested_before_date=before_date,
+    )
+    try:
+        return team_starters(session, context, id)
+    except PositionEvidenceUnavailable as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @router.get("/teams/{id}/schedule", response_model=TeamScheduleResponse)
@@ -1181,11 +1603,14 @@ def get_playoffs_endpoint(
         None, description="Optional temporal replay cutoff date (YYYY-MM-DD)"
     ),
     cutoffDate: date | None = Query(None, description="CamelCase alias for cutoff_date"),
+    release_id: str | None = Query(None, alias="releaseId"),
     session: Session = Depends(get_db),
 ) -> PlayoffBracketResponse:
     """Retrieve canonical playoff bracket hierarchy, rounds 1-4, and seed evidence."""
     effective_cutoff = cutoff_date or cutoffDate
-    return get_playoff_bracket(session, season=season, cutoff_date=effective_cutoff)
+    return get_playoff_bracket(
+        session, season=season, cutoff_date=effective_cutoff, release_id=release_id
+    )
 
 
 @router.get("/playoffs/series/{series_id}", response_model=PlayoffSeriesDetailResponse)
@@ -1195,12 +1620,13 @@ def get_playoff_series_detail_endpoint(
         None, description="Optional temporal replay cutoff date (YYYY-MM-DD)"
     ),
     cutoffDate: date | None = Query(None, description="CamelCase alias for cutoff_date"),
+    release_id: str | None = Query(None, alias="releaseId"),
     session: Session = Depends(get_db),
 ) -> PlayoffSeriesDetailResponse:
     """Retrieve playoff series detail with 7-game cards, Four Factors, and player stats."""
     effective_cutoff = cutoff_date or cutoffDate
     return get_playoff_series_detail(
-        session, series_id_or_slug=series_id, cutoff_date=effective_cutoff
+        session, series_id_or_slug=series_id, cutoff_date=effective_cutoff, release_id=release_id
     )
 
 
@@ -1251,10 +1677,53 @@ def compare_players_endpoint(
         window=context.window,
     )
 
+    ordered = teams_by_last_appearance(
+        session,
+        context.dataset_id,
+        context.season,
+        context.phase,
+        context.before_date,
+        [target_a, target_b],
+    )
+    titles = championships(session, context.dataset_id, context.before_date, [target_a, target_b])
+    # Availability needs the season's team schedule as its span, so only season-to-date has it.
+    available = (
+        availability(
+            session,
+            context.dataset_id,
+            context.phase,
+            context.before_date,
+            [target_a, target_b],
+            context.season,
+        )
+        if context.window == "season"
+        else {}
+    )
+
+    # A player without games in the scope has no profile name; use the identity catalog's name
+    # instead of echoing the ID (alignment row 3, 39).
+    names: dict[str, str] = {
+        external_id: display_name
+        for external_id, display_name in session.execute(
+            select(WorkbenchIdentity.external_id, WorkbenchIdentity.display_name).where(
+                WorkbenchIdentity.kind == "player",
+                WorkbenchIdentity.external_id.in_([target_a, target_b]),
+            )
+        ).all()
+    }
+
     # API-only identity enrichment leaves analytical/saved serializers unchanged.
     def with_teams(player: dict[str, Any]) -> dict[str, Any]:
         association = associations.get(player["id"])
-        return {**player, "teams": association.teams if association else []}
+        name = player.get("name")
+        return {
+            **player,
+            "name": names.get(player["id"], name) if not name or name == player["id"] else name,
+            "teams": association.teams if association else [],
+            "teams_chronological": ordered.get(player["id"], []),
+            "championships": titles.get(player["id"]),
+            "availability": available.get(player["id"]),
+        }
 
     return PlayerComparisonResponse(
         context=result["context"],
@@ -1482,28 +1951,141 @@ def get_player_portrait_media(hash: str, session: Session = Depends(get_db)) -> 
     return FileResponse(path, media_type=portrait.mime_type)
 
 
-@router.get("/players/{id}/portrait")
-def get_player_portrait(id: str, session: Session = Depends(get_db)) -> FileResponse:
-    """Serve cached player portrait image by player ID with cache headers."""
-    portrait = session.scalar(
-        select(PlayerPortrait)
-        .where(
-            PlayerPortrait.player_id == id,
+@router.get("/portrait-credits")
+def get_portrait_credits(session: Session = Depends(get_db)) -> dict[str, Any]:
+    """Wikimedia Commons photos in use, with author, licence and file page (their licences
+    require the credit): team-season photos, then career photos (no season or team).
+    NBA.com and Basketball-Reference headshots are listed by source."""
+    from courtlens.services.commons_portraits import COMMONS_PORTRAIT_SOURCE
+
+    rows = session.scalars(
+        select(PlayerSeasonPortrait).where(
+            PlayerSeasonPortrait.source_name == COMMONS_PORTRAIT_SOURCE,
+            PlayerSeasonPortrait.status == "active",
+        )
+    ).all()
+    # One name per player (an identity can be held under several namespaces).
+    names = {
+        str(external_id): str(display_name)
+        for external_id, display_name in session.execute(
+            select(WorkbenchIdentity.external_id, WorkbenchIdentity.display_name).where(
+                WorkbenchIdentity.kind == "player",
+                WorkbenchIdentity.external_id.in_(sorted({row.player_id for row in rows})),
+            )
+        )
+    }
+    career = session.scalars(
+        select(PlayerPortrait).where(
+            PlayerPortrait.source_name == WIKIDATA_PORTRAIT_SOURCE,
             PlayerPortrait.status == "active",
         )
-        .order_by(PlayerPortrait.acquired_at.desc())
-        .limit(1)
+    ).all()
+    career_ids = sorted({row.player_id for row in career} - set(names))
+    if career_ids:
+        # Players before 2000-01 are named only by their Basketball-Reference profile.
+        from courtlens.reference_models import BbrefPlayerProfile
+
+        for player_id, profile in session.execute(
+            select(BbrefPlayerProfile.player_id, BbrefPlayerProfile.profile)
+            .where(BbrefPlayerProfile.player_id.in_(career_ids))
+            .order_by(BbrefPlayerProfile.observed_at)
+        ):
+            if isinstance(profile, dict) and profile.get("name"):
+                names[str(player_id)] = str(profile["name"])
+    return {
+        "commons": [
+            {
+                "player_id": row.player_id,
+                "name": names.get(row.player_id, row.player_id),
+                "season": row.season,
+                "team": row.team_tricode,
+                "credit": row.attribution,
+                "source_url": row.source_url,
+            }
+            for row in sorted(rows, key=lambda r: (names.get(r.player_id, r.player_id), r.season))
+        ]
+        + [
+            {
+                "player_id": row.player_id,
+                "name": names.get(row.player_id, row.player_id),
+                "season": None,
+                "team": None,
+                "credit": row.attribution,
+                "source_url": file_page(row.attribution),
+            }
+            for row in sorted(career, key=lambda r: names.get(r.player_id, r.player_id))
+        ],
+    }
+
+
+@router.get("/players/{id}/portrait", response_model=None)
+def get_player_portrait(
+    id: str,
+    size: int | None = Query(
+        None, description=f"Square face-framed derivative in pixels: one of {PORTRAIT_SIZES}"
+    ),
+    season: str | None = Query(
+        None,
+        pattern=r"^\d{4}-\d{2}$",
+        description=(
+            "Prefer the player's headshot from this season (NBA.com team-season photos, "
+            "2015-16 on)."
+        ),
+    ),
+    team: str | None = Query(
+        None,
+        pattern=r"^[A-Za-z]{2,4}$|^[0-9]{1,12}$",
+        description="With season: prefer that team's headshot (tricode or NBA team ID).",
+    ),
+    session: Session = Depends(get_db),
+) -> FileResponse | Response:
+    """Serve a player's cached portrait, or a display-sized derivative of it, by player ID.
+
+    With ``season`` the team-season headshot is served when one was acquired; otherwise the
+    current one. ``X-Portrait-Season`` names the season actually served (absent for current).
+    The Basketball-Reference career photo is the fallback when NBA.com has no photo, and comes
+    first for players whose NBA.com photo is from after their career (a coaching photo), so a
+    player is never shown out of uniform (alignment row 9, follow-ups 15 and 16). A Wikimedia
+    Commons career photo found through Wikidata is the last resort.
+    """
+    if size is not None and size not in PORTRAIT_SIZES:
+        raise HTTPException(status_code=422, detail=f"size must be one of {PORTRAIT_SIZES}")
+
+    def current(kind: str) -> PlayerPortrait | None:
+        """kind: 'bbref' (career headshot), 'commons' (Wikidata career photo) or 'nba'."""
+        sources = {"bbref": BBREF_PORTRAIT_SOURCE, "commons": WIKIDATA_PORTRAIT_SOURCE}
+        source = (
+            PlayerPortrait.source_name == sources[kind]
+            if kind in sources
+            else PlayerPortrait.source_name.not_in(sources.values())
+        )
+        return session.scalar(
+            select(PlayerPortrait)
+            .where(PlayerPortrait.player_id == id, PlayerPortrait.status == "active", source)
+            .order_by(PlayerPortrait.acquired_at.desc())
+            .limit(1)
+        )
+
+    seasonal = find_season_portrait(session, id, season, team) if season else None
+    order = ("bbref", "nba") if prefers_bbref(id) else ("nba", "bbref")
+    # The Commons career photo only stands in when neither headshot exists.
+    portrait: PlayerPortrait | PlayerSeasonPortrait | None = (
+        seasonal or current(order[0]) or current(order[1]) or current("commons")
     )
-    if portrait is None:
+    if portrait is None or portrait.storage_path is None or portrait.content_sha256 is None:
         raise HTTPException(status_code=404, detail="Portrait not found for player")
+    headers = {"Cache-Control": "public, max-age=86400"}
+    if seasonal is not None:
+        headers["X-Portrait-Season"] = seasonal.season
     path = Path(portrait.storage_path)
     if not path.exists():
         raise HTTPException(status_code=404, detail="Portrait file missing on disk")
-    return FileResponse(
-        path,
-        media_type=portrait.mime_type,
-        headers={"Cache-Control": "public, max-age=86400"},
-    )
+    if size is not None:
+        content = portrait_derivative(
+            path, portrait.content_sha256, size, get_settings().portraits_cache_path
+        )
+        return Response(content, media_type=PORTRAIT_DERIVATIVE_MIME, headers=headers)
+    return FileResponse(path, media_type=portrait.mime_type or "image/png", headers=headers)
 
 
 @router.get("/forecasts/evaluation", response_model=PointsForecastEvaluationResponse)

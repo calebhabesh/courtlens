@@ -52,7 +52,7 @@ export function SavedOperationLibrary({ legacy, legacyError }: { legacy: SavedIn
         <h2>Saved Analytical Operations</h2>
         {loading && <p role="status" className="sr-only">Loading retained operations…</p>}
         {error && <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => { setLoading(true); setRetry(value => value + 1); }}>Retry library</Button>}>{error}</GatedNote></div>}
-        {!loading && !error && items.length === 0 && <GatedNote action={<ButtonLink size="lg" href="/research/ask">Run an investigation without AI</ButtonLink>} why={<p>Explicitly retained manual or conversational results. Questions are optional metadata; provider narrative is excluded.</p>}>No retained operations on this page.</GatedNote>}
+        {!loading && !error && items.length === 0 && <GatedNote action={<ButtonLink size="lg" href="/research/ask">Run an Investigation Without AI</ButtonLink>} why={<p>Explicitly retained manual or conversational results. Questions are optional metadata; provider narrative is excluded.</p>}>No retained operations on this page.</GatedNote>}
         {loading && <Skeleton height={240} />}
         {!loading && !error && items.length > 0 && <div className="table-wrapper research-table" role="region" aria-label="Saved operations table" tabIndex={0}>
           <table className="data-table">

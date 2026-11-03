@@ -15,9 +15,9 @@ export function StatsHelpRow() {
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
   return (
     <div className="stats-help-row" role="group" aria-label="Page help">
-      <Button size="lg" tone="console" icon="help" onClick={() => setHowToOpen(true)}>How to Use This Page</Button>
-      <ButtonLink size="lg" tone="console" icon="page" href="/stats/glossary">Stats Glossary</ButtonLink>
-      <Button size="lg" tone="console" icon="keyboard" onClick={() => setHotkeysOpen(true)}>Hotkeys</Button>
+      <Button size="sm" tone="console" icon="help" onClick={() => setHowToOpen(true)}>How to Use This Page</Button>
+      <ButtonLink size="sm" tone="console" icon="page" href="/stats/glossary">Stats Glossary</ButtonLink>
+      <Button size="sm" tone="console" icon="keyboard" onClick={() => setHotkeysOpen(true)}>Hotkeys</Button>
       <Modal isOpen={howToOpen} onClose={() => setHowToOpen(false)} title="How to use this page" className="stats-how-to">
         <ul className="stats-how-to-list">
           <li>Pick a season, Regular or Playoffs, and optionally a team. Through and Window narrow the dates counted.</li>
@@ -26,6 +26,8 @@ export function StatsHelpRow() {
           <li>Small numbers under each value are league percentiles among qualified players; Rules above the table gives the cutoff.</li>
           <li>Hover or focus a row to preview a player. Use + to add players to a comparison.</li>
           <li>Click a column header to sort. The filter button sets minimum games and minutes.</li>
+          <li>Overview ranks by DARKO DPM when it rates the season (daily during the season), otherwise by minutes.</li>
+          <li>Columns with no values yet for the season are hidden; the eye button shows them.</li>
         </ul>
       </Modal>
       <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
@@ -65,7 +67,7 @@ export function StatsTeamSelect() {
   const choose = (tricode: string | null) => { setOpen(false); set({ teamId: tricode, team_id: null }); };
   return (
     <>
-      <Button size="lg" tone="console" data-selected={selected ? "true" : undefined} onClick={() => setOpen(true)}
+      <Button size="sm" tone="console" data-selected={selected ? "true" : undefined} onClick={() => setOpen(true)}
         aria-haspopup="dialog" aria-label={selected ? `Team: ${selected.name}. Change team` : "Select Team"}>
         {selected ? <><TeamLogo team={selected.tricode} size={20} />{selected.tricode}</> : "Select Team"}
       </Button>
@@ -79,15 +81,15 @@ export function StatsTeamSelect() {
             </button>
           ))}
         </div>
-        {selected && <button type="button" className="stats-team-clear" onClick={() => choose(null)}>Show all teams</button>}
+        {selected && <button type="button" className="stats-team-clear" onClick={() => choose(null)}>Show All Teams</button>}
       </Modal>
     </>
   );
 }
 
 const POSITIONS = [
-  { value: "PG", label: "Point guards" }, { value: "SG", label: "Shooting guards" },
-  { value: "SF", label: "Small forwards" }, { value: "PF", label: "Power forwards" }, { value: "C", label: "Centers" }
+  { value: "PG", label: "Point Guards" }, { value: "SG", label: "Shooting Guards" },
+  { value: "SF", label: "Small Forwards" }, { value: "PF", label: "Power Forwards" }, { value: "C", label: "Centers" }
 ] as const;
 
 /**
@@ -112,7 +114,7 @@ export function StatsPositionChips() {
     <div className="stats-position-chips" role="group" aria-label="Estimated positions"
       title="Estimated positions for this season from listed position, size and box-score rates (not a roster listing).">
       {POSITIONS.map(position => (
-        <Chip key={position.value} size="lg" tone="console" pressed={active.has(position.value)}
+        <Chip key={position.value} size="sm" tone="console" pressed={active.has(position.value)}
           aria-label={position.label} onClick={() => toggle(position.value)}>{position.value}</Chip>
       ))}
     </div>
@@ -126,7 +128,7 @@ export function StatsDraftClassSelect({ classes }: { classes: { year: number; pl
   if (classes.length === 0) return null;
   return (
     <Menu className="stats-draft-menu"
-      renderTrigger={props => <MenuTrigger {...props} size="lg" tone="console" icon="graduation" selected={Boolean(year)}>{year ? `${year} Draft` : "Draft Class"}</MenuTrigger>}>
+      renderTrigger={props => <MenuTrigger {...props} size="sm" tone="console" icon="graduation" selected={Boolean(year)}>{year ? `${year} Draft` : "Draft Class"}</MenuTrigger>}>
       {year && <MenuItem label="All draft classes" icon="close" onClick={() => set({ draftYear: null })} />}
       {classes.map(entry => (
         <MenuItem key={entry.year} label={String(entry.year)} className={entry.year === year ? "is-active" : ""}

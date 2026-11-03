@@ -344,7 +344,8 @@ export type WorkbenchCatalog = {
   source: string;
   seasons: string[];
   phases: string[];
-  stats_scopes?: { season: string; phase: string; coverage_start: string; coverage_end: string; default_before_date: string }[];
+  /** `basis` "season_totals": a season before the 1983-84 game logs, served as whole-season totals. */
+  stats_scopes?: { season: string; phase: string; coverage_start: string; coverage_end: string; default_before_date: string; basis?: "games" | "season_totals" }[];
   stats_windows?: string[];
   stats_normalizations?: string[];
   stats_sort_fields?: string[];
@@ -569,6 +570,8 @@ export type WorkbenchQueryResponse = {
     eligible_players: number;
     formula: string;
     good_directions: Record<string, "high" | "low" | null>;
+    /** View columns unknown for every player in scope; null when the scope was not checked. */
+    empty_fields?: string[] | null;
   } | null;
   items: PlayerResearchItem[];
   next_cursor: string | null;
@@ -607,6 +610,20 @@ export type PlayerResearchItem = {
   cohort_sample_sizes?: Record<string, number> | null;
   // Estimated position for the queried season (Stats query only).
   position?: EstimatedPosition | null;
+  /** Who the player is on a roster with today; the row's teams stay its games' teams. */
+  current_team?: PlayerCurrentTeam | null;
+  /** Set instead of current_team when the player is on no NBA roster today. */
+  current_status?: PlayerCurrentStatus | null;
+};
+
+/** A player's career table in one read: each season ranked against its own league (newest first). */
+export type PlayerCareerResponse = {
+  player_id: string;
+  release_id: string;
+  phase: string;
+  seasons: { season: string; item: PlayerResearchItem | null }[];
+  // Aggregated over the same seasons; season-only joins and ranks are unknown.
+  career: PlayerResearchItem | null;
 };
 
 export type LookupAvailability = {
@@ -623,6 +640,8 @@ export type LookupTeamAssociation = {
   basis: "selected_scope" | "last_observed";
   teams: string[];
   observed_through: string | null;
+  /** Careers before the 1983-84 game logs: the last season played (no game dates). */
+  last_season?: string | null;
   season: string | null;
   phase: string | null;
   before_date: string | null;
@@ -634,9 +653,11 @@ export type LookupItem = {
   canonical_id: string;
   display_name: string;
   subtitle?: string | null;
-  match_basis: "exact" | "prefix" | "token_prefix" | "substring" | "typo" | "suggestion";
+  match_basis: "exact" | "prefix" | "token_prefix" | "substring" | "typo" | "suggestion" | "leader";
   match_score: number;
   matched_alias?: string | null;
+  /** Every Basketball-Reference nickname, the matched one (if any) first. */
+  nicknames?: string[];
   portrait_url?: string | null;
   portrait_fallback?: string | null;
   availability: LookupAvailability;
@@ -752,6 +773,8 @@ export type ImpactDisclosureData = {
   limitations: string[];
   unavailable_columns: Record<string, string>;
   reason?: string | null;
+  /** Present when an in-season weekly fit (not a sealed season) supplied these values. */
+  provisional?: { last_included_date: string; note: string } | null;
 };
 export type ImpactResponse = ImpactDisclosureData & {
   total_players: number;
@@ -825,7 +848,7 @@ export type PlayerGameLogItem = {
 };
 
 export type PlayerGameLogResponse = {
-  player: { id: string; name: string };
+  player: { id: string; name: string; position?: string };
   context: Record<string, unknown>;
   games: PlayerGameLogItem[];
   next_cursor: string | null;
@@ -983,9 +1006,10 @@ export type TeamScheduleResponse = {
     wins: number;
     losses: number;
     win_pct: number | null;
-    differential: number;
+    differential: number | null;
     current_streak?: string | null;
   };
+  /** Null for a season served as totals (before 1983-84): no games, so no home or away record. */
   home_split: {
     games_played: number;
     wins: number;
@@ -994,7 +1018,7 @@ export type TeamScheduleResponse = {
     ppg: number | null;
     opp_ppg: number | null;
     differential: number;
-  };
+  } | null;
   away_split: {
     games_played: number;
     wins: number;
@@ -1003,7 +1027,7 @@ export type TeamScheduleResponse = {
     ppg: number | null;
     opp_ppg: number | null;
     differential: number;
-  };
+  } | null;
   rest_splits: TeamRestSplitItem[];
   back_to_back_summary: TeamBackToBackSummary;
   longest_homestand: number;
@@ -1099,24 +1123,60 @@ export type MetricComparisonItem = {
   n_b: number;
 };
 
+/** Titles from admitted playoff box scores decided before the cutoff (alignment row 3). */
+export type ComparisonChampionships = {
+  /** Titles before the comparison's cutoff. */
+  seasons: string[];
+  /** Every title in the release, for the season picker's per-season marks. */
+  all_seasons?: string[];
+  coverage_from: string | null;
+  /** False when the career may predate the first admitted season: the count is not a total. */
+  complete: boolean;
+};
+
+export type ComparisonPlayer = {
+  id: string;
+  name: string;
+  teams: string[];
+  /** The scope's teams by last appearance: a traded player's latest team is last. */
+  teams_chronological?: string[];
+  championships?: ComparisonChampionships | null;
+  /** Season-to-date scopes only; other windows have no team-game span. */
+  availability?: ComparisonAvailability | null;
+  games_played: number;
+  total_minutes: number;
+  portrait_url?: string;
+};
+
+/** Both players' careers through the comparison cutoff (Compare's Career view). */
+/** Games played and the teams' games over the same span, before the cutoff (row 3, 26). */
+export type ComparisonAvailability = { games: number; team_games: number };
+export type ComparisonCareer = { player_id: string; seasons: string[]; item: PlayerResearchItem | null; availability?: ComparisonAvailability | null };
+/** One column of the multi-player grid (alignment row 3, 64). */
+export type ComparisonGroupPlayer = {
+  player_id: string; name: string;
+  /** The season row, or the career through the cutoff; null without games in the scope. */
+  item: PlayerResearchItem | null;
+  /** Career span only: observed seasons up to the compared one. */
+  seasons: string[] | null;
+  teams_chronological: string[];
+  championships: ComparisonChampionships | null;
+  availability: ComparisonAvailability | null;
+};
+export type ComparisonGroupResponse = {
+  context: { release_id: string; season: string; phase: string; before_date: string; window: string };
+  span: "season" | "career";
+  players: ComparisonGroupPlayer[];
+};
+export type ComparisonCareerResponse = {
+  season: string; phase: string; before_date: string;
+  player_a: ComparisonCareer; player_b: ComparisonCareer;
+};
+
 export type PlayerComparisonResponse = {
   context: Record<string, unknown>;
-  player_a: {
-    id: string;
-    name: string;
-    teams: string[];
-    games_played: number;
-    total_minutes: number;
-    portrait_url?: string;
-  };
-  player_b: {
-    id: string;
-    name: string;
-    teams: string[];
-    games_played: number;
-    total_minutes: number;
-    portrait_url?: string;
-  };
+  player_a: ComparisonPlayer;
+  player_b: ComparisonPlayer;
   aligned_metrics: MetricComparisonItem[];
   no_forced_winner_notice: string;
   warnings: string[];
@@ -1402,9 +1462,22 @@ export type AssistantStatusResponse = {
     max_total_rows: number;
     timeout_seconds: number;
   };
+  providers?: AssistantProviderStatus[];
   allowed_tools: string[];
   privacy_notice: string;
   setup_instructions: string;
+};
+
+export type AssistantProviderStatus = {
+  provider: string;
+  model: string;
+  state: "ready" | "cooling_down";
+  available_at?: string | null;
+  requests_last_minute?: number;
+  requests_today?: number;
+  provider_requests_remaining?: number;
+  provider_tokens_per_minute?: number;
+  last_quota?: { scope?: string | null; quota_id?: string | null; limit?: number | null; at?: string } | null;
 };
 
 export type AssistantQueryRequest = {
@@ -2026,6 +2099,11 @@ export interface TeamSeriesHeader {
   name: string;
   seed: number | null;
   wins: number;
+  /** Regular season before the playoffs; absent where the release lacks the games. */
+  record_wins?: number | null;
+  record_losses?: number | null;
+  /** Wins in the regular-season meetings with the opponent; null when they never met. */
+  season_series_wins?: number | null;
 }
 
 export interface PlayoffSeriesSummary {
@@ -2103,6 +2181,69 @@ export interface TeamSeriesStats {
   oreb_pct: number | null;
   ftr: number | null;
   totals: Record<string, unknown>;
+  record_wins?: number | null;
+  record_losses?: number | null;
+  season_series_wins?: number | null;
+}
+
+/** A regular-season meeting of the series' teams (the season series). */
+export interface SeasonSeriesGame {
+  game_id: string;
+  game_date: string;
+  home_team_id: string;
+  home_tricode: string;
+  away_team_id: string;
+  away_tricode: string;
+  home_score: number;
+  away_score: number;
+  winner_team_id: string | null;
+}
+
+/** One offensive player against one defender over a phase's games (NBA.com matchups). */
+export interface SeriesMatchupRow {
+  phase: "playoffs" | "regular_season";
+  off_player_id: string;
+  off_player_name: string;
+  off_team_id: string;
+  def_player_id: string;
+  def_player_name: string;
+  games: number;
+  possessions: number;
+  seconds: number;
+  points: number;
+  fgm: number;
+  fga: number;
+  fg3m: number;
+  fg3a: number;
+  ftm: number;
+  fta: number;
+  assists: number;
+  turnovers: number;
+}
+
+export interface SeriesMatchups {
+  playoff_games: number;
+  playoff_games_played: number;
+  regular_season_games: number;
+  source: string;
+  rows: SeriesMatchupRow[];
+}
+
+export interface SeriesImpactPlayer {
+  player_id: string;
+  player_name: string;
+  team_id: string;
+  total: number | null;
+  offense: number | null;
+  defense: number | null;
+}
+
+export interface SeriesImpactBoard {
+  metric: "darko" | "rapm" | string;
+  label: string;
+  as_of: string | null;
+  note: string;
+  players: SeriesImpactPlayer[];
 }
 
 export interface PlayerSeriesStats {
@@ -2162,6 +2303,9 @@ export interface PlayoffSeriesDetailResponse {
   game_cards: PlayoffGameCard[];
   team1_players: PlayerSeriesStats[];
   team2_players: PlayerSeriesStats[];
+  season_series?: SeasonSeriesGame[];
+  matchups?: SeriesMatchups | null;
+  impact?: SeriesImpactBoard[];
   capabilities: Record<string, string>;
   disclaimers: string[];
 }
@@ -2189,6 +2333,43 @@ export interface ScheduleDatesResponse {
   warnings: string[];
 }
 
+export type PlayerCurrentTeam = {
+  team_id: string; team_tricode: string | null; listing_season?: string | null;
+  index_refreshed_at?: string | null; trade_date?: string | null; trade_source_url?: string | null;
+  /** The roster source that places the player (ESPN rosters, the NBA player index or Wikipedia). */
+  listing_source?: string | null;
+};
+
+/** A player the free-agency tracker's sources place on no NBA roster today. */
+export type PlayerCurrentStatus = {
+  state: "free_agent" | "abroad" | "retired";
+  source?: string | null;
+  as_of?: string | null;
+  move?: { kind: string; date?: string | null; club?: string | null; country?: string | null; team_tricode?: string | null } | null;
+};
+
+export type PlayerGuarantee = {
+  amount: string | null; status: "full" | "partial" | "none" | null;
+  source_url: string; as_of: string;
+};
+
+export type PlayerSalary = {
+  season: string; team: string | null; team_code: string | null; salary: string | null;
+  salary_note?: string | null; league?: string | null; option?: "player" | "team" | null;
+  share_of_cap?: number | null; cap_source_url?: string | null; cap_as_of?: string | null;
+  guarantee?: PlayerGuarantee | null;
+};
+
+export type PlayerReferenceEvent = {
+  date: string | null; type: string; description: string;
+  from_team_code: string | null; to_team_code: string | null;
+};
+
+export type PlayerGameHighs = {
+  phase: "regular_season" | "playoffs"; scope: "career" | "season"; season: string | null;
+  values: Partial<Record<string, { value: string | null; url: string | null; date: string | null }>>;
+};
+
 /** Player page header listings (team-reported) and combine values (measured), as of a scope. */
 export type PlayerBio = {
   player_id: string;
@@ -2214,5 +2395,58 @@ export type PlayerBio = {
     standing_reach_inches: number | null;
     weight_lbs: number | null;
   } | null;
+  /** The latest NBA player index listing: who the player plays for today, not a season's team. */
+  current_team?: PlayerCurrentTeam | null;
+  current_status?: PlayerCurrentStatus | null;
+  last_team?: PlayerCurrentTeam | null;
+  /** Basketball-Reference biography and honours as of its last crawl (whole career to date). */
+  reference?: {
+    source: string; url: string; as_of: string;
+    birthplace: string | null; high_school: string | null; shoots: string | null; debut_date: string | null;
+    honours: string[]; awards: Record<string, string[]>; all_star_seasons: string[];
+    salary_history?: PlayerSalary[]; career_earnings?: string | null;
+    current_contract?: PlayerSalary[]; remaining_guaranteed?: PlayerGuarantee | null;
+    contract_events?: PlayerReferenceEvent[]; transactions?: PlayerReferenceEvent[];
+    game_highs?: PlayerGameHighs[];
+  } | null;
+  limitations: string[];
+};
+
+/** Player Dashboard tracking cells (alignment row 22): one player-season's NBA tracking measures. */
+export type PlayerDashboardFeedValues = Record<string, number | null>;
+
+export type PlayerDashboardPlayFamily = {
+  family: "creation" | "spacing" | "transition" | "finishing";
+  label: string;
+  possessions: number;
+  frequency: number | null;
+  points_per_possession: number | null;
+  league_points_per_possession: number | null;
+  relative_per_100: number | null;
+  percentiles: { frequency: number | null; relative_per_100: number | null };
+};
+
+export type PlayerDashboardFeeds = {
+  version: string;
+  player_id: string;
+  season: string;
+  phase: "regular_season" | "playoffs";
+  label: string;
+  source: string;
+  qualification: Record<string, number>;
+  observed: { tracking: boolean; defense: boolean; hustle: boolean; play_types: boolean };
+  first_seasons: { tracking: string; defense: string; hustle: string; play_types: string };
+  metrics: { key: string; label: string; definition: string; higher_is_better: boolean; counting: boolean }[];
+  player: {
+    games: number | null;
+    minutes: number | null;
+    qualified: boolean;
+    defense_qualified: boolean;
+    per_game: PlayerDashboardFeedValues;
+    per_36: PlayerDashboardFeedValues;
+    percentiles: { per_game: PlayerDashboardFeedValues; per_36: PlayerDashboardFeedValues };
+  } | null;
+  play_types: PlayerDashboardPlayFamily[] | null;
+  cohort: { qualified_players: number; rule: string };
   limitations: string[];
 };

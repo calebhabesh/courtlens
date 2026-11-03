@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ControlScope } from "./control-scope";
+import { ControlScope, useControlScope } from "./control-scope";
 
 export interface FieldProps {
   label: ReactNode;
@@ -12,12 +12,16 @@ export interface FieldProps {
   className?: string;
 }
 
-/** One label/control treatment for inputs, selects and date pickers (40px controls). */
+/**
+ * One label/control treatment for inputs, selects and date pickers: 40 px controls, or the
+ * surrounding placement's size (the filter bar's slim 32 px) when one is set.
+ */
 export function Field({ label, children, layout = "stacked", htmlFor, hint, className = "" }: FieldProps) {
+  const placement = useControlScope();
   return (
     <div className={`ui-field ui-field-${layout} ${className}`}>
       {htmlFor ? <label className="ui-field-label" htmlFor={htmlFor}>{label}</label> : <span className="ui-field-label">{label}</span>}
-      <div className="ui-field-control"><ControlScope size="lg">{children}</ControlScope></div>
+      <div className="ui-field-control"><ControlScope size={placement.size ?? "lg"}>{children}</ControlScope></div>
       {hint && <span className="ui-field-hint">{hint}</span>}
     </div>
   );

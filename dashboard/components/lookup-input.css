@@ -91,16 +91,11 @@
   padding: var(--space-2) var(--space-3);
   cursor: pointer;
   transition: background-color 100ms ease;
-  border-left: 3px solid transparent;
 }
 
 .lookup-option:hover,
 .lookup-option.selected {
   background: var(--color-surface-2);
-}
-
-.lookup-option.selected {
-  border-left-color: var(--color-accent);
 }
 
 .lookup-item-leading {
@@ -127,13 +122,12 @@
   white-space: nowrap;
 }
 
+/* A verified Basketball-Reference nickname the query matched, after the name. */
 .lookup-alias-badge {
+  margin-left: var(--space-2);
   font-size: var(--text-xs);
-  color: var(--color-accent);
-  background: color-mix(in srgb, var(--color-accent) 12%, transparent);
-  padding: var(--space-0-5) var(--space-2);
-  border-radius: var(--radius-xs);
-  font-family: var(--font-mono), monospace;
+  font-weight: 400;
+  color: var(--color-text-secondary);
 }
 
 .lookup-item-subtitle {

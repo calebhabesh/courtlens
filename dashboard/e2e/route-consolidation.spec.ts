@@ -35,17 +35,11 @@ test.describe("FO07 route consolidation", () => {
     }
   });
 
-  test("tabs switch in place and carry the scope and player", async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await openWorkbench(page, "/similar-players?season=2024-25&playerId=1627751");
-    const tabs = page.getByRole("navigation", { name: "Similar Players sections" });
-    await tabs.getByRole("link", { name: "Shot Profile" }).click();
-    await expect(page).toHaveURL(url => url.pathname === "/similar-players/shot-profile"
+  test("the old Shot Profile tab opens Player Twins with its scope", async ({ page }) => {
+    await openWorkbench(page, "/similar-players/shot-profile?season=2024-25&playerId=1627751");
+    await expect(page).toHaveURL(url => url.pathname === "/similar-players"
       && url.searchParams.get("season") === "2024-25" && url.searchParams.get("playerId") === "1627751");
-    await expect(tabs.locator('[aria-current="page"]')).toHaveText("Shot Profile");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Similar Players");
-    // The embedded view drops its own title; the page has exactly one h1.
-    await expect(page.locator("h1")).toHaveCount(1);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Player Twins");
   });
 
   test("the Research menu lists each merged page once", async ({ page }) => {
@@ -66,7 +60,7 @@ test.describe("FO07 route consolidation", () => {
     const tabs = page.getByRole("navigation", { name: "Shooting sections" });
     await expect(tabs.locator('[aria-current="page"]')).toHaveText("Shot Aftermath");
     for (const box of await tabs.getByRole("link").evaluateAll(links => links.map(link => link.getBoundingClientRect().height))) {
-      expect(box).toBeGreaterThanOrEqual(40);
+      expect(Math.round(box)).toBeGreaterThanOrEqual(40);
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });

@@ -28,12 +28,12 @@ test("position chips narrow the displayed players and rows show the position", a
   await expect(rows(page)).toHaveCount(2);
   const chips = page.getByRole("group", { name: "Estimated positions" }).getByRole("button");
   await expect(chips).toHaveText(["PG", "SG", "SF", "PF", "C"]);
-  await page.getByRole("button", { name: "Point guards", exact: true }).click();
+  await page.getByRole("button", { name: "Point Guards", exact: true }).click();
   await page.waitForURL(url => url.searchParams.get("positions") === "PG");
   await expect(rows(page)).toHaveCount(1);
   await expect(rows(page).first()).toContainText("Fixture Guard");
   await expect(rows(page).first().locator(".player-cell-teams")).toContainText("PG");
-  await expect(page.getByRole("button", { name: "Point guards", exact: true })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("button", { name: "Point Guards", exact: true })).toHaveAttribute("aria-pressed", "true");
 });
 
 test("Draft Class narrows the table to one draft year", async ({ page }) => {

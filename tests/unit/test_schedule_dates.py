@@ -11,7 +11,7 @@ from test_live_history import DAY, seed
 
 from courtlens.api.app import create_app
 from courtlens.database import get_db
-from courtlens.live_models import LiveLease, LiveObservation
+from courtlens.live_models import LiveCurrent, LiveObservation
 from courtlens.services.schedule_dates import schedule_dates
 from courtlens.workbench_models import WorkbenchSchedule
 
@@ -60,7 +60,7 @@ def test_counts_scheduled_and_admitted_finals_per_date(session):
     }
     assert result["nearest_scheduled"] == {"before": date(2025, 4, 16), "after": date(2025, 4, 20)}
     assert result["nearest_finals"] == {"before": date(2025, 4, 16), "after": None}
-    assert session.scalar(select(func.count()).select_from(LiveLease)) == 0
+    assert session.scalar(select(func.count()).select_from(LiveCurrent)) == 0
     assert session.scalar(select(func.count()).select_from(LiveObservation)) == 0
 
 

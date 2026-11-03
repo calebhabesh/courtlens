@@ -1,6 +1,7 @@
 # Roster Shapes v1 (PC10)
 
-Status: contract for [presentation clarity](../presentation-clarity-plan.md) PC10 (C15, C18).
+Status: superseded by [Roster Shapes v2](roster-shapes-v2.md) (alignment row 12, 2026-10-19). Was the
+contract for [presentation clarity](../presentation-clarity-plan.md) PC10 (C15, C18).
 Code: `src/courtlens/services/roster_shapes.py` (read-only serving),
 `dashboard/components/roster-shapes-view.tsx`, `dashboard/lib/roster-shapes.ts`,
 `ShapeGlyph`/`ShapePack` in `dashboard/components/charts/shape-pack.tsx`.
