@@ -103,7 +103,7 @@ tabulate==0.10.0
 text-unidecode==1.3
 threadpoolctl==3.7.0
 typer==0.27.3
-types-PyYAML==6.0.12.20260906
+types-PyYAML==6.0.12.20261030
 truststore==0.10.5
 typing-inspection==0.4.4
 typing_extensions==4.16.0
