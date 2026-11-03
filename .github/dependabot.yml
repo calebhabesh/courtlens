@@ -12,11 +12,13 @@ updates:
       # dbt-adapters pins mashumaro below 3.18; let dbt upgrades move it.
       - dependency-name: mashumaro
         versions: [">=3.18"]
-      # dbt-common pins agate below 1.10 and pathspec below 1.1.
+      # dbt-common pins agate below 1.10, pathspec below 1.1 and deepdiff below 9.
       - dependency-name: agate
         versions: [">=1.10"]
       - dependency-name: pathspec
         versions: [">=1.1"]
+      - dependency-name: deepdiff
+        versions: [">=9"]
       # google-genai pins tenacity below 9.2; metricflow pins more-itertools below 11.
       - dependency-name: tenacity
         versions: [">=9.2"]
