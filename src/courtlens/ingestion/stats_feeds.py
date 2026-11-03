@@ -65,6 +65,8 @@ DEFENSE = {
     "greater-than-15ft": "Greater Than 15Ft",
 }
 LINEUP_MEASURES = {"base": "Base", "advanced": "Advanced", "four-factors": "Four Factors"}
+# Team season totals: fast-break, paint, second-chance and off-turnover points, own and allowed.
+TEAM_MEASURES = {"misc": "Misc"}
 
 
 @dataclass(frozen=True)
@@ -103,6 +105,14 @@ SPECS = {
     ),
     "leaguedashlineups": FeedSpec(
         "leaguedashlineups", "lineups", "lineups", "Lineups", LINEUP_MEASURES, "MeasureType"
+    ),
+    "leaguedashteamstats": FeedSpec(
+        "leaguedashteamstats",
+        "team_misc",
+        "team_scoring",
+        "LeagueDashTeamStats",
+        TEAM_MEASURES,
+        "MeasureType",
     ),
     "draftcombineplayeranthro": FeedSpec(
         "draftcombineplayeranthro", "combine_anthro", "combine", "Results", None, None, True
@@ -316,6 +326,9 @@ def _declared(params: dict[str, Any], *names: str) -> Any:
 
 # Endpoints whose files sometimes declare only the start year; their rows carry SEASON_ID.
 START_YEAR_ENDPOINTS = frozenset({"leagueseasonmatchups", "synergyplaytypes"})
+# The mirror's team files before 2025-26 declare only the start year and carry no SEASON_ID;
+# servers prove the season instead by matching each team's games and wins to its own record.
+START_YEAR_TEAM_ENDPOINTS = frozenset({"leaguedashteamstats"})
 
 
 def _check_declared(scope: FeedScope, spec: FeedSpec, params: dict[str, Any]) -> bool:
@@ -342,7 +355,8 @@ def _check_declared(scope: FeedScope, spec: FeedSpec, params: dict[str, Any]) ->
         return False
     season = _declared(params, "Season", "SeasonYear")
     rows_must_prove = season == scope.season[:4] and spec.endpoint in START_YEAR_ENDPOINTS
-    if season != scope.season and not rows_must_prove:
+    start_year_team = season == scope.season[:4] and spec.endpoint in START_YEAR_TEAM_ENDPOINTS
+    if season != scope.season and not rows_must_prove and not start_year_team:
         raise ValueError("payload declares a different season")
     if params.get("SeasonType") != PHASES[scope.season_type.replace("_", "-")]:
         raise ValueError("payload declares a different season type")
@@ -382,6 +396,11 @@ def _entity_key(feed: str, row: dict[str, Any]) -> tuple[str, dict[str, Any]]:
             raise ValueError("pbpstats lineup without five NBA person ids")
         team = nba_id(row.get("team_id"))
         return f"{team}:{group}", {"team_id": team, "player_ids": sorted(players)}
+    if feed == "team_misc":
+        team = nba_id(row.get("team_id"))
+        if team is None:
+            raise ValueError("team row without an NBA team id")
+        return team, {"team_id": team}
     if feed == "pbpstats_team":
         team = nba_id(row.get("entity_id"))
         if team is None:

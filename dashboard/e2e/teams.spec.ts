@@ -58,6 +58,46 @@ test("standings view seeds by record and the venue selector asks for one venue",
   await expect(page.locator(".teams-note")).toContainText("Home games only");
 });
 
+test("scoring view ranks fast-break points, and the search keeps every team's rank", async ({ page }) => {
+  await openWorkbench(page, `/teams?${SCOPE}&view=scoring`);
+  const head = page.locator(".teams-grid thead");
+  await expect(head).toContainText("Tempo");
+  await expect(head).toContainText("Allowed");
+  const rows = page.locator(".teams-grid tbody tr");
+  // Sorted by fast-break points per 100: BOS 1120 / 7000 = 16.0 before TOR 1065 / 7100 = 15.0.
+  await expect(rows.first()).toContainText("BOS");
+  await expect(rows.first().locator("td").nth(1)).toContainText("16.0");
+  await expect(rows.last().locator("td").nth(1)).toContainText("15.0");
+  // BOS's second-chance points allowed are unknown: a dash, never a zero, and unranked.
+  await expect(rows.first().locator("td").nth(7)).toHaveText("—");
+  const search = page.getByRole("searchbox", { name: "Filter teams by name" });
+  await search.fill("toronto");
+  await expect(rows).toHaveCount(1);
+  await expect(rows.first().locator(".teams-rank-badge")).toHaveText("2");
+  await expect(page).toHaveURL(/q=toronto/);
+  await search.fill("zzz");
+  await expect(page.locator(".teams-search-empty")).toContainText("No team matches");
+  await page.getByRole("button", { name: "Clear team search" }).click();
+  await expect(rows).toHaveCount(2);
+  await page.getByRole("radio", { name: "Home", exact: true }).click();
+  await expect(page.getByRole("status").filter({ hasText: "Scoring is unknown" })).toContainText("cannot be split by venue");
+  await expect(rows.first().locator("td").nth(1)).toHaveText("—");
+});
+
+test("team profile ranks the team in the league, each rank opening the sorted table", async ({ page }) => {
+  await openWorkbench(page, `/teams/100?${SCOPE}`);
+  const strip = page.getByRole("region", { name: "League ranks of 2 teams" });
+  const fastBreak = strip.getByRole("link").filter({ hasText: "Fast Break" });
+  await expect(fastBreak).toContainText("#2");
+  await expect(fastBreak).toContainText("15.0 / 100");
+  await expect(strip.getByRole("link").filter({ hasText: "Transition D" })).toContainText("#1");
+  await expect(strip.getByRole("link").filter({ hasText: "Offense" })).toContainText("ORTG 115.4");
+  await expect(fastBreak).toHaveAttribute("href", /\/teams\?.*season=2025-26.*view=scoring&sort=pts_fb/);
+  await fastBreak.click();
+  await expect(page).toHaveURL(/view=scoring&sort=pts_fb/);
+  await expect(page.getByRole("radio", { name: "Scoring", exact: true })).toHaveAttribute("aria-checked", "true");
+});
+
 for (const width of [1440, 390]) {
   test(`Team Stats views, cards and totals survive reload at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -90,12 +130,41 @@ for (const width of [1440, 390]) {
     await expect(page.getByRole("region", { name: "Six factors table" })).toContainText("Offense");
     await expect(page.getByRole("region", { name: "Home and away table" })).toContainText("Home");
     await expect(page.getByRole("region", { name: "Net rating trend" }).locator(".net-trend svg")).toBeVisible();
+    // The Game Log is the Schedule section's second view.
+    await page.getByRole("region", { name: "Schedule" }).getByRole("radio", { name: "Game Log" }).click();
     const game = page.getByRole("region", { name: "Recent games table" }).locator("tbody tr").filter({ hasText: "Mar 1, 2026" });
     await expect(game).toContainText("BOS");
     // A missing score stays unknown, never a loss or a zero margin.
     await expect(game.locator("td").nth(1)).toHaveText("—");
     await expect(game.locator("td").nth(3)).toHaveText("—");
     await expect(page.getByRole("region", { name: "Similar teams" })).toContainText("Boston Celtics");
+    await noOverflow(page, width);
+  });
+}
+
+for (const width of [1440, 390]) {
+  test(`team schedule shows the season as a calendar, each game opening its Live page, at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await openWorkbench(page, `/teams/100?${SCOPE}`);
+    const schedule = page.getByRole("region", { name: "Schedule" });
+    // Today is outside 2025-26, so the calendar opens on the season's first month.
+    await expect(schedule.locator(".team-cal-title")).toContainText("March 2026");
+    await expect(schedule.locator(".team-cal-title")).toContainText("1–1");
+    const win = schedule.locator(".team-cal-game[data-result=win]");
+    await expect(win).toHaveAttribute("href", "/live/games/401000001?date=2026-03-01");
+    await expect(win).toHaveAttribute("title", /vs BOS: W 112–104/);
+    await expect(schedule.locator(".team-cal-game[data-result=loss]")).toHaveAttribute("title", /at NYK: L 99–120/);
+    // Each game date takes its opponent's colours (BOS, NYK); empty dates stay plain.
+    await expect(schedule.locator("td[data-themed]")).toHaveCount(2);
+    if (width === 1440) await expect(schedule).toContainText("3 games · 1–1");
+    await schedule.getByRole("button", { name: "Next month" }).click();
+    await expect(schedule.locator(".team-cal-title")).toContainText("April 2026");
+    await expect(schedule.locator(".team-cal-game")).toContainText("Postponed");
+    await expect(schedule).toContainText("1 listed game has no date yet.");
+    // The other view is the admitted Game Log, kept in the URL.
+    await schedule.getByRole("radio", { name: "Game Log" }).click();
+    await expect(page).toHaveURL(/schedule=log/);
+    await expect(schedule.getByRole("region", { name: "Recent games table" })).toBeVisible();
     await noOverflow(page, width);
   });
 }
