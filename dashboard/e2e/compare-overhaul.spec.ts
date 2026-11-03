@@ -225,7 +225,8 @@ test("team comparison preserves unknown versus zero, unknown outcomes and scope 
   await page.getByRole("radio",{name:"Team Stats",exact:true}).click();
   await expect(page).toHaveURL(/view=stats/);
   const points=page.getByRole("row").filter({has:page.getByRole("rowheader",{name:"Points Per Game",exact:true})});
-  await expect(points.locator("td").first()).toHaveText("115.4");
+  // The value, without the league rank that now hangs beside it.
+  await expect(points.locator("td").first().locator(".tc-stat-value")).toHaveText("115.4");
   await expect(points.locator("td").last()).toHaveText("—");
   await page.getByRole("button",{name:"Edit Metrics",exact:true}).click();
   await page.getByRole("dialog",{name:"Edit Metrics"}).locator("label",{hasText:"Field Goal %"}).click();

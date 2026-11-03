@@ -150,15 +150,16 @@ for (const view of WIDTHS) {
   });
 }
 
-// FO14: numerical alignment, phone targets and the final shared 404 header.
-for (const view of WIDTHS) test.describe(`PC12 directory ${view.name}`, () => {
+// FO14 / PC12: /players first load. Row 22 replaced the Player Directory with the Player Dashboard.
+for (const view of WIDTHS) test.describe(`Player Dashboard ${view.name}`, () => {
   test("first load", async ({ page }) => {
     await page.setViewportSize({ width: view.width, height: view.height });
     await stableWorkspace(page);
     await openWorkbench(page, "/players");
-    await expect(page.getByRole("table", { name: "Player directory", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Player Dashboard" })).toBeVisible();
+    await expect(page.locator(".pd-card-name").first()).toBeVisible();
     await settle(page);
-    await expect(page).toHaveScreenshot(`pc12-directory-${view.name}.png`, shot);
+    await expect(page).toHaveScreenshot(`player-dashboard-${view.name}.png`, shot);
   });
 });
 

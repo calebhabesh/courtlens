@@ -14,7 +14,8 @@ for (const width of [1440, 768, 390, 375]) {
     if (width === 1440 || width === 390) await expect(page).toHaveScreenshot(`pc12-c-evaluation-${width}.png`, { animations: "disabled", maxDiffPixelRatio: 0.01 });
 
     await openWorkbench(page, "/playoffs");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Playoffs");
+    // Row 8 titles the page by its year ("2026 NBA Playoffs").
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(/^\d{4} NBA Playoffs$/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
 
     await openWorkbench(page, "/investigations");
