@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { MAX_GRID_PLAYERS } from "@/lib/compare-grid";
 import { queryLookup } from "@/lib/workbench-api";
 import { buildLookupCacheKey, defaultLookupCache } from "@/lib/lookup-cache";
 import { Button, ButtonLink, IconButton } from "./ui/kit";
 import { PlayerPortrait } from "./player-portrait";
 import type { PlayerResearchItem } from "@/lib/types";
 
-interface CompareTrayProps {
+export interface CompareTrayProps {
   selectedPlayers: PlayerResearchItem[];
   onRemovePlayer: (playerId: string) => void;
   onClearAll: () => void;
@@ -20,14 +21,8 @@ interface CompareTrayProps {
   };
 }
 
-export function CompareTray({
-  selectedPlayers,
-  onRemovePlayer,
-  onClearAll,
-  context
-}: CompareTrayProps) {
-  if (selectedPlayers.length === 0) return null;
-
+/** The Compare page for a selection: the duel for two players, the grid (first five) for more. */
+export function compareHref(selectedPlayers: Pick<PlayerResearchItem, "player_id">[], context: CompareTrayProps["context"]): string {
   const playerA = selectedPlayers[0]?.player_id;
   const playerB = selectedPlayers[1]?.player_id;
 
@@ -40,13 +35,27 @@ export function CompareTray({
   if (context.release_id) {
     queryParams.set("releaseId", context.release_id);
   }
-  if (playerA) queryParams.set("playerA", playerA);
-  if (playerB) queryParams.set("playerB", playerB);
+  // Three or more open the grid with the first five; two open the duel card (row 3, 64).
   if (selectedPlayers.length > 2) {
-    queryParams.set("players", selectedPlayers.map((p) => p.player_id).join(","));
+    queryParams.set("layout", "grid");
+    queryParams.set("players", selectedPlayers.slice(0, MAX_GRID_PLAYERS).map((p) => p.player_id).join(","));
+  } else {
+    if (playerA) queryParams.set("playerA", playerA);
+    if (playerB) queryParams.set("playerB", playerB);
   }
 
-  const compareHref = `/compare?${queryParams.toString()}`;
+  return `/compare?${queryParams.toString()}`;
+}
+
+export function CompareTray({
+  selectedPlayers,
+  onRemovePlayer,
+  onClearAll,
+  context
+}: CompareTrayProps) {
+  if (selectedPlayers.length === 0) return null;
+
+  const href = compareHref(selectedPlayers, context);
   const canCompare = selectedPlayers.length >= 2;
 
   return (
@@ -79,13 +88,13 @@ export function CompareTray({
           <ButtonLink
             size="xs"
             variant="primary"
-            href={compareHref}
+            href={href}
             onClick={event => { if (!canCompare) event.preventDefault(); }}
             aria-disabled={!canCompare}
             tabIndex={canCompare ? 0 : -1}
-            title={canCompare ? "Compare the first two selected players (Z)" : "Select at least 2 players to compare"}
+            title={canCompare ? selectedPlayers.length > MAX_GRID_PLAYERS ? `Compare the first ${MAX_GRID_PLAYERS} selected players (Z)` : "Compare the selected players (Z)" : "Select at least 2 players to compare"}
           >
-            {canCompare ? selectedPlayers.length > 2 ? "Compare first 2" : "Compare (2)" : "Select 2+ players"}
+            {canCompare ? selectedPlayers.length > MAX_GRID_PLAYERS ? `Compare first ${MAX_GRID_PLAYERS}` : `Compare (${selectedPlayers.length})` : "Select 2+ players"}
           </ButtonLink>
         </div>
       </div>

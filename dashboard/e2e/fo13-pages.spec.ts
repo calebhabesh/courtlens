@@ -20,7 +20,7 @@ test("data status keeps release identities and job IDs in Data details, not on t
   const visible = await page.locator(".ui-page").innerText();
   expect(visible).not.toMatch(/\b[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}\b/i);
   expect(visible).not.toMatch(/\b\d{4}-\d{2}-\d{2}\b/);
-  await page.getByRole("region", { name: "Published release" }).getByRole("button", { name: "Data details" }).click();
+  await page.getByRole("region", { name: "Published release" }).getByRole("button", { name: "Data Details" }).click();
   await expect(page.getByRole("dialog")).toContainText("Snapshot ID");
 });
 
@@ -28,6 +28,9 @@ test("methodology and what's new use the Article template with anchored sections
   await openWorkbench(page, "/methodology");
   await expect(page.locator(".ui-page")).toHaveAttribute("data-template", "article");
   await expect(page.getByRole("navigation", { name: "On this page" }).getByRole("link", { name: "Metric catalog" })).toHaveAttribute("href", "#catalog");
+  // Commons photos carry the credit their licences require, linked to the file page.
+  await expect(page.getByRole("link", { name: /Keith Allison.*CC BY-SA 2\.0.*Wikimedia Commons/ }))
+    .toHaveAttribute("href", "https://commons.wikimedia.org/wiki/File:Dwyane_Wade_and_LeBron_James.jpg");
   await openWorkbench(page, "/whats-new");
   await expect(page.getByText("Oct 4, 2026 · CourtLens local workbench", { exact: false })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "On this page" }).getByRole("link", { name: "Open gates" })).toHaveAttribute("href", "#open-gates");
@@ -75,7 +78,7 @@ test("planner applies a week change immediately, keeps it in the URL and signs i
   expect(signIns).toBe(1);
   // Snapshot and rules versions are in Data details, not on the page.
   await expect(page.getByText("fixture-rules")).toHaveCount(0);
-  await page.getByRole("region", { name: "Planner scope" }).getByRole("button", { name: "Data details" }).click();
+  await page.getByRole("region", { name: "Planner scope" }).getByRole("button", { name: "Data Details" }).click();
   await expect(page.getByRole("dialog")).toContainText("fixture-rules");
 });
 

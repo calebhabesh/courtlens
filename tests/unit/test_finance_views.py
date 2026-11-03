@@ -71,3 +71,26 @@ def test_league_view_counts_known_only_and_rejects_unknown_team(session, tmp_pat
 )
 def test_position_group_uses_first_listed_position(position, group):
     assert _group(position) == group
+
+
+def test_player_contract_keeps_remaining_total_separate_and_rejects_stale_terms(session, tmp_path):
+    from courtlens.services.player_contracts import enrich_contracts
+
+    admitted(session, tmp_path)
+    reference = {
+        "profile_id": "fixture",
+        "current_contract": [{"season": "2026-27", "team_code": "TOR", "salary": "100.01"}],
+        "contract_events": [],
+    }
+    enrich_contracts(session, "99001", reference)
+    assert reference["remaining_guaranteed"]["amount"] == "123.45"
+    assert reference["remaining_guaranteed"]["source_url"].endswith("/contracts/TOR.html")
+    assert "guarantee" not in reference["current_contract"][0]
+    for change in [
+        {"current_contract": [{"season": "2026-27", "team_code": "TOR", "salary": "200"}]},
+        {"current_contract": [{"season": "2026-27", "team_code": "BOS", "salary": "100.01"}]},
+        {"contract_events": [{"date": "2099-01-01", "type": "extended"}]},
+    ]:
+        changed = {k: v for k, v in reference.items() if k != "remaining_guaranteed"} | change
+        enrich_contracts(session, "99001", changed)
+        assert "remaining_guaranteed" not in changed

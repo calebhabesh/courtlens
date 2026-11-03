@@ -52,7 +52,7 @@ Owner decisions (2026-10-14):
 | Component | Sizes | Notes |
 | --- | --- | --- |
 | `Button` | xs–lg | Leading `icon`, trailing `iconAfter`; `ButtonLink` renders Next `Link` with `href`, and `ButtonSummary` renders native `<summary>`, sharing the same recipe. `stretch` fills the row, lead-aligns and truncates the label (the phone Filters toggle). |
-| `IconButton` | xs–lg | `label` is required and becomes the tooltip and `aria-label`. |
+| `IconButton` | xs–lg | `label` is required and becomes the tooltip and `aria-label`. `expanded` makes it a disclosure toggle: it sets `aria-expanded`, and the glyph (normally `chevron-down`) turns half a turn over `--dur-fast` while open instead of swapping icons. `identity` (`a`/`b`) selects in a comparison side's identity colour (gold/blue) instead of the accent; `beckon` pulses ring and fill in that colour to invite the next press (`kit-beckon`, 1.2 s; a still ring under reduced motion) and, like a tone, replaces the variant's colours. Added 2026-10-23 for Player Dashboard pairing. |
 | `IconButtonLink` | xs–lg | Square icon-only Next `Link` (added in UC04 batch 4 for rail shortcuts); `label` as for `IconButton`. |
 | `Select` | sm–lg | Native select with the built-in chevron (below). |
 | `Segmented` | xs–lg | Generalises `SegmentedControl` and `StatsChoicePills`; the active indicator is `SlidingIndicator`. Radio semantics and roving focus, optional `deferChange` for an expensive owner update. Existing callers migrate in UC04. |
@@ -78,6 +78,7 @@ inner radii and gaps between kit controls of one size. The controls themselves a
 | `secondary` | `--color-surface-2`, `--color-text` | `--color-surface-3` | console and default actions; `console` tone as above |
 | `ghost` | transparent, `--color-text-secondary` | `--color-surface-hover`, `--color-text` | toolbars, table rows, header (on the page background the text is `--color-on-bg-secondary`) |
 | `danger` | `--color-surface-2`, `--color-negative` text | negative mixed 15% into surface-2 | destructive actions |
+| `text` | transparent, `--color-text-secondary`, no inline padding | `--color-text` only, no fill | an inline disclosure that sits flush with the content it follows (player Earlier Transactions) |
 
 **Selected** (`aria-pressed`, `aria-checked`, `aria-selected` or `aria-current` true) applies to every
 variant except `primary`: `--color-accent-soft` fill, `--color-accent` text, a 1 px inset accent ring,

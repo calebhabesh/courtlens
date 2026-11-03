@@ -1,0 +1,80 @@
+
+Running 26 tests using 2 workers
+
+[1/26] e2e/compare-overhaul.spec.ts:20:5 › compare card: console actions, change cues, wordmark footer and trend tray (alignment row 3)
+[2/26] e2e/compare-overhaul.spec.ts:5:5 › player comparison uses shared scope, signed values and contextual URL modes
+[3/26] e2e/compare-overhaul.spec.ts:31:5 › Career compares both players through the cutoff without league percentiles (row 3, 21)
+[4/26] e2e/compare-overhaul.spec.ts:41:36 › counting menu keeps its slot across season and career modes at 1440px
+[5/26] e2e/compare-overhaul.spec.ts:41:36 › counting menu keeps its slot across season and career modes at 390px
+  1) e2e/compare-overhaul.spec.ts:41:36 › counting menu keeps its slot across season and career modes at 1440px 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 513
+    Received: 502
+
+    Expected precision:    0
+    Expected difference: < 0.5
+    Received difference:   11
+
+      59 |   await expect(trigger).toHaveText("Career · Per Game");
+      60 |   const after=await trigger.boundingBox();
+    > 61 |   expect(after?.x).toBeCloseTo(before?.x??0,0);expect(after?.y).toBeCloseTo(before?.y??0,0);expect(after?.width).toBe(before?.width);
+         |                                                                 ^
+      62 |   const presets=await page.locator(".pvp-presets").boundingBox();
+      63 |   if(width===1440) expect(after?.y).toBeCloseTo(presets?.y??0,0);
+      64 |   expect(await page.locator(".pvp-presets").evaluate(element=>element.scrollWidth<=element.clientWidth)).toBe(true);
+        at /home/ethioking/.cache/courtlens-tmp/compare-context-6bfwqs9d/dashboard/e2e/compare-overhaul.spec.ts:61:65
+
+    Error Context: ../browser-results/compare-overhaul-counting--21aea--and-career-modes-at-1440px/error-context.md
+
+
+[6/26] e2e/compare-overhaul.spec.ts:68:5 › each player can be compared in their own season; seasons without games say so (row 3, 38-39)
+  2) e2e/compare-overhaul.spec.ts:41:36 › counting menu keeps its slot across season and career modes at 390px 
+
+    Error: expect(received).toBeCloseTo(expected, precision)
+
+    Expected: 613
+    Received: 474
+
+    Expected precision:    0
+    Expected difference: < 0.5
+    Received difference:   139
+
+      59 |   await expect(trigger).toHaveText("Career · Per Game");
+      60 |   const after=await trigger.boundingBox();
+    > 61 |   expect(after?.x).toBeCloseTo(before?.x??0,0);expect(after?.y).toBeCloseTo(before?.y??0,0);expect(after?.width).toBe(before?.width);
+         |                                                                 ^
+      62 |   const presets=await page.locator(".pvp-presets").boundingBox();
+      63 |   if(width===1440) expect(after?.y).toBeCloseTo(presets?.y??0,0);
+      64 |   expect(await page.locator(".pvp-presets").evaluate(element=>element.scrollWidth<=element.clientWidth)).toBe(true);
+        at /home/ethioking/.cache/courtlens-tmp/compare-context-6bfwqs9d/dashboard/e2e/compare-overhaul.spec.ts:61:65
+
+    Error Context: ../browser-results/compare-overhaul-counting--128e5-n-and-career-modes-at-390px/error-context.md
+
+
+[7/26] e2e/compare-overhaul.spec.ts:84:5 › the console Season is a global override that clears per-player seasons (row 3, 42)
+[8/26] e2e/compare-overhaul.spec.ts:95:36 › season honors show every badge in aligned rows at 1440px (row 3, 49)
+[9/26] e2e/compare-overhaul.spec.ts:95:36 › season honors show every badge in aligned rows at 390px (row 3, 49)
+[10/26] e2e/compare-overhaul.spec.ts:126:36 › midseason honors show badges and empty dashes without pending copy at 1440px (row 3, 57)
+[11/26] e2e/compare-overhaul.spec.ts:126:36 › midseason honors show badges and empty dashes without pending copy at 390px (row 3, 57)
+[12/26] e2e/compare-overhaul.spec.ts:140:36 › player search shows full names in wider viewport-bounded results at 1440px
+[13/26] e2e/compare-overhaul.spec.ts:140:36 › player search shows full names in wider viewport-bounded results at 390px
+[14/26] e2e/compare-overhaul.spec.ts:157:5 › team comparison preserves unknown versus zero, unknown outcomes and scope across tabs
+[15/26] e2e/compare-overhaul.spec.ts:171:5 › WOWY: a late response for an earlier team cannot replace the current result (PC11)
+[16/26] e2e/presentation-defaults.spec.ts:7:37 › Compare opens on a resolved pair with percentiles and games badges at 1440px
+[17/26] e2e/presentation-defaults.spec.ts:7:37 › Compare opens on a resolved pair with percentiles and games badges at 390px
+[18/26] e2e/presentation-defaults.spec.ts:25:5 › Custom picks and exact counting units survive reload and Back/Forward; SVG carries current values
+[19/26] e2e/presentation-defaults.spec.ts:56:221 › parameter-free /stat-line-shift resolves a named observed example
+[20/26] e2e/presentation-defaults.spec.ts:56:221 › parameter-free /similar-players/shot-profile resolves a named observed example
+[21/26] e2e/presentation-defaults.spec.ts:56:221 › parameter-free /research/shooting/aftermath resolves a named observed example
+[22/26] e2e/presentation-defaults.spec.ts:56:221 › parameter-free /similar-players resolves a named observed example
+[23/26] e2e/presentation-defaults.spec.ts:56:221 › parameter-free /last-games resolves a named observed example
+[24/26] e2e/presentation-defaults.spec.ts:64:5 › explicit subject is retained and the operation menu issues no conversation request
+[25/26] e2e/presentation-defaults.spec.ts:71:5 › Live empty landing resolves the latest final day, points leaders and next scheduled date
+[26/26] e2e/presentation-defaults.spec.ts:81:5 › typing a focal selection cancels a pending default without losing the lookup
+  2 failed
+    e2e/compare-overhaul.spec.ts:41:36 › counting menu keeps its slot across season and career modes at 1440px 
+    e2e/compare-overhaul.spec.ts:41:36 › counting menu keeps its slot across season and career modes at 390px 
+  1 skipped
+  23 passed (10.1s)

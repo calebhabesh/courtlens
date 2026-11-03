@@ -51,6 +51,12 @@
     }
   }
 
+  @keyframes skeletonSweep {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
   @keyframes shimmer {
     0% {
       background-position: -200% 0;
@@ -81,6 +87,43 @@
     animation: routeEnter var(--dur-slow) var(--ease-out) forwards;
   }
 
+  /* ---------- Content motion (DL Enter / Loading / Table patterns) ----------
+     Compositor-only (opacity and transform), CSS-driven, no per-frame JavaScript. Fill mode
+     "backwards" holds the start state through a stagger delay and leaves nothing behind, so
+     sticky cells and stacking contexts are back to normal once a row has entered. */
+  @keyframes enterRise {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes enterFade { from { opacity: 0; } to { opacity: 1; } }
+  /* Two identical fades: alternating the name restarts the animation without remounting. */
+  @keyframes settleA { from { opacity: 0.35; } to { opacity: 1; } }
+  @keyframes settleB { from { opacity: 0.35; } to { opacity: 1; } }
+
+  /* One element entering: a panel replacing its skeleton, a row opening. --motion-index (set as a
+     custom property) staggers siblings 20 ms apart for the first 8, then together. */
+  .motion-enter {
+    animation: enterRise var(--dur-base) var(--ease-out) backwards;
+    animation-delay: calc(min(var(--motion-index, 0), 8) * 20ms);
+  }
+
+  /* A list or page assembling on first load: children enter 20 ms apart, the first 8 staggered,
+     the rest together (DL Enter). */
+  .motion-stagger > * { animation: enterRise var(--dur-base) var(--ease-out) backwards; animation-delay: 160ms; }
+  .motion-stagger > :nth-child(1) { animation-delay: 0ms; }
+  .motion-stagger > :nth-child(2) { animation-delay: 20ms; }
+  .motion-stagger > :nth-child(3) { animation-delay: 40ms; }
+  .motion-stagger > :nth-child(4) { animation-delay: 60ms; }
+  .motion-stagger > :nth-child(5) { animation-delay: 80ms; }
+  .motion-stagger > :nth-child(6) { animation-delay: 100ms; }
+  .motion-stagger > :nth-child(7) { animation-delay: 120ms; }
+  .motion-stagger > :nth-child(8) { animation-delay: 140ms; }
+
+  /* Data changed in place (sort, filter, view, counting mode): the body settles in over
+     --dur-base. Toggle between the two classes on each change. */
+  .motion-settle-a { animation: settleA var(--dur-base) var(--ease-out); }
+  .motion-settle-b { animation: settleB var(--dur-base) var(--ease-out); }
+
   /* Rewritten reduced-motion handling per Design Language v1 */
   @media (prefers-reduced-motion: reduce) {
     :root {
@@ -105,9 +148,19 @@
       background-image: none !important;
     }
 
+    .ui-skeleton::after { display: none; }
+
     .route-enter {
       animation: fadeInDropdown var(--dur-slow) var(--ease-out) forwards;
       transform: none !important;
+    }
+
+    /* Content enters keep a short opacity fade (opacity keeps --dur-fast) and never move. */
+    .motion-enter,
+    .motion-stagger > * {
+      animation-name: enterFade;
+      animation-duration: var(--dur-fast);
+      animation-delay: 0ms;
     }
 
     /* Transform-based enters become opacity-only in reduced motion */

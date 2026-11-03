@@ -72,3 +72,14 @@ it("renders an icon-only link square, named by its label", () => {
   expect(link.getAttribute("title")).toBe("Recent games");
   expect(link.className).toContain("kit:w-control-sm");
 });
+
+it("selects in a comparison side's identity colour and beckons only while unpressed", () => {
+  const { rerender } = render(<IconButton icon="swap" label="Compare" identity="b" beckon />);
+  const button = screen.getByRole("button", { name: "Compare" });
+  expect(button.className).toContain("kit:animate-beckon");
+  expect(button.className).toContain("kit:motion-reduce:animate-none");
+  expect(button.className).toContain("kit:selected:text-identity-b");
+  expect(button.className).not.toContain("kit:selected:text-accent");
+  rerender(<IconButton icon="swap" label="Compare" identity="b" beckon pressed />);
+  expect(button.className).not.toContain("kit:animate-beckon");
+});

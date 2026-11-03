@@ -16,7 +16,6 @@ test.describe("DL07 Evidence Screenshot Capture", () => {
     { name: "settings", path: "/settings" },
     { name: "data-status", path: "/data-status" },
     { name: "methodology", path: "/methodology" },
-    { name: "tierlist", path: "/tierlist" },
     { name: "forecasts", path: "/forecasts" },
     { name: "calculator", path: "/calculator" },
     { name: "learning", path: "/learning" },

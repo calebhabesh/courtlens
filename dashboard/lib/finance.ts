@@ -3,8 +3,9 @@ import { browserApi } from "./api";
 
 export const FINANCE_STATUSES = ["unknown_review", "unsigned", "signed", "returned", "option_pending", "two_way"] as const;
 export type FinanceStatus = typeof FINANCE_STATUSES[number];
-export const STATUS_LABELS: Record<FinanceStatus, string> = { unknown_review: "Review / unknown", unsigned: "Unsigned", signed: "Signed", returned: "Returned", option_pending: "Option pending", two_way: "Two-way" };
+export const STATUS_LABELS: Record<FinanceStatus, string> = { unknown_review: "Review / Unknown", unsigned: "Unsigned", signed: "Signed", returned: "Returned", option_pending: "Option Pending", two_way: "Two-way" };
 export const AMOUNT_KINDS = ["base_salary", "cash", "cap_hit", "cap_hold", "dead_money", "tax_component"] as const;
+export const AMOUNT_LABELS: Record<typeof AMOUNT_KINDS[number], string> = { base_salary: "Base Salary", cash: "Cash", cap_hit: "Cap Hit", cap_hold: "Cap Hold", dead_money: "Dead Money", tax_component: "Tax Component" };
 export type FinanceQuery = {
   operation_version: "finance-query-v1"; book_id: string; financial_season: string;
   known_at: string; effective_on: string; unknown_dates: "include_labelled" | "exclude";

@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
 
-test("release availability agrees across desktop and mobile and preserves context", async ({ page }) => {
+test("release availability agrees across desktop and mobile and never carries this page's scope", async ({ page }) => {
   await openWorkbench(page, "/stats?season=2025-26&phase=regular_season&beforeDate=2026-06-30");
   await page.getByRole("button", { name: "More options", exact: true }).click();
   await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
@@ -14,19 +14,21 @@ test("release availability agrees across desktop and mobile and preserves contex
   const section = page.locator(".replica-mobile-section").filter({ has: page.getByText("Availability", { exact: true }) });
   expect(await section.locator("a").evaluateAll(items => items.map(item => item.getAttribute("href")))).toEqual(links);
   await expect(page.locator(".replica-mobile-drawer").getByRole("link", { name: "Shooting", exact: true })).toBeVisible();
-  expect(links.every(href => href?.includes("beforeDate=2026-06-30"))).toBe(true);
+  // Every page keeps its own season (owner, 2026-10-15): navigation carries no scope parameters.
+  expect(links.every(href => !/[?&](season|phase|beforeDate)=/.test(href ?? ""))).toBe(true);
 });
 
 test("catalog scope options keep unavailable context explicit and synchronize navigation", async ({ page }) => {
-  await openWorkbench(page, "/stat-line-shift?season=2000-01&phase=summer_league&beforeDate=2001-01-01");
+  // Stat Line Shift (row 13) and Player Twins (row 17) left the catalog scope fields; Shot Aftermath still uses them.
+  await openWorkbench(page, "/research/shooting/aftermath?season=2000-01&phase=summer_league&beforeDate=2001-01-01");
   const season = page.getByLabel("Season", { exact: true });
   await expect(season).toHaveValue("2000-01");
-  await expect(season.locator("option:checked")).toContainText("unavailable");
+  await expect(season.locator("option:checked")).toContainText("Unavailable");
   await season.selectOption("2025-26");
   await expect(page.getByLabel("Phase", { exact: true })).toHaveValue("regular_season");
   // The picker shows the last included day; the URL keeps the exclusive cutoff (2026-06-30).
   await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-06-29");
-  await openWorkbench(page, "/stat-line-shift?season=2025-26&phase=regular_season&beforeDate=2026-04-01");
+  await openWorkbench(page, "/research/shooting/aftermath?season=2025-26&phase=regular_season&beforeDate=2026-04-01");
   await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-03-31");
 });
 
@@ -37,7 +39,7 @@ test("settings distinguishes configured key from provider health and hides opera
   const card = page.getByRole("region", { name: "Assistant configuration", exact: true });
   await expect(card).toContainText("Configuration alone does not establish provider availability or answer accuracy");
   await expect(card).toContainText("Limits per turn");
-  const details = card.locator("details").filter({ has: page.getByText("Configuration details", { exact: true }) });
+  const details = card.locator("details").filter({ has: page.getByText("Configuration Details", { exact: true }) });
   // Wait for React's hidden streamed copy to be revealed or discarded before strict lookup.
   await expect(details).toHaveCount(1);
   await expect(details).not.toHaveAttribute("open", "");
@@ -54,7 +56,7 @@ test("partial source keeps tools primary; service failure remains a distinct ava
   });
   await openWorkbench(page, "/calculator?season=2025-26&phase=regular_season");
   await page.getByRole("button", { name: "Players", exact: true }).click();
-  await expect(page.getByRole("menuitem", { name: "Recent Games", exact: true })).toBeVisible();
+  await expect(page.getByRole("menuitem", { name: /^Last X Games/ })).toBeVisible();
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "More options", exact: true }).click();
   await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
@@ -65,7 +67,7 @@ test("partial source keeps tools primary; service failure remains a distinct ava
   await page.reload(); await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: "More options", exact: true }).click();
   await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
-  await expect(page.getByRole("menuitem", { name: /Recent Games/ })).toContainText("could not be verified");
+  await expect(page.getByRole("menuitem", { name: /Last X Games/ })).toContainText("could not be verified");
   await expect(page.getByRole("region", { name: "Scenario output" })).toBeVisible();
 });
 

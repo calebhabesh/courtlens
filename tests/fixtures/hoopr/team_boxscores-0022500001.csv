@@ -1,0 +1,3 @@
+team_id,team_city,team_name,team_tricode,team_slug,side,minutes,field_goals_made,field_goals_attempted,field_goals_percentage,three_pointers_made,three_pointers_attempted,three_pointers_percentage,free_throws_made,free_throws_attempted,free_throws_percentage,rebounds_offensive,rebounds_defensive,rebounds_total,assists,steals,blocks,turnovers,fouls_personal,points,plus_minus_points,game_id,season,season_type_id
+1610612760,Oklahoma City,Thunder,OKC,thunder,home,290:00,46,104,0.442,13,52,0.25,20,25,0.8,11,27,38,29,12,4,11,27,125,1.0,0022500001,2026,2
+1610612745,Houston,Rockets,HOU,rockets,away,290:00,43,97,0.443,11,39,0.282,27,31,0.871,16,36,52,23,6,5,22,26,124,-1.0,0022500001,2026,2

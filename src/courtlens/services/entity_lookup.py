@@ -34,7 +34,8 @@ from courtlens.domain.entity_lookup import (
     score_entity_match,
     tokenize_lookup_text,
 )
-from courtlens.domain.teams import NBA_TEAMS, get_team_info, resolve_team_tricode
+from courtlens.domain.teams import NBA_TEAMS, TEAM_ERAS, get_team_info, resolve_team_tricode
+from courtlens.reference_models import BbrefPlayerProfile
 from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot
 from courtlens.workbench_models import (
     WorkbenchDataset,
@@ -45,6 +46,55 @@ from courtlens.workbench_models import (
 
 # Bounded LRU cache capacity for warm query responses
 LOOKUP_CACHE_MAX_ENTRIES = 1024
+# Season leaders offered before typing: alone in a player search, or ahead of pages and teams.
+LEADER_SUGGESTIONS = 8
+MIXED_LEADER_SUGGESTIONS = 5
+
+
+def season_leaders(
+    session: Session,
+    dataset_id: str | None,
+    season: str | None,
+    phase: str | None,
+    before_date: date | None,
+    limit: int,
+) -> list[str]:
+    """Player IDs by points per game in the scope, the Stats table's default sort.
+
+    Only players with at least half the scope's most games played qualify, so a short sample
+    never leads early in a season. Without a season the newest admitted one is used. These are
+    labelled season leaders, never "popular": there is no usage data behind them.
+    """
+    if dataset_id is None or limit <= 0:
+        return []
+    scope = [
+        WorkbenchPlayerGame.dataset_id == dataset_id,
+        WorkbenchPlayerGame.appearance == "appeared",
+        WorkbenchPlayerGame.phase == (phase or "regular_season"),
+    ]
+    if season is None:
+        season = session.scalar(select(func.max(WorkbenchPlayerGame.season)).where(*scope))
+        if season is None:
+            return []
+    scope.append(WorkbenchPlayerGame.season == season)
+    if before_date is not None:
+        scope.append(WorkbenchPlayerGame.game_date < before_date)
+    games = func.count()
+    points = func.sum(WorkbenchPlayerGame.points)
+    rows = session.execute(
+        select(WorkbenchPlayerGame.player_id, games, points)
+        .where(*scope)
+        .group_by(WorkbenchPlayerGame.player_id)
+    ).all()
+    if not rows:
+        return []
+    floor = max(row[1] for row in rows) / 2
+    ranked = sorted(
+        (row for row in rows if row[1] >= floor),
+        key=lambda row: (-(row[2] or 0) / row[1], -row[1], row[0]),
+    )
+    return [player_id for player_id, _, _ in ranked[:limit]]
+
 
 _index_lock = threading.RLock()
 _indices_by_dataset: dict[str, list[IndexedEntity]] = {}
@@ -95,6 +145,26 @@ def resolve_lookup_binding(
     raise HTTPException(status_code=404, detail="snapshot or dataset not found")
 
 
+def _destination(
+    entity: IndexedEntity,
+    release_id: str | None,
+    season: str | None,
+    phase: str | None,
+    before_date: date | None,
+) -> str:
+    """An entity's link in the search scope; an earlier team name opens its own last season."""
+    fixed = entity.metadata.get("season")
+    if entity.kind == "team" and isinstance(fixed, str):
+        return build_destination_url(entity.base_destination, release_id=release_id, season=fixed)
+    return build_destination_url(
+        entity.base_destination,
+        release_id=release_id,
+        season=season,
+        phase=phase,
+        before_date=before_date.isoformat() if before_date else None,
+    )
+
+
 def build_entity_index(session: Session, dataset_id: str | None = None) -> list[IndexedEntity]:
     """Build in-memory searchable entity index from database identities, teams, and pages."""
     entities: list[IndexedEntity] = []
@@ -114,6 +184,7 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
             WorkbenchPlayerGame.season,
             WorkbenchPlayerGame.team_id,
             func.max(WorkbenchPlayerGame.game_date).label("latest_date"),
+            func.count().label("games"),
         ).group_by(
             WorkbenchPlayerGame.player_id,
             WorkbenchPlayerGame.season,
@@ -124,15 +195,17 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
 
         summary_rows = session.execute(summary_query).all()
 
-        for pid, season, team_id, latest_date in summary_rows:
+        for pid, season, team_id, latest_date, games in summary_rows:
             if pid not in player_summaries:
                 player_summaries[pid] = {
                     "seasons": set(),
                     "latest_date": latest_date,
                     "latest_team_id": team_id,
+                    "games": 0,
                 }
             entry = player_summaries[pid]
             entry["seasons"].add(season)
+            entry["games"] += games
             if latest_date and (
                 entry["latest_date"] is None or latest_date >= entry["latest_date"]
             ):
@@ -142,11 +215,58 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
         # Fallback if table is not accessible or dataset does not exist
         pass
 
+    # Seasons before the game logs (season totals pinned by the dataset).
+    try:
+        from courtlens.services.history_totals import (
+            dataset_totals,
+            player_team_seasons,
+            season_end_date,
+        )
+
+        totals_sha, totals_seasons = dataset_totals(session, dataset_id)
+        for pid, season, _phase, team_id, games in player_team_seasons(
+            session, totals_sha, totals_seasons
+        ):
+            entry = player_summaries.setdefault(
+                pid, {"seasons": set(), "latest_date": None, "latest_team_id": None, "games": 0}
+            )
+            entry["seasons"].add(season)
+            entry["games"] += games if _phase == "regular_season" else 0
+            ended = season_end_date(season)
+            if entry["latest_date"] is None or ended > entry["latest_date"]:
+                entry["latest_date"] = ended
+                entry["latest_team_id"] = team_id
+    except Exception:
+        session.rollback()
+
+    # 3. Basketball-Reference nicknames from each player's newest parsed profile
+    nicknames: dict[str, list[str]] = {}
+    try:
+        nickname_rows = session.execute(
+            select(BbrefPlayerProfile.player_id, BbrefPlayerProfile.profile["nicknames"])
+            .where(BbrefPlayerProfile.player_id.in_([i.external_id for i in player_identities]))
+            .order_by(BbrefPlayerProfile.observed_at, BbrefPlayerProfile.created_at)
+        ).all()
+        for pid, names in nickname_rows:
+            # Profiles from parsers before bbref-player-v3 carry no nicknames key.
+            if isinstance(names, list):
+                nicknames[pid] = [str(name) for name in names]
+    except Exception:
+        session.rollback()
+
     for ident in player_identities:
         raw_aliases = []
         if isinstance(ident.metadata_json, dict) and "aliases" in ident.metadata_json:
             raw_aliases = ident.metadata_json["aliases"]
-        generated = generate_player_aliases(ident.display_name, raw_aliases)
+        player_nicknames = {
+            normalize_lookup_text(name): name for name in nicknames.get(ident.external_id, [])
+        }
+        player_nicknames.pop("", None)
+        # "greek freak" should find "The Greek Freak" as a whole nickname, not a later word.
+        for norm, name in list(player_nicknames.items()):
+            if norm.startswith("the ") and len(norm) > 4:
+                player_nicknames.setdefault(norm[4:], name)
+        generated = generate_player_aliases(ident.display_name, [*raw_aliases, *player_nicknames])
 
         summary = player_summaries.get(ident.external_id, {})
         seasons = tuple(sorted(summary.get("seasons", [])))
@@ -178,6 +298,8 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
                 latest_team_id=latest_team_id,
                 latest_tricode=latest_tricode,
                 metadata={"identity_id": ident.id, "namespace": ident.namespace},
+                nicknames=player_nicknames,
+                games=summary.get("games", 0),
             )
         )
 
@@ -218,6 +340,41 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
             )
         )
 
+    # 3b. Earlier team names (Seattle SuperSonics, Syracuse Nationals) and teams that folded
+    # (Chicago Stags), each opening its last season; the season is fixed, not the search scope's.
+    # Eras split only by a realignment (the Sonics' 2004-05) are one name: one entry, whole span.
+    spans: dict[tuple[str, str], list[Any]] = {}
+    for era in TEAM_ERAS:
+        spans.setdefault((era.name, era.franchise_id or era.code), []).append(era)
+    for (name, owner), group in spans.items():
+        group.sort(key=lambda e: e.first_season)
+        era, first_season = group[-1], group[0].first_season
+        now = NBA_TEAMS.get(era.franchise_id) if era.franchise_id else None
+        if now is not None and now.name == name:
+            continue  # The franchise's own entry already has this name.
+        era_aliases = [normalize_lookup_text(era.name), era.code.casefold()]
+        entities.append(
+            IndexedEntity(
+                id=f"team:{owner}:{first_season}",
+                kind="team",
+                canonical_id=era.franchise_id or era.code,
+                display_name=era.name,
+                display_name_norm=normalize_lookup_text(era.name),
+                aliases_norm=tuple(dict.fromkeys(a for a in era_aliases if a)),
+                tokens=tuple(tokenize_lookup_text(era.name)),
+                subtitle=f"{first_season} to {era.last_season} · "
+                + (f"Now the {now.name}" if now else "Folded"),
+                portrait_url=None,
+                portrait_fallback=era.code,
+                base_destination=f"/teams/{era.franchise_id or era.code}",
+                latest_team_id=era.franchise_id or era.code,
+                latest_tricode=era.code,
+                conference=era.conference,
+                division=era.division,
+                metadata={"tricode": era.code, "city": era.city, "season": era.last_season},
+            )
+        )
+
     # 4. Load Static Navigation Pages
     for page in STATIC_NAVIGATION_PAGES:
         p_aliases: list[str] = []
@@ -247,6 +404,23 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
         )
 
     return entities
+
+
+def _match_tier(entity: IndexedEntity, basis: MatchBasis, term: str | None) -> int:
+    """Rank tier: an exact full name (or multi-word alias) outranks a word or prefix match.
+
+    Within a tier, prominence decides, so "vic" lists Victor Wembanyama (nickname "Vic")
+    before Vic Law (first name) and both before players who merely contain "vic" or have it
+    later in a nickname.
+    """
+    if basis == "exact" and (term is None or term == entity.display_name or " " in term):
+        return 0
+    if basis == "token_prefix" and term in entity.nicknames:
+        # A later word of a nickname ("Maple Jordan") is no stronger than a substring.
+        return 2
+    if basis in {"exact", "prefix", "token_prefix"}:
+        return 1
+    return 2 if basis == "substring" else 3
 
 
 def get_or_build_entity_index(
@@ -347,6 +521,25 @@ def scoped_team_associations(
         grouped: dict[str, list[tuple[str, date]]] = {}
         for player_id, team_id, latest in session.execute(query).all():
             grouped.setdefault(player_id, []).append((team_id, latest))
+        # Seasons served as totals (before 1983-84) stand at their season end, whole seasons only.
+        unseen = [player_id for player_id in missing if player_id not in grouped]
+        totals_dates: set[date] = set()
+        if unseen and window == "season":
+            from courtlens.services.history_totals import (
+                dataset_totals,
+                player_team_seasons,
+                season_end_date,
+            )
+
+            totals_sha, totals_seasons = dataset_totals(session, dataset_id)
+            in_scope = [s for s in totals_seasons if season is None or s == season]
+            for player_id, totals_season, _, team_id, _ in player_team_seasons(
+                session, totals_sha, in_scope, player_ids=unseen, phase=phase
+            ):
+                ended = season_end_date(totals_season)
+                if before_date is None or ended < before_date:
+                    grouped.setdefault(player_id, []).append((team_id, ended))
+                    totals_dates.add(ended)
         for player_id in missing:
             rows = grouped.get(player_id, [])
             if not rows:
@@ -361,10 +554,12 @@ def scoped_team_associations(
             teams = sorted(
                 {resolve_team_tricode(team) for team, day in rows if scoped or day == latest}
             )
+            from_totals = latest in totals_dates
             result[player_id] = LookupTeamAssociation(
                 basis="selected_scope" if scoped else "last_observed",
                 teams=teams,
-                observed_through=latest,
+                observed_through=None if from_totals else latest,
+                last_season=f"{latest.year - 1}-{latest.year % 100:02d}" if from_totals else None,
                 season=season,
                 phase=phase,
                 before_date=before_date,
@@ -422,14 +617,55 @@ def lookup_entities(
 
     # 1. Empty query -> Navigation suggestions
     if not norm_q:
-        # Players have no meaningful order before typing (identity rows would surface in
-        # storage order), so empty input suggests only pages and teams.
+        # Players have no order of their own before typing, so the scope's season leaders lead
+        # (row 3, 64); pages and teams follow when the search allows them.
+        if "player" in allowed_kinds:
+            players = {e.canonical_id: e for e in index if e.kind == "player"}
+            wanted = min(
+                clamped_limit,
+                LEADER_SUGGESTIONS if allowed_kinds == {"player"} else MIXED_LEADER_SUGGESTIONS,
+            )
+            for player_id in season_leaders(
+                session, dataset_id, season, phase, before_date, wanted
+            ):
+                entity = players.get(player_id)
+                if entity is None:
+                    continue
+                items.append(
+                    LookupItem(
+                        id=entity.id,
+                        kind="player",
+                        canonical_id=entity.canonical_id,
+                        display_name=entity.display_name,
+                        subtitle=entity.latest_tricode,
+                        match_basis="leader",
+                        match_score=0.0,
+                        matched_alias=None,
+                        # Nicknames help only once typed; untyped suggestions stay plain.
+                        nicknames=[],
+                        portrait_url=entity.portrait_url,
+                        portrait_fallback=entity.portrait_fallback,
+                        availability=LookupAvailability(
+                            has_current_season=True,
+                            status="available",
+                            seasons=list(entity.seasons),
+                            latest_team_id=entity.latest_team_id,
+                            latest_tricode=entity.latest_tricode,
+                            conference=entity.conference,
+                            division=entity.division,
+                        ),
+                        destination_url=_destination(
+                            entity, release_id, season, phase, before_date
+                        ),
+                        metadata=entity.metadata,
+                    )
+                )
         suggestion_entities = [e for e in index if e.kind in allowed_kinds and e.kind != "player"]
         # Prefer pages and prominent entities for empty suggestions
         suggestion_entities.sort(
             key=lambda e: 0 if e.kind == "page" else 1 if e.kind == "team" else 2
         )
-        for entity in suggestion_entities[:clamped_limit]:
+        for entity in suggestion_entities[: max(0, clamped_limit - len(items))]:
             items.append(
                 LookupItem(
                     id=entity.id,
@@ -458,13 +694,7 @@ def lookup_entities(
                         conference=entity.conference,
                         division=entity.division,
                     ),
-                    destination_url=build_destination_url(
-                        entity.base_destination,
-                        release_id=release_id,
-                        season=season,
-                        phase=phase,
-                        before_date=before_date.isoformat() if before_date else None,
-                    ),
+                    destination_url=_destination(entity, release_id, season, phase, before_date),
                     metadata=entity.metadata,
                 )
             )
@@ -485,13 +715,27 @@ def lookup_entities(
                 k_rank = kind_rank_map.get(entity.kind, 4)
                 scored_candidates.append((match_score, k_rank, entity, match_basis, matched_term))
 
-        # Stable deterministic tie ordering:
-        # 1. match_score DESC
-        # 2. kind priority (player > team > page)
-        # 3. display_name ASC
-        # 4. id ASC
+        # Players in the scope's season (or the newest indexed season) come first within a tier.
+        current_season = season or max(
+            (s for e in index if e.kind == "player" for s in e.seasons[-1:]), default=None
+        )
+
+        # Stable deterministic ordering:
+        # 1. match tier (full name, then name/nickname word or prefix, substring, typo)
+        # 2. players in the current season, then most observed games
+        # 3. match_score DESC
+        # 4. kind priority (player > team > page)
+        # 5. display_name ASC, id ASC
         scored_candidates.sort(
-            key=lambda item: (-item[0], item[1], item[2].display_name_norm, item[2].id)
+            key=lambda item: (
+                _match_tier(item[2], item[3], item[4]),
+                current_season not in item[2].seasons,
+                -item[2].games,
+                -item[0],
+                item[1],
+                item[2].display_name_norm,
+                item[2].id,
+            )
         )
 
         total_matches = len(scored_candidates)
@@ -522,6 +766,11 @@ def lookup_entities(
                 status = "available"
                 sub = entity.subtitle
 
+            matched_nickname = entity.nicknames.get(matched_term or "")
+            # "The Greek Freak" is indexed twice (with and without "The"); list it once.
+            nicknames = list(dict.fromkeys(entity.nicknames.values()))
+            if matched_nickname:
+                nicknames = [matched_nickname, *(n for n in nicknames if n != matched_nickname)]
             items.append(
                 LookupItem(
                     id=entity.id,
@@ -531,7 +780,8 @@ def lookup_entities(
                     subtitle=sub,
                     match_basis=match_basis,
                     match_score=round(match_score, 4),
-                    matched_alias=matched_term,
+                    matched_alias=matched_nickname,
+                    nicknames=nicknames,
                     portrait_url=entity.portrait_url,
                     portrait_fallback=entity.portrait_fallback,
                     availability=LookupAvailability(
@@ -543,13 +793,7 @@ def lookup_entities(
                         conference=entity.conference,
                         division=entity.division,
                     ),
-                    destination_url=build_destination_url(
-                        entity.base_destination,
-                        release_id=release_id,
-                        season=season,
-                        phase=phase,
-                        before_date=before_date.isoformat() if before_date else None,
-                    ),
+                    destination_url=_destination(entity, release_id, season, phase, before_date),
                     metadata=entity.metadata,
                 )
             )
@@ -578,6 +822,8 @@ def lookup_entities(
             item.subtitle = (
                 f"{label} · Observed in selected scope"
                 if scoped and label
+                else f"{label} · Last season {association.last_season}"
+                if label and association.last_season
                 else f"{label} · Last observed {association.observed_through}"
                 if label
                 else "No observed appearances in selected scope"

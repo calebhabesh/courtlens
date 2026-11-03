@@ -28,6 +28,7 @@ Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`, 
 | IM06 | verified | [Serving and UI evidence](evidence/im06/README.md): identical immutable bundle from 18 sealed artifacts; 68 metrics joined before SQL filters/paging/cohorts, pinned saved replay, ungated presets, profile/research cards. 166,260 real values/nulls match source artifacts across six scopes. 1,778 Python, 285 Vitest, 229 fixture + 12 real browser passes; 14 desktop/mobile screenshots; Ruff/format/mypy/lint/types/build pass. |
 | IM07 | verified | [Agent/eval evidence](evidence/im07/README.md): v3 catalog through existing tools, warehouse-first prompt, pinned impact evidence/units and bounded conflict audits. New development revision preserves every frozen holdout; 48/48 real-data exact replays, zero missed overrides. 1,795 Python, 286 Vitest, 231 browser passes; two Ask screenshots. Live Gemini stopped on quota; no language-quality claim. |
 | IM08 | verified | [Browser fetcher/source assessment](evidence/im08/README.md): 18 fixed targets accounted for; 15 Stats timeouts, two CDN HTTP/2 protocol failures, terms HTTP 403. All direct capabilities remain `source_blocked`, with a separate consent gate. Two exact readbacks, independent 1,230-game/582-player scope, 10 actual Chromium controls; 1,844 Python and 286 Vitest passes. Ruff/format/mypy/lint/types pass. No data admission, provider call or deployment. |
+| SB01 | verified | [Stint box evidence](evidence/stint-box-v1/README.md): per-player stint box for all 3,901 accepted IM03 games (alignment row 13). Replay reproduces every sealed stint's player points; each field conserves to the box score in ≥ 99.6% of team-games, the rest unknown. Six IM03 datasets admitted to the owner database; shared-floor v2 serves them. |
 
 ## IM01 — 2026-10-07
 
@@ -598,3 +599,35 @@ remain required. IM04 remains planned until measured completion is recorded belo
   100); `impact_rts` (Overview rTS%) and `impact_ast_per100` (possession denominator for
   offensive load, cTOV% and rim AST/100) stay. Re-measured: 2,064 Python and 460 Vitest tests
   pass; Ruff, format, mypy, dashboard lint and typecheck pass; the live API lists 0 retired keys.
+
+## Per-team extras for split seasons (2026-10-17)
+
+- Owner instruction: fill the team rows under a split season (Stats and player career tables)
+  wherever per-team data can be fitted.
+- `aggregate_by_team` in `domain/impact_extras.py` keys the committed IM05 per-game facts by
+  (player, team) and runs the unchanged `aggregate`; league references (league TS% for rTS)
+  still come from every player. `scripts/build_impact_team_splits.py` first checks that the
+  facts reproduce each sealed extras artifact (players and league) exactly, then writes a
+  separate content-addressed sidecar, `data/derived/impact-team-splits-v1/b78075aa….json`
+  (11.9 MB, 6 season-phases, built in about 5 s). No sealed artifact or serving manifest changed.
+- `impact_for_query` serves the sidecar's rows for the selected team instead of dropping extras
+  under a team filter, and binds `team_split_sha256` into the query's artifacts, so cohort and
+  cache keys change with it. A missing or altered sidecar leaves team-filtered extras unknown.
+  Ratings (RAPM, BPR, six-factor) stay full-league fits and team rows leave them blank; on/off
+  was already per team.
+- Not fillable: NBA tracking (OnBall%, PTS Created) has no free per-team source. hoopR mirrors
+  only league-wide `leaguedashptstats` files, and stats.nba.com is not admitted (it times out
+  here). DARKO is one rating per player, so DPM stays blank on team rows.
+- Measured: Harden 2025-26 rim assists split 91 (CLE) + 142 (LAC) = 233, the season value; rTS%
+  +5.7 / +1.6 against +2.9 for the season; cTOV% 10.2% / 9.7%. 2,128 Python tests pass (1
+  inherited skip, 24 deselected); Ruff, format and strict mypy pass; 565 Vitest tests pass
+  (the 4 animation errors from `header.test.tsx` predate this change); dashboard lint and
+  typecheck pass. The hosted demo needs the sidecar directory synced (added to
+  `scripts/deploy-vps.sh`, both Compose files and `deploy/pinned.env`).
+
+## 2026-10-19 — SB01 verified: stint box for Stat Line Shift
+
+Alignment row 13 needed per-player shots, free throws, rebounds, assists and turnovers per stint;
+the sealed IM03 stints carry player points only. The owner chose to derive them
+([stint box v1](design/stint-box-v1.md)) and to admit the six IM03 bundles to the owner database.
+Evidence: [stint box](evidence/stint-box-v1/README.md). Consumer: [shared-floor v2](design/shared-floor-v2.md).

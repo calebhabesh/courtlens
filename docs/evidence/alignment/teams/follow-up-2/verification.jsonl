@@ -1,0 +1,10 @@
+{"name":"teams-1440","width":1440,"path":"/teams","overflow":0,"logo":32,"logoCentreOffset":0.5,"rowHeight":52,"markHeights":[22,22],"maxValueLabelOffset":0.51,"errors":[]}
+{"name":"teams-390","width":390,"path":"/teams","overflow":0,"logo":32,"logoCentreOffset":0.5,"rowHeight":49,"markHeights":[0,0],"maxValueLabelOffset":0.5,"errors":[]}
+{"name":"standings-1440","width":1440,"path":"/teams?view=standings","overflow":0,"logo":32,"logoCentreOffset":0.5,"rowHeight":52,"markHeights":[22,22],"maxValueLabelOffset":0.51,"errors":[]}
+{"name":"standings-390","width":390,"path":"/teams?view=standings","overflow":0,"logo":32,"logoCentreOffset":0.5,"rowHeight":49,"markHeights":[0,0],"maxValueLabelOffset":0.5,"errors":[]}
+{"name":"standings-west-1440","width":1440,"path":"/teams?view=standings&conf=west","overflow":0,"logo":32,"logoCentreOffset":0.5,"rowHeight":52,"markHeights":[22,22],"maxValueLabelOffset":0.51,"errors":[]}
+{"name":"home-1440","width":1440,"path":"/teams?venue=home","overflow":0,"logo":32,"logoCentreOffset":0.5,"rowHeight":52,"markHeights":[22,22],"maxValueLabelOffset":0.51,"errors":[]}
+{"name":"cards-1440","width":1440,"path":"/teams?layout=cards","overflow":0,"markHeights":[22,22],"errors":[]}
+{"name":"cards-390","width":390,"path":"/teams?layout=cards","overflow":0,"markHeights":[0,0],"errors":[]}
+{"name":"profile-1440","width":1440,"path":"/teams/1610612760","overflow":0,"errors":[]}
+{"name":"profile-390","width":390,"path":"/teams/1610612760","overflow":0,"errors":[]}

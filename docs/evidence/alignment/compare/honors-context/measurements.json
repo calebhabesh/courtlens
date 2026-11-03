@@ -1,0 +1,100 @@
+[
+  {
+    "width": 1440,
+    "layout": {
+      "overflow": 0,
+      "cardTop": 214,
+      "cardHeight": 1030,
+      "values": [
+        595.5,
+        844.5
+      ],
+      "honors": [
+        595.5,
+        844.5
+      ],
+      "honorsText": "2020-21 HONORS\nAll-Star\n—\nNo honors recorded in this scope"
+    },
+    "headingStyles": [
+      {
+        "text": "2020-21",
+        "tag": "P",
+        "background": "rgb(21, 23, 27)",
+        "color": "rgb(169, 175, 185)",
+        "weight": "600"
+      },
+      {
+        "text": "Career through 2020-21",
+        "tag": "P",
+        "background": "rgb(21, 23, 27)",
+        "color": "rgb(169, 175, 185)",
+        "weight": "600"
+      }
+    ],
+    "menuBackground": "rgb(36, 40, 46)",
+    "counting": {
+      "before": {
+        "x": 825,
+        "y": 513,
+        "width": 160,
+        "height": 32
+      },
+      "after": {
+        "x": 825,
+        "y": 513,
+        "width": 160,
+        "height": 32
+      }
+    },
+    "pageErrors": []
+  },
+  {
+    "width": 390,
+    "layout": {
+      "overflow": 0,
+      "cardTop": 266,
+      "cardHeight": 1130,
+      "values": [
+        113,
+        277
+      ],
+      "honors": [
+        113,
+        277
+      ],
+      "honorsText": "2020-21 HONORS\nAll-Star\n—\nNo honors recorded in this scope"
+    },
+    "headingStyles": [
+      {
+        "text": "2020-21",
+        "tag": "P",
+        "background": "rgb(21, 23, 27)",
+        "color": "rgb(169, 175, 185)",
+        "weight": "600"
+      },
+      {
+        "text": "Career through 2020-21",
+        "tag": "P",
+        "background": "rgb(21, 23, 27)",
+        "color": "rgb(169, 175, 185)",
+        "weight": "600"
+      }
+    ],
+    "menuBackground": "rgb(36, 40, 46)",
+    "counting": {
+      "before": {
+        "x": 115,
+        "y": 629,
+        "width": 160,
+        "height": 40
+      },
+      "after": {
+        "x": 115,
+        "y": 629,
+        "width": 160,
+        "height": 40
+      }
+    },
+    "pageErrors": []
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "playerId": "24",
+  "before": true,
+  "widths": [
+    {
+      "width": 1440,
+      "pageWidth": 1440,
+      "resting": "rgb(31, 38, 50)",
+      "hover": "color(srgb 0.174275 0.200078 0.244314)",
+      "metricHover": "color(srgb 0.122667 0.141098 0.170588)",
+      "rows": [
+        {
+          "season": "2025-26All-Star",
+          "width": 73.1875,
+          "height": 52,
+          "lines": 1,
+          "labels": [
+            "MVP-2",
+            "DPOY-1",
+            "NBA1",
+            "DEF1"
+          ],
+          "contained": false,
+          "tableEdgeGap": 0
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "pageWidth": 390,
+      "resting": "rgb(31, 38, 50)",
+      "hover": "color(srgb 0.174275 0.200078 0.244314)",
+      "metricHover": "color(srgb 0.122667 0.141098 0.170588)",
+      "rows": [
+        {
+          "season": "2025-26All-Star",
+          "width": 73.1875,
+          "height": 49,
+          "lines": 1,
+          "labels": [
+            "MVP-2",
+            "DPOY-1",
+            "NBA1",
+            "DEF1"
+          ],
+          "contained": false,
+          "tableEdgeGap": 0
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

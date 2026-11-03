@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: mart_player_awards
+    description: >-
+      Retrospective season award codes and vote places, keyed by NBA player_id. Awards are
+      known after season end; exact announcement dates are unknown. known_at is acquisition
+      time. These current reference rows are excluded from historical features and forecasts.
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]
+      - name: season
+        data_tests: [not_null]
+      - name: award_code
+        data_tests: [not_null]
+  - name: mart_player_honours
+    description: Source-listed career honours at the latest retained observation, not a game cutoff.
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]
+      - name: honour
+        data_tests: [not_null]
+  - name: mart_player_salaries
+    description: >-
+      Separate salary_history and current_contract reports in exact dollars. A share_of_cap is
+      a fraction of that season's retained official cap, null without it. No historical season
+      borrows the current cap. Options do not establish exercise, guarantees or realized earnings.
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]
+      - name: season
+        data_tests: [not_null]
+      - name: record_kind
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [salary_history, current_contract]
+  - name: mart_player_transactions
+    description: >-
+      Dated source transactions and explicitly marked from/to teams. Event date and local known_at
+      are distinct. Historical team codes are retained; no team is inferred from linked assets.
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]
+      - name: type
+        data_tests: [not_null]

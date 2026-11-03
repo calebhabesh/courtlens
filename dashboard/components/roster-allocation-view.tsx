@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { seasonEra } from "@/lib/portrait-source";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent } from "react";
 import { ContextBar } from "./context-bar";
@@ -32,7 +33,7 @@ export interface RosterAllocationViewProps {
   catalog: WorkbenchCatalog | null;
   teamId: string | null;
   scope: { releaseId?: string; season?: string; phase?: string; beforeDate?: string };
-  /** PC10: rendered as the Depth chart tab inside a Roster Shapes team page. */
+  /** Rendered as a section inside another page (the team profile since alignment row 12). */
   embedded?: boolean;
 }
 
@@ -127,7 +128,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
       <li key={row.player_id} className={`roster-chip ${mode === "projected" ? "is-projected" : ""}`} data-player-id={row.player_id} draggable
         onDragStart={(event) => { event.dataTransfer.setData(DRAG_TYPE, row.player_id); event.dataTransfer.effectAllowed = "move"; }}
         onDragEnd={() => setDropLane(null)}>
-        <PlayerPortrait playerId={row.player_id} name={row.player_name} size="sm" />
+        <PlayerPortrait playerId={row.player_id} name={row.player_name} size="sm" era={seasonEra(scope.season, teamId)} />
         <span className="roster-chip-text">
           <span className="roster-chip-name" title={row.player_name}>{row.player_name}</span>
           <span className="roster-chip-meta">{mode === "projected" && row.games_played > 0 && row.total_minutes !== null
@@ -207,6 +208,8 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
     <>
       {embedded ? <div className="roster-embedded-actions">
         <p className="roster-embedded-intro">Place players into a depth chart and see how {scope.season ?? "observed"} minutes split by position.</p>
+        <Segmented<AllocationMode> size="sm" label="roster-basis" value={mode} onChange={setMode}
+          options={[{ value: "observed", label: "Observed" }, { value: "projected", label: "Projected" }]} />
         <Button size="sm" variant="primary" icon="download" disabled={exportDisabled}
           onClick={() => data && downloadResearch(ALLOCATION_EXPORT_FILENAME, allocationExport(data, mode, allocations))}>Export JSON</Button>
       </div> : <PageHeader
@@ -215,7 +218,8 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
         actions={actions}
       />}
 
-      <ContextBar
+      {/* Embedded, the host page owns the scope controls. */}
+      {!embedded && <ContextBar
         catalog={catalog ?? undefined}
         sampleNoun="players"
         initialReleaseId={scope.releaseId}
@@ -233,7 +237,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
           ...(data.warnings ?? []).map((warning, index) => ({ label: `Source warning ${index + 1}`, value: warning })),
           { label: "Resolved context", value: <pre className="roster-context">{JSON.stringify(data.context, null, 2)}</pre> }
         ] : []}
-      />
+      />}
 
       {!teamId ? (
         <section className="roster-picker" aria-label="Choose a team">
@@ -275,7 +279,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
                   <div className="roster-lanes">{POSITION_LANES.map(lane)}</div>
                 </>} />
               </section>
-              <AccordionItem title={`All players (${rows.length})`} className="roster-table">
+              <AccordionItem title={`All Players (${rows.length})`} className="roster-table">
                 <Table density="compact" aria-label="Player allocation inputs">
                   <TableHeader>
                     <TableRow>

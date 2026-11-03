@@ -101,6 +101,16 @@ def test_defense_and_matchup_views_aggregate_in_sql(marts):
     assert view["focus_rule"] == "Most makes below expected (qualified)"
     offense = views.matchups_view(marts, None, None, "99003", "offense")
     assert offense["detail"]["rows"][0]["player_id"] == "99001" and offense["focus_rule"] is None
+    first_row = offense["detail"]["rows"][0]
+    assert (first_row["fg3m"], first_row["fg3a"], first_row["fta"]) == (4, 10, 5)
+    assert first_row["fg3_pct"] == pytest.approx(0.4)
+    assert offense["pair"] is None
+    capped = views.matchups_view(marts, None, None, "99001", "defense", limit=1)
+    assert len(capped["detail"]["rows"]) == 1 and capped["detail"]["opponents"] == 2
+    paired = views.matchups_view(marts, None, None, "99003", "offense", opponent_id="99001")
+    assert paired["pair"]["player_on_offense"]["player_points"] == 40
+    # 99001 never had the ball against 99003: unobserved, not a zero row.
+    assert paired["pair"]["opponent_on_offense"] is None
     defense = views.matchups_view(marts, None, None, None, "defense")
     assert defense["detail"]["player_id"] == "99001" and defense["focus_rule"]
     with pytest.raises(HTTPException, match="422"):
@@ -130,9 +140,9 @@ def test_play_type_tracking_and_combine_views(marts):
 
 
 def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine(marts):
-    from datetime import date
+    from datetime import UTC, date, datetime
 
-    from courtlens.services.player_bio import age_on, player_bio
+    from courtlens.services.player_bio import age_on, current_teams, player_bio
 
     # Without the bio marts, draft and combine still serve and listings stay unknown.
     early = player_bio(marts, "99001", "2025-26", date(2026, 4, 13))
@@ -144,7 +154,7 @@ def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine
             "listed_position text, listed_height_inches int, listed_weight_lbs numeric, "
             "college text, country text, draft_year int, draft_round int, draft_number int, "
             "from_year int, to_year int, listed_team_id text, birth_date date, "
-            "index_season text, dataset_id text)"
+            "index_season text, dataset_id text, index_observed_at timestamptz, last_team_id text)"
         )
     )
     marts.execute(
@@ -159,9 +169,9 @@ def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine
         text(
             "INSERT INTO mart_player_bio VALUES ('99001','Fictional One','15','C',84,250,"
             "'Fictional U','Fictionland',2025,1,3,2025,2026,'1610612761','2004-04-20',"
-            "'2026-27','i'),"
+            "'2026-27','i','2026-10-01T00:00:00Z','1610612761'),"
             "('99003','Fictional Three',NULL,'G',75,190,NULL,'Fictionland',NULL,NULL,NULL,"
-            "2020,2026,NULL,NULL,'2026-27','i')"
+            "2020,2026,NULL,NULL,'2026-27','i','2026-10-01T00:00:00Z','1610612738')"
         )
     )
     marts.execute(
@@ -176,11 +186,60 @@ def test_player_bio_dates_age_to_the_scope_and_keeps_listings_apart_from_combine
     assert (bio["jersey"], bio["listed_height_inches"], bio["prior_seasons"]) == ("12", 83, 0)
     assert bio["age"] == 21 and bio["as_of"] == date(2026, 4, 12)
     assert bio["country"] == "Fictionland" and not bio["undrafted"]
+    # The current team is the latest index listing, whatever season the page looks at.
+    assert bio["current_team"] == {
+        "team_id": "1610612761",
+        "team_tricode": "TOR",
+        "listing_season": "2026-27",
+        "index_refreshed_at": datetime(2026, 10, 1, tzinfo=UTC),
+        "listing_source": "NBA player index",
+        "trade_date": None,
+        "trade_source_url": None,
+    }
     # Another season has no roster row: the index listing serves, experience stays unknown.
     other = player_bio(marts, "99001", "2024-25", date(2025, 4, 14))
     assert other["listing_source"] == "player_index" and other["prior_seasons"] is None
     assert other["age"] == 20
     undrafted = player_bio(marts, "99003", "2025-26", date(2026, 4, 13))
     assert undrafted["undrafted"] and undrafted["draft"] is None and undrafted["age"] is None
+    assert undrafted["current_team"] is None  # No team in the index: a free agent or retired.
+    # Without roster or Wikipedia sources nothing places them, so no off-roster status is claimed.
+    assert undrafted["current_status"] is None
+    # Stats rows read the same listing; players without a team are left out.
+    assert current_teams(marts, ["99001", "99003", "missing"]) == {
+        "99001": {
+            "team_id": "1610612761",
+            "team_tricode": "TOR",
+            "listing_season": "2026-27",
+            "index_refreshed_at": datetime(2026, 10, 1, tzinfo=UTC),
+            "listing_source": "NBA player index",
+            "trade_date": None,
+            "trade_source_url": None,
+        }
+    }
+    assert undrafted["last_team"]["team_tricode"] == "BOS"
+    assert current_teams(marts, []) == {}
+    marts.execute(
+        text(
+            "CREATE TABLE mart_player_transactions (player_id text, type text, "
+            "to_team text, date date, source_url text, entry_number int)"
+        )
+    )
+    marts.execute(
+        text(
+            "INSERT INTO mart_player_transactions VALUES "
+            "('99001','traded','TOR','2026-09-14','https://www.basketball-reference.com/players/f/fixture01.html',1),"
+            "('99001','extended','TOR','2026-09-22','https://www.basketball-reference.com/players/f/fixture01.html',2)"
+        )
+    )
+    assert current_teams(marts, ["99001"])["99001"]["trade_date"] == date(2026, 9, 14)
+    # A later signing elsewhere prevents an old trade to the current listing being misattributed.
+    marts.execute(
+        text(
+            "INSERT INTO mart_player_transactions VALUES "
+            "('99001','signed','BOS','2026-10-02','https://www.basketball-reference.com/players/f/fixture01.html',3)"
+        )
+    )
+    assert current_teams(marts, ["99001"])["99001"]["trade_date"] is None
     assert age_on(date(2004, 4, 20), date(2026, 4, 19)) == 21
     assert age_on(date(2004, 4, 20), date(2026, 4, 20)) == 22

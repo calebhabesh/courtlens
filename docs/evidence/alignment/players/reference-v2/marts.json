@@ -1,0 +1,70 @@
+{
+  "awards": {
+    "rows": 1250,
+    "players": 203
+  },
+  "honours": {
+    "rows": 576,
+    "players": 255
+  },
+  "salaries": {
+    "rows": 5360,
+    "players": 733
+  },
+  "transactions": {
+    "rows": 7732,
+    "players": 733
+  },
+  "salary_cap_coverage": [
+    {
+      "season": "2031-32",
+      "rows": 5,
+      "cap_shares": 0
+    },
+    {
+      "season": "2030-31",
+      "rows": 18,
+      "cap_shares": 0
+    },
+    {
+      "season": "2029-30",
+      "rows": 58,
+      "cap_shares": 0
+    },
+    {
+      "season": "2028-29",
+      "rows": 154,
+      "cap_shares": 0
+    },
+    {
+      "season": "2027-28",
+      "rows": 288,
+      "cap_shares": 0
+    },
+    {
+      "season": "2026-27",
+      "rows": 426,
+      "cap_shares": 426
+    },
+    {
+      "season": "2025-26",
+      "rows": 690,
+      "cap_shares": 0
+    },
+    {
+      "season": "2024-25",
+      "rows": 669,
+      "cap_shares": 0
+    }
+  ],
+  "leonard_trade": [
+    {
+      "player_id": "202695",
+      "date": "2026-09-14",
+      "type": "traded",
+      "from_team": "LAC",
+      "to_team": "TOR",
+      "observed_at": "2026-10-15 00:48:05.631542+00:00"
+    }
+  ]
+}

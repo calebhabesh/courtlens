@@ -4,7 +4,7 @@ import * as path from "node:path";
 import * as fs from "node:fs/promises";
 
 test.describe("DL03 Header and Command Palette", () => {
-  test("header is single 56px sticky row without bottom border line and zero layout shift on scroll", async ({ page }) => {
+  test("header is single 64px sticky row without bottom border line and zero layout shift on scroll", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 500 });
     await openWorkbench(page, "/stats");
     await page.waitForLoadState("networkidle");
@@ -12,10 +12,10 @@ test.describe("DL03 Header and Command Palette", () => {
     const header = page.locator(".courtlens-header");
     await expect(header).toBeVisible();
 
-    // Verify 56px height
+    // Verify 64px height
     const initialBox = await header.boundingBox();
     expect(initialBox).not.toBeNull();
-    expect(Math.round(initialBox!.height)).toBe(56);
+    expect(Math.round(initialBox!.height)).toBe(64);
 
     // Verify no bottom border line
     const borderBottom = await header.evaluate(el => {
@@ -40,7 +40,7 @@ test.describe("DL03 Header and Command Palette", () => {
 
     const scrolledBox = await header.boundingBox();
     expect(scrolledBox).not.toBeNull();
-    expect(Math.round(scrolledBox!.height)).toBe(56);
+    expect(Math.round(scrolledBox!.height)).toBe(64);
     expect(Math.round(scrolledBox!.y)).toBe(0);
 
     // Header has scrolled class
@@ -52,15 +52,16 @@ test.describe("DL03 Header and Command Palette", () => {
     await openWorkbench(page, "/stats");
     await page.waitForLoadState("networkidle");
 
-    const playersTrigger = page.locator('[data-dropdown-id="players"]');
-    await expect(playersTrigger).toBeVisible();
+    // Live's items need no catalog capability, so the menu has items on the fixture catalog.
+    const liveTrigger = page.locator('[data-dropdown-id="live"]');
+    await expect(liveTrigger).toBeVisible();
 
     // Focus trigger and press ArrowDown
-    await playersTrigger.focus();
+    await liveTrigger.focus();
     await page.keyboard.press("ArrowDown");
 
     // Dropdown panel opens and menuitem is focused
-    const dropdown = page.locator('[data-dropdown-panel="players"]');
+    const dropdown = page.locator('[data-dropdown-panel="live"]');
     await expect(dropdown).toBeVisible();
 
     const firstItem = dropdown.locator('[role="menuitem"]').first();
@@ -74,7 +75,7 @@ test.describe("DL03 Header and Command Palette", () => {
     // Escape closes dropdown and returns focus to trigger
     await page.keyboard.press("Escape");
     await expect(dropdown).toBeHidden();
-    await expect(playersTrigger).toBeFocused();
+    await expect(liveTrigger).toBeFocused();
   });
 
   test("command palette opens via shortcut, searches global lookup, supports arrow traversal, and restores focus", async ({ page }) => {

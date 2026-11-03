@@ -1,6 +1,7 @@
 import { browserApi } from "./workbench-api";
 import { formatDate } from "./format-date";
 import type { ImpactResponse } from "./types";
+import type { TwinsPlayerIndex, TwinsView } from "./player-twins";
 
 /** PC11 read-only views over the PC07 NBA Stats feeds and the WOWY artifact. */
 export type FeedPhase = "regular_season" | "playoffs";
@@ -21,12 +22,13 @@ export interface Defender {
   qualified: boolean; percentiles: Percentiles;
 }
 export interface MatchupRow {
-  player_id: string; player_name: string; games: number | null; matchup_minutes: number | null; partial_possessions: number | null;
+  player_id: string; player_name: string; team_tricode?: string | null; games: number | null; matchup_minutes: number | null; partial_possessions: number | null;
   player_points: number | null; points_per_100: number | null; fgm: number | null; fga: number | null; fg_pct: number | null;
-  fg3m: number | null; fg3a: number | null; assists: number | null; turnovers: number | null;
+  fg3m: number | null; fg3a: number | null; fg3_pct?: number | null; ftm?: number | null; fta?: number | null;
+  assists: number | null; turnovers: number | null; blocks?: number | null;
 }
 export interface MatchupDetail {
-  player_id: string; player_name: string; side: "offense" | "defense"; opponents: number;
+  player_id: string; player_name: string; team_tricode?: string | null; side: "offense" | "defense"; opponents: number;
   matchup_minutes: number | null; partial_possessions: number | null; player_points: number | null;
   points_per_100: number | null; fg_pct: number | null; rows: MatchupRow[];
 }
@@ -34,7 +36,12 @@ export interface DefenseView extends FeedEnvelope {
   category: string; categories: { value: string; label: string }[]; matchups_observed: boolean;
   focus_rule: string | null; players: Defender[]; detail: MatchupDetail | null;
 }
-export interface MatchupsView extends FeedEnvelope { side: "offense" | "defense"; focus_rule: string | null; detail: MatchupDetail }
+/** Two players' direct matchup both ways; a direction never observed is null, not zero. */
+export interface MatchupPair {
+  player_id: string; player_name: string; team_tricode: string | null;
+  player_on_offense: MatchupRow | null; opponent_on_offense: MatchupRow | null;
+}
+export interface MatchupsView extends FeedEnvelope { side: "offense" | "defense"; focus_rule: string | null; detail: MatchupDetail; pair?: MatchupPair | null }
 
 export interface PlayTypeBreakdown {
   play_type: string; label: string; possessions: number; share: number | null; points_per_possession: number | null;
@@ -93,7 +100,7 @@ export interface WowyView {
   artifact_sha256: string; inputs: { acceptance_sha256: string; datasets: Record<string, string> }; source: string; limitations: string[];
 }
 
-export const PHASE_LABELS: Record<FeedPhase, string> = { regular_season: "Regular season", playoffs: "Playoffs" };
+export const PHASE_LABELS: Record<FeedPhase, string> = { regular_season: "Regular Season", playoffs: "Playoffs" };
 
 async function getJson<T>(path: string, params: Record<string, string | number | null | undefined>, signal?: AbortSignal): Promise<T> {
   const query = new URLSearchParams();
@@ -108,7 +115,7 @@ async function getJson<T>(path: string, params: Record<string, string | number |
 
 export const getDefense = (p: { season?: string | null; phase?: string | null; category?: string | null; playerId?: string | null }, signal?: AbortSignal) =>
   getJson<DefenseView>("defense", p, signal);
-export const getSeasonMatchups = (p: { season?: string | null; phase?: string | null; playerId?: string | null; side?: string | null }, signal?: AbortSignal) =>
+export const getSeasonMatchups = (p: { season?: string | null; phase?: string | null; playerId?: string | null; side?: string | null; limit?: number | null; opponentId?: string | null }, signal?: AbortSignal) =>
   getJson<MatchupsView>("season-matchups", p, signal);
 export const getPlayTypes = (p: { season?: string | null; phase?: string | null; side?: string | null; playerId?: string | null }, signal?: AbortSignal) =>
   getJson<PlayTypesView>("play-types", p, signal);
@@ -120,6 +127,10 @@ export const getCombine = (p: { draftYear?: string | number | null; playerId?: s
   getJson<CombineView>("combine", p, signal);
 export const getWowy = (p: { season?: string | null; phase?: string | null; teamId?: string | null; a?: string | null; b?: string | null }, signal?: AbortSignal) =>
   getJson<WowyView>("wowy", p, signal);
+
+export const getPlayerTwins = (p: Record<string, string | number | null | undefined>, signal?: AbortSignal) =>
+  getJson<TwinsView>("player-twins", p, signal);
+export const getPlayerTwinsPlayers = (signal?: AbortSignal) => getJson<TwinsPlayerIndex>("player-twins/players", {}, signal);
 
 export const getSixFactor = (p: { season: string; phase: string; beforeDate: string; sortMetric: string; limit?: number }, signal?: AbortSignal) =>
   getJson<ImpactResponse>("impact", { ...p, limit: p.limit ?? 25 }, signal);
