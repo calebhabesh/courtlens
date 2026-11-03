@@ -19,6 +19,9 @@ updates:
         versions: [">=1.1"]
       - dependency-name: deepdiff
         versions: [">=9"]
+      # dbt-adapters pins protobuf below 7.
+      - dependency-name: protobuf
+        versions: [">=7"]
       # google-genai pins tenacity below 9.2; metricflow pins more-itertools below 11.
       - dependency-name: tenacity
         versions: [">=9.2"]
