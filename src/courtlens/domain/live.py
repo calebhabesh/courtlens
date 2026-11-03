@@ -67,8 +67,11 @@ def parse_game(event: dict[str, Any], slate: date) -> LiveGame:
     teams = []
     for c in comp.get("competitors", []):
         raw_score = c.get("score")
+        # Team schedules report {"value": 135.0, "displayValue": "135"}; scoreboards a string.
+        if isinstance(raw_score, dict):
+            raw_score = raw_score.get("value")
         score = (
-            int(raw_score)
+            int(float(raw_score))
             if normalized in {"in_progress", "final"} and raw_score is not None
             else None
         )
@@ -594,6 +597,57 @@ def _calendar(payload: dict[str, Any]) -> list[str] | None:
         except ValueError:
             continue
     return sorted(out)
+
+
+SCHEDULE_SEASON_TYPES = {"regular_season": 2, "playoffs": 3}
+
+
+def parse_team_schedule(
+    payload: dict[str, Any], team_source_id: str, year: int, season_type: int
+) -> dict[str, Any]:
+    """ESPN's schedule for one team and season phase: every listed game, played or not.
+
+    Each game is a scoreboard game (date in Eastern time, status, both teams, scores once
+    played) plus ESPN's note (e.g. "NBA Cup - Group Play"). Games the source lists without a
+    valid date or two teams are dropped and counted, never guessed.
+    """
+    events = payload.get("events")
+    if not isinstance(events, list) or len(events) > 120:
+        raise ValueError("invalid team schedule")
+    eastern = ZoneInfo("America/New_York")
+    games: list[dict[str, Any]] = []
+    dropped = 0
+    for event in events:
+        try:
+            when = datetime.fromisoformat(str(event.get("date", "")).replace("Z", "+00:00"))
+            game = parse_game(event, when.astimezone(eastern).date())
+        except (ValueError, KeyError, TypeError, AttributeError):
+            dropped += 1
+            continue
+        if team_source_id not in {t.source_id for t in game.teams}:
+            raise ValueError("schedule game without the team")
+        comp = (event.get("competitions") or [{}])[0]
+        notes = comp.get("notes") if isinstance(comp, dict) else None
+        note = next(
+            (
+                n["headline"]
+                for n in notes or []
+                if isinstance(n, dict) and isinstance(n.get("headline"), str)
+            ),
+            None,
+        )
+        games.append({**game.model_dump(mode="json"), "note": note})
+    if len({g["source_id"] for g in games}) != len(games):
+        raise ValueError("duplicate game identities")
+    games.sort(key=lambda g: (g["event_time"], g["source_id"]))
+    return {
+        "team_source_id": team_source_id,
+        "season": f"{year - 1}-{str(year)[-2:]}",
+        "year": year,
+        "season_type": season_type,
+        "games": games,
+        "dropped_events": dropped,
+    }
 
 
 def parse_summary(payload: dict[str, Any], slate: date, game_id: str) -> dict[str, Any]:

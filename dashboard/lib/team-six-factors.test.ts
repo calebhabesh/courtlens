@@ -76,4 +76,20 @@ describe("seasons served as totals", () => {
     // A relative term over unknown possessions has no total.
     expect(column("o_ts").value(team("X", 1, { possessions: null }), "totals")).toBeNull();
   });
+
+  it("ranks scoring points per 100 own or opponent possessions, allowed low-first, unknowns unranked", () => {
+    const scoring = (fb: number, oppFb: number) => ({ games: 82, minutes: 3966, pace: 100, pts_fb: fb, pts_paint: 4000, pts_2nd_chance: 1100, pts_off_tov: 1500,
+      opp_pts_fb: oppFb, opp_pts_paint: 3600, opp_pts_2nd_chance: null, opp_pts_off_tov: 1300 });
+    const teams = [team("A", 1, { possessions: 8000, opp_possessions: 8000, scoring: scoring(1200, 900) }),
+      team("B", 2, { possessions: 9000, opp_possessions: 9000, scoring: scoring(1260, 1100) }), team("C", 3, { scoring: null })];
+    expect(column("pts_fb").value(teams[0], "per_100")).toBe(15);
+    expect(column("pts_fb").value(teams[1], "per_100")).toBe(14);
+    expect(column("pts_fb").value(teams[1], "totals")).toBe(1260);
+    const fb = columnRanks(teams, column("pts_fb"), "per_100"), allowed = columnRanks(teams, column("opp_pts_fb"), "per_100");
+    expect([fb.get("A"), fb.get("B"), fb.has("C")]).toEqual([1, 2, false]);
+    expect([allowed.get("A"), allowed.get("B")]).toEqual([1, 2]);
+    expect(column("opp_pts_2nd_chance").value(teams[0], "per_100")).toBeNull();
+    expect(TEAM_VIEWS.scoring.map(group => group.label)).toEqual(["Tempo", "Scored", "Allowed"]);
+    expect(formatValue(101.04, "tempo", "totals")).toBe("101.0");
+  });
 });

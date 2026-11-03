@@ -226,10 +226,15 @@ const workbenchPlayers = {
 const sixFactorRates = (ts, tov) => ({ ts_pct: ts, tov_per_100: tov, orb_pct: 0.27, ftr: 0.26, fg3a_per_100: 37.1, fg3_pct: 0.362, opp_ts_pct: 0.571, opp_tov_per_100: 13.9, drb_pct: 0.73, opp_ftr: 0.25, opp_fg3a_per_100: 35.2, opp_fg3_pct: 0.351 });
 // Context fields (instruction 9): a ten-point rolling trend; BOS's net is unknown, so its Adj Net is too.
 const sixFactorTrend = (start) => Array.from({ length: 12 }, (_, i) => ({ date: `2026-03-${String(i + 1).padStart(2, "0")}`, net: Math.round((start + Math.sin(i / 2) * 6) * 10) / 10 }));
+// Team scoring (NBA Stats Misc totals): season totals, so unknown for a window or a venue.
+const teamScoring = (pace, fb, paint, second, offTov, oppFb, oppPaint, oppSecond, oppOffTov) =>
+  ({ games: 72, minutes: 3466, pace, pts_fb: fb, pts_paint: paint, pts_2nd_chance: second, pts_off_tov: offTov,
+    opp_pts_fb: oppFb, opp_pts_paint: oppPaint, opp_pts_2nd_chance: oppSecond, opp_pts_off_tov: oppOffTov });
 const workbenchSixFactors = (url) => {
   const luck = Number(url.searchParams.get("offenseLuck") || 0);
   const windowDays = Number(url.searchParams.get("windowDays")) || null;
   const venue = url.searchParams.get("venue");
+  const season = !windowDays && !venue;
   return {
     context: workbenchContext,
     teams: [
@@ -238,13 +243,15 @@ const workbenchSixFactors = (url) => {
         off: 1.9 - luck, o_ts: 1.2 - luck, o_tov: 0.9, o_orb: -0.2, def: 3.3, d_ts: 2.1, d_tov: 0.4, d_drb: 0.8, net_eff: 3.3 - luck, net_poss: 1.9,
         off_luck: -luck, def_luck: 0, league_rating: 113.5, rates: sixFactorRates(0.584, 12.8),
         sos: 0.4, adj_net: 5.6 - luck, expected_wins: 46.2, win_luck: -1.2, close_wins: 9, close_losses: 7,
-        standings: { wins: 45, losses: 27, last10_wins: 7, last10_losses: 3, streak: 3 }, trend: sixFactorTrend(4) },
+        standings: { wins: 45, losses: 27, last10_wins: 7, last10_losses: 3, streak: 3 }, trend: sixFactorTrend(4),
+        scoring: season ? teamScoring(99.2, 1065, 3550, 994, 1349, 852, 3398, 1062, 1133) : null },
       { team_id: "200", tricode: "BOS", name: "Boston Celtics", conference: "Eastern", division: "Atlantic", games_played: 72, wins: 55, losses: 17,
         possessions: 7000, opp_possessions: 7020, points: 8260, opp_points: 7900, ortg: 118.0, drtg: null, net: null,
         off: 4.5, o_ts: 2.0, o_tov: 1.5, o_orb: 1.0, def: null, d_ts: null, d_tov: null, d_drb: null, net_eff: null, net_poss: null,
         off_luck: 0, def_luck: 0, league_rating: 113.5, rates: sixFactorRates(0.592, 11.9),
         sos: -0.3, adj_net: null, expected_wins: null, win_luck: null, close_wins: 6, close_losses: 2,
-        standings: { wins: 55, losses: 17, last10_wins: 8, last10_losses: 2, streak: -1 }, trend: sixFactorTrend(-1) },
+        standings: { wins: 55, losses: 17, last10_wins: 8, last10_losses: 2, streak: -1 }, trend: sixFactorTrend(-1),
+        scoring: season ? teamScoring(97.8, 1120, 3360, 1050, 1260, 910, 3510, null, 1190) : null },
     ],
     league: { rating: 113.5, ts_pct: 0.578, tov_per_100: 13.4, orb_pct: 0.26, ftr: 0.26, fg3a_per_100: 36.3, fg3_pct: 0.36 },
     window: { days: windowDays, start: windowDays ? "2026-03-14" : null, first_game: windowDays ? "2026-03-14" : "2025-10-21", last_game: "2026-04-12", games: windowDays ? 40 : 1230, excluded_games: 0 },
@@ -253,6 +260,10 @@ const workbenchSixFactors = (url) => {
     method_version: "courtlens-team-six-factors-v1",
     context_method_version: "courtlens-team-context-v1",
     warnings: [],
+    scoring: { method_version: "courtlens-team-scoring-v1", status: season ? "complete" : "unavailable", teams: season ? 2 : 0,
+      reason: season ? null : venue ? "Season totals cannot be split by venue." : "Season totals cannot be cut to a recent-game window.",
+      dataset_ids: season ? ["fixture-team-misc"] : [], observed_at: season ? "2026-04-13T10:00:00+00:00" : null, upstream_revisions: [],
+      limitations: ["Fixture team scoring totals."] },
   };
 };
 
@@ -608,6 +619,17 @@ createServer(async (request, response) => {
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
   // Live (alignment row 7): an observed empty date; e2e/live.spec.ts routes real ESPN reads itself.
   if (url.pathname === "/api/live") return json(response, 200, { namespace: "espn", resource: `slate:${url.searchParams.get("slate_date")}`, status: "observed", final: false, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: 600, error: null, observation_id: null, content_sha256: null, data: { games: [], calendar: [] } });
+  // Team schedule (row 4 follow-up): ESPN's season for the team page calendar.
+  if (/^\/api\/live\/teams\/[A-Za-z0-9]+\/schedule$/.test(url.pathname)) {
+    const side = (id, tricode, home, score, winner) => ({ source_id: id, canonical_id: null, identity_status: "verified", tricode, name: tricode, side: home ? "home" : "away", score, winner });
+    const game = (id, day, status, teams, note = null) => ({ source_id: id, canonical_id: null, identity_status: "unmapped", namespace: "espn", slate_date: day, event_time: `${day}T23:30:00Z`, status, period: status === "final" ? 4 : null, clock: null, teams, provisional: true, status_detail: status === "final" ? "Final" : null, odds: null, note });
+    return json(response, 200, { namespace: "espn", resource: "schedule:28:2026:2", status: "observed", final: true, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: null, error: null, observation_id: null, content_sha256: null,
+      data: { team_source_id: "28", season: "2025-26", year: 2026, season_type: 2, dropped_events: 1, games: [
+        game("401000001", "2026-03-01", "final", [side("28", "TOR", true, 112, true), side("2", "BOS", false, 104, false)]),
+        game("401000002", "2026-03-03", "final", [side("18", "NYK", true, 120, true), side("28", "TOR", false, 99, false)]),
+        game("401000003", "2026-04-12", "postponed", [side("28", "TOR", true, null, null), side("14", "MIA", false, null, null)], "NBA Cup - Group Play"),
+      ] } });
+  }
   // Browser JSON POSTs (for example Showcase rank queries) send a CORS preflight, as the real API allows.
   if (request.method === "OPTIONS") {
     response.writeHead(204, {

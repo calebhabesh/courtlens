@@ -27,8 +27,20 @@ export interface SixFactorTeam {
   standings: { wins: number; losses: number; last10_wins: number | null; last10_losses: number | null; streak: number | null };
   /** Net rating over the latest ten games, after each game from the tenth. */
   trend: { date: string; net: number }[];
+  /** NBA Stats team Misc totals and pace (`courtlens-team-scoring-v1`); null unless they cover exactly the games in scope. */
+  scoring?: TeamScoring | null;
   /** Derived in the browser over the teams shown (`withStandings`). */
   seed?: number; games_back?: number;
+}
+/** Season point totals by source tagging, scored and allowed; pace = 48 × (Poss + Opp Poss) / (2 × game minutes). */
+export interface TeamScoring {
+  games: number; minutes: number | null; pace: number | null;
+  pts_fb: number | null; pts_paint: number | null; pts_2nd_chance: number | null; pts_off_tov: number | null;
+  opp_pts_fb: number | null; opp_pts_paint: number | null; opp_pts_2nd_chance: number | null; opp_pts_off_tov: number | null;
+}
+export interface TeamScoringSummary {
+  method_version: string; status: "complete" | "partial" | "unavailable"; teams: number; reason: string | null;
+  dataset_ids: string[]; observed_at: string | null; upstream_revisions: string[]; limitations: string[];
 }
 export interface SixFactorsResponse {
   context: Record<string, unknown>;
@@ -40,6 +52,7 @@ export interface SixFactorsResponse {
   method_version: string;
   context_method_version: string;
   warnings: string[];
+  scoring?: TeamScoringSummary | null;
 }
 
 export type TeamVenue = "home" | "away";
@@ -54,9 +67,10 @@ export async function getTeamSixFactors(p: { season?: string | null; phase?: str
   return response.json();
 }
 
-export type TeamView = "overall" | "offense" | "defense" | "standings";
+export type TeamView = "overall" | "offense" | "defense" | "standings" | "scoring";
 export type TeamCounting = "per_100" | "totals";
-export type ColumnFormat = "signed" | "rating" | "pct" | "rate" | "ratio" | "count" | "wins";
+/** `tempo`: one decimal whatever the counting (pace is per 48 minutes in both modes). */
+export type ColumnFormat = "signed" | "rating" | "pct" | "rate" | "ratio" | "count" | "wins" | "tempo";
 export interface TeamColumn {
   key: string;
   label: string;
@@ -124,6 +138,30 @@ const WIN_LUCK: TeamColumn = { key: "win_luck", label: "Luck", title: "Wins abov
 const CLOSE: TeamColumn = { key: "close", label: "Close", title: "Record in games decided by five points or fewer", higherBetter: true, format: "ratio",
   value: t => winPct(t.close_wins, t.close_losses), display: t => record(t.close_wins, t.close_losses) };
 
+type ScoringPoints = Exclude<keyof TeamScoring, "games" | "minutes" | "pace">;
+/** Points of one kind: per 100 of the side's own possessions (allowed: the opponents'), or season totals. */
+const points = (key: ScoringPoints, label: string, title: string, allowed: boolean): TeamColumn => ({
+  key, label, format: "count", higherBetter: !allowed,
+  title: `${title}${allowed ? ", lower is better" : ""} (per 100 ${allowed ? "opponent " : ""}possessions; Totals: points). NBA Stats season totals`,
+  value: (t, c) => {
+    const total = t.scoring?.[key];
+    if (total == null) return null;
+    if (c === "totals") return total;
+    const possessions = allowed ? t.opp_possessions : t.possessions;
+    return possessions ? 100 * total / possessions : null;
+  },
+});
+const PACE: TeamColumn = { key: "pace", label: "Pace", title: "Possessions per 48 minutes: 48 × (Poss + Opp Poss) / (2 × game minutes); #1 is the fastest", higherBetter: true, format: "tempo",
+  value: t => t.scoring?.pace ?? null };
+const FB = points("pts_fb", "FB", "Fast-break points", false);
+const PAINT = points("pts_paint", "Paint", "Points in the paint", false);
+const SECOND = points("pts_2nd_chance", "2nd", "Second-chance points", false);
+const OFF_TOV = points("pts_off_tov", "OffTO", "Points off turnovers", false);
+const OPP_FB = points("opp_pts_fb", "FB", "Fast-break points allowed", true);
+const OPP_PAINT = points("opp_pts_paint", "Paint", "Points in the paint allowed", true);
+const OPP_SECOND = points("opp_pts_2nd_chance", "2nd", "Second-chance points allowed", true);
+const OPP_OFF_TOV = points("opp_pts_off_tov", "OffTO", "Points allowed off turnovers", true);
+
 const rate = (key: keyof SixFactorRates, label: string, title: string, format: ColumnFormat, higherBetter: boolean): TeamColumn =>
   ({ key, label, title, format, higherBetter, value: t => t.rates[key] });
 
@@ -163,6 +201,11 @@ export const TEAM_VIEWS: Record<TeamView, TeamColumnGroup[]> = {
     { label: "Schedule", columns: [NET, SOS, ADJ_NET] },
     { label: "Expected", columns: [X_WINS, WIN_LUCK, CLOSE] },
   ],
+  scoring: [
+    { label: "Tempo", columns: [PACE] },
+    { label: "Scored", columns: [FB, PAINT, SECOND, OFF_TOV] },
+    { label: "Allowed", columns: [OPP_FB, OPP_PAINT, OPP_SECOND, OPP_OFF_TOV] },
+  ],
 };
 
 export const viewColumns = (view: TeamView) => TEAM_VIEWS[view].flatMap(group => group.columns);
@@ -171,7 +214,7 @@ export const ALL_COLUMNS = [...new Map(Object.values(TEAM_VIEWS).flat().flatMap(
 
 export function formatValue(value: number | null, format: ColumnFormat, counting: TeamCounting): string {
   if (value == null || !Number.isFinite(value)) return "—";
-  if (format === "wins") return value.toFixed(1);
+  if (format === "wins" || format === "tempo") return value.toFixed(1);
   const digits = counting === "totals" && format !== "pct" && format !== "ratio" && format !== "rate" ? 0 : format === "ratio" ? 3 : 1;
   if (format === "pct") return `${(value * 100).toFixed(1)}%`;
   const text = value.toFixed(digits);

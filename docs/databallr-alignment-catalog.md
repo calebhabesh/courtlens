@@ -16,7 +16,7 @@ Rows are in working order.
 | 1 | Stats | `/stats` | 👀 | Follow-up 84 (in-season default sort, empty columns) ready for review; first revision approved 2026-10-15, cold-load follow-up 2026-10-25; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
 | 3 | PvP | `/compare` | ✅ | Owner approved 2026-10-21 (Compare menu tentatively done); Compare Export fixed (card export) |
-| 4 | Teams | `/teams`, `/teams/[id]` | ✅ | Owner approved 2026-10-21 (Teams menu tentatively done); Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
+| 4 | Teams | `/teams`, `/teams/[id]` | 👀 | Reopened 2026-11-02 for team rankings (rank strip, Scoring view, search), ready for review; owner approved 2026-10-21 (Teams menu tentatively done); Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
 | 5 | WOWY | `/wowy` | 👀 | Top-level nav link after Stats; Select Team on arrival; Databallr's WOWY Combos lineup table (Combo / On / Off roles, every on/off mix with large lit / OFF photos, ON − OFF row, Overview / Offense / Defense) with date, game-clock, garbage-time, common-games, opponent and player-vs-player filters (`courtlens-wowy-combos-v1`) |
 | 6 | Last X Games | `/last-games` | ✅ | Owner approved first revision 2026-10-20; Databallr's window card, comparison and game logs, then stretch verdicts, game context, opponent defence, Since windows, linked panels and a four-stat rolling chart; +/- from accepted stints |
 | 7 | Live | `/live` | 👀 | Owner started 2026-10-27: Databallr's date strip, game cards and game view (Box Score / Play-by-Play / Pre-Game, All Games rail, hotkeys) plus X's game summary (line score, shot chart, team stats, leaders, game info) |
@@ -1277,7 +1277,76 @@ Guardrails kept: no overall winner or lead tally; unknown values show "—" with
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
 
-### 4 Teams — ✅ aligned (first revision; instruction 8 still awaits the owner's conference list)
+### 4 Teams — 👀 ready for review (team rankings follow-up, 2026-11-02; first revision approved; instruction 8 still awaits the owner's conference list)
+
+Follow-up instruction (owner, 2026-11-02): "Team rankings for given stats. Offensive Rating (best
+offense), Defensive Rating (best defense), Best fast break, other relevant team statistics. Either
+on the team page, or in the team standings (with a table search there), or even both" — owner
+approved the proposal: team-page rank strip, /teams search, team Misc feed with fast-break view.
+- [x] Team Misc feed: `leaguedashteamstats` Misc totals (hoopR mirror) admitted as stats feed
+  `team_misc` (capability `team_scoring`), 1996-97 to 2026-27 (62 files; older files declare only
+  the start year). `courtlens acquire-team-scoring`, a `refresh-daily` step, view mart
+  `mart_stats_team_scoring`. The six-factors response gains `scoring` per team
+  (`courtlens-team-scoring-v1`): shown only when the totals' games and wins equal the scope's,
+  never for a venue or window; pace = 48 × (Poss + Opp Poss) / (2 × MIN).
+- [x] /teams Scoring view (Pace; FB, Paint, 2nd, OffTO scored and allowed, per 100 or totals,
+  league ranks) and a team search in the pinned team header (cards: above the cards); searching
+  keeps ranks.
+- [x] Team page rank strip under the title: Offense, Defense, Net, Pace, Shooting, Three-Point,
+  Fast Break, Paint, Second Chance, Off Turnovers, Transition D, Paint D; #rank of N (top five
+  gold, bottom five blue); each opens /teams sorted by that stat.
+- [x] Verified (2026-11-02): `e2e/teams.spec.ts` gains scoring/search and rank-strip specs; all 9
+  pass in a sandbox on 3185/4185 (3180 was held by another server; 4190 is a fetch-blocked port).
+  The team stats visual baseline still passes (change under its 1% tolerance). The team profile
+  baseline times out on `networkidle` at HEAD as well, so it is a pre-existing failure, not
+  regenerated here. Evidence (live data): `docs/evidence/alignment/teams/rankings/`
+  (`team-ranks-1440/390`, `team-ranks-1997-98-1440`, `teams-scoring-1440/390`,
+  `teams-search-1440`, `teams-scoring-home-1440`). Status: ready for owner review.
+
+Follow-up instruction (owner, 2026-11-02, second round): "can we have the color shading for team
+stats like we have for rotation/player stats. Also in that comparison can it show how that team
+fared in that stats versus the league like on the Team Stats page" and "In 'Game Log' or 'Home
+Away' would it be possible to link to the game pages for the game, formatted like the 'Live' game
+pages we have?"
+- [x] Team Compare › Team Stats: the leading cell carries its team colour (the Rotations gradient),
+  and each value shows that side's league rank (#n, top five gold, bottom five blue) from the
+  Teams page's six-factors read for the side's own scope. New groups from the same read: Shooting
+  Profile, Scoring Types (scored/allowed), Six Factors, Schedule & Luck; FB and Paint scored and
+  allowed join the defaults. eFG%, TOV%, FG%, FT% and the opponent eFG/TOV/FG% rows have no
+  league read, so they show no rank. Pace, 3PA volume and SOS rank but never shade.
+- [x] Verified (2026-11-02): new `e2e/team-comparison.spec.ts` stats spec; comparison and Teams
+  specs (13) pass in a sandbox on 3185/4185. Evidence (live data): `team-compare-stats-1440`,
+  `game-log-live-link-1440` (TOR–LAL Nov 1 opened as ESPN game 401909906).
+- [x] Team Game Log: the score opens the game's Live page through `/live/open` (reads ESPN's
+  slate for the date; matches our game id, else both teams by id or tricode; falls back to the
+  date's Live board). Home and Away is a split table with no games, so it has no links.
+
+Follow-up instruction (owner, 2026-11-03): "Yes, build it, I want a more far out game log that
+shows me all valid games scheduled in the season in a calendar like view."
+- [x] Live API: `GET /api/live/teams/{team}/schedule?season=&phase=` reads ESPN's team schedule
+  (`/teams/{espn_id}/schedule`, seasontype 2 or 3) through the Live cache as resource
+  `schedule:{espn_id}:{year}:{type}`: refreshed every 10 minutes (1 while a game is live), final
+  and retained as hashed evidence once a past season is fully settled. Franchise ids, tricodes and
+  era codes map to ESPN's franchise team (SEA → Thunder). Undated listings (NBA Cup knockout TBDs)
+  are dropped and counted, never placed. Dashboard proxy allows the path (GET only).
+- [x] Team page Schedule section replaces the Game Log section: Calendar (default) and Game Log
+  views (`?schedule=log`). The calendar is a Sunday-first month grid with month arrows and a
+  month picker, opening on today's month in season (else the first); each game shows venue,
+  opponent logo and season-era code, W/L (green/red) with score, or tip-off (Eastern), live,
+  postponed; NBA Cup / playoff-round notes; home dates tinted, today ringed; every game opens its
+  Live page by ESPN id. Header: games, record, next game; month titles carry the month's record.
+  Phones keep logo plus W/L or time. ESPN's schedule is read now, so it shows games after the
+  page's Through date (stated under the calendar).
+- [x] Owner follow-ups (2026-11-03): month picker at the view toggle's size (it hides under
+  640px; arrows remain); each game date themed by its opponent (brand-colour gradient and a large
+  faded season logo, as the comparison cards), replacing the home tint; larger date, opponent and
+  time text, and a played game's result as a large green W / red L (no badge) beside a bold
+  score. The Standing table's team cell shows the logo beside the code.
+- [x] Verified (2026-11-03): `tests/unit/test_live_team_schedule.py`,
+  `components/team-schedule.test.ts`, two new `e2e/teams.spec.ts` calendar specs (1440/390);
+  Teams, Team Compare and Live specs (29) pass in a sandbox on 3185/4185. Evidence (live data):
+  `team-schedule-calendar-1440/390`, `team-schedule-1997-98-1440`,
+  `team-schedule-playoffs-1440`, `team-schedule-game-log-1440`.
 
 Owner start (2026-10-18): "Let's begin the revamp for the teams pages", with Databallr references
 for Teams, the Teams menu, Roster Shapes, Stat Line Shift, Contracts (overview, roster table, pies)

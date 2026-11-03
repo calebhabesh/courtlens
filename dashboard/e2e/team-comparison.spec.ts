@@ -87,3 +87,22 @@ test("team game totals preserve missing fields and known zeroes independently", 
   await expect(page.getByRole("cell", { name: "TOR AST: 0", exact: true })).toHaveText("0");
   await expect(page.getByRole("cell", { name: "BOS AST: 0", exact: true })).toHaveText("0");
 });
+
+test("team stats shade the leader in its team colour and rank each side in its league", async ({ page }) => {
+  await openWorkbench(page, `${scope}&view=stats`);
+  const table = page.getByRole("table", { name: "Team statistics" });
+  // Fixture fast-break points per 100: TOR 1065 / 7100 = 15.0, BOS 1120 / 7000 = 16.0.
+  const fastBreak = table.getByRole("row", { name: /^.*Fast-Break Points \/ 100.*$/ });
+  await expect(fastBreak.locator("td").nth(0)).toContainText("15.0");
+  await expect(fastBreak.locator("td").nth(0)).toContainText("#2");
+  await expect(fastBreak.locator("td").nth(0)).not.toHaveAttribute("data-leading");
+  await expect(fastBreak.locator("td").nth(1)).toContainText("16.0");
+  await expect(fastBreak.locator("td").nth(1)).toContainText("#1");
+  await expect(fastBreak.locator("td").nth(1)).toHaveAttribute("data-leading", "true");
+  // Allowed ranks low-first: TOR 852 / 7080 = 12.0 leads BOS 910 / 7020 = 13.0.
+  const allowed = table.getByRole("row", { name: /Fast-Break Points Allowed/ });
+  await expect(allowed.locator("td").nth(0)).toHaveAttribute("data-leading", "true");
+  await expect(allowed.locator("td").nth(0)).toContainText("#1");
+  // A stat with no league read shows its value without a rank.
+  await expect(table.getByRole("row", { name: /Effective FG %/ }).locator(".tc-stat-rank")).toHaveCount(0);
+});

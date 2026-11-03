@@ -1476,6 +1476,65 @@ def acquire_player_bio_command(
         raise typer.Exit(1)
 
 
+@app.command("acquire-team-scoring")
+def acquire_team_scoring_command(
+    season: list[str] = typer.Option([], help="Seasons to fetch; default the one under way."),
+    revision: str | None = typer.Option(
+        None, help="Pinned 40-hex hoopR-nba-stats-raw commit; default its newest."
+    ),
+    root: Path = typer.Option(Path("data/raw/stats-feeds")),
+    report: Path | None = typer.Option(None, help="Write the run summary JSON here."),
+) -> None:
+    """Team Misc season totals (fast-break, paint, second-chance, off-turnover points).
+
+    A phase not played yet has no file: that fetch fails and is reported, and the run goes on.
+    The run fails only when a file is rejected or nothing was admitted.
+    """
+    import httpx
+
+    from courtlens.services.darko import season_of
+    from courtlens.services.season_refresh import latest_revision
+    from courtlens.services.stats_feed_ingestion import FeedFetcher, admit_feed, team_scoring_plan
+
+    seasons = season or [season_of(date.today())]
+    results = []
+    with SessionLocal() as session, httpx.Client(timeout=30) as client:
+        pinned = revision or latest_revision(client)
+        fetcher = FeedFetcher(session, root, client)
+        for source, url, scope_season in team_scoring_plan(pinned, seasons):
+            receipt = fetcher.fetch(source, url, scope_season)
+            session.commit()
+            result: dict[str, Any] = {
+                "url": url,
+                "status": receipt.status,
+                "http_status": receipt.http_status,
+                "reason": receipt.error_summary,
+            }
+            if receipt.status == "success":
+                try:
+                    dataset = admit_feed(session, receipt.id, root)
+                    session.commit()
+                    result |= {"dataset_id": dataset.id, "rows": dataset.coverage_json["rows"]}
+                except (ValueError, KeyError) as error:
+                    session.rollback()
+                    result |= {"status": "rejected", "reason": str(error)[:300]}
+            results.append(result)
+            typer.echo(json.dumps(result))
+    summary = {
+        "revision": pinned,
+        "seasons": seasons,
+        "planned": len(results),
+        "admitted": sum("dataset_id" in r for r in results),
+        "failed": [r["url"] for r in results if r["status"] == "failed"],
+        "rejected": [r["url"] for r in results if r["status"] == "rejected"],
+    }
+    if report is not None:
+        report.write_text(json.dumps(summary, indent=2) + "\n")
+    typer.echo(json.dumps({k: v for k, v in summary.items() if k != "seasons"}))
+    if summary["rejected"] or not summary["admitted"]:
+        raise typer.Exit(1)
+
+
 @app.command("acquire-bbref-bios")
 def acquire_bbref_bios_command(
     limit: int | None = typer.Option(None, help="Fetch at most this many player pages."),
@@ -1964,7 +2023,7 @@ def retire_release_command(dataset_id: list[str] = typer.Argument(...)) -> None:
 def refresh_daily_command(
     keep_days: int = typer.Option(30, help="Retention window passed to every step."),
 ) -> None:
-    """Scheduled daily run: player index, season stats, contracts, DARKO, Wikipedia moves.
+    """Scheduled daily run: player index, season stats, team scoring, contracts, DARKO, moves.
 
     Each step runs even when an earlier one fails (contracts then pin the previous index);
     the run exits non-zero if any step failed so the timer's journal records it.
@@ -1978,6 +2037,10 @@ def refresh_daily_command(
         (
             "season stats",
             lambda: refresh_season_stats_command(None, Path("data/raw/season-boxscores"), 2, False),
+        ),
+        (
+            "team scoring",
+            lambda: acquire_team_scoring_command([], None, Path("data/raw/stats-feeds"), None),
         ),
         ("contracts", lambda: refresh_contracts_command(None, Path("data/raw/finance"), keep_days)),
         (

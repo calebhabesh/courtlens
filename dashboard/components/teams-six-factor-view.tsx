@@ -1,7 +1,7 @@
 "use client";
 
 import { FIRST_GAME_LOG_SEASON, isTotalsSeason, seasonOptionLabel } from "@/lib/season-basis";
-import { useMemo, type CSSProperties } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import Link from "next/link";
 // The Stats table look, as the career and matchup tables borrow it.
 import "./stats-explorer.css";
@@ -14,7 +14,8 @@ import { FilterBar } from "./ui/filter-bar";
 import { DataDetailsButton } from "./ui/data-details";
 import { Menu, MenuItem } from "./ui/menu";
 import { PageHeader } from "./ui/panel";
-import { MenuTrigger, Segmented, Select } from "./ui/kit";
+import { IconButton, MenuTrigger, Segmented, Select } from "./ui/kit";
+import { Icon } from "./ui/icon";
 import { formatDate } from "@/lib/format-date";
 import type { WorkbenchCatalog } from "@/lib/types";
 import {
@@ -23,13 +24,16 @@ import {
 } from "@/lib/team-six-factors";
 
 const PHASES = [{ value: "regular_season", label: "Regular Season" }, { value: "playoffs", label: "Playoffs" }] as const;
-const DEFAULT_SORT: Record<TeamView, string> = { overall: "net", offense: "off", defense: "def", standings: "seed" };
+const DEFAULT_SORT: Record<TeamView, string> = { overall: "net", offense: "off", defense: "def", standings: "seed", scoring: "pts_fb" };
 const VIEW_OPTIONS: { value: TeamView; label: string; title: string }[] = [
   { value: "overall", label: "Overall", title: "Ratings and six factors" },
   { value: "offense", label: "Offense", title: "Offensive six factors and rates" },
   { value: "defense", label: "Defense", title: "Defensive six factors and opponent rates" },
   { value: "standings", label: "Standings", title: "Seed, record and streak; strength of schedule; expected wins and close games" },
+  { value: "scoring", label: "Scoring", title: "Pace; fast-break, paint, second-chance and off-turnover points, scored and allowed" },
 ];
+/** A team matches a search on its code, city or name, whatever the case. */
+const matches = (team: SixFactorTeam, query: string) => !query || `${team.tricode} ${team.name}`.toLowerCase().includes(query.toLowerCase());
 const share = (raw: string | null) => LUCK_SHARES.find(value => String(value) === raw) ?? 0;
 const tone = (column: TeamColumn, value: number | null) => !column.signed || value == null || Math.abs(value) < 0.05 ? undefined : value > 0 ? "up" : "down";
 
@@ -63,7 +67,15 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
   // A conference ranks and seeds its own teams; every value stays relative to the league average.
   // Before 1970-71 there were no conferences: East and West are the Eastern and Western Divisions.
   const shownTeams = useMemo(() => data ? withStandings(data.teams.filter(team => !conference || (team.conference ?? team.division) === conference)) : [], [data, conference]);
-  const teams = useMemo(() => sortTeams(shownTeams, sortColumn, sortDir, counting), [shownTeams, sortColumn, sortDir, counting]);
+  const sorted = useMemo(() => sortTeams(shownTeams, sortColumn, sortDir, counting), [shownTeams, sortColumn, sortDir, counting]);
+  // Searching narrows the rows; ranks and the Rk column stay those of every team shown.
+  // The typed text filters at once; the URL keeps it for links and reloads.
+  const [typed, setTyped] = useState(() => get("q") ?? "");
+  const query = typed.trim();
+  const teams = useMemo(() => sorted.filter(team => matches(team, query)), [sorted, query]);
+  const position = useMemo(() => new Map(sorted.map((team, index) => [team.team_id, index + 1])), [sorted]);
+  const search = (value: string) => { setTyped(value); set({ q: value.trim() ? value : null }); };
+  const scoringMissing = view === "scoring" && data != null && data.scoring?.status !== "complete";
   const ranks = useMemo(() => new Map(ALL_COLUMNS.map(column => [column.key, columnRanks(shownTeams, column, counting)])), [shownTeams, counting]);
   const scopeParams = new URLSearchParams({ season, phase, ...(beforeDate ? { beforeDate } : {}) }).toString();
   const phases = PHASES.filter(entry => !catalog?.stats_scopes || catalog.stats_scopes.some(scope => scope.season === season && scope.phase === entry.value));
@@ -77,6 +89,16 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
   const windowLabel = WINDOWS.find(entry => entry.value === windowValue)!.label;
   const venueLabel = VENUES.find(entry => entry.value === (venue ?? ""))!.label;
   const estimated = totals && data != null && data.teams.length > 0 && data.teams.every(team => team.o_ts == null);
+
+  const searchField = <div className="stats-header-search teams-search" role="search">
+    <div className="lookup-input-wrapper">
+      <Icon name="search" className="lookup-search-icon" />
+      <input type="search" className="lookup-input" aria-label="Filter teams by name" placeholder="Search teams…" autoComplete="off" spellCheck={false}
+        value={typed} onChange={event => search(event.target.value)}
+        onKeyDown={event => { if (event.key === "Escape" && typed) { event.preventDefault(); search(""); } }} />
+      {typed && <IconButton size="sm" icon="close" label="Clear team search" onClick={() => search("")} />}
+    </div>
+  </div>;
 
   return <div className="teams-page" role="region" aria-label="NBA Team Stats">
     <PageHeader className="pvp-header" icon="users" title="NBA Team Stats" subtitle={`Six Factor Analysis · ${season} Season`} />
@@ -124,14 +146,18 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
         { label: "Schedule and luck", value: "Adj Net solves every team's net rating plus the average strength of the opponents it faced, pinned so the league averages zero (Basketball-Reference's SRS, per 100 possessions); SOS is that opponent average, so Adj Net = Net + SOS. xW = games × PF¹⁴ / (PF¹⁴ + PA¹⁴); Luck = wins − xW; Close = games decided by five points or fewer. Seed orders the teams shown by win percentage, ties by net rating, not the NBA's tiebreakers. Seed, W–L, GB, L10, Strk and the trend cover every game in scope, whatever the window or venue." },
         { label: "Method version", value: `${data.method_version} · ${data.context_method_version}`, mono: true },
         { label: "Source", value: "CourtLens admitted team box scores (descriptive; not a forecast). Databallr's version reads play-by-play first- and second-chance points, so values differ slightly." },
+        ...(data.scoring ? [{ label: "Scoring", value: [
+          data.scoring.status === "complete" ? `NBA Stats team Misc totals for all ${data.scoring.teams} teams${data.scoring.observed_at ? `, mirrored ${formatDate(data.scoring.observed_at.slice(0, 10))}` : ""}.` : data.scoring.reason ?? "Unavailable.",
+          ...data.scoring.limitations].join(" ") }, { label: "Scoring method", value: data.scoring.method_version, mono: true }] : []),
         ...data.warnings.map(value => ({ label: "Source warning", value })),
       ]} /> : undefined} /></div>
     {totals && <p className="teams-note">{season} has season totals only (game logs start in {FIRST_GAME_LOG_SEASON}): records come from the standings, and last ten, streaks, close games, the trend, schedule strength and home and away need games.
       {estimated && " Turnovers and offensive rebounds were not kept before 1973-74, so ratings are Basketball-Reference's estimates and the six factors are unknown."}</p>}
     {error && <FeedFailure error={error} retry={retry} what="team stats" />}
     {loading && !data && <FeedSkeleton label="Loading team stats" />}
-    {data && !teams.length && <p className="teams-empty">{conference ? `No ${conference} Conference teams in this scope.` : "No team games in this scope."}</p>}
-    {data && teams.length > 0 && layout === "table" && <section className="stats-workspace teams-table" aria-label="Team six factors" aria-busy={loading || undefined}>
+    {data && !sorted.length && <p className="teams-empty">{conference ? `No ${conference} Conference teams in this scope.` : "No team games in this scope."}</p>}
+    {scoringMissing && <p className="teams-note" role="status">Scoring is unknown{data.scoring?.status === "partial" ? " for some teams" : ""} here: {data.scoring?.reason ?? "no team scoring totals are admitted."} These are season totals, so they show for full-season scopes from 1996-97 on.</p>}
+    {data && sorted.length > 0 && layout === "table" && <section className="stats-workspace teams-table" aria-label="Team six factors" aria-busy={loading || undefined}>
       <div className="stats-table-frame is-table">
         <div className="table-wrapper stats-scroll-region teams-scroll" role="region" aria-label="Team table scroll area" tabIndex={0}>
           <table className="data-table dense-stats-table teams-grid" data-view={view}>
@@ -142,16 +168,18 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
                 {TEAM_VIEWS[view].map((group, index) => <th key={group.label} colSpan={group.columns.length} scope="colgroup" className={`stats-group-th ${index > 0 ? "group-start" : ""}`}>{group.label}</th>)}
               </tr>
               <tr className="stats-header-tier-2">
-                <th scope="col" className="pinned-col teams-name"><span className="teams-name-label"><span>Rk</span><span>Team</span></span></th>
+                {/* Databallr: the search field sits in the pinned team column, as on Stats. */}
+                <th scope="col" className="pinned-col teams-name teams-name-search"><span className="sr-only">Rank and team</span>{searchField}</th>
                 {TEAM_VIEWS[view].flatMap((group, index) => group.columns.map((column, position) => <SortHeader key={column.key} label={column.label} metric={column.key} description={column.title}
                   active={sortKey === column.key} direction={sortDir} onSort={sort} className={`num ${index > 0 && position === 0 ? "group-start" : ""}`} />))}
               </tr>
             </thead>
             <tbody key={`${season}-${phase}-${windowValue}`} className="pvp-fade">
-              {teams.map((team, index) => <tr key={team.team_id}>
+              {!teams.length && <tr><td colSpan={columns.length + 1} className="teams-search-empty">No team matches “{query}”.</td></tr>}
+              {teams.map(team => <tr key={team.team_id}>
                 <th scope="row" className="pinned-col teams-name">
                   <span className="teams-identity">
-                    <span className="teams-rank-badge" data-top={index < 3 || undefined}>{index + 1}</span>
+                    <span className="teams-rank-badge" data-top={(position.get(team.team_id) ?? 99) <= 3 || undefined}>{position.get(team.team_id)}</span>
                     <TeamLogo team={team.tricode} season={season} size={32} />
                     <Link href={`/teams/${team.team_id}?${scopeParams}`} title={`${team.name} · ${team.wins}–${team.losses}`}>{team.tricode}</Link>
                     <span className="teams-record">{team.wins}–{team.losses}</span>
@@ -165,9 +193,16 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
         </div>
       </div>
     </section>}
-    {data && teams.length > 0 && layout === "cards" && <TeamCards teams={teams} counting={counting} ranks={ranks} season={season} scopeParams={scopeParams} />}
-    {data && teams.length > 0 && <p className="teams-note">
-      Points per 100 possessions against league average; positive is better on both ends, and each side&apos;s three terms add up to OFF or DEF exactly.{conference ? ` Ranks are within the ${conference} Conference.` : ""}
+    {data && sorted.length > 0 && layout === "cards" && <>
+      <div className="teams-cards-search">{searchField}</div>
+      {teams.length ? <TeamCards teams={teams} all={sorted} position={position} counting={counting} ranks={ranks} season={season} scopeParams={scopeParams} />
+        : <p className="teams-empty">No team matches “{query}”.</p>}
+    </>}
+    {data && sorted.length > 0 && <p className="teams-note">
+      {view === "scoring"
+        ? "Scored points per 100 possessions and allowed points per 100 opponent possessions (Totals: points), from NBA Stats season totals; Pace is possessions per 48 minutes."
+        : "Points per 100 possessions against league average; positive is better on both ends, and each side's three terms add up to OFF or DEF exactly."}
+      {conference ? ` Ranks are within the ${conference} Conference.` : ""}{query ? " Searching keeps every team's rank." : ""}
       {view === "standings" ? " Seed, W–L, GB, L10 and Strk cover every game in scope; Adj Net = Net + SOS." : ""}
       {venue ? ` ${venueLabel} games only, against the league average over every game.` : ""}
       {luckActive ? " 3P luck adjusts ratings and shooting terms only." : ""} {windowDays ? `${windowLabel}: ${data.window.games} games to ${formatDate(data.window.last_game!)}.` : ""}
@@ -189,14 +224,15 @@ const CARD_TERMS: { side: string; total: string; terms: string[] }[] = [
 ];
 
 /** Cards: each team's net rating over its six factors, bars on one league-wide scale. */
-function TeamCards({ teams, counting, ranks, season, scopeParams }: { teams: SixFactorTeam[]; counting: TeamCounting; ranks: Map<string, Map<string, number>>; season: string; scopeParams: string }) {
+function TeamCards({ teams, all, position, counting, ranks, season, scopeParams }: { teams: SixFactorTeam[]; /** Every team shown, so a search keeps the bar scale. */ all: SixFactorTeam[]; position: Map<string, number>; counting: TeamCounting; ranks: Map<string, Map<string, number>>; season: string; scopeParams: string }) {
   const column = (key: string) => ALL_COLUMNS.find(entry => entry.key === key)!;
   const termKeys = CARD_TERMS.flatMap(group => group.terms);
-  const scale = Math.max(1e-9, ...teams.flatMap(team => termKeys.map(key => Math.abs(column(key).value(team, counting) ?? 0))));
+  const scale = Math.max(1e-9, ...all.flatMap(team => termKeys.map(key => Math.abs(column(key).value(team, counting) ?? 0))));
   const net = column("net");
   return <section className="teams-cards" aria-label="Team cards">
-    {teams.map((team, index) => {
+    {teams.map(team => {
       const netValue = net.value(team, counting);
+      const index = (position.get(team.team_id) ?? 1) - 1;
       return <article key={team.team_id} className="teams-card pvp-fade">
         <header className="teams-card-head">
           <span className="teams-rank-badge" data-top={index < 3 || undefined}>{index + 1}</span>

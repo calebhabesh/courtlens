@@ -948,6 +948,9 @@ class TeamSixFactorsItem(BaseModel):
     close_losses: int | None = 0
     standings: TeamStandingsItem
     trend: list[TeamTrendPoint]
+    # NBA Stats team Misc totals and pace (`courtlens-team-scoring-v1`); None when they do not
+    # cover exactly the games in scope.
+    scoring: dict[str, float | int | None] | None = None
 
     model_config = ConfigDict(populate_by_name=True, serialize_by_alias=True)
 
@@ -962,6 +965,7 @@ class TeamSixFactorsResponse(BaseModel):
     method_version: str
     context_method_version: str
     warnings: list[str]
+    scoring: dict[str, Any] | None = None
 
 
 class TeamDetailResponse(BaseModel):

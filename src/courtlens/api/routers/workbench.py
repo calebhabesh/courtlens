@@ -227,6 +227,7 @@ from courtlens.services.team_analytics import (
     get_team_three_point_variation,
     get_teams_six_factors,
 )
+from courtlens.services.team_scoring import attach_team_scoring, load_team_scoring
 from courtlens.services.value_archetypes import (
     load_value_store,
     unknown_row,
@@ -1432,6 +1433,8 @@ def get_teams_six_factors_endpoint(
         defense_luck=defense_luck,
         venue=venue,
     )
+    scoring_rows = load_team_scoring(session, context.season, context.phase)
+    attach_team_scoring(result, scoring_rows, window_days=window_days, venue=venue)
     return TeamSixFactorsResponse(**result)
 
 

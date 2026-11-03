@@ -11,14 +11,16 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { ButtonLink } from "@/components/ui/kit";
 import { StatsWorkspace } from "@/components/stats-workspace";
 import { TeamDivisionStandings } from "@/components/team-division-standings";
-import { TeamDepthSection, TeamGameLogSection, TeamPeersSection, TeamProfileHeader, TeamSixFactorsSection, TeamStandingSection, TeamTrendSection, TeamVenueSection } from "@/components/team-profile";
+import { TeamScheduleSection } from "@/components/team-schedule";
+import { TeamDepthSection, TeamGameLogSection, TeamPeersSection, TeamProfileHeader, TeamRankStrip, TeamSixFactorsSection, TeamStandingSection, TeamTrendSection, TeamVenueSection } from "@/components/team-profile";
 
 export const metadata: Metadata = { title: "Team Profile · CourtLens" };
 export const dynamic = "force-dynamic";
 
 /**
- * Team profile (alignment row 4): the season's logo and era name over the Stats table fixed to the
- * team, then its standing, six factors, home/away split, trend, game log and similar teams.
+ * Team profile (alignment row 4): the season's logo and era name with its league ranks, over the
+ * Stats table fixed to the team, then its standing, six factors, home/away split, trend, game log
+ * and similar teams.
  */
 export default async function TeamDetailPage({ params, searchParams }: {
   params: Promise<{ id: string }>;
@@ -58,19 +60,23 @@ export default async function TeamDetailPage({ params, searchParams }: {
   const netRank = factors && factorTeam ? columnRanks(factors.teams, ALL_COLUMNS.find(entry => entry.key === "net")!, "per_100").get(factorTeam.team_id) : undefined;
   const scopeParams = new URLSearchParams({ season, phase, ...(beforeDate ? { beforeDate } : {}), ...(releaseId ? { releaseId } : {}) }).toString();
   const header = <TeamProfileHeader name={name} tricode={team.tricode} season={season} phaseLabel={phase === "playoffs" ? "Playoffs" : "Regular Season"}
-    team={factorTeam} netRank={netRank} compareHref={`/team-compare?teamA=${franchiseOf(id) ?? id}&season=${season}&phase=${phase}`} teamsHref={`/teams?season=${season}${phase === "playoffs" ? "&phase=playoffs" : ""}`} />;
+    team={factorTeam} netRank={netRank} compareHref={`/team-compare?teamA=${franchiseOf(id) ?? id}&season=${season}&phase=${phase}`} teamsHref={`/teams?season=${season}${phase === "playoffs" ? "&phase=playoffs" : ""}`}>
+    {factors && found && <TeamRankStrip data={factors} team={found} teamsHref={`/teams?${scopeParams}`} />}
+  </TeamProfileHeader>;
 
   return <PageShell template="profile" className="team-profile-page">
     <AssistantPageSelection route={`/teams/${team.id}`} teamIds={[team.id]} scope={detail.context} label={name} />
     <StatsWorkspace params={raw} basePath={`/teams/${id}`} team={{ id: dataTeamId, header }} />
     <div className="team-profile-sections">
-      {factors && factorTeam && <TeamStandingSection data={factors} team={factorTeam} />}
+      {factors && factorTeam && <TeamStandingSection data={factors} team={factorTeam} season={season} />}
       {phase !== "playoffs" && <TeamDivisionStandings tricode={team.tricode} season={season} />}
       {factors && factorTeam && <TeamSixFactorsSection data={factors} team={factorTeam} />}
       {factors && factorTeam && <TeamVenueSection all={factors} home={home} away={away} team={factorTeam} />}
       {factorTeam && factorTeam.trend.length > 0 && <TeamTrendSection team={factorTeam} />}
-      {schedule && <TeamGameLogSection games={schedule.games} season={season} scopeParams={scopeParams}
-        empty={totals ? `Game logs start in ${FIRST_GAME_LOG_SEASON}; ${season} has season totals only.` : undefined} />}
+      {/* The season calendar (ESPN's schedule) with the admitted Game Log as its other view. */}
+      <TeamScheduleSection teamId={dataTeamId} tricode={team.tricode} season={season} phase={phase}
+        log={schedule ? <TeamGameLogSection embedded games={schedule.games} season={season} scopeParams={scopeParams} teamId={dataTeamId} tricode={team.tricode}
+          empty={totals ? `Game logs start in ${FIRST_GAME_LOG_SEASON}; ${season} has season totals only.` : undefined} /> : <p className="player-open-empty">The game log is unavailable.</p>} />
       <TeamDepthSection catalog={catalog} teamId={dataTeamId} scope={{ releaseId, season, phase, beforeDate: beforeDate || undefined }} />
       {peers && <TeamPeersSection peers={peers} season={season} scopeParams={scopeParams} />}
     </div>

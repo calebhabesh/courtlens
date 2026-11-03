@@ -1,11 +1,12 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { TeamLogo } from "./team-logo";
 import { BackButton, NavLabel } from "./ui/back-button";
 import { Icon } from "./ui/icon";
 import { PageHeader } from "./ui/panel";
 import { ButtonLink, ButtonSummary } from "./ui/kit";
 import { formatDate } from "@/lib/format-date";
-import { ALL_COLUMNS, TEAM_VIEWS, columnRanks, formatValue, standingGroup, type SixFactorTeam, type SixFactorsResponse, type TeamColumnGroup } from "@/lib/team-six-factors";
+import { ALL_COLUMNS, TEAM_VIEWS, columnRanks, formatValue, standingGroup, type SixFactorTeam, type SixFactorsResponse, type TeamColumnGroup, type TeamView } from "@/lib/team-six-factors";
 import { NetTrend } from "./team-trend";
 import { RosterAllocationView, type RosterAllocationViewProps } from "./roster-allocation-view";
 import type { TeamPeersResponse, TeamScheduleGameItem } from "@/lib/types";
@@ -19,7 +20,7 @@ const ranksOf = (teams: SixFactorTeam[]) => new Map(ALL_COLUMNS.map(entry => [en
 /** Rows of whole teams (a team, its home or away split) over column groups, each value with its #rank. */
 function TeamRowsGrid({ label, groups, lead, rows, className }: {
   label: string; groups: TeamColumnGroup[]; lead: string; className: string;
-  rows: { label: string; team: SixFactorTeam; ranks: Map<string, Map<string, number>> }[];
+  rows: { label: string; team: SixFactorTeam; ranks: Map<string, Map<string, number>>; /** The season, to show the team's logo beside its code. */ logoSeason?: string }[];
 }) {
   return <div className="player-ref-grid-frame">
     <div className="player-ref-grid-scroll" role="region" aria-label={label} tabIndex={0}>
@@ -38,7 +39,7 @@ function TeamRowsGrid({ label, groups, lead, rows, className }: {
         </thead>
         <tbody>
           {rows.map(row => <tr key={row.label}>
-            <th scope="row" className="player-ref-grid-lead">{row.label}</th>
+            <th scope="row" className="player-ref-grid-lead">{row.logoSeason ? <span className="team-grid-lead-team"><TeamLogo team={row.team.tricode} season={row.logoSeason} size={20} />{row.label}</span> : row.label}</th>
             {groups.flatMap((group, index) => group.columns.map((entry, position) => {
               const value = entry.value(row.team, "per_100");
               return <td key={entry.key} className={index > 0 && position === 0 ? "group-start" : undefined} data-tone={tone(entry.key, value)}>
@@ -54,11 +55,11 @@ function TeamRowsGrid({ label, groups, lead, rows, className }: {
 }
 
 /** Standing, schedule strength and luck: the Teams page's Standings view for one team. */
-export function TeamStandingSection({ data, team }: { data: SixFactorsResponse; team: SixFactorTeam }) {
+export function TeamStandingSection({ data, team, season }: { data: SixFactorsResponse; team: SixFactorTeam; season: string }) {
   return <section className="player-open-section player-glass team-profile-section" aria-label="Standing">
     <header className="player-open-heading"><h2><Icon name="trophy" size={20} />Standing</h2>
       <span>Seed and GB within the {standingGroup(team)?.label ?? "league"} · other #ranks of {data.teams.length}</span></header>
-    <TeamRowsGrid label="Standing table" groups={TEAM_VIEWS.standings} lead="Team" className="team-standing-grid" rows={[{ label: team.tricode, team, ranks: ranksOf(data.teams) }]} />
+    <TeamRowsGrid label="Standing table" groups={TEAM_VIEWS.standings} lead="Team" className="team-standing-grid" rows={[{ label: team.tricode, team, ranks: ranksOf(data.teams), logoSeason: season }]} />
     <p className="player-reference-note">Seed orders the conference (before 1970-71, the division) by win percentage, ties by net rating, not the NBA&apos;s tiebreakers. Adj Net = Net + SOS, where SOS is the average schedule-adjusted net rating of the opponents faced. xW is the record the point margin predicts; Luck = wins − xW.</p>
   </section>;
 }
@@ -94,8 +95,10 @@ export function TeamTrendSection({ team }: { team: SixFactorTeam }) {
 }
 
 /** Databallr's team header (its Contracts page): the season's logo, the full era name, the record. */
-export function TeamProfileHeader({ name, tricode, season, phaseLabel, team, netRank, compareHref, teamsHref }: {
+export function TeamProfileHeader({ name, tricode, season, phaseLabel, team, netRank, compareHref, teamsHref, children }: {
   name: string; tricode: string; season: string; phaseLabel: string; team: SixFactorTeam | null; netRank?: number; compareHref: string; teamsHref: string;
+  /** Under the title: the league rank strip. */
+  children?: ReactNode;
 }) {
   const group = team ? standingGroup(team) : null;
   const seed = team?.seed && group ? ` · ${ordinal(team.seed)} in the ${group.short}` : "";
@@ -109,7 +112,62 @@ export function TeamProfileHeader({ name, tricode, season, phaseLabel, team, net
         <ButtonLink size="sm" href={compareHref} icon="swap">Compare Team</ButtonLink>
       } />
     </div>
+    {children}
   </div>;
+}
+
+/** The league ranks a reader looks for first; each opens the Teams table sorted by that stat. */
+const RANK_TILES: { label: string; key: string; view: TeamView; neutral?: boolean }[] = [
+  { label: "Offense", key: "ortg", view: "offense" },
+  { label: "Defense", key: "drtg", view: "defense" },
+  { label: "Net Rating", key: "net", view: "overall" },
+  { label: "Pace (#1 fastest)", key: "pace", view: "scoring", neutral: true },
+  { label: "Shooting", key: "ts_pct", view: "offense" },
+  { label: "Three-Point", key: "fg3_pct", view: "offense" },
+  { label: "Fast Break", key: "pts_fb", view: "scoring" },
+  { label: "Paint", key: "pts_paint", view: "scoring" },
+  { label: "Second Chance", key: "pts_2nd_chance", view: "scoring" },
+  { label: "Off Turnovers", key: "pts_off_tov", view: "scoring" },
+  { label: "Transition D", key: "opp_pts_fb", view: "scoring" },
+  { label: "Paint D", key: "opp_pts_paint", view: "scoring" },
+];
+/** What the ranked value is, under it: "ORTG 117.0", "18.1 / 100", "11.7 opp / 100", "101.0 poss / 48". */
+function rankCaption(key: string, value: number | null): string {
+  const spec = column(key);
+  const text = formatValue(value, spec.format, "per_100");
+  if (key === "pace") return `${text} poss / 48`;
+  if (key.startsWith("opp_pts_")) return `${text} opp / 100`;
+  if (key.startsWith("pts_")) return `${text} / 100`;
+  return `${spec.label} ${text}`;
+}
+
+/**
+ * League ranks under the team header: offense, defense, net, pace, shooting and the scoring
+ * splits, #1 the best (Pace: the fastest). Ranks are among every team in the scope; a stat
+ * unknown in this scope (scoring outside full seasons from 1996-97) is left out, never ranked.
+ */
+export function TeamRankStrip({ data, team, teamsHref }: { data: SixFactorsResponse; team: SixFactorTeam; teamsHref: string }) {
+  const count = data.teams.length;
+  const tiles = RANK_TILES.map(tile => {
+    const spec = column(tile.key);
+    const value = spec.value(team, "per_100");
+    const rank = value == null ? undefined : columnRanks(data.teams, spec, "per_100").get(team.team_id);
+    return { ...tile, value, rank };
+  }).filter((tile): tile is typeof tile & { value: number; rank: number } => tile.rank != null);
+  if (!tiles.length) return null;
+  const href = (tile: { key: string; view: TeamView }) => `${teamsHref}${teamsHref.includes("?") ? "&" : "?"}${tile.view === "overall" ? "" : `view=${tile.view}&`}sort=${tile.key}`;
+  const tone = (tile: { rank: number; neutral?: boolean }) => tile.neutral || count < 10 ? undefined : tile.rank <= 5 ? "up" : tile.rank > count - 5 ? "down" : undefined;
+  return <section className="team-ranks" aria-label={`League ranks of ${count} teams`}>
+    <ul className="team-ranks-list">
+      {tiles.map(tile => <li key={tile.key}>
+        <Link className="team-rank-tile" href={href(tile)} prefetch={false} data-tone={tone(tile)} title={`${column(tile.key).title}. Open the Teams table sorted by it.`}>
+          <span className="team-rank-label">{tile.label}</span>
+          <strong className="team-rank-value">#{tile.rank}<small>of {count}</small></strong>
+          <span className="team-rank-caption">{rankCaption(tile.key, tile.value)}</span>
+        </Link>
+      </li>)}
+    </ul>
+  </section>;
 }
 
 const FACTOR_GROUPS: { label: string; columns: [string, string][] }[] = [
@@ -165,7 +223,9 @@ export function TeamSixFactorsSection({ data, team }: { data: SixFactorsResponse
 }
 
 /** Results, most recent first; earlier games fold under a disclosure. */
-export function TeamGameLogSection({ games, season, scopeParams, empty = "No games in this scope." }: { games: TeamScheduleGameItem[]; season: string; scopeParams: string; /** Why there are no games. */ empty?: string }) {
+export function TeamGameLogSection({ games, season, scopeParams, teamId, tricode, empty = "No games in this scope.", embedded = false }: { games: TeamScheduleGameItem[]; season: string; scopeParams: string; /** The season's own id and code, to find each game on ESPN's slate. */ teamId: string; tricode: string; /** Why there are no games. */ empty?: string; /** Inside the Schedule section: the tables only. */ embedded?: boolean }) {
+  // Live game pages are keyed by ESPN's id; /live/open finds it from the date and our ids.
+  const gameHref = (game: TeamScheduleGameItem) => `/live/open?${new URLSearchParams({ date: game.game_date.slice(0, 10), game: game.game_id, teams: `${teamId}:${tricode},${game.opponent_id ?? ""}:${game.opponent_tricode}` })}`;
   const ordered = [...games].sort((a, b) => b.game_date.localeCompare(a.game_date) || b.game_id.localeCompare(a.game_id));
   const table = (rows: TeamScheduleGameItem[], label: string) => <div className="player-ref-grid-frame">
     <div className="player-ref-grid-scroll" role="region" aria-label={label} tabIndex={0}>
@@ -181,17 +241,21 @@ export function TeamGameLogSection({ games, season, scopeParams, empty = "No gam
             <td className="group-start"><span className="team-games-opponent-cell">{game.side === "away" ? "@" : "vs"}<TeamLogo team={game.opponent_tricode} season={season} size={18} />
               {game.opponent_id ? <Link href={`/teams/${game.opponent_id}?${scopeParams}`}>{game.opponent_tricode}</Link> : game.opponent_tricode}</span></td>
             <td data-tone={game.is_win == null ? undefined : game.is_win ? "up" : "down"}>{game.is_win == null ? "—" : game.is_win ? "W" : "L"}</td>
-            <td>{known ? `${game.team_points}–${game.opponent_points}` : "—"}</td>
+            <td>{known ? <Link className="team-games-score" href={gameHref(game)} prefetch={false} title="Open the game page: box score, play-by-play and shot chart">{game.team_points}–{game.opponent_points}</Link> : "—"}</td>
             <td data-tone={game.differential == null || game.differential === 0 ? undefined : game.differential > 0 ? "up" : "down"}>{game.differential == null ? "—" : formatValue(game.differential, "signed", "totals")}</td>
           </tr>;
         })}</tbody>
       </table>
     </div>
   </div>;
-  return <section className="player-open-section player-glass team-profile-section" aria-label="Game log">
-    <header className="player-open-heading"><h2><Icon name="calendar" size={20} />Game Log</h2><span>{games.length} games · most recent first</span></header>
+  const body = <>
     {ordered.length ? table(ordered.slice(0, RECENT_GAMES), "Recent games table") : <p className="player-open-empty">{empty}</p>}
     {ordered.length > RECENT_GAMES && <details><ButtonSummary size="sm" variant="text" iconAfter="chevron-down">Earlier Games · {ordered.length - RECENT_GAMES}</ButtonSummary>{table(ordered.slice(RECENT_GAMES), "Earlier games table")}</details>}
+  </>;
+  if (embedded) return <div className="team-games-log" aria-label="Game log" role="group"><p className="team-games-log-count">{games.length} games played · most recent first</p>{body}</div>;
+  return <section className="player-open-section player-glass team-profile-section" aria-label="Game log">
+    <header className="player-open-heading"><h2><Icon name="calendar" size={20} />Game Log</h2><span>{games.length} games · most recent first</span></header>
+    {body}
   </section>;
 }
 

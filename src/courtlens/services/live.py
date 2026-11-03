@@ -39,6 +39,7 @@ SOON_SECONDS = 60
 UPCOMING_SECONDS = 600
 INJURY_SECONDS = 600
 STANDINGS_SECONDS = 600
+SCHEDULE_SECONDS = 600
 RETRY_SECONDS = (30, 60, 120, 300)
 EASTERN = ZoneInfo("America/New_York")
 SETTLED = {"final", "postponed", "cancelled"}
@@ -50,6 +51,10 @@ class Provider(Protocol):
     def fetch_injuries(self) -> LiveFetch: ...
 
     def fetch_standings(self, year: int) -> LiveFetch: ...
+
+    def fetch_team_schedule(
+        self, team_source_id: str, year: int, season_type: int
+    ) -> LiveFetch: ...
 
 
 def aware(value: datetime) -> datetime:
@@ -73,10 +78,25 @@ def season_end_year(today: date) -> int:
     return today.year + 1 if today.month >= 8 else today.year
 
 
+def schedule_resource(team_source_id: str, year: int, season_type: int) -> str:
+    return f"schedule:{team_source_id}:{year}:{season_type}"
+
+
+def _schedule_year(resource: str) -> int:
+    return int(resource.split(":")[2])
+
+
 def is_final(resource: str, data: dict[str, Any] | None, today: date) -> bool:
     """Nothing left to change: every game settled, or an empty date that has passed."""
     if resource.startswith("standings:"):
         return data is not None and int(resource[10:]) < season_end_year(today)
+    if resource.startswith("schedule:"):
+        # A past season's schedule is settled; the current one can still add or move games.
+        return (
+            data is not None
+            and _schedule_year(resource) < season_end_year(today)
+            and all(g["status"] in SETTLED for g in _games(data))
+        )
     if resource == "injuries" or data is None:
         return False
     games = _games(data)
@@ -94,6 +114,11 @@ def refresh_seconds(resource: str, data: dict[str, Any] | None, now: datetime) -
         return INJURY_SECONDS
     if resource.startswith("standings:"):
         return None if is_final(resource, data, today) else STANDINGS_SECONDS
+    if resource.startswith("schedule:"):
+        if is_final(resource, data, today):
+            return None
+        live = any(g["status"] == "in_progress" for g in _games(data))
+        return SOON_SECONDS if data is None or live else SCHEDULE_SECONDS
     if data is None:
         return SOON_SECONDS
     if is_final(resource, data, today):
@@ -199,6 +224,9 @@ def _retain(
 def _fetch(provider: Provider, resource: str, slate: date | None, game_id: str | None) -> LiveFetch:
     if resource.startswith("standings:"):
         return provider.fetch_standings(int(resource[10:]))
+    if resource.startswith("schedule:"):
+        _, team, year, season_type = resource.split(":")
+        return provider.fetch_team_schedule(team, int(year), int(season_type))
     return provider.fetch_injuries() if slate is None else provider.fetch(slate, game_id)
 
 
@@ -249,10 +277,13 @@ def read(
     *,
     now: datetime | None = None,
     standings_year: int | None = None,
+    resource: str | None = None,
 ) -> dict[str, Any]:
     """The cached read of one resource, fetched first when stale."""
     now = now or datetime.now(UTC)
-    resource = f"standings:{standings_year}" if standings_year else resource_name(slate, game_id)
+    resource = resource or (
+        f"standings:{standings_year}" if standings_year else resource_name(slate, game_id)
+    )
     current = session.get(LiveCurrent, resource)
     if _due(current, now):
         with resource_lock(session.get_bind().engine, resource) as locked:

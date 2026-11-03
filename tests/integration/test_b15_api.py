@@ -285,6 +285,9 @@ def test_teams_six_factors_endpoint(client: TestClient) -> None:
         0.0, abs=1e-6
     )
     assert client.get("/api/workbench/teams/six-factors?offenseLuck=2").status_code == 422
+    # Without the team scoring mart the totals are unknown, never zero.
+    assert data["scoring"]["status"] == "unavailable"
+    assert all(t["scoring"] is None for t in data["teams"])
 
     assert data["context_method_version"] == "courtlens-team-context-v1"
     for team in data["teams"]:

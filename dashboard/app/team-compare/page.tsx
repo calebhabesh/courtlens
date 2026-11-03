@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/ui/page-shell";
-import { getWorkbenchCatalog, getTeamDetail, getTeamFourFactors, getTeamSchedule, executeWorkbenchQuery, getTeamStarters } from "@/lib/workbench-api";
+import { getWorkbenchCatalog, getTeamDetail, getTeamFourFactors, getTeamSchedule, executeWorkbenchQuery, getTeamStarters, getTeamsSixFactors } from "@/lib/workbench-api";
 import { TeamComparison, type TeamSide } from "./team-comparison";
 import { foldedTeams, franchiseOf, seasonTeamId } from "@/lib/team-era";
 
@@ -29,7 +29,7 @@ export default async function TeamComparePage({ searchParams }: { searchParams: 
       ? requestedBefore
       : catalog.stats_scopes?.find(scope => scope.season === season && scope.phase === phase)?.default_before_date ?? `${Number(season.slice(0, 4)) + 1}-07-01`;
     const scope = { season, phase, beforeDate, releaseId: catalog.release_id };
-    const [detail, factors, schedule, players, observed] = await Promise.all([
+    const [detail, factors, schedule, players, observed, league] = await Promise.all([
       getTeamDetail(dataTeamId, scope).catch(() => null),
       getTeamFourFactors(dataTeamId, scope).catch(() => null),
       getTeamSchedule(dataTeamId, scope).catch(() => null),
@@ -39,9 +39,11 @@ export default async function TeamComparePage({ searchParams }: { searchParams: 
         sort: [{ field: "dpm", direction: "desc" }], page: { limit: 100 } }).catch(() => null),
       // Read live against this release, so a new publication never switches By Position off.
       getTeamStarters(dataTeamId, scope).catch(() => null),
+      // Every team in the same scope, for each stat's league rank (the Teams page's numbers).
+      getTeamsSixFactors({ season, phase, beforeDate, releaseId: catalog.release_id }).catch(() => null),
     ]);
     const starterEvidence = observed && observed.unit_players.every(player => players?.items.some(item => item.player_id === player.player_id)) ? observed : null;
-    return { teamId, dataTeamId, season, beforeDate, detail, factors, schedule, players, starterEvidence };
+    return { teamId, dataTeamId, season, beforeDate, detail, factors, schedule, players, starterEvidence, league };
   };
   const [a, b] = await Promise.all([load("A"), load("B")]);
   return <PageShell template="compare"><TeamComparison a={a} b={b} catalog={catalog} phase={phase} /></PageShell>;
