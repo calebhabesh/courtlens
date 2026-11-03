@@ -11,7 +11,7 @@ from collections.abc import Sequence
 from datetime import UTC, datetime
 from typing import Any
 
-import httpx
+import httpx2
 import pytest
 from openai import OpenAI
 
@@ -92,11 +92,11 @@ def isolated_keys(monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.delenv(key, raising=False)
 
 
-def groq(transport: httpx.MockTransport, model: str = "openai/gpt-oss-120b") -> GroqProvider:
+def groq(transport: httpx2.MockTransport, model: str = "openai/gpt-oss-120b") -> GroqProvider:
     sdk = OpenAI(
         api_key="test-secret",
         base_url="https://api.groq.com/openai/v1",
-        http_client=httpx.Client(transport=transport),
+        http_client=httpx2.Client(transport=transport),
         max_retries=0,
     )
     return GroqProvider("test-secret", model, client=sdk)
@@ -130,12 +130,12 @@ TOOL_MESSAGE = {
 def test_groq_compacts_request_parses_tools_and_reads_rate_headers() -> None:
     requests: list[dict[str, Any]] = []
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         assert request.url.host == "api.groq.com"
         requests.append(json.loads(request.content))
-        return httpx.Response(200, json=completion(TOOL_MESSAGE), headers=HEADERS)
+        return httpx2.Response(200, json=completion(TOOL_MESSAGE), headers=HEADERS)
 
-    provider = groq(httpx.MockTransport(respond))
+    provider = groq(httpx2.MockTransport(respond))
     step = provider.step(PROMPT, MESSAGES, [TOOL], **OPTIONS)
     body = requests[0]
     system = body["messages"][0]["content"]
@@ -170,7 +170,7 @@ def test_groq_compacts_request_parses_tools_and_reads_rate_headers() -> None:
 
 
 def test_groq_truncates_large_tool_payloads_and_estimates_tokens() -> None:
-    provider = groq(httpx.MockTransport(lambda request: httpx.Response(500)))
+    provider = groq(httpx2.MockTransport(lambda request: httpx2.Response(500)))
     big = AgentMessage(
         role="tool",
         tool_results=[ToolResult(call_id="c", name="t", payload={"rows": ["x" * 50] * 1000})],
@@ -227,16 +227,16 @@ def test_groq_streams_text_and_tool_call_fragments() -> None:
     )
     seen: list[dict[str, Any]] = []
 
-    def respond(request: httpx.Request) -> httpx.Response:
+    def respond(request: httpx2.Request) -> httpx2.Response:
         seen.append(json.loads(request.content))
-        return httpx.Response(
+        return httpx2.Response(
             200,
             content=(sse + "data: [DONE]\n\n").encode(),
             headers={"content-type": "text/event-stream", **HEADERS},
         )
 
     deltas: list[str] = []
-    step = groq(httpx.MockTransport(respond)).step(
+    step = groq(httpx2.MockTransport(respond)).step(
         PROMPT, MESSAGES, [TOOL], **OPTIONS, on_delta=deltas.append
     )
     assert seen[0]["stream"] is True and seen[0]["stream_options"] == {"include_usage": True}
@@ -278,7 +278,7 @@ def test_groq_failures_map_without_bodies(
     status: int, body: dict[str, Any], headers: dict[str, str], kind: str, scope: str | None
 ) -> None:
     provider = groq(
-        httpx.MockTransport(lambda request: httpx.Response(status, json=body, headers=headers))
+        httpx2.MockTransport(lambda request: httpx2.Response(status, json=body, headers=headers))
     )
     with pytest.raises(ProviderFailure) as raised:
         provider.step(PROMPT, MESSAGES, [TOOL], **OPTIONS)
