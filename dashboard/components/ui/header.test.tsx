@@ -1,7 +1,12 @@
 // @vitest-environment happy-dom
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup, act } from "@testing-library/react";
+import { MotionGlobalConfig } from "motion/react";
 import { Header } from "./header";
+
+// happy-dom cancels in-flight animations when rows unmount and rejects their `finished`
+// promises, which motion leaves unhandled; these tests check behaviour, not motion.
+MotionGlobalConfig.skipAnimations = true;
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/stats",

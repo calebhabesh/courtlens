@@ -619,6 +619,9 @@ createServer(async (request, response) => {
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
   // Live (alignment row 7): an observed empty date; e2e/live.spec.ts routes real ESPN reads itself.
   if (url.pathname === "/api/live") return json(response, 200, { namespace: "espn", resource: `slate:${url.searchParams.get("slate_date")}`, status: "observed", final: false, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: 600, error: null, observation_id: null, content_sha256: null, data: { games: [], calendar: [] } });
+  // Standings (row 23): no ESPN standings in the fixture; standings specs route their own. Answering
+  // (rather than leaving the request open) lets pages that show division standings settle.
+  if (url.pathname === "/api/live/standings") return json(response, 200, { namespace: "espn", resource: `standings:${url.searchParams.get("season") ?? "current"}`, status: "observed", final: true, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: null, error: null, observation_id: null, content_sha256: null, data: { season: url.searchParams.get("season"), standings: null } });
   // Team schedule (row 4 follow-up): ESPN's season for the team page calendar.
   if (/^\/api\/live\/teams\/[A-Za-z0-9]+\/schedule$/.test(url.pathname)) {
     const side = (id, tricode, home, score, winner) => ({ source_id: id, canonical_id: null, identity_status: "verified", tricode, name: tricode, side: home ? "home" : "away", score, winner });

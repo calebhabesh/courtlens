@@ -19,9 +19,11 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
+# A module import (not a name), so importing workbench_models first still works: the FK target
+# table registers however the import cycle through courtlens.models is entered.
+import courtlens.workbench_models  # noqa: F401  (FK target)
 from courtlens.database import Base
 from courtlens.models import new_uuid, utc_now
-from courtlens.workbench_models import WorkbenchAcquisition  # noqa: F401  (FK target)
 
 
 class BbrefPlayerProfile(Base):

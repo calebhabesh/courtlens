@@ -711,8 +711,10 @@ function leagueRank(side: TeamSide, spec: TeamMetricSpec): { rank: number; of: n
 
 function TeamStats({ a, b, selectedKeys }: { a: TeamSide; b: TeamSide; selectedKeys: string[] }) {
   const specs = TEAM_METRICS.filter(m => selectedKeys.includes(m.key));
-  const cell = (side: TeamSide, key: "a" | "b", spec: TeamMetricSpec, text: string, leading: boolean) => {
-    const place = leagueRank(side, spec);
+  const cell = (side: TeamSide, key: "a" | "b", spec: TeamMetricSpec, value: { num: number | null; text: string }, leading: boolean) => {
+    // An unknown value has no rank, even where the league read ranks the team.
+    const place = value.num == null ? null : leagueRank(side, spec);
+    const text = value.text;
     // Top and bottom five tone like the team page's rank strip; pace and volume have no better end.
     const tone = !place || spec.neutral || place.of < 10 ? undefined : place.rank <= 5 ? "up" : place.rank > place.of - 5 ? "down" : undefined;
     return <td data-side={key} data-leading={leading || undefined}>
@@ -734,9 +736,9 @@ function TeamStats({ a, b, selectedKeys }: { a: TeamSide; b: TeamSide; selectedK
         return <Fragment key={spec.key}>
           {showGroup && <tr className="tc-stats-group"><th colSpan={3} scope="colgroup">{spec.group}</th></tr>}
           <tr>
-            {cell(a, "a", spec, valA.text, leader === "a")}
+            {cell(a, "a", spec, valA, leader === "a")}
             <th scope="row">{spec.label}</th>
-            {cell(b, "b", spec, valB.text, leader === "b")}
+            {cell(b, "b", spec, valB, leader === "b")}
           </tr>
         </Fragment>;
       })}

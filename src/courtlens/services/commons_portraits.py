@@ -265,7 +265,7 @@ class FaceMatcher:
         return [] if found is None else list(found)
 
     def embedding(self, image: np.ndarray, face: np.ndarray) -> np.ndarray:
-        return self.recognizer.feature(self.recognizer.alignCrop(image, face))
+        return np.asarray(self.recognizer.feature(self.recognizer.alignCrop(image, face)))
 
     def similarity(self, a: np.ndarray, b: np.ndarray) -> float:
         return float(self.recognizer.match(a, b, self.cv2.FaceRecognizerSF_FR_COSINE))
