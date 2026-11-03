@@ -9,7 +9,7 @@ from dataclasses import dataclass, replace
 from datetime import date
 from functools import lru_cache, reduce
 from operator import or_
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, cast
 
 from fastapi import HTTPException
 from pydantic import BaseModel, Field, TypeAdapter, create_model, field_validator
@@ -76,14 +76,15 @@ def _stats_adapter() -> TypeAdapter[Any]:
         create_model(
             "AgentStats" + name.title().replace("_", ""),
             __base__=StatsScope,
-            operation=(Literal[name], ...),
+            # Built at runtime per operation, so the type checker sees them as Any.
+            operation=(cast(Any, Literal[name]), ...),
             arguments=(operation.schema, ...),
         )
         for name, operation in operations.REGISTRY.items()
         if name != "finance"
     ]
     variant_union = reduce(or_, variants)
-    return TypeAdapter(Annotated[variant_union, Field(discriminator="operation")])
+    return TypeAdapter(cast(Any, Annotated[variant_union, Field(discriminator="operation")]))
 
 
 class LookupArgs(StrictModel):
