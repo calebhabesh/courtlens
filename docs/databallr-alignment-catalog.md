@@ -13,25 +13,25 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |
-| 1 | Stats | `/stats` | 👀 | Follow-up 84 (in-season default sort, empty columns) ready for review; first revision approved 2026-10-15, cold-load follow-up 2026-10-25; deferred 43f/43g remain open |
+| 1 | Stats | `/stats` | ✅ | Owner approved 2026-11-03 (all core pages done); Follow-up 84 (in-season default sort, empty columns) ready for review; first revision approved 2026-10-15, cold-load follow-up 2026-10-25; deferred 43f/43g remain open |
 | 2 | Dashboard (player) | `/players/[id]` | ✅ | Owner approved first revision 2026-10-15; Career-since label overlap fixed |
 | 3 | PvP | `/compare` | ✅ | Owner approved 2026-10-21 (Compare menu tentatively done); Compare Export fixed (card export) |
-| 4 | Teams | `/teams`, `/teams/[id]` | 👀 | Reopened 2026-11-02 for team rankings (rank strip, Scoring view, search), ready for review; owner approved 2026-10-21 (Teams menu tentatively done); Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
-| 5 | WOWY | `/wowy` | 👀 | Top-level nav link after Stats; Select Team on arrival; Databallr's WOWY Combos lineup table (Combo / On / Off roles, every on/off mix with large lit / OFF photos, ON − OFF row, Overview / Offense / Defense) with date, game-clock, garbage-time, common-games, opponent and player-vs-player filters (`courtlens-wowy-combos-v1`) |
+| 4 | Teams | `/teams`, `/teams/[id]` | ✅ | Owner approved 2026-11-03 the team rankings follow-up (rank strip, Scoring view, search, season calendar, comparison ranks); first approved 2026-10-21 (Teams menu tentatively done); Six-factor table, Standings view (SOS, AdjNet, xW, standings), home/away, trend; team profile on the Stats table; Teams menu |
+| 5 | WOWY | `/wowy` | ✅ | Owner approved 2026-11-03 (all core pages done); Top-level nav link after Stats; Select Team on arrival; Databallr's WOWY Combos lineup table (Combo / On / Off roles, every on/off mix with large lit / OFF photos, ON − OFF row, Overview / Offense / Defense) with date, game-clock, garbage-time, common-games, opponent and player-vs-player filters (`courtlens-wowy-combos-v1`) |
 | 6 | Last X Games | `/last-games` | ✅ | Owner approved first revision 2026-10-20; Databallr's window card, comparison and game logs, then stretch verdicts, game context, opponent defence, Since windows, linked panels and a four-stat rolling chart; +/- from accepted stints |
-| 7 | Live | `/live` | 👀 | Owner started 2026-10-27: Databallr's date strip, game cards and game view (Box Score / Play-by-Play / Pre-Game, All Games rail, hotkeys) plus X's game summary (line score, shot chart, team stats, leaders, game info) |
-| 8 | Playoffs | `/playoffs` | 👀 | Owner started 2026-10-30: mirrored bracket with a Finals centre card, season series, Databallr series page (hero, trajectory, comparison bars, averages, matchups, DARKO / RAPM face-off) |
+| 7 | Live | `/live` | ✅ | Owner approved 2026-11-03 (all core pages done); Owner started 2026-10-27: Databallr's date strip, game cards and game view (Box Score / Play-by-Play / Pre-Game, All Games rail, hotkeys) plus X's game summary (line score, shot chart, team stats, leaders, game info) |
+| 8 | Playoffs | `/playoffs` | ✅ | Owner approved 2026-11-03 (all core pages done); Owner started 2026-10-30: mirrored bracket with a Finals centre card, season series, Databallr series page (hero, trajectory, comparison bars, averages, matchups, DARKO / RAPM face-off) |
 | 9 | Showcase | `/showcase` | ✅ | Owner approved first revision 2026-10-21; Databallr's season card grid (DPM leaders), player dialog and season slideshow; NBA.com-first photos with matted career photos, top-100 rank changes with tooltips, slideshow keys, compare tray |
 | 10 | Rankings | ~~`/rankings`~~ | ✂️ cut | Owner cut 2026-10-20: built for social sharing, not CourtLens's data/ML/statistics focus. Page and Players menu item removed |
 | 11 | Tier List | ~~`/tierlist`~~ | ✂️ cut | Owner cut 2026-10-20: "It doesn't serve any purpose." Page, Compare menu item and example boards removed |
 | 12 | Roster Shapes | `/roster-shapes` | ✅ | Owner approved first revision 2026-10-19; Databallr side-by-side team view with linked hover, season-by-season fill, rotation-capped minutes, searchable trade sandbox |
-| 13 | Stat Line Shift | `/stat-line-shift` | 👀 | Top-level link after WOWY (follow-up 18, review); first revision approved 2026-10-19; opens on Select Team, full-width roster drawer with season photos, per-75 without → with table, pair cards, Customize Stats dialog; IM03 stints + stint box (shared-floor v2) |
+| 13 | Stat Line Shift | `/stat-line-shift` | ✅ | Owner approved 2026-11-03 (all core pages done); Top-level link after WOWY (follow-up 18, review); first revision approved 2026-10-19; opens on Select Team, full-width roster drawer with season photos, per-75 without → with table, pair cards, Customize Stats dialog; IM03 stints + stint box (shared-floor v2) |
 | 14 | Contracts + Free Agency | `/contracts`, `/free-agency` | ✅ | Owner approved 2026-10-21 (Teams menu tentatively done); Select Team flow, Overview (payroll, cap bar, full flow, bar timeline, roster Stats table, pies), Small vs Big on DARKO values; Free Agency restored from NBA.com's tracker |
 | 15 | Team Compare | `/team-compare` | ✅ | Owner approved first revision 2026-10-18; historical franchises, mid-season scope and old view removal done |
 | 16 | Matchup Matrix | `/matchups` | ✅ aligned (first revision) | Player Comparison card, every opponent in a Stats table, direct matchup both ways; 3P fixed |
 | 17 | Shot Profile Twin | `/similar-players` | ✅ | Owner approved first revision 2026-10-21 (Player Twins); NBA only; Databallr's twin cards and closest-matches table on pbpstats zone totals, then Box Score mode, pool filters, distance drivers; table headers centered over their values |
 | 22 | Player Dashboard | `/players` | ✅ | Owner approved first revision 2026-10-25; Databallr's `/dashboard` (Top 50 DARKO DPM card carousel, compact player panels, head-to-head panel). Row 2's "Dashboard" pairing was wrong: row 2 is our player page, kept as approved. Replaces the Player Directory table |
-| 23 | — (ESPN Standings, owner request) | `/standings` | 👀 | Owner request 2026-10-29 (from row 7): ESPN's NBA Standings page under the Teams menu, plus standings on the game page and team pages |
+| 23 | — (ESPN Standings, owner request) | `/standings` | ✅ | Owner approved 2026-11-03 (all core pages done); Owner request 2026-10-29 (from row 7): ESPN's NBA Standings page under the Teams menu, plus standings on the game page and team pages |
 | 18 | Six Factor RAPM | `/research` | ⬜ | |
 | 19 | Wingspan | `/wingspan` | ⬜ | |
 | 20 | Offensive Calculator | `/calculator` | ⬜ | |
@@ -210,7 +210,7 @@ Padding follow-up: lint/typecheck, Vitest 511/511, four header checks and favico
 pass; the broader search check has dev-server lookup/workspace timeouts. Evidence:
 docs/evidence/alignment/app-shell/favicon-padding/.
 
-### 1 Stats — 👀 owner review (follow-up 84; first revision was ✅; deferred 43f/43g remain open)
+### 1 Stats — ✅ approved 2026-11-03 (all core pages done; was owner review) (follow-up 84; first revision was ✅; deferred 43f/43g remain open)
 
 Owner approval (2026-10-15): "I think I'm done the first solid revision of the main stats page
 and the player page. It's not a perfect version, but a presentable one now." Rows 0–2 are
@@ -1277,7 +1277,7 @@ Guardrails kept: no overall winner or lead tally; unknown values show "—" with
 Per 100 stay disabled with their reason.
 Evidence: docs/evidence/alignment/compare/
 
-### 4 Teams — 👀 ready for review (team rankings follow-up, 2026-11-02; first revision approved; instruction 8 still awaits the owner's conference list)
+### 4 Teams — ✅ approved (team rankings follow-up approved 2026-11-03; instruction 8 still awaits the owner's conference list)
 
 Follow-up instruction (owner, 2026-11-02): "Team rankings for given stats. Offensive Rating (best
 offense), Defensive Rating (best defense), Best fast break, other relevant team statistics. Either
@@ -1763,7 +1763,7 @@ Follow-up after approval (owner, 2026-10-19; screenshot of the 2025-26 grid):
     no overflow. Lint clean; Roster Shapes and visual-baseline specs 103 passed, the four
     first-load baselines within tolerance (none rewritten).
 
-### 13 Stat Line Shift — 👀 owner review (follow-up 18; first revision was ✅)
+### 13 Stat Line Shift — ✅ approved 2026-11-03 (all core pages done; was owner review) (follow-up 18; first revision was ✅)
 
 Owner approval (2026-10-19): "Alright, I think we can mark this page finished." Approved after
 follow-up 17 (uncommitted at approval). The `stat-shift` and `first-load-stat-shift` Playwright
@@ -3650,7 +3650,7 @@ Round 7 (owner, 2026-10-24): "Can we make the photos in the cards larger like in
 
 Owner approval (2026-10-25): approved as a first revision when asked whether row 22 should be marked ✅.
 
-### 7 Live — 👀 ready for review
+### 7 Live — ✅ approved 2026-11-03 (all core pages done; was ready for review)
 
 Owner start (2026-10-27): "Let's work on the pages under 'Live'." Owner screenshots of Databallr's
 Live page and of X's game summary: "we can also draw inspiration from [X] (note this is in a
@@ -3980,7 +3980,7 @@ Follow-up instructions (owner, 2026-10-29):
     `banner-logos-inward-1440-upcoming.png`.
 
 
-### 5 WOWY — 👀 ready for review
+### 5 WOWY — ✅ approved 2026-11-03 (all core pages done; was ready for review)
 
 Owner start (2026-10-25): "On databallr it has its own nav bar entry. We don't have a nav bar entry
 for it." "When you press the WOWY nav bar entry, it gives you a team prompt." "Databallr's WOWY
@@ -4170,7 +4170,7 @@ Follow-ups (owner, 2026-10-27, sixth pass):
     `teams-menu-1440.png`.
 
 
-### 23 Standings — 👀 ready for review
+### 23 Standings — ✅ approved 2026-11-03 (all core pages done; was ready for review)
 
 Owner request (2026-10-29, during row 7): "I really like the "Standings" page on ESPN.com we should
 integrate it onto the relevant pages on our site" (screenshot: ESPN's NBA Standings 2026-27,
@@ -4227,7 +4227,7 @@ view (row 4, computed from game logs, seeds without NBA tiebreakers) is unchange
    Conference and Division at 1440. No table scrolls. Evidence: `equal-edges-division-1140.png`.
 
 
-### 8 Playoffs — 👀 ready for review (follow-ups 13–14)
+### 8 Playoffs — ✅ approved 2026-11-03 (all core pages done; was ready for review) (follow-ups 13–14)
 Instructions (owner, 2026-10-30; four Databallr screenshots of `/playoffs` and a series page,
 2025-26 Finals SAS vs NYK and West First Round OKC vs PHX):
 1. [x] Replace the round panels with a mirrored bracket instead of Databallr's flat West / East
