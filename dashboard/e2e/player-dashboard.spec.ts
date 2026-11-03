@@ -18,7 +18,7 @@ test.describe("Player Dashboard", () => {
     await expect(star.locator(".pd-block-group")).toContainText(["DARKO", "MP", "1 Year RAPM", "Scoring", "ORB", "Playmaking", "Contesting", "DRB", "D-Playmaking"]);
     await expect(star.locator(".pd-cell", { hasText: "POTAST" }).locator(".pd-cell-value")).toHaveText("9.2");
     await expect(star.locator(".pd-play-label")).toHaveText(["Creation", "Spacing", "Transition", "Finishing"]);
-    await expect(carousel.getByRole("button", { name: /Fixture Star.*shown below/ })).toBeVisible();
+    await expect(carousel.getByRole("button", { name: /Fixture Star.*already on the dashboard/ })).toBeVisible();
 
     // Rate and the Basic view change only that panel and live in the URL.
     await star.getByRole("button", { name: "Per 36" }).click();
@@ -34,7 +34,8 @@ test.describe("Player Dashboard", () => {
     await expect(guard.locator(".pd-plays")).toContainText("No Synergy play types");
 
     await star.getByRole("button", { name: "Compare Fixture Star head to head" }).click();
-    await guard.getByRole("button", { name: "Compare Fixture Guard head to head" }).click();
+    // With a first pick waiting, the other panels offer to pair with it.
+    await guard.getByRole("button", { name: "Compare Fixture Guard with the first pick" }).click();
     await expect(page).toHaveURL(/vs=0\.1/);
     const versus = page.getByRole("article", { name: "2025-26 Fixture Star versus 2025-26 Fixture Guard" });
     const potast = versus.locator(".pd-vs-cell", { hasText: "POTAST" });

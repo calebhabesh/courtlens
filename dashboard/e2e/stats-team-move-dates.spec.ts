@@ -5,7 +5,7 @@ test("the Stats move tooltip dates its NBA listing and source-reported trade", a
   await openWorkbench(page, "/stats");
   const chip = page.locator(".stats-player-link", { hasText: "Fixture Guard" });
   await expect(chip).toContainText("now");
-  await expect(chip.locator('[title*="Now listed"]')).toHaveAttribute("title", /Index refreshed Oct 1, 2026\. Traded Sep 14, 2026 \(Basketball-Reference\)/);
+  await expect(chip.locator('[title*="Now listed"]')).toHaveAttribute("title", /Checked Oct 1, 2026\. Traded Sep 14, 2026 \(Basketball-Reference\)/);
 });
 
 for (const width of [1440, 390]) {
