@@ -1,0 +1,1 @@
+{"machine": "x86_64", "games": 200, "threads": 1, "model_load_seconds": 0.244, "events_per_game_mean": 481.9, "seconds_p50": 0.0149, "seconds_p95": 0.0229, "seconds_max": 0.033, "peak_rss_mib": 346.6}

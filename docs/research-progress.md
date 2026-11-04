@@ -21,7 +21,7 @@ coverage and screenshots per block. Plan text is not evidence.
 | R12 Research landing, menu, README | ⬜ pending | |
 | R14 Lineup model with learned embeddings | ⬜ pending | |
 | R15a Win Probability: model and final-test report | ✅ measured (production and pages are R15b) | [R15a evidence](evidence/research/r15a/README.md): both gates pass on 2,439 test games; log loss 0.4028 against 0.4157 baseline, calibration error 0.0083; level with ESPN overall, better after halftime; behind the closing spread pregame; lineup step S4 failed |
-| R15b Win Probability: production, scorecard, pages | ⬜ pending | |
+| R15b Win Probability: production, scorecard, pages | 🟡 frozen and running; prospective scoring and arm64 unverified; pages await owner | [R15b evidence](evidence/research/r15b/README.md): frozen 2026-11-04 22:08:55 UTC; ESPN-built states change log loss +0.0002; p95 23 ms per game; nightly job and drift flag run on 107 real pre-freeze games; 14 games sealed as the first prospective |
 | R16 Ask held-out evaluation | ⬜ pending | |
 | R13 Prospect projection | ⏸ parked | |
 
@@ -106,4 +106,18 @@ structure goes where basketball knowledge is reliable.
 - **Data.** 14,296 games, 3,150,447 states, none excluded. A score-reset bug in older rows was found by audit and fixed before fitting; replay then disagrees with 0 of 11,090 stint-end scores. Causality audit: 0 of 124,948 states change when later rows are removed.
 - **Sources.** ESPN summaries at 5-second pacing (2,766 requests, no failures, 3 h 50 min); hoopR-nba-data closing lines (CC BY 4.0, pinned commit). New dependencies: LightGBM 4.7.0, pyarrow (dev).
 - **Runtime and memory.** Whole pipeline under 15 minutes, peak 2.2 GiB, inside the 3 GiB cap.
-- **For R15b.** The Docker image may need `libgomp` for LightGBM, the freeze decision is open, and the owner still decides how the scorecard reaches the hosted demo.
+- **For R15b.** The Docker image may need `libgomp` for LightGBM. Owner decisions, 2026-11-04: (1) **freeze the tested model as is**, with no refit on newer seasons; any refit needs its own version and report and is an offseason job. (2) **The scorecard reaches the hosted demo by a scheduled sync of the scorecard bundle**; the VPS stays read-only and does not run the nightly job.
+
+## 2026-11-04 — R15b measured
+
+[Evidence](evidence/research/r15b/README.md). Model frozen as tested, manifest `b2b0db82311fd6c5…`, files in the artifact registry.
+
+- **Parity passes.** On 2,439 test games, states built from ESPN change log loss by +0.0002 (+0.0001 to +0.0002) on Live's sample and +0.0005 at the same times; calibration error stays 0.0083; mean probability gap 0.0017. Limits were set before the full run.
+- **Pregame.** The test numbers assume a known inactive list, which Live does not have before tip-off. It uses ESPN's roster minus reported Out. No injury news at all costs +0.0034 (+0.0016 to +0.0052); Live's real cost is unmeasured until prospective boxes arrive.
+- **Ratings keep the monthly rule.** Holding one snapshot all season costs +0.0039 (+0.0018 to +0.0058), so the method is pinned, not one file. Moving to Projected Impact needs a new version. The owner may want to confirm this reading of the no-refit decision.
+- **Live lineup tracker skipped.** S4 was rejected and the frozen model does not read lineups; the S3 fallback no longer applies because S3 was rejected too.
+- **Platform.** `libgomp1` added. x86 image matches the reference exactly. arm64 unverified: no emulation here.
+- **Drift interval** computed by game bootstrap from saved predictions, without refitting: 0.021–0.074 at 100 games.
+- **Serving.** p95 23 ms per full game on one x86 thread.
+- **Scorecard.** 107 pre-freeze games scored (hindsight, not prospective): CourtLens 0.4269, ESPN 0.4202, gap -0.0068 (-0.0338 to +0.0187); drift within. 14 games of 2026-11-04 sealed before tip-off.
+

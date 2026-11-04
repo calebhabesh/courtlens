@@ -2019,6 +2019,29 @@ def retire_release_command(dataset_id: list[str] = typer.Argument(...)) -> None:
             typer.echo(f"retired {value}")
 
 
+@app.command("refresh-win-probability")
+def refresh_win_probability_command(
+    lookback_days: int = typer.Option(7, help="Days back to look for unscored finished games."),
+) -> None:
+    """Score finished games for CourtLens and ESPN, then seal today's pregame inputs (R15b)."""
+    from courtlens.ingestion.espn_win_probability import Client
+    from courtlens.services.win_probability_production import nightly
+
+    typer.echo(json.dumps(nightly(Client(), lookback_days=lookback_days)))
+
+
+@app.command("capture-win-probability-inputs")
+def capture_win_probability_inputs_command() -> None:
+    """Seal today's pregame inputs only; run nearer tip-off to catch later injury news."""
+    from zoneinfo import ZoneInfo
+
+    from courtlens.ingestion.espn_win_probability import Client
+    from courtlens.services.win_probability_production import capture_slate
+
+    today = datetime.now(ZoneInfo("America/New_York")).date()
+    typer.echo(str(capture_slate(today, Client())))
+
+
 @app.command("refresh-daily")
 def refresh_daily_command(
     keep_days: int = typer.Option(30, help="Retention window passed to every step."),
@@ -2058,6 +2081,7 @@ def refresh_daily_command(
                 keep_days,
             ),
         ),
+        ("win probability", lambda: refresh_win_probability_command(7)),
     )
     for name, step in steps:
         typer.echo(f"== {name}")

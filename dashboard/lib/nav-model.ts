@@ -81,6 +81,9 @@ export const NAV_MENUS: NavMenu[] = [
     id: "research",
     label: "Research",
     groups: [
+      { title: "Models", items: [
+        { label: "Win Probability", href: "/research/win-probability" },
+      ] },
       { title: "Impact", items: [
         { label: "RAPM Research", href: "/research/rapm" },
         { label: "Defensive Matchups", href: "/research/defensive-matchups" },

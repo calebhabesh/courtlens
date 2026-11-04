@@ -43,6 +43,22 @@ read is stale ([Live service v2](design/shared-live-v2.md)). That needs outbound
 container. Final games are kept as hashed evidence (about 0.7 MB each, capped at 4 GiB), the one
 part of the demo database that grows after deploy.
 
+### Win probability
+
+The API serves the frozen model on CPU; the model files and scorecard bundle are plain read-only
+files (`data/artifacts/win-probability`, 8.4 MB; `data/derived/win-probability-serving`, about
+9 MB plus about 6 KB per game), rsynced by each deploy. The nightly job does **not** run on the
+VPS (owner decision, 2026-11-04): it runs locally in `refresh-daily`, and
+`scripts/sync-win-probability.sh` copies the bundle over; a new scorecard appears without a
+restart. `scripts/install_win_probability_sync.sh` installs a daily 16:00 UTC timer for that sync.
+Between syncs a Live game with no sealed inputs shows ESPN's line alone. The endpoints are GETs, so
+the Caddy allowlist is unchanged. After a deploy, confirm arm64 predictions in the API container:
+
+```bash
+docker compose --env-file secrets.env --env-file release.env exec api \
+  python -m courtlens.evaluation.win_probability_platform_check check
+```
+
 ### Disk budget
 
 The VPS boot volume is 193 GB, nearly all of the Always Free 200 GB block-storage allowance

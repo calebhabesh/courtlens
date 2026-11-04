@@ -25,10 +25,11 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
 
   it("groups Research by the FO07 targets; Players and Compare follow Databallr", () => {
     const research = NAV_MENUS.find(menu => menu.id === "research")!;
-    expect(research.groups.map(group => group.title)).toEqual(["Impact", "Shooting", "Trends & Distributions", "Forecasts & Evaluation", "Tools"]);
-    expect(research.groups[0].items.map(item => item.href)).toEqual(["/research/rapm", "/research/defensive-matchups"]);
-    expect(research.groups[1].items.map(item => item.href)).toEqual(["/research/shooting"]);
-    expect(research.groups[3].items.map(item => item.label)).toEqual(["Points Forecasts", "Evaluation Archive", "Case Studies", "Saved Investigations"]);
+    expect(research.groups.map(group => group.title)).toEqual(["Models", "Impact", "Shooting", "Trends & Distributions", "Forecasts & Evaluation", "Tools"]);
+    expect(research.groups[0].items.map(item => item.href)).toEqual(["/research/win-probability"]);
+    expect(research.groups[1].items.map(item => item.href)).toEqual(["/research/rapm", "/research/defensive-matchups"]);
+    expect(research.groups[2].items.map(item => item.href)).toEqual(["/research/shooting"]);
+    expect(research.groups[4].items.map(item => item.label)).toEqual(["Points Forecasts", "Evaluation Archive", "Case Studies", "Saved Investigations"]);
     const players = NAV_MENUS.find(menu => menu.id === "players")!.groups.flatMap(group => group.items.map(item => item.href));
     expect(players).toEqual(["/last-games", "/showcase", "/similar-players", "/players"]);
     const compare = NAV_MENUS.find(menu => menu.id === "compare")!.groups.flatMap(group => group.items.map(item => item.href));

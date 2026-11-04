@@ -67,6 +67,9 @@ class Settings(BaseSettings):
     )
     # Directories resolve like impact serving (services/served_bundle.py); a file pins one.
     wowy_manifest: Path | None = Path("data/derived/wowy-v1")
+    win_probability_serving_dir: Path = Path("data/derived/win-probability-serving")
+    win_probability_models_dir: Path = Path("data/artifacts/win-probability")
+    win_probability_snapshots_dir: Path = Path("data/derived/win-probability-ratings")
     # Sealed by `courtlens.evaluation.stint_box_runner`; absent means focal stats beyond points
     # stay unknown for IM03 stints.
     stint_box_manifest: Path | None = Path("data/derived/stint-box-v1/manifest")

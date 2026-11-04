@@ -1,0 +1,60 @@
+{
+ "elapsed_seconds": 133.2,
+ "pooled": {
+  "monthly_no_news": {
+   "calibration_error": 0.007804111971256413,
+   "log_loss_change": {
+    "games": 2439,
+    "high": 0.005202938210728456,
+    "low": 0.0015602412490253517,
+    "mean": 0.003383942135423689
+   },
+   "material": true
+  },
+  "no_news": {
+   "calibration_error": 0.006763099463711254,
+   "log_loss_change": {
+    "games": 2439,
+    "high": 0.009600651484594934,
+    "low": 0.00439546468901918,
+    "mean": 0.007034773826182715
+   },
+   "material": true
+  },
+  "pinned": {
+   "calibration_error": 0.006668613884670609,
+   "log_loss_change": {
+    "games": 2439,
+    "high": 0.005842124893342441,
+    "low": 0.001791635157332714,
+    "mean": 0.0038743917812026946
+   },
+   "material": true
+  },
+  "selected_calibration_error": 0.00829567945568128
+ },
+ "reproduction": {
+  "max_abs_input": 0.0,
+  "max_abs_mu": 3.552713678800501e-15
+ },
+ "seasons": {
+  "2024-25": {
+   "monthly_no_injury_news_log_loss": 0.4111365728445058,
+   "no_injury_news_log_loss": 0.41439865268045367,
+   "pinned_log_loss": 0.40975983413564265,
+   "reproduction_max_abs_probability": 2.9802221912511584e-08,
+   "selected_log_loss": 0.4061418086001672,
+   "snapshot_cutoff": "2024-05-01",
+   "snapshot_pinned": "fe6a9f12ba35d0390407e1bf30121b5c9c7838f96cebd3cc3987b8c95c84b1f5"
+  },
+  "2025-26": {
+   "monthly_no_injury_news_log_loss": 0.4012482873685087,
+   "no_injury_news_log_loss": 0.40528311844641607,
+   "pinned_log_loss": 0.4035830991054256,
+   "reproduction_max_abs_probability": 2.980186686318831e-08,
+   "selected_log_loss": 0.3994554751401795,
+   "snapshot_cutoff": "2025-05-01",
+   "snapshot_pinned": "384e69396fd1b97b416610cd8c4c09303ce0a756e88e1fdab2f74ce9b4c8a77a"
+  }
+ }
+}
