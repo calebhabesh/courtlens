@@ -32,16 +32,22 @@ Rows are in working order.
 | 17 | Shot Profile Twin | `/similar-players` | ✅ | Owner approved first revision 2026-10-21 (Player Twins); NBA only; Databallr's twin cards and closest-matches table on pbpstats zone totals, then Box Score mode, pool filters, distance drivers; table headers centered over their values |
 | 22 | Player Dashboard | `/players` | ✅ | Owner approved first revision 2026-10-25; Databallr's `/dashboard` (Top 50 DARKO DPM card carousel, compact player panels, head-to-head panel). Row 2's "Dashboard" pairing was wrong: row 2 is our player page, kept as approved. Replaces the Player Directory table |
 | 23 | — (ESPN Standings, owner request) | `/standings` | ✅ | Owner approved 2026-11-03 (all core pages done); Owner request 2026-10-29 (from row 7): ESPN's NBA Standings page under the Teams menu, plus standings on the game page and team pages |
-| 18 | Six Factor RAPM | `/research` | ⬜ | |
-| 19 | Wingspan | `/wingspan` | ⬜ | |
-| 20 | Offensive Calculator | `/calculator` | ⬜ | |
-| 21 | Learning / Patch Notes | `/methodology`, `/whats-new` | ⬜ | |
+| 18 | Six Factor RAPM (+ `/decomp`) | `/research/rapm/six-factor` | ⬜ | [Research handoff](research-plan.md) R02; Impact Tree builds Databallr's `/decomp` mock-up for real |
+| 19 | Wingspan | `/wingspan` | ⬜ | Research R10 |
+| 20 | Offensive Calculator | `/calculator` | ⬜ | Research R10 |
+| 21 | Learning / Patch Notes | `/methodology`, `/whats-new` | ⬜ | Research R11; Blog removed |
+| 24 | zTS | `/research/zts` | ⬜ | Research R04; plus registered validation test |
+| 25 | ShotQuality | `/research/shot-quality` | ⬜ | Research R05–R06; CourtLens expected-points model replaces the paid ShotQuality feed |
+| 26 | D-ShotQuality | `/research/defensive-matchups` | ⬜ | Research R06; from public matchup data |
+| 27 | Shot Aftermath | `/research/shooting/aftermath` | ⬜ | Research R10; restyle only |
+| 28 | NBA Draft (Draftballr) | `/draft` | ⬜ | Research R09; refactored as Draft Classes, no prospect model |
+| 29 | — (CourtLens research) | `/research` landing, `/research/win-probability`, `/research/backtest`, `/research/projected-impact`, `/research/lineup-model`, `/research/signal-noise`, `/research/assistant-evaluation` | ⬜ | Research R03, R07, R08, R12, R14–R16 |
 
 **CourtLens-only (one sweep at the end, no checkbox):** `/forecasts`, `/evaluation`,
 `/investigations`, `/data-status`, `/settings`, `/planner`, `/design`.
 
-**Databallr-only, not replicated:** Rankings and Tier List (owner cuts, 2026-10-20), Home game, WNBA, zTS, ShotQuality, D-ShotQuality,
-Shot Aftermath, EPV Replays, Kawhi Files, Blog, NBA Draft.
+**Databallr-only, not replicated:** Rankings and Tier List (owner cuts, 2026-10-20), Home game, WNBA, EPV Replays,
+Kawhi Files, Blog (Research handoff D3, 2026-11-04).
 
 ## Page instructions
 
