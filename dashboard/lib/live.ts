@@ -40,6 +40,15 @@ export interface LiveLeader {
 export interface LiveInjury { source_id: string; name: string; position: string | null; status: string | null; detail?: string | null; canonical_id: string | null }
 export interface LiveInfo { venue: string | null; venue_image?: string | null; city: string | null; state: string | null; attendance: number | null; officials: string[]; broadcasts: string[] }
 export interface LiveWinPoint { play_id: string; home: number }
+/** The frozen CourtLens model on one game: its line, biggest swings and identity. */
+export interface WinProbabilityPoint { play_id: string | null; t: number; home: number; home_score: number; away_score: number; period: number }
+export interface WinProbabilitySwing { play_id: string; t: number; home_after: number; delta_home: number; period: number | null; clock: string | null; text: string | null; side: string | null; home_score: number; away_score: number }
+export interface WinProbabilityLine {
+  status: "ok" | "no_inputs" | "no_plays";
+  model: { version: string; manifest_sha256: string; frozen_at: string };
+  availability?: "tip_off_capture" | "hindsight_box" | null; captured_at?: string;
+  points?: WinProbabilityPoint[]; swings?: WinProbabilitySwing[]; reason?: string;
+}
 export interface LiveSeriesGame {
   source_id: string; date: string | null; state: "pre" | "in" | "post" | null; detail: string | null;
   teams: { source_id: string; side: "home" | "away" | null; score: number | null; winner: boolean | null }[];

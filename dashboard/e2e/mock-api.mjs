@@ -10,6 +10,8 @@ const retainedDistribution = JSON.parse(readFileSync(new URL("./fixtures/pc12-re
 // Real 2025-26 playoffs (alignment row 8) and seasons whose formats test the bracket's byes.
 const playoffBrackets = Object.fromEntries(["2025-26", "1975-76", "1965-66", "1949-50"].map(season =>
   [season, JSON.parse(readFileSync(new URL(`./fixtures/playoffs-bracket-${season}.json`, import.meta.url), "utf8"))]));
+// Real answers of the frozen win-probability model's page, cut to a few rows.
+const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
 const okcPhx = JSON.parse(readFileSync(new URL("./fixtures/playoffs-series-2026-r1-okc-phx.json", import.meta.url), "utf8"));
 const playerTwins = JSON.parse(readFileSync(new URL("./fixtures/player-twins-v1.json", import.meta.url), "utf8"));
 function playerTwinsView(url) {
@@ -618,6 +620,11 @@ createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
   // Live (alignment row 7): an observed empty date; e2e/live.spec.ts routes real ESPN reads itself.
+  if (url.pathname === "/api/win-probability") return json(response, 200, winProbability.page);
+  if (url.pathname === "/api/win-probability/wpa") {
+    const table = winProbability.wpa[url.searchParams.get("season")];
+    return table ? json(response, 200, table) : json(response, 404, { detail: "No win probability added for this season" });
+  }
   if (url.pathname === "/api/live") return json(response, 200, { namespace: "espn", resource: `slate:${url.searchParams.get("slate_date")}`, status: "observed", final: false, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: 600, error: null, observation_id: null, content_sha256: null, data: { games: [], calendar: [] } });
   // Standings (row 23): no ESPN standings in the fixture; standings specs route their own. Answering
   // (rather than leaving the request open) lets pages that show division standings settle.

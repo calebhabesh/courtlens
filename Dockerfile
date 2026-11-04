@@ -8,7 +8,7 @@ WORKDIR /app
 
 RUN groupadd --system courtlens && useradd --system --gid courtlens --home /app courtlens
 
-RUN apt-get update && apt-get install -y --no-install-recommends poppler-utils \
+RUN apt-get update && apt-get install -y --no-install-recommends poppler-utils libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY pyproject.toml README.md requirements-lock.txt ./

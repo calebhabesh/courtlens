@@ -1,0 +1,123 @@
+{
+ "any_material": false,
+ "calibration_error": {
+  "archive": 0.008295679471804257,
+  "espn_own_sample": 0.008294274334862788,
+  "espn_same_times": 0.008275511655388935
+ },
+ "elapsed_seconds": 792.7,
+ "espn_replay_final_score_differs": 3,
+ "feature_exact_agreement": {
+  "bonus_away": 0.99098,
+  "bonus_home": 0.99032,
+  "fouls_away": 0.9682,
+  "fouls_home": 0.96928,
+  "ft_pending_away": 0.99971,
+  "ft_pending_home": 0.99959,
+  "margin": 0.98995,
+  "possession": 0.98237,
+  "possession_age": 0.94696,
+  "timeouts_away": 0.99749,
+  "timeouts_home": 0.99649
+ },
+ "feature_near_agreement": {
+  "fouls_away": {
+   "share": 0.98026,
+   "tolerance": 1.0
+  },
+  "fouls_home": {
+   "share": 0.98192,
+   "tolerance": 1.0
+  },
+  "possession_age": {
+   "share": 0.99187,
+   "tolerance": 5.0
+  }
+ },
+ "games": 2439,
+ "games_without_espn": [],
+ "limits": {
+  "ece": 0.02,
+  "log_loss_change": 0.002,
+  "mean_abs_probability_gap": 0.01
+ },
+ "log_loss": {
+  "aligned": 0.4033094461166553,
+  "archive": 0.402778081237991,
+  "own": 0.40293700738384397
+ },
+ "log_loss_change_aligned": {
+  "games": 2439,
+  "high": 0.0007324004506939839,
+  "low": 0.0003518488284436956,
+  "mean": 0.0005313648786644038
+ },
+ "log_loss_change_own_sample": {
+  "games": 2439,
+  "high": 0.0002304582594611655,
+  "low": 0.000105674237730613,
+  "mean": 0.0001589261458530078
+ },
+ "material": {
+  "ece_aligned": false,
+  "ece_own_sample": false,
+  "log_loss_aligned": false,
+  "log_loss_own_sample": false,
+  "probability_gap": false
+ },
+ "probability_gap": {
+  "max": 0.8112495148253634,
+  "mean_abs": 0.0016501279845169677,
+  "p50": 0.0,
+  "p95": 0.00034719567738143926,
+  "p99": 0.05737285896359755
+ },
+ "reproduction_max_abs_difference": 2.9802221912511584e-08,
+ "score_source": {
+  "scoring_plays": 2433,
+  "source": 6
+ },
+ "states_compared": 533770,
+ "worst_games": [
+  {
+   "game": "0022500158",
+   "mean_abs_probability_gap": 0.0373
+  },
+  {
+   "game": "0022400436",
+   "mean_abs_probability_gap": 0.0319
+  },
+  {
+   "game": "0022400615",
+   "mean_abs_probability_gap": 0.0317
+  },
+  {
+   "game": "0022400883",
+   "mean_abs_probability_gap": 0.0291
+  },
+  {
+   "game": "0022400159",
+   "mean_abs_probability_gap": 0.0287
+  },
+  {
+   "game": "0022400953",
+   "mean_abs_probability_gap": 0.0279
+  },
+  {
+   "game": "0022400002",
+   "mean_abs_probability_gap": 0.0264
+  },
+  {
+   "game": "0022401102",
+   "mean_abs_probability_gap": 0.0246
+  },
+  {
+   "game": "0022400942",
+   "mean_abs_probability_gap": 0.0237
+  },
+  {
+   "game": "0022400711",
+   "mean_abs_probability_gap": 0.0225
+  }
+ ]
+}
