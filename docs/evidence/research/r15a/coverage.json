@@ -1,0 +1,116 @@
+{
+ "espn_receipts": 2766,
+ "games_table_sha256": "270c16439d1165713fce9240d206ee86abce7483172bbcb3e31443ec12bca617",
+ "market_commit": "7be25dae2ebe5f6027f5343a4ab3195caa61aee5",
+ "market_sha256": "b58911bf54af2cff9f33b214787cf90a8e8545ebe4b807e11569e178f542ede7",
+ "seasons": {
+  "2014-15": {
+   "archive_sha256": "76a5398235900fd5b914eaeb1464e76fc05517184d04c503404a16a44d14f741",
+   "elapsed_seconds": 12.4,
+   "excluded_count": 0,
+   "games": 1208,
+   "sha256": "ecd408e2e6e7a695bed8ba9af7a3d1ee0748615cfebf9ab9ca6409358ec0af77",
+   "states": 269037,
+   "states_per_game": 222.7
+  },
+  "2015-16": {
+   "archive_sha256": "7bbb1e8a1512dd2877be97cb73d990c424a2f7488137ca5d7a6285e2afea873e",
+   "elapsed_seconds": 14.1,
+   "excluded_count": 0,
+   "games": 1219,
+   "sha256": "f7dfacea19fffde69c37a57ec926182a5cd56d45405ba8257ee9fee162004b8f",
+   "states": 271321,
+   "states_per_game": 222.6
+  },
+  "2016-17": {
+   "archive_sha256": "6c94890f389abe5af085ff19a26a80e7fe0d205c55dc201aefaa078a887540f4",
+   "elapsed_seconds": 13.9,
+   "excluded_count": 0,
+   "games": 1206,
+   "sha256": "a214b15ab249fc414e6dae31ab441d51cfd63137a03357762e6c2586f25ba7c8",
+   "states": 267090,
+   "states_per_game": 221.5
+  },
+  "2017-18": {
+   "archive_sha256": "e9fedc33337e6a34dc4373bc5138e742e6bbcf09477b34568d79588dead7e62c",
+   "elapsed_seconds": 13.9,
+   "excluded_count": 0,
+   "games": 1217,
+   "sha256": "b69d2bdd550e8950060b9f4d277441f7e8a1a20244c1f9931695d91b84ffbf89",
+   "states": 267744,
+   "states_per_game": 220.0
+  },
+  "2018-19": {
+   "archive_sha256": "a8c05607863b0bb0da51ed65fc89866cbb5c1954f7951ce00ed05f2ad178097d",
+   "elapsed_seconds": 14.5,
+   "excluded_count": 0,
+   "games": 1227,
+   "sha256": "b4b0796494cacaea942da8a84466fb890bb3822aa9ecc84a50bdcd800be65ea6",
+   "states": 270743,
+   "states_per_game": 220.7
+  },
+  "2019-20": {
+   "archive_sha256": "3fc651e4c294e231723fa097dca2cf938dd868ee2b9a6111f22ab9c0728e89dc",
+   "elapsed_seconds": 12.5,
+   "excluded_count": 0,
+   "games": 1033,
+   "sha256": "c97ea34618eeb10c23246b2449a423fce0545ded9894ee5e05e5bfe4d39b76b7",
+   "states": 228446,
+   "states_per_game": 221.1
+  },
+  "2020-21": {
+   "archive_sha256": "8bbd2406d741f8247db9eec222bb1655ea699edb60907d3851a048b8ea7a798d",
+   "elapsed_seconds": 12.4,
+   "excluded_count": 0,
+   "games": 1074,
+   "sha256": "b29e9da0f1cb3bdb927175d7a18564607f5e85b497c7cb461a21edc5086306d6",
+   "states": 236298,
+   "states_per_game": 220.0
+  },
+  "2021-22": {
+   "archive_sha256": "f44ec8a4a9864732fca66943ae4d06a06ef98ba3932571c15a23ecae644f84c4",
+   "elapsed_seconds": 14.4,
+   "excluded_count": 0,
+   "games": 1228,
+   "sha256": "b36a7646188f34a3e5abbc51ceaf9e85c296d58239970fae634d22af7f145a44",
+   "states": 269000,
+   "states_per_game": 219.1
+  },
+  "2022-23": {
+   "archive_sha256": "42c24abf0abbc0ccef00addaba4b8c76df230a0ff3c0e5b301353307941fd04c",
+   "elapsed_seconds": 14.4,
+   "excluded_count": 0,
+   "games": 1229,
+   "sha256": "34963489c8286bc0e1c500f689727f1020b8a959789b17d6faeee455ba54dbff",
+   "states": 270633,
+   "states_per_game": 220.2
+  },
+  "2023-24": {
+   "archive_sha256": "3a6976219b87fb50cecf8b2c54cb2af110f2f013ed8368d694035806802c8b04",
+   "elapsed_seconds": 14.2,
+   "excluded_count": 0,
+   "games": 1216,
+   "sha256": "b0ffc582e46912989da5bc2c7a269056aa764e2149a1d37e1bc7dc03aa04440d",
+   "states": 266365,
+   "states_per_game": 219.1
+  },
+  "2024-25": {
+   "archive_sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+   "elapsed_seconds": 14.5,
+   "excluded_count": 0,
+   "games": 1212,
+   "sha256": "a15215471c047a06942b117e4c746521d4f51ad36ccabb57491f52c2376db6be",
+   "states": 265317,
+   "states_per_game": 218.9
+  },
+  "2025-26": {
+   "archive_sha256": "790a01ea3f0b2f8335d96bd687e21501551fc8cdea3ada83457ee3208a940671",
+   "elapsed_seconds": 14.8,
+   "excluded_count": 0,
+   "games": 1227,
+   "sha256": "b591a60188a537cf6d26aaecdd4b11fdac95ed9e66851bad183966c89ebc1934",
+   "states": 268453,
+   "states_per_game": 218.8
+  }
+ }
+}
