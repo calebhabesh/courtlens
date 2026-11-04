@@ -1,0 +1,88 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-win-probability-v1",
+  "block": "R15a",
+  "registered_on": "2026-11-04",
+  "kind": "predictive",
+  "question": "Does a two-layer model (pregame margin, then in-game remaining-margin distribution) give better-calibrated in-game win probabilities than a Brownian-motion baseline, on seasons it never saw, and how does it compare with ESPN's published per-play probability?",
+  "inputs": [
+    "Sealed regular-season IM03 bundles 2014-15 to 2025-26 (admitted games only; lineups from their stints)",
+    "nbastatsv3 play-by-play rows from the pinned shufinskiy archives (clock, score, fouls, timeouts, free throws)",
+    "sportsdataverse team and player boxes 2013-14 onward (form, pace, three-point rate, minutes; inactive list = DND and NWT comments)",
+    "courtlens-rating-snapshots-v1 dated RAPM (latest cutoff on or before the game date)",
+    "Benchmarks only, never inputs: ESPN per-play win probability (test seasons) and hoopR-nba-data closing_lines_odds_api.parquet at commit 7be25dae (CC BY 4.0, sha256 b58911bf)"
+  ],
+  "method": [
+    "States: every 15 seconds of game clock plus after every event with 120 seconds or less left in the fourth period or any overtime. Final zero-second states are dropped. Each state is the game after all events at or before its time.",
+    "Weights and metrics: each game counts equally. Training weight is 1 / states in the game; a metric is the mean per game, then the mean over games (for a phase, over games reaching that phase).",
+    "Views: each training state is used from one seeded random team's point of view. Prediction averages p(home view) and 1 - p(away view), so the two teams' probabilities sum to one.",
+    "Target: margin at the end of the current segment (regulation or the current overtime). P(win) = P(M >= 0.5) + P(|M| < 0.5) x p_ot, where p_ot is a logistic regression of winning on mu0 fitted on games tied at the end of a segment.",
+    "Pregame layer: team form = ridge on game margins with a home term, lambda 20, exponential time decay, half-life selected on training seasons from the grid by margin RMSE. Player strength = sum of (expected minutes / 48) x snapshot RAPM over available players, expected minutes = mean of the last 10 appearances within 365 days, renormalised to 240; a player absent from the snapshot takes the mean RAPM of that snapshot's unqualified players. mu0 = OLS of final margin on player strength difference x expected pace / 100, team form, home (0 in the 2019-20 bubble), rest days, back-to-back, games in 7 days, travel km and altitude differences, fitted on 2015-16 to 2021-22. 2014-15 has no snapshot, so its mu0 is team form. sigma0 = Gaussian MLE of log sigma linear in summed expected pace and three-point rate.",
+    "Structural baseline: M ~ Normal(margin + beta x mu0 x f, sigma^2 x f), f = time left in the segment / 2880 with a floor of 1 second; beta and sigma by maximum likelihood.",
+    "Main model: two LightGBM boosters started from the baseline. Mean: L2 on the segment-end margin, monotone increasing in margin and mu0. Log-variance: Gaussian negative log-likelihood on 2-fold game-grouped out-of-fold mean residuals.",
+    "End-game specialist: LightGBM multiclass on the remaining segment margin clipped to [-12, 12] for states with 120 seconds or less in period 4 or later; blended linearly by time left from weight 0 at 120 seconds to 1 at 0 seconds.",
+    "Ablation ladder. S0: baseline with team-form mu0. S0g (diagnostic, no new information): boosters on margin, time and mu0 only. S1: adds possession, free throws pending, timeouts used, team fouls, bonus, time since possession start. S2: full mu0 and context. S3: adds sigma0, expected pace and three-point rate. S4: adds remaining rotation strength, exits, foul trouble and current lineup against rotation. S5: adds runs over the last 120 and 300 seconds and in-game three-point and free-throw luck. E: the end-game specialist on the accepted step.",
+    "Rotation rules for S4: a player is out after six fouls or an ejection; a player off the floor for 720 seconds or more counts at half weight, computed only from events so far. Live serving depends on the R15b tracker.",
+    "Comparators: logistic regression on S1 inputs (margin / sqrt(f), mu0 x f, f and game state) and a direct LightGBM win/loss classifier on the accepted step's inputs.",
+    "Calibration: one logit-linear recalibration fitted on 2023-24, applied only if its 5-fold game-grouped log loss on 2023-24 beats the uncalibrated model."
+  ],
+  "parameters": {
+    "seed": 2501,
+    "splits": {
+      "train": ["2014-15", "2015-16", "2016-17", "2017-18", "2018-19", "2019-20", "2020-21", "2021-22"],
+      "select": ["2022-23"],
+      "calibrate": ["2023-24"],
+      "test": ["2024-25", "2025-26"],
+      "prospective": ["2026-27"]
+    },
+    "grid_seconds": 15,
+    "end_game_seconds": 120,
+    "team_form": {"half_life_days": [30, 60, 120], "ridge_lambda": 20, "window_days": 400},
+    "pregame_ewma_half_life_days": 60,
+    "expected_minutes": {"appearances": 10, "window_days": 365},
+    "long_absence_seconds": 720,
+    "booster": {
+      "learning_rate": 0.03,
+      "num_leaves_grid_at_S1": [15, 31],
+      "min_data_in_leaf": 2000,
+      "feature_fraction": 0.8,
+      "bagging_fraction": 0.3,
+      "lambda_l2": 10,
+      "max_rounds": 1500,
+      "early_stopping_rounds": 50
+    },
+    "bootstrap": {"replicates": 2000, "unit": "game"},
+    "ece_bins": 20
+  },
+  "selection": "On 2022-23 only, walk S1, S2, S3, S4, S5, E in order. A step is accepted when the paired game-bootstrap 90% interval of its log-loss improvement over the current accepted model is above zero (E is judged on the last two minutes and overtime). Rejected steps do not block later ones. The test seasons are read once, after selection and calibration are frozen.",
+  "uncertainty": "Game bootstrap (2000 replicates, seed 2501) for every metric and every paired difference, overall and by phase: first half, third quarter, fourth quarter before the last two minutes, last two minutes, overtime.",
+  "evaluation": [
+    "Brier score, log loss and calibration curves overall and by phase on 2024-25 and 2025-26, separately and pooled",
+    "Every ablation step, with intervals, on the selection and test seasons; rejected steps stay in the report",
+    "ESPN comparison on matched states: the latest ESPN play at or before the state's time, kept only when its score equals the state's; matched share reported per season",
+    "Pregame margin RMSE and winner accuracy against the closing spread on the same test games",
+    "Monotonicity audit: share of sampled test states where raising the margin lowers the probability"
+  ],
+  "acceptance": [
+    "A1: pooled test log loss of the selected model beats S0, with the paired 95% game-bootstrap interval of the improvement above zero",
+    "A2: pooled test expected calibration error (20 equal-width bins) is 0.02 or less",
+    "ESPN and market comparisons are reported, not gates; ESPN probably uses betting lines, so it is expected to be stronger early in games"
+  ],
+  "outputs": [
+    "Hashed model artifacts under data/derived/win-probability-v1",
+    "docs/evidence/research/r15a: report with every metric, calibration curves, ablation table, ESPN and market comparisons, coverage and runtimes"
+  ],
+  "limitations": [
+    "About 14,000 game outcomes: every state in a game shares one result, so the effective sample is games, not rows",
+    "Regular season only; playoffs are not scored in v1",
+    "Admitted games only (97.5 to 99.9% of each season), plus any game whose replayed final score differs from the schedule, which is excluded and counted",
+    "Trained on seasons through 2021-22 and tested on 2024-25 onward, so league drift (pace, threes) counts against the model",
+    "The inactive list is assumed known at tip-off; a late scratch is treated as known",
+    "Game location is the home team's city; neutral-site games other than the 2019-20 bubble are not identified",
+    "Selection and early stopping share 2022-23, so selection-season improvements are optimistic; only the test seasons support claims",
+    "Credit assignment (WPA) and live serving belong to R15b"
+  ],
+  "negative_result_policy": "Publish every result, including failed gates, rejected steps and any loss to ESPN or the market, in the evidence report and on the page. A failed gate is not re-run with changed settings under this identity; a change needs a new version.",
+  "seed": 2501,
+  "budget": {"cpu_threads": 2, "max_peak_mib": 3072, "max_wall_seconds": 1800}
+}

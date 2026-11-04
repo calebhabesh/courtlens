@@ -20,7 +20,7 @@ coverage and screenshots per block. Plan text is not evidence.
 | R11 Learning, Glossary, Patch Notes | ⬜ pending | |
 | R12 Research landing, menu, README | ⬜ pending | |
 | R14 Lineup model with learned embeddings | ⬜ pending | |
-| R15a Win Probability: model and final-test report | ⬜ pending (runs second, after R01) | |
+| R15a Win Probability: model and final-test report | ✅ measured (production and pages are R15b) | [R15a evidence](evidence/research/r15a/README.md): both gates pass on 2,439 test games; log loss 0.4028 against 0.4157 baseline, calibration error 0.0083; level with ESPN overall, better after halftime; behind the closing spread pregame; lineup step S4 failed |
 | R15b Win Probability: production, scorecard, pages | ⬜ pending | |
 | R16 Ask held-out evaluation | ⬜ pending | |
 | R13 Prospect projection | ⏸ parked | |
@@ -94,3 +94,16 @@ structure goes where basketball knowledge is reliable.
   24.4 min; IM05 extras 8.3 min; history fits 27.0 min; 1Y intervals 5.6 min (12 seasons); time
   decay with its intervals and diagnostics 14.2 min; snapshots 24.6 min. Peak 1.8 GiB (IM03), inside
   the 3 GiB caps.
+
+## 2026-11-04 — R15a measured
+
+[Evidence](evidence/research/r15a/README.md). `courtlens-win-probability-v1` was superseded before any test read, because its monotone constraint blocked mean reversion; `-v2` is the registration of record and every artifact was rebuilt under it.
+
+- **Gates.** Both pass on 2024-25 and 2025-26 (2,439 games). A1: log-loss gain on the baseline +0.0130 (+0.0089 to +0.0169). A2: calibration error 0.0083 (limit 0.02).
+- **Selected model.** S2 plus the end-game specialist, not recalibrated. S1 and S2 accepted; S3, S4 and S5 rejected on 2022-23 and no better on test. S4, the expected differentiator, is a negative result (-0.0009 (-0.0021 to +0.0004)). So the first frozen R15b model does not need the live lineup tracker.
+- **ESPN.** All states +0.0034 (-0.0011 to +0.0080) (includes zero). ESPN leads at tip-off, they tie in the first half, and CourtLens is better after halftime (phase intervals unadjusted).
+- **Market.** The closing spread wins pregame: RMSE 13.71 against 14.16.
+- **Data.** 14,296 games, 3,150,447 states, none excluded. A score-reset bug in older rows was found by audit and fixed before fitting; replay then disagrees with 0 of 11,090 stint-end scores. Causality audit: 0 of 124,948 states change when later rows are removed.
+- **Sources.** ESPN summaries at 5-second pacing (2,766 requests, no failures, 3 h 50 min); hoopR-nba-data closing lines (CC BY 4.0, pinned commit). New dependencies: LightGBM 4.7.0, pyarrow (dev).
+- **Runtime and memory.** Whole pipeline under 15 minutes, peak 2.2 GiB, inside the 3 GiB cap.
+- **For R15b.** The Docker image may need `libgomp` for LightGBM, the freeze decision is open, and the owner still decides how the scorecard reaches the hosted demo.
