@@ -35,7 +35,7 @@ OUTPUT = Path("data/derived/win-probability-v1/espn")
 TEST_SEASONS = ("2024-25", "2025-26")
 PACING_SECONDS = 5.0
 ATTEMPTS = 3
-CAPS = {"scoreboard": 1024 * 1024, "summary": 4 * 1024 * 1024}
+CAPS = {"scoreboard": 1024 * 1024, "summary": 4 * 1024 * 1024, "injuries": 2 * 1024 * 1024}
 TRICODE = {espn: tricode for espn, (_, tricode) in ESPN_TEAMS.items()}
 
 

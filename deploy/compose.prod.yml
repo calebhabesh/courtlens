@@ -77,6 +77,8 @@ services:
       - ./data/derived/wowy-v1:/app/data/derived/wowy-v1:ro
       - ./data/artifacts/analyses:/app/data/artifacts/analyses:ro
       - ./data/cache/portraits:/app/data/cache/portraits:ro
+      - ./data/artifacts/win-probability:/app/data/artifacts/win-probability:ro
+      - ./data/derived/win-probability-serving:/app/data/derived/win-probability-serving:ro
     logging: *logging
     depends_on:
       db:

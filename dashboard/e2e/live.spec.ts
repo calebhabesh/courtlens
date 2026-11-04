@@ -14,6 +14,7 @@ async function mock(page: Page, overrides: Record<string, (url: URL) => unknown>
     const url = new URL(route.request().url());
     calls.push(`${url.pathname}${url.search}`);
     for (const [key, respond] of Object.entries(overrides)) if (`${url.pathname}${url.search}`.includes(key)) return route.fulfill({ json: respond(url) });
+    if (url.pathname.endsWith("/win-probability")) return route.fulfill({ status: 503, json: { detail: "Win probability model unavailable" } });
     const id = url.pathname.match(/games\/(\d+)/)?.[1];
     if (id) return games[id] ? route.fulfill({ json: games[id] }) : route.fulfill({ status: 502, json: { detail: "Live service unavailable" } });
     const day = url.searchParams.get("slate_date");
