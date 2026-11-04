@@ -1,0 +1,38 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-impact-intervals-v1",
+  "block": "R01",
+  "registered_on": "2026-11-04",
+  "kind": "descriptive",
+  "question": "How much do RAPM, ORAPM, DRAPM and the six factors move when the games in the fit window are resampled?",
+  "inputs": [
+    "1Y regular-season impact-ratings-v1-method fits for 2014-15 to 2025-26 (sealed artifacts for 2023-24 to 2025-26, courtlens-impact-history-v1 artifacts before)",
+    "courtlens-rapm-time-decay-v1 season-end fits"
+  ],
+  "method": [
+    "Game bootstrap: draw the window's games with replacement (as many draws as games); a game drawn k times multiplies its observations' weights by k, so all stints and both sides of a game stay together.",
+    "Each replicate refits the same design with the fit's already selected alpha (no reselection) and the fit's own centering (seconds weighted by the replicate's multiplicities; decayed for time decay).",
+    "Targets: RAPM (offense, defense, total) and the six factors (oTS, oTOV, oREB, dTS, dTOV, dREB) for 1Y fits; RAPM for time-decay fits.",
+    "Random stream: numpy default_rng(SeedSequence([2501, starting_year, fit_code])), fit_code 1 = 1Y, 2 = time decay; replicate r uses the r-th draw.",
+    "Served values: 10th and 90th percentiles and replicate standard deviation, for every player with a point estimate; display qualification is unchanged."
+  ],
+  "parameters": {"replicates": 200, "percentiles": [10, 90]},
+  "selection": "None.",
+  "uncertainty": "This is the interval itself. It is a game-resampling interval around a shrunk estimate with a fixed penalty, not a confidence interval for true impact.",
+  "evaluation": [
+    "Check: the bootstrap code's replicate with all multiplicities equal to 1 reproduces the point-estimate coefficients (max absolute difference below 1e-8)",
+    "Per season: median 80% interval width for qualified players, by metric, and the share of qualified players whose interval excludes zero"
+  ],
+  "acceptance": [
+    "200 replicates for every 1Y fit 2014-15 to 2025-26 and every time-decay season-end fit",
+    "Two runs reproduce identical interval artifact hashes"
+  ],
+  "outputs": ["data/derived/impact-intervals-v1/ interval artifacts keyed by the fitted artifact hash"],
+  "limitations": [
+    "A fixed alpha and lineup confounding make intervals narrower than the true uncertainty",
+    "No claim that one player is better than another is made from overlapping intervals"
+  ],
+  "negative_result_policy": "Publish interval widths whatever they are, including if most intervals include zero.",
+  "seed": 2501,
+  "budget": {"cpu_threads": 2, "max_peak_mib": 3072, "max_wall_seconds": 1800}
+}

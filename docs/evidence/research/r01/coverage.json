@@ -1,0 +1,916 @@
+{
+ "regular_seasons": [
+  {
+   "admitted_pct": 98.21,
+   "box_estimate_within_two_pct": 53.48,
+   "bundle_sha256": "6ca7a2334b48ce9b7be946de247e3d5c40ed9551acb75fc1451b7742b98df90b",
+   "clean": 0,
+   "event_gate_excluded": 0,
+   "excluded": 22,
+   "excluded_games": {
+    "0021400072": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400215": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400521": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400529": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400615": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400769": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400814": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400852": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400855": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400864": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021400892": [
+     "missing-substitution cycle",
+     "team 1610612745 lineup reconstruction incomplete"
+    ],
+    "0021400978": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021401027": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021401069": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021401075": [
+     "incoming player already on floor",
+     "team 1610612755 lineup reconstruction incomplete"
+    ],
+    "0021401098": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021401102": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021401151": [
+     "player minutes exceed 30-second tolerance: 111.00"
+    ],
+    "0021401162": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021401181": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021401189": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021401204": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ]
+   },
+   "im02_excluded": 22,
+   "minutes_nonexcluded": {
+    "comparisons": 25503,
+    "max_absolute_error": 0.5,
+    "within_one": 25503,
+    "within_thirty": 25503
+   },
+   "name_aliases": {
+    "by_side": {
+     "incoming": 1727,
+     "outgoing": 1822
+    },
+    "games_with_rewrites": 574,
+    "rewrites": 3549,
+    "touched_quality": {
+     "excluded": 10,
+     "patched": 564
+    }
+   },
+   "patched": 1208,
+   "plus_minus_exact_pct": 50.2707,
+   "possessions": 229809,
+   "public_crosscheck": {
+    "comparisons": 2416,
+    "exact": 1268,
+    "max_absolute_delta": 3,
+    "within_two": 2409
+   },
+   "rule_counts": {
+    "IM02-R1": 2420,
+    "IM02-R2": 1,
+    "IM02-R3": 0,
+    "IM02-R4": 0,
+    "IM02-R5": 75,
+    "IM02-R6": 0,
+    "IM02-R7": 22
+   },
+   "scheduled": 1230,
+   "season": "2014-15",
+   "source": "courtlens-impact-history-v2",
+   "stints": 57810
+  },
+  {
+   "admitted_pct": 99.11,
+   "box_estimate_within_two_pct": 53.12,
+   "bundle_sha256": "86a503d8c7ab1a9a057c7b40043157c77b5cb9a9bd66153ddf361c0c47ffc4a2",
+   "clean": 0,
+   "event_gate_excluded": 0,
+   "excluded": 11,
+   "excluded_games": {
+    "0021500391": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021500589": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021500594": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021500624": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021500627": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021500761": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021500765": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021500916": [
+     "missing period endpoints: 5",
+     "player minutes exceed 30-second tolerance: 299.90"
+    ],
+    "0021500934": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021500965": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021501180": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ]
+   },
+   "im02_excluded": 11,
+   "minutes_nonexcluded": {
+    "comparisons": 25847,
+    "max_absolute_error": 0.5,
+    "within_one": 25847,
+    "within_thirty": 25847
+   },
+   "name_aliases": {
+    "by_side": {
+     "incoming": 1162,
+     "outgoing": 1113
+    },
+    "games_with_rewrites": 474,
+    "rewrites": 2275,
+    "touched_quality": {
+     "excluded": 7,
+     "patched": 467
+    }
+   },
+   "patched": 1219,
+   "plus_minus_exact_pct": 50.0369,
+   "possessions": 236479,
+   "public_crosscheck": {
+    "comparisons": 2438,
+    "exact": 1256,
+    "max_absolute_delta": 3,
+    "within_two": 2432
+   },
+   "rule_counts": {
+    "IM02-R1": 2440,
+    "IM02-R2": 0,
+    "IM02-R3": 0,
+    "IM02-R4": 0,
+    "IM02-R5": 75,
+    "IM02-R6": 0,
+    "IM02-R7": 11
+   },
+   "scheduled": 1230,
+   "season": "2015-16",
+   "source": "courtlens-impact-history-v2",
+   "stints": 59475
+  },
+  {
+   "admitted_pct": 98.05,
+   "box_estimate_within_two_pct": 49.3,
+   "bundle_sha256": "06484ae4e852712b76d0eb478ae2030549f5cf0df74559e1d8226f98adee6119",
+   "clean": 0,
+   "event_gate_excluded": 4,
+   "excluded": 24,
+   "excluded_games": {
+    "0021600026": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600039": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600056": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600158": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600240": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600344": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600478": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600487": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600528": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600627": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021600676": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600723": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600770": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600788": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600848": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600859": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021600877": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600896": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021600995": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021601152": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021601156": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021601166": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021601215": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021601219": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ]
+   },
+   "im02_excluded": 20,
+   "minutes_nonexcluded": {
+    "comparisons": 25608,
+    "max_absolute_error": 0.5,
+    "within_one": 25608,
+    "within_thirty": 25608
+   },
+   "name_aliases": {
+    "by_side": {
+     "incoming": 814,
+     "outgoing": 1074
+    },
+    "games_with_rewrites": 365,
+    "rewrites": 1888,
+    "touched_quality": {
+     "excluded": 10,
+     "patched": 355
+    }
+   },
+   "patched": 1206,
+   "plus_minus_exact_pct": 50.399,
+   "possessions": 234795,
+   "public_crosscheck": {
+    "comparisons": 2412,
+    "exact": 1250,
+    "max_absolute_delta": 3,
+    "within_two": 2406
+   },
+   "rule_counts": {
+    "IM02-R1": 2420,
+    "IM02-R2": 0,
+    "IM02-R3": 0,
+    "IM02-R4": 0,
+    "IM02-R5": 45,
+    "IM02-R6": 0,
+    "IM02-R7": 20
+   },
+   "scheduled": 1230,
+   "season": "2016-17",
+   "source": "courtlens-impact-history-v2",
+   "stints": 58726
+  },
+  {
+   "admitted_pct": 98.94,
+   "box_estimate_within_two_pct": 47.62,
+   "bundle_sha256": "e37e706e2800a10944f87306f8c7a227a3a1fb66568e0503eaa56fa798ddff89",
+   "clean": 1146,
+   "event_gate_excluded": 12,
+   "excluded": 13,
+   "excluded_games": {
+    "0021700022": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700023": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700041": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700047": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700077": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700136": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700140": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700180": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700216": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700233": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700298": [
+     "missing-substitution cycle",
+     "team 1610612739 lineup reconstruction incomplete"
+    ],
+    "0021700325": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021700806": [
+     "R01-H2: IM03 event verification failed"
+    ]
+   },
+   "im02_excluded": 1,
+   "minutes_nonexcluded": {
+    "comparisons": 25822,
+    "max_absolute_error": 0.5,
+    "within_one": 25822,
+    "within_thirty": 25822
+   },
+   "name_aliases": {
+    "by_side": {
+     "incoming": 492,
+     "outgoing": 542
+    },
+    "games_with_rewrites": 240,
+    "rewrites": 1034,
+    "touched_quality": {
+     "clean": 226,
+     "patched": 14
+    }
+   },
+   "patched": 71,
+   "plus_minus_exact_pct": 50.99,
+   "possessions": 238674,
+   "public_crosscheck": {
+    "comparisons": 2434,
+    "exact": 1169,
+    "max_absolute_delta": 4,
+    "within_two": 2406
+   },
+   "rule_counts": {
+    "IM02-R1": 0,
+    "IM02-R2": 0,
+    "IM02-R3": 0,
+    "IM02-R4": 0,
+    "IM02-R5": 71,
+    "IM02-R6": 0,
+    "IM02-R7": 1
+   },
+   "scheduled": 1230,
+   "season": "2017-18",
+   "source": "courtlens-impact-history-v2",
+   "stints": 59715
+  },
+  {
+   "admitted_pct": 99.76,
+   "box_estimate_within_two_pct": 45.76,
+   "bundle_sha256": "5b610ae6fabde190c1e0a8356662719b94cbd1717f56fdf0ee8d273f9c28f98c",
+   "clean": 1172,
+   "event_gate_excluded": 1,
+   "excluded": 3,
+   "excluded_games": {
+    "0021800160": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021800388": [
+     "missing-substitution cycle",
+     "team 1610612761 lineup reconstruction incomplete"
+    ],
+    "0021800920": [
+     "missing-substitution cycle",
+     "team 1610612758 lineup reconstruction incomplete"
+    ]
+   },
+   "im02_excluded": 2,
+   "minutes_nonexcluded": {
+    "comparisons": 26039,
+    "max_absolute_error": 0.5,
+    "within_one": 26039,
+    "within_thirty": 26039
+   },
+   "name_aliases": {
+    "by_side": {
+     "incoming": 419,
+     "outgoing": 487
+    },
+    "games_with_rewrites": 201,
+    "rewrites": 906,
+    "touched_quality": {
+     "clean": 189,
+     "patched": 12
+    }
+   },
+   "patched": 55,
+   "plus_minus_exact_pct": 49.5949,
+   "possessions": 247673,
+   "public_crosscheck": {
+    "comparisons": 2454,
+    "exact": 1299,
+    "max_absolute_delta": 4,
+    "within_two": 2449
+   },
+   "rule_counts": {
+    "IM02-R1": 0,
+    "IM02-R2": 8,
+    "IM02-R3": 0,
+    "IM02-R4": 0,
+    "IM02-R5": 57,
+    "IM02-R6": 0,
+    "IM02-R7": 2
+   },
+   "scheduled": 1230,
+   "season": "2018-19",
+   "source": "courtlens-impact-history-v2",
+   "stints": 61936
+  },
+  {
+   "admitted_pct": 97.54,
+   "box_estimate_within_two_pct": 44.72,
+   "bundle_sha256": "64e7b8b7f94d23ffd1256661c39185dec7c0fcbd59b0a68f8159d98437336cad",
+   "clean": 970,
+   "event_gate_excluded": 1,
+   "excluded": 26,
+   "excluded_games": {
+    "0021900040": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900051": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900064": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900083": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900097": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900112": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900128": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900134": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900154": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900167": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900328": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0021900336": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900389": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900401": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900539": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900823": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900836": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900857": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900864": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900879": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900895": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900909": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900926": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900940": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900957": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ],
+    "0021900970": [
+     "incomplete game periods",
+     "neither source conserves independent box totals"
+    ]
+   },
+   "im02_excluded": 25,
+   "minutes_nonexcluded": {
+    "comparisons": 21861,
+    "max_absolute_error": 0.5,
+    "within_one": 21861,
+    "within_thirty": 21861
+   },
+   "name_aliases": {
+    "by_side": {
+     "incoming": 331,
+     "outgoing": 397
+    },
+    "games_with_rewrites": 155,
+    "rewrites": 728,
+    "touched_quality": {
+     "clean": 133,
+     "excluded": 14,
+     "patched": 8
+    }
+   },
+   "patched": 63,
+   "plus_minus_exact_pct": 49.2406,
+   "possessions": 209402,
+   "public_crosscheck": {
+    "comparisons": 2060,
+    "exact": 1070,
+    "max_absolute_delta": 3,
+    "within_two": 2055
+   },
+   "rule_counts": {
+    "IM02-R1": 0,
+    "IM02-R2": 0,
+    "IM02-R3": 0,
+    "IM02-R4": 0,
+    "IM02-R5": 69,
+    "IM02-R6": 0,
+    "IM02-R7": 25
+   },
+   "scheduled": 1059,
+   "season": "2019-20",
+   "source": "courtlens-impact-history-v2",
+   "stints": 54694
+  },
+  {
+   "admitted_pct": 99.44,
+   "box_estimate_within_two_pct": 48.0,
+   "bundle_sha256": "c2abc097078497458da60c98a657f07d13206deb0410a7c0b1281c4a62f36be5",
+   "clean": 0,
+   "event_gate_excluded": 1,
+   "excluded": 6,
+   "excluded_games": {
+    "0022000327": [
+     "neither source conserves independent box totals",
+     "team 1610612755 lineup reconstruction incomplete",
+     "team 1610612766 lineup reconstruction incomplete"
+    ],
+    "0022000528": [
+     "neither source conserves independent box totals",
+     "team 1610612758 lineup reconstruction incomplete",
+     "team 1610612766 lineup reconstruction incomplete"
+    ],
+    "0022000588": [
+     "neither source conserves independent box totals",
+     "team 1610612761 lineup reconstruction incomplete",
+     "team 1610612766 lineup reconstruction incomplete"
+    ],
+    "0022000630": [
+     "chronological event reversal at 354265",
+     "neither source conserves independent box totals",
+     "team 1610612747 lineup reconstruction incomplete",
+     "team 1610612766 lineup reconstruction incomplete"
+    ],
+    "0022000686": [
+     "chronological event reversal at 385514",
+     "team 1610612748 lineup reconstruction incomplete",
+     "team 1610612766 lineup reconstruction incomplete"
+    ],
+    "0022000896": [
+     "R01-H2: IM03 event verification failed"
+    ]
+   },
+   "im02_excluded": 5,
+   "minutes_nonexcluded": {
+    "comparisons": 22925,
+    "max_absolute_error": 0.8,
+    "within_one": 22925,
+    "within_thirty": 22925
+   },
+   "name_aliases": {
+    "by_side": {
+     "incoming": 525,
+     "outgoing": 510
+    },
+    "games_with_rewrites": 223,
+    "rewrites": 1035,
+    "touched_quality": {
+     "excluded": 3,
+     "patched": 220
+    }
+   },
+   "patched": 1074,
+   "plus_minus_exact_pct": 53.2283,
+   "possessions": 214554,
+   "public_crosscheck": {
+    "comparisons": 2148,
+    "exact": 1136,
+    "max_absolute_delta": 5,
+    "within_two": 2138
+   },
+   "rule_counts": {
+    "IM02-R1": 0,
+    "IM02-R2": 0,
+    "IM02-R3": 0,
+    "IM02-R4": 0,
+    "IM02-R5": 51,
+    "IM02-R6": 90398,
+    "IM02-R7": 5
+   },
+   "scheduled": 1080,
+   "season": "2020-21",
+   "source": "courtlens-impact-history-v2",
+   "stints": 53533
+  },
+  {
+   "admitted_pct": 99.84,
+   "box_estimate_within_two_pct": 47.43,
+   "bundle_sha256": "f659eaaf992ecdd506654d6e47086464d46d218bc2ef4525c46c417fcaab41da",
+   "clean": 0,
+   "event_gate_excluded": 2,
+   "excluded": 2,
+   "excluded_games": {
+    "0022100976": [
+     "R01-H2: IM03 event verification failed"
+    ],
+    "0022101023": [
+     "R01-H2: IM03 event verification failed"
+    ]
+   },
+   "im02_excluded": 0,
+   "minutes_nonexcluded": {
+    "comparisons": 25999,
+    "max_absolute_error": 0.5,
+    "within_one": 25999,
+    "within_thirty": 25999
+   },
+   "name_aliases": {
+    "by_side": {
+     "incoming": 771,
+     "outgoing": 742
+    },
+    "games_with_rewrites": 254,
+    "rewrites": 1513,
+    "touched_quality": {
+     "patched": 254
+    }
+   },
+   "patched": 1228,
+   "plus_minus_exact_pct": 50.6411,
+   "possessions": 243233,
+   "public_crosscheck": {
+    "comparisons": 2456,
+    "exact": 1264,
+    "max_absolute_delta": 4,
+    "within_two": 2434
+   },
+   "rule_counts": {
+    "IM02-R1": 0,
+    "IM02-R2": 0,
+    "IM02-R3": 0,
+    "IM02-R4": 0,
+    "IM02-R5": 60,
+    "IM02-R6": 85778,
+    "IM02-R7": 0
+   },
+   "scheduled": 1230,
+   "season": "2021-22",
+   "source": "courtlens-impact-history-v2",
+   "stints": 62284
+  },
+  {
+   "admitted_pct": 99.92,
+   "box_estimate_within_two_pct": 45.24,
+   "bundle_sha256": "0b39f913beca9c2ac353d6012a139350ebbdaf69ea420421faf3a1e9444b227c",
+   "clean": 0,
+   "event_gate_excluded": 1,
+   "excluded": 1,
+   "excluded_games": {
+    "0022200973": [
+     "R01-H2: IM03 event verification failed"
+    ]
+   },
+   "im02_excluded": 0,
+   "minutes_nonexcluded": {
+    "comparisons": 25875,
+    "max_absolute_error": 0.5,
+    "within_one": 25875,
+    "within_thirty": 25875
+   },
+   "name_aliases": {
+    "by_side": {
+     "incoming": 652,
+     "outgoing": 731
+    },
+    "games_with_rewrites": 219,
+    "rewrites": 1383,
+    "touched_quality": {
+     "patched": 219
+    }
+   },
+   "patched": 1229,
+   "plus_minus_exact_pct": 49.6637,
+   "possessions": 246351,
+   "public_crosscheck": {
+    "comparisons": 2458,
+    "exact": 1265,
+    "max_absolute_delta": 3,
+    "within_two": 2447
+   },
+   "rule_counts": {
+    "IM02-R1": 0,
+    "IM02-R2": 0,
+    "IM02-R3": 0,
+    "IM02-R4": 0,
+    "IM02-R5": 57,
+    "IM02-R6": 69243,
+    "IM02-R7": 0
+   },
+   "scheduled": 1230,
+   "season": "2022-23",
+   "source": "courtlens-impact-history-v2",
+   "stints": 62265
+  },
+  {
+   "admitted_pct": 98.86,
+   "bundle_sha256": "1aa4bbe6f275ae06647241a72c6900d377c101e10cbdc0b898b961e718effdd5",
+   "clean": 0,
+   "excluded": 14,
+   "patched": 1216,
+   "plus_minus_exact_pct": 52.1386,
+   "possessions": 241673,
+   "scheduled": 1230,
+   "season": "2023-24",
+   "source": "sealed-im03",
+   "stints": 58652
+  },
+  {
+   "admitted_pct": 98.54,
+   "bundle_sha256": "b3fe49d5919562bc017e56652197057850f729e12031ca76eab66541967ec939",
+   "clean": 0,
+   "excluded": 18,
+   "patched": 1212,
+   "plus_minus_exact_pct": 53.1808,
+   "possessions": 241609,
+   "scheduled": 1230,
+   "season": "2024-25",
+   "source": "sealed-im03",
+   "stints": 61514
+  },
+  {
+   "admitted_pct": 99.76,
+   "bundle_sha256": "25002650fb6f299948c75cc9caf6a11d03e32c2dd0aefeb8a7c06a1126c59291",
+   "clean": 0,
+   "excluded": 3,
+   "patched": 1227,
+   "plus_minus_exact_pct": 48.712,
+   "possessions": 245711,
+   "scheduled": 1230,
+   "season": "2025-26",
+   "source": "sealed-im03",
+   "stints": 68925
+  }
+ ]
+}
