@@ -25,7 +25,7 @@ only restyles existing data is worth less than a page that tests a claim.
   every page this plan touches.
 - **Keeps** every analytical, temporal, identity, data and zero-cost contract,
   [source policy v3](design/source-policy-v3.md), Design Language v1, the control kit, and the frozen
-  `courtload-…-vN` identifiers. The four B26 protocols (`courtload-rapm-v1`,
+  pre-rename hash identifiers. The four B26 protocols (`courtload-rapm-v1`,
   `courtload-six-factor-v1`, `courtload-expected-shot-v1`, `courtload-adjusted-shooting-v1`) and the
   expected-shot negative result stay sealed. New experiments get new `courtlens-…-v1` registrations.
 - **Never edit hash-pinned impact modules** (`impact_population`, `impact_repair_audit`,
