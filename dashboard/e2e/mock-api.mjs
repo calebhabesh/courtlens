@@ -16,6 +16,7 @@ const projectedImpact = JSON.parse(readFileSync(new URL("./fixtures/projected-im
 const signalNoise = JSON.parse(readFileSync(new URL("./fixtures/signal-noise.json", import.meta.url), "utf8"));
 const zts = JSON.parse(readFileSync(new URL("./fixtures/zts.json", import.meta.url), "utf8"));
 const shotQuality = JSON.parse(readFileSync(new URL("./fixtures/shot-quality.json", import.meta.url), "utf8"));
+const shotDecomposition = JSON.parse(readFileSync(new URL("./fixtures/shot-decomposition.json", import.meta.url), "utf8"));
 // Real answers of the six-factor API for 2025-26, cut to a few rows, and real Impact Trees.
 const sixFactorPage = JSON.parse(readFileSync(new URL("./fixtures/six-factor-page.json", import.meta.url), "utf8"));
 const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
@@ -636,6 +637,19 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/signal-noise/shrinkage") return json(response, 200, { ...signalNoise.shrinkage, season: url.searchParams.get("season"), phase: url.searchParams.get("phase") });
   if (url.pathname === "/api/signal-noise/player") return json(response, 200, signalNoise.player);
   // R04 zTS: real answers of the zTS API; other seasons answer as the API does for a season it lacks.
+  // R06: real answers of the decomposition and Defensive Shot Quality APIs.
+  if (url.pathname === "/api/shot-quality/decomposition") return json(response, 200, shotDecomposition.summary);
+  if (url.pathname === "/api/shot-quality/decomposition/players") {
+    const q = url.searchParams;
+    const key = `${q.get("season") ?? "2025-26"}:${q.get("side") ?? "offense"}:${q.get("sort") ?? "ts"}:${q.get("team") ?? "all"}:${q.get("minShots") ?? "1000"}`;
+    return json(response, 200, shotDecomposition.boards[key] ?? { ...shotDecomposition.unknown_season, season: q.get("season") });
+  }
+  if (url.pathname === "/api/defensive-shot-quality") return json(response, 200, shotDecomposition.defense_summary);
+  if (url.pathname === "/api/defensive-shot-quality/cards") {
+    const q = url.searchParams;
+    const key = `${q.get("season") ?? "2025-26"}:${q.get("kind") ?? "all"}:${q.get("sort") ?? "dsq"}:${q.get("team") ?? "all"}`;
+    return json(response, 200, shotDecomposition.cards[key] ?? { ...shotDecomposition.unknown_cards, season: q.get("season") });
+  }
   if (url.pathname === "/api/shot-quality") return json(response, 200, shotQuality.summary);
   if (url.pathname === "/api/shot-quality/players") {
     const q = url.searchParams;

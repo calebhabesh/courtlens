@@ -11,7 +11,7 @@ const requirements: Record<string, string> = {
   "/wowy": "wowy", "/stat-line-shift": "on_off",
   "/research/shooting/aftermath": "shots", "/matchups": "matchups",
   "/research/shooting/adjusted": "play_types", "/stats/tracking": "tracking",
-  "/research/defensive-matchups": "defensive_tracking",
+  "/research/defensive-matchups/tracking": "defensive_tracking",
 };
 /**
  * Whether a route's release-bound source can serve it. `anySeason` (the header's menus) asks

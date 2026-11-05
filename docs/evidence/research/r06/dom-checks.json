@@ -1,0 +1,29 @@
+{
+ "values": 92022,
+ "mismatches": [],
+ "console_errors": [],
+ "overflow": {
+  "1440 /research/shot-quality?tab=decomposition&side=offense&dSeason=2025-26": 0,
+  "1440 /research/shot-quality?tab=decomposition&side=defense&dSeason=2025-26": 0,
+  "1440 /research/shot-quality?tab=decomposition&side=combined&dSeason=2025-26": 0,
+  "1440 /research/shot-quality?tab=decomposition&side=offense&dSeason=2022-23": 0,
+  "1440 /research/defensive-matchups?season=2025-26&kind=all": 0,
+  "1440 /research/defensive-matchups?season=2025-26&kind=3pt": 0,
+  "1440 /research/defensive-matchups?season=2019-20&kind=all": 0,
+  "390 /research/shot-quality?tab=decomposition&side=offense&dSeason=2025-26": 0,
+  "390 /research/shot-quality?tab=decomposition&side=defense&dSeason=2025-26": 0,
+  "390 /research/shot-quality?tab=decomposition&side=combined&dSeason=2025-26": 0,
+  "390 /research/shot-quality?tab=decomposition&side=offense&dSeason=2022-23": 0,
+  "390 /research/defensive-matchups?season=2025-26&kind=all": 0,
+  "390 /research/defensive-matchups?season=2025-26&kind=3pt": 0,
+  "390 /research/defensive-matchups?season=2019-20&kind=all": 0
+ },
+ "pages": {
+  "1440 /research/defensive-matchups?season=2025-26&kind=all": 329,
+  "1440 /research/defensive-matchups?season=2025-26&kind=3pt": 329,
+  "1440 /research/defensive-matchups?season=2019-20&kind=all": 281,
+  "390 /research/defensive-matchups?season=2025-26&kind=all": 329,
+  "390 /research/defensive-matchups?season=2025-26&kind=3pt": 329,
+  "390 /research/defensive-matchups?season=2019-20&kind=all": 281
+ }
+}

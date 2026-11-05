@@ -93,7 +93,7 @@ export const NAV_MENUS: NavMenu[] = [
       ] },
       { title: "Shooting", items: [
         { label: "Shooting", href: "/research/shooting", icon: "target", description: "Expected shots, adjusted shooting and what follows a shot" },
-        { label: "Defensive Matchups", href: "/research/defensive-matchups", icon: "shield", description: "Ranks defenders from NBA tracking data" },
+        { label: "Defensive Shot Quality", href: "/research/defensive-matchups", icon: "shield", description: "What shooters scored against each defender, against their own shooting" },
         { label: "zTS", href: "/research/zts", icon: "scale", description: "True shooting adjusted for the difficulty of a player's play types" },
         { label: "Shot Quality", href: "/research/shot-quality", icon: "scatter", description: "Expected points per shot and each player's shot-making above it" },
       ] },
