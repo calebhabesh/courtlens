@@ -37,7 +37,7 @@ Rows are in working order.
 | 20 | Offensive Calculator | `/calculator` | ⬜ | Research R10, then design phase (D13) |
 | 21 | Learning / Patch Notes | `/methodology`, `/whats-new` | ⬜ | Research R11; Blog removed |
 | 24 | zTS | `/research/zts` | ⬜ | Research R04, built plain (D13) from the owner's saved Databallr page: About and Top 200 replicated, Player tab built without a reference (not in the save). Registered test `courtlens-zts-validation-v1`: zTS tracks oTS RAPM better, predicts next-season rTS worse. Not reproduced: SV/100, team table, X/Y explorer, position filter. Evidence: `docs/evidence/research/r04/` |
-| 25 | ShotQuality | `/research/shot-quality` | ⬜ | Research R05–R06; CourtLens expected-points model replaces the paid ShotQuality feed |
+| 25 | ShotQuality | `/research/shot-quality` | ⬜ | Research R05–R06; CourtLens expected-points model replaces the paid ShotQuality feed. R05 built 2026-11-05 (plain build page): Players tab after the owner's saved ShotQuality RAPM page (filters, ranked table per 100 shots, how to read); Model and Player tabs without reference; the oTS/oSQ/oMake/oFT decomposition is R06. [Evidence](evidence/research/r05/README.md) |
 | 26 | D-ShotQuality | `/research/defensive-matchups` | ⬜ | Research R06; from public matchup data |
 | 27 | Shot Aftermath | `/research/shooting/aftermath` | ⬜ | Design phase (D13); restyle only |
 | 28 | NBA Draft (Draftballr) | `/draft` | ⬜ | Research R09; refactored as Draft Classes, no prospect model |

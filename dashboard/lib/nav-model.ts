@@ -95,6 +95,7 @@ export const NAV_MENUS: NavMenu[] = [
         { label: "Shooting", href: "/research/shooting", icon: "target", description: "Expected shots, adjusted shooting and what follows a shot" },
         { label: "Defensive Matchups", href: "/research/defensive-matchups", icon: "shield", description: "Ranks defenders from NBA tracking data" },
         { label: "zTS", href: "/research/zts", icon: "scale", description: "True shooting adjusted for the difficulty of a player's play types" },
+        { label: "Shot Quality", href: "/research/shot-quality", icon: "scatter", description: "Expected points per shot and each player's shot-making above it" },
       ] },
       { title: "Methods", items: [
         { label: "Signal vs Noise", href: "/research/signal-noise", icon: "waveform", description: "How big a sample a stat needs, and shrunk shooting percentages" },

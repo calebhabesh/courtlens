@@ -1,0 +1,25 @@
+{
+ "checked": {
+  "players 2025-26": 4546,
+  "players 2022-23": 4322,
+  "model metrics": 218,
+  "gates": 14,
+  "curve": 200,
+  "chart": 240,
+  "slices": 204,
+  "persistence": 18,
+  "data check": 144,
+  "player": 64
+ },
+ "mismatches": [],
+ "console": [],
+ "overflow": {
+  "players-1440": 0,
+  "model-1440": 0,
+  "player-1440": 0,
+  "players-390": 0,
+  "model-390": 0,
+  "player-390": 0
+ },
+ "total_checked": 9970
+}

@@ -29,7 +29,7 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
     expect(research.groups.map(group => group.items.map(item => item.href))).toEqual([
       ["/research/win-probability", "/research/projected-impact"],
       ["/research/rapm/six-factor"],
-      ["/research/shooting", "/research/defensive-matchups", "/research/zts"],
+      ["/research/shooting", "/research/defensive-matchups", "/research/zts", "/research/shot-quality"],
       ["/research/signal-noise", "/forecasts"],
       ["/wingspan", "/calculator"],
     ]);

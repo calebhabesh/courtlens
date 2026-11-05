@@ -90,11 +90,14 @@ export function TableHead({
 export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
   align?: "left" | "center" | "right";
   numeric?: boolean;
+  /** Green/red for a good/bad signal only (+/-, above/below expectation); never for neutral measures. */
+  tone?: "positive" | "negative";
 }
 
 export function TableCell({
   align = "left",
   numeric = false,
+  tone,
   className = "",
   children,
   ...props
@@ -103,6 +106,7 @@ export function TableCell({
   return (
     <td
       className={`ui-table-cell ui-table-align-${resolvedAlign} ${numeric ? "tabular-nums" : ""} ${className}`}
+      data-tone={tone}
       {...props}
     >
       {children}
