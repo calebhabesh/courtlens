@@ -25,6 +25,7 @@ from courtlens.api.routers import (
     six_factor,
     win_probability,
     workbench,
+    zts,
 )
 from courtlens.config import get_settings
 
@@ -77,6 +78,7 @@ def create_app() -> FastAPI:
     application.include_router(projected_impact.router, prefix="/api")
     application.include_router(six_factor.router, prefix="/api")
     application.include_router(signal_noise.router, prefix="/api")
+    application.include_router(zts.router, prefix="/api")
     application.include_router(auth.router, prefix="/api")
     application.include_router(fantasy.router, prefix="/api")
     application.add_api_route(
