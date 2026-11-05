@@ -18,7 +18,7 @@ import { useToast } from "./ui/toast";
 import { PercentileCell } from "./charts/percentile-cell";
 import { Skeleton } from "./ui/skeleton";
 import { Field } from "./ui/field";
-import { Button, IconButton, Segmented } from "./ui/kit";
+import { Button, ButtonLink, IconButton, Segmented } from "./ui/kit";
 import { TeamLogo, TeamLogoStack } from "./team-logo";
 import { latestStatsSeason, teamMove } from "@/lib/current-team";
 import { PlayerPortrait } from "./player-portrait";
@@ -728,6 +728,7 @@ export function WorkbenchPlayerExplorer({
                 {v.id === defaultViewId && <span className="stats-default-view-star"><Icon name="star" size={14} filled /><span className="sr-only">Default view</span></span>}
                 {(v.unavailable_columns?.length ?? 0) > 0 && <span className="stats-preset-gated-tag">Unavailable: {v.unavailable_columns?.length}</span>}</> })),
           ]} />
+        {activePresetId === "sixfactor" && <ButtonLink size="sm" variant="text" href={`/research/rapm/six-factor?${new URLSearchParams({ season: query.season, phase: query.phase })}`}>How Six-Factor RAPM works</ButtonLink>}
 
         <Field label="Table Divider" layout="inline" className="stats-divider-field">
           <Segmented label="Table Divider" size="sm" tone="console" deferChange
