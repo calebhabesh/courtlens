@@ -1,0 +1,71 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-zts-validation-v1",
+  "block": "R04",
+  "registered_on": "2026-11-05",
+  "kind": "predictive",
+  "question": "Does a player's season-t zTS (relative true shooting plus a play-type difficulty adjustment, after Databallr's zTS) predict the same player's season-t+1 rTS, and track season-t oTS RAPM from the sealed six-factor fits, better than season-t rTS does?",
+  "inputs": [
+    "Play types: analytics_marts.mart_stats_player_play_types, side 'offensive', season_type 'regular_season', seasons 2015-16 to 2025-26 (NBA Stats Synergy via hoopR). Per player-team-play-type row: possessions, frequency (share of the player-team's Synergy possessions, three decimals), points, fga, fgm, turnover_frequency. Eleven play types: cut, handoff, isolation, misc, offrebound, offscreen, postup, prballhandler, prrollman, spotup, transition. No listed offensive row has fewer than 10 possessions, so a play type a player used fewer than 10 times is absent from the source. The runner records a SHA-256 of the extracted rows per season; two runs must match.",
+    "rTS: the served impact bundle (courtlens-impact-serving-v1, the file the Stats table reads), one-year regular-season 'extras' entries, metric impact_rts = player TS - league TS, where TS = PTS / (2 * (FGA + 0.44 * FTA)) over the player's box rows in the sealed play-by-play season and league TS is the same ratio over every player in that season. This is exactly the Stats table's rTS% for a whole regular season with no team or date filter. Its TSA is the served support denominator. The runner records the bundle's SHA-256.",
+    "oTS RAPM: the same bundle's one-year regular-season 'ratings' entries, metric o_ts (sealed six-factor fits, courtload-six-factor-v1 method; 100 * centred offensive true-shooting coefficient). Values the bundle withholds below display qualification are unknown.",
+    "FTA check only (reported, chooses nothing after this registration): the raw Synergy fields ft_poss_pct and plusone_poss_pct from analytics_staging.stg_stats_feed_rows and box-score FTA, PTS, FGM, FGA, FTM and 3PM from workbench_player_games of the published Stats dataset.",
+    "Nothing else: no playoffs, no 2026-27 (no Synergy rows exist for it), no tracking or DARKO."
+  ],
+  "method": [
+    "FTA RULE (decided before this registration from the FTA check, which read Synergy and box totals only, never rTS, zTS or oTS). Synergy rows carry no FTA and no 3PM. FT-trip possessions (ft_poss_pct * poss) and and-one possessions (plusone_poss_pct * poss) count trips, not attempts, and PTS - 2*FGM mixes 3PM and FTM, so FTA cannot be derived exactly. On 2,013 single-team player-seasons with Synergy coverage >= 0.98 and >= 300 box FGA (2015-16 to 2025-26), the best proxy 2*(trips - and-ones) + and-ones divided by box FTA has median 0.956 and 5th to 95th percentiles 0.827 to 1.010. Therefore play-type TS is CourtLens's own definition: TS_k = PTS_k / (2 * SP_k), with scoring possessions SP_k = possessions_k * (1 - turnover_frequency_k). It is not Databallr's number and is never presented as such. The runner reproduces the check.",
+    "PLAYER PLAY-TYPE MIX. For each player-team-season, listed rows give possessions P_k, SP_k and PTS_k. Implied Synergy total T = sum(P_k) / sum(frequency_k). Missing possessions M = T - sum(P_k); missing types m = 11 - (listed types). A DROPPED ROW is flagged when M > 9*m + 0.0005 * n_listed * T / sum(frequency_k) (each absent type can hold at most 9 possessions; the last term allows for three-decimal rounding of frequency). Rows are summed over a player's teams; coverage = sum over teams of sum(P_k) / sum over teams of T.",
+    "LEAGUE REFERENCES, same season t, from every listed offensive row of season t (all players and teams, including players who are not eligible). League play-type TS L_k(t) = sum PTS_k / (2 * sum SP_k), i.e. pooled and weighted by scoring possessions. League Synergy TS L(t) = sum over all types of PTS / (2 * sum SP). Using the season's own league average is descriptive: zTS describes a season, it is not a forecast feature. In the predictive test season t+1 is never read for any season-t value.",
+    "EXPECTED TS AND DIFFICULTY. Player shares s_k = SP_k / sum(SP) over the player's listed types (absent types, at most 10% of possessions for an eligible player, are assumed to carry the listed mix). Expected TS E = sum(s_k * L_k(t)). Playtype Difficulty D = L(t) - E (positive = a harder-than-average shot diet). zTS = rTS + D, with rTS the served impact_rts. D is a difference of two Synergy-unit TS values and is added to the box-unit rTS; the page says so.",
+    "ELIGIBILITY (zTS known). A player-season has a served zTS only if: rTS is served with TSA >= 200 (the impact extras' attempt qualification; above R03's TS% stabilization point of 169 TSA); Synergy rows exist; no team row set is flagged DROPPED ROW; coverage >= 0.90. Otherwise zTS and D are unknown with one named reason, checked in this order: no_rts, small_sample (TSA < 200), no_play_types, source_rows_missing, low_coverage. The play-type mix is still served when rows exist.",
+    "PREDICTIVE TEST. Pairs (player, t, t+1): zTS known at t and rTS served at t+1 with TSA_{t+1} >= 200, any team. Weight w = harmonic mean of TSA_t and TSA_{t+1}. For each predictor X in {rTS_t, zTS_t}: weighted Pearson correlation r(X, rTS_{t+1}) and weighted mean squared error of X as a raw prediction of rTS_{t+1} (x 10^4). Differences: delta_r = r(zTS) - r(rTS); delta_MSE = MSE(rTS) - MSE(zTS). Positive favours zTS on both.",
+    "TRACKING TEST. Rows (player, t): zTS known at t and o_ts served at t. Weight w = TSA_t. Weighted Pearson correlation of each X in {rTS_t, zTS_t} with o_ts_t; delta_r = r(zTS) - r(rTS). Units differ, so no MSE.",
+    "DESCRIPTIVE (reported, no gate): the weighted correlation of D alone with each target; per-season values; league play-type TS and shares per season; counts of every unknown reason per season.",
+    "CREDIT. zTS, Expected TS and Playtype Difficulty are Databallr's concepts and names (databallr.com, zTS page); CourtLens's play-type TS definition, coverage rules and numbers are its own and do not reproduce Databallr's. Play-type data: NBA Stats (Synergy Sports) via hoopR / sportsdataverse."
+  ],
+  "parameters": {
+    "zts_seasons": ["2015-16", "2016-17", "2017-18", "2018-19", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"],
+    "choice_seasons": {"predictive_t": ["2015-16", "2016-17", "2017-18"], "tracking_t": ["2015-16", "2016-17", "2017-18"]},
+    "test_seasons": {"predictive_t": ["2018-19", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25"], "tracking_t": ["2018-19", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"]},
+    "play_types": ["cut", "handoff", "isolation", "misc", "offrebound", "offscreen", "postup", "prballhandler", "prrollman", "spotup", "transition"],
+    "source_min_possessions": 10,
+    "min_tsa": 200,
+    "min_coverage": 0.9,
+    "frequency_rounding": 0.0005,
+    "predictive_weight": "harmonic_mean_tsa",
+    "tracking_weight": "tsa_t",
+    "mse_scale": 10000,
+    "bootstrap_replicates": 2000,
+    "interval": 0.95
+  },
+  "selection": "None by outcome. The FTA rule was settled by the identifiability check above, which reads no rTS, zTS or oTS. The minimum TSA (200, the existing rTS qualification), minimum coverage (0.90), weights and metrics are fixed here before any zTS, correlation or error is computed. Choice seasons exist so the pipeline (counts, unknown reasons, references) can be checked on predictive and tracking pairs with t in 2015-16 to 2017-18 before the test pairs are read; any change made after reading them, or any change at all after the test pairs are read, requires a new version (courtlens-zts-validation-v2) and is disclosed. Test seasons are never used for any choice. Choice-season numbers are published beside the test numbers; only test seasons decide the verdict.",
+  "uncertainty": "Paired player-cluster bootstrap: 2,000 replicates, seed 4004, numpy default_rng, players (all of a player's rows in the pooled test set together) resampled with replacement; each replicate recomputes both predictors' metrics on the same resample and their difference. 95% percentile intervals for every metric and every difference, pooled over test seasons. Per-season intervals use the same procedure within one season and are unadjusted for multiple comparisons. No optimiser is used anywhere; the runner fails if any metric is non-finite. Per-player zTS is built from season totals, which have no resampling unit below the season, so it is served without an interval and the page says so.",
+  "evaluation": [
+    "Verdict per target on the pooled test seasons: 'zTS better' if the 95% interval of delta_r lies above 0, 'rTS better' if below 0, otherwise 'no clear difference'. The same rule is reported for delta_MSE on the predictive target.",
+    "Pooled and per-season r, MSE (predictive) and differences with intervals, with the number of rows and players, for choice and test seasons separately.",
+    "Served per player-season values for 2015-16 to 2025-26: rTS, TSA, league TS, Synergy possessions, coverage, play-type mix with player and league TS per type, Expected TS, Difficulty, zTS and status.",
+    "Reproducibility: two runs from the seed give the same results hash."
+  ],
+  "acceptance": [
+    "Every player-season with Synergy rows or a served rTS has a status, and every unknown has one named reason.",
+    "For an eligible player, zTS - rTS equals D, and sum(s_k) equals 1 within 1e-9.",
+    "With league shares in place of a player's shares, Expected TS equals league Synergy TS (difficulty zero) within 1e-9 for every season.",
+    "Two runs give the same results hash.",
+    "The result is published whichever way it goes, including 'zTS adds nothing' or 'rTS better'."
+  ],
+  "outputs": [
+    "evaluation/research/frozen/courtlens-zts-validation-v1.json (served by the API)",
+    "docs/evidence/research/r04/validation.json (the registration receipt, FTA check, coverage and validation sections, byte-identical to those sections of the frozen file)"
+  ],
+  "limitations": [
+    "Play-type TS is CourtLens's PTS / (2 * scoring possessions), not box TS: a two-shot free-throw trip counts as one scoring possession here and 0.88 TSA in box TS, and and-ones count once.",
+    "Play types under 10 possessions are absent from the source; up to 10% of an eligible player's possessions are assumed to follow the listed mix.",
+    "Some seasons' sources are missing whole rows (for example 2023-24); those player-seasons are unknown rather than estimated.",
+    "League references come from listed rows only, so they omit players' sub-10-possession types and any dropped rows.",
+    "Difficulty assumes a play type is equally hard for everyone; it does not model shot location, defender distance or the player's role within the type.",
+    "rTS and oTS RAPM are both computed from the same season's shots, so the tracking test measures agreement, not prediction."
+  ],
+  "negative_result_policy": "Publish every number whatever it shows, including 'no clear difference', 'rTS better' and a zTS that adds nothing to rTS.",
+  "seed": 4004,
+  "budget": {"cpu_threads": 1, "max_peak_mib": 3072, "max_wall_seconds": 900}
+}
