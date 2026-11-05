@@ -83,6 +83,7 @@ export const NAV_MENUS: NavMenu[] = [
     groups: [
       { title: "Models", items: [
         { label: "Win Probability", href: "/research/win-probability" },
+        { label: "Projected Impact", href: "/research/projected-impact" },
       ] },
       { title: "Impact", items: [
         { label: "RAPM Research", href: "/research/rapm" },

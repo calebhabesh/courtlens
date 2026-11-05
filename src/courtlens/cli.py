@@ -2030,6 +2030,16 @@ def refresh_win_probability_command(
     typer.echo(json.dumps(nightly(Client(), lookback_days=lookback_days)))
 
 
+@app.command("refresh-projected-impact")
+def refresh_projected_impact_command(
+    force: bool = typer.Option(False, help="Score now even if the last score is under 7 days old."),
+) -> None:
+    """Weekly game-level score of the frozen 2026-27 projections; a no-op on other days."""
+    from courtlens.services.projected_impact import weekly
+
+    typer.echo(json.dumps(weekly(force=force)))
+
+
 @app.command("capture-win-probability-inputs")
 def capture_win_probability_inputs_command() -> None:
     """Seal today's pregame inputs only; run nearer tip-off to catch later injury news."""
@@ -2082,6 +2092,7 @@ def refresh_daily_command(
             ),
         ),
         ("win probability", lambda: refresh_win_probability_command(7)),
+        ("projected impact", lambda: refresh_projected_impact_command(False)),
     )
     for name, step in steps:
         typer.echo(f"== {name}")

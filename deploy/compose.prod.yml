@@ -79,6 +79,8 @@ services:
       - ./data/cache/portraits:/app/data/cache/portraits:ro
       - ./data/artifacts/win-probability:/app/data/artifacts/win-probability:ro
       - ./data/derived/win-probability-serving:/app/data/derived/win-probability-serving:ro
+      - ./data/artifacts/projected-impact:/app/data/artifacts/projected-impact:ro
+      - ./data/derived/projected-impact-serving:/app/data/derived/projected-impact-serving:ro
     logging: *logging
     depends_on:
       db:

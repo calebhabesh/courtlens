@@ -16,6 +16,7 @@ from courtlens.api.routers import (
     finance,
     live,
     player_context,
+    projected_impact,
     public,
     research,
     shared_floor,
@@ -71,6 +72,7 @@ def create_app() -> FastAPI:
     application.include_router(shooting.router, prefix="/api")
     application.include_router(research.router, prefix="/api")
     application.include_router(win_probability.router, prefix="/api")
+    application.include_router(projected_impact.router, prefix="/api")
     application.include_router(auth.router, prefix="/api")
     application.include_router(fantasy.router, prefix="/api")
     application.add_api_route(

@@ -13,7 +13,7 @@ coverage and screenshots per block. Plan text is not evidence.
 | R04 zTS + validation | ⬜ pending | |
 | R05 Shot Quality v2 model | ⬜ pending | |
 | R06 ShotQuality decomposition + Defensive Shot Quality | ⬜ pending | |
-| R07 Projected Impact | ⬜ pending | |
+| R07 Projected Impact | 🟡 frozen and scoring; prospective score unverified; page awaits owner | [R07 evidence](evidence/research/r07/README.md): frozen 2026-11-05 04:53:33 UTC, `6eaef389…`; beats carry-forward on 2024-25 and 2025-26 for players (+4.38, 3.25 to 5.50) and game margins (+13.42, 9.55 to 17.14) and time-decay RAPM more narrowly; intervals over-cover (84.3%), F1 failed and owner waived it; ridge beat the selected LightGBM on test |
 | R08 Metric Backtest | ⬜ pending | |
 | R09 Draft Classes | ⬜ pending | |
 | R10 Wingspan, ORtg Calculator, Shot Aftermath restyle | ⬜ pending | |
@@ -121,3 +121,13 @@ structure goes where basketball knowledge is reliable.
 - **Serving.** p95 23 ms per full game on one x86 thread.
 - **Scorecard.** 107 pre-freeze games scored (hindsight, not prospective): CourtLens 0.4269, ESPN 0.4202, gap -0.0068 (-0.0338 to +0.0187); drift within. 14 games of 2026-11-04 sealed before tip-off.
 
+## 2026-11-05 — R07 measured
+
+[Evidence](evidence/research/r07/README.md). `courtlens-projected-impact-v1` committed before any fit; 2026-27 projections frozen 2026-11-05 04:53:33 UTC, `6eaef38960af783b…`. First games that can count tip 2026-11-06 02:00 UTC.
+
+- **Gates.** A1 players +4.38 (+3.25 to +5.50), player RMSE 2.82 against 3.51. A2 games +13.42 (+9.55 to +17.14), margin RMSE 14.66 against 15.11. Both pass on 2024-25 and 2025-26 (911 player seasons, 2,460 games).
+- **Time-decay RAPM is the harder comparison.** LightGBM beats it by +1.30 (+0.65 to +2.00) and +2.85 (+0.46 to +5.33). Reported, not a gate. By season, 2 of the 4 intervals exclude zero (table in the evidence).
+- **F1 failed: intervals too wide.** 84.3% against a nominal 80% (limit 77–83%); under-500 and no-prior buckets 89%. A freeze-stopping check; the owner waived it for over-coverage only on 2026-11-05. Not tuned on test.
+- **Negative results.** Ridge beat the selected LightGBM on test (margin RMSE 14.51, player RMSE 2.76); selection on 2023-24 stands. The age curve adds almost nothing and is worse on games (-1.92). No clear gain for rookies or returners.
+- **Weekly score.** Step in `refresh-daily`, 7-day guard, append-only. 107 real games scored, all labelled hindsight; 0 prospective so far.
+- **Hosted demo.** Built, not deployed.

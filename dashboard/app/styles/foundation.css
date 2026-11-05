@@ -956,3 +956,11 @@
   .pvp-value .chart-percentile-text[data-qualified] { color: var(--color-text); }
   .pvp-value[data-leading] .stat-main-value { font-weight: 700; }
 }
+
+/* Projected Impact leaderboard: long names wrap on a phone so the projection stays on screen. */
+@layer foundation {
+  @media (max-width: 767px) {
+    .pi-board .ui-identity-text { min-width: 0; }
+    .pi-board .ui-identity-name { white-space: normal; font-size: var(--text-xs); line-height: var(--text-xs-lh); letter-spacing: 0; }
+  }
+}

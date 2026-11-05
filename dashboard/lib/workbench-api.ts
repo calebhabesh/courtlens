@@ -1,6 +1,7 @@
 import { assertCurrentEnvironment } from "./server-env";
 import type { SixFactorsResponse } from "./team-six-factors";
 import type { SavedDetail } from "./saved-operations";
+import type { PlayerDetail, ProjectedImpactPage } from "./projected-impact";
 import type { WinProbabilityAdded, WinProbabilityPage } from "./win-probability";
 
 assertCurrentEnvironment();
@@ -142,6 +143,14 @@ export async function getImpact(params: {
 }): Promise<ImpactResponse> {
   const query = new URLSearchParams(params);
   return wbFetch<ImpactResponse>(`/api/workbench/impact?${query}`);
+}
+
+export async function getProjectedImpactPage(): Promise<ProjectedImpactPage> {
+  return wbFetch<ProjectedImpactPage>("/api/projected-impact");
+}
+
+export async function getProjectedImpactPlayer(playerId: string): Promise<PlayerDetail> {
+  return wbFetch<PlayerDetail>(`/api/projected-impact/players/${encodeURIComponent(playerId)}`);
 }
 
 export async function getWinProbabilityPage(): Promise<WinProbabilityPage> {

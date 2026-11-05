@@ -11,6 +11,7 @@ const retainedDistribution = JSON.parse(readFileSync(new URL("./fixtures/pc12-re
 const playoffBrackets = Object.fromEntries(["2025-26", "1975-76", "1965-66", "1949-50"].map(season =>
   [season, JSON.parse(readFileSync(new URL(`./fixtures/playoffs-bracket-${season}.json`, import.meta.url), "utf8"))]));
 // Real answers of the frozen win-probability model's page, cut to a few rows.
+const projectedImpact = JSON.parse(readFileSync(new URL("./fixtures/projected-impact-page.json", import.meta.url), "utf8"));
 const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
 const okcPhx = JSON.parse(readFileSync(new URL("./fixtures/playoffs-series-2026-r1-okc-phx.json", import.meta.url), "utf8"));
 const playerTwins = JSON.parse(readFileSync(new URL("./fixtures/player-twins-v1.json", import.meta.url), "utf8"));
@@ -620,6 +621,11 @@ createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
   // Live (alignment row 7): an observed empty date; e2e/live.spec.ts routes real ESPN reads itself.
+  if (url.pathname === "/api/projected-impact") return json(response, 200, projectedImpact.page);
+  if (url.pathname.startsWith("/api/projected-impact/players/")) {
+    const detail = projectedImpact.players[url.pathname.split("/").at(-1)];
+    return detail ? json(response, 200, detail) : json(response, 404, { detail: "No frozen projection for this player" });
+  }
   if (url.pathname === "/api/win-probability") return json(response, 200, winProbability.page);
   if (url.pathname === "/api/win-probability/wpa") {
     const table = winProbability.wpa[url.searchParams.get("season")];

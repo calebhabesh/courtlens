@@ -44,6 +44,8 @@ SERVING_DIRS=(
   derived/series-matchups-v1
   artifacts/win-probability
   derived/win-probability-serving
+  artifacts/projected-impact
+  derived/projected-impact-serving
   cache/portraits
 )
 for dir in "${SERVING_DIRS[@]}"; do
