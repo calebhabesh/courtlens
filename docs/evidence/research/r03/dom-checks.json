@@ -1,0 +1,2731 @@
+{
+ "results_sha256": "22a227b2339f7e7b08ba140c0f39243be10ed09ed8e8ba7708a5a3b0edfdd3cd",
+ "page": {
+  "390": {
+   "compared": 122,
+   "league_rows": 20,
+   "bin_rows": 8,
+   "prior_rows": 4,
+   "validation_rows": 20,
+   "example_rows": 5,
+   "mismatches": [],
+   "console_errors": [],
+   "page_overflow_px": 0
+  },
+  "1440": {
+   "compared": 122,
+   "league_rows": 20,
+   "bin_rows": 8,
+   "prior_rows": 4,
+   "validation_rows": 20,
+   "example_rows": 5,
+   "mismatches": [],
+   "console_errors": [],
+   "page_overflow_px": 0
+  }
+ },
+ "stats": {
+  "2025-26 whole season @1440": {
+   "query": "season=2025-26&phase=regular_season&viewId=shooting",
+   "url_on": "http://localhost:3180/stats?season=2025-26&phase=regular_season&viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&beforeDate=2026-04-13&window=season&countingMode=per_game&shrunk=1",
+   "url_off": "http://localhost:3180/stats?season=2025-26&phase=regular_season&viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&beforeDate=2026-04-13&window=season&countingMode=per_game",
+   "heads_before": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "eFG%",
+    "TS%",
+    "FTR",
+    "Pin"
+   ],
+   "heads_on": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "3P%-Shrunk",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "FT%-Shrunk",
+    "eFG%",
+    "TS%",
+    "TS%-Shrunk",
+    "FTR",
+    "Rim FG%",
+    "Rim FG%-Shrunk",
+    "Pin"
+   ],
+   "note": "Shrunk columns use the 2025-26 priors, fitted on 2022-23, 2023-24, 2024-25 only; raw columns are unchanged.How shrinkage works",
+   "requests_on_toggle": [
+    "GET /api/signal-noise/shrinkage?season=2025-26&phase=regular_season"
+   ],
+   "stats_query_rerun_on_toggle": false,
+   "off_identical_to_before": true,
+   "raw_cells_changed_when_on": [],
+   "rows_on": [
+    {
+     "player_id": "1629029",
+     "shown": {
+      "fg3m": "254",
+      "fg3_pct": "36.6%",
+      "fg3_pct__shrunk": "36.3%",
+      "ft_pct": "78.0%",
+      "ft_pct__shrunk": "77.9%",
+      "ts_pct": "61.6%",
+      "ts_pct__shrunk": "61.2%",
+      "rim_fg_pct": "81.6%",
+      "rim_fg_pct__shrunk": "76.6%"
+     }
+    },
+    {
+     "player_id": "1628983",
+     "shown": {
+      "fg3m": "115",
+      "fg3_pct": "38.6%",
+      "fg3_pct__shrunk": "37.1%",
+      "ft_pct": "87.9%",
+      "ft_pct__shrunk": "87.5%",
+      "ts_pct": "66.5%",
+      "ts_pct__shrunk": "65.8%",
+      "rim_fg_pct": "71.2%",
+      "rim_fg_pct__shrunk": "70.3%"
+     }
+    },
+    {
+     "player_id": "1630162",
+     "shown": {
+      "fg3m": "205",
+      "fg3_pct": "39.9%",
+      "fg3_pct__shrunk": "38.3%",
+      "ft_pct": "79.6%",
+      "ft_pct__shrunk": "79.4%",
+      "ts_pct": "61.7%",
+      "ts_pct__shrunk": "60.8%",
+      "rim_fg_pct": "71.3%",
+      "rim_fg_pct__shrunk": "70.1%"
+     }
+    },
+    {
+     "player_id": "1627759",
+     "shown": {
+      "fg3m": "137",
+      "fg3_pct": "34.5%",
+      "fg3_pct__shrunk": "35.0%",
+      "ft_pct": "79.5%",
+      "ft_pct__shrunk": "79.3%",
+      "ts_pct": "57.2%",
+      "ts_pct__shrunk": "57.4%",
+      "rim_fg_pct": "68.8%",
+      "rim_fg_pct__shrunk": "68.2%"
+     }
+    },
+    {
+     "player_id": "1630178",
+     "shown": {
+      "fg3m": "220",
+      "fg3_pct": "36.7%",
+      "fg3_pct__shrunk": "36.4%",
+      "ft_pct": "89.2%",
+      "ft_pct__shrunk": "88.5%",
+      "ts_pct": "58.8%",
+      "ts_pct__shrunk": "58.6%",
+      "rim_fg_pct": "64.3%",
+      "rim_fg_pct__shrunk": "64.5%"
+     }
+    },
+    {
+     "player_id": "1628378",
+     "shown": {
+      "fg3m": "224",
+      "fg3_pct": "36.4%",
+      "fg3_pct__shrunk": "36.1%",
+      "ft_pct": "86.5%",
+      "ft_pct__shrunk": "85.9%",
+      "ts_pct": "61.3%",
+      "ts_pct__shrunk": "60.9%",
+      "rim_fg_pct": "65.6%",
+      "rim_fg_pct__shrunk": "65.6%"
+     }
+    },
+    {
+     "player_id": "202695",
+     "shown": {
+      "fg3m": "172",
+      "fg3_pct": "38.6%",
+      "fg3_pct__shrunk": "37.4%",
+      "ft_pct": "89.2%",
+      "ft_pct__shrunk": "88.4%",
+      "ts_pct": "62.9%",
+      "ts_pct__shrunk": "62.1%",
+      "rim_fg_pct": "74.0%",
+      "rim_fg_pct__shrunk": "71.8%"
+     }
+    },
+    {
+     "player_id": "203999",
+     "shown": {
+      "fg3m": "112",
+      "fg3_pct": "38.0%",
+      "fg3_pct__shrunk": "36.8%",
+      "ft_pct": "83.1%",
+      "ft_pct__shrunk": "82.8%",
+      "ts_pct": "67.0%",
+      "ts_pct__shrunk": "66.0%",
+      "rim_fg_pct": "73.5%",
+      "rim_fg_pct__shrunk": "72.1%"
+     }
+    },
+    {
+     "player_id": "203507",
+     "shown": {
+      "fg3m": "15",
+      "fg3_pct": "33.3%",
+      "fg3_pct__shrunk": "35.4%",
+      "ft_pct": "65.0%",
+      "ft_pct__shrunk": "65.8%",
+      "ts_pct": "65.8%",
+      "ts_pct__shrunk": "65.2%",
+      "rim_fg_pct": "77.4%",
+      "rim_fg_pct__shrunk": "75.5%"
+     }
+    },
+    {
+     "player_id": "1628374",
+     "shown": {
+      "fg3m": "115",
+      "fg3_pct": "35.5%",
+      "fg3_pct__shrunk": "35.6%",
+      "ft_pct": "89.5%",
+      "ft_pct__shrunk": "88.4%",
+      "ts_pct": "60.8%",
+      "ts_pct__shrunk": "60.6%",
+      "rim_fg_pct": "70.8%",
+      "rim_fg_pct__shrunk": "69.5%"
+     }
+    },
+    {
+     "player_id": "203954",
+     "shown": {
+      "fg3m": "49",
+      "fg3_pct": "32.2%",
+      "fg3_pct__shrunk": "34.6%",
+      "ft_pct": "85.4%",
+      "ft_pct__shrunk": "84.7%",
+      "ts_pct": "60.3%",
+      "ts_pct__shrunk": "60.8%",
+      "rim_fg_pct": "68.0%",
+      "rim_fg_pct__shrunk": "67.3%"
+     }
+    },
+    {
+     "player_id": "201939",
+     "shown": {
+      "fg3m": "190",
+      "fg3_pct": "39.3%",
+      "fg3_pct__shrunk": "37.9%",
+      "ft_pct": "92.3%",
+      "ft_pct__shrunk": "90.6%",
+      "ts_pct": "63.7%",
+      "ts_pct__shrunk": "62.1%",
+      "rim_fg_pct": "68.9%",
+      "rim_fg_pct__shrunk": "67.6%"
+     }
+    },
+    {
+     "player_id": "1628973",
+     "shown": {
+      "fg3m": "192",
+      "fg3_pct": "36.9%",
+      "fg3_pct__shrunk": "36.4%",
+      "ft_pct": "84.3%",
+      "ft_pct__shrunk": "83.8%",
+      "ts_pct": "58.2%",
+      "ts_pct__shrunk": "58.0%",
+      "rim_fg_pct": "63.9%",
+      "rim_fg_pct__shrunk": "64.3%"
+     }
+    },
+    {
+     "player_id": "1626164",
+     "shown": {
+      "fg3m": "122",
+      "fg3_pct": "33.0%",
+      "fg3_pct__shrunk": "34.2%",
+      "ft_pct": "87.3%",
+      "ft_pct__shrunk": "86.8%",
+      "ts_pct": "58.5%",
+      "ts_pct__shrunk": "59.0%",
+      "rim_fg_pct": "66.2%",
+      "rim_fg_pct__shrunk": "66.0%"
+     }
+    },
+    {
+     "player_id": "201142",
+     "shown": {
+      "fg3m": "186",
+      "fg3_pct": "41.3%",
+      "fg3_pct__shrunk": "39.1%",
+      "ft_pct": "87.4%",
+      "ft_pct__shrunk": "86.8%",
+      "ts_pct": "64.0%",
+      "ts_pct__shrunk": "62.9%",
+      "rim_fg_pct": "76.6%",
+      "rim_fg_pct__shrunk": "72.5%"
+     }
+    },
+    {
+     "player_id": "1627750",
+     "shown": {
+      "fg3m": "245",
+      "fg3_pct": "43.5%",
+      "fg3_pct__shrunk": "40.8%",
+      "ft_pct": "88.7%",
+      "ft_pct__shrunk": "87.9%",
+      "ts_pct": "62.2%",
+      "ts_pct__shrunk": "60.7%",
+      "rim_fg_pct": "64.7%",
+      "rim_fg_pct__shrunk": "64.9%"
+     }
+    },
+    {
+     "player_id": "1641705",
+     "shown": {
+      "fg3m": "120",
+      "fg3_pct": "35.0%",
+      "fg3_pct__shrunk": "35.3%",
+      "ft_pct": "82.6%",
+      "ft_pct__shrunk": "82.2%",
+      "ts_pct": "62.6%",
+      "ts_pct__shrunk": "62.4%",
+      "rim_fg_pct": "74.9%",
+      "rim_fg_pct__shrunk": "73.4%"
+     }
+    },
+    {
+     "player_id": "1630166",
+     "shown": {
+      "fg3m": "125",
+      "fg3_pct": "31.8%",
+      "fg3_pct__shrunk": "33.5%",
+      "ft_pct": "80.2%",
+      "ft_pct__shrunk": "80.0%",
+      "ts_pct": "60.0%",
+      "ts_pct__shrunk": "60.7%",
+      "rim_fg_pct": "65.7%",
+      "rim_fg_pct__shrunk": "65.7%"
+     }
+    },
+    {
+     "player_id": "1629008",
+     "shown": {
+      "fg3m": "176",
+      "fg3_pct": "36.3%",
+      "fg3_pct__shrunk": "36.1%",
+      "ft_pct": "85.9%",
+      "ft_pct__shrunk": "84.9%",
+      "ts_pct": "59.5%",
+      "ts_pct__shrunk": "59.1%",
+      "rim_fg_pct": "76.6%",
+      "rim_fg_pct__shrunk": "73.8%"
+     }
+    },
+    {
+     "player_id": "1627783",
+     "shown": {
+      "fg3m": "105",
+      "fg3_pct": "35.8%",
+      "fg3_pct__shrunk": "35.8%",
+      "ft_pct": "69.3%",
+      "ft_pct__shrunk": "69.8%",
+      "ts_pct": "56.2%",
+      "ts_pct__shrunk": "56.3%",
+      "rim_fg_pct": "68.6%",
+      "rim_fg_pct__shrunk": "68.0%"
+     }
+    },
+    {
+     "player_id": "1630595",
+     "shown": {
+      "fg3m": "125",
+      "fg3_pct": "34.2%",
+      "fg3_pct__shrunk": "34.9%",
+      "ft_pct": "81.2%",
+      "ft_pct__shrunk": "80.8%",
+      "ts_pct": "56.4%",
+      "ts_pct__shrunk": "56.8%",
+      "rim_fg_pct": "63.0%",
+      "rim_fg_pct__shrunk": "63.5%"
+     }
+    },
+    {
+     "player_id": "201935",
+     "shown": {
+      "fg3m": "215",
+      "fg3_pct": "37.5%",
+      "fg3_pct__shrunk": "36.9%",
+      "ft_pct": "88.4%",
+      "ft_pct__shrunk": "87.8%",
+      "ts_pct": "61.0%",
+      "ts_pct__shrunk": "60.7%",
+      "rim_fg_pct": "63.9%",
+      "rim_fg_pct__shrunk": "64.3%"
+     }
+    },
+    {
+     "player_id": "1641718",
+     "shown": {
+      "fg3m": "134",
+      "fg3_pct": "37.1%",
+      "fg3_pct__shrunk": "36.5%",
+      "ft_pct": "89.1%",
+      "ft_pct__shrunk": "88.3%",
+      "ts_pct": "60.9%",
+      "ts_pct__shrunk": "60.5%",
+      "rim_fg_pct": "71.9%",
+      "rim_fg_pct__shrunk": "69.6%"
+     }
+    },
+    {
+     "player_id": "1630559",
+     "shown": {
+      "fg3m": "118",
+      "fg3_pct": "36.0%",
+      "fg3_pct__shrunk": "35.8%",
+      "ft_pct": "87.1%",
+      "ft_pct__shrunk": "86.4%",
+      "ts_pct": "64.1%",
+      "ts_pct__shrunk": "63.6%",
+      "rim_fg_pct": "75.0%",
+      "rim_fg_pct__shrunk": "72.2%"
+     }
+    },
+    {
+     "player_id": "1630552",
+     "shown": {
+      "fg3m": "120",
+      "fg3_pct": "35.2%",
+      "fg3_pct__shrunk": "35.4%",
+      "ft_pct": "78.8%",
+      "ft_pct__shrunk": "78.6%",
+      "ts_pct": "58.1%",
+      "ts_pct__shrunk": "58.1%",
+      "rim_fg_pct": "69.8%",
+      "rim_fg_pct__shrunk": "69.1%"
+     }
+    },
+    {
+     "player_id": "1631094",
+     "shown": {
+      "fg3m": "82",
+      "fg3_pct": "30.4%",
+      "fg3_pct__shrunk": "33.2%",
+      "ft_pct": "77.4%",
+      "ft_pct__shrunk": "77.3%",
+      "ts_pct": "56.6%",
+      "ts_pct__shrunk": "57.6%",
+      "rim_fg_pct": "67.1%",
+      "rim_fg_pct__shrunk": "66.8%"
+     }
+    },
+    {
+     "player_id": "1628369",
+     "shown": {
+      "fg3m": "47",
+      "fg3_pct": "32.9%",
+      "fg3_pct__shrunk": "34.8%",
+      "ft_pct": "82.3%",
+      "ft_pct__shrunk": "80.8%",
+      "ts_pct": "54.1%",
+      "ts_pct__shrunk": "55.9%",
+      "rim_fg_pct": "61.3%",
+      "rim_fg_pct__shrunk": "63.5%"
+     }
+    },
+    {
+     "player_id": "1626181",
+     "shown": {
+      "fg3m": "156",
+      "fg3_pct": "38.0%",
+      "fg3_pct__shrunk": "37.0%",
+      "ft_pct": "82.7%",
+      "ft_pct__shrunk": "82.2%",
+      "ts_pct": "60.9%",
+      "ts_pct__shrunk": "60.2%",
+      "rim_fg_pct": "62.9%",
+      "rim_fg_pct__shrunk": "63.5%"
+     }
+    },
+    {
+     "player_id": "1630530",
+     "shown": {
+      "fg3m": "212",
+      "fg3_pct": "38.1%",
+      "fg3_pct__shrunk": "37.2%",
+      "ft_pct": "88.5%",
+      "ft_pct__shrunk": "87.3%",
+      "ts_pct": "61.3%",
+      "ts_pct__shrunk": "60.4%",
+      "rim_fg_pct": "74.2%",
+      "rim_fg_pct__shrunk": "72.3%"
+     }
+    },
+    {
+     "player_id": "1627742",
+     "shown": {
+      "fg3m": "135",
+      "fg3_pct": "38.2%",
+      "fg3_pct__shrunk": "37.1%",
+      "ft_pct": "82.0%",
+      "ft_pct__shrunk": "81.6%",
+      "ts_pct": "57.3%",
+      "ts_pct__shrunk": "56.9%",
+      "rim_fg_pct": "67.4%",
+      "rim_fg_pct__shrunk": "66.9%"
+     }
+    },
+    {
+     "player_id": "203944",
+     "shown": {
+      "fg3m": "107",
+      "fg3_pct": "31.6%",
+      "fg3_pct__shrunk": "33.5%",
+      "ft_pct": "80.6%",
+      "ft_pct__shrunk": "80.4%",
+      "ts_pct": "58.8%",
+      "ts_pct__shrunk": "59.4%",
+      "rim_fg_pct": "67.8%",
+      "rim_fg_pct__shrunk": "67.4%"
+     }
+    },
+    {
+     "player_id": "1642843",
+     "shown": {
+      "fg3m": "72",
+      "fg3_pct": "29.5%",
+      "fg3_pct__shrunk": "33.0%",
+      "ft_pct": "82.8%",
+      "ft_pct__shrunk": "82.3%",
+      "ts_pct": "54.8%",
+      "ts_pct__shrunk": "55.8%",
+      "rim_fg_pct": "65.8%",
+      "rim_fg_pct__shrunk": "65.7%"
+     }
+    },
+    {
+     "player_id": "1629627",
+     "shown": {
+      "fg3m": "1",
+      "fg3_pct": "25.0%",
+      "fg3_pct__shrunk": "35.6%",
+      "ft_pct": "71.6%",
+      "ft_pct__shrunk": "71.9%",
+      "ts_pct": "64.3%",
+      "ts_pct__shrunk": "64.1%",
+      "rim_fg_pct": "70.1%",
+      "rim_fg_pct__shrunk": "69.5%"
+     }
+    },
+    {
+     "player_id": "2544",
+     "shown": {
+      "fg3m": "77",
+      "fg3_pct": "31.7%",
+      "fg3_pct__shrunk": "33.9%",
+      "ft_pct": "73.7%",
+      "ft_pct__shrunk": "73.9%",
+      "ts_pct": "59.4%",
+      "ts_pct__shrunk": "59.9%",
+      "rim_fg_pct": "75.6%",
+      "rim_fg_pct__shrunk": "73.8%"
+     }
+    },
+    {
+     "player_id": "1629638",
+     "shown": {
+      "fg3m": "251",
+      "fg3_pct": "39.9%",
+      "fg3_pct__shrunk": "38.5%",
+      "ft_pct": "90.2%",
+      "ft_pct__shrunk": "89.1%",
+      "ts_pct": "61.1%",
+      "ts_pct__shrunk": "60.0%",
+      "rim_fg_pct": "61.9%",
+      "rim_fg_pct__shrunk": "62.6%"
+     }
+    },
+    {
+     "player_id": "1631101",
+     "shown": {
+      "fg3m": "103",
+      "fg3_pct": "33.7%",
+      "fg3_pct__shrunk": "34.7%",
+      "ft_pct": "78.7%",
+      "ft_pct__shrunk": "78.4%",
+      "ts_pct": "54.6%",
+      "ts_pct__shrunk": "55.2%",
+      "rim_fg_pct": "68.6%",
+      "rim_fg_pct__shrunk": "67.9%"
+     }
+    },
+    {
+     "player_id": "1630532",
+     "shown": {
+      "fg3m": "48",
+      "fg3_pct": "34.5%",
+      "fg3_pct__shrunk": "35.3%",
+      "ft_pct": "82.3%",
+      "ft_pct__shrunk": "81.6%",
+      "ts_pct": "58.8%",
+      "ts_pct__shrunk": "59.1%",
+      "rim_fg_pct": "65.0%",
+      "rim_fg_pct__shrunk": "65.1%"
+     }
+    },
+    {
+     "player_id": "1629639",
+     "shown": {
+      "fg3m": "84",
+      "fg3_pct": "37.8%",
+      "fg3_pct__shrunk": "36.6%",
+      "ft_pct": "91.7%",
+      "ft_pct__shrunk": "88.7%",
+      "ts_pct": "60.2%",
+      "ts_pct__shrunk": "59.0%",
+      "rim_fg_pct": "68.3%",
+      "rim_fg_pct__shrunk": "66.8%"
+     }
+    },
+    {
+     "player_id": "1630578",
+     "shown": {
+      "fg3m": "40",
+      "fg3_pct": "30.5%",
+      "fg3_pct__shrunk": "34.2%",
+      "ft_pct": "69.2%",
+      "ft_pct__shrunk": "69.6%",
+      "ts_pct": "56.9%",
+      "ts_pct__shrunk": "57.5%",
+      "rim_fg_pct": "68.1%",
+      "rim_fg_pct__shrunk": "67.7%"
+     }
+    },
+    {
+     "player_id": "203076",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "27.0%",
+      "fg3_pct__shrunk": "34.8%",
+      "ft_pct": "72.8%",
+      "ft_pct__shrunk": "73.7%",
+      "ts_pct": "55.0%",
+      "ts_pct__shrunk": "56.4%",
+      "rim_fg_pct": "66.0%",
+      "rim_fg_pct__shrunk": "65.8%"
+     }
+    },
+    {
+     "player_id": "1641706",
+     "shown": {
+      "fg3m": "204",
+      "fg3_pct": "38.3%",
+      "fg3_pct__shrunk": "37.3%",
+      "ft_pct": "89.2%",
+      "ft_pct__shrunk": "87.9%",
+      "ts_pct": "57.4%",
+      "ts_pct__shrunk": "56.9%",
+      "rim_fg_pct": "67.3%",
+      "rim_fg_pct__shrunk": "66.7%"
+     }
+    },
+    {
+     "player_id": "1628415",
+     "shown": {
+      "fg3m": "127",
+      "fg3_pct": "34.4%",
+      "fg3_pct__shrunk": "35.0%",
+      "ft_pct": "84.2%",
+      "ft_pct__shrunk": "83.3%",
+      "ts_pct": "54.0%",
+      "ts_pct__shrunk": "54.5%",
+      "rim_fg_pct": "64.3%",
+      "rim_fg_pct__shrunk": "64.8%"
+     }
+    },
+    {
+     "player_id": "1630217",
+     "shown": {
+      "fg3m": "167",
+      "fg3_pct": "39.1%",
+      "fg3_pct__shrunk": "37.7%",
+      "ft_pct": "90.8%",
+      "ft_pct__shrunk": "89.7%",
+      "ts_pct": "60.7%",
+      "ts_pct__shrunk": "59.9%",
+      "rim_fg_pct": "61.6%",
+      "rim_fg_pct__shrunk": "62.2%"
+     }
+    },
+    {
+     "player_id": "1628389",
+     "shown": {
+      "fg3m": "127",
+      "fg3_pct": "31.8%",
+      "fg3_pct__shrunk": "33.5%",
+      "ft_pct": "77.8%",
+      "ft_pct__shrunk": "77.7%",
+      "ts_pct": "55.1%",
+      "ts_pct__shrunk": "56.1%",
+      "rim_fg_pct": "68.3%",
+      "rim_fg_pct__shrunk": "67.7%"
+     }
+    },
+    {
+     "player_id": "1626157",
+     "shown": {
+      "fg3m": "112",
+      "fg3_pct": "37.0%",
+      "fg3_pct__shrunk": "36.3%",
+      "ft_pct": "85.8%",
+      "ft_pct__shrunk": "85.2%",
+      "ts_pct": "61.9%",
+      "ts_pct__shrunk": "61.5%",
+      "rim_fg_pct": "61.8%",
+      "rim_fg_pct__shrunk": "62.3%"
+     }
+    },
+    {
+     "player_id": "1630163",
+     "shown": {
+      "fg3m": "270",
+      "fg3_pct": "37.0%",
+      "fg3_pct__shrunk": "36.6%",
+      "ft_pct": "89.5%",
+      "ft_pct__shrunk": "87.7%",
+      "ts_pct": "54.8%",
+      "ts_pct__shrunk": "54.7%",
+      "rim_fg_pct": "58.1%",
+      "rim_fg_pct__shrunk": "60.3%"
+     }
+    },
+    {
+     "player_id": "202710",
+     "shown": {
+      "fg3m": "32",
+      "fg3_pct": "37.6%",
+      "fg3_pct__shrunk": "36.1%",
+      "ft_pct": "86.4%",
+      "ft_pct__shrunk": "85.6%",
+      "ts_pct": "64.6%",
+      "ts_pct__shrunk": "64.0%",
+      "rim_fg_pct": "69.7%",
+      "rim_fg_pct__shrunk": "68.6%"
+     }
+    },
+    {
+     "player_id": "1629660",
+     "shown": {
+      "fg3m": "42",
+      "fg3_pct": "42.0%",
+      "fg3_pct__shrunk": "37.2%",
+      "ft_pct": "87.5%",
+      "ft_pct__shrunk": "84.0%",
+      "ts_pct": "61.6%",
+      "ts_pct__shrunk": "58.5%",
+      "rim_fg_pct": "53.3%",
+      "rim_fg_pct__shrunk": "61.9%"
+     }
+    },
+    {
+     "player_id": "1631105",
+     "shown": {
+      "fg3m": "0",
+      "fg3_pct": "—",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "74.7%",
+      "ft_pct__shrunk": "74.7%",
+      "ts_pct": "68.8%",
+      "ts_pct__shrunk": "68.1%",
+      "rim_fg_pct": "72.8%",
+      "rim_fg_pct__shrunk": "72.0%"
+     }
+    },
+    {
+     "player_id": "1629630",
+     "shown": {
+      "fg3m": "20",
+      "fg3_pct": "23.5%",
+      "fg3_pct__shrunk": "33.1%",
+      "ft_pct": "89.7%",
+      "ft_pct__shrunk": "87.3%",
+      "ts_pct": "52.1%",
+      "ts_pct__shrunk": "56.0%",
+      "rim_fg_pct": "60.7%",
+      "rim_fg_pct__shrunk": "62.9%"
+     }
+    }
+   ],
+   "console_errors": []
+  },
+  "2026-27 default @1440": {
+   "query": "viewId=shooting",
+   "url_on": "http://localhost:3180/stats?viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&season=2026-27&phase=regular_season&beforeDate=2026-11-05&window=season&countingMode=per_game&shrunk=1",
+   "url_off": "http://localhost:3180/stats?viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&season=2026-27&phase=regular_season&beforeDate=2026-11-05&window=season&countingMode=per_game",
+   "heads_before": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "eFG%",
+    "TS%",
+    "FTR",
+    "Pin"
+   ],
+   "heads_on": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "3P%-Shrunk",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "FT%-Shrunk",
+    "eFG%",
+    "TS%",
+    "TS%-Shrunk",
+    "FTR",
+    "Rim FG%",
+    "Rim FG%-Shrunk",
+    "Pin"
+   ],
+   "note": "Shrunk columns use the 2026-27 priors, fitted on 2023-24, 2024-25, 2025-26 only; raw columns are unchanged. Rim FG% unknown: No game-level rim attempts: the retained NBA shot detail covers 2014-15 to 2025-26.How shrinkage works",
+   "requests_on_toggle": [
+    "GET /api/signal-noise/shrinkage?season=2026-27&phase=regular_season"
+   ],
+   "stats_query_rerun_on_toggle": false,
+   "off_identical_to_before": true,
+   "raw_cells_changed_when_on": [],
+   "rows_on": [
+    {
+     "player_id": "1629029",
+     "shown": {
+      "fg3m": "47",
+      "fg3_pct": "43.1%",
+      "fg3_pct__shrunk": "37.6%",
+      "ft_pct": "89.3%",
+      "ft_pct__shrunk": "86.2%",
+      "ts_pct": "68.5%",
+      "ts_pct__shrunk": "63.2%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630162",
+     "shown": {
+      "fg3m": "18",
+      "fg3_pct": "40.0%",
+      "fg3_pct__shrunk": "36.2%",
+      "ft_pct": "75.0%",
+      "ft_pct__shrunk": "75.8%",
+      "ts_pct": "59.0%",
+      "ts_pct__shrunk": "56.8%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628983",
+     "shown": {
+      "fg3m": "21",
+      "fg3_pct": "35.6%",
+      "fg3_pct__shrunk": "35.6%",
+      "ft_pct": "84.8%",
+      "ft_pct__shrunk": "82.1%",
+      "ts_pct": "55.8%",
+      "ts_pct__shrunk": "56.7%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "201939",
+     "shown": {
+      "fg3m": "27",
+      "fg3_pct": "42.9%",
+      "fg3_pct__shrunk": "36.9%",
+      "ft_pct": "98.1%",
+      "ft_pct__shrunk": "90.7%",
+      "ts_pct": "68.2%",
+      "ts_pct__shrunk": "63.0%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630178",
+     "shown": {
+      "fg3m": "20",
+      "fg3_pct": "33.9%",
+      "fg3_pct__shrunk": "35.4%",
+      "ft_pct": "83.0%",
+      "ft_pct__shrunk": "81.0%",
+      "ts_pct": "61.7%",
+      "ts_pct__shrunk": "60.8%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1641705",
+     "shown": {
+      "fg3m": "12",
+      "fg3_pct": "24.0%",
+      "fg3_pct__shrunk": "34.0%",
+      "ft_pct": "76.9%",
+      "ft_pct__shrunk": "76.8%",
+      "ts_pct": "57.0%",
+      "ts_pct__shrunk": "59.7%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "203507",
+     "shown": {
+      "fg3m": "4",
+      "fg3_pct": "21.1%",
+      "fg3_pct__shrunk": "34.8%",
+      "ft_pct": "65.8%",
+      "ft_pct__shrunk": "68.6%",
+      "ts_pct": "60.6%",
+      "ts_pct__shrunk": "61.4%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629660",
+     "shown": {
+      "fg3m": "18",
+      "fg3_pct": "37.5%",
+      "fg3_pct__shrunk": "35.9%",
+      "ft_pct": "87.0%",
+      "ft_pct__shrunk": "83.1%",
+      "ts_pct": "62.6%",
+      "ts_pct__shrunk": "60.4%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628369",
+     "shown": {
+      "fg3m": "11",
+      "fg3_pct": "22.9%",
+      "fg3_pct__shrunk": "33.9%",
+      "ft_pct": "87.0%",
+      "ft_pct__shrunk": "84.0%",
+      "ts_pct": "55.1%",
+      "ts_pct__shrunk": "59.8%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1643411",
+     "shown": {
+      "fg3m": "24",
+      "fg3_pct": "30.8%",
+      "fg3_pct__shrunk": "34.6%",
+      "ft_pct": "83.8%",
+      "ft_pct__shrunk": "80.7%",
+      "ts_pct": "49.9%",
+      "ts_pct__shrunk": "53.7%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628973",
+     "shown": {
+      "fg3m": "22",
+      "fg3_pct": "36.1%",
+      "fg3_pct__shrunk": "35.7%",
+      "ft_pct": "75.4%",
+      "ft_pct__shrunk": "75.7%",
+      "ts_pct": "53.8%",
+      "ts_pct__shrunk": "55.9%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1627750",
+     "shown": {
+      "fg3m": "29",
+      "fg3_pct": "50.9%",
+      "fg3_pct__shrunk": "38.1%",
+      "ft_pct": "83.0%",
+      "ft_pct__shrunk": "80.6%",
+      "ts_pct": "65.1%",
+      "ts_pct__shrunk": "59.2%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1626164",
+     "shown": {
+      "fg3m": "9",
+      "fg3_pct": "32.1%",
+      "fg3_pct__shrunk": "35.4%",
+      "ft_pct": "95.3%",
+      "ft_pct__shrunk": "88.1%",
+      "ts_pct": "61.7%",
+      "ts_pct__shrunk": "61.3%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1631094",
+     "shown": {
+      "fg3m": "3",
+      "fg3_pct": "50.0%",
+      "fg3_pct__shrunk": "35.9%",
+      "ft_pct": "70.0%",
+      "ft_pct__shrunk": "73.7%",
+      "ts_pct": "77.0%",
+      "ts_pct__shrunk": "64.5%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1642843",
+     "shown": {
+      "fg3m": "7",
+      "fg3_pct": "21.2%",
+      "fg3_pct__shrunk": "34.2%",
+      "ft_pct": "86.5%",
+      "ft_pct__shrunk": "83.1%",
+      "ts_pct": "57.1%",
+      "ts_pct__shrunk": "60.3%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630595",
+     "shown": {
+      "fg3m": "17",
+      "fg3_pct": "37.0%",
+      "fg3_pct__shrunk": "35.8%",
+      "ft_pct": "76.7%",
+      "ft_pct__shrunk": "76.6%",
+      "ts_pct": "59.8%",
+      "ts_pct__shrunk": "58.8%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630567",
+     "shown": {
+      "fg3m": "4",
+      "fg3_pct": "15.4%",
+      "fg3_pct__shrunk": "34.0%",
+      "ft_pct": "68.0%",
+      "ft_pct__shrunk": "71.0%",
+      "ts_pct": "52.2%",
+      "ts_pct__shrunk": "56.8%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "203076",
+     "shown": {
+      "fg3m": "7",
+      "fg3_pct": "35.0%",
+      "fg3_pct__shrunk": "35.6%",
+      "ft_pct": "82.9%",
+      "ft_pct__shrunk": "80.4%",
+      "ts_pct": "57.0%",
+      "ts_pct__shrunk": "57.3%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "203999",
+     "shown": {
+      "fg3m": "7",
+      "fg3_pct": "21.9%",
+      "fg3_pct__shrunk": "34.3%",
+      "ft_pct": "87.9%",
+      "ft_pct__shrunk": "82.7%",
+      "ts_pct": "57.9%",
+      "ts_pct__shrunk": "59.8%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630166",
+     "shown": {
+      "fg3m": "12",
+      "fg3_pct": "31.6%",
+      "fg3_pct__shrunk": "35.2%",
+      "ft_pct": "66.7%",
+      "ft_pct__shrunk": "69.5%",
+      "ts_pct": "57.7%",
+      "ts_pct__shrunk": "59.4%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630559",
+     "shown": {
+      "fg3m": "21",
+      "fg3_pct": "42.9%",
+      "fg3_pct__shrunk": "36.7%",
+      "ft_pct": "87.9%",
+      "ft_pct__shrunk": "84.3%",
+      "ts_pct": "67.5%",
+      "ts_pct__shrunk": "62.6%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "203897",
+     "shown": {
+      "fg3m": "23",
+      "fg3_pct": "38.3%",
+      "fg3_pct__shrunk": "36.1%",
+      "ft_pct": "83.3%",
+      "ft_pct__shrunk": "80.9%",
+      "ts_pct": "64.2%",
+      "ts_pct__shrunk": "60.9%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "202681",
+     "shown": {
+      "fg3m": "21",
+      "fg3_pct": "38.2%",
+      "fg3_pct__shrunk": "36.0%",
+      "ft_pct": "90.5%",
+      "ft_pct__shrunk": "82.6%",
+      "ts_pct": "61.7%",
+      "ts_pct__shrunk": "58.2%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628378",
+     "shown": {
+      "fg3m": "23",
+      "fg3_pct": "41.1%",
+      "fg3_pct__shrunk": "36.5%",
+      "ft_pct": "82.5%",
+      "ft_pct__shrunk": "80.1%",
+      "ts_pct": "61.8%",
+      "ts_pct__shrunk": "58.8%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630578",
+     "shown": {
+      "fg3m": "7",
+      "fg3_pct": "50.0%",
+      "fg3_pct__shrunk": "36.3%",
+      "ft_pct": "74.4%",
+      "ft_pct__shrunk": "75.2%",
+      "ts_pct": "61.4%",
+      "ts_pct__shrunk": "59.1%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629639",
+     "shown": {
+      "fg3m": "29",
+      "fg3_pct": "42.6%",
+      "fg3_pct__shrunk": "36.9%",
+      "ft_pct": "75.0%",
+      "ft_pct__shrunk": "75.7%",
+      "ts_pct": "58.8%",
+      "ts_pct__shrunk": "56.2%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1641706",
+     "shown": {
+      "fg3m": "27",
+      "fg3_pct": "26.7%",
+      "fg3_pct__shrunk": "33.4%",
+      "ft_pct": "86.1%",
+      "ft_pct__shrunk": "82.0%",
+      "ts_pct": "47.0%",
+      "ts_pct__shrunk": "53.1%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1641718",
+     "shown": {
+      "fg3m": "17",
+      "fg3_pct": "32.7%",
+      "fg3_pct__shrunk": "35.2%",
+      "ft_pct": "77.4%",
+      "ft_pct__shrunk": "77.0%",
+      "ts_pct": "57.4%",
+      "ts_pct__shrunk": "58.7%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630169",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "37.0%",
+      "fg3_pct__shrunk": "35.8%",
+      "ft_pct": "86.7%",
+      "ft_pct__shrunk": "80.1%",
+      "ts_pct": "63.4%",
+      "ts_pct__shrunk": "58.9%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629638",
+     "shown": {
+      "fg3m": "37",
+      "fg3_pct": "40.7%",
+      "fg3_pct__shrunk": "36.8%",
+      "ft_pct": "82.3%",
+      "ft_pct__shrunk": "79.7%",
+      "ts_pct": "59.8%",
+      "ts_pct__shrunk": "57.4%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629627",
+     "shown": {
+      "fg3m": "3",
+      "fg3_pct": "42.9%",
+      "fg3_pct__shrunk": "35.8%",
+      "ft_pct": "76.3%",
+      "ft_pct__shrunk": "76.3%",
+      "ts_pct": "67.2%",
+      "ts_pct__shrunk": "64.0%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1642865",
+     "shown": {
+      "fg3m": "20",
+      "fg3_pct": "40.0%",
+      "fg3_pct__shrunk": "36.3%",
+      "ft_pct": "76.9%",
+      "ft_pct__shrunk": "76.8%",
+      "ts_pct": "63.8%",
+      "ts_pct__shrunk": "60.7%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629008",
+     "shown": {
+      "fg3m": "28",
+      "fg3_pct": "38.9%",
+      "fg3_pct__shrunk": "36.3%",
+      "ft_pct": "72.5%",
+      "ft_pct__shrunk": "74.1%",
+      "ts_pct": "60.8%",
+      "ts_pct__shrunk": "58.4%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1627783",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "30.3%",
+      "fg3_pct__shrunk": "35.1%",
+      "ft_pct": "66.7%",
+      "ft_pct__shrunk": "70.5%",
+      "ts_pct": "57.6%",
+      "ts_pct__shrunk": "58.6%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "202331",
+     "shown": {
+      "fg3m": "24",
+      "fg3_pct": "41.4%",
+      "fg3_pct__shrunk": "36.6%",
+      "ft_pct": "80.8%",
+      "ft_pct__shrunk": "78.6%",
+      "ts_pct": "59.9%",
+      "ts_pct__shrunk": "57.1%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "203944",
+     "shown": {
+      "fg3m": "14",
+      "fg3_pct": "34.2%",
+      "fg3_pct__shrunk": "35.5%",
+      "ft_pct": "81.3%",
+      "ft_pct__shrunk": "79.8%",
+      "ts_pct": "57.1%",
+      "ts_pct__shrunk": "59.1%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629636",
+     "shown": {
+      "fg3m": "20",
+      "fg3_pct": "36.4%",
+      "fg3_pct__shrunk": "35.8%",
+      "ft_pct": "84.4%",
+      "ft_pct__shrunk": "80.7%",
+      "ts_pct": "58.4%",
+      "ts_pct__shrunk": "57.6%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629628",
+     "shown": {
+      "fg3m": "14",
+      "fg3_pct": "31.8%",
+      "fg3_pct__shrunk": "35.2%",
+      "ft_pct": "59.5%",
+      "ft_pct__shrunk": "66.1%",
+      "ts_pct": "55.1%",
+      "ts_pct__shrunk": "57.0%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "201142",
+     "shown": {
+      "fg3m": "13",
+      "fg3_pct": "40.6%",
+      "fg3_pct__shrunk": "36.1%",
+      "ft_pct": "83.6%",
+      "ft_pct__shrunk": "81.5%",
+      "ts_pct": "66.1%",
+      "ts_pct__shrunk": "63.2%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1627759",
+     "shown": {
+      "fg3m": "13",
+      "fg3_pct": "41.9%",
+      "fg3_pct__shrunk": "36.2%",
+      "ft_pct": "73.5%",
+      "ft_pct__shrunk": "74.8%",
+      "ts_pct": "55.0%",
+      "ts_pct__shrunk": "55.3%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630532",
+     "shown": {
+      "fg3m": "7",
+      "fg3_pct": "20.0%",
+      "fg3_pct__shrunk": "34.0%",
+      "ft_pct": "79.5%",
+      "ft_pct__shrunk": "78.2%",
+      "ts_pct": "50.3%",
+      "ts_pct__shrunk": "56.4%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "203081",
+     "shown": {
+      "fg3m": "19",
+      "fg3_pct": "31.7%",
+      "fg3_pct__shrunk": "35.0%",
+      "ft_pct": "82.6%",
+      "ft_pct__shrunk": "80.3%",
+      "ts_pct": "58.6%",
+      "ts_pct__shrunk": "60.0%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1626157",
+     "shown": {
+      "fg3m": "15",
+      "fg3_pct": "42.9%",
+      "fg3_pct__shrunk": "36.4%",
+      "ft_pct": "76.5%",
+      "ft_pct__shrunk": "76.5%",
+      "ts_pct": "67.4%",
+      "ts_pct__shrunk": "61.3%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629027",
+     "shown": {
+      "fg3m": "15",
+      "fg3_pct": "27.8%",
+      "fg3_pct__shrunk": "34.5%",
+      "ft_pct": "84.9%",
+      "ft_pct__shrunk": "82.4%",
+      "ts_pct": "58.1%",
+      "ts_pct__shrunk": "61.6%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1643410",
+     "shown": {
+      "fg3m": "19",
+      "fg3_pct": "30.2%",
+      "fg3_pct__shrunk": "34.7%",
+      "ft_pct": "69.4%",
+      "ft_pct__shrunk": "72.4%",
+      "ts_pct": "51.0%",
+      "ts_pct__shrunk": "55.2%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "202695",
+     "shown": {
+      "fg3m": "4",
+      "fg3_pct": "28.6%",
+      "fg3_pct__shrunk": "35.3%",
+      "ft_pct": "100.0%",
+      "ft_pct__shrunk": "83.3%",
+      "ts_pct": "46.6%",
+      "ts_pct__shrunk": "56.0%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1626181",
+     "shown": {
+      "fg3m": "17",
+      "fg3_pct": "30.9%",
+      "fg3_pct__shrunk": "34.9%",
+      "ft_pct": "79.7%",
+      "ft_pct__shrunk": "78.8%",
+      "ts_pct": "57.7%",
+      "ts_pct__shrunk": "60.9%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629614",
+     "shown": {
+      "fg3m": "17",
+      "fg3_pct": "39.5%",
+      "fg3_pct__shrunk": "36.1%",
+      "ft_pct": "90.3%",
+      "ft_pct__shrunk": "83.9%",
+      "ts_pct": "61.2%",
+      "ts_pct__shrunk": "58.9%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630596",
+     "shown": {
+      "fg3m": "17",
+      "fg3_pct": "48.6%",
+      "fg3_pct__shrunk": "37.0%",
+      "ft_pct": "63.6%",
+      "ft_pct__shrunk": "69.4%",
+      "ts_pct": "65.5%",
+      "ts_pct__shrunk": "59.2%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1642844",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "37.0%",
+      "fg3_pct__shrunk": "35.8%",
+      "ft_pct": "88.5%",
+      "ft_pct__shrunk": "82.3%",
+      "ts_pct": "58.5%",
+      "ts_pct__shrunk": "57.5%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    }
+   ],
+   "console_errors": []
+  },
+  "2025-26 team filter @1440": {
+   "query": "season=2025-26&phase=regular_season&viewId=shooting&teamId=BOS",
+   "url_on": "http://localhost:3180/stats?season=2025-26&phase=regular_season&viewId=shooting&teamId=BOS&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&beforeDate=2026-04-13&window=season&countingMode=per_game&shrunk=1",
+   "url_off": "http://localhost:3180/stats?season=2025-26&phase=regular_season&viewId=shooting&teamId=BOS&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&beforeDate=2026-04-13&window=season&countingMode=per_game",
+   "heads_before": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "eFG%",
+    "TS%",
+    "FTR",
+    "Pin"
+   ],
+   "heads_on": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "3P%-Shrunk",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "FT%-Shrunk",
+    "eFG%",
+    "TS%",
+    "TS%-Shrunk",
+    "FTR",
+    "Rim FG%",
+    "Rim FG%-Shrunk",
+    "Pin"
+   ],
+   "note": "Shrunk columns use the 2025-26 priors, fitted on 2022-23, 2023-24, 2024-25 only; raw columns are unchanged. Rim FG% unknown here: it is served for a whole regular season with no team, date or window filter.How shrinkage works",
+   "requests_on_toggle": [
+    "GET /api/signal-noise/shrinkage?season=2025-26&phase=regular_season"
+   ],
+   "stats_query_rerun_on_toggle": false,
+   "off_identical_to_before": true,
+   "raw_cells_changed_when_on": [],
+   "rows_on": [
+    {
+     "player_id": "1627759",
+     "shown": {
+      "fg3m": "137",
+      "fg3_pct": "34.5%",
+      "fg3_pct__shrunk": "35.0%",
+      "ft_pct": "79.5%",
+      "ft_pct__shrunk": "79.3%",
+      "ts_pct": "57.2%",
+      "ts_pct__shrunk": "57.4%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628369",
+     "shown": {
+      "fg3m": "47",
+      "fg3_pct": "32.9%",
+      "fg3_pct__shrunk": "34.8%",
+      "ft_pct": "82.3%",
+      "ft_pct__shrunk": "80.8%",
+      "ts_pct": "54.1%",
+      "ts_pct__shrunk": "55.9%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630202",
+     "shown": {
+      "fg3m": "212",
+      "fg3_pct": "37.7%",
+      "fg3_pct__shrunk": "37.0%",
+      "ft_pct": "89.0%",
+      "ft_pct__shrunk": "86.9%",
+      "ts_pct": "58.4%",
+      "ts_pct__shrunk": "57.7%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628401",
+     "shown": {
+      "fg3m": "209",
+      "fg3_pct": "32.7%",
+      "fg3_pct__shrunk": "33.6%",
+      "ft_pct": "90.2%",
+      "ft_pct__shrunk": "88.6%",
+      "ts_pct": "52.9%",
+      "ts_pct__shrunk": "53.8%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629014",
+     "shown": {
+      "fg3m": "130",
+      "fg3_pct": "39.5%",
+      "fg3_pct__shrunk": "37.7%",
+      "ft_pct": "88.9%",
+      "ft_pct__shrunk": "85.6%",
+      "ts_pct": "57.9%",
+      "ts_pct__shrunk": "56.5%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629674",
+     "shown": {
+      "fg3m": "1",
+      "fg3_pct": "12.5%",
+      "fg3_pct__shrunk": "35.1%",
+      "ft_pct": "70.3%",
+      "ft_pct__shrunk": "71.1%",
+      "ts_pct": "67.4%",
+      "ts_pct__shrunk": "66.6%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "202696",
+     "shown": {
+      "fg3m": "18",
+      "fg3_pct": "34.0%",
+      "fg3_pct__shrunk": "35.4%",
+      "ft_pct": "79.0%",
+      "ft_pct__shrunk": "77.4%",
+      "ts_pct": "52.6%",
+      "ts_pct__shrunk": "54.4%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630573",
+     "shown": {
+      "fg3m": "198",
+      "fg3_pct": "39.3%",
+      "fg3_pct__shrunk": "37.9%",
+      "ft_pct": "85.0%",
+      "ft_pct__shrunk": "80.1%",
+      "ts_pct": "59.0%",
+      "ts_pct__shrunk": "57.1%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630568",
+     "shown": {
+      "fg3m": "54",
+      "fg3_pct": "43.5%",
+      "fg3_pct__shrunk": "38.0%",
+      "ft_pct": "76.5%",
+      "ft_pct__shrunk": "76.5%",
+      "ts_pct": "68.3%",
+      "ts_pct__shrunk": "64.1%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1631169",
+     "shown": {
+      "fg3m": "34",
+      "fg3_pct": "44.2%",
+      "fg3_pct__shrunk": "37.4%",
+      "ft_pct": "76.9%",
+      "ft_pct__shrunk": "76.6%",
+      "ts_pct": "65.1%",
+      "ts_pct__shrunk": "58.6%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1631248",
+     "shown": {
+      "fg3m": "97",
+      "fg3_pct": "39.9%",
+      "fg3_pct__shrunk": "37.6%",
+      "ft_pct": "90.3%",
+      "ft_pct__shrunk": "83.9%",
+      "ts_pct": "61.7%",
+      "ts_pct__shrunk": "58.2%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1641775",
+     "shown": {
+      "fg3m": "48",
+      "fg3_pct": "38.4%",
+      "fg3_pct__shrunk": "36.5%",
+      "ft_pct": "77.2%",
+      "ft_pct__shrunk": "76.9%",
+      "ts_pct": "62.3%",
+      "ts_pct__shrunk": "59.7%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1631199",
+     "shown": {
+      "fg3m": "28",
+      "fg3_pct": "35.0%",
+      "fg3_pct__shrunk": "35.6%",
+      "ft_pct": "75.0%",
+      "ft_pct__shrunk": "76.1%",
+      "ts_pct": "55.0%",
+      "ts_pct__shrunk": "54.5%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1642864",
+     "shown": {
+      "fg3m": "42",
+      "fg3_pct": "36.2%",
+      "fg3_pct__shrunk": "35.8%",
+      "ft_pct": "50.0%",
+      "ft_pct__shrunk": "63.1%",
+      "ts_pct": "56.1%",
+      "ts_pct__shrunk": "55.9%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629646",
+     "shown": {
+      "fg3m": "0",
+      "fg3_pct": "—",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "50.0%",
+      "ft_pct__shrunk": "72.8%",
+      "ts_pct": "79.9%",
+      "ts_pct__shrunk": "62.1%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1642910",
+     "shown": {
+      "fg3m": "3",
+      "fg3_pct": "30.0%",
+      "fg3_pct__shrunk": "35.5%",
+      "ft_pct": "100.0%",
+      "ft_pct__shrunk": "79.5%",
+      "ts_pct": "47.6%",
+      "ts_pct__shrunk": "57.3%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628449",
+     "shown": {
+      "fg3m": "2",
+      "fg3_pct": "13.3%",
+      "fg3_pct__shrunk": "34.7%",
+      "ft_pct": "75.0%",
+      "ft_pct__shrunk": "76.1%",
+      "ts_pct": "39.2%",
+      "ts_pct__shrunk": "55.3%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630214",
+     "shown": {
+      "fg3m": "3",
+      "fg3_pct": "20.0%",
+      "fg3_pct__shrunk": "35.0%",
+      "ft_pct": "—",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "50.0%",
+      "ts_pct__shrunk": "54.7%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630625",
+     "shown": {
+      "fg3m": "0",
+      "fg3_pct": "0.0%",
+      "fg3_pct__shrunk": "35.6%",
+      "ft_pct": "100.0%",
+      "ft_pct__shrunk": "79.5%",
+      "ts_pct": "30.7%",
+      "ts_pct__shrunk": "58.1%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1642873",
+     "shown": {
+      "fg3m": "0",
+      "fg3_pct": "—",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "71.4%",
+      "ft_pct__shrunk": "74.6%",
+      "ts_pct": "57.3%",
+      "ts_pct__shrunk": "60.7%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1642917",
+     "shown": {
+      "fg3m": "1",
+      "fg3_pct": "25.0%",
+      "fg3_pct__shrunk": "35.6%",
+      "ft_pct": "100.0%",
+      "ft_pct__shrunk": "78.0%",
+      "ts_pct": "39.4%",
+      "ts_pct__shrunk": "56.5%",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    }
+   ],
+   "console_errors": []
+  },
+  "2024-25 playoffs @1440": {
+   "query": "season=2024-25&phase=playoffs&viewId=shooting",
+   "url_on": "http://localhost:3180/stats?season=2024-25&phase=playoffs&viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&beforeDate=2025-06-23&window=season&countingMode=per_game&shrunk=1",
+   "url_off": "http://localhost:3180/stats?season=2024-25&phase=playoffs&viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&beforeDate=2025-06-23&window=season&countingMode=per_game",
+   "heads_before": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "eFG%",
+    "TS%",
+    "FTR",
+    "Pin"
+   ],
+   "heads_on": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "3P%-Shrunk",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "FT%-Shrunk",
+    "eFG%",
+    "TS%",
+    "TS%-Shrunk",
+    "FTR",
+    "Rim FG%",
+    "Rim FG%-Shrunk",
+    "Pin"
+   ],
+   "note": "Shrunk 3P%, FT% and TS% unknown: Priors are fitted on regular seasons only; playoff values are not shrunk. Rim FG% unknown: Rim FG% is served for regular seasons only.How shrinkage works",
+   "requests_on_toggle": [
+    "GET /api/signal-noise/shrinkage?season=2024-25&phase=playoffs"
+   ],
+   "stats_query_rerun_on_toggle": false,
+   "off_identical_to_before": true,
+   "raw_cells_changed_when_on": [],
+   "rows_on": [
+    {
+     "player_id": "203507",
+     "shown": {
+      "fg3m": "1",
+      "fg3_pct": "20.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "69.8%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "65.1%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629029",
+     "shown": {
+      "fg3m": "16",
+      "fg3_pct": "34.8%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "89.1%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "60.8%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628983",
+     "shown": {
+      "fg3m": "32",
+      "fg3_pct": "28.3%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "87.6%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "57.4%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628378",
+     "shown": {
+      "fg3m": "28",
+      "fg3_pct": "33.3%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "74.2%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "57.0%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628973",
+     "shown": {
+      "fg3m": "48",
+      "fg3_pct": "35.8%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "85.1%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "58.2%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1631094",
+     "shown": {
+      "fg3m": "12",
+      "fg3_pct": "44.4%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "65.8%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "51.7%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628369",
+     "shown": {
+      "fg3m": "29",
+      "fg3_pct": "37.2%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "88.9%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "56.6%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "203999",
+     "shown": {
+      "fg3m": "27",
+      "fg3_pct": "38.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "77.2%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "58.7%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630532",
+     "shown": {
+      "fg3m": "7",
+      "fg3_pct": "18.9%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "76.9%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "51.0%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "2544",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "35.7%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "77.5%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "60.1%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630162",
+     "shown": {
+      "fg3m": "46",
+      "fg3_pct": "35.4%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "71.9%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "56.4%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "202695",
+     "shown": {
+      "fg3m": "15",
+      "fg3_pct": "40.5%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "77.8%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "63.0%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630595",
+     "shown": {
+      "fg3m": "5",
+      "fg3_pct": "17.9%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "83.3%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "50.8%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "201939",
+     "shown": {
+      "fg3m": "32",
+      "fg3_pct": "40.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "89.3%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "63.6%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1627759",
+     "shown": {
+      "fg3m": "21",
+      "fg3_pct": "33.3%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "75.8%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "54.2%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1627750",
+     "shown": {
+      "fg3m": "34",
+      "fg3_pct": "35.4%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "87.5%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "55.5%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "203944",
+     "shown": {
+      "fg3m": "30",
+      "fg3_pct": "38.5%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "88.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "62.2%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1631114",
+     "shown": {
+      "fg3m": "35",
+      "fg3_pct": "30.4%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "78.9%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "54.4%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1626157",
+     "shown": {
+      "fg3m": "26",
+      "fg3_pct": "35.1%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "84.5%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "58.9%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630578",
+     "shown": {
+      "fg3m": "3",
+      "fg3_pct": "37.5%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "62.5%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "49.1%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1627783",
+     "shown": {
+      "fg3m": "35",
+      "fg3_pct": "42.7%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "71.3%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "59.8%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "202710",
+     "shown": {
+      "fg3m": "11",
+      "fg3_pct": "30.6%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "80.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "56.4%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628401",
+     "shown": {
+      "fg3m": "40",
+      "fg3_pct": "38.5%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "86.1%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "63.6%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629018",
+     "shown": {
+      "fg3m": "22",
+      "fg3_pct": "50.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "80.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "70.8%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1627832",
+     "shown": {
+      "fg3m": "27",
+      "fg3_pct": "43.5%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "100.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "63.2%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "201935",
+     "shown": {
+      "fg3m": "16",
+      "fg3_pct": "36.4%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "81.8%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "56.7%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630590",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "35.7%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "100.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "55.0%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629630",
+     "shown": {
+      "fg3m": "4",
+      "fg3_pct": "25.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "63.6%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "47.5%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629636",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "28.6%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "91.7%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "56.6%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629639",
+     "shown": {
+      "fg3m": "9",
+      "fg3_pct": "31.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "80.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "51.1%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628389",
+     "shown": {
+      "fg3m": "7",
+      "fg3_pct": "33.3%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "63.6%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "50.8%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1627826",
+     "shown": {
+      "fg3m": "0",
+      "fg3_pct": "—",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "53.8%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "65.3%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630169",
+     "shown": {
+      "fg3m": "54",
+      "fg3_pct": "34.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "82.8%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "58.1%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630596",
+     "shown": {
+      "fg3m": "14",
+      "fg3_pct": "45.2%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "84.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "69.9%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628384",
+     "shown": {
+      "fg3m": "41",
+      "fg3_pct": "33.9%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "81.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "53.9%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "203932",
+     "shown": {
+      "fg3m": "22",
+      "fg3_pct": "37.9%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "86.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "60.1%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630559",
+     "shown": {
+      "fg3m": "15",
+      "fg3_pct": "31.9%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "85.7%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "53.2%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1626181",
+     "shown": {
+      "fg3m": "14",
+      "fg3_pct": "35.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "77.8%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "57.8%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628991",
+     "shown": {
+      "fg3m": "3",
+      "fg3_pct": "27.3%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "85.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "47.9%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "202699",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "43.5%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "100.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "60.2%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1641708",
+     "shown": {
+      "fg3m": "1",
+      "fg3_pct": "25.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "69.4%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "54.5%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1628969",
+     "shown": {
+      "fg3m": "28",
+      "fg3_pct": "33.3%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "75.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "51.8%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630228",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "40.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "71.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "57.2%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630217",
+     "shown": {
+      "fg3m": "7",
+      "fg3_pct": "21.9%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "93.3%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "43.8%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1631096",
+     "shown": {
+      "fg3m": "27",
+      "fg3_pct": "29.7%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "78.3%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "56.5%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630558",
+     "shown": {
+      "fg3m": "7",
+      "fg3_pct": "50.0%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "42.9%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "68.1%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1629060",
+     "shown": {
+      "fg3m": "15",
+      "fg3_pct": "48.4%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "100.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "63.4%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1630183",
+     "shown": {
+      "fg3m": "21",
+      "fg3_pct": "38.2%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "89.3%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "60.7%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1627736",
+     "shown": {
+      "fg3m": "20",
+      "fg3_pct": "33.9%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "100.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "53.5%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    },
+    {
+     "player_id": "1626171",
+     "shown": {
+      "fg3m": "10",
+      "fg3_pct": "35.7%",
+      "fg3_pct__shrunk": "—",
+      "ft_pct": "0.0%",
+      "ft_pct__shrunk": "—",
+      "ts_pct": "51.1%",
+      "ts_pct__shrunk": "—",
+      "rim_fg_pct": "—",
+      "rim_fg_pct__shrunk": "—"
+     }
+    }
+   ],
+   "console_errors": []
+  },
+  "2025-26 whole season @390": {
+   "query": "season=2025-26&phase=regular_season&viewId=shooting",
+   "url_on": "http://localhost:3180/stats?season=2025-26&phase=regular_season&viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&beforeDate=2026-04-13&window=season&countingMode=per_game&shrunk=1",
+   "url_off": "http://localhost:3180/stats?season=2025-26&phase=regular_season&viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&beforeDate=2026-04-13&window=season&countingMode=per_game",
+   "heads_before": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "eFG%",
+    "TS%",
+    "FTR",
+    "Pin"
+   ],
+   "heads_on": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "3P%-Shrunk",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "FT%-Shrunk",
+    "eFG%",
+    "TS%",
+    "TS%-Shrunk",
+    "FTR",
+    "Rim FG%",
+    "Rim FG%-Shrunk",
+    "Pin"
+   ],
+   "note": "Shrunk columns use the 2025-26 priors, fitted on 2022-23, 2023-24, 2024-25 only; raw columns are unchanged.How shrinkage works",
+   "requests_on_toggle": [
+    "GET /api/signal-noise/shrinkage?season=2025-26&phase=regular_season"
+   ],
+   "stats_query_rerun_on_toggle": false,
+   "off_identical_to_before": true,
+   "raw_cells_changed_when_on": [],
+   "console_errors": []
+  },
+  "2026-27 default @390": {
+   "query": "viewId=shooting",
+   "url_on": "http://localhost:3180/stats?viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&season=2026-27&phase=regular_season&beforeDate=2026-11-05&window=season&countingMode=per_game&shrunk=1",
+   "url_off": "http://localhost:3180/stats?viewId=shooting&releaseId=a584c88b-8bde-4457-b915-79e37a722af3&season=2026-27&phase=regular_season&beforeDate=2026-11-05&window=season&countingMode=per_game",
+   "heads_before": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "eFG%",
+    "TS%",
+    "FTR",
+    "Pin"
+   ],
+   "heads_on": [
+    "GP",
+    "FGM",
+    "FGA/G",
+    "FG%",
+    "3PM",
+    "3PA/G",
+    "3P%",
+    "3P%-Shrunk",
+    "FTM",
+    "FTA/G",
+    "FT%",
+    "FT%-Shrunk",
+    "eFG%",
+    "TS%",
+    "TS%-Shrunk",
+    "FTR",
+    "Rim FG%",
+    "Rim FG%-Shrunk",
+    "Pin"
+   ],
+   "note": "Shrunk columns use the 2026-27 priors, fitted on 2023-24, 2024-25, 2025-26 only; raw columns are unchanged. Rim FG% unknown: No game-level rim attempts: the retained NBA shot detail covers 2014-15 to 2025-26.How shrinkage works",
+   "requests_on_toggle": [
+    "GET /api/signal-noise/shrinkage?season=2026-27&phase=regular_season"
+   ],
+   "stats_query_rerun_on_toggle": false,
+   "off_identical_to_before": true,
+   "raw_cells_changed_when_on": [],
+   "console_errors": []
+  }
+ }
+}

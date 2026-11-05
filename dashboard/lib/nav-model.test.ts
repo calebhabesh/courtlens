@@ -30,7 +30,7 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
       ["/research/win-probability", "/research/projected-impact"],
       ["/research/rapm/six-factor"],
       ["/research/shooting", "/research/defensive-matchups"],
-      ["/forecasts"],
+      ["/research/signal-noise", "/forecasts"],
       ["/wingspan", "/calculator"],
     ]);
     for (const item of research.groups.flatMap(group => group.items)) {
