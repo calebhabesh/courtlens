@@ -114,7 +114,7 @@ structure goes where basketball knowledge is reliable.
 
 - **Parity passes.** On 2,439 test games, states built from ESPN change log loss by +0.0002 (+0.0001 to +0.0002) on Live's sample and +0.0005 at the same times; calibration error stays 0.0083; mean probability gap 0.0017. Limits were set before the full run.
 - **Pregame.** The test numbers assume a known inactive list, which Live does not have before tip-off. It uses ESPN's roster minus reported Out. No injury news at all costs +0.0034 (+0.0016 to +0.0052); Live's real cost is unmeasured until prospective boxes arrive.
-- **Ratings keep the monthly rule.** Holding one snapshot all season costs +0.0039 (+0.0018 to +0.0058), so the method is pinned, not one file. Moving to Projected Impact needs a new version. The owner may want to confirm this reading of the no-refit decision.
+- **Ratings keep the monthly rule.** Holding one snapshot all season costs +0.0039 (+0.0018 to +0.0058), so the method is pinned, not one file. Moving to Projected Impact needs a new version. The owner confirmed this reading of the no-refit decision on 2026-11-04: the model files stay frozen and ratings keep refitting monthly.
 - **Live lineup tracker skipped.** S4 was rejected and the frozen model does not read lineups; the S3 fallback no longer applies because S3 was rejected too.
 - **Platform.** `libgomp1` added. x86 image matches the reference exactly. arm64 unverified: no emulation here.
 - **Drift interval** computed by game bootstrap from saved predictions, without refitting: 0.021–0.074 at 100 games.

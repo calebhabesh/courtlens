@@ -52,7 +52,7 @@ The largest single-state gap, 0.81, comes from a tied final second where the two
 
 - `evaluation/win_probability_ratings.py` builds them from the provisional `season-impact` bundle, only once it holds every date before the cutoff, so a monthly refit can wait up to a week for the Monday impact run. Built: 2026-10-20 (`b3de6e4a…`), 2026-11-01 (`794bbf97…`).
 - Pins: the manifest holds the hash of `impact_history_ratings.py` and of both replay modules, and names time-decay RAPM. `test_committed_manifest_is_intact_and_pins_what_the_model_reads` fails if any changes. Moving to Projected Impact needs a new version.
-- Each capture records the snapshot cutoff it used. **Owner's call:** this keeps your "no refit" decision for the model but does refit player ratings monthly. If you read that decision more strictly, say so; pinning is cheap to switch to before many prospective games accumulate, at the cost above.
+- Each capture records the snapshot cutoff it used. **Owner confirmed, 2026-11-04:** the "no refit" decision covers the model files; player ratings keep refitting monthly by this rule.
 
 ### 4. Platform
 
