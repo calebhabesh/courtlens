@@ -12,6 +12,8 @@ const playoffBrackets = Object.fromEntries(["2025-26", "1975-76", "1965-66", "19
   [season, JSON.parse(readFileSync(new URL(`./fixtures/playoffs-bracket-${season}.json`, import.meta.url), "utf8"))]));
 // Real answers of the frozen win-probability model's page, cut to a few rows.
 const projectedImpact = JSON.parse(readFileSync(new URL("./fixtures/projected-impact-page.json", import.meta.url), "utf8"));
+// Real answers of the six-factor API for 2025-26, cut to a few rows, and real Impact Trees.
+const sixFactorPage = JSON.parse(readFileSync(new URL("./fixtures/six-factor-page.json", import.meta.url), "utf8"));
 const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
 const okcPhx = JSON.parse(readFileSync(new URL("./fixtures/playoffs-series-2026-r1-okc-phx.json", import.meta.url), "utf8"));
 const playerTwins = JSON.parse(readFileSync(new URL("./fixtures/player-twins-v1.json", import.meta.url), "utf8"));
@@ -621,6 +623,11 @@ createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
   // Live (alignment row 7): an observed empty date; e2e/live.spec.ts routes real ESPN reads itself.
+  if (url.pathname === "/api/six-factor") return json(response, 200, sixFactorPage.pages[url.searchParams.get("season") ?? "2025-26"] ?? { status: "unavailable", season: url.searchParams.get("season"), phase: "regular_season", scopes: sixFactorPage.pages["2025-26"].scopes });
+  if (url.pathname === "/api/six-factor/tree") {
+    const tree = sixFactorPage.trees[url.searchParams.get("playerId")];
+    return tree ? json(response, 200, tree) : json(response, 200, sixFactorPage.notInFit);
+  }
   if (url.pathname === "/api/projected-impact") return json(response, 200, projectedImpact.page);
   if (url.pathname.startsWith("/api/projected-impact/players/")) {
     const detail = projectedImpact.players[url.pathname.split("/").at(-1)];

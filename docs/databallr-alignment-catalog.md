@@ -32,7 +32,7 @@ Rows are in working order.
 | 17 | Shot Profile Twin | `/similar-players` | ✅ | Owner approved first revision 2026-10-21 (Player Twins); NBA only; Databallr's twin cards and closest-matches table on pbpstats zone totals, then Box Score mode, pool filters, distance drivers; table headers centered over their values |
 | 22 | Player Dashboard | `/players` | ✅ | Owner approved first revision 2026-10-25; Databallr's `/dashboard` (Top 50 DARKO DPM card carousel, compact player panels, head-to-head panel). Row 2's "Dashboard" pairing was wrong: row 2 is our player page, kept as approved. Replaces the Player Directory table |
 | 23 | — (ESPN Standings, owner request) | `/standings` | ✅ | Owner approved 2026-11-03 (all core pages done); Owner request 2026-10-29 (from row 7): ESPN's NBA Standings page under the Teams menu, plus standings on the game page and team pages |
-| 18 | Six Factor RAPM (+ `/decomp`) | `/research/rapm/six-factor` | ⬜ | [Research handoff](research-plan.md) R02; Impact Tree builds Databallr's `/decomp` mock-up for real |
+| 18 | Six Factor RAPM (+ `/decomp`) | `/research/rapm/six-factor` | ⬜ | [Research handoff](research-plan.md) R02 built, awaiting owner review ([evidence](evidence/research/r02/README.md)): explainer, intervals on the sortable table, real Impact Tree for any player; RAPM Research renamed Six-Factor RAPM, old page kept as the RAPM Ratings tab |
 | 19 | Wingspan | `/wingspan` | ⬜ | Research R10 |
 | 20 | Offensive Calculator | `/calculator` | ⬜ | Research R10 |
 | 21 | Learning / Patch Notes | `/methodology`, `/whats-new` | ⬜ | Research R11; Blog removed |

@@ -17,9 +17,9 @@ function isFile(file: string) {
 describe("FO07 route consolidation (D3)", () => {
   const tabs = Object.values(TABBED_PAGES).flatMap(page => page.tabs);
 
-  it("backs every tab with a page under one layout, first tab at the page's own path", () => {
+  it("backs every tab with a page under one layout, at the page's own path or a sub-path", () => {
     for (const page of Object.values(TABBED_PAGES)) {
-      const root = page.tabs[0].href;
+      const root = page.tabs.map(tab => tab.href).sort((a, b) => a.length - b.length)[0];
       expect(isFile(path.join(appDir, root, "layout.tsx")), root).toBe(true);
       for (const tab of page.tabs) {
         expect(isFile(pageFile(tab.href)), tab.href).toBe(true);
@@ -70,7 +70,7 @@ describe("FO07 route consolidation (D3)", () => {
   });
 
   it("maps a tab path to its merged page for the current-page marker", () => {
-    expect(mergedPagePath("/research/rapm/six-factor")).toBe("/research/rapm");
+    expect(mergedPagePath("/research/rapm")).toBe("/research/rapm/six-factor");
     expect(mergedPagePath("/methodology/learning")).toBe("/methodology");
     expect(mergedPagePath("/players/2544")).toBe("/players/2544");
   });

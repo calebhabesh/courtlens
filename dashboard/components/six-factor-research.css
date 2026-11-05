@@ -1,0 +1,125 @@
+/* Research → Six-Factor RAPM (R02). Sections use the player-glass panel; the table is the shared reference grid. */
+@layer pages {
+  .sf-page { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .sf-section { min-width: 0; }
+  .sf-heading { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-xl); line-height: var(--text-xl-lh); }
+  .sf-note { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .sf-lead { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); max-width: 72ch; }
+  .sf-signed { font-variant-numeric: tabular-nums; font-weight: 650; }
+  .sf-signed[data-tone="up"] { color: var(--color-positive); }
+  .sf-signed[data-tone="down"] { color: var(--color-negative); }
+  .sf-interval { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sf-interval-cell { display: block; font-weight: 400; }
+
+  .sf-range { display: block; width: 100%; max-width: 160px; height: 16px; }
+  .sf-range-track { stroke: var(--color-hairline-strong); }
+  .sf-range-zero { stroke: var(--color-on-bg-secondary); }
+  .sf-range-span { stroke: var(--color-identity-a); stroke-width: 3; stroke-linecap: round; }
+  .sf-range-dot { fill: var(--color-text); }
+
+  .sf-framework { display: grid; grid-template-columns: 88px repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+  .sf-framework-row { display: contents; }
+  .sf-framework-family, .sf-framework-side { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); font-weight: 650; }
+  .sf-framework-family { text-align: center; }
+  .sf-framework-side { align-self: center; }
+  .sf-framework-cell { display: grid; align-content: start; gap: var(--space-1); padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-table-well); }
+  .sf-framework-code { display: flex; justify-content: space-between; align-items: baseline; margin: 0; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .sf-framework-code span { display: none; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); font-weight: 400; }
+  .sf-framework-name { margin: 0; color: var(--color-text); font-size: var(--text-sm); font-weight: 600; }
+  .sf-framework-weight { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); }
+  .sf-framework-weight strong { color: var(--color-text); }
+
+  .sf-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: sf-step; }
+  .sf-steps li { counter-increment: sf-step; display: grid; align-content: start; gap: var(--space-1); padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-table-well); }
+  .sf-steps h3 { margin: 0; color: var(--color-text); font-size: var(--text-sm); font-weight: 650; }
+  .sf-steps h3::before { content: counter(sf-step) ". "; color: var(--color-identity-a); }
+  .sf-steps p { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  .sf-factor { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
+  .sf-factor-help { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .sf-factor-help strong { color: var(--color-text); }
+  .sf-leaders { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  .sf-leaders li { display: grid; grid-template-columns: minmax(0, 1fr) 64px 112px 160px; align-items: center; gap: var(--space-3); padding: var(--space-1) var(--space-3); border-radius: var(--radius-sm); background: var(--color-table-well); }
+  .sf-leaders .sf-signed { text-align: right; }
+
+  .sf-scatter { display: block; width: 100%; max-width: 760px; height: auto; margin-inline: auto; }
+  .sf-scatter text { fill: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .sf-scatter-grid { stroke: var(--color-hairline); }
+  .sf-scatter-axis { stroke: var(--color-hairline-strong); }
+  .sf-scatter-even { stroke: var(--color-on-bg-tertiary); stroke-dasharray: 4 4; }
+  .sf-scatter-dot { fill: color-mix(in srgb, var(--color-identity-b) 55%, transparent); }
+  .sf-scatter-dot[data-highlight] { fill: var(--color-identity-a); }
+  .sf-scatter .sf-scatter-label { fill: var(--color-text); font-weight: 600; }
+
+  .sf-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+  .sf-card { display: grid; align-content: start; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-table-well); }
+  .sf-card h3 { margin: 0; color: var(--color-identity-a); font-size: var(--text-md); font-weight: 650; }
+  .sf-card-values { display: grid; gap: var(--space-1); margin: 0; }
+  .sf-card-values > div { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+  .sf-card-values dt { color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .sf-card-values dd { display: flex; align-items: baseline; gap: var(--space-2); margin: 0; font-size: var(--text-sm); }
+
+  .sf-caveats { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5); color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); max-width: 96ch; }
+  .sf-caveats strong { color: var(--color-text); }
+  .sf-caveats a { color: inherit; text-decoration: underline; }
+
+  .sf-table { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
+  /* ref-grid.css loads later in the same layer, so these go through its variables and a doubled class. */
+  .sf-table .player-ref-grid-scroll { --lead-width: 248px; }
+  .player-ref-grid.sf-grid { --grid-min-width: 1560px; min-width: var(--grid-min-width); }
+  .player-ref-grid.sf-grid .player-ref-grid-lead { text-align: left; }
+  .player-ref-grid.sf-grid tbody td { height: 52px; padding-inline: var(--space-1); }
+  .sf-table-foot { display: grid; justify-items: start; gap: var(--space-2); }
+
+  .sf-tree-picker { max-width: 360px; }
+  .sf-tree-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+  .sf-tree, .sf-tree ul { display: flex; justify-content: center; margin: 0; padding: 0; list-style: none; }
+  .sf-tree { container-type: inline-size; }
+  .sf-tree li { position: relative; display: flex; flex-direction: column; align-items: center; flex: 1 1 0; min-width: 0; padding-inline: var(--space-1); }
+  .sf-tree li > ul { width: 100%; padding-top: var(--space-6); }
+  /* Connectors: a stem down from each parent, a rail across its children, a stem up to each child. */
+  .sf-tree li > .sf-node:not(:last-child)::after { content: ""; position: absolute; left: 50%; bottom: calc(-1 * var(--space-6)); height: var(--space-6); border-left: 1px solid var(--color-hairline-strong); }
+  .sf-tree ul > li { padding-top: var(--space-5); }
+  .sf-tree ul > li::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: 1px solid var(--color-hairline-strong); }
+  .sf-tree ul > li:first-child::before { left: 50%; }
+  .sf-tree ul > li:last-child::before { right: 50%; }
+  .sf-tree ul > li::after { content: ""; position: absolute; top: 0; left: 50%; height: var(--space-5); border-left: 1px solid var(--color-hairline-strong); }
+  .sf-node { position: relative; display: grid; align-content: start; justify-items: center; gap: var(--space-1); width: 100%; max-width: 232px; padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-table-well); text-align: center; }
+  .sf-node-code { display: grid; margin: 0; color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }
+  .sf-node-code span { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); font-weight: 400; }
+  .sf-node-value { display: flex; align-items: baseline; gap: var(--space-1); margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); }
+  .sf-node-unit { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); }
+  .sf-node-unknown { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; }
+  .sf-node-interval { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+  .sf-tree-notes { display: grid; gap: var(--space-1); color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .sf-tree-notes p { margin: 0; }
+  .sf-tree-notes strong { color: var(--color-text); }
+
+  @media (max-width: 1023px) {
+    .sf-steps, .sf-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sf-leaders li { grid-template-columns: minmax(0, 1fr) 64px 112px; }
+    .sf-leaders .sf-range { display: none; }
+  }
+
+  @media (max-width: 767px) {
+    .sf-framework { grid-template-columns: minmax(0, 1fr); }
+    .sf-framework > span, .sf-framework-family { display: none; }
+    .sf-framework-side { margin-top: var(--space-2); }
+    .sf-framework-code span { display: inline; }
+    .sf-steps, .sf-cards { grid-template-columns: minmax(0, 1fr); }
+    .sf-table .player-ref-grid-scroll { --lead-width: 168px; }
+    .player-ref-grid.sf-grid { --grid-min-width: 1480px; }
+    .player-ref-grid.sf-grid tbody .player-ref-grid-lead { padding-inline: var(--space-2); white-space: normal; overflow-wrap: anywhere; }
+    .sf-leaders li { grid-template-columns: minmax(0, 1fr) auto; gap: 0 var(--space-3); }
+    .sf-leaders .sf-interval { grid-column: 2; text-align: right; }
+    .sf-scatter text { font-size: var(--text-xl); }
+    /* The tree reads top-down: each level indents under its parent, with no rails. */
+    .sf-tree, .sf-tree ul { display: grid; gap: var(--space-2); }
+    .sf-tree li { align-items: stretch; padding: 0; }
+    .sf-tree li > ul { padding-top: var(--space-2); padding-left: var(--space-4); }
+    .sf-tree ul > li { padding-top: 0; }
+    .sf-tree ul > li::before, .sf-tree ul > li::after, .sf-tree li > .sf-node:not(:last-child)::after { content: none; }
+    .sf-node { max-width: none; justify-items: stretch; text-align: left; }
+    .sf-node .sf-range { max-width: none; }
+  }
+}

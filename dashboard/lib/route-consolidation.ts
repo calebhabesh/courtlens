@@ -1,6 +1,7 @@
-// FO07 route consolidation (frontend overhaul D3). Merged pages are one title with route tabs: the
-// first tab lives at the page's own path and every other tab at a sub-path, so views that rewrite
-// their URL from `usePathname()` keep the selected tab. This file is imported by `next.config.ts`,
+// FO07 route consolidation (frontend overhaul D3). Merged pages are one title with route tabs: one
+// tab lives at the page's own path and every other tab at a sub-path, so views that rewrite their
+// URL from `usePathname()` keep the selected tab. The first tab is where the menu opens the page,
+// normally the page's own path (Six-Factor RAPM opens on its sub-path). This file is imported by `next.config.ts`,
 // so it must stay free of path aliases and runtime dependencies.
 
 export interface RouteTab {
@@ -17,11 +18,12 @@ export interface TabbedPage {
 
 export const TABBED_PAGES = {
   rapm: {
-    title: "RAPM Research",
-    subtitle: "Served impact ratings and registered impact experiments.",
+    title: "Six-Factor RAPM",
+    subtitle: "RAPM split into six factors, with an interval on every number.",
+    // R02: the explainer is the main entry; the 1Y/2Y/3Y table and sealed experiment stay a tab.
     tabs: [
-      { label: "RAPM", href: "/research/rapm" },
       { label: "Six-Factor", href: "/research/rapm/six-factor" },
+      { label: "RAPM Ratings", href: "/research/rapm" },
     ],
   },
   shooting: {

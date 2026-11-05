@@ -49,9 +49,9 @@ test.describe("FO07 route consolidation", () => {
     await openWorkbench(page, "/stats");
     await page.getByRole("button", { name: "Research", exact: true }).click();
     const menu = page.getByRole("menu");
-    await expect(menu.getByRole("menuitem", { name: "RAPM Research" })).toHaveAttribute("href", /^\/research\/rapm(\?|$)/);
+    await expect(menu.getByRole("menuitem", { name: /^Six-Factor RAPM/ })).toHaveAttribute("href", /^\/research\/rapm\/six-factor(\?|$)/);
     await expect(menu.getByRole("menuitem", { name: /^Shooting\b/ })).toHaveAttribute("href", /^\/research\/shooting(\?|$)/);
-    for (const removed of ["Six-Factor RAPM", "Expected Shots", "Adjusted Shooting", "Shot Aftermath"]) {
+    for (const removed of ["RAPM Research", "Expected Shots", "Adjusted Shooting", "Shot Aftermath"]) {
       // Anchored: a kept item's description may mention a removed page's name.
       await expect(menu.getByRole("menuitem", { name: new RegExp(`^${removed}`) })).toHaveCount(0);
     }

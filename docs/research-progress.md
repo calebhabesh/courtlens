@@ -8,7 +8,7 @@ coverage and screenshots per block. Plan text is not evidence.
 | Block | Status | Evidence |
 | --- | --- | --- |
 | R01 Impact history backfill, time decay, intervals, rating snapshots | ✅ measured (page work is R02) | [R01 evidence](evidence/research/r01/README.md): twelve regular seasons sealed and served (97.5–99.9% of games admitted); 200-replicate intervals; time decay; six-factor R² 0.955–0.966; 91 dated snapshots |
-| R02 Six-Factor RAPM + Impact Tree | ⬜ pending | |
+| R02 Six-Factor RAPM + Impact Tree | 🟡 built and verified on real data; page awaits owner | [R02 evidence](evidence/research/r02/README.md): all 12 regular-season fits have intervals on all nine nodes, so no new protocol; six factors reconstruct RAPM at R² 0.955–0.966 (0.950–0.964 held out); tree equals the bundle on 64,098 nodes; playoff intervals unknown |
 | R03 Signal vs Noise | ⬜ pending | |
 | R04 zTS + validation | ⬜ pending | |
 | R05 Shot Quality v2 model | ⬜ pending | |
@@ -150,3 +150,15 @@ The 13:30 UTC `refresh-daily` run succeeded and scored the 14 games of 2026-11-0
 - **Log loss on matched states.** CourtLens 0.4433, ESPN 0.4213, one night only. The pre-freeze replay was 0.4269 and 0.4202.
 - **Live's injury-information cost.** Across 13 games, tip-off and hindsight expected margins differ by a mean of 0.62 points in absolute value (95th percentile 1.97).
 - **Weekly R07 step.** Under the timer it skipped as designed (`last_written` 2026-11-05 04:54:49 UTC).
+
+## 2026-11-05 — R02 measured, Playwright debt settled
+
+[Evidence](evidence/research/r02/README.md). `/research/rapm/six-factor` is the new explainer, table and Impact Tree. Nothing was fitted.
+
+- **Intervals.** All 12 one-year regular-season fits have them for RAPM, ORAPM, DRAPM and all six factors; 0 values lack one. No new registration. Playoff fits have none (166 values), and neither they nor the composites get an invented one: shown as unknown.
+- **Reconstruction.** R² 0.955–0.966 in-sample, 0.950–0.964 held out, from R01's registration. Not 0.985.
+- **Tree.** 64,098 nodes across 15 scopes equal the bundle exactly. In the browser, 14 views at 1440 and 390 match the API with no console errors, including partial data, factors without RAPM, a rated rookie and a rookie with no row.
+- **Composites.** Net Efficiency and Possession Control are CourtLens's own weighted sums, with no interval. They add to the reconstructed RAPM.
+- **Menu.** RAPM Research is now Six-Factor RAPM, on the same icon and description. The old page stays as the RAPM Ratings tab.
+- **Playwright debt from e50b564.** First valid run: 509 passed, 17 skipped, 5 failed, all stale tests or baselines. Also traced a 52 px phone flash on Player Twins that predates R02 (16 of 120 loaded runs on e50b564, settled by 1.2 s); the test now waits for the settled page, the flash remains.
+- **Checks.** Full Playwright 523 passed, 17 skipped, 0 failed. Vitest 713 passed; lint, typecheck, Ruff, format and strict mypy clean. Python 2,475 passed, 1 skipped, 8 failed: the same Anthropic SDK environment failures as R01.

@@ -89,7 +89,7 @@ export const NAV_MENUS: NavMenu[] = [
         { label: "Projected Impact", href: "/research/projected-impact", icon: "trend", description: "2026-27 player ratings frozen before the games, with intervals" },
       ] },
       { title: "Impact", items: [
-        { label: "RAPM Research", href: "/research/rapm", icon: "gauge", description: "Player impact ratings and their six-factor breakdown" },
+        { label: "Six-Factor RAPM", href: "/research/rapm/six-factor", icon: "gauge", description: "Player impact ratings and their six-factor breakdown" },
       ] },
       { title: "Shooting", items: [
         { label: "Shooting", href: "/research/shooting", icon: "target", description: "Expected shots, adjusted shooting and what follows a shot" },
