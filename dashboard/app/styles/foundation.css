@@ -961,6 +961,8 @@
 @layer foundation {
   @media (max-width: 767px) {
     .pi-board .ui-identity-text { min-width: 0; }
+    /* Six-Factor RAPM: long names wrap inside the pinned phone column. */
+    .sf-grid .ui-identity-name { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
     .pi-board .ui-identity-name { white-space: normal; font-size: var(--text-xs); line-height: var(--text-xs-lh); letter-spacing: 0; }
   }
 }

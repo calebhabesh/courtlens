@@ -413,9 +413,9 @@ STATIC_NAVIGATION_PAGES: list[dict[str, Any]] = [
     {
         "id": "page_rapm",
         "canonical_id": "research/rapm",
-        "display_name": "RAPM Research",
-        "subtitle": "Navigation · Served impact ratings and the six-factor experiment",
-        "base_destination": "/research/rapm",
+        "display_name": "Six-Factor RAPM",
+        "subtitle": "Navigation · RAPM split into six factors, with intervals and the Impact Tree",
+        "base_destination": "/research/rapm/six-factor",
         "portrait_fallback": "RAP",
         "aliases": ["rapm", "impact", "plus minus", "adjusted plus minus", "six factor"],
     },

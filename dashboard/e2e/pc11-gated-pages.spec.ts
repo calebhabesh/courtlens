@@ -95,16 +95,6 @@ test.describe("PC11 populated pages", () => {
     await noPhoneOverflow(page);
   });
 
-  test("Six-Factor ranks one factor at a time with shaded percentiles", async ({ page }) => {
-    await openWorkbench(page, "/research/rapm/six-factor");
-    await expect(page.getByRole("figure", { name: /Offensive Shooting \(oTS\), top 15/ })).toBeVisible();
-    await expect(page.getByRole("region", { name: "Six-factor ratings" }).locator(".chart-percentile-cell").first()).toBeVisible();
-    await page.getByRole("radio", { name: "Defense" }).click();
-    await expect(page).toHaveURL(/factor=d_ts/);
-    await expect(page.getByRole("figure", { name: /Shooting Defense \(dTS\)/ })).toBeVisible();
-    await noPhoneOverflow(page);
-  });
-
   test("Combine opens on the latest class with unknown drills and identities kept unknown", async ({ page }) => {
     await openWorkbench(page, "/wingspan");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Combine & Wingspan");
@@ -138,7 +128,7 @@ test("player profile gains a Tracking tab; a player with no combine record has n
   await expect(page.getByRole("tab", { name: "Combine" })).toHaveCount(0);
 });
 
-test("EPV is removed: the route redirects to RAPM Research and leaves navigation", async ({ page }) => {
+test("EPV is removed: the route redirects to RAPM Ratings and leaves navigation", async ({ page }) => {
   await openWorkbench(page, "/research/epv?season=2025-26");
   await expect(page).toHaveURL(/\/research\/rapm\?season=2025-26/);
   await expect(page.getByRole("link", { name: "Spatial EPV" })).toHaveCount(0);

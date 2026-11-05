@@ -1,0 +1,317 @@
+{
+ "composites_rebuilt": 2934,
+ "manifest_sha256": "3cfdb968cc51a870918147e817582c6934caa5fac2d006b934bdc779bdab6e6e",
+ "mismatches": [],
+ "nodes_compared": 64098,
+ "scopes": [
+  {
+   "archetypes": [
+    "2594",
+    "202702",
+    "202695",
+    "201586",
+    "2585",
+    "203077"
+   ],
+   "artifact_sha256": "d52b9a67198f490b4989e2a2dcca42b6112918ba9fdbca0f200288dd1ded6bfe",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1316,
+    "estimate": 3112
+   },
+   "phase": "regular_season",
+   "players_in_fit": 492,
+   "players_in_table": 398,
+   "season": "2014-15",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [
+    "201142",
+    "203210",
+    "200768",
+    "203503",
+    "203496",
+    "202683"
+   ],
+   "artifact_sha256": "6bb99bade56f4540a9af19d4db4fbd903986e397efe7c176272042e0e08eee9e",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1213,
+    "estimate": 3071
+   },
+   "phase": "regular_season",
+   "players_in_fit": 476,
+   "players_in_table": 393,
+   "season": "2015-16",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [
+    "203076",
+    "1626169",
+    "200768",
+    "203497",
+    "1626204",
+    "2730"
+   ],
+   "artifact_sha256": "bff2c0e84570692b0cba6e602f18a9ea52b48c5b9a51fc10b0586d9a790ff8dd",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1300,
+    "estimate": 3074
+   },
+   "phase": "regular_season",
+   "players_in_fit": 486,
+   "players_in_table": 393,
+   "season": "2016-17",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [
+    "203954",
+    "201942",
+    "203496",
+    "203994",
+    "201596",
+    "203500"
+   ],
+   "artifact_sha256": "6d5c37813212d0fa7e17a5b61799f998dfaca72841edf535cf975f2cebe4b549",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1786,
+    "estimate": 3074
+   },
+   "phase": "regular_season",
+   "players_in_fit": 540,
+   "players_in_table": 392,
+   "season": "2017-18",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [
+    "201143",
+    "201144",
+    "200794",
+    "201577",
+    "101108",
+    "202683"
+   ],
+   "artifact_sha256": "a427e849aaa49deedbc7c0b2e1fabecdf909b1a1919896cb635d1e99bbc8151f",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1591,
+    "estimate": 3179
+   },
+   "phase": "regular_season",
+   "players_in_fit": 530,
+   "players_in_table": 406,
+   "season": "2018-19",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [
+    "201935",
+    "1626178",
+    "202695",
+    "201188",
+    "1629067",
+    "203991"
+   ],
+   "artifact_sha256": "32b0acc5324fa1579b2c2b7c9b4c4736c1878fc497612acc73f54a58d00778c6",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1805,
+    "estimate": 2947
+   },
+   "phase": "regular_season",
+   "players_in_fit": 528,
+   "players_in_table": 391,
+   "season": "2019-20",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [
+    "203497",
+    "1628369",
+    "202695",
+    "203991",
+    "1627936",
+    "202685"
+   ],
+   "artifact_sha256": "ae7d62e0ac32e807860614b0132c5c056cec900850544673d9e4103fbfc600f4",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1753,
+    "estimate": 3107
+   },
+   "phase": "regular_season",
+   "players_in_fit": 540,
+   "players_in_table": 413,
+   "season": "2020-21",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [
+    "201142",
+    "1629723",
+    "201950",
+    "201588",
+    "1629680",
+    "203500"
+   ],
+   "artifact_sha256": "cfbb173daae1f6bb49261695dbd9c6724c8db12a53fff47a6e92d25f8da979cf",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 2204,
+    "estimate": 3241
+   },
+   "phase": "regular_season",
+   "players_in_fit": 605,
+   "players_in_table": 422,
+   "season": "2021-22",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [
+    "203954",
+    "1631106",
+    "203076",
+    "1630193",
+    "1627936",
+    "203500"
+   ],
+   "artifact_sha256": "ff8c4412980ff26d5aa8a00cbee0cf136c43afa29133874373090d966d89b6fa",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1677,
+    "estimate": 3174
+   },
+   "phase": "regular_season",
+   "players_in_fit": 539,
+   "players_in_table": 415,
+   "season": "2022-23",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [],
+   "artifact_sha256": "1d3b1e37bd5e26909a89a722d02427a8901bde17cb4bfdf2dc2d43d1e0a2e93b",
+   "interval_entry": false,
+   "node_statuses": {
+    "below_qualification": 1892,
+    "no_interval": 34
+   },
+   "phase": "playoffs",
+   "players_in_fit": 214,
+   "players_in_table": 7,
+   "season": "2023-24",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 34
+  },
+  {
+   "archetypes": [
+    "2544",
+    "1641708",
+    "1628973",
+    "1628384",
+    "1627936",
+    "203083"
+   ],
+   "artifact_sha256": "f7f8928a38335e63be065fe63af6f16fa65bf0cf99585eab42ff23f44d1a26a5",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 2028,
+    "estimate": 3120
+   },
+   "phase": "regular_season",
+   "players_in_fit": 572,
+   "players_in_table": 418,
+   "season": "2023-24",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [],
+   "artifact_sha256": "94cba7d57c46a6a549b383798d0a7b81400cbb17ddcedb208697f7375008d9cb",
+   "interval_entry": false,
+   "node_statuses": {
+    "below_qualification": 1878,
+    "no_interval": 93
+   },
+   "phase": "playoffs",
+   "players_in_fit": 219,
+   "players_in_table": 17,
+   "season": "2024-25",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 93
+  },
+  {
+   "archetypes": [
+    "201142",
+    "1631217",
+    "1628983",
+    "1641705",
+    "1631114",
+    "1641744"
+   ],
+   "artifact_sha256": "64df32d0ce3ed9211e7186820ee791fa40316baab023fb55bc12a219a768d4cc",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1886,
+    "estimate": 3235
+   },
+   "phase": "regular_season",
+   "players_in_fit": 569,
+   "players_in_table": 426,
+   "season": "2024-25",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  },
+  {
+   "archetypes": [],
+   "artifact_sha256": "614cc3a9b8a893694e9ba7d2a9786a7543c5a7b6b09957ea534face1197c4630",
+   "interval_entry": false,
+   "node_statuses": {
+    "below_qualification": 2031,
+    "no_interval": 39
+   },
+   "phase": "playoffs",
+   "players_in_fit": 230,
+   "players_in_table": 7,
+   "season": "2025-26",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 39
+  },
+  {
+   "archetypes": [
+    "203954",
+    "1630692",
+    "1630700",
+    "1641705",
+    "1629750",
+    "1642270"
+   ],
+   "artifact_sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+   "interval_entry": true,
+   "node_statuses": {
+    "below_qualification": 1934,
+    "estimate": 3304
+   },
+   "phase": "regular_season",
+   "players_in_fit": 582,
+   "players_in_table": 431,
+   "season": "2025-26",
+   "values_with_under_200_replicates": 0,
+   "values_without_interval": 0
+  }
+ ]
+}
