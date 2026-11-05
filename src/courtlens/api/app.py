@@ -12,6 +12,7 @@ from courtlens.api.metrics import metrics_response, observe_request
 from courtlens.api.routers import (
     auth,
     conversation,
+    defensive_shot_quality,
     fantasy,
     finance,
     live,
@@ -81,6 +82,7 @@ def create_app() -> FastAPI:
     application.include_router(signal_noise.router, prefix="/api")
     application.include_router(zts.router, prefix="/api")
     application.include_router(shot_quality.router, prefix="/api")
+    application.include_router(defensive_shot_quality.router, prefix="/api")
     application.include_router(auth.router, prefix="/api")
     application.include_router(fantasy.router, prefix="/api")
     application.add_api_route(

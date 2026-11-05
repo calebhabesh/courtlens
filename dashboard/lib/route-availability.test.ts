@@ -27,7 +27,7 @@ describe("release-bound route availability", () => {
     const pending = { ...catalog, capabilities: { ...catalog.capabilities, defensive_tracking: {
       status: "not_yet_observed", seasons: [], phases: [],
       limitations: ["Source admitted (hoopR NBA Stats raw); not yet ingested in this release."] } } } as unknown as WorkbenchCatalog;
-    const result = routeAvailability("/research/defensive-matchups", pending);
+    const result = routeAvailability("/research/defensive-matchups/tracking", pending);
     expect(result.secondary).toBe(true);
     expect(result.reason).toContain("not yet ingested");
     expect(result.reason).not.toContain("unavailable");

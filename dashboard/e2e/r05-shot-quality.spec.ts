@@ -24,6 +24,7 @@ test.describe("R05 Shot Quality", () => {
     await expect(rows.first().locator("[data-field='xpps']")).not.toHaveAttribute("data-tone", /.+/);
     await expect(page.getByRole("region", { name: "Key findings" })).toContainText("Accepted");
     await expect(page.getByText("RAPM decomposition (oTS, oSQ, oMake, oFT)", { exact: false })).toBeVisible();
+    await expect(page.getByRole("radio", { name: "Decomposition" })).toBeVisible();
   });
 
   test("the team, minimum and sort filters change the served board", async ({ page }) => {

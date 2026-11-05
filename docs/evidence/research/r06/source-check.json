@@ -1,0 +1,15 @@
+{
+ "worst": {
+  "a_avg_points": 3.43557626791835e-10,
+  "a_league_ft": 4.899991523643621e-10,
+  "a_league_sq": 3.5576874779508216e-10,
+  "a_shift": 4.760544146387158e-10,
+  "a_shots": 3.4924596548080444e-10,
+  "b_defender_dsq": 4.997628977321256e-10,
+  "b_defender_fga": 0.0,
+  "b_defender_pps": 4.993663260677295e-10,
+  "b_defender_xpps": 4.998907954245624e-10,
+  "b_league_fga": 0.0,
+  "b_league_term": 3.949493284499672e-10
+ }
+}

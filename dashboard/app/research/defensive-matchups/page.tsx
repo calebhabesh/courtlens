@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { DefensiveMatchupsView } from "@/components/defensive-matchups-view";
+import { DefensiveShotQualityView } from "@/components/defensive-shot-quality-view";
 import { TemplateSkeleton } from "@/components/ui/template-skeleton";
 
-export const metadata: Metadata = { title: "Defensive Matchups" };
+export const metadata: Metadata = { title: "Defensive Shot Quality" };
 
-export default function DefensiveMatchupsPage() {
-  return <Suspense fallback={<TemplateSkeleton template="research" />}><DefensiveMatchupsView /></Suspense>;
+export default function DefensiveShotQualityPage() {
+  return <Suspense fallback={<TemplateSkeleton template="research" />}><DefensiveShotQualityView /></Suspense>;
 }

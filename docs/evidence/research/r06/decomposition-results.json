@@ -1,0 +1,905 @@
+{
+ "data": {
+  "2022-23": {
+   "content_sha256": "7264ab59368e4378ca938a7533f6e4b9ce82e61283b576f9e962a75c5940a7f9",
+   "free_throws": {
+    "classified": {
+     "and_one": 6607,
+     "clear_path": 50,
+     "flagrant": 386,
+     "one_shot_other": 300,
+     "technical": 1435,
+     "three_shot": 2169,
+     "two_shot": 46934
+    },
+    "free_throws_scored": 57881,
+    "joined": 57847,
+    "season_free_throws": 57881,
+    "shooter_without_earlier_attempts": 190,
+    "unjoined": {
+     "game_not_admitted": 34
+    },
+    "unknown_sub_types": {}
+   },
+   "inputs": {
+    "pbp_archive_sha256": {
+     "2019-20": "3fc651e4c294e231723fa097dca2cf938dd868ee2b9a6111f22ab9c0728e89dc",
+     "2020-21": "8bbd2406d741f8247db9eec222bb1655ea699edb60907d3851a048b8ea7a798d",
+     "2021-22": "f44ec8a4a9864732fca66943ae4d06a06ef98ba3932571c15a23ecae644f84c4",
+     "2022-23": "42c24abf0abbc0ccef00addaba4b8c76df230a0ff3c0e5b301353307941fd04c"
+    },
+    "r01_admitted_games": 1229,
+    "r01_bundle_sha256": "0b39f913beca9c2ac353d6012a139350ebbdaf69ea420421faf3a1e9444b227c",
+    "r01_bundle_source": "courtlens-impact-history-v2",
+    "r03_ft_prior": {
+     "alpha": 17.447136,
+     "beta": 5.548912
+    },
+    "r05_model": "lightgbm_31",
+    "r05_model_sha256": "732df4d80d902390ffd3e18c0c7f5edbd798e090313c14d0f4c39cbe65246cd5",
+    "r05_platt": {
+     "a": 0.020050123,
+     "b": 0.972330149
+    },
+    "r05_table_sha256": "84a66b41afa88d7e5d5c1c4d7a34bc6ce4bbc7a4117781aabec0cbfbe2ceb0e4",
+    "r05_vocabulary_sha256": "cb8284f3109f7614e2e6392822577f0bb854ebfecc948ac036e601c7b814f982"
+   },
+   "join": {
+    "fga_joined_via_cdn": 514,
+    "fga_joined_via_v3": 216512,
+    "fga_without_r05_shot": 2,
+    "uncounted_segments_with_attempt": 2187
+   },
+   "kinds": {
+    "and_one": 6601,
+    "clear_path": 50,
+    "fga": 217026,
+    "flagrant": 386,
+    "one_shot_other": 300,
+    "technical": 1435,
+    "three_shot": 2169,
+    "two_shot": 46906
+   },
+   "possessions": {
+    "counted_possessions": 244164,
+    "counted_possessions_with_attempt_and_turnover": 3327,
+    "counted_possessions_without_attempt": 31328,
+    "counted_possessions_without_attempt_turnover": 31327,
+    "possessions": 246351
+   },
+   "r05_shots": {
+    "games": 1230,
+    "join_rate": 0.999116095,
+    "joined": 217026,
+    "shots": 217218,
+    "unjoined": {
+     "game_not_admitted": 191,
+     "not_on_a_possession": 1
+    },
+    "unjoined_games": 2
+   },
+   "recompute": {
+    "absolute_difference": 0.0,
+    "league_xpps": 1.096308853,
+    "r05_frozen_league_xpps": 1.096308853
+   },
+   "rows": 274873,
+   "season": "2022-23"
+  },
+  "2023-24": {
+   "content_sha256": "9144c9d262e2e3414136e7ffdec7d30a5171a94fcfffcef680353ba7ccc979e3",
+   "free_throws": {
+    "classified": {
+     "and_one": 6015,
+     "clear_path": 48,
+     "flagrant": 267,
+     "one_shot_other": 224,
+     "technical": 1479,
+     "three_shot": 1899,
+     "two_shot": 43498
+    },
+    "free_throws_scored": 53430,
+    "joined": 52783,
+    "season_free_throws": 53430,
+    "shooter_without_earlier_attempts": 200,
+    "unjoined": {
+     "game_not_admitted": 647
+    },
+    "unknown_sub_types": {}
+   },
+   "inputs": {
+    "pbp_archive_sha256": {
+     "2020-21": "8bbd2406d741f8247db9eec222bb1655ea699edb60907d3851a048b8ea7a798d",
+     "2021-22": "f44ec8a4a9864732fca66943ae4d06a06ef98ba3932571c15a23ecae644f84c4",
+     "2022-23": "42c24abf0abbc0ccef00addaba4b8c76df230a0ff3c0e5b301353307941fd04c",
+     "2023-24": "3a6976219b87fb50cecf8b2c54cb2af110f2f013ed8368d694035806802c8b04"
+    },
+    "r01_admitted_games": 1216,
+    "r01_bundle_sha256": "1aa4bbe6f275ae06647241a72c6900d377c101e10cbdc0b898b961e718effdd5",
+    "r01_bundle_source": "sealed-im03",
+    "r03_ft_prior": {
+     "alpha": 17.416325,
+     "beta": 5.473846
+    },
+    "r05_model": "lightgbm_31",
+    "r05_model_sha256": "732df4d80d902390ffd3e18c0c7f5edbd798e090313c14d0f4c39cbe65246cd5",
+    "r05_platt": {
+     "a": 0.020050123,
+     "b": 0.972330149
+    },
+    "r05_table_sha256": "196833fff2088c9bb8adf3b0b941eab76cb3e9ee2f8d848adca8f4ecc1391148",
+    "r05_vocabulary_sha256": "cb8284f3109f7614e2e6392822577f0bb854ebfecc948ac036e601c7b814f982"
+   },
+   "join": {
+    "fga_joined_via_cdn": 46990,
+    "fga_joined_via_v3": 169246,
+    "fga_without_r05_shot": 2,
+    "uncounted_segments_with_attempt": 1992
+   },
+   "kinds": {
+    "and_one": 5945,
+    "clear_path": 48,
+    "fga": 216236,
+    "flagrant": 263,
+    "one_shot_other": 222,
+    "technical": 1462,
+    "three_shot": 1884,
+    "two_shot": 42959
+   },
+   "possessions": {
+    "counted_possessions": 239681,
+    "counted_possessions_with_attempt_and_turnover": 3335,
+    "counted_possessions_without_attempt": 29724,
+    "counted_possessions_without_attempt_turnover": 29724,
+    "possessions": 241673
+   },
+   "r05_shots": {
+    "games": 1230,
+    "join_rate": 0.988728904,
+    "joined": 216236,
+    "shots": 218701,
+    "unjoined": {
+     "game_not_admitted": 2464,
+     "not_on_a_possession": 1
+    },
+    "unjoined_games": 15
+   },
+   "recompute": {
+    "absolute_difference": 0.0,
+    "league_xpps": 1.097742236,
+    "r05_frozen_league_xpps": 1.097742236
+   },
+   "rows": 269019,
+   "season": "2023-24"
+  },
+  "2024-25": {
+   "content_sha256": "ab544c3cccb7ab1b4c178ecdd4b4da5fb646316895bcf683690308ad19550e57",
+   "free_throws": {
+    "classified": {
+     "and_one": 5593,
+     "clear_path": 36,
+     "flagrant": 299,
+     "one_shot_other": 218,
+     "technical": 1074,
+     "three_shot": 2440,
+     "two_shot": 43652
+    },
+    "free_throws_scored": 53312,
+    "joined": 52516,
+    "season_free_throws": 53312,
+    "shooter_without_earlier_attempts": 237,
+    "unjoined": {
+     "game_not_admitted": 796
+    },
+    "unknown_sub_types": {}
+   },
+   "inputs": {
+    "pbp_archive_sha256": {
+     "2021-22": "f44ec8a4a9864732fca66943ae4d06a06ef98ba3932571c15a23ecae644f84c4",
+     "2022-23": "42c24abf0abbc0ccef00addaba4b8c76df230a0ff3c0e5b301353307941fd04c",
+     "2023-24": "3a6976219b87fb50cecf8b2c54cb2af110f2f013ed8368d694035806802c8b04",
+     "2024-25": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841"
+    },
+    "r01_admitted_games": 1212,
+    "r01_bundle_sha256": "b3fe49d5919562bc017e56652197057850f729e12031ca76eab66541967ec939",
+    "r01_bundle_source": "sealed-im03",
+    "r03_ft_prior": {
+     "alpha": 18.657986,
+     "beta": 5.852311
+    },
+    "r05_model": "lightgbm_31",
+    "r05_model_sha256": "732df4d80d902390ffd3e18c0c7f5edbd798e090313c14d0f4c39cbe65246cd5",
+    "r05_platt": {
+     "a": 0.020050123,
+     "b": 0.972330149
+    },
+    "r05_table_sha256": "e529ebe0b5c795c8b7c8433b0bba2b1c0600994027c29e11a52db61581b65caf",
+    "r05_vocabulary_sha256": "cb8284f3109f7614e2e6392822577f0bb854ebfecc948ac036e601c7b814f982"
+   },
+   "join": {
+    "fga_joined_via_cdn": 33923,
+    "fga_joined_via_v3": 182390,
+    "uncounted_segments_with_attempt": 1584
+   },
+   "kinds": {
+    "and_one": 5511,
+    "clear_path": 36,
+    "fga": 216313,
+    "flagrant": 293,
+    "one_shot_other": 216,
+    "technical": 1052,
+    "three_shot": 2419,
+    "two_shot": 42989
+   },
+   "possessions": {
+    "counted_possessions": 240025,
+    "counted_possessions_with_attempt_and_turnover": 3771,
+    "counted_possessions_without_attempt": 30891,
+    "counted_possessions_without_attempt_turnover": 30891,
+    "possessions": 241609
+   },
+   "r05_shots": {
+    "games": 1230,
+    "join_rate": 0.985359432,
+    "joined": 216313,
+    "shots": 219527,
+    "unjoined": {
+     "game_not_admitted": 3214
+    },
+    "unjoined_games": 18
+   },
+   "recompute": {
+    "absolute_difference": 0.0,
+    "league_xpps": 1.103797781,
+    "r05_frozen_league_xpps": 1.103797781
+   },
+   "rows": 268829,
+   "season": "2024-25"
+  },
+  "2025-26": {
+   "content_sha256": "b84b59f116ac7a4e1a9ddb49af628c2de61c227d98e65e0bb26584ad01edd77d",
+   "free_throws": {
+    "classified": {
+     "and_one": 5914,
+     "clear_path": 38,
+     "flagrant": 509,
+     "one_shot_other": 232,
+     "technical": 1086,
+     "three_shot": 2799,
+     "two_shot": 47190
+    },
+    "free_throws_scored": 57768,
+    "joined": 57623,
+    "season_free_throws": 57768,
+    "shooter_without_earlier_attempts": 271,
+    "unjoined": {
+     "game_not_admitted": 145
+    },
+    "unknown_sub_types": {}
+   },
+   "inputs": {
+    "pbp_archive_sha256": {
+     "2022-23": "42c24abf0abbc0ccef00addaba4b8c76df230a0ff3c0e5b301353307941fd04c",
+     "2023-24": "3a6976219b87fb50cecf8b2c54cb2af110f2f013ed8368d694035806802c8b04",
+     "2024-25": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+     "2025-26": "790a01ea3f0b2f8335d96bd687e21501551fc8cdea3ada83457ee3208a940671"
+    },
+    "r01_admitted_games": 1227,
+    "r01_bundle_sha256": "25002650fb6f299948c75cc9caf6a11d03e32c2dd0aefeb8a7c06a1126c59291",
+    "r01_bundle_source": "sealed-im03",
+    "r03_ft_prior": {
+     "alpha": 19.736077,
+     "beta": 6.127678
+    },
+    "r05_model": "lightgbm_31",
+    "r05_model_sha256": "732df4d80d902390ffd3e18c0c7f5edbd798e090313c14d0f4c39cbe65246cd5",
+    "r05_platt": {
+     "a": 0.020050123,
+     "b": 0.972330149
+    },
+    "r05_table_sha256": "5c68c0614ad40a26ede07e5fe54d586ffe3da013c26545c71f72811061b9b150",
+    "r05_vocabulary_sha256": "cb8284f3109f7614e2e6392822577f0bb854ebfecc948ac036e601c7b814f982"
+   },
+   "join": {
+    "fga_joined_via_cdn": 8287,
+    "fga_joined_via_v3": 210338,
+    "uncounted_segments_with_attempt": 1845
+   },
+   "kinds": {
+    "and_one": 5891,
+    "clear_path": 38,
+    "fga": 218625,
+    "flagrant": 509,
+    "one_shot_other": 231,
+    "technical": 1085,
+    "three_shot": 2787,
+    "two_shot": 47082
+   },
+   "possessions": {
+    "counted_possessions": 243866,
+    "counted_possessions_with_attempt_and_turnover": 3735,
+    "counted_possessions_without_attempt": 31874,
+    "counted_possessions_without_attempt_turnover": 31874,
+    "possessions": 245711
+   },
+   "r05_shots": {
+    "games": 1230,
+    "join_rate": 0.997558861,
+    "joined": 218625,
+    "shots": 219160,
+    "unjoined": {
+     "game_not_admitted": 534,
+     "not_on_a_possession": 1
+    },
+    "unjoined_games": 4
+   },
+   "recompute": {
+    "absolute_difference": 0.0,
+    "league_xpps": 1.107984014,
+    "r05_frozen_league_xpps": 1.107984014
+   },
+   "rows": 276248,
+   "season": "2025-26"
+  }
+ },
+ "persistence": {
+  "correlations": {
+   "defense:ft": {
+    "interval": [
+     0.328209701,
+     0.466879089
+    ],
+    "r": 0.403046928
+   },
+   "defense:make": {
+    "interval": [
+     0.049483702,
+     0.211542973
+    ],
+    "r": 0.134266737
+   },
+   "defense:sq": {
+    "interval": [
+     0.360457143,
+     0.489009204
+    ],
+    "r": 0.429598424
+   },
+   "defense:sq_minus_make": {
+    "interval": [
+     0.191624793,
+     0.397278172
+    ],
+    "r": 0.295331687
+   },
+   "defense:ts": {
+    "interval": [
+     0.170217759,
+     0.330049737
+    ],
+    "r": 0.249777139
+   },
+   "offense:ft": {
+    "interval": [
+     0.516124328,
+     0.661904353
+    ],
+    "r": 0.598187915
+   },
+   "offense:make": {
+    "interval": [
+     0.266636297,
+     0.426532521
+    ],
+    "r": 0.349275513
+   },
+   "offense:sq": {
+    "interval": [
+     0.358719775,
+     0.533441679
+    ],
+    "r": 0.450793412
+   },
+   "offense:sq_minus_make": {
+    "interval": [
+     -0.020644821,
+     0.211241148
+    ],
+    "r": 0.1015179
+   },
+   "offense:ts": {
+    "interval": [
+     0.290766185,
+     0.475142084
+    ],
+    "r": 0.388656972
+   }
+  },
+  "interval": 0.95,
+  "pairs": 863,
+  "pairs_by_season": {
+   "2022-23->2023-24": 292,
+   "2023-24->2024-25": 286,
+   "2024-25->2025-26": 285
+  },
+  "players": 398,
+  "registered_statistic": "offense:sq_minus_make",
+  "replicates": 2000,
+  "seed": 6006,
+  "verdict": "no clear difference"
+ },
+ "registration": {
+  "content_sha256": "0366bd7c4092f62dcb03c251060bdc0d718ced19295a1c34a07782bd6f6955b4",
+  "identity": "courtlens-shot-decomposition-v1",
+  "parameters": {
+   "additivity_tolerance": 1e-06,
+   "alpha": 3000.0,
+   "bootstrap_replicates": 200,
+   "ft_history_seasons": 3,
+   "min_games": 20,
+   "min_shots_each_side": 1000,
+   "percentiles": [
+    10,
+    90
+   ],
+   "persistence_interval": 0.95,
+   "persistence_replicates": 2000,
+   "scale": 100.0,
+   "seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "solve_tolerance": 1e-09,
+   "table_sha256": {
+    "2022-23": "7264ab59368e4378ca938a7533f6e4b9ce82e61283b576f9e962a75c5940a7f9",
+    "2023-24": "9144c9d262e2e3414136e7ffdec7d30a5171a94fcfffcef680353ba7ccc979e3",
+    "2024-25": "ab544c3cccb7ab1b4c178ecdd4b4da5fb646316895bcf683690308ad19550e57",
+    "2025-26": "b84b59f116ac7a4e1a9ddb49af628c2de61c227d98e65e0bb26584ad01edd77d"
+   },
+   "targets": [
+    "ts",
+    "sq",
+    "make",
+    "ft"
+   ],
+   "trip_sizes": {
+    "three_shot": 3,
+    "two_shot": 2
+   }
+  },
+  "registered_on": "2026-11-05"
+ },
+ "results_sha256": "1e437b5ebaf0cda1af2e4f97c8a398cb58143bf46586d52eb25e1006e13f9bad",
+ "seasons": {
+  "2022-23": {
+   "attempts": 274873,
+   "avg_points": 1.09055597,
+   "bootstrap": {
+    "percentiles": [
+     10,
+     90
+    ],
+    "replicates": 200,
+    "seed": [
+     6006,
+     2022,
+     0
+    ]
+   },
+   "coefficient_additivity_residual": {
+    "combined": 0.0,
+    "defense": 0.0,
+    "offense": 0.0
+   },
+   "expected_shift": -0.005796004,
+   "games": 1229,
+   "groups": 60105,
+   "home_coefficient_per_100": {
+    "ft": 0.060002862,
+    "make": 0.436100086,
+    "sq": 0.507443854,
+    "ts": 1.003546802
+   },
+   "kinds": {
+    "and_one": 6601,
+    "clear_path": 50,
+    "fga": 217026,
+    "flagrant": 386,
+    "one_shot_other": 300,
+    "technical": 1435,
+    "three_shot": 2169,
+    "two_shot": 46906
+   },
+   "league_per_100_shots": {
+    "ft": 7.716219684,
+    "make": -0.0,
+    "sq": 109.055597025,
+    "ts": 116.771816709
+   },
+   "median_interval_width": {
+    "combined": {
+     "ft": 0.59339873,
+     "make": 3.008001331,
+     "sq": 0.817591852,
+     "ts": 3.273274497
+    },
+    "defense": {
+     "ft": 0.441863176,
+     "make": 2.218322148,
+     "sq": 0.666395432,
+     "ts": 2.335067659
+    },
+    "offense": {
+     "ft": 0.44599595,
+     "make": 2.200946917,
+     "sq": 0.660465578,
+     "ts": 2.316034829
+    }
+   },
+   "players_qualified": 367,
+   "players_rated": 539,
+   "row_additivity_residual": 0.0,
+   "season": "2022-23",
+   "second_stage": {
+    "combined": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 367,
+     "r2": 1.0
+    },
+    "defense": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 367,
+     "r2": 1.0
+    },
+    "offense": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 367,
+     "r2": 1.0
+    }
+   },
+   "shots": 241202.0,
+   "zero_shot_group_values": {
+    "ft": 139.04461634,
+    "make": 0.0,
+    "sq": 0.0,
+    "ts": 139.04461634
+   },
+   "zero_shot_groups": 146
+  },
+  "2023-24": {
+   "attempts": 269019,
+   "avg_points": 1.093462698,
+   "bootstrap": {
+    "percentiles": [
+     10,
+     90
+    ],
+    "replicates": 200,
+    "seed": [
+     6006,
+     2023,
+     1
+    ]
+   },
+   "coefficient_additivity_residual": {
+    "combined": 0.0,
+    "defense": 0.0,
+    "offense": 0.0
+   },
+   "expected_shift": -0.004515071,
+   "games": 1216,
+   "groups": 58645,
+   "home_coefficient_per_100": {
+    "ft": 0.049291639,
+    "make": 0.255736541,
+    "sq": 0.515530275,
+    "ts": 0.820558455
+   },
+   "kinds": {
+    "and_one": 5945,
+    "clear_path": 48,
+    "fga": 216236,
+    "flagrant": 263,
+    "one_shot_other": 222,
+    "technical": 1462,
+    "three_shot": 1884,
+    "two_shot": 42959
+   },
+   "league_per_100_shots": {
+    "ft": 7.164216286,
+    "make": 0.0,
+    "sq": 109.346269816,
+    "ts": 116.510486102
+   },
+   "median_interval_width": {
+    "combined": {
+     "ft": 0.584874986,
+     "make": 3.042605581,
+     "sq": 0.806089996,
+     "ts": 3.28864764
+    },
+    "defense": {
+     "ft": 0.425923221,
+     "make": 2.187694396,
+     "sq": 0.663713712,
+     "ts": 2.303144001
+    },
+    "offense": {
+     "ft": 0.428767791,
+     "make": 2.199835294,
+     "sq": 0.661013232,
+     "ts": 2.284241562
+    }
+   },
+   "players_qualified": 359,
+   "players_rated": 572,
+   "row_additivity_residual": 0.0,
+   "season": "2023-24",
+   "second_stage": {
+    "combined": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 359,
+     "r2": 1.0
+    },
+    "defense": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 359,
+     "r2": 1.0
+    },
+    "offense": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 359,
+     "r2": 1.0
+    }
+   },
+   "shots": 238343.5,
+   "zero_shot_group_values": {
+    "ft": 110.262561231,
+    "make": 0.0,
+    "sq": 0.0,
+    "ts": 110.262561231
+   },
+   "zero_shot_groups": 109
+  },
+  "2024-25": {
+   "attempts": 268829,
+   "avg_points": 1.086582868,
+   "bootstrap": {
+    "percentiles": [
+     10,
+     90
+    ],
+    "replicates": 200,
+    "seed": [
+     6006,
+     2024,
+     2
+    ]
+   },
+   "coefficient_additivity_residual": {
+    "combined": 0.0,
+    "defense": 0.0,
+    "offense": 0.0
+   },
+   "expected_shift": -0.017173153,
+   "games": 1212,
+   "groups": 60309,
+   "home_coefficient_per_100": {
+    "ft": 0.046343074,
+    "make": 0.318626137,
+    "sq": 0.387988057,
+    "ts": 0.752957269
+   },
+   "kinds": {
+    "and_one": 5511,
+    "clear_path": 36,
+    "fga": 216313,
+    "flagrant": 293,
+    "one_shot_other": 216,
+    "technical": 1052,
+    "three_shot": 2419,
+    "two_shot": 42989
+   },
+   "league_per_100_shots": {
+    "ft": 6.97654699,
+    "make": -0.0,
+    "sq": 108.658286834,
+    "ts": 115.634833824
+   },
+   "median_interval_width": {
+    "combined": {
+     "ft": 0.583808255,
+     "make": 3.023927346,
+     "sq": 0.815149293,
+     "ts": 3.263699432
+    },
+    "defense": {
+     "ft": 0.425053062,
+     "make": 2.252161689,
+     "sq": 0.685603306,
+     "ts": 2.348761719
+    },
+    "offense": {
+     "ft": 0.421136741,
+     "make": 2.173956662,
+     "sq": 0.67851283,
+     "ts": 2.279944581
+    }
+   },
+   "players_qualified": 370,
+   "players_rated": 569,
+   "row_additivity_residual": 0.0,
+   "season": "2024-25",
+   "second_stage": {
+    "combined": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 370,
+     "r2": 1.0
+    },
+    "defense": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 370,
+     "r2": 1.0
+    },
+    "offense": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 370,
+     "r2": 1.0
+    }
+   },
+   "shots": 238613.833333333,
+   "zero_shot_group_values": {
+    "ft": 115.895120638,
+    "make": 0.0,
+    "sq": 0.0,
+    "ts": 115.895120638
+   },
+   "zero_shot_groups": 113
+  },
+  "2025-26": {
+   "attempts": 276248,
+   "avg_points": 1.091361921,
+   "bootstrap": {
+    "percentiles": [
+     10,
+     90
+    ],
+    "replicates": 200,
+    "seed": [
+     6006,
+     2025,
+     3
+    ]
+   },
+   "coefficient_additivity_residual": {
+    "combined": 0.0,
+    "defense": 0.0,
+    "offense": 0.0
+   },
+   "expected_shift": -0.016729112,
+   "games": 1227,
+   "groups": 65091,
+   "home_coefficient_per_100": {
+    "ft": 0.110158466,
+    "make": 0.388499182,
+    "sq": 0.388332881,
+    "ts": 0.88699053
+   },
+   "kinds": {
+    "and_one": 5891,
+    "clear_path": 38,
+    "fga": 218625,
+    "flagrant": 509,
+    "one_shot_other": 231,
+    "technical": 1085,
+    "three_shot": 2787,
+    "two_shot": 47082
+   },
+   "league_per_100_shots": {
+    "ft": 7.466265053,
+    "make": 0.0,
+    "sq": 109.13619211,
+    "ts": 116.602457163
+   },
+   "median_interval_width": {
+    "combined": {
+     "ft": 0.596883485,
+     "make": 3.103547635,
+     "sq": 0.799763882,
+     "ts": 3.328439603
+    },
+    "defense": {
+     "ft": 0.438371882,
+     "make": 2.247565516,
+     "sq": 0.65553826,
+     "ts": 2.347931058
+    },
+    "offense": {
+     "ft": 0.442760879,
+     "make": 2.2670838,
+     "sq": 0.656801096,
+     "ts": 2.360341896
+    }
+   },
+   "players_qualified": 379,
+   "players_rated": 582,
+   "row_additivity_residual": 0.0,
+   "season": "2025-26",
+   "second_stage": {
+    "combined": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 379,
+     "r2": 1.0
+    },
+    "defense": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 379,
+     "r2": 1.0
+    },
+    "offense": {
+     "coefficients": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "players": 379,
+     "r2": 1.0
+    }
+   },
+   "shots": 243095.0,
+   "zero_shot_group_values": {
+    "ft": 140.937400276,
+    "make": 0.0,
+    "sq": 0.0,
+    "ts": 140.937400276
+   },
+   "zero_shot_groups": 133
+  }
+ }
+}

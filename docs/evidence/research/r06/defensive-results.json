@@ -1,0 +1,522 @@
+{
+ "agreement_with_rapm": {
+  "correlations": {
+   "make": {
+    "interval": [
+     0.445082218,
+     0.544132601
+    ],
+    "r": 0.494970912
+   },
+   "sq": {
+    "interval": [
+     0.167388977,
+     0.295170638
+    ],
+    "r": 0.23115147
+   },
+   "ts": {
+    "interval": [
+     0.539824386,
+     0.62729219
+    ],
+    "r": 0.584229701
+   }
+  },
+  "pairs": 1274,
+  "players": 507
+ },
+ "data": {
+  "2017-18": {
+   "archive_sha256": "c09c1c5a54ceb9af0e3c31a3452f912ebdc721a763be9e0360b0a6f8abcb0d66",
+   "content_sha256": "95a67773facb6081cd3a9c7f03d42803436484eae54c6b706e18aa7abca746f8",
+   "counts": {
+    "fg3a": 71049,
+    "fg_points": 236534,
+    "fga": 228953,
+    "help_fga": 0,
+    "rows": 231888,
+    "rows_without_fga": 118394
+   },
+   "games": 1222,
+   "season": "2017-18",
+   "table_rows": 113494
+  },
+  "2018-19": {
+   "archive_sha256": "e618b602d809969384c583e263896397b8279abe456e435f38bae2b9d64e5644",
+   "content_sha256": "e13f321bdaaf76e8014cb135fc2fe1e00c04843184ba3c5451acee22d2256933",
+   "counts": {
+    "fg3a": 79111,
+    "fg_points": 248370,
+    "fga": 239014,
+    "help_fga": 0,
+    "rows": 232985,
+    "rows_without_fga": 115837
+   },
+   "games": 1223,
+   "season": "2018-19",
+   "table_rows": 117148
+  },
+  "2019-20": {
+   "archive_sha256": "930ee633aa45645ace1e3c4c6111139ee0c85363d74786ec2ad96e6ae9b95ea4",
+   "content_sha256": "da24636da142b921f724515f03170eb6cbfbb527323e40d5e6615711731b57c0",
+   "counts": {
+    "fg3a": 63985,
+    "fg_points": 197291,
+    "fga": 188630,
+    "help_fga": 0,
+    "rows": 181840,
+    "rows_without_fga": 88772
+   },
+   "games": 967,
+   "season": "2019-20",
+   "table_rows": 93068
+  },
+  "2020-21": {
+   "archive_sha256": "2d5ea06bf51c59fe0903e90a81de601d3d1751b15e811d2ba731ab68846d4dd8",
+   "content_sha256": "3bf503ff1aef961916ccd5e416406716e5802eb52ea788aead1314a6d4d0395c",
+   "counts": {
+    "fg3a": 73486,
+    "fg_points": 225735,
+    "fga": 211954,
+    "help_fga": 0,
+    "rows": 202195,
+    "rows_without_fga": 98122
+   },
+   "games": 1080,
+   "season": "2020-21",
+   "table_rows": 104073
+  },
+  "2021-22": {
+   "archive_sha256": "71e5fff86639b5e08d29a77692013e5a4eee8a5f3733c7af870656b2c6f81b3c",
+   "content_sha256": "43f0fe929a246940afb52aeeb6016458b692908fd1a1b7b319db13fccc4300d0",
+   "counts": {
+    "fg3a": 84481,
+    "fg_points": 252340,
+    "fga": 239546,
+    "help_fga": 0,
+    "rows": 229901,
+    "rows_without_fga": 110140
+   },
+   "games": 1229,
+   "season": "2021-22",
+   "table_rows": 119761
+  },
+  "2022-23": {
+   "archive_sha256": "9beaa66f389b6e2b5c538ab8738332c09f1b6a57087065b097da35eacc69b215",
+   "content_sha256": "898454914e980879e92e86de95cee3dac629408c33c1b8d45cfad36f237d8eaa",
+   "counts": {
+    "fg3a": 82248,
+    "fg_points": 262092,
+    "fga": 242622,
+    "help_fga": 0,
+    "rows": 229185,
+    "rows_without_fga": 109908
+   },
+   "games": 1230,
+   "season": "2022-23",
+   "table_rows": 119277
+  },
+  "2023-24": {
+   "archive_sha256": "c91a1dad0d7649b38eb885455291c63139675e52eeda75c0b6269e4bc64aa52e",
+   "content_sha256": "2045e46324c8407809b6a9644c20eb1d4b0786a4552946cb610de737b10729f0",
+   "counts": {
+    "fg3a": 83793,
+    "fg_points": 262068,
+    "fga": 242617,
+    "help_fga": 0,
+    "rows": 230703,
+    "rows_without_fga": 111725
+   },
+   "games": 1227,
+   "season": "2023-24",
+   "table_rows": 118978
+  },
+  "2024-25": {
+   "archive_sha256": "a83b80a597533a503b7cc35d859827d67e3a9ff064242e7d2da2955c1e911f35",
+   "content_sha256": "c6350ae939dd868fa86deea697c54dd005546e7b6dd33ff3440800d53425825a",
+   "counts": {
+    "fg3a": 90144,
+    "fg_points": 257899,
+    "fga": 240606,
+    "help_fga": 0,
+    "rows": 231961,
+    "rows_without_fga": 111311
+   },
+   "games": 1229,
+   "season": "2024-25",
+   "table_rows": 120650
+  },
+  "2025-26": {
+   "archive_sha256": "4c3ab0fb760f00238f6e9639761152a791b2f5a8eda3d14779f0bac41b7c92ef",
+   "content_sha256": "c758f4450464958102a96b646b99e17b273d93d6694fde8d905c44ca4ce13f63",
+   "counts": {
+    "fg3a": 88697,
+    "fg_points": 258169,
+    "fga": 239965,
+    "help_fga": 0,
+    "rows": 240839,
+    "rows_without_fga": 116883
+   },
+   "games": 1230,
+   "season": "2025-26",
+   "table_rows": 123956
+  }
+ },
+ "persistence": {
+  "correlations": {
+   "dsq": {
+    "interval": [
+     0.354342083,
+     0.474149971
+    ],
+    "r": 0.417448472
+   },
+   "pps": {
+    "interval": [
+     0.32374709,
+     0.433925522
+    ],
+    "r": 0.381764147
+   },
+   "xpps": {
+    "interval": [
+     0.832686524,
+     0.856958029
+    ],
+    "r": 0.845533781
+   }
+  },
+  "pairs": 1903,
+  "pairs_by_season": {
+   "2017-18->2018-19": 233,
+   "2018-19->2019-20": 219,
+   "2019-20->2020-21": 226,
+   "2020-21->2021-22": 250,
+   "2021-22->2022-23": 247,
+   "2022-23->2023-24": 252,
+   "2023-24->2024-25": 237,
+   "2024-25->2025-26": 239
+  },
+  "players": 538
+ },
+ "registration": {
+  "content_sha256": "fed20026bda06b3652b60bff450b0b605801a46067d66e0cd705ad1537af32cd",
+  "identity": "courtlens-defensive-shot-quality-v1",
+  "parameters": {
+   "bootstrap_replicates": 2000,
+   "interval": 0.95,
+   "key_matchups": 5,
+   "kinds": [
+    "all",
+    "2pt",
+    "3pt"
+   ],
+   "min_fga": 300,
+   "min_type_fga": 100,
+   "part_a_results_sha256": "1e437b5ebaf0cda1af2e4f97c8a398cb58143bf46586d52eb25e1006e13f9bad",
+   "seasons": [
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "table_sha256": {
+    "2017-18": "95a67773facb6081cd3a9c7f03d42803436484eae54c6b706e18aa7abca746f8",
+    "2018-19": "e13f321bdaaf76e8014cb135fc2fe1e00c04843184ba3c5451acee22d2256933",
+    "2019-20": "da24636da142b921f724515f03170eb6cbfbb527323e40d5e6615711731b57c0",
+    "2020-21": "3bf503ff1aef961916ccd5e416406716e5802eb52ea788aead1314a6d4d0395c",
+    "2021-22": "43f0fe929a246940afb52aeeb6016458b692908fd1a1b7b319db13fccc4300d0",
+    "2022-23": "898454914e980879e92e86de95cee3dac629408c33c1b8d45cfad36f237d8eaa",
+    "2023-24": "2045e46324c8407809b6a9644c20eb1d4b0786a4552946cb610de737b10729f0",
+    "2024-25": "c6350ae939dd868fa86deea697c54dd005546e7b6dd33ff3440800d53425825a",
+    "2025-26": "c758f4450464958102a96b646b99e17b273d93d6694fde8d905c44ca4ce13f63"
+   }
+  },
+  "registered_on": "2026-11-05"
+ },
+ "results_sha256": "5c2c9cb5f9f973c09d0e7098f04665044ec499ef8d3d061f4aa6a0d5b14447b3",
+ "seasons": {
+  "2017-18": {
+   "defenders": 535,
+   "defenders_served": 305,
+   "games": 1222,
+   "interval_excludes_zero": 44,
+   "interval_excludes_zero_share": 0.144262295,
+   "league": {
+    "2pt": {
+     "fga": 157904.0,
+     "pps": 1.01090536,
+     "term": -0.004720454,
+     "xpps": 1.006184907
+    },
+    "3pt": {
+     "fga": 71049.0,
+     "pps": 1.082464215,
+     "term": -0.009711275,
+     "xpps": 1.07275294
+    },
+    "all": {
+     "fga": 228953.0,
+     "pps": 1.033111599,
+     "term": -0.006269212,
+     "xpps": 1.026842387
+    }
+   },
+   "median_interval_width": 17.726303697,
+   "season": "2017-18",
+   "table_rows": 113494
+  },
+  "2018-19": {
+   "defenders": 523,
+   "defenders_served": 318,
+   "games": 1223,
+   "interval_excludes_zero": 50,
+   "interval_excludes_zero_share": 0.157232704,
+   "league": {
+    "2pt": {
+     "fga": 159903.0,
+     "pps": 1.027185231,
+     "term": -0.003844145,
+     "xpps": 1.023341086
+    },
+    "3pt": {
+     "fga": 79111.0,
+     "pps": 1.0633161,
+     "term": 0.00474241,
+     "xpps": 1.06805851
+    },
+    "all": {
+     "fga": 239014.0,
+     "pps": 1.039144151,
+     "term": -0.00100209,
+     "xpps": 1.03814206
+    }
+   },
+   "median_interval_width": 17.252847334,
+   "season": "2018-19",
+   "table_rows": 117148
+  },
+  "2019-20": {
+   "defenders": 510,
+   "defenders_served": 281,
+   "games": 967,
+   "interval_excludes_zero": 56,
+   "interval_excludes_zero_share": 0.199288256,
+   "league": {
+    "2pt": {
+     "fga": 124645.0,
+     "pps": 1.035773597,
+     "term": -0.003124705,
+     "xpps": 1.032648892
+    },
+    "3pt": {
+     "fga": 63985.0,
+     "pps": 1.065671642,
+     "term": 0.004118212,
+     "xpps": 1.069789854
+    },
+    "all": {
+     "fga": 188630.0,
+     "pps": 1.045915284,
+     "term": -0.000667842,
+     "xpps": 1.045247442
+    }
+   },
+   "median_interval_width": 18.895819972,
+   "season": "2019-20",
+   "table_rows": 93068
+  },
+  "2020-21": {
+   "defenders": 537,
+   "defenders_served": 313,
+   "games": 1080,
+   "interval_excludes_zero": 41,
+   "interval_excludes_zero_share": 0.130990415,
+   "league": {
+    "2pt": {
+     "fga": 138468.0,
+     "pps": 1.050177658,
+     "term": -0.0015505,
+     "xpps": 1.048627159
+    },
+    "3pt": {
+     "fga": 73486.0,
+     "pps": 1.092983698,
+     "term": -0.010150656,
+     "xpps": 1.082833042
+    },
+    "all": {
+     "fga": 211954.0,
+     "pps": 1.065018825,
+     "term": -0.004532237,
+     "xpps": 1.060486588
+    }
+   },
+   "median_interval_width": 18.896682149,
+   "season": "2020-21",
+   "table_rows": 104073
+  },
+  "2021-22": {
+   "defenders": 595,
+   "defenders_served": 325,
+   "games": 1229,
+   "interval_excludes_zero": 51,
+   "interval_excludes_zero_share": 0.156923077,
+   "league": {
+    "2pt": {
+     "fga": 155065.0,
+     "pps": 1.053880631,
+     "term": 0.000139132,
+     "xpps": 1.054019763
+    },
+    "3pt": {
+     "fga": 84481.0,
+     "pps": 1.052544359,
+     "term": 0.012985107,
+     "xpps": 1.065529467
+    },
+    "all": {
+     "fga": 239546.0,
+     "pps": 1.053409366,
+     "term": 0.004669539,
+     "xpps": 1.058078905
+    }
+   },
+   "median_interval_width": 18.045008431,
+   "season": "2021-22",
+   "table_rows": 119761
+  },
+  "2022-23": {
+   "defenders": 534,
+   "defenders_served": 319,
+   "games": 1229,
+   "interval_excludes_zero": 42,
+   "interval_excludes_zero_share": 0.131661442,
+   "league": {
+    "2pt": {
+     "fga": 160374.0,
+     "pps": 1.083355157,
+     "term": -0.003205936,
+     "xpps": 1.080149221
+    },
+    "3pt": {
+     "fga": 82248.0,
+     "pps": 1.074190254,
+     "term": -0.000395302,
+     "xpps": 1.073794952
+    },
+    "all": {
+     "fga": 242622.0,
+     "pps": 1.080248287,
+     "term": -0.002253141,
+     "xpps": 1.077995146
+    }
+   },
+   "median_interval_width": 17.591241384,
+   "season": "2022-23",
+   "table_rows": 119277
+  },
+  "2023-24": {
+   "defenders": 569,
+   "defenders_served": 309,
+   "games": 1225,
+   "interval_excludes_zero": 45,
+   "interval_excludes_zero_share": 0.145631068,
+   "league": {
+    "2pt": {
+     "fga": 158824.0,
+     "pps": 1.074850149,
+     "term": 0.000626956,
+     "xpps": 1.075477104
+    },
+    "3pt": {
+     "fga": 83793.0,
+     "pps": 1.090258136,
+     "term": -0.005287729,
+     "xpps": 1.084970408
+    },
+    "all": {
+     "fga": 242617.0,
+     "pps": 1.080171629,
+     "term": -0.001415808,
+     "xpps": 1.078755821
+    }
+   },
+   "median_interval_width": 17.474367105,
+   "season": "2023-24",
+   "table_rows": 118978
+  },
+  "2024-25": {
+   "defenders": 568,
+   "defenders_served": 319,
+   "games": 1228,
+   "interval_excludes_zero": 50,
+   "interval_excludes_zero_share": 0.156739812,
+   "league": {
+    "2pt": {
+     "fga": 150462.0,
+     "pps": 1.071845383,
+     "term": 0.002896764,
+     "xpps": 1.074742147
+    },
+    "3pt": {
+     "fga": 90144.0,
+     "pps": 1.071918264,
+     "term": 0.003422164,
+     "xpps": 1.075340428
+    },
+    "all": {
+     "fga": 240606.0,
+     "pps": 1.071872688,
+     "term": 0.003093607,
+     "xpps": 1.074966295
+    }
+   },
+   "median_interval_width": 17.894527492,
+   "season": "2024-25",
+   "table_rows": 120650
+  },
+  "2025-26": {
+   "defenders": 581,
+   "defenders_served": 329,
+   "games": 1230,
+   "interval_excludes_zero": 50,
+   "interval_excludes_zero_share": 0.151975684,
+   "league": {
+    "2pt": {
+     "fga": 151268.0,
+     "pps": 1.08243647,
+     "term": 0.002213233,
+     "xpps": 1.084649704
+    },
+    "3pt": {
+     "fga": 88697.0,
+     "pps": 1.064647057,
+     "term": 0.011353067,
+     "xpps": 1.076000124
+    },
+    "all": {
+     "fga": 239965.0,
+     "pps": 1.075861063,
+     "term": 0.005591542,
+     "xpps": 1.081452605
+    }
+   },
+   "median_interval_width": 18.286985547,
+   "season": "2025-26",
+   "table_rows": 123956
+  }
+ },
+ "signal": {
+  "defender_seasons": 2818,
+  "interval_excludes_zero": 429,
+  "share": 0.152235628,
+  "share_expected_if_no_signal": 0.05
+ }
+}

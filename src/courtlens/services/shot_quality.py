@@ -87,9 +87,9 @@ CREDIT = (
 REFERENCE_NOTE = (
     "Design reference: a saved copy of Databallr's ShotQuality RAPM page (header, filters, ranked "
     "table in points per 100 shots, how-to-read and methodology panels). That page shows a RAPM "
-    "decomposition (oTS, oSQ, oMake, oFT), which is Research block R06. It has no model card, "
-    "calibration curve or per-player shot-making view, so those parts of this page have no "
-    "reference."
+    "decomposition (oTS, oSQ, oMake, oFT), which is this page's Decomposition tab. It has no "
+    "model card, calibration curve or per-player shot-making view, so those parts of this page "
+    "have no reference."
 )
 
 
