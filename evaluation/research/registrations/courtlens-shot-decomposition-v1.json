@@ -1,0 +1,104 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-shot-decomposition-v1",
+  "block": "R06",
+  "registered_on": "2026-11-05",
+  "kind": "descriptive",
+  "question": "Using CourtLens's accepted expected-shot model and the R01 possessions, how does each player's lineup-adjusted shooting impact split into shot quality, shot making and free-throw value, on offence and defence, with what uncertainty? And does shot making (oMake) carry over from one season to the next less than shot quality (oSQ)?",
+  "inputs": [
+    "Possessions: the accepted regular-season R01 bundles for 2022-23 (history v2) and 2023-24 to 2025-26 (sealed IM03), every game member checked by content SHA-256. Hash-pinned modules are read, never edited. Each possession's own offence and defence lineup is used for all its events.",
+    "Expected points: courtlens-expected-shot-v2's accepted serving_model lightgbm_31 (saved run a, SHA-256 732df4d8..., vocabulary cb8284f3...), calibrated with the frozen 2023-24 Platt values a = 0.020050123, b = 0.972330149. Never refitted. Field-goal points only. The table build recomputes R05's frozen league xPPS per season and fails beyond 1e-6 (measured at most 4.3e-10).",
+    "Free throws: PlayByPlayV3 archives, the SHA-256 pins R05 read (subType, personId, teamId, description). FT% prior: R03's frozen league Beta prior for FT% for the target season (courtlens-signal-noise-v1, fitted on the three earlier seasons only).",
+    "Attempt tables: built before this registration by courtlens.evaluation.shot_decomposition_data (two builds, identical content hashes) and pinned in parameters.table_sha256. The runner refuses any other table.",
+    "DATA CHECK (done before this registration; counts and joins only, no regression, no player value). R05 shots joined to possession events by (game, action number), requiring the same team and result: 2022-23 217,026 of 217,218 (99.91%); 2023-24 216,236 of 218,701 (98.87%); 2024-25 216,313 of 219,527 (98.54%); 2025-26 218,625 of 219,160 (99.76%). Unjoined shots are in games R01 excluded (2, 15, 18 and 4 games), plus one stray shot in each of 2022-23, 2023-24 and 2025-26. They have no lineup and are out of the fit. CDN-located events use the same numbering as v3 (514, 46,990, 33,923 and 8,287 field goals), with team and result agreeing on every one. Two possession field goals in each of 2022-23 and 2023-24 have no R05 shot and are out, counted, never zero. Free throws: every subType in all seasons is classified, 0 unknown; joined 57,847 of 57,881, 52,783 of 53,430, 52,516 of 53,312, 57,623 of 57,768, the rest in excluded games. Counted possessions without an attempt: 31,328, 29,724, 30,891 and 31,874, of which 1 in 2022-23 has no turnover; they carry no weight."
+  ],
+  "method": [
+    "SEASONS. 2022-23 to 2025-26, one fit per regular season: the seasons the R05 model was not trained on, and the four R05 serves player shot-making for. 2014-15 to 2021-22 are excluded because expected values there would be in-sample. Disclosure: 2022-23 chose the R05 model and 2023-24 fitted its two Platt parameters, so those two are not untouched by the model, but no tree was fitted on them. Only 2024-25 and 2025-26 are R05's test seasons.",
+    "ATTEMPT VALUES (Databallr's table). Field-goal attempt: 1 shot; TS = actual field-goal points; SQ = v * p' + shift; MAKE = TS - SQ; FT = 0. Free throw of a 2-shot trip: 1/2 shot; TS = expected FT value; SQ = avg_pts / 2; FT = TS - SQ; MAKE = 0. 3-shot trip: 1/3 shot; the same with avg_pts / 3. Every other free throw (and-one, technical, flagrant, clear path, one-shot away-from-play or transition take): 0 shots, SQ = 0, FT = TS = expected FT value, MAKE = 0, because no possession was replaced. Flagrant, clear-path and other one-shot trips are CourtLens's extension of Databallr's and-one and technical rule, since the team keeps the ball. TS = SQ + MAKE + FT on every row by construction, and the runner measures it.",
+    "SEASON CONSTANTS. avg_pts = mean actual field-goal points per included FGA in the season. shift = avg_pts - mean(v * p') over the same shots, Databallr's per-year additive calibration, so MAKE averages zero per season. These read the same season, which is acceptable for a descriptive fit and is stated.",
+    "TRIP CLASSIFICATION. From the PlayByPlayV3 subType. 'Free Throw 1 of 1' is an and-one when an unpaired made field goal by the shooter's team has the same period and clock (the shooter may be a substitute), otherwise one-shot other. A row is a miss when its description starts 'MISS ' (case and space matter; Yves Missi's makes read 'Missi Free Throw'). The result is checked against the possession's own count.",
+    "EXPECTED FT VALUE. p = (alpha_t + M) / (alpha_t + beta_t + A), with alpha_t and beta_t R03's FT% prior for season t and M, A the shooter's makes and attempts in regular-season games of seasons t-3 to t on dates strictly before this game. Nothing at or after the trip is read. A shooter with no earlier attempt gets the prior mean (190 to 271 free throws per season). Actual FT results therefore enter neither TS nor FT, as on Databallr's page.",
+    "RIDGE DESIGN. Weighted least squares of value per shot on offence indicators, defence indicators and a signed home column (+1 home offence, -1 away offence), with an unpenalised intercept, all other columns penalised: the sealed six-factor design. Differences from the sealed fits: rows are sums of attempts by game, offence five, defence five and home side, using the possession's lineup rather than stint rows (coefficients equal one row per attempt; a test proves it); the weight is shots, not 2 x TSA; the target is points per shot. Groups with zero shots carry no weight and their values are reported.",
+    "PENALTY. alpha = 3000 for all four targets, both sides, all seasons, fixed, no cross-validation. Reason: it is Databallr's published value, no choice reads outcomes, and one penalty on the same design and weights makes ridge linear in the target, so coefficients add up. Solved exactly (dense normal equations); the relative solve residual must be at most 1e-9. Difference from Databallr: one season per fit with no time decay and no multi-year window (the persistence check needs seasons fitted independently), so the same alpha shrinks harder here than on Databallr's three years. Values are not comparable with Databallr's.",
+    "RATINGS. Coefficient minus the shot-weighted mean over players, per side, times 100: points per 100 shots against the average player. Defence is sign-flipped so positive is always good. Combined = offence + defence.",
+    "QUALIFICATION. A player's values are served with at least 20 games and at least 1,000 shots on each side in the season; otherwise status small_sample and no value, shown as unknown.",
+    "SECOND STAGE. Among qualified players, weighted least squares without intercept of oTS on oSQ + oMake + oFT (weight: offence shots), the same for defence (defence shots) and combined (both). Coefficients and R^2 are reported.",
+    "PERSISTENCE (held-out across seasons; fits are independent). Pairs 2022-23 to 2023-24, 2023-24 to 2024-25, 2024-25 to 2025-26, players qualified in both. Pooled Pearson correlation weighted by the harmonic mean of the side's shots in the two seasons. REGISTERED STATISTIC: r(oSQ) - r(oMake). Reported beside it, no statement attached: oTS, oFT and all defensive values, and r(dSQ) - r(dContest). Disclosure: R05's player-level persistence (xPPS r = 0.845, shot-making r = 0.625) was read before this registration, so the expected direction is known; the lineup-adjusted values have not been computed.",
+    "RUN ORDER. There is no choice to make, so there is one pass. Any change after results are read is disclosed; analysis changes require v2. Timings live in the run log, never in the hashed results.",
+    "CREDIT. The four parallel regressions, foul-type baselines and second-stage check are Databallr's method (ShotQuality RAPM page), the expected-value concept ShotQuality's. CourtLens does not use the paid ShotQuality feed: its expected values have no defender or tracking information, and its numbers are its own."
+  ],
+  "parameters": {
+    "seasons": [
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "targets": [
+      "ts",
+      "sq",
+      "make",
+      "ft"
+    ],
+    "alpha": 3000.0,
+    "scale": 100.0,
+    "min_games": 20,
+    "min_shots_each_side": 1000,
+    "bootstrap_replicates": 200,
+    "percentiles": [
+      10,
+      90
+    ],
+    "persistence_replicates": 2000,
+    "persistence_interval": 0.95,
+    "ft_history_seasons": 3,
+    "trip_sizes": {
+      "two_shot": 2,
+      "three_shot": 3
+    },
+    "solve_tolerance": 1e-09,
+    "additivity_tolerance": 1e-06,
+    "table_sha256": {
+      "2022-23": "7264ab59368e4378ca938a7533f6e4b9ce82e61283b576f9e962a75c5940a7f9",
+      "2023-24": "9144c9d262e2e3414136e7ffdec7d30a5171a94fcfffcef680353ba7ccc979e3",
+      "2024-25": "ab544c3cccb7ab1b4c178ecdd4b4da5fb646316895bcf683690308ad19550e57",
+      "2025-26": "b84b59f116ac7a4e1a9ddb49af628c2de61c227d98e65e0bb26584ad01edd77d"
+    }
+  },
+  "selection": "None. Seasons, targets, baselines, penalty, qualification and the persistence statistic are fixed here, before any coefficient is computed.",
+  "uncertainty": "Game bootstrap as in R01: 200 replicates, whole games resampled with replacement within the season (multinomial counts), seed SeedSequence([6006, starting year, season index]), the expected values, avg_pts and shift held fixed, refit at the fixed alpha. 10th and 90th percentiles are served, for every value of every qualified player on offence, defence and combined. Intervals describe game sampling at a fixed penalty and a fixed model and understate total uncertainty. Persistence: player-cluster bootstrap, 2,000 replicates, seed 6006, 95% percentile intervals.",
+  "evaluation": [
+    "Per season: attempts, shots, kinds, avg_pts, shift, league values per 100 shots, groups, zero-shot groups and their values, players rated and qualified, home coefficients.",
+    "Additivity: largest row residual and largest coefficient residual |TS - (SQ + MAKE + FT)| across all rated players, per side.",
+    "Second stage: coefficients and R^2 per side and season.",
+    "Interval widths: median 80% width per value and side among qualified players.",
+    "Persistence: every correlation with its interval, the pairs and players, and the registered statistic with its statement: 'oMake persists less than oSQ' if the 95% interval of r(oSQ) - r(oMake) is above 0, 'oMake persists more than oSQ' if below 0, otherwise 'no clear difference'.",
+    "Reproducibility: two runs give the same results hash."
+  ],
+  "acceptance": [
+    "Descriptive: there is no gate on any value. The run fails if a solve misses its tolerance, a value is non-finite, the coefficient additivity residual exceeds 1e-6, a table hash differs, or a module constant differs from this registration.",
+    "Every served player-season has a status, and every value an interval or a named unknown.",
+    "Two runs give the same results hash.",
+    "The persistence result is published whichever way it goes."
+  ],
+  "outputs": [
+    "evaluation/research/frozen/courtlens-shot-decomposition-v1.json (served by the API)",
+    "data/derived/shot-decomposition-v1/tables (attempt tables, content-hashed, git-ignored)",
+    "docs/evidence/research/r06/ (registration receipt, data check, per-season summaries and persistence)"
+  ],
+  "limitations": [
+    "The expected-shot model has no defender, shot-clock or tracking data, and R05 found it slightly worse than location alone on 3-pointers, so oSQ and oMake split what free data can see, not true shot quality: an open look and a contested one at the same spot share an expected value, and the gap lands in oMake or dContest.",
+    "Lineup confounding: ridge separates players who share the floor only partly. These are descriptive estimates, not causal effects. No box-score prior.",
+    "One-season fits at alpha 3000 are heavily shrunk, which pulls values toward zero and does not change a correlation's meaning but does change the scale.",
+    "One possession uses one lineup, so a free throw after a substitution is credited to the possession's lineup.",
+    "Attempts on a possession that later ends in a turnover keep their value; Databallr's wording excludes turnover possessions (3,327 to 3,771 per season here). Pure turnover possessions carry no weight, so turnovers do not lower any value.",
+    "Excluded games (2 to 18 per season) have no lineups."
+  ],
+  "negative_result_policy": "Publish every number whatever it shows, including a persistence result that goes against the expected direction or is inconclusive.",
+  "seed": 6006,
+  "budget": {
+    "cpu_threads": 1,
+    "max_peak_mib": 4096,
+    "max_wall_seconds": 1800
+  }
+}
