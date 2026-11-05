@@ -81,7 +81,7 @@ export const NAV_MENUS: NavMenu[] = [
     id: "research",
     label: "Research",
     // The Research handoff's target menu (D8), limited to pages that exist. Each later block adds its
-    // own item: Lineup Model, Metric Backtest, Learning, Draft Classes and so on.
+    // own item: Lineup Model, Learning, Draft Classes and so on.
     // Case Studies and Saved Investigations moved to Methodology; Evaluation Archive is reached from Points Forecasts and Methodology.
     groups: [
       { title: "Models", items: [
@@ -90,6 +90,7 @@ export const NAV_MENUS: NavMenu[] = [
       ] },
       { title: "Impact", items: [
         { label: "Six-Factor RAPM", href: "/research/rapm/six-factor", icon: "gauge", description: "Player impact ratings and their six-factor breakdown" },
+        { label: "Metric Backtest", href: "/research/backtest", icon: "chart-trend", description: "Which impact metric best predicts real game results" },
       ] },
       { title: "Shooting", items: [
         { label: "Shooting", href: "/research/shooting", icon: "target", description: "Expected shots, adjusted shooting and what follows a shot" },
