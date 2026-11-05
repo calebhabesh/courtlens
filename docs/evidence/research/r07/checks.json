@@ -1,0 +1,332 @@
+{
+ "F2_causality": {
+  "passed": true,
+  "seasons": {
+   "2016-17": {
+    "feature_sha256": "c2a9aba9cd4ed7f1488762b17f4a2f7cb885a638e76939d5737c5f533fcdaa0b",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2017-18": {
+    "feature_sha256": "6a57bed877c02f7adfcbcb866a79cb8958ef3947d3cc39d0e54cd4499c8f70a6",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2018-19": {
+    "feature_sha256": "dc1116f0d077d8896aed232a1b3e859d11ecac9784d07bbaf8ceec102740c49b",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2019-20": {
+    "feature_sha256": "011768fed686f65f8caa18f0249db8e31f53edffa19f95b2d890a244f1ba0e21",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2020-21": {
+    "feature_sha256": "f0d096627acdf288e30088c7079588049753ed09f4fb52c4876d975198b191e8",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2021-22": {
+    "feature_sha256": "47eee104d9bea7bbe702d55ee883f021ebf4e4cfd0b1f221f0fe1f7910618ed8",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2022-23": {
+    "feature_sha256": "7a2b05a46ec7ed9a9cdba1041b1405c5efb325a60e6971737540b94042659077",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2023-24": {
+    "feature_sha256": "a621e1b02cf155cf0d781ca2ac8cd19f0a53dc991eb7535b0c3cabd51888ea7d",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2024-25": {
+    "feature_sha256": "629af039ec4406ceba34f3be65fd88599656185015761be7bf7069c399ad5134",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2025-26": {
+    "feature_sha256": "c500946235eb6d89e77a6b5c7adf7e20fd12426f856eb2be1cb7937837cdd6e9",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   },
+   "2026-27": {
+    "feature_sha256": "6ddfb577cfb3129402c2c03d8f1a964d95c89871f7cd194f4a428cc288884ef8",
+    "unchanged_when_changed": true,
+    "unchanged_when_removed": true
+   }
+  }
+ },
+ "F3_windows": {
+  "passed": true,
+  "seasons": {
+   "2016-17": {
+    "feature_games": 2460,
+    "shared_games": 0,
+    "target_games": 1206
+   },
+   "2017-18": {
+    "feature_games": 2460,
+    "shared_games": 0,
+    "target_games": 1217
+   },
+   "2018-19": {
+    "feature_games": 2460,
+    "shared_games": 0,
+    "target_games": 1227
+   },
+   "2019-20": {
+    "feature_games": 2460,
+    "shared_games": 0,
+    "target_games": 1033
+   },
+   "2020-21": {
+    "feature_games": 2289,
+    "shared_games": 0,
+    "target_games": 1074
+   },
+   "2021-22": {
+    "feature_games": 2139,
+    "shared_games": 0,
+    "target_games": 1228
+   },
+   "2022-23": {
+    "feature_games": 2310,
+    "shared_games": 0,
+    "target_games": 1229
+   },
+   "2023-24": {
+    "feature_games": 2460,
+    "shared_games": 0,
+    "target_games": 1216
+   },
+   "2024-25": {
+    "feature_games": 2460,
+    "shared_games": 0,
+    "target_games": 1212
+   },
+   "2025-26": {
+    "feature_games": 2460,
+    "shared_games": 0,
+    "target_games": 1227
+   }
+  }
+ },
+ "F4_prospective_build": {
+  "cutoff": "2026-10-20",
+  "games_2026_27_in_boxes": 107,
+  "games_2026_27_in_features": 0,
+  "passed": true,
+  "same_feature_columns_as_test": true,
+  "snapshot_latest_game_date": "2026-04-12"
+ },
+ "coverage": {
+  "birth_date_sources": {
+   "espn_roster": 73,
+   "nba_player_index": 2388
+  },
+  "by_season": {
+   "2016-17": {
+    "age": 0.9917695473251029,
+    "any_feature_missing": 0.9279835390946503,
+    "box": 0.7942386831275721,
+    "groups": {
+     "prior": 386,
+     "returner": 10,
+     "rookie": 90
+    },
+    "play_type_offense": 0.6707818930041153,
+    "players": 486,
+    "rapm_t_minus_1": 0.7942386831275721,
+    "rapm_t_minus_2": 0.6810699588477366,
+    "shot_profile": 0.7921810699588477,
+    "six_factors": 0.7942386831275721,
+    "time_decay_snapshot": 0.808641975308642,
+    "years_in_league": 1.0
+   },
+   "2017-18": {
+    "age": 0.9796296296296296,
+    "any_feature_missing": 0.9462962962962963,
+    "box": 0.725925925925926,
+    "groups": {
+     "prior": 392,
+     "returner": 25,
+     "rookie": 123
+    },
+    "play_type_offense": 0.5925925925925926,
+    "players": 540,
+    "rapm_t_minus_1": 0.725925925925926,
+    "rapm_t_minus_2": 0.6055555555555555,
+    "shot_profile": 0.7240740740740741,
+    "six_factors": 0.725925925925926,
+    "time_decay_snapshot": 0.7648148148148148,
+    "years_in_league": 1.0
+   },
+   "2018-19": {
+    "age": 0.9830188679245283,
+    "any_feature_missing": 0.9509433962264151,
+    "box": 0.7773584905660378,
+    "groups": {
+     "prior": 412,
+     "returner": 12,
+     "rookie": 106
+    },
+    "play_type_offense": 0.6547169811320754,
+    "players": 530,
+    "rapm_t_minus_1": 0.7773584905660378,
+    "rapm_t_minus_2": 0.620754716981132,
+    "shot_profile": 0.7754716981132076,
+    "six_factors": 0.7773584905660378,
+    "time_decay_snapshot": 0.7962264150943397,
+    "years_in_league": 1.0
+   },
+   "2019-20": {
+    "age": 0.9867674858223062,
+    "any_feature_missing": 0.9546313799621928,
+    "box": 0.7561436672967864,
+    "groups": {
+     "prior": 400,
+     "returner": 10,
+     "rookie": 119
+    },
+    "play_type_offense": 0.6408317580340265,
+    "players": 529,
+    "rapm_t_minus_1": 0.7561436672967864,
+    "rapm_t_minus_2": 0.6257088846880907,
+    "shot_profile": 0.7561436672967864,
+    "six_factors": 0.7561436672967864,
+    "time_decay_snapshot": 0.775047258979206,
+    "years_in_league": 1.0
+   },
+   "2020-21": {
+    "age": 0.9851851851851852,
+    "any_feature_missing": 0.9407407407407408,
+    "box": 0.8055555555555556,
+    "groups": {
+     "prior": 435,
+     "returner": 11,
+     "rookie": 94
+    },
+    "play_type_offense": 0.6703703703703704,
+    "players": 540,
+    "rapm_t_minus_1": 0.8055555555555556,
+    "rapm_t_minus_2": 0.6351851851851852,
+    "shot_profile": 0.8037037037037037,
+    "six_factors": 0.8055555555555556,
+    "time_decay_snapshot": 0.825925925925926,
+    "years_in_league": 1.0
+   },
+   "2021-22": {
+    "age": 0.943801652892562,
+    "any_feature_missing": 0.9603305785123967,
+    "box": 0.743801652892562,
+    "groups": {
+     "prior": 450,
+     "returner": 29,
+     "rookie": 126
+    },
+    "play_type_offense": 0.6247933884297521,
+    "players": 605,
+    "rapm_t_minus_1": 0.743801652892562,
+    "rapm_t_minus_2": 0.6363636363636364,
+    "shot_profile": 0.743801652892562,
+    "six_factors": 0.743801652892562,
+    "time_decay_snapshot": 0.7917355371900826,
+    "years_in_league": 1.0
+   },
+   "2022-23": {
+    "age": 0.9907235621521335,
+    "any_feature_missing": 0.9443413729128015,
+    "box": 0.8033395176252319,
+    "groups": {
+     "prior": 433,
+     "returner": 21,
+     "rookie": 85
+    },
+    "play_type_offense": 0.6827458256029685,
+    "players": 539,
+    "rapm_t_minus_1": 0.8033395176252319,
+    "rapm_t_minus_2": 0.6716141001855288,
+    "shot_profile": 0.8033395176252319,
+    "six_factors": 0.8033395176252319,
+    "time_decay_snapshot": 0.8423005565862709,
+    "years_in_league": 1.0
+   },
+   "2023-24": {
+    "age": 0.972027972027972,
+    "any_feature_missing": 0.9423076923076923,
+    "box": 0.7867132867132867,
+    "groups": {
+     "prior": 450,
+     "returner": 21,
+     "rookie": 101
+    },
+    "play_type_offense": 0.6573426573426573,
+    "players": 572,
+    "rapm_t_minus_1": 0.7867132867132867,
+    "rapm_t_minus_2": 0.6695804195804196,
+    "shot_profile": 0.784965034965035,
+    "six_factors": 0.7867132867132867,
+    "time_decay_snapshot": 0.8234265734265734,
+    "years_in_league": 1.0
+   },
+   "2024-25": {
+    "age": 0.9789103690685413,
+    "any_feature_missing": 0.9947275922671354,
+    "box": 0.7855887521968365,
+    "groups": {
+     "prior": 447,
+     "returner": 18,
+     "rookie": 104
+    },
+    "play_type_offense": 0.5325131810193322,
+    "players": 569,
+    "rapm_t_minus_1": 0.7855887521968365,
+    "rapm_t_minus_2": 0.6731107205623902,
+    "shot_profile": 0.7838312829525483,
+    "six_factors": 0.7855887521968365,
+    "time_decay_snapshot": 0.8154657293497364,
+    "years_in_league": 1.0
+   },
+   "2025-26": {
+    "age": 0.9742268041237113,
+    "any_feature_missing": 0.9415807560137457,
+    "box": 0.7972508591065293,
+    "groups": {
+     "prior": 464,
+     "returner": 15,
+     "rookie": 103
+    },
+    "play_type_offense": 0.6168384879725086,
+    "players": 582,
+    "rapm_t_minus_1": 0.7972508591065293,
+    "rapm_t_minus_2": 0.6597938144329897,
+    "shot_profile": 0.7972508591065293,
+    "six_factors": 0.7972508591065293,
+    "time_decay_snapshot": 0.8213058419243986,
+    "years_in_league": 1.0
+   },
+   "2026-27": {
+    "age": 0.9742268041237113,
+    "any_feature_missing": 0.9329896907216495,
+    "box": 1.0,
+    "groups": {
+     "prior": 582,
+     "returner": 0,
+     "rookie": 0
+    },
+    "play_type_offense": 0.6872852233676976,
+    "players": 582,
+    "rapm_t_minus_1": 1.0,
+    "rapm_t_minus_2": 0.7972508591065293,
+    "shot_profile": 1.0,
+    "six_factors": 1.0,
+    "time_decay_snapshot": 1.0,
+    "years_in_league": 1.0
+   }
+  }
+ },
+ "passed": true
+}

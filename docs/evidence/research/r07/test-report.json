@@ -1,0 +1,740 @@
+{
+ "gates": {
+  "A1_player": {
+   "gap": 4.3755320940624625,
+   "high": 5.49824006486669,
+   "level": 0.95,
+   "low": 3.2510852982620806,
+   "passed": true,
+   "units": 537
+  },
+  "A2_game": {
+   "gap": 13.415553100542022,
+   "high": 17.142548846753332,
+   "level": 0.95,
+   "low": 9.549468684775096,
+   "passed": true,
+   "units": 2460
+  },
+  "F1_coverage": {
+   "buckets_within_limit": false,
+   "overall_within_limit": false,
+   "passed": false
+  }
+ },
+ "pooled": {
+  "coverage": {
+   "by_prior_minutes": {
+    "1500_plus": {
+     "coverage": 0.8269794721407625,
+     "half_width": 3.9013519459331354,
+     "players": 341
+    },
+    "500_to_1499": {
+     "coverage": 0.8305084745762712,
+     "half_width": 3.4901670905317306,
+     "players": 236
+    },
+    "no_prior": {
+     "coverage": 0.8953488372093024,
+     "half_width": 4.405814455944156,
+     "players": 86
+    },
+    "under_500": {
+     "coverage": 0.891566265060241,
+     "half_width": 4.704480643409204,
+     "players": 83
+    }
+   },
+   "by_target_minutes_diagnostic": {
+    "1000+": {
+     "coverage": 0.8224543080939948,
+     "players": 383
+    },
+    "2000+": {
+     "coverage": 0.8404907975460123,
+     "players": 163
+    },
+    "500+": {
+     "coverage": 0.885,
+     "players": 200
+    }
+   },
+   "mean_width": 7.837566711911124,
+   "nominal": 0.8,
+   "overall": {
+    "coverage": 0.8431635388739946,
+    "players": 746
+   }
+  },
+  "game": {
+   "games": 2460,
+   "gaps": {
+    "age_curve_over_carry_forward": {
+     "gap": -1.9234975744067844,
+     "high": -0.9197288317610292,
+     "level": 0.95,
+     "low": -2.990676893828246,
+     "units": 2460
+    },
+    "age_curve_over_time_decay": {
+     "gap": -12.484506145828837,
+     "high": -9.284265106246952,
+     "level": 0.95,
+     "low": -15.821726182782333,
+     "units": 2460
+    },
+    "lightgbm_over_carry_forward": {
+     "gap": 13.415553100542022,
+     "high": 17.142548846753332,
+     "level": 0.95,
+     "low": 9.549468684775096,
+     "units": 2460
+    },
+    "lightgbm_over_time_decay": {
+     "gap": 2.8545445291199694,
+     "high": 5.329521147952031,
+     "level": 0.95,
+     "low": 0.46479183135382085,
+     "units": 2460
+    },
+    "ridge_over_carry_forward": {
+     "gap": 17.757124593962736,
+     "high": 21.58224149019196,
+     "level": 0.95,
+     "low": 14.025912593481008,
+     "units": 2460
+    },
+    "ridge_over_time_decay": {
+     "gap": 7.196116022540682,
+     "high": 9.458700716802166,
+     "level": 0.95,
+     "low": 4.807867586353044,
+     "units": 2460
+    }
+   },
+   "ratings": {
+    "age_curve": {
+     "rmse": 15.175113090739568,
+     "winner_accuracy": 0.6398373983739838
+    },
+    "carry_forward": {
+     "rmse": 15.111603480184648,
+     "winner_accuracy": 0.6386178861788618
+    },
+    "lightgbm": {
+     "rmse": 14.66100292073454,
+     "winner_accuracy": 0.666260162601626
+    },
+    "ridge": {
+     "rmse": 14.512182301375832,
+     "winner_accuracy": 0.6800813008130081
+    },
+    "time_decay": {
+     "rmse": 14.758033445242853,
+     "winner_accuracy": 0.6654471544715447
+    }
+   }
+  },
+  "groups": {
+   "returner": {
+    "group_mean_rule_rmse": 2.6432955954273547,
+    "minutes": 13415.866666666669,
+    "models": {
+     "lightgbm": {
+      "gap_over_group_mean": {
+       "gap": 0.040882646478875614,
+       "high": 2.3348420150729954,
+       "level": 0.95,
+       "low": -1.9090844636711437,
+       "units": 33
+      },
+      "rmse": 2.6355509781309063
+     },
+     "ridge": {
+      "gap_over_group_mean": {
+       "gap": -0.0707409125943704,
+       "high": 1.5955660217589032,
+       "level": 0.95,
+       "low": -1.5341284948875735,
+       "units": 33
+      },
+      "rmse": 2.656643091836015
+     },
+     "time_decay": {
+      "gap_over_group_mean": {
+       "gap": 0.5880516102383271,
+       "high": 3.9233075041420675,
+       "level": 0.95,
+       "low": -1.6057104176464825,
+       "units": 33
+      },
+      "rmse": 2.5296165706619105
+     }
+    },
+    "players": 33
+   },
+   "rookie": {
+    "group_mean_rule_rmse": 2.9307400572599156,
+    "minutes": 118220.09166666667,
+    "models": {
+     "lightgbm": {
+      "gap_over_group_mean": {
+       "gap": 0.17937191855679965,
+       "high": 0.4398532548963445,
+       "level": 0.95,
+       "low": -0.07597293174874273,
+       "units": 207
+      },
+      "rmse": 2.8999767869193462
+     },
+     "ridge": {
+      "gap_over_group_mean": {
+       "gap": -0.3771179590327397,
+       "high": 0.20400382559824753,
+       "level": 0.95,
+       "low": -0.9871066302910777,
+       "units": 207
+      },
+      "rmse": 2.9943872899577624
+     },
+     "time_decay": {
+      "gap_over_group_mean": {
+       "gap": 0.0,
+       "high": 0.0,
+       "level": 0.95,
+       "low": 0.0,
+       "units": 207
+      },
+      "rmse": 2.9307400572599156
+     }
+    },
+    "players": 207
+   }
+  },
+  "player": {
+   "gaps": {
+    "age_curve_over_carry_forward": {
+     "gap": 0.19653237558194556,
+     "high": 0.36913168363919124,
+     "level": 0.95,
+     "low": 0.03977808891705422,
+     "units": 537
+    },
+    "age_curve_over_time_decay": {
+     "gap": -2.87688779008581,
+     "high": -1.9496367393520984,
+     "level": 0.95,
+     "low": -3.765880771586009,
+     "units": 537
+    },
+    "lightgbm_over_carry_forward": {
+     "gap": 4.3755320940624625,
+     "high": 5.49824006486669,
+     "level": 0.95,
+     "low": 3.2510852982620806,
+     "units": 537
+    },
+    "lightgbm_over_time_decay": {
+     "gap": 1.3021119283947074,
+     "high": 1.9956486297809326,
+     "level": 0.95,
+     "low": 0.6479128327306972,
+     "units": 537
+    },
+    "ridge_over_carry_forward": {
+     "gap": 4.6949070919411415,
+     "high": 5.829257912514507,
+     "level": 0.95,
+     "low": 3.5538710166315974,
+     "units": 537
+    },
+    "ridge_over_time_decay": {
+     "gap": 1.621486926273386,
+     "high": 2.3500588409784764,
+     "level": 0.95,
+     "low": 0.9534951774993481,
+     "units": 537
+    }
+   },
+   "minutes": 1045384.0416666665,
+   "models": {
+    "age_curve": {
+     "correlation": 0.353582668158714,
+     "rmse": 3.48166330927709
+    },
+    "carry_forward": {
+     "correlation": 0.3590450110719037,
+     "rmse": 3.5097737497947414
+    },
+    "lightgbm": {
+     "correlation": 0.43976006833641107,
+     "rmse": 2.818329235679497
+    },
+    "ridge": {
+     "correlation": 0.4735619815115934,
+     "rmse": 2.7610875905713494
+    },
+    "time_decay": {
+     "correlation": 0.45848964446972806,
+     "rmse": 3.040574223576936
+    }
+   },
+   "players": 911
+  }
+ },
+ "read_at": "2026-11-05T04:28:35+00:00",
+ "registration": {
+  "content_sha256": "4c6bf16d1da1fc76097a66baee53ce22264c55a8e312fe098749823870fa10d9",
+  "identity": "courtlens-projected-impact-v1",
+  "parameters": {
+   "age_curve_degree": 3,
+   "bootstrap": {
+    "game_unit": "game",
+    "player_unit": "player across seasons",
+    "replicates": 2000
+   },
+   "coverage_limits": {
+    "overall": 0.03,
+    "prior_minutes_bucket": 0.08
+   },
+   "interval_min_target_minutes": 500,
+   "lightgbm_grid": {
+    "max_rounds": 600,
+    "min_data_in_leaf": [
+     20,
+     50
+    ],
+    "num_leaves": [
+     4,
+     8,
+     16
+    ],
+    "round_step": 25
+   },
+   "minute_buckets": [
+    500,
+    1500
+   ],
+   "nominal_coverage": 0.8,
+   "ridge_alpha_grid": [
+    1,
+    3,
+    10,
+    30,
+    100,
+    300,
+    1000,
+    3000,
+    10000,
+    30000,
+    100000
+   ],
+   "seed": 2701,
+   "splits": {
+    "prospective": [
+     "2026-27"
+    ],
+    "select_and_calibrate": [
+     "2023-24"
+    ],
+    "test": [
+     "2024-25",
+     "2025-26"
+    ],
+    "train_targets": [
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23"
+    ]
+   },
+   "validation_seasons": [
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23"
+   ]
+  },
+  "registered_on": "2026-11-05"
+ },
+ "seasons": {
+  "2024-25": {
+   "coverage": {
+    "by_prior_minutes": {
+     "1500_plus": {
+      "coverage": 0.8388888888888889,
+      "half_width": 3.9013519459331354,
+      "players": 180
+     },
+     "500_to_1499": {
+      "coverage": 0.822429906542056,
+      "half_width": 3.4901670905317306,
+      "players": 107
+     },
+     "no_prior": {
+      "coverage": 0.8837209302325582,
+      "half_width": 4.405814455944156,
+      "players": 43
+     },
+     "under_500": {
+      "coverage": 0.9473684210526315,
+      "half_width": 4.704480643409204,
+      "players": 38
+     }
+    },
+    "by_target_minutes_diagnostic": {
+     "1000+": {
+      "coverage": 0.8241758241758241,
+      "players": 182
+     },
+     "2000+": {
+      "coverage": 0.8604651162790697,
+      "players": 86
+     },
+     "500+": {
+      "coverage": 0.89,
+      "players": 100
+     }
+    },
+    "mean_width": 7.847345190271783,
+    "nominal": 0.8,
+    "overall": {
+     "coverage": 0.8505434782608695,
+     "players": 368
+    }
+   },
+   "game": {
+    "games": 1230,
+    "gaps": {
+     "age_curve_over_carry_forward": {
+      "gap": -1.8333060504943515,
+      "high": -0.4086811217472476,
+      "level": 0.95,
+      "low": -3.1917744011526694,
+      "units": 1230
+     },
+     "age_curve_over_time_decay": {
+      "gap": -10.119916732977396,
+      "high": -5.502170095757926,
+      "level": 0.95,
+      "low": -14.536368741594284,
+      "units": 1230
+     },
+     "lightgbm_over_carry_forward": {
+      "gap": 9.095186486461824,
+      "high": 14.061565462635205,
+      "level": 0.95,
+      "low": 4.130220693748706,
+      "units": 1230
+     },
+     "lightgbm_over_time_decay": {
+      "gap": 0.8085758039787797,
+      "high": 4.135443969454731,
+      "level": 0.95,
+      "low": -2.432751720823658,
+      "units": 1230
+     },
+     "ridge_over_carry_forward": {
+      "gap": 10.601202200921374,
+      "high": 15.29175408713507,
+      "level": 0.95,
+      "low": 5.6522000049235395,
+      "units": 1230
+     },
+     "ridge_over_time_decay": {
+      "gap": 2.31459151843833,
+      "high": 5.292247925847517,
+      "level": 0.95,
+      "low": -0.630660784687708,
+      "units": 1230
+     }
+    },
+    "ratings": {
+     "age_curve": {
+      "rmse": 14.764195802786295,
+      "winner_accuracy": 0.651219512195122
+     },
+     "carry_forward": {
+      "rmse": 14.701978494492437,
+      "winner_accuracy": 0.6414634146341464
+     },
+     "lightgbm": {
+      "rmse": 14.38933581393027,
+      "winner_accuracy": 0.6617886178861788
+     },
+     "ridge": {
+      "rmse": 14.336909340984086,
+      "winner_accuracy": 0.6707317073170732
+     },
+     "time_decay": {
+      "rmse": 14.41740479316701,
+      "winner_accuracy": 0.667479674796748
+     }
+    },
+    "unprojected_minutes_share": 0.0
+   },
+   "player": {
+    "gaps": {
+     "age_curve_over_carry_forward": {
+      "gap": 0.24034472344690636,
+      "high": 0.7350929244268227,
+      "level": 0.95,
+      "low": -0.1312034665862469,
+      "units": 447
+     },
+     "age_curve_over_time_decay": {
+      "gap": -2.90642360696653,
+      "high": -1.509587636348695,
+      "level": 0.95,
+      "low": -4.253319068508874,
+      "units": 447
+     },
+     "lightgbm_over_carry_forward": {
+      "gap": 4.799660069538968,
+      "high": 6.5378234008699305,
+      "level": 0.95,
+      "low": 3.17009175034108,
+      "units": 447
+     },
+     "lightgbm_over_time_decay": {
+      "gap": 1.652891739125531,
+      "high": 2.6782934934737828,
+      "level": 0.95,
+      "low": 0.7026759190498989,
+      "units": 447
+     },
+     "ridge_over_carry_forward": {
+      "gap": 5.12599354865649,
+      "high": 6.891138634965337,
+      "level": 0.95,
+      "low": 3.4334064310969388,
+      "units": 447
+     },
+     "ridge_over_time_decay": {
+      "gap": 1.9792252182430539,
+      "high": 3.0833252161206577,
+      "level": 0.95,
+      "low": 0.9491429717747397,
+      "units": 447
+     }
+    },
+    "minutes": 521881.50833333324,
+    "models": {
+     "age_curve": {
+      "correlation": 0.3232973325830215,
+      "rmse": 3.5428155152010783
+     },
+     "carry_forward": {
+      "correlation": 0.3302114974085444,
+      "rmse": 3.5765746879097025
+     },
+     "lightgbm": {
+      "correlation": 0.3944427573427147,
+      "rmse": 2.8270526045083453
+     },
+     "ridge": {
+      "correlation": 0.4276231485158687,
+      "rmse": 2.768734900552939
+     },
+     "time_decay": {
+      "correlation": 0.42154647960909764,
+      "rmse": 3.105659055302586
+     }
+    },
+    "players": 447
+   }
+  },
+  "2025-26": {
+   "coverage": {
+    "by_prior_minutes": {
+     "1500_plus": {
+      "coverage": 0.8136645962732919,
+      "half_width": 3.9013519459331354,
+      "players": 161
+     },
+     "500_to_1499": {
+      "coverage": 0.8372093023255814,
+      "half_width": 3.4901670905317306,
+      "players": 129
+     },
+     "no_prior": {
+      "coverage": 0.9069767441860465,
+      "half_width": 4.405814455944156,
+      "players": 43
+     },
+     "under_500": {
+      "coverage": 0.8444444444444444,
+      "half_width": 4.704480643409204,
+      "players": 45
+     }
+    },
+    "by_target_minutes_diagnostic": {
+     "1000+": {
+      "coverage": 0.8208955223880597,
+      "players": 201
+     },
+     "2000+": {
+      "coverage": 0.8181818181818182,
+      "players": 77
+     },
+     "500+": {
+      "coverage": 0.88,
+      "players": 100
+     }
+    },
+    "mean_width": 7.828046923454185,
+    "nominal": 0.8,
+    "overall": {
+     "coverage": 0.8359788359788359,
+     "players": 378
+    }
+   },
+   "game": {
+    "games": 1230,
+    "gaps": {
+     "age_curve_over_carry_forward": {
+      "gap": -2.0136890983192166,
+      "high": -0.4755530783141552,
+      "level": 0.95,
+      "low": -3.581896266751079,
+      "units": 1230
+     },
+     "age_curve_over_time_decay": {
+      "gap": -14.849095558680279,
+      "high": -10.013724199206775,
+      "level": 0.95,
+      "low": -19.517464850555374,
+      "units": 1230
+     },
+     "lightgbm_over_carry_forward": {
+      "gap": 17.73591971462222,
+      "high": 23.343023148788614,
+      "level": 0.95,
+      "low": 11.912025570044623,
+      "units": 1230
+     },
+     "lightgbm_over_time_decay": {
+      "gap": 4.900513254261157,
+      "high": 8.640532902444743,
+      "level": 0.95,
+      "low": 0.947547922329488,
+      "units": 1230
+     },
+     "ridge_over_carry_forward": {
+      "gap": 24.913046987004094,
+      "high": 30.469650186463852,
+      "level": 0.95,
+      "low": 19.43209762917586,
+      "units": 1230
+     },
+     "ridge_over_time_decay": {
+      "gap": 12.077640526643036,
+      "high": 15.949284750743816,
+      "level": 0.95,
+      "low": 8.33607025484807,
+      "units": 1230
+     }
+    },
+    "ratings": {
+     "age_curve": {
+      "rmse": 15.575192998176892,
+      "winner_accuracy": 0.6284552845528455
+     },
+     "carry_forward": {
+      "rmse": 15.510414173455823,
+      "winner_accuracy": 0.6357723577235772
+     },
+     "lightgbm": {
+      "rmse": 14.92772682351593,
+      "winner_accuracy": 0.6707317073170732
+     },
+     "ridge": {
+      "rmse": 14.685363490398704,
+      "winner_accuracy": 0.6894308943089431
+     },
+     "time_decay": {
+      "rmse": 15.090975494373389,
+      "winner_accuracy": 0.6634146341463415
+     }
+    },
+    "unprojected_minutes_share": 0.0
+   },
+   "player": {
+    "gaps": {
+     "age_curve_over_carry_forward": {
+      "gap": 0.1528556926023972,
+      "high": 0.46537208380919787,
+      "level": 0.95,
+      "low": -0.18299549487565045,
+      "units": 464
+     },
+     "age_curve_over_time_decay": {
+      "gap": -2.8474434308285224,
+      "high": -1.657419783810005,
+      "level": 0.95,
+      "low": -4.06489161725265,
+      "units": 464
+     },
+     "lightgbm_over_carry_forward": {
+      "gap": 3.9527174303804014,
+      "high": 5.475184858784626,
+      "level": 0.95,
+      "low": 2.5013580430419045,
+      "units": 464
+     },
+     "lightgbm_over_time_decay": {
+      "gap": 0.952418306949482,
+      "high": 2.0119038173490535,
+      "level": 0.95,
+      "low": -0.07158246935360278,
+      "units": 464
+     },
+     "ridge_over_carry_forward": {
+      "gap": 4.265155493949489,
+      "high": 5.777383084865761,
+      "level": 0.95,
+      "low": 2.859080791017345,
+      "units": 464
+     },
+     "ridge_over_time_decay": {
+      "gap": 1.2648563705185696,
+      "high": 2.314357869769558,
+      "level": 0.95,
+      "low": 0.2677610643273892,
+      "units": 464
+     }
+    },
+    "minutes": 523502.5333333333,
+    "models": {
+     "age_curve": {
+      "correlation": 0.38364009134182836,
+      "rmse": 3.4196121363381713
+     },
+     "carry_forward": {
+      "correlation": 0.3879376238736212,
+      "rmse": 3.441889431052908
+     },
+     "lightgbm": {
+      "correlation": 0.48923482686963343,
+      "rmse": 2.8096059199135572
+     },
+     "ridge": {
+      "correlation": 0.5234492346493809,
+      "rmse": 2.753442819752068
+     },
+     "time_decay": {
+      "correlation": 0.4945310881382671,
+      "rmse": 2.9742736478277836
+     }
+    },
+    "players": 464
+   }
+  }
+ },
+ "selected": "lightgbm",
+ "state_sha256": "249cd2eaa638a5608b9555f7878ea4e1ce06e169662994323ecb44efe2e47e2b"
+}

@@ -43,6 +43,10 @@ read is stale ([Live service v2](design/shared-live-v2.md)). That needs outbound
 container. Final games are kept as hashed evidence (about 0.7 MB each, capped at 4 GiB), the one
 part of the demo database that grows after deploy.
 
+### Projected Impact
+
+The API reads the frozen projections from `data/artifacts/projected-impact` (1.1 MB, hash-checked at load) and the weekly score from `data/derived/projected-impact-serving` (about 60 KB plus 0.5 KB per game), both rsynced by each deploy and mounted read-only. Scoring runs locally in `refresh-daily`; `scripts/sync-win-probability.sh` copies the score over when it syncs the scorecard. The endpoints are GETs, so the Caddy allowlist is unchanged.
+
 ### Win probability
 
 The API serves the frozen model on CPU; the model files and scorecard bundle are plain read-only
