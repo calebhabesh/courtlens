@@ -30,6 +30,8 @@ test.describe("FO07 route consolidation", () => {
       await expect(page).toHaveURL(url => url.pathname === destination && url.searchParams.get("season") === "2024-25");
       await expect(page.getByRole("heading", { level: 1 }), source).toHaveText(merged.title);
       const tabs = page.getByRole("navigation", { name: `${merged.title} sections` });
+      // A page left with one tab shows no tab bar (What's New since the Blog was removed).
+      if (merged.tabs.length === 1) { await expect(tabs, source).toHaveCount(0); continue; }
       await expect(tabs.getByRole("link")).toHaveText(merged.tabs.map(item => item.label));
       await expect(tabs.locator('[aria-current="page"]'), source).toHaveText(tab.label);
     }
@@ -48,9 +50,10 @@ test.describe("FO07 route consolidation", () => {
     await page.getByRole("button", { name: "Research", exact: true }).click();
     const menu = page.getByRole("menu");
     await expect(menu.getByRole("menuitem", { name: "RAPM Research" })).toHaveAttribute("href", /^\/research\/rapm(\?|$)/);
-    await expect(menu.getByRole("menuitem", { name: "Shooting", exact: true })).toHaveAttribute("href", /^\/research\/shooting(\?|$)/);
+    await expect(menu.getByRole("menuitem", { name: /^Shooting\b/ })).toHaveAttribute("href", /^\/research\/shooting(\?|$)/);
     for (const removed of ["Six-Factor RAPM", "Expected Shots", "Adjusted Shooting", "Shot Aftermath"]) {
-      await expect(menu.getByRole("menuitem", { name: removed })).toHaveCount(0);
+      // Anchored: a kept item's description may mention a removed page's name.
+      await expect(menu.getByRole("menuitem", { name: new RegExp(`^${removed}`) })).toHaveCount(0);
     }
   });
 
