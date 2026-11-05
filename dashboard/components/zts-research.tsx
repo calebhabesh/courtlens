@@ -171,7 +171,7 @@ function Distribution({ board }: { board: Leaderboard }) {
             return <g key={bin.from} data-bin={bin.from} data-count={bin.count}>
               <title>{`${bin.from} to ${bin.to}: ${bin.count} players`}</title>
               <rect x={64 + i * width + 1} y={232 - h} width={Math.max(1, width - 2)} height={h}
-                fill={bin.from >= 0 ? "var(--color-identity-a)" : "var(--color-identity-b)"} />
+                fill="var(--color-identity-a)" />
               <text x={64 + i * width + width / 2} y="250" textAnchor="middle">{bin.from}</text>
               {bin.count > 0 && <text x={64 + i * width + width / 2} y={226 - h} textAnchor="middle">{bin.count}</text>}
             </g>;
