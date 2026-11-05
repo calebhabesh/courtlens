@@ -17,6 +17,8 @@ const signalNoise = JSON.parse(readFileSync(new URL("./fixtures/signal-noise.jso
 const zts = JSON.parse(readFileSync(new URL("./fixtures/zts.json", import.meta.url), "utf8"));
 const shotQuality = JSON.parse(readFileSync(new URL("./fixtures/shot-quality.json", import.meta.url), "utf8"));
 const shotDecomposition = JSON.parse(readFileSync(new URL("./fixtures/shot-decomposition.json", import.meta.url), "utf8"));
+// R08: the real Metric Backtest answer (frozen results, metric notes, 2026-27 score).
+const metricBacktest = JSON.parse(readFileSync(new URL("./fixtures/metric-backtest.json", import.meta.url), "utf8"));
 // Real answers of the six-factor API for 2025-26, cut to a few rows, and real Impact Trees.
 const sixFactorPage = JSON.parse(readFileSync(new URL("./fixtures/six-factor-page.json", import.meta.url), "utf8"));
 const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
@@ -668,6 +670,7 @@ createServer(async (request, response) => {
     return json(response, 200, id ? zts.players[id] ?? { status: "unknown", player_id: id, player_name: `NBA player ${id}`, season: url.searchParams.get("season"), reason: "No rTS or play-type rows for this player in 2015-16 to 2025-26.", history: [], selection_rule: null } : zts.default_player);
   }
   if (url.pathname === "/api/projected-impact") return json(response, 200, projectedImpact.page);
+  if (url.pathname === "/api/metric-backtest") return json(response, 200, metricBacktest);
   if (url.pathname.startsWith("/api/projected-impact/players/")) {
     const detail = projectedImpact.players[url.pathname.split("/").at(-1)];
     return detail ? json(response, 200, detail) : json(response, 404, { detail: "No frozen projection for this player" });
