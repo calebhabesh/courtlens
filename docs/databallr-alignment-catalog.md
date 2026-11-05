@@ -41,7 +41,7 @@ Rows are in working order.
 | 26 | D-ShotQuality | `/research/defensive-matchups` | ⬜ | Research R06; from public matchup data |
 | 27 | Shot Aftermath | `/research/shooting/aftermath` | ⬜ | Design phase (D13); restyle only |
 | 28 | NBA Draft (Draftballr) | `/draft` | ⬜ | Research R09; refactored as Draft Classes, no prospect model |
-| 29 | — (CourtLens research) | `/research` landing, `/research/win-probability`, `/research/backtest`, `/research/projected-impact`, `/research/lineup-model`, `/research/signal-noise`, `/research/assistant-evaluation` | ⬜ | Research R03, R07, R08, R12, R14–R16 |
+| 29 | — (CourtLens research) | `/research` landing, `/research/win-probability`, `/research/backtest`, `/research/projected-impact`, `/research/lineup-model`, `/research/signal-noise`, `/research/assistant-evaluation` | ⬜ | Research R03, R07, R08, R12, R14–R16. `/research/signal-noise` built (R03, 2026-11-05, plain D13 build, no Databallr counterpart; [evidence](evidence/research/r03/README.md)); design pending |
 
 **CourtLens-only (one sweep at the end, no checkbox):** `/forecasts`, `/evaluation`,
 `/investigations`, `/data-status`, `/settings`, `/planner`, `/design`.

@@ -1,0 +1,37 @@
+{
+ "results_sha256": "22a227b2339f7e7b08ba140c0f39243be10ed09ed8e8ba7708a5a3b0edfdd3cd",
+ "scopes": {
+  "2025-26 whole season @1440": {
+   "season": "2025-26",
+   "phase": "regular_season",
+   "team": null,
+   "rows": 50,
+   "cells_compared": 250,
+   "mismatches": []
+  },
+  "2026-27 default @1440": {
+   "season": "2026-27",
+   "phase": "regular_season",
+   "team": null,
+   "rows": 50,
+   "cells_compared": 250,
+   "mismatches": []
+  },
+  "2025-26 team filter @1440": {
+   "season": "2025-26",
+   "phase": "regular_season",
+   "team": "BOS",
+   "rows": 21,
+   "cells_compared": 105,
+   "mismatches": []
+  },
+  "2024-25 playoffs @1440": {
+   "season": "2024-25",
+   "phase": "playoffs",
+   "team": null,
+   "rows": 50,
+   "cells_compared": 250,
+   "mismatches": []
+  }
+ }
+}

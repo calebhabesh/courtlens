@@ -81,7 +81,7 @@ export const NAV_MENUS: NavMenu[] = [
     id: "research",
     label: "Research",
     // The Research handoff's target menu (D8), limited to pages that exist. Each later block adds its
-    // own item: Lineup Model, Metric Backtest, zTS, Signal vs Noise, Learning, Draft Classes and so on.
+    // own item: Lineup Model, Metric Backtest, zTS, Learning, Draft Classes and so on.
     // Case Studies and Saved Investigations moved to Methodology; Evaluation Archive is reached from Points Forecasts and Methodology.
     groups: [
       { title: "Models", items: [
@@ -96,6 +96,7 @@ export const NAV_MENUS: NavMenu[] = [
         { label: "Defensive Matchups", href: "/research/defensive-matchups", icon: "shield", description: "Ranks defenders from NBA tracking data" },
       ] },
       { title: "Methods", items: [
+        { label: "Signal vs Noise", href: "/research/signal-noise", icon: "waveform", description: "How big a sample a stat needs, and shrunk shooting percentages" },
         { label: "Points Forecasts", href: "/forecasts", icon: "chart-line", description: "Next-game points estimates, their test and the prospective ledger" },
       ] },
       { title: "Tools", items: [

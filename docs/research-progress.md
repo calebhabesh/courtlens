@@ -9,7 +9,7 @@ coverage and screenshots per block. Plan text is not evidence.
 | --- | --- | --- |
 | R01 Impact history backfill, time decay, intervals, rating snapshots | ✅ measured (page work is R02) | [R01 evidence](evidence/research/r01/README.md): twelve regular seasons sealed and served (97.5–99.9% of games admitted); 200-replicate intervals; time decay; six-factor R² 0.955–0.966; 91 dated snapshots |
 | R02 Six-Factor RAPM + Impact Tree | 🟡 built and verified on real data; page awaits owner | [R02 evidence](evidence/research/r02/README.md): all 12 regular-season fits have intervals on all nine nodes, so no new protocol; six factors reconstruct RAPM at R² 0.955–0.966 (0.950–0.964 held out); tree equals the bundle on 64,098 nodes; playoff intervals unknown |
-| R03 Signal vs Noise | ⬜ pending | |
+| R03 Signal vs Noise | 🟡 built and verified on real data; full Playwright not run (memory); page awaits owner | [R03 evidence](evidence/research/r03/README.md): 19 of 20 rate stats stabilize; **3P% never reaches 0.5** in observed samples (largest bin 0.486 at 480 3PA; fitted curve 419); FT% 27 FTA, TS% 169 TSA; shrinkage cuts next-season error for 3P%, FT%, 2P%, TS%, rim FG% by 32–53%, all intervals above zero |
 | R04 zTS + validation | ⬜ pending | |
 | R05 Shot Quality v2 model | ⬜ pending | |
 | R06 ShotQuality decomposition + Defensive Shot Quality | ⬜ pending | |
@@ -166,3 +166,14 @@ The 13:30 UTC `refresh-daily` run succeeded and scored the 14 games of 2026-11-0
 ## 2026-11-05 — Build first, design after (D13)
 
 The owner judged the Research pages' styling well below the aligned core pages and chose to build each page's function first, then redesign every Research page in final design blocks, as on the core pages. Recorded as [D13](research-plan.md#owner-decisions-2026-11-04-delegated). R03 is the next build block. Correction to the R02 entry: that page was built from the plan's list of sections, with no Databallr screenshot, so it is a first draft of the layout; its data checks stand.
+
+## 2026-11-05 — R03 measured
+
+[Evidence](evidence/research/r03/README.md). `courtlens-signal-noise-v1` committed on its own before any fit. Results `22a227b2…`, reproduced by two runs with the final code (byte-identical file).
+
+- **Coverage.** Game logs exist for regular seasons 1983-84 to 2026-27, not only from 2000-01. Stabilization uses 2014-15 to 2025-26: 5,707 player-seasons, 500 random game splits each. Rim FG% was not on the Stats table; game-level rim attempts come from the retained NBA shot detail, 2014-15 to 2025-26 (every logged game covered; FGA disagree with the box in 360 of 306,337 player-games). 2026-27 rim is unknown.
+- **Stabilization (reliability 0.5, then 0.7).** 3P% **not reached**: largest bin 0.486 (0.401–0.549) at 480 3PA; the fitted curve would cross at 419 and 978, served only as labelled extrapolation. FT% 27 and 64 FTA; 2P% 65 and 152; rim FG% 70 and 164; TS% 169 and 395 TSA; eFG% 149 and 347 FGA. Per-36 rates from 19 (3PA) to 284 minutes (STL).
+- **Shrinkage.** Beta-binomial priors from up to three earlier seasons. Their strengths match the stabilization points (FT% 26.9 against 27; rim 77 against 70). Next-season error, raw minus shrunk ×10⁻⁴: 3P% 20.4 (17.3 to 23.6), FT% 16.9 (12.0 to 22.4), 2P% 11.4 (8.2 to 15.6), TS% 9.8 (7.7 to 12.7), rim 19.3 (15.3 to 24.2); shrunk wins in every attempt band.
+- **Bug found and fixed before publication.** The first run's prior optimiser stopped unconverged for 3P%, FT% and rim FG%, collapsing everyone to the league mean. It was replaced by a profile-likelihood fit that raises on non-convergence and recovers known priors in tests; the registration is unchanged.
+- **Stats toggle.** "Shrunk %" is off by default and inert when off. On, it adds labelled shrunk columns. In the browser, 855 shrunk cells across four scopes match values recomputed from the database; raw cells and the Stats query never change.
+- **Checks.** Page vs API: 122 values at each width, 0 mismatches, 0 console errors. Ruff, format, strict mypy, lint, typecheck clean; Vitest 715 passed; Python 2,493 passed, 1 skipped, 8 failed (the known Anthropic SDK tests). Targeted Playwright 53 passed. **Full Playwright not run**: 9.1–9.4 GiB available against the ~12 GiB it needs.
