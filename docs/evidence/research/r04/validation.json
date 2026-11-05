@@ -1,0 +1,1173 @@
+{
+ "coverage": {
+  "2015-16": {
+   "player_seasons": 476,
+   "status": {
+    "known": 328,
+    "low_coverage": 5,
+    "no_play_types": 2,
+    "no_rts": 1,
+    "small_sample": 140
+   }
+  },
+  "2016-17": {
+   "player_seasons": 486,
+   "status": {
+    "known": 318,
+    "low_coverage": 6,
+    "no_play_types": 3,
+    "no_rts": 1,
+    "small_sample": 158
+   }
+  },
+  "2017-18": {
+   "player_seasons": 541,
+   "status": {
+    "known": 310,
+    "low_coverage": 13,
+    "no_play_types": 7,
+    "no_rts": 4,
+    "small_sample": 207
+   }
+  },
+  "2018-19": {
+   "player_seasons": 531,
+   "status": {
+    "known": 326,
+    "low_coverage": 10,
+    "no_play_types": 3,
+    "no_rts": 5,
+    "small_sample": 187
+   }
+  },
+  "2019-20": {
+   "player_seasons": 528,
+   "status": {
+    "known": 300,
+    "low_coverage": 15,
+    "no_play_types": 3,
+    "no_rts": 2,
+    "small_sample": 208
+   }
+  },
+  "2020-21": {
+   "player_seasons": 541,
+   "status": {
+    "known": 319,
+    "low_coverage": 14,
+    "no_play_types": 2,
+    "no_rts": 2,
+    "small_sample": 204
+   }
+  },
+  "2021-22": {
+   "player_seasons": 605,
+   "status": {
+    "known": 332,
+    "low_coverage": 16,
+    "no_play_types": 2,
+    "no_rts": 8,
+    "small_sample": 247
+   }
+  },
+  "2022-23": {
+   "player_seasons": 539,
+   "status": {
+    "known": 324,
+    "low_coverage": 17,
+    "no_rts": 2,
+    "small_sample": 196
+   }
+  },
+  "2023-24": {
+   "player_seasons": 572,
+   "status": {
+    "known": 160,
+    "low_coverage": 19,
+    "no_rts": 4,
+    "small_sample": 244,
+    "source_rows_missing": 145
+   }
+  },
+  "2024-25": {
+   "player_seasons": 569,
+   "status": {
+    "known": 299,
+    "low_coverage": 5,
+    "no_play_types": 1,
+    "no_rts": 3,
+    "small_sample": 221,
+    "source_rows_missing": 40
+   }
+  },
+  "2025-26": {
+   "player_seasons": 582,
+   "status": {
+    "known": 313,
+    "low_coverage": 12,
+    "no_play_types": 1,
+    "small_sample": 217,
+    "source_rows_missing": 39
+   }
+  }
+ },
+ "fta_check": {
+  "derivable": false,
+  "exact_matches": 0,
+  "player_seasons": 2013,
+  "population": "single-team regular-season player-seasons with Synergy frequency sum >= 0.98 and >= 300 box FGA",
+  "ratio_proxy_to_box_fta": {
+   "p01": 0.731592626,
+   "p05": 0.826294809,
+   "p25": 0.913469136,
+   "p50": 0.955904762,
+   "p75": 0.985264438,
+   "p95": 1.009631301,
+   "p99": 1.037697674
+  },
+  "ratio_two_per_trip_to_box_fta": {
+   "p01": 0.806181961,
+   "p05": 0.904280414,
+   "p25": 1.00058529,
+   "p50": 1.05857,
+   "p75": 1.098907975,
+   "p95": 1.157962406,
+   "p99": 1.200826933
+  },
+  "rule": "play-type TS = PTS / (2 x possessions x (1 - turnover share)), CourtLens's definition",
+  "synergy_pts_minus_2fgm_minus_box_3pm_ftm": {
+   "p01": -44.0,
+   "p05": -28.0,
+   "p25": -11.0,
+   "p50": -4.0,
+   "p75": -1.0,
+   "p95": 1.0,
+   "p99": 5.0
+  }
+ },
+ "inputs": {
+  "dataset_id": "1940051a-cd59-40e9-9730-fc48f819e32c",
+  "impact_bundle_sha256": "3cfdb968cc51a870918147e817582c6934caa5fac2d006b934bdc779bdab6e6e",
+  "impact_values_sha256": {
+   "2015-16": "5299b368a5a58c8d7daa6dac703e484a740b140c30e56b705ac4d488880e4b39",
+   "2016-17": "e4da2af07c2ddd263dcd0cc6992e6ef489b6f09df050769d47ff5357909e88e0",
+   "2017-18": "d9b7dcec6b9a7157f8f3ab1d47a4086a71d17816a4fc4cd13aa3ac5efe9774e1",
+   "2018-19": "447b93aef04d6e827e75f74a1233287d7ed09961715af04e9fbe21a46a8755af",
+   "2019-20": "4e570a0d68a0a220a42dc4fc16313765188199bcffea5b88a3b5c0a91514c4c2",
+   "2020-21": "7638394606016d72571bf1e5cdfb079e9f61f70db6d312230498b2e4983ef436",
+   "2021-22": "fb49ba2487e32ceb1ba458391bad26babaa645b480977a7cc996551670f68d53",
+   "2022-23": "73e1189c1f5e22653b021723005f578abe986c4a49a965907fa460f09a4bcf1f",
+   "2023-24": "42f6b0b5564068d196650d7c1f98daff93afcb5d8d011c7e70c5c62e2034132d",
+   "2024-25": "4a8babb573040007775a25fd8541cf6cd0f6a2bb064747c2f83a4f2efa307a49",
+   "2025-26": "d13337a38d09c6ef1413688bef473e6dd2ace946d61dc903e14f5619801c3226"
+  },
+  "play_types_sha256": {
+   "2015-16": "354622e7a7cb4793920f235e4d50984dec5b41c93702fe5a21492bf6617eca80",
+   "2016-17": "3f2861cfd7e1c8945acd087796ca880cf11406778326340cffd3139bb2ffc7d8",
+   "2017-18": "4eb1e375b293b7f426965c0a804228bc56fc2200e010efee9a1be586d7853116",
+   "2018-19": "698af63915ed0e87cec77b3b55c2253984564f966f8aff8d2b399ca47cde8d66",
+   "2019-20": "8fe16ce75be1f8fc796cfa43f46d95fe16ff6b2bd62fa2b62b303b46976d6c3d",
+   "2020-21": "a5f9d0cb6f827eed2e029ab54262cec5ea424675de143911173ae688c67bf185",
+   "2021-22": "778e563b62272f2f346da70ead354609792e67eb80d31906389980c8d134c307",
+   "2022-23": "66c8eaa4e1d4b1504f26a03427ef1b507a6c3748015942ba714cc9c949e23961",
+   "2023-24": "ce9895172bbbaadbd04542751cc574f6c534e00282327de0e44e2282be3b709b",
+   "2024-25": "d2422eb7e0be1782768fa2a148e9056bc9bbda78e47963da7721c0f7527ec8a5",
+   "2025-26": "9fd30dc39e1d957939ca8d0a4ddf6645f7b33c55015212faf044b5872e07e477"
+  },
+  "release_id": "a584c88b-8bde-4457-b915-79e37a722af3"
+ },
+ "registration": {
+  "content_sha256": "ea4e1d155ee71de10fb2bb8b7a7e82028b4d26342ccd2603511bd2dab47095da",
+  "identity": "courtlens-zts-validation-v1",
+  "parameters": {
+   "bootstrap_replicates": 2000,
+   "choice_seasons": {
+    "predictive_t": [
+     "2015-16",
+     "2016-17",
+     "2017-18"
+    ],
+    "tracking_t": [
+     "2015-16",
+     "2016-17",
+     "2017-18"
+    ]
+   },
+   "frequency_rounding": 0.0005,
+   "interval": 0.95,
+   "min_coverage": 0.9,
+   "min_tsa": 200,
+   "mse_scale": 10000,
+   "play_types": [
+    "cut",
+    "handoff",
+    "isolation",
+    "misc",
+    "offrebound",
+    "offscreen",
+    "postup",
+    "prballhandler",
+    "prrollman",
+    "spotup",
+    "transition"
+   ],
+   "predictive_weight": "harmonic_mean_tsa",
+   "source_min_possessions": 10,
+   "test_seasons": {
+    "predictive_t": [
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23",
+     "2023-24",
+     "2024-25"
+    ],
+    "tracking_t": [
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ]
+   },
+   "tracking_weight": "tsa_t",
+   "zts_seasons": [
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ]
+  },
+  "registered_on": "2026-11-05"
+ },
+ "results_sha256": "ecc5ae9fe5933a8a47bf72e67a8967022ebbb46f886d308f7eb85b4cf5a5d1af",
+ "validation": {
+  "predictive": {
+   "choice": {
+    "by_season": {
+     "2015-16": {
+      "metrics": {
+       "delta_mse": {
+        "high": -1.947202221,
+        "low": -5.407581851,
+        "value": -3.570666188
+       },
+       "delta_r": {
+        "high": -0.057215774,
+        "low": -0.165326416,
+        "value": -0.108292401
+       },
+       "mse_rts": {
+        "high": 15.257093132,
+        "low": 10.770507361,
+        "value": 12.945007018
+       },
+       "mse_zts": {
+        "high": 19.686627692,
+        "low": 13.82026493,
+        "value": 16.515673206
+       },
+       "r_difficulty": {
+        "high": -0.086201282,
+        "low": -0.33305933,
+        "value": -0.21250003
+       },
+       "r_rts": {
+        "high": 0.680773903,
+        "low": 0.535442647,
+        "value": 0.611447397
+       },
+       "r_zts": {
+        "high": 0.594111002,
+        "low": 0.401737932,
+        "value": 0.503154997
+       }
+      },
+      "players": 265,
+      "rows": 265,
+      "verdict_mse": "rts_better",
+      "verdict_r": "rts_better"
+     },
+     "2016-17": {
+      "metrics": {
+       "delta_mse": {
+        "high": -2.08953635,
+        "low": -4.89729379,
+        "value": -3.482863665
+       },
+       "delta_r": {
+        "high": -0.072522547,
+        "low": -0.153833979,
+        "value": -0.11175182
+       },
+       "mse_rts": {
+        "high": 15.706931062,
+        "low": 10.797222812,
+        "value": 13.137824675
+       },
+       "mse_zts": {
+        "high": 19.578436872,
+        "low": 13.916375003,
+        "value": 16.62068834
+       },
+       "r_difficulty": {
+        "high": -0.18059449,
+        "low": -0.430675512,
+        "value": -0.306655449
+       },
+       "r_rts": {
+        "high": 0.702298142,
+        "low": 0.54272223,
+        "value": 0.631106877
+       },
+       "r_zts": {
+        "high": 0.60616606,
+        "low": 0.413142407,
+        "value": 0.519355057
+       }
+      },
+      "players": 250,
+      "rows": 250,
+      "verdict_mse": "rts_better",
+      "verdict_r": "rts_better"
+     },
+     "2017-18": {
+      "metrics": {
+       "delta_mse": {
+        "high": -3.779750271,
+        "low": -7.333468564,
+        "value": -5.475576807
+       },
+       "delta_r": {
+        "high": -0.120277255,
+        "low": -0.234162035,
+        "value": -0.175872415
+       },
+       "mse_rts": {
+        "high": 15.4572416,
+        "low": 10.650593986,
+        "value": 12.946224717
+       },
+       "mse_zts": {
+        "high": 21.424793017,
+        "low": 15.608841686,
+        "value": 18.421801524
+       },
+       "r_difficulty": {
+        "high": -0.278113505,
+        "low": -0.527231649,
+        "value": -0.407063016
+       },
+       "r_rts": {
+        "high": 0.723244323,
+        "low": 0.567286575,
+        "value": 0.650977359
+       },
+       "r_zts": {
+        "high": 0.566231582,
+        "low": 0.372741931,
+        "value": 0.475104944
+       }
+      },
+      "players": 250,
+      "rows": 250,
+      "verdict_mse": "rts_better",
+      "verdict_r": "rts_better"
+     }
+    },
+    "pooled": {
+     "metrics": {
+      "delta_mse": {
+       "high": -3.195245137,
+       "low": -5.301214538,
+       "value": -4.172943616
+      },
+      "delta_r": {
+       "high": -0.095385774,
+       "low": -0.173499732,
+       "value": -0.131615317
+      },
+      "mse_rts": {
+       "high": 14.714263595,
+       "low": 11.512961899,
+       "value": 13.008061173
+      },
+      "mse_zts": {
+       "high": 19.207329475,
+       "low": 15.394423733,
+       "value": 17.181004789
+      },
+      "r_difficulty": {
+       "high": -0.201448172,
+       "low": -0.410925358,
+       "value": -0.310409436
+      },
+      "r_rts": {
+       "high": 0.680273335,
+       "low": 0.561516586,
+       "value": 0.626429913
+      },
+      "r_zts": {
+       "high": 0.562604838,
+       "low": 0.41546835,
+       "value": 0.494814595
+      }
+     },
+     "players": 354,
+     "rows": 765,
+     "verdict_mse": "rts_better",
+     "verdict_r": "rts_better"
+    },
+    "seasons": [
+     "2015-16",
+     "2016-17",
+     "2017-18"
+    ]
+   },
+   "test": {
+    "by_season": {
+     "2018-19": {
+      "metrics": {
+       "delta_mse": {
+        "high": -0.357271306,
+        "low": -4.363114382,
+        "value": -2.240459826
+       },
+       "delta_r": {
+        "high": -0.049825024,
+        "low": -0.166764422,
+        "value": -0.106974235
+       },
+       "mse_rts": {
+        "high": 16.243525581,
+        "low": 11.431235794,
+        "value": 13.830564099
+       },
+       "mse_zts": {
+        "high": 19.030360108,
+        "low": 13.257793797,
+        "value": 16.071023925
+       },
+       "r_difficulty": {
+        "high": -0.149714501,
+        "low": -0.455547483,
+        "value": -0.306716462
+       },
+       "r_rts": {
+        "high": 0.692197316,
+        "low": 0.525426313,
+        "value": 0.611122314
+       },
+       "r_zts": {
+        "high": 0.589809684,
+        "low": 0.403951047,
+        "value": 0.504148079
+       }
+      },
+      "players": 242,
+      "rows": 242,
+      "verdict_mse": "rts_better",
+      "verdict_r": "rts_better"
+     },
+     "2019-20": {
+      "metrics": {
+       "delta_mse": {
+        "high": -1.428542307,
+        "low": -5.324785433,
+        "value": -3.443003796
+       },
+       "delta_r": {
+        "high": -0.068695539,
+        "low": -0.173574161,
+        "value": -0.122492868
+       },
+       "mse_rts": {
+        "high": 17.14224816,
+        "low": 12.095120051,
+        "value": 14.47164721
+       },
+       "mse_zts": {
+        "high": 20.71523949,
+        "low": 15.386101352,
+        "value": 17.914651007
+       },
+       "r_difficulty": {
+        "high": -0.171017835,
+        "low": -0.421703318,
+        "value": -0.30253271
+       },
+       "r_rts": {
+        "high": 0.680684155,
+        "low": 0.543243669,
+        "value": 0.617215995
+       },
+       "r_zts": {
+        "high": 0.567026753,
+        "low": 0.411406812,
+        "value": 0.494723127
+       }
+      },
+      "players": 249,
+      "rows": 249,
+      "verdict_mse": "rts_better",
+      "verdict_r": "rts_better"
+     },
+     "2020-21": {
+      "metrics": {
+       "delta_mse": {
+        "high": -5.346710034,
+        "low": -9.565358098,
+        "value": -7.397711896
+       },
+       "delta_r": {
+        "high": -0.164091799,
+        "low": -0.263441864,
+        "value": -0.212702397
+       },
+       "mse_rts": {
+        "high": 15.594452857,
+        "low": 10.925186702,
+        "value": 13.112171746
+       },
+       "mse_zts": {
+        "high": 24.520843898,
+        "low": 17.066283629,
+        "value": 20.509883642
+       },
+       "r_difficulty": {
+        "high": -0.364147706,
+        "low": -0.575283483,
+        "value": -0.476546298
+       },
+       "r_rts": {
+        "high": 0.72903192,
+        "low": 0.574922153,
+        "value": 0.660458853
+       },
+       "r_zts": {
+        "high": 0.535793533,
+        "low": 0.345824653,
+        "value": 0.447756456
+       }
+      },
+      "players": 267,
+      "rows": 267,
+      "verdict_mse": "rts_better",
+      "verdict_r": "rts_better"
+     },
+     "2021-22": {
+      "metrics": {
+       "delta_mse": {
+        "high": -1.598109279,
+        "low": -5.824270681,
+        "value": -3.662086183
+       },
+       "delta_r": {
+        "high": -0.082733097,
+        "low": -0.19880196,
+        "value": -0.139612532
+       },
+       "mse_rts": {
+        "high": 15.05995427,
+        "low": 10.918327776,
+        "value": 12.979948047
+       },
+       "mse_zts": {
+        "high": 19.267249999,
+        "low": 14.13934121,
+        "value": 16.642034231
+       },
+       "r_difficulty": {
+        "high": -0.250079604,
+        "low": -0.473014315,
+        "value": -0.365184876
+       },
+       "r_rts": {
+        "high": 0.724304622,
+        "low": 0.579075118,
+        "value": 0.658113991
+       },
+       "r_zts": {
+        "high": 0.60738869,
+        "low": 0.417314311,
+        "value": 0.518501459
+       }
+      },
+      "players": 258,
+      "rows": 258,
+      "verdict_mse": "rts_better",
+      "verdict_r": "rts_better"
+     },
+     "2022-23": {
+      "metrics": {
+       "delta_mse": {
+        "high": -1.91934772,
+        "low": -5.36030453,
+        "value": -3.526635907
+       },
+       "delta_r": {
+        "high": -0.086553046,
+        "low": -0.181583815,
+        "value": -0.132270951
+       },
+       "mse_rts": {
+        "high": 15.708314967,
+        "low": 10.828126387,
+        "value": 13.158046866
+       },
+       "mse_zts": {
+        "high": 19.795357842,
+        "low": 13.996703563,
+        "value": 16.684682773
+       },
+       "r_difficulty": {
+        "high": -0.248543989,
+        "low": -0.47027228,
+        "value": -0.368170143
+       },
+       "r_rts": {
+        "high": 0.71347383,
+        "low": 0.575463257,
+        "value": 0.64916976
+       },
+       "r_zts": {
+        "high": 0.592496745,
+        "low": 0.426937972,
+        "value": 0.516898809
+       }
+      },
+      "players": 263,
+      "rows": 263,
+      "verdict_mse": "rts_better",
+      "verdict_r": "rts_better"
+     },
+     "2023-24": {
+      "metrics": {
+       "delta_mse": {
+        "high": 0.677296684,
+        "low": -5.1123281,
+        "value": -2.008233547
+       },
+       "delta_r": {
+        "high": -0.027467421,
+        "low": -0.185770022,
+        "value": -0.105329631
+       },
+       "mse_rts": {
+        "high": 14.137641636,
+        "low": 8.153970022,
+        "value": 10.907569829
+       },
+       "mse_zts": {
+        "high": 17.240313409,
+        "low": 9.393984303,
+        "value": 12.915803376
+       },
+       "r_difficulty": {
+        "high": -0.141342494,
+        "low": -0.526009678,
+        "value": -0.354635045
+       },
+       "r_rts": {
+        "high": 0.780283005,
+        "low": 0.594840667,
+        "value": 0.698332019
+       },
+       "r_zts": {
+        "high": 0.704745874,
+        "low": 0.473793905,
+        "value": 0.593002389
+       }
+      },
+      "players": 130,
+      "rows": 130,
+      "verdict_mse": "no_clear_difference",
+      "verdict_r": "rts_better"
+     },
+     "2024-25": {
+      "metrics": {
+       "delta_mse": {
+        "high": -0.557173087,
+        "low": -3.98111927,
+        "value": -2.213975828
+       },
+       "delta_r": {
+        "high": -0.039205412,
+        "low": -0.135696965,
+        "value": -0.087981107
+       },
+       "mse_rts": {
+        "high": 16.601680118,
+        "low": 11.27815464,
+        "value": 13.74039228
+       },
+       "mse_zts": {
+        "high": 19.690433113,
+        "low": 12.868103459,
+        "value": 15.954368108
+       },
+       "r_difficulty": {
+        "high": -0.123711973,
+        "low": -0.399093582,
+        "value": -0.263615767
+       },
+       "r_rts": {
+        "high": 0.687557223,
+        "low": 0.518039545,
+        "value": 0.60930241
+       },
+       "r_zts": {
+        "high": 0.615187405,
+        "low": 0.410982663,
+        "value": 0.521321303
+       }
+      },
+      "players": 242,
+      "rows": 242,
+      "verdict_mse": "rts_better",
+      "verdict_r": "rts_better"
+     }
+    },
+    "pooled": {
+     "metrics": {
+      "delta_mse": {
+       "high": -2.873495959,
+       "low": -4.349334523,
+       "value": -3.622921933
+      },
+      "delta_r": {
+       "high": -0.106828358,
+       "low": -0.160389254,
+       "value": -0.134300859
+      },
+      "mse_rts": {
+       "high": 14.504177957,
+       "low": 12.274938135,
+       "value": 13.304183897
+      },
+      "mse_zts": {
+       "high": 18.302144957,
+       "low": 15.608778214,
+       "value": 16.92710583
+      },
+      "r_difficulty": {
+       "high": -0.25967049,
+       "low": -0.43841265,
+       "value": -0.35182608
+      },
+      "r_rts": {
+       "high": 0.682049702,
+       "low": 0.587836853,
+       "value": 0.640220553
+      },
+      "r_zts": {
+       "high": 0.552421045,
+       "low": 0.451406177,
+       "value": 0.505919693
+      }
+     },
+     "players": 526,
+     "rows": 1651,
+     "verdict_mse": "rts_better",
+     "verdict_r": "rts_better"
+    },
+    "seasons": [
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23",
+     "2023-24",
+     "2024-25"
+    ]
+   }
+  },
+  "tracking": {
+   "choice": {
+    "by_season": {
+     "2015-16": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.203378793,
+        "low": 0.096639254,
+        "value": 0.148386229
+       },
+       "r_difficulty": {
+        "high": 0.393945848,
+        "low": 0.207663903,
+        "value": 0.298918287
+       },
+       "r_rts": {
+        "high": 0.547333827,
+        "low": 0.298493952,
+        "value": 0.427228888
+       },
+       "r_zts": {
+        "high": 0.664656221,
+        "low": 0.474385009,
+        "value": 0.575615117
+       }
+      },
+      "players": 327,
+      "rows": 327,
+      "verdict_r": "zts_better"
+     },
+     "2016-17": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.170470598,
+        "low": 0.09055929,
+        "value": 0.129394977
+       },
+       "r_difficulty": {
+        "high": 0.40398417,
+        "low": 0.199934415,
+        "value": 0.304095971
+       },
+       "r_rts": {
+        "high": 0.578102835,
+        "low": 0.38387701,
+        "value": 0.485958553
+       },
+       "r_zts": {
+        "high": 0.68462531,
+        "low": 0.532828174,
+        "value": 0.61535353
+       }
+      },
+      "players": 316,
+      "rows": 316,
+      "verdict_r": "zts_better"
+     },
+     "2017-18": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.241241312,
+        "low": 0.128306239,
+        "value": 0.184467383
+       },
+       "r_difficulty": {
+        "high": 0.401495581,
+        "low": 0.176224758,
+        "value": 0.294387741
+       },
+       "r_rts": {
+        "high": 0.524094285,
+        "low": 0.295567811,
+        "value": 0.416567927
+       },
+       "r_zts": {
+        "high": 0.685925644,
+        "low": 0.491758172,
+        "value": 0.60103531
+       }
+      },
+      "players": 310,
+      "rows": 310,
+      "verdict_r": "zts_better"
+     }
+    },
+    "pooled": {
+     "metrics": {
+      "delta_r": {
+       "high": 0.190307492,
+       "low": 0.117705832,
+       "value": 0.153380507
+      },
+      "r_difficulty": {
+       "high": 0.366069647,
+       "low": 0.223536214,
+       "value": 0.297206623
+      },
+      "r_rts": {
+       "high": 0.526504534,
+       "low": 0.357078133,
+       "value": 0.444615552
+      },
+      "r_zts": {
+       "high": 0.661569497,
+       "low": 0.525779599,
+       "value": 0.59799606
+      }
+     },
+     "players": 443,
+     "rows": 953,
+     "verdict_r": "zts_better"
+    },
+    "seasons": [
+     "2015-16",
+     "2016-17",
+     "2017-18"
+    ]
+   },
+   "test": {
+    "by_season": {
+     "2018-19": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.170564856,
+        "low": 0.055591467,
+        "value": 0.113404562
+       },
+       "r_difficulty": {
+        "high": 0.254994623,
+        "low": 0.025706991,
+        "value": 0.141398493
+       },
+       "r_rts": {
+        "high": 0.478683868,
+        "low": 0.257062505,
+        "value": 0.377208834
+       },
+       "r_zts": {
+        "high": 0.594679143,
+        "low": 0.366480141,
+        "value": 0.490613396
+       }
+      },
+      "players": 326,
+      "rows": 326,
+      "verdict_r": "zts_better"
+     },
+     "2019-20": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.245922057,
+        "low": 0.143196159,
+        "value": 0.195627517
+       },
+       "r_difficulty": {
+        "high": 0.411347625,
+        "low": 0.207976962,
+        "value": 0.316660131
+       },
+       "r_rts": {
+        "high": 0.454800225,
+        "low": 0.256329548,
+        "value": 0.364301272
+       },
+       "r_zts": {
+        "high": 0.636819952,
+        "low": 0.46648869,
+        "value": 0.559928789
+       }
+      },
+      "players": 298,
+      "rows": 298,
+      "verdict_r": "zts_better"
+     },
+     "2020-21": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.172787327,
+        "low": 0.08194152,
+        "value": 0.127783744
+       },
+       "r_difficulty": {
+        "high": 0.319827514,
+        "low": 0.105836133,
+        "value": 0.214046742
+       },
+       "r_rts": {
+        "high": 0.549577892,
+        "low": 0.347146487,
+        "value": 0.452943112
+       },
+       "r_zts": {
+        "high": 0.665445664,
+        "low": 0.487515423,
+        "value": 0.580726857
+       }
+      },
+      "players": 319,
+      "rows": 319,
+      "verdict_r": "zts_better"
+     },
+     "2021-22": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.201853361,
+        "low": 0.09762563,
+        "value": 0.151028998
+       },
+       "r_difficulty": {
+        "high": 0.254209421,
+        "low": 0.027676465,
+        "value": 0.143041172
+       },
+       "r_rts": {
+        "high": 0.513228499,
+        "low": 0.310533234,
+        "value": 0.418119268
+       },
+       "r_zts": {
+        "high": 0.645110974,
+        "low": 0.478111684,
+        "value": 0.569148266
+       }
+      },
+      "players": 332,
+      "rows": 332,
+      "verdict_r": "zts_better"
+     },
+     "2022-23": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.168152158,
+        "low": 0.060239049,
+        "value": 0.113210811
+       },
+       "r_difficulty": {
+        "high": 0.250119516,
+        "low": 0.007914624,
+        "value": 0.126959483
+       },
+       "r_rts": {
+        "high": 0.555530622,
+        "low": 0.354948247,
+        "value": 0.459114295
+       },
+       "r_zts": {
+        "high": 0.647050217,
+        "low": 0.484525323,
+        "value": 0.572325106
+       }
+      },
+      "players": 323,
+      "rows": 323,
+      "verdict_r": "zts_better"
+     },
+     "2023-24": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.229711999,
+        "low": 0.079536624,
+        "value": 0.15111163
+       },
+       "r_difficulty": {
+        "high": 0.380025861,
+        "low": 0.068965488,
+        "value": 0.220112163
+       },
+       "r_rts": {
+        "high": 0.484224962,
+        "low": 0.197192221,
+        "value": 0.347017645
+       },
+       "r_zts": {
+        "high": 0.605181007,
+        "low": 0.371014401,
+        "value": 0.498129275
+       }
+      },
+      "players": 160,
+      "rows": 160,
+      "verdict_r": "zts_better"
+     },
+     "2024-25": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.15279084,
+        "low": 0.046900628,
+        "value": 0.100057686
+       },
+       "r_difficulty": {
+        "high": 0.283544574,
+        "low": 0.037235966,
+        "value": 0.165297326
+       },
+       "r_rts": {
+        "high": 0.562256879,
+        "low": 0.37471832,
+        "value": 0.471075367
+       },
+       "r_zts": {
+        "high": 0.65546142,
+        "low": 0.48031178,
+        "value": 0.571133053
+       }
+      },
+      "players": 297,
+      "rows": 297,
+      "verdict_r": "zts_better"
+     },
+     "2025-26": {
+      "metrics": {
+       "delta_r": {
+        "high": 0.20152315,
+        "low": 0.093495397,
+        "value": 0.147387751
+       },
+       "r_difficulty": {
+        "high": 0.350444041,
+        "low": 0.128597859,
+        "value": 0.241349522
+       },
+       "r_rts": {
+        "high": 0.456625212,
+        "low": 0.213182427,
+        "value": 0.335605606
+       },
+       "r_zts": {
+        "high": 0.586169451,
+        "low": 0.364842017,
+        "value": 0.482993358
+       }
+      },
+      "players": 309,
+      "rows": 309,
+      "verdict_r": "zts_better"
+     }
+    },
+    "pooled": {
+     "metrics": {
+      "delta_r": {
+       "high": 0.163507592,
+       "low": 0.104210806,
+       "value": 0.13481998
+      },
+      "r_difficulty": {
+       "high": 0.251202773,
+       "low": 0.117839984,
+       "value": 0.188664074
+      },
+      "r_rts": {
+       "high": 0.46938426,
+       "low": 0.345770237,
+       "value": 0.408366688
+      },
+      "r_zts": {
+       "high": 0.592041512,
+       "low": 0.487491965,
+       "value": 0.543186668
+      }
+     },
+     "players": 712,
+     "rows": 2364,
+     "verdict_r": "zts_better"
+    },
+    "seasons": [
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ]
+   }
+  }
+ }
+}

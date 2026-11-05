@@ -14,6 +14,7 @@ const playoffBrackets = Object.fromEntries(["2025-26", "1975-76", "1965-66", "19
 const projectedImpact = JSON.parse(readFileSync(new URL("./fixtures/projected-impact-page.json", import.meta.url), "utf8"));
 // R03: real Signal vs Noise answers (results file, 2025-26 shrinkage, the default worked example).
 const signalNoise = JSON.parse(readFileSync(new URL("./fixtures/signal-noise.json", import.meta.url), "utf8"));
+const zts = JSON.parse(readFileSync(new URL("./fixtures/zts.json", import.meta.url), "utf8"));
 // Real answers of the six-factor API for 2025-26, cut to a few rows, and real Impact Trees.
 const sixFactorPage = JSON.parse(readFileSync(new URL("./fixtures/six-factor-page.json", import.meta.url), "utf8"));
 const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
@@ -633,6 +634,17 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/signal-noise") return json(response, 200, signalNoise.summary);
   if (url.pathname === "/api/signal-noise/shrinkage") return json(response, 200, { ...signalNoise.shrinkage, season: url.searchParams.get("season"), phase: url.searchParams.get("phase") });
   if (url.pathname === "/api/signal-noise/player") return json(response, 200, signalNoise.player);
+  // R04 zTS: real answers of the zTS API; other seasons answer as the API does for a season it lacks.
+  if (url.pathname === "/api/zts") return json(response, 200, zts.summary);
+  if (url.pathname === "/api/zts/leaderboard") {
+    const season = url.searchParams.get("season") ?? "2025-26";
+    if (season === "all") return json(response, 200, zts.top);
+    return json(response, 200, zts.boards[`${season}:${url.searchParams.get("sort") ?? "zts"}`] ?? { ...zts.unknown_season, season });
+  }
+  if (url.pathname === "/api/zts/player") {
+    const id = url.searchParams.get("playerId");
+    return json(response, 200, id ? zts.players[id] ?? { status: "unknown", player_id: id, player_name: `NBA player ${id}`, season: url.searchParams.get("season"), reason: "No rTS or play-type rows for this player in 2015-16 to 2025-26.", history: [], selection_rule: null } : zts.default_player);
+  }
   if (url.pathname === "/api/projected-impact") return json(response, 200, projectedImpact.page);
   if (url.pathname.startsWith("/api/projected-impact/players/")) {
     const detail = projectedImpact.players[url.pathname.split("/").at(-1)];
