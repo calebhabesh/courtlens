@@ -3,6 +3,7 @@
 import { ReliabilityPlot } from "./charts";
 import { EntityField } from "./entity-picker";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
+import { ShotDecompositionTab } from "./shot-decomposition-tab";
 import { TeamLogo } from "./team-logo";
 import { Field } from "./ui/field";
 import { GatedNote } from "./ui/gated-note";
@@ -25,9 +26,10 @@ import {
  * methodology); the Model and Player tabs have no reference. Every number is the frozen
  * courtlens-expected-shot-v2 results'; exact values sit on `data-value` for the browser check.
  */
-type Tab = "players" | "model" | "player";
+type Tab = "players" | "decomposition" | "model" | "player";
 const TABS = [
   { value: "players", label: "Players", icon: "trophy" },
+  { value: "decomposition", label: "Decomposition", icon: "split" },
   { value: "model", label: "Model", icon: "chart-line" },
   { value: "player", label: "Player", icon: "search" },
 ] as const;
@@ -131,7 +133,7 @@ function Players({ summary }: { summary: ShotQualitySummary }) {
         <li>{summary.definitions.features}</li>
         <li>{summary.credit}</li>
         <li>{summary.reference_note}</li>
-        <li>Not reproduced from the reference: the oTS / oSQ / oMake / oFT RAPM decomposition and its defensive counterparts (Research block R06), the possession filter and CSV download.</li>
+        <li>The oTS / oSQ / oMake / oFT table from the reference, its defensive views, filters and CSV are on the Decomposition tab.</li>
       </ul>
     </Section>
   </>;
@@ -324,7 +326,7 @@ export function ShotQualityResearch() {
   const { data, error, loading, retry } = useFeed([], signal => getShotQuality(signal));
   const gate = data?.test.gates;
   return <PageShell template="research">
-    <PageHeader icon="scatter" title="Shot Quality" subtitle="Expected points for every field-goal attempt from free NBA shot and play-by-play data, and each player's shot-making above or below it." />
+    <PageHeader icon="scatter" title="Shot Quality" subtitle="Expected points for every field-goal attempt from free NBA shot and play-by-play data, each player's shot-making above or below it, and each player's lineup-adjusted split into shot quality, making and free throws." />
     <Segmented label="Shot Quality view" value={tab} onChange={next => set({ tab: next === "players" ? null : next })} options={TABS} />
     {error && <FeedFailure error={error} retry={retry} what="Shot Quality" />}
     {loading && <FeedSkeleton label="Loading Shot Quality" />}
@@ -335,6 +337,7 @@ export function ShotQualityResearch() {
       <StatTile label="Outcome" value={data.outcome === "accepted" ? "Accepted" : "Negative result"} footnote={`Selection ${pct(data.selection.relative_brier)} on ${data.selection.season}`} />
     </>}>
       {tab === "players" && <Players summary={data} />}
+      {tab === "decomposition" && <ShotDecompositionTab />}
       {tab === "model" && <Model summary={data} />}
       {tab === "player" && <PlayerTab summary={data} />}
     </ResearchLayout>}

@@ -12,7 +12,7 @@ async function noPhoneOverflow(page: Page) {
 
 test.describe("PC11 populated pages", () => {
   test("Defensive Matchups opens on a ranked headline, tiles, the focus defender and a shaded table", async ({ page }) => {
-    await openWorkbench(page, "/research/defensive-matchups");
+    await openWorkbench(page, "/research/defensive-matchups/tracking");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Defensive Matchups");
     await expect(page.getByRole("note")).toHaveCount(0); // no gate notice
     await expect(page.getByRole("list", { name: /Makes below expected/ }).getByRole("listitem")).toHaveCount(4);
