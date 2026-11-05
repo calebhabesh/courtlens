@@ -81,4 +81,13 @@ describe("FO07 route consolidation (D3)", () => {
     expect(activeRouteTab(shooting, "/research/shooting/aftermath")?.label).toBe("Shot Aftermath");
     expect(activeRouteTab(shooting, "/research/shootingx")).toBeUndefined();
   });
+
+  it("removed Research pages redirect to their replacement and no longer exist", () => {
+    const redirects = new Map([...CONSOLIDATED_REDIRECTS, ...HIDDEN_REDIRECTS].map(r => [r.source, r.destination]));
+    expect(redirects.get("/research/trends")).toBe("/last-games");
+    expect(redirects.get("/research/distributions")).toBe("/last-games");
+    expect(redirects.get("/whats-new/blog")).toBe("/whats-new");
+    expect(redirects.get("/blog")).toBe("/whats-new");
+    for (const route of ["/research/trends", "/research/distributions", "/whats-new/blog"]) expect(isFile(pageFile(route)), route).toBe(false);
+  });
 });

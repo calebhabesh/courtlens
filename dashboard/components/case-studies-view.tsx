@@ -100,13 +100,11 @@ const CASE_STUDIES: CaseStudy[] = [
       "Descriptive Discipline: Increased three-point accuracy in Indiana (38.6% vs 31.7%) is recorded as an empirical fact, without inventing an unsupported causal narrative about teammate spacing."
     ],
     manualAnswerSteps: [
-      "Navigate to Workload Trends (/research/trends?playerId=1627783&season=2023-24) to compare Siakam's distinct appearance windows.",
       "Open the Player Profile (/players/1627783?season=2023-24) to inspect the Stints table, confirming 39 GP for TOR and 41 GP for IND.",
       "Check the Teams view for Toronto (/teams/1610612761?season=2023-24) to verify that only 39 games and 867 points enter the Raptors team statistics."
     ],
     actionLinks: [
-      { label: "Analyze in Trends", href: "/research/trends?playerId=1627783&season=2023-24", primary: true },
-      { label: "View Siakam Profile", href: "/players/1627783?season=2023-24" },
+      { label: "View Siakam Profile", href: "/players/1627783?season=2023-24", primary: true },
       { label: "Inspect Raptors Roster", href: "/teams/1610612761?season=2023-24" }
     ]
   },
@@ -168,12 +166,10 @@ const CASE_STUDIES: CaseStudy[] = [
     ],
     manualAnswerSteps: [
       "Open the Forecasts Explorer (/forecasts?playerId=1630567) to inspect Barnes' active point estimates and calibrated intervals.",
-      "View Quantile Distributions (/research/distributions?playerId=1630567&metric=pts) to verify his empirical median and IQR dispersion.",
       "Open the Player Profile (/players/1630567) to view the forecast card displaying conditionality notices."
     ],
     actionLinks: [
       { label: "View Barnes Forecasts", href: "/forecasts?playerId=1630567", primary: true },
-      { label: "View Empirical Distribution", href: "/research/distributions?playerId=1630567&metric=pts" },
       { label: "View Barnes Profile", href: "/players/1630567" }
     ]
   },
@@ -234,13 +230,11 @@ const CASE_STUDIES: CaseStudy[] = [
       "Playoff Odds Rejection: When asked 'Can Toronto win the Eastern Conference?', CourtLens server returns status='model_not_available'. CourtLens never fabricates playoff probabilities or simulates future brackets from regular-season records."
     ],
     manualAnswerSteps: [
-      "Open Opponent Context (/research/distributions?tab=opponent) to see where Toronto ranks in points and shooting allowed relative to all 30 NBA teams.",
       "Open Stats Explorer (/stats?teamId=1610612761&preset=defense) to sort Raptors players by steals, blocks, and defensive rebounds.",
       "Test the conversational agent (/research/ask) with 'Who will win the Eastern Conference?' to observe the typed guardrail in action."
     ],
     actionLinks: [
-      { label: "View Opponent Defense", href: "/research/distributions?tab=opponent", primary: true },
-      { label: "Explore Defense in Stats", href: "/stats?teamId=1610612761&preset=defense" },
+      { label: "Explore Defense in Stats", href: "/stats?teamId=1610612761&preset=defense", primary: true },
       { label: "Test Assistant Guardrails", href: "/research/ask" }
     ]
   }

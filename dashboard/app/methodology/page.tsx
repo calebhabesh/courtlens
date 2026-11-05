@@ -143,6 +143,7 @@ export default async function MethodologyPage() {
           <li><Link href="/forecasts">Points Forecasts</Link>: the forecast protocol and ledger.</li>
           <li><Link href="/evaluation">Evaluation Archive</Link>: out-of-time model evaluation.</li>
           <li><Link href="/investigations">Saved Investigations</Link>: retained, reproducible results.</li>
+          <li><Link href="/research/case-studies">Case Studies</Link>: reproducible investigations of stints and forecasts.</li>
           <li><Link href="/data-status">Data Status</Link>: source coverage and lineage.</li>
         </ul>
       </ArticleSection>

@@ -14,7 +14,6 @@
 }
 
 .workbench-content > *, .ui-tabbed-page-body > *, .advanced-research > *, .panel-header > * { min-width: 0; }
-.workbench-content .table-card, .ui-tabbed-page-body .table-card { min-width: 0; }
 .workbench-content code, .ui-tabbed-page-body code { overflow-wrap: anywhere; }
 @media (max-width: 600px) {
   :is(.workbench-content, .ui-tabbed-page-body) .panel :where(input, select) { max-width: 100%; min-width: 0; }

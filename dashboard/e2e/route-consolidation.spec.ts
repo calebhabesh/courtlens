@@ -54,6 +54,27 @@ test.describe("FO07 route consolidation", () => {
     }
   });
 
+  test("removed Research pages redirect and the Research menu carries an icon on every item", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/research/trends?playerId=1630567&season=2025-26");
+    await expect(page).toHaveURL(url => url.pathname === "/last-games" && url.searchParams.get("playerId") === "1630567");
+    await page.goto("/research/distributions");
+    await expect(page).toHaveURL(url => url.pathname === "/last-games");
+    await page.goto("/whats-new/blog");
+    await expect(page).toHaveURL(url => url.pathname === "/whats-new");
+    await expect(page.getByRole("navigation", { name: "What's New sections" })).toHaveCount(0);
+    await page.getByRole("button", { name: "Research", exact: true }).click();
+    const menu = page.getByRole("menu", { name: "Research" });
+    await expect(menu.getByRole("menuitem")).not.toHaveCount(0);
+    for (const removed of ["Workload Trends", "Distributions & Splits", "Case Studies", "Saved Investigations", "Evaluation Archive"]) {
+      await expect(menu.getByRole("menuitem", { name: removed })).toHaveCount(0);
+    }
+    const items = menu.getByRole("menuitem");
+    for (let index = 0; index < await items.count(); index++) await expect(items.nth(index).locator("svg")).toBeVisible();
+    const box = await menu.boundingBox();
+    expect(box!.x + box!.width).toBeLessThanOrEqual(1280);
+  });
+
   test("tabs fit a phone without page overflow", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/research/shooting/aftermath");

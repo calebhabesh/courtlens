@@ -242,10 +242,17 @@
 .courtlens-dropdown-multicol,
 .replica-dropdown-multicol {
   display: grid;
-  grid-template-columns: repeat(3, minmax(180px, auto));
+  /* Two columns of rich rows, like Databallr's Research menu. */
+  grid-template-columns: repeat(2, 264px);
   gap: var(--space-3);
   padding: var(--space-3);
   min-width: 0;
+}
+
+/* Research sits far along the nav: below 1440px the panel would pass the viewport's right edge. */
+@media (max-width: 1439px) {
+  .courtlens-dropdown-multicol,
+  .replica-dropdown-multicol { left: auto; right: 0; }
 }
 
 .courtlens-dropdown-col,

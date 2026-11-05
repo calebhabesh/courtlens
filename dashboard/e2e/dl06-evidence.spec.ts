@@ -15,8 +15,6 @@ test.describe("DL06 Evidence Screenshot Capture", () => {
     { name: "shot-aftermath", path: "/shot-aftermath" },
     { name: "wowy", path: "/wowy" },
     { name: "matchups", path: "/matchups" },
-    { name: "distributions", path: "/research/distributions" },
-    { name: "trends", path: "/research/trends" },
     { name: "similarity", path: "/research/similarity" },
     { name: "case-studies", path: "/research/case-studies" },
     { name: "stat-line-shift", path: "/stat-line-shift" },

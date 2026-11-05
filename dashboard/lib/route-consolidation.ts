@@ -35,10 +35,9 @@ export const TABBED_PAGES = {
   },
   whatsNew: {
     title: "What's New",
-    subtitle: "Dated changes and engineering notes.",
+    subtitle: "Dated changes.",
     tabs: [
       { label: "Patch Notes", href: "/whats-new" },
-      { label: "Blog", href: "/whats-new/blog" },
     ],
   },
   methodology: {
@@ -68,7 +67,7 @@ export const CONSOLIDATED_REDIRECTS: { source: string; destination: string }[] =
   { source: "/research/adjusted-shooting", destination: "/research/shooting/adjusted" },
   { source: "/shot-aftermath", destination: "/research/shooting/aftermath" },
   { source: "/patch-notes", destination: "/whats-new" },
-  { source: "/blog", destination: "/whats-new/blog" },
+  { source: "/blog", destination: "/whats-new" },
   { source: "/learning", destination: "/methodology/learning" },
 ];
 
@@ -101,6 +100,11 @@ export const HIDDEN_REDIRECTS: { source: string; destination: string }[] = [
   { source: "/rankings", destination: "/showcase" },
   // Alignment row 11 (owner, 2026-10-20): Tier List is cut for the same reason.
   { source: "/tierlist", destination: "/compare" },
+  // Research D8 (owner, 2026-11-05): Last X Games and the player page cover these two.
+  { source: "/research/trends", destination: "/last-games" },
+  { source: "/research/distributions", destination: "/last-games" },
+  // Research D3 (owner, 2026-11-05): the Blog is dropped.
+  { source: "/whats-new/blog", destination: "/whats-new" },
 ];
 
 /** PC11: removed from the hosted demo only (see HOSTED_DEMO_HIDDEN in lib/nav-model.ts). */

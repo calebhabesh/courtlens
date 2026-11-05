@@ -80,31 +80,27 @@ export const NAV_MENUS: NavMenu[] = [
   {
     id: "research",
     label: "Research",
+    // The Research handoff's target menu (D8), limited to pages that exist. Each later block adds its
+    // own item: Lineup Model, Metric Backtest, zTS, Signal vs Noise, Learning, Draft Classes and so on.
+    // Case Studies and Saved Investigations moved to Methodology; Evaluation Archive is reached from Points Forecasts and Methodology.
     groups: [
       { title: "Models", items: [
-        { label: "Win Probability", href: "/research/win-probability" },
-        { label: "Projected Impact", href: "/research/projected-impact" },
+        { label: "Win Probability", href: "/research/win-probability", icon: "activity", description: "Live win probability for each game, scored nightly" },
+        { label: "Projected Impact", href: "/research/projected-impact", icon: "trend", description: "2026-27 player ratings frozen before the games, with intervals" },
       ] },
       { title: "Impact", items: [
-        { label: "RAPM Research", href: "/research/rapm" },
-        { label: "Defensive Matchups", href: "/research/defensive-matchups" },
+        { label: "RAPM Research", href: "/research/rapm", icon: "gauge", description: "Player impact ratings and their six-factor breakdown" },
       ] },
       { title: "Shooting", items: [
-        { label: "Shooting", href: "/research/shooting" },
+        { label: "Shooting", href: "/research/shooting", icon: "target", description: "Expected shots, adjusted shooting and what follows a shot" },
+        { label: "Defensive Matchups", href: "/research/defensive-matchups", icon: "shield", description: "Ranks defenders from NBA tracking data" },
       ] },
-      { title: "Trends & Distributions", items: [
-        { label: "Workload Trends", href: "/research/trends" },
-        { label: "Distributions & Splits", href: "/research/distributions" },
-      ] },
-      { title: "Forecasts & Evaluation", items: [
-        { label: "Points Forecasts", href: "/forecasts" },
-        { label: "Evaluation Archive", href: "/evaluation" },
-        { label: "Case Studies", href: "/research/case-studies" },
-        { label: "Saved Investigations", href: "/investigations" },
+      { title: "Methods", items: [
+        { label: "Points Forecasts", href: "/forecasts", icon: "chart-line", description: "Next-game points estimates, their test and the prospective ledger" },
       ] },
       { title: "Tools", items: [
-        { label: "Combine & Wingspan", href: "/wingspan" },
-        { label: "Hypothetical Calculator", href: "/calculator" },
+        { label: "Combine & Wingspan", href: "/wingspan", icon: "ruler", description: "Official NBA Draft Combine measurements, including wingspan" },
+        { label: "Hypothetical Calculator", href: "/calculator", icon: "calculator", description: "Offensive rating from your own possession assumptions" },
       ] },
     ],
   },
@@ -153,6 +149,6 @@ export function activeNavSection(pathname: string): string {
   if (pathname.startsWith("/live") || pathname.startsWith("/playoffs")) return "live";
   if (pathname.startsWith("/players/")) return "players";
   if (pathname.startsWith("/teams/") || pathname.startsWith("/contracts/")) return "teams";
-  if (pathname.startsWith("/research") || pathname.startsWith("/investigations")) return "research";
+  if (pathname.startsWith("/research") || pathname.startsWith("/investigations") || pathname.startsWith("/evaluation")) return "research";
   return "";
 }

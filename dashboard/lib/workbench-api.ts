@@ -15,12 +15,8 @@ import type {
   AssistantQueryRequest,
   AssistantStatusResponse,
   BackfillStatusResponse,
-  ComparePeriodsRequest,
-  ComparePeriodsResponse,
   DraftClassesResponse,
   CrosswalkResponse,
-  DistributionRequest,
-  DistributionResponse,
   ForecastIssuanceDetailResponse,
   ForecastsListResponse,
   InvestigationDetail,
@@ -30,8 +26,6 @@ import type {
   LookupResponse,
   MeasurementsQueryResponse,
   MetricCatalog,
-  OpponentContextRequest,
-  OpponentContextResponse,
   PlayerCareerResponse,
   PlayerComparisonResponse,
   PlayerGameLogResponse,
@@ -43,13 +37,9 @@ import type {
   PlayoffSeriesDetailResponse,
   ScheduleDatesResponse,
   PointsForecastEvaluation,
-  RankOperationRequest,
-  RankOperationResponse,
   SavedInvestigation,
   QuerySpec,
   StatsPresentation,
-  SplitProfileRequest,
-  SplitProfileResponse,
   StatisticalPeersRequest,
   StatisticalPeersResponse,
   TeamDetailResponse,
@@ -638,86 +628,6 @@ export async function queryLookup(options: LookupQueryOptions): Promise<LookupRe
   return response.json();
 }
 
-export async function comparePeriods(
-  req: ComparePeriodsRequest
-): Promise<ComparePeriodsResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/compare-periods`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
-export async function getDistribution(
-  req: DistributionRequest
-): Promise<DistributionResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/distribution`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
-export async function getSplitProfile(
-  req: SplitProfileRequest
-): Promise<SplitProfileResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/splits`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
-export async function getOpponentContext(
-  req: OpponentContextRequest = {}
-): Promise<OpponentContextResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/opponent-context`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
 export async function getStatisticalPeers(
   req: StatisticalPeersRequest
 ): Promise<StatisticalPeersResponse> {
@@ -728,27 +638,6 @@ export async function getStatisticalPeers(
     body: JSON.stringify(req),
     cache: "no-store",
     signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
-export async function getRankOperation(
-  req: RankOperationRequest
-): Promise<RankOperationResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/rank`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    // League-wide ranks scan every eligible player (about 15s on a full season), like other operations.
-    signal: AbortSignal.timeout(50000)
   });
 
   if (!response.ok) {

@@ -46,7 +46,6 @@ export default async function LearningPage() {
         <ul>
           <li><Link href="/research/ask">Start manual research</Link></li>
           <li><Link href="/investigations">Saved library</Link></li>
-          <li><Link href="/whats-new/blog">Evidence before narrative</Link></li>
           <li><Link href="/data-status">Lineage and operations</Link></li>
         </ul>
       </ArticleSection>

@@ -18,7 +18,7 @@ coverage and screenshots per block. Plan text is not evidence.
 | R09 Draft Classes | ⬜ pending | |
 | R10 Wingspan, ORtg Calculator, Shot Aftermath restyle | ⬜ pending | |
 | R11 Learning, Glossary, Patch Notes | ⬜ pending | |
-| R12 Research landing, menu, README | ⬜ pending | |
+| R12 Research landing, menu, README | 🟡 menu done; landing, README and demo pending | [Menu entry](#2026-11-05--research-menu-trimmed-dropped-pages-removed-owner-request-part-of-r12) |
 | R14 Lineup model with learned embeddings | ⬜ pending | |
 | R15a Win Probability: model and final-test report | ✅ measured (production and pages are R15b) | [R15a evidence](evidence/research/r15a/README.md): both gates pass on 2,439 test games; log loss 0.4028 against 0.4157 baseline, calibration error 0.0083; level with ESPN overall, better after halftime; behind the closing spread pregame; lineup step S4 failed |
 | R15b Win Probability: production, scorecard, pages | 🟡 frozen and running; prospective scoring and arm64 unverified; pages await owner | [R15b evidence](evidence/research/r15b/README.md): frozen 2026-11-04 22:08:55 UTC; ESPN-built states change log loss +0.0002; p95 23 ms per game; nightly job and drift flag run on 107 real pre-freeze games; 14 games sealed as the first prospective |
@@ -131,3 +131,22 @@ structure goes where basketball knowledge is reliable.
 - **Negative results.** Ridge beat the selected LightGBM on test (margin RMSE 14.51, player RMSE 2.76); selection on 2023-24 stands. The age curve adds almost nothing and is worse on games (-1.92). No clear gain for rookies or returners.
 - **Weekly score.** Step in `refresh-daily`, 7-day guard, append-only. 107 real games scored, all labelled hindsight; 0 prospective so far.
 - **Hosted demo.** Built, not deployed.
+
+## 2026-11-05 — Research menu trimmed, dropped pages removed (owner request, part of R12)
+
+Screenshots: [1440](evidence/research/menu/research-menu-1440.png), [390](evidence/research/menu/research-menu-390.png).
+
+- **Menu.** Five D8 groups and eight items, all existing pages, each with an icon and one-line description in two columns like Databallr's menu. Later blocks add their own items.
+- **Removed.** Workload Trends and Distributions & Splits (D8) now redirect to Last X Games, and the Blog (D3) to What's New. Player page, Stats drawer, Case Studies and Learning links updated; backend operations kept for Ask and saved investigations.
+- **Off the menu, pages kept.** Case Studies, Saved Investigations and Evaluation Archive, linked from Methodology; Evaluation Archive also from Points Forecasts.
+- **Verified.** On `localhost:3100`, at 1280, 1366, 1440 and 1920 the panel fits the viewport with an icon on all eight rows; at 390 the drawer lists them without page overflow. Vitest 703 passed; lint and typecheck clean.
+- **Not verified: Playwright.** The one full run is invalid: a stale server held the sandbox port, so tests hit an old build, and the system then stopped the run for low memory. Rerun before merging.
+- **R12 remainder.** `/research` landing, README results and the demo refresh remain pending.
+
+## 2026-11-05 — R15b first prospective run
+
+The 13:30 UTC `refresh-daily` run succeeded and scored the 14 games of 2026-11-04, the first prospective games. Too few to judge: drift status is `insufficient` (minimum 25 games) and no interval exists yet.
+
+- **Log loss on matched states.** CourtLens 0.4433, ESPN 0.4213, one night only. The pre-freeze replay was 0.4269 and 0.4202.
+- **Live's injury-information cost.** Across 13 games, tip-off and hindsight expected margins differ by a mean of 0.62 points in absolute value (95th percentile 1.97).
+- **Weekly R07 step.** Under the timer it skipped as designed (`last_written` 2026-11-05 04:54:49 UTC).
