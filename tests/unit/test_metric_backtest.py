@@ -247,7 +247,9 @@ def test_runner_end_to_end(synthetic_run: dict[str, Any]) -> None:
     for name, body in c.items():
         for season, row in body["seasons"].items():
             assert row["calibration"]["fitted_on"] < season, name
-            assert row["intervals"]["rmse"]["low"] <= row["rmse"] <= row["intervals"]["rmse"]["high"]
+            assert (
+                row["intervals"]["rmse"]["low"] <= row["rmse"] <= row["intervals"]["rmse"]["high"]
+            )
     pair = next(
         p
         for p in synthetic_run["pairs"]
@@ -282,3 +284,95 @@ def test_test_command_refuses_a_second_read(tmp_path: Any) -> None:
     path.write_text("{}")
     with pytest.raises(SystemExit, match="has been read"):
         runner.command_test(tmp_path, path)
+
+
+# The 2026-27 scorer and the served files.
+
+
+def _manifest() -> dict[str, Any]:
+    from courtlens.ingestion.native_reconstruction import content_hash
+
+    body: dict[str, Any] = {
+        "version": "v",
+        "frozen_at": "2026-11-05T22:52:08+00:00",
+        "calibration": {n: {"a": 2.0, "b": 1.0, "sigma": 12.0} for n in data.CANDIDATES},
+        "minimum_games_for_interval": 20,
+        "season": "2026-27",
+    }
+    body["manifest_sha256"] = content_hash(body)
+    return body
+
+
+def test_score_game_reads_the_newest_snapshot_and_labels_by_tip() -> None:
+    from courtlens.services import metric_backtest as service
+
+    table = synthetic_tables(games=2)["2025-26"]
+    game = {**table["games"][0], "date": "2026-11-10"}
+    snap = {"sha256": "s1", "cutoff": "2026-11-01", "players": {"x": (1.0, 9.0)}}
+    snapshots = {"2026-10-20": {**snap, "sha256": "s0", "cutoff": "2026-10-20"}, "2026-11-01": snap}
+    manifest = _manifest()
+    before = service.score_game(game, table, snapshots, manifest, "2026-11-05T20:00:00Z")
+    after = service.score_game(game, table, snapshots, manifest, "2026-11-10T00:30:00Z")
+    assert before is not None and after is not None
+    assert before["label"] == "hindsight" and after["label"] == "prospective"
+    assert after["time_decay_snapshot"] == {"cutoff": "2026-11-01", "sha256": "s1"}
+    # The snapshot rates nobody who played, so every minute takes its replacement value.
+    assert after["replaced_seconds"]["time_decay"] == after["total_seconds"]
+    assert 0 < after["probability"]["team_net"] < 1
+    early = {**game, "date": "2026-10-19"}
+    assert service.score_game(early, table, snapshots, manifest, None) is None
+
+
+def test_prospective_summary_needs_twenty_games_for_intervals() -> None:
+    from courtlens.services import metric_backtest as service
+
+    table = synthetic_tables(games=30)["2025-26"]
+    snapshots = {
+        "2025-10-01": {"sha256": "s", "cutoff": "2025-10-01", "players": {"x": (1.0, 9.0)}}
+    }
+    manifest = _manifest()
+    rows = [
+        service.score_game(g, table, snapshots, manifest, "2026-12-01T00:00:00Z")
+        for g in table["games"]
+    ]
+    scored = [r for r in rows if r is not None]
+    few = service.summarize_group(scored[:19], 20)
+    assert few["games"] == 19 and "pairs" not in few
+    many = service.summarize_group(scored, 20)
+    assert len(many["pairs"]) == 36
+    assert all(p["rmse"]["low"] <= p["rmse"]["gain"] <= p["rmse"]["high"] for p in many["pairs"])
+
+
+def test_served_results_refuse_a_changed_file(
+    tmp_path: Any, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import json
+
+    from courtlens.ingestion.native_reconstruction import content_hash
+    from courtlens.services import metric_backtest as service
+
+    body: dict[str, Any] = {"version": "v", "candidates": {}}
+    body["results_sha256"] = content_hash(body)
+    path = tmp_path / "results.json"
+    path.write_text(json.dumps(body))
+    monkeypatch.setattr(service, "RESULTS_PATH", path)
+    service._cache.clear()
+    assert service.load_results()["version"] == "v"
+    path.write_text(json.dumps({**body, "version": "edited"}))
+    service._cache.clear()
+    with pytest.raises(ValueError, match="changed after it was frozen"):
+        service.load_results()
+
+
+def test_committed_results_match_their_hash_and_verdict_rule() -> None:
+    """The frozen file is intact and its verdict follows the registered rule mechanically."""
+    from courtlens.services import metric_backtest as service
+
+    service._cache.clear()
+    results = service.load_results()
+    service.load_manifest()
+    for pair in results["pairs"]:
+        gains = [pair["per_season"][s]["rmse"]["gain"] for s in pair["seasons"]]
+        assert runner.pair_verdict(pair["pooled"]["rmse"], gains) == pair["verdict"]
+    assert set(results["candidates"]) == set(data.CANDIDATES)
+    assert results["candidates"]["projected_impact"]["test_seasons"] == ["2024-25", "2025-26"]

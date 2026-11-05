@@ -2040,6 +2040,16 @@ def refresh_projected_impact_command(
     typer.echo(json.dumps(weekly(force=force)))
 
 
+@app.command("refresh-metric-backtest")
+def refresh_metric_backtest_command(
+    force: bool = typer.Option(False, help="Score now even if the last score is under 7 days old."),
+) -> None:
+    """Score completed 2026-27 games for the Metric Backtest; a no-op within 7 days of the last."""
+    from courtlens.services.metric_backtest import weekly
+
+    typer.echo(json.dumps(weekly(force=force)))
+
+
 @app.command("capture-win-probability-inputs")
 def capture_win_probability_inputs_command() -> None:
     """Seal today's pregame inputs only; run nearer tip-off to catch later injury news."""

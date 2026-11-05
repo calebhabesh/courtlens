@@ -72,6 +72,7 @@ class Settings(BaseSettings):
     win_probability_snapshots_dir: Path = Path("data/derived/win-probability-ratings")
     projected_impact_serving_dir: Path = Path("data/derived/projected-impact-serving")
     projected_impact_models_dir: Path = Path("data/artifacts/projected-impact")
+    metric_backtest_serving_dir: Path = Path("data/derived/metric-backtest-serving")
     # Sealed by `courtlens.evaluation.stint_box_runner`; absent means focal stats beyond points
     # stay unknown for IM03 stints.
     stint_box_manifest: Path | None = Path("data/derived/stint-box-v1/manifest")
