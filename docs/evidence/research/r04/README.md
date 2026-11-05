@@ -144,3 +144,4 @@ of 0%.
 - Signed values have explicit signs but no green/red colour: there is no shared class for it, and plain
   build pages add no page CSS. Left for the design pass.
 - Full-page captures leave lazy-loaded photos blank; viewport shots show them.
+- The screenshots were taken before one last change: the difficulty histogram now draws every bin in one tone. Difficulty is not a good/bad signal, so it gets neither green/red nor a gold/blue split by sign. Values and layout are unchanged.
