@@ -155,10 +155,8 @@ export function StatsDetailDrawer({
 
         {/* Investigation Shortcuts */}
         <nav className="stats-drawer-shortcuts" aria-label="Player research links">
-          <ButtonLink size="sm" href={`/research/trends?playerId=${player.player_id}&${queryString}`}
-            title="Analyze workload and performance trends across disjoint windows">Trends</ButtonLink>
-          <ButtonLink size="sm" href={`/research/distributions?playerId=${player.player_id}&${queryString}`}
-            title="View empirical quantiles, dispersion, and contextual splits">Distributions</ButtonLink>
+          <ButtonLink size="sm" href={`/last-games?playerId=${player.player_id}&${queryString}`}
+            title="Player performance over their most recent games">Last X Games</ButtonLink>
           <ButtonLink size="sm" href={`/similar-players?playerId=${player.player_id}&${queryString}`}
             title="Find statistical twin players across standardized dimensions">Peers</ButtonLink>
         </nav>

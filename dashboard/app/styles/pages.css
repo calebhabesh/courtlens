@@ -181,11 +181,6 @@
 .research-view .gate-list { display: flex; flex-direction: column; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
 .research-view details > summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; }
 /* Trends: the player and both compared windows side by side. */
-.research-periods { display: grid; grid-template-columns: minmax(220px, 1.2fr) repeat(2, minmax(0, 1fr)); gap: var(--space-3); align-items: stretch; }
-.research-periods > .ui-identity { padding: var(--space-4); background: var(--color-surface-1); border-radius: var(--radius-md); }
-.research-period { display: flex; flex-direction: column; gap: var(--space-1); padding: var(--space-4); background: var(--color-surface-1); border-radius: var(--radius-md); font-size: var(--text-sm); color: var(--color-text-secondary); min-width: 0; }
-.research-period strong { color: var(--color-text); font-size: var(--text-md); }
-.research-period-kicker { font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.04em; }
 /* Case studies and measurement comparison. */
 .research-view .case-study-hero { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-4); }
 .case-study-heading { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
@@ -198,7 +193,6 @@
 /* Inputs placed in the shared bar match the 40px controls. */
 .research-view .ui-filter-bar input:not([type="checkbox"], .lookup-input) { min-height: 40px; max-width: 9rem; }
 @media (width < 1024px) {
-  .research-periods { grid-template-columns: minmax(0, 1fr); }
   .research-view .case-study-hero { grid-template-columns: minmax(0, 1fr); }
 }
 @media (width < 768px) {
@@ -215,8 +209,6 @@
 .research-view .case-study-hero { padding: var(--space-4); border-top: 0; border-radius: var(--radius-md); }
 .research-view .case-study-guarantees-list { padding-left: var(--space-5); }
 .research-view .case-study-guarantee-item { padding: 0; background: none; border: 0; border-radius: 0; font-size: var(--text-sm); color: var(--color-text-secondary); }
-.research-view .dist-strip-card { margin: 0; padding: var(--space-4); border: 0; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: var(--space-3); }
-.research-view .dist-strip-container { border: 0; }
 /* Row headers name a player, team or record; they read as text, not as column labels. */
 .research-view .data-table tbody th { background: none; color: var(--color-text); font-size: var(--text-sm); font-weight: 500; text-transform: none; letter-spacing: normal; user-select: text; }
 /* Learning workshop (FO13 Article template). */

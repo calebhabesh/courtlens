@@ -71,23 +71,8 @@ test("partial source keeps tools primary; service failure remains a distinct ava
   await expect(page.getByRole("region", { name: "Scenario output" })).toBeVisible();
 });
 
-test("distribution subtools retain release, postseason and exclusive cutoff", async ({ page }) => {
-  const requests: Record<string, unknown>[] = [];
-  await page.route("**/api/workbench/operations/*", route => {
-    requests.push(route.request().postDataJSON());
-    return route.fulfill({ status: 503, json: { detail: "Fixture service failure; scope retained" } });
-  });
-  const scope = "season=2025-26&phase=playoffs&releaseId=fixture-release&beforeDate=2026-05-01&playerId=1630567";
-  for (const tab of ["distribution", "splits", "opponent"]) {
-    await openWorkbench(page, `/research/distributions?${scope}&tab=${tab}`);
-    await expect.poll(() => requests.length).toBeGreaterThan(0);
-    expect(requests.every(body => body.season === "2025-26" && body.phase === "playoffs" && body.release_id === "fixture-release" && body.before_date === "2026-05-01")).toBe(true);
-    requests.length = 0;
-  }
-});
-
 test("research without a catalog explains the missing context", async ({ page }) => {
   await page.route("**/api/workbench/catalog*", route => route.fulfill({ status: 503, json: { detail: "Temporary catalog failure" } }));
-  await openWorkbench(page, "/research/distributions");
+  await openWorkbench(page, "/research/rapm");
   await expect(page.getByRole("status").filter({ hasText: "Context catalog unavailable" })).toBeVisible();
 });
