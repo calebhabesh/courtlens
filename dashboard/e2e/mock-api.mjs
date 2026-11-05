@@ -15,6 +15,7 @@ const projectedImpact = JSON.parse(readFileSync(new URL("./fixtures/projected-im
 // R03: real Signal vs Noise answers (results file, 2025-26 shrinkage, the default worked example).
 const signalNoise = JSON.parse(readFileSync(new URL("./fixtures/signal-noise.json", import.meta.url), "utf8"));
 const zts = JSON.parse(readFileSync(new URL("./fixtures/zts.json", import.meta.url), "utf8"));
+const shotQuality = JSON.parse(readFileSync(new URL("./fixtures/shot-quality.json", import.meta.url), "utf8"));
 // Real answers of the six-factor API for 2025-26, cut to a few rows, and real Impact Trees.
 const sixFactorPage = JSON.parse(readFileSync(new URL("./fixtures/six-factor-page.json", import.meta.url), "utf8"));
 const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
@@ -635,6 +636,13 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/signal-noise/shrinkage") return json(response, 200, { ...signalNoise.shrinkage, season: url.searchParams.get("season"), phase: url.searchParams.get("phase") });
   if (url.pathname === "/api/signal-noise/player") return json(response, 200, signalNoise.player);
   // R04 zTS: real answers of the zTS API; other seasons answer as the API does for a season it lacks.
+  if (url.pathname === "/api/shot-quality") return json(response, 200, shotQuality.summary);
+  if (url.pathname === "/api/shot-quality/players") {
+    const q = url.searchParams;
+    const key = `${q.get("season") ?? "2025-26"}:${q.get("sort") ?? "shot_making"}:${q.get("team") ?? "all"}:${q.get("minFga") ?? "300"}`;
+    return json(response, 200, shotQuality.boards[key] ?? { ...shotQuality.unknown_season, season: q.get("season") });
+  }
+  if (url.pathname === "/api/shot-quality/player") return json(response, 200, shotQuality.default_player);
   if (url.pathname === "/api/zts") return json(response, 200, zts.summary);
   if (url.pathname === "/api/zts/leaderboard") {
     const season = url.searchParams.get("season") ?? "2025-26";
