@@ -73,6 +73,6 @@ test("partial source keeps tools primary; service failure remains a distinct ava
 
 test("research without a catalog explains the missing context", async ({ page }) => {
   await page.route("**/api/workbench/catalog*", route => route.fulfill({ status: 503, json: { detail: "Temporary catalog failure" } }));
-  await openWorkbench(page, "/research/rapm");
+  await openWorkbench(page, "/research/shooting/aftermath");
   await expect(page.getByRole("status").filter({ hasText: "Context catalog unavailable" })).toBeVisible();
 });
