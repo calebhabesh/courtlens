@@ -303,7 +303,7 @@ export function SixFactorResearch() {
       ]} />} />
     {error && <FeedFailure error={error} retry={retry} what="Six-Factor RAPM" />}
     {loading && <FeedSkeleton label="Loading six-factor ratings" />}
-    {answer?.status === "unavailable" && <GatedNote>No one-year fit is served for {season} {phaseLabel(phase).toLowerCase()}. RAPM is sealed after a season ends, and history starts in 2014-15. Pick a season above.</GatedNote>}
+    {answer?.status === "unavailable" && <GatedNote action={answer.scopes[0] && <ButtonLink size="lg" href={`${pathname}?season=${answer.scopes[0].season}`}>Open {answer.scopes[0].season}</ButtonLink>}>No one-year fit is served for {season} {phaseLabel(phase).toLowerCase()}. RAPM is sealed after a season ends, and history starts in 2014-15.</GatedNote>}
     {data && <ResearchLayout className="sf-page" findings={<>
       <StatTile label="Six Factors to RAPM" value={data.reconstruction ? `R² ${r2(data.reconstruction.in_sample.value)}` : null} footnote={data.reconstruction ? `${r2(data.reconstruction.cross_validated.value)} on held-out players` : "Not registered for this phase"} />
       <StatTile label="Rated Players" value={data.players.length.toLocaleString("en-US")} footnote={`Of ${data.fit_players.toLocaleString("en-US")} in the fit`} />

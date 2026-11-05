@@ -100,7 +100,8 @@ Whole page: [1440](six-factor-1440.png), [390](six-factor-390.png). For these fu
 sticky filter bar was made static and the off-screen skip link hidden; both otherwise paint mid-page in a
 full-page capture. A plain viewport shot at scroll 0 shows them correctly.
 
-A season with no fit (2026-27, or before 2014-15) gets an explanation and the season picker, not an error.
+A season with no fit (2026-27, or before 2014-15) gets an explanation and a button to the latest fit, not
+an error. Stats defaults to 2026-27, so its link lands here until that season is sealed.
 
 ## Step 0: the Playwright debt from `e50b564`
 
