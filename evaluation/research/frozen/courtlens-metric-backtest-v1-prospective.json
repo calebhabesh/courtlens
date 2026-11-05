@@ -1,0 +1,78 @@
+{
+ "calibration": {
+  "box_prior_rapm": {
+   "a": 1.7699459015158772,
+   "b": 0.6103656307070457,
+   "fitted_on": "2025-26",
+   "games": 1230,
+   "sigma": 15.286770134265932
+  },
+  "on_off": {
+   "a": 1.794228512661161,
+   "b": 0.3350005390981016,
+   "fitted_on": "2025-26",
+   "games": 1230,
+   "sigma": 15.72181199377219
+  },
+  "plus_minus": {
+   "a": 1.7295188610865373,
+   "b": 0.16610428609932806,
+   "fitted_on": "2025-26",
+   "games": 1230,
+   "sigma": 15.471333285672523
+  },
+  "projected_impact": {
+   "a": 1.6886864156565082,
+   "b": 1.5680123218543511,
+   "fitted_on": "2025-26",
+   "games": 1230,
+   "sigma": 14.924952689529349
+  },
+  "rapm_1y": {
+   "a": 1.7716977595476644,
+   "b": 0.6108336933235557,
+   "fitted_on": "2025-26",
+   "games": 1230,
+   "sigma": 15.379671154359666
+  },
+  "rapm_3y": {
+   "a": 1.7272213989296872,
+   "b": 0.7399194754408256,
+   "fitted_on": "2025-26",
+   "games": 1230,
+   "sigma": 15.037097108306538
+  },
+  "team_net": {
+   "a": 1.7281430032593057,
+   "b": 0.4932454935465367,
+   "fitted_on": "2025-26",
+   "games": 1230,
+   "sigma": 15.856851629141381
+  },
+  "time_decay": {
+   "a": 1.772900083132921,
+   "b": 1.0067227931854097,
+   "fitted_on": "2025-26",
+   "games": 1230,
+   "sigma": 14.550570099752262
+  },
+  "time_decay_opener": {
+   "a": 1.7363091322357804,
+   "b": 0.7952281412240639,
+   "fitted_on": "2025-26",
+   "games": 1230,
+   "sigma": 15.054080114489079
+  }
+ },
+ "first_prospective_rule": "scheduled tip after frozen_at",
+ "frozen_at": "2026-11-05T22:52:08+00:00",
+ "manifest_sha256": "8692e886a1f1346fc95abd0cf34d5a333715a7bec7316074831d3f11c4940146",
+ "minimum_games_for_interval": 20,
+ "prospective_table_sha256": "44d17524c168c37ddbef47ba15e4d660690e0b8f785fd0ff81e55ae802c101df",
+ "registration_sha256": "43d6f1d36ace9807d86a2041ee770b72d27fe8f57110e6b2ce6fdbaf299ec01d",
+ "replicates": 2000,
+ "results_sha256": "0d45de08c46e5c1194dbcf7962cdaeee845b787cc591d0fe5bdc371b71372593",
+ "season": "2026-27",
+ "seed": 8008,
+ "version": "courtlens-metric-backtest-v1-prospective-2026-27"
+}
