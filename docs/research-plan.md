@@ -48,6 +48,7 @@ only restyles existing data is worth less than a page that tests a claim.
 | D10 ML depth | Owner, 2026-11-04: the project should read as data science, statistics, ML **and** applied AI. R14 adds learned representations, R15 adds a model in production with monitoring, and R16 publishes the assistant's held-out evaluation. |
 | D11 Run order | **R01 → R15a → R15b → R07 → then R02–R06, R08–R12, R14, R16 in number order.** Win probability and Projected Impact are scored live on 2026-27, and every week of delay loses prospective games, so they come straight after the foundation. R03 may run in parallel with anything. |
 | D12 Compute | Train on the local CPU by default: logistic, GAM and LightGBM models on about 13 million event rows fit in minutes. Google Colab (bundled with the owner's Google AI Pro plan) is an **optional accelerator** for neural models (R14) and large hyperparameter sweeps. Rules: the training set is exported as a content-hashed Parquet file; the Colab notebook records the dataset hash, package lock, seed and GPU type; the returned model is verified by hash locally. Every published model must also be reproducible on CPU, so no result depends on a paid service. |
+| D13 Build, then design | Owner, 2026-11-05: Research pages are built for function first and redesigned afterwards in final design blocks. This supersedes D11's order for the blocks still to run. **Build phase:** R03, R04, R05, R06, R08, R09, R14, R16 and the new data in R10. **Design phase:** every Research page, one at a time from the owner's Databallr screenshots and instructions under the [alignment handoff](databallr-alignment-plan.md)'s process, starting with Six-Factor RAPM (row 18) to set the pattern; only the owner marks ✅. **Finish:** R11 and R12. Win Probability keeps its existing page unless the owner asks otherwise. |
 
 ## Target Research menu
 
@@ -64,7 +65,14 @@ number, test seasons and a link to the evidence.
 
 ## Blocks
 
-Run in the order set by D11; otherwise in number order unless marked independent. Each block ends with measured evidence in the progress
+Run in the order set by D13; otherwise in number order unless marked independent.
+
+**Build-phase rules (D13).** A build block ends with the analysis finished and a deliberately plain page.
+- **Plain UI:** the control kit and the shared tables and charts, with no bespoke layouts or custom page CSS. Layout, polish and Databallr alignment belong to the design phase.
+- **Finished API:** served data, intervals, unknown states and tests against the data, so a design block needs no new analysis.
+- **Check the content first:** before building a page with a Databallr counterpart, ask the owner for its screenshots and confirm the data covers what that page shows. The agent cannot fetch databallr.com, and a list of section names is not a design reference.
+
+Each block ends with measured evidence in the progress
 log and, for pages, the alignment verification steps (lint, typecheck, Vitest, page Playwright
 specs, 1440 and 390 screenshots in `docs/evidence/research/<block>/`). One block per commit.
 
@@ -193,6 +201,8 @@ the page says so.
 - Combine measurements (Wingspan) shown beside outcome, descriptive only.
 
 ### R10 — Wingspan, ORtg Calculator and Shot Aftermath restyle (catalog rows 19, 20, 27)
+
+Under D13, the build phase adds only the new data (for example DARKO D-DPM beside wingspan, positional averages, Pearson r); layout and restyling move to the design phase.
 
 Owner-driven alignment, as on the core pages. Wingspan: Databallr layout plus DARKO D-DPM, positional
 averages, a scatter with Pearson r, overlay, and nearest-build comparisons. Calculator: Databallr's

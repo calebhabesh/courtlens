@@ -162,3 +162,7 @@ The 13:30 UTC `refresh-daily` run succeeded and scored the 14 games of 2026-11-0
 - **Menu.** RAPM Research is now Six-Factor RAPM, on the same icon and description. The old page stays as the RAPM Ratings tab.
 - **Playwright debt from e50b564.** First valid run: 509 passed, 17 skipped, 5 failed, all stale tests or baselines. Also traced a 52 px phone flash on Player Twins that predates R02 (16 of 120 loaded runs on e50b564, settled by 1.2 s); the test now waits for the settled page, the flash remains.
 - **Checks.** Full Playwright 523 passed, 17 skipped, 0 failed. Vitest 713 passed; lint, typecheck, Ruff, format and strict mypy clean. Python 2,475 passed, 1 skipped, 8 failed: the same Anthropic SDK environment failures as R01.
+
+## 2026-11-05 — Build first, design after (D13)
+
+The owner judged the Research pages' styling well below the aligned core pages and chose to build each page's function first, then redesign every Research page in final design blocks, as on the core pages. Recorded as [D13](research-plan.md#owner-decisions-2026-11-04-delegated). R03 is the next build block. Correction to the R02 entry: that page was built from the plan's list of sections, with no Databallr screenshot, so it is a first draft of the layout; its data checks stand.
