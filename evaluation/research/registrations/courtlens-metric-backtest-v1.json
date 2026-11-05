@@ -1,0 +1,120 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-metric-backtest-v1",
+  "block": "R08",
+  "registered_on": "2026-11-05",
+  "kind": "predictive",
+  "question": "Which impact metric best predicts real NBA game results? For every regular-season game in a test season, predict the home margin from each player's rating as it stood before that game, weighted by the minutes each player actually played, and compare margin error, winner accuracy and probability calibration across metrics with paired game-bootstrap intervals.",
+  "inputs": [
+    "GAMES: every regular-season game with a two-team box in the retained SportsDataverse boxes (R07's game_rows): final margin, teams, date, and each player's box seconds. 2015-16 (calibration only) and 2016-17 to 2025-26: 1,230 games per season except 2019-20 (1,059, of which 88 bubble games from 2020-07-30 are neutral-site) and 2020-21 (1,080). Box minutes are used rather than R01 stints, so R01's excluded games (3 to 26 per season; admitted 1,033 to 1,229) are still scored. No game is dropped.",
+    "BASELINE team_net: each team's previous-season regular-season box-score net rating (ORtg - DRtg from estimated possessions), computed with the Teams page's own function (domain/team_analytics.compute_team_four_factors) on the same retained team boxes. DATA CHECK: all 330 team-season values for 2014-15 to 2024-25 equal the Teams API (GET /api/workbench/teams) exactly. No franchise was added or relocated in 2014-15 to 2026-27 (team ids are stable), so no new-team rule is needed; a missing team fails the run.",
+    "SEASON-END FITS (read, never refitted; hash-pinned IM04-method artifacts in data/derived/impact-history-v2/ratings and data/derived/impact-ratings-v1/ratings, the served 1Y fit where two runs exist). RULE: a season-end fit is used only for the NEXT season's games, never its own. plus_minus = on-court net rating per 100 pooled across a player's teams (from the fit's on_off block); on_off = on-court minus off-court net per 100, averaged across teams weighted by on-court possessions; both require at least 250 counted possessions on each side on court and off court, otherwise replaced. rapm_1y = 1Y RAPM total; rapm_3y = RAPM total of the complete three-season window ending the previous season (first complete window ends 2016-17); box_prior_rapm = 1Y box-prior RAPM total (none for 2014-15, which has no earlier season, and none for the sealed 2023-24 fit, which was fitted with no earlier admitted season).",
+    "TIME DECAY (courtlens-rating-snapshots-v1): R01's 91 dated snapshots (2015-16 opener to 2026-05-01), each fitted on games strictly before its cutoff (latest_game_date < cutoff checked on load, content hash checked). time_decay reads the newest snapshot with cutoff on or before the game date, as R15's win probability does. time_decay_opener reads only the season-opener snapshot all season: the same method with the information set of the season-end fits, so it separates 'better method' from 'fresher data'. 2026-27 snapshots are read from data/derived/win-probability-ratings (built by the R15b nightly job under the same rule).",
+    "PROJECTED IMPACT (courtlens-projected-impact-v1, R07): the frozen selected LightGBM, read through R07's own feature path (rows_for / predict_all, selection.json and the model file checked by hash); no refit. Trained on 2016-17 to 2022-23 targets and selected on 2023-24, so it is scored only on 2024-25 and 2025-26 (its out-of-sample test seasons) and on 2026-27 prospectively from the frozen file (projections_sha256 6eaef389...). 2023-24 projections are used only to fit its 2024-25 scale. DATA CHECK: these recomputed projections, scored with R07's own rule, reproduce R07's published game RMSE exactly (2024-25 14.38933581393027, 2025-26 14.92772682351593, pooled 14.66100292073454).",
+    "DARKO is OMITTED from the backtest and from every verdict. The stored files (data/derived/darko-dpm-v2) hold one retrospective rating per season made with DARKO's current model; original publication-time versions are unavailable, so they are hindsight, not pregame ratings. No free dated pregame history was found. It is credited and the omission is stated on the page.",
+    "DATA CHECK (counts and dates only; no margin was read for any candidate). Share of player minutes needing the replacement value, 2016-17 to 2025-26: plus_minus and on_off 11.4 to 14.3% (48 to 121 players per season under the 250-possession minimum), rapm_1y 9.7 to 13.2%, rapm_3y 8.2 to 11.9%, box_prior_rapm 9.7 to 13.2%, time_decay 0.5 to 1.1% (monthly snapshots rate rookies after their first month), time_decay_opener 8.2 to 11.9%, projected_impact 0.0% (R07 projects every player with a box). Leakage audit on the pinned tables: for all 103,912 game-candidate ratings, every source's inputs precede the game (inputs_before <= game date), 0 violations; the runner repeats this audit.",
+    "TABLES: built by courtlens.evaluation.metric_backtest_data before this registration, three builds byte-identical, pinned in parameters.table_sha256 (one per season plus `prospective`, the fixed 2026-27 sources). The runner refuses any other bytes."
+  ],
+  "method": [
+    "STRENGTH. Team baseline: D = net(home) - net(away). Player metrics: D = sum over home players of (box seconds / 2,880) x rating minus the same for away players, so five full-game players sum five ratings (overtime adds weight). A player without a rating in the source (rookie, call-up, below the raw-metric minimum) takes the source's REPLACEMENT value: the 20th percentile of that source's own ratings, weighted by the source's playing time (seconds, decayed seconds or counted possessions; equal weights for Projected Impact, whose file has no playing time for rookies). Fixed before any margin was read; never zero, never the team's own result. Counted per candidate and season.",
+    "PREDICTION. margin = a x H + b x D, H = 0 for neutral-site games (2019-20 bubble from 2020-07-30) and 1 otherwise; no other intercept. a (home advantage), b (scale: pace, shrinkage and units) and sigma (residual SD, n - 2) are fitted by least squares per candidate on the games of the LATEST EARLIER SEASON in which that candidate has ratings, rated by the same rule (normally the previous season; box_prior_rapm 2025-26 uses 2023-24 because 2024-25 has no box-prior source). No score reads its own season's results; a unit test proves that changing a later season's margins changes no earlier season's calibration or score.",
+    "WIN PROBABILITY. P(home win) = Phi(margin / sigma) with that calibration season's sigma.",
+    "TEST SEASONS. A candidate is scored in a test season (2016-17 to 2025-26) if it has ratings there and in some earlier season: team_net, plus_minus, on_off, rapm_1y, time_decay and time_decay_opener 2016-17 to 2025-26 (10 seasons); rapm_3y 2018-19 to 2025-26 (8); box_prior_rapm 2017-18 to 2023-24 and 2025-26 (8); projected_impact 2024-25 and 2025-26 (2). Within a season every available candidate is scored on the same games (all box games), so pairs are always on a common game set: their common seasons.",
+    "SCORES. Margin RMSE (primary), winner accuracy (sign of predicted margin equals sign of actual), Brier score and log loss (probabilities clipped to [1e-6, 1 - 1e-6]), mean error, and a 10-bin calibration curve with expected calibration error. Per season and pooled over the candidate's test seasons.",
+    "PAIRED DIFFERENCES. For every pair of candidates (and so every candidate against team_net) on their common seasons: gain = reference minus candidate for RMSE, Brier and log loss, candidate minus reference for accuracy (positive always favours the candidate), per season and pooled.",
+    "REGISTERED VERDICT RULE (written before any number exists; margin RMSE only). 'A predicts game margins better than B' if and only if (1) the pooled 95% interval of B's RMSE minus A's RMSE over their common seasons lies entirely above zero, AND (2) A has the lower RMSE in more than half of those seasons. The reverse statement uses the mirror rule. Otherwise: no ranking. Overlapping or zero-straddling intervals never rank. A metric is called the best predictor only if it is ranked above every other candidate it shares a season with. Intervals are not adjusted for the number of pairs (36), which is stated; condition (2) guards against one season driving a pooled result. Brier, log loss and accuracy are reported with intervals and carry no verdict.",
+    "CHOICES. Nothing is chosen from outcomes: the replacement quantile (0.2), the raw-metric minimum (250 possessions), the previous-season rule for season-end fits, the calibration window and the scores are fixed here. So there is one pass and no choice pass. Any change after results are read is disclosed, keeps this hash, and analysis changes require v2.",
+    "PROSPECTIVE 2026-27. After the backtest, `freeze` writes evaluation/research/frozen/courtlens-metric-backtest-v1-prospective.json: frozen_at, the pinned 2026-27 sources (team_net 2025-26, fits ending 2025-26, time_decay_opener = the 2026-10-20 snapshot, the frozen Projected Impact file) and each candidate's a, b, sigma fitted on 2025-26 under the same rule. time_decay reads the newest 2026-27 snapshot with cutoff on or before the game date, checked by hash and recorded per game. The scorer adds each completed 2026-27 regular-season game once (one row per game, never rewritten), using box minutes; a game is prospective only if its scheduled tip is after frozen_at, earlier games are labelled hindsight and shown apart. Paired gains with intervals are shown once 20 prospective games exist. The backtest verdict is never updated from prospective games; at the end of the regular season condition (1) alone is reported for 2026-27."
+  ],
+  "parameters": {
+    "candidates": [
+      "team_net",
+      "plus_minus",
+      "on_off",
+      "rapm_1y",
+      "rapm_3y",
+      "box_prior_rapm",
+      "time_decay",
+      "time_decay_opener",
+      "projected_impact"
+    ],
+    "baseline": "team_net",
+    "test_seasons": [
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "calibration_first": "2015-16",
+    "prospective_season": "2026-27",
+    "raw_min_controls": 250.0,
+    "replacement_quantile": 0.2,
+    "bubble_neutral_from": "2020-07-30",
+    "projected_impact_test": [
+      "2024-25",
+      "2025-26"
+    ],
+    "replicates": 2000,
+    "level": 0.95,
+    "calibration_bins": 10,
+    "probability_clip": 1e-06,
+    "minimum_prospective_games": 20,
+    "table_sha256": {
+      "2015-16": "6c60a1c90689b7ec777e3ea016a9dbfc57e74e82c337790a3d280d6503b73fd8",
+      "2016-17": "a5cc4b5923a5c4b9c656ef209d80b1e94147e7d564ffd636297bdd835ba0e7dc",
+      "2017-18": "8840b8123651bf5c814c626b62b0144053c616597b8f4b6bafc212b44d6e8a4f",
+      "2018-19": "34cde5bee96510c8a99370c5ce62b0b7925264ee122ed2fb8341930c9800bfb1",
+      "2019-20": "c18d64f66615121f344d5450cad1891d7f88326b9b7472ed24e4e44964e5b998",
+      "2020-21": "e6d47beb5e2b9fb329a369330829b74048b394e67c16e55613dafa6b9a89ec44",
+      "2021-22": "45b5fa301cb88103b87657373abefb73fc3b2cd2bac2ad338291b549f33b45ac",
+      "2022-23": "54b1a0fd05cb7ae072cf9067ebf113cf979c9d32c3f2a74a7d5269d26a46bce9",
+      "2023-24": "a1cb86fc59d214cdc824fc6e0a527a6edd9b14fe43887a461cb7029d23cc60fa",
+      "2024-25": "10610feb01402aa7322c974ddb816deb543c99d4c157d6c2e7a44b2ebab57d94",
+      "2025-26": "fe1c0d706dd86c17ab154eb396a11971d559bc271c9d77a91ffeeeb9f539ad93",
+      "prospective": "44d17524c168c37ddbef47ba15e4d660690e0b8f785fd0ff81e55ae802c101df"
+    }
+  },
+  "selection": "None. Candidates, sources, the previous-season rule, the replacement value, the calibration window, the scores and the verdict rule are fixed here before any candidate's score is computed. PRIOR KNOWLEDGE, disclosed: R07 published game-margin RMSE on 2024-25 and 2025-26 for Projected Impact (14.66 pooled), prior-season 1Y RAPM carried forward (15.11) and the opener time-decay snapshot (14.76), under R07's own replacement rule and a 2023-24 scale; R15a published pregame RMSE for team form (14.53) and its player-based mu0 (14.16); R01 found time decay slightly ahead of 1Y RAPM on held-out stints. These overlap three R08 candidates on two seasons, so their direction there is partly known; nothing in this registration was changed because of them.",
+  "uncertainty": "Paired game bootstrap: within each test season, games are resampled with replacement (2,000 replicates, generator SeedSequence([8008, starting year])); every candidate uses the same draws, so differences are paired. Pooled values resample each season within itself (stratified) and pool. 95% percentile intervals for every score and every gain, per season and pooled. Calibration a, b and sigma are held fixed (they come from earlier seasons), so intervals describe test-game sampling only.",
+  "evaluation": [
+    "Per candidate and test season: games, RMSE, accuracy, Brier, log loss, mean error, each with its interval; the calibration season, a, b, sigma; the replaced-minutes share.",
+    "Pooled per candidate over its test seasons, with intervals, and a pooled calibration curve with ECE.",
+    "Every pair: common seasons and games, per-season and pooled gains with intervals for all four scores, the number of seasons the candidate has the lower RMSE, and the registered verdict.",
+    "The verdict summary: every established ordering, each candidate against team_net, the best predictor if one exists, and the count of unranked pairs.",
+    "Leakage audit repeated in the results; table hashes; registration receipt; results hash. Two runs give the same results hash."
+  ],
+  "acceptance": [
+    "Comparative: no gate decides publication. The run fails if a table hash differs, a module constant differs from this registration, a calibration fit is rank-deficient or non-finite, a source is dated on or after a game it rates, or a team lacks a prior net rating.",
+    "Two runs give the same results hash.",
+    "The page states the verdict exactly as the rule gives it, including 'no ranking'."
+  ],
+  "outputs": [
+    "evaluation/research/frozen/courtlens-metric-backtest-v1.json (results, served by the API)",
+    "evaluation/research/frozen/courtlens-metric-backtest-v1-prospective.json (2026-27 freeze manifest)",
+    "data/derived/metric-backtest-v1/tables (pinned input tables, git-ignored)",
+    "data/derived/metric-backtest-serving (2026-27 game rows and summary, git-ignored)",
+    "docs/evidence/research/r08/ (data check, results summary, browser checks, screenshots)"
+  ],
+  "limitations": [
+    "Actual minutes are hindsight on purpose: they isolate how good the ratings are from how well anyone predicts playing time. This is not a forecast of games before tip-off.",
+    "Season-end fits are used only from the next season, so they never update within a season; time_decay updates monthly. time_decay_opener shows how much of any time_decay edge is freshness.",
+    "Replacement values and the 250-possession minimum affect raw metrics most; shares are reported. A missing rating is unknown, never zero.",
+    "Projected Impact has only two test seasons, so its pooled intervals are wider and its 'more than half of seasons' condition needs both.",
+    "Metrics are compared on one task: predicting game margins from the players who played. A metric built for another purpose (describing a season) is not judged on that purpose.",
+    "No closing-line benchmark here (R15a reports it); team_net is a weak baseline by design.",
+    "36 pairwise intervals are unadjusted for multiplicity."
+  ],
+  "negative_result_policy": "Publish every number whatever it shows, including a verdict of no ranking, a metric losing to the team baseline, or Projected Impact losing to a simpler rating.",
+  "seed": 8008,
+  "budget": {
+    "cpu_threads": 1,
+    "max_peak_mib": 4096,
+    "max_wall_seconds": 1800
+  }
+}
