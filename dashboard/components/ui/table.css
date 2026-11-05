@@ -84,4 +84,12 @@
 .ui-table-sort-inactive {
   opacity: 0.35;
 }
+
+.ui-table-cell[data-tone="positive"] {
+  color: var(--color-positive);
+}
+
+.ui-table-cell[data-tone="negative"] {
+  color: var(--color-negative);
+}
 }
