@@ -96,6 +96,9 @@ test.describe("R02 Six-Factor RAPM", () => {
     await openWorkbench(page, `${path}?season=2026-27`);
     await expect(page.getByText(/No one-year fit is served for 2026-27/)).toBeVisible();
     await expect(page.getByRole("combobox", { name: "Season" })).toHaveValue("2026-27");
+    await page.getByRole("link", { name: "Open 2025-26" }).click();
+    await expect(page).toHaveURL(/season=2025-26/);
+    await expect(page.getByRole("heading", { name: "Impact Tree" })).toBeVisible();
   });
 
   test("the Stats six-factor preset links here; the RAPM tab stays", async ({ page }) => {
