@@ -1,0 +1,86 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-projected-impact-v1",
+  "block": "R07",
+  "registered_on": "2026-11-05",
+  "kind": "predictive",
+  "question": "Using only seasons before a target season, does a learned projection of a player's per-100 impact beat carrying forward last season's RAPM, on seasons it never saw and in real game margins, and does it keep beating it on 2026-27 games played after its freeze?",
+  "inputs": [
+    "Sealed one-season RAPM and six-factor fits, regular season: data/derived/impact-history-v2/ratings (2014-15 to 2022-23) and data/derived/impact-ratings-v1/ratings (2023-24 to 2025-26). A fit is one whose input.seasons has one entry and whose phase is regular_season.",
+    "courtlens-rating-snapshots-v1 time-decay RAPM at each target season's opener: data/derived/impact-history-v2/snapshots and, for 2026-27, data/derived/win-probability-ratings (cutoff 2026-10-20).",
+    "sportsdataverse player and team boxes and schedules, regular season, 2013-14 to 2026-27 (retained files, checked against their receipts).",
+    "Play-type mix: analytics_marts.mart_stats_player_play_types, regular season, 2015-16 onward, offensive and defensive.",
+    "Shot profile: data/derived/shot-zones-v1 season totals (rim, short mid-range, long mid-range, three-point attempts and makes).",
+    "Age and experience (free sources, coverage reported per season): birth date from analytics_marts.mart_player_bio, then analytics_marts.mart_player_roster_seasons, then ESPN dateOfBirth in the retained data/raw/espn-rosters payloads, the only source with 2026 rookies; debut year from mart_player_bio.from_year."
+  ],
+  "method": [
+    "TARGET (question 1). A player's RAPM total in the single target season t, from the sealed fit on season t's regular-season games alone (IM04 method, alpha 1000, the same fit the site serves). Weighted by the player's minutes in t. Departure from the plan's 'two-year RAPM centred on the target season', which cannot be used as written: a window including t-1 shares games with the prior-RAPM feature and inflates results, and a window including t+1 leaves the 2025-26 test target incomplete and reaches into the prospective period. Cost of the departure: one-season RAPM is noisier than a two-year window, so every candidate's absolute error is larger; comparisons between candidates stay fair because all face the same target. The target is a shrunk ridge estimate, not true talent, so prediction intervals describe next season's fitted RAPM and not a player's ability.",
+    "FEATURE CUTOFF. Every feature for target t uses only games with game_date before t's first regular-season game. Season-level sources (one-season fits, play types, shot zones) are read only for seasons ending before that date. The 2026-27 build applies the same rule with cutoff 2026-10-20, so no 2026-27 game enters any feature, although the freeze falls after the opener. Age is measured at the opener in every season for the same reason.",
+    "FEATURES. Lag 1 (t-1): RAPM total, offense, defense; the six factors (ts, tov, reb, each offense and defense); minutes, games, minutes per game; per-36 points, attempts, threes, free throws, offensive rebounds, defensive rebounds, assists, steals, blocks, turnovers, fouls; true shooting; three-point rate; free-throw rate; offensive play-type shares over 11 types and defensive shares over 7; rim, short-mid, long-mid and three-point attempt shares and rim, mid-range and three-point FG%. Lag 2 (t-2): RAPM total, offense, defense; minutes. Opener snapshot: time-decay RAPM, ORAPM, DRAPM, decayed seconds. Bio: age at opener and its square, years in league.",
+    "EARLIER SEASONS (question 4). Usable target seasons are 2016-17 to 2025-26. RAPM starts in 2014-15 and play types in 2015-16, so 2016-17 is the first target whose t-1 has every source. 2015-16 is excluded and not imputed, because a whole season of missing play types would act as a season marker. Train targets 2016-17 to 2022-23 (7 seasons), select and calibrate 2023-24, final test 2024-25 and 2025-26. A feature missing for one player stays missing: NaN for LightGBM (native handling); for ridge, the training-season mean plus a missing indicator per feature block. Missing is never read as zero. An absent play type for a player with other play-type rows is also missing, since the source drops small samples.",
+    "AGE AND EXPERIENCE (question 5). Age = (opener - birth date) / 365.25. Years in league = t's start year - from_year; a rookie's 0 is a measured value. A missing birth date or debut year stays NaN and is reported per season. Birth dates and debut years are fixed facts, so taking them from a later capture leaks no outcome.",
+    "NO PRIOR-SEASON RAPM (question 3). A player with no row in the t-1 fit is a rookie (years in league 0, or no box appearance before the opener) or a returner (an earlier box appearance, none in t-1). Neither is dropped. Their carry-forward prediction is their group's minutes-weighted mean target over the training seasons; the time-decay comparator uses the player's snapshot value if there is one, otherwise that group mean. Learned candidates predict from whatever features exist. Both groups are excluded from gate A1 and reported separately per group, with their own interval bucket.",
+    "CANDIDATES. carry_forward (primary baseline): t-1 one-season RAPM. time_decay (registered second comparator, the rating the frozen win-probability model reads): the opener snapshot. age_curve: carry_forward plus a cubic in age fitted on training-season changes between consecutive seasons, weighted by the smaller of the two seasons' minutes (the delta method); missing age gets no adjustment. ridge: all features, standardized on training seasons, alpha by forward-chained validation. lightgbm: all features except the age square, squared error, learning rate 0.03, feature_fraction 0.8, bagging_fraction 0.8, lambda_l2 10, leaves and min_data_in_leaf and rounds by forward-chained validation. Forward chain: fit on targets before season v, validate on v, for v in 2019-20 to 2022-23; pick the setting with the lowest pooled minutes-weighted squared error. All sample weights are target minutes divided by their mean over the training rows, so the ridge grid means the same whatever the season's total minutes.",
+    "LEARNED AGING CURVE. The page shows the age_curve cubic, and for the selected learned model the partial dependence on age over training players. Whichever is selected, the page says which curve it is showing.",
+    "FEATURE CONTRIBUTIONS. Ridge: standardized value x coefficient. LightGBM: TreeSHAP (pred_contrib). Grouped by source on the page. These describe the model and do not claim causes.",
+    "INTERVALS. Split-conformal, nominal 80%, on absolute residuals of the 2023-24 calibration season, one quantile per bucket (Mondrian), with the finite-sample rank ceil((n+1) x 0.8) / n. Buckets are known before the season: t-1 minutes under 500, 500-1499, 1500 or more, and no prior RAPM. Calibration and coverage populations are players with 500 or more target minutes, because a low-minute player's fit is mostly shrinkage.",
+    "GAME-LEVEL MEASURE (question 2), computable weekly and scored identically on the test seasons and on 2026-27. For each regular-season game with a published box: D = sum over home players of (box minutes / 48) x rating - the same over away players. Predicted margin = a + b x D, with a and b fitted per rating by OLS on 2023-24 and then frozen. The outcome compared against is the actual final point margin (home minus away). Actual minutes are used on purpose, as in R08: the test isolates rating quality from playing-time prediction, so this is not a forecast of the game. Season-so-far RAPM is never used as an outcome. A player with no frozen row takes the rookie group mean for every rating; that share of minutes is reported.",
+    "PROSPECTIVE RULE. A game is prospective only if its scheduled tip (schedule gameDateTimeUTC) is after the freeze timestamp. Earlier 2026-27 games are scored under the same rule and labelled hindsight, never prospective. Weekly scoring appends one row per game and rewrites a summary with cumulative gaps and intervals.",
+    "PRODUCTION MODEL. The tested model is frozen as tested, with no refit on later seasons: the same fitted parameters, conformal quantiles and a, b, applied to features built with the test seasons' rules, with 2025-26 as t-1. This matches the owner's R15 decision. A refit needs a new version. The frozen file holds, for every projected player, the selected model's value, the carry_forward, time_decay and every candidate's value, the interval and the top contributions. The 2026-27 population is everyone on the newest ESPN roster capture before the freeze plus everyone in the 2025-26 fit.",
+    "CREDIT. DARKO (Kostya Medvedovsky) and EPM (Taylor Snarr) are the published player-projection methods this approach is in the style of. CourtLens does not replicate either and uses neither as an input."
+  ],
+  "parameters": {
+    "seed": 2701,
+    "nominal_coverage": 0.8,
+    "splits": {
+      "train_targets": ["2016-17", "2017-18", "2018-19", "2019-20", "2020-21", "2021-22", "2022-23"],
+      "select_and_calibrate": ["2023-24"],
+      "test": ["2024-25", "2025-26"],
+      "prospective": ["2026-27"]
+    },
+    "ridge_alpha_grid": [1, 3, 10, 30, 100, 300, 1000, 3000, 10000, 30000, 100000],
+    "lightgbm_grid": {"num_leaves": [4, 8, 16], "min_data_in_leaf": [20, 50], "max_rounds": 600, "round_step": 25},
+    "validation_seasons": ["2019-20", "2020-21", "2021-22", "2022-23"],
+    "age_curve_degree": 3,
+    "minute_buckets": [500, 1500],
+    "interval_min_target_minutes": 500,
+    "bootstrap": {"replicates": 2000, "player_unit": "player across seasons", "game_unit": "game"},
+    "coverage_limits": {"overall": 0.03, "prior_minutes_bucket": 0.08}
+  },
+  "selection": "On 2023-24 only. Compute minutes-weighted squared error for players with a prior-season fit. The better of ridge and lightgbm is the learned candidate. It is selected if the paired player-bootstrap 90% interval of its improvement over carry_forward is above zero; otherwise, if age_curve's is, age_curve is selected; otherwise carry_forward is selected and the frozen file says so. The test seasons are read once, after this choice and the conformal quantiles are frozen; the runner refuses a second read.",
+  "uncertainty": "Paired bootstrap, 2000 replicates, seed 2701, 95% intervals. Player-level differences resample players (a player's two test seasons stay together). Game-level differences resample games. Player values carry the conformal interval. Intervals are not verdicts: the page makes no 'better player' claim from overlapping intervals.",
+  "evaluation": [
+    "Player level, on 2024-25 and 2025-26 separately and pooled, for every candidate and comparator: minutes-weighted RMSE, weighted correlation, and the paired squared-error gap against carry_forward and against time_decay, for players with a prior-season fit.",
+    "Rookies and returners separately: the same measures against the group-mean rule.",
+    "Game level, on the same seasons: margin RMSE, winner accuracy and the paired squared-error gap against carry_forward and against time_decay.",
+    "Conformal coverage on test seasons overall, by prior-minutes bucket, and by target-minutes bucket as a diagnostic (target minutes are unknown at prediction time).",
+    "Coverage of every input per season, and the ablation-free feature contribution summary of the selected model."
+  ],
+  "acceptance": [
+    "A1 player: the selected model's pooled test minutes-weighted squared error beats carry_forward with the paired player-bootstrap 95% interval above zero.",
+    "A2 game: the selected model's pooled test margin squared error beats carry_forward with the paired game-bootstrap 95% interval above zero.",
+    "Report, not gate: the same two comparisons against time_decay. If the selected model beats carry_forward but not time_decay, the page says so plainly.",
+    "Freeze check F1: test coverage overall within 0.03 of 0.80, and each of the four prior-minutes buckets within 0.08. A failure stops the freeze and is reported to the owner. It is not tuned on test.",
+    "Freeze checks F2-F4: changing or removing games on or after a feature cutoff changes no feature hash; target and feature windows share no games; the 2026-27 build goes through the same function as the test seasons and contains no 2026-27 game. Any failure stops the freeze. Failing A1 or A2 does not stop it: the negative result is published and the frozen file still scores weekly."
+  ],
+  "outputs": [
+    "data/derived/projected-impact-v1: features, fits, selection, test report (hashed; not committed)",
+    "evaluation/research/frozen/courtlens-projected-impact-v1.json: committed manifest with freeze time and hash",
+    "data/artifacts/projected-impact: the frozen projections file, recorded in the artifact registry and checked by hash at load",
+    "data/derived/projected-impact-serving: weekly game rows and summary",
+    "docs/evidence/research/r07: report, coverage, screenshots"
+  ],
+  "limitations": [
+    "One-season RAPM is a noisy, shrunk target. Its alpha sits at the top of the pinned grid, so low-minute players are pulled toward zero by the fit.",
+    "The player-level population is defined by who played in the target season, which is hindsight. The game-level measure shares this, through actual minutes.",
+    "Selection and calibration share 2023-24, which makes the selection-season gain optimistic; only test seasons support claims.",
+    "Training ends at 2022-23 and the frozen model does not refit, so league drift through 2026-27 counts against it.",
+    "Offseason moves are not modelled: a projection does not know the player's new team, and RAPM is measured in a lineup context.",
+    "Injuries before the season are unknown to the model; the conformal buckets use last season's minutes, not this season's expected minutes.",
+    "2026-27 uses provisional boxes that can be corrected later.",
+    "Birth dates reach 2026 rookies only through ESPN, while earlier rookies come from NBA team rosters. They are the same fact from different sources, but the coverage differs and is reported."
+  ],
+  "negative_result_policy": "Publish every result, including failed gates and any candidate losing to carry-forward, on the page and in the evidence report. If nothing beats carry-forward, the page says so plainly. A failed gate is not re-run with changed settings under this identity; a change needs a new version.",
+  "seed": 2701,
+  "budget": {"cpu_threads": 2, "max_peak_mib": 3072, "max_wall_seconds": 1800}
+}
