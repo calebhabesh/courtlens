@@ -16,10 +16,10 @@ test("Projected Impact: result, frozen identity, intervals, negative results, cr
   await expect(page.getByText(data.model.projections_sha256).first()).toBeVisible();
   await expect(page.getByText(data.model.version).first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "What did not work" })).toBeVisible();
-  await expect(page.getByText("The registered selection did not pick the best test model.")).toBeVisible();
-  await expect(page.getByText("The intervals ran wide and failed their registered check.")).toBeVisible();
+  await expect(page.getByText("The registered selection did not pick the best test model.").filter({ visible: true })).toBeVisible();
+  await expect(page.getByText("The intervals ran wide and failed their registered check.").filter({ visible: true })).toBeVisible();
   await expect(page.getByRole("region", { name: "Interval coverage" })).toContainText("No RAPM last season");
-  await expect(page.getByText(/DARKO \(Kostya Medvedovsky\) and EPM \(Taylor Snarr\)/)).toBeVisible();
+  await expect(page.getByText(/DARKO \(Kostya Medvedovsky\) and EPM \(Taylor Snarr\)/).filter({ visible: true })).toBeVisible();
   await expect(page.getByRole("figure", { name: "Impact by age" })).toBeVisible();
   // No verdicts from overlapping intervals.
   await expect(page.getByText(/better player/i)).toHaveCount(0);
