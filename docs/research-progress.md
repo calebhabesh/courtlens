@@ -300,3 +300,7 @@ pages and seven screenshots. Design only: no Python, API, fit, interval or unkno
 - **Demo.** Steps prepared. Found: several Research pages read served directories that the deploy script doesn't sync or mount (draft value tables, lineup model weights, backtest 2026-27 score, dated ratings), and the demo still pins the 3-season impact bundle; the 12-season one is 170 MB against a 1.5 GiB API cap. Left for the owner.
 - **Checks.** Lint, typecheck clean; Vitest 804. Page specs 60/60 over three repeats. Full Playwright 579 passed, 17 skipped, 0 failed. Real data at 1440 and 390: 0 mismatches, 0 console errors, 0 overflow, 0 broken images.
 
+
+## 2026-11-06 — Research menu without gaps (owner request)
+
+[Screenshot](evidence/research/menu/research-menu-columns-1440.png). The two-column dropdown placed groups in shared rows, so a short group left a gap beside a long one. Each column now stacks its groups; `balanceColumns` in `lib/nav-model.ts` picks the most even split while keeping menu order inside each column. Measured on `localhost:3100` at 1440: no gaps between groups; columns end 36 px apart; the panel is 750 px tall instead of 871. Lint clean; Vitest 805; full Playwright 579 passed, 17 skipped, 0 failed.
