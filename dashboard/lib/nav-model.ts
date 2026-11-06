@@ -168,3 +168,26 @@ export function activeNavSection(pathname: string): string {
   if (pathname.startsWith("/research") || pathname.startsWith("/investigations") || pathname.startsWith("/evaluation")) return "research";
   return "";
 }
+
+/** Estimated height of a menu group in text lines: its heading plus each row's label and wrapped description. */
+function groupLines(group: NavGroup, charsPerLine = 34): number {
+  return (group.title ? 1.5 : 0) + group.items.reduce((sum, item) => sum + 1.6 + Math.ceil((item.description?.length ?? 0) / charsPerLine), 0);
+}
+
+/**
+ * Splits a menu's groups into two columns whose heights are as close as possible (owner,
+ * 2026-11-06: no gaps in the dropdown). Groups keep their menu order within each column; on a tie
+ * the first group stays in the left column.
+ */
+export function balanceColumns(groups: readonly NavGroup[]): [NavGroup[], NavGroup[]] {
+  const heights = groups.map(group => groupLines(group));
+  let best = 0, bestDiff = Infinity;
+  for (let mask = 0; mask < 1 << groups.length; mask++) {
+    if (mask & 1) continue; // group 0 always left
+    const right = heights.reduce((sum, h, i) => sum + (mask >> i & 1 ? h : 0), 0);
+    const left = heights.reduce((sum, h) => sum + h, 0) - right;
+    const diff = Math.abs(left - right);
+    if (diff < bestDiff - 1e-9) { best = mask; bestDiff = diff; }
+  }
+  return [groups.filter((_, i) => !(best >> i & 1)), groups.filter((_, i) => best >> i & 1)];
+}

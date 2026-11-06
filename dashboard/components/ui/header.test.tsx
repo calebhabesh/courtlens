@@ -212,7 +212,8 @@ describe("FO02 search and drawer", () => {
     const titles = Array.from(drawer.querySelectorAll(".courtlens-mobile-group-title")).map(node => node.textContent);
     // Both derive from lib/nav-model.ts and the same availability filter (the mock declares no sources).
     expect(desktop.length).toBeGreaterThan(2);
-    expect(titles).toEqual(desktop);
+    // The desktop panel lays groups out in two balanced columns, so compare membership; the drawer keeps menu order.
+    expect([...titles].sort()).toEqual([...desktop].sort());
     const live = Array.from(drawer.querySelectorAll<HTMLButtonElement>(".ui-accordion-trigger")).find(node => node.textContent === "Live")!;
     expect(live.getAttribute("aria-expanded")).toBe("false");
     expect(document.getElementById(live.getAttribute("aria-controls")!)?.hasAttribute("inert")).toBe(true);

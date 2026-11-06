@@ -241,11 +241,21 @@
 
 .courtlens-dropdown-multicol,
 .replica-dropdown-multicol {
+  /* Two columns of rich rows, like Databallr's Research menu. Each column stacks its groups
+     (lib/nav-model.ts balanceColumns picks the most even split), so a short group leaves no gap
+     beside a long one (owner, 2026-11-06). */
   display: grid;
-  /* Two columns of rich rows, like Databallr's Research menu. */
   grid-template-columns: repeat(2, 264px);
-  gap: var(--space-3);
+  align-items: start;
+  column-gap: var(--space-3);
   padding: var(--space-3);
+  min-width: 0;
+}
+
+.courtlens-dropdown-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
   min-width: 0;
 }
 
