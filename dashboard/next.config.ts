@@ -8,7 +8,6 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd()
   },
-  outputFileTracingIncludes: { "/whats-new": ["./content/*.md"] },
   poweredByHeader: false,
   reactStrictMode: true,
   devIndicators: false,
