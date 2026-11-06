@@ -24,7 +24,7 @@ function Entry({ entry }: { entry: PatchEntry }) {
 export function PatchNotesView() {
   return <>
     <ResearchIntro tagline={`New pages, improvements and removals across CourtLens. ${PATCH_ABOUT}`}
-      links={[{ label: "Learning", href: "/methodology/learning", icon: "book" }]} />
+      links={[{ label: "Learning", href: "/methodology/learning", icon: "book" }, { label: "Research", href: "/research", icon: "sparkles" }]} />
     {PATCH_RELEASES.map(release => <ResearchSection key={release.id} id={release.id} icon="history" title={release.title}
       aside={<span className="rs-note" data-release={release.id}>{releaseLine(release)}</span>}>
       <ResearchProse><p>{release.summary}</p></ResearchProse>

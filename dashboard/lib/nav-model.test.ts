@@ -25,8 +25,9 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
 
   it("groups Research by the handoff's target menu, with an icon and description on every item; Players and Compare follow Databallr", () => {
     const research = NAV_MENUS.find(menu => menu.id === "research")!;
-    expect(research.groups.map(group => group.title)).toEqual(["Models", "Impact", "Shooting", "Methods", "Tools"]);
+    expect(research.groups.map(group => group.title)).toEqual(["Overview", "Models", "Impact", "Shooting", "Methods", "Tools"]);
     expect(research.groups.map(group => group.items.map(item => item.href))).toEqual([
+      ["/research"],
       ["/research/win-probability", "/research/projected-impact", "/research/lineup-model"],
       ["/research/rapm/six-factor", "/research/backtest"],
       ["/research/shooting", "/research/defensive-matchups", "/research/zts", "/research/shot-quality"],

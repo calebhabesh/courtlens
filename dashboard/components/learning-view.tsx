@@ -46,7 +46,7 @@ export function LearningView({ workshop }: { workshop?: ReactNode }) {
   return <>
     <ResearchIntro
       tagline={`Understand advanced NBA stats from the ground up: ${topics} topics across ${LEARNING_TIERS.length} tiers, each linked to the CourtLens page that shows it and, where CourtLens tested the idea, the measured result.`}
-      links={[{ label: "Glossary", href: "/stats/glossary", icon: "book" }, { label: "Patch Notes", href: "/whats-new", icon: "history" }]}
+      links={[{ label: "Glossary", href: "/stats/glossary", icon: "book" }, { label: "Research", href: "/research", icon: "sparkles" }, { label: "Patch Notes", href: "/whats-new", icon: "history" }]}
     />
     <ResearchSection id="topics" icon="list-ordered" title="Topics">
       <ResearchCards columns={3} label="Learning tiers">

@@ -1,0 +1,26 @@
+{
+  "pages": [
+    {
+      "width": 1440,
+      "compared": 26,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0,
+      "iso": [],
+      "smallTouchTargets": null,
+      "firstCardTop": 243
+    },
+    {
+      "width": 390,
+      "compared": 26,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0,
+      "iso": [],
+      "smallTouchTargets": 0,
+      "firstCardTop": 227
+    }
+  ]
+}
