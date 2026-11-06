@@ -71,14 +71,19 @@ for (const scope of [{ season: "2025-26", phase: "regular_season" }, { season: "
     // Archetypes: RAPM and the six-factor strip.
     const cards = await page.$$eval(".sf-archetype", cs => cs.map(c => ({ rapm: c.querySelector(".sf-archetype-rapm .rs-value")?.getAttribute("data-value"), strip: [...c.querySelectorAll(".sf-strip .rs-value")].map(v => v.getAttribute("data-value")), text: c.textContent })));
     eq("archetype count", cards.length, api.archetypes.length);
+    // RD00 round 5: each rule is listed under Caveats & Methodology instead of on its card.
+    const rules = await page.$$eval('[aria-label="Archetype rules"] li', lis => Object.fromEntries(lis.map(li => [li.getAttribute("data-archetype"), li.textContent])));
     api.archetypes.forEach((card, i) => {
       const p = byId.get(card.player_id);
       eq(`archetype ${card.key} rapm`, num(cards[i]?.rapm), p.metrics.rapm.value);
       FACTORS.forEach((key, j) => eq(`archetype ${card.key} ${key}`, num(cards[i]?.strip[j]), p.metrics[key].value));
-      eq(`archetype ${card.key} rule`, cards[i]?.text.includes(card.rule), true);
+      eq(`archetype ${card.key} no rule caption`, cards[i]?.text.includes("Rule:"), false);
+      eq(`archetype ${card.key} rule in methodology`, rules[card.key]?.includes(card.rule), true);
     });
     // Copy numbers: R², counts, weights in the formulas, composite leaders, scatter points.
     const text = await page.locator(".sf-page").innerText();
+    // RD00 round 5: coverage and player counts moved into the collapsed methodology (in the DOM, not rendered).
+    const methods = await page.locator("#methodology").textContent();
     const fit = api.reconstruction;
     if (fit) {
       eq("R² in framework", text.includes(`R² = ${fit.in_sample.value.toFixed(3)}`), true);
@@ -90,9 +95,9 @@ for (const scope of [{ season: "2025-26", phase: "regular_season" }, { season: "
         eq(`${key} leader value`, shown.map(Number).includes(top.composites[key]), true);
       }
     } else eq("no reconstruction note", text.includes("No reconstruction is registered"), true);
-    eq("fit players", text.includes(`${api.fit_players.toLocaleString("en-US")} players in the fit`), true);
+    eq("fit players", methods.includes(`${api.fit_players.toLocaleString("en-US")} players in the fit`), true);
     eq("rated players", text.includes(`${api.players.length.toLocaleString("en-US")} rated`), true);
-    if (api.coverage) eq("admitted games", text.includes(`${api.coverage.admitted_games.toLocaleString("en-US")} of ${api.coverage.scheduled_games.toLocaleString("en-US")} games admitted`), true);
+    if (api.coverage) eq("admitted games", methods.includes(`${api.coverage.admitted_games.toLocaleString("en-US")} of ${api.coverage.scheduled_games.toLocaleString("en-US")} games admitted`), true);
     const dots = await page.locator(".sf-scatter-dot").count();
     eq("scatter points", dots, api.players.filter(p => p.composites.net_efficiency != null && p.composites.possession_control != null).length);
     // Impact Tree for the default (top RAPM) player.

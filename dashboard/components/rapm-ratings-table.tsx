@@ -44,5 +44,5 @@ export function RapmRatingsTable({ players, teams, season, phase, scope, statsHr
     minimum={{ label: "Min MIN", value: minutes, initial: 0, step: 100 }}
     csv={{ filename: `courtlens-rapm-ratings-${season}-${phase}.csv`, columns: csvColumns }}
     rowAction={row => <IconButtonLink size="sm" icon="split" label={`Open ${row.player_name}'s Impact Tree`} href={tree(row.player_id)} />}
-    footnote={<>The top 20 by qualified 1Y RAPM, in points per 100 counted controls. No interval is served here, so values are never coloured; each 1Y value&apos;s 80% interval is on the Six-Factor tab. Teams are the player&apos;s team in the season&apos;s six-factor fit. <ButtonLink size="sm" variant="text" href={statsHref}>All players in Stats</ButtonLink></>} />;
+    footnote={<>Top 20 by 1Y RAPM. Uncoloured: no interval is served here (see the Six-Factor tab). <ButtonLink size="sm" variant="text" href={statsHref}>All players in Stats</ButtonLink></>} />;
 }

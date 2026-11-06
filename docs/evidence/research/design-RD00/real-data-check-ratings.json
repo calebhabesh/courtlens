@@ -1,5 +1,5 @@
 {
-  "checked": "2026-11-06T17:51:28.820Z",
+  "checked": "2026-11-06T18:07:44.508Z",
   "api": "owner's API on :8000 through a read-only proxy on 4180 (GET only; shared Postgres read only)",
   "web": "production build on 3180",
   "results": [

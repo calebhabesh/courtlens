@@ -82,7 +82,7 @@ Saved Investigations, the operation gallery (`/research/operation`) and the lega
 
 ---
 
-## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 4)
+## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 5)
 
 Redesigned 2026-11-06 (design-18, `4023a98`); its nine instructions are in the alignment catalog, row 18.
 It sets the pattern for every page below, so review it first: changes here are cheapest before they're
@@ -118,6 +118,12 @@ CourtLens's page at the same point, CourtLens's Six Factors panel, CourtLens's R
 6. [x] Same goes for Leaders and All Ratings: the player photos are too small, they don't even have player
    colours in the photos, and they're clipped off on the edges.
    — 44 px (Leaders) and 40 px (tables) in team colour; RAPM Ratings takes teams from the season's six-factor fit.
+
+Instructions (owner, 2026-11-06, round 5; screenshot of the Player Archetypes cards):
+7. [x] There is a lot of caption text on this page, like "Rule:" in this image. If it is non-essential we should
+   remove it, if it takes away from the key takeaway/point.
+   — Every caption on both tabs got one fate (cut, shortened, moved to the collapsed methodology, or kept as an
+   honesty statement); archetype rules now live under "How the Archetypes Are Picked". Table in the evidence.
 
 ## RD01 Combine & Wingspan — ⬜
 

@@ -1,4 +1,4 @@
-# RD00 — Six-Factor RAPM, rounds 2–4: centred column, Databallr shading, RAPM Ratings tab, larger photos
+# RD00 — Six-Factor RAPM, rounds 2–5: centred column, Databallr shading, RAPM Ratings tab, larger photos, less caption text
 
 Measured 2026-11-06 on branch `research` from `a1fd129`. Parents: [Research design catalog](../../../research-design-catalog.md)
 RD00, [Research progress](../../../research-progress.md), round 1 in [design-18](../design-18/README.md). Page:
@@ -138,6 +138,40 @@ face-framed crop shows head and shoulders inside the ring, as on the approved St
 | Screenshots (viewed, every photo loaded before capture) | all seven PNGs in this folder retaken |
 
 Shared effect: Learning, Patch Notes and the Research landing use the same cards, so they are shaded too.
+
+## Round 5 — caption text (owner, 2026-11-06)
+
+7. "There is a lot of caption text on this page, like 'Rule:' in this image. If it is non-essential we should remove
+   it, if it takes away from the key takeaway/point."
+
+Every caption on both tabs was listed and given one fate. The rule: keep what changes how a number is read or is a
+required honesty statement (confounding, unknowns, overlapping intervals, no interval); move method detail into the
+collapsed Caveats & Methodology (in the DOM, so nothing is lost); cut repeats.
+
+| Caption | Fate |
+| --- | --- |
+| Archetype cards: "Rule: … RAPM 80% interval …" | **Cut from cards.** Rules listed in a new methodology block, "How the Archetypes Are Picked"; the RAPM value keeps its interval colour, and the interval is in the table and tree |
+| Archetype intro (two sentences on rules and "not a claim…") | **Shortened** to "Six different routes to impact in 2025-26."; the "not a claim the player is the best" sentence moved with the rules |
+| How It Works, card 2: player count and 12-season range | **Cut**; the range is in the Caveats, the R² stays |
+| How It Works, card 3: admitted games, fit date, players in the fit, rated | **Moved** to the Stints step in The Regressions |
+| Framework: "Databallr quotes 0.985 for its own pooled fit." | **Cut** here; the Caveats already compare with 0.985 |
+| Six Factors: "Order follows the estimates. Where intervals overlap…" | **Cut**; How to Read the Numbers keeps the overlap rule |
+| Tradeoffs lead-in | **Shortened** ("oTS against oREB for the archetype players.") |
+| Scatter note | **Shortened** to the one point: no interval for these sums, so nearby dots are not separated |
+| All Ratings footnote (units, sorting) | **Shortened**: the interval line, the unrated count with the Impact Tree pointer, the Stats link. Units stay in How to Read |
+| Impact Tree aside "Any player, 2025-26 · Regular Season" | **Cut**; the filter bar shows the scope |
+| Impact Tree second note (R² repeat) | **Shortened** to "the bottom row does not sum to the middle"; the rebuild sentence stays |
+| RAPM Ratings: chart note "Blue = 1Y RAPM; descriptive…; intervals…" | **Cut**; the notice above and the intro link carry both |
+| RAPM Ratings facts: "In the served impact cohort", "Scheduled games in this scope", season under the date | **Cut**; the leader's name stays under the top value |
+| RAPM Ratings table footnote | **Shortened** to "Top 20 by 1Y RAPM. Uncoloured: no interval is served here (see the Six-Factor tab)." |
+| Kept as they are | Taglines, the confounding notice and its Why?, the How to Read units, examples and no-prior note, the Two Ways examples, the rebuild sentence, unknown and playoff notices, every caveat, chart source and sample lines, the credits |
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 errors, 0 warnings; clean; 805 passed |
+| Specs | `r02-six-factor` 14/14 (archetype test now asserts no "Rule:" on cards and each rule in the methodology list). Baselines `pc12-b-rapm-{1440,390}` and `pc11-six-factor-phone` regenerated after viewing (captions removed) |
+| Full Playwright | **582 passed, 17 skipped, 0 failed**; no committed evidence touched |
+| Real data | Six-Factor 87,162 values (now also: no "Rule:" on any card, each rule in the methodology list; coverage and player counts read from the methodology's Stints step) and RAPM Ratings 1,170, both 0 mismatches over three scopes at 1440 and 390; 0 console errors, 0 overflow, 0 broken images. Screenshots in this folder retaken with every photo loaded and viewed |
 
 ## Credits
 

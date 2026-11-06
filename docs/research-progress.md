@@ -354,3 +354,18 @@ photos in Leaders and All Ratings. Design only.
   baselines regenerated after viewing.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-06 — RD00 round 5: less caption text
+
+[Evidence](evidence/research/design-RD00/README.md#round-5--caption-text-owner-2026-11-06). Owner: remove caption text
+that is non-essential or takes away from the point (archetype "Rule:" lines as the example). Design only.
+
+- **Cut or shortened.** Archetype rule and interval lines, the archetype intro, How It Works counts, the framework's
+  Databallr aside, the Six Factors overlap note, the scatter note, the table and tree footnotes, the tree's scope aside,
+  the ratings chart note, fact filler lines and the ratings footnote.
+- **Moved, not lost.** Rules to a new "How the Archetypes Are Picked" methodology block; coverage and player counts to
+  the Stints step.
+- **Kept.** Confounding, unknown, overlap and no-interval statements, units, examples, caveats, sources and credits.
+- **Checks.** Real data Six-Factor 87,162 and ratings 1,170 values, 0 mismatches. Lint 0/0, typecheck, Vitest 805;
+  page spec 14/14; full Playwright 582 passed, 0 failed; three baselines regenerated after viewing.
+- **Not done.** The owner's review and ✅.
+

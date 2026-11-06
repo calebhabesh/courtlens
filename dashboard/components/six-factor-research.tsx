@@ -72,13 +72,11 @@ function HowItWorks({ page }: { page: SixFactorPage }) {
     </ResearchCard>
     <ResearchCard title={fit ? `R² = ${r2(fit.in_sample.value)} Reconstruction` : "Reconstruction"}>
       <p className="rs-card-text">{fit
-        ? <>A second regression weights the six factors into RAPM points. For {page.season} they explain {r2(fit.in_sample.value)} of RAPM across {count(fit.players)} players, and {r2(fit.cross_validated.value)} on held-out players. Across {fit.seasons} seasons: {r2(fit.range_in_sample[0])} to {r2(fit.range_in_sample[1])}.</>
+        ? <>A second regression weights the six factors into RAPM points. They explain {r2(fit.in_sample.value)} of {page.season} RAPM ({r2(fit.cross_validated.value)} on held-out players).</>
         : "The second regression is registered for regular seasons only, so the weights and R² are unknown here."}</p>
     </ResearchCard>
     <ResearchCard title={page.intervals_available ? "One Season, 200 Resamples" : "One Season, No Intervals"}>
-      <p className="rs-card-text">Each fit uses {page.season} {phaseLabel(page.phase).toLowerCase()} games only: no time decay and no box-score prior. {page.coverage ? `${count(page.coverage.admitted_games)} of ${count(page.coverage.scheduled_games)} games admitted, through ${formatDate(page.provenance.last_included_date)}. ` : `Games through ${formatDate(page.provenance.last_included_date)}. `}
-        {page.intervals_available ? "Games are resampled 200 times for each 80% interval. " : "No resampling is registered for playoff fits, so intervals are unknown. "}
-        {count(page.fit_players)} players in the fit, {count(page.players.length)} rated.</p>
+      <p className="rs-card-text">Each fit uses one {phaseLabel(page.phase).toLowerCase()}, with no time decay and no box-score prior. {page.intervals_available ? "Games are resampled 200 times for each 80% interval." : "No resampling is registered for playoff fits, so intervals are unknown."}</p>
     </ResearchCard>
   </ResearchCards>;
 }
@@ -110,12 +108,11 @@ function FactorPanel({ factor, page, byId, treeHref }: { factor: FactorKey; page
       <RankedList title="Lowest Estimates" label={`${meta.label}, three lowest estimates with 80% intervals`} items={known.slice(-3).reverse().map(item)} />
     </div>
     {archetypePlayers.length > 0 && <ResearchCallout icon="trend" title="Cross-Factor Tradeoffs">
-      <p className="rs-card-text">{meta.short} beside {pair.short} for {page.season}&apos;s archetype players:</p>
+      <p className="rs-card-text">{meta.short} against {pair.short} for the archetype players.</p>
       <ul className="sf-tradeoffs" aria-label={`${meta.short} beside ${pair.short}`}>
         {archetypePlayers.map(player => <li key={player.player_id}><strong>{player.player_name}</strong> {meta.short} <NodeValue node={player.metrics[factor]} /> · {pair.short} <NodeValue node={player.metrics[copy.pair]} /></li>)}
       </ul>
     </ResearchCallout>}
-    <p className="rs-note">Order follows the estimates. Where intervals overlap, the data does not separate those players.</p>
   </div>;
 }
 
@@ -151,7 +148,7 @@ function CompositeScatter({ players, season, highlighted }: { players: SixFactor
   const y = (value: number) => bottom - (value - low) / (high - low) * (bottom - top);
   const ticks = Array.from({ length: high - low + 1 }, (_, i) => low + i).filter(value => value % 2 === 0);
   return <ChartFrame title={`Net Efficiency vs Possession Control, ${season}`} source="CourtLens model · public play-by-play stints" sample={`${points.length} players with all six factors`}
-    note="Each axis weights factors by the season's regression. No interval is served for a sum of factors, so nearby dots are not separated.">
+    note="No interval is served for these sums, so nearby dots are not separated.">
     <ChartData fingerprint={`${season}-${points.length}`}>
       <svg className="sf-scatter chart-graphic" viewBox="0 0 640 440" role="img" aria-label={`Scatter of ${points.length} players: Possession Control across, Net Efficiency up. Labelled: ${[...highlighted.values()].join(", ")}.`}>
         {ticks.map(value => <g key={value}>
@@ -181,7 +178,6 @@ function ArchetypeCards({ page, byId, treeHref }: { page: SixFactorPage; byId: M
       aside={<span className="sf-archetype-rapm">RAPM <NodeValue node={player.metrics.rapm} /></span>}
       title={<PlayerIdentity playerId={player.player_id} name={player.player_name} team={player.team} era={seasonEra(page.season, player.team)} size="md" href={treeHref(player.player_id)} />}>
       <dl className="sf-strip">{FACTORS.map(item => <div key={item.key} data-picked={card.factors.includes(item.key) || undefined}><dt title={item.label}>{item.short}</dt><dd><NodeValue node={player.metrics[item.key]} /></dd></div>)}</dl>
-      <p className="rs-card-text">Rule: {card.rule}. RAPM 80% interval {intervalText(player.metrics.rapm)}.</p>
     </ResearchCard>;
   })}</ResearchCards>;
 }
@@ -283,14 +279,14 @@ export function ImpactTree({ tree, reconstruction }: { tree: ImpactTreeData; rec
       {rebuilt != null && tree.metrics.rapm.value != null
         ? <p>The six factors, weighted by the {tree.season} regression, rebuild this RAPM as <strong>{signed(rebuilt)}</strong> against <strong>{signed(tree.metrics.rapm.value)}</strong> served: Net Efficiency {signed(efficiency)}, Possession Control {signed(possession)}.</p>
         : <p>Rebuilding RAPM from the factors is unknown here: it needs {reconstruction ? "RAPM and all six factors for this player" : "regression weights, which are registered for regular seasons only"}.</p>}
-      <p className="rs-note">ORAPM plus DRAPM equals RAPM exactly. Each factor is a separate estimate, so the third level does not sum to the second.{reconstruction ? ` Across ${reconstruction.players} ${tree.season} players the weighted factors explain R² ${r2(reconstruction.in_sample.value)} of RAPM.` : ""}</p>
+      <p className="rs-note">ORAPM plus DRAPM equals RAPM exactly; each factor is its own estimate, so the bottom row does not sum to the middle.</p>
     </div>
   </div>;
 }
 
 function TreeSection({ page, playerId, onPlayer }: { page: SixFactorPage; playerId: string; onPlayer: (id: string | null) => void }) {
   const { data, error, loading, retry } = useFeed([playerId, page.season, page.phase], signal => getImpactTree(playerId, page.season, page.phase, signal));
-  return <ResearchSection id="impact-tree" icon="split" title="Impact Tree" aside={<span className="rs-note">Any player, {page.season} · {phaseLabel(page.phase)}</span>}>
+  return <ResearchSection id="impact-tree" icon="split" title="Impact Tree">
     <div className="sf-tree-head">
       <div className="sf-tree-picker"><EntityField label="Player" value={playerId} season={page.season} phase={page.phase} initialName={data?.player_name} onChange={value => onPlayer(value || null)} /></div>
       {data && <PlayerIdentity playerId={data.player_id} name={data.player_name} team={data.team} era={seasonEra(page.season, data.team)} size="lg" href={`/players/${data.player_id}?season=${page.season}`}
@@ -334,7 +330,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
     <ResearchSection icon="layers" title="The Framework">
       <ResearchProse>
         <p>RAPM gives one number per player. {leader && leader.metrics.rapm.value != null ? <>{leader.player_name} leads the {page.season}{page.phase === "playoffs" ? " playoffs" : ""} fit at <NodeValue node={leader.metrics.rapm} /> RAPM, but that number doesn&apos;t say why. </> : null}Six-Factor RAPM opens it up: the same ridge regression on the same lineups, run once for each of three rates (true shooting, turnover rate and offensive rebound rate), each on offense and defense.</p>
-        <p>{fit ? <>Weighted by a second regression, the six factors rebuild {page.season} RAPM with <strong className="sf-r2">R² = {r2(fit.in_sample.value)}</strong>, measured by CourtLens ({r2(fit.cross_validated.value)} on held-out players). Databallr quotes 0.985 for its own pooled fit.</> : "No reconstruction is registered for playoff fits, so how far the factors rebuild RAPM is unknown here."}</p>
+        <p>{fit ? <>Weighted by a second regression, the six factors rebuild {page.season} RAPM with <strong className="sf-r2">R² = {r2(fit.in_sample.value)}</strong> ({r2(fit.cross_validated.value)} on held-out players).</> : "No reconstruction is registered for playoff fits, so how far the factors rebuild RAPM is unknown here."}</p>
       </ResearchProse>
       <FrameworkGrid factor={factor} onFactor={onFactor} />
     </ResearchSection>
@@ -353,7 +349,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
     </ResearchSection>
 
     <ResearchSection icon="target" title="Player Archetypes">
-      <p className="rs-prose-line">Six profiles picked by fixed rules from {page.season}&apos;s players with all nine values: different routes to impact. A rule picks the largest estimate; that is how a card is filled, not a claim that the player is the best at it.</p>
+      <p className="rs-prose-line">Six different routes to impact in {page.season}.</p>
       <ArchetypeCards page={page} byId={byId} treeHref={treeHref} />
     </ResearchSection>
 
@@ -365,7 +361,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
         csv={{ filename: `courtlens-six-factor-${page.season}-${page.phase}.csv`, columns: csvColumns }}
         actions={<ButtonLink size="md" icon="book" href="#methodology">Methodology</ButtonLink>}
         rowAction={p => <IconButtonLink size="sm" icon="split" label={`Open ${p.player_name}'s Impact Tree`} href={treeHref(p.player_id)} />}
-        footnote={<>RAPM in points per 100 counted controls, factors in percentage points, each with its 80% interval. Unknown values sort last and are never zero. {count(page.fit_players - players.length)} more players in the fit qualify for no value; find them in the Impact Tree. <ButtonLink size="sm" variant="text" href={statsHref}>All players in Stats</ButtonLink></>} />
+        footnote={<>The second line is each value&apos;s 80% interval. {count(page.fit_players - players.length)} more players in the fit have no rated value; find them in the Impact Tree. <ButtonLink size="sm" variant="text" href={statsHref}>All players in Stats</ButtonLink></>} />
     </ResearchSection>
 
     <ResearchSection icon="book" title="How to Read the Numbers">
@@ -384,13 +380,17 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
       <MethodBlock title="Caveats"><Caveats page={page} /></MethodBlock>
       <MethodBlock title="The Regressions">
         <MethodSteps steps={[
-          { title: "Stints", text: <>Public play-by-play is rebuilt into stints: who was on the floor and what happened.{page.coverage ? ` ${count(page.coverage.admitted_games)} of ${count(page.coverage.scheduled_games)} ${page.season} games were admitted.` : ""}</> },
+          { title: "Stints", text: <>Public play-by-play is rebuilt into stints: who was on the floor and what happened. {page.coverage ? `${count(page.coverage.admitted_games)} of ${count(page.coverage.scheduled_games)} games admitted, through ${formatDate(page.provenance.last_included_date)}; ` : `Games through ${formatDate(page.provenance.last_included_date)}; `}{count(page.fit_players)} players in the fit, {count(page.players.length)} rated.</> },
           { title: "RAPM", text: "A ridge regression of scoring on every player on the floor, offense and defense, for one season." },
           { title: "Six factors", text: "The same design and penalty with true shooting, turnover rate and offensive rebound rate as the targets, each split into offense and defense." },
           { title: "Resampling", text: page.intervals_available ? "Games are drawn with replacement 200 times (seeded) and every fit repeated. The 10th and 90th percentiles form each 80% interval." : "No resampling is registered for playoff fits." },
           { title: "Reconstruction", text: fit ? `A seconds-weighted regression of RAPM on the six factors gives each factor's weight in RAPM points: R² ${r2(fit.in_sample.value)} in-sample, ${r2(fit.cross_validated.value)} in 10-fold cross-validation.` : "Registered for regular seasons only." },
         ]} />
       </MethodBlock>
+      {page.archetypes.length > 0 && <MethodBlock title="How the Archetypes Are Picked">
+        <p className="rs-card-text">Each card is filled by a fixed rule over {page.season}&apos;s players with all nine values: the largest estimate wins. That is how a card is filled, not a claim that the player is the best at it.</p>
+        <ul className="sf-caveats" aria-label="Archetype rules">{page.archetypes.map(card => <li key={card.key} data-archetype={card.key}><strong>{card.label}:</strong> {card.rule}.</li>)}</ul>
+      </MethodBlock>}
       <MethodBlock title="Data & Credits"><Credits /></MethodBlock>
     </ResearchDisclosure>
   </>;
