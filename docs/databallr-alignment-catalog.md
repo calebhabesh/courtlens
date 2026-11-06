@@ -10,6 +10,8 @@ Status: ⬜ not started · 🔧 in progress · 👀 ready for review · ✅ alig
 
 Rows are in working order.
 
+> **Rows 18–29 (Research pages):** from 2026-11-06 their redesigns are worked from the [Research design catalog](research-design-catalog.md), which holds their instructions and status (RD00–RD19). Row 18's instruction list below stays as the record of its first pass.
+
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ✅ | Owner approved first revision 2026-10-15; pattern idea parked |

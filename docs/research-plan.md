@@ -51,6 +51,9 @@ only restyles existing data is worth less than a page that tests a claim.
 | D13 Build, then design | Owner, 2026-11-05: Research pages are built for function first and redesigned afterwards in final design blocks. This supersedes D11's order for the blocks still to run. **Build phase:** R03, R04, R05, R06, R08, R09, R14, R16 and the new data in R10. **Design phase:** every Research page, one at a time from the owner's Databallr screenshots and instructions under the [alignment handoff](databallr-alignment-plan.md)'s process, starting with Six-Factor RAPM (row 18) to set the pattern; only the owner marks ✅. **Finish:** R11 and R12. Win Probability keeps its existing page unless the owner asks otherwise. |
 | D14 Finish before design | Owner, 2026-11-06: finish every block that isn't blocked before the page redesigns. This reverses D13's order for R11 and R12 only: **R11 → R12 → design phase** (rows 19 onward and every other Research page, one at a time from the owner's screenshots). Row 18 (Six-Factor RAPM) is already redesigned and awaits the owner. R11 and R12 are build blocks (plain UI from the shared Research components). R12's R16 card and README line say "evaluation in progress", with no number, until R16 finishes. |
 
+**Design phase work queue:** [Research design catalog](research-design-catalog.md), one row per page with its
+reference, current state, known gaps, the owner's instructions and status (2026-11-06).
+
 ## Target Research menu
 
 | Group | Items |
