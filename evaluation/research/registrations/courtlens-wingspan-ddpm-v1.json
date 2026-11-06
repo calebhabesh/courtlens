@@ -1,0 +1,135 @@
+{
+ "schema_version": "courtlens-research-registration-v1",
+ "identity": "courtlens-wingspan-ddpm-v1",
+ "block": "R10",
+ "registered_on": "2026-11-06",
+ "kind": "descriptive",
+ "question": "Among NBA Draft Combine participants 2000-2025 who later played, how do barefoot height, wingspan and wingspan minus height relate to DARKO's defensive rating (D-DPM), overall and within position? Descriptive association only: not a forecast and not a causal claim.",
+ "inputs": [
+  "COMBINE: every NBA Draft Combine row 2000-2026 with an NBA person ID (official combine-stats and anthropometric feeds via the hoopR mirror, analytics_marts.mart_stats_draft_combine): barefoot height, height in shoes, wingspan, standing reach, weight, listed combine position. 1,873 rows, 1,804 players with an ID (5 rows without an ID are excluded, never name-matched).",
+  "MINUTES: regular-season minutes per player-season 2000-01 to 2025-26 from the published game logs (dataset 1940051a-cd59-40e9-9730-fc48f819e32c, release a584c88b, read only), appearances only; the season's team is the team with the most minutes.",
+  "D-DPM: DARKO Daily Plus-Minus (Kostya Medvedovsky, darko.app) defensive component from the sealed season-end regular-season board of each season 2000-01 to 2025-26 (bundle e99039fb..., each board dated at that season's last regular-season game date). Keyed by NBA person ID, as are the combine and the game logs.",
+  "Tables pinned by content hash (parameters.table_sha256); coverage in docs/evidence/research/r10/data-check.json, committed before this registration."
+ ],
+ "method": [
+  "ONE ROW PER PLAYER: the latest combine at which both barefoot height and wingspan were measured; a player never measured on both is 'not measured' and has every derived value unknown (never zero). DIFF = wingspan minus barefoot height, inches.",
+  "POSITION: the first position of the combine label at that combine (e.g. 'SG-SF' is SG); PG, SG, SF, PF or C. A blank label is unassigned: kept in the overall statistics, left out of positional ones.",
+  "CAREER D-DPM: minutes-weighted mean of season-end regular-season D-DPM over the player's seasons 2000-01 to 2025-26 with at least 500 logged regular-season minutes and a D-DPM on that season's board. A season under 500 minutes or with no board row is not used; a player with no such season has no career D-DPM (reason recorded: no_nba_minutes, no_season_at_min_minutes, no_darko_rating_in_qualifying_seasons).",
+  "POPULATIONS: 'measured' = every player with both measurements (pairs among height, wingspan and diff; positional averages of the measurements). 'analysis' = measured players with a career D-DPM (every pair with D-DPM; positional average of D-DPM).",
+  "CORRELATIONS: Pearson r for diff-D-DPM (primary), wingspan-D-DPM, height-D-DPM on the analysis population; height-wingspan, height-diff, wingspan-diff on the measured population. Within each position: diff, wingspan and height against D-DPM. Partial r of wingspan and D-DPM controlling for height (residuals of straight-line fits on height).",
+  "POSITIONAL AVERAGES: mean height, wingspan, diff and weight over measured players, and mean career D-DPM over the analysis population, for all players and each position, with counts.",
+  "VERDICT: an association is called positive or negative only when its 95% interval excludes zero; otherwise 'not distinguishable from zero'. No threshold on the size of r is applied.",
+  "NEAREST BUILDS (served by the API, not summarized here): Euclidean distance on barefoot height and wingspan, each standardized by its mean and population standard deviation over the measured players (frozen in the results); the 5 nearest other measured players, ties by player ID.",
+  "PERCENTILES (display only): mid-rank percentile of height, wingspan and diff among measured players and of career D-DPM in the analysis population."
+ ],
+ "parameters": {
+  "seed": 1010,
+  "replicates": 2000,
+  "interval_percentiles": [
+   2.5,
+   97.5
+  ],
+  "seasons": [
+   "2000-01",
+   "2025-26"
+  ],
+  "min_season_minutes": 500,
+  "positions": [
+   "PG",
+   "SG",
+   "SF",
+   "PF",
+   "C"
+  ],
+  "pairs": [
+   [
+    "diff",
+    "d_dpm"
+   ],
+   [
+    "wingspan",
+    "d_dpm"
+   ],
+   [
+    "height",
+    "d_dpm"
+   ],
+   [
+    "height",
+    "wingspan"
+   ],
+   [
+    "height",
+    "diff"
+   ],
+   [
+    "wingspan",
+    "diff"
+   ]
+  ],
+  "within_position_pairs": [
+   [
+    "diff",
+    "d_dpm"
+   ],
+   [
+    "wingspan",
+    "d_dpm"
+   ],
+   [
+    "height",
+    "d_dpm"
+   ]
+  ],
+  "averaged": [
+   "height",
+   "wingspan",
+   "diff",
+   "weight",
+   "d_dpm"
+  ],
+  "nearest_inputs": [
+   "height",
+   "wingspan"
+  ],
+  "nearest_k": 5,
+  "table_sha256": {
+   "combine": "e419681598d378113c6122e121c93552e987fbdee7bd86e1855cab875d90d234",
+   "seasons": "0cafcaf7b4bc5cf22d39e4cafd6f351a566d5e42464250f48a3b6f4a4bbdb986"
+  },
+  "game_log_dataset_id": "1940051a-cd59-40e9-9730-fc48f819e32c",
+  "darko_bundle_sha256": "e99039fbde7c8b0859a93088aca4081a459a5fd65320138f33636b08ba252c66"
+ },
+ "selection": "Nothing is chosen from outcomes. The minimum minutes, career rule, combine choice, position rule, pairs and nearest-build inputs are fixed here before any association is computed; there is one pass.",
+ "uncertainty": "Seeded percentile bootstrap over players, 2,000 replicates, 95% (2.5th and 97.5th percentiles), seed 1010: SeedSequence([1010, 1, pair]) for overall pairs, [1010, 2, position, pair] within position, [1010, 3] for the partial r, [1010, 4, group, variable] for positional means. Each replicate resamples the players of that population with replacement.",
+ "evaluation": [
+  "Every r with its interval, n and verdict; within-position r; the partial r.",
+  "Positional averages with counts and intervals.",
+  "Population counts and every exclusion by reason.",
+  "Nearest-build scaling parameters."
+ ],
+ "acceptance": [
+  "Two `reproduce` runs give the frozen results hash.",
+  "Tests prove that a missing measurement or rating is unknown, never zero, that seasons under the minimum do not enter, and that the results carry every expected key.",
+  "The API serves every number with its unknown state, and the page's values equal the API's.",
+  "An independent recomputation of r and the positional averages outside the pipeline matches."
+ ],
+ "outputs": [
+  "evaluation/research/frozen/courtlens-wingspan-ddpm-v1.json",
+  "data/derived/wingspan-v1/tables/<sha256>.json (local inputs, hashes above)",
+  "docs/evidence/research/r10/"
+ ],
+ "limitations": [
+  "DARKO's season-end boards are retrospective ratings recomputed with its current model and include the season's own games; this is an association between a pre-draft measurement and a later rating, not a prediction or a cause.",
+  "Only players who attended a combine since 2000 and played at least one 500-minute season; players who skipped the combine (often top picks) are absent, so the population is not the league.",
+  "35 player-seasons of 500+ minutes have no row on DARKO's season-end board (players no longer rostered at that date); those seasons are not used.",
+  "Combine measurements describe the body before the draft, not at each season. Positions are combine labels, not roles."
+ ],
+ "negative_result_policy": "Publish every r, interval and average whatever it shows, including associations not distinguishable from zero.",
+ "seed": 1010,
+ "budget": {
+  "cpu_threads": 1,
+  "max_peak_mib": 2048,
+  "max_wall_seconds": 900
+ }
+}
