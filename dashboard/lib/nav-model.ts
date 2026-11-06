@@ -81,12 +81,13 @@ export const NAV_MENUS: NavMenu[] = [
     id: "research",
     label: "Research",
     // The Research handoff's target menu (D8), limited to pages that exist. Each later block adds its
-    // own item: Lineup Model, Learning and so on.
+    // own item: Learning and so on.
     // Case Studies and Saved Investigations moved to Methodology; Evaluation Archive is reached from Points Forecasts and Methodology.
     groups: [
       { title: "Models", items: [
         { label: "Win Probability", href: "/research/win-probability", icon: "activity", description: "Live win probability for each game, scored nightly" },
         { label: "Projected Impact", href: "/research/projected-impact", icon: "trend", description: "2026-27 player ratings frozen before the games, with intervals" },
+        { label: "Lineup Model", href: "/research/lineup-model", icon: "users", description: "A neural lineup model tested against ridge RAPM, with a lineup tool and player map" },
       ] },
       { title: "Impact", items: [
         { label: "Six-Factor RAPM", href: "/research/rapm/six-factor", icon: "gauge", description: "Player impact ratings and their six-factor breakdown" },

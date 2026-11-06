@@ -20,6 +20,8 @@ const shotDecomposition = JSON.parse(readFileSync(new URL("./fixtures/shot-decom
 // R08: the real Metric Backtest answer (frozen results, metric notes, 2026-27 score).
 const metricBacktest = JSON.parse(readFileSync(new URL("./fixtures/metric-backtest.json", import.meta.url), "utf8"));
 // R09: real Draft Classes answers (summary, six classes, combine, rookie tracker, one rookie).
+const lineupFixture = name => JSON.parse(readFileSync(new URL(`./fixtures/lineup-model${name}.json`, import.meta.url), "utf8"));
+const lineupPage = lineupFixture(""), lineupPlayers = lineupFixture("-players"), lineupFit = lineupFixture("-fit"), lineupFitAlt = lineupFixture("-fit-alt");
 const draftFixture = name => JSON.parse(readFileSync(new URL(`./fixtures/draft-${name}.json`, import.meta.url), "utf8"));
 const draftSummary = draftFixture("summary"), draftClasses = draftFixture("classes"), draftCombine = draftFixture("combine");
 const draftRookies = draftFixture("rookies"), draftRookie = draftFixture("rookie");
@@ -675,6 +677,14 @@ createServer(async (request, response) => {
   }
   if (url.pathname === "/api/projected-impact") return json(response, 200, projectedImpact.page);
   if (url.pathname === "/api/metric-backtest") return json(response, 200, metricBacktest);
+  if (url.pathname === "/api/lineup-model") return json(response, 200, lineupPage);
+  if (url.pathname === "/api/lineup-model/players") return json(response, 200, lineupPlayers);
+  if (url.pathname === "/api/lineup-model/fit") {
+    // Real API answers for two fives; any other five is "not in the fit" (404), as the API says for unknown ids.
+    const five = url.searchParams.get("players") ?? "";
+    const known = [lineupFit, lineupFitAlt].find(fit => fit.players.map(p => p.player_id).join(",") === five);
+    return known ? json(response, 200, known) : json(response, 404, { detail: "Not in the 2026-27 fit" });
+  }
   if (url.pathname === "/api/draft") return json(response, 200, draftSummary);
   if (url.pathname === "/api/draft/combine") return json(response, 200, draftCombine);
   if (url.pathname === "/api/draft/rookies") return json(response, 200, draftRookies);
