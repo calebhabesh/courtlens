@@ -94,6 +94,28 @@ change and say why.
 **Cascade.** Overrides of foundation controls (the lookup focus ring, for example) belong in
 `app/styles/foundation.css`. The `foundation` layer outranks `pages` whatever the specificity.
 
+**Research pages (row 18, design phase).** Six-Factor RAPM set the pattern for every Research page
+redesigned from the owner's Databallr screenshots (Research handoff D13). Owner instructions still win.
+- **Header:** a centred `TabbedPage` header (`hero: { icon }` in `lib/route-consolidation.ts`: the
+  `pvp-header research-hero` classes, accent icon, one subtitle line), route tabs centred under it, then
+  the sticky `FilterBar` for scope, then `ResearchIntro` (centred tagline and text links).
+- **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
+  with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
+  explainer look; panels with text-colour icons stay the pattern for non-Research pages).
+- **Building blocks** (same file): `ResearchProse`, `ResearchCards`/`ResearchCard` (identity tones `a`
+  gold, `b` blue for Offense/Defense, never good/bad), `FormulaLine`, `ResearchTabPanel` (full-width
+  `Segmented` over an accent-ringed panel), `FeatureList`, `RankedList`, `ResearchCallout`,
+  `ReadingGuide`, `ToneLegend`, `Glossary`, `MethodSteps`/`MethodBlock` and `ResearchDisclosure`
+  (a collapsed section whose body stays in the DOM, for Caveats & Methodology).
+- **Ratings table:** `ResearchTable` from `components/research/research-table.tsx`, after Databallr's
+  ShotQuality table: toolbar (search, minimum, team, page actions, CSV, count), views as a `Segmented`
+  group, sticky logo and player columns, a bar beside each signed value, the interval on a second line,
+  unknowns "—" and last in both directions. Columns declare `signedValue` and `interval`.
+- **Colour:** `SignalValue` and the table colour a value green or red only when its 80% interval
+  excludes zero (`lib/research-values.ts` `intervalTone`); values without an interval stay neutral.
+- **Verification:** a real-data script compares every drawn value with the API at 1440 and 390 for
+  several scopes (`docs/evidence/research/design-18/real-check.mjs`).
+
 **Verification.** For every instruction:
 - Build a production sandbox at 3180, never on the owner's ports 3100/8000.
 - For live data, run a read-only proxy at 4180 to the owner's API. Allow GET, HEAD, OPTIONS and

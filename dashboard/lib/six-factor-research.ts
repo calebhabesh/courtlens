@@ -111,3 +111,47 @@ export function intervalDomain(nodes: readonly ImpactNode[]): [number, number] {
   const values = nodes.flatMap(node => [node.low, node.high, node.value]).filter((value): value is number => value != null);
   return [Math.floor(Math.min(0, ...values)), Math.ceil(Math.max(0, ...values, 1))];
 }
+
+/**
+ * CourtLens's own explainer copy for each factor (design phase, owner 2026-11-06): what can move it
+ * and what a box score would not show. Descriptive, not a claim about any player.
+ */
+export interface FactorCopy { tagline: string; showsUp: readonly string[]; boxMisses: readonly string[]; pair: FactorKey }
+export const FACTOR_COPY: Record<FactorKey, FactorCopy> = {
+  o_ts: {
+    tagline: "Team shoots better",
+    showsUp: ["The player's own scoring efficiency", "Shots created for teammates", "Spacing that keeps help defenders home", "Ball movement that ends in better looks"],
+    boxMisses: ["Gravity that never becomes an assist", "Screens that free a shooter", "Non-shooters who shrink the floor despite a high personal TS%"],
+    pair: "o_reb",
+  },
+  o_tov: {
+    tagline: "Team turns it over less",
+    showsUp: ["The player's own ball security", "Safe passing and handling under pressure", "Decisions that end possessions in a shot"],
+    boxMisses: ["Turnovers a player prevents for teammates", "Calm handling that never shows as an assist", "Roles that keep the ball moving without risk"],
+    pair: "o_ts",
+  },
+  o_reb: {
+    tagline: "Team grabs more of its misses",
+    showsUp: ["Crashing the glass and tipping misses", "Position and size near the rim", "Second chances that start a new shot clock"],
+    boxMisses: ["Box-outs that free a teammate's rebound", "Tips that keep the ball alive without a credit", "The cost of crashing: fewer players back on defense"],
+    pair: "o_ts",
+  },
+  d_ts: {
+    tagline: "Opponents shoot worse",
+    showsUp: ["Rim protection and contests", "Help rotations and scheme", "Keeping shooters off clean looks"],
+    boxMisses: ["Shots opponents never take", "Contests without a block or a steal", "Communication that holds a scheme together"],
+    pair: "d_tov",
+  },
+  d_tov: {
+    tagline: "Opponents turn it over more",
+    showsUp: ["Steals, deflections and charges", "Ball pressure and active hands", "Passing lanes jumped"],
+    boxMisses: ["Deflections a teammate turns into a steal", "Passes denied before they are thrown", "Gambles that give up shots, which show in dTS instead"],
+    pair: "d_ts",
+  },
+  d_reb: {
+    tagline: "Opponents grab fewer of their misses",
+    showsUp: ["Defensive rebounds and boxing out", "Size and position near the rim", "Ending possessions after a miss"],
+    boxMisses: ["Box-outs that let a teammate secure the ball", "Rebounds conceded to a teammate", "Second chances prevented without a rebound credit"],
+    pair: "d_ts",
+  },
+};

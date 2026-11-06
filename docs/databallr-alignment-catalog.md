@@ -32,7 +32,7 @@ Rows are in working order.
 | 17 | Shot Profile Twin | `/similar-players` | ✅ | Owner approved first revision 2026-10-21 (Player Twins); NBA only; Databallr's twin cards and closest-matches table on pbpstats zone totals, then Box Score mode, pool filters, distance drivers; table headers centered over their values |
 | 22 | Player Dashboard | `/players` | ✅ | Owner approved first revision 2026-10-25; Databallr's `/dashboard` (Top 50 DARKO DPM card carousel, compact player panels, head-to-head panel). Row 2's "Dashboard" pairing was wrong: row 2 is our player page, kept as approved. Replaces the Player Directory table |
 | 23 | — (ESPN Standings, owner request) | `/standings` | ✅ | Owner approved 2026-11-03 (all core pages done); Owner request 2026-10-29 (from row 7): ESPN's NBA Standings page under the Teams menu, plus standings on the game page and team pages |
-| 18 | Six Factor RAPM (+ `/decomp`) | `/research/rapm/six-factor` | ⬜ | [Research handoff](research-plan.md) R02 built, awaiting owner review ([evidence](evidence/research/r02/README.md)): explainer, intervals on the sortable table, real Impact Tree for any player; RAPM Research renamed Six-Factor RAPM, old page kept as the RAPM Ratings tab. Built without a Databallr screenshot, so a first draft; first page of the Research design phase (D13) |
+| 18 | Six Factor RAPM (+ `/decomp`) | `/research/rapm/six-factor` | 👀 | [Research handoff](research-plan.md) R02 built, awaiting owner review ([evidence](evidence/research/r02/README.md)): explainer, intervals on the sortable table, real Impact Tree for any player; RAPM Research renamed Six-Factor RAPM, old page kept as the RAPM Ratings tab. Built without a Databallr screenshot, so a first draft; first page of the Research design phase (D13). Redesigned 2026-11-06 from the owner's saved Databallr pages and screenshots, awaiting the owner ([instructions](#18-six-factor-rapm--ready-for-review-awaiting-the-owner-research-design-phase-page-1-sets-the-research-page-pattern), [evidence](evidence/research/design-18/README.md)) |
 | 19 | Wingspan | `/wingspan` | ⬜ | Research R10 data built 2026-11-06 (plain sections under the combine view, from the owner's saved Databallr Wingspan page): career DARKO D-DPM per player, current D-DPM, percentiles, positional averages with counts and intervals, registered Pearson r (`courtlens-wingspan-ddpm-v1`: wingspan − height · D-DPM +0.21, +0.15 to +0.27, 822 players; descriptive only), scatter with selectable axes, nearest builds. Pending for the design phase: Databallr layout, with-shoes and units toggles, CSV, overlay graphic. Players who skipped the combine (Wembanyama, Holmgren…) stay unknown. [R10 evidence](evidence/research/r10/README.md) |
 | 20 | Offensive Calculator | `/calculator` | ⬜ | Research R10 data built 2026-11-06 (plain sections under the existing hypothetical calculator, from the owner's saved ORTG Lab page): every season's 2014-15 to 2025-26 observed league and team inputs to Poropudas and Halme's Eq. (11) (arXiv:2305.13032, v1 *Dean Oliver's Four Factors Revisited*), μ, offensive-rebound rates after missed twos, threes and final free throws, ORTG and marginals (`courtlens-four-factors-inputs-v2`). Pending for the design phase: the interactive ORTG Lab itself. [R10 evidence](evidence/research/r10/README.md) |
 | 21 | Learning / Patch Notes | `/methodology`, `/whats-new` | ⬜ | Research R11; Blog removed |
@@ -4360,3 +4360,43 @@ approval; the other failing baselines (recent games, roster shapes, team profile
 settings) differ in the nav bar from the uncommitted Live/Standings nav work, not this page.
 Evidence (`docs/evidence/alignment/playoffs/`): `bracket-1440.png`, `bracket-finals-390.png`,
 `bracket-west-390.png`, `bracket-1975-76-1440.png`, `series-1440.png`, `series-390.png`.
+
+### 18 Six-Factor RAPM — 👀 ready for review, awaiting the owner (Research design phase, page 1; sets the Research page pattern)
+Instructions (owner, 2026-11-06; saved Databallr pages `six-factor-rapm` and `shotquality`, plus seven
+screenshots of the Six-Factor explainer and the ShotQuality table, glossary and methodology; Research
+handoff D13):
+1. [x] Rebuild the page's layout and presentation after Databallr's Six-Factor RAPM explainer: centred
+   hero with the Stats and Impact Tree links, The Framework (prose and the 3 × 2 Shooting / Turnovers /
+   Rebounding × Offense / Defense grid), How It Works (three cards), The Six Factors (six full-width
+   tabs over a panel), Two Ways to Slice the Grid (Net Efficiency and Possession Control cards),
+   Player Archetypes (3 × 2 cards with a six-factor strip), Caveats & Methodology (collapsed).
+   — Done in Databallr's order; the Impact Tree, ratings table, reading guide and glossary follow the archetypes, and Caveats & Methodology closes the page.
+2. [x] Keep R02's API, frozen fits, intervals and unknown states exactly; playoff and composite
+   intervals stay unknown and are shown as unknown.
+   — No Python or API change; real-data check: 87,138 values, 0 mismatches. Playoff values show "Interval unknown" and no colour.
+3. [x] Per-player slots (owner chose): general copy for each factor (tagline, What Shows Up, What Box
+   Scores Miss) written by CourtLens; player slots show value, interval and team; archetype prose is
+   the printed rule; the tradeoffs box shows oTS against oREB (numbers only) for the season's archetype
+   players.
+   — `FACTOR_COPY` in `lib/six-factor-research.ts`; Highest (4) / Lowest (3) estimates with intervals; tradeoffs pair each factor with one partner (oTS with oREB, dTS with dTOV…).
+4. [x] Keep R02's Net Efficiency vs Possession Control scatter below the two cards (owner chose).
+   — Kept under the two cards.
+5. [x] Keep the sticky filter bar (Season, Phase, count, Data details) above the hero (owner chose).
+   — Kept; the header above it is centred (`TabbedPage` hero).
+6. [x] Rebuild the ratings table on Databallr's ShotQuality table: search, team filter, minimum
+   minutes (possessions are not served), CSV download, Offense / Defense / Combined, a bar beside each
+   value, sticky header in a scrolling frame, legend, How to Read the Numbers, Column Glossary; every
+   value keeps its 80% interval as a second line (owner chose).
+   — `ResearchTable`; Combined / Offense / Defense; Min MIN; CSV of every value and interval.
+7. [x] Controls only from the kit; CSS colocated and imported in cascade order; tokens only; team
+   logos beside codes; season-correct photos; green/red only where an interval excludes zero, gold/blue
+   for Offense/Defense identity.
+   — Lint 0/0; CSS in `components/research/*.css` and `six-factor-research.css`, imported after `ref-grid.css`.
+8. [x] Credit Databallr as the design reference and each method and data source by name.
+   — Data & Credits block and the Framework prose.
+9. [x] Make the structure reusable (shared Research components) and record the pattern in the
+   alignment plan's Patterns section.
+   — `components/research/`, `lib/research-values.ts`; Patterns → "Research pages".
+Data-blocked: Databallr's six-year 550-day time-decay pool (CourtLens serves one-season fits), its
+hand-written per-player notes, the "residual < 0.6 per player" summary (not served), possessions.
+Evidence: docs/evidence/research/design-18/

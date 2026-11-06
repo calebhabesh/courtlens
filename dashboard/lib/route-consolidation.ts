@@ -14,12 +14,15 @@ export interface TabbedPage {
   /** One short line under the title (D7). */
   subtitle: string;
   tabs: readonly RouteTab[];
+  /** Research design pattern (row 18): a centred header with this Lucide icon name, after Databallr's explainers. */
+  hero?: { icon: string };
 }
 
 export const TABBED_PAGES = {
   rapm: {
     title: "Six-Factor RAPM",
-    subtitle: "RAPM split into six factors, with an interval on every number.",
+    subtitle: "A structural decomposition of player impact",
+    hero: { icon: "book" },
     // R02: the explainer is the main entry; the 1Y/2Y/3Y table and sealed experiment stay a tab.
     tabs: [
       { label: "Six-Factor", href: "/research/rapm/six-factor" },

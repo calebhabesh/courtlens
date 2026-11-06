@@ -8,7 +8,7 @@ coverage and screenshots per block. Plan text is not evidence.
 | Block | Status | Evidence |
 | --- | --- | --- |
 | R01 Impact history backfill, time decay, intervals, rating snapshots | ✅ measured (page work is R02) | [R01 evidence](evidence/research/r01/README.md): twelve regular seasons sealed and served (97.5–99.9% of games admitted); 200-replicate intervals; time decay; six-factor R² 0.955–0.966; 91 dated snapshots |
-| R02 Six-Factor RAPM + Impact Tree | 🟡 built and verified on real data; page awaits owner | [R02 evidence](evidence/research/r02/README.md): all 12 regular-season fits have intervals on all nine nodes, so no new protocol; six factors reconstruct RAPM at R² 0.955–0.966 (0.950–0.964 held out); tree equals the bundle on 64,098 nodes; playoff intervals unknown |
+| R02 Six-Factor RAPM + Impact Tree | 🟡 built and verified on real data; redesigned from Databallr (design 18, 2026-11-06); page awaits owner | [R02 evidence](evidence/research/r02/README.md): all 12 regular-season fits have intervals on all nine nodes, so no new protocol; six factors reconstruct RAPM at R² 0.955–0.966 (0.950–0.964 held out); tree equals the bundle on 64,098 nodes; playoff intervals unknown |
 | R03 Signal vs Noise | 🟡 built and verified on real data; full Playwright not run (memory); page awaits owner | [R03 evidence](evidence/research/r03/README.md): 19 of 20 rate stats stabilize; **3P% never reaches 0.5** in observed samples (largest bin 0.486 at 480 3PA; fitted curve 419); FT% 27 FTA, TS% 169 TSA; shrinkage cuts next-season error for 3P%, FT%, 2P%, TS%, rim FG% by 32–53%, all intervals above zero |
 | R04 zTS + validation | 🟡 built and verified on real data; full Playwright not run (memory); page awaits owner | [R04 evidence](evidence/research/r04/README.md): FTA not derivable, so play-type TS is CourtLens's own; split verdict on test seasons: zTS tracks oTS RAPM better (+0.135 in r, +0.104 to +0.164), predicts next-season rTS worse (−0.134, −0.160 to −0.107); 3,329 player-seasons served, every other with a named reason |
 | R05 Shot Quality v2 model | 🟡 built and verified on real data; full Playwright not run (memory); page awaits owner | [R05 evidence](evidence/research/r05/README.md): **accepted**; LightGBM with shot type and pre-shot context beats league zone × distance rates by 3.44% Brier on 2022-23 and 2.56% (2.44 to 2.67) on 2024-25 and 2025-26, ECE 0.0102; slightly worse on 3-pointers (−0.28%); shot-making persists r = 0.625 (0.542 to 0.696), no more than raw PPS |
@@ -257,4 +257,25 @@ Run on `research` at `1c3627a` by request, from a production build and the mock 
 - **Shot Aftermath.** Not restyle-only: Databallr's league/team/position view by zone needs a play-by-play aggregate CourtLens doesn't serve (the current page is per player and its tables hold two test games in the published database). Not built; owner's decision.
 - **Checks.** Page against API at 1440 and 390: every value in every new table equal, 0 console errors, 0 overflow. Independent recomputation of r and positional averages equal to 4.8e-7; 5 D-DPM values traced to raw DARKO responses; 19 of 19 measured players in Databallr's saved table match exactly, 8 others not measured at a combine (Databallr uses other sources). Ruff, format, strict mypy, lint, typecheck clean; Vitest 735; Python 2,665 passed with the 8 known Anthropic SDK failures; R10 Playwright 15/15 over three repeats; full Playwright 570 passed, 17 skipped, 0 failed.
 - **Not done.** The design phase (Databallr layout, with-shoes and units toggles, CSV, overlay graphic, the interactive ORTG Lab) and the owner's ✅.
+
+## 2026-11-06 — Design 18: Six-Factor RAPM redesigned (design phase, page 1)
+
+[Evidence](evidence/research/design-18/README.md). From the owner's saved Databallr `six-factor-rapm` and `shotquality`
+pages and seven screenshots. Design only: no Python, API, fit, interval or unknown state changed.
+
+- **Layout.** Databallr's explainer order: centred header and links, The Framework (3 × 2 grid selects the factor),
+  How It Works, The Six Factors (tabs over a panel), Two Ways to Slice the Grid (R02's scatter kept below, owner's
+  choice), Player Archetypes, then the ratings table on Databallr's ShotQuality pattern (search, Min MIN, team, CSV,
+  Combined / Offense / Defense, bars, intervals kept), How to Read the Numbers, Column Glossary, the Impact Tree and a
+  collapsed Caveats & Methodology.
+- **Gaps.** One-season fits, not Databallr's six-year time-decay pool; CourtLens's measured R² instead of 0.985;
+  per-player notes replaced by CourtLens factor copy and data lines (owner's choice); minutes instead of possessions;
+  "residual < 0.6" not served.
+- **Pattern.** Shared `components/research/` (sections, cards, tab panel, ranked lists, glossary, disclosure and the
+  `ResearchTable`) and `lib/research-values.ts`; recorded in the alignment plan's Patterns. Green/red only where an
+  80% interval excludes zero.
+- **Checks.** Page against the API on real data: 87,138 values over three scopes at 1440 and 390, 0 mismatches, 0
+  console errors, 0 overflow, 0 broken images. Lint, typecheck clean; Vitest 742. Page spec 33/33 over three repeats.
+  Full Playwright: 571 passed, 17 skipped, 0 failed after regenerating the RAPM tab's two stale `pc12-b-rapm` baselines (the shared header changed by design).
+- **Not done.** The owner's review and ✅.
 

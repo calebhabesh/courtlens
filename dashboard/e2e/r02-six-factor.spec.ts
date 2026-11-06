@@ -29,41 +29,80 @@ async function expectTreeMatchesFixture(page: import("@playwright/test").Page, i
   }
 }
 
-test.describe("R02 Six-Factor RAPM", () => {
+test.describe("R02 Six-Factor RAPM (design row 18)", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
+  const served = fixture.pages["2025-26"];
+  const byId = new Map(served.players.map((p: { player_id: string }) => [p.player_id, p]));
 
-  test("opens with the explainer in order, the measured R² and the Databallr credit", async ({ page }) => {
+  test("opens with Databallr's explainer order, the measured R² and the credits", async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Six-Factor RAPM");
-    await expect(page.locator(".sf-heading")).toHaveText(["The Framework", "How It Works", "The Six Factors", "Net Efficiency vs Possession Control", "Player Archetypes", "Caveats", "All Ratings", "Impact Tree"]);
-    const { reconstruction: fit } = fixture.pages["2025-26"];
-    await expect(page.getByText(`R² ${fit.in_sample.value.toFixed(3)}`, { exact: true })).toBeVisible();
-    const caveats = page.getByRole("region", { name: "Caveats" });
-    await expect(caveats).toContainText("not the commonly quoted 0.985");
-    await expect(caveats.getByRole("link", { name: "Databallr" })).toBeVisible();
+    await expect(page.locator(".rs-heading")).toHaveText(["The Framework", "How It Works", "The Six Factors", "Two Ways to Slice the Grid", "Player Archetypes", "All Ratings", "How to Read the Numbers", "Column Glossary", "Impact Tree", "Caveats & Methodology"]);
+    await expect(page.getByText(`R² = ${served.reconstruction.in_sample.value.toFixed(3)}`, { exact: true }).first()).toBeVisible();
+    const methods = page.getByRole("region", { name: "Caveats & Methodology" });
+    await expect(methods).toContainText("not the commonly quoted 0.985");
+    await methods.locator("summary").click();
+    await expect(methods.getByRole("link", { name: "Databallr" })).toBeVisible();
+    await expect(methods).toContainText("Rosenbaum (2004) and Sill (2010)");
     await expect(page.getByRole("navigation", { name: "Six-Factor RAPM sections" }).locator('[aria-current="page"]')).toHaveText("Six-Factor");
   });
 
-  test("factor tabs change the leaderboard, with an interval on every row", async ({ page }) => {
+  test("the framework grid and the factor tabs pick the same factor", async ({ page }) => {
     await openWorkbench(page, path);
-    const section = page.getByRole("region", { name: "The Six Factors" });
-    await section.getByRole("radio", { name: "dTS" }).click();
+    await page.getByRole("button", { name: "dTS, Shooting Defense" }).click();
     await expect(page).toHaveURL(/factor=d_ts/);
-    const rows = section.getByRole("list", { name: /Shooting Defense, ten largest/ }).getByRole("listitem");
-    await expect(rows).toHaveCount(10);
-    await expect(rows.first()).toContainText(" to ");
+    const section = page.getByRole("region", { name: "The Six Factors" });
+    await expect(section.getByRole("radio", { name: "dTS" })).toHaveAttribute("aria-checked", "true");
+    const top = section.getByRole("list", { name: /Shooting Defense, four highest/ }).getByRole("listitem");
+    await expect(top).toHaveCount(4);
+    const best = [...served.players].filter((p: { metrics: Record<string, { value: number | null }> }) => p.metrics.d_ts.value !== null)
+      .sort((a: { metrics: Record<string, { value: number }> }, b: { metrics: Record<string, { value: number }> }) => b.metrics.d_ts.value - a.metrics.d_ts.value)[0];
+    expect(Number(await top.first().locator(".rs-value").getAttribute("data-value"))).toBe(best.metrics.d_ts.value);
+    await expect(top.first()).toContainText(" to ");
+    await section.getByRole("radio", { name: "oREB" }).click();
+    await expect(page).toHaveURL(/factor=o_reb/);
+    await expect(section.getByRole("heading", { level: 3 })).toContainText("oREB");
   });
 
-  test("the table sorts every way with unknowns last", async ({ page }) => {
+  test("archetype cards show the served players and values", async ({ page }) => {
+    await openWorkbench(page, path);
+    const cards = page.getByRole("list", { name: "Player archetypes" }).getByRole("listitem");
+    await expect(cards).toHaveCount(served.archetypes.length);
+    for (const [index, card] of served.archetypes.entries()) {
+      const player = byId.get(card.player_id) as { player_name: string; metrics: Record<string, { value: number | null; low: number | null }> };
+      await expect(cards.nth(index)).toContainText(player.player_name);
+      await expect(cards.nth(index)).toContainText(card.rule);
+      expect(Number(await cards.nth(index).locator(".sf-archetype-rapm .rs-value").getAttribute("data-value"))).toBe(player.metrics.rapm.value);
+    }
+  });
+
+  test("the table matches the API, sorts every way with unknowns last, filters and exports", async ({ page }) => {
     await openWorkbench(page, path);
     const table = page.getByRole("region", { name: "Six-factor ratings with intervals" });
+    for (const row of await table.locator("tbody tr[data-row]").all()) {
+      const player = byId.get((await row.getAttribute("data-row"))!) as { metrics: Record<string, { value: number | null; low: number | null; high: number | null }> };
+      const cell = row.locator('td[data-column="rapm"]');
+      if (player.metrics.rapm.value === null) await expect(cell).toHaveText("—");
+      else {
+        expect(Number(await cell.getAttribute("data-value"))).toBe(player.metrics.rapm.value);
+        const tone = await cell.locator(".rt-value").getAttribute("data-tone");
+        const { low, high } = player.metrics.rapm;
+        expect(tone).toBe(low !== null && low > 0 ? "good" : high !== null && high < 0 ? "bad" : null);
+      }
+    }
+    await page.getByRole("radio", { name: "Offense" }).click();
     await table.getByRole("button", { name: "Sort by oREB" }).click();
-    const lastRow = table.getByRole("row").last();
     await expect(table.locator("th[aria-sort=descending]")).toContainText("oREB");
     await table.getByRole("button", { name: "Sort by oREB" }).click();
     await expect(table.locator("th[aria-sort=ascending]")).toContainText("oREB");
-    await page.getByRole("button", { name: /^Show all/ }).click();
-    await expect(lastRow.locator("td").nth(4)).toHaveText("—");
+    await expect(table.locator("tbody tr").last().locator('td[data-column="o_reb"]')).toHaveText("—");
+    await page.getByRole("searchbox", { name: "Search players", exact: true }).fill("Embiid");
+    await expect(table.locator("tbody tr[data-row]")).toHaveCount(1);
+    await expect(page.getByText("1 players", { exact: true })).toBeVisible();
+    const download = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Download CSV" }).click();
+    const file = await download;
+    expect(file.suggestedFilename()).toBe("courtlens-six-factor-2025-26-regular_season.csv");
   });
 
   test("the tree opens on the top RAPM and matches the served values exactly", async ({ page }) => {
