@@ -1,4 +1,7 @@
-"""ORtg calculator inputs (`courtlens-four-factors-inputs-v1`, R10). Descriptive counts.
+"""ORtg calculator inputs (`courtlens-four-factors-inputs-v2`, R10). Descriptive counts.
+
+v2 corrects v1's three-point rule (v1 read only `shotValue`, absent before 2024-25) and checks
+every game's counted points against its final score.
 
 For every NBA regular season 2014-15 to 2025-26, counts each team's field goals, free throws by
 trip kind, turnovers (team turnovers included) and rebounds after each kind of miss from the
@@ -25,8 +28,8 @@ from courtlens.domain.research_registry import load_registration, registration_r
 from courtlens.evaluation import expected_shot_v2_data as shots_data
 from courtlens.ingestion.native_reconstruction import content_hash
 
-REGISTRATION = "courtlens-four-factors-inputs-v1"
-RESULTS_PATH = Path("evaluation/research/frozen/courtlens-four-factors-inputs-v1.json")
+REGISTRATION = "courtlens-four-factors-inputs-v2"
+RESULTS_PATH = Path("evaluation/research/frozen/courtlens-four-factors-inputs-v2.json")
 SEASONS = tuple(f"{y}-{(y + 1) % 100:02d}" for y in range(2014, 2026))
 PAPER = "arXiv:2305.13032v2"
 PARAMETERS: dict[str, Any] = {
@@ -36,6 +39,8 @@ PARAMETERS: dict[str, Any] = {
     "miss_kinds": list(ff.MISS_KINDS),
     "marginal_step": 0.01,
     "paper": PAPER,
+    "three_rule": "shotValue when present, else '3PT' in the description",
+    "points_check": "counted points of both teams equal the final scoreHome + scoreAway",
 }
 
 
@@ -51,8 +56,10 @@ def season_counts(season: str, sha: str) -> tuple[dict[str, Counter[str]], dict[
     teams: dict[str, Counter[str]] = {}
     unknown: Counter[str] = Counter()
     codes: dict[str, str] = {}
+    no_score: list[str] = []
+    mismatched: list[dict[str, Any]] = []
     games = 0
-    for _game, rows in shots_data.games_in_order(shots_data.archive_csv(sha, f"nbastatsv3_{year}")):
+    for game, rows in shots_data.games_in_order(shots_data.archive_csv(sha, f"nbastatsv3_{year}")):
         games += 1
         for row in rows:
             team, code = row.get("teamId", "").strip(), row.get("teamTricode", "").strip()
@@ -60,10 +67,17 @@ def season_counts(season: str, sha: str) -> tuple[dict[str, Counter[str]], dict[
                 codes.setdefault(team, code)
         counted = ff.count_game(rows)
         unknown.update(counted.unknown_sub_types)
+        total = sum(c["points"] for c in counted.teams.values())
+        if counted.final_points is None:
+            no_score.append(game)
+        elif total != counted.final_points:
+            mismatched.append({"game_id": game, "counted": total, "final": counted.final_points})
         for team, c in counted.teams.items():
             teams.setdefault(team, Counter()).update(c)
     return teams, {
         "games": games,
+        "games_without_final_score": no_score,
+        "games_points_differ_from_final_score": mismatched,
         "unknown_ft_sub_types": dict(sorted(unknown.items())),
         "tricodes": dict(sorted(codes.items())),
     }
