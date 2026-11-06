@@ -304,3 +304,23 @@ pages and seven screenshots. Design only: no Python, API, fit, interval or unkno
 ## 2026-11-06 — Research menu without gaps (owner request)
 
 [Screenshot](evidence/research/menu/research-menu-columns-1440.png). The two-column dropdown placed groups in shared rows, so a short group left a gap beside a long one. Each column now stacks its groups; `balanceColumns` in `lib/nav-model.ts` picks the most even split while keeping menu order inside each column. Measured on `localhost:3100` at 1440: no gaps between groups; columns end 36 px apart; the panel is 750 px tall instead of 871. Lint clean; Vitest 805; full Playwright 579 passed, 17 skipped, 0 failed.
+
+## 2026-11-06 — RD00: Six-Factor RAPM in a centred column, open layout (design round 2)
+
+[Evidence](evidence/research/design-RD00/README.md). The owner's two instructions: a centred column like Databallr's
+instead of full width, and no boxes around everything; both for the Research pages generally. Design only.
+
+- **Column.** Shared `.rs-column` (992 px, centred) holds the filter bar and sections; the pattern records it so each
+  Research page adopts it in its own turn.
+- **Open layout.** Shared cards, glossary, method blocks, steps, factor panel, feature lists, callouts and table
+  toolbar lose their fills and frames (top rules, hairlines, a left accent rule). The ratings table, framework grid and
+  tree nodes stay framed. Learning, Patch Notes and the landing share the open cards; still full width.
+- **Table.** Column widths by content (128 / 96 / 64 px, 184 px player, 24 px bars) so every view fits the column
+  unscrolled; long names wrap inside the pinned column (they ran under the values at 390).
+- **Checks.** Real data through a read-only proxy to the owner's API: 87,138 values over three scopes at 1440 and
+  390, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, table unscrolled at 1440 in all views. Lint 0/0,
+  typecheck clean, Vitest 805. Page spec 33/33 over three repeats plus two new tests 6/6. Full Playwright 577 passed,
+  17 skipped, 4 failed (Six-Factor and Patch Notes baselines, changed by design, viewed and regenerated; visual spec
+  84/84): net 581 passed, 0 failed.
+- **Not done.** The owner's review and ✅.
+

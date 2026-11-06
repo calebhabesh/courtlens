@@ -1,0 +1,175 @@
+{
+  "checked": "2026-11-06T16:26:27.938Z",
+  "api": "owner's API on :8000 through a read-only proxy on 4180 (GET only; shared Postgres read only)",
+  "web": "production build on 3180",
+  "results": [
+    {
+      "season": "2025-26",
+      "phase": "regular_season",
+      "width": 1440,
+      "layout": {
+        "Combined": {
+          "tableScroll": 0,
+          "columnWidth": 992,
+          "namesOutside": 0
+        },
+        "Offense": {
+          "tableScroll": 0,
+          "columnWidth": 992,
+          "namesOutside": 0
+        },
+        "Defense": {
+          "tableScroll": 0,
+          "columnWidth": 992,
+          "namesOutside": 0
+        }
+      },
+      "compared": 22126,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2025-26",
+      "phase": "regular_season",
+      "width": 390,
+      "layout": {
+        "Combined": {
+          "tableScroll": 610,
+          "columnWidth": 366,
+          "namesOutside": 0
+        },
+        "Offense": {
+          "tableScroll": 546,
+          "columnWidth": 366,
+          "namesOutside": 0
+        },
+        "Defense": {
+          "tableScroll": 546,
+          "columnWidth": 366,
+          "namesOutside": 0
+        }
+      },
+      "compared": 22126,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2018-19",
+      "phase": "regular_season",
+      "width": 1440,
+      "layout": {
+        "Combined": {
+          "tableScroll": 0,
+          "columnWidth": 992,
+          "namesOutside": 0
+        },
+        "Offense": {
+          "tableScroll": 0,
+          "columnWidth": 992,
+          "namesOutside": 0
+        },
+        "Defense": {
+          "tableScroll": 0,
+          "columnWidth": 992,
+          "namesOutside": 0
+        }
+      },
+      "compared": 21008,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2018-19",
+      "phase": "regular_season",
+      "width": 390,
+      "layout": {
+        "Combined": {
+          "tableScroll": 610,
+          "columnWidth": 366,
+          "namesOutside": 0
+        },
+        "Offense": {
+          "tableScroll": 546,
+          "columnWidth": 366,
+          "namesOutside": 0
+        },
+        "Defense": {
+          "tableScroll": 546,
+          "columnWidth": 366,
+          "namesOutside": 0
+        }
+      },
+      "compared": 21008,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2025-26",
+      "phase": "playoffs",
+      "width": 1440,
+      "layout": {
+        "Combined": {
+          "tableScroll": 0,
+          "columnWidth": 992,
+          "namesOutside": 0
+        },
+        "Offense": {
+          "tableScroll": 0,
+          "columnWidth": 992,
+          "namesOutside": 0
+        },
+        "Defense": {
+          "tableScroll": 0,
+          "columnWidth": 992,
+          "namesOutside": 0
+        }
+      },
+      "compared": 435,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2025-26",
+      "phase": "playoffs",
+      "width": 390,
+      "layout": {
+        "Combined": {
+          "tableScroll": 610,
+          "columnWidth": 366,
+          "namesOutside": 0
+        },
+        "Offense": {
+          "tableScroll": 546,
+          "columnWidth": 366,
+          "namesOutside": 0
+        },
+        "Defense": {
+          "tableScroll": 546,
+          "columnWidth": 366,
+          "namesOutside": 0
+        }
+      },
+      "compared": 435,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    }
+  ]
+}

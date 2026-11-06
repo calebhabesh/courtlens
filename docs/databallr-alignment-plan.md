@@ -99,6 +99,13 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
 - **Header:** a centred `TabbedPage` header (`hero: { icon }` in `lib/route-consolidation.ts`: the
   `pvp-header research-hero` classes, accent icon, one subtitle line), route tabs centred under it, then
   the sticky `FilterBar` for scope, then `ResearchIntro` (centred tagline and text links).
+- **Column (owner, RD00, 2026-11-06):** the filter bar and every section sit in `.rs-column`, a centred
+  992 px reading column (Databallr's), not the full page width. Each Research page adopts it in its own
+  design turn.
+- **Open, not boxed (owner, RD00):** content sits on the page background. Cards are open (a 2 px top rule,
+  gold/blue for Offense/Defense identity), and glossary entries, method blocks, the factor panel, feature
+  lists and the table toolbar have no fill or frame; a callout is a left accent rule. Only a data table, a
+  grid such as the framework grid, and diagram nodes keep a frame.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).
@@ -110,7 +117,9 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
 - **Ratings table:** `ResearchTable` from `components/research/research-table.tsx`, after Databallr's
   ShotQuality table: toolbar (search, minimum, team, page actions, CSV, count), views as a `Segmented`
   group, sticky logo and player columns, a bar beside each signed value, the interval on a second line,
-  unknowns "—" and last in both directions. Columns declare `signedValue` and `interval`.
+  unknowns "—" and last in both directions. Columns declare `signedValue` and `interval`. Column widths
+  follow content (128 px with an interval, 96 px without, 64 px for counts) so a five-value view fits the
+  column unscrolled; long names wrap inside the pinned player column.
 - **Colour:** `SignalValue` and the table colour a value green or red only when its 80% interval
   excludes zero (`lib/research-values.ts` `intervalTone`); values without an interval stay neutral.
 - **Verification:** a real-data script compares every drawn value with the API at 1440 and 390 for

@@ -326,7 +326,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
     ]),
     { header: "net_efficiency", value: (p: SixFactorPlayer) => p.composites.net_efficiency }, { header: "possession_control", value: (p: SixFactorPlayer) => p.composites.possession_control },
   ], []);
-  return <div className="sf-page">
+  return <>
     <ResearchIntro tagline="RAPM split into six factors, each with an 80% interval, for any player."
       links={[{ label: "Check this in the Stats page", href: statsHref, icon: "table" }, { label: "Impact Tree for any player", href: "#impact-tree", icon: "split" }]} />
     {!page.intervals_available && <GatedNote>Playoff fits have values but no registered intervals or regression weights, so their intervals, composites and archetypes show as unknown.</GatedNote>}
@@ -393,7 +393,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
       </MethodBlock>
       <MethodBlock title="Data & Credits"><Credits /></MethodBlock>
     </ResearchDisclosure>
-  </div>;
+  </>;
 }
 
 /** Research → Six-Factor RAPM (R02, design phase row 18). Layout after Databallr's explainer; every value is CourtLens's own. */
@@ -423,7 +423,7 @@ export function SixFactorResearch() {
     { label: "Intervals", value: data.provenance.interval_sha256 ? `${data.provenance.interval_registration} · ${data.provenance.interval_sha256}` : "None served for this fit", mono: true },
     { label: "Reconstruction", value: data.reconstruction ? `${data.reconstruction.registration} · ${data.reconstruction.registration_sha256}` : "None registered for this phase", mono: true },
   ]} />;
-  return <>
+  return <div className="rs-column sf-page">
     <FilterBar label="Six-Factor filters" summary={`${season} · ${phaseLabel(phase)}`}
       scope={<>
         <Field label="Season" layout="inline"><Select aria-label="Season" value={season} onChange={event => {
@@ -438,6 +438,6 @@ export function SixFactorResearch() {
     {loading && <FeedSkeleton label="Loading six-factor ratings" />}
     {answer?.status === "unavailable" && <GatedNote action={answer.scopes[0] && <ButtonLink size="lg" href={`${pathname}?season=${answer.scopes[0].season}`}>Open {answer.scopes[0].season}</ButtonLink>}>No one-year fit is served for {season} {phaseLabel(phase).toLowerCase()}. RAPM is sealed after a season ends, and history starts in 2014-15.</GatedNote>}
     {data && <Body page={data} factor={factor} playerId={playerId} treeHref={treeHref} statsHref={statsHref} set={set} />}
-  </>;
+  </div>;
 }
 

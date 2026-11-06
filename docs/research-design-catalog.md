@@ -52,7 +52,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | # | Page | Route(s) | Databallr reference | Built in | Status |
 | --- | --- | --- | --- | --- | --- |
 | **A. Pages with a saved Databallr reference** | | | | | |
-| RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18 | 👀 |
+| RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18, RD00 | 👀 |
 | RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data | ⬜ |
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data | ⬜ |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04 | ⬜ |
@@ -82,11 +82,27 @@ Saved Investigations, the operation gallery (`/research/operation`) and the lega
 
 ---
 
-## RD00 Six-Factor RAPM — 👀 awaiting the owner
+## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 2)
 
 Redesigned 2026-11-06 (design-18, `4023a98`); its nine instructions are in the alignment catalog, row 18.
 It sets the pattern for every page below, so review it first: changes here are cheapest before they're
-copied. Evidence: `docs/evidence/research/design-18/`.
+copied. Evidence: `docs/evidence/research/design-18/`, then `docs/evidence/research/design-RD00/`.
+
+Instructions (owner, 2026-11-06, round 2; references: three new screenshots of Databallr's Six-Factor page
+from the header through the archetypes and the open Caveats & Methodology, plus the saved page):
+1. [x] Transition from a full-width page to a centred column like Databallr. Do this for pretty much all
+   the Research pages: full width makes the containers look very bulky and the site hard to read.
+   — Shared `.rs-column`, 992 px centred (Databallr's width), holding the filter bar and every section; recorded
+   in the pattern so each Research page adopts it in its turn. The ratings table fits it unscrolled in all views.
+2. [x] Move away from containerizing everything; it's quite ugly and we do it on pretty much every
+   Research page. Make it look aesthetic without containerizing everything.
+   — Shared components are open: cards take a top rule, glossary a hairline list, method blocks and steps no
+   wells, the factor panel and table toolbar no frame, callouts a left rule. Only the table, the framework grid
+   and the tree nodes stay framed. Learning, Patch Notes and the landing share the open cards already.
+
+Found before building: at 390 the longest names (Gilgeous-Alexander, Antetokounmpo, Wembanyama) run 24–53 px
+past the pinned player column under the RAPM values; fixed with this round (names wrap inside the column).
+Evidence: [`design-RD00`](evidence/research/design-RD00/README.md).
 
 ## RD01 Combine & Wingspan — ⬜
 

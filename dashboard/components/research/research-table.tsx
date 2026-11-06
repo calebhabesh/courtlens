@@ -80,7 +80,7 @@ function ValueCell<T>({ column, row, scale, start }: { column: ResearchColumn<T>
       <span className="rt-bar" data-tone={tone} aria-hidden="true"><span style={chartVars({ "--chart-position": `${(share * 100).toFixed(1)}%` })} /></span>
       <span className="rt-figures">
         <span className="rt-value" data-tone={tone}>{signed(value, column.digits ?? 2)}</span>
-        {interval && <span className="rt-interval">{interval.low == null ? "interval unknown" : intervalLabel(interval.low, interval.high, 1)}</span>}
+        {interval && <span className="rt-interval" data-unknown={interval.low == null || undefined}>{interval.low == null ? "interval unknown" : intervalLabel(interval.low, interval.high, 1)}</span>}
       </span>
     </span>
   </td>;
@@ -129,7 +129,7 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
     <div className="player-ref-grid-frame rt-frame">
       <div className="player-ref-grid-scroll rt-scroll" role="region" aria-label={label} tabIndex={0}>
         <table className="player-ref-grid rt-grid" data-columns={columns.length}>
-          <colgroup><col className="rt-col-logo" /><col className="player-ref-grid-lead-column" />{columns.map(column => <col key={column.key} className={column.signedValue ? "rt-col-value" : "rt-col-count"} />)}{rowAction && <col className="rt-col-action" />}</colgroup>
+          <colgroup><col className="rt-col-logo" /><col className="player-ref-grid-lead-column" />{columns.map(column => <col key={column.key} className={column.signedValue ? (column.interval ? "rt-col-value" : "rt-col-signed") : "rt-col-count"} />)}{rowAction && <col className="rt-col-action" />}</colgroup>
           <thead><tr className="rt-head">
             <th scope="col" className="rt-logo"><span className="sr-only">Team</span></th>
             <th scope="col" className="player-ref-grid-lead">Player</th>
