@@ -15,6 +15,7 @@ import { Select } from "./ui/select";
 import { StatTile } from "./ui/stat-tile";
 import { fmt, getCombine, inches, signed, type CombineRow, type CombineView as CombineData } from "@/lib/stats-feeds";
 import { Button } from "./ui/kit";
+import { WingspanDdpm } from "./wingspan-ddpm";
 
 const COHORT = "every measured combine participant since 2000";
 
@@ -125,5 +126,6 @@ export function CombineView() {
     {loading && <FeedSkeleton label="Loading combine measurements" />}
     {data && playerId && !data.selected_player_id && <GatedNote action={<Button size="lg" onClick={() => set({ playerId: null })}>Show the latest class</Button>}>No combine record for this player: they may have skipped the combine, which is unknown, not zero.</GatedNote>}
     {data && data.rows.length > 0 && <Body data={data} />}
+    <WingspanDdpm />
   </PageShell>;
 }
