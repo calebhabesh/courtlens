@@ -144,6 +144,15 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
         "Wikipedia (CC BY-SA 4.0)",
     ),
     AdmittedSource(
+        "wikipedia_drafts",
+        "Wikipedia NBA draft articles",
+        "en.wikipedia.org/wiki/<year>_NBA_draft",
+        "secondary",
+        ("draft_metadata",),
+        5,
+        "Wikipedia (CC BY-SA 4.0)",
+    ),
+    AdmittedSource(
         "darko",
         "DARKO Daily Plus-Minus",
         "www.darko.app",

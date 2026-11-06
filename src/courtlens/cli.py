@@ -1886,6 +1886,26 @@ def refresh_darko_daily_command(
     typer.echo(f"{verb} {path}  (served as the newest bundle in {output})")
 
 
+@app.command("acquire-draft-history")
+def acquire_draft_history_command(
+    root: Path = typer.Option(Path("data/raw/draft-history")),
+    output: Path = typer.Option(Path("data/derived/draft-history-v1")),
+    seal_only: bool = typer.Option(False, help="Re-parse held pages without fetching."),
+) -> None:
+    """Operator run: seal full draft lists for 1966-99 (hoopR mirror 1996-99, Wikipedia 1966-95)."""
+    import httpx
+
+    from courtlens.services.draft_history import acquire, seal
+
+    with SessionLocal() as session, httpx.Client() as client:
+        if seal_only:
+            path, result = seal(session, root, output)
+        else:
+            path, result = acquire(session, root, client, output, log=typer.echo)
+    typer.echo(json.dumps(result))
+    typer.echo(f"sealed {path}")
+
+
 @app.command("refresh-wikipedia-transactions")
 def refresh_wikipedia_transactions_command(
     season: str | None = typer.Option(None, help="Default: the season under way today."),
