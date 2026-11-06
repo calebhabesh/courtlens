@@ -83,6 +83,10 @@ export const NAV_MENUS: NavMenu[] = [
     // The Research handoff's target menu (D8), limited to pages that exist; R11 added Learning and Patch Notes.
     // Case Studies and Saved Investigations moved to Methodology; Evaluation Archive is reached from Points Forecasts and Methodology.
     groups: [
+      // R12: the landing page opens the menu (D8).
+      { title: "Overview", items: [
+        { label: "Research Overview", href: "/research", icon: "sparkles", description: "Headline results, each with its test seasons and evidence" },
+      ] },
       { title: "Models", items: [
         { label: "Win Probability", href: "/research/win-probability", icon: "activity", description: "Live win probability for each game, scored nightly" },
         { label: "Projected Impact", href: "/research/projected-impact", icon: "trend", description: "2026-27 player ratings frozen before the games, with intervals" },
