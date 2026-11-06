@@ -31,7 +31,7 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
       ["/research/rapm/six-factor", "/research/backtest"],
       ["/research/shooting", "/research/defensive-matchups", "/research/zts", "/research/shot-quality"],
       ["/research/signal-noise", "/forecasts"],
-      ["/wingspan", "/calculator"],
+      ["/wingspan", "/draft", "/calculator"],
     ]);
     for (const item of research.groups.flatMap(group => group.items)) {
       expect(item.icon, item.label).toBeTruthy();

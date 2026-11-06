@@ -19,6 +19,10 @@ const shotQuality = JSON.parse(readFileSync(new URL("./fixtures/shot-quality.jso
 const shotDecomposition = JSON.parse(readFileSync(new URL("./fixtures/shot-decomposition.json", import.meta.url), "utf8"));
 // R08: the real Metric Backtest answer (frozen results, metric notes, 2026-27 score).
 const metricBacktest = JSON.parse(readFileSync(new URL("./fixtures/metric-backtest.json", import.meta.url), "utf8"));
+// R09: real Draft Classes answers (summary, six classes, combine, rookie tracker, one rookie).
+const draftFixture = name => JSON.parse(readFileSync(new URL(`./fixtures/draft-${name}.json`, import.meta.url), "utf8"));
+const draftSummary = draftFixture("summary"), draftClasses = draftFixture("classes"), draftCombine = draftFixture("combine");
+const draftRookies = draftFixture("rookies"), draftRookie = draftFixture("rookie");
 // Real answers of the six-factor API for 2025-26, cut to a few rows, and real Impact Trees.
 const sixFactorPage = JSON.parse(readFileSync(new URL("./fixtures/six-factor-page.json", import.meta.url), "utf8"));
 const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
@@ -671,6 +675,17 @@ createServer(async (request, response) => {
   }
   if (url.pathname === "/api/projected-impact") return json(response, 200, projectedImpact.page);
   if (url.pathname === "/api/metric-backtest") return json(response, 200, metricBacktest);
+  if (url.pathname === "/api/draft") return json(response, 200, draftSummary);
+  if (url.pathname === "/api/draft/combine") return json(response, 200, draftCombine);
+  if (url.pathname === "/api/draft/rookies") return json(response, 200, draftRookies);
+  if (url.pathname.startsWith("/api/draft/rookies/")) {
+    const id = url.pathname.split("/").at(-1);
+    return id === draftRookie.rookie.player_id ? json(response, 200, draftRookie) : json(response, 200, { ...draftRookie, rookie: draftRookies.rookies.find(r => r.player_id === id) ?? draftRookie.rookie, comparisons: [] });
+  }
+  if (url.pathname.startsWith("/api/draft/classes/")) {
+    const body = draftClasses[url.pathname.split("/").at(-1)];
+    return body ? json(response, 200, body) : json(response, 404, { detail: "No such draft class" });
+  }
   if (url.pathname.startsWith("/api/projected-impact/players/")) {
     const detail = projectedImpact.players[url.pathname.split("/").at(-1)];
     return detail ? json(response, 200, detail) : json(response, 404, { detail: "No frozen projection for this player" });

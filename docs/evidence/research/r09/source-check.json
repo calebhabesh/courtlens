@@ -1,0 +1,12 @@
+{
+ "results_sha256": "7b7bd3b8f9a874091024f644e5eadb7cc5c83c8e3efcd4e4265270298fb4b7b9",
+ "value_rows_checked": 6335,
+ "value_rows_mismatched": 0,
+ "value_rows_skipped_bbref_alias": 11,
+ "bbref_only_players_in_totals": 34,
+ "mismatch_examples": [],
+ "official_classes_checked": 27,
+ "official_pick_mismatches": 0,
+ "bio_slots_checked": 1581,
+ "bio_slot_mismatches": 2
+}

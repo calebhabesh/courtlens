@@ -40,7 +40,7 @@ Rows are in working order.
 | 25 | ShotQuality | `/research/shot-quality` | ⬜ | Research R05–R06; CourtLens expected-points model replaces the paid ShotQuality feed. R05 built 2026-11-05 (plain build page): Players tab after the owner's saved ShotQuality RAPM page (filters, ranked table per 100 shots, how to read); Model and Player tabs without reference; the oTS/oSQ/oMake/oFT decomposition is R06, built 2026-11-05 as a Decomposition tab (owner's choice), offence / defence / combined, filters, CSV, intervals. [R05](evidence/research/r05/README.md), [R06](evidence/research/r06/README.md) |
 | 26 | D-ShotQuality | `/research/defensive-matchups` | ⬜ | Research R06, built 2026-11-05 (plain build page) from the owner's saved D-ShotQuality page: ranked cards, All / 2PT / 3PT, ranks, RAPM headline, Key Matchups, paging. From free matchup data 2017-18 onward; expected PPS is the shooters' own shooting, not tracking; no 2nd Defender (help columns are empty). Old tracking page at `/research/defensive-matchups/tracking`. [Evidence](evidence/research/r06/README.md) |
 | 27 | Shot Aftermath | `/research/shooting/aftermath` | ⬜ | Design phase (D13); restyle only |
-| 28 | NBA Draft (Draftballr) | `/draft` | ⬜ | Research R09; refactored as Draft Classes, no prospect model |
+| 28 | NBA Draft (Draftballr) | `/draft` | ⬜ | Research R09 built, awaiting owner review ([evidence](evidence/research/r09/README.md)): Draft Classes in Research → Tools; rookie tracker, value by pick with intervals, class redrafts, steals and misses, combine beside value; no prospect model. Owner, 2026-11-06: don't replicate Draftballr's own design language; match CourtLens and Databallr and add relevant data. Built plainly under D13 |
 | 29 | — (CourtLens research) | `/research` landing, `/research/win-probability`, `/research/backtest`, `/research/projected-impact`, `/research/lineup-model`, `/research/signal-noise`, `/research/assistant-evaluation` | ⬜ | Research R03, R07, R08, R12, R14–R16. `/research/signal-noise` built (R03, 2026-11-05, plain D13 build, no Databallr counterpart; [evidence](evidence/research/r03/README.md)); `/research/backtest` built (R08, 2026-11-05, plain D13 build, no Databallr counterpart; [evidence](evidence/research/r08/README.md)); design pending |
 
 **CourtLens-only (one sweep at the end, no checkbox):** `/forecasts`, `/evaluation`,
@@ -411,6 +411,9 @@ Follow-up instructions (owner, 2026-10-12, sixth review):
     - 43g [ ] Draft classes before 2000 so older players match the Draft Class filter. Deferred
       with 43f. The pinned hoopR mirror only has 1996–1999 drafts (files 1997–2000); 1976–1995
       need another free source (e.g. NBA DraftHistory direct).
+      2026-11-06 (R09): full pick lists for 1966–1999 now exist (`courtlens acquire-draft-history`,
+      bundle `courtlens-draft-history-v1`: hoopR 1996–99, Wikipedia 1966–95). The Stats filter is
+      not wired to them yet.
 Follow-up instructions (owner, 2026-10-13, control uniformity):
 44. [x] Normalize the containers/buttons above the table for uniform text and container sizing.
     Through/Window selector text should be grey, not white. Final owner revision: restore the
