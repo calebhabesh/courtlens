@@ -16,6 +16,7 @@ from courtlens.api.routers import (
     draft_classes,
     fantasy,
     finance,
+    four_factors,
     lineup_model,
     live,
     metric_backtest,
@@ -29,6 +30,7 @@ from courtlens.api.routers import (
     signal_noise,
     six_factor,
     win_probability,
+    wingspan,
     workbench,
     zts,
 )
@@ -84,6 +86,8 @@ def create_app() -> FastAPI:
     application.include_router(metric_backtest.router, prefix="/api")
     application.include_router(draft_classes.router, prefix="/api")
     application.include_router(lineup_model.router, prefix="/api")
+    application.include_router(wingspan.router, prefix="/api")
+    application.include_router(four_factors.router, prefix="/api")
     application.include_router(six_factor.router, prefix="/api")
     application.include_router(signal_noise.router, prefix="/api")
     application.include_router(zts.router, prefix="/api")

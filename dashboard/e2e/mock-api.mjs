@@ -25,6 +25,9 @@ const lineupPage = lineupFixture(""), lineupPlayers = lineupFixture("-players"),
 const draftFixture = name => JSON.parse(readFileSync(new URL(`./fixtures/draft-${name}.json`, import.meta.url), "utf8"));
 const draftSummary = draftFixture("summary"), draftClasses = draftFixture("classes"), draftCombine = draftFixture("combine");
 const draftRookies = draftFixture("rookies"), draftRookie = draftFixture("rookie");
+const r10Fixture = name => JSON.parse(readFileSync(new URL(`./fixtures/r10-${name}.json`, import.meta.url), "utf8"));
+const r10Wingspan = r10Fixture("wingspan"), r10Nearest = r10Fixture("wingspan-nearest");
+const r10FourFactors = r10Fixture("four-factors"), r10FourFactorSeasons = r10Fixture("four-factors-seasons");
 // Real answers of the six-factor API for 2025-26, cut to a few rows, and real Impact Trees.
 const sixFactorPage = JSON.parse(readFileSync(new URL("./fixtures/six-factor-page.json", import.meta.url), "utf8"));
 const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
@@ -684,6 +687,16 @@ createServer(async (request, response) => {
     const five = url.searchParams.get("players") ?? "";
     const known = [lineupFit, lineupFitAlt].find(fit => fit.players.map(p => p.player_id).join(",") === five);
     return known ? json(response, 200, known) : json(response, 404, { detail: "Not in the 2026-27 fit" });
+  }
+  if (url.pathname === "/api/wingspan") return json(response, 200, r10Wingspan);
+  if (url.pathname.startsWith("/api/wingspan/nearest/")) {
+    const body = r10Nearest[url.pathname.split("/").at(-1)];
+    return body ? json(response, 200, body) : json(response, 404, { detail: "No combine record for this player since 2000." });
+  }
+  if (url.pathname === "/api/four-factors") return json(response, 200, r10FourFactors);
+  if (url.pathname.startsWith("/api/four-factors/seasons/")) {
+    const body = r10FourFactorSeasons[url.pathname.split("/").at(-1)];
+    return body ? json(response, 200, body) : json(response, 404, { detail: "No inputs for this season" });
   }
   if (url.pathname === "/api/draft") return json(response, 200, draftSummary);
   if (url.pathname === "/api/draft/combine") return json(response, 200, draftCombine);
