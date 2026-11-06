@@ -41,9 +41,9 @@ export default async function Page({ searchParams }: {
   ] : [];
   const facts = data?.status === "available" ? [
     { label: "Top 1Y RAPM", value: leader ? formatStatValue(leader.metrics.rapm, 2) : "—", note: leader?.player_name ?? "Unknown" },
-    { label: "Rated Players", value: data.total_players.toLocaleString("en-US"), note: "In the served impact cohort" },
-    { label: "Admitted Games", value: coverage ? `${coverage.admitted_games.toLocaleString("en-US")} / ${coverage.scheduled_games.toLocaleString("en-US")}` : "—", note: "Scheduled games in this scope" },
-    { label: "1Y Fit Through", value: fit ? formatDate(fit.last_included_date) : "—", note: fit ? fit.seasons.join(" / ") : "Unknown" },
+    { label: "Rated Players", value: data.total_players.toLocaleString("en-US") },
+    { label: "Admitted Games", value: coverage ? `${coverage.admitted_games.toLocaleString("en-US")} / ${coverage.scheduled_games.toLocaleString("en-US")}` : "—" },
+    { label: "1Y Fit Through", value: fit ? formatDate(fit.last_included_date) : "—" },
   ] : [];
   return <div className="rs-column rapm-ratings">
     <Suspense fallback={<div className="ui-filter-bar" aria-hidden="true" />}>
@@ -57,11 +57,11 @@ export default async function Page({ searchParams }: {
         {/* PC12: the headline chart leads on first load, labelled for assistive tech; open, not boxed (RD00). */}
         <section className="rapm-headline" aria-label="Headline result">
           <RankedBars title="Qualified 1Y RAPM leaders" source="CourtLens sealed IM04 lineup model" sample={`${data.total_players} served players · ${coverage?.admitted_games ?? "unknown"} admitted games`}
-            measure="points per 100 counted controls" tone="identity-b" note="Blue = 1Y RAPM; descriptive under lineup confounding. Intervals are on the Six-Factor tab."
+            measure="points per 100 counted controls" tone="identity-b"
             items={data.players.filter(p => p.metrics.rapm != null).slice(0, 5).map(p => ({ key: p.player_id, name: p.player_name, label: <PlayerIdentity playerId={p.player_id} name={p.player_name} team={teams[p.player_id] ?? null} era={seasonEra(season, teams[p.player_id])} href={`/players/${p.player_id}?${scope}`} size="sm" />, value: p.metrics.rapm!, formatted: formatStatValue(p.metrics.rapm, 2), detail: `${p.support.rapm?.games ?? "unknown"} games · ${p.support.rapm?.seconds == null ? "unknown" : Math.round(p.support.rapm.seconds / 60)} minutes` }))} />
         </section>
         <ResearchCards columns={4} label="Fit summary">
-          {facts.map(fact => <ResearchCard key={fact.label} listItem kicker={fact.label} title={fact.value}><p className="rs-card-text">{fact.note}</p></ResearchCard>)}
+          {facts.map(fact => <ResearchCard key={fact.label} listItem kicker={fact.label} title={fact.value}>{fact.note && <p className="rs-card-text">{fact.note}</p>}</ResearchCard>)}
         </ResearchCards>
       </ResearchSection>}
       <ResearchSection id="ratings" icon="table" title="All Ratings">
