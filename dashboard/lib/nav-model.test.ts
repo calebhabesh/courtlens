@@ -27,7 +27,7 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
     const research = NAV_MENUS.find(menu => menu.id === "research")!;
     expect(research.groups.map(group => group.title)).toEqual(["Models", "Impact", "Shooting", "Methods", "Tools"]);
     expect(research.groups.map(group => group.items.map(item => item.href))).toEqual([
-      ["/research/win-probability", "/research/projected-impact"],
+      ["/research/win-probability", "/research/projected-impact", "/research/lineup-model"],
       ["/research/rapm/six-factor", "/research/backtest"],
       ["/research/shooting", "/research/defensive-matchups", "/research/zts", "/research/shot-quality"],
       ["/research/signal-noise", "/forecasts"],
