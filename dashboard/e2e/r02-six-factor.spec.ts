@@ -155,4 +155,34 @@ test.describe("R02 Six-Factor RAPM (design row 18)", () => {
     const { scroll, inner } = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, inner: window.innerWidth }));
     expect(scroll).toBeLessThanOrEqual(inner);
   });
+
+  test("reads in a centred column with open sections and an unscrolled table (RD00)", async ({ page }) => {
+    await openWorkbench(page, path);
+    await expect(page.locator('[data-node="d_reb"]')).toBeVisible();
+    const layout = await page.evaluate(() => {
+      const column = document.querySelector(".rs-column")!.getBoundingClientRect();
+      const card = getComputedStyle(document.querySelector(".rs-card")!);
+      const scroller = document.querySelector(".rt-scroll")!;
+      return { width: column.width, left: column.left, right: window.innerWidth - column.right, cardFill: card.backgroundColor, tableScroll: scroller.scrollWidth - scroller.clientWidth };
+    });
+    expect(layout.width).toBeLessThanOrEqual(992);
+    expect(Math.abs(layout.left - layout.right)).toBeLessThanOrEqual(1);
+    expect(layout.cardFill).toBe("rgba(0, 0, 0, 0)");
+    for (const view of ["Combined", "Offense", "Defense"]) {
+      await page.getByRole("radio", { name: view }).click();
+      expect(await page.locator(".rt-scroll").evaluate(el => el.scrollWidth - el.clientWidth), view).toBeLessThanOrEqual(0);
+    }
+  });
+
+  test("keeps every name inside the pinned player column on a phone (RD00)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openWorkbench(page, path);
+    await expect(page.locator(".rt-grid tbody tr").first()).toBeVisible();
+    const overflowing = await page.locator(".rt-grid tbody .ui-identity-name").evaluateAll(names => names.filter(name => {
+      const cell = name.closest("th")!, range = document.createRange();
+      range.selectNodeContents(name);
+      return range.getBoundingClientRect().right > cell.getBoundingClientRect().right - parseFloat(getComputedStyle(cell).paddingRight) + 0.5;
+    }).map(name => name.textContent));
+    expect(overflowing).toEqual([]);
+  });
 });
