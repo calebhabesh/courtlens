@@ -46,3 +46,18 @@ describe("research facts", () => {
   });
 });
 
+// R12: the README's Results section quotes the same numbers; it must not drift either.
+describe("README results", () => {
+  const readme = readFileSync(path.join(ROOT, "README.md"), "utf8").replace(/\s+/g, " ");
+  it.each([
+    "wp.logLoss", "wp.baselineLogLoss", "wp.calibration", "wp.games", "wp.seasons",
+    "bt.games", "bt.seasons", "bt.gain", "bt.gainLow", "bt.gainHigh",
+    "pi.gain", "pi.gainLow", "pi.gainHigh", "pi.seasons",
+    "sq.brier", "sq.brierLow", "sq.brierHigh", "sq.seasons",
+  ] as const)("quotes %s as checked", id => {
+    expect(readme).toContain(formatFact(RESEARCH_FACTS[id]));
+  });
+  it("gives R16 no number while its evaluation is in progress", () => {
+    expect(readme).toContain("**Ask evaluation (R16):** evaluation in progress; no number yet.");
+  });
+});
