@@ -15,7 +15,7 @@ import { AskDrawer } from "../ask-drawer";
 import { HotkeysModal } from "../hotkeys-modal";
 import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
 import type { WorkbenchCatalog } from "@/lib/types";
-import { DIRECT_LINKS, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems } from "@/lib/nav-model";
+import { DIRECT_LINKS, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems, balanceColumns, type NavGroup } from "@/lib/nav-model";
 import { mergedPagePath } from "@/lib/route-consolidation";
 import { isHostedDemo } from "@/lib/hosted";
 
@@ -318,7 +318,9 @@ export function Header() {
                       className={`courtlens-dropdown-menu ${multi ? "courtlens-dropdown-multicol" : ""}`}
                       onKeyDown={handleDropdownKeyDown}
                     >
-                      {menu.groups.map((group, index) => (
+                      {(multi ? balanceColumns(menu.groups) : [menu.groups]).map((column, columnIndex) => {
+                        const groups: NavGroup[] = column;
+                        const body = groups.map((group, index) => (
                         <div key={group.title ?? index} className={multi ? "courtlens-dropdown-col" : "courtlens-dropdown-group"}>
                           {group.title && (
                             <span className="courtlens-dropdown-section-title">{group.title}</span>
@@ -339,7 +341,9 @@ export function Header() {
                             </Link>
                           ))}
                         </div>
-                      ))}
+                        ));
+                        return multi ? <div key={columnIndex} className="courtlens-dropdown-stack">{body}</div> : body;
+                      })}
                     </motion.div>
                   )}
                 </AnimatePresence>

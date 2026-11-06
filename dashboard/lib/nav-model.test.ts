@@ -1,7 +1,7 @@
 import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { HOSTED_DEMO_HIDDEN, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems, moreLinks } from "./nav-model";
+import { HOSTED_DEMO_HIDDEN, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems, balanceColumns, moreLinks } from "./nav-model";
 
 const appDir = path.resolve(__dirname, "../app");
 function routeExists(href: string): boolean {
@@ -74,5 +74,16 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
   it("keeps app directory routes discoverable (sanity check on the route probe)", () => {
     expect(readdirSync(appDir).length).toBeGreaterThan(10);
     expect(routeExists("/no-such-route")).toBe(false);
+  });
+});
+
+describe("dropdown columns (owner, 2026-11-06: no gaps)", () => {
+  it("splits Research into two columns of near-equal height, each in menu order", () => {
+    const research = NAV_MENUS.find(menu => menu.id === "research")!;
+    const [left, right] = balanceColumns(research.groups);
+    expect(left.length + right.length).toBe(research.groups.length);
+    expect(left[0].title).toBe("Overview");
+    const order = (column: typeof left) => column.map(group => research.groups.indexOf(group));
+    for (const column of [left, right]) expect(order(column)).toEqual([...order(column)].sort((a, b) => a - b));
   });
 });
