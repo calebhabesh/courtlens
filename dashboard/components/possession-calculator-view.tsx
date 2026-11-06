@@ -8,6 +8,7 @@ import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { StatTile } from "./ui/stat-tile";
 import { Button } from "./ui/kit";
+import { FourFactorsInputs } from "./four-factors-inputs";
 
 const defaults = () => Object.fromEntries(Object.entries(flowDefaults).map(([key, v]) => [key, String(v)])) as Record<keyof FlowInputs, string>;
 const CATEGORY = { two: "2P", three: "3P", ft: "FT" } as const;
@@ -58,5 +59,6 @@ export function PossessionCalculatorView() {
         <p>The scenario is an accounting exercise under independent repeated chances; it is not a validated prediction or causal estimate.</p>
       </>}>An accounting scenario under your assumptions, not a prediction.</GatedNote>
     </ResearchLayout>
+    <FourFactorsInputs />
   </PageShell>;
 }
