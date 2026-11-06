@@ -90,7 +90,7 @@ function FactorPanel({ factor, page, byId, treeHref }: { factor: FactorKey; page
   const known = useMemo(() => sortPlayers(page.players, factor, "desc").filter(p => p.metrics[factor].value != null), [page.players, factor]);
   const item = (player: SixFactorPlayer) => ({
     key: player.player_id, value: player.metrics[factor].value, low: player.metrics[factor].low, high: player.metrics[factor].high,
-    identity: <PlayerIdentity playerId={player.player_id} name={player.player_name} team={player.team} era={seasonEra(page.season, player.team)} size="sm" href={treeHref(player.player_id)} />,
+    identity: <PlayerIdentity playerId={player.player_id} name={player.player_name} team={player.team} era={seasonEra(page.season, player.team)} size="md" href={treeHref(player.player_id)} />,
   });
   const archetypePlayers = page.archetypes.map(card => byId.get(card.player_id)).filter((p): p is SixFactorPlayer => p != null);
   return <div className="sf-factor">
@@ -359,7 +359,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
 
     <ResearchSection id="ratings" icon="table" title="All Ratings">
       <ResearchTable label="Six-factor ratings with intervals" rows={players} rowKey={p => p.player_id} name={p => p.player_name} team={p => p.team} season={page.season}
-        player={p => <PlayerIdentity playerId={p.player_id} name={p.player_name} era={seasonEra(page.season, p.team)} size="sm" href={`/players/${p.player_id}?season=${page.season}`} />}
+        player={p => <PlayerIdentity playerId={p.player_id} name={p.player_name} team={p.team} era={seasonEra(page.season, p.team)} size="sm" href={`/players/${p.player_id}?season=${page.season}`} />}
         views={views} trailingColumns={trailing} defaultSort="rapm" noun="players"
         minimum={{ label: "Min MIN", value: p => p.minutes, initial: 0, step: 100 }}
         csv={{ filename: `courtlens-six-factor-${page.season}-${page.phase}.csv`, columns: csvColumns }}

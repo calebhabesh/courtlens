@@ -128,6 +128,16 @@ export async function getDraftClasses(): Promise<DraftClassesResponse> {
   return wbFetch<DraftClassesResponse>("/api/workbench/draft-classes");
 }
 
+/**
+ * Each player's team in a season's six-factor fit (the same served GET the Six-Factor tab reads). The RAPM
+ * Ratings feed serves no team, so its photos take their team colour and logo from here; a player missing
+ * from the fit stays without a team.
+ */
+export async function getSixFactorTeams(season: string, phase: string): Promise<Record<string, string>> {
+  const page = await wbFetch<{ status: string; players?: { player_id: string; team: string | null }[] }>(`/api/six-factor?${new URLSearchParams({ season, phase })}`);
+  return Object.fromEntries((page.players ?? []).flatMap(player => player.team ? [[player.player_id, player.team]] : []));
+}
+
 export async function getImpact(params: {
   season: string; phase: string; beforeDate: string; playerId?: string; teamId?: string; window?: string;
 }): Promise<ImpactResponse> {
