@@ -1,0 +1,248 @@
+{
+ "lineup_grid": {
+  "d16-l0.0001": {
+   "dim": 16,
+   "penalty": 0.0001,
+   "pooled": 92.21807851050113,
+   "seasons": {
+    "2021-22": 92.73539953290954,
+    "2022-23": 91.70430332840472
+   }
+  },
+  "d16-l0.001": {
+   "dim": 16,
+   "penalty": 0.001,
+   "pooled": 92.18931956893034,
+   "seasons": {
+    "2021-22": 92.69430631291695,
+    "2022-23": 91.68786029450354
+   }
+  },
+  "d16-l0.01": {
+   "dim": 16,
+   "penalty": 0.01,
+   "pooled": 92.18885252007782,
+   "seasons": {
+    "2021-22": 92.69379668966397,
+    "2022-23": 91.68743574013602
+   }
+  },
+  "d16-l1e-05": {
+   "dim": 16,
+   "penalty": 1e-05,
+   "pooled": 92.25091157996837,
+   "seasons": {
+    "2021-22": 92.7749385930696,
+    "2022-23": 91.73043959993417
+   }
+  },
+  "d8-l0.0001": {
+   "dim": 8,
+   "penalty": 0.0001,
+   "pooled": 92.22693353843204,
+   "seasons": {
+    "2021-22": 92.74456108951466,
+    "2022-23": 91.71285249787992
+   }
+  },
+  "d8-l0.001": {
+   "dim": 8,
+   "penalty": 0.001,
+   "pooled": 92.18915692167721,
+   "seasons": {
+    "2021-22": 92.69413618491126,
+    "2022-23": 91.68770511156444
+   }
+  },
+  "d8-l0.01": {
+   "dim": 8,
+   "penalty": 0.01,
+   "pooled": 92.18885123258333,
+   "seasons": {
+    "2021-22": 92.69379747346835,
+    "2022-23": 91.68743238451673
+   }
+  },
+  "d8-l1e-05": {
+   "dim": 8,
+   "penalty": 1e-05,
+   "pooled": 92.25353172459239,
+   "seasons": {
+    "2021-22": 92.77787438395352,
+    "2022-23": 91.73274454278344
+   }
+  }
+ },
+ "registration": {
+  "content_sha256": "32140ebb73a4d59544f97683001861a7a24b5d6a82dc8046823e40c3fd5bd171",
+  "identity": "courtlens-lineup-model-v1",
+  "parameters": {
+   "backtest_calibration_season": "2022-23",
+   "batch": 2048,
+   "bootstrap_refits": 100,
+   "bootstrap_seed": 1414,
+   "bootstrap_train_seed": 2000,
+   "box_features": [
+    "points_per36",
+    "field_goals_attempted_per36",
+    "three_pointers_attempted_per36",
+    "free_throws_attempted_per36",
+    "rebounds_offensive_per36",
+    "rebounds_defensive_per36",
+    "assists_per36",
+    "steals_per36",
+    "blocks_per36",
+    "turnovers_per36",
+    "fouls_personal_per36",
+    "log_minutes"
+   ],
+   "bubble_neutral": [
+    "2020-07-30",
+    "2020-10-15"
+   ],
+   "code_sha256": {
+    "src/courtlens/evaluation/lineup_model_core.py": "50a70651c6283cd769ce7a94f8d2f5c3ff2d28d6109b3c32f229c66986eb4318",
+    "src/courtlens/evaluation/lineup_model_data.py": "f8f2c967e52c7fc4422ab6bf2f7581fa26bb00409077aef944cae7b171d29f32",
+    "src/courtlens/evaluation/lineup_model_runner.py": "b4d376112dff3a277701f4776da6df91712aeabc6d654084a4b5d935bd64b773",
+    "src/courtlens/evaluation/lineup_model_train.py": "2ea34b4bc7be6e08818b4328b5d157274d007fe8c335719249b9753d421d91fb"
+   },
+   "dataset_sha256": {
+    "boxes_sha256": "3ab77bd827a4803b2c1de069f1853dc55d32aef1016c38e43df9499de4b42a3e",
+    "stints_sha256": "694704a837d0e330c83a19452343c87358a6fae42fc0b0776c0a11cae4bd120b"
+   },
+   "dims": [
+    8,
+    16
+   ],
+   "epochs": 6,
+   "ffn_multiplier": 2,
+   "first_season": "2014-15",
+   "heads": 2,
+   "interaction_penalties": [
+    1e-05,
+    0.0001,
+    0.001,
+    0.01
+   ],
+   "last_season": "2025-26",
+   "learning_rate": 0.002,
+   "level": 0.95,
+   "min_possessions": 1000.0,
+   "neighbours": 10,
+   "package_versions": {
+    "numpy": "2.5.3",
+    "python": "3.14.9",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.18.1",
+    "torch": "2.15.0+cpu",
+    "umap-learn": "0.5.12"
+   },
+   "panel_lineups": 200,
+   "replicates": 2000,
+   "ridge_alphas": [
+    100.0,
+    300.0,
+    1000.0,
+    3000.0,
+    10000.0,
+    30000.0
+   ],
+   "rounds": 2,
+   "seeds": [
+    1401,
+    1402,
+    1403,
+    1404,
+    1405
+   ],
+   "selection_seasons": [
+    "2021-22",
+    "2022-23"
+   ],
+   "serving_season": "2026-27",
+   "test_seasons": [
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "threads": 2,
+   "tool_interval_percentiles": [
+    10.0,
+    90.0
+   ],
+   "umap": {
+    "metric": "euclidean",
+    "min_dist": 0.1,
+    "n_neighbors": 15,
+    "random_state": 1414
+   },
+   "window_seasons": 3
+  },
+  "registered_on": "2026-11-06"
+ },
+ "ridge_alpha_grid": {
+  "100": {
+   "pooled": 92.39983768690695,
+   "seasons": {
+    "2021-22": 92.91270813987774,
+    "2022-23": 91.89051270220894
+   }
+  },
+  "1000": {
+   "pooled": 92.27553464522516,
+   "seasons": {
+    "2021-22": 92.78050653388021,
+    "2022-23": 91.77409276737944
+   }
+  },
+  "10000": {
+   "pooled": 92.18884611437473,
+   "seasons": {
+    "2021-22": 92.69379072395714,
+    "2022-23": 91.6874288949284
+   }
+  },
+  "300": {
+   "pooled": 92.35640982215516,
+   "seasons": {
+    "2021-22": 92.86665300286396,
+    "2022-23": 91.84970702990586
+   }
+  },
+  "3000": {
+   "pooled": 92.20729381043097,
+   "seasons": {
+    "2021-22": 92.70837995955544,
+    "2022-23": 91.70972944682063
+   }
+  },
+  "30000": {
+   "pooled": 92.21258008916888,
+   "seasons": {
+    "2021-22": 92.7289685564977,
+    "2022-23": 91.69973608185379
+   }
+  }
+ },
+ "rule": "lowest possession-weighted stint margin RMSE pooled over the selection seasons; ties: larger ridge penalty; smaller model, then larger interaction penalty",
+ "seasons": [
+  "2021-22",
+  "2022-23"
+ ],
+ "selected_alpha": 10000.0,
+ "selected_config": {
+  "dim": 8,
+  "key": "d8-l0.01",
+  "penalty": 0.01
+ },
+ "selection_sha256": "65a4f741ff9da2278cdb58181b719d9b6db6eaf08eb4e05997e94fd7e03fae31",
+ "version": "courtlens-lineup-model-v1",
+ "versions": {
+  "numpy": "2.5.3",
+  "python": "3.14.9",
+  "scikit-learn": "1.6.1",
+  "scipy": "1.18.1",
+  "torch": "2.15.0+cpu",
+  "umap-learn": "0.5.12"
+ }
+}
