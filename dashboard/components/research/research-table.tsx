@@ -40,7 +40,8 @@ export interface ResearchTableProps<T> {
   rows: readonly T[];
   rowKey: (row: T) => string;
   name: (row: T) => string;
-  team: (row: T) => string | null;
+  /** Team code per row for the logo column and team filter; omit when the feed serves no team. */
+  team?: (row: T) => string | null;
   season: string;
   player: (row: T) => ReactNode;
   views: readonly ResearchView<T>[];
@@ -94,12 +95,12 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
   const [floor, setFloor] = useState(minimum ? String(minimum.initial) : "");
   const [sort, setSort] = useState<{ key: string; direction: Direction }>({ key: defaultSort, direction: "desc" });
   const columns = useMemo(() => [...(views.find(item => item.value === view) ?? views[0]).columns, ...trailingColumns], [views, view, trailingColumns]);
-  const teams = useMemo(() => [...new Set(rows.map(team).filter((code): code is string => code != null))].sort(), [rows, team]);
+  const teams = useMemo(() => team ? [...new Set(rows.map(team).filter((code): code is string => code != null))].sort() : [], [rows, team]);
   const filtered = useMemo(() => {
     const needle = query.trim().toLocaleLowerCase("en-US");
     const least = Number(floor);
     return rows.filter(row => (!needle || name(row).toLocaleLowerCase("en-US").includes(needle))
-      && (!teamFilter || team(row) === teamFilter)
+      && (!teamFilter || team?.(row) === teamFilter)
       && (!minimum || !Number.isFinite(least) || least <= 0 || (minimum.value(row) ?? -Infinity) >= least));
   }, [rows, query, teamFilter, floor, minimum, name, team]);
   /* A view without the sorted column sorts by its own first column. */
@@ -116,10 +117,10 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
       <div className="rt-toolbar-row">
         <SearchField aria-label={`Search ${noun}`} placeholder={`Search ${noun.replace(/s$/, "")}…`} value={query} onChange={event => setQuery(event.target.value)} onClear={() => setQuery("")} inputSize="md" wrapperClassName="rt-search" />
         {minimum && <label className="rt-minimum"><span>{minimum.label}</span><Input type="number" inputMode="numeric" min={0} step={minimum.step} value={floor} onChange={event => setFloor(event.target.value)} aria-label={minimum.label} inputSize="md" wrapperClassName="rt-minimum-input" /></label>}
-        <Select size="md" aria-label="Team" value={teamFilter} onChange={event => setTeamFilter(event.target.value)}>
+        {team && <Select size="md" aria-label="Team" value={teamFilter} onChange={event => setTeamFilter(event.target.value)}>
           <option value="">All teams</option>
           {teams.map(code => <option key={code} value={code}>{code}</option>)}
-        </Select>
+        </Select>}
         {actions}
         <Button size="md" icon="download" onClick={exportCsv}>Download CSV</Button>
         <CountChip>{sorted.length.toLocaleString("en-US")} {noun}</CountChip>
@@ -128,18 +129,18 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
     </div>
     <div className="player-ref-grid-frame rt-frame">
       <div className="player-ref-grid-scroll rt-scroll" role="region" aria-label={label} tabIndex={0}>
-        <table className="player-ref-grid rt-grid" data-columns={columns.length}>
-          <colgroup><col className="rt-col-logo" /><col className="player-ref-grid-lead-column" />{columns.map(column => <col key={column.key} className={column.signedValue ? (column.interval ? "rt-col-value" : "rt-col-signed") : "rt-col-count"} />)}{rowAction && <col className="rt-col-action" />}</colgroup>
+        <table className="player-ref-grid rt-grid" data-columns={columns.length} data-team={team ? "logo" : undefined}>
+          <colgroup>{team && <col className="rt-col-logo" />}<col className="player-ref-grid-lead-column" />{columns.map(column => <col key={column.key} className={column.signedValue ? (column.interval ? "rt-col-value" : "rt-col-signed") : "rt-col-count"} />)}{rowAction && <col className="rt-col-action" />}</colgroup>
           <thead><tr className="rt-head">
-            <th scope="col" className="rt-logo"><span className="sr-only">Team</span></th>
+            {team && <th scope="col" className="rt-logo"><span className="sr-only">Team</span></th>}
             <th scope="col" className="player-ref-grid-lead">Player</th>
             {columns.map((column, index) => <SortHeader key={column.key} label={column.label} metric={column.key} description={column.title} active={activeSort === column.key} direction={sort.direction} onSort={onSort} className={index === 0 ? "group-start" : undefined} />)}
             {rowAction && <th scope="col"><span className="sr-only">Actions</span></th>}
           </tr></thead>
           <tbody>
-            {sorted.length === 0 && <tr><td className="rt-empty" colSpan={columns.length + 2 + (rowAction ? 1 : 0)}>No {noun} match these filters.</td></tr>}
-            {sorted.map(row => { const code = team(row); return <tr key={rowKey(row)} data-row={rowKey(row)}>
-              <td className="rt-logo">{code ? <TeamLogo team={code} season={season} size={20} /> : <span className="rt-unknown" title="Team unknown">—</span>}</td>
+            {sorted.length === 0 && <tr><td className="rt-empty" colSpan={columns.length + (team ? 2 : 1) + (rowAction ? 1 : 0)}>No {noun} match these filters.</td></tr>}
+            {sorted.map(row => { const code = team?.(row); return <tr key={rowKey(row)} data-row={rowKey(row)}>
+              {team && <td className="rt-logo">{code ? <TeamLogo team={code} season={season} size={20} /> : <span className="rt-unknown" title="Team unknown">—</span>}</td>}
               <th scope="row" className="player-ref-grid-lead">{player(row)}</th>
               {columns.map((column, index) => <ValueCell key={column.key} column={column} row={row} scale={scales.get(column.key) ?? 0} start={index === 0} />)}
               {rowAction && <td className="rt-action">{rowAction(row)}</td>}
@@ -148,6 +149,6 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
         </table>
       </div>
     </div>
-    <div className="rt-foot"><ToneLegend />{footnote && <p className="rs-note">{footnote}</p>}</div>
+    <div className="rt-foot">{columns.some(column => column.interval) && <ToneLegend />}{footnote && <p className="rs-note">{footnote}</p>}</div>
   </div>;
 }
