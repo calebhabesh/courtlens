@@ -81,7 +81,7 @@ export const NAV_MENUS: NavMenu[] = [
     id: "research",
     label: "Research",
     // The Research handoff's target menu (D8), limited to pages that exist. Each later block adds its
-    // own item: Lineup Model, Learning, Draft Classes and so on.
+    // own item: Lineup Model, Learning and so on.
     // Case Studies and Saved Investigations moved to Methodology; Evaluation Archive is reached from Points Forecasts and Methodology.
     groups: [
       { title: "Models", items: [
@@ -104,6 +104,7 @@ export const NAV_MENUS: NavMenu[] = [
       ] },
       { title: "Tools", items: [
         { label: "Combine & Wingspan", href: "/wingspan", icon: "ruler", description: "Official NBA Draft Combine measurements, including wingspan" },
+        { label: "Draft Classes", href: "/draft", icon: "graduation", description: "What each draft slot returned, classes redrafted and this year's rookies" },
         { label: "Hypothetical Calculator", href: "/calculator", icon: "calculator", description: "Offensive rating from your own possession assumptions" },
       ] },
     ],
