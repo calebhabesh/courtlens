@@ -1,4 +1,4 @@
-# RD00 — Six-Factor RAPM, rounds 2–3: centred column, open layout, RAPM Ratings tab
+# RD00 — Six-Factor RAPM, rounds 2–4: centred column, Databallr shading, RAPM Ratings tab, larger photos
 
 Measured 2026-11-06 on branch `research` from `a1fd129`. Parents: [Research design catalog](../../../research-design-catalog.md)
 RD00, [Research progress](../../../research-progress.md), round 1 in [design-18](../design-18/README.md). Page:
@@ -110,6 +110,34 @@ Glance test for the tab: header and filters as the Six-Factor tab; first screen 
 Incident: adding the new stylesheet import before creating the file left the owner's :3100 dev server failing to
 compile `globals.css` for a few minutes (Turbopack cached the missing file). Toggling the import line cleared it;
 the same stale-CSS cache also hid the headline fix once and was cleared the same way. :3100 verified healthy.
+
+## Round 4 — shading and photos (owner, 2026-11-06)
+
+4. "The page should be shaded like Databallr does it; we are currently only using thin white lines."
+5. "Six Factors section: the player photos need to be much larger."
+6. "Same goes for Leaders and All Ratings: the player photos are too small, they don't even have player colours in
+   the photos, and they're clipped off on the edges."
+
+| Before (round 2–3) | After |
+| --- | --- |
+| Open blocks: top rules and hairlines only | Databallr's shading in the shared components: cards, glossary entries, method blocks, the table toolbar, the framework grid and tree nodes on a light panel (`--rs-panel`, 4% white, 10% rim, 14 px radius); What Shows Up / Box Scores Miss, the tradeoffs box, steps, formulas and archetype strips on a slightly darker well (`--rs-well`); Offense/Defense cards tinted gold/blue; the factor panel accent-tinted and ringed. Light panels, not round 1's dark surfaces |
+| Six Factors estimates: 30 px photos | 64 px season photos in team colour with the logo badge (48 px on a phone) |
+| Tables: 30 px photos, grey ring (no team passed) | 40 px, team-coloured ring and fill; the logo column carries the team, so no badge |
+| RAPM Ratings: no team served, so no colour or logos | Teams read from the season's six-factor fit (`getSixFactorTeams`, the same served GET): photo colour, logo column, team under the name; footnote says so. A player missing from the fit stays without a team |
+| Leaders chart: 30 px photos | 44 px in team colour; the games line starts under the name |
+
+"Clipped off on the edges" was the tight face crop at 30 px: the circle cut through the head. At 40–64 px the same
+face-framed crop shows head and shoulders inside the ring, as on the approved Stats table.
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 errors, 0 warnings; clean; 805 passed |
+| Specs | `r02-six-factor` (round-2 test now asserts the shading, 64 px list photos, 40 px team-coloured table photos; ratings test expects the logo column) and `pc12-headlines` 60/60 over three repeats. Baselines `pc12-b-rapm-{1440,390}` and `whats-new-{desktop,phone}` regenerated after viewing (photos; Patch Notes' shared cards now shaded) |
+| Full Playwright | **582 passed, 17 skipped, 0 failed**; no committed evidence touched |
+| Real data | RAPM Ratings: 1,170 values (now including each row's team against the six-factor feed and the 40 px photo size), 0 mismatches. Six-Factor: 87,138 values, 0 mismatches. Both at 1440 and 390 over three scopes: 0 console errors, 0 overflow, 0 broken images, tables unscrolled at 1440 |
+| Screenshots (viewed, every photo loaded before capture) | all seven PNGs in this folder retaken |
+
+Shared effect: Learning, Patch Notes and the Research landing use the same cards, so they are shaded too.
 
 ## Credits
 

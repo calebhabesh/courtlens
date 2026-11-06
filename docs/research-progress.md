@@ -339,3 +339,18 @@ into RD00.
   cleared by toggling the import (known Turbopack cache).
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-06 — RD00 round 4: Databallr shading and larger team-coloured photos
+
+[Evidence](evidence/research/design-RD00/README.md#round-4--shading-and-photos-owner-2026-11-06). Owner: shade the
+page like Databallr instead of thin lines; much larger photos in the Six Factors; larger, team-coloured, unclipped
+photos in Leaders and All Ratings. Design only.
+
+- **Shading.** Shared `--rs-panel` / `--rs-well` light panels and wells, tinted identity cards, accent-ringed factor
+  panel; applied to cards, glossary, method blocks, toolbar, framework grid, tree nodes and experiment tiles.
+- **Photos.** 64 px in the Six Factors estimates, 44 px in Leaders, 40 px in both tables, all in team colour. The
+  RAPM Ratings tab reads teams from the season's six-factor fit (same served GET) for colour and logos.
+- **Checks.** Real data: ratings 1,170 values (teams and photo sizes included) and Six-Factor 87,138, 0 mismatches.
+  Lint 0/0, typecheck, Vitest 805; specs 60/60 over three repeats; full Playwright 582 passed, 0 failed; four
+  baselines regenerated after viewing.
+- **Not done.** The owner's review and ✅.
+

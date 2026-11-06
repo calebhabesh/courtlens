@@ -6,7 +6,7 @@
   .sf-example[data-tone="a"] { color: var(--color-identity-a); }
   .sf-example[data-tone="b"] { color: var(--color-identity-b); }
 
-  .sf-grid-frame { border-radius: var(--radius-lg); box-shadow: inset 0 0 0 1px var(--color-hairline-strong); overflow: clip; }
+  .sf-grid-frame { border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); overflow: clip; }
   .sf-framework { width: 100%; table-layout: fixed; border-collapse: collapse; }
   .sf-framework :is(th, td) { padding: var(--space-2); border: 1px solid var(--color-hairline-strong); text-align: center; }
   .sf-framework tr > :first-child { width: 22%; border-left: 0; }
@@ -30,7 +30,7 @@
   .sf-tradeoffs strong { color: var(--color-text); font-weight: 600; }
 
   .sf-archetype-rapm { display: inline-flex; align-items: baseline; gap: var(--space-2); color: var(--color-on-bg-secondary); font-size: var(--text-xs); font-weight: 650; }
-  .sf-strip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-1); margin: var(--space-1) 0; padding: var(--space-2) 0; border-block: 1px solid var(--color-hairline); }
+  .sf-strip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-1); margin: var(--space-1) 0; padding: var(--space-2) 0; border-radius: var(--radius-md); background: var(--rs-well); }
   .sf-strip > div { display: grid; justify-items: center; gap: var(--space-0-5); min-width: 0; }
   .sf-strip dt { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
   .sf-strip > div[data-picked] dt { color: var(--color-text); font-weight: 700; }
@@ -68,7 +68,7 @@
   .sf-tree ul > li:first-child::before { left: 50%; }
   .sf-tree ul > li:last-child::before { right: 50%; }
   .sf-tree ul > li::after { content: ""; position: absolute; top: 0; left: 50%; height: var(--space-5); border-left: 1px solid var(--color-hairline-strong); }
-  .sf-node { position: relative; display: grid; align-content: start; justify-items: center; gap: var(--space-1); width: 100%; max-width: 232px; padding: var(--space-3); border-radius: var(--radius-lg); background: var(--color-surface-1); box-shadow: inset 0 0 0 1px var(--color-hairline); text-align: center; }
+  .sf-node { position: relative; display: grid; align-content: start; justify-items: center; gap: var(--space-1); width: 100%; max-width: 232px; padding: var(--space-3); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); text-align: center; }
   .sf-tree li[data-side="offense"] > .sf-node { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-identity-a) 32%, transparent); }
   .sf-tree li[data-side="defense"] > .sf-node { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-identity-b) 32%, transparent); }
   .sf-node-code { display: grid; margin: 0; color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }

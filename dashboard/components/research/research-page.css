@@ -1,8 +1,13 @@
-/* Shared Research page pattern (alignment row 18, after Databallr's explainers; RD00 round 2): a
-   centred reading column, sections on the page background with a hairline between them, and open
-   content: cards, lists, glossary entries and method blocks are divided by rules and space, not boxed.
-   Only tables, grids and diagram nodes keep a frame. */
+/* Shared Research page pattern (alignment row 18, after Databallr's explainers; RD00 rounds 2 and 4): a
+   centred reading column, sections on the page background with a hairline between them, and Databallr's
+   shading: cards, panels and glossary entries on a faint lighter panel with a soft rim, inner lists and
+   steps on a slightly darker well. Light panels, never the dark surface boxes of the first build. */
 @layer pages {
+  .rs-section, .rs-column {
+    --rs-panel: color-mix(in srgb, var(--color-white) 4%, transparent);
+    --rs-rim: var(--color-hairline-strong);
+    --rs-well: color-mix(in srgb, var(--color-surface-0) 24%, transparent);
+  }
   .rs-column { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); width: 100%; max-width: 992px; min-width: 0; margin-inline: auto; }
   .rs-intro { display: grid; justify-items: center; gap: var(--space-2); text-align: center; }
   .rs-intro-tagline { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-md); line-height: var(--text-md-lh); }
@@ -27,9 +32,9 @@
   .rs-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
   .rs-cards[data-columns="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rs-cards[data-columns="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .rs-card { display: grid; align-content: start; gap: var(--space-2); min-width: 0; padding-top: var(--space-4); border-top: 2px solid var(--color-hairline-strong); }
-  .rs-card[data-tone="a"] { border-top-color: var(--color-identity-a); }
-  .rs-card[data-tone="b"] { border-top-color: var(--color-identity-b); }
+  .rs-card { display: grid; align-content: start; gap: var(--space-2); min-width: 0; padding: var(--space-5); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .rs-card[data-tone="a"] { background: color-mix(in srgb, var(--color-identity-a) 7%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-identity-a) 35%, transparent); }
+  .rs-card[data-tone="b"] { background: color-mix(in srgb, var(--color-identity-b) 7%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-identity-b) 35%, transparent); }
   .rs-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
   .rs-card-kicker { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 650; letter-spacing: 0.06em; text-transform: uppercase; }
   .rs-card[data-tone="a"] .rs-card-kicker, .rs-card[data-tone="a"] .rs-card-title { color: var(--color-identity-a); }
@@ -37,13 +42,12 @@
   .rs-card-title { margin: 0; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 650; }
   .rs-card-text { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
   .rs-card-text strong { color: var(--color-text); }
-  .rs-formula { margin: 0; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--color-surface-0); color: var(--color-text-secondary); font-family: var(--font-mono), monospace; font-size: var(--text-xs); line-height: var(--text-xs-lh); overflow-wrap: anywhere; }
+  .rs-formula { margin: 0; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--rs-well); color: var(--color-text-secondary); font-family: var(--font-mono), monospace; font-size: var(--text-xs); line-height: var(--text-xs-lh); overflow-wrap: anywhere; }
 
   .rs-tabpanel { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
-  .rs-tabpanel-body { min-width: 0; padding-top: var(--space-3); }
+  .rs-tabpanel-body { min-width: 0; padding: var(--space-6); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--color-accent) 5%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 35%, transparent); }
 
-  .rs-feature, .rs-callout { display: grid; align-content: start; gap: var(--space-2); min-width: 0; }
-  .rs-callout { padding-left: var(--space-4); border-left: 2px solid var(--color-accent); }
+  .rs-feature, .rs-callout { display: grid; align-content: start; gap: var(--space-2); min-width: 0; padding: var(--space-4); border-radius: var(--radius-md); background: var(--rs-well); }
   .rs-feature-title, .rs-callout-title { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
   .rs-feature-title > svg, .rs-callout-title > svg { color: var(--color-accent); }
   .rs-feature-list { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
@@ -71,8 +75,8 @@
   .rs-glossary-label { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
   .rs-glossary-label[data-tone="a"] { color: var(--color-identity-a); }
   .rs-glossary-label[data-tone="b"] { color: var(--color-identity-b); }
-  .rs-glossary-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--space-8); margin: 0; }
-  .rs-glossary-item { display: grid; align-content: start; gap: var(--space-1); padding-block: var(--space-3); border-top: 1px solid var(--color-hairline-strong); }
+  .rs-glossary-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+  .rs-glossary-item { display: grid; align-content: start; gap: var(--space-1); padding: var(--space-4); border-radius: var(--radius-md); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
   .rs-glossary-item dt { color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 700; }
   .rs-glossary-item[data-tone="a"] dt { color: var(--color-identity-a); }
   .rs-glossary-item[data-tone="b"] dt { color: var(--color-identity-b); }
@@ -84,11 +88,10 @@
   .rs-disclosure-chevron { flex: none; color: var(--color-on-bg-secondary); transition: transform var(--dur-base) var(--ease-out); }
   .rs-disclosure details[open] .rs-disclosure-chevron { transform: rotate(180deg); }
   .rs-disclosure-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); padding-top: var(--space-4); }
-  .rs-method-block { display: grid; gap: var(--space-3); min-width: 0; padding-top: var(--space-4); border-top: 1px solid var(--color-hairline-strong); }
-  .rs-disclosure-body > .rs-method-block:first-child { padding-top: 0; border-top: 0; }
+  .rs-method-block { display: grid; gap: var(--space-3); min-width: 0; padding: var(--space-5); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
   .rs-method-title { margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 650; }
   .rs-steps { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; counter-reset: rs-step; }
-  .rs-steps li { counter-increment: rs-step; display: grid; gap: var(--space-1); }
+  .rs-steps li { counter-increment: rs-step; display: grid; gap: var(--space-1); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--rs-well); }
   .rs-steps h4 { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
   .rs-steps h4::before { content: counter(rs-step); display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: var(--radius-xs); background: var(--color-accent-soft); color: var(--color-accent); font-size: var(--text-xs); font-weight: 700; }
   .rs-steps p { margin: 0; padding-left: calc(var(--space-5) + var(--space-2)); color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
@@ -101,9 +104,18 @@
     .rs-section { padding-top: var(--space-6); }
     .rs-heading { font-size: var(--text-xl); line-height: var(--text-xl-lh); }
     .rs-column { gap: var(--space-6); }
+    .rs-tabpanel-body { padding: var(--space-4); }
     .rs-cards, .rs-cards[data-columns="2"], .rs-glossary-items { grid-template-columns: minmax(0, 1fr); }
     .rs-cards[data-columns="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .rs-ranked-list li { grid-template-columns: 56px minmax(0, 1fr); row-gap: 0; }
     .rs-ranked-list .rs-interval { grid-column: 2; padding-left: var(--space-10); }
   }
+}
+
+/* Identity sizes are set in the foundation layer, so the Research overrides live there too (RD00 round 4):
+   the Six Factors' highest and lowest estimates show large season photos in team colour. */
+@layer foundation {
+  .rs-ranked-identity .ui-identity { --identity-media: 64px; gap: var(--space-3); }
+  .rs-ranked-identity .ui-identity-name { font-size: var(--text-md); line-height: var(--text-md-lh); }
+  @media (max-width: 767px) { .rs-ranked-identity .ui-identity { --identity-media: 48px; } }
 }

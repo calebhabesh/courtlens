@@ -7,7 +7,7 @@ import { ContextBar } from "@/components/context-bar";
 import { RapmRatingsTable } from "@/components/rapm-ratings-table";
 import { ResearchCard, ResearchCards, ResearchIntro, ResearchSection } from "@/components/research/research-page";
 import { GatedNote } from "@/components/ui/gated-note";
-import { getImpact } from "@/lib/workbench-api";
+import { getImpact, getSixFactorTeams } from "@/lib/workbench-api";
 import { formatStatValue } from "@/lib/stats-presets";
 import { formatDate } from "@/lib/format-date";
 import { seasonEra } from "@/lib/portrait-source";
@@ -24,7 +24,10 @@ export default async function Page({ searchParams }: {
   const season = read("season", "2025-26");
   const phase = read("phase", "regular_season");
   const beforeDate = read("beforeDate", "2026-07-01");
-  const data = await getImpact({ season, phase, beforeDate }).catch(() => null);
+  const [data, teams] = await Promise.all([
+    getImpact({ season, phase, beforeDate }).catch(() => null),
+    getSixFactorTeams(season, phase).catch(() => ({} as Record<string, string>)),
+  ]);
   const scope = new URLSearchParams({ season, phase, beforeDate });
   const coverage = data?.coverage.find(row => row.season === season && row.phase === phase);
   const fit = data?.artifacts.find(artifact => artifact.years === 1 && artifact.season === season && artifact.phase === phase);
@@ -55,14 +58,14 @@ export default async function Page({ searchParams }: {
         <section className="rapm-headline" aria-label="Headline result">
           <RankedBars title="Qualified 1Y RAPM leaders" source="CourtLens sealed IM04 lineup model" sample={`${data.total_players} served players · ${coverage?.admitted_games ?? "unknown"} admitted games`}
             measure="points per 100 counted controls" tone="identity-b" note="Blue = 1Y RAPM; descriptive under lineup confounding. Intervals are on the Six-Factor tab."
-            items={data.players.filter(p => p.metrics.rapm != null).slice(0, 5).map(p => ({ key: p.player_id, name: p.player_name, label: <PlayerIdentity playerId={p.player_id} name={p.player_name} era={seasonEra(season)} href={`/players/${p.player_id}?${scope}`} size="sm" />, value: p.metrics.rapm!, formatted: formatStatValue(p.metrics.rapm, 2), detail: `${p.support.rapm?.games ?? "unknown"} games · ${p.support.rapm?.seconds == null ? "unknown" : Math.round(p.support.rapm.seconds / 60)} minutes` }))} />
+            items={data.players.filter(p => p.metrics.rapm != null).slice(0, 5).map(p => ({ key: p.player_id, name: p.player_name, label: <PlayerIdentity playerId={p.player_id} name={p.player_name} team={teams[p.player_id] ?? null} era={seasonEra(season, teams[p.player_id])} href={`/players/${p.player_id}?${scope}`} size="sm" />, value: p.metrics.rapm!, formatted: formatStatValue(p.metrics.rapm, 2), detail: `${p.support.rapm?.games ?? "unknown"} games · ${p.support.rapm?.seconds == null ? "unknown" : Math.round(p.support.rapm.seconds / 60)} minutes` }))} />
         </section>
         <ResearchCards columns={4} label="Fit summary">
           {facts.map(fact => <ResearchCard key={fact.label} listItem kicker={fact.label} title={fact.value}><p className="rs-card-text">{fact.note}</p></ResearchCard>)}
         </ResearchCards>
       </ResearchSection>}
       <ResearchSection id="ratings" icon="table" title="All Ratings">
-        {data.players.length ? <RapmRatingsTable players={data.players} season={season} phase={phase} scope={scope.toString()} statsHref={statsHref} />
+        {data.players.length ? <RapmRatingsTable players={data.players} teams={teams} season={season} phase={phase} scope={scope.toString()} statsHref={statsHref} />
           : <GatedNote>No qualified rating sample for this scope.</GatedNote>}
       </ResearchSection>
     </>}

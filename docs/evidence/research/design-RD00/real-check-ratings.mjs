@@ -1,4 +1,4 @@
-// Real-data check for RD00 round 3 (RAPM Ratings tab): every table cell, the leader bars and the four facts
+// Real-data check for RD00 rounds 3–4 (RAPM Ratings tab): every table cell, the leader bars and the four facts
 // against the owner's API through a read-only proxy on 4180 (GET only; no API code changed), plus the layout:
 // the centred column, the table's sideways scroll, no colour without an interval, console errors, overflow, images.
 import { chromium } from "/home/ethioking/dev/courtlens/dashboard/node_modules/playwright/index.mjs";
@@ -12,6 +12,9 @@ for (const scope of [{ season: "2025-26", phase: "regular_season", beforeDate: "
   const query = new URLSearchParams(scope);
   const api = await (await fetch(`${API}/api/workbench/impact?${query}`)).json();
   const byId = new Map(api.players.map(p => [p.player_id, p]));
+  // Round 4: teams (photo colour, logo) come from the season's six-factor fit.
+  const six = await (await fetch(`${API}/api/six-factor?${new URLSearchParams({ season: scope.season, phase: scope.phase })}`)).json();
+  const teamOf = new Map((six.players ?? []).map(p => [p.player_id, p.team]));
   for (const width of [1440, 390]) {
     const page = await browser.newPage({ viewport: { width, height: width > 600 ? 900 : 844 } });
     const errors = [], mismatches = [];
@@ -25,11 +28,14 @@ for (const scope of [{ season: "2025-26", phase: "regular_season", beforeDate: "
     if (api.players.length) {
       await page.waitForSelector(".rt-grid tbody tr[data-row]", { timeout: 60000 });
       const rows = await page.$$eval(".rt-grid tbody tr[data-row]", trs => trs.map(tr => ({ id: tr.getAttribute("data-row"), name: tr.querySelector(".ui-identity-name")?.textContent.trim(),
+        team: tr.querySelector(".ui-identity-subtitle")?.textContent.trim() ?? null, photo: Math.round(tr.querySelector(".ui-identity-media > *")?.getBoundingClientRect().width ?? 0),
         cells: [...tr.querySelectorAll("td[data-column]")].map(td => ({ key: td.getAttribute("data-column"), value: td.getAttribute("data-value"), text: td.textContent.trim() })) })));
       eq("row count", rows.length, api.players.length);
       for (const row of rows) {
         const p = byId.get(row.id);
         eq(`${row.id} name`, row.name, p.player_name);
+        eq(`${row.id} team`, row.team, teamOf.get(row.id) ?? null);
+        eq(`${row.id} photo size`, row.photo, 40);
         for (const cell of row.cells) {
           const want = cell.key === "games" ? (p.support.rapm?.games ?? null) : cell.key === "minutes" ? (p.support.rapm?.seconds == null ? null : p.support.rapm.seconds / 60) : (p.metrics[cell.key] ?? null);
           eq(`${row.id} ${cell.key}`, cell.value == null ? null : Number(cell.value), want);

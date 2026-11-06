@@ -156,25 +156,32 @@ test.describe("R02 Six-Factor RAPM (design row 18)", () => {
     expect(scroll).toBeLessThanOrEqual(inner);
   });
 
-  test("reads in a centred column with open sections and an unscrolled table (RD00)", async ({ page }) => {
+  test("reads in a centred column with shaded panels, large photos and an unscrolled table (RD00)", async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.locator('[data-node="d_reb"]')).toBeVisible();
     const layout = await page.evaluate(() => {
       const column = document.querySelector(".rs-column")!.getBoundingClientRect();
       const card = getComputedStyle(document.querySelector(".rs-card")!);
       const scroller = document.querySelector(".rt-scroll")!;
-      return { width: column.width, left: column.left, right: window.innerWidth - column.right, cardFill: card.backgroundColor, tableScroll: scroller.scrollWidth - scroller.clientWidth };
+      const media = (selector: string) => Math.round(document.querySelector(selector)!.getBoundingClientRect().width);
+      const tableIdentity = document.querySelector(".rt-grid tbody .ui-identity")!;
+      return { width: column.width, left: column.left, right: window.innerWidth - column.right, cardFill: card.backgroundColor, tableScroll: scroller.scrollWidth - scroller.clientWidth,
+        rankedPhoto: media(".rs-ranked-identity .ui-identity-media > *"), tablePhoto: media(".rt-grid tbody .ui-identity-media > *"),
+        tableTeamColour: tableIdentity.getAttribute("style") ?? "" };
     });
     expect(layout.width).toBeLessThanOrEqual(992);
     expect(Math.abs(layout.left - layout.right)).toBeLessThanOrEqual(1);
-    expect(layout.cardFill).toBe("rgba(0, 0, 0, 0)");
+    expect(layout.cardFill).not.toBe("rgba(0, 0, 0, 0)"); // RD00 round 4: Databallr's light panel shading
+    expect(layout.rankedPhoto).toBe(64);
+    expect(layout.tablePhoto).toBe(40);
+    expect(layout.tableTeamColour).toContain("--team-color"); // set only when the row has a team
     for (const view of ["Combined", "Offense", "Defense"]) {
       await page.getByRole("radio", { name: view }).click();
       expect(await page.locator(".rt-scroll").evaluate(el => el.scrollWidth - el.clientWidth), view).toBeLessThanOrEqual(0);
     }
   });
 
-  test("the RAPM Ratings tab reads in the same column with the shared, uncoloured table (RD00 round 3)", async ({ page }) => {
+  test("the RAPM Ratings tab reads in the same column with the shared, uncoloured table and team photos (RD00 rounds 3–4)", async ({ page }) => {
     await openWorkbench(page, "/research/rapm");
     const table = page.getByRole("region", { name: "Served impact ratings" });
     await expect(table.locator("tbody tr[data-row]").first()).toBeVisible();
@@ -188,7 +195,7 @@ test.describe("R02 Six-Factor RAPM (design row 18)", () => {
     expect(Math.abs(layout.left - layout.right)).toBeLessThanOrEqual(1);
     expect(layout.tableScroll).toBeLessThanOrEqual(0);
     expect(layout.toned).toBe(0); // no interval is served on this tab, so nothing is coloured
-    expect(layout.logos).toBe(0); // and no team, so no logo column
+    expect(layout.logos).toBeGreaterThan(0); // teams come from the season's six-factor fit (round 4)
     await expect(page.getByRole("list", { name: "Colour key" })).toHaveCount(0);
     await expect(page.getByRole("heading", { name: "B26 preregistered experiment", exact: true })).toBeVisible();
   });

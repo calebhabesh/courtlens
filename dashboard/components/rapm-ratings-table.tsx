@@ -9,9 +9,9 @@ import { IMPACT_COLUMNS } from "@/lib/stats-presets";
 import type { ImpactResponse } from "@/lib/types";
 
 /*
- * RAPM Ratings tab table (RD00 round 3): the served 1Y / 2Y / 3Y ratings on the shared Research
- * table. The feed serves no intervals and no team for these rows, so values stay neutral (the colour
- * rule needs an interval) and there is no logo column; intervals live on the Six-Factor tab.
+ * RAPM Ratings tab table (RD00 rounds 3–4): the served 1Y / 2Y / 3Y ratings on the shared Research
+ * table. The feed serves no intervals, so values stay neutral (the colour rule needs an interval);
+ * intervals live on the Six-Factor tab. Teams come from the season's six-factor fit (`teams`).
  */
 
 type Row = ImpactResponse["players"][number];
@@ -21,7 +21,7 @@ export const RAPM_RATING_METRICS = ["rapm", "orapm", "drapm", "bpr", "rapm_2y", 
 const minutes = (row: Row) => row.support.rapm?.seconds == null ? null : row.support.rapm.seconds / 60;
 const games = (row: Row) => row.support.rapm?.games ?? null;
 
-export function RapmRatingsTable({ players, season, phase, scope, statsHref }: { players: readonly Row[]; season: string; phase: string; scope: string; statsHref: string }) {
+export function RapmRatingsTable({ players, teams, season, phase, scope, statsHref }: { players: readonly Row[]; teams: Record<string, string>; season: string; phase: string; scope: string; statsHref: string }) {
   const columns = useMemo<ResearchColumn<Row>[]>(() => RAPM_RATING_METRICS.map(key => ({
     key, label: IMPACT_COLUMNS[key].label, title: IMPACT_COLUMNS[key].tooltip ?? IMPACT_COLUMNS[key].label, signedValue: true,
     value: row => row.metrics[key] ?? null,
@@ -36,11 +36,13 @@ export function RapmRatingsTable({ players, season, phase, scope, statsHref }: {
     { header: "games_1y", value: games }, { header: "minutes_1y", value: minutes },
   ], []);
   const tree = (id: string) => `/research/rapm/six-factor?${new URLSearchParams({ season, ...(phase === "playoffs" ? { phase } : {}), player: id })}#impact-tree`;
+  const team = (row: Row) => teams[row.player_id] ?? null;
   return <ResearchTable label="Served impact ratings" rows={players} rowKey={row => row.player_id} name={row => row.player_name} season={season}
-    player={row => <PlayerIdentity playerId={row.player_id} name={row.player_name} era={seasonEra(season)} size="sm" href={`/players/${row.player_id}?${scope}`} />}
+    team={Object.keys(teams).length ? team : undefined}
+    player={row => <PlayerIdentity playerId={row.player_id} name={row.player_name} team={team(row)} era={seasonEra(season, team(row))} size="sm" href={`/players/${row.player_id}?${scope}`} />}
     views={[{ value: "ratings", label: "Ratings", columns }]} trailingColumns={trailing} defaultSort="rapm" noun="players"
     minimum={{ label: "Min MIN", value: minutes, initial: 0, step: 100 }}
     csv={{ filename: `courtlens-rapm-ratings-${season}-${phase}.csv`, columns: csvColumns }}
     rowAction={row => <IconButtonLink size="sm" icon="split" label={`Open ${row.player_name}'s Impact Tree`} href={tree(row.player_id)} />}
-    footnote={<>The top 20 by qualified 1Y RAPM, in points per 100 counted controls. No interval is served here, so values are never coloured; each 1Y value&apos;s 80% interval is on the Six-Factor tab. <ButtonLink size="sm" variant="text" href={statsHref}>All players in Stats</ButtonLink></>} />;
+    footnote={<>The top 20 by qualified 1Y RAPM, in points per 100 counted controls. No interval is served here, so values are never coloured; each 1Y value&apos;s 80% interval is on the Six-Factor tab. Teams are the player&apos;s team in the season&apos;s six-factor fit. <ButtonLink size="sm" variant="text" href={statsHref}>All players in Stats</ButtonLink></>} />;
 }

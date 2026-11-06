@@ -82,7 +82,7 @@ Saved Investigations, the operation gallery (`/research/operation`) and the lega
 
 ---
 
-## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 3)
+## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 4)
 
 Redesigned 2026-11-06 (design-18, `4023a98`); its nine instructions are in the alignment catalog, row 18.
 It sets the pattern for every page below, so review it first: changes here are cheapest before they're
@@ -108,6 +108,16 @@ Instructions (owner, 2026-11-06, round 3; screenshot of the RAPM Ratings tab at 
 3. [x] Not done: the RAPM Ratings table is still full width and has the old ugly table/container styling.
    — The tab is in the same column with the shared `ResearchTable` (uncoloured: no interval is served), an open
    leaders chart (still the PC12 first-load headline), open facts and an open experiment block.
+
+Instructions (owner, 2026-11-06, round 4; screenshots: Databallr's Six-Factor page from the header to The Six Factors,
+CourtLens's page at the same point, CourtLens's Six Factors panel, CourtLens's RAPM Ratings Leaders and All Ratings):
+4. [x] The page should be shaded like Databallr does it; we are currently only using thin white lines.
+   — Shared light panels (4% white, soft rim) and darker inner wells, tinted Offense/Defense cards, an accent-ringed factor panel; supersedes round 2's open blocks.
+5. [x] Six Factors section: the player photos need to be much larger.
+   — 64 px season photos in team colour (48 px on a phone).
+6. [x] Same goes for Leaders and All Ratings: the player photos are too small, they don't even have player
+   colours in the photos, and they're clipped off on the edges.
+   — 44 px (Leaders) and 40 px (tables) in team colour; RAPM Ratings takes teams from the season's six-factor fit.
 
 ## RD01 Combine & Wingspan — ⬜
 
