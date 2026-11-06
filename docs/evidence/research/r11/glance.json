@@ -1,0 +1,72 @@
+[
+ {
+  "route": "/methodology/learning",
+  "width": 1440,
+  "h1": "Methodology",
+  "first": 376,
+  "hashes": [],
+  "iso": [],
+  "smallTargets": 74,
+  "sampleSmall": [
+   "Glossary:32",
+   "Research:32",
+   "Patch Notes:32",
+   "Per-100 Possession Thinking:32"
+  ],
+  "iconSizes": [
+   "16",
+   "20"
+  ],
+  "overflow": 0
+ },
+ {
+  "route": "/methodology/learning",
+  "width": 390,
+  "h1": "Methodology",
+  "first": 428,
+  "hashes": [],
+  "iso": [],
+  "smallTargets": 0,
+  "sampleSmall": [],
+  "iconSizes": [
+   "16",
+   "20"
+  ],
+  "overflow": 0
+ },
+ {
+  "route": "/whats-new",
+  "width": 1440,
+  "h1": "Patch Notes",
+  "first": 300,
+  "hashes": [],
+  "iso": [],
+  "smallTargets": 108,
+  "sampleSmall": [
+   "Learning:32",
+   "Research:32",
+   "Explore:32",
+   "Commit:32"
+  ],
+  "iconSizes": [
+   "16",
+   "20"
+  ],
+  "overflow": 0
+ },
+ {
+  "route": "/whats-new",
+  "width": 390,
+  "h1": "Patch Notes",
+  "first": 386,
+  "hashes": [],
+  "iso": [],
+  "smallTargets": 0,
+  "sampleSmall": [],
+  "iconSizes": [
+   "16",
+   "20"
+  ],
+  "overflow": 0
+ }
+]

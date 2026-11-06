@@ -20,6 +20,14 @@ export function ResearchIntro({ tagline, links }: { tagline: ReactNode; links?: 
   </div>;
 }
 
+/** A row of related-page links under a block of copy (left-aligned; `ResearchIntro` centres its own). */
+export function ResearchLinks({ label, links }: { label: string; links: readonly { label: string; href: string; icon?: IconName; ariaLabel?: string }[] }) {
+  return <nav className="rs-links" aria-label={label}>
+    {links.map(link => <ButtonLink key={link.href + link.label} size="sm" variant="text" href={link.href} icon={link.icon} iconAfter={link.icon ? undefined : "right"}
+      aria-label={link.ariaLabel} title={link.ariaLabel}>{link.label}</ButtonLink>)}
+  </nav>;
+}
+
 /** A page section on the page background: 24 px heading with its icon, a rule between sections. */
 export function ResearchSection({ id, icon, title, aside, children, className = "" }: { id?: string; icon: IconName; title: string; aside?: ReactNode; children: ReactNode; className?: string }) {
   const headingId = useId();
