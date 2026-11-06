@@ -71,7 +71,10 @@ test.describe("R02 Six-Factor RAPM (design row 18)", () => {
     for (const [index, card] of served.archetypes.entries()) {
       const player = byId.get(card.player_id) as { player_name: string; metrics: Record<string, { value: number | null; low: number | null }> };
       await expect(cards.nth(index)).toContainText(player.player_name);
-      await expect(cards.nth(index)).toContainText(card.rule);
+      // RD00 round 5: the rule left the card; it is listed under Caveats & Methodology.
+      await expect(cards.nth(index)).not.toContainText("Rule:");
+      // The methodology is collapsed but stays in the DOM, so query it directly rather than by role.
+      await expect(page.locator(`[aria-label="Archetype rules"] [data-archetype="${card.key}"]`)).toContainText(card.rule);
       expect(Number(await cards.nth(index).locator(".sf-archetype-rapm .rs-value").getAttribute("data-value"))).toBe(player.metrics.rapm.value);
     }
   });
