@@ -1,4 +1,4 @@
-# RD00 — Six-Factor RAPM, round 2: centred column, open layout
+# RD00 — Six-Factor RAPM, rounds 2–3: centred column, open layout, RAPM Ratings tab
 
 Measured 2026-11-06 on branch `research` from `a1fd129`. Parents: [Research design catalog](../../../research-design-catalog.md)
 RD00, [Research progress](../../../research-progress.md), round 1 in [design-18](../design-18/README.md). Page:
@@ -77,6 +77,39 @@ For full-page captures the sticky header and filter bar were made static and laz
 
 R16 constraints observed: no Ask or provider calls, `~/dev/courtlens-r16` untouched, shared Postgres only read, the
 owner's :8000 and :3100 servers not restarted.
+
+## Round 3 — the RAPM Ratings tab (owner, 2026-11-06)
+
+Instruction 3: "Not done: the RAPM Ratings table is still full width and has the old ugly table/container styling."
+The tab (`/research/rapm`, formerly queue row RD15, now folded into RD00) is rebuilt in the same pattern. Same
+data, filter bar, notices and experiment; design only.
+
+| Before | After |
+| --- | --- |
+| Full width (1392 px) | `.rs-column`, 992 px centred, filter bar included |
+| Boxed `.pc12-headline` leaders chart, four filled stat tiles | Leaders section: the chart in an open region still labelled "Headline result" (PC12: bars on first load at 623 px at 1440 and 711 px at 390, under PC12's 800 px and above the table), then four open facts (`ResearchCards` gains a 4-across layout, 2 × 2 on a phone) |
+| Legacy `data-table` in a filled wrapper, unsigned values, minutes to one decimal | The shared `ResearchTable`: search, Min MIN, CSV, count, sortable headers, pinned player column, bars, signed values, whole minutes, a link to each player's Impact Tree. No interval or team is served for these rows, so nothing is coloured, the colour key is hidden, and there is no logo column (`team` is now optional in `ResearchTable`) |
+| B26 experiment: three filled tiles under a hairline | A Registered Experiment section; the tiles open (top rule, no fill) |
+
+The PC12 phone rules for the leaders chart (full-width names, source above the bars) were tied to the old
+`.pc12-headline` box; they now also apply to the open `.rapm-headline`, so names like Shai Gilgeous-Alexander are
+not cut at 390.
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 errors, 0 warnings; clean; 805 passed |
+| Specs | `r02-six-factor` (one new test: column, no colour, no logo column, no colour key, experiment heading) and `pc12-headlines` 60/60 over three repeats; `advanced-research` passed. `pc12-b-rapm-{1440,390}` baselines regenerated after viewing (layout changed by design; the PC12 assertions themselves passed unchanged except the RAPM selector, now `.rapm-headline`) |
+| Full Playwright | First run 581 passed, 17 skipped, 1 failed: `projected-impact.spec.ts` "no frozen row" matched a duplicate streaming copy of a section (a page this round does not touch; passed 25/25 alone). Rerun **582 passed, 17 skipped, 0 failed**; after the headline phone fix, final run **582 passed, 17 skipped, 0 failed**. No committed evidence touched by the runs |
+| Real data ([`real-data-check-ratings.json`](real-data-check-ratings.json), [`real-check-ratings.mjs`](real-check-ratings.mjs)) | Every table cell (six ratings, games, minutes), the five leader bars and the facts against `/api/workbench/impact` through the read-only proxy: 2025-26 regular season 215 values, 2018-19 215, 2025-26 playoffs 65, each at 1440 and 390: **0 mismatches**, 0 console errors, 0 overflow, 0 broken images; column 992 px and centred; table unscrolled at 1440 (562 px inside its frame at 390); 0 coloured values; no colour key |
+| Six-Factor tab after the shared table change | `real-check.mjs` rerun: 87,138 values, 0 mismatches, unchanged layout figures |
+| Screenshots (viewed) | [`ratings-1440.png`](ratings-1440.png), [`ratings-390.png`](ratings-390.png), [`ratings-playoffs-1440.png`](ratings-playoffs-1440.png) |
+
+Glance test for the tab: header and filters as the Six-Factor tab; first screen shows the leaders chart (bars at 623 px at
+1440); one left edge; season photos; unknowns "—"; 0 controls under 40 px at 390; 0 px page overflow.
+
+Incident: adding the new stylesheet import before creating the file left the owner's :3100 dev server failing to
+compile `globals.css` for a few minutes (Turbopack cached the missing file). Toggling the import line cleared it;
+the same stale-CSS cache also hid the headline fix once and was cleared the same way. :3100 verified healthy.
 
 ## Credits
 

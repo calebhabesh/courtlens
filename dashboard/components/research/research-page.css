@@ -26,6 +26,7 @@
 
   .rs-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
   .rs-cards[data-columns="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rs-cards[data-columns="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .rs-card { display: grid; align-content: start; gap: var(--space-2); min-width: 0; padding-top: var(--space-4); border-top: 2px solid var(--color-hairline-strong); }
   .rs-card[data-tone="a"] { border-top-color: var(--color-identity-a); }
   .rs-card[data-tone="b"] { border-top-color: var(--color-identity-b); }
@@ -101,6 +102,7 @@
     .rs-heading { font-size: var(--text-xl); line-height: var(--text-xl-lh); }
     .rs-column { gap: var(--space-6); }
     .rs-cards, .rs-cards[data-columns="2"], .rs-glossary-items { grid-template-columns: minmax(0, 1fr); }
+    .rs-cards[data-columns="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .rs-ranked-list li { grid-template-columns: 56px minmax(0, 1fr); row-gap: 0; }
     .rs-ranked-list .rs-interval { grid-column: 2; padding-left: var(--space-10); }
   }

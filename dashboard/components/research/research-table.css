@@ -20,6 +20,7 @@
   .player-ref-grid.rt-grid thead th { top: 0; height: 40px; padding: var(--space-1) var(--space-3); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-transform: uppercase; vertical-align: middle; text-align: right; }
   .player-ref-grid.rt-grid thead .group-start { border-left: 1px solid var(--color-hairline-strong); }
   .player-ref-grid.rt-grid thead .player-ref-grid-lead, .player-ref-grid.rt-grid .player-ref-grid-lead { left: 48px; text-align: left; }
+  .player-ref-grid.rt-grid:not([data-team]) .player-ref-grid-lead { left: 0; }
   .player-ref-grid.rt-grid .rt-logo { position: sticky; left: 0; z-index: var(--z-sticky); width: 48px; padding-inline: var(--space-2); text-align: center; }
   .player-ref-grid.rt-grid tbody td.rt-logo { background: var(--color-table-lift); border-bottom: 1px solid var(--color-hairline-strong); }
   .player-ref-grid.rt-grid thead .rt-logo { z-index: var(--z-sticky-corner); }

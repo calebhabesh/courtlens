@@ -68,7 +68,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none | R14 | ⬜ |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none | R03 | ⬜ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
-| RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | ⬜ |
+| RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none | workbench | ⬜ |
 | RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed) | ⏸ redesign, fold into Shot Quality / zTS, or keep as is |
 | **C. Blocked** | | | | | |
@@ -82,7 +82,7 @@ Saved Investigations, the operation gallery (`/research/operation`) and the lega
 
 ---
 
-## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 2)
+## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 3)
 
 Redesigned 2026-11-06 (design-18, `4023a98`); its nine instructions are in the alignment catalog, row 18.
 It sets the pattern for every page below, so review it first: changes here are cheapest before they're
@@ -103,6 +103,11 @@ from the header through the archetypes and the open Caveats & Methodology, plus 
 Found before building: at 390 the longest names (Gilgeous-Alexander, Antetokounmpo, Wembanyama) run 24–53 px
 past the pinned player column under the RAPM values; fixed with this round (names wrap inside the column).
 Evidence: [`design-RD00`](evidence/research/design-RD00/README.md).
+
+Instructions (owner, 2026-11-06, round 3; screenshot of the RAPM Ratings tab at full width):
+3. [x] Not done: the RAPM Ratings table is still full width and has the old ugly table/container styling.
+   — The tab is in the same column with the shared `ResearchTable` (uncoloured: no interval is served), an open
+   leaders chart (still the PC12 first-load headline), open facts and an open experiment block.
 
 ## RD01 Combine & Wingspan — ⬜
 
@@ -203,7 +208,7 @@ Evidence: [`design-RD00`](evidence/research/design-RD00/README.md).
 - **Now:** the live model's page with the final-test report, the nightly scorecard and WPA.
 - **Decision:** D13 keeps this page as it is unless the owner asks. Include it in the design phase?
 
-## RD15 RAPM Ratings tab — ⬜
+## RD15 RAPM Ratings tab — folded into RD00 (round 3)
 
 - **Now:** the 1Y / 2Y / 3Y ratings table and the sealed experiment, a tab of Six-Factor RAPM; its header
   already follows row 18.

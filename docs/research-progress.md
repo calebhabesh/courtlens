@@ -324,3 +324,18 @@ instead of full width, and no boxes around everything; both for the Research pag
   84/84): net 581 passed, 0 failed.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-06 — RD00 round 3: the RAPM Ratings tab in the Research pattern
+
+[Evidence](evidence/research/design-RD00/README.md#round-3--the-rapm-ratings-tab-owner-2026-11-06). Owner: the RAPM
+Ratings tab was still full width with the old table and boxes. Design only; the tab's queue row (RD15) is folded
+into RD00.
+
+- **Tab.** Centred column; the leaders chart open but still the PC12 first-load headline; four open facts; the
+  shared `ResearchTable` (search, minimum, CSV, sort, Impact Tree links), uncoloured because no interval is served;
+  the B26 experiment block opened up. `ResearchTable.team` is now optional; `ResearchCards` gains 4 across.
+- **Checks.** Real data 990 values over three scopes at 1440 and 390, 0 mismatches; Six-Factor rerun 87,138, 0
+  mismatches. Lint, typecheck, Vitest 805; page and PC12 specs 60/60 over three repeats; full Playwright 582 passed, 17 skipped, 0 failed (one earlier Projected Impact streaming flake, untouched page, passed on rerun).
+- **Incident.** A CSS import added before its file existed broke the owner's :3100 compile for a few minutes;
+  cleared by toggling the import (known Turbopack cache).
+- **Not done.** The owner's review and ✅.
+

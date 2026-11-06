@@ -45,8 +45,8 @@ export function ResearchProse({ children }: { children: ReactNode }) {
   return <div className="rs-prose">{children}</div>;
 }
 
-/** Equal cards in a row: 3 at desktop, 2 at tablet, 1 on a phone (or 2 → 1). */
-export function ResearchCards({ columns = 3, children, label }: { columns?: 2 | 3; children: ReactNode; label?: string }) {
+/** Equal cards in a row: 3 at desktop, 2 at tablet, 1 on a phone (or 2 → 1; 4 → 2 → 2 for short facts). */
+export function ResearchCards({ columns = 3, children, label }: { columns?: 2 | 3 | 4; children: ReactNode; label?: string }) {
   return <div className="rs-cards" data-columns={columns} role={label ? "list" : undefined} aria-label={label}>{children}</div>;
 }
 

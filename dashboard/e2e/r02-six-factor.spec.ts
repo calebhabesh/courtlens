@@ -174,6 +174,25 @@ test.describe("R02 Six-Factor RAPM (design row 18)", () => {
     }
   });
 
+  test("the RAPM Ratings tab reads in the same column with the shared, uncoloured table (RD00 round 3)", async ({ page }) => {
+    await openWorkbench(page, "/research/rapm");
+    const table = page.getByRole("region", { name: "Served impact ratings" });
+    await expect(table.locator("tbody tr[data-row]").first()).toBeVisible();
+    const layout = await page.evaluate(() => {
+      const column = document.querySelector(".rapm-ratings.rs-column")!.getBoundingClientRect();
+      const scroller = document.querySelector(".rt-scroll")!;
+      return { width: column.width, left: column.left, right: window.innerWidth - column.right, tableScroll: scroller.scrollWidth - scroller.clientWidth,
+        toned: document.querySelectorAll('.rt-grid [data-tone="good"], .rt-grid [data-tone="bad"]').length, logos: document.querySelectorAll(".rt-grid .rt-logo").length };
+    });
+    expect(layout.width).toBeLessThanOrEqual(992);
+    expect(Math.abs(layout.left - layout.right)).toBeLessThanOrEqual(1);
+    expect(layout.tableScroll).toBeLessThanOrEqual(0);
+    expect(layout.toned).toBe(0); // no interval is served on this tab, so nothing is coloured
+    expect(layout.logos).toBe(0); // and no team, so no logo column
+    await expect(page.getByRole("list", { name: "Colour key" })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "B26 preregistered experiment", exact: true })).toBeVisible();
+  });
+
   test("keeps every name inside the pinned player column on a phone (RD00)", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await openWorkbench(page, path);
