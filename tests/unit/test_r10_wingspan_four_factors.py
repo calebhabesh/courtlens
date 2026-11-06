@@ -67,6 +67,23 @@ def test_count_game_rebounds_free_throws_and_team_rows() -> None:
     assert sum(c["orb_ft_end"] for c in out.teams.values()) == 0  # the placeholder was skipped
 
 
+def test_three_rule_falls_back_to_the_description_and_final_score_is_read() -> None:
+    assert ff.is_three({"shotValue": "3", "description": "x"})
+    assert not ff.is_three({"shotValue": "2", "description": "3PT"})  # shotValue wins
+    assert ff.is_three({"description": "MISS Curry 27' 3PT Jump Shot"})  # 2014-15..2023-24
+    assert not ff.is_three({"description": "MISS Curry 17' Jump Shot"})
+    rows = [
+        {
+            **row(1, "A", "Made Shot", "Jump Shot", "Curry 27' 3PT Jump Shot (3 PTS)"),
+            "shotValue": "",
+        },
+        {**row(2, "", "period", "end"), "scoreHome": "3", "scoreAway": "0"},
+    ]
+    out = ff.count_game(rows)
+    assert out.teams["A"]["fg3m"] == 1 and out.teams["A"]["points"] == 3
+    assert out.final_points == 3
+
+
 def counts(**over: float) -> Counter[str]:
     base: Counter[str] = Counter({k: 0 for k in ff.COUNT_KEYS})
     base.update(

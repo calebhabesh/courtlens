@@ -59,6 +59,20 @@ class GameCounts:
 
     teams: dict[str, Counter[str]] = field(default_factory=dict)
     unknown_sub_types: list[str] = field(default_factory=list)
+    # The game's final score (home + away) from its last row with both scores; None if absent.
+    final_points: int | None = None
+
+
+def is_three(row: Mapping[str, str]) -> bool:
+    """`shotValue` when the archive has it (2024-25 on); else "3PT" in the description.
+
+    The 2014-15 to 2023-24 archives have no shotValue column; their descriptions mark every
+    three-point attempt "3PT" (v1 read only shotValue and counted none of them).
+    """
+    value = row.get("shotValue", "").strip()
+    if value:
+        return value == "3"
+    return "3PT" in row.get("description", "")
 
 
 def actor_team(row: Mapping[str, str]) -> str:
@@ -100,10 +114,9 @@ def count_game(rows: Iterable[Mapping[str, str]]) -> GameCounts:
         if kind in ("Made Shot", "Missed Shot"):
             drop()
             shooter = actor_team(row)
-            value = row.get("shotValue", "").strip()
             c = team(shooter)
             c["fga"] += 1
-            three = value == "3"
+            three = is_three(row)
             if three:
                 c["fg3a"] += 1
             if kind == "Made Shot":
@@ -154,6 +167,11 @@ def count_game(rows: Iterable[Mapping[str, str]]) -> GameCounts:
     drop()
     for c in out.teams.values():
         c["games"] = 1
+    for row in reversed(rows):
+        home, away = row.get("scoreHome", "").strip(), row.get("scoreAway", "").strip()
+        if home.isdigit() and away.isdigit():
+            out.final_points = int(home) + int(away)
+            break
     return out
 
 
