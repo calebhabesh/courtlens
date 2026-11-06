@@ -1,0 +1,9537 @@
+{
+ "cold_start": {
+  "2021-22": {
+   "fallback_in_window": 238,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 2.6418,
+     "blocks_per36": 0.7724,
+     "field_goals_attempted_per36": 10.9752,
+     "fouls_personal_per36": 3.8363,
+     "free_throws_attempted_per36": 2.7256,
+     "log_minutes": 5.4706,
+     "points_per36": 12.5718,
+     "rebounds_defensive_per36": 4.9894,
+     "rebounds_offensive_per36": 1.8083,
+     "steals_per36": 1.0386,
+     "three_pointers_attempted_per36": 4.33,
+     "turnovers_per36": 1.8424
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2018-19",
+     "2019-20",
+     "2020-21"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 518,
+   "players_in_window": 756,
+   "target": {
+    "box_fallback": 81,
+    "newcomer_no_box_in_window": 128,
+    "own_embedding": 396,
+    "players": 605,
+    "possession_share_box_fallback": 0.0347,
+    "possession_share_newcomer": 0.1047,
+    "possession_share_own": 0.8605,
+    "stints": 32248,
+    "stints_with_any_fallback_player": 23173
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 518,
+    "2000": 440,
+    "250": 638,
+    "4000": 324,
+    "500": 582
+   },
+   "training_stints": 89041,
+   "window": [
+    "2018-19",
+    "2019-20",
+    "2020-21"
+   ],
+   "window_possession_share_own": 0.9763
+  },
+  "2022-23": {
+   "fallback_in_window": 260,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 2.8163,
+     "blocks_per36": 0.8216,
+     "field_goals_attempted_per36": 10.9533,
+     "fouls_personal_per36": 3.7595,
+     "free_throws_attempted_per36": 2.5298,
+     "log_minutes": 5.4952,
+     "points_per36": 12.2319,
+     "rebounds_defensive_per36": 4.8167,
+     "rebounds_offensive_per36": 1.9392,
+     "steals_per36": 1.127,
+     "three_pointers_attempted_per36": 4.562,
+     "turnovers_per36": 1.8797
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2019-20",
+     "2020-21",
+     "2021-22"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 514,
+   "players_in_window": 774,
+   "target": {
+    "box_fallback": 63,
+    "newcomer_no_box_in_window": 87,
+    "own_embedding": 389,
+    "players": 539,
+    "possession_share_box_fallback": 0.0412,
+    "possession_share_newcomer": 0.083,
+    "possession_share_own": 0.8759,
+    "stints": 32197,
+    "stints_with_any_fallback_player": 21912
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 514,
+    "2000": 432,
+    "250": 640,
+    "4000": 334,
+    "500": 587
+   },
+   "training_stints": 88491,
+   "window": [
+    "2019-20",
+    "2020-21",
+    "2021-22"
+   ],
+   "window_possession_share_own": 0.9748
+  },
+  "2023-24": {
+   "fallback_in_window": 266,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 2.9248,
+     "blocks_per36": 0.7035,
+     "field_goals_attempted_per36": 11.1024,
+     "fouls_personal_per36": 3.6615,
+     "free_throws_attempted_per36": 2.4051,
+     "log_minutes": 5.4159,
+     "points_per36": 12.2433,
+     "rebounds_defensive_per36": 4.6434,
+     "rebounds_offensive_per36": 1.6988,
+     "steals_per36": 1.1309,
+     "three_pointers_attempted_per36": 4.7525,
+     "turnovers_per36": 1.742
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2020-21",
+     "2021-22",
+     "2022-23"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 518,
+   "players_in_window": 784,
+   "target": {
+    "box_fallback": 75,
+    "newcomer_no_box_in_window": 101,
+    "own_embedding": 396,
+    "players": 572,
+    "possession_share_box_fallback": 0.039,
+    "possession_share_newcomer": 0.0862,
+    "possession_share_own": 0.8748,
+    "stints": 31365,
+    "stints_with_any_fallback_player": 21186
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 518,
+    "2000": 449,
+    "250": 638,
+    "4000": 345,
+    "500": 574
+   },
+   "training_stints": 92351,
+   "window": [
+    "2020-21",
+    "2021-22",
+    "2022-23"
+   ],
+   "window_possession_share_own": 0.9774
+  },
+  "2024-25": {
+   "fallback_in_window": 291,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 2.9482,
+     "blocks_per36": 0.7295,
+     "field_goals_attempted_per36": 10.7378,
+     "fouls_personal_per36": 3.5926,
+     "free_throws_attempted_per36": 2.2511,
+     "log_minutes": 5.4038,
+     "points_per36": 11.7495,
+     "rebounds_defensive_per36": 4.5799,
+     "rebounds_offensive_per36": 1.7819,
+     "steals_per36": 1.1125,
+     "three_pointers_attempted_per36": 4.6265,
+     "turnovers_per36": 1.6337
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2021-22",
+     "2022-23",
+     "2023-24"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 527,
+   "players_in_window": 818,
+   "target": {
+    "box_fallback": 67,
+    "newcomer_no_box_in_window": 107,
+    "own_embedding": 395,
+    "players": 569,
+    "possession_share_box_fallback": 0.0424,
+    "possession_share_newcomer": 0.0978,
+    "possession_share_own": 0.8598,
+    "stints": 32005,
+    "stints_with_any_fallback_player": 22522
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 527,
+    "2000": 448,
+    "250": 650,
+    "4000": 331,
+    "500": 589
+   },
+   "training_stints": 95810,
+   "window": [
+    "2021-22",
+    "2022-23",
+    "2023-24"
+   ],
+   "window_possession_share_own": 0.9769
+  },
+  "2025-26": {
+   "fallback_in_window": 237,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 3.2958,
+     "blocks_per36": 0.779,
+     "field_goals_attempted_per36": 10.7789,
+     "fouls_personal_per36": 3.6386,
+     "free_throws_attempted_per36": 2.3833,
+     "log_minutes": 5.4601,
+     "points_per36": 12.1439,
+     "rebounds_defensive_per36": 4.7017,
+     "rebounds_offensive_per36": 1.9125,
+     "steals_per36": 1.1623,
+     "three_pointers_attempted_per36": 4.4358,
+     "turnovers_per36": 1.9114
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2022-23",
+     "2023-24",
+     "2024-25"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 534,
+   "players_in_window": 771,
+   "target": {
+    "box_fallback": 77,
+    "newcomer_no_box_in_window": 106,
+    "own_embedding": 399,
+    "players": 582,
+    "possession_share_box_fallback": 0.0517,
+    "possession_share_newcomer": 0.1089,
+    "possession_share_own": 0.8394,
+    "stints": 34057,
+    "stints_with_any_fallback_player": 25688
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 534,
+    "2000": 444,
+    "250": 641,
+    "4000": 329,
+    "500": 593
+   },
+   "training_stints": 95567,
+   "window": [
+    "2022-23",
+    "2023-24",
+    "2024-25"
+   ],
+   "window_possession_share_own": 0.9792
+  },
+  "2026-27": {
+   "fallback_in_window": 256,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 3.1814,
+     "blocks_per36": 0.7953,
+     "field_goals_attempted_per36": 10.9399,
+     "fouls_personal_per36": 3.4391,
+     "free_throws_attempted_per36": 2.4297,
+     "log_minutes": 5.4978,
+     "points_per36": 12.4337,
+     "rebounds_defensive_per36": 4.647,
+     "rebounds_offensive_per36": 1.9182,
+     "steals_per36": 1.1883,
+     "three_pointers_attempted_per36": 4.8008,
+     "turnovers_per36": 1.7956
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 546,
+   "players_in_window": 802,
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 546,
+    "2000": 461,
+    "250": 668,
+    "4000": 338,
+    "500": 623
+   },
+   "training_stints": 97427,
+   "window": [
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "window_possession_share_own": 0.9759
+  }
+ },
+ "dataset": {
+  "boxes_sha256": "3ab77bd827a4803b2c1de069f1853dc55d32aef1016c38e43df9499de4b42a3e",
+  "stints_sha256": "694704a837d0e330c83a19452343c87358a6fae42fc0b0776c0a11cae4bd120b"
+ },
+ "excluded_games": "R01's admission (IM02 + event gate) excluded 3 to 26 games a season; their stints are not in the sealed bundles. Counts and reasons: docs/evidence/research/r01/coverage.json.",
+ "facts_sha256": "a2766d86d6b5b6444e0e2e98fa7e333e57a111c38515e9effcdec26612968093",
+ "leakage_plan": [
+  "Rolling origin: a fit for target season t reads stints and boxes from seasons t-3..t-1 only, so every input is dated before t's opener.",
+  "Selection seasons 2021-22 and 2022-23, test seasons 2023-24 to 2025-26, fixed here.",
+  "Cold-start status and box features for a target season come from the window only; a player first seen in t reads the newcomer value.",
+  "The 2026-27 serving fit reads 2023-24 to 2025-26."
+ ],
+ "players": {
+  "101108": {
+   "name": "Chris Paul",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 8111.5
+  },
+  "1626143": {
+   "name": "Jahlil Okafor",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 7.5
+  },
+  "1626145": {
+   "name": "Tyus Jones",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "ORL",
+    "DAL",
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 10362.0
+  },
+  "1626153": {
+   "name": "Delon Wright",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "MIL",
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 2752.0
+  },
+  "1626156": {
+   "name": "D'Angelo Russell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 9043.0
+  },
+  "1626157": {
+   "name": "Karl-Anthony Towns",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 13453.5
+  },
+  "1626158": {
+   "name": "Richaun Holmes",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 2157.0
+  },
+  "1626162": {
+   "name": "Kelly Oubre Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 11327.5
+  },
+  "1626164": {
+   "name": "Devin Booker",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 14785.5
+  },
+  "1626166": {
+   "name": "Cameron Payne",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 5454.0
+  },
+  "1626167": {
+   "name": "Myles Turner",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 12401.5
+  },
+  "1626168": {
+   "name": "Trey Lyles",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 4985.0
+  },
+  "1626171": {
+   "name": "Bobby Portis",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 9715.0
+  },
+  "1626172": {
+   "name": "Kevon Looney",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 5271.0
+  },
+  "1626174": {
+   "name": "Christian Wood",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 1730.0
+  },
+  "1626179": {
+   "name": "Terry Rozier",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 7214.5
+  },
+  "1626181": {
+   "name": "Norman Powell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 11543.0
+  },
+  "1626192": {
+   "name": "Pat Connaughton",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 5152.5
+  },
+  "1626196": {
+   "name": "Josh Richardson",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 2435.5
+  },
+  "1626204": {
+   "name": "Larry Nance Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 4270.0
+  },
+  "1626220": {
+   "name": "Royce O'Neale",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 11940.5
+  },
+  "1626224": {
+   "name": "Cedi Osman",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 2664.0
+  },
+  "1626246": {
+   "name": "Boban Marjanovic",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 136.0
+  },
+  "1627732": {
+   "name": "Ben Simmons",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "BKN",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 2892.0
+  },
+  "1627734": {
+   "name": "Domantas Sabonis",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 11795.0
+  },
+  "1627736": {
+   "name": "Malik Beasley",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 9413.5
+  },
+  "1627739": {
+   "name": "Kris Dunn",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 10485.0
+  },
+  "1627741": {
+   "name": "Buddy Hield",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "GSW",
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 9817.5
+  },
+  "1627742": {
+   "name": "Brandon Ingram",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 10404.0
+  },
+  "1627745": {
+   "name": "Damian Jones",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 517.5
+  },
+  "1627746": {
+   "name": "Skal Labissiere",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 99.0
+  },
+  "1627747": {
+   "name": "Caris LeVert",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 9526.5
+  },
+  "1627749": {
+   "name": "Dejounte Murray",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 8514.0
+  },
+  "1627750": {
+   "name": "Jamal Murray",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 13808.5
+  },
+  "1627751": {
+   "name": "Jakob Poeltl",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 8398.0
+  },
+  "1627752": {
+   "name": "Taurean Prince",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 9856.5
+  },
+  "1627759": {
+   "name": "Jaylen Brown",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 13752.5
+  },
+  "1627763": {
+   "name": "Malcolm Brogdon",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 3374.0
+  },
+  "1627777": {
+   "name": "Georges Niang",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "CLE",
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 6981.0
+  },
+  "1627780": {
+   "name": "Gary Payton II",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 5497.5
+  },
+  "1627783": {
+   "name": "Pascal Siakam",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 14665.0
+  },
+  "1627788": {
+   "name": "Furkan Korkmaz",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 625.0
+  },
+  "1627814": {
+   "name": "Damion Lee",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 298.0
+  },
+  "1627824": {
+   "name": "Guerschon Yabusele",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "CHI",
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 5721.0
+  },
+  "1627826": {
+   "name": "Ivica Zubac",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "LAC",
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 11528.0
+  },
+  "1627827": {
+   "name": "Dorian Finney-Smith",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 8540.0
+  },
+  "1627832": {
+   "name": "Fred VanVleet",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 9128.0
+  },
+  "1627853": {
+   "name": "Ryan Arcidiacono",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 89.5
+  },
+  "1627863": {
+   "name": "Danuel House Jr.",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 1040.0
+  },
+  "1627884": {
+   "name": "Derrick Jones Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 10074.5
+  },
+  "1627885": {
+   "name": "Shaquille Harrison",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 12.0
+  },
+  "1627936": {
+   "name": "Alex Caruso",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 7979.5
+  },
+  "1628365": {
+   "name": "Markelle Fultz",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 2093.5
+  },
+  "1628366": {
+   "name": "Lonzo Ball",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 3178.5
+  },
+  "1628368": {
+   "name": "De'Aaron Fox",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 14400.5
+  },
+  "1628369": {
+   "name": "Jayson Tatum",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 11506.5
+  },
+  "1628370": {
+   "name": "Malik Monk",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 10644.0
+  },
+  "1628371": {
+   "name": "Jonathan Isaac",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 4740.5
+  },
+  "1628372": {
+   "name": "Dennis Smith Jr.",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 1996.0
+  },
+  "1628373": {
+   "name": "Frank Ntilikina",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 85.5
+  },
+  "1628374": {
+   "name": "Lauri Markkanen",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 9621.5
+  },
+  "1628378": {
+   "name": "Donovan Mitchell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 13175.0
+  },
+  "1628379": {
+   "name": "Luke Kennard",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "ATL",
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 8457.0
+  },
+  "1628380": {
+   "name": "Zach Collins",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 5460.5
+  },
+  "1628381": {
+   "name": "John Collins",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 9980.5
+  },
+  "1628382": {
+   "name": "Justin Jackson",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 1.0
+  },
+  "1628384": {
+   "name": "OG Anunoby",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 13032.5
+  },
+  "1628385": {
+   "name": "Harry Giles III",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "BKN",
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 206.0
+  },
+  "1628386": {
+   "name": "Jarrett Allen",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 12543.0
+  },
+  "1628389": {
+   "name": "Bam Adebayo",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 14648.5
+  },
+  "1628391": {
+   "name": "D.J. Wilson",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 29.0
+  },
+  "1628392": {
+   "name": "Isaiah Hartenstein",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 9126.5
+  },
+  "1628396": {
+   "name": "Tony Bradley",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "IND",
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 1128.0
+  },
+  "1628398": {
+   "name": "Kyle Kuzma",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 12325.0
+  },
+  "1628401": {
+   "name": "Derrick White",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 14850.0
+  },
+  "1628404": {
+   "name": "Josh Hart",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 14765.5
+  },
+  "1628408": {
+   "name": "PJ Dozier",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 74.0
+  },
+  "1628415": {
+   "name": "Dillon Brooks",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 12200.5
+  },
+  "1628418": {
+   "name": "Thomas Bryant",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 4262.5
+  },
+  "1628420": {
+   "name": "Mont\u00e9 Morris",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 2185.5
+  },
+  "1628424": {
+   "name": "Kobi Simmons",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 134.5
+  },
+  "1628426": {
+   "name": "Sasha Vezenkov",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 1022.5
+  },
+  "1628427": {
+   "name": "Vlatko \u010can\u010dar",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 274.0
+  },
+  "1628436": {
+   "name": "Luke Kornet",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 7390.5
+  },
+  "1628449": {
+   "name": "Chris Boucher",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 3297.0
+  },
+  "1628464": {
+   "name": "Daniel Theis",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 3279.0
+  },
+  "1628467": {
+   "name": "Maxi Kleber",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 3943.5
+  },
+  "1628470": {
+   "name": "Torrey Craig",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "BOS",
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 2584.5
+  },
+  "1628502": {
+   "name": "Nigel Hayes-Davis",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 381.5
+  },
+  "1628960": {
+   "name": "Grayson Allen",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 11022.0
+  },
+  "1628962": {
+   "name": "Udoka Azubuike",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 226.0
+  },
+  "1628963": {
+   "name": "Marvin Bagley III",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "WAS",
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 5122.0
+  },
+  "1628964": {
+   "name": "Mo Bamba",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "UTA",
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 2343.0
+  },
+  "1628966": {
+   "name": "Keita Bates-Diop",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "PHX",
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 1282.0
+  },
+  "1628969": {
+   "name": "Mikal Bridges",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 16723.5
+  },
+  "1628970": {
+   "name": "Miles Bridges",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 13963.0
+  },
+  "1628971": {
+   "name": "Bruce Brown",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 9719.5
+  },
+  "1628972": {
+   "name": "Troy Brown Jr.",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "DET",
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 1663.0
+  },
+  "1628973": {
+   "name": "Jalen Brunson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 14981.5
+  },
+  "1628975": {
+   "name": "Jevon Carter",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "ORL",
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 4351.5
+  },
+  "1628976": {
+   "name": "Wendell Carter Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 10364.5
+  },
+  "1628977": {
+   "name": "Hamidou Diallo",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 9.5
+  },
+  "1628978": {
+   "name": "Donte DiVincenzo",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 12934.0
+  },
+  "1628981": {
+   "name": "Bruno Fernando",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 1642.0
+  },
+  "1628983": {
+   "name": "Shai Gilgeous-Alexander",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 14750.0
+  },
+  "1628984": {
+   "name": "Devonte' Graham",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 639.0
+  },
+  "1628988": {
+   "name": "Aaron Holiday",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 5589.5
+  },
+  "1628989": {
+   "name": "Kevin Huerter",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "CHI",
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 9623.0
+  },
+  "1628991": {
+   "name": "Jaren Jackson Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "MEM",
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 11829.5
+  },
+  "1628995": {
+   "name": "Kevin Knox II",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 1325.5
+  },
+  "1628997": {
+   "name": "Caleb Martin",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 7499.0
+  },
+  "1628998": {
+   "name": "Cody Martin",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 3972.0
+  },
+  "1629001": {
+   "name": "De'Anthony Melton",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 4547.0
+  },
+  "1629002": {
+   "name": "Chimezie Metu",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "PHX",
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 1717.5
+  },
+  "1629003": {
+   "name": "Shake Milton",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "BKN",
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 2844.5
+  },
+  "1629004": {
+   "name": "Svi Mykhailiuk",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 4742.0
+  },
+  "1629006": {
+   "name": "Josh Okogie",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 5771.0
+  },
+  "1629007": {
+   "name": "Jontay Porter",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 745.0
+  },
+  "1629008": {
+   "name": "Michael Porter Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 13450.5
+  },
+  "1629010": {
+   "name": "Jerome Robinson",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 168.0
+  },
+  "1629011": {
+   "name": "Mitchell Robinson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 4314.5
+  },
+  "1629012": {
+   "name": "Collin Sexton",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHA",
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 11046.0
+  },
+  "1629013": {
+   "name": "Landry Shamet",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 5273.0
+  },
+  "1629014": {
+   "name": "Anfernee Simons",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "BOS",
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 10324.5
+  },
+  "1629018": {
+   "name": "Gary Trent Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 10535.0
+  },
+  "1629020": {
+   "name": "Jarred Vanderbilt",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 4615.0
+  },
+  "1629021": {
+   "name": "Moritz Wagner",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 4483.0
+  },
+  "1629022": {
+   "name": "Lonnie Walker IV",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 2895.5
+  },
+  "1629023": {
+   "name": "P.J. Washington",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 11743.0
+  },
+  "1629026": {
+   "name": "Kenrich Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 5958.5
+  },
+  "1629027": {
+   "name": "Trae Young",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "ATL",
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 10641.5
+  },
+  "1629028": {
+   "name": "Deandre Ayton",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 9849.5
+  },
+  "1629029": {
+   "name": "Luka Don\u010di\u0107",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 13514.0
+  },
+  "1629048": {
+   "name": "Goga Bitadze",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 6335.5
+  },
+  "1629052": {
+   "name": "Oshae Brissett",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 1554.5
+  },
+  "1629056": {
+   "name": "Terence Davis",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 14.5
+  },
+  "1629057": {
+   "name": "Robert Williams III",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 3009.5
+  },
+  "1629060": {
+   "name": "Rui Hachimura",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 11322.5
+  },
+  "1629098": {
+   "name": "Jack McVeigh",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 92.5
+  },
+  "1629111": {
+   "name": "Jock Landale",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "MEM",
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 5560.0
+  },
+  "1629117": {
+   "name": "Wenyen Gabriel",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 162.5
+  },
+  "1629130": {
+   "name": "Duncan Robinson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 11311.0
+  },
+  "1629139": {
+   "name": "Yuta Watanabe",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "PHX",
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 923.0
+  },
+  "1629162": {
+   "name": "Jordan McLaughlin",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 2365.0
+  },
+  "1629216": {
+   "name": "Gabe Vincent",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "LAL",
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 5280.0
+  },
+  "1629232": {
+   "name": "Kaiser Gates",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 16.0
+  },
+  "1629234": {
+   "name": "Drew Eubanks",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 4969.0
+  },
+  "1629308": {
+   "name": "Juan Toscano-Anderson",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 107.0
+  },
+  "1629312": {
+   "name": "Haywood Highsmith",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 6286.0
+  },
+  "1629599": {
+   "name": "Amir Coffey",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "MIL",
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 7308.5
+  },
+  "1629603": {
+   "name": "Mamadi Diakite",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612752",
+   "teams": [
+    "SAS",
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 49.5
+  },
+  "1629610": {
+   "name": "DaQuan Jeffries",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 2306.0
+  },
+  "1629611": {
+   "name": "Terance Mann",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 9342.5
+  },
+  "1629614": {
+   "name": "Andrew Nembhard",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 10870.5
+  },
+  "1629618": {
+   "name": "Jalen Pickett",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 3114.5
+  },
+  "1629622": {
+   "name": "Max Strus",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 7612.0
+  },
+  "1629623": {
+   "name": "Lindell Wigginton",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 15.5
+  },
+  "1629626": {
+   "name": "Bol Bol",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 1846.5
+  },
+  "1629627": {
+   "name": "Zion Williamson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 9987.0
+  },
+  "1629628": {
+   "name": "RJ Barrett",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 11097.0
+  },
+  "1629629": {
+   "name": "Cam Reddish",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 3177.0
+  },
+  "1629630": {
+   "name": "Ja Morant",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 4983.5
+  },
+  "1629631": {
+   "name": "De'Andre Hunter",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "CLE",
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 9371.0
+  },
+  "1629632": {
+   "name": "Coby White",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHI",
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 12987.0
+  },
+  "1629634": {
+   "name": "Brandon Clarke",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 2804.0
+  },
+  "1629636": {
+   "name": "Darius Garland",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "CLE",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 11076.5
+  },
+  "1629637": {
+   "name": "Jaxson Hayes",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 6420.5
+  },
+  "1629638": {
+   "name": "Nickeil Alexander-Walker",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 13337.0
+  },
+  "1629639": {
+   "name": "Tyler Herro",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 10161.5
+  },
+  "1629640": {
+   "name": "Keldon Johnson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 11852.5
+  },
+  "1629642": {
+   "name": "Nassir Little",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 927.5
+  },
+  "1629643": {
+   "name": "Chuma Okeke",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "PHI",
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 1132.5
+  },
+  "1629645": {
+   "name": "Kevin Porter Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 5479.5
+  },
+  "1629646": {
+   "name": "Charles Bassey",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "GSW",
+    "MEM",
+    "BOS",
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 1523.5
+  },
+  "1629647": {
+   "name": "Darius Bazley",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "UTA",
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 306.0
+  },
+  "1629650": {
+   "name": "Moses Brown",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612754",
+   "teams": [
+    "DAL",
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 653.5
+  },
+  "1629651": {
+   "name": "Nic Claxton",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 11381.5
+  },
+  "1629652": {
+   "name": "Luguentz Dort",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 12180.0
+  },
+  "1629655": {
+   "name": "Daniel Gafford",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 8637.5
+  },
+  "1629656": {
+   "name": "Quentin Grimes",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 10312.5
+  },
+  "1629659": {
+   "name": "Talen Horton-Tucker",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 3506.0
+  },
+  "1629660": {
+   "name": "Ty Jerome",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 3447.0
+  },
+  "1629661": {
+   "name": "Cameron Johnson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 9843.0
+  },
+  "1629667": {
+   "name": "Jalen McDaniels",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 1107.5
+  },
+  "1629669": {
+   "name": "Jaylen Nowell",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 703.5
+  },
+  "1629670": {
+   "name": "Jordan Nwora",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "TOR",
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 1493.5
+  },
+  "1629673": {
+   "name": "Jordan Poole",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 11054.5
+  },
+  "1629674": {
+   "name": "Neemias Queta",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 5907.0
+  },
+  "1629675": {
+   "name": "Naz Reid",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 12294.5
+  },
+  "1629677": {
+   "name": "Luka Samanic",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 838.0
+  },
+  "1629678": {
+   "name": "Admiral Schofield",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 151.5
+  },
+  "1629680": {
+   "name": "Matisse Thybulle",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 4614.5
+  },
+  "1629684": {
+   "name": "Grant Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 6603.5
+  },
+  "1629685": {
+   "name": "Dylan Windler",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612752",
+   "teams": [
+    "ATL",
+    "LAL",
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 215.0
+  },
+  "1629716": {
+   "name": "Marques Bolden",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612749",
+   "teams": [
+    "CHA",
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 243.0
+  },
+  "1629717": {
+   "name": "Armoni Brooks",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 208.0
+  },
+  "1629718": {
+   "name": "Charlie Brown Jr.",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 70.5
+  },
+  "1629723": {
+   "name": "John Konchar",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "UTA",
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 5817.0
+  },
+  "1629726": {
+   "name": "Garrison Mathews",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 4141.5
+  },
+  "1629731": {
+   "name": "Dean Wade",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 7355.0
+  },
+  "1629750": {
+   "name": "Javonte Green",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 5813.0
+  },
+  "1629875": {
+   "name": "Xavier Moon",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 246.5
+  },
+  "1630162": {
+   "name": "Anthony Edwards",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 15436.5
+  },
+  "1630163": {
+   "name": "LaMelo Ball",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 8536.0
+  },
+  "1630164": {
+   "name": "James Wiseman",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 2326.0
+  },
+  "1630165": {
+   "name": "Killian Hayes",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 3232.0
+  },
+  "1630166": {
+   "name": "Deni Avdija",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 13607.5
+  },
+  "1630167": {
+   "name": "Obi Toppin",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 7610.0
+  },
+  "1630168": {
+   "name": "Onyeka Okongwu",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 11914.5
+  },
+  "1630169": {
+   "name": "Tyrese Haliburton",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 9547.5
+  },
+  "1630170": {
+   "name": "Devin Vassell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 12790.5
+  },
+  "1630171": {
+   "name": "Isaac Okoro",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 9287.0
+  },
+  "1630172": {
+   "name": "Patrick Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 8637.5
+  },
+  "1630173": {
+   "name": "Precious Achiuwa",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 8970.0
+  },
+  "1630174": {
+   "name": "Aaron Nesmith",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 9072.0
+  },
+  "1630175": {
+   "name": "Cole Anthony",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 6580.5
+  },
+  "1630177": {
+   "name": "Theo Maledon",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "CHA",
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 443.0
+  },
+  "1630178": {
+   "name": "Tyrese Maxey",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 14408.0
+  },
+  "1630180": {
+   "name": "Saddiq Bey",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 8769.5
+  },
+  "1630181": {
+   "name": "R.J. Hampton",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 149.5
+  },
+  "1630182": {
+   "name": "Josh Green",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 8585.5
+  },
+  "1630183": {
+   "name": "Jaden McDaniels",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 13894.0
+  },
+  "1630184": {
+   "name": "Kira Lewis Jr.",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "NOP",
+    "UTA",
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 545.0
+  },
+  "1630186": {
+   "name": "Jahmi'us Ramsey",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 248.5
+  },
+  "1630188": {
+   "name": "Jalen Smith",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 6428.5
+  },
+  "1630191": {
+   "name": "Isaiah Stewart",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 8361.5
+  },
+  "1630192": {
+   "name": "Zeke Nnaji",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 3533.5
+  },
+  "1630193": {
+   "name": "Immanuel Quickley",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 10304.0
+  },
+  "1630194": {
+   "name": "Paul Reed",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 5804.5
+  },
+  "1630196": {
+   "name": "Filip Petrusev",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "SAC",
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 19.0
+  },
+  "1630197": {
+   "name": "Aleksej Pokusevski",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612760",
+   "teams": [
+    "CHA",
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 798.5
+  },
+  "1630198": {
+   "name": "Isaiah Joe",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 9022.5
+  },
+  "1630200": {
+   "name": "Tre Jones",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 9920.5
+  },
+  "1630201": {
+   "name": "Malachi Flynn",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 1798.0
+  },
+  "1630202": {
+   "name": "Payton Pritchard",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 12769.0
+  },
+  "1630204": {
+   "name": "Ashton Hagans",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 601.0
+  },
+  "1630205": {
+   "name": "Lamar Stevens",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 1342.0
+  },
+  "1630207": {
+   "name": "Nate Hinton",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 155.5
+  },
+  "1630208": {
+   "name": "Nick Richards",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "CHI",
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 7362.5
+  },
+  "1630209": {
+   "name": "Omer Yurtseven",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 1298.5
+  },
+  "1630214": {
+   "name": "Xavier Tillman",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "BOS",
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 2737.0
+  },
+  "1630215": {
+   "name": "Jared Butler",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "PHI",
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 3263.5
+  },
+  "1630217": {
+   "name": "Desmond Bane",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 13027.5
+  },
+  "1630219": {
+   "name": "Skylar Mays",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "POR",
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 861.0
+  },
+  "1630222": {
+   "name": "Mason Jones",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 145.0
+  },
+  "1630224": {
+   "name": "Jalen Green",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 11865.0
+  },
+  "1630227": {
+   "name": "Daishen Nix",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 136.5
+  },
+  "1630228": {
+   "name": "Jonathan Kuminga",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "GSW",
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 7962.0
+  },
+  "1630230": {
+   "name": "Naji Marshall",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 10819.0
+  },
+  "1630231": {
+   "name": "KJ Martin",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "PHI",
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 3350.0
+  },
+  "1630235": {
+   "name": "Trent Forrest",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 800.0
+  },
+  "1630240": {
+   "name": "Saben Lee",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 364.0
+  },
+  "1630241": {
+   "name": "Sam Merrill",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 7665.0
+  },
+  "1630243": {
+   "name": "Trevelin Queen",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 1123.0
+  },
+  "1630245": {
+   "name": "Ayo Dosunmu",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "CHI",
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 10924.5
+  },
+  "1630249": {
+   "name": "V\u00edt Krej\u010d\u00ed",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "ATL",
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 6249.0
+  },
+  "1630256": {
+   "name": "Jae'Sean Tate",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 3939.0
+  },
+  "1630259": {
+   "name": "Jordan Ford",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 42.5
+  },
+  "1630264": {
+   "name": "Anthony Gill",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 3722.5
+  },
+  "1630283": {
+   "name": "Kylor Kelley",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "DAL",
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 262.0
+  },
+  "1630284": {
+   "name": "Kevon Harris",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 13.5
+  },
+  "1630285": {
+   "name": "Zavier Simpson",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 328.0
+  },
+  "1630286": {
+   "name": "Trevon Scott",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 366.0
+  },
+  "1630288": {
+   "name": "Jeff Dowtin Jr.",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 1461.5
+  },
+  "1630296": {
+   "name": "Braxton Key",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 151.0
+  },
+  "1630311": {
+   "name": "Pat Spencer",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 2923.5
+  },
+  "1630314": {
+   "name": "Brandon Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 4308.0
+  },
+  "1630322": {
+   "name": "Lindy Waters III",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 2674.0
+  },
+  "1630346": {
+   "name": "Matt Ryan",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 926.5
+  },
+  "1630526": {
+   "name": "Jeremiah Robinson-Earl",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "IND",
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 3785.0
+  },
+  "1630527": {
+   "name": "Brandon Boston",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 2525.5
+  },
+  "1630528": {
+   "name": "Josh Christopher",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 150.5
+  },
+  "1630529": {
+   "name": "Herbert Jones",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 9050.5
+  },
+  "1630530": {
+   "name": "Trey Murphy III",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 11837.5
+  },
+  "1630531": {
+   "name": "Jaden Springer",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "UTA",
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 1769.5
+  },
+  "1630532": {
+   "name": "Franz Wagner",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 10090.0
+  },
+  "1630533": {
+   "name": "Ziaire Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 7584.0
+  },
+  "1630534": {
+   "name": "Ochai Agbaji",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "TOR",
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 8837.5
+  },
+  "1630535": {
+   "name": "Greg Brown III",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 91.0
+  },
+  "1630536": {
+   "name": "Sharife Cooper",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 1454.5
+  },
+  "1630537": {
+   "name": "Chris Duarte",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 1587.0
+  },
+  "1630538": {
+   "name": "Bones Hyland",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 3948.0
+  },
+  "1630539": {
+   "name": "Kai Jones",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "DAL",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 883.5
+  },
+  "1630540": {
+   "name": "Miles McBride",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 7791.0
+  },
+  "1630541": {
+   "name": "Moses Moody",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 8683.5
+  },
+  "1630542": {
+   "name": "Marcus Bagley",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 523.5
+  },
+  "1630543": {
+   "name": "Isaiah Jackson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "IND",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 3608.5
+  },
+  "1630544": {
+   "name": "Tre Mann",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 3840.5
+  },
+  "1630545": {
+   "name": "Terrence Shannon Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 1803.0
+  },
+  "1630547": {
+   "name": "James Bouknight",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 158.0
+  },
+  "1630548": {
+   "name": "Johnny Juzang",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 3479.5
+  },
+  "1630549": {
+   "name": "Day'Ron Sharpe",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 5725.0
+  },
+  "1630550": {
+   "name": "JT Thor",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "WAS",
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 2030.5
+  },
+  "1630551": {
+   "name": "Justin Champagnie",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 6038.5
+  },
+  "1630552": {
+   "name": "Jalen Johnson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 11880.0
+  },
+  "1630553": {
+   "name": "Keon Johnson",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 3853.5
+  },
+  "1630554": {
+   "name": "Jason Preston",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 144.5
+  },
+  "1630556": {
+   "name": "Kessler Edwards",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 1777.0
+  },
+  "1630557": {
+   "name": "Corey Kispert",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "ATL",
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 9779.0
+  },
+  "1630558": {
+   "name": "Davion Mitchell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 10387.5
+  },
+  "1630559": {
+   "name": "Austin Reaves",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 14027.0
+  },
+  "1630560": {
+   "name": "Cam Thomas",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "BKN",
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 7195.5
+  },
+  "1630561": {
+   "name": "David Duke Jr.",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 176.0
+  },
+  "1630562": {
+   "name": "Matt Hurt",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 221.5
+  },
+  "1630563": {
+   "name": "Joshua Primo",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 22.0
+  },
+  "1630564": {
+   "name": "RaiQuan Gray",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 79.5
+  },
+  "1630567": {
+   "name": "Scottie Barnes",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 14029.0
+  },
+  "1630568": {
+   "name": "Luka Garza",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 2830.0
+  },
+  "1630570": {
+   "name": "Trendon Watford",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 5147.0
+  },
+  "1630572": {
+   "name": "Sandro Mamukelashvili",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 5847.5
+  },
+  "1630573": {
+   "name": "Sam Hauser",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 10112.0
+  },
+  "1630574": {
+   "name": "Ariel Hukporti",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 1420.0
+  },
+  "1630577": {
+   "name": "Julian Champagnie",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 11588.0
+  },
+  "1630578": {
+   "name": "Alperen Sengun",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 13112.5
+  },
+  "1630579": {
+   "name": "Jericho Sims",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 4872.5
+  },
+  "1630581": {
+   "name": "Josh Giddey",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 11949.5
+  },
+  "1630583": {
+   "name": "Santi Aldama",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 9137.5
+  },
+  "1630585": {
+   "name": "Marcus Garrett",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 155.0
+  },
+  "1630586": {
+   "name": "Usman Garuba",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 38.0
+  },
+  "1630587": {
+   "name": "Isaiah Livers",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 1674.5
+  },
+  "1630590": {
+   "name": "Scotty Pippen Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 5004.0
+  },
+  "1630591": {
+   "name": "Jalen Suggs",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 8943.0
+  },
+  "1630592": {
+   "name": "Jalen Wilson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 6785.0
+  },
+  "1630595": {
+   "name": "Cade Cunningham",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 13490.0
+  },
+  "1630596": {
+   "name": "Evan Mobley",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 11664.0
+  },
+  "1630598": {
+   "name": "Aaron Wiggins",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 8705.5
+  },
+  "1630600": {
+   "name": "Isaiah Mobley",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 176.0
+  },
+  "1630604": {
+   "name": "E.J. Liddell",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 860.0
+  },
+  "1630606": {
+   "name": "Javonte Smart",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 1.0
+  },
+  "1630608": {
+   "name": "Malcolm Cazalon",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 5.5
+  },
+  "1630610": {
+   "name": "DeJon Jarreau",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 781.5
+  },
+  "1630611": {
+   "name": "Gui Santos",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 4610.0
+  },
+  "1630618": {
+   "name": "D.J. Carton",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 151.0
+  },
+  "1630619": {
+   "name": "Moussa Cisse",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 1084.0
+  },
+  "1630621": {
+   "name": "Hunter Dickinson",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 94.0
+  },
+  "1630622": {
+   "name": "Jalen Crutcher",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 4.5
+  },
+  "1630623": {
+   "name": "Tyson Etienne",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 1096.5
+  },
+  "1630625": {
+   "name": "Dalano Banton",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "BOS",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 4477.5
+  },
+  "1630631": {
+   "name": "Jose Alvarado",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NOP",
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 7445.5
+  },
+  "1630639": {
+   "name": "A.J. Lawson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 2118.0
+  },
+  "1630641": {
+   "name": "Ibou Badji",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 452.5
+  },
+  "1630643": {
+   "name": "Jay Huff",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 5151.5
+  },
+  "1630644": {
+   "name": "Mac McClung",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612754",
+   "teams": [
+    "CHI",
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 302.5
+  },
+  "1630647": {
+   "name": "Eugene Omoruyi",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 850.5
+  },
+  "1630649": {
+   "name": "Stanley Umude",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 829.0
+  },
+  "1630658": {
+   "name": "Colin Castleton",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 1015.0
+  },
+  "1630678": {
+   "name": "Terry Taylor",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 376.5
+  },
+  "1630679": {
+   "name": "Ethan Thompson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 1326.5
+  },
+  "1630688": {
+   "name": "Ish Wainright",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "POR",
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 133.0
+  },
+  "1630692": {
+   "name": "Jordan Goodwin",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 6237.0
+  },
+  "1630695": {
+   "name": "Micah Potter",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 3709.5
+  },
+  "1630696": {
+   "name": "Dru Smith",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 3163.0
+  },
+  "1630699": {
+   "name": "MarJon Beauchamp",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 1976.5
+  },
+  "1630700": {
+   "name": "Dyson Daniels",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 13223.0
+  },
+  "1630702": {
+   "name": "Jaden Hardy",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "WAS",
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 5638.5
+  },
+  "1630703": {
+   "name": "Scoot Henderson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 8655.5
+  },
+  "1630762": {
+   "name": "Phillip Wheeler",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 86.0
+  },
+  "1630811": {
+   "name": "Keaton Wallace",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 2058.0
+  },
+  "1630828": {
+   "name": "Alex Antetokounmpo",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 43.5
+  },
+  "1630846": {
+   "name": "Olivier Sarr",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 283.0
+  },
+  "1630929": {
+   "name": "Henri Drell",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 65.0
+  },
+  "1631093": {
+   "name": "Jaden Ivey",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "DET",
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 7620.5
+  },
+  "1631094": {
+   "name": "Paolo Banchero",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 13107.0
+  },
+  "1631095": {
+   "name": "Jabari Smith Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 13171.5
+  },
+  "1631096": {
+   "name": "Chet Holmgren",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 10446.0
+  },
+  "1631097": {
+   "name": "Bennedict Mathurin",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "IND",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 10729.5
+  },
+  "1631098": {
+   "name": "Johnny Davis",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 1801.0
+  },
+  "1631099": {
+   "name": "Keegan Murray",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 11915.5
+  },
+  "1631100": {
+   "name": "AJ Griffin",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 362.5
+  },
+  "1631101": {
+   "name": "Shaedon Sharpe",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 9731.5
+  },
+  "1631102": {
+   "name": "TyTy Washington Jr.",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 517.5
+  },
+  "1631103": {
+   "name": "Malaki Branham",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 4769.5
+  },
+  "1631104": {
+   "name": "Blake Wesley",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 3959.5
+  },
+  "1631105": {
+   "name": "Jalen Duren",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 11652.0
+  },
+  "1631106": {
+   "name": "Tari Eason",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 6716.0
+  },
+  "1631107": {
+   "name": "Nikola Jovi\u0107",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 5654.0
+  },
+  "1631108": {
+   "name": "Max Christie",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 10737.5
+  },
+  "1631109": {
+   "name": "Mark Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 6249.0
+  },
+  "1631110": {
+   "name": "Jeremy Sochan",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "SAS",
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 8231.0
+  },
+  "1631111": {
+   "name": "Wendell Moore Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 1281.5
+  },
+  "1631112": {
+   "name": "Kendall Brown",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 128.0
+  },
+  "1631113": {
+   "name": "Kennedy Chandler",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 791.0
+  },
+  "1631114": {
+   "name": "Jalen Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 10657.0
+  },
+  "1631115": {
+   "name": "Orlando Robinson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 2209.0
+  },
+  "1631116": {
+   "name": "Patrick Baldwin Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "SAC",
+    "LAC",
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 1467.5
+  },
+  "1631117": {
+   "name": "Walker Kessler",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 6738.0
+  },
+  "1631119": {
+   "name": "Jaylin Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 5906.5
+  },
+  "1631120": {
+   "name": "JD Davison",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 683.0
+  },
+  "1631121": {
+   "name": "Bryce McGowens",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 3642.5
+  },
+  "1631123": {
+   "name": "Jamaree Bouyea",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 1556.5
+  },
+  "1631124": {
+   "name": "Julian Strawther",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 5649.0
+  },
+  "1631126": {
+   "name": "Caleb Love",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 2070.0
+  },
+  "1631127": {
+   "name": "Harrison Ingram",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 125.0
+  },
+  "1631128": {
+   "name": "Christian Braun",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 11430.0
+  },
+  "1631131": {
+   "name": "Oscar Tshiebwe",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 1560.0
+  },
+  "1631132": {
+   "name": "Christian Koloko",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "MEM",
+    "ATL",
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 1427.5
+  },
+  "1631133": {
+   "name": "Jabari Walker",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 6454.0
+  },
+  "1631157": {
+   "name": "Ryan Rollins",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 6563.0
+  },
+  "1631159": {
+   "name": "Leonard Miller",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "CHI",
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 1711.0
+  },
+  "1631165": {
+   "name": "Keon Ellis",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "SAC",
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 8689.0
+  },
+  "1631166": {
+   "name": "Drew Timme",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 972.0
+  },
+  "1631167": {
+   "name": "Izaiah Brockington",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 8.0
+  },
+  "1631169": {
+   "name": "Josh Minott",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BOS",
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 2384.0
+  },
+  "1631170": {
+   "name": "Jaime Jaquez Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 11221.5
+  },
+  "1631172": {
+   "name": "Ousmane Dieng",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "MIL",
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 3677.0
+  },
+  "1631173": {
+   "name": "Terquavion Smith",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 190.5
+  },
+  "1631174": {
+   "name": "Tyler Burton",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 634.0
+  },
+  "1631197": {
+   "name": "Jared Rhoden",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "TOR",
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 956.5
+  },
+  "1631199": {
+   "name": "Ron Harper Jr.",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 647.0
+  },
+  "1631200": {
+   "name": "Kris Murray",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 7528.0
+  },
+  "1631204": {
+   "name": "Marcus Sasser",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 5350.5
+  },
+  "1631205": {
+   "name": "Buddy Boeheim",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 196.5
+  },
+  "1631207": {
+   "name": "Dalen Terry",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "CHI",
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 4487.5
+  },
+  "1631209": {
+   "name": "Isaiah Wong",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 532.5
+  },
+  "1631210": {
+   "name": "Jacob Toppin",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 255.0
+  },
+  "1631211": {
+   "name": "Trevor Keels",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 38.0
+  },
+  "1631212": {
+   "name": "Peyton Watson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 9411.5
+  },
+  "1631213": {
+   "name": "Tyrese Martin",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "BKN",
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 4005.5
+  },
+  "1631214": {
+   "name": "Alondes Williams",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 248.0
+  },
+  "1631216": {
+   "name": "Caleb Houstan",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 3005.5
+  },
+  "1631217": {
+   "name": "Moussa Diabat\u00e9",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 6218.5
+  },
+  "1631218": {
+   "name": "Trayce Jackson-Davis",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "GSW",
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 5249.0
+  },
+  "1631220": {
+   "name": "Dereon Seabron",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 113.5
+  },
+  "1631221": {
+   "name": "Collin Gillespie",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 5853.0
+  },
+  "1631222": {
+   "name": "Jake LaRavia",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 8501.5
+  },
+  "1631223": {
+   "name": "David Roddy",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 3398.0
+  },
+  "1631230": {
+   "name": "Dominick Barlow",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 5067.5
+  },
+  "1631232": {
+   "name": "Keion Brooks Jr.",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 677.5
+  },
+  "1631241": {
+   "name": "Javon Freeman-Liberty",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 826.5
+  },
+  "1631243": {
+   "name": "Mouhamed Gueye",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 3600.0
+  },
+  "1631245": {
+   "name": "Quenton Jackson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 2655.5
+  },
+  "1631246": {
+   "name": "Vince Williams Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "MEM",
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 5513.0
+  },
+  "1631247": {
+   "name": "Luke Travers",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 336.0
+  },
+  "1631248": {
+   "name": "Baylor Scheierman",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 3462.0
+  },
+  "1631250": {
+   "name": "Pete Nance",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 1752.5
+  },
+  "1631254": {
+   "name": "Kenneth Lofton Jr.",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "MEM",
+    "UTA",
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 411.5
+  },
+  "1631255": {
+   "name": "Karlo Matkovi\u0107",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 3409.0
+  },
+  "1631257": {
+   "name": "Jermaine Samuels Jr.",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 105.5
+  },
+  "1631260": {
+   "name": "AJ Green",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 8999.0
+  },
+  "1631262": {
+   "name": "Jules Bernard",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 315.5
+  },
+  "1631288": {
+   "name": "Jamal Cain",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 2396.0
+  },
+  "1631298": {
+   "name": "Jack White",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 130.0
+  },
+  "1631301": {
+   "name": "Jaylen Sims",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 228.5
+  },
+  "1631303": {
+   "name": "Justin Minaya",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 945.0
+  },
+  "1631306": {
+   "name": "Cole Swider",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612765",
+   "teams": [
+    "TOR",
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 531.5
+  },
+  "1631311": {
+   "name": "Lester Quinones",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "NOP",
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 1186.5
+  },
+  "1631321": {
+   "name": "Sidy Cissoko",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 3448.0
+  },
+  "1631323": {
+   "name": "Simone Fontecchio",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 8339.0
+  },
+  "1631338": {
+   "name": "Mouhamadou Gueye",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 338.5
+  },
+  "1631342": {
+   "name": "Daeqwon Plowden",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 1860.5
+  },
+  "1631351": {
+   "name": "Lucas Williamson",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 489.0
+  },
+  "1631367": {
+   "name": "Jacob Gilyard",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "MEM",
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 1363.0
+  },
+  "1631376": {
+   "name": "Dmytro Skapintsev",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 3.5
+  },
+  "1631386": {
+   "name": "Taz\u00e9 Moore",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 134.0
+  },
+  "1631451": {
+   "name": "Javonte Cooke",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 197.0
+  },
+  "1631457": {
+   "name": "Alex Morales",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 46.5
+  },
+  "1631466": {
+   "name": "Nate Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 1034.5
+  },
+  "1641705": {
+   "name": "Victor Wembanyama",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 11179.5
+  },
+  "1641706": {
+   "name": "Brandon Miller",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 10420.0
+  },
+  "1641707": {
+   "name": "Taylor Hendricks",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "MEM",
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 4215.0
+  },
+  "1641708": {
+   "name": "Amen Thompson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 12720.0
+  },
+  "1641709": {
+   "name": "Ausar Thompson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 9670.5
+  },
+  "1641710": {
+   "name": "Anthony Black",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 9470.0
+  },
+  "1641711": {
+   "name": "Gradey Dick",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 8024.0
+  },
+  "1641712": {
+   "name": "Rayan Rupert",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "POR",
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 4445.5
+  },
+  "1641713": {
+   "name": "GG Jackson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 5759.5
+  },
+  "1641715": {
+   "name": "Cam Whitmore",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 4141.5
+  },
+  "1641716": {
+   "name": "Jarace Walker",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 7153.0
+  },
+  "1641717": {
+   "name": "Cason Wallace",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 11117.5
+  },
+  "1641718": {
+   "name": "Keyonte George",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 12041.0
+  },
+  "1641720": {
+   "name": "Jalen Hood-Schifino",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "PHI",
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 866.0
+  },
+  "1641721": {
+   "name": "Maxwell Lewis",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "BKN",
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 847.5
+  },
+  "1641722": {
+   "name": "Jordan Hawkins",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 6406.5
+  },
+  "1641723": {
+   "name": "Kobe Bufkin",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 904.5
+  },
+  "1641724": {
+   "name": "Jett Howard",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 2836.5
+  },
+  "1641725": {
+   "name": "Trey Alexander",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 476.0
+  },
+  "1641726": {
+   "name": "Dereck Lively II",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 4490.5
+  },
+  "1641727": {
+   "name": "Dariq Whitehead",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 959.0
+  },
+  "1641729": {
+   "name": "Brice Sensabaugh",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 7870.5
+  },
+  "1641730": {
+   "name": "Noah Clowney",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 6257.0
+  },
+  "1641731": {
+   "name": "Bilal Coulibaly",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 10645.5
+  },
+  "1641732": {
+   "name": "Colby Jones",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 1343.5
+  },
+  "1641733": {
+   "name": "Nick Smith Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 4931.0
+  },
+  "1641734": {
+   "name": "Emoni Bates",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 417.0
+  },
+  "1641735": {
+   "name": "Amari Bailey",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 129.0
+  },
+  "1641736": {
+   "name": "Reece Beekman",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612744",
+   "teams": [
+    "BKN",
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 906.5
+  },
+  "1641737": {
+   "name": "Adem Bona",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 4243.0
+  },
+  "1641738": {
+   "name": "Kobe Brown",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "IND",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 3240.0
+  },
+  "1641739": {
+   "name": "Toumani Camara",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 14195.0
+  },
+  "1641740": {
+   "name": "Jaylen Clark",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 2879.5
+  },
+  "1641741": {
+   "name": "Ricky Council IV",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 3041.0
+  },
+  "1641744": {
+   "name": "Zach Edey",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 3463.0
+  },
+  "1641745": {
+   "name": "Adam Flagler",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 437.0
+  },
+  "1641747": {
+   "name": "DaRon Holmes II",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 398.5
+  },
+  "1641748": {
+   "name": "Andre Jackson Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 3963.0
+  },
+  "1641749": {
+   "name": "Keyontae Johnson",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 132.5
+  },
+  "1641750": {
+   "name": "Ryan Kalkbrenner",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 2949.0
+  },
+  "1641752": {
+   "name": "Bobi Klintman",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 229.5
+  },
+  "1641753": {
+   "name": "Chris Livingston",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 435.0
+  },
+  "1641754": {
+   "name": "Seth Lundy",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 103.0
+  },
+  "1641755": {
+   "name": "Kevin McCullar Jr.",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 372.0
+  },
+  "1641757": {
+   "name": "Jordan Miller",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 3511.5
+  },
+  "1641761": {
+   "name": "Grant Nelson",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 64.5
+  },
+  "1641763": {
+   "name": "Julian Phillips",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "CHI",
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 3808.0
+  },
+  "1641764": {
+   "name": "Brandin Podziemski",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 11973.5
+  },
+  "1641765": {
+   "name": "Olivier-Maxence Prosper",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 3937.5
+  },
+  "1641766": {
+   "name": "Adama Sanogo",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 180.5
+  },
+  "1641767": {
+   "name": "Ben Sheppard",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 6968.5
+  },
+  "1641771": {
+   "name": "Jalen Slawson",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 701.0
+  },
+  "1641772": {
+   "name": "Nae'Qwan Tomlin",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 2172.0
+  },
+  "1641774": {
+   "name": "Tristan Vukcevic",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 2739.0
+  },
+  "1641775": {
+   "name": "Jordan Walsh",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 3204.0
+  },
+  "1641778": {
+   "name": "Leaky Black",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 1468.0
+  },
+  "1641779": {
+   "name": "Jalen Bridges",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 58.0
+  },
+  "1641780": {
+   "name": "Johni Broome",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 100.5
+  },
+  "1641783": {
+   "name": "Tristan da Silva",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 6810.0
+  },
+  "1641787": {
+   "name": "Tosan Evbuomwan",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 1988.5
+  },
+  "1641788": {
+   "name": "Alex Fudge",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "DAL",
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 83.5
+  },
+  "1641789": {
+   "name": "Jazian Gortman",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 121.5
+  },
+  "1641790": {
+   "name": "PJ Hall",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "CHA",
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 558.0
+  },
+  "1641793": {
+   "name": "D'Moi Hodge",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 60.0
+  },
+  "1641794": {
+   "name": "Dillon Jones",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 1191.0
+  },
+  "1641796": {
+   "name": "Pelle Larsson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 5383.0
+  },
+  "1641798": {
+   "name": "Jaylen Martin",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612751",
+   "teams": [
+    "WAS",
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 443.5
+  },
+  "1641801": {
+   "name": "Emanuel Miller",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 117.5
+  },
+  "1641803": {
+   "name": "Tristen Newton",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 60.5
+  },
+  "1641806": {
+   "name": "Markquis Nowell",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 7.0
+  },
+  "1641807": {
+   "name": "Norchad Omier",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 47.0
+  },
+  "1641809": {
+   "name": "Drew Peterson",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 533.5
+  },
+  "1641810": {
+   "name": "Antonio Reeves",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 1366.0
+  },
+  "1641813": {
+   "name": "Mark Sears",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 51.5
+  },
+  "1641815": {
+   "name": "Isaiah Stevens",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 95.5
+  },
+  "1641816": {
+   "name": "Hunter Tyson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 1207.0
+  },
+  "1641817": {
+   "name": "Anton Watson",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 50.0
+  },
+  "1641824": {
+   "name": "Matas Buzelis",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 7825.0
+  },
+  "1641842": {
+   "name": "Ronald Holland II",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 5650.0
+  },
+  "1641847": {
+   "name": "Andrew Funk",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 27.0
+  },
+  "1641851": {
+   "name": "Timmy Allen",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 253.0
+  },
+  "1641854": {
+   "name": "Craig Porter Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 4558.5
+  },
+  "1641857": {
+   "name": "Liam Robbins",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 120.0
+  },
+  "1641869": {
+   "name": "Malachi Smith",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 725.0
+  },
+  "1641871": {
+   "name": "Duop Reath",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 3878.5
+  },
+  "1641877": {
+   "name": "Nathan Mensah",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 614.5
+  },
+  "1641878": {
+   "name": "Damion Baugh",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 737.0
+  },
+  "1641879": {
+   "name": "Yuri Collins",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 34.0
+  },
+  "1641890": {
+   "name": "Tyler Smith",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 607.5
+  },
+  "1641926": {
+   "name": "Dexter Dennis",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 72.0
+  },
+  "1641931": {
+   "name": "Onuralp Bitim",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 525.5
+  },
+  "1641936": {
+   "name": "Miles Norris",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 64.0
+  },
+  "1641970": {
+   "name": "Maozinha Pereira",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 247.5
+  },
+  "1641989": {
+   "name": "Elijah Harkless",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 1410.0
+  },
+  "1641998": {
+   "name": "Trey Jemison III",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 1997.5
+  },
+  "1642013": {
+   "name": "Malik Williams",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 213.0
+  },
+  "1642024": {
+   "name": "Alex Reese",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612760",
+   "teams": [
+    "PHI",
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 419.5
+  },
+  "1642050": {
+   "name": "Jackson Rowe",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 110.0
+  },
+  "1642066": {
+   "name": "Myron Gardner",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 873.5
+  },
+  "1642258": {
+   "name": "Zaccharie Risacher",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 6970.5
+  },
+  "1642259": {
+   "name": "Alex Sarr",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 6444.0
+  },
+  "1642260": {
+   "name": "Nikola Topi\u0107",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 322.0
+  },
+  "1642261": {
+   "name": "Dalton Knecht",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 4029.5
+  },
+  "1642262": {
+   "name": "Cody Williams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 5644.5
+  },
+  "1642263": {
+   "name": "Reed Sheppard",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 5548.5
+  },
+  "1642264": {
+   "name": "Stephon Castle",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 8537.0
+  },
+  "1642265": {
+   "name": "Rob Dillingham",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "CHI",
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 3098.0
+  },
+  "1642266": {
+   "name": "Ja'Kobe Walter",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 5179.0
+  },
+  "1642267": {
+   "name": "Bub Carrington",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 9691.0
+  },
+  "1642268": {
+   "name": "Isaiah Collier",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 6930.0
+  },
+  "1642269": {
+   "name": "Devin Carter",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 2206.5
+  },
+  "1642270": {
+   "name": "Donovan Clingan",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 6942.0
+  },
+  "1642271": {
+   "name": "Kyle Filipowski",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 6875.5
+  },
+  "1642272": {
+   "name": "Jared McCain",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "PHI",
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 3540.0
+  },
+  "1642273": {
+   "name": "Kyshawn George",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 6529.0
+  },
+  "1642274": {
+   "name": "Yves Missi",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 6438.5
+  },
+  "1642275": {
+   "name": "Tidjane Sala\u00fcn",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 3580.0
+  },
+  "1642276": {
+   "name": "Kel'el Ware",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 6380.5
+  },
+  "1642277": {
+   "name": "Johnny Furphy",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 2035.0
+  },
+  "1642278": {
+   "name": "Tyler Kolek",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 2019.0
+  },
+  "1642279": {
+   "name": "Ulrich Chomche",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 61.5
+  },
+  "1642280": {
+   "name": "Trentyn Flowers",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 67.0
+  },
+  "1642281": {
+   "name": "Jaylon Tyson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 4448.5
+  },
+  "1642282": {
+   "name": "Hunter Sallis",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 45.5
+  },
+  "1642285": {
+   "name": "Cam Spencer",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 3899.5
+  },
+  "1642345": {
+   "name": "Oso Ighodaro",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 5584.0
+  },
+  "1642346": {
+   "name": "Ryan Dunn",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 5383.0
+  },
+  "1642347": {
+   "name": "Jamal Shead",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 6668.5
+  },
+  "1642348": {
+   "name": "Justin Edwards",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 4272.0
+  },
+  "1642349": {
+   "name": "Ajay Mitchell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 4140.0
+  },
+  "1642352": {
+   "name": "Keshad Johnson",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 819.5
+  },
+  "1642353": {
+   "name": "Cam Christie",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 1052.5
+  },
+  "1642354": {
+   "name": "KJ Simpson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "CHA",
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 2194.0
+  },
+  "1642355": {
+   "name": "Bronny James",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 1089.0
+  },
+  "1642357": {
+   "name": "David Jones Garcia",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 145.0
+  },
+  "1642358": {
+   "name": "AJ Johnson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "DAL",
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 2173.0
+  },
+  "1642359": {
+   "name": "Pac\u00f4me Dadiet",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 494.0
+  },
+  "1642362": {
+   "name": "Payton Sandfort",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 133.0
+  },
+  "1642363": {
+   "name": "Nique Clifford",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 3807.0
+  },
+  "1642364": {
+   "name": "Jamir Watkins",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 2139.0
+  },
+  "1642366": {
+   "name": "Quinten Post",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 3669.0
+  },
+  "1642367": {
+   "name": "Jonathan Mogbo",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 3142.0
+  },
+  "1642368": {
+   "name": "N'Faly Dante",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 137.5
+  },
+  "1642377": {
+   "name": "Jaylen Wells",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 7937.0
+  },
+  "1642380": {
+   "name": "Adama Bal",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 517.5
+  },
+  "1642382": {
+   "name": "Branden Carlson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 1505.0
+  },
+  "1642383": {
+   "name": "Walter Clayton Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "UTA",
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 2913.0
+  },
+  "1642384": {
+   "name": "Isaiah Crawford",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 270.0
+  },
+  "1642385": {
+   "name": "Cui Yongxi",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 23.5
+  },
+  "1642389": {
+   "name": "Zyon Pullin",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 97.0
+  },
+  "1642396": {
+   "name": "Blake Hinson",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 601.0
+  },
+  "1642399": {
+   "name": "Jesse Edwards",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 10.5
+  },
+  "1642400": {
+   "name": "Tristan Enaruna",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 170.0
+  },
+  "1642402": {
+   "name": "Enrique Freeman",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 463.0
+  },
+  "1642403": {
+   "name": "Isaac Jones",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612758",
+   "teams": [
+    "DET",
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 652.5
+  },
+  "1642404": {
+   "name": "Chaz Lanier",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 530.5
+  },
+  "1642419": {
+   "name": "Jamison Battle",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 3179.5
+  },
+  "1642422": {
+   "name": "Armel Traor\u00e9",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 135.0
+  },
+  "1642434": {
+   "name": "Riley Minix",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612759",
+   "teams": [
+    "CLE",
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 138.5
+  },
+  "1642439": {
+   "name": "Quincy Olivari",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 21.5
+  },
+  "1642443": {
+   "name": "Jahmir Young",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 193.5
+  },
+  "1642449": {
+   "name": "Tolu Smith",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 307.0
+  },
+  "1642450": {
+   "name": "Daniss Jenkins",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 2982.0
+  },
+  "1642461": {
+   "name": "Spencer Jones",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 3073.0
+  },
+  "1642468": {
+   "name": "Darius Brown",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 4.5
+  },
+  "1642484": {
+   "name": "RayJ Dennis",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "IND",
+    "ATL",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 557.0
+  },
+  "1642490": {
+   "name": "Josh Oduro",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 183.0
+  },
+  "1642502": {
+   "name": "Malevy Leons",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 582.0
+  },
+  "1642504": {
+   "name": "Cormac Ryan",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 524.5
+  },
+  "1642505": {
+   "name": "Alex Ducas",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 254.5
+  },
+  "1642530": {
+   "name": "Yuki Kawamura",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 576.0
+  },
+  "1642843": {
+   "name": "Cooper Flagg",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 4809.0
+  },
+  "1642844": {
+   "name": "Dylan Harper",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 3082.5
+  },
+  "1642845": {
+   "name": "VJ Edgecombe",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 5213.0
+  },
+  "1642846": {
+   "name": "Ace Bailey",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 4151.0
+  },
+  "1642847": {
+   "name": "Jeremiah Fears",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 4357.5
+  },
+  "1642848": {
+   "name": "Tre Johnson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 3011.5
+  },
+  "1642849": {
+   "name": "Nolan Traore",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 2439.5
+  },
+  "1642851": {
+   "name": "Kon Knueppel",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 5064.5
+  },
+  "1642852": {
+   "name": "Derik Queen",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 4195.5
+  },
+  "1642853": {
+   "name": "Rasheer Fleming",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 1295.5
+  },
+  "1642854": {
+   "name": "Asa Newell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 1048.0
+  },
+  "1642855": {
+   "name": "Noa Essengue",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 14.0
+  },
+  "1642856": {
+   "name": "Egor D\u00ebmin",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 2572.5
+  },
+  "1642857": {
+   "name": "Kasparas Jaku\u010dionis",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 2012.5
+  },
+  "1642859": {
+   "name": "Jase Richardson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 1175.0
+  },
+  "1642860": {
+   "name": "Will Riley",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 3383.5
+  },
+  "1642862": {
+   "name": "Liam McNeeley",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 715.0
+  },
+  "1642863": {
+   "name": "Khaman Maluach",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 796.0
+  },
+  "1642864": {
+   "name": "Hugo Gonz\u00e1lez",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 2062.5
+  },
+  "1642866": {
+   "name": "Joan Beringer",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 665.0
+  },
+  "1642867": {
+   "name": "Collin Murray-Boyles",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 2465.0
+  },
+  "1642868": {
+   "name": "Carter Bryant",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 1630.5
+  },
+  "1642869": {
+   "name": "Noah Penda",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 1520.0
+  },
+  "1642873": {
+   "name": "Amari Williams",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 290.5
+  },
+  "1642874": {
+   "name": "Danny Wolf",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 2317.0
+  },
+  "1642875": {
+   "name": "Maxime Raynaud",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 4008.0
+  },
+  "1642876": {
+   "name": "Adou Thiero",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 301.5
+  },
+  "1642877": {
+   "name": "Micah Peavy",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 1873.0
+  },
+  "1642878": {
+   "name": "Tyrese Proctor",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 1097.0
+  },
+  "1642879": {
+   "name": "Ben Saraf",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 1830.5
+  },
+  "1642880": {
+   "name": "Kam Jones",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 1288.0
+  },
+  "1642882": {
+   "name": "Julian Reese",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 827.5
+  },
+  "1642883": {
+   "name": "Sion James",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 3604.5
+  },
+  "1642884": {
+   "name": "Vladislav Goldin",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 57.5
+  },
+  "1642885": {
+   "name": "Mohamed Diawara",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 1233.0
+  },
+  "1642886": {
+   "name": "Koby Brea",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 160.5
+  },
+  "1642905": {
+   "name": "Yang Hansen",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 618.0
+  },
+  "1642907": {
+   "name": "Cedric Coward",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 3311.0
+  },
+  "1642910": {
+   "name": "John Tonje",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 86.5
+  },
+  "1642911": {
+   "name": "Rocco Zikarsky",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 70.0
+  },
+  "1642914": {
+   "name": "Javon Small",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 1728.0
+  },
+  "1642917": {
+   "name": "Max Shulga",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612738",
+   "teams": [
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 74.5
+  },
+  "1642918": {
+   "name": "Alijah Martin",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 277.0
+  },
+  "1642920": {
+   "name": "Kobe Sanders",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 2676.0
+  },
+  "1642928": {
+   "name": "Dylan Cardwell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 1814.0
+  },
+  "1642933": {
+   "name": "Keshon Gilbert",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612737",
+   "teams": [
+    "WAS",
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 150.0
+  },
+  "1642935": {
+   "name": "Chucky Hepburn",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 25.5
+  },
+  "1642938": {
+   "name": "Curtis Jones",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 176.5
+  },
+  "1642939": {
+   "name": "Miles Kelly",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 285.5
+  },
+  "1642942": {
+   "name": "Jahmai Mashack",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 1405.0
+  },
+  "1642948": {
+   "name": "Ryan Nembhard",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 2374.5
+  },
+  "1642949": {
+   "name": "Yanic Konan Niederh\u00e4user",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 831.0
+  },
+  "1642950": {
+   "name": "Lachlan Olbrich",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612741",
+   "teams": [
+    "CHI"
+   ],
+   "tricode": "CHI",
+   "window_possessions": 721.5
+  },
+  "1642951": {
+   "name": "Sean Pedulla",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 61.0
+  },
+  "1642954": {
+   "name": "Will Richard",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 2801.0
+  },
+  "1642955": {
+   "name": "Kadary Richmond",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612764",
+   "teams": [
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 146.5
+  },
+  "1642959": {
+   "name": "Chris Youngblood",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612757",
+   "teams": [
+    "OKC",
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 371.0
+  },
+  "1642962": {
+   "name": "Drake Powell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 2593.5
+  },
+  "1642964": {
+   "name": "Brooks Barnhizer",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612760",
+   "teams": [
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 695.5
+  },
+  "1642967": {
+   "name": "John Poulakidas",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 535.5
+  },
+  "1643007": {
+   "name": "Taelon Peter",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 1038.5
+  },
+  "1643016": {
+   "name": "Bez Mbeng",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 1075.5
+  },
+  "1643018": {
+   "name": "LJ Cryer",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 563.0
+  },
+  "1643024": {
+   "name": "Chris Ma\u00f1on",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 91.0
+  },
+  "1643047": {
+   "name": "CJ Huntley",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 83.0
+  },
+  "1643052": {
+   "name": "Chaney Johnson",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612751",
+   "teams": [
+    "BKN"
+   ],
+   "tricode": "BKN",
+   "window_possessions": 709.5
+  },
+  "1643060": {
+   "name": "Hayden Gray",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 53.5
+  },
+  "1643133": {
+   "name": "Lawson Lovering",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 107.5
+  },
+  "1643141": {
+   "name": "Jahmyl Telfort",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 63.0
+  },
+  "1643158": {
+   "name": "Andersson Garcia",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 354.0
+  },
+  "1643253": {
+   "name": "Toby Okani",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 473.5
+  },
+  "1643257": {
+   "name": "Jayson Kent",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 43.5
+  },
+  "200768": {
+   "name": "Kyle Lowry",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 4847.0
+  },
+  "200782": {
+   "name": "P.J. Tucker",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 1068.0
+  },
+  "201142": {
+   "name": "Kevin Durant",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 15759.0
+  },
+  "201143": {
+   "name": "Al Horford",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 8611.5
+  },
+  "201144": {
+   "name": "Mike Conley",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 9606.0
+  },
+  "201145": {
+   "name": "Jeff Green",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 3672.0
+  },
+  "201152": {
+   "name": "Thaddeus Young",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "TOR",
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 868.0
+  },
+  "201565": {
+   "name": "Derrick Rose",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 805.5
+  },
+  "201566": {
+   "name": "Russell Westbrook",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 11100.0
+  },
+  "201567": {
+   "name": "Kevin Love",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 3619.5
+  },
+  "201568": {
+   "name": "Danilo Gallinari",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "WAS",
+    "MIL",
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 1273.0
+  },
+  "201569": {
+   "name": "Eric Gordon",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 5486.0
+  },
+  "201572": {
+   "name": "Brook Lopez",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 13167.5
+  },
+  "201577": {
+   "name": "Robin Lopez",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 133.5
+  },
+  "201580": {
+   "name": "JaVale McGee",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 696.0
+  },
+  "201587": {
+   "name": "Nicolas Batum",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 8298.0
+  },
+  "201599": {
+   "name": "DeAndre Jordan",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 2553.0
+  },
+  "201935": {
+   "name": "James Harden",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "LAC",
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 15174.5
+  },
+  "201939": {
+   "name": "Stephen Curry",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 12301.5
+  },
+  "201942": {
+   "name": "DeMar DeRozan",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 15988.5
+  },
+  "201949": {
+   "name": "James Johnson",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 160.5
+  },
+  "201950": {
+   "name": "Jrue Holiday",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 11522.5
+  },
+  "201959": {
+   "name": "Taj Gibson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 1424.0
+  },
+  "201976": {
+   "name": "Patrick Beverley",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "PHI",
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 2885.0
+  },
+  "201980": {
+   "name": "Danny Green",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 38.0
+  },
+  "201988": {
+   "name": "Patty Mills",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "UTA",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 1490.0
+  },
+  "202066": {
+   "name": "Garrett Temple",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 1219.5
+  },
+  "202083": {
+   "name": "Wesley Matthews",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612737",
+   "teams": [
+    "ATL"
+   ],
+   "tricode": "ATL",
+   "window_possessions": 831.5
+  },
+  "202330": {
+   "name": "Gordon Hayward",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "CHA",
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 2531.5
+  },
+  "202331": {
+   "name": "Paul George",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 9787.0
+  },
+  "202397": {
+   "name": "Ish Smith",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612766",
+   "teams": [
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 1496.5
+  },
+  "202681": {
+   "name": "Kyrie Irving",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 7672.5
+  },
+  "202684": {
+   "name": "Tristan Thompson",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 1656.5
+  },
+  "202685": {
+   "name": "Jonas Valan\u010di\u016bnas",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 8560.5
+  },
+  "202687": {
+   "name": "Bismack Biyombo",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 2924.0
+  },
+  "202691": {
+   "name": "Klay Thompson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 11683.5
+  },
+  "202692": {
+   "name": "Alec Burks",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 4113.5
+  },
+  "202693": {
+   "name": "Markieff Morris",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612742",
+   "teams": [
+    "LAL",
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 781.5
+  },
+  "202694": {
+   "name": "Marcus Morris Sr.",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "PHI",
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 1605.0
+  },
+  "202695": {
+   "name": "Kawhi Leonard",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 11003.0
+  },
+  "202696": {
+   "name": "Nikola Vu\u010devi\u0107",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612738",
+   "teams": [
+    "CHI",
+    "BOS"
+   ],
+   "tricode": "BOS",
+   "window_possessions": 13352.0
+  },
+  "202699": {
+   "name": "Tobias Harris",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 12921.5
+  },
+  "202704": {
+   "name": "Reggie Jackson",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 4352.0
+  },
+  "202709": {
+   "name": "Cory Joseph",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612753",
+   "teams": [
+    "ORL"
+   ],
+   "tricode": "ORL",
+   "window_possessions": 1651.0
+  },
+  "202710": {
+   "name": "Jimmy Butler III",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 9782.0
+  },
+  "202711": {
+   "name": "Bojan Bogdanovic",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "DET",
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 2947.0
+  },
+  "202722": {
+   "name": "Davis Bertans",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "CHA",
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 1317.5
+  },
+  "202738": {
+   "name": "Isaiah Thomas",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612756",
+   "teams": [
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 37.5
+  },
+  "203076": {
+   "name": "Anthony Davis",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 10279.0
+  },
+  "203078": {
+   "name": "Bradley Beal",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 7182.5
+  },
+  "203081": {
+   "name": "Damian Lillard",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 9440.0
+  },
+  "203083": {
+   "name": "Andre Drummond",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 6421.0
+  },
+  "203084": {
+   "name": "Harrison Barnes",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 13246.0
+  },
+  "203095": {
+   "name": "Evan Fournier",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "DET",
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 1159.0
+  },
+  "203109": {
+   "name": "Jae Crowder",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 2540.0
+  },
+  "203110": {
+   "name": "Draymond Green",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 10791.0
+  },
+  "203114": {
+   "name": "Khris Middleton",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "WAS",
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 7734.5
+  },
+  "203200": {
+   "name": "Justin Holiday",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 1722.0
+  },
+  "203458": {
+   "name": "Alex Len",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "SAC",
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 1650.5
+  },
+  "203468": {
+   "name": "CJ McCollum",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612764",
+   "teams": [
+    "ATL",
+    "WAS"
+   ],
+   "tricode": "WAS",
+   "window_possessions": 12630.0
+  },
+  "203469": {
+   "name": "Cody Zeller",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612740",
+   "teams": [
+    "NOP"
+   ],
+   "tricode": "NOP",
+   "window_possessions": 666.5
+  },
+  "203471": {
+   "name": "Dennis Schr\u00f6der",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612739",
+   "teams": [
+    "SAC",
+    "CLE"
+   ],
+   "tricode": "CLE",
+   "window_possessions": 12473.5
+  },
+  "203482": {
+   "name": "Kelly Olynyk",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 6078.5
+  },
+  "203484": {
+   "name": "Kentavious Caldwell-Pope",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 11086.5
+  },
+  "203486": {
+   "name": "Mason Plumlee",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612759",
+   "teams": [
+    "CHA",
+    "SAS"
+   ],
+   "tricode": "SAS",
+   "window_possessions": 4298.5
+  },
+  "203488": {
+   "name": "Mike Muscala",
+   "season": "2023-24",
+   "status": "own",
+   "team_id": "1610612760",
+   "teams": [
+    "WAS",
+    "DET",
+    "OKC"
+   ],
+   "tricode": "OKC",
+   "window_possessions": 1239.5
+  },
+  "203490": {
+   "name": "Otto Porter Jr.",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612761",
+   "teams": [
+    "TOR"
+   ],
+   "tricode": "TOR",
+   "window_possessions": 361.0
+  },
+  "203493": {
+   "name": "Reggie Bullock Jr.",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 794.5
+  },
+  "203496": {
+   "name": "Robert Covington",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612746",
+   "teams": [
+    "PHI",
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 966.5
+  },
+  "203497": {
+   "name": "Rudy Gobert",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 14442.5
+  },
+  "203500": {
+   "name": "Steven Adams",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 2927.0
+  },
+  "203501": {
+   "name": "Tim Hardaway Jr.",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 13001.5
+  },
+  "203507": {
+   "name": "Giannis Antetokounmpo",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 11811.0
+  },
+  "203552": {
+   "name": "Seth Curry",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 3603.5
+  },
+  "203648": {
+   "name": "Thanasis Antetokounmpo",
+   "season": "2025-26",
+   "status": "box",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 606.5
+  },
+  "203897": {
+   "name": "Zach LaVine",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 9521.0
+  },
+  "203901": {
+   "name": "Elfrid Payton",
+   "season": "2024-25",
+   "status": "box",
+   "team_id": "1610612766",
+   "teams": [
+    "NOP",
+    "CHA"
+   ],
+   "tricode": "CHA",
+   "window_possessions": 987.5
+  },
+  "203903": {
+   "name": "Jordan Clarkson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612752",
+   "teams": [
+    "NYK"
+   ],
+   "tricode": "NYK",
+   "window_possessions": 7768.5
+  },
+  "203914": {
+   "name": "Gary Harris",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612749",
+   "teams": [
+    "MIL"
+   ],
+   "tricode": "MIL",
+   "window_possessions": 4982.5
+  },
+  "203915": {
+   "name": "Spencer Dinwiddie",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 8515.5
+  },
+  "203924": {
+   "name": "Jerami Grant",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612757",
+   "teams": [
+    "POR"
+   ],
+   "tricode": "POR",
+   "window_possessions": 10220.0
+  },
+  "203925": {
+   "name": "Joe Harris",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612765",
+   "teams": [
+    "DET"
+   ],
+   "tricode": "DET",
+   "window_possessions": 345.5
+  },
+  "203926": {
+   "name": "Doug McDermott",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 3451.0
+  },
+  "203932": {
+   "name": "Aaron Gordon",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 9489.0
+  },
+  "203933": {
+   "name": "T.J. Warren",
+   "season": "2023-24",
+   "status": "box",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 259.5
+  },
+  "203935": {
+   "name": "Marcus Smart",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 6183.0
+  },
+  "203937": {
+   "name": "Kyle Anderson",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612763",
+   "teams": [
+    "UTA",
+    "MIN",
+    "MEM"
+   ],
+   "tricode": "MEM",
+   "window_possessions": 7225.0
+  },
+  "203939": {
+   "name": "Dwight Powell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 4651.0
+  },
+  "203944": {
+   "name": "Julius Randle",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 13004.0
+  },
+  "203952": {
+   "name": "Andrew Wiggins",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612748",
+   "teams": [
+    "MIA"
+   ],
+   "tricode": "MIA",
+   "window_possessions": 11915.5
+  },
+  "203954": {
+   "name": "Joel Embiid",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612755",
+   "teams": [
+    "PHI"
+   ],
+   "tricode": "PHI",
+   "window_possessions": 6276.5
+  },
+  "203957": {
+   "name": "Dant\u00e9 Exum",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612742",
+   "teams": [
+    "DAL"
+   ],
+   "tricode": "DAL",
+   "window_possessions": 2928.5
+  },
+  "203967": {
+   "name": "Dario \u0160ari\u0107",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612758",
+   "teams": [
+    "SAC"
+   ],
+   "tricode": "SAC",
+   "window_possessions": 2693.5
+  },
+  "203991": {
+   "name": "Clint Capela",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612745",
+   "teams": [
+    "HOU"
+   ],
+   "tricode": "HOU",
+   "window_possessions": 8079.0
+  },
+  "203992": {
+   "name": "Bogdan Bogdanovi\u0107",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612746",
+   "teams": [
+    "LAC"
+   ],
+   "tricode": "LAC",
+   "window_possessions": 8406.5
+  },
+  "203994": {
+   "name": "Jusuf Nurki\u0107",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612762",
+   "teams": [
+    "UTA"
+   ],
+   "tricode": "UTA",
+   "window_possessions": 8589.5
+  },
+  "203995": {
+   "name": "Vasilije Mici\u0107",
+   "season": "2024-25",
+   "status": "own",
+   "team_id": "1610612756",
+   "teams": [
+    "CHA",
+    "PHX"
+   ],
+   "tricode": "PHX",
+   "window_possessions": 3835.5
+  },
+  "203999": {
+   "name": "Nikola Joki\u0107",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612743",
+   "teams": [
+    "DEN"
+   ],
+   "tricode": "DEN",
+   "window_possessions": 15271.5
+  },
+  "204001": {
+   "name": "Kristaps Porzi\u0146\u0123is",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612744",
+   "teams": [
+    "ATL",
+    "GSW"
+   ],
+   "tricode": "GSW",
+   "window_possessions": 7440.0
+  },
+  "204060": {
+   "name": "Joe Ingles",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612750",
+   "teams": [
+    "MIN"
+   ],
+   "tricode": "MIN",
+   "window_possessions": 2646.5
+  },
+  "204456": {
+   "name": "T.J. McConnell",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612754",
+   "teams": [
+    "IND"
+   ],
+   "tricode": "IND",
+   "window_possessions": 7520.0
+  },
+  "2544": {
+   "name": "LeBron James",
+   "season": "2025-26",
+   "status": "own",
+   "team_id": "1610612747",
+   "teams": [
+    "LAL"
+   ],
+   "tricode": "LAL",
+   "window_possessions": 13972.0
+  }
+ },
+ "players_without_identity": [],
+ "seasons": {
+  "2014-15": {
+   "dropped_stints_one_side_no_possession": 26444,
+   "first_date": "2014-10-28",
+   "games": 1208,
+   "last_date": "2015-04-15",
+   "neutral_stints": 0,
+   "players": 492,
+   "possessions": 114056.5,
+   "stints": 57810,
+   "usable_possessions": 111974.0,
+   "usable_stints": 31366
+  },
+  "2015-16": {
+   "dropped_stints_one_side_no_possession": 27599,
+   "first_date": "2015-10-27",
+   "games": 1219,
+   "last_date": "2016-04-13",
+   "neutral_stints": 0,
+   "players": 476,
+   "possessions": 117241.5,
+   "stints": 59475,
+   "usable_possessions": 115111.5,
+   "usable_stints": 31876
+  },
+  "2016-17": {
+   "dropped_stints_one_side_no_possession": 27308,
+   "first_date": "2016-10-25",
+   "games": 1206,
+   "last_date": "2017-04-12",
+   "neutral_stints": 0,
+   "players": 486,
+   "possessions": 116500.5,
+   "stints": 58726,
+   "usable_possessions": 114565.0,
+   "usable_stints": 31418
+  },
+  "2017-18": {
+   "dropped_stints_one_side_no_possession": 28063,
+   "first_date": "2017-10-17",
+   "games": 1217,
+   "last_date": "2018-04-11",
+   "neutral_stints": 0,
+   "players": 540,
+   "possessions": 118492.0,
+   "stints": 59715,
+   "usable_possessions": 116548.5,
+   "usable_stints": 31652
+  },
+  "2018-19": {
+   "dropped_stints_one_side_no_possession": 29138,
+   "first_date": "2018-10-16",
+   "games": 1227,
+   "last_date": "2019-04-10",
+   "neutral_stints": 0,
+   "players": 530,
+   "possessions": 122888.0,
+   "stints": 61936,
+   "usable_possessions": 120992.5,
+   "usable_stints": 32798
+  },
+  "2019-20": {
+   "dropped_stints_one_side_no_possession": 26357,
+   "first_date": "2019-10-22",
+   "games": 1033,
+   "last_date": "2020-08-14",
+   "neutral_stints": 4548,
+   "players": 528,
+   "possessions": 103880.0,
+   "stints": 54694,
+   "usable_possessions": 102135.0,
+   "usable_stints": 28337
+  },
+  "2020-21": {
+   "dropped_stints_one_side_no_possession": 25627,
+   "first_date": "2020-12-22",
+   "games": 1074,
+   "last_date": "2021-05-16",
+   "neutral_stints": 0,
+   "players": 540,
+   "possessions": 106529.0,
+   "stints": 53533,
+   "usable_possessions": 104918.5,
+   "usable_stints": 27906
+  },
+  "2021-22": {
+   "dropped_stints_one_side_no_possession": 30036,
+   "first_date": "2021-10-19",
+   "games": 1228,
+   "last_date": "2022-04-10",
+   "neutral_stints": 0,
+   "players": 605,
+   "possessions": 120584.5,
+   "stints": 62284,
+   "usable_possessions": 118719.5,
+   "usable_stints": 32248
+  },
+  "2022-23": {
+   "dropped_stints_one_side_no_possession": 30068,
+   "first_date": "2022-10-18",
+   "games": 1229,
+   "last_date": "2023-04-09",
+   "neutral_stints": 0,
+   "players": 539,
+   "possessions": 122082.0,
+   "stints": 62265,
+   "usable_possessions": 120209.0,
+   "usable_stints": 32197
+  },
+  "2023-24": {
+   "dropped_stints_one_side_no_possession": 27287,
+   "first_date": "2023-10-24",
+   "games": 1216,
+   "last_date": "2024-04-14",
+   "neutral_stints": 0,
+   "players": 572,
+   "possessions": 119840.5,
+   "stints": 58652,
+   "usable_possessions": 118078.0,
+   "usable_stints": 31365
+  },
+  "2024-25": {
+   "dropped_stints_one_side_no_possession": 29509,
+   "first_date": "2024-10-22",
+   "games": 1212,
+   "last_date": "2025-04-13",
+   "neutral_stints": 0,
+   "players": 569,
+   "possessions": 120012.5,
+   "stints": 61514,
+   "usable_possessions": 118172.5,
+   "usable_stints": 32005
+  },
+  "2025-26": {
+   "dropped_stints_one_side_no_possession": 34868,
+   "first_date": "2025-10-21",
+   "games": 1227,
+   "last_date": "2026-04-12",
+   "neutral_stints": 0,
+   "players": 582,
+   "possessions": 121933.0,
+   "stints": 68925,
+   "usable_possessions": 119838.0,
+   "usable_stints": 34057
+  }
+ },
+ "serving_window": [
+  "2023-24",
+  "2024-25",
+  "2025-26"
+ ],
+ "threshold": 1000.0,
+ "totals": {
+  "box_player_seasons": 6942,
+  "games": 14296,
+  "players": 1632,
+  "stints": 719529,
+  "usable_stints": 377225
+ },
+ "version": "courtlens-lineup-model-v1"
+}
