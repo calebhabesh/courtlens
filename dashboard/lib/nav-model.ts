@@ -80,8 +80,7 @@ export const NAV_MENUS: NavMenu[] = [
   {
     id: "research",
     label: "Research",
-    // The Research handoff's target menu (D8), limited to pages that exist. Each later block adds its
-    // own item: Learning and so on.
+    // The Research handoff's target menu (D8), limited to pages that exist; R11 added Learning and Patch Notes.
     // Case Studies and Saved Investigations moved to Methodology; Evaluation Archive is reached from Points Forecasts and Methodology.
     groups: [
       { title: "Models", items: [
@@ -102,15 +101,23 @@ export const NAV_MENUS: NavMenu[] = [
       { title: "Methods", items: [
         { label: "Signal vs Noise", href: "/research/signal-noise", icon: "waveform", description: "How big a sample a stat needs, and shrunk shooting percentages" },
         { label: "Points Forecasts", href: "/forecasts", icon: "chart-line", description: "Next-game points estimates, their test and the prospective ledger" },
+        { label: "Learning", href: "/methodology/learning", icon: "book", description: "Advanced stats from the ground up, each linked to a measured result" },
       ] },
       { title: "Tools", items: [
         { label: "Combine & Wingspan", href: "/wingspan", icon: "ruler", description: "Official NBA Draft Combine measurements, including wingspan" },
         { label: "Draft Classes", href: "/draft", icon: "graduation", description: "What each draft slot returned, classes redrafted and this year's rookies" },
         { label: "Hypothetical Calculator", href: "/calculator", icon: "calculator", description: "Offensive rating from your own possession assumptions" },
+        { label: "Patch Notes", href: "/whats-new", icon: "history", description: "Every release, with the commit that shipped it" },
       ] },
     ],
   },
 ];
+
+/**
+ * Menu items that open a merged page on a later tab. D8 lists Learning in Research → Methods while it
+ * stays a Methodology tab beside the definitions it teaches (R11).
+ */
+export const TAB_SHORTCUTS = new Set(["/methodology/learning"]);
 
 /** Pages that exist locally but not on the hosted demo (PC11). Their routes redirect there too. */
 export const HOSTED_DEMO_HIDDEN = new Set(["/planner"]);
@@ -125,7 +132,6 @@ export function moreLinks(hosted = HOSTED_DEMO): NavItem[] {
     { label: "Settings", href: "/settings" },
     { label: "Data Status", href: "/data-status" },
     { label: "Methodology", href: "/methodology" },
-    { label: "What's New", href: "/whats-new" },
     // Planner is empty without a signed-in league, so the hosted demo drops it (PC11).
     { label: "Planner", href: "/planner" },
   ].filter(item => !(hosted && HOSTED_DEMO_HIDDEN.has(item.href)));

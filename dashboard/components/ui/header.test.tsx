@@ -108,7 +108,7 @@ describe("Design Language v1 Header Component", () => {
 
     expect(screen.getByRole("menuitem", { name: "Settings" })).toBeDefined();
     expect(screen.getByRole("menuitem", { name: "Data Status" })).toBeDefined();
-    for (const name of ["Methodology", "What's New", "Planner"]) {
+    for (const name of ["Methodology", "Planner"]) {
       expect(screen.getByRole("menuitem", { name })).toBeDefined();
     }
 

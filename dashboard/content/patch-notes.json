@@ -1,0 +1,225 @@
+{
+  "about": "CourtLens has no version numbers: a release is a merge to main (its pull request) or, for work not yet merged, its branch. Each entry links the commit that shipped it.",
+  "releases": [
+    {
+      "id": "research",
+      "title": "Research",
+      "version": "research branch, not yet merged to main",
+      "merge": null,
+      "range": { "from": "2026-11-04", "to": "2026-11-06" },
+      "summary": "The Research menu: models tested on seasons they never saw, each with a registered protocol, frozen results and evidence.",
+      "groups": [
+        {
+          "title": "Models",
+          "entries": [
+            { "title": "Win Probability", "badge": "New", "href": "/research/win-probability", "date": "2026-11-04", "commit": "a87e648", "text": "A live win-probability model for every game, frozen and scored each night against ESPN's, with its final-test report.", "bullets": ["Models and final test on held-out seasons (9b53fbb).", "Frozen model, nightly scorecard and drift flag."], "log": { "file": "docs/research-progress.md", "heading": "2026-11-04 — R15b measured" } },
+            { "title": "Projected Impact", "badge": "New", "href": "/research/projected-impact", "date": "2026-11-05", "commit": "7ef5f35", "text": "CourtLens's own player rating with aging curves. Its 2026-27 projections were frozen before the games they are scored on.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — R07 measured" } },
+            { "title": "Lineup Model", "badge": "New", "href": "/research/lineup-model", "date": "2026-11-06", "commit": "1ebc5ea", "text": "A lineup model with learned player vectors, tested against ridge RAPM on held-out stints, with a lineup tool and a player map.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-06 — R14 measured" } }
+          ]
+        },
+        {
+          "title": "Impact",
+          "entries": [
+            { "title": "Impact history and intervals", "badge": "New", "href": "/research/rapm", "date": "2026-11-04", "commit": "37601c2", "text": "Twelve regular seasons of RAPM computed from public play-by-play, with time decay, bootstrap intervals and dated rating snapshots.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-04 — R01 measured" } },
+            { "title": "Six-Factor RAPM", "badge": "New", "href": "/research/rapm/six-factor", "date": "2026-11-05", "commit": "9487d37", "text": "Player impact split into shooting, turnovers and rebounding on both ends, with an Impact Tree.", "bullets": ["Redesigned after Databallr's Six-Factor explainer, with shared Research components (4023a98, 2026-11-06)."], "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — R02 measured, Playwright debt settled" } },
+            { "title": "Metric Backtest", "badge": "New", "href": "/research/backtest", "date": "2026-11-05", "commit": "7f6b554", "text": "Nine impact metrics, each fixed before every game, ranked by how well they predict real results.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — R08 measured" } }
+          ]
+        },
+        {
+          "title": "Shooting",
+          "entries": [
+            { "title": "zTS", "badge": "New", "href": "/research/zts", "date": "2026-11-05", "commit": "99deb5a", "text": "True shooting adjusted for play-type difficulty, with a registered test against rTS.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — R04 measured" } },
+            { "title": "Shot Quality", "badge": "New", "href": "/research/shot-quality", "date": "2026-11-05", "commit": "e9bf4fa", "text": "An expected-points shot model built from free shot and play-by-play data, and each player's shot-making above it.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — R05 measured" } },
+            { "title": "Defensive Shot Quality", "badge": "New", "href": "/research/defensive-matchups", "date": "2026-11-05", "commit": "1c3627a", "text": "What shooters scored against each defender compared with their own shooting, and the shot quality / shot-making split of true shooting.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — R06 measured" } }
+          ]
+        },
+        {
+          "title": "Methods and Tools",
+          "entries": [
+            { "title": "Signal vs Noise", "badge": "New", "href": "/research/signal-noise", "date": "2026-11-05", "commit": "dffe54d", "text": "How many attempts each stat needs before it reflects skill, and shrunk shooting percentages, also available as a Stats toggle.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — R03 measured" } },
+            { "title": "Draft Classes", "badge": "New", "href": "/draft", "date": "2026-11-06", "commit": "5edab1d", "text": "What each draft slot returned since 1966, every class redrafted, and this season's rookies against past picks at their slot.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-06 — R09 measured" } },
+            { "title": "Wingspan and calculator data", "badge": "Updated", "href": "/wingspan", "date": "2026-11-06", "commit": "c8d0ff0", "text": "Wingspan beside career defensive DPM, and each season's observed four-factor inputs on the ORtg calculator.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-06 — R10 data part measured" } },
+            { "title": "Research menu", "badge": "Updated", "date": "2026-11-05", "commit": "e50b564", "text": "Regrouped into Models, Impact, Shooting, Methods and Tools. Workload Trends, Distributions & Splits and the Blog were removed.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — Research menu trimmed, dropped pages removed (owner request, part of R12)" } }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pr-42",
+      "title": "Databallr alignment",
+      "version": "PR #42",
+      "merge": { "commit": "fc0dabd", "date": "2026-11-03" },
+      "range": { "from": "2026-10-14", "to": "2026-11-03" },
+      "summary": "Every core page worked one at a time against Databallr, and every NBA season back to 1946-47.",
+      "groups": [
+        {
+          "title": "Players",
+          "entries": [
+            { "title": "Player page", "badge": "Updated", "href": "/players", "date": "2026-10-14", "commit": "84b36ef", "text": "Redesigned player page with a career table, contracts, career highs, honours and Basketball-Reference bios (1316b7e)." },
+            { "title": "Player Comparison", "badge": "Updated", "href": "/compare", "date": "2026-10-15", "commit": "974644e", "text": "A duel card with percentiles and season headshots, later extended to five players (b27c9e9, 2026-10-16)." },
+            { "title": "Last X Games", "badge": "New", "href": "/last-games", "date": "2026-10-20", "commit": "43e3f68", "text": "A player's recent games with their averages." },
+            { "title": "Player Showcase", "badge": "Updated", "href": "/showcase", "date": "2026-10-20", "commit": "83974be", "text": "Ranked percentile cards for one player." },
+            { "title": "Player Twins", "badge": "New", "href": "/similar-players", "date": "2026-10-21", "commit": "42c986a", "text": "Statistically similar players by shot profile and box score." },
+            { "title": "Player Dashboard", "badge": "New", "href": "/players", "date": "2026-10-22", "commit": "0110bef", "text": "Replaces the Player Directory." }
+          ]
+        },
+        {
+          "title": "Teams",
+          "entries": [
+            { "title": "Team Comparison", "badge": "New", "href": "/team-compare", "date": "2026-10-17", "commit": "e9d0529", "text": "Two team seasons side by side, with rotations, series score and game history." },
+            { "title": "Teams", "badge": "Updated", "href": "/teams", "date": "2026-10-19", "commit": "8588139", "text": "Six factors, standings, schedule and trends on each team page; rankings and a season calendar followed (6e026d5, 2026-11-03)." },
+            { "title": "Roster Shapes", "badge": "Updated", "href": "/roster-shapes", "date": "2026-10-19", "commit": "c38378a", "text": "Every roster sized by DARKO DPM, with fit-estimate shapes." },
+            { "title": "Contracts and Free Agency", "badge": "Updated", "href": "/contracts", "date": "2026-10-20", "commit": "c78114f", "text": "Contracts and NBA.com's free-agency tracker, with one current-team placement per player." },
+            { "title": "Standings", "badge": "New", "href": "/standings", "date": "2026-11-02", "commit": "460314a", "text": "ESPN's standings by league, conference and division, with playoff brackets." }
+          ]
+        },
+        {
+          "title": "Games and Lineups",
+          "entries": [
+            { "title": "Stat Line Shift", "badge": "New", "href": "/stat-line-shift", "date": "2026-10-19", "commit": "bc2965a", "text": "How a player's stat line changes with and without teammates." },
+            { "title": "Live", "badge": "Updated", "href": "/live", "date": "2026-10-27", "commit": "b54c726", "text": "A Databallr-style Live page reading ESPN on demand." },
+            { "title": "WOWY", "badge": "Updated", "href": "/wowy", "date": "2026-10-27", "commit": "0189002", "text": "Every on/off combination of up to five players." }
+          ]
+        },
+        {
+          "title": "History and Ask",
+          "entries": [
+            { "title": "Every season since 1946-47", "badge": "New", "href": "/stats", "date": "2026-10-22", "commit": "1b92f98", "text": "Basketball-Reference history brings every season to the site, with team identities, playoff brackets and older players' photos.", "bullets": ["The history crawl itself started the day before (806bef7, 2026-10-21)."] },
+            { "title": "Ask provider pool", "badge": "Updated", "href": "/research/ask", "date": "2026-11-02", "commit": "c120fc3", "text": "The assistant pools free-tier Gemini and Groq keys." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pr-25",
+      "title": "Control kit",
+      "version": "PR #25",
+      "merge": { "commit": "dab67b5", "date": "2026-10-14" },
+      "range": { "from": "2026-10-14", "to": "2026-10-14" },
+      "summary": "One Tailwind control kit for every button, select, segmented group, menu trigger and chip, enforced by lint.",
+      "groups": [
+        {
+          "title": "Interface",
+          "entries": [
+            { "title": "Control kit", "badge": "New", "date": "2026-10-14", "commit": "caac0cb", "text": "Buttons, selects, segmented groups, menu triggers and chips from one kit; every page migrated and the lint ratchets closed (6abb8e4)." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pr-24",
+      "title": "Stats alignment and the hosted demo",
+      "version": "PR #24",
+      "merge": { "commit": "240fa7a", "date": "2026-10-14" },
+      "range": { "from": "2026-10-12", "to": "2026-10-14" },
+      "summary": "The first pages aligned with Databallr, and a read-only demo online.",
+      "groups": [
+        {
+          "title": "Pages",
+          "entries": [
+            { "title": "Stats", "badge": "Updated", "href": "/stats", "date": "2026-10-12", "commit": "38f4b86", "text": "Databallr's button set, layout, percentiles and glossary; seasons back to 2000-01 with DARKO history followed (0296760, 2026-10-13)." },
+            { "title": "Players", "badge": "Updated", "href": "/players", "date": "2026-10-14", "commit": "b767563", "text": "Career table and bio header." }
+          ]
+        },
+        {
+          "title": "Hosting",
+          "entries": [
+            { "title": "Hosted demo", "badge": "New", "date": "2026-10-13", "commit": "9a2cab8", "text": "A read-only demo at courtlens.calebhabesh.com, merged separately as PR #22." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "presentation-clarity",
+      "title": "Presentation clarity",
+      "version": "presentation-clarity branch",
+      "merge": { "commit": "2b51dcc", "date": "2026-10-12" },
+      "range": { "from": "2026-10-11", "to": "2026-10-12" },
+      "summary": "Chart colours with fixed meanings, free data sources only, and pages without free data removed.",
+      "groups": [
+        {
+          "title": "Data and charts",
+          "entries": [
+            { "title": "Source policy v2", "badge": "New", "date": "2026-10-11", "commit": "d898dd3", "text": "Admitted-source capabilities under a free-data-only policy." },
+            { "title": "Chart semantics", "badge": "New", "date": "2026-10-11", "commit": "4681be3", "text": "Semantic colours and a shared SVG toolkit." },
+            { "title": "Contracts", "badge": "New", "href": "/contracts", "date": "2026-10-11", "commit": "1d5732c", "text": "Contract views from dated source books." },
+            { "title": "Roster Shapes", "badge": "New", "href": "/roster-shapes", "date": "2026-10-11", "commit": "063c602", "text": "Roster Shapes grid and team detail." },
+            { "title": "Gated pages", "badge": "Removed", "date": "2026-10-12", "commit": "ab1cd7d", "text": "Pages without free data were removed rather than gated." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pr-17",
+      "title": "Frontend overhaul",
+      "version": "PR #17",
+      "merge": { "commit": "b105212", "date": "2026-10-11" },
+      "range": { "from": "2026-10-09", "to": "2026-10-11" },
+      "summary": "Shared page templates, one header and search, and consolidated routes.",
+      "groups": [
+        {
+          "title": "Interface",
+          "entries": [
+            { "title": "Page foundation", "badge": "New", "date": "2026-10-09", "commit": "93df868", "text": "Shared page foundation, filter bar, date picker and identity primitives." },
+            { "title": "Header and search", "badge": "New", "date": "2026-10-09", "commit": "217093f", "text": "One header, one search modal and a drawer." },
+            { "title": "Tabbed pages", "badge": "Updated", "date": "2026-10-09", "commit": "3225f3e", "text": "Related routes consolidated into tabbed pages, with redirects from the old URLs." },
+            { "title": "Live", "badge": "Updated", "href": "/live", "date": "2026-10-09", "commit": "de337e7", "text": "Live, Finals and Playoffs tabs with a date strip." },
+            { "title": "Responsive and accessibility sweep", "badge": "Updated", "date": "2026-10-11", "commit": "ac10ff7", "text": "Responsive layout and accessibility fixes across the pages." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "impact-assistant",
+      "title": "Impact metrics, CourtLens and the Ask agent",
+      "version": "main",
+      "merge": null,
+      "range": { "from": "2026-10-06", "to": "2026-10-08" },
+      "summary": "Impact ratings computed from public play-by-play, the CourtLens name, and a tool-calling assistant.",
+      "groups": [
+        {
+          "title": "Analytics",
+          "entries": [
+            { "title": "RAPM from play-by-play", "badge": "New", "date": "2026-10-08", "commit": "d3b3d6b", "text": "Offline RAPM and box-prior ratings, after play-by-play repair and possession models (3661928)." },
+            { "title": "Design Language v1", "badge": "New", "date": "2026-10-08", "commit": "0a55882", "text": "Tokens, spacing, type scale and motion rules, enforced by lint." }
+          ]
+        },
+        {
+          "title": "Ask",
+          "entries": [
+            { "title": "Agent loop", "badge": "New", "href": "/research/ask", "date": "2026-10-07", "commit": "9881ff6", "text": "A bounded tool-calling agent with durable turns." },
+            { "title": "Evaluation baseline", "badge": "New", "date": "2026-10-06", "commit": "ce35732", "text": "A frozen evaluation corpus scored against independently written SQL." }
+          ]
+        },
+        {
+          "title": "Project",
+          "entries": [
+            { "title": "CourtLens", "badge": "Updated", "date": "2026-10-06", "commit": "1a250d5", "text": "CourtLoad renamed CourtLens, with the ball-lens mark; the environment and database followed (91a46ed, 2026-10-07)." }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "workbench",
+      "title": "Research workbench",
+      "version": "main",
+      "merge": null,
+      "range": { "from": "2026-09-23", "to": "2026-10-04" },
+      "summary": "The warehouse, forecasting, and the first dashboard.",
+      "groups": [
+        {
+          "title": "Foundation",
+          "entries": [
+            { "title": "Warehouse", "badge": "New", "date": "2026-09-23", "commit": "1d2ffa1", "text": "Immutable archive ingestion and dbt warehouse models." },
+            { "title": "Offline evaluation", "badge": "New", "date": "2026-09-23", "commit": "b2b33f4", "text": "An offline evaluation runner with baseline calibration." },
+            { "title": "Points forecasts", "badge": "New", "href": "/forecasts", "date": "2026-10-01", "commit": "111f219", "text": "A prospective points-forecasting experiment and its scoring ledger." },
+            { "title": "Stats engine", "badge": "New", "href": "/stats", "date": "2026-10-03", "commit": "3b82a1b", "text": "Core domain models, metric catalog v2 and the stats engine." },
+            { "title": "Live", "badge": "New", "href": "/live", "date": "2026-10-04", "commit": "d3689ed", "text": "A shared live service with game reconciliation." },
+            { "title": "Saved operations and learning", "badge": "New", "href": "/methodology/learning", "date": "2026-10-04", "commit": "1595752", "text": "Saved, reproducible operations, original learning material and an installable app." },
+            { "title": "Release benchmarks", "badge": "New", "date": "2026-10-04", "commit": "daedc03", "text": "Benchmarks, case studies and documentation for the first release." }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -35,7 +35,7 @@ Rows are in working order.
 | 18 | Six Factor RAPM (+ `/decomp`) | `/research/rapm/six-factor` | 👀 | [Research handoff](research-plan.md) R02 built, awaiting owner review ([evidence](evidence/research/r02/README.md)): explainer, intervals on the sortable table, real Impact Tree for any player; RAPM Research renamed Six-Factor RAPM, old page kept as the RAPM Ratings tab. Built without a Databallr screenshot, so a first draft; first page of the Research design phase (D13). Redesigned 2026-11-06 from the owner's saved Databallr pages and screenshots, awaiting the owner ([instructions](#18-six-factor-rapm--ready-for-review-awaiting-the-owner-research-design-phase-page-1-sets-the-research-page-pattern), [evidence](evidence/research/design-18/README.md)) |
 | 19 | Wingspan | `/wingspan` | ⬜ | Research R10 data built 2026-11-06 (plain sections under the combine view, from the owner's saved Databallr Wingspan page): career DARKO D-DPM per player, current D-DPM, percentiles, positional averages with counts and intervals, registered Pearson r (`courtlens-wingspan-ddpm-v1`: wingspan − height · D-DPM +0.21, +0.15 to +0.27, 822 players; descriptive only), scatter with selectable axes, nearest builds. Pending for the design phase: Databallr layout, with-shoes and units toggles, CSV, overlay graphic. Players who skipped the combine (Wembanyama, Holmgren…) stay unknown. [R10 evidence](evidence/research/r10/README.md) |
 | 20 | Offensive Calculator | `/calculator` | ⬜ | Research R10 data built 2026-11-06 (plain sections under the existing hypothetical calculator, from the owner's saved ORTG Lab page): every season's 2014-15 to 2025-26 observed league and team inputs to Poropudas and Halme's Eq. (11) (arXiv:2305.13032, v1 *Dean Oliver's Four Factors Revisited*), μ, offensive-rebound rates after missed twos, threes and final free throws, ORTG and marginals (`courtlens-four-factors-inputs-v2`). Pending for the design phase: the interactive ORTG Lab itself. [R10 evidence](evidence/research/r10/README.md) |
-| 21 | Learning / Patch Notes | `/methodology`, `/whats-new` | ⬜ | Research R11; Blog removed |
+| 21 | Learning / Patch Notes | `/methodology/learning`, `/whats-new` | 👀 | Research R11 built 2026-11-06 (build phase), awaiting the owner; Blog removed |
 | 24 | zTS | `/research/zts` | ⬜ | Research R04, built plain (D13) from the owner's saved Databallr page: About and Top 200 replicated, Player tab built without a reference (not in the save). Registered test `courtlens-zts-validation-v1`: zTS tracks oTS RAPM better, predicts next-season rTS worse. Not reproduced: SV/100, team table, X/Y explorer, position filter. Evidence: `docs/evidence/research/r04/` |
 | 25 | ShotQuality | `/research/shot-quality` | ⬜ | Research R05–R06; CourtLens expected-points model replaces the paid ShotQuality feed. R05 built 2026-11-05 (plain build page): Players tab after the owner's saved ShotQuality RAPM page (filters, ranked table per 100 shots, how to read); Model and Player tabs without reference; the oTS/oSQ/oMake/oFT decomposition is R06, built 2026-11-05 as a Decomposition tab (owner's choice), offence / defence / combined, filters, CSV, intervals. [R05](evidence/research/r05/README.md), [R06](evidence/research/r06/README.md) |
 | 26 | D-ShotQuality | `/research/defensive-matchups` | ⬜ | Research R06, built 2026-11-05 (plain build page) from the owner's saved D-ShotQuality page: ranked cards, All / 2PT / 3PT, ranks, RAPM headline, Key Matchups, paging. From free matchup data 2017-18 onward; expected PPS is the shooters' own shooting, not tracking; no 2nd Defender (help columns are empty). Old tracking page at `/research/defensive-matchups/tracking`. [Evidence](evidence/research/r06/README.md) |
@@ -4400,3 +4400,16 @@ handoff D13):
 Data-blocked: Databallr's six-year 550-day time-decay pool (CourtLens serves one-season fits), its
 hand-written per-player notes, the "residual < 0.6 per player" summary (not served), possessions.
 Evidence: docs/evidence/research/design-18/
+
+### 21 Learning / Patch Notes — 👀 built (Research R11, build phase), awaiting the owner
+From the owner's saved Databallr `Learning` and `patch-notes` pages (Research handoff R11, D14). Build
+phase: shared Research components; the Databallr styling is the design phase's.
+- Learning: 22 topics across 5 tiers (Databallr's four plus Testing Models), each linked to its CourtLens
+  page; 14 quote the measured Research result with its evidence. League trends from `/api/four-factors`.
+- Glossary: `/stats/glossary`, generated from the metric catalog.
+- Patch Notes: real releases (merged PRs and the research branch) and commits, checked against git.
+- Blog: removed (redirects only).
+Data-blocked: league averages before 2014-15 (play-by-play archives start there); version numbers
+(CourtLens has none).
+Evidence: docs/evidence/research/r11/
+

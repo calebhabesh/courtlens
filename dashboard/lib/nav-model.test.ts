@@ -30,8 +30,8 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
       ["/research/win-probability", "/research/projected-impact", "/research/lineup-model"],
       ["/research/rapm/six-factor", "/research/backtest"],
       ["/research/shooting", "/research/defensive-matchups", "/research/zts", "/research/shot-quality"],
-      ["/research/signal-noise", "/forecasts"],
-      ["/wingspan", "/draft", "/calculator"],
+      ["/research/signal-noise", "/forecasts", "/methodology/learning"],
+      ["/wingspan", "/draft", "/calculator", "/whats-new"],
     ]);
     for (const item of research.groups.flatMap(group => group.items)) {
       expect(item.icon, item.label).toBeTruthy();
@@ -44,7 +44,7 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
   });
 
   it("keeps the D9 support links in the More menu", () => {
-    expect(MORE_LINKS.map(item => item.label)).toEqual(["Settings", "Data Status", "Methodology", "What's New", "Planner"]);
+    expect(MORE_LINKS.map(item => item.label)).toEqual(["Settings", "Data Status", "Methodology", "Planner"]);
   });
 
   it("drops Planner from the hosted demo only (PC11)", () => {

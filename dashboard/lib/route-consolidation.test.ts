@@ -2,7 +2,7 @@ import { statSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { activeRouteTab } from "@/components/ui/route-tabs";
-import { analyticalNavItems, MORE_LINKS } from "./nav-model";
+import { analyticalNavItems, MORE_LINKS, TAB_SHORTCUTS } from "./nav-model";
 import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS, HIDDEN_REDIRECTS, TABBED_PAGES, mergedPagePath } from "./route-consolidation";
 import nextConfig from "../next.config";
 
@@ -61,7 +61,7 @@ describe("FO07 route consolidation (D3)", () => {
   it("lists each merged page once in the navigation, under its page title", () => {
     const nav = [...analyticalNavItems(), ...MORE_LINKS];
     for (const page of Object.values(TABBED_PAGES)) {
-      const entries = nav.filter(item => page.tabs.some(tab => tab.href === item.href.split("?")[0]));
+      const entries = nav.filter(item => !TAB_SHORTCUTS.has(item.href) && page.tabs.some(tab => tab.href === item.href.split("?")[0]));
       expect(entries.map(({ label, href }) => ({ label, href })), page.title).toEqual([{ label: page.title, href: page.tabs[0].href }]);
     }
     expect(nav.some(item => item.href.startsWith("/design")), "/design stays internal").toBe(false);

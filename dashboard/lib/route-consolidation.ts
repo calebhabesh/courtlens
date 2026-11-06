@@ -38,9 +38,10 @@ export const TABBED_PAGES = {
       { label: "Shot Aftermath", href: "/research/shooting/aftermath" },
     ],
   },
+  // R11: the What's New route is the Patch Notes changelog, listed under Research → Tools (D8).
   whatsNew: {
-    title: "What's New",
-    subtitle: "Dated changes.",
+    title: "Patch Notes",
+    subtitle: "Every release, with the commit that shipped it.",
     tabs: [
       { label: "Patch Notes", href: "/whats-new" },
     ],

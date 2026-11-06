@@ -4,6 +4,7 @@
   .rs-intro { display: grid; justify-items: center; gap: var(--space-2); text-align: center; }
   .rs-intro-tagline { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-md); line-height: var(--text-md-lh); }
   .rs-intro-links { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-1) var(--space-5); }
+  .rs-links { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
 
   .rs-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; padding-top: var(--space-8); border-top: 1px solid var(--color-hairline-strong); }
   .rs-section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }

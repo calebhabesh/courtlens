@@ -18,7 +18,7 @@ import { DarkoSourceLink } from "./darko-source-link";
 
 const ESTIMATED_POSITIONS: EstimatedPosition[] = ["PG", "SG", "SF", "PF", "C"];
 import { Icon } from "./ui/icon";
-import { readPublication } from "@/lib/original-content";
+import { latestPatchEntry, shortDate } from "@/lib/patch-notes";
 import Link from "next/link";
 import { ControlScope } from "./ui/control-scope";
 
@@ -198,17 +198,9 @@ function stableKey(value: unknown): string {
 }
 
 /** Databallr's "What's New" line: the latest patch note's date and title, linking to the notes. */
-async function WhatsNewLine() {
-  let note = "";
-  try {
-    const source = await readPublication("patch-notes");
-    const heading = source.match(/^# (?:Patch notes: )?(.+)$/m)?.[1] ?? "";
-    const date = source.match(/^(\d{4}-\d{2}-\d{2}) ·/m)?.[1];
-    const when = date ? new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" }) : "";
-    note = [when, heading.charAt(0).toUpperCase() + heading.slice(1)].filter(Boolean).join(": ");
-  } catch {
-    // The link alone still leads to the notes.
-  }
+function WhatsNewLine() {
+  const latest = latestPatchEntry();
+  const note = latest ? `${shortDate(latest.date).replace(/, \d{4}$/, "")}: ${latest.title}` : "";
   return <p className="stats-whats-new">
     <Link href="/whats-new"><Icon name="sparkles" size={14} />What&apos;s New</Link>
     {note && <span className="stats-whats-new-note">· {note}</span>}
