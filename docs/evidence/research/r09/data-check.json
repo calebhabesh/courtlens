@@ -1,0 +1,852 @@
+{
+ "classes": {
+  "1966": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 28,
+    "bio_slot+bbref_id": 2,
+    "name_rule": 1,
+    "none": 81
+   },
+   "picks": 112,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 31
+  },
+  "1967": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 32,
+    "bio_slot+bbref_id": 1,
+    "name_rule": 1,
+    "none": 128
+   },
+   "picks": 162,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 33
+  },
+  "1968": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 47,
+    "none": 167
+   },
+   "picks": 214,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 45
+  },
+  "1969": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 45,
+    "bio_slot+bbref_id": 1,
+    "none": 172
+   },
+   "picks": 218,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 45
+  },
+  "1970": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 53,
+    "bio_slot+bbref_id": 1,
+    "name_rule": 1,
+    "none": 184
+   },
+   "picks": 239,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 55
+  },
+  "1971": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 54,
+    "none": 183
+   },
+   "picks": 237,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 52
+  },
+  "1972": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 46,
+    "bio_slot+bbref_id": 2,
+    "name_rule": 1,
+    "none": 149
+   },
+   "picks": 198,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 49
+  },
+  "1973": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 50,
+    "none": 161
+   },
+   "picks": 211,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 49
+  },
+  "1974": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 61,
+    "bio_slot+bbref_id": 1,
+    "none": 116
+   },
+   "picks": 178,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 62
+  },
+  "1975": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 50,
+    "none": 124
+   },
+   "picks": 174,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 48
+  },
+  "1976": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 50,
+    "none": 123
+   },
+   "picks": 173,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 50
+  },
+  "1977": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 63,
+    "none": 107
+   },
+   "picks": 170,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 63
+  },
+  "1978": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 67,
+    "name_rule": 1,
+    "none": 134
+   },
+   "picks": 202,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 68
+  },
+  "1979": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 53,
+    "none": 149
+   },
+   "picks": 202,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 53
+  },
+  "1980": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 57,
+    "none": 157
+   },
+   "picks": 214,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 57
+  },
+  "1981": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 58,
+    "bio_slot+bbref_id": 1,
+    "none": 164
+   },
+   "picks": 223,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 59
+  },
+  "1982": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 65,
+    "none": 160
+   },
+   "picks": 225,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": null,
+   "with_rapm_season": 0,
+   "with_season_rows": 65
+  },
+  "1983": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 57,
+    "none": 169
+   },
+   "picks": 226,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 57,
+   "with_rapm_season": 0,
+   "with_season_rows": 57
+  },
+  "1984": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 58,
+    "none": 170
+   },
+   "picks": 228,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 58,
+   "with_rapm_season": 0,
+   "with_season_rows": 58
+  },
+  "1985": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 65,
+    "none": 97
+   },
+   "picks": 162,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 65,
+   "with_rapm_season": 0,
+   "with_season_rows": 65
+  },
+  "1986": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 68,
+    "none": 94
+   },
+   "picks": 162,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 68,
+   "with_rapm_season": 0,
+   "with_season_rows": 68
+  },
+  "1987": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 55,
+    "none": 106
+   },
+   "picks": 161,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 55,
+   "with_rapm_season": 0,
+   "with_season_rows": 55
+  },
+  "1988": {
+   "combine_rows": 0,
+   "first_60": 60,
+   "identity": {
+    "bio_slot": 58,
+    "none": 17
+   },
+   "picks": 75,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 58,
+   "with_rapm_season": 0,
+   "with_season_rows": 58
+  },
+  "1989": {
+   "combine_rows": 0,
+   "first_60": 54,
+   "identity": {
+    "bio_slot": 48,
+    "none": 6
+   },
+   "picks": 54,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 48,
+   "with_rapm_season": 0,
+   "with_season_rows": 48
+  },
+  "1990": {
+   "combine_rows": 0,
+   "first_60": 54,
+   "identity": {
+    "bio_slot": 52,
+    "none": 2
+   },
+   "picks": 54,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 52,
+   "with_rapm_season": 0,
+   "with_season_rows": 52
+  },
+  "1991": {
+   "combine_rows": 0,
+   "first_60": 54,
+   "identity": {
+    "bio_slot": 44,
+    "none": 10
+   },
+   "picks": 54,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 44,
+   "with_rapm_season": 0,
+   "with_season_rows": 44
+  },
+  "1992": {
+   "combine_rows": 0,
+   "first_60": 54,
+   "identity": {
+    "bio_slot": 48,
+    "none": 6
+   },
+   "picks": 54,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 48,
+   "with_rapm_season": 0,
+   "with_season_rows": 48
+  },
+  "1993": {
+   "combine_rows": 0,
+   "first_60": 54,
+   "identity": {
+    "bio_slot": 43,
+    "none": 11
+   },
+   "picks": 54,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 43,
+   "with_rapm_season": 0,
+   "with_season_rows": 43
+  },
+  "1994": {
+   "combine_rows": 0,
+   "first_60": 54,
+   "identity": {
+    "bio_slot": 45,
+    "none": 9
+   },
+   "picks": 54,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 45,
+   "with_rapm_season": 0,
+   "with_season_rows": 45
+  },
+  "1995": {
+   "combine_rows": 0,
+   "first_60": 58,
+   "identity": {
+    "bio_slot": 50,
+    "none": 8
+   },
+   "picks": 58,
+   "source": "wikipedia_drafts",
+   "team_codes_missing": 0,
+   "with_first_season_log": 50,
+   "with_rapm_season": 1,
+   "with_season_rows": 50
+  },
+  "1996": {
+   "combine_rows": 0,
+   "first_60": 58,
+   "identity": {
+    "official": 58
+   },
+   "picks": 58,
+   "source": "hoopr_nba_stats_raw",
+   "team_codes_missing": 0,
+   "with_first_season_log": 47,
+   "with_rapm_season": 1,
+   "with_season_rows": 47
+  },
+  "1997": {
+   "combine_rows": 0,
+   "first_60": 57,
+   "identity": {
+    "official": 57
+   },
+   "picks": 57,
+   "source": "hoopr_nba_stats_raw",
+   "team_codes_missing": 0,
+   "with_first_season_log": 47,
+   "with_rapm_season": 1,
+   "with_season_rows": 47
+  },
+  "1998": {
+   "combine_rows": 0,
+   "first_60": 58,
+   "identity": {
+    "official": 58
+   },
+   "picks": 58,
+   "source": "hoopr_nba_stats_raw",
+   "team_codes_missing": 0,
+   "with_first_season_log": 56,
+   "with_rapm_season": 4,
+   "with_season_rows": 56
+  },
+  "1999": {
+   "combine_rows": 0,
+   "first_60": 58,
+   "identity": {
+    "official": 56,
+    "official+bbref_id": 2
+   },
+   "picks": 58,
+   "source": "hoopr_nba_stats_raw",
+   "team_codes_missing": 0,
+   "with_first_season_log": 46,
+   "with_rapm_season": 7,
+   "with_season_rows": 46
+  },
+  "2000": {
+   "combine_rows": 24,
+   "first_60": 58,
+   "identity": {
+    "official": 58
+   },
+   "picks": 58,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 50,
+   "with_rapm_season": 4,
+   "with_season_rows": 50
+  },
+  "2001": {
+   "combine_rows": 37,
+   "first_60": 57,
+   "identity": {
+    "official": 57
+   },
+   "picks": 57,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 49,
+   "with_rapm_season": 10,
+   "with_season_rows": 49
+  },
+  "2002": {
+   "combine_rows": 33,
+   "first_60": 57,
+   "identity": {
+    "official": 57
+   },
+   "picks": 57,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 48,
+   "with_rapm_season": 11,
+   "with_season_rows": 48
+  },
+  "2003": {
+   "combine_rows": 32,
+   "first_60": 58,
+   "identity": {
+    "official": 58
+   },
+   "picks": 58,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 47,
+   "with_rapm_season": 20,
+   "with_season_rows": 47
+  },
+  "2004": {
+   "combine_rows": 37,
+   "first_60": 59,
+   "identity": {
+    "official": 59
+   },
+   "picks": 59,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 46,
+   "with_rapm_season": 20,
+   "with_season_rows": 45
+  },
+  "2005": {
+   "combine_rows": 37,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 55,
+   "with_rapm_season": 24,
+   "with_season_rows": 55
+  },
+  "2006": {
+   "combine_rows": 30,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 52,
+   "with_rapm_season": 18,
+   "with_season_rows": 52
+  },
+  "2007": {
+   "combine_rows": 36,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 49,
+   "with_rapm_season": 23,
+   "with_season_rows": 48
+  },
+  "2008": {
+   "combine_rows": 30,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 51,
+   "with_rapm_season": 36,
+   "with_season_rows": 50
+  },
+  "2009": {
+   "combine_rows": 39,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 50,
+   "with_rapm_season": 36,
+   "with_season_rows": 50
+  },
+  "2010": {
+   "combine_rows": 41,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 51,
+   "with_rapm_season": 32,
+   "with_season_rows": 50
+  },
+  "2011": {
+   "combine_rows": 43,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 54,
+   "with_rapm_season": 40,
+   "with_season_rows": 54
+  },
+  "2012": {
+   "combine_rows": 50,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 56,
+   "with_rapm_season": 46,
+   "with_season_rows": 56
+  },
+  "2013": {
+   "combine_rows": 45,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 51,
+   "with_rapm_season": 46,
+   "with_season_rows": 51
+  },
+  "2014": {
+   "combine_rows": 43,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 54,
+   "with_rapm_season": 54,
+   "with_season_rows": 54
+  },
+  "2015": {
+   "combine_rows": 37,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 44,
+   "with_rapm_season": 44,
+   "with_season_rows": 44
+  },
+  "2016": {
+   "combine_rows": 41,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 55,
+   "with_rapm_season": 55,
+   "with_season_rows": 55
+  },
+  "2017": {
+   "combine_rows": 47,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 57,
+   "with_rapm_season": 57,
+   "with_season_rows": 57
+  },
+  "2018": {
+   "combine_rows": 50,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 57,
+   "with_rapm_season": 57,
+   "with_season_rows": 57
+  },
+  "2019": {
+   "combine_rows": 53,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 58,
+   "with_rapm_season": 58,
+   "with_season_rows": 58
+  },
+  "2020": {
+   "combine_rows": 27,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 58,
+   "with_rapm_season": 58,
+   "with_season_rows": 58
+  },
+  "2021": {
+   "combine_rows": 51,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 56,
+   "with_rapm_season": 56,
+   "with_season_rows": 56
+  },
+  "2022": {
+   "combine_rows": 56,
+   "first_60": 58,
+   "identity": {
+    "official": 58
+   },
+   "picks": 58,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 52,
+   "with_rapm_season": 52,
+   "with_season_rows": 52
+  },
+  "2023": {
+   "combine_rows": 63,
+   "first_60": 58,
+   "identity": {
+    "official": 58
+   },
+   "picks": 58,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 55,
+   "with_rapm_season": 55,
+   "with_season_rows": 55
+  },
+  "2024": {
+   "combine_rows": 60,
+   "first_60": 58,
+   "identity": {
+    "official": 57,
+    "official+bbref_id": 1
+   },
+   "picks": 58,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 55,
+   "with_rapm_season": 55,
+   "with_season_rows": 54
+  },
+  "2025": {
+   "combine_rows": 55,
+   "first_60": 59,
+   "identity": {
+    "official": 59
+   },
+   "picks": 59,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 55,
+   "with_rapm_season": 55,
+   "with_season_rows": 55
+  },
+  "2026": {
+   "combine_rows": 55,
+   "first_60": 60,
+   "identity": {
+    "official": 60
+   },
+   "picks": 60,
+   "source": "nba_stats_mart",
+   "team_codes_missing": 0,
+   "with_first_season_log": 0,
+   "with_rapm_season": 0,
+   "with_season_rows": 0
+  }
+ },
+ "rules": {
+  "name_rule": 5,
+  "official_to_bbref_id": 12
+ },
+ "tables": {
+  "combine": "1779dd333293ee5e7822292c8aa99a19f742304b65aa41910d0e786a84dcb184",
+  "picks": "d5bdcbe038b608a4323d8a0009f3c17a5ab6ccb8919cb3083d4927f5424bbe88",
+  "rapm": "3efa01a68e7c042917444f42f5447bbc78d55d6c1966a2a9a8163cc1eb59f287",
+  "rookies": "a22deec431487b465e4f555e1568a640d517851bf251ff283f9b49dc1e41c23f",
+  "seasons": "395424e2847fb9478d45f4d8eb2049f414c84c8b24dae4e9387371b13f2e2484"
+ }
+}

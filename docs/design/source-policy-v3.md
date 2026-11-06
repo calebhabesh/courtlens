@@ -43,6 +43,7 @@ The machine-readable registry is `src/courtlens/domain/source_policy.py`. Source
 | ESPN injuries | `site.api.espn.com` | injuries | 5 s |
 | ESPN team rosters | `site.api.espn.com` | current rosters for the free-agency roster check (`courtlens refresh-espn-rosters`, every 6 h) | 5 s |
 | Wikipedia NBA season transactions | `en.wikipedia.org` | dated signings, two-way deals, waivers, camp cuts, signings abroad and retirements for Free Agency's current status (`courtlens refresh-wikipedia-transactions`, daily); CC BY-SA 4.0, attributed | 5 s |
+| Wikipedia NBA draft articles | `en.wikipedia.org/wiki/<year>_NBA_draft` | full pick lists for the 1966 to 1995 drafts, read once for Draft Classes (`courtlens acquire-draft-history`, R09; the 1996 to 1999 lists come from the hoopR mirror); CC BY-SA 4.0, attributed | 5 s |
 | Official league cap release | `nba.com` | cap thresholds | entered by hand |
 | DARKO (darko.app) | `www.darko.app` | DPM, ODPM, DDPM (Kostya Medvedovsky's model) | 5 s |
 
