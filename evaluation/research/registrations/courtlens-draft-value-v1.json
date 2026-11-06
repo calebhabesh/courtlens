@@ -1,0 +1,102 @@
+{
+ "schema_version": "courtlens-research-registration-v1",
+ "identity": "courtlens-draft-value-v1",
+ "block": "R09",
+ "registered_on": "2026-11-06",
+ "kind": "descriptive",
+ "question": "What has each NBA draft slot been worth, measured by realized NBA value, and how would each complete draft class from 1966 to 2022 be redrafted by that value? Which picks most exceeded or fell short of their slot's expectation? How do 2026-27 rookies compare with past rookies taken at the same pick at the same point of their first season? Combine measurements are shown beside realized value, descriptively. No prospect projection model (D4; R13 stays parked).",
+ "inputs": [
+  "PICKS: every pick of every NBA draft 1966-2026 (6,581 picks; 3,595 at slots 1-60). Drafts 1966-95 from each year's Wikipedia article '<year> NBA draft' (first draft table only; later tables are supplemental, hardship or ABA dispersal drafts), read once and sealed in courtlens-draft-history-v1 with each page's revision ID; 1996-99 from the official NBA Stats drafthistory files in the pinned hoopR mirror (revision 7f2c0afa); 2000-26 from the official draft-history mart (draft_type 'Draft'). Every class has picks numbered 1..N with no gap. Territorial, supplemental and dispersal picks are excluded.",
+  "IDENTITY: an official pick carries its NBA person ID. A Wikipedia pick (1966-95) is the player whose NBA.com bio records that draft year and overall number (1,778 of 1,778 bio slots name the same person on Wikipedia; 10 differ only by a later name change or nickname). Otherwise, the name rule: a unique same-name player whose bio has no draft record (or who has season totals only under a Basketball-Reference ID) and whose first NBA season starts within 2 seasons after the draft (5 picks). An official pick whose NBA ID has no season totals takes the same-name Basketball-Reference-only player under the same rule (12 picks, for example Jo Jo White, Bobby Jones, Omer Asik). A player drafted more than once is credited to the draft his bio records; his earlier picks produced no NBA career for the team that made them. 3,164 picks name no NBA player.",
+  "SEASONS: NBA regular-season games, minutes and win shares per player-season, 1966-67 to 2025-26, from the full-history season totals (bbref_player_seasons, Basketball-Reference season pages; the multi-team summary row when a player changed teams). ABA seasons are not NBA value and are not counted.",
+  "RAPM: 1Y regular-season RAPM and on-court seconds per player-season 2014-15 to 2025-26 from R01's sealed fits (the same fits R08 reads).",
+  "COMBINE: NBA Draft Combine measurements (official combine-stats and anthropometric feeds via the hoopR mirror) for drafted players, 2000-26.",
+  "ROOKIES: each drafted player's first NBA regular season with a logged appearance, up to 82 appearances in date order, from the published game logs (dataset 1940051a-cd59-40e9-9730-fc48f819e32c; complete from 1983-84: 943 games a season for 23 teams, then every game).",
+  "CURRENT ROOKIES (served, not frozen): 2026 draft picks' 2026-27 regular-season appearances in the published game logs on or before the comparison date; DARKO's newest current board whose ratings date is on or before it; R15b's newest time-decay RAPM snapshot whose cutoff is on or before the day after it (every snapshot reads only games before its cutoff)."
+ ],
+ "method": [
+  "REALIZED VALUE, WINDOW: win shares and minutes over the first four NBA seasons after the draft, the calendar seasons starting in the draft year through three years later (a draft-and-stash year counts as a season with no value). Comparable across classes; complete for classes 1966-2022 because 2025-26 is the last complete season.",
+  "REALIZED VALUE, CAREER TO DATE: all regular seasons from the draft year to 2025-26. Value by pick on career uses classes 1966-2005 only (at least 21 seasons elapsed); players from those classes still active in 2025-26 count at their value to date and are counted per slot.",
+  "RAPM VALUE: on-court-seconds-weighted mean of 1Y RAPM over the window seasons, for classes 2014-2022 only (the window inside RAPM coverage). A pick with no RAPM fit row in the window is unknown, never zero, and is counted per slot.",
+  "ZERO VERSUS UNKNOWN: a pick with no regular-season row in the complete league totals played 0 NBA minutes and earned 0 win shares; that is a recorded absence from a complete league table, not a missing box score. A season row without win shares would make that player's win shares unknown, excluded and counted.",
+  "VALUE BY PICK: for each slot 1-60, the mean window value (win shares, minutes) over picks in the era, with the median, 90th percentile and share who played any NBA regular-season game. Eras: all classes 1966-2022, multi-round era 1966-88, two-round era 1989-2022; career eras 1966-2005, 1966-88, 1989-2005; RAPM 2014-22. No smoothing.",
+  "SLOT BANDS: mean window value of band A minus band B, for pick 1 vs 2, picks 1-3 vs 4-10, 1-10 vs 11-30, 21-30 vs 31-40, 31-45 vs 46-60, in each era and measure. A band is called higher or lower only when its 95% interval excludes zero; otherwise no difference.",
+  "CENSORING: classes 2023-25 have fewer than four seasons; they show value to date labelled with seasons elapsed and are never redrafted, given an expectation, or listed as steals or misses. 2026 is the rookie class. A complete class with players active in 2025-26 is labelled with how many.",
+  "REDRAFT: within each complete class (1966-2022), every pick (all rounds) ranked by window win shares, ties broken by window minutes then the original pick; a second ranking uses career win shares to date. Undrafted players are not in any class.",
+  "STEALS AND MISSES: a pick's surplus is its window win shares minus the mean window win shares of picks at the same slot in the same era (1966-88 or 1989-2022) from every other complete class (leave-one-class-out). Slots after 60 share one bucket, '61+'. Steals: the 10 largest surpluses in a class (any round). Misses: the 10 most negative surpluses among first-round picks. Overall lists: the 25 largest and 25 most negative across complete classes.",
+  "COMBINE BESIDE VALUE: for drafted players in classes 2000-22 with a combine row, Pearson r between each measurement (height without shoes, wingspan, wingspan minus height, standing reach, weight, max vertical, lane agility, three-quarter sprint) and window win shares and minutes. Descriptive only: no model, no prediction, no adjustment for pick.",
+  "ROOKIE COMPARISON: a 2026-27 rookie with g appearances to the comparison date is compared with every player taken at the same overall pick in classes 1983-2025 whose first NBA regular season is in the game logs, over that player's first min(g, G) first-season appearances (G his first-season total; the number who reached g is reported). Stats: minutes per game; points, rebounds, assists, steals, blocks and turnovers per 36 minutes; true shooting (PTS / (2 x (FGA + 0.44 x FTA))). For each: the rookie's value, the pool's median, 10th and 90th percentile, and his percentile rank (share below plus half of ties). Under 100 minutes is flagged as a small sample. DARKO and RAPM are shown for current rookies with their dates; past rookies have no rating at the same point (DARKO history is retrospective; RAPM fits are season-level), so ratings are not compared.",
+  "TEMPORAL RULE: nothing after a comparison date enters it: current rookies' games are filtered to dates on or before it, ratings are dated on or before it, and a past rookie's games after his first g appearances are never read."
+ ],
+ "parameters": {
+  "table_sha256": {
+   "picks": "d5bdcbe038b608a4323d8a0009f3c17a5ab6ccb8919cb3083d4927f5424bbe88",
+   "seasons": "395424e2847fb9478d45f4d8eb2049f414c84c8b24dae4e9387371b13f2e2484",
+   "rapm": "3efa01a68e7c042917444f42f5447bbc78d55d6c1966a2a9a8163cc1eb59f287",
+   "combine": "1779dd333293ee5e7822292c8aa99a19f742304b65aa41910d0e786a84dcb184",
+   "rookies": "a22deec431487b465e4f555e1568a640d517851bf251ff283f9b49dc1e41c23f"
+  },
+  "draft_history_bundle_sha256": "cfa65a4870ddfb8b0048486f83af17351b671e278afe89ade3f5f8ee7b902180",
+  "game_log_dataset_id": "1940051a-cd59-40e9-9730-fc48f819e32c",
+  "seed": 909,
+  "replicates": 2000,
+  "interval_percentiles": [2.5, 97.5],
+  "window_seasons": 4,
+  "slots": 60,
+  "last_complete_season": "2025-26",
+  "window_classes": [1966, 2022],
+  "career_classes": [1966, 2005],
+  "rapm_classes": [2014, 2022],
+  "censored_classes": [2023, 2025],
+  "rookie_class": 2026,
+  "eras": {"all": [1966, 2022], "multi_round": [1966, 1988], "two_round": [1989, 2022]},
+  "career_eras": {"all": [1966, 2005], "multi_round": [1966, 1988], "two_round": [1989, 2005]},
+  "measures": ["ws", "min"],
+  "bands": [
+   ["pick_1_vs_2", [1, 1], [2, 2]],
+   ["top_3_vs_4_to_10", [1, 3], [4, 10]],
+   ["top_10_vs_11_to_30", [1, 10], [11, 30]],
+   ["21_to_30_vs_31_to_40", [21, 30], [31, 40]],
+   ["31_to_45_vs_46_to_60", [31, 45], [46, 60]]
+  ],
+  "steals_per_class": 10,
+  "top_list": 25,
+  "combine_classes": [2000, 2022],
+  "combine_measures": ["height", "wingspan", "wingspan_minus_height", "standing_reach", "weight", "max_vertical", "lane_agility", "sprint"],
+  "rookie_pool_classes": [1983, 2025],
+  "rookie_stats": ["mpg", "pts36", "reb36", "ast36", "stl36", "blk36", "tov36", "ts"],
+  "small_sample_minutes": 100,
+  "name_rule_seasons": 2
+ },
+ "selection": "Nothing is chosen from outcomes. The window length, eras, bands, censoring, redraft, surplus and comparison rules are fixed here before any value is summarized; there is one pass.",
+ "uncertainty": "Seeded percentile bootstrap, 2,000 replicates, 95%: over the players at each slot for value by pick (SeedSequence([909, 1 or 2, era, measure, slot]); RAPM [909, 3, slot]); over the players of each band independently for band differences ([909, 4, era, measure, band]); over players for combine correlations ([909, 5, measure, outcome]). Redraft ranks, surpluses and rookie percentiles are descriptive and carry no interval; the pool's 10th to 90th percentile range is shown instead.",
+ "evaluation": [
+  "Value by pick per slot, era and measure with intervals, unknown and played counts.",
+  "Band differences with intervals and the registered verdict.",
+  "Each complete class redrafted on window and career win shares; each pick's expectation and surplus; per-class and overall steals and misses.",
+  "Combine correlations with intervals and n.",
+  "Rookie pool sizes by pick; the comparison rule served on 2026-27 rookies with its comparison date."
+ ],
+ "acceptance": [
+  "Every class 1966-2026 has a full pick list with no gap in pick numbers; coverage by class (source, identity rule, picks naming an NBA player) is published.",
+  "Two `reproduce` runs give the frozen results hash.",
+  "Tests prove that censored and rookie classes are never redrafted or scored, that the expectation leaves out the pick's own class, that a missing win-share value is unknown rather than zero, and that the rookie comparison reads no game after the comparison point.",
+  "The API serves every number with its unknown state, and the page's values equal the API's."
+ ],
+ "outputs": [
+  "evaluation/research/frozen/courtlens-draft-value-v1.json",
+  "data/derived/draft-value-v1/tables/<sha256>.json (local inputs, hashes above)",
+  "docs/evidence/research/r09/"
+ ],
+ "limitations": [
+  "Win shares (Basketball-Reference) and minutes measure playing time and box-score production, not impact; RAPM covers only classes 2014-22.",
+  "NBA value only: picks who played in the ABA (heavily in 1967-76) are undervalued.",
+  "Value by pick is descriptive: it mixes team needs, trades of picks, league size (10 to 30 teams) and changing draft rules. A pick's expectation is the historical average, not what a team could have known.",
+  "1966-95 lists come from Wikipedia (CC BY-SA 4.0), not NBA Stats, which no client CourtLens has tried can reach; identities follow NBA.com's bio draft fields.",
+  "Career value for players still active in 2025-26 is to date; the career view uses classes 1966-2005 to limit this.",
+  "Rookie comparisons are early-season samples; the 100-minute flag marks the noisiest. Past rookies' first seasons may start a year or more after their draft."
+ ],
+ "negative_result_policy": "Publish every number whatever it shows, including slots or bands with no measurable difference, combine measurements unrelated to value, and rookies far below their slot's history.",
+ "seed": 909,
+ "budget": {"cpu_threads": 1, "max_peak_mib": 4096, "max_wall_seconds": 1800}
+}
