@@ -62,10 +62,13 @@ export function GridPlayer({ playerId, name, team, season, era, subtitle, href, 
   </span>;
 }
 
-/** A figure with an optional small second line; unknown is "—". */
-export function GridValue({ text, sub, identity, muted }: { text: string | null; sub?: string | null; identity?: "a" | "b"; muted?: boolean }) {
+/**
+ * A figure with an optional small second line; unknown is "—". `identity` (gold/blue) shows a sign; `tone` (green/red) is only for
+ * a value whose served interval excludes zero (RD04), and `title` says why.
+ */
+export function GridValue({ text, sub, identity, tone, muted, title }: { text: string | null; sub?: string | null; identity?: "a" | "b"; tone?: "good" | "bad"; muted?: boolean; title?: string }) {
   if (text === null || text === "—") return <span className="rs-grid-value rs-grid-unknown">—</span>;
-  return <><span className="rs-grid-value stat-main-value" data-identity={identity} data-muted={muted || undefined}>{text}</span>{sub != null && <span className="rs-grid-sub">{sub}</span>}</>;
+  return <><span className="rs-grid-value stat-main-value" data-identity={identity} data-tone={tone} data-muted={muted || undefined} title={title}>{text}</span>{sub != null && <span className="rs-grid-sub">{sub}</span>}</>;
 }
 
 export function StatsGrid<T>({ label, rows, rowKey, lead, columns, sort, density = "default", height = "scroll", leadWidth = "lg", minWidth = "default", empty, rowData, className = "", name }: StatsGridProps<T>) {

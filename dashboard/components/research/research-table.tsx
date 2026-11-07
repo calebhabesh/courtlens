@@ -9,7 +9,6 @@ import { type IconName } from "../ui/icon";
 import { Input, SearchField } from "../ui/input";
 import { Button, Segmented, Select } from "../ui/kit";
 import { ToneLegend } from "./research-page";
-import { TeamPicker } from "./team-picker";
 import { downloadCsv, intervalLabel, intervalTone, signed, toCsv } from "@/lib/research-values";
 
 /*
@@ -57,16 +56,13 @@ export interface ResearchTableProps<T> {
   teamSeason?: (row: T) => string | null;
   /** The team filter in the toolbar (on when `team` is set, unless this is false). */
   teamFilter?: boolean;
-  /** The team filter as the site's logo-grid picker instead of a select (RD04 round 2). */
-  teamPicker?: boolean;
   season: string;
   player: (row: T) => ReactNode;
   views: readonly ResearchView<T>[];
   /** Columns shown in every view, after the view's own (sample size). */
   trailingColumns?: readonly ResearchColumn<T>[];
   defaultSort: string;
-  /** A floor on a count; `value` gets the current view, for a count that differs by view. */
-  minimum?: { label: string; value: (row: T, view: string) => number | null; initial: number; step: number };
+  minimum?: { label: string; value: (row: T) => number | null; initial: number; step: number };
   csv: { filename: string; columns: readonly { header: string; value: (row: T) => string | number | null }[] };
   noun: string;
   actions?: ReactNode;
@@ -74,11 +70,6 @@ export interface ResearchTableProps<T> {
   footnote?: ReactNode;
   /** Page hook for sizing the frame or columns. */
   className?: string;
-  /** Controlled view (a URL parameter); otherwise the table keeps its own. */
-  view?: string;
-  onViewChange?: (view: string) => void;
-  /** Interval level the colour key names (80 unless the feed serves another). */
-  intervalLevel?: number;
 }
 
 type Direction = "asc" | "desc";
@@ -121,10 +112,8 @@ function ValueCell<T>({ column, row, scale, start }: { column: ResearchColumn<T>
 }
 
 export function ResearchTable<T>(props: ResearchTableProps<T>) {
-  const { label, rows, rowKey, name, team, teamSeason, teamFilter: showTeamFilter = true, teamPicker = false, season, player, views, trailingColumns = [], defaultSort, minimum, csv, noun, actions, rowAction, footnote, className, intervalLevel = 80 } = props;
-  const [ownView, setOwnView] = useState(views[0].value);
-  const view = props.view && views.some(item => item.value === props.view) ? props.view : ownView;
-  const setView = (next: string) => { setOwnView(next); props.onViewChange?.(next); };
+  const { label, rows, rowKey, name, team, teamSeason, teamFilter: showTeamFilter = true, season, player, views, trailingColumns = [], defaultSort, minimum, csv, noun, actions, rowAction, footnote, className } = props;
+  const [view, setView] = useState(views[0].value);
   const [query, setQuery] = useState("");
   const [teamFilter, setTeamFilter] = useState("");
   const [floor, setFloor] = useState(minimum ? String(minimum.initial) : "");
@@ -136,8 +125,8 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
     const least = Number(floor);
     return rows.filter(row => (!needle || name(row).toLocaleLowerCase("en-US").includes(needle))
       && (!teamFilter || team?.(row) === teamFilter)
-      && (!minimum || !Number.isFinite(least) || least <= 0 || (minimum.value(row, view) ?? -Infinity) >= least));
-  }, [rows, query, teamFilter, floor, minimum, name, team, view]);
+      && (!minimum || !Number.isFinite(least) || least <= 0 || (minimum.value(row) ?? -Infinity) >= least));
+  }, [rows, query, teamFilter, floor, minimum, name, team]);
   /* A view without the sorted column sorts by its own first column. */
   const sortColumn = columns.find(column => column.key === sort.key) ?? columns[0];
   const activeSort = sortColumn.key;
@@ -152,8 +141,7 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
       <div className="rt-toolbar-row">
         <SearchField aria-label={`Search ${noun}`} placeholder={`Search ${noun.replace(/s$/, "")}…`} value={query} onChange={event => setQuery(event.target.value)} onClear={() => setQuery("")} inputSize="md" wrapperClassName="rt-search" />
         {minimum && <label className="rt-minimum"><span>{minimum.label}</span><Input type="number" inputMode="numeric" min={0} step={minimum.step} value={floor} onChange={event => setFloor(event.target.value)} aria-label={minimum.label} inputSize="md" wrapperClassName="rt-minimum-input" /></label>}
-        {team && showTeamFilter && teamPicker && <TeamPicker value={teamFilter || null} onChange={code => setTeamFilter(code ?? "")} season={season} />}
-        {team && showTeamFilter && !teamPicker && <Select size="md" aria-label="Team" value={teamFilter} onChange={event => setTeamFilter(event.target.value)}>
+        {team && showTeamFilter && <Select size="md" aria-label="Team" value={teamFilter} onChange={event => setTeamFilter(event.target.value)}>
           <option value="">All teams</option>
           {teams.map(code => <option key={code} value={code}>{code}</option>)}
         </Select>}
@@ -185,6 +173,6 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
         </table>
       </div>
     </div>
-    <div className="rt-foot">{columns.some(column => column.interval) && <ToneLegend level={intervalLevel} />}{footnote && <p className="rs-note">{footnote}</p>}</div>
+    <div className="rt-foot">{columns.some(column => column.interval) && <ToneLegend />}{footnote && <p className="rs-note">{footnote}</p>}</div>
   </div>;
 }
