@@ -485,3 +485,14 @@ tiles are nested too deep (one level only); balance the stepper cards' left and 
   0 overflow, 0 broken images.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD02 round 4: site text colour, fewer dividers
+
+[Evidence](evidence/research/design-RD02/README.md#round-4-owner-2026-11-07). Owner: the methodology text is greyer than the
+site's; remove the divider above Observed Inputs & Caveats, and the dividers above and below the Six-Factor RAPM intro. CSS only.
+
+- **Change.** The calculator's neutral greys become the Research pages' blue-tinted `--color-on-bg-*` tokens; no rule above
+  the collapsed section. Six-Factor RAPM: no rule under the filter bar or over The Framework (RD00's page, at the owner's word).
+- **Checks.** Lint 0/0, typecheck, Vitest 812; page specs 119/119 ×3; full Playwright 592 passed, 2 failed (the Six-Factor
+  baselines, changed by design; regenerated, viewed, visual spec 84/84); real data 1,596 values, 0 mismatches.
+- **Not done.** The owner's review and ✅.
+

@@ -136,6 +136,8 @@ Instructions (owner, 2026-11-06, round 7; screenshot of the All Ratings table sc
    — The pinned player column tied the sticky filter bar's layer and, being later, painted over it; the shared table's
    scroll frame is now its own stacking context, so it scrolls under the bar on both tabs at every width.
 
+Owner, 2026-11-07 (given during RD02 round 4, instruction 6): the dividers above and below the intro line removed.
+
 ## RD01 Combine & Wingspan — ✅ approved by the owner (2026-11-07)
 
 - **Now:** the combine measurements view plus R10's plain sections: career and current DARKO D-DPM,
@@ -254,6 +256,16 @@ Instructions (owner, 2026-11-07, round 2; screenshot: the stepper board's ORTG /
 3. [x] (Screenshot: the stepper cards.) Balance the left and right columns in the container, it looks a little weird.
    — Each stepper card is two equal columns, each centred; the label and ΔORTG share one row and the control and its
    figure the next. A phone keeps the stacked two-column board.
+
+Instructions (owner, 2026-11-07, round 4; screenshots: the methodology panel, and the Six-Factor RAPM intro):
+4. [x] Why is the text so grey here (the methodology panel)? That's not what we use across the site.
+   — The page used the neutral greys (`--color-text-secondary` / `-tertiary`); every one now uses the Research pages'
+   blue-tinted `--color-on-bg-secondary` / `-tertiary`, as the other explainers do.
+5. [x] Remove the divider above "Observed Inputs & Caveats".
+   — Its top rule is gone on this page.
+6. [x] Remove the divider above and below "RAPM split into six factors," on the Six-Factor RAPM page. These dividers are ugly.
+   — The filter bar's bottom rule and The Framework's top rule are gone on that page (`six-factor-research.css`); its two
+   visual baselines regenerated and viewed.
 
 ## RD03 zTS — ⬜
 
