@@ -76,7 +76,7 @@ function ShotMaking({ summary }: { summary: ShotQualitySummary }) {
       {loading && <FeedSkeleton label="Loading player shot-making" />}
       {data?.status === "unknown" && <SqPanel className="sq-unknown" label="Season"><div className="sq-control-row">{seasonSelect}</div><GatedNote>{data.reason}</GatedNote></SqPanel>}
       {data?.status === "available" && <ResearchTable label={`Shot-making ${data.season}`} className="sq-board sq-players" rows={data.rows} rowKey={r => r.player_id} name={r => r.player_name}
-        team={r => r.tricode} season={data.season} views={[{ value: "shot-making", label: "Shot-making", columns }]} defaultSort="shot_making" noun="players" intervalLevel={95}
+        team={r => r.tricode} teamPicker season={data.season} views={[{ value: "shot-making", label: "Shot-making", columns }]} defaultSort="shot_making" noun="players" intervalLevel={95}
         player={r => { const [, ...others] = r.teams; return <PlayerIdentity playerId={r.player_id} name={r.player_name} team={r.tricode} size="sm" era={seasonEra(data.season, r.tricode)}
           href={`/players/${r.player_id}?season=${data.season}`} subtitle={others.length ? <TeamCodes teams={others} season={data.season} /> : undefined} />; }}
         minimum={{ label: "Min FGA", value: r => r.fga, initial: minFga, step: 50 }}

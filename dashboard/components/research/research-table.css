@@ -50,6 +50,9 @@
   .rt-unknown { color: var(--color-text-tertiary); }
   .player-ref-grid.rt-grid td.rt-empty { height: 96px; text-align: center; color: var(--color-text-secondary); }
   .rt-foot { display: grid; gap: var(--space-2); }
+  /* RD04 round 2: the logo-grid team picker's dialog, as WOWY's. */
+  .rs-team-modal { width: min(520px, calc(100vw - 2 * var(--space-4))); }
+  .rs-team-clear { margin-top: var(--space-3); }
 
   @media (max-width: 767px) {
     .rt-search { flex-basis: 100%; max-width: none; }
