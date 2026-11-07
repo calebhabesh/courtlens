@@ -18,6 +18,7 @@
   .player-ref-grid.rt-grid .rt-col-value { width: 128px; }
   .player-ref-grid.rt-grid .rt-col-signed { width: 96px; }
   .player-ref-grid.rt-grid .rt-col-count { width: 64px; }
+  .player-ref-grid.rt-grid .rt-col-text { width: 72px; }
   .player-ref-grid.rt-grid .rt-col-action { width: 56px; }
   .player-ref-grid.rt-grid thead th { top: 0; height: 40px; padding: var(--space-1) var(--space-3); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-transform: uppercase; vertical-align: middle; text-align: right; }
   .player-ref-grid.rt-grid thead .group-start { border-left: 1px solid var(--color-hairline-strong); }
@@ -41,6 +42,9 @@
   .rt-value { font-weight: 650; }
   .rt-value[data-tone="good"] { color: var(--color-positive); }
   .rt-value[data-tone="bad"] { color: var(--color-negative); }
+  /* RD01: a sign in identity colour (gold above zero, blue below), after Databallr; never good or bad. */
+  .rt-value[data-identity="a"] { color: var(--color-identity-a); }
+  .rt-value[data-identity="b"] { color: var(--color-identity-b); }
   .rt-interval { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: right; white-space: nowrap; }
   .rt-interval[data-unknown] { white-space: normal; }
   .rt-unknown { color: var(--color-text-tertiary); }

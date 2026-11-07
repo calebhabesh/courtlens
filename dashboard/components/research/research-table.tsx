@@ -31,6 +31,16 @@ export interface ResearchColumn<T> {
   digits?: number;
   /** Why a cell is unknown, for its title. */
   unknown?: (row: T) => string | undefined;
+  /** Display text for a known value (units, feet-inches, a label); `data-value` keeps the exact number. */
+  format?: (value: number, row: T) => string;
+  /** A second line under the value, such as a percentile. */
+  sub?: (row: T) => string | null;
+  /** Identity tone (a gold, b blue) that carries a sign, never good or bad (RD01, after Databallr). */
+  identity?: (row: T) => "a" | "b" | undefined;
+  /** Signed columns draw a bar unless this is false. */
+  bar?: boolean;
+  /** Column width class; by default from `signedValue` and `interval`. */
+  width?: "value" | "signed" | "count" | "text";
 }
 
 export interface ResearchView<T> { value: string; label: string; icon?: IconName; columns: readonly ResearchColumn<T>[] }
@@ -42,6 +52,10 @@ export interface ResearchTableProps<T> {
   name: (row: T) => string;
   /** Team code per row for the logo column and team filter; omit when the feed serves no team. */
   team?: (row: T) => string | null;
+  /** Season of each row's logo when rows span seasons; otherwise `season`. */
+  teamSeason?: (row: T) => string | null;
+  /** The team filter in the toolbar (on when `team` is set, unless this is false). */
+  teamFilter?: boolean;
   season: string;
   player: (row: T) => ReactNode;
   views: readonly ResearchView<T>[];
@@ -54,6 +68,8 @@ export interface ResearchTableProps<T> {
   actions?: ReactNode;
   rowAction?: (row: T) => ReactNode;
   footnote?: ReactNode;
+  /** Page hook for sizing the frame or columns. */
+  className?: string;
 }
 
 type Direction = "asc" | "desc";
@@ -72,6 +88,14 @@ function ValueCell<T>({ column, row, scale, start }: { column: ResearchColumn<T>
   const value = column.value(row);
   const interval = column.interval?.(row);
   const className = start ? "group-start" : undefined;
+  if (column.format || column.sub || column.identity || column.bar === false) {
+    if (value == null) return <td className={className} data-column={column.key} title={column.unknown?.(row)}><span className="rt-unknown">—</span></td>;
+    const sub = column.sub?.(row) ?? null, identity = column.identity?.(row);
+    const text = column.format ? column.format(value, row) : column.signedValue ? signed(value, column.digits ?? 2) : Math.round(value).toLocaleString("en-US");
+    return <td className={className} data-column={column.key} data-value={value}>
+      <span className="rt-figures"><span className="rt-value" data-identity={identity}>{text}</span>{sub != null && <span className="rt-interval">{sub}</span>}</span>
+    </td>;
+  }
   if (!column.signedValue) return <td className={className} data-column={column.key} data-value={value ?? undefined}>{value == null ? "—" : Math.round(value).toLocaleString("en-US")}</td>;
   if (value == null) return <td className={className} data-column={column.key} title={column.unknown?.(row)}><span className="rt-unknown">—</span></td>;
   const tone = interval ? intervalTone(interval.low, interval.high) : undefined;
@@ -88,7 +112,7 @@ function ValueCell<T>({ column, row, scale, start }: { column: ResearchColumn<T>
 }
 
 export function ResearchTable<T>(props: ResearchTableProps<T>) {
-  const { label, rows, rowKey, name, team, season, player, views, trailingColumns = [], defaultSort, minimum, csv, noun, actions, rowAction, footnote } = props;
+  const { label, rows, rowKey, name, team, teamSeason, teamFilter: showTeamFilter = true, season, player, views, trailingColumns = [], defaultSort, minimum, csv, noun, actions, rowAction, footnote, className } = props;
   const [view, setView] = useState(views[0].value);
   const [query, setQuery] = useState("");
   const [teamFilter, setTeamFilter] = useState("");
@@ -112,12 +136,12 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
   const onSort = (key: string) => setSort(current => activeSort === key ? { key, direction: current.direction === "desc" ? "asc" : "desc" } : { key, direction: "desc" });
   const exportCsv = () => downloadCsv(csv.filename, toCsv(csv.columns.map(column => column.header), sorted.map(row => csv.columns.map(column => column.value(row)))));
   const viewSwitch = views.length > 1 && <Segmented size="sm" label="View" value={view} onChange={setView} options={views.map(item => ({ value: item.value, label: item.label, icon: item.icon }))} />;
-  return <div className="rt">
+  return <div className={className ? `rt ${className}` : "rt"}>
     <div className="rt-toolbar">
       <div className="rt-toolbar-row">
         <SearchField aria-label={`Search ${noun}`} placeholder={`Search ${noun.replace(/s$/, "")}…`} value={query} onChange={event => setQuery(event.target.value)} onClear={() => setQuery("")} inputSize="md" wrapperClassName="rt-search" />
         {minimum && <label className="rt-minimum"><span>{minimum.label}</span><Input type="number" inputMode="numeric" min={0} step={minimum.step} value={floor} onChange={event => setFloor(event.target.value)} aria-label={minimum.label} inputSize="md" wrapperClassName="rt-minimum-input" /></label>}
-        {team && <Select size="md" aria-label="Team" value={teamFilter} onChange={event => setTeamFilter(event.target.value)}>
+        {team && showTeamFilter && <Select size="md" aria-label="Team" value={teamFilter} onChange={event => setTeamFilter(event.target.value)}>
           <option value="">All teams</option>
           {teams.map(code => <option key={code} value={code}>{code}</option>)}
         </Select>}
@@ -130,7 +154,7 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
     <div className="player-ref-grid-frame rt-frame">
       <div className="player-ref-grid-scroll rt-scroll" role="region" aria-label={label} tabIndex={0}>
         <table className="player-ref-grid rt-grid" data-columns={columns.length} data-team={team ? "logo" : undefined}>
-          <colgroup>{team && <col className="rt-col-logo" />}<col className="player-ref-grid-lead-column" />{columns.map(column => <col key={column.key} className={column.signedValue ? (column.interval ? "rt-col-value" : "rt-col-signed") : "rt-col-count"} />)}{rowAction && <col className="rt-col-action" />}</colgroup>
+          <colgroup>{team && <col className="rt-col-logo" />}<col className="player-ref-grid-lead-column" />{columns.map(column => <col key={column.key} className={`rt-col-${column.width ?? (column.signedValue ? (column.interval ? "value" : "signed") : "count")}`} />)}{rowAction && <col className="rt-col-action" />}</colgroup>
           <thead><tr className="rt-head">
             {team && <th scope="col" className="rt-logo"><span className="sr-only">Team</span></th>}
             <th scope="col" className="player-ref-grid-lead">Player</th>
@@ -140,7 +164,7 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
           <tbody>
             {sorted.length === 0 && <tr><td className="rt-empty" colSpan={columns.length + (team ? 2 : 1) + (rowAction ? 1 : 0)}>No {noun} match these filters.</td></tr>}
             {sorted.map(row => { const code = team?.(row); return <tr key={rowKey(row)} data-row={rowKey(row)}>
-              {team && <td className="rt-logo">{code ? <TeamLogo team={code} season={season} size={20} /> : <span className="rt-unknown" title="Team unknown">—</span>}</td>}
+              {team && <td className="rt-logo">{code ? <TeamLogo team={code} season={teamSeason?.(row) ?? season} size={20} /> : <span className="rt-unknown" title="Team unknown">—</span>}</td>}
               <th scope="row" className="player-ref-grid-lead">{player(row)}</th>
               {columns.map((column, index) => <ValueCell key={column.key} column={column} row={row} scale={scales.get(column.key) ?? 0} start={index === 0} />)}
               {rowAction && <td className="rt-action">{rowAction(row)}</td>}

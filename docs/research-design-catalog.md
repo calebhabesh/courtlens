@@ -53,7 +53,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | --- | --- | --- | --- | --- | --- |
 | **A. Pages with a saved Databallr reference** | | | | | |
 | RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18, RD00 | ✅ |
-| RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data | ⬜ |
+| RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data, RD01 | 👀 |
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data | ⬜ |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04 | ⬜ |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06 | ⬜ |
@@ -136,14 +136,34 @@ Instructions (owner, 2026-11-06, round 7; screenshot of the All Ratings table sc
    — The pinned player column tied the sticky filter bar's layer and, being later, painted over it; the shared table's
    scroll frame is now its own stacking context, so it scrolls under the bar on both tabs at every width.
 
-## RD01 Combine & Wingspan — ⬜
+## RD01 Combine & Wingspan — 👀 ready for the owner's review
 
 - **Now:** the combine measurements view plus R10's plain sections: career and current DARKO D-DPM,
   percentiles, positional averages with counts and intervals, the registered correlation (wingspan − height
   against D-DPM r +0.21, +0.15 to +0.27, 822 players), a scatter with selectable axes, nearest builds.
 - **Known gaps from the reference:** Databallr's layout, with-shoes and units toggles, CSV, the overlay
   graphic. Players who skipped the combine stay unknown (Databallr uses other sources).
-- **Instructions:** _(owner)_
+
+Instructions (owner, 2026-11-07, round 1; references: the saved page `Wingspan Database - NBA Height & Wingspan
+Resource _ databallr.html`, rendered offline with every request blocked, beside this page at 1440 and 390; the
+owner answered the four questions under the gap list):
+1. [x] Yes: fold everything into one Databallr-style page, with R10's correlations below it.
+   — One page in Databallr's order: centred hero, a shaded filter panel, the players table beside Positional Averages
+   and the overlay, the scatter, Similar Profiles, then Wingspan and Defense and the collapsed Caveats & Methodology.
+   The per-class view became a Combine class filter that adds that class's drills; its tiles and second scatter went.
+2. [x] With shoes (measured shoe height or Databallr's flat +1.25″): use your best judgement.
+   — The measured shoe height, never an allowance: 1,167 of 1,751 have one; the 2000–2003 and 2023–2026 combines
+   didn't measure it, so those show “—”. Percentiles and correlations stay barefoot; the methodology says so.
+3. [x] Players who skipped the combine (unknown here, filled from other sources by Databallr): use your best judgement.
+   — Left unknown: adding them needs a new source and a new frozen analysis (the stop-and-ask rule). The methodology
+   names the gap (Wembanyama, Holmgren, Lively); a free source can be its own block if the owner wants it.
+4. [x] Colour on Diff and D-DPM: try to make the entire page match Databallr before moving on.
+   — Databallr's sign colours as identity tones (gold above zero, blue below) on Diff, D-DPM, career D-DPM and the
+   position cards; never green/red, since none has an interval. Also Databallr's wide column (1352 px, not RD00's 992),
+   Inches/Ft-In with ¼ ½ ¾, the summary line, CSV with `nba_id`, per-row similar-profile and overlay buttons, the
+   overlay drawing and the scatter coloured by position with its r.
+
+Evidence: [`design-RD01`](evidence/research/design-RD01/README.md).
 
 ## RD02 ORtg Calculator — ⬜
 

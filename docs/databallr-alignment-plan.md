@@ -102,6 +102,11 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
 - **Column (owner, RD00, 2026-11-06):** the filter bar and every section sit in `.rs-column`, a centred
   992 px reading column (Databallr's), not the full page width. Each Research page adopts it in its own
   design turn.
+  A database page whose Databallr counterpart is wider takes that width instead (RD01 Wingspan: 1352 px, a table
+  beside a side column); explainer pages keep 992 px.
+- **Sign colours (owner, RD01):** where Databallr colours a value by its sign and no interval is served (a
+  measurement, a player's D-DPM), use the identity tones, gold above zero and blue below (`data-identity` on
+  `ResearchTable` cells), never green/red.
 - **Shaded, like Databallr (owner, RD00 round 4; supersedes round 2's open blocks):** light panels
   (`--rs-panel`, 4% white, with a soft inset rim `--rs-rim`) for cards, glossary entries, method blocks and
   the table toolbar; darker inner wells (`--rs-well`) for feature lists, callouts, formulas and steps.

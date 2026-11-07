@@ -29,6 +29,13 @@ export const TABBED_PAGES = {
       { label: "RAPM Ratings", href: "/research/rapm" },
     ],
   },
+  // RD01: one page after Databallr's Wingspan Database; the hero frame with no route tabs.
+  wingspan: {
+    title: "Combine & Wingspan",
+    subtitle: "NBA Draft Combine measurements since 2000, with height and wingspan comps.",
+    hero: { icon: "ruler" },
+    tabs: [{ label: "Combine & Wingspan", href: "/wingspan" }],
+  },
   shooting: {
     title: "Shooting",
     subtitle: "Expected-shot and adjusted-shooting research, and what follows a shot.",

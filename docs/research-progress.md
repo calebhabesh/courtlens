@@ -400,3 +400,20 @@ row is ✅. The alignment plan's "Research pages" pattern now records what RD00 
 caption economy, clearable pickers, sticky layers) in place of round 2's open-block rule. Next in the queue: RD01
 Combine & Wingspan.
 
+
+## 2026-11-07 — RD01 round 1: Combine & Wingspan as one Databallr-style page
+
+[Evidence](evidence/research/design-RD01/README.md). Owner, from the saved Databallr Wingspan Database and the gap list:
+fold everything into one Databallr-style page with R10's correlations below; judgement on with-shoes and on combine
+skippers; match Databallr, colour included. Design only.
+
+- **Change.** `components/wingspan-research.tsx` replaces `combine-view.tsx` and `wingspan-ddpm.tsx`: hero, a shaded
+  filter panel (status, position, shoes, units, class), `ResearchTable` beside Positional Averages and a new overlay
+  drawing, one position-coloured scatter with its r, Similar Profiles (clearable), class drills, Wingspan and Defense,
+  collapsed Caveats & Methodology. Column 1352 px (Databallr's for this page). With Shoes is the measured shoe height
+  ("—" where not measured); skippers stay unknown; Diff and D-DPM take gold/blue sign tones. `ResearchTable` gains
+  optional per-column format, sub-line, identity tone and width, and per-row logo seasons.
+- **Checks.** Lint 0/0, typecheck, Vitest 808; page specs 42/42 ×3; full Playwright 589 passed, 17 skipped, 2 failed
+  (the `pc11-combine` baselines, changed by design; regenerated, viewed, then passed); real data 76,686 values at 1440
+  and 390 in three scenes: 0 mismatches, 0 console errors, 0 overflow, 0 broken images.
+- **Not done.** The owner's review and ✅.
