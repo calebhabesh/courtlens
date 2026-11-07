@@ -54,4 +54,18 @@ describe("ResearchTable", () => {
     expect(order()).toEqual(["2", "1", "3"]);
     expect(screen.getByRole("region", { name: "Test table" }).querySelector("th[aria-sort=descending]")?.textContent).toContain("B");
   });
+
+  it("RD04: a controlled view follows its prop, reports changes, filters on the view's own count and names the interval level", () => {
+    const seen: string[] = [];
+    render(<ResearchTable<Row> label="Test table" rows={rows} rowKey={r => r.id} name={r => r.name} season="2025-26" intervalLevel={95}
+      player={r => <span>{r.name}</span>} views={[{ value: "one", label: "One", columns: [colA] }, { value: "two", label: "Two", columns: [colB] }]}
+      view="two" onViewChange={next => seen.push(next)} defaultSort="a" noun="players"
+      minimum={{ label: "Min", value: (r, view) => view === "two" ? r.min : 0, initial: 0, step: 100 }}
+      csv={{ filename: "t.csv", columns: [{ header: "id", value: r => r.id }] }} />);
+    expect(screen.getByRole("radio", { name: "Two" }).getAttribute("aria-checked")).toBe("true");
+    fireEvent.change(screen.getByRole("spinbutton", { name: "Min" }), { target: { value: "1000" } });
+    expect(order()).toEqual(["3"]);
+    fireEvent.click(screen.getByRole("radio", { name: "One" }));
+    expect(seen).toEqual(["one"]);
+  });
 });
