@@ -53,7 +53,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | --- | --- | --- | --- | --- | --- |
 | **A. Pages with a saved Databallr reference** | | | | | |
 | RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18, RD00 | ✅ |
-| RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data, RD01 | 👀 |
+| RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data, RD01 | ✅ |
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data | ⬜ |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04 | ⬜ |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06 | ⬜ |
@@ -136,7 +136,7 @@ Instructions (owner, 2026-11-06, round 7; screenshot of the All Ratings table sc
    — The pinned player column tied the sticky filter bar's layer and, being later, painted over it; the shared table's
    scroll frame is now its own stacking context, so it scrolls under the bar on both tabs at every width.
 
-## RD01 Combine & Wingspan — 👀 ready for the owner's review (round 4)
+## RD01 Combine & Wingspan — ✅ approved by the owner (2026-11-07)
 
 - **Now:** the combine measurements view plus R10's plain sections: career and current DARKO D-DPM,
   percentiles, positional averages with counts and intervals, the registered correlation (wingspan − height
