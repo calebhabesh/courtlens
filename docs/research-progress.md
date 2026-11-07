@@ -577,3 +577,10 @@ seasons he didn't play, back to 2015-16.
 - **Checks.** Lint 0/0, typecheck; page spec 27/27 ×3; full Playwright 598 passed, 17 skipped, 0 failed; real data 6,116
   values, 0 mismatches.
 - **Not done.** The owner's review and ✅.
+
+## 2026-11-07 — RD03 approved
+
+The owner approved zTS (RD03) after six rounds and asked for the next page; the catalog row is ✅. Settled along the way: no
+dropdown of player names (search with suggestions, opened under the player's photo); photos are `PlayerAvatar` with the team
+colour and logo; a per-player season picker lists only that player's seasons; space after a title chip. Next in the queue:
+RD04 Shot Quality.

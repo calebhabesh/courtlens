@@ -130,6 +130,10 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   never panel → well → card); small control cards split into balanced, centred halves; text on Research pages uses the
   blue-tinted `--color-on-bg-secondary` / `--color-on-bg-tertiary`, never the neutral `--color-text-secondary` greys; no
   hairline dividers around an intro line or above a collapsed section.
+- **Settled in RD03 (owner, zTS, 2026-11-07):** never a dropdown of player names: change a player through a search field with
+  suggestions (`LookupInput` candidates / `EntityField`), opening in place under that player's photo; player photos are the
+  site's `PlayerAvatar` (team-colour fill, ring and logo badge, the season's photo), never a page-made circle; a per-player
+  season picker lists only the seasons that player has data for; leave a little space between a title chip and the text after it.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).
