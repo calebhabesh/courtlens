@@ -82,7 +82,7 @@ Saved Investigations, the operation gallery (`/research/operation`) and the lega
 
 ---
 
-## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 6)
+## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 7)
 
 Redesigned 2026-11-06 (design-18, `4023a98`); its nine instructions are in the alignment catalog, row 18.
 It sets the pattern for every page below, so review it first: changes here are cheapest before they're
@@ -130,6 +130,11 @@ Instructions (owner, 2026-11-06, round 6; screenshot of the Impact Tree with Kaw
    doesn't work.
    — No. The top RAPM player still opens the tree on first load, but the X now clears it (`player=none`, kept on
    reload): the picker stays with "No player selected" and a "Show {leader}" button.
+
+Instructions (owner, 2026-11-06, round 7; screenshot of the All Ratings table scrolled under the header):
+9. [x] There is a weird bug with this table causing it to overlap the top drop downs.
+   — The pinned player column tied the sticky filter bar's layer and, being later, painted over it; the shared table's
+   scroll frame is now its own stacking context, so it scrolls under the bar on both tabs at every width.
 
 ## RD01 Combine & Wingspan — ⬜
 

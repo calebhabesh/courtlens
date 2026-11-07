@@ -230,4 +230,24 @@ test.describe("R02 Six-Factor RAPM (design row 18)", () => {
     }).map(name => name.textContent));
     expect(overflowing).toEqual([]);
   });
+
+  for (const [tab, url] of [["Six-Factor", path], ["RAPM Ratings", "/research/rapm"]] as const) for (const width of [1440, 1053, 390]) {
+    test(`the ${tab} table scrolls under the filter bar, never over it, at ${width} (RD00 round 7)`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await openWorkbench(page, url);
+      await expect(page.locator(".rt-grid tbody tr").first()).toBeVisible();
+      // Room below the page, so a short fixture page can still scroll its table under the bar.
+      await page.evaluate(() => { document.documentElement.style.scrollBehavior = "auto"; document.body.style.paddingBottom = "1600px"; window.scrollTo(0, document.querySelector(".rt-scroll")!.getBoundingClientRect().top + scrollY + 120); });
+      await expect.poll(() => page.evaluate(() => {
+        const bar = document.querySelector(".ui-filter-bar")!.getBoundingClientRect(), scroll = document.querySelector(".rt-scroll")!.getBoundingClientRect();
+        if (scroll.top >= bar.bottom) return "not under the bar yet";
+        const hits: string[] = [];
+        for (let x = bar.left + 4; x < bar.right - 4; x += 24) for (const y of [bar.top + 4, (bar.top + bar.bottom) / 2, bar.bottom - 4]) {
+          const hit = document.elementFromPoint(x, y);
+          if (hit?.closest(".rt-scroll")) hits.push(`${Math.round(x)},${Math.round(y)}`);
+        }
+        return hits.join(" ");
+      })).toBe("");
+    });
+  }
 });

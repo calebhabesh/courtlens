@@ -193,6 +193,25 @@ survives a reload and a shared link. The lookup failure's "Clear selection" butt
 | Real data | `tree-clear-check.mjs` on the owner's :3100 (live API, GET only) at 1440 and 390: X clears, URL `player=none`, empty state, kept after reload, "Show Kawhi Leonard" restores him, a search for Jokić loads his tree; 0 console errors, 0 overflow |
 | Screenshots | `tree-empty-1440.png`, `tree-empty-390.png` (viewed) |
 
+## Round 7 — table over the filter bar (owner, 2026-11-06)
+
+Owner: "There is a weird bug with this table causing it to overlap the top drop downs."
+
+**Cause.** The sticky filter bar and the table's pinned player column and header cells shared one layer
+(`--z-sticky`, 10). The table comes later in the page, so on a tie it painted on top when scrolled under the bar.
+Both tabs, every width.
+
+**Change (design only).** The shared Research table's scroll frame is its own stacking context
+(`isolation: isolate` on `.rt-scroll`), so its pinned cells only stack inside the table. Nothing else moves.
+
+| Check | Result |
+| --- | --- |
+| Live, owner's :3100 | `overlap-check.mjs`: table points over the filter bar, both tabs at 1440, 1053 and 390: **15–18 before, 0 after**. `overlap-before-1053.png` / `overlap-after-1053.png`, `overlap-after-ratings-390.png` (viewed) |
+| Negative control | Production build with the fix switched off in the page: 30 hits on each tab; with it on: 0 |
+| Lint, typecheck, Vitest | 0 errors, 0 warnings; clean; 805 passed (in the repo) |
+| Specs | `r02-six-factor` 21/21, three repeats (63/63); six new tests (two tabs × three widths) scroll the table under the bar and probe it with `elementFromPoint` |
+| Full Playwright | 586 passed, 17 skipped, 3 failed: the three new RAPM Ratings tests, whose short fixture page could not scroll the table under the bar. The test now pads the page; rerun of the spec 63/63. Nothing else changed after the full run |
+
 ## Credits
 
 Design reference: Databallr's Six-Factor RAPM explainer and ShotQuality RAPM table. Method: RAPM after Rosenbaum (2004)
