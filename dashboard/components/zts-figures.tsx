@@ -1,11 +1,13 @@
 "use client";
 
-import { useMemo, type CSSProperties, type ReactNode } from "react";
+import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { PlayerPortrait } from "./player-portrait";
 import { Icon } from "./ui/icon";
 import { teamStyle } from "./ui/identity";
-import { Select } from "./ui/kit";
+import { Button, IconButton, Select } from "./ui/kit";
+import { LookupInput } from "./lookup-input";
 import { seasonEra } from "@/lib/portrait-source";
+import type { LookupItem } from "@/lib/types";
 import {
   FAMILIES, density, familyTs, formatNumber, formatPoints, formatShare, formatSigned, formatTs, signTone,
   type LeagueType, type PlayerType, type ValidationBlock, type ZtsRow,
@@ -20,6 +22,7 @@ import {
 
 const vars = (v: Record<string, string | number>) => v as CSSProperties;
 const known = (v: number | null | undefined): v is number => typeof v === "number" && Number.isFinite(v);
+const int = (n: number) => n.toLocaleString("en-US");
 
 /** A titled panel (Databallr's lighter panel with a soft rim); children are one level deep. */
 export function Panel({ title, kicker, aside, children, className = "", label }: { title?: ReactNode; kicker?: ReactNode; aside?: ReactNode; children: ReactNode; className?: string; label?: string }) {
@@ -121,27 +124,50 @@ const COMPARE_ROWS = [
   { key: "zts", label: "zTS", text: (r: ZtsRow) => formatPoints(r.zts), tone: (r: ZtsRow) => signTone(r.zts) },
 ] as const;
 
+/** The season's served players as search candidates (only they have the four fields the card shows). */
+export function compareCandidates(season: string, players: readonly ZtsRow[]): LookupItem[] {
+  return players.map(r => {
+    const team = r.teams[0];
+    return {
+      id: r.player_id, kind: "player", canonical_id: r.player_id, display_name: r.player_name,
+      subtitle: r.teams.map(t => t.tricode ?? t.team_id).join(" · ") || null,
+      match_basis: "substring", match_score: 0, destination_url: `/players/${r.player_id}?season=${season}`,
+      availability: { has_current_season: true, status: "served", seasons: [season], latest_team_id: team?.team_id ?? null, latest_tricode: team?.tricode ?? null },
+    } satisfies LookupItem;
+  });
+}
+
 export function CompareCard({ season, a, b, players, onPick }: { season: string; a: ZtsRow; b: ZtsRow; players: readonly ZtsRow[]; onPick: (side: "a" | "b", id: string) => void }) {
+  const [open, setOpen] = useState<"a" | "b" | null>(null);
+  const [text, setText] = useState("");
+  const candidates = useMemo(() => compareCandidates(season, players), [season, players]);
+  const toggle = (s: "a" | "b") => { setText(""); setOpen(o => o === s ? null : s); };
   const side = (row: ZtsRow, s: "a" | "b") => {
     const team = row.teams[0]?.tricode ?? null;
     return <div className="zt-compare-side" data-series={s} data-row={row.player_id}>
       <span className="zt-photo" style={teamStyle(team)}><PlayerPortrait playerId={row.player_id} name={row.player_name} size="md" era={seasonEra(season, team)} /></span>
       <span className="zt-compare-name">{row.player_name}</span>
-      <Select size="sm" aria-label={`Change player ${s.toUpperCase()}`} value={row.player_id} onChange={e => onPick(s, e.target.value)}>
-        {players.map(p => <option key={p.player_id} value={p.player_id}>{p.player_name}</option>)}
-      </Select>
+      <Button size="sm" variant="secondary" icon="search" pressed={open === s} aria-expanded={open === s} aria-label={`Change player ${s.toUpperCase()}`} onClick={() => toggle(s)}>Change</Button>
     </div>;
   };
-  return <div className="zt-compare" data-pair="true">
-    {side(a, "a")}
-    <dl className="zt-compare-rows">
-      {COMPARE_ROWS.map(m => <div key={m.key} className="zt-compare-row" data-field={m.key}>
-        <dd className="zt-compare-val" data-row={a.player_id} data-value={a[m.key] ?? undefined} data-identity={m.tone(a)}>{m.text(a)}</dd>
-        <dt className="zt-compare-label">{m.label}</dt>
-        <dd className="zt-compare-val" data-row={b.player_id} data-value={b[m.key] ?? undefined} data-identity={m.tone(b)}>{m.text(b)}</dd>
-      </div>)}
-    </dl>
-    {side(b, "b")}
+  return <div className="zt-compare-wrap">
+    <div className="zt-compare" data-pair="true">
+      {side(a, "a")}
+      <dl className="zt-compare-rows">
+        {COMPARE_ROWS.map(m => <div key={m.key} className="zt-compare-row" data-field={m.key}>
+          <dd className="zt-compare-val" data-row={a.player_id} data-value={a[m.key] ?? undefined} data-identity={m.tone(a)}>{m.text(a)}</dd>
+          <dt className="zt-compare-label">{m.label}</dt>
+          <dd className="zt-compare-val" data-row={b.player_id} data-value={b[m.key] ?? undefined} data-identity={m.tone(b)}>{m.text(b)}</dd>
+        </div>)}
+      </dl>
+      {side(b, "b")}
+    </div>
+    {open && <div className="zt-compare-search" data-side={open}>
+      <LookupInput label={`Search for player ${open.toUpperCase()}`} placeholder={`Search ${int(candidates.length)} players with a ${season} zTS`}
+        value={text} onChange={setText} kinds={["player"]} candidates={candidates} excludedIds={[a.player_id, b.player_id]} limit={8} autoFocus
+        onSelect={item => { onPick(open, item.canonical_id); setText(""); setOpen(null); }} />
+      <IconButton size="md" variant="ghost" icon="close" label="Close player search" onClick={() => setOpen(null)} />
+    </div>}
   </div>;
 }
 

@@ -104,3 +104,25 @@ the colon."* CSS only: `.zt-hero-chip` takes `margin-inline-end: var(--space-2)`
 
 :3100 served stale CSS; refreshed by toggling the import (computed margin 8 px afterwards). :8000 and :3100 not restarted;
 3180/4180 stopped, sandbox deleted.
+
+## Round 3 (owner, 2026-11-07)
+
+Instruction, from a screenshot of Compare Players Side by Side: (3) *"Do these drop downs contain all players? Remember we
+shouldn't use drop down menus to scroll through player lists, it should be a search bar/drop down combo if need be."*
+
+Answer: no. Each select listed only the season's players with a served zTS (313 in 2025-26), the only players the card can show.
+
+| Change | Detail |
+| --- | --- |
+| Change, then search | Under each photo a kit `Button` "Change" (search icon, pressed while open) opens a search field under the card: the site's `LookupInput` with the season's served players as its candidates (filtered as you type, 8 suggestions with photos, the two shown players excluded), focused on open, with a close button. Choosing a player swaps that side and writes `a` / `b` to the URL |
+| No player dropdowns | The page's remaining selects are season, minutes, X/Y axes and Top 200 season (12 options at most); the Player tab already used the search picker |
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 / 0; clean; 817 passed |
+| Page Playwright (`r04-zts`) ×3 | 24/24; new test: no select with 30+ options, Change → focused search → "Gilgeous" → the option swaps side A, URL `a=`, the card's zTS equals the fixture, the search closes |
+| Full Playwright (sandbox, final build) | First run 596 passed, 17 skipped, 1 failed: `route-polish.spec.ts` "catalog scope options…", an untouched page (a URL-state race; alone 10/10). Full rerun **597 passed, 17 skipped, 0 failed** |
+| Real data | 6,088 values in the five scenes at 1440 and 390: 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 phone controls under 40 px. On real data the search for "ja" offers served players and picking Ajay Mitchell draws 21.5 / +0.4 / +1.8 / +2.2, equal to the API; 0 errors, 0 overflow at both widths |
+| Screenshots (viewed) | [`compare-search-r3-1440.png`](compare-search-r3-1440.png), [`compare-search-r3-390.png`](compare-search-r3-390.png), [`compare-picked-r3-1440.png`](compare-picked-r3-1440.png) |
+
+:3100 CSS refreshed by toggling the import. :8000 and :3100 not restarted; 3180/4180 stopped, sandbox deleted.
