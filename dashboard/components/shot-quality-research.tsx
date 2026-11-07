@@ -10,13 +10,13 @@ import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
 import { CountChip } from "./ui/filter-bar";
 import { PlayerAvatar } from "./ui/identity";
-import { Input, SearchField } from "./ui/input";
+import { Input } from "./ui/input";
 import { Button, Segmented, Select } from "./ui/kit";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchSection, ToneLegend } from "./research/research-page";
 import { sortRows } from "./research/research-table";
-import { GridPlayer, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
+import { GridPlayer, GridSearch, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
 import { TeamPicker } from "./research/team-picker";
 import { downloadCsv, intervalTone, toCsv } from "@/lib/research-values";
 import { seasonEra } from "@/lib/portrait-source";
@@ -108,7 +108,7 @@ function ShotMakingTable({ board, summary, seasonSelect, league, minFga }: { boa
     && (!Number.isFinite(least) || least <= 0 || r.fga >= least)), r => r[sort.key], sort.direction, r => r.player_id);
   const onSort = (key: string) => setSort(s => s.key === key ? { key: s.key, direction: s.direction === "desc" ? "asc" : "desc" } : { key: key as ShotKey, direction: "desc" });
   const plain = (key: Exclude<ShotKey, "shot_making">, label: string, title: string, format: (v: number) => string, width: "xs" | "sm"): GridColumn<PlayerRow> => ({
-    key, label, title, group: "Shooting", width, sort: r => r[key], data: r => ({ value: r[key] }), cell: r => <GridValue text={format(r[key])} /> });
+    key, label, title, group: "Shooting", width, keepCase: key === "xpps", sort: r => r[key], data: r => ({ value: r[key] }), cell: r => <GridValue text={format(r[key])} /> });
   const columns: GridColumn<PlayerRow>[] = [
     plain("fga", "FGA", "Field-goal attempts", v => formatWhole(v), "xs"),
     plain("fg_pct", "FG%", "Field-goal percentage", v => formatShare(v), "sm"),
@@ -137,7 +137,7 @@ function ShotMakingTable({ board, summary, seasonSelect, league, minFga }: { boa
     <StatsGrid<PlayerRow> label={`Shot-making ${board.season}`} name="shot-making" className="sq-players" rows={shown} rowKey={r => r.player_id} columns={columns} leadWidth="lg" minWidth="wide"
       sort={{ key: sort.key, direction: sort.direction, onSort }} empty="No players match these filters."
       lead={{ group: "Player",
-        label: <span className="stats-header-search"><SearchField aria-label="Search players" placeholder="Search players…" value={query} onChange={e => setQuery(e.target.value)} onClear={() => setQuery("")} inputSize="sm" wrapperClassName="sq-search" /></span>,
+        label: <GridSearch value={query} onChange={setQuery} />,
         cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.tricode} season={board.season} era={seasonEra(board.season, r.tricode)} href={`/players/${r.player_id}?season=${board.season}`}
           subtitle={r.teams.map(t => t.tricode ?? t.team_id).join(" · ")} /> }} />
     <div className="sq-foot">
@@ -368,7 +368,7 @@ function PlayerTab({ summary }: { summary: ShotQualitySummary }) {
             { key: "fg_pct", label: "FG%", width: "xs", cell: (r: History) => <GridValue text={formatShare(r.fg_pct)} />, data: (r: History) => ({ field: "fg_pct", value: r.fg_pct }) },
             { key: "three_share", label: "3PA share", width: "sm", cell: (r: History) => <GridValue text={formatShare(r.three_share)} />, data: (r: History) => ({ field: "three_share", value: r.three_share }) },
             { key: "pps", label: "PPS", width: "xs", cell: (r: History) => <GridValue text={formatFixed(r.pps)} />, data: (r: History) => ({ field: "pps", value: r.pps }) },
-            { key: "xpps", label: "xPPS", width: "xs", cell: (r: History) => <GridValue text={formatFixed(r.xpps)} />, data: (r: History) => ({ field: "xpps", value: r.xpps }) },
+            { key: "xpps", label: "xPPS", width: "xs", keepCase: true, cell: (r: History) => <GridValue text={formatFixed(r.xpps)} />, data: (r: History) => ({ field: "xpps", value: r.xpps }) },
             { key: "shot_making", label: "Shot-making /100", width: "md", cell: (r: History) => known(r.shot_making)
               ? <><Toned text={formatSigned(r.shot_making)} value={r.shot_making} low={r.interval?.[0]} high={r.interval?.[1]} level={95} field="shot_making" /><span className="rs-grid-sub">{formatInterval(r.interval, v => formatSigned(v))}</span></>
               : <GridValue text={null} /> },
@@ -384,7 +384,7 @@ function PlayerTab({ summary }: { summary: ShotQualitySummary }) {
         {splits.data && <StatsGrid label="Lineup split by season" name="splits" density="compact" height="auto" leadWidth="sm" rows={splits.data} rowKey={r => r.season} rowData={r => ({ season: r.season })}
           lead={{ label: "Season", cell: r => <span className="sq-cell-strong">{r.season}</span> }}
           columns={[
-            ...TARGETS.map((t): GridColumn<SplitRow> => ({ key: t, label: { ts: "oTS", sq: "oSQ", make: "oMake", ft: "oFT" }[t], width: "md",
+            ...TARGETS.map((t): GridColumn<SplitRow> => ({ key: t, label: { ts: "oTS", sq: "oSQ", make: "oMake", ft: "oFT" }[t], width: "md", keepCase: true,
               cell: r => r.row ? <><Toned text={formatSigned(r.row.values[t])} value={r.row.values[t]} low={r.row.intervals[t][0]} high={r.row.intervals[t][1]} level={80} field={t} /><span className="rs-grid-sub">{formatInterval(r.row.intervals[t], v => formatSigned(v))}</span></> : <GridValue text={null} /> })),
             { key: "shots", label: "Shots", width: "sm", cell: r => <GridValue text={r.row ? formatWhole(r.row.shots) : null} />, data: r => ({ field: "shots", value: r.row?.shots }) },
             { key: "status", label: "Status", width: "lg", align: "left", cell: r => <GridValue text={r.row ? "Rated" : `Unknown: ${r.reason}`} muted={!r.row} /> },

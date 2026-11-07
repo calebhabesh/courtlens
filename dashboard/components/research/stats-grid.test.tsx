@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
-import { cleanup, render } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
-import { GridValue } from "./stats-grid";
+import { GridSearch, GridValue, StatsGrid } from "./stats-grid";
 
 describe("GridValue", () => {
   afterEach(cleanup);
@@ -15,5 +15,21 @@ describe("GridValue", () => {
     rerender(<GridValue text={null} tone="good" />);
     expect(container.querySelector(".rs-grid-value")?.hasAttribute("data-tone")).toBe(false);
     expect(container.textContent).toBe("—");
+  });
+
+  it("RD04 round 5: the header search is the Stats table's markup, and Escape clears it", () => {
+    const seen: string[] = [];
+    const { container } = render(<GridSearch value="jok" onChange={v => seen.push(v)} />);
+    expect(container.querySelector(".stats-header-search > .lookup-input-wrapper > input.lookup-input")).toBeTruthy();
+    fireEvent.keyDown(screen.getByRole("searchbox", { name: "Search players" }), { key: "Escape" });
+    expect(seen).toEqual([""]);
+  });
+
+  it("RD04 round 5: a keepCase column marks its header so oTS isn't capitalised", () => {
+    const { container } = render(<StatsGrid<{ id: string }> label="T" rows={[{ id: "1" }]} rowKey={r => r.id} lead={{ label: "Player", cell: r => r.id }}
+      columns={[{ key: "ts", label: "oTS", keepCase: true, cell: () => "+1" }, { key: "n", label: "Shots", cell: () => "2" }]} />);
+    const heads = [...container.querySelectorAll("thead th")];
+    expect(heads.find(th => th.textContent === "oTS")?.classList.contains("rs-grid-keep-case")).toBe(true);
+    expect(heads.find(th => th.textContent === "Shots")?.classList.contains("rs-grid-keep-case")).toBe(false);
   });
 });

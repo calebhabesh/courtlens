@@ -6,6 +6,7 @@ import "../stats-explorer.css";
 import { PlayerPortrait } from "../player-portrait";
 import { SortHeader } from "../table-ui";
 import { TeamLogo } from "../team-logo";
+import { Icon } from "../ui/icon";
 import type { PortraitEra } from "@/lib/portrait-source";
 
 /*
@@ -28,6 +29,8 @@ export interface GridColumn<T> {
   data?: (row: T) => Record<string, string | number | undefined>;
   align?: "center" | "left" | "right";
   width?: "xs" | "sm" | "md" | "lg" | "xl" | "fill";
+  /** Keep the label's own case (oTS, dContest, xPPS) instead of the header's capitals: a lowercase prefix carries meaning (RD04 round 5). */
+  keepCase?: boolean;
 }
 
 export interface StatsGridProps<T> {
@@ -63,6 +66,21 @@ export function GridPlayer({ playerId, name, team, season, era, subtitle, href, 
 }
 
 /**
+ * The Stats table's header search (owner, RD04 round 5: one search design in every table): the NBA Player Statistics markup,
+ * `stats-header-search` › `lookup-input-wrapper` › icon and `lookup-input`, styled by the Stats CSS the grid already carries.
+ * Put it in the lead header (`lead.label`). Escape clears it.
+ */
+export function GridSearch({ value, onChange, label = "Search players", placeholder = "Search players…" }: { value: string; onChange: (value: string) => void; label?: string; placeholder?: string }) {
+  return <div className="stats-header-search" role="search">
+    <div className="lookup-input-wrapper">
+      <Icon name="search" className="lookup-search-icon" />
+      <input type="search" className="lookup-input" aria-label={label} placeholder={placeholder} autoComplete="off" spellCheck={false} value={value}
+        onChange={event => onChange(event.target.value)} onKeyDown={event => { if (event.key === "Escape" && value) { event.preventDefault(); onChange(""); } }} />
+    </div>
+  </div>;
+}
+
+/**
  * A figure with an optional small second line; unknown is "—". `identity` (gold/blue) shows a sign; `tone` (green/red) is only for
  * a value whose served interval excludes zero (RD04), and `title` says why.
  */
@@ -93,8 +111,8 @@ export function StatsGrid<T>({ label, rows, rowKey, lead, columns, sort, density
             <tr className="stats-header-tier-2">
               <th scope="col" className="pinned-col rs-grid-lead">{typeof lead.label === "string" ? <span className="table-sort-button">{lead.label}</span> : lead.label}</th>
               {columns.map((c, i) => c.sort && sort
-                ? <SortHeader key={c.key} label={c.label} metric={c.key} description={c.title} active={sort.key === c.key} direction={sort.direction} onSort={sort.onSort} className={`num ${starts.has(i) ? "group-start" : ""}`} />
-                : <th key={c.key} scope="col" className={`num ${starts.has(i) ? "group-start" : ""}`} title={c.title}><span className="table-sort-button">{c.label}</span></th>)}
+                ? <SortHeader key={c.key} label={c.label} metric={c.key} description={c.title} active={sort.key === c.key} direction={sort.direction} onSort={sort.onSort} className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} />
+                : <th key={c.key} scope="col" className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} title={c.title}><span className="table-sort-button">{c.label}</span></th>)}
             </tr>
           </thead>
           <tbody>

@@ -124,3 +124,26 @@ the one table look the owner settled in RD01 and Wingspan uses.
   phone controls under 40 px, hero icon offsets 0 px. `real-check.mjs` reads the toolbar and foot from their new places.
 - Glance test: the rebuilt tables viewed at 1440 and 390 beside the Wingspan screenshot.
 
+## Round 5 (owner, 2026-11-07)
+
+"Decision for you: use your best judgment here, choose the optimal deciison." (on the capitalised oTS / dContest headers), and
+"If there is a search bar in the table, rememeber it shoudl be standardized design like the main nba player statistics table."
+(screenshots: the Decomposition table and the Stats table's search).
+
+**Changed**
+
+- Judgement: metric labels keep their own case. `StatsGrid` columns take `keepCase` (header class `rs-grid-keep-case`, no
+  `text-transform`). Set on oTS / oSQ / oMake / oFT and the d- labels, the Player tab's split and xPPS columns, and Shot-making's
+  xPPS. The o/d prefix is the only thing telling oTS from dTS. Group labels and plain abbreviations keep the site's capitals.
+- New shared `GridSearch` in `stats-grid.tsx`: the Stats table's header search markup, so the existing Stats CSS draws the same
+  bordered field. Escape clears it. It replaces the `SearchField` copied from Wingspan in both Shot Quality tables.
+- Tests: `stats-grid.test.tsx` covers the search markup, Escape and `keepCase`.
+
+**Checks**
+
+- Lint 0/0, typecheck, Vitest 820. No Python changed.
+- Page specs 14/14 three times. Full Playwright: **599 passed, 17 skipped, 0 failed**.
+- Real data: 10 scenes at 1440 and 390, **51,416 values, 0 mismatches**, 0 console errors, 0 overflow, 0 broken images, 0 phone
+  controls under 40 px (the new search included), hero icon offsets 0 px.
+- Glance test: both tables' headers and the Player tab's split viewed at 1440 and 390.
+

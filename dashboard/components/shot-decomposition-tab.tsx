@@ -4,11 +4,11 @@ import { useState, type ReactNode } from "react";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { GatedNote } from "./ui/gated-note";
 import { CountChip } from "./ui/filter-bar";
-import { Input, SearchField } from "./ui/input";
+import { Input } from "./ui/input";
 import { Button, Segmented, Select } from "./ui/kit";
 import { FormulaLine, Glossary, MethodBlock, MethodSteps, ReadingGuide, ResearchDisclosure, ResearchSection, ToneLegend } from "./research/research-page";
 import { sortRows } from "./research/research-table";
-import { GridPlayer, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
+import { GridPlayer, GridSearch, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
 import { TeamPicker } from "./research/team-picker";
 import { IntervalPlot, LinkCard, SqPanel } from "./shot-quality-figures";
 import { seasonEra } from "@/lib/portrait-source";
@@ -114,7 +114,7 @@ function Board({ data, summary, side, seasonSelect, onSide }: { data: Merged; su
   const group = `${SIDE_LABELS[side]} · points per 100 shots`;
   const columns: GridColumn<MergedRow>[] = [
     ...TARGETS.map((t): GridColumn<MergedRow> => ({
-      key: t, label: labels[t], title: summary.definitions[t] ?? labels[t], group, width: "md", sort: r => value(r, t),
+      key: t, label: labels[t], title: summary.definitions[t] ?? labels[t], group, width: "md", keepCase: true, sort: r => value(r, t),
       data: r => { const band = r.sides[side]?.intervals[t]; return { value: value(r, t) ?? undefined, low: band?.[0], high: band?.[1] }; },
       cell: r => { const v = value(r, t), band = r.sides[side]?.intervals[t];
         return v == null ? <GridValue text={null} /> : <GridValue text={formatSigned(v)} sub={band ? formatInterval(band, x => formatSigned(x)) : null}
@@ -142,7 +142,7 @@ function Board({ data, summary, side, seasonSelect, onSide }: { data: Merged; su
     <StatsGrid<MergedRow> label={`Decomposition ${data.season} ${side}`} name="decomposition" className="sq-board" rows={shown} rowKey={r => r.player_id} columns={columns} leadWidth="lg" minWidth="wide"
       sort={{ key: sort.key, direction: sort.direction, onSort }} empty="No players match these filters."
       lead={{ group: "Player",
-        label: <span className="stats-header-search"><SearchField aria-label="Search players" placeholder="Search players…" value={query} onChange={e => setQuery(e.target.value)} onClear={() => setQuery("")} inputSize="sm" wrapperClassName="sq-search" /></span>,
+        label: <GridSearch value={query} onChange={setQuery} />,
         cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.tricode} season={data.season} era={seasonEra(data.season, r.tricode)} href={`/players/${r.player_id}?season=${data.season}`}
           subtitle={`${r.tricode ?? "—"} · ${r.games} games`} /> }} />
     <div className="sq-foot">
