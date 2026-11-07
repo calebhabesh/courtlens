@@ -393,3 +393,10 @@ table overlaps the top drop-downs. Design only.
   fixture page and were fixed (spec rerun 63/63).
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD00 approved
+
+The owner approved Six-Factor RAPM (RD00, both tabs) after seven rounds and asked for the next page. The catalog
+row is ✅. The alignment plan's "Research pages" pattern now records what RD00 settled (shading, photo sizes,
+caption economy, clearable pickers, sticky layers) in place of round 2's open-block rule. Next in the queue: RD01
+Combine & Wingspan.
+
