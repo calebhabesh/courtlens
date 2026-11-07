@@ -449,3 +449,10 @@ Owner: the static tables' left-most columns look broken; centre the graph's play
 - **Checks.** Lint 0/0, typecheck, Vitest 810; page specs 45/45 ×3; full Playwright 591 passed, 1 known Projected Impact
   flake (1 of 25 alone, untouched page); real data 199,252 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images.
 - **Not done.** The owner's review and ✅.
+
+## 2026-11-07 — RD01 approved
+
+The owner approved Combine & Wingspan (RD01) after four rounds and asked for the next page; the catalog row is ✅. Settled
+rules now in the "Research pages" pattern: the wide column for database pages, gold/blue sign tones where no interval is
+served, and one site table look (`StatsGrid`, after the Stats table; compact for static tables; one lead-column edge). Next
+in the queue: RD02 ORtg Calculator.
