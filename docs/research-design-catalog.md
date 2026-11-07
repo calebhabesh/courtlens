@@ -328,6 +328,14 @@ Instructions (owner, 2026-11-07, round 4; screenshot: the compare card with its 
    — The compare card and the Player tab use the site's `PlayerAvatar` at 64 px: team-colour fill and ring with the team logo
    badge, the season's photo.
 
+Instructions (owner, 2026-11-07, round 5; reply to the shared phone search-list question):
+6. [x] Use your best judgement. Also is this compare players only for 25-26?
+   — It followed the page season (2025-26 unless changed in the distribution section further down). Each compared side now has
+   its own season select (2015-16 to 2025-26, URL `as`/`bs`); its search lists that season's served players, and its photo and
+   logo follow that season. The worked example above it stays the page season's default pair. Judgement on the shared rule:
+   fixed site-wide for floating lists only (`.lookup-dropdown:not(.lookup-floating-dropdown)`), so a phone search list opens
+   under its field; inline lists keep the old rule.
+
 ## RD04 Shot Quality — ⬜
 
 - **Now:** four tabs: Players (ranked per 100 shots), Decomposition (oTS = oSQ + oMake + oFT, offence,
