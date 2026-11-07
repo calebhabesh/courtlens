@@ -175,7 +175,7 @@ function Board({ b, state, onSet, onReset }: { b: Baseline; state: LabState; onS
     <span className="ol-kicker">{label}</span><strong className={label === "ORTG" ? "ol-tile-value ol-tile-ortg" : "ol-tile-value"} data-field={field} data-value={raw}>{value}</strong>{extra}
   </div>;
   return <section className="ol-panel ol-board" aria-label="Stepper board">
-    <div className="ol-well ol-tiles">
+    <div className="ol-tiles">
       {tile("ORTG", fixed(t.ortg, 1), "ortg", t.ortg, <span className="ol-vs ol-vs-sm" data-identity={tone(diff)}>{signed(diff, 2)} vs avg</span>)}
       {tile("xSHOT", fixed(t.xshot, 3), "xshot", t.xshot)}
       {tile("xEFF", fixed(t.xeff, 3), "xeff", t.xeff)}

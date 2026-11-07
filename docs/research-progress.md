@@ -473,3 +473,15 @@ is served for the league and each team, and the lab equals the served Eq. (11) a
   0 mismatches, 0 console errors, 0 overflow, 0 broken images, outputs equal to Eq. (11).
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD02 rounds 2–3: one level of nesting, balanced stepper cards
+
+[Evidence](evidence/research/design-RD02/README.md#rounds-2-and-3-owner-2026-11-07). Owner: the ORTG / xSHOT / xEFF / xPOSS
+tiles are nested too deep (one level only); balance the stepper cards' left and right columns. Design only.
+
+- **Change.** The board's tiles sit straight on its panel as wells (the extra well is gone). Stepper cards are two equal,
+  centred columns with the labels on one row and the control and ΔORTG on the next; phones keep the stacked card.
+- **Checks.** Lint 0/0, typecheck, Vitest 812; page specs 60/60 ×3; full Playwright 594 passed, 0 failed on the final build
+  (one earlier run hit the known Projected Impact flake, 10/10 alone); real data 1,596 values, 0 mismatches, 0 console errors,
+  0 overflow, 0 broken images.
+- **Not done.** The owner's review and ✅.
+
