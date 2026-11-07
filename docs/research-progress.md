@@ -369,3 +369,15 @@ that is non-essential or takes away from the point (archetype "Rule:" lines as t
   page spec 14/14; full Playwright 582 passed, 0 failed; three baselines regenerated after viewing.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-06 — RD00 round 6: the Impact Tree player can be removed
+
+[Evidence](evidence/research/design-RD00/README.md#round-6--clearable-impact-tree-owner-2026-11-06). Owner: the X on
+the Impact Tree's player doesn't work; does there always need to be a player? Design only.
+
+- **Cause.** Clearing deleted `player` from the URL, which means "default to the top RAPM player", so he came back.
+- **Change.** First load still shows the top RAPM player. Clearing stores `player=none`; the section keeps its picker
+  and shows "No player selected" with a "Show {leader}" button. Survives reload and shared links.
+- **Checks.** Lint 0/0, typecheck, Vitest 805; page spec 15/15 ×3; full Playwright 583 passed, 0 failed; live check on
+  :3100 at 1440 and 390 (clear, reload, restore, search), 0 errors, 0 overflow.
+- **Not done.** The owner's review and ✅.
+

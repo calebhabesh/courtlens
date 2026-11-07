@@ -11,6 +11,7 @@ import {
 import { ResearchTable, type ResearchColumn, type ResearchView } from "./research/research-table";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { DataDetailsButton } from "./ui/data-details";
+import { EmptyState } from "./ui/empty-state";
 import { Field } from "./ui/field";
 import { CountChip, FilterBar } from "./ui/filter-bar";
 import { GatedNote } from "./ui/gated-note";
@@ -284,9 +285,22 @@ export function ImpactTree({ tree, reconstruction }: { tree: ImpactTreeData; rec
   </div>;
 }
 
-function TreeSection({ page, playerId, onPlayer }: { page: SixFactorPage; playerId: string; onPlayer: (id: string | null) => void }) {
-  const { data, error, loading, retry } = useFeed([playerId, page.season, page.phase], signal => getImpactTree(playerId, page.season, page.phase, signal));
+/** RD00 round 6: the picker can be cleared; with no player the section keeps its picker and says how to fill it. */
+function TreeSection({ page, playerId, leader, onPlayer }: { page: SixFactorPage; playerId: string; leader: SixFactorPlayer | undefined; onPlayer: (id: string | null) => void }) {
   return <ResearchSection id="impact-tree" icon="split" title="Impact Tree">
+    {playerId
+      ? <TreeBody key={playerId} page={page} playerId={playerId} onPlayer={onPlayer} />
+      : <>
+        <div className="sf-tree-head"><div className="sf-tree-picker"><EntityField label="Player" value="" season={page.season} phase={page.phase} onChange={value => onPlayer(value || null)} /></div></div>
+        <EmptyState icon="split" title="No player selected" description="Search for a player to see how their RAPM splits into offense, defense and the six factors."
+          action={leader && <Button variant="secondary" onClick={() => onPlayer(leader.player_id)}>Show {leader.player_name}</Button>} />
+      </>}
+  </ResearchSection>;
+}
+
+function TreeBody({ page, playerId, onPlayer }: { page: SixFactorPage; playerId: string; onPlayer: (id: string | null) => void }) {
+  const { data, error, loading, retry } = useFeed([playerId, page.season, page.phase], signal => getImpactTree(playerId, page.season, page.phase, signal));
+  return <>
     <div className="sf-tree-head">
       <div className="sf-tree-picker"><EntityField label="Player" value={playerId} season={page.season} phase={page.phase} initialName={data?.player_name} onChange={value => onPlayer(value || null)} /></div>
       {data && <PlayerIdentity playerId={data.player_id} name={data.player_name} team={data.team} era={seasonEra(page.season, data.team)} size="lg" href={`/players/${data.player_id}?season=${page.season}`}
@@ -298,7 +312,7 @@ function TreeSection({ page, playerId, onPlayer }: { page: SixFactorPage; player
       {!data.in_fit && <GatedNote>This player has no stints in the {page.season} {phaseLabel(page.phase).toLowerCase()} fit, so every number is unknown, not zero.{data.rated_seasons.length > 0 ? ` RAPM is served for ${data.rated_seasons.join(", ")}.` : ""}</GatedNote>}
       <ImpactTree tree={data} reconstruction={page.reconstruction} />
     </>}
-  </ResearchSection>;
+  </>;
 }
 
 function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixFactorPage; factor: FactorKey; playerId: string; treeHref: (id: string) => string; statsHref: string; set: (next: Record<string, string | null>) => void }) {
@@ -374,7 +388,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
 
     <ResearchSection icon="help" title="Column Glossary"><Glossary groups={GLOSSARY} /></ResearchSection>
 
-    {playerId && <TreeSection page={page} playerId={playerId} onPlayer={id => set({ player: id })} />}
+    <TreeSection page={page} playerId={playerId} leader={leader} onPlayer={id => set({ player: id ?? NO_PLAYER })} />
 
     <ResearchDisclosure id="methodology" icon="book" title="Caveats & Methodology">
       <MethodBlock title="Caveats"><Caveats page={page} /></MethodBlock>
@@ -396,6 +410,9 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
   </>;
 }
 
+/** URL value for a cleared Impact Tree picker (no `player` means the default, the top RAPM player). */
+const NO_PLAYER = "none";
+
 /** Research → Six-Factor RAPM (R02, design phase row 18). Layout after Databallr's explainer; every value is CourtLens's own. */
 export function SixFactorResearch() {
   const { get, set } = useUrlState();
@@ -406,7 +423,9 @@ export function SixFactorResearch() {
   const { data: answer, error, loading, retry } = useFeed([season, phase], signal => getSixFactorPage(season, phase, signal));
   const data = answer?.status === "available" ? answer : null;
   const leader = useMemo(() => data ? sortPlayers(data.players, "rapm", "desc")[0] : undefined, [data]);
-  const playerId = get("player") ?? leader?.player_id ?? "";
+  // The top RAPM player fills the tree on first load; clearing the picker stores NO_PLAYER so it stays empty.
+  const chosen = get("player");
+  const playerId = chosen === NO_PLAYER ? "" : chosen ?? leader?.player_id ?? "";
   const treeHref = (id: string) => {
     const next = new URLSearchParams({ ...(get("season") ? { season } : {}), ...(phase === "playoffs" ? { phase } : {}), ...(get("factor") ? { factor } : {}), player: id });
     return `${pathname}?${next}#impact-tree`;

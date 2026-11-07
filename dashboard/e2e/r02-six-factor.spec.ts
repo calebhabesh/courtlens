@@ -114,6 +114,22 @@ test.describe("R02 Six-Factor RAPM (design row 18)", () => {
     await expect(page.getByTestId("tree-reconstruction")).toContainText("rebuild this RAPM");
   });
 
+  test("the tree's player can be removed, stays removed on reload and comes back from the empty state (RD00 round 6)", async ({ page }) => {
+    await openWorkbench(page, path);
+    const tree = page.getByRole("region", { name: "Impact Tree" });
+    await expectTreeMatchesFixture(page, LEADER);
+    await tree.getByRole("button", { name: `Remove ${fixture.trees[LEADER].player_name} from Player` }).click();
+    await expect(page).toHaveURL(/player=none/);
+    await expect(tree.getByRole("heading", { name: "No player selected" })).toBeVisible();
+    await expect(tree.locator("[data-node]")).toHaveCount(0);
+    await expect(tree.getByRole("combobox", { name: "Player" })).toBeVisible();
+    await page.reload();
+    await expect(tree.getByRole("heading", { name: "No player selected" })).toBeVisible();
+    await tree.getByRole("button", { name: `Show ${fixture.trees[LEADER].player_name}` }).click();
+    await expect(page).toHaveURL(new RegExp(`player=${LEADER}`));
+    await expectTreeMatchesFixture(page, LEADER);
+  });
+
   for (const [name, id, unknown, known] of [
     ["partial data keeps its known nodes and marks the rest unknown", PARTIAL, "o_reb", "rapm"],
     ["factors without RAPM leave the top of the tree unknown", FACTORS_ONLY, "rapm", "o_ts"],

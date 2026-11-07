@@ -82,7 +82,7 @@ Saved Investigations, the operation gallery (`/research/operation`) and the lega
 
 ---
 
-## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 5)
+## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 6)
 
 Redesigned 2026-11-06 (design-18, `4023a98`); its nine instructions are in the alignment catalog, row 18.
 It sets the pattern for every page below, so review it first: changes here are cheapest before they're
@@ -124,6 +124,12 @@ Instructions (owner, 2026-11-06, round 5; screenshot of the Player Archetypes ca
    remove it, if it takes away from the key takeaway/point.
    — Every caption on both tabs got one fate (cut, shortened, moved to the collapsed methodology, or kept as an
    honesty statement); archetype rules now live under "How the Archetypes Are Picked". Table in the evidence.
+
+Instructions (owner, 2026-11-06, round 6; screenshot of the Impact Tree with Kawhi Leonard selected):
+8. [x] Does there always need to be a player in the "Impact Tree"? Why can't I remove a player? The x button
+   doesn't work.
+   — No. The top RAPM player still opens the tree on first load, but the X now clears it (`player=none`, kept on
+   reload): the picker stays with "No player selected" and a "Show {leader}" button.
 
 ## RD01 Combine & Wingspan — ⬜
 

@@ -173,6 +173,26 @@ collapsed Caveats & Methodology (in the DOM, so nothing is lost); cut repeats.
 | Full Playwright | **582 passed, 17 skipped, 0 failed**; no committed evidence touched |
 | Real data | Six-Factor 87,162 values (now also: no "Rule:" on any card, each rule in the methodology list; coverage and player counts read from the methodology's Stints step) and RAPM Ratings 1,170, both 0 mismatches over three scopes at 1440 and 390; 0 console errors, 0 overflow, 0 broken images. Screenshots in this folder retaken with every photo loaded and viewed |
 
+## Round 6 — clearable Impact Tree (owner, 2026-11-06)
+
+Owner: "Does there always need to be a player in the Impact Tree? Why can't I remove a player? The x button doesn't work."
+
+**Cause.** The X did clear the picker, but clearing removed `player` from the URL, and a missing `player` means "open
+on the top RAPM player", so the same player came straight back. The section was also only drawn while a player was set.
+
+**Change (design only, no API change).** The top RAPM player still fills the tree on first load (the first-load
+default). Clearing the picker now stores `player=none`: the section keeps its heading and picker and shows "No player
+selected" with a search prompt and a "Show {leader}" button that puts the top RAPM player back. The empty state
+survives a reload and a shared link. The lookup failure's "Clear selection" button leads to the same empty state.
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 errors, 0 warnings; clean; 805 passed (in the repo; the sandbox lacked the root README that `research-facts.test.ts` reads) |
+| Specs | `r02-six-factor` 15/15, three repeats (45/45). New test: remove via X, URL `player=none`, empty state with no tree nodes and the picker, still empty after reload, "Show Kawhi Leonard" restores the tree and every node matches the fixture. The mock lookup gained the fixture leader (202695) so the chip renders |
+| Full Playwright | **583 passed, 17 skipped, 0 failed**; no baseline changed (the first-load tree is unchanged) |
+| Real data | `tree-clear-check.mjs` on the owner's :3100 (live API, GET only) at 1440 and 390: X clears, URL `player=none`, empty state, kept after reload, "Show Kawhi Leonard" restores him, a search for Jokić loads his tree; 0 console errors, 0 overflow |
+| Screenshots | `tree-empty-1440.png`, `tree-empty-390.png` (viewed) |
+
 ## Credits
 
 Design reference: Databallr's Six-Factor RAPM explainer and ShotQuality RAPM table. Method: RAPM after Rosenbaum (2004)
