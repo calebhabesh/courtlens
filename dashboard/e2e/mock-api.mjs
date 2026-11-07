@@ -749,7 +749,7 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/lookup") {
     const q = (url.searchParams.get("q") || "").toLowerCase();
     const kinds = (url.searchParams.get("kinds") || "player,team,page").split(",");
-    const players = [["23","Fixture Star"],["24","Fixture Guard"],["1627751","Fixture Shooter"],["1630567","Scottie Barnes"],["1628389","Bam Adebayo"], ...[1,2,3,4,5].map(n=>[String(n),`Fixture Player ${n}`])];
+    const players = [["23","Fixture Star"],["24","Fixture Guard"],["1627751","Fixture Shooter"],["1630567","Scottie Barnes"],["1628389","Bam Adebayo"],["202695","Kawhi Leonard"], ...[1,2,3,4,5].map(n=>[String(n),`Fixture Player ${n}`])];
     const teams = [["TOR","Toronto Raptors"],["100","Toronto Raptors"],["200","Boston Celtics"]];
     const items = [...players.map(([id,name])=>({id,canonical_id:id,display_name:name,kind:"player",portrait_fallback:"FP",subtitle:"Synthetic browser fixture",availability:{status:"available",has_current_season:true,seasons:["2023-24","2025-26"]},team_association:{basis:"selected_scope",teams:["TOR"]},destination_url:`/players/${id}`})), ...teams.map(([id,name])=>({id:`team-${id}`,canonical_id:id,display_name:name,kind:"team",portrait_fallback:id === "200" ? "BOS" : "TOR",subtitle:"Synthetic browser fixture",destination_url:`/teams/${id}`}))].filter(item=>kinds.includes(item.kind) && (!q || item.canonical_id.toLowerCase() === q || item.display_name.toLowerCase().includes(q))).slice(0,Number(url.searchParams.get("limit") || 10));
     return json(response,200,{query:{raw:q,normalized:q,tokens:[],version:"fixture-pf04"},catalog_version:"fixture-pf04",total_matches:items.length,items});
