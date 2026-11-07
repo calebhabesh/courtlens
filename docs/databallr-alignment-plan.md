@@ -134,6 +134,13 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   suggestions (`LookupInput` candidates / `EntityField`), opening in place under that player's photo; player photos are the
   site's `PlayerAvatar` (team-colour fill, ring and logo badge, the season's photo), never a page-made circle; a per-player
   season picker lists only the seasons that player has data for; leave a little space between a title chip and the text after it.
+- **Settled in RD04 (owner, Shot Quality, 2026-11-07):** every table is `StatsGrid` in the Wingspan/Stats look, even where the
+  Databallr reference draws its own table (bars and all); `ResearchTable` stays only on RD00's own tables. A table's search is
+  `GridSearch` (the NBA Player Statistics table's own markup), with equal space above it (from the PLAYER label) and below it.
+  A team filter is the site's Select Team logo grid (`TeamPicker` in `components/research/team-picker.tsx`), never a dropdown.
+  Labels whose lowercase prefix carries meaning (oTS, dContest, xPPS) keep their case (`keepCase`). Green/red goes on a value
+  (`GridValue tone`) only where its served interval excludes zero. Centre a `PageHeader` icon tile with flex alignment: the
+  unlayered `display: inline-flex` defeats grid centring.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).

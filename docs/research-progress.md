@@ -651,3 +651,11 @@ should be equal.
   Wingspan load flake; 11/11 twice alone); real data 51,444 values, 0 mismatches, search gaps equal within 0.5 px.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD04 approved
+
+The owner approved Shot Quality (RD04) after six rounds and asked for the next page; the catalog row is ✅. Settled along the
+way and added to the Research pages pattern: every table on `StatsGrid` like Wingspan's (not `ResearchTable`, even where
+Databallr's own table has bars); the Stats table's search (`GridSearch`) with equal space above and below; the Select Team logo
+grid instead of a team dropdown; metric labels keep their case; green/red only where an interval excludes zero; centring a
+header icon tile with flex. Next in the queue: RD05 Defensive Shot Quality.
+

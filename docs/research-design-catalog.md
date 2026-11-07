@@ -56,7 +56,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data, RD01 | ✅ |
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data, RD02 | ✅ |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04, RD03 | ✅ |
-| RD04 | Shot Quality [25] | `/research/shot-quality` | W/D/LocalSend: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06, RD04 | 👀 |
+| RD04 | Shot Quality [25] | `/research/shot-quality` | W/D/LocalSend: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06, RD04 | ✅ |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06 | ⬜ |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning` | R11 | ⬜ |
 | RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes` | R11 | ⬜ |
@@ -342,7 +342,7 @@ Instructions (owner, 2026-11-07, round 6; the compare card's season select for A
    — The select listed every zTS season. Each side's select now lists only that player's seasons with a served zTS, from his
    history (Sarr: 2025-26, 2024-25; Westbrook skips 2023-24 and 2025-26, which have no served zTS).
 
-## RD04 Shot Quality — 👀
+## RD04 Shot Quality — ✅ approved by the owner (2026-11-07)
 
 - **Now:** four tabs: Players (ranked per 100 shots), Decomposition (oTS = oSQ + oMake + oFT, offence,
   defence, combined, CSV, intervals), Model, Player. CourtLens's expected-points model (Shot Quality v2)
