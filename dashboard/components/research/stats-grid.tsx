@@ -71,7 +71,7 @@ export function GridPlayer({ playerId, name, team, season, era, subtitle, href, 
  * Put it in the lead header (`lead.label`). Escape clears it.
  */
 export function GridSearch({ value, onChange, label = "Search players", placeholder = "Search players…" }: { value: string; onChange: (value: string) => void; label?: string; placeholder?: string }) {
-  return <div className="stats-header-search" role="search">
+  return <div className="stats-header-search rs-grid-search" role="search">
     <div className="lookup-input-wrapper">
       <Icon name="search" className="lookup-search-icon" />
       <input type="search" className="lookup-input" aria-label={label} placeholder={placeholder} autoComplete="off" spellCheck={false} value={value}

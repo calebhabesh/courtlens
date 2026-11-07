@@ -1,11 +1,11 @@
 {
- "compared": 51416,
+ "compared": 51444,
  "mismatches": 0,
  "scenes": [
   {
    "scene": "decomposition-offense",
    "width": 1440,
-   "compared": 6545,
+   "compared": 6547,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -19,12 +19,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": [
+    {
+     "above": 6.5,
+     "below": 7
+    }
+   ]
   },
   {
    "scene": "decomposition-offense",
    "width": 390,
-   "compared": 6545,
+   "compared": 6547,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -38,12 +44,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": [
+    {
+     "above": 7.5,
+     "below": 8
+    }
+   ]
   },
   {
    "scene": "decomposition-defense",
    "width": 1440,
-   "compared": 6545,
+   "compared": 6547,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -57,12 +69,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": [
+    {
+     "above": 6.5,
+     "below": 7
+    }
+   ]
   },
   {
    "scene": "decomposition-defense",
    "width": 390,
-   "compared": 6545,
+   "compared": 6547,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -76,12 +94,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": [
+    {
+     "above": 7.5,
+     "below": 8
+    }
+   ]
   },
   {
    "scene": "decomposition-combined-2023-24",
    "width": 1440,
-   "compared": 6205,
+   "compared": 6207,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -95,12 +119,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": [
+    {
+     "above": 6.5,
+     "below": 7
+    }
+   ]
   },
   {
    "scene": "decomposition-combined-2023-24",
    "width": 390,
-   "compared": 6205,
+   "compared": 6207,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -114,12 +144,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": [
+    {
+     "above": 7.5,
+     "below": 8
+    }
+   ]
   },
   {
    "scene": "decomposition-team-bos",
    "width": 1440,
-   "compared": 291,
+   "compared": 293,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -133,12 +169,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": [
+    {
+     "above": 6.5,
+     "below": 7
+    }
+   ]
   },
   {
    "scene": "decomposition-team-bos",
    "width": 390,
-   "compared": 291,
+   "compared": 293,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -152,12 +194,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": [
+    {
+     "above": 7.5,
+     "below": 8
+    }
+   ]
   },
   {
    "scene": "shot-making-latest",
    "width": 1440,
-   "compared": 2847,
+   "compared": 2849,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -171,12 +219,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": [
+    {
+     "above": 6.5,
+     "below": 7
+    }
+   ]
   },
   {
    "scene": "shot-making-latest",
    "width": 390,
-   "compared": 2847,
+   "compared": 2849,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -190,12 +244,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": [
+    {
+     "above": 7.5,
+     "below": 8
+    }
+   ]
   },
   {
    "scene": "shot-making-team-den",
    "width": 1440,
-   "compared": 110,
+   "compared": 112,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -209,12 +269,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": [
+    {
+     "above": 6.5,
+     "below": 7
+    }
+   ]
   },
   {
    "scene": "shot-making-team-den",
    "width": 390,
-   "compared": 110,
+   "compared": 112,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -228,12 +294,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": [
+    {
+     "above": 7.5,
+     "below": 8
+    }
+   ]
   },
   {
    "scene": "shot-making-2022-23",
    "width": 1440,
-   "compared": 2707,
+   "compared": 2709,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -247,12 +319,18 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": [
+    {
+     "above": 6.5,
+     "below": 7
+    }
+   ]
   },
   {
    "scene": "shot-making-2022-23",
    "width": 390,
-   "compared": 2707,
+   "compared": 2709,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -266,7 +344,13 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": [
+    {
+     "above": 7.5,
+     "below": 8
+    }
+   ]
   },
   {
    "scene": "model",
@@ -285,7 +369,8 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": []
   },
   {
    "scene": "model",
@@ -304,7 +389,8 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": []
   },
   {
    "scene": "player-default",
@@ -323,7 +409,8 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": []
   },
   {
    "scene": "player-default",
@@ -342,7 +429,8 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": []
   },
   {
    "scene": "player-jokic",
@@ -361,7 +449,8 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": 0
-   }
+   },
+   "search": []
   },
   {
    "scene": "player-jokic",
@@ -380,7 +469,8 @@
     "dy": 0,
     "titleDy": 0,
     "groupDx": -0.01
-   }
+   },
+   "search": []
   }
  ]
 }

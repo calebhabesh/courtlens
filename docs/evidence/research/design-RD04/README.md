@@ -147,3 +147,28 @@ the one table look the owner settled in RD01 and Wingspan uses.
   controls under 40 px (the new search included), hero icon offsets 0 px.
 - Glance test: both tables' headers and the Player tab's split viewed at 1440 and 390.
 
+## Round 6 (owner, 2026-11-07)
+
+"padding above and below the search bar should be equal" (screenshot: the Player header with its search).
+
+**Changed**
+
+- Measured first: from the tier boundary the gaps were already 4 / 4 px. But the two header tiers share one background, so the
+  visible gap above is from the PLAYER label: 10.5 px above against 4 px below (11.5 / 4 on a phone).
+- `stats-grid.css`: the lead header cell holding `GridSearch` (new class `rs-grid-search`) has no top padding, so the field sits
+  on the tier line under the label's own ~7 px gap. It takes the same 7 px below, and centres vertically, so a taller phone row
+  splits its 2 px of slack evenly. Scoped to `GridSearch`; Wingspan's `SearchField` header (approved, RD01) is unchanged.
+- Result: 6.5 px above / 7 px below at 1440, 7.5 / 8 at 390, on both tables.
+
+**Checks**
+
+- Lint 0/0, typecheck, Vitest 820. No Python changed.
+- Page specs 14/14 three times.
+- Full Playwright: 595 passed, 17 skipped, 4 failed, all in `r10-wingspan-calculator` again (the round-1 load flake; Wingspan
+  doesn't use the changed rule). It passed 11/11 twice on its own against the same build. Round 5's run of the same code paths
+  was 599 / 0.
+- Real data: 10 scenes at 1440 and 390, **51,444 values, 0 mismatches**, 0 console errors, 0 overflow, 0 broken images, 0
+  phone controls under 40 px. `real-check.mjs` now measures the search gaps in every table scene (equal within 1 px: all within
+  0.5) and requires one table search on the Decomposition and Shot-making tabs.
+- Glance test: the Player header at 1440 and 390.
+
