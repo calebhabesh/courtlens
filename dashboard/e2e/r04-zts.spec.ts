@@ -80,6 +80,31 @@ test.describe("R04 zTS", () => {
     await expect(page.locator(".zt-compare-side .ui-identity.has-team .ui-identity-badge")).toHaveCount(2);
   });
 
+  test("each side has its own season: its search lists that season's served players and its fields equal that season's board", async ({ page }) => {
+    await openWorkbench(page, path);
+    const old: Row[] = fixture.boards["2016-17:zts_add"].rows;
+    const sideB = page.locator(".zt-compare-side[data-series='b']");
+    const before = await sideB.getAttribute("data-row");
+    const sideA = await page.locator(".zt-compare-side[data-series='a']").getAttribute("data-row");
+    await page.getByRole("combobox", { name: "Season for player B" }).selectOption("2016-17");
+    await expect(page).toHaveURL(/bs=2016-17/);
+    await expect(sideB).toHaveAttribute("data-season", "2016-17");
+    const kept = old.find(r => r.player_id === before);
+    if (kept) await expect(sideB).toHaveAttribute("data-row", kept.player_id);
+    else await expect(sideB.locator(".zt-compare-note")).toHaveText("No served zTS in 2016-17");
+    const russ = old.find(r => r.player_name === "Russell Westbrook")!;
+    await page.getByRole("button", { name: "Change player B" }).click();
+    await page.getByRole("combobox", { name: "Search for player B" }).fill("Westbrook");
+    await page.getByRole("option", { name: /Russell Westbrook/ }).click();
+    await expect(sideB).toHaveAttribute("data-row", russ.player_id);
+    for (const field of ["scoring_usage", "rts", "difficulty", "zts"] as const)
+      expect(Number(await attr(page, `.zt-compare-row[data-field="${field}"] [data-series="b"]`))).toBe(russ[field]);
+    // Side A keeps the page season; the worked example above stays the season's default pair.
+    await expect(page.locator(".zt-compare-side[data-series='a']")).toHaveAttribute("data-season", "2025-26");
+    await expect(page.locator(".zt-compare-side[data-series='a']")).toHaveAttribute("data-row", sideA!);
+    await expect(page.locator(`.zt-expected [data-row="${russ.player_id}"]`)).toHaveCount(0);
+  });
+
   test("the distribution, the extremes, the explorer, role moves and team difficulty equal the API", async ({ page }) => {
     await openWorkbench(page, path);
     const pool = rows.filter(r => (r.minutes ?? 0) >= 500 && r.difficulty !== null).map(r => (r.difficulty as number) * 100);

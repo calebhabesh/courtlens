@@ -152,3 +152,25 @@ not changed here (shared CSS, the owner's call).
 | Screenshots (viewed) | [`compare-r4-1440.png`](compare-r4-1440.png), [`compare-r4-390.png`](compare-r4-390.png), [`compare-search-r4-1440.png`](compare-search-r4-1440.png), [`compare-search-r4-390.png`](compare-search-r4-390.png); the Player tab in the refreshed scene shots |
 
 :3100 CSS refreshed by toggling the import. :8000 and :3100 not restarted; 3180/4180 stopped, sandbox deleted.
+
+## Round 5 (owner, 2026-11-07)
+
+Instruction (6), replying to the round-4 question about the shared phone rule: *"Use your best judgement. Also is this compare
+players only for 25-26?"*
+
+| Change | Detail |
+| --- | --- |
+| A season per side | It was tied to the page season (2025-26 unless the distribution section's season select, further down, was changed). Each side now has its own season select (2015-16 to 2025-26) under the name, kept in the URL (`as`, `bs`; absent = the page season). That side's search lists that season's served players (placeholder "Search 2016-17", season under each name), and the photo, team ring and logo follow that season. If the shown player has no served zTS in the new season, the side says "No served zTS in {season}" with dashes, and Change searches that season. Changing the page season resets both sides |
+| Worked example kept apart | "The Calculation in Practice" now always shows the page season's default pair: its mix chart and Expected TS panel use one season's league references, so they can't take a cross-season pair. Before, it followed the compare picks |
+| Prose | "Pick any two players, each from any season since 2015-16 … rTS, Role and zTS are each measured against their own season's league, so different seasons compare directly." The season doesn't break across lines |
+| Shared phone rule (judgement) | `shared-overrides.css` now reads `.lookup-dropdown:not(.lookup-floating-dropdown) { top: 112px; }`: floating (portalled) lists use their own measured position again, so on a phone they open under their field; inline lists are unchanged. Measured on the Player Dashboard's "Add a player" at 390 px: list top 5 px below the field, where it was pinned 112 px from the top of the screen. The zTS page keeps its inline list |
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 / 0; clean; 817 passed |
+| Page Playwright (`r04-zts`) ×3 | 27/27; new test: side B to 2016-17 (URL `bs`), search "Westbrook", its four fields equal the real 2016-17 board (added to the fixture from the API), side A stays 2025-26, the worked example keeps the default pair |
+| Full Playwright (sandbox, final build) | **598 passed, 17 skipped, 0 failed**, including every spec that opens a floating search |
+| Real data | 6,112 values in six scenes (new: `compare-cross-season`, side B Russell Westbrook 2016-17) at 1440 and 390: 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 phone controls under 40 px |
+| Screenshots (viewed) | [`compare-seasons-r5-desktop.png`](compare-seasons-r5-desktop.png), [`compare-seasons-r5-phone.png`](compare-seasons-r5-phone.png), [`compare-seasons-search-r5-phone.png`](compare-seasons-search-r5-phone.png) |
+
+:8000 and :3100 not touched; 3180/4180 stopped, sandbox deleted.

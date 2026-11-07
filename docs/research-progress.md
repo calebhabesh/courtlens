@@ -555,3 +555,15 @@ player photos; the photos need the team colour and logo behind them, as on other
   6,088 values, 0 mismatches.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD03 round 5: a season per compared player; phone search lists fixed
+
+[Evidence](evidence/research/design-RD03/README.md#round-5-owner-2026-11-07). Owner: "Use your best judgement. Also is this
+compare players only for 25-26?"
+
+- **Change.** Each compared side has its own season select (2015-16 on, URL `as`/`bs`), searching that season's served players;
+  the worked example stays the page season's default pair.
+- **Judgement.** The shared phone rule no longer pins floating search lists (`:not(.lookup-floating-dropdown)`); they open under
+  their field site-wide. Inline lists unchanged.
+- **Checks.** Lint 0/0, typecheck, Vitest 817; page spec 27/27 ×3; full Playwright 598 passed, 17 skipped, 0 failed; real data
+  6,112 values, 0 mismatches.
+- **Not done.** The owner's review and ✅.

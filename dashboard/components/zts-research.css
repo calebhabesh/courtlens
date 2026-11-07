@@ -102,6 +102,8 @@
   .zt-compare-search .lookup-dropdown { top: calc(100% + var(--space-1)); left: 0; right: auto; width: min(300px, calc(100vw - var(--space-8))); min-width: 0; max-width: none; text-align: left; }
   .zt-compare-side[data-series="b"] .zt-compare-search .lookup-dropdown { left: auto; right: 0; }
   .zt-compare-search > :first-child { flex: 1 1 auto; min-width: 0; }
+  .zt-nowrap { white-space: nowrap; }
+  .zt-compare-note { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
   .zt-compare-name { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
   .zt-compare-rows { display: grid; gap: var(--space-3); margin: 0; padding-top: var(--space-6); }
   .zt-compare-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-3); }
