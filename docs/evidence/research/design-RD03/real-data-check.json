@@ -1,5 +1,5 @@
 {
- "compared": 6112,
+ "compared": 6116,
  "mismatches": 0,
  "scenes": [
   {
@@ -77,7 +77,7 @@
   {
    "scene": "compare-cross-season",
    "width": 1440,
-   "compared": 12,
+   "compared": 14,
    "mismatches": [],
    "errors": [],
    "overflow": 0,
@@ -89,7 +89,7 @@
   {
    "scene": "compare-cross-season",
    "width": 390,
-   "compared": 12,
+   "compared": 14,
    "mismatches": [],
    "errors": [],
    "overflow": 0,

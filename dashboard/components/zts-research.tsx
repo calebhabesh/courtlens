@@ -134,7 +134,10 @@ function usePair(board: Leaderboard) {
   return { a, b, sideA: a ? { row: a, types: types(da, a) } as PairSide : null, sideB: b ? { row: b, types: types(db, b) } as PairSide : null };
 }
 
-/** One compared side: its season (URL `as`/`bs`, the page season by default), that season's served players and its row. */
+/**
+ * One compared side: its season (URL `as`/`bs`, the page season by default), that season's served players, its row, and the
+ * seasons this player has a served zTS (from the player's history), which are the only ones its season select offers.
+ */
 function useCompareSide(key: "a" | "b", board: Leaderboard, seasons: readonly string[], fallback: ZtsRow | null): CompareSide {
   const { get } = useUrlState();
   const asked = get(`${key}s`);
@@ -143,7 +146,11 @@ function useCompareSide(key: "a" | "b", board: Leaderboard, seasons: readonly st
   const { data, error } = useFeed([other ? season : null], signal => other ? getLeaderboard(season, "zts_add", 1000, signal) : Promise.resolve(null));
   const players = !other ? board.rows : data?.status === "available" ? (data as Leaderboard).rows : data || error ? [] : null;
   const id = get(key) ?? fallback?.player_id ?? null;
-  return { season, id, players, row: players?.find(r => r.player_id === id) ?? null };
+  // The history is the same whichever season is asked, so it is keyed by the player alone.
+  const { data: player } = useFeed([id], signal => getPlayerZts(id, season, signal));
+  const served = player && player.player_id === id ? player.history.filter(h => known(h.zts) && seasons.includes(h.season)).map(h => h.season) : [];
+  const playerSeasons = [...new Set([...served, season])].sort().reverse();
+  return { season, id, players, row: players?.find(r => r.player_id === id) ?? null, seasons: playerSeasons };
 }
 
 function InPractice({ board, summary, pair }: { board: Leaderboard; summary: ZtsSummary; pair: ReturnType<typeof usePair> }) {
@@ -472,8 +479,8 @@ function BoardSections({ board, summary, season, setSeason, x, y, ext, setAxes }
   return <>
     <ResearchSection className="zt-section" title="The Calculation in Practice"><InPractice board={board} summary={summary} pair={pair} /></ResearchSection>
     {pair.a && pair.b && <ResearchSection className="zt-section" title="Compare Players Side by Side">
-      <ResearchProse><p>Pick any two players, each from any season since <span className="zt-nowrap">{summary.seasons[0]}</span>, to see the four core scoring fields side by side. <Code>rTS</Code>, Role and <Code>zTS</Code> are each measured against their own season&apos;s league, so different seasons compare directly.</p></ResearchProse>
-      <Panel className="zt-compare-panel" label="Side by side"><CompareCard seasons={summary.seasons} a={compareA} b={compareB}
+      <ResearchProse><p>Pick any two players, each in any of his seasons with a served zTS (from <span className="zt-nowrap">{summary.seasons[0]}</span>), to see the four core scoring fields side by side. <Code>rTS</Code>, Role and <Code>zTS</Code> are each measured against their own season&apos;s league, so different seasons compare directly.</p></ResearchProse>
+      <Panel className="zt-compare-panel" label="Side by side"><CompareCard a={compareA} b={compareB}
         onPick={(s, id) => set({ [s]: id })} onSeason={(s, season) => set({ [`${s}s`]: season === board.season ? null : season })} /></Panel>
     </ResearchSection>}
     <ResearchSection className="zt-section" title="How Big the Adjustments Are">

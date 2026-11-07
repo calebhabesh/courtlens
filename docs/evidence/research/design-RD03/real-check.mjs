@@ -130,6 +130,12 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
     eq("side b", await page.locator(".zt-compare-side[data-series='b']").getAttribute("data-row"), russ.player_id);
     for (const [series, r] of [["a", pair[0]], ["b", russ]])
       for (const f of ["scoring_usage", "rts", "difficulty", "zts"]) eq(`compare ${series} ${f}`, await attr(`.zt-compare-row[data-field="${f}"] [data-series="${series}"]`), r[f]);
+    // Round 6: each side's season select offers only the player's served seasons.
+    for (const [series, id] of [["a", pair[0].player_id], ["b", russ.player_id]]) {
+      const hist = (await player(id, series === "a" ? "2025-26" : "2016-17")).history.filter(h => known(h.zts)).map(h => h.season).reverse();
+      await page.waitForFunction(([sel, n]) => document.querySelectorAll(sel).length === n, [`.zt-compare-side[data-series="${series}"] select option`, hist.length], { timeout: 30000 }).catch(() => {});
+      eq(`seasons ${series}`, JSON.stringify(await page.locator(`.zt-compare-side[data-series="${series}"] select option`).allTextContents()), JSON.stringify(hist));
+    }
     for (const r of pair) eq(`worked example ${r.player_id}`, await attr(`.zt-expected [data-row="${r.player_id}"] [data-field="difficulty"]`), r.difficulty);
   }
   if (scene.tab === "player") {

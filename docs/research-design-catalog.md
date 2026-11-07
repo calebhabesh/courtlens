@@ -336,6 +336,12 @@ Instructions (owner, 2026-11-07, round 5; reply to the shared phone search-list 
    fixed site-wide for floating lists only (`.lookup-dropdown:not(.lookup-floating-dropdown)`), so a phone search list opens
    under its field; inline lists keep the old rule.
 
+Instructions (owner, 2026-11-07, round 6; the compare card's season select for Alex Sarr):
+7. [x] It should only show years that are valid for a player, why is it serving me years for sarr that he didn't play (back
+   to 15-16)
+   — The select listed every zTS season. Each side's select now lists only that player's seasons with a served zTS, from his
+   history (Sarr: 2025-26, 2024-25; Westbrook skips 2023-24 and 2025-26, which have no served zTS).
+
 ## RD04 Shot Quality — ⬜
 
 - **Now:** four tabs: Players (ranked per 100 shots), Decomposition (oTS = oSQ + oMake + oFT, offence,

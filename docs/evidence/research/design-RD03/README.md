@@ -174,3 +174,23 @@ players only for 25-26?"*
 | Screenshots (viewed) | [`compare-seasons-r5-desktop.png`](compare-seasons-r5-desktop.png), [`compare-seasons-r5-phone.png`](compare-seasons-r5-phone.png), [`compare-seasons-search-r5-phone.png`](compare-seasons-search-r5-phone.png) |
 
 :8000 and :3100 not touched; 3180/4180 stopped, sandbox deleted.
+
+## Round 6 (owner, 2026-11-07)
+
+Instruction (7), on the compare card's season select: *"It should only show years that are valid for a player, why is it
+serving me years for sarr that he didn't play (back to 15-16)"*
+
+| Change | Detail |
+| --- | --- |
+| Player's seasons only | Round 5's select listed every zTS season (2015-16 to 2025-26). Each side now reads its player's history (`/api/zts/player`, fetched once per player) and offers only the seasons with a served zTS, newest first: Alex Sarr 2025-26 and 2024-25; LaMelo Ball 2025-26 to 2020-21; Russell Westbrook 2015-16 to 2024-25 without 2023-24 (and not 2025-26), which have no served zTS. A changed player brings his own list. The side's season is always in the list, so a hand-edited URL still shows what it asks for (with the "No served zTS" note) |
+| Prose | "Pick any two players, each in any of his seasons with a served zTS (from 2015-16) …" |
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | 0 / 0; clean |
+| Page Playwright (`r04-zts`) ×3 | 27/27; the season test now checks both default sides offer exactly their served seasons, Westbrook 2016-17 by URL offers his and skips 2023-24, his fields equal the real 2016-17 board, and Change searches 2016-17 (Stephen Curry's 2016-17 zTS). Westbrook's real player answer was added to the fixture |
+| Full Playwright (sandbox, final build) | **598 passed, 17 skipped, 0 failed** |
+| Real data | 6,116 values in six scenes at 1440 and 390, now including each side's season list against the player's history: 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 phone controls under 40 px |
+| Screenshot (viewed) | [`compare-seasons-r6-phone.png`](compare-seasons-r6-phone.png) |
+
+:8000 and :3100 not touched; 3180/4180 stopped, sandbox deleted.

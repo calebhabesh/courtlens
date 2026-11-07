@@ -135,11 +135,14 @@ export function compareCandidates(season: string, players: readonly ZtsRow[]): L
   });
 }
 
-/** One side of the side-by-side card: its own season, that season's served players (null while loading) and its row. */
-export interface CompareSide { season: string; id: string | null; row: ZtsRow | null; players: readonly ZtsRow[] | null }
+/**
+ * One side of the side-by-side card: its own season, that season's served players (null while loading), its row, and the
+ * seasons the player has a served zTS (newest first; always including the side's season), the only ones its select offers.
+ */
+export interface CompareSide { season: string; id: string | null; row: ZtsRow | null; players: readonly ZtsRow[] | null; seasons: readonly string[] }
 
-export function CompareCard({ seasons, a, b, onPick, onSeason }: {
-  seasons: readonly string[]; a: CompareSide; b: CompareSide;
+export function CompareCard({ a, b, onPick, onSeason }: {
+  a: CompareSide; b: CompareSide;
   onPick: (side: "a" | "b", id: string) => void; onSeason: (side: "a" | "b", season: string) => void;
 }) {
   const [open, setOpen] = useState<"a" | "b" | null>(null);
@@ -162,7 +165,7 @@ export function CompareCard({ seasons, a, b, onPick, onSeason }: {
       {!row && cs.players !== null && <span className="zt-compare-note" data-missing={cs.id ?? undefined}>No served zTS in {cs.season}</span>}
       <Select size="sm" aria-label={`Season for player ${s.toUpperCase()}`} value={cs.season}
         onChange={e => { if (row) setNames(n => ({ ...n, [s]: row.player_name })); onSeason(s, e.target.value); }}>
-        {[...seasons].reverse().map(season => <option key={season} value={season}>{season}</option>)}
+        {cs.seasons.map(season => <option key={season} value={season}>{season}</option>)}
       </Select>
       {open === s
         ? <span className="zt-compare-search"

@@ -567,3 +567,13 @@ compare players only for 25-26?"
 - **Checks.** Lint 0/0, typecheck, Vitest 817; page spec 27/27 ×3; full Playwright 598 passed, 17 skipped, 0 failed; real data
   6,112 values, 0 mismatches.
 - **Not done.** The owner's review and ✅.
+
+## 2026-11-07 — RD03 round 6: a compared player's season list holds only his served seasons
+
+[Evidence](evidence/research/design-RD03/README.md#round-6-owner-2026-11-07). Owner: the season select offered Alex Sarr
+seasons he didn't play, back to 2015-16.
+
+- **Change.** Each side's season select lists only the player's seasons with a served zTS, from his history.
+- **Checks.** Lint 0/0, typecheck; page spec 27/27 ×3; full Playwright 598 passed, 17 skipped, 0 failed; real data 6,116
+  values, 0 mismatches.
+- **Not done.** The owner's review and ✅.
