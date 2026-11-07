@@ -104,6 +104,9 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   design turn.
   A database page whose Databallr counterpart is wider takes that width instead (RD01 Wingspan: 1352 px, a table
   beside a side column); explainer pages keep 992 px.
+- **Tables (owner, RD01 round 3):** one look for the site, the Stats page's NBA Player Statistics table. Research tables use
+  `StatsGrid` (`components/research/stats-grid.tsx`), which renders the Stats classes; small static tables use its
+  `density="compact"` scaled version. Player rows use its Stats player card (logo, season photo, name, subtitle).
 - **Sign colours (owner, RD01):** where Databallr colours a value by its sign and no interval is served (a
   measurement, a player's D-DPM), use the identity tones, gold above zero and blue below (`data-identity` on
   `ResearchTable` cells), never green/red.

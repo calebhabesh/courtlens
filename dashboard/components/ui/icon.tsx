@@ -9,7 +9,7 @@ import {
   Building2, Shapes, DollarSign, House, Swords, ChartPie, Split, UserCheck,
   ChartLine, Crown, FingerprintPattern, LayoutDashboard, ListOrdered, Rows3,
   Heart, TrendingDown, BookOpen, Minus, Radio, ArrowLeft, MapPin, Tv, Flag, Newspaper,
-  Gauge, Target, ShieldCheck, Ruler, Calculator, AudioWaveform, Layers, Crosshair
+  Gauge, Target, ShieldCheck, Ruler, Calculator, AudioWaveform, Layers, Crosshair, Footprints, ArrowUpDown
 } from "lucide-react";
 
 // D26: Lucide only, always through this wrapper (lint bans `lucide-react` elsewhere). One stroke
@@ -35,7 +35,7 @@ const icons = {
   "list-ordered": ListOrdered, tiers: Rows3,
   heart: Heart, "trend-down": TrendingDown, book: BookOpen, minus: Minus, broadcast: Radio, back: ArrowLeft,
   "map-pin": MapPin, tv: Tv, flag: Flag, news: Newspaper,
-  gauge: Gauge, target: Target, shield: ShieldCheck, ruler: Ruler, calculator: Calculator, waveform: AudioWaveform,
+  gauge: Gauge, target: Target, shield: ShieldCheck, ruler: Ruler, footprints: Footprints, units: ArrowUpDown, calculator: Calculator, waveform: AudioWaveform,
   layers: Layers, crosshair: Crosshair
 };
 

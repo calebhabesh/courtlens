@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { diffText, lengthText, percentileText, signIdentity } from "./wingspan-format";
+import { diffText, lengthText, lengthTicks, percentileText, signIdentity } from "./wingspan-format";
 
 describe("wingspan formats", () => {
   it("writes quarter-inch lengths with glyphs and other lengths with two decimals", () => {
@@ -18,6 +18,21 @@ describe("wingspan formats", () => {
     expect(diffText(0, "in")).toBe("0.00″");
     expect(diffText(null, "ftin")).toBe("—");
     expect(lengthText(undefined, "in")).toBe("—");
+  });
+
+  it("converts to metres and centimetres, differences always in centimetres", () => {
+    expect(lengthText(88, "m")).toBe("2.24 m");
+    expect(lengthText(88, "cm")).toBe("223.5 cm");
+    expect(diffText(8, "m")).toBe("+20.3 cm");
+    expect(diffText(-1, "cm")).toBe("−2.5 cm");
+    expect(lengthText(null, "m")).toBe("—");
+  });
+
+  it("ticks every foot, 24 inches, half metre or 50 cm from zero", () => {
+    expect(lengthTicks(96, "ftin").map(t => t.label)).toEqual(["0′", "1′", "2′", "3′", "4′", "5′", "6′", "7′", "8′"]);
+    expect(lengthTicks(96, "in").map(t => t.label)).toEqual(["0″", "24″", "48″", "72″", "96″"]);
+    expect(lengthTicks(100, "m").map(t => t.label)).toEqual(["0.0 m", "0.5 m", "1.0 m", "1.5 m", "2.0 m", "2.5 m"]);
+    expect(lengthTicks(100, "cm").at(-1)?.label).toBe("250 cm");
   });
 
   it("rounds percentiles and maps signs to identity tones", () => {

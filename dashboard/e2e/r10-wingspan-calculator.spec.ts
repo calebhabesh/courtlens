@@ -8,15 +8,17 @@ const wingspan = read("wingspan"), nearest = read("wingspan-nearest"), ff = read
 const served = (value: string | null) => value === null || value === "" ? null : Number(value);
 const value = async (cell: Locator) => served(await cell.getAttribute("data-value"));
 
-type Player = { player_id: string; name: string; measured: boolean; in_population: boolean; height: number | null; height_shoes: number | null; wingspan: number | null; diff: number | null;
-  d_dpm: number | null; d_dpm_now: number | null; position: string | null; active: boolean | null };
+type Player = { player_id: string; name: string; measurement_source: string | null; measured: boolean; in_population: boolean; height: number | null; height_shoes: number | null;
+  wingspan: number | null; diff: number | null; d_dpm: number | null; d_dpm_now: number | null; position: string | null; active: boolean | null; percentiles: Record<string, number> };
 const players = wingspan.players as Player[];
 const byWingspan = (rows: Player[]) => [...rows].sort((a, b) => (b.wingspan ?? 0) - (a.wingspan ?? 0) || a.player_id.localeCompare(b.player_id));
-const measured = byWingspan(players.filter(p => p.measured));
-const active = measured.filter(p => p.active === true);
-const rowIds = (page: import("@playwright/test").Page) => page.locator('[aria-label="Wingspan players"] tbody tr[data-row]').evaluateAll(rows => rows.map(r => (r as HTMLElement).dataset.row));
+const listed = byWingspan(players.filter(p => p.measurement_source !== null));
+const active = listed.filter(p => p.active === true);
+const grid = (page: import("@playwright/test").Page) => page.locator('[aria-label="Wingspan players"]');
+const rowIds = (page: import("@playwright/test").Page) => grid(page).locator("tbody tr[data-row]").evaluateAll(rows => rows.map(r => (r as HTMLElement).dataset.row));
 
-// RD01: one page after Databallr's Wingspan Database; R10's registered numbers below it.
+// RD01: one page after Databallr's Wingspan Database; R10's registered numbers below it; round 2 adds
+// CraftedNBA's reported players (courtlens-wingspan-coverage-v1), kept out of the registered analysis.
 test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
 
@@ -27,14 +29,19 @@ test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
     await expect(table.locator("tbody tr")).toHaveCount(all.length);
     for (const [i, c] of all.entries()) {
       const row = table.locator("tbody tr").nth(i);
-      expect(await value(row.locator('[data-field="r"]'))).toBe(c.r);
-      expect(served(await row.locator('[data-field="interval"]').getAttribute("data-low"))).toBe(c.low);
-      expect(served(await row.locator('[data-field="interval"]').getAttribute("data-high"))).toBe(c.high);
+      const r = row.locator('[data-field="r"]');
+      expect(await value(r)).toBe(c.r);
+      expect(served(await r.getAttribute("data-low"))).toBe(c.low);
+      expect(served(await r.getAttribute("data-high"))).toBe(c.high);
       await expect(row.locator('[data-field="verdict"]')).toHaveAttribute("data-value", c.verdict);
       await expect(row.locator("[data-tone], [data-identity]")).toHaveCount(0);
     }
     await expect(page.locator('[data-field="headline"]')).toHaveAttribute("data-value", String(wingspan.correlations[0].r));
-    await expect(page.getByRole("table", { name: "Correlations within position" }).locator("tbody tr")).toHaveCount(wingspan.within_position.length);
+    // Within position: one row per position, one cell per pair.
+    const within = page.getByRole("table", { name: "Correlations within position" });
+    await expect(within.locator("tbody tr")).toHaveCount(5);
+    for (const w of wingspan.within_position as { position: string; x: string; y: string; r: number }[])
+      expect(await value(within.locator(`tr[data-row="${w.position}"] [data-pair="${w.x}:${w.y}"]`))).toBe(w.r);
     // The full table with intervals sits in the collapsed methodology: CSS locators read it closed.
     const avg = page.locator('table[aria-label="Positional averages"]');
     for (const a of wingspan.positional_averages) {
@@ -47,48 +54,62 @@ test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
       const card = page.locator(`.ws-average[data-row="${a.position}"]`);
       for (const k of ["height", "wingspan", "diff"]) expect(await value(card.locator(`[data-field="${k}"]`))).toBe(a[k].mean);
     }
-    // Default scatter: barefoot height against wingspan over every measured player, with the served r.
-    await expect(page.locator("circle[data-player]")).toHaveCount(measured.filter(p => p.height !== null && p.wingspan !== null).length);
+    // Default scatter: barefoot height against wingspan, combine and reported players, with the served r.
+    await expect(page.locator("circle[data-player]")).toHaveCount(listed.filter(p => p.height !== null && p.wingspan !== null).length);
+    await expect(page.locator('circle[data-source="craftednba"]')).toHaveCount(listed.filter(p => p.measurement_source === "craftednba" && p.height !== null && p.wingspan !== null).length);
     const hw = wingspan.correlations.find((c: { x: string; y: string }) => c.x === "height" && c.y === "wingspan");
     await expect(page.locator('[data-field="scatter-r"]')).toHaveAttribute("data-value", String(hw.r));
     await page.getByRole("combobox", { name: "Horizontal axis" }).selectOption("wingspan");
     await page.getByRole("combobox", { name: "Vertical axis" }).selectOption("d_dpm");
     await expect(page.locator("circle[data-player]")).toHaveCount(wingspan.population.analysis);
+    await expect(page.locator('circle[data-source="craftednba"]')).toHaveCount(0);
   });
 
-  test("opens on active players longest wingspan first, filters and keeps unknowns blank", async ({ page }) => {
+  test("opens on active players longest wingspan first, reported players tagged, unknowns blank", async ({ page }) => {
     await openWorkbench(page, "/wingspan");
     await expect(page.getByRole("radio", { name: "Active", exact: true })).toHaveAttribute("aria-checked", "true");
     await expect(page.locator('[data-field="summary"]')).toHaveAttribute("data-value", String(active.length));
     expect(await rowIds(page)).toEqual(active.map(p => p.player_id));
-    const grid = page.locator('[aria-label="Wingspan players"]');
     for (const p of active.slice(0, 20)) {
-      const row = grid.locator(`tr[data-row="${p.player_id}"]`);
+      const row = grid(page).locator(`tr[data-row="${p.player_id}"]`);
       for (const k of ["height", "wingspan", "diff", "d_dpm_now", "d_dpm"] as const) {
         const cell = row.locator(`td[data-column="${k}"]`);
         expect(served(await cell.getAttribute("data-value"))).toBe(p[k]);
         if (p[k] === null) await expect(cell).toHaveText("—");
       }
-      if (p.d_dpm_now !== null && p.d_dpm_now !== 0) await expect(row.locator('td[data-column="d_dpm_now"] .rt-value')).toHaveAttribute("data-identity", p.d_dpm_now > 0 ? "a" : "b");
+      // Coloured by the value as shown (one decimal): a figure that prints as 0.0 takes no colour.
+      const shownNow = p.d_dpm_now === null ? 0 : Math.round(p.d_dpm_now * 10) / 10;
+      if (shownNow !== 0) await expect(row.locator('td[data-column="d_dpm_now"] .rs-grid-value')).toHaveAttribute("data-identity", shownNow > 0 ? "a" : "b");
+      await expect(row.locator(".ws-reported")).toHaveCount(p.measurement_source === "craftednba" ? 1 : 0);
+      if (p.measurement_source === "craftednba") await expect(row.locator(".rs-grid-sub")).toHaveCount(0);
     }
     await page.getByRole("radio", { name: "PG", exact: true }).click();
     await expect(page.locator('[data-field="summary"]')).toHaveAttribute("data-value", String(active.filter(p => p.position === "PG").length));
     await page.getByRole("radio", { name: "All Players" }).click();
-    await expect(page.locator('[data-field="summary"]')).toHaveAttribute("data-value", String(measured.filter(p => p.position === "PG").length));
+    await expect(page.locator('[data-field="summary"]')).toHaveAttribute("data-value", String(listed.filter(p => p.position === "PG").length));
     await expect(page).toHaveURL(/status=all/);
+    await page.getByRole("radio", { name: "All Positions" }).click();
+    await grid(page).getByRole("searchbox", { name: "Search players" }).fill("Holmgren");
+    await expect(grid(page).locator("tbody tr[data-row]")).toHaveCount(listed.filter(p => p.name.includes("Holmgren")).length);
+    await expect(grid(page).locator("tbody tr[data-row] .ws-reported")).toHaveCount(1);
   });
 
-  test("switches to inches and to measured shoe height, never an allowance", async ({ page }) => {
+  test("switches units (inches, m, cm) and to measured shoe height, never an allowance", async ({ page }) => {
     await openWorkbench(page, "/wingspan?shoes=1&units=in");
-    const grid = page.locator('[aria-label="Wingspan players"]');
     const withShoes = active.find(p => p.height_shoes !== null)!, without = active.find(p => p.height_shoes === null)!;
-    const cell = (p: Player) => grid.locator(`tr[data-row="${p.player_id}"] td[data-column="height"]`);
+    const cell = (p: Player, k = "height") => grid(page).locator(`tr[data-row="${p.player_id}"] td[data-column="${k}"]`);
     expect(served(await cell(withShoes).getAttribute("data-value"))).toBe(withShoes.height_shoes);
     await expect(cell(withShoes)).toHaveText(`${withShoes.height_shoes!.toFixed(2)}″`);
     await expect(cell(without)).toHaveText("—");
+    await page.getByRole("radio", { name: "cm", exact: true }).click();
+    await expect(cell(withShoes, "wingspan").locator(".rs-grid-value")).toHaveText(`${(withShoes.wingspan! * 2.54).toFixed(1)} cm`);
+    await page.getByRole("radio", { name: "m", exact: true }).click();
+    await expect(page).toHaveURL(/units=m/);
+    await expect(cell(withShoes, "wingspan").locator(".rs-grid-value")).toHaveText(`${(withShoes.wingspan! * 0.0254).toFixed(2)} m`);
+    await expect(cell(withShoes, "diff").locator(".rs-grid-value")).toHaveText(/ cm$/);
   });
 
-  test("similar profiles start empty, then show nearest builds for a chosen player", async ({ page }) => {
+  test("similar profiles start empty, then show nearest builds, also for a reported player", async ({ page }) => {
     await openWorkbench(page, "/wingspan");
     await expect(page.locator('table[aria-label="Nearest builds"]')).toHaveCount(0);
     await page.getByRole("button", { name: `Show ${active[0].name}` }).click();
@@ -103,11 +124,12 @@ test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
     await page.getByRole("button", { name: "Clear the selected player" }).click();
     await expect(page).toHaveURL(/build=none/);
     await expect(table).toHaveCount(0);
-    await openWorkbench(page, "/wingspan?build=203497");
-    await expect(table.locator("tbody tr").nth(1)).toHaveAttribute("data-row", nearest["203497"].neighbours[0].player_id);
+    await openWorkbench(page, "/wingspan?build=1641705");
+    await expect(table.locator("tbody tr").first()).toContainText("Reported");
+    await expect(table.locator("tbody tr").nth(1)).toHaveAttribute("data-row", nearest["1641705"].neighbours[0].player_id);
   });
 
-  test("adds players to the overlay to scale and removes them", async ({ page }) => {
+  test("overlay draws height and wingspan to scale on a labelled axis; highlighted players can be cleared", async ({ page }) => {
     await openWorkbench(page, "/wingspan");
     await expect(page.locator('[data-field="overlay-empty"]')).toBeVisible();
     const [a, b] = active;
@@ -116,13 +138,39 @@ test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
     await page.getByRole("button", { name: `Add ${b.name} to the overlay` }).click();
     await expect(page).toHaveURL(new RegExp(`overlay=${a.player_id}(%2C|,)${b.player_id}`));
     for (const p of [a, b]) {
-      expect(served(await page.locator(`line[data-player="${p.player_id}"][data-kind="wingspan"]`).getAttribute("data-value"))).toBe(p.wingspan);
-      expect(served(await page.locator(`line[data-player="${p.player_id}"][data-kind="height"]`).getAttribute("data-value"))).toBe(p.height);
+      expect(served(await page.locator(`rect[data-player="${p.player_id}"][data-kind="wingspan"]`).getAttribute("data-value"))).toBe(p.wingspan);
+      expect(served(await page.locator(`rect[data-player="${p.player_id}"][data-kind="height"]`).getAttribute("data-value"))).toBe(p.height);
     }
-    await page.getByRole("button", { name: `Remove ${a.name} from the overlay` }).click();
-    await expect(page.locator(`line[data-player="${a.player_id}"]`)).toHaveCount(0);
-    await page.getByRole("button", { name: "Clear", exact: true }).click();
+    await expect(page.locator(".ws-overlay-graphic")).toContainText("Length from zero (feet)");
+    await expect(page.locator(".ws-overlay-graphic")).toContainText("7′");
+    // The scatter rings and labels them, with a chip each and Clear all.
+    await expect(page.locator(`.ws-picked[data-selected="${a.player_id}"]`)).toContainText(a.name);
+    const chips = page.getByRole("group", { name: "Highlighted players" });
+    await chips.getByRole("button", { name: `Stop highlighting ${b.name}` }).click();
+    await expect(page.locator(`rect[data-player="${b.player_id}"]`)).toHaveCount(0);
+    await page.getByRole("button", { name: "Clear all" }).click();
+    await expect(page.locator(".ws-picked")).toHaveCount(0);
     await expect(page.locator('[data-field="overlay-empty"]')).toBeVisible();
+  });
+
+  test("adds several players to the graph from its search, each labelled, and clears them", async ({ page }) => {
+    await openWorkbench(page, "/wingspan");
+    const added = active.slice(2, 6);
+    for (const p of added) {
+      await page.getByRole("searchbox", { name: "Add a player to the graph" }).fill(p.name);
+      await page.getByRole("button", { name: `Add ${p.name} to the graph` }).click();
+      await expect(page.getByRole("button", { name: `Stop highlighting ${p.name}` })).toBeVisible();
+    }
+    await expect(page).toHaveURL(new RegExp(`mark=${added.map(p => p.player_id).join("(%2C|,)")}`));
+    for (const p of added) await expect(page.locator(`.ws-picked[data-selected="${p.player_id}"]`)).toContainText(p.name);
+    // Labels never share a line: each sits at least 18 px from the next.
+    const ys = await page.locator(".ws-picked-label").evaluateAll(els => els.map(e => Number(e.getAttribute("y"))).sort((a, b) => a - b));
+    for (let i = 1; i < ys.length; i++) expect(ys[i] - ys[i - 1]).toBeGreaterThanOrEqual(17.9);
+    await page.getByRole("group", { name: "Highlighted players" }).getByRole("button", { name: `Stop highlighting ${added[0].name}` }).click();
+    await expect(page.locator(".ws-picked")).toHaveCount(added.length - 1);
+    await page.getByRole("button", { name: "Clear all" }).click();
+    await expect(page.locator(".ws-picked")).toHaveCount(0);
+    await expect(page).not.toHaveURL(/mark=/);
   });
 });
 

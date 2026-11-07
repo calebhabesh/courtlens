@@ -46,6 +46,7 @@ The machine-readable registry is `src/courtlens/domain/source_policy.py`. Source
 | Wikipedia NBA draft articles | `en.wikipedia.org/wiki/<year>_NBA_draft` | full pick lists for the 1966 to 1995 drafts, read once for Draft Classes (`courtlens acquire-draft-history`, R09; the 1996 to 1999 lists come from the hoopR mirror); CC BY-SA 4.0, attributed | 5 s |
 | Official league cap release | `nba.com` | cap thresholds | entered by hand |
 | DARKO (darko.app) | `www.darko.app` | DPM, ODPM, DDPM (Kostya Medvedovsky's model) | 5 s |
+| CraftedNBA | `craftednba.com` | reported height and wingspan for current players the combine never measured, read once and sealed for Combine & Wingspan (`courtlens seal-wingspan-coverage`, RD01; labelled Reported, never in combine percentiles or the R10 analysis) | 5 s |
 
 Adding a source is a registry row plus an ingestion path; no admission review is required.
 

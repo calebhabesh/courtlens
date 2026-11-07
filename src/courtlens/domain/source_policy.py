@@ -162,6 +162,15 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
         "DARKO (darko.app, Kostya Medvedovsky)",
     ),
     AdmittedSource(
+        "craftednba",
+        "CraftedNBA height and wingspan",
+        "craftednba.com",
+        "secondary",
+        ("measurements",),
+        5,
+        "CraftedNBA (craftednba.com)",
+    ),
+    AdmittedSource(
         "nba_free_agent_tracker",
         "NBA.com free-agent tracker",
         "www.nba.com",

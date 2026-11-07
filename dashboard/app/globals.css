@@ -78,6 +78,7 @@
 @import "../components/ref-grid.css";
 @import "../components/research/research-page.css";
 @import "../components/research/research-table.css";
+@import "../components/research/stats-grid.css";
 @import "../components/six-factor-research.css";
 @import "../components/wingspan-research.css";
 @import "./research/rapm/rapm-ratings.css";

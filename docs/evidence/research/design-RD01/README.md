@@ -89,3 +89,88 @@ the script keeps that settle.
 R16 constraints observed: no Ask or provider calls, `~/dev/courtlens-r16` untouched, shared Postgres only read, the
 owner's :8000 and :3100 servers not restarted (3100 answered 200 throughout). 3180 and 4180 were stopped and the
 sandbox deleted.
+
+## Rounds 2 and 3 (owner, 2026-11-07)
+
+Measured 2026-11-07 on branch `research` from `5bd3e84`. Both rounds land in one commit: round 3's instructions arrived
+before round 2 was committed, and round 3 replaces most of round 2's table styling. **Awaiting the owner.**
+
+Instructions (verbatim in the [catalog](../../../research-design-catalog.md), RD01):
+
+5. Full coverage for all players like Databallr has.
+6. Icons where possible like Databallr has.
+7. A main table design more similar to Databallr.
+8. A units toggle: ft and inches to m/cm.
+9. Better static tables (Similar Profiles, Wingspan and Defense): more breathing room, slightly larger contents.
+10. A clearer Selected Player Overlay, with axis labels.
+11. Selected players more notable on the graph, and a way to clear them.
+12. Left-aligned search; player photos.
+13. Several players on the graph without labels clipping into each other.
+14. One table look for the site, after the Stats page's NBA Player Statistics table, in scaled equivalents.
+
+### Coverage (instruction 5): new data, owner-approved source
+
+Asked before building (data is a stop-and-ask): the owner chose **CraftedNBA, labelled**. Its free page "Height and Wingspan
+for every player in the NBA" (`craftednba.com/player-traits/length`) was fetched once with the policy user agent
+(`robots.txt` has content-signal comments and no Disallow), kept byte for byte at
+`evaluation/research/sources/raw/craftednba-length-58612294d3f0134f.html.gz` (raw SHA-256 `58612294d3f0134f…`), and sealed as
+[`courtlens-wingspan-coverage-v1`](../../../../evaluation/research/sources/courtlens-wingspan-coverage-v1.json)
+(`a843773ae030bf1b…`) by `courtlens seal-wingspan-coverage`. The API (`/api/wingspan`, `/api/wingspan/nearest/{id}`) merges it
+beside the frozen R10 file, whose registration and results hashes are unchanged.
+
+| Step | Players |
+| --- | ---: |
+| Rows on the page (all parsed; the parser refuses a page where any row fails) | 418 |
+| Matched to an NBA person ID by normalized name (frozen combine players and DARKO's 2026-11-05 board) | 418 (4 by a reviewed alias: Bones Hyland, Alex Sarr, Nic Claxton, Bub Carrington) |
+| Already combine-measured: **the combine's figure is shown** | 321 |
+| Fill a combine participant who wasn't measured (Wembanyama, Holmgren, Lively…) | 27 |
+| Add a player the combine never saw | 70 |
+| Unmatched / ambiguous | 0 / 0 |
+| Page's own Length column disagreeing with its figures (its rounding; CourtLens computes the difference) | 4 |
+
+Where both exist (321), CraftedNBA's height equals the combine's **barefoot** height for 305 and never its shoe height (1 of
+159); its wingspan equals the combine's for 306. Reported values are tagged Reported, have no percentiles, and stay out of
+the positional averages, the summary averages, r and the career D-DPM population. Active rows rise from 362 to 459 (Databallr:
+593, with sources CourtLens doesn't use). The source is registered in `source_policy.py` and
+[source policy v3](../../../design/source-policy-v3.md).
+
+### Design
+
+| Before (round 1) | After |
+| --- | --- |
+| Players table on `ResearchTable`, 40 px photos, figures right-aligned | **`StatsGrid`** (new, `components/research/stats-grid.tsx`): the Stats page's classes and look (frame, PLAYER / MEASUREMENTS / DEFENSE (DARKO) group tier, lifted header, well cells, pinned player card). Search left-aligned in the pinned header; each row is the Stats card (logo, 40 px season photo, name over "team · year combine" or "team · Reported") with ◎ and + beside it; centred figures with a small percentile |
+| Kit `Table` (compact, dark) for correlations, within position, similar profiles, method tables; `ResearchTable` for drills | The same `StatsGrid` in its compact (scaled) density for every table on the page; within position is one row per position with three r columns; drills sort by column and keep CSV |
+| Ft-In / Inches | Ft-In · Inches · m · cm everywhere (table, cards, overlay axis, scatter, similar profiles); differences in centimetres in metric |
+| Group controls unlabelled | Databallr's inset labels with icons (footprints Height, arrows Units, calendar Combine); icons on status options, panel titles and the scatter; CSV in the filter panel with "`nba_id` included" |
+| Overlay: a cross per player, no axis | Scaled bars from zero on a labelled axis (feet, inches, metres or centimetres): a light wingspan bar under the solid height bar, the difference at its end, a key |
+| Selected points: a ring | Highlighted players large, filled in their colour, outlined and named while the rest dim; a chip each and Clear all; **Add a player to the graph** adds up to 8 more (`mark=`); labels take the side their name fits, one line each (≥ 18 px apart), sliding inside the chart with a leader line when neither side has room |
+| Sign colour from the raw value | From the value as shown (a D-DPM that prints 0.0 is uncoloured) |
+
+### Checks
+
+| Check | Result |
+| --- | --- |
+| Python: ruff, ruff format, mypy | clean (378 files) |
+| Python tests | `make test-python` (ephemeral Postgres): 2,672 passed, 3 skipped, **9 failed**; the same 9 fail on a clean `HEAD` worktree (8 Anthropic SDK provider tests: `httpx2` client type check; 1 legacy-brand check on `dashboard/content/patch-notes.json`, unchanged since R12), so none come from this change. New `test_wingspan_coverage.py` (parser, aliases and board tie-break, seal and raw verification, tamper refusal, merge precedence, reported nearest) and updated `test_r10_api.py` pass |
+| Lint, typecheck, Vitest | 0 errors, 0 warnings; clean; **810 passed** (metric units and axis ticks added) |
+| Page specs (`r10-wingspan-calculator` rewritten, `pc11-gated-pages`) | **45/45 over three repeats** on the final build: correlations, within position, averages and cards, scatter counts incl. hollow reported points, default Active order and cells, Reported tags without percentiles, search, inches/m/cm, measured shoe height, similar profiles for a reported player, overlay bars and axis, chips and Clear all, several added players with labels ≥ 18 px apart |
+| Full Playwright (sandbox, mock API 4180, build 3180, `MemoryMax=8G`) | **591 passed, 17 skipped, 1 failed** (the `pc11-combine` desktop baseline, changed by design). Both combine baselines regenerated (the phone one deleted first: its change fell inside the tolerance), viewed and committed; the visual spec then passed 84/84 on the final build. In round 2's run one Stats focus test failed once and passed 5/5 on rerun |
+| Real data ([`real-data-check-r3.json`](real-data-check-r3.json), [`real-check.mjs`](real-check.mjs)) | The owner's :8000 through the read-only proxy (POST 405), final build. Six scenes at 1440 and 390: default, all players in inches with shoes, all in cm, active in metres with a reported similar-profile pick and overlay, six players added to the graph, a class with drills. **199,252 values, 0 mismatches**, 0 console errors, 0 overflow, 0 broken images, 0 controls under 40 px at 390. Column 1352 px; the table scrolls 0 px sideways at 1440, 514 px in its frame at 390 |
+| Screenshots (viewed) | [`wingspan-r3-1440.png`](wingspan-r3-1440.png), [`wingspan-r3-390.png`](wingspan-r3-390.png), [`wingspan-r3-graph-1440.png`](wingspan-r3-graph-1440.png), [`wingspan-r3-graph-390.png`](wingspan-r3-graph-390.png), [`wingspan-r3-metric-1440.png`](wingspan-r3-metric-1440.png), [`wingspan-r3-metric-390.png`](wingspan-r3-metric-390.png), [`wingspan-r3-state-1440.png`](wingspan-r3-state-1440.png), [`wingspan-r3-state-390.png`](wingspan-r3-state-390.png), [`wingspan-r3-methods-1440.png`](wingspan-r3-methods-1440.png) |
+
+Glance test (both widths): title and scope at once; table rows above the fold at 1440, after the filters at 390; one left
+edge; season photos with logos; unknowns "—"; gold/blue only for a shown sign, position colours only on the scatter, no
+green/red; one subtitle line and the summary, rules in the collapsed methodology; kit controls only, none under 40 px on a
+phone; highlighted players clear by chip or Clear all; the table frame is its own stacking context.
+
+### Not verified or left open
+
+- **`ResearchTable`** (RD00's tables) and the kit `Table` elsewhere still have their own looks; moving them to `StatsGrid` is
+  recorded in the pattern for each page's turn. RD00 is approved, so it changes only if the owner asks.
+- **Two rapid clicks** on add-to-graph or overlay within one render can drop the first (URL state); the spec waits between
+  clicks. A user clicking normally isn't affected.
+- **CraftedNBA freshness:** sealed once; a re-seal is a new version, by hand.
+- **Hosted demo:** not deployed (standing rule). The seal ships in the image (`COPY evaluation`).
+
+Observed: no Ask or provider calls, `~/dev/courtlens-r16` untouched, the shared Postgres only read (the Python tests used
+their own container), the owner's :8000 (auto-reloaded the API) and :3100 not restarted; 3180/4180 stopped, sandbox deleted.

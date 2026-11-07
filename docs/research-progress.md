@@ -417,3 +417,22 @@ skippers; match Databallr, colour included. Design only.
   (the `pc11-combine` baselines, changed by design; regenerated, viewed, then passed); real data 76,686 values at 1440
   and 390 in three scenes: 0 mismatches, 0 console errors, 0 overflow, 0 broken images.
 - **Not done.** The owner's review and ✅.
+
+## 2026-11-07 — RD01 rounds 2–3: full coverage, the Stats table look, units, overlay and graph
+
+[Evidence](evidence/research/design-RD01/README.md#rounds-2-and-3-owner-2026-11-07). Owner: full coverage like Databallr
+(source chosen when asked: CraftedNBA, labelled), icons, a Databallr-like table, m/cm units, better static tables, a clear
+overlay, notable and clearable graph picks; then left-aligned search and photos, several players on the graph, and one
+site-wide table look after the Stats table.
+
+- **Data.** CraftedNBA's 418 current players read once, kept (raw SHA-256 `58612294…`) and sealed
+  (`courtlens-wingspan-coverage-v1`, `a843773a…`); all matched to NBA IDs; 97 rows gain reported figures (Wembanyama,
+  Holmgren, Lively…), the combine wins for 321. Reported values stay out of percentiles, averages, r and the frozen R10 file
+  (hashes unchanged). Registered in the source policy.
+- **Design.** New shared `StatsGrid` renders the Stats table's classes; every table on the page uses it (compact for static
+  tables). Ft-In/Inches/m/cm; icon-labelled control groups; scaled overlay bars on a labelled axis; highlighted players
+  named and removable, up to 8 more added from the graph's search with non-overlapping labels.
+- **Checks.** ruff, mypy clean; Python 2,672 passed, 9 failed (all 9 fail on a clean HEAD worktree); lint, typecheck, Vitest
+  810; page specs 45/45 ×3; full Playwright 591 passed, 1 failed (baseline, regenerated and viewed; visual spec 84/84);
+  real data 199,252 values at 1440 and 390, 0 mismatches, 0 console errors, 0 overflow, 0 broken images.
+- **Not done.** The owner's review and ✅; `ResearchTable` and other pages' tables move to `StatsGrid` in their turns.

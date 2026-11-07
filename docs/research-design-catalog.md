@@ -136,7 +136,7 @@ Instructions (owner, 2026-11-06, round 7; screenshot of the All Ratings table sc
    — The pinned player column tied the sticky filter bar's layer and, being later, painted over it; the shared table's
    scroll frame is now its own stacking context, so it scrolls under the bar on both tabs at every width.
 
-## RD01 Combine & Wingspan — 👀 ready for the owner's review
+## RD01 Combine & Wingspan — 👀 ready for the owner's review (round 3)
 
 - **Now:** the combine measurements view plus R10's plain sections: career and current DARKO D-DPM,
   percentiles, positional averages with counts and intervals, the registered correlation (wingspan − height
@@ -164,6 +164,48 @@ owner answered the four questions under the gap list):
    overlay drawing and the scatter coloured by position with its r.
 
 Evidence: [`design-RD01`](evidence/research/design-RD01/README.md).
+
+Instructions (owner, 2026-11-07, round 2; screenshots: Databallr's table and filter panel with "che" searched, and this
+page's table, overlay, scatter, Similar Profiles and Wingspan and Defense tables):
+5. [x] I want full coverage for all players like Databallr has.
+   — Owner chose CraftedNBA, labelled: its page (418 current players) is read once and sealed
+   (`courtlens-wingspan-coverage-v1`, raw page kept gzipped by SHA-256); all 418 match an NBA ID (4 by a reviewed nickname
+   alias). 97 rows gain figures (27 unmeasured combine participants, 70 new players: Wembanyama, Holmgren, Lively…); the combine
+   wins for the other 321. Tagged Reported; no percentiles; out of averages, r and the frozen R10 analysis. Active: 362 → 459.
+6. [x] Remember to add icons where possible like Databallr has (the filter panel's Height and Units groups).
+   — Height (footprints), Units (arrows) and Combine (calendar) groups with Databallr's inset label; icons on the status
+   options, the panel titles and the scatter's axis pickers; CSV moved into the panel with "`nba_id` included".
+7. [x] Try a main table design that looks more similar to Databallr.
+   — Databallr's layout: solid dark table, lighter header holding the search, logo then the name with ◎ and + beside it, no
+   photos, centred figures with a small percentile under them, D-DPM to one decimal, 49 px rows.
+8. [x] Add a units toggle for people that need it, to switch between ft and inches to m/cm.
+   — Units: Ft-In · Inches · m · cm everywhere (table, cards, overlay axis, scatter, similar profiles); differences show in
+   centimetres in both metric modes.
+9. [x] These tables (Similar Profiles, Wingspan and Defense) are ugly and are remnants from a past design. Use a better
+   static table design: more breathing room, and their contents slightly larger (text size, etc.).
+   — Shared `rs-static` table style (light panel, 12 × 16 px cells, 14 px text, interval under each r); within-position
+   pivoted to one row per position with three r columns; the method tables use it too.
+10. [x] The Selected Player Overlay is kind of a bad display. Where are the axis labels? Make it as clear as possible.
+   — Replaced the cross with scaled bars from zero on a labelled axis (feet, inches, metres or centimetres): a light
+   wingspan bar under the solid height bar per player, the difference at its end, a key, names and figures.
+11. [x] Make selected players more notable in the graph. Also, is there a way to clear them?
+   — Highlighted players are large, filled in their overlay colour, outlined and named while the rest dim; a chip per player
+   above the chart removes it, and Clear all empties the overlay and the similar-profile pick.
+
+Instructions (owner, 2026-11-07, round 3; screenshots: this page's players table and scatter, the Stats page's NBA Player
+Statistics table, and the Wingspan and Defense tables):
+12. [x] The search bar should be left aligned. Add player photos.
+    — The search sits at the left of the pinned player header, as on Stats; each row is the Stats player card: logo, 40 px
+    season photo, name over "team · year combine" or "team · Reported", with ◎ and + beside it.
+13. [x] Can we make it possible to add multiple players to the graph if possible (hopefully they don't clip into each other).
+    — "Add a player to the graph" search on the scatter adds up to 8 more players (`mark=` in the URL) beside the overlay and
+    similar-profile picks; every label takes the side its name fits and a line of its own (18 px apart, with a leader line).
+14. [x] We should standardize table styling on this website. Use the site's main NBA Player Statistics table as a guide, and use
+    scaled equivalents of it: these tables are incongruent with the rest of the site. I want standardization.
+    — New shared `StatsGrid` (`components/research/stats-grid.tsx`) renders the Stats table's own classes (frame, group tier,
+    lifted header, well cells, pinned player card); `density="compact"` is the scaled version. Every table on this page uses it:
+    players, similar profiles, drills, correlations, within position, exclusions, positional averages. Recorded in the pattern;
+    the RD00 table (`ResearchTable`) and other pages move to it in their turns (owner's call).
 
 ## RD02 ORtg Calculator — ⬜
 
