@@ -2314,3 +2314,33 @@ def reconcile_live_final_command(observation_id: str, dataset_id: str) -> None:
     with SessionLocal() as session:
         result = reconcile_final(session, observation_id, dataset_id)
     typer.echo(json.dumps(result, indent=2))
+
+
+@app.command("seal-wingspan-coverage")
+def seal_wingspan_coverage_command(
+    page: Path = typer.Option(
+        ..., exists=True, dir_okay=False, help="CraftedNBA length page, raw bytes."
+    ),
+    observed_at: str = typer.Option(
+        ..., help="When the page was fetched, ISO 8601 with a timezone."
+    ),
+) -> None:
+    """RD01: seal CraftedNBA's reported heights and wingspans beside the frozen R10 results."""
+    from courtlens.services import wingspan, wingspan_coverage
+
+    raw = page.read_bytes()
+    sealed = wingspan_coverage.build(
+        raw, datetime.fromisoformat(observed_at), wingspan._load_results(), wingspan.current_board()
+    )
+    raw_path, seal_path = wingspan_coverage.write(raw, sealed)
+    typer.echo(
+        json.dumps(
+            {
+                "raw": str(raw_path),
+                "seal": str(seal_path),
+                "seal_sha256": sealed["seal_sha256"],
+                **sealed["counts"],
+            },
+            indent=2,
+        )
+    )
