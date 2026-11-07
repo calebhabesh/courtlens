@@ -228,11 +228,21 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
     const mid = r => ({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
     const icon = { dx: +(mid(glyph).x - mid(tile).x).toFixed(2), dy: +(mid(glyph).y - mid(tile).y).toFixed(2), titleDy: +(mid(title).y - mid(tile).y).toFixed(2),
       groupDx: +(((tile.left + title.right) / 2) - mid(col).x).toFixed(2) };
-    return { overflow: document.documentElement.scrollWidth - innerWidth, broken, small, column: Math.round(col.width), left: Math.round(col.left), icon };
+    // Round 6: the table search has equal space above (from the PLAYER label, the two header tiers share one background) and
+    // below (to the first row).
+    const search = [...document.querySelectorAll(".rs-grid .rs-grid-search")].map(el => {
+      const box = el.querySelector(".lookup-input-wrapper").getBoundingClientRect(), table = el.closest("table");
+      const r = document.createRange(); r.selectNodeContents(table.querySelector(".stats-header-tier-1 th.rs-grid-lead")); const label = r.getBoundingClientRect();
+      const row = table.querySelector("tbody tr").getBoundingClientRect();
+      return { above: +(box.top - label.bottom).toFixed(1), below: +(row.top - box.bottom).toFixed(1) };
+    });
+    return { overflow: document.documentElement.scrollWidth - innerWidth, broken, small, column: Math.round(col.width), left: Math.round(col.left), icon, search };
   }, width);
   for (const [k, v] of Object.entries(page_.icon)) eq(`hero icon ${k}`, Math.abs(v) <= 1, true);
+  for (const [i, g] of page_.search.entries()) eq(`search gap ${i} (${g.above} above, ${g.below} below)`, Math.abs(g.above - g.below) <= 1, true);
+  if (["decomposition", "shot-making"].includes(scene.tab)) eq("table search present", page_.search.length, 1);
   report.push({ scene: scene.name, width, compared, mismatches: mismatches.slice(0, 40), mismatchCount: mismatches.length, errors, ...page_ });
-  console.log(scene.name, width, compared, "mismatches", mismatches.length, "errors", errors.length, "overflow", page_.overflow, "broken", page_.broken.length, "small", page_.small.length, "col", page_.column, "icon", JSON.stringify(page_.icon));
+  console.log(scene.name, width, compared, "mismatches", mismatches.length, "errors", errors.length, "overflow", page_.overflow, "broken", page_.broken.length, "small", page_.small.length, "col", page_.column, "icon", JSON.stringify(page_.icon), "search", JSON.stringify(page_.search));
   if (mismatches.length) console.log(JSON.stringify(mismatches.slice(0, 5)));
   if (shots) {
     const fresh = await browser.newPage({ viewport: { width, height: width > 600 ? 900 : 844 } });

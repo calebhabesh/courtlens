@@ -31,6 +31,10 @@
   .rs-grid .dense-stats-table .group-start { border-left: 1px solid var(--color-hairline-strong); }
   .rs-grid .dense-stats-table thead .group-start { border-left: 0; }
   .rs-grid .stats-header-search { padding-right: var(--space-2); }
+  /* RD04 round 6 (owner): equal space above and below the header search. The two header tiers share one background, so the
+     visible gap above is from the PLAYER label (about 7 px of tier-1 padding below it); the field sits flush on the tier line
+     and takes the same gap below it, before the first row; a taller phone row splits its slack evenly (middle). */
+  .rs-grid .dense-stats-table thead th.rs-grid-lead:has(> .rs-grid-search) { --rs-search-gap: 7px; padding-top: 0; padding-bottom: var(--rs-search-gap); vertical-align: middle; }
   /* RD04 round 5: labels whose lowercase prefix carries meaning (oTS, dContest, xPPS) keep their case. */
   .rs-grid .dense-stats-table thead th.rs-grid-keep-case, .rs-grid .dense-stats-table thead th.rs-grid-keep-case .table-sort-button { text-transform: none; }
 

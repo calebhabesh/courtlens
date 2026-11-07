@@ -640,3 +640,14 @@ a table's search must be the NBA Player Statistics table's design.
   51,416 values, 0 mismatches.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD04 round 6: equal space above and below the table search
+
+[Evidence](evidence/research/design-RD04/README.md#round-6-owner-2026-11-07). Owner: the padding above and below the search bar
+should be equal.
+
+- **Change.** The `GridSearch` header cell drops its top padding and takes the PLAYER label's ~7 px gap below the field: 6.5 / 7 px
+  at 1440, 7.5 / 8 at 390. Scoped to `GridSearch`, so Wingspan is unchanged.
+- **Checks.** Lint 0/0, typecheck, Vitest 820; page specs 14/14 ×3; full Playwright 595 passed, 17 skipped, 4 failed (the
+  Wingspan load flake; 11/11 twice alone); real data 51,444 values, 0 mismatches, search gaps equal within 0.5 px.
+- **Not done.** The owner's review and ✅.
+
