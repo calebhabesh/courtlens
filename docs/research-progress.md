@@ -381,3 +381,15 @@ the Impact Tree's player doesn't work; does there always need to be a player? De
   :3100 at 1440 and 390 (clear, reload, restore, search), 0 errors, 0 overflow.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-06 — RD00 round 7: the table no longer paints over the filter bar
+
+[Evidence](evidence/research/design-RD00/README.md#round-7--table-over-the-filter-bar-owner-2026-11-06). Owner: the
+table overlaps the top drop-downs. Design only.
+
+- **Cause.** The sticky filter bar and the table's pinned column shared `--z-sticky`; the later table won the tie.
+- **Change.** `.rt-scroll` is its own stacking context (`isolation: isolate`), so pinned cells stack only inside it.
+- **Checks.** Live :3100, both tabs at 1440/1053/390: 15–18 overlapping points before, 0 after; negative control 30
+  vs 0. Lint 0/0, typecheck, Vitest 805; page spec 21/21 ×3; full Playwright 586 passed, 3 new tests failed on a short
+  fixture page and were fixed (spec rerun 63/63).
+- **Not done.** The owner's review and ✅.
+

@@ -11,7 +11,9 @@
   /* Fixed columns: the table is the wider of the frame and the sum of its columns, so a phone scrolls
      sideways under the pinned logo and player columns instead of squeezing the figures. */
   .player-ref-grid.rt-grid { --grid-min-width: 0; }
-  .player-ref-grid-scroll.rt-scroll { --lead-width: 184px; }
+  /* RD00 round 7: its own stacking context, so the pinned lead column and header cells (z-sticky) stay
+     inside the table and can't paint over the sticky filter bar (also z-sticky, earlier in the page). */
+  .player-ref-grid-scroll.rt-scroll { --lead-width: 184px; isolation: isolate; }
   .player-ref-grid.rt-grid .rt-col-logo { width: 48px; }
   .player-ref-grid.rt-grid .rt-col-value { width: 128px; }
   .player-ref-grid.rt-grid .rt-col-signed { width: 96px; }
