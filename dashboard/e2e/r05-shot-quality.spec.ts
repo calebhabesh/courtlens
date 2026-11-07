@@ -21,9 +21,9 @@ test.describe("R05 Shot Quality", () => {
     expect(await rows.evaluateAll(list => list.map(r => r.getAttribute("data-row")))).toEqual(board.rows.map((r: Row) => r.player_id));
     const cells = page.locator(`${rowsOf} td[data-column='shot_making']`);
     expect((await cells.evaluateAll(list => list.map(n => n.getAttribute("data-value")))).map(Number)).toEqual(board.rows.map((r: Row) => r.shot_making));
-    expect(await page.locator(`${rowsOf} td[data-column='shot_making'] .rt-value`).evaluateAll(list => list.map(n => n.getAttribute("data-tone"))))
+    expect(await page.locator(`${rowsOf} td[data-column='shot_making'] .rs-grid-value`).evaluateAll(list => list.map(n => n.getAttribute("data-tone"))))
       .toEqual(board.rows.map((r: Row) => tone(r.interval)));
-    await expect(rows.first().locator("td[data-column='xpps'] .rt-value")).not.toHaveAttribute("data-tone", /.+/);
+    await expect(rows.first().locator("td[data-column='xpps'] .rs-grid-value")).not.toHaveAttribute("data-tone", /.+/);
     await expect(page.getByText("Helps: 95% interval above zero")).toBeVisible();
     await expect(page.getByText("Design reference: a saved copy of Databallr's ShotQuality RAPM page", { exact: false })).toBeAttached();
   });
@@ -76,7 +76,7 @@ test.describe("R05 Shot Quality", () => {
     await page.setViewportSize({ width: 390, height: 844 });
     for (const tab of ["shot-making", "model", "player"]) {
       await openWorkbench(page, `${path}?tab=${tab}`);
-      await expect(page.locator(".sq-page [data-section], .sq-page .sq-board, .sq-page .sq-model-head").first()).toBeVisible();
+      await expect(page.locator(".sq-page [data-section], .sq-page .sq-table-block, .sq-page .sq-model-head").first()).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
     }
   });

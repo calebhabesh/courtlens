@@ -402,6 +402,16 @@ Instructions (owner, 2026-11-07, round 3; screenshot: the hero):
    with flex alignment. Measured at 1440 and 390: glyph to tile centre 0 px both ways, tile level with the title, the pair centred
    in the column.
 
+Instructions (owner, 2026-11-07, round 4; screenshots: the Wingspan players table beside the Decomposition table):
+4. [x] Again we neeed to make sure table styling is standardized. Why does it look different compared to the combine and wingspan
+   table
+   — Because round 1 put both tables on RD00's older `ResearchTable` (bars, its own header) instead of `StatsGrid`, the site look
+   settled in RD01. Both are now `StatsGrid`, as Wingspan: search in the Player header, a group tier (Offense/Defense · points per
+   100 shots, Sample; Shooting, Shot-making), the pinned logo/photo/name card with a subtitle, the value over its interval line,
+   sortable headers; the toolbar panel above keeps min, team picker, season, Methodology, CSV, count and the side views. Bars are
+   gone with the old table. `GridValue` gains `tone` (green/red only where the interval excludes zero); `ResearchTable` is back
+   as it was before RD04.
+
 ## RD05 Defensive Shot Quality — ⬜
 
 - **Now:** ranked defender cards, All / 2PT / 3PT, ranks, RAPM headline, Key Matchups, paging; matchup data

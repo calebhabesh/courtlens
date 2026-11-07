@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { GatedNote } from "./ui/gated-note";
-import { PlayerIdentity } from "./ui/identity";
-import { Button, Select } from "./ui/kit";
-import { FormulaLine, Glossary, MethodBlock, MethodSteps, ReadingGuide, ResearchDisclosure, ResearchSection } from "./research/research-page";
-import { ResearchTable, type ResearchColumn, type ResearchView } from "./research/research-table";
-import { GridValue, StatsGrid } from "./research/stats-grid";
+import { CountChip } from "./ui/filter-bar";
+import { Input, SearchField } from "./ui/input";
+import { Button, Segmented, Select } from "./ui/kit";
+import { FormulaLine, Glossary, MethodBlock, MethodSteps, ReadingGuide, ResearchDisclosure, ResearchSection, ToneLegend } from "./research/research-page";
+import { sortRows } from "./research/research-table";
+import { GridPlayer, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
+import { TeamPicker } from "./research/team-picker";
 import { IntervalPlot, LinkCard, SqPanel } from "./shot-quality-figures";
 import { seasonEra } from "@/lib/portrait-source";
 import {
@@ -16,10 +18,11 @@ import {
 } from "@/lib/shot-decomposition";
 import { formatFixed, formatInterval, formatShare, formatSigned, formatWhole } from "@/lib/shot-quality";
 import type { Pair } from "@/lib/shot-quality";
+import { downloadCsv, intervalTone, toCsv } from "@/lib/research-values";
 
 /*
  * Research → Shot Quality → Decomposition (R06 analysis; RD04 design after Databallr's ShotQuality RAPM page). Databallr's
- * order: the toolbar panel and table (RD00's `ResearchTable`, built from this same Databallr table), the colour key, the
+ * order: the toolbar panel and table (the site's `StatsGrid` look, owner round 4), the colour key, the
  * Six-Factor card, How to Read, the Column Glossary, then a results section of CourtLens's own and the collapsed Caveats &
  * Methodology. Every number is the frozen courtlens-shot-decomposition-v1 results'; exact values sit on `data-*`.
  * CourtLens fits one season at a time; Databallr pools three. The prose is CourtLens's own.
@@ -97,40 +100,58 @@ export function ShotDecompositionTab() {
 }
 
 function Board({ data, summary, side, seasonSelect, onSide }: { data: Merged; summary: DecompositionSummary; side: Side; seasonSelect: ReactNode; onSide: (side: Side) => void }) {
-  const views = useMemo<ResearchView<MergedRow>[]>(() => SIDES.map(s => ({
-    value: s, label: SIDE_LABELS[s], icon: SIDE_ICONS[s],
-    columns: [
-      ...TARGETS.map((t): ResearchColumn<MergedRow> => ({
-        key: t, label: summary.labels[s][t], title: summary.definitions[t] ?? summary.labels[s][t], signedValue: true, digits: 1,
-        value: r => r.sides[s]?.values[t] ?? null,
-        interval: r => { const band = r.sides[s]?.intervals[t]; return { low: band?.[0] ?? null, high: band?.[1] ?? null }; },
-      })),
-      { key: "shots", label: "Shots", title: "Field-goal attempts and 2-shot or 3-shot free-throw trips on this side, with the player on the floor", value: r => r.sides[s]?.shots ?? null },
-    ],
-  })), [summary]);
-  const csvColumns = useMemo(() => [
-    { header: "player_id", value: (r: MergedRow) => r.player_id }, { header: "player", value: (r: MergedRow) => r.player_name },
-    { header: "team", value: (r: MergedRow) => r.tricode }, { header: "games", value: (r: MergedRow) => r.games },
-    ...SIDES.flatMap(s => [
-      { header: `${s}_shots`, value: (r: MergedRow) => r.sides[s]?.shots ?? null },
-      ...TARGETS.flatMap(t => [
-        { header: summary.labels[s][t], value: (r: MergedRow) => r.sides[s]?.values[t] ?? null },
-        { header: `${summary.labels[s][t]}_p10`, value: (r: MergedRow) => r.sides[s]?.intervals[t][0] ?? null },
-        { header: `${summary.labels[s][t]}_p90`, value: (r: MergedRow) => r.sides[s]?.intervals[t][1] ?? null },
-      ]),
-    ]),
-  ], [summary]);
+  const [query, setQuery] = useState("");
+  const [team, setTeam] = useState<string | null>(null);
+  const [floor, setFloor] = useState(String(MIN_SHOTS));
+  const [sort, setSort] = useState<{ key: Target | "shots"; direction: "asc" | "desc" }>({ key: "ts", direction: "desc" });
+  const labels = summary.labels[side];
+  const value = (r: MergedRow, key: Target | "shots") => key === "shots" ? r.sides[side]?.shots ?? null : r.sides[side]?.values[key] ?? null;
+  const needle = query.trim().toLocaleLowerCase("en-US");
+  const least = Number(floor);
+  const shown = sortRows(data.rows.filter(r => (!needle || r.player_name.toLocaleLowerCase("en-US").includes(needle)) && (!team || r.tricode === team)
+    && (!Number.isFinite(least) || least <= 0 || (r.sides[side]?.shots ?? -Infinity) >= least)), r => value(r, sort.key), sort.direction, r => r.player_id);
+  const onSort = (key: string) => setSort(s => s.key === key ? { key: s.key, direction: s.direction === "desc" ? "asc" : "desc" } : { key: key as Target | "shots", direction: "desc" });
+  const group = `${SIDE_LABELS[side]} · points per 100 shots`;
+  const columns: GridColumn<MergedRow>[] = [
+    ...TARGETS.map((t): GridColumn<MergedRow> => ({
+      key: t, label: labels[t], title: summary.definitions[t] ?? labels[t], group, width: "md", sort: r => value(r, t),
+      data: r => { const band = r.sides[side]?.intervals[t]; return { value: value(r, t) ?? undefined, low: band?.[0], high: band?.[1] }; },
+      cell: r => { const v = value(r, t), band = r.sides[side]?.intervals[t];
+        return v == null ? <GridValue text={null} /> : <GridValue text={formatSigned(v)} sub={band ? formatInterval(band, x => formatSigned(x)) : null}
+          tone={band ? intervalTone(band[0], band[1]) : undefined} title={band ? `80% interval ${formatInterval(band, x => formatSigned(x))}` : undefined} />; },
+    })),
+    { key: "shots", label: "Shots", title: "Field-goal attempts and 2-shot or 3-shot free-throw trips on this side, with the player on the floor", group: "Sample", width: "sm",
+      sort: r => value(r, "shots"), data: r => ({ value: value(r, "shots") ?? undefined }), cell: r => <GridValue text={formatWhole(value(r, "shots"))} /> },
+  ];
+  const exportCsv = () => downloadCsv(`courtlens-decomposition-${data.season}.csv`, toCsv(
+    ["player_id", "player", "team", "games", ...SIDES.flatMap(s => [`${s}_shots`, ...TARGETS.flatMap(t => [summary.labels[s][t], `${summary.labels[s][t]}_p10`, `${summary.labels[s][t]}_p90`])])],
+    shown.map(r => [r.player_id, r.player_name, r.tricode, r.games, ...SIDES.flatMap(s => [r.sides[s]?.shots ?? null, ...TARGETS.flatMap(t => [r.sides[s]?.values[t] ?? null, r.sides[s]?.intervals[t][0] ?? null, r.sides[s]?.intervals[t][1] ?? null])])])));
   const board = data.boards[side];
-  return <ResearchTable label={`Decomposition ${data.season} ${side}`} className="sq-board" rows={data.rows} rowKey={r => r.player_id} name={r => r.player_name}
-    team={r => r.tricode} teamPicker season={data.season} views={views} view={side} onViewChange={next => onSide(next as Side)} defaultSort="ts" noun="players"
-    player={r => <PlayerIdentity playerId={r.player_id} name={r.player_name} team={r.tricode} size="sm" era={seasonEra(data.season, r.tricode)} href={`/players/${r.player_id}?season=${data.season}`} />}
-    minimum={{ label: "Min shots", value: (r, view) => r.sides[view as Side]?.shots ?? null, initial: MIN_SHOTS, step: 500 }}
-    csv={{ filename: `courtlens-decomposition-${data.season}.csv`, columns: csvColumns }}
-    actions={<>{seasonSelect}<Button size="md" icon="book" onClick={() => openMethodology()}>Methodology</Button></>}
-    footnote={<span data-count={data.rows.length} data-unknown={board.unknown.length}>
-      Points per 100 shots against the average player; positive is good on both ends. {data.season} is its own fit: one season, no box prior, no time
-      decay, so values are shrunk hard. {formatWhole(board.unknown.length)} players with fewer than 20 games or 1,000 shots on either side have no value.
-    </span>} />;
+  return <div className="sq-table-block">
+    <div className="sq-panel sq-toolbar" role="group" aria-label="Table filters">
+      <div className="sq-control-row">
+        <label className="sq-minimum"><span>Min shots</span><Input type="number" inputMode="numeric" min={0} step={500} value={floor} onChange={e => setFloor(e.target.value)} aria-label="Min shots" inputSize="md" wrapperClassName="sq-minimum-input" /></label>
+        <TeamPicker value={team} onChange={setTeam} season={data.season} />
+        {seasonSelect}
+        <Button size="md" icon="book" onClick={() => openMethodology()}>Methodology</Button>
+        <Button size="md" icon="download" onClick={exportCsv}>Download CSV</Button>
+        <CountChip>{shown.length.toLocaleString("en-US")} players</CountChip>
+      </div>
+      <Segmented size="md" label="View" value={side} onChange={next => onSide(next)} options={SIDES.map(s => ({ value: s, label: SIDE_LABELS[s], icon: SIDE_ICONS[s] }))} />
+    </div>
+    <StatsGrid<MergedRow> label={`Decomposition ${data.season} ${side}`} name="decomposition" className="sq-board" rows={shown} rowKey={r => r.player_id} columns={columns} leadWidth="lg" minWidth="wide"
+      sort={{ key: sort.key, direction: sort.direction, onSort }} empty="No players match these filters."
+      lead={{ group: "Player",
+        label: <span className="stats-header-search"><SearchField aria-label="Search players" placeholder="Search players…" value={query} onChange={e => setQuery(e.target.value)} onClear={() => setQuery("")} inputSize="sm" wrapperClassName="sq-search" /></span>,
+        cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.tricode} season={data.season} era={seasonEra(data.season, r.tricode)} href={`/players/${r.player_id}?season=${data.season}`}
+          subtitle={`${r.tricode ?? "—"} · ${r.games} games`} /> }} />
+    <div className="sq-foot">
+      <ToneLegend />
+      <p className="rs-note" data-count={data.rows.length} data-unknown={board.unknown.length}>Points per 100 shots against the average player; positive is good on
+        both ends, and the small line is the 80% interval. {data.season} is its own fit: one season, no box prior, no time decay, so values are shrunk hard.
+        {" "}{formatWhole(board.unknown.length)} players with fewer than 20 games or 1,000 shots on either side have no value.</p>
+    </div>
+  </div>;
 }
 
 function Reading({ summary, data }: { summary: DecompositionSummary; data: Merged | null }) {

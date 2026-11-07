@@ -51,11 +51,13 @@
   .sq-page [data-series="a"] { --sq-series: var(--color-identity-a); }
   .sq-page [data-series="b"] { --sq-series: var(--color-identity-b); }
 
-  /* The board: Databallr's toolbar panel over a frame of about eleven rows. */
-  .sq-board-section { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
-  .sq-board .player-ref-grid-scroll.rt-scroll { --lead-width: 240px; max-height: 68vh; }
-  .sq-players .player-ref-grid-scroll.rt-scroll { --lead-width: 240px; }
-  .sq-board .rt-foot .rs-note { max-width: none; }
+  /* Tables (owner, round 4): the site's `StatsGrid` look, as Wingspan's, under a toolbar panel. */
+  .sq-board-section, .sq-table-block { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
+  .sq-toolbar { gap: var(--space-3); padding: var(--space-4); }
+  .sq-minimum { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-on-bg-secondary); font-size: var(--text-sm); white-space: nowrap; }
+  .sq-minimum-input { width: 96px; }
+  .sq-search { width: 100%; }
+  .sq-foot { display: grid; gap: var(--space-2); }
 
   /* Framework link card. */
   .sq-link-card { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-4); }
@@ -103,7 +105,6 @@
     .sq-panel { padding: var(--space-4); }
     .sq-link-card { grid-template-columns: auto minmax(0, 1fr); }
     .sq-link-card > :last-child { grid-column: 1 / -1; justify-self: start; }
-    .sq-board .player-ref-grid-scroll.rt-scroll, .sq-players .player-ref-grid-scroll.rt-scroll { --lead-width: 184px; }
     .sq-ci { --sq-ci-label: 72px; --sq-ci-value: 88px; }
     .sq-ci-range { display: none; }
   }

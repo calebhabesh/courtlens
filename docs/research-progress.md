@@ -616,3 +616,16 @@ other pages, not a team dropdown; the Shot Quality icon looked wonky and off-cen
   Shapes phone baseline, untouched page; 84/84 on rerun); real data 51,416 values, 0 mismatches; icon offsets 0 px.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD04 round 4: both tables on the site's StatsGrid look
+
+[Evidence](evidence/research/design-RD04/README.md#round-4-owner-2026-11-07). Owner: table styling must be standardised; why does
+it differ from the Wingspan table?
+
+- **Cause.** Round 1 used RD00's `ResearchTable` instead of `StatsGrid`, the table look settled in RD01.
+- **Change.** Decomposition and Shot-making are `StatsGrid` tables like Wingspan's (header search, group tier, pinned player card,
+  value over interval line) under a toolbar panel; `GridValue` gains an interval `tone`; `ResearchTable` restored to its pre-RD04
+  state.
+- **Checks.** Lint 0/0, typecheck, Vitest 818; page specs 14/14 ×3; full Playwright 598 passed, 17 skipped, 1 failed
+  (Projected Impact, untouched; 5/5 twice on rerun); real data 51,416 values, 0 mismatches.
+- **Not done.** The owner's review and ✅.
+

@@ -94,3 +94,33 @@ Round 2: "Can we use the same team picker we use on the other pages. I don't lik
   its close animation (4 script mismatches); the check now waits for it to detach.
 - Glance test: the hero and the open dialog viewed at both widths (`sq-*-team-*-{1440,390}.png` show the dialog open).
 
+## Round 4 (owner, 2026-11-07)
+
+"Again we neeed to make sure table styling is standardized. Why does it look different compared to the combine and wingspan
+table" (screenshots: the Wingspan players table beside the Decomposition table).
+
+**Why.** Round 1 built both tables on RD00's `ResearchTable` (Databallr's ShotQuality table look, with bars), not on `StatsGrid`,
+the one table look the owner settled in RD01 and Wingspan uses.
+
+**Changed**
+
+- Decomposition and Shot-making tables rebuilt on `StatsGrid` exactly as Wingspan's players table: the search field in the
+  Player header, a group tier (Offense / Defense / Combined · points per 100 shots and Sample; Shooting and Shot-making), the
+  pinned Stats player card (logo, season photo, name, subtitle: team · games, or the season's teams), the value over its
+  interval line, sortable headers and the scrolling frame. A toolbar panel above keeps min shots / min FGA, the team picker,
+  season, Methodology, CSV, the count and the Offense / Defense / Combined views. Bars went with the old table.
+- `GridValue` takes `tone` (green/red, only where the served interval excludes zero) and a `title`; `stats-grid.test.tsx` covers
+  it. The round-1 and round-2 additions to `ResearchTable` are reverted (nothing uses them), so RD00/RD01 are untouched; the
+  team picker's dialog styles moved to `stats-grid.css`.
+- The site's header style uppercases column labels, so oTS reads OTS, as every `StatsGrid` header does.
+
+**Checks**
+
+- Lint 0/0, typecheck, Vitest 818. No Python changed.
+- Page specs updated (tones on `.rs-grid-value`; the phone check finds `.sq-table-block`): 14/14 three times.
+- Full Playwright: 598 passed, 17 skipped, 1 failed: `projected-impact` "a player with no frozen row" (two `#contributions`
+  elements for a moment; untouched page). It passed 5/5 twice on rerun.
+- Real data: 10 scenes at 1440 and 390, **51,416 values, 0 mismatches**, 0 console errors, 0 overflow, 0 broken images, 0
+  phone controls under 40 px, hero icon offsets 0 px. `real-check.mjs` reads the toolbar and foot from their new places.
+- Glance test: the rebuilt tables viewed at 1440 and 390 beside the Wingspan screenshot.
+

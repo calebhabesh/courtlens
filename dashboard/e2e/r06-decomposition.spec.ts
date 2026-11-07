@@ -29,7 +29,7 @@ test.describe("R06 decomposition", () => {
       expect(await values(page, `${rowsOf} td[data-column='${target}']`)).toEqual(board.rows.map((r: Row) => r.values[target]));
       expect(await values(page, `${rowsOf} td[data-column='${target}']`, "data-low")).toEqual(board.rows.map((r: Row) => r.intervals[target][0]));
       expect(await values(page, `${rowsOf} td[data-column='${target}']`, "data-high")).toEqual(board.rows.map((r: Row) => r.intervals[target][1]));
-      const tones = await page.locator(`${rowsOf} td[data-column='${target}'] .rt-value`).evaluateAll(list => list.map(n => n.getAttribute("data-tone")));
+      const tones = await page.locator(`${rowsOf} td[data-column='${target}'] .rs-grid-value`).evaluateAll(list => list.map(n => n.getAttribute("data-tone")));
       expect(tones).toEqual(board.rows.map((r: Row) => tone(r.intervals[target])));
     }
     await expect(page.getByRole("columnheader", { name: "oMake" })).toBeVisible();
