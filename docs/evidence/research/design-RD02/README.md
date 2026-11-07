@@ -79,3 +79,25 @@ Noted, not changed: FT ORB recycle reads about 0.4% per FGA here against Databal
 rebounds of missed final free throws per FGA from play-by-play; Databallr's figure uses its own form. The owner's :8000 and
 :3100 were not restarted (3100 answered 200 throughout; its stale CSS was refreshed by toggling the import, as recorded).
 3180 and 4180 were stopped and the sandbox deleted.
+
+## Rounds 2 and 3 (owner, 2026-11-07)
+
+Instructions, from screenshots of the stepper board: (2) *"For ORTG, xSHOT, xEFF, xPOSS there is too much nesting. Only one
+nest deep."* (3) *"Balance the left and right columns in the container, it looks a little weird."* Design only (CSS and one
+wrapper class); no numbers changed.
+
+| Change | Detail |
+| --- | --- |
+| One level of nesting | The four tiles sat in a well inside the board panel (panel → well → tile). The well is removed; the tiles are the panel's wells (`--rs-well`, rim, 14 px radius) |
+| Balanced stepper cards | Two equal columns at 701 px and up, each centred; the label and ΔORTG share the first row, the − value + control and the ΔORTG figure the second. The phone keeps round 1's stacked card |
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 / 0; clean; 812 passed |
+| Page Playwright ×3 | 60/60 |
+| Full Playwright (sandbox, final build) | 594 passed, 17 skipped, 0 failed. An earlier run in this round had 1 failure, `projected-impact.spec.ts` "no frozen row" (the known flake, an untouched page); alone it passed 10/10. Visual baselines unaffected (the board is below both baselines' viewport) |
+| Real data | 1,596 values in the same three scenes at 1440 and 390: 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 phone controls under 40 px; the `calculator-*` scene shots are refreshed |
+| Screenshots (viewed) | [`calculator-board-r3-1440.png`](calculator-board-r3-1440.png), [`calculator-board-r3-390.png`](calculator-board-r3-390.png), and the refreshed scene shots above |
+
+:3100 served stale CSS twice; refreshed by toggling the import. :8000 and :3100 were not restarted; 3180/4180 stopped and the
+sandbox deleted.
