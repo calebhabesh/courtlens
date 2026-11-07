@@ -88,3 +88,19 @@ HEAD worktree deleted.
 
 Not changed, as asked: the old `/zts` alias still redirects to `/research/shooting/adjusted` (`lib/route-consolidation.ts:95`),
 not to this page.
+
+## Round 2 (owner, 2026-11-07)
+
+Instruction, from a screenshot of the hero title: (2) *"Add a little bit of spacing after "zTS" container, it seems too close to
+the colon."* CSS only: `.zt-hero-chip` takes `margin-inline-end: var(--space-2)` (8 px).
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 / 0; clean; 817 passed |
+| Page Playwright (`r04-zts`) ×3 | 21/21 |
+| Full Playwright (sandbox, final build) | First run 595 passed, 17 skipped, 1 failed: `last-games.spec.ts` "the trend chart follows the window…", an untouched page; alone it passed 10/10, and the full rerun was **596 passed, 17 skipped, 0 failed** |
+| Real data | 6,088 values in the same five scenes at 1440 and 390: 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 phone controls under 40 px; scene shots refreshed |
+| Screenshots (viewed) | [`hero-r2-1440.png`](hero-r2-1440.png), [`hero-r2-390.png`](hero-r2-390.png) |
+
+:3100 served stale CSS; refreshed by toggling the import (computed margin 8 px afterwards). :8000 and :3100 not restarted;
+3180/4180 stopped, sandbox deleted.

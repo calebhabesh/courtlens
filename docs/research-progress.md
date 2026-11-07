@@ -521,3 +521,13 @@ recommendations look good; redesign the page comprehensively. Design, plus one o
   1440 and 390, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 phone controls under 40 px.
 - **Not done.** The owner's review and ✅. The `/zts` alias still points at `/research/shooting/adjusted` (not changed, as asked).
 
+## 2026-11-07 — RD03 round 2: space after the zTS chip
+
+[Evidence](evidence/research/design-RD03/README.md#round-2-owner-2026-11-07). Owner: a little spacing after the "zTS"
+container; it sits too close to the colon. CSS only.
+
+- **Change.** The hero's zTS chip has an 8 px gap before the colon.
+- **Checks.** Lint 0/0, typecheck, Vitest 817; page spec 21/21 ×3; full Playwright 596 passed, 17 skipped, 0 failed (one
+  `last-games` flake in the first run, 10/10 alone); real data 6,088 values, 0 mismatches, 0 errors, 0 overflow, 0 broken images.
+- **Not done.** The owner's review and ✅.
+

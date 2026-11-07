@@ -309,6 +309,10 @@ recommendations look good. Go ahead and comprehensively create redesign the page
 
 Evidence: [`design-RD03`](evidence/research/design-RD03/README.md).
 
+Instructions (owner, 2026-11-07, round 2; screenshot: the hero title):
+2. [x] Add a little bit of spacing after "zTS" container, it seems too close to the colon.
+   — The title chip has an 8 px (`--space-2`) gap before the colon at every width.
+
 ## RD04 Shot Quality — ⬜
 
 - **Now:** four tabs: Players (ranked per 100 shots), Decomposition (oTS = oSQ + oMake + oFT, offence,
