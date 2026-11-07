@@ -55,7 +55,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18, RD00 | ✅ |
 | RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data, RD01 | ✅ |
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data, RD02 | ✅ |
-| RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04, RD03 | 👀 |
+| RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04, RD03 | ✅ |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06 | ⬜ |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06 | ⬜ |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning` | R11 | ⬜ |
@@ -267,7 +267,7 @@ Instructions (owner, 2026-11-07, round 4; screenshots: the methodology panel, an
    — The filter bar's bottom rule and The Framework's top rule are gone on that page (`six-factor-research.css`); its two
    visual baselines regenerated and viewed.
 
-## RD03 zTS — 👀
+## RD03 zTS — ✅ approved by the owner (2026-11-07)
 
 - **Now:** About and Top 200 replicated, a Player tab built without a reference; registered test: zTS
   tracks oTS RAPM better, predicts next-season rTS worse.
