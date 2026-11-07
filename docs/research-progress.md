@@ -496,3 +496,10 @@ site's; remove the divider above Observed Inputs & Caveats, and the dividers abo
   baselines, changed by design; regenerated, viewed, visual spec 84/84); real data 1,596 values, 0 mismatches.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD02 approved
+
+The owner approved the ORtg Calculator (RD02) after four rounds and asked for the next page; the catalog row is ✅. Settled
+along the way: copy Databallr's layout where it has one; one level of nesting inside a panel; balanced, centred halves in
+small control cards; the Research pages' blue-tinted text tokens (`--color-on-bg-*`), never the neutral greys; no hairline
+dividers around intro lines or above a collapsed section. Next in the queue: RD03 zTS.
+

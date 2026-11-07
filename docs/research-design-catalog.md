@@ -54,7 +54,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | **A. Pages with a saved Databallr reference** | | | | | |
 | RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18, RD00 | ✅ |
 | RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data, RD01 | ✅ |
-| RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data, RD02 | 👀 |
+| RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data, RD02 | ✅ |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04 | ⬜ |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06 | ⬜ |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06 | ⬜ |
@@ -219,7 +219,7 @@ Instructions (owner, 2026-11-07, round 4; screenshots: the Within Position and C
     — The scatter header is a three-column grid: axis pickers left, the add-a-player search centred on the panel, r right; on a
     phone the pickers take the first line and the search the second.
 
-## RD02 ORtg Calculator — 👀 ready for review
+## RD02 ORtg Calculator — ✅ approved by the owner (2026-11-07)
 
 - **Now:** the hypothetical calculator plus R10's observed inputs per season (2014-15 to 2025-26), Poropudas
   and Halme's Eq. (11), μ, rebound rates by miss, ORTG and marginals.

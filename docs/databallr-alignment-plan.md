@@ -125,6 +125,11 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   leaving the picker and an empty state with a way back to the default (`player=none` in the URL).
 - **Sticky layers (owner, RD00 round 7):** `ResearchTable`'s scroll frame is its own stacking context, so pinned
   columns scroll under the sticky filter bar. Anything new with sticky or z-indexed parts needs the same.
+- **Settled in RD02 (owner, ORtg Calculator, 2026-11-07):** where Databallr has a layout, copy it (RD02 used Databallr's own
+  hero bar through `PageHeader` instead of the centred hero); one level of nesting inside a panel (panel → card or well,
+  never panel → well → card); small control cards split into balanced, centred halves; text on Research pages uses the
+  blue-tinted `--color-on-bg-secondary` / `--color-on-bg-tertiary`, never the neutral `--color-text-secondary` greys; no
+  hairline dividers around an intro line or above a collapsed section.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).
