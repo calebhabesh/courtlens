@@ -174,3 +174,24 @@ phone; highlighted players clear by chip or Clear all; the table frame is its ow
 
 Observed: no Ask or provider calls, `~/dev/courtlens-r16` untouched, the shared Postgres only read (the Python tests used
 their own container), the owner's :8000 (auto-reloaded the API) and :3100 not restarted; 3180/4180 stopped, sandbox deleted.
+
+## Round 4 — the tables' left edge and a centred search (owner, 2026-11-07)
+
+From `e8e699c`. Instructions: 15. the left-most columns of the static tables look broken ("what is this inset?"); 16. the
+graph's player search should be centred. Design only.
+
+| Before | After |
+| --- | --- |
+| Lead column header padded 4 px, body 8 px; header label outside the sort-label box, so it sat higher than the others | One 16 px left edge in every row of every `StatsGrid` table; the lead header label uses the same label box, left-aligned |
+| Small tables repeated labels over two header rows (POSITION / POS, PAIR / MEASUREMENT · RATING, SAMPLE / PLAYERS) | One header row for correlations, within position and exclusions; positional averages keeps its Measured / Rated tier with an empty lead cell |
+| Scatter header: a wrapping row, search wherever it fell | A three-column grid: axis pickers, the search centred on the panel, r; on a phone, pickers then search |
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 errors, 0 warnings; clean; 810 passed |
+| Page specs | 45/45 over three repeats |
+| Full Playwright (sandbox) | 591 passed, 17 skipped, 1 failed: `projected-impact.spec.ts` "no frozen row", a page this round doesn't touch (it imports neither `StatsGrid` nor anything changed; `research-table` matches HEAD); alone it fails 1 of 25, the flake RD00 already recorded. Visual baselines unaffected |
+| Real data ([`real-data-check-r4.json`](real-data-check-r4.json)) | Same six scenes at 1440 and 390 through the read-only proxy: 199,252 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 controls under 40 px at 390 |
+| Screenshots (viewed) | [`wingspan-r4-defense-1440.png`](wingspan-r4-defense-1440.png), [`wingspan-r4-defense-390.png`](wingspan-r4-defense-390.png), [`wingspan-r4-similar-1440.png`](wingspan-r4-similar-1440.png), [`wingspan-r4-similar-390.png`](wingspan-r4-similar-390.png), [`wingspan-r4-scatter-head-1440.png`](wingspan-r4-scatter-head-1440.png), [`wingspan-r4-scatter-head-390.png`](wingspan-r4-scatter-head-390.png) |
+
+3180/4180 stopped and the sandbox deleted; :8000 and :3100 untouched.

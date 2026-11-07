@@ -136,7 +136,7 @@ Instructions (owner, 2026-11-06, round 7; screenshot of the All Ratings table sc
    — The pinned player column tied the sticky filter bar's layer and, being later, painted over it; the shared table's
    scroll frame is now its own stacking context, so it scrolls under the bar on both tabs at every width.
 
-## RD01 Combine & Wingspan — 👀 ready for the owner's review (round 3)
+## RD01 Combine & Wingspan — 👀 ready for the owner's review (round 4)
 
 - **Now:** the combine measurements view plus R10's plain sections: career and current DARKO D-DPM,
   percentiles, positional averages with counts and intervals, the registered correlation (wingspan − height
@@ -206,6 +206,16 @@ Statistics table, and the Wingspan and Defense tables):
     lifted header, well cells, pinned player card); `density="compact"` is the scaled version. Every table on this page uses it:
     players, similar profiles, drills, correlations, within position, exclusions, positional averages. Recorded in the pattern;
     the RD00 table (`ResearchTable`) and other pages move to it in their turns (owner's call).
+
+Instructions (owner, 2026-11-07, round 4; screenshots: the Within Position and Correlations tables, the scatter's header):
+15. [x] How do we deal with tables like this? It seems like it's broken on the left edge. What is this inset? It doesn't look
+    right. These left-most columns don't look right.
+    — Two causes: the pinned lead column's header had 4 px of padding and its body 8 px, so labels didn't line up, and the small
+    tables repeated labels in two header rows (POSITION over POS). Now one 16 px left edge in every row, header labels aligned,
+    and the small static tables have one header row (positional averages keeps its Measured / Rated groups).
+16. [x] The player search bar should be centered.
+    — The scatter header is a three-column grid: axis pickers left, the add-a-player search centred on the panel, r right; on a
+    phone the pickers take the first line and the search the second.
 
 ## RD02 ORtg Calculator — ⬜
 
