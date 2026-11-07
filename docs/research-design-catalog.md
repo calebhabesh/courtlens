@@ -52,7 +52,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | # | Page | Route(s) | Databallr reference | Built in | Status |
 | --- | --- | --- | --- | --- | --- |
 | **A. Pages with a saved Databallr reference** | | | | | |
-| RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18, RD00 | 👀 |
+| RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18, RD00 | ✅ |
 | RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data | ⬜ |
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data | ⬜ |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04 | ⬜ |
@@ -82,7 +82,7 @@ Saved Investigations, the operation gallery (`/research/operation`) and the lega
 
 ---
 
-## RD00 Six-Factor RAPM — 👀 awaiting the owner (round 7)
+## RD00 Six-Factor RAPM — ✅ approved by the owner (2026-11-07)
 
 Redesigned 2026-11-06 (design-18, `4023a98`); its nine instructions are in the alignment catalog, row 18.
 It sets the pattern for every page below, so review it first: changes here are cheapest before they're

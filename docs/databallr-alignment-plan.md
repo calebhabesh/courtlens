@@ -94,7 +94,7 @@ change and say why.
 **Cascade.** Overrides of foundation controls (the lookup focus ring, for example) belong in
 `app/styles/foundation.css`. The `foundation` layer outranks `pages` whatever the specificity.
 
-**Research pages (row 18, design phase).** Six-Factor RAPM set the pattern for every Research page
+**Research pages (row 18, design phase).** Six-Factor RAPM (RD00, ✅ 2026-11-07) set the pattern for every Research page
 redesigned from the owner's Databallr screenshots (Research handoff D13). Owner instructions still win.
 - **Header:** a centred `TabbedPage` header (`hero: { icon }` in `lib/route-consolidation.ts`: the
   `pvp-header research-hero` classes, accent icon, one subtitle line), route tabs centred under it, then
@@ -102,10 +102,21 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
 - **Column (owner, RD00, 2026-11-06):** the filter bar and every section sit in `.rs-column`, a centred
   992 px reading column (Databallr's), not the full page width. Each Research page adopts it in its own
   design turn.
-- **Open, not boxed (owner, RD00):** content sits on the page background. Cards are open (a 2 px top rule,
-  gold/blue for Offense/Defense identity), and glossary entries, method blocks, the factor panel, feature
-  lists and the table toolbar have no fill or frame; a callout is a left accent rule. Only a data table, a
-  grid such as the framework grid, and diagram nodes keep a frame.
+- **Shaded, like Databallr (owner, RD00 round 4; supersedes round 2's open blocks):** light panels
+  (`--rs-panel`, 4% white, with a soft inset rim `--rs-rim`) for cards, glossary entries, method blocks and
+  the table toolbar; darker inner wells (`--rs-well`) for feature lists, callouts, formulas and steps.
+  Offense/Defense cards take a 7% gold/blue tint, the tab panel an accent ring. Tokens live on
+  `.rs-section, .rs-column` in `research-page.css`.
+- **Photos (owner, RD00 round 4):** season photos in team colour (pass `team` to `PlayerIdentity`), never
+  clipped: 64 px in ranked lists (48 px on a phone), 44 px in headline charts, 40 px in tables. A feed without
+  teams borrows them server-side from a feed that has them.
+- **Captions (owner, RD00 round 5):** cut any caption that is non-essential or pulls from the key point. Rules,
+  counts and coverage move into the collapsed Caveats & Methodology; honesty statements (unknowns,
+  confounding, overlap, no interval) and sources stay.
+- **Pickers (owner, RD00 round 6):** a first-load default is fine, but a picker's clear button must clear it,
+  leaving the picker and an empty state with a way back to the default (`player=none` in the URL).
+- **Sticky layers (owner, RD00 round 7):** `ResearchTable`'s scroll frame is its own stacking context, so pinned
+  columns scroll under the sticky filter bar. Anything new with sticky or z-indexed parts needs the same.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).
@@ -119,11 +130,12 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   group, sticky logo and player columns, a bar beside each signed value, the interval on a second line,
   unknowns "—" and last in both directions. Columns declare `signedValue` and `interval`. Column widths
   follow content (128 px with an interval, 96 px without, 64 px for counts) so a five-value view fits the
-  column unscrolled; long names wrap inside the pinned player column.
+  column unscrolled; long names wrap inside the pinned player column. `team` is optional: without it there
+  is no logo column or team filter.
 - **Colour:** `SignalValue` and the table colour a value green or red only when its 80% interval
   excludes zero (`lib/research-values.ts` `intervalTone`); values without an interval stay neutral.
 - **Verification:** a real-data script compares every drawn value with the API at 1440 and 390 for
-  several scopes (`docs/evidence/research/design-18/real-check.mjs`).
+  several scopes (`docs/evidence/research/design-RD00/real-check.mjs`, `real-check-ratings.mjs`).
 
 **Verification.** For every instruction:
 - Build a production sandbox at 3180, never on the owner's ports 3100/8000.
