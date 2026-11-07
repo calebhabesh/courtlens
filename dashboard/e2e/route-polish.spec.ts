@@ -68,7 +68,7 @@ test("partial source keeps tools primary; service failure remains a distinct ava
   await page.getByRole("button", { name: "More options", exact: true }).click();
   await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
   await expect(page.getByRole("menuitem", { name: /Last X Games/ })).toContainText("could not be verified");
-  await expect(page.getByRole("region", { name: "Scenario output" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Result" })).toBeVisible();
 });
 
 test("research without a catalog explains the missing context", async ({ page }) => {

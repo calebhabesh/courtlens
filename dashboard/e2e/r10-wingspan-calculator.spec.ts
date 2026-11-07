@@ -176,9 +176,15 @@ test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
 
 test.describe("R10 ORtg calculator inputs", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
+  // RD02: the observed tables sit in the collapsed Observed Inputs & Caveats section.
+  const openObserved = async (page: import("@playwright/test").Page) => {
+    await page.locator("#observed summary").click();
+    await expect(page.locator("#observed details")).toHaveAttribute("open", "");
+  };
 
   test("shows the latest season's league inputs, marginals, rebounds and teams", async ({ page }) => {
     await openWorkbench(page, "/calculator");
+    await openObserved(page);
     const s = ff.seasons.at(-1), L = s.league;
     const league = page.getByRole("table", { name: "League inputs" });
     expect(await value(league.locator('tr[data-row="ortg"] [data-value]'))).toBe(L.ortg_factors);
@@ -197,11 +203,72 @@ test.describe("R10 ORtg calculator inputs", () => {
   test("switches season and compares 2024-25 with the paper", async ({ page }) => {
     await openWorkbench(page, "/calculator");
     await page.getByRole("combobox", { name: "Season" }).selectOption("2024-25");
+    await expect(page).toHaveURL(/season=2024-25/);
+    await openObserved(page);
     const s = ff.seasons.find((x: { season: string }) => x.season === "2024-25");
     await expect(page.getByRole("table", { name: "League inputs" }).locator('tr[data-row="ortg"] [data-value]')).toHaveAttribute("data-value", String(s.league.ortg_factors));
     await expect(page.getByRole("table", { name: "Team inputs 2024-25" }).locator("tbody tr")).toHaveCount(30);
     const paper = page.getByRole("table", { name: "Against the paper" });
     expect(await value(paper.locator('tr[data-row="mu"] [data-field="paper"]'))).toBe(0.425);
     expect(await value(paper.locator('tr[data-row="mu"] [data-field="courtlens"]'))).toBe(s.mu);
+    await expect(page.locator('.ol-equation [data-field="ortg"]')).toHaveText(s.league.ortg_factors.toFixed(1));
+  });
+});
+
+test.describe("RD02 ORTG lab", () => {
+  const lab = (page: import("@playwright/test").Page) => page.locator('[data-section="ortg-lab"]');
+  const ortg = async (page: import("@playwright/test").Page) => Number(await page.locator('.ol-equation [data-field="ortg"]').getAttribute("data-value"));
+  // Eq. (11) on the six inputs the page shows, recomputed here from the drawn data-value attributes.
+  const eq11 = async (page: import("@playwright/test").Page, mu: number) => {
+    const read = async (sel: string) => Number(await page.locator(sel).getAttribute("data-value"));
+    const efg = await read('.ol-row[data-key="efg"] [data-field="value"]'), ft = await read('.ol-row[data-key="ft"] [data-field="value"]');
+    const fta = await read('.ol-row[data-key="fta"] [data-field="value"]'), tov = await read('.ol-row[data-key="tov"] [data-field="value"]');
+    const orb = await read('.ol-row[data-key="orb"] [data-field="value"]'), p2 = await read('.ol-row[data-key="p2"] [data-field="value"]');
+    const p3 = await read('.ol-row[data-key="p3"] [data-field="value"]'), r3 = await read('.ol-row[data-key="r3"] [data-field="value"]');
+    const fg = (1 - r3) * p2 + r3 * p3, ftr = fta * ft;
+    return 100 * (1 - tov) * (ftr + 2 * efg) / (1 - orb * (1 - fg) + mu * ftr / ft);
+  };
+
+  for (const width of [1440, 390]) test(`starts from the league inputs and stays Eq. (11) when moved, ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: width > 600 ? 900 : 844 });
+    await openWorkbench(page, "/calculator");
+    const s = ff.seasons.at(-1), L = s.league;
+    await expect(lab(page).getByRole("heading", { level: 1 })).toHaveAccessibleName("Offensive Rating Calculator");
+    expect(await ortg(page)).toBeCloseTo(L.ortg_factors, 4);
+    await expect(page.locator('.ol-equation [data-field="league-ortg"]')).toHaveText(L.ortg_factors.toFixed(1));
+    for (const [key, served] of [["efg", L.inputs.efg], ["p2", L.fg2], ["p3", L.fg3], ["ft", L.inputs.ft], ["ts", L.ts], ["r3", L.fg3a_rate], ["tov", L.inputs.tov_pct], ["orb", L.inputs.orb_pct], ["o2", L.rebounds_by_miss.two.orb_rate], ["o3", L.rebounds_by_miss.three.orb_rate], ["oft", L.rebounds_by_miss.ft_end.orb_rate]] as const)
+      await expect(page.locator(`.ol-row[data-key="${key}"] .ol-row-value`), key).toHaveText(`${(served * 100).toFixed(1)}%`);
+    const tovMarginal = Number(await page.locator('.ol-row[data-key="tov"] [data-field="marginal"]').getAttribute("data-value"));
+    expect(tovMarginal).toBeCloseTo(L.marginals.tov_pct, 5);
+    // A stepper click, a slider move and a master dial: the rating is Eq. (11) on the inputs drawn each time.
+    await page.getByRole("button", { name: "3P% up one point" }).click();
+    await expect(page.locator('.ol-step[data-key="p3"] .ol-step-value')).toHaveText(`${(L.fg3 * 100 + 1).toFixed(1)}%`);
+    expect(await ortg(page)).toBeCloseTo(await eq11(page, s.mu), 6);
+    await page.locator("#ol-tov").fill(String(Math.round((L.inputs.tov_pct - 0.02) * 1000) / 1000));
+    expect(await ortg(page)).toBeCloseTo(await eq11(page, s.mu), 6);
+    await page.getByRole("button", { name: "eFG% up one point" }).click();
+    expect(await ortg(page)).toBeCloseTo(await eq11(page, s.mu), 6);
+    expect(await ortg(page)).toBeGreaterThan(L.ortg_factors);
+    await expect(page.locator('.ol-equation [data-field="vs-avg"]')).toHaveAttribute("data-identity", "a");
+    await page.getByRole("button", { name: "Reset to league average" }).click();
+    expect(await ortg(page)).toBeCloseTo(L.ortg_factors, 4);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+
+  test("loads a team, clears back to the league, and switches tabs", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await openWorkbench(page, "/calculator");
+    const s = ff.seasons.at(-1), team = seasons[s.season].teams[0];
+    await page.getByRole("combobox", { name: "Team" }).selectOption(team.team);
+    await expect(page).toHaveURL(new RegExp(`team=${team.team}`));
+    await expect.poll(() => ortg(page)).toBeCloseTo(team.ortg_factors, 4);
+    await expect(page.locator('.ol-row[data-key="p2"] .ol-row-value')).toHaveText(`${(team.fg2 * 100).toFixed(1)}%`);
+    await page.getByRole("button", { name: "Clear team" }).click();
+    await expect(page).not.toHaveURL(/team=/);
+    await expect.poll(() => ortg(page)).toBeCloseTo(s.league.ortg_factors, 4);
+    await page.getByRole("radio", { name: "Marginal value" }).click();
+    await expect(page.locator(".ol-board-list li")).toHaveCount(12);
+    await page.getByRole("radio", { name: "Context notes" }).click();
+    await expect(page.locator(".ol-notes")).toContainText("League average");
   });
 });
