@@ -674,6 +674,14 @@ createServer(async (request, response) => {
     if (season === "all") return json(response, 200, zts.top);
     return json(response, 200, zts.boards[`${season}:${url.searchParams.get("sort") ?? "zts"}`] ?? { ...zts.unknown_season, season });
   }
+  if (url.pathname === "/api/zts/teams") {
+    const season = url.searchParams.get("season") ?? "2025-26";
+    return json(response, 200, season === zts.teams.season ? zts.teams : { status: "unknown", season, seasons: zts.teams.seasons, reason: "No team playtype difficulty for this season: Synergy play types start in 2015-16, and 2026-27 has no play-type rows yet." });
+  }
+  if (url.pathname === "/api/zts/role-moves") {
+    const season = url.searchParams.get("season") ?? "2025-26";
+    return json(response, 200, season === zts.role_moves.season ? zts.role_moves : { status: "unknown", season, reason: "No zTS for this season: Synergy play types start in 2015-16." });
+  }
   if (url.pathname === "/api/zts/player") {
     const id = url.searchParams.get("playerId");
     return json(response, 200, id ? zts.players[id] ?? { status: "unknown", player_id: id, player_name: `NBA player ${id}`, season: url.searchParams.get("season"), reason: "No rTS or play-type rows for this player in 2015-16 to 2025-26.", history: [], selection_rule: null } : zts.default_player);
