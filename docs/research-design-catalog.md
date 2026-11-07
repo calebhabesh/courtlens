@@ -56,7 +56,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data, RD01 | ✅ |
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data, RD02 | ✅ |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04, RD03 | ✅ |
-| RD04 | Shot Quality [25] | `/research/shot-quality` | W/D: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06 | ⬜ |
+| RD04 | Shot Quality [25] | `/research/shot-quality` | W/D/LocalSend: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06, RD04 | 👀 |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06 | ⬜ |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning` | R11 | ⬜ |
 | RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes` | R11 | ⬜ |
@@ -342,14 +342,53 @@ Instructions (owner, 2026-11-07, round 6; the compare card's season select for A
    — The select listed every zTS season. Each side's select now lists only that player's seasons with a served zTS, from his
    history (Sarr: 2025-26, 2024-25; Westbrook skips 2023-24 and 2025-26, which have no served zTS).
 
-## RD04 Shot Quality — ⬜
+## RD04 Shot Quality — 👀
 
 - **Now:** four tabs: Players (ranked per 100 shots), Decomposition (oTS = oSQ + oMake + oFT, offence,
   defence, combined, CSV, intervals), Model, Player. CourtLens's expected-points model (Shot Quality v2)
   replaces the paid ShotQuality feed.
 - **Known gaps:** Databallr's four-regression ShotQuality RAPM on its own pool; the Model and Player tabs
   have no reference.
-- **Instructions:** _(owner)_
+- **Reference:** three identical saves (W, D, and the owner's `~/Downloads/LocalSend/` copy of 2026-11-07, used: the newest);
+  the text differs only in one stray number after the footer, the CSS bundle by build. Databallr's column is 1352 px.
+- **Data check (2026-11-07):** (A) Databallr pools 2023-24 to 2025-26 in one time-decay ridge fit (673 players, min
+  possessions); CourtLens fits each season 2022-23 to 2025-26 separately (379 rated in 2025-26: 20 games and 1,000 shots).
+  (B) Poss → Shots. (C) Min poss free entry → min shots from 1,000 (below it there is no value). (D) no player search on our
+  board. (E) no Methodology button. (G) our values were coloured green/red by sign, against the colour rule. (H) the Six-Factor
+  link card's 98.5% is not served. (I–K) reading guide, glossary and methodology are served, layout only. (L) additivity,
+  persistence and data joins have no reference. (M) the Model and Player tabs have no reference. (N) "Request access" dropped.
+
+Instructions (owner, 2026-11-07, round 1; the owner answered the nine recommendations under the gap list with "I agree with
+your recommendations. Let's comprehensively build it out."):
+1. [x] I agree with your recommendations. Let's comprehensively build it out.
+   - (1) Layout: Databallr's centred hero through `PageHeader`; tabs Decomposition (default) · Shot-making · Player · Model;
+     Decomposition in Databallr's order (toolbar panel, table, colour key, Six-Factor link card, How to Read, Column Glossary,
+     collapsed Caveats & Methodology); the three result tiles move to Model.
+   - (2) Width: Databallr's measured 1352 px column on every tab.
+   - (3) CourtLens's own prose in Databallr's structure with CourtLens's numbers; none of Databallr's wording or claims.
+   - (4) Gaps: (A) per-season fit with a season select, said in one line, no pooled run; (B, C) Shots and min shots from
+     1,000; (D, E) player search and a Methodology button that opens and scrolls to Caveats & Methodology; (H) the link card
+     without 98.5%; (K) four regressions as steps, the foul-baseline table and a worked example with our avg_pts, calibration,
+     the second stage and credits in Caveats & Methodology; (L) the persistence verdict as a short results section after the
+     glossary, additivity and data joins in Caveats & Methodology.
+   - (5) Colour: bars and the 80% interval line stay; green/red only where the interval excludes zero, neutral otherwise (the
+     RD00 table rule), on every tab. The board on RD00's `ResearchTable`; every other table on `StatsGrid`.
+   - (6) Shot-making tab: the same toolbar and table look; FGA, FG%, 3PA share, PPS, xPPS and shot-making/100 with its
+     interval.
+   - (7) Model tab (own design): the three test tiles, the model card in panels, the test gates (green/red, intervals exclude
+     zero), the calibration chart, the slices coloured by interval, persistence; selection metrics, calibration bins and the
+     data check in Caveats & Methodology.
+   - (8) Player tab (own design, RD03 pattern): clearable search with an empty state (`player=none`), a 64 px `PlayerAvatar`
+     card with four tiles from the latest season, the season history on `StatsGrid`, and the player's oTS/oSQ/oMake/oFT per
+     season from the existing season boards; no season picker (it lists every season the player has data for).
+   - (9) Phone: the interval on one line under each value, the toolbar wraps, controls at least 40 px, the table scrolls in
+     its frame.
+   — Databallr's centred hero and 1352 px column; Decomposition first on RD00's `ResearchTable` (three sides merged, search,
+   min shots, team, season, Methodology, CSV), then the colour key, Six-Factor card, How to Read, glossary, the persistence
+   verdict and collapsed Caveats & Methodology; Shot-making on the same table (95% key); Model and Player in panels and
+   `StatsGrid`; green/red only where an interval excludes zero on every tab. Real data 50,550 values, 0 mismatches.
+
+Evidence: [`design-RD04`](evidence/research/design-RD04/README.md).
 
 ## RD05 Defensive Shot Quality — ⬜
 

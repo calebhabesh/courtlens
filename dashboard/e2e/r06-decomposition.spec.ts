@@ -14,52 +14,68 @@ async function values(page: Page, selector: string, attribute = "data-value") {
 
 test.describe("R06 decomposition", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
+  const rowsOf = ".sq-board tbody tr[data-row]";
+  const tone = (band: [number, number]) => band[0] > 0 ? "good" : band[1] < 0 ? "bad" : null;
 
-  test("offence ranks every served player with exact values, intervals and tones", async ({ page }) => {
+  test("RD04: the default view ranks every served player with exact values, intervals and interval tones", async ({ page }) => {
     const board = fixture.boards["2025-26:offense:ts:all:1000"];
     await openWorkbench(page, path);
-    const rows = page.locator("[data-board='decomposition'] [data-row]");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Shot Quality");
+    await expect(page.getByRole("radio", { name: "Decomposition" })).toBeChecked();
+    const rows = page.locator(rowsOf);
     await expect(rows).toHaveCount(board.rows.length);
     expect(await rows.evaluateAll(list => list.map(r => r.getAttribute("data-row")))).toEqual(board.rows.map((r: Row) => r.player_id));
     for (const target of ["ts", "sq", "make", "ft"]) {
-      expect(await values(page, `[data-board='decomposition'] [data-field='${target}']`)).toEqual(board.rows.map((r: Row) => r.values[target]));
-      expect(await values(page, `[data-board='decomposition'] [data-field='${target}']`, "data-low")).toEqual(board.rows.map((r: Row) => r.intervals[target][0]));
-      expect(await values(page, `[data-board='decomposition'] [data-field='${target}']`, "data-high")).toEqual(board.rows.map((r: Row) => r.intervals[target][1]));
+      expect(await values(page, `${rowsOf} td[data-column='${target}']`)).toEqual(board.rows.map((r: Row) => r.values[target]));
+      expect(await values(page, `${rowsOf} td[data-column='${target}']`, "data-low")).toEqual(board.rows.map((r: Row) => r.intervals[target][0]));
+      expect(await values(page, `${rowsOf} td[data-column='${target}']`, "data-high")).toEqual(board.rows.map((r: Row) => r.intervals[target][1]));
+      const tones = await page.locator(`${rowsOf} td[data-column='${target}'] .rt-value`).evaluateAll(list => list.map(n => n.getAttribute("data-tone")));
+      expect(tones).toEqual(board.rows.map((r: Row) => tone(r.intervals[target])));
     }
-    await expect(rows.first().locator("[data-field='ts']")).toHaveAttribute("data-tone", "positive");
-    await expect(rows.last().locator("[data-field='ts']")).toHaveAttribute("data-tone", "negative");
-    await expect(page.getByRole("table", { name: /^Decomposition/ }).getByRole("columnheader", { name: "oMake" })).toBeVisible();
+    await expect(page.getByRole("columnheader", { name: "oMake" })).toBeVisible();
     await expect(page.locator("[data-verdict]")).toHaveAttribute("data-verdict", fixture.summary.persistence.verdict);
+    await expect(page.getByRole("link", { name: "Open Six-Factor RAPM" })).toHaveAttribute("href", "/research/rapm/six-factor");
   });
 
-  test("defence and combined change the labels and the values", async ({ page }) => {
+  test("defence and combined change the labels and the values, and the view stays in the URL", async ({ page }) => {
     await openWorkbench(page, `${path}&side=defense`);
-    await expect(page.getByRole("table", { name: /^Decomposition/ }).getByRole("columnheader", { name: "dContest" })).toBeVisible();
-    await expect(page.locator("[data-board='decomposition'] [data-row]")).toHaveCount(fixture.boards["2025-26:defense:ts:all:1000"].rows.length);
-    expect(await values(page, "[data-board='decomposition'] [data-field='make']")).toEqual(fixture.boards["2025-26:defense:ts:all:1000"].rows.map((r: Row) => r.values.make));
-    await openWorkbench(page, `${path}&side=combined`);
-    await expect(page.locator("[data-board='decomposition'] [data-row]")).toHaveCount(fixture.boards["2025-26:combined:ts:all:1000"].rows.length);
-    expect(await values(page, "[data-board='decomposition'] [data-field='ts']")).toEqual(fixture.boards["2025-26:combined:ts:all:1000"].rows.map((r: Row) => r.values.ts));
+    await expect(page.getByRole("columnheader", { name: "dContest" })).toBeVisible();
+    await expect(page.locator(rowsOf)).toHaveCount(fixture.boards["2025-26:defense:ts:all:1000"].rows.length);
+    expect(await values(page, `${rowsOf} td[data-column='make']`)).toEqual(fixture.boards["2025-26:defense:ts:all:1000"].rows.map((r: Row) => r.values.make));
+    await page.getByRole("radio", { name: "Combined" }).click();
+    await expect(page).toHaveURL(/side=combined/);
+    expect(await values(page, `${rowsOf} td[data-column='ts']`)).toEqual(fixture.boards["2025-26:combined:ts:all:1000"].rows.map((r: Row) => r.values.ts));
   });
 
-  test("the team, minimum and rank filters serve the filtered board", async ({ page }) => {
+  test("search, team, minimum and sorting filter the rows like the API's filtered board", async ({ page }) => {
     const board = fixture.boards["2025-26:offense:make:BOS:2000"];
-    await openWorkbench(page, `${path}&dSort=make&dTeam=BOS&minShots=2000`);
-    await expect(page.locator("[data-board='decomposition'] [data-row]")).toHaveCount(board.rows.length);
-    expect(await values(page, "[data-board='decomposition'] [data-field='make']")).toEqual(board.rows.map((r: Row) => r.values.make));
+    await openWorkbench(page, path);
+    await page.getByRole("combobox", { name: "Team" }).selectOption("BOS");
+    await page.getByRole("spinbutton", { name: "Min shots" }).fill("2000");
+    await page.getByRole("button", { name: "Sort by oMake" }).click();
+    await expect(page.locator(rowsOf)).toHaveCount(board.rows.length);
+    expect(await values(page, `${rowsOf} td[data-column='make']`)).toEqual(board.rows.map((r: Row) => r.values.make));
+    const first = fixture.boards["2025-26:offense:ts:all:1000"].rows[0] as Row & { player_name: string };
+    await page.getByRole("combobox", { name: "Team" }).selectOption("");
+    await page.getByRole("searchbox", { name: "Search players", exact: true }).fill(first.player_name);
+    await expect(page.locator(rowsOf)).toHaveCount(1);
   });
 
-  test("a season without the model's out-of-sample fit says why, and the CSV holds the table", async ({ page }) => {
+  test("a season without the model's out-of-sample fit says why; Methodology opens the caveats; the CSV holds every side", async ({ page }) => {
     await openWorkbench(page, `${path}&dSeason=2019-20`);
     await expect(page.getByText(fixture.unknown_season.reason)).toBeVisible();
     await openWorkbench(page, path);
+    await page.getByRole("button", { name: "Methodology" }).click();
+    await expect(page.locator("#methodology details")).toHaveAttribute("open", "");
+    await expect(page.locator("[data-table='sq-additivity'] tbody tr[data-row]")).toHaveCount(Object.keys(fixture.summary.seasons).length);
     const download = page.waitForEvent("download");
     await page.getByRole("button", { name: "Download CSV" }).click();
     const file = await download;
-    expect(file.suggestedFilename()).toBe("courtlens-decomposition-2025-26-offense.csv");
-    const text = readFileSync(await file.path(), "utf8").trim().split("\n");
+    expect(file.suggestedFilename()).toBe("courtlens-decomposition-2025-26.csv");
+    const text = readFileSync(await file.path(), "utf8").trim().split(/\r?\n/);
     expect(text).toHaveLength(fixture.boards["2025-26:offense:ts:all:1000"].rows.length + 1);
     expect(text[0]).toContain("oTS_p10");
+    expect(text[0]).toContain("dContest_p90");
   });
 });
 
@@ -110,7 +126,7 @@ test.describe("R06 Defensive Shot Quality", () => {
     await expect(page.locator("[data-card]").first()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
     await openWorkbench(page, path);
-    await expect(page.locator("[data-board='decomposition'] [data-row]").first()).toBeVisible();
+    await expect(page.locator(".sq-board tbody tr[data-row]").first()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
   });
 });

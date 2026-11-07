@@ -1,345 +1,397 @@
 "use client";
 
+import { useMemo } from "react";
 import { ReliabilityPlot } from "./charts";
 import { EntityField } from "./entity-picker";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
-import { ShotDecompositionTab } from "./shot-decomposition-tab";
+import { DECOMPOSITION_LATEST, openMethodology, ShotDecompositionTab } from "./shot-decomposition-tab";
+import { SqPanel, Tiles, Toned } from "./shot-quality-figures";
 import { TeamLogo } from "./team-logo";
-import { Field } from "./ui/field";
 import { GatedNote } from "./ui/gated-note";
-import { PlayerIdentity } from "./ui/identity";
-import { Segmented, Select } from "./ui/kit";
-import { PageHeader, Section } from "./ui/panel";
-import { PageShell, ResearchLayout } from "./ui/page-shell";
-import { StatTile } from "./ui/stat-tile";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import { PlayerAvatar, PlayerIdentity } from "./ui/identity";
+import { Button, Segmented, Select } from "./ui/kit";
+import { PageShell } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
+import { MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchSection } from "./research/research-page";
+import { ResearchTable, type ResearchColumn } from "./research/research-table";
+import { GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
 import { seasonEra } from "@/lib/portrait-source";
+import { getDecompositionBoard, TARGETS, type DecompositionBoard, type DecompositionRow, type UnknownSeason } from "@/lib/shot-decomposition";
 import {
   formatFixed, formatInterval, formatPercentSigned, formatShare, formatSigned, formatWhole, GATE_LABELS, getPlayers,
-  getPlayerShots, getShotQuality, MIN_FGA, reliabilityBins, SLICE_FAMILIES, SORT_OPTIONS, signTone,
-  type Leaderboard, type MetricBlock, type ModelName, type PlayerRow, type ShotQualitySummary, type Sort
+  getPlayerShots, getShotQuality, reliabilityBins, SLICE_FAMILIES,
+  type MetricBlock, type ModelName, type PlayerRow, type ShotQualitySummary
 } from "@/lib/shot-quality";
 
-/**
- * Research → Shot Quality (R05). A deliberately plain build-phase page (D13). The Players tab follows the
- * saved Databallr ShotQuality RAPM page (filters, ranked table in points per 100 shots, how to read,
- * methodology); the Model and Player tabs have no reference. Every number is the frozen
- * courtlens-expected-shot-v2 results'; exact values sit on `data-value` for the browser check.
+/*
+ * Research → Shot Quality (R05 and R06 analyses; RD04 design after Databallr's ShotQuality RAPM page). Databallr's centred
+ * hero through `PageHeader`, a 1352 px column (Databallr's measured width), then four views: Decomposition (the reference
+ * page, default), Shot-making (R05's per-player view on the same table), Player and Model (no reference: CourtLens's own
+ * design on the Research pattern). Colour: green/red only where a served interval excludes zero. Every number is the frozen
+ * courtlens-expected-shot-v2 and courtlens-shot-decomposition-v1 results'; exact values sit on `data-*` for checks.
  */
-type Tab = "players" | "decomposition" | "model" | "player";
+
+type Tab = "decomposition" | "shot-making" | "player" | "model";
 const TABS = [
-  { value: "players", label: "Players", icon: "trophy" },
   { value: "decomposition", label: "Decomposition", icon: "split" },
-  { value: "model", label: "Model", icon: "chart-line" },
+  { value: "shot-making", label: "Shot-making", icon: "target" },
   { value: "player", label: "Player", icon: "search" },
+  { value: "model", label: "Model", icon: "chart-line" },
 ] as const;
+const LEGACY_TABS: Record<string, Tab> = { players: "shot-making" };
 const LATEST = "2025-26";
+const NO_PLAYER = "none";
 const MODEL_ORDER: ModelName[] = ["baseline", "reference", "logistic_spline", "lightgbm_31", "lightgbm_127"];
-const value = (v: number | null | undefined) => (typeof v === "number" && Number.isFinite(v) ? v : "");
-const pct = (v: number) => formatPercentSigned(v, 2);
+const pct = (v: number | null | undefined) => formatPercentSigned(v, 2);
+const known = (v: number | null | undefined): v is number => typeof v === "number" && Number.isFinite(v);
+/** A served definition without its leading "Term: " (the card's kicker names it). */
+const definition = (text: string) => { const body = text.replace(/^[^:]{1,24}: /, ""); return body.charAt(0).toUpperCase() + body.slice(1); };
 
 function TeamCodes({ teams, season }: { teams: PlayerRow["teams"]; season: string }) {
-  return <>{teams.map(t => <span key={t.team_id}>{t.tricode && <TeamLogo team={t.tricode} season={season} size={16} />} {t.tricode ?? t.team_id} </span>)}</>;
+  return <span className="sq-teams">{teams.map(t => <span key={t.team_id} className="sq-team">{t.tricode && <TeamLogo team={t.tricode} season={season} size={16} />}{t.tricode ?? t.team_id}</span>)}</span>;
 }
 
-function PlayerCell({ row, season }: { row: PlayerRow; season: string }) {
-  const [, ...others] = row.teams;
-  return <TableCell data-player={row.player_id}>
-    <PlayerIdentity playerId={row.player_id} name={row.player_name} team={row.tricode} size="sm" era={seasonEra(season, row.tricode)}
-      href={`/players/${row.player_id}?season=${season}`}
-      subtitle={others.length ? <TeamCodes teams={others} season={season} /> : undefined} />
-  </TableCell>;
-}
+// ---- Shot-making (R05 players, Databallr's table look) ---------------------------------------------
 
-function ShotMaking({ row }: { row: Pick<PlayerRow, "shot_making" | "interval"> }) {
-  return <>
-    <TableCell numeric tone={signTone(row.shot_making)} data-value={value(row.shot_making)} data-field="shot_making">{formatSigned(row.shot_making)}</TableCell>
-    <TableCell numeric data-value={value(row.interval?.[0])} data-high={value(row.interval?.[1])} data-field="interval">
-      {formatInterval(row.interval, v => formatSigned(v))}</TableCell>
-  </>;
-}
-
-function ShotCells({ row }: { row: PlayerRow | (Omit<PlayerRow, "player_name"> & { season: string }) }) {
-  return <>
-    <TableCell numeric data-value={row.fga} data-field="fga">{formatWhole(row.fga)}</TableCell>
-    <TableCell numeric data-value={row.fg_pct} data-field="fg_pct">{formatShare(row.fg_pct)}</TableCell>
-    <TableCell numeric data-value={row.three_share} data-field="three_share">{formatShare(row.three_share)}</TableCell>
-    <TableCell numeric data-value={row.pps} data-field="pps">{formatFixed(row.pps)}</TableCell>
-    <TableCell numeric data-value={row.xpps} data-field="xpps">{formatFixed(row.xpps)}</TableCell>
-  </>;
-}
-
-const SHOT_HEADS = <>
-  <TableHead align="right">FGA</TableHead><TableHead align="right">FG%</TableHead><TableHead align="right">3PA share</TableHead>
-  <TableHead align="right">PPS</TableHead><TableHead align="right">xPPS</TableHead>
-  <TableHead align="right">Shot-making /100</TableHead><TableHead align="right">95% interval</TableHead>
-</>;
-
-// ---- Players (Databallr reference: filters, ranked table, how to read, methodology) -------------
-
-function Board({ board }: { board: Leaderboard }) {
-  return <Table aria-label={`Shot-making ${board.season}`} density="compact" data-board="players">
-    <TableHeader><TableRow hoverable={false}><TableHead align="right">#</TableHead><TableHead>Player</TableHead>{SHOT_HEADS}</TableRow></TableHeader>
-    <TableBody>{board.rows.map((row, i) => <TableRow key={row.player_id} data-row={row.player_id}>
-      <TableCell numeric>{i + 1}</TableCell>
-      <PlayerCell row={row} season={board.season} />
-      <ShotCells row={row} /><ShotMaking row={row} />
-    </TableRow>)}</TableBody>
-  </Table>;
-}
-
-function Players({ summary }: { summary: ShotQualitySummary }) {
+function ShotMaking({ summary }: { summary: ShotQualitySummary }) {
   const { get, set } = useUrlState();
   const season = get("season") ?? LATEST;
-  const sort = (get("sort") ?? "shot_making") as Sort;
-  const team = get("team");
-  const minFga = Number(get("minFga") ?? "300");
-  const { data, error, loading, retry } = useFeed([season, sort, team, String(minFga)], signal => getPlayers(season, sort, team, minFga, signal));
+  const minFga = summary.players.min_attempts;
+  const { data, error, loading, retry } = useFeed([season], signal => getPlayers(season, "shot_making", null, minFga, signal));
   const league = summary.players.league[season];
+  const columns = useMemo<ResearchColumn<PlayerRow>[]>(() => [
+    { key: "fga", label: "FGA", title: "Field-goal attempts", value: r => r.fga },
+    { key: "fg_pct", label: "FG%", title: "Field-goal percentage", value: r => r.fg_pct, format: v => formatShare(v), width: "text" },
+    { key: "three_share", label: "3PA share", title: "Share of attempts from three", value: r => r.three_share, format: v => formatShare(v), width: "text" },
+    { key: "pps", label: "PPS", title: summary.definitions.pps, value: r => r.pps, format: v => formatFixed(v), width: "text" },
+    { key: "xpps", label: "xPPS", title: summary.definitions.xpps, value: r => r.xpps, format: v => formatFixed(v), width: "text" },
+    { key: "shot_making", label: "Shot-making /100", title: summary.definitions.shot_making, signedValue: true, digits: 1, value: r => r.shot_making,
+      interval: r => ({ low: r.interval?.[0] ?? null, high: r.interval?.[1] ?? null }), unknown: r => r.reason ?? undefined },
+  ], [summary]);
+  const seasonSelect = <Select size="md" aria-label="Season" value={season} onChange={event => set({ season: event.target.value === LATEST ? null : event.target.value })}>
+    {[...summary.players.seasons].reverse().map(s => <option key={s} value={s}>{s}</option>)}</Select>;
   return <>
-    <Section title="Player shot-making" description={`Points per 100 shots above or below the expected value of the same shots, relative to the league in the same season. Expected values come from the ${summary.model_labels[summary.players.model]} model, calibrated on ${summary.calibration.season}. Served for ${summary.players.seasons[0]} to ${summary.players.seasons.at(-1)}, the seasons no model was trained on, with at least ${summary.players.min_attempts} field-goal attempts.`}
-      actions={<>
-        <Field label="Season" layout="inline"><Select aria-label="Season" value={season} onChange={event => set({ season: event.target.value === LATEST ? null : event.target.value, team: null })}>
-          {[...summary.players.seasons].reverse().map(s => <option key={s} value={s}>{s}</option>)}</Select></Field>
-        <Field label="Team" layout="inline"><Select aria-label="Team" value={team ?? ""} onChange={event => set({ team: event.target.value || null })}>
-          <option value="">All teams</option>
-          {data?.status === "available" && data.teams.map(t => <option key={t.team_id} value={t.tricode ?? t.team_id}>{t.tricode ?? t.team_id}</option>)}</Select></Field>
-        <Field label="Min FGA" layout="inline"><Select aria-label="Minimum field-goal attempts" value={String(minFga)} onChange={event => set({ minFga: event.target.value === "300" ? null : event.target.value })}>
-          {MIN_FGA.map(m => <option key={m} value={m}>{m}+</option>)}</Select></Field>
-        <Segmented label="Rank by" size="sm" value={sort} onChange={next => set({ sort: next === "shot_making" ? null : next })} options={SORT_OPTIONS} />
-      </>}>
+    <section className="sq-board-section" aria-label="Player shot-making">
       {error && <FeedFailure error={error} retry={retry} what="Player shot-making" />}
       {loading && <FeedSkeleton label="Loading player shot-making" />}
-      {data?.status === "unknown" && <GatedNote>{data.reason}</GatedNote>}
-      {data?.status === "available" && <>
-        {league && <p data-league={season} data-value={league.league_term}>League in {season}: {formatFixed(league.league_pps)} points per shot against {formatFixed(league.league_xpps)} expected (league term {formatSigned(league.league_term * 100)} per 100 shots, subtracted from every player). {data.rows.length} players shown; {data.unknown.length} with fewer than {summary.players.min_attempts} attempts have no shot-making value.</p>}
-        <Board board={data} />
-      </>}
-    </Section>
-
-    <Section title="How to read the numbers">
-      <ul>
-        <li>{summary.definitions.shot_making}</li>
-        <li>{summary.definitions.xpps}</li>
-        <li>{summary.definitions.pps}</li>
-        <li>{summary.definitions.interval}</li>
-        <li>Green is above expectation, red below. xPPS has no colour: easier shots are not better or worse play by themselves.</li>
-      </ul>
-    </Section>
-
-    <Section title="Method and data">
-      <ul>
-        <li>{summary.definitions.target}</li>
-        <li>{summary.definitions.features}</li>
-        <li>{summary.credit}</li>
-        <li>{summary.reference_note}</li>
-        <li>The oTS / oSQ / oMake / oFT table from the reference, its defensive views, filters and CSV are on the Decomposition tab.</li>
-      </ul>
-    </Section>
+      {data?.status === "unknown" && <SqPanel className="sq-unknown" label="Season"><div className="sq-control-row">{seasonSelect}</div><GatedNote>{data.reason}</GatedNote></SqPanel>}
+      {data?.status === "available" && <ResearchTable label={`Shot-making ${data.season}`} className="sq-board sq-players" rows={data.rows} rowKey={r => r.player_id} name={r => r.player_name}
+        team={r => r.tricode} season={data.season} views={[{ value: "shot-making", label: "Shot-making", columns }]} defaultSort="shot_making" noun="players" intervalLevel={95}
+        player={r => { const [, ...others] = r.teams; return <PlayerIdentity playerId={r.player_id} name={r.player_name} team={r.tricode} size="sm" era={seasonEra(data.season, r.tricode)}
+          href={`/players/${r.player_id}?season=${data.season}`} subtitle={others.length ? <TeamCodes teams={others} season={data.season} /> : undefined} />; }}
+        minimum={{ label: "Min FGA", value: r => r.fga, initial: minFga, step: 50 }}
+        csv={{ filename: `courtlens-shot-making-${data.season}.csv`, columns: [
+          { header: "player_id", value: r => r.player_id }, { header: "player", value: r => r.player_name }, { header: "team", value: r => r.tricode },
+          { header: "fga", value: r => r.fga }, { header: "fg_pct", value: r => r.fg_pct }, { header: "three_share", value: r => r.three_share },
+          { header: "pps", value: r => r.pps }, { header: "xpps", value: r => r.xpps }, { header: "shot_making", value: r => r.shot_making },
+          { header: "shot_making_p2_5", value: r => r.interval?.[0] ?? null }, { header: "shot_making_p97_5", value: r => r.interval?.[1] ?? null },
+        ] }}
+        actions={<>{seasonSelect}<Button size="md" icon="book" onClick={() => openMethodology("shot-making-method")}>Methodology</Button></>}
+        footnote={league && <span data-league={season} data-value={league.league_term} data-count={data.rows.length} data-unknown={data.unknown.length}>
+          Points per 100 shots above the expected value of the same shots, net of the league ({formatFixed(league.league_pps)} points per shot against
+          {" "}{formatFixed(league.league_xpps)} expected in {season}, a league term of {formatSigned(league.league_term * 100)}). xPPS has no colour: easier
+          shots are not better or worse play by themselves. {formatWhole(data.unknown.length)} players with fewer than {minFga} attempts have no value.
+        </span>} />}
+    </section>
+    <ResearchSection icon="book" title="How to Read the Numbers">
+      <ResearchCards columns={3}>
+        <ResearchCard kicker="Shot-making" tone="a"><p className="sq-text">{definition(summary.definitions.shot_making)}</p></ResearchCard>
+        <ResearchCard kicker="xPPS"><p className="sq-text">{definition(summary.definitions.xpps)}</p></ResearchCard>
+        <ResearchCard kicker="PPS"><p className="sq-text">{definition(summary.definitions.pps)}</p></ResearchCard>
+      </ResearchCards>
+      <p className="sq-note">{summary.definitions.interval} This is the shooter&apos;s own making; the Decomposition tab&apos;s oMake is the lineup&apos;s, adjusted for everyone on the floor.</p>
+    </ResearchSection>
+    <ResearchDisclosure id="shot-making-method" icon="layers" title="Caveats & Methodology">
+      <MethodBlock title="The expected value of a shot"><ul className="sq-list"><li>{summary.definitions.target}</li><li>{summary.definitions.features}</li></ul></MethodBlock>
+      <MethodBlock title="Seasons">
+        <p className="sq-text">Served for {summary.players.seasons[0]} to {summary.players.seasons.at(-1)}, the seasons no model was trained on, from the
+          {" "}{summary.model_labels[summary.players.model]} model calibrated on {summary.calibration.season}. A player needs {minFga} field-goal attempts in the season.</p>
+      </MethodBlock>
+      <MethodBlock title="Data & credits">
+        <p className="sq-text">{summary.credit}</p>
+        <p className="sq-text">{summary.reference_note} Design reference: Databallr&apos;s ShotQuality RAPM page.</p>
+      </MethodBlock>
+    </ResearchDisclosure>
   </>;
 }
 
-// ---- Model (no reference) ------------------------------------------------------------------------
+// ---- Model (no reference) --------------------------------------------------------------------------
 
-function MetricRows({ block, names, labels, scope }: { block: MetricBlock; names: ModelName[]; labels: Record<ModelName, string>; scope: string }) {
-  return <>{names.filter(n => block.models[n]).map(name => {
-    const m = block.models[name]!;
-    const d = block.versus_baseline[name];
-    return <TableRow key={name} data-metrics={`${scope}:${name}`}>
-      <TableCell><strong>{labels[name]}</strong></TableCell>
-      <TableCell numeric data-value={m.brier} data-field="brier">{formatFixed(m.brier, 4)}</TableCell>
-      <TableCell numeric data-value={m.log_loss} data-field="log_loss">{formatFixed(m.log_loss, 4)}</TableCell>
-      <TableCell numeric data-value={m.points_mae} data-field="points_mae">{formatFixed(m.points_mae, 4)}</TableCell>
-      <TableCell numeric data-value={m.ece} data-field="ece">{formatFixed(m.ece, 4)}</TableCell>
-      <TableCell numeric tone={d ? signTone(d.relative_brier.value) : undefined} data-value={value(d?.relative_brier.value)} data-field="relative_brier">{d ? pct(d.relative_brier.value) : "—"}</TableCell>
-      <TableCell numeric data-value={value(d?.relative_brier.interval[0])} data-high={value(d?.relative_brier.interval[1])} data-field="relative_brier_interval">{d ? formatInterval(d.relative_brier.interval, pct) : "Reference"}</TableCell>
-      <TableCell numeric tone={d ? signTone(d.relative_log_loss.value) : undefined} data-value={value(d?.relative_log_loss.value)} data-field="relative_log_loss">{d ? pct(d.relative_log_loss.value) : "—"}</TableCell>
-    </TableRow>;
-  })}</>;
+interface MetricRow { key: string; label: string; name: ModelName; block: MetricBlock }
+function metricColumns(): GridColumn<MetricRow>[] {
+  const metric = (key: "brier" | "log_loss" | "points_mae" | "ece", label: string): GridColumn<MetricRow> => ({
+    key, label, width: "sm", cell: r => <GridValue text={formatFixed(r.block.models[r.name]?.[key], 4)} />, data: r => ({ field: key, value: r.block.models[r.name]?.[key] }) });
+  return [
+    metric("brier", "Brier"), metric("log_loss", "Log loss"), metric("points_mae", "Points MAE"), metric("ece", "ECE"),
+    { key: "relative_brier", label: "Brier vs baseline", width: "md", cell: r => { const d = r.block.versus_baseline[r.name]?.relative_brier;
+      return d ? <><Toned text={pct(d.value)} value={d.value} low={d.interval[0]} high={d.interval[1]} level={95} field="relative_brier" /><span className="rs-grid-sub">{formatInterval(d.interval, pct)}</span></> : <GridValue text="Reference" muted />; } },
+    { key: "relative_log_loss", label: "Log loss vs baseline", width: "md", cell: r => { const d = r.block.versus_baseline[r.name]?.relative_log_loss;
+      return d ? <><Toned text={pct(d.value)} value={d.value} low={d.interval[0]} high={d.interval[1]} level={95} field="relative_log_loss" /><span className="rs-grid-sub">{formatInterval(d.interval, pct)}</span></> : <GridValue text="—" />; } },
+  ];
 }
 
-const METRIC_HEAD = <TableHeader><TableRow hoverable={false}>
-  <TableHead>Model</TableHead><TableHead align="right">Brier</TableHead><TableHead align="right">Log loss</TableHead>
-  <TableHead align="right">Points MAE</TableHead><TableHead align="right">ECE</TableHead>
-  <TableHead align="right">Brier vs baseline</TableHead><TableHead align="right">95% interval</TableHead><TableHead align="right">Log loss vs baseline</TableHead>
-</TableRow></TableHeader>;
+function MetricGrid({ label, name, rows }: { label: string; name: string; rows: MetricRow[] }) {
+  return <StatsGrid label={label} name={name} density="compact" height="auto" leadWidth="xl" rows={rows} rowKey={r => r.key} rowData={r => ({ metrics: r.key })}
+    lead={{ label: "Model", cell: r => <span className="sq-cell-strong">{r.label}</span> }} columns={metricColumns()} />;
+}
 
 function Model({ summary }: { summary: ShotQualitySummary }) {
   const { selection: sel, test, calibration } = summary;
   const labels = summary.model_labels;
   const chosen = sel.chosen;
+  const gates = test.gates;
   const testNames = MODEL_ORDER.filter(n => test.pooled.models[n]);
-  const curves = test.curves;
   const families = [...new Set(test.slices.map(s => s.family))];
   const p = summary.players.persistence;
+  const platt = calibration.platt[chosen];
+  const slices = families.flatMap(f => test.slices.filter(s => s.family === f));
+  type SliceRow = (typeof slices)[number];
+  const gateRows = [
+    gates.relative_brier && { key: "relative_brier", label: GATE_LABELS.relative_brier, text: pct(gates.relative_brier.value), value: gates.relative_brier.value,
+      interval: gates.relative_brier.brier_difference_interval, intervalText: `Brier difference ${formatInterval(gates.relative_brier.brier_difference_interval, v => formatFixed(v, 4))}`, passed: gates.relative_brier.passed },
+    gates.log_loss && { key: "log_loss", label: GATE_LABELS.log_loss, text: formatFixed(gates.log_loss.difference, 4), value: gates.log_loss.difference,
+      interval: gates.log_loss.interval, intervalText: formatInterval(gates.log_loss.interval, v => formatFixed(v, 4)), passed: gates.log_loss.passed },
+    gates.ece && { key: "ece", label: GATE_LABELS.ece, text: formatFixed(gates.ece.value, 4), value: gates.ece.value, interval: null, intervalText: "No interval: a threshold", passed: gates.ece.passed },
+  ].filter((g): g is NonNullable<typeof g> => Boolean(g));
+  type GateRow = (typeof gateRows)[number];
   return <>
-    <Section title="Model card" description="No Databallr reference: Databallr uses ShotQuality's paid tracking model and publishes no model card. Built from the registration.">
-      <ul data-model-card="true">
-        <li>{summary.definitions.target}</li>
-        <li>{summary.definitions.features}</li>
-        <li>Candidates, fixed before any fit: {(["logistic_spline", "lightgbm_31", "lightgbm_127"] as const).map(n => labels[n]).join("; ")}. Baseline: {labels.baseline}. Reference: {labels.reference}.</li>
-        <li>Seasons: train 2014-15 to 2021-22 ({formatWhole(sel.training_attempts)} shots), select {sel.season}, calibrate {calibration.season}, test {test.seasons.join(" and ")}. Whole seasons; the models are never refitted.</li>
-        <li>Selected on {sel.season}: <strong>{labels[chosen]}</strong>, the lowest Brier score. Calibration: Platt scaling on {calibration.season}{calibration.platt[chosen] ? ` (a = ${formatFixed(calibration.platt[chosen]!.a, 4)}, b = ${formatFixed(calibration.platt[chosen]!.b, 4)})` : ""}.</li>
-        <li>Outcome: <strong data-outcome={summary.outcome}>{summary.outcome_text}</strong></li>
-        <li>{summary.definitions.metrics}</li>
-      </ul>
-    </Section>
+    <section className="sq-model-head" aria-label="Test results">
+      <Tiles label="Key findings" tiles={[
+        { key: "brier", label: "Test: Brier vs baseline", value: gates.relative_brier ? <Toned text={pct(gates.relative_brier.value)} value={gates.relative_brier.value}
+          low={gates.relative_brier.brier_difference_interval[0]} high={gates.relative_brier.brier_difference_interval[1]} level={95} /> : "—",
+          foot: `${test.seasons.join(" and ")}, ${labels[chosen]}` },
+        { key: "ece", label: "Test: calibration error", value: gates.ece ? <span data-value={gates.ece.value}>{formatFixed(gates.ece.value, 4)}</span> : "—", foot: "ECE, ten bins; gate at most 0.02" },
+        { key: "outcome", label: "Outcome", value: <span data-outcome={summary.outcome}>{summary.outcome === "accepted" ? "Accepted" : "Negative result"}</span>,
+          foot: `Selection ${pct(sel.relative_brier)} on ${sel.season}` },
+      ]} />
+      <p className="sq-text sq-lead">{summary.outcome_text}</p>
+    </section>
 
-    <Section title={`Selection, ${sel.season} (uncalibrated)`} description={`Gate (same as v1): the selected candidate improves Brier by at least ${formatShare(sel.gate, 0)} over the baseline. Result: ${pct(sel.relative_brier)}, ${sel.passed ? "passed" : "failed"}. ${formatWhole(sel.metrics.attempts)} shots in ${sel.metrics.games} games.`}>
-      <Table aria-label="Selection metrics" density="compact" data-table="selection">{METRIC_HEAD}
-        <TableBody><MetricRows block={sel.metrics} names={MODEL_ORDER} labels={labels} scope="selection" /></TableBody></Table>
-    </Section>
+    <ResearchSection icon="info" title="Model Card">
+      <p className="sq-note">No Databallr counterpart: Databallr reads ShotQuality&apos;s paid tracking model, which publishes no model card. This one is built from the registration.</p>
+      <ResearchCards columns={2} label="Model card">
+        <ResearchCard kicker="What it predicts"><p className="sq-text">{summary.definitions.target}</p></ResearchCard>
+        <ResearchCard kicker="What it reads"><p className="sq-text">{summary.definitions.features}</p></ResearchCard>
+        <ResearchCard kicker="Candidates"><p className="sq-text">Fixed before any fit: {(["logistic_spline", "lightgbm_31", "lightgbm_127"] as const).map(n => labels[n]).join("; ")}.
+          Baseline: {labels.baseline}. Reference: {labels.reference}.</p></ResearchCard>
+        <ResearchCard kicker="Seasons"><p className="sq-text">Train 2014-15 to 2021-22 ({formatWhole(sel.training_attempts)} shots), select on {sel.season}, calibrate on
+          {" "}{calibration.season}, test on {test.seasons.join(" and ")}. Whole seasons; the models are never refitted.</p></ResearchCard>
+        <ResearchCard kicker="Chosen" tone="a"><p className="sq-text">Selected on {sel.season}: <strong>{labels[chosen]}</strong>, the lowest Brier score.
+          Platt scaling on {calibration.season}{platt ? ` (a = ${formatFixed(platt.a, 4)}, b = ${formatFixed(platt.b, 4)})` : ""}.</p></ResearchCard>
+        <ResearchCard kicker="Scores"><p className="sq-text">{summary.definitions.metrics}</p></ResearchCard>
+      </ResearchCards>
+    </ResearchSection>
 
-    <Section title={`Test, ${test.seasons.join(" and ")} (calibrated)`} description={`Seasons never used for any choice. ${formatWhole(test.pooled.attempts)} shots in ${test.pooled.games} games. Intervals: 95% game bootstrap, 2,000 replicates.`}>
-      <Table aria-label="Test gates" density="compact" data-table="gates">
-        <TableHeader><TableRow hoverable={false}><TableHead>Gate</TableHead><TableHead align="right">Value</TableHead><TableHead align="right">95% interval</TableHead><TableHead>Result</TableHead></TableRow></TableHeader>
-        <TableBody>
-          {test.gates.relative_brier && <TableRow data-gate="relative_brier"><TableCell>{GATE_LABELS.relative_brier}</TableCell>
-            <TableCell numeric data-value={test.gates.relative_brier.value}>{pct(test.gates.relative_brier.value)}</TableCell>
-            <TableCell numeric data-value={test.gates.relative_brier.brier_difference_interval[0]} data-high={test.gates.relative_brier.brier_difference_interval[1]}>Brier difference {formatInterval(test.gates.relative_brier.brier_difference_interval, v => formatFixed(v, 4))}</TableCell>
-            <TableCell>{test.gates.relative_brier.passed ? "Passed" : "Failed"}</TableCell></TableRow>}
-          {test.gates.log_loss && <TableRow data-gate="log_loss"><TableCell>{GATE_LABELS.log_loss}</TableCell>
-            <TableCell numeric data-value={test.gates.log_loss.difference}>{formatFixed(test.gates.log_loss.difference, 4)}</TableCell>
-            <TableCell numeric data-value={test.gates.log_loss.interval[0]} data-high={test.gates.log_loss.interval[1]}>{formatInterval(test.gates.log_loss.interval, v => formatFixed(v, 4))}</TableCell>
-            <TableCell>{test.gates.log_loss.passed ? "Passed" : "Failed"}</TableCell></TableRow>}
-          {test.gates.ece && <TableRow data-gate="ece"><TableCell>{GATE_LABELS.ece}</TableCell>
-            <TableCell numeric data-value={test.gates.ece.value}>{formatFixed(test.gates.ece.value, 4)}</TableCell><TableCell numeric>—</TableCell>
-            <TableCell>{test.gates.ece.passed ? "Passed" : "Failed"}</TableCell></TableRow>}
-        </TableBody>
-      </Table>
-      <Table aria-label="Test metrics" density="compact" data-table="test">{METRIC_HEAD}
-        <TableBody>
-          <MetricRows block={test.pooled} names={testNames} labels={labels} scope="test" />
-          {Object.entries(test.by_season).map(([season, block]) => <MetricRows key={season} block={block} names={testNames}
-            labels={Object.fromEntries(testNames.map(n => [n, `${season}: ${labels[n]}`])) as Record<ModelName, string>} scope={`test-${season}`} />)}
-        </TableBody>
-      </Table>
-      <p data-uncalibrated={chosen} data-value={value(test.uncalibrated.versus_baseline[chosen]?.relative_brier.value)}>Before calibration the selected model improved test Brier by {pct(test.uncalibrated.versus_baseline[chosen]?.relative_brier.value ?? NaN)} (ECE {formatFixed(test.uncalibrated.models[chosen]?.ece, 4)}); the baseline&apos;s ECE was {formatFixed(test.uncalibrated.models.baseline?.ece, 4)}. The gates are registered on calibrated values.</p>
-    </Section>
+    <ResearchSection icon="check" title={`Test Gates, ${test.seasons.join(" and ")}`}>
+      <p className="sq-text">Seasons never used for any choice: {formatWhole(test.pooled.attempts)} shots in {formatWhole(test.pooled.games)} games, calibrated.
+        Intervals are 95% game bootstraps (2,000 replicates); a value is green only when its interval clears zero.</p>
+      <StatsGrid label="Test gates" name="gates" density="compact" height="auto" leadWidth="xl" rows={gateRows} rowKey={g => g.key} rowData={g => ({ gate: g.key })}
+        lead={{ label: "Gate", cell: g => <span className="sq-cell-text">{g.label}</span> }}
+        columns={[
+          { key: "value", label: "Value", width: "sm", cell: (g: GateRow) => <Toned text={g.text} value={g.value} low={g.interval?.[0]} high={g.interval?.[1]} level={95} field="value" /> },
+          { key: "interval", label: "95% interval", width: "xl", cell: (g: GateRow) => <span className="sq-cell-text" data-value={g.interval?.[0]} data-high={g.interval?.[1]}>{g.intervalText}</span> },
+          { key: "result", label: "Result", width: "sm", cell: (g: GateRow) => <GridValue text={g.passed ? "Passed" : "Failed"} />, data: (g: GateRow) => ({ passed: String(g.passed) }) },
+        ]} />
+      <MetricGrid label="Test metrics" name="test" rows={testNames.map(n => ({ key: `test:${n}`, label: labels[n], name: n, block: test.pooled }))} />
+    </ResearchSection>
 
-    <Section title="Calibration on the test seasons" description="Twenty equal-count bins of predicted make probability, calibrated predictions.">
-      <ReliabilityPlot title="Predicted against observed make rate" label="Test calibration: predicted make probability against observed make rate"
-        source={`Frozen ${summary.registration.identity} results`} sample={`${formatWhole(test.pooled.attempts)} test shots, 20 bins per model`}
-        note="Dashed line: observed = predicted. Exact bins in the table below."
-        series={[{ name: labels.baseline, bins: reliabilityBins(curves.baseline) }, { name: labels[chosen], bins: reliabilityBins(curves[chosen]) }]} />
-      <Table aria-label="Calibration bins" density="compact" data-table="curve">
-        <TableHeader><TableRow hoverable={false}><TableHead align="right">Bin</TableHead><TableHead align="right">Shots</TableHead>
-          <TableHead align="right">Baseline predicted</TableHead><TableHead align="right">Baseline observed</TableHead>
-          <TableHead align="right">Selected predicted</TableHead><TableHead align="right">Selected observed</TableHead></TableRow></TableHeader>
-        <TableBody>{(curves[chosen] ?? curves.baseline ?? []).map((bin, i) => {
-          const b = curves.baseline?.[i];
-          return <TableRow key={bin.bin} data-bin={bin.bin}>
-            <TableCell numeric>{bin.bin}</TableCell><TableCell numeric data-value={bin.count}>{formatWhole(bin.count)}</TableCell>
-            <TableCell numeric data-value={value(b?.mean_predicted)}>{formatShare(b?.mean_predicted)}</TableCell>
-            <TableCell numeric data-value={value(b?.observed)}>{formatShare(b?.observed)}</TableCell>
-            <TableCell numeric data-value={bin.mean_predicted}>{formatShare(bin.mean_predicted)}</TableCell>
-            <TableCell numeric data-value={bin.observed}>{formatShare(bin.observed)}</TableCell>
-          </TableRow>;
-        })}</TableBody>
-      </Table>
-    </Section>
+    <ResearchSection icon="chart-line" title="Calibration on the Test Seasons">
+      <SqPanel className="sq-chart" label="Calibration chart">
+        <ReliabilityPlot title="Predicted against observed make rate" label="Test calibration: predicted make probability against observed make rate"
+          source={`Frozen ${summary.registration.identity} results`} sample={`${formatWhole(test.pooled.attempts)} test shots, 20 equal-count bins per model`}
+          note="Dashed line: observed = predicted. Exact bins in Caveats & Methodology."
+          series={[{ name: labels.baseline, bins: reliabilityBins(test.curves.baseline) }, { name: labels[chosen], bins: reliabilityBins(test.curves[chosen]) }]} />
+      </SqPanel>
+    </ResearchSection>
 
-    <Section title="Where the model gains" description={`Brier improvement of the selected model over the baseline by shot type and situation, pooled test seasons (reported, no gate). Slices under 200 shots are not scored.`}>
-      <Table aria-label="Test slices" density="compact" data-table="slices">
-        <TableHeader><TableRow hoverable={false}><TableHead>Slice</TableHead><TableHead align="right">Shots</TableHead>
-          <TableHead align="right">Baseline Brier</TableHead><TableHead align="right">Selected Brier</TableHead>
-          <TableHead align="right">Brier vs baseline</TableHead><TableHead align="right">95% interval</TableHead></TableRow></TableHeader>
-        <TableBody>{families.flatMap(family => test.slices.filter(s => s.family === family).map(s => {
-          const d = s.metrics?.versus_baseline[chosen];
-          return <TableRow key={`${family}-${s.label}`} data-slice={`${family}:${s.label}`}>
-            <TableCell>{SLICE_FAMILIES[family] ?? family}: {s.label}</TableCell>
-            <TableCell numeric data-value={s.attempts}>{formatWhole(s.attempts)}</TableCell>
-            <TableCell numeric data-value={value(s.metrics?.models.baseline?.brier)}>{formatFixed(s.metrics?.models.baseline?.brier, 4)}</TableCell>
-            <TableCell numeric data-value={value(s.metrics?.models[chosen]?.brier)}>{formatFixed(s.metrics?.models[chosen]?.brier, 4)}</TableCell>
-            <TableCell numeric tone={signTone(d?.relative_brier.value)} data-value={value(d?.relative_brier.value)}>{d ? pct(d.relative_brier.value) : "Too few shots"}</TableCell>
-            <TableCell numeric data-value={value(d?.relative_brier.interval[0])} data-high={value(d?.relative_brier.interval[1])}>{d ? formatInterval(d.relative_brier.interval, pct) : "—"}</TableCell>
-          </TableRow>;
-        }))}</TableBody>
-      </Table>
-    </Section>
+    <ResearchSection icon="crosshair" title="Where the Model Gains">
+      <p className="sq-text">Brier improvement of {labels[chosen]} over the baseline by shot type and situation, pooled test seasons. Reported, no gate; slices
+        under 200 shots are not scored.</p>
+      <StatsGrid label="Test slices" name="slices" density="compact" height="auto" leadWidth="xl" rows={slices} rowKey={s => `${s.family}:${s.label}`} rowData={s => ({ slice: `${s.family}:${s.label}` })}
+        lead={{ label: "Slice", cell: s => <span className="sq-cell-text"><span className="sq-muted">{SLICE_FAMILIES[s.family] ?? s.family}</span> {s.label}</span> }}
+        columns={[
+          { key: "shots", label: "Shots", width: "sm", cell: (s: SliceRow) => <GridValue text={formatWhole(s.attempts)} />, data: (s: SliceRow) => ({ value: s.attempts }) },
+          { key: "baseline", label: "Baseline Brier", width: "sm", cell: (s: SliceRow) => <GridValue text={formatFixed(s.metrics?.models.baseline?.brier, 4)} />, data: (s: SliceRow) => ({ value: s.metrics?.models.baseline?.brier }) },
+          { key: "selected", label: "Selected Brier", width: "sm", cell: (s: SliceRow) => <GridValue text={formatFixed(s.metrics?.models[chosen]?.brier, 4)} />, data: (s: SliceRow) => ({ value: s.metrics?.models[chosen]?.brier }) },
+          { key: "relative", label: "Brier vs baseline", width: "md", cell: (s: SliceRow) => { const d = s.metrics?.versus_baseline[chosen]?.relative_brier;
+            return d ? <><Toned text={pct(d.value)} value={d.value} low={d.interval[0]} high={d.interval[1]} level={95} field="relative_brier" /><span className="rs-grid-sub">{formatInterval(d.interval, pct)}</span></> : <GridValue text="Too few shots" muted />; } },
+        ]} />
+    </ResearchSection>
 
-    <Section title="Is shot-making persistent?" description={`Weighted correlation of a player's value in consecutive served seasons (${p.pairs} pairs, ${p.players} players, at least ${summary.players.min_attempts} attempts in both; weight: harmonic mean of attempts). 95% player-cluster bootstrap intervals. Reported, no gate.`}>
-      <Table aria-label="Persistence" density="compact" data-table="persistence">
-        <TableHeader><TableRow hoverable={false}><TableHead>Measure</TableHead><TableHead align="right">r, season to season</TableHead><TableHead align="right">95% interval</TableHead></TableRow></TableHeader>
-        <TableBody>{([["shot_making", "Shot-making (PPS − xPPS − league term)"], ["pps_minus_league", "PPS minus league PPS"], ["xpps", "xPPS (shot quality)"]] as const).map(([key, label]) =>
-          <TableRow key={key} data-persistence={key}><TableCell>{label}</TableCell>
-            <TableCell numeric data-value={p[key].r}>{formatFixed(p[key].r)}</TableCell>
-            <TableCell numeric data-value={p[key].interval[0]} data-high={p[key].interval[1]}>{formatInterval(p[key].interval, v => formatFixed(v))}</TableCell></TableRow>)}</TableBody>
-      </Table>
-    </Section>
+    <ResearchSection icon="activity" title="Is Shot-making Persistent?">
+      <p className="sq-text">Weighted correlation of a player&apos;s value in consecutive served seasons: {formatWhole(p.pairs)} pairs, {formatWhole(p.players)} players with
+        {" "}{summary.players.min_attempts} attempts in both, weighted by the harmonic mean of attempts, with 95% player-cluster bootstrap intervals. Reported, no gate.</p>
+      <StatsGrid label="Persistence" name="persistence" density="compact" height="auto" leadWidth="xl" rows={(["shot_making", "pps_minus_league", "xpps"] as const).map(k => k)} rowKey={k => k} rowData={k => ({ persistence: k })}
+        lead={{ label: "Measure", cell: k => <span className="sq-cell-text">{{ shot_making: "Shot-making (PPS − xPPS − league term)", pps_minus_league: "PPS minus league PPS", xpps: "xPPS (shot quality)" }[k]}</span> }}
+        columns={[
+          { key: "r", label: "r, season to season", width: "md", cell: k => <GridValue text={formatFixed(p[k].r)} />, data: k => ({ value: p[k].r }) },
+          { key: "interval", label: "95% interval", width: "md", cell: k => <GridValue text={formatInterval(p[k].interval, v => formatFixed(v))} />, data: k => ({ value: p[k].interval[0], high: p[k].interval[1] }) },
+        ]} />
+    </ResearchSection>
 
-    <Section title="Data check" description="Every field-goal attempt in the NBA shot chart, joined to its play-by-play event by game and event number. A shot without a join keeps its location and shot type; its game context is unknown, never zero.">
-      <Table aria-label="Data check" density="compact" data-table="data">
-        <TableHeader><TableRow hoverable={false}><TableHead>Season</TableHead><TableHead align="right">Shots</TableHead><TableHead align="right">Games</TableHead>
-          <TableHead align="right">Joined</TableHead><TableHead align="right">Possession known</TableHead><TableHead align="right">And-ones (not modelled)</TableHead>
-          <TableHead align="right">Missed shots with an assist</TableHead></TableRow></TableHeader>
-        <TableBody>{Object.entries(summary.data).map(([season, d]) => <TableRow key={season} data-season={season}>
-          <TableCell>{season}</TableCell><TableCell numeric data-value={d.rows}>{formatWhole(d.rows)}</TableCell>
-          <TableCell numeric data-value={d.games}>{formatWhole(d.games)}</TableCell>
-          <TableCell numeric data-value={d.join_rate}>{formatShare(d.join_rate, 3)}</TableCell>
-          <TableCell numeric data-value={d.possession_known_rate}>{formatShare(d.possession_known_rate, 2)}</TableCell>
-          <TableCell numeric data-value={d.and_ones}>{formatWhole(d.and_ones)}</TableCell>
-          <TableCell numeric data-value={d.assist_in_description.missed_True ?? 0}>{formatWhole(d.assist_in_description.missed_True ?? 0)}</TableCell>
-        </TableRow>)}</TableBody>
-      </Table>
-      <p>Registration <code>{summary.registration.content_sha256.slice(0, 16)}</code> · results <code>{summary.results_sha256.slice(0, 16)}</code>. Two runs from the seed give the same hash.</p>
-    </Section>
+    <ResearchDisclosure id="model-method" icon="layers" title="Caveats & Methodology">
+      <MethodBlock title={`Selection, ${sel.season} (uncalibrated)`}>
+        <p className="sq-text">Gate, unchanged from v1: the selected candidate improves Brier by at least {formatShare(sel.gate, 0)} over the baseline. Result
+          {" "}{pct(sel.relative_brier)}, {sel.passed ? "passed" : "failed"}. {formatWhole(sel.metrics.attempts)} shots in {formatWhole(sel.metrics.games)} games.</p>
+        <MetricGrid label="Selection metrics" name="selection" rows={MODEL_ORDER.filter(n => sel.metrics.models[n]).map(n => ({ key: `selection:${n}`, label: labels[n], name: n, block: sel.metrics }))} />
+      </MethodBlock>
+      <MethodBlock title="Test metrics by season">
+        <MetricGrid label="Test metrics by season" name="test-seasons" rows={Object.entries(test.by_season).flatMap(([season, block]) => testNames.map(n => ({ key: `test-${season}:${n}`, label: `${season}: ${labels[n]}`, name: n, block })))} />
+        <p className="sq-text" data-uncalibrated={chosen} data-value={test.uncalibrated.versus_baseline[chosen]?.relative_brier.value}>Before calibration the selected model improved test Brier
+          by {pct(test.uncalibrated.versus_baseline[chosen]?.relative_brier.value)} (ECE {formatFixed(test.uncalibrated.models[chosen]?.ece, 4)}); the baseline&apos;s ECE was
+          {" "}{formatFixed(test.uncalibrated.models.baseline?.ece, 4)}. The gates are registered on calibrated values.</p>
+      </MethodBlock>
+      <MethodBlock title="Calibration bins">
+        <StatsGrid label="Calibration bins" name="curve" density="compact" height="auto" leadWidth="sm" rows={test.curves[chosen] ?? test.curves.baseline ?? []} rowKey={b => String(b.bin)} rowData={b => ({ bin: b.bin })}
+          lead={{ label: "Bin", cell: b => <span className="sq-cell-strong">{b.bin}</span> }}
+          columns={[
+            { key: "count", label: "Shots", width: "sm", cell: b => <GridValue text={formatWhole(b.count)} />, data: b => ({ value: b.count }) },
+            { key: "bp", label: "Baseline predicted", width: "md", cell: b => <GridValue text={formatShare(test.curves.baseline?.[b.bin - 1]?.mean_predicted)} />, data: b => ({ value: test.curves.baseline?.[b.bin - 1]?.mean_predicted }) },
+            { key: "bo", label: "Baseline observed", width: "md", cell: b => <GridValue text={formatShare(test.curves.baseline?.[b.bin - 1]?.observed)} />, data: b => ({ value: test.curves.baseline?.[b.bin - 1]?.observed }) },
+            { key: "sp", label: "Selected predicted", width: "md", cell: b => <GridValue text={formatShare(b.mean_predicted)} />, data: b => ({ value: b.mean_predicted }) },
+            { key: "so", label: "Selected observed", width: "md", cell: b => <GridValue text={formatShare(b.observed)} />, data: b => ({ value: b.observed }) },
+          ]} />
+      </MethodBlock>
+      <MethodBlock title="Data check">
+        <p className="sq-text">Every field-goal attempt in the NBA shot chart, joined to its play-by-play event by game and event number. A shot without a join keeps its
+          location and shot type; its game context is unknown, never zero.</p>
+        <StatsGrid label="Data check" name="data" density="compact" height="auto" leadWidth="sm" rows={Object.keys(summary.data)} rowKey={s => s} rowData={s => ({ season: s })}
+          lead={{ label: "Season", cell: s => <span className="sq-cell-strong">{s}</span> }}
+          columns={[
+            { key: "rows", label: "Shots", width: "sm", cell: s => <GridValue text={formatWhole(summary.data[s].rows)} />, data: s => ({ value: summary.data[s].rows }) },
+            { key: "games", label: "Games", width: "xs", cell: s => <GridValue text={formatWhole(summary.data[s].games)} />, data: s => ({ value: summary.data[s].games }) },
+            { key: "join", label: "Joined", width: "sm", cell: s => <GridValue text={formatShare(summary.data[s].join_rate, 3)} />, data: s => ({ value: summary.data[s].join_rate }) },
+            { key: "poss", label: "Possession known", width: "md", cell: s => <GridValue text={formatShare(summary.data[s].possession_known_rate, 2)} />, data: s => ({ value: summary.data[s].possession_known_rate }) },
+            { key: "and1", label: "And-ones (not modelled)", width: "md", cell: s => <GridValue text={formatWhole(summary.data[s].and_ones)} />, data: s => ({ value: summary.data[s].and_ones }) },
+            { key: "assist", label: "Missed shots with an assist", width: "md", cell: s => <GridValue text={formatWhole(summary.data[s].assist_in_description.missed_True ?? 0)} />, data: s => ({ value: summary.data[s].assist_in_description.missed_True ?? 0 }) },
+          ]} />
+      </MethodBlock>
+      <MethodBlock title="Data & credits">
+        <p className="sq-text">{summary.credit}</p>
+        <p className="sq-note">Registration <code>{summary.registration.content_sha256.slice(0, 16)}</code> · results <code>{summary.results_sha256.slice(0, 16)}</code>. Two runs from the seed give the same hash.</p>
+      </MethodBlock>
+    </ResearchDisclosure>
   </>;
 }
 
-// ---- Player (no reference) -----------------------------------------------------------------------
+// ---- Player (no reference; RD03 pattern) -----------------------------------------------------------
+
+type History = NonNullable<Awaited<ReturnType<typeof getPlayerShots>>["seasons"]>[number];
+interface SplitRow { season: string; row: DecompositionRow | null; reason: string | null }
+
+/** The player's offensive split per decomposition season, from the season boards (no per-player endpoint). */
+async function getSplits(playerId: string, seasons: readonly string[], signal: AbortSignal): Promise<SplitRow[]> {
+  const boards = await Promise.all(seasons.map(s => getDecompositionBoard(s, "offense", "ts", null, 1000, signal)));
+  return boards.map((b: DecompositionBoard | UnknownSeason, i) => {
+    if (b.status !== "available") return { season: seasons[i], row: null, reason: b.reason };
+    const row = b.rows.find(r => r.player_id === playerId) ?? null;
+    const unknown = b.unknown.find(r => r.player_id === playerId);
+    return { season: seasons[i], row, reason: row ? null : unknown ? unknown.reason : "Not on the floor enough this season to be rated." };
+  });
+}
+const DECOMPOSITION_SEASONS = ["2022-23", "2023-24", "2024-25", DECOMPOSITION_LATEST];
 
 function PlayerTab({ summary }: { summary: ShotQualitySummary }) {
   const { get, set } = useUrlState();
-  const playerId = get("player");
-  const { data, error, loading, retry } = useFeed([playerId], signal => getPlayerShots(playerId, signal));
-  const latest = data?.seasons?.at(-1);
-  return <Section title="Player" description="No Databallr reference for this view. A player's shot-making in each served season, with intervals.">
-    <EntityField label="Player" value={data?.player_id ?? playerId ?? ""} season={latest?.season ?? LATEST} phase="regular_season"
-      initialName={data?.player_name} onChange={next => set({ player: next || null })} />
+  const chosen = get("player");
+  const cleared = chosen === NO_PLAYER;
+  const { data, error, loading, retry } = useFeed([cleared ? NO_PLAYER : chosen], signal => cleared ? Promise.resolve(null) : getPlayerShots(chosen, signal));
+  const playerId = data?.player_id ?? null;
+  const splits = useFeed([playerId], signal => playerId ? getSplits(playerId, DECOMPOSITION_SEASONS, signal) : Promise.resolve(null));
+  const history = data?.seasons ?? [];
+  const latest = [...history].reverse().find(r => r.status === "served") ?? history.at(-1);
+  const team = latest?.tricode ?? null;
+  return <div className="sq-player" data-section="player">
+    <SqPanel className="sq-controls" label="Player">
+      <div className="sq-control-row sq-player-pick">
+        <EntityField label="Player" value={cleared ? "" : playerId ?? chosen ?? ""} season={latest?.season ?? LATEST} phase="regular_season"
+          initialName={cleared ? undefined : data?.player_name} onChange={next => set({ player: next || NO_PLAYER })} />
+      </div>
+    </SqPanel>
+    {cleared && <GatedNote action={<Button size="lg" variant="secondary" onClick={() => set({ player: null })}>Open the default player</Button>}>
+      No player chosen. Search for one above, or open the default: the most field-goal attempts in {LATEST}.</GatedNote>}
     {error && <FeedFailure error={error} retry={retry} what="The player's shot-making" />}
     {loading && <FeedSkeleton label="Loading the player's shot-making" />}
     {data && <>
-      <PlayerIdentity playerId={data.player_id} name={data.player_name} team={latest?.tricode ?? null} size="md"
-        era={latest ? seasonEra(latest.season, latest.tricode) : undefined}
-        href={`/players/${data.player_id}${latest ? `?season=${latest.season}` : ""}`} subtitle={latest ? `${latest.season} regular season` : undefined} />
-      {data.selection_rule && <p data-rule="default">{data.selection_rule}</p>}
+      <div className="sq-hero-card" data-player={data.player_id}>
+        <PlayerAvatar playerId={data.player_id} name={data.player_name} team={team} size="lg" era={latest ? seasonEra(latest.season, team) : undefined} className="sq-avatar" />
+        <span className="sq-hero-text">
+          <a className="sq-hero-name" href={`/players/${data.player_id}${latest ? `?season=${latest.season}` : ""}`}>{data.player_name}</a>
+          <span className="sq-hero-sub">{team && <TeamLogo team={team} season={latest?.season} size={16} />}{team ?? ""}{team ? " · " : ""}{latest ? `${latest.season} regular season` : "No served season"}</span>
+        </span>
+      </div>
+      {data.selection_rule && <p className="sq-note" data-rule="default">{data.selection_rule}</p>}
       {data.status === "unknown" && <GatedNote>{data.reason}</GatedNote>}
-      {data.seasons && <Table aria-label="Shot-making by season" density="compact" data-table="history">
-        <TableHeader><TableRow hoverable={false}><TableHead>Season</TableHead><TableHead>Team</TableHead>{SHOT_HEADS}<TableHead>Status</TableHead></TableRow></TableHeader>
-        <TableBody>{data.seasons.map(row => <TableRow key={row.season} data-season={row.season}>
-          <TableCell>{row.season}</TableCell><TableCell><TeamCodes teams={row.teams} season={row.season} /></TableCell>
-          <ShotCells row={row} /><ShotMaking row={row} />
-          <TableCell>{row.status === "served" ? "Served" : `Unknown: ${row.reason}`}</TableCell>
-        </TableRow>)}</TableBody>
-      </Table>}
-      <p>{summary.definitions.interval}</p>
+      {latest && <PlayerTiles row={latest} />}
+      {history.length > 0 && <ResearchSection icon="target" title="Shot-making by Season">
+        <StatsGrid label="Shot-making by season" name="history" density="compact" height="auto" leadWidth="sm" rows={history} rowKey={r => r.season} rowData={r => ({ season: r.season })}
+          lead={{ label: "Season", cell: r => <span className="sq-cell-strong">{r.season}</span> }}
+          columns={[
+            { key: "team", label: "Team", width: "md", align: "left", cell: (r: History) => <TeamCodes teams={r.teams} season={r.season} /> },
+            { key: "fga", label: "FGA", width: "xs", cell: (r: History) => <GridValue text={formatWhole(r.fga)} />, data: (r: History) => ({ field: "fga", value: r.fga }) },
+            { key: "fg_pct", label: "FG%", width: "xs", cell: (r: History) => <GridValue text={formatShare(r.fg_pct)} />, data: (r: History) => ({ field: "fg_pct", value: r.fg_pct }) },
+            { key: "three_share", label: "3PA share", width: "sm", cell: (r: History) => <GridValue text={formatShare(r.three_share)} />, data: (r: History) => ({ field: "three_share", value: r.three_share }) },
+            { key: "pps", label: "PPS", width: "xs", cell: (r: History) => <GridValue text={formatFixed(r.pps)} />, data: (r: History) => ({ field: "pps", value: r.pps }) },
+            { key: "xpps", label: "xPPS", width: "xs", cell: (r: History) => <GridValue text={formatFixed(r.xpps)} />, data: (r: History) => ({ field: "xpps", value: r.xpps }) },
+            { key: "shot_making", label: "Shot-making /100", width: "md", cell: (r: History) => known(r.shot_making)
+              ? <><Toned text={formatSigned(r.shot_making)} value={r.shot_making} low={r.interval?.[0]} high={r.interval?.[1]} level={95} field="shot_making" /><span className="rs-grid-sub">{formatInterval(r.interval, v => formatSigned(v))}</span></>
+              : <GridValue text={null} /> },
+            { key: "status", label: "Status", width: "lg", align: "left", cell: (r: History) => <GridValue text={r.status === "served" ? "Served" : `Unknown: ${r.reason}`} muted={r.status !== "served"} />, data: (r: History) => ({ status: r.status }) },
+          ]} />
+        <p className="sq-note">{summary.definitions.interval}</p>
+      </ResearchSection>}
+      <ResearchSection icon="split" title="Lineup Split by Season">
+        <p className="sq-text">The same player&apos;s offensive decomposition: how lineups shot with this player on the floor, split into the looks, the making and the free throws.
+          Points per 100 shots against the average player, 80% intervals.</p>
+        {splits.error && <FeedFailure error={splits.error} retry={splits.retry} what="The player's decomposition" />}
+        {splits.loading && <FeedSkeleton label="Loading the player's decomposition" />}
+        {splits.data && <StatsGrid label="Lineup split by season" name="splits" density="compact" height="auto" leadWidth="sm" rows={splits.data} rowKey={r => r.season} rowData={r => ({ season: r.season })}
+          lead={{ label: "Season", cell: r => <span className="sq-cell-strong">{r.season}</span> }}
+          columns={[
+            ...TARGETS.map((t): GridColumn<SplitRow> => ({ key: t, label: { ts: "oTS", sq: "oSQ", make: "oMake", ft: "oFT" }[t], width: "md",
+              cell: r => r.row ? <><Toned text={formatSigned(r.row.values[t])} value={r.row.values[t]} low={r.row.intervals[t][0]} high={r.row.intervals[t][1]} level={80} field={t} /><span className="rs-grid-sub">{formatInterval(r.row.intervals[t], v => formatSigned(v))}</span></> : <GridValue text={null} /> })),
+            { key: "shots", label: "Shots", width: "sm", cell: r => <GridValue text={r.row ? formatWhole(r.row.shots) : null} />, data: r => ({ field: "shots", value: r.row?.shots }) },
+            { key: "status", label: "Status", width: "lg", align: "left", cell: r => <GridValue text={r.row ? "Rated" : `Unknown: ${r.reason}`} muted={!r.row} /> },
+          ]} />}
+      </ResearchSection>
     </>}
-  </Section>;
+  </div>;
 }
 
-// ---- Page ----------------------------------------------------------------------------------------
+function PlayerTiles({ row }: { row: History }) {
+  return <Tiles label={`Shot-making, ${row.season}`} tiles={[
+    { key: "shot_making", label: `Shot-making /100, ${row.season}`, value: known(row.shot_making)
+      ? <Toned text={formatSigned(row.shot_making)} value={row.shot_making} low={row.interval?.[0]} high={row.interval?.[1]} level={95} field="shot_making" /> : "—",
+      foot: row.interval ? `95% interval ${formatInterval(row.interval, v => formatSigned(v))}` : row.reason ?? undefined },
+    { key: "xpps", label: "xPPS", value: <span data-field="xpps" data-value={row.xpps}>{formatFixed(row.xpps)}</span>, foot: "Expected points per shot" },
+    { key: "pps", label: "PPS", value: <span data-field="pps" data-value={row.pps}>{formatFixed(row.pps)}</span>, foot: `${formatShare(row.fg_pct)} FG` },
+    { key: "fga", label: "FGA", value: <span data-field="fga" data-value={row.fga}>{formatWhole(row.fga)}</span>, foot: `${formatShare(row.three_share)} from three` },
+  ]} />;
+}
+
+// ---- Page ------------------------------------------------------------------------------------------
 
 export function ShotQualityResearch() {
   const { get, set } = useUrlState();
-  const tab = (get("tab") ?? "players") as Tab;
-  const { data, error, loading, retry } = useFeed([], signal => getShotQuality(signal));
-  const gate = data?.test.gates;
-  return <PageShell template="research">
-    <PageHeader icon="scatter" title="Shot Quality" subtitle="Expected points for every field-goal attempt from free NBA shot and play-by-play data, each player's shot-making above or below it, and each player's lineup-adjusted split into shot quality, making and free throws." />
-    <Segmented label="Shot Quality view" value={tab} onChange={next => set({ tab: next === "players" ? null : next })} options={TABS} />
-    {error && <FeedFailure error={error} retry={retry} what="Shot Quality" />}
-    {loading && <FeedSkeleton label="Loading Shot Quality" />}
-    {data && <ResearchLayout findings={<>
-      <StatTile label="Test: Brier vs baseline" value={gate?.relative_brier ? pct(gate.relative_brier.value) : "—"}
-        footnote={`${data.test.seasons.join(" and ")}, ${data.model_labels[data.selection.chosen]}`} />
-      <StatTile label="Test: calibration error" value={gate?.ece ? formatFixed(gate.ece.value, 4) : "—"} footnote="ECE, ten bins; gate at most 0.02" />
-      <StatTile label="Outcome" value={data.outcome === "accepted" ? "Accepted" : "Negative result"} footnote={`Selection ${pct(data.selection.relative_brier)} on ${data.selection.season}`} />
-    </>}>
-      {tab === "players" && <Players summary={data} />}
+  const raw = get("tab") ?? "decomposition";
+  const tab = (TABS.find(t => t.value === raw)?.value ?? LEGACY_TABS[raw] ?? "decomposition") as Tab;
+  const needsSummary = tab !== "decomposition";
+  const { data, error, loading, retry } = useFeed([needsSummary ? "summary" : "none"], signal => needsSummary ? getShotQuality(signal) : Promise.resolve(null));
+  return <PageShell template="research" className="sq-shell">
+    <div className="rs-column sq-page" data-tab={tab}>
+      <PageHeader className="sq-hero research-hero" icon="target" title="Shot Quality"
+        subtitle="Every player's shooting impact split into the quality of the looks, the making and the free throws, on both ends, from CourtLens's own expected-points model on free NBA data." />
+      <nav className="sq-tabs" aria-label="Shot Quality views">
+        <span className="sq-tabs-wide"><Segmented label="Shot Quality view" size="lg" value={tab} onChange={next => set({ tab: next === "decomposition" ? null : next })} options={TABS} /></span>
+        <span className="sq-tabs-phone"><Segmented label="Shot Quality view" size="md" dense stretch value={tab} onChange={next => set({ tab: next === "decomposition" ? null : next })}
+          options={TABS.map(({ value, label }) => ({ value, label }))} /></span>
+      </nav>
       {tab === "decomposition" && <ShotDecompositionTab />}
-      {tab === "model" && <Model summary={data} />}
-      {tab === "player" && <PlayerTab summary={data} />}
-    </ResearchLayout>}
+      {needsSummary && error && <FeedFailure error={error} retry={retry} what="Shot Quality" />}
+      {needsSummary && loading && <FeedSkeleton label="Loading Shot Quality" />}
+      {data && tab === "shot-making" && <ShotMaking summary={data} />}
+      {data && tab === "player" && <PlayerTab summary={data} />}
+      {data && tab === "model" && <Model summary={data} />}
+    </div>
   </PageShell>;
 }

@@ -138,10 +138,10 @@ export function ReadingGuide({ units, offense, defense, note }: { units: ReactNo
 }
 
 /** The colour key every Research value uses. */
-export function ToneLegend({ className = "" }: { className?: string }) {
+export function ToneLegend({ className = "", level = 80 }: { className?: string; level?: number }) {
   return <ul className={`rs-legend ${className}`} aria-label="Colour key">
-    <li><span className="rs-swatch" data-tone="good" aria-hidden="true" />Helps: 80% interval above zero</li>
-    <li><span className="rs-swatch" data-tone="bad" aria-hidden="true" />Hurts: 80% interval below zero</li>
+    <li><span className="rs-swatch" data-tone="good" aria-hidden="true" />Helps: {level}% interval above zero</li>
+    <li><span className="rs-swatch" data-tone="bad" aria-hidden="true" />Hurts: {level}% interval below zero</li>
     <li><span className="rs-swatch" aria-hidden="true" />Interval includes zero, or unknown</li>
   </ul>;
 }

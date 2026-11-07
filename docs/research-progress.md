@@ -584,3 +584,23 @@ The owner approved zTS (RD03) after six rounds and asked for the next page; the 
 dropdown of player names (search with suggestions, opened under the player's photo); photos are `PlayerAvatar` with the team
 colour and logo; a per-player season picker lists only that player's seasons; space after a title chip. Next in the queue:
 RD04 Shot Quality.
+
+## 2026-11-07 — RD04 round 1: Shot Quality after Databallr's ShotQuality RAPM page
+
+[Evidence](evidence/research/design-RD04/README.md#round-1-owner-2026-11-07). Owner: "I agree with your recommendations. Let's
+comprehensively build it out."
+
+- **Change.** Databallr's centred hero and 1352 px column; tabs Decomposition (default) · Shot-making · Player · Model. The
+  decomposition board is RD00's `ResearchTable` over the three side boards merged, with search, min shots, team, season,
+  Methodology and a CSV of every side; then the colour key, Six-Factor card, How to Read, glossary, the registered persistence
+  verdict with an interval plot, and collapsed Caveats & Methodology (regressions, foul baselines with a worked example,
+  calibration, second stage, joins, credits). Shot-making on the same table; Model and Player redesigned on panels and
+  `StatsGrid`. Green/red only where an interval excludes zero, replacing the old colouring by sign.
+- **Shared.** `ResearchTable` gains an optional controlled view, a view-aware minimum and `intervalLevel`; `ToneLegend` takes
+  `level`. Defaults unchanged.
+- **Kept.** One-season fits (no pooled run), shots not possessions, min shots from 1,000; analyses, results and APIs untouched.
+- **Checks.** Lint 0/0, typecheck, Vitest 818; page specs 14/14 ×3; full Playwright 596 passed, 17 skipped, 3 failed, all in
+  `r10-wingspan-calculator` under load (11/11 twice alone; Wingspan uses none of the changed code); real data 50,550 values,
+  0 mismatches, 0 console errors, 0 overflow, 0 broken images, no phone control under 40 px.
+- **Not done.** The owner's review and ✅.
+
