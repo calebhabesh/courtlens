@@ -531,3 +531,14 @@ container; it sits too close to the colon. CSS only.
   `last-games` flake in the first run, 10/10 alone); real data 6,088 values, 0 mismatches, 0 errors, 0 overflow, 0 broken images.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD03 round 3: search, not dropdowns, to change a compared player
+
+[Evidence](evidence/research/design-RD03/README.md#round-3-owner-2026-11-07). Owner: do the compare dropdowns hold every
+player? Player lists are never scrolled in a dropdown; use a search field with suggestions.
+
+- **Answer and change.** They held only the 313 served 2025-26 players. Each side now has a Change button that opens the site's
+  search field over that pool; no player dropdown remains on the page.
+- **Checks.** Lint 0/0, typecheck, Vitest 817; page spec 24/24 ×3; full Playwright 597 passed, 17 skipped, 0 failed (one
+  `route-polish` flake in the first run, 10/10 alone); real data 6,088 values, 0 mismatches.
+- **Not done.** The owner's review and ✅.
+
