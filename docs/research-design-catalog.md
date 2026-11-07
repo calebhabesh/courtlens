@@ -422,6 +422,12 @@ Instructions (owner, 2026-11-07, round 5; screenshots: the Decomposition table a
    — Shared `GridSearch` renders the NBA Player Statistics table's own search markup (`stats-header-search` › `lookup-input-wrapper`
    › icon and `lookup-input`), so the Stats CSS styles it: the bordered field in the Player header. Both Shot Quality tables use it.
 
+Instructions (owner, 2026-11-07, round 6; screenshot: the Player header with its search):
+7. [x] padding above and below the search bar should be equal
+   — The field had 10.5 px from the PLAYER label above it (the two header tiers share one background) and 4 px to the first row
+   below. It now sits on the tier line with the label's own gap below it: 6.5 / 7 px at 1440 and 7.5 / 8 px at 390, on both
+   tables, checked in every scene. Scoped to `GridSearch`, so Wingspan's approved header is unchanged.
+
 ## RD05 Defensive Shot Quality — ⬜
 
 - **Now:** ranked defender cards, All / 2PT / 3PT, ranks, RAPM headline, Key Matchups, paging; matchup data
