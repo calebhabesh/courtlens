@@ -436,3 +436,16 @@ site-wide table look after the Stats table.
   810; page specs 45/45 ×3; full Playwright 591 passed, 1 failed (baseline, regenerated and viewed; visual spec 84/84);
   real data 199,252 values at 1440 and 390, 0 mismatches, 0 console errors, 0 overflow, 0 broken images.
 - **Not done.** The owner's review and ✅; `ResearchTable` and other pages' tables move to `StatsGrid` in their turns.
+
+## 2026-11-07 — RD01 round 4: the tables' left edge, a centred search
+
+[Evidence](evidence/research/design-RD01/README.md#round-4--the-tables-left-edge-and-a-centred-search-owner-2026-11-07).
+Owner: the static tables' left-most columns look broken; centre the graph's player search. Design only.
+
+- **Cause.** The pinned lead column's header had 4 px of padding against 8 px in the body, and small tables repeated their
+  labels over two header rows.
+- **Change.** `StatsGrid`: one 16 px left edge in every row, aligned header labels; small static tables get one header row.
+  The scatter header is a grid with the search centred.
+- **Checks.** Lint 0/0, typecheck, Vitest 810; page specs 45/45 ×3; full Playwright 591 passed, 1 known Projected Impact
+  flake (1 of 25 alone, untouched page); real data 199,252 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images.
+- **Not done.** The owner's review and ✅.

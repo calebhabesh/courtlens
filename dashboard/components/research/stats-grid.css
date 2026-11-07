@@ -20,6 +20,11 @@
   .rs-grid .dense-stats-table .rs-grid-lead { position: sticky; left: 0; z-index: var(--z-sticky); text-align: left; }
   .rs-grid .dense-stats-table thead .rs-grid-lead { z-index: var(--z-sticky-corner); }
   .rs-grid .dense-stats-table tbody th.rs-grid-lead { padding: var(--space-1) var(--space-2); font-weight: 600; font-size: var(--text-md); text-transform: none; letter-spacing: 0; }
+  /* RD01 round 4 (owner): the lead column keeps one left edge in every row, header tiers included. */
+  .rs-grid .dense-stats-table thead th.rs-grid-lead { padding-inline: var(--space-4) var(--space-2); text-align: left; }
+  .rs-grid .dense-stats-table thead th.rs-grid-lead .table-sort-button { justify-content: flex-start; }
+  .rs-grid.density-compact .dense-stats-table tbody th.rs-grid-lead { padding-inline: var(--space-4) var(--space-2); }
+  .rs-grid.density-compact .dense-stats-table .stats-header-tier-2 th { color: var(--color-text-secondary); }
   .rs-grid .dense-stats-table td.stats-metric-cell { text-align: center; }
   .rs-grid .dense-stats-table td[data-align="left"] { text-align: left; padding-inline: var(--space-3); }
   .rs-grid .dense-stats-table td[data-align="right"] { text-align: right; padding-inline: var(--space-3); }
