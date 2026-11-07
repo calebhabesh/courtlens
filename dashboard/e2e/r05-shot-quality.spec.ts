@@ -31,7 +31,9 @@ test.describe("R05 Shot Quality", () => {
   test("the old Players link opens Shot-making, and team, minimum and sort filter like the API", async ({ page }) => {
     await openWorkbench(page, `${path}?tab=players`);
     await expect(page.getByRole("radio", { name: "Shot-making" })).toBeChecked();
-    await page.getByRole("combobox", { name: "Team" }).selectOption("BOS");
+    await page.getByRole("button", { name: "Select Team" }).click();
+    await page.getByRole("dialog", { name: "Select Team" }).getByRole("button", { name: "Boston Celtics" }).click();
+    await expect(page.getByRole("button", { name: /^Team, Boston Celtics/ })).toBeVisible();
     await page.getByRole("spinbutton", { name: "Min FGA" }).fill("1000");
     await page.getByRole("button", { name: "Sort by FGA" }).click();
     const want = fixture.boards["2025-26:fga:BOS:1000"].rows.map((r: Row) => r.player_id);

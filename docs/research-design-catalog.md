@@ -390,6 +390,18 @@ your recommendations. Let's comprehensively build it out."):
 
 Evidence: [`design-RD04`](evidence/research/design-RD04/README.md).
 
+Instructions (owner, 2026-11-07, round 2):
+2. [x] Can we use the same team picker we use on the other pages. I don't like drop down selector for teams.
+   — Both tables' team filter is now the site's picker (WOWY's and Contracts'): a button with the logo and code opening the
+   Select Team dialog of 30 logos (`TeamGrid`), with Show All Teams to clear. Shared as `components/research/team-picker.tsx`,
+   opt-in on `ResearchTable` (`teamPicker`), so the approved RD00 and RD01 tables are unchanged.
+
+Instructions (owner, 2026-11-07, round 3; screenshot: the hero):
+3. [x] The "Shot Quality" icon looks wonky, and not centerd.
+   — An unlayered `display: inline-flex` beat the page's grid centring, leaving the glyph in the tile's corner; it is now centred
+   with flex alignment. Measured at 1440 and 390: glyph to tile centre 0 px both ways, tile level with the title, the pair centred
+   in the column.
+
 ## RD05 Defensive Shot Quality — ⬜
 
 - **Now:** ranked defender cards, All / 2PT / 3PT, ranks, RAPM headline, Key Matchups, paging; matchup data

@@ -68,4 +68,15 @@ describe("ResearchTable", () => {
     fireEvent.click(screen.getByRole("radio", { name: "One" }));
     expect(seen).toEqual(["one"]);
   });
+
+  it("RD04 round 2: the team filter can be the logo-grid picker, with no team dropdown", () => {
+    render(<ResearchTable<Row> label="Test table" rows={rows} rowKey={r => r.id} name={r => r.name} team={r => r.team} teamPicker season="2025-26"
+      player={r => <span>{r.name}</span>} views={[{ value: "one", label: "One", columns: [colA] }]} defaultSort="a" noun="players"
+      csv={{ filename: "t.csv", columns: [{ header: "id", value: r => r.id }] }} />);
+    expect(screen.queryByRole("combobox", { name: "Team" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Select Team" }));
+    fireEvent.click(screen.getByRole("button", { name: "Boston Celtics" }));
+    expect(order()).toEqual(["1", "3"]);
+    expect(screen.getByRole("button", { name: /^Team, Boston Celtics/ })).toBeTruthy();
+  });
 });

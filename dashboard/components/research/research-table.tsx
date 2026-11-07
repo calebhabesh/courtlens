@@ -9,6 +9,7 @@ import { type IconName } from "../ui/icon";
 import { Input, SearchField } from "../ui/input";
 import { Button, Segmented, Select } from "../ui/kit";
 import { ToneLegend } from "./research-page";
+import { TeamPicker } from "./team-picker";
 import { downloadCsv, intervalLabel, intervalTone, signed, toCsv } from "@/lib/research-values";
 
 /*
@@ -56,6 +57,8 @@ export interface ResearchTableProps<T> {
   teamSeason?: (row: T) => string | null;
   /** The team filter in the toolbar (on when `team` is set, unless this is false). */
   teamFilter?: boolean;
+  /** The team filter as the site's logo-grid picker instead of a select (RD04 round 2). */
+  teamPicker?: boolean;
   season: string;
   player: (row: T) => ReactNode;
   views: readonly ResearchView<T>[];
@@ -118,7 +121,7 @@ function ValueCell<T>({ column, row, scale, start }: { column: ResearchColumn<T>
 }
 
 export function ResearchTable<T>(props: ResearchTableProps<T>) {
-  const { label, rows, rowKey, name, team, teamSeason, teamFilter: showTeamFilter = true, season, player, views, trailingColumns = [], defaultSort, minimum, csv, noun, actions, rowAction, footnote, className, intervalLevel = 80 } = props;
+  const { label, rows, rowKey, name, team, teamSeason, teamFilter: showTeamFilter = true, teamPicker = false, season, player, views, trailingColumns = [], defaultSort, minimum, csv, noun, actions, rowAction, footnote, className, intervalLevel = 80 } = props;
   const [ownView, setOwnView] = useState(views[0].value);
   const view = props.view && views.some(item => item.value === props.view) ? props.view : ownView;
   const setView = (next: string) => { setOwnView(next); props.onViewChange?.(next); };
@@ -149,7 +152,8 @@ export function ResearchTable<T>(props: ResearchTableProps<T>) {
       <div className="rt-toolbar-row">
         <SearchField aria-label={`Search ${noun}`} placeholder={`Search ${noun.replace(/s$/, "")}…`} value={query} onChange={event => setQuery(event.target.value)} onClear={() => setQuery("")} inputSize="md" wrapperClassName="rt-search" />
         {minimum && <label className="rt-minimum"><span>{minimum.label}</span><Input type="number" inputMode="numeric" min={0} step={minimum.step} value={floor} onChange={event => setFloor(event.target.value)} aria-label={minimum.label} inputSize="md" wrapperClassName="rt-minimum-input" /></label>}
-        {team && showTeamFilter && <Select size="md" aria-label="Team" value={teamFilter} onChange={event => setTeamFilter(event.target.value)}>
+        {team && showTeamFilter && teamPicker && <TeamPicker value={teamFilter || null} onChange={code => setTeamFilter(code ?? "")} season={season} />}
+        {team && showTeamFilter && !teamPicker && <Select size="md" aria-label="Team" value={teamFilter} onChange={event => setTeamFilter(event.target.value)}>
           <option value="">All teams</option>
           {teams.map(code => <option key={code} value={code}>{code}</option>)}
         </Select>}

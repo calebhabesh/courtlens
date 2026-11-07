@@ -604,3 +604,15 @@ comprehensively build it out."
   0 mismatches, 0 console errors, 0 overflow, 0 broken images, no phone control under 40 px.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD04 rounds 2 and 3: the site's team picker; the hero icon centred
+
+[Evidence](evidence/research/design-RD04/README.md#rounds-2-and-3-owner-2026-11-07). Owner: use the same team picker as the
+other pages, not a team dropdown; the Shot Quality icon looked wonky and off-centre.
+
+- **Change.** Both tables filter teams through the site's Select Team logo grid (shared `TeamPicker`, opt-in on
+  `ResearchTable`, so RD00/RD01 are unchanged). The hero icon is centred in its tile (an unlayered `inline-flex` had defeated
+  the grid centring).
+- **Checks.** Lint 0/0, typecheck, Vitest 819; page specs 14/14 ×3; full Playwright 598 passed, 17 skipped, 1 failed (Roster
+  Shapes phone baseline, untouched page; 84/84 on rerun); real data 51,416 values, 0 mismatches; icon offsets 0 px.
+- **Not done.** The owner's review and ✅.
+

@@ -122,7 +122,7 @@ function Board({ data, summary, side, seasonSelect, onSide }: { data: Merged; su
   ], [summary]);
   const board = data.boards[side];
   return <ResearchTable label={`Decomposition ${data.season} ${side}`} className="sq-board" rows={data.rows} rowKey={r => r.player_id} name={r => r.player_name}
-    team={r => r.tricode} season={data.season} views={views} view={side} onViewChange={next => onSide(next as Side)} defaultSort="ts" noun="players"
+    team={r => r.tricode} teamPicker season={data.season} views={views} view={side} onViewChange={next => onSide(next as Side)} defaultSort="ts" noun="players"
     player={r => <PlayerIdentity playerId={r.player_id} name={r.player_name} team={r.tricode} size="sm" era={seasonEra(data.season, r.tricode)} href={`/players/${r.player_id}?season=${data.season}`} />}
     minimum={{ label: "Min shots", value: (r, view) => r.sides[view as Side]?.shots ?? null, initial: MIN_SHOTS, step: 500 }}
     csv={{ filename: `courtlens-decomposition-${data.season}.csv`, columns: csvColumns }}

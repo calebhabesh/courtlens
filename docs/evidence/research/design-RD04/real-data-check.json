@@ -1,11 +1,11 @@
 {
- "compared": 50550,
+ "compared": 51416,
  "mismatches": 0,
  "scenes": [
   {
    "scene": "decomposition-offense",
    "width": 1440,
-   "compared": 6541,
+   "compared": 6545,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -13,12 +13,18 @@
    "broken": [],
    "small": [],
    "column": 1352,
-   "left": 44
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
   },
   {
    "scene": "decomposition-offense",
    "width": 390,
-   "compared": 6541,
+   "compared": 6545,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -26,12 +32,18 @@
    "broken": [],
    "small": [],
    "column": 366,
-   "left": 12
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
   },
   {
    "scene": "decomposition-defense",
    "width": 1440,
-   "compared": 6541,
+   "compared": 6545,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -39,12 +51,18 @@
    "broken": [],
    "small": [],
    "column": 1352,
-   "left": 44
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
   },
   {
    "scene": "decomposition-defense",
    "width": 390,
-   "compared": 6541,
+   "compared": 6545,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -52,12 +70,18 @@
    "broken": [],
    "small": [],
    "column": 366,
-   "left": 12
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
   },
   {
    "scene": "decomposition-combined-2023-24",
    "width": 1440,
-   "compared": 6201,
+   "compared": 6205,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -65,12 +89,18 @@
    "broken": [],
    "small": [],
    "column": 1352,
-   "left": 44
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
   },
   {
    "scene": "decomposition-combined-2023-24",
    "width": 390,
-   "compared": 6201,
+   "compared": 6205,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -78,12 +108,56 @@
    "broken": [],
    "small": [],
    "column": 366,
-   "left": 12
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
+  },
+  {
+   "scene": "decomposition-team-bos",
+   "width": 1440,
+   "compared": 291,
+   "mismatches": [],
+   "mismatchCount": 0,
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 1352,
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
+  },
+  {
+   "scene": "decomposition-team-bos",
+   "width": 390,
+   "compared": 291,
+   "mismatches": [],
+   "mismatchCount": 0,
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 366,
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
   },
   {
    "scene": "shot-making-latest",
    "width": 1440,
-   "compared": 2843,
+   "compared": 2847,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -91,12 +165,18 @@
    "broken": [],
    "small": [],
    "column": 1352,
-   "left": 44
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
   },
   {
    "scene": "shot-making-latest",
    "width": 390,
-   "compared": 2843,
+   "compared": 2847,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -104,12 +184,56 @@
    "broken": [],
    "small": [],
    "column": 366,
-   "left": 12
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
+  },
+  {
+   "scene": "shot-making-team-den",
+   "width": 1440,
+   "compared": 110,
+   "mismatches": [],
+   "mismatchCount": 0,
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 1352,
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
+  },
+  {
+   "scene": "shot-making-team-den",
+   "width": 390,
+   "compared": 110,
+   "mismatches": [],
+   "mismatchCount": 0,
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 366,
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
   },
   {
    "scene": "shot-making-2022-23",
    "width": 1440,
-   "compared": 2703,
+   "compared": 2707,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -117,12 +241,18 @@
    "broken": [],
    "small": [],
    "column": 1352,
-   "left": 44
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
   },
   {
    "scene": "shot-making-2022-23",
    "width": 390,
-   "compared": 2703,
+   "compared": 2707,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -130,12 +260,18 @@
    "broken": [],
    "small": [],
    "column": 366,
-   "left": 12
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
   },
   {
    "scene": "model",
    "width": 1440,
-   "compared": 272,
+   "compared": 276,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -143,12 +279,18 @@
    "broken": [],
    "small": [],
    "column": 1352,
-   "left": 44
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
   },
   {
    "scene": "model",
    "width": 390,
-   "compared": 272,
+   "compared": 276,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -156,12 +298,18 @@
    "broken": [],
    "small": [],
    "column": 366,
-   "left": 12
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
   },
   {
    "scene": "player-default",
    "width": 1440,
-   "compared": 87,
+   "compared": 91,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -169,12 +317,18 @@
    "broken": [],
    "small": [],
    "column": 1352,
-   "left": 44
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
   },
   {
    "scene": "player-default",
    "width": 390,
-   "compared": 87,
+   "compared": 91,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -182,12 +336,18 @@
    "broken": [],
    "small": [],
    "column": 366,
-   "left": 12
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
   },
   {
    "scene": "player-jokic",
    "width": 1440,
-   "compared": 87,
+   "compared": 91,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -195,12 +355,18 @@
    "broken": [],
    "small": [],
    "column": 1352,
-   "left": 44
+   "left": 44,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": 0
+   }
   },
   {
    "scene": "player-jokic",
    "width": 390,
-   "compared": 87,
+   "compared": 91,
    "mismatches": [],
    "mismatchCount": 0,
    "errors": [],
@@ -208,7 +374,13 @@
    "broken": [],
    "small": [],
    "column": 366,
-   "left": 12
+   "left": 12,
+   "icon": {
+    "dx": 0,
+    "dy": 0,
+    "titleDy": 0,
+    "groupDx": -0.01
+   }
   }
  ]
 }

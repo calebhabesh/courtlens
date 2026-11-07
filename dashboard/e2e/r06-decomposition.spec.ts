@@ -50,13 +50,16 @@ test.describe("R06 decomposition", () => {
   test("search, team, minimum and sorting filter the rows like the API's filtered board", async ({ page }) => {
     const board = fixture.boards["2025-26:offense:make:BOS:2000"];
     await openWorkbench(page, path);
-    await page.getByRole("combobox", { name: "Team" }).selectOption("BOS");
+    await page.getByRole("button", { name: "Select Team" }).click();
+    await page.getByRole("dialog", { name: "Select Team" }).getByRole("button", { name: "Boston Celtics" }).click();
+    await expect(page.getByRole("button", { name: /^Team, Boston Celtics/ })).toBeVisible();
     await page.getByRole("spinbutton", { name: "Min shots" }).fill("2000");
     await page.getByRole("button", { name: "Sort by oMake" }).click();
     await expect(page.locator(rowsOf)).toHaveCount(board.rows.length);
     expect(await values(page, `${rowsOf} td[data-column='make']`)).toEqual(board.rows.map((r: Row) => r.values.make));
     const first = fixture.boards["2025-26:offense:ts:all:1000"].rows[0] as Row & { player_name: string };
-    await page.getByRole("combobox", { name: "Team" }).selectOption("");
+    await page.getByRole("button", { name: /^Team, Boston Celtics/ }).click();
+    await page.getByRole("dialog", { name: "Select Team" }).getByRole("button", { name: "Show All Teams" }).click();
     await page.getByRole("searchbox", { name: "Search players", exact: true }).fill(first.player_name);
     await expect(page.locator(rowsOf)).toHaveCount(1);
   });
