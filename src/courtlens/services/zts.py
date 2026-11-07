@@ -13,7 +13,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
-from courtlens.domain import zts
+from courtlens.domain import zts, zts_teams
 from courtlens.domain.teams import get_team_info
 from courtlens.services.impact_serving import load_impact_store, served_path
 
@@ -378,4 +378,159 @@ def player(player_id: str, season: str) -> dict[str, Any] | None:
         "dropped_row": value["dropped_row"],
         "play_types": play_types(value, reference),
         "history": history,
+    }
+
+
+# ---- RD03: team playtype difficulty and role moves (descriptive, owner-approved) ---------------
+
+TEAMS_PATH = Path("evaluation/research/derived/courtlens-zts-teams-v1.json")
+MOVES_WINDOW = 5
+MOVES_COUNT = 6
+MOVES_MINUTES = 1000.0
+TEAMS_NOTE = (
+    "Team playtype difficulty: every listed Synergy offensive row a team's players logged for "
+    "it, summed, then Expected TS and difficulty exactly as for a player, against the same league "
+    "references. Rows under the source's 10-possession floor are absent, so team totals run "
+    "slightly low. Descriptive, not part of the registered test."
+)
+MOVES_RULE = (
+    "Players with a served zTS and 1,000+ minutes in each of the {n} seasons ending in {season}, "
+    "ranked by the size of their Role change from the first season to the last; the six largest."
+)
+
+
+@lru_cache(maxsize=1)
+def load_teams(path: Path = TEAMS_PATH) -> dict[str, Any] | None:
+    if not path.exists():
+        return None
+    data: dict[str, Any] = json.loads(path.read_text())
+    return data
+
+
+def team_board(season: str) -> dict[str, Any] | None:
+    """One season's teams by difficulty, each with its players' share of the mix and served Role,
+    plus every season's team and served player difficulties for the spread chart."""
+    results, teams = load_results(), load_teams()
+    if results is None or teams is None:
+        return None
+    if teams["inputs"]["zts_results_sha256"] != results["results_sha256"]:
+        raise ValueError("team file was built from a different zTS results file")
+    entry = teams["seasons"].get(season)
+    if entry is None:
+        return {
+            "status": "unknown",
+            "season": season,
+            "seasons": sorted(teams["seasons"]),
+            "reason": "No team playtype difficulty for this season: Synergy play types start in "
+            "2015-16, and 2026-27 has no play-type rows yet.",
+        }
+    players = results["players"][season]
+    rows = []
+    for team_id, t in entry["teams"].items():
+        roster = []
+        for p in t["players"]:
+            value = players.get(p["player_id"]) or {}
+            roster.append(
+                {
+                    **p,
+                    "difficulty": value.get("difficulty"),
+                    "zts_status": value.get("status"),
+                    "multi_team": len(value.get("teams") or []) > 1,
+                }
+            )
+        rows.append(
+            {
+                "team_id": team_id,
+                "tricode": _tricode(team_id),
+                "difficulty": t["difficulty"],
+                "expected_ts": t["expected_ts"],
+                "synergy_ts": t["synergy_ts"],
+                "scoring_possessions": t["scoring_possessions"],
+                "players": roster,
+            }
+        )
+    rows.sort(key=lambda r: (-r["difficulty"], r["team_id"]))
+    for rank, row in enumerate(rows, start=1):
+        row["rank"] = rank
+    team_values = [t["difficulty"] for s in teams["seasons"].values() for t in s["teams"].values()]
+    player_values = [
+        v["difficulty"]
+        for s in seasons(results)
+        for v in results["players"][s].values()
+        if v["status"] == zts.KNOWN
+    ]
+    return {
+        "status": "available",
+        "season": season,
+        "seasons": sorted(teams["seasons"]),
+        "league_ts": results["references"][season]["ts"],
+        "league_difficulty": entry["league_difficulty"],
+        "teams": rows,
+        "spread": {
+            "seasons": [seasons(results)[0], seasons(results)[-1]],
+            "players": {"values": player_values, "sd": zts_teams.spread(player_values)},
+            "teams": {"values": team_values, "sd": zts_teams.spread(team_values)},
+        },
+        "note": TEAMS_NOTE,
+        "teams_sha256": teams["teams_sha256"],
+    }
+
+
+def role_moves(season: str) -> dict[str, Any] | None:
+    """The six largest Role changes across the (up to) five served seasons ending in `season`."""
+    results = load_results()
+    if results is None:
+        return None
+    all_seasons = seasons(results)
+    if season not in all_seasons:
+        return {
+            "status": "unknown",
+            "season": season,
+            "reason": "No zTS for this season: Synergy play types start in 2015-16.",
+        }
+    end = all_seasons.index(season)
+    window = all_seasons[max(0, end - MOVES_WINDOW + 1) : end + 1]
+    if len(window) < 2:
+        return {
+            "status": "unknown",
+            "season": season,
+            "reason": f"Role moves need two served seasons; {season} is the first.",
+        }
+    volumes = {s: volume(s) for s in window}
+
+    def qualified(pid: str, s: str) -> bool:
+        value = results["players"][s].get(pid)
+        minutes = (volumes[s].get(pid) or {}).get("minutes")
+        return (
+            value is not None
+            and value["status"] == zts.KNOWN
+            and minutes is not None
+            and minutes >= MOVES_MINUTES
+        )
+
+    pool = [pid for pid in results["players"][window[0]] if all(qualified(pid, s) for s in window)]
+    first, last = window[0], window[-1]
+    changes = {
+        pid: results["players"][last][pid]["difficulty"]
+        - results["players"][first][pid]["difficulty"]
+        for pid in pool
+    }
+    chosen = sorted(changes, key=lambda pid: (-abs(changes[pid]), pid))[:MOVES_COUNT]
+    return {
+        "status": "available",
+        "season": season,
+        "window": window,
+        "pool": len(pool),
+        "rule": MOVES_RULE.format(n=len(window), season=season),
+        "players": [
+            {
+                "player_id": pid,
+                "change": changes[pid],
+                "history": [
+                    {"season": s, **_row(pid, results["players"][s][pid], volumes[s].get(pid))}
+                    for s in window
+                ],
+            }
+            for pid in chosen
+        ],
     }

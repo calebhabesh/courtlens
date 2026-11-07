@@ -80,3 +80,30 @@ def zts_player(
     result = _results_or_503(zts.player(chosen, season))
     name = _names(session, [chosen]).get(chosen) or f"NBA player {chosen}"
     return {**result, "player_id": chosen, "player_name": name, "selection_rule": rule}
+
+
+@router.get("/teams")
+def zts_teams(season: str = SeasonQuery, session: Session = Depends(get_db)) -> dict[str, Any]:
+    board = _results_or_503(zts.team_board(season))
+    if board["status"] != "available":
+        return board
+    ids = [p["player_id"] for t in board["teams"] for p in t["players"]]
+    names = _names(session, ids)
+    return {
+        **board,
+        "teams": [{**t, "players": _named(t["players"], names)} for t in board["teams"]],
+    }
+
+
+@router.get("/role-moves")
+def zts_role_moves(season: str = SeasonQuery, session: Session = Depends(get_db)) -> dict[str, Any]:
+    moves = _results_or_503(zts.role_moves(season))
+    if moves["status"] != "available":
+        return moves
+    names = _names(session, [p["player_id"] for p in moves["players"]])
+    players = []
+    for p in moves["players"]:
+        name = names.get(p["player_id"]) or f"NBA player {p['player_id']}"
+        history = [{**h, "player_name": name} for h in p["history"]]
+        players.append({**p, "player_name": name, "history": history})
+    return {**moves, "players": players}
