@@ -95,10 +95,12 @@
 
   /* Side by side. */
   .zt-compare-panel { justify-items: center; }
-  .zt-compare { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: var(--space-4); width: 100%; max-width: 520px; padding: var(--space-5); border-radius: var(--radius-lg); background: var(--rs-well); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .zt-compare { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: var(--space-4); width: 100%; max-width: 600px; padding: var(--space-5); border-radius: var(--radius-lg); background: var(--rs-well); box-shadow: inset 0 0 0 1px var(--rs-rim); }
   .zt-compare-side { display: grid; justify-items: center; gap: var(--space-2); min-width: 0; text-align: center; }
-  .zt-compare-wrap { display: grid; justify-items: center; gap: var(--space-3); width: 100%; }
-  .zt-compare-search { display: flex; align-items: center; gap: var(--space-2); width: 100%; max-width: 520px; }
+  .zt-compare-search { position: relative; display: flex; align-items: center; gap: var(--space-1); width: 100%; }
+  /* Results drop straight under the search box (inline, not portalled: a shared phone rule pins floating lists at 112 px). */
+  .zt-compare-search .lookup-dropdown { top: calc(100% + var(--space-1)); left: 0; right: auto; width: min(300px, calc(100vw - var(--space-8))); min-width: 0; max-width: none; text-align: left; }
+  .zt-compare-side[data-series="b"] .zt-compare-search .lookup-dropdown { left: auto; right: 0; }
   .zt-compare-search > :first-child { flex: 1 1 auto; min-width: 0; }
   .zt-compare-name { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
   .zt-compare-rows { display: grid; gap: var(--space-3); margin: 0; padding-top: var(--space-6); }
@@ -217,8 +219,8 @@
   .zt-hero-title { color: var(--color-text); font-size: calc(var(--text-3xl) * 1.5); line-height: 1.1; font-weight: 800; letter-spacing: -0.03em; }
   .zt-hero-chip { margin-inline-end: var(--space-2); padding: 0 var(--space-2); border-radius: var(--radius-md); background: var(--rs-well, color-mix(in srgb, var(--color-surface-0) 24%, transparent)); box-shadow: inset 0 0 0 1px var(--color-hairline-strong); color: var(--color-accent); }
   .zt-hero .ui-page-header-subtitle { margin-top: var(--space-4); color: var(--color-on-bg-secondary); font-size: var(--text-xl); line-height: var(--text-xl-lh); white-space: normal; overflow: visible; }
-  .zt-photo { display: inline-grid; flex: none; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: color-mix(in srgb, var(--team-color, var(--color-surface-2)) 60%, var(--color-surface-1)); overflow: hidden; }
-  .zt-photo .player-portrait, .zt-photo .player-portrait-fallback { width: 64px; height: 64px; min-width: 64px; min-height: 64px; border: 0; }
+  /* Team-colour photos with the logo badge, as on other pages (owner, round 4): PlayerAvatar at 64 px. */
+  .zt-avatar.ui-identity-lg { --identity-media: 64px; }
   @media (max-width: 767px) {
     .zt-hero-title { font-size: calc(var(--text-2xl) * 1.5); }
     .zt-hero .ui-page-header-subtitle { font-size: var(--text-md); line-height: var(--text-md-lh); }
