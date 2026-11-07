@@ -95,15 +95,16 @@ test.describe("PC11 populated pages", () => {
     await noPhoneOverflow(page);
   });
 
-  test("Combine opens on the latest class with unknown drills and identities kept unknown", async ({ page }) => {
-    await openWorkbench(page, "/wingspan");
+  test("Combine class shows its drills with unknown drills and identities kept unknown", async ({ page }) => {
+    await openWorkbench(page, "/wingspan?year=2026");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Combine & Wingspan");
-    await expect(page.getByRole("img", { name: /Wingspan versus barefoot height for 4 players, 2026 combine/ })).toBeVisible();
-    const table = page.getByRole("region", { name: "Combine measurement table" });
+    await expect(page.getByRole("heading", { name: "2026 Combine Drills" })).toBeVisible();
+    const table = page.getByRole("region", { name: "Combine drills", exact: true });
     await expect(table).toContainText("Identity unknown");
-    await expect(table.getByRole("row", { name: /Fixture Big/ })).toContainText("—");
-    await page.getByRole("combobox", { name: "Draft class" }).selectOption("2025");
-    await expect(page).toHaveURL(/draftYear=2025/);
+    await expect(table.locator('tr[data-row="r3"] td[data-column="pick"]')).toHaveText("—");
+    await page.getByRole("combobox", { name: "Combine class" }).selectOption("2025");
+    await expect(page).toHaveURL(/year=2025/);
+    await expect(page.getByRole("heading", { name: "2025 Combine Drills" })).toBeVisible();
     await noPhoneOverflow(page);
   });
 
