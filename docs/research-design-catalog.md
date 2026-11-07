@@ -412,6 +412,16 @@ Instructions (owner, 2026-11-07, round 4; screenshots: the Wingspan players tabl
    gone with the old table. `GridValue` gains `tone` (green/red only where the interval excludes zero); `ResearchTable` is back
    as it was before RD04.
 
+Instructions (owner, 2026-11-07, round 5; screenshots: the Decomposition table and the NBA Player Statistics table's search):
+5. [x] Decision for you: use your best judgment here, choose the optimal deciison. (The question: the shared header capitalises
+   oTS, oSQ and dContest.)
+   — Judgement: keep the metric labels' own case. The o/d prefix is the only thing telling oTS from dTS, and capitals turn it into
+   "OTS" / "DCONTEST". `StatsGrid` columns take `keepCase`; this page sets it on oTS, oSQ, oMake, oFT, the d- labels and xPPS. Group
+   labels and plain words (FGA, Shots) keep the site's capitals.
+6. [x] If there is a search bar in the table, rememeber it shoudl be standardized design like the main nba player statistics table.
+   — Shared `GridSearch` renders the NBA Player Statistics table's own search markup (`stats-header-search` › `lookup-input-wrapper`
+   › icon and `lookup-input`), so the Stats CSS styles it: the bordered field in the Player header. Both Shot Quality tables use it.
+
 ## RD05 Defensive Shot Quality — ⬜
 
 - **Now:** ranked defender cards, All / 2PT / 3PT, ranks, RAPM headline, Key Matchups, paging; matchup data

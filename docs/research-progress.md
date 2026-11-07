@@ -629,3 +629,14 @@ it differ from the Wingspan table?
   (Projected Impact, untouched; 5/5 twice on rerun); real data 51,416 values, 0 mismatches.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD04 round 5: metric labels keep their case; the Stats table's search in both tables
+
+[Evidence](evidence/research/design-RD04/README.md#round-5-owner-2026-11-07). Owner: use judgement on the capitalised headers;
+a table's search must be the NBA Player Statistics table's design.
+
+- **Change.** `StatsGrid` columns take `keepCase`, set on oTS-style and xPPS labels; new shared `GridSearch` renders the Stats
+  table's search markup and replaces the Wingspan-style field in both tables.
+- **Checks.** Lint 0/0, typecheck, Vitest 820; page specs 14/14 ×3; full Playwright 599 passed, 17 skipped, 0 failed; real data
+  51,416 values, 0 mismatches.
+- **Not done.** The owner's review and ✅.
+
