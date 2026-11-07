@@ -248,6 +248,13 @@ answered the five questions under the gap list with "use your best judgement"):
 
 Evidence: [`design-RD02`](evidence/research/design-RD02/README.md).
 
+Instructions (owner, 2026-11-07, round 2; screenshot: the stepper board's ORTG / xSHOT / xEFF / xPOSS tiles):
+2. [x] For ORTG, xSHOT, xEFF, xPOSS there is too much nesting. Only one nest deep.
+   — The extra well around the four tiles is gone: panel → tile, the tiles as the panel's wells.
+3. [x] (Screenshot: the stepper cards.) Balance the left and right columns in the container, it looks a little weird.
+   — Each stepper card is two equal columns, each centred; the label and ΔORTG share one row and the control and its
+   figure the next. A phone keeps the stacked two-column board.
+
 ## RD03 zTS — ⬜
 
 - **Now:** About and Top 200 replicated, a Player tab built without a reference; registered test: zTS
