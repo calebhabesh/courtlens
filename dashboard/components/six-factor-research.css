@@ -97,3 +97,13 @@
     .sf-node .sf-range { max-width: none; }
   }
 }
+
+/* Owner (RD02 round 4): no dividers above and below the intro line, under the filter bar and over The Framework. The
+   filter bar's rule lives in `foundation`, above `pages`, so its override goes there. */
+@layer foundation {
+  .sf-page .ui-filter-bar { border-bottom: 0; }
+}
+@layer pages {
+  .sf-page .rs-intro + .rs-section, .sf-page .rs-intro + .ui-gated-note + .rs-section { border-top: 0; padding-top: var(--space-4); }
+}
+

@@ -101,3 +101,26 @@ wrapper class); no numbers changed.
 
 :3100 served stale CSS twice; refreshed by toggling the import. :8000 and :3100 were not restarted; 3180/4180 stopped and the
 sandbox deleted.
+
+## Round 4 (owner, 2026-11-07)
+
+Instructions, from screenshots of the methodology panel and the Six-Factor RAPM intro: (4) *"Why is the text so grey here?
+That's not what we use across the site."* (5) *"Remove the divider above 'Observed Inputs & Caveats'."* (6) *"Remove the divider
+above and below 'RAPM split into six factors,' on the six-factor RAPM page. These dividers are ugly."* CSS only.
+
+| Change | Detail |
+| --- | --- |
+| Text colour | This page used the neutral greys `--color-text-secondary` (#a9afb9) and `--color-text-tertiary`. All 17 uses now take the Research pages' `--color-on-bg-secondary` (#c9d3e6) and `--color-on-bg-tertiary`, as `.rs-prose` and `.rs-card-text` do |
+| Observed divider | `.ol-page .rs-disclosure` has no top rule |
+| Six-Factor intro | `.sf-page .ui-filter-bar` has no bottom rule (in `@layer foundation`, where the filter bar's rule lives) and the first section after the intro has no top rule. Only that page; RD00 stays ✅ unless the owner says otherwise |
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 / 0; clean; 812 passed |
+| Page Playwright ×3 (calculator specs plus `r02-six-factor`) | 119/119 |
+| Full Playwright (sandbox) | 592 passed, 17 skipped, 2 failed: the `pc11-six-factor` baselines, changed by design. Deleted, regenerated, viewed (no dividers around the intro at 1440 and 390); visual spec then 84/84 |
+| Real data | 1,596 values in three scenes at 1440 and 390: 0 mismatches, 0 console errors, 0 overflow, 0 broken images |
+| Screenshots (viewed) | [`calculator-method-r4-1440.png`](calculator-method-r4-1440.png), [`-390`](calculator-method-r4-390.png), [`calculator-observed-head-r4-1440.png`](calculator-observed-head-r4-1440.png), [`six-factor-intro-r4-1440.png`](six-factor-intro-r4-1440.png), [`-390`](six-factor-intro-r4-390.png) |
+
+:3100 served stale CSS; refreshed by toggling both imports. :8000 and :3100 not restarted; 3180/4180 stopped, sandbox deleted.
+
