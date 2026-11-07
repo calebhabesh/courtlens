@@ -185,11 +185,6 @@
 .research-view .case-study-hero { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-4); }
 .case-study-heading { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
 .research-view .case-study-guarantees-list, .research-view .case-study-steps-list { margin: 0; display: flex; flex-direction: column; gap: var(--space-2); color: var(--color-text-secondary); line-height: 1.5; }
-/* Calculator inputs keep a 40px rhythm. */
-.calculator-view .research-input { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); margin: 0; font-size: var(--text-sm); }
-.calculator-view .research-input input { width: 6rem; min-height: 40px; text-align: right; font-variant-numeric: tabular-nums; }
-.calculator-view .allocation-row { display: grid; grid-template-columns: 3rem minmax(0, 1fr) 4rem; align-items: center; gap: var(--space-3); }
-.calculator-view .allocation-row meter { width: 100%; }
 /* Inputs placed in the shared bar match the 40px controls. */
 .research-view .ui-filter-bar input:not([type="checkbox"], .lookup-input) { min-height: 40px; max-width: 9rem; }
 @media (width < 1024px) {
