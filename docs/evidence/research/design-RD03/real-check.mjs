@@ -28,6 +28,8 @@ const SCENES = [
   { name: "about-latest", q: "", season: "2025-26", tab: "about" },
   { name: "about-2018-19", q: "season=2018-19", season: "2018-19", tab: "about" },
   { name: "top-all", q: "tab=top", tab: "top" },
+  // Round 5: each compared side has its own season (side B Russell Westbrook 2016-17; side A the 2025-26 default).
+  { name: "compare-cross-season", q: "b=201566&bs=2016-17", tab: "compare", season: "2025-26" },
   { name: "player-default", q: "tab=player", tab: "player" },
   { name: "player-jokic-2018-19", q: "tab=player&player=203999&playerSeason=2018-19", tab: "player", id: "203999", season: "2018-19" },
 ];
@@ -119,6 +121,16 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
     await page.waitForSelector(gridRows("zts-top"), { timeout: 60000 });
     await checkRows("zts-top", top.rows, r => `${r.season}:${r.player_id}`, ["minutes", "scoring_usage", "rts", "difficulty", "zts", "zts_add"]);
     for (const r of top.rows.slice(0, 20)) eq(`top rank ${r.player_id}`, await page.locator(`${gridRows("zts-top")}[data-row="${r.season}:${r.player_id}"] [data-rank]`).getAttribute("data-rank"), String(r.rank));
+  }
+  if (scene.tab === "compare") {
+    const latest = await board("2025-26"), old = await board("2016-17");
+    await page.waitForSelector(".zt-compare-side[data-series='b'][data-season='2016-17'][data-row]", { timeout: 60000 });
+    const pair = defaultPair(latest.rows), russ = old.rows.find(r => r.player_id === "201566");
+    eq("side a", await page.locator(".zt-compare-side[data-series='a']").getAttribute("data-row"), pair[0].player_id);
+    eq("side b", await page.locator(".zt-compare-side[data-series='b']").getAttribute("data-row"), russ.player_id);
+    for (const [series, r] of [["a", pair[0]], ["b", russ]])
+      for (const f of ["scoring_usage", "rts", "difficulty", "zts"]) eq(`compare ${series} ${f}`, await attr(`.zt-compare-row[data-field="${f}"] [data-series="${series}"]`), r[f]);
+    for (const r of pair) eq(`worked example ${r.player_id}`, await attr(`.zt-expected [data-row="${r.player_id}"] [data-field="difficulty"]`), r.difficulty);
   }
   if (scene.tab === "player") {
     const d = await player(scene.id ?? null, scene.season ?? "2025-26");

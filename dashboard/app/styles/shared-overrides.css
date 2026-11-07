@@ -53,7 +53,7 @@ textarea, input, select { max-width: 100%; }
   :root { --page-gutter: 12px; --control-height: 44px; }
   .replica-header { position: relative; }
   .context-bar { position: relative; top: auto; }
-  .lookup-dropdown { top: 112px; }
+  .lookup-dropdown:not(.lookup-floating-dropdown) { top: 112px; }
   .workbench-content { padding: var(--space-4) var(--space-6) var(--space-8); }
   .panel, .conversation { padding: var(--space-4); }
   .conversation-controls { grid-template-columns: minmax(0, 1fr); }

@@ -135,37 +135,59 @@ export function compareCandidates(season: string, players: readonly ZtsRow[]): L
   });
 }
 
-export function CompareCard({ season, a, b, players, onPick }: { season: string; a: ZtsRow; b: ZtsRow; players: readonly ZtsRow[]; onPick: (side: "a" | "b", id: string) => void }) {
+/** One side of the side-by-side card: its own season, that season's served players (null while loading) and its row. */
+export interface CompareSide { season: string; id: string | null; row: ZtsRow | null; players: readonly ZtsRow[] | null }
+
+export function CompareCard({ seasons, a, b, onPick, onSeason }: {
+  seasons: readonly string[]; a: CompareSide; b: CompareSide;
+  onPick: (side: "a" | "b", id: string) => void; onSeason: (side: "a" | "b", season: string) => void;
+}) {
   const [open, setOpen] = useState<"a" | "b" | null>(null);
   const [text, setText] = useState("");
-  const candidates = useMemo(() => compareCandidates(season, players), [season, players]);
+  // The name a side showed before its season changed, for the note when that player has no served zTS there.
+  const [names, setNames] = useState<Partial<Record<"a" | "b", string>>>({});
+  const candA = useMemo(() => compareCandidates(a.season, a.players ?? []), [a.season, a.players]);
+  const candB = useMemo(() => compareCandidates(b.season, b.players ?? []), [b.season, b.players]);
   const toggle = (s: "a" | "b") => { setText(""); setOpen(o => o === s ? null : s); };
-  const side = (row: ZtsRow, s: "a" | "b") => {
-    const team = row.teams[0]?.tricode ?? null;
-    return <div className="zt-compare-side" data-series={s} data-row={row.player_id} data-searching={open === s || undefined}>
-      <PlayerAvatar playerId={row.player_id} name={row.player_name} team={team} size="lg" era={seasonEra(season, team)} className="zt-avatar" />
-      <span className="zt-compare-name">{row.player_name}</span>
+  const side = (cs: CompareSide, other: CompareSide, s: "a" | "b") => {
+    const row = cs.row;
+    const team = row?.teams[0]?.tricode ?? null;
+    const name = row?.player_name ?? names[s] ?? null;
+    const excluded = [cs.id, other.season === cs.season ? other.id : null].filter((id): id is string => !!id);
+    return <div className="zt-compare-side" data-series={s} data-row={row?.player_id} data-season={cs.season} data-searching={open === s || undefined}>
+      {row
+        ? <PlayerAvatar playerId={row.player_id} name={row.player_name} team={team} size="lg" era={seasonEra(cs.season, team)} className="zt-avatar" />
+        : <PlayerAvatar name={name ?? "No player"} size="lg" className="zt-avatar" />}
+      <span className="zt-compare-name">{row ? row.player_name : cs.players === null ? "Loading…" : name ?? "No player"}</span>
+      {!row && cs.players !== null && <span className="zt-compare-note" data-missing={cs.id ?? undefined}>No served zTS in {cs.season}</span>}
+      <Select size="sm" aria-label={`Season for player ${s.toUpperCase()}`} value={cs.season}
+        onChange={e => { if (row) setNames(n => ({ ...n, [s]: row.player_name })); onSeason(s, e.target.value); }}>
+        {[...seasons].reverse().map(season => <option key={season} value={season}>{season}</option>)}
+      </Select>
       {open === s
         ? <span className="zt-compare-search"
           onBlur={e => { if (!text && !e.currentTarget.contains(e.relatedTarget as Node | null)) setOpen(null); }}
           onKeyDown={e => { if (e.key === "Escape" && !text) setOpen(null); }}>
-          <LookupInput label={`Search for player ${s.toUpperCase()}`} placeholder="Search players" value={text} onChange={setText} kinds={["player"]}
-            candidates={candidates} excludedIds={[a.player_id, b.player_id]} limit={8} autoFocus
+          <LookupInput label={`Search for player ${s.toUpperCase()}`} placeholder={`Search ${cs.season}`} value={text} onChange={setText} kinds={["player"]}
+            candidates={s === "a" ? candA : candB} excludedIds={excluded} limit={8} autoFocus
             onSelect={item => { onPick(s, item.canonical_id); setText(""); setOpen(null); }} />
         </span>
-        : <Button size="sm" variant="secondary" icon="search" aria-label={`Change player ${s.toUpperCase()}`} onClick={() => toggle(s)}>Change</Button>}
+        : <Button size="sm" variant="secondary" icon="search" aria-label={`Change player ${s.toUpperCase()}`} disabled={cs.players === null} onClick={() => toggle(s)}>Change</Button>}
     </div>;
   };
+  const value = (row: ZtsRow | null, m: typeof COMPARE_ROWS[number], s: "a" | "b") => row
+    ? <dd className="zt-compare-val" data-series={s} data-row={row.player_id} data-value={row[m.key] ?? undefined} data-identity={m.tone(row)}>{m.text(row)}</dd>
+    : <dd className="zt-compare-val" data-series={s}>—</dd>;
   return <div className="zt-compare" data-pair="true">
-    {side(a, "a")}
+    {side(a, b, "a")}
     <dl className="zt-compare-rows">
       {COMPARE_ROWS.map(m => <div key={m.key} className="zt-compare-row" data-field={m.key}>
-        <dd className="zt-compare-val" data-row={a.player_id} data-value={a[m.key] ?? undefined} data-identity={m.tone(a)}>{m.text(a)}</dd>
+        {value(a.row, m, "a")}
         <dt className="zt-compare-label">{m.label}</dt>
-        <dd className="zt-compare-val" data-row={b.player_id} data-value={b[m.key] ?? undefined} data-identity={m.tone(b)}>{m.text(b)}</dd>
+        {value(b.row, m, "b")}
       </div>)}
     </dl>
-    {side(b, "b")}
+    {side(b, a, "b")}
   </div>;
 }
 

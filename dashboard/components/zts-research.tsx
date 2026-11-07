@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import { EntityField } from "./entity-picker";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
@@ -14,7 +14,7 @@ import { FormulaLine, MethodBlock, ResearchDisclosure, ResearchProse, ResearchSe
 import { GridPlayer, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
 import {
   AXES, Code, CompareCard, ExpectedPanel, Explorer, GlossaryLabel, Histogram, LeagueTypes, PairMix, Panel, Spread, TestBars,
-  type Axis, type PairSide,
+  type Axis, type CompareSide, type PairSide,
 } from "./zts-figures";
 import { seasonEra } from "@/lib/portrait-source";
 import {
@@ -124,18 +124,26 @@ function Calculation({ board }: { board: Leaderboard | null }) {
   </>;
 }
 
+/** The worked example: the season's default pair and their play-type rows. */
 function usePair(board: Leaderboard) {
-  const { get, set } = useUrlState();
-  const byId = useMemo(() => new Map(board.rows.map(r => [r.player_id, r])), [board]);
   const fallback = defaultPair(board.rows);
-  const a = byId.get(get("a") ?? "") ?? fallback?.[0] ?? null;
-  const b = byId.get(get("b") ?? "") ?? fallback?.[1] ?? null;
-  const players = useMemo(() => [...board.rows].sort((x, y) => x.player_name.localeCompare(y.player_name)), [board]);
+  const a = fallback?.[0] ?? null, b = fallback?.[1] ?? null;
   const { data: da } = useFeed([a?.player_id ?? null, board.season], signal => getPlayerZts(a?.player_id ?? null, board.season, signal));
   const { data: db } = useFeed([b?.player_id ?? null, board.season], signal => getPlayerZts(b?.player_id ?? null, board.season, signal));
   const types = (d: typeof da, row: ZtsRow | null) => d?.status === "available" && d.player_id === row?.player_id ? d.play_types : d && d.player_id === row?.player_id ? [] : null;
-  const pick = (side: "a" | "b", id: string) => set(side === "a" ? { a: id, b: b?.player_id ?? null } : { a: a?.player_id ?? null, b: id });
-  return { a, b, players, pick, sideA: a ? { row: a, types: types(da, a) } as PairSide : null, sideB: b ? { row: b, types: types(db, b) } as PairSide : null };
+  return { a, b, sideA: a ? { row: a, types: types(da, a) } as PairSide : null, sideB: b ? { row: b, types: types(db, b) } as PairSide : null };
+}
+
+/** One compared side: its season (URL `as`/`bs`, the page season by default), that season's served players and its row. */
+function useCompareSide(key: "a" | "b", board: Leaderboard, seasons: readonly string[], fallback: ZtsRow | null): CompareSide {
+  const { get } = useUrlState();
+  const asked = get(`${key}s`);
+  const season = asked && seasons.includes(asked) ? asked : board.season;
+  const other = season !== board.season;
+  const { data, error } = useFeed([other ? season : null], signal => other ? getLeaderboard(season, "zts_add", 1000, signal) : Promise.resolve(null));
+  const players = !other ? board.rows : data?.status === "available" ? (data as Leaderboard).rows : data || error ? [] : null;
+  const id = get(key) ?? fallback?.player_id ?? null;
+  return { season, id, players, row: players?.find(r => r.player_id === id) ?? null };
 }
 
 function InPractice({ board, summary, pair }: { board: Leaderboard; summary: ZtsSummary; pair: ReturnType<typeof usePair> }) {
@@ -377,7 +385,7 @@ function Caveats({ summary, season, board }: { summary: ZtsSummary; season: stri
 function About({ summary }: { summary: ZtsSummary }) {
   const { get, set } = useUrlState();
   const season = summary.seasons.includes(get("season") ?? "") ? get("season")! : LATEST;
-  const setSeason = (s: string) => set({ season: s === LATEST ? null : s, a: null, b: null });
+  const setSeason = (s: string) => set({ season: s === LATEST ? null : s, a: null, b: null, as: null, bs: null });
   const { data, error, loading, retry } = useFeed([season], signal => getLeaderboard(season, "zts_add", 1000, signal));
   const board = data?.status === "available" ? data as Leaderboard : null;
   const ref = summary.references[season];
@@ -457,12 +465,16 @@ function BoardSections({ board, summary, season, setSeason, x, y, ext, setAxes }
   board: Leaderboard; summary: ZtsSummary; season: string; setSeason: (s: string) => void; x: Axis; y: Axis; ext: { easiest: ZtsRow[]; hardest: ZtsRow[] }; setAxes: (x: Axis, y: Axis) => void;
 }) {
   const pair = usePair(board);
+  const { set } = useUrlState();
+  const compareA = useCompareSide("a", board, summary.seasons, pair.a);
+  const compareB = useCompareSide("b", board, summary.seasons, pair.b);
   const big = ext.easiest[0], burden = ext.hardest[0];
   return <>
     <ResearchSection className="zt-section" title="The Calculation in Practice"><InPractice board={board} summary={summary} pair={pair} /></ResearchSection>
     {pair.a && pair.b && <ResearchSection className="zt-section" title="Compare Players Side by Side">
-      <ResearchProse><p>Change either player to see the four core scoring fields side by side.</p></ResearchProse>
-      <Panel className="zt-compare-panel" label="Side by side"><CompareCard season={board.season} a={pair.a} b={pair.b} players={pair.players} onPick={pair.pick} /></Panel>
+      <ResearchProse><p>Pick any two players, each from any season since <span className="zt-nowrap">{summary.seasons[0]}</span>, to see the four core scoring fields side by side. <Code>rTS</Code>, Role and <Code>zTS</Code> are each measured against their own season&apos;s league, so different seasons compare directly.</p></ResearchProse>
+      <Panel className="zt-compare-panel" label="Side by side"><CompareCard seasons={summary.seasons} a={compareA} b={compareB}
+        onPick={(s, id) => set({ [s]: id })} onSeason={(s, season) => set({ [`${s}s`]: season === board.season ? null : season })} /></Panel>
     </ResearchSection>}
     <ResearchSection className="zt-section" title="How Big the Adjustments Are">
       <ResearchProse>
