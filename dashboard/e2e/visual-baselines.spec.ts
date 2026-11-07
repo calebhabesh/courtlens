@@ -251,7 +251,7 @@ for (const view of WIDTHS) test.describe(`PC11 populated pages ${view.name}`, ()
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
   for (const [name, path, ready] of [["defensive-matchups", "/research/defensive-matchups/tracking", "Makes below expected, top 12"], ["player-matchups", "/matchups", "Exposure"],
     ["adjusted-shooting", "/research/shooting/adjusted", "Points per 100 above the play-type expectation"], ["six-factor", "/research/rapm/six-factor", "Net Efficiency vs Possession Control, 2025-26"],
-    ["combine", "/wingspan", "Wingspan versus barefoot height"],
+    ["combine", "/wingspan", "Positional Averages"],
     ["stats-tracking", "/stats/tracking", "Drives per game, top 12"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByText(ready, { exact: true }).first()).toBeVisible();
