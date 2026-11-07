@@ -1,0 +1,92 @@
+[
+  {
+    "scene": "league-latest",
+    "width": 1440,
+    "compared": 266,
+    "mismatches": [],
+    "errors": [],
+    "overflow": 0,
+    "broken": 0,
+    "images": 30,
+    "column": {
+      "x": 44,
+      "width": 1352
+    },
+    "small": []
+  },
+  {
+    "scene": "league-latest",
+    "width": 390,
+    "compared": 266,
+    "mismatches": [],
+    "errors": [],
+    "overflow": 0,
+    "broken": 0,
+    "images": 30,
+    "column": {
+      "x": 12,
+      "width": 366
+    },
+    "small": []
+  },
+  {
+    "scene": "league-2016-17",
+    "width": 1440,
+    "compared": 266,
+    "mismatches": [],
+    "errors": [],
+    "overflow": 0,
+    "broken": 0,
+    "images": 30,
+    "column": {
+      "x": 44,
+      "width": 1352
+    },
+    "small": []
+  },
+  {
+    "scene": "league-2016-17",
+    "width": 390,
+    "compared": 266,
+    "mismatches": [],
+    "errors": [],
+    "overflow": 0,
+    "broken": 0,
+    "images": 30,
+    "column": {
+      "x": 12,
+      "width": 366
+    },
+    "small": []
+  },
+  {
+    "scene": "team-best-2018-19",
+    "width": 1440,
+    "compared": 266,
+    "mismatches": [],
+    "errors": [],
+    "overflow": 0,
+    "broken": 0,
+    "images": 31,
+    "column": {
+      "x": 44,
+      "width": 1352
+    },
+    "small": []
+  },
+  {
+    "scene": "team-best-2018-19",
+    "width": 390,
+    "compared": 266,
+    "mismatches": [],
+    "errors": [],
+    "overflow": 0,
+    "broken": 0,
+    "images": 31,
+    "column": {
+      "x": 12,
+      "width": 366
+    },
+    "small": []
+  }
+]

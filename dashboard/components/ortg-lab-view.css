@@ -1,0 +1,156 @@
+/* RD02 ORtg Calculator, after Databallr's ORTG Lab: Databallr's own width (1352 px), a hero bar, the inputs panel
+   beside the equation card and its tabs, the stepper board, then the methodology panel. Shading tokens come from
+   `.rs-column` (light panels, darker wells); sign colours are the identity tones (no interval is served). */
+@layer pages {
+  .rs-column.ol-page { max-width: 1352px; gap: var(--space-5); }
+  .ol-panel { display: grid; align-content: start; gap: var(--space-4); min-width: 0; padding: var(--space-5); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .ol-well { border-radius: var(--radius-lg); background: var(--rs-well); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .ol-kicker { margin: 0; color: var(--color-text-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 650; letter-spacing: 0.14em; text-transform: uppercase; }
+  .ol-link { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-accent); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600; text-decoration: none; }
+  .ol-link:hover { color: var(--color-accent-hover); }
+  .ol-link:focus-visible { outline: none; border-radius: var(--radius-xs); box-shadow: var(--focus-ring); }
+  [data-identity="a"].ol-vs, [data-identity="a"].ol-row-delta, [data-identity="a"].ol-step-delta, [data-identity="a"].ol-board-value { color: var(--color-identity-a); }
+  [data-identity="b"].ol-vs, [data-identity="b"].ol-row-delta, [data-identity="b"].ol-step-delta, [data-identity="b"].ol-board-value { color: var(--color-identity-b); }
+
+  .ol-pill { display: inline-flex; align-items: center; gap: var(--space-2); height: var(--control-lg); padding: 0 var(--space-4); border-radius: var(--radius-pill); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 45%, transparent); color: var(--color-accent); font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; }
+
+  /* Inputs beside the result. */
+  .ol-main { display: grid; grid-template-columns: minmax(0, 412px) minmax(0, 1fr); align-items: start; gap: var(--space-4); }
+  .ol-inputs { gap: var(--space-5); }
+  .ol-inputs:focus-visible { outline: none; box-shadow: inset 0 0 0 1px var(--rs-rim), var(--focus-ring); }
+  .ol-inputs-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .ol-baseline { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+  .ol-team-pick { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .ol-group { display: grid; gap: var(--space-3); }
+  .ol-group-label { margin-bottom: var(--space-1); }
+  .ol-row { display: grid; grid-template-columns: 96px 60px minmax(0, 1fr) 72px; align-items: center; gap: var(--space-3); min-height: var(--control-lg); }
+  .ol-row-label { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600; }
+  .ol-row-value, .ol-step-value { color: var(--color-text); font-size: var(--text-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ol-row-value small, .ol-step-value small, .ol-row-delta small { margin-left: var(--space-0); color: var(--color-text-tertiary); font-size: var(--text-2xs); }
+  .ol-row-delta { color: var(--color-text-tertiary); font-size: var(--text-sm); font-variant-numeric: tabular-nums; font-weight: 600; text-align: right; white-space: nowrap; }
+  .ol-range { width: 100%; height: var(--space-6); min-height: 0; margin: 0; padding: 0; border: 0; background: transparent; appearance: none; cursor: pointer; }
+  .ol-range::-webkit-slider-runnable-track { height: var(--space-1); border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) var(--fill), var(--color-surface-3) var(--fill)); }
+  .ol-range::-moz-range-track { height: var(--space-1); border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) var(--fill), var(--color-surface-3) var(--fill)); }
+  .ol-range::-webkit-slider-thumb { width: var(--space-4); height: var(--space-4); margin-top: calc(-1 * var(--space-1) * 1.5); border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-text); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 22%, transparent); appearance: none; }
+  .ol-range::-moz-range-thumb { width: var(--space-4); height: var(--space-4); border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-text); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 22%, transparent); }
+  .ol-range:focus, .ol-range:focus-visible { outline: none; }
+  .ol-range:focus-visible::-webkit-slider-thumb { box-shadow: var(--focus-ring); }
+  .ol-range:focus-visible::-moz-range-thumb { box-shadow: var(--focus-ring); }
+
+  /* Equation card: ORTG = xSHOT × xEFF × xPOSS. */
+  .ol-equation { display: grid; grid-template-columns: minmax(0, 1.2fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-3); padding: var(--space-6) var(--space-5); }
+  .ol-term { display: grid; justify-items: center; align-content: start; gap: var(--space-1); min-width: 0; text-align: center; }
+  .ol-term-label { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+  .ol-term-value { color: var(--color-text); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ol-term-text { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .ol-ortg { color: var(--color-accent); font-size: calc(var(--text-3xl) * 1.5); line-height: 1.1; font-weight: 750; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .ol-vs { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
+  .ol-op { color: var(--color-text); font-size: var(--text-xl); font-weight: 700; }
+  .ol-tabs { justify-self: start; }
+  .ol-tab-body { min-width: 0; }
+
+  /* Decomposition cards. */
+  .ol-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .ol-card { display: grid; align-content: start; gap: var(--space-3); min-width: 0; padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .ol-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3) var(--space-4); margin: 0; }
+  .ol-fact { display: grid; gap: var(--space-1); min-width: 0; }
+  .ol-fact dt { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .ol-fact dd { margin: 0; color: var(--color-text); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ol-fact dd.ol-formula { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 400; }
+
+  /* Marginal value board: ΔORTG per point, ranked. */
+  .ol-board-list { display: grid; gap: var(--space-2); margin: 0; padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); list-style: none; }
+  .ol-board-list li { display: grid; grid-template-columns: 112px minmax(0, 1fr) 56px; align-items: center; gap: var(--space-3); min-height: var(--space-6); }
+  .ol-board-label { color: var(--color-text); font-size: var(--text-sm); font-weight: 600; white-space: nowrap; }
+  .ol-board-label small { color: var(--color-text-tertiary); font-size: var(--text-2xs); }
+  .ol-bar { display: block; height: var(--space-2); border-radius: var(--radius-pill); background: var(--rs-well); overflow: hidden; }
+  .ol-bar-fill { display: block; width: var(--w); height: 100%; border-radius: inherit; background: var(--color-text-tertiary); }
+  .ol-bar-fill[data-identity="a"] { background: var(--color-identity-a); }
+  .ol-bar-fill[data-identity="b"] { background: var(--color-identity-b); }
+  .ol-board-value { color: var(--color-text-tertiary); font-size: var(--text-sm); font-weight: 650; font-variant-numeric: tabular-nums; text-align: right; }
+  .ol-notes { display: grid; gap: var(--space-2); margin: 0; padding: var(--space-4) var(--space-4) var(--space-4) var(--space-8); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ol-notes strong { color: var(--color-text); }
+
+  /* Stepper board. */
+  .ol-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); padding: var(--space-4); }
+  .ol-tile { display: grid; justify-items: center; align-content: center; gap: var(--space-1); min-height: 84px; padding: var(--space-3); border-radius: var(--radius-md); background: color-mix(in srgb, var(--color-surface-0) 55%, transparent); box-shadow: inset 0 0 0 1px var(--rs-rim); text-align: center; }
+  .ol-tile-value { color: var(--color-text); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .ol-tile-ortg { color: var(--color-accent); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); }
+  .ol-vs-sm { font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
+  .ol-board-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
+  .ol-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .ol-step { display: grid; gap: var(--space-2); min-width: 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .ol-step { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--space-3); }
+  .ol-step-main { display: grid; justify-items: center; gap: var(--space-2); }
+  .ol-step-side { display: grid; justify-items: end; gap: var(--space-2); }
+  .ol-step .ol-kicker { color: var(--color-text-secondary); }
+  .ol-step-control { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .ol-step-value { min-width: 56px; font-size: var(--text-lg); font-weight: 700; text-align: center; }
+  .ol-step-delta { color: var(--color-text-tertiary); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  /* Methodology panel. */
+  .ol-method { gap: var(--space-5); padding: var(--space-6); }
+  .ol-method-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
+  .ol-method-title { margin: var(--space-2) 0 0; color: var(--color-text); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); font-weight: 700; letter-spacing: -0.01em; }
+  .ol-link-pill { min-height: var(--control-md); padding: 0 var(--space-4); border-radius: var(--radius-pill); box-shadow: inset 0 0 0 1px var(--rs-rim); font-size: var(--text-xs); }
+  .ol-prose { display: grid; gap: var(--space-3); max-width: 112ch; }
+  .ol-prose p { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.7; }
+  .ol-prose strong { color: var(--color-text); }
+  .ol-prose a { color: var(--color-accent); }
+  .ol-form { display: grid; gap: var(--space-2); padding: var(--space-5); }
+  .ol-form-line { margin: 0; color: var(--color-text); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; }
+  .ol-form-terms { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+  .ol-form-terms p { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: 1.7; }
+  .ol-form-terms strong { color: var(--color-text); }
+  .ol-method-card { padding: var(--space-5); }
+
+  /* Observed inputs (collapsed). */
+  .ol-observed { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+  .ol-observed .rs-method-block { grid-template-columns: minmax(0, 1fr); }
+  .ol-observed-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: var(--space-4); }
+  .ol-observed-stack { display: grid; gap: var(--space-4); min-width: 0; }
+  .ol-team-cell { display: inline-flex; align-items: center; gap: var(--space-2); font-weight: 600; }
+  .ol-list { display: grid; gap: var(--space-1); margin: 0; padding-left: var(--space-5); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ol-observed code { font-family: var(--font-mono), monospace; overflow-wrap: anywhere; }
+  .ol-sources { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; }
+
+  @media (max-width: 1100px) {
+    .ol-main { grid-template-columns: minmax(0, 1fr); }
+    .ol-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ol-observed-pair { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 700px) {
+    .ol-panel { padding: var(--space-4); }
+    .ol-row { grid-template-columns: minmax(0, 1fr) auto auto; row-gap: 0; }
+    .ol-row .ol-range { grid-column: 1 / -1; grid-row: 2; height: var(--control-lg); }
+    .ol-equation { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-5); padding: var(--space-5) var(--space-3); }
+    .ol-equation .ol-op { display: none; }
+    .ol-cards, .ol-form-terms, .ol-tiles { grid-template-columns: minmax(0, 1fr); }
+    .ol-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ol-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+    .ol-step { grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-2); }
+    .ol-step-control { gap: var(--space-1); }
+    .ol-step-value { min-width: 52px; font-size: var(--text-md); }
+    .ol-step-side { display: flex; align-items: baseline; justify-content: center; }
+    .ol-step-delta { font-size: var(--text-md); line-height: var(--text-md-lh); }
+    .ol-link-pill { min-height: var(--control-lg); }
+    .ol-method { padding: var(--space-4); }
+    .ol-board-list li { grid-template-columns: 96px minmax(0, 1fr) 52px; }
+    .ol-tabs { justify-self: stretch; overflow-x: auto; }
+  }
+}
+
+/* Hero bar (Databallr's): the page header in a panel, the ORTG LAB pill before the title, the paper link at the
+   right. The page header's rules live in `foundation`, above `pages`, so these overrides go there too. */
+@layer foundation {
+  .ui-page-header.ol-hero { padding: var(--space-3) var(--space-5); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--color-white) 4%, transparent); box-shadow: inset 0 0 0 1px var(--color-hairline-strong); }
+  .ol-hero .ui-page-header-title-row { flex-wrap: nowrap; justify-content: space-between; gap: var(--space-4); }
+  .ol-hero .ui-page-header-title { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-4); min-width: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; letter-spacing: -0.02em; }
+  .ol-hero .ui-page-header-actions { flex: none; }
+  @media (max-width: 700px) {
+    .ui-page-header.ol-hero { position: relative; padding: var(--space-4); }
+    .ol-hero .ui-page-header-title { gap: var(--space-3); }
+    .ol-hero .ui-page-header-actions { position: absolute; top: var(--space-4); right: var(--space-4); display: flex; width: auto; align-items: center; height: var(--control-lg); }
+    .ol-hero .ol-link { min-height: var(--control-lg); }
+  }
+}

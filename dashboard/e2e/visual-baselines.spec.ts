@@ -207,7 +207,7 @@ for (const view of WIDTHS) test.describe(`FO12 baselines ${view.name}`, () => {
     await expect(page.getByRole("region", { name: "Registered research result" })).toBeVisible();
     await settle(page); await expect(page).toHaveScreenshot(`expected-shots-${view.name}.png`, shot);
   });
-  for (const [name, path, ready] of [["forecasts", "/forecasts", "Prespecified Out-of-Time Error Slices"], ["evaluation", "/evaluation", "Final Test · 2023–24"], ["case-studies", "/research/case-studies", "Mid-Season Trade & Jersey Stint Tracking"], ["calculator", "/calculator", "Scenario Output"]] as const) test(name, async ({ page }) => {
+  for (const [name, path, ready] of [["forecasts", "/forecasts", "Prespecified Out-of-Time Error Slices"], ["evaluation", "/evaluation", "Final Test · 2023–24"], ["case-studies", "/research/case-studies", "Mid-Season Trade & Jersey Stint Tracking"], ["calculator", "/calculator", "How this calculator is built"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByText(ready, { exact: true }).first()).toBeVisible();
     await settle(page); await expect(page).toHaveScreenshot(`${name}-${view.name}.png`, shot);

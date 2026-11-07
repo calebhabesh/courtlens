@@ -54,7 +54,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | **A. Pages with a saved Databallr reference** | | | | | |
 | RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18, RD00 | ✅ |
 | RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data, RD01 | ✅ |
-| RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data | ⬜ |
+| RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data, RD02 | 👀 |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04 | ⬜ |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06 | ⬜ |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06 | ⬜ |
@@ -217,13 +217,36 @@ Instructions (owner, 2026-11-07, round 4; screenshots: the Within Position and C
     — The scatter header is a three-column grid: axis pickers left, the add-a-player search centred on the panel, r right; on a
     phone the pickers take the first line and the search the second.
 
-## RD02 ORtg Calculator — ⬜
+## RD02 ORtg Calculator — 👀 ready for review
 
 - **Now:** the hypothetical calculator plus R10's observed inputs per season (2014-15 to 2025-26), Poropudas
   and Halme's Eq. (11), μ, rebound rates by miss, ORTG and marginals.
 - **Known gaps:** the interactive ORTG Lab itself; the menu label is still "Hypothetical Calculator" (D8
   says "ORtg Calculator").
-- **Instructions:** _(owner)_
+- **Data check (2026-11-07):** no new data. The lab's xSHOT × xEFF × xPOSS is exactly Eq. (11); every slider input
+  (2P%, 3P%, FT%, 3PA rate, FTA rate, TOV%, 2P / 3P / final-FT OREB%) is served for the league and all 30 teams in
+  each season, and the rebounds by miss add up to the served ORB% (36,509 = 36,509 in 2025-26). A split-rebound form
+  rebuilt from the served counts reproduces the served rating in all 372 league and team rows.
+
+Instructions (owner, 2026-11-07, round 1; references: the saved page `Offensive Rating Calculator _ databallr.html`,
+rendered offline with every request blocked, and three screenshots of it, beside this page at 1440 and 390; the owner
+answered the five questions under the gap list with "use your best judgement"):
+1. [x] Can you use your best judgement and suggestions for optimal layout. I would like our page to be the same as
+   Databallr's and then we can build from there. Our current page is too information dense. I like Databallr's layout,
+   we should copy it.
+   - (a) The lab computes Eq. (11) on the page from the served inputs, with Databallr's split 2P / 3P / FT offensive
+     rebounds rebuilt so it equals Eq. (11) at every observed season and team, and its eFG% / TS% master dials.
+   - (b) Starting values: season (2014-15 to 2025-26) and a clearable team picker, default the league in 2025-26.
+   - (c) The hypothetical calculator (B27) goes: the lab replaces it, as on Databallr.
+   - (d) R10's observed tables move into a collapsed section below the lab; the page shows Databallr's layout only.
+   - (e) Databallr's sliders panel and stepper board both stay, on one page.
+   — Databallr's ORTG Lab at its 1352 px: hero bar (pill, title, Paper), inputs panel (season, clearable team, 12 sliders with
+   ΔORTG), the ORTG = xSHOT × xEFF × xPOSS card with Decomposition / Marginal value / Context notes tabs, the stepper board,
+   Databallr's methodology panel; R10's tables in the collapsed Observed Inputs & Caveats on `StatsGrid`. The lab equals the
+   served Eq. (11) for all 72 fixture rows and stays Eq. (11) on the inputs shown after any move; B27 removed; menu "ORtg
+   Calculator".
+
+Evidence: [`design-RD02`](evidence/research/design-RD02/README.md).
 
 ## RD03 zTS — ⬜
 

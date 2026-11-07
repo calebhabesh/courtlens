@@ -49,17 +49,6 @@ test("integrity rejection hides numerical outputs and retry recovers",async ({pa
   await page.unroute(`**/api/workbench/research/runs/${run.run_id}`);await page.route(`**/api/workbench/research/runs/${run.run_id}`,route => route.fulfill({json:result}));
   await page.getByRole("button",{name:"Retry reads"}).click();await expect(page.getByRole("region",{name:"Registered research result"})).toContainText("Completed negative result");
 });
-test("calculator rejects invalid scenarios and shows checked finite differences on mobile",async ({page}) => {
-  await page.setViewportSize({width:390,height:844}); await openWorkbench(page, "/calculator");
-  await expect(page.getByRole("region",{name:"Scenario output"})).toContainText("ORTG");
-  await page.getByLabel("2P category probability",{exact:true}).fill("0.9");
-  await expect(page.getByRole("alert").filter({hasText:"sum to 1"})).toBeVisible();
-  await expect(page.getByRole("button",{name:"Export scenario JSON"})).toHaveCount(0);
-  await page.getByRole("button",{name:"Reset hypothetical defaults"}).click();
-  await expect(page.getByRole("region",{name:"Scenario output"})).toContainText("Finite-difference sensitivities");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.screenshot({path:test.info().outputPath("b27-calculator-mobile.png"),fullPage:true});
-});
 test("roster keeps observed and projected inputs separate and exports context",async ({page}) => {
   await page.route(`**/api/workbench/teams/${BOS}?*`,route => { expect(new URL(route.request().url()).searchParams.get("phase")).toBe("regular_season"); return route.fulfill({json:{team:{id:"fixture",name:"Fixture Team",tricode:"FIX"},context:{release_id:"fixture-release",season:"2025-26",phase:"regular",before_date:"2026-07-01"},record:{games_played:1},player_cohort:[{player_id:"1",player_name:"Fixture Player",games_played:1,total_minutes:30,points:0,points_per_game:0}],warnings:["Fixture scope only"]}}); });
   // FO05: no form or Load button; the team loads from the URL as soon as it is chosen.

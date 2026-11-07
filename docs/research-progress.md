@@ -456,3 +456,20 @@ The owner approved Combine & Wingspan (RD01) after four rounds and asked for the
 rules now in the "Research pages" pattern: the wide column for database pages, gold/blue sign tones where no interval is
 served, and one site table look (`StatsGrid`, after the Stats table; compact for static tables; one lead-column edge). Next
 in the queue: RD02 ORtg Calculator.
+
+## 2026-11-07 — RD02 round 1: the ORtg Calculator as Databallr's ORTG Lab
+
+[Evidence](evidence/research/design-RD02/README.md). Owner, from the saved Databallr Offensive Rating Calculator and the gap
+list: use best judgement, copy Databallr's layout, the current page is too dense. Design only; no new data (every slider input
+is served for the league and each team, and the lab equals the served Eq. (11) at every start).
+
+- **Change.** `components/ortg-lab-view.tsx` and `lib/ortg-lab.ts` replace the hypothetical calculator (B27; its view, flow
+  functions and tests removed): hero bar, inputs panel with season and clearable team starting points and 12 sliders, the
+  ORTG = xSHOT × xEFF × xPOSS card with Decomposition / Marginal value / Context notes tabs, the stepper board, the methodology
+  panel, and R10's tables collapsed on `StatsGrid`. Column 1352 px. Split 2P / 3P / FT rebounds and eFG / TS / ORB dials as
+  Databallr's adaptation, always Eq. (11) on the inputs shown. Menu label "ORtg Calculator" (D8).
+- **Checks.** Lint 0/0, typecheck, Vitest 812; page specs 60/60 ×3; full Playwright 594 passed, 17 skipped, 0 failed on the
+  final build (the two calculator baselines regenerated and viewed); real data 1,596 values in three scenes at 1440 and 390,
+  0 mismatches, 0 console errors, 0 overflow, 0 broken images, outputs equal to Eq. (11).
+- **Not done.** The owner's review and ✅.
+

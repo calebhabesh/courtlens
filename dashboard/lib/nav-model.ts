@@ -110,7 +110,7 @@ export const NAV_MENUS: NavMenu[] = [
       { title: "Tools", items: [
         { label: "Combine & Wingspan", href: "/wingspan", icon: "ruler", description: "Official NBA Draft Combine measurements, including wingspan" },
         { label: "Draft Classes", href: "/draft", icon: "graduation", description: "What each draft slot returned, classes redrafted and this year's rookies" },
-        { label: "Hypothetical Calculator", href: "/calculator", icon: "calculator", description: "Offensive rating from your own possession assumptions" },
+        { label: "ORtg Calculator", href: "/calculator", icon: "calculator", description: "Offensive rating from the four factors, after Poropudas and Halme" },
         { label: "Patch Notes", href: "/whats-new", icon: "history", description: "Every release, with the commit that shipped it" },
       ] },
     ],
