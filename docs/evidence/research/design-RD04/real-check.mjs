@@ -18,7 +18,9 @@ const SCENES = [
   { name: "decomposition-offense", q: "", tab: "decomposition", season: "2025-26", side: "offense" },
   { name: "decomposition-defense", q: "side=defense", tab: "decomposition", season: "2025-26", side: "defense" },
   { name: "decomposition-combined-2023-24", q: "side=combined&dSeason=2023-24", tab: "decomposition", season: "2023-24", side: "combined" },
+  { name: "decomposition-team-bos", q: "", tab: "decomposition", season: "2025-26", side: "offense", team: "BOS", teamName: "Boston Celtics" },
   { name: "shot-making-latest", q: "tab=shot-making", tab: "shot-making", season: "2025-26" },
+  { name: "shot-making-team-den", q: "tab=shot-making", tab: "shot-making", season: "2025-26", team: "DEN", teamName: "Denver Nuggets" },
   { name: "shot-making-2022-23", q: "tab=shot-making&season=2022-23", tab: "shot-making", season: "2022-23" },
   { name: "model", q: "tab=model", tab: "model" },
   { name: "player-default", q: "tab=player", tab: "player" },
@@ -48,11 +50,22 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
     })),
   })), cellSel);
   const attr = async (sel, name = "data-value") => page.locator(sel).first().getAttribute(name);
+  // Round 2: the team filter is the logo-grid picker (no dropdown); choose the scene's team through its dialog.
+  const pickTeam = async () => {
+    eq("no team dropdown", await page.locator(".rt-toolbar select[aria-label='Team']").count(), 0);
+    await page.getByRole("button", { name: "Select Team" }).click();
+    const dialog = page.getByRole("dialog", { name: "Select Team" });
+    eq("picker tiles", await dialog.locator(".team-grid-tile").count() >= 30, true);
+    await dialog.getByRole("button", { name: scene.teamName }).click();
+    eq("picker closed", await dialog.waitFor({ state: "detached", timeout: 5000 }).then(() => 0, () => 1), 0); // after its close animation
+    eq("picker label", await page.getByRole("button", { name: new RegExp(`^Team, ${scene.teamName}`) }).count(), 1);
+  };
 
   if (scene.tab === "decomposition") {
     const summary = await api("/api/shot-quality/decomposition");
-    const b = await board(scene.season, scene.side);
+    const b = scene.team ? await api(`/api/shot-quality/decomposition/players?season=${scene.season}&side=${scene.side}&sort=ts&minShots=1000&team=${scene.team}`) : await board(scene.season, scene.side);
     await page.waitForSelector(".sq-board tbody tr[data-row]", { timeout: 60000 });
+    if (scene.team) await pickTeam();
     const rows = await grab(".sq-board tbody tr[data-row]", "td[data-column]");
     eq("board order", JSON.stringify(rows.map(r => r.key)), JSON.stringify(b.rows.map(r => r.player_id)));
     const byKey = Object.fromEntries(rows.map(r => [r.key, r.cells]));
@@ -66,8 +79,10 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
       }
       eq(`${r.player_id} shots`, cells.shots?.value ?? null, r.shots);
     }
-    eq("count", await attr(".sq-board [data-count]", "data-count"), String(b.rows.length));
-    eq("unknown", await attr(".sq-board [data-unknown]", "data-unknown"), String(b.unknown.length));
+    if (!scene.team) {
+      eq("count", await attr(".sq-board [data-count]", "data-count"), String(b.rows.length));
+      eq("unknown", await attr(".sq-board [data-unknown]", "data-unknown"), String(b.unknown.length));
+    }
     eq("count chip", (await page.locator(".sq-board .rt-toolbar").innerText()).includes(`${b.rows.length.toLocaleString("en-US")} players`), true);
     // How to Read examples: the season's highest oTS and lowest dTS.
     const off = await board(scene.season, "offense"), def = await board(scene.season, "defense");
@@ -97,8 +112,9 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
   }
 
   if (scene.tab === "shot-making") {
-    const b = await api(`/api/shot-quality/players?season=${scene.season}&sort=shot_making&minFga=300`);
+    const b = await api(`/api/shot-quality/players?season=${scene.season}&sort=shot_making&minFga=300${scene.team ? `&team=${scene.team}` : ""}`);
     await page.waitForSelector(".sq-players tbody tr[data-row]", { timeout: 60000 });
+    if (scene.team) await pickTeam();
     const rows = await grab(".sq-players tbody tr[data-row]", "td[data-column]");
     eq("board order", JSON.stringify(rows.map(r => r.key)), JSON.stringify(b.rows.map(r => r.player_id)));
     const byKey = Object.fromEntries(rows.map(r => [r.key, r.cells]));
@@ -111,7 +127,7 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
       eq(`${r.player_id} tone`, c.shot_making?.tone ?? null, tone(r.interval?.[0], r.interval?.[1]));
     }
     eq("league term", await attr("[data-league]"), b.league.league_term);
-    eq("unknown", await attr("[data-league]", "data-unknown"), String(b.unknown.length));
+    if (!scene.team) eq("unknown", await attr("[data-league]", "data-unknown"), String(b.unknown.length));
   }
 
   if (scene.tab === "model") {
@@ -205,16 +221,25 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
     const broken = [...document.images].filter(i => i.complete && i.naturalWidth === 0).map(i => i.currentSrc || i.src);
     const small = w < 600 ? [...document.querySelectorAll("button, select, input, [role='radio'], summary")].filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.height < 40 && !e.closest("[aria-hidden='true']"); }).map(e => `${e.tagName}:${(e.getAttribute("aria-label") || e.textContent || "").trim().slice(0, 40)}:${Math.round(e.getBoundingClientRect().height)}`) : [];
     const col = document.querySelector(".sq-page").getBoundingClientRect();
-    return { overflow: document.documentElement.scrollWidth - innerWidth, broken, small, column: Math.round(col.width), left: Math.round(col.left) };
+    // Round 3: the hero icon's glyph centred in its tile, the tile level with the title, and icon + title centred in the column.
+    const tile = document.querySelector(".sq-hero .ui-page-header-icon").getBoundingClientRect();
+    const glyph = document.querySelector(".sq-hero .ui-page-header-icon svg").getBoundingClientRect();
+    const title = document.querySelector(".sq-hero .ui-page-header-title").getBoundingClientRect();
+    const mid = r => ({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+    const icon = { dx: +(mid(glyph).x - mid(tile).x).toFixed(2), dy: +(mid(glyph).y - mid(tile).y).toFixed(2), titleDy: +(mid(title).y - mid(tile).y).toFixed(2),
+      groupDx: +(((tile.left + title.right) / 2) - mid(col).x).toFixed(2) };
+    return { overflow: document.documentElement.scrollWidth - innerWidth, broken, small, column: Math.round(col.width), left: Math.round(col.left), icon };
   }, width);
+  for (const [k, v] of Object.entries(page_.icon)) eq(`hero icon ${k}`, Math.abs(v) <= 1, true);
   report.push({ scene: scene.name, width, compared, mismatches: mismatches.slice(0, 40), mismatchCount: mismatches.length, errors, ...page_ });
-  console.log(scene.name, width, compared, "mismatches", mismatches.length, "errors", errors.length, "overflow", page_.overflow, "broken", page_.broken.length, "small", page_.small.length, "col", page_.column);
+  console.log(scene.name, width, compared, "mismatches", mismatches.length, "errors", errors.length, "overflow", page_.overflow, "broken", page_.broken.length, "small", page_.small.length, "col", page_.column, "icon", JSON.stringify(page_.icon));
   if (mismatches.length) console.log(JSON.stringify(mismatches.slice(0, 5)));
   if (shots) {
     const fresh = await browser.newPage({ viewport: { width, height: width > 600 ? 900 : 844 } });
     await fresh.goto(`${WEB}${scene.q ? `?${scene.q}` : ""}`, { waitUntil: "networkidle", timeout: 120000 });
     await fresh.evaluate(async () => { document.querySelectorAll("img").forEach(i => { i.loading = "eager"; }); await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))); });
     await fresh.waitForTimeout(1000);
+    if (scene.team) await fresh.getByRole("button", { name: "Select Team" }).click(), await fresh.waitForTimeout(500);
     await fresh.screenshot({ path: `${shots}/sq-${scene.name}-${width}.png`, fullPage: true });
     await fresh.close();
   }

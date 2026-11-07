@@ -66,3 +66,31 @@ instruction in the catalog.
   the colour of every coloured value, the model tables, bins and chart points, and two players' histories and splits.
   `real-data-check.json`.
 - Glance test: every screenshot viewed (`sq-*-{1440,390}.png`).
+
+## Rounds 2 and 3 (owner, 2026-11-07)
+
+Round 2: "Can we use the same team picker we use on the other pages. I don't like drop down selector for teams." Round 3
+(screenshot of the hero, sent during round 2): "The "Shot Quality" icon looks wonky, and not centerd."
+
+**Changed**
+
+- New shared `components/research/team-picker.tsx`: the site's team picker as WOWY and Contracts have it. A kit button with the
+  chosen team's logo and code ("Select Team" when empty) opens the Select Team dialog with the compact `TeamGrid` (season-correct
+  logos and codes) and Show All Teams to clear. `ResearchTable` takes it with `teamPicker`; both Shot Quality tables use it, so
+  the page has no team dropdown. Off by default, so the approved RD00 and RD01 tables are unchanged.
+- Hero icon: `panel.css`'s unlayered `display: inline-flex` overrode the page's layered `inline-grid; place-items: center`, so the
+  glyph sat in the tile's top-left corner. Now centred with `align-items` / `justify-content`, which nothing overrides.
+
+**Checks**
+
+- Lint 0/0, typecheck, Vitest 819 (new: the picker replaces the select and filters). No Python changed.
+- Page specs updated to choose a team through the dialog and clear it: 14/14 three times.
+- Full Playwright: 598 passed, 17 skipped, 1 failed: `visual-baselines` "roster shapes depth chart" phone, a 2% pixel diff on a
+  page this round didn't touch. The spec passed 84/84 on rerun.
+- Real data: 10 scenes at 1440 and 390, **51,416 values, 0 mismatches**, 0 console errors, 0 overflow, 0 broken images, 0
+  phone controls under 40 px. New scenes pick Boston (decomposition) and Denver (shot-making) through the dialog and compare
+  every row with the API's team-filtered board; every scene checks there is no team select and measures the hero icon (glyph
+  vs tile centre, tile vs title, pair vs column: all 0 px, within 0.01). The first run counted the dialog as still open during
+  its close animation (4 script mismatches); the check now waits for it to detach.
+- Glance test: the hero and the open dialog viewed at both widths (`sq-*-team-*-{1440,390}.png` show the dialog open).
+
