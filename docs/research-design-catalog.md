@@ -320,6 +320,14 @@ Instructions (owner, 2026-11-07, round 3; screenshot: Compare Players Side by Si
    a search field with suggestions (`LookupInput` over that same served pool, 8 results, the pair excluded); no player dropdown is
    left on the page.
 
+Instructions (owner, 2026-11-07, round 4; screenshot: the compare card with its search open below it):
+4. [x] It should enter as search boxes under the player photos.
+   — Change turns into the search field in place, under that player's photo and name; its results drop straight beneath it.
+   Escape or leaving it empty closes it.
+5. [x] The player photos should have the team color/logo behind them. Like we have on other pages. It's important.
+   — The compare card and the Player tab use the site's `PlayerAvatar` at 64 px: team-colour fill and ring with the team logo
+   badge, the season's photo.
+
 ## RD04 Shot Quality — ⬜
 
 - **Now:** four tabs: Players (ranked per 100 shots), Decomposition (oTS = oSQ + oMake + oFT, offence,

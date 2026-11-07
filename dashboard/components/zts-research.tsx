@@ -5,10 +5,9 @@ import { EntityField } from "./entity-picker";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
-import { teamStyle } from "./ui/identity";
+import { PlayerAvatar } from "./ui/identity";
 import { Input } from "./ui/input";
 import { Button, ButtonLink, Segmented, Select } from "./ui/kit";
-import { PlayerPortrait } from "./player-portrait";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { FormulaLine, MethodBlock, ResearchDisclosure, ResearchProse, ResearchSection } from "./research/research-page";
@@ -565,7 +564,7 @@ function PlayerTab({ summary }: { summary: ZtsSummary }) {
     {loading && <FeedSkeleton label="Loading the player's zTS" />}
     {data && <>
       <div className="zt-hero-card" data-player={data.player_id}>
-        <span className="zt-photo" style={teamStyle(team)}><PlayerPortrait playerId={data.player_id} name={data.player_name} size="md" era={seasonEra(data.season, team)} /></span>
+        <PlayerAvatar playerId={data.player_id} name={data.player_name} team={team} size="lg" era={seasonEra(data.season, team)} className="zt-avatar" />
         <span className="zt-hero-text">
           <a className="zt-hero-name" href={`/players/${data.player_id}?season=${data.season}`}>{data.player_name}</a>
           <span className="zt-hero-sub">{team && <TeamLogo team={team} season={data.season} size={16} />}{team ?? ""}{team ? " · " : ""}{data.season} regular season</span>

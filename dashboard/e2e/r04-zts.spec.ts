@@ -70,6 +70,14 @@ test.describe("R04 zTS", () => {
     await expect(page).toHaveURL(new RegExp(`a=${sga.player_id}`));
     expect(Number(await attr(page, `.zt-compare-row[data-field="zts"] [data-row="${sga.player_id}"]`))).toBe(sga.zts);
     await expect(search).toHaveCount(0);
+    // Round 4 (owner): the search opens under the photo it replaces, and Escape on an empty field closes it.
+    await page.getByRole("button", { name: "Change player B" }).click();
+    await expect(page.locator(".zt-compare-side[data-series='b'] [role='combobox']")).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("combobox", { name: "Search for player B" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Change player B" })).toBeVisible();
+    // Team-colour photos with the logo badge, as on other pages.
+    await expect(page.locator(".zt-compare-side .ui-identity.has-team .ui-identity-badge")).toHaveCount(2);
   });
 
   test("the distribution, the extremes, the explorer, role moves and team difficulty equal the API", async ({ page }) => {

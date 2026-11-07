@@ -542,3 +542,16 @@ player? Player lists are never scrolled in a dropdown; use a search field with s
   `route-polish` flake in the first run, 10/10 alone); real data 6,088 values, 0 mismatches.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-07 — RD03 round 4: search under the photos, team-colour photos
+
+[Evidence](evidence/research/design-RD03/README.md#round-4-owner-2026-11-07). Owner: the search should open under the
+player photos; the photos need the team colour and logo behind them, as on other pages.
+
+- **Change.** Change becomes the search field in place under each photo, its list dropping beneath; the compare and Player tab
+  photos are the site's `PlayerAvatar` (team fill, ring, logo badge) at 64 px.
+- **Found.** A shared phone rule pins floating search lists at 112 px; this page renders its list inline. Other pages using
+  `portalDropdown` may be affected; left for the owner.
+- **Checks.** Lint 0/0, typecheck, Vitest 817; page spec 24/24 ×3; full Playwright 597 passed, 17 skipped, 0 failed; real data
+  6,088 values, 0 mismatches.
+- **Not done.** The owner's review and ✅.
+

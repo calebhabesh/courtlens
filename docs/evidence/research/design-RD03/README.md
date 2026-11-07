@@ -126,3 +126,29 @@ Answer: no. Each select listed only the season's players with a served zTS (313 
 | Screenshots (viewed) | [`compare-search-r3-1440.png`](compare-search-r3-1440.png), [`compare-search-r3-390.png`](compare-search-r3-390.png), [`compare-picked-r3-1440.png`](compare-picked-r3-1440.png) |
 
 :3100 CSS refreshed by toggling the import. :8000 and :3100 not restarted; 3180/4180 stopped, sandbox deleted.
+
+## Round 4 (owner, 2026-11-07)
+
+Instructions, from a screenshot of the compare card with its search open under the card: (4) *"It should enter as search boxes
+under the player photos."* (5) *"The player photos should have the team color/logo behind them. Like we have on other pages.
+It's important."*
+
+| Change | Detail |
+| --- | --- |
+| Search under the photo | "Change" is replaced in place by the search field, under that player's photo and name (the card widens to 600 px to fit it). Results drop straight beneath the field, 300 px wide, aligned to that side; Escape or leaving the field empty closes it. The separate close button is gone (it stuck out of the card on a phone) |
+| Team colour and logo | The compare photos and the Player tab photo are the site's `PlayerAvatar` at 64 px: the team-colour fill and 2 px ring with the team logo badge, the season's photo (as on WOWY, Playoffs and Contracts). Before, a page-made circle carried only a faint fill |
+
+Found while checking: on phones a shared rule (`shared-overrides.css`, `.lookup-dropdown { top: 112px }`, `components` layer,
+imported after `lookup-input.css`) pins every *floating* (portalled) search list at 112 px, so it covered the field here. This
+page now renders its list inline, placed by page-layer CSS. Other pages that use `portalDropdown` on phones are likely affected;
+not changed here (shared CSS, the owner's call).
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck, Vitest | 0 / 0; clean; 817 passed |
+| Page Playwright (`r04-zts`) ×3 | 24/24; the search test now also checks the field opens under side B's photo focused, Escape closes it back to Change, and both photos carry the team badge |
+| Full Playwright (sandbox, final build) | **597 passed, 17 skipped, 0 failed** |
+| Real data | 6,088 values in the five scenes at 1440 and 390: 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 phone controls under 40 px. On real data both photos are 64 px with the team fill, ring and logo; the field opens under the photo and its list starts 5 px below it at three scroll positions on a phone; a pick swaps the side; 0 overflow, 0 errors |
+| Screenshots (viewed) | [`compare-r4-1440.png`](compare-r4-1440.png), [`compare-r4-390.png`](compare-r4-390.png), [`compare-search-r4-1440.png`](compare-search-r4-1440.png), [`compare-search-r4-390.png`](compare-search-r4-390.png); the Player tab in the refreshed scene shots |
+
+:3100 CSS refreshed by toggling the import. :8000 and :3100 not restarted; 3180/4180 stopped, sandbox deleted.
