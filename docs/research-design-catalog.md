@@ -313,6 +313,13 @@ Instructions (owner, 2026-11-07, round 2; screenshot: the hero title):
 2. [x] Add a little bit of spacing after "zTS" container, it seems too close to the colon.
    — The title chip has an 8 px (`--space-2`) gap before the colon at every width.
 
+Instructions (owner, 2026-11-07, round 3; screenshot: Compare Players Side by Side):
+3. [x] Do these drop downs contain all players? Remember we shouldn't use drop down menus to scroll through player lists, it
+   should be a search bar/drop down combo if need be.
+   — No: they held only the season's players with a served zTS (313 in 2025-26). Each side now has a Change button that opens
+   a search field with suggestions (`LookupInput` over that same served pool, 8 results, the pair excluded); no player dropdown is
+   left on the page.
+
 ## RD04 Shot Quality — ⬜
 
 - **Now:** four tabs: Players (ranked per 100 shots), Decomposition (oTS = oSQ + oMake + oFT, offence,

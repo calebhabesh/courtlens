@@ -56,6 +56,22 @@ test.describe("R04 zTS", () => {
     if (missing) await expect(page.getByRole("img", { name: new RegExp(`^${missing.label}, .*not listed`) })).toBeVisible();
   });
 
+  test("a side is changed by searching the season's served players, never by scrolling a list", async ({ page }) => {
+    await openWorkbench(page, path);
+    // Round 3 (owner): no dropdown of player names anywhere on the page.
+    for (const select of await page.locator("select").all()) expect(await select.locator("option").count()).toBeLessThan(30);
+    const sga = rows.find(r => r.player_id === fixture.default_player.player_id)!;
+    await page.getByRole("button", { name: "Change player A" }).click();
+    const search = page.getByRole("combobox", { name: "Search for player A" });
+    await expect(search).toBeFocused();
+    await search.fill("Gilgeous");
+    await page.getByRole("option", { name: /Shai Gilgeous-Alexander/ }).click();
+    await expect(page.locator(".zt-compare-side[data-series='a']")).toHaveAttribute("data-row", sga.player_id);
+    await expect(page).toHaveURL(new RegExp(`a=${sga.player_id}`));
+    expect(Number(await attr(page, `.zt-compare-row[data-field="zts"] [data-row="${sga.player_id}"]`))).toBe(sga.zts);
+    await expect(search).toHaveCount(0);
+  });
+
   test("the distribution, the extremes, the explorer, role moves and team difficulty equal the API", async ({ page }) => {
     await openWorkbench(page, path);
     const pool = rows.filter(r => (r.minutes ?? 0) >= 500 && r.difficulty !== null).map(r => (r.difficulty as number) * 100);
