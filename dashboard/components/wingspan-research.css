@@ -64,7 +64,9 @@
 
   /* Scatter: highlighted players large, labelled and on top; everyone else dims while any is highlighted. */
   .ws-scatter { gap: var(--space-3); }
-  .ws-scatter-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  /* Axis pickers left, the add-a-player search centred on the panel, r right (owner, RD01 round 4). */
+  .ws-scatter-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 360px) minmax(0, 1fr); align-items: center; gap: var(--space-3); }
+  .ws-scatter-head .ws-r { justify-self: end; }
   .ws-axes { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
   .ws-axes > svg { color: var(--color-accent); }
   .ws-vs { color: var(--color-text-tertiary); font-size: var(--text-xs); }
@@ -80,7 +82,7 @@
   .ws-legend li { display: inline-flex; align-items: center; gap: var(--space-1); }
 
   /* Add a player to the graph: a search with a short result list under it. */
-  .ws-add { position: relative; flex: 1 1 260px; max-width: 360px; }
+  .ws-add { position: relative; grid-column: 2; width: 100%; }
   .ws-add-field { width: 100%; }
   .ws-add-results { position: absolute; z-index: var(--z-dropdown); top: calc(100% + var(--space-1)); left: 0; right: 0; display: grid; margin: 0; padding: var(--space-1); list-style: none; border-radius: var(--radius-md); background: var(--color-surface-3); box-shadow: var(--shadow-2); }
   .ws-add-results button { justify-content: flex-start; width: 100%; }
@@ -100,6 +102,9 @@
   }
   @media (max-width: 767px) {
     .ws-filters { grid-template-columns: minmax(0, 1fr); }
+    .ws-scatter-head { grid-template-columns: minmax(0, 1fr) auto; }
+    .ws-scatter-head .ws-axes { grid-column: 1 / -1; }
+    .ws-add { grid-column: 1; }
     .ws-group { flex-wrap: wrap; padding-block: var(--space-1); }
     .ws-dl { grid-template-columns: minmax(0, 1fr); }
     .ws-overlay-list li { grid-template-columns: 12px minmax(0, 1fr) auto; }

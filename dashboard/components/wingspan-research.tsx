@@ -398,18 +398,18 @@ function Defense({ data }: { data: WingspanSummary }) {
       With height held fixed, wingspan&apos;s partial r is {signed(data.partial.r, 2)} (95% {rangeText(data.partial.low, data.partial.high, 2)}). A description, not a prediction or a cause.
     </p>
     <StatsGrid<CRow> label="Correlations" name="correlations" rows={all} rowKey={key} density="compact" height="auto" leadWidth="xl"
-      lead={{ group: "Pair", label: "Measurement · rating", cell: c => <span className="ws-pair">{VAR_LABELS[c.x]} · {VAR_LABELS[c.y]}{c.partial ? " (height held fixed)" : ""}</span> }}
+      lead={{ label: "Pair", cell: c => <span className="ws-pair">{VAR_LABELS[c.x]} · {VAR_LABELS[c.y]}{c.partial ? " (height held fixed)" : ""}</span> }}
       columns={[
-        { key: "n", label: "Players", group: "Sample", width: "sm", data: c => ({ field: "n", value: c.n }), cell: c => <GridValue text={c.n.toLocaleString("en-US")} /> },
-        { key: "r", label: "r (95%)", group: "Pearson correlation", width: "xl", data: c => ({ field: "r", ...rData(c) }), cell: c => rValue(c) },
-        { key: "verdict", label: "Verdict", group: "Pearson correlation", width: "lg", data: c => ({ field: "verdict", value: c.verdict }), cell: c => <GridValue text={VERDICT_LABELS[c.verdict]} muted={c.verdict === "not_distinguishable_from_zero"} /> },
+        { key: "n", label: "Players", width: "sm", data: c => ({ field: "n", value: c.n }), cell: c => <GridValue text={c.n.toLocaleString("en-US")} /> },
+        { key: "r", label: "r (95% interval)", width: "xl", data: c => ({ field: "r", ...rData(c) }), cell: c => rValue(c) },
+        { key: "verdict", label: "Verdict", width: "lg", data: c => ({ field: "verdict", value: c.verdict }), cell: c => <GridValue text={VERDICT_LABELS[c.verdict]} muted={c.verdict === "not_distinguishable_from_zero"} /> },
       ]} />
     <h3 className="ws-subhead">Within Position, against Career D-DPM</h3>
     <StatsGrid<Pos> label="Correlations within position" name="within-position" rows={[...POSITIONS]} rowKey={p => p} density="compact" height="auto" leadWidth="sm"
-      lead={{ group: "Position", label: "Pos", cell: pos => <strong>{pos}</strong> }}
+      lead={{ label: "Position", cell: pos => <strong>{pos}</strong> }}
       columns={[
-        { key: "n", label: "Players", group: "Sample", width: "sm", data: pos => ({ field: "n", value: find(pos, "diff", "d_dpm")?.n }), cell: pos => <GridValue text={find(pos, "diff", "d_dpm")?.n.toLocaleString("en-US") ?? null} /> },
-        ...pairs.map(([x, y, label]): GridColumn<Pos> => ({ key: `r-${x}`, label, group: "r against career D-DPM (95%)", width: "fill", data: pos => ({ field: `r-${x}`, ...rData(find(pos, x, y)) }), cell: pos => rValue(find(pos, x, y)) })),
+        { key: "n", label: "Players", width: "sm", data: pos => ({ field: "n", value: find(pos, "diff", "d_dpm")?.n }), cell: pos => <GridValue text={find(pos, "diff", "d_dpm")?.n.toLocaleString("en-US") ?? null} /> },
+        ...pairs.map(([x, y, label]): GridColumn<Pos> => ({ key: `r-${x}`, label, width: "fill", data: pos => ({ field: `r-${x}`, ...rData(find(pos, x, y)) }), cell: pos => rValue(find(pos, x, y)) })),
       ]} />
   </ResearchSection>;
 }
@@ -453,7 +453,7 @@ function Methodology({ data, details }: { data: WingspanSummary; details: ReactN
     <MethodBlock title="Positional Averages with Intervals">
       <p className="rs-card-text">First listed combine position; inches and pounds; 95% bootstrap intervals over players. Career D-DPM averages the rated players.</p>
       <StatsGrid<PositionalAverage> label="Positional averages" name="positional-averages" rows={data.positional_averages} rowKey={a => a.position} density="compact" height="auto" leadWidth="sm" minWidth="wide"
-        lead={{ group: "Position", label: "Pos", cell: a => <strong>{a.position === "ALL" ? "All" : a.position}</strong> }}
+        lead={{ group: "", label: "Position", cell: a => <strong>{a.position === "ALL" ? "All" : a.position}</strong> }}
         columns={[
           { key: "measured", label: "Players", group: "Measured players", width: "sm", data: a => ({ field: "measured", value: a.height.n }), cell: a => <GridValue text={a.height.n.toLocaleString("en-US")} /> },
           meanCell("height"), meanCell("wingspan"), meanCell("diff"), meanCell("weight"),
