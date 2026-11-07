@@ -503,3 +503,21 @@ along the way: copy Databallr's layout where it has one; one level of nesting in
 small control cards; the Research pages' blue-tinted text tokens (`--color-on-bg-*`), never the neutral greys; no hairline
 dividers around intro lines or above a collapsed section. Next in the queue: RD03 zTS.
 
+## 2026-11-07 — RD03 round 1: zTS as Databallr's zTS explainer
+
+[Evidence](evidence/research/design-RD03/README.md). Owner, from the saved Databallr zTS page and the gap list: the
+recommendations look good; redesign the page comprehensively. Design, plus one owner-approved descriptive addition.
+
+- **Change.** `components/zts-research.tsx`, `zts-figures.tsx` and `zts-research.css`: Databallr's article in a 768 px column
+  (its measured width), an article hero, sections in its order, panels one level deep, a floating view dock; CourtLens's own
+  prose and numbers; zTS add/100 in place of SV/100; the registered test as two panels (green/red only there); everything else
+  gold/blue by sign; rules, the test by season and coverage collapsed; Top 200 and Player on `StatsGrid`.
+- **Data.** Team playtype difficulty (`domain/zts_teams.py`, `evaluation/zts_teams.py` →
+  `evaluation/research/derived/courtlens-zts-teams-v1.json`), built only from the frozen run's rows (every season's digest
+  matched) and its league references; league team difficulty 0 each season. Role moves by rule. GET `/api/zts/teams` and
+  `/api/zts/role-moves`. No frozen result or registration changed.
+- **Checks.** Lint 0/0, typecheck, Vitest 817; ruff, format, mypy clean; Python 2,678 passed, 9 failed (the same 9 as a clean
+  HEAD worktree); page spec 21/21 ×3; full Playwright 596 passed, 17 skipped, 0 failed; real data 6,088 values in five scenes at
+  1440 and 390, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 phone controls under 40 px.
+- **Not done.** The owner's review and ✅. The `/zts` alias still points at `/research/shooting/adjusted` (not changed, as asked).
+

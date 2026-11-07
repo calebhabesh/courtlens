@@ -55,7 +55,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD00 | Six-Factor RAPM [18] | `/research/rapm/six-factor` | D: `Six-Factor RAPM`, `ShotQuality RAPM`; 7 screenshots | R02, design-18, RD00 | ✅ |
 | RD01 | Combine & Wingspan [19] | `/wingspan` | D: `Wingspan Database` | R10 data, RD01 | ✅ |
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data, RD02 | ✅ |
-| RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04 | ⬜ |
+| RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04, RD03 | 👀 |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06 | ⬜ |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06 | ⬜ |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning` | R11 | ⬜ |
@@ -267,13 +267,47 @@ Instructions (owner, 2026-11-07, round 4; screenshots: the methodology panel, an
    — The filter bar's bottom rule and The Framework's top rule are gone on that page (`six-factor-research.css`); its two
    visual baselines regenerated and viewed.
 
-## RD03 zTS — ⬜
+## RD03 zTS — 👀
 
 - **Now:** About and Top 200 replicated, a Player tab built without a reference; registered test: zTS
   tracks oTS RAPM better, predicts next-season rTS worse.
 - **Known gaps:** SV/100, the team table, the X/Y explorer and the position filter weren't reproduced. FTA
   per play type isn't derivable, so play-type TS is CourtLens's own.
-- **Instructions:** _(owner)_
+- **Reference (2026-11-07):** `~/Downloads/LocalSend/zTS — Playtype-Adjusted Scoring Efficiency _ databallr.html` (newer
+  than the `~/Downloads/Webpages/` copy), rendered offline with its 12 scripts and every `crossorigin=""` stripped, a
+  `<base>` at the saved folder and every non-file request blocked; plus eight owner screenshots. The save holds the About
+  essay (768 px column, `max-w-3xl`, in a 1248 px container) and the Top 200 table (hidden in the save, unhidden to render;
+  a fit-width table in the same column). The Player tab is not in the save, so it is this page's design.
+- **Data check (2026-11-07):** served: league TS by type, the calculation, pair and compare data, the distribution, scoring
+  usage, extremes, X/Y fields, TS add / zTS add, season histories, the leaderboard, the registered test and coverage. Not
+  served: (A) SV/100 (formula unpublished); (B) Databallr's add-stat R² study and baseline sweep; (C) team playtype
+  difficulty; (D) per-season positions; (E) Databallr's role-change slope, team-scheme statistics, shot-quality (Genius
+  Sports, not free), PPP and further studies; (F) seasons before 2015-16 and playoffs.
+
+Instructions (owner, 2026-11-07, round 1; the owner answered the seven recommendations under the gap list with "Your
+recommendations look good. Go ahead and comprehensively create redesign the page"):
+1. [x] Your recommendations look good. Go ahead and comprehensively create redesign the page.
+   - (1) Copy Databallr's layout: its article hero through `PageHeader`, one essay column in its section order, the
+     floating bottom pill tabs, panels and wells one level deep.
+   - (2) Databallr's measured 768 px column.
+   - (3) CourtLens's own prose in Databallr's structure with CourtLens's numbers; Databallr's wording and findings are not
+     copied or presented as CourtLens's.
+   - (4) Gaps: (A) zTS add/100 in place of SV/100; (B) and (E) left out, no stub sections; (C) team playtype difficulty
+     from each team's summed player Synergy rows (a new descriptive analysis, no new source; rows under 10 possessions are
+     absent, so team totals run slightly low); (D) no position chips; (F) 2015-16 onward, Post disabled.
+   - (5) Rules: Finishing-Big and High-Burden keep the five most negative / positive Role with 1,000+ minutes; Playtype
+     Difficulty Moves picks its six players by rule (largest role change, 1,000+ minutes in each season).
+   - (6) Gold/blue by sign on values and play-type bars; green/red only on the registered test, whose intervals exclude zero.
+   - (7) Player tab (own design): clearable picker with season and an empty state, a 64 px photo card and four tiles, the
+     play-type mix in Databallr's pair-chart style against the league, the Expected TS / difficulty panel, and the season
+     history on `StatsGrid`.
+   — Databallr's article at 768 px: hero through `PageHeader`, the essay in its section order without heading icons, panels
+   one level deep, the floating About / Top 200 / Player dock; gold/blue signs, green/red only on the registered test; team
+   difficulty (`/api/zts/teams`, from the frozen run's own rows) and role moves (`/api/zts/role-moves`) added; rules, the test
+   by season, coverage and credits in the collapsed Caveats & Methodology; Top 200 and Player rebuilt on `StatsGrid`. Real data
+   6,088 values, 0 mismatches.
+
+Evidence: [`design-RD03`](evidence/research/design-RD03/README.md).
 
 ## RD04 Shot Quality — ⬜
 

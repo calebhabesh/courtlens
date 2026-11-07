@@ -28,12 +28,12 @@ export function ResearchLinks({ label, links }: { label: string; links: readonly
   </nav>;
 }
 
-/** A page section on the page background: 24 px heading with its icon, a rule between sections. */
-export function ResearchSection({ id, icon, title, aside, children, className = "" }: { id?: string; icon: IconName; title: string; aside?: ReactNode; children: ReactNode; className?: string }) {
+/** A page section on the page background: 24 px heading with its icon (none where Databallr has none), a rule between sections. */
+export function ResearchSection({ id, icon, title, aside, children, className = "" }: { id?: string; icon?: IconName; title: string; aside?: ReactNode; children: ReactNode; className?: string }) {
   const headingId = useId();
   return <section id={id} className={`rs-section ${className}`} aria-labelledby={headingId}>
     <div className="rs-section-head">
-      <h2 id={headingId} className="rs-heading"><Icon name={icon} size={20} />{title}</h2>
+      <h2 id={headingId} className="rs-heading">{icon && <Icon name={icon} size={20} />}{title}</h2>
       {aside && <div className="rs-section-aside">{aside}</div>}
     </div>
     {children}

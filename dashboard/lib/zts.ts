@@ -128,3 +128,73 @@ export function defaultPair(rows: ZtsRow[]): [ZtsRow, ZtsRow] | null {
 }
 export const DEFAULT_PAIR_RULE = "Default pair: in the chosen season, the hardest and easiest role (Playtype Difficulty) among players with 1,000+ minutes and scoring usage of 25 or more. A selection rule, not a judgement of the players.";
 export const EXTREMES_RULE = "Players with 1,000+ minutes in the chosen season, five most negative and five most positive Playtype Difficulty.";
+
+// ---- RD03: team playtype difficulty, role moves and presentation helpers ------------------------
+
+export interface TeamPlayer {
+  player_id: string; player_name: string; scoring_possessions: number; share: number;
+  difficulty: number | null; zts_status: ZtsStatus | null; multi_team: boolean;
+}
+export interface ZtsTeam {
+  team_id: string; tricode: string | null; rank: number; difficulty: number; expected_ts: number; synergy_ts: number;
+  scoring_possessions: number; players: TeamPlayer[];
+}
+export interface TeamBoard {
+  status: "available"; season: string; seasons: string[]; league_ts: number; league_difficulty: number; teams: ZtsTeam[];
+  spread: { seasons: [string, string]; players: { values: number[]; sd: number }; teams: { values: number[]; sd: number } };
+  note: string; teams_sha256: string;
+}
+export interface RoleMove { player_id: string; player_name: string; change: number; history: ZtsRow[] }
+export interface RoleMoves { status: "available"; season: string; window: string[]; pool: number; rule: string; players: RoleMove[] }
+
+export const getTeams = (season: string, signal?: AbortSignal) => read<TeamBoard | Unknown>("/teams", { season }, signal);
+export const getRoleMoves = (season: string, signal?: AbortSignal) => read<RoleMoves | Unknown>("/role-moves", { season }, signal);
+
+/** Gold above zero, blue below, none when the shown figure rounds to zero (no interval: identity tones, never green/red). */
+export function signTone(value: number | null | undefined, digits = 1, scale = 100): "a" | "b" | undefined {
+  if (!known(value)) return undefined;
+  const shown = Number((value * scale).toFixed(digits));
+  return shown > 0 ? "a" : shown < 0 ? "b" : undefined;
+}
+
+/** Gaussian kernel density on `xs` (Silverman's bandwidth unless given); values and xs share units. */
+export function density(values: readonly number[], xs: readonly number[], bandwidth?: number): number[] {
+  const n = values.length;
+  if (!n) return xs.map(() => 0);
+  const mean = values.reduce((s, v) => s + v, 0) / n;
+  const sd = Math.sqrt(values.reduce((s, v) => s + (v - mean) ** 2, 0) / n);
+  const h = bandwidth ?? Math.max(1.06 * sd * n ** -0.2, 1e-9);
+  const k = 1 / (n * h * Math.sqrt(2 * Math.PI));
+  return xs.map(x => k * values.reduce((s, v) => s + Math.exp(-0.5 * ((x - v) / h) ** 2), 0));
+}
+
+/** Plain (unweighted) Pearson correlation over pairs where both values are known; null under three pairs. */
+export function pearson(pairs: readonly (readonly [number | null | undefined, number | null | undefined])[]): { r: number; n: number } | null {
+  const ok = pairs.filter((p): p is readonly [number, number] => known(p[0]) && known(p[1]));
+  const n = ok.length;
+  if (n < 3) return null;
+  const mx = ok.reduce((s, p) => s + p[0], 0) / n, my = ok.reduce((s, p) => s + p[1], 0) / n;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (const [x, y] of ok) { sxy += (x - mx) * (y - my); sxx += (x - mx) ** 2; syy += (y - my) ** 2; }
+  return sxx > 0 && syy > 0 ? { r: sxy / Math.sqrt(sxx * syy), n } : null;
+}
+
+/** The page's four play-type families (league TS pooled from the served points and scoring possessions). */
+export const FAMILIES = [
+  { key: "creation", label: "Creation", types: ["isolation", "prballhandler", "offscreen", "handoff"] },
+  { key: "spacing", label: "Spot-up & post", types: ["spotup", "postup"] },
+  { key: "finishing", label: "Finishing", types: ["prrollman", "offrebound", "cut", "misc"] },
+  { key: "transition", label: "Transition", types: ["transition"] },
+] as const;
+export function familyTs(types: readonly LeagueType[], keys: readonly string[]): number | null {
+  const rows = types.filter(t => keys.includes(t.play_type));
+  const sp = rows.reduce((s, t) => s + t.scoring_possessions, 0);
+  return sp > 0 ? rows.reduce((s, t) => s + t.points, 0) / (2 * sp) : null;
+}
+
+/** Five most negative and five most positive Playtype Difficulty among 1,000+ minute players. */
+export function extremes(rows: readonly ZtsRow[]): { easiest: ZtsRow[]; hardest: ZtsRow[] } {
+  const pool = rows.filter(r => (r.minutes ?? 0) >= 1000 && known(r.difficulty))
+    .sort((x, y) => (x.difficulty as number) - (y.difficulty as number) || x.player_id.localeCompare(y.player_id));
+  return { easiest: pool.slice(0, 5), hardest: pool.slice(-5).reverse() };
+}

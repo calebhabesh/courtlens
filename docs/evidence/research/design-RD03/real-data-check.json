@@ -1,0 +1,126 @@
+{
+ "compared": 6088,
+ "mismatches": 0,
+ "scenes": [
+  {
+   "scene": "about-latest",
+   "width": 1440,
+   "compared": 837,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 768,
+   "left": 336
+  },
+  {
+   "scene": "about-latest",
+   "width": 390,
+   "compared": 837,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 366,
+   "left": 12
+  },
+  {
+   "scene": "about-2018-19",
+   "width": 1440,
+   "compared": 848,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 768,
+   "left": 336
+  },
+  {
+   "scene": "about-2018-19",
+   "width": 390,
+   "compared": 848,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 366,
+   "left": 12
+  },
+  {
+   "scene": "top-all",
+   "width": 1440,
+   "compared": 1221,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 768,
+   "left": 336
+  },
+  {
+   "scene": "top-all",
+   "width": 390,
+   "compared": 1221,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 366,
+   "left": 12
+  },
+  {
+   "scene": "player-default",
+   "width": 1440,
+   "compared": 63,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 768,
+   "left": 336
+  },
+  {
+   "scene": "player-default",
+   "width": 390,
+   "compared": 63,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 366,
+   "left": 12
+  },
+  {
+   "scene": "player-jokic-2018-19",
+   "width": 1440,
+   "compared": 75,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 768,
+   "left": 336
+  },
+  {
+   "scene": "player-jokic-2018-19",
+   "width": 390,
+   "compared": 75,
+   "mismatches": [],
+   "errors": [],
+   "overflow": 0,
+   "broken": [],
+   "small": [],
+   "column": 366,
+   "left": 12
+  }
+ ]
+}
