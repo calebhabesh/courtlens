@@ -37,9 +37,12 @@ def test_wingspan_summary_matches_frozen_counts_and_keeps_unknowns() -> None:
     body = get("/api/wingspan")
     assert body["population"]["measured"] == 1751
     assert body["population"]["analysis"] == 822
-    assert len(body["players"]) == 1804
+    # RD01 round 2: the frozen 1,804 combine rows plus CraftedNBA players the combine never saw.
+    combine = [p for p in body["players"] if p["combine_year"] is not None]
+    assert len(combine) == 1804
+    assert len(body["players"]) == 1804 + body["coverage"]["counts"]["adds_player"]
     assert body["current"] == {"state": "ready", "season": "2026-27", "data_date": "2026-11-02"}
-    unmeasured = [p for p in body["players"] if not p["measured"]]
+    unmeasured = [p for p in body["players"] if p["measurement_source"] is None]
     assert unmeasured and all(p["height"] is None or p["wingspan"] is None for p in unmeasured)
     assert all(p["diff"] is None and p["d_dpm"] is None for p in unmeasured)
     wemby = next(p for p in body["players"] if p["player_id"] == "203497")

@@ -99,7 +99,7 @@ test.describe("PC11 populated pages", () => {
     await openWorkbench(page, "/wingspan?year=2026");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Combine & Wingspan");
     await expect(page.getByRole("heading", { name: "2026 Combine Drills" })).toBeVisible();
-    const table = page.getByRole("region", { name: "Combine drills", exact: true });
+    const table = page.getByRole("table", { name: "Combine drills", exact: true });
     await expect(table).toContainText("Identity unknown");
     await expect(table.locator('tr[data-row="r3"] td[data-column="pick"]')).toHaveText("—");
     await page.getByRole("combobox", { name: "Combine class" }).selectOption("2025");

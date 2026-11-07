@@ -16,6 +16,7 @@ from typing import Any
 from courtlens.domain.research_registry import load_registration
 from courtlens.evaluation import wingspan_runner as runner
 from courtlens.ingestion.native_reconstruction import content_hash
+from courtlens.services import wingspan_coverage
 
 RESULTS_PATH = runner.RESULTS_PATH
 _cache: dict[str, dict[str, Any]] = {}
@@ -49,6 +50,21 @@ CAVEATS = [
     "Positions are the first listed combine position (SG-SF is SG), not current roles.",
     "A missing measurement or rating is unknown, never zero.",
     "An r is called positive or negative only when its 95% interval excludes zero.",
+]
+
+COVERAGE_SOURCE = {
+    "name": "CraftedNBA",
+    "detail": "Reported height and wingspan for current players "
+    "(craftednba.com/player-traits/length), sealed once (courtlens-wingspan-coverage-v1) "
+    "for players the combine never measured.",
+}
+COVERAGE_CREDIT = "Reported heights and wingspans: CraftedNBA (craftednba.com)."
+COVERAGE_CAVEATS = [
+    "Players the combine never measured show CraftedNBA's reported height and wingspan, labelled "
+    "Reported. CraftedNBA names no measurement source; where both exist its heights match the "
+    "combine's barefoot height for most players, and the combine's figure is always the one shown.",
+    "Reported players have no percentiles and stay out of the positional averages, the "
+    "correlations and the career D-DPM population.",
 ]
 
 
@@ -108,6 +124,8 @@ def _registration(body: dict[str, Any]) -> dict[str, Any]:
 def _player(row: dict[str, Any], board: dict[str, Any] | None) -> dict[str, Any]:
     rating = board["players"].get(row["player_id"]) if board else None
     return {
+        # RD01 round 2: where each height and wingspan comes from; combine first.
+        "measurement_source": "combine" if row["measured"] else None,
         "player_id": row["player_id"],
         "name": row["name"],
         "combine_year": row["combine_year"],
@@ -136,9 +154,96 @@ def _player(row: dict[str, Any], board: dict[str, Any] | None) -> dict[str, Any]
     }
 
 
+def _reported(
+    entry: dict[str, Any], row: dict[str, Any] | None, board: dict[str, Any] | None
+) -> dict[str, Any]:
+    """A CraftedNBA height and wingspan on an existing unmeasured row, or a new row for a player
+    the combine never saw. No percentile, career D-DPM or correlation membership: reported only."""
+    base = (
+        _player(row, board)
+        if row
+        else {
+            **_player(
+                {
+                    "player_id": entry["player_id"],
+                    "name": entry["name"],
+                    "combine_year": None,
+                    "position": entry["position"],
+                    "position_label": entry["position"],
+                    "height": None,
+                    "height_shoes": None,
+                    "wingspan": None,
+                    "diff": None,
+                    "weight": None,
+                    "standing_reach": None,
+                    "measured": False,
+                    "d_dpm": None,
+                    "career": {
+                        "seasons": 0,
+                        "minutes": 0,
+                        "first_season": None,
+                        "last_season": None,
+                        "photo_season": board["season"] if board else None,
+                        "photo_team": entry["team"],
+                    },
+                    "in_population": False,
+                    "exclusion": "not_at_combine",
+                    "percentiles": {},
+                },
+                board,
+            )
+        }
+    )
+    if base["position"] is None and entry["position"] in ("PG", "SG", "SF", "PF", "C"):
+        base["position"] = base["position_label"] = entry["position"]
+    return {
+        **base,
+        "measurement_source": "craftednba",
+        "height": entry["height"],
+        "wingspan": entry["wingspan"],
+        "diff": None
+        if entry["height"] is None or entry["wingspan"] is None
+        else entry["wingspan"] - entry["height"],
+        "percentiles": {k: v for k, v in base["percentiles"].items() if k == "d_dpm"},
+    }
+
+
+def _players(
+    body: dict[str, Any], board: dict[str, Any] | None, coverage: dict[str, Any] | None
+) -> list[dict[str, Any]]:
+    rows = {p["player_id"]: p for p in body["players"]}
+    reported = {e["player_id"]: e for e in (coverage["players"] if coverage else [])}
+    out = []
+    for row in body["players"]:
+        entry = reported.get(row["player_id"])
+        out.append(
+            _reported(entry, row, board) if entry and not row["measured"] else _player(row, board)
+        )
+    out.extend(_reported(e, None, board) for pid, e in reported.items() if pid not in rows)
+    return out
+
+
+def _coverage_block(coverage: dict[str, Any] | None) -> dict[str, Any]:
+    if coverage is None:
+        return {"state": "unavailable"}
+    return {
+        "state": "ready",
+        "version": coverage["version"],
+        "source": coverage["source"],
+        "observed_at": coverage["observed_at"],
+        "raw_sha256": coverage["raw_sha256"],
+        "seal_sha256": coverage["seal_sha256"],
+        "board": coverage["board"],
+        "counts": coverage["counts"],
+        "agreement_with_combine": coverage["agreement_with_combine"],
+        "aliases": wingspan_coverage.ALIASES,
+    }
+
+
 def summary() -> dict[str, Any]:
     body = _load_results()
     board = current_board()
+    coverage = wingspan_coverage.load()
     seasons = sorted(body["darko_boards"])
     return {
         "registration": _registration(body),
@@ -154,10 +259,11 @@ def summary() -> dict[str, Any]:
             if board is None
             else {"state": "ready", "season": board["season"], "data_date": board["data_date"]}
         ),
-        "players": [_player(p, board) for p in body["players"]],
-        "sources": SOURCES,
-        "credits": CREDITS,
-        "caveats": CAVEATS,
+        "players": _players(body, board, coverage),
+        "coverage": _coverage_block(coverage),
+        "sources": SOURCES + ([COVERAGE_SOURCE] if coverage else []),
+        "credits": CREDITS + ([COVERAGE_CREDIT] if coverage else []),
+        "caveats": CAVEATS + (COVERAGE_CAVEATS if coverage else []),
     }
 
 
@@ -165,7 +271,18 @@ def nearest(player_id: str) -> dict[str, Any] | None:
     """The k measured players nearest in standardized barefoot height and wingspan."""
     body = _load_results()
     rows = {p["player_id"]: p for p in body["players"]}
+    coverage = wingspan_coverage.load()
+    reported = {e["player_id"]: e for e in (coverage["players"] if coverage else [])}
     target = rows.get(player_id)
+    entry = reported.get(player_id)
+    # A reported player is compared with the combine-measured pool on the same frozen scaling.
+    if entry is not None and (target is None or not target["measured"]):
+        target = {
+            **(target or {"name": entry["name"]}),
+            "height": entry["height"],
+            "wingspan": entry["wingspan"],
+            "measured": entry["height"] is not None and entry["wingspan"] is not None,
+        }
     if target is None:
         return None
     params = body["nearest"]
@@ -173,6 +290,9 @@ def nearest(player_id: str) -> dict[str, Any] | None:
         "player_id": player_id,
         "name": target["name"],
         "inputs": params["inputs"],
+        "target_source": "craftednba"
+        if entry is not None and not rows.get(player_id, {}).get("measured")
+        else "combine",
         "scaling": params["scaling"],
         "metric": "Euclidean distance on z-scores (value minus mean, over standard deviation, "
         "across every measured player); ties by player ID.",

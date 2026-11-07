@@ -14,8 +14,11 @@ export interface Correlation {
 }
 export interface Mean { n: number; mean: number | null; low: number | null; high: number | null }
 export interface PositionalAverage { position: "ALL" | Position; height: Mean; wingspan: Mean; diff: Mean; weight: Mean; d_dpm: Mean }
+/** RD01 round 2: where a row's height and wingspan come from (the combine wins where both exist). */
+export type MeasurementSource = "combine" | "craftednba";
 export interface WingspanPlayer {
-  player_id: string; name: string; combine_year: number; position: Position | null; position_label: string | null;
+  measurement_source: MeasurementSource | null;
+  player_id: string; name: string; combine_year: number | null; position: Position | null; position_label: string | null;
   height: number | null; height_shoes: number | null; wingspan: number | null; diff: number | null; weight: number | null;
   standing_reach: number | null; measured: boolean; d_dpm: number | null; career_seasons: number; career_minutes: number;
   first_season: string | null; last_season: string | null; photo_season: string | null; photo_team: string | null;
@@ -32,13 +35,21 @@ export interface WingspanSummary {
   nearest: { inputs: string[]; k: number; scaling: Record<string, { mean: number; sd: number }> };
   darko_seasons: [string, string] | null;
   current: { state: "ready" | "unavailable"; season: string | null; data_date: string | null };
+  coverage: { state: "unavailable" } | {
+    state: "ready"; version: string; observed_at: string; raw_sha256: string; seal_sha256: string;
+    source: { name: string; host: string; url: string; policy: string; limitations: string[] };
+    board: { season: string; data_date: string } | null;
+    counts: { rows: number; matched: number; combine_measured: number; fills_combine_row: number; adds_player: number; ambiguous: number; unmatched: number; listed_length_differs: number };
+    agreement_with_combine: { players: number; height_vs_barefoot?: { compared: number; equal: number; within_half_inch: number }; wingspan?: { compared: number; equal: number; within_half_inch: number } };
+    aliases: Record<string, string>;
+  };
   players: WingspanPlayer[];
   sources: { name: string; detail: string }[];
   credits: string[];
   caveats: string[];
 }
 export interface Nearest {
-  player_id: string; name: string; inputs: string[]; metric: string; state: "ready" | "not_measured";
+  player_id: string; name: string; inputs: string[]; metric: string; state: "ready" | "not_measured"; target_source?: MeasurementSource;
   neighbours: (WingspanPlayer & { distance: number })[];
 }
 
@@ -90,6 +101,7 @@ export const EXCLUSION_LABELS: Record<string, string> = {
   no_nba_minutes: "No NBA regular-season minutes 2000-01 to 2025-26",
   no_season_at_min_minutes: "No season with 500 or more minutes",
   no_darko_rating_in_qualifying_seasons: "No DARKO rating in any 500-minute season",
+  not_at_combine: "Not measured at a combine since 2000 (reported by CraftedNBA)",
 };
 export const MISS_LABELS: Record<MissKind, string> = { two: "Missed two", three: "Missed three", ft_end: "Missed final free throw", and_one: "Missed and-one" };
 export const INPUT_LABELS: Record<FactorInput, string> = { efg: "eFG%", ftr: "FT rate (FTM/FGA)", tov_pct: "TOV% (Eq. 10)", orb_pct: "ORB% (Eq. 9)", fg: "FG%", ft: "FT%" };
