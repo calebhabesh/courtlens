@@ -52,7 +52,7 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
   const attr = async (sel, name = "data-value") => page.locator(sel).first().getAttribute(name);
   // Round 2: the team filter is the logo-grid picker (no dropdown); choose the scene's team through its dialog.
   const pickTeam = async () => {
-    eq("no team dropdown", await page.locator(".rt-toolbar select[aria-label='Team']").count(), 0);
+    eq("no team dropdown", await page.locator("select[aria-label='Team']").count(), 0);
     await page.getByRole("button", { name: "Select Team" }).click();
     const dialog = page.getByRole("dialog", { name: "Select Team" });
     eq("picker tiles", await dialog.locator(".team-grid-tile").count() >= 30, true);
@@ -80,10 +80,10 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
       eq(`${r.player_id} shots`, cells.shots?.value ?? null, r.shots);
     }
     if (!scene.team) {
-      eq("count", await attr(".sq-board [data-count]", "data-count"), String(b.rows.length));
-      eq("unknown", await attr(".sq-board [data-unknown]", "data-unknown"), String(b.unknown.length));
+      eq("count", await attr(".sq-foot [data-count]", "data-count"), String(b.rows.length));
+      eq("unknown", await attr(".sq-foot [data-unknown]", "data-unknown"), String(b.unknown.length));
     }
-    eq("count chip", (await page.locator(".sq-board .rt-toolbar").innerText()).includes(`${b.rows.length.toLocaleString("en-US")} players`), true);
+    eq("count chip", (await page.locator(".sq-table-block .sq-toolbar").first().innerText()).includes(`${b.rows.length.toLocaleString("en-US")} players`), true);
     // How to Read examples: the season's highest oTS and lowest dTS.
     const off = await board(scene.season, "offense"), def = await board(scene.season, "defense");
     eq("offense example", await attr("[data-example='offense']"), Math.max(...off.rows.map(r => r.values.ts)));

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, type ReactNode } from "react";
 import { ReliabilityPlot } from "./charts";
 import { EntityField } from "./entity-picker";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
@@ -8,19 +8,23 @@ import { DECOMPOSITION_LATEST, openMethodology, ShotDecompositionTab } from "./s
 import { SqPanel, Tiles, Toned } from "./shot-quality-figures";
 import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
-import { PlayerAvatar, PlayerIdentity } from "./ui/identity";
+import { CountChip } from "./ui/filter-bar";
+import { PlayerAvatar } from "./ui/identity";
+import { Input, SearchField } from "./ui/input";
 import { Button, Segmented, Select } from "./ui/kit";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
-import { MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchSection } from "./research/research-page";
-import { ResearchTable, type ResearchColumn } from "./research/research-table";
-import { GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
+import { MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchSection, ToneLegend } from "./research/research-page";
+import { sortRows } from "./research/research-table";
+import { GridPlayer, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
+import { TeamPicker } from "./research/team-picker";
+import { downloadCsv, intervalTone, toCsv } from "@/lib/research-values";
 import { seasonEra } from "@/lib/portrait-source";
 import { getDecompositionBoard, TARGETS, type DecompositionBoard, type DecompositionRow, type UnknownSeason } from "@/lib/shot-decomposition";
 import {
   formatFixed, formatInterval, formatPercentSigned, formatShare, formatSigned, formatWhole, GATE_LABELS, getPlayers,
   getPlayerShots, getShotQuality, reliabilityBins, SLICE_FAMILIES,
-  type MetricBlock, type ModelName, type PlayerRow, type ShotQualitySummary
+  type Leaderboard, type LeagueSeason, type MetricBlock, type ModelName, type PlayerRow, type ShotQualitySummary
 } from "@/lib/shot-quality";
 
 /*
@@ -59,15 +63,6 @@ function ShotMaking({ summary }: { summary: ShotQualitySummary }) {
   const minFga = summary.players.min_attempts;
   const { data, error, loading, retry } = useFeed([season], signal => getPlayers(season, "shot_making", null, minFga, signal));
   const league = summary.players.league[season];
-  const columns = useMemo<ResearchColumn<PlayerRow>[]>(() => [
-    { key: "fga", label: "FGA", title: "Field-goal attempts", value: r => r.fga },
-    { key: "fg_pct", label: "FG%", title: "Field-goal percentage", value: r => r.fg_pct, format: v => formatShare(v), width: "text" },
-    { key: "three_share", label: "3PA share", title: "Share of attempts from three", value: r => r.three_share, format: v => formatShare(v), width: "text" },
-    { key: "pps", label: "PPS", title: summary.definitions.pps, value: r => r.pps, format: v => formatFixed(v), width: "text" },
-    { key: "xpps", label: "xPPS", title: summary.definitions.xpps, value: r => r.xpps, format: v => formatFixed(v), width: "text" },
-    { key: "shot_making", label: "Shot-making /100", title: summary.definitions.shot_making, signedValue: true, digits: 1, value: r => r.shot_making,
-      interval: r => ({ low: r.interval?.[0] ?? null, high: r.interval?.[1] ?? null }), unknown: r => r.reason ?? undefined },
-  ], [summary]);
   const seasonSelect = <Select size="md" aria-label="Season" value={season} onChange={event => set({ season: event.target.value === LATEST ? null : event.target.value })}>
     {[...summary.players.seasons].reverse().map(s => <option key={s} value={s}>{s}</option>)}</Select>;
   return <>
@@ -75,23 +70,7 @@ function ShotMaking({ summary }: { summary: ShotQualitySummary }) {
       {error && <FeedFailure error={error} retry={retry} what="Player shot-making" />}
       {loading && <FeedSkeleton label="Loading player shot-making" />}
       {data?.status === "unknown" && <SqPanel className="sq-unknown" label="Season"><div className="sq-control-row">{seasonSelect}</div><GatedNote>{data.reason}</GatedNote></SqPanel>}
-      {data?.status === "available" && <ResearchTable label={`Shot-making ${data.season}`} className="sq-board sq-players" rows={data.rows} rowKey={r => r.player_id} name={r => r.player_name}
-        team={r => r.tricode} teamPicker season={data.season} views={[{ value: "shot-making", label: "Shot-making", columns }]} defaultSort="shot_making" noun="players" intervalLevel={95}
-        player={r => { const [, ...others] = r.teams; return <PlayerIdentity playerId={r.player_id} name={r.player_name} team={r.tricode} size="sm" era={seasonEra(data.season, r.tricode)}
-          href={`/players/${r.player_id}?season=${data.season}`} subtitle={others.length ? <TeamCodes teams={others} season={data.season} /> : undefined} />; }}
-        minimum={{ label: "Min FGA", value: r => r.fga, initial: minFga, step: 50 }}
-        csv={{ filename: `courtlens-shot-making-${data.season}.csv`, columns: [
-          { header: "player_id", value: r => r.player_id }, { header: "player", value: r => r.player_name }, { header: "team", value: r => r.tricode },
-          { header: "fga", value: r => r.fga }, { header: "fg_pct", value: r => r.fg_pct }, { header: "three_share", value: r => r.three_share },
-          { header: "pps", value: r => r.pps }, { header: "xpps", value: r => r.xpps }, { header: "shot_making", value: r => r.shot_making },
-          { header: "shot_making_p2_5", value: r => r.interval?.[0] ?? null }, { header: "shot_making_p97_5", value: r => r.interval?.[1] ?? null },
-        ] }}
-        actions={<>{seasonSelect}<Button size="md" icon="book" onClick={() => openMethodology("shot-making-method")}>Methodology</Button></>}
-        footnote={league && <span data-league={season} data-value={league.league_term} data-count={data.rows.length} data-unknown={data.unknown.length}>
-          Points per 100 shots above the expected value of the same shots, net of the league ({formatFixed(league.league_pps)} points per shot against
-          {" "}{formatFixed(league.league_xpps)} expected in {season}, a league term of {formatSigned(league.league_term * 100)}). xPPS has no colour: easier
-          shots are not better or worse play by themselves. {formatWhole(data.unknown.length)} players with fewer than {minFga} attempts have no value.
-        </span>} />}
+      {data?.status === "available" && <ShotMakingTable board={data} summary={summary} seasonSelect={seasonSelect} league={league} minFga={minFga} />}
     </section>
     <ResearchSection icon="book" title="How to Read the Numbers">
       <ResearchCards columns={3}>
@@ -113,6 +92,63 @@ function ShotMaking({ summary }: { summary: ShotQualitySummary }) {
       </MethodBlock>
     </ResearchDisclosure>
   </>;
+}
+
+type ShotKey = "fga" | "fg_pct" | "three_share" | "pps" | "xpps" | "shot_making";
+
+/** The shot-making table in the site's `StatsGrid` look (owner, round 4), with a toolbar panel like Wingspan's. */
+function ShotMakingTable({ board, summary, seasonSelect, league, minFga }: { board: Leaderboard; summary: ShotQualitySummary; seasonSelect: ReactNode; league: LeagueSeason | undefined; minFga: number }) {
+  const [query, setQuery] = useState("");
+  const [team, setTeam] = useState<string | null>(null);
+  const [floor, setFloor] = useState(String(minFga));
+  const [sort, setSort] = useState<{ key: ShotKey; direction: "asc" | "desc" }>({ key: "shot_making", direction: "desc" });
+  const needle = query.trim().toLocaleLowerCase("en-US");
+  const least = Number(floor);
+  const shown = sortRows(board.rows.filter(r => (!needle || r.player_name.toLocaleLowerCase("en-US").includes(needle)) && (!team || r.tricode === team)
+    && (!Number.isFinite(least) || least <= 0 || r.fga >= least)), r => r[sort.key], sort.direction, r => r.player_id);
+  const onSort = (key: string) => setSort(s => s.key === key ? { key: s.key, direction: s.direction === "desc" ? "asc" : "desc" } : { key: key as ShotKey, direction: "desc" });
+  const plain = (key: Exclude<ShotKey, "shot_making">, label: string, title: string, format: (v: number) => string, width: "xs" | "sm"): GridColumn<PlayerRow> => ({
+    key, label, title, group: "Shooting", width, sort: r => r[key], data: r => ({ value: r[key] }), cell: r => <GridValue text={format(r[key])} /> });
+  const columns: GridColumn<PlayerRow>[] = [
+    plain("fga", "FGA", "Field-goal attempts", v => formatWhole(v), "xs"),
+    plain("fg_pct", "FG%", "Field-goal percentage", v => formatShare(v), "sm"),
+    plain("three_share", "3PA share", "Share of attempts from three", v => formatShare(v), "sm"),
+    plain("pps", "PPS", summary.definitions.pps, v => formatFixed(v), "sm"),
+    plain("xpps", "xPPS", summary.definitions.xpps, v => formatFixed(v), "sm"),
+    { key: "shot_making", label: "Per 100 shots", title: summary.definitions.shot_making, group: "Shot-making", width: "md", sort: r => r.shot_making,
+      data: r => ({ value: r.shot_making ?? undefined, low: r.interval?.[0], high: r.interval?.[1] }),
+      cell: r => known(r.shot_making) ? <GridValue text={formatSigned(r.shot_making)} sub={r.interval ? formatInterval(r.interval, v => formatSigned(v)) : null}
+        tone={r.interval ? intervalTone(r.interval[0], r.interval[1]) : undefined} title={r.interval ? `95% interval ${formatInterval(r.interval, v => formatSigned(v))}` : undefined} /> : <GridValue text={null} /> },
+  ];
+  const exportCsv = () => downloadCsv(`courtlens-shot-making-${board.season}.csv`, toCsv(
+    ["player_id", "player", "team", "fga", "fg_pct", "three_share", "pps", "xpps", "shot_making", "shot_making_p2_5", "shot_making_p97_5"],
+    shown.map(r => [r.player_id, r.player_name, r.tricode, r.fga, r.fg_pct, r.three_share, r.pps, r.xpps, r.shot_making, r.interval?.[0] ?? null, r.interval?.[1] ?? null])));
+  return <div className="sq-table-block">
+    <div className="sq-panel sq-toolbar" role="group" aria-label="Table filters">
+      <div className="sq-control-row">
+        <label className="sq-minimum"><span>Min FGA</span><Input type="number" inputMode="numeric" min={0} step={50} value={floor} onChange={e => setFloor(e.target.value)} aria-label="Min FGA" inputSize="md" wrapperClassName="sq-minimum-input" /></label>
+        <TeamPicker value={team} onChange={setTeam} season={board.season} />
+        {seasonSelect}
+        <Button size="md" icon="book" onClick={() => openMethodology("shot-making-method")}>Methodology</Button>
+        <Button size="md" icon="download" onClick={exportCsv}>Download CSV</Button>
+        <CountChip>{shown.length.toLocaleString("en-US")} players</CountChip>
+      </div>
+    </div>
+    <StatsGrid<PlayerRow> label={`Shot-making ${board.season}`} name="shot-making" className="sq-players" rows={shown} rowKey={r => r.player_id} columns={columns} leadWidth="lg" minWidth="wide"
+      sort={{ key: sort.key, direction: sort.direction, onSort }} empty="No players match these filters."
+      lead={{ group: "Player",
+        label: <span className="stats-header-search"><SearchField aria-label="Search players" placeholder="Search players…" value={query} onChange={e => setQuery(e.target.value)} onClear={() => setQuery("")} inputSize="sm" wrapperClassName="sq-search" /></span>,
+        cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.tricode} season={board.season} era={seasonEra(board.season, r.tricode)} href={`/players/${r.player_id}?season=${board.season}`}
+          subtitle={r.teams.map(t => t.tricode ?? t.team_id).join(" · ")} /> }} />
+    <div className="sq-foot">
+      <ToneLegend level={95} />
+      {league && <p className="rs-note" data-league={board.season} data-value={league.league_term} data-count={board.rows.length} data-unknown={board.unknown.length}>
+        Points per 100 shots above the expected value of the same shots, net of the league ({formatFixed(league.league_pps)} points per shot against
+        {" "}{formatFixed(league.league_xpps)} expected in {board.season}, a league term of {formatSigned(league.league_term * 100)}); the small line is the 95%
+        interval. xPPS has no colour: easier shots are not better or worse play by themselves. {formatWhole(board.unknown.length)} players with fewer than {minFga}
+        {" "}attempts have no value.</p>}
+    </div>
+  </div>;
 }
 
 // ---- Model (no reference) --------------------------------------------------------------------------
