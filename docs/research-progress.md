@@ -818,3 +818,13 @@ Committed code unchanged since round 4. Awaits the owner's ✅.
 The owner approved Patch Notes ("Looks good. I approve this page."). Row RD07 ✅; its settled rules are in the alignment plan's
 "Research pages" pattern ("Settled in RD07"). Next in the design queue: RD08 Draft Classes.
 
+## 2026-11-08 — RD08 round 1: Draft Classes as one scrolling page
+
+Design only; no API, analysis or frozen result changed. `/draft` was five tabs under the old header; it is now one page in a 1352 px column with RD06's sticky numbered index (a
+"Sections" list on a phone) and the centred hero: 2026-27 rookies (a team-tinted card chosen by search, past same-pick rookies, all 60 picks), what a slot is worth (one line with the 95%
+interval as a band), ranges of picks, classes and redrafts, steals and misses, combine beside value, how to read, and a collapsed About this page. Surplus is gold/blue, since it has no interval. Shared: `SeasonLineChart`
+gained an optional band and chosen x labels; `LookupInput` gained an optional group label.
+
+Lint and typecheck clean, Vitest 833, `r09-draft-classes` and `r11-learning-patch-notes` 48/48 ×3, full Playwright 605 passed, 17 skipped, 0 failed. Real data: 212,435 values, 0 mismatches at 1440 and 390; 0 console
+errors, 0 overflow, 0 broken images, no phone control under 40 px; every photo requested for its own season and team. Early classes are mostly initials (1984: 21 of the 58 who played have a photo). Evidence:
+[`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.
