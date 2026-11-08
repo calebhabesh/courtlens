@@ -807,3 +807,9 @@ progress logs or repository details, just a simple list of features for visitors
   control under 40 px.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-08 — RD07 round 5: stale CSS on :3100 again, no code change
+
+Owner: the gold edge on the version tile is still there. Round 4 removed it; :3100 was serving round 2's Patch Notes CSS. A slower
+import toggle (remove, request the page for 12 s, re-add, request again) refreshed it; :3100 then showed the tile without the rail.
+Committed code unchanged since round 4. Awaits the owner's ✅.
+
