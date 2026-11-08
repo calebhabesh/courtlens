@@ -751,3 +751,8 @@ Owner: "the search bar is still squished for some reason." :3100 served round 1'
 sticky index slid against the search on scroll. Toggling the import in `app/globals.css` (left unchanged) refreshed it; :3100 then
 measured a 24 px gap at every scroll position. Committed code unchanged since 2f1f67e. Awaits the owner's ✅.
 
+## 2026-11-08 — RD06 approved
+
+The owner approved Learning ("I approve this page."). Row RD06 ✅; its settled rules are in the alignment plan's "Research pages"
+pattern ("Settled in RD06"). Next in the design queue: RD07 Patch Notes.
+

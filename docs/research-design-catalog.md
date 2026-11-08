@@ -58,7 +58,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04, RD03 | ✅ |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D/LocalSend: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06, RD04 | ✅ |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06, RD05 | ✅ |
-| RD06 | Learning [21] | `/methodology/learning` | D: `Learning`; `~/Downloads/Projects/Courtlens/Learning _ databallr.html` | R11, RD06 | 👀 |
+| RD06 | Learning [21] | `/methodology/learning` | D: `Learning`; `~/Downloads/Projects/Courtlens/Learning _ databallr.html` | R11, RD06 | ✅ |
 | RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes` | R11 | ⬜ |
 | RD08 | Draft Classes [28] | `/draft` | D: Draftballr dashboard, lottery, resources (owner: don't copy Draftballr's design; match CourtLens and Databallr) | R09 | ⬜ |
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
@@ -489,7 +489,7 @@ recommendation with "Sounds good build it comprehensively."):
    it is NBA tracking's season matchups with no expected PPS. Coverage checked on real data: 2017-18 to 2025-26, every top-12
    defender's list and every key-matchup pair sampled (96) served; the links followed on real data in 2025-26 and 2017-18.
 
-## RD06 Learning — 👀
+## RD06 Learning — ✅ approved by the owner (2026-11-08)
 
 - **Now:** 22 topics in 5 tiers, each with formula, key takeaways and links; 12 "Measured in CourtLens"
   boxes (the build-phase note said 14; the page serves 12); a league-trends table (2014-15 to 2025-26). Plain build.

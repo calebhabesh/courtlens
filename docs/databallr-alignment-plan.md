@@ -146,6 +146,15 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   Where the frozen results serve only part of a list (five key matchups), link to the CourtLens page that serves all of it (Player
   Matchups: everyone guarded, and each head-to-head) rather than building a search over data the page doesn't have, and say the
   source difference beside the link, in the glossary and in Caveats & Methodology.
+- **Settled in RD06 (owner, Learning, 2026-11-08):** an explainer with many topics copies Databallr's Learning layout: a sticky
+  224 px index column (numbered tiers and topics, the one being read marked) beside the topic cards, collapsed into a "Topics"
+  disclosure above them on a phone. A search filtering that index heads its column at the column's width and stays pinned with it,
+  24 px clear of the list; on a phone it is full width above the disclosure. Categories that are labels, not ranks (tiers) take
+  `--color-category-*` tints in fixed order. A measure over seasons is one line on one axis with a switch between measures, never
+  Databallr's two y-axes, beside its `StatsGrid`. A myth is shown only where a frozen CourtLens result answers it, and that result
+  is its reality (the number appears once). A route under a tabbed page may draw its own centred hero (`OWN_HEADER_TABS`) without
+  moving its URL. Judge CSS from the sandbox build: when the owner's :3100 shows something the build doesn't, check the CSS chunk
+  :3100 serves and toggle the import line in `app/globals.css`.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).
