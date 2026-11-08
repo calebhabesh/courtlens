@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { LEARNING_TIERS, learningTopic, learningTopicCount, topicMatches } from "../lib/learning-topics";
-import { PATCH_RELEASES, commitUrl, releaseLine } from "../lib/patch-notes";
+import { PATCH_RELEASES, commitUrl, displayText, isUnmerged, logUrl, monthRange, patchEntries, releaseLine, shortDate } from "../lib/patch-notes";
 import { openWorkbench } from "./workbench-navigation";
 
 // R11: Learning, Glossary and Patch Notes (Learning redesigned in RD06). Measured numbers come from lib/research-facts.ts
@@ -131,17 +131,59 @@ test.describe("R11 Learning (RD06 design)", () => {
   });
 });
 
-test.describe("R11 Patch Notes", () => {
+test.describe("R11 Patch Notes (RD07 design)", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
 
-  test("lists every release newest first with its version and each entry's commit", async ({ page }) => {
+  test("lists every release newest first with its version, month and merge line, and every entry with its links", async ({ page }) => {
     await openWorkbench(page, "/whats-new");
+    await expect(page.getByRole("heading", { level: 1, name: "Patch Notes" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "What's New sections" })).toHaveCount(0);
+    const entries = patchEntries();
+    const latest = entries.map(entry => entry.date).sort().at(-1)!;
+    await expect(page.locator(".rs-intro-tagline")).toHaveText(`Latest ${shortDate(latest)} · ${PATCH_RELEASES.length} releases · ${entries.length} changes`);
+    await expect(page.locator(".pn-release h2")).toHaveText(PATCH_RELEASES.map(release => new RegExp(`^${release.number.replace(".", "\\.")} ${isUnmerged(release) ? "Unmerged " : ""}${release.title}$`)));
     for (const release of PATCH_RELEASES) {
-      await expect(page.locator(`[data-release="${release.id}"]`)).toHaveText(releaseLine(release));
-      for (const group of release.groups) for (const entry of group.entries)
-        await expect(page.getByRole("link", { name: `Commit ${entry.commit}` }).first()).toHaveAttribute("href", commitUrl(entry.commit));
+      const block = page.locator(`li#${release.id}`);
+      await expect(block.locator(".pn-month")).toHaveText(monthRange(release.range));
+      await expect(block.locator(`[data-release="${release.id}"]`)).toHaveText(releaseLine(release));
+      if (release.merge) await expect(block.locator(`[data-release="${release.id}"] a`)).toHaveAttribute("href", commitUrl(release.merge.commit));
+      await expect(block.locator(".pn-summary")).toHaveText(release.summary);
+      await expect(block.locator(".pn-group-title")).toHaveText(release.groups.map(group => group.title));
+      for (const group of release.groups) for (const entry of group.entries) {
+        const row = block.locator(`[data-entry="${entry.commit}"]`).filter({ has: page.getByRole("heading", { level: 4, name: `${entry.title} ${entry.badge}`, exact: true }) });
+        await expect(row).toHaveCount(1);
+        await expect(row.locator(".pn-badge")).toHaveText(entry.badge);
+        await expect(row.locator(".pn-entry-text")).toHaveText(displayText(entry.text));
+        await expect(row.locator(".pn-bullets li")).toHaveText((entry.bullets ?? []).map(displayText));
+        await expect(row.locator("time")).toHaveText(shortDate(entry.date));
+        await expect(row.getByRole("link", { name: `Commit ${entry.commit}` })).toHaveAttribute("href", commitUrl(entry.commit));
+        if (entry.href) await expect(row.getByRole("link", { name: `Explore ${entry.title}` })).toHaveAttribute("href", entry.href);
+        else await expect(row.getByRole("link", { name: /^Explore/ })).toHaveCount(0);
+        if (entry.log) await expect(row.getByRole("link", { name: "Progress log" })).toHaveAttribute("href", logUrl(entry.log.file));
+      }
     }
+    await expect(page.locator(".pn-entry")).toHaveCount(entries.length);
     await expect(page.getByRole("link", { name: /blog/i })).toHaveCount(0);
+    await expect(page.locator("#about")).toContainText("Databallr");
+  });
+
+  test("the release column stays in view on a desktop and sits above its entries on a phone", async ({ page }) => {
+    await openWorkbench(page, "/whats-new");
+    const head = page.locator("li#pr-42 .pn-release-head");
+    await page.locator("li#pr-42 .pn-entry").nth(8).scrollIntoViewIfNeeded();
+    const pinned = await head.boundingBox();
+    expect(pinned!.y).toBeGreaterThan(0);
+    expect(pinned!.y).toBeLessThan(200);
+    expect(await head.evaluate(element => getComputedStyle(element).position)).toBe("sticky");
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/whats-new");
+    await expect(head).toBeVisible();
+    expect(await head.evaluate(element => getComputedStyle(element).position)).toBe("static");
+    const [headBox, firstEntry] = [await head.boundingBox(), await page.locator("li#pr-42 .pn-entry").first().boundingBox()];
+    expect(headBox!.y + headBox!.height).toBeLessThan(firstEntry!.y);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    for (const explore of await page.locator(".pn-explore").all()) expect(Math.round((await explore.boundingBox())!.height)).toBeGreaterThanOrEqual(40);
   });
 
   test("the Research menu lists Learning and Patch Notes; the Blog stays removed", async ({ page }) => {

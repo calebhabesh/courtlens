@@ -59,7 +59,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D/LocalSend: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06, RD04 | ✅ |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06, RD05 | ✅ |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning`; `~/Downloads/Projects/Courtlens/Learning _ databallr.html` | R11, RD06 | ✅ |
-| RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes` | R11 | ⬜ |
+| RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes`; `~/Downloads/Projects/Courtlens/databallr — NBA & WNBA analytics, impact metrics, and draft games.html` | R11, RD07 | 👀 |
 | RD08 | Draft Classes [28] | `/draft` | D: Draftballr dashboard, lottery, resources (owner: don't copy Draftballr's design; match CourtLens and Databallr) | R09 | ⬜ |
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
 | RD09 | Research landing [29] | `/research` | none | R12 | ⬜ |
@@ -545,13 +545,48 @@ Instructions (owner, 2026-11-08, round 2; screenshot: the desktop index with the
    markup, so on scroll the sticky list slid up against the search (the Turbopack stale-import issue). Toggling the import line in
    `app/globals.css` (file unchanged) made :3100 serve the current rules; measured there: 24 px gap at scroll 0, 250 and 3000.
 
-## RD07 Patch Notes — ⬜
+## RD07 Patch Notes — 👀
 
 - **Now:** releases newest first (merged PRs and the research branch), grouped entries with badge, date,
   Explore, commit and progress-log links. Plain build. Data in `dashboard/content/patch-notes.json`,
   checked by `dashboard/scripts/check-patch-notes.mjs`.
 - **Known gaps:** CourtLens has no version numbers (Databallr shows v4.x).
-- **Instructions:** _(owner)_
+- **Reference:** `~/Downloads/Projects/Courtlens/databallr — NBA & WNBA analytics, impact metrics, and draft games.html` (+ `_files`),
+  the save the owner attached in round 1; the same changelog as `~/Downloads/Webpages/DraftBallr/patch-notes.html`, saved later, so
+  the attached save was followed. Rendered offline (scripts and `crossorigin` stripped, a `<base>`, every non-`file://` request
+  blocked, scroll-in content forced visible). Measured at 1440: a left-aligned hero ("Changelog" kicker, latest month, 60 px title,
+  one subtitle line); releases in a 976 px column, each a 160 px release column (month in small capitals over a 36 px version,
+  not sticky) beside 776 px entries; group labels in 11 px capitals over a hairline; entries as plain rows between hairlines, a
+  24 px title with a New (accent) or Updated (grey) pill, Explore on the right, one sentence and dot bullets. At 390 the month
+  and version share a row and Explore drops under the title.
+- **Data check (2026-11-08):** (1) version numbers: none in CourtLens. (2) The notes stop at 2026-11-06; the design phase
+  (RD00 to RD06, 2026-11-06 to 2026-11-08) is not listed.
+
+Instructions (owner, 2026-11-08, round 1; the owner answered the gap list and recommendations with "Go with your recommendations
+and suggestions for optimal construction and layout of this page. Build it comprehensively."):
+1. [x] Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively.
+   - (A) Version numbers: CourtLens's releases numbered in merge order, v1.0 (research workbench) to v1.6 (PR #42); the unmerged
+     research branch shows v1.7 with an "Unmerged" pill. Kept in `patch-notes.json`, checked by `check-patch-notes.mjs`, and an
+     About line says they were assigned on 2026-11-08.
+   - (B) Content: one Updated entry per approved Research redesign (RD00 to RD06) in the research release, each linked to the
+     commit that shipped it, checked by the script.
+   - (1) Hero: the settled centred hero "Patch Notes", one line, then the latest date, release and change counts and links to
+     Learning and Research; Patch Notes draws its own header; the version-number paragraph moves to a collapsed "About this page"
+     that credits Databallr as the design reference.
+   - (2) Layout: Databallr's article layout, about 1000 px centred, a 160 px release column (month range in small capitals, large
+     version, a small "PR #42 · merged Nov 3" line linking the merge commit) beside the entries; sticky while its release is read;
+     month and version on one row on a phone. No index or search.
+   - (3) Entries: no cards; rows between hairlines; title, a badge pill (New gold, Updated grey, Removed outlined grey, never
+     green/red) and Explore on the right with the `arrow-right` icon; the sentence and dot bullets; one quiet footer line (date ·
+     commit · Progress log).
+   - (4) Release summary: one line in secondary text above each release's entries.
+   - (5) Tests: design only, no data or API change beyond (A) and (B); the R11 spec's Patch Notes tests updated, Learning tests
+     unchanged.
+   — Centred "Patch Notes" hero with the latest date and counts; releases v1.0 to v1.7 in a 1000 px column, each with a sticky 160
+   px release column beside plain entry rows (badge pill, Explore, quiet date · commit · log line); seven RD00 to RD06 redesign
+   entries; version order checked by the script (107 references). Real data 1,366 values, 0 mismatches; full Playwright 605 passed.
+
+Evidence: [`design-RD07`](evidence/research/design-RD07/README.md).
 
 ## RD08 Draft Classes — ⬜
 

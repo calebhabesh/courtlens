@@ -756,3 +756,22 @@ measured a 24 px gap at every scroll position. Committed code unchanged since 2f
 The owner approved Learning ("I approve this page."). Row RD06 ✅; its settled rules are in the alignment plan's "Research pages"
 pattern ("Settled in RD06"). Next in the design queue: RD07 Patch Notes.
 
+## 2026-11-08 — RD07 round 1: Patch Notes after Databallr's changelog
+
+[Evidence](evidence/research/design-RD07/README.md#round-1-owner-2026-11-08). Owner: "Go with your recommendations and
+suggestions for optimal construction and layout of this page. Build it comprehensively."
+
+- **Reference.** The attached `databallr — NBA & WNBA analytics, impact metrics, and draft games.html` save (Databallr's
+  changelog, newer than the DraftBallr `patch-notes` save), rendered offline.
+- **Change.** Patch Notes' own centred hero (no one-tab header; route and redirects unchanged); releases in a 1000 px column, each
+  with a sticky 160 px release column (month, version, name, merge line) beside plain entry rows: title with a badge pill, Explore,
+  the sentence, dot bullets and one quiet date · commit · progress-log line; a collapsed About this page crediting Databallr.
+- **Data (owner-approved stop-and-asks).** Version numbers v1.0 to v1.7 in merge order, the research branch marked Unmerged, checked
+  by `check-patch-notes.mjs`; seven Updated entries for the approved RD00 to RD06 redesigns. No API, analysis or frozen result
+  changed.
+- **Checks.** Lint 0/0, typecheck, Vitest 832; `check-patch-notes.mjs` 107 references; `r11-learning-patch-notes`, `fo13-pages` and
+  `route-consolidation` 66/66 ×3; full Playwright 605 passed, 17 skipped, 0 failed (the first run's two failures were the
+  redesigned page's own visual baselines, regenerated and viewed); real data 1,366 values, 0 mismatches, 0 console errors, 0
+  overflow, 0 broken images, no phone control or `ButtonLink` under 40 px.
+- **Not done.** The owner's review and ✅.
+

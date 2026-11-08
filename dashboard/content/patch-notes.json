@@ -1,13 +1,14 @@
 {
-  "about": "CourtLens has no version numbers: a release is a merge to main (its pull request) or, for work not yet merged, its branch. Each entry links the commit that shipped it.",
+  "about": "A release is a merge to main (its pull request) or, for work not yet merged, its branch. Version numbers were assigned on Nov 8, 2026, in merge order, v1.0 for the first release; the research branch is v1.7 until it merges. Each entry links the commit that shipped it.",
   "releases": [
     {
       "id": "research",
+      "number": "v1.7",
       "title": "Research",
-      "version": "research branch, not yet merged to main",
+      "version": "research branch",
       "merge": null,
-      "range": { "from": "2026-11-04", "to": "2026-11-06" },
-      "summary": "The Research menu: models tested on seasons they never saw, each with a registered protocol, frozen results and evidence.",
+      "range": { "from": "2026-11-04", "to": "2026-11-08" },
+      "summary": "The Research menu: models tested on seasons they never saw, each with a registered protocol, frozen results and evidence; then each Research page redesigned after its Databallr counterpart.",
       "groups": [
         {
           "title": "Models",
@@ -42,11 +43,24 @@
             { "title": "Learning and Patch Notes", "badge": "New", "href": "/methodology/learning", "date": "2026-11-06", "commit": "3f7facf", "text": "Advanced stats in tiers, each linked to the page and the measured result that shows it, and this changelog of real releases.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-06 — D14 recorded; R11 built" } },
             { "title": "Research menu", "badge": "Updated", "date": "2026-11-05", "commit": "e50b564", "text": "Regrouped into Models, Impact, Shooting, Methods and Tools. Workload Trends, Distributions & Splits and the Blog were removed.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — Research menu trimmed, dropped pages removed (owner request, part of R12)" } }
           ]
+        },
+        {
+          "title": "Page redesigns",
+          "entries": [
+            { "title": "Six-Factor RAPM redesign", "badge": "Updated", "href": "/research/rapm/six-factor", "date": "2026-11-06", "commit": "6d1a940", "text": "A centred column with open sections, Databallr-style shading, larger team-coloured photos and the RAPM Ratings tab on the shared table.", "bullets": ["Approved after seven review rounds (467bc49, 2026-11-07)."], "log": { "file": "docs/research-progress.md", "heading": "2026-11-07 — RD00 approved" } },
+            { "title": "Combine & Wingspan redesign", "badge": "Updated", "href": "/wingspan", "date": "2026-11-07", "commit": "5bd3e84", "text": "Combine measurements and wingspans on one page, every season covered, on the Stats table look with a clearer graph.", "bullets": ["Approved after four review rounds (1c88453, 2026-11-07)."], "log": { "file": "docs/research-progress.md", "heading": "2026-11-07 — RD01 approved" } },
+            { "title": "ORtg Calculator redesign", "badge": "Updated", "href": "/calculator", "date": "2026-11-07", "commit": "b0d14c8", "text": "The offensive rating calculator laid out as a board of input tiles and stepper cards, with one level of nesting.", "bullets": ["Approved after four review rounds (70ebb71, 2026-11-07)."], "log": { "file": "docs/research-progress.md", "heading": "2026-11-07 — RD02 approved" } },
+            { "title": "zTS redesign", "badge": "Updated", "href": "/research/zts", "date": "2026-11-07", "commit": "84748f7", "text": "zTS as an explainer: compared players chosen by search, a season for each, and team-colour photos with logos.", "bullets": ["Approved after six review rounds (ecfdf48, 2026-11-07)."], "log": { "file": "docs/research-progress.md", "heading": "2026-11-07 — RD03 approved" } },
+            { "title": "Shot Quality redesign", "badge": "Updated", "href": "/research/shot-quality", "date": "2026-11-07", "commit": "bc961b3", "text": "Both Shot Quality tables on the Stats table look, with the site's team picker and table search.", "bullets": ["Approved after six review rounds (f68600d, 2026-11-07)."], "log": { "file": "docs/research-progress.md", "heading": "2026-11-07 — RD04 approved" } },
+            { "title": "Defensive Shot Quality redesign", "badge": "Updated", "href": "/research/defensive-matchups", "date": "2026-11-08", "commit": "9aff011", "text": "Defender cards whose Key Matchups open the head-to-head, and every player a defender guarded, on Player Matchups.", "bullets": ["Approved after three review rounds (c10113b, 2026-11-08)."], "log": { "file": "docs/research-progress.md", "heading": "2026-11-08 — RD05 approved" } },
+            { "title": "Learning redesign", "badge": "Updated", "href": "/methodology/learning", "date": "2026-11-08", "commit": "758bd7a", "text": "Topics with a search and a sticky index, labelled formulas, myths answered by measured results, and league trends on one axis.", "bullets": ["Approved after four review rounds (290a837, 2026-11-08)."], "log": { "file": "docs/research-progress.md", "heading": "2026-11-08 — RD06 approved" } }
+          ]
         }
       ]
     },
     {
       "id": "pr-42",
+      "number": "v1.6",
       "title": "Databallr alignment",
       "version": "PR #42",
       "merge": { "commit": "fc0dabd", "date": "2026-11-03" },
@@ -93,6 +107,7 @@
     },
     {
       "id": "pr-25",
+      "number": "v1.5",
       "title": "Control kit",
       "version": "PR #25",
       "merge": { "commit": "dab67b5", "date": "2026-10-14" },
@@ -109,6 +124,7 @@
     },
     {
       "id": "pr-24",
+      "number": "v1.4",
       "title": "Stats alignment and the hosted demo",
       "version": "PR #24",
       "merge": { "commit": "240fa7a", "date": "2026-10-14" },
@@ -132,6 +148,7 @@
     },
     {
       "id": "presentation-clarity",
+      "number": "v1.3",
       "title": "Presentation clarity",
       "version": "presentation-clarity branch",
       "merge": { "commit": "2b51dcc", "date": "2026-10-12" },
@@ -152,6 +169,7 @@
     },
     {
       "id": "pr-17",
+      "number": "v1.2",
       "title": "Frontend overhaul",
       "version": "PR #17",
       "merge": { "commit": "b105212", "date": "2026-10-11" },
@@ -172,6 +190,7 @@
     },
     {
       "id": "impact-assistant",
+      "number": "v1.1",
       "title": "Impact metrics, CourtLens and the Ask agent",
       "version": "main",
       "merge": null,
@@ -202,6 +221,7 @@
     },
     {
       "id": "workbench",
+      "number": "v1.0",
       "title": "Research workbench",
       "version": "main",
       "merge": null,

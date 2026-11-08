@@ -1,0 +1,30 @@
+{
+  "checkedOn": "2026-11-08T20:08:21.890Z",
+  "source": "dashboard/content/patch-notes.json (committed); API via readonly-proxy.mjs (GET only) → :8000",
+  "releases": 8,
+  "entries": 63,
+  "total": 1366,
+  "mismatches": 0,
+  "scenes": [
+    {
+      "width": 1440,
+      "compared": 683,
+      "mismatches": [],
+      "consoleErrors": [],
+      "overflow": false,
+      "brokenImages": [],
+      "phoneControlsUnder40": [],
+      "phoneButtonLinksUnder40": []
+    },
+    {
+      "width": 390,
+      "compared": 683,
+      "mismatches": [],
+      "consoleErrors": [],
+      "overflow": false,
+      "brokenImages": [],
+      "phoneControlsUnder40": [],
+      "phoneButtonLinksUnder40": []
+    }
+  ]
+}

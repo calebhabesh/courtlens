@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PATCH_RELEASES, dateRange, displayText, releaseLine, shortDate } from "./patch-notes";
+import { PATCH_RELEASES, dateRange, displayText, isUnmerged, monthRange, patchEntries, releaseLine, shortDate } from "./patch-notes";
 
 // Commits and dates are checked against git by scripts/check-patch-notes.mjs (CI clones at depth 1).
 describe("patch notes", () => {
@@ -29,5 +29,17 @@ describe("patch notes", () => {
     expect(displayText("Held-out seasons (9b53fbb).")).toBe("Held-out seasons.");
     for (const release of PATCH_RELEASES) for (const group of release.groups) for (const entry of group.entries)
       for (const text of [entry.text, ...(entry.bullets ?? [])]) expect(displayText(text), entry.title).not.toMatch(/\b[0-9a-f]{7}\b|\d{4}-\d{2}-\d{2}/);
+  });
+
+  it("numbers releases in merge order (RD07): v1.0 first, only the newest unmerged", () => {
+    expect(PATCH_RELEASES.map(release => release.number)).toEqual(PATCH_RELEASES.map((_, index) => `v1.${PATCH_RELEASES.length - 1 - index}`));
+    expect(PATCH_RELEASES.filter(isUnmerged).map(release => release.id)).toEqual(["research"]);
+    expect(patchEntries()).toHaveLength(PATCH_RELEASES.reduce((sum, release) => sum + release.groups.reduce((n, group) => n + group.entries.length, 0), 0));
+  });
+
+  it("writes release months as Databallr does", () => {
+    expect(monthRange({ from: "2026-11-04", to: "2026-11-08" })).toBe("November 2026");
+    expect(monthRange({ from: "2026-10-14", to: "2026-11-03" })).toBe("Oct–Nov 2026");
+    expect(monthRange({ from: "2026-12-20", to: "2027-01-03" })).toBe("Dec 2026–Jan 2027");
   });
 });
