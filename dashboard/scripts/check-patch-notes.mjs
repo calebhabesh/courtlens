@@ -29,6 +29,22 @@ function expectCommit(hash, date, where) {
   return found;
 }
 
+// RD07: version numbers run in merge order, newest release first, with no gaps or repeats.
+const numbers = notes.releases.map(release => release.number);
+const parsed = numbers.map(number => number?.match(/^v(\d+)\.(\d+)$/));
+checked += 1;
+if (parsed.some(match => !match)) problems.push(`version numbers must look like v1.6: ${numbers.join(", ")}`);
+else for (let index = 1; index < parsed.length; index += 1) {
+  const [newer, older] = [parsed[index - 1], parsed[index]].map(match => [Number(match[1]), Number(match[2])]);
+  const next = newer[0] === older[0] ? newer[1] === older[1] + 1 : newer[0] === older[0] + 1 && newer[1] === 0;
+  if (!next) problems.push(`${numbers[index - 1]} does not follow ${numbers[index]}`);
+}
+if (notes.releases.slice(1).some(release => release.merge === null && release.version !== "main")) problems.push("only the newest release may be unmerged");
+for (const [index, release] of notes.releases.entries()) {
+  const merged = notes.releases.slice(index + 1).filter(older => older.merge);
+  if (release.merge && merged.some(older => older.merge.date > release.merge.date)) problems.push(`${release.number} merged before an older number`);
+}
+
 for (const release of notes.releases) {
   if (release.merge) {
     const merge = expectCommit(release.merge.commit, release.merge.date, `${release.id} merge`);
