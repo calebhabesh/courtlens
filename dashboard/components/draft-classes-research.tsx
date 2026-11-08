@@ -1,492 +1,687 @@
 "use client";
 
-import { ChartData, ChartFrame } from "./charts/chart-frame";
-import { toneColor } from "./charts/semantics";
+import Link from "next/link";
+import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
+import { EntityField } from "./entity-picker";
+import { LookupInput } from "./lookup-input";
+import { SqPanel } from "./shot-quality-figures";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
-import { Field } from "./ui/field";
 import { GatedNote } from "./ui/gated-note";
-import { PlayerIdentity } from "./ui/identity";
-import { Segmented, Select } from "./ui/kit";
-import { PageShell, ResearchLayout } from "./ui/page-shell";
-import { PageHeader, Section } from "./ui/panel";
-import { StatTile } from "./ui/stat-tile";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import { PlayerAvatar } from "./ui/identity";
+import { Button, ButtonSummary, IconButton, Segmented, Select } from "./ui/kit";
+import { PageShell } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
+import {
+  Glossary, MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchIntro, ResearchLinks, ResearchSection,
+} from "./research/research-page";
+import { SeasonLineChart, niceTicks } from "./research/season-line-chart";
+import { GridPlayer, GridSearch, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
+import { TeamPicker, teamCode } from "./research/team-picker";
 import {
   BAND_LABELS, CAREER_ERA_LABELS, COMBINE_LABELS, COMBINE_UNITS, ERA_LABELS, MEASURE_LABELS, ROOKIE_STATS, STAT_LABELS,
-  fixed, getDraftClass, getDraftCombine, getDraftSummary, getRookie, getRookies, intervalTone, percent, rangeText, rookieTone,
+  fixed, getDraftClass, getDraftCombine, getDraftSummary, getRookie, getRookies, percent, rangeText, rookieTone,
   seasonLabel, signed, statText, whole,
-  type DraftClass, type DraftSummary, type Era, type Measure, type PickRow, type Rookie, type SlotSummary
+  type Band, type ClassIndex, type CombineRow, type DraftClass, type DraftSummary, type Era, type Measure, type PastRookie, type PickRow,
+  type Rookie, type RookieStat, type RookieTracker, type SlotSummary,
 } from "@/lib/draft-classes";
 import { seasonEra } from "@/lib/portrait-source";
-import { teamArtwork } from "@/lib/team-era";
+import { evidenceUrl } from "@/lib/research-facts";
+import { teamAccent } from "@/lib/team-colors";
+import type { LookupItem } from "@/lib/types";
 
-/**
- * Research → Tools → Draft Classes (R09). A plain build-phase page: the 2026-27 rookie tracker,
- * value by pick, class retrospectives with redrafts, steals and misses, and combine measurements
- * beside value. Every number is the frozen courtlens-draft-value-v1 results' or the rookie
- * tracker's; exact values sit on `data-value`.
+/*
+ * Research → Draft Classes (R09 analysis; RD08 design, owner 2026-11-08). No Databallr page exists and Draftballr's look is not
+ * copied: each section borrows an approved CourtLens Research pattern. The centred hero, a 1352 px column and RD06's sticky
+ * numbered index beside one scrolling page (a collapsed "Sections" list on a phone): this year's rookies (RD05-style card chosen
+ * through a search field, RD01/RD04 grids), what each slot has returned (RD06's one-axis line with the 95% interval as a band),
+ * ranges of picks, classes and redrafts, steals and misses (cards, then grids), combine beside value (RD00's scatter, linking to
+ * Wingspan for every measurement), reading notes and a collapsed About this page. Every number is the frozen
+ * courtlens-draft-value-v1 results' or the rookie tracker's; exact values sit on `data-*`. Green/red only where a served
+ * interval excludes zero, plus R09's registered rookie rule (outside past same-pick rookies' 10th to 90th percentile).
+ * Surplus has no interval, so its sign takes the gold/blue identity tones.
  */
 
-const TABS = [
-  { value: "rookies", label: "Rookies 2026-27", icon: "users" },
-  { value: "value", label: "Value by pick", icon: "chart-column" },
-  { value: "classes", label: "Classes", icon: "list-ordered" },
-  { value: "steals", label: "Steals & misses", icon: "trophy" },
-  { value: "combine", label: "Combine", icon: "ruler" },
+const SECTIONS = [
+  { id: "rookies", label: "2026-27 rookies" },
+  { id: "value", label: "What a slot is worth" },
+  { id: "ranges", label: "Ranges of picks" },
+  { id: "classes", label: "Classes and redrafts" },
+  { id: "steals", label: "Steals and misses" },
+  { id: "combine", label: "Combine beside value" },
+  { id: "reading", label: "How to read" },
+  { id: "about", label: "About this page" },
 ] as const;
-type Tab = (typeof TABS)[number]["value"];
+/** The old tab links (`?tab=value`) scroll to their section. */
+const TAB_SECTIONS: Record<string, string> = { rookies: "rookies", value: "value", classes: "classes", steals: "steals", combine: "combine" };
 type Span = "window" | "career" | "rapm";
-const SPANS = [
-  { value: "window", label: "First 4 seasons" },
-  { value: "career", label: "Career" },
-  { value: "rapm", label: "RAPM" },
-] as const;
-const ERAS = [
-  { value: "all", label: "All" },
-  { value: "multi_round", label: "1966–88" },
-  { value: "two_round", label: "1989 on" },
-] as const;
+const SPANS = [{ value: "window", label: "First 4 seasons" }, { value: "career", label: "Career" }, { value: "rapm", label: "RAPM" }] as const;
+const ERAS = [{ value: "all", label: "All" }, { value: "multi_round", label: "1966–88" }, { value: "two_round", label: "1989 on" }] as const;
 const MEASURES = [{ value: "ws", label: "Win shares" }, { value: "min", label: "Minutes" }] as const;
+const ORDERS = [{ value: "draft", label: "Draft order" }, { value: "redraft", label: "Redraft" }, { value: "career", label: "Career" }] as const;
+type Order = (typeof ORDERS)[number]["value"];
 const LATEST_CLASS = 2022;
-const ACCENT = toneColor("identity-a");
+const ROOKIE_SEASON = "2026-27";
+const NO_ROOKIE = "none";
+const PICK_TICKS = [0, 9, 19, 29, 39, 49, 59];
+const STATUS_LABELS: Record<ClassIndex["status"], string> = { complete: "Complete", censored: "Too recent", rookies: "Rookies" };
+const STATUS_TINT: Record<ClassIndex["status"], string> = { complete: "1", censored: "2", rookies: "3" };
 
-function TeamCell({ team, season }: { team: string | null; season: string }) {
-  if (!team) return <TableCell>—</TableCell>;
-  const code = teamArtwork(team, season)?.tricode ?? team;
-  return <TableCell data-field="team" data-value={team}><TeamLogo team={team} season={season} size={16} /> {code}</TableCell>;
+const vars = (props: Record<string, string>) => props as CSSProperties;
+const known = (v: number | null | undefined): v is number => typeof v === "number" && Number.isFinite(v);
+const toneOf = (t: "positive" | "negative" | undefined): "good" | "bad" | undefined => t === "positive" ? "good" : t === "negative" ? "bad" : undefined;
+const identityOf = (v: number | null | undefined, digits = 1): "a" | "b" | undefined => !known(v) || Number(v.toFixed(digits)) === 0 ? undefined : v > 0 ? "a" : "b";
+const pct = (p: number | null | undefined) => known(p) ? `p${Math.round(p)}` : "—";
+const codeOf = (team: string | null, season: string) => team ? (/^\d+$/.test(team) ? teamCode(team, season) : team) : null;
+
+/** A team logo beside its code (the settled rule), or a dash. */
+function TeamCode({ team, season }: { team: string | null; season: string }) {
+  const code = codeOf(team, season);
+  if (!team || !code) return <span className="rs-grid-unknown">—</span>;
+  return <span className="dc-team"><TeamLogo team={team} season={season} size={16} />{code}</span>;
 }
 
-function PlayerCell({ row, season, team }: { row: { player_id: string | null; name: string }; season: string; team: string | null }) {
-  return <TableCell data-field="player" data-value={row.player_id ?? row.name}>
-    <PlayerIdentity playerId={row.player_id ?? undefined} name={row.name} team={team} size="sm" era={seasonEra(season, team)}
-      href={row.player_id ? `/players/${row.player_id}?season=${season}` : undefined} />
-  </TableCell>;
+/** Sort rows by a column's sort value, unknowns last in both directions. */
+function useSort<T>(rows: readonly T[], columns: readonly GridColumn<T>[], initial: { key: string; direction: "asc" | "desc" }) {
+  const [sort, setSort] = useState(initial);
+  const sorted = useMemo(() => {
+    const column = columns.find(c => c.key === sort.key);
+    if (!column?.sort) return rows;
+    const by = column.sort;
+    return [...rows].sort((a, b) => {
+      const x = by(a), y = by(b);
+      if (x === null && y === null) return 0;
+      if (x === null) return 1;
+      if (y === null) return -1;
+      return sort.direction === "asc" ? x - y : y - x;
+    });
+  }, [rows, columns, sort]);
+  const onSort = (key: string) => setSort(s => s.key === key ? { key, direction: s.direction === "desc" ? "asc" : "desc" } : { key, direction: key === "pick" || key === "year" ? "asc" : "desc" });
+  return { rows: sorted, sort: { ...sort, onSort } };
 }
 
-function NumCell({ field, value, text, tone, title }: { field: string; value: number | null | undefined; text: string; tone?: "positive" | "negative"; title?: string }) {
-  return <TableCell numeric tone={tone} data-field={field} data-value={value ?? ""} title={title}>{text}</TableCell>;
+const matches = (name: string, query: string) => !query.trim() || name.normalize("NFKD").replace(/\p{M}/gu, "").toLowerCase().includes(query.trim().normalize("NFKD").replace(/\p{M}/gu, "").toLowerCase());
+
+// ---- Index ---------------------------------------------------------------------------------------
+
+function SectionIndex({ current, onPick }: { current: string | null; onPick?: () => void }) {
+  return <ol className="dc-index-list">
+    {SECTIONS.map((s, i) => <li key={s.id}>
+      <a className="dc-index-link" href={`#${s.id}`} aria-current={current === s.id ? "location" : undefined} onClick={onPick}>
+        <span className="dc-index-number">{i < SECTIONS.length - 1 ? i + 1 : ""}</span>{s.label}
+      </a>
+    </li>)}
+  </ol>;
 }
 
-// ---- Rookies ----------------------------------------------------------------------------------
+/** The section being read: the last whose top has passed the upper third of the window (RD06). */
+function useCurrentSection(): string | null {
+  const [current, setCurrent] = useState<string | null>(null);
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const line = window.innerHeight / 3;
+      let found: string | null = SECTIONS[0].id;
+      for (const s of SECTIONS) { const el = document.getElementById(s.id); if (el && el.getBoundingClientRect().top <= line) found = s.id; }
+      setCurrent(found);
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => { window.removeEventListener("scroll", schedule); window.removeEventListener("resize", schedule); if (frame) cancelAnimationFrame(frame); };
+  }, []);
+  return current;
+}
 
-function RookieDetailSection({ rookie }: { rookie: Rookie }) {
+// ---- 1. Rookies ------------------------------------------------------------------------------------
+
+function rookieItem(r: Rookie): LookupItem {
+  return {
+    id: r.player_id!, canonical_id: r.player_id!, kind: "player", display_name: r.name, match_basis: "suggestion", match_score: 1,
+    availability: { has_current_season: true, status: "available", seasons: [ROOKIE_SEASON] }, destination_url: `/players/${r.player_id}`,
+    metadata: { caption: `Pick ${r.pick} · ${r.team ?? codeOf(r.draft_team, ROOKIE_SEASON) ?? "—"} · ${r.comparison?.line.games ?? 0} games` },
+  } as LookupItem;
+}
+
+function RookieTile({ stat, rookie }: { stat: RookieStat; rookie: Rookie }) {
+  const c = rookie.comparison!.stats[stat];
+  return <div className="dc-tile" data-stat={stat}>
+    <span className="dc-tile-label">{STAT_LABELS[stat]}</span>
+    <GridValue text={statText(stat, c.value)} tone={toneOf(rookieTone(stat, c))}
+      title={`Past number ${rookie.pick} picks (${c.n}): median ${statText(stat, c.median)}, 10th to 90th ${statText(stat, c.p10)} to ${statText(stat, c.p90)}`} />
+    <span className="dc-tile-sub" data-field={stat} data-value={c.value ?? ""} data-percentile={c.percentile ?? ""}>{pct(c.percentile)} of {c.n}</span>
+  </div>;
+}
+
+function RookieCard({ rookie, tracker }: { rookie: Rookie; tracker: RookieTracker }) {
+  const line = rookie.comparison!.line;
+  const tint = teamAccent(rookie.team, ROOKIE_SEASON);
+  const drafted = codeOf(rookie.draft_team, ROOKIE_SEASON);
+  return <article className="dc-card dc-rookie-card" data-card={rookie.player_id ?? ""} aria-label={`Pick ${rookie.pick}, ${rookie.name}`} style={tint ? vars({ "--dc-team": tint }) : undefined}>
+    <header className="dc-card-head">
+      <PlayerAvatar playerId={rookie.player_id ?? undefined} name={rookie.name} team={rookie.team} size="lg" era={seasonEra(ROOKIE_SEASON, rookie.team)} className="dc-avatar" />
+      <div className="dc-card-titles">
+        <Link className="dc-card-name" href={`/players/${rookie.player_id}?season=${ROOKIE_SEASON}`}>{rookie.name}</Link>
+        <span className="dc-card-team"><TeamCode team={rookie.team} season={ROOKIE_SEASON} />{drafted && drafted !== rookie.team ? <> · drafted by <TeamCode team={rookie.draft_team} season={ROOKIE_SEASON} /></> : null}</span>
+        <span className="dc-card-meta" data-field="games" data-value={line.games}>{line.games} games · {whole(line.minutes)} minutes{rookie.comparison!.small_sample ? " · under 100 minutes" : ""}</span>
+      </div>
+      <span className="dc-badge" data-field="pick" data-value={rookie.pick}>#{rookie.pick}</span>
+    </header>
+    <div className="dc-tiles" role="list" aria-label={`${rookie.name} against past picks at ${rookie.pick}`}>
+      {ROOKIE_STATS.map(s => <div role="listitem" key={s} className="dc-tile-wrap"><RookieTile stat={s} rookie={rookie} /></div>)}
+    </div>
+    <div className="dc-ratings">
+      <span className="dc-rating" title={rookie.darko ? `O ${signed(rookie.darko.o_dpm)}, D ${signed(rookie.darko.d_dpm)}` : "Not on DARKO's board"}>
+        <span className="dc-tile-label">DARKO DPM</span>
+        <span data-field="darko" data-value={rookie.darko?.dpm ?? ""}><GridValue text={signed(rookie.darko?.dpm)} identity={identityOf(rookie.darko?.dpm)} /></span>
+      </span>
+      <span className="dc-rating" title={rookie.rapm ? `${whole((rookie.rapm.decayed_seconds ?? 0) / 60)} decayed minutes` : "No minutes before the snapshot"}>
+        <span className="dc-tile-label">RAPM</span>
+        <span data-field="rapm" data-value={rookie.rapm?.rapm ?? ""}><GridValue text={signed(rookie.rapm?.rapm)} identity={identityOf(rookie.rapm?.rapm)} /></span>
+      </span>
+      <span className="dc-rating-note">Shown, not compared: past rookies have no rating at the same point.
+        {tracker.darko ? ` DARKO through ${tracker.darko.data_date};` : ""}{tracker.rapm ? ` RAPM through ${tracker.rapm.latest_game_date}.` : ""}</span>
+    </div>
+  </article>;
+}
+
+function PastPicks({ rookie }: { rookie: Rookie }) {
   const { data, error, loading, retry } = useFeed([rookie.player_id], signal => getRookie(rookie.player_id!, signal));
   const games = rookie.comparison?.line.games ?? 0;
-  return <Section title={`${rookie.name} against past number ${rookie.pick} picks`}
-    description={`Every player taken at pick ${rookie.pick} from 1983 to 2025, over his first ${games} appearances of his first NBA season (or all of them if he played fewer). Sorted by points per 36 minutes.`}>
+  type Row = PastRookie & { current?: boolean };
+  const rows: Row[] = data ? [{ ...rookie.comparison!.line, player_id: rookie.player_id!, name: rookie.name, year: 2026, first_season: ROOKIE_SEASON,
+    first_season_games: games, photo_season: rookie.photo_season, photo_team: rookie.team, current: true }, ...data.comparisons] : [];
+  return <div className="dc-past">
+    <h3 className="dc-subhead">Past number {rookie.pick} picks over their first {games} games</h3>
     {error && <FeedFailure error={error} retry={retry} what="The comparison" />}
     {loading && <FeedSkeleton label="Loading the comparison" />}
     {data && (data.comparisons.length === 0 ? <GatedNote>No past rookie at this pick has logged games.</GatedNote> :
-      <Table aria-label={`Past number ${rookie.pick} picks at ${games} games`} density="compact" data-table="rookie-comparisons">
-        <TableHeader><TableRow hoverable={false}>
-          <TableHead>Player</TableHead><TableHead align="right">Class</TableHead><TableHead align="right">G</TableHead>
-          {ROOKIE_STATS.map(s => <TableHead key={s} align="right">{STAT_LABELS[s]}</TableHead>)}
-        </TableRow></TableHeader>
-        <TableBody>
-          <TableRow data-row={rookie.player_id ?? ""} data-current="true">
-            <PlayerCell row={rookie} season={rookie.photo_season} team={rookie.team} />
-            <NumCell field="year" value={2026} text="2026" />
-            <NumCell field="games" value={rookie.comparison?.line.games} text={String(rookie.comparison?.line.games ?? "—")} />
-            {ROOKIE_STATS.map(s => <NumCell key={s} field={s} value={rookie.comparison?.line[s]} text={statText(s, rookie.comparison?.line[s])} />)}
-          </TableRow>
-          {data.comparisons.map(c => <TableRow key={c.player_id} data-row={c.player_id}>
-            <PlayerCell row={c} season={c.photo_season} team={c.photo_team} />
-            <NumCell field="year" value={c.year} text={String(c.year)} title={`First season ${c.first_season}, ${c.first_season_games} games logged`} />
-            <NumCell field="games" value={c.games} text={String(c.games)} />
-            {ROOKIE_STATS.map(s => <NumCell key={s} field={s} value={c[s]} text={statText(s, c[s])} />)}
-          </TableRow>)}
-        </TableBody>
-      </Table>)}
-  </Section>;
+      <StatsGrid<Row> label={`Past number ${rookie.pick} picks at ${games} games`} name="rookie-comparisons" density="compact" leadWidth="md" className="dc-past-grid"
+        rows={rows} rowKey={r => r.player_id} rowData={r => ({ current: r.current ? "true" : undefined })}
+        lead={{ label: "Player", cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.photo_team} season={r.photo_season} era={seasonEra(r.photo_season, r.photo_team)}
+          subtitle={r.current ? "This season" : `${r.year} class`} href={`/players/${r.player_id}?season=${r.photo_season}`} /> }}
+        columns={[
+          { key: "games", label: "G", width: "xs", data: r => ({ field: "games", value: r.games }), cell: r => <GridValue text={String(r.games)} /> },
+          ...ROOKIE_STATS.map(s => ({ key: s, label: STAT_LABELS[s], width: "xs" as const, data: (r: Row) => ({ field: s, value: r[s] ?? "" }), cell: (r: Row) => <GridValue text={statText(s, r[s])} /> })),
+        ]} />)}
+  </div>;
 }
 
-function RookiesTab() {
+function RookiesSection({ feed }: { feed: ReturnType<typeof useFeed<RookieTracker>> }) {
   const { get, set } = useUrlState();
-  const { data, error, loading, retry } = useFeed([], signal => getRookies(signal));
-  if (error) return <FeedFailure error={error} retry={retry} what="The rookie tracker" />;
-  if (loading || !data) return <FeedSkeleton label="Loading the rookie tracker" />;
-  if (data.state !== "ok") return <GatedNote>{data.state === "no_games" ? "No 2026-27 regular-season game is in the published data yet." : "The past-rookie comparison table is not on this server."}</GatedNote>;
-  const chosen = data.rookies.find(r => r.player_id === get("rookie")) ?? data.rookies.find(r => r.state === "compared") ?? null;
-  const compared = data.rookies.filter(r => r.state === "compared").length;
+  const [query, setQuery] = useState("");
+  const [team, setTeam] = useState<string | null>(null);
+  const data = feed.data;
+  const compared = useMemo(() => data?.rookies.filter(r => r.state === "compared" && r.player_id) ?? [], [data]);
+  const columns = useMemo<GridColumn<Rookie>[]>(() => [
+    { key: "pick", label: "Pick", width: "xs", sort: r => r.pick, data: r => ({ field: "pick", value: r.pick }), cell: r => <GridValue text={String(r.pick)} /> },
+    { key: "drafted", label: "Drafted by", width: "sm", align: "left", cell: r => <TeamCode team={r.draft_team} season={ROOKIE_SEASON} /> },
+    { key: "games", label: "G", width: "xs", sort: r => r.comparison?.line.games ?? null, data: r => ({ field: "games", value: r.comparison?.line.games ?? "" }),
+      cell: r => <GridValue text={r.comparison ? `${r.comparison.line.games}${r.comparison.small_sample ? "*" : ""}` : null} title={r.comparison?.small_sample ? `Under 100 minutes (${fixed(r.comparison.line.minutes, 0)})` : undefined} /> },
+    ...ROOKIE_STATS.map(s => ({ key: s, label: STAT_LABELS[s], width: "sm" as const, sort: (r: Rookie) => r.comparison?.stats[s].value ?? null,
+      data: (r: Rookie) => ({ field: s, value: r.comparison?.stats[s].value ?? "", percentile: r.comparison?.stats[s].percentile ?? "" }),
+      cell: (r: Rookie) => { const c = r.comparison?.stats[s]; return c ? <GridValue text={statText(s, c.value)} sub={pct(c.percentile)} tone={toneOf(rookieTone(s, c))} /> : <GridValue text={null} />; } })),
+    { key: "darko", label: "DARKO", title: "DARKO Daily Plus-Minus, shown, not compared", width: "sm", sort: r => r.darko?.dpm ?? null, data: r => ({ field: "darko", value: r.darko?.dpm ?? "" }),
+      cell: r => <GridValue text={signed(r.darko?.dpm)} identity={identityOf(r.darko?.dpm)} /> },
+    { key: "rapm", label: "RAPM", title: "Time-decay RAPM, shown, not compared", width: "sm", sort: r => r.rapm?.rapm ?? null, data: r => ({ field: "rapm", value: r.rapm?.rapm ?? "" }),
+      cell: r => <GridValue text={signed(r.rapm?.rapm)} identity={identityOf(r.rapm?.rapm)} /> },
+    { key: "pool", label: "Past", title: "Past rookies at the same pick, classes 1983 to 2025", width: "sm", sort: r => r.pool, data: r => ({ field: "pool", value: r.pool }), cell: r => <GridValue text={String(r.pool)} /> },
+  ], []);
+  const filtered = useMemo(() => (data?.rookies ?? []).filter(r => matches(r.name, query) && (!team || r.team === team)), [data, query, team]);
+  const sorted = useSort(filtered, columns, { key: "pick", direction: "asc" });
+  if (feed.error) return <FeedFailure error={feed.error} retry={feed.retry} what="The rookie tracker" />;
+  if (feed.loading || !data) return <FeedSkeleton label="Loading the rookie tracker" />;
+  if (data.state !== "ok") return <GatedNote>{data.state === "no_games" ? `No ${data.season} regular-season game is in the published data yet.` : "The past-rookie comparison table is not on this server, so the rookies can't be compared here."}</GatedNote>;
+  const requested = get("rookie");
+  const cleared = requested === NO_ROOKIE;
+  const chosen = cleared ? null : compared.find(r => r.player_id === requested) ?? compared[0] ?? null;
+  const choose = (id: string | null) => {
+    set({ rookie: id === null ? NO_ROOKIE : id === compared[0]?.player_id ? null : id });
+    if (id) document.getElementById("rookie-card")?.scrollIntoView({ block: "start" });
+  };
   return <>
-    <Section title={`The ${data.class} draft class in ${data.season}`}
-      description={`Games through ${data.comparison_date}. Each rookie is compared with every past pick at his slot (1983 to 2025) over the same number of first-season games. Below each figure: his percentile among them. Green or red: outside their 10th to 90th percentile (turnovers reversed). * under 100 minutes.`}>
-      <p data-field="rookie-dates">
-        <span data-field="compared" data-value={compared}>{compared} of {data.rookies.length}</span> picks have played.
-        DARKO {data.darko ? <>through games of {data.darko.data_date}</> : "unavailable"};
-        RAPM {data.rapm ? <>time-decay, games through {data.rapm.latest_game_date}</> : "unavailable"}.
-        Ratings are shown, not compared: past rookies have none at the same point.
-      </p>
-      <Table aria-label="2026-27 rookies" density="compact" data-table="rookies">
-        <TableHeader><TableRow hoverable={false}>
-          <TableHead align="right">Pick</TableHead><TableHead>Player</TableHead><TableHead>Drafted by</TableHead>
-          <TableHead align="right">G</TableHead>
-          {ROOKIE_STATS.map(s => <TableHead key={s} align="right">{STAT_LABELS[s]}</TableHead>)}
-          <TableHead align="right">DARKO DPM</TableHead><TableHead align="right">RAPM</TableHead><TableHead align="right">Past rookies</TableHead>
-        </TableRow></TableHeader>
-        <TableBody>{data.rookies.map(r => <TableRow key={r.pick} data-row={r.player_id ?? String(r.pick)} data-pick={r.pick}
-          onClick={r.state === "compared" ? () => set({ rookie: r.player_id }) : undefined} aria-selected={chosen?.pick === r.pick}>
-          <NumCell field="pick" value={r.pick} text={String(r.pick)} />
-          <PlayerCell row={r} season={r.photo_season} team={r.team ?? r.draft_team} />
-          <TeamCell team={r.draft_team} season={seasonLabel(data.class)} />
-          {r.comparison ? <>
-            <NumCell field="games" value={r.comparison.line.games} text={`${r.comparison.line.games}${r.comparison.small_sample ? "*" : ""}`}
-              title={r.comparison.small_sample ? `Under 100 minutes (${fixed(r.comparison.line.minutes, 0)})` : undefined} />
-            {ROOKIE_STATS.map(s => {
-              const c = r.comparison!.stats[s];
-              return <TableCell key={s} numeric tone={rookieTone(s, c)} data-field={s} data-value={c.value ?? ""} data-percentile={c.percentile ?? ""}
-                title={`Past rookies (${c.n}): median ${statText(s, c.median)}, 10th to 90th ${statText(s, c.p10)} to ${statText(s, c.p90)}`}>
-                {statText(s, c.value)}<br /><small>{c.percentile === null ? "—" : `p${Math.round(c.percentile)}`}</small>
-              </TableCell>;
-            })}
-          </> : <TableCell colSpan={ROOKIE_STATS.length + 1} data-field="state" data-value="no_games">No games yet</TableCell>}
-          <NumCell field="darko" value={r.darko?.dpm} text={signed(r.darko?.dpm)} title={r.darko ? `O ${signed(r.darko.o_dpm)}, D ${signed(r.darko.d_dpm)}` : "Not on DARKO's board"} />
-          <NumCell field="rapm" value={r.rapm?.rapm} text={signed(r.rapm?.rapm)} title={r.rapm ? `${whole((r.rapm.decayed_seconds ?? 0) / 60)} decayed minutes` : "No minutes before the snapshot"} />
-          <NumCell field="pool" value={r.pool} text={String(r.pool)} />
-        </TableRow>)}</TableBody>
-      </Table>
-      <Field label="Compare" layout="inline">
-        <Select aria-label="Rookie to compare" value={chosen?.player_id ?? ""} onChange={event => set({ rookie: event.target.value || null })}>
-          {data.rookies.filter(r => r.state === "compared").map(r => <option key={r.pick} value={r.player_id!}>{r.pick}. {r.name}</option>)}
-        </Select>
-      </Field>
-    </Section>
-    {chosen && <RookieDetailSection key={chosen.player_id} rookie={chosen} />}
+    <p className="dc-lead">Each rookie against every player taken at the same pick from 1983 to 2025, over the same number of first-season games.
+      Games through <time dateTime={data.comparison_date ?? undefined}>{data.comparison_date}</time>;
+      <span data-field="compared" data-value={compared.length}> {compared.length} of {data.rookies.length}</span> picks have played.</p>
+    <div className="dc-rookie-pick" id="rookie-card">
+      <EntityField label="Rookie" value={chosen?.player_id ?? ""} candidates={compared.map(rookieItem)} initialName={chosen?.name}
+        onChange={next => choose(next || null)} />
+    </div>
+    {!chosen && <GatedNote action={<Button size="lg" variant="secondary" onClick={() => set({ rookie: null })}>Open the first pick</Button>}>
+      No rookie chosen. Search for one above, or open the first pick who has played.</GatedNote>}
+    {chosen && <div className="dc-rookie-pair">
+      <RookieCard rookie={chosen} tracker={data} />
+      <PastPicks key={chosen.player_id} rookie={chosen} />
+    </div>}
+    <div className="dc-grid-tools">
+      <p className="dc-note">Under each figure, the rookie&apos;s percentile among past picks at his slot. Green or red: outside their middle 80% (turnovers count the
+        other way). * Under 100 minutes. DARKO and RAPM are gold above zero and blue below.</p>
+      <TeamPicker value={team} onChange={setTeam} season={ROOKIE_SEASON} />
+    </div>
+    <StatsGrid<Rookie> label={`${data.season} rookies`} name="rookies" leadWidth="lg" rows={sorted.rows} rowKey={r => String(r.pick)}
+      rowData={r => ({ pick: r.pick, selected: chosen?.pick === r.pick ? "true" : undefined })} sort={sorted.sort}
+      empty={query || team ? "No rookie matches these filters." : "No rookies."}
+      lead={{ label: <GridSearch value={query} onChange={setQuery} label="Search rookies" placeholder="Search rookies…" />,
+        cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.team} season={ROOKIE_SEASON} era={seasonEra(r.photo_season, r.team)}
+          subtitle={r.state === "compared" ? r.team ?? undefined : <span data-field="state" data-value="no_games">No games yet</span>}
+          href={r.player_id ? `/players/${r.player_id}?season=${ROOKIE_SEASON}` : undefined}
+          tools={r.state === "compared" && r.player_id ? <IconButton size="sm" icon="arrow-right" label={`Show ${r.name} in the card`} pressed={chosen?.pick === r.pick} onClick={() => choose(r.player_id)} /> : undefined} /> }}
+      columns={columns} />
   </>;
 }
 
-// ---- Value by pick ----------------------------------------------------------------------------
+// ---- 2 and 3. Value by pick and ranges --------------------------------------------------------------
 
-function SlotChart({ rows, label }: { rows: SlotSummary[]; label: string }) {
-  const known = rows.filter(r => r.mean !== null && r.lo !== null && r.hi !== null);
-  const low = Math.min(0, ...known.map(r => r.lo!)), high = Math.max(...known.map(r => r.hi!));
-  const left = 52, right = 628, top = 16, bottom = 260;
-  const x = (slot: number) => left + ((slot - 0.5) / 60) * (right - left);
-  const y = (v: number) => bottom - ((v - low) / (high - low || 1)) * (bottom - top);
-  const step = niceStep((high - low) / 5);
-  const ticks = Array.from({ length: Math.floor((high - Math.ceil(low / step) * step) / step) + 1 }, (_, i) => Math.ceil(low / step) * step + i * step);
-  return <svg className="chart-graphic chart-reliability" viewBox="0 0 640 290" role="img" aria-label={`${label} by draft slot, with 95% intervals`}>
-    {ticks.map(t => <g key={t}>
-      <line x1={left} x2={right} y1={y(t)} y2={y(t)} stroke="var(--color-hairline-strong)" />
-      <text x={left - 8} y={y(t)} dy="0.35em" textAnchor="end">{step >= 100 ? whole(t) : fixed(t, step < 1 ? 1 : 0)}</text>
-    </g>)}
-    {[1, 10, 20, 30, 40, 50, 60].map(s => <text key={s} x={x(s)} y={bottom + 20} textAnchor="middle">{s}</text>)}
-    <g stroke={ACCENT} fill={ACCENT}>
-      {known.map(r => <g key={r.slot}>
-        <line x1={x(r.slot)} x2={x(r.slot)} y1={y(r.lo!)} y2={y(r.hi!)} strokeWidth="1.5" />
-        <circle cx={x(r.slot)} cy={y(r.mean!)} r="3" data-slot={r.slot} data-value={r.mean!} data-low={r.lo!} data-high={r.hi!}>
-          <title>{`Pick ${r.slot}: ${fixed(r.mean)} (95% ${rangeText(r.lo, r.hi)}), ${r.n} picks`}</title>
-        </circle>
-      </g>)}
-    </g>
-  </svg>;
-}
+function digitsFor(span: Span, measure: Measure) { return span === "rapm" ? 2 : measure === "min" ? 0 : 1; }
+function numText(v: number | null | undefined, digits: number) { return digits === 0 ? whole(v) : fixed(v, digits); }
+function rangeOf(lo: number | null | undefined, hi: number | null | undefined, digits: number) { return digits === 0 ? `${whole(lo)} to ${whole(hi)}` : rangeText(lo, hi, digits); }
 
-function niceStep(raw: number): number {
-  const p = 10 ** Math.floor(Math.log10(Math.max(raw, 1e-9)));
-  const m = raw / p;
-  return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p;
-}
-
-function ValueTab({ summary }: { summary: DraftSummary }) {
+function ValueSection({ summary }: { summary: DraftSummary }) {
   const { get, set } = useUrlState();
-  const span = (get("span") ?? "window") as Span;
-  const era = (get("era") ?? "all") as Era;
-  const measure = (get("measure") ?? "ws") as Measure;
+  const span = (SPANS.find(s => s.value === get("span"))?.value ?? "window") as Span;
+  const era = (ERAS.find(e => e.value === get("era"))?.value ?? "all") as Era;
+  const measure = (MEASURES.find(m => m.value === get("measure"))?.value ?? "ws") as Measure;
   const rows = span === "rapm" ? summary.value_by_pick.rapm : summary.value_by_pick[span][era][measure];
-  const unit = span === "rapm" ? "RAPM, points per 100 possessions" : `${MEASURE_LABELS[measure]}${span === "window" ? ", first four seasons" : ", career to date"}`;
+  const digits = digitsFor(span, measure);
+  const unit = span === "rapm" ? "RAPM, points per 100 possessions, weighted by minutes" : `${MEASURE_LABELS[measure]}, ${span === "window" ? "first four seasons" : "career to date"}`;
   const classes = span === "rapm" ? "2014–22" : span === "career" ? CAREER_ERA_LABELS[era].replace("All", "1966–2005") : ERA_LABELS[era].replace("All", "1966–2022");
-  const digits = measure === "min" && span !== "rapm" ? 0 : span === "rapm" ? 2 : 1;
-  const num = (v: number | null | undefined) => digits === 0 ? whole(v) : fixed(v, digits);
+  const one = summary.value_by_pick.window.all.ws[0], thirty = summary.value_by_pick.window.all.ws[29];
+  const columns: GridColumn<SlotSummary>[] = [
+    { key: "n", label: "Picks", width: "xs", data: r => ({ field: "n", value: r.n }), cell: r => <GridValue text={String(r.n)} /> },
+    { key: "mean", label: "Mean", title: "Mean, with its 95% interval", width: "md", data: r => ({ field: "mean", value: r.mean ?? "", low: r.lo ?? "", high: r.hi ?? "" }),
+      cell: r => <GridValue text={numText(r.mean, digits)} sub={known(r.mean) ? rangeOf(r.lo, r.hi, digits) : null} /> },
+    { key: "median", label: "Median", width: "sm", data: r => ({ field: "median", value: r.median ?? "" }), cell: r => <GridValue text={numText(r.median, digits)} /> },
+    ...(span !== "rapm" ? [
+      { key: "p90", label: "90th pct", width: "sm" as const, data: (r: SlotSummary) => ({ field: "p90", value: r.p90 ?? "" }), cell: (r: SlotSummary) => <GridValue text={numText(r.p90, digits)} /> },
+      { key: "played", label: "Played", title: "Share who played an NBA regular-season game", width: "sm" as const, data: (r: SlotSummary) => ({ field: "played", value: r.played_share ?? "" }), cell: (r: SlotSummary) => <GridValue text={percent(r.played_share)} /> },
+    ] : []),
+    ...(span === "career" ? [{ key: "active", label: "Still active", width: "sm" as const, data: (r: SlotSummary) => ({ field: "active", value: r.active ?? 0 }), cell: (r: SlotSummary) => <GridValue text={String(r.active ?? 0)} /> }] : []),
+    ...(span === "rapm" ? [{ key: "no_rapm", label: "No RAPM", title: "Picks with no RAPM minutes in their window", width: "sm" as const, data: (r: SlotSummary) => ({ field: "no_rapm", value: r.no_rapm ?? 0 }), cell: (r: SlotSummary) => <GridValue text={String(r.no_rapm ?? 0)} /> }] : []),
+  ];
+  return <>
+    <p className="dc-lead" data-field="headline">Over the first four seasons, the first pick has returned <strong data-value={one.mean ?? ""}>{fixed(one.mean)}</strong> win shares
+      (95% {rangeText(one.lo, one.hi)}) and the thirtieth <strong data-value={thirty.mean ?? ""}>{fixed(thirty.mean)}</strong> ({rangeText(thirty.lo, thirty.hi)}), across classes 1966 to 2022.</p>
+    <SqPanel className="dc-controls" label="Value controls">
+      <Segmented label="Value" size="md" value={span} onChange={next => set({ span: next === "window" ? null : next })} options={SPANS} />
+      {span !== "rapm" && <Segmented label="Classes" size="md" value={era} onChange={next => set({ era: next === "all" ? null : next })} options={ERAS} />}
+      {span !== "rapm" && <Segmented label="Measure" size="md" value={measure} onChange={next => set({ measure: next === "ws" ? null : next })} options={MEASURES} />}
+    </SqPanel>
+    <figure className="dc-figure" data-chart="value-by-pick" data-span={span} data-era={era} data-measure={measure}>
+      <figcaption className="dc-figure-title">{unit} by pick · classes {classes} · 95% interval shaded</figcaption>
+      <SeasonLineChart key={`${span}-${era}-${measure}`} label={`${unit} by pick`} band="95%" xTicks={PICK_TICKS}
+        points={rows.map(r => ({ season: String(r.slot), value: r.mean, low: r.lo, high: r.hi, label: `Pick ${r.slot} · ${r.n} picks` }))}
+        format={v => numText(v, digits)} axisFormat={v => digits === 0 ? whole(v) : fixed(v, span === "rapm" ? 1 : 0)} />
+      <p className="dc-axis-note">Pick</p>
+    </figure>
+    <StatsGrid<SlotSummary> label={`${unit} by pick`} name="value-by-pick" density="compact" leadWidth="sm" className="dc-slot-grid" rows={rows} rowKey={r => String(r.slot)}
+      lead={{ label: "Pick", cell: r => <span className="dc-cell-strong">{r.slot}</span> }} columns={columns} />
+  </>;
+}
+
+function RangesSection({ summary }: { summary: DraftSummary }) {
+  const { get } = useUrlState();
+  const era = (ERAS.find(e => e.value === get("era"))?.value ?? "all") as Era;
+  const measure = (MEASURES.find(m => m.value === get("measure"))?.value ?? "ws") as Measure;
+  const digits = measure === "min" ? 0 : 1;
   const bands = summary.bands.filter(b => b.era === era && b.measure === measure);
   return <>
-    <Section title="What each draft slot has returned"
-      description="Mean value of every pick at each slot, with a 95% interval from resampling that slot's players. A pick who never played in the NBA counts as zero (a complete league table records his absence). Career uses classes 1966 to 2005; RAPM classes 2014 to 2022; 2023 to 2025 are too recent."
-      actions={<>
-        <Segmented label="Value" size="sm" value={span} onChange={next => set({ span: next === "window" ? null : next })} options={SPANS} />
-        {span !== "rapm" && <Segmented label="Classes" size="sm" value={era} onChange={next => set({ era: next === "all" ? null : next })} options={ERAS} />}
-        {span !== "rapm" && <Segmented label="Measure" size="sm" value={measure} onChange={next => set({ measure: next === "ws" ? null : next })} options={MEASURES} />}
-      </>}>
-      <ChartFrame title={`${unit} by pick`} source="Frozen courtlens-draft-value-v1 results; full-history season totals"
-        sample={`Draft classes ${classes}; picks 1 to 60`} state={rows.some(r => r.mean !== null) ? "ready" : "empty"}>
-        <ChartData fingerprint={`${span}-${era}-${measure}`}><SlotChart rows={rows} label={unit} /></ChartData>
-      </ChartFrame>
-      <Table aria-label={`${unit} by pick`} density="compact" data-table="value-by-pick" data-span={span} data-era={era} data-measure={measure}>
-        <TableHeader><TableRow hoverable={false}>
-          <TableHead align="right">Pick</TableHead><TableHead align="right">Picks</TableHead><TableHead align="right">Mean, 95%</TableHead>
-          <TableHead align="right">Median</TableHead>
-          {span !== "rapm" && <TableHead align="right">90th pct</TableHead>}
-          {span !== "rapm" && <TableHead align="right">Played</TableHead>}
-          {span === "career" && <TableHead align="right">Still active</TableHead>}
-          {span === "rapm" && <TableHead align="right">No RAPM</TableHead>}
-        </TableRow></TableHeader>
-        <TableBody>{rows.map(r => <TableRow key={r.slot} data-row={r.slot}>
-          <NumCell field="slot" value={r.slot} text={String(r.slot)} />
-          <NumCell field="n" value={r.n} text={String(r.n)} />
-          <TableCell numeric data-field="mean" data-value={r.mean ?? ""} data-low={r.lo ?? ""} data-high={r.hi ?? ""}>{num(r.mean)}<br /><small>{digits === 0 ? `${whole(r.lo)} to ${whole(r.hi)}` : rangeText(r.lo, r.hi, digits)}</small></TableCell>
-          <NumCell field="median" value={r.median} text={num(r.median)} />
-          {span !== "rapm" && <NumCell field="p90" value={r.p90} text={num(r.p90)} />}
-          {span !== "rapm" && <NumCell field="played" value={r.played_share} text={percent(r.played_share)} />}
-          {span === "career" && <NumCell field="active" value={r.active} text={String(r.active ?? 0)} />}
-          {span === "rapm" && <NumCell field="no_rapm" value={r.no_rapm} text={String(r.no_rapm ?? 0)} />}
-        </TableRow>)}</TableBody>
-      </Table>
-    </Section>
-    {span === "window" && <Section title="Is one range of picks worth more than another?"
-      description="Mean first-four-season value of the first range minus the second, with a 95% interval from resampling players within each range. Called higher only when the whole interval is above zero.">
-      <Table aria-label="Slot range differences" density="compact" data-table="bands">
-        <TableHeader><TableRow hoverable={false}>
-          <TableHead>Ranges</TableHead><TableHead align="right">First, mean</TableHead><TableHead align="right">Second, mean</TableHead>
-          <TableHead align="right">Difference, 95%</TableHead><TableHead>Verdict</TableHead>
-        </TableRow></TableHeader>
-        <TableBody>{bands.map(b => <TableRow key={b.band} data-row={b.band}>
-          <TableCell>{BAND_LABELS[b.band] ?? b.band}</TableCell>
-          <NumCell field="mean_a" value={b.mean_a} text={num(b.mean_a)} title={`${b.n_a} picks`} />
-          <NumCell field="mean_b" value={b.mean_b} text={num(b.mean_b)} title={`${b.n_b} picks`} />
-          <TableCell numeric tone={intervalTone(b.lo, b.hi)} data-field="diff" data-value={b.diff} data-low={b.lo} data-high={b.hi}>
-            {signed(b.diff, digits)}<br /><small>{digits === 0 ? `${whole(b.lo)} to ${whole(b.hi)}` : rangeText(b.lo, b.hi, digits)}</small></TableCell>
-          <TableCell data-field="verdict" data-value={b.verdict}>{b.verdict === "higher" ? "First range higher" : b.verdict === "lower" ? "First range lower" : "No measurable difference"}</TableCell>
-        </TableRow>)}</TableBody>
-      </Table>
-    </Section>}
+    <p className="dc-lead">Mean first-four-season {MEASURE_LABELS[measure].toLowerCase()} of the first range minus the second, classes {ERA_LABELS[era].replace("All", "1966–2022")}{" "}
+      (the era and measure chosen above). A range is called higher only when its whole 95% interval is above zero.</p>
+    <ul className="rs-legend" aria-label="Colour key">
+      <li><span className="rs-swatch" data-tone="good" aria-hidden="true" />First range higher: 95% interval above zero</li>
+      <li><span className="rs-swatch" data-tone="bad" aria-hidden="true" />First range lower: 95% interval below zero</li>
+      <li><span className="rs-swatch" aria-hidden="true" />Interval includes zero: no measurable difference</li>
+    </ul>
+    <StatsGrid<Band> label="Slot range differences" name="bands" density="compact" height="auto" leadWidth="lg" rows={bands} rowKey={b => b.band}
+      lead={{ label: "Ranges", cell: b => <span className="dc-cell-strong">{BAND_LABELS[b.band] ?? b.band}</span> }}
+      columns={[
+        { key: "mean_a", label: "First", title: "Mean of the first range", width: "sm", data: b => ({ field: "mean_a", value: b.mean_a }), cell: b => <GridValue text={numText(b.mean_a, digits)} sub={`${b.n_a} picks`} /> },
+        { key: "mean_b", label: "Second", title: "Mean of the second range", width: "sm", data: b => ({ field: "mean_b", value: b.mean_b }), cell: b => <GridValue text={numText(b.mean_b, digits)} sub={`${b.n_b} picks`} /> },
+        { key: "diff", label: "Difference", title: "First minus second, with its 95% interval", width: "md", data: b => ({ field: "diff", value: b.diff, low: b.lo, high: b.hi }),
+          cell: b => <GridValue text={signed(b.diff, digits)} sub={rangeOf(b.lo, b.hi, digits)} tone={b.lo > 0 ? "good" : b.hi < 0 ? "bad" : undefined} /> },
+        { key: "verdict", label: "Verdict", width: "lg", align: "left", data: b => ({ field: "verdict", value: b.verdict }),
+          cell: b => <span className="dc-cell-text">{b.verdict === "higher" ? "First range higher" : b.verdict === "lower" ? "First range lower" : "No measurable difference"}</span> },
+      ]} />
   </>;
 }
 
-// ---- Classes ----------------------------------------------------------------------------------
+// ---- 4. Classes ------------------------------------------------------------------------------------
 
-function ClassTable({ data, order }: { data: DraftClass; order: "draft" | "redraft" | "career" }) {
-  const complete = data.status === "complete";
-  const season = seasonLabel(data.year);
-  const rows = [...data.rows].sort((a, b) => order === "draft" ? a.pick - b.pick
-    : order === "redraft" ? (a.redraft_window ?? 1e9) - (b.redraft_window ?? 1e9) : (a.redraft_career ?? 1e9) - (b.redraft_career ?? 1e9));
-  const rapm = data.year >= 2014 && data.year <= LATEST_CLASS;
-  const steals = new Set(data.steals), misses = new Set(data.misses);
-  return <Table aria-label={`${data.year} draft class`} density="compact" data-table="class" data-year={data.year} data-order={order}>
-    <TableHeader><TableRow hoverable={false}>
-      {complete && order !== "draft" && <TableHead align="right">{order === "redraft" ? "Redraft" : "Career rank"}</TableHead>}
-      <TableHead align="right">Pick</TableHead><TableHead align="right">Rd</TableHead><TableHead>Player</TableHead><TableHead>Team</TableHead><TableHead>From</TableHead>
-      <TableHead align="right">{complete ? "WS, 4 seasons" : "WS to date"}</TableHead><TableHead align="right">{complete ? "Min, 4 seasons" : "Min to date"}</TableHead>
-      {complete && <TableHead align="right">Career WS</TableHead>}
-      {rapm && <TableHead align="right">RAPM</TableHead>}
-      {complete && <TableHead align="right">Expected WS</TableHead>}
-      {complete && <TableHead align="right">Surplus</TableHead>}
-      {complete && order === "draft" && <TableHead align="right">Redraft</TableHead>}
-    </TableRow></TableHeader>
-    <TableBody>{rows.map(r => {
-      const rank = order === "career" ? r.redraft_career : r.redraft_window;
-      const tag = steals.has(r.pick) ? "Steal" : misses.has(r.pick) ? "Miss" : null;
-      return <TableRow key={r.pick} data-row={r.pick} data-tag={tag ?? ""}>
-        {complete && order !== "draft" && <NumCell field="rank" value={rank} text={String(rank ?? "—")} />}
-        <NumCell field="pick" value={r.pick} text={String(r.pick)} />
-        <NumCell field="round" value={r.round} text={String(r.round ?? "—")} />
-        <PlayerCell row={r} season={r.photo_season} team={r.photo_team} />
-        <TeamCell team={r.team} season={season} />
-        <TableCell data-field="organization">{r.organization ?? "—"}{tag && <><br /><small data-field="tag">{tag}</small></>}</TableCell>
-        <NumCell field="window_ws" value={complete ? r.window_ws : r.career_ws} text={fixed(complete ? r.window_ws : r.career_ws)} />
-        <NumCell field="window_min" value={complete ? r.window_min : r.career_min} text={whole(complete ? r.window_min : r.career_min)} />
-        {complete && <NumCell field="career_ws" value={r.career_ws} text={fixed(r.career_ws)} title={r.active ? "Still active in 2025-26: to date" : `${r.career_seasons} seasons`} />}
-        {rapm && <NumCell field="rapm" value={r.window_rapm} text={signed(r.window_rapm, 2)} title={r.window_rapm === null ? "No RAPM in the window" : `${whole((r.window_rapm_seconds ?? 0) / 60)} minutes`} />}
-        {complete && <NumCell field="expected" value={r.expected_window_ws} text={fixed(r.expected_window_ws)} />}
-        {complete && <NumCell field="surplus" value={r.surplus_window_ws} text={signed(r.surplus_window_ws)}
-          tone={r.surplus_window_ws === null ? undefined : tag === "Steal" ? "positive" : tag === "Miss" ? "negative" : undefined} />}
-        {complete && order === "draft" && <NumCell field="rank" value={r.redraft_window} text={String(r.redraft_window ?? "—")} />}
-      </TableRow>;
-    })}</TableBody>
-  </Table>;
+function TagLabel({ tag }: { tag: "Steal" | "Miss" | null }) {
+  return tag ? <span className="dc-label" data-tint={tag === "Steal" ? "1" : "2"} data-field="tag">{tag}</span> : null;
 }
 
-function ClassesTab({ summary }: { summary: DraftSummary }) {
+function ClassPicker({ summary, year, onYear }: { summary: DraftSummary; year: number; onYear: (y: number) => void }) {
+  const [text, setText] = useState("");
+  const years = summary.classes.map(c => c.year);
+  const index = years.indexOf(year);
+  const items = useMemo<LookupItem[]>(() => [...summary.classes].reverse().map(c => ({
+    id: String(c.year), canonical_id: String(c.year), kind: "page", display_name: `${c.year} NBA draft`, subtitle: `${STATUS_LABELS[c.status]} · ${c.picks} picks`,
+    match_basis: "suggestion", match_score: 1, availability: { has_current_season: false, status: "available", seasons: [] }, destination_url: "",
+  } as LookupItem)), [summary]);
+  return <div className="dc-class-picker">
+    <IconButton size="md" variant="secondary" icon="left" label="Earlier class" disabled={index <= 0} onClick={() => onYear(years[index - 1])} />
+    <div className="dc-class-search">
+      <LookupInput label="Draft class" placeholder="Search classes, e.g. 1984" value={text} onChange={setText} candidates={items} limit={items.length}
+        groupLabel="Draft classes" onSelect={item => { setText(""); onYear(Number(item.canonical_id)); }} />
+    </div>
+    <IconButton size="md" variant="secondary" icon="right" label="Later class" disabled={index >= years.length - 1} onClick={() => onYear(years[index + 1])} />
+  </div>;
+}
+
+function ClassesSection({ summary }: { summary: DraftSummary }) {
   const { get, set } = useUrlState();
   const years = summary.classes.map(c => c.year);
   const requested = Number(get("year"));
   const year = years.includes(requested) ? requested : LATEST_CLASS;
-  const order = (get("order") ?? "draft") as "draft" | "redraft" | "career";
+  const order = (ORDERS.find(o => o.value === get("order"))?.value ?? "draft") as Order;
+  const [query, setQuery] = useState("");
+  const [team, setTeam] = useState<string | null>(null);
   const { data, error, loading, retry } = useFeed([String(year)], signal => getDraftClass(year, signal));
-  const status = data?.status;
-  return <Section title={`${year} NBA draft`}
-    description={status === "complete" ? `Redraft ranks every pick by win shares over the first four seasons (ties by minutes, then the original pick); the career rank uses career win shares to date. Expected is the mean at the same slot in the same era from every other class; surplus is the difference. The ten largest surpluses are steals; the ten most negative first-round surpluses are misses.`
-      : status === "censored" ? `Only ${data?.seasons_elapsed} of four seasons have been played, so this class shows value to date and is not redrafted or scored.`
-        : status === "rookies" ? "The 2026 class plays its first season now: see the Rookies tab." : undefined}
-    actions={<>
-      <Field label="Class" layout="inline"><Select aria-label="Draft class" value={String(year)} onChange={event => set({ year: event.target.value === String(LATEST_CLASS) ? null : event.target.value })}>
-        {[...years].reverse().map(y => <option key={y} value={y}>{y}</option>)}
-      </Select></Field>
-      {status === "complete" && <Segmented label="Order" size="sm" value={order} onChange={next => set({ order: next === "draft" ? null : next })}
-        options={[{ value: "draft", label: "Draft order" }, { value: "redraft", label: "Redraft" }, { value: "career", label: "Career" }]} />}
-    </>}>
+  const season = seasonLabel(year);
+  return <>
+    <SqPanel className="dc-controls" label="Class controls">
+      <ClassPicker summary={summary} year={year} onYear={y => { setTeam(null); set({ year: y === LATEST_CLASS ? null : String(y) }); }} />
+      {data?.status === "complete" && <Segmented label="Order" size="md" value={order} onChange={next => set({ order: next === "draft" ? null : next })} options={ORDERS} />}
+      <TeamPicker value={team} onChange={setTeam} season={season} />
+    </SqPanel>
     {error && <FeedFailure error={error} retry={retry} what="The draft class" />}
     {loading && <FeedSkeleton label="Loading the draft class" />}
-    {data && <>
-      <p data-field="class-source">{data.picks} picks; {data.played} played an NBA regular-season game{data.status === "complete" && data.active ? `; ${data.active} still active in 2025-26` : ""}. List: {data.source.name}{data.source.license ? ` (${data.source.license})` : ""}.</p>
-      <ClassTable data={data} order={data.status === "complete" ? order : "draft"} />
-    </>}
-  </Section>;
-}
-
-// ---- Steals and misses ------------------------------------------------------------------------
-
-function ListTable({ rows, label }: { rows: PickRow[]; label: string }) {
-  return <Table aria-label={label} density="compact" data-table={label.toLowerCase().replace(/\s+/g, "-")}>
-    <TableHeader><TableRow hoverable={false}>
-      <TableHead align="right">Class</TableHead><TableHead align="right">Pick</TableHead><TableHead>Player</TableHead><TableHead>Team</TableHead>
-      <TableHead align="right">WS, 4 seasons</TableHead><TableHead align="right">Expected</TableHead><TableHead align="right">Surplus</TableHead>
-    </TableRow></TableHeader>
-    <TableBody>{rows.map(r => <TableRow key={`${r.year}-${r.pick}`} data-row={`${r.year}-${r.pick}`}>
-      <NumCell field="year" value={r.year} text={String(r.year)} />
-      <NumCell field="pick" value={r.pick} text={String(r.pick)} />
-      <PlayerCell row={r} season={r.photo_season} team={r.photo_team} />
-      <TeamCell team={r.team} season={seasonLabel(r.year)} />
-      <NumCell field="window_ws" value={r.window_ws} text={fixed(r.window_ws)} />
-      <NumCell field="expected" value={r.expected_window_ws} text={fixed(r.expected_window_ws)} />
-      <NumCell field="surplus" value={r.surplus_window_ws} text={signed(r.surplus_window_ws)} tone={(r.surplus_window_ws ?? 0) > 0 ? "positive" : "negative"} />
-    </TableRow>)}</TableBody>
-  </Table>;
-}
-
-function StealsTab({ summary }: { summary: DraftSummary }) {
-  return <>
-    <Section title="Biggest steals, 1966 to 2022" description="Win shares over the first four seasons minus the mean at the same slot in the same era from every other class. Any round.">
-      <ListTable rows={summary.steals} label="Steals" />
-    </Section>
-    <Section title="Biggest misses, 1966 to 2022" description="The most negative surpluses among first-round picks. Surplus measures what a pick returned, not whether the choice was sound: a pick can fall short for reasons nobody controlled.">
-      <ListTable rows={summary.misses} label="Misses" />
-    </Section>
+    {data && data.year === year && <ClassBody data={data} order={data.status === "complete" ? order : "draft"} query={query} setQuery={setQuery} team={team} />}
   </>;
 }
 
-// ---- Combine ----------------------------------------------------------------------------------
+function ClassBody({ data, order, query, setQuery, team }: { data: DraftClass; order: Order; query: string; setQuery: (v: string) => void; team: string | null }) {
+  const complete = data.status === "complete";
+  const season = seasonLabel(data.year);
+  const rapm = data.year >= 2014 && data.year <= LATEST_CLASS;
+  const steals = new Set(data.steals), misses = new Set(data.misses);
+  const tagOf = (r: PickRow) => steals.has(r.pick) ? "Steal" as const : misses.has(r.pick) ? "Miss" as const : null;
+  const rank = (r: PickRow) => order === "career" ? r.redraft_career : r.redraft_window;
+  const rows = useMemo(() => [...data.rows]
+    .sort((a, b) => order === "draft" ? a.pick - b.pick : order === "redraft" ? (a.redraft_window ?? 1e9) - (b.redraft_window ?? 1e9) : (a.redraft_career ?? 1e9) - (b.redraft_career ?? 1e9))
+    .filter(r => matches(r.name, query) && (!team || r.team === team)), [data, order, query, team]);
+  const columns: GridColumn<PickRow>[] = [
+    ...(complete && order !== "draft" ? [{ key: "rank", label: order === "redraft" ? "Redraft" : "Career rank", width: "sm" as const, data: (r: PickRow) => ({ field: "rank", value: rank(r) ?? "" }), cell: (r: PickRow) => <GridValue text={rank(r) === null ? null : String(rank(r))} /> }] : []),
+    { key: "pick", label: "Pick", width: "xs", data: r => ({ field: "pick", value: r.pick }), cell: r => <GridValue text={String(r.pick)} /> },
+    { key: "round", label: "Rd", width: "xs", data: r => ({ field: "round", value: r.round ?? "" }), cell: r => <GridValue text={r.round === null ? null : String(r.round)} /> },
+    { key: "team", label: "Drafted by", width: "md", align: "left", data: r => ({ field: "team", value: r.team ?? "" }), cell: r => <TeamCode team={r.team} season={season} /> },
+    { key: "from", label: "From", width: "lg", align: "left", data: r => ({ field: "organization", value: r.organization ?? "" }),
+      cell: r => <span className="dc-cell-text dc-from">{r.organization ?? "—"}<TagLabel tag={tagOf(r)} /></span> },
+    { key: "window_ws", label: "WS", group: complete ? "First 4 seasons" : "To date", title: complete ? "Win shares, first four seasons" : "Win shares to date", width: "sm", data: r => ({ field: "window_ws", value: (complete ? r.window_ws : r.career_ws) ?? "" }), cell: r => <GridValue text={fixed(complete ? r.window_ws : r.career_ws)} /> },
+    { key: "window_min", label: "Min", group: complete ? "First 4 seasons" : "To date", title: complete ? "Minutes, first four seasons" : "Minutes to date", width: "sm", data: r => ({ field: "window_min", value: (complete ? r.window_min : r.career_min) ?? "" }), cell: r => <GridValue text={whole(complete ? r.window_min : r.career_min)} /> },
+    ...(complete ? [{ key: "career_ws", label: "Career WS", width: "sm" as const, data: (r: PickRow) => ({ field: "career_ws", value: r.career_ws ?? "" }),
+      cell: (r: PickRow) => <GridValue text={fixed(r.career_ws)} title={r.active ? "Still active in 2025-26: to date" : `${r.career_seasons} seasons`} /> }] : []),
+    ...(rapm ? [{ key: "rapm", label: "RAPM", title: "RAPM over the window, weighted by minutes", width: "sm" as const, data: (r: PickRow) => ({ field: "rapm", value: r.window_rapm ?? "" }),
+      cell: (r: PickRow) => <GridValue text={signed(r.window_rapm, 2)} identity={identityOf(r.window_rapm, 2)} title={r.window_rapm === null ? "No RAPM in the window" : `${whole((r.window_rapm_seconds ?? 0) / 60)} minutes`} /> }] : []),
+    ...(complete ? [
+      { key: "expected", label: "Expected WS", title: "Mean at the same slot in the same era, from every other class", width: "sm" as const, data: (r: PickRow) => ({ field: "expected", value: r.expected_window_ws ?? "" }), cell: (r: PickRow) => <GridValue text={fixed(r.expected_window_ws)} /> },
+      { key: "surplus", label: "Surplus", title: "Four-season win shares minus expected; no interval, so gold above zero and blue below", width: "sm" as const, data: (r: PickRow) => ({ field: "surplus", value: r.surplus_window_ws ?? "" }),
+        cell: (r: PickRow) => <GridValue text={signed(r.surplus_window_ws)} identity={identityOf(r.surplus_window_ws)} /> },
+    ] : []),
+    ...(complete && order === "draft" ? [{ key: "redraft", label: "Redraft", width: "sm" as const, data: (r: PickRow) => ({ field: "redraft", value: r.redraft_window ?? "" }), cell: (r: PickRow) => <GridValue text={r.redraft_window === null ? null : String(r.redraft_window)} /> }] : []),
+  ];
+  return <>
+    <h3 className="dc-subhead">{data.year} NBA draft</h3>
+    <p className="dc-lead" data-field="class-summary">
+      <span data-field="picks" data-value={data.picks}>{data.picks} picks</span>; <span data-field="played" data-value={data.played}>{data.played}</span> played an NBA regular-season game
+      {complete && data.active ? <>; <span data-field="active" data-value={data.active}>{data.active}</span> still active in 2025-26</> : null}.{" "}
+      {data.status === "complete" ? "Redraft ranks every pick by win shares over the first four seasons; Career by career win shares to date. Surplus is win shares over the same slot and era's mean."
+        : data.status === "censored" ? `Only ${data.seasons_elapsed} of four seasons have been played, so this class shows value to date and is not redrafted or scored.`
+          : <>This class plays its first season now: see <a href="#rookies">2026-27 rookies</a>.</>}
+    </p>
+    <StatsGrid<PickRow> label={`${data.year} draft class`} name="class" leadWidth="lg" className="dc-class-grid" rows={rows} rowKey={r => String(r.pick)}
+      rowData={r => ({ year: data.year, order, tag: tagOf(r) ?? undefined })}
+      empty={query || team ? "No pick matches these filters." : "No picks."}
+      lead={{ label: <GridSearch value={query} onChange={setQuery} label="Search the class" placeholder="Search players…" />,
+        cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.photo_team} season={r.photo_season} era={seasonEra(r.photo_season, r.photo_team)}
+          subtitle={r.played ? `First NBA team ${r.photo_team ?? "—"}` : "Never played in the NBA"}
+          href={r.player_id ? `/players/${r.player_id}?season=${r.photo_season}` : undefined} /> }}
+      columns={columns} />
+  </>;
+}
 
-function CombineTab({ summary }: { summary: DraftSummary }) {
+// ---- 5. Steals and misses ------------------------------------------------------------------------------
+
+function PickCard({ row }: { row: PickRow }) {
+  const season = seasonLabel(row.year);
+  const tint = teamAccent(row.team, season);
+  return <article className="dc-card dc-pick-card" data-card={`${row.year}-${row.pick}`} aria-label={`${row.year} pick ${row.pick}, ${row.name}`} style={tint ? vars({ "--dc-team": tint }) : undefined}>
+    <header className="dc-card-head">
+      <PlayerAvatar playerId={row.player_id ?? undefined} name={row.name} team={row.photo_team} size="lg" era={seasonEra(row.photo_season, row.photo_team)} className="dc-avatar" />
+      <div className="dc-card-titles">
+        {row.player_id ? <Link className="dc-card-name" href={`/players/${row.player_id}?season=${row.photo_season}`}>{row.name}</Link> : <span className="dc-card-name">{row.name}</span>}
+        <span className="dc-card-team"><TeamCode team={row.team} season={season} /> · {row.year} draft</span>
+      </div>
+      <span className="dc-badge" data-field="pick" data-value={row.pick}>#{row.pick}</span>
+    </header>
+    <div className="dc-tiles" data-count="3">
+      <div className="dc-tile"><span className="dc-tile-label">WS, 4 seasons</span><span data-field="window_ws" data-value={row.window_ws ?? ""}><GridValue text={fixed(row.window_ws)} /></span></div>
+      <div className="dc-tile"><span className="dc-tile-label">Expected</span><span data-field="expected" data-value={row.expected_window_ws ?? ""}><GridValue text={fixed(row.expected_window_ws)} /></span></div>
+      <div className="dc-tile"><span className="dc-tile-label">Surplus</span><span data-field="surplus" data-value={row.surplus_window_ws ?? ""}><GridValue text={signed(row.surplus_window_ws)} identity={identityOf(row.surplus_window_ws)} /></span></div>
+    </div>
+  </article>;
+}
+
+function PickList({ rows, label, name }: { rows: PickRow[]; label: string; name: string }) {
+  return <StatsGrid<PickRow> label={label} name={name} density="compact" leadWidth="md" className="dc-list-grid" rows={rows} rowKey={r => `${r.year}-${r.pick}`}
+    lead={{ label: "Player", cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.team} season={seasonLabel(r.year)} era={seasonEra(r.photo_season, r.photo_team)}
+      subtitle={`${r.year} · ${codeOf(r.team, seasonLabel(r.year)) ?? "—"}`} href={r.player_id ? `/players/${r.player_id}?season=${r.photo_season}` : undefined} /> }}
+    columns={[
+      { key: "pick", label: "Pick", width: "xs", data: r => ({ field: "pick", value: r.pick }), cell: r => <GridValue text={String(r.pick)} /> },
+      { key: "window_ws", label: "WS", title: "Win shares, first four seasons", width: "xs", data: r => ({ field: "window_ws", value: r.window_ws ?? "" }), cell: r => <GridValue text={fixed(r.window_ws)} /> },
+      { key: "expected", label: "Exp.", title: "Expected: the slot's mean in the same era from every other class", width: "xs", data: r => ({ field: "expected", value: r.expected_window_ws ?? "" }), cell: r => <GridValue text={fixed(r.expected_window_ws)} /> },
+      { key: "surplus", label: "Surplus", width: "sm", data: r => ({ field: "surplus", value: r.surplus_window_ws ?? "" }), cell: r => <GridValue text={signed(r.surplus_window_ws)} identity={identityOf(r.surplus_window_ws)} /> },
+    ]} />;
+}
+
+function StealsSection({ summary }: { summary: DraftSummary }) {
+  return <div className="dc-pair">
+    <div className="dc-column" data-list="steals">
+      <h3 className="dc-subhead">Biggest steals</h3>
+      <p className="dc-lead">The largest surpluses in any round: four-season win shares over the mean at the same slot and era from every other class.</p>
+      <div className="dc-cards">{summary.steals.slice(0, 3).map(r => <PickCard key={`${r.year}-${r.pick}`} row={r} />)}</div>
+      <PickList rows={summary.steals} label="Steals" name="steals" />
+    </div>
+    <div className="dc-column" data-list="misses">
+      <h3 className="dc-subhead">Biggest misses</h3>
+      <p className="dc-lead">The most negative first-round surpluses. Surplus measures what a pick returned, not whether the choice was sound: a pick can fall short
+        for reasons nobody controlled. Len Bias (1986, pick 2) died two days after the draft.</p>
+      <div className="dc-cards">{summary.misses.slice(0, 3).map(r => <PickCard key={`${r.year}-${r.pick}`} row={r} />)}</div>
+      <PickList rows={summary.misses} label="Misses" name="misses" />
+    </div>
+  </div>;
+}
+
+// ---- 6. Combine --------------------------------------------------------------------------------------
+
+function CombineScatter({ rows, measure, r }: { rows: CombineRow[]; measure: string; r: string }) {
+  const points = rows.filter(p => known(p[measure as keyof CombineRow] as number | null) && known(p.window_ws)).map(p => ({ p, x: p[measure as keyof CombineRow] as number, y: p.window_ws! }));
+  if (points.length < 2) return <GatedNote>Too few measured players to draw this scatter.</GatedNote>;
+  const xt = niceTicks(points.map(p => p.x), 5), yt = niceTicks([0, ...points.map(p => p.y)], 5);
+  const [x0, x1, y0, y1] = [xt[0], xt.at(-1)!, yt[0], yt.at(-1)!];
+  const left = 52, right = 628, top = 12, bottom = 380;
+  const px = (v: number) => left + (v - x0) / (x1 - x0 || 1) * (right - left);
+  const py = (v: number) => bottom - (v - y0) / (y1 - y0 || 1) * (bottom - top);
+  const xDigits = x1 - x0 < 5 ? 1 : 0;
+  const label = COMBINE_LABELS[measure];
+  return <svg className="dc-scatter chart-graphic" viewBox="0 0 640 430" role="img" aria-label={`${label} against first-four-season win shares: ${points.length} drafted players, ${r}.`} data-chart="combine" data-measure={measure}>
+    {yt.map(v => <g key={`y${v}`}><line className={v === 0 ? "dc-scatter-axis" : "dc-scatter-grid"} x1={left} x2={right} y1={py(v)} y2={py(v)} /><text x={left - 8} y={py(v) + 4} textAnchor="end">{fixed(v, 0)}</text></g>)}
+    {xt.map(v => <g key={`x${v}`}><line className="dc-scatter-grid" x1={px(v)} x2={px(v)} y1={top} y2={bottom} /><text x={px(v)} y={bottom + 18} textAnchor="middle">{fixed(v, xDigits)}</text></g>)}
+    <text x={(left + right) / 2} y={bottom + 44} textAnchor="middle">{label} ({COMBINE_UNITS[measure]})</text>
+    <text transform={`translate(12 ${(top + bottom) / 2}) rotate(-90)`} textAnchor="middle">Win shares, first four seasons</text>
+    {points.map(({ p, x, y }) => <circle key={`${p.year}-${p.player_id}`} className="dc-scatter-dot" cx={px(x)} cy={py(y)} r="3" data-player={p.player_id} data-x={x} data-value={y}>
+      <title>{`${p.name} (${p.year}, pick ${p.pick}): ${fixed(x, 2)} ${COMBINE_UNITS[measure]}, ${fixed(y)} win shares`}</title>
+    </circle>)}
+  </svg>;
+}
+
+function CombineSection({ summary }: { summary: DraftSummary }) {
   const { get, set } = useUrlState();
-  const measure = get("measure") && COMBINE_LABELS[get("measure")!] ? get("measure")! : "wingspan";
+  const measure = get("combine") && COMBINE_LABELS[get("combine")!] ? get("combine")! : "wingspan";
   const { data, error, loading, retry } = useFeed([], signal => getDraftCombine(signal));
-  const correlations = summary.combine.correlations;
-  const points = (data?.rows ?? []).filter(r => r[measure as keyof typeof r] !== null && r.window_ws !== null)
-    .map(r => ({ r, x: r[measure as keyof typeof r] as number, y: r.window_ws! }));
-  const xs = points.map(p => p.x), ys = points.map(p => p.y);
-  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(0, ...ys), Math.max(...ys)];
-  const left = 52, right = 628, top = 16, bottom = 260;
-  const px = (v: number) => left + ((v - x0) / (x1 - x0 || 1)) * (right - left);
-  const py = (v: number) => bottom - ((v - y0) / (y1 - y0 || 1)) * (bottom - top);
-  const chosen = correlations.find(c => c.measure === measure && c.outcome === "window_ws");
+  type Row = { measure: string; ws?: DraftSummary["combine"]["correlations"][number]; min?: DraftSummary["combine"]["correlations"][number] };
+  const correlations: Row[] = Object.keys(COMBINE_LABELS).map(m => ({ measure: m,
+    ws: summary.combine.correlations.find(c => c.measure === m && c.outcome === "window_ws"), min: summary.combine.correlations.find(c => c.measure === m && c.outcome === "window_min") }));
+  const chosen = correlations.find(c => c.measure === measure)?.ws;
+  const rText = chosen ? `r ${signed(chosen.r, 2)} (95% ${rangeText(chosen.lo, chosen.hi, 2)})` : "r unknown";
   return <>
-    <Section title="Combine measurements beside value"
-      description="Pearson correlation between each NBA Draft Combine measurement and the player's value over his first four seasons, for drafted players in classes 2000 to 2022. Descriptive only: no model, no prediction and no adjustment for draft position, which already reflects these measurements.">
-      <Table aria-label="Combine correlations" density="compact" data-table="combine-correlations">
-        <TableHeader><TableRow hoverable={false}>
-          <TableHead>Measurement</TableHead><TableHead align="right">Players</TableHead>
-          <TableHead align="right">r with win shares, 95%</TableHead><TableHead align="right">r with minutes, 95%</TableHead>
-        </TableRow></TableHeader>
-        <TableBody>{Object.keys(COMBINE_LABELS).map(m => {
-          const ws = correlations.find(c => c.measure === m && c.outcome === "window_ws");
-          const mins = correlations.find(c => c.measure === m && c.outcome === "window_min");
-          return <TableRow key={m} data-row={m}>
-            <TableCell>{COMBINE_LABELS[m]}</TableCell>
-            <NumCell field="n" value={ws?.n} text={String(ws?.n ?? "—")} />
-            <TableCell numeric data-field="r_ws" data-value={ws?.r ?? ""} data-low={ws?.lo ?? ""} data-high={ws?.hi ?? ""}>{signed(ws?.r, 2)}<br /><small>{rangeText(ws?.lo, ws?.hi, 2)}</small></TableCell>
-            <TableCell numeric data-field="r_min" data-value={mins?.r ?? ""} data-low={mins?.lo ?? ""} data-high={mins?.hi ?? ""}>{signed(mins?.r, 2)}<br /><small>{rangeText(mins?.lo, mins?.hi, 2)}</small></TableCell>
-          </TableRow>;
-        })}</TableBody>
-      </Table>
-    </Section>
-    <Section title={`${COMBINE_LABELS[measure]} and first-four-season win shares`}
-      actions={<Field label="Measurement" layout="inline"><Select aria-label="Combine measurement" value={measure} onChange={event => set({ measure: event.target.value === "wingspan" ? null : event.target.value })}>
+    <p className="dc-lead">Pearson correlation between each NBA Draft Combine measurement and value over the first four seasons, for drafted players in classes 2000 to 2022.
+      Descriptive only: no model and no prediction, and no adjustment for draft position, which already reflects these measurements. All are weak.</p>
+    <StatsGrid<Row> label="Combine correlations" name="combine-correlations" density="compact" height="auto" leadWidth="lg" rows={correlations} rowKey={c => c.measure}
+      lead={{ label: "Measurement", cell: c => <span className="dc-cell-strong">{COMBINE_LABELS[c.measure]}</span> }}
+      columns={[
+        { key: "n", label: "Players", width: "sm", data: c => ({ field: "n", value: c.ws?.n ?? "" }), cell: c => <GridValue text={c.ws ? String(c.ws.n) : null} /> },
+        { key: "r_ws", label: "r with WS", title: "Correlation with four-season win shares, 95% interval", width: "md", keepCase: true, data: c => ({ field: "r_ws", value: c.ws?.r ?? "", low: c.ws?.lo ?? "", high: c.ws?.hi ?? "" }),
+          cell: c => <GridValue text={signed(c.ws?.r, 2)} sub={rangeText(c.ws?.lo, c.ws?.hi, 2)} /> },
+        { key: "r_min", label: "r with minutes", title: "Correlation with four-season minutes, 95% interval", width: "md", keepCase: true, data: c => ({ field: "r_min", value: c.min?.r ?? "", low: c.min?.lo ?? "", high: c.min?.hi ?? "" }),
+          cell: c => <GridValue text={signed(c.min?.r, 2)} sub={rangeText(c.min?.lo, c.min?.hi, 2)} /> },
+      ]} />
+    <div className="dc-scatter-head">
+      <h3 className="dc-subhead">{COMBINE_LABELS[measure]} against first-four-season win shares</h3>
+      <Select size="md" aria-label="Combine measurement" value={measure} onChange={event => set({ combine: event.target.value === "wingspan" ? null : event.target.value })}>
         {Object.entries(COMBINE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-      </Select></Field>}>
-      {error && <FeedFailure error={error} retry={retry} what="Combine rows" />}
-      {loading && <FeedSkeleton label="Loading combine rows" />}
-      {data && <ChartFrame title={`${COMBINE_LABELS[measure]} (${COMBINE_UNITS[measure]}) against win shares, first four seasons`}
-        source="NBA Draft Combine via hoopR; frozen courtlens-draft-value-v1 results"
-        sample={`${points.length} drafted players, classes 2000–22; r ${signed(chosen?.r, 2)} (95% ${rangeText(chosen?.lo, chosen?.hi, 2)})`}
-        state={points.length ? "ready" : "empty"}>
-        <ChartData fingerprint={measure}>
-          <svg className="chart-graphic chart-reliability" viewBox="0 0 640 290" role="img" aria-label={`${COMBINE_LABELS[measure]} against win shares`}>
-            <line x1={left} x2={right} y1={py(0)} y2={py(0)} stroke="var(--color-hairline-strong)" />
-            <text x={left - 8} y={py(0)} dy="0.35em" textAnchor="end">0</text>
-            <text x={left - 8} y={py(y1)} dy="0.35em" textAnchor="end">{fixed(y1, 0)}</text>
-            <text x={left} y={bottom + 20} textAnchor="start">{fixed(x0, 1)}</text>
-            <text x={right} y={bottom + 20} textAnchor="end">{fixed(x1, 1)}</text>
-            <g fill={ACCENT} fillOpacity="0.55">
-              {points.map(p => <circle key={`${p.r.year}-${p.r.player_id}`} cx={px(p.x)} cy={py(p.y)} r="2.5" data-player={p.r.player_id} data-x={p.x} data-value={p.y}>
-                <title>{`${p.r.name} (${p.r.year}, pick ${p.r.pick}): ${fixed(p.x, 2)} ${COMBINE_UNITS[measure]}, ${fixed(p.y)} WS`}</title>
-              </circle>)}
-            </g>
-          </svg>
-        </ChartData>
-      </ChartFrame>}
-    </Section>
+      </Select>
+    </div>
+    {error && <FeedFailure error={error} retry={retry} what="Combine rows" />}
+    {loading && <FeedSkeleton label="Loading combine rows" />}
+    {data && <figure className="dc-figure">
+      <CombineScatter rows={data.rows} measure={measure} r={rText} />
+      <figcaption className="dc-note" data-field="combine-r">{rText}. Each dot is one drafted player; hover for the name.</figcaption>
+    </figure>}
+    <p className="dc-note">Every player&apos;s measurements, with position averages and a searchable table, are on Wingspan. It uses the same NBA Draft Combine data and adds
+      reported wingspans for players the combine never measured; this section keeps drafted players from classes 2000 to 2022, whose value is known.</p>
+    <ResearchLinks label="Combine pages" links={[{ label: "Wingspan", href: "/wingspan", icon: "arrow-right" }]} />
   </>;
 }
 
-// ---- Words ------------------------------------------------------------------------------------
+// ---- 7 and 8. Reading and About ----------------------------------------------------------------------
 
-function CoverageSection({ summary }: { summary: DraftSummary }) {
-  return <Section title="Coverage" description="Every class from 1966 to 2026 has a complete pick list with no gap in pick numbers. Value is read from NBA regular seasons through 2025-26.">
-    <Table aria-label="Coverage by class" density="compact" data-table="coverage">
-      <TableHeader><TableRow hoverable={false}>
-        <TableHead align="right">Class</TableHead><TableHead>Status</TableHead><TableHead align="right">Seasons</TableHead>
-        <TableHead align="right">Picks</TableHead><TableHead align="right">Played</TableHead><TableHead align="right">Active 2025-26</TableHead><TableHead>Pick list</TableHead>
-      </TableRow></TableHeader>
-      <TableBody>{[...summary.classes].reverse().map(c => <TableRow key={c.year} data-row={c.year}>
-        <NumCell field="year" value={c.year} text={String(c.year)} />
-        <TableCell data-field="status" data-value={c.status}>{c.status === "complete" ? "Complete" : c.status === "censored" ? "Too recent" : "Rookies"}</TableCell>
-        <NumCell field="seasons" value={c.seasons_elapsed} text={String(c.seasons_elapsed)} />
-        <NumCell field="picks" value={c.picks} text={String(c.picks)} />
-        <NumCell field="played" value={c.played} text={String(c.played)} />
-        <NumCell field="active" value={c.active} text={String(c.active)} />
-        <TableCell>{c.source}</TableCell>
-      </TableRow>)}</TableBody>
-    </Table>
-  </Section>;
-}
-
-function NotesSection({ summary }: { summary: DraftSummary }) {
-  const r = summary.registration;
+function Reading() {
   return <>
-    <Section title="Caveats"><ul>{summary.caveats.map(c => <li key={c}>{c}</li>)}</ul></Section>
-    <Section title="Credits and sources">
-      <ul>{summary.credits.map(c => <li key={c}>{c}</li>)}</ul>
-      <ul>{summary.sources.map(s => <li key={s.classes.join("-")}>Classes {s.classes[0]}–{s.classes[1]}: {s.name}{s.license ? ` (${s.license})` : ""}. {s.note}</li>)}</ul>
-    </Section>
-    <Section title="Method and reproducibility">
-      <dl>
-        <dt>Value</dt><dd>Win shares and minutes in the first four NBA seasons after the draft (the comparable window), career to date, and RAPM weighted by minutes for classes 2014–22. No prospect projection: that model is parked.</dd>
-        <dt>Intervals</dt><dd>Seeded bootstrap over the players at each slot or range, {r.parameters.replicates.toLocaleString("en-US")} replicates, 95%. Seed {r.parameters.seed}.</dd>
-        <dt>Registration</dt><dd><code>{r.identity}</code> · <code data-field="registration-sha" data-value={r.content_sha256}>{r.content_sha256.slice(0, 16)}</code>, committed {r.registered_on} before any outcome was summarized.</dd>
-        <dt>Results</dt><dd><code data-field="results-sha" data-value={r.results_sha256}>{r.results_sha256.slice(0, 16)}</code>. Two runs give the same hash.</dd>
-      </dl>
-    </Section>
+    <ResearchCards columns={3}>
+      <ResearchCard kicker="Value"><p className="dc-card-text">Win shares and minutes over a pick&apos;s first four NBA seasons, the window every complete class (1966 to 2022) has
+        played. A pick who never played counts as zero: complete season totals record his absence.</p></ResearchCard>
+      <ResearchCard kicker="Surplus"><p className="dc-card-text">A pick&apos;s four-season win shares minus the mean at the same slot and era from every other class. It has no
+        interval, so it is gold above zero and blue below, never green or red.</p></ResearchCard>
+      <ResearchCard kicker="Colour"><p className="dc-card-text">Green or red only where a 95% interval excludes zero (ranges of picks), and for rookies outside the middle
+        80% of past picks at their slot. Overlapping intervals rank nothing.</p></ResearchCard>
+    </ResearchCards>
+    <Glossary groups={[
+      { label: "Picks and classes", icon: "graduation", items: [
+        { term: "Complete class", text: "A class with four seasons played: 1966 to 2022. Classes 2023 to 2025 are shown to date, never redrafted or scored." },
+        { term: "Redraft", text: "Every pick in a complete class ranked by four-season win shares (ties by minutes, then the original pick); Career ranks by career win shares to date." },
+        { term: "Expected", text: "The mean at the same slot in the same era (1966–88 or 1989 on) from every other class." },
+        { term: "Steal and miss", text: "The ten largest surpluses in a class are its steals; the ten most negative first-round surpluses are its misses. The page lists the 25 largest of each since 1966." },
+      ] },
+      { label: "Rookies and ratings", icon: "users", items: [
+        { term: "Past picks", text: "Every player taken at the same pick from 1983 to 2025, over his first appearances of his first season, as many as the rookie has played. Their later games are never read." },
+        { term: "Percentile", text: "Where the rookie's figure sits among those past picks; p50 is the middle." },
+        { term: "DARKO and RAPM", text: "Current ratings shown beside the rookie, not compared: past rookies have none from the same point of their first season." },
+        { term: "RAPM by pick", text: "Classes 2014 to 2022, weighted by minutes over the first four seasons; nine classes a slot." },
+      ] },
+    ]} />
   </>;
 }
 
-// ---- Page --------------------------------------------------------------------------------------
+function About({ summary }: { summary: DraftSummary }) {
+  const r = summary.registration;
+  return <ResearchDisclosure id="about" icon="info" title="About this page">
+    <MethodBlock title="Coverage by class">
+      <p className="dc-card-text">Every class from 1966 to 2026 has a complete pick list with no gap in pick numbers. Value is read from NBA regular seasons through 2025-26.</p>
+      <StatsGrid<ClassIndex> label="Coverage by class" name="coverage" density="compact" leadWidth="sm" className="dc-coverage-grid" rows={[...summary.classes].reverse()} rowKey={c => String(c.year)}
+        lead={{ label: "Class", cell: c => <span className="dc-cell-strong">{c.year}</span> }}
+        columns={[
+          { key: "status", label: "Status", width: "md", align: "left", data: c => ({ field: "status", value: c.status }), cell: c => <span className="dc-label" data-tint={STATUS_TINT[c.status]}>{STATUS_LABELS[c.status]}</span> },
+          { key: "seasons", label: "Seasons", width: "sm", data: c => ({ field: "seasons", value: c.seasons_elapsed }), cell: c => <GridValue text={String(c.seasons_elapsed)} /> },
+          { key: "picks", label: "Picks", width: "sm", data: c => ({ field: "picks", value: c.picks }), cell: c => <GridValue text={String(c.picks)} /> },
+          { key: "played", label: "Played", width: "sm", data: c => ({ field: "played", value: c.played }), cell: c => <GridValue text={String(c.played)} /> },
+          { key: "active", label: "Active", title: "Still active in 2025-26", width: "sm", data: c => ({ field: "active", value: c.active }), cell: c => <GridValue text={String(c.active)} /> },
+          { key: "source", label: "Pick list", width: "xl", align: "left", cell: c => <span className="dc-cell-text">{c.source}</span> },
+        ]} />
+    </MethodBlock>
+    <MethodBlock title="Caveats">
+      <ul className="dc-list">{summary.caveats.map(c => <li key={c}>{c}</li>)}</ul>
+    </MethodBlock>
+    <MethodBlock title="One known error">
+      <p className="dc-card-text" data-field="known-error">One pick is credited to the wrong person. NBA.com&apos;s player records give Walker Russell (1982-83 to 1987-88) and his son
+        Walker Russell Jr. (2011-12, undrafted) the same slot, 1982 pick 78. The data kept the son, so that pick shows 0 win shares and 0 minutes instead of about −0.5 win
+        shares and 1,255 minutes. It is beyond pick 60, so value by pick is unchanged; it moves that pick in the 1982 redraft. The frozen results keep it as recorded.</p>
+    </MethodBlock>
+    <MethodBlock title="Sources and credits">
+      <ul className="dc-list">{summary.credits.filter(c => !c.startsWith("Page reference")).map(c => <li key={c}>{c}</li>)}</ul>
+      <ul className="dc-list">{summary.sources.map(s => <li key={s.classes.join("-")}>Classes {s.classes[0]}–{s.classes[1]}: {s.name}{s.license ? ` (${s.license})` : ""}. {s.note}</li>)}</ul>
+    </MethodBlock>
+    <MethodBlock title="Method">
+      <p className="dc-card-text">Intervals come from a seeded bootstrap over the players at each slot or range: {r.parameters.replicates.toLocaleString("en-US")} replicates, 95%.
+        The method was registered on {r.registered_on} before any result was summarized, and the results were read once. There is no prospect model.</p>
+      <p className="dc-note">Registration <code data-field="registration-sha" data-value={r.content_sha256}>{r.content_sha256.slice(0, 16)}</code> · results{" "}
+        <code data-field="results-sha" data-value={r.results_sha256}>{r.results_sha256.slice(0, 16)}</code>. Two runs give the same hash.</p>
+      <ResearchLinks label="Evidence" links={[{ label: "How Draft Classes was built", href: evidenceUrl("docs/evidence/research/r09/README.md"), icon: "external" }]} />
+    </MethodBlock>
+  </ResearchDisclosure>;
+}
+
+// ---- Page ----------------------------------------------------------------------------------------------
+
+function Section({ id, icon, title, children }: { id: string; icon: Parameters<typeof ResearchSection>[0]["icon"]; title: string; children: ReactNode }) {
+  const n = SECTIONS.findIndex(s => s.id === id) + 1;
+  return <ResearchSection id={id} icon={icon} title={`${n}. ${title}`} className="dc-section">{children}</ResearchSection>;
+}
 
 export function DraftClassesResearch() {
-  const { get, set } = useUrlState();
-  const tab = (TABS.some(t => t.value === get("tab")) ? get("tab") : "rookies") as Tab;
-  const { data, error, loading, retry } = useFeed([], signal => getDraftSummary(signal));
-  const one = data?.value_by_pick.window.all.ws[0];
-  const thirty = data?.value_by_pick.window.all.ws[29];
-  const complete = data?.classes.filter(c => c.status === "complete").length;
-  return <PageShell template="research">
-    <PageHeader icon="graduation" title="Draft Classes" subtitle="What every NBA draft slot has returned since 1966, each class redrafted by what its players did, and how this year's rookies compare with past picks at the same spot." />
-    <Segmented label="Draft Classes view" value={tab} onChange={next => set({ tab: next === "rookies" ? null : next, measure: null })} options={TABS} />
-    {error && <FeedFailure error={error} retry={retry} what="Draft Classes" />}
-    {loading && <FeedSkeleton label="Loading Draft Classes" />}
-    {data && <ResearchLayout findings={<>
-      <StatTile label="Pick 1, first four seasons" value={fixed(one?.mean)} unit="WS" footnote={`95% ${rangeText(one?.lo, one?.hi)}; ${one?.n} classes`} />
-      <StatTile label="Pick 30, first four seasons" value={fixed(thirty?.mean)} unit="WS" footnote={`95% ${rangeText(thirty?.lo, thirty?.hi)}; ${thirty?.n} classes`} />
-      <StatTile label="Classes redrafted" value={complete ?? 0} footnote="1966 to 2022; 2023–25 too recent" />
-      <StatTile label="Picks covered" value={data.classes.reduce((s, c) => s + c.picks, 0).toLocaleString("en-US")} footnote="Every pick, 1966 to 2026" />
-    </>}>
-      {tab === "rookies" && <RookiesTab />}
-      {tab === "value" && <ValueTab summary={data} />}
-      {tab === "classes" && <ClassesTab summary={data} />}
-      {tab === "steals" && <StealsTab summary={data} />}
-      {tab === "combine" && <CombineTab summary={data} />}
-      <CoverageSection summary={data} />
-      <NotesSection summary={data} />
-    </ResearchLayout>}
+  const { get } = useUrlState();
+  const summary = useFeed([], signal => getDraftSummary(signal));
+  const rookies = useFeed([], signal => getRookies(signal));
+  const current = useCurrentSection();
+  const [indexOpen, setIndexOpen] = useState(false);
+  const data = summary.data;
+  const tab = get("tab");
+  useEffect(() => {
+    const target = tab ? TAB_SECTIONS[tab] : undefined;
+    if (!target || !data) return;
+    // The sections above it finish loading after the first scroll, so keep it aligned briefly, until the visitor scrolls.
+    const go = () => document.getElementById(target)?.scrollIntoView({ block: "start" });
+    const events = ["wheel", "touchmove", "keydown", "pointerdown"] as const;
+    const stop = () => { clearInterval(timer); clearTimeout(end); events.forEach(name => window.removeEventListener(name, stop)); };
+    go();
+    const timer = setInterval(go, 250);
+    const end = setTimeout(stop, 3000);
+    events.forEach(name => window.addEventListener(name, stop, { passive: true }));
+    return stop;
+  }, [tab, data]);
+  const picks = data?.classes.reduce((sum, c) => sum + c.picks, 0);
+  const date = rookies.data?.state === "ok" ? rookies.data.comparison_date : null;
+  return <PageShell template="research" className="dc-shell">
+    <div className="rs-column dc-page">
+      <PageHeader className="sq-hero dc-hero research-hero" icon="graduation" title="Draft Classes"
+        subtitle="What every NBA draft slot has returned since 1966, and how this year's rookies compare." />
+      <ResearchIntro
+        tagline={<span data-field="hero-meta">{date ? <>Games through <time dateTime={date}>{date}</time> · </> : null}{picks ? `${picks.toLocaleString("en-US")} picks · ` : ""}classes 1966–2026</span>}
+        links={[{ label: "Wingspan", href: "/wingspan", icon: "ruler" }, { label: "Players", href: "/players", icon: "users" }, { label: "Learning", href: "/methodology/learning", icon: "book" }]} />
+      <div className="dc-layout">
+        <aside className="dc-aside"><nav className="dc-aside-sticky" aria-label="Sections"><SectionIndex current={current} /></nav></aside>
+        <details className="dc-index-phone" open={indexOpen} onToggle={event => setIndexOpen(event.currentTarget.open)}>
+          <ButtonSummary size="md" variant="secondary" icon="list-ordered" iconAfter="chevron-down">Sections</ButtonSummary>
+          <nav className="dc-index-phone-list" aria-label="Sections (phone)"><SectionIndex current={current} onPick={() => setIndexOpen(false)} /></nav>
+        </details>
+        <div className="dc-sections">
+          <Section id="rookies" icon="users" title={`${ROOKIE_SEASON} rookies`}><RookiesSection feed={rookies} /></Section>
+          {summary.error && <FeedFailure error={summary.error} retry={summary.retry} what="Draft Classes" />}
+          {summary.loading && <FeedSkeleton label="Loading Draft Classes" />}
+          {data && <>
+            <Section id="value" icon="chart-line" title="What a slot is worth"><ValueSection summary={data} /></Section>
+            <Section id="ranges" icon="scale" title="Ranges of picks"><RangesSection summary={data} /></Section>
+            <Section id="classes" icon="list-ordered" title="Classes and redrafts"><ClassesSection summary={data} /></Section>
+            <Section id="steals" icon="trophy" title="Steals and misses"><StealsSection summary={data} /></Section>
+            <Section id="combine" icon="ruler" title="Combine beside value"><CombineSection summary={data} /></Section>
+            <Section id="reading" icon="book" title="How to read"><Reading /></Section>
+            <About summary={data} />
+          </>}
+        </div>
+      </div>
+    </div>
   </PageShell>;
 }

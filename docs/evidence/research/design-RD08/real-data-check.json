@@ -1,0 +1,110 @@
+[
+ {
+  "width": 1440,
+  "compared": 182379,
+  "loads": 142,
+  "mismatches": 0,
+  "errors": [],
+  "photos": {
+   "portraits": 5661,
+   "initials": 4279,
+   "wrongSeason": [],
+   "wrongSeasonCount": 0
+  },
+  "oldPhotos": [
+   {
+    "year": 1966,
+    "played": 31,
+    "playedWithPhoto": 17,
+    "neverPlayedWithPhoto": 0,
+    "noId": 81
+   },
+   {
+    "year": 1972,
+    "played": 49,
+    "playedWithPhoto": 17,
+    "neverPlayedWithPhoto": 0,
+    "noId": 149
+   },
+   {
+    "year": 1984,
+    "played": 58,
+    "playedWithPhoto": 21,
+    "neverPlayedWithPhoto": 0,
+    "noId": 170
+   },
+   {
+    "year": 1996,
+    "played": 47,
+    "playedWithPhoto": 31,
+    "neverPlayedWithPhoto": 0,
+    "noId": 0
+   }
+  ],
+  "missingLogos": [],
+  "overflow": 0,
+  "broken": [],
+  "small": [],
+  "column": 1352,
+  "index": 224,
+  "indexPhone": "none",
+  "iconCentred": true,
+  "cards": 7,
+  "watermarks": 0,
+  "tinted": 7,
+  "edgeRails": 0,
+  "draftballr": false,
+  "arrows": false,
+  "playerSelects": 0,
+  "noLogoCodes": [],
+  "indexPinned": true,
+  "current": "3Ranges of picks",
+  "firstMismatches": []
+ },
+ {
+  "width": 390,
+  "compared": 30056,
+  "loads": 21,
+  "mismatches": 0,
+  "errors": [],
+  "photos": {
+   "portraits": 729,
+   "initials": 807,
+   "wrongSeason": [],
+   "wrongSeasonCount": 0
+  },
+  "oldPhotos": [
+   {
+    "year": 1966,
+    "played": 31,
+    "playedWithPhoto": 17,
+    "neverPlayedWithPhoto": 0,
+    "noId": 81
+   },
+   {
+    "year": 1984,
+    "played": 58,
+    "playedWithPhoto": 21,
+    "neverPlayedWithPhoto": 0,
+    "noId": 170
+   }
+  ],
+  "missingLogos": [],
+  "overflow": 0,
+  "broken": [],
+  "small": [],
+  "column": 366,
+  "index": 0,
+  "indexPhone": "grid",
+  "iconCentred": true,
+  "cards": 7,
+  "watermarks": 0,
+  "tinted": 7,
+  "edgeRails": 0,
+  "draftballr": false,
+  "arrows": false,
+  "playerSelects": 0,
+  "noLogoCodes": [],
+  "firstMismatches": []
+ }
+]

@@ -60,7 +60,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06, RD05 | ✅ |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning`; `~/Downloads/Projects/Courtlens/Learning _ databallr.html` | R11, RD06 | ✅ |
 | RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes`; `~/Downloads/Projects/Courtlens/databallr — NBA & WNBA analytics, impact metrics, and draft games.html` | R11, RD07 | ✅ |
-| RD08 | Draft Classes [28] | `/draft` | D: Draftballr dashboard, lottery, resources (owner: don't copy Draftballr's design; match CourtLens and Databallr) | R09 | ⬜ |
+| RD08 | Draft Classes [28] | `/draft` | none (owner, 2026-11-08: no Databallr page; never copy Draftballr; built from approved CourtLens Research patterns) | R09, RD08 | 👀 |
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
 | RD09 | Research landing [29] | `/research` | none | R12 | ⬜ |
 | RD10 | Metric Backtest [29] | `/research/backtest` | none | R08 | ⬜ |
@@ -622,13 +622,53 @@ Instructions (owner, 2026-11-08, round 5; screenshot: :3100, v1.7's tile still w
    rules) with round 4's markup. One quick import toggle did not refresh it; removing the import, requesting the page for 12 s,
    re-adding it and requesting again did. :3100 then measured only the 1 px rim (`box-shadow`), no rail.
 
-## RD08 Draft Classes — ⬜
+## RD08 Draft Classes — 👀
 
 - **Now:** rookie tracker, value by pick with intervals, class redrafts, steals and misses, combine beside
   value; no prospect model (D4).
 - **Known gaps:** owner direction is to match CourtLens and Databallr, not Draftballr's own look. The Stats
   pre-2000 draft filter isn't wired; one 1982 pick is misattributed (disclosed).
-- **Instructions:** _(owner)_
+- **Reference:** none. There is no Databallr page for it and Draftballr's look is not copied (owner, 2026-11-06 and 2026-11-08);
+  the Draftballr saves were not opened. Each section borrows a named, approved CourtLens Research precedent instead.
+- **Before (round 1, :3100):** five tabs (Rookies 2026-27, Value by pick, Classes, Steals & misses, Combine) under the old left-aligned
+  header and four stat tiles; three dropdowns (a player dropdown for the rookie, class, combine measurement); old `Table`s; surplus
+  green/red without an interval; Coverage, Caveats, Credits and Method (with hashes) repeated under every tab. 4,480–8,861 px tall at
+  1440, 7,621–14,133 px at 390; 0 console errors, 0 overflow, 0 broken images.
+- **Design check (2026-11-08):** nothing needs new data, an API field or a new analysis. Open questions: (A) the value-by-pick chart
+  needs an interval band on the shared `SeasonLineChart`; (B) the rookie colouring is R09's registered 10th–90th percentile rule, not
+  an interval; (C) surplus has no interval; (D) old seasons may lack a season photo (Len Bias has no player ID); (E) the combine
+  section overlaps Wingspan; (F) the class picker; (G) the hero stat tiles.
+
+Instructions (owner, 2026-11-08, round 1; the owner answered the design proposal and its recommendations with "Go with your
+recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively."):
+1. [x] Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively.
+   - (1) One scrolling page instead of five tabs: RD04's 1352 px column, RD06's sticky 224 px numbered index beside the sections (a
+     collapsed "Sections" disclosure on a phone); old `?tab=` links scroll to their section.
+   - (2) Hero: the settled centred hero, one tagline, a meta line (games through, picks, classes) and intro links (Wingspan, Players,
+     Learning). The four stat tiles are dropped (G); pick 1 against pick 30 is one line at the start of the slot section.
+   - (3) 2026 rookies: a spotlight card after RD05's (team tint, no watermark, season photo, logo beside the code, #pick badge, tiles with
+     percentiles, DARKO and RAPM shown, not compared), chosen with `EntityField` over the rookies who have played (never a `<select>`);
+     the 60-pick `StatsGrid` with `GridSearch` and `TeamPicker`; then the chosen rookie's past same-pick rookies on `StatsGrid`.
+   - (4) What a slot is worth: one line on one axis with the 95% interval as a band (A: an optional band and plain x labels added to
+     the shared `SeasonLineChart`), the span, era and measure switches, and its `StatsGrid`.
+   - (5) Ranges: the bands on compact `StatsGrid`, green/red only where the 95% interval excludes zero, with a 95% `ToneLegend`.
+   - (6) Classes and redrafts: a class search field with suggestions plus previous and next buttons (F), Draft / Redraft / Career,
+     `GridSearch`, `TeamPicker`, Steal and Miss as category-tint labels, surplus in gold/blue.
+   - (7) Steals and misses: two columns (stacked on a phone), the top three of each as cards, then all 25 on `StatsGrid`; surplus in
+     gold/blue (C); the miss wording and Len Bias kept.
+   - (8) Combine beside value: correlations on `StatsGrid`, one scatter after RD00's with a measurement switch, and a link to Wingspan
+     for every per-player measurement (E).
+   - (9) Rookie colouring: R09's registered rule kept, with its own legend line (B).
+   - (10) Photos: the season's photo or the site's initials avatar, never a later season's; fallbacks counted in the real-data check (D).
+   - (11) How to read and a glossary, then a collapsed "About this page": coverage by class, caveats, sources and credits, method, the
+     Walker Russell 1982 #78 disclosure, evidence links and hashes. No design reference credit (none of the layout is Databallr's).
+   - (12) Design only: no API, analysis or frozen result changes; the Stats pre-2000 Draft Class filter and any prospect model stay out.
+   — One scrolling page in a 1352 px column with a sticky numbered index (a Sections list on a phone; old `?tab=` links scroll to their section); centred hero with a meta line, no stat tiles; a searchable, team-tinted rookie card
+   beside its past same-pick rookies, then all 60 picks; one line with a 95% band; ranges green/red only where the interval excludes zero; class search with earlier/later buttons; steals and misses as cards then grids; combine
+   correlations, scatter and a Wingspan link; how to read; collapsed About this page. Surplus gold/blue. Real data 212,435 values, 0 mismatches; every photo requested for its own season and team; early classes mostly initials
+   (1984: 21 of the 58 who played have a photo). Full Playwright 605 passed.
+
+Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
 
 ## RD09 Research landing — ⬜
 
