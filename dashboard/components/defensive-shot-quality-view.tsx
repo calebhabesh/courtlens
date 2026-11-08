@@ -1,172 +1,302 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
-import { Field } from "./ui/field";
+import { SqPanel, Tiles, Toned } from "./shot-quality-figures";
+import { TeamLogo } from "./team-logo";
+import { TeamWatermark } from "./team-watermark";
 import { GatedNote } from "./ui/gated-note";
-import { PlayerIdentity } from "./ui/identity";
+import { CountChip } from "./ui/filter-bar";
+import { PlayerAvatar } from "./ui/identity";
 import { Button, Segmented, Select } from "./ui/kit";
-import { PageHeader, Panel, Section } from "./ui/panel";
-import { PageShell, ResearchLayout } from "./ui/page-shell";
-import { StatTile } from "./ui/stat-tile";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import { PageShell } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
+import { Glossary, MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchSection, ToneLegend } from "./research/research-page";
+import { GridPlayer, GridSearch, GridValue, StatsGrid } from "./research/stats-grid";
+import { TeamPicker } from "./research/team-picker";
 import { seasonEra } from "@/lib/portrait-source";
+import { teamAccent } from "@/lib/team-colors";
+import { teamArtwork } from "@/lib/team-era";
 import {
-  getDefensiveCards, getDefensiveSummary, type DefenseBoard, type DefenseCard, type DefenseSort, type DefenseSummary, type ShotKind
+  getDefensiveCards, getDefensiveSummary, type DefenseBoard, type DefenseCard, type DefenseSort, type DefenseSummary, type KeyMatchup, type ShotKind, type UnknownSeason
 } from "@/lib/shot-decomposition";
-import { formatFixed, formatInterval, formatShare, formatSigned, formatWhole, signTone } from "@/lib/shot-quality";
+import { formatFixed, formatInterval, formatShare, formatSigned, formatWhole } from "@/lib/shot-quality";
 
-/**
- * Research → Defensive Shot Quality (R06). A plain build-phase page after the saved Databallr D-ShotQuality
- * card grid. Every number is the frozen courtlens-defensive-shot-quality-v1 results' (the RAPM headline is
- * courtlens-shot-decomposition-v1's dSQ); exact values sit on `data-value`.
+/*
+ * Research → Defensive Shot Quality (R06 analysis; RD05 design after Databallr's D-ShotQuality page). Databallr's centred hero,
+ * a toolbar panel (search, season, rank by, team picker, global shot type), then its ranked player cards three across: photo,
+ * name, a RAPM chip and a #N badge over a team tint and logo watermark, the card's own All / 2PT / 3PT, value tiles with ranks
+ * and a Key Matchups table. Databallr's 2nd Defender tiles are left out: the free matchup data has no help defender. Below the
+ * cards, CourtLens's own reading guide, glossary, signal checks and collapsed Caveats & Methodology. Green/red only where a
+ * served interval excludes zero (D-SQ 95%, RAPM 80%). Every number is the frozen courtlens-defensive-shot-quality-v1 results'
+ * (the RAPM chip is courtlens-shot-decomposition-v1's dSQ); exact values sit on `data-*`.
  */
 const LATEST = "2025-26";
 const PAGE = 6;
-const KINDS: { value: ShotKind; label: string }[] = [{ value: "all", label: "All" }, { value: "2pt", label: "2PT" }, { value: "3pt", label: "3PT" }];
+const KINDS: readonly ShotKind[] = ["all", "2pt", "3pt"];
+const KIND_LABELS: Record<ShotKind, string> = { all: "All", "2pt": "2PT", "3pt": "3PT" };
+const KIND_OPTIONS = KINDS.map(value => ({ value, label: KIND_LABELS[value] }));
 const SORTS: { value: DefenseSort; label: string }[] = [
-  { value: "dsq", label: "D-SQ" }, { value: "rapm", label: "D-SQ RAPM" }, { value: "fga", label: "Shots defended" },
+  { value: "dsq", label: "D-SQ" }, { value: "rapm", label: "D-SQ RAPM" }, { value: "fga", label: "Matchup shots" },
   { value: "xpps", label: "Expected PPS (lowest)" }, { value: "pps", label: "Actual PPS (lowest)" },
 ];
+const known = (v: number | null | undefined): v is number => typeof v === "number" && Number.isFinite(v);
+/** A served definition without its leading "Term: " (the card or glossary entry names it). */
+const definition = (text: string | undefined) => { const body = (text ?? "").replace(/^[^:]{1,24}: /, ""); return body.charAt(0).toUpperCase() + body.slice(1); };
 
-function Card({ card, position, season, kind }: { card: DefenseCard; position: number; season: string; kind: ShotKind }) {
-  const v = card.value;
-  const stats = [
-    { key: "fga", label: `Shots (${kind === "all" ? "All" : kind === "2pt" ? "2PT" : "3PT"})`, value: v.fga, text: formatWhole(v.fga), rank: card.rank?.fga },
-    { key: "xpps", label: "Opp. expected PPS", value: v.xpps, text: formatFixed(v.xpps, 2), rank: card.rank?.xpps },
-    { key: "pps", label: "Opp. actual PPS", value: v.pps, text: formatFixed(v.pps, 2), rank: card.rank?.pps },
-  ];
-  return <Panel data-card={card.player_id} title={<span>#{position}</span>}>
-    <PlayerIdentity playerId={card.player_id} name={card.player_name} team={card.tricode} size="md" era={seasonEra(season, card.tricode)} href={`/players/${card.player_id}?season=${season}`} />
-    <Table aria-label={`${card.player_name} matchup shooting`} density="compact" data-table="stats">
-      <TableHeader><TableRow hoverable={false}><TableHead>Stat</TableHead><TableHead align="right">Value</TableHead><TableHead align="right">Rank</TableHead></TableRow></TableHeader>
-      <TableBody>
-        <TableRow data-stat="rapm">
-          <TableCell>D-SQ RAPM (80%){card.rapm.reason && <><br /><small>{card.rapm.reason}</small></>}</TableCell>
-          <TableCell numeric tone={signTone(card.rapm.value)} data-field="rapm" data-value={card.rapm.value ?? ""} data-low={card.rapm.interval?.[0] ?? ""} data-high={card.rapm.interval?.[1] ?? ""}>
-            {card.rapm.value == null ? "unknown" : <>{formatSigned(card.rapm.value, 2)}<br /><small>{formatInterval(card.rapm.interval, x => formatSigned(x, 2))}</small></>}
-          </TableCell>
-          <TableCell numeric>—</TableCell>
-        </TableRow>
-        <TableRow data-stat="dsq">
-          <TableCell>D-SQ per 100 (95%){card.reason && <><br /><small>{card.reason}</small></>}</TableCell>
-          <TableCell numeric tone={signTone(v.dsq)} data-field="dsq" data-value={v.dsq ?? ""} data-low={v.interval?.[0] ?? ""} data-high={v.interval?.[1] ?? ""}>
-            {v.dsq == null ? "unknown" : <>{formatSigned(v.dsq)}<br /><small>{formatInterval(v.interval, x => formatSigned(x))}</small></>}
-          </TableCell>
-          <TableCell numeric data-value={card.rank?.dsq ?? ""}>{card.rank ? `#${card.rank.dsq}` : "—"}</TableCell>
-        </TableRow>
-        {stats.map(s => <TableRow key={s.key} data-stat={s.key}>
-          <TableCell>{s.label}</TableCell>
-          <TableCell numeric data-field={s.key} data-value={s.value ?? ""}>{s.text}</TableCell>
-          <TableCell numeric data-value={s.rank ?? ""}>{s.rank ? `#${s.rank}` : "—"}</TableCell>
-        </TableRow>)}
-      </TableBody>
-    </Table>
-    <Table aria-label={`${card.player_name} key matchups`} density="compact" data-table="key-matchups">
-      <TableHeader><TableRow hoverable={false}><TableHead>Key matchups</TableHead></TableRow></TableHeader>
-      <TableBody>{card.key_matchups.map(m => <TableRow key={m.player_id} data-matchup={m.player_id}>
-        <TableCell><PlayerIdentity playerId={m.player_id} name={m.player_name} team={m.tricode} size="sm" era={seasonEra(season, m.tricode)} href={`/players/${m.player_id}?season=${season}`}
-          subtitle={<><span data-field="fga" data-value={m.fga}>{formatWhole(m.fga)} FGA</span> · <span data-field="xpps" data-value={m.xpps}>{formatFixed(m.xpps, 2)} xPPS</span> · <span data-field="pps" data-value={m.pps}>{formatFixed(m.pps, 2)} PPS</span></>} /></TableCell>
-      </TableRow>)}</TableBody>
-    </Table>
-  </Panel>;
+interface Boards { status: "available"; season: string; kind: ShotKind; board: DefenseBoard; byKind: Record<ShotKind, Map<string, DefenseCard>> }
+
+/** The three shot-type boards of one season, sort and team, so each card switches type without a request. Order is the global type's. */
+async function getBoards(season: string, kind: ShotKind, sort: DefenseSort, team: string | null, signal: AbortSignal): Promise<Boards | UnknownSeason> {
+  const answers = await Promise.all(KINDS.map(k => getDefensiveCards(season, k, sort, team, signal)));
+  const own = answers[KINDS.indexOf(kind)];
+  if (own.status !== "available") return own;
+  const byKind = Object.fromEntries(KINDS.map((k, i) => {
+    const answer = answers[i];
+    return [k, new Map(answer.status === "available" ? answer.rows.map(r => [r.player_id, r]) : [])];
+  })) as Record<ShotKind, Map<string, DefenseCard>>;
+  return { status: "available", season, kind, board: own, byKind };
 }
 
-function Grid({ board }: { board: DefenseBoard }) {
-  const [shown, setShown] = useState(PAGE);
-  return <>
-    <p data-count={board.rows.length}>{board.defenders_served} defenders with at least 300 matchup attempts in {board.season}; {board.unknown_count} with fewer have no value. {board.interval_excludes_zero} of {board.defenders_served} have an all-shots interval that excludes zero. League: {formatFixed(board.league.pps)} PPS against {formatFixed(board.league.xpps)} expected.</p>
-    <div className="ui-design-foundation-grid" data-grid="defenders">
-      {board.rows.slice(0, shown).map((card, i) => <Card key={card.player_id} card={card} position={i + 1} season={board.season} kind={board.kind} />)}
+// ---- Cards -----------------------------------------------------------------------------------------
+
+function RapmChip({ card }: { card: DefenseCard }) {
+  const r = card.rapm;
+  return <div className="dq-chip-block">
+    <span className="dq-chip" title={r.interval ? `80% interval ${formatInterval(r.interval, x => formatSigned(x, 2))}` : r.reason ?? undefined}>
+      <span>D-SQ RAPM</span>
+      {known(r.value) ? <Toned text={formatSigned(r.value, 2)} value={r.value} low={r.interval?.[0]} high={r.interval?.[1]} level={80} field="rapm" />
+        : <span className="dq-chip-unknown" data-field="rapm" data-value="">unknown</span>}
+    </span>
+    <span className="dq-chip-sub">{r.interval ? `80% ${formatInterval(r.interval, x => formatSigned(x, 2))}` : r.reason ?? ""}</span>
+  </div>;
+}
+
+function Stat({ field, label, text, rank, sub, wide }: { field: string; label: string; text: ReactNode; rank?: number; sub?: ReactNode; wide?: boolean }) {
+  return <div className="dq-stat" data-stat={field} data-wide={wide || undefined}>
+    <span className="dq-stat-label">{label}</span>
+    <span className="dq-stat-row">
+      <span className="dq-stat-value">{text}</span>
+      <span className="dq-stat-rank" data-field={`${field}-rank`} data-value={rank ?? ""}>{rank ? `#${rank}` : "—"}</span>
+    </span>
+    {sub && <span className="dq-stat-sub">{sub}</span>}
+  </div>;
+}
+
+function Matchups({ rows, season, name }: { rows: readonly KeyMatchup[]; season: string; name: string }) {
+  return <div className="dq-matchups-block">
+    <h4 className="dq-subhead">Key Matchups</h4>
+    <StatsGrid<KeyMatchup> label={`${name} key matchups`} name="key-matchups" className="dq-matchups" density="compact" height="auto" leadWidth="sm"
+      rows={rows} rowKey={m => m.player_id} rowData={m => ({ matchup: m.player_id })} empty="No matchup with enough shots."
+      lead={{ label: "Shooter", cell: m => <GridPlayer playerId={m.player_id} name={m.player_name} team={m.tricode} season={season} era={seasonEra(season, m.tricode)}
+        subtitle={m.tricode ?? undefined} href={`/players/${m.player_id}?season=${season}`} /> }}
+      columns={[
+        { key: "fga", label: "FGA", title: "Matchup field-goal attempts, all shots", width: "xs", data: m => ({ field: "fga", value: m.fga }), cell: m => <GridValue text={formatWhole(m.fga)} /> },
+        { key: "xpps", label: "xPPS", title: "Expected points per shot from the shooter's own season", width: "xs", keepCase: true, data: m => ({ field: "xpps", value: m.xpps }), cell: m => <GridValue text={formatFixed(m.xpps, 2)} /> },
+        { key: "pps", label: "PPS", title: "Actual points per shot", width: "xs", data: m => ({ field: "pps", value: m.pps }), cell: m => <GridValue text={formatFixed(m.pps, 2)} /> },
+      ]} />
+  </div>;
+}
+
+function Card({ card, position, data, global }: { card: DefenseCard; position: number; data: Boards; global: ShotKind }) {
+  const [kind, setKind] = useState<ShotKind>(global);
+  const season = data.season;
+  const shown = data.byKind[kind].get(card.player_id);
+  const v = shown?.value;
+  const rank = shown?.rank;
+  const matchups = (data.byKind.all.get(card.player_id) ?? card).key_matchups;
+  const tint = teamAccent(card.tricode, season);
+  const art = teamArtwork(card.tricode, season);
+  const reason = shown ? shown.reason : `No ${KIND_LABELS[kind]} value for this defender.`;
+  return <article className="dq-card" data-card={card.player_id} data-kind={kind} aria-label={`#${position} ${card.player_name}`}
+    style={tint ? ({ "--dq-team": tint } as CSSProperties) : undefined}>
+    {art && <TeamWatermark asset={art.asset} className="dq-watermark" />}
+    <header className="dq-card-head">
+      <PlayerAvatar playerId={card.player_id} name={card.player_name} team={card.tricode} size="lg" era={seasonEra(season, card.tricode)} className="dq-avatar" />
+      <div className="dq-card-titles">
+        <Link className="dq-card-name" href={`/players/${card.player_id}?season=${season}`}>{card.player_name}</Link>
+        <span className="dq-card-team">{card.tricode && <TeamLogo team={card.tricode} season={season} size={16} />}{card.tricode ?? "—"}</span>
+        <RapmChip card={card} />
+      </div>
+      <span className="dq-badge" data-field="position" data-value={position}>#{position}</span>
+    </header>
+    <Segmented label={`${card.player_name} shot type`} size="sm" stretch value={kind} onChange={setKind} options={KIND_OPTIONS} className="dq-card-kinds" />
+    <div className="dq-stats">
+      <Stat wide field="dsq" label={`D-SQ per 100 (${KIND_LABELS[kind]})`} rank={rank?.dsq}
+        text={known(v?.dsq) ? <Toned text={formatSigned(v.dsq)} value={v.dsq} low={v.interval?.[0]} high={v.interval?.[1]} level={95} field="dsq" /> : <span className="dq-unknown" data-field="dsq" data-value="">—</span>}
+        sub={known(v?.dsq) && v.interval ? `95% ${formatInterval(v.interval, x => formatSigned(x))}` : reason ?? undefined} />
+      <Stat field="fga" label={`Matchup shots (${KIND_LABELS[kind]})`} rank={rank?.fga} text={<span data-field="fga" data-value={v?.fga ?? ""}>{formatWhole(v?.fga)}</span>} />
+      <Stat field="xpps" label="Expected PPS" rank={rank?.xpps} text={<span data-field="xpps" data-value={v?.xpps ?? ""}>{formatFixed(v?.xpps, 2)}</span>} />
+      <Stat field="pps" label="Actual PPS" rank={rank?.pps} text={<span data-field="pps" data-value={v?.pps ?? ""}>{formatFixed(v?.pps, 2)}</span>} />
     </div>
-    {shown < board.rows.length && <Button onClick={() => setShown(s => s + PAGE)}>Show next {Math.min(PAGE, board.rows.length - shown)} players ({shown}/{board.rows.length} shown)</Button>}
+    <Matchups rows={matchups} season={season} name={card.player_name} />
+  </article>;
+}
+
+function Board({ data, query, kind }: { data: Boards; query: string; kind: ShotKind }) {
+  const [shown, setShown] = useState(PAGE);
+  const needle = query.trim().toLocaleLowerCase("en-US");
+  const ranked = data.board.rows.map((card, i) => ({ card, position: i + 1 }));
+  const rows = needle ? ranked.filter(r => r.card.player_name.toLocaleLowerCase("en-US").includes(needle)) : ranked;
+  const b = data.board;
+  return <>
+    {rows.length === 0 ? <p className="dq-empty">No defender matches “{query.trim()}”.</p>
+      : <div className="dq-grid" data-grid="defenders" data-count={rows.length}>
+        {rows.slice(0, shown).map(r => <Card key={`${r.card.player_id}:${kind}`} card={r.card} position={r.position} data={data} global={kind} />)}
+      </div>}
+    {shown < rows.length && <div className="dq-more"><Button size="md" onClick={() => setShown(s => s + PAGE)}>Show next {Math.min(PAGE, rows.length - shown)} players ({shown}/{rows.length} shown)</Button></div>}
+    <p className="dq-note">{formatWhole(b.defenders_served)} defenders with at least 300 matchup attempts in {b.season}; {formatWhole(b.unknown_count)} with fewer have no value.
+      No 2nd Defender values: the free matchup data credits no help defender. Key matchups count all shots, whichever type is shown.</p>
   </>;
 }
 
-function Checks({ summary }: { summary: DefenseSummary }) {
-  const seasons = Object.keys(summary.seasons).sort();
-  const p = summary.persistence.correlations;
-  const a = summary.agreement_with_rapm.correlations;
-  return <>
-    <Section title="Is it signal?" description="Reported checks, registered before any defender value was computed. No gate.">
-      <Table aria-label="Reported checks" density="compact" data-table="checks">
-        <TableHeader><TableRow hoverable={false}><TableHead>Check</TableHead><TableHead align="right">r</TableHead><TableHead align="right">95% interval</TableHead><TableHead align="right">Pairs</TableHead></TableRow></TableHeader>
-        <TableBody>{([
-          ["persistence-dsq", "D-SQ, season to next season", p.dsq, summary.persistence.pairs],
-          ["persistence-pps", "Actual PPS, season to next season", p.pps, summary.persistence.pairs],
-          ["persistence-xpps", "Expected PPS, season to next season (who they guard)", p.xpps, summary.persistence.pairs],
-          ["agreement-make", "D-SQ against dContest, same season", a.make, summary.agreement_with_rapm.pairs],
-          ["agreement-sq", "D-SQ against dSQ, same season", a.sq, summary.agreement_with_rapm.pairs],
-          ["agreement-ts", "D-SQ against dTS, same season", a.ts, summary.agreement_with_rapm.pairs],
-        ] as const).map(([key, label, c, pairs]) => <TableRow key={key} data-row={key}>
-          <TableCell>{label}</TableCell><TableCell numeric data-value={c.r}>{formatFixed(c.r)}</TableCell>
-          <TableCell numeric data-value={c.interval[0]} data-high={c.interval[1]}>{formatInterval(c.interval, x => formatFixed(x))}</TableCell>
-          <TableCell numeric data-value={pairs}>{formatWhole(pairs)}</TableCell>
-        </TableRow>)}</TableBody>
-      </Table>
-      <Table aria-label="By season" density="compact" data-table="seasons">
-        <TableHeader><TableRow hoverable={false}><TableHead>Season</TableHead><TableHead align="right">Games</TableHead><TableHead align="right">Defenders served</TableHead><TableHead align="right">Interval excludes 0</TableHead><TableHead align="right">Share</TableHead><TableHead align="right">Median width</TableHead><TableHead align="right">League PPS</TableHead><TableHead align="right">Expected PPS</TableHead></TableRow></TableHeader>
-        <TableBody>{seasons.map(s => { const b = summary.seasons[s]; return <TableRow key={s} data-season={s}>
-          <TableCell>{s}</TableCell>
-          <TableCell numeric data-value={b.games}>{formatWhole(b.games)}</TableCell>
-          <TableCell numeric data-value={b.defenders_served}>{b.defenders_served}</TableCell>
-          <TableCell numeric data-value={b.interval_excludes_zero}>{b.interval_excludes_zero}</TableCell>
-          <TableCell numeric data-value={b.interval_excludes_zero_share}>{formatShare(b.interval_excludes_zero_share)}</TableCell>
-          <TableCell numeric data-value={b.median_interval_width}>{formatFixed(b.median_interval_width, 1)}</TableCell>
-          <TableCell numeric data-value={b.league.all.pps}>{formatFixed(b.league.all.pps)}</TableCell>
-          <TableCell numeric data-value={b.league.all.xpps}>{formatFixed(b.league.all.xpps)}</TableCell>
-        </TableRow>; })}</TableBody>
-      </Table>
-    </Section>
-    <Section title="How to read the cards"><ul>
-      {(["dsq", "rapm", "xpps", "pps", "fga", "interval", "hindsight"] as const).map(k => <li key={k}>{summary.definitions[k]}</li>)}
-      <li>Key matchups always count all shots, whichever shot type is selected, and are small samples.</li>
-      <li>Green is better than expected, red worse. Expected and actual PPS have no colour: ranks run from the lowest, and a low expected PPS says who was guarded, not how well.</li>
-    </ul></Section>
-    <Section title="Method and data"><ul>
-      <li>{summary.credit}</li><li>{summary.reference_note}</li>
-      <li>NBA tracking&apos;s closest-defender season numbers and hustle stats are on the <Link href="/research/defensive-matchups/tracking">Tracking page</Link>.</li>
-    </ul>
-      <p>Registration <code>{summary.registration.content_sha256.slice(0, 16)}</code> · results <code>{summary.results_sha256.slice(0, 16)}</code>. Two runs from the seed give the same hash.</p>
-    </Section>
-  </>;
+// ---- Sections under the cards ------------------------------------------------------------------------
+
+function Reading({ data }: { data: Boards | null }) {
+  const top = data?.board.rows.find(r => known(r.value.dsq));
+  return <ResearchSection icon="book" title="How to Read the Cards">
+    <ResearchCards columns={3}>
+      <ResearchCard kicker="D-SQ per 100" tone="a"><p className="sq-text">Above zero: the shooters this defender guarded scored less than their own shooting predicts. Green or red only when the 95% interval excludes zero.</p></ResearchCard>
+      <ResearchCard kicker="Expected PPS"><p className="sq-text">Who was guarded: high means good shooters or many threes. It describes the assignment, so it is never coloured.</p></ResearchCard>
+      <ResearchCard kicker="Actual PPS"><p className="sq-text">What those shooters scored per shot. Set beside Expected PPS, the gap is what D-SQ measures, per 100 attempts.</p></ResearchCard>
+    </ResearchCards>
+    {top && known(top.value.dsq) && <p className="sq-text dq-example">Example: {top.player_name} heads {data?.board.season} at <strong>{formatSigned(top.value.dsq)}</strong> per 100 matchup
+      attempts{top.value.interval ? <>, 95% interval {formatInterval(top.value.interval, x => formatSigned(x))}</> : null}: the shooters in those matchups scored {formatFixed(top.value.pps, 2)} points
+      per shot against {formatFixed(top.value.xpps, 2)} expected from their own shooting.</p>}
+    <p className="sq-note">Ranks run from the best D-SQ and from the lowest expected and actual PPS. A low expected PPS says who was guarded, not how well. Overlapping intervals do not rank two defenders.</p>
+  </ResearchSection>;
 }
+
+function CardGlossary({ summary }: { summary: DefenseSummary }) {
+  const d = summary.definitions;
+  return <ResearchSection icon="help" title="Glossary">
+    <Glossary groups={[
+      { label: "On each card", icon: "shield", items: [
+        { term: "D-SQ per 100", text: definition(d.dsq) },
+        { term: "D-SQ RAPM", text: definition(d.rapm) },
+        { term: "Matchup shots", text: definition(d.fga) },
+        { term: "Expected PPS (xPPS)", text: definition(d.xpps) },
+        { term: "Actual PPS", text: definition(d.pps) },
+      ] },
+      { label: "Reading the values", icon: "layers", items: [
+        { term: "Interval", text: definition(d.interval) },
+        { term: "Hindsight", text: definition(d.hindsight) },
+        { term: "Key Matchups", text: "The five shooters this defender faced most often in the season, all shots, with their expected and actual points per shot. Small samples." },
+      ] },
+    ]} />
+  </ResearchSection>;
+}
+
+type Check = { key: string; label: string; r: number; low: number; high: number; pairs: number };
+
+function Signal({ summary }: { summary: DefenseSummary }) {
+  const p = summary.persistence, a = summary.agreement_with_rapm;
+  const checks: Check[] = [
+    { key: "persistence-dsq", label: "D-SQ, season to next season", r: p.correlations.dsq.r, low: p.correlations.dsq.interval[0], high: p.correlations.dsq.interval[1], pairs: p.pairs },
+    { key: "persistence-pps", label: "Actual PPS, season to next season", r: p.correlations.pps.r, low: p.correlations.pps.interval[0], high: p.correlations.pps.interval[1], pairs: p.pairs },
+    { key: "persistence-xpps", label: "Expected PPS, season to next season (who they guard)", r: p.correlations.xpps.r, low: p.correlations.xpps.interval[0], high: p.correlations.xpps.interval[1], pairs: p.pairs },
+    { key: "agreement-make", label: "D-SQ against dContest, same season", r: a.correlations.make.r, low: a.correlations.make.interval[0], high: a.correlations.make.interval[1], pairs: a.pairs },
+    { key: "agreement-sq", label: "D-SQ against dSQ, same season", r: a.correlations.sq.r, low: a.correlations.sq.interval[0], high: a.correlations.sq.interval[1], pairs: a.pairs },
+    { key: "agreement-ts", label: "D-SQ against dTS, same season", r: a.correlations.ts.r, low: a.correlations.ts.interval[0], high: a.correlations.ts.interval[1], pairs: a.pairs },
+  ];
+  const s = summary.signal;
+  return <ResearchSection icon="chart-line" title="Is It Signal?">
+    <p className="sq-text dq-lead">Checks registered before any defender value was computed; reported, with no gate.</p>
+    <Tiles label="Signal checks" tiles={[
+      { key: "share", label: "Interval excludes zero", value: <span data-field="share" data-value={s.share}>{formatShare(s.share)}</span>,
+        foot: `${formatWhole(s.interval_excludes_zero)} of ${formatWhole(s.defender_seasons)} defender-seasons; ${formatShare(s.share_expected_if_no_signal, 0)} if no defender differed` },
+      { key: "persistence", label: "D-SQ, next season", value: <span data-field="persistence" data-value={p.correlations.dsq.r}>r {formatFixed(p.correlations.dsq.r, 2)}</span>,
+        foot: `${formatInterval(p.correlations.dsq.interval, x => formatFixed(x, 2))}, ${formatWhole(p.pairs)} pairs` },
+      { key: "agreement", label: "D-SQ and dContest", value: <span data-field="agreement" data-value={a.correlations.make.r}>r {formatFixed(a.correlations.make.r, 2)}</span>,
+        foot: `${formatInterval(a.correlations.make.interval, x => formatFixed(x, 2))}, ${formatWhole(a.pairs)} player-seasons` },
+    ]} />
+    <StatsGrid<Check> label="Reported checks" name="checks" density="compact" height="auto" leadWidth="xl" minWidth="narrow" rows={checks} rowKey={c => c.key}
+      lead={{ label: "Check", cell: c => <span className="sq-cell-text">{c.label}</span> }}
+      columns={[
+        { key: "r", label: "r", width: "sm", keepCase: true, data: c => ({ value: c.r }), cell: c => <GridValue text={formatFixed(c.r)} /> },
+        { key: "interval", label: "95% interval", width: "lg", data: c => ({ value: c.low, high: c.high }), cell: c => <GridValue text={`${formatFixed(c.low)} to ${formatFixed(c.high)}`} /> },
+        { key: "pairs", label: "Pairs", width: "sm", data: c => ({ value: c.pairs }), cell: c => <GridValue text={formatWhole(c.pairs)} /> },
+      ]} />
+  </ResearchSection>;
+}
+
+type SeasonRow = { season: string } & DefenseSummary["seasons"][string];
+
+function Methodology({ summary }: { summary: DefenseSummary }) {
+  const seasons: SeasonRow[] = Object.keys(summary.seasons).sort().map(season => ({ season, ...summary.seasons[season] }));
+  return <ResearchDisclosure id="methodology" icon="layers" title="Caveats & Methodology">
+    <MethodBlock title="In hindsight"><p className="sq-text">{definition(summary.definitions.hindsight)} {definition(summary.definitions.interval)}</p></MethodBlock>
+    <MethodBlock title="Seasons">
+      <p className="sq-text">A defender is served with at least 300 matchup attempts in the season; below that there is no value. Matchup data starts in 2017-18.</p>
+      <StatsGrid<SeasonRow> label="By season" name="seasons" density="compact" height="auto" leadWidth="sm" rows={seasons} rowKey={r => r.season} rowData={r => ({ season: r.season })}
+        lead={{ label: "Season", cell: r => <span className="sq-cell-strong">{r.season}</span> }}
+        columns={[
+          { key: "games", label: "Games", width: "sm", data: r => ({ value: r.games }), cell: r => <GridValue text={formatWhole(r.games)} /> },
+          { key: "served", label: "Served", width: "sm", data: r => ({ value: r.defenders_served }), cell: r => <GridValue text={formatWhole(r.defenders_served)} /> },
+          { key: "excludes", label: "Excludes 0", width: "sm", data: r => ({ value: r.interval_excludes_zero }), cell: r => <GridValue text={formatWhole(r.interval_excludes_zero)} /> },
+          { key: "share", label: "Share", width: "sm", data: r => ({ value: r.interval_excludes_zero_share }), cell: r => <GridValue text={formatShare(r.interval_excludes_zero_share)} /> },
+          { key: "width", label: "Median width", width: "md", data: r => ({ value: r.median_interval_width }), cell: r => <GridValue text={formatFixed(r.median_interval_width, 1)} /> },
+          { key: "pps", label: "League PPS", width: "md", data: r => ({ value: r.league.all.pps }), cell: r => <GridValue text={formatFixed(r.league.all.pps)} /> },
+          { key: "xpps", label: "Expected PPS", width: "md", data: r => ({ value: r.league.all.xpps }), cell: r => <GridValue text={formatFixed(r.league.all.xpps)} /> },
+        ]} />
+    </MethodBlock>
+    <MethodBlock title="Tracking">
+      <p className="sq-text">NBA tracking&apos;s closest-defender season numbers and hustle stats are on the <Link href="/research/defensive-matchups/tracking">Tracking page</Link>.</p>
+    </MethodBlock>
+    <MethodBlock title="Data & credits">
+      <p className="sq-text">{summary.credit}</p>
+      <p className="sq-text">{summary.reference_note}</p>
+      <p className="sq-note">Registration <code>{summary.registration.content_sha256.slice(0, 16)}</code> · results <code>{summary.results_sha256.slice(0, 16)}</code>. Two runs from the seed give the same hash.</p>
+    </MethodBlock>
+  </ResearchDisclosure>;
+}
+
+// ---- Page ------------------------------------------------------------------------------------------
 
 export function DefensiveShotQualityView() {
   const { get, set } = useUrlState();
   const season = get("season") ?? LATEST;
-  const kind = (get("kind") ?? "all") as ShotKind;
-  const sort = (get("sort") ?? "dsq") as DefenseSort;
+  const kind = (KINDS.find(k => k === get("kind")) ?? "all") as ShotKind;
+  const sort = (SORTS.find(s => s.value === get("sort"))?.value ?? "dsq") as DefenseSort;
   const team = get("team");
+  const [query, setQuery] = useState("");
   const summary = useFeed([], signal => getDefensiveSummary(signal));
-  const { data, error, loading, retry } = useFeed([season, kind, sort, team], signal => getDefensiveCards(season, kind, sort, team, signal));
-  const s = summary.data;
-  return <PageShell template="research">
-    <PageHeader icon="shield" title="Defensive Shot Quality" subtitle="What shooters scored against each defender, against what their own shooting predicts. From free NBA matchup data, 2017-18 onward." />
-    {summary.error && <FeedFailure error={summary.error} retry={summary.retry} what="Defensive Shot Quality" />}
-    <ResearchLayout findings={s && <>
-      <StatTile label="Interval excludes zero" value={formatShare(s.signal.share)} footnote={`${formatWhole(s.signal.interval_excludes_zero)} of ${formatWhole(s.signal.defender_seasons)} defender-seasons; 5% if no defender differed`} />
-      <StatTile label="D-SQ, next season" value={`r ${formatFixed(s.persistence.correlations.dsq.r, 2)}`} footnote={`${formatInterval(s.persistence.correlations.dsq.interval, x => formatFixed(x, 2))}, ${formatWhole(s.persistence.pairs)} pairs`} />
-      <StatTile label="D-SQ and dContest" value={`r ${formatFixed(s.agreement_with_rapm.correlations.make.r, 2)}`} footnote={`${formatInterval(s.agreement_with_rapm.correlations.make.interval, x => formatFixed(x, 2))}, ${formatWhole(s.agreement_with_rapm.pairs)} player-seasons`} />
-    </>}>
-      <Section title="Defenders" description="Ranked by points per 100 matchup attempts below what the shooters' own season shooting predicts. Positive is good. Overlapping intervals do not rank two defenders."
-        actions={<>
-          <Field label="Season" layout="inline"><Select aria-label="Season" value={season} onChange={event => set({ season: event.target.value === LATEST ? null : event.target.value, team: null })}>
-            {(data?.seasons ?? [LATEST]).slice().reverse().map(x => <option key={x} value={x}>{x}</option>)}</Select></Field>
-          <Field label="Team" layout="inline"><Select aria-label="Team" value={team ?? ""} onChange={event => set({ team: event.target.value || null })}>
-            <option value="">All teams</option>
-            {data?.status === "available" && data.teams.map(t => <option key={t.team_id} value={t.tricode ?? t.team_id}>{t.tricode ?? t.team_id}</option>)}</Select></Field>
-          <Field label="Rank by" layout="inline"><Select aria-label="Rank by" value={sort} onChange={event => set({ sort: event.target.value === "dsq" ? null : event.target.value })}>
-            {SORTS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}</Select></Field>
-          <Segmented label="Shot type" size="sm" value={kind} onChange={next => set({ kind: next === "all" ? null : next })} options={KINDS} />
-        </>}>
+  const { data, error, loading, retry } = useFeed([season, kind, sort, team], signal => getBoards(season, kind, sort, team, signal));
+  const served = data?.status === "available" ? data.board.seasons : data?.seasons ?? (summary.data ? Object.keys(summary.data.seasons).sort() : []);
+  const list = served.length ? served : [LATEST];
+  const available = data?.status === "available" ? data : null;
+  return <PageShell template="research" className="dq-shell">
+    <div className="rs-column dq-page">
+      <PageHeader className="sq-hero dq-hero research-hero" icon="shield" title="Defensive Shot Quality"
+        subtitle="What shooters scored against each defender, against what their own shooting predicts, from free NBA matchup data since 2017-18." />
+      <section className="dq-board-section" aria-label="Defenders">
+        <SqPanel className="dq-toolbar" label="Card filters">
+          <div className="dq-toolbar-row">
+            <div className="dq-search"><GridSearch value={query} onChange={setQuery} label="Search defenders" placeholder="Search players…" /></div>
+            <div className="dq-controls">
+              <Select size="md" aria-label="Season" value={season} onChange={event => set({ season: event.target.value === LATEST ? null : event.target.value, team: null })}>
+                {(list.includes(season) ? list : [...list, season]).slice().reverse().map(s => <option key={s} value={s}>{s}</option>)}</Select>
+              <Select size="md" aria-label="Rank by" value={sort} onChange={event => set({ sort: event.target.value === "dsq" ? null : event.target.value })}>
+                {SORTS.map(o => <option key={o.value} value={o.value}>Rank by {o.label}</option>)}</Select>
+              <TeamPicker value={team} onChange={code => set({ team: code })} season={season} />
+              <Segmented label="Shot type" size="md" value={kind} onChange={next => set({ kind: next === "all" ? null : next })} options={KIND_OPTIONS} />
+            </div>
+          </div>
+          {available && <div className="dq-toolbar-foot"><ToneLegend level={95} className="dq-legend" /><CountChip>{formatWhole(available.board.rows.length)} defenders</CountChip></div>}
+        </SqPanel>
         {error && <FeedFailure error={error} retry={retry} what="The defender cards" />}
         {loading && <FeedSkeleton label="Loading the defender cards" />}
         {data?.status === "unknown" && <GatedNote>{data.reason}</GatedNote>}
-        {data?.status === "available" && <Grid key={`${season}:${kind}:${sort}:${team}`} board={data} />}
-      </Section>
-      {s && <Checks summary={s} />}
-    </ResearchLayout>
+        {available && <Board key={`${season}:${kind}:${sort}:${team}`} data={available} query={query} kind={kind} />}
+      </section>
+      {summary.error && <FeedFailure error={summary.error} retry={summary.retry} what="Defensive Shot Quality" />}
+      {summary.data && <>
+        <Reading data={available} />
+        <CardGlossary summary={summary.data} />
+        <Signal summary={summary.data} />
+        <Methodology summary={summary.data} />
+      </>}
+    </div>
   </PageShell>;
 }

@@ -85,36 +85,78 @@ test.describe("R06 decomposition", () => {
 test.describe("R06 Defensive Shot Quality", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
   const board = fixture.cards["2025-26:all:dsq:all"];
+  const tone = (band: [number, number] | null) => !band ? null : band[0] > 0 ? "good" : band[1] < 0 ? "bad" : null;
+  type Card = { player_id: string; value: { dsq: number | null; fga: number; xpps: number | null; pps: number | null; interval: [number, number] | null };
+    rank: Record<string, number> | null; rapm: { value: number | null; interval: [number, number] | null }; key_matchups: { player_id: string }[] };
 
-  test("cards rank by D-SQ with exact values, ranks, key matchups and paging", async ({ page }) => {
+  test("RD05: Databallr's cards in rank order with exact values, ranks, interval tones and key matchups; paging", async ({ page }) => {
     await openWorkbench(page, defense);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Defensive Shot Quality");
     const cards = page.locator("[data-card]");
     await expect(cards).toHaveCount(6);
-    const first = board.rows[0];
-    const card = cards.first();
-    await expect(card).toHaveAttribute("data-card", first.player_id);
-    expect(Number(await card.locator("[data-field='dsq']").getAttribute("data-value"))).toBe(first.value.dsq);
-    await expect(card.locator("[data-field='dsq']")).toHaveAttribute("data-tone", "positive");
-    expect(Number(await card.locator("[data-field='xpps']").first().getAttribute("data-value"))).toBe(first.value.xpps);
-    await expect(card.locator("[data-field='xpps']").first()).not.toHaveAttribute("data-tone", /.+/);
-    await expect(card.locator("[data-matchup]")).toHaveCount(first.key_matchups.length);
-    await page.getByRole("button", { name: /Show next 6 players/ }).click();
+    for (const [i, row] of (board.rows as Card[]).slice(0, 6).entries()) {
+      const card = cards.nth(i);
+      await expect(card).toHaveAttribute("data-card", row.player_id);
+      await expect(card.locator("[data-field='position']")).toHaveText(`#${i + 1}`);
+      const dsq = card.locator("[data-field='dsq']");
+      expect(Number(await dsq.getAttribute("data-value"))).toBe(row.value.dsq);
+      expect(await dsq.getAttribute("data-tone")).toBe(tone(row.value.interval));
+      const rapm = card.locator("[data-field='rapm']");
+      expect(Number(await rapm.getAttribute("data-value"))).toBe(row.rapm.value);
+      expect(await rapm.getAttribute("data-tone")).toBe(tone(row.rapm.interval));
+      for (const key of ["fga", "xpps", "pps"] as const) {
+        const cell = card.locator(`.dq-stat [data-field='${key}']`);
+        expect(Number(await cell.getAttribute("data-value"))).toBe(row.value[key]);
+        await expect(cell).not.toHaveAttribute("data-tone", /.+/);
+        expect(Number(await card.locator(`[data-field='${key}-rank']`).getAttribute("data-value"))).toBe(row.rank?.[key]);
+      }
+      expect(Number(await card.locator("[data-field='dsq-rank']").getAttribute("data-value"))).toBe(row.rank?.dsq);
+      await expect(card.locator("tr[data-matchup]")).toHaveCount(row.key_matchups.length);
+    }
+    // No 2nd Defender tiles, no dropdown for teams, the RAPM chip's tone is the 80% interval's (Capela's includes zero: neutral).
+    await expect(page.getByText("2nd Defender", { exact: true })).toHaveCount(0);
+    await expect(page.locator("select[aria-label='Team']")).toHaveCount(0);
+    await page.getByRole("button", { name: /Show next 6 players \(6\/329 shown\)/ }).click();
     await expect(cards).toHaveCount(12);
-    await expect(page.getByText("Reproduced: the ranked player cards", { exact: false })).toBeVisible();
+    await expect(page.getByText("Reproduced: the ranked player cards", { exact: false })).toBeAttached();
+    await page.locator("#methodology summary").click();
     await expect(page.getByRole("link", { name: "Tracking page" })).toHaveAttribute("href", "/research/defensive-matchups/tracking");
   });
 
-  test("the shot-type switch serves that type's values and unknowns stay unknown", async ({ page }) => {
-    const threes = fixture.cards["2025-26:3pt:dsq:all"];
-    await openWorkbench(page, `${defense}?kind=3pt`);
+  test("RD05: each card switches its own shot type to that board's values; the global switch reorders", async ({ page }) => {
+    const twos = fixture.cards["2025-26:2pt:dsq:all"], threes = fixture.cards["2025-26:3pt:dsq:all"];
+    await openWorkbench(page, defense);
     const card = page.locator("[data-card]").first();
-    await expect(card).toHaveAttribute("data-card", threes.rows[0].player_id);
-    expect(Number(await card.locator("[data-field='dsq']").getAttribute("data-value"))).toBe(threes.rows[0].value.dsq);
-    await expect(card).toContainText("Shots (3PT)");
+    const id = await card.getAttribute("data-card");
+    await card.getByRole("radio", { name: "2PT" }).click();
+    const two = (twos.rows as Card[]).find(r => r.player_id === id)!;
+    await expect(card).toHaveAttribute("data-kind", "2pt");
+    expect(Number(await card.locator("[data-field='dsq']").getAttribute("data-value"))).toBe(two.value.dsq);
+    expect(Number(await card.locator(".dq-stat [data-field='fga']").getAttribute("data-value"))).toBe(two.value.fga);
+    await expect(card).toContainText("Matchup shots (2PT)");
+    await expect(page.locator("[data-card]").nth(1)).toHaveAttribute("data-kind", "all");
+    await openWorkbench(page, `${defense}?kind=3pt`);
+    const first = page.locator("[data-card]").first();
+    await expect(first).toHaveAttribute("data-card", threes.rows[0].player_id);
+    expect(Number(await first.locator("[data-field='dsq']").getAttribute("data-value"))).toBe(threes.rows[0].value.dsq);
+    await expect(first).toContainText("Matchup shots (3PT)");
   });
 
-  test("a season before the decomposition shows the RAPM headline as unknown with its reason", async ({ page }) => {
+  test("RD05: search filters the cards and keeps their rank; the team picker serves that team", async ({ page }) => {
+    await openWorkbench(page, defense);
+    const target = (board.rows as (Card & { player_name: string })[])[9];
+    await page.getByRole("searchbox", { name: "Search defenders" }).fill(target.player_name);
+    await expect(page.locator("[data-card]")).toHaveCount(1);
+    await expect(page.locator("[data-card] [data-field='position']")).toHaveText("#10");
+    await page.getByRole("searchbox", { name: "Search defenders" }).fill("");
+    await page.getByRole("button", { name: "Select Team" }).click();
+    await page.getByRole("dialog", { name: "Select Team" }).getByRole("button", { name: "Boston Celtics" }).click();
+    await expect(page).toHaveURL(/team=BOS/);
+    const bos = fixture.cards["2025-26:all:dsq:BOS"];
+    await expect(page.locator("[data-card]").first()).toHaveAttribute("data-card", bos.rows[0].player_id);
+  });
+
+  test("a season before the decomposition shows the RAPM chip as unknown with its reason", async ({ page }) => {
     await openWorkbench(page, `${defense}?season=2019-20`);
     const card = page.locator("[data-card]").first();
     await expect(card.locator("[data-field='rapm']")).toHaveText("unknown");

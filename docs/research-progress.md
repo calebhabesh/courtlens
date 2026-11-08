@@ -659,3 +659,23 @@ Databallr's own table has bars); the Stats table's search (`GridSearch`) with eq
 grid instead of a team dropdown; metric labels keep their case; green/red only where an interval excludes zero; centring a
 header icon tile with flex. Next in the queue: RD05 Defensive Shot Quality.
 
+## 2026-11-08 — RD05 round 1: Defensive Shot Quality after Databallr's D-ShotQuality page
+
+[Evidence](evidence/research/design-RD05/README.md#round-1-owner-2026-11-08). Owner: "Yes, go with your recommendations for an
+optimal layout and presentation of this page. Comprehensively build out the page now."
+
+- **Reference.** The attached `ShotQuality RAPM …` file is a `/shotquality` save (RD04's page); the Webpages `Defensive Shot
+  Quality` save was used.
+- **Change.** RD04's centred hero and 1352 px column; a toolbar panel (Stats search, season, Rank by, `TeamPicker`, All/2PT/3PT,
+  colour key, count); Databallr's ranked cards three across with a team tint and logo watermark, a season photo, the RAPM chip
+  with its 80% interval, #N, the card's own shot type (the three boards joined by player), a D-SQ tile with its 95% interval and
+  rank, matchup shots / expected / actual PPS with ranks and Key Matchups on `StatsGrid`; next-six paging; 2nd Defender left out
+  and said why. Then How to Read, Glossary, Is It Signal? and collapsed Caveats & Methodology. Green/red only where an interval
+  excludes zero, replacing the old sign colouring.
+- **Kept.** Analyses, results and APIs untouched; the fixture gained five real boards for the per-card switch.
+- **Checks.** Lint 0/0, typecheck, Vitest 820; `r06-decomposition` 9/9 ×3; full Playwright on the final build 597 passed, 17
+  skipped, 3 failed, all `r10-wingspan-calculator` under load (11/11 alone; earlier runs' r05/r09/RD04 timeouts pass alone); real
+  data 67,960 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, no phone control under 40 px, one green and one
+  red rendered.
+- **Not done.** The owner's review and ✅.
+

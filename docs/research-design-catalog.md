@@ -57,7 +57,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data, RD02 | ✅ |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04, RD03 | ✅ |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D/LocalSend: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06, RD04 | ✅ |
-| RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06 | ⬜ |
+| RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06, RD05 | 👀 |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning` | R11 | ⬜ |
 | RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes` | R11 | ⬜ |
 | RD08 | Draft Classes [28] | `/draft` | D: Draftballr dashboard, lottery, resources (owner: don't copy Draftballr's design; match CourtLens and Databallr) | R09 | ⬜ |
@@ -428,12 +428,48 @@ Instructions (owner, 2026-11-07, round 6; screenshot: the Player header with its
    below. It now sits on the tier line with the label's own gap below it: 6.5 / 7 px at 1440 and 7.5 / 8 px at 390, on both
    tables, checked in every scene. Scoped to `GridSearch`, so Wingspan's approved header is unchanged.
 
-## RD05 Defensive Shot Quality — ⬜
+## RD05 Defensive Shot Quality — 👀
 
 - **Now:** ranked defender cards, All / 2PT / 3PT, ranks, RAPM headline, Key Matchups, paging; matchup data
   from 2017-18; expected PPS is the shooters' own shooting.
 - **Known gaps:** no tracking, so no contest-based expectation and no 2nd defender (help columns empty).
-- **Instructions:** _(owner)_
+- **Reference:** `~/Downloads/Webpages/Defensive Shot Quality - NBA Defense Analytics _ databallr.html` (`/d-shotquality`). The
+  file the owner attached in round 1 (`~/Downloads/Projects/Courtlens/ShotQuality RAPM …`) is another save of `/shotquality`
+  (RD04's page; its text equals the LocalSend copy), so the Webpages save was used. Databallr's column measures about 1368 px.
+- **Data check (2026-11-08):** (A) 2nd Defender: not served (help columns are zero in the free matchup data). (B) Closest
+  Defender: our rows are tracked matchups, not the nearest defender. (C) Opponent Shot Quality EV: ours is expected PPS from
+  the shooters' own shooting. (D) Data Source ↔ our Rank by. (E) per-card All/2PT/3PT: the three served boards joined by
+  player. (F) player search: filters the served rows. (G) team-colour cards: `team-colors` and `TeamWatermark` exist. (H) Key
+  Matchups FGA · SQ · PPS ↔ FGA · xPPS · PPS (ours has five; Databallr's are empty). (I) the RAPM chip is our dSQ (80%, from
+  2022-23). (J) D-SQ per 100 with its 95% interval is ours only. (K) seasons from 2017-18. (L) Powered by ShotQuality and
+  Request access dropped. (M) signal checks, season table, definitions, method and hashes are ours only. (N) 329 served, not 478.
+
+Instructions (owner, 2026-11-08, round 1; the owner answered the gap list and recommendations with "Yes, go with your
+recommendations for an optimal layout and presentation of this page. Comprehensively build out the page now."):
+1. [x] Yes, go with your recommendations for an optimal layout and presentation of this page. Comprehensively build out the page now.
+   - (1) Layout: the centred hero ("Defensive Shot Quality", one line; no ShotQuality logo or Request access); RD04's 1352 px
+     column; cards three across on a desktop, one on a phone.
+   - (2) Toolbar panel: the Stats search look filtering the cards on the left; season (kit select, 2017-18 on), Rank by (kit
+     select, our stand-in for Data Source), `TeamPicker` and the global All/2PT/3PT on the right; then the count.
+   - (3) Cards after Databallr's: 60 px season photo, name, logo beside the team code, #N badge, the D-SQ RAPM chip (80% interval
+     under it; "from 2022-23" before); the card's own All/2PT/3PT, starting from the global one; a D-SQ per 100 tile (value over
+     its 95% interval, rank); then Matchup shots, Expected PPS and Actual PPS tiles with ranks. (A) 2nd Defender tiles dropped,
+     one line under the cards says why.
+   - (4) Colour: green/red only where the served interval excludes zero (D-SQ 95%, RAPM 80%); expected and actual PPS neutral.
+     (G) a subdued team-colour tint and the logo watermark, not solid team fills. `ToneLegend` above the cards.
+   - (5) Key Matchups as a small table in each card: player (photo, logo, code), FGA, xPPS, PPS; an empty state.
+   - (6) Paging: "Show next 6 players (6/329 shown)".
+   - (7) Below the cards: How to read (`ReadingGuide`-style), the glossary from the served definitions, "Is it signal?" (the three
+     tiles and the checks on `StatsGrid`), and collapsed Caveats & Methodology (hindsight, the by-season table on `StatsGrid`,
+     method, Tracking link, credits with Databallr as the design reference, hashes).
+   - (8) Phone: the toolbar wraps, controls at least 40 px, no sideways scroll.
+   - (9) Design only: no API or analysis change; labels say what our numbers are.
+   — Centred hero and 1352 px column; toolbar with search, season, Rank by, `TeamPicker`, All/2PT/3PT; team-tinted cards three
+   across with photo, RAPM chip (80%), #N, their own shot-type switch, D-SQ (95%) and three ranked tiles, Key Matchups on `StatsGrid`;
+   no 2nd Defender (said why); reading notes, glossary, signal checks and collapsed Caveats & Methodology. Real data 67,960 values, 0
+   mismatches.
+
+Evidence: [`design-RD05`](evidence/research/design-RD05/README.md).
 
 ## RD06 Learning — ⬜
 
