@@ -704,3 +704,11 @@ accepted the recommendation to link to Player Matchups: "Sounds good build it co
   the links followed in 2025-26 and 2017-18.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-08 — RD05 approved
+
+The owner approved Defensive Shot Quality (RD05) after three rounds and asked for the next page; the catalog row is ✅. Settled
+along the way and added to the Research pages pattern: player cards take a subdued team-colour tint without a logo watermark
+behind them; a card can carry its own view switch when the served boards can be joined without a request; data a page doesn't
+serve in full (five key matchups) links to the CourtLens page that does (Player Matchups) instead of being rebuilt, and the source
+difference is said where the reader meets the link. Next in the queue: RD06 Learning.
+
