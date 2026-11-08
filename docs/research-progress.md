@@ -813,3 +813,8 @@ Owner: the gold edge on the version tile is still there. Round 4 removed it; :31
 import toggle (remove, request the page for 12 s, re-add, request again) refreshed it; :3100 then showed the tile without the rail.
 Committed code unchanged since round 4. Awaits the owner's ✅.
 
+## 2026-11-08 — RD07 approved
+
+The owner approved Patch Notes ("Looks good. I approve this page."). Row RD07 ✅; its settled rules are in the alignment plan's
+"Research pages" pattern ("Settled in RD07"). Next in the design queue: RD08 Draft Classes.
+
