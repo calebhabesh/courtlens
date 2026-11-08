@@ -9,6 +9,7 @@
   .slc-plot:focus-visible { outline: none; box-shadow: var(--focus-ring); }
   .slc-grid { position: absolute; top: var(--slc-y); left: 0; right: 0; height: 1px; background: var(--color-hairline); }
   .slc-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .slc-band { fill: color-mix(in srgb, var(--color-accent) 16%, transparent); stroke: none; }
   .slc-line { fill: none; stroke: var(--color-accent); stroke-width: 2px; stroke-linejoin: round; stroke-linecap: round; }
   .slc-dot { position: absolute; top: var(--slc-y); left: var(--slc-x); width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--color-accent); box-shadow: 0 0 0 2px var(--color-bg); transform: translate(-50%, -50%); pointer-events: none; }
   .slc-dot[data-active] { width: 12px; height: 12px; }

@@ -120,11 +120,11 @@ export const BAND_LABELS: Record<string, string> = {
   "21_to_30_vs_31_to_40": "Picks 21–30 vs 31–40", "31_to_45_vs_46_to_60": "Picks 31–45 vs 46–60",
 };
 
-export const fixed = (v: number | null | undefined, digits = 1) => v === null || v === undefined ? "—" : v.toFixed(digits);
-export const whole = (v: number | null | undefined) => v === null || v === undefined ? "—" : Math.round(v).toLocaleString("en-US");
-export const percent = (v: number | null | undefined, digits = 0) => v === null || v === undefined ? "—" : `${(v * 100).toFixed(digits)}%`;
 /** A true minus sign, and no sign on a value that rounds to zero. */
 const minus = (text: string) => /^-0(\.0+)?$/.test(text) ? text.slice(1) : text.replace(/^-/, "−");
+export const fixed = (v: number | null | undefined, digits = 1) => v === null || v === undefined ? "—" : minus(v.toFixed(digits));
+export const whole = (v: number | null | undefined) => v === null || v === undefined ? "—" : minus(Math.round(v).toLocaleString("en-US"));
+export const percent = (v: number | null | undefined, digits = 0) => v === null || v === undefined ? "—" : `${(v * 100).toFixed(digits)}%`;
 export const signed = (v: number | null | undefined, digits = 1) => {
   if (v === null || v === undefined) return "—";
   const text = minus(v.toFixed(digits));
