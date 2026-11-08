@@ -155,6 +155,14 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   is its reality (the number appears once). A route under a tabbed page may draw its own centred hero (`OWN_HEADER_TABS`) without
   moving its URL. Judge CSS from the sandbox build: when the owner's :3100 shows something the build doesn't, check the CSS chunk
   :3100 serves and toggle the import line in `app/globals.css`.
+- **Settled in RD07 (owner, Patch Notes, 2026-11-08):** pages for visitors carry no repository detail: no commit hashes, progress-log
+  links, branch, merge or PR lines and no process notes ("approved after n rounds"); copy is plain language about what a visitor can
+  do. Where the data needs those references to stay checkable, they live in the source file and its check script, not on the page.
+  A changelog copies Databallr's: a 160 px release column (month, version, name, dates) beside plain entry rows (title, badge,
+  Explore, one sentence), the column a subdued gold-tinted tile with the version in gold, sticky while its release is read; entries
+  condensed, with no cards. No accent rail or edge highlight on a card or tile edge (it reads as vibe-coded). After a CSS change
+  the owner will view on :3100, check the served chunk and refresh it (remove the import, request the page for about 12 s, re-add,
+  request again) before reporting.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).

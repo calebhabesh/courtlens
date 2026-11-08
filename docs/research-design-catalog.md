@@ -59,7 +59,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D/LocalSend: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06, RD04 | ✅ |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06, RD05 | ✅ |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning`; `~/Downloads/Projects/Courtlens/Learning _ databallr.html` | R11, RD06 | ✅ |
-| RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes`; `~/Downloads/Projects/Courtlens/databallr — NBA & WNBA analytics, impact metrics, and draft games.html` | R11, RD07 | 👀 |
+| RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes`; `~/Downloads/Projects/Courtlens/databallr — NBA & WNBA analytics, impact metrics, and draft games.html` | R11, RD07 | ✅ |
 | RD08 | Draft Classes [28] | `/draft` | D: Draftballr dashboard, lottery, resources (owner: don't copy Draftballr's design; match CourtLens and Databallr) | R09 | ⬜ |
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
 | RD09 | Research landing [29] | `/research` | none | R12 | ⬜ |
@@ -545,7 +545,7 @@ Instructions (owner, 2026-11-08, round 2; screenshot: the desktop index with the
    markup, so on scroll the sticky list slid up against the search (the Turbopack stale-import issue). Toggling the import line in
    `app/globals.css` (file unchanged) made :3100 serve the current rules; measured there: 24 px gap at scroll 0, 250 and 3000.
 
-## RD07 Patch Notes — 👀
+## RD07 Patch Notes — ✅ approved by the owner (2026-11-08)
 
 - **Now:** releases newest first (merged PRs and the research branch), grouped entries with badge, date,
   Explore, commit and progress-log links. Plain build. Data in `dashboard/content/patch-notes.json`,
