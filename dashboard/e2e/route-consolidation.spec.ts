@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { CONSOLIDATED_REDIRECTS, TABBED_PAGES } from "../lib/route-consolidation";
+import { CONSOLIDATED_REDIRECTS, OWN_HEADER_TABS, TABBED_PAGES } from "../lib/route-consolidation";
 import { openWorkbench } from "./workbench-navigation";
 
 // FO07 route consolidation (D3): merged pages are one title with link tabs, and every removed URL
@@ -28,8 +28,14 @@ test.describe("FO07 route consolidation", () => {
       const tab = merged.tabs.find(item => item.href === destination)!;
       await page.goto(`${source}?season=2024-25`);
       await expect(page).toHaveURL(url => url.pathname === destination && url.searchParams.get("season") === "2024-25");
-      await expect(page.getByRole("heading", { level: 1 }), source).toHaveText(merged.title);
       const tabs = page.getByRole("navigation", { name: `${merged.title} sections` });
+      // RD06: a tab with its own centred hero (Learning) shows its own title and no tab bar.
+      if (OWN_HEADER_TABS.has(destination)) {
+        await expect(page.getByRole("heading", { level: 1 }), source).toHaveText(tab.label);
+        await expect(tabs, source).toHaveCount(0);
+        continue;
+      }
+      await expect(page.getByRole("heading", { level: 1 }), source).toHaveText(merged.title);
       // A page left with one tab shows no tab bar (What's New since the Blog was removed).
       if (merged.tabs.length === 1) { await expect(tabs, source).toHaveCount(0); continue; }
       await expect(tabs.getByRole("link")).toHaveText(merged.tabs.map(item => item.label));

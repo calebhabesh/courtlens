@@ -63,6 +63,9 @@ export const TABBED_PAGES = {
   },
 } satisfies Record<string, TabbedPage>;
 
+/** RD06 (owner, 2026-11-08): tabs that draw their own centred hero instead of the tabbed header (route and redirects unchanged). */
+export const OWN_HEADER_TABS: ReadonlySet<string> = new Set(["/methodology/learning"]);
+
 /** PC11: Stats keeps its own header; Tracking is a second route tab (season totals, separate query). */
 export const STATS_TABS: readonly RouteTab[] = [
   { label: "Box Score", href: "/stats" },
