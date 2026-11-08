@@ -679,3 +679,14 @@ optimal layout and presentation of this page. Comprehensively build out the page
   red rendered.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-08 — RD05 round 2: no logo behind the cards
+
+[Evidence](evidence/research/design-RD05/README.md#round-2-owner-2026-11-08). Owner: remove the team logo under the cards; the
+team colour is enough.
+
+- **Change.** The logo watermark is gone from every card; the team-colour tint, the photo's logo badge and the logo beside the
+  code stay.
+- **Checks.** Lint 0/0, typecheck, Vitest 820; `r06-decomposition` 9/9 ×3; full Playwright 597 passed, 17 skipped, 3 failed, all
+  `r10-wingspan-calculator` under load (11/11 alone); real data 67,988 values, 0 mismatches, 0 watermarks, every card tinted.
+- **Not done.** The owner's review and ✅.
+
