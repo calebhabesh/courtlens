@@ -471,6 +471,11 @@ recommendations for an optimal layout and presentation of this page. Comprehensi
 
 Evidence: [`design-RD05`](evidence/research/design-RD05/README.md).
 
+Instructions (owner, 2026-11-08, round 2; screenshot: the first three cards):
+2. [x] remove the team logo under the cards. It's a little distracting. The team color match is enough.
+   — The logo watermark behind each card is gone; the team-colour tint, the photo's logo badge and the logo beside the code stay.
+   Checked on real data: no image behind any card, every card tinted.
+
 ## RD06 Learning — ⬜
 
 - **Now:** 22 topics in 5 tiers, each with formula, key takeaways and links; 14 "Measured in CourtLens"
