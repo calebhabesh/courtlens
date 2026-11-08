@@ -540,6 +540,10 @@ Instructions (owner, 2026-11-08, round 2; screenshot: the desktop index with the
 3. [x] it's squished to the content below it. Add a natural padding (screenshot: the search over "1. Core Concepts").
    — The search now heads the index column at its 224 px width and stays sticky with it, 24 px above "1. Core Concepts"; full width
    above the Topics button on a phone. Real data 620 values, 0 mismatches.
+4. [x] the search bar is still squished for some reason. (screenshot: :3100, scrolled, the index against the search)
+   — No code change. :3100 was serving round 1's `learning-view.css` (384 px search, the index list itself sticky) with round 2's
+   markup, so on scroll the sticky list slid up against the search (the Turbopack stale-import issue). Toggling the import line in
+   `app/globals.css` (file unchanged) made :3100 serve the current rules; measured there: 24 px gap at scroll 0, 250 and 3000.
 
 ## RD07 Patch Notes — ⬜
 
