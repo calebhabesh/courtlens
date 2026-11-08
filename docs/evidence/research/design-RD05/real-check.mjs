@@ -127,10 +127,16 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
     const good = colours("good"), bad = colours("bad");
     const plain = [...new Set([...document.querySelectorAll("[data-card] [data-field='rapm']:not([data-tone]), [data-card] .dq-stat [data-field]:not([data-tone])")].map(e => getComputedStyle(e).color))];
     const toneColours = { good, bad, plainUsesTone: plain.some(c => good.includes(c) || bad.includes(c)) };
-    return { overflow: document.documentElement.scrollWidth - innerWidth, broken, small, column: Math.round(col.width), columns: grid, icon, toneColours };
+    // Round 2 (owner): no logo watermark behind a card; the team colour stays.
+    const cardsEl = [...document.querySelectorAll("[data-card]")];
+    const watermarks = cardsEl.reduce((n, c) => n + c.querySelectorAll(":scope > img").length, 0);
+    const tinted = cardsEl.filter(c => getComputedStyle(c).backgroundImage.includes("gradient")).length === cardsEl.length;
+    return { overflow: document.documentElement.scrollWidth - innerWidth, broken, small, column: Math.round(col.width), columns: grid, icon, toneColours, watermarks, tinted };
   }, width);
   for (const [k, v] of Object.entries(page_.icon)) eq(`hero icon ${k}`, Math.abs(v) <= 1, true);
   eq("card columns", page_.columns, width > 1200 ? 3 : 1);
+  eq("no watermarks", page_.watermarks, 0);
+  eq("cards tinted", page_.tinted, true);
   eq("one good colour", page_.toneColours.good.length <= 1, true);
   eq("one bad colour", page_.toneColours.bad.length <= 1, true);
   eq("untoned values not green/red", page_.toneColours.plainUsesTone, false);

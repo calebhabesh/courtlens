@@ -1,6 +1,6 @@
 /* RD05 (owner, 2026-11-08): Research → Defensive Shot Quality as Databallr's D-ShotQuality page. RD04's centred hero and 1352 px
-   column, the toolbar panel, then ranked player cards three across (one on a phone): a subdued team tint and logo watermark (identity,
-   not good/bad), photo, name, RAPM chip, #N badge, the card's own shot-type switch, value tiles with ranks and the Key Matchups table.
+   column, the toolbar panel, then ranked player cards three across (one on a phone): a subdued team-colour tint (identity, not good/bad;
+   round 2: no logo watermark), photo, name, RAPM chip, #N badge, the card's own shot-type switch, value tiles with ranks and the Key Matchups table.
    Green/red only on values whose served interval excludes zero (`Toned`). */
 @layer pages {
   .rs-column.dq-page { max-width: 1352px; gap: var(--space-8); padding-bottom: var(--space-12); }
@@ -27,8 +27,6 @@
     background: linear-gradient(160deg, color-mix(in srgb, var(--dq-team) 16%, transparent), color-mix(in srgb, var(--dq-team) 5%, transparent) 70%), var(--rs-panel);
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--dq-team) 28%, var(--rs-rim));
   }
-  .dq-card > :not(.dq-watermark) { position: relative; }
-  .dq-watermark { position: absolute; top: 50%; left: 50%; width: 62%; aspect-ratio: 1; object-fit: contain; opacity: 0.07; transform: translate(calc(-50% + var(--logo-shift, 0) * 1%), -50%); pointer-events: none; }
   .dq-card-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); }
   .dq-avatar.ui-identity-lg { --identity-media: 60px; }
   .dq-card-titles { display: grid; justify-items: start; gap: var(--space-1); min-width: 0; }

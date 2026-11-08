@@ -5,7 +5,6 @@ import Link from "next/link";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { SqPanel, Tiles, Toned } from "./shot-quality-figures";
 import { TeamLogo } from "./team-logo";
-import { TeamWatermark } from "./team-watermark";
 import { GatedNote } from "./ui/gated-note";
 import { CountChip } from "./ui/filter-bar";
 import { PlayerAvatar } from "./ui/identity";
@@ -17,7 +16,6 @@ import { GridPlayer, GridSearch, GridValue, StatsGrid } from "./research/stats-g
 import { TeamPicker } from "./research/team-picker";
 import { seasonEra } from "@/lib/portrait-source";
 import { teamAccent } from "@/lib/team-colors";
-import { teamArtwork } from "@/lib/team-era";
 import {
   getDefensiveCards, getDefensiveSummary, type DefenseBoard, type DefenseCard, type DefenseSort, type DefenseSummary, type KeyMatchup, type ShotKind, type UnknownSeason
 } from "@/lib/shot-decomposition";
@@ -26,7 +24,7 @@ import { formatFixed, formatInterval, formatShare, formatSigned, formatWhole } f
 /*
  * Research → Defensive Shot Quality (R06 analysis; RD05 design after Databallr's D-ShotQuality page). Databallr's centred hero,
  * a toolbar panel (search, season, rank by, team picker, global shot type), then its ranked player cards three across: photo,
- * name, a RAPM chip and a #N badge over a team tint and logo watermark, the card's own All / 2PT / 3PT, value tiles with ranks
+ * name, a RAPM chip and a #N badge over a team-colour tint (round 2: no logo watermark), the card's own All / 2PT / 3PT, value tiles with ranks
  * and a Key Matchups table. Databallr's 2nd Defender tiles are left out: the free matchup data has no help defender. Below the
  * cards, CourtLens's own reading guide, glossary, signal checks and collapsed Caveats & Methodology. Green/red only where a
  * served interval excludes zero (D-SQ 95%, RAPM 80%). Every number is the frozen courtlens-defensive-shot-quality-v1 results'
@@ -107,11 +105,9 @@ function Card({ card, position, data, global }: { card: DefenseCard; position: n
   const rank = shown?.rank;
   const matchups = (data.byKind.all.get(card.player_id) ?? card).key_matchups;
   const tint = teamAccent(card.tricode, season);
-  const art = teamArtwork(card.tricode, season);
   const reason = shown ? shown.reason : `No ${KIND_LABELS[kind]} value for this defender.`;
   return <article className="dq-card" data-card={card.player_id} data-kind={kind} aria-label={`#${position} ${card.player_name}`}
     style={tint ? ({ "--dq-team": tint } as CSSProperties) : undefined}>
-    {art && <TeamWatermark asset={art.asset} className="dq-watermark" />}
     <header className="dq-card-head">
       <PlayerAvatar playerId={card.player_id} name={card.player_name} team={card.tricode} size="lg" era={seasonEra(season, card.tricode)} className="dq-avatar" />
       <div className="dq-card-titles">

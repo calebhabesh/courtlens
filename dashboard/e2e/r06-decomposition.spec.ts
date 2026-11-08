@@ -115,6 +115,8 @@ test.describe("R06 Defensive Shot Quality", () => {
     }
     // No 2nd Defender tiles, no dropdown for teams, the RAPM chip's tone is the 80% interval's (Capela's includes zero: neutral).
     await expect(page.getByText("2nd Defender", { exact: true })).toHaveCount(0);
+    // Round 2 (owner): the team colour only, no logo watermark behind a card.
+    await expect(page.locator("[data-card] > img")).toHaveCount(0);
     await expect(page.locator("select[aria-label='Team']")).toHaveCount(0);
     await page.getByRole("button", { name: /Show next 6 players \(6\/329 shown\)/ }).click();
     await expect(cards).toHaveCount(12);

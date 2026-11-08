@@ -64,3 +64,24 @@ now." The nine recommendations are recorded with the instruction in the catalog.
 - Glance test (screenshots viewed): the title, the ranked defenders and their green D-SQ with ranks read at once; the RAPM chip
   and Key Matchups second; photos match the season (2019-20: Anderson in Memphis, Gobert in Utah).
 - Screenshots: `dq-{default,3pt,2019-20,team-bos,card-2pt,search}-{1440,390}.png` (real data).
+
+## Round 2 (owner, 2026-11-08)
+
+"remove the team logo under the cards. It's a little distracting. The team color match is enough." (Screenshot: the first three
+cards.)
+
+**Built**
+
+- The team logo watermark behind each card is removed (`TeamWatermark` and its CSS). The team-colour tint stays, as do the
+  logo badge on the photo and the logo beside the team code (the site's logo rule).
+
+**Checks**
+
+- Lint 0 errors / 0 warnings, typecheck clean, Vitest 820 passed.
+- `r06-decomposition` 9/9 three times; it now also asserts no image behind a card.
+- Full Playwright in the sandbox: 597 passed, 17 skipped, 3 failed, all `r10-wingspan-calculator` under load (11/11 alone).
+- Real-data check, the same seven scenes at 1440 and 390: **67,988 values, 0 mismatches**; 0 console errors, 0 overflow, 0 broken
+  images, no phone control under 40 px; new checks: 0 watermarks, every card tinted.
+- Glance test (screenshots viewed): the cards read as the defender, the D-SQ value and the ranks, with the team only in the tint,
+  the badge and the code. Screenshots replaced: `dq-*-{1440,390}.png`.
+
