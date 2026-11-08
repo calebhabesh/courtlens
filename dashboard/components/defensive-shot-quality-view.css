@@ -55,6 +55,7 @@
 
   /* Key Matchups: the site's StatsGrid, fitted to the card. */
   .dq-matchups-block { display: grid; gap: var(--space-2); min-width: 0; }
+  .dq-matchups-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
   .dq-subhead { margin: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
   .dq-card .dq-matchups.rs-grid[data-lead] { --rs-grid-min: 0px; --rs-grid-lead: auto; }
   .dq-card .dq-matchups col.rs-col-xs { width: 56px; }

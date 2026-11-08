@@ -8,7 +8,7 @@ import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
 import { CountChip } from "./ui/filter-bar";
 import { PlayerAvatar } from "./ui/identity";
-import { Button, Segmented, Select } from "./ui/kit";
+import { Button, ButtonLink, Segmented, Select } from "./ui/kit";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { Glossary, MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchSection, ToneLegend } from "./research/research-page";
@@ -39,6 +39,9 @@ const SORTS: { value: DefenseSort; label: string }[] = [
   { value: "dsq", label: "D-SQ" }, { value: "rapm", label: "D-SQ RAPM" }, { value: "fga", label: "Matchup shots" },
   { value: "xpps", label: "Expected PPS (lowest)" }, { value: "pps", label: "Actual PPS (lowest)" },
 ];
+/** Player Matchups (NBA tracking's season matchups): everyone a defender guarded, or one head-to-head (round 3). */
+export const matchupsHref = (season: string, defender: string, shooter?: string) =>
+  `/matchups?${new URLSearchParams({ season, side: "defense", playerId: defender, ...(shooter ? { opponentId: shooter } : {}) })}`;
 const known = (v: number | null | undefined): v is number => typeof v === "number" && Number.isFinite(v);
 /** A served definition without its leading "Term: " (the card or glossary entry names it). */
 const definition = (text: string | undefined) => { const body = (text ?? "").replace(/^[^:]{1,24}: /, ""); return body.charAt(0).toUpperCase() + body.slice(1); };
@@ -82,13 +85,17 @@ function Stat({ field, label, text, rank, sub, wide }: { field: string; label: s
   </div>;
 }
 
-function Matchups({ rows, season, name }: { rows: readonly KeyMatchup[]; season: string; name: string }) {
+function Matchups({ rows, season, name, defender }: { rows: readonly KeyMatchup[]; season: string; name: string; defender: string }) {
   return <div className="dq-matchups-block">
-    <h4 className="dq-subhead">Key Matchups</h4>
+    <div className="dq-matchups-head">
+      <h4 className="dq-subhead">Key Matchups</h4>
+      <ButtonLink size="md" variant="text" iconAfter="right" href={matchupsHref(season, defender)} data-link="all-matchups"
+        aria-label={`All matchups: everyone ${name} guarded in ${season}, on Player Matchups`} title={`Everyone ${name} guarded in ${season}, searchable, on Player Matchups`}>All matchups</ButtonLink>
+    </div>
     <StatsGrid<KeyMatchup> label={`${name} key matchups`} name="key-matchups" className="dq-matchups" density="compact" height="auto" leadWidth="sm"
       rows={rows} rowKey={m => m.player_id} rowData={m => ({ matchup: m.player_id })} empty="No matchup with enough shots."
       lead={{ label: "Shooter", cell: m => <GridPlayer playerId={m.player_id} name={m.player_name} team={m.tricode} season={season} era={seasonEra(season, m.tricode)}
-        subtitle={m.tricode ?? undefined} href={`/players/${m.player_id}?season=${season}`} /> }}
+        subtitle={m.tricode ?? undefined} href={matchupsHref(season, defender, m.player_id)} /> }}
       columns={[
         { key: "fga", label: "FGA", title: "Matchup field-goal attempts, all shots", width: "xs", data: m => ({ field: "fga", value: m.fga }), cell: m => <GridValue text={formatWhole(m.fga)} /> },
         { key: "xpps", label: "xPPS", title: "Expected points per shot from the shooter's own season", width: "xs", keepCase: true, data: m => ({ field: "xpps", value: m.xpps }), cell: m => <GridValue text={formatFixed(m.xpps, 2)} /> },
@@ -126,7 +133,7 @@ function Card({ card, position, data, global }: { card: DefenseCard; position: n
       <Stat field="xpps" label="Expected PPS" rank={rank?.xpps} text={<span data-field="xpps" data-value={v?.xpps ?? ""}>{formatFixed(v?.xpps, 2)}</span>} />
       <Stat field="pps" label="Actual PPS" rank={rank?.pps} text={<span data-field="pps" data-value={v?.pps ?? ""}>{formatFixed(v?.pps, 2)}</span>} />
     </div>
-    <Matchups rows={matchups} season={season} name={card.player_name} />
+    <Matchups rows={matchups} season={season} name={card.player_name} defender={card.player_id} />
   </article>;
 }
 
@@ -143,7 +150,9 @@ function Board({ data, query, kind }: { data: Boards; query: string; kind: ShotK
       </div>}
     {shown < rows.length && <div className="dq-more"><Button size="md" onClick={() => setShown(s => s + PAGE)}>Show next {Math.min(PAGE, rows.length - shown)} players ({shown}/{rows.length} shown)</Button></div>}
     <p className="dq-note">{formatWhole(b.defenders_served)} defenders with at least 300 matchup attempts in {b.season}; {formatWhole(b.unknown_count)} with fewer have no value.
-      No 2nd Defender values: the free matchup data credits no help defender. Key matchups count all shots, whichever type is shown.</p>
+      No 2nd Defender values: the free matchup data credits no help defender. Key matchups count all shots, whichever type is shown.
+      A shooter&apos;s name opens that head-to-head and All matchups opens everyone the defender guarded, on Player Matchups: NBA tracking&apos;s
+      season matchups, a different source with no expected PPS, so its numbers differ from the cards&apos;.</p>
   </>;
 }
 
@@ -178,7 +187,8 @@ function CardGlossary({ summary }: { summary: DefenseSummary }) {
       { label: "Reading the values", icon: "layers", items: [
         { term: "Interval", text: definition(d.interval) },
         { term: "Hindsight", text: definition(d.hindsight) },
-        { term: "Key Matchups", text: "The five shooters this defender faced most often in the season, all shots, with their expected and actual points per shot. Small samples." },
+        { term: "Key Matchups", text: "The five shooters this defender faced most often in the season, all shots, with their expected and actual points per shot. Small samples. A name opens the head-to-head on Player Matchups." },
+        { term: "All matchups", text: "Everyone the defender guarded that season, searchable, on Player Matchups. That page is NBA tracking's season matchups (minutes, partial possessions, points, FG%): a different source from these cards, with no expected PPS." },
       ] },
     ]} />
   </ResearchSection>;
@@ -238,7 +248,10 @@ function Methodology({ summary }: { summary: DefenseSummary }) {
         ]} />
     </MethodBlock>
     <MethodBlock title="Tracking">
-      <p className="sq-text">NBA tracking&apos;s closest-defender season numbers and hustle stats are on the <Link href="/research/defensive-matchups/tracking">Tracking page</Link>.</p>
+      <p className="sq-text">NBA tracking&apos;s closest-defender season numbers and hustle stats are on the <Link href="/research/defensive-matchups/tracking">Tracking page</Link>.
+        Every card links to <Link href="/matchups">Player Matchups</Link>, NBA tracking&apos;s season matchups (who guarded whom, every season these cards cover): the
+        All matchups link lists everyone the defender guarded, and a Key Matchups name opens that head-to-head. Its counts come from tracking, not from the
+        matchup rows behind D-SQ, and it has no expected PPS, so the two pages&apos; numbers differ.</p>
     </MethodBlock>
     <MethodBlock title="Data & credits">
       <p className="sq-text">{summary.credit}</p>
