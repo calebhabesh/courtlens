@@ -149,3 +149,11 @@ v1.7's tile and its first entries with the date, commit and Progress log links).
   `r4-patch-notes-release-390`, `r4-patch-notes-about-390`. A visitor sees versions and plain feature lines only. Page height 6,863
   px at 1440 (7,567 in round 2), 8,729 px at 390 (10,994).
 
+## Round 5 (owner, 2026-11-08): stale CSS on :3100 again, no code change
+
+"you are still including that yellow edge highlight. It looks vibecoded remove it" (screenshot from :3100). The committed CSS has
+had no rail since round 4 (fe61585). The chunk :3100 served still held round 2's rules: `.pn-release-head` with
+`inset 3px 0 0 var(--color-accent)` and the `.pn-entry-meta` rules removed in round 4. A quick import toggle in `app/globals.css`
+did not refresh it; removing the import, requesting the page every 2 s for 12 s, re-adding it and requesting again did (file and
+`globals.css` unchanged in the end). Measured on :3100 afterwards: the tile's `box-shadow` is only the 1 px accent rim at 22%.
+

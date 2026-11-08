@@ -616,6 +616,12 @@ Instructions (owner, 2026-11-08, round 4):
    evaluation baseline, source policy, Ask provider pool), leaving 58. The JSON keeps each entry's commit, date and log, so
    `check-patch-notes.mjs` still verifies all 85 references.
 
+Instructions (owner, 2026-11-08, round 5; screenshot: :3100, v1.7's tile still with the gold left edge):
+7. [x] you are still including that yellow edge highlight. It looks vibecoded remove it
+   — No code change: round 4 removed it. :3100 was serving round 2's `patch-notes-view.css` (the 3 px rail and the removed meta
+   rules) with round 4's markup. One quick import toggle did not refresh it; removing the import, requesting the page for 12 s,
+   re-adding it and requesting again did. :3100 then measured only the 1 px rim (`box-shadow`), no rail.
+
 ## RD08 Draft Classes — ⬜
 
 - **Now:** rookie tracker, value by pick with intervals, class redrafts, steals and misses, combine beside
