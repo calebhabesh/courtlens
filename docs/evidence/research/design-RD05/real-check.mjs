@@ -20,6 +20,8 @@ const SCENES = [
   { name: "team-bos", q: "", season: "2025-26", kind: "all", team: "BOS", teamName: "Boston Celtics", all: true },
   { name: "card-2pt", q: "", season: "2025-26", kind: "all", switchTo: "2pt" },
   { name: "search", q: "", season: "2025-26", kind: "all", search: true },
+  { name: "follow-2025-26", q: "", season: "2025-26", kind: "all", follow: 3 },
+  { name: "follow-2017-18", q: "season=2017-18", season: "2017-18", kind: "all", follow: 3 },
 ];
 
 const report = [];
@@ -64,7 +66,8 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
     return { id: card.getAttribute("data-card"), kind: card.getAttribute("data-kind"), position: f("[data-field='position']")?.value, dsq: f(".dq-stat [data-field='dsq']"), rapm: f("[data-field='rapm']"),
       fga: f(".dq-stat [data-field='fga']"), xpps: f(".dq-stat [data-field='xpps']"), pps: f(".dq-stat [data-field='pps']"),
       ranks: Object.fromEntries(["dsq", "fga", "xpps", "pps"].map(k => [k, card.querySelector(`[data-field='${k}-rank']`)?.getAttribute("data-value")])),
-      matchups: [...card.querySelectorAll("tr[data-matchup]")].map(tr => ({ id: tr.getAttribute("data-matchup"), ...Object.fromEntries(["fga", "xpps", "pps"].map(k => [k, tr.querySelector(`td[data-field='${k}']`)?.getAttribute("data-value")])) })) };
+      all: card.querySelector("[data-link='all-matchups']")?.getAttribute("href") ?? null,
+      matchups: [...card.querySelectorAll("tr[data-matchup]")].map(tr => ({ id: tr.getAttribute("data-matchup"), href: tr.querySelector("a")?.getAttribute("href") ?? null, ...Object.fromEntries(["fga", "xpps", "pps"].map(k => [k, tr.querySelector(`td[data-field='${k}']`)?.getAttribute("data-value")])) })) };
   }));
   const expectedRows = target ? [target] : b.rows.slice(0, drawn.length);
   eq("order", JSON.stringify(drawn.map(d => d.id)), JSON.stringify(expectedRows.map(r => r.player_id)));
@@ -85,6 +88,28 @@ for (const scene of SCENES) for (const width of [1440, 390]) {
     const m = matchupsOf[d.id] ?? card.key_matchups;
     eq(`${d.id} matchups`, JSON.stringify(d.matchups.map(x => x.id)), JSON.stringify(m.map(x => x.player_id)));
     m.forEach((x, i) => { for (const k of ["fga", "xpps", "pps"]) eq(`${d.id} matchup ${x.player_id} ${k}`, d.matchups[i]?.[k] ?? null, x[k]); });
+    // Round 3: All matchups and each key matchup's head-to-head on Player Matchups.
+    const base = `/matchups?season=${scene.season}&side=defense&playerId=${d.id}`;
+    eq(`${d.id} all-matchups href`, d.all, base);
+    m.forEach((x, i) => eq(`${d.id} matchup ${x.player_id} href`, d.matchups[i]?.href ?? null, `${base}&opponentId=${x.player_id}`));
+  }
+  if (scene.follow) {
+    // Round 3: follow the links of the first cards; Player Matchups must open on that defender, and on the head-to-head.
+    for (const d of drawn.slice(0, scene.follow)) {
+      const card = b.rows.find(r => r.player_id === d.id);
+      const side = await browser.newPage({ viewport: { width, height: width > 600 ? 900 : 844 } });
+      side.on("console", msg => { if (msg.type() === "error") errors.push(`matchups: ${msg.text()}`); });
+      await side.goto(`http://localhost:3180${d.all}`, { waitUntil: "networkidle", timeout: 120000 });
+      const view = await api(`/api/workbench/season-matchups?season=${scene.season}&side=defense&playerId=${d.id}&limit=50`);
+      eq(`${d.id} matchups defender`, view.detail?.player_id ?? null, d.id);
+      eq(`${d.id} matchups region`, await side.getByRole("region", { name: `Who ${card.player_name} guarded` }).count() > 0, true);
+      const shooter = card.key_matchups[0];
+      await side.goto(`http://localhost:3180${d.matchups[0].href}`, { waitUntil: "networkidle", timeout: 120000 });
+      const pair = (await api(`/api/workbench/season-matchups?season=${scene.season}&side=defense&playerId=${d.id}&opponentId=${shooter.player_id}&limit=50`)).pair;
+      eq(`${d.id} vs ${shooter.player_id} pair served`, pair ? String(pair.player_id) : null, shooter.player_id);
+      eq(`${d.id} vs ${shooter.player_id} pair shown`, (await side.locator("main").innerText()).includes(shooter.player_name), true);
+      await side.close();
+    }
   }
   if (!target) eq("count chip", (await page.locator(".dq-toolbar").innerText()).includes(`${b.rows.length.toLocaleString("en-US")} defenders`), true);
   if (scene.summary) {

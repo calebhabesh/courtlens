@@ -158,6 +158,26 @@ test.describe("R06 Defensive Shot Quality", () => {
     await expect(page.locator("[data-card]").first()).toHaveAttribute("data-card", bos.rows[0].player_id);
   });
 
+  test("RD05 round 3: every card links to Player Matchups, all matchups and each key matchup's head-to-head", async ({ page }) => {
+    await openWorkbench(page, defense);
+    const cards = page.locator("[data-card]");
+    await expect(cards).toHaveCount(6);
+    for (const [i, row] of (board.rows as Card[]).slice(0, 6).entries()) {
+      const card = cards.nth(i);
+      await expect(card.locator("[data-link='all-matchups']")).toHaveAttribute("href", `/matchups?season=2025-26&side=defense&playerId=${row.player_id}`);
+      const links = await card.locator("tr[data-matchup] a").evaluateAll(list => list.map(a => a.getAttribute("href")));
+      expect(links).toEqual(row.key_matchups.map(m => `/matchups?season=2025-26&side=defense&playerId=${row.player_id}&opponentId=${m.player_id}`));
+    }
+    const first = board.rows[0] as Card;
+    await cards.first().locator("[data-link='all-matchups']").click();
+    await expect(page).toHaveURL(new RegExp(`/matchups\\?season=2025-26&side=defense&playerId=${first.player_id}$`));
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Player Matchups");
+    await openWorkbench(page, defense);
+    await page.locator("[data-card]").first().locator("tr[data-matchup] a").first().click();
+    await expect(page).toHaveURL(new RegExp(`opponentId=${first.key_matchups[0].player_id}$`));
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Player Matchups");
+  });
+
   test("a season before the decomposition shows the RAPM chip as unknown with its reason", async ({ page }) => {
     await openWorkbench(page, `${defense}?season=2019-20`);
     const card = page.locator("[data-card]").first();

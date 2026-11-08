@@ -690,3 +690,17 @@ team colour is enough.
   `r10-wingspan-calculator` under load (11/11 alone); real data 67,988 values, 0 mismatches, 0 watermarks, every card tinted.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-08 — RD05 round 3: Key Matchups open Player Matchups
+
+[Evidence](evidence/research/design-RD05/README.md#round-3-owner-2026-11-08). Owner asked for Key Matchups to be searchable;
+accepted the recommendation to link to Player Matchups: "Sounds good build it comprehensively."
+
+- **Change.** Each card's Key Matchups has an "All matchups" link (everyone the defender guarded, searchable on Player Matchups)
+  and each shooter's name opens that head-to-head. The source difference (NBA tracking, no expected PPS) is said under the cards,
+  in the glossary and in Caveats & Methodology.
+- **Kept.** The five frozen key matchups; no new data or API.
+- **Checks.** Lint 0/0, typecheck, Vitest 822; page specs 16/17 then 17/17 ×2 and 68/68 repeated; full Playwright 595 passed, 17
+  skipped, 6 failed under load (r10 ×4, r09, RD04's URL wait; 28/28 with two workers); real data 80,616 values, 0 mismatches,
+  the links followed in 2025-26 and 2017-18.
+- **Not done.** The owner's review and ✅.
+

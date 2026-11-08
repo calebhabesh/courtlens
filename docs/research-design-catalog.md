@@ -476,6 +476,19 @@ Instructions (owner, 2026-11-08, round 2; screenshot: the first three cards):
    — The logo watermark behind each card is gone; the team-colour tint, the photo's logo badge and the logo beside the code stay.
    Checked on real data: no image behind any card, every card tinted.
 
+Instructions (owner, 2026-11-08, round 3; after asking whether Key Matchups should be searchable, the owner accepted the
+recommendation with "Sounds good build it comprehensively."):
+3. [x] Sounds good build it comprehensively.
+   - (1) An "All matchups" link on each card opening Player Matchups (`/matchups?playerId=…&side=defense&season=…`), every player
+     that defender guarded, searchable there. The frozen results keep only five key matchups, so no search is built into the card.
+   - (2) Each Key Matchups row opens that head-to-head (`…&opponentId=…`).
+   - (3) Say that Player Matchups is NBA tracking's season matchups, a different source with no expected PPS; coverage checked
+     from 2017-18 (it serves every D-SQ season).
+   — Each card's Key Matchups head has an "All matchups" link to everyone that defender guarded on Player Matchups (searchable
+   there), and each shooter's name opens that head-to-head. A line under the cards, the glossary and Caveats & Methodology say
+   it is NBA tracking's season matchups with no expected PPS. Coverage checked on real data: 2017-18 to 2025-26, every top-12
+   defender's list and every key-matchup pair sampled (96) served; the links followed on real data in 2025-26 and 2017-18.
+
 ## RD06 Learning — ⬜
 
 - **Now:** 22 topics in 5 tiers, each with formula, key takeaways and links; 14 "Measured in CourtLens"

@@ -85,3 +85,42 @@ cards.)
 - Glance test (screenshots viewed): the cards read as the defender, the D-SQ value and the ranks, with the team only in the tint,
   the badge and the code. Screenshots replaced: `dq-*-{1440,390}.png`.
 
+## Round 3 (owner, 2026-11-08)
+
+The owner asked whether Key Matchups should be searchable, to see how a defender did against different players. The frozen
+results keep five key matchups per defender, so a search inside the card would need new data; the recommendation was to link
+to Player Matchups (`/matchups`, NBA tracking's season matchups, which already searches everyone a player guarded and opens any
+head-to-head). Owner: "Sounds good build it comprehensively."
+
+**Coverage check (before building, GET only on the owner's API).** Player Matchups answers 2017-18, 2019-20, 2022-23 and
+2025-26 with a defence list for each of the top 12 defenders (244 to 377 opponents each), and all 96 sampled key-matchup pairs
+(two per defender) are served.
+
+**Built**
+
+- `matchupsHref(season, defender, shooter?)` builds `/matchups?season=…&side=defense&playerId=…[&opponentId=…]`.
+- The Key Matchups head of each card gains an "All matchups →" link (kit `ButtonLink`, 40 px on a phone) opening everyone the
+  defender guarded that season; each shooter's name in the table opens that head-to-head (it used to open the shooter's player
+  page; the defender's name still opens theirs).
+- The source is said once in each place a reader meets it: the line under the cards, the glossary (Key Matchups, All
+  matchups) and Caveats & Methodology. Player Matchups is NBA tracking (minutes, partial possessions, points, FG%), with no
+  expected PPS, so its numbers differ from the cards'. It shows a player's latest team: Anthony Davis is DAL on Capela's card
+  (his team in those games) and WAS on the head-to-head.
+
+**Checks**
+
+- Lint 0 errors / 0 warnings, typecheck clean, Vitest 822 passed (new `defensive-shot-quality-view.test.ts`, the link builder).
+- `r06-decomposition` with `pc11-gated-pages` (Player Matchups' own spec): 17 tests; three runs: 16 passed and 1 URL wait
+  failed on the first run against the freshly started server, then 17/17, 17/17, and 68/68 with `--repeat-each 4`. The new test
+  checks every link of the first six cards and clicks through both kinds.
+- Full Playwright in the sandbox: 595 passed, 17 skipped, 6 failed: `r10-wingspan-calculator` (4), `r09-draft-classes` (1) and RD04's
+  `side=combined` URL wait (1), under load (load average about 20 during the run). Alone at the default workers r06 and r09 pass
+  and r10 fails again 4 times; with two workers all three specs pass 28/28. None of those pages changed.
+- Real-data check, nine scenes at 1440 and 390 (the seven before, plus following the first three cards' links in 2025-26 and
+  2017-18): **80,616 values, 0 mismatches**, including every card's All matchups and head-to-head hrefs, Player Matchups opening
+  on the right defender ("Who … guarded") and showing the shooter in the pair; 0 console errors (both pages), 0 overflow, 0 broken
+  images, no phone control under 40 px.
+- Glance test (screenshots viewed): the link sits on the Key Matchups line, quiet but obvious; the head-to-head opens with both
+  players and their numbers. New screenshots: `dq-card-links-*.png`, `dq-to-all-matchups-*.png`, `dq-to-head-to-head-*.png`;
+  the others replaced.
+
