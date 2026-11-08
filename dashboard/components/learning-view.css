@@ -1,0 +1,105 @@
+/* RD06 (owner, 2026-11-08): Research → Learning as Databallr's Learning page. The centred hero, a 1352 px column, a topic search
+   over a sticky 224 px numbered index beside the topic cards (a collapsed index above them below 1024 px), tier headings in small
+   gold capitals, and topic cards: a tier pill in a subdued categorical tint (tells tiers apart, never good/bad), prose at card
+   width, one labelled well per formula, the Myth / Reality and Measured in CourtLens wells, Key Takeaways with gold dots,
+   prerequisite chips and links. One nesting level (card → well), blue-tinted on-background text. */
+@layer pages {
+  .rs-column.ln-page { max-width: 1352px; gap: var(--space-8); padding-bottom: var(--space-12); }
+  .ln-page .rs-disclosure { padding-top: var(--space-2); border-top: 0; }
+  .ln-page .rs-intro { margin-top: calc(-1 * var(--space-4)); }
+
+  .ln-body { display: grid; gap: var(--space-5); min-width: 0; }
+  .ln-search { width: 384px; max-width: 100%; }
+  .ln-search .stats-header-search { padding: 0; }
+  .ln-layout { display: grid; grid-template-columns: 224px minmax(0, 1fr); gap: var(--space-8); align-items: start; min-width: 0; }
+
+  /* Index: numbered tiers, their topics under them; the topic being read in gold. */
+  .ln-aside { align-self: stretch; min-width: 0; }
+  .ln-aside .ln-index { position: sticky; top: calc(var(--header-height) + var(--space-6)); max-height: calc(100vh - var(--header-height) - var(--space-12)); overflow-y: auto; padding-right: var(--space-2); scrollbar-width: none; }
+  .ln-index-tiers, .ln-index-topics { margin: 0; padding: 0; list-style: none; }
+  .ln-index-tiers { display: grid; gap: var(--space-4); }
+  .ln-index-tier { display: grid; gap: var(--space-1); }
+  .ln-index-tier-link { color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; }
+  .ln-index-topics { display: grid; gap: var(--space-0-5); padding-left: var(--space-2); }
+  .ln-index-link { display: block; overflow: hidden; padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-xs); color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-decoration: none; text-overflow: ellipsis; white-space: nowrap; transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out); }
+  .ln-index-tier-link:hover, .ln-index-link:hover { color: var(--color-text); }
+  .ln-index-link[aria-current] { background: var(--color-accent-soft); color: var(--color-accent); font-weight: 600; }
+  .ln-index-tier-link:focus-visible, .ln-index-link:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .ln-index-phone { display: none; }
+
+  /* Tiers and topics. */
+  .ln-topics { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-10); min-width: 0; }
+  .ln-count { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ln-empty { display: grid; justify-items: start; gap: var(--space-3); padding: var(--space-6); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); color: var(--color-on-bg-secondary); }
+  .ln-empty p { margin: 0; }
+  .ln-tier { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); min-width: 0; scroll-margin-top: calc(var(--header-height) + var(--space-6)); }
+  .ln-tier-head { display: grid; gap: var(--space-2); }
+  .ln-tier-title { display: flex; align-items: center; gap: var(--space-3); margin: 0; color: var(--color-accent); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+  .ln-tier-title::after { content: ""; flex: 1; height: 1px; background: var(--color-hairline-strong); }
+  .ln-tier-blurb { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+
+  .ln-topic { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; padding: var(--space-6); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); scroll-margin-top: calc(var(--header-height) + var(--space-6)); }
+  .ln-pill { justify-self: start; display: inline-flex; align-items: center; padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--ln-tier) 15%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ln-tier) 32%, transparent); color: var(--ln-tier); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 650; letter-spacing: 0.02em; }
+  .ln-topic-head { display: grid; gap: var(--space-1); margin-top: calc(-1 * var(--space-1)); }
+  .ln-topic-title { margin: 0; color: var(--color-text); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; letter-spacing: -0.01em; }
+  .ln-topic-sub { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ln-prose { display: grid; gap: var(--space-3); }
+  .ln-prose p { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-md); line-height: var(--text-md-lh); }
+
+  /* Wells: one level inside the card. */
+  .ln-formulas { display: grid; gap: var(--space-2); }
+  .ln-well { display: grid; gap: var(--space-1); min-width: 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--rs-well); }
+  .ln-well-label { margin: 0; color: var(--color-accent); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
+  .ln-formula-line { color: var(--color-text); font-family: var(--font-mono), monospace; font-size: var(--text-sm); line-height: var(--text-sm-lh); overflow-wrap: anywhere; }
+
+  .ln-myth { display: grid; gap: var(--space-1); padding: var(--space-4); border-left: 4px solid color-mix(in srgb, var(--color-accent) 60%, transparent); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: color-mix(in srgb, var(--color-accent) 5%, transparent); }
+  .ln-myth-label { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-accent); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .ln-myth-label-reality { margin-top: var(--space-2); color: var(--color-text); }
+  .ln-myth-label-reality > svg { color: var(--color-accent); }
+  .ln-myth-label-reality .ln-block { letter-spacing: 0; text-transform: none; }
+  .ln-myth .rs-links { margin-top: var(--space-1); }
+  .ln-myth-text { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-style: italic; }
+  .ln-myth-reality { margin: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+
+  .ln-measured { gap: var(--space-2); }
+  .ln-measured-head { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
+  .ln-measured-head > svg { color: var(--color-accent); }
+  .ln-block { padding: 0 var(--space-2); border-radius: var(--radius-xs); background: var(--color-accent-soft); color: var(--color-accent); font-family: var(--font-mono), monospace; font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; }
+  .ln-measured-text { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+
+  .ln-takeaways { display: grid; gap: var(--space-2); }
+  .ln-kicker { margin: 0; color: var(--color-accent); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .ln-takeaway-list { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .ln-takeaway-list li { display: grid; grid-template-columns: var(--space-4) minmax(0, 1fr); align-items: start; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .ln-takeaway-list li::before { content: ""; width: 6px; height: 6px; margin-top: var(--space-2); transform: translateY(-1px); border-radius: var(--radius-pill); background: var(--color-accent); }
+
+  .ln-prereqs { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+  .ln-prereqs-label { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .ln-prereq-list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .ln-links { padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); }
+
+  /* League trends inside the Statistical Evolution card. */
+  .ln-trends { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
+  .ln-trends-chart { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); padding: var(--space-4); }
+  .ln-trends-switch { max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .ln-trends-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+  .ln-season { color: var(--color-text); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ln-note { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  @media (max-width: 1023px) {
+    .ln-layout { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+    .ln-aside { display: none; }
+    .ln-index-phone { display: grid; gap: var(--space-3); }
+    .ln-index-phone > .ln-index { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+    .ln-index-phone .ln-index-link { padding-block: var(--space-2); white-space: normal; }
+  }
+
+  @media (max-width: 767px) {
+    .ln-search { width: 100%; }
+    .ln-topic { padding: var(--space-4); }
+    .ln-topics { gap: var(--space-8); }
+    .ln-topic-title { font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+    .ln-prose p { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+    .ln-well { padding: var(--space-3); }
+  }
+}

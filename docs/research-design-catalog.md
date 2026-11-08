@@ -58,7 +58,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04, RD03 | ✅ |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D/LocalSend: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06, RD04 | ✅ |
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06, RD05 | ✅ |
-| RD06 | Learning [21] | `/methodology/learning` | D: `Learning` | R11 | ⬜ |
+| RD06 | Learning [21] | `/methodology/learning` | D: `Learning`; `~/Downloads/Projects/Courtlens/Learning _ databallr.html` | R11, RD06 | 👀 |
 | RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes` | R11 | ⬜ |
 | RD08 | Draft Classes [28] | `/draft` | D: Draftballr dashboard, lottery, resources (owner: don't copy Draftballr's design; match CourtLens and Databallr) | R09 | ⬜ |
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
@@ -489,12 +489,49 @@ recommendation with "Sounds good build it comprehensively."):
    it is NBA tracking's season matchups with no expected PPS. Coverage checked on real data: 2017-18 to 2025-26, every top-12
    defender's list and every key-matchup pair sampled (96) served; the links followed on real data in 2025-26 and 2017-18.
 
-## RD06 Learning — ⬜
+## RD06 Learning — 👀
 
-- **Now:** 22 topics in 5 tiers, each with formula, key takeaways and links; 14 "Measured in CourtLens"
-  boxes; a league-trends table (2014-15 to 2025-26). Plain build.
+- **Now:** 22 topics in 5 tiers, each with formula, key takeaways and links; 12 "Measured in CourtLens"
+  boxes (the build-phase note said 14; the page serves 12); a league-trends table (2014-15 to 2025-26). Plain build.
 - **Known gaps:** Databallr's topic layout and the league-trends chart; no league averages before 2014-15.
-- **Instructions:** _(owner)_
+- **Reference:** `~/Downloads/Projects/Courtlens/Learning _ databallr.html` (+ `_files`), the save the owner attached in round 1
+  (`~/Downloads/Webpages/DraftBallr/` has no Learning save). No screenshots came with the round 1 prompt. Rendered offline (scripts
+  and `crossorigin` stripped, a `<base>`, every non-`file://` request blocked; its scroll-in cards forced visible). Measured: a
+  1368 px container, a sticky 224 px topic sidebar with "Search topics…" (384 px) above it, 32 px gap, 1112 px topic cards. Without
+  its scripts the save does not lay out at 390 px (the sidebar stays 224 px wide), so there is no phone reference.
+- **Data check (2026-11-08):** (A) league averages before 2014-15: the Teams API serves box-score league eFG%, TOV%, ORB%, FTr, ORtg
+  and pace from 1983-84 (eFG% from 1946-47), a different source with different definitions (2014-15: TOV% 12.8% vs 15.3%, ORB%
+  25.1% vs 31.0%, ORtg 103.7 vs 106.8) and no TS%; not joined. (B) offensive rebound rate by shot zone: not served (only missed 2s
+  vs missed 3s, from counts). (C) Volume-Efficiency Tradeoff: Databallr's topic, no CourtLens result behind it.
+
+Instructions (owner, 2026-11-08, round 1; the owner answered the gap list and recommendations with "Go with your recommendations
+and suggestions for optimal construction of the page. Comprehensively build it out now."):
+1. [x] Go with your recommendations and suggestions for optimal construction of the page. Comprehensively build it out now.
+   - (1) Hero: the settled centred hero titled "Learning"; Learning gets its own header instead of the shared Methodology tabs;
+     Definitions and Glossary become intro links; the Definitions page stays as it is.
+   - (2) Layout: Databallr's: a 1352 px column, a sticky 224 px sidebar with a topic search filtering the cards (`GridSearch` look)
+     and the numbered tier and topic links (current topic highlighted), beside the topic cards. On a phone the search and a collapsed
+     "Topics" index sit above the cards.
+   - (3) Cards: a tier pill in a subdued categorical tint (tells tiers apart, never good/bad); title, subtitle in
+     `--color-on-bg-secondary`, prose at card width; each formula in its own labelled well; Key Takeaways with gold dots;
+     prerequisite chips with our topic titles; links as `ButtonLink`; Measured in CourtLens as a well with its R-block chip. One
+     nesting level.
+   - (4) Myth / Reality callouts in our own words, only where a CourtLens result answers the myth (about four, each quoting a frozen
+     number).
+   - (5) League trends: one line chart with a metric switch (TS% / eFG% / TOV% / ORB% / 3PA rate / ORTG), never two y-axes, plus a
+     `StatsGrid` compact table; 2014-15 to 2025-26 only (data check A, option a).
+   - (6) Workshop: removed from Learning.
+   - (7) Credits folded into a short collapsed "About this page" (Databallr credited as the design reference, evidence links).
+   - (8) Content: our own prose and numbers stay; the catalog's "14 Measured boxes" corrected to 12.
+   - (9) Tests: design only; the R11 spec's Learning tests updated to the new layout, Patch Notes tests unchanged.
+   - Agent's reading of the two open data questions (the recommendations did not cover them): (B) not shown, since the page would
+     need a new derived series; (C) added as our own topic in Tier 3 with no Measured box, linking to Stats and Compare.
+   — Centred "Learning" hero (Definitions keeps its tabs); topic search and a sticky numbered index beside the cards (a collapsed
+   index on a phone); tier pills, labelled formula wells, four myths answered by their measured result, prerequisite chips; league
+   trends as one-axis chart with a six-measure switch plus `StatsGrid`; workshop removed; 23 topics. Real data 613 values, 0
+   mismatches.
+
+Evidence: [`design-RD06`](evidence/research/design-RD06/README.md).
 
 ## RD07 Patch Notes — ⬜
 

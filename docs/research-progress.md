@@ -712,3 +712,24 @@ behind them; a card can carry its own view switch when the served boards can be 
 serve in full (five key matchups) links to the CourtLens page that does (Player Matchups) instead of being rebuilt, and the source
 difference is said where the reader meets the link. Next in the queue: RD06 Learning.
 
+## 2026-11-08 — RD06 round 1: Learning after Databallr's Learning page
+
+[Evidence](evidence/research/design-RD06/README.md#round-1-owner-2026-11-08). Owner: "Go with your recommendations and
+suggestions for optimal construction of the page. Comprehensively build it out now."
+
+- **Reference.** The attached `~/Downloads/Projects/Courtlens/Learning _ databallr.html` save, rendered offline; no phone layout
+  without its scripts.
+- **Change.** Learning's own centred hero (the Methodology tabs stay on Definitions; route and redirects unchanged); a 1352 px
+  column with a topic search and a sticky numbered index beside the cards, collapsed above them on a phone; tier headings and
+  categorical tier pills; one labelled well per formula; Myth / Reality on four topics, the reality being the topic's frozen
+  measured result; prerequisite chips; the league trends as a one-axis chart with a six-measure switch (new shared
+  `SeasonLineChart`) plus `StatsGrid`; a collapsed About this page. The workshop and Credits section removed; Volume and Efficiency
+  added (23 topics).
+- **Kept.** Analyses, results and APIs untouched; league averages stay 2014-15 on (older box-score averages use other
+  definitions); rebound rate by shot zone not shown (not served).
+- **Checks.** Lint 0/0, typecheck, Vitest 830; `r11-learning-patch-notes` 7/7 ×3; full Playwright on the final build 603 passed, 17
+  skipped, 0 failed (the first run's four Wingspan load flakes pass alone; its route-consolidation heading check was updated for
+  Learning's own header); real data 613 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, no phone control or
+  `ButtonLink` under 40 px.
+- **Not done.** The owner's review and ✅.
+

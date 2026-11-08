@@ -206,7 +206,3 @@
 .research-view .case-study-guarantee-item { padding: 0; background: none; border: 0; border-radius: 0; font-size: var(--text-sm); color: var(--color-text-secondary); }
 /* Row headers name a player, team or record; they read as text, not as column labels. */
 .research-view .data-table tbody th { background: none; color: var(--color-text); font-size: var(--text-sm); font-weight: 500; text-transform: none; letter-spacing: normal; user-select: text; }
-/* Learning workshop (FO13 Article template). */
-.learning-scope { color: var(--color-text-tertiary); font-size: var(--text-sm); }
-.learning-controls { display: flex; flex-direction: column; align-items: stretch; gap: var(--space-3); }
-.learning-controls > .ui-field { width: 200px; max-width: 100%; }
