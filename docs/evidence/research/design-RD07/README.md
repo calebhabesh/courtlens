@@ -103,3 +103,12 @@ column beside its first three entries).
   entries), `r2-patch-notes-release-390`, `r2-patch-notes-full-*`. The releases now read as gold markers down the left; more
   changes fit on a screen (about 6 entries per 1440 screen instead of 3).
 
+## Round 3 (owner, 2026-11-08): stale CSS on :3100, no code change
+
+"I meant the left part with the actual version number" (screenshot from :3100, v1.7's release column circled). The screenshot
+showed round 2's markup (date, commit and log above Explore) with round 1's styling: no tile, white version. The CSS chunk :3100
+served had round 1's `.pn-release-head` (no background or rail) and no `.pn-entry-side` rule, so the dev server was serving the
+stale import. Removing and re-adding the `patch-notes-view.css` import in `app/globals.css` (file left unchanged) made :3100
+serve the current rules; measured there: the tile's gradient and 3 px accent rail, the version in `rgb(255, 209, 102)`.
+Committed code unchanged since round 2.
+

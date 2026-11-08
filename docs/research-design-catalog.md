@@ -597,6 +597,12 @@ Instructions (owner, 2026-11-08, round 2; screenshot: v1.7's release column besi
    — Entries are condensed: 18 px titles, 14 px text at a 760 px measure, tighter padding and bullets, and the date · commit · log
    line moved into the title row beside Explore. The page is 36% shorter at 1440 (11,840 to 7,567 px) and 23% at 390.
 
+Instructions (owner, 2026-11-08, round 3; screenshot: :3100, v1.7's release column circled, still without the gold tile):
+4. [x] I meant the left part with the actual version number
+   — No code change: round 2's gold tile is on that column. :3100 was serving round 1's `patch-notes-view.css` with round 2's
+   markup (no tile rules, no `pn-entry-side` rule; the Turbopack stale-import issue). Toggling the import line in
+   `app/globals.css` (file unchanged) made :3100 serve the current rules; its screenshot then showed the gold tile.
+
 ## RD08 Draft Classes — ⬜
 
 - **Now:** rookie tracker, value by pick with intervals, class redrafts, steals and misses, combine beside
