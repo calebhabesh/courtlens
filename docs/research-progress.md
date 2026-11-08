@@ -787,3 +787,9 @@ more condensed entries.
   phone control under 40 px.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-08 — RD07 round 3: stale CSS on :3100, no code change
+
+Owner: "I meant the left part with the actual version number." :3100 served round 1's Patch Notes CSS with round 2's markup, so
+the version column showed no gold tile. Toggling the import in `app/globals.css` (left unchanged) refreshed it; :3100 then showed
+the tile. Committed code unchanged since round 2. Awaits the owner's ✅.
+
