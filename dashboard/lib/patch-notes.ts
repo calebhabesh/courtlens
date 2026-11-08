@@ -1,11 +1,11 @@
 import notes from "../content/patch-notes.json";
-import { REPO_URL } from "./research-facts";
 
 /**
  * Patch Notes (Research R11, catalog row 21; RD07 design): real releases and dates from git history and
  * the progress logs. `content/patch-notes.json` holds them; `scripts/check-patch-notes.mjs` checks every
  * commit, date, log heading and the version order against the repository. Version numbers were assigned
- * on 2026-11-08 in merge order (owner, RD07).
+ * on 2026-11-08 in merge order (owner, RD07). The page shows none of the commits, logs or merge details
+ * (RD07 round 4: a plain list for visitors); they stay here so the entries remain checkable.
  */
 
 export type PatchBadge = "New" | "Updated" | "Removed";
@@ -17,7 +17,6 @@ export interface PatchEntry {
   date: string;
   commit: string;
   text: string;
-  bullets?: string[];
   log?: { file: string; heading: string };
 }
 
@@ -35,9 +34,6 @@ export interface PatchRelease {
 
 export const PATCH_ABOUT: string = notes.about;
 export const PATCH_RELEASES = notes.releases as PatchRelease[];
-
-export const commitUrl = (hash: string): string => `${REPO_URL}/commit/${hash}`;
-export const logUrl = (file: string): string => `${REPO_URL}/blob/main/${file}`;
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -65,18 +61,9 @@ export function monthRange({ from, to }: { from: string; to: string }): string {
   return `${MONTHS[fromMonth - 1]} ${fromYear}–${MONTHS[toMonth - 1]} ${toYear}`;
 }
 
-/** A release still on its branch (not merged to main), shown with an "Unmerged" pill. */
-export const isUnmerged = (release: PatchRelease): boolean => release.merge === null && release.version !== "main";
-
 /** Every entry, newest release first, in listed order. */
 export const patchEntries = (releases: readonly PatchRelease[] = PATCH_RELEASES): PatchEntry[] =>
   releases.flatMap(release => release.groups.flatMap(group => group.entries));
-
-/** The release line under a heading: version and when it reached main (or that it hasn't). */
-export function releaseLine(release: PatchRelease): string {
-  if (release.merge) return `${release.version} · merged ${shortDate(release.merge.date)}`;
-  return `${release.version} · ${dateRange(release.range)}`;
-}
 
 /** The newest entry (latest date; the first listed wins a tie), for the Stats "What's New" line. */
 export function latestPatchEntry(releases: readonly PatchRelease[] = PATCH_RELEASES): PatchEntry | null {
@@ -85,15 +72,4 @@ export function latestPatchEntry(releases: readonly PatchRelease[] = PATCH_RELEA
     if (!latest || entry.date > latest.date) latest = entry;
   }
   return latest;
-}
-
-/**
- * Entry copy as displayed: commits quoted in the source text ("(abc1234)", "(abc1234, 2026-10-16)")
- * stay in the JSON for the git check but are not shown (glance test: no hashes in the main flow);
- * a quoted date reads "(Oct 16, 2026)".
- */
-export function displayText(text: string): string {
-  return text
-    .replace(/ \(([0-9a-f]{7}), (\d{4}-\d{2}-\d{2})\)/g, (_match, _hash: string, date: string) => ` (${shortDate(date)})`)
-    .replace(/ \([0-9a-f]{7}\)/g, "");
 }

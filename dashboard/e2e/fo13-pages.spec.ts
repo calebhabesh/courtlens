@@ -34,7 +34,7 @@ test("methodology and what's new use the Article template with anchored sections
   // R11: What's New is the Patch Notes changelog (releases newest first) on the same template.
   await openWorkbench(page, "/whats-new");
   await expect(page.locator(".ui-page")).toHaveAttribute("data-template", "article");
-  await expect(page.locator('[data-release="pr-42"]')).toHaveText("PR #42 · merged Nov 3, 2026");
+  await expect(page.locator('[data-release="pr-42"]')).toHaveText("Oct 14 – Nov 3, 2026");
 });
 
 test("the hidden Schedule page redirects to Live and is not in the More menu", async ({ page }) => {
