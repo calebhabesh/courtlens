@@ -112,3 +112,40 @@ stale import. Removing and re-adding the `patch-notes-view.css` import in `app/g
 serve the current rules; measured there: the tile's gradient and 3 px accent rail, the version in `rgb(255, 209, 102)`.
 Committed code unchanged since round 2.
 
+## Round 4 (owner, 2026-11-08)
+
+"remove the vibecodey edge highlight. Unecessary." and "Don't link any commits/progress log or anything. It should be a very simply
+list of the features, for end users front facing to see. Not really related to the repo or more technical things." (screenshot:
+v1.7's tile and its first entries with the date, commit and Progress log links).
+
+**Built**
+
+- **Tile.** The 3 px accent rail is removed; the gold tint, the thin accent rim and the gold month and version stay.
+- **A list for visitors.** Each release shows its month, version, name and date range ("Oct 14 – Nov 3, 2026"); each entry its
+  title, badge, Explore link and one sentence. Removed from the page: commit and progress-log links, the per-entry date, the merge
+  and branch line ("PR #42 · merged…", "research branch"), the Unmerged pill and the bullets. The About text is two plain
+  sentences (how versions group changes; Databallr credited as the design reference). Nothing on the page links off the site.
+- **Content** (`content/patch-notes.json`). Every entry rewritten in plain language for visitors (no hashes, ISO dates or
+  repository terms; a Vitest check enforces it), release names and summaries made readable (v1.6 "Core pages redesigned", v1.5
+  "Consistent controls", v1.0 "First release"), the "Approved after n review rounds" and other process bullets removed, and five
+  internal entries dropped (Warehouse, Offline evaluation, Evaluation baseline, Source policy v2, Ask provider pool): 58 changes.
+  Each entry still carries its commit, date and log heading, so `check-patch-notes.mjs` verifies 85 references and the version
+  order; the page just does not show them.
+- **Code.** `lib/patch-notes.ts` loses the helpers only the links used (`commitUrl`, `logUrl`, `releaseLine`, `isUnmerged`,
+  `displayText`); the CSS loses the meta, bullet and split-line rules. On a phone Explore stays on the title row, at the right.
+- **Tests.** The R11 spec checks every release and entry against the JSON and that the releases hold no off-site link and no
+  commit, log, branch, merge or PR wording; FO13 checks pr-42's date range; the What's New baselines were regenerated and viewed
+  (ready heading "v1.6 Core pages redesigned").
+
+**Checks**
+
+- Lint 0 / 0, typecheck clean, Vitest 832 passed; `check-patch-notes.mjs` 85 references.
+- `r11-learning-patch-notes`, `fo13-pages`, `route-consolidation`: 66/66 three times.
+- Full Playwright in the sandbox: **605 passed, 17 skipped, 0 failed**.
+- Real-data check through `readonly-proxy.mjs` at 1440 and 390: **784 values, 0 mismatches** (fewer fields per entry now); 0
+  console errors, 0 overflow, 0 broken images, no phone control or `ButtonLink` under 40 px; no off-site link or repository wording
+  in the releases.
+- Glance test, screenshots viewed: `r4-patch-notes-default-*`, `r4-patch-notes-full-*`, `r4-patch-notes-sticky-1440`,
+  `r4-patch-notes-release-390`, `r4-patch-notes-about-390`. A visitor sees versions and plain feature lines only. Page height 6,863
+  px at 1440 (7,567 in round 2), 8,729 px at 390 (10,994).
+

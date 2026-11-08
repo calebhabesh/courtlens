@@ -603,6 +603,19 @@ Instructions (owner, 2026-11-08, round 3; screenshot: :3100, v1.7's release colu
    markup (no tile rules, no `pn-entry-side` rule; the Turbopack stale-import issue). Toggling the import line in
    `app/globals.css` (file unchanged) made :3100 serve the current rules; its screenshot then showed the gold tile.
 
+Instructions (owner, 2026-11-08, round 4):
+5. [x] remove the vibecodey edge highlight. Unecessary.
+   — The 3 px gold rail on each release tile is gone; the tile keeps its gold tint, thin rim and gold version.
+6. [x] Don't link any commits/progress log or anything. It should be a very simply list of the features, for end users front facing
+   to see. Not really related to the repo or more technical things. (screenshot: v1.7's tile and its first entries with the date,
+   commit and Progress log links)
+   — The page shows only what a visitor needs: each release's month, version, name and dates, and each entry's title, badge,
+   Explore link and one plain sentence. No commit, progress-log or merge links, no per-entry dates, no "Unmerged" pill or branch
+   and PR lines, no bullets. Every entry was rewritten in plain language and release names made readable ("Core pages
+   redesigned", "Consistent controls", "First release"); five internal entries were dropped (warehouse, offline evaluation,
+   evaluation baseline, source policy, Ask provider pool), leaving 58. The JSON keeps each entry's commit, date and log, so
+   `check-patch-notes.mjs` still verifies all 85 references.
+
 ## RD08 Draft Classes — ⬜
 
 - **Now:** rookie tracker, value by pick with intervals, class redrafts, steals and misses, combine beside

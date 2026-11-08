@@ -2,14 +2,14 @@
 // dashboard/content/patch-notes.json (itself checked against git by dashboard/scripts/check-patch-notes.mjs). The production
 // build on 3180 runs against the owner's API through the read-only proxy on 4180 (readonly-proxy.mjs, GET only), at 1440 and
 // 390. Also: console errors, page overflow, broken images, phone controls and ButtonLinks under 40 px, the hero icon's
-// centring, the sticky release column on a desktop and the release head above its entries on a phone.
+// centring, the sticky release column on a desktop and the release head above its entries on a phone. Round 4: the page shows no
+// commit, progress-log, branch or merge detail and links nowhere off the site.
 // Usage: node real-check.mjs <report.json> [<shots dir>]
 import { chromium } from "/home/ethioking/dev/courtlens/dashboard/node_modules/playwright/index.mjs";
 import { readFileSync, writeFileSync } from "node:fs";
 const WEB = "http://localhost:3180/whats-new";
 const [,, out, shots] = process.argv;
 const notes = JSON.parse(readFileSync("/home/ethioking/dev/courtlens/dashboard/content/patch-notes.json", "utf8"));
-const REPO = "https://github.com/calebhabesh/courtlens";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const FULL = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -20,8 +20,6 @@ const month = ({ from, to }) => {
   return fy === ty ? `${MONTHS[fm - 1]}–${MONTHS[tm - 1]} ${ty}` : `${MONTHS[fm - 1]} ${fy}–${MONTHS[tm - 1]} ${ty}`;
 };
 const range = ({ from, to }) => from === to ? short(from) : `${from.slice(0, 4) === to.slice(0, 4) ? short(from).replace(/, \d{4}$/, "") : short(from)} – ${short(to)}`;
-const line = r => r.merge ? `${r.version} · merged ${short(r.merge.date)}` : `${r.version} · ${range(r.range)}`;
-const display = t => t.replace(/ \(([0-9a-f]{7}), (\d{4}-\d{2}-\d{2})\)/g, (_, __, d) => ` (${short(d)})`).replace(/ \([0-9a-f]{7}\)/g, "");
 const entries = notes.releases.flatMap(r => r.groups.flatMap(g => g.entries));
 const latest = entries.map(e => e.date).sort().at(-1);
 
@@ -53,10 +51,8 @@ for (const width of [1440, 390]) {
     id: r.id,
     month: r.querySelector(".pn-month").textContent,
     number: r.querySelector(".pn-number").textContent,
-    unmerged: !!r.querySelector('.pn-version [data-badge="unmerged"]'),
     name: r.querySelector(".pn-release-name").textContent,
     line: r.querySelector(".pn-release-line").textContent,
-    mergeHref: r.querySelector(".pn-release-line a")?.getAttribute("href") ?? null,
     summary: r.querySelector(".pn-summary").textContent,
     groups: [...r.querySelectorAll(".pn-group")].map(g => ({
       title: g.querySelector(".pn-group-title").textContent,
@@ -64,12 +60,8 @@ for (const width of [1440, 390]) {
         title: e.querySelector(".pn-entry-title").firstChild.textContent,
         badge: e.querySelector(".pn-badge").textContent,
         explore: e.querySelector(".pn-explore")?.getAttribute("href") ?? null,
+        links: e.querySelectorAll("a").length,
         text: e.querySelector(".pn-entry-text").textContent,
-        bullets: [...e.querySelectorAll(".pn-bullets li")].map(li => li.textContent),
-        date: e.querySelector("time").textContent,
-        dateTime: e.querySelector("time").getAttribute("datetime"),
-        commit: e.querySelector('a[aria-label^="Commit"]').getAttribute("href"),
-        log: [...e.querySelectorAll(".pn-entry-meta a")].find(a => a.textContent === "Progress log")?.getAttribute("href") ?? null,
       })),
     })),
   })));
@@ -79,10 +71,8 @@ for (const width of [1440, 390]) {
     eq(`${at} id`, d.id, release.id);
     eq(`${at} month`, d.month, month(release.range));
     eq(`${at} number`, d.number, release.number);
-    eq(`${at} unmerged pill`, d.unmerged, release.merge === null && release.version !== "main");
     eq(`${at} name`, d.name, release.title);
-    eq(`${at} line`, d.line, line(release));
-    eq(`${at} merge link`, d.mergeHref, release.merge ? `${REPO}/commit/${release.merge.commit}` : null);
+    eq(`${at} dates`, d.line, range(release.range));
     eq(`${at} summary`, d.summary, release.summary);
     eq(`${at} groups`, d.groups?.length, release.groups.length);
     release.groups.forEach((group, j) => {
@@ -94,15 +84,13 @@ for (const width of [1440, 390]) {
         eq(`${w} title`, e.title?.trim(), entry.title);
         eq(`${w} badge`, e.badge, entry.badge);
         eq(`${w} explore`, e.explore, entry.href ?? null);
-        eq(`${w} text`, e.text, display(entry.text));
-        eq(`${w} bullets`, JSON.stringify(e.bullets), JSON.stringify((entry.bullets ?? []).map(display)));
-        eq(`${w} date`, e.date, short(entry.date));
-        eq(`${w} datetime`, e.dateTime, entry.date);
-        eq(`${w} commit`, e.commit, `${REPO}/commit/${entry.commit}`);
-        eq(`${w} log`, e.log, entry.log ? `${REPO}/blob/main/${entry.log.file}` : null);
+        eq(`${w} links`, e.links, entry.href ? 1 : 0);
+        eq(`${w} text`, e.text, entry.text);
       });
     });
   });
+  eq("no link off the site in the releases", await page.locator('.pn-releases a[href^="http"]').count(), 0);
+  eq("no repository wording", /commit|progress log|branch|merged|unmerged|PR #/i.test(await page.locator(".pn-releases").innerText()), false);
   eq("about credits Databallr", (await page.locator("#about").textContent()).includes("Databallr's changelog, the design reference"), true);
 
   // Release column: sticky beside the entries on a desktop; above them on a phone.

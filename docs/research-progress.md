@@ -793,3 +793,17 @@ Owner: "I meant the left part with the actual version number." :3100 served roun
 the version column showed no gold tile. Toggling the import in `app/globals.css` (left unchanged) refreshed it; :3100 then showed
 the tile. Committed code unchanged since round 2. Awaits the owner's ✅.
 
+## 2026-11-08 — RD07 round 4: a plain feature list for visitors
+
+[Evidence](evidence/research/design-RD07/README.md#round-4-owner-2026-11-08). Owner: remove the edge highlight; no commits,
+progress logs or repository details, just a simple list of features for visitors.
+
+- **Change.** The tile's accent rail removed. Releases show month, version, name and dates; entries show title, badge, Explore
+  and one plain sentence. Commit, log and merge links, entry dates, the Unmerged pill and bullets are gone; every entry rewritten
+  in plain language, release names made readable, five internal entries dropped (58 remain). The JSON keeps commits and logs, so
+  the check script still verifies 85 references.
+- **Checks.** Lint 0/0, typecheck, Vitest 832; page specs 66/66 ×3; full Playwright 605 passed, 17 skipped, 0 failed (What's New
+  baselines regenerated and viewed); real data 784 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, no phone
+  control under 40 px.
+- **Not done.** The owner's review and ✅.
+

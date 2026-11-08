@@ -2,39 +2,24 @@ import { ResearchDisclosure, ResearchIntro } from "./research/research-page";
 import { ButtonLink } from "./ui/kit";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
-import { PATCH_ABOUT, PATCH_RELEASES, commitUrl, displayText, isUnmerged, logUrl, monthRange, patchEntries, releaseLine, shortDate, type PatchEntry, type PatchRelease } from "@/lib/patch-notes";
+import { PATCH_ABOUT, PATCH_RELEASES, dateRange, monthRange, patchEntries, shortDate, type PatchEntry, type PatchRelease } from "@/lib/patch-notes";
 
 /*
  * Patch Notes (Research R11, catalog row 21; RD07 design, owner 2026-11-08), after Databallr's changelog: the centred hero, then
- * releases newest first in an article column. Each release has a 160 px column (month, version, name, the merge line) that stays
- * in view while its entries are read, beside plain entry rows: title with its badge, Explore, the sentence, dot bullets and one
- * quiet line with the date, the commit and the progress-log entry.
+ * releases newest first in an article column. Each release has a 160 px gold-tinted column (month, version, name, dates) that
+ * stays in view while its entries are read, beside plain entry rows: title with its badge, Explore and one sentence. Round 4
+ * (owner): a simple list for site visitors, so no commits, progress logs or branch and merge details are shown; the JSON keeps
+ * them for the check script.
  */
 
 function Entry({ entry }: { entry: PatchEntry }) {
-  return <li className="pn-entry" data-entry={entry.commit}>
+  return <li className="pn-entry">
     <div className="pn-entry-head">
       <h4 className="pn-entry-title">{entry.title}{" "}<span className="pn-badge" data-badge={entry.badge.toLowerCase()}>{entry.badge}</span></h4>
-      {/* Round 2 (owner): condensed; the date, commit and log share the title row with Explore. */}
-      <div className="pn-entry-side">
-        <p className="pn-entry-meta">
-          <time dateTime={entry.date}>{shortDate(entry.date)}</time>
-          <span aria-hidden="true">·</span>
-          <a href={commitUrl(entry.commit)} aria-label={`Commit ${entry.commit}`}><span className="pn-hash">{entry.commit}</span></a>
-          {entry.log && <><span aria-hidden="true">·</span><a href={logUrl(entry.log.file)}>Progress log</a></>}
-        </p>
-        {entry.href && <ButtonLink className="pn-explore" size="sm" variant="text" href={entry.href} iconAfter="arrow-right" aria-label={`Explore ${entry.title}`}>Explore</ButtonLink>}
-      </div>
+      {entry.href && <ButtonLink className="pn-explore" size="sm" variant="text" href={entry.href} iconAfter="arrow-right" aria-label={`Explore ${entry.title}`}>Explore</ButtonLink>}
     </div>
-    <p className="pn-entry-text">{displayText(entry.text)}</p>
-    {entry.bullets && <ul className="pn-bullets">{entry.bullets.map(bullet => <li key={bullet}>{displayText(bullet)}</li>)}</ul>}
+    <p className="pn-entry-text">{entry.text}</p>
   </li>;
-}
-
-/** Round 2: the version and the date on their own lines in the tile (the text still reads "PR #42 · merged Nov 3, 2026"). */
-function ReleaseLine({ release }: { release: PatchRelease }) {
-  const [where, ...when] = releaseLine(release).split(" · ");
-  return <><span className="pn-release-part">{where}</span><span className="pn-release-sep"> · </span><span className="pn-release-part">{when.join(" · ")}</span></>;
 }
 
 function Release({ release }: { release: PatchRelease }) {
@@ -44,18 +29,15 @@ function Release({ release }: { release: PatchRelease }) {
       <p className="pn-month">{monthRange(release.range)}</p>
       <h2 id={headingId} className="pn-version">
         <span className="pn-number">{release.number}</span>{" "}
-        {isUnmerged(release) && <><span className="pn-badge" data-badge="unmerged">Unmerged</span>{" "}</>}
         <span className="pn-release-name">{release.title}</span>
       </h2>
-      <p className="pn-release-line" data-release={release.id}>
-        {release.merge ? <a href={commitUrl(release.merge.commit)}><ReleaseLine release={release} /></a> : <ReleaseLine release={release} />}
-      </p>
+      <p className="pn-release-line" data-release={release.id}>{dateRange(release.range)}</p>
     </div>
     <div className="pn-release-body">
       <p className="pn-summary">{release.summary}</p>
       {release.groups.map(group => <section key={group.title} className="pn-group" aria-label={`${release.number} ${group.title}`}>
         <h3 className="pn-group-title">{group.title}</h3>
-        <ul className="pn-entries">{group.entries.map(entry => <Entry key={entry.commit + entry.title} entry={entry} />)}</ul>
+        <ul className="pn-entries">{group.entries.map(entry => <Entry key={entry.title} entry={entry} />)}</ul>
       </section>)}
     </div>
   </li>;
@@ -77,7 +59,6 @@ export function PatchNotesView() {
       <ResearchDisclosure id="about" icon="info" title="About this page">
         <div className="pn-about">
           <p>{PATCH_ABOUT}</p>
-          <p>Entries are written from the git history and the progress logs. A check script matches every commit, date and progress-log heading against the repository, and the version numbers against the merge order.</p>
           <p>Layout after Databallr&apos;s changelog, the design reference. The wording and the releases are CourtLens&apos;s own.</p>
         </div>
       </ResearchDisclosure>

@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { LEARNING_TIERS, learningTopic, learningTopicCount, topicMatches } from "../lib/learning-topics";
-import { PATCH_RELEASES, commitUrl, displayText, isUnmerged, logUrl, monthRange, patchEntries, releaseLine, shortDate } from "../lib/patch-notes";
+import { PATCH_RELEASES, dateRange, monthRange, patchEntries, shortDate } from "../lib/patch-notes";
 import { openWorkbench } from "./workbench-navigation";
 
 // R11: Learning, Glossary and Patch Notes (Learning redesigned in RD06). Measured numbers come from lib/research-facts.ts
@@ -134,35 +134,34 @@ test.describe("R11 Learning (RD06 design)", () => {
 test.describe("R11 Patch Notes (RD07 design)", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
 
-  test("lists every release newest first with its version, month and merge line, and every entry with its links", async ({ page }) => {
+  test("lists every release newest first with its version, month and dates, and every entry as a plain line (RD07 round 4)", async ({ page }) => {
     await openWorkbench(page, "/whats-new");
     await expect(page.getByRole("heading", { level: 1, name: "Patch Notes" })).toBeVisible();
     await expect(page.getByRole("navigation", { name: "What's New sections" })).toHaveCount(0);
     const entries = patchEntries();
     const latest = entries.map(entry => entry.date).sort().at(-1)!;
     await expect(page.locator(".rs-intro-tagline")).toHaveText(`Latest ${shortDate(latest)} · ${PATCH_RELEASES.length} releases · ${entries.length} changes`);
-    await expect(page.locator(".pn-release h2")).toHaveText(PATCH_RELEASES.map(release => new RegExp(`^${release.number.replace(".", "\\.")} ${isUnmerged(release) ? "Unmerged " : ""}${release.title}$`)));
+    await expect(page.locator(".pn-release h2")).toHaveText(PATCH_RELEASES.map(release => `${release.number} ${release.title}`));
     for (const release of PATCH_RELEASES) {
       const block = page.locator(`li#${release.id}`);
       await expect(block.locator(".pn-month")).toHaveText(monthRange(release.range));
-      await expect(block.locator(`[data-release="${release.id}"]`)).toHaveText(releaseLine(release));
-      if (release.merge) await expect(block.locator(`[data-release="${release.id}"] a`)).toHaveAttribute("href", commitUrl(release.merge.commit));
+      await expect(block.locator(`[data-release="${release.id}"]`)).toHaveText(dateRange(release.range));
       await expect(block.locator(".pn-summary")).toHaveText(release.summary);
       await expect(block.locator(".pn-group-title")).toHaveText(release.groups.map(group => group.title));
-      for (const group of release.groups) for (const entry of group.entries) {
-        const row = block.locator(`[data-entry="${entry.commit}"]`).filter({ has: page.getByRole("heading", { level: 4, name: `${entry.title} ${entry.badge}`, exact: true }) });
-        await expect(row).toHaveCount(1);
-        await expect(row.locator(".pn-badge")).toHaveText(entry.badge);
-        await expect(row.locator(".pn-entry-text")).toHaveText(displayText(entry.text));
-        await expect(row.locator(".pn-bullets li")).toHaveText((entry.bullets ?? []).map(displayText));
-        await expect(row.locator("time")).toHaveText(shortDate(entry.date));
-        await expect(row.getByRole("link", { name: `Commit ${entry.commit}` })).toHaveAttribute("href", commitUrl(entry.commit));
+      const rows = block.locator(".pn-entry");
+      const flat = release.groups.flatMap(group => group.entries);
+      await expect(rows.locator("h4")).toHaveText(flat.map(entry => `${entry.title} ${entry.badge}`));
+      await expect(rows.locator(".pn-entry-text")).toHaveText(flat.map(entry => entry.text));
+      for (const [index, entry] of flat.entries()) {
+        const row = rows.nth(index);
         if (entry.href) await expect(row.getByRole("link", { name: `Explore ${entry.title}` })).toHaveAttribute("href", entry.href);
-        else await expect(row.getByRole("link", { name: /^Explore/ })).toHaveCount(0);
-        if (entry.log) await expect(row.getByRole("link", { name: "Progress log" })).toHaveAttribute("href", logUrl(entry.log.file));
+        else await expect(row.getByRole("link")).toHaveCount(0);
       }
     }
     await expect(page.locator(".pn-entry")).toHaveCount(entries.length);
+    // A list for visitors: no commit, progress-log, branch or merge details, and no link off the site.
+    await expect(page.locator('.pn-releases a[href^="http"]')).toHaveCount(0);
+    await expect(page.locator(".pn-releases")).not.toContainText(/commit|progress log|branch|merged|unmerged|PR #/i);
     await expect(page.getByRole("link", { name: /blog/i })).toHaveCount(0);
     await expect(page.locator("#about")).toContainText("Databallr");
   });
