@@ -15,17 +15,26 @@ function Entry({ entry }: { entry: PatchEntry }) {
   return <li className="pn-entry" data-entry={entry.commit}>
     <div className="pn-entry-head">
       <h4 className="pn-entry-title">{entry.title}{" "}<span className="pn-badge" data-badge={entry.badge.toLowerCase()}>{entry.badge}</span></h4>
-      {entry.href && <ButtonLink className="pn-explore" size="sm" variant="text" href={entry.href} iconAfter="arrow-right" aria-label={`Explore ${entry.title}`}>Explore</ButtonLink>}
+      {/* Round 2 (owner): condensed; the date, commit and log share the title row with Explore. */}
+      <div className="pn-entry-side">
+        <p className="pn-entry-meta">
+          <time dateTime={entry.date}>{shortDate(entry.date)}</time>
+          <span aria-hidden="true">·</span>
+          <a href={commitUrl(entry.commit)} aria-label={`Commit ${entry.commit}`}><span className="pn-hash">{entry.commit}</span></a>
+          {entry.log && <><span aria-hidden="true">·</span><a href={logUrl(entry.log.file)}>Progress log</a></>}
+        </p>
+        {entry.href && <ButtonLink className="pn-explore" size="sm" variant="text" href={entry.href} iconAfter="arrow-right" aria-label={`Explore ${entry.title}`}>Explore</ButtonLink>}
+      </div>
     </div>
     <p className="pn-entry-text">{displayText(entry.text)}</p>
     {entry.bullets && <ul className="pn-bullets">{entry.bullets.map(bullet => <li key={bullet}>{displayText(bullet)}</li>)}</ul>}
-    <p className="pn-entry-meta">
-      <time dateTime={entry.date}>{shortDate(entry.date)}</time>
-      <span aria-hidden="true">·</span>
-      <a href={commitUrl(entry.commit)} aria-label={`Commit ${entry.commit}`}>Commit <span className="pn-hash">{entry.commit}</span></a>
-      {entry.log && <><span aria-hidden="true">·</span><a href={logUrl(entry.log.file)}>Progress log</a></>}
-    </p>
   </li>;
+}
+
+/** Round 2: the version and the date on their own lines in the tile (the text still reads "PR #42 · merged Nov 3, 2026"). */
+function ReleaseLine({ release }: { release: PatchRelease }) {
+  const [where, ...when] = releaseLine(release).split(" · ");
+  return <><span className="pn-release-part">{where}</span><span className="pn-release-sep"> · </span><span className="pn-release-part">{when.join(" · ")}</span></>;
 }
 
 function Release({ release }: { release: PatchRelease }) {
@@ -39,7 +48,7 @@ function Release({ release }: { release: PatchRelease }) {
         <span className="pn-release-name">{release.title}</span>
       </h2>
       <p className="pn-release-line" data-release={release.id}>
-        {release.merge ? <a href={commitUrl(release.merge.commit)}>{releaseLine(release)}</a> : releaseLine(release)}
+        {release.merge ? <a href={commitUrl(release.merge.commit)}><ReleaseLine release={release} /></a> : <ReleaseLine release={release} />}
       </p>
     </div>
     <div className="pn-release-body">

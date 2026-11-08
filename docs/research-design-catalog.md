@@ -588,6 +588,15 @@ and suggestions for optimal construction and layout of this page. Build it compr
 
 Evidence: [`design-RD07`](evidence/research/design-RD07/README.md).
 
+Instructions (owner, 2026-11-08, round 2; screenshot: v1.7's release column beside its first three Models entries):
+2. [x] Looks good. Can we add some type of color attention grabbing to the left side which has the version numbers (which are
+   visual dividers).
+   — Each release column is now a gold-tinted tile with a 3 px accent rail, the month and version in gold, and the merge line on
+   two lines (PR, then date); on a phone the tile is one wrapped row above its entries.
+3. [x] I would like a more condensed note of the features added, they take up a little too much space.
+   — Entries are condensed: 18 px titles, 14 px text at a 760 px measure, tighter padding and bullets, and the date · commit · log
+   line moved into the title row beside Explore. The page is 36% shorter at 1440 (11,840 to 7,567 px) and 23% at 390.
+
 ## RD08 Draft Classes — ⬜
 
 - **Now:** rookie tracker, value by pick with intervals, class redrafts, steals and misses, combine beside

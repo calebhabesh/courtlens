@@ -775,3 +775,15 @@ suggestions for optimal construction and layout of this page. Build it comprehen
   overflow, 0 broken images, no phone control or `ButtonLink` under 40 px.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-08 — RD07 round 2: gold release tiles, condensed entries
+
+[Evidence](evidence/research/design-RD07/README.md#round-2-owner-2026-11-08). Owner: a colour accent on the version column, and
+more condensed entries.
+
+- **Change.** Each release column is a gold-tinted tile with an accent rail and the version in gold; entries use smaller titles
+  and text, tighter padding, and carry the date · commit · log line in the title row. The page is 36% shorter at 1440, 23% at 390.
+- **Checks.** Lint 0/0, typecheck, Vitest 832; page specs 66/66 ×3; full Playwright 605 passed, 17 skipped, 0 failed (What's New
+  baselines regenerated and viewed); real data 1,366 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, no
+  phone control under 40 px.
+- **Not done.** The owner's review and ✅.
+

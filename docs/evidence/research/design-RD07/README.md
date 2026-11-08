@@ -73,3 +73,33 @@ recommendations, including both stop-and-ask items, are recorded with the instru
 
 **Found in passing (not changed):** the Stats page's "What's New" line shows the newest entry, which is now "Nov 8: Defensive Shot
 Quality redesign" (the first of the two Nov 8 entries); its baselines still pass.
+
+## Round 2 (owner, 2026-11-08)
+
+"Can we add some type of color attention grabbing to the left side which has the version numbers (which are visual dividers)." and
+"I would like a more condensed note of the features added, they take up a little too much space." (screenshot: v1.7's release
+column beside its first three entries).
+
+**Built**
+
+- **Release column.** A gold-tinted tile (`--color-accent` at 16% fading to 4%, a 1 px accent rim and a 3 px accent rail on the
+  left), with the month and the version in the accent; still 160 px and sticky. The merge line sits on two lines ("PR #42", then
+  "merged Nov 3, 2026"); a visually hidden separator keeps its text "PR #42 · merged Nov 3, 2026" for screen readers and the
+  tests. On a phone the tile is one wrapped row (month, version, pill, name, then the line) above its entries.
+- **Condensed entries.** Titles 18 px (16 px on a phone), text 14 px at a 760 px measure, 16 px row padding, 2 px between
+  bullets, and the date · commit · progress-log line moved into the title row beside Explore (under the title, with Explore at
+  its right, on a phone). The commit link shows the hash alone; its accessible name stays "Commit …". Full-page height: 11,840
+  to 7,567 px at 1440 (36% shorter), 14,288 to 10,994 px at 390 (23%).
+- **Not changed.** Data, content and APIs; the spec (its checks still hold); the What's New visual baselines regenerated and viewed.
+
+**Checks**
+
+- Lint 0 / 0, typecheck clean, Vitest 832 passed.
+- `r11-learning-patch-notes`, `fo13-pages`, `route-consolidation`: 66/66 three times.
+- Full Playwright in the sandbox: **605 passed, 17 skipped, 0 failed** (after regenerating the two What's New baselines).
+- Real-data check through `readonly-proxy.mjs` at 1440 and 390: **1,366 values, 0 mismatches**; 0 console errors, 0 overflow, 0
+  broken images, no phone control or `ButtonLink` under 40 px; the tile 160 px and pinned on a desktop, above its entries on a phone.
+- Glance test, screenshots viewed: `r2-patch-notes-default-*`, `r2-patch-notes-sticky-1440` (v1.6's tile pinned beside its
+  entries), `r2-patch-notes-release-390`, `r2-patch-notes-full-*`. The releases now read as gold markers down the left; more
+  changes fit on a screen (about 6 entries per 1440 screen instead of 3).
+
