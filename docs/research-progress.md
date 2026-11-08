@@ -733,3 +733,15 @@ suggestions for optimal construction of the page. Comprehensively build it out n
   `ButtonLink` under 40 px.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-08 — RD06 rounds 2 and 3: the search heads the index column
+
+[Evidence](evidence/research/design-RD06/README.md#rounds-2-and-3-owner-2026-11-08). Owner: "the search topics bar is arbitrarily
+placed. Should we make it width of column", then "it's squished to the content below it. Add a natural padding".
+
+- **Change.** The topic search moved into the index column at its 224 px width, sticky with the index, 24 px above the first tier;
+  full width above the Topics button on a phone. The owner's round 3 screenshot (a ~4 px gap) did not match the sandbox build
+  (16 px), most likely :3100's stale CSS; the gap was widened anyway.
+- **Checks.** Lint 0/0, typecheck, Vitest 830; `r11-learning-patch-notes` 8/8 ×3; full Playwright 604 passed, 17 skipped, 0
+  failed; real data 620 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, no phone control under 40 px.
+- **Not done.** The owner's review and ✅.
+

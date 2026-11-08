@@ -1,5 +1,5 @@
 {
-  "checkedOn": "2026-11-08T19:22:33.408Z",
+  "checkedOn": "2026-11-08T19:42:03.397Z",
   "api": "GET via readonly-proxy.mjs → :8000",
   "seasons": [
     "2014-15",
@@ -15,12 +15,12 @@
     "2024-25",
     "2025-26"
   ],
-  "total": 613,
+  "total": 620,
   "mismatches": 0,
   "scenes": [
     {
       "width": 1440,
-      "compared": 306,
+      "compared": 309,
       "mismatches": [],
       "consoleErrors": [],
       "overflow": false,
@@ -30,7 +30,7 @@
     },
     {
       "width": 390,
-      "compared": 307,
+      "compared": 311,
       "mismatches": [],
       "consoleErrors": [],
       "overflow": false,

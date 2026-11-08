@@ -101,6 +101,18 @@ for (const width of [1440, 390]) {
   await search.fill("");
   await page.waitForFunction(() => document.querySelectorAll("article[data-topic]").length === 23);
 
+  // Rounds 2 and 3: the search heads the index column at its width, 24 px above the index; on a phone, above the Topics button.
+  const place = await page.evaluate(() => {
+    const box = s => document.querySelector(s)?.getBoundingClientRect();
+    const search = box(".ln-search"), aside = box(".ln-aside"), index = box(".ln-aside .ln-index"), button = box(".ln-index-phone summary");
+    return { searchX: Math.round(search.left), searchW: Math.round(search.width), asideX: Math.round(aside.left), asideW: Math.round(aside.width),
+      gap: index && index.height ? Math.round(index.top - search.bottom) : null, buttonGap: button && button.height ? Math.round(button.top - search.bottom) : null, buttonW: button ? Math.round(button.width) : null };
+  });
+  eq("search x = index column x", place.searchX, place.asideX);
+  eq("search width = index column width", place.searchW, place.asideW);
+  if (width > 600) eq("gap under search", place.gap, 24); else { eq("search above Topics", place.buttonGap > 0, true); eq("search width = Topics width", place.searchW, place.buttonW); }
+  if (shots) { await page.evaluate(() => scrollTo(0, 0)); await page.locator(width > 600 ? ".ln-aside-sticky" : ".ln-body").screenshot({ path: `${shots}/learning-search-placement-${tag}.png`, ...(width > 600 ? {} : { clip: undefined }) }); }
+
   // Index: desktop marks the topic being read; the phone index opens and closes on a pick.
   if (width > 600) {
     await page.locator(".ln-aside a[href='#rapm']").click();

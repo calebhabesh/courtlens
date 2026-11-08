@@ -119,10 +119,13 @@ export function LearningView() {
         links={[{ label: "Definitions", href: "/methodology", icon: "table" }, { label: "Glossary", href: "/stats/glossary", icon: "book" }, { label: "Research", href: "/research", icon: "sparkles" }, { label: "Patch Notes", href: "/whats-new", icon: "history" }]}
       />
       <div className="ln-body">
-        <div className="ln-search"><GridSearch value={query} onChange={setQuery} label="Search topics" placeholder="Search topics…" /></div>
         <div className="ln-layout">
+          {/* Round 2: the search heads the index column at its width and stays with it; on a phone it sits above the Topics button. */}
           <aside className="ln-aside">
-            <nav className="ln-index" aria-label="Learning topics"><TopicIndex tiers={tiers} current={current} /></nav>
+            <div className="ln-aside-sticky">
+              <div className="ln-search"><GridSearch value={query} onChange={setQuery} label="Search topics" placeholder="Search topics…" /></div>
+              <nav className="ln-index" aria-label="Learning topics"><TopicIndex tiers={tiers} current={current} /></nav>
+            </div>
           </aside>
           <details className="ln-index-phone" open={indexOpen} onToggle={event => setIndexOpen(event.currentTarget.open)}>
             <ButtonSummary size="md" variant="secondary" icon="list-ordered" iconAfter="chevron-down">Topics ({shown})</ButtonSummary>

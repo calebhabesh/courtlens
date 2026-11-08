@@ -533,6 +533,14 @@ and suggestions for optimal construction of the page. Comprehensively build it o
 
 Evidence: [`design-RD06`](evidence/research/design-RD06/README.md).
 
+Instructions (owner, 2026-11-08, round 2; screenshot: the desktop index with the search field above it):
+2. [x] the search topics bar is arbitrarily placed. Should we make it width of column
+   - Agent's answer, built: the index column's width (224 px), at the top of that column, sticky with the index; full width above
+     the Topics button on a phone.
+3. [x] it's squished to the content below it. Add a natural padding (screenshot: the search over "1. Core Concepts").
+   — The search now heads the index column at its 224 px width and stays sticky with it, 24 px above "1. Core Concepts"; full width
+   above the Topics button on a phone. Real data 620 values, 0 mismatches.
+
 ## RD07 Patch Notes — ⬜
 
 - **Now:** releases newest first (merged PRs and the research branch), grouped entries with badge, date,

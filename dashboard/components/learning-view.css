@@ -9,13 +9,15 @@
   .ln-page .rs-intro { margin-top: calc(-1 * var(--space-4)); }
 
   .ln-body { display: grid; gap: var(--space-5); min-width: 0; }
-  .ln-search { width: 384px; max-width: 100%; }
+  .ln-search { width: 100%; min-width: 0; }
   .ln-search .stats-header-search { padding: 0; }
   .ln-layout { display: grid; grid-template-columns: 224px minmax(0, 1fr); gap: var(--space-8); align-items: start; min-width: 0; }
 
   /* Index: numbered tiers, their topics under them; the topic being read in gold. */
   .ln-aside { align-self: stretch; min-width: 0; }
-  .ln-aside .ln-index { position: sticky; top: calc(var(--header-height) + var(--space-6)); max-height: calc(100vh - var(--header-height) - var(--space-12)); overflow-y: auto; padding-right: var(--space-2); scrollbar-width: none; }
+  /* Round 2 (owner): the search heads the index column at its width and stays sticky with it. */
+  .ln-aside-sticky { position: sticky; top: calc(var(--header-height) + var(--space-6)); display: flex; flex-direction: column; gap: var(--space-6); max-height: calc(100vh - var(--header-height) - var(--space-12)); min-width: 0; }
+  .ln-aside .ln-index { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding-right: var(--space-2); scrollbar-width: none; }
   .ln-index-tiers, .ln-index-topics { margin: 0; padding: 0; list-style: none; }
   .ln-index-tiers { display: grid; gap: var(--space-4); }
   .ln-index-tier { display: grid; gap: var(--space-1); }
@@ -88,14 +90,14 @@
 
   @media (max-width: 1023px) {
     .ln-layout { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
-    .ln-aside { display: none; }
+    .ln-aside-sticky { position: static; max-height: none; }
+    .ln-aside .ln-index { display: none; }
     .ln-index-phone { display: grid; gap: var(--space-3); }
     .ln-index-phone > .ln-index { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
     .ln-index-phone .ln-index-link { padding-block: var(--space-2); white-space: normal; }
   }
 
   @media (max-width: 767px) {
-    .ln-search { width: 100%; }
     .ln-topic { padding: var(--space-4); }
     .ln-topics { gap: var(--space-8); }
     .ln-topic-title { font-size: var(--text-lg); line-height: var(--text-lg-lh); }

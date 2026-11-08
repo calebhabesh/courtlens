@@ -71,6 +71,23 @@ test.describe("R11 Learning (RD06 design)", () => {
     await expect(index.locator("[aria-current]")).toHaveCount(1);
   });
 
+  test("the search heads the index column at its width and stays with it (RD06 round 2)", async ({ page }) => {
+    await openWorkbench(page, "/methodology/learning");
+    const search = page.getByRole("searchbox", { name: "Search topics" });
+    const index = page.getByRole("navigation", { name: "Learning topics", exact: true });
+    const column = page.locator(".ln-aside");
+    const [s, i, c] = [await search.locator("xpath=ancestor::div[contains(@class,'ln-search')]").boundingBox(), await index.boundingBox(), await column.boundingBox()];
+    expect(Math.abs(s!.x - c!.x)).toBeLessThanOrEqual(1);
+    expect(Math.abs(s!.width - c!.width)).toBeLessThanOrEqual(1);
+    expect(Math.round(i!.y - (s!.y + s!.height))).toBe(24); // round 3: a clear 24 px under the search
+    const top = page.locator(".ln-tier").first();
+    expect(Math.abs(s!.y - (await top.boundingBox())!.y)).toBeLessThanOrEqual(1);
+    await page.locator("article#rapm").scrollIntoViewIfNeeded();
+    await page.mouse.wheel(0, 600);
+    await expect(search).toBeInViewport();
+    await expect(index).toBeInViewport();
+  });
+
   test("shows the served league inputs for every season, in the table and the chart", async ({ page }) => {
     await openWorkbench(page, "/methodology/learning");
     const table = page.getByRole("table", { name: "League averages by season" });
@@ -101,6 +118,10 @@ test.describe("R11 Learning (RD06 design)", () => {
     await expect(page.getByRole("table", { name: "League averages by season" })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await expect(page.getByRole("navigation", { name: "Learning topics", exact: true })).toBeHidden();
+    const searchBox = (await page.getByRole("searchbox", { name: "Search topics" }).locator("xpath=ancestor::div[contains(@class,'ln-search')]").boundingBox())!;
+    const topicsButton = (await page.locator(".ln-index-phone summary").boundingBox())!;
+    expect(searchBox.y + searchBox.height).toBeLessThanOrEqual(topicsButton.y);
+    expect(Math.abs(searchBox.width - topicsButton.width)).toBeLessThanOrEqual(1);
     const phoneIndex = page.getByRole("navigation", { name: "Learning topics (phone)" });
     await expect(phoneIndex).toBeHidden();
     await page.locator(".ln-index-phone summary").click();
