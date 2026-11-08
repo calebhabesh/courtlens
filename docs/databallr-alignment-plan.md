@@ -141,6 +141,11 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   Labels whose lowercase prefix carries meaning (oTS, dContest, xPPS) keep their case (`keepCase`). Green/red goes on a value
   (`GridValue tone`) only where its served interval excludes zero. Centre a `PageHeader` icon tile with flex alignment: the
   unlayered `display: inline-flex` defeats grid centring.
+- **Settled in RD05 (owner, Defensive Shot Quality, 2026-11-08):** player cards after Databallr's take a subdued team-colour tint
+  (identity, not good/bad) with no team logo watermark behind them; the logo badge on the photo and the logo beside the code stay.
+  Where the frozen results serve only part of a list (five key matchups), link to the CourtLens page that serves all of it (Player
+  Matchups: everyone guarded, and each head-to-head) rather than building a search over data the page doesn't have, and say the
+  source difference beside the link, in the glossary and in Caveats & Methodology.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).

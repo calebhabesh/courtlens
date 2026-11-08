@@ -57,7 +57,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD02 | ORtg Calculator [20] | `/calculator` | D: `Offensive Rating Calculator` | R10 data, RD02 | ✅ |
 | RD03 | zTS [24] | `/research/zts` | W: `zTS — Playtype-Adjusted Scoring Efficiency` | R04, RD03 | ✅ |
 | RD04 | Shot Quality [25] | `/research/shot-quality` | W/D/LocalSend: `ShotQuality RAPM - Scoring Impact Decomposition` | R05, R06, RD04 | ✅ |
-| RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06, RD05 | 👀 |
+| RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06, RD05 | ✅ |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning` | R11 | ⬜ |
 | RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes` | R11 | ⬜ |
 | RD08 | Draft Classes [28] | `/draft` | D: Draftballr dashboard, lottery, resources (owner: don't copy Draftballr's design; match CourtLens and Databallr) | R09 | ⬜ |
@@ -428,7 +428,7 @@ Instructions (owner, 2026-11-07, round 6; screenshot: the Player header with its
    below. It now sits on the tier line with the label's own gap below it: 6.5 / 7 px at 1440 and 7.5 / 8 px at 390, on both
    tables, checked in every scene. Scoped to `GridSearch`, so Wingspan's approved header is unchanged.
 
-## RD05 Defensive Shot Quality — 👀
+## RD05 Defensive Shot Quality — ✅ approved by the owner (2026-11-08)
 
 - **Now:** ranked defender cards, All / 2PT / 3PT, ranks, RAPM headline, Key Matchups, paging; matchup data
   from 2017-18; expected PPS is the shooters' own shooting.
