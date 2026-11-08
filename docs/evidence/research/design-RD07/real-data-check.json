@@ -1,14 +1,14 @@
 {
-  "checkedOn": "2026-11-08T20:27:46.310Z",
+  "checkedOn": "2026-11-08T20:48:49.891Z",
   "source": "dashboard/content/patch-notes.json (committed); API via readonly-proxy.mjs (GET only) → :8000",
   "releases": 8,
-  "entries": 63,
-  "total": 1366,
+  "entries": 58,
+  "total": 784,
   "mismatches": 0,
   "scenes": [
     {
       "width": 1440,
-      "compared": 683,
+      "compared": 392,
       "mismatches": [],
       "consoleErrors": [],
       "overflow": false,
@@ -18,7 +18,7 @@
     },
     {
       "width": 390,
-      "compared": 683,
+      "compared": 392,
       "mismatches": [],
       "consoleErrors": [],
       "overflow": false,
