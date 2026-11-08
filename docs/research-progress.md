@@ -745,3 +745,9 @@ placed. Should we make it width of column", then "it's squished to the content b
   failed; real data 620 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, no phone control under 40 px.
 - **Not done.** The owner's review and ✅.
 
+## 2026-11-08 — RD06 round 4: stale CSS on :3100, no code change
+
+Owner: "the search bar is still squished for some reason." :3100 served round 1's Learning CSS with round 2's markup, so the old
+sticky index slid against the search on scroll. Toggling the import in `app/globals.css` (left unchanged) refreshed it; :3100 then
+measured a 24 px gap at every scroll position. Committed code unchanged since 2f1f67e. Awaits the owner's ✅.
+
