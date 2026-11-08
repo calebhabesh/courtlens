@@ -79,3 +79,31 @@ added as a CourtLens topic with no Measured box.
 **Found in passing (not changed):** `--space-1-5` is not a defined token, so the rules in `zts-research.css`,
 `shot-quality-research.css`, `shared-floor-view.css` and `playoffs-bracket-view.css` that use it fall back to no spacing. RD06
 uses defined tokens only.
+
+## Rounds 2 and 3 (owner, 2026-11-08)
+
+Round 2: "the search topics bar is arbitrarily placed. Should we make it width of column" (screenshot: the desktop index with the
+384 px search above it, running past the index into the gap). Round 3, sent during the build: "it's squished to the content below
+it. Add a natural padding" (screenshot: the search over "1. Core Concepts"). The round 3 screenshot showed a ~4 px gap and an
+indented field, which the sandbox build did not (16 px, flush): likely :3100's stale CSS for an edited imported file. The gap was
+widened regardless.
+
+**Built**
+
+- The search moved into the index column (`.ln-aside-sticky`): the column's width (224 px), at its top, sticky with the index while
+  the cards scroll; 24 px between the search and "1. Core Concepts" (16 px separates the tiers, so the search no longer reads as
+  part of the list). Its top aligns with the first tier heading. Below 1024 px it stays full width above the Topics button.
+- No other change; no API, analysis or result.
+
+**Checks**
+
+- Lint 0/0, typecheck clean, Vitest 830.
+- `r11-learning-patch-notes`: 8/8 three times (new test: the search's x and width equal the index column's, a 24 px gap, top
+  aligned with the first tier, still in view after scrolling; the phone test checks it sits above the Topics button at its width).
+- Full Playwright in the sandbox on the final build: **604 passed, 17 skipped, 0 failed**.
+- Real-data check through `readonly-proxy.mjs` at 1440 and 390: **620 values, 0 mismatches** (the round 1 checks plus placement:
+  search x and width = the index column's, 24 px gap; on the phone above the Topics button at its width); 0 console errors, 0
+  overflow, 0 broken images, no phone control or `ButtonLink` under 40 px.
+- Glance test, screenshots viewed: `learning-search-placement-1440.png` (the index column), `learning-search-placement-390.png`,
+  `learning-default-*`. Screenshots from round 1 were retaken on this build.
+
