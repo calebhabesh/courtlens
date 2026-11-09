@@ -1,4 +1,4 @@
-import { RankedBars } from "@/components/charts";
+import { LeaderBars } from "@/components/research/leader-bars";
 import { PlayerIdentity } from "@/components/ui/identity";
 import { Suspense } from "react";
 import { ResearchResultsView } from "@/components/research-results-view";
@@ -56,8 +56,8 @@ export default async function Page({ searchParams }: {
       {data.status === "available" && <ResearchSection icon="trophy" title="Leaders">
         {/* PC12: the headline chart leads on first load, labelled for assistive tech; open, not boxed (RD00). */}
         <section className="rapm-headline" aria-label="Headline result">
-          <RankedBars title="Qualified 1Y RAPM leaders" source="CourtLens lineup model" sample={`${data.total_players} served players · ${coverage?.admitted_games ?? "unknown"} admitted games`}
-            measure="points per 100 counted controls" tone="identity-b"
+          <LeaderBars title="Qualified 1Y RAPM leaders, points per 100 counted controls" source="CourtLens lineup model" sample={`${data.total_players} served players · ${coverage?.admitted_games ?? "unknown"} admitted games`}
+            measure="points per 100 counted controls" zeroMeans="an average player"
             items={data.players.filter(p => p.metrics.rapm != null).slice(0, 5).map(p => ({ key: p.player_id, name: p.player_name, label: <PlayerIdentity playerId={p.player_id} name={p.player_name} team={teams[p.player_id] ?? null} era={seasonEra(season, teams[p.player_id])} href={`/players/${p.player_id}?${scope}`} size="sm" />, value: p.metrics.rapm!, formatted: formatStatValue(p.metrics.rapm, 2), detail: `${p.support.rapm?.games ?? "unknown"} games · ${p.support.rapm?.seconds == null ? "unknown" : Math.round(p.support.rapm.seconds / 60)} minutes` }))} />
         </section>
         <ResearchCards columns={4} label="Fit summary">

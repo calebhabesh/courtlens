@@ -29,12 +29,12 @@ for (const width of [1440, 390]) for (const [name, url] of PAGES) {
         }
       }
     }
-    return { photos: photos.length, circle: photos.filter(p => parseFloat(getComputedStyle(p).borderRadius) >= p.getBoundingClientRect().width / 2).length, clipped, overflow: document.documentElement.scrollWidth - innerWidth, leaders: document.querySelectorAll(".rapm-headline .chart-ranked li").length };
+    return { photos: photos.length, circle: photos.filter(p => parseFloat(getComputedStyle(p).borderRadius) >= p.getBoundingClientRect().width / 2).length, clipped, overflow: document.documentElement.scrollWidth - innerWidth, leaders: document.querySelectorAll(".rapm-headline .rs-leaders-list li").length };
   });
   const result = await measure();
   if (result.leaders && shots) await page.locator(".rapm-headline").screenshot({ path: `${shots}/rapm-leaders-${width}.png` });
   // The control: put the old rule back and the check must find every leader cut, or it proves nothing.
-  if (result.leaders) { await page.addStyleTag({ content: ".rapm-headline .chart-ranked-label { overflow: hidden; }" }); result.controlClipped = (await measure()).clipped.length; }
+  if (result.leaders) { await page.addStyleTag({ content: ".rapm-headline .rs-leaders-label { overflow: hidden; }" }); result.controlClipped = (await measure()).clipped.length; }
   report.push({ width, page: name, ...result, errors });
   console.log(JSON.stringify({ width, page: name, photos: result.photos, circle: result.circle, clipped: result.clipped.slice(0, 6), overflow: result.overflow, leaders: result.leaders, controlClipped: result.controlClipped, errors: errors.slice(0, 3) }));
   await page.close();

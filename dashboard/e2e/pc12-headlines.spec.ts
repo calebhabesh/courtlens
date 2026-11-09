@@ -6,8 +6,8 @@ for (const width of [1440, 390]) {
   for (const [name, path, chart] of [
     ["Forecasts", "/forecasts", ".pc12-headline .chart-pairs"],
     ["Shooting", "/research/shooting", ".pc12-headline .chart-reliability"],
-    // RD00 round 3: the RAPM headline is an open region in the Research column, not the boxed .pc12-headline.
-    ["RAPM", "/research/rapm", ".rapm-headline .chart-ranked"],
+    // RD00 round 3: the RAPM headline is an open region in the Research column, not the boxed .pc12-headline. RD12 round 4: its leaders list is Research-native.
+    ["RAPM", "/research/rapm", ".rapm-headline .rs-leaders-list"],
   ]) {
     test(`PC12 ${name} headline on first load at ${width}px`, async ({ page }) => {
       await page.setViewportSize({width, height: 900});

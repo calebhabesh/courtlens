@@ -937,3 +937,8 @@ The lineup tool's search now sits in the card at its full width, keeps the photo
 
 The tool says how far apart the two models are for each five, and a swap keeps the last result dimmed instead of jumping. The test's intro is two blocks, the backtest captions are shorter, phone cards are smaller (196 px off the page at 390), and one line says neither model reads positions. The RAPM Ratings Leaders label no longer carries IM04. Vitest 843, `r14-lineup-model` ×3 39/39, full Playwright 622 passed, 17 skipped, 0 failed, real data 6,730 values, 0 mismatches. No API, analysis, frozen result or interval changed.
 [`design-RD12`](evidence/research/design-RD12/README.md). Awaits the owner.
+
+## 2026-11-09 — RD12 round 4: RAPM Leaders bars in the Research look
+
+The RAPM Ratings Leaders chart is now a Research-native list: thin gold bars on the Research track, a scale above them that says what its ends are, and the unit in the title. Its two visual baselines were regenerated for this change. The shared `RankedBars` is unchanged. Vitest 846, `r14-lineup-model` ×3 39/39, full Playwright 622 passed, 17 skipped, 0 failed; Leaders on real data 598 values over 4 scopes, 0 mismatches. No API, analysis, frozen result or interval changed.
+[`design-RD12`](evidence/research/design-RD12/README.md). Awaits the owner.

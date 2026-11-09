@@ -142,6 +142,8 @@ Owner, 2026-11-09 (given during RD12 round 2, instruction 4): "the palyer photos
 
 Owner, 2026-11-09 (given during RD12 round 3, instruction 6): the Leaders chart's source label no longer carries the project code IM04.
 
+Owner, 2026-11-09 (given during RD12 round 4, instruction 8): the Leaders chart's old blue-on-black bars replaced with the Research look.
+
 ## RD01 Combine & Wingspan — ✅ approved by the owner (2026-11-07)
 
 - **Now:** the combine measurements view plus R10's plain sections: career and current DARKO D-DPM,
@@ -873,6 +875,12 @@ Instructions (owner, 2026-11-09, round 3; answering the six improvements propose
    - (6) One line saying the model doesn't use positions.
    - (7) The Leaders chart on RAPM Ratings: drop "IM04" from its source label.
    — All seven done: the tool says how far apart the two models are for that five, a swap keeps the last result dimmed with no jump, the test's intro is two blocks, backtest captions read "3 seasons · 3,655 games" except on the two shorter rows, phone cards are 196 px shorter down the tool, one line says neither model reads positions, and the Leaders source reads "CourtLens lineup model". Real data 6,730 values, 0 mismatches; full Playwright 622 passed, 17 skipped, 0 failed.
+
+Instructions (owner, 2026-11-09, round 4; two screenshots of the RAPM Ratings Leaders chart):
+7. (Question) what does 0 and 9.6  on the left and right mean.
+   — Answered: the ends of the bars' scale. 0 is an average player and 9.6 was the leader's 9.61, rounded. The new scale says so in words.
+8. [x] Also these blue/black bars are remannts of the old ugly design. Make sure you clean them up to the updated design
+   — The Leaders chart is a new Research-native list (`LeaderBars`): thin gold bars on the Research track, the scale labelled above them and lined up with the bars, the unit in the title. Blue was wrong for values above zero. Real data 598 values across 4 scopes, 0 mismatches; full Playwright 622 passed, 17 skipped, 0 failed.
 
 Evidence: [`design-RD12`](evidence/research/design-RD12/README.md).
 
