@@ -68,3 +68,11 @@ photos or initials, counted below; (E) combine kept here, linking to Wingspan; (
 - **Shared change.** `StatsGrid` gained an optional `guide` column (the Stats photo strip); other tables are unchanged.
 - **Check tooling.** `readonly-proxy.mjs` now also passes POST to `/api/workbench/query` and nothing else; every other non-GET is still refused.
 - **Checks.** Lint and typecheck clean; Vitest 833; `r09-draft-classes` and `r11-learning-patch-notes` 51/51 at `--repeat-each=3`; full Playwright 606 passed, 17 skipped, 0 failed. Real data at 1440 (145 loads) and 390 (24 loads): 229,753 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 wrong-season photos. Screenshots viewed: `draft-rookie-stats-1440.png`, `draft-rookie-stats-390.png`, `draft-classes-1440.png`; visuals judged from the sandbox build.
+
+## Round 3 (owner, 2026-11-09): even search bar, past picks by year, round and pick labels
+
+- **Search bar.** Vs Past Picks had no group row, and the search cell padded only below. `StatsGrid`'s new optional `lead.span` makes the lead header fill both rows with the field centred; Vs Past Picks gained group labels (Draft, Against past picks, Ratings). Measured gaps: 17.25 px above and below at 1440 (rookie views and class table), 18.25 px at 390. Other pages' tables are unchanged.
+- **Past same-pick rookies.** The page drew the API's order (highest PTS/36 first) with no sign of it. It now has a Year column, newest first (the current rookie on top), every column sortable, and a season in place of "class" under the name.
+- **Picks.** `pickLabel` gives "R1 #2" (round, overall), the Players bio's form, in the rookie and class tables, cards, search suggestions and steal and miss lists. The class table's Rd column merged into Pick. Value-by-slot stays a plain pick number because a slot spans rounds across eras.
+- **Spec.** The value-by-pick spec no longer fails when its section has not rendered yet (the poll read a missing element).
+- **Checks.** Lint and typecheck clean; Vitest 833; page specs 51/51 at `--repeat-each=3`; full Playwright 606 passed, 17 skipped, 0 failed. Real data at 1440 (145 loads) and 390 (24 loads): 239,609 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 wrong-season photos. Screenshots viewed: `draft-rookie-past-1440.png`, `draft-past-picks-1440.png`, `draft-rookie-past-390.png`.
