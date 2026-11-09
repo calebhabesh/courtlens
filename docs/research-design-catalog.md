@@ -817,6 +817,11 @@ Instructions (owner, 2026-11-09, round 4; asked "Can we do that now?" about the 
    - Force the 2026-27 score (`courtlens refresh-projected-impact --force`) and check the prospective table on real data.
    — Done: 39 games added, 25 prospective and 121 hindsight through Nov 8, 2026, the earlier rows unchanged. The table renders on real data, 108,627 values, 0 mismatches. The first result goes against the model: margin RMSE 16.80 against 15.10 for time decay, on 25 games. The next automatic score moves to about Nov 17, 2026.
 
+Instructions (owner, 2026-11-09, round 5; answering the recommendation to connect the prospective result to the test):
+5. [x] Yes, go with your recommendation.
+   - One line above the prospective table: the games so far are too few to overturn the test, and the section will settle as the season goes.
+   — Done: the line sits above the table with served counts, and shows only while the sample is under one test season. Real data 108,631 values, 0 mismatches; full Playwright 616 passed, 17 skipped, 0 failed.
+
 Evidence: [`design-RD11`](evidence/research/design-RD11/README.md).
 
 ## RD12 Lineup Model — ⬜
