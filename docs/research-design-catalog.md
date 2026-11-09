@@ -706,6 +706,11 @@ Instructions (owner, 2026-11-09, round 5):
 9. [x] Also it only goes back to 1983-84 for a reason correct?
    — Answered, no change: yes. Comparing first N games needs game-by-game logs, and complete box scores and logs start in 1983-84 (R09's `ROOKIE_POOL = (1983, 2025)`; full-history plan).
 
+Instructions (owner, 2026-11-09, round 6):
+10. [x] can this chart mark commonly known ft'in" heights?
+   (Screenshot: "Height (no shoes) against first-four-season win shares".)
+   — Done: height, wingspan and standing reach now mark the axis in feet and inches, every 3 inches (6′0″, 6′3″, 6′6″), every 6 on a phone, and hovering a dot gives the same form. Wingspan minus height stays in inches because it is a difference.
+
 Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
 
 ## RD09 Research landing — ⬜

@@ -19,12 +19,13 @@ import { SeasonLineChart, niceTicks } from "./research/season-line-chart";
 import { GridPlayer, GridSearch, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
 import { TeamPicker, teamCode } from "./research/team-picker";
 import {
-  BAND_LABELS, CAREER_ERA_LABELS, COMBINE_LABELS, COMBINE_UNITS, ERA_LABELS, MEASURE_LABELS, ROOKIE_STATS, STAT_LABELS,
-  fixed, getDraftClass, getDraftCombine, getDraftSummary, getRookie, getRookieStats, getRookies, percent, pickLabel, rangeText, rookieTone,
+  BAND_LABELS, CAREER_ERA_LABELS, COMBINE_LABELS, COMBINE_UNITS, ERA_LABELS, FEET_INCH_MEASURES, MEASURE_LABELS, ROOKIE_STATS, STAT_LABELS,
+  feetInchTicks, fixed, getDraftClass, getDraftCombine, getDraftSummary, getRookie, getRookieStats, getRookies, percent, pickLabel, rangeText, rookieTone,
   seasonLabel, signed, statText, whole,
   type Band, type ClassIndex, type CombineRow, type DraftClass, type DraftSummary, type Era, type Measure, type PastRookie, type PickRow,
   type Rookie, type RookieStat, type RookieStatLine, type RookieTracker, type SlotSummary,
 } from "@/lib/draft-classes";
+import { lengthText } from "@/lib/wingspan-format";
 import { formatDate } from "@/lib/format-date";
 import { seasonEra } from "@/lib/portrait-source";
 import { evidenceUrl } from "@/lib/research-facts";
@@ -575,21 +576,23 @@ function CombineScatter({ rows, measure, r }: { rows: CombineRow[]; measure: str
   }, []);
   const points = rows.filter(p => known(p[measure as keyof CombineRow] as number | null) && known(p.window_ws)).map(p => ({ p, x: p[measure as keyof CombineRow] as number, y: p.window_ws! }));
   if (points.length < 2) return <GatedNote>Too few measured players to draw this scatter.</GatedNote>;
-  const xt = niceTicks(points.map(p => p.x), 5), yt = niceTicks([0, ...points.map(p => p.y)], 5);
-  const [x0, x1, y0, y1] = [xt[0], xt.at(-1)!, yt[0], yt.at(-1)!];
   const height = Math.round(Math.min(430, Math.max(280, width * 0.56)));
   const left = 44, right = width - 12, top = 12, bottom = height - 44;
+  const feetInches = FEET_INCH_MEASURES.has(measure);
+  const xValues = points.map(p => p.x);
+  const xt = feetInches ? feetInchTicks(Math.min(...xValues), Math.max(...xValues), right - left) : niceTicks(xValues, 5), yt = niceTicks([0, ...points.map(p => p.y)], 5);
+  const [x0, x1, y0, y1] = [xt[0], xt.at(-1)!, yt[0], yt.at(-1)!];
   const px = (v: number) => left + (v - x0) / (x1 - x0 || 1) * (right - left);
   const py = (v: number) => bottom - (v - y0) / (y1 - y0 || 1) * (bottom - top);
   const xDigits = x1 - x0 < 5 ? 1 : 0;
   const label = COMBINE_LABELS[measure];
   return <div ref={box} className="dc-scatter-box"><svg className="dc-scatter chart-graphic" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${label} against first-four-season win shares: ${points.length} drafted players, ${r}.`} data-chart="combine" data-measure={measure}>
     {yt.map(v => <g key={`y${v}`}><line className={v === 0 ? "dc-scatter-axis" : "dc-scatter-grid"} x1={left} x2={right} y1={py(v)} y2={py(v)} /><text x={left - 8} y={py(v) + 3} textAnchor="end">{fixed(v, 0)}</text></g>)}
-    {xt.map(v => <g key={`x${v}`}><line className="dc-scatter-grid" x1={px(v)} x2={px(v)} y1={top} y2={bottom} /><text x={px(v)} y={bottom + 16} textAnchor="middle">{fixed(v, xDigits)}</text></g>)}
-    <text x={(left + right) / 2} y={bottom + 36} textAnchor="middle">{label} ({COMBINE_UNITS[measure]})</text>
+    {xt.map(v => <g key={`x${v}`}><line className="dc-scatter-grid" x1={px(v)} x2={px(v)} y1={top} y2={bottom} /><text x={px(v)} y={bottom + 16} textAnchor="middle" data-tick={v}>{feetInches ? lengthText(v, "ftin") : fixed(v, xDigits)}</text></g>)}
+    <text x={(left + right) / 2} y={bottom + 36} textAnchor="middle">{feetInches ? label : `${label} (${COMBINE_UNITS[measure]})`}</text>
     <text transform={`translate(12 ${(top + bottom) / 2}) rotate(-90)`} textAnchor="middle">Win shares, first four seasons</text>
     {points.map(({ p, x, y }) => <circle key={`${p.year}-${p.player_id}`} className="dc-scatter-dot" cx={px(x)} cy={py(y)} r={width < 500 ? 2 : 3} data-player={p.player_id} data-x={x} data-value={y}>
-      <title>{`${p.name} (${p.year}, pick ${p.pick}): ${fixed(x, 2)} ${COMBINE_UNITS[measure]}, ${fixed(y)} win shares`}</title>
+      <title>{`${p.name} (${p.year}, pick ${p.pick}): ${feetInches ? lengthText(x, "ftin") : `${fixed(x, 2)} ${COMBINE_UNITS[measure]}`}, ${fixed(y)} win shares`}</title>
     </circle>)}
   </svg></div>;
 }

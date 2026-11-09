@@ -35,13 +35,13 @@
     "height": 32
    }
   },
-  "compared": 207309,
+  "compared": 207349,
   "loads": 150,
   "mismatches": 0,
   "errors": [],
   "photos": {
-   "portraits": 6837,
-   "initials": 4183,
+   "portraits": 6840,
+   "initials": 4180,
    "wrongSeason": [],
    "wrongSeasonCount": 0
   },
@@ -131,8 +131,8 @@
     "height": 42
    }
   },
-  "compared": 41340,
-  "loads": 25,
+  "compared": 42203,
+  "loads": 26,
   "mismatches": 0,
   "errors": [],
   "photos": {

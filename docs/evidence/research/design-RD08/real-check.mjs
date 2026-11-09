@@ -260,6 +260,18 @@ for (const width of [1440, 390]) {
     eq(`scatter ${measure} n`, drawn.length, want.length);
     want.forEach((w, i) => eq(`scatter ${measure} ${i}`, drawn[i], w));
     const c = summary.combine.correlations.find(x => x.measure === measure && x.outcome === "window_ws");
+    // Round 6: lengths are marked in feet and inches, and each mark sits where its dots are.
+    const axis = await page.evaluate(() => ({
+      ticks: [...document.querySelectorAll('svg[data-chart="combine"] text[data-tick]')].map(t => ({ inches: Number(t.dataset.tick), x: Number(t.getAttribute("x")), label: t.textContent })),
+      dots: [...document.querySelectorAll('svg[data-chart="combine"] circle')].map(c => ({ value: Number(c.dataset.x), x: Number(c.getAttribute("cx")) })),
+    }));
+    if (["height", "wingspan", "standing_reach"].includes(measure)) {
+      for (const t of axis.ticks) eq(`scatter ${measure} mark ${t.inches}`, t.label, `${Math.floor(t.inches / 12)}′${t.inches % 12}″`);
+      const [a, z] = [axis.ticks[0], axis.ticks.at(-1)];
+      const off = axis.dots.filter(d => Math.abs(a.x + (d.value - a.inches) / (z.inches - a.inches) * (z.x - a.x) - d.x) > 0.01).length;
+      eq(`scatter ${measure} dots on the marks`, off, 0);
+      eq(`scatter ${measure} labels clear`, axis.ticks.every((t, i) => i === 0 || t.x - axis.ticks[i - 1].x >= 38), true);
+    } else eq(`scatter ${measure} no feet marks`, axis.ticks.some(t => t.label.includes("′")), false);
     eq(`scatter ${measure} r`, (await page.locator('[data-field="combine-r"]').innerText()).startsWith(`r ${signed(c.r, 2)} (95% ${range(c.lo, c.hi, 2)})`), true);
   };
 
@@ -354,7 +366,7 @@ for (const width of [1440, 390]) {
   for (const y of years) await checkClass(y, "draft");
   for (const y of wide ? [1966, 1982, 1984, 2003, 2014, 2022] : [1984]) { await checkClass(y, "redraft"); await checkClass(y, "career"); }
   if (shots) { await open("?year=1984&order=redraft", 'table[aria-label="1984 draft class"] tbody tr'); await page.evaluate(() => document.getElementById("classes").scrollIntoView()); await page.waitForTimeout(900); await page.screenshot({ path: `${shots}/draft-1984-redraft-${tag}.png` }); }
-  for (const m of wide ? Object.keys(combine.rows[0]).filter(k => ["height", "wingspan", "wingspan_minus_height", "standing_reach", "weight", "max_vertical", "lane_agility", "sprint"].includes(k)) : ["wingspan", "sprint"]) await checkScatter(m);
+  for (const m of wide ? Object.keys(combine.rows[0]).filter(k => ["height", "wingspan", "wingspan_minus_height", "standing_reach", "weight", "max_vertical", "lane_agility", "sprint"].includes(k)) : ["wingspan", "height", "sprint"]) await checkScatter(m);
   // The old tab links still land on their section.
   for (const [tab, id] of [["value", "value"], ["steals", "steals"]]) {
     await open(`?tab=${tab}`, `section#${id}`); await page.waitForTimeout(3300);
