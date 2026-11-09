@@ -54,3 +54,27 @@ Before the rebuild (:3100, read 2026-11-09): four stat tiles and ten stacked hea
 **Glance test** (`lm-top-1440.png`, full pages at both widths, viewed). In five seconds: what the page is (hero), the answer in one sentence, and the strip showing the gap sitting on zero.
 
 Screenshots viewed: `lm-answer-*`, `lm-tool-*` (default, one box player, five box players, unavailable), `lm-search-1440.png`, `lm-test-*`, `lm-backtest-*`, `lm-map-*` (default and with a box player), `lm-reading-1440.png`, `lm-glossary-1440.png`, `lm-about-1440.png`, the full page at 1440. Section captures can show the sticky site header or the Skip to content link across a tall section; neither is on the page there. Visuals were judged from the sandbox build; the CSS chunk :3100 serves was stale after the last CSS change, was refreshed with the import toggle, and now has the new rules.
+
+## Round 2 (owner, 2026-11-09): the search, the Six-Factor photos, two questions
+
+| # | Change | Result |
+| --- | --- | --- |
+| 2 | "the player search in the lineup looks wonky" | The search takes the name block's place at the card's full width, so the photo and rating stay and the rating doesn't move (0 px at 1440). The card's own tool turns into the cancel: no X outside the field, and none inside it (`LookupInput` gained an optional `clearable`; without it nothing changes). The list opens only once something is typed. Escape, the cancel or a click elsewhere leaves it, so no card is left holding a stranded field |
+| 4 | "the palyer photos are still square cropped" (`/research/rapm`, Leaders) | `.chart-ranked-label`'s `overflow: hidden` cut each photo's ring flat at the top and left, against RD00's "never clipped". The Leaders chart no longer clips; the name and the line under it truncate themselves. Only `.rapm-headline` changed, in `rapm-ratings.css` |
+
+Questions 3 (positions) and 5 (more improvements) were answered in the report and nothing was built for them.
+
+**Page size.** Unchanged: 4,295 px at 1440 and 5,949 px at 390 with the disclosures collapsed.
+
+**Found by the check and the screenshots, then fixed.** The open card's rating sat 6 px lower than its neighbours' (a 64 px block replacing 58 px).
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | clean |
+| Vitest | 843 passed |
+| `r14-lineup-model` ×3 (12 tests, one new for the search) | 36/36 |
+| Full Playwright | 621 passed, 17 skipped, 0 failed, on the final build |
+| Real data ([`real-data-check.json`](real-data-check.json), [`real-check.mjs`](real-check.mjs)) | 6,645 values (3,502 at 1440 over 12 loads; 3,143 at 390 over 9 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images. New: the field inside the card, the rating kept and unmoved, no list before typing, no extra button, and all three ways out |
+| Photos ([`photo-check.json`](photo-check.json), [`photo-check.mjs`](photo-check.mjs)) | Both Six-Factor tabs, 1440 and 390, real data: 25 portraits on RAPM Ratings and 445 on Six-Factor, all circular, 0 cut by a box that doesn't scroll. Control: with the old rule put back, the check finds all 5 leaders cut at each width, so it does detect this fault |
+
+Screenshots viewed: `lm-search-1440.png`, `lm-search-390.png`, `rapm-leaders-1440.png`, `rapm-leaders-390.png`. The CSS chunk :3100 serves was checked for the new rules.

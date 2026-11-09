@@ -272,6 +272,13 @@ for (const width of [1440, 390]) {
   await page.getByRole("button", { name: `Replace ${firstName}` }).click();
   const box = page.getByRole("combobox", { name: `Replace ${firstName}` });
   eq("search opens in place", await box.isVisible(), true);
+  const opened = await page.evaluate(id => { const slot = document.querySelector(`[data-slot="${id}"]`), s = slot.getBoundingClientRect(), f = slot.querySelector(".lookup-input-wrapper").getBoundingClientRect(), t = slot.querySelector(".lm-slot-tool").getBoundingClientRect(), others = [...document.querySelectorAll("[data-slot]")].filter(x => x !== slot).map(x => x.querySelector(".lm-slot-rating").getBoundingClientRect().top), r = slot.querySelector(".lm-slot-rating").getBoundingClientRect(); return { inside: f.left >= s.left && f.right <= s.right, rating: r.height > 0 && !!slot.querySelector('[data-field="rating"]'), toolTop: Math.round(t.top - s.top), toolRight: Math.round(s.right - t.right), buttonsInField: slot.querySelectorAll(".lookup-input-wrapper button").length, buttonsOutside: [...slot.querySelectorAll("button")].filter(b => !b.closest(".lm-slot-tool")).length, list: document.querySelectorAll(".lookup-dropdown").length, ratingOffset: others.length ? Math.abs(r.top - others[0]) : 0, width: Math.round(f.width), inputWidth: Math.round(slot.querySelector(".lookup-input").getBoundingClientRect().width) }; }, def[0]);
+  eq("search field inside the card", opened.inside, true);
+  eq("card keeps its rating", opened.rating, true);
+  eq("no list before typing", opened.list, 0);
+  eq("no button in the field", opened.buttonsInField, 0);
+  eq("only the card's own tool", opened.buttonsOutside, 0);
+  if (wide) eq("rating doesn't move", opened.ratingOffset <= 2, true);
   await box.fill(wanted.name.split(" ").at(-1));
   await page.waitForSelector('[role="option"]', { timeout: 15000 });
   if (shots) await page.screenshot({ path: `${shots}/lm-search-${tag}.png` });
@@ -288,6 +295,11 @@ for (const width of [1440, 390]) {
   await page.waitForSelector(READY, { state: "attached" });
   await page.waitForTimeout(400);
   await checkFive("via search", swapped);
+  // Each way out of the search.
+  const secondName = players.get(def[1]).name, leave = async how => { await page.getByRole("button", { name: `Replace ${secondName}` }).click(); await page.getByRole("combobox", { name: `Replace ${secondName}` }).waitFor(); await how(); await page.waitForTimeout(150); eq("search closed", await page.getByRole("combobox", { name: `Replace ${secondName}` }).count(), 0); };
+  await leave(() => page.keyboard.press("Escape"));
+  await leave(() => page.getByRole("button", { name: `Cancel replacing ${secondName}` }).click());
+  await leave(() => page.locator(".lm-headline").click());
   await page.getByRole("button", { name: "Most-used five" }).click();
   await page.waitForFunction(() => !new URL(location.href).searchParams.has("five"));
   await page.waitForSelector(READY, { state: "attached" });

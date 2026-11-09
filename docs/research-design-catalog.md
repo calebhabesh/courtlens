@@ -138,6 +138,8 @@ Instructions (owner, 2026-11-06, round 7; screenshot of the All Ratings table sc
 
 Owner, 2026-11-07 (given during RD02 round 4, instruction 6): the dividers above and below the intro line removed.
 
+Owner, 2026-11-09 (given during RD12 round 2, instruction 4): "the palyer photos are still square cropped". The Leaders chart on RAPM Ratings no longer clips the photos' rings. Evidence: [`design-RD12`](evidence/research/design-RD12/README.md).
+
 ## RD01 Combine & Wingspan — ✅ approved by the owner (2026-11-07)
 
 - **Now:** the combine measurements view plus R10's plain sections: career and current DARKO D-DPM,
@@ -848,6 +850,16 @@ recommendations and suggestions for optimal construction and layout of this page
    - (7) How to read: three short cards and a collapsed glossary. (8) About this page, collapsed: selection grids, coverage, cold start, rule, method, credits, hashes, the restored-scores disclosure in plain words, the evidence link.
    - Q1: the ridge-against-lineup gains stay neutral, with "better by the registered rule, no practical difference"; other backtest rows keep green/red. Q2: the tool comes before the test detail. Q3: the map stays visible, last among the results, no player search.
    — Built as proposed: the answer in one sentence with the gap drawn to scale on zero, five team-tinted player cards with search in place, net rating with its 80% interval, gains before errors, the backtest in registered order, the warning above the map, How to read and a collapsed About. Real data 6,628 values, 0 mismatches; full Playwright 620 passed, 17 skipped, 0 failed.
+
+Instructions (owner, 2026-11-09, round 2; three screenshots, the search open in the first card and the Six-Factor Leaders list):
+2. [x] the player search in the lineup looks wonky
+   — The search now takes the name block's place at the card's full width, so the photo and rating stay and nothing moves. The card's own tool turns into the cancel, with no stray X; the list opens only once you type; Escape or a click elsewhere leaves it.
+3. (Question) Should we add symbol pg,sg,sf,pf,c positions, or does that matter fro the lineup tool?
+   — Answered, no change: position is not an input to either model, and the tool's API doesn't serve it (only the Stats query has estimated positions). Recommended leaving it off. Awaiting the owner.
+4. [x] on six-factor rapm page, the palyer photos are still square cropped, and it looks weird with their circle portraits.
+   — The Leaders chart's label box clipped the photos' rings flat at the top and left. It no longer clips; the name and caption still truncate themselves. All portraits on both Six-Factor tabs checked at both widths.
+5. (Question) Are there any more improvements we can make to the page?
+   — Answered with a list of proposals; nothing built. Awaiting the owner.
 
 Evidence: [`design-RD12`](evidence/research/design-RD12/README.md).
 
