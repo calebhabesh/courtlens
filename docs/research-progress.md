@@ -917,3 +917,8 @@ On the owner's instruction, `courtlens refresh-projected-impact --force` added 3
 
 On the owner's instruction, one line now sits above the prospective table: the games so far are too few to overturn the test on 2,460 games, and the section will settle as the season goes. It uses served counts and shows only while the sample is under one test season. No number, colour, API or analysis changed. Lint and typecheck clean, Vitest 840, `projected-impact` ×3 30/30, full Playwright 616 passed, 17 skipped, 0 failed. Real data 108,631 values over 143 loads, 0 mismatches, 0 console errors, 0 overflow, 0 broken images.
 [`design-RD11`](evidence/research/design-RD11/README.md). Awaits the owner.
+
+## 2026-11-09 — RD11 approved after the first prospective score
+
+The owner approved Projected Impact again ("Okay. I approve this page."), after the forced first prospective score and the line tying it to the test. Row RD11 ✅; the alignment plan's "Settled in RD11" gains the early-sample rule. The next automatic score is about Nov 17, 2026.
+[`design-RD11`](evidence/research/design-RD11/README.md).
