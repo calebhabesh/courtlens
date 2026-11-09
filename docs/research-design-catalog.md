@@ -668,6 +668,13 @@ recommendations and suggestions for optimal construction and layout of this page
    correlations, scatter and a Wingspan link; how to read; collapsed About this page. Surplus gold/blue. Real data 212,435 values, 0 mismatches; every photo requested for its own season and team; early classes mostly initials
    (1984: 21 of the 58 who played have a photo). Full Playwright 605 passed.
 
+Instructions (owner, 2026-11-09, round 2):
+2. [x] This table needs a title or something telling us that it's the stats of the rookies this year. Also why iss it per 36 stats? you can try designing like the main stats page but for rookies only.
+   (Screenshots: the 60-pick rookie table, then the Stats page's NBA Player Statistics table.)
+   — Titled "2026-27 rookie stats". Rebuilt on the Stats table's groups and columns (Draft, Profile, Impact, Counting, Eff, Shooting, Other) with its repeated photo strips, from the Stats query's own draft-class filter, default Per Game, with Per 36 and Totals. Per 36 was there because the past-picks comparison uses it; that comparison keeps its own "Vs Past Picks" view and says so.
+3. [x] The search bar is too squished.
+   — The rookie table had no group header row, so the field sat against the top of the header. It now has the Stats header (30 px of air above the field) and a wider column: 268 px at 1440 (was about 228), 192 px on a phone; the class table's search widened the same way.
+
 Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
 
 ## RD09 Research landing — ⬜

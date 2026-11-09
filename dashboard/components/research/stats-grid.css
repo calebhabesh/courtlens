@@ -40,6 +40,8 @@
 
   /* Column widths (no inline geometry): the lead column and five figure widths. */
   .rs-grid col.rs-col-lead { width: var(--rs-grid-lead, 280px); }
+  .rs-grid col.rs-col-guide { width: 38px; }
+  .rs-grid .dense-stats-table thead .stats-group-th[data-guided] { padding-left: var(--space-10); }
   .rs-grid col.rs-col-xs { width: 64px; }
   .rs-grid col.rs-col-sm { width: 88px; }
   .rs-grid col.rs-col-md { width: 112px; }

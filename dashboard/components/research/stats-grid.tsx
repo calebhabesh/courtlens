@@ -31,6 +31,8 @@ export interface GridColumn<T> {
   width?: "xs" | "sm" | "md" | "lg" | "xl" | "fill";
   /** Keep the label's own case (oTS, dContest, xPPS) instead of the header's capitals: a lowercase prefix carries meaning (RD04 round 5). */
   keepCase?: boolean;
+  /** The Stats table's repeated photo strip at the start of a group: `cell` draws the photo, and the column has no label. */
+  guide?: boolean;
 }
 
 export interface StatsGridProps<T> {
@@ -102,15 +104,15 @@ export function StatsGrid<T>({ label, rows, rowKey, lead, columns, sort, density
     <div className="stats-table-frame is-table">
       <div className="table-wrapper stats-scroll-region" role="region" aria-label={`${label} scroll area`} tabIndex={0}>
         <table className="data-table dense-stats-table" data-table={name} aria-label={label}>
-          <colgroup><col className="rs-col-lead" />{columns.map(c => <col key={c.key} className={`rs-col-${c.width ?? "sm"}`} />)}</colgroup>
+          <colgroup><col className="rs-col-lead" />{columns.map(c => <col key={c.key} className={c.guide ? "rs-col-guide" : `rs-col-${c.width ?? "sm"}`} />)}</colgroup>
           <thead>
             {hasGroups && <tr className="stats-header-tier-1">
               <th scope="col" className="pinned-col pinned-col-group rs-grid-lead">{lead.group ?? ""}</th>
-              {groups.map(g => <th key={`${g.label}-${g.start}`} scope="colgroup" colSpan={g.span} className={`stats-group-th ${g.start > 0 ? "group-start" : ""}`}>{g.label}</th>)}
+              {groups.map(g => <th key={`${g.label}-${g.start}`} scope="colgroup" colSpan={g.span} className={`stats-group-th ${g.start > 0 && !columns[g.start].guide ? "group-start" : ""}`} data-guided={columns[g.start].guide || undefined}>{g.label}</th>)}
             </tr>}
             <tr className="stats-header-tier-2">
               <th scope="col" className="pinned-col rs-grid-lead">{typeof lead.label === "string" ? <span className="table-sort-button">{lead.label}</span> : lead.label}</th>
-              {columns.map((c, i) => c.sort && sort
+              {columns.map((c, i) => c.guide ? <th key={c.key} className="stats-guide-cell" aria-hidden="true" /> : c.sort && sort
                 ? <SortHeader key={c.key} label={c.label} metric={c.key} description={c.title} active={sort.key === c.key} direction={sort.direction} onSort={sort.onSort} className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} />
                 : <th key={c.key} scope="col" className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} title={c.title}><span className="table-sort-button">{c.label}</span></th>)}
             </tr>
@@ -120,7 +122,7 @@ export function StatsGrid<T>({ label, rows, rowKey, lead, columns, sort, density
             {rows.map(row => <tr key={rowKey(row)} className="stats-table-row" data-row={rowKey(row)} {...prefixed(rowData?.(row))}>
               <th scope="row" className="pinned-col rs-grid-lead">{lead.cell(row)}</th>
               {columns.map((c, i) => <Fragment key={c.key}>
-                <td className={`stats-metric-cell num ${starts.has(i) ? "group-start" : ""}`} data-column={c.key} data-align={c.align && c.align !== "center" ? c.align : undefined} {...prefixed(c.data?.(row))}>{c.cell(row)}</td>
+                {c.guide ? <td className="stats-guide-cell" aria-hidden="true"><span className="stats-guide-marker">{c.cell(row)}</span></td> : <td className={`stats-metric-cell num ${starts.has(i) ? "group-start" : ""}`} data-column={c.key} data-align={c.align && c.align !== "center" ? c.align : undefined} {...prefixed(c.data?.(row))}>{c.cell(row)}</td>}
               </Fragment>)}
             </tr>)}
           </tbody>

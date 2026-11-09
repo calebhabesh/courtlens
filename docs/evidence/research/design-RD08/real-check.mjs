@@ -1,5 +1,5 @@
 // Real-data check for RD08 (Draft Classes): every value the page draws against the owner's API through the read-only proxy on 4180
-// (readonly-proxy.mjs, GET only), the production build on 3180, at 1440 and 390. 1440 walks all 45 played rookies, all 13 value
+// (readonly-proxy.mjs: GET, plus the Stats query POST), the production build on 3180, at 1440 and 390. 1440 walks all 45 played rookies, all 13 value
 // views, every class 1966-2026 and all eight combine measurements; 390 walks a sample. Also the colour rules (green/red only where a
 // 95% interval excludes zero and on R09's rookie rule; surplus gold or blue), console errors, overflow, broken images, season-matched
 // photos, logos beside codes, phone controls and ButtonLinks under 40 px, and the layout.
@@ -10,6 +10,11 @@ const API = "http://127.0.0.1:4180", WEB = "http://localhost:3180/draft";
 const [,, out, shots] = process.argv;
 const cache = {};
 const api = async path => cache[path] ??= await (await fetch(`${API}${path}`)).json();
+const catalog = await api("/api/workbench/catalog");
+const statsBody = await (await fetch(`${API}/api/workbench/query`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+  query: { release_id: catalog.release_id, season: "2026-27", phase: "regular_season", before_date: catalog.stats_scopes.find(s => s.season === "2026-27").default_before_date, window: { kind: "season" }, sort: [{ field: "min", direction: "desc" }], page: { limit: 100 } },
+  presentation: { draft_year: 2026 } }) })).json();
+const statsLines = new Map(statsBody.items.map(i => [i.player_id, i.metrics]));
 const summary = await api("/api/draft"), tracker = await api("/api/draft/rookies"), combine = await api("/api/draft/combine");
 
 // The page's formats, written again here so a formatting bug shows up as a mismatch.
@@ -47,6 +52,7 @@ for (const width of [1440, 390]) {
   const errors = [], mismatches = []; let compared = 0, loads = 0;
   const photos = { portraits: 0, initials: 0, wrongSeason: [] }, missingLogos = [];
   const oldPhotos = [];
+  let rookieHeader = null;
   const eq = (what, got, want) => { compared += 1; if (got !== want) mismatches.push({ what, got, want }); };
   page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
   page.on("pageerror", e => errors.push(String(e)));
@@ -57,6 +63,36 @@ for (const width of [1440, 390]) {
     photos.portraits += 1;
     const url = new URL(row.portrait);
     if (url.searchParams.get("season") !== wantSeason || (wantTeam && url.searchParams.get("team") !== wantTeam)) photos.wrongSeason.push({ what, src: row.portrait, wantSeason, wantTeam });
+  };
+
+  // Stats views: every figure against the Stats query's own value, and the header look.
+  const checkRookieStats = async view => {
+    const rows = await readTable(page, 'table[data-table="rookies"]');
+    eq(`stats ${view} rows`, rows.length, tracker.rookies.length);
+    const one = v => v === null ? "—" : minus(v.toFixed(1)), int = v => v === null ? "—" : minus(Math.round(v).toLocaleString("en-US")), share = v => v === null ? "—" : `${(v * 100).toFixed(1)}%`;
+    const scaled = key => view === "raw" ? key : `${key}_${view}`;
+    const columns = [["gp", "gp", int], ["min", "min", int], ["min_per_game", "min_per_game", one], ["ts_pct", "ts_pct", share], ["efg_pct", "efg_pct", share], ["fg2_pct", "fg2_pct", share], ["fg3_pct", "fg3_pct", share], ["ft_pct", "ft_pct", share],
+      ...["pts", "reb", "ast", "tov", "fg3a", "fta", "oreb", "dreb", "stl", "blk"].map(k => [k, scaled(k), view === "raw" ? int : one])];
+    for (const r of tracker.rookies) {
+      const row = rows.find(x => x.key === String(r.pick));
+      if (!row) { eq(`stats ${view} ${r.pick} present`, false, true); continue; }
+      const line = r.state === "compared" ? statsLines.get(r.player_id) : null;
+      if (r.state === "compared") eq(`stats ${view} ${r.pick} line served`, !!line, true);
+      for (const [field, metric, text] of columns) {
+        const want = line?.[metric] ?? null;
+        eq(`stats ${view} ${r.pick} ${field}`, num(row.cells[field].value), want);
+        eq(`stats ${view} ${r.pick} ${field} text`, row.cells[field].main ?? row.cells[field].text, text(want));
+      }
+      for (const [field, want] of [["darko", r.darko?.dpm], ["o_dpm", r.darko?.o_dpm], ["d_dpm", r.darko?.d_dpm], ["rapm", r.rapm?.rapm]]) {
+        eq(`stats ${view} ${r.pick} ${field}`, num(row.cells[field].value), want ?? null);
+        eq(`stats ${view} ${r.pick} ${field} text`, row.cells[field].text, signed(want));
+        if (want != null && Number(want.toFixed(1)) !== 0) eq(`stats ${view} ${r.pick} ${field} sign`, row.cells[field].identity, identity(want));
+      }
+      photo(row, r.photo_season, r.team, `stats ${view} ${r.pick}`);
+    }
+    const guides = await page.evaluate(() => [...document.querySelectorAll('table[data-table="rookies"] tbody .stats-guide-cell img')].map(i => i.getAttribute("src")));
+    for (const src of guides) { photos.portraits += 1; const u = new URL(src, WEB); if (u.searchParams.get("season") !== "2026-27") photos.wrongSeason.push({ what: "guide", src }); }
+    eq(`stats ${view} guide cells`, await page.locator('table[data-table="rookies"] tbody tr:first-child .stats-guide-cell').count(), 5);
   };
 
   const checkRookieTable = async () => {
@@ -223,7 +259,9 @@ for (const width of [1440, 390]) {
   await page.waitForSelector('svg[data-chart="combine"] circle', { state: "attached", timeout: 60000 });
   await page.waitForSelector('table[aria-label="2022 draft class"] tbody tr', { state: "attached", timeout: 60000 });
   await page.waitForLoadState("networkidle").catch(() => {});
-  await checkRookieTable();
+  await checkRookieStats("per_game");
+  eq("rookie table title", await page.locator("#rookie-stats").innerText(), "2026-27 rookie stats");
+  rookieHeader = await page.evaluate(() => { const b = document.querySelector('table[data-table="rookies"] .lookup-input').getBoundingClientRect(), h = document.querySelector('table[data-table="rookies"] thead').getBoundingClientRect(); return { width: Math.round(b.width), height: Math.round(b.height), gapAbove: Math.round(b.top - h.top), groups: [...document.querySelectorAll('table[data-table="rookies"] .stats-group-th')].map(e => e.textContent) }; });
   await checkCard(compared_rookies[0]);
   await checkLists();
   const total = summary.classes.reduce((s, c) => s + c.picks, 0);
@@ -280,6 +318,8 @@ for (const width of [1440, 390]) {
   }
 
   // Walks.
+  for (const view of ["per_36", "raw"]) { await open(`?stat=${view}`, 'table[data-table="rookies"] td[data-field="gp"]'); await checkRookieStats(view); }
+  await open("?stat=past", 'table[data-table="rookies"] td[data-field="pool"]'); await checkRookieTable();
   const rookiesToCheck = wide ? compared_rookies.slice(1) : compared_rookies.slice(1, 4);
   for (const r of rookiesToCheck) { await open(`?rookie=${r.player_id}`, `article[data-card="${r.player_id}"]`); await checkCard(r); }
   const SPANS = wide ? [["window", "all", "ws"], ["window", "all", "min"], ["window", "multi_round", "ws"], ["window", "multi_round", "min"], ["window", "two_round", "ws"], ["window", "two_round", "min"],
@@ -298,7 +338,7 @@ for (const width of [1440, 390]) {
     eq(`tab=${tab} lands`, top >= 0 && top < 220, true);
   }
 
-  const result = { width, compared, loads, mismatches: mismatches.length, errors: [...new Set(errors)].slice(0, 12), photos: { ...photos, wrongSeason: photos.wrongSeason.slice(0, 12), wrongSeasonCount: photos.wrongSeason.length }, oldPhotos, missingLogos: [...new Set(missingLogos)].slice(0, 40), ...layout, firstMismatches: mismatches.slice(0, 30) };
+  const result = { width, rookieHeader, compared, loads, mismatches: mismatches.length, errors: [...new Set(errors)].slice(0, 12), photos: { ...photos, wrongSeason: photos.wrongSeason.slice(0, 12), wrongSeasonCount: photos.wrongSeason.length }, oldPhotos, missingLogos: [...new Set(missingLogos)].slice(0, 40), ...layout, firstMismatches: mismatches.slice(0, 30) };
   report.push(result);
   console.log(JSON.stringify({ ...result, firstMismatches: mismatches.slice(0, 12) }, null, 1));
   await page.close();

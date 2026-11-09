@@ -1,3 +1,5 @@
+import { resolveStatsQuery } from "./stats-query";
+import type { WorkbenchCatalog } from "./types";
 import { browserApi } from "./workbench-api";
 
 /**
@@ -101,6 +103,24 @@ export const getDraftClass = (year: number, signal?: AbortSignal) => get<DraftCl
 export const getDraftCombine = (signal?: AbortSignal) => get<{ rows: CombineRow[]; correlations: Correlation[] }>("/combine", "Combine", signal);
 export const getRookies = (signal?: AbortSignal) => get<RookieTracker>("/rookies", "Rookie tracker", signal);
 export const getRookie = (playerId: string, signal?: AbortSignal) => get<RookieDetail>(`/rookies/${encodeURIComponent(playerId)}`, "Rookie comparison", signal);
+
+export type RookieStatLine = Record<string, number | null>;
+
+/** One draft class's season lines from the Stats page's own query and draft-class filter, by player ID. */
+export async function getRookieStats(season: string, draftYear: number, signal?: AbortSignal): Promise<Map<string, RookieStatLine>> {
+  const failed = (status: number) => new Error(`Rookie stats request failed (${status})`);
+  const catalogResponse = await fetch(`${browserApi}/api/workbench/catalog`, { signal });
+  if (!catalogResponse.ok) throw failed(catalogResponse.status);
+  const catalog = await catalogResponse.json() as WorkbenchCatalog;
+  const query = { ...resolveStatsQuery({ season, phase: "regular_season" }, catalog, "per_game", "min"), page: { limit: 100 } };
+  const response = await fetch(`${browserApi}/api/workbench/query`, {
+    method: "POST", headers: { "Content-Type": "application/json" }, signal,
+    body: JSON.stringify({ query, presentation: { draft_year: draftYear } }),
+  });
+  if (!response.ok) throw failed(response.status);
+  const body = await response.json() as { items: { player_id: string; metrics: RookieStatLine }[] };
+  return new Map(body.items.map(item => [item.player_id, item.metrics]));
+}
 
 export const ERA_LABELS: Record<Era, string> = { all: "All", multi_round: "1966–88", two_round: "1989–2022" };
 export const CAREER_ERA_LABELS: Record<Era, string> = { all: "All", multi_round: "1966–88", two_round: "1989–2005" };

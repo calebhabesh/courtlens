@@ -831,6 +831,15 @@ createServer(async (request, response) => {
     for await (const chunk of request) raw += chunk;
     const body = JSON.parse(raw);
     const query = body.query;
+    // The Draft Classes page's rookie table: the fixture rookies who have played, as Stats season lines.
+    if (body.presentation?.draft_year === 2026) {
+      const items = draftRookies.rookies.filter(r => r.comparison).map(r => {
+        const line = r.comparison.line, game = line.minutes / line.games / 36, metrics = { gp: line.games, min: line.minutes, min_per_game: line.mpg, ts_pct: line.ts, efg_pct: 0.5, fg2_pct: 0.5, fg3_pct: null, ft_pct: 0.75 };
+        for (const [key, per36] of Object.entries({ pts: line.pts36, reb: line.reb36, ast: line.ast36, stl: line.stl36, blk: line.blk36, tov: line.tov36, oreb: 1, dreb: 2, fg3a: 3, fta: 4 })) Object.assign(metrics, { [`${key}_per_36`]: per36, [`${key}_per_game`]: per36 * game, [key]: per36 * game * line.games });
+        return { player_id: r.player_id, player_name: r.name, teams: [r.team], metrics };
+      });
+      return json(response, 200, { context: workbenchContext, query, total_eligible_players: items.length, total_output_players: items.length, output_offset: 0, items, next_cursor: null, has_more: false, warnings: [] });
+    }
     // Estimated positions and draft classes the server would resolve for the fixture players.
     const fixturePositions = { 23: "SF", 24: "PG" }, fixtureDrafts = { 23: 2018, 24: 2020 };
     const darkoAvailable = query.window?.kind === "season" && query.before_date > "2026-04-12";
