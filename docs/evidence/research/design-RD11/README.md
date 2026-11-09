@@ -110,3 +110,19 @@ Metric Backtest scores the same 25 games separately and agrees on the direction:
 
 **Page size.** 5,499 px at 1440 and 6,690 px at 390, now that the prospective table has rows. Screenshots viewed: `pi-season-2026-27-1440.png`, `pi-season-2026-27-390.png`.
 
+## Round 5 (owner, 2026-11-09): "Yes, go with your recommendation."
+
+One line above the prospective table: "These 25 games are too few to overturn the test on 2,460 games; this section will settle as the season goes." Both counts come from the served data, and the line shows only while the prospective sample is under one test season (half of the test's games). It ties the red cells to the answer above without hiding them. No number, colour, API or analysis changed.
+
+**Page size.** 5,533 px at 1440 and 6,742 px at 390.
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | clean |
+| Vitest | 840 passed |
+| `projected-impact` ×3 | 30/30 (the line's exact text at 25 games) |
+| Full Playwright | 616 passed, 17 skipped, 0 failed |
+| Real data ([`real-data-check.json`](real-data-check.json), [`real-check.mjs`](real-check.mjs)) | 108,631 values (67,324 at 1440 over 123 loads; 41,307 at 390 over 20 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images; the line's exact text and its place above the table |
+
+Screenshots viewed: `pi-season-2026-27-1440.png`, `pi-season-2026-27-390.png`.
+

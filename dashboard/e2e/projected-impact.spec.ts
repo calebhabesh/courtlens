@@ -73,6 +73,8 @@ test("Projected Impact: prospective games are coloured where an interval exclude
   await expect(table.locator('tr[data-row="lightgbm"] td[data-column="over_carry_forward"] [data-tone="good"]')).toBeVisible();
   await expect(page.locator('[data-field="prospective-games"]')).toHaveAttribute("data-value", "25");
   await expect(page.locator('[data-field="prospective-empty"]')).toHaveCount(0);
+  // The early result is tied back to the test.
+  await expect(page.locator('[data-field="prospective-note"]')).toHaveText(`These 25 games are too few to overturn the test on ${data.card.test.pooled.game.games.toLocaleString("en-US")} games; this section will settle as the season goes.`);
   // Hindsight stays uncoloured beside it.
   await expect(page.getByRole("table", { name: "Hindsight 2026-27 games" }).locator("[data-tone]")).toHaveCount(0);
 });
