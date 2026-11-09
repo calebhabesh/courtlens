@@ -59,3 +59,12 @@ photos or initials, counted below; (E) combine kept here, linking to Wingspan; (
   photo; 1972, 17 of 49; 1984, 21 of 58; 1996, 31 of 47. No later-season photo is substituted (the site's rule), so early classes are mostly initials.
 - Glance test, screenshots viewed (`draft-*-1440.png`, `draft-*-390.png`, and `draft-1984-redraft-*`). In five seconds: what the page is (hero), who this year's rookies are against past picks at their slot
   (card and table), and what a slot is worth (the line, one headline sentence). Visuals judged from the sandbox build, not :3100.
+
+## Round 2 (owner, 2026-11-09): the rookie table built like Stats
+
+- **Title and views.** "2026-27 rookie stats", with Per Game (default), Per 36, Totals and Vs Past Picks (`?stat=`). The first three use the Stats page's Overview groups and columns with its repeated photo strips; Vs Past Picks is round 1's table, R09's per-36 comparison, and its note says why it is per 36.
+- **Data.** `POST /api/workbench/query` with the served `draft_year` filter (the Stats page's own read, already on the demo's Caddy allowlist). All 45 rookies who have played are in it, with the same games and DPM as the tracker. DPM and RAPM come from the tracker; a pick with no games shows dashes. No API, analysis or frozen result changed.
+- **Search bar.** With no group row the field sat against the top of the header. It now has the Stats header and a wider column: field 268 px at 1440, 192 px at 390. The class table's lead column went from 240 to 288 px.
+- **Shared change.** `StatsGrid` gained an optional `guide` column (the Stats photo strip); other tables are unchanged.
+- **Check tooling.** `readonly-proxy.mjs` now also passes POST to `/api/workbench/query` and nothing else; every other non-GET is still refused.
+- **Checks.** Lint and typecheck clean; Vitest 833; `r09-draft-classes` and `r11-learning-patch-notes` 51/51 at `--repeat-each=3`; full Playwright 606 passed, 17 skipped, 0 failed. Real data at 1440 (145 loads) and 390 (24 loads): 229,753 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 wrong-season photos. Screenshots viewed: `draft-rookie-stats-1440.png`, `draft-rookie-stats-390.png`, `draft-classes-1440.png`; visuals judged from the sandbox build.
