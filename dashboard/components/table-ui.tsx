@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import type { IdentityDensity } from "@/lib/stats-presets";
 import type { PortraitEra } from "@/lib/portrait-source";
 import type { PlayerResearchItem } from "@/lib/types";
@@ -9,11 +10,13 @@ import { Icon } from "./ui/icon";
 
 /** Native buttons keep Enter/Space and focus semantics consistent across tables. */
 export function SortHeader({ label, metric, active, direction, onSort, sortable = true,
-  description, className = "", column }: {
+  description, className = "", column, after }: {
   label: string; metric: string; active: boolean; direction: string;
   onSort: (metric: string) => void; sortable?: boolean; description?: string; className?: string;
   /** Column key for page-level header hints (Stats). */
   column?: string;
+  /** Drawn after the label inside the header cell (RD11: the scale of the bars below). */
+  after?: ReactNode;
 }) {
   return <th scope="col" className={className} data-column={column}
     aria-sort={active ? direction === "asc" ? "ascending" : "descending" : "none"}>
@@ -21,6 +24,7 @@ export function SortHeader({ label, metric, active, direction, onSort, sortable 
       title={description ?? label} aria-label={`Sort by ${label}`}>
       {label}{active && <Icon name={direction === "asc" ? "up" : "down"} />}
     </button> : <span title={description ?? label}>{label}</span>}
+    {after}
   </th>;
 }
 
