@@ -7,30 +7,45 @@ const read = (name: string) => JSON.parse(readFileSync(`e2e/fixtures/lineup-mode
 const fixture = read("");
 const fit = read("-fit");
 const alt = read("-fit-alt");
+const roster = read("-players");
 const results = fixture.results;
 const path = "/research/lineup-model";
+const toneOf = (g: { low: number; high: number }) => g.low > 0 ? "good" : g.high < 0 ? "bad" : null;
 
 test.describe("R14 Lineup Model", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
 
-  test("states the registered verdict and every test-season error exactly", async ({ page }) => {
+  test("answers that ridge's edge is no practical difference, and shows it to scale", async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Lineup Model");
-    await expect(page.locator('[data-field="verdict-summary"]')).toContainText("(registered rule)");
-    const table = page.getByRole("table", { name: "Stint margin error by test season" });
-    for (const season of results.test_seasons) {
-      const row = table.locator(`tr[data-row="${season}"]`);
-      for (const model of ["lineup", "ridge", "home_only"]) {
-        expect(Number(await row.locator(`[data-field="${model}"]`).getAttribute("data-value"))).toBe(results.models[model].seasons[season].wrmse);
-      }
-      const gain = row.locator('[data-field="gain"]');
-      const g = results.gains.lineup_over_ridge.seasons[season];
-      expect(Number(await gain.getAttribute("data-value"))).toBe(g.gain);
-      expect(await gain.getAttribute("data-tone")).toBe(g.low > 0 ? "positive" : g.high < 0 ? "negative" : null);
+    const answer = page.locator('[data-field="verdict-summary"]');
+    await expect(answer).toHaveAttribute("data-verdict", results.verdict);
+    await expect(answer).toContainText("no practical difference");
+    await expect(answer).toContainText("0.000011");
+    await expect(page.locator('[data-field="edge"]')).toHaveAttribute("data-ratio", "17000");
+    const strip = page.locator('[data-chart="scale"]');
+    for (const key of ["ridge_over_home_only", "lineup_over_home_only", "lineup_over_ridge"]) {
+      await expect(strip.locator(`[data-key="${key}"]`)).toHaveAttribute("data-value", String(results.gains[key].pooled.gain));
     }
-    const pooled = table.locator('tr[data-row="pooled"] [data-field="gain"]');
-    expect(Number(await pooled.getAttribute("data-value"))).toBe(results.gains.lineup_over_ridge.pooled.gain);
-    await expect(page.locator("circle[data-season]")).toHaveCount(results.test_seasons.length + 1);
+    await expect(strip.locator('[data-key="lineup_over_ridge"] strong')).not.toHaveAttribute("data-tone", /.*/);
+    await expect(page.getByText("Verdict", { exact: true })).toHaveCount(0);
+  });
+
+  test("shows every test-season error and gain, leaving lineup against ridge uncoloured", async ({ page }) => {
+    await openWorkbench(page, path);
+    const table = page.getByRole("table", { name: "Stint margin error by test season" });
+    for (const season of [...results.test_seasons, "pooled"]) {
+      const row = table.locator(`tr[data-row="${season}"]`);
+      const scope = (block: { seasons: Record<string, unknown>; pooled: unknown }) => (season === "pooled" ? block.pooled : block.seasons[season]) as { wrmse: number; gain: number; low: number; high: number };
+      for (const model of ["lineup", "ridge", "home_only"]) expect(Number(await row.locator(`[data-field="${model}"]`).getAttribute("data-value"))).toBe(scope(results.models[model]).wrmse);
+      for (const key of ["lineup_over_ridge", "lineup_over_home_only", "ridge_over_home_only"]) {
+        const cell = row.locator(`[data-field="${key}"]`), g = scope(results.gains[key]);
+        expect(Number(await cell.getAttribute("data-value"))).toBe(g.gain);
+        expect(await cell.locator(".rs-grid-value").getAttribute("data-tone")).toBe(key === "lineup_over_ridge" ? null : toneOf(g));
+      }
+    }
+    const correlation = results.diagnostics[results.test_seasons[0]].prediction_correlation_with_ridge;
+    await expect(page.getByRole("table", { name: "Interaction size by test season" }).locator(`tr[data-row="${results.test_seasons[0]}"] [data-field="correlation"]`)).toHaveText(correlation.toFixed(10));
   });
 
   test("the lineup tool opens on the most-used five and shows the served prediction", async ({ page }) => {
@@ -38,36 +53,93 @@ test.describe("R14 Lineup Model", () => {
     const table = page.getByRole("table", { name: "Predicted net rating" });
     await expect(table.locator('tr[data-row="lineup_model"] [data-field="net"]')).toHaveAttribute("data-value", String(fit.lineup_model.net));
     await expect(table.locator('tr[data-row="ridge"] [data-field="net"]')).toHaveAttribute("data-value", String(fit.ridge.net));
-    const five = page.getByRole("table", { name: "Players in this five" });
-    await expect(five.locator("tbody tr")).toHaveCount(5);
-    for (const p of fit.players) await expect(five.locator(`tr[data-row="${p.player_id}"]`)).toContainText(p.name);
-    await expect(page.getByText("Example:")).toBeVisible();
+    await expect(page.locator("[data-slot]")).toHaveCount(5);
+    for (const p of fit.players) await expect(page.locator(`[data-slot="${p.player_id}"]`)).toContainText(p.name);
+    await expect(page.locator('[data-field="interaction"]')).toHaveAttribute("data-value", String(fit.lineup_model.interaction));
+    await expect(page.locator('[data-field="five-note"]')).toContainText("most-used lineup");
+    await expect(page.getByRole("button", { name: "Most-used five" })).toHaveCount(0);
   });
 
-  test("changing a player puts the five in the URL and refetches", async ({ page }) => {
+  test("changing a player through search puts the five in the URL and refetches, and the five can be reset", async ({ page }) => {
     await openWorkbench(page, path);
-    const changed = alt.players.map((p: { player_id: string }) => p.player_id);
-    const index = changed.findIndex((id: string, i: number) => id !== fit.players[i].player_id);
-    await page.getByRole("combobox", { name: `Player ${index + 1}` }).selectOption(changed[index]);
+    await expect(page.locator("[data-slot]")).toHaveCount(5);
+    const changed: string[] = alt.players.map((p: { player_id: string }) => p.player_id);
+    const index = changed.findIndex((id, i) => id !== fit.players[i].player_id);
+    const incoming = alt.players[index];
+    await page.getByRole("button", { name: `Replace ${fit.players[index].name}` }).click();
+    await page.getByRole("combobox", { name: `Replace ${fit.players[index].name}` }).fill(incoming.name);
+    await page.getByRole("option", { name: new RegExp(incoming.name) }).first().click();
     await expect(page).toHaveURL(new RegExp(`five=${changed.join("%2C")}|five=${changed.join(",")}`));
     const table = page.getByRole("table", { name: "Predicted net rating" });
     await expect(table.locator('tr[data-row="lineup_model"] [data-field="net"]')).toHaveAttribute("data-value", String(alt.lineup_model.net));
+    await page.getByRole("button", { name: "Most-used five" }).click();
+    await expect(page).toHaveURL(url => !url.searchParams.has("five"));
+    await expect(table.locator('tr[data-row="lineup_model"] [data-field="net"]')).toHaveAttribute("data-value", String(fit.lineup_model.net));
   });
 
-  test("the similarity map draws every served point and says what it does not show", async ({ page }) => {
+  test("the map keeps its warning above the dots and draws every served point", async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.locator("circle[data-player]")).toHaveCount(fixture.map.points.length);
     await expect(page.locator('[data-field="seed-stability"]')).toHaveAttribute("data-value", String(fixture.map.seed_stability.mean_overlap));
-    await expect(page.getByText("the axes, directions and the distances between groups mean nothing")).toBeVisible();
+    await expect(page.locator('[data-field="seed-warning"]')).toContainText("Read this map as noise");
+    const before = await page.evaluate(() => {
+      const warn = document.querySelector('[data-field="seed-warning"]'), dot = document.querySelector("circle[data-player]");
+      return Boolean(warn && dot && warn.compareDocumentPosition(dot) & Node.DOCUMENT_POSITION_FOLLOWING);
+    });
+    expect(before).toBe(true);
+    await expect(page.getByText("the axes, directions and distances between groups mean nothing")).toBeVisible();
+    await expect(page.locator("circle[data-player][data-on]")).toHaveCount(5);
   });
 
-  test("shows the game backtest entry, credits and the registration", async ({ page }) => {
+  test("says when a chosen player has no dot on the map", async ({ page }) => {
+    const box = roster.players.find((p: { status: string }) => p.status === "box");
+    const five = [...fit.players.slice(0, 4).map((p: { player_id: string }) => p.player_id), box.player_id];
+    await openWorkbench(page, `${path}?five=${five.join(",")}`);
+    await expect(page.locator('[data-field="map-missing"]')).toContainText(box.name);
+    await expect(page.locator("circle[data-player][data-on]")).toHaveCount(4);
+    await expect(page.locator(`[data-slot="${box.player_id}"] [data-field="status"]`)).toHaveText("Box-score fallback");
+  });
+
+  test("works without the weights: one line for the tool, everything else stays", async ({ page }) => {
+    const served = { ...fixture, serving: { ...fixture.serving, tool_available: false } };
+    const headers = { "access-control-allow-origin": "*" };
+    await page.route("**/api/lineup-model", route => route.fulfill({ json: served, headers }));
+    await page.route("**/api/lineup-model/players", route => route.fulfill({ json: { state: "unavailable", players: [] }, headers }));
+    await openWorkbench(page, path);
+    await expect(page.locator('[data-field="tool-unavailable"]')).toBeVisible();
+    await expect(page.locator("[data-slot]")).toHaveCount(0);
+    await expect(page.locator('[data-field="five-note"]')).toHaveCount(0);
+    await expect(page.getByRole("table", { name: "Stint margin error by test season" })).toBeVisible();
+    await expect(page.getByRole("table", { name: "Game margin error, lineup backtest" })).toBeVisible();
+    await expect(page.locator("circle[data-player]")).toHaveCount(fixture.map.points.length);
+    await expect(page.locator("circle[data-player][data-on]")).toHaveCount(5);
+  });
+
+  test("shows the game backtest in registered order, with the ridge row uncoloured", async ({ page }) => {
     await openWorkbench(page, path);
     const bt = page.getByRole("table", { name: "Game margin error, lineup backtest" });
     await expect(bt.locator("tbody tr")).toHaveCount(Object.keys(fixture.backtest.candidates).length);
+    const order = await bt.locator("tbody tr").evaluateAll(rows => rows.map(r => (r as HTMLElement).dataset.row));
+    expect(order).toEqual(["team_net", "plus_minus", "on_off", "rapm_1y", "rapm_3y", "box_prior_rapm", "time_decay", "time_decay_opener", "projected_impact", "lineup_model", "lineup_ridge"]);
     await expect(bt.locator('tr[data-row="lineup_model"] [data-field="rmse"]')).toHaveAttribute("data-value", String(fixture.backtest.candidates.lineup_model.pooled.rmse));
-    for (const name of ["Rosenbaum", "Sill", "McInnes"]) await expect(page.getByText(new RegExp(name)).first()).toBeVisible();
+    const ridge = bt.locator('tr[data-row="lineup_ridge"]');
+    expect(await ridge.locator('[data-field="gain"] .rs-grid-value').getAttribute("data-tone")).toBeNull();
+    await expect(ridge.locator('[data-field="verdict"]')).toContainText("no practical difference");
+    await expect(page.locator('[data-field="samples"]')).toContainText("don't compare RMSE");
+    await expect(page.getByRole("link", { name: "Every metric head to head in Metric Backtest" })).toHaveAttribute("href", "/research/backtest");
+  });
+
+  test("keeps project detail and the method in the collapsed About", async ({ page }) => {
+    await openWorkbench(page, path);
+    await expect(page.locator("[data-slot]")).toHaveCount(5);
+    const about = page.locator("#about details");
+    await expect(about).not.toHaveAttribute("open", "");
     await expect(page.locator('[data-field="results-sha"]')).toHaveAttribute("data-value", results.results_sha256);
+    const text = await page.locator(".lm-page").innerText();
+    expect(text).not.toMatch(/\bR0?\d{1,2}\b|IM02|docs\/evidence|courtlens-lineup/);
+    await about.locator("summary").click();
+    for (const name of ["Rosenbaum", "Sill", "McInnes"]) await expect(page.locator('[data-field="credits"]')).toContainText(name);
+    await expect(page.getByRole("table", { name: "Stints by season" })).toBeVisible();
   });
 
   test("is in the Research menu under Models with an icon", async ({ page }) => {

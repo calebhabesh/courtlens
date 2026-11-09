@@ -116,18 +116,10 @@ export const getLineupPlayers = (signal?: AbortSignal) => get<PlayersPage>("/api
 export const getLineupFit = (ids: readonly string[], signal?: AbortSignal) =>
   get<FitResult>(`/api/lineup-model/fit?players=${ids.map(encodeURIComponent).join(",")}`, "Lineup fit", signal);
 
-export const VERDICT_TEXT: Record<Verdict, string> = {
-  lineup_better: "The lineup model predicts held-out stints better than ridge",
-  ridge_better: "Ridge predicts held-out stints better than the lineup model",
-  no_difference: "No difference: neither model predicts held-out stints better",
-};
-export const SHORT_VERDICT: Record<Verdict, string> = { lineup_better: "Lineup model better", ridge_better: "Ridge better", no_difference: "No difference" };
 export const PAIR_TEXT: Record<"lineup_better" | "other_better" | "no_ranking", string> = {
   lineup_better: "Lineup model better", other_better: "Lineup model worse", no_ranking: "No ranking",
 };
-export const STATUS_TEXT: Record<Status, string> = {
-  own: "Own vector (1,000+ possessions)", box: "Box-score fallback", newcomer: "Newcomer (no window minutes)",
-};
+export const STATUS_LABEL: Record<Status, string> = { own: "Own vector", box: "Box-score fallback", newcomer: "Newcomer" };
 export const CANDIDATE_LABELS: Record<string, string> = {
   team_net: "Team net (baseline)", plus_minus: "Plus-minus", on_off: "On/off", rapm_1y: "RAPM 1Y", rapm_3y: "RAPM 3Y",
   box_prior_rapm: "Box-prior RAPM", time_decay: "Time decay, monthly", time_decay_opener: "Time decay, opener",
@@ -135,7 +127,7 @@ export const CANDIDATE_LABELS: Record<string, string> = {
 };
 
 export const fixed = (v: number, digits = 2) => v.toFixed(digits);
-export const signed = (v: number, digits = 2) => `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(digits)}`;
+export const signed = (v: number, digits = 2) => { const t = Math.abs(v).toFixed(digits); return Number(t) === 0 ? t : `${v > 0 ? "+" : "−"}${t}`; };
 export const percent = (v: number, digits = 1) => `${(100 * v).toFixed(digits)}%`;
 export const whole = (v: number) => Math.round(v).toLocaleString("en-US");
 export const bandText = (b: Band, digits = 2) => `${fixed(b.low, digits)} to ${fixed(b.high, digits)}`;
@@ -149,19 +141,36 @@ export const gainText = (g: Gain, digits = 2) => {
   const d = digitsFor([g.gain, g.low, g.high], digits);
   return `${signed(g.gain, d)} (${signed(g.low, d)} to ${signed(g.high, d)})`;
 };
+export const gainBand = (b: Band, digits = 2) => `${signed(b.low, digits)} to ${signed(b.high, digits)}`;
 /** Green or red only when the whole interval is on one side of zero. */
 export const gainTone = (g: Band): "positive" | "negative" | undefined => g.low > 0 ? "positive" : g.high < 0 ? "negative" : undefined;
+/** The same rule, in the grid's words. */
+export const gridTone = (g: Band): "good" | "bad" | undefined => { const tone = gainTone(g); return tone === "positive" ? "good" : tone === "negative" ? "bad" : undefined; };
+/** Gold above zero, blue below, nothing when it rounds to zero. */
+export const identityOf = (v: number, digits = 2): "a" | "b" | undefined => Number(Math.abs(v).toFixed(digits)) === 0 ? undefined : v > 0 ? "a" : "b";
 
-/** The page's lead sentences, built from the served verdict and gains only. */
-export function verdictSentences(page: LineupModelPage): string[] {
-  const r = page.results;
-  const g = r.gains.lineup_over_ridge.pooled;
-  const seasons = r.test_seasons.length;
-  const out = [
-    `${VERDICT_TEXT[r.verdict]} (registered rule).`,
-    `Pooled over ${seasons} held-out seasons, ridge's error minus the lineup model's is ${gainText(g)} points per 100 possessions (95% interval); the lineup model is lower in ${r.seasons_lineup_lower} of ${seasons} seasons.`,
-  ];
-  const h = r.gains.ridge_over_home_only.pooled;
-  out.push(`For scale: ridge beats a model that knows only home court by ${gainText(h)} points per 100.`);
-  return out;
+/** How many times larger `big` is than `small`, to two significant figures. */
+export function scaleRatio(big: number, small: number): number {
+  const ratio = Math.abs(big / small);
+  const unit = 10 ** (Math.floor(Math.log10(ratio)) - 1);
+  return Math.round(ratio / unit) * unit;
+}
+
+/** One axis for every interval on the strip, in steps of 0.05 and always including zero. */
+export function stripScale(values: readonly Band[], step = 0.05): { left: number; right: number } {
+  return { left: Math.floor(Math.min(0, ...values.map(v => v.low)) / step) * step, right: Math.ceil(Math.max(0, ...values.map(v => v.high)) / step) * step };
+}
+
+/** The largest gap between a player's two ratings across the fit. */
+export const ratingGap = (players: readonly { ridge_rating: number; lineup_additive_rating: number }[]) => players.reduce((max, p) => Math.max(max, Math.abs(p.ridge_rating - p.lineup_additive_rating)), 0);
+
+/** Served text naming project codes, a docs path or the runner reads in plain words on the page (RD07: no repository detail). The API is unchanged. */
+export function visitorText(text: string): string {
+  return text
+    .replace("R01's admission (IM02 + event gate) excluded", "Checks on the source data left out")
+    .replace(/\s*Counts and reasons:.*$/, "")
+    .replace("their stints are not in the sealed bundles", "their stints aren't in the data")
+    .replace("CourtLens's R01 reconstruction", "CourtLens's reconstruction")
+    .replace("R08's: ", "")
+    .replace("after a defect in the frozen runner overwrote it", "after a fault in the original run overwrote it");
 }

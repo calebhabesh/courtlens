@@ -65,7 +65,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD09 | Research landing [29] | `/research` | none | R12 | ✂️ cut by the owner (2026-11-09) |
 | RD10 | Metric Backtest [29] | `/research/backtest` | none (built from approved CourtLens Research patterns) | R08, RD10 | ✅ |
 | RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | ✅ |
-| RD12 | Lineup Model [29] | `/research/lineup-model` | none | R14 | ⬜ |
+| RD12 | Lineup Model [29] | `/research/lineup-model` | none (built from approved CourtLens Research patterns) | R14, RD12 | 👀 |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none | R03 | ⬜ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
@@ -828,11 +828,28 @@ Instructions (owner, 2026-11-09, round 6):
 
 Evidence: [`design-RD11`](evidence/research/design-RD11/README.md).
 
-## RD12 Lineup Model — ⬜
+## RD12 Lineup Model — 👀
 
 - **Now:** registered verdict (ridge better, no practical difference), the lineup tool with intervals, the
   backtest placement, the UMAP player map with its seed-instability notice.
-- **Instructions:** _(owner)_
+- **Reference:** none. No Databallr page for it; each section borrows a named, approved CourtLens Research precedent.
+- **Before (round 1, :3100, 2026-11-09):** four stat tiles and ten stacked headings, full width; 9 old tables, 5 native player dropdowns. 7,246 px tall at 1440, 10,530 px at 390; 0 console errors, 0 overflow, 0 broken images. The top chart fits its axis to ±0.000029, so a 0.000011 gap fills the frame in red; the map's warning sits below the map; correlation reads 1.0000 (served 0.9999999982 at its lowest); backtest rows alphabetical, 2-season rows unmarked; the Example note shows with no result when weights are absent; R01, R08, IM02, a docs path and hashes in the body.
+- **Design check (2026-11-09):** nothing needs new data, an API field or a new analysis. Not served and left out: team or real lineup presets (only the default five), the 200 panel lineups (only the count), a per-player share of a five's net rating, an interval on the interaction, position or style on the map. The tool's `newcomer` state never occurs (546 own vector, 256 box).
+
+Instructions (owner, 2026-11-09, round 1; the owner answered the design proposal and its three recommendations with "Go with your
+recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively."):
+1. [x] Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively.
+   - (1) Hero: centred, 992 px column, one line, links to RAPM Ratings and Metric Backtest; the four stat tiles are cut.
+   - (2) Does it beat ridge? One sentence (both miss by 94.08 per 100, ridge's registered edge is 0.000011, no practical difference), then one pooled interval strip on a shared scale: ridge over home court only, lineup over home court only, lineup over ridge.
+   - (3) Lineup tool: five player cards with subdued team tint, `PlayerAvatar` and search in place, a reset to the default five; a two-row compact grid of net rating and 80% interval at 2 decimals; the interaction as one sentence; "model output, not a forecast" visible. One Rating column, a sentence saying ridge and additive ratings differ by at most 0.0066. Weights absent: one plain line, no pickers, no Example note.
+   - (4) The test: gains first, then errors, by season and pooled, 95%, including the home-court gains; interaction size against additive size; correlation at full digits.
+   - (5) In the game backtest: 11 rows in registered order, gains before RMSE, a "don't compare rows across different seasons" line, a link to Metric Backtest, no `GridSearch`.
+   - (6) Player map: warning above the map (1.9% against 1.8%), neutral dots, the five in `--color-category-3`, names on hover, a statement when a chosen player has no dot.
+   - (7) How to read: three short cards and a collapsed glossary. (8) About this page, collapsed: selection grids, coverage, cold start, rule, method, credits, hashes, the restored-scores disclosure in plain words, the evidence link.
+   - Q1: the ridge-against-lineup gains stay neutral, with "better by the registered rule, no practical difference"; other backtest rows keep green/red. Q2: the tool comes before the test detail. Q3: the map stays visible, last among the results, no player search.
+   — Built as proposed: the answer in one sentence with the gap drawn to scale on zero, five team-tinted player cards with search in place, net rating with its 80% interval, gains before errors, the backtest in registered order, the warning above the map, How to read and a collapsed About. Real data 6,628 values, 0 mismatches; full Playwright 620 passed, 17 skipped, 0 failed.
+
+Evidence: [`design-RD12`](evidence/research/design-RD12/README.md).
 
 ## RD13 Signal vs Noise — ⬜
 

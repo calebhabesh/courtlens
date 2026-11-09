@@ -922,3 +922,8 @@ On the owner's instruction, one line now sits above the prospective table: the g
 
 The owner approved Projected Impact again ("Okay. I approve this page."), after the forced first prospective score and the line tying it to the test. Row RD11 ✅; the alignment plan's "Settled in RD11" gains the early-sample rule. The next automatic score is about Nov 17, 2026.
 [`design-RD11`](evidence/research/design-RD11/README.md).
+
+## 2026-11-09 — RD12 round 1: Lineup Model rebuilt
+
+The page now answers in one sentence: on 3 seasons it never saw, the lineup model and ridge both miss a stint by 94.08 per 100, and ridge's 0.000011 edge is no practical difference. One strip draws that gap to scale beside ridge's +0.19 over home court. Five team-tinted player cards with search in place replace the five dropdowns, then net rating with its 80% interval, gains before errors, the game backtest in registered order, the map with its warning above it, How to read and a collapsed About. The lineup-against-ridge gains stay uncoloured (owner's Q1). 4,295 px at 1440 (was 7,246) and 5,949 at 390 (was 10,530). No API, analysis, frozen result or interval changed. Lint and typecheck clean, Vitest 843, `r14-lineup-model` ×3 33/33, full Playwright 620 passed, 17 skipped, 0 failed, real data 6,628 values, 0 mismatches.
+[`design-RD12`](evidence/research/design-RD12/README.md). Awaits the owner.
