@@ -847,3 +847,8 @@ Shared `StatsGrid` gained an optional two-row lead header. Lint and typecheck cl
 
 Retitled the steals and misses lists, Stats-format dates, classes open on who played (with an All picks switch), a Tag column, `CHI · 1984-85` subtitles, a combine chart drawn at its true width, one rookie search field, a narrow slot-table pick column, and one sentence in place of a repeated Verdict column. Design only; no API, analysis or frozen result changed. Lint and typecheck clean; Vitest 833; page specs ×3 54/54; full Playwright 607 passed, 17 skipped, 0 failed; real data 248,604 values, 0 mismatches, 0 console errors, 0 overflow, 0 wrong-season photos. Evidence:
 [`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.
+
+## 2026-11-09 — RD08 round 5: past-picks table level with the card
+
+The past same-pick table now ends level with the rookie card and its heading says "per 36 minutes"; column widths leave room for a scrollbar. The owner's two questions were answered (per 36 and the 1983-84 start are R09's design). Design only. Lint and typecheck clean; Vitest 833; page specs ×3 54/54; full Playwright 607 passed, 17 skipped, 0 failed; real data 248,649 values, 0 mismatches, 0 console errors, 0 overflow, 0 wrong-season photos. Evidence:
+[`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.

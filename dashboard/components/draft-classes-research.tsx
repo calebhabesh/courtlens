@@ -204,7 +204,7 @@ function PastPicks({ rookie }: { rookie: Rookie }) {
   ], []);
   const sorted = useSort(rows, columns, { key: "year", direction: "desc" });
   return <div className="dc-past">
-    <h3 className="dc-subhead">Past number {rookie.pick} picks over their first {games} games</h3>
+    <h3 className="dc-subhead">Past number {rookie.pick} picks over their first {games} games, per 36 minutes</h3>
     {error && <FeedFailure error={error} retry={retry} what="The comparison" />}
     {loading && <FeedSkeleton label="Loading the comparison" />}
     {data && (data.comparisons.length === 0 ? <GatedNote>No past rookie at this pick has logged games.</GatedNote> :
