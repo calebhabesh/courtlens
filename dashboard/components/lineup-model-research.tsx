@@ -143,6 +143,7 @@ function FitView({ fit }: { fit: FitResult }) {
   type Row = typeof rows[number];
   const tone = (row: Row) => gridTone(row);
   const interaction = digitsFor([l.interaction]);
+  const gap = Math.abs(l.net - rd.net);
   return <>
     <StatsGrid<Row> label="Predicted net rating" name="fit" density="compact" height="auto" leadWidth="xl" minWidth="narrow" className="lm-fit" rows={rows} rowKey={r => r.key}
       lead={{ label: "Model", cell: r => <ModelName model={r.model} /> }}
@@ -150,7 +151,7 @@ function FitView({ fit }: { fit: FitResult }) {
         { key: "net", label: "Net rating", data: r => ({ field: "net", value: r.net }), cell: r => <GridValue text={signed(r.net)} tone={tone(r)} identity={tone(r) ? undefined : identityOf(r.net)} title={tone(r) ? "80% interval excludes zero" : "80% interval includes zero"} /> },
         { key: "interval", label: "80% interval", data: r => ({ field: "interval", low: r.low, high: r.high }), cell: r => <GridValue text={`${signed(r.low)} to ${signed(r.high)}`} /> },
       ]} />
-    <p className="lm-lead" data-field="interaction" data-value={l.interaction} data-additive={l.additive}>Of the lineup model&apos;s {signed(l.net)}, the interaction between these players adds <strong>{signed(l.interaction, interaction)}</strong>. The other {signed(l.additive)} is the additive part, the same kind of number ridge gives.</p>
+    <p className="lm-lead" data-field="interaction" data-value={l.interaction} data-additive={l.additive}>The two models are <strong data-field="model-gap" data-value={gap}>{fixed(gap, digitsFor([gap]))}</strong> apart on this five. Of the lineup model&apos;s {signed(l.net)}, the interaction between these players adds <strong>{signed(l.interaction, interaction)}</strong>. The other {signed(l.additive)} is the additive part, the same kind of number ridge gives.</p>
     <p className="lm-note" data-field="fit-note" data-opponents={fit.opponents} data-panel={fit.panel_size} data-refits={fit.refits}>Against the {fit.opponents} of {fit.panel_size} panel lineups that share no player with this five, at a neutral site. Intervals run from the 10th to the 90th percentile over {fit.refits} game-bootstrap refits; the estimate comes from the five-seed fit and can sit outside them. This is a model output, not a forecast of how these five will play, and overlapping intervals rank nothing.</p>
   </>;
 }
@@ -161,7 +162,7 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
   const { serving } = page;
   const ready = roster?.state === "ready";
   const key = five.join(",");
-  const { data: fit, error, loading, retry } = useFeed([key, String(ready)], signal => ready ? getLineupFit(five, signal) : Promise.resolve(null));
+  const { data: fit, error, loading, retry, stale } = useFeed([key, String(ready)], signal => ready ? getLineupFit(five, signal) : Promise.resolve(null));
   const items = useMemo(() => (roster?.players ?? []).map((p): LookupItem => ({
     id: p.player_id, canonical_id: p.player_id, kind: "player", display_name: p.name ?? p.player_id, match_basis: "suggestion", match_score: 1,
     portrait_url: p.photo_season ? `/api/workbench/players/${p.player_id}/portrait?size=64&season=${p.photo_season}${p.tricode ? `&team=${p.tricode}` : ""}&crop=${PORTRAIT_CROP_VERSION}` : undefined,
@@ -170,6 +171,8 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
     metadata: { caption: `${p.tricode ?? "No team"} · ${p.status ? STATUS_LABEL[p.status] : "Unknown"}` },
   } as LookupItem)), [roster, serving.season]);
   const isDefault = key === serving.default_five.join(",");
+  // The last prediction stays, dimmed, until the new one arrives, so swapping a player doesn't jump the page.
+  const shown = fit ?? stale;
   const gap = ratingGap(roster?.players ?? []);
   const unavailable = !serving.tool_available || roster?.state === "unavailable";
   return <ResearchSection id="tool" icon="users" title="Lineup tool, points per 100 possessions">
@@ -186,9 +189,10 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
           {five.map((id, index) => { const player = players.get(id); return player ? <Slot key={id} player={player} others={five.filter(other => other !== id)} items={items} onPick={next => onChoose(index, next)} /> : null; })}
         </div>
         <p className="lm-note" data-field="rating-gap" data-value={gap}>Each card shows the player&apos;s ridge rating, in points per 100 above an average player, and possessions in the fit. The lineup model&apos;s own additive ratings differ from these by at most {fixed(gap, 4)} across all {whole(roster?.players.length ?? 0)} players.</p>
+        <p className="lm-note" data-field="positions">Neither model takes a player&apos;s position as an input, so neither judges a lineup&apos;s balance.</p>
         {error && <FeedFailure error={error} retry={retry} what="This five's prediction" />}
-        {loading && <FeedSkeleton label="Predicting this five" />}
-        {fit && <FitView fit={fit} />}
+        {loading && !shown && <FeedSkeleton label="Predicting this five" />}
+        {shown && <div className="lm-fit-result" data-result data-stale={loading || undefined} aria-busy={loading}><FitView fit={shown} /></div>}
       </>}
     </>}
   </ResearchSection>;
@@ -213,14 +217,13 @@ function TestSection({ page }: { page: LineupModelPage }) {
   const seasonsDiag = r.test_seasons.map(season => ({ season, d: r.diagnostics[season] }));
   type Diag = typeof seasonsDiag[number];
   return <ResearchSection id="test" icon="target" title="The test: stint error, points per 100 possessions">
-    <p className="lm-lead">Each test season is predicted by models trained only on the {page.registration.parameters.window_seasons} seasons before it. Error is the possession-weighted miss on each stint&apos;s home margin. A gain is the second model&apos;s error minus the first&apos;s, so above zero the first did better.</p>
-    <p className="lm-lead" data-field="noise" data-low={noise.low} data-high={noise.high}>Stint margins are very noisy: across these seasons and models, the typical miss is {fixed(noise.low, 1)} to {fixed(noise.high, 1)} points per 100.</p>
+    <p className="lm-lead">Each test season is predicted by models trained only on the {page.registration.parameters.window_seasons} seasons before it. Above zero, the model named first had the lower error.</p>
+    <p className="lm-lead" data-field="noise" data-low={noise.low} data-high={noise.high}>Stint margins are very noisy: the typical miss is {fixed(noise.low, 1)} to {fixed(noise.high, 1)} points per 100. Lineup-against-ridge gains stay uncoloured even where their interval excludes zero, because the gaps are no practical difference.</p>
     <ul className="rs-legend" aria-label="Colour key">
       <li><span className="rs-swatch" data-tone="good" aria-hidden="true" />Better: 95% interval above zero</li>
       <li><span className="rs-swatch" data-tone="bad" aria-hidden="true" />Worse: 95% interval below zero</li>
       <li><span className="rs-swatch" aria-hidden="true" />Interval includes zero, or the gap is too small to matter</li>
     </ul>
-    <p className="lm-note" data-field="neutral-note">The lineup-against-ridge gains are better by the registered rule where their interval excludes zero, but they are no practical difference, so they stay uncoloured.</p>
     <StatsGrid<TestRow> label="Stint margin error by test season" name="test" density="compact" height="auto" leadWidth="md" className="lm-test" rows={rows} rowKey={row => row.key}
       lead={{ label: "Season", cell: row => <><span className="lm-name">{row.label}</span><span className="lm-name-sub" data-field="counts" data-stints={row.stints} data-games={row.games}>{whole(row.stints)} stints · {whole(row.games)} games</span></> }}
       columns={[
@@ -258,6 +261,8 @@ function BacktestSection({ page }: { page: LineupModelPage }) {
   };
   const lead = (name: string) => { const g = asLineup(name); return g ? signed(g.gain, digitsFor([g.gain, g.low, g.high])) : "—"; };
   const seasonsOf = (name: string) => bt.candidates[name].test_seasons;
+  const fullSeasons = seasonsOf("lineup_model").length;
+  const scopeText = (name: string) => `${seasonsOf(name).length === fullSeasons ? `${fullSeasons} seasons` : seasonsOf(name).map(short).join(", ")} · ${whole(bt.candidates[name].pooled.games)} games`;
   const twoSeason = names.filter(name => seasonsOf(name).length < seasonsOf("lineup_model").length);
   const best = bt.verdict.best.map(name => CANDIDATE_LABELS[name] ?? name);
   return <ResearchSection id="backtest" icon="chart-trend" title="In the game backtest, final margin in points">
@@ -269,7 +274,7 @@ function BacktestSection({ page }: { page: LineupModelPage }) {
       <li><span className="rs-swatch" aria-hidden="true" />Interval includes zero, or the gap is too small to matter</li>
     </ul>
     <StatsGrid<string> label="Game margin error, lineup backtest" name="backtest" density="compact" height="auto" leadWidth="lg" className="lm-backtest" rows={names} rowKey={name => name}
-      lead={{ label: "Metric", cell: name => <><span className="lm-name">{CANDIDATE_LABELS[name] ?? name}</span><span className="lm-name-sub" data-field="scope" data-games={bt.candidates[name].pooled.games} data-seasons={seasonsOf(name).length}>{seasonsOf(name).map(short).join(", ")} · {whole(bt.candidates[name].pooled.games)} games</span></> }}
+      lead={{ label: "Metric", cell: name => <><span className="lm-name">{CANDIDATE_LABELS[name] ?? name}</span><span className="lm-name-sub" data-field="scope" data-games={bt.candidates[name].pooled.games} data-seasons={seasonsOf(name).length}>{scopeText(name)}</span></> }}
       columns={[
         { key: "gain", label: "Lineup model's gain, 95%", title: "This metric's RMSE minus the lineup model's on the seasons both were scored. Above zero, the lineup model did better", width: "lg",
           data: name => name === "lineup_model" ? { field: "gain", baseline: "true" } : gainData(asLineup(name), "gain"),

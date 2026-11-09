@@ -78,3 +78,30 @@ Questions 3 (positions) and 5 (more improvements) were answered in the report an
 | Photos ([`photo-check.json`](photo-check.json), [`photo-check.mjs`](photo-check.mjs)) | Both Six-Factor tabs, 1440 and 390, real data: 25 portraits on RAPM Ratings and 445 on Six-Factor, all circular, 0 cut by a box that doesn't scroll. Control: with the old rule put back, the check finds all 5 leaders cut at each width, so it does detect this fault |
 
 Screenshots viewed: `lm-search-1440.png`, `lm-search-390.png`, `rapm-leaders-1440.png`, `rapm-leaders-390.png`. The CSS chunk :3100 serves was checked for the new rules.
+
+## Round 3 (owner, 2026-11-09): "You can make all of those improvements, comprehensively"
+
+| # | Change | Result |
+| --- | --- | --- |
+| 1 | How close the two models are | One sentence above the interaction line, from the served nets: 0.000022 apart on the default five, 0.00078 on the phone example with a box-score player |
+| 2 | No jump on a swap | The last prediction stays, dimmed and `aria-busy`, until the new one arrives; no skeleton and no change of page height. `useFeed` gained an optional `stale`; existing callers are unaffected |
+| 3 | The test's intro | Two text blocks and the legend. The note that lineup-against-ridge gains stay uncoloured no longer says "better by the registered rule" per season: that rule is pooled |
+| 4 | Backtest captions | "3 seasons · 3,655 games", naming seasons only on Box-prior RAPM and Projected Impact; one line each on a phone |
+| 5 | Phone cards | A 56 px photo and two lines beside it (name; team and status) with the rating as one line: 108 px a card. Page 196 px shorter at 390 |
+| 6 | Positions | One line under the cards: neither model takes a position as an input, so neither judges a lineup's balance. No position labels were added |
+| 7 | RAPM Ratings Leaders | Source label now reads "CourtLens lineup model", without IM04 |
+
+**Page size.** 4,297 px at 1440 with the disclosures collapsed and 5,753 at 390 (round 2: 4,295 and 5,949).
+
+**Found by the check.** A script fault of its own: the swap test reset the five, so the later reset had no button to click. The phone card limit in the check was a guess (100 px); the card as designed is 108 px and the limit is 112.
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | clean |
+| Vitest | 843 passed |
+| `r14-lineup-model` ×3 (13 tests, one new for the swap) | 39/39 |
+| Full Playwright | 622 passed, 17 skipped, 0 failed, on the final build |
+| Real data ([`real-data-check.json`](real-data-check.json), [`real-check.mjs`](real-check.mjs)) | 6,730 values (3,548 at 1440 over 12 loads; 3,182 at 390 over 9 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images. New: the model gap for every five, a held fit call (old result kept, no skeleton, no jump), the two intro blocks, the phone card and photo sizes |
+| Photos ([`photo-check.json`](photo-check.json), [`photo-check.mjs`](photo-check.mjs)) | Re-run on the final build: 470 portraits per width, 0 cut; control 5 of 5 |
+
+Screenshots viewed: `lm-tool-box-390.png`, `lm-tool-1440.png`, `lm-test-1440.png`, `lm-backtest-390.png`, `rapm-leaders-1440.png`. The CSS chunk :3100 serves has the new rules.
