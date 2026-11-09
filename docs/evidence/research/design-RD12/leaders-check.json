@@ -1,0 +1,18 @@
+[
+ {
+  "width": 1440,
+  "scopes": 4,
+  "compared": 299,
+  "mismatches": 0,
+  "errors": [],
+  "firstMismatches": []
+ },
+ {
+  "width": 390,
+  "scopes": 4,
+  "compared": 299,
+  "mismatches": 0,
+  "errors": [],
+  "firstMismatches": []
+ }
+]

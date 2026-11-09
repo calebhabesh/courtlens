@@ -105,3 +105,28 @@ Screenshots viewed: `lm-search-1440.png`, `lm-search-390.png`, `rapm-leaders-144
 | Photos ([`photo-check.json`](photo-check.json), [`photo-check.mjs`](photo-check.mjs)) | Re-run on the final build: 470 portraits per width, 0 cut; control 5 of 5 |
 
 Screenshots viewed: `lm-tool-box-390.png`, `lm-tool-1440.png`, `lm-test-1440.png`, `lm-backtest-390.png`, `rapm-leaders-1440.png`. The CSS chunk :3100 serves has the new rules.
+
+## Round 4 (owner, 2026-11-09): the RAPM Ratings Leaders bars
+
+"what does 0 and 9.6 on the left and right mean" was answered: they were the ends of the bars' scale, 0 an average player and 9.6 the leader's 9.61 rounded. "these blue/black bars are remannts of the old ugly design. Make sure you clean them up to the updated design."
+
+| Change | Result |
+| --- | --- |
+| New `LeaderBars` (`components/research/leader-bars.tsx`) on `/research/rapm` | Thin 8 px bars on the Research well, as RD11's contribution bars, in place of 12 px blue-on-black SVG bars with an inset fill |
+| Colour | Gold above zero and blue below, because these ratings have no interval (RD01). The old chart drew positive values in blue, the sign colour for below zero |
+| Scale | Above the bars and lined up with them (RD11), saying what each end is: "0 is an average player" and "9.61 is the top of this list" |
+| Unit | Moved from the axis into the title: "points per 100 counted controls", the term the Six-Factor tab uses |
+
+The shared `RankedBars` is untouched: three older views still use it (tracking stats, play-type shooting, defensive matchups). The two `pc12-b-rapm-*` visual baselines were regenerated because this chart changed.
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | clean |
+| Vitest | 846 passed (3 new for `LeaderBars`) |
+| `r14-lineup-model` ×3 | 39/39 |
+| Full Playwright | 622 passed, 17 skipped, 0 failed, on the final build, with the two regenerated baselines |
+| Leaders on real data ([`leaders-check.json`](leaders-check.json), [`leaders-check.mjs`](leaders-check.mjs)) | 598 values at 1440 and 390 over four scopes (2025-26, 2024-25 and 2023-24 regular seasons, 2025-26 playoffs), 0 mismatches, 0 console errors: names, values, drawn bar width and position from the served values alone, gold fills, the scale's words and alignment, the old chart gone |
+| Lineup Model real data | 6,730 values, 0 mismatches, re-run on this build |
+| Photos ([`photo-check.json`](photo-check.json)) | 470 portraits per width, 0 cut; control 5 of 5 |
+
+Screenshots viewed: `rapm-leaders-1440.png`, `rapm-leaders-390.png`. The CSS chunk :3100 serves has the new rules.

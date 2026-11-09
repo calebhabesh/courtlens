@@ -13,20 +13,16 @@
   .rapm-ratings .research-embedded .ui-stat-tile-label { color: var(--color-on-bg-secondary); }
   .rapm-ratings .research-embedded .ui-stat-tile-footnote { color: var(--color-on-bg-tertiary); }
 
-  /* The PC12 headline's chart rules (presentation-clarity.css), without its box: source below the bars,
-     compact names, and on a phone the name takes its own full-width line instead of being cut. */
+  /* The headline leaders list (RD12 round 4), with no box: source below the bars, compact names, and on a phone
+     the name takes its own full-width line instead of being cut. Photos are never clipped. */
   .rapm-headline { --rapm-photo: 44px; min-width: 0; }
   .rapm-headline .chart-meta { grid-row: 2; }
-  /* The label clipped to a box cuts the photo's ring flat; the name and the line under it truncate themselves (RD00: photos are never clipped). */
-  .rapm-headline .chart-ranked-label { overflow: visible; }
-  .rapm-headline .chart-ranked-label .ui-identity { display: flex; --identity-media: var(--rapm-photo); }
+  .rapm-headline .rs-leaders-label .ui-identity { display: flex; --identity-media: var(--rapm-photo); }
   /* The games and minutes line starts under the name, not under the photo. */
-  .rapm-headline .chart-ranked-label small { padding-left: calc(var(--rapm-photo) + var(--space-2)); }
-  .rapm-headline .chart-ranked-label .ui-identity-name { font-size: var(--text-sm); }
+  .rapm-headline .rs-leaders-label small { padding-left: calc(var(--rapm-photo) + var(--space-2)); }
+  .rapm-headline .rs-leaders-label .ui-identity-name { font-size: var(--text-sm); }
   @media (width < 768px) {
-    .rapm-headline .chart-ranked li { grid-template-columns: minmax(0, 1fr) max-content; row-gap: var(--space-1); }
-    .rapm-headline .chart-ranked-label { grid-column: 1 / -1; white-space: normal; }
-    .rapm-headline .chart-ranked-label small { white-space: normal; }
-    .rapm-headline .chart-ranked-label .ui-identity-name { white-space: normal; overflow: visible; text-overflow: clip; }
+    .rapm-headline .rs-leaders-label small { white-space: normal; }
+    .rapm-headline .rs-leaders-label .ui-identity-name { white-space: normal; overflow: visible; text-overflow: clip; }
   }
 }
