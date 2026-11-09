@@ -12,7 +12,7 @@ import { Select } from "./ui/kit";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import {
-  bandText, fixed, gainBand, getMetricBacktest, gridTone, pairOf, percent, SCORE_DIGITS, SCORE_LABELS, SCORES, seasonRange, signed,
+  bandText, fixed, gainBand, getMetricBacktest, gridTone, groupGain, pairOf, percent, pointsText, SCORE_DIGITS, SCORE_LABELS, SCORES, seasonRange, signed,
   verdictSentences, VERDICT_TEXT, type CurveBin, type Gain, type MetricBacktestPage, type Pair, type ProspectiveGroup, type Score,
 } from "@/lib/metric-backtest";
 import { formatDate } from "@/lib/format-date";
@@ -117,7 +117,11 @@ function PairsSection({ page }: { page: MetricBacktestPage }) {
   const columns: GridColumn<Pair>[] = [
     ...SCORES.map((score): GridColumn<Pair> => ({
       key: score, label: `${SCORE_LABELS[score]} gain`, width: "md", data: p => gainData(gainOf(p, score), score),
-      cell: p => { const g = gainOf(p, score); return g ? <GainValue gain={g} digits={SCORE_DIGITS[score]} /> : <GridValue text={null} />; },
+      cell: p => {
+        const g = gainOf(p, score);
+        if (!g) return <GridValue text={null} />;
+        return score === "accuracy" ? <GridValue text={`${pointsText(g.gain)} pts`} sub={`${pointsText(g.low)} to ${pointsText(g.high)}`} tone={gridTone(g)} /> : <GainValue gain={g} digits={SCORE_DIGITS[score]} />;
+      },
     })),
     { key: "lower", label: "Lower RMSE in", title: "Shared seasons in which this metric had the lower RMSE", width: "sm", data: p => ({ field: "lower", value: p.seasons_candidate_lower_rmse }),
       cell: p => <GridValue text={`${p.seasons_candidate_lower_rmse} of ${p.seasons.length}`} /> },
@@ -125,7 +129,7 @@ function PairsSection({ page }: { page: MetricBacktestPage }) {
       cell: (p: Pair) => <span className="mb-text">{VERDICT_TEXT[p.verdict]}</span> }]),
   ];
   return <ResearchSection id="scores-against" icon="target" title="Every score, against one metric">
-    <p className="mb-lead">Each row is that metric&apos;s gain over the one chosen. Positive means the row&apos;s metric did better; winner picked is its share of games minus the other&apos;s.</p>
+    <p className="mb-lead">Each row is that metric&apos;s gain over the one chosen. Positive means the row&apos;s metric did better; winner picked is in percentage points of games.</p>
     <div className="mb-controls">
       <Field label="Against" layout="inline"><Select size="md" aria-label="Compare against" value={reference}
         onChange={event => set({ against: event.target.value === baseline ? null : event.target.value })}><MetricOptions page={page} /></Select></Field>
@@ -270,7 +274,7 @@ function GroupGrid({ page, group, label, name }: { page: MetricBacktestPage; gro
   const baseline = baselineOf(page);
   const scores = group.candidates!;
   const hasGains = (group.pairs?.length ?? 0) > 0;
-  const gain = (metric: string) => group.pairs?.find(p => p.candidate === metric && p.reference === baseline)?.rmse;
+  const gain = (metric: string) => groupGain(group, metric, baseline);
   return <StatsGrid<string> label={`${label} 2026-27 games`} name={name} density="compact" height="auto" leadWidth="md" className="mb-scores" rows={candidatesOf(page)} rowKey={n => n}
     lead={{ label: "Metric", cell: n => <Metric page={page} name={n} /> }}
     columns={[
@@ -326,14 +330,19 @@ function Reading({ page }: { page: MetricBacktestPage }) {
     { label: "Updated and projected", icon: "calendar", items: ["time_decay", "time_decay_opener", "projected_impact"].map(noted) },
     { label: "Left out", icon: "info", items: Object.entries(omitted).map(([key, text]) => ({ term: key === "darko" ? "DARKO" : key, text })) },
   ];
-  return <ResearchSection id="reading" icon="book" title="How to read">
-    <ResearchCards columns={3}>
-      <ResearchCard kicker="Error"><p className="mb-card-text">Margin RMSE is how far, in points, the predicted home margin falls from the real one. Lower is better.</p></ResearchCard>
-      <ResearchCard kicker="Gain"><p className="mb-card-text">The other metric&apos;s error minus this one&apos;s, on the games both were scored. Positive means this one did better.</p></ResearchCard>
-      <ResearchCard kicker="Colour"><p className="mb-card-text">Green or red only where a gain&apos;s whole 95% interval is on one side of zero. Pooled scores and calibration stay neutral.</p></ResearchCard>
-    </ResearchCards>
-    <Glossary groups={groups} />
-  </ResearchSection>;
+  return <>
+    <ResearchSection id="reading" icon="book" title="How to read">
+      <ResearchCards columns={3}>
+        <ResearchCard kicker="Error"><p className="mb-card-text">Margin RMSE is how far, in points, the predicted home margin falls from the real one. Lower is better.</p></ResearchCard>
+        <ResearchCard kicker="Gain"><p className="mb-card-text">The other metric&apos;s error minus this one&apos;s, on the games both were scored. Positive means this one did better.</p></ResearchCard>
+        <ResearchCard kicker="Colour"><p className="mb-card-text">Green or red only where a gain&apos;s whole 95% interval is on one side of zero. Pooled scores and calibration stay neutral.</p></ResearchCard>
+      </ResearchCards>
+      <p className="mb-lead" data-field="darko-line">DARKO is left out of every comparison: the ratings as published before each game aren&apos;t available free, and scoring later recomputed ones would be hindsight.</p>
+    </ResearchSection>
+    <ResearchDisclosure id="glossary" icon="list-ordered" title="Scores and metrics, defined">
+      <Glossary groups={groups} />
+    </ResearchDisclosure>
+  </>;
 }
 
 function About({ page }: { page: MetricBacktestPage }) {
@@ -367,6 +376,7 @@ function About({ page }: { page: MetricBacktestPage }) {
         <dt>Scores</dt><dd>Margin RMSE (the verdict), winner picked, Brier, log loss, and calibration error over ten probability bins.</dd>
         <dt>Intervals</dt><dd>Paired game bootstrap within each season, {count(p.replicates)} replicates, 95%, one set of draws shared by every metric. Seed 8008.</dd>
         <dt>Rule</dt><dd>{results.verdict.rule.charAt(0).toUpperCase()}{results.verdict.rule.slice(1)}.</dd>
+        <dt>Sources</dt><dd>CourtLens backtest of NBA regular-season box scores. The calibration plot uses ten probability bins, each metric over its own seasons.</dd>
         <dt>Fixed in advance</dt><dd>Method registered on {formatDate(results.registration.registered_on)}, before any score was read. 2026-27 rules frozen {formatDate(frozenAt.slice(0, 10))}, {frozenAt.slice(11, 16)} UTC.</dd>
         <dt>Hashes</dt><dd>Registration <code data-field="registration-sha" data-value={results.registration.content_sha256}>{results.registration.content_sha256.slice(0, 16)}</code> · results{" "}
           <code data-field="results-sha" data-value={results.results_sha256}>{results.results_sha256.slice(0, 16)}</code> · 2026-27 rules <code data-field="manifest-sha" data-value={prospective.manifest.manifest_sha256}>{prospective.manifest.manifest_sha256.slice(0, 16)}</code>. Two runs give the same results hash.</dd>

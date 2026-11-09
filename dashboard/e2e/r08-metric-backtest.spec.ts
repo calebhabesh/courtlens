@@ -9,6 +9,14 @@ const candidates: string[] = results.registration.parameters.candidates;
 const baseline: string = results.registration.parameters.baseline;
 const path = "/research/backtest";
 type Row = { candidate: string; reference: string; seasons: string[]; verdict: string; pooled: { rmse: { gain: number; low: number; high: number } }; per_season: Record<string, { rmse: { gain: number; low: number; high: number } }> };
+type Group = { games: number; pairs: { candidate: string; reference: string; rmse: { gain: number; low: number; high: number } }[] };
+/** A 2026-27 pair's gain with `a` first: the scorer can serve a pair either way round. */
+const groupGain = (group: Group, a: string, b: string) => {
+  const direct = group.pairs.find(p => p.candidate === a && p.reference === b);
+  if (direct) return direct.rmse;
+  const other = group.pairs.find(p => p.candidate === b && p.reference === a)!.rmse;
+  return { gain: -other.gain, low: -other.high, high: -other.low };
+};
 const pairFor = (a: string, b: string): { pair: Row; sign: number } => {
   const direct = results.pairs.find((p: Row) => p.candidate === a && p.reference === b);
   return direct ? { pair: direct, sign: 1 } : { pair: results.pairs.find((p: Row) => p.candidate === b && p.reference === a), sign: -1 };
@@ -61,6 +69,7 @@ test.describe("R08 Metric Backtest (RD10 design)", () => {
     await expect(table.locator("tbody tr")).toHaveCount(candidates.length - 1);
     await expect(page.locator('[data-field="pairs-verdict"]')).toHaveAttribute("data-value", "reference_better");
     await expect(table.locator('[data-field="verdict"]')).toHaveCount(0);
+    await expect(table.locator('tr[data-row="team_net"] [data-field="accuracy"] .rs-grid-value')).toHaveText(/^[+−]\d+\.\d pts$/);
     await page.getByRole("combobox", { name: "Compare against" }).selectOption("projected_impact");
     await expect(page).toHaveURL(/against=projected_impact/);
     await expect(page.locator('[data-field="pairs-verdict"]')).toHaveCount(0);
@@ -107,11 +116,42 @@ test.describe("R08 Metric Backtest (RD10 design)", () => {
     await expect(block.locator('[data-field="ece-chosen"]')).toHaveAttribute("data-value", String(results.candidates.rapm_1y.calibration_curve.ece));
   });
 
-  test("keeps the 2026-27 games apart, names DARKO's omission and credits the methods in About", async ({ page }) => {
+  test("reads the served 2026-27 games, keeping prospective and hindsight apart", async ({ page }) => {
     await openWorkbench(page, path);
-    await expect(page.locator('[data-field="prospective-games"]')).toHaveAttribute("data-value", String(fixture.prospective.summary.prospective.games));
+    const summary = fixture.prospective.summary;
+    await expect(page.locator('[data-field="prospective-games"]')).toHaveAttribute("data-value", String(summary.prospective.games));
+    const prospective = page.getByRole("table", { name: "Prospective 2026-27 games" });
+    for (const [group, table] of [[summary.prospective, prospective], [summary.hindsight, page.getByRole("table", { name: "Hindsight 2026-27 games" })]] as const) {
+      await expect(table.locator("tbody tr")).toHaveCount(candidates.length);
+      for (const name of candidates.filter(n => n !== baseline)) {
+        const want = groupGain(group, name, baseline);
+        const cell = table.locator(`tr[data-row="${name}"] [data-field="gain"]`);
+        expect(Number(await cell.getAttribute("data-value"))).toBe(want.gain);
+        expect(await cell.locator(".rs-grid-value").getAttribute("data-tone")).toBe(want.low > 0 ? "good" : want.high < 0 ? "bad" : null);
+      }
+    }
+    await expect(prospective.locator(`tr[data-row="${baseline}"] [data-field="replaced"]`)).toHaveText("—");
+  });
+
+  test("says so when no prospective game has been scored, and leaves gains out below the interval minimum", async ({ page }) => {
+    const empty = structuredClone(fixture); empty.prospective.summary.prospective = { games: 0 };
+    await page.route("**/api/metric-backtest", route => route.fulfill({ json: empty }));
+    await openWorkbench(page, path);
     await expect(page.locator('[data-field="prospective-empty"]')).toBeVisible();
-    await expect(page.getByRole("table", { name: "Hindsight 2026-27 games" }).locator("tbody tr")).toHaveCount(candidates.length);
+    await expect(page.getByRole("table", { name: "Prospective 2026-27 games" })).toHaveCount(0);
+    const few = structuredClone(fixture); few.prospective.summary.prospective.games = 5; delete few.prospective.summary.prospective.pairs;
+    await page.unroute("**/api/metric-backtest");
+    await page.route("**/api/metric-backtest", route => route.fulfill({ json: few }));
+    await page.reload();
+    await expect(page.locator('[data-field="prospective-intervals"]')).toBeVisible();
+    await expect(page.getByRole("table", { name: "Prospective 2026-27 games" }).locator('[data-field="gain"]')).toHaveCount(0);
+  });
+
+  test("keeps the DARKO line visible, the definitions collapsed, and credits the methods", async ({ page }) => {
+    await openWorkbench(page, path);
+    await expect(page.locator('[data-field="darko-line"]')).toBeVisible();
+    await expect(page.locator("#glossary details")).not.toHaveAttribute("open");
+    await page.locator("#glossary summary").click();
     await expect(page.locator("dt", { hasText: /^DARKO$/ })).toBeVisible();
     for (const credit of ["Dan Rosenbaum", "Joe Sill", "CourtLens's own"]) await expect(page.getByText(credit, { exact: false }).filter({ visible: true }).first()).toBeVisible();
     await expect(page.locator("#about details")).not.toHaveAttribute("open");

@@ -6,6 +6,7 @@
   .mb-page .rs-intro { margin-top: calc(-1 * var(--space-6)); }
   .mb-page > .rs-section { padding-top: 0; border-top: 0; scroll-margin-top: calc(-1 * var(--space-12)); }
   .mb-page .rs-method-block { grid-template-columns: minmax(0, 1fr); }
+  .mb-page > .rs-disclosure + .rs-disclosure { margin-top: calc(-1 * var(--space-6)); }
 
   /* Copy. */
   .mb-answer { display: grid; gap: var(--space-3); max-width: 768px; }
@@ -68,6 +69,8 @@
 
 /* The foundation layer sets this chart's phone text at --text-xl for a tile-sized plot; here it would run the axis title into its tick labels. */
 @layer foundation {
+  /* The heading above names the chart and About carries its source; the title stays in the markup for the figure's accessible name. */
+  .mb-calibration .chart-title, .mb-calibration .chart-meta { display: none; }
   @media (max-width: 767px) {
     .mb-calibration .chart-reliability text { font-size: var(--text-md); }
   }
