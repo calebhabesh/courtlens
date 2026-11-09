@@ -18,3 +18,13 @@ shots above show this final state.
 
 Lint and typecheck clean, Vitest 835, full Playwright 607 passed, 17 skipped, 0 failed (three landing tests removed, two menu tests added). The
 real-data check was not run because no data display changed. :3100 serves the new rule (checked in its CSS chunk).
+
+## Smoke-white headers (owner, 2026-11-09)
+
+"Can we try a smokier white or something. Not the grey caption text, or white subheader titles." Section headers use a new token,
+`--color-text-smoke` (#c8cdd4), between `--color-text` and `--color-text-secondary`. The shots above show this final state. Owner: "Great, that works."
+
+Lint and typecheck clean, Vitest 835, full Playwright 606 passed, 17 skipped, 1 failed. The failure is `projected-impact.spec.ts:67`, not related to
+this change: while the page streams, `#contributions` briefly exists twice and the strict lookup fails (2 of 10 on a rerun against this build). Left
+for Projected Impact (RD11). :3100 serves the new rule and token (checked in its CSS chunk).
+

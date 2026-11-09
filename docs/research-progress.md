@@ -872,3 +872,9 @@ Section headers in the Research menu and phone drawer are now bold white capital
 
 The owner cut the Research landing page (RD09 ✂️). `/research` redirects to Six-Factor RAPM and the menu's Overview group is gone. Menu section headers are now blue capitals. Lint and typecheck clean, Vitest 835, full Playwright 607 passed, 17 skipped, 0 failed. Next in the design queue: RD10 Metric Backtest.
 [`design-RD09`](evidence/research/design-RD09/README.md).
+
+## 2026-11-09 — Research menu headers in smoke white
+
+Section headers are now `--color-text-smoke` (#c8cdd4), approved by the owner. Vitest 835; full Playwright 606 passed, 17 skipped, 1 failed: an intermittent, unrelated Projected Impact test (duplicate `#contributions` while the page streams, 2 of 10 on a rerun), left for RD11.
+[`design-RD09`](evidence/research/design-RD09/README.md).
+

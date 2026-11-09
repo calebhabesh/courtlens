@@ -727,7 +727,9 @@ Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
      — Done: the page and the menu's Overview group are gone; `/research` redirects to Six-Factor RAPM; the Research links on Learning and Patch Notes are removed. Learning's Out-of-Time Testing and Prospective Scoring topics already cover how models are tested, so nothing was moved.
   4. [x] Also, make the menu headers a different colors or a different shade of grey. THey kind of blend in with the other subheaders.
      (Screenshot: the Research menu with white capitals.)
-     — Done: blue (`--color-category-2`) capitals in the menu and the phone drawer, apart from the white item names, grey descriptions and the gold current page.
+     — Done: blue (`--color-category-2`) capitals in the menu and the phone drawer, apart from the white item names, grey descriptions and the gold current page. Then smoke white, see 5.
+  5. [x] Can we try a smokier white or something. Not the grey caption text, or white subheader titles
+     — Done: `--color-text-smoke` (#c8cdd4) capitals, between the white item names and the grey descriptions. Owner: "Great, that works."
 
 ## RD10 Metric Backtest — ⬜
 

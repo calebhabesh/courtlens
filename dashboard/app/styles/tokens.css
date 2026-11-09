@@ -28,6 +28,7 @@
     --color-text-tertiary: #858b95;
     /* Inactive control labels (Stats toolbars): brighter than secondary text, below --color-text. */
     --color-text-control: #d5d9e0;
+    --color-text-smoke: #c8cdd4;
     /* Secondary/tertiary text that sits directly on the blue page background (6.5:1 and 5.5:1). */
     --color-on-bg-secondary: #c9d3e6;
     --color-on-bg-tertiary: #b4c2dc;
