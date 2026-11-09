@@ -59,7 +59,8 @@ for (const width of [1440, 390]) {
   const READY = 'table[data-table="pooled"] tbody tr';
   const checkGain = (what, cell, g, d) => {
     eq(`${what} value`, num(cell.value), g.gain); eq(`${what} low`, num(cell.low), g.low); eq(`${what} high`, num(cell.high), g.high);
-    eq(`${what} text`, cell.main, signed(g.gain, d)); eq(`${what} sub`, cell.sub, gainBand(g, d)); eq(`${what} tone`, cell.tone, tone(g)); eq(`${what} no identity`, cell.identity, null);
+    const points = v => signed(v * 100, 1);
+    eq(`${what} text`, cell.main, d === "pts" ? `${points(g.gain)} pts` : signed(g.gain, d)); eq(`${what} sub`, cell.sub, d === "pts" ? `${points(g.low)} to ${points(g.high)}` : gainBand(g, d)); eq(`${what} tone`, cell.tone, tone(g)); eq(`${what} no identity`, cell.identity, null);
   };
 
   // Default page: every section at once.
@@ -74,7 +75,8 @@ for (const width of [1440, 390]) {
   eq("answer gain", await page.locator('[data-field="best-line"] strong').nth(1).getAttribute("data-value"), String(bestGain.gain));
   eq("answer gain band", (await page.locator('[data-field="best-line"]').innerText()).includes(`(95% interval of the gain ${gainBand(bestGain)})`), true);
   eq("answer honest line", answer.includes("tests ratings, not game forecasts"), true);
-  for (const x of results.pairs.filter(q => q.verdict === "no_ranking")) eq(`answer unranked ${x.candidate}`, answer.includes(`${metrics[x.candidate].label} and ${metrics[x.reference].label}`), true);
+  eq("answer unranked", answer.includes("Projected Impact can't be separated from RAPM 3Y or Time decay (opener)."), true);
+  eq("answer unranked pairs served", results.pairs.filter(q => q.verdict === "no_ranking").map(q => [q.candidate, q.reference].sort().join()).sort().join(";"), [["projected_impact", "rapm_3y"], ["projected_impact", "time_decay_opener"]].map(a => a.sort().join()).sort().join(";"));
 
   // The 9×9: 72 ordered cells and nine blanks, in registered order.
   const matrix = await readTable(page, "head-to-head");
@@ -129,8 +131,11 @@ for (const width of [1440, 390]) {
       if (n === baseline) { eq(`${name} baseline`, c.gain?.main, "Baseline"); eq(`${name} replaced dash`, c.replaced.text, "—"); }
       else {
         eq(`${name} ${n} replaced`, num(c.replaced.value), s.replaced_minutes_share); eq(`${name} ${n} replaced text`, c.replaced.main, pct(s.replaced_minutes_share));
-        const g = group.pairs.find(x => x.candidate === n && x.reference === baseline)?.rmse;
-        if (g) checkGain(`${name} ${n} gain`, c.gain, g, 2); else eq(`${name} ${n} no gain`, c.gain?.text, "—");
+        // The scorer can serve a pair either way round; written independently of the page's lookup.
+        const direct = group.pairs.find(x => x.candidate === n && x.reference === baseline)?.rmse, other = group.pairs.find(x => x.candidate === baseline && x.reference === n)?.rmse;
+        const g = direct ?? (other ? flipG(other) : null);
+        eq(`${name} ${n} gain served`, group.pairs.length > 0 ? g !== null : true, true);
+        if (g) checkGain(`${name} ${n} gain`, c.gain, g, 2); else eq(`${name} ${n} no gain`, c.gain, undefined);
       }
     }
   };
@@ -139,7 +144,11 @@ for (const width of [1440, 390]) {
   if (sum.hindsight.games > 0) await checkGroup(sum.hindsight, "season-2026-27-hindsight");
 
   // Words: every metric's served note and DARKO.
-  const words = await page.locator("#reading").innerText();
+  const words = await page.locator("#glossary").textContent();
+  eq("definitions collapsed", await page.locator("#glossary details").getAttribute("open"), null);
+  eq("darko line visible", await page.locator('[data-field="darko-line"]').isVisible(), true);
+  eq("calibration captions hidden", await page.locator(".mb-calibration .chart-meta").isVisible(), false);
+  eq("calibration title hidden", await page.locator(".mb-calibration .chart-title").isVisible(), false);
   for (const n of all) { eq(`glossary ${n} label`, words.includes(metrics[n].label), true); eq(`glossary ${n} what`, words.includes(metrics[n].what), true); eq(`glossary ${n} credit`, words.includes(visitor(metrics[n].credit)), true); eq(`glossary ${n} source`, words.includes(visitor(metrics[n].source)), true); }
   for (const text of Object.values(data.omitted)) eq("glossary DARKO", words.includes(text), true);
 
@@ -162,7 +171,11 @@ for (const width of [1440, 390]) {
   eq("about replicates", about.includes(`${count(p.replicates)} replicates`), true);
   eq("about leakage", about.includes(`For ${count(Object.values(results.leakage).reduce((s, l) => s + l.game_ratings_checked, 0))} game ratings`), true);
   eq("about actual minutes", about.includes("Actual minutes, on purpose."), true);
+  eq("about source", about.includes("CourtLens backtest of NBA regular-season box scores"), true);
   if (shots) { await page.locator("#about").scrollIntoViewIfNeeded(); await page.waitForTimeout(200); await page.locator("#about").screenshot({ path: `${shots}/backtest-about-${tag}.png` }); }
+  await page.locator("#glossary summary").click();
+  if (shots) { await page.locator("#glossary").scrollIntoViewIfNeeded(); await page.waitForTimeout(200); await page.locator("#glossary").screenshot({ path: `${shots}/backtest-glossary-${tag}.png` }); }
+  await page.locator("#glossary summary").click();
 
   // Page-wide layout and rules.
   await page.evaluate(async () => { document.querySelectorAll("img").forEach(i => { i.loading = "eager"; }); await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))); });
@@ -202,7 +215,7 @@ for (const width of [1440, 390]) {
       const row = table.find(r => r.key === n);
       const games = season === "pooled" ? x.games : results.candidates[n].seasons[season].games;
       eq(`${id} ${n} games`, num(row.data.games), games); eq(`${id} ${n} lead`, row.lead, `${metrics[n].short}${range(x.seasons)} · ${count(games)} games`);
-      for (const s of SCORES) checkGain(`${id} ${n} ${s}`, row.cells[s], season === "pooled" ? x.pooled[s] : x.per[season][s], DIGITS[s]);
+      for (const s of SCORES) checkGain(`${id} ${n} ${s}`, row.cells[s], season === "pooled" ? x.pooled[s] : x.per[season][s], s === "accuracy" ? "pts" : DIGITS[s]);
       eq(`${id} ${n} lower`, num(row.cells.lower.value), x.lower); eq(`${id} ${n} lower text`, row.cells.lower.main, `${x.lower} of ${x.seasons.length}`);
       if (shared === null) { eq(`${id} ${n} verdict`, row.cells.verdict.value, x.verdict); eq(`${id} ${n} verdict text`, row.cells.verdict.text, VERDICT[x.verdict]); } else eq(`${id} ${n} no verdict column`, row.cells.verdict, undefined);
     }
