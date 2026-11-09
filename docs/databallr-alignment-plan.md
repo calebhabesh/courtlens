@@ -179,7 +179,7 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   and how big the edge is in units a reader can feel. A filter view where a column would be all dashes drops it and shows something that view has. A table of projections with overlapping intervals is sorted by the estimate
   but carries no rank. Interval bars share one scale fitted to the served values, labelled in the column header and lined up with the bars. In a table comparing models the gains come before the raw scores, so they are on
   screen on a phone. Games that aren't a test of the model are collapsed behind one visible line saying so, and are never coloured. On a phone a player row's tool stays on the name's line and names wrap whole, never mid-word;
-  two long lists that sit side by side on desktop become a switch. The same value takes the same colour everywhere on a card. A line chart with many points shows them on hover only.
+  two long lists that sit side by side on desktop become a switch. The same value takes the same colour everywhere on a card. A line chart with many points shows them on hover only. An early live sample that cuts against a finished test is drawn as served, with one line above it saying the sample is too few to overturn the test.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).

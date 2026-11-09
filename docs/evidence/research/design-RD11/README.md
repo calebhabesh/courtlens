@@ -126,3 +126,7 @@ One line above the prospective table: "These 25 games are too few to overturn th
 
 Screenshots viewed: `pi-season-2026-27-1440.png`, `pi-season-2026-27-390.png`.
 
+## Approved again (owner, 2026-11-09)
+
+"Okay. I approve this page." Row ✅. The early-sample rule is added to "Settled in RD11" in the alignment plan. The next automatic score is about Nov 17, 2026.
+

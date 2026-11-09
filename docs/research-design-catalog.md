@@ -64,7 +64,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
 | RD09 | Research landing [29] | `/research` | none | R12 | ✂️ cut by the owner (2026-11-09) |
 | RD10 | Metric Backtest [29] | `/research/backtest` | none (built from approved CourtLens Research patterns) | R08, RD10 | ✅ |
-| RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | 👀 |
+| RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | ✅ |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none | R14 | ⬜ |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none | R03 | ⬜ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
@@ -772,7 +772,7 @@ Instructions (owner, 2026-11-09, round 3):
 
 Evidence: [`design-RD10`](evidence/research/design-RD10/README.md).
 
-## RD11 Projected Impact — 👀
+## RD11 Projected Impact — ✅ approved by the owner (2026-11-09)
 
 - **Now:** frozen 2026-27 projections with intervals (roster / rookies / everyone), aging curve, the test
   against carry-forward and time decay, the weekly prospective score (first scheduled run 2026-11-12).
@@ -821,6 +821,10 @@ Instructions (owner, 2026-11-09, round 5; answering the recommendation to connec
 5. [x] Yes, go with your recommendation.
    - One line above the prospective table: the games so far are too few to overturn the test, and the section will settle as the season goes.
    — Done: the line sits above the table with served counts, and shows only while the sample is under one test season. Real data 108,631 values, 0 mismatches; full Playwright 616 passed, 17 skipped, 0 failed.
+
+Instructions (owner, 2026-11-09, round 6):
+6. [x] Okay. I approve this page.
+   — Approved after five build rounds. The first prospective score is on the page (25 games, verified on real data); the next automatic score is about Nov 17, 2026.
 
 Evidence: [`design-RD11`](evidence/research/design-RD11/README.md).
 
