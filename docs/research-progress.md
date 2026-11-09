@@ -932,3 +932,8 @@ The page now answers in one sentence: on 3 seasons it never saw, the lineup mode
 
 The lineup tool's search now sits in the card at its full width, keeps the photo and rating in place, opens its list only on typing, and leaves by the card's own tool, Escape or a click elsewhere. On RAPM Ratings the Leaders chart no longer clips the photos' rings flat. Vitest 843, `r14-lineup-model` ×3 36/36, full Playwright 621 passed, 17 skipped, 0 failed, real data 6,645 values, 0 mismatches; 470 portraits per width across both Six-Factor tabs with none cut. No API, analysis, frozen result or interval changed.
 [`design-RD12`](evidence/research/design-RD12/README.md). Awaits the owner.
+
+## 2026-11-09 — RD12 round 3: seven improvements
+
+The tool says how far apart the two models are for each five, and a swap keeps the last result dimmed instead of jumping. The test's intro is two blocks, the backtest captions are shorter, phone cards are smaller (196 px off the page at 390), and one line says neither model reads positions. The RAPM Ratings Leaders label no longer carries IM04. Vitest 843, `r14-lineup-model` ×3 39/39, full Playwright 622 passed, 17 skipped, 0 failed, real data 6,730 values, 0 mismatches. No API, analysis, frozen result or interval changed.
+[`design-RD12`](evidence/research/design-RD12/README.md). Awaits the owner.

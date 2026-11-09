@@ -77,6 +77,31 @@ test.describe("R14 Lineup Model", () => {
     await expect(table.locator('tr[data-row="lineup_model"] [data-field="net"]')).toHaveAttribute("data-value", String(fit.lineup_model.net));
   });
 
+  test("swapping a player keeps the last prediction dimmed instead of jumping, and says how close the models are", async ({ page }) => {
+    await openWorkbench(page, path);
+    const table = page.getByRole("table", { name: "Predicted net rating" });
+    await expect(table.locator('tr[data-row="lineup_model"] [data-field="net"]')).toHaveAttribute("data-value", String(fit.lineup_model.net));
+    const gap = page.locator('[data-field="model-gap"]');
+    await expect(gap).toHaveAttribute("data-value", String(Math.abs(fit.lineup_model.net - fit.ridge.net)));
+    await expect(page.locator('[data-field="positions"]')).toContainText("position");
+    let release = () => {};
+    const held = new Promise<void>(resolve => { release = resolve; });
+    await page.route("**/api/lineup-model/fit*", async route => { await held; await route.continue(); });
+    const changed: string[] = alt.players.map((p: { player_id: string }) => p.player_id);
+    const index = changed.findIndex((id, i) => id !== fit.players[i].player_id);
+    const incoming = alt.players[index], name = fit.players[index].name;
+    await page.getByRole("button", { name: `Replace ${name}` }).click();
+    await page.getByRole("combobox", { name: `Replace ${name}` }).fill(incoming.name);
+    await page.getByRole("option", { name: new RegExp(incoming.name) }).first().click();
+    const result = page.locator("[data-result]");
+    await expect(result).toHaveAttribute("data-stale", "true");
+    await expect(table.locator('tr[data-row="lineup_model"] [data-field="net"]')).toHaveAttribute("data-value", String(fit.lineup_model.net));
+    await expect(page.getByText("Predicting this five")).toHaveCount(0);
+    release();
+    await expect(result).not.toHaveAttribute("data-stale", "true");
+    await expect(table.locator('tr[data-row="lineup_model"] [data-field="net"]')).toHaveAttribute("data-value", String(alt.lineup_model.net));
+  });
+
   test("the search sits inside the card, keeps the card whole and can be left three ways", async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.locator("[data-slot]")).toHaveCount(5);

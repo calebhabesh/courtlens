@@ -75,6 +75,8 @@
   .lm-slot-rating small, .lm-slot-rating span { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); white-space: nowrap; }
   /* The search takes the place of the name block, the full width of the card, so nothing else on the card moves. */
   .lm-slot-search { display: grid; align-items: center; width: 100%; min-width: 0; min-height: 58px; }
+  .lm-fit-result { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; transition: opacity var(--dur-fast) var(--ease-out); }
+  .lm-fit-result[data-stale] { opacity: .5; }
   .lm-fit.rs-grid { --rs-grid-min: 320px; }
   .lm-fit col:not(.rs-col-lead) { width: auto; }
 
@@ -104,13 +106,15 @@
     .lm-strip-row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-1) var(--space-3); }
     .lm-strip-row .lm-range { grid-column: 1 / -1; grid-row: 2; }
     .lm-five { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
-    .lm-slot { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; justify-items: start; padding: var(--space-3); text-align: left; }
-    .lm-slot-tool { position: static; grid-column: 3; grid-row: 1; }
-    .lm-slot-copy { justify-items: start; }
-    .lm-slot-rating { grid-column: 3; grid-row: 2; justify-items: end; }
-    .lm-slot-copy { grid-column: 2; grid-row: 1 / span 2; }
+    /* A phone card is two lines beside the photo: the name, team and status with the tool on the name's line, then the rating as one line. */
+    .lm-slot { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; justify-items: start; gap: var(--space-1) var(--space-3); padding: var(--space-3); text-align: left; }
     .lm-slot > .ui-identity { grid-column: 1; grid-row: 1 / span 2; }
-    .lm-slot-search { grid-column: 2; grid-row: 1 / span 2; min-height: 0; }
+    .lm-slot-tool { position: static; grid-column: 3; grid-row: 1; }
+    .lm-slot-copy { grid-column: 2; grid-row: 1; grid-template-columns: auto auto; justify-content: start; justify-items: start; column-gap: var(--space-2); }
+    .lm-slot-copy .lm-slot-name { grid-column: 1 / -1; }
+    .lm-slot-rating { grid-column: 2 / -1; grid-row: 2; display: flex; flex-wrap: wrap; align-items: baseline; justify-items: start; column-gap: var(--space-2); }
+    .lm-slot-rating strong { font-size: var(--text-md); line-height: var(--text-md-lh); }
+    .lm-slot-search { grid-column: 2; grid-row: 1; min-height: 0; }
     .lm-fit.rs-grid[data-lead] { --rs-grid-lead: 136px; }
     .lm-test.rs-grid[data-lead] { --rs-grid-lead: 120px; }
     .lm-auto.rs-grid[data-lead] { --rs-grid-lead: 128px; }
@@ -120,5 +124,12 @@
     .lm-dot[data-on] { r: 8; }
     .lm-defs { grid-template-columns: minmax(0, 1fr); }
     .lm-defs dd { margin-bottom: var(--space-2); }
+  }
+}
+
+/* Identity sizes live in the foundation layer, so the phone card's smaller photo does too. */
+@layer foundation {
+  @media (max-width: 767px) {
+    .lm-slot .ui-identity-lg { --identity-media: 56px; }
   }
 }
