@@ -1,338 +1,404 @@
 "use client";
 
-import { ChartData, ChartFrame } from "./charts/chart-frame";
-import { chartVars, toneColor } from "./charts/semantics";
+import { ReliabilityPlot } from "./charts";
+import { SeasonLineChart } from "./research/season-line-chart";
+import {
+  Glossary, MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchIntro, ResearchLinks, ResearchSection, type GlossaryGroup,
+} from "./research/research-page";
+import { GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { Field } from "./ui/field";
-import { GatedNote } from "./ui/gated-note";
-import { Chip, Select } from "./ui/kit";
-import { PageShell, ResearchLayout } from "./ui/page-shell";
-import { PageHeader, Section } from "./ui/panel";
-import { StatTile } from "./ui/stat-tile";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import { Select } from "./ui/kit";
+import { PageShell } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
 import {
-  bandText, fixed, gainText, gainTone, getMetricBacktest, pairOf, percent, SCORE_DIGITS, SCORE_LABELS, SCORES, seasonRange, signed,
-  VERDICT_TEXT, verdictSentences, type MetricBacktestPage, type Pair, type ProspectiveGroup, type Score
+  bandText, fixed, gainBand, getMetricBacktest, gridTone, pairOf, percent, SCORE_DIGITS, SCORE_LABELS, SCORES, seasonRange, signed,
+  verdictSentences, VERDICT_TEXT, type CurveBin, type Gain, type MetricBacktestPage, type Pair, type ProspectiveGroup, type Score,
 } from "@/lib/metric-backtest";
+import { formatDate } from "@/lib/format-date";
+import { evidenceUrl } from "@/lib/research-facts";
 
 /**
- * Research → Impact → Metric Backtest (R08). A plain build-phase page: verdict, one chart of
- * error by metric by season, pooled scores, paired differences, the 2026-27 score, what each metric
- * is and the caveats. Every number is the frozen courtlens-metric-backtest-v1 results' or the
- * 2026-27 scorer's; exact values sit on `data-value`.
+ * Research → Impact → Metric Backtest (R08, designed in RD10). Every number is the frozen courtlens-metric-backtest-v1 results' or the
+ * 2026-27 scorer's; exact values sit on `data-*`. Rows stay in registered order: a pooled row covers its own seasons, so the page never
+ * ranks metrics itself and compares them only through the served pairs.
  */
 
-// Shown first: the registered baseline, the common one-season RAPM, monthly time decay and
-// CourtLens's own Projected Impact. The reader can add or remove any metric.
-const DEFAULT_SHOWN = ["team_net", "rapm_1y", "time_decay", "projected_impact"];
-const COLORS: Record<string, string> = {
-  team_net: "var(--color-text-secondary)",
-  plus_minus: toneColor("category-5"),
-  on_off: toneColor("category-6"),
-  rapm_1y: toneColor("category-1"),
-  rapm_3y: toneColor("category-2"),
-  box_prior_rapm: toneColor("category-3"),
-  time_decay: toneColor("identity-a"),
-  time_decay_opener: toneColor("category-4"),
-  projected_impact: toneColor("identity-b"),
-};
 const short = (season: string) => season.slice(2);
+/** The served notes name a project code in two places; visitors read the page's name instead (RD07: no repository detail). The API is unchanged. */
+const visitorText = (text: string) => text.replace("R07's frozen model", "the frozen Projected Impact model").replace(" (R07)", "");
+const count = (n: number) => n.toLocaleString("en-US");
+/** The two calibration series are labels, not a sign: category tints, never gold and blue. */
+const CALIBRATION_TONES = ["category-3", "category-4"] as const;
 
-function Swatch({ name }: { name: string }) {
-  return <span className="chart-key" style={chartVars({ "--chart-tone": COLORS[name] })} aria-hidden="true" />;
+const candidatesOf = (page: MetricBacktestPage) => page.results.registration.parameters.candidates;
+const baselineOf = (page: MetricBacktestPage) => page.results.registration.parameters.baseline;
+const defaultMetric = (page: MetricBacktestPage) => page.results.verdict.best[0] ?? candidatesOf(page)[1];
+
+function Metric({ page, name, sub }: { page: MetricBacktestPage; name: string; sub?: string }) {
+  return <><span className="mb-metric">{page.metrics[name].short}</span>{sub && <span className="mb-metric-sub">{sub}</span>}</>;
 }
 
-// ---- Chart -------------------------------------------------------------------------------------
+function MetricOptions({ page, except }: { page: MetricBacktestPage; except?: string }) {
+  return <>{candidatesOf(page).filter(n => n !== except).map(n => <option key={n} value={n}>{page.metrics[n].short}</option>)}</>;
+}
 
-function ErrorChart({ page, shown }: { page: MetricBacktestPage; shown: string[] }) {
+function GainValue({ gain, digits, title }: { gain: Gain; digits: number; title?: string }) {
+  return <GridValue text={signed(gain.gain, digits)} sub={gainBand(gain, digits)} tone={gridTone(gain)} title={title} />;
+}
+
+const gainData = (gain: Gain | undefined, field: string) => ({ field, value: gain?.gain ?? "", low: gain?.low ?? "", high: gain?.high ?? "" });
+
+// ---- The answer --------------------------------------------------------------------------------
+
+function Answer({ page }: { page: MetricBacktestPage }) {
   const { results, metrics } = page;
-  const seasons = results.registration.parameters.test_seasons;
-  const series = results.registration.parameters.candidates.filter(n => shown.includes(n));
-  const bands = series.flatMap(n => Object.values(results.candidates[n].seasons).map(s => s.intervals.rmse));
-  const low = Math.floor((Math.min(...bands.map(b => b.low)) - 0.1) * 2) / 2;
-  const high = Math.ceil((Math.max(...bands.map(b => b.high)) + 0.1) * 2) / 2;
-  const left = 52, right = 628, top = 16, bottom = 280;
-  const slot = (right - left) / seasons.length;
-  const x = (i: number, k: number) => left + slot * (i + 0.5) + (k - (series.length - 1) / 2) * Math.min(7, slot / (series.length + 1));
-  const y = (v: number) => bottom - ((v - low) / (high - low)) * (bottom - top);
-  const ticks = Array.from({ length: Math.round((high - low) / 0.5) + 1 }, (_, i) => low + i * 0.5);
-  return <svg className="chart-graphic chart-reliability" viewBox="0 0 640 308" role="img"
-    aria-label={`Margin RMSE by season for ${series.map(n => metrics[n].short).join(", ")}, with 95% intervals. Lower is better.`}>
-    {ticks.map(t => <g key={t}>
-      <line x1={left} x2={right} y1={y(t)} y2={y(t)} stroke="var(--color-hairline-strong)" />
-      <text x={left - 8} y={y(t)} dy="0.35em" textAnchor="end">{t.toFixed(1)}</text>
-    </g>)}
-    {seasons.map((s, i) => <text key={s} x={left + slot * (i + 0.5)} y={bottom + 20} textAnchor="middle">{short(s)}</text>)}
-    {series.map((name, k) => {
-      const rows = seasons.map((s, i) => ({ s, i, row: results.candidates[name].seasons[s] })).filter(p => p.row);
-      return <g key={name} data-series={name} stroke={COLORS[name]} fill={COLORS[name]}>
-        <polyline fill="none" strokeWidth="1.5" points={rows.map(p => `${x(p.i, k)},${y(p.row.rmse)}`).join(" ")} />
-        {rows.map(p => <g key={p.s}>
-          <line x1={x(p.i, k)} x2={x(p.i, k)} y1={y(p.row.intervals.rmse.low)} y2={y(p.row.intervals.rmse.high)} strokeWidth="1.5" />
-          <circle cx={x(p.i, k)} cy={y(p.row.rmse)} r="3.5" data-candidate={name} data-season={p.s} data-value={p.row.rmse}
-            data-low={p.row.intervals.rmse.low} data-high={p.row.intervals.rmse.high}>
-            <title>{`${metrics[name].label}, ${p.s}: RMSE ${fixed(p.row.rmse)} points (95% ${bandText(p.row.intervals.rmse)}), ${p.row.games} games`}</title>
-          </circle>
-        </g>)}
-      </g>;
-    })}
-  </svg>;
-}
-
-function ChartSection({ page }: { page: MetricBacktestPage }) {
-  const { get, set } = useUrlState();
-  const all = page.results.registration.parameters.candidates;
-  const raw = get("show");
-  const shown = raw ? raw.split(",").filter(n => all.includes(n)) : DEFAULT_SHOWN;
-  const toggle = (name: string) => {
-    const next = shown.includes(name) ? shown.filter(n => n !== name) : [...shown, name];
-    const same = next.length === DEFAULT_SHOWN.length && DEFAULT_SHOWN.every(n => next.includes(n));
-    set({ show: same ? null : next.join(",") || "none" });
-  };
-  const seasons = page.results.registration.parameters.test_seasons;
-  return <Section title="Margin error by metric and season"
-    description="Root mean squared error of the predicted home margin, in points, with 95% game-bootstrap intervals. Lower is better. Each metric is scored only in seasons where it existed before the games and has an earlier season to set its scale.">
-    <div role="group" aria-label="Metrics shown" className="chart-legend-inline">
-      {all.map(name => <Chip key={name} size="sm" pressed={shown.includes(name)} onClick={() => toggle(name)}>
-        <Swatch name={name} />{page.metrics[name].short}
-      </Chip>)}
+  const baseline = baselineOf(page);
+  const best = results.verdict.best.length === 1 ? results.verdict.best[0] : null;
+  const gain = best ? pairOf(results.pairs, best, baseline)?.pooled.rmse : undefined;
+  const [headline, ...rest] = verdictSentences(page);
+  return <ResearchSection id="answer" icon="trophy" title="Which metric predicts games best?">
+    <div className="mb-answer" data-field="verdict-summary">
+      <p className="mb-headline">{headline}</p>
+      {best && gain && <p className="mb-lead" data-field="best-line">Its margin RMSE was <strong data-value={results.candidates[best].pooled.rmse}>{fixed(results.candidates[best].pooled.rmse)}</strong> points,{" "}
+        <strong data-value={gain.gain}>{fixed(gain.gain)}</strong> lower than {metrics[baseline].short} on the same games (95% interval of the gain {gainBand(gain)}).</p>}
+      {rest.map(text => <p key={text} className="mb-lead">{text}</p>)}
+      <p className="mb-lead">This tests ratings, not game forecasts: each prediction uses a rating from before the game, weighted by the minutes players really went on to play.</p>
     </div>
-    <ChartFrame title="Margin RMSE, points" source="Frozen courtlens-metric-backtest-v1 results; retained box scores"
-      sample={`Regular-season games ${seasonRange(seasons)}; every metric on the same games within a season`}
-      state={shown.length ? "ready" : "empty"} action={<span>Choose a metric above.</span>}>
-      <ChartData fingerprint={shown.join(",")}><ErrorChart page={page} shown={shown} /></ChartData>
-    </ChartFrame>
-    <Table aria-label="Margin RMSE by season" density="compact" data-table="by-season">
-      <TableHeader><TableRow hoverable={false}>
-        <TableHead>Metric</TableHead>
-        {seasons.map(s => <TableHead key={s} align="right">{short(s)}</TableHead>)}
-      </TableRow></TableHeader>
-      <TableBody>{all.map(name => <TableRow key={name} data-row={name}>
-        <TableCell><Swatch name={name} /> {page.metrics[name].short}</TableCell>
-        {seasons.map(s => {
-          const row = page.results.candidates[name].seasons[s];
-          return row
-            ? <TableCell key={s} numeric data-season={s} data-value={row.rmse} data-low={row.intervals.rmse.low} data-high={row.intervals.rmse.high}
-              title={`95% ${bandText(row.intervals.rmse)}`}>{fixed(row.rmse)}<br /><small>{bandText(row.intervals.rmse, 1)}</small></TableCell>
-            : <TableCell key={s} numeric data-season={s} data-value="">—</TableCell>;
-        })}
-      </TableRow>)}</TableBody>
-    </Table>
-  </Section>;
+  </ResearchSection>;
 }
 
-// ---- Tables ------------------------------------------------------------------------------------
+// ---- Head to head ------------------------------------------------------------------------------
 
-function PooledTable({ page }: { page: MetricBacktestPage }) {
+function HeadToHead({ page }: { page: MetricBacktestPage }) {
   const { results, metrics } = page;
-  return <Table aria-label="Pooled scores" density="compact" data-table="pooled">
-    <TableHeader><TableRow hoverable={false}>
-      <TableHead>Metric</TableHead><TableHead>Seasons</TableHead><TableHead align="right">Games</TableHead>
-      <TableHead align="right">Margin RMSE, 95%</TableHead><TableHead align="right">Winner picked</TableHead>
-      <TableHead align="right">Brier</TableHead><TableHead align="right">Log loss</TableHead>
-      <TableHead align="right">Calibration error</TableHead><TableHead align="right">Minutes replaced</TableHead>
-    </TableRow></TableHeader>
-    <TableBody>{results.registration.parameters.candidates.map(name => {
-      const c = results.candidates[name];
-      const p = c.pooled;
-      const seasons = Object.values(c.seasons);
-      const replaced = seasons.reduce((sum, s) => sum + s.replaced_minutes_share * s.games, 0) / Math.max(1, p.games);
-      return <TableRow key={name} data-row={name}>
-        <TableCell><Swatch name={name} /> {metrics[name].short}</TableCell>
-        <TableCell>{seasonRange(c.test_seasons)} ({c.test_seasons.length})</TableCell>
-        <TableCell numeric data-field="games" data-value={p.games}>{p.games.toLocaleString("en-US")}</TableCell>
-        <TableCell numeric data-field="rmse" data-value={p.rmse} data-low={p.intervals.rmse.low} data-high={p.intervals.rmse.high}>{fixed(p.rmse)}<br /><small>{bandText(p.intervals.rmse)}</small></TableCell>
-        <TableCell numeric data-field="accuracy" data-value={p.accuracy}>{percent(p.accuracy)}</TableCell>
-        <TableCell numeric data-field="brier" data-value={p.brier}>{fixed(p.brier, 4)}</TableCell>
-        <TableCell numeric data-field="log_loss" data-value={p.log_loss}>{fixed(p.log_loss, 4)}</TableCell>
-        <TableCell numeric data-field="ece" data-value={c.calibration_curve.ece}>{fixed(c.calibration_curve.ece, 4)}</TableCell>
-        <TableCell numeric data-field="replaced" data-value={replaced}>{percent(replaced)}</TableCell>
-      </TableRow>;
-    })}</TableBody>
-  </Table>;
+  const all = candidatesOf(page);
+  const columns: GridColumn<string>[] = all.map(other => ({
+    key: other, label: metrics[other].short, title: `Against ${metrics[other].label}`,
+    data: name => name === other ? { field: "gain", self: "true" } : gainData(pairOf(results.pairs, name, other)?.pooled.rmse, "gain"),
+    cell: name => {
+      if (name === other) return <span role="img" aria-label="Same metric" />;
+      const pair = pairOf(results.pairs, name, other);
+      if (!pair) return <GridValue text={null} />;
+      return <GainValue gain={pair.pooled.rmse} digits={2}
+        title={`${metrics[name].short} against ${metrics[other].short}: lower error in ${pair.seasons_candidate_lower_rmse} of ${pair.seasons.length} shared seasons, ${count(pair.games)} games. ${VERDICT_TEXT[pair.verdict]}.`} />;
+    },
+  }));
+  return <ResearchSection id="head-to-head" icon="scale" title="Head to head: RMSE gain, points">
+    <p className="mb-lead">Read across a row. Each cell is how many points less error the row&apos;s metric had than the column&apos;s, over the games of the seasons both were scored. A metric is called
+      better only if its whole 95% interval is above zero and it had the lower error in more than half of those seasons.</p>
+    <ul className="rs-legend" aria-label="Colour key">
+      <li><span className="rs-swatch" data-tone="good" aria-hidden="true" />Row metric ahead: 95% interval above zero</li>
+      <li><span className="rs-swatch" data-tone="bad" aria-hidden="true" />Row metric behind: 95% interval below zero</li>
+      <li><span className="rs-swatch" aria-hidden="true" />Interval includes zero: no ranking</li>
+    </ul>
+    <StatsGrid<string> label="Head-to-head RMSE gains" name="head-to-head" density="compact" height="auto" className="mb-matrix" rows={all} rowKey={n => n}
+      lead={{ label: "Metric", cell: n => <Metric page={page} name={n} /> }} columns={columns} />
+  </ResearchSection>;
 }
 
-function GainCell({ pair, score, season }: { pair: Pair; score: Score; season: string }) {
-  const g = season === "pooled" ? pair.pooled[score] : pair.per_season[season]?.[score];
-  if (!g) return <TableCell numeric data-field={score} data-value="">—</TableCell>;
-  const digits = score === "accuracy" ? 3 : SCORE_DIGITS[score];
-  return <TableCell numeric tone={gainTone(g)} data-field={score} data-value={g.gain} data-low={g.low} data-high={g.high}>
-    {signed(g.gain, digits)}<br /><small>{signed(g.low, digits)} to {signed(g.high, digits)}</small>
-  </TableCell>;
-}
+// ---- Every score, against one metric -----------------------------------------------------------
 
 function PairsSection({ page }: { page: MetricBacktestPage }) {
   const { get, set } = useUrlState();
   const { results, metrics } = page;
-  const all = results.registration.parameters.candidates;
-  const baseline = results.registration.parameters.baseline;
+  const all = candidatesOf(page);
+  const baseline = baselineOf(page);
   const reference = all.includes(get("against") ?? "") ? get("against")! : baseline;
-  const season = get("pairSeason") ?? "pooled";
+  const seasons = results.registration.parameters.test_seasons;
+  const season = seasons.includes(get("pairSeason") ?? "") ? get("pairSeason")! : "pooled";
   const rows = all.filter(n => n !== reference).map(n => pairOf(results.pairs, n, reference)).filter((p): p is Pair => p !== null)
     .filter(p => season === "pooled" || p.seasons.includes(season));
-  return <Section title="Paired differences"
-    description="Each metric against the one chosen, on the games of the seasons both were scored. Gain is the chosen metric's error minus this metric's (positive means this metric did better; for winner picked, this metric's share minus the other's). Green or red only when the whole 95% interval is on one side of zero. The verdict uses margin RMSE alone and needs the pooled interval to exclude zero and the lower error in more than half of the shared seasons."
-    actions={<>
-      <Field label="Against" layout="inline"><Select aria-label="Compare against" value={reference}
-        onChange={event => set({ against: event.target.value === baseline ? null : event.target.value })}>
-        {all.map(n => <option key={n} value={n}>{metrics[n].short}</option>)}
-      </Select></Field>
-      <Field label="Seasons" layout="inline"><Select aria-label="Seasons compared" value={season}
+  const gameCount = (p: Pair) => season === "pooled" ? p.games : results.candidates[p.candidate].seasons[season]?.games ?? 0;
+  const gainOf = (p: Pair, score: Score) => season === "pooled" ? p.pooled[score] : p.per_season[season]?.[score];
+  // One answer on every row is said once, in a sentence (RD08); the column returns when the rows differ.
+  const shared = new Set(rows.map(p => p.verdict)).size === 1 ? rows[0].verdict : null;
+  const name = metrics[reference].short;
+  const columns: GridColumn<Pair>[] = [
+    ...SCORES.map((score): GridColumn<Pair> => ({
+      key: score, label: `${SCORE_LABELS[score]} gain`, width: "md", data: p => gainData(gainOf(p, score), score),
+      cell: p => { const g = gainOf(p, score); return g ? <GainValue gain={g} digits={SCORE_DIGITS[score]} /> : <GridValue text={null} />; },
+    })),
+    { key: "lower", label: "Lower RMSE in", title: "Shared seasons in which this metric had the lower RMSE", width: "sm", data: p => ({ field: "lower", value: p.seasons_candidate_lower_rmse }),
+      cell: p => <GridValue text={`${p.seasons_candidate_lower_rmse} of ${p.seasons.length}`} /> },
+    ...(shared ? [] : [{ key: "verdict", label: "Verdict, pooled", width: "sm" as const, data: (p: Pair) => ({ field: "verdict", value: p.verdict }),
+      cell: (p: Pair) => <span className="mb-text">{VERDICT_TEXT[p.verdict]}</span> }]),
+  ];
+  return <ResearchSection id="scores-against" icon="target" title="Every score, against one metric">
+    <p className="mb-lead">Each row is that metric&apos;s gain over the one chosen. Positive means the row&apos;s metric did better; winner picked is its share of games minus the other&apos;s.</p>
+    <div className="mb-controls">
+      <Field label="Against" layout="inline"><Select size="md" aria-label="Compare against" value={reference}
+        onChange={event => set({ against: event.target.value === baseline ? null : event.target.value })}><MetricOptions page={page} /></Select></Field>
+      <Field label="Seasons" layout="inline"><Select size="md" aria-label="Seasons compared" value={season}
         onChange={event => set({ pairSeason: event.target.value === "pooled" ? null : event.target.value })}>
         <option value="pooled">Pooled</option>
-        {results.registration.parameters.test_seasons.map(s => <option key={s} value={s}>{s}</option>)}
+        {seasons.map(s => <option key={s} value={s}>{s}</option>)}
       </Select></Field>
-    </>}>
-    <Table aria-label={`Paired differences against ${metrics[reference].short}`} density="compact" data-table="pairs" data-reference={reference} data-season={season}>
-      <TableHeader><TableRow hoverable={false}>
-        <TableHead>Metric</TableHead><TableHead>Shared seasons</TableHead><TableHead align="right">Games</TableHead>
-        {SCORES.map(s => <TableHead key={s} align="right">{SCORE_LABELS[s]} gain</TableHead>)}
-        <TableHead align="right">Lower RMSE in</TableHead><TableHead>Verdict, pooled</TableHead>
-      </TableRow></TableHeader>
-      <TableBody>{rows.map(p => <TableRow key={p.candidate} data-row={p.candidate}>
-        <TableCell><Swatch name={p.candidate} /> {metrics[p.candidate].short}</TableCell>
-        <TableCell>{seasonRange(p.seasons)}</TableCell>
-        <TableCell numeric data-field="games" data-value={season === "pooled" ? p.games : results.candidates[p.candidate].seasons[season]?.games}>
-          {(season === "pooled" ? p.games : results.candidates[p.candidate].seasons[season]?.games ?? 0).toLocaleString("en-US")}</TableCell>
-        {SCORES.map(s => <GainCell key={s} pair={p} score={s} season={season} />)}
-        <TableCell numeric data-field="lower" data-value={p.seasons_candidate_lower_rmse}>{p.seasons_candidate_lower_rmse} of {p.seasons.length}</TableCell>
-        <TableCell data-field="verdict" data-value={p.verdict}>{VERDICT_TEXT[p.verdict]}</TableCell>
-      </TableRow>)}</TableBody>
-    </Table>
-    {rows.length === 0 && <GatedNote>No metric shares {season} with {metrics[reference].short}.</GatedNote>}
-  </Section>;
+    </div>
+    {shared && <p className="mb-note" data-field="pairs-verdict" data-value={shared}>Pooled verdict: {shared === "candidate_better"
+      ? `every metric here is ranked better than ${name}.` : shared === "reference_better" ? `every metric here is ranked worse than ${name}.` : `none of these can be ranked against ${name}.`}</p>}
+    <div data-field="pairs" data-reference={reference} data-season={season}>
+      <StatsGrid<Pair> label={`Paired differences against ${name}`} name="pairs" density="compact" height="auto" leadWidth="md" className="mb-pairs" rows={rows} rowKey={p => p.candidate}
+        rowData={p => ({ games: gameCount(p), seasons: p.seasons.length })} empty={`No metric shares ${season} with ${name}.`}
+        lead={{ label: "Metric", cell: p => <Metric page={page} name={p.candidate} sub={`${seasonRange(p.seasons)} · ${count(gameCount(p))} games`} /> }} columns={columns} />
+    </div>
+  </ResearchSection>;
+}
+
+// ---- Season by season --------------------------------------------------------------------------
+
+function SeasonSection({ page }: { page: MetricBacktestPage }) {
+  const { get, set } = useUrlState();
+  const { results, metrics } = page;
+  const all = candidatesOf(page);
+  const baseline = baselineOf(page);
+  const seasons = results.registration.parameters.test_seasons;
+  const fallback = defaultMetric(page);
+  const metric = all.includes(get("metric") ?? "") ? get("metric")! : fallback;
+  const standard = metric === baseline ? all.find(n => n !== baseline)! : baseline;
+  const vs = get("vs") ?? "";
+  const reference = all.includes(vs) && vs !== metric ? vs : standard;
+  const pair = pairOf(results.pairs, metric, reference);
+  const points = seasons.map(s => {
+    const g = pair?.per_season[s]?.rmse;
+    return { season: short(s), value: g?.gain ?? null, low: g?.low ?? null, high: g?.high ?? null, label: `${s} · ${count(results.candidates[metric].seasons[s]?.games ?? 0)} games` };
+  });
+  const title = `${metrics[metric].short} against ${metrics[reference].short}: RMSE gain by season, points`;
+  const only = pair?.seasons.length === 1 ? pair.seasons[0] : null;
+  const onlyGain = only ? pair?.per_season[only].rmse : undefined;
+  const columns: GridColumn<string>[] = seasons.map(s => ({
+    key: s, label: short(s), title: s,
+    data: name => { const row = results.candidates[name].seasons[s]; return { field: "rmse", season: s, value: row?.rmse ?? "", low: row?.intervals.rmse.low ?? "", high: row?.intervals.rmse.high ?? "" }; },
+    cell: name => { const row = results.candidates[name].seasons[s]; return row ? <GridValue text={fixed(row.rmse)} sub={bandText(row.intervals.rmse, 1)} /> : <GridValue text={null} />; },
+  }));
+  return <ResearchSection id="seasons" icon="chart-line" title="Season by season">
+    <p className="mb-lead">The gap between two metrics, one season at a time, on the same games. Above zero, the first metric had the lower error.</p>
+    <div className="mb-controls">
+      <Field label="Metric" layout="inline"><Select size="md" aria-label="Metric charted" value={metric}
+        onChange={event => set({ metric: event.target.value === fallback ? null : event.target.value })}><MetricOptions page={page} /></Select></Field>
+      <Field label="Against" layout="inline"><Select size="md" aria-label="Metric charted against" value={reference}
+        onChange={event => set({ vs: event.target.value === baseline ? null : event.target.value })}><MetricOptions page={page} except={metric} /></Select></Field>
+    </div>
+    <figure className="mb-figure" data-chart="gain-by-season" data-metric={metric} data-reference={reference}>
+      <figcaption className="mb-figure-title">{title} · 95% interval shaded</figcaption>
+      {only
+        ? <p className="mb-lead" data-field="single-season">These two share one season, {only}: {signed(onlyGain?.gain)} (95% {gainBand(onlyGain)}).</p>
+        : <SeasonLineChart key={`${metric}-${reference}`} label={title} band="95%" zero points={points} format={v => signed(v)} axisFormat={v => signed(v, 1)} />}
+    </figure>
+    <h3 className="mb-subhead">Margin RMSE by season, points</h3>
+    <p className="mb-note">Each cell is one metric&apos;s own error that season, with its 95% interval. A dash means the metric wasn&apos;t scored that season.</p>
+    <StatsGrid<string> label="Margin RMSE by season" name="by-season" density="compact" height="auto" className="mb-seasons" rows={all} rowKey={n => n}
+      lead={{ label: "Metric", cell: n => <Metric page={page} name={n} /> }} columns={columns} />
+  </ResearchSection>;
+}
+
+// ---- Scores and calibration --------------------------------------------------------------------
+
+function ScoresGrid({ page }: { page: MetricBacktestPage }) {
+  const { results } = page;
+  const baseline = baselineOf(page);
+  const candidate = (name: string) => results.candidates[name];
+  const replaced = (name: string) => Object.values(candidate(name).seasons).reduce((sum, s) => sum + s.replaced_minutes_share * s.games, 0) / Math.max(1, candidate(name).pooled.games);
+  return <StatsGrid<string> label="Pooled scores" name="pooled" density="compact" height="auto" leadWidth="md" className="mb-scores" rows={candidatesOf(page)} rowKey={n => n}
+    rowData={n => ({ games: candidate(n).pooled.games, seasons: candidate(n).test_seasons.length })}
+    lead={{ label: "Metric", cell: n => <Metric page={page} name={n} sub={`${seasonRange(candidate(n).test_seasons)} · ${count(candidate(n).pooled.games)} games`} /> }}
+    columns={[
+      { key: "rmse", label: "Margin RMSE", width: "md", data: n => ({ field: "rmse", value: candidate(n).pooled.rmse, low: candidate(n).pooled.intervals.rmse.low, high: candidate(n).pooled.intervals.rmse.high }),
+        cell: n => <GridValue text={fixed(candidate(n).pooled.rmse)} sub={bandText(candidate(n).pooled.intervals.rmse)} /> },
+      { key: "accuracy", label: "Winner picked", width: "sm", data: n => ({ field: "accuracy", value: candidate(n).pooled.accuracy }), cell: n => <GridValue text={percent(candidate(n).pooled.accuracy)} /> },
+      { key: "brier", label: "Brier", width: "sm", data: n => ({ field: "brier", value: candidate(n).pooled.brier }), cell: n => <GridValue text={fixed(candidate(n).pooled.brier, 4)} /> },
+      { key: "log_loss", label: "Log loss", width: "sm", data: n => ({ field: "log_loss", value: candidate(n).pooled.log_loss }), cell: n => <GridValue text={fixed(candidate(n).pooled.log_loss, 4)} /> },
+      { key: "ece", label: "Calibration error", width: "sm", data: n => ({ field: "ece", value: candidate(n).calibration_curve.ece }), cell: n => <GridValue text={fixed(candidate(n).calibration_curve.ece, 4)} /> },
+      { key: "replaced", label: "Minutes replaced", width: "sm", data: n => ({ field: "replaced", value: n === baseline ? "" : replaced(n) }), cell: n => <GridValue text={n === baseline ? null : percent(replaced(n))} /> },
+    ]} />;
+}
+
+const toBins = (bins: readonly CurveBin[]) => bins.map(b => ({ lower: b.low, upper: b.high, rows: b.games, mean_probability: b.predicted ?? null, observed_rate: b.observed ?? null }));
+const binPercent = (value: number | undefined) => value === undefined ? null : percent(value);
+
+interface BinRow { index: number; low: number; high: number; chosen: CurveBin; base: CurveBin }
+
+function Calibration({ page }: { page: MetricBacktestPage }) {
+  const { get, set } = useUrlState();
+  const { results, metrics } = page;
+  const baseline = baselineOf(page);
+  const fallback = defaultMetric(page);
+  const asked = get("cal") ?? "";
+  const metric = candidatesOf(page).includes(asked) && asked !== baseline ? asked : fallback;
+  const chosen = results.candidates[metric].calibration_curve, base = results.candidates[baseline].calibration_curve;
+  const rows: BinRow[] = chosen.bins.map((b, index) => ({ index, low: b.low, high: b.high, chosen: b, base: base.bins[index] }));
+  const a = metrics[metric].short, b = metrics[baseline].short;
+  const series = (group: string, read: (r: BinRow) => CurveBin, tag: string): GridColumn<BinRow>[] => [
+    { key: `${tag}-games`, label: "Games", group, data: r => ({ field: `${tag}-games`, value: read(r).games }), cell: r => <GridValue text={count(read(r).games)} /> },
+    { key: `${tag}-predicted`, label: "Pred", title: "Mean predicted home win probability", group, data: r => ({ field: `${tag}-predicted`, value: read(r).predicted ?? "" }), cell: r => <GridValue text={binPercent(read(r).predicted)} /> },
+    { key: `${tag}-observed`, label: "Obs", title: "Observed home win rate", group, data: r => ({ field: `${tag}-observed`, value: read(r).observed ?? "" }), cell: r => <GridValue text={binPercent(read(r).observed)} /> },
+  ];
+  return <div className="mb-block" data-chart="calibration" data-metric={metric}>
+    <div className="mb-controls">
+      <h3 className="mb-subhead">Calibration: when a metric says 60%, does the home team win 60%?</h3>
+      <Field label="Metric" layout="inline"><Select size="md" aria-label="Calibration metric" value={metric}
+        onChange={event => set({ cal: event.target.value === fallback ? null : event.target.value })}><MetricOptions page={page} except={baseline} /></Select></Field>
+    </div>
+    <p className="mb-note">Calibration error: <span data-field="ece-chosen" data-value={chosen.ece}>{a} {fixed(chosen.ece, 4)}</span>, <span data-field="ece-base" data-value={base.ece}>{b} {fixed(base.ece, 4)}</span>. It has no interval and decides no ranking.</p>
+    <div className="mb-calibration">
+      <div className="mb-figure">
+        <ReliabilityPlot title="Predicted against observed home wins" label={`Predicted home win probability against observed home win rate for ${a} and ${b}`}
+          tones={CALIBRATION_TONES} outcome={{ x: "Predicted home win probability", y: "Observed home win rate" }} unit="games"
+          source="CourtLens backtest of NBA box scores" sample="Ten probability bins, each metric over its own seasons"
+          series={[{ name: a, bins: toBins(chosen.bins) }, { name: b, bins: toBins(base.bins) }]} />
+      </div>
+      <StatsGrid<BinRow> label={`Calibration bins for ${a} and ${b}`} name="bins" density="compact" height="auto" className="mb-bins" rows={rows} rowKey={r => String(r.index)}
+        lead={{ label: "Bin", cell: r => <span className="mb-metric">{Math.round(r.low * 100)}–{Math.round(r.high * 100)}%</span> }}
+        columns={[...series(a, r => r.chosen, "chosen"), ...series(b, r => r.base, "base")]} />
+    </div>
+  </div>;
+}
+
+function ScoresSection({ page }: { page: MetricBacktestPage }) {
+  return <ResearchSection id="scores" icon="list-ordered" title="Scores, each over its own seasons">
+    <p className="mb-lead">Don&apos;t compare these rows against each other: seasons differ, and so does how hard they were to predict. Projected Impact, scored on two seasons, has the highest RMSE here yet beats
+      most metrics on the games they share. The head-to-head table above is the fair comparison.</p>
+    <ScoresGrid page={page} />
+    <Calibration page={page} />
+  </ResearchSection>;
 }
 
 // ---- 2026-27 -----------------------------------------------------------------------------------
 
-function GroupTable({ page, group, label }: { page: MetricBacktestPage; group: ProspectiveGroup; label: string }) {
-  const { metrics, results } = page;
-  const baseline = results.registration.parameters.baseline;
-  if (!group.games || !group.candidates) return <GatedNote>No {label.toLowerCase()} games scored yet.</GatedNote>;
-  const gain = (name: string) => group.pairs?.find(p => (p.candidate === name && p.reference === baseline));
-  return <Table aria-label={`${label} 2026-27 games`} density="compact" data-table={`season-2026-27-${label.toLowerCase()}`}>
-    <TableHeader><TableRow hoverable={false}>
-      <TableHead>Metric</TableHead><TableHead align="right">Margin RMSE</TableHead><TableHead align="right">Winner picked</TableHead>
-      <TableHead align="right">Brier</TableHead><TableHead align="right">RMSE gain over {metrics[baseline].short}, 95%</TableHead>
-      <TableHead align="right">Minutes replaced</TableHead>
-    </TableRow></TableHeader>
-    <TableBody>{results.registration.parameters.candidates.map(name => {
-      const row = group.candidates![name];
-      const g = gain(name);
-      return <TableRow key={name} data-row={name}>
-        <TableCell><Swatch name={name} /> {metrics[name].short}</TableCell>
-        <TableCell numeric data-field="rmse" data-value={row.rmse}>{fixed(row.rmse)}</TableCell>
-        <TableCell numeric data-field="accuracy" data-value={row.accuracy}>{percent(row.accuracy)}</TableCell>
-        <TableCell numeric data-field="brier" data-value={row.brier}>{fixed(row.brier, 4)}</TableCell>
-        {name === baseline ? <TableCell numeric>Baseline</TableCell>
-          : g ? <TableCell numeric tone={gainTone(g.rmse)} data-field="gain" data-value={g.rmse.gain} data-low={g.rmse.low} data-high={g.rmse.high}>{gainText(g.rmse)}</TableCell>
-            : <TableCell numeric data-field="gain" data-value="">Under {page.prospective.manifest.minimum_games_for_interval} games</TableCell>}
-        <TableCell numeric data-field="replaced" data-value={row.replaced_minutes_share}>{percent(row.replaced_minutes_share)}</TableCell>
-      </TableRow>;
-    })}</TableBody>
-  </Table>;
+function GroupGrid({ page, group, label, name }: { page: MetricBacktestPage; group: ProspectiveGroup; label: string; name: string }) {
+  const { metrics } = page;
+  const baseline = baselineOf(page);
+  const scores = group.candidates!;
+  const hasGains = (group.pairs?.length ?? 0) > 0;
+  const gain = (metric: string) => group.pairs?.find(p => p.candidate === metric && p.reference === baseline)?.rmse;
+  return <StatsGrid<string> label={`${label} 2026-27 games`} name={name} density="compact" height="auto" leadWidth="md" className="mb-scores" rows={candidatesOf(page)} rowKey={n => n}
+    lead={{ label: "Metric", cell: n => <Metric page={page} name={n} /> }}
+    columns={[
+      { key: "rmse", label: "Margin RMSE", width: "sm", data: n => ({ field: "rmse", value: scores[n].rmse }), cell: n => <GridValue text={fixed(scores[n].rmse)} /> },
+      { key: "accuracy", label: "Winner picked", width: "sm", data: n => ({ field: "accuracy", value: scores[n].accuracy }), cell: n => <GridValue text={percent(scores[n].accuracy)} /> },
+      { key: "brier", label: "Brier", width: "sm", data: n => ({ field: "brier", value: scores[n].brier }), cell: n => <GridValue text={fixed(scores[n].brier, 4)} /> },
+      ...(hasGains ? [{ key: "gain", label: `RMSE gain over ${metrics[baseline].short}`, width: "lg" as const, data: (n: string) => gainData(gain(n), "gain"),
+        cell: (n: string) => { const g = gain(n); return g ? <GainValue gain={g} digits={2} /> : <GridValue text={n === baseline ? "Baseline" : null} muted />; } }] : []),
+      { key: "replaced", label: "Minutes replaced", width: "sm", data: n => ({ field: "replaced", value: n === baseline ? "" : scores[n].replaced_minutes_share }), cell: n => <GridValue text={n === baseline ? null : percent(scores[n].replaced_minutes_share)} /> },
+    ]} />;
 }
 
 function ProspectiveSection({ page }: { page: MetricBacktestPage }) {
   const { manifest, summary } = page.prospective;
-  return <Section title="2026-27, scored as the season goes"
-    description={`The rules were frozen at ${manifest.frozen_at}, after the backtest, with each metric's scale fitted on 2025-26. Each completed game is added once and never rescored. A game counts as prospective only if it tipped after the freeze; earlier games are hindsight and shown apart. The backtest verdict is never updated from these games.`}>
-    {!summary ? <GatedNote>No 2026-27 game has been scored yet.</GatedNote> : <>
-      <p>Scored through {summary.scored_through ?? "no games"} (last run {summary.written_at.slice(0, 10)}): <strong data-field="prospective-games" data-value={summary.prospective.games}>{summary.prospective.games}</strong> prospective games, {summary.hindsight.games} hindsight games.</p>
-      <h3>Prospective, after the freeze</h3>
-      <GroupTable page={page} group={summary.prospective} label="Prospective" />
-      <h3>Hindsight, before the freeze</h3>
-      <GroupTable page={page} group={summary.hindsight} label="Hindsight" />
+  const frozen = formatDate(manifest.frozen_at.slice(0, 10));
+  const prospective = summary?.prospective, hindsight = summary?.hindsight;
+  return <ResearchSection id="season-2026-27" icon="calendar" title="2026-27, scored as the season goes">
+    <p className="mb-lead">The rules were frozen on {frozen}, after the backtest, with each metric&apos;s scale fitted on 2025-26. A game counts as prospective only if it tipped after the freeze. Each is added once and never
+      rescored, and none of them changes the backtest verdict above.</p>
+    {!summary || !prospective || !hindsight ? <p className="mb-note">No 2026-27 game has been scored yet.</p> : <>
+      <p className="mb-lead" data-field="season-status">Scored through {summary.scored_through ? formatDate(summary.scored_through) : "no games yet"} (last run {formatDate(summary.written_at.slice(0, 10))}):{" "}
+        <strong data-field="prospective-games" data-value={prospective.games}>{count(prospective.games)}</strong> prospective {prospective.games === 1 ? "game" : "games"} and <strong data-field="hindsight-games" data-value={hindsight.games}>{count(hindsight.games)}</strong> hindsight.</p>
+      <h3 className="mb-subhead">Prospective, after the freeze</h3>
+      {prospective.games && prospective.candidates
+        ? <>{!(prospective.pairs?.length) && <p className="mb-note" data-field="prospective-intervals">Gains over the baseline start at {manifest.minimum_games_for_interval} games.</p>}<GroupGrid page={page} group={prospective} label="Prospective" name="season-2026-27-prospective" /></>
+        : <p className="mb-note" data-field="prospective-empty">No game has been scored since the rules were frozen, so there is no prospective result yet.</p>}
+      <h3 className="mb-subhead">Hindsight, before the freeze</h3>
+      {hindsight.games && hindsight.candidates
+        ? <><p className="mb-note">These games tipped before the rules were frozen. They are shown apart, and are not a test of the frozen rules.</p><GroupGrid page={page} group={hindsight} label="Hindsight" name="season-2026-27-hindsight" /></>
+        : <p className="mb-note">No hindsight games scored yet.</p>}
     </>}
-  </Section>;
+  </ResearchSection>;
 }
 
-// ---- Words -------------------------------------------------------------------------------------
+// ---- How to read and About -----------------------------------------------------------------------
 
-function MetricNotes({ page }: { page: MetricBacktestPage }) {
+function Reading({ page }: { page: MetricBacktestPage }) {
   const { results, metrics, omitted } = page;
-  return <Section title="What each metric is" description="Every rating is fixed before the games it predicts. Season-end fits are used only for the next season's games.">
-    <dl>
-      {results.registration.parameters.candidates.map(name => <div key={name} data-row={name}>
-        <dt><Swatch name={name} /> {metrics[name].label}</dt>
-        <dd>{metrics[name].what} Ratings from: {metrics[name].source}. Scored {seasonRange(results.candidates[name].test_seasons)}. Credit: {metrics[name].credit}</dd>
-      </div>)}
-      {Object.entries(omitted).map(([key, text]) => <div key={key} data-row={key}><dt>Left out: DARKO</dt><dd>{text}</dd></div>)}
-    </dl>
-  </Section>;
+  const noted = (key: string) => {
+    const m = metrics[key];
+    return { term: m.label, text: <>{m.what} Ratings from: {visitorText(m.source)}. Scored {seasonRange(results.candidates[key].test_seasons)}. Credit: {visitorText(m.credit)}</> };
+  };
+  const groups: GlossaryGroup[] = [
+    { label: "Scores", icon: "target", items: [
+      { term: "Margin RMSE", text: "Root mean squared error of the predicted home margin, in points. Lower is better, and the verdict uses this score alone." },
+      { term: "Winner picked", text: "The share of games in which the metric's predicted winner won." },
+      { term: "Brier and log loss", text: "Two penalties on the predicted home win probability. Lower is better; log loss punishes confident misses harder." },
+      { term: "Calibration error", text: "How far predicted probabilities sit from the real win rate, averaged over ten probability bins. Reported only; it has no interval and decides no ranking." },
+      { term: "Minutes replaced", text: "The share of minutes played by players with no rating, who take the 20th percentile of that source's ratings. Team net rates no players, so it shows a dash." },
+    ] },
+    { label: "Team and raw", icon: "users", items: ["team_net", "plus_minus", "on_off"].map(noted) },
+    { label: "RAPM", icon: "chart-trend", items: ["rapm_1y", "rapm_3y", "box_prior_rapm"].map(noted) },
+    { label: "Updated and projected", icon: "calendar", items: ["time_decay", "time_decay_opener", "projected_impact"].map(noted) },
+    { label: "Left out", icon: "info", items: Object.entries(omitted).map(([key, text]) => ({ term: key === "darko" ? "DARKO" : key, text })) },
+  ];
+  return <ResearchSection id="reading" icon="book" title="How to read">
+    <ResearchCards columns={3}>
+      <ResearchCard kicker="Error"><p className="mb-card-text">Margin RMSE is how far, in points, the predicted home margin falls from the real one. Lower is better.</p></ResearchCard>
+      <ResearchCard kicker="Gain"><p className="mb-card-text">The other metric&apos;s error minus this one&apos;s, on the games both were scored. Positive means this one did better.</p></ResearchCard>
+      <ResearchCard kicker="Colour"><p className="mb-card-text">Green or red only where a gain&apos;s whole 95% interval is on one side of zero. Pooled scores and calibration stay neutral.</p></ResearchCard>
+    </ResearchCards>
+    <Glossary groups={groups} />
+  </ResearchSection>;
 }
 
-function Caveats({ page }: { page: MetricBacktestPage }) {
-  const { results } = page;
+function About({ page }: { page: MetricBacktestPage }) {
+  const { results, prospective } = page;
   const p = results.registration.parameters;
   const replaced = (name: string) => {
     const seasons = Object.values(results.candidates[name].seasons).map(s => s.replaced_minutes_share);
-    return `${percent(Math.min(...seasons))} to ${percent(Math.max(...seasons))}`;
+    const low = percent(Math.min(...seasons)), high = percent(Math.max(...seasons));
+    return low === high ? low : `${low} to ${high}`;
   };
   const checked = Object.values(results.leakage).reduce((sum, l) => sum + l.game_ratings_checked, 0);
-  return <Section title="Caveats">
-    <ul>
-      <li><strong>Actual minutes, on purpose.</strong> Each prediction weights players by the minutes they really played, which is hindsight. It isolates how good each rating is from how well anyone guesses playing time, so this is a test of ratings, not a game forecast.</li>
-      <li><strong>The same games for every metric.</strong> Every regular-season game with a box score, {results.candidates[p.baseline].pooled.games.toLocaleString("en-US")} in {seasonRange(p.test_seasons)}. Within a season all metrics are scored on the same games, so paired differences compare like with like. Pooled rows above each cover their own seasons, so compare them through the paired differences, not row against row.</li>
-      <li><strong>Players without a rating</strong> (rookies, call-ups, raw metrics under {p.raw_min_controls} possessions) take the 20th percentile of that source&apos;s own ratings, never zero. Share of minutes this covers, by season: plus-minus {replaced("plus_minus")}, RAPM 1Y {replaced("rapm_1y")}, monthly time decay {replaced("time_decay")}, Projected Impact {replaced("projected_impact")}. This favours metrics that rate rookies early, which is part of what is being tested.</li>
-      <li><strong>Projected Impact has two test seasons</strong>, so its intervals are wider and a ranking needs both seasons. It is never scored on 2016-17 to 2023-24, which it was trained or selected on.</li>
-      <li><strong>Box-prior RAPM skips 2024-25</strong>: the sealed 2023-24 fit has no box prior. Its 2025-26 scale comes from 2023-24. The Projected Impact and box-prior pair shares only 2025-26.</li>
-      <li><strong>DARKO is left out</strong> of every comparison: only hindsight ratings are stored (see above).</li>
-      <li><strong>Many comparisons.</strong> 95% intervals on 36 pairs are not adjusted for multiplicity; the more-than-half-of-seasons condition guards against one season deciding a pair.</li>
-      <li><strong>Neutral sites.</strong> Only the 2019-20 bubble games count as neutral; the few other neutral-site games (NBA Cup semifinals, international games) get the home term.</li>
-      <li><strong>Known before registering.</strong> Projected Impact&apos;s page had already published margin errors for itself, prior-season RAPM and the opener time-decay snapshot on 2024-25 and 2025-26, and Win Probability&apos;s for team form. Nothing here was changed because of them, and no choice was made from outcomes.</li>
-      <li><strong>No leakage found.</strong> For {checked.toLocaleString("en-US")} game ratings, every source&apos;s inputs end before the game; a test proves changing later seasons&apos; results changes no earlier score.</li>
-    </ul>
-  </Section>;
-}
-
-function MethodCard({ page }: { page: MetricBacktestPage }) {
-  const { results, prospective } = page;
-  const p = results.registration.parameters;
-  return <Section title="Method and reproducibility">
-    <dl>
-      <dt>Prediction</dt><dd>Margin = a × home + b × (home minus away of minutes ÷ 48 × rating). a, b and the residual SD are fitted on the latest earlier season the metric exists in. Win probability = Φ(margin ÷ SD).</dd>
-      <dt>Scores</dt><dd>Margin RMSE (the verdict), winner picked, Brier, log loss, and calibration error over ten probability bins.</dd>
-      <dt>Intervals</dt><dd>Paired game bootstrap within each season, {p.replicates.toLocaleString("en-US")} replicates, 95%, one set of draws shared by every metric. Seed 8008.</dd>
-      <dt>Rule</dt><dd>{results.verdict.rule}.</dd>
-      <dt>Registration</dt><dd><code>{results.registration.identity}</code> · <code>{results.registration.content_sha256.slice(0, 16)}</code>, committed before any score.</dd>
-      <dt>Results</dt><dd><code data-field="results-sha" data-value={results.results_sha256}>{results.results_sha256.slice(0, 16)}</code>. Two runs from the seed give the same hash.</dd>
-      <dt>2026-27 freeze</dt><dd>{prospective.manifest.frozen_at} · <code>{prospective.manifest.manifest_sha256.slice(0, 16)}</code></dd>
-    </dl>
-  </Section>;
+  const frozenAt = prospective.manifest.frozen_at;
+  return <ResearchDisclosure id="about" icon="info" title="About this page">
+    <MethodBlock title="Caveats">
+      <ul className="mb-list">
+        <li><strong>Actual minutes, on purpose.</strong> Each prediction weights players by the minutes they really played, which is hindsight. It isolates how good each rating is from how well anyone guesses playing time, so this is a test of ratings, not a game forecast.</li>
+        <li><strong>The same games for every metric.</strong> Every regular-season game with a box score, {count(results.candidates[p.baseline].pooled.games)} in {seasonRange(p.test_seasons)}. Within a season all metrics are scored on the same games, so paired differences compare like with like. Pooled rows each cover their own seasons, so compare them through the paired differences, not row against row.</li>
+        <li><strong>Players without a rating</strong> (rookies, call-ups, raw metrics under {p.raw_min_controls} possessions) take the 20th percentile of that source&apos;s own ratings, never zero. Share of minutes this covers, by season: plus-minus {replaced("plus_minus")}, RAPM 1Y {replaced("rapm_1y")}, monthly time decay {replaced("time_decay")}, Projected Impact {replaced("projected_impact")}. This favours metrics that rate rookies early, which is part of what is being tested.</li>
+        <li><strong>Projected Impact has two test seasons</strong>, so its intervals are wider and a ranking needs both seasons. It is never scored on 2016-17 to 2023-24, which it was trained or selected on.</li>
+        <li><strong>Box-prior RAPM skips 2024-25</strong>: the 2023-24 fit has no box prior. Its 2025-26 scale comes from 2023-24. The Projected Impact and box-prior pair shares only 2025-26.</li>
+        <li><strong>DARKO is left out</strong> of every comparison: only hindsight ratings are stored (see How to read).</li>
+        <li><strong>Many comparisons.</strong> 95% intervals on 36 pairs are not adjusted for multiplicity; the more-than-half-of-seasons condition guards against one season deciding a pair.</li>
+        <li><strong>Neutral sites.</strong> Only the 2019-20 bubble games count as neutral; the few other neutral-site games (NBA Cup semifinals, international games) get the home term.</li>
+        <li><strong>Known before the method was fixed.</strong> Projected Impact&apos;s page had already published margin errors for itself, prior-season RAPM and the opener time-decay snapshot on 2024-25 and 2025-26, and Win Probability&apos;s for team form. Nothing here was changed because of them, and no choice was made from outcomes.</li>
+        <li><strong>No leakage found.</strong> For {count(checked)} game ratings, every source&apos;s inputs end before the game; a test proves changing later seasons&apos; results changes no earlier score.</li>
+      </ul>
+    </MethodBlock>
+    <MethodBlock title="Method">
+      <dl className="mb-defs">
+        <dt>Prediction</dt><dd>Margin = a × home + b × (home minus away of minutes ÷ 48 × rating). a, b and the residual SD are fitted on the latest earlier season the metric exists in. Win probability = Φ(margin ÷ SD).</dd>
+        <dt>Scores</dt><dd>Margin RMSE (the verdict), winner picked, Brier, log loss, and calibration error over ten probability bins.</dd>
+        <dt>Intervals</dt><dd>Paired game bootstrap within each season, {count(p.replicates)} replicates, 95%, one set of draws shared by every metric. Seed 8008.</dd>
+        <dt>Rule</dt><dd>{results.verdict.rule.charAt(0).toUpperCase()}{results.verdict.rule.slice(1)}.</dd>
+        <dt>Fixed in advance</dt><dd>Method registered on {formatDate(results.registration.registered_on)}, before any score was read. 2026-27 rules frozen {formatDate(frozenAt.slice(0, 10))}, {frozenAt.slice(11, 16)} UTC.</dd>
+        <dt>Hashes</dt><dd>Registration <code data-field="registration-sha" data-value={results.registration.content_sha256}>{results.registration.content_sha256.slice(0, 16)}</code> · results{" "}
+          <code data-field="results-sha" data-value={results.results_sha256}>{results.results_sha256.slice(0, 16)}</code> · 2026-27 rules <code data-field="manifest-sha" data-value={prospective.manifest.manifest_sha256}>{prospective.manifest.manifest_sha256.slice(0, 16)}</code>. Two runs give the same results hash.</dd>
+      </dl>
+      <ResearchLinks label="Evidence" links={[{ label: "How the backtest was built", href: evidenceUrl("docs/evidence/research/r08/README.md"), icon: "external" }]} />
+    </MethodBlock>
+  </ResearchDisclosure>;
 }
 
 // ---- Page --------------------------------------------------------------------------------------
 
 export function MetricBacktestResearch() {
   const { data, error, loading, retry } = useFeed([], signal => getMetricBacktest(signal));
-  const results = data?.results;
-  const best = results?.verdict.best[0];
-  const baseline = results?.registration.parameters.baseline ?? "team_net";
-  const bestGain = data && best ? pairOf(data.results.pairs, best, baseline) : null;
+  const parameters = data?.results.registration.parameters;
   return <PageShell template="research">
-    <PageHeader icon="chart-trend" title="Metric Backtest" subtitle="Which impact metric best predicts real game results, using only ratings from before each game." />
-    {error && <FeedFailure error={error} retry={retry} what="The metric backtest" />}
-    {loading && <FeedSkeleton label="Loading the metric backtest" />}
-    {data && results && <ResearchLayout findings={<>
-      <StatTile label="Best predictor" value={best ? data.metrics[best].short : "None"} footnote={best && bestGain ? `RMSE ${fixed(results.candidates[best].pooled.rmse)}; ${gainText(bestGain.pooled.rmse)} over the team baseline` : "No metric ranks above all others"} />
-      <StatTile label="Team baseline error" value={fixed(results.candidates[baseline].pooled.rmse)} footnote={`Points RMSE, ${results.candidates[baseline].pooled.games.toLocaleString("en-US")} games`} />
-      <StatTile label="Metrics ranked above the baseline" value={`${Object.values(results.verdict.against_baseline).filter(v => v === "candidate_better").length} of ${Object.keys(results.verdict.against_baseline).length}`} footnote="Under the registered rule" />
-      <StatTile label="Prospective games" value={data.prospective.summary?.prospective.games ?? 0} footnote={`Since the freeze, ${data.prospective.manifest.frozen_at.slice(0, 10)}`} />
-    </>}>
-      <Section title="Which metric predicts games best?"
-        description="For every regular-season game from 2016-17 to 2025-26, each metric predicts the home margin from players' ratings as they stood before the game, weighted by the minutes they actually played.">
-        <ul data-field="verdict-summary">{verdictSentences(data).map(text => <li key={text}>{text}</li>)}</ul>
-      </Section>
-      <ChartSection page={data} />
-      <Section title="Pooled scores" description="Each metric over its own test seasons. Errors are neutral numbers; differences between metrics are in the next table.">
-        <PooledTable page={data} />
-      </Section>
-      <PairsSection page={data} />
-      <ProspectiveSection page={data} />
-      <MetricNotes page={data} />
-      <Caveats page={data} />
-      <MethodCard page={data} />
-    </ResearchLayout>}
+    <div className="rs-column mb-page">
+      <PageHeader className="sq-hero research-hero" icon="chart-trend" title="Metric Backtest" subtitle="Which impact metric best predicts real game results, using only ratings from before each game." />
+      <ResearchIntro
+        tagline={data && parameters ? <span data-field="hero-meta">{count(data.results.candidates[parameters.baseline].pooled.games)} games · {seasonRange(parameters.test_seasons)} · {parameters.candidates.length} metrics</span> : null}
+        links={[{ label: "RAPM Ratings", href: "/research/rapm", icon: "chart-line" }, { label: "Projected Impact", href: "/research/projected-impact", icon: "target" }, { label: "Learning", href: "/methodology/learning", icon: "book" }]} />
+      {error && <FeedFailure error={error} retry={retry} what="The metric backtest" />}
+      {loading && <FeedSkeleton label="Loading the metric backtest" />}
+      {data && <>
+        <Answer page={data} />
+        <HeadToHead page={data} />
+        <PairsSection page={data} />
+        <SeasonSection page={data} />
+        <ScoresSection page={data} />
+        <ProspectiveSection page={data} />
+        <Reading page={data} />
+        <About page={data} />
+      </>}
+    </div>
   </PageShell>;
 }

@@ -40,4 +40,12 @@ describe("headline chart semantics", () => {
     expect(container.querySelector("circle")?.getAttribute("cx")).toBe("156");
     expect(container.querySelector("title")?.textContent).toContain("10 shots");
   });
+  it("names its own outcome and tones when told to", () => {
+    const bin = {lower: .2, upper: .3, rows: 10, mean_probability: .25, observed_rate: .3};
+    const { container } = render(<ReliabilityPlot {...meta} title="Reliability" tones={["category-3", "category-4"]} outcome={{ x: "Predicted win probability", y: "Observed win rate" }} unit="games" series={[{name: "A", bins: [bin]}, {name: "B", bins: [bin]}]} />);
+    expect(container.textContent).toContain("Predicted win probability");
+    expect(container.querySelector("title")?.textContent).toContain("10 games");
+    expect(container.querySelector("g[data-series='0']")?.getAttribute("fill")).toBe("var(--color-category-3)");
+    expect(container.querySelector("g[data-series='1']")?.getAttribute("fill")).toBe("var(--color-category-4)");
+  });
 });

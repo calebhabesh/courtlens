@@ -36,6 +36,13 @@ describe("SeasonLineChart (RD06)", () => {
     expect([...container.querySelectorAll(".slc-y-label")].every(l => Number(l.textContent) >= 0)).toBe(true);
   });
 
+  it("keeps zero on the axis and marks it when asked (RD10)", () => {
+    const { container } = render(<SeasonLineChart label="Gain" format={v => v.toFixed(2)} band="95%" zero
+      points={[{ season: "24-25", value: 0.6, low: 0.4, high: 0.8 }, { season: "25-26", value: 1.2, low: 1, high: 1.4 }]} />);
+    expect(container.querySelectorAll('.slc-grid[data-zero]')).toHaveLength(1);
+    expect([...container.querySelectorAll(".slc-y-label")].map(l => Number(l.textContent))).toContain(0);
+  });
+
   it("says so when there are fewer than two values", () => {
     render(<SeasonLineChart label="x" format={String} points={[{ season: "2014-15", value: 1 }]} />);
     expect(screen.getByText("Not enough seasons to draw a line.")).toBeTruthy();
