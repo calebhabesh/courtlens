@@ -907,3 +907,8 @@ The owner asked what could improve the page, then answered the nine proposals wi
 
 The owner approved Projected Impact ("looks good, approved."). Row RD11 ✅; its settled rules are in the alignment plan's "Research pages" pattern ("Settled in RD11"). The prospective table has not rendered on real data and needs a real-data check after the first weekly score, due around Nov 12, 2026.
 [`design-RD11`](evidence/research/design-RD11/README.md).
+
+## 2026-11-09 — RD11 round 4: first prospective score
+
+On the owner's instruction, `courtlens refresh-projected-impact --force` added 39 games: 25 prospective and 121 hindsight, scored through Nov 8, 2026. The first 107 rows and the projections hash are unchanged. The first prospective result goes against the model: margin RMSE 16.80 (Projected Impact) against 15.10 (time-decay RAPM) and 15.71 (carry-forward); gain over time decay −54.33 (95% −96.08 to −16.72). Metric Backtest's separate scoring of the same games agrees on the direction. Twenty-five games are few, and the frozen test is unchanged. The prospective table now renders on real data: 108,627 values over 143 loads, 0 mismatches, 0 console errors, 0 overflow, 0 broken images. No page, API or analysis code changed, so the full suite was not re-run. The next automatic score moves to about Nov 17, 2026.
+[`design-RD11`](evidence/research/design-RD11/README.md). Awaits the owner.
