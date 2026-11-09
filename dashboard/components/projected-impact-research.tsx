@@ -55,16 +55,22 @@ function subtitleOf(row: ProjectedPlayer): string {
   return row.group === "prior" ? team : `${team} · ${row.group === "rookie" ? "Rookie" : "Returner"}`;
 }
 
+/** The frozen model reads as the page's own name, with its technical name under it. */
+const ratingName = (name: string, selected: string) => name === selected ? "Projected Impact" : RATING_LABELS[name] ?? name;
+
 function Rating({ name, selected }: { name: string; selected: string }) {
-  return <><span className="pi-rating">{RATING_LABELS[name] ?? name}</span>{name === selected && <span className="pi-rating-sub">The frozen model</span>}</>;
+  return <><span className="pi-rating">{ratingName(name, selected)}</span>{name === selected && <span className="pi-rating-sub">LightGBM, the frozen model</span>}</>;
 }
 
 // ---- The answer --------------------------------------------------------------------------------
 
-function Answer() {
-  return <ResearchSection id="answer" icon="trophy" title="Does it beat carrying last season forward?">
+function Answer({ page }: { page: ProjectedImpactPage }) {
+  const { ratings } = page.card.test.pooled.game;
+  const error = (name: string) => <strong data-value={ratings[name].rmse}>{fixed(ratings[name].rmse)}</strong>;
+  return <ResearchSection id="answer" icon="trophy" title="Does the model beat carrying last season forward?">
     <div className="pi-answer" data-field="answer">
-      <p className="pi-headline">Yes, on both held-out seasons, but its edge over time-decay RAPM is small.</p>
+      <p className="pi-headline">Yes, the frozen model beat it on both held-out seasons, but its edge over time-decay RAPM is small.</p>
+      <p className="pi-lead" data-field="edge">Error on final game margins, in points: {error(page.model.selected)} for the model, {error("time_decay")} for time decay and {error("carry_forward")} for carry-forward.</p>
       <p className="pi-lead">Time-decay RAPM already blends several seasons, so most of the gain over carry-forward is what any multi-year rating gives. The test was read once, after every choice was fixed.</p>
     </div>
   </ResearchSection>;
@@ -90,18 +96,27 @@ function Projections({ page, chosen, onChoose }: { page: ProjectedImpactPage; ch
   // The bars' scale fits every served interval, so none is cut off.
   const axis = useMemo(() => ({ left: Math.floor(Math.min(...players.map(p => p.low))), right: Math.ceil(Math.max(...players.map(p => p.high))) }), [players]);
   const below = players.some(p => p.high < 0);
+  const rookies = view === "rookie";
+  const zero = `${((0 - axis.left) / (axis.right - axis.left)) * 100}%`;
   const columns: GridColumn<ProjectedPlayer>[] = [
     { key: "projection", label: "Projected", title: "Projected RAPM with its 80% interval, and the interval drawn on one scale for every player", group: SEASON, width: "fill", sort: p => p.projection,
+      headerAfter: <span className="pi-scale" aria-hidden="true" data-field="axis" data-left={axis.left} data-right={axis.right} style={vars({ "--pi-zero": zero })}>
+        <span data-end="left">{signed(axis.left, 0)}</span><span data-end="zero">0</span><span data-end="right">{signed(axis.right, 0)}</span>
+      </span>,
       data: p => ({ field: "projection", value: p.projection, low: p.low, high: p.high }),
       cell: p => <span className="pi-projection">
         <span className="pi-projection-value"><GridValue text={signed(p.projection)} sub={gapBand(p, 1)} tone={intervalTone(p)} identity={intervalTone(p) ? undefined : signTone(p.projection)} title={intervalTone(p) ? "80% interval excludes zero" : "80% interval includes zero"} /></span>
         <RangeMark row={p} left={axis.left} right={axis.right} />
       </span> },
     { key: "age", label: "Age", title: "Age at the season opener", group: SEASON, width: "xs", sort: p => p.age, data: p => ({ field: "age", value: p.age ?? "" }), cell: p => <GridValue text={p.age == null ? null : String(Math.floor(p.age))} /> },
-    { key: "last", label: "RAPM", title: "Last season's RAPM. Rookies and returners have none", group: "Last season", width: "sm", sort: p => p.group === "prior" ? p.ratings.carry_forward : null,
-      data: p => ({ field: "last", value: p.group === "prior" ? p.ratings.carry_forward : "" }), cell: p => p.group === "prior" ? <GridValue text={signed(p.ratings.carry_forward)} identity={signTone(p.ratings.carry_forward)} /> : <GridValue text={null} /> },
-    { key: "minutes", label: "Minutes", title: "Minutes last season", group: "Last season", width: "sm", sort: p => p.minutes_last_season, data: p => ({ field: "minutes", value: p.minutes_last_season ?? "" }),
-      cell: p => <GridValue text={p.minutes_last_season == null ? null : count(Math.round(p.minutes_last_season))} /> },
+    // Rookies and returners have no last season at all, so that view shows how long each has been around instead of two columns of dashes.
+    ...(rookies ? [{ key: "years", label: "Years in league", title: "Years in the league at the season opener", group: SEASON, width: "md" as const, sort: (p: ProjectedPlayer) => p.years_in_league,
+      data: (p: ProjectedPlayer) => ({ field: "years", value: p.years_in_league ?? "" }), cell: (p: ProjectedPlayer) => <GridValue text={p.years_in_league == null ? null : String(p.years_in_league)} /> }] : [
+      { key: "last", label: "RAPM", title: "Last season's RAPM. Rookies and returners have none", group: "Last season", width: "sm" as const, sort: (p: ProjectedPlayer) => p.group === "prior" ? p.ratings.carry_forward : null,
+        data: (p: ProjectedPlayer) => ({ field: "last", value: p.group === "prior" ? p.ratings.carry_forward : "" }), cell: (p: ProjectedPlayer) => p.group === "prior" ? <GridValue text={signed(p.ratings.carry_forward)} identity={signTone(p.ratings.carry_forward)} /> : <GridValue text={null} /> },
+      { key: "minutes", label: "Minutes", title: "Minutes last season", group: "Last season", width: "sm" as const, sort: (p: ProjectedPlayer) => p.minutes_last_season, data: (p: ProjectedPlayer) => ({ field: "minutes", value: p.minutes_last_season ?? "" }),
+        cell: (p: ProjectedPlayer) => <GridValue text={p.minutes_last_season == null ? null : count(Math.round(p.minutes_last_season))} /> },
+    ]),
   ];
   const column = columns.find(c => c.key === sort.key) ?? columns[0];
   const needle = query.trim().toLocaleLowerCase("en-US");
@@ -121,10 +136,9 @@ function Projections({ page, chosen, onChoose }: { page: ProjectedImpactPage; ch
       {below && <li><span className="rs-swatch" data-tone="bad" aria-hidden="true" />80% interval below zero</li>}
       <li><span className="rs-swatch pi-swatch" data-identity="a" aria-hidden="true" />Above zero, interval includes zero</li>
       <li><span className="rs-swatch pi-swatch" data-identity="b" aria-hidden="true" />Below zero, interval includes zero</li>
-      <li data-field="axis" data-left={axis.left} data-right={axis.right}>Bars run from {signed(axis.left, 0)} to {signed(axis.right, 0)}; the tick marks zero</li>
     </ul>
     <StatsGrid<ProjectedPlayer> label="Projected impact" name="projections" className="pi-board" rows={rows} rowKey={p => p.player_id} leadWidth="lg" columns={columns}
-      sort={{ key: sort.key, direction: sort.direction, onSort }} empty="No players match these filters." rowData={p => ({ group: p.group, roster: p.on_roster ? "true" : "false" })}
+      sort={{ key: column.key, direction: sort.direction, onSort }} empty="No players match these filters." rowData={p => ({ group: p.group, roster: p.on_roster ? "true" : "false" })}
       lead={{ span: true, label: <GridSearch value={query} onChange={setQuery} />,
         cell: p => <GridPlayer playerId={p.player_id} name={p.name} team={teamOf(p)} season={teamSeason(p)} era={seasonEra(teamSeason(p), teamOf(p))} subtitle={subtitleOf(p)} href={`/players/${p.player_id}`}
           tools={<IconButton size="sm" icon="arrow-right" label={`Why ${p.name} is projected here`} pressed={chosen === p.player_id} onClick={() => onChoose(p.player_id)} />} /> }} />
@@ -135,7 +149,7 @@ function Projections({ page, chosen, onChoose }: { page: ProjectedImpactPage; ch
 
 function Bars({ title, rows, name }: { title: string; rows: { key: string; label: string; value: number }[]; name: string }) {
   const max = Math.max(.5, ...rows.map(r => Math.abs(r.value)));
-  return <div className="pi-bars-block">
+  return <div className="pi-bars-block" data-block={name}>
     <h4 className="pi-bars-title">{title}</h4>
     <ul className="pi-bars" data-bars={name}>{rows.map(row => <li key={row.key} className="pi-bar-row" data-key={row.key} data-value={row.value}>
       <span className="pi-bar-label">{row.label}</span>
@@ -148,6 +162,7 @@ function Bars({ title, rows, name }: { title: string; rows: { key: string; label
 function Why({ page, id, fallback, onChoose, onClear, onReset }: { page: ProjectedImpactPage; id: string | null; fallback: string | null; onChoose: (id: string) => void; onClear: () => void; onReset: () => void }) {
   const { players, model } = page;
   const [text, setText] = useState("");
+  const [side, setSide] = useState<"blocks" | "top">("blocks");
   const row = id ? players.find(p => p.player_id === id) ?? null : null;
   const { data, error, loading, retry } = useFeed([row?.player_id ?? null], signal => row ? getProjectedImpactPlayer(row.player_id, signal) : Promise.resolve(null));
   const items = useMemo(() => players.map((p): LookupItem => ({
@@ -180,15 +195,16 @@ function Why({ page, id, fallback, onChoose, onClear, onReset }: { page: Project
         </span>
       </header>
       <p className="pi-sum" data-field="sum" data-base={data.base}>{signed(data.base)} training average + the sources below = {signed(row.projection)}</p>
-      <div className="pi-bars-pair">
+      <div className="pi-bars-switch"><Segmented label="Contribution list" size="md" stretch value={side} onChange={setSide} options={[{ value: "blocks", label: "By source" }, { value: "top", label: "Largest inputs" }]} /></div>
+      <div className="pi-bars-pair" data-side={side}>
         <Bars title="By source" name="blocks" rows={blockRows(data.player.contributions.blocks)} />
         <Bars title="Largest single inputs" name="top" rows={featureRows(data.player.contributions.top)} />
       </div>
       <div className="pi-tiles" data-field="ratings">{RATING_ORDER.map(name => <div key={name} className="pi-tile" data-rating={name} data-value={row.ratings[name]}>
-        <span className="pi-tile-label">{name === "carry_forward" && row.group !== "prior" ? "Group average" : RATING_LABELS[name]}</span>
-        <span className="pi-tile-value" data-identity={signTone(row.ratings[name])}>{signed(row.ratings[name])}</span>
+        <span className="pi-tile-label">{name === "carry_forward" && row.group !== "prior" ? "Group average" : ratingName(name, model.selected)}</span>
+        <span className="pi-tile-value" data-tone={name === model.selected ? intervalTone(row) : undefined} data-identity={name === model.selected && intervalTone(row) ? undefined : signTone(row.ratings[name])}>{signed(row.ratings[name])}</span>
       </div>)}</div>
-      <p className="pi-note">The bars describe the model&apos;s arithmetic, not a cause. Only {RATING_LABELS[model.selected]}, the frozen model, has an interval.</p>
+      <p className="pi-note">The bars describe the model&apos;s arithmetic, not a cause. Only the frozen model has an interval.</p>
     </article>}
   </ResearchSection>;
 }
@@ -214,18 +230,18 @@ function TestGrids({ player, game, selected }: { player: PlayerTable; game: Game
     <StatsGrid<string> label="Final test, players" name="test-players" density="compact" height="auto" leadWidth="md" className="pi-test" rows={RATING_ORDER} rowKey={n => n}
       lead={{ label: "Rating", cell: n => <Rating name={n} selected={selected} /> }}
       columns={[
+        ...gainColumns<string>(() => player.gaps),
         { key: "rmse", label: "RMSE", width: "sm", data: n => ({ field: "rmse", value: player.models[n].rmse }), cell: n => <GridValue text={fixed(player.models[n].rmse)} /> },
         { key: "correlation", label: "Correlation", width: "sm", data: n => ({ field: "correlation", value: player.models[n].correlation }), cell: n => <GridValue text={fixed(player.models[n].correlation)} /> },
-        ...gainColumns<string>(() => player.gaps),
       ]} />
     <h3 className="pi-subhead">Games: final margin</h3>
     <p className="pi-note" data-field="test-games" data-value={game.games}>{count(game.games)} games.</p>
     <StatsGrid<string> label="Final test, games" name="test-games" density="compact" height="auto" leadWidth="md" className="pi-test" rows={RATING_ORDER} rowKey={n => n}
       lead={{ label: "Rating", cell: n => <Rating name={n} selected={selected} /> }}
       columns={[
+        ...gainColumns<string>(() => game.gaps),
         { key: "rmse", label: "Margin RMSE", width: "sm", data: n => ({ field: "rmse", value: game.ratings[n].rmse }), cell: n => <GridValue text={fixed(game.ratings[n].rmse)} /> },
         { key: "winner", label: "Winner picked", width: "sm", data: n => ({ field: "winner", value: game.ratings[n].winner_accuracy ?? "" }), cell: n => <GridValue text={game.ratings[n].winner_accuracy == null ? null : percent(game.ratings[n].winner_accuracy)} /> },
-        ...gainColumns<string>(() => game.gaps),
       ]} />
   </>;
 }
@@ -239,15 +255,15 @@ function GroupsGrid({ page }: { page: ProjectedImpactPage }) {
     const table = groups[group], heading = `${group === "rookie" ? "Rookies" : "Returners"}, ${count(table.players)} players`;
     const model = (name: string) => table.models[name];
     return [
-      { key: `${group}-rmse`, label: "RMSE", group: heading, width: "sm", data: n => ({ field: `${group}-rmse`, value: n === "group_mean" ? table.group_mean_rule_rmse : model(n).rmse }),
-        cell: n => <GridValue text={fixed(n === "group_mean" ? table.group_mean_rule_rmse : model(n).rmse)} /> },
       { key: `${group}-gain`, label: "Gain", title: "Squared-error gain over the group's average, with its 95% interval", group: heading, width: "md",
         data: n => n === "group_mean" ? { field: `${group}-gain`, baseline: "true" } : gainData(model(n).gap_over_group_mean, `${group}-gain`),
         cell: n => n === "group_mean" ? <GridValue text="Baseline" muted /> : <GridValue text={signed(model(n).gap_over_group_mean.gap)} sub={gapBand(model(n).gap_over_group_mean)} tone={intervalTone(model(n).gap_over_group_mean)} /> },
+      { key: `${group}-rmse`, label: "RMSE", group: heading, width: "sm", data: n => ({ field: `${group}-rmse`, value: n === "group_mean" ? table.group_mean_rule_rmse : model(n).rmse }),
+        cell: n => <GridValue text={fixed(n === "group_mean" ? table.group_mean_rule_rmse : model(n).rmse)} /> },
     ];
   });
   return <StatsGrid<string> label="Rookies and returners against the group average" name="test-groups" density="compact" height="auto" leadWidth="md" className="pi-test" rows={GROUP_RATINGS} rowKey={n => n}
-    lead={{ label: "Rating", cell: n => <span className="pi-rating">{n === "group_mean" ? "Group average" : RATING_LABELS[n]}</span> }} columns={columns} />;
+    lead={{ label: "Rating", cell: n => n === "group_mean" ? <span className="pi-rating">Group average</span> : <Rating name={n} selected={page.model.selected} /> }} columns={columns} />;
 }
 
 function TestSection({ page }: { page: ProjectedImpactPage }) {
@@ -256,7 +272,7 @@ function TestSection({ page }: { page: ProjectedImpactPage }) {
   const seasons = Object.keys(card.test.seasons);
   const season = seasons.includes(get("testSeason") ?? "") ? get("testSeason")! : "pooled";
   const scope = season === "pooled" ? card.test.pooled : card.test.seasons[season];
-  const pooled = card.test.pooled, selected = RATING_LABELS[model.selected];
+  const pooled = card.test.pooled;
   return <ResearchSection id="test" icon="target" title="The test">
     <p className="pi-lead">Each row is one rating on 2024-25 and 2025-26. A gain is the baseline&apos;s squared error minus the rating&apos;s, so above zero the rating did better. A dash is a pair that was never computed.</p>
     <div className="pi-tools">
@@ -268,7 +284,7 @@ function TestSection({ page }: { page: ProjectedImpactPage }) {
       <li><span className="rs-swatch" aria-hidden="true" />Interval includes zero</li>
     </ul>
     <div className="pi-block" data-field="test" data-season={season}><TestGrids player={scope.player} game={scope.game} selected={model.selected} /></div>
-    <p className="pi-lead" data-field="ridge-line"><strong>The selection didn&apos;t pick the best test model.</strong> {selected} won on {card.selection.season} and stays frozen, but ridge did better on the pooled test: margin RMSE {fixed(pooled.game.ratings.ridge.rmse)} against {fixed(pooled.game.ratings[model.selected].rmse)},
+    <p className="pi-lead" data-field="ridge-line"><strong>The selection didn&apos;t pick the best test model.</strong> LightGBM, the frozen model, won on {card.selection.season} and stays in place, but ridge did better on the pooled test: margin RMSE {fixed(pooled.game.ratings.ridge.rmse)} against {fixed(pooled.game.ratings[model.selected].rmse)},
       player RMSE {fixed(pooled.player.models.ridge.rmse)} against {fixed(pooled.player.models[model.selected].rmse)}. Switching now would be choosing on the test, so ridge&apos;s values are kept and scored beside it.</p>
     <h3 className="pi-subhead">Rookies and returners, against their group&apos;s average, pooled</h3>
     <p className="pi-lead" data-field="groups-line"><strong>Neither group shows a clear gain:</strong> every interval includes zero, since most inputs need a prior season. Time decay has no record for a rookie, so it matches the rookie average.</p>
@@ -283,9 +299,9 @@ function ScoreGrid({ group, name, label, tinted, selected }: { group: ScoreGroup
   return <StatsGrid<string> label={label} name={name} density="compact" height="auto" leadWidth="md" className="pi-test" rows={RATING_ORDER} rowKey={n => n}
     lead={{ label: "Rating", cell: n => <Rating name={n} selected={selected} /> }}
     columns={[
+      ...(gaps ? gainColumns<string>(() => gaps, tinted) : []),
       { key: "rmse", label: "Margin RMSE", width: "sm", data: n => ({ field: "rmse", value: ratings[n].rmse }), cell: n => <GridValue text={fixed(ratings[n].rmse)} /> },
       { key: "winner", label: "Winner picked", width: "sm", data: n => ({ field: "winner", value: ratings[n].winner_accuracy ?? "" }), cell: n => <GridValue text={ratings[n].winner_accuracy == null ? null : percent(ratings[n].winner_accuracy)} /> },
-      ...(gaps ? gainColumns<string>(() => gaps, tinted) : []),
     ]} />;
 }
 
@@ -294,7 +310,7 @@ function ScoreSection({ page }: { page: ProjectedImpactPage }) {
   const prospective = score?.prospective, hindsight = score?.hindsight;
   const unprojected = (group: ScoreGroup) => group.unprojected_minutes_share === undefined ? null
     : <p className="pi-note" data-field="unprojected" data-value={group.unprojected_minutes_share}>Minutes played by someone with no frozen row, who takes the rookie average: {percent(group.unprojected_minutes_share)}. A dash is a pair the weekly score doesn&apos;t compute.</p>;
-  return <ResearchSection id="season-2026-27" icon="calendar" title={`${SEASON}, scored each week`}>
+  return <><ResearchSection id="season-2026-27" icon="calendar" title={`${SEASON}, scored each week`}>
     <p className="pi-lead">The season-long target won&apos;t exist until the season ends, so the frozen numbers are scored each week on real games. It uses the minutes players really played, so it tests the ratings and is not a game forecast.
       Only games that tipped after the freeze on {formatDate(model.frozen_at.slice(0, 10))} count as prospective.</p>
     {!score || !prospective || !hindsight ? <p className="pi-note">No {SEASON} game has been scored yet.</p> : <>
@@ -305,13 +321,13 @@ function ScoreSection({ page }: { page: ProjectedImpactPage }) {
         ? <>{!prospective.gaps && <p className="pi-note" data-field="prospective-intervals">Gains start at 20 games.</p>}
           <ScoreGrid group={prospective} name="score-prospective" label="Prospective 2026-27 games" tinted selected={model.selected} />{unprojected(prospective)}</>
         : <p className="pi-note" data-field="prospective-empty">No game has been scored since the freeze, so there is no prospective result yet. The next weekly score is due around {formatDate(addDays(score.written_at.slice(0, 10), 7))}.</p>}
-      <h3 className="pi-subhead">Hindsight, before the freeze</h3>
-      {hindsight.games && hindsight.ratings
-        ? <><p className="pi-note" data-field="hindsight-note">These games tipped before the freeze. They are shown apart, aren&apos;t a test of the frozen model, and are too few to quote.</p>
-          <ScoreGrid group={hindsight} name="score-hindsight" label="Hindsight 2026-27 games" tinted={false} selected={model.selected} />{unprojected(hindsight)}</>
-        : <p className="pi-note">No hindsight games scored yet.</p>}
+      {hindsight.games > 0 && <p className="pi-lead" data-field="hindsight-note">The {count(hindsight.games)} hindsight games tipped before the freeze. They aren&apos;t a test of the frozen model and are too few to quote, so they are kept apart below.</p>}
     </>}
-  </ResearchSection>;
+  </ResearchSection>
+    {hindsight && hindsight.games > 0 && hindsight.ratings && <ResearchDisclosure id="hindsight" icon="calendar" title="Hindsight games, before the freeze">
+      <ScoreGrid group={hindsight} name="score-hindsight" label="Hindsight 2026-27 games" tinted={false} selected={model.selected} />{unprojected(hindsight)}
+    </ResearchDisclosure>}
+  </>;
 }
 
 // ---- The aging curve --------------------------------------------------------------------------------
@@ -320,7 +336,6 @@ const AGE_LABELS = [20, 24, 27, 30, 34, 38];
 
 function Aging({ page }: { page: ProjectedImpactPage }) {
   const { card, model } = page;
-  const selected = RATING_LABELS[model.selected];
   const { aging } = card;
   const dependence = aging.partial_dependence[model.selected];
   const rows = aging.ages.map((age, i) => ({ age, delta: aging.delta_method_relative_to_27[i], model: dependence[i] })).filter(p => p.age >= 20 && p.age <= 38);
@@ -329,14 +344,14 @@ function Aging({ page }: { page: ProjectedImpactPage }) {
   const { player, game } = card.test.pooled;
   return <ResearchSection id="aging" icon="chart-line" title="The aging curve">
     <p className="pi-lead" data-field="aging-line">The age-curve candidate learns a clear rise and fall but adds almost nothing over carry-forward: players {gapText(player.gaps.age_curve_over_carry_forward)}, games {gapText(game.gaps.age_curve_over_carry_forward)}, which is worse.
-      {" "}{selected} barely moves with age once it has seen a player&apos;s record, so age is not where its gain comes from. That doesn&apos;t mean players don&apos;t age.</p>
+      {" "}The frozen model barely moves with age once it has seen a player&apos;s record, so age is not where its gain comes from. That doesn&apos;t mean players don&apos;t age.</p>
     <figure className="pi-figure" data-chart="aging">
       <figcaption className="pi-figure-title">Impact by age, relative to age 27, points per 100 possessions</figcaption>
       <ul className="pi-key">
         <li><span className="pi-key-mark" data-series="main" aria-hidden="true" />Age-curve candidate: year-on-year change, summed</li>
-        <li><span className="pi-key-mark" data-series="overlay" aria-hidden="true" />{selected}: partial dependence on age</li>
+        <li><span className="pi-key-mark" data-series="overlay" aria-hidden="true" />Projected Impact: partial dependence on age</li>
       </ul>
-      <SeasonLineChart label="Impact relative to age 27" name="Age curve" overlay={{ name: selected, values: rows.map(p => p.model - anchor) }} points={points} zero
+      <SeasonLineChart label="Impact relative to age 27" name="Age curve" overlay={{ name: "Projected Impact", values: rows.map(p => p.model - anchor) }} points={points} zero
         xTicks={AGE_LABELS.map(age => rows.findIndex(p => p.age === age)).filter(i => i >= 0)} format={v => signed(v)} axisFormat={v => signed(v, 1)} />
       <p className="pi-note">Age at the season opener. The ends rest on few players, so read them loosely. Neither curve has a served interval.</p>
     </figure>
@@ -345,6 +360,9 @@ function Aging({ page }: { page: ProjectedImpactPage }) {
 
 // ---- Do the intervals hold? --------------------------------------------------------------------------
 
+/** Most minutes first, then no prior season at all. */
+const COVERAGE_ORDER = ["1500_plus", "500_to_1499", "under_500", "no_prior"];
+
 interface CoverageRow { key: string; label: string; players: number; coverage: number; width: number | null; calibration: number | null }
 
 function Intervals({ page }: { page: ProjectedImpactPage }) {
@@ -352,7 +370,7 @@ function Intervals({ page }: { page: ProjectedImpactPage }) {
   const coverage = card.test.pooled.coverage;
   const rows: CoverageRow[] = [
     { key: "all", label: "All", players: coverage.overall.players, coverage: coverage.overall.coverage, width: null, calibration: null },
-    ...Object.entries(coverage.by_prior_minutes).map(([bucket, row]) => ({ key: bucket, label: BUCKET_LABELS[bucket] ?? bucket, players: row.players, coverage: row.coverage ?? NaN, width: row.half_width ?? null, calibration: model.conformal[`${bucket}_n`] ?? null })),
+    ...COVERAGE_ORDER.filter(bucket => coverage.by_prior_minutes[bucket]).map(bucket => [bucket, coverage.by_prior_minutes[bucket]] as const).map(([bucket, row]) => ({ key: bucket, label: BUCKET_LABELS[bucket] ?? bucket, players: row.players, coverage: row.coverage ?? NaN, width: row.half_width ?? null, calibration: model.conformal[`${bucket}_n`] ?? null })),
   ];
   const seasons = Object.entries(card.test.seasons);
   return <ResearchSection id="intervals" icon="ruler" title="Do the intervals hold?">
@@ -374,7 +392,7 @@ function Intervals({ page }: { page: ProjectedImpactPage }) {
 const GLOSSARY: GlossaryGroup[] = [
   { label: "Ratings", icon: "chart-trend", items: [
     { term: "RAPM", text: "Regularized adjusted plus-minus: points per 100 possessions a player adds above an average player, from who was on the floor. One season of it is noisy." },
-    { term: "LightGBM", text: "The frozen model, gradient-boosted trees on past RAPM, box-score rates, play types, shot profile, minutes and age. It was picked on 2023-24, before the test." },
+    { term: "Projected Impact (LightGBM)", text: "The frozen model, gradient-boosted trees on past RAPM, box-score rates, play types, shot profile, minutes and age. It was picked on 2023-24, before the test." },
     { term: "Ridge", text: "A linear model on the same inputs. It did better on the test seasons but wasn't the one selected, so it is scored beside the frozen model." },
     { term: "Time-decay RAPM", text: "RAPM over several seasons, with older games counting for less, as of the season opener." },
     { term: "Age curve", text: "Last season's RAPM plus the average change for a player of that age." },
@@ -454,7 +472,7 @@ function Sections({ page }: { page: ProjectedImpactPage }) {
     document.getElementById("contributions")?.scrollIntoView({ block: "start" });
   };
   return <>
-    <Answer />
+    <Answer page={page} />
     <Projections page={page} chosen={id} onChoose={choose} />
     <Why page={page} id={id} fallback={fallback} onChoose={choose} onClear={() => set({ player: NO_PLAYER })} onReset={() => set({ player: null })} />
     <TestSection page={page} />

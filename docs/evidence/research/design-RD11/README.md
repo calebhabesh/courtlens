@@ -59,3 +59,34 @@ Before the rebuild (:3100, read 2026-11-09): four stat tiles and eight stacked s
 **Glance test** (`pi-top-1440.png`, full pages at both widths, viewed). In five seconds: what the page is (hero), the answer in one sentence, and the first rows of a table with each player's projection and its interval.
 
 **Notes.** Section captures taken by Playwright can show the sticky site header or the Skip to content link across a tall section; neither is on the page there. Visuals were judged from the sandbox build. The `projected-impact.css` import moved to just after `metric-backtest-research.css`, and the CSS chunk :3100 serves was checked for the new rules.
+
+## Round 2 (owner, 2026-11-09): "Yes, do them all comprehensively."
+
+| # | Change | Result |
+| --- | --- | --- |
+| 1 | Rookies and returners view | RAPM and Minutes are gone (all 79 rows were dashes) and Years in league is served in their place. The check now fails any column that is all dashes, in every view |
+| 2 | What "it" is | The heading and the answer name the model; its row reads "Projected Impact" over "LightGBM, the frozen model", in every grid, the tile and the aging key |
+| 3 | The size of the edge | One line: 14.66 for the model, 14.76 for time decay, 15.11 for carry-forward (error on final game margins, served, pooled) |
+| 4 | Phone table | The Why arrow stays on the player's line and names wrap whole; rows are 72 px (were about 97). Name text is 14 px on a phone so the longest surname fits the cell |
+| 5 | Gains first | Gain columns come ahead of RMSE in the test, group and weekly grids; both gains are on screen at 390 |
+| 6 | Hindsight | Its own collapsed section, with one visible line saying these games aren't a test and are too few to quote |
+| 7 | Why card on a phone | A By source / Largest inputs switch; one list at a time. Desktop still shows both |
+| 8 | Bar scale | −7, 0 and +10 in the Projected header, 0 px from the bars' ends and zero tick at 1440; the sentence left the legend. `GridColumn` and `SortHeader` gained an optional `headerAfter` / `after`; without it nothing changes |
+| 9 | Small fixes | The frozen model's tile takes the card header's colour; coverage rows run 1,500+, 500 to 1,499, Under 500, No RAPM; aging dots appear only on hover, one per line, with both values in the tooltip |
+
+Nothing else moved: no API, analysis, frozen result or interval changed. The prospective table still hasn't rendered on real data; the first weekly score is due around Nov 12, 2026.
+
+**Page size.** 5,203 px at 1440 with the disclosures collapsed (round 1: 5,433; the original: 4,857) and 6,354 px at 390 (round 1: 6,806; the original: 6,507).
+
+**Found by viewing the screenshots, then fixed and re-verified.** The first build of item 4 split long surnames mid-word ("Wembanyam-a"), and "LightGBM, the frozen model" ran into the next column on a phone. The check now fails both: any name word wider than its cell, and any rating subtitle past its own cell.
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | clean |
+| Vitest | 840 passed |
+| `projected-impact` ×3 | 30/30. The known flake did not appear |
+| Full Playwright | 616 passed, 17 skipped, 0 failed, on the final build |
+| Real data ([`real-data-check.json`](real-data-check.json), [`real-check.mjs`](real-check.mjs)) | 108,497 values (67,257 at 1440 over 123 loads; 41,240 at 390 over 20 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images |
+
+Screenshots viewed: `pi-top-1440.png`, `pi-answer-1440.png`, `pi-projections-*`, `pi-rookies-*`, `pi-contributions-390.png`, `pi-test-*`, `pi-season-2026-27-1440.png`, `pi-hindsight-1440.png`, `pi-aging-1440.png`, the full page at 1440. Evidence screenshots are from round 2's final build. The `pi-rookies` shots were taken separately on that build. Visuals were judged from the sandbox build; the CSS chunk :3100 serves was checked for the new rules.
+

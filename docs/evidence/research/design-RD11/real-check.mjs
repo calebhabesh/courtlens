@@ -31,6 +31,7 @@ const ORDER = ["lightgbm", "ridge", "time_decay", "age_curve", "carry_forward"];
 const LABEL = { lightgbm: "LightGBM", ridge: "Ridge", time_decay: "Time-decay RAPM", age_curve: "Age curve", carry_forward: "Carry-forward" };
 // Which gains the frozen test and the weekly score serve, written out, so a lookup that silently finds nothing fails here.
 const TEST_PAIRS = { lightgbm: ["carry_forward", "time_decay"], ridge: ["carry_forward", "time_decay"], age_curve: ["carry_forward", "time_decay"], time_decay: [], carry_forward: [] };
+const shownName = n => n === "lightgbm" ? "Projected Impact" : LABEL[n];
 const WEEK_PAIRS = { lightgbm: ["carry_forward", "time_decay"], ridge: ["carry_forward", "time_decay"], age_curve: [], time_decay: [], carry_forward: [] };
 
 const readTable = (page, name) => page.evaluate(n => [...document.querySelectorAll(`table[data-table="${n}"] tbody tr`)].filter(tr => tr.dataset.row).map(tr => ({
@@ -62,8 +63,9 @@ for (const width of [1440, 390]) {
   const open = async (q, ready) => { loads += 1; await page.goto(`${WEB}${q}`, { waitUntil: "domcontentloaded", timeout: 120000 }); await page.waitForSelector(ready, { state: "attached", timeout: 60000 }); };
   const READY = 'table[data-table="projections"] tbody tr[data-row]';
 
-  const checkBoard = (id, table, want) => {
+  const checkBoard = (id, table, want, rookieView = false) => {
     eq(`${id} rows`, table.length, want.length);
+    if (table.length) for (const key of Object.keys(table[0].cells)) eq(`${id} column ${key} isn't all dashes`, table.some(r => r.cells[key].text !== "—"), true);
     eq(`${id} order`, table.map(r => r.key).join(), want.map(p => p.player_id).join());
     for (const p of want) {
       const r = table.find(x => x.key === p.player_id); if (!r) continue;
@@ -72,11 +74,17 @@ for (const width of [1440, 390]) {
       eq(`${id} ${p.name} text`, c.main, signed(p.projection)); eq(`${id} ${p.name} interval`, c.sub, band(p, 1));
       eq(`${id} ${p.name} tone`, c.tone, t); eq(`${id} ${p.name} identity`, c.identity, t ? null : identity(p.projection));
       eq(`${id} ${p.name} age`, num(r.cells.age.value), p.age); eq(`${id} ${p.name} age text`, r.cells.age.text, p.age == null ? "—" : String(Math.floor(p.age)));
-      eq(`${id} ${p.name} last`, num(r.cells.last.value), p.group === "prior" ? p.ratings.carry_forward : null);
-      eq(`${id} ${p.name} last text`, r.cells.last.text, p.group === "prior" ? signed(p.ratings.carry_forward) : "—");
-      eq(`${id} ${p.name} last identity`, r.cells.last.identity, p.group === "prior" ? identity(p.ratings.carry_forward) : null); eq(`${id} ${p.name} last no tone`, r.cells.last.tone, null);
-      eq(`${id} ${p.name} minutes`, num(r.cells.minutes.value), p.minutes_last_season);
-      eq(`${id} ${p.name} minutes text`, r.cells.minutes.text, p.minutes_last_season == null ? "—" : Math.round(p.minutes_last_season).toLocaleString("en-US"));
+      if (rookieView) {
+        eq(`${id} ${p.name} no last column`, r.cells.last, undefined); eq(`${id} ${p.name} no minutes column`, r.cells.minutes, undefined);
+        eq(`${id} ${p.name} years`, num(r.cells.years.value), p.years_in_league); eq(`${id} ${p.name} years text`, r.cells.years.text, p.years_in_league == null ? "—" : String(p.years_in_league));
+      } else {
+        eq(`${id} ${p.name} no years column`, r.cells.years, undefined);
+        eq(`${id} ${p.name} last`, num(r.cells.last.value), p.group === "prior" ? p.ratings.carry_forward : null);
+        eq(`${id} ${p.name} last text`, r.cells.last.text, p.group === "prior" ? signed(p.ratings.carry_forward) : "—");
+        eq(`${id} ${p.name} last identity`, r.cells.last.identity, p.group === "prior" ? identity(p.ratings.carry_forward) : null); eq(`${id} ${p.name} last no tone`, r.cells.last.tone, null);
+        eq(`${id} ${p.name} minutes`, num(r.cells.minutes.value), p.minutes_last_season);
+        eq(`${id} ${p.name} minutes text`, r.cells.minutes.text, p.minutes_last_season == null ? "—" : Math.round(p.minutes_last_season).toLocaleString("en-US"));
+      }
       eq(`${id} ${p.name} name`, r.lead.includes(p.name), true); eq(`${id} ${p.name} subtitle`, r.sub, subtitle(p));
       eq(`${id} ${p.name} why`, r.why, `Why ${p.name} is projected here`); eq(`${id} ${p.name} group`, r.group, p.group);
       eq(`${id} ${p.name} logo`, r.logos >= 1, true);
@@ -112,7 +120,10 @@ for (const width of [1440, 390]) {
 
   // The answer's claims, from the served numbers.
   const answer = await page.locator('[data-field="answer"]').innerText();
-  eq("answer yes", answer.includes("Yes, on both held-out seasons, but its edge over time-decay RAPM is small."), true);
+  eq("answer yes", answer.includes("Yes, the frozen model beat it on both held-out seasons, but its edge over time-decay RAPM is small."), true);
+  const edge = page.locator('[data-field="edge"]'), edgeText = await edge.innerText(), edgeRatings = card.test.pooled.game.ratings;
+  eq("edge line", edgeText, `Error on final game margins, in points: ${fixed(edgeRatings.lightgbm.rmse)} for the model, ${fixed(edgeRatings.time_decay.rmse)} for time decay and ${fixed(edgeRatings.carry_forward.rmse)} for carry-forward.`);
+  eq("edge values", (await edge.locator("strong").evaluateAll(e => e.map(x => Number(x.dataset.value)))).join(), [edgeRatings.lightgbm.rmse, edgeRatings.time_decay.rmse, edgeRatings.carry_forward.rmse].join());
   eq("answer gates", card.test.gates.A1_player.passed && card.test.gates.A2_game.passed, true);
   for (const [s, v] of Object.entries(card.test.seasons)) { eq(`answer ${s} players`, v.player.gaps.lightgbm_over_carry_forward.low > 0, true); eq(`answer ${s} games`, v.game.gaps.lightgbm_over_carry_forward.low > 0, true); }
   const pool = card.test.pooled;
@@ -125,6 +136,8 @@ for (const width of [1440, 390]) {
   eq("projections honesty", proj.includes("not the player's true ability"), true); eq("no verdict from overlap", proj.includes("no claim about which of two players is better"), true);
   eq("board default", await page.locator('[data-field="shown"]').getAttribute("data-value"), String(inView("roster").length));
   eq("axis left", num(await page.locator('[data-field="axis"]').getAttribute("data-left")), left); eq("axis right", num(await page.locator('[data-field="axis"]').getAttribute("data-right")), right);
+  eq("axis labels", (await page.locator('[data-field="axis"] > span').allTextContents()).join("|"), `${signed(left, 0)}|0|${signed(right, 0)}`);
+  eq("legend has no scale sentence", proj.includes("Bars run"), false);
   eq("no red key while none excludes below", await page.locator('#projections .rs-legend [data-tone="bad"]').count(), players.some(p => p.high < 0) ? 1 : 0);
   checkBoard("roster", await readTable(page, "projections"), byProjection(inView("roster")));
 
@@ -133,7 +146,7 @@ for (const width of [1440, 390]) {
     const d = await detailOf(p.player_id), blocks = Object.entries(d.player.contributions.blocks), top = d.player.contributions.top;
     const got = await page.evaluate(pid => { const c = document.querySelector(`[data-player="${pid}"]`); const field = n => c.querySelector(`[data-field="${n}"]`); const bars = n => [...c.querySelectorAll(`[data-bars="${n}"] li`)].map(l => ({ key: l.dataset.key, value: l.dataset.value, label: l.querySelector(".pi-bar-label").textContent, text: l.querySelector(".pi-bar-value").textContent, identity: l.querySelector(".pi-bar-value").dataset.identity ?? null, sign: l.querySelector(".pi-bar").dataset.sign, barIdentity: l.querySelector(".pi-bar").dataset.identity ?? null, tones: l.querySelectorAll("[data-tone]").length }));
       return { name: c.querySelector(".pi-card-name").textContent, team: c.querySelector(".pi-card-team").textContent, value: field("card-projection").dataset.value, low: field("card-projection").dataset.low, high: field("card-projection").dataset.high, strong: field("card-projection").querySelector("strong").textContent, strongTone: field("card-projection").querySelector("strong").dataset.tone ?? null, strongIdentity: field("card-projection").querySelector("strong").dataset.identity ?? null, small: field("card-projection").querySelector("small").textContent, sum: field("sum").textContent, base: field("sum").dataset.base, blocks: bars("blocks"), top: bars("top"),
-        tiles: [...c.querySelectorAll(".pi-tile")].map(t => ({ rating: t.dataset.rating, value: t.dataset.value, label: t.querySelector(".pi-tile-label").textContent, text: t.querySelector(".pi-tile-value").textContent, identity: t.querySelector(".pi-tile-value").dataset.identity ?? null })), avatar: c.querySelectorAll(".ui-identity img, .ui-identity .player-portrait, .ui-identity .player-portrait-fallback").length, tint: c.getAttribute("style") ?? "" }; }, p.player_id);
+        tiles: [...c.querySelectorAll(".pi-tile")].map(t => ({ rating: t.dataset.rating, value: t.dataset.value, label: t.querySelector(".pi-tile-label").textContent, text: t.querySelector(".pi-tile-value").textContent, identity: t.querySelector(".pi-tile-value").dataset.identity ?? null, tone: t.querySelector(".pi-tile-value").dataset.tone ?? null })), avatar: c.querySelectorAll(".ui-identity img, .ui-identity .player-portrait, .ui-identity .player-portrait-fallback").length, tint: c.getAttribute("style") ?? "" }; }, p.player_id);
     eq(`${id} name`, got.name, p.name); eq(`${id} value`, num(got.value), p.projection); eq(`${id} low`, num(got.low), p.low); eq(`${id} high`, num(got.high), p.high);
     eq(`${id} text`, got.strong, signed(p.projection)); eq(`${id} band`, got.small, `80% interval ${band(p, 1)}`);
     eq(`${id} tone`, got.strongTone, tone(p)); eq(`${id} identity`, got.strongIdentity, tone(p) ? null : identity(p.projection));
@@ -146,7 +159,8 @@ for (const width of [1440, 390]) {
     eq(`${id} top count`, got.top.length, top.length);
     top.forEach((e, i) => { const b = got.top[i]; eq(`${id} top ${i} key`, b.key, e.feature); eq(`${id} top ${i} value`, num(b.value), e.contribution); eq(`${id} top ${i} text`, b.text, signed(e.contribution)); eq(`${id} top ${i} identity`, b.identity, identity(e.contribution)); eq(`${id} top ${i} no green/red`, b.tones, 0); eq(`${id} top ${i} input`, e.value == null ? !/\(\d/.test(b.label) : b.label.endsWith(`(${fixed(e.value)})`), true); eq(`${id} top ${i} worded`, /_/.test(b.label.replace(/\(.*$/, "")), false); });
     eq(`${id} tiles order`, got.tiles.map(t => t.rating).join(), ORDER.join());
-    for (const t of got.tiles) { eq(`${id} tile ${t.rating}`, num(t.value), p.ratings[t.rating]); eq(`${id} tile ${t.rating} text`, t.text, signed(p.ratings[t.rating])); eq(`${id} tile ${t.rating} identity`, t.identity, identity(p.ratings[t.rating])); eq(`${id} tile ${t.rating} label`, t.label, t.rating === "carry_forward" && p.group !== "prior" ? "Group average" : LABEL[t.rating]); }
+    for (const t of got.tiles) { eq(`${id} tile ${t.rating}`, num(t.value), p.ratings[t.rating]); eq(`${id} tile ${t.rating} text`, t.text, signed(p.ratings[t.rating])); const frozenTone = t.rating === "lightgbm" ? tone(p) : null; eq(`${id} tile ${t.rating} tone`, t.tone, frozenTone); eq(`${id} tile ${t.rating} identity`, t.identity, frozenTone ? null : identity(p.ratings[t.rating])); eq(`${id} tile ${t.rating} label`, t.label, t.rating === "carry_forward" && p.group !== "prior" ? "Group average" : shownName(t.rating)); }
+    eq(`${id} card and frozen tile agree`, got.tiles.find(t => t.rating === "lightgbm").tone, got.strongTone);
   };
   const top = byProjection(inView("roster"))[0];
   await page.waitForSelector(`[data-player="${top.player_id}"]`, { state: "attached" });
@@ -160,7 +174,7 @@ for (const width of [1440, 390]) {
     eq(`${id} player order`, players_.map(r => r.key).join(), ORDER.join()); eq(`${id} game order`, games_.map(r => r.key).join(), ORDER.join());
     for (const n of ORDER) {
       const pl = players_.find(r => r.key === n), ga = games_.find(r => r.key === n), m = scope.player.models[n], g = scope.game.ratings[n];
-      eq(`${id} ${n} label`, pl.lead.startsWith(LABEL[n]), true); eq(`${id} ${n} frozen mark`, pl.lead.includes("The frozen model"), n === model.selected);
+      eq(`${id} ${n} label`, pl.lead.startsWith(shownName(n)), true); eq(`${id} ${n} frozen mark`, pl.lead.includes("LightGBM, the frozen model"), n === model.selected);
       eq(`${id} ${n} rmse`, num(pl.cells.rmse.value), m.rmse); eq(`${id} ${n} rmse text`, pl.cells.rmse.main, fixed(m.rmse)); eq(`${id} ${n} corr`, num(pl.cells.correlation.value), m.correlation); eq(`${id} ${n} corr text`, pl.cells.correlation.main, fixed(m.correlation));
       eq(`${id} ${n} margin`, num(ga.cells.rmse.value), g.rmse); eq(`${id} ${n} margin text`, ga.cells.rmse.main, fixed(g.rmse)); eq(`${id} ${n} winner`, num(ga.cells.winner.value), g.winner_accuracy); eq(`${id} ${n} winner text`, ga.cells.winner.main, pct(g.winner_accuracy));
       for (const k of ["rmse", "correlation"]) eq(`${id} ${n} ${k} neutral`, pl.cells[k].tone, null);
@@ -201,7 +215,7 @@ for (const width of [1440, 390]) {
   };
   if (score.prospective.games > 0) await checkWeek(score.prospective, "score-prospective", true);
   else { const line = await page.locator('[data-field="prospective-empty"]').innerText(); const next = new Date(Date.parse(`${score.written_at.slice(0, 10)}T00:00:00Z`) + 7 * 864e5).toISOString().slice(0, 10); eq("prospective empty", line.includes(`due around ${longDate(next)}`), true); eq("no prospective table", await page.locator('table[data-table="score-prospective"]').count(), 0); }
-  if (score.hindsight.games > 0) { await checkWeek(score.hindsight, "score-hindsight", false); eq("hindsight note", (await page.locator('[data-field="hindsight-note"]').innerText()).includes("too few to quote"), true); eq("unprojected", num(await page.locator('#season-2026-27 [data-field="unprojected"]').last().getAttribute("data-value")), score.hindsight.unprojected_minutes_share); }
+  if (score.hindsight.games > 0) { await checkWeek(score.hindsight, "score-hindsight", false); eq("hindsight note", (await page.locator('[data-field="hindsight-note"]').innerText()).includes(`The ${count(score.hindsight.games)} hindsight games tipped before the freeze. They aren't a test of the frozen model and are too few to quote`), true); eq("hindsight note visible", await page.locator('[data-field="hindsight-note"]').isVisible(), true); eq("hindsight collapsed", await page.locator("#hindsight details").getAttribute("open"), null); eq("hindsight table hidden", await page.locator('table[data-table="score-hindsight"]').isVisible(), false); eq("unprojected", num(await page.locator('#hindsight [data-field="unprojected"]').getAttribute("data-value")), score.hindsight.unprojected_minutes_share); }
 
   // Aging: both series at every age 20 to 38, relative to 27.
   const ages = card.aging.ages.map((age, i) => ({ age, delta: card.aging.delta_method_relative_to_27[i], pd: card.aging.partial_dependence.lightgbm[i] })).filter(a => a.age >= 20 && a.age <= 38);
@@ -209,6 +223,7 @@ for (const width of [1440, 390]) {
   const aging = await page.evaluate(() => { const f = document.querySelector('[data-chart="aging"]'); const dots = s => [...f.querySelectorAll(`.slc-dot${s}`)].map(d => ({ age: d.dataset.season, value: d.dataset.value, bg: getComputedStyle(d).backgroundColor })); const line = s => getComputedStyle(f.querySelector(`path.slc-line${s}`)).stroke;
     return { main: dots(":not([data-series])"), overlay: dots('[data-series="overlay"]'), mainStroke: line(":not([data-series])"), overlayStroke: line('[data-series="overlay"]'), zero: f.querySelectorAll(".slc-grid[data-zero]").length, x: [...f.querySelectorAll(".slc-x-label")].map(x => x.textContent), a: getComputedStyle(document.documentElement).getPropertyValue("--color-category-3").trim(), b: getComputedStyle(document.documentElement).getPropertyValue("--color-category-4").trim(), text: f.innerText, keyA: getComputedStyle(f.querySelector('.pi-key-mark[data-series="main"]')).backgroundColor, keyB: getComputedStyle(f.querySelector('.pi-key-mark[data-series="overlay"]')).backgroundColor }; });
   eq("aging points", aging.main.length, ages.length); eq("aging overlay points", aging.overlay.length, ages.length); eq("aging zero line", aging.zero, 1); eq("aging ages", aging.main.map(d => d.age).join(), ages.map(a => String(a.age)).join()); eq("aging x labels", aging.x.join(), "20,24,27,30,34,38");
+  eq("aging dots hidden until hover", await page.evaluate(() => [...document.querySelectorAll('[data-chart="aging"] .slc-dot')].every(d => getComputedStyle(d).opacity === "0")), true);
   for (const a of ages) { eq(`aging ${a.age}`, num(aging.main.find(d => d.age === String(a.age))?.value), a.delta); near(`aging model ${a.age}`, num(aging.overlay.find(d => d.age === String(a.age))?.value), a.pd - zeroPd, 1e-9); }
   const hex = h => { const n = parseInt(h.slice(1), 16); return `rgb(${n >> 16 & 255}, ${n >> 8 & 255}, ${n & 255})`; };
   eq("aging tint a", aging.mainStroke, hex(aging.a)); eq("aging tint b", aging.overlayStroke, hex(aging.b)); eq("aging key a", aging.keyA, hex(aging.a)); eq("aging key b", aging.keyB, hex(aging.b));
@@ -219,7 +234,7 @@ for (const width of [1440, 390]) {
   // Coverage.
   const cov = card.test.pooled.coverage;
   const covTable = await readTable(page, "coverage");
-  eq("coverage rows", covTable.map(r => r.key).join(), ["all", ...Object.keys(cov.by_prior_minutes)].join());
+  eq("coverage rows", covTable.map(r => r.key).join(), "all,1500_plus,500_to_1499,under_500,no_prior");
   const all = covTable[0]; eq("coverage all", num(all.cells.coverage.value), cov.overall.coverage); eq("coverage all text", all.cells.coverage.main, pct(cov.overall.coverage)); eq("coverage all players", num(all.cells.players.value), cov.overall.players); eq("coverage all width", all.cells.width.text, "—");
   for (const [b, row] of Object.entries(cov.by_prior_minutes)) { const r = covTable.find(x => x.key === b); eq(`coverage ${b}`, num(r.cells.coverage.value), row.coverage); eq(`coverage ${b} text`, r.cells.coverage.main, pct(row.coverage)); eq(`coverage ${b} players`, num(r.cells.players.value), row.players); eq(`coverage ${b} width`, num(r.cells.width.value), row.half_width); eq(`coverage ${b} width text`, r.cells.width.main, fixed(row.half_width)); eq(`coverage ${b} calibrated`, num(r.cells.calibration.value), model.conformal[`${b}_n`]); eq(`coverage ${b} width = conformal`, row.half_width, model.conformal[b]); }
   const covLine = await page.locator('[data-field="coverage-line"]').innerText();
@@ -231,7 +246,7 @@ for (const width of [1440, 390]) {
     await page.evaluate(async () => { document.querySelectorAll("img").forEach(i => { i.loading = "eager"; }); });
     await page.waitForLoadState("networkidle").catch(() => {});
     await page.screenshot({ path: `${shots}/pi-full-${tag}.png`, fullPage: true });
-    for (const id of ["projections", "contributions", "test", "season-2026-27", "aging", "intervals", "reading"]) { await page.locator(`#${id}`).scrollIntoViewIfNeeded(); await page.waitForTimeout(200); await page.locator(`#${id}`).screenshot({ path: `${shots}/pi-${id}-${tag}.png` }); }
+    for (const id of ["answer", "projections", "contributions", "test", "season-2026-27", "aging", "intervals", "reading"]) { await page.locator(`#${id}`).scrollIntoViewIfNeeded(); await page.waitForTimeout(200); await page.locator(`#${id}`).screenshot({ path: `${shots}/pi-${id}-${tag}.png` }); }
     await page.evaluate(() => window.scrollTo(0, 0));
   }
 
@@ -251,6 +266,10 @@ for (const width of [1440, 390]) {
   eq("diagnostic bands partition the players", Object.values(cov.by_target_minutes_diagnostic).reduce((s, v) => s + v.players, 0), cov.overall.players);
   if (shots) { await page.locator("#about").scrollIntoViewIfNeeded(); await page.waitForTimeout(200); await page.locator("#about").screenshot({ path: `${shots}/pi-about-${tag}.png` }); }
   await page.locator("#about summary").click();
+  await page.locator("#hindsight summary").click();
+  eq("hindsight opens", await page.locator('table[data-table="score-hindsight"]').isVisible(), true);
+  if (shots) { await page.locator("#hindsight").scrollIntoViewIfNeeded(); await page.waitForTimeout(200); await page.locator("#hindsight").screenshot({ path: `${shots}/pi-hindsight-${tag}.png` }); }
+  await page.locator("#hindsight summary").click();
   await page.locator("#glossary summary").click();
   if (shots) { await page.locator("#glossary").scrollIntoViewIfNeeded(); await page.waitForTimeout(200); await page.locator("#glossary").screenshot({ path: `${shots}/pi-glossary-${tag}.png` }); }
   await page.locator("#glossary summary").click();
@@ -272,15 +291,40 @@ for (const width of [1440, 390]) {
       greenRedCells: toned.length, watermarks: root.querySelectorAll(".pi-card > img, .rs-card > img").length, sectionBorders: [...root.querySelectorAll(":scope > .rs-section")].filter(s => parseFloat(getComputedStyle(s).borderTopWidth) > 0).length,
       cardEdges: (c => c ? parseFloat(getComputedStyle(c).borderLeftWidth) : 0)(root.querySelector(".pi-card")),
       phoneBoardFits: (() => { const c = root.querySelector('table[data-table="projections"] td[data-column="projection"]').getBoundingClientRect(); return c.right <= innerWidth; })(),
+      scaleAligned: (() => { if (w < 600) return null; const row = root.querySelector('table[data-table="projections"] tbody .pi-range'); const zero = row.querySelector(".pi-range-zero").getBoundingClientRect(); const label = root.querySelector('[data-end="zero"]').getBoundingClientRect(), a = root.querySelector('[data-end="left"]').getBoundingClientRect(), b = root.querySelector('[data-end="right"]').getBoundingClientRect(), r = row.getBoundingClientRect(); return { zero: Math.abs(label.left + label.width / 2 - zero.left), left: Math.abs(a.left - r.left), right: Math.abs(b.right - r.right) }; })(),
+      namesCut: [...root.querySelectorAll('table[data-table="projections"] .player-cell-name')].filter(n => n.scrollWidth > n.clientWidth + 1 && w < 600).length,
+      namesWiderThanCell: w < 600 ? (() => { const ctx = document.createElement("canvas").getContext("2d"); return [...root.querySelectorAll('table[data-table="projections"] .player-cell-name')].filter(n => { const c = getComputedStyle(n); ctx.font = `${c.fontWeight} ${c.fontSize} ${c.fontFamily}`; return n.textContent.split(/[\s-]+/).some(word => ctx.measureText(word).width > n.getBoundingClientRect().width + 0.5); }).map(n => n.textContent); })() : null,
+      ratingSubsOverflow: [...root.querySelectorAll(".pi-rating-sub")].filter(e => { const b = document.createRange(); b.selectNodeContents(e); return b.getBoundingClientRect().right > e.closest("th").getBoundingClientRect().right + 0.5; }).length,
+      arrowOnNameLine: w < 600 ? (() => { const row = root.querySelector('table[data-table="projections"] tbody tr'); const a = row.querySelector(".rs-grid-tools").getBoundingClientRect(), n = row.querySelector(".player-cell-name").getBoundingClientRect(); return a.top < n.bottom && a.bottom > n.top; })() : null,
+      phoneRowHeight: w < 600 ? Math.round(root.querySelector('table[data-table="projections"] tbody tr').getBoundingClientRect().height) : null,
+      gainsOnScreen: (() => { const g = root.querySelector('table[data-table="test-players"] tbody tr td[data-column="over_time_decay"]').getBoundingClientRect(); return g.right <= innerWidth; })(),
+      phoneListsShown: w < 600 ? [...root.querySelectorAll(".pi-bars-block")].filter(visible).length : null, switchShown: visible(root.querySelector(".pi-bars-switch")),
       firstColumnBarsHidden: root.querySelector(".pi-range") ? getComputedStyle(root.querySelector(".pi-range")).display : null,
     };
   }, width);
+
+  // Hover shows one point per line with both values in the tooltip.
+  if (wide) {
+    const box = await page.locator('[data-chart="aging"] .slc-plot').boundingBox();
+    await page.locator('[data-chart="aging"] .slc-plot').scrollIntoViewIfNeeded();
+    const b2 = await page.locator('[data-chart="aging"] .slc-plot').boundingBox();
+    await page.mouse.move(b2.x + b2.width / 2, b2.y + b2.height / 2); await page.waitForTimeout(150);
+    eq("hover shows two points", await page.locator('[data-chart="aging"] .slc-dot[data-active]').count(), 2);
+    const tip = await page.locator('[data-chart="aging"] .slc-tip').innerText();
+    eq("hover tooltip names both", tip.includes("Age curve") && tip.includes("Projected Impact"), true);
+    await page.mouse.move(0, 0); void box;
+  } else {
+    const list = page.locator(".pi-card");
+    await list.getByRole("radio", { name: "Largest inputs" }).click();
+    eq("phone: inputs shown", await list.locator('[data-block="top"]').isVisible(), true); eq("phone: sources hidden", await list.locator('[data-block="blocks"]').isVisible(), false);
+    await list.getByRole("radio", { name: "By source" }).click();
+  }
 
   // The other test seasons.
   for (const season of Object.keys(card.test.seasons)) { await open(`?testSeason=${season}`, 'table[data-table="test-players"] tbody tr'); await checkTest(card.test.seasons[season], season, `test ${season}`); }
 
   // The other views and every team.
-  for (const view of ["rookie", "all"]) { await open(`?view=${view}`, READY); checkBoard(view, await readTable(page, "projections"), byProjection(inView(view))); eq(`${view} count`, await page.locator('[data-field="shown"]').getAttribute("data-value"), String(inView(view).length)); }
+  for (const view of ["rookie", "all"]) { await open(`?view=${view}`, READY); checkBoard(view, await readTable(page, "projections"), byProjection(inView(view)), view === "rookie"); eq(`${view} count`, await page.locator('[data-field="shown"]').getAttribute("data-value"), String(inView(view).length)); }
   const teams = [...new Set(players.filter(p => p.on_roster).map(p => p.tricode))].sort();
   for (const team of wide ? teams : teams.slice(0, 3)) { await open(`?team=${team}`, READY); checkBoard(`team ${team}`, await readTable(page, "projections"), byProjection(inView("roster").filter(p => p.tricode === team))); }
   { const last = players.find(p => !p.on_roster); await open(`?view=all&team=${last.last_tricode}`, READY); checkBoard("everyone, last team", await readTable(page, "projections"), byProjection(players.filter(p => teamOf(p) === last.last_tricode))); }
