@@ -76,3 +76,14 @@ photos or initials, counted below; (E) combine kept here, linking to Wingspan; (
 - **Picks.** `pickLabel` gives "R1 #2" (round, overall), the Players bio's form, in the rookie and class tables, cards, search suggestions and steal and miss lists. The class table's Rd column merged into Pick. Value-by-slot stays a plain pick number because a slot spans rounds across eras.
 - **Spec.** The value-by-pick spec no longer fails when its section has not rendered yet (the poll read a missing element).
 - **Checks.** Lint and typecheck clean; Vitest 833; page specs 51/51 at `--repeat-each=3`; full Playwright 606 passed, 17 skipped, 0 failed. Real data at 1440 (145 loads) and 390 (24 loads): 239,609 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 wrong-season photos. Screenshots viewed: `draft-rookie-past-1440.png`, `draft-past-picks-1440.png`, `draft-rookie-past-390.png`.
+
+## Round 4 (owner, 2026-11-09): "Fix them all, comprehensively."
+
+- **Titles.** The two lists are "Most above their slot" and "Furthest below their slot"; surplus, the Steal and Miss tags and the miss wording are unchanged.
+- **Dates.** `formatDate` (Nov 8, 2026) in the hero, rookie notes and card; `<time>` keeps the ISO value.
+- **Classes.** Open on Played, with an All picks switch (`?picks=all`) shown when some picks never played. A never-played pick tagged Miss stays, so a pick such as Len Bias doesn't drop out of its class; the summary says how many are hidden. No filter when nobody in a class has played yet.
+- **Tags and subtitles.** Steal and Miss have a Tag column beside Surplus; "From" holds only the school or club. Subtitles read `CHI · 1984-85`.
+- **Combine chart.** Drawn at its box's measured width, so labels are true 10 px at every size, matching the slot chart, and the chart fills its panel.
+- **Rookie picker.** One `LookupInput` above the card; the chip and the "No rookie chosen" state are gone, so `?rookie=none` opens the first pick.
+- **Slot table and ranges.** The pick column is 80 px. When every row has one verdict it is said once in a sentence (`data-field="band-verdict"`); the Verdict column returns when rows differ.
+- **Checks.** Lint and typecheck clean; Vitest 833; page specs 54/54 at `--repeat-each=3`; full Playwright 607 passed, 17 skipped, 0 failed. Real data at 1440 (150 loads) and 390 (25 loads): 248,604 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 wrong-season photos; every class checked with `?picks=all`, and 1966, 1984, 1986, 2003 and 2022 in the default view. Screenshots viewed: `draft-class-played-*`, `draft-combine-chart-1440.png`, `draft-ranges-round4-1440.png`, `draft-slot-table-1440.png`.

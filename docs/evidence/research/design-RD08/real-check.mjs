@@ -33,6 +33,8 @@ const rookieTone = (s, c) => {
   const high = c.value > c.p90, low = c.value < c.p10;
   return s === "tov36" ? (high ? "bad" : low ? "good" : null) : (high ? "good" : low ? "bad" : null);
 };
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const longDate = iso => { const [y, m, d] = iso.split("-").map(Number); return `${MONTHS[m - 1]} ${d}, ${y}`; };
 const num = v => v === null || v === undefined || v === "" ? null : Number(v);
 
 // One table as { row key: { field: { value, low, high, percentile, text, main, sub, tone, identity, logo } } }, in order.
@@ -178,14 +180,15 @@ for (const width of [1440, 390]) {
         eq(`${id} ${b.band} a`, num(row.cells.mean_a.value), b.mean_a); eq(`${id} ${b.band} b`, num(row.cells.mean_b.value), b.mean_b);
         eq(`${id} ${b.band} diff`, num(row.cells.diff.value), b.diff); eq(`${id} ${b.band} lo`, num(row.cells.diff.low), b.lo); eq(`${id} ${b.band} hi`, num(row.cells.diff.high), b.hi);
         eq(`${id} ${b.band} text`, row.cells.diff.main, signed(b.diff, bd)); eq(`${id} ${b.band} tone`, row.cells.diff.tone, b.lo > 0 ? "good" : b.hi < 0 ? "bad" : null);
-        eq(`${id} ${b.band} verdict`, row.cells.verdict.value, b.verdict);
+        if (row.cells.verdict) eq(`${id} ${b.band} verdict`, row.cells.verdict.value, b.verdict);
+        else eq(`${id} ${b.band} shared verdict`, await page.locator('[data-field="band-verdict"]').getAttribute("data-value"), b.verdict);
       }
     }
   };
   const checkClass = async (year, order) => {
     const data = await api(`/api/draft/classes/${year}`);
     const q = new URLSearchParams(); q.set("year", String(year)); if (order !== "draft") q.set("order", order);
-    await open(`?${q}`, `table[aria-label="${year} draft class"] tbody tr`);
+    await open(`?${q}&picks=all`, `table[aria-label="${year} draft class"] tbody tr`);
     const complete = data.status === "complete", effective = complete ? order : "draft";
     const key = effective === "career" ? "redraft_career" : "redraft_window";
     const want = effective === "draft" ? [...data.rows].sort((a, b) => a.pick - b.pick) : [...data.rows].sort((a, b) => (a[key] ?? 1e9) - (b[key] ?? 1e9));
@@ -212,7 +215,7 @@ for (const width of [1440, 390]) {
       eq(`${p} round`, num(c.pick.round), r.round); eq(`${p} pick text`, c.pick.text, r.round == null ? `#${r.pick}` : `R${r.round} #${r.pick}`); eq(`${p} team`, c.team.value, r.team ?? "");
       if (r.team && !c.team.logo) missingLogos.push(`${year} ${r.team}`);
       eq(`${p} from`, c.organization.value, r.organization ?? "");
-      eq(`${p} tag`, c.organization.label, steals.has(r.pick) ? "Steal" : misses.has(r.pick) ? "Miss" : null);
+      if (complete) eq(`${p} tag`, c.label.label, steals.has(r.pick) ? "Steal" : misses.has(r.pick) ? "Miss" : null); eq(`${p} tag not in from`, c.organization.label, null);
       eq(`${p} ws`, num(c.window_ws.value), (complete ? r.window_ws : r.career_ws) ?? null); eq(`${p} ws text`, c.window_ws.main ?? c.window_ws.text, fixed(complete ? r.window_ws : r.career_ws));
       eq(`${p} min`, num(c.window_min.value), (complete ? r.window_min : r.career_min) ?? null); eq(`${p} min text`, c.window_min.main ?? c.window_min.text, whole(complete ? r.window_min : r.career_min));
       if (complete) {
@@ -273,7 +276,7 @@ for (const width of [1440, 390]) {
   await checkCard(compared_rookies[0]);
   await checkLists();
   const total = summary.classes.reduce((s, c) => s + c.picks, 0);
-  eq("hero", (await page.locator(".rs-intro-tagline").innerText()).trim(), `Games through ${tracker.comparison_date} · ${total.toLocaleString("en-US")} picks · classes 1966–2026`);
+  eq("hero", (await page.locator(".rs-intro-tagline").innerText()).trim(), `Games through ${longDate(tracker.comparison_date)} · ${total.toLocaleString("en-US")} picks · classes 1966–2026`);
   eq("h1", await page.locator("h1").innerText(), "Draft Classes");
   const one = summary.value_by_pick.window.all.ws[0], thirty = summary.value_by_pick.window.all.ws[29];
   eq("headline", await page.locator('[data-field="headline"]').innerText(), `Over the first four seasons, the first pick has returned ${fixed(one.mean)} win shares (95% ${range(one.lo, one.hi)}) and the thirtieth ${fixed(thirty.mean)} (${range(thirty.lo, thirty.hi)}), across classes 1966 to 2022.`);
@@ -328,6 +331,18 @@ for (const width of [1440, 390]) {
   // Walks.
   for (const view of ["per_36", "raw"]) { await open(`?stat=${view}`, 'table[data-table="rookies"] td[data-field="gp"]'); await checkRookieStats(view); }
   await open("?stat=past", 'table[data-table="rookies"] td[data-field="pool"]'); await checkRookieTable(); await evenGaps("rookies past picks", 'table[data-table="rookies"]');
+  // Default class view: who played, and every Steal or Miss, in order.
+  for (const year of wide ? [1966, 1984, 1986, 2003, 2022] : [1984]) {
+    const data = await api(`/api/draft/classes/${year}`);
+    await open(`?year=${year}`, `table[aria-label="${year} draft class"] tbody tr`);
+    const kept = data.rows.filter(r => r.played || data.misses.includes(r.pick) || data.steals.includes(r.pick));
+    const seen = await readTable(page, `table[aria-label="${year} draft class"]`);
+    eq(`default ${year} rows`, seen.map(r => r.key).join(), [...kept].sort((a, b) => a.pick - b.pick).map(r => String(r.pick)).join());
+    const hidden = data.rows.length - kept.length;
+    eq(`default ${year} hidden`, num(await page.locator('#classes [data-field="hidden"]').getAttribute("data-value").catch(() => null)), hidden || null);
+    const sub = await page.evaluate(sel => [...document.querySelectorAll(`${sel} tbody tr`)].slice(0, 3).map(t => t.querySelector(".player-cell-teams")?.textContent), `table[aria-label="${year} draft class"]`);
+    for (const t of sub) eq(`default ${year} subtitle form`, /^[A-Z]{2,3} · \d{4}-\d{2}$/.test(t ?? "") || t === "Never played in the NBA", true);
+  }
   const rookiesToCheck = wide ? compared_rookies.slice(1) : compared_rookies.slice(1, 4);
   for (const r of rookiesToCheck) { await open(`?rookie=${r.player_id}`, `article[data-card="${r.player_id}"]`); await checkCard(r); }
   const SPANS = wide ? [["window", "all", "ws"], ["window", "all", "min"], ["window", "multi_round", "ws"], ["window", "multi_round", "min"], ["window", "two_round", "ws"], ["window", "two_round", "min"],

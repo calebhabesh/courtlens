@@ -92,13 +92,40 @@ test.describe("R09 Draft Classes (RD08 layout)", () => {
       expect(served(await row.locator('td[data-field="pts36"]').getAttribute("data-value"))).toBe(c.pts36);
       expect(c.games).toBeLessThanOrEqual(rookie.rookie.comparison.line.games);
     }
-    await page.getByRole("button", { name: `Remove ${rookie.rookie.name} from Rookie` }).click();
-    await expect(page).toHaveURL(/rookie=none/);
-    await expect(page.getByText("No rookie chosen.")).toBeVisible();
+    await expect(page.getByRole("button", { name: `Remove ${rookie.rookie.name} from Rookie` })).toHaveCount(0);
     const other = rookies.rookies.find((r: { state: string; player_id: string }) => r.state === "compared" && r.player_id !== rookie.rookie.player_id);
     await page.getByRole("combobox", { name: "Rookie" }).fill(other.name);
     await page.getByRole("option", { name: new RegExp(other.name) }).click();
     await expect(page.locator(`article[data-card="${other.player_id}"]`)).toBeVisible();
+  });
+
+  test("old classes show who played by default, tags have their own column, and the page's labels read cleanly", async ({ page }) => {
+    await openWorkbench(page, `${path}?year=1984`);
+    const c = classes["1984"];
+    const table = page.getByRole("table", { name: "1984 draft class" });
+    const kept = c.rows.filter((r: { played: boolean; pick: number }) => r.played || c.misses.includes(r.pick) || c.steals.includes(r.pick));
+    await expect(table.locator("tbody tr")).toHaveCount(kept.length);
+    await expect(page.locator('#classes [data-field="hidden"]')).toHaveAttribute("data-value", String(c.rows.length - kept.length));
+    await page.getByRole("radiogroup", { name: "Picks shown" }).getByRole("radio", { name: "All picks" }).click();
+    await expect(page).toHaveURL(/picks=all/);
+    await expect(table.locator("tbody tr")).toHaveCount(c.rows.length);
+    const tagged = c.steals[0];
+    await expect(table.locator(`tr[data-row="${tagged}"] td[data-field="label"] [data-field="tag"]`)).toHaveText("Steal");
+    await expect(table.locator('td[data-field="organization"] [data-field="tag"]')).toHaveCount(0);
+    await expect(page.locator('[data-field="hero-meta"]')).toContainText(/Games through [A-Z][a-z]{2} \d{1,2}, \d{4}/);
+    await expect(page.getByRole("heading", { name: "Most above their slot" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Furthest below their slot" })).toBeVisible();
+    await expect(page.locator(".dc-rookie-pick")).not.toContainText("Remove");
+    const scatter = page.locator('svg[data-chart="combine"]');
+    await expect(scatter.locator("circle").first()).toBeAttached();
+    const box = await scatter.locator("text").first().evaluate(t => getComputedStyle(t).fontSize);
+    expect(box).toBe("10px");
+    const rendered = await scatter.evaluate(s => { const b = (s as SVGSVGElement).getBoundingClientRect(); return b.width / (s as SVGSVGElement).viewBox.baseVal.width; });
+    expect(Math.abs(rendered - 1)).toBeLessThan(0.02);
+    const lead = await page.locator('table[data-table="value-by-pick"] thead th').first().evaluate(t => t.getBoundingClientRect().width);
+    expect(lead).toBeLessThanOrEqual(90);
+    const verdicts = new Set(summary.bands.filter((b: { era: string; measure: string }) => b.era === "all" && b.measure === "ws").map((b: { verdict: string }) => b.verdict));
+    await expect(page.locator('table[data-table="bands"] td[data-field="verdict"]')).toHaveCount(verdicts.size === 1 ? 0 : 5);
   });
 
   test("value by pick: chart points, band and table equal the served slots, controls live in the URL, and old tab links scroll", async ({ page }) => {
@@ -136,7 +163,7 @@ test.describe("R09 Draft Classes (RD08 layout)", () => {
   });
 
   test("a complete class is redrafted with logos and the served ranks; a recent class is not; the class search moves between classes", async ({ page }) => {
-    await openWorkbench(page, `${path}?year=1984&order=redraft`);
+    await openWorkbench(page, `${path}?year=1984&order=redraft&picks=all`);
     const table = page.getByRole("table", { name: "1984 draft class" });
     await expect(table.locator("tbody tr")).toHaveCount(classes["1984"].rows.length);
     const first = table.locator("tbody tr").first();
