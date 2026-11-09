@@ -12,11 +12,11 @@ test.describe("Research menu without a landing page", () => {
     await expect(page.locator(".courtlens-dropdown-section-title", { hasText: "Overview" })).toHaveCount(0);
   });
 
-  test("the section headers are blue capitals, apart from the white item names and grey descriptions", async ({ page }) => {
+  test("the section headers are smoke-white capitals, between the white item names and grey descriptions", async ({ page }) => {
     await openWorkbench(page, "/stats");
     await page.getByRole("button", { name: "Research", exact: true }).click();
     const heading = page.locator(".courtlens-dropdown-section-title", { hasText: "Tools" });
-    await expect(heading).toHaveCSS("color", "rgb(128, 191, 255)");
+    await expect(heading).toHaveCSS("color", "rgb(200, 205, 212)");
     await expect(heading).toHaveCSS("text-transform", "uppercase");
     await expect(heading).toHaveCSS("font-weight", "700");
   });
