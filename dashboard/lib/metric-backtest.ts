@@ -78,6 +78,12 @@ export function pairOf(pairs: readonly Pair[], candidate: string, reference: str
   };
 }
 
+/** `StatsGrid`'s tone names for `gainTone`. */
+export const gridTone = (g: Band | undefined): "good" | "bad" | undefined => {
+  const tone = gainTone(g);
+  return tone === "positive" ? "good" : tone === "negative" ? "bad" : undefined;
+};
+
 /** Green only when the whole 95% interval favours the candidate, red only when it all goes against. */
 export function gainTone(g: Band | undefined): "positive" | "negative" | undefined {
   if (!g) return undefined;
@@ -103,6 +109,8 @@ export function signed(value: number | null | undefined, digits = 2): string {
 export const percent = (value: number | null | undefined, digits = 1) =>
   typeof value === "number" && Number.isFinite(value) ? `${(value * 100).toFixed(digits)}%` : "—";
 export const gainText = (g: Gain | undefined, digits = 2) => g ? `${signed(g.gain, digits)} (${signed(g.low, digits)} to ${signed(g.high, digits)})` : "—";
+/** Both ends with their signs: "+0.72 to +0.88". */
+export const gainBand = (b: Band | undefined, digits = 2) => b ? `${signed(b.low, digits)} to ${signed(b.high, digits)}` : "—";
 export const bandText = (b: Band | undefined, digits = 2) => b ? `${fixed(b.low, digits)} to ${fixed(b.high, digits)}` : "—";
 export const seasonRange = (seasons: readonly string[]) => seasons.length === 0 ? "none" : seasons.length === 1 ? seasons[0] : `${seasons[0]} to ${seasons.at(-1)}`;
 
@@ -119,15 +127,16 @@ export function verdictSentences(page: MetricBacktestPage): string[] {
   const best = results.verdict.best;
   if (best.length === 1) {
     const rival = results.pairs.filter(p => p.candidate === best[0] || p.reference === best[0]).length;
-    out.push(`Under the registered rule, one metric predicts game margins better than every one of the other ${rival}: ${name(best[0])}. Its pooled 95% interval excludes zero against each, and it has the lower error in more than half of the seasons they share.`);
+    // A label with its own comma ("Time-decay RAPM, refreshed monthly") closes it before the verb.
+    out.push(`${name(best[0])}${name(best[0]).includes(",") ? "," : ""} predicted game margins better than each of the other ${rival} metrics.`);
   } else {
-    out.push("No single metric predicts game margins better than every other under the registered rule.");
+    out.push("No single metric predicted game margins better than every other.");
   }
   const against = results.verdict.against_baseline;
   const beat = Object.keys(against).filter(k => against[k] === "candidate_better");
   const lost = Object.keys(against).filter(k => against[k] === "reference_better");
   const tied = Object.keys(against).filter(k => against[k] === "no_ranking");
-  if (beat.length === Object.keys(against).length) out.push(`Every player metric beats ${name(baseline)}.`);
+  if (beat.length === Object.keys(against).length) out.push(`Every player metric beat ${name(baseline)}.`);
   else {
     if (beat.length) out.push(`${beat.map(name).join(", ")} beat ${name(baseline)}.`);
     if (lost.length) out.push(`${lost.map(name).join(", ")} lose to ${name(baseline)}.`);
@@ -135,7 +144,7 @@ export function verdictSentences(page: MetricBacktestPage): string[] {
   }
   const unranked = results.pairs.filter(p => p.verdict === "no_ranking");
   if (unranked.length) {
-    out.push(`No ranking for ${unranked.length === 1 ? "one pair" : `${unranked.length} pairs`}: ${unranked.map(p => `${name(p.candidate)} and ${name(p.reference)} (${gainText(p.pooled.rmse)} points over ${seasonRange(p.seasons)})`).join("; ")}. Their intervals include zero, so neither is called better.`);
+    out.push(`No ranking for ${unranked.length === 1 ? "one pair" : `${unranked.length} pairs`}: ${unranked.map(p => `${name(p.candidate)} and ${name(p.reference)} (${signed(p.pooled.rmse.gain)} points, 95% ${gainBand(p.pooled.rmse)}, over ${seasonRange(p.seasons)})`).join("; ")}. Their intervals include zero, so neither is called better.`);
   }
   return out;
 }

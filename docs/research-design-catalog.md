@@ -63,7 +63,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD08 | Draft Classes [28] | `/draft` | none (owner, 2026-11-08: no Databallr page; never copy Draftballr; built from approved CourtLens Research patterns) | R09, RD08 | ✅ |
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
 | RD09 | Research landing [29] | `/research` | none | R12 | ✂️ cut by the owner (2026-11-09) |
-| RD10 | Metric Backtest [29] | `/research/backtest` | none | R08 | ⬜ |
+| RD10 | Metric Backtest [29] | `/research/backtest` | none (built from approved CourtLens Research patterns) | R08, RD10 | 👀 |
 | RD11 | Projected Impact [29] | `/research/projected-impact` | none | R07 | ⬜ |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none | R14 | ⬜ |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none | R03 | ⬜ |
@@ -731,11 +731,33 @@ Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
   5. [x] Can we try a smokier white or something. Not the grey caption text, or white subheader titles
      — Done: `--color-text-smoke` (#c8cdd4) capitals, between the white item names and the grey descriptions. Owner: "Great, that works."
 
-## RD10 Metric Backtest — ⬜
+## RD10 Metric Backtest — 👀
 
 - **Now:** nine metrics fixed before each game, 11,979 games; RMSE, gains with intervals, orderings,
   calibration, the 2026-27 prospective score.
-- **Instructions:** _(owner)_
+- **Reference:** none. No Databallr page for it; each section borrows a named, approved CourtLens Research precedent.
+- **Before (round 1, :3100):** ten stacked sections under the old left-aligned header and four stat tiles; old `Table`s; an overlaid RMSE chart with gold and blue as metric
+  colours; calibration served but drawn only as one number per metric; hashes and a seed in the page body; raw ISO dates. 5,644 px tall at 1440, 9,475 px at 390; 0 console errors, 0 page overflow.
+- **Design check (2026-11-09):** nothing needs new data, an API field or a new analysis. The pooled table misleads row against row (each row covers its own seasons: Projected Impact has the
+  highest pooled RMSE, 14.66, and the largest gain over the baseline, +0.86, on two seasons). The served 2026-27 summary stops at Nov 4, 2026 with 0 prospective games: R08's timer was never installed, and only the owner runs the refresh.
+
+Instructions (owner, 2026-11-09, round 1; the owner answered the design proposal and its recommendations with "Go with your
+recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively."):
+1. [x] Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively.
+   - (1) RD00's 992 px column, centred hero (tagline, meta line, links to RAPM Ratings, Projected Impact, Learning), no index; the four stat tiles, the overlaid RMSE chart, swatches and the chart source line are cut.
+   - (2) The answer: one plain sentence, the two unranked pairs, and that this tests ratings, not game forecasts.
+   - (3) Head to head: a 9×9 compact `StatsGrid` of all 36 RMSE gains with intervals, green/red only where the interval excludes zero, a 95% `ToneLegend` (Q1: yes).
+   - (4) Other scores: the paired table on `StatsGrid` with Against and Seasons selects; Verdict becomes one sentence when every row agrees.
+   - (5) Season by season: one line with a 95% band, a chosen metric's gain over a chosen reference (Q2: replaces the overlay), then RMSE by season on `StatsGrid`.
+   - (6) Scores and calibration: the pooled grid headed "each over its own seasons", then predicted against observed for a chosen metric against Team net.
+   - (7) 2026-27: prospective first, hindsight apart and labelled, on `StatsGrid`.
+   - (8) How to read: three short cards and a `Glossary` of the nine metrics, DARKO's omission and credits. Then a collapsed About this page: caveats, method, rule, hashes, the R08 evidence link.
+   - (9) Rows stay in registered order, Team net first; the page never ranks anything itself.
+   - (10) Nine-row tables take no `GridSearch` (Q3: RD08's compact tables have none). Team net's Minutes replaced shows a dash (Q4: the baseline rates no players).
+   - (11) Shared additions: an optional zero line on `SeasonLineChart`; optional axis and unit wording on `ReliabilityPlot`.
+   — Built as proposed: the answer in one sentence, a 9×9 of all 36 gains coloured only where the interval excludes zero, every score against a chosen metric, one line with a band and zero on the axis, pooled scores with a warning not to compare rows, a calibration plot in category tints beside its bins, 2026-27 kept apart, How to read and a collapsed About. Real data 29,440 values, 0 mismatches; full Playwright 609 passed, 17 skipped, 0 failed. The page shows 0 prospective games until the owner runs the 2026-27 refresh.
+
+Evidence: [`design-RD10`](evidence/research/design-RD10/README.md).
 
 ## RD11 Projected Impact — ⬜
 

@@ -878,3 +878,7 @@ The owner cut the Research landing page (RD09 ✂️). `/research` redirects to 
 Section headers are now `--color-text-smoke` (#c8cdd4), approved by the owner. Vitest 835; full Playwright 606 passed, 17 skipped, 1 failed: an intermittent, unrelated Projected Impact test (duplicate `#contributions` while the page streams, 2 of 10 on a rerun), left for RD11.
 [`design-RD09`](evidence/research/design-RD09/README.md).
 
+## 2026-11-09 — RD10 round 1: Metric Backtest rebuilt
+
+`/research/backtest` is rebuilt from approved Research patterns: the answer first, a 9×9 of all 36 RMSE gains coloured only where the 95% interval excludes zero, every score against a chosen metric, one line with a band by season, pooled scores with a warning not to compare rows, a calibration plot beside its bins, 2026-27 apart, How to read and a collapsed About. Design only: no API, analysis or frozen result changed. The served 2026-27 summary still stops at Nov 4 with 0 prospective games, because R08's timer was never installed and the refresh is the owner's to run. Lint and typecheck clean; Vitest 837; page spec ×3 24/24; full Playwright 609 passed, 17 skipped, 0 failed; real data 29,440 values, 0 mismatches, 0 console errors, 0 overflow.
+[`design-RD10`](evidence/research/design-RD10/README.md). Awaits the owner.
