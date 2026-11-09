@@ -51,7 +51,7 @@ export function PatchNotesView() {
       <PageHeader className="sq-hero pn-hero research-hero" icon="history" title="Patch Notes" subtitle="New pages, improvements and removals across CourtLens." />
       <ResearchIntro
         tagline={<>Latest <time dateTime={latest}>{shortDate(latest)}</time> · {PATCH_RELEASES.length} releases · {entries.length} changes</>}
-        links={[{ label: "Learning", href: "/methodology/learning", icon: "book" }, { label: "Research", href: "/research", icon: "sparkles" }]}
+        links={[{ label: "Learning", href: "/methodology/learning", icon: "book" }]}
       />
       <ol className="pn-releases" aria-label="Releases, newest first">
         {PATCH_RELEASES.map(release => <Release key={release.id} release={release} />)}
