@@ -163,6 +163,12 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   condensed, with no cards. No accent rail or edge highlight on a card or tile edge (it reads as vibe-coded). After a CSS change
   the owner will view on :3100, check the served chunk and refresh it (remove the import, request the page for about 12 s, re-add,
   request again) before reporting.
+- **Settled in RD08 (owner, Draft Classes, 2026-11-09):** a table of a season's players is built like the Stats table (a title saying
+  what it is, Per Game by default, the Stats groups and photo strip); say the unit in a heading when a table isn't per game. A search in
+  a table header has equal space above and below. Rows with a year sort by year unless the user sorts otherwise. Draft position is
+  written `R1 #2`, the Players bio's form. Dates use the Stats format (Nov 8, 2026). A column that would repeat one answer on every row
+  becomes one sentence. A table beside a card ends level with it. Heights and lengths on a chart are marked in feet and inches; a
+  difference between two lengths stays in inches.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).

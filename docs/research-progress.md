@@ -857,3 +857,8 @@ The past same-pick table now ends level with the rookie card and its heading say
 
 Height, wingspan and standing reach now mark the combine scatter in feet and inches (every 3 inches, every 6 on a phone); wingspan minus height stays in inches. Display only: no analysis, result or API changed. Lint and typecheck clean, Vitest 835, page specs ×3 57/57, full Playwright 608 passed, 17 skipped, 0 failed; real data 249,552 values, 0 mismatches.
 [`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.
+
+## 2026-11-09 — RD08 approved
+
+The owner approved Draft Classes ("Alright. I approve this page."). Row RD08 ✅; its settled rules are in the alignment plan's
+"Research pages" pattern ("Settled in RD08"). Next in the design queue: RD09 Research landing.

@@ -60,7 +60,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD05 | Defensive Shot Quality [26] | `/research/defensive-matchups` | W: `Defensive Shot Quality` | R06, RD05 | ✅ |
 | RD06 | Learning [21] | `/methodology/learning` | D: `Learning`; `~/Downloads/Projects/Courtlens/Learning _ databallr.html` | R11, RD06 | ✅ |
 | RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes`; `~/Downloads/Projects/Courtlens/databallr — NBA & WNBA analytics, impact metrics, and draft games.html` | R11, RD07 | ✅ |
-| RD08 | Draft Classes [28] | `/draft` | none (owner, 2026-11-08: no Databallr page; never copy Draftballr; built from approved CourtLens Research patterns) | R09, RD08 | 👀 |
+| RD08 | Draft Classes [28] | `/draft` | none (owner, 2026-11-08: no Databallr page; never copy Draftballr; built from approved CourtLens Research patterns) | R09, RD08 | ✅ |
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
 | RD09 | Research landing [29] | `/research` | none | R12 | ⬜ |
 | RD10 | Metric Backtest [29] | `/research/backtest` | none | R08 | ⬜ |
@@ -622,7 +622,7 @@ Instructions (owner, 2026-11-08, round 5; screenshot: :3100, v1.7's tile still w
    rules) with round 4's markup. One quick import toggle did not refresh it; removing the import, requesting the page for 12 s,
    re-adding it and requesting again did. :3100 then measured only the 1 px rim (`box-shadow`), no rail.
 
-## RD08 Draft Classes — 👀
+## RD08 Draft Classes — ✅ approved by the owner (2026-11-09)
 
 - **Now:** rookie tracker, value by pick with intervals, class redrafts, steals and misses, combine beside
   value; no prospect model (D4).
