@@ -138,6 +138,7 @@ for (const width of [1440, 390]) {
     await page.waitForSelector('table[data-table="rookie-comparisons"] tbody tr', { state: "attached", timeout: 30000 }).catch(() => {});
     const past = await readTable(page, 'table[data-table="rookie-comparisons"]');
     const pastYears = past.map(x => num(x.cells.year.value));
+    if (wide) { const b = await page.evaluate(() => { const c = document.querySelector(".dc-rookie-card").getBoundingClientRect(), f = document.querySelector(".dc-past-grid .stats-table-frame").getBoundingClientRect(); return Math.abs(c.bottom - f.bottom); }); eq(`past ${r.pick} bottom level with card`, b <= 1, true); }
     eq(`past ${r.pick} newest first`, pastYears.every((y, i) => i === 0 || pastYears[i - 1] >= y), true);
     if (detail.comparisons.length === 0) return;
     eq(`past ${r.pick} rows`, past.length, detail.comparisons.length + 1);

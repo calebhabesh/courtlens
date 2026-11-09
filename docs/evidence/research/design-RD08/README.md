@@ -87,3 +87,11 @@ photos or initials, counted below; (E) combine kept here, linking to Wingspan; (
 - **Rookie picker.** One `LookupInput` above the card; the chip and the "No rookie chosen" state are gone, so `?rookie=none` opens the first pick.
 - **Slot table and ranges.** The pick column is 80 px. When every row has one verdict it is said once in a sentence (`data-field="band-verdict"`); the Verdict column returns when rows differ.
 - **Checks.** Lint and typecheck clean; Vitest 833; page specs 54/54 at `--repeat-each=3`; full Playwright 607 passed, 17 skipped, 0 failed. Real data at 1440 (150 loads) and 390 (25 loads): 248,604 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 wrong-season photos; every class checked with `?picks=all`, and 1966, 1984, 1986, 2003 and 2022 in the default view. Screenshots viewed: `draft-class-played-*`, `draft-combine-chart-1440.png`, `draft-ranges-round4-1440.png`, `draft-slot-table-1440.png`.
+
+## Round 5 (owner, 2026-11-09): past-picks table level with the card
+
+- **Alignment.** At 1024 px and wider the pair stretches and the table scrolls inside the card's height (`contain: size` keeps its rows from setting that height). Measured with real data: card and table both end at 540 px in the 1440 screenshot. Stacked below 1024 px the table keeps its own 372 px limit.
+- **Per 36.** The heading now reads "..., per 36 minutes". `rookie_line` serves MPG, per-36 box figures and TS%, the same comparison as the card.
+- **Widths.** 246 + 48 + 32 + 8 x 48 = 710 px, the frame less its scrollbar: checked with scrollbars visible (0 px sideways scroll).
+- **1983-84.** No change: `ROOKIE_POOL = (1983, 2025)`, because first-N-games comparisons need game logs, complete from 1983-84.
+- **Checks.** Lint and typecheck clean; Vitest 833; page specs 54/54 at `--repeat-each=3`; full Playwright 607 passed, 17 skipped, 0 failed. Real data at 1440 (150 loads) and 390 (25 loads): 248,649 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 wrong-season photos; the card and table bottoms checked for all 45 played rookies at 1440. Screenshot viewed: `draft-past-picks-aligned-1440.png`.

@@ -84,10 +84,11 @@
   .dc-section table[data-table="rookies"] col.rs-col-sm { width: 60px; }
   .dc-section table[data-table="rookies"] col.rs-col-xs { width: 60px; }
   .dc-section table[data-table="rookies"] col:nth-child(3) { width: 72px; }
-  .dc-section table[data-table="rookie-comparisons"] col.rs-col-lead { width: 248px; }
-  .dc-section table[data-table="rookie-comparisons"] col.rs-col-xs { width: 49px; }
-  .dc-section table[data-table="rookie-comparisons"] col:nth-child(2) { width: 44px; }
-  .dc-section table[data-table="rookie-comparisons"] col:nth-child(3) { width: 36px; }
+  .dc-section table[data-table="rookie-comparisons"] col.rs-col-lead { width: 246px; }
+  /* 710 px: the 720 px frame less a scrollbar, so TS% is never clipped. */
+  .dc-section table[data-table="rookie-comparisons"] col.rs-col-xs { width: 48px; }
+  .dc-section table[data-table="rookie-comparisons"] col:nth-child(2) { width: 48px; }
+  .dc-section table[data-table="rookie-comparisons"] col:nth-child(3) { width: 32px; }
   .dc-section table[data-table="class"] col.rs-col-lead { width: 288px; }
   .dc-section table[data-table="class"] col.rs-col-xs { width: 52px; }
   .dc-section table[data-table="class"] col.rs-col-sm { width: 72px; }
@@ -117,6 +118,14 @@
   .dc-list-grid col.rs-col-xs { width: 52px; }
   .dc-list-grid col.rs-col-sm { width: 76px; }
 
+  /* RD08 round 5 (owner): beside the card, the past-picks table ends level with it. `contain: size` stops its rows setting the height. */
+  @media (min-width: 1024px) {
+    .dc-rookie-pair { align-items: stretch; }
+    .dc-past { grid-template-rows: auto minmax(0, 1fr); }
+    .dc-past-grid.rs-grid { contain: size; }
+    .dc-past-grid .stats-table-frame { height: 100%; }
+    .dc-past-grid .stats-table-frame .stats-scroll-region { height: 100%; max-height: none; }
+  }
   @media (max-width: 1023px) {
     .dc-layout { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
     .dc-aside { display: none; }

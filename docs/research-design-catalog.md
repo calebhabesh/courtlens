@@ -699,6 +699,13 @@ Instructions (owner, 2026-11-09, round 4; answering the list of glaring improvem
    - (9) Ranges table: no Verdict column repeating the same answer on every row.
    — All nine done: "Most above their slot" and "Furthest below their slot"; dates as Nov 8, 2026; classes open on Played with an All picks switch (a never-played Miss such as Len Bias stays); a Tag column beside Surplus; subtitles CHI · 1984-85; the combine chart redrawn at its real width with 10 px labels; one rookie search field; an 80 px pick column; one sentence for a shared verdict, the column only when rows differ.
 
+Instructions (owner, 2026-11-09, round 5):
+8. [x] is there a reason this table also uses pts/36? I'm confused. also make the table bottom aligned with the card to the left of it.
+   (Screenshot: "Past number 4 picks over their first 9 games".)
+   — Answered: it is the same comparison as the card, per 36 so rookies on different minutes compare fairly, and only per-36 lines are served. The heading now says "per 36 minutes". The table ends level with the card at 1024 px and wider (0 px apart, measured); stacked on narrower screens. Column widths now leave room for a scrollbar, so TS% is not clipped.
+9. [x] Also it only goes back to 1983-84 for a reason correct?
+   — Answered, no change: yes. Comparing first N games needs game-by-game logs, and complete box scores and logs start in 1983-84 (R09's `ROOKIE_POOL = (1983, 2025)`; full-history plan).
+
 Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
 
 ## RD09 Research landing — ⬜
