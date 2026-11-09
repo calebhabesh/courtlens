@@ -140,6 +140,8 @@ Owner, 2026-11-07 (given during RD02 round 4, instruction 6): the dividers above
 
 Owner, 2026-11-09 (given during RD12 round 2, instruction 4): "the palyer photos are still square cropped". The Leaders chart on RAPM Ratings no longer clips the photos' rings. Evidence: [`design-RD12`](evidence/research/design-RD12/README.md).
 
+Owner, 2026-11-09 (given during RD12 round 3, instruction 6): the Leaders chart's source label no longer carries the project code IM04.
+
 ## RD01 Combine & Wingspan — ✅ approved by the owner (2026-11-07)
 
 - **Now:** the combine measurements view plus R10's plain sections: career and current DARKO D-DPM,
@@ -860,6 +862,17 @@ Instructions (owner, 2026-11-09, round 2; three screenshots, the search open in 
    — The Leaders chart's label box clipped the photos' rings flat at the top and left. It no longer clips; the name and caption still truncate themselves. All portraits on both Six-Factor tabs checked at both widths.
 5. (Question) Are there any more improvements we can make to the page?
    — Answered with a list of proposals; nothing built. Awaiting the owner.
+
+Instructions (owner, 2026-11-09, round 3; answering the six improvements proposed after round 2, and the offered IM04 label fix):
+6. [x] You can make all of those improvements, comprehensively
+   - (1) Show how close the two models are: a line with the actual gap for that five.
+   - (2) Stop the jump when swapping a player: keep the old result dimmed until the new one arrives.
+   - (3) Trim the test section's intro to two text blocks.
+   - (4) Shorten the backtest row captions: "3 seasons · 3,655 games", naming seasons only on the two shorter rows.
+   - (5) Smaller photos on phone cards, saving about 200 px down the tool.
+   - (6) One line saying the model doesn't use positions.
+   - (7) The Leaders chart on RAPM Ratings: drop "IM04" from its source label.
+   — All seven done: the tool says how far apart the two models are for that five, a swap keeps the last result dimmed with no jump, the test's intro is two blocks, backtest captions read "3 seasons · 3,655 games" except on the two shorter rows, phone cards are 196 px shorter down the tool, one line says neither model reads positions, and the Leaders source reads "CourtLens lineup model". Real data 6,730 values, 0 mismatches; full Playwright 622 passed, 17 skipped, 0 failed.
 
 Evidence: [`design-RD12`](evidence/research/design-RD12/README.md).
 

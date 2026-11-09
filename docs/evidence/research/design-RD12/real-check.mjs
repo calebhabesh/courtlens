@@ -75,6 +75,7 @@ for (const width of [1440, 390]) {
   const shot = async (name, selector) => { if (!shots) return; const box = page.locator(selector); await box.scrollIntoViewIfNeeded(); await page.waitForTimeout(200); await box.screenshot({ path: `${shots}/lm-${name}-${tag}.png` }); };
 
   const checkFive = async (label, ids) => {
+    await page.waitForSelector("[data-result]:not([data-stale])", { state: "attached", timeout: 30000 });
     const fit = await fitOf(ids);
     eq(`${label} state`, fit.state, "ready");
     const table = await readTable(page, "fit");
@@ -93,6 +94,10 @@ for (const width of [1440, 390]) {
     eq(`${label} interaction`, num(await line.getAttribute("data-value")), fit.lineup_model.interaction);
     eq(`${label} additive`, num(await line.getAttribute("data-additive")), fit.lineup_model.additive);
     eq(`${label} interaction text`, (await line.innerText()).includes(signed(fit.lineup_model.interaction, digits([fit.lineup_model.interaction]))), true);
+    const modelGap = Math.abs(fit.lineup_model.net - fit.ridge.net), gapCell = page.locator('[data-field="model-gap"]');
+    eq(`${label} model gap`, num(await gapCell.getAttribute("data-value")), modelGap);
+    eq(`${label} model gap text`, await gapCell.innerText(), modelGap.toFixed(digits([modelGap])));
+    eq(`${label} positions line`, (await page.locator('[data-field="positions"]').innerText()).includes("position as an input"), true);
     const note = page.locator('[data-field="fit-note"]');
     eq(`${label} opponents`, num(await note.getAttribute("data-opponents")), fit.opponents);
     eq(`${label} panel`, num(await note.getAttribute("data-panel")), fit.panel_size);
@@ -213,7 +218,9 @@ for (const width of [1440, 390]) {
     eq(`backtest ${b.key} rmse low`, num(b.cells.rmse.low), c.pooled.intervals.rmse.low); eq(`backtest ${b.key} rmse high`, num(b.cells.rmse.high), c.pooled.intervals.rmse.high);
     eq(`backtest ${b.key} rmse band`, b.cells.rmse.sub, plainBand(c.pooled.intervals.rmse));
     eq(`backtest ${b.key} label`, b.lead.split("\n")[0], LABEL[b.key]);
-    eq(`backtest ${b.key} scope`, b.lead.includes(`${c.test_seasons.map(s => s.slice(2)).join(", ")} · ${count(c.pooled.games)} games`), true);
+    const shorter = ["box_prior_rapm", "projected_impact"].includes(b.key);
+    eq(`backtest ${b.key} scope`, b.lead.includes(`${shorter ? c.test_seasons.map(s => s.slice(2)).join(", ") : "3 seasons"} · ${count(c.pooled.games)} games`), true);
+    eq(`backtest ${b.key} season count`, c.test_seasons.length, shorter ? 2 : 3);
     if (b.key === "lineup_model") { eq("backtest model cell", b.cells.gain.main, "The model"); eq("backtest model verdict", b.cells.verdict.value, ""); continue; }
     const g = lineupGain(b.key), d = digits([g.gain, g.low, g.high]);
     eq(`backtest ${b.key} gain`, num(b.cells.gain.value), g.gain); eq(`backtest ${b.key} gain low`, num(b.cells.gain.low), g.low); eq(`backtest ${b.key} gain high`, num(b.cells.gain.high), g.high);
@@ -292,9 +299,26 @@ for (const width of [1440, 390]) {
   const swapped = [wanted.player_id, ...def.slice(1)];
   await page.waitForFunction(id => new URL(location.href).searchParams.get("five")?.startsWith(id), wanted.player_id);
   await page.waitForFunction(id => document.querySelector("[data-slot]")?.dataset.slot === id, wanted.player_id);
-  await page.waitForSelector(READY, { state: "attached" });
-  await page.waitForTimeout(400);
   await checkFive("via search", swapped);
+  // Swapping a player holds the page still: the old result stays, dimmed, with no skeleton and no change of height.
+  {
+    let release = () => {}; const held = new Promise(resolve => { release = resolve; });
+    await page.route("**/api/lineup-model/fit*", async route => { await held; await route.continue(); });
+    const swapName = players.get(def[2]).name, other = byRating.find(p => !def.includes(p.player_id) && p.player_id !== wanted.player_id);
+    const before = await page.evaluate(() => document.documentElement.scrollHeight), oldNet = await page.locator('table[data-table="fit"] tr[data-row="lineup_model"] [data-field="net"]').getAttribute("data-value");
+    await page.getByRole("button", { name: `Replace ${swapName}` }).click();
+    await page.getByRole("combobox", { name: `Replace ${swapName}` }).fill(other.name.split(" ").at(-1));
+    await page.locator('[role="option"]', { hasText: other.name }).first().click();
+    await page.waitForSelector("[data-result][data-stale]", { state: "attached" });
+    eq("swap: old result kept", await page.locator('table[data-table="fit"] tr[data-row="lineup_model"] [data-field="net"]').getAttribute("data-value"), oldNet);
+    eq("swap: dimmed", await page.locator("[data-result]").evaluate(e => getComputedStyle(e).opacity !== "1" || e.hasAttribute("data-stale")), true);
+    eq("swap: no skeleton", await page.getByText("Predicting this five").count(), 0);
+    eq("swap: no jump", Math.abs(await page.evaluate(() => document.documentElement.scrollHeight) - before) <= 2, true);
+    release();
+    await page.waitForSelector("[data-result]:not([data-stale])", { state: "attached" });
+    await page.unroute("**/api/lineup-model/fit*");
+  }
+
   // Each way out of the search.
   const secondName = players.get(def[1]).name, leave = async how => { await page.getByRole("button", { name: `Replace ${secondName}` }).click(); await page.getByRole("combobox", { name: `Replace ${secondName}` }).waitFor(); await how(); await page.waitForTimeout(150); eq("search closed", await page.getByRole("combobox", { name: `Replace ${secondName}` }).count(), 0); };
   await leave(() => page.keyboard.press("Escape"));
@@ -302,8 +326,6 @@ for (const width of [1440, 390]) {
   await leave(() => page.locator(".lm-headline").click());
   await page.getByRole("button", { name: "Most-used five" }).click();
   await page.waitForFunction(() => !new URL(location.href).searchParams.has("five"));
-  await page.waitForSelector(READY, { state: "attached" });
-  await page.waitForTimeout(400);
   await checkFive("default", def);
 
   // A spread of fives.
@@ -381,6 +403,9 @@ for (const width of [1440, 390]) {
       cardEdges: slots.map(c => parseFloat(getComputedStyle(c).borderLeftWidth)).reduce((a, b) => Math.max(a, b), 0), watermarks: root.querySelectorAll(".lm-slot > img").length,
       selects: root.querySelectorAll("select").length, inlineStylesWithoutVars: [...root.querySelectorAll("[style]")].filter(e => !e.closest(".lm-page table") && [...e.style].some(p => !p.startsWith("--"))).map(e => e.className).slice(0, 5),
       gainOnScreen: (() => { const g = root.querySelector('table[data-table="test"] tbody tr td[data-column="lineup_over_ridge"]').getBoundingClientRect(); return g.right <= innerWidth; })(),
+      testIntroBlocks: (() => { const section = root.querySelector("#test"), table = section.querySelector(".rs-grid"); return [...section.children].filter(e => e.tagName === "P" && (e.compareDocumentPosition(table) & Node.DOCUMENT_POSITION_FOLLOWING)).length; })(),
+      phoneSlotHeight: w < 600 ? Math.round(Math.max(...slots.map(s => s.getBoundingClientRect().height))) : null,
+      phonePhoto: w < 600 ? Math.round(root.querySelector("[data-slot] .player-portrait").getBoundingClientRect().width) : null,
       fitIntervalOnScreen: (() => { const g = root.querySelector('table[data-table="fit"] tbody tr td[data-column="interval"]').getBoundingClientRect(); return g.right <= innerWidth; })(),
       backtestGainOnScreen: (() => { const g = root.querySelector('table[data-table="backtest"] tbody tr td[data-column="gain"]').getBoundingClientRect(); return g.right <= innerWidth; })(),
       subsOverflow: [...root.querySelectorAll(".rs-grid-sub")].filter(e => { const td = e.closest("td"); if (!td) return false; const b = document.createRange(); b.selectNodeContents(e); const r = b.getBoundingClientRect(), c = td.getBoundingClientRect(); return r.right > c.right + 0.5 || r.left < c.left - 0.5; }).length,
@@ -392,6 +417,8 @@ for (const width of [1440, 390]) {
 
   eq("strip scale lines up with its bars", layout.scaleAligned.zero <= 1 && layout.scaleAligned.left <= 1 && layout.scaleAligned.right <= 1, true);
   eq("80% interval on screen", layout.fitIntervalOnScreen, true);
+  eq("test intro is two text blocks", layout.testIntroBlocks, 2);
+  if (!wide) { eq("phone cards are short", layout.phoneSlotHeight <= 112, true); eq("phone photo is 56 px", layout.phonePhoto, 56); }
 
   // The hosted demo's state: no weights. Only the tool goes; everything else stays.
   await page.route("**/api/lineup-model", async route => { const body = JSON.parse(JSON.stringify(page0)); body.serving.tool_available = false; await route.fulfill({ json: body, headers: { "access-control-allow-origin": "*" } }); });
