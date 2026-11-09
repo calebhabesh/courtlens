@@ -836,3 +836,9 @@ Owner's notes: the table needed a title, why per 36, try the main Stats design f
 the Stats query's served draft-class filter; no API, analysis or frozen result changed. Shared `StatsGrid` gained an optional `guide` column. Lint and typecheck clean; Vitest 833; page specs ×3 51/51;
 full Playwright 606 passed, 17 skipped, 0 failed; real data 229,753 values, 0 mismatches, 0 console errors, 0 overflow, 0 wrong-season photos. Evidence:
 [`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.
+
+## 2026-11-09 — RD08 round 3: even search bar, past picks by year, round and pick labels
+
+The rookie and class table searches are centred across both header rows (equal space above and below, measured). Past same-pick rookies now run newest draft year first with a sortable Year column (the API's order, highest PTS/36 first, was never explained on the page). Picks read "R1 #2", the Players bio's form, across the page. Design only; no API, analysis or frozen result changed.
+Shared `StatsGrid` gained an optional two-row lead header. Lint and typecheck clean; Vitest 833; page specs ×3 51/51; full Playwright 606 passed, 17 skipped, 0 failed; real data 239,609 values, 0 mismatches, 0 console errors, 0 overflow, 0 wrong-season photos. Evidence:
+[`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.

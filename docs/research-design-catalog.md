@@ -675,6 +675,17 @@ Instructions (owner, 2026-11-09, round 2):
 3. [x] The search bar is too squished.
    — The rookie table had no group header row, so the field sat against the top of the header. It now has the Stats header (30 px of air above the field) and a wider column: 268 px at 1440 (was about 228), 192 px on a phone; the class table's search widened the same way.
 
+Instructions (owner, 2026-11-09, round 3):
+4. [x] the search bar is still cramped why is the padding above and below not equal.
+   (Screenshot: the rookie table's Vs Past Picks view.)
+   — The Vs Past Picks view had no group row and the header cell padded only below. The search now fills both header rows, centred: 17.25 px above and below in every rookie view and the class table at 1440, 18.25 px at 390. Vs Past Picks has group labels too.
+5. [x] why is the past picks not ordered by draft year? Is there a reason for the arbitrary order.
+   (Screenshot: the rookie card beside "Past number 2 picks over their first 10 games".)
+   — No reason: it was the API's order, highest PTS/36 first, with no sign of that. The table now has a Year column, newest first with the current rookie on top, and every column sorts.
+6. [x] should we denote draft pick and round with something like "R1P1" or something more commonly known. I don't know if we do that with ours currently.
+   (Screenshot: the rookie table's Per Game view.)
+   — Used "R1 #2" (round, overall pick), the form the Players page bio already uses, in the rookie and class tables, cards, search suggestions and steal and miss lists; the class table's separate Rd column is merged into it. The overall number is kept so second-round picks read R2 #31, and value-by-slot stays a plain pick number.
+
 Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
 
 ## RD09 Research landing — ⬜

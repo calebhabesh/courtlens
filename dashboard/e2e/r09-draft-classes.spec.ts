@@ -37,9 +37,15 @@ test.describe("R09 Draft Classes (RD08 layout)", () => {
     await expect(page.locator('[data-field="rookie-note"]')).toContainText("Per 36 minutes");
     const unplayed = rookies.rookies.find((r: { state: string }) => r.state !== "compared");
     if (unplayed) { await view.getByRole("radio", { name: "Per Game" }).click(); await expect(table.locator(`tr[data-pick="${unplayed.pick}"] td[data-field="pts"]`)).toHaveText("—"); }
-    const search = await table.locator(".lookup-input-wrapper").boundingBox();
-    expect(search!.width).toBeGreaterThanOrEqual(260);
-    expect(search!.height).toBeGreaterThanOrEqual(30);
+    for (const stat of ["Per Game", "Vs Past Picks"]) {
+      await view.getByRole("radio", { name: stat }).click();
+      await expect(table.locator(".stats-group-th").first()).toHaveText("Draft");
+      const gaps = await table.evaluate(t => { const f = t.querySelector(".lookup-input-wrapper")!.getBoundingClientRect(), h = (t as HTMLTableElement).tHead!.getBoundingClientRect(); return { above: f.top - h.top, below: h.bottom - f.bottom, width: f.width }; });
+      expect(Math.abs(gaps.above - gaps.below)).toBeLessThanOrEqual(1);
+      expect(gaps.above).toBeGreaterThanOrEqual(8);
+      expect(gaps.width).toBeGreaterThanOrEqual(260);
+    }
+    await expect(row.locator('td[data-field="pick"]')).toHaveText(`R${played.round} #${played.pick}`);
   });
 
   test("opens on one page with every section and shows every compared rookie's values and percentiles", async ({ page }) => {
@@ -77,6 +83,9 @@ test.describe("R09 Draft Classes (RD08 layout)", () => {
     expect(served(await card.locator('.dc-tile-sub[data-field="pts36"]').getAttribute("data-percentile"))).toBe(rookie.rookie.comparison.stats.pts36.percentile);
     const table = page.getByRole("table", { name: /Past number \d+ picks at \d+ games/ });
     await expect(table.locator("tbody tr")).toHaveCount(rookie.comparisons.length + 1);
+    const years = await table.locator('tbody td[data-field="year"]').evaluateAll(cells => cells.map(c => Number((c as HTMLElement).dataset.value)));
+    expect(years).toEqual([...years].sort((a, b) => b - a));
+    expect(years[0]).toBe(2026);
     for (const c of rookie.comparisons) {
       const row = table.locator(`tr[data-row="${c.player_id}"]`);
       expect(Number(await row.locator('td[data-field="games"]').getAttribute("data-value"))).toBe(c.games);
@@ -94,7 +103,7 @@ test.describe("R09 Draft Classes (RD08 layout)", () => {
 
   test("value by pick: chart points, band and table equal the served slots, controls live in the URL, and old tab links scroll", async ({ page }) => {
     await openWorkbench(page, `${path}?tab=value`);
-    await expect.poll(() => page.evaluate(() => Math.abs(document.getElementById("value")!.getBoundingClientRect().top) < 200)).toBe(true);
+    await expect.poll(() => page.evaluate(() => Math.abs(document.getElementById("value")?.getBoundingClientRect().top ?? Infinity) < 200)).toBe(true);
     const figure = page.locator('[data-chart="value-by-pick"]');
     const points = figure.locator(".slc-dot");
     await expect(points).toHaveCount(60);

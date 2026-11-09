@@ -40,7 +40,7 @@ const readTable = (page, selector) => page.evaluate(sel => [...document.querySel
   key: tr.dataset.row, data: { ...tr.dataset }, name: tr.querySelector(".player-cell-name")?.textContent ?? null,
   portrait: tr.querySelector("th img.player-portrait")?.getAttribute("src") ?? null, initials: tr.querySelector("th .player-portrait-fallback") ? true : false,
   cells: Object.fromEntries([...tr.querySelectorAll("td[data-field]")].map(td => { const main = td.querySelector(".rs-grid-value"); return [td.dataset.field, {
-    value: td.dataset.value, low: td.dataset.low, high: td.dataset.high, percentile: td.dataset.percentile, text: td.textContent, main: main?.textContent ?? null,
+    value: td.dataset.value, round: td.dataset.round, low: td.dataset.low, high: td.dataset.high, percentile: td.dataset.percentile, text: td.textContent, main: main?.textContent ?? null,
     sub: td.querySelector(".rs-grid-sub")?.textContent ?? null, label: td.querySelector('[data-field="tag"]')?.textContent ?? null, tone: main?.dataset.tone ?? null, identity: main?.dataset.identity ?? null, logo: !!td.querySelector("img, svg, .team-logo") }]; })),
 })), selector);
 
@@ -52,7 +52,7 @@ for (const width of [1440, 390]) {
   const errors = [], mismatches = []; let compared = 0, loads = 0;
   const photos = { portraits: 0, initials: 0, wrongSeason: [] }, missingLogos = [];
   const oldPhotos = [];
-  let rookieHeader = null;
+  let rookieHeader = null; const headerGapReport = {};
   const eq = (what, got, want) => { compared += 1; if (got !== want) mismatches.push({ what, got, want }); };
   page.on("console", m => { if (m.type() === "error") errors.push(m.text()); });
   page.on("pageerror", e => errors.push(String(e)));
@@ -66,6 +66,9 @@ for (const width of [1440, 390]) {
   };
 
   // Stats views: every figure against the Stats query's own value, and the header look.
+  const pickText = (round, pick) => round == null ? `#${pick}` : `R${round} #${pick}`;
+  const headerGaps = selector => page.evaluate(sel => { const t = document.querySelector(sel), f = t.querySelector(".lookup-input-wrapper").getBoundingClientRect(), h = t.tHead.getBoundingClientRect(); return { above: f.top - h.top, below: h.bottom - f.bottom, width: Math.round(f.width), height: Math.round(f.height) }; }, selector);
+  const evenGaps = async (what, selector) => { const g = await headerGaps(selector); eq(`${what} search gaps equal`, Math.abs(g.above - g.below) <= 1, true); headerGapReport[what] = g; };
   const checkRookieStats = async view => {
     const rows = await readTable(page, 'table[data-table="rookies"]');
     eq(`stats ${view} rows`, rows.length, tracker.rookies.length);
@@ -89,6 +92,7 @@ for (const width of [1440, 390]) {
         if (want != null && Number(want.toFixed(1)) !== 0) eq(`stats ${view} ${r.pick} ${field} sign`, row.cells[field].identity, identity(want));
       }
       photo(row, r.photo_season, r.team, `stats ${view} ${r.pick}`);
+      eq(`stats ${view} ${r.pick} pick text`, row.cells.pick.text, pickText(r.round, r.pick));
     }
     const guides = await page.evaluate(() => [...document.querySelectorAll('table[data-table="rookies"] tbody .stats-guide-cell img')].map(i => i.getAttribute("src")));
     for (const src of guides) { photos.portraits += 1; const u = new URL(src, WEB); if (u.searchParams.get("season") !== "2026-27") photos.wrongSeason.push({ what: "guide", src }); }
@@ -118,7 +122,7 @@ for (const width of [1440, 390]) {
   };
   const checkCard = async r => {
     const c = page.locator(`article[data-card="${r.player_id}"]`);
-    eq(`card ${r.pick} pick`, num(await c.locator('[data-field="pick"]').getAttribute("data-value")), r.pick);
+    eq(`card ${r.pick} pick`, num(await c.locator('[data-field="pick"]').getAttribute("data-value")), r.pick); eq(`card ${r.pick} pick text`, await c.locator('[data-field="pick"]').innerText(), pickText(r.round, r.pick));
     eq(`card ${r.pick} games`, num(await c.locator('.dc-card-meta[data-field="games"]').getAttribute("data-value")), r.comparison.line.games);
     eq(`card ${r.pick} darko`, num(await c.locator('[data-field="darko"]').getAttribute("data-value")), r.darko?.dpm ?? null);
     eq(`card ${r.pick} rapm`, num(await c.locator('[data-field="rapm"]').getAttribute("data-value")), r.rapm?.rapm ?? null);
@@ -131,6 +135,8 @@ for (const width of [1440, 390]) {
     const detail = await api(`/api/draft/rookies/${r.player_id}`);
     await page.waitForSelector('table[data-table="rookie-comparisons"] tbody tr', { state: "attached", timeout: 30000 }).catch(() => {});
     const past = await readTable(page, 'table[data-table="rookie-comparisons"]');
+    const pastYears = past.map(x => num(x.cells.year.value));
+    eq(`past ${r.pick} newest first`, pastYears.every((y, i) => i === 0 || pastYears[i - 1] >= y), true);
     if (detail.comparisons.length === 0) return;
     eq(`past ${r.pick} rows`, past.length, detail.comparisons.length + 1);
     for (const p of detail.comparisons) {
@@ -203,7 +209,7 @@ for (const width of [1440, 390]) {
       const c = row.cells, p = `${id} #${r.pick}`;
       eq(`${p} name`, row.name, r.name);
       photo(row, r.photo_season, r.photo_team, p);
-      eq(`${p} round`, num(c.round.value), r.round); eq(`${p} team`, c.team.value, r.team ?? "");
+      eq(`${p} round`, num(c.pick.round), r.round); eq(`${p} pick text`, c.pick.text, r.round == null ? `#${r.pick}` : `R${r.round} #${r.pick}`); eq(`${p} team`, c.team.value, r.team ?? "");
       if (r.team && !c.team.logo) missingLogos.push(`${year} ${r.team}`);
       eq(`${p} from`, c.organization.value, r.organization ?? "");
       eq(`${p} tag`, c.organization.label, steals.has(r.pick) ? "Steal" : misses.has(r.pick) ? "Miss" : null);
@@ -225,7 +231,7 @@ for (const width of [1440, 390]) {
       for (const r of list) {
         const key = `${r.year}-${r.pick}`, row = rows.find(x => x.key === key); if (!row) { eq(`${name} ${key}`, false, true); continue; }
         eq(`${name} ${key} name`, row.name, r.name); photo(row, r.photo_season, r.photo_team, `${name} ${key}`);
-        eq(`${name} ${key} pick`, num(row.cells.pick.value), r.pick); eq(`${name} ${key} ws`, num(row.cells.window_ws.value), r.window_ws); eq(`${name} ${key} expected`, num(row.cells.expected.value), r.expected_window_ws);
+        eq(`${name} ${key} pick`, num(row.cells.pick.value), r.pick); eq(`${name} ${key} pick text`, row.cells.pick.text, r.round == null ? `#${r.pick}` : `R${r.round} #${r.pick}`); eq(`${name} ${key} ws`, num(row.cells.window_ws.value), r.window_ws); eq(`${name} ${key} expected`, num(row.cells.expected.value), r.expected_window_ws);
         eq(`${name} ${key} surplus`, num(row.cells.surplus.value), r.surplus_window_ws); eq(`${name} ${key} text`, row.cells.surplus.main, signed(r.surplus_window_ws));
         eq(`${name} ${key} sign`, row.cells.surplus.identity, identity(r.surplus_window_ws)); eq(`${name} ${key} no green/red`, row.cells.surplus.tone, null);
       }
@@ -260,6 +266,8 @@ for (const width of [1440, 390]) {
   await page.waitForSelector('table[aria-label="2022 draft class"] tbody tr', { state: "attached", timeout: 60000 });
   await page.waitForLoadState("networkidle").catch(() => {});
   await checkRookieStats("per_game");
+  await evenGaps("rookies per game", 'table[data-table="rookies"]');
+  await evenGaps("class table", 'table[aria-label="2022 draft class"]');
   eq("rookie table title", await page.locator("#rookie-stats").innerText(), "2026-27 rookie stats");
   rookieHeader = await page.evaluate(() => { const b = document.querySelector('table[data-table="rookies"] .lookup-input').getBoundingClientRect(), h = document.querySelector('table[data-table="rookies"] thead').getBoundingClientRect(); return { width: Math.round(b.width), height: Math.round(b.height), gapAbove: Math.round(b.top - h.top), groups: [...document.querySelectorAll('table[data-table="rookies"] .stats-group-th')].map(e => e.textContent) }; });
   await checkCard(compared_rookies[0]);
@@ -319,7 +327,7 @@ for (const width of [1440, 390]) {
 
   // Walks.
   for (const view of ["per_36", "raw"]) { await open(`?stat=${view}`, 'table[data-table="rookies"] td[data-field="gp"]'); await checkRookieStats(view); }
-  await open("?stat=past", 'table[data-table="rookies"] td[data-field="pool"]'); await checkRookieTable();
+  await open("?stat=past", 'table[data-table="rookies"] td[data-field="pool"]'); await checkRookieTable(); await evenGaps("rookies past picks", 'table[data-table="rookies"]');
   const rookiesToCheck = wide ? compared_rookies.slice(1) : compared_rookies.slice(1, 4);
   for (const r of rookiesToCheck) { await open(`?rookie=${r.player_id}`, `article[data-card="${r.player_id}"]`); await checkCard(r); }
   const SPANS = wide ? [["window", "all", "ws"], ["window", "all", "min"], ["window", "multi_round", "ws"], ["window", "multi_round", "min"], ["window", "two_round", "ws"], ["window", "two_round", "min"],
@@ -338,7 +346,7 @@ for (const width of [1440, 390]) {
     eq(`tab=${tab} lands`, top >= 0 && top < 220, true);
   }
 
-  const result = { width, rookieHeader, compared, loads, mismatches: mismatches.length, errors: [...new Set(errors)].slice(0, 12), photos: { ...photos, wrongSeason: photos.wrongSeason.slice(0, 12), wrongSeasonCount: photos.wrongSeason.length }, oldPhotos, missingLogos: [...new Set(missingLogos)].slice(0, 40), ...layout, firstMismatches: mismatches.slice(0, 30) };
+  const result = { width, rookieHeader, headerGapReport, compared, loads, mismatches: mismatches.length, errors: [...new Set(errors)].slice(0, 12), photos: { ...photos, wrongSeason: photos.wrongSeason.slice(0, 12), wrongSeasonCount: photos.wrongSeason.length }, oldPhotos, missingLogos: [...new Set(missingLogos)].slice(0, 40), ...layout, firstMismatches: mismatches.slice(0, 30) };
   report.push(result);
   console.log(JSON.stringify({ ...result, firstMismatches: mismatches.slice(0, 12) }, null, 1));
   await page.close();

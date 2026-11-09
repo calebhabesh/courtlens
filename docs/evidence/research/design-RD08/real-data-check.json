@@ -4,7 +4,7 @@
   "rookieHeader": {
    "width": 226,
    "height": 30,
-   "gapAbove": 29,
+   "gapAbove": 18,
    "groups": [
     "Draft",
     "Profile",
@@ -15,13 +15,33 @@
     "Other"
    ]
   },
-  "compared": 191038,
+  "headerGapReport": {
+   "rookies per game": {
+    "above": 17.25,
+    "below": 17.25,
+    "width": 268,
+    "height": 32
+   },
+   "class table": {
+    "above": 17.25,
+    "below": 17.25,
+    "width": 256,
+    "height": 32
+   },
+   "rookies past picks": {
+    "above": 17.25,
+    "below": 17.25,
+    "width": 268,
+    "height": 32
+   }
+  },
+  "compared": 199411,
   "loads": 145,
   "mismatches": 0,
   "errors": [],
   "photos": {
-   "portraits": 6776,
-   "initials": 4244,
+   "portraits": 6832,
+   "initials": 4188,
    "wrongSeason": [],
    "wrongSeasonCount": 0
   },
@@ -80,7 +100,7 @@
   "rookieHeader": {
    "width": 150,
    "height": 40,
-   "gapAbove": 30,
+   "gapAbove": 19,
    "groups": [
     "Draft",
     "Profile",
@@ -91,7 +111,27 @@
     "Other"
    ]
   },
-  "compared": 38715,
+  "headerGapReport": {
+   "rookies per game": {
+    "above": 18.25,
+    "below": 18.25,
+    "width": 192,
+    "height": 42
+   },
+   "class table": {
+    "above": 18.25,
+    "below": 18.25,
+    "width": 256,
+    "height": 42
+   },
+   "rookies past picks": {
+    "above": 18.25,
+    "below": 18.25,
+    "width": 192,
+    "height": 42
+   }
+  },
+  "compared": 40198,
   "loads": 24,
   "mismatches": 0,
   "errors": [],
