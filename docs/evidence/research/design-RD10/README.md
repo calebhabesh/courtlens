@@ -55,3 +55,31 @@ Before the rebuild (:3100, read 2026-11-09): ten stacked sections under the old 
 **Glance test** (`backtest-top-1440.png`, full pages at both widths, viewed). In five seconds: what the page asks (hero), the answer in one sentence, and the first rows of a green-and-red table saying who beats whom.
 
 **Notes.** Section captures taken by Playwright can show the sticky site header or the Skip to content link across the middle of a tall section; neither is on the page there. Visuals were judged from the sandbox build. Earlier in this round the new CSS file's import was added a moment before the file existed, so the owner's :3100 showed a build error until the import was toggled (no server restart, `app/globals.css` left unchanged).
+
+## Round 2 (owner, 2026-11-09): "Yes, do all 5. Complete it comprehensively."
+
+| # | Change | Result |
+| --- | --- | --- |
+| 1 | Ran the 2026-27 refresh | `courtlens refresh-metric-backtest --force` (the owner's instruction; forced because the last run was under 7 days old). 26 games added: **25 prospective and 121 hindsight, scored through Nov 8, 2026**. It only appends to `games.jsonl` and rewrites `summary.json` under the git-ignored `data/derived/metric-backtest-serving/`; no frozen result, database or server was touched. The API reads the file on each request. |
+| 2 | Definitions collapsed | "How to read" keeps the three cards and one visible DARKO line; the glossary is a collapsed "Scores and metrics, defined" |
+| 3 | Winner picked gains | "+2.6 pts", interval in the same unit |
+| 4 | Answer trimmed | "Projected Impact can't be separated from RAPM 3Y or Time decay (opener)."; the numbers stay in the grid |
+| 5 | Calibration captions | The panel's title, source and sample lines are gone; the source is in About, Method |
+
+**The first prospective result.** 25 games: no player metric's RMSE gain over Team net excludes zero (for example Time decay +0.89, 95% −1.28 to +3.18). Twenty-five games decide nothing, and the backtest verdict never changes from these. This is the first time this table has rendered on real data; the 1 to 19 game state is covered by the spec with a modified payload.
+
+**A bug the refresh exposed, fixed on the page.** The scorer orders each pair by the names in the group's first row, and rows read back from `games.jsonl` have sorted keys, while rows scored in the same run don't. After this refresh most hindsight pairs came back with Team net first, and the page (like the R08 build before it) only looked one way round, so those rows drew a dash. `groupGain` in `lib/metric-backtest.ts` now reads either direction and flips the sign, as `pairOf` already did. The scorer is unchanged. The real-data check had copied the page's one-way lookup, so it passed; it now finds the pair independently and requires a gain on every non-baseline row. The problem was spotted in the screenshot.
+
+**Spec fixture.** `e2e/fixtures/metric-backtest.json` is the real API answer again, now with the 25 prospective games.
+
+**Page size.** 5,789 px at 1440 with both disclosures collapsed (round 1: 6,799; the original: 5,644) and 6,891 px at 390 (round 1: 8,988; the original: 9,475).
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | clean |
+| Vitest | 838 passed |
+| `r08-metric-backtest` ×3 | 30/30 |
+| Full Playwright | 611 passed, 17 skipped, 0 failed. The known Projected Impact flake did not appear |
+| Real data | 29,738 values (26,008 at 1440 over 180 loads; 3,730 at 390 over 13 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images. Prospective and hindsight tables compared in full; the definitions and About collapsed; the calibration title and captions not visible; no phone control under 40 px |
+
+Screenshots viewed: `backtest-season-2026-27-1440.png`, `backtest-scores-1440.png`, `backtest-scores-against-1440.png`, `backtest-reading-1440.png`, `backtest-glossary-1440.png`, full pages, `backtest-top-390.png`. Visuals judged from the sandbox build; the :3100 CSS chunk was refreshed and checked before reporting.

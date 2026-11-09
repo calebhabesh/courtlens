@@ -64,6 +64,18 @@ export async function getMetricBacktest(signal?: AbortSignal): Promise<MetricBac
 const flipVerdict = (v: PairVerdict): PairVerdict => v === "candidate_better" ? "reference_better" : v === "reference_better" ? "candidate_better" : v;
 const flipGain = (g: Gain): Gain => ({ gain: -g.gain, low: -g.high, high: -g.low });
 
+/**
+ * A 2026-27 pair's gain with `candidate` first. The scorer orders each pair by the names in the group's first row, so a pair can be served
+ * either way round; the sign is flipped to match, as in `pairOf`.
+ */
+export function groupGain(group: ProspectiveGroup, candidate: string, reference: string, score: Score = "rmse"): Gain | undefined {
+  for (const p of group.pairs ?? []) {
+    if (p.candidate === candidate && p.reference === reference) return p[score];
+    if (p.candidate === reference && p.reference === candidate) return flipGain(p[score]);
+  }
+  return undefined;
+}
+
 /** The pair with `candidate` first; gains flipped so positive still favours `candidate`. */
 export function pairOf(pairs: readonly Pair[], candidate: string, reference: string): Pair | null {
   const found = pairs.find(p => (p.candidate === candidate && p.reference === reference) || (p.candidate === reference && p.reference === candidate));
@@ -109,6 +121,8 @@ export function signed(value: number | null | undefined, digits = 2): string {
 export const percent = (value: number | null | undefined, digits = 1) =>
   typeof value === "number" && Number.isFinite(value) ? `${(value * 100).toFixed(digits)}%` : "—";
 export const gainText = (g: Gain | undefined, digits = 2) => g ? `${signed(g.gain, digits)} (${signed(g.low, digits)} to ${signed(g.high, digits)})` : "—";
+/** A difference of shares in percentage points: "+2.6 pts". */
+export const pointsText = (value: number | null | undefined) => typeof value === "number" && Number.isFinite(value) ? signed(value * 100, 1) : "—";
 /** Both ends with their signs: "+0.72 to +0.88". */
 export const gainBand = (b: Band | undefined, digits = 2) => b ? `${signed(b.low, digits)} to ${signed(b.high, digits)}` : "—";
 export const bandText = (b: Band | undefined, digits = 2) => b ? `${fixed(b.low, digits)} to ${fixed(b.high, digits)}` : "—";
@@ -144,7 +158,10 @@ export function verdictSentences(page: MetricBacktestPage): string[] {
   }
   const unranked = results.pairs.filter(p => p.verdict === "no_ranking");
   if (unranked.length) {
-    out.push(`No ranking for ${unranked.length === 1 ? "one pair" : `${unranked.length} pairs`}: ${unranked.map(p => `${name(p.candidate)} and ${name(p.reference)} (${signed(p.pooled.rmse.gain)} points, 95% ${gainBand(p.pooled.rmse)}, over ${seasonRange(p.seasons)})`).join("; ")}. Their intervals include zero, so neither is called better.`);
+    const common = [unranked[0].candidate, unranked[0].reference].find(k => unranked.every(p => p.candidate === k || p.reference === k));
+    const short = (key: string) => metrics[key]?.short ?? key;
+    if (common) out.push(`${short(common)} can't be separated from ${unranked.map(p => short(p.candidate === common ? p.reference : p.candidate)).join(" or ")}.`);
+    else out.push(`No ranking for ${unranked.length} pairs: ${unranked.map(p => `${short(p.candidate)} and ${short(p.reference)}`).join("; ")}.`);
   }
   return out;
 }

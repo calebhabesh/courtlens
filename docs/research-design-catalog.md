@@ -757,6 +757,15 @@ recommendations and suggestions for optimal construction and layout of this page
    - (11) Shared additions: an optional zero line on `SeasonLineChart`; optional axis and unit wording on `ReliabilityPlot`.
    — Built as proposed: the answer in one sentence, a 9×9 of all 36 gains coloured only where the interval excludes zero, every score against a chosen metric, one line with a band and zero on the axis, pooled scores with a warning not to compare rows, a calibration plot in category tints beside its bins, 2026-27 kept apart, How to read and a collapsed About. Real data 29,440 values, 0 mismatches; full Playwright 609 passed, 17 skipped, 0 failed. The page shows 0 prospective games until the owner runs the 2026-27 refresh.
 
+Instructions (owner, 2026-11-09, round 2; answering the five improvements proposed after round 1):
+2. [x] Yes, do all 5. Complete it comprehensively.
+   - (1) Run the 2026-27 refresh, so games since the freeze are scored, and re-check the prospective table on real data.
+   - (2) Collapse the metric glossary, keeping the three short cards; DARKO's omission stays visible as one line.
+   - (3) Show Winner picked gains in percentage points.
+   - (4) Trim the answer section's unranked-pairs paragraph.
+   - (5) Cut the calibration chart's extra captions; the source moves to About.
+   — All five done: 2026-27 refreshed to 25 prospective and 121 hindsight games through Nov 8, 2026; definitions collapsed with one visible DARKO line; Winner picked gains in pts; the answer's unranked line shortened; the calibration panel's captions gone, source in About. The refresh exposed hindsight gains drawing as dashes (pairs served Team net first); the page now reads either direction. Real data 29,738 values, 0 mismatches; full Playwright 611 passed, 17 skipped, 0 failed.
+
 Evidence: [`design-RD10`](evidence/research/design-RD10/README.md).
 
 ## RD11 Projected Impact — ⬜
