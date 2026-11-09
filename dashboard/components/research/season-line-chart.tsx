@@ -37,7 +37,7 @@ function trimmed(ticks: number[], values: readonly number[]): number[] {
 
 const vars = (props: Record<string, string>) => props as CSSProperties;
 
-export function SeasonLineChart({ label, points, format, axisFormat = format, band, xTicks, zero = false }: {
+export function SeasonLineChart({ label, points, format, axisFormat = format, band, xTicks, zero = false, name, overlay }: {
   label: string;
   points: readonly SeasonPoint[];
   format: (value: number) => string;
@@ -48,12 +48,17 @@ export function SeasonLineChart({ label, points, format, axisFormat = format, ba
   xTicks?: readonly number[];
   /** Keep zero on the axis and mark it more strongly than the other grid lines, for a measure whose sign matters (RD10). */
   zero?: boolean;
+  /** The main line's name in the tooltip, when an `overlay` shares the axis. */
+  name?: string;
+  /** A second measure on the same axis and scale, one value per point (RD11); its line and points carry `data-series="overlay"`. */
+  overlay?: { name: string; values: readonly (number | null)[] };
 }) {
   const [active, setActive] = useState<number | null>(null);
   const known = points.map(p => p.value).filter((v): v is number => v !== null && Number.isFinite(v));
   if (known.length < 2) return <p className="slc-empty">Not enough seasons to draw a line.</p>;
   const bounded = (p: SeasonPoint): p is SeasonPoint & { low: number; high: number } => band !== undefined && typeof p.low === "number" && typeof p.high === "number";
-  const span = [...known, ...points.filter(bounded).flatMap(p => [p.low, p.high]), ...(zero ? [0] : [])];
+  const second = overlay?.values.filter((v): v is number => v !== null && Number.isFinite(v)) ?? [];
+  const span = [...known, ...second, ...points.filter(bounded).flatMap(p => [p.low, p.high]), ...(zero ? [0] : [])];
   const ticks = band === undefined ? niceTicks(span) : trimmed(niceTicks(span), span);
   const bottom = ticks[0], top = ticks[ticks.length - 1];
   const x = (index: number) => points.length === 1 ? 50 : (index / (points.length - 1)) * 100;
@@ -63,6 +68,12 @@ export function SeasonLineChart({ label, points, format, axisFormat = format, ba
     if (p.value === null) { pen = false; return; }
     path += `${pen ? "L" : "M"}${x(i).toFixed(3)},${y(p.value).toFixed(3)}`;
     pen = true;
+  });
+  let overlayPath = "", overlayPen = false;
+  overlay?.values.forEach((value, i) => {
+    if (value === null) { overlayPen = false; return; }
+    overlayPath += `${overlayPen ? "L" : "M"}${x(i).toFixed(3)},${y(value).toFixed(3)}`;
+    overlayPen = true;
   });
   // The band: upper edges left to right, lower edges back, one closed shape per unbroken run of intervals.
   let area = "";
@@ -102,15 +113,19 @@ export function SeasonLineChart({ label, points, format, axisFormat = format, ba
         <svg className="slc-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
           {area && <path className="slc-band" d={area} />}
           <path className="slc-line" d={path} vectorEffect="non-scaling-stroke" />
+          {overlayPath && <path className="slc-line" data-series="overlay" d={overlayPath} vectorEffect="non-scaling-stroke" />}
         </svg>
         {points.map((p, i) => p.value === null ? null : <span key={p.season} className="slc-dot" aria-hidden="true" data-season={p.season} data-value={p.value}
           data-low={bounded(p) ? p.low : undefined} data-high={bounded(p) ? p.high : undefined}
           data-active={active === i || undefined} style={vars({ "--slc-x": `${x(i)}%`, "--slc-y": `${y(p.value)}%` })} />)}
+        {overlay?.values.map((value, i) => value === null ? null : <span key={points[i].season} className="slc-dot" aria-hidden="true" data-series="overlay" data-season={points[i].season} data-value={value}
+          data-active={active === i || undefined} style={vars({ "--slc-x": `${x(i)}%`, "--slc-y": `${y(value)}%` })} />)}
         {shown && active !== null && <>
           <span className="slc-cross" aria-hidden="true" style={vars({ "--slc-x": `${x(active)}%` })} />
           <span className="slc-tip" data-edge={edge} role="status" style={vars({ "--slc-x": `${x(active)}%` })}>
             <span className="slc-tip-season">{shown.label ?? shown.season}</span>
-            <span className="slc-tip-value">{shown.value === null ? "Unknown" : format(shown.value)}</span>
+            <span className="slc-tip-value">{name ? `${name} ` : ""}{shown.value === null ? "Unknown" : format(shown.value)}</span>
+            {overlay && <span className="slc-tip-value">{overlay.name} {typeof overlay.values[active] === "number" ? format(overlay.values[active]) : "Unknown"}</span>}
             {bounded(shown) && <span className="slc-tip-season">{band} {format(shown.low)} to {format(shown.high)}</span>}
           </span>
         </>}

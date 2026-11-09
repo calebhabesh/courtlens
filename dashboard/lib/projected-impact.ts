@@ -1,4 +1,6 @@
-/** Research → Projected Impact: types and copy for `courtlens-projected-impact-v1`. */
+/** Research → Projected Impact: types, reads and copy for `courtlens-projected-impact-v1`. */
+
+import { browserApi } from "./workbench-api";
 
 export interface Gap { gap: number; low: number; high: number; units: number; level: number }
 export interface PlayerModel { rmse: number; correlation: number }
@@ -68,6 +70,9 @@ export const BUCKET_LABELS: Record<string, string> = {
   no_prior: "No RAPM last season (rookies, returners)",
 };
 
+/** Target-season minute bands of the served diagnostic; each key is its band's lower bound, and the bands don't overlap. */
+export const TARGET_MINUTE_LABELS: Record<string, string> = { "500+": "500 to 999", "1000+": "1,000 to 1,999", "2000+": "2,000 or more" };
+
 const STAT_LABELS: Record<string, string> = {
   pts: "Points", fga: "Field-goal attempts", fg3a: "Three-point attempts", fta: "Free-throw attempts", oreb: "Offensive rebounds",
   dreb: "Defensive rebounds", ast: "Assists", stl: "Steals", blk: "Blocks", tov: "Turnovers", pf: "Fouls",
@@ -100,12 +105,31 @@ export function featureLabel(name: string): string {
 }
 
 export const fixed = (value: number | null | undefined, digits = 2) => value == null ? "—" : value.toFixed(digits);
-export const signed = (value: number | null | undefined, digits = 2) => value == null ? "—" : `${value > 0 ? "+" : ""}${value.toFixed(digits)}`;
+export function signed(value: number | null | undefined, digits = 2): string {
+  if (value == null || !Number.isFinite(value)) return "—";
+  const text = Math.abs(value).toFixed(digits);
+  return Number(text) === 0 ? text : `${value > 0 ? "+" : "−"}${text}`;
+}
 export const percent = (value: number | null | undefined, digits = 1) => value == null ? "—" : `${(value * 100).toFixed(digits)}%`;
-export const gapText = (gap: Gap | undefined, digits = 2) => gap ? `${signed(gap.gap, digits)} (${signed(gap.low, digits)} to ${signed(gap.high, digits)})` : "—";
-/** Whether a paired interval excludes zero, and on which side. Never read as a verdict on players. */
-export const gapTone = (gap: Gap | undefined): "better" | "worse" | "unclear" => !gap ? "unclear" : gap.low > 0 ? "better" : gap.high < 0 ? "worse" : "unclear";
+export const gapBand = (gap: { low: number; high: number } | undefined, digits = 2) => gap ? `${signed(gap.low, digits)} to ${signed(gap.high, digits)}` : "—";
+export const gapText = (gap: Gap | undefined, digits = 2) => gap ? `${signed(gap.gap, digits)} (${gapBand(gap, digits)})` : "—";
+/** Green or red only where the served interval excludes zero. Never read as a verdict on players. */
+export const intervalTone = (gap: { low: number; high: number } | undefined): "good" | "bad" | undefined => !gap ? undefined : gap.low > 0 ? "good" : gap.high < 0 ? "bad" : undefined;
+/** Gold above zero and blue below, for a value with no interval or one that includes zero. A value that rounds to zero has no sign. */
+export const signTone = (value: number | null | undefined, digits = 2): "a" | "b" | undefined => value == null || Number(Math.abs(value).toFixed(digits)) === 0 ? undefined : value > 0 ? "a" : "b";
 
-/** Largest first; a source too small to read is left out of the chart, not rounded to zero. */
-export const blockRows = (blocks: Record<string, number>) => Object.entries(blocks).map(([key, value]) => ({ label: BLOCK_LABELS[key] ?? key, value })).filter(row => Math.abs(row.value) >= .005).sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
-export const featureRows = (top: Contribution[]) => top.map(entry => ({ label: `${featureLabel(entry.feature)}${entry.value == null ? "" : ` (${fixed(entry.value)})`}`, value: entry.contribution }));
+async function readJson<T>(path: string, signal: AbortSignal | undefined, what: string): Promise<T> {
+  const response = await fetch(`${browserApi}${path}`, { signal });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null) as { detail?: string } | null;
+    throw new Error(typeof body?.detail === "string" ? body.detail : `${what} request failed (${response.status})`);
+  }
+  return response.json() as Promise<T>;
+}
+
+export const getProjectedImpactPage = (signal?: AbortSignal) => readJson<ProjectedImpactPage>("/api/projected-impact", signal, "Projected impact");
+export const getProjectedImpactPlayer = (playerId: string, signal?: AbortSignal) => readJson<PlayerDetail>(`/api/projected-impact/players/${encodeURIComponent(playerId)}`, signal, "Projected impact player");
+
+/** Every source, largest first, so the sources add up to the projection on the page. */
+export const blockRows = (blocks: Record<string, number>) => Object.entries(blocks).map(([key, value]) => ({ key, label: BLOCK_LABELS[key] ?? key, value })).sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+export const featureRows = (top: Contribution[]) => top.map(entry => ({ key: entry.feature, label: `${featureLabel(entry.feature)}${entry.value == null ? "" : ` (${fixed(entry.value)})`}`, value: entry.contribution }));

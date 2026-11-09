@@ -64,7 +64,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
 | RD09 | Research landing [29] | `/research` | none | R12 | ✂️ cut by the owner (2026-11-09) |
 | RD10 | Metric Backtest [29] | `/research/backtest` | none (built from approved CourtLens Research patterns) | R08, RD10 | ✅ |
-| RD11 | Projected Impact [29] | `/research/projected-impact` | none | R07 | ⬜ |
+| RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | 👀 |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none | R14 | ⬜ |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none | R03 | ⬜ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
@@ -772,11 +772,30 @@ Instructions (owner, 2026-11-09, round 3):
 
 Evidence: [`design-RD10`](evidence/research/design-RD10/README.md).
 
-## RD11 Projected Impact — ⬜
+## RD11 Projected Impact — 👀
 
 - **Now:** frozen 2026-27 projections with intervals (roster / rookies / everyone), aging curve, the test
   against carry-forward and time decay, the weekly prospective score (first scheduled run 2026-11-12).
-- **Instructions:** _(owner)_
+- **Reference:** none. No Databallr page for it; each section borrows a named, approved CourtLens Research precedent.
+- **Before (round 1, :3100, 2026-11-09):** four stat tiles and eight stacked sections, full width with no side gutter, old tables. 4,857 px tall at 1440, 6,507 px at 390; 0 console errors, 0 overflow, 0 broken images. Range bars clipped at −6 while served lows reach −6.99 (71 of 661 players); green/red contribution bars with no interval; gold/blue aging lines as labels; copy saying the weekly score reports ridge while the table left it out; 107 hindsight games with a green +28.43; project wording, ISO timestamps and hashes in the body; per-season results served but not drawn.
+- **Design check (2026-11-09):** nothing needs new data, an API field or a new analysis. Not served and left out: position, an interval on the aging curve, time decay's test gain over carry-forward (not computed), the weekly trend (`prospective_by_week` is empty until scheduled runs).
+
+Instructions (owner, 2026-11-09, round 1; the owner answered the design proposal and its four recommendations with "Go with your
+recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively."):
+1. [x] Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively.
+   - (1) 992 px column, centred hero (tagline, meta line, links); the four stat tiles are cut.
+   - (2) The answer in one sentence: yes against carry-forward, small against time decay; the numbers stay in the grids.
+   - (3) 2026-27 projected RAPM, points per 100 possessions: `StatsGrid`, `GridSearch`, `TeamPicker`, the three-way switch, the value with its interval under it, a range bar on desktop whose axis fits the served intervals, age, last season, minutes. The "not true ability" line stays. Q1: projections come before the test. Q2: the `#` column is cut, sorted by Projected. `Why` becomes a small tool on the player row; `?player=` stays.
+   - (4) Why a player is projected there: a tinted player card, `LookupInput` search over the frozen players, training average + sources = projection, gold/blue bars readable on a phone, the player under all five ratings.
+   - (5) The test: Pooled / 2024-25 / 2025-26 switch, compact Players and Games grids, gains against both baselines, registered order, the ridge line visible, a small rookies and returners grid.
+   - (6) 2026-27 score: prospective first, hindsight apart and labelled, all five ratings, the formula in About. Q3: hindsight gains stay uncoloured. Q4: the score is not forced; the first scheduled run is 2026-11-12.
+   - (7) Aging curve: category tints, captions cut, the "ends are thin" line kept, a statement that no interval is served.
+   - (8) Do the intervals hold: a five-row compact grid and one plain sentence that they ran wide.
+   - (9) How to read: three short cards, glossary collapsed. (10) About this page, collapsed: method, target, limits, hashes, DARKO and EPM credit, evidence link.
+   - (11) "What did not work" is dissolved: each finding moves beside its evidence and stays visible.
+   — Built as proposed: the answer in one sentence, the projections on `StatsGrid` with bars on one scale, a tinted Why card with search, per-season test grids, 2026-27 prospective first and hindsight uncoloured, category-tinted aging lines, coverage, How to read and a collapsed About. Real data 105,044 values, 0 mismatches; full Playwright 613 passed, 17 skipped, 0 failed. The page shows 0 prospective games until the first weekly score, due around Nov 12, 2026.
+
+Evidence: [`design-RD11`](evidence/research/design-RD11/README.md).
 
 ## RD12 Lineup Model — ⬜
 

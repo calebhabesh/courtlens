@@ -43,6 +43,14 @@ describe("SeasonLineChart (RD06)", () => {
     expect([...container.querySelectorAll(".slc-y-label")].map(l => Number(l.textContent))).toContain(0);
   });
 
+  it("draws a second line on the same scale, with its own points (RD11)", () => {
+    const { container } = render(<SeasonLineChart label="By age" format={v => v.toFixed(2)} name="Curve" overlay={{ name: "Model", values: [-3, null, 0.5] }}
+      points={[{ season: "20", value: -1 }, { season: "27", value: 0 }, { season: "34", value: 1 }]} />);
+    expect(container.querySelectorAll('path.slc-line[data-series="overlay"]')).toHaveLength(1);
+    expect([...container.querySelectorAll('.slc-dot[data-series="overlay"]')].map(d => d.getAttribute("data-value"))).toEqual(["-3", "0.5"]);
+    expect(Math.min(...[...container.querySelectorAll(".slc-y-label")].map(l => Number(l.textContent)))).toBeLessThanOrEqual(-3);
+  });
+
   it("says so when there are fewer than two values", () => {
     render(<SeasonLineChart label="x" format={String} points={[{ season: "2014-15", value: 1 }]} />);
     expect(screen.getByText("Not enough seasons to draw a line.")).toBeTruthy();
