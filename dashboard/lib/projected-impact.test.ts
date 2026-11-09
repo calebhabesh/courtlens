@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { featureLabel, gapText, gapTone, percent, signed } from "./projected-impact";
+import { featureLabel, gapText, intervalTone, percent, signed, signTone } from "./projected-impact";
 
 describe("projected impact copy", () => {
   it("names every feature family in words", () => {
@@ -10,11 +10,18 @@ describe("projected impact copy", () => {
     expect(featureLabel("unknown_name")).toBe("unknown_name");
   });
 
-  it("reads an interval by whether it excludes zero, never as a verdict", () => {
-    expect(gapTone({ gap: 1, low: .1, high: 2, units: 2, level: .95 })).toBe("better");
-    expect(gapTone({ gap: -1, low: -2, high: -.1, units: 2, level: .95 })).toBe("worse");
-    expect(gapTone({ gap: 1, low: -.1, high: 2, units: 2, level: .95 })).toBe("unclear");
-    expect(gapTone(undefined)).toBe("unclear");
+  it("colours only by whether an interval excludes zero, never as a verdict", () => {
+    expect(intervalTone({ low: .1, high: 2 })).toBe("good");
+    expect(intervalTone({ low: -2, high: -.1 })).toBe("bad");
+    expect(intervalTone({ low: -.1, high: 2 })).toBeUndefined();
+    expect(intervalTone(undefined)).toBeUndefined();
+  });
+
+  it("gives gold or blue by sign, and none to a value that rounds to zero", () => {
+    expect(signTone(.4)).toBe("a");
+    expect(signTone(-.4)).toBe("b");
+    expect(signTone(-.001)).toBeUndefined();
+    expect(signTone(null)).toBeUndefined();
   });
 
   it("formats unknown values as a dash, not zero", () => {
@@ -22,5 +29,7 @@ describe("projected impact copy", () => {
     expect(percent(undefined)).toBe("—");
     expect(gapText(undefined)).toBe("—");
     expect(signed(1.234)).toBe("+1.23");
+    expect(signed(-1.234)).toBe("−1.23");
+    expect(signed(-.001)).toBe("0.00");
   });
 });
