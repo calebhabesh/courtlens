@@ -828,3 +828,11 @@ gained an optional band and chosen x labels; `LookupInput` gained an optional gr
 Lint and typecheck clean, Vitest 833, `r09-draft-classes` and `r11-learning-patch-notes` 48/48 ×3, full Playwright 605 passed, 17 skipped, 0 failed. Real data: 212,435 values, 0 mismatches at 1440 and 390; 0 console
 errors, 0 overflow, 0 broken images, no phone control under 40 px; every photo requested for its own season and team. Early classes are mostly initials (1984: 21 of the 58 who played have a photo). Evidence:
 [`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.
+
+## 2026-11-09 — RD08 round 2: rookie table built like Stats
+
+Owner's notes: the table needed a title, why per 36, try the main Stats design for rookies only, and the search bar was too squished. The table is now titled
+"2026-27 rookie stats" and uses the Stats groups, columns and photo strips, with Per Game (default), Per 36, Totals and Vs Past Picks (R09's per-36 comparison, unchanged). Numbers come from
+the Stats query's served draft-class filter; no API, analysis or frozen result changed. Shared `StatsGrid` gained an optional `guide` column. Lint and typecheck clean; Vitest 833; page specs ×3 51/51;
+full Playwright 606 passed, 17 skipped, 0 failed; real data 229,753 values, 0 mismatches, 0 console errors, 0 overflow, 0 wrong-season photos. Evidence:
+[`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.

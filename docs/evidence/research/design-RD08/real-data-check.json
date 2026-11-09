@@ -1,13 +1,27 @@
 [
  {
   "width": 1440,
-  "compared": 182379,
-  "loads": 142,
+  "rookieHeader": {
+   "width": 226,
+   "height": 30,
+   "gapAbove": 29,
+   "groups": [
+    "Draft",
+    "Profile",
+    "Impact",
+    "Counting",
+    "Eff",
+    "Shooting",
+    "Other"
+   ]
+  },
+  "compared": 191038,
+  "loads": 145,
   "mismatches": 0,
   "errors": [],
   "photos": {
-   "portraits": 5661,
-   "initials": 4279,
+   "portraits": 6776,
+   "initials": 4244,
    "wrongSeason": [],
    "wrongSeasonCount": 0
   },
@@ -63,12 +77,26 @@
  },
  {
   "width": 390,
-  "compared": 30056,
-  "loads": 21,
+  "rookieHeader": {
+   "width": 150,
+   "height": 40,
+   "gapAbove": 30,
+   "groups": [
+    "Draft",
+    "Profile",
+    "Impact",
+    "Counting",
+    "Eff",
+    "Shooting",
+    "Other"
+   ]
+  },
+  "compared": 38715,
+  "loads": 24,
   "mismatches": 0,
   "errors": [],
   "photos": {
-   "portraits": 729,
+   "portraits": 1809,
    "initials": 807,
    "wrongSeason": [],
    "wrongSeasonCount": 0

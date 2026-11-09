@@ -29,6 +29,7 @@
   .dc-lead strong { color: var(--color-text); font-weight: 650; font-variant-numeric: tabular-nums; }
   .dc-lead a { color: var(--color-accent); }
   .dc-note { max-width: 768px; margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .dc-note a { color: var(--color-accent); }
   .dc-subhead { margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 650; }
   .dc-card-text { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
   .dc-list { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5); color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
@@ -81,13 +82,12 @@
   .dc-rating-note { grid-column: 1 / -1; color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); }
 
   /* Tables: the rookie table fits the 1096 px content column with its pinned player. */
-  .dc-section table[data-table="rookies"] col.rs-col-lead { width: 260px; }
   .dc-section table[data-table="rookies"] col.rs-col-sm { width: 60px; }
   .dc-section table[data-table="rookies"] col.rs-col-xs { width: 48px; }
   .dc-section table[data-table="rookies"] col:nth-child(3) { width: 72px; }
   .dc-section table[data-table="rookie-comparisons"] col.rs-col-lead { width: 248px; }
   .dc-section table[data-table="rookie-comparisons"] col.rs-col-xs { width: 52px; }
-  .dc-section table[data-table="class"] col.rs-col-lead { width: 240px; }
+  .dc-section table[data-table="class"] col.rs-col-lead { width: 288px; }
   .dc-section table[data-table="class"] col.rs-col-xs { width: 52px; }
   .dc-section table[data-table="class"] col.rs-col-sm { width: 72px; }
   .dc-section table[data-table="class"] col.rs-col-md { width: 92px; }
@@ -132,7 +132,10 @@
     .dc-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .dc-tiles[data-count="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .dc-scatter text { font-size: var(--text-xl); }
-    .dc-section table[data-table="rookies"] col.rs-col-lead { width: 200px; }
+    .dc-section table[data-table="rookies"] col.rs-col-lead { width: 224px; }
+    .dc-rookie-tools { align-items: stretch; flex-direction: column; }
+    .dc-rookie-tools [role="radiogroup"] { width: 100%; min-height: var(--space-12); }
+    .dc-rookie-tools [role="radiogroup"] button { flex: 1 1 0; min-height: 40px; padding-inline: var(--space-1); }
     /* The rookie search above the card chooses on a phone; the row button has no room beside the name. */
     .dc-section table[data-table="rookies"] .rs-grid-tools { display: none; }
     .dc-section table:is([data-table="bands"], [data-table="combine-correlations"]) col.rs-col-lead { width: 168px; }

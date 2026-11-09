@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { EntityField } from "./entity-picker";
 import { LookupInput } from "./lookup-input";
+import { PlayerPortrait } from "./player-portrait";
 import { SqPanel } from "./shot-quality-figures";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
@@ -20,10 +21,10 @@ import { GridPlayer, GridSearch, GridValue, StatsGrid, type GridColumn } from ".
 import { TeamPicker, teamCode } from "./research/team-picker";
 import {
   BAND_LABELS, CAREER_ERA_LABELS, COMBINE_LABELS, COMBINE_UNITS, ERA_LABELS, MEASURE_LABELS, ROOKIE_STATS, STAT_LABELS,
-  fixed, getDraftClass, getDraftCombine, getDraftSummary, getRookie, getRookies, percent, rangeText, rookieTone,
+  fixed, getDraftClass, getDraftCombine, getDraftSummary, getRookie, getRookieStats, getRookies, percent, rangeText, rookieTone,
   seasonLabel, signed, statText, whole,
   type Band, type ClassIndex, type CombineRow, type DraftClass, type DraftSummary, type Era, type Measure, type PastRookie, type PickRow,
-  type Rookie, type RookieStat, type RookieTracker, type SlotSummary,
+  type Rookie, type RookieStat, type RookieStatLine, type RookieTracker, type SlotSummary,
 } from "@/lib/draft-classes";
 import { seasonEra } from "@/lib/portrait-source";
 import { evidenceUrl } from "@/lib/research-facts";
@@ -62,7 +63,10 @@ const ORDERS = [{ value: "draft", label: "Draft order" }, { value: "redraft", la
 type Order = (typeof ORDERS)[number]["value"];
 const LATEST_CLASS = 2022;
 const ROOKIE_SEASON = "2026-27";
+const ROOKIE_CLASS = 2026;
 const NO_ROOKIE = "none";
+const ROOKIE_VIEWS = [{ value: "per_game", label: "Per Game" }, { value: "per_36", label: "Per 36" }, { value: "raw", label: "Totals" }, { value: "past", label: "Vs Past Picks" }] as const;
+type RookieView = (typeof ROOKIE_VIEWS)[number]["value"];
 const PICK_TICKS = [0, 9, 19, 29, 39, 49, 59];
 const STATUS_LABELS: Record<ClassIndex["status"], string> = { complete: "Complete", censored: "Too recent", rookies: "Rookies" };
 const STATUS_TINT: Record<ClassIndex["status"], string> = { complete: "1", censored: "2", rookies: "3" };
@@ -209,26 +213,70 @@ function PastPicks({ rookie }: { rookie: Rookie }) {
   </div>;
 }
 
+const DRAFT_COLUMNS: GridColumn<Rookie>[] = [
+  { key: "pick", label: "Pick", width: "xs", sort: r => r.pick, data: r => ({ field: "pick", value: r.pick }), cell: r => <GridValue text={String(r.pick)} /> },
+  { key: "drafted", label: "By", title: "The team that made the pick", width: "sm", align: "left", cell: r => <TeamCode team={r.draft_team} season={ROOKIE_SEASON} /> },
+];
+
+const ratingColumns = (group?: string): GridColumn<Rookie>[] => [
+  { key: "darko", label: group ? "DPM" : "DARKO", group, title: "DARKO Daily Plus-Minus", width: "sm", sort: r => r.darko?.dpm ?? null, data: r => ({ field: "darko", value: r.darko?.dpm ?? "" }),
+    cell: r => <GridValue text={signed(r.darko?.dpm)} identity={identityOf(r.darko?.dpm)} /> },
+  ...(group ? [
+    { key: "o_dpm", label: "ODPM", group, title: "DARKO offence", width: "sm" as const, sort: (r: Rookie) => r.darko?.o_dpm ?? null, data: (r: Rookie) => ({ field: "o_dpm", value: r.darko?.o_dpm ?? "" }),
+      cell: (r: Rookie) => <GridValue text={signed(r.darko?.o_dpm)} identity={identityOf(r.darko?.o_dpm)} /> },
+    { key: "d_dpm", label: "DDPM", group, title: "DARKO defence", width: "sm" as const, sort: (r: Rookie) => r.darko?.d_dpm ?? null, data: (r: Rookie) => ({ field: "d_dpm", value: r.darko?.d_dpm ?? "" }),
+      cell: (r: Rookie) => <GridValue text={signed(r.darko?.d_dpm)} identity={identityOf(r.darko?.d_dpm)} /> },
+  ] : []),
+  { key: "rapm", label: "RAPM", group, title: "Time-decay RAPM", width: "sm", sort: r => r.rapm?.rapm ?? null, data: r => ({ field: "rapm", value: r.rapm?.rapm ?? "" }),
+    cell: r => <GridValue text={signed(r.rapm?.rapm)} identity={identityOf(r.rapm?.rapm)} /> },
+];
+
+/** The table's past-picks view: R09's per-36 comparison with each rookie's percentile among past picks at his slot. */
+function pastColumns(): GridColumn<Rookie>[] {
+  return [
+    ...DRAFT_COLUMNS,
+    { key: "games", label: "G", width: "xs", sort: r => r.comparison?.line.games ?? null, data: r => ({ field: "games", value: r.comparison?.line.games ?? "" }),
+      cell: r => <GridValue text={r.comparison ? `${r.comparison.line.games}${r.comparison.small_sample ? "*" : ""}` : null} title={r.comparison?.small_sample ? `Under 100 minutes (${fixed(r.comparison.line.minutes, 0)})` : undefined} /> },
+    ...ROOKIE_STATS.map(s => ({ key: s, label: STAT_LABELS[s], width: "sm" as const, sort: (r: Rookie) => r.comparison?.stats[s].value ?? null,
+      data: (r: Rookie) => ({ field: s, value: r.comparison?.stats[s].value ?? "", percentile: r.comparison?.stats[s].percentile ?? "" }),
+      cell: (r: Rookie) => { const c = r.comparison?.stats[s]; return c ? <GridValue text={statText(s, c.value)} sub={pct(c.percentile)} tone={toneOf(rookieTone(s, c))} /> : <GridValue text={null} />; } })),
+    ...ratingColumns(),
+    { key: "pool", label: "Past", title: "Past rookies at the same pick, classes 1983 to 2025", width: "sm", sort: r => r.pool, data: r => ({ field: "pool", value: r.pool }), cell: r => <GridValue text={String(r.pool)} /> },
+  ];
+}
+
+/** The Stats page's Overview columns and groups for the rookies; DPM and RAPM come from the tracker. A pick with no games shows dashes. */
+function statColumns(view: Exclude<RookieView, "past">, lines: Map<string, RookieStatLine> | null | undefined): GridColumn<Rookie>[] {
+  const value = (r: Rookie, metric: string) => r.state === "compared" && r.player_id ? lines?.get(r.player_id)?.[metric] ?? null : null;
+  const figure = (group: string, key: string, label: string, metric: string, text: (v: number | null) => string, title?: string): GridColumn<Rookie> => ({
+    key, label, group, title, width: "sm", sort: r => value(r, metric), data: r => ({ field: key, value: value(r, metric) ?? "" }),
+    cell: r => <GridValue text={value(r, metric) === null ? null : text(value(r, metric))} />,
+  });
+  const scaled = (metric: string) => view === "raw" ? metric : `${metric}_${view}`;
+  const count = (group: string, key: string, label: string) => figure(group, key, label, scaled(key), v => view === "raw" ? whole(v) : fixed(v, 1));
+  const share = (group: string, key: string, label: string) => figure(group, key, label, key, v => percent(v, 1));
+  const guide = (group: string): GridColumn<Rookie> => ({ key: `guide-${group}`, label: "", group, guide: true,
+    cell: r => <PlayerPortrait playerId={r.player_id ?? undefined} name={r.name} size="sm" era={seasonEra(r.photo_season, r.team)} /> });
+  return [
+    ...DRAFT_COLUMNS.map(c => ({ ...c, group: "Draft" })),
+    figure("Profile", "gp", "GP", "gp", whole, "Games played"), figure("Profile", "min", "MIN", "min", whole, "Total minutes"), figure("Profile", "min_per_game", "MPG", "min_per_game", v => fixed(v, 1), "Minutes per game"),
+    guide("Impact"), ...ratingColumns("Impact"),
+    guide("Counting"), count("Counting", "pts", "PTS"), count("Counting", "reb", "REB"), count("Counting", "ast", "AST"), count("Counting", "tov", "TOV"),
+    guide("Eff"), share("Eff", "ts_pct", "TS%"), share("Eff", "efg_pct", "eFG%"),
+    guide("Shooting"), share("Shooting", "fg2_pct", "2P%"), share("Shooting", "fg3_pct", "3P%"), count("Shooting", "fg3a", "3PA"), share("Shooting", "ft_pct", "FT%"), count("Shooting", "fta", "FTA"),
+    guide("Other"), count("Other", "oreb", "OREB"), count("Other", "dreb", "DREB"), count("Other", "stl", "STL"), count("Other", "blk", "BLK"),
+  ];
+}
+
 function RookiesSection({ feed }: { feed: ReturnType<typeof useFeed<RookieTracker>> }) {
   const { get, set } = useUrlState();
   const [query, setQuery] = useState("");
   const [team, setTeam] = useState<string | null>(null);
   const data = feed.data;
   const compared = useMemo(() => data?.rookies.filter(r => r.state === "compared" && r.player_id) ?? [], [data]);
-  const columns = useMemo<GridColumn<Rookie>[]>(() => [
-    { key: "pick", label: "Pick", width: "xs", sort: r => r.pick, data: r => ({ field: "pick", value: r.pick }), cell: r => <GridValue text={String(r.pick)} /> },
-    { key: "drafted", label: "Drafted by", width: "sm", align: "left", cell: r => <TeamCode team={r.draft_team} season={ROOKIE_SEASON} /> },
-    { key: "games", label: "G", width: "xs", sort: r => r.comparison?.line.games ?? null, data: r => ({ field: "games", value: r.comparison?.line.games ?? "" }),
-      cell: r => <GridValue text={r.comparison ? `${r.comparison.line.games}${r.comparison.small_sample ? "*" : ""}` : null} title={r.comparison?.small_sample ? `Under 100 minutes (${fixed(r.comparison.line.minutes, 0)})` : undefined} /> },
-    ...ROOKIE_STATS.map(s => ({ key: s, label: STAT_LABELS[s], width: "sm" as const, sort: (r: Rookie) => r.comparison?.stats[s].value ?? null,
-      data: (r: Rookie) => ({ field: s, value: r.comparison?.stats[s].value ?? "", percentile: r.comparison?.stats[s].percentile ?? "" }),
-      cell: (r: Rookie) => { const c = r.comparison?.stats[s]; return c ? <GridValue text={statText(s, c.value)} sub={pct(c.percentile)} tone={toneOf(rookieTone(s, c))} /> : <GridValue text={null} />; } })),
-    { key: "darko", label: "DARKO", title: "DARKO Daily Plus-Minus, shown, not compared", width: "sm", sort: r => r.darko?.dpm ?? null, data: r => ({ field: "darko", value: r.darko?.dpm ?? "" }),
-      cell: r => <GridValue text={signed(r.darko?.dpm)} identity={identityOf(r.darko?.dpm)} /> },
-    { key: "rapm", label: "RAPM", title: "Time-decay RAPM, shown, not compared", width: "sm", sort: r => r.rapm?.rapm ?? null, data: r => ({ field: "rapm", value: r.rapm?.rapm ?? "" }),
-      cell: r => <GridValue text={signed(r.rapm?.rapm)} identity={identityOf(r.rapm?.rapm)} /> },
-    { key: "pool", label: "Past", title: "Past rookies at the same pick, classes 1983 to 2025", width: "sm", sort: r => r.pool, data: r => ({ field: "pool", value: r.pool }), cell: r => <GridValue text={String(r.pool)} /> },
-  ], []);
+  const stats = useFeed([], signal => getRookieStats(ROOKIE_SEASON, ROOKIE_CLASS, signal));
+  const view = (ROOKIE_VIEWS.find(v => v.value === get("stat"))?.value ?? "per_game") as RookieView;
+  const columns = useMemo(() => view === "past" ? pastColumns() : statColumns(view, stats.data), [view, stats.data]);
   const filtered = useMemo(() => (data?.rookies ?? []).filter(r => matches(r.name, query) && (!team || r.team === team)), [data, query, team]);
   const sorted = useSort(filtered, columns, { key: "pick", direction: "asc" });
   if (feed.error) return <FeedFailure error={feed.error} retry={feed.retry} what="The rookie tracker" />;
@@ -255,20 +303,27 @@ function RookiesSection({ feed }: { feed: ReturnType<typeof useFeed<RookieTracke
       <RookieCard rookie={chosen} tracker={data} />
       <PastPicks key={chosen.player_id} rookie={chosen} />
     </div>}
-    <div className="dc-grid-tools">
-      <p className="dc-note">Under each figure, the rookie&apos;s percentile among past picks at his slot. Green or red: outside their middle 80% (turnovers count the
-        other way). * Under 100 minutes. DARKO and RAPM are gold above zero and blue below.</p>
+    <h3 className="dc-subhead" id="rookie-stats">{data.season} rookie stats</h3>
+    <div className="dc-grid-tools dc-rookie-tools">
+      <Segmented label="Rookie stats" size="md" value={view} onChange={next => set({ stat: next === "per_game" ? null : next })} options={ROOKIE_VIEWS} />
       <TeamPicker value={team} onChange={setTeam} season={ROOKIE_SEASON} />
     </div>
-    <StatsGrid<Rookie> label={`${data.season} rookies`} name="rookies" leadWidth="lg" rows={sorted.rows} rowKey={r => String(r.pick)}
+    {view === "past"
+      ? <p className="dc-note" data-field="rookie-note">Per 36 minutes, so rookies on different minutes can be compared with past picks at their slot. Under each figure, the rookie&apos;s percentile among those picks.
+        Green or red: outside their middle 80% (turnovers count the other way). * Under 100 minutes. DARKO and RAPM are gold above zero and blue below.</p>
+      : <p className="dc-note" data-field="rookie-note">Every {ROOKIE_CLASS} draft pick this regular season, with games through <time dateTime={data.comparison_date ?? undefined}>{data.comparison_date}</time>.
+        DARKO and RAPM are gold above zero and blue below. <Link href={`/stats?season=${ROOKIE_SEASON}&draftYear=${ROOKIE_CLASS}`}>Open this class in Stats</Link></p>}
+    {view !== "past" && stats.error ? <FeedFailure error={stats.error} retry={stats.retry} what="The rookie stats" />
+      : view !== "past" && (stats.loading || !stats.data) ? <FeedSkeleton label="Loading the rookie stats" />
+      :     <StatsGrid<Rookie> label={`${data.season} rookies`} name="rookies" leadWidth="lg" rows={sorted.rows} rowKey={r => String(r.pick)}
       rowData={r => ({ pick: r.pick, selected: chosen?.pick === r.pick ? "true" : undefined })} sort={sorted.sort}
       empty={query || team ? "No rookie matches these filters." : "No rookies."}
       lead={{ label: <GridSearch value={query} onChange={setQuery} label="Search rookies" placeholder="Search rookies…" />,
         cell: r => <GridPlayer playerId={r.player_id} name={r.name} team={r.team} season={ROOKIE_SEASON} era={seasonEra(r.photo_season, r.team)}
-          subtitle={r.state === "compared" ? r.team ?? undefined : <span data-field="state" data-value="no_games">No games yet</span>}
+          subtitle={r.state === "compared" ? `${r.team ?? ""} · ${ROOKIE_SEASON}` : <span data-field="state" data-value="no_games">No games yet</span>}
           href={r.player_id ? `/players/${r.player_id}?season=${ROOKIE_SEASON}` : undefined}
           tools={r.state === "compared" && r.player_id ? <IconButton size="sm" icon="arrow-right" label={`Show ${r.name} in the card`} pressed={chosen?.pick === r.pick} onClick={() => choose(r.player_id)} /> : undefined} /> }}
-      columns={columns} />
+      columns={columns} />}
   </>;
 }
 

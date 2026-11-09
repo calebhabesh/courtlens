@@ -13,8 +13,37 @@ const served = (value: string | null) => value === null || value === "" ? null :
 test.describe("R09 Draft Classes (RD08 layout)", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
 
-  test("opens on one page with every section and shows every compared rookie's values and percentiles", async ({ page }) => {
+  test("the rookie table is titled and built like Stats: per-game, per-36 and totals by group, with past picks as its own view", async ({ page }) => {
     await openWorkbench(page, path);
+    await expect(page.getByRole("heading", { name: "2026-27 rookie stats" })).toBeVisible();
+    const table = page.getByRole("table", { name: "2026-27 rookies" });
+    const played = rookies.rookies.find((r: { state: string }) => r.state === "compared");
+    const line = played.comparison.line;
+    const row = table.locator(`tr[data-pick="${played.pick}"]`);
+    await expect(row.locator('td[data-field="pts"]')).toBeAttached();
+    for (const group of ["Draft", "Profile", "Impact", "Counting", "Eff", "Shooting", "Other"]) await expect(table.getByRole("columnheader", { name: group, exact: true })).toBeVisible();
+    await expect(row.locator(".stats-guide-cell")).toHaveCount(5);
+    const perGame = line.pts36 * (line.minutes / line.games / 36);
+    expect(Number(await row.locator('td[data-field="pts"]').getAttribute("data-value"))).toBeCloseTo(perGame, 6);
+    await expect(row.locator('td[data-field="gp"]')).toHaveAttribute("data-value", String(line.games));
+    const view = page.getByRole("radiogroup", { name: "Rookie stats" });
+    await view.getByRole("radio", { name: "Per 36" }).click();
+    await expect(page).toHaveURL(/stat=per_36/);
+    await expect.poll(async () => Number(await row.locator('td[data-field="pts"]').getAttribute("data-value"))).toBeCloseTo(line.pts36, 6);
+    await view.getByRole("radio", { name: "Totals" }).click();
+    await expect.poll(async () => Number(await row.locator('td[data-field="pts"]').getAttribute("data-value"))).toBeCloseTo(perGame * line.games, 6);
+    await view.getByRole("radio", { name: "Vs Past Picks" }).click();
+    await expect(row.locator('td[data-field="pts36"]')).toBeAttached();
+    await expect(page.locator('[data-field="rookie-note"]')).toContainText("Per 36 minutes");
+    const unplayed = rookies.rookies.find((r: { state: string }) => r.state !== "compared");
+    if (unplayed) { await view.getByRole("radio", { name: "Per Game" }).click(); await expect(table.locator(`tr[data-pick="${unplayed.pick}"] td[data-field="pts"]`)).toHaveText("—"); }
+    const search = await table.locator(".lookup-input-wrapper").boundingBox();
+    expect(search!.width).toBeGreaterThanOrEqual(260);
+    expect(search!.height).toBeGreaterThanOrEqual(30);
+  });
+
+  test("opens on one page with every section and shows every compared rookie's values and percentiles", async ({ page }) => {
+    await openWorkbench(page, `${path}?stat=past`);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Draft Classes");
     for (const id of ["rookies", "value", "ranges", "classes", "steals", "combine", "reading", "about"]) await expect(page.locator(`section#${id}`)).toBeAttached();
     await expect(page.getByRole("navigation", { name: "Sections", exact: true }).getByRole("link")).toHaveCount(8);
