@@ -717,7 +717,12 @@ Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
 
 - **Now:** five headline cards (R15, R08, R07, R05 numbers; R16 in progress), how the results were tested,
   every Research page by group.
-- **Instructions:** _(owner)_
+- **Instructions (owner, 2026-11-09):**
+  1. [ ] Why is there a research landing page? Should we just cut that? The pages speak for themselves.
+     — Answered, awaiting the owner's decision: recommended cutting it. Nothing removed yet.
+  2. [x] also can you make the drop down section headers more prominent. They kind of blend in, with the grey text (impact/models/shooting/etc.)
+     (Screenshot: the Research menu.)
+     — Done: bold white capitals in the menu and the phone drawer, replacing the dim grey. Not gold, which marks the page you are on.
 
 ## RD10 Metric Backtest — ⬜
 
