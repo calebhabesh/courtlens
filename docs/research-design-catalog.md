@@ -72,7 +72,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none | workbench | ⬜ |
 | RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed) | ⏸ redesign, fold into Shot Quality / zTS, or keep as is |
 | **C. Blocked** | | | | | |
-| RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | — | ⏸ needs a new play-by-play aggregate by zone; owner's call |
+| RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | — | ⬜ queued after RD12, RD13 and RD16: new frozen aggregate, then design (owner, 2026-11-09) |
 | RD19 | Ask evaluation [29] | `/research/assistant-evaluation` (not built) | none | R16 | ⏸ after R16 finishes |
 
 **Not in this catalog** unless the owner adds them: Methodology Definitions (`/methodology`), Stats
@@ -863,11 +863,11 @@ Evidence: [`design-RD11`](evidence/research/design-RD11/README.md).
 - **Decision:** Shot Quality v2 and zTS now cover the same ground. Redesign them, fold them into those pages
   (keeping the sealed results reachable), or leave them as they are?
 
-## RD18 Shot Aftermath — ⏸
+## RD18 Shot Aftermath — ⬜ queued
 
 - **Now:** a per-player page whose play-by-play tables hold two test games in the published database.
-- **Decision:** matching Databallr (league, team and position results by shot zone over two seasons) needs a
-  new frozen play-by-play aggregate. Build it, or keep the page as it is?
+- **Decision (owner, 2026-11-09):** build it, after RD12, RD13 and RD16: a new frozen play-by-play aggregate matching Databallr (league, team and position results by shot zone) for 2024-25 and 2025-26, then the design rounds.
+- **Feasibility (read 2026-11-09; nothing built or run):** no new source is needed. On disk: `expected-shot-v2` per-shot tables (zone, event id, `after_oreb`), the sealed possessions Shot Decomposition uses, and `position-estimates-v1`. Measure first how many shots fail to match. To work out: opponent cost (each possession against the opponent's next, and a league-normal baseline), blocks, free throws after a rebound, and-ones and period ends, with unmatched shots counted as unknown; position groups are estimated and the page says so. Usual Research path: register the method before reading results, freeze, API, then design.
 
 ## RD19 Ask evaluation — ⏸
 
