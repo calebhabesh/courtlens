@@ -77,6 +77,31 @@ test.describe("R14 Lineup Model", () => {
     await expect(table.locator('tr[data-row="lineup_model"] [data-field="net"]')).toHaveAttribute("data-value", String(fit.lineup_model.net));
   });
 
+  test("the search sits inside the card, keeps the card whole and can be left three ways", async ({ page }) => {
+    await openWorkbench(page, path);
+    await expect(page.locator("[data-slot]")).toHaveCount(5);
+    const name = fit.players[0].name, slot = page.locator(`[data-slot="${fit.players[0].player_id}"]`);
+    const field = slot.getByRole("combobox", { name: `Replace ${name}` });
+    await slot.getByRole("button", { name: `Replace ${name}` }).click();
+    await expect(field).toBeFocused();
+    await expect(slot.locator('[data-field="rating"]')).toBeVisible();
+    await expect(page.locator(".lookup-dropdown")).toHaveCount(0);
+    const [card, box] = await Promise.all([slot.boundingBox(), slot.locator(".lookup-input-wrapper").boundingBox()]);
+    expect(box!.x).toBeGreaterThanOrEqual(card!.x);
+    expect(box!.x + box!.width).toBeLessThanOrEqual(card!.x + card!.width);
+    await field.fill("a");
+    await expect(page.locator(".lookup-dropdown")).toHaveCount(1);
+    await expect(slot.locator(".lookup-input-wrapper button")).toHaveCount(0);
+    await field.press("Escape");
+    await expect(field).toHaveCount(0);
+    await slot.getByRole("button", { name: `Replace ${name}` }).click();
+    await page.getByRole("heading", { name: "Player similarity map" }).click();
+    await expect(field).toHaveCount(0);
+    await slot.getByRole("button", { name: `Replace ${name}` }).click();
+    await slot.getByRole("button", { name: `Cancel replacing ${name}` }).click();
+    await expect(field).toHaveCount(0);
+  });
+
   test("the map keeps its warning above the dots and draws every served point", async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.locator("circle[data-player]")).toHaveCount(fixture.map.points.length);
