@@ -135,6 +135,17 @@ export const COMBINE_LABELS: Record<string, string> = {
 export const COMBINE_UNITS: Record<string, string> = {
   height: "in", wingspan: "in", wingspan_minus_height: "in", standing_reach: "in", weight: "lb", max_vertical: "in", lane_agility: "s", sprint: "s",
 };
+/** Combine lengths read in feet and inches; wingspan minus height is a difference and stays in inches. */
+export const FEET_INCH_MEASURES: ReadonlySet<string> = new Set(["height", "wingspan", "standing_reach"]);
+/** Axis marks in inches on the familiar heights: every 3″ (6′0″, 6′3″, 6′6″), wider where labels would crowd. */
+export function feetInchTicks(low: number, high: number, plotWidth: number): number[] {
+  const steps = [3, 6, 12];
+  for (const step of steps) {
+    const first = Math.floor(low / step), last = Math.ceil(high / step);
+    if (step === steps.at(-1) || plotWidth / (last - first || 1) >= 44) return Array.from({ length: last - first + 1 }, (_, i) => (first + i) * step);
+  }
+  return [];
+}
 export const BAND_LABELS: Record<string, string> = {
   pick_1_vs_2: "Pick 1 vs pick 2", top_3_vs_4_to_10: "Picks 1–3 vs 4–10", top_10_vs_11_to_30: "Picks 1–10 vs 11–30",
   "21_to_30_vs_31_to_40": "Picks 21–30 vs 31–40", "31_to_45_vs_46_to_60": "Picks 31–45 vs 46–60",

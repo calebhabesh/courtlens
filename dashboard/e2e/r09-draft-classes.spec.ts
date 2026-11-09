@@ -213,6 +213,26 @@ test.describe("R09 Draft Classes (RD08 layout)", () => {
     await expect(page.locator("#combine").getByRole("link", { name: "Wingspan" })).toHaveAttribute("href", "/wingspan");
   });
 
+  test("the combine chart marks lengths in feet and inches, and only lengths", async ({ page }) => {
+    await openWorkbench(page, `${path}?combine=height`);
+    const chart = page.locator('svg[data-chart="combine"][data-measure="height"]');
+    await expect(chart.locator("circle").first()).toBeAttached();
+    const ticks = await chart.locator("text[data-tick]").evaluateAll(all => all.map(t => [Number((t as SVGElement).dataset.tick), t.textContent]));
+    expect(ticks.length).toBeGreaterThan(3);
+    for (const [inches, label] of ticks as [number, string][]) {
+      expect(inches % 3).toBe(0);
+      expect(label).toBe(`${Math.floor(inches / 12)}′${inches % 12}″`);
+    }
+    expect(ticks).toContainEqual([72, "6′0″"]);
+    expect(ticks).toContainEqual([84, "7′0″"]);
+    await expect(chart.getByText("Height (no shoes)", { exact: true })).toBeVisible();
+    await openWorkbench(page, `${path}?combine=wingspan_minus_height`);
+    const inches = page.locator('svg[data-chart="combine"][data-measure="wingspan_minus_height"]');
+    await expect(inches.locator("circle").first()).toBeAttached();
+    await expect(inches.getByText("Wingspan minus height (in)", { exact: true })).toBeVisible();
+    expect((await inches.locator("text[data-tick]").allTextContents()).join(" ")).not.toContain("′");
+  });
+
   test("is in the Research menu under Tools with an icon", async ({ page }) => {
     await openWorkbench(page, "/stats");
     await page.getByRole("button", { name: "Research", exact: true }).click();

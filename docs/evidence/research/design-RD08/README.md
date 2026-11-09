@@ -95,3 +95,21 @@ photos or initials, counted below; (E) combine kept here, linking to Wingspan; (
 - **Widths.** 246 + 48 + 32 + 8 x 48 = 710 px, the frame less its scrollbar: checked with scrollbars visible (0 px sideways scroll).
 - **1983-84.** No change: `ROOKIE_POOL = (1983, 2025)`, because first-N-games comparisons need game logs, complete from 1983-84.
 - **Checks.** Lint and typecheck clean; Vitest 833; page specs 54/54 at `--repeat-each=3`; full Playwright 607 passed, 17 skipped, 0 failed. Real data at 1440 (150 loads) and 390 (25 loads): 248,649 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 wrong-season photos; the card and table bottoms checked for all 45 played rookies at 1440. Screenshot viewed: `draft-past-picks-aligned-1440.png`.
+
+## Round 6 (owner, 2026-11-09): feet and inches on the combine chart
+
+"can this chart mark commonly known ft'in" heights?" Height, wingspan and standing reach mark the axis in feet and inches, every 3 inches where the
+labels fit (6′0″, 6′3″, 6′6″) and every 6 on a phone (6′0″, 6′6″, 7′0″), in the Wingspan page's format. The axis title drops "(in)" and a dot's hover
+text uses the same form. Wingspan minus height is a difference, so it stays in inches, as do weight, vertical and the timed drills. Each dot's exact
+served inches stay on `data-x`.
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | clean |
+| Vitest | 835 passed |
+| Page specs ×3 | 57/57 |
+| Full Playwright (sandbox) | 608 passed, 17 skipped, 0 failed |
+| Real data (`real-data-check.json`) | 249,552 values (207,349 at 1440 over 150 loads; 42,203 at 390 over 26 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images, 0 wrong-season photos |
+| Marks | every label matches its inches; every dot sits on the scale the marks show (0.01 px); labels at least 38 px apart; no feet marks on non-length measures |
+
+Shots: `round6-combine-height-1440.png`, `round6-combine-reach-390.png`.

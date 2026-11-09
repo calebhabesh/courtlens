@@ -852,3 +852,8 @@ Retitled the steals and misses lists, Stats-format dates, classes open on who pl
 
 The past same-pick table now ends level with the rookie card and its heading says "per 36 minutes"; column widths leave room for a scrollbar. The owner's two questions were answered (per 36 and the 1983-84 start are R09's design). Design only. Lint and typecheck clean; Vitest 833; page specs ×3 54/54; full Playwright 607 passed, 17 skipped, 0 failed; real data 248,649 values, 0 mismatches, 0 console errors, 0 overflow, 0 wrong-season photos. Evidence:
 [`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.
+
+## 2026-11-09 — RD08 round 6: feet and inches on the combine chart
+
+Height, wingspan and standing reach now mark the combine scatter in feet and inches (every 3 inches, every 6 on a phone); wingspan minus height stays in inches. Display only: no analysis, result or API changed. Lint and typecheck clean, Vitest 835, page specs ×3 57/57, full Playwright 608 passed, 17 skipped, 0 failed; real data 249,552 values, 0 mismatches.
+[`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.
