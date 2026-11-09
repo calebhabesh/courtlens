@@ -902,3 +902,8 @@ The owner answered the layout proposal with "Go with your recommendations and su
 
 The owner asked what could improve the page, then answered the nine proposals with "Yes, do them all comprehensively." The Rookies and returners view has no columns of dashes and shows Years in league; the answer and rows name the model; one line gives the size of the edge (14.66, 14.76, 15.11); the phone table keeps the Why arrow on the player's line with names whole; gains come first; hindsight is collapsed behind one visible line; a phone switch replaces the stacked lists; the bar scale is in the column header; the frozen tile matches the card, coverage runs in minutes order and aging dots appear on hover. No API, analysis, frozen result or interval changed. Lint and typecheck clean, Vitest 840, `projected-impact` ×3 30/30, full Playwright 616 passed, 17 skipped, 0 failed. Real data 108,497 values over 143 loads, 0 mismatches, 0 console errors, 0 overflow, 0 broken images. The prospective table has not yet rendered on real data; the first weekly score is due around Nov 12, 2026.
 [`design-RD11`](evidence/research/design-RD11/README.md). Awaits the owner.
+
+## 2026-11-09 — RD11 approved
+
+The owner approved Projected Impact ("looks good, approved."). Row RD11 ✅; its settled rules are in the alignment plan's "Research pages" pattern ("Settled in RD11"). The prospective table has not rendered on real data and needs a real-data check after the first weekly score, due around Nov 12, 2026.
+[`design-RD11`](evidence/research/design-RD11/README.md).

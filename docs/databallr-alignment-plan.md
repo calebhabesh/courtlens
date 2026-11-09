@@ -175,6 +175,11 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   band and zero marked. Two series that are labels take `--color-category-3` and `-4` (1 and 2 read as gold and blue). A difference of shares is written in
   points (`+2.6 pts`). Nine-row tables take no `GridSearch`. A long glossary is collapsed while an honesty statement stays visible as one line. A chart
   its heading already names drops its own title and source lines; the source goes in About. Served text carrying a project code is replaced on the page.
+- **Settled in RD11 (owner, Projected Impact, 2026-11-09):** a model reads as the page's own name, with its technical name under it, and the one-sentence answer says what is being tested
+  and how big the edge is in units a reader can feel. A filter view where a column would be all dashes drops it and shows something that view has. A table of projections with overlapping intervals is sorted by the estimate
+  but carries no rank. Interval bars share one scale fitted to the served values, labelled in the column header and lined up with the bars. In a table comparing models the gains come before the raw scores, so they are on
+  screen on a phone. Games that aren't a test of the model are collapsed behind one visible line saying so, and are never coloured. On a phone a player row's tool stays on the name's line and names wrap whole, never mid-word;
+  two long lists that sit side by side on desktop become a switch. The same value takes the same colour everywhere on a card. A line chart with many points shows them on hover only.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).

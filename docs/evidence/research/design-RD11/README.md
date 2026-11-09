@@ -90,3 +90,6 @@ Nothing else moved: no API, analysis, frozen result or interval changed. The pro
 
 Screenshots viewed: `pi-top-1440.png`, `pi-answer-1440.png`, `pi-projections-*`, `pi-rookies-*`, `pi-contributions-390.png`, `pi-test-*`, `pi-season-2026-27-1440.png`, `pi-hindsight-1440.png`, `pi-aging-1440.png`, the full page at 1440. Evidence screenshots are from round 2's final build. The `pi-rookies` shots were taken separately on that build. Visuals were judged from the sandbox build; the CSS chunk :3100 serves was checked for the new rules.
 
+## Approved (owner, 2026-11-09)
+
+"looks good, approved." The settled rules are in the alignment plan ("Settled in RD11"). Still to do: re-check the prospective table on real data after the first weekly score, due around Nov 12, 2026.

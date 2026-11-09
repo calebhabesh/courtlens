@@ -64,7 +64,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
 | RD09 | Research landing [29] | `/research` | none | R12 | ✂️ cut by the owner (2026-11-09) |
 | RD10 | Metric Backtest [29] | `/research/backtest` | none (built from approved CourtLens Research patterns) | R08, RD10 | ✅ |
-| RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | 👀 |
+| RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | ✅ |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none | R14 | ⬜ |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none | R03 | ⬜ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
@@ -772,7 +772,7 @@ Instructions (owner, 2026-11-09, round 3):
 
 Evidence: [`design-RD10`](evidence/research/design-RD10/README.md).
 
-## RD11 Projected Impact — 👀
+## RD11 Projected Impact — ✅ approved by the owner (2026-11-09)
 
 - **Now:** frozen 2026-27 projections with intervals (roster / rookies / everyone), aging curve, the test
   against carry-forward and time decay, the weekly prospective score (first scheduled run 2026-11-12).
@@ -807,6 +807,10 @@ Instructions (owner, 2026-11-09, round 2; asked "Are there any things we can do 
    - (8) Bar scale: −7, 0 and +10 labelled in the column header; that sentence leaves the legend.
    - (9) Small fixes: the same projection takes one colour in the card header and its tile; coverage rows in minutes order, "Under 500" before "No RAPM"; aging dots only on hover.
    — All nine done: no all-dash columns, the model named in the answer and rows, the size of the edge in one line, the phone table's arrow on the player's line and names whole, gains first, hindsight collapsed, a phone switch for the two lists, the scale in the header, and the three small fixes. Real data 108,497 values, 0 mismatches; full Playwright 616 passed, 17 skipped, 0 failed.
+
+Instructions (owner, 2026-11-09, round 3):
+3. [x] looks good, approved.
+   — Approved. The settled rules are in the alignment plan's "Research pages" pattern ("Settled in RD11"). The prospective table still needs a real-data check after the first weekly score, due around Nov 12, 2026.
 
 Evidence: [`design-RD11`](evidence/research/design-RD11/README.md).
 
