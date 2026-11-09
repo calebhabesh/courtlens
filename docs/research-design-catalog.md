@@ -62,7 +62,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD07 | Patch Notes [21] | `/whats-new` | D: `patch-notes`; `~/Downloads/Projects/Courtlens/databallr — NBA & WNBA analytics, impact metrics, and draft games.html` | R11, RD07 | ✅ |
 | RD08 | Draft Classes [28] | `/draft` | none (owner, 2026-11-08: no Databallr page; never copy Draftballr; built from approved CourtLens Research patterns) | R09, RD08 | ✅ |
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
-| RD09 | Research landing [29] | `/research` | none | R12 | ⬜ |
+| RD09 | Research landing [29] | `/research` | none | R12 | ✂️ cut by the owner (2026-11-09) |
 | RD10 | Metric Backtest [29] | `/research/backtest` | none | R08 | ⬜ |
 | RD11 | Projected Impact [29] | `/research/projected-impact` | none | R07 | ⬜ |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none | R14 | ⬜ |
@@ -713,16 +713,21 @@ Instructions (owner, 2026-11-09, round 6):
 
 Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
 
-## RD09 Research landing — ⬜
+## RD09 Research landing — ✂️ cut by the owner (2026-11-09)
 
 - **Now:** five headline cards (R15, R08, R07, R05 numbers; R16 in progress), how the results were tested,
   every Research page by group.
 - **Instructions (owner, 2026-11-09):**
   1. [ ] Why is there a research landing page? Should we just cut that? The pages speak for themselves.
-     — Answered, awaiting the owner's decision: recommended cutting it. Nothing removed yet.
+     — Answered: it repeated numbers and links the menu already gives. Owner: "Yes, cut it." See 3.
   2. [x] also can you make the drop down section headers more prominent. They kind of blend in, with the grey text (impact/models/shooting/etc.)
      (Screenshot: the Research menu.)
-     — Done: bold white capitals in the menu and the phone drawer, replacing the dim grey. Not gold, which marks the page you are on.
+     — Done: bold white capitals in the menu and the phone drawer, replacing the dim grey. Not gold, which marks the page you are on. Then blue, see 4.
+  3. [x] Yes, cut it.
+     — Done: the page and the menu's Overview group are gone; `/research` redirects to Six-Factor RAPM; the Research links on Learning and Patch Notes are removed. Learning's Out-of-Time Testing and Prospective Scoring topics already cover how models are tested, so nothing was moved.
+  4. [x] Also, make the menu headers a different colors or a different shade of grey. THey kind of blend in with the other subheaders.
+     (Screenshot: the Research menu with white capitals.)
+     — Done: blue (`--color-category-2`) capitals in the menu and the phone drawer, apart from the white item names, grey descriptions and the gold current page.
 
 ## RD10 Metric Backtest — ⬜
 

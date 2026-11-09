@@ -655,7 +655,7 @@
     letter-spacing: 0.06em;
     text-transform: uppercase;
     white-space: nowrap;
-    color: var(--color-text);
+    color: var(--color-category-2);
   }
 
   .replica-mobile-drawer .ui-drawer-body { padding: 0; }
@@ -667,7 +667,7 @@
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--color-text);
+    color: var(--color-category-2);
   }
   .courtlens-mobile-link,
   .courtlens-mobile-sublink { min-height: var(--control-lg); }

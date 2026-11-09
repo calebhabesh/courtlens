@@ -25,9 +25,8 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
 
   it("groups Research by the handoff's target menu, with an icon and description on every item; Players and Compare follow Databallr", () => {
     const research = NAV_MENUS.find(menu => menu.id === "research")!;
-    expect(research.groups.map(group => group.title)).toEqual(["Overview", "Models", "Impact", "Shooting", "Methods", "Tools"]);
+    expect(research.groups.map(group => group.title)).toEqual(["Models", "Impact", "Shooting", "Methods", "Tools"]);
     expect(research.groups.map(group => group.items.map(item => item.href))).toEqual([
-      ["/research"],
       ["/research/win-probability", "/research/projected-impact", "/research/lineup-model"],
       ["/research/rapm/six-factor", "/research/backtest"],
       ["/research/shooting", "/research/defensive-matchups", "/research/zts", "/research/shot-quality"],
@@ -82,7 +81,7 @@ describe("dropdown columns (owner, 2026-11-06: no gaps)", () => {
     const research = NAV_MENUS.find(menu => menu.id === "research")!;
     const [left, right] = balanceColumns(research.groups);
     expect(left.length + right.length).toBe(research.groups.length);
-    expect(left[0].title).toBe("Overview");
+    expect(left[0].title).toBe("Models");
     const order = (column: typeof left) => column.map(group => research.groups.indexOf(group));
     for (const column of [left, right]) expect(order(column)).toEqual([...order(column)].sort((a, b) => a - b));
   });

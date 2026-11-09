@@ -1,6 +1,4 @@
-import type { Metadata } from "next";
-import { ResearchLanding } from "@/components/research-landing";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = { title: "Research", description: "CourtLens's own models and tests, each scored on seasons it never saw." };
-
-export default function Page() { return <ResearchLanding />; }
+// The Research landing page was cut (owner, 2026-11-09): the menu leads straight to each page. Old links land on the first Research page.
+export default function Page() { redirect("/research/rapm/six-factor"); }

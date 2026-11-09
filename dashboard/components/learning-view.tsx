@@ -116,7 +116,7 @@ export function LearningView() {
       <PageHeader className="sq-hero ln-hero research-hero" icon="book" title="Learning" subtitle="Understand advanced NBA stats from the ground up." />
       <ResearchIntro
         tagline={`${total} topics across ${LEARNING_TIERS.length} tiers, from per-possession thinking to testing models, each linked to the CourtLens page that shows it.`}
-        links={[{ label: "Definitions", href: "/methodology", icon: "table" }, { label: "Glossary", href: "/stats/glossary", icon: "book" }, { label: "Research", href: "/research", icon: "sparkles" }, { label: "Patch Notes", href: "/whats-new", icon: "history" }]}
+        links={[{ label: "Definitions", href: "/methodology", icon: "table" }, { label: "Glossary", href: "/stats/glossary", icon: "book" }, { label: "Patch Notes", href: "/whats-new", icon: "history" }]}
       />
       <div className="ln-body">
         <div className="ln-layout">

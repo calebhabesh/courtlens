@@ -1,5 +1,5 @@
 /**
- * Measured Research numbers quoted in prose (Learning, the Research landing and the README).
+ * Measured Research numbers quoted in prose (Learning and the README).
  *
  * Each fact keeps the displayed value beside the committed file and field it comes from.
  * `research-facts.test.ts` reads every source file and fails if a value no longer equals its

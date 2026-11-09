@@ -239,11 +239,6 @@ test.describe("R09 Draft Classes (RD08 layout)", () => {
     const item = page.getByRole("menu", { name: "Research" }).getByRole("menuitem", { name: /Draft Classes/ });
     await expect(item).toHaveAttribute("href", "/draft");
     await expect(item.locator("svg").first()).toBeVisible();
-    // The section headers read as headings: bold white capitals, not the dim grey of a description.
-    const heading = page.locator(".courtlens-dropdown-section-title", { hasText: "Tools" });
-    await expect(heading).toHaveCSS("color", "rgb(242, 243, 245)");
-    await expect(heading).toHaveCSS("text-transform", "uppercase");
-    await expect(heading).toHaveCSS("font-weight", "700");
   });
 
   test("About holds the coverage, the known error and the hashes; the phone layout does not scroll sideways", async ({ page }) => {

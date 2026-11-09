@@ -64,7 +64,7 @@ reference, current state, known gaps, the owner's instructions and status (2026-
 | Methods | Signal vs Noise, Points Forecasts (Evaluation Archive folded in), Learning |
 | Tools | Wingspan, Draft Classes, ORtg Calculator, Patch Notes |
 
-A **Research landing page** (`/research`) opens the menu: one card per headline result, with its
+_(Cut by the owner 2026-11-09, RD09; `/research` redirects to Six-Factor RAPM.)_ A **Research landing page** (`/research`) opens the menu: one card per headline result, with its
 number, test seasons and a link to the evidence.
 
 ## Blocks
