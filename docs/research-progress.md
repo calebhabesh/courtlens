@@ -862,3 +862,8 @@ Height, wingspan and standing reach now mark the combine scatter in feet and inc
 
 The owner approved Draft Classes ("Alright. I approve this page."). Row RD08 ✅; its settled rules are in the alignment plan's
 "Research pages" pattern ("Settled in RD08"). Next in the design queue: RD09 Research landing.
+
+## 2026-11-09 — Research menu section headers
+
+Section headers in the Research menu and phone drawer are now bold white capitals instead of dim grey. Lint and typecheck clean, Vitest 835, full Playwright 608 passed, 17 skipped, 0 failed. The owner also asked whether to cut the Research landing page; recommendation given, decision pending, nothing removed.
+[`design-RD09`](evidence/research/design-RD09/README.md).
