@@ -842,3 +842,8 @@ full Playwright 606 passed, 17 skipped, 0 failed; real data 229,753 values, 0 mi
 The rookie and class table searches are centred across both header rows (equal space above and below, measured). Past same-pick rookies now run newest draft year first with a sortable Year column (the API's order, highest PTS/36 first, was never explained on the page). Picks read "R1 #2", the Players bio's form, across the page. Design only; no API, analysis or frozen result changed.
 Shared `StatsGrid` gained an optional two-row lead header. Lint and typecheck clean; Vitest 833; page specs ×3 51/51; full Playwright 606 passed, 17 skipped, 0 failed; real data 239,609 values, 0 mismatches, 0 console errors, 0 overflow, 0 wrong-season photos. Evidence:
 [`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.
+
+## 2026-11-09 — RD08 round 4: nine fixes from the owner's review
+
+Retitled the steals and misses lists, Stats-format dates, classes open on who played (with an All picks switch), a Tag column, `CHI · 1984-85` subtitles, a combine chart drawn at its true width, one rookie search field, a narrow slot-table pick column, and one sentence in place of a repeated Verdict column. Design only; no API, analysis or frozen result changed. Lint and typecheck clean; Vitest 833; page specs ×3 54/54; full Playwright 607 passed, 17 skipped, 0 failed; real data 248,604 values, 0 mismatches, 0 console errors, 0 overflow, 0 wrong-season photos. Evidence:
+[`design-RD08`](evidence/research/design-RD08/README.md). Awaits the owner.
