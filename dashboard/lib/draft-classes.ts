@@ -142,6 +142,8 @@ export const BAND_LABELS: Record<string, string> = {
 
 /** A true minus sign, and no sign on a value that rounds to zero. */
 const minus = (text: string) => /^-0(\.0+)?$/.test(text) ? text.slice(1) : text.replace(/^-/, "−");
+/** Round and overall pick, the form the Players page's bio already uses: "R1 #2", "R2 #31". */
+export const pickLabel = (round: number | null | undefined, pick: number) => round === null || round === undefined ? `#${pick}` : `R${round} #${pick}`;
 export const fixed = (v: number | null | undefined, digits = 1) => v === null || v === undefined ? "—" : minus(v.toFixed(digits));
 export const whole = (v: number | null | undefined) => v === null || v === undefined ? "—" : minus(Math.round(v).toLocaleString("en-US"));
 export const percent = (v: number | null | undefined, digits = 0) => v === null || v === undefined ? "—" : `${(v * 100).toFixed(digits)}%`;

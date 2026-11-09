@@ -35,6 +35,9 @@
      visible gap above is from the PLAYER label (about 7 px of tier-1 padding below it); the field sits flush on the tier line
      and takes the same gap below it, before the first row; a taller phone row splits its slack evenly (middle). */
   .rs-grid .dense-stats-table thead th.rs-grid-lead:has(> .rs-grid-search) { --rs-search-gap: 7px; padding-top: 0; padding-bottom: var(--rs-search-gap); vertical-align: middle; }
+  /* RD08 round 3 (owner): a search in a lead header that fills both rows, with equal space above and below. */
+  .rs-grid .dense-stats-table thead th.rs-grid-lead[rowspan]:has(> .rs-grid-search) { padding-block: var(--space-3); vertical-align: middle; }
+  .rs-grid .dense-stats-table thead th[rowspan] .rs-grid-search input { letter-spacing: 0; }
   /* RD04 round 5: labels whose lowercase prefix carries meaning (oTS, dContest, xPPS) keep their case. */
   .rs-grid .dense-stats-table thead th.rs-grid-keep-case, .rs-grid .dense-stats-table thead th.rs-grid-keep-case .table-sort-button { text-transform: none; }
 

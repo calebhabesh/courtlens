@@ -39,7 +39,8 @@ export interface StatsGridProps<T> {
   label: string;
   rows: readonly T[];
   rowKey: (row: T) => string;
-  lead: { label: ReactNode; cell: (row: T) => ReactNode; group?: string };
+  /** `span`: the lead header fills both header rows, so a search field sits centred with equal space above and below. */
+  lead: { label: ReactNode; cell: (row: T) => ReactNode; group?: string; span?: boolean };
   columns: readonly GridColumn<T>[];
   sort?: { key: string; direction: "asc" | "desc"; onSort: (key: string) => void };
   density?: "default" | "compact";
@@ -100,6 +101,8 @@ export function StatsGrid<T>({ label, rows, rowKey, lead, columns, sort, density
   });
   const starts = new Set(groups.filter(g => g.start > 0).map(g => g.start));
   const hasGroups = columns.some(c => c.group) || Boolean(lead.group);
+  const spanLead = Boolean(lead.span) && hasGroups;
+  const leadHeader = typeof lead.label === "string" ? <span className="table-sort-button">{lead.label}</span> : lead.label;
   return <div className={`stats-workspace rs-grid ${density === "compact" ? "density-compact" : ""} ${className}`} data-height={height} data-lead={leadWidth} data-min={minWidth === "default" ? undefined : minWidth}>
     <div className="stats-table-frame is-table">
       <div className="table-wrapper stats-scroll-region" role="region" aria-label={`${label} scroll area`} tabIndex={0}>
@@ -107,11 +110,11 @@ export function StatsGrid<T>({ label, rows, rowKey, lead, columns, sort, density
           <colgroup><col className="rs-col-lead" />{columns.map(c => <col key={c.key} className={c.guide ? "rs-col-guide" : `rs-col-${c.width ?? "sm"}`} />)}</colgroup>
           <thead>
             {hasGroups && <tr className="stats-header-tier-1">
-              <th scope="col" className="pinned-col pinned-col-group rs-grid-lead">{lead.group ?? ""}</th>
+              {spanLead ? <th scope="col" rowSpan={2} className="pinned-col rs-grid-lead">{leadHeader}</th> : <th scope="col" className="pinned-col pinned-col-group rs-grid-lead">{lead.group ?? ""}</th>}
               {groups.map(g => <th key={`${g.label}-${g.start}`} scope="colgroup" colSpan={g.span} className={`stats-group-th ${g.start > 0 && !columns[g.start].guide ? "group-start" : ""}`} data-guided={columns[g.start].guide || undefined}>{g.label}</th>)}
             </tr>}
             <tr className="stats-header-tier-2">
-              <th scope="col" className="pinned-col rs-grid-lead">{typeof lead.label === "string" ? <span className="table-sort-button">{lead.label}</span> : lead.label}</th>
+              {!spanLead && <th scope="col" className="pinned-col rs-grid-lead">{leadHeader}</th>}
               {columns.map((c, i) => c.guide ? <th key={c.key} className="stats-guide-cell" aria-hidden="true" /> : c.sort && sort
                 ? <SortHeader key={c.key} label={c.label} metric={c.key} description={c.title} active={sort.key === c.key} direction={sort.direction} onSort={sort.onSort} className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} />
                 : <th key={c.key} scope="col" className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} title={c.title}><span className="table-sort-button">{c.label}</span></th>)}
