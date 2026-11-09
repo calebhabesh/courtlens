@@ -83,3 +83,7 @@ Before the rebuild (:3100, read 2026-11-09): ten stacked sections under the old 
 | Real data | 29,738 values (26,008 at 1440 over 180 loads; 3,730 at 390 over 13 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images. Prospective and hindsight tables compared in full; the definitions and About collapsed; the calibration title and captions not visible; no phone control under 40 px |
 
 Screenshots viewed: `backtest-season-2026-27-1440.png`, `backtest-scores-1440.png`, `backtest-scores-against-1440.png`, `backtest-reading-1440.png`, `backtest-glossary-1440.png`, full pages, `backtest-top-390.png`. Visuals judged from the sandbox build; the :3100 CSS chunk was refreshed and checked before reporting.
+
+## Approved (owner, 2026-11-09)
+
+"Approved, install the timer." Timer `courtlens-metric-backtest` (daily, 15:00 UTC, in `scripts/install_data_refresh.sh`) is enabled; a manual start exited 0 with `{"skipped": true}` and left `summary.json` unchanged. The first scheduled score is expected on Nov 17, 2026, the first firing at least 7 days after the Nov 9 run.

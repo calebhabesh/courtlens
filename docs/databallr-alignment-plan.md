@@ -169,6 +169,12 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   written `R1 #2`, the Players bio's form. Dates use the Stats format (Nov 8, 2026). A column that would repeat one answer on every row
   becomes one sentence. A table beside a card ends level with it. Heights and lengths on a chart are marked in feet and inches; a
   difference between two lengths stays in inches.
+- **Settled in RD10 (owner, Metric Backtest, 2026-11-09):** a page comparing many models answers in one sentence first, then shows every served
+  pair at once as a compact `StatsGrid` read across a row, coloured only where the interval excludes zero. Rows keep their registered order, and a
+  table whose rows cover different samples says not to compare them and is not ranked. A gap between two series over seasons is one line with its
+  band and zero marked. Two series that are labels take `--color-category-3` and `-4` (1 and 2 read as gold and blue). A difference of shares is written in
+  points (`+2.6 pts`). Nine-row tables take no `GridSearch`. A long glossary is collapsed while an honesty statement stays visible as one line. A chart
+  its heading already names drops its own title and source lines; the source goes in About. Served text carrying a project code is replaced on the page.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).

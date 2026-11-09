@@ -887,3 +887,8 @@ Section headers are now `--color-text-smoke` (#c8cdd4), approved by the owner. V
 
 The owner had the 2026-27 refresh run (`courtlens refresh-metric-backtest --force`): 25 prospective and 121 hindsight games through Nov 8, 2026, the first prospective score for R08. No player metric's RMSE gain over Team net excludes zero on 25 games, and the backtest verdict never changes from these games. The timer is still not installed. On the page: definitions collapsed, Winner picked gains in points, a shorter answer, calibration captions moved to About, and gains read in either pair direction (the scorer's pair order depends on file order; the scorer is unchanged). No frozen result or API changed. Lint and typecheck clean; Vitest 838; page spec ×3 30/30; full Playwright 611 passed, 17 skipped, 0 failed; real data 29,738 values, 0 mismatches.
 [`design-RD10`](evidence/research/design-RD10/README.md). Awaits the owner.
+
+## 2026-11-09 — RD10 approved; 2026-27 scoring timer installed
+
+The owner approved Metric Backtest ("Approved, install the timer."). Row RD10 ✅; its settled rules are in the alignment plan's "Research pages" pattern ("Settled in RD10"). Timer `courtlens-metric-backtest` is added to `scripts/install_data_refresh.sh` and enabled. It fires daily at 15:00 UTC because `courtlens refresh-metric-backtest` scores only when its last score is at least 7 days old, and a fixed weekly firing could land just short of that and skip a week. One manual start ran the unit: exit 0, `{"skipped": true}`, summary unchanged. The first scheduled score is expected on Nov 17, 2026.
+[`design-RD10`](evidence/research/design-RD10/README.md).

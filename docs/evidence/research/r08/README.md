@@ -12,6 +12,7 @@ Measured 2026-11-05 on branch `research-r08`. Parent: [Research progress](../../
 | 2026-27 freeze | 2026-11-05 22:52:08 UTC, manifest `8692e886a1f13…`, committed in `4b5f3fc` |
 | Prospective score | **Unverified.** No game has tipped since the freeze. First tip 2026-11-06 02:00 UTC. The scorer is built and has scored 120 real 2026-27 games, all hindsight |
 | Timer | **Not installed or enabled.** Commands below |
+| Update, 2026-11-09 | **First prospective score:** 25 prospective and 121 hindsight games through Nov 8, 2026 (`refresh-metric-backtest --force`, on the owner's instruction). No player metric's RMSE gain over Team net excludes zero on those 25 games, and the backtest verdict never changes from them. The rows above stand as written on 2026-11-05. **Timer now installed:** `courtlens-metric-backtest`, in `scripts/install_data_refresh.sh`, firing daily and scoring when the last score is at least 7 days old. See [RD10](../design-RD10/README.md) |
 | Page | `/research/backtest`, Research → Impact, plain D13 build. Verified on real data; only the owner marks it ✅ |
 
 **Disclosure.** The first chained `git commit && run` stopped before the runner started: the chain called `/usr/bin/time`, which isn't installed. Nothing was computed. The run 5 seconds later is the first and only read.
