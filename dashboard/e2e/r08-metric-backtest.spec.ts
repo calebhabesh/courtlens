@@ -6,61 +6,118 @@ import { openWorkbench } from "./workbench-navigation";
 const fixture = JSON.parse(readFileSync("e2e/fixtures/metric-backtest.json", "utf8"));
 const results = fixture.results;
 const candidates: string[] = results.registration.parameters.candidates;
+const baseline: string = results.registration.parameters.baseline;
 const path = "/research/backtest";
+type Row = { candidate: string; reference: string; seasons: string[]; verdict: string; pooled: { rmse: { gain: number; low: number; high: number } }; per_season: Record<string, { rmse: { gain: number; low: number; high: number } }> };
+const pairFor = (a: string, b: string): { pair: Row; sign: number } => {
+  const direct = results.pairs.find((p: Row) => p.candidate === a && p.reference === b);
+  return direct ? { pair: direct, sign: 1 } : { pair: results.pairs.find((p: Row) => p.candidate === b && p.reference === a), sign: -1 };
+};
 
-test.describe("R08 Metric Backtest", () => {
+test.describe("R08 Metric Backtest (RD10 design)", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
 
-  test("states the registered verdict and shows every pooled score exactly", async ({ page }) => {
+  test("states the served verdict under a centred hero and shows every pooled score exactly", async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Metric Backtest");
+    await expect(page.locator('[data-field="hero-meta"]')).toContainText("11,979 games");
     const verdict = page.locator('[data-field="verdict-summary"]');
     for (const best of results.verdict.best) await expect(verdict).toContainText(fixture.metrics[best].label);
+    await expect(verdict).toContainText("tests ratings, not game forecasts");
     const pooled = page.getByRole("table", { name: "Pooled scores" });
     await expect(pooled.locator("tbody tr")).toHaveCount(candidates.length);
+    expect(await pooled.locator("tbody tr").evaluateAll(rows => rows.map(r => (r as HTMLElement).dataset.row))).toEqual(candidates);
     for (const name of candidates) {
       const row = pooled.locator(`tr[data-row="${name}"]`);
       for (const field of ["rmse", "accuracy", "brier", "log_loss"]) {
         expect(Number(await row.locator(`[data-field="${field}"]`).getAttribute("data-value"))).toBe(results.candidates[name].pooled[field]);
       }
     }
+    await expect(pooled.locator(`tr[data-row="${baseline}"] [data-field="replaced"]`)).toHaveText("—");
   });
 
-  test("the chart toggles metrics in the URL and its points equal the served season errors", async ({ page }) => {
+  test("the head-to-head grid draws all 36 served gains in both directions, coloured only where the interval excludes zero", async ({ page }) => {
     await openWorkbench(page, path);
-    const points = page.locator("circle[data-candidate]");
-    await expect(page.locator('g[data-series="time_decay"] circle')).toHaveCount(10);
-    await page.getByRole("group", { name: "Metrics shown" }).getByRole("button", { name: /RAPM 3Y/ }).click();
-    await expect(page).toHaveURL(/show=/);
-    await expect(page.locator('g[data-series="rapm_3y"] circle')).toHaveCount(results.candidates.rapm_3y.test_seasons.length);
-    for (const point of await points.all()) {
-      const name = (await point.getAttribute("data-candidate"))!;
-      const season = (await point.getAttribute("data-season"))!;
-      expect(Number(await point.getAttribute("data-value"))).toBe(results.candidates[name].seasons[season].rmse);
+    const grid = page.getByRole("table", { name: "Head-to-head RMSE gains" });
+    await expect(grid.locator("tbody tr")).toHaveCount(candidates.length);
+    await expect(grid.locator('td[data-self="true"]')).toHaveCount(candidates.length);
+    for (const a of candidates) for (const b of candidates) {
+      if (a === b) continue;
+      const { pair, sign } = pairFor(a, b);
+      const want = sign === 1 ? pair.pooled.rmse : { gain: -pair.pooled.rmse.gain, low: -pair.pooled.rmse.high, high: -pair.pooled.rmse.low };
+      const cell = grid.locator(`tr[data-row="${a}"] td[data-column="${b}"]`);
+      expect(Number(await cell.getAttribute("data-value"))).toBe(want.gain);
+      expect(Number(await cell.getAttribute("data-low"))).toBe(want.low);
+      expect(Number(await cell.getAttribute("data-high"))).toBe(want.high);
+      const tone = await cell.locator(".rs-grid-value").getAttribute("data-tone");
+      expect(tone).toBe(want.low > 0 ? "good" : want.high < 0 ? "bad" : null);
     }
   });
 
-  test("paired differences follow the served verdicts, with green or red only when the interval excludes zero", async ({ page }) => {
+  test("every score against a chosen metric says one shared verdict once and shows mixed verdicts by row", async ({ page }) => {
     await openWorkbench(page, `${path}?against=time_decay`);
+    await expect(page.locator('[data-field="pairs"]')).toHaveAttribute("data-reference", "time_decay");
     const table = page.getByRole("table", { name: /Paired differences against/ });
-    await expect(table).toHaveAttribute("data-reference", "time_decay");
     await expect(table.locator("tbody tr")).toHaveCount(candidates.length - 1);
-    for (const row of await table.locator("tbody tr").all()) {
+    await expect(page.locator('[data-field="pairs-verdict"]')).toHaveAttribute("data-value", "reference_better");
+    await expect(table.locator('[data-field="verdict"]')).toHaveCount(0);
+    await page.getByRole("combobox", { name: "Compare against" }).selectOption("projected_impact");
+    await expect(page).toHaveURL(/against=projected_impact/);
+    await expect(page.locator('[data-field="pairs-verdict"]')).toHaveCount(0);
+    await expect(page.getByRole("table", { name: /Paired differences against Projected Impact/ }).locator('tr[data-row="rapm_3y"] [data-field="verdict"]')).toHaveText("No ranking");
+    for (const row of await page.getByRole("table", { name: /Paired differences against/ }).locator("tbody tr").all()) {
       const cell = row.locator('[data-field="rmse"]');
-      const low = Number(await cell.getAttribute("data-low"));
-      const high = Number(await cell.getAttribute("data-high"));
-      const tone = await cell.getAttribute("data-tone");
-      expect(tone).toBe(low > 0 ? "positive" : high < 0 ? "negative" : null);
+      const low = Number(await cell.getAttribute("data-low")), high = Number(await cell.getAttribute("data-high"));
+      expect(await cell.locator(".rs-grid-value").getAttribute("data-tone")).toBe(low > 0 ? "good" : high < 0 ? "bad" : null);
     }
-    await expect(table.locator('tr[data-row="team_net"] [data-field="verdict"]')).toHaveText("Worse");
   });
 
-  test("lists the 2026-27 games apart, names DARKO's omission and credits the methods", async ({ page }) => {
+  test("the season line draws the served per-season gain with its band and keeps zero on the axis", async ({ page }) => {
+    await openWorkbench(page, path);
+    const figure = page.locator('[data-chart="gain-by-season"]');
+    await expect(figure.locator(".slc-dot")).toHaveCount(10);
+    await expect(figure.locator('.slc-grid[data-zero]')).toHaveCount(1);
+    const { pair, sign } = pairFor("time_decay", baseline);
+    expect(sign).toBe(1);
+    for (const season of pair.seasons) {
+      const dot = figure.locator(`.slc-dot[data-season="${season.slice(2)}"]`);
+      expect(Number(await dot.getAttribute("data-value"))).toBe(pair.per_season[season].rmse.gain);
+      expect(Number(await dot.getAttribute("data-low"))).toBe(pair.per_season[season].rmse.low);
+    }
+    await page.getByRole("combobox", { name: "Metric charted", exact: true }).selectOption("projected_impact");
+    await expect(page).toHaveURL(/metric=projected_impact/);
+    await expect(figure.locator(".slc-dot")).toHaveCount(2);
+    await page.getByRole("combobox", { name: "Metric charted against" }).selectOption("box_prior_rapm");
+    await expect(page.locator('[data-field="single-season"]')).toContainText("2025-26");
+    const grid = page.getByRole("table", { name: "Margin RMSE by season" });
+    expect(Number(await grid.locator('tr[data-row="rapm_1y"] td[data-season="2025-26"]').getAttribute("data-value"))).toBe(results.candidates.rapm_1y.seasons["2025-26"].rmse);
+    await expect(grid.locator('tr[data-row="projected_impact"] td[data-season="2016-17"]')).toHaveText("—");
+  });
+
+  test("the calibration plot draws the served bins for the chosen metric and Team net, in category tints", async ({ page }) => {
+    await openWorkbench(page, `${path}?cal=rapm_1y`);
+    const block = page.locator('[data-chart="calibration"]');
+    await expect(block).toHaveAttribute("data-metric", "rapm_1y");
+    const measured = (name: string) => results.candidates[name].calibration_curve.bins.filter((b: { games: number }) => b.games > 0);
+    await expect(block.locator('g[data-series="0"]')).toHaveCount(measured("rapm_1y").length);
+    await expect(block.locator('g[data-series="1"]')).toHaveCount(measured(baseline).length);
+    await expect(block.locator('g[data-series="0"]').first()).toHaveAttribute("fill", "var(--color-category-3)");
+    const first = results.candidates.rapm_1y.calibration_curve.bins[0];
+    await expect(block.locator('tr[data-row="0"] [data-field="chosen-games"]')).toHaveAttribute("data-value", String(first.games));
+    await expect(block.locator('[data-field="ece-chosen"]')).toHaveAttribute("data-value", String(results.candidates.rapm_1y.calibration_curve.ece));
+  });
+
+  test("keeps the 2026-27 games apart, names DARKO's omission and credits the methods in About", async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.locator('[data-field="prospective-games"]')).toHaveAttribute("data-value", String(fixture.prospective.summary.prospective.games));
-    await expect(page.getByText("Left out: DARKO")).toBeVisible();
+    await expect(page.locator('[data-field="prospective-empty"]')).toBeVisible();
+    await expect(page.getByRole("table", { name: "Hindsight 2026-27 games" }).locator("tbody tr")).toHaveCount(candidates.length);
+    await expect(page.locator("dt", { hasText: /^DARKO$/ })).toBeVisible();
     for (const credit of ["Dan Rosenbaum", "Joe Sill", "CourtLens's own"]) await expect(page.getByText(credit, { exact: false }).filter({ visible: true }).first()).toBeVisible();
+    await expect(page.locator("#about details")).not.toHaveAttribute("open");
+    await page.locator("#about summary").click();
     await expect(page.getByText("Actual minutes, on purpose.")).toBeVisible();
+    await expect(page.locator('[data-field="results-sha"]')).toHaveAttribute("data-value", results.results_sha256);
   });
 
   test("is in the Research menu under Impact with an icon", async ({ page }) => {

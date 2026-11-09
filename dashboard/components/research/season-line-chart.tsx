@@ -37,7 +37,7 @@ function trimmed(ticks: number[], values: readonly number[]): number[] {
 
 const vars = (props: Record<string, string>) => props as CSSProperties;
 
-export function SeasonLineChart({ label, points, format, axisFormat = format, band, xTicks }: {
+export function SeasonLineChart({ label, points, format, axisFormat = format, band, xTicks, zero = false }: {
   label: string;
   points: readonly SeasonPoint[];
   format: (value: number) => string;
@@ -46,12 +46,14 @@ export function SeasonLineChart({ label, points, format, axisFormat = format, ba
   band?: string;
   /** Indexes of the points whose x label is shown; every label by default. */
   xTicks?: readonly number[];
+  /** Keep zero on the axis and mark it more strongly than the other grid lines, for a measure whose sign matters (RD10). */
+  zero?: boolean;
 }) {
   const [active, setActive] = useState<number | null>(null);
   const known = points.map(p => p.value).filter((v): v is number => v !== null && Number.isFinite(v));
   if (known.length < 2) return <p className="slc-empty">Not enough seasons to draw a line.</p>;
   const bounded = (p: SeasonPoint): p is SeasonPoint & { low: number; high: number } => band !== undefined && typeof p.low === "number" && typeof p.high === "number";
-  const span = [...known, ...points.filter(bounded).flatMap(p => [p.low, p.high])];
+  const span = [...known, ...points.filter(bounded).flatMap(p => [p.low, p.high]), ...(zero ? [0] : [])];
   const ticks = band === undefined ? niceTicks(span) : trimmed(niceTicks(span), span);
   const bottom = ticks[0], top = ticks[ticks.length - 1];
   const x = (index: number) => points.length === 1 ? 50 : (index / (points.length - 1)) * 100;
@@ -96,7 +98,7 @@ export function SeasonLineChart({ label, points, format, axisFormat = format, ba
       </div>
       <div className="slc-plot" role="img" aria-label={summary} tabIndex={0}
         onPointerMove={pick} onPointerDown={pick} onPointerLeave={() => setActive(null)} onKeyDown={keys} onBlur={() => setActive(null)}>
-        {ticks.map(t => <span key={t} className="slc-grid" aria-hidden="true" style={vars({ "--slc-y": `${y(t)}%` })} />)}
+        {ticks.map(t => <span key={t} className="slc-grid" data-zero={zero && t === 0 || undefined} aria-hidden="true" style={vars({ "--slc-y": `${y(t)}%` })} />)}
         <svg className="slc-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
           {area && <path className="slc-band" d={area} />}
           <path className="slc-line" d={path} vectorEffect="non-scaling-stroke" />
