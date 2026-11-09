@@ -83,6 +83,8 @@ test.describe("R09 Draft Classes (RD08 layout)", () => {
     expect(served(await card.locator('.dc-tile-sub[data-field="pts36"]').getAttribute("data-percentile"))).toBe(rookie.rookie.comparison.stats.pts36.percentile);
     const table = page.getByRole("table", { name: /Past number \d+ picks at \d+ games/ });
     await expect(table.locator("tbody tr")).toHaveCount(rookie.comparisons.length + 1);
+    const pair = await page.evaluate(() => { const card = document.querySelector(".dc-rookie-card")!.getBoundingClientRect(), frame = document.querySelector(".dc-past-grid .stats-table-frame")!.getBoundingClientRect(); return { card: card.bottom, frame: frame.bottom }; });
+    expect(Math.abs(pair.card - pair.frame)).toBeLessThanOrEqual(1);
     const years = await table.locator('tbody td[data-field="year"]').evaluateAll(cells => cells.map(c => Number((c as HTMLElement).dataset.value)));
     expect(years).toEqual([...years].sort((a, b) => b - a));
     expect(years[0]).toBe(2026);
