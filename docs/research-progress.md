@@ -927,3 +927,8 @@ The owner approved Projected Impact again ("Okay. I approve this page."), after 
 
 The page now answers in one sentence: on 3 seasons it never saw, the lineup model and ridge both miss a stint by 94.08 per 100, and ridge's 0.000011 edge is no practical difference. One strip draws that gap to scale beside ridge's +0.19 over home court. Five team-tinted player cards with search in place replace the five dropdowns, then net rating with its 80% interval, gains before errors, the game backtest in registered order, the map with its warning above it, How to read and a collapsed About. The lineup-against-ridge gains stay uncoloured (owner's Q1). 4,295 px at 1440 (was 7,246) and 5,949 at 390 (was 10,530). No API, analysis, frozen result or interval changed. Lint and typecheck clean, Vitest 843, `r14-lineup-model` ×3 33/33, full Playwright 620 passed, 17 skipped, 0 failed, real data 6,628 values, 0 mismatches.
 [`design-RD12`](evidence/research/design-RD12/README.md). Awaits the owner.
+
+## 2026-11-09 — RD12 round 2: the lineup search; Six-Factor photos
+
+The lineup tool's search now sits in the card at its full width, keeps the photo and rating in place, opens its list only on typing, and leaves by the card's own tool, Escape or a click elsewhere. On RAPM Ratings the Leaders chart no longer clips the photos' rings flat. Vitest 843, `r14-lineup-model` ×3 36/36, full Playwright 621 passed, 17 skipped, 0 failed, real data 6,645 values, 0 mismatches; 470 portraits per width across both Six-Factor tabs with none cut. No API, analysis, frozen result or interval changed.
+[`design-RD12`](evidence/research/design-RD12/README.md). Awaits the owner.

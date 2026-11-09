@@ -17,6 +17,8 @@
      compact names, and on a phone the name takes its own full-width line instead of being cut. */
   .rapm-headline { --rapm-photo: 44px; min-width: 0; }
   .rapm-headline .chart-meta { grid-row: 2; }
+  /* The label clipped to a box cuts the photo's ring flat; the name and the line under it truncate themselves (RD00: photos are never clipped). */
+  .rapm-headline .chart-ranked-label { overflow: visible; }
   .rapm-headline .chart-ranked-label .ui-identity { display: flex; --identity-media: var(--rapm-photo); }
   /* The games and minutes line starts under the name, not under the photo. */
   .rapm-headline .chart-ranked-label small { padding-left: calc(var(--rapm-photo) + var(--space-2)); }

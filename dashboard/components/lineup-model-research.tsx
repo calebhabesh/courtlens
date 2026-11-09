@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { LookupInput } from "./lookup-input";
 import {
   Glossary, MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchIntro, ResearchLinks, ResearchSection, type GlossaryGroup,
@@ -99,29 +99,38 @@ function Answer({ page }: { page: LineupModelPage }) {
 function Slot({ player, others, items, onPick }: { player: ToolPlayer; others: readonly string[]; items: readonly LookupItem[]; onPick: (id: string) => void }) {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+  const root = useRef<HTMLElement>(null);
   const name = player.name ?? player.player_id;
   const team = player.tricode;
   const tint = teamAccent(team, player.photo_season);
   const close = () => { setOpen(false); setText(""); };
-  return <article className="lm-slot" data-slot={player.player_id} style={tint ? vars({ "--lm-team": tint }) : undefined}>
+  // A click anywhere else ends the search, so a card is never left holding a stranded field. The suggestions are portalled to the body.
+  useEffect(() => {
+    if (!open) return;
+    const away = (event: PointerEvent) => {
+      const target = event.target as Element;
+      if (root.current?.contains(target) || target.closest(".lookup-dropdown")) return;
+      setOpen(false); setText("");
+    };
+    document.addEventListener("pointerdown", away);
+    return () => document.removeEventListener("pointerdown", away);
+  }, [open]);
+  return <article ref={root} className="lm-slot" data-slot={player.player_id} data-searching={open || undefined} style={tint ? vars({ "--lm-team": tint }) : undefined}>
     <PlayerAvatar playerId={player.player_id} name={name} team={team} size="lg" era={seasonEra(player.photo_season, team)} />
-    {open ? <div className="lm-slot-search">
-      <LookupInput label={`Replace ${name}`} placeholder="Search players" value={text} onChange={setText} candidates={[...items]} excludedIds={[...others, player.player_id]} limit={12} groupLabel="Players in this fit" portalDropdown dropdownMinWidth={280} autoFocus
+    <span className="lm-slot-tool"><IconButton size="xs" variant="ghost" icon={open ? "close" : "search"} label={open ? `Cancel replacing ${name}` : `Replace ${name}`} onClick={() => open ? close() : setOpen(true)} /></span>
+    {open ? <div className="lm-slot-search" role="search" onKeyDown={event => { if (event.key === "Escape") close(); }}>
+      <LookupInput label={`Replace ${name}`} placeholder="Search players" value={text} onChange={setText} candidates={[...items]} excludedIds={[...others, player.player_id]} limit={12} groupLabel="Players in this fit" portalDropdown dropdownMinWidth={280} autoFocus openOnFocus={false} clearable={false}
         onSelect={item => { close(); onPick(item.canonical_id); }} />
-      <IconButton size="sm" variant="ghost" icon="close" label="Cancel" onClick={close} />
-    </div> : <>
-      <span className="lm-slot-tool"><IconButton size="xs" variant="ghost" icon="search" label={`Replace ${name}`} onClick={() => setOpen(true)} /></span>
-      <span className="lm-slot-copy">
-        <a className="lm-slot-name" href={`/players/${player.player_id}${player.photo_season ? `?season=${player.photo_season}` : ""}`}>{name}</a>
-        {team && <span className="lm-slot-team" data-field="team" data-value={team}><TeamLogo team={team} season={player.photo_season ?? undefined} size={16} />{team}</span>}
-        {player.status && <span className="lm-slot-status" data-field="status" data-status={player.status}>{STATUS_LABEL[player.status]}</span>}
-      </span>
-      <span className="lm-slot-rating">
-        <span>Ridge rating</span>
-        <strong data-field="rating" data-value={player.ridge_rating} data-additive={player.lineup_additive_rating} data-identity={identityOf(player.ridge_rating)}>{signed(player.ridge_rating)}</strong>
-        <small data-field="possessions" data-value={player.window_possessions ?? ""}>{player.window_possessions == null ? "No possessions" : `${whole(player.window_possessions)} poss.`}</small>
-      </span>
-    </>}
+    </div> : <span className="lm-slot-copy">
+      <a className="lm-slot-name" href={`/players/${player.player_id}${player.photo_season ? `?season=${player.photo_season}` : ""}`}>{name}</a>
+      {team && <span className="lm-slot-team" data-field="team" data-value={team}><TeamLogo team={team} season={player.photo_season ?? undefined} size={16} />{team}</span>}
+      {player.status && <span className="lm-slot-status" data-field="status" data-status={player.status}>{STATUS_LABEL[player.status]}</span>}
+    </span>}
+    <span className="lm-slot-rating">
+      <span>Ridge rating</span>
+      <strong data-field="rating" data-value={player.ridge_rating} data-additive={player.lineup_additive_rating} data-identity={identityOf(player.ridge_rating)}>{signed(player.ridge_rating)}</strong>
+      <small data-field="possessions" data-value={player.window_possessions ?? ""}>{player.window_possessions == null ? "No possessions" : `${whole(player.window_possessions)} poss.`}</small>
+    </span>
   </article>;
 }
 
