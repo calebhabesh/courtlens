@@ -686,6 +686,19 @@ Instructions (owner, 2026-11-09, round 3):
    (Screenshot: the rookie table's Per Game view.)
    — Used "R1 #2" (round, overall pick), the form the Players page bio already uses, in the rookie and class tables, cards, search suggestions and steal and miss lists; the class table's separate Rd column is merged into it. The overall number is kept so second-round picks read R2 #31, and value-by-slot stays a plain pick number.
 
+Instructions (owner, 2026-11-09, round 4; answering the list of glaring improvements proposed after round 3):
+7. [x] Fix them all, comprehensively.
+   - (1) Retitle "Biggest steals" and "Biggest misses" "Most above their slot" and "Furthest below their slot"; the maths and the Steal/Miss tags stay.
+   - (2) Dates in the Stats format instead of 2026-11-08.
+   - (3) Old classes: only picks who played by default, with a switch to show everyone.
+   - (4) Steal and Miss tags in their own narrow column beside Surplus, not in "From".
+   - (5) "First NBA team CHI" becomes "CHI · 1984-85".
+   - (6) Combine chart axis numbers the same size as the slot chart's.
+   - (7) Rookie picker: one field instead of a chip and a search box above the card.
+   - (8) Slot table: a narrow pick column.
+   - (9) Ranges table: no Verdict column repeating the same answer on every row.
+   — All nine done: "Most above their slot" and "Furthest below their slot"; dates as Nov 8, 2026; classes open on Played with an All picks switch (a never-played Miss such as Len Bias stays); a Tag column beside Surplus; subtitles CHI · 1984-85; the combine chart redrawn at its real width with 10 px labels; one rookie search field; an 80 px pick column; one sentence for a shared verdict, the column only when rows differ.
+
 Evidence: [`design-RD08`](evidence/research/design-RD08/README.md).
 
 ## RD09 Research landing — ⬜
