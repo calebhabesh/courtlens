@@ -31,6 +31,8 @@ export interface GridColumn<T> {
   width?: "xs" | "sm" | "md" | "lg" | "xl" | "fill";
   /** Keep the label's own case (oTS, dContest, xPPS) instead of the header's capitals: a lowercase prefix carries meaning (RD04 round 5). */
   keepCase?: boolean;
+  /** Drawn after the label inside a sortable column's header cell (RD11: the scale of the bars below it). */
+  headerAfter?: ReactNode;
   /** The Stats table's repeated photo strip at the start of a group: `cell` draws the photo, and the column has no label. */
   guide?: boolean;
 }
@@ -116,7 +118,7 @@ export function StatsGrid<T>({ label, rows, rowKey, lead, columns, sort, density
             <tr className="stats-header-tier-2">
               {!spanLead && <th scope="col" className="pinned-col rs-grid-lead">{leadHeader}</th>}
               {columns.map((c, i) => c.guide ? <th key={c.key} className="stats-guide-cell" aria-hidden="true" /> : c.sort && sort
-                ? <SortHeader key={c.key} label={c.label} metric={c.key} description={c.title} active={sort.key === c.key} direction={sort.direction} onSort={sort.onSort} className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} />
+                ? <SortHeader key={c.key} label={c.label} metric={c.key} description={c.title} active={sort.key === c.key} direction={sort.direction} onSort={sort.onSort} after={c.headerAfter} className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} />
                 : <th key={c.key} scope="col" className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} title={c.title}><span className="table-sort-button">{c.label}</span></th>)}
             </tr>
           </thead>

@@ -11,10 +11,12 @@ const signed = (value: number, digits: number) => { const text = Math.abs(value)
 test("Projected Impact: the answer, the test, honest limits, credit and hashes", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/research/projected-impact");
-  await expect(page.getByRole("heading", { name: "Does it beat carrying last season forward?" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Does the model beat carrying last season forward?" })).toBeVisible();
+  await expect(page.locator('[data-field="answer"]')).toContainText("the frozen model beat it");
   await expect(page.locator('[data-field="answer"]')).toContainText("edge over time-decay RAPM is small");
+  await expect(page.locator('[data-field="edge"]')).toContainText(data.card.test.pooled.game.ratings.lightgbm.rmse.toFixed(2));
   const players = page.getByRole("table", { name: "Final test, players" });
-  await expect(players).toContainText("The frozen model");
+  await expect(players).toContainText("LightGBM, the frozen model");
   await expect(players).toContainText("Carry-forward");
   await expect(page.getByRole("table", { name: "Final test, games" })).toContainText("Winner picked");
   await expect(page.getByText("The selection didn't pick the best test model.").filter({ visible: true })).toBeVisible();
@@ -49,6 +51,10 @@ test("Projected Impact: pre-freeze games are hindsight, never prospective", asyn
   await expect(page.locator('[data-field="prospective-games"]')).toHaveAttribute("data-value", String(data.scorecard!.prospective.games));
   await expect(page.locator('[data-field="prospective-empty"]')).toBeVisible();
   const hindsight = page.getByRole("table", { name: "Hindsight 2026-27 games" });
+  // Collapsed, with its one visible line.
+  await expect(page.locator('[data-field="hindsight-note"]')).toContainText("aren't a test");
+  await expect(hindsight).toBeHidden();
+  await page.locator("#hindsight summary").click();
   await expect(hindsight).toBeVisible();
   // Hindsight is never coloured, even where its interval excludes zero.
   await expect(hindsight.locator("[data-tone]")).toHaveCount(0);
@@ -93,6 +99,9 @@ test("Projected Impact: filters, intervals and the Why card", async ({ page }) =
   await expect(page.locator(`[data-player="${first.player_id}"]`)).toContainText(first.name);
   await page.getByRole("radiogroup", { name: "Players" }).getByRole("radio", { name: "Rookies and returners" }).click();
   await expect(board).toContainText("Rookie");
+  // A view with no last season has no columns of dashes.
+  await expect(board.locator("thead")).toContainText(/years in league/i);
+  await expect(board.locator("thead")).not.toContainText(/minutes/i);
   const rookie = data.players.find(row => row.group === "rookie" && details[row.player_id])!;
   await board.getByRole("button", { name: `Why ${rookie.name} is projected here` }).click();
   await expect(page).toHaveURL(new RegExp(`player=${rookie.player_id}`));
@@ -123,6 +132,17 @@ test("Projected Impact: no sideways overflow on a phone, projection on screen", 
   const cell = page.getByRole("table", { name: "Projected impact" }).locator('td[data-column="projection"]').first();
   const box = (await cell.boundingBox())!;
   expect(box.x + box.width).toBeLessThanOrEqual(390);
+});
+
+test("Projected Impact: a phone switches between the two contribution lists", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/research/projected-impact");
+  const card = page.locator(".pi-card");
+  await expect(card.locator('[data-block="blocks"]')).toBeVisible();
+  await expect(card.locator('[data-block="top"]')).toBeHidden();
+  await card.getByRole("radiogroup", { name: "Contribution list" }).getByRole("radio", { name: "Largest inputs" }).click();
+  await expect(card.locator('[data-block="top"]')).toBeVisible();
+  await expect(card.locator('[data-block="blocks"]')).toBeHidden();
 });
 
 test("Projected Impact: a player with no frozen row is stated, not guessed", async ({ page }) => {

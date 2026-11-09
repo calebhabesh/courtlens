@@ -795,6 +795,19 @@ recommendations and suggestions for optimal construction and layout of this page
    - (11) "What did not work" is dissolved: each finding moves beside its evidence and stays visible.
    — Built as proposed: the answer in one sentence, the projections on `StatsGrid` with bars on one scale, a tinted Why card with search, per-season test grids, 2026-27 prospective first and hindsight uncoloured, category-tinted aging lines, coverage, How to read and a collapsed About. Real data 105,044 values, 0 mismatches; full Playwright 613 passed, 17 skipped, 0 failed. The page shows 0 prospective games until the first weekly score, due around Nov 12, 2026.
 
+Instructions (owner, 2026-11-09, round 2; asked "Are there any things we can do to improve the page?", then, answering the nine improvements proposed):
+2. [x] Yes, do them all comprehensively.
+   - (1) Rookies and returners view: drop the RAPM and Minutes columns (every row is a dash) and show Years in league.
+   - (2) Say what "it" is: the answer names the frozen model, and the row reads "Projected Impact" with LightGBM under it.
+   - (3) Put the size of the edge in the answer: one line with game error for the model, time decay and carry-forward.
+   - (4) Phone table: the Why arrow stays on the player's line, and names aren't cut off.
+   - (5) Test grids: gain columns ahead of RMSE, so they are on screen on a phone.
+   - (6) Collapse hindsight, with one visible line saying it isn't a test.
+   - (7) Why card on a phone: a switch between By source and Largest inputs instead of stacking them.
+   - (8) Bar scale: −7, 0 and +10 labelled in the column header; that sentence leaves the legend.
+   - (9) Small fixes: the same projection takes one colour in the card header and its tile; coverage rows in minutes order, "Under 500" before "No RAPM"; aging dots only on hover.
+   — All nine done: no all-dash columns, the model named in the answer and rows, the size of the edge in one line, the phone table's arrow on the player's line and names whole, gains first, hindsight collapsed, a phone switch for the two lists, the scale in the header, and the three small fixes. Real data 108,497 values, 0 mismatches; full Playwright 616 passed, 17 skipped, 0 failed.
+
 Evidence: [`design-RD11`](evidence/research/design-RD11/README.md).
 
 ## RD12 Lineup Model — ⬜
