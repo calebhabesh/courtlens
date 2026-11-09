@@ -64,7 +64,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | **B. CourtLens-only pages (no Databallr counterpart; row-18 pattern unless the owner directs)** | | | | | |
 | RD09 | Research landing [29] | `/research` | none | R12 | ✂️ cut by the owner (2026-11-09) |
 | RD10 | Metric Backtest [29] | `/research/backtest` | none (built from approved CourtLens Research patterns) | R08, RD10 | ✅ |
-| RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | ✅ |
+| RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | 👀 |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none | R14 | ⬜ |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none | R03 | ⬜ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
@@ -772,7 +772,7 @@ Instructions (owner, 2026-11-09, round 3):
 
 Evidence: [`design-RD10`](evidence/research/design-RD10/README.md).
 
-## RD11 Projected Impact — ✅ approved by the owner (2026-11-09)
+## RD11 Projected Impact — 👀
 
 - **Now:** frozen 2026-27 projections with intervals (roster / rookies / everyone), aging curve, the test
   against carry-forward and time decay, the weekly prospective score (first scheduled run 2026-11-12).
@@ -811,6 +811,11 @@ Instructions (owner, 2026-11-09, round 2; asked "Are there any things we can do 
 Instructions (owner, 2026-11-09, round 3):
 3. [x] looks good, approved.
    — Approved. The settled rules are in the alignment plan's "Research pages" pattern ("Settled in RD11"). The prospective table still needs a real-data check after the first weekly score, due around Nov 12, 2026.
+
+Instructions (owner, 2026-11-09, round 4; asked "Can we do that now?" about the prospective table's real-data check, then answered the recommendation to force the score):
+4. [x] Yes do that now.
+   - Force the 2026-27 score (`courtlens refresh-projected-impact --force`) and check the prospective table on real data.
+   — Done: 39 games added, 25 prospective and 121 hindsight through Nov 8, 2026, the earlier rows unchanged. The table renders on real data, 108,627 values, 0 mismatches. The first result goes against the model: margin RMSE 16.80 against 15.10 for time decay, on 25 games. The next automatic score moves to about Nov 17, 2026.
 
 Evidence: [`design-RD11`](evidence/research/design-RD11/README.md).
 

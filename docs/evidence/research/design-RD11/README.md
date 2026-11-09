@@ -93,3 +93,20 @@ Screenshots viewed: `pi-top-1440.png`, `pi-answer-1440.png`, `pi-projections-*`,
 ## Approved (owner, 2026-11-09)
 
 "looks good, approved." The settled rules are in the alignment plan ("Settled in RD11"). Still to do: re-check the prospective table on real data after the first weekly score, due around Nov 12, 2026.
+
+## Round 4 (owner, 2026-11-09): the prospective table on real data
+
+Asked "Can we do that now?", then "Yes do that now." `courtlens refresh-projected-impact --force` (the owner's instruction; forced because the last run was under 7 days old) ran under an 8 GiB cap. **39 games added: 25 prospective and 121 hindsight in total, scored through Nov 8, 2026.** It only appends to `games.jsonl` and rewrites `summary.json` under the git-ignored `data/derived/projected-impact-serving/`: the first 107 rows are byte-identical to before, the projections hash is unchanged, and no frozen result, database or server was touched. The API reads the file on each request. The next automatic score moves from about Nov 12 to about Nov 17, 2026, the first daily firing at least 7 days after this run.
+
+**The first prospective result goes against the model.** On 25 games (margin RMSE, lower is better): Projected Impact 16.80, ridge 16.23, age curve 15.84, carry-forward 15.71, time-decay RAPM 15.10. Gain over time decay: Projected Impact −54.33 (95% −96.08 to −16.72), ridge −35.26 (−69.69 to −2.81), both excluding zero, so both show red. Gain over carry-forward: −35.58 (−86.01 to +10.84) and −16.52 (−54.70 to +20.92), both including zero. Winner picked: 68.0% for Projected Impact, 80.0% for time decay.
+
+Metric Backtest scores the same 25 games separately and agrees on the direction: Projected Impact 16.76 and opener time decay 15.33, a gain of −1.43 (95% −2.37 to −0.55). Twenty-five games are few, and the frozen test on 2,460 games is unchanged. The result is drawn as served.
+
+**Code.** No page, API or analysis code changed this round. `real-check.mjs` gained the prospective assertions (table visible, no empty note, gains served at 20 or more games, the unprojected share, green and red only where served). The spec's fixture stays at 0 prospective games, because it covers the empty state; the two filled states stay on a modified payload. The full suite was not re-run, since nothing it covers changed.
+
+| Check | Result |
+| --- | --- |
+| Real data ([`real-data-check.json`](real-data-check.json), [`real-check.mjs`](real-check.mjs)) | 108,627 values (67,322 at 1440 over 123 loads; 41,305 at 390 over 20 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images. Prospective table compared in full for the first time |
+
+**Page size.** 5,499 px at 1440 and 6,690 px at 390, now that the prospective table has rows. Screenshots viewed: `pi-season-2026-27-1440.png`, `pi-season-2026-27-390.png`.
+
