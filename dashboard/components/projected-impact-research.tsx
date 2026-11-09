@@ -308,6 +308,8 @@ function ScoreGrid({ group, name, label, tinted, selected }: { group: ScoreGroup
 function ScoreSection({ page }: { page: ProjectedImpactPage }) {
   const { scorecard: score, model } = page;
   const prospective = score?.prospective, hindsight = score?.hindsight;
+  // The caution holds while the sample is under one test season (the test's two seasons are 2,460 games).
+  const testGames = page.card.test.pooled.game.games;
   const unprojected = (group: ScoreGroup) => group.unprojected_minutes_share === undefined ? null
     : <p className="pi-note" data-field="unprojected" data-value={group.unprojected_minutes_share}>Minutes played by someone with no frozen row, who takes the rookie average: {percent(group.unprojected_minutes_share)}. A dash is a pair the weekly score doesn&apos;t compute.</p>;
   return <><ResearchSection id="season-2026-27" icon="calendar" title={`${SEASON}, scored each week`}>
@@ -318,7 +320,8 @@ function ScoreSection({ page }: { page: ProjectedImpactPage }) {
         <strong data-field="prospective-games" data-value={prospective.games}>{count(prospective.games)}</strong> prospective {prospective.games === 1 ? "game" : "games"} and <strong data-field="hindsight-games" data-value={hindsight.games}>{count(hindsight.games)}</strong> hindsight.</p>
       <h3 className="pi-subhead">Prospective, after the freeze</h3>
       {prospective.games && prospective.ratings
-        ? <>{!prospective.gaps && <p className="pi-note" data-field="prospective-intervals">Gains start at 20 games.</p>}
+        ? <>{prospective.games < testGames / 2 && <p className="pi-lead" data-field="prospective-note">These {count(prospective.games)} {prospective.games === 1 ? "game is" : "games are"} too few to overturn the test on {count(testGames)} games; this section will settle as the season goes.</p>}
+          {!prospective.gaps && <p className="pi-note" data-field="prospective-intervals">Gains start at 20 games.</p>}
           <ScoreGrid group={prospective} name="score-prospective" label="Prospective 2026-27 games" tinted selected={model.selected} />{unprojected(prospective)}</>
         : <p className="pi-note" data-field="prospective-empty">No game has been scored since the freeze, so there is no prospective result yet. The next weekly score is due around {formatDate(addDays(score.written_at.slice(0, 10), 7))}.</p>}
       {hindsight.games > 0 && <p className="pi-lead" data-field="hindsight-note">The {count(hindsight.games)} hindsight games tipped before the freeze. They aren&apos;t a test of the frozen model and are too few to quote, so they are kept apart below.</p>}

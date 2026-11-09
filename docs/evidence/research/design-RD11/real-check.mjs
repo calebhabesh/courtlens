@@ -214,6 +214,8 @@ for (const width of [1440, 390]) {
     if (!colored) eq(`${name} never coloured`, await page.locator(`table[data-table="${name}"] [data-tone]`).count(), 0);
   };
   if (score.prospective.games > 0) { await checkWeek(score.prospective, "score-prospective", true);
+    eq("prospective caution", await page.locator('[data-field="prospective-note"]').innerText(), score.prospective.games < card.test.pooled.game.games / 2 ? `These ${count(score.prospective.games)} games are too few to overturn the test on ${count(card.test.pooled.game.games)} games; this section will settle as the season goes.` : "");
+    eq("prospective caution above the table", await page.evaluate(() => { const n = document.querySelector('[data-field="prospective-note"]').getBoundingClientRect(), t = document.querySelector('table[data-table="score-prospective"]').getBoundingClientRect(); return n.bottom <= t.top; }), true);
     eq("prospective has no empty note", await page.locator('[data-field="prospective-empty"]').count(), 0); eq("prospective table visible", await page.locator('table[data-table="score-prospective"]').isVisible(), true);
     eq("prospective gains served", !!score.prospective.gaps, score.prospective.games >= 20); eq("prospective under-20 note", await page.locator('[data-field="prospective-intervals"]').count(), score.prospective.games >= 20 ? 0 : 1);
     eq("prospective unprojected", num(await page.locator('#season-2026-27 [data-field="unprojected"]').getAttribute("data-value")), score.prospective.unprojected_minutes_share);

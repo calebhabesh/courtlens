@@ -912,3 +912,8 @@ The owner approved Projected Impact ("looks good, approved."). Row RD11 ✅; its
 
 On the owner's instruction, `courtlens refresh-projected-impact --force` added 39 games: 25 prospective and 121 hindsight, scored through Nov 8, 2026. The first 107 rows and the projections hash are unchanged. The first prospective result goes against the model: margin RMSE 16.80 (Projected Impact) against 15.10 (time-decay RAPM) and 15.71 (carry-forward); gain over time decay −54.33 (95% −96.08 to −16.72). Metric Backtest's separate scoring of the same games agrees on the direction. Twenty-five games are few, and the frozen test is unchanged. The prospective table now renders on real data: 108,627 values over 143 loads, 0 mismatches, 0 console errors, 0 overflow, 0 broken images. No page, API or analysis code changed, so the full suite was not re-run. The next automatic score moves to about Nov 17, 2026.
 [`design-RD11`](evidence/research/design-RD11/README.md). Awaits the owner.
+
+## 2026-11-09 — RD11 round 5: the early result tied to the test
+
+On the owner's instruction, one line now sits above the prospective table: the games so far are too few to overturn the test on 2,460 games, and the section will settle as the season goes. It uses served counts and shows only while the sample is under one test season. No number, colour, API or analysis changed. Lint and typecheck clean, Vitest 840, `projected-impact` ×3 30/30, full Playwright 616 passed, 17 skipped, 0 failed. Real data 108,631 values over 143 loads, 0 mismatches, 0 console errors, 0 overflow, 0 broken images.
+[`design-RD11`](evidence/research/design-RD11/README.md). Awaits the owner.
