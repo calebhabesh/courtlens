@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { openWorkbench } from "./workbench-navigation";
 
-// Real answers of the R03 API (e2e/fixtures/signal-noise.json): the page must show them exactly.
+// Real answers of the R03 API (e2e/fixtures/signal-noise.json): the page must show them exactly. Layout from RD13.
 const fixture = JSON.parse(readFileSync("e2e/fixtures/signal-noise.json", "utf8"));
 const stats: { key: string; label: string; levels: Record<string, { status: string; n: number | null; extrapolated: number | null }> }[] = fixture.summary.stabilization.stats;
 const path = "/research/signal-noise";
@@ -10,34 +10,80 @@ const path = "/research/signal-noise";
 test.describe("R03 Signal vs Noise", () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: 1440, height: 900 }); });
 
-  test("lists every stat with its served stabilization point, and never presents an extrapolation as reached", async ({ page }) => {
+  test("draws every stat with its served stabilization point, and never presents an extrapolation as reached (RD13)", async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Signal vs Noise");
-    const table = page.getByRole("table", { name: "Stabilization points" });
-    await expect(table.locator("tbody tr")).toHaveCount(20);
-    for (const stat of stats) {
-      const cell = table.locator(`tr[data-stat="${stat.key}"] [data-status]`).first();
-      const level = stat.levels["0.5"];
-      await expect(cell).toHaveAttribute("data-status", level.status);
-      if (level.status === "reached") expect(Number(await cell.getAttribute("data-value"))).toBe(level.n);
-      else {
-        await expect(cell).toContainText("Not reached");
-        expect(Number(await cell.getAttribute("data-extrapolated"))).toBe(level.extrapolated);
+    for (const family of ["percentage", "per_36"] as const) {
+      if (family === "per_36") await page.getByRole("radio", { name: "Per 36 minutes" }).click();
+      const familyStats = stats.filter(stat => (fixture.summary.stabilization.stats as { key: string; family: string }[]).find(s => s.key === stat.key)?.family === family);
+      const strip = page.locator(`[data-chart="strip"][data-family="${family}"] .sn-strip-row`);
+      await expect(strip).toHaveCount(familyStats.length);
+      const grid = page.getByRole("table", { name: "Stabilization points" });
+      await expect(grid.locator("tbody tr")).toHaveCount(familyStats.length);
+      for (const stat of familyStats) {
+        const level = stat.levels["0.5"];
+        const row = page.locator(`.sn-strip-row[data-stat="${stat.key}"]`);
+        await expect(row).toHaveAttribute("data-status", level.status);
+        if (level.status === "reached") expect(Number(await row.getAttribute("data-value"))).toBe(level.n);
+        else {
+          await expect(row).toContainText("Not reached");
+          await expect(row.locator(".sn-track-dot")).toHaveCount(0);
+          await expect(grid.locator(`tr[data-stat="${stat.key}"]`)).toContainText("Not reached");
+          expect(Number(await grid.locator(`tr[data-stat="${stat.key}"] [data-field="level-0.5"]`).getAttribute("data-extrapolated"))).toBe(level.extrapolated);
+        }
       }
     }
-    await expect(page.getByRole("region", { name: "Key findings" })).toContainText("Not reached");
+    // No hashes or project codes in the visible body; they live in the collapsed About.
+    const visible = await page.locator("main").innerText();
+    for (const code of [fixture.summary.results_sha256.slice(0, 16), "courtlens-signal-noise", "R03"]) expect(visible).not.toContain(code);
+    await expect(page.locator("#about")).toContainText(fixture.summary.results_sha256.slice(0, 16));
+    expect(await page.locator("select").count()).toBe(1);
   });
 
-  test("switches the curve, shows the worked example and credits the methods", async ({ page }) => {
+  test("3P%'s curve draws its bins but no fitted line; a reached stat draws both", async ({ page }) => {
     await openWorkbench(page, path);
-    await page.getByRole("combobox", { name: "Stat" }).selectOption("ft_pct");
+    const curve = page.locator('[data-chart="curve"]');
+    await expect(curve).toHaveAttribute("data-stat", "fg3_pct");
+    await expect(curve).toHaveAttribute("data-fitted", "not-drawn");
+    await expect(curve.locator(".sn-bin")).toHaveCount(8);
+    await expect(page.locator('[data-field="curve-not-drawn"]')).toBeVisible();
+    await page.getByRole("group", { name: "Stat" }).getByRole("button", { name: "FT%", exact: true }).click();
     await expect(page).toHaveURL(/stat=ft_pct/);
-    await expect(page.getByRole("table", { name: "FT% bins" }).locator("tbody tr")).toHaveCount(8);
+    await expect(curve).toHaveAttribute("data-fitted", "drawn");
+    await expect(page.getByRole("table", { name: "FT% bins", includeHidden: true }).locator("tbody tr")).toHaveCount(8);
+  });
+
+  test("shows the worked example in a card with search in place, and credits the methods", async ({ page }) => {
+    await openWorkbench(page, path);
+    const card = page.locator(".sn-card");
+    await expect(card).toHaveAttribute("data-player", fixture.player.player_id);
+    await expect(card.getByRole("link", { name: fixture.player.player_name })).toBeVisible();
+    await expect(page.locator('.sn-card [data-team="POR"] img')).toHaveCount(1);
     const example = page.getByRole("table", { name: "Worked example" });
-    const served = fixture.player.estimates.fg3_pct;
-    expect(Number(await example.locator('tr[data-stat="fg3_pct"] [data-value]').nth(1).getAttribute("data-value"))).toBe(served.shrunk.value);
+    expect(Number(await example.locator('tr[data-stat="fg3_pct"] [data-field="shrunk"]').getAttribute("data-value"))).toBe(fixture.player.estimates.fg3_pct.shrunk.value);
     await expect(page.getByText(fixture.player.selection_rule)).toBeVisible();
+    await card.getByRole("button", { name: `Replace ${fixture.player.player_name}` }).click();
+    await expect(card.getByRole("combobox", { name: "Search players" })).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(card.getByRole("link", { name: fixture.player.player_name })).toBeVisible();
+    await page.getByRole("radiogroup", { name: "Season path" }).getByRole("radio", { name: "FT%" }).click();
+    await expect(page.locator('[data-chart="path"]')).toHaveAttribute("data-path", "ft_pct");
+    await page.locator("#about summary").click();
     for (const credit of ["Spearman 1910", "Efron and Morris (1975)", "Darryl Blackport"]) await expect(page.getByText(credit, { exact: false }).first()).toBeVisible();
+  });
+
+  test("the shrinkage test colours a gain only where its 95% interval excludes zero", async ({ page }) => {
+    await openWorkbench(page, path);
+    const test = page.getByRole("table", { name: "Shrinkage test" });
+    await expect(test.locator("tbody tr")).toHaveCount(5);
+    await page.getByRole("radio", { name: "Under 50" }).click();
+    await expect(page).toHaveURL(/band=under/);
+    for (const stat of ["fg3_pct", "ts_pct"]) {
+      const cell = test.locator(`tr[data-stat="${stat}"] [data-field="prior_minus_shrunk"]`);
+      expect(Number(await cell.getAttribute("data-low"))).toBeLessThan(0);
+      await expect(cell.locator("[data-tone]")).toHaveCount(0);
+    }
+    await expect(test.locator('tr[data-stat="fg3_pct"] [data-field="raw_minus_shrunk"] [data-tone="good"]')).toHaveCount(1);
   });
 
   test("is in the Research menu under Methods with an icon", async ({ page }) => {
