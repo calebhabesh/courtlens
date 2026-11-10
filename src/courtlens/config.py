@@ -134,6 +134,11 @@ class Settings(BaseSettings):
     gemini_requests_per_day: int | None = Field(default=None, ge=1, le=10_000_000)
     assistant_model: str | None = Field(default=None, min_length=1, max_length=128)
     assistant_max_steps: int = Field(default=6, ge=1, le=20)
+    # Public Ask on the hosted demo: anyone with the link may ask a few questions a day, and the
+    # whole site stops taking questions before the free Gemini quota runs out. Off locally.
+    public_ask: bool = False
+    public_ask_prompts_per_visitor: int = Field(default=3, ge=1, le=100)
+    public_ask_daily_requests: int = Field(default=480, ge=1, le=10_000_000)
     assistant_max_web_searches: int = Field(default=3, ge=0, le=20)
     assistant_max_tokens: int = Field(default=60000, ge=1024, le=1_000_000)
     assistant_turn_timeout_seconds: int = Field(default=60, ge=1, le=300)

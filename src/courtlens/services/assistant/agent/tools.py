@@ -239,6 +239,27 @@ def _props(name: Any) -> set[str]:
     return set(operation.schema.model_json_schema().get("properties", {}))
 
 
+# The server's fixed planning refusals, turned into instructions the model can act on.
+_PLANNING_GUIDANCE: dict[str, tuple[str, str]] = {
+    "operation cannot silently change pinned context": (
+        "scope_conflict",
+        "season, phase or before_date inside the query differs from the pinned scope. To change "
+        "scope, put it beside operation (for example season: 2023-24), not inside arguments.",
+    ),
+    "unsupported Stats planning scope": (
+        "unsupported_scope",
+        "A query covers one season of players: entity_kind player_season, no season_scope list "
+        "(choose the season beside operation), no cursor, and a season or recent-games window.",
+    ),
+    "use actual catalog metric keys and current versions": (
+        "invalid_metric",
+        "Use catalog metric keys with normalization raw. The key carries the unit: pts is a "
+        "season total, pts_per_game per game. Call list_metrics for the keys.",
+    ),
+    "too many selected metrics": ("invalid_arguments", "Select at most 12 metrics."),
+}
+
+
 def repair_stats_call(arguments: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
     """Fix the argument shapes models get wrong when only one reading is possible.
 
@@ -329,16 +350,15 @@ def repair_stats_call(arguments: dict[str, Any]) -> tuple[dict[str, Any], list[s
 
 
 def _repair_query_scope(call: dict[str, Any], query: dict[str, Any], notes: list[str]) -> None:
-    """The server pins release and scope: a query repeating them moves them to the call's scope."""
+    """The server pins the release. Scope inside a query must match the call's pinned scope (it
+    may not silently change what the user is looking at), so a single season_scope season is
+    read as the query's season and left for that check; only the call-level scope changes it."""
     if query.pop("release_id", None) is not None:
         notes.append("release_id is pinned by the server; omit it")
     for key in _SCOPE_KEYS:
-        if key in query:
-            value = query.pop(key)
-            if call.setdefault(key, value) == value:
-                notes.append(f"{key} belongs beside operation, not inside the query")
-            else:
-                query[key] = value  # A conflicting scope stays for the validator to name.
+        if key in query and call.get(key) == query[key]:
+            query.pop(key)
+            notes.append(f"{key} belongs beside operation, not inside the query")
     scope = query.get("season_scope")
     if not isinstance(scope, dict):
         return
@@ -347,13 +367,15 @@ def _repair_query_scope(call: dict[str, Any], query: dict[str, Any], notes: list
         isinstance(seasons, list)
         and len(seasons) == 1
         and isinstance(seasons[0], str)
-        and call.setdefault("season", seasons[0]) == seasons[0]
+        and query.get("season", seasons[0]) == seasons[0]
     ):
         rest = {k: v for k, v in scope.items() if k not in ("seasons", "aggregate_multi_season")}
         if rest:
             query["season_scope"] = rest
         else:
             query.pop("season_scope")
+        if call.get("season") != seasons[0]:
+            query["season"] = seasons[0]
         notes.append("one season is the call's season, not season_scope.seasons")
 
 
@@ -543,9 +565,17 @@ def _run(
             query = QuerySpec.model_validate(args if name == "query" else args["query"])
             if query_uses_impact(query):
                 context = replace(context, window=query.window.kind.value)
-        step = operations.canonical_step(
-            session, context, OperationStep(step_id="agent_tool", operation=name, arguments=args)
-        )
+        try:
+            step = operations.canonical_step(
+                session,
+                context,
+                OperationStep(step_id="agent_tool", operation=name, arguments=args),
+            )
+        except ValueError as exc:
+            guidance = _PLANNING_GUIDANCE.get(str(exc))
+            if guidance is None:
+                raise
+            raise ToolError(guidance[0], guidance[1], example=_EXAMPLES.get(name)) from None
         data = execute_bounded(session, context, step, deadline)
         _empty_error(name, data)
         result = render_result(step, context, data, canonical_hash(context.to_dict()))
