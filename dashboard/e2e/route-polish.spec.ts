@@ -13,7 +13,7 @@ test("release availability agrees across desktop and mobile and never carries th
   await page.getByRole("button", { name: "Toggle navigation drawer" }).click();
   const section = page.locator(".replica-mobile-section").filter({ has: page.getByText("Availability", { exact: true }) });
   expect(await section.locator("a").evaluateAll(items => items.map(item => item.getAttribute("href")))).toEqual(links);
-  await expect(page.locator(".replica-mobile-drawer").getByRole("link", { name: "Shooting", exact: true })).toBeVisible();
+  await expect(page.locator(".replica-mobile-drawer").getByRole("link", { name: "Shot Quality", exact: true })).toBeVisible();
   // Every page keeps its own season (owner, 2026-10-15): navigation carries no scope parameters.
   expect(links.every(href => !/[?&](season|phase|beforeDate)=/.test(href ?? ""))).toBe(true);
 });

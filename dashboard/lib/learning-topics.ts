@@ -262,7 +262,7 @@ export const LEARNING_TIERS: readonly LearningTier[] = [
         measured: { block: "R06", evidence: evidence("r06"), text: `Next-season correlation: shot quality ${fact("sd.sqR")}, shot-making ${fact("sd.makeR")}. The difference, ${fact("sd.diff")} (${fact("sd.diffLow")} to ${fact("sd.diffHigh")}), includes zero, so neither is clearly more persistent.` },
         prerequisites: ["shot-value"],
         myth: "Shot quality is a skill; shot-making is luck that fades by next season.",
-        links: [{ label: "Shooting decomposition", href: "/research/shooting" }, { label: "Defensive Shot Quality", href: "/research/defensive-matchups" }],
+        links: [{ label: "Shooting decomposition", href: "/research/shot-quality" }, { label: "Defensive Shot Quality", href: "/research/defensive-matchups" }],
       },
       {
         id: "play-type-difficulty",

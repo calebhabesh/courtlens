@@ -84,7 +84,9 @@
 @import "../components/wingspan-research.css";
 @import "../components/ortg-lab-view.css";
 @import "../components/zts-research.css";
+@import "../components/zts-defense.css";
 @import "../components/shot-quality-research.css";
+@import "../components/expected-shot-earlier.css";
 @import "../components/defensive-shot-quality-view.css";
 @import "../components/learning-view.css";
 @import "../components/patch-notes-view.css";
