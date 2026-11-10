@@ -20,6 +20,7 @@ x-api-environment: &api-environment
   COURTLENS_IMPACT_SERVING_MANIFEST: ${COURTLENS_IMPACT_SERVING_MANIFEST:?}
   COURTLENS_VALUE_ARCHETYPES_MANIFEST: ${COURTLENS_VALUE_ARCHETYPES_MANIFEST:?}
   COURTLENS_WOWY_MANIFEST: ${COURTLENS_WOWY_MANIFEST:?}
+  COURTLENS_IMPACT_TEAM_SPLITS_MANIFEST: ${COURTLENS_IMPACT_TEAM_SPLITS_MANIFEST:?}
 
 services:
   db:
@@ -66,7 +67,8 @@ services:
   api:
     image: ${COURTLENS_API_IMAGE:?}
     restart: unless-stopped
-    mem_limit: 1536m
+    # The 12-season impact bundle peaks near 2.3 GB while serving (measured 2026-11-10).
+    mem_limit: 3g
     cpus: 2.0
     environment: *api-environment
     volumes:
@@ -81,6 +83,21 @@ services:
       - ./data/derived/win-probability-serving:/app/data/derived/win-probability-serving:ro
       - ./data/artifacts/projected-impact:/app/data/artifacts/projected-impact:ro
       - ./data/derived/projected-impact-serving:/app/data/derived/projected-impact-serving:ro
+      - ./data/derived/win-probability-ratings:/app/data/derived/win-probability-ratings:ro
+      - ./data/derived/metric-backtest-serving:/app/data/derived/metric-backtest-serving:ro
+      - ./data/derived/draft-value-v1:/app/data/derived/draft-value-v1:ro
+      - ./data/derived/lineup-model-v1:/app/data/derived/lineup-model-v1:ro
+      - ./data/derived/darko-dpm-v2:/app/data/derived/darko-dpm-v2:ro
+      - ./data/derived/espn-rosters-v1:/app/data/derived/espn-rosters-v1:ro
+      - ./data/derived/wikipedia-transactions-v1:/app/data/derived/wikipedia-transactions-v1:ro
+      - ./data/derived/free-agency-v1:/app/data/derived/free-agency-v1:ro
+      - ./data/derived/shot-zones-v1:/app/data/derived/shot-zones-v1:ro
+      - ./data/derived/position-estimates-v1:/app/data/derived/position-estimates-v1:ro
+      - ./data/derived/contracts-checks:/app/data/derived/contracts-checks:ro
+      - ./data/derived/stint-box-v1:/app/data/derived/stint-box-v1:ro
+      - ./data/artifacts/research-runs:/app/data/artifacts/research-runs:ro
+      - ./data/artifacts/research-run-packages:/app/data/artifacts/research-run-packages:ro
+      - ./data/raw:/app/data/raw:ro
     logging: *logging
     depends_on:
       db:
