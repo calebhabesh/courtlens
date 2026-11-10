@@ -53,6 +53,20 @@ test.describe("R03 Signal vs Noise", () => {
     await expect(page.getByRole("table", { name: "FT% bins", includeHidden: true }).locator("tbody tr")).toHaveCount(8);
   });
 
+  test("a stat name in the strip selects its curve without moving the page; the curve button moves there", async ({ page }) => {
+    await openWorkbench(page, path);
+    const row = page.locator('.sn-strip-row[data-stat="fg_pct"]');
+    await row.scrollIntoViewIfNeeded();
+    const before = await page.evaluate(() => window.scrollY);
+    await row.getByRole("button", { name: "Choose FG% for the reliability curve" }).click();
+    await expect(page).toHaveURL(/stat=fg_pct/);
+    await expect(page.locator('[data-chart="curve"]')).toHaveAttribute("data-stat", "fg_pct");
+    await page.waitForTimeout(400);
+    expect(await page.evaluate(() => window.scrollY)).toBe(before);
+    await page.getByRole("button", { name: "FG% curve" }).click();
+    await expect.poll(() => page.evaluate(() => Math.abs(document.getElementById("curve")!.getBoundingClientRect().top))).toBeLessThan(200);
+  });
+
   test("shows the worked example in a card with search in place, and credits the methods", async ({ page }) => {
     await openWorkbench(page, path);
     const card = page.locator(".sn-card");
