@@ -1,3 +1,3 @@
-import { OriginalArticle } from "@/components/original-article";
-import { readPublication } from "@/lib/original-content";
-export default async function Page() { return <OriginalArticle source={await readPublication("patch-notes")} />; }
+import { PatchNotesView } from "@/components/patch-notes-view";
+
+export default function Page() { return <PatchNotesView />; }

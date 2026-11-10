@@ -1,0 +1,44 @@
+[
+ {
+  "width": 1440,
+  "page": "ratings",
+  "photos": 25,
+  "circle": 25,
+  "clipped": [],
+  "overflow": 0,
+  "leaders": 5,
+  "controlClipped": 5,
+  "errors": []
+ },
+ {
+  "width": 1440,
+  "page": "six-factor",
+  "photos": 445,
+  "circle": 445,
+  "clipped": [],
+  "overflow": 0,
+  "leaders": 0,
+  "errors": []
+ },
+ {
+  "width": 390,
+  "page": "ratings",
+  "photos": 25,
+  "circle": 25,
+  "clipped": [],
+  "overflow": 0,
+  "leaders": 5,
+  "controlClipped": 5,
+  "errors": []
+ },
+ {
+  "width": 390,
+  "page": "six-factor",
+  "photos": 445,
+  "circle": 445,
+  "clipped": [],
+  "overflow": 0,
+  "leaders": 0,
+  "errors": []
+ }
+]

@@ -1,0 +1,986 @@
+{
+ "availability_check": {
+  "games": 0,
+  "mean_abs_mu_gap": null,
+  "p95_abs_mu_gap": null
+ },
+ "drift": {
+  "basis": "pre_freeze_replay",
+  "latest": {
+   "calibration_error": 0.043417925355377404,
+   "date": "2026-11-02",
+   "games": 107,
+   "interval": {
+    "high": 0.07230315832007904,
+    "low": 0.020555514960020074
+   },
+   "minimum_games": 25,
+   "status": "within"
+  },
+  "series": [
+   {
+    "calibration_error": 0.24830829999999995,
+    "date": "2026-10-20",
+    "games": 3,
+    "interval": null,
+    "minimum_games": 25,
+    "status": "insufficient"
+   },
+   {
+    "calibration_error": 0.0753436444716495,
+    "date": "2026-10-21",
+    "games": 14,
+    "interval": null,
+    "minimum_games": 25,
+    "status": "insufficient"
+   },
+   {
+    "calibration_error": 0.09402304551293206,
+    "date": "2026-10-22",
+    "games": 16,
+    "interval": null,
+    "minimum_games": 25,
+    "status": "insufficient"
+   },
+   {
+    "calibration_error": 0.06809650884526984,
+    "date": "2026-10-23",
+    "games": 28,
+    "interval": {
+     "high": 0.1448679573738113,
+     "low": 0.03821895587915067
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.05031945403576411,
+    "date": "2026-10-24",
+    "games": 36,
+    "interval": {
+     "high": 0.1310621556822729,
+     "low": 0.03499057928053845
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.0640262065868388,
+    "date": "2026-10-25",
+    "games": 43,
+    "interval": {
+     "high": 0.11898207920217678,
+     "low": 0.03216574975675276
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.05508679924222079,
+    "date": "2026-10-26",
+    "games": 52,
+    "interval": {
+     "high": 0.10536208809566429,
+     "low": 0.028898223632746457
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.05113633484172029,
+    "date": "2026-10-27",
+    "games": 56,
+    "interval": {
+     "high": 0.10228225884283153,
+     "low": 0.028012830432305243
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.046074041583006285,
+    "date": "2026-10-28",
+    "games": 68,
+    "interval": {
+     "high": 0.09304277108433323,
+     "low": 0.025356650830981604
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.04337202982181425,
+    "date": "2026-10-29",
+    "games": 71,
+    "interval": {
+     "high": 0.09073289914470865,
+     "low": 0.024692605930650695
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.03650265569075057,
+    "date": "2026-10-30",
+    "games": 81,
+    "interval": {
+     "high": 0.08437166374593852,
+     "low": 0.023166666003836194
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.03454405235123646,
+    "date": "2026-10-31",
+    "games": 88,
+    "interval": {
+     "high": 0.08054335657567825,
+     "low": 0.022419361489734023
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.03224549140949619,
+    "date": "2026-11-01",
+    "games": 92,
+    "interval": {
+     "high": 0.07835575247838666,
+     "low": 0.0219923303388185
+    },
+    "minimum_games": 25,
+    "status": "within"
+   },
+   {
+    "calibration_error": 0.043417925355377404,
+    "date": "2026-11-02",
+    "games": 107,
+    "interval": {
+     "high": 0.07230315832007904,
+     "low": 0.020555514960020074
+    },
+    "minimum_games": 25,
+    "status": "within"
+   }
+  ],
+  "window_days": 30
+ },
+ "games_scored": 107,
+ "model": {
+  "frozen_at": "2026-11-04T22:08:55+00:00",
+  "manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+  "version": "courtlens-win-probability-v2-frozen-2026-27"
+ },
+ "pre_freeze_replay": {
+  "courtlens": {
+   "brier": 0.1409293720704168,
+   "calibration_error": 0.043417925355377404,
+   "log_loss": 0.4156010444568125
+  },
+  "curve_courtlens": [
+   {
+    "observed": 0.013272797570559597,
+    "predicted": 0.009654113643281937,
+    "share": 0.11328665545781302
+   },
+   {
+    "observed": 0.07918346350331237,
+    "predicted": 0.07398313773673709,
+    "share": 0.036429960849803635
+   },
+   {
+    "observed": 0.15215814757323629,
+    "predicted": 0.12571862766126282,
+    "share": 0.03786455150803147
+   },
+   {
+    "observed": 0.17425770679444078,
+    "predicted": 0.17472678723472101,
+    "share": 0.039100162726449054
+   },
+   {
+    "observed": 0.24368780239192808,
+    "predicted": 0.22424137708314087,
+    "share": 0.035494066454656255
+   },
+   {
+    "observed": 0.28674179748041073,
+    "predicted": 0.27456020807270787,
+    "share": 0.03581350570788833
+   },
+   {
+    "observed": 0.29939797206142094,
+    "predicted": 0.32579544075814365,
+    "share": 0.03380800663684488
+   },
+   {
+    "observed": 0.2950110154748014,
+    "predicted": 0.37522090356603904,
+    "share": 0.03331210009339841
+   },
+   {
+    "observed": 0.31913656276705604,
+    "predicted": 0.42494124924368865,
+    "share": 0.03662947486905461
+   },
+   {
+    "observed": 0.4495766538688275,
+    "predicted": 0.4756574328711948,
+    "share": 0.03903866833375328
+   },
+   {
+    "observed": 0.49903435847905236,
+    "predicted": 0.526228685308165,
+    "share": 0.04074478889928445
+   },
+   {
+    "observed": 0.5229032476323789,
+    "predicted": 0.5752735489262757,
+    "share": 0.03989137581277957
+   },
+   {
+    "observed": 0.5932152661944533,
+    "predicted": 0.6251040322381892,
+    "share": 0.04239564684783825
+   },
+   {
+    "observed": 0.5474035785450798,
+    "predicted": 0.6751341633637019,
+    "share": 0.041154144975198544
+   },
+   {
+    "observed": 0.5600863170393561,
+    "predicted": 0.724126023375491,
+    "share": 0.045037187042160344
+   },
+   {
+    "observed": 0.6074437898487801,
+    "predicted": 0.7745557503792203,
+    "share": 0.04697167676721032
+   },
+   {
+    "observed": 0.7506512527277273,
+    "predicted": 0.8248917450069316,
+    "share": 0.041717227219767915
+   },
+   {
+    "observed": 0.8988820828622991,
+    "predicted": 0.8746379178114765,
+    "share": 0.0436097225521768
+   },
+   {
+    "observed": 0.9730768887363898,
+    "predicted": 0.9258974266115844,
+    "share": 0.04480016461158926
+   },
+   {
+    "observed": 0.9960047885673549,
+    "predicted": 0.9907807332746186,
+    "share": 0.1729009126343016
+   }
+  ],
+  "curve_espn": [
+   {
+    "observed": 0.02924570274079776,
+    "predicted": 0.011449751386287054,
+    "share": 0.10847421436718394
+   },
+   {
+    "observed": 0.09189336048354166,
+    "predicted": 0.07505114378332955,
+    "share": 0.03990262093594457
+   },
+   {
+    "observed": 0.18864983135776506,
+    "predicted": 0.1254391403510618,
+    "share": 0.041199864842992553
+   },
+   {
+    "observed": 0.2064659296478321,
+    "predicted": 0.17506683847486337,
+    "share": 0.040410925601716004
+   },
+   {
+    "observed": 0.21371120593554796,
+    "predicted": 0.224384555608161,
+    "share": 0.037630015360326896
+   },
+   {
+    "observed": 0.20175201439859522,
+    "predicted": 0.27508386772589905,
+    "share": 0.036179021922724014
+   },
+   {
+    "observed": 0.24643113957910656,
+    "predicted": 0.3258359566664217,
+    "share": 0.032577874309655974
+   },
+   {
+    "observed": 0.31902165450856546,
+    "predicted": 0.3741781251164334,
+    "share": 0.031529942548645676
+   },
+   {
+    "observed": 0.33616204323608817,
+    "predicted": 0.425017430191331,
+    "share": 0.03367639298584496
+   },
+   {
+    "observed": 0.3820304413211371,
+    "predicted": 0.4749404528837325,
+    "share": 0.04103951905084789
+   },
+   {
+    "observed": 0.45951823414729276,
+    "predicted": 0.5243329850910998,
+    "share": 0.03956139009960669
+   },
+   {
+    "observed": 0.45345997253005715,
+    "predicted": 0.5739545166204872,
+    "share": 0.037330180785090934
+   },
+   {
+    "observed": 0.5486601427853302,
+    "predicted": 0.6253777677117395,
+    "share": 0.03823555647333332
+   },
+   {
+    "observed": 0.5796298224683334,
+    "predicted": 0.6746029175487278,
+    "share": 0.04132030970111717
+   },
+   {
+    "observed": 0.6506484070934585,
+    "predicted": 0.7253704045114429,
+    "share": 0.03932231627118248
+   },
+   {
+    "observed": 0.7007362452900794,
+    "predicted": 0.7741498495231787,
+    "share": 0.04505304609738722
+   },
+   {
+    "observed": 0.7441273816565982,
+    "predicted": 0.8240444043924998,
+    "share": 0.049477802110124286
+   },
+   {
+    "observed": 0.8316629808398937,
+    "predicted": 0.8745907262295948,
+    "share": 0.046030073186494304
+   },
+   {
+    "observed": 0.958204636543199,
+    "predicted": 0.9248407169719959,
+    "share": 0.05052870022623319
+   },
+   {
+    "observed": 0.9965348098133469,
+    "predicted": 0.9896842730622946,
+    "share": 0.1705202331235481
+   }
+  ],
+  "espn_compared_games": 107,
+  "first_date": "2026-10-20",
+  "games": 107,
+  "last_date": "2026-11-02",
+  "same_events": {
+   "courtlens_brier": 0.14504135572802904,
+   "courtlens_calibration_error": 0.04523415556746732,
+   "courtlens_log_loss": 0.42694819510860543,
+   "espn_brier": 0.1404559348343723,
+   "espn_calibration_error": 0.04961126192133743,
+   "espn_log_loss": 0.4201723531410034,
+   "log_loss_gap": {
+    "games": 107,
+    "high": 0.01872607995169754,
+    "low": -0.03382543698564998,
+    "mean": -0.006775841967601953
+   },
+   "matched_state_share": 0.9742581873891326
+  }
+ },
+ "prospective": {
+  "games": 0
+ },
+ "recent_games": [
+  {
+   "availability": "hindsight_box",
+   "away": "MIA",
+   "away_score": 117,
+   "courtlens": {
+    "brier": 0.06513126666445547,
+    "log_loss": 0.22017898317990614,
+    "phases": {
+     "first_half": {
+      "brier": 0.15087270987660925,
+      "log_loss": 0.48790147383687305
+     },
+     "fourth_early": {
+      "brier": 4.064716497206122e-05,
+      "log_loss": 0.004184069546355783
+     },
+     "last_two": {
+      "brier": 3.6316047695123e-15,
+      "log_loss": 1.0000005000290893e-06
+     },
+     "third_quarter": {
+      "brier": 0.007594224265464935,
+      "log_loss": 0.06655958114171978
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.04318084684684684,
+    "courtlens_brier": 0.06689157116890022,
+    "courtlens_log_loss": 0.22612973948205226,
+    "log_loss": 0.16961283744465658
+   },
+   "game_id": "401909921",
+   "home": "LAL",
+   "home_score": 138,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "TOR",
+   "away_score": 125,
+   "courtlens": {
+    "brier": 0.3709198437020618,
+    "log_loss": 0.9778806939194814,
+    "phases": {
+     "first_half": {
+      "brier": 0.39512581646822476,
+      "log_loss": 1.007463005606856
+     },
+     "fourth_early": {
+      "brier": 0.6567470696279217,
+      "log_loss": 1.7712033859872167
+     },
+     "last_two": {
+      "brier": 0.013283050295369381,
+      "log_loss": 0.08416715828724966
+     },
+     "third_quarter": {
+      "brier": 0.620773733341558,
+      "log_loss": 1.5981841306033002
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.43979646382978727,
+    "courtlens_brier": 0.4033549965413365,
+    "courtlens_log_loss": 1.0595889277774362,
+    "log_loss": 1.2053812398000052
+   },
+   "game_id": "401909920",
+   "home": "LAC",
+   "home_score": 118,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "PHX",
+   "away_score": 113,
+   "courtlens": {
+    "brier": 0.35104167160648786,
+    "log_loss": 0.9194831167270424,
+    "phases": {
+     "first_half": {
+      "brier": 0.5621412331702653,
+      "log_loss": 1.436102989284873
+     },
+     "fourth_early": {
+      "brier": 0.2165444916094788,
+      "log_loss": 0.624959101048422
+     },
+     "last_two": {
+      "brier": 0.011155948091346965,
+      "log_loss": 0.09729479956579784
+     },
+     "third_quarter": {
+      "brier": 0.47286163877693205,
+      "log_loss": 1.176544371069313
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.32689566101694917,
+    "courtlens_brier": 0.36405691679587454,
+    "courtlens_log_loss": 0.9514106312476235,
+    "log_loss": 0.8699610085808781
+   },
+   "game_id": "401909919",
+   "home": "GSW",
+   "home_score": 116,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "POR",
+   "away_score": 118,
+   "courtlens": {
+    "brier": 0.3963840390018649,
+    "log_loss": 1.01534156569535,
+    "phases": {
+     "first_half": {
+      "brier": 0.5762325803185002,
+      "log_loss": 1.4503335629597738
+     },
+     "fourth_early": {
+      "brier": 0.18513861487202005,
+      "log_loss": 0.5441436538183687
+     },
+     "last_two": {
+      "brier": 0.004071549876878653,
+      "log_loss": 0.039988262805441134
+     },
+     "third_quarter": {
+      "brier": 0.5151323535106419,
+      "log_loss": 1.2898573353749578
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.38554267129629627,
+    "courtlens_brier": 0.4055587155634437,
+    "courtlens_log_loss": 1.0387049823865302,
+    "log_loss": 0.9952625079379523
+   },
+   "game_id": "401909918",
+   "home": "DEN",
+   "home_score": 110,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "UTA",
+   "away_score": 97,
+   "courtlens": {
+    "brier": 0.0029354950651258945,
+    "log_loss": 0.038423965126059306,
+    "phases": {
+     "first_half": {
+      "brier": 0.006169585649786193,
+      "log_loss": 0.07435105427292656
+     },
+     "fourth_early": {
+      "brier": 1.5601465004879242e-07,
+      "log_loss": 0.00024736729033608326
+     },
+     "last_two": {
+      "brier": 3.173326152856332e-11,
+      "log_loss": 3.0816832896712418e-06
+     },
+     "third_quarter": {
+      "brier": 0.0006869580205432201,
+      "log_loss": 0.021596235442100802
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.004115717703349283,
+    "courtlens_brier": 0.0029916767888603616,
+    "courtlens_log_loss": 0.039159332879658525,
+    "log_loss": 0.04624737680731549
+   },
+   "game_id": "401909917",
+   "home": "SAS",
+   "home_score": 119,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "BOS",
+   "away_score": 93,
+   "courtlens": {
+    "brier": 0.04851675800772663,
+    "log_loss": 0.21678878378087818,
+    "phases": {
+     "first_half": {
+      "brier": 0.07308099899243749,
+      "log_loss": 0.3102601221681807
+     },
+     "fourth_early": {
+      "brier": 0.004440909145146499,
+      "log_loss": 0.04555861296844403
+     },
+     "last_two": {
+      "brier": 3.1619763407287413e-12,
+      "log_loss": 1.3334588900209602e-06
+     },
+     "third_quarter": {
+      "brier": 0.058354997509213836,
+      "log_loss": 0.2718988307475462
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.06710746116504855,
+    "courtlens_brier": 0.04851675800772663,
+    "courtlens_log_loss": 0.21678878378087818,
+    "log_loss": 0.26189213457648686
+   },
+   "game_id": "401909916",
+   "home": "HOU",
+   "home_score": 109,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "MIL",
+   "away_score": 100,
+   "courtlens": {
+    "brier": 0.01692720162358401,
+    "log_loss": 0.1139221535144754,
+    "phases": {
+     "first_half": {
+      "brier": 0.012622431085156793,
+      "log_loss": 0.11356737335902828
+     },
+     "fourth_early": {
+      "brier": 0.005428515820266831,
+      "log_loss": 0.0549279250728939
+     },
+     "last_two": {
+      "brier": 1.8050733830219878e-08,
+      "log_loss": 6.452883471311814e-05
+     },
+     "third_quarter": {
+      "brier": 0.04534582094513307,
+      "log_loss": 0.23258255243737733
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.021247156097560976,
+    "courtlens_brier": 0.017587774578356138,
+    "courtlens_log_loss": 0.11836510234498644,
+    "log_loss": 0.13135891630006094
+   },
+   "game_id": "401909915",
+   "home": "MIN",
+   "home_score": 112,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "NOP",
+   "away_score": 135,
+   "courtlens": {
+    "brier": 0.23667567194508915,
+    "log_loss": 0.6531247705094038,
+    "phases": {
+     "first_half": {
+      "brier": 0.2910455593425325,
+      "log_loss": 0.7772603078707946
+     },
+     "fourth_early": {
+      "brier": 0.07459981602784557,
+      "log_loss": 0.30183627302904814
+     },
+     "last_two": {
+      "brier": 0.05703469191303727,
+      "log_loss": 0.21426071063079147
+     },
+     "overtime": {
+      "brier": 0.23906696667722718,
+      "log_loss": 0.664179586444254
+     },
+     "third_quarter": {
+      "brier": 0.3577638906123702,
+      "log_loss": 0.9235664008570549
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.2314932857142857,
+    "courtlens_brier": 0.23612186861359824,
+    "courtlens_log_loss": 0.6512550355767278,
+    "log_loss": 0.6419062118202702
+   },
+   "game_id": "401909914",
+   "home": "MEM",
+   "home_score": 134,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "SAC",
+   "away_score": 115,
+   "courtlens": {
+    "brier": 0.30227366649165793,
+    "log_loss": 0.7752725950728345,
+    "phases": {
+     "first_half": {
+      "brier": 0.5041377782354864,
+      "log_loss": 1.2443364772719934
+     },
+     "fourth_early": {
+      "brier": 0.01932953127335859,
+      "log_loss": 0.1172511149836469
+     },
+     "last_two": {
+      "brier": 1.3321555325051272e-11,
+      "log_loss": 2.546777587320106e-06
+     },
+     "third_quarter": {
+      "brier": 0.2728743194884879,
+      "log_loss": 0.7408281695508273
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.37635761463414635,
+    "courtlens_brier": 0.3037481721818611,
+    "courtlens_log_loss": 0.7790544077317239,
+    "log_loss": 0.9703314726107158
+   },
+   "game_id": "401909913",
+   "home": "DAL",
+   "home_score": 100,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "CHI",
+   "away_score": 107,
+   "courtlens": {
+    "brier": 0.0224389064698684,
+    "log_loss": 0.12858897342123174,
+    "phases": {
+     "first_half": {
+      "brier": 0.04220203087363924,
+      "log_loss": 0.22170092581943487
+     },
+     "fourth_early": {
+      "brier": 0.0010371764464877677,
+      "log_loss": 0.026538069774329858
+     },
+     "last_two": {
+      "brier": 1.0478668137175531e-16,
+      "log_loss": 1.000000500029089e-06
+     },
+     "third_quarter": {
+      "brier": 0.014304272007356003,
+      "log_loss": 0.10509605560560246
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.011485418269230772,
+    "courtlens_brier": 0.022978303260009467,
+    "courtlens_log_loss": 0.13168003047461468,
+    "log_loss": 0.08882539889538675
+   },
+   "game_id": "401909912",
+   "home": "PHI",
+   "home_score": 126,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "WAS",
+   "away_score": 103,
+   "courtlens": {
+    "brier": 0.34013665370727747,
+    "log_loss": 0.8815496464348939,
+    "phases": {
+     "first_half": {
+      "brier": 0.5570194586547322,
+      "log_loss": 1.3827127047307606
+     },
+     "fourth_early": {
+      "brier": 0.07591361531813764,
+      "log_loss": 0.3080972036256468
+     },
+     "last_two": {
+      "brier": 0.0001063611304657171,
+      "log_loss": 0.006786658097545572
+     },
+     "third_quarter": {
+      "brier": 0.28240412656769,
+      "log_loss": 0.7580336018388171
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.20870404901960785,
+    "courtlens_brier": 0.34347130996885245,
+    "courtlens_log_loss": 0.8901796894916097,
+    "log_loss": 0.5787471326662703
+   },
+   "game_id": "401909911",
+   "home": "ORL",
+   "home_score": 94,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "BKN",
+   "away_score": 90,
+   "courtlens": {
+    "brier": 0.014515073245434225,
+    "log_loss": 0.09568931951917728,
+    "phases": {
+     "first_half": {
+      "brier": 0.009382190921469897,
+      "log_loss": 0.09754490477640176
+     },
+     "fourth_early": {
+      "brier": 0.024527611083463983,
+      "log_loss": 0.10623157027874516
+     },
+     "last_two": {
+      "brier": 1.869266700336914e-11,
+      "log_loss": 2.5599131491380566e-06
+     },
+     "third_quarter": {
+      "brier": 0.025508977128384885,
+      "log_loss": 0.1429971647921893
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.029103855769230767,
+    "courtlens_brier": 0.014933777280496354,
+    "courtlens_log_loss": 0.09844945694059003,
+    "log_loss": 0.15055923043708608
+   },
+   "game_id": "401909910",
+   "home": "NYK",
+   "home_score": 103,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "ATL",
+   "away_score": 108,
+   "courtlens": {
+    "brier": 0.011717361544448477,
+    "log_loss": 0.10440871358315418,
+    "phases": {
+     "first_half": {
+      "brier": 0.015438446666264363,
+      "log_loss": 0.12646232158760626
+     },
+     "fourth_early": {
+      "brier": 0.007788042563356043,
+      "log_loss": 0.08161642898933356
+     },
+     "last_two": {
+      "brier": 0.013197214852521668,
+      "log_loss": 0.10360110102297444
+     },
+     "third_quarter": {
+      "brier": 0.00671720629926923,
+      "log_loss": 0.0797493501342017
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.028915952606635074,
+    "courtlens_brier": 0.011717361544448477,
+    "courtlens_log_loss": 0.10440871358315418,
+    "log_loss": 0.1663621921893938
+   },
+   "game_id": "401909909",
+   "home": "IND",
+   "home_score": 104,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "DET",
+   "away_score": 124,
+   "courtlens": {
+    "brier": 0.055253547177333814,
+    "log_loss": 0.21240679051686445,
+    "phases": {
+     "first_half": {
+      "brier": 0.11129517156538948,
+      "log_loss": 0.399199041371973
+     },
+     "fourth_early": {
+      "brier": 3.7975283680210984e-06,
+      "log_loss": 0.001037460091140003
+     },
+     "last_two": {
+      "brier": 3.347349558212035e-31,
+      "log_loss": 1.000000500029089e-06
+     },
+     "third_quarter": {
+      "brier": 0.020291876729277573,
+      "log_loss": 0.13444165466020616
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.047216195238095233,
+    "courtlens_brier": 0.05551665930674969,
+    "courtlens_log_loss": 0.21341824666218048,
+    "log_loss": 0.19006722770957224
+   },
+   "game_id": "401909908",
+   "home": "CHA",
+   "home_score": 91,
+   "prospective": false
+  },
+  {
+   "availability": "hindsight_box",
+   "away": "OKC",
+   "away_score": 117,
+   "courtlens": {
+    "brier": 0.14822552395075367,
+    "log_loss": 0.46478773171917664,
+    "phases": {
+     "first_half": {
+      "brier": 0.190412926137016,
+      "log_loss": 0.5679793138324879
+     },
+     "fourth_early": {
+      "brier": 0.21186313082233035,
+      "log_loss": 0.6130354992956994
+     },
+     "last_two": {
+      "brier": 0.0656561092263414,
+      "log_loss": 0.23363655847866088
+     },
+     "third_quarter": {
+      "brier": 0.06242526472133945,
+      "log_loss": 0.27933424445410754
+     }
+    }
+   },
+   "date": "2026-11-02",
+   "espn": {
+    "brier": 0.19590720095693778,
+    "courtlens_brier": 0.15149567087697763,
+    "courtlens_log_loss": 0.47361233429573873,
+    "log_loss": 0.5668525469894798
+   },
+   "game_id": "401909907",
+   "home": "CLE",
+   "home_score": 112,
+   "prospective": false
+  }
+ ],
+ "schema": "courtlens-win-probability-scorecard-v1",
+ "updated_at": "2026-11-04T22:20:59+00:00"
+}

@@ -1,0 +1,170 @@
+{
+ "baseline": {
+  "beta": 0.8772299870202851,
+  "sigma": 15.982772686448588
+ },
+ "drift": {
+  "actual_30_day_windows": {
+   "count": 292,
+   "maximum": 0.06028685719670526,
+   "minimum": 0.01137384307937149
+  },
+  "all_test_games_calibration_error": 0.008295679455681043,
+  "by_window_games": [
+   {
+    "games": 25,
+    "high": 0.1500451330081382,
+    "low": 0.039429597103630254,
+    "median": 0.07461407322187354
+   },
+   {
+    "games": 50,
+    "high": 0.10690200272208067,
+    "low": 0.029340920232967062,
+    "median": 0.0541107167100775
+   },
+   {
+    "games": 75,
+    "high": 0.08765306989187589,
+    "low": 0.02380721273020948,
+    "median": 0.04473765185016999
+   },
+   {
+    "games": 100,
+    "high": 0.0739805442838035,
+    "low": 0.021138268036987446,
+    "median": 0.038604198318207314
+   },
+   {
+    "games": 150,
+    "high": 0.061999215971485944,
+    "low": 0.016975746058649068,
+    "median": 0.03205851295905786
+   },
+   {
+    "games": 200,
+    "high": 0.055265004814640216,
+    "low": 0.015187993649338599,
+    "median": 0.028099181025906653
+   },
+   {
+    "games": 250,
+    "high": 0.048648311366341956,
+    "low": 0.01360147824705779,
+    "median": 0.02516347579862411
+   },
+   {
+    "games": 300,
+    "high": 0.04382361695899886,
+    "low": 0.012835806395161542,
+    "median": 0.023456831952110957
+   },
+   {
+    "games": 400,
+    "high": 0.039564350940077354,
+    "low": 0.01165016882007173,
+    "median": 0.020658102741343665
+   },
+   {
+    "games": 600,
+    "high": 0.03298044503049171,
+    "low": 0.00962568978376188,
+    "median": 0.01726823549935616
+   },
+   {
+    "games": 800,
+    "high": 0.02865083060241045,
+    "low": 0.008931184818589104,
+    "median": 0.01576011585602497
+   }
+  ],
+  "method": "Game bootstrap of the saved selected-model predictions for 2024-25 and 2025-26, 4000 resamples per window size, 2.5th and 97.5th percentiles. No refit; run_test was not re-run."
+ },
+ "end_game_features": [
+  "margin",
+  "seconds_left",
+  "fraction",
+  "overtime",
+  "mu",
+  "mu_fraction",
+  "possession",
+  "pending_own",
+  "pending_opp",
+  "timeouts_own",
+  "timeouts_opp",
+  "fouls_own",
+  "fouls_opp",
+  "bonus_own",
+  "bonus_opp",
+  "possession_age"
+ ],
+ "espn_state_adapter": {
+  "src/courtlens/domain/win_probability_live.py": "bac1a802f8577a91441b43b6d575ccdb0aec767e6ed094bafb2b3e95250ef931",
+  "src/courtlens/domain/win_probability_state.py": "01255fd0b11b34c5d9d4cfb9a83825a3364783d06f828e274ecab27321b733d0"
+ },
+ "frozen_at": "2026-11-04T22:08:55+00:00",
+ "main_features": [
+  "margin",
+  "seconds_left",
+  "fraction",
+  "overtime",
+  "mu",
+  "mu_fraction",
+  "possession",
+  "pending_own",
+  "pending_opp",
+  "timeouts_own",
+  "timeouts_opp",
+  "fouls_own",
+  "fouls_opp",
+  "bonus_own",
+  "bonus_opp",
+  "possession_age",
+  "home",
+  "strength",
+  "form",
+  "rest",
+  "b2b_own",
+  "b2b_opp",
+  "games7",
+  "travel_own",
+  "travel_opp",
+  "denver",
+  "utah"
+ ],
+ "manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+ "mean_start_shrink": 0.7,
+ "models": {
+  "end_game": "26bbd8a955d42ac8dc937f2fe0d5b72dc9de3db65badfcd7a646314a3c1719dd",
+  "mean": "2b5c29aa57ac1405121087b6db006b8c9cd5c376475dce88cb724ae2f723a744",
+  "variance": "c6a7d9908db9f55b25730ec8c65dd01fe725403de6a4935c15f386d620b23fd2"
+ },
+ "overtime_slope": 0.05264161791751983,
+ "pregame": {
+  "availability": "newest ESPN roster minus players ESPN's injury report lists as Out, read when the slate is captured; late scratches are not known",
+  "coefficients": {
+   "b2b_away": 2.168322683086667,
+   "b2b_home": -1.488594789105517,
+   "denver": 1.2422446725817107,
+   "form": 0.5660748193038668,
+   "games7": -0.4508780510224355,
+   "home": 0.44715907939657723,
+   "rest": -0.19328339540068312,
+   "strength_x_pace": 0.5915623962300777,
+   "travel_away_kkm": 0.14053780011340924,
+   "travel_home_kkm": 0.03889831093580275,
+   "utah": 1.506430855199161
+  },
+  "form_half_life_days": 120,
+  "player_rating": "time-decay RAPM; moving to Projected Impact needs a new version",
+  "rating_code_sha256": "311a95f5922faff916e062a382842f6772364ccd6be436a7368eb998f8979d89",
+  "rating_rule": "newest snapshot with a cutoff on or before the game date",
+  "rating_source": "courtlens-rating-snapshots-v1"
+ },
+ "registration": "courtlens-win-probability-v2",
+ "registration_sha256": "7bba2a1b545e71bfac8967a73d82d593f1fb5fb6bc0a777feae91ffd7fc57d79",
+ "schema": "courtlens-win-probability-frozen-v1",
+ "selected": "S2 plus the end-game specialist, not recalibrated",
+ "trained_through": "2021-22",
+ "version": "courtlens-win-probability-v2-frozen-2026-27"
+}

@@ -1,0 +1,73 @@
+{
+  "checked": "2026-11-06T13:21:48.599Z",
+  "api": "private API on 4180 (worktree code, shared Postgres, read only)",
+  "web": "production build on 3180",
+  "results": [
+    {
+      "season": "2025-26",
+      "phase": "regular_season",
+      "width": 1440,
+      "compared": 22126,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2025-26",
+      "phase": "regular_season",
+      "width": 390,
+      "compared": 22126,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2018-19",
+      "phase": "regular_season",
+      "width": 1440,
+      "compared": 21008,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2018-19",
+      "phase": "regular_season",
+      "width": 390,
+      "compared": 21008,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2025-26",
+      "phase": "playoffs",
+      "width": 1440,
+      "compared": 435,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2025-26",
+      "phase": "playoffs",
+      "width": 390,
+      "compared": 435,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    }
+  ]
+}

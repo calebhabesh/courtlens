@@ -1,30 +1,36 @@
 import React from "react";
 import { ChartData, ChartFrame, type ChartMeta } from "./chart-frame";
-import { knownNumber } from "./semantics";
+import { chartVars, knownNumber, toneColor, type ChartTone } from "./semantics";
 import type { ShotMetrics } from "@/lib/advanced-research";
 
 type Series = { name: string; bins: ShotMetrics["calibration_bins"] };
-/** Measured bin means only. Empty bins have no points and no connecting interpolation. */
-export function ReliabilityPlot({ series, ...meta }: ChartMeta & { series: [Series, Series] }) {
+/**
+ * Measured bin means only. Empty bins have no points and no connecting interpolation. `tones` replaces the gold/blue identity pair where
+ * the two series aren't an offense/defense sign (RD10); `outcome` and `unit` name what the bins count.
+ */
+export function ReliabilityPlot({ series, label = "Selection reliability: predicted make probability against observed make rate", tones, outcome = { x: "Predicted make probability", y: "Observed make rate" }, unit = "shots", ...meta }: ChartMeta & {
+  series: [Series, Series]; label?: string; tones?: readonly [ChartTone, ChartTone]; outcome?: { x: string; y: string }; unit?: string;
+}) {
+  const fill = (i: number) => tones ? toneColor(tones[i]) : `var(--color-identity-${i ? "b" : "a"})`;
   const points = series.flatMap((s, i) => s.bins.flatMap((bin, index) => bin.rows > 0 && knownNumber(bin.mean_probability) && knownNumber(bin.observed_rate)
     ? [{ ...bin, probability: bin.mean_probability, rate: bin.observed_rate, name: s.name, identity: i, index }] : []));
   return <ChartFrame {...meta} state={meta.state ?? (points.length ? "ready" : "empty")}>
     <ChartData fingerprint={JSON.stringify(series)}>
       <ul className="chart-legend chart-legend-inline">
-        {series.map((s, i) => <li key={i}><span className={`chart-key chart-key-${i ? "b" : "a"}`} aria-hidden="true" />{s.name} · {i ? "squares" : "circles"}</li>)}
+        {series.map((s, i) => <li key={i}><span className={tones ? "chart-key" : `chart-key chart-key-${i ? "b" : "a"}`} style={tones ? chartVars({ "--chart-tone": toneColor(tones[i]) }) : undefined} aria-hidden="true" />{s.name} · {i ? "squares" : "circles"}</li>)}
         <li>Dashed line: observed = predicted</li>
       </ul>
-      <svg className="chart-reliability chart-graphic" viewBox="0 0 480 280" role="img" aria-label="Selection reliability: predicted make probability against observed make rate">
+      <svg className="chart-reliability chart-graphic" viewBox="0 0 480 280" role="img" aria-label={label}>
         {[0, .5, 1].map(t => <g key={t}>
           <line x1="64" x2="432" y1={224 - t * 184} y2={224 - t * 184} stroke="var(--color-hairline-strong)" />
           <text x="52" y={228 - t * 184} textAnchor="end">{t * 100}%</text>
           <text x={64 + t * 368} y="244" textAnchor="middle">{t * 100}%</text>
         </g>)}
         <line x1="64" y1="224" x2="432" y2="40" stroke="var(--color-text-secondary)" strokeDasharray="4 4" />
-        <text x="248" y="272" textAnchor="middle">Predicted make probability</text>
-        <text transform="translate(16,132) rotate(-90)" textAnchor="middle">Observed make rate</text>
-        {points.map(p => <g key={`${p.identity}-${p.index}`} fill={`var(--color-identity-${p.identity ? "b" : "a"})`}>
-          <title>{`${p.name} · bin ${p.lower}–${p.upper} · ${p.rows.toLocaleString("en-US")} shots · predicted ${(p.probability * 100).toFixed(2)}% · observed ${(p.rate * 100).toFixed(2)}%`}</title>
+        <text x="248" y="272" textAnchor="middle">{outcome.x}</text>
+        <text transform="translate(16,132) rotate(-90)" textAnchor="middle">{outcome.y}</text>
+        {points.map(p => <g key={`${p.identity}-${p.index}`} data-series={p.identity} data-bin={p.index} data-predicted={p.probability} data-observed={p.rate} data-count={p.rows} fill={fill(p.identity)}>
+          <title>{`${p.name} · bin ${+p.lower.toFixed(3)}–${+p.upper.toFixed(3)} · ${p.rows.toLocaleString("en-US")} ${unit} · predicted ${(p.probability * 100).toFixed(2)}% · observed ${(p.rate * 100).toFixed(2)}%`}</title>
           {p.identity ? <rect x={64 + p.probability * 368 - 4} y={224 - p.rate * 184 - 4} width="8" height="8" /> : <circle cx={64 + p.probability * 368} cy={224 - p.rate * 184} r="4" />}
         </g>)}
       </svg>

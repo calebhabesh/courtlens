@@ -80,31 +80,44 @@ export const NAV_MENUS: NavMenu[] = [
   {
     id: "research",
     label: "Research",
+    // The Research handoff's target menu (D8), limited to pages that exist; R11 added Learning and Patch Notes.
+    // Case Studies and Saved Investigations moved to Methodology; Evaluation Archive is reached from Points Forecasts and Methodology.
     groups: [
+      { title: "Models", items: [
+        { label: "Win Probability", href: "/research/win-probability", icon: "activity", description: "Live win probability for each game, scored nightly" },
+        { label: "Projected Impact", href: "/research/projected-impact", icon: "trend", description: "2026-27 player ratings frozen before the games, with intervals" },
+        { label: "Lineup Model", href: "/research/lineup-model", icon: "users", description: "A neural lineup model tested against ridge RAPM, with a lineup tool and player map" },
+      ] },
       { title: "Impact", items: [
-        { label: "RAPM Research", href: "/research/rapm" },
-        { label: "Defensive Matchups", href: "/research/defensive-matchups" },
+        { label: "Six-Factor RAPM", href: "/research/rapm/six-factor", icon: "gauge", description: "Player impact ratings and their six-factor breakdown" },
+        { label: "Metric Backtest", href: "/research/backtest", icon: "chart-trend", description: "Which impact metric best predicts real game results" },
       ] },
       { title: "Shooting", items: [
-        { label: "Shooting", href: "/research/shooting" },
+        { label: "Shooting", href: "/research/shooting", icon: "target", description: "Expected shots, adjusted shooting and what follows a shot" },
+        { label: "Defensive Shot Quality", href: "/research/defensive-matchups", icon: "shield", description: "What shooters scored against each defender, against their own shooting" },
+        { label: "zTS", href: "/research/zts", icon: "scale", description: "True shooting adjusted for the difficulty of a player's play types" },
+        { label: "Shot Quality", href: "/research/shot-quality", icon: "scatter", description: "Expected points per shot and each player's shot-making above it" },
       ] },
-      { title: "Trends & Distributions", items: [
-        { label: "Workload Trends", href: "/research/trends" },
-        { label: "Distributions & Splits", href: "/research/distributions" },
-      ] },
-      { title: "Forecasts & Evaluation", items: [
-        { label: "Points Forecasts", href: "/forecasts" },
-        { label: "Evaluation Archive", href: "/evaluation" },
-        { label: "Case Studies", href: "/research/case-studies" },
-        { label: "Saved Investigations", href: "/investigations" },
+      { title: "Methods", items: [
+        { label: "Signal vs Noise", href: "/research/signal-noise", icon: "waveform", description: "How big a sample a stat needs, and shrunk shooting percentages" },
+        { label: "Points Forecasts", href: "/forecasts", icon: "chart-line", description: "Next-game points estimates, their test and the prospective ledger" },
+        { label: "Learning", href: "/methodology/learning", icon: "book", description: "Advanced stats from the ground up, each linked to a measured result" },
       ] },
       { title: "Tools", items: [
-        { label: "Combine & Wingspan", href: "/wingspan" },
-        { label: "Hypothetical Calculator", href: "/calculator" },
+        { label: "Combine & Wingspan", href: "/wingspan", icon: "ruler", description: "Official NBA Draft Combine measurements, including wingspan" },
+        { label: "Draft Classes", href: "/draft", icon: "graduation", description: "What each draft slot returned, classes redrafted and this year's rookies" },
+        { label: "ORtg Calculator", href: "/calculator", icon: "calculator", description: "Offensive rating from the four factors, after Poropudas and Halme" },
+        { label: "Patch Notes", href: "/whats-new", icon: "history", description: "Every release, with the commit that shipped it" },
       ] },
     ],
   },
 ];
+
+/**
+ * Menu items that open a merged page on a later tab. D8 lists Learning in Research → Methods while it
+ * stays a Methodology tab beside the definitions it teaches (R11).
+ */
+export const TAB_SHORTCUTS = new Set(["/methodology/learning"]);
 
 /** Pages that exist locally but not on the hosted demo (PC11). Their routes redirect there too. */
 export const HOSTED_DEMO_HIDDEN = new Set(["/planner"]);
@@ -119,7 +132,6 @@ export function moreLinks(hosted = HOSTED_DEMO): NavItem[] {
     { label: "Settings", href: "/settings" },
     { label: "Data Status", href: "/data-status" },
     { label: "Methodology", href: "/methodology" },
-    { label: "What's New", href: "/whats-new" },
     // Planner is empty without a signed-in league, so the hosted demo drops it (PC11).
     { label: "Planner", href: "/planner" },
   ].filter(item => !(hosted && HOSTED_DEMO_HIDDEN.has(item.href)));
@@ -149,6 +161,29 @@ export function activeNavSection(pathname: string): string {
   if (pathname.startsWith("/live") || pathname.startsWith("/playoffs")) return "live";
   if (pathname.startsWith("/players/")) return "players";
   if (pathname.startsWith("/teams/") || pathname.startsWith("/contracts/")) return "teams";
-  if (pathname.startsWith("/research") || pathname.startsWith("/investigations")) return "research";
+  if (pathname.startsWith("/research") || pathname.startsWith("/investigations") || pathname.startsWith("/evaluation")) return "research";
   return "";
+}
+
+/** Estimated height of a menu group in text lines: its heading plus each row's label and wrapped description. */
+function groupLines(group: NavGroup, charsPerLine = 34): number {
+  return (group.title ? 1.5 : 0) + group.items.reduce((sum, item) => sum + 1.6 + Math.ceil((item.description?.length ?? 0) / charsPerLine), 0);
+}
+
+/**
+ * Splits a menu's groups into two columns whose heights are as close as possible (owner,
+ * 2026-11-06: no gaps in the dropdown). Groups keep their menu order within each column; on a tie
+ * the first group stays in the left column.
+ */
+export function balanceColumns(groups: readonly NavGroup[]): [NavGroup[], NavGroup[]] {
+  const heights = groups.map(group => groupLines(group));
+  let best = 0, bestDiff = Infinity;
+  for (let mask = 0; mask < 1 << groups.length; mask++) {
+    if (mask & 1) continue; // group 0 always left
+    const right = heights.reduce((sum, h, i) => sum + (mask >> i & 1 ? h : 0), 0);
+    const left = heights.reduce((sum, h) => sum + h, 0) - right;
+    const diff = Math.abs(left - right);
+    if (diff < bestDiff - 1e-9) { best = mask; bestDiff = diff; }
+  }
+  return [groups.filter((_, i) => !(best >> i & 1)), groups.filter((_, i) => best >> i & 1)];
 }

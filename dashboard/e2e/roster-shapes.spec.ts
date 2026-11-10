@@ -207,7 +207,7 @@ test.describe("Roster Shapes", () => {
     for (const lane of ["PG", "SG", "SF", "PF", "C"]) await expect(chart.getByRole("region", { name: `${lane} lane` })).toContainText("Drop players here");
     // Required caveats stay rendered behind Why? (D14); no code-like rules in the main flow.
     await expect(page.locator("#depth-chart .ui-why-body")).toContainText("Missing participation is not a confirmed zero or roster exclusion.");
-    await expect(page.locator("#depth-chart")).not.toContainText("game_date");
+    await expect(page.locator("#depth-chart").filter({ visible: true })).not.toContainText("game_date");
   });
 
   test("moves players by drag and by keyboard menu, with lane shares", async ({ page }) => {

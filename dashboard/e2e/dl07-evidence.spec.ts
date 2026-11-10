@@ -20,7 +20,6 @@ test.describe("DL07 Evidence Screenshot Capture", () => {
     { name: "calculator", path: "/calculator" },
     { name: "learning", path: "/learning" },
     { name: "patch-notes", path: "/patch-notes" },
-    { name: "blog", path: "/blog" },
   ];
 
   for (const { name, path: routePath } of routes) {

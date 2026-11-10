@@ -42,8 +42,31 @@ SERVING_DIRS=(
   derived/value-archetypes-v1/serving
   derived/wowy-v1
   derived/series-matchups-v1
+  artifacts/win-probability
+  derived/win-probability-serving
+  artifacts/projected-impact
+  derived/projected-impact-serving
+  derived/win-probability-ratings
+  derived/metric-backtest-serving
+  derived/draft-value-v1
+  derived/lineup-model-v1
+  derived/darko-dpm-v2
+  derived/espn-rosters-v1
+  derived/wikipedia-transactions-v1
+  derived/free-agency-v1
+  derived/shot-zones-v1
+  derived/position-estimates-v1
+  derived/contracts-checks
+  derived/stint-box-v1
+  artifacts/research-runs
+  artifacts/research-run-packages
   cache/portraits
+  # Raw box-score evidence for starting positions and starting fives (mounted as data/raw).
+  raw/bbref_history_sealed
 )
+for dir in "$DATA_DIR"/raw/sportsdataverse_*/; do
+  dir="${dir%/}"; SERVING_DIRS+=("raw/${dir##*/}")
+done
 for dir in "${SERVING_DIRS[@]}"; do
   [[ -d "$DATA_DIR/$dir" ]] || { echo "Missing $DATA_DIR/$dir; set COURTLENS_DATA_DIR." >&2; exit 1; }
 done

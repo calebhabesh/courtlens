@@ -1,0 +1,127 @@
+{
+  "checked": "2026-11-06T18:07:44.508Z",
+  "api": "owner's API on :8000 through a read-only proxy on 4180 (GET only; shared Postgres read only)",
+  "web": "production build on 3180",
+  "results": [
+    {
+      "season": "2025-26",
+      "phase": "regular_season",
+      "beforeDate": "2026-07-01",
+      "width": 1440,
+      "layout": {
+        "status": "available",
+        "columnWidth": 992,
+        "centred": true,
+        "tableScroll": 0,
+        "coloured": 0,
+        "colourKey": 0
+      },
+      "compared": 255,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2025-26",
+      "phase": "regular_season",
+      "beforeDate": "2026-07-01",
+      "width": 390,
+      "layout": {
+        "status": "available",
+        "columnWidth": 366,
+        "centred": true,
+        "tableScroll": 610,
+        "coloured": 0,
+        "colourKey": 0
+      },
+      "compared": 255,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2018-19",
+      "phase": "regular_season",
+      "beforeDate": "2019-07-01",
+      "width": 1440,
+      "layout": {
+        "status": "available",
+        "columnWidth": 992,
+        "centred": true,
+        "tableScroll": 0,
+        "coloured": 0,
+        "colourKey": 0
+      },
+      "compared": 255,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2018-19",
+      "phase": "regular_season",
+      "beforeDate": "2019-07-01",
+      "width": 390,
+      "layout": {
+        "status": "available",
+        "columnWidth": 366,
+        "centred": true,
+        "tableScroll": 610,
+        "coloured": 0,
+        "colourKey": 0
+      },
+      "compared": 255,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2025-26",
+      "phase": "playoffs",
+      "beforeDate": "2026-07-01",
+      "width": 1440,
+      "layout": {
+        "status": "available",
+        "columnWidth": 992,
+        "centred": true,
+        "tableScroll": 0,
+        "coloured": 0,
+        "colourKey": 0
+      },
+      "compared": 75,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    },
+    {
+      "season": "2025-26",
+      "phase": "playoffs",
+      "beforeDate": "2026-07-01",
+      "width": 390,
+      "layout": {
+        "status": "available",
+        "columnWidth": 366,
+        "centred": true,
+        "tableScroll": 610,
+        "coloured": 0,
+        "colourKey": 0
+      },
+      "compared": 75,
+      "mismatches": 0,
+      "firstMismatches": [],
+      "consoleErrors": [],
+      "overflow": 0,
+      "brokenImages": 0
+    }
+  ]
+}

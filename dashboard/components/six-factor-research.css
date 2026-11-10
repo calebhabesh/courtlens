@@ -1,0 +1,109 @@
+/* Research → Six-Factor RAPM (row 18). Shared pieces are in research/research-page.css and
+   research/research-table.css; this file holds the framework grid, factor panel, archetype strip,
+   scatter and Impact Tree. */
+@layer pages {
+  .sf-r2 { color: var(--color-accent); }
+  .sf-example[data-tone="a"] { color: var(--color-identity-a); }
+  .sf-example[data-tone="b"] { color: var(--color-identity-b); }
+
+  .sf-grid-frame { border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); overflow: clip; }
+  .sf-framework { width: 100%; table-layout: fixed; border-collapse: collapse; }
+  .sf-framework :is(th, td) { padding: var(--space-2); border: 1px solid var(--color-hairline-strong); text-align: center; }
+  .sf-framework tr > :first-child { width: 22%; border-left: 0; }
+  .sf-framework tr > :last-child { border-right: 0; }
+  .sf-framework thead :is(th, td) { border-top: 0; }
+  .sf-framework tbody tr:last-child :is(th, td) { border-bottom: 0; }
+  .sf-framework thead th { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
+  .sf-framework thead th > svg { display: block; margin: 0 auto var(--space-1); color: var(--color-text-secondary); }
+  .sf-framework tbody th { color: var(--color-text); font-size: var(--text-sm); font-weight: 650; text-align: left; padding-inline: var(--space-4); }
+  .sf-framework tbody th > svg { margin-right: var(--space-2); vertical-align: -3px; }
+  .sf-framework tbody th[data-tone="a"] { color: var(--color-identity-a); }
+  .sf-framework tbody th[data-tone="b"] { color: var(--color-identity-b); }
+
+  .sf-factor { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+  .sf-factor-head { display: grid; gap: var(--space-1); }
+  .sf-factor-title { margin: 0; color: var(--color-text); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; }
+  .sf-factor-title span { color: var(--color-on-bg-secondary); font-size: var(--text-md); font-weight: 400; }
+  .sf-factor-tagline { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .sf-factor-lists { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); min-width: 0; }
+  .sf-tradeoffs { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .sf-tradeoffs strong { color: var(--color-text); font-weight: 600; }
+
+  .sf-archetype-rapm { display: inline-flex; align-items: baseline; gap: var(--space-2); color: var(--color-on-bg-secondary); font-size: var(--text-xs); font-weight: 650; }
+  .sf-strip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-1); margin: var(--space-1) 0; padding: var(--space-2) 0; border-radius: var(--radius-md); background: var(--rs-well); }
+  .sf-strip > div { display: grid; justify-items: center; gap: var(--space-0-5); min-width: 0; }
+  .sf-strip dt { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
+  .sf-strip > div[data-picked] dt { color: var(--color-text); font-weight: 700; }
+  .sf-strip dd { margin: 0; font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  .sf-scatter { display: block; width: 100%; max-width: 760px; height: auto; margin-inline: auto; }
+  .sf-scatter text { fill: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .sf-scatter-grid { stroke: var(--color-hairline); }
+  .sf-scatter-axis { stroke: var(--color-hairline-strong); }
+  .sf-scatter-even { stroke: var(--color-on-bg-tertiary); stroke-dasharray: 4 4; }
+  .sf-scatter-dot { fill: color-mix(in srgb, var(--color-identity-b) 55%, transparent); }
+  .sf-scatter-dot[data-highlight] { fill: var(--color-identity-a); }
+  .sf-scatter .sf-scatter-label { fill: var(--color-text); font-weight: 600; }
+
+  .sf-caveats { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .sf-caveats strong { color: var(--color-text); }
+  .sf-caveats a { color: var(--color-accent); text-decoration: underline; }
+
+  .sf-range { display: block; width: 100%; max-width: 160px; height: 16px; }
+  .sf-range-track { stroke: var(--color-hairline-strong); }
+  .sf-range-zero { stroke: var(--color-text-secondary); }
+  .sf-range-span { stroke: var(--color-text-secondary); stroke-width: 3; stroke-linecap: round; }
+  .sf-range-dot { fill: var(--color-text); }
+
+  .sf-tree-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-4) var(--space-6); }
+  .sf-tree-picker { flex: 0 1 360px; min-width: 0; }
+  .sf-tree-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+  .sf-tree, .sf-tree ul { display: flex; justify-content: center; margin: 0; padding: 0; list-style: none; }
+  .sf-tree li { position: relative; display: flex; flex-direction: column; align-items: center; flex: 1 1 0; min-width: 0; padding-inline: var(--space-1); }
+  .sf-tree li > ul { width: 100%; padding-top: var(--space-6); }
+  /* Connectors: a stem down from each parent, a rail across its children, a stem up to each child. */
+  .sf-tree li > .sf-node:not(:last-child)::after { content: ""; position: absolute; left: 50%; bottom: calc(-1 * var(--space-6)); height: var(--space-6); border-left: 1px solid var(--color-hairline-strong); }
+  .sf-tree ul > li { padding-top: var(--space-5); }
+  .sf-tree ul > li::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: 1px solid var(--color-hairline-strong); }
+  .sf-tree ul > li:first-child::before { left: 50%; }
+  .sf-tree ul > li:last-child::before { right: 50%; }
+  .sf-tree ul > li::after { content: ""; position: absolute; top: 0; left: 50%; height: var(--space-5); border-left: 1px solid var(--color-hairline-strong); }
+  .sf-node { position: relative; display: grid; align-content: start; justify-items: center; gap: var(--space-1); width: 100%; max-width: 232px; padding: var(--space-3); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); text-align: center; }
+  .sf-tree li[data-side="offense"] > .sf-node { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-identity-a) 32%, transparent); }
+  .sf-tree li[data-side="defense"] > .sf-node { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-identity-b) 32%, transparent); }
+  .sf-node-code { display: grid; margin: 0; color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }
+  .sf-node-code span { color: var(--color-text-tertiary); font-size: var(--text-xs); font-weight: 400; }
+  .sf-node-value { display: flex; align-items: baseline; gap: var(--space-1); margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); }
+  .sf-node-unit { color: var(--color-text-tertiary); font-size: var(--text-xs); }
+  .sf-node-unknown { margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; }
+  .sf-node-interval { margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+  .sf-tree-notes { display: grid; gap: var(--space-1); color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .sf-tree-notes p { margin: 0; }
+  .sf-tree-notes strong { color: var(--color-text); }
+
+  @media (max-width: 767px) {
+    .sf-framework tr > :first-child { width: 30%; }
+    .sf-framework tbody th { padding-inline: var(--space-2); }
+    .sf-framework thead th span { font-size: var(--text-xs); }
+    .sf-factor-lists { grid-template-columns: minmax(0, 1fr); }
+    .sf-scatter text { font-size: var(--text-xl); }
+    /* The tree reads top-down: each level indents under its parent, with no rails. */
+    .sf-tree, .sf-tree ul { display: grid; gap: var(--space-2); }
+    .sf-tree li { align-items: stretch; padding: 0; }
+    .sf-tree li > ul { padding-top: var(--space-2); padding-left: var(--space-4); }
+    .sf-tree ul > li { padding-top: 0; }
+    .sf-tree ul > li::before, .sf-tree ul > li::after, .sf-tree li > .sf-node:not(:last-child)::after { content: none; }
+    .sf-node { max-width: none; justify-items: stretch; text-align: left; }
+    .sf-node .sf-range { max-width: none; }
+  }
+}
+
+/* Owner (RD02 round 4): no dividers above and below the intro line, under the filter bar and over The Framework. The
+   filter bar's rule lives in `foundation`, above `pages`, so its override goes there. */
+@layer foundation {
+  .sf-page .ui-filter-bar { border-bottom: 0; }
+}
+@layer pages {
+  .sf-page .rs-intro + .rs-section, .sf-page .rs-intro + .ui-gated-note + .rs-section { border-top: 0; padding-top: var(--space-4); }
+}
+

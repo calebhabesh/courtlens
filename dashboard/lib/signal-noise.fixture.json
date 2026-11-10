@@ -1,0 +1,140 @@
+{
+ "note": "Generated from courtlens.domain.signal_noise with the 2025-26 priors; tests/unit/test_signal_noise.py holds it equal to Python.",
+ "cases": [
+  {
+   "fg2m": 26,
+   "fg2a": 58,
+   "fg3m": 5,
+   "fg3a": 42,
+   "ftm": 28,
+   "fta": 34,
+   "priors": {
+    "fg2_pct": {
+     "alpha": 40.172957,
+     "beta": 34.026408
+    },
+    "fg3_pct": {
+     "alpha": 109.376557,
+     "beta": 197.009114
+    },
+    "ft_pct": {
+     "alpha": 19.736077,
+     "beta": 6.127678
+    }
+   },
+   "expected": {
+    "fg3_pct": 0.32830442386363246,
+    "ft_pct": 0.797412006647428,
+    "ts_pct": 0.5503769192194155
+   }
+  },
+  {
+   "fg2m": 500,
+   "fg2a": 900,
+   "fg3m": 210,
+   "fg3a": 560,
+   "ftm": 400,
+   "fta": 450,
+   "priors": {
+    "fg2_pct": {
+     "alpha": 40.172957,
+     "beta": 34.026408
+    },
+    "fg3_pct": {
+     "alpha": 109.376557,
+     "beta": 197.009114
+    },
+    "ft_pct": {
+     "alpha": 19.736077,
+     "beta": 6.127678
+    }
+   },
+   "expected": {
+    "fg3_pct": 0.3686309315704276,
+    "ft_pct": 0.882050949646291,
+    "ts_pct": 0.6074441638065184
+   }
+  },
+  {
+   "fg2m": 3,
+   "fg2a": 4,
+   "fg3m": 0,
+   "fg3a": 0,
+   "ftm": 0,
+   "fta": 0,
+   "priors": {
+    "fg2_pct": {
+     "alpha": 40.172957,
+     "beta": 34.026408
+    },
+    "fg3_pct": {
+     "alpha": 109.376557,
+     "beta": 197.009114
+    },
+    "ft_pct": {
+     "alpha": 19.736077,
+     "beta": 6.127678
+    }
+   },
+   "expected": {
+    "fg3_pct": null,
+    "ft_pct": null,
+    "ts_pct": 0.5520883321750758
+   }
+  },
+  {
+   "fg2m": 0,
+   "fg2a": 0,
+   "fg3m": 0,
+   "fg3a": 0,
+   "ftm": 1,
+   "fta": 2,
+   "priors": {
+    "fg2_pct": {
+     "alpha": 40.172957,
+     "beta": 34.026408
+    },
+    "fg3_pct": {
+     "alpha": 109.376557,
+     "beta": 197.009114
+    },
+    "ft_pct": {
+     "alpha": 19.736077,
+     "beta": 6.127678
+    }
+   },
+   "expected": {
+    "fg3_pct": null,
+    "ft_pct": 0.744195353425983,
+    "ts_pct": 0.8456765379840716
+   }
+  },
+  {
+   "fg2m": 0,
+   "fg2a": 0,
+   "fg3m": 0,
+   "fg3a": 0,
+   "ftm": 0,
+   "fta": 0,
+   "priors": {
+    "fg2_pct": {
+     "alpha": 40.172957,
+     "beta": 34.026408
+    },
+    "fg3_pct": {
+     "alpha": 109.376557,
+     "beta": 197.009114
+    },
+    "ft_pct": {
+     "alpha": 19.736077,
+     "beta": 6.127678
+    }
+   },
+   "expected": {
+    "fg3_pct": null,
+    "ft_pct": null,
+    "ts_pct": null
+   }
+  }
+ ]
+}
