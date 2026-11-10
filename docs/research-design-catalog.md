@@ -66,7 +66,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD10 | Metric Backtest [29] | `/research/backtest` | none (built from approved CourtLens Research patterns) | R08, RD10 | ✅ |
 | RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | ✅ |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none (built from approved CourtLens Research patterns) | R14, RD12 | ✅ |
-| RD13 | Signal vs Noise [29] | `/research/signal-noise` | none (built from approved CourtLens Research patterns) | R03, RD13 | 👀 |
+| RD13 | Signal vs Noise [29] | `/research/signal-noise` | none (built from approved CourtLens Research patterns) | R03, RD13 | ✅ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none | workbench | ⬜ |
@@ -888,7 +888,7 @@ Instructions (owner, 2026-11-10, round 5):
 
 Evidence: [`design-RD12`](evidence/research/design-RD12/README.md).
 
-## RD13 Signal vs Noise — 👀
+## RD13 Signal vs Noise — ✅ approved by the owner (2026-11-10)
 
 - **Now:** stabilization points for 20 stats with intervals, the shrinkage test, a player lookup; Stats has a
   Shrunk toggle.
@@ -935,6 +935,10 @@ Instructions (owner, 2026-11-10, round 4; the owner answered the six suggestions
    - (5) The test table on a phone. — A Gains / Errors, RMSE switch at phone width, so the table never scrolls sideways; desktop unchanged.
    - (6) A what-if in the worked example (approved by the owner here). — Sliders for attempts and raw rate on 3P%, FT%, 2P% and Rim FG% (when served), starting from the player's season; shrunk value, raw, league prior, the weight on the player's own attempts, the formula, a reset; a posterior mean from the served prior, no interval, said on the page.
    — Built as listed. Real data 10,613 values, 0 mismatches, 0 console errors, 0 overflow; 12 portraits, 0 faults; `r03-signal-noise` ×3 27/27; Vitest 854. Full Playwright not run: no shared code changed (owner's rule, 2026-11-10).
+
+Instructions (owner, 2026-11-10, round 5):
+9. [x] Alright. I approve this page.
+   — Approved after four build rounds; the settled rules are in the alignment plan ("Settled in RD13"). The full Playwright run owed under the owner's rule: 627 passed, 17 skipped, 0 failed.
 
 Evidence: [`design-RD13`](evidence/research/design-RD13/README.md).
 

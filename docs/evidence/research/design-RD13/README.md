@@ -119,3 +119,7 @@ Screenshots viewed: `sn-strip-r3-1440.png`, `sn-strip-r3-390.png` (FG% selected)
 The phone example-scale fix came after the sandbox build; it was checked on :3100 (3 labels shown, none overlapping, 0 overflow, 0 console errors).
 
 Screenshots viewed: `sn-strip-r4-*`, `sn-curve-r4-*` (3P%, typical season only), `sn-example-scale-r4-*`, `sn-whatif-*`, `sn-test-r4-*`, `sn-priors-r4-*`, `sn-full-r4-*`; FT%'s curve with both marks was viewed on :3100.
+
+## Approved (owner, 2026-11-10)
+
+"Alright. I approve this page." Row ✅. The settled rules are in the alignment plan ("Settled in RD13"). The full Playwright run owed before ✅ (sandbox, mock API, 2 workers, 8 GiB cap): 627 passed, 17 skipped, 0 failed.
