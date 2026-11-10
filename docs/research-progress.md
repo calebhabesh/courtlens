@@ -969,3 +969,13 @@ On Signal vs Noise, every chart's axis matches the strip's brighter labels; the 
 
 The owner approved Signal vs Noise ("Alright. I approve this page.") after four build rounds. Row RD13 ✅; the alignment plan gains "Settled in RD13". Full Playwright before ✅: 627 passed, 17 skipped, 0 failed. Next in the queue: RD16 Points Forecasts (RD14 and RD17 are paused; RD18 follows RD16).
 [`design-RD13`](evidence/research/design-RD13/README.md).
+
+## 2026-11-10 — Hosted demo brought up to RD13
+
+Release 3c2f1b03 (research through the RD13 approval, merged to main in PR #77) is live at
+courtlens.calebhabesh.com with a fresh 2026-11-10 database, so every Research page, full history and the
+2026-27 season are on the demo. The deploy-config gap found while preparing R12 is closed: the deploy
+syncs and mounts every Research serving input, pins the 12-season impact bundle and gives the API 3 GiB.
+RD16 and later are not on the demo yet. Details and measurements in
+[the deploy log](deployment.md#deploy-log).
+
