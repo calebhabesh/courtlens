@@ -9,7 +9,8 @@ const requirements: Record<string, string> = {
   "/showcase": "core_stats", "/similar-players": "core_stats",
   "/roster-shapes": "core_stats", "/playoffs": "core_stats",
   "/wowy": "wowy", "/stat-line-shift": "on_off",
-  "/research/shooting/aftermath": "shots", "/matchups": "matchups",
+  // RD18: Shot Aftermath reads the frozen R17 aggregate, not the workbench shot source, so it is always listed.
+  "/matchups": "matchups",
   "/research/shooting/adjusted": "play_types", "/stats/tracking": "tracking",
   "/research/defensive-matchups/tracking": "defensive_tracking",
 };
