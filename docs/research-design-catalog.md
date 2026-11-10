@@ -1040,6 +1040,16 @@ menu entry, and answered "Sure."):
    was still gated on the old workbench shot source (unavailable), which hid the entry; the gate is gone, since the page reads only the frozen R17 file.
    Vitest 877; full Playwright 629 passed, 17 skipped, 1 failed (`route-consolidation` still asserted no Shot Aftermath entry; updated to expect it, then 39/39 over three runs with the page spec). Evidence: [`design-RD18`](evidence/research/design-RD18/README.md).
 
+- **Open for the owner's review (2026-11-10, proposed after round 2, not built):** six suggested improvements, none needing new analysis:
+  (1) one line in the answer saying whether the zone order and the rim-rebound effect held in the other season (they did);
+  (2) a small icon on each team row that scopes the page to that team without scrolling (RD13);
+  (3) a compact grid of guards, forwards and bigs by zone (net and rebound cost, with intervals);
+  (4) round steps on the cost charts' axis (thin scopes give ±1.44 with ticks at 0.72);
+  (5) tighter phone labels under the cost bars (the interval wraps onto two lines);
+  (6) on the After a defensive rebound view, opponent points per possession after a make and after a rebound side by side against the league line.
+  Recommended: 1, 2, 4 and 5 together; 3 and 6 each add a section (owner's call). Also: delete the now-unrendered `components/shooting-view.tsx`
+  and `components/catalog-scope-fields.tsx` (the old per-player tool; its POST endpoint stays), or keep them?
+
 ## RD19 Ask evaluation — ⏸
 
 - **Now:** not built. R16 is running (development set partly done, holdout unopened).
