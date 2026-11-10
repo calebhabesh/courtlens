@@ -28,11 +28,12 @@ describe("FO07 route consolidation (D3)", () => {
     }
   });
 
-  it("removes every merged URL and redirects it to an existing tab", () => {
+  it("removes every merged URL and redirects it to an existing tab or page", () => {
     const tabHrefs = new Set<string>(tabs.map(tab => tab.href));
     for (const { source, destination } of CONSOLIDATED_REDIRECTS) {
       expect(isFile(pageFile(source)), `${source} still has a page`).toBe(false);
-      expect(tabHrefs.has(destination), destination).toBe(true);
+      // RD17: a page's in-page tab (`?tab=`) or a page that left its tabbed page (Shot Aftermath) is a valid landing too.
+      expect(tabHrefs.has(destination) || isFile(pageFile(destination)), destination).toBe(true);
     }
   });
 
@@ -76,10 +77,10 @@ describe("FO07 route consolidation (D3)", () => {
   });
 
   it("selects the tab that owns a pathname", () => {
-    const shooting = TABBED_PAGES.shooting.tabs;
-    expect(activeRouteTab(shooting, "/research/shooting")?.label).toBe("Expected Shots");
-    expect(activeRouteTab(shooting, "/research/shooting/aftermath")?.label).toBe("Shot Aftermath");
-    expect(activeRouteTab(shooting, "/research/shootingx")).toBeUndefined();
+    const methodology = TABBED_PAGES.methodology.tabs;
+    expect(activeRouteTab(methodology, "/methodology")?.label).toBe("Definitions");
+    expect(activeRouteTab(methodology, "/methodology/learning")?.label).toBe("Learning");
+    expect(activeRouteTab(methodology, "/methodologyx")).toBeUndefined();
   });
 
   it("removed Research pages redirect to their replacement and no longer exist", () => {
@@ -89,5 +90,16 @@ describe("FO07 route consolidation (D3)", () => {
     expect(redirects.get("/whats-new/blog")).toBe("/whats-new");
     expect(redirects.get("/blog")).toBe("/whats-new");
     for (const route of ["/research/trends", "/research/distributions", "/whats-new/blog"]) expect(isFile(pageFile(route)), route).toBe(false);
+  });
+
+  it("RD17: Expected Shots and Adjusted Shooting redirect straight to their new tabs, and their pages are gone", () => {
+    const redirects = new Map([...CONSOLIDATED_REDIRECTS, ...COMPATIBILITY_REDIRECTS].map(r => [r.source, r.destination]));
+    for (const source of ["/research/shooting", "/research/expected-shots"]) expect(redirects.get(source), source).toBe("/research/shot-quality?tab=model&earlier=open");
+    for (const source of ["/research/shooting/adjusted", "/research/adjusted-shooting"]) expect(redirects.get(source), source).toBe("/research/zts?tab=defense");
+    expect(redirects.get("/zts")).toBe("/research/zts");
+    expect(redirects.get("/shotquality")).toBe("/research/shot-quality");
+    for (const route of ["/research/shooting", "/research/shooting/adjusted"]) expect(isFile(pageFile(route)), route).toBe(false);
+    expect(isFile(pageFile("/research/shooting/aftermath"))).toBe(true);
+    expect(Object.values(TABBED_PAGES).flatMap(page => page.tabs).some(tab => tab.href.startsWith("/research/shooting"))).toBe(false);
   });
 });

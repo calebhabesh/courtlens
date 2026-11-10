@@ -1,11 +1,9 @@
 /* RD18 (owner, 2026-11-10): Research → Shooting → Shot Aftermath after Databallr's Shot Aftermath page, from approved Research patterns: its own
-   centred hero with the Shooting route tabs (RD06's own-header tab, RD16's hero over tabs), RD00's 992 px column, Databallr's four small zone
+   centred hero with no tab bar (RD17: a page of its own), RD00's 992 px column, Databallr's four small zone
    charts with 95% whiskers (points charts on one axis from zero, cost on its own axis centred on zero, RD18 Q2), RD10's compact grids, RD13's
    12 px axes, centred keys and phone column switches. Green and red only on a cost whose 95% interval excludes zero. */
 @layer pages {
   .rs-column.sa-page { gap: var(--space-10); padding-bottom: var(--space-12); }
-  .sa-page .ui-route-tabs-list { justify-content: center; }
-  .sa-page > .sa-tabs { margin-top: calc(-1 * var(--space-6)); }
   .sa-page .rs-intro { margin-top: calc(-1 * var(--space-6)); }
   .sa-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-10); transition: opacity var(--dur-fast) var(--ease-out); }
   .sa-body[data-loading] { opacity: 0.6; }

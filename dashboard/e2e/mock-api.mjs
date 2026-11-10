@@ -16,6 +16,8 @@ const projectedImpact = JSON.parse(readFileSync(new URL("./fixtures/projected-im
 const signalNoise = JSON.parse(readFileSync(new URL("./fixtures/signal-noise.json", import.meta.url), "utf8"));
 const zts = JSON.parse(readFileSync(new URL("./fixtures/zts.json", import.meta.url), "utf8"));
 const shotQuality = JSON.parse(readFileSync(new URL("./fixtures/shot-quality.json", import.meta.url), "utf8"));
+// RD17: the sealed earlier expected-shot run, as the research API serves it (Shot Quality → Model → An earlier attempt).
+const expectedShot = JSON.parse(readFileSync(new URL("./fixtures/rd17-expected-shot.json", import.meta.url), "utf8"));
 const shotDecomposition = JSON.parse(readFileSync(new URL("./fixtures/shot-decomposition.json", import.meta.url), "utf8"));
 // R08: the real Metric Backtest answer (frozen results, metric notes, 2026-27 score).
 const metricBacktest = JSON.parse(readFileSync(new URL("./fixtures/metric-backtest.json", import.meta.url), "utf8"));
@@ -661,6 +663,9 @@ createServer(async (request, response) => {
     const key = `${q.get("season") ?? "2025-26"}:${q.get("kind") ?? "all"}:${q.get("sort") ?? "dsq"}:${q.get("team") ?? "all"}`;
     return json(response, 200, shotDecomposition.cards[key] ?? { ...shotDecomposition.unknown_cards, season: q.get("season") });
   }
+  if (url.pathname === "/api/workbench/research/experiments") return json(response, 200, expectedShot.experiments);
+  if (url.pathname === "/api/workbench/research/runs") return json(response, 200, expectedShot.runs);
+  if (url.pathname === `/api/workbench/research/runs/${expectedShot.result.run.run_id}`) return json(response, 200, expectedShot.result);
   if (url.pathname === "/api/shot-quality") return json(response, 200, shotQuality.summary);
   if (url.pathname === "/api/shot-quality/players") {
     const q = url.searchParams;

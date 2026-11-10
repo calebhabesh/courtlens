@@ -6,6 +6,8 @@
   .rs-column.sq-page { --sq-measure: 768px; max-width: 1352px; gap: var(--space-8); padding-bottom: var(--space-12); }
   .sq-page .rs-section:first-of-type, .sq-page .sq-board-section + .rs-section { border-top: 0; }
   .sq-page .rs-disclosure { padding-top: var(--space-2); border-top: 0; }
+  /* RD17: a method block holds wide grids; one shrinkable track keeps them scrolling in their own frame on a phone instead of widening the page. */
+  .sq-page .rs-method-block { grid-template-columns: minmax(0, 1fr); }
 
   /* Hero: Databallr's centred icon tile, title and one line. */
   .ui-page-header.sq-hero { display: grid; justify-items: center; gap: var(--space-3); padding-top: var(--space-8); text-align: center; }

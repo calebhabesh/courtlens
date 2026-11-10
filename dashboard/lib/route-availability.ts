@@ -11,7 +11,7 @@ const requirements: Record<string, string> = {
   "/wowy": "wowy", "/stat-line-shift": "on_off",
   // RD18: Shot Aftermath reads the frozen R17 aggregate, not the workbench shot source, so it is always listed.
   "/matchups": "matchups",
-  "/research/shooting/adjusted": "play_types", "/stats/tracking": "tracking",
+  "/stats/tracking": "tracking",
   "/research/defensive-matchups/tracking": "defensive_tracking",
 };
 /**

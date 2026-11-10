@@ -1,22 +1,16 @@
 import { expect, test } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
-import research from "./fixtures/research-negative-result.json";
 
 for (const width of [1440, 390]) {
   for (const [name, path, chart] of [
     // RD16: Points Forecasts answers in a sentence and draws its models in the Research column, not the boxed .pc12-headline.
-    ["Shooting", "/research/shooting", ".pc12-headline .chart-reliability"],
+    // RD17: the Shooting page is gone; its sealed result is Shot Quality's earlier attempt (r05-shot-quality.spec.ts).
     // RD00 round 3: the RAPM headline is an open region in the Research column, not the boxed .pc12-headline. RD12 round 4: its leaders list is Research-native.
     ["RAPM", "/research/rapm", ".rapm-headline .rs-leaders-list"],
   ]) {
     test(`PC12 ${name} headline on first load at ${width}px`, async ({ page }) => {
       await page.setViewportSize({width, height: 900});
       await page.emulateMedia({reducedMotion: "reduce"});
-      if (name === "Shooting") {
-        await page.route("**/api/workbench/research/experiments", r => r.fulfill({json: [{experiment: research.run.experiment, status: research.run.status, run_id: research.run.run_id, protocol_sha256: research.run.protocol_sha256}]}));
-        await page.route("**/api/workbench/research/runs?*", r => r.fulfill({json: [research.run]}));
-        await page.route(`**/api/workbench/research/runs/${research.run.run_id}`, r => r.fulfill({json: research}));
-      }
       await openWorkbench(page, path);
       await expect(page.locator(chart).first()).toBeVisible();
       const visual = await page.locator(chart).first().boundingBox();
