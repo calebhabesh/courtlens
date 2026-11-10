@@ -92,3 +92,30 @@ Screenshots viewed: `sn-strip-labels-1440.png`, `sn-strip-labels-390.png` (3P% p
 | Full Playwright (sandbox, mock API, 2 workers, 8 GiB cap) | 625 passed, 17 skipped, 0 failed |
 
 Screenshots viewed: `sn-strip-r3-1440.png`, `sn-strip-r3-390.png` (FG% selected), from :3100.
+
+## Round 4 (owner, 2026-11-10)
+
+"Do them all comprehensively." (the six suggestions given after round 3)
+
+**Changed.**
+1. **Axes.** The curve's axes, the season path, the league prior and the example scale use the strip's axis look: 12 px, `--color-on-bg-secondary`, weight 500. `SeasonLineChart` is restyled only inside this page (`.sn-page .slc-*-label`); the shared component is unchanged. The example scale gains its own axis (0%, 25%, 50%, 75%, 100%; 0, 50 and 100 on a phone, where 75% and 100% collided) and its caption drops "0% to 100%".
+2. **Strip marks on the curve.** For each level the stat reaches, a filled (0.5) or hollow (0.7) mark in the curve's colour where it crosses, with its served 95% interval as a bar, and a line at the typical season (median). The scale reaches every mark. 3P% reaches no level, so it shows only the typical season.
+3. **Units in sentences.** `sampleWords` spells the unit out wherever a number sits in a sentence: the curve's line, the season path's empty note, About's fitted 3P% figure. Strip, grids and tooltips keep `sampleText` ("480 3PA").
+4. **Curve picker.** The 20 chips are gone; a kit `Select` ("Curve stat") beside the curve's heading lists the stats under Percentages and Per 36 minutes. The page now has two native selects (this and the example season).
+5. **Phone test table.** Under 768 px a Segmented "Test columns" switches between Gains and Errors, RMSE, with a shorter group label; the table is 0 px wider than its frame (it was 651 px in a scroll frame before RD13, and scrolled 47 px in round 1's layout). The server renders the desktop table, and the phone view follows `matchMedia`.
+6. **What if** (approved by the owner here). Under the example scale: a Segmented for each stat with a served prior (3P%, FT%, 2P%, and Rim FG% when served), sliders for attempts (to 600, 400 for FT%, or the player's own if higher) and raw rate (0.5-point steps), starting at the player's season. It shows made/attempts, raw, shrunk, league prior, a 0–100% track, the share of weight on the player's own attempts, the formula, and a reset to the player's season. It uses `whatIf` in `lib/signal-noise.ts`, the same posterior mean (makes + α) / (attempts + α + β) as the frozen run, so at the player's own numbers it equals the served shrunk value (Vitest and the real-data check confirm this to 1e-9). No interval is computed, and the page says so. The slider copies RD02's approved ORtg Lab range input. No API, analysis, frozen result or interval changed.
+
+**Page size.** 6,041 px at 1440 (round 1: 5,709) and 7,747 px at 390 (7,049): the what-if, the curve key and round 3's two-line phone strip.
+
+| Check | Result |
+| --- | --- |
+| Real data ([`real-data-check-r4.json`](real-data-check-r4.json), [`real-check.mjs`](real-check.mjs) extended for round 4, proxy GET only) | 10,613 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images at both widths. New: every curve's marks and typical season against the served levels; the curve line's spelled-out units; the what-if for every stat of every example (start equal to the served shrunk value, counts, prior, formula), one slider move recomputed from the served prior, and the reset; the phone test in both views |
+| Photos ([`photo-check-r4.json`](photo-check-r4.json)) | 12 portraits, 0 faults, control caught |
+| Lint (ESLint, Stylelint), typecheck | clean |
+| Vitest | 854 passed (2 new: units in words; the what-if starts at the served shrunk value, and the prior's weight halves at its strength) |
+| `r03-signal-noise` ×3 (sandbox; new: curve marks, what-if, phone test) | 27/27 |
+| Full Playwright | not run: no shared component changed (the owner's rule from 2026-11-10: full suite for shared code and before ✅) |
+
+The phone example-scale fix came after the sandbox build; it was checked on :3100 (3 labels shown, none overlapping, 0 overflow, 0 console errors).
+
+Screenshots viewed: `sn-strip-r4-*`, `sn-curve-r4-*` (3P%, typical season only), `sn-example-scale-r4-*`, `sn-whatif-*`, `sn-test-r4-*`, `sn-priors-r4-*`, `sn-full-r4-*`; FT%'s curve with both marks was viewed on :3100.

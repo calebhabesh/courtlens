@@ -960,3 +960,7 @@ The stat names in the Signal vs Noise strip were unpadded text buttons, so the p
 ## 2026-11-10 — RD13 round 3: a curve icon on every strip row
 
 The Signal vs Noise strip's attempt axis is larger and brighter; each row has a chart icon that selects that stat and goes to its curve (the name still only selects), replacing round 2's button under the strip; on a phone the track runs full width under the name and value; the chart keys are centred. Lint and typecheck clean, Vitest 852, `r03-signal-noise` ×3 21/21, full Playwright 625 passed, 17 skipped, 0 failed. [`design-RD13`](evidence/research/design-RD13/README.md). Awaits the owner.
+
+## 2026-11-10 — RD13 round 4: marks on the curve, a what-if, phone test view
+
+On Signal vs Noise, every chart's axis matches the strip's brighter labels; the curve marks where each stat reaches 0.5 and 0.7 with their 95% intervals and the typical season; sentences spell units out; one grouped select picks the curve's stat instead of 20 chips; on a phone the shrinkage test switches between gains and errors instead of scrolling; and the worked example gains an owner-approved what-if (attempts and raw-rate sliders on the served prior, a posterior mean with no interval). Real data 10,613 values, 0 mismatches; 12 portraits, 0 faults; Vitest 854; `r03-signal-noise` ×3 27/27; full Playwright not run (no shared code changed). [`design-RD13`](evidence/research/design-RD13/README.md). Awaits the owner.
