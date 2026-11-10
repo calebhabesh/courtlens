@@ -23,6 +23,8 @@ x-api-environment: &api-environment
   COURTLENS_PUBLIC_ASK_DAILY_REQUESTS: "480"
   COURTLENS_ASSISTANT_PROVIDERS: gemini,groq
   COURTLENS_GEMINI_REQUESTS_PER_DAY: "500"
+  # The free tier refuses Google Search grounding; trying costs a request and a 30 s cooldown.
+  COURTLENS_ASSISTANT_MAX_WEB_SEARCHES: "0"
   COURTLENS_GEMINI_API_KEY: ${COURTLENS_GEMINI_API_KEY:?}
   COURTLENS_GROQ_API_KEY: ${COURTLENS_GROQ_API_KEY:-}
   COURTLENS_RAW_STORE_PATH: /app/data/raw
