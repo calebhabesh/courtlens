@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import contextlib
 import json
+import re
 import time
 from dataclasses import dataclass, replace
 from datetime import date
@@ -12,7 +13,7 @@ from operator import or_
 from typing import Annotated, Any, Literal, cast
 
 from fastapi import HTTPException
-from pydantic import BaseModel, Field, TypeAdapter, create_model, field_validator
+from pydantic import BaseModel, Field, TypeAdapter, ValidationError, create_model, field_validator
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 
@@ -120,7 +121,10 @@ _MODELS: dict[str, type[BaseModel]] = {
 }
 _DESCRIPTIONS = {
     "query_stats": (
-        "Execute a registered warehouse operation. Supply operation and its arguments. "
+        'Execute a registered warehouse operation. Shape: {"operation": NAME, "arguments": '
+        "{...that operation's fields...}, optional season/phase/before_date}. For operation "
+        "query, arguments is the query itself (entity_kind, metric_selectors, sort, page), "
+        "not wrapped in a query key; only position_query takes {position, query}. "
         "The server pins the release; optional season, phase and before_date select scope. "
         "last_season means the latest completed season. Errors are recoverable. "
         "Numbers, units, samples and equivalent-analysis links come from exact evidence."
@@ -191,6 +195,249 @@ def _error(call: ToolCall, code: str, message: str, **details: Any) -> Dispatche
         compact["truncated_lists"] = truncated
     return DispatchedTool(
         ToolResult(call_id=call.id, name=call.name, payload=compact, is_error=True), payload
+    )
+
+
+_SCOPE_KEYS = ("season", "phase", "before_date")
+_FIELD_NAME = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,40}$")
+_EXAMPLES: dict[str, dict[str, Any]] = {
+    "query": {
+        "operation": "query",
+        "season": "2025-26",
+        "arguments": {
+            "entity_kind": "player_season",
+            "metric_selectors": [{"key": "pts_per_game", "normalization": "raw"}],
+            "sort": [{"field": "pts_per_game", "direction": "desc"}],
+            "page": {"limit": 10},
+        },
+    },
+    "position_query": {
+        "operation": "position_query",
+        "arguments": {
+            "position": "guard",
+            "query": {
+                "entity_kind": "player_season",
+                "metric_selectors": [{"key": "pts_per_game", "normalization": "raw"}],
+                "sort": [{"field": "pts_per_game", "direction": "desc"}],
+                "page": {"limit": 10},
+            },
+        },
+    },
+    "profile": {"operation": "profile", "arguments": {"player_id": "1630567"}},
+    "compare": {
+        "operation": "compare",
+        "arguments": {"player_a": "1630567", "player_b": "1629029"},
+    },
+    "team": {"operation": "team", "arguments": {"team_id": "1610612738"}},
+}
+
+
+def _props(name: Any) -> set[str]:
+    operation = operations.REGISTRY.get(name) if isinstance(name, str) else None
+    if operation is None or name == "finance":
+        return set()
+    return set(operation.schema.model_json_schema().get("properties", {}))
+
+
+def repair_stats_call(arguments: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    """Fix the argument shapes models get wrong when only one reading is possible.
+
+    Measured on 224 development calls (R16): 73 wrapped a query in {"query": ...}, 11 put the
+    operation inside arguments, 10 sent no arguments object and 8 put the query at the top level;
+    a few repeated the operation inside arguments, named the tool as the operation, added an
+    operation_version, or passed player_id to a query. Each repair is reported back so the model
+    sees the canonical shape. Anything ambiguous is left to the validator's specific error.
+    """
+    repaired = dict(arguments)
+    notes: list[str] = []
+    if repaired.pop("operation_version", None) is not None:
+        notes.append("operation_version is pinned by the server; omit it")
+    if isinstance(repaired.get("arguments"), dict):
+        stray = [k for k in repaired if k not in ("operation", "arguments", *_SCOPE_KEYS)]
+        if stray:
+            repaired["arguments"] = {
+                **{k: repaired.pop(k) for k in stray},
+                **repaired["arguments"],
+            }
+            notes.append("operation fields belong inside arguments")
+    if "arguments" not in repaired:
+        loose = {
+            key: repaired.pop(key)
+            for key in list(repaired)
+            if key not in ("operation", *_SCOPE_KEYS)
+        }
+        if loose:
+            repaired["arguments"] = loose
+            notes.append("operation fields belong inside arguments")
+    inner = repaired.get("arguments")
+    if isinstance(inner, dict) and "operation" in inner:
+        inner = dict(inner)
+        nested = inner.pop("operation")
+        top = repaired.get("operation")
+        fields = set(inner) - {"query", *_SCOPE_KEYS}
+        if not _props(top) or (
+            _props(nested) and fields <= _props(nested) and not fields <= _props(top)
+        ):
+            repaired["operation"] = nested
+        own = _props(repaired.get("operation"))
+        for key in _SCOPE_KEYS:
+            # Scope keys an operation doesn't take itself are the call's scope.
+            if key in inner and key not in own:
+                value = inner.pop(key)
+                repaired.setdefault(key, value)
+        repaired["arguments"] = inner
+        notes.append("operation belongs beside arguments, once, not inside it")
+    inner = repaired.get("arguments")
+    if (
+        "operation" not in repaired
+        and isinstance(inner, dict)
+        and (
+            bool({"entity_kind", "metric_selectors"} & set(inner))
+            or isinstance(inner.get("query"), dict)
+        )
+    ):
+        repaired["operation"] = "query"
+        notes.append("operation was missing; these are query fields")
+    if repaired.get("operation") == "query" and isinstance(inner, dict):
+        query = dict(inner)
+        if isinstance(query.get("query"), dict) and "position" not in query:
+            wrapped = query.pop("query")
+            query = {**query, **wrapped}
+            notes.append("for operation query, arguments is the query itself, not {query: ...}")
+        _repair_query_scope(repaired, query, notes)
+        _repair_metrics(query, notes)
+        if "title" in query and "name" not in query:
+            query["name"] = query.pop("title")
+        player = query.get("player_id")
+        if isinstance(player, str) and "metric_selectors" in query:
+            query.pop("player_id")
+            leaf = {"field": "player_id", "op": "eq", "value": player}
+            group = query.get("predicates")
+            if isinstance(group, dict) and isinstance(group.get("predicates"), list):
+                group = {**group, "predicates": [*group["predicates"], leaf]}
+            else:
+                group = {"conjunction": "and", "predicates": [leaf]}
+            query["predicates"] = group
+            notes.append("one player in a query is a player_id predicate")
+        repaired["arguments"] = query
+        if isinstance(player, str) and set(query) - {"window"} == {"player_id"}:
+            # A bare player in a query asks for that player's numbers: the profile operation.
+            repaired["operation"] = "profile"
+            repaired["arguments"] = {"player_id": player}
+            notes.append("one player's season is operation profile with {player_id}")
+    return repaired, notes
+
+
+def _repair_query_scope(call: dict[str, Any], query: dict[str, Any], notes: list[str]) -> None:
+    """The server pins release and scope: a query repeating them moves them to the call's scope."""
+    if query.pop("release_id", None) is not None:
+        notes.append("release_id is pinned by the server; omit it")
+    for key in _SCOPE_KEYS:
+        if key in query:
+            value = query.pop(key)
+            if call.setdefault(key, value) == value:
+                notes.append(f"{key} belongs beside operation, not inside the query")
+            else:
+                query[key] = value  # A conflicting scope stays for the validator to name.
+    scope = query.get("season_scope")
+    if not isinstance(scope, dict):
+        return
+    seasons = scope.get("seasons")
+    if (
+        isinstance(seasons, list)
+        and len(seasons) == 1
+        and isinstance(seasons[0], str)
+        and call.setdefault("season", seasons[0]) == seasons[0]
+    ):
+        rest = {k: v for k, v in scope.items() if k not in ("seasons", "aggregate_multi_season")}
+        if rest:
+            query["season_scope"] = rest
+        else:
+            query.pop("season_scope")
+        notes.append("one season is the call's season, not season_scope.seasons")
+
+
+def _repair_metrics(query: dict[str, Any], notes: list[str]) -> None:
+    """Units live in the metric key (pts is a season total, pts_per_game per game) and
+    normalization must be raw. Swap to the key that carries the asked unit when one exists."""
+    selectors = query.get("metric_selectors")
+    if not isinstance(selectors, list):
+        return
+    renamed: dict[str, str] = {}
+    for selector in selectors:
+        if not isinstance(selector, dict) or not isinstance(selector.get("key"), str):
+            continue
+        key, mode = selector["key"], selector.get("normalization")
+        target = key
+        if mode == "per_game" and not key.endswith("_per_game"):
+            target = key + "_per_game"
+        elif mode == "totals" and key.endswith("_per_game"):
+            target = key.removesuffix("_per_game")
+        elif mode not in ("per_game", "totals"):
+            continue
+        if target not in METRIC_CATALOG:
+            continue
+        selector["key"], selector["normalization"] = target, "raw"
+        if selector.get("version") not in (None, METRIC_CATALOG[target].version):
+            selector.pop("version")
+        if target != key:
+            renamed[key] = target
+        notes.append(f"{target} already carries its unit; normalization is raw")
+    for sort in query.get("sort") or []:
+        if isinstance(sort, dict) and sort.get("field") in renamed:
+            sort["field"] = renamed[sort["field"]]
+
+
+def _field_names(names: Any) -> list[str]:
+    return sorted({str(n) for n in names if isinstance(n, str) and _FIELD_NAME.match(n)})
+
+
+def _strings(value: Any) -> list[str]:
+    if isinstance(value, dict):
+        return [s for v in value.values() for s in _strings(v)] + [
+            k for k in value if isinstance(k, str)
+        ]
+    if isinstance(value, list):
+        return [s for v in value for s in _strings(v)]
+    return [value] if isinstance(value, str) else []
+
+
+def _argument_error(name: str, arguments: Any, exc: Exception) -> ToolError:
+    """A specific, safe correction: unknown and required fields, the validator's own complaints and
+    an example. Nothing the model sent is echoed except plain field names."""
+    schema = operations.REGISTRY[name].schema.model_json_schema()
+    allowed = list(schema.get("properties", {}))
+    given = arguments if isinstance(arguments, dict) else {}
+    details: dict[str, Any] = {
+        "operation": name,
+        "allowed_fields": allowed,
+        "required_fields": schema.get("required", []),
+    }
+    unknown = _field_names(set(given) - set(allowed))
+    if unknown:
+        details["unknown_fields"] = unknown
+    if isinstance(exc, ValidationError):
+        sent = [s for s in _strings(given) if len(s) >= 3]
+        problems = []
+        for error in exc.errors(include_input=False, include_url=False)[:6]:
+            at = ".".join(
+                str(p) for p in error["loc"] if isinstance(p, int) or _FIELD_NAME.match(str(p))
+            )
+            message = str(error["msg"])[:160]
+            if any(s in message for s in sent):
+                message = "invalid value"
+            problems.append({"at": at, "issue": message})
+        details["problems"] = problems
+    if name == "query" and "player_id" in given:
+        details["hint"] = "For one player's season use operation profile with {player_id}."
+    if not given:
+        details["hint"] = "arguments is required: an object with this operation's fields."
+    if name in _EXAMPLES:
+        details["example"] = _EXAMPLES[name]
+    return ToolError(
+        "invalid_arguments",
+        "Arguments do not match this operation. Fix the listed fields and call again.",
+        **details,
     )
 
 
@@ -268,15 +515,23 @@ def _run(
 ) -> tuple[dict[str, Any], OperationResult | None, ResolvedContext | None]:
     arguments = call.arguments
     if call.name == "query_stats":
+        arguments, repairs = repair_stats_call(arguments)
         # Older nested Pydantic models ignore extras. Reject them before parsing, recursively.
         name = arguments.get("operation")
         if name not in operations.REGISTRY or name == "finance":
             raise ToolError(
-                "unknown_operation", "Use a declared stats operation; finance is separate."
+                "unknown_operation",
+                "Use a declared stats operation; finance is separate.",
+                operations=[op for op in operations.REGISTRY if op != "finance"],
             )
+        if "arguments" not in arguments:
+            raise _argument_error(name, {}, ValueError("missing arguments"))
         schema = operations.REGISTRY[name].schema.model_json_schema()
-        operations.reject_unknown_fields(schema, arguments.get("arguments", {}), schema)
-        parsed = _stats_adapter().validate_python(arguments)
+        try:
+            operations.reject_unknown_fields(schema, arguments.get("arguments", {}), schema)
+            parsed = _stats_adapter().validate_python(arguments)
+        except (ValidationError, ValueError) as exc:
+            raise _argument_error(name, arguments.get("arguments"), exc) from None
         scope = StatsScope.model_validate(parsed.model_dump(exclude={"operation", "arguments"}))
         context = _scope(session, scope, selections, as_of)
         args = parsed.arguments.model_dump(mode="json", exclude_unset=True)
@@ -294,7 +549,10 @@ def _run(
         data = execute_bounded(session, context, step, deadline)
         _empty_error(name, data)
         result = render_result(step, context, data, canonical_hash(context.to_dict()))
-        return _warehouse_payload(result, context), result, context
+        payload = _warehouse_payload(result, context)
+        if repairs:
+            payload["argument_repairs"] = repairs
+        return payload, result, context
     if call.name not in _MODELS:
         raise ToolError("unknown_tool", "This tool is not available.")
     schema = _MODELS[call.name].model_json_schema()
