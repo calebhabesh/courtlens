@@ -947,3 +947,8 @@ The RAPM Ratings Leaders chart is now a Research-native list: thin gold bars on 
 
 The owner approved Lineup Model ("I approve this page.") after four build rounds. Row RD12 ✅; the alignment plan gains "Settled in RD12". Not built: dropping the Leaders scale's right-hand label, and moving the three older `RankedBars` views to `LeaderBars`. Next in the queue: RD13 Signal vs Noise.
 [`design-RD12`](evidence/research/design-RD12/README.md).
+
+## 2026-11-10 — RD13 round 1: Signal vs Noise rebuilt
+
+The page answers in one sentence: FT% means something after about 27 attempts and TS% after 169, 3P% never got there (0.49 at 480), and shrinking predicted next season better for all 5 stats tested. One strip per family draws every stabilization point with its interval on a shared scale; 3P% has no point, only its observed range, and its chart no longer draws a fitted curve that crosses 0.5. A team-tinted example card with search in place and the player's own seasons replaces the native selects, then the test with gains first, the prior over 43 seasons, coverage, How to read and a collapsed About. `SeasonLineChart` gained an optional axis floor. 5,709 px at 1440 (was 5,258) and 7,049 at 390 (was 8,086). No API, analysis, frozen result or interval changed. Lint and typecheck clean, Vitest 852, `r03-signal-noise` ×3 18/18, full Playwright 624 passed, 17 skipped, 0 failed, real data 10,221 values, 0 mismatches, 12 portraits with no fault.
+[`design-RD13`](evidence/research/design-RD13/README.md). Awaits the owner.

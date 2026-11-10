@@ -37,7 +37,7 @@ function trimmed(ticks: number[], values: readonly number[]): number[] {
 
 const vars = (props: Record<string, string>) => props as CSSProperties;
 
-export function SeasonLineChart({ label, points, format, axisFormat = format, band, xTicks, zero = false, name, overlay }: {
+export function SeasonLineChart({ label, points, format, axisFormat = format, band, xTicks, zero = false, floor, name, overlay }: {
   label: string;
   points: readonly SeasonPoint[];
   format: (value: number) => string;
@@ -48,6 +48,8 @@ export function SeasonLineChart({ label, points, format, axisFormat = format, ba
   xTicks?: readonly number[];
   /** Keep zero on the axis and mark it more strongly than the other grid lines, for a measure whose sign matters (RD10). */
   zero?: boolean;
+  /** The lowest value the measure can take (0 for a percentage): no axis tick is drawn below it (RD13). */
+  floor?: number;
   /** The main line's name in the tooltip, when an `overlay` shares the axis. */
   name?: string;
   /** A second measure on the same axis and scale, one value per point (RD11); its line and points carry `data-series="overlay"`. */
@@ -59,7 +61,9 @@ export function SeasonLineChart({ label, points, format, axisFormat = format, ba
   const bounded = (p: SeasonPoint): p is SeasonPoint & { low: number; high: number } => band !== undefined && typeof p.low === "number" && typeof p.high === "number";
   const second = overlay?.values.filter((v): v is number => v !== null && Number.isFinite(v)) ?? [];
   const span = [...known, ...second, ...points.filter(bounded).flatMap(p => [p.low, p.high]), ...(zero ? [0] : [])];
-  const ticks = band === undefined ? niceTicks(span) : trimmed(niceTicks(span), span);
+  const allTicks = band === undefined ? niceTicks(span) : trimmed(niceTicks(span), span);
+  const floored = floor === undefined ? allTicks : allTicks.filter(t => t >= floor);
+  const ticks = floored.length >= 2 ? floored : allTicks;
   const bottom = ticks[0], top = ticks[ticks.length - 1];
   const x = (index: number) => points.length === 1 ? 50 : (index / (points.length - 1)) * 100;
   const y = (value: number) => ((top - value) / (top - bottom)) * 100;

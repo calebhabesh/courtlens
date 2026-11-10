@@ -130,3 +130,57 @@ export const formatSample = (value: number | null | undefined) =>
   typeof value === "number" && Number.isFinite(value) ? Math.round(value).toLocaleString("en-US") : "—";
 export const formatPct = (value: number | null | undefined, digits = 1) =>
   typeof value === "number" && Number.isFinite(value) ? `${(value * 100).toFixed(digits)}%` : "—";
+
+// ---- RD13 page helpers -----------------------------------------------------------------------------
+
+export type Family = StatResult["family"];
+/** Short unit names for sample sizes, after the served unit (FGA, 3PA, rim FGA …); per-36 rates are measured in minutes. */
+export const sampleUnit = (stat: StatResult) => stat.family === "per_36" ? "min" : stat.unit;
+export const sampleText = (value: number | null | undefined, stat: StatResult) => value == null ? "—" : `${formatSample(value)} ${sampleUnit(stat)}`;
+
+/** Reliability, a correlation stepped up to the full sample: three decimals. */
+export const formatRho = (value: number | null | undefined, digits = 3) =>
+  typeof value === "number" && Number.isFinite(value) ? value.toFixed(digits) : "—";
+
+/** A stat reaches a level only where a bin shows it; anything else draws no point (the contract: 3P%'s fitted M is not a stabilization point). */
+export const reached = (level: Level | undefined): level is Level & { n: number } => level?.status === "reached" && typeof level.n === "number";
+
+/**
+ * The strip's rows for one family, fastest to slowest at reliability 0.5 (owner, RD13 Q1: sorted, never ranked). A stat that never
+ * reaches 0.5 goes last, ordered by its largest observed bin.
+ */
+export function stripOrder(stats: readonly StatResult[], family: Family): StatResult[] {
+  const key = (s: StatResult) => { const l = s.levels["0.5"]; return reached(l) ? [0, l.n] : [1, l?.largest_n ?? Infinity]; };
+  return stats.filter(s => s.family === family).sort((a, b) => { const [ga, va] = key(a), [gb, vb] = key(b); return ga - gb || va - vb; });
+}
+
+/** The right-hand end the strip must reach: every 0.7 interval, typical season and, for a stat not reached, its largest bin. */
+export function stripReach(stats: readonly StatResult[]): number {
+  return Math.max(1, ...stats.flatMap(s => {
+    const half = s.levels["0.5"], seventy = s.levels["0.7"];
+    // An unreached level's interval belongs to the fitted curve, not to anything observed, so it never stretches the scale.
+    return [s.median_sample ?? 0, reached(seventy) ? seventy.interval.high ?? 0 : 0, reached(half) ? half.interval.high ?? 0 : half?.largest_n ?? 0];
+  }));
+}
+
+/** Mean squared error of a proportion in squared percentage points (the served value ×10,000), and its root in points. */
+export const squaredPoints = (mse: number) => mse * 10000;
+export const rmsePoints = (mse: number) => Math.sqrt(mse) * 100;
+
+export const BAND_LABELS: Record<string, string> = { "under 50": "Under 50", "50-199": "50–199", "200 or more": "200 or more" };
+export const TEST_STATS = ["fg3_pct", "ft_pct", "fg2_pct", "ts_pct", "rim_fg_pct"] as const;
+export const PRIOR_STATS = ["fg3_pct", "fg2_pct", "ft_pct", "rim_fg_pct"] as const;
+
+/** Every stat in the test where shrunk beats raw on the pooled sample, with the whole 95% interval above zero. */
+export function shrinkingWins(summary: Pick<SignalNoiseSummary, "validation">): string[] {
+  return TEST_STATS.filter(stat => { const g = summary.validation[stat]?.pooled.raw_minus_shrunk; return typeof g?.low === "number" && g.low > 0; });
+}
+
+/**
+ * The example's season picker: the seasons this player played (from their career), limited to seasons with a fitted prior, newest first.
+ * The season shown is always listed, so the control never loses its value while the career loads.
+ */
+export function exampleSeasons(playerSeasons: readonly string[], priorSeasons: readonly string[], shown: string): string[] {
+  const priors = new Set(priorSeasons);
+  return [...new Set([...playerSeasons.filter(s => priors.has(s)), shown])].sort().reverse();
+}

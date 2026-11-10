@@ -1,0 +1,54 @@
+# RD13 Signal vs Noise: design evidence
+
+Research → Signal vs Noise (`/research/signal-noise`), rebuilt from approved CourtLens Research patterns. Instructions and status:
+[research design catalog, RD13](../../../research-design-catalog.md#rd13-signal-vs-noise--). How the analysis was built and what its numbers mean: [R03](../r03/README.md).
+
+## Reference
+
+None. There is no Databallr page for it, so each section borrows a named, approved CourtLens precedent (below). databallr.com and draftballr.com were not fetched.
+
+Before the rebuild (:3100, read 2026-11-10): four stat tiles and seven stacked sections under the old left-aligned header, full width; 5 old tables and 3 native selects. 5,258 px tall at 1440 and 8,086 px at 390, 0 console errors, 0 page overflow, 0 broken images. The 3P% chart drew the fitted line out to 1,057 3PA, so it crossed 0.5 at about 419 while the page said "not reached". Screenshots: `sn-before-top-*`, `sn-before-full-*`.
+
+## Round 1 (owner, 2026-11-10)
+
+"Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively." The proposal, with its answers to Q1 to Q4, is recorded with the instruction in the catalog.
+
+**Built**
+
+| Section | What it shows | Borrowed from |
+| --- | --- | --- |
+| Hero | `sq-hero research-hero`, one line, the meta line (player-seasons, players, seasons, registered before any fit), links to the Stats Shrunk columns and Learning | RD10, RD11, RD12 |
+| How long until a stat means something? | One sentence: FT% after about 27 attempts, TS% after 169, 3P% never got there (0.49 at 480); shrinking predicted next season better for all 5 stats tested; what 0.5 means | RD10, RD11 answers |
+| How many attempts each stat needs | A Percentages / Per 36 minutes switch; one strip per family on a shared scale: the 0.5 point with its 95% interval, a hollow 0.7 mark, a tick at the typical season, sorted fastest first with no rank (Q1). 3P% draws only its observed range, dashed, labelled "Not reached", with its largest bin's interval in a line under the strip. Then a compact `StatsGrid` (0.5 and 0.7 with intervals under them, typical season, largest bin with its interval, player-seasons), no `GridSearch` | RD11 shared scale, RD10 grids |
+| Reliability by sample size | Kit chips grouped by family choose the stat; the stat name in each strip row opens it too (Q2). Bins with 95% bars, the 0.5 and 0.7 lines, the fitted curve over the observed bins only. Then the bins table, collapsed | RD06 chart method |
+| A worked example | A team-tinted card with `PlayerAvatar`, search in place of the name, and a season picker listing only that player's seasons with a prior (from `GET /api/workbench/players/{id}/career`); a reset to the default example; the selection rule; Raw and Shrunk first in a compact grid, then the league prior and made/attempts; one formula line; raw and shrunk on one 0–100% scale with the prior; the season path game by game with a 3P% / FT% / TS% switch in category tints | RD03, RD05, RD12 |
+| Does shrinking predict next season better? | One sentence; an All / Under 50 / 50–199 / 200 or more switch; gains over raw and over the prior mean first, in squared points with 95% intervals, then RMSE in points (Q3); green only where an interval excludes zero | RD10, RD11 |
+| The league prior, season by season | One line from 1984-85 to 2026-27 for 3P%, 2P%, FT% or Rim FG%, with a Prior mean / Strength switch and points on hover; one line comparing strength with the stabilization point (Q4) | RD06 one measure on one axis |
+| What this doesn't cover | The 7 families with reasons, visible | RD10 honesty lines |
+| How to read | Three cards, a collapsed glossary | RD10, RD12 |
+| About this page | Collapsed: method, levels (3P%'s fitted 419 named as not a stabilization point), priors, the test, coverage, limits, registration date, hashes, credits, the R03 evidence link | RD12 |
+
+**One change from the proposal.** Item (4) said to draw the fitted curve over the observed bins. For 3P% that still crosses 0.5 (at 419 3PA, inside the observed 480), while no bin reaches it. So the curve is drawn only for stats that reach both levels; for 3P% the chart shows the bins and one line says why the curve is absent.
+
+**Shared change.** `SeasonLineChart` gained an optional `floor`: no axis tick below it (the path's axis went to −10%). Without it nothing changes; a Vitest case covers it.
+
+**Not changed.** No API, analysis, frozen result or interval. The worked example, test, priors and stabilization numbers are the served frozen run.
+
+**Page size.** 5,709 px at 1440 (was 5,258) and 7,049 px at 390 (was 8,086), disclosures collapsed. Desktop is taller because the strip, curve, example scale and two line charts are new; the phone page is shorter.
+
+**Found by the checks and screenshots, then fixed before reporting.** The strip's scale ran to 1,500 because it counted 3P%'s unreached fitted intervals; it now stops at what was observed (600). At 390 the hero meta overflowed by 165 px (separators inside no-wrap spans) and broke "2025-26" mid-value before that; the example grid's Shrunk column was off screen on a phone (now second); the last two game labels on the path collided.
+
+| Check | Result |
+| --- | --- |
+| Lint (ESLint, Stylelint), typecheck | clean |
+| Vitest | 852 passed (6 new: strip order, unreached levels off the scale, unit conversions, the win rule, the season list, the chart floor) |
+| `r03-signal-noise` ×3 (rewritten for the layout, 6 tests) | 18/18 |
+| Full Playwright (sandbox, mock API, 2 workers, 8 GiB cap) | 624 passed, 17 skipped, 0 failed |
+| Real data ([`real-data-check.json`](real-data-check.json), [`real-check.mjs`](real-check.mjs), proxy [`../design-RD10/readonly-proxy.mjs`](../design-RD10/readonly-proxy.mjs), GET only) | 10,221 values, 0 mismatches, 0 console errors, 0 overflow, 0 broken images at both widths |
+| Coverage of that check | Hero and answer; both strip families and both grids, every row; all 20 curves and bins tables at 1440, 6 at 390; every test band; all 8 prior series; What this doesn't cover; About. Worked examples: the default, Curry 2014-15, Abdul-Jabbar 1984-85, Yang 2026-27 (rim unknown), Curry 1990-91 (no games), James 2003-04 at 1440 (four at 390), each with every grid value, the formula, the scale and all three path series against `GET /api/signal-noise/player`, and its season list against the career endpoint. The search in place (focus, no list before typing, pick, Escape) and the reset |
+| Layout and rules | 992 px column (366 at 390); one native select (the season picker); no hashes, project codes, ISO dates, hyphen-minus numbers or arrows in the visible text; no phone control under 40 px; tones only where a 95% interval excludes zero (the two zero-crossing prior gains under 50 stay neutral) |
+| Photos ([`photo-check.json`](photo-check.json), [`photo-check.mjs`](photo-check.mjs)) | 12 portraits (6 examples × 2 widths): each the season's and team's photo, circular, uncut, logo beside the code. Control: with the card clipping and the photo pushed past its corner, the check catches it every time |
+
+**Glance test** (`sn-top-1440.png`, `sn-answer-*`, full pages at both widths, viewed). In five seconds: what the page is (hero), the answer in one sentence, and the strip showing FT% early and 3P% with no point.
+
+Screenshots viewed: `sn-top-*`, `sn-answer-*`, `sn-stabilization-*`, `sn-curve-*`, `sn-example-*`, `sn-test-*`, `sn-priors-*`, `sn-not-covered-*`, `sn-reading-*`, `sn-card-*`, the full page at both widths. Section captures can show the sticky site header or the Skip to content link across a section; neither is on the page there. Visuals were judged from the sandbox build; the CSS chunk :3100 serves was checked and carries the new rules.

@@ -43,6 +43,14 @@ describe("SeasonLineChart (RD06)", () => {
     expect([...container.querySelectorAll(".slc-y-label")].map(l => Number(l.textContent))).toContain(0);
   });
 
+  it("draws no tick below a floor, for a percentage that can't go under zero (RD13)", () => {
+    const values = [0, 0.08, 0.15, 0.12];
+    const { container } = render(<SeasonLineChart label="3P%" format={v => v.toFixed(2)} floor={0} points={values.map((value, i) => ({ season: String(i + 1), value }))} />);
+    const ticks = [...container.querySelectorAll(".slc-y-label")].map(l => Number(l.textContent));
+    expect(Math.min(...ticks)).toBe(0);
+    expect(niceTicks(values)[0]).toBeLessThan(0);
+  });
+
   it("draws a second line on the same scale, with its own points (RD11)", () => {
     const { container } = render(<SeasonLineChart label="By age" format={v => v.toFixed(2)} name="Curve" overlay={{ name: "Model", values: [-3, null, 0.5] }}
       points={[{ season: "20", value: -1 }, { season: "27", value: 0 }, { season: "34", value: 1 }]} />);

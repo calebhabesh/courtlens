@@ -66,7 +66,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD10 | Metric Backtest [29] | `/research/backtest` | none (built from approved CourtLens Research patterns) | R08, RD10 | ✅ |
 | RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | ✅ |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none (built from approved CourtLens Research patterns) | R14, RD12 | ✅ |
-| RD13 | Signal vs Noise [29] | `/research/signal-noise` | none | R03 | ⬜ |
+| RD13 | Signal vs Noise [29] | `/research/signal-noise` | none (built from approved CourtLens Research patterns) | R03, RD13 | 👀 |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none | workbench | ⬜ |
@@ -888,11 +888,29 @@ Instructions (owner, 2026-11-10, round 5):
 
 Evidence: [`design-RD12`](evidence/research/design-RD12/README.md).
 
-## RD13 Signal vs Noise — ⬜
+## RD13 Signal vs Noise — 👀
 
 - **Now:** stabilization points for 20 stats with intervals, the shrinkage test, a player lookup; Stats has a
   Shrunk toggle.
-- **Instructions:** _(owner)_
+- **Reference:** none. No Databallr page for it; each section borrows a named, approved CourtLens Research precedent.
+- **Before (round 1, :3100, 2026-11-10):** four stat tiles and seven stacked sections under the old left-aligned header, full width; 5 old tables, 3 native selects (20 stats, 43 prior seasons, 43 example seasons not limited to the player's). 5,258 px tall at 1440, 8,086 px at 390; 0 console errors, 0 page overflow, 0 broken images (the nine-column table runs 651 px wide inside its scroll frame at 390). The 3P% curve draws the fitted line out to 7M/3 (1,057 3PA), so it visibly crosses 0.5 at about 419 while the page says "not reached"; the example shows the player twice (EntityField chip and identity block); the season path draws 3P% only (FT% and TS% are served) in gold/blue; prior minus shrunk is served but not drawn; a project code and two hashes in the body.
+- **Design check (2026-11-10):** nothing needs new data, an API field or a new analysis. A player's seasons come from the existing `GET /api/workbench/players/{id}/career`, limited to seasons with a prior (1984-85 to 2026-27). 3P%'s largest bin is 0.486 with a 95% interval of 0.401 to 0.549 and M's interval reaches 500, so "not reached" is worded with that interval. Prior minus shrunk includes zero for 3P% and TS% under 50 attempts (neutral). Not served and left out: stabilization by season or position, 3P% beyond 480 attempts, an interval on the season path, a per-season shrinkage test, shrinkage for per-36 rates.
+
+Instructions (owner, 2026-11-10, round 1; the owner answered the design proposal and its four recommendations with "Go with your
+recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively."):
+1. [x] Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively.
+   - (1) Hero: centred, 992 px column, one line, a meta line (player-seasons, players, seasons), links to the Stats Shrunk columns and Learning; the four stat tiles are cut.
+   - (2) The answer in one sentence: FT% after about 27 attempts, TS% after 169, 3P% not reached in the observed bins (0.49 at 480), shrinking predicts next season better for all five stats tested.
+   - (3) How many attempts: an interval strip with a Percentages / Per 36 switch, a dot at 0.5 with its 95% interval, a hollow mark at 0.7, a tick at the typical season; 3P% drawn only over its observed range and labelled "Not reached". Then a compact `StatsGrid` (0.5 and 0.7 with intervals under them, typical season, largest bin), no `GridSearch`.
+   - (4) Reliability by sample size for one stat: bins with 95% bars, the 0.5 and 0.7 lines, the fitted line drawn only over the observed bins; the bins table collapsed under it.
+   - (5) Worked example: a team-tinted card with `PlayerAvatar` and search in place, a season picker listing only that player's seasons, the selection rule in one line, a compact grid (made/attempts, raw, shrunk with its interval, a small raw-against-shrunk strip with the league prior), one formula line, the season path with a 3P% / FT% / TS% switch in `--color-category-3` / `-4`.
+   - (6) Does shrinking help: one sentence, a compact grid with an All / under 50 / 50–199 / 200+ switch, gains over raw and over the prior mean with intervals first, then errors; green only where an interval excludes zero.
+   - (7) Priors over time: one line per stat from 1984-85 to 2026-27 with a Prior mean / Strength switch, points on hover, one line comparing strength with the stabilization point.
+   - (8) What this doesn't cover: the 7 families with reasons, visible. (9) How to read: three cards and a collapsed glossary. (10) About this page, collapsed: method, coverage, seed check, credits, registration and hashes.
+   - Q1: the strip is sorted fastest to slowest within each family, with no rank. Q2: clicking a strip row opens its curve, with kit chips grouped by family. Q3: errors as RMSE in percentage points, gains as served in squared points with their intervals. Q4: the priors-over-time chart is added.
+   — Built as proposed: the answer in one sentence, strips per family with 3P% drawn only over its observed range, the curve with chips, a team-tinted example card with search in place and the player's own seasons, the test with gains first, the prior over 43 seasons, coverage visible, How to read and a collapsed About. One change: the fitted curve is drawn only for stats that reach both levels, because for 3P% it crosses 0.5 at 419 inside the observed range. Real data 10,221 values, 0 mismatches; full Playwright 624 passed, 17 skipped, 0 failed.
+
+Evidence: [`design-RD13`](evidence/research/design-RD13/README.md).
 
 ## RD14 Win Probability — ⏸
 
