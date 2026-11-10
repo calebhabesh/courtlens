@@ -1,0 +1,9 @@
+{
+ "results_sha256": "5aa5161b68b2be431bcdb00cc50dd9ad89d3da6f1b5790023a2ae11a534a97bf",
+ "season_seconds": {
+  "2024-25": 8.9,
+  "2025-26": 8.8
+ },
+ "wall_seconds": 17.8,
+ "peak_rss_mib": 688.5
+}
