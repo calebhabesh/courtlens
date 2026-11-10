@@ -43,13 +43,34 @@ read is stale ([Live service v2](design/shared-live-v2.md)). That needs outbound
 container. Final games are kept as hashed evidence (about 0.7 MB each, capped at 4 GiB), the one
 part of the demo database that grows after deploy.
 
+### Projected Impact
+
+The API reads the frozen projections from `data/artifacts/projected-impact` (1.1 MB, hash-checked at load) and the weekly score from `data/derived/projected-impact-serving` (about 60 KB plus 0.5 KB per game), both rsynced by each deploy and mounted read-only. Scoring runs locally in `refresh-daily`; `scripts/sync-win-probability.sh` copies the score over when it syncs the scorecard. The endpoints are GETs, so the Caddy allowlist is unchanged.
+
+### Win probability
+
+The API serves the frozen model on CPU; the model files and scorecard bundle are plain read-only
+files (`data/artifacts/win-probability`, 8.4 MB; `data/derived/win-probability-serving`, about
+9 MB plus about 6 KB per game), rsynced by each deploy. The nightly job does **not** run on the
+VPS (owner decision, 2026-11-04): it runs locally in `refresh-daily`, and
+`scripts/sync-win-probability.sh` copies the bundle over; a new scorecard appears without a
+restart. `scripts/install_win_probability_sync.sh` installs a daily 16:00 UTC timer for that sync.
+Between syncs a Live game with no sealed inputs shows ESPN's line alone. The endpoints are GETs, so
+the Caddy allowlist is unchanged. After a deploy, confirm arm64 predictions in the API container:
+
+```bash
+docker compose --env-file secrets.env --env-file release.env exec api \
+  python -m courtlens.evaluation.win_probability_platform_check check
+```
+
 ### Disk budget
 
 The VPS boot volume is 193 GB, nearly all of the Always Free 200 GB block-storage allowance
 (measured 2026-10-19: 21 GB used across CourtLens, LineWatchTO and the portfolio; Docker images
 4.8 GB, volumes 8.3 GB). Outbound transfer is free up to 10 TB a month and inbound is free, and
-Caddy compresses responses (`encode zstd gzip`). The demo needs about 1.2 GB of images, about 6 GB
-of Postgres and about 1.4 GB of serving files. The data snapshot is frozen, so the database
+Caddy compresses responses (`encode zstd gzip`). The demo needs about 1.2 GB of images, about 21 GB
+of Postgres (the 2026-11-10 snapshot, with full history and the 12 impact seasons) and about
+3.1 GB of serving files. The data snapshot is frozen, so the database
 does not grow. Deploys never build on the VPS. Each deploy removes CourtLens images other
 than the current and previous release. Container logs rotate at 3 × 10 MB, and journald
 is capped at 200 MB.
@@ -105,8 +126,10 @@ scripts/deploy-vps.sh <sha>      # a specific main commit
 ```
 
 Serving files are git-ignored: evaluation reports, saved analyses, the impact,
-value-archetype and WOWY manifests, and player portraits (`SERVING_DIRS` in the script,
-about 1.4 GB). They are rsynced from
+value-archetype and WOWY manifests, player portraits, the Research serving tables and model
+files, DARKO, ESPN rosters, the Free Agency and Wikipedia bundles, shot zones, stint boxes and
+the raw box-score evidence behind starting positions (`SERVING_DIRS` in the script, about
+3.1 GB on 2026-11-10; the raw evidence is mounted read-only as `data/raw`). They are rsynced from
 `$COURTLENS_DATA_DIR`, which defaults to the checkout's `data/`. A worktree must point
 this at the primary checkout.
 

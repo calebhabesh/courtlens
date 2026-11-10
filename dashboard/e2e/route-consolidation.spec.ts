@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { CONSOLIDATED_REDIRECTS, TABBED_PAGES } from "../lib/route-consolidation";
+import { CONSOLIDATED_REDIRECTS, OWN_HEADER_TABS, TABBED_PAGES } from "../lib/route-consolidation";
 import { openWorkbench } from "./workbench-navigation";
 
 // FO07 route consolidation (D3): merged pages are one title with link tabs, and every removed URL
@@ -28,8 +28,16 @@ test.describe("FO07 route consolidation", () => {
       const tab = merged.tabs.find(item => item.href === destination)!;
       await page.goto(`${source}?season=2024-25`);
       await expect(page).toHaveURL(url => url.pathname === destination && url.searchParams.get("season") === "2024-25");
-      await expect(page.getByRole("heading", { level: 1 }), source).toHaveText(merged.title);
       const tabs = page.getByRole("navigation", { name: `${merged.title} sections` });
+      // RD06: a tab with its own centred hero (Learning) shows its own title and no tab bar.
+      if (OWN_HEADER_TABS.has(destination)) {
+        await expect(page.getByRole("heading", { level: 1 }), source).toHaveText(tab.label);
+        await expect(tabs, source).toHaveCount(0);
+        continue;
+      }
+      await expect(page.getByRole("heading", { level: 1 }), source).toHaveText(merged.title);
+      // A page left with one tab shows no tab bar (What's New since the Blog was removed).
+      if (merged.tabs.length === 1) { await expect(tabs, source).toHaveCount(0); continue; }
       await expect(tabs.getByRole("link")).toHaveText(merged.tabs.map(item => item.label));
       await expect(tabs.locator('[aria-current="page"]'), source).toHaveText(tab.label);
     }
@@ -47,11 +55,33 @@ test.describe("FO07 route consolidation", () => {
     await openWorkbench(page, "/stats");
     await page.getByRole("button", { name: "Research", exact: true }).click();
     const menu = page.getByRole("menu");
-    await expect(menu.getByRole("menuitem", { name: "RAPM Research" })).toHaveAttribute("href", /^\/research\/rapm(\?|$)/);
-    await expect(menu.getByRole("menuitem", { name: "Shooting", exact: true })).toHaveAttribute("href", /^\/research\/shooting(\?|$)/);
-    for (const removed of ["Six-Factor RAPM", "Expected Shots", "Adjusted Shooting", "Shot Aftermath"]) {
+    await expect(menu.getByRole("menuitem", { name: /^Six-Factor RAPM/ })).toHaveAttribute("href", /^\/research\/rapm\/six-factor(\?|$)/);
+    await expect(menu.getByRole("menuitem", { name: /^Shooting\b/ })).toHaveAttribute("href", /^\/research\/shooting(\?|$)/);
+    for (const removed of ["RAPM Research", "Expected Shots", "Adjusted Shooting", "Shot Aftermath"]) {
+      // Anchored: a kept item's description may mention a removed page's name.
+      await expect(menu.getByRole("menuitem", { name: new RegExp(`^${removed}`) })).toHaveCount(0);
+    }
+  });
+
+  test("removed Research pages redirect and the Research menu carries an icon on every item", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/research/trends?playerId=1630567&season=2025-26");
+    await expect(page).toHaveURL(url => url.pathname === "/last-games" && url.searchParams.get("playerId") === "1630567");
+    await page.goto("/research/distributions");
+    await expect(page).toHaveURL(url => url.pathname === "/last-games");
+    await page.goto("/whats-new/blog");
+    await expect(page).toHaveURL(url => url.pathname === "/whats-new");
+    await expect(page.getByRole("navigation", { name: "What's New sections" })).toHaveCount(0);
+    await page.getByRole("button", { name: "Research", exact: true }).click();
+    const menu = page.getByRole("menu", { name: "Research" });
+    await expect(menu.getByRole("menuitem")).not.toHaveCount(0);
+    for (const removed of ["Workload Trends", "Distributions & Splits", "Case Studies", "Saved Investigations", "Evaluation Archive"]) {
       await expect(menu.getByRole("menuitem", { name: removed })).toHaveCount(0);
     }
+    const items = menu.getByRole("menuitem");
+    for (let index = 0; index < await items.count(); index++) await expect(items.nth(index).locator("svg")).toBeVisible();
+    const box = await menu.boundingBox();
+    expect(box!.x + box!.width).toBeLessThanOrEqual(1280);
   });
 
   test("tabs fit a phone without page overflow", async ({ page }) => {

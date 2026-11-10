@@ -10,6 +10,27 @@ const retainedDistribution = JSON.parse(readFileSync(new URL("./fixtures/pc12-re
 // Real 2025-26 playoffs (alignment row 8) and seasons whose formats test the bracket's byes.
 const playoffBrackets = Object.fromEntries(["2025-26", "1975-76", "1965-66", "1949-50"].map(season =>
   [season, JSON.parse(readFileSync(new URL(`./fixtures/playoffs-bracket-${season}.json`, import.meta.url), "utf8"))]));
+// Real answers of the frozen win-probability model's page, cut to a few rows.
+const projectedImpact = JSON.parse(readFileSync(new URL("./fixtures/projected-impact-page.json", import.meta.url), "utf8"));
+// R03: real Signal vs Noise answers (results file, 2025-26 shrinkage, the default worked example).
+const signalNoise = JSON.parse(readFileSync(new URL("./fixtures/signal-noise.json", import.meta.url), "utf8"));
+const zts = JSON.parse(readFileSync(new URL("./fixtures/zts.json", import.meta.url), "utf8"));
+const shotQuality = JSON.parse(readFileSync(new URL("./fixtures/shot-quality.json", import.meta.url), "utf8"));
+const shotDecomposition = JSON.parse(readFileSync(new URL("./fixtures/shot-decomposition.json", import.meta.url), "utf8"));
+// R08: the real Metric Backtest answer (frozen results, metric notes, 2026-27 score).
+const metricBacktest = JSON.parse(readFileSync(new URL("./fixtures/metric-backtest.json", import.meta.url), "utf8"));
+// R09: real Draft Classes answers (summary, six classes, combine, rookie tracker, one rookie).
+const lineupFixture = name => JSON.parse(readFileSync(new URL(`./fixtures/lineup-model${name}.json`, import.meta.url), "utf8"));
+const lineupPage = lineupFixture(""), lineupPlayers = lineupFixture("-players"), lineupFit = lineupFixture("-fit"), lineupFitAlt = lineupFixture("-fit-alt");
+const draftFixture = name => JSON.parse(readFileSync(new URL(`./fixtures/draft-${name}.json`, import.meta.url), "utf8"));
+const draftSummary = draftFixture("summary"), draftClasses = draftFixture("classes"), draftCombine = draftFixture("combine");
+const draftRookies = draftFixture("rookies"), draftRookie = draftFixture("rookie");
+const r10Fixture = name => JSON.parse(readFileSync(new URL(`./fixtures/r10-${name}.json`, import.meta.url), "utf8"));
+const r10Wingspan = r10Fixture("wingspan"), r10Nearest = r10Fixture("wingspan-nearest");
+const r10FourFactors = r10Fixture("four-factors"), r10FourFactorSeasons = r10Fixture("four-factors-seasons");
+// Real answers of the six-factor API for 2025-26, cut to a few rows, and real Impact Trees.
+const sixFactorPage = JSON.parse(readFileSync(new URL("./fixtures/six-factor-page.json", import.meta.url), "utf8"));
+const winProbability = JSON.parse(readFileSync(new URL("./fixtures/win-probability-page.json", import.meta.url), "utf8"));
 const okcPhx = JSON.parse(readFileSync(new URL("./fixtures/playoffs-series-2026-r1-okc-phx.json", import.meta.url), "utf8"));
 const playerTwins = JSON.parse(readFileSync(new URL("./fixtures/player-twins-v1.json", import.meta.url), "utf8"));
 function playerTwinsView(url) {
@@ -618,6 +639,93 @@ createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
   // Live (alignment row 7): an observed empty date; e2e/live.spec.ts routes real ESPN reads itself.
+  if (url.pathname === "/api/six-factor") return json(response, 200, sixFactorPage.pages[url.searchParams.get("season") ?? "2025-26"] ?? { status: "unavailable", season: url.searchParams.get("season"), phase: "regular_season", scopes: sixFactorPage.pages["2025-26"].scopes });
+  if (url.pathname === "/api/six-factor/tree") {
+    const tree = sixFactorPage.trees[url.searchParams.get("playerId")];
+    return tree ? json(response, 200, tree) : json(response, 200, sixFactorPage.notInFit);
+  }
+  if (url.pathname === "/api/signal-noise") return json(response, 200, signalNoise.summary);
+  if (url.pathname === "/api/signal-noise/shrinkage") return json(response, 200, { ...signalNoise.shrinkage, season: url.searchParams.get("season"), phase: url.searchParams.get("phase") });
+  if (url.pathname === "/api/signal-noise/player") return json(response, 200, signalNoise.player);
+  // R04 zTS: real answers of the zTS API; other seasons answer as the API does for a season it lacks.
+  // R06: real answers of the decomposition and Defensive Shot Quality APIs.
+  if (url.pathname === "/api/shot-quality/decomposition") return json(response, 200, shotDecomposition.summary);
+  if (url.pathname === "/api/shot-quality/decomposition/players") {
+    const q = url.searchParams;
+    const key = `${q.get("season") ?? "2025-26"}:${q.get("side") ?? "offense"}:${q.get("sort") ?? "ts"}:${q.get("team") ?? "all"}:${q.get("minShots") ?? "1000"}`;
+    return json(response, 200, shotDecomposition.boards[key] ?? { ...shotDecomposition.unknown_season, season: q.get("season") });
+  }
+  if (url.pathname === "/api/defensive-shot-quality") return json(response, 200, shotDecomposition.defense_summary);
+  if (url.pathname === "/api/defensive-shot-quality/cards") {
+    const q = url.searchParams;
+    const key = `${q.get("season") ?? "2025-26"}:${q.get("kind") ?? "all"}:${q.get("sort") ?? "dsq"}:${q.get("team") ?? "all"}`;
+    return json(response, 200, shotDecomposition.cards[key] ?? { ...shotDecomposition.unknown_cards, season: q.get("season") });
+  }
+  if (url.pathname === "/api/shot-quality") return json(response, 200, shotQuality.summary);
+  if (url.pathname === "/api/shot-quality/players") {
+    const q = url.searchParams;
+    const key = `${q.get("season") ?? "2025-26"}:${q.get("sort") ?? "shot_making"}:${q.get("team") ?? "all"}:${q.get("minFga") ?? "300"}`;
+    return json(response, 200, shotQuality.boards[key] ?? { ...shotQuality.unknown_season, season: q.get("season") });
+  }
+  if (url.pathname === "/api/shot-quality/player") return json(response, 200, shotQuality.default_player);
+  if (url.pathname === "/api/zts") return json(response, 200, zts.summary);
+  if (url.pathname === "/api/zts/leaderboard") {
+    const season = url.searchParams.get("season") ?? "2025-26";
+    if (season === "all") return json(response, 200, zts.top);
+    return json(response, 200, zts.boards[`${season}:${url.searchParams.get("sort") ?? "zts"}`] ?? { ...zts.unknown_season, season });
+  }
+  if (url.pathname === "/api/zts/teams") {
+    const season = url.searchParams.get("season") ?? "2025-26";
+    return json(response, 200, season === zts.teams.season ? zts.teams : { status: "unknown", season, seasons: zts.teams.seasons, reason: "No team playtype difficulty for this season: Synergy play types start in 2015-16, and 2026-27 has no play-type rows yet." });
+  }
+  if (url.pathname === "/api/zts/role-moves") {
+    const season = url.searchParams.get("season") ?? "2025-26";
+    return json(response, 200, season === zts.role_moves.season ? zts.role_moves : { status: "unknown", season, reason: "No zTS for this season: Synergy play types start in 2015-16." });
+  }
+  if (url.pathname === "/api/zts/player") {
+    const id = url.searchParams.get("playerId");
+    return json(response, 200, id ? zts.players[id] ?? { status: "unknown", player_id: id, player_name: `NBA player ${id}`, season: url.searchParams.get("season"), reason: "No rTS or play-type rows for this player in 2015-16 to 2025-26.", history: [], selection_rule: null } : zts.default_player);
+  }
+  if (url.pathname === "/api/projected-impact") return json(response, 200, projectedImpact.page);
+  if (url.pathname === "/api/metric-backtest") return json(response, 200, metricBacktest);
+  if (url.pathname === "/api/lineup-model") return json(response, 200, lineupPage);
+  if (url.pathname === "/api/lineup-model/players") return json(response, 200, lineupPlayers);
+  if (url.pathname === "/api/lineup-model/fit") {
+    // Real API answers for two fives; any other five is "not in the fit" (404), as the API says for unknown ids.
+    const five = url.searchParams.get("players") ?? "";
+    const known = [lineupFit, lineupFitAlt].find(fit => fit.players.map(p => p.player_id).join(",") === five);
+    return known ? json(response, 200, known) : json(response, 404, { detail: "Not in the 2026-27 fit" });
+  }
+  if (url.pathname === "/api/wingspan") return json(response, 200, r10Wingspan);
+  if (url.pathname.startsWith("/api/wingspan/nearest/")) {
+    const body = r10Nearest[url.pathname.split("/").at(-1)];
+    return body ? json(response, 200, body) : json(response, 404, { detail: "No combine record for this player since 2000." });
+  }
+  if (url.pathname === "/api/four-factors") return json(response, 200, r10FourFactors);
+  if (url.pathname.startsWith("/api/four-factors/seasons/")) {
+    const body = r10FourFactorSeasons[url.pathname.split("/").at(-1)];
+    return body ? json(response, 200, body) : json(response, 404, { detail: "No inputs for this season" });
+  }
+  if (url.pathname === "/api/draft") return json(response, 200, draftSummary);
+  if (url.pathname === "/api/draft/combine") return json(response, 200, draftCombine);
+  if (url.pathname === "/api/draft/rookies") return json(response, 200, draftRookies);
+  if (url.pathname.startsWith("/api/draft/rookies/")) {
+    const id = url.pathname.split("/").at(-1);
+    return id === draftRookie.rookie.player_id ? json(response, 200, draftRookie) : json(response, 200, { ...draftRookie, rookie: draftRookies.rookies.find(r => r.player_id === id) ?? draftRookie.rookie, comparisons: [] });
+  }
+  if (url.pathname.startsWith("/api/draft/classes/")) {
+    const body = draftClasses[url.pathname.split("/").at(-1)];
+    return body ? json(response, 200, body) : json(response, 404, { detail: "No such draft class" });
+  }
+  if (url.pathname.startsWith("/api/projected-impact/players/")) {
+    const detail = projectedImpact.players[url.pathname.split("/").at(-1)];
+    return detail ? json(response, 200, detail) : json(response, 404, { detail: "No frozen projection for this player" });
+  }
+  if (url.pathname === "/api/win-probability") return json(response, 200, winProbability.page);
+  if (url.pathname === "/api/win-probability/wpa") {
+    const table = winProbability.wpa[url.searchParams.get("season")];
+    return table ? json(response, 200, table) : json(response, 404, { detail: "No win probability added for this season" });
+  }
   if (url.pathname === "/api/live") return json(response, 200, { namespace: "espn", resource: `slate:${url.searchParams.get("slate_date")}`, status: "observed", final: false, stale: false, age_seconds: 0, acquired_at: null, source_time: null, http_date: null, refresh_seconds: 600, error: null, observation_id: null, content_sha256: null, data: { games: [], calendar: [] } });
   // Standings (row 23): no ESPN standings in the fixture; standings specs route their own. Answering
   // (rather than leaving the request open) lets pages that show division standings settle.
@@ -649,7 +757,7 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/lookup") {
     const q = (url.searchParams.get("q") || "").toLowerCase();
     const kinds = (url.searchParams.get("kinds") || "player,team,page").split(",");
-    const players = [["23","Fixture Star"],["24","Fixture Guard"],["1627751","Fixture Shooter"],["1630567","Scottie Barnes"],["1628389","Bam Adebayo"], ...[1,2,3,4,5].map(n=>[String(n),`Fixture Player ${n}`])];
+    const players = [["23","Fixture Star"],["24","Fixture Guard"],["1627751","Fixture Shooter"],["1630567","Scottie Barnes"],["1628389","Bam Adebayo"],["202695","Kawhi Leonard"], ...[1,2,3,4,5].map(n=>[String(n),`Fixture Player ${n}`])];
     const teams = [["TOR","Toronto Raptors"],["100","Toronto Raptors"],["200","Boston Celtics"]];
     const items = [...players.map(([id,name])=>({id,canonical_id:id,display_name:name,kind:"player",portrait_fallback:"FP",subtitle:"Synthetic browser fixture",availability:{status:"available",has_current_season:true,seasons:["2023-24","2025-26"]},team_association:{basis:"selected_scope",teams:["TOR"]},destination_url:`/players/${id}`})), ...teams.map(([id,name])=>({id:`team-${id}`,canonical_id:id,display_name:name,kind:"team",portrait_fallback:id === "200" ? "BOS" : "TOR",subtitle:"Synthetic browser fixture",destination_url:`/teams/${id}`}))].filter(item=>kinds.includes(item.kind) && (!q || item.canonical_id.toLowerCase() === q || item.display_name.toLowerCase().includes(q))).slice(0,Number(url.searchParams.get("limit") || 10));
     return json(response,200,{query:{raw:q,normalized:q,tokens:[],version:"fixture-pf04"},catalog_version:"fixture-pf04",total_matches:items.length,items});
@@ -723,6 +831,15 @@ createServer(async (request, response) => {
     for await (const chunk of request) raw += chunk;
     const body = JSON.parse(raw);
     const query = body.query;
+    // The Draft Classes page's rookie table: the fixture rookies who have played, as Stats season lines.
+    if (body.presentation?.draft_year === 2026) {
+      const items = draftRookies.rookies.filter(r => r.comparison).map(r => {
+        const line = r.comparison.line, game = line.minutes / line.games / 36, metrics = { gp: line.games, min: line.minutes, min_per_game: line.mpg, ts_pct: line.ts, efg_pct: 0.5, fg2_pct: 0.5, fg3_pct: null, ft_pct: 0.75 };
+        for (const [key, per36] of Object.entries({ pts: line.pts36, reb: line.reb36, ast: line.ast36, stl: line.stl36, blk: line.blk36, tov: line.tov36, oreb: 1, dreb: 2, fg3a: 3, fta: 4 })) Object.assign(metrics, { [`${key}_per_36`]: per36, [`${key}_per_game`]: per36 * game, [key]: per36 * game * line.games });
+        return { player_id: r.player_id, player_name: r.name, teams: [r.team], metrics };
+      });
+      return json(response, 200, { context: workbenchContext, query, total_eligible_players: items.length, total_output_players: items.length, output_offset: 0, items, next_cursor: null, has_more: false, warnings: [] });
+    }
     // Estimated positions and draft classes the server would resolve for the fixture players.
     const fixturePositions = { 23: "SF", 24: "PG" }, fixtureDrafts = { 23: 2018, 24: 2020 };
     const darkoAvailable = query.window?.kind === "season" && query.before_date > "2026-04-12";

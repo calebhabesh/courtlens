@@ -1,0 +1,210 @@
+{
+ "all_equal": true,
+ "backtest_lineup_2023_24": {
+  "games": 1216,
+  "recomputed": 14.61994664223828,
+  "served": 14.61994664223828
+ },
+ "counts": {
+  "2014-15": {
+   "recomputed": {
+    "games": 1208,
+    "stints": 57810,
+    "usable_possessions": 111974.0,
+    "usable_stints": 31366
+   },
+   "served": {
+    "games": 1208,
+    "stints": 57810,
+    "usable_possessions": 111974.0,
+    "usable_stints": 31366
+   }
+  },
+  "2015-16": {
+   "recomputed": {
+    "games": 1219,
+    "stints": 59475,
+    "usable_possessions": 115111.5,
+    "usable_stints": 31876
+   },
+   "served": {
+    "games": 1219,
+    "stints": 59475,
+    "usable_possessions": 115111.5,
+    "usable_stints": 31876
+   }
+  },
+  "2016-17": {
+   "recomputed": {
+    "games": 1206,
+    "stints": 58726,
+    "usable_possessions": 114565.0,
+    "usable_stints": 31418
+   },
+   "served": {
+    "games": 1206,
+    "stints": 58726,
+    "usable_possessions": 114565.0,
+    "usable_stints": 31418
+   }
+  },
+  "2017-18": {
+   "recomputed": {
+    "games": 1217,
+    "stints": 59715,
+    "usable_possessions": 116548.5,
+    "usable_stints": 31652
+   },
+   "served": {
+    "games": 1217,
+    "stints": 59715,
+    "usable_possessions": 116548.5,
+    "usable_stints": 31652
+   }
+  },
+  "2018-19": {
+   "recomputed": {
+    "games": 1227,
+    "stints": 61936,
+    "usable_possessions": 120992.5,
+    "usable_stints": 32798
+   },
+   "served": {
+    "games": 1227,
+    "stints": 61936,
+    "usable_possessions": 120992.5,
+    "usable_stints": 32798
+   }
+  },
+  "2019-20": {
+   "recomputed": {
+    "games": 1033,
+    "stints": 54694,
+    "usable_possessions": 102135.0,
+    "usable_stints": 28337
+   },
+   "served": {
+    "games": 1033,
+    "stints": 54694,
+    "usable_possessions": 102135.0,
+    "usable_stints": 28337
+   }
+  },
+  "2020-21": {
+   "recomputed": {
+    "games": 1074,
+    "stints": 53533,
+    "usable_possessions": 104918.5,
+    "usable_stints": 27906
+   },
+   "served": {
+    "games": 1074,
+    "stints": 53533,
+    "usable_possessions": 104918.5,
+    "usable_stints": 27906
+   }
+  },
+  "2021-22": {
+   "recomputed": {
+    "games": 1228,
+    "stints": 62284,
+    "usable_possessions": 118719.5,
+    "usable_stints": 32248
+   },
+   "served": {
+    "games": 1228,
+    "stints": 62284,
+    "usable_possessions": 118719.5,
+    "usable_stints": 32248
+   }
+  },
+  "2022-23": {
+   "recomputed": {
+    "games": 1229,
+    "stints": 62265,
+    "usable_possessions": 120209.0,
+    "usable_stints": 32197
+   },
+   "served": {
+    "games": 1229,
+    "stints": 62265,
+    "usable_possessions": 120209.0,
+    "usable_stints": 32197
+   }
+  },
+  "2023-24": {
+   "recomputed": {
+    "games": 1216,
+    "stints": 58652,
+    "usable_possessions": 118078.0,
+    "usable_stints": 31365
+   },
+   "served": {
+    "games": 1216,
+    "stints": 58652,
+    "usable_possessions": 118078.0,
+    "usable_stints": 31365
+   }
+  },
+  "2024-25": {
+   "recomputed": {
+    "games": 1212,
+    "stints": 61514,
+    "usable_possessions": 118172.5,
+    "usable_stints": 32005
+   },
+   "served": {
+    "games": 1212,
+    "stints": 61514,
+    "usable_possessions": 118172.5,
+    "usable_stints": 32005
+   }
+  },
+  "2025-26": {
+   "recomputed": {
+    "games": 1227,
+    "stints": 68925,
+    "usable_possessions": 119838.0,
+    "usable_stints": 34057
+   },
+   "served": {
+    "games": 1227,
+    "stints": 68925,
+    "usable_possessions": 119838.0,
+    "usable_stints": 34057
+   }
+  }
+ },
+ "counts_equal": true,
+ "gain_2025_26": {
+  "recomputed": {
+   "gain": -1.2839001669817662e-05,
+   "high": -5.856105960688758e-06,
+   "low": -1.9877528418987823e-05
+  },
+  "served": {
+   "gain": -1.2839001698239372e-05,
+   "high": -5.8561059613993e-06,
+   "low": -1.9877528432843405e-05
+  }
+ },
+ "lineup_2025_26": {
+  "recomputed": 96.07741771881895,
+  "served": 96.07741771881895
+ },
+ "ridge_2025_26": {
+  "recomputed": 96.07740487981728,
+  "served": 96.07740487981725
+ },
+ "tool_default_five": {
+  "five": [
+   "1628978",
+   "1630162",
+   "1630183",
+   "203497",
+   "203944"
+  ],
+  "opponents": 190,
+  "recomputed_net": 2.6963817767316614
+ }
+}

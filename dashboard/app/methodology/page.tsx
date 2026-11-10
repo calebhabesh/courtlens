@@ -74,7 +74,7 @@ export default async function MethodologyPage() {
 
       <ArticleSection id="tracking-feeds" title="Tracking, play types, matchups and WOWY" label="Tracking and WOWY methodology">
         <p>Tracking, defended shots, hustle, Synergy play types, season matchups and the Draft Combine are NBA Stats season totals read from the public hoopR mirror (CC BY 4.0) and stored as immutable datasets. They have no per-game dates, so they are shown on their own pages and never joined into date-windowed Stats or forecasting features. CourtLens has no frame-level tracking data; Spatial EPV was removed for that reason.</p>
-        <p>Defensive Matchups compares the shots a player defended (NBA tracking&apos;s closest defender at the shot) with the shooters&apos; normal FG% on those shots. Makes below expected = expected makes minus actual makes. Matchup points are the offensive player&apos;s points per 100 partial possessions while that defender was the tracked matchup. All three describe results, not blame or causal defense.</p>
+        <p>Defensive Matchups (the Tracking page linked from Defensive Shot Quality) compares the shots a player defended (NBA tracking&apos;s closest defender at the shot) with the shooters&apos; normal FG% on those shots. Makes below expected = expected makes minus actual makes. Matchup points are the offensive player&apos;s points per 100 partial possessions while that defender was the tracked matchup. All three describe results, not blame or causal defense.</p>
         <p>Play-type-adjusted scoring is points per 100 play-type possessions above or below what the whole league scored on the same mix of play types. Play types under the source&apos;s minimum are not listed for a player.</p>
         <p>WOWY splits each team&apos;s possessions into four groups for a pair of players (both on, either one without the other, neither on) using the sealed, event-accepted public play-by-play stints. The four groups always add up to the team total. A group under 200 possessions at either end is a small sample and is not compared. Splits are descriptive: teammates, opponents and game state differ between them.</p>
         <p>Percentiles on these pages compare qualified players in the same season and phase (for example 500 minutes for tracking, 250 play-type possessions, 20 games and 100 defended shots). Columns that describe style or volume, such as turnovers per game, are not shaded as better or worse.</p>
@@ -143,6 +143,7 @@ export default async function MethodologyPage() {
           <li><Link href="/forecasts">Points Forecasts</Link>: the forecast protocol and ledger.</li>
           <li><Link href="/evaluation">Evaluation Archive</Link>: out-of-time model evaluation.</li>
           <li><Link href="/investigations">Saved Investigations</Link>: retained, reproducible results.</li>
+          <li><Link href="/research/case-studies">Case Studies</Link>: reproducible investigations of stints and forecasts.</li>
           <li><Link href="/data-status">Data Status</Link>: source coverage and lineage.</li>
         </ul>
       </ArticleSection>

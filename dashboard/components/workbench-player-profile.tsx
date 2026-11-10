@@ -210,8 +210,6 @@ export function WorkbenchPlayerProfile({
   const totalsSeason = isTotalsSeason(catalog, context.season);
   const explore: { label: string; href: string; icon: IconName }[] = [
     { label: "Recent Games", href: `/last-games?playerId=${player.id}&${scopeParams}`, icon: "history" },
-    { label: "Workload Trends", href: `/research/trends?playerId=${player.id}&${scopeParams}`, icon: "trend" },
-    { label: "Distributions", href: `/research/distributions?playerId=${player.id}&${scopeParams}`, icon: "chart" },
     { label: "Player Twins", href: `/similar-players?playerId=${player.id}&season=${context.season}`, icon: "fingerprint" },
     { label: "Compare Head to Head", href: `/compare?playerA=${player.id}&${scopeParams}`, icon: "swap" },
     { label: "Wingspan", href: `/wingspan?playerId=${player.id}`, icon: "scale" },

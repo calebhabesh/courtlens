@@ -73,16 +73,20 @@ export interface LookupInputProps extends LookupScope {
   /** Minimum floating result width, bounded by the viewport. */
   dropdownMinWidth?: number;
   clearLabel?: string;
+  /** The clear button inside the field; a caller with its own way out can leave it off. */
+  clearable?: boolean;
   onClear?: () => void;
   /** False: focus alone (a programmatic one included) keeps results closed until the field is
       pressed, typed in or arrowed into (row 3, 69). */
   openOnFocus?: boolean;
+  /** Heading over a fixed candidate list (RD08: "Draft classes"); the kind's own heading by default. */
+  groupLabel?: string;
 }
 
 const RECENT_IN_PICKER = 3;
 
 /** Form-safe lookup. Enter only commits an explicitly highlighted candidate. */
-export function LookupInput({ label, value, onChange, onSelect, onSubmitText, kinds, candidates, excludedIds = [], limit = 10, debounceMs = 120, placeholder = "Search by name", inputRef, autoFocus, required, disabled, compactResults = false, portalDropdown = false, dropdownMinWidth = 320, clearLabel, onClear, openOnFocus = true, ...scope }: LookupInputProps) {
+export function LookupInput({ label, value, onChange, onSelect, onSubmitText, kinds, candidates, excludedIds = [], limit = 10, debounceMs = 120, placeholder = "Search by name", inputRef, autoFocus, required, disabled, compactResults = false, portalDropdown = false, dropdownMinWidth = 320, clearLabel, onClear, clearable = true, openOnFocus = true, groupLabel, ...scope }: LookupInputProps) {
   const resolved = useLookupScope(scope);
   const key = buildLookupCacheKey({ query: value, ...resolved, kinds, limit }) + JSON.stringify(candidates ?? null);
   const id = useId();
@@ -115,7 +119,7 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
   function close() { invalidate(); setOpen(false); }
   function choose(item: LookupItem) { if (!candidates && item.kind === "player") rememberRecentSearch(item); onSelect(item); ref.current?.focus(); close(); }
   /** Each result's heading: recents, then season leaders, then players, teams and pages. */
-  const groupOf = (item: LookupItem, index: number) => index < recent.length ? "Recent"
+  const groupOf = (item: LookupItem, index: number) => groupLabel && candidates ? groupLabel : index < recent.length ? "Recent"
     : item.match_basis === "leader" ? `Season leaders${resolved.season ? ` · ${resolved.season}` : ""}`
     : item.kind === "player" ? "Players" : item.kind === "team" ? "Teams" : "Pages and tools";
   useEffect(() => {
@@ -207,7 +211,7 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
           else if (event.key === "Escape") { if(open) event.preventDefault(); close(); }
           else if (event.key === "Tab") close();
         }} />
-      {value && !disabled && <IconButton size="sm" variant="ghost" icon="close" label={clearLabel ?? `Clear ${label}`} onClick={() => {change(""); onClear?.(); ref.current?.focus();}} />}
+      {clearable && value && !disabled && <IconButton size="sm" variant="ghost" icon="close" label={clearLabel ?? `Clear ${label}`} onClick={() => {change(""); onClear?.(); ref.current?.focus();}} />}
     </div>
     <span id={`${id}-status`} role="status" aria-live="polite" className="sr-only">{open && !loading && !ime ? error ?? `${items.length} suggestions. Use arrow keys to choose, then Enter.` : ""}</span>
     {portalDropdown ? position && dropdown && createPortal(dropdown, document.body) : dropdown}

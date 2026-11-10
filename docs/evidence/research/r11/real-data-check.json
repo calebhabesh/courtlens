@@ -1,0 +1,313 @@
+{
+  "facts": [
+    {
+      "id": "wp.logLoss",
+      "shown": "0.4028",
+      "source": 0.4028,
+      "equal": true
+    },
+    {
+      "id": "wp.baselineLogLoss",
+      "shown": "0.4157",
+      "source": 0.4157,
+      "equal": true
+    },
+    {
+      "id": "wp.calibration",
+      "shown": "0.0083",
+      "source": 0.0083,
+      "equal": true
+    },
+    {
+      "id": "wp.games",
+      "shown": "2,439",
+      "source": 2439,
+      "equal": true
+    },
+    {
+      "id": "wp.seasons",
+      "shown": "2024-25 and 2025-26",
+      "source": "2024-25 and 2025-26",
+      "equal": true
+    },
+    {
+      "id": "bt.timeDecayRmse",
+      "shown": "13.52",
+      "source": 13.52,
+      "equal": true
+    },
+    {
+      "id": "bt.teamNetRmse",
+      "shown": "14.32",
+      "source": 14.32,
+      "equal": true
+    },
+    {
+      "id": "bt.gain",
+      "shown": "+0.80",
+      "source": 0.8,
+      "equal": true
+    },
+    {
+      "id": "bt.gainLow",
+      "shown": "+0.72",
+      "source": 0.72,
+      "equal": true
+    },
+    {
+      "id": "bt.gainHigh",
+      "shown": "+0.88",
+      "source": 0.88,
+      "equal": true
+    },
+    {
+      "id": "bt.games",
+      "shown": "11,979",
+      "source": 11979,
+      "equal": true
+    },
+    {
+      "id": "bt.seasons",
+      "shown": "2016-17 to 2025-26",
+      "source": "2016-17 to 2025-26",
+      "equal": true
+    },
+    {
+      "id": "pi.gain",
+      "shown": "+4.38",
+      "source": 4.38,
+      "equal": true
+    },
+    {
+      "id": "pi.gainLow",
+      "shown": "+3.25",
+      "source": 3.25,
+      "equal": true
+    },
+    {
+      "id": "pi.gainHigh",
+      "shown": "+5.50",
+      "source": 5.5,
+      "equal": true
+    },
+    {
+      "id": "pi.seasons",
+      "shown": "2024-25 and 2025-26",
+      "source": "2024-25 and 2025-26",
+      "equal": true
+    },
+    {
+      "id": "sq.brier",
+      "shown": "2.56",
+      "source": 2.56,
+      "equal": true
+    },
+    {
+      "id": "sq.brierLow",
+      "shown": "2.44",
+      "source": 2.44,
+      "equal": true
+    },
+    {
+      "id": "sq.brierHigh",
+      "shown": "2.67",
+      "source": 2.67,
+      "equal": true
+    },
+    {
+      "id": "sq.seasons",
+      "shown": "2024-25 and 2025-26",
+      "source": "2024-25 and 2025-26",
+      "equal": true
+    },
+    {
+      "id": "sn.ftAttempts",
+      "shown": "27",
+      "source": 27,
+      "equal": true
+    },
+    {
+      "id": "sn.tsAttempts",
+      "shown": "169",
+      "source": 169,
+      "equal": true
+    },
+    {
+      "id": "sn.threeLargestRho",
+      "shown": "0.486",
+      "source": 0.486,
+      "equal": true
+    },
+    {
+      "id": "sn.threeLargestN",
+      "shown": "480",
+      "source": 480,
+      "equal": true
+    },
+    {
+      "id": "sn.threeShrinkCut",
+      "shown": "53%",
+      "source": 53,
+      "equal": true
+    },
+    {
+      "id": "sn.ftShrinkCut",
+      "shown": "32%",
+      "source": 32,
+      "equal": true
+    },
+    {
+      "id": "sf.r2",
+      "shown": "0.952",
+      "source": 0.952,
+      "equal": true
+    },
+    {
+      "id": "sd.sqR",
+      "shown": "0.451",
+      "source": 0.451,
+      "equal": true
+    },
+    {
+      "id": "sd.makeR",
+      "shown": "0.349",
+      "source": 0.349,
+      "equal": true
+    },
+    {
+      "id": "sd.diff",
+      "shown": "+0.10",
+      "source": 0.1,
+      "equal": true
+    },
+    {
+      "id": "sd.diffLow",
+      "shown": "−0.02",
+      "source": -0.02,
+      "equal": true
+    },
+    {
+      "id": "sd.diffHigh",
+      "shown": "+0.21",
+      "source": 0.21,
+      "equal": true
+    },
+    {
+      "id": "zts.trackingGain",
+      "shown": "+0.135",
+      "source": 0.135,
+      "equal": true
+    },
+    {
+      "id": "zts.predictiveGain",
+      "shown": "−0.134",
+      "source": -0.134,
+      "equal": true
+    },
+    {
+      "id": "lm.ridgeEdge",
+      "shown": "0.000011",
+      "source": -0.000011,
+      "equal": true
+    },
+    {
+      "id": "dv.pick1",
+      "shown": "24.8",
+      "source": 24.8,
+      "equal": true
+    },
+    {
+      "id": "dv.pick2",
+      "shown": "17.5",
+      "source": 17.5,
+      "equal": true
+    },
+    {
+      "id": "ws.r",
+      "shown": "+0.21",
+      "source": 0.21,
+      "equal": true
+    },
+    {
+      "id": "ws.n",
+      "shown": "822",
+      "source": 822,
+      "equal": true
+    }
+  ],
+  "pages": [
+    {
+      "route": "/methodology/learning",
+      "width": 1440,
+      "compared": 141,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0
+    },
+    {
+      "route": "/whats-new",
+      "width": 1440,
+      "compared": 63,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0
+    },
+    {
+      "route": "/stats/glossary",
+      "width": 1440,
+      "compared": 8,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0
+    },
+    {
+      "route": "/stats",
+      "width": 1440,
+      "compared": 1,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0
+    },
+    {
+      "route": "/methodology/learning",
+      "width": 390,
+      "compared": 141,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0
+    },
+    {
+      "route": "/whats-new",
+      "width": 390,
+      "compared": 63,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0
+    },
+    {
+      "route": "/stats/glossary",
+      "width": 390,
+      "compared": 8,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0
+    },
+    {
+      "route": "/stats",
+      "width": 390,
+      "compared": 1,
+      "mismatches": [],
+      "errors": [],
+      "broken": [],
+      "overflow": 0
+    }
+  ],
+  "measuredBoxes": 12
+}

@@ -37,7 +37,8 @@ export function useFeed<T>(inputs: readonly (string | null)[], load: (signal: Ab
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, attempt]);
   const current = state?.key === key ? state : null;
-  return { data: current?.data ?? null, error: current?.error ?? "", loading: current === null, retry: () => setAttempt(n => n + 1) };
+  // `stale` is the last result, kept while a new one loads, so a page can hold its layout instead of jumping.
+  return { data: current?.data ?? null, error: current?.error ?? "", loading: current === null, stale: state?.data ?? null, retry: () => setAttempt(n => n + 1) };
 }
 
 /** Season and phase pickers limited to the scopes the source actually observed. */

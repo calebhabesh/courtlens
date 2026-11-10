@@ -1,0 +1,301 @@
+{
+ "2014-15": {
+  "archive_sha256": "76a5398235900fd5b914eaeb1464e76fc05517184d04c503404a16a44d14f741",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [
+   {
+    "counted": 216,
+    "final": 215,
+    "game_id": "0021400072"
+   },
+   {
+    "counted": 242,
+    "final": 241,
+    "game_id": "0021400215"
+   },
+   {
+    "counted": 202,
+    "final": 201,
+    "game_id": "0021400615"
+   },
+   {
+    "counted": 214,
+    "final": 213,
+    "game_id": "0021400769"
+   },
+   {
+    "counted": 210,
+    "final": 209,
+    "game_id": "0021400814"
+   },
+   {
+    "counted": 231,
+    "final": 230,
+    "game_id": "0021400855"
+   },
+   {
+    "counted": 208,
+    "final": 207,
+    "game_id": "0021401181"
+   }
+  ],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 30,
+  "unattributed_rows": {},
+  "unknown_ft_sub_types": {}
+ },
+ "2015-16": {
+  "archive_sha256": "7bbb1e8a1512dd2877be97cb73d990c424a2f7488137ca5d7a6285e2afea873e",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [
+   {
+    "counted": 292,
+    "final": 291,
+    "game_id": "0021500391"
+   },
+   {
+    "counted": 207,
+    "final": 206,
+    "game_id": "0021500594"
+   },
+   {
+    "counted": 215,
+    "final": 214,
+    "game_id": "0021500627"
+   },
+   {
+    "counted": 213,
+    "final": 212,
+    "game_id": "0021500761"
+   },
+   {
+    "counted": 225,
+    "final": 224,
+    "game_id": "0021500765"
+   },
+   {
+    "counted": 232,
+    "final": 226,
+    "game_id": "0021500916"
+   },
+   {
+    "counted": 201,
+    "final": 200,
+    "game_id": "0021500965"
+   },
+   {
+    "counted": 212,
+    "final": 211,
+    "game_id": "0021501180"
+   }
+  ],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 30,
+  "unattributed_rows": {},
+  "unknown_ft_sub_types": {}
+ },
+ "2016-17": {
+  "archive_sha256": "6c94890f389abe5af085ff19a26a80e7fe0d205c55dc201aefaa078a887540f4",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [
+   {
+    "counted": 177,
+    "final": 176,
+    "game_id": "0021600026"
+   },
+   {
+    "counted": 212,
+    "final": 211,
+    "game_id": "0021600158"
+   },
+   {
+    "counted": 235,
+    "final": 234,
+    "game_id": "0021600344"
+   },
+   {
+    "counted": 201,
+    "final": 200,
+    "game_id": "0021600478"
+   },
+   {
+    "counted": 195,
+    "final": 194,
+    "game_id": "0021600487"
+   },
+   {
+    "counted": 219,
+    "final": 218,
+    "game_id": "0021600528"
+   },
+   {
+    "counted": 184,
+    "final": 183,
+    "game_id": "0021600770"
+   },
+   {
+    "counted": 205,
+    "final": 204,
+    "game_id": "0021601215"
+   }
+  ],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 30,
+  "unattributed_rows": {},
+  "unknown_ft_sub_types": {}
+ },
+ "2017-18": {
+  "archive_sha256": "e9fedc33337e6a34dc4373bc5138e742e6bbcf09477b34568d79588dead7e62c",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [
+   {
+    "counted": 248,
+    "final": 227,
+    "game_id": "0021700025"
+   },
+   {
+    "counted": 241,
+    "final": 174,
+    "game_id": "0021700211"
+   }
+  ],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 30,
+  "unattributed_rows": {},
+  "unknown_ft_sub_types": {}
+ },
+ "2018-19": {
+  "archive_sha256": "a8c05607863b0bb0da51ed65fc89866cbb5c1954f7951ce00ed05f2ad178097d",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 30,
+  "unattributed_rows": {},
+  "unknown_ft_sub_types": {}
+ },
+ "2019-20": {
+  "archive_sha256": "3fc651e4c294e231723fa097dca2cf938dd868ee2b9a6111f22ab9c0728e89dc",
+  "free_throw_rows_unclassified": 0,
+  "games": 1059,
+  "games_points_differ_from_final_score": [],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 30,
+  "unattributed_rows": {},
+  "unknown_ft_sub_types": {}
+ },
+ "2020-21": {
+  "archive_sha256": "8bbd2406d741f8247db9eec222bb1655ea699edb60907d3851a048b8ea7a798d",
+  "free_throw_rows_unclassified": 0,
+  "games": 1080,
+  "games_points_differ_from_final_score": [],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 31,
+  "unattributed_rows": {
+   "0": {
+    "games": 2,
+    "tov": 2
+   }
+  },
+  "unknown_ft_sub_types": {}
+ },
+ "2021-22": {
+  "archive_sha256": "f44ec8a4a9864732fca66943ae4d06a06ef98ba3932571c15a23ecae644f84c4",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [
+   {
+    "counted": 193,
+    "final": 191,
+    "game_id": "0022100028"
+   },
+   {
+    "counted": 234,
+    "final": 232,
+    "game_id": "0022100298"
+   }
+  ],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 31,
+  "unattributed_rows": {
+   "0": {
+    "games": 1,
+    "tov": 1
+   }
+  },
+  "unknown_ft_sub_types": {}
+ },
+ "2022-23": {
+  "archive_sha256": "42c24abf0abbc0ccef00addaba4b8c76df230a0ff3c0e5b301353307941fd04c",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 31,
+  "unattributed_rows": {
+   "0": {
+    "games": 1,
+    "tov": 1
+   }
+  },
+  "unknown_ft_sub_types": {}
+ },
+ "2023-24": {
+  "archive_sha256": "3a6976219b87fb50cecf8b2c54cb2af110f2f013ed8368d694035806802c8b04",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [
+   {
+    "counted": 234,
+    "final": 231,
+    "game_id": "0022301202"
+   }
+  ],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 30,
+  "unattributed_rows": {},
+  "unknown_ft_sub_types": {}
+ },
+ "2024-25": {
+  "archive_sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 30,
+  "unattributed_rows": {},
+  "unknown_ft_sub_types": {}
+ },
+ "2025-26": {
+  "archive_sha256": "790a01ea3f0b2f8335d96bd687e21501551fc8cdea3ada83457ee3208a940671",
+  "free_throw_rows_unclassified": 0,
+  "games": 1230,
+  "games_points_differ_from_final_score": [
+   {
+    "counted": 235,
+    "final": 115,
+    "game_id": "0022500232"
+   }
+  ],
+  "games_without_final_score": [],
+  "no_turnover_rows": 0,
+  "teams": 30,
+  "unattributed_rows": {},
+  "unknown_ft_sub_types": {}
+ }
+}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { SixFactorView } from "@/components/six-factor-view";
+import { SixFactorResearch } from "@/components/six-factor-research";
 
-export const metadata: Metadata = { title: "Six-Factor · RAPM Research" };
+export const metadata: Metadata = { title: "Six-Factor RAPM" };
 
-export default function Page() { return <Suspense fallback={null}><SixFactorView /></Suspense>; }
+export default function Page() { return <Suspense fallback={null}><SixFactorResearch /></Suspense>; }

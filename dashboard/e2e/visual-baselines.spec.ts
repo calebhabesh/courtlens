@@ -207,7 +207,7 @@ for (const view of WIDTHS) test.describe(`FO12 baselines ${view.name}`, () => {
     await expect(page.getByRole("region", { name: "Registered research result" })).toBeVisible();
     await settle(page); await expect(page).toHaveScreenshot(`expected-shots-${view.name}.png`, shot);
   });
-  for (const [name, path, ready] of [["forecasts", "/forecasts", "Prespecified Out-of-Time Error Slices"], ["evaluation", "/evaluation", "Final Test · 2023–24"], ["case-studies", "/research/case-studies", "Mid-Season Trade & Jersey Stint Tracking"], ["calculator", "/calculator", "Scenario Output"]] as const) test(name, async ({ page }) => {
+  for (const [name, path, ready] of [["forecasts", "/forecasts", "Prespecified Out-of-Time Error Slices"], ["evaluation", "/evaluation", "Final Test · 2023–24"], ["case-studies", "/research/case-studies", "Mid-Season Trade & Jersey Stint Tracking"], ["calculator", "/calculator", "How this calculator is built"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByText(ready, { exact: true }).first()).toBeVisible();
     await settle(page); await expect(page).toHaveScreenshot(`${name}-${view.name}.png`, shot);
@@ -217,7 +217,7 @@ for (const view of WIDTHS) test.describe(`FO12 baselines ${view.name}`, () => {
 // FO13: Article template pages (Settings, Methodology, What's New) and Data Status on the mock API.
 for (const view of WIDTHS) test.describe(`FO13 baselines ${view.name}`, () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
-  for (const [name, path, ready] of [["settings", "/settings", "Background worker"], ["data-status", "/data-status", "Background jobs"], ["methodology", "/methodology", "Principles"], ["whats-new", "/whats-new", "Open gates"]] as const) test(name, async ({ page }) => {
+  for (const [name, path, ready] of [["settings", "/settings", "Background worker"], ["data-status", "/data-status", "Background jobs"], ["methodology", "/methodology", "Principles"], ["whats-new", "/whats-new", "v1.6 Core pages redesigned"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByRole("heading", { name: ready, exact: true })).toBeVisible();
     await settle(page); await expect(page).toHaveScreenshot(`${name}-${view.name}.png`, shot);
@@ -249,9 +249,9 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
 // PC11: former gate pages on first load with no URL parameters (fictional e2e/pc11-fixtures.mjs).
 for (const view of WIDTHS) test.describe(`PC11 populated pages ${view.name}`, () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
-  for (const [name, path, ready] of [["defensive-matchups", "/research/defensive-matchups", "Makes below expected, top 12"], ["player-matchups", "/matchups", "Exposure"],
-    ["adjusted-shooting", "/research/shooting/adjusted", "Points per 100 above the play-type expectation"], ["six-factor", "/research/rapm/six-factor", "Offensive Shooting (oTS), top 15"],
-    ["combine", "/wingspan", "Wingspan versus barefoot height"],
+  for (const [name, path, ready] of [["defensive-matchups", "/research/defensive-matchups/tracking", "Makes below expected, top 12"], ["player-matchups", "/matchups", "Exposure"],
+    ["adjusted-shooting", "/research/shooting/adjusted", "Points per 100 above the play-type expectation"], ["six-factor", "/research/rapm/six-factor", "Net Efficiency vs Possession Control, 2025-26"],
+    ["combine", "/wingspan", "Positional Averages"],
     ["stats-tracking", "/stats/tracking", "Drives per game, top 12"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByText(ready, { exact: true }).first()).toBeVisible();

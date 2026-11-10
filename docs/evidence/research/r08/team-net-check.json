@@ -1,0 +1,78 @@
+{
+ "seasons": {
+  "2014-15": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2015-16": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2016-17": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2017-18": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2018-19": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2019-20": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2020-21": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2021-22": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2022-23": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2023-24": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2024-25": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  },
+  "2025-26": {
+   "teams": 30,
+   "api_teams": 30,
+   "max_abs_difference": 0.0,
+   "same_ids": true
+  }
+ },
+ "values": 360,
+ "max_abs_difference": 0.0
+}

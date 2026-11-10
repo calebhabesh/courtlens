@@ -1,0 +1,3399 @@
+{
+ "history_fits": [
+  {
+   "bpr": "unavailable",
+   "bpr_reason": "no admitted prior-season rating targets",
+   "cutoff": "2015-04-16",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 87.69904798466845,
+    "team": 87.9295854634166
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2014-15"
+   ],
+   "sha256": "d52b9a67198f490b4989e2a2dcca42b6112918ba9fdbca0f200288dd1ded6bfe"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2016-04-14",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 87.2002228716331,
+    "team": 87.20528757341998
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2015-16"
+   ],
+   "sha256": "6bb99bade56f4540a9af19d4db4fbd903986e397efe7c176272042e0e08eee9e"
+  },
+  {
+   "bpr": "unavailable",
+   "bpr_reason": "no admitted prior-season rating targets",
+   "cutoff": "2016-04-14",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 87.65290686990338,
+    "team": 87.8308658434013
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2014-15",
+    "2015-16"
+   ],
+   "sha256": "6ad5a9d69c16022c04f67e681dc00f1a87d25102fd1b76251c9de22415578054"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2017-04-13",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 87.92465715759693,
+    "team": 87.974576229494
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2016-17"
+   ],
+   "sha256": "bff2c0e84570692b0cba6e602f18a9ea52b48c5b9a51fc10b0586d9a790ff8dd"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2017-04-13",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 88.65154160281651,
+    "team": 88.68551487105239
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2015-16",
+    "2016-17"
+   ],
+   "sha256": "53b8b0df0eded1ecd0c24839539d180ac3a4ee397c986f2dbf3d2df87004c692"
+  },
+  {
+   "bpr": "unavailable",
+   "bpr_reason": "no admitted prior-season rating targets",
+   "cutoff": "2017-04-13",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 88.74049189527726,
+    "team": 88.8304559945226
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2014-15",
+    "2015-16",
+    "2016-17"
+   ],
+   "sha256": "b1174801620d0b12de729a0f7e93a4b9142125266e89c28a32c96b63fafe2f78"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2018-04-12",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 87.88052739578535,
+    "team": 87.98203218486094
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2017-18"
+   ],
+   "sha256": "6d5c37813212d0fa7e17a5b61799f998dfaca72841edf535cf975f2cebe4b549"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2018-04-12",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 88.50626260793129,
+    "team": 88.72846048783431
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2016-17",
+    "2017-18"
+   ],
+   "sha256": "ccf884a3d2694066694fd9ca28d0e847517fedf3bcae91a31028ebad5203973b"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2018-04-12",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 88.87066218904376,
+    "team": 89.08766157227936
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2015-16",
+    "2016-17",
+    "2017-18"
+   ],
+   "sha256": "1257f30aaccc787bc165ee7e093a1f2e36327d377f5ecea7f807feaf0bebe8c4"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2019-04-11",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 87.30441112640409,
+    "team": 87.45506040894104
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2018-19"
+   ],
+   "sha256": "a427e849aaa49deedbc7c0b2e1fabecdf909b1a1919896cb635d1e99bbc8151f"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2019-04-11",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 88.73625755660879,
+    "team": 88.98411078545148
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2017-18",
+    "2018-19"
+   ],
+   "sha256": "6daeb9db81cfbc78ad19c2c5153711f6d1ae5e71a7057567a28bb7984b83f1f1"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2019-04-11",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 88.69488376533045,
+    "team": 88.9808339274869
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2016-17",
+    "2017-18",
+    "2018-19"
+   ],
+   "sha256": "a8497195a8a5fcca1258d88581e9ae6d5ce014df79af3785fad9dfcd014770eb"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2020-08-15",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 91.31384407113104,
+    "team": 91.36389944873548
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2019-20"
+   ],
+   "sha256": "32b0acc5324fa1579b2c2b7c9b4c4736c1878fc497612acc73f54a58d00778c6"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2020-08-15",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 91.02528595516719,
+    "team": 91.05783920882963
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2018-19",
+    "2019-20"
+   ],
+   "sha256": "5ad084b82a66b9f04c3a914afc00b65c95bb40a6e0d2d204a70f0c43fc38f151"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2020-08-15",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 90.69822210985642,
+    "team": 90.83468496052603
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2017-18",
+    "2018-19",
+    "2019-20"
+   ],
+   "sha256": "7dca9e7be3857166cd6dbd22ff5dac5e0384bca49ca1decbb1320a44ddb69dff"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2021-05-17",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 88.61779919569311,
+    "team": 88.78454355246764
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2020-21"
+   ],
+   "sha256": "ae7d62e0ac32e807860614b0132c5c056cec900850544673d9e4103fbfc600f4"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2021-05-17",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 89.58696829611337,
+    "team": 89.70106411497875
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2019-20",
+    "2020-21"
+   ],
+   "sha256": "3f6e1de34fe57fd5fdf678d384f618873e31a9420f0fac6d1b3e355e85758adc"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2021-05-17",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 89.14254673567429,
+    "team": 89.40986548397886
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2018-19",
+    "2019-20",
+    "2020-21"
+   ],
+   "sha256": "50a568e345addad98452cc812e85d39786b185ae14dcf14816b6a726e0b193c2"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2022-04-11",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 90.0106682765518,
+    "team": 89.99581012629586
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2021-22"
+   ],
+   "sha256": "cfbb173daae1f6bb49261695dbd9c6724c8db12a53fff47a6e92d25f8da979cf"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2022-04-11",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 89.45584438816996,
+    "team": 89.5652555796049
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2020-21",
+    "2021-22"
+   ],
+   "sha256": "5eaa202bb3cc75a4094300a871426599af03efefbfe1126b8d4d8fdf3257167d"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2022-04-11",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 90.19937953701768,
+    "team": 90.36685880383872
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2019-20",
+    "2020-21",
+    "2021-22"
+   ],
+   "sha256": "3f6cf2b172b06e25655756eace14d15b1f1a886a5064d67b770c8eddfed4cecd"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2023-04-10",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 87.71820843270216,
+    "team": 88.01684782013258
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2022-23"
+   ],
+   "sha256": "ff8c4412980ff26d5aa8a00cbee0cf136c43afa29133874373090d966d89b6fa"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2023-04-10",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 88.24626829268189,
+    "team": 88.53806233671129
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2021-22",
+    "2022-23"
+   ],
+   "sha256": "179914960a08a395e27df67908257b9e1b3540b3dbe2ce6b65984f4dcd03b392"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2023-04-10",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 89.08184486350225,
+    "team": 89.34605758213104
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2020-21",
+    "2021-22",
+    "2022-23"
+   ],
+   "sha256": "f837d64724c3bf121f6199efa43b4e19a8224a3786fd0314053033ab05667968"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2024-04-15",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 90.02975938355016,
+    "team": 90.31884140793298
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2022-23",
+    "2023-24"
+   ],
+   "sha256": "a0b49573b27964b077ac24276a2dcbbd7494b2c09ec14bc16a7b7b8b86744c46"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2024-04-15",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 90.2274677747263,
+    "team": 90.48382793593449
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2021-22",
+    "2022-23",
+    "2023-24"
+   ],
+   "sha256": "92faf2feedca256c2dbee4c70cc9d3e1fdc53e639981b1aa7bdc30c62e82672f"
+  },
+  {
+   "bpr": "available",
+   "bpr_reason": null,
+   "cutoff": "2025-04-14",
+   "factor_alpha": 1000.0,
+   "margin_rmse": {
+    "player": 91.42521577088533,
+    "team": 91.69609186312667
+   },
+   "rapm_alpha": 1000.0,
+   "seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25"
+   ],
+   "sha256": "9e030f42f4bfc9c0835f2a3d6033f68f32838dcff7b2136a3beaa1e3efcb58dc"
+  }
+ ],
+ "intervals": [
+  {
+   "fit_sha256": "d52b9a67198f490b4989e2a2dcca42b6112918ba9fdbca0f200288dd1ded6bfe",
+   "kind": "one_year",
+   "point_check_max": 1.0995233556965189e-07,
+   "season": "2014-15",
+   "sha256": "cfa07a39eb29c7c9937fda0cebe97a77a3f1c8677180ab18b8faab08dc23fa86",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 3.821881855060608,
+     "qualified": 360,
+     "share_excluding_zero": 0.33611111111111114
+    },
+    "rapm:offense": {
+     "median_width": 3.7857095872420023,
+     "qualified": 360,
+     "share_excluding_zero": 0.3638888888888889
+    },
+    "rapm:total": {
+     "median_width": 5.44413051031359,
+     "qualified": 360,
+     "share_excluding_zero": 0.4166666666666667
+    },
+    "reb:defense": {
+     "median_width": 1.538980929499707,
+     "qualified": 250,
+     "share_excluding_zero": 0.356
+    },
+    "reb:offense": {
+     "median_width": 1.5722083539398208,
+     "qualified": 250,
+     "share_excluding_zero": 0.408
+    },
+    "tov:defense": {
+     "median_width": 1.1512173235058778,
+     "qualified": 368,
+     "share_excluding_zero": 0.33695652173913043
+    },
+    "tov:offense": {
+     "median_width": 1.1491974377728642,
+     "qualified": 368,
+     "share_excluding_zero": 0.375
+    },
+    "ts:defense": {
+     "median_width": 2.5176274253928024,
+     "qualified": 398,
+     "share_excluding_zero": 0.32160804020100503
+    },
+    "ts:offense": {
+     "median_width": 2.490542382060374,
+     "qualified": 398,
+     "share_excluding_zero": 0.3341708542713568
+    }
+   }
+  },
+  {
+   "fit_sha256": "6bb99bade56f4540a9af19d4db4fbd903986e397efe7c176272042e0e08eee9e",
+   "kind": "one_year",
+   "point_check_max": 2.4668045384146353e-10,
+   "season": "2015-16",
+   "sha256": "1d63d7be30955be0d72fd2b211fbc07215f1f6ac4e13f10996e550ac80eebb60",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 3.9026843197230496,
+     "qualified": 351,
+     "share_excluding_zero": 0.31054131054131057
+    },
+    "rapm:offense": {
+     "median_width": 3.9157341872729923,
+     "qualified": 351,
+     "share_excluding_zero": 0.3418803418803419
+    },
+    "rapm:total": {
+     "median_width": 5.560491997356493,
+     "qualified": 351,
+     "share_excluding_zero": 0.34472934472934474
+    },
+    "reb:defense": {
+     "median_width": 1.561640055882457,
+     "qualified": 253,
+     "share_excluding_zero": 0.3557312252964427
+    },
+    "reb:offense": {
+     "median_width": 1.5511597809166242,
+     "qualified": 253,
+     "share_excluding_zero": 0.4980237154150198
+    },
+    "tov:defense": {
+     "median_width": 1.1789773026418506,
+     "qualified": 363,
+     "share_excluding_zero": 0.3526170798898072
+    },
+    "tov:offense": {
+     "median_width": 1.1619546854598557,
+     "qualified": 363,
+     "share_excluding_zero": 0.30303030303030304
+    },
+    "ts:defense": {
+     "median_width": 2.5720426219137904,
+     "qualified": 393,
+     "share_excluding_zero": 0.29770992366412213
+    },
+    "ts:offense": {
+     "median_width": 2.5737431530457946,
+     "qualified": 393,
+     "share_excluding_zero": 0.35877862595419846
+    }
+   }
+  },
+  {
+   "fit_sha256": "bff2c0e84570692b0cba6e602f18a9ea52b48c5b9a51fc10b0586d9a790ff8dd",
+   "kind": "one_year",
+   "point_check_max": 1.985300812634705e-10,
+   "season": "2016-17",
+   "sha256": "496bdd5189dc6b9a29007008bec73f47a4e7f393b1a4ce39a59b255d2a95af2b",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 3.9539583423492877,
+     "qualified": 352,
+     "share_excluding_zero": 0.3068181818181818
+    },
+    "rapm:offense": {
+     "median_width": 3.9573454688877083,
+     "qualified": 352,
+     "share_excluding_zero": 0.3465909090909091
+    },
+    "rapm:total": {
+     "median_width": 5.649664440171234,
+     "qualified": 352,
+     "share_excluding_zero": 0.3153409090909091
+    },
+    "reb:defense": {
+     "median_width": 1.5118267346517382,
+     "qualified": 254,
+     "share_excluding_zero": 0.3425196850393701
+    },
+    "reb:offense": {
+     "median_width": 1.5216245055023143,
+     "qualified": 254,
+     "share_excluding_zero": 0.421259842519685
+    },
+    "tov:defense": {
+     "median_width": 1.1671912452468378,
+     "qualified": 362,
+     "share_excluding_zero": 0.35911602209944754
+    },
+    "tov:offense": {
+     "median_width": 1.1541496107595066,
+     "qualified": 362,
+     "share_excluding_zero": 0.3674033149171271
+    },
+    "ts:defense": {
+     "median_width": 2.5465009333572803,
+     "qualified": 393,
+     "share_excluding_zero": 0.31806615776081426
+    },
+    "ts:offense": {
+     "median_width": 2.561819739575686,
+     "qualified": 393,
+     "share_excluding_zero": 0.34096692111959287
+    }
+   }
+  },
+  {
+   "fit_sha256": "6d5c37813212d0fa7e17a5b61799f998dfaca72841edf535cf975f2cebe4b549",
+   "kind": "one_year",
+   "point_check_max": 2.181942404533288e-09,
+   "season": "2017-18",
+   "sha256": "e3597c62b761528198f5e7ce1768188c0cb46052b0bdb1d251d3d69b05cf66b9",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 3.968987986983655,
+     "qualified": 354,
+     "share_excluding_zero": 0.3361581920903955
+    },
+    "rapm:offense": {
+     "median_width": 4.066313190282248,
+     "qualified": 354,
+     "share_excluding_zero": 0.3022598870056497
+    },
+    "rapm:total": {
+     "median_width": 5.773799122899532,
+     "qualified": 354,
+     "share_excluding_zero": 0.3333333333333333
+    },
+    "reb:defense": {
+     "median_width": 1.5178563493213995,
+     "qualified": 252,
+     "share_excluding_zero": 0.3373015873015873
+    },
+    "reb:offense": {
+     "median_width": 1.494186846067413,
+     "qualified": 252,
+     "share_excluding_zero": 0.36507936507936506
+    },
+    "tov:defense": {
+     "median_width": 1.146014237075328,
+     "qualified": 362,
+     "share_excluding_zero": 0.3812154696132597
+    },
+    "tov:offense": {
+     "median_width": 1.1545646233182683,
+     "qualified": 362,
+     "share_excluding_zero": 0.30939226519337015
+    },
+    "ts:defense": {
+     "median_width": 2.565074669382156,
+     "qualified": 392,
+     "share_excluding_zero": 0.3239795918367347
+    },
+    "ts:offense": {
+     "median_width": 2.611085057529263,
+     "qualified": 392,
+     "share_excluding_zero": 0.32908163265306123
+    }
+   }
+  },
+  {
+   "fit_sha256": "a427e849aaa49deedbc7c0b2e1fabecdf909b1a1919896cb635d1e99bbc8151f",
+   "kind": "one_year",
+   "point_check_max": 0.0,
+   "season": "2018-19",
+   "sha256": "dd8d5ba81870c6e2d775fe0dd0f9dd1ad825457681ba70fae2ad059b75ca6a5f",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 3.937748975144856,
+     "qualified": 365,
+     "share_excluding_zero": 0.3095890410958904
+    },
+    "rapm:offense": {
+     "median_width": 3.9413819379171136,
+     "qualified": 365,
+     "share_excluding_zero": 0.32602739726027397
+    },
+    "rapm:total": {
+     "median_width": 5.612403237570278,
+     "qualified": 365,
+     "share_excluding_zero": 0.3452054794520548
+    },
+    "reb:defense": {
+     "median_width": 1.5280410979356214,
+     "qualified": 262,
+     "share_excluding_zero": 0.3473282442748092
+    },
+    "reb:offense": {
+     "median_width": 1.5400379726817806,
+     "qualified": 262,
+     "share_excluding_zero": 0.45038167938931295
+    },
+    "tov:defense": {
+     "median_width": 1.1201354079538977,
+     "qualified": 374,
+     "share_excluding_zero": 0.35561497326203206
+    },
+    "tov:offense": {
+     "median_width": 1.1142407339090323,
+     "qualified": 374,
+     "share_excluding_zero": 0.3181818181818182
+    },
+    "ts:defense": {
+     "median_width": 2.5690292247011692,
+     "qualified": 406,
+     "share_excluding_zero": 0.29802955665024633
+    },
+    "ts:offense": {
+     "median_width": 2.5527471980646785,
+     "qualified": 406,
+     "share_excluding_zero": 0.2832512315270936
+    }
+   }
+  },
+  {
+   "fit_sha256": "32b0acc5324fa1579b2c2b7c9b4c4736c1878fc497612acc73f54a58d00778c6",
+   "kind": "one_year",
+   "point_check_max": 0.0,
+   "season": "2019-20",
+   "sha256": "674dd0e7b789752a659d3f593ecf1f9d400bf88b9c137f9dd80e0beb9214d635",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 4.058376176520465,
+     "qualified": 337,
+     "share_excluding_zero": 0.2878338278931751
+    },
+    "rapm:offense": {
+     "median_width": 4.065641493940865,
+     "qualified": 337,
+     "share_excluding_zero": 0.35014836795252224
+    },
+    "rapm:total": {
+     "median_width": 5.768531970740386,
+     "qualified": 337,
+     "share_excluding_zero": 0.3115727002967359
+    },
+    "reb:defense": {
+     "median_width": 1.5069303481898673,
+     "qualified": 223,
+     "share_excluding_zero": 0.3452914798206278
+    },
+    "reb:offense": {
+     "median_width": 1.5123889145120204,
+     "qualified": 223,
+     "share_excluding_zero": 0.4080717488789238
+    },
+    "tov:defense": {
+     "median_width": 1.1621870531941885,
+     "qualified": 354,
+     "share_excluding_zero": 0.3305084745762712
+    },
+    "tov:offense": {
+     "median_width": 1.1730242778279618,
+     "qualified": 354,
+     "share_excluding_zero": 0.2909604519774011
+    },
+    "ts:defense": {
+     "median_width": 2.657706152990031,
+     "qualified": 391,
+     "share_excluding_zero": 0.2557544757033248
+    },
+    "ts:offense": {
+     "median_width": 2.688657489538291,
+     "qualified": 391,
+     "share_excluding_zero": 0.29923273657289
+    }
+   }
+  },
+  {
+   "fit_sha256": "ae7d62e0ac32e807860614b0132c5c056cec900850544673d9e4103fbfc600f4",
+   "kind": "one_year",
+   "point_check_max": 2.291661949094248e-08,
+   "season": "2020-21",
+   "sha256": "dc3111208b52c169a5cdd13ba1c6655539227d5a8b5c66516473cc2e7ec3df14",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 4.06052973204842,
+     "qualified": 365,
+     "share_excluding_zero": 0.2684931506849315
+    },
+    "rapm:offense": {
+     "median_width": 4.02507490868677,
+     "qualified": 365,
+     "share_excluding_zero": 0.35342465753424657
+    },
+    "rapm:total": {
+     "median_width": 5.795232766634114,
+     "qualified": 365,
+     "share_excluding_zero": 0.3424657534246575
+    },
+    "reb:defense": {
+     "median_width": 1.494106085737139,
+     "qualified": 223,
+     "share_excluding_zero": 0.35874439461883406
+    },
+    "reb:offense": {
+     "median_width": 1.5087919165355248,
+     "qualified": 223,
+     "share_excluding_zero": 0.3811659192825112
+    },
+    "tov:defense": {
+     "median_width": 1.155898984713585,
+     "qualified": 370,
+     "share_excluding_zero": 0.2972972972972973
+    },
+    "tov:offense": {
+     "median_width": 1.148188386272067,
+     "qualified": 370,
+     "share_excluding_zero": 0.34594594594594597
+    },
+    "ts:defense": {
+     "median_width": 2.643679543176427,
+     "qualified": 413,
+     "share_excluding_zero": 0.288135593220339
+    },
+    "ts:offense": {
+     "median_width": 2.6362839829592164,
+     "qualified": 413,
+     "share_excluding_zero": 0.35351089588377727
+    }
+   }
+  },
+  {
+   "fit_sha256": "cfbb173daae1f6bb49261695dbd9c6724c8db12a53fff47a6e92d25f8da979cf",
+   "kind": "one_year",
+   "point_check_max": 8.330789746935352e-08,
+   "season": "2021-22",
+   "sha256": "b7db02237c1e237f02784b62424f9da9a8d40e0a6281179df4d2b8aafebe8243",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 4.135881548974237,
+     "qualified": 375,
+     "share_excluding_zero": 0.2773333333333333
+    },
+    "rapm:offense": {
+     "median_width": 4.1391306847259575,
+     "qualified": 375,
+     "share_excluding_zero": 0.3333333333333333
+    },
+    "rapm:total": {
+     "median_width": 5.898021143864919,
+     "qualified": 375,
+     "share_excluding_zero": 0.2853333333333333
+    },
+    "reb:defense": {
+     "median_width": 1.5343607206110486,
+     "qualified": 248,
+     "share_excluding_zero": 0.3629032258064516
+    },
+    "reb:offense": {
+     "median_width": 1.5505001126653701,
+     "qualified": 248,
+     "share_excluding_zero": 0.4153225806451613
+    },
+    "tov:defense": {
+     "median_width": 1.1347780432822951,
+     "qualified": 388,
+     "share_excluding_zero": 0.39948453608247425
+    },
+    "tov:offense": {
+     "median_width": 1.135250687702841,
+     "qualified": 388,
+     "share_excluding_zero": 0.31958762886597936
+    },
+    "ts:defense": {
+     "median_width": 2.665261756941683,
+     "qualified": 422,
+     "share_excluding_zero": 0.2843601895734597
+    },
+    "ts:offense": {
+     "median_width": 2.6453360417998866,
+     "qualified": 422,
+     "share_excluding_zero": 0.33886255924170616
+    }
+   }
+  },
+  {
+   "fit_sha256": "ff8c4412980ff26d5aa8a00cbee0cf136c43afa29133874373090d966d89b6fa",
+   "kind": "one_year",
+   "point_check_max": 6.672521979389501e-10,
+   "season": "2022-23",
+   "sha256": "49dcf08334cb54061e4418f7caccf91ed404e64cd9b3f296bbf7e8e0fe335510",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 4.068100417026933,
+     "qualified": 368,
+     "share_excluding_zero": 0.29347826086956524
+    },
+    "rapm:offense": {
+     "median_width": 4.0906366500435904,
+     "qualified": 368,
+     "share_excluding_zero": 0.35597826086956524
+    },
+    "rapm:total": {
+     "median_width": 5.815746347258692,
+     "qualified": 368,
+     "share_excluding_zero": 0.358695652173913
+    },
+    "reb:defense": {
+     "median_width": 1.5753729073109246,
+     "qualified": 241,
+     "share_excluding_zero": 0.3278008298755187
+    },
+    "reb:offense": {
+     "median_width": 1.5692237425466151,
+     "qualified": 241,
+     "share_excluding_zero": 0.5352697095435685
+    },
+    "tov:defense": {
+     "median_width": 1.1439836887447992,
+     "qualified": 379,
+     "share_excluding_zero": 0.3482849604221636
+    },
+    "tov:offense": {
+     "median_width": 1.1349778473587597,
+     "qualified": 379,
+     "share_excluding_zero": 0.3324538258575198
+    },
+    "ts:defense": {
+     "median_width": 2.64146845026783,
+     "qualified": 415,
+     "share_excluding_zero": 0.26024096385542167
+    },
+    "ts:offense": {
+     "median_width": 2.6169250500328074,
+     "qualified": 415,
+     "share_excluding_zero": 0.3228915662650602
+    }
+   }
+  },
+  {
+   "fit_sha256": "f7f8928a38335e63be065fe63af6f16fa65bf0cf99585eab42ff23f44d1a26a5",
+   "kind": "one_year",
+   "point_check_max": 2.5592413299690975e-08,
+   "season": "2023-24",
+   "sha256": "b703d88827211d05e2031036e226ffe26f46be7b1e64bd0f314605a5613ac6ea",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 4.09970387270377,
+     "qualified": 360,
+     "share_excluding_zero": 0.3277777777777778
+    },
+    "rapm:offense": {
+     "median_width": 4.063477908052496,
+     "qualified": 360,
+     "share_excluding_zero": 0.34444444444444444
+    },
+    "rapm:total": {
+     "median_width": 5.869960351632928,
+     "qualified": 360,
+     "share_excluding_zero": 0.37222222222222223
+    },
+    "reb:defense": {
+     "median_width": 1.5649745943990574,
+     "qualified": 230,
+     "share_excluding_zero": 0.3130434782608696
+    },
+    "reb:offense": {
+     "median_width": 1.5596860332029523,
+     "qualified": 230,
+     "share_excluding_zero": 0.43478260869565216
+    },
+    "tov:defense": {
+     "median_width": 1.131920580260311,
+     "qualified": 372,
+     "share_excluding_zero": 0.3709677419354839
+    },
+    "tov:offense": {
+     "median_width": 1.1518015302595481,
+     "qualified": 372,
+     "share_excluding_zero": 0.30913978494623656
+    },
+    "ts:defense": {
+     "median_width": 2.6698727497214145,
+     "qualified": 418,
+     "share_excluding_zero": 0.3038277511961722
+    },
+    "ts:offense": {
+     "median_width": 2.6359540671869945,
+     "qualified": 418,
+     "share_excluding_zero": 0.3397129186602871
+    }
+   }
+  },
+  {
+   "fit_sha256": "64df32d0ce3ed9211e7186820ee791fa40316baab023fb55bc12a219a768d4cc",
+   "kind": "one_year",
+   "point_check_max": 4.82268891488502e-10,
+   "season": "2024-25",
+   "sha256": "4cf3f54228309ab9410776e912e47776c5331b4fa610bd7986c6bf0fe0b05c46",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 4.147402574164056,
+     "qualified": 373,
+     "share_excluding_zero": 0.3136729222520107
+    },
+    "rapm:offense": {
+     "median_width": 4.084801619020497,
+     "qualified": 373,
+     "share_excluding_zero": 0.34584450402144773
+    },
+    "rapm:total": {
+     "median_width": 5.9067657902320585,
+     "qualified": 373,
+     "share_excluding_zero": 0.3351206434316354
+    },
+    "reb:defense": {
+     "median_width": 1.6104309836524502,
+     "qualified": 245,
+     "share_excluding_zero": 0.3673469387755102
+    },
+    "reb:offense": {
+     "median_width": 1.6290507160334795,
+     "qualified": 245,
+     "share_excluding_zero": 0.44081632653061226
+    },
+    "tov:defense": {
+     "median_width": 1.1517194458934668,
+     "qualified": 387,
+     "share_excluding_zero": 0.3798449612403101
+    },
+    "tov:offense": {
+     "median_width": 1.1541407440421438,
+     "qualified": 387,
+     "share_excluding_zero": 0.330749354005168
+    },
+    "ts:defense": {
+     "median_width": 2.651340518624428,
+     "qualified": 426,
+     "share_excluding_zero": 0.27230046948356806
+    },
+    "ts:offense": {
+     "median_width": 2.664431002758977,
+     "qualified": 426,
+     "share_excluding_zero": 0.284037558685446
+    }
+   }
+  },
+  {
+   "fit_sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+   "kind": "one_year",
+   "point_check_max": 8.039129006931489e-08,
+   "season": "2025-26",
+   "sha256": "268eea7922d849bf70fbb8799bbbd0a952692668b32c40e45e4406d376a6875a",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 4.181622879640681,
+     "qualified": 382,
+     "share_excluding_zero": 0.31151832460732987
+    },
+    "rapm:offense": {
+     "median_width": 4.165083934311015,
+     "qualified": 382,
+     "share_excluding_zero": 0.306282722513089
+    },
+    "rapm:total": {
+     "median_width": 6.054892482717506,
+     "qualified": 382,
+     "share_excluding_zero": 0.3219895287958115
+    },
+    "reb:defense": {
+     "median_width": 1.61921158892398,
+     "qualified": 253,
+     "share_excluding_zero": 0.35968379446640314
+    },
+    "reb:offense": {
+     "median_width": 1.6404599668214117,
+     "qualified": 253,
+     "share_excluding_zero": 0.466403162055336
+    },
+    "tov:defense": {
+     "median_width": 1.1571804954577702,
+     "qualified": 395,
+     "share_excluding_zero": 0.369620253164557
+    },
+    "tov:offense": {
+     "median_width": 1.1659298564645537,
+     "qualified": 395,
+     "share_excluding_zero": 0.3367088607594937
+    },
+    "ts:defense": {
+     "median_width": 2.6245415129571454,
+     "qualified": 431,
+     "share_excluding_zero": 0.271461716937355
+    },
+    "ts:offense": {
+     "median_width": 2.624380092856128,
+     "qualified": 431,
+     "share_excluding_zero": 0.31554524361948955
+    }
+   }
+  },
+  {
+   "fit_sha256": "8a69a84370c695cbd4b4bcc1489658c68114670c72761873c1b31cf6cf6f9058",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2014-15",
+   "sha256": "9088d610672b751fc9aa2c99408572547176ad0fa2577d563606d285d9626c49",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 3.6687185865752703,
+     "qualified": 360,
+     "share_excluding_zero": 0.33611111111111114
+    },
+    "rapm:offense": {
+     "median_width": 3.6254173602224764,
+     "qualified": 360,
+     "share_excluding_zero": 0.3527777777777778
+    },
+    "rapm:total": {
+     "median_width": 5.220914422147128,
+     "qualified": 360,
+     "share_excluding_zero": 0.3972222222222222
+    }
+   }
+  },
+  {
+   "fit_sha256": "4e21590eeabca962ad2cc0b1c2518628aa9975371c5aa33dd1ba01df173b4d31",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2015-16",
+   "sha256": "f2d64cc1fa493fef4722ba4b94cacb04e88197fad4f4b707c56c2df4f9f06cd6",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 2.0152261278786803,
+     "qualified": 434,
+     "share_excluding_zero": 0.3640552995391705
+    },
+    "rapm:offense": {
+     "median_width": 2.011797122370388,
+     "qualified": 434,
+     "share_excluding_zero": 0.4976958525345622
+    },
+    "rapm:total": {
+     "median_width": 2.825229122958643,
+     "qualified": 434,
+     "share_excluding_zero": 0.47465437788018433
+    }
+   }
+  },
+  {
+   "fit_sha256": "4124a4a47fd85e5485ee7e9afa215c4ae0a484e19831d1a34dfd841a2ed7e6a1",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2016-17",
+   "sha256": "c0d7955fbecd209d15560deb356f119f17df907f55521b1ada11b1d191b1c3ed",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 1.9325021612337387,
+     "qualified": 430,
+     "share_excluding_zero": 0.3930232558139535
+    },
+    "rapm:offense": {
+     "median_width": 1.9643626348621739,
+     "qualified": 430,
+     "share_excluding_zero": 0.5093023255813953
+    },
+    "rapm:total": {
+     "median_width": 2.737914247456852,
+     "qualified": 430,
+     "share_excluding_zero": 0.4627906976744186
+    }
+   }
+  },
+  {
+   "fit_sha256": "f0c1f2fe190c54967f34f4e4207f5c325c926cea5dc6608decd7bbda2ab6a528",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2017-18",
+   "sha256": "2f32c67366c9fb6eb40b6c16ba170d181bec38d554ad834d53e7048168b4dc84",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 2.8456843053656233,
+     "qualified": 440,
+     "share_excluding_zero": 0.41818181818181815
+    },
+    "rapm:offense": {
+     "median_width": 2.912315141639801,
+     "qualified": 440,
+     "share_excluding_zero": 0.4090909090909091
+    },
+    "rapm:total": {
+     "median_width": 4.046933142169646,
+     "qualified": 440,
+     "share_excluding_zero": 0.425
+    }
+   }
+  },
+  {
+   "fit_sha256": "c7c3a5a339fea40fa70f56ec46c8a113b817262136e091f4a192996376e0cacc",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2018-19",
+   "sha256": "6b6a19c1edac9839bc8004e465c49ae85bd0ef52e2a1cc20fee37108b80e835f",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 2.7507350612177945,
+     "qualified": 443,
+     "share_excluding_zero": 0.4288939051918736
+    },
+    "rapm:offense": {
+     "median_width": 2.7894888525436583,
+     "qualified": 443,
+     "share_excluding_zero": 0.44469525959367945
+    },
+    "rapm:total": {
+     "median_width": 3.9553444329110006,
+     "qualified": 443,
+     "share_excluding_zero": 0.47404063205417607
+    }
+   }
+  },
+  {
+   "fit_sha256": "f0c30475b2076ae634b35851cc9bcd0c179b11049179217276427deab6fc3579",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2019-20",
+   "sha256": "9d63fa3e7d38bc969a6fcbe6ee47332d0c8e0253ad4765a9f0084b2e7cc1169c",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 2.6873133026297156,
+     "qualified": 383,
+     "share_excluding_zero": 0.4281984334203655
+    },
+    "rapm:offense": {
+     "median_width": 2.688534710255778,
+     "qualified": 383,
+     "share_excluding_zero": 0.42297650130548303
+    },
+    "rapm:total": {
+     "median_width": 3.821406686031601,
+     "qualified": 383,
+     "share_excluding_zero": 0.4281984334203655
+    }
+   }
+  },
+  {
+   "fit_sha256": "8ca02f8a4ecdcd5855eef6303023aa0d4876044dc7fc883305d924dd1783bbba",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2020-21",
+   "sha256": "bff685c6a9ad9bcafe862b7fe8849ac99abb01bd362ecb36f9c3f13e97825b73",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 1.8960118480147004,
+     "qualified": 438,
+     "share_excluding_zero": 0.3949771689497717
+    },
+    "rapm:offense": {
+     "median_width": 1.8974852044657222,
+     "qualified": 438,
+     "share_excluding_zero": 0.502283105022831
+    },
+    "rapm:total": {
+     "median_width": 2.664123054744225,
+     "qualified": 438,
+     "share_excluding_zero": 0.4634703196347032
+    }
+   }
+  },
+  {
+   "fit_sha256": "d75736257925cf24a1c3336cb7f925371689d0baf0b487c4c84d624cf517aef9",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2021-22",
+   "sha256": "20c3bebb1090ad9d9fcd22c739917bbc26136927789fe1dbbbe73c7f747e6492",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 1.952097698447276,
+     "qualified": 453,
+     "share_excluding_zero": 0.39072847682119205
+    },
+    "rapm:offense": {
+     "median_width": 1.937693883058805,
+     "qualified": 453,
+     "share_excluding_zero": 0.46799116997792495
+    },
+    "rapm:total": {
+     "median_width": 2.7398875610883944,
+     "qualified": 453,
+     "share_excluding_zero": 0.4304635761589404
+    }
+   }
+  },
+  {
+   "fit_sha256": "b45771043037afa2379d72691e857fc9791edc9764afb9e37ceb0828e6975823",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2022-23",
+   "sha256": "e54bee63fc7ffb88adc8bb9860b4f961511699939b349b652b5e68071cfbcce0",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 1.9468834290880805,
+     "qualified": 467,
+     "share_excluding_zero": 0.37687366167023556
+    },
+    "rapm:offense": {
+     "median_width": 1.9324901270949617,
+     "qualified": 467,
+     "share_excluding_zero": 0.48394004282655245
+    },
+    "rapm:total": {
+     "median_width": 2.707370633166133,
+     "qualified": 467,
+     "share_excluding_zero": 0.4753747323340471
+    }
+   }
+  },
+  {
+   "fit_sha256": "8f337dba61b550550d10dfa96115d908e416970256b6753065e2fed4a61bd44f",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2023-24",
+   "sha256": "0417412f82f258fe2c3820bee57a7c0a6e4f30984cb7adab0dfead6df4205631",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 1.9161246663022928,
+     "qualified": 459,
+     "share_excluding_zero": 0.39651416122004357
+    },
+    "rapm:offense": {
+     "median_width": 1.9001274303796345,
+     "qualified": 459,
+     "share_excluding_zero": 0.5272331154684096
+    },
+    "rapm:total": {
+     "median_width": 2.694472322850888,
+     "qualified": 459,
+     "share_excluding_zero": 0.4989106753812636
+    }
+   }
+  },
+  {
+   "fit_sha256": "687c89d2477b3e3eef09db4cca095a5451eb96f9029cfa4765c34429bc58f9f9",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2024-25",
+   "sha256": "44b18eb419cb253ea74d26ea715efbd27a7809aca14345788f47b73b567b9417",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 1.9297301876642683,
+     "qualified": 464,
+     "share_excluding_zero": 0.41379310344827586
+    },
+    "rapm:offense": {
+     "median_width": 1.9234700053003126,
+     "qualified": 464,
+     "share_excluding_zero": 0.5323275862068966
+    },
+    "rapm:total": {
+     "median_width": 2.7174417222445033,
+     "qualified": 464,
+     "share_excluding_zero": 0.5301724137931034
+    }
+   }
+  },
+  {
+   "fit_sha256": "784efcaf8571e5331978d266601fe63348c68966459cb7d0df43e7a977c2064a",
+   "kind": "time_decay_season_end",
+   "point_check_max": 0.0,
+   "season": "2025-26",
+   "sha256": "5842f769998cae3d8e4c29261809512006f238bbba9932efcb8fb9c5020b3866",
+   "summary": {
+    "rapm:defense": {
+     "median_width": 1.9234276539989532,
+     "qualified": 486,
+     "share_excluding_zero": 0.4547325102880658
+    },
+    "rapm:offense": {
+     "median_width": 1.9495180016132916,
+     "qualified": 486,
+     "share_excluding_zero": 0.4670781893004115
+    },
+    "rapm:total": {
+     "median_width": 2.7663237249412633,
+     "qualified": 486,
+     "share_excluding_zero": 0.5205761316872428
+    }
+   }
+  }
+ ],
+ "registrations": {
+  "courtlens-impact-history-v1": "2d5fb238ff280e42a048799be0049ef294e0cc9ddb84967b4a98025ba940b6fc",
+  "courtlens-impact-history-v2": "6f65bf3f4df58d9014360cc1defc4f9bbcaa0ab4d57898fcc8bc86776d60fb7a",
+  "courtlens-impact-intervals-v1": "c6af4219499c323f2911bb2873325460d7c3dea325c8fb798a1e0e513a1c55bb",
+  "courtlens-rapm-time-decay-v1": "23a2f525ab5d1358bab7cf11f65766aa7d0c635f6d8e7aebc63b4f0ca81ac30f",
+  "courtlens-rating-snapshots-v1": "1f7ea178aca301aa5208a211ffdf54ad0854b80bae509d50bc47a5ff36831069",
+  "courtlens-six-factor-reconstruction-v1": "80fcba8915fee37e565120c96132e1cb72bc9781868d7242a90b5d53ed4ea99f"
+ },
+ "runs": {
+  "acquire": {
+   "memory_peak": "280.8M",
+   "runtime": "1min 8.957s"
+  },
+  "check": {
+   "memory_peak": "938.6M",
+   "runtime": "1min 32.094s"
+  },
+  "extras-2014-15": {
+   "memory_peak": "751.3M",
+   "runtime": "46.306s"
+  },
+  "extras-2015-16": {
+   "memory_peak": "766.6M",
+   "runtime": "41.080s"
+  },
+  "extras-2016-17": {
+   "memory_peak": "798M",
+   "runtime": "48.360s"
+  },
+  "extras-2017-18": {
+   "memory_peak": "1.4G",
+   "runtime": "49.287s"
+  },
+  "extras-2018-19": {
+   "memory_peak": "1.4G",
+   "runtime": "1min 3.556s"
+  },
+  "extras-2019-20": {
+   "memory_peak": "1.2G",
+   "runtime": "47.371s"
+  },
+  "extras-2020-21": {
+   "memory_peak": "1.3G",
+   "runtime": "1min 1.248s"
+  },
+  "extras-2021-22": {
+   "memory_peak": "1.4G",
+   "runtime": "1min 10.499s"
+  },
+  "extras-2022-23": {
+   "memory_peak": "1.4G",
+   "runtime": "1min 11.459s"
+  },
+  "fit-2014-15": {
+   "memory_peak": "927.1M",
+   "runtime": "2min 10.919s"
+  },
+  "fit-2017-18": {
+   "memory_peak": "1.3G",
+   "runtime": "9min 9.851s"
+  },
+  "fit-2020-21": {
+   "memory_peak": "1.4G",
+   "runtime": "10min 54.136s"
+  },
+  "fit-2023-24": {
+   "memory_peak": "1.4G",
+   "runtime": "4min 47.123s"
+  },
+  "fit-history": {
+   "memory_peak": "962.3M",
+   "runtime": "2min 13.967s"
+  },
+  "im02-first": {
+   "memory_peak": "1006.5M",
+   "runtime": "5min 47.587s"
+  },
+  "im02-second": {
+   "memory_peak": "691.1M",
+   "runtime": "4min 51.790s"
+  },
+  "im03-2014": {
+   "memory_peak": "1.7G",
+   "runtime": "4min 48.843s"
+  },
+  "im03-2017": {
+   "memory_peak": "1.7G",
+   "runtime": "4min 41.973s"
+  },
+  "im03-2020": {
+   "memory_peak": "1.8G",
+   "runtime": "5min 30.047s"
+  },
+  "intervals": {
+   "memory_peak": "1G",
+   "runtime": "5min 36.358s"
+  },
+  "intervals-2025-26": {
+   "memory_peak": "941.5M",
+   "runtime": "1min 45.848s"
+  },
+  "intervals-rest": {
+   "memory_peak": "938.6M",
+   "runtime": "5min 38.833s"
+  },
+  "pilot": {
+   "memory_peak": "304M",
+   "runtime": "29.676s"
+  },
+  "pilot-v2": {
+   "memory_peak": "299.8M",
+   "runtime": "37.313s"
+  },
+  "pilot-v2b": {
+   "memory_peak": "293.8M",
+   "runtime": "35.864s"
+  },
+  "populate-0": {
+   "memory_peak": "375.7M",
+   "runtime": "6min 53.023s"
+  },
+  "populate-3": {
+   "memory_peak": "256M",
+   "runtime": "8min 28.670s"
+  },
+  "populate-6": {
+   "memory_peak": "443.3M",
+   "runtime": "9min 5.257s"
+  },
+  "populate-reuse": {
+   "memory_peak": "99.2M",
+   "runtime": "38.393s"
+  },
+  "reconstruction": {
+   "memory_peak": "309.8M",
+   "runtime": "4.506s"
+  },
+  "serve-boxes-wowy": {
+   "memory_peak": "517.2M",
+   "runtime": "1min 12.543s"
+  },
+  "serve-impact": {
+   "memory_peak": "1001M",
+   "runtime": "5.305s"
+  },
+  "serve-impact-final": {
+   "memory_peak": "1.3G",
+   "runtime": "6.053s"
+  },
+  "serve-splits": {
+   "memory_peak": "584.1M",
+   "runtime": "12.646s"
+  },
+  "snap-2015-16": {
+   "memory_peak": "1.1G",
+   "runtime": "2min 15.512s"
+  },
+  "snap-2017-18": {
+   "memory_peak": "1.3G",
+   "runtime": "3min 59.988s"
+  },
+  "snap-2019-20": {
+   "memory_peak": "1.3G",
+   "runtime": "5min 22.503s"
+  },
+  "snap-2021-22": {
+   "memory_peak": "1.5G",
+   "runtime": "4min 47.867s"
+  },
+  "snap-2023-24": {
+   "memory_peak": "1.5G",
+   "runtime": "4min 50.506s"
+  },
+  "snap-2025-26": {
+   "memory_peak": "1.6G",
+   "runtime": "3min 20.735s"
+  },
+  "snapshot-index": {
+   "memory_peak": "403.1M",
+   "runtime": "2.253s"
+  },
+  "stint-box-2014-15": {
+   "memory_peak": "326.7M",
+   "runtime": "42.100s"
+  },
+  "stint-box-2015-16": {
+   "memory_peak": "347.2M",
+   "runtime": "37.800s"
+  },
+  "stint-box-2016-17": {
+   "memory_peak": "389.1M",
+   "runtime": "41.276s"
+  },
+  "stint-box-2017-18": {
+   "memory_peak": "344.9M",
+   "runtime": "48.249s"
+  },
+  "stint-box-2018-19": {
+   "memory_peak": "317.8M",
+   "runtime": "42.408s"
+  },
+  "stint-box-2019-20": {
+   "memory_peak": "293.8M",
+   "runtime": "32.318s"
+  },
+  "stint-box-2020-21": {
+   "memory_peak": "339.2M",
+   "runtime": "51.139s"
+  },
+  "stint-box-2021-22": {
+   "memory_peak": "361.3M",
+   "runtime": "57.855s"
+  },
+  "stint-box-2022-23": {
+   "memory_peak": "364.3M",
+   "runtime": "1min 61ms"
+  },
+  "td-2014-15": {
+   "memory_peak": "1G",
+   "runtime": "2min 8.344s"
+  },
+  "td-2017-18": {
+   "memory_peak": "1.3G",
+   "runtime": "4min 15.631s"
+  },
+  "td-2020-21": {
+   "memory_peak": "1.3G",
+   "runtime": "3min 49.005s"
+  },
+  "td-2023-24": {
+   "memory_peak": "1.3G",
+   "runtime": "4min 1.546s"
+  }
+ },
+ "six_factor_reconstruction": {
+  "2014-15": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": null,
+     "p90": null,
+     "value": null
+    },
+    "cross_validated": {
+     "p10": 0.928574402774444,
+     "p90": 0.9497543361371877,
+     "value": 0.9390692439637768
+    },
+    "in_sample": {
+     "p10": 0.9314146638847538,
+     "p90": 0.9517585629634011,
+     "value": 0.9416882401578637
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": null,
+     "p90": null,
+     "value": null
+    },
+    "cross_validated": {
+     "p10": 0.9226141747615206,
+     "p90": 0.9424081586263584,
+     "value": 0.934389827512581
+    },
+    "in_sample": {
+     "p10": 0.9263810682297897,
+     "p90": 0.9448613745911693,
+     "value": 0.9361224793824866
+    }
+   },
+   "players": 250,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": null,
+     "p90": null,
+     "value": null
+    },
+    "cross_validated": {
+     "p10": 0.9546751494643692,
+     "p90": 0.9660368221844107,
+     "value": 0.9599947181105819
+    },
+    "in_sample": {
+     "p10": 0.9575112951251409,
+     "p90": 0.9681083439106468,
+     "value": 0.9624006167478502
+    }
+   }
+  },
+  "2015-16": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9175502580475593,
+     "p90": 0.941006980473284,
+     "value": 0.9301160381913713
+    },
+    "cross_validated": {
+     "p10": 0.9172644464563291,
+     "p90": 0.9404216788368535,
+     "value": 0.9283004300870075
+    },
+    "in_sample": {
+     "p10": 0.9198028257986707,
+     "p90": 0.9426693257856215,
+     "value": 0.9311332098307726
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9110197963446285,
+     "p90": 0.9357878736532582,
+     "value": 0.9252875637071566
+    },
+    "cross_validated": {
+     "p10": 0.9112044242081155,
+     "p90": 0.9356637615364164,
+     "value": 0.9237252785285149
+    },
+    "in_sample": {
+     "p10": 0.9145420368608441,
+     "p90": 0.9377565560330299,
+     "value": 0.9261869956224653
+    }
+   },
+   "players": 253,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.9483854069568513,
+     "p90": 0.96405843552311,
+     "value": 0.9575969377285917
+    },
+    "cross_validated": {
+     "p10": 0.9473038955578347,
+     "p90": 0.9640480524261211,
+     "value": 0.9571282415625004
+    },
+    "in_sample": {
+     "p10": 0.950429555966063,
+     "p90": 0.9660922216656098,
+     "value": 0.9587053557821187
+    }
+   }
+  },
+  "2016-17": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9258623110856331,
+     "p90": 0.9475569184729479,
+     "value": 0.9396510113240923
+    },
+    "cross_validated": {
+     "p10": 0.9252976075284811,
+     "p90": 0.9469133296445161,
+     "value": 0.9380404650063102
+    },
+    "in_sample": {
+     "p10": 0.9279792920694945,
+     "p90": 0.9487417891709065,
+     "value": 0.9401137321637665
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9160921994771861,
+     "p90": 0.9445269950905882,
+     "value": 0.9331234670020571
+    },
+    "cross_validated": {
+     "p10": 0.914941958062053,
+     "p90": 0.9445842882104245,
+     "value": 0.9304917760075209
+    },
+    "in_sample": {
+     "p10": 0.9191384026179146,
+     "p90": 0.9471013824838466,
+     "value": 0.9335697321290055
+    }
+   },
+   "players": 254,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.9514990498745983,
+     "p90": 0.9652177067367773,
+     "value": 0.9589789555126245
+    },
+    "cross_validated": {
+     "p10": 0.950252094051349,
+     "p90": 0.9645354261121496,
+     "value": 0.9567704721386934
+    },
+    "in_sample": {
+     "p10": 0.9537013504133154,
+     "p90": 0.9666276375187557,
+     "value": 0.9594523986174873
+    }
+   }
+  },
+  "2017-18": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9386748002751226,
+     "p90": 0.9558702948058105,
+     "value": 0.947962564962164
+    },
+    "cross_validated": {
+     "p10": 0.9420029033948613,
+     "p90": 0.9593037456016297,
+     "value": 0.9505426009142207
+    },
+    "in_sample": {
+     "p10": 0.9442070405367803,
+     "p90": 0.9611458411794855,
+     "value": 0.9523759507526144
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9295156653542094,
+     "p90": 0.9504439058865837,
+     "value": 0.9419265397509401
+    },
+    "cross_validated": {
+     "p10": 0.9316112209124112,
+     "p90": 0.9520221029034891,
+     "value": 0.9419702569596942
+    },
+    "in_sample": {
+     "p10": 0.9337841550452045,
+     "p90": 0.9537079349951418,
+     "value": 0.9440237295331811
+    }
+   },
+   "players": 252,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.9506446111350233,
+     "p90": 0.965528342390867,
+     "value": 0.9587942907840183
+    },
+    "cross_validated": {
+     "p10": 0.9505509833830298,
+     "p90": 0.9659275883103619,
+     "value": 0.9569694867590702
+    },
+    "in_sample": {
+     "p10": 0.95334678186645,
+     "p90": 0.9679221159950656,
+     "value": 0.9599863116908678
+    }
+   }
+  },
+  "2018-19": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9263170003542813,
+     "p90": 0.9477142892731544,
+     "value": 0.9371509524974249
+    },
+    "cross_validated": {
+     "p10": 0.9259222250986806,
+     "p90": 0.9492650220955053,
+     "value": 0.9361128951820602
+    },
+    "in_sample": {
+     "p10": 0.9286654699359903,
+     "p90": 0.9510400027895178,
+     "value": 0.9393628207206117
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.932891470497636,
+     "p90": 0.9530270634341496,
+     "value": 0.943267999210792
+    },
+    "cross_validated": {
+     "p10": 0.9342115812228559,
+     "p90": 0.9545865009729972,
+     "value": 0.9433881662441206
+    },
+    "in_sample": {
+     "p10": 0.9365563972434078,
+     "p90": 0.9563255605126458,
+     "value": 0.9458389885779223
+    }
+   },
+   "players": 262,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.954049821120106,
+     "p90": 0.9668219104913373,
+     "value": 0.9619293453661445
+    },
+    "cross_validated": {
+     "p10": 0.9561809374344142,
+     "p90": 0.9684697568204091,
+     "value": 0.9628970403949789
+    },
+    "in_sample": {
+     "p10": 0.9588582812369725,
+     "p90": 0.9701098782532457,
+     "value": 0.964682568449953
+    }
+   }
+  },
+  "2019-20": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9467765760627893,
+     "p90": 0.9613954327665339,
+     "value": 0.9550712250844298
+    },
+    "cross_validated": {
+     "p10": 0.9466334340660202,
+     "p90": 0.961138681162033,
+     "value": 0.9541992040188477
+    },
+    "in_sample": {
+     "p10": 0.9483549801743527,
+     "p90": 0.9627772024702929,
+     "value": 0.955982867941015
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9135685077759369,
+     "p90": 0.9376066611537595,
+     "value": 0.9269876500588221
+    },
+    "cross_validated": {
+     "p10": 0.9192696725749975,
+     "p90": 0.941004228462041,
+     "value": 0.9302189816818318
+    },
+    "in_sample": {
+     "p10": 0.9221783186801628,
+     "p90": 0.9431237291631612,
+     "value": 0.9320261623936273
+    }
+   },
+   "players": 223,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.9482842829288307,
+     "p90": 0.9654770410555538,
+     "value": 0.9572415360329568
+    },
+    "cross_validated": {
+     "p10": 0.9469833099427887,
+     "p90": 0.9650306592589544,
+     "value": 0.9549122180743161
+    },
+    "in_sample": {
+     "p10": 0.9505830962381108,
+     "p90": 0.9672319133357551,
+     "value": 0.9579813605516705
+    }
+   }
+  },
+  "2020-21": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9163850136587953,
+     "p90": 0.942879376548424,
+     "value": 0.9303177426604416
+    },
+    "cross_validated": {
+     "p10": 0.9191003453569989,
+     "p90": 0.942859327385621,
+     "value": 0.9312222260450762
+    },
+    "in_sample": {
+     "p10": 0.9228552344122841,
+     "p90": 0.945388682367877,
+     "value": 0.9340032225229303
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9402462117352124,
+     "p90": 0.9586570624506456,
+     "value": 0.9506245152162698
+    },
+    "cross_validated": {
+     "p10": 0.9429267668212773,
+     "p90": 0.9605975178695161,
+     "value": 0.9503861916659235
+    },
+    "in_sample": {
+     "p10": 0.9454395551781205,
+     "p90": 0.9619571694172437,
+     "value": 0.9537182348680376
+    }
+   },
+   "players": 223,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.9452027314677874,
+     "p90": 0.9607141392804757,
+     "value": 0.9532155655199258
+    },
+    "cross_validated": {
+     "p10": 0.9448897020377809,
+     "p90": 0.9607695758588265,
+     "value": 0.9498270609140075
+    },
+    "in_sample": {
+     "p10": 0.94867474296073,
+     "p90": 0.9638994373464084,
+     "value": 0.9551122811815989
+    }
+   }
+  },
+  "2021-22": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9433572072715526,
+     "p90": 0.9561107896137937,
+     "value": 0.9507178897701841
+    },
+    "cross_validated": {
+     "p10": 0.9460384389329434,
+     "p90": 0.9587244107624877,
+     "value": 0.9523740671911068
+    },
+    "in_sample": {
+     "p10": 0.9476403128070654,
+     "p90": 0.9602551068536441,
+     "value": 0.9536329204387245
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9338570761650004,
+     "p90": 0.9504110900217779,
+     "value": 0.9434031941097217
+    },
+    "cross_validated": {
+     "p10": 0.9329093418778587,
+     "p90": 0.950452004361103,
+     "value": 0.9419154000000972
+    },
+    "in_sample": {
+     "p10": 0.935826881321984,
+     "p90": 0.9520812643016574,
+     "value": 0.9439898087329395
+    }
+   },
+   "players": 248,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.949473522260202,
+     "p90": 0.964802130575888,
+     "value": 0.9588202346409074
+    },
+    "cross_validated": {
+     "p10": 0.9493970470253069,
+     "p90": 0.9648545369262714,
+     "value": 0.9586963838859542
+    },
+    "in_sample": {
+     "p10": 0.9526188394004599,
+     "p90": 0.9668515054838447,
+     "value": 0.9602488795459477
+    }
+   }
+  },
+  "2022-23": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9270178269519616,
+     "p90": 0.9458536878384145,
+     "value": 0.9375202022645234
+    },
+    "cross_validated": {
+     "p10": 0.9277103164781771,
+     "p90": 0.9455224647261913,
+     "value": 0.9359168614021458
+    },
+    "in_sample": {
+     "p10": 0.9299374137553399,
+     "p90": 0.9479391477559542,
+     "value": 0.9385253756584553
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9251704554479032,
+     "p90": 0.9485372213343305,
+     "value": 0.93815985771593
+    },
+    "cross_validated": {
+     "p10": 0.9301215747864322,
+     "p90": 0.949969939683864,
+     "value": 0.9396272022751058
+    },
+    "in_sample": {
+     "p10": 0.932824581098314,
+     "p90": 0.9522092232340867,
+     "value": 0.9422632326236339
+    }
+   },
+   "players": 241,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.9506802664423839,
+     "p90": 0.9647223146636996,
+     "value": 0.9585217366323358
+    },
+    "cross_validated": {
+     "p10": 0.9556311188599689,
+     "p90": 0.9685866057516788,
+     "value": 0.9616538158518061
+    },
+    "in_sample": {
+     "p10": 0.9584048501066699,
+     "p90": 0.9706376862226719,
+     "value": 0.9640693450823983
+    }
+   }
+  },
+  "2023-24": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.932860713613257,
+     "p90": 0.951973669558026,
+     "value": 0.944448287081908
+    },
+    "cross_validated": {
+     "p10": 0.9325919953506986,
+     "p90": 0.9518904681075937,
+     "value": 0.9437744267183412
+    },
+    "in_sample": {
+     "p10": 0.9353930953519974,
+     "p90": 0.9538825922499373,
+     "value": 0.9453586044253588
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9157001179125801,
+     "p90": 0.9376531409632697,
+     "value": 0.927727440251537
+    },
+    "cross_validated": {
+     "p10": 0.9179469566146718,
+     "p90": 0.9409519980471163,
+     "value": 0.9300686394128057
+    },
+    "in_sample": {
+     "p10": 0.9216415059283313,
+     "p90": 0.9437538251990428,
+     "value": 0.9327051084038397
+    }
+   },
+   "players": 230,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.9414686052617128,
+     "p90": 0.9609262567791866,
+     "value": 0.952508734927031
+    },
+    "cross_validated": {
+     "p10": 0.9467822757843289,
+     "p90": 0.9633607827512174,
+     "value": 0.9546778944716339
+    },
+    "in_sample": {
+     "p10": 0.9505917681009037,
+     "p90": 0.9661803876575231,
+     "value": 0.9578947390735688
+    }
+   }
+  },
+  "2024-25": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9539865015755636,
+     "p90": 0.9662312176113135,
+     "value": 0.9607769139206171
+    },
+    "cross_validated": {
+     "p10": 0.9538145672234459,
+     "p90": 0.9661353455044902,
+     "value": 0.9603335394593308
+    },
+    "in_sample": {
+     "p10": 0.9551922697665843,
+     "p90": 0.9671797929629915,
+     "value": 0.9615287175495553
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9292516279308825,
+     "p90": 0.9496826527444103,
+     "value": 0.9411938748361487
+    },
+    "cross_validated": {
+     "p10": 0.928863902395033,
+     "p90": 0.9500926016887034,
+     "value": 0.9402078533953435
+    },
+    "in_sample": {
+     "p10": 0.9324173478028823,
+     "p90": 0.951830100906162,
+     "value": 0.9424462137504613
+    }
+   },
+   "players": 245,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.9554678260631542,
+     "p90": 0.9694261130765266,
+     "value": 0.9628609426485157
+    },
+    "cross_validated": {
+     "p10": 0.957750174704503,
+     "p90": 0.9709836549226699,
+     "value": 0.9637952295411875
+    },
+    "in_sample": {
+     "p10": 0.9601446180328359,
+     "p90": 0.9727540652816155,
+     "value": 0.9656265440174037
+    }
+   }
+  },
+  "2025-26": {
+   "drapm_on_defense": {
+    "cross_season": {
+     "p10": 0.9358674273022026,
+     "p90": 0.9531575401939245,
+     "value": 0.9462167944739411
+    },
+    "cross_validated": {
+     "p10": 0.9358148628714223,
+     "p90": 0.9527166589039098,
+     "value": 0.9457726336353396
+    },
+    "in_sample": {
+     "p10": 0.9384856550683089,
+     "p90": 0.9545198170078452,
+     "value": 0.9472035983891691
+    }
+   },
+   "orapm_on_offense": {
+    "cross_season": {
+     "p10": 0.9159656471737183,
+     "p90": 0.9425753255930328,
+     "value": 0.9318198072945286
+    },
+    "cross_validated": {
+     "p10": 0.9198443832120695,
+     "p90": 0.9443453109101005,
+     "value": 0.9323055972382011
+    },
+    "in_sample": {
+     "p10": 0.9237734082744138,
+     "p90": 0.9469489636679516,
+     "value": 0.9360159110403837
+    }
+   },
+   "players": 253,
+   "rapm_on_six": {
+    "cross_season": {
+     "p10": 0.9418272904732669,
+     "p90": 0.9579854455444281,
+     "value": 0.9512368568030078
+    },
+    "cross_validated": {
+     "p10": 0.9452755181005766,
+     "p90": 0.960213889329901,
+     "value": 0.9516245391824668
+    },
+    "in_sample": {
+     "p10": 0.9489330197698711,
+     "p90": 0.9629332897375545,
+     "value": 0.9554842863730527
+    }
+   }
+  }
+ },
+ "snapshots": {
+  "alphas": {
+   "1000.0": 38,
+   "3000.0": 53
+  },
+  "count": 91,
+  "cutoffs": {
+   "2015-10-27": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 1208,
+    "latest_game_date": "2015-04-15",
+    "qualified_players": 360,
+    "sha256": "37be72c18ffd75179ad483415942baf8a1a2ec43a57acc55df1a700496f96b12",
+    "window_start": "2014-10-28"
+   },
+   "2015-11-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 1246,
+    "latest_game_date": "2015-10-31",
+    "qualified_players": 361,
+    "sha256": "b2729002eadf67cd52f71c117a1f17964d77574d20865bcc5d6b2b74c9c4f4ef",
+    "window_start": "2014-10-28"
+   },
+   "2015-12-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 1469,
+    "latest_game_date": "2015-11-30",
+    "qualified_players": 374,
+    "sha256": "d0881b8a17372ba7548a8ca22fc4bce320530ad4fcf35bb6c8a53d0ceba3cb92",
+    "window_start": "2014-10-28"
+   },
+   "2016-01-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 1696,
+    "latest_game_date": "2015-12-31",
+    "qualified_players": 394,
+    "sha256": "17e869971a3610e467946c4fb09bf84f4d32c1c4f34ca8755b8ab31e6d2a6b2c",
+    "window_start": "2014-10-28"
+   },
+   "2016-02-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 1922,
+    "latest_game_date": "2016-01-31",
+    "qualified_players": 408,
+    "sha256": "7618f0406371e56897309a41d5a73f541994ea66e0a88d90d0f7ad8f5d7a683b",
+    "window_start": "2014-10-28"
+   },
+   "2016-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 2091,
+    "latest_game_date": "2016-02-29",
+    "qualified_players": 418,
+    "sha256": "3854e25894e80c362e35890a0597f3e77c695ec0b634f9fdd6f0f27e061b7378",
+    "window_start": "2014-10-28"
+   },
+   "2016-04-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 2325,
+    "latest_game_date": "2016-03-31",
+    "qualified_players": 427,
+    "sha256": "ec5cad7c157475ec9d88869de9068c141622efe5e799678bec05b3bc2029c17f",
+    "window_start": "2014-10-28"
+   },
+   "2016-05-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 2427,
+    "latest_game_date": "2016-04-13",
+    "qualified_players": 433,
+    "sha256": "c13c591fa3072f94bd586c4c2d0147b8c621d751f3f0748aa5772701150bf8e9",
+    "window_start": "2014-10-28"
+   },
+   "2016-10-25": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 2427,
+    "latest_game_date": "2016-04-13",
+    "qualified_players": 351,
+    "sha256": "7d8b6730bda8e04f07896322d937c54cfa3ab5c96469f9e6d40d2496742485d2",
+    "window_start": "2014-10-28"
+   },
+   "2016-11-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 2470,
+    "latest_game_date": "2016-10-31",
+    "qualified_players": 353,
+    "sha256": "e9bfbe62ac6f4ff2102b5e498ee9ad941bb311eeec3cc166533dd25ac3ae8046",
+    "window_start": "2014-10-28"
+   },
+   "2016-12-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 2696,
+    "latest_game_date": "2016-11-30",
+    "qualified_players": 365,
+    "sha256": "9a52340a926941d47fdbdaa698cb29acb8defe617041b4a90fc0b2cbdc29191f",
+    "window_start": "2014-10-28"
+   },
+   "2017-01-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 2925,
+    "latest_game_date": "2016-12-31",
+    "qualified_players": 392,
+    "sha256": "86c12ebb6bac8227881c6ed8327f320ed22e19378f3527c085ac544d08f80d2f",
+    "window_start": "2014-10-28"
+   },
+   "2017-02-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 3144,
+    "latest_game_date": "2017-01-31",
+    "qualified_players": 405,
+    "sha256": "524cdd90c0967d861d9757c45485f5b95e17cd35567ada826c939688da278e1c",
+    "window_start": "2014-10-28"
+   },
+   "2017-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 3304,
+    "latest_game_date": "2017-02-28",
+    "qualified_players": 411,
+    "sha256": "fad2d4b735da48758a95d19154c7480e6b00f34997d6d66983871dfb7c0eaa25",
+    "window_start": "2014-10-28"
+   },
+   "2017-04-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 3543,
+    "latest_game_date": "2017-03-31",
+    "qualified_players": 423,
+    "sha256": "c14051fe8a6c27ad1f10cd592802eac10ca724a15ebbc89c0fea3d3dbbb5c2a9",
+    "window_start": "2014-10-28"
+   },
+   "2017-05-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 3633,
+    "latest_game_date": "2017-04-12",
+    "qualified_players": 430,
+    "sha256": "52dc430c23bda031cb1d6878913dd33e56a841763b707283572e9f3764bd94d9",
+    "window_start": "2014-10-28"
+   },
+   "2017-10-17": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 3633,
+    "latest_game_date": "2017-04-12",
+    "qualified_players": 352,
+    "sha256": "5a1a4636ba0a01ec9fff6cbc541a541a385e1402b6e430879ca09ea0269e0b78",
+    "window_start": "2014-10-28"
+   },
+   "2017-11-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 3732,
+    "latest_game_date": "2017-10-31",
+    "qualified_players": 356,
+    "sha256": "037071b9949d92e8f3db009c99116c11fae8cd0b39d7a94d97e2b1f1fa2d8f00",
+    "window_start": "2014-10-28"
+   },
+   "2017-12-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 3939,
+    "latest_game_date": "2017-11-30",
+    "qualified_players": 378,
+    "sha256": "ea5340c4793800fcba920eef79c3c066dbee045cd673e48714dbbb4aafdfb3a1",
+    "window_start": "2014-10-28"
+   },
+   "2018-01-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 4165,
+    "latest_game_date": "2017-12-31",
+    "qualified_players": 398,
+    "sha256": "5b456691bab33e7fbe7d530178a1561a77d69d27017acb17a738d506b001937d",
+    "window_start": "2014-10-28"
+   },
+   "2018-02-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 4381,
+    "latest_game_date": "2018-01-31",
+    "qualified_players": 415,
+    "sha256": "92525837e67117c2b2d8c1a2ea74aa698bc7812e06111b6bc52e0267167f73a3",
+    "window_start": "2014-10-28"
+   },
+   "2018-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 4540,
+    "latest_game_date": "2018-02-28",
+    "qualified_players": 424,
+    "sha256": "8657a84a66b4a8f66734c5d6d2e9d43aadfeaae27ef3f3fe83fafdd53b8d1bb8",
+    "window_start": "2014-10-28"
+   },
+   "2018-04-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 4762,
+    "latest_game_date": "2018-03-31",
+    "qualified_players": 434,
+    "sha256": "3514d8b0cc220891cec2b8f7e1a5f11d7bf02c387f6777161909e19c2e11c0aa",
+    "window_start": "2014-10-28"
+   },
+   "2018-05-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 4850,
+    "latest_game_date": "2018-04-11",
+    "qualified_players": 439,
+    "sha256": "d64206fea1f13d90ce63dc3900238c6ffe9522714137a12465590b807828e67e",
+    "window_start": "2014-10-28"
+   },
+   "2018-10-16": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 4850,
+    "latest_game_date": "2018-04-11",
+    "qualified_players": 354,
+    "sha256": "5208acfb4568031c151dc9ecf7b9e95658120d351fed41d554ddec51ad8f9b3c",
+    "window_start": "2014-10-28"
+   },
+   "2018-11-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 4960,
+    "latest_game_date": "2018-10-31",
+    "qualified_players": 361,
+    "sha256": "a4511b8aaac31ce2940a03413b9158798e537c26eb64e096c65cdd69669c53ff",
+    "window_start": "2014-10-28"
+   },
+   "2018-12-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5178,
+    "latest_game_date": "2018-11-30",
+    "qualified_players": 389,
+    "sha256": "158836129616cdb225d99d160330dc2d408092dd19e8814d86d5773b1643c719",
+    "window_start": "2014-10-28"
+   },
+   "2019-01-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5396,
+    "latest_game_date": "2018-12-31",
+    "qualified_players": 414,
+    "sha256": "bcec514fe401926d837e1a6f3d82ffadd7de047f2bfe2d3341777e78d854324b",
+    "window_start": "2014-10-28"
+   },
+   "2019-02-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5617,
+    "latest_game_date": "2019-01-31",
+    "qualified_players": 426,
+    "sha256": "b62897fb6f880c2447624e912152ef2abbe992191eed0d1845ad77afa7c0ee11",
+    "window_start": "2014-10-28"
+   },
+   "2019-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5774,
+    "latest_game_date": "2019-02-28",
+    "qualified_players": 431,
+    "sha256": "3999cbaaca5dfd2c6e63507bf89a7386abb56ebed4c9c343230d3bcd48a40a18",
+    "window_start": "2014-10-28"
+   },
+   "2019-04-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5998,
+    "latest_game_date": "2019-03-31",
+    "qualified_players": 439,
+    "sha256": "184f741c07560effcbdc5891f255fd06598ac6c5c9943f560b69328e7b0846cc",
+    "window_start": "2014-10-28"
+   },
+   "2019-05-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6077,
+    "latest_game_date": "2019-04-10",
+    "qualified_players": 439,
+    "sha256": "96d0331df919582a0979e2e3c9e0e87de48e14845f3e1d2f39d6463637ecbb04",
+    "window_start": "2014-10-28"
+   },
+   "2019-10-22": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6077,
+    "latest_game_date": "2019-04-10",
+    "qualified_players": 365,
+    "sha256": "c7bdad795c6f143bcc918dec99c2a07589a45d2ebdae7c409ca4451a25f72b0e",
+    "window_start": "2014-10-28"
+   },
+   "2019-11-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6122,
+    "latest_game_date": "2019-10-31",
+    "qualified_players": 369,
+    "sha256": "f57014dcead277360f48a94363dabed7f08ed82da0977b7e6dc3d73614133396",
+    "window_start": "2014-10-31"
+   },
+   "2019-12-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6112,
+    "latest_game_date": "2019-11-30",
+    "qualified_players": 390,
+    "sha256": "f548a60fe273768ff5d76b1f509a9b5a7f649dfd44552d9ee5a505a5f7fd8658",
+    "window_start": "2014-11-30"
+   },
+   "2020-01-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6094,
+    "latest_game_date": "2019-12-31",
+    "qualified_players": 418,
+    "sha256": "636dd30cbeb71c3a1db3b9c433fceb70a5fb5ae40fbf48e8c2e39e08692fb554",
+    "window_start": "2014-12-31"
+   },
+   "2020-02-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6090,
+    "latest_game_date": "2020-01-31",
+    "qualified_players": 430,
+    "sha256": "1a980447977da73f0592d682bce3166241ec3dd260983db36d75d94e7acb3710",
+    "window_start": "2015-01-31"
+   },
+   "2020-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6086,
+    "latest_game_date": "2020-02-29",
+    "qualified_players": 439,
+    "sha256": "2b02589af96d7eb17b8bf2d11691b859896a55f7717618db8da04586a75a102d",
+    "window_start": "2015-03-01"
+   },
+   "2020-04-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5929,
+    "latest_game_date": "2020-03-11",
+    "qualified_players": 443,
+    "sha256": "518fe0dcb41f1df293edbc5b9e93ae77365aac6b5f34dded235f1dea0628d636",
+    "window_start": "2015-04-01"
+   },
+   "2020-05-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5814,
+    "latest_game_date": "2020-03-11",
+    "qualified_players": 436,
+    "sha256": "b5ec2959ff1096ae833495f9be2a907fb539d74ecaeb2b35854931e26089560a",
+    "window_start": "2015-10-27"
+   },
+   "2020-06-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5814,
+    "latest_game_date": "2020-03-11",
+    "qualified_players": 426,
+    "sha256": "2dc0609afacb7206f88548afeec03950e6eef37b3942b9b359cddc96b0b8bb04",
+    "window_start": "2015-10-27"
+   },
+   "2020-07-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5814,
+    "latest_game_date": "2020-03-11",
+    "qualified_players": 414,
+    "sha256": "bbc817d1fb5413e02e3ba253cf7620b8562aa6b68e582cd9c447bb8eacbd69f7",
+    "window_start": "2015-10-27"
+   },
+   "2020-08-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5822,
+    "latest_game_date": "2020-07-31",
+    "qualified_players": 395,
+    "sha256": "758f39487d89fb917e61e6e13fd78c5cdb1850b883533ff61d38ea70b4600458",
+    "window_start": "2015-10-27"
+   },
+   "2020-09-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5902,
+    "latest_game_date": "2020-08-14",
+    "qualified_players": 376,
+    "sha256": "2b678c63eb235729f56d4522dc4d5bf8077aa720ea314f414f5b7dbdfd64908f",
+    "window_start": "2015-10-27"
+   },
+   "2020-12-22": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5485,
+    "latest_game_date": "2020-08-14",
+    "qualified_players": 337,
+    "sha256": "d13308f9a65f643c9475e7a8a080c5403eb0f4591143926db2286162091f046a",
+    "window_start": "2015-12-22"
+   },
+   "2021-01-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5481,
+    "latest_game_date": "2020-12-31",
+    "qualified_players": 346,
+    "sha256": "5cf7bc3d7d1932aecb96401c22188048b54db56e3c583a80dff5de359bed3759",
+    "window_start": "2016-01-01"
+   },
+   "2021-02-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5477,
+    "latest_game_date": "2021-01-31",
+    "qualified_players": 369,
+    "sha256": "877557f985249949c055cde299a51af9c2ddb425f2627139c5817378f6a7a6f7",
+    "window_start": "2016-02-01"
+   },
+   "2021-03-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5525,
+    "latest_game_date": "2021-02-28",
+    "qualified_players": 400,
+    "sha256": "52a80d3dc933f76d0bbb0ebf9d511157fad2996be90689649624b32cb431356f",
+    "window_start": "2016-02-29"
+   },
+   "2021-04-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5491,
+    "latest_game_date": "2021-03-31",
+    "qualified_players": 416,
+    "sha256": "50ad664fb73a5fd0f4b8f0c1a8ca7f260bd95f59a95054ef648be0dfe454adba",
+    "window_start": "2016-03-31"
+   },
+   "2021-05-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5622,
+    "latest_game_date": "2021-04-30",
+    "qualified_players": 432,
+    "sha256": "87829c2f474037bc82368ecf4ec4b620b60b9ebf05f0fe32585f8e6e23b4a5d2",
+    "window_start": "2016-10-25"
+   },
+   "2021-06-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5757,
+    "latest_game_date": "2021-05-16",
+    "qualified_players": 431,
+    "sha256": "268c86777f5bbf341e3229c4eaa41e7699adcd364ad6f8887e9205ab71e01947",
+    "window_start": "2016-10-25"
+   },
+   "2021-10-19": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5757,
+    "latest_game_date": "2021-05-16",
+    "qualified_players": 369,
+    "sha256": "133a210e356b9bcb82825d121d80173c089c8c6b0ff33c3d2e7dd1dfc730cfa3",
+    "window_start": "2016-10-25"
+   },
+   "2021-11-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5811,
+    "latest_game_date": "2021-10-31",
+    "qualified_players": 373,
+    "sha256": "7d08ecd7800a422e375c501d85dbfe967a979fee5a67f7152a181f4dd8ed4115",
+    "window_start": "2016-10-31"
+   },
+   "2021-12-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5815,
+    "latest_game_date": "2021-11-30",
+    "qualified_players": 391,
+    "sha256": "db3897a58bebf58638a76bdc8e75b682529228628d2cb0402c8969f8576963bb",
+    "window_start": "2016-11-30"
+   },
+   "2022-01-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5792,
+    "latest_game_date": "2021-12-31",
+    "qualified_players": 407,
+    "sha256": "76011cc148eb1385994ad83bcce10d86150aeb122b50103d99341ba0d5cd6725",
+    "window_start": "2016-12-31"
+   },
+   "2022-02-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5804,
+    "latest_game_date": "2022-01-31",
+    "qualified_players": 425,
+    "sha256": "aa4ae75eb0a2e3e6a277f5f1fca552f8eaa5cb65234a23b2fd6f5f13e9000b5a",
+    "window_start": "2017-01-31"
+   },
+   "2022-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5807,
+    "latest_game_date": "2022-02-28",
+    "qualified_players": 431,
+    "sha256": "e3a8a51091363626ea035eb81b51a314133d41f8a4a89ba6099457ae0edfafc5",
+    "window_start": "2017-02-28"
+   },
+   "2022-04-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5800,
+    "latest_game_date": "2022-03-31",
+    "qualified_players": 444,
+    "sha256": "52b683e24b5e8cbd4b05ca9b80f0a33c5e9460b410e918fa31f657c420d1fc72",
+    "window_start": "2017-03-31"
+   },
+   "2022-05-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5779,
+    "latest_game_date": "2022-04-10",
+    "qualified_players": 453,
+    "sha256": "a3ac6d1ce6a59a8836720ceb702865b2b8ee95103ea612c75b26d37cce8510b6",
+    "window_start": "2017-10-17"
+   },
+   "2022-10-18": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5779,
+    "latest_game_date": "2022-04-10",
+    "qualified_players": 403,
+    "sha256": "a690b69d6bf2b75e2bf55c4680a6aef1fe16bb53803c8a073500a7b1a6bff40a",
+    "window_start": "2017-10-17"
+   },
+   "2022-11-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5786,
+    "latest_game_date": "2022-10-31",
+    "qualified_players": 398,
+    "sha256": "c5904c605253d8820f95658db8a84bcfdfb7a4b33cdbf26d3a47705811f0cfe4",
+    "window_start": "2017-10-31"
+   },
+   "2022-12-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5802,
+    "latest_game_date": "2022-11-30",
+    "qualified_players": 401,
+    "sha256": "b1bb4090220046492d9b684d29ae927a9e18f9d57d50734927b3f4cd2c46969c",
+    "window_start": "2017-11-30"
+   },
+   "2023-01-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5801,
+    "latest_game_date": "2022-12-31",
+    "qualified_players": 431,
+    "sha256": "3ca9e8fe7b936d95d3c97404cccfcc9f27d4ac6df5564d0170534fb2b6968240",
+    "window_start": "2017-12-31"
+   },
+   "2023-02-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5807,
+    "latest_game_date": "2023-01-31",
+    "qualified_players": 444,
+    "sha256": "379c0f395d85ae505482730f3bc748f58759bc58952bf4341e41fa6437da0932",
+    "window_start": "2018-01-31"
+   },
+   "2023-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5812,
+    "latest_game_date": "2023-02-28",
+    "qualified_players": 452,
+    "sha256": "2df02f4f1023f0fd5bb9db84d62734ca588200bf0fd9d5b1fd5c94c2c0ed03ad",
+    "window_start": "2018-02-28"
+   },
+   "2023-04-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5814,
+    "latest_game_date": "2023-03-31",
+    "qualified_players": 465,
+    "sha256": "33d6ecde4b3a73cb9f3979a974c0c692cc968a78fec2d787220908b4bc472138",
+    "window_start": "2018-03-31"
+   },
+   "2023-05-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5791,
+    "latest_game_date": "2023-04-09",
+    "qualified_players": 465,
+    "sha256": "3b342f26229824d700c71ebeb5293da2ae1d795fdc4d1a16c5047db91e2b5546",
+    "window_start": "2018-10-16"
+   },
+   "2023-10-24": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5743,
+    "latest_game_date": "2023-04-09",
+    "qualified_players": 368,
+    "sha256": "82f164ec21d0b0681ccaaa53d11aeab716491ba8c602a3cd9def2cf712d0e145",
+    "window_start": "2018-10-23"
+   },
+   "2023-11-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5741,
+    "latest_game_date": "2023-10-31",
+    "qualified_players": 369,
+    "sha256": "286a2f4054d5e47145382b855c9c6647fd04cf14834aa4cb290420a1d6d0e371",
+    "window_start": "2018-10-31"
+   },
+   "2023-12-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5743,
+    "latest_game_date": "2023-11-30",
+    "qualified_players": 380,
+    "sha256": "c937546b5a405a108540d0c44d90cc91b486e55a866a9b514bb8030de78d4594",
+    "window_start": "2018-11-30"
+   },
+   "2024-01-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5724,
+    "latest_game_date": "2023-12-31",
+    "qualified_players": 406,
+    "sha256": "86b2ac40e99756a00067a58dcc0a43fda638ba2970ff98d0fb6dd3616bed7076",
+    "window_start": "2018-12-31"
+   },
+   "2024-02-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5732,
+    "latest_game_date": "2024-01-31",
+    "qualified_players": 418,
+    "sha256": "4bacfbfba3478e84cad6185fbde755d0812dc295b1acaa32139daa4d04087dd0",
+    "window_start": "2019-01-31"
+   },
+   "2024-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5740,
+    "latest_game_date": "2024-02-29",
+    "qualified_players": 435,
+    "sha256": "591c4c679843dde3ffc2d64d0ebbd029b3e4c562065dfc349a7cb5c907db20fe",
+    "window_start": "2019-03-01"
+   },
+   "2024-04-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5744,
+    "latest_game_date": "2024-03-31",
+    "qualified_players": 445,
+    "sha256": "f0089e678cff30d7e6379da34ad8955391963b311255389b74c527a40352ef71",
+    "window_start": "2019-04-01"
+   },
+   "2024-05-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5780,
+    "latest_game_date": "2024-04-14",
+    "qualified_players": 458,
+    "sha256": "fe6a9f12ba35d0390407e1bf30121b5c9c7838f96cebd3cc3987b8c95c84b1f5",
+    "window_start": "2019-10-22"
+   },
+   "2024-10-22": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5780,
+    "latest_game_date": "2024-04-14",
+    "qualified_players": 360,
+    "sha256": "0f820c2df24e1602472f2ffaef0ca6523cca5daaf425b0d5a9ee0c0e0b5547fb",
+    "window_start": "2019-10-22"
+   },
+   "2024-11-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5785,
+    "latest_game_date": "2024-10-31",
+    "qualified_players": 364,
+    "sha256": "aca1e32782c48f09aa129feda3fa89d8a69f5931eb9ff761be8174d01d4b8101",
+    "window_start": "2019-11-01"
+   },
+   "2024-12-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5795,
+    "latest_game_date": "2024-11-30",
+    "qualified_players": 381,
+    "sha256": "53374b4dd81ef2f972209a9da385825eb206444afb797c42c861c82b53b2d6c5",
+    "window_start": "2019-12-01"
+   },
+   "2025-01-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5767,
+    "latest_game_date": "2024-12-31",
+    "qualified_players": 409,
+    "sha256": "d27d988cd4d240ff8a491e9415d5fbec487a32b35aa846239a948994501e54f3",
+    "window_start": "2020-01-01"
+   },
+   "2025-02-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5771,
+    "latest_game_date": "2025-01-31",
+    "qualified_players": 427,
+    "sha256": "1a9e02a6c62cd9be8932fbdfb1ab221f7fc9d74651f5eaac3d8664a3653c4601",
+    "window_start": "2020-02-01"
+   },
+   "2025-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5790,
+    "latest_game_date": "2025-02-28",
+    "qualified_players": 434,
+    "sha256": "37fa1c9ec0d4ebe2537d8738ac6c5c15b379a1efa4eb2f2d59fbe1c3723b3042",
+    "window_start": "2020-02-29"
+   },
+   "2025-04-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5944,
+    "latest_game_date": "2025-03-31",
+    "qualified_players": 455,
+    "sha256": "b325a8fa539dd25acb4ab02b4ede4bd4ebc9c44e3dc96d83630c016cfb7c69fe",
+    "window_start": "2020-07-30"
+   },
+   "2025-05-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6047,
+    "latest_game_date": "2025-04-13",
+    "qualified_players": 462,
+    "sha256": "384e69396fd1b97b416610cd8c4c09303ce0a756e88e1fdab2f74ce9b4c8a77a",
+    "window_start": "2020-07-30"
+   },
+   "2025-10-21": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 5959,
+    "latest_game_date": "2025-04-13",
+    "qualified_players": 373,
+    "sha256": "3b3e390dea12273cc3861ed6f7a008cd91a8e3651c2f55146ac545b98f3cc448",
+    "window_start": "2020-12-22"
+   },
+   "2025-11-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6039,
+    "latest_game_date": "2025-10-31",
+    "qualified_players": 382,
+    "sha256": "028c2095a7cc0209b86e76578882972ecbf17768bcf287d7800537b9e55358bd",
+    "window_start": "2020-12-22"
+   },
+   "2025-12-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6256,
+    "latest_game_date": "2025-11-30",
+    "qualified_players": 400,
+    "sha256": "8453f9d954e164607cc380ac4301fced3307cac8db47b6e19f0e0157d3411cd1",
+    "window_start": "2020-12-22"
+   },
+   "2026-01-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6393,
+    "latest_game_date": "2025-12-31",
+    "qualified_players": 429,
+    "sha256": "828f982a947b41bf3b993c0149368d25622cec40d0087d37f5616bb8c525f18d",
+    "window_start": "2020-12-31"
+   },
+   "2026-02-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6403,
+    "latest_game_date": "2026-01-31",
+    "qualified_players": 450,
+    "sha256": "877aa2b69b68ef5b1361a57d687d405e4e058e689706d2fb55c439b8185c8294",
+    "window_start": "2021-01-31"
+   },
+   "2026-03-01": {
+    "alpha": 3000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6359,
+    "latest_game_date": "2026-02-28",
+    "qualified_players": 456,
+    "sha256": "47a9aaa20c6a6e90bf1940a8d4b67f1f6607cd00e84979a006ee82d5b207ab3e",
+    "window_start": "2021-02-28"
+   },
+   "2026-04-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6400,
+    "latest_game_date": "2026-03-31",
+    "qualified_players": 474,
+    "sha256": "c2c2d7b45b049fccccb4591e197d186675395d1d96cd91b381a51efc59c6883a",
+    "window_start": "2021-03-31"
+   },
+   "2026-05-01": {
+    "alpha": 1000.0,
+    "alpha_at_grid_endpoint": false,
+    "games": 6255,
+    "latest_game_date": "2026-04-12",
+    "qualified_players": 485,
+    "sha256": "c65af335b2a2045e6f77ac66d216728775219daa587046cbcac09d960da44e37",
+    "window_start": "2021-04-30"
+   }
+  },
+  "endpoint_alphas": 0,
+  "index_sha256": "ff42a9ddebc4b42b630f50472ded19607c07f9783663c90ebeb978f9bffc7450"
+ },
+ "time_decay_diagnostics": [
+  {
+   "evaluated_stints": 6698,
+   "holdout_start": "2016-03-11",
+   "rmse_per100": {
+    "one_year_player": 87.2002228716331,
+    "team_context": 87.20528757341998,
+    "time_decay": 87.06803571055144
+   },
+   "season": "2015-16",
+   "time_decay_alpha": 3000.0
+  },
+  {
+   "evaluated_stints": 6409,
+   "holdout_start": "2017-03-11",
+   "rmse_per100": {
+    "one_year_player": 87.92465715759693,
+    "team_context": 87.974576229494,
+    "time_decay": 87.7806059756122
+   },
+   "season": "2016-17",
+   "time_decay_alpha": 3000.0
+  },
+  {
+   "evaluated_stints": 6648,
+   "holdout_start": "2018-03-08",
+   "rmse_per100": {
+    "one_year_player": 87.88052739578535,
+    "team_context": 87.98203218486094,
+    "time_decay": 87.73343743181935
+   },
+   "season": "2017-18",
+   "time_decay_alpha": 3000.0
+  },
+  {
+   "evaluated_stints": 6651,
+   "holdout_start": "2019-03-07",
+   "rmse_per100": {
+    "one_year_player": 87.30441112640409,
+    "team_context": 87.45506040894104,
+    "time_decay": 87.09105014354661
+   },
+   "season": "2018-19",
+   "time_decay_alpha": 1000.0
+  },
+  {
+   "evaluated_stints": 4935,
+   "holdout_start": "2020-02-27",
+   "rmse_per100": {
+    "one_year_player": 91.31384407113104,
+    "team_context": 91.36389944873548,
+    "time_decay": 91.20554542816468
+   },
+   "season": "2019-20",
+   "time_decay_alpha": 3000.0
+  },
+  {
+   "evaluated_stints": 5858,
+   "holdout_start": "2021-04-19",
+   "rmse_per100": {
+    "one_year_player": 88.61779919569311,
+    "team_context": 88.78454355246764,
+    "time_decay": 88.51077676733472
+   },
+   "season": "2020-21",
+   "time_decay_alpha": 3000.0
+  },
+  {
+   "evaluated_stints": 6408,
+   "holdout_start": "2022-03-08",
+   "rmse_per100": {
+    "one_year_player": 90.0106682765518,
+    "team_context": 89.99581012629586,
+    "time_decay": 89.78095506794853
+   },
+   "season": "2021-22",
+   "time_decay_alpha": 3000.0
+  },
+  {
+   "evaluated_stints": 6401,
+   "holdout_start": "2023-03-07",
+   "rmse_per100": {
+    "one_year_player": 87.71820843270216,
+    "team_context": 88.01684782013258,
+    "time_decay": 87.66823449606423
+   },
+   "season": "2022-23",
+   "time_decay_alpha": 3000.0
+  },
+  {
+   "evaluated_stints": 6571,
+   "holdout_start": "2024-03-12",
+   "rmse_per100": {
+    "one_year_player": 90.19725046388884,
+    "team_context": 90.49963890631777,
+    "time_decay": 90.22619150978164
+   },
+   "season": "2023-24",
+   "time_decay_alpha": 3000.0
+  },
+  {
+   "evaluated_stints": 6631,
+   "holdout_start": "2025-03-11",
+   "rmse_per100": {
+    "one_year_player": 91.02864882680205,
+    "team_context": 91.0043610585215,
+    "time_decay": 90.89049207207674
+   },
+   "season": "2024-25",
+   "time_decay_alpha": 3000.0
+  },
+  {
+   "evaluated_stints": 7278,
+   "holdout_start": "2026-03-10",
+   "rmse_per100": {
+    "one_year_player": 92.48940079861072,
+    "team_context": 92.63059452388417,
+    "time_decay": 92.42533494275385
+   },
+   "season": "2025-26",
+   "time_decay_alpha": 3000.0
+  }
+ ],
+ "time_decay_season_end": [
+  {
+   "alpha": 1000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2015-04-16",
+   "games": 1208,
+   "home": {
+    "2014-15": 1.259495775635193
+   },
+   "qualified": 360,
+   "sha256": "8a69a84370c695cbd4b4bcc1489658c68114670c72761873c1b31cf6cf6f9058",
+   "window_start": "2014-10-28"
+  },
+  {
+   "alpha": 3000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2016-04-14",
+   "games": 2427,
+   "home": {
+    "2014-15": 1.273493386324742,
+    "2015-16": 1.3477655952960719
+   },
+   "qualified": 434,
+   "sha256": "4e21590eeabca962ad2cc0b1c2518628aa9975371c5aa33dd1ba01df173b4d31",
+   "window_start": "2014-10-28"
+  },
+  {
+   "alpha": 3000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2017-04-13",
+   "games": 3633,
+   "home": {
+    "2014-15": 1.2565879729277893,
+    "2015-16": 1.3381804945993383,
+    "2016-17": 1.4839302112852084
+   },
+   "qualified": 430,
+   "sha256": "4124a4a47fd85e5485ee7e9afa215c4ae0a484e19831d1a34dfd841a2ed7e6a1",
+   "window_start": "2014-10-28"
+  },
+  {
+   "alpha": 1000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2018-04-12",
+   "games": 4850,
+   "home": {
+    "2014-15": 1.259469211211079,
+    "2015-16": 1.3559810473174958,
+    "2016-17": 1.4205302384953447,
+    "2017-18": 0.986267963837688
+   },
+   "qualified": 440,
+   "sha256": "f0c1f2fe190c54967f34f4e4207f5c325c926cea5dc6608decd7bbda2ab6a528",
+   "window_start": "2014-10-28"
+  },
+  {
+   "alpha": 1000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2019-04-11",
+   "games": 6077,
+   "home": {
+    "2014-15": 1.236653881017969,
+    "2015-16": 1.3248240448031483,
+    "2016-17": 1.417524558267261,
+    "2017-18": 0.962368604279607,
+    "2018-19": 1.344992233899702
+   },
+   "qualified": 443,
+   "sha256": "c7c3a5a339fea40fa70f56ec46c8a113b817262136e091f4a192996376e0cacc",
+   "window_start": "2014-10-28"
+  },
+  {
+   "alpha": 1000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2020-08-15",
+   "games": 5902,
+   "home": {
+    "2015-16": 1.3157641300350176,
+    "2016-17": 1.4174200876188487,
+    "2017-18": 0.9602807556900843,
+    "2018-19": 1.3531529407591414,
+    "2019-20": 1.0420462598959772
+   },
+   "qualified": 383,
+   "sha256": "f0c30475b2076ae634b35851cc9bcd0c179b11049179217276427deab6fc3579",
+   "window_start": "2015-10-27"
+  },
+  {
+   "alpha": 3000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2021-05-17",
+   "games": 5757,
+   "home": {
+    "2016-17": 1.3902911951707502,
+    "2017-18": 0.9405366324408987,
+    "2018-19": 1.3068087321304462,
+    "2019-20": 1.0829400427300946,
+    "2020-21": 0.4232422853202536
+   },
+   "qualified": 438,
+   "sha256": "8ca02f8a4ecdcd5855eef6303023aa0d4876044dc7fc883305d924dd1783bbba",
+   "window_start": "2016-10-25"
+  },
+  {
+   "alpha": 3000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2022-04-11",
+   "games": 5805,
+   "home": {
+    "2016-17": 0.5547276710335213,
+    "2017-18": 0.9252809540754097,
+    "2018-19": 1.289463332692939,
+    "2019-20": 1.0527587394769953,
+    "2020-21": 0.4393936823947677,
+    "2021-22": 0.7495544341541784
+   },
+   "qualified": 453,
+   "sha256": "d75736257925cf24a1c3336cb7f925371689d0baf0b487c4c84d624cf517aef9",
+   "window_start": "2017-04-10"
+  },
+  {
+   "alpha": 3000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2023-04-10",
+   "games": 5818,
+   "home": {
+    "2017-18": 0.2713730677576929,
+    "2018-19": 1.2631311601916475,
+    "2019-20": 0.9960567701683662,
+    "2020-21": 0.4282207854606732,
+    "2021-22": 0.7746084936306908,
+    "2022-23": 1.1682800079782365
+   },
+   "qualified": 467,
+   "sha256": "b45771043037afa2379d72691e857fc9791edc9764afb9e37ceb0828e6975823",
+   "window_start": "2018-04-09"
+  },
+  {
+   "alpha": 3000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2024-04-15",
+   "games": 5780,
+   "home": {
+    "2019-20": 0.9668042199332841,
+    "2020-21": 0.43208793038491927,
+    "2021-22": 0.7707899031735493,
+    "2022-23": 1.151219872444355,
+    "2023-24": 1.006616389831473
+   },
+   "qualified": 459,
+   "sha256": "8f337dba61b550550d10dfa96115d908e416970256b6753065e2fed4a61bd44f",
+   "window_start": "2019-10-22"
+  },
+  {
+   "alpha": 3000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2025-04-14",
+   "games": 6047,
+   "home": {
+    "2019-20": 0.0,
+    "2020-21": 0.41049051285924243,
+    "2021-22": 0.7795575039940408,
+    "2022-23": 1.14563763199184,
+    "2023-24": 0.9969253880605762,
+    "2024-25": 0.751596224831287
+   },
+   "qualified": 464,
+   "sha256": "687c89d2477b3e3eef09db4cca095a5451eb96f9029cfa4765c34429bc58f9f9",
+   "window_start": "2020-07-30"
+  },
+  {
+   "alpha": 3000.0,
+   "alpha_at_endpoint": false,
+   "cutoff": "2026-04-13",
+   "games": 6397,
+   "home": {
+    "2020-21": 0.24791841909145626,
+    "2021-22": 0.7784166779438547,
+    "2022-23": 1.1364569462116079,
+    "2023-24": 0.9661950912211157,
+    "2024-25": 0.7378737052493616,
+    "2025-26": 0.8442339248288446
+   },
+   "qualified": 486,
+   "sha256": "784efcaf8571e5331978d266601fe63348c68966459cb7d0df43e7a977c2064a",
+   "window_start": "2021-04-12"
+  }
+ ]
+}
