@@ -1022,3 +1022,7 @@ The owner answered with "Go with your recommendations and suggestions for optima
 ## 2026-11-10 — RD17 and RD18 approved
 
 The owner approved both ("Sounds good. I approve them."). Rows RD17 and RD18 ✅; the alignment plan gains "Settled in RD17–RD18". RD18's six suggestions and the question of deleting `shooting-view.tsx` and `catalog-scope-fields.tsx` stay open, unbuilt. No design row is now workable: RD14 is paused (D13 keeps its page) and RD19 waits for R16, which stands at dev 117/573 with the holdout unopened. [`design-RD17`](evidence/research/design-RD17/README.md), [`design-RD18`](evidence/research/design-RD18/README.md).
+
+## 2026-11-10 — RD18 round 4: suggestions 1, 2, 4, 5
+
+After approving the page, the owner asked for the recommended suggestions ("Yes, add these"). Shot Aftermath gains a line on whether the zone order and the rebound effect held in the other season, a crosshair on each team row that scopes the page in place, a cost axis ending on round steps (±2.00, not ±1.44), and phone cost intervals that stay on one line. `shooting-view.tsx` is deleted; `catalog-scope-fields.tsx` stays (still used by Ask and the contract drawer). Suggestions 3 and 6 stay open. Vitest 888; touched specs ×3 60/60; full Playwright 632 passed, 17 skipped, 0 failed. Row stays ✅. [`design-RD18`](evidence/research/design-RD18/README.md).

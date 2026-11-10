@@ -37,6 +37,13 @@ test.describe("RD18 Shot Aftermath", () => {
     await expect(answer).toHaveAttribute("data-worst", "long_mid");
     await expect(page.locator("[data-field=headline]")).toContainText("Rim attempts return the most, 1.40 points per first-chance attempt");
     await expect(page.locator("[data-field=answer-rebound]")).toHaveAttribute("data-zone", "rim");
+    // RD18 suggestion 1: the other season, same scope, read independently from the served 2024-25 rows (order and rim effect both held).
+    const other = page.locator("[data-field=answer-other-season]");
+    await expect(other).toHaveAttribute("data-season", "2024-25");
+    await expect(other).toHaveAttribute("data-same-order", "true");
+    await expect(other).toHaveAttribute("data-order", "rim,three,short_mid,long_mid");
+    await expect(other).toHaveAttribute("data-rebound", "held");
+    await expect(other).toHaveText("The same zone order held in 2024-25, and the opponent again scored more than average after a\u00a0rim miss the defence rebounded, interval clear of zero.");
     // No project codes or hashes in the visible text; they live in the collapsed About.
     const visible = await page.locator("main").evaluate(main => (main as HTMLElement).innerText);
     expect(visible).not.toMatch(/courtlens-shot-aftermath-v1|5aa5161b|\b[0-9a-f]{16,}\b/);
@@ -85,6 +92,32 @@ test.describe("RD18 Shot Aftermath", () => {
     await expect(page.locator("[data-field=answer-thin-zones]")).toHaveAttribute("data-zones", "long_mid");
   });
 
+  test("scopes the page to a team from its row without moving it, and back (RD18 suggestion 2)", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await openWorkbench(page, "/research/shooting/aftermath");
+    const row = page.locator("table[data-table=teams] tr[data-team=BOS]");
+    await row.scrollIntoViewIfNeeded();
+    // The row stays where it was on screen (the browser may adjust scrollY to hold it while content above changes height).
+    const top = async () => (await row.boundingBox())!.y;
+    const before = await top();
+    await row.getByRole("button", { name: "Show the page for BOS" }).click();
+    await expect(page).toHaveURL(/team=BOS/);
+    await expect(page.locator("[data-field=hero-meta]")).toContainText("BOS");
+    await expect(row).toHaveAttribute("data-selected", "true");
+    await expect(row.getByRole("button", { name: "Show every team again" })).toHaveAttribute("aria-pressed", "true");
+    expect(Math.abs(await top() - before)).toBeLessThan(4);
+    await row.getByRole("button", { name: "Show every team again" }).click();
+    await expect(page).not.toHaveURL(/team=/);
+    await expect(page.locator("[data-field=hero-meta]")).toContainText("NBA");
+  });
+
+  test("ends the cost axis on a round step (RD18 suggestion 4)", async ({ page }) => {
+    await openWorkbench(page, "/research/shooting/aftermath?team=BOS&position=bigs&view=dreb");
+    const cost = page.locator("[data-chart=dreb_cost]");
+    await expect(cost).toHaveAttribute("data-top", "2");
+    await expect(cost.locator(".sa-axis > span")).toHaveText(["−2.00", "−1.00", "0.00", "+1.00", "+2.00"]);
+  });
+
   test("sorts the team table as a view and keeps unknowns last", async ({ page }) => {
     await openWorkbench(page, "/research/shooting/aftermath");
     const first = page.locator("table[data-table=teams] tbody tr").first();
@@ -106,6 +139,24 @@ test.describe("RD18 Shot Aftermath", () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
     await page.getByRole("radio", { name: "Cost" }).click();
     await expect(page.locator("table[data-table=teams] thead")).toContainText("Opponent cost");
+  });
+
+  test("keeps every chart's interval on one line on a phone (RD18 suggestion 5)", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    for (const path of ["/research/shooting/aftermath", "/research/shooting/aftermath?team=BOS&position=bigs&view=dreb"]) {
+      await openWorkbench(page, path);
+      await expect(page.locator("[data-field=chart-band]").first()).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      const bad = await page.locator("[data-field=chart-band]").evaluateAll(els => els.filter(el => {
+        const label = el.closest(".sa-label")!.getBoundingClientRect();
+        const range = document.createRange(); range.selectNodeContents(el);
+        const lines = new Set([...range.getClientRects()].map(r => Math.round(r.top))).size, text = range.getBoundingClientRect();
+        return lines > 1 || text.left < label.left - 1 || text.right > label.right + 1;
+      }).map(el => el.textContent));
+      expect(bad).toEqual([]);
+    }
+    await expect(page.locator("[data-chart=dreb_cost] .sa-col[data-zone=rim]")).toHaveAttribute("data-low", /^-0\.3/);
+    await expect(page.locator("[data-chart=dreb_cost] [data-field=chart-band]").first()).toHaveText(/^−\.3\d\d to \+\.\d{3}$/);
   });
 
   test("keeps identifiers in the collapsed About and the CSV complete", async ({ page }) => {

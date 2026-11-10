@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  answerOf, band, chanceLine, costAxis, CSV_HEADER, csvRows, pointsAxis, signed, sortTeams, ticks, unknowns, viewCharts,
+  answerOf, band, chanceLine, costAxis, CSV_HEADER, csvRows, pointsAxis, seasonCheck, shortBand, signed, sortTeams, ticks, unknowns, viewCharts,
   type Cell, type Estimate, type Scope, type Zone,
 } from "./shot-aftermath";
 
@@ -23,6 +23,9 @@ describe("shot aftermath numbers", () => {
     expect(signed(-0.0101)).toBe("−0.010");
     expect(signed(-0.0001)).toBe("0.000");
     expect(band(e(-0.01, -0.015, 0.006), true)).toBe("−0.015 to +0.006");
+    expect(shortBand(e(-0.081, -0.389, 0.215))).toBe("−.389 to +.215");
+    expect(shortBand(e(0.64, -0.241, 1.428))).toBe("−.241 to +1.428");
+    expect(shortBand(e(0, -0.0001, 0.02))).toBe(".000 to +.020");
   });
 
   it("puts every points chart of a view on one axis from zero and cost on its own symmetric axis", () => {
@@ -30,8 +33,13 @@ describe("shot aftermath numbers", () => {
     expect(pointsAxis(rows, ["own", "net", "second"])).toBe(1.5);
     expect(pointsAxis(rows, ["ppp_dreb"], 1.157)).toBe(1.5);
     expect(costAxis(rows, "cost")).toBeCloseTo(0.02);
-    expect(costAxis([cell("rim", null, { values: { ...cell("rim", null).values, cost: e(0.03, 0.01, 0.041) } })], "cost")).toBeCloseTo(0.06);
+    expect(costAxis([cell("rim", null, { values: { ...cell("rim", null).values, cost: e(0.03, 0.01, 0.041) } })], "cost")).toBeCloseTo(0.05);
     expect(ticks(0.04, "cost")).toEqual([-0.04, -0.02, 0, 0.02, 0.04]);
+    expect(ticks(0.05, "cost")).toEqual([-0.05, 0, 0.05]);
+    // RD18 suggestion 4: a thin scope reaching 1.428 ends on a round 2.00, ticks at whole points, never ±1.44 / ±0.72.
+    expect(costAxis([cell("rim", null, { values: { ...cell("rim", null).values, cost: e(0.64, -0.241, 1.428) } })], "cost")).toBeCloseTo(2);
+    expect(ticks(2, "cost")).toEqual([-2, -1, 0, 1, 2]);
+    expect(ticks(0.2, "cost")).toEqual([-0.2, -0.1, 0, 0.1, 0.2]);
     expect(ticks(1.5, "points")).toEqual([0, 0.5, 1, 1.5]);
   });
 
@@ -87,5 +95,28 @@ describe("shot aftermath answer with thin zones", () => {
     const a = answerOf(rows)!;
     expect(a.worst.zone).toBe("short_mid");
     expect(a.thin.map(z => z.zone)).toEqual(["long_mid"]);
+  });
+});
+
+describe("shot aftermath other-season check", () => {
+  const rebound = (zone: Zone, n: number, cost: Estimate, tone: "cost" | "benefit" | null) =>
+    cell(zone, e(n, n - 0.01, n + 0.01), { tones: { cost: null, miss_cost: null, dreb_cost: tone }, values: { ...cell(zone, e(n, n - 0.01, n + 0.01)).values, dreb_cost: cost } });
+  const now = [rebound("rim", 1.3, e(0.045, 0.02, 0.07), "cost"), rebound("three", 1.2, e(0.01, -0.02, 0.04), null), rebound("long_mid", 0.8, e(0, -0.03, 0.03), null)];
+
+  it("says the order and the rebound effect held when they did", () => {
+    const then = [rebound("rim", 1.32, e(0.05, 0.02, 0.08), "cost"), rebound("three", 1.18, e(0.0, -0.03, 0.03), null), rebound("long_mid", 0.79, e(0, -0.03, 0.03), null)];
+    expect(seasonCheck(now, then, "2024-25")).toEqual({ season: "2024-25", sameOrder: true, order: ["rim", "three", "long_mid"], rebound: { zone: "rim", held: "held" } });
+  });
+
+  it("reports a changed order and an unclear rebound effect", () => {
+    const then = [rebound("rim", 1.1, e(0.03, -0.01, 0.07), null), rebound("three", 1.2, e(0, -0.03, 0.03), null), rebound("long_mid", 0.8, e(0, -0.03, 0.03), null)];
+    const check = seasonCheck(now, then, "2024-25")!;
+    expect(check.sameOrder).toBe(false);
+    expect(check.order).toEqual(["three", "rim", "long_mid"]);
+    expect(check.rebound).toEqual({ zone: "rim", held: "unclear" });
+  });
+
+  it("has nothing to say when either season can't rank zones", () => {
+    expect(seasonCheck(now, [now[0]], "2024-25")).toBeNull();
   });
 });

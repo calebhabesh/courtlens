@@ -11,14 +11,14 @@ import { TeamPicker } from "./research/team-picker";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
-import { Button, ButtonSummary, Segmented } from "./ui/kit";
+import { Button, ButtonSummary, IconButton, Segmented } from "./ui/kit";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { formatDate } from "@/lib/format-date";
 import { downloadCsv, toCsv } from "@/lib/research-values";
 import {
   answerOf, band, chanceLine, costAxis, CSV_HEADER, csvRows, fixed, getScope, getSummary, getTeams, gridTone, LATEST_SEASON, nb, pct, pctBand,
-  pointsAxis, POSITION_LABEL, POSITIONS, SHOT_ZONES, signed, sortTeams, ticks, unknowns, VIEW_COST, VIEW_LABEL, VIEW_UNIT, viewCharts, whole,
+  pointsAxis, POSITION_LABEL, POSITIONS, seasonCheck, SHOT_ZONES, shortBand, signed, sortTeams, ticks, unknowns, VIEW_COST, VIEW_LABEL, VIEW_UNIT, viewCharts, whole,
   ZONE_LABEL, ZONE_SENTENCE, ZONES, type Cell, type ChartSpec, type CostKey, type Position, type Scope, type Summary, type TeamBoard, type TeamSort,
   type ValueKey, type View, type Zone,
 } from "@/lib/shot-aftermath";
@@ -64,6 +64,7 @@ function MetaLine({ items }: { items: readonly ReactNode[] }) {
 
 /** Four zones as bars from zero with their 95% whiskers. Points charts share one axis from zero; cost has its own, centred on zero (RD18 Q2). */
 function ZoneChart({ spec, rows, top, league }: { spec: ChartSpec; rows: readonly Cell[]; top: number; league?: number }) {
+  const phone = usePhone();
   const cost = spec.kind === "cost";
   const at = (v: number) => `${Math.max(0, Math.min(1, cost ? (v + top) / (2 * top) : v / top)) * 100}%`;
   const zero = at(0);
@@ -98,7 +99,7 @@ function ZoneChart({ spec, rows, top, league }: { spec: ChartSpec; rows: readonl
         return <div key={r.zone} className="sa-label" data-zone={r.zone}>
           <span className="sa-label-zone">{ZONE_LABEL[r.zone]}</span>
           <strong className="sa-label-value" data-field="chart-value" data-tone={cost ? gridTone(r.tones[spec.key as CostKey]) ?? "" : ""}>{e ? (cost ? signed(e.value) : fixed(e.value)) : "—"}</strong>
-          {e && <small className="sa-label-band">{band(e, cost)}</small>}
+          {e && <small className="sa-label-band" data-field="chart-band">{cost && phone ? shortBand(e) : band(e, cost)}</small>}
           {r.status === "thin" && <small className="sa-label-band" data-field="thin">Thin sample</small>}
         </div>;
       })}</div>
@@ -139,7 +140,22 @@ function ChartsSection({ scope, view, setView }: { scope: Scope; view: View; set
 
 // ---- Answer ------------------------------------------------------------------------------------------------------------------
 
-function AnswerSection({ scope }: { scope: Scope }) {
+/** RD18 suggestion 1: one line on whether the zone order and the rebound effect held in the other season, same team and position. */
+function OtherSeasonLine({ scope, other }: { scope: Scope; other: Scope }) {
+  const check = seasonCheck(scope.rows, other.rows, other.season);
+  if (!check) return null;
+  const order = check.order.map(z => ZONE_SENTENCE[z]).join(", then ");
+  const rebound = check.rebound
+    ? check.rebound.held === "held"
+      ? <>, and the opponent again scored {scope.rows.find(r => r.zone === check.rebound!.zone)!.values.dreb_cost!.value > 0 ? "more" : "less"} than average after {nb(`a ${ZONE_LABEL[check.rebound.zone].toLowerCase()}`)} miss the defence rebounded, interval clear of zero</>
+      : <>, but the opponent&apos;s scoring after {nb(`a ${ZONE_LABEL[check.rebound.zone].toLowerCase()}`)} miss the defence rebounded can&apos;t be told from the league average there</>
+    : null;
+  return <p className="sa-note" data-field="answer-other-season" data-season={check.season} data-same-order={check.sameOrder} data-order={check.order.join(",")} data-rebound={check.rebound?.held ?? ""}>
+    {check.sameOrder ? <>The same zone order held in {check.season}</> : <>In {check.season} the order was {order}</>}{rebound}.
+  </p>;
+}
+
+function AnswerSection({ scope, other }: { scope: Scope; other: Scope | null }) {
   const answer = answerOf(scope.rows);
   const overall = scope.rows.find(r => r.zone === "all");
   const league = scope.league.ppp;
@@ -165,6 +181,7 @@ function AnswerSection({ scope }: { scope: Scope }) {
         The clearest aftermath: after {nb(`a ${ZONE_LABEL[reboundEffect.zone].toLowerCase()}`)} miss the defence rebounds, the opponent scores <strong>{fixed(reboundEffect.values.ppp_dreb.value)}</strong> points per possession, <strong>{signed(reboundEffect.values.dreb_cost.value)}</strong> {reboundEffect.values.dreb_cost.value > 0 ? "above" : "below"} the league average (95% interval {band(reboundEffect.values.dreb_cost, true)}).
         {answer.reboundAll === "some" && others.every(z => !scope.rows.find(r => r.zone === z)?.tones.dreb_cost) ? " After other misses the interval includes zero." : ""}
       </p> : <p className="sa-lead" data-field="answer-rebound" data-zone="">After a miss the defence rebounds, no zone&apos;s opponent scoring is clearly above or below the league average here.</p>}
+      {other && <OtherSeasonLine scope={scope} other={other} />}
       {overall.status === "thin" && <p className="sa-note" data-field="answer-thin">This scope is thin (under {whole(100)} attempts or 50 opponent possessions), so its intervals are wide and nothing is coloured.</p>}
     </div>
   </ResearchSection>;
@@ -233,7 +250,9 @@ function TablesSection({ scope }: { scope: Scope }) {
 
 // ---- All 30 teams --------------------------------------------------------------------------------------------------------------
 
-function TeamsSection({ board, selected, zone, setZone, season }: { board: TeamBoard; selected: string | null; zone: Zone; setZone: (z: Zone) => void; season: string }) {
+function TeamsSection({ board, selected, zone, setZone, season, onScope }: {
+  board: TeamBoard; selected: string | null; zone: Zone; setZone: (z: Zone) => void; season: string; onScope: (team: string | null) => void;
+}) {
   const phone = usePhone();
   const [view, setView] = useState<"shots" | "scoring" | "cost">("shots");
   const [sort, setSort] = useState<{ key: TeamSort; direction: "asc" | "desc" }>({ key: "team", direction: "asc" });
@@ -262,7 +281,7 @@ function TeamsSection({ board, selected, zone, setZone, season }: { board: TeamB
       <Segmented size="sm" label="Zone" value={zone} onChange={setZone} options={ZONES.map(z => ({ value: z, label: ZONE_LABEL[z] }))} />
     </div>
     <p className="sa-lead" data-field="teams-line">
-      Every team&apos;s {zone === "all" ? "first-chance attempts" : ZONE_SENTENCE[zone]}, {board.position === "all" ? "every position" : `${POSITION_LABEL[board.position].toLowerCase()} only`}, in team order; sorting is a view, not a ranking. All teams together: own scoring <strong>{fixed(all.values.own?.value)}</strong>, opponent cost <strong>{signed(all.values.cost?.value)}</strong>, net <strong>{fixed(all.values.net?.value)}</strong> points per attempt.
+      Every team&apos;s {zone === "all" ? "first-chance attempts" : ZONE_SENTENCE[zone]}, {board.position === "all" ? "every position" : `${POSITION_LABEL[board.position].toLowerCase()} only`}, in team order; sorting is a view, not a ranking. The crosshair on a row shows the whole page for that team without moving it. All teams together: own scoring <strong>{fixed(all.values.own?.value)}</strong>, opponent cost <strong>{signed(all.values.cost?.value)}</strong>, net <strong>{fixed(all.values.net?.value)}</strong> points per attempt.
     </p>
     <p className="sa-note" data-field="chance-line" data-coloured={chance.coloured + reboundChance.coloured} data-eligible={chance.eligible + reboundChance.eligible}>
       With 95% intervals, about 1 cost in 20 is coloured by chance alone. Here {chance.coloured + reboundChance.coloured} of {chance.eligible + reboundChance.eligible} team costs are, so read any one team&apos;s colour with care. Thin rows are dimmed and never coloured.
@@ -271,7 +290,9 @@ function TeamsSection({ board, selected, zone, setZone, season }: { board: TeamB
     <StatsGrid<Cell> label={`Teams, ${ZONE_LABEL[zone].toLowerCase()}`} name="teams" density="compact" height="auto" leadWidth="sm" className={phone ? "sa-grid sa-teams sa-phone" : "sa-grid sa-teams"}
       rows={rows} rowKey={r => r.team} sort={{ key: sort.key, direction: sort.direction, onSort }}
       rowData={r => ({ team: r.team_code ?? r.team, status: r.status, selected: r.team_code === selected || undefined })}
-      lead={{ label: "Team", cell: r => <span className="sa-team" data-team={r.team_code ?? ""}><TeamLogo team={r.team_code ?? r.team} season={season} size={20} /><span className="sa-name">{r.team_code}</span>{r.status !== "ok" && <span className="sa-name-sub">{r.status === "thin" ? "Thin" : "No attempts"}</span>}</span> }}
+      lead={{ label: "Team", cell: r => <span className="sa-team" data-team={r.team_code ?? ""}><TeamLogo team={r.team_code ?? r.team} season={season} size={20} /><span className="sa-name">{r.team_code}</span>{r.status !== "ok" && <span className="sa-name-sub">{r.status === "thin" ? "Thin" : "No attempts"}</span>}
+        {r.team_code && <span className="sa-team-scope"><IconButton size="xs" variant="ghost" icon="crosshair" pressed={r.team_code === selected}
+          label={r.team_code === selected ? "Show every team again" : `Show the page for ${r.team_code}`} onClick={() => onScope(r.team_code === selected ? null : r.team_code)} data-field="scope-team" /></span>}</span> }}
       columns={columns} />
   </ResearchSection>;
 }
@@ -363,6 +384,8 @@ export function ShotAftermathResearch() {
   const view = (VIEWS as readonly string[]).includes(get("view") ?? "") ? get("view") as View : "all";
   const zone = (ZONES as readonly string[]).includes(get("zone") ?? "") ? get("zone") as Zone : "all";
   const scopeFeed = useFeed([season, team, position], signal => getScope(season, team, position, signal));
+  const otherSeason = summary ? seasons.find(s => s !== season) ?? null : null;
+  const otherFeed = useFeed([otherSeason, team, position], signal => otherSeason ? getScope(otherSeason, team, position, signal) : Promise.resolve(null));
   const teamsFeed = useFeed([season, position, zone], signal => getTeams(season, position, zone, signal));
   const scope = scopeFeed.data ?? scopeFeed.stale;
   const board = teamsFeed.data ?? teamsFeed.stale;
@@ -383,11 +406,11 @@ export function ShotAftermathResearch() {
     {!scope && !scopeFeed.error && <FeedSkeleton label="Loading Shot Aftermath" />}
     {scope && overall?.status === "unknown" && <GatedNote>No first-chance attempts in this scope.</GatedNote>}
     {scope && <div className="sa-body" data-loading={scopeFeed.loading || undefined} data-season={scope.season} data-team={scope.team} data-position={scope.position}>
-      <AnswerSection scope={scope} />
+      <AnswerSection scope={scope} other={otherFeed.data && otherFeed.data.season === otherSeason ? otherFeed.data : null} />
       <ChartsSection scope={scope} view={view} setView={next => set({ view: next === "all" ? null : next })} />
       <TablesSection scope={scope} />
       {teamsFeed.error && <FeedFailure error={teamsFeed.error} retry={teamsFeed.retry} what="The team table" />}
-      {board && <TeamsSection board={board} selected={team} zone={zone} season={season} setZone={next => set({ zone: next === "all" ? null : next })} />}
+      {board && <TeamsSection board={board} selected={team} zone={zone} season={season} setZone={next => set({ zone: next === "all" ? null : next })} onScope={code => set({ team: code })} />}
       {summary && <CompareSection summary={summary} season={scope.season} />}
       {summary && <Reading summary={summary} />}
       {summary && <About summary={summary} scope={scope} />}
