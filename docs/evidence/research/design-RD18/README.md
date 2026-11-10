@@ -60,3 +60,16 @@ Registered, frozen and served before any design: [`r17-shot-aftermath`](../r17-s
 **Glance test** (`sa-r1-2025-26-nba-all-all-all-1440.png`, the phone top, viewed). In five seconds: what the page asks (the hero), the answer in one sentence (rim attempts return the most, long mid-range the least), and four small charts with the rim bar tallest and a green three-point cost.
 
 Screenshots viewed: `sa-r1-*` (all five) and the regenerated gallery baseline. Full-page captures move the sticky filter bar down the page, leaving a gap under the meta line; the viewport shows it in place.
+
+## Round 2 (owner, 2026-11-10)
+
+"Where is shot aftermath?" (a screenshot of the Research menu), then "Sure." to its own menu entry.
+
+**Changed.** Research → Shooting lists Shot Aftermath after Shot Quality (split icon, "What first-chance shots score, what misses win back and what the opponent scores next") as a tab shortcut (`TAB_SHORTCUTS`, like Learning); the page stays a Shooting tab and keeps its URL. The Shooting entry reads "Expected shots and adjusted shooting". **Found while checking it:** `lib/route-availability.ts` still gated the route on the old workbench shot source, which is unavailable, so the menu hid the new entry; the gate is removed, since the page reads only the frozen R17 file. The menu's columns rebalance themselves (Shooting now has five items); the phone drawer lists the entry.
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | clean |
+| Vitest | 877 passed (`nav-model` lists the new link) |
+| Full Playwright (sandbox, mock API, 2 workers, 8 GiB cap) | 629 passed, 17 skipped, 1 failed: `route-consolidation` still asserted the menu had no Shot Aftermath entry (an FO07 rule this instruction replaces); updated to expect the entry and its link, then `route-consolidation` and `shot-aftermath` ×3: 39/39 |
+| Menu viewed | desktop menu at 1440 (entry, icon, description, balanced columns); the phone drawer link counted |

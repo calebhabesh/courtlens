@@ -63,7 +63,9 @@ test.describe("FO07 route consolidation", () => {
     const menu = page.getByRole("menu");
     await expect(menu.getByRole("menuitem", { name: /^Six-Factor RAPM/ })).toHaveAttribute("href", /^\/research\/rapm\/six-factor(\?|$)/);
     await expect(menu.getByRole("menuitem", { name: /^Shooting\b/ })).toHaveAttribute("href", /^\/research\/shooting(\?|$)/);
-    for (const removed of ["RAPM Research", "Expected Shots", "Adjusted Shooting", "Shot Aftermath"]) {
+    // RD18 (owner, 2026-11-10): Shot Aftermath has its own entry, a shortcut to its Shooting tab.
+    await expect(menu.getByRole("menuitem", { name: /^Shot Aftermath/ })).toHaveAttribute("href", /^\/research\/shooting\/aftermath(\?|$)/);
+    for (const removed of ["RAPM Research", "Expected Shots", "Adjusted Shooting"]) {
       // Anchored: a kept item's description may mention a removed page's name.
       await expect(menu.getByRole("menuitem", { name: new RegExp(`^${removed}`) })).toHaveCount(0);
     }
