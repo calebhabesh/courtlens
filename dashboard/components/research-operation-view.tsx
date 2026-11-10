@@ -21,7 +21,7 @@ import { ButtonLink } from "./ui/kit";
 const OPERATION_PAGES = [
   { title: "Player Comparison", href: "/compare", icon: "swap" as const, description: "Aligned production, efficiency and per-metric differences." },
   { title: "Player Twins", href: "/similar-players", icon: "fingerprint" as const, description: "Closest player-seasons by shot profile or box-score profile." },
-  { title: "Shot Aftermath", href: "/research/shooting/aftermath", icon: "trend" as const, description: "Possession outcomes following mapped shots." },
+  { title: "Shot Aftermath", href: "/research/shooting/aftermath", icon: "trend" as const, description: "What first-chance shots score, what misses win back and what the opponent scores next, by zone." },
   { title: "WOWY", href: "/wowy", icon: "person" as const, description: "Team exposure with and without selected players." },
   { title: "Stat Line Shift", href: "/stat-line-shift", icon: "chart-column" as const, description: "How a player's stat line changes with and without a teammate." },
   { title: "Player Matchups", href: "/matchups", icon: "swap" as const, description: "Explicit source assignments between offense and defense." },

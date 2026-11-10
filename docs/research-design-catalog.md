@@ -72,7 +72,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none (built from approved CourtLens Research patterns) | workbench, RD16 | ✅ |
 | RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed) | ⏸ redesign, fold into Shot Quality / zTS, or keep as is |
 | **C. Blocked** | | | | | |
-| RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | — | ⬜ queued after RD12, RD13 and RD16: new frozen aggregate, then design (owner, 2026-11-09) |
+| RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | R17, RD18 | 👀 |
 | RD19 | Ask evaluation [29] | `/research/assistant-evaluation` (not built) | none | R16 | ⏸ after R16 finishes |
 
 **Not in this catalog** unless the owner adds them: Methodology Definitions (`/methodology`), Stats
@@ -998,13 +998,31 @@ Instructions (owner, 2026-11-10, round 3):
 - **Decision:** Shot Quality v2 and zTS now cover the same ground. Redesign them, fold them into those pages
   (keeping the sealed results reachable), or leave them as they are?
 
-## RD18 Shot Aftermath — ⬜ queued
+## RD18 Shot Aftermath — 👀 ready for review
 
 - **Now:** a per-player page whose play-by-play tables hold two test games in the published database.
 - **Decision (owner, 2026-11-09):** build it, after RD12, RD13 and RD16: a new frozen play-by-play aggregate matching Databallr (league, team and position results by shot zone) for 2024-25 and 2025-26, then the design rounds.
 - **Content check (2026-11-10, counts only):** of 219,527 (2024-25) and 219,160 (2025-26) shots, 216,313 and 218,625 join a sealed R01 possession; the rest are in the 18 and 4 games R01 excluded (plus 1 stray). First-chance attempts 193,336 and 194,813 (Databallr prints 190,685 for 2024-25; cause not visible from its page); zones with rim labels first come close to Databallr's but not exactly. Opponent's next possession missing at period ends after 919 / 1,180 makes and 2,860 / 2,380 defensive rebounds; every shooter has a position estimate (group accuracy 85.5% out of sample; centres weakest). Evidence: [`design-RD18`](evidence/research/design-RD18/README.md).
 - **Owner, 2026-11-10 (answer to Q1–Q6 of the content check):** "Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively." Q1 95% game-bootstrap intervals on every rate, cost and net (2,000 replicates, seeded), green/red only on cost and net where the interval excludes zero; Q2 every cell served with counts and interval, flagged thin below 100 attempts or 50 opponent possessions, no smoothing; Q3 the After a miss and After a defensive rebound views defined from Databallr's formulas; Q4 Guards, Forwards, Bigs labelled estimates, no Unclassified; Q5 the tab body replaced, the old player operation and its POST endpoint left unchanged; Q6 `courtlens-shot-aftermath-v1`, block R17, evidence in `docs/evidence/research/r17-shot-aftermath/`.
 - **Feasibility (read 2026-11-09; nothing built or run):** no new source is needed. On disk: `expected-shot-v2` per-shot tables (zone, event id, `after_oreb`), the sealed possessions Shot Decomposition uses, and `position-estimates-v1`. Measure first how many shots fail to match. To work out: opponent cost (each possession against the opponent's next, and a league-normal baseline), blocks, free throws after a rebound, and-ones and period ends, with unmatched shots counted as unknown; position groups are estimated and the page says so. Usual Research path: register the method before reading results, freeze, API, then design.
+
+- **Built (R17, 2026-11-10):** `courtlens-shot-aftermath-v1` registered (`7bc242ab…`), frozen (results `5aa5161b…`, two byte-identical runs) and served at `GET /api/shot-aftermath`, `/scope`, `/teams`. Evidence: [`r17-shot-aftermath`](evidence/research/r17-shot-aftermath/README.md).
+
+Instructions (owner, 2026-11-10, round 1; the owner answered the design proposal and its five recommendations with "Go with your
+recommendations and build it comprehensively."):
+1. [x] Go with your recommendations and build it comprehensively.
+   - (1) A centred hero for this tab, "What happens after the shot?", with the Shooting route tabs under it and the URL kept.
+   - (2) The 992 px centred column.
+   - (3) A sticky filter bar: Season (segmented), Shooting team (`TeamPicker`), Position (All, Guards, Forwards, Bigs, labelled estimates), Export CSV; a meta line under it.
+   - (4) The answer in one sentence, computed from the served scope.
+   - (5) The view switch: All attempts / After a miss / After a defensive rebound.
+   - (6) Four small charts by zone (own scoring, second chances, opponent cost, scoring minus cost) with 95% whiskers; cost green/red only where its interval excludes zero; a scale note when a value is too small to see.
+   - (7) Databallr's three tables as compact `StatsGrid`s with intervals; column-group switch on a phone.
+   - (8) All 30 teams for one zone (logos, sortable, not ranked, thin rows dimmed) with one line on chance colours.
+   - (9) Visible honesty lines: positions are estimates (85.5%; centres weakest), values aren't Databallr's (second chances named); a collapsed count comparison.
+   - (10) How to read cards and a collapsed glossary. (11) A collapsed About: method, matching and unknowns, limits, credit, hashes.
+   - Q1 a hero for this tab only (Expected Shots and Adjusted keep theirs, RD17 is paused); Q2 one shared points axis from zero for own scoring, second chances and net, cost on its own axis centred on zero, labelled; Q3 the team table included; Q4 2025-26 by default; Q5 the per-player tool leaves this tab, its POST endpoint unchanged.
+   — Built as proposed: its own centred hero over the Shooting tabs; a sticky filter bar (season, team logo grid, estimated position, CSV); the answer in one sentence from the scope (thin zones named, never ranked); the view switch over Databallr's small zone charts with 95% whiskers, points on one axis from zero and cost on its own centred axis, coloured only where the interval excludes zero; Databallr's three tables as compact grids; all 30 teams with logos, sortable as a view, thin rows dimmed, a line on chance colours; the position and Databallr honesty lines with a toggle for the count comparison; How to read, glossary and a collapsed About. Phone tables switch column groups, none scrolls sideways. Real data 4,976 values, 0 mismatches; spec ×3 21/21; full Playwright 629 passed, 1 baseline changed by design (regenerated). Evidence: [`design-RD18`](evidence/research/design-RD18/README.md).
 
 ## RD19 Ask evaluation — ⏸
 

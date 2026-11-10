@@ -31,6 +31,12 @@ test.describe("FO07 route consolidation", () => {
       const tabs = page.getByRole("navigation", { name: `${merged.title} sections` });
       // RD06: a tab with its own centred hero (Learning) shows its own title and no tab bar.
       if (OWN_HEADER_TABS.has(destination)) {
+        // RD18: Shot Aftermath's own hero keeps the Shooting tabs under it.
+        if (destination === "/research/shooting/aftermath") {
+          await expect(page.getByRole("heading", { level: 1 }), source).toHaveText("What happens after the shot?");
+          await expect(tabs.locator('[aria-current="page"]'), source).toHaveText(tab.label);
+          continue;
+        }
         await expect(page.getByRole("heading", { level: 1 }), source).toHaveText(tab.label);
         await expect(tabs, source).toHaveCount(0);
         continue;

@@ -18,20 +18,6 @@ test("release availability agrees across desktop and mobile and never carries th
   expect(links.every(href => !/[?&](season|phase|beforeDate)=/.test(href ?? ""))).toBe(true);
 });
 
-test("catalog scope options keep unavailable context explicit and synchronize navigation", async ({ page }) => {
-  // Stat Line Shift (row 13) and Player Twins (row 17) left the catalog scope fields; Shot Aftermath still uses them.
-  await openWorkbench(page, "/research/shooting/aftermath?season=2000-01&phase=summer_league&beforeDate=2001-01-01");
-  const season = page.getByLabel("Season", { exact: true });
-  await expect(season).toHaveValue("2000-01");
-  await expect(season.locator("option:checked")).toContainText("Unavailable");
-  await season.selectOption("2025-26");
-  await expect(page.getByLabel("Phase", { exact: true })).toHaveValue("regular_season");
-  // The picker shows the last included day; the URL keeps the exclusive cutoff (2026-06-30).
-  await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-06-29");
-  await openWorkbench(page, "/research/shooting/aftermath?season=2025-26&phase=regular_season&beforeDate=2026-04-01");
-  await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-03-31");
-});
-
 test("settings distinguishes configured key from provider health and hides operator details", async ({ page }) => {
   await openWorkbench(page, "/settings");
   await expect(page.getByRole("heading", { name: "Settings", exact: true })).toBeVisible();
@@ -69,10 +55,4 @@ test("partial source keeps tools primary; service failure remains a distinct ava
   await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
   await expect(page.getByRole("menuitem", { name: /Last X Games/ })).toContainText("could not be verified");
   await expect(page.getByRole("region", { name: "Result" })).toBeVisible();
-});
-
-test("research without a catalog explains the missing context", async ({ page }) => {
-  await page.route("**/api/workbench/catalog*", route => route.fulfill({ status: 503, json: { detail: "Temporary catalog failure" } }));
-  await openWorkbench(page, "/research/shooting/aftermath");
-  await expect(page.getByRole("status").filter({ hasText: "Context catalog unavailable" })).toBeVisible();
 });
