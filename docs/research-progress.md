@@ -982,3 +982,15 @@ On Points Forecasts and its archive tab: the ledger's 50 forecasts open from a s
 
 The owner approved Points Forecasts ("Great, I approve this page.") after two build rounds. Row RD16 ✅; the alignment plan gains "Settled in RD16". Full Playwright before ✅: 632 passed, 17 skipped, 0 failed. Next in the queue: RD18 Shot Aftermath, which needs its new frozen play-by-play aggregate built before the design rounds (owner, 2026-11-09); RD14, RD17 and RD19 are paused.
 [`design-RD16`](evidence/research/design-RD16/README.md).
+
+## 2026-11-10 — RD18 steps 1–2: Shot Aftermath before-read and content check
+
+Before (:3100): the old workbench operation view, full width, 3 old tables and 2 native selects, every value 0 or "—" under "Source Unavailable" (unavailable data drawn as zeros), raw branch keys in the body; 0 console errors, 0 overflow, 0 broken images. Content check, counts only (no points read): of 219,527 (2024-25) and 219,160 (2025-26) shots, 216,313 and 218,625 join a sealed R01 possession; the rest sit in the 18 and 4 games R01 excluded (3,214 and 534 shots) plus 1 stray. First-chance attempts by the sealed possessions: 193,336 and 194,813 (Databallr prints 190,685 for 2024-25). Every first-chance miss is followed by an R01 rebound event but one; opponent's next possession is missing at a period end after 919 / 1,180 makes and 2,860 / 2,380 defensive rebounds. Every shooter has a position estimate. Awaiting the owner's answers before registration. [`design-RD18`](evidence/research/design-RD18/README.md).
+
+## 2026-11-10 — RD18: owner answers the content check
+
+"Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively." Q1–Q6 taken as recommended (95% game-bootstrap intervals; thin cells flagged, never smoothed; the two other views from Databallr's formulas; estimated Guards/Forwards/Bigs; the old player tool replaced in this tab only; `courtlens-shot-aftermath-v1` as block R17). The registration proposal goes to the owner before anything is registered or computed. [RD18 catalog](research-design-catalog.md#rd18-shot-aftermath--queued).
+
+## 2026-11-10 — R17 registered: `courtlens-shot-aftermath-v1`
+
+The owner approved the registration proposal ("Approved, go with your recommendations and build it comprehensively."). Registered before any point, rate or average was computed: [`evaluation/research/registrations/courtlens-shot-aftermath-v1.json`](../evaluation/research/registrations/courtlens-shot-aftermath-v1.json), content SHA-256 `7bc242ab2812159e7e4d2f0006c4bac889a2ec9bcf165c17bd631ae64b6a86b5`. Descriptive, no gate: first-chance attempts by zone, made and second-chance points, opponent cost against the season's league points per possession (Databallr's formula), three views, 1,240 cells, 95% game-bootstrap intervals (2,000 replicates), thin cells flagged, unknowns counted. Committed before the first run.
