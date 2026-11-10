@@ -247,25 +247,35 @@ def recover_interrupted(session: Session) -> int:
         return recover_locked(session)
 
 
-def require_thread(session: Session, thread_id: UUID) -> AssistantThread:
+def require_thread(
+    session: Session, thread_id: UUID, visitor: str | None = None
+) -> AssistantThread:
+    """A thread by ID. In public mode (visitor set) only the visitor's own threads exist."""
     row = session.get(AssistantThread, str(thread_id))
-    if row is None:
+    if row is None or (visitor is not None and row.visitor != visitor):
         raise HTTPException(404, "Thread not found.")
     return row
 
 
-def create_thread(session: Session) -> DurableThreadHeader:
+def create_thread(session: Session, visitor: str | None = None) -> DurableThreadHeader:
     with lifecycle(session):
         now = datetime.now(UTC)
         row = AssistantThread(
-            id=str(uuid4()), title="New chat", created_at=now, updated_at=now, version=1
+            id=str(uuid4()),
+            title="New chat",
+            created_at=now,
+            updated_at=now,
+            version=1,
+            visitor=visitor,
         )
         session.add(row)
         session.flush()
         return header(row)
 
 
-def accept(session: Session, request: HybridTurnRequest) -> StoredTurnRecord:
+def accept(
+    session: Session, request: HybridTurnRequest, visitor: str | None = None
+) -> StoredTurnRecord:
     with lifecycle(session):
         recover_locked(session)
         digest = canonical_hash(request.model_dump(mode="json"))
@@ -278,7 +288,7 @@ def accept(session: Session, request: HybridTurnRequest) -> StoredTurnRecord:
             return record(previous)
         now = datetime.now(UTC)
         if request.thread_id:
-            thread = require_thread(session, request.thread_id)
+            thread = require_thread(session, request.thread_id, visitor)
         else:
             thread = AssistantThread(
                 id=str(uuid4()),
@@ -286,6 +296,7 @@ def accept(session: Session, request: HybridTurnRequest) -> StoredTurnRecord:
                 created_at=now,
                 updated_at=now,
                 version=1,
+                visitor=visitor,
             )
             session.add(thread)
             session.flush()
@@ -353,9 +364,11 @@ class ClaimedTurn:
     interrupted: HybridTurnResponse
 
 
-def claim_turn(session: Session, request: HybridTurnRequest) -> TurnResponse | ClaimedTurn:
+def claim_turn(
+    session: Session, request: HybridTurnRequest, visitor: str | None = None
+) -> TurnResponse | ClaimedTurn:
     """Accept durably; return a retained response, or the claim to execute it."""
-    accepted = accept(session, request)
+    accepted = accept(session, request, visitor)
     if accepted.response:
         return accepted.response
     # Only the process that wins pending -> running executes; duplicates poll/replay.
@@ -468,8 +481,9 @@ def run_durable_turn(
     *,
     provider: PlanProvider | None = None,
     agent_provider: AgentProvider | None = None,
+    visitor: str | None = None,
 ) -> TurnResponse:
-    claimed = claim_turn(session, request)
+    claimed = claim_turn(session, request, visitor)
     if isinstance(claimed, (HybridTurnResponse, AgentTurnResponse)):
         return claimed
     return complete_turn(
@@ -477,9 +491,11 @@ def run_durable_turn(
     )
 
 
-def cancel_turn(session: Session, thread_id: UUID, turn_id: UUID) -> StoredTurnRecord:
+def cancel_turn(
+    session: Session, thread_id: UUID, turn_id: UUID, visitor: str | None = None
+) -> StoredTurnRecord:
     with lifecycle(session):
-        require_thread(session, thread_id)
+        require_thread(session, thread_id, visitor)
         row = session.get(AssistantTurn, str(turn_id))
         if not row or row.thread_id != str(thread_id):
             raise HTTPException(404, "Turn not found.")
@@ -512,11 +528,12 @@ def delete_history(session: Session, thread_id: UUID | None = None) -> dict[str,
 
 
 def list_threads(
-    session: Session, limit: int = 20, cursor: UUID | None = None
+    session: Session, limit: int = 20, cursor: UUID | None = None, visitor: str | None = None
 ) -> ThreadHistoryPage:
     rows = session.scalars(
         select(AssistantThread)
         .where(AssistantThread.id > str(cursor) if cursor else true())
+        .where(AssistantThread.visitor == visitor if visitor is not None else true())
         .order_by(AssistantThread.id)
         .limit(limit + 1)
     ).all()
@@ -527,10 +544,14 @@ def list_threads(
 
 
 def list_turns(
-    session: Session, thread_id: UUID, limit: int = 20, cursor: int = 0
+    session: Session,
+    thread_id: UUID,
+    limit: int = 20,
+    cursor: int = 0,
+    visitor: str | None = None,
 ) -> AgentHistoryPage:
     recover_interrupted(session)
-    thread = require_thread(session, thread_id)
+    thread = require_thread(session, thread_id, visitor)
     rows = session.scalars(
         select(AssistantTurn)
         .where(AssistantTurn.thread_id == str(thread_id), AssistantTurn.sequence > cursor)

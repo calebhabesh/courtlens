@@ -205,7 +205,7 @@ def test_repairs_unambiguous_shapes(sent, expected):
     assert notes
 
 
-def test_repairs_units_seasons_and_pinned_scope_inside_a_query():
+def test_repairs_units_and_pinned_release_inside_a_query():
     sent = {
         "operation": "query",
         "arguments": {
@@ -224,8 +224,9 @@ def test_repairs_units_seasons_and_pinned_scope_inside_a_query():
     }
     repaired, _ = repair_stats_call(sent)
     query = repaired["arguments"]
-    assert repaired["season"] == "2024-25"
-    assert "release_id" not in query and "season" not in query and "season_scope" not in query
+    # The inner season isn't moved up: only a call-level season may change the pinned scope.
+    assert "season" not in repaired and query["season"] == "2024-25"
+    assert "release_id" not in query and "season_scope" not in query
     assert query["metric_selectors"] == [
         {"key": "pts_per_game", "normalization": "raw"},
         {"key": "blk_per_game", "normalization": "raw"},
