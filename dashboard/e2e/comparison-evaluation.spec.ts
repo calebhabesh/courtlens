@@ -1,5 +1,8 @@
 import { waitForStreamedPage } from "./workbench-navigation";
 import { expect, test, type Page } from "@playwright/test";
+import archive from "./fixtures/rd16-evaluation-archive.json";
+import ledger from "./fixtures/rd16-forecast-ledger.json";
+import pointsEvaluation from "./fixtures/rd16-points-evaluation.json";
 
 async function tabTo(page: Page, selector: string) {
   for (let attempt = 0; attempt < 30; attempt += 1) {
@@ -27,12 +30,137 @@ test("shared-cutoff comparison keeps different target dates and missing context 
   await expect(page).toHaveURL(/playerA=24&playerB=23/);
 });
 
-test("evaluation presents the no-promotion decision and failed build state", async ({ page }) => {
-  await page.goto("/evaluation");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Evaluation Archive");
-  await expect(page.getByText("No challenger promoted").filter({ visible: true })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Key findings" }).getByText("7.82 ref pts", { exact: true }).filter({ visible: true })).toBeVisible();
-  await expect(page.getByText(/failed · Sep 21, 2026/).filter({ visible: true })).toBeVisible();
+// RD16: Points Forecasts and its Evaluation Archive tab, on the real API's responses (captured 2026-11-10 from :8000).
+async function realForecasts(page: Page) {
+  await page.route("**/api/workbench/forecasts/evaluation*", route => route.fulfill({ json: pointsEvaluation }));
+  await page.route(/\/api\/workbench\/forecasts(\?.*)?$/, route => route.fulfill({ json: ledger }));
+  await page.route("**/api/analytics/evaluations?*", route => route.fulfill({ json: archive }));
+}
+const PROJECT_WORDS = /prior_blend|player_only|player_plus_context|ewma_20_hl5|basketball-points-v1|\bM6\b|\bS3\b|Block F|\b[0-9a-f]{16,}\b/;
+
+test.describe("RD16 Points Forecasts", () => {
+  test("answers first, keeps the paired gain neutral and draws every model on one axis", async ({ page }) => {
+    await realForecasts(page);
+    await page.goto("/forecasts");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Points Forecasts");
+    const tabs = page.getByRole("navigation", { name: "Points Forecasts sections" });
+    await expect(tabs.getByRole("link", { name: "Points Forecasts" })).toHaveAttribute("aria-current", "page");
+    const answer = page.locator("#answer");
+    await expect(answer.locator("[data-field=headline]")).toContainText("Not by enough to matter. On 2025-26, a season none of them saw, all 3 models missed a player's points by about 4.6 a game.");
+    await expect(answer.locator("[data-field=answer-gain]")).toContainText("Player trees missed by 0.015 points a game less than the prior blend");
+    await expect(answer.locator("[data-field=answer-gain]")).toContainText("−0.014 to +0.052: it can't be told from zero. The prior blend stays.");
+    const strip = page.locator("[data-chart=miss]");
+    await expect(strip.locator("[data-row=miss]")).toHaveCount(3);
+    await expect(strip.locator("[data-row=gain]")).not.toHaveAttribute("data-tone", /./);
+    await expect(page.locator(".fc-models [data-tone]")).toHaveCount(0);
+    await expect(page.locator(".fc-gates [data-gate]")).toHaveCount(4);
+    await expect(page.locator(".fc-gates")).toContainText("Not passed");
+    const text = await page.locator("main").innerText();
+    expect(text).not.toMatch(PROJECT_WORDS);
+  });
+
+  test("switches slices in place, labels every served key and leaves changes uncoloured", async ({ page }) => {
+    await realForecasts(page);
+    await page.goto("/forecasts");
+    const slices = page.locator("#slices");
+    await expect(slices.locator("tbody tr")).toHaveCount(5);
+    const before = await page.evaluate(() => scrollY);
+    await page.getByRole("combobox", { name: "Slice" }).selectOption("prior_minutes_slice");
+    await expect(page).toHaveURL(/slice=prior_minutes_slice/);
+    await expect(slices.getByRole("heading", { level: 2 })).toHaveText("Where the misses differ: minutes, last 10 games");
+    await expect(slices.locator("tbody")).toContainText("Under 15");
+    await expect(slices.locator("tbody")).toContainText("28 or more");
+    expect(await page.evaluate(() => scrollY)).toBe(before);
+    await expect(slices.locator("[data-tone]")).toHaveCount(0);
+    await expect(slices.locator("[data-field=opponent-missing]")).toContainText("missing for all 48,870 test forecasts");
+  });
+
+  test("says the ledger is a back-dated test and keeps it collapsed", async ({ page }) => {
+    await realForecasts(page);
+    await page.goto("/forecasts");
+    const line = page.locator("#ledger [data-field=ledger-line]");
+    await expect(line).toHaveAttribute("data-timing", "after");
+    await expect(line).toContainText("The newest of the 489 on record is for a game on Jan 17, 2026.");
+    await expect(line).toContainText("issued on Oct 1, 2026, after their games, which fall inside the test season: a back-dated test");
+    const list = page.locator("#ledger-list");
+    await expect(list.locator(".fc-ledger")).toBeHidden();
+    await list.locator("summary").click();
+    await expect(list.locator(".fc-ledger tbody tr")).toHaveCount(50);
+    await expect(list.locator("[data-field=ledger-totals]")).toContainText("489 issued: 313 scored, 176 where the player did not play or was not in the box score (unknown, not zero)");
+    await expect(list.locator(".fc-ledger [data-tone]")).toHaveCount(0);
+    await expect(list.getByText("Not in the box score, unknown").first()).toBeVisible();
+  });
+
+  test("fits a phone by switching column groups instead of scrolling", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await realForecasts(page);
+    await page.goto("/forecasts");
+    await expect(page.locator("#models tbody tr")).toHaveCount(3);
+    for (const table of [".fc-models", ".fc-slices", ".fc-gates"]) {
+      const fits = await page.locator(`${table} .stats-scroll-region`).evaluate(e => e.scrollWidth - e.clientWidth);
+      expect(fits, table).toBeLessThanOrEqual(1);
+    }
+    await page.getByRole("radiogroup", { name: "Model columns" }).getByRole("radio", { name: "80% ranges" }).click();
+    await expect(page.locator(".fc-models thead")).toContainText("10+ games");
+    await expect(page.locator(".fc-models thead")).not.toContainText("RMSE");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
+  });
+
+  test("the archive tab colours the one gain whose interval excludes zero", async ({ page }) => {
+    await realForecasts(page);
+    await page.goto("/evaluation");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Points Forecasts");
+    await expect(page.getByRole("navigation", { name: "Points Forecasts sections" }).getByRole("link", { name: "Evaluation Archive" })).toHaveAttribute("aria-current", "page");
+    await expect(page.locator("#answer [data-field=headline]")).toContainText("No. On 2023-24, a season none of them saw, the player + context trees missed by 0.14 reference points a game more than EWMA-20");
+    await expect(page.locator("#answer [data-field=headline]")).toContainText("(95% interval 0.11 to 0.18 more, so the gap is real)");
+    await expect(page.locator("[data-chart=miss] [data-row=gain]")).toHaveAttribute("data-tone", "bad");
+    await expect(page.locator(".fc-gates")).toContainText("Minutes, recent games under 15: 6.3% worse");
+    await expect(page.locator("main")).not.toContainText("Latest build");
+    expect(await page.locator("main").innerText()).not.toMatch(PROJECT_WORDS);
+    await page.locator("#about summary").click();
+    await expect(page.locator("#about [data-field=run-id]")).toHaveText("6f7af9e63f27aada910d");
+  });
+
+  test("round 2: the scale note, distances from the target, how the models were chosen and the slice pattern", async ({ page }) => {
+    await realForecasts(page);
+    await page.goto("/forecasts");
+    await expect(page.locator("[data-chart=miss] [data-field=miss-scale-note]")).toHaveText("The gain is drawn to the same scale as the misses. Its whole interval spans 0.066 points, too small to see beside a miss of about 4.6.");
+    const gaps = page.locator("[data-chart=coverage] [data-field=target-gap]");
+    await expect(gaps).toHaveCount(6);
+    await expect(gaps.first()).toHaveText("+0.6 pts from 80%");
+    await expect(gaps.nth(1)).toHaveText("−0.3 pts from 80%");
+    const selection = page.locator("#selection");
+    await expect(selection.locator(".fc-selection")).toBeHidden();
+    await selection.locator("summary").click();
+    await expect(selection.locator("tbody tr")).toHaveCount(11);
+    await expect(selection.locator("[data-field=selection-line]")).toHaveAttribute("data-rule", "true");
+    await expect(selection.locator('tr[data-chosen="true"]')).toHaveCount(3);
+    await expect(selection.locator('tr[data-finalist="true"]')).toContainText("Player trees, 15\u00a0leaves, L2\u00a00");
+    await expect(selection.locator("[data-tone]")).toHaveCount(0);
+    await expect(page.locator("#slices [data-field=slice-pattern]")).toHaveText("The trees did best at 1 to 4 (−0.245 points) and worst at 40 or more (+0.021). No interval is served for a slice, so this is a pattern, not a result, and nothing is coloured.");
+    await expect(page.locator("[data-chart=coverage] [data-field=target-gap-note]")).toHaveText("Points are percentage points: +0.6 pts means the range held the real total in 0.6 more games of every 100 than the target.");
+    const toggle = page.locator("#ledger-list > summary");
+    await expect(toggle).toHaveText("Show the 50 newest of 489 forecasts");
+    await expect(page.locator("#ledger h2")).toHaveCount(1);
+  });
+
+  test("round 2: the archive tab has the reading cards, a glossary and its own selection grid", async ({ page }) => {
+    await realForecasts(page);
+    await page.goto("/evaluation");
+    await expect(page.getByRole("heading", { name: "How to read" })).toBeVisible();
+    await expect(page.locator("#glossary summary")).toBeVisible();
+    await page.locator("#selection summary").click();
+    await expect(page.locator("#selection tbody tr")).toHaveCount(9);
+    await expect(page.locator('#selection tr[data-finalist="true"]')).toContainText("Player + context trees, 15\u00a0leaves, L2\u00a01");
+    await expect(page.locator("#selection [data-field=selection-line]")).toContainText("the served simple average and 8 tree settings");
+  });
+
+  test("a ledger issued before its games reads as forecasts, on the mock API", async ({ page }) => {
+    await page.goto("/forecasts");
+    await expect(page.locator("#ledger [data-field=ledger-line]")).toHaveAttribute("data-timing", "before");
+    await expect(page.locator("#ledger").getByRole("link", { name: "Fixture Star" })).toBeVisible();
+    await expect(page.locator("#ledger")).toContainText("Waiting for the game");
+  });
 });
 
 test("comparison controls work by keyboard and fit a 375px viewport", async ({ page }) => {

@@ -1,0 +1,96 @@
+[
+  {
+    "route": "/forecasts",
+    "width": 1440,
+    "consoleErrors": [],
+    "height": 5397,
+    "overflow": 0,
+    "brokenImages": [],
+    "nativeSelects": 0,
+    "oldTables": 5,
+    "statsGrids": 0,
+    "sections": [
+      "Promotion Decision: retain the served baseline (prior_blend)",
+      "Out-of-Time Performance on Holdout Block F (2025-26 Regular Season)",
+      "Prespecified Out-of-Time Error Slices",
+      "Genuine Prospective Issuance Status"
+    ],
+    "hashes": [],
+    "codes": [
+      "basketball-points-v1",
+      "prior_blend",
+      "player_only",
+      "Block F",
+      "player_plus_context"
+    ],
+    "oldBadges": 59
+  },
+  {
+    "route": "/forecasts",
+    "width": 390,
+    "consoleErrors": [],
+    "height": 6570,
+    "overflow": 0,
+    "brokenImages": [],
+    "nativeSelects": 0,
+    "oldTables": 5,
+    "statsGrids": 0,
+    "sections": [
+      "Promotion Decision: retain the served baseline (prior_blend)",
+      "Out-of-Time Performance on Holdout Block F (2025-26 Regular Season)",
+      "Prespecified Out-of-Time Error Slices",
+      "Genuine Prospective Issuance Status"
+    ],
+    "hashes": [],
+    "codes": [
+      "basketball-points-v1",
+      "prior_blend",
+      "player_only",
+      "Block F",
+      "player_plus_context"
+    ],
+    "oldBadges": 59
+  },
+  {
+    "route": "/evaluation",
+    "width": 1440,
+    "consoleErrors": [],
+    "height": 1544,
+    "overflow": 0,
+    "brokenImages": [],
+    "nativeSelects": 0,
+    "oldTables": 1,
+    "statsGrids": 0,
+    "sections": [
+      "Final Test · 2023–24",
+      "Promotion Gates",
+      "Data Health and Coverage"
+    ],
+    "hashes": [],
+    "codes": [
+      "M6"
+    ],
+    "oldBadges": 4
+  },
+  {
+    "route": "/evaluation",
+    "width": 390,
+    "consoleErrors": [],
+    "height": 1976,
+    "overflow": 0,
+    "brokenImages": [],
+    "nativeSelects": 0,
+    "oldTables": 1,
+    "statsGrids": 0,
+    "sections": [
+      "Final Test · 2023–24",
+      "Promotion Gates",
+      "Data Health and Coverage"
+    ],
+    "hashes": [],
+    "codes": [
+      "M6"
+    ],
+    "oldBadges": 4
+  }
+]
