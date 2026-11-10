@@ -15,13 +15,14 @@ The limits are never a cost control: the keys are free-tier keys with no billing
 
 from __future__ import annotations
 
+import hmac
 import re
 import threading
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
 
-from fastapi import HTTPException, Request
+from fastapi import Header, HTTPException, Request
 
 from courtlens.config import Settings, get_settings
 from courtlens.services.assistant.agent.providers.pool import (
@@ -51,6 +52,20 @@ def ask_identity(request: Request) -> AskIdentity | None:
     if not (_HASH.match(visitor) and _HASH.match(client)):
         raise HTTPException(403, "Ask is only available through the CourtLens site.")
     return AskIdentity(visitor=visitor, client=client)
+
+
+def public_ask_writer(
+    x_ask_token: str | None = Header(None, alias="X-CourtLens-Ask-Token"),
+) -> bool:
+    """True when the dashboard proxy presents the Ask-only token in public mode."""
+    settings = get_settings()
+    expected = settings.public_ask_token.get_secret_value() if settings.public_ask_token else ""
+    return bool(
+        settings.public_ask
+        and expected
+        and x_ask_token
+        and hmac.compare_digest(x_ask_token.encode(), expected.encode())
+    )
 
 
 @dataclass

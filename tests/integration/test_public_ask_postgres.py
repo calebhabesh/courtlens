@@ -140,3 +140,21 @@ def test_local_use_is_unchanged(postgres_conversation, monkeypatch):
         assert client.get("/api/workbench/assistant/v2/limits").json() == {"enabled": False}
         titles = [t["title"] for t in client.get(THREADS).json()["threads"]]
         assert "Local" in titles
+
+
+def test_the_ask_token_starts_turns_only_in_public_mode(public, monkeypatch):
+    client, _operator = public
+    monkeypatch.setenv("COURTLENS_PUBLIC_ASK_TOKEN", "ask-only-token")
+    get_settings.cache_clear()
+    token = {"X-CourtLens-Ask-Token": "ask-only-token"}
+    body = HybridTurnRequest(request_id=uuid4(), message="Explain spacing.").model_dump(mode="json")
+    assert client.post(TURN, json=body, headers={**token, **who("frank")}).status_code == 200
+    wrong = {"X-CourtLens-Ask-Token": "guess"}
+    body = HybridTurnRequest(request_id=uuid4(), message="Explain spacing.").model_dump(mode="json")
+    assert client.post(TURN, json=body, headers={**wrong, **who("frank")}).status_code == 401
+    # Deletes and every other write still need the operator.
+    assert client.delete(THREADS, headers={**token, **who("frank")}).status_code == 401
+    monkeypatch.setenv("COURTLENS_PUBLIC_ASK", "false")
+    get_settings.cache_clear()
+    body = HybridTurnRequest(request_id=uuid4(), message="Explain spacing.").model_dump(mode="json")
+    assert client.post(TURN, json=body, headers=token).status_code == 401

@@ -3,7 +3,7 @@
 from typing import Literal
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
@@ -36,7 +36,12 @@ from courtlens.services.assistant.history import (
     run_durable_turn,
 )
 from courtlens.services.assistant.operations import declarations
-from courtlens.services.assistant.public_ask import PUBLIC_ASK, AskIdentity, ask_identity
+from courtlens.services.assistant.public_ask import (
+    PUBLIC_ASK,
+    AskIdentity,
+    ask_identity,
+    public_ask_writer,
+)
 from courtlens.services.assistant.saved import (
     export_saved,
     get_saved,
@@ -47,6 +52,17 @@ from courtlens.services.assistant.saved import (
 from courtlens.services.assistant.streaming import stream_turn
 
 router = APIRouter(prefix="/workbench/assistant", tags=["conversational analytics"])
+
+
+def verify_ask_write_access(
+    request: Request,
+    public_writer: bool = Depends(public_ask_writer),
+    x_operator_token: str | None = Header(None, alias="X-Operator-Token"),
+) -> None:
+    """Ask turns and threads: the operator, or in public mode the dashboard's Ask-only token."""
+    if public_writer:
+        return
+    verify_workspace_operator_access(request, x_operator_token)
 
 
 @router.get("/operations")
@@ -65,7 +81,7 @@ def post_turn(
 def post_hybrid_turn(
     request: HybridTurnRequest,
     session: Session = Depends(get_db),
-    _auth: None = Depends(verify_workspace_operator_access),
+    _auth: None = Depends(verify_ask_write_access),
     identity: AskIdentity | None = Depends(ask_identity),
 ) -> TurnResponse:
     """Accept durably before execution; retransmissions replay the exact retained response."""
@@ -82,7 +98,7 @@ def post_hybrid_turn(
 def post_hybrid_turn_stream(
     request: HybridTurnRequest,
     session: Session = Depends(get_db),
-    _auth: None = Depends(verify_workspace_operator_access),
+    _auth: None = Depends(verify_ask_write_access),
     identity: AskIdentity | None = Depends(ask_identity),
 ) -> StreamingResponse:
     """AR05 SSE view of the same durable turn. Acceptance errors stay plain HTTP statuses."""
@@ -100,7 +116,7 @@ def post_hybrid_turn_stream(
     "/v2/threads",
     response_model=DurableThreadHeader,
     status_code=201,
-    dependencies=[Depends(verify_workspace_operator_access)],
+    dependencies=[Depends(verify_ask_write_access)],
 )
 def new_thread(
     session: Session = Depends(get_db), identity: AskIdentity | None = Depends(ask_identity)
@@ -138,7 +154,7 @@ def turns(
 @router.post(
     "/v2/threads/{thread_id}/turns/{turn_id}/cancel",
     response_model=StoredTurnRecord,
-    dependencies=[Depends(verify_workspace_operator_access)],
+    dependencies=[Depends(verify_ask_write_access)],
 )
 def stop_turn(
     thread_id: UUID,

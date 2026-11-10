@@ -71,6 +71,8 @@ export class WorkbenchApiError extends Error {
         ? detail
         : typeof (detail as { detail?: string })?.detail === "string"
         ? (detail as { detail: string }).detail
+        : typeof (detail as { message?: string })?.message === "string"
+        ? (detail as { message: string }).message
         : "Workbench API request failed"
     );
   }
