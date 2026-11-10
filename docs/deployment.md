@@ -68,8 +68,9 @@ docker compose --env-file secrets.env --env-file release.env exec api \
 The VPS boot volume is 193 GB, nearly all of the Always Free 200 GB block-storage allowance
 (measured 2026-10-19: 21 GB used across CourtLens, LineWatchTO and the portfolio; Docker images
 4.8 GB, volumes 8.3 GB). Outbound transfer is free up to 10 TB a month and inbound is free, and
-Caddy compresses responses (`encode zstd gzip`). The demo needs about 1.2 GB of images, about 6 GB
-of Postgres and about 1.4 GB of serving files. The data snapshot is frozen, so the database
+Caddy compresses responses (`encode zstd gzip`). The demo needs about 1.2 GB of images, about 21 GB
+of Postgres (the 2026-11-10 snapshot, with full history and the 12 impact seasons) and about
+3.1 GB of serving files. The data snapshot is frozen, so the database
 does not grow. Deploys never build on the VPS. Each deploy removes CourtLens images other
 than the current and previous release. Container logs rotate at 3 × 10 MB, and journald
 is capped at 200 MB.
@@ -125,8 +126,10 @@ scripts/deploy-vps.sh <sha>      # a specific main commit
 ```
 
 Serving files are git-ignored: evaluation reports, saved analyses, the impact,
-value-archetype and WOWY manifests, and player portraits (`SERVING_DIRS` in the script,
-about 1.4 GB). They are rsynced from
+value-archetype and WOWY manifests, player portraits, the Research serving tables and model
+files, DARKO, ESPN rosters, the Free Agency and Wikipedia bundles, shot zones, stint boxes and
+the raw box-score evidence behind starting positions (`SERVING_DIRS` in the script, about
+3.1 GB on 2026-11-10; the raw evidence is mounted read-only as `data/raw`). They are rsynced from
 `$COURTLENS_DATA_DIR`, which defaults to the checkout's `data/`. A worktree must point
 this at the primary checkout.
 
