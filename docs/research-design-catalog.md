@@ -70,9 +70,9 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none (built from approved CourtLens Research patterns) | workbench, RD16 | ✅ |
-| RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed) | 👀 merged into Shot Quality and zTS (owner, 2026-11-10) |
+| RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed), RD17 | ✅ merged into Shot Quality and zTS (owner, 2026-11-10) |
 | **C. Blocked** | | | | | |
-| RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | R17, RD18 | 👀 |
+| RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | R17, RD18 | ✅ |
 | RD19 | Ask evaluation [29] | `/research/assistant-evaluation` (not built) | none | R16 | ⏸ after R16 finishes |
 
 **Not in this catalog** unless the owner adds them: Methodology Definitions (`/methodology`), Stats
@@ -992,7 +992,7 @@ Instructions (owner, 2026-11-10, round 3):
    — Approved after two build rounds; the settled rules are in the alignment plan ("Settled in RD16"). The full Playwright run owed under the owner's rule: 632 passed, 17 skipped, 0 failed.
 
 
-## RD17 Expected Shots and Adjusted Shooting — 👀 ready for review
+## RD17 Expected Shots and Adjusted Shooting — ✅ approved by the owner (2026-11-10)
 
 - **Now:** the sealed B26 experiments (expected-shot v1 is a registered negative result), tabs of Shooting.
 - **Decision (owner, 2026-11-10, "I agree", answering the recommendation below):** merge both, keeping every sealed result reachable and unrenamed.
@@ -1020,7 +1020,11 @@ Instructions (owner, 2026-11-10, round 1; the owner answered the content check w
    - Q1: the "v1" in the decision reads as the sealed retrospective-v2 run, the only expected-shot run sealed; the page calls it the earlier attempt and names the identifiers only in About. Q2: the empty preflight run is one sentence in About, not a run select. Q3: the Defense tab serves playoffs too, since the feed has them (zTS's own tabs stay regular season). Q4: the old aliases `/zts` → zTS and `/shotquality` → Shot Quality, the pages Databallr's own paths name. Q5: the Learning link goes to Shot Quality's Decomposition. Q6: the backend search entry `page_shooting` is replaced by entries for Shot Quality, zTS and Shot Aftermath (corrected while building: neither Shot Quality nor zTS had one). Q7: `play-type-shooting-view.tsx` is deleted with its route (nothing else renders it); `ResearchResultsView` stays for RAPM. Q8: traded players show every team code with its logo, the photo without a team tint.
    — Built as proposed. Shot Quality's Model tab ends with "An earlier attempt": one line computed from the sealed run (0.08% better Brier than a zone rate against the 1% it needed, never calibrated or tested), a small toggle opening the five selection scores uncoloured, "Failed" in words and the reliability chart (12 px axes, centred key); identifiers, the model card, the empty preflight run and the report download in Caveats & Methodology. zTS gains a Defense tab: season and Regular season / Playoffs, a pattern line, the league's play types as `LeaderBars`, every defender on `StatsGrid` (photos, a logo per code, search, sortable, no rank or colour, thin samples dimmed and last), a crosshair selecting a defender in place, the defender card and play-type grid with Clear and an empty state, a collapsed About. Shot Aftermath stands alone with no tab bar; the menu, redirects, Learning link and search entries follow. Found and fixed: Shot Quality's Caveats widened the phone page when opened (pre-existing on the approved page), the new grid's sideways scroll and cut names. Real data 30,937 values, 0 mismatches; touched specs ×3 49/49; full Playwright 628 passed, 17 skipped, 1 failed (`route-polish` expected the old "Shooting" link; updated). Evidence: [`design-RD17`](evidence/research/design-RD17/README.md).
 
-## RD18 Shot Aftermath — 👀 ready for review
+Instructions (owner, 2026-11-10, round 2):
+2. [x] Sounds good. I approve them. (RD17 and RD18 together.)
+   — Approved after one build round. Full Playwright for this state: 628 passed, 17 skipped, 1 failed (`route-polish` expected the old "Shooting" drawer link; updated, then the touched specs 49/49 over three runs).
+
+## RD18 Shot Aftermath — ✅ approved by the owner (2026-11-10)
 
 - **Now:** a per-player page whose play-by-play tables hold two test games in the published database.
 - **Decision (owner, 2026-11-09):** build it, after RD12, RD13 and RD16: a new frozen play-by-play aggregate matching Databallr (league, team and position results by shot zone) for 2024-25 and 2025-26, then the design rounds.
@@ -1063,6 +1067,10 @@ menu entry, and answered "Sure."):
   (6) on the After a defensive rebound view, opponent points per possession after a make and after a rebound side by side against the league line.
   Recommended: 1, 2, 4 and 5 together; 3 and 6 each add a section (owner's call). Also: delete the now-unrendered `components/shooting-view.tsx`
   and `components/catalog-scope-fields.tsx` (the old per-player tool; its POST endpoint stays), or keep them?
+
+Instructions (owner, 2026-11-10, round 3):
+3. [x] Sounds good. I approve them. (RD17 and RD18 together.)
+   — Approved after two build rounds and RD17's removal of the tab bar. The six suggestions and the deletion question above stay open and unbuilt; nothing in this approval chose them.
 
 ## RD19 Ask evaluation — ⏸
 
