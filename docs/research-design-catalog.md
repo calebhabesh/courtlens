@@ -910,6 +910,12 @@ recommendations and suggestions for optimal construction and layout of this page
    - Q1: the strip is sorted fastest to slowest within each family, with no rank. Q2: clicking a strip row opens its curve, with kit chips grouped by family. Q3: errors as RMSE in percentage points, gains as served in squared points with their intervals. Q4: the priors-over-time chart is added.
    — Built as proposed: the answer in one sentence, strips per family with 3P% drawn only over its observed range, the curve with chips, a team-tinted example card with search in place and the player's own seasons, the test with gains first, the prior over 43 seasons, coverage visible, How to read and a collapsed About. One change: the fitted curve is drawn only for stats that reach both levels, because for 3P% it crosses 0.5 at 419 inside the observed range. Real data 10,221 values, 0 mismatches; full Playwright 624 passed, 17 skipped, 0 failed.
 
+Instructions (owner, 2026-11-10, round 2):
+2. [x] give the selector highlight breathing room around the stats (fts, ftr, fg, etc.) It seems squished.
+   — The stat names in the strip are now the kit's ghost button (12 px each side) instead of the unpadded text variant, so the pressed outline no longer hugs the label; the phone label column went from 72 to 80 px so "Rim FG%" fits.
+3. [x] why does pressing a menu button in this chart/table auto scroll? I thought it wouldn't is there better behaviour?
+   — It scrolled because round 1 made a strip press both select the stat and jump to its curve (Q2). Now a press only selects: the row stays outlined, the page holds still, and the curve below changes. Moving there is the reader's choice, through a "{stat} curve" button at the end of the strip's key (a smooth scroll, instant under reduced motion), and the heading lands at the site default, 80 px under the header. 625 passed, 17 skipped, 0 failed
+
 Evidence: [`design-RD13`](evidence/research/design-RD13/README.md).
 
 ## RD14 Win Probability — ⏸
