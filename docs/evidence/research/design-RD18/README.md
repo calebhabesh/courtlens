@@ -73,3 +73,7 @@ Screenshots viewed: `sa-r1-*` (all five) and the regenerated gallery baseline. F
 | Vitest | 877 passed (`nav-model` lists the new link) |
 | Full Playwright (sandbox, mock API, 2 workers, 8 GiB cap) | 629 passed, 17 skipped, 1 failed: `route-consolidation` still asserted the menu had no Shot Aftermath entry (an FO07 rule this instruction replaces); updated to expect the entry and its link, then `route-consolidation` and `shot-aftermath` ×3: 39/39 |
 | Menu viewed | desktop menu at 1440 (entry, icon, description, balanced columns); the phone drawer link counted |
+
+## Open for the owner (2026-11-10, not built)
+
+Proposed after round 2; the full list is in the [catalog's RD18 section](../../../research-design-catalog.md#rd18-shot-aftermath--ready-for-review): six suggested improvements (other-season line in the answer, team-row scope icon, position grid, round cost-axis steps, phone label wrap, after-make against after-rebound chart; 1, 2, 4 and 5 recommended together) and whether to delete the now-unrendered `components/shooting-view.tsx` and `components/catalog-scope-fields.tsx`.
