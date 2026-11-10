@@ -69,35 +69,22 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(page.getByText("Better Player:")).not.toBeVisible();
   });
 
-  test("forecasts view displays active policy, promotion decision, gates, and prespecified slices", async ({ page }) => {
+  test("forecasts view displays the decision, the rules fixed before the test, slices and the ledger", async ({ page }) => {
     await page.goto("/forecasts");
 
-    // FO12: the title matches the nav label; the policy leads the key-findings row.
+    // RD16: one hero over the Points Forecasts and Evaluation Archive tabs; the answer leads.
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Points Forecasts");
-    const findings = page.getByRole("region", { name: "Key findings" });
-    await expect(findings).toContainText("Active Forecast Policy");
-    await expect(findings).toContainText("prior_blend");
-
-    // Verify promotion decision banner and gates
-    await expect(page.getByText("Promotion Decision:").filter({ visible: true })).toBeVisible();
-    await expect(page.getByText("DO_NOT_PROMOTE").filter({ visible: true })).toBeVisible();
-    await expect(page.getByText("Gate 1: Validation Improvement >= 5%").filter({ visible: true })).toBeVisible();
-    await expect(page.getByText("Gate 2: Final Paired Superiority").filter({ visible: true })).toBeVisible();
-
-    // Verify holdout performance table
-    await expect(page.getByText("Out-of-Time Performance on Holdout Block F").filter({ visible: true })).toBeVisible();
-    await expect(page.locator("strong.font-mono:has-text('prior_blend')").first()).toBeVisible();
-    await expect(page.locator("strong.font-mono:has-text('player_only')").first()).toBeVisible();
-
-    // Verify slices table
-    await expect(page.getByText("Prespecified Out-of-Time Error Slices").filter({ visible: true })).toBeVisible();
-    await expect(page.getByText("Schedule Rest").first().filter({ visible: true })).toBeVisible();
-
-    // Verify prospective issuance status and ledger table
-    await expect(page.getByText("Genuine Prospective Issuance Status").filter({ visible: true })).toBeVisible();
-    await expect(page.getByText("Awaiting 2026-27 Tipoff").filter({ visible: true })).toBeVisible();
-    await expect(page.getByText("Prospective Forecasts Ledger").filter({ visible: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Does a smarter model forecast points better?" })).toBeVisible();
+    await expect(page.locator("#answer [data-field=headline]")).toContainText("Not by enough to matter.");
+    await expect(page.getByRole("heading", { name: "The rule fixed before the test" })).toBeVisible();
+    await expect(page.locator(".fc-gates [data-gate]")).toHaveCount(4);
+    await expect(page.getByRole("heading", { name: /^Where the misses differ/ })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Forecasts issued so far" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Fixture Star" })).toBeVisible();
+
+    // No winner banner or decision badge.
+    await expect(page.getByText(/^Winner:/)).not.toBeVisible();
+    await expect(page.getByText("DO_NOT_PROMOTE").filter({ visible: true })).toHaveCount(0);
   });
 
   test("dense dark research layout fits a 375px mobile viewport without horizontal overflow", async ({ page }) => {

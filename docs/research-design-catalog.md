@@ -69,7 +69,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none (built from approved CourtLens Research patterns) | R03, RD13 | ✅ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
-| RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none | workbench | ⬜ |
+| RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none (built from approved CourtLens Research patterns) | workbench, RD16 | 👀 |
 | RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed) | ⏸ redesign, fold into Shot Quality / zTS, or keep as is |
 | **C. Blocked** | | | | | |
 | RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | — | ⬜ queued after RD12, RD13 and RD16: new frozen aggregate, then design (owner, 2026-11-09) |
@@ -953,11 +953,28 @@ Evidence: [`design-RD13`](evidence/research/design-RD13/README.md).
   already follows row 18.
 - **Instructions:** _(owner)_
 
-## RD16 Points Forecasts — ⬜
+## RD16 Points Forecasts — 👀
 
 - **Now:** next-game points estimates, their out-of-time test, the prospective ledger; Evaluation Archive
   linked from it.
-- **Instructions:** _(owner)_
+- **Reference:** none. No Databallr page for it; each section borrows a named, approved CourtLens Research precedent.
+- **Before (round 1, :3100, 2026-11-10):** `/forecasts` under the old left-aligned header, full width: a coverage chart, four stat tiles, then gates, holdout, slices and ledger as 5 old tables with badges; 5,397 px tall at 1440, 6,570 at 390. `/evaluation` the same look, 1 old table, 1,544 / 1,976 px. 0 console errors, 0 overflow, 0 broken images, 0 native selects on both. Project codes in the body (`basketball-points-v1`, `prior_blend`, `player_only`, `player_plus_context`, "Block F", "M6"); the phone subtitle is cut mid-word; the ledger has no photos and no logo beside CLE, PHI, IND, NOP, MIN or HOU.
+- **Content check (2026-11-10):** (A) the "prospective" ledger is a back-dated pipeline test: all 489 forecasts were issued Oct 1, 2026 for games on Jan 15–17, 2026, inside the 2025-26 final-test season (`issue-forecasts --as-of-date 2026-01-15`, workbench progress log), yet the page calls it "Genuine Prospective Issuance" and "Live Scored"; no 2026-27 forecast has been issued. (B) The ledger API sorts on tied fields, so paging 489 rows by 100 returns 420 unique. (C) The archive's Data Health rows describe today's database (latest build Nov 10, 2026), not the frozen experiment. (D) Slice changes are coloured by sign with no interval, slice labels show raw keys, and the "Awaiting 2026-27 tipoff" note contradicts the served status. (E) The archive's split dates and reference-points formula are fixed in `evaluation/config/baseline-v1.yaml`, not served.
+
+Instructions (owner, 2026-11-10, round 1; the owner answered the design proposal and its four recommendations with "Go with your
+recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively."):
+1. [x] Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively.
+   - (1) One centred hero with two route tabs, Points Forecasts and Evaluation Archive; `/evaluation` keeps its URL.
+   - (2) The answer in one sentence (the simple blend stays; player-only 0.015 points better, 95% interval −0.052 to +0.014, can't be told from zero), then a meta line; the model reads as "Points Forecast" with its technical name under it.
+   - (3) The three models: the paired gap to scale on a shared axis including zero, then a compact `StatsGrid` (MAE, RMSE, player-balanced MAE, coverage, width, rows), uncoloured.
+   - (4) Interval coverage, core and early season against the 80% target on one 0–100% scale, key centred.
+   - (5) Promotion gates: four rows, rule in one sentence and the observed value; pass/fail in neutral tones, not green/red.
+   - (6) Slices: a grouped select of dimensions and a compact `StatsGrid` of the three models' MAE and the change in points, uncoloured; a phone column switch.
+   - (7) Ledger: `StatsGrid` player cards with 2025-26 season photos and logos, interval bars on one shared scale, nonappearances as unknown.
+   - (8) Archive tab: the answer (context model worse than EWMA-20 by 0.11 to 0.18 reference points, 95%, red because the interval excludes zero), three models on a zero axis, gates with the failed slice named, slices with coverage, splits.
+   - (9) How to read (cards, collapsed glossary) and a collapsed About (protocol, splits, policy, run, hashes, reproduce commands, the served model card).
+   - Q1: the ledger is relabelled as a back-dated test of the issuance pipeline (issued Oct 1, 2026 for games Jan 15–17, 2026, inside the test season; not a prospective result), collapsed behind that one line and never coloured. Q2: the first 50 rows from one request, with the total stated; no API change. Q3: the live-database rows leave the archive; the experiment's own counts go to About. Q4: route tabs, not one long page.
+   — Built as proposed: one hero over both tabs, the answer in one sentence with the typical misses and the paired gain on one axis from zero, the models grid with the gain first (uncoloured), coverage against the 80% target, the four rules in words, slices through one grouped select, the ledger behind one line saying it is a back-dated test (50 rows with 2025-26 photos and ranges on one scale), How to read and a collapsed About; the archive tab with its red gain (95% interval below zero) and no live-database rows. Phone tables switch column groups, none scrolls sideways. One shared change: `StatsGrid` draws `headerAfter` on unsorted columns. Real data 2,470 values, 0 mismatches, 100 photos; full Playwright 630 passed, 17 skipped, 0 failed. Evidence: [`design-RD16`](evidence/research/design-RD16/README.md).
 
 ## RD17 Expected Shots and Adjusted Shooting — ⏸
 

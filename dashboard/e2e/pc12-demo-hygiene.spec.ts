@@ -7,8 +7,10 @@ for (const width of [1440, 768, 390, 375]) {
     await page.setViewportSize({ width, height: width < 768 ? 844 : 900 });
     await page.emulateMedia({ reducedMotion: "reduce" });
     await openWorkbench(page, "/evaluation");
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Evaluation Archive");
-    await expect(page.getByRole("figure", { name: "Final-Test Error" })).toContainText("Reference points =");
+    // RD16: the archive is the second tab of Points Forecasts.
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Points Forecasts");
+    await expect(page.getByRole("heading", { name: "Did adding context beat a simple average?" })).toBeVisible();
+    await expect(page.locator("#answer [data-field=target]")).toContainText("PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV");
     await expect(page.getByText("Evaluation unavailable", { exact: false })).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
     if (width === 1440 || width === 390) await expect(page).toHaveScreenshot(`pc12-c-evaluation-${width}.png`, { animations: "disabled", maxDiffPixelRatio: 0.01 });
@@ -55,6 +57,6 @@ test("PC12 C explicit incompatible Evaluation stays selected until archive recov
   await expect(page.getByText("Evaluation unavailable for the selected snapshot.", { exact: true })).toBeVisible();
   await expect(page).toHaveURL(/snapshotId=incompatible/);
   await page.getByRole("link", { name: "Open Evaluation Archive" }).click();
-  await expect(page.getByRole("figure", { name: "Final-Test Error" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Did adding context beat a simple average?" })).toBeVisible();
   expect(new URL(page.url()).searchParams.has("snapshotId")).toBe(false);
 });
