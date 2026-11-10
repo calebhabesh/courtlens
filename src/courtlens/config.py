@@ -139,6 +139,8 @@ class Settings(BaseSettings):
     public_ask: bool = False
     public_ask_prompts_per_visitor: int = Field(default=3, ge=1, le=100)
     public_ask_daily_requests: int = Field(default=480, ge=1, le=10_000_000)
+    # Held only by the dashboard's server proxy: it may start Ask turns, nothing else.
+    public_ask_token: SecretStr | None = None
     assistant_max_web_searches: int = Field(default=3, ge=0, le=20)
     assistant_max_tokens: int = Field(default=60000, ge=1024, le=1_000_000)
     assistant_turn_timeout_seconds: int = Field(default=60, ge=1, le=300)

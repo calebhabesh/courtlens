@@ -19,11 +19,18 @@
 		respond "ok" 200
 	}
 
-	# Route handlers owned by Next.js: reads only. Their writes would carry
-	# server-side credentials (jobs, workspace, assistant threads, live leases).
+	# Route handlers owned by Next.js: reads only, except public Ask. Their writes would
+	# carry server-side credentials (jobs, workspace, live leases). Ask's proxy holds only
+	# an Ask token, and the API limits each visitor and the site (docs/deployment.md).
 	@nextApi path /api/assistant-v2 /api/assistant-v2/* /api/live /api/live/* /api/workspace /api/workspace/* /api/jobs /api/jobs/* /api/finance-import /api/finance-import/*
 	handle @nextApi {
-		@write not method GET HEAD
+		@write {
+			not method GET HEAD
+			not {
+				method POST
+				path_regexp ^/api/assistant-v2/(turn|turn/stream|threads|threads/[0-9a-fA-F-]{36}/turns/[0-9a-fA-F-]{36}/cancel)$
+			}
+		}
 		respond @write "The hosted demo is read-only." 403
 		reverse_proxy dashboard:3000
 	}
