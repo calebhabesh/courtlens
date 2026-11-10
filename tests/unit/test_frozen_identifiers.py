@@ -137,6 +137,8 @@ def test_no_unexplained_legacy_brand_references() -> None:
             or relative in baseline["file_sha256"]
             or relative.startswith(("docs/evidence/", "migrations/versions/"))
             or relative == "tests/unit/test_frozen_identifiers.py"
+            # RD16 serves the sealed pre-rename evaluation report verbatim as its fixture.
+            or relative == "dashboard/e2e/fixtures/rd16-points-evaluation.json"
         ):
             continue
         try:
