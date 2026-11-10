@@ -81,3 +81,19 @@ Proposed after round 2; the full list is in the [catalog's RD18 section](../../.
 ## Approved (owner, 2026-11-10)
 
 "Sounds good. I approve them." (with RD17). Row ✅. The open suggestions and the deletion question above are not chosen by this approval and stay unbuilt.
+
+## Round 4 (owner, 2026-11-10, after approval): suggestions 1, 2, 4, 5 and the deletion
+
+"Yes, add these." Built: the other-season line under the answer, a crosshair on each team row that scopes the page (a second press clears it), round steps on the cost axis, phone cost intervals without leading zeros, and `components/shooting-view.tsx` with its stylesheet deleted. `components/catalog-scope-fields.tsx` is kept: the Ask scope editor and the contract drawer import it.
+
+| Check | Result |
+| --- | --- |
+| Real data | 2024-25 scopes for BOS, BOS bigs and NBA bigs captured from the owner's API into the fixture; the existing 2024-25 NBA fixture still equals the live response. The other-season line computed independently in Python from the served rows: NBA order rim, three, short mid, long mid in both seasons, rim rebound effect held; BOS, BOS bigs and NBA bigs same order, no rebound effect to check |
+| Lint, typecheck | pass |
+| Vitest | 888 passed (lib tests for round steps, the short band and the season check added) |
+| Touched specs ×3 (sandbox, mock API) | `shot-aftermath`, `route-consolidation`, `route-polish`: 60/60 |
+| Full Playwright (sandbox, mock API, 2 workers, 8 GiB cap) | 632 passed, 17 skipped, 0 failed |
+
+Found while testing: a row scope changes the height of the content above the table, and the browser's scroll anchoring holds the row in place by moving `scrollY` (34 px here); the spec checks the row's position on screen instead. Phone interval labels measured 63–69 px of text in 71 px columns, one line each.
+
+Screenshots viewed: `rd18-r4-answer-1440`, `rd18-r4-cost-axis-BOS-bigs-dreb-1440`, `rd18-r4-charts-BOS-bigs-dreb-390`, `rd18-r4-teams-1440`, `rd18-r4-teams-390` (the mock API serves no logo images, so team logos are blank in these).

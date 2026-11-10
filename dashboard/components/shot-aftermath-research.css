@@ -60,6 +60,7 @@
   .sa-label-value { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; font-variant-numeric: tabular-nums; }
   .sa-label-value[data-tone="good"] { color: var(--color-positive); }
   .sa-label-value[data-tone="bad"] { color: var(--color-negative); }
+  .sa-label-band[data-field="chart-band"] { white-space: nowrap; }
   .sa-label-band { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
 
   /* Keys, centred (RD13). */
@@ -84,8 +85,9 @@
   .sa-phone.rs-grid { --rs-grid-min: 0px; }
   .sa-teams tr[data-status="thin"] > *, .sa-teams tr[data-status="unknown"] > * { opacity: 0.55; }
   .sa-teams tr[data-selected="true"] > th { box-shadow: inset 3px 0 0 var(--color-accent); }
-  .sa-team { display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: center; column-gap: var(--space-2); text-align: left; }
-  .sa-team > .sa-name-sub { grid-column: 2; }
+  .sa-team { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; column-gap: var(--space-2); text-align: left; }
+  .sa-team > .sa-name-sub { grid-column: 2; grid-row: 2; }
+  .sa-team > .sa-team-scope { grid-column: 3; grid-row: 1 / span 2; }
   .sa-limit { display: inline; }
 
   @media (max-width: 767px) {
