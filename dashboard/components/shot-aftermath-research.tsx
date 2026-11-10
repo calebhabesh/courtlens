@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, Suspense, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { FilterBar } from "./ui/filter-bar";
 import { Field } from "./ui/field";
 import {
@@ -14,10 +14,8 @@ import { GatedNote } from "./ui/gated-note";
 import { Button, ButtonSummary, Segmented } from "./ui/kit";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
-import { RouteTabs } from "./ui/route-tabs";
 import { formatDate } from "@/lib/format-date";
 import { downloadCsv, toCsv } from "@/lib/research-values";
-import { TABBED_PAGES } from "@/lib/route-consolidation";
 import {
   answerOf, band, chanceLine, costAxis, CSV_HEADER, csvRows, fixed, getScope, getSummary, getTeams, gridTone, LATEST_SEASON, nb, pct, pctBand,
   pointsAxis, POSITION_LABEL, POSITIONS, SHOT_ZONES, signed, sortTeams, ticks, unknowns, VIEW_COST, VIEW_LABEL, VIEW_UNIT, viewCharts, whole,
@@ -47,14 +45,11 @@ const VIEWS: readonly View[] = ["all", "miss", "dreb"];
 
 // ---- Frame -----------------------------------------------------------------------------------------------------------------
 
-/** RD18 Q1: this tab draws its own centred hero, with the Shooting route tabs under it (Expected Shots and Adjusted keep the shared header). */
+/** RD18 Q1, RD17 (4): its own centred hero over the page, with no tab bar (the Shooting tabs were merged into Shot Quality and zTS). */
 function AftermathFrame({ intro, children }: { intro: ReactNode; children: ReactNode }) {
   return <PageShell template="research">
     <div className="rs-column sa-page">
       <PageHeader className="sq-hero research-hero" icon="target" title="What happens after the shot?" subtitle="What each shot scores, what a miss wins back, and what the opponent does next." />
-      <Suspense fallback={<div className="ui-route-tabs" aria-hidden="true" />}>
-        <RouteTabs tabs={TABBED_PAGES.shooting.tabs} aria-label="Shooting sections" className="sa-tabs" />
-      </Suspense>
       {intro}
       {children}
     </div>

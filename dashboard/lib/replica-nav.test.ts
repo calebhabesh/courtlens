@@ -113,9 +113,9 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/forecasts",
     "/evaluation",
     "/research/case-studies",
-    "/research/shooting/adjusted",
+    "/research/zts",
     "/research/rapm/six-factor",
-    "/research/shooting",
+    "/research/shot-quality",
     "/research/shooting/aftermath",
     "/research/defensive-matchups",
     "/wingspan",
@@ -136,7 +136,8 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
 
   it("maps all compatibility and consolidation redirects to valid canonical routes", () => {
     for (const { source, destination } of [...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS]) {
-      expect(CANONICAL_ROUTES).toContain(destination);
+      // RD17: a redirect may land on a tab of its page (`?tab=…`).
+      expect(CANONICAL_ROUTES).toContain(destination.split("?")[0]);
       expect(source).not.toBe(destination);
     }
   });

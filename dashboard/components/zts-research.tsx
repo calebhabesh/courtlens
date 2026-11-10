@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties, type ReactNode } from "react";
 import { EntityField } from "./entity-picker";
+import { DefenseTab } from "./zts-defense";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
@@ -33,11 +34,13 @@ import {
  * add-stat R² study, SV/100 and its other studies are not reproduced. Exact values sit on `data-*` for checks.
  */
 
-type Tab = "about" | "top" | "player";
+type Tab = "about" | "top" | "player" | "defense";
 const TABS = [
   { value: "about", label: "About", icon: "info" },
   { value: "top", label: "Top 200", icon: "trophy" },
   { value: "player", label: "Player", icon: "search" },
+  // RD17 (owner, 2026-11-10): the defensive half of the old Adjusted Shooting page.
+  { value: "defense", label: "Defense", icon: "shield" },
 ] as const;
 const LATEST = "2025-26";
 const MINUTES = ["200", "300", "500", "750", "1000"] as const;
@@ -686,6 +689,7 @@ export function ZtsResearch() {
       {data && tab === "about" && <About summary={data} />}
       {data && tab === "top" && <TopSeasons summary={data} />}
       {data && tab === "player" && <PlayerTab summary={data} />}
+      {tab === "defense" && <DefenseTab />}
     </div>
     <nav className="zt-dock" aria-label="zTS views">
       <Segmented label="zTS view" size="lg" value={tab} onChange={next => { set({ tab: next === "about" ? null : next }); window.scrollTo({ top: 0 }); }} options={TABS} />

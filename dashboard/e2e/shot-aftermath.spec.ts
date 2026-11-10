@@ -25,12 +25,12 @@ const scope = (key: string) => responses[key] as { rows: { zone: string; values:
 test.describe("RD18 Shot Aftermath", () => {
   test.beforeEach(async ({ page }) => { await serve(page); });
 
-  test("answers first under its own hero with the Shooting tabs", async ({ page }) => {
+  test("answers first under its own hero, a page of its own with no tab bar (RD17)", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await openWorkbench(page, "/research/shooting/aftermath");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("What happens after the shot?");
-    const tabs = page.getByRole("navigation", { name: "Shooting sections" });
-    await expect(tabs.locator('[aria-current="page"]')).toHaveText("Shot Aftermath");
+    await expect(page.getByRole("navigation", { name: "Shooting sections" })).toHaveCount(0);
+    await expect(page.locator(".ui-route-tabs")).toHaveCount(0);
     await expect(page.locator("[data-field=hero-meta]")).toContainText("2025-26 · NBA · All positions · 194,813 first-chance attempts · Regular season");
     const answer = page.locator("[data-field=answer]");
     await expect(answer).toHaveAttribute("data-best", "rim");
