@@ -49,6 +49,8 @@ test.describe("R09 Draft Classes (RD08 layout)", () => {
   });
 
   test("opens on one page with every section and shows every compared rookie's values and percentiles", async ({ page }) => {
+    // Checks every rookie's cells one by one: about 12 s locally, past 30 s on a loaded CI runner.
+    test.slow();
     await openWorkbench(page, `${path}?stat=past`);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Draft Classes");
     for (const id of ["rookies", "value", "ranges", "classes", "steals", "combine", "reading", "about"]) await expect(page.locator(`section#${id}`)).toBeAttached();
