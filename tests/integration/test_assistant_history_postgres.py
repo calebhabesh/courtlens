@@ -322,6 +322,12 @@ def test_additive_migration_upgrade_downgrade_and_schema_parity(postgres_convers
     spec = importlib.util.spec_from_file_location("history_migration", path)
     migration = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(migration)
+    # Public Ask's visitor column (2a7c41d0e518) belongs to the same tables.
+    visitor_spec = importlib.util.spec_from_file_location(
+        "visitor_migration", Path("migrations/versions/2a7c41d0e518_assistant_thread_visitor.py")
+    )
+    visitor = importlib.util.module_from_spec(visitor_spec)
+    visitor_spec.loader.exec_module(visitor)
     from courtlens.assistant_history_models import AssistantAgentTranscript
 
     tables = [AssistantTurnInput.__table__, AssistantTurn.__table__, AssistantThread.__table__]
@@ -331,14 +337,17 @@ def test_additive_migration_upgrade_downgrade_and_schema_parity(postgres_convers
             table.drop(connection)
         with Operations.context(MigrationContext.configure(connection)):
             migration.upgrade()
+            visitor.upgrade()
         inspector = inspect(connection)
         for table in tables:
             assert {c["name"] for c in inspector.get_columns(table.name)} == set(
                 table.columns.keys()
             )
         with Operations.context(MigrationContext.configure(connection)):
+            visitor.downgrade()
             migration.downgrade()
             migration.upgrade()
+            visitor.upgrade()
         AssistantAgentTranscript.__table__.create(connection)
     answer = legacy_turn(session, question())
     assert answer.status == "answered"

@@ -87,7 +87,10 @@ def post_hybrid_turn(
     """Accept durably before execution; retransmissions replay the exact retained response."""
     if identity:
         PUBLIC_ASK.admit(identity.client)
-    return run_durable_turn(session, request, visitor=_visitor(identity))
+    # Public mode only: local callers (and their test doubles) keep the original signature.
+    if identity:
+        return run_durable_turn(session, request, visitor=identity.visitor)
+    return run_durable_turn(session, request)
 
 
 @router.post(
@@ -104,7 +107,9 @@ def post_hybrid_turn_stream(
     """AR05 SSE view of the same durable turn. Acceptance errors stay plain HTTP statuses."""
     if identity:
         PUBLIC_ASK.admit(identity.client)
-    claimed = claim_turn(session, request, _visitor(identity))
+    claimed = (
+        claim_turn(session, request, identity.visitor) if identity else claim_turn(session, request)
+    )
     return StreamingResponse(
         stream_turn(session, request, claimed),
         media_type="text/event-stream",
