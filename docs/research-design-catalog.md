@@ -976,6 +976,18 @@ recommendations and suggestions for optimal construction and layout of this page
    - Q1: the ledger is relabelled as a back-dated test of the issuance pipeline (issued Oct 1, 2026 for games Jan 15–17, 2026, inside the test season; not a prospective result), collapsed behind that one line and never coloured. Q2: the first 50 rows from one request, with the total stated; no API change. Q3: the live-database rows leave the archive; the experiment's own counts go to About. Q4: route tabs, not one long page.
    — Built as proposed: one hero over both tabs, the answer in one sentence with the typical misses and the paired gain on one axis from zero, the models grid with the gain first (uncoloured), coverage against the 80% target, the four rules in words, slices through one grouped select, the ledger behind one line saying it is a back-dated test (50 rows with 2025-26 photos and ranges on one scale), How to read and a collapsed About; the archive tab with its red gain (95% interval below zero) and no live-database rows. Phone tables switch column groups, none scrolls sideways. One shared change: `StatsGrid` draws `headerAfter` on unsorted columns. Real data 2,470 values, 0 mismatches, 100 photos; full Playwright 630 passed, 17 skipped, 0 failed. Evidence: [`design-RD16`](evidence/research/design-RD16/README.md).
 
+Instructions (owner, 2026-11-10, round 2; the owner asked "Is there anything else we can improve on the page, before moving to the next?",
+was given six suggestions, and answered "Build them all comprehensively."):
+2. [x] Build them all comprehensively.
+   - (1) The ledger's list is a small "Show the 50 forecasts" toggle inside its section, not a second full-size heading.
+   - (2) Under the miss chart, one line saying the gain is drawn to the same scale and is too small to see (RD12).
+   - (3) Each coverage row gives its distance from the 80% target in points (RD10), bars unchanged.
+   - (4) A collapsed "How the models were chosen" grid after the rules: the simple averages and every tree setting on both validation folds, the chosen ones marked.
+   - (5) One line on the slices' clearest pattern (the trees did best early in the season), saying no slice has an interval, so it is a pattern, not a result.
+   - (6) The archive tab gets the same How to read cards and a collapsed glossary.
+   — All six built: the ledger opens from a small toggle under one heading; a centred scale note under each miss chart; every coverage row gives its distance from 80% in points; a collapsed validation grid on both tabs (every candidate on both folds, the chosen ones named, the lowest-pooled sentence shown only when the numbers bear it out); a computed pattern line on every slice that calls it a pattern, not a result; the archive gains How to read and a glossary. Real data 2,820 values, 0 mismatches; `comparison-evaluation` ×3 33/33; Vitest 868; no shared code, so no full suite. Evidence: [`design-RD16`](evidence/research/design-RD16/README.md).
+
+
 ## RD17 Expected Shots and Adjusted Shooting — ⏸
 
 - **Now:** the sealed B26 experiments (expected-shot v1 is a registered negative result), tabs of Shooting.

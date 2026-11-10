@@ -8,15 +8,16 @@ import { GridPlayer, GridValue, StatsGrid, type GridColumn } from "./research/st
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
-import { ButtonLink, Segmented, Select } from "./ui/kit";
+import { ButtonLink, ButtonSummary, Segmented, Select } from "./ui/kit";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { RouteTabs } from "./ui/route-tabs";
 import { formatDate } from "@/lib/format-date";
 import { seasonEra } from "@/lib/portrait-source";
 import {
-  dimensionLabel, eligibilityText, estimandModels, fixed, gainBand, gainFromDifference, gainTone, insideSplit, issueTiming, ledgerSpan, modelName, modelOrder, modelSub,
-  orderedDimensions, orderedSubgroups, OUTCOME_TEXT, outcomeOf, pct, POINTS_PROTOCOL, seasonOf, subgroupLabel, timingCounts, whole, type Gain,
+  chosenByLowestPooled, dimensionLabel, eligibilityText, estimandModels, fixed, gainBand, gainFromDifference, gainTone, insideSplit, issueTiming, ledgerSpan, modelName, modelOrder, modelSub,
+  orderedDimensions, orderedSubgroups, OUTCOME_TEXT, outcomeOf, pct, POINTS_PROTOCOL, pointsSelectionRows, seasonOf, slicePattern, subgroupLabel, timingCounts, whole, type Gain,
+  type PointsValidationResults, type SelectionRow,
 } from "@/lib/points-forecasts";
 import { signed } from "@/lib/research-values";
 import type { ForecastIssuanceItem, ForecastsListResponse, PointsForecastEvaluation } from "@/lib/types";
@@ -81,6 +82,8 @@ export function MissStrip({ rows, gain, gainLabel, unit }: { rows: readonly Miss
   const at = (value: number) => `${((value - left) / (right - left)) * 100}%`;
   const ticks = Array.from({ length: right + 1 }, (_, i) => i).filter(t => right <= 6 || t % 2 === 0 || t === right);
   const tone = gainTone(gain);
+  // RD12: the gain stays on the misses' scale; when that makes it too small to see, one line says so (owner, RD16 round 2).
+  const tiny = gain ? (gain.high - gain.low) / (right - left) < 0.03 : false;
   return <figure className="fc-figure" data-chart="miss" data-left={left} data-right={right}>
     <figcaption className="fc-figure-title">Typical miss per game, in {unit}, and the gain with its 95% interval</figcaption>
     <div className="fc-strip-axis" aria-hidden="true">
@@ -108,6 +111,7 @@ export function MissStrip({ rows, gain, gainLabel, unit }: { rows: readonly Miss
       <li><span className="fc-key-mark" data-mark="bar" aria-hidden="true" />Typical miss (mean absolute error)</li>
       {gain && <li><span className="fc-key-mark" data-mark="gain" aria-hidden="true" />Gain, with its 95% interval{tone ? "" : ", which includes zero"}</li>}
     </ul>
+    {gain && tiny && <p className="fc-note fc-figure-note" data-field="miss-scale-note" data-span={gain.high - gain.low}>The gain is drawn to the same scale as the misses. Its whole interval spans {fixed(gain.high - gain.low, 3)} {unit}, too small to see beside a miss of about {fixed(Math.min(...rows.map(r => r.mae)), 1)}.</p>}
   </figure>;
 }
 
@@ -117,6 +121,8 @@ export interface CoverageRow { key: string; model: string; group?: string; cover
 
 export function CoverageStrip({ rows, nominal, unit }: { rows: readonly CoverageRow[]; nominal: number; unit: string }) {
   const at = (value: number) => `${Math.max(0, Math.min(1, value)) * 100}%`;
+  const first = rows.find(r => r.coverage != null)?.coverage;
+  const example = first == null ? null : (first - nominal) * 100;
   return <figure className="fc-figure" data-chart="coverage" data-nominal={nominal}>
     <figcaption className="fc-figure-title">Share of games inside the {Math.round(nominal * 100)}% range</figcaption>
     <div className="fc-strip-axis" aria-hidden="true">
@@ -130,12 +136,15 @@ export function CoverageStrip({ rows, nominal, unit }: { rows: readonly Coverage
         <span className="fc-track-target" style={vars({ "--fc-at": at(nominal) })} />
         {r.coverage != null && <span className="fc-track-bar" data-series="share" style={vars({ "--fc-low": at(0), "--fc-high": at(r.coverage) })} />}
       </span>
-      <span className="fc-strip-value"><strong>{pct(r.coverage)}</strong><small>{r.width == null ? "Width unknown" : `${fixed(r.width, 1)} ${unit} wide`}</small></span>
+      <span className="fc-strip-value"><strong>{pct(r.coverage)}</strong>
+        {r.coverage != null && <small data-field="target-gap" data-value={(r.coverage - nominal) * 100}>{signed((r.coverage - nominal) * 100, 1)} pts from {Math.round(nominal * 100)}%</small>}
+        <small>{r.width == null ? "Width unknown" : `${fixed(r.width, 1)} ${unit} wide`}</small></span>
     </li>)}</ul>
     <ul className="fc-key">
       <li><span className="fc-key-mark" data-mark="share" aria-hidden="true" />Observed share</li>
       <li><span className="fc-key-mark" data-mark="target" aria-hidden="true" />The {Math.round(nominal * 100)}% target</li>
     </ul>
+    {example != null && <p className="fc-note fc-figure-note" data-field="target-gap-note">Points are percentage points: {signed(example, 1)} pts means the range held the real total in {fixed(Math.abs(example), 1)} {example >= 0 ? "more" : "fewer"} games of every 100 than the target.</p>}
   </figure>;
 }
 
@@ -154,6 +163,34 @@ export function GatesGrid({ rows, label }: { rows: readonly GateRow[]; label: st
       { key: "observed", label: "Observed", width: "lg", align: "left", data: r => ({ field: "observed", value: r.observed }), cell: r => <span className="fc-cell-text" data-field="observed">{r.observed}</span> },
       { key: "result", label: "Result", width: "sm", data: r => ({ field: "result", value: r.passed ? "passed" : "not-passed" }), cell: r => <span className="fc-result" data-passed={r.passed}>{r.passed ? "Passed" : "Not passed"}</span> },
     ]} />;
+}
+
+// ---- How the models were chosen (RD16 round 2) ---------------------------------------------------------------------------
+
+/** Every candidate on both validation folds, the chosen ones marked in words (no colour: these errors carry no interval). */
+export function SelectionDisclosure({ rows, folds, unit }: { rows: readonly SelectionRow[]; folds: readonly [string, string]; unit: string }) {
+  const phone = usePhone();
+  if (!rows.length) return null;
+  const rule = chosenByLowestPooled(rows);
+  const averages = rows.filter(r => r.group === "averages").length;
+  const columns: GridColumn<SelectionRow>[] = [
+    { key: "v1", label: phone ? "Fold 1" : `Fold 1, ${folds[0]}`, group: phone ? "Typical miss" : `Typical miss, ${unit}`, width: phone ? "sm" : "md", data: r => ({ field: "v1", value: r.v1 ?? "" }), cell: r => <GridValue text={fixed(r.v1, 3)} /> },
+    { key: "v2", label: phone ? "Fold 2" : `Fold 2, ${folds[1]}`, group: phone ? "Typical miss" : `Typical miss, ${unit}`, width: phone ? "sm" : "md", data: r => ({ field: "v2", value: r.v2 ?? "" }), cell: r => <GridValue text={fixed(r.v2, 3)} /> },
+    { key: "pooled", label: "Pooled", group: phone ? "Typical miss" : `Typical miss, ${unit}`, width: "sm", data: r => ({ field: "pooled", value: r.pooled ?? "" }), cell: r => <GridValue text={fixed(r.pooled, 3)} /> },
+    ...(phone ? [] : [{ key: "rows", label: "Forecasts", width: "sm" as const, data: (r: SelectionRow) => ({ field: "rows", value: r.rows ?? "" }), cell: (r: SelectionRow) => <GridValue text={whole(r.rows)} /> }]),
+  ];
+  return <ResearchDisclosure id="selection" icon="list-ordered" title="How the models were chosen">
+    <p className="fc-lead" data-field="selection-line" data-rule={rule}>
+      Before the test opened, every candidate was scored on two validation folds: {averages > 1 ? `${averages} simple averages` : averages === 1 ? "the served simple average" : "no simple average"} and {rows.length - averages} tree settings.
+      {rule ? ` ${averages > 1 ? "The average with the lowest pooled typical miss became the served model, e" : "E"}ach tree type kept its best setting, and the better of the two became the finalist.` : " The chosen ones are marked."}
+    </p>
+    <p className="fc-note">Typical misses in {unit}. No interval is served for these errors, so nothing is coloured; a few thousandths apart is no practical difference.</p>
+    <StatsGrid<SelectionRow> label="Validation results" name="selection" density="compact" height="auto" leadWidth="lg" className={phone ? "fc-grid fc-selection fc-phone" : "fc-grid fc-selection"} rows={rows} rowKey={r => r.key}
+      rowData={r => ({ key: r.key, model: r.model, chosen: r.chosen, finalist: r.finalist })}
+      lead={{ label: "Candidate", cell: r => <><span className="fc-name">{modelName(r.model)}{r.setting ? <span className="fc-setting">, {r.setting}</span> : null}</span>
+        <span className="fc-name-sub" data-field="chosen">{r.group === "averages" ? (r.chosen ? "Chosen: the served model" : "Simple average") : r.finalist ? "Chosen: the finalist" : r.chosen ? "Best setting of its type" : "Tree setting"}</span></> }}
+      columns={columns} />
+  </ResearchDisclosure>;
 }
 
 // ---- Slices: a grouped select and one compact grid ------------------------------------------------------------------------
@@ -307,6 +344,7 @@ function SlicesSection({ evaluation }: { evaluation: PointsForecastEvaluation })
   const opponent = slices.opponent_context_slice;
   const allMissing = opponent && Object.keys(opponent).length === 1 && opponent.missing?.[served]?.forecast_rows === total;
   const change = (r: SliceRow) => r.models[finalist] && r.models[served] ? r.models[finalist].mae - r.models[served].mae : null;
+  const pattern = slicePattern(rows.map(r => ({ key: r.key, change: change(r) })));
   const columns: GridColumn<SliceRow>[] = [
     ...(!phone || view === "misses" ? models.map(m => ({ key: m, label: modelName(m), group: "Typical miss, points", width: "sm" as const,
       data: (r: SliceRow) => ({ field: `mae-${m}`, value: r.models[m]?.mae ?? "" }), cell: (r: SliceRow) => <GridValue text={fixed(r.models[m]?.mae, 3)} /> })) : []),
@@ -319,7 +357,13 @@ function SlicesSection({ evaluation }: { evaluation: PointsForecastEvaluation })
   return <ResearchSection id="slices" icon="layers" title={`Where the misses differ: ${dimensionLabel(dimension).toLowerCase()}`}
     aside={<SliceSelect dimensions={dimensions} value={dimension} onChange={key => set({ slice: key === dimensions[0] ? null : key })} />}>
     <p className="fc-lead">Every forecast in the test, split {dimensions.length} ways chosen before it opened. Players who play more score more, so their misses are larger in points.</p>
-    <p className="fc-note">Change is {modelName(finalist).toLowerCase()} minus the {modelName(served).toLowerCase()}; below zero, the trees missed by less. No interval is served for a slice, so no change is coloured.</p>
+    <p className="fc-note">Change is {modelName(finalist).toLowerCase()} minus the {modelName(served).toLowerCase()}; below zero, the trees missed by less.{pattern ? "" : " No interval is served for a slice, so no change is coloured."}</p>
+    {pattern && <p className="fc-lead" data-field="slice-pattern" data-best={pattern.best.key} data-worst={pattern.worst.key}>
+      {pattern.allBetter ? <>The trees missed by less in every group here, most at <strong>{subgroupLabel(dimension, pattern.best.key).toLowerCase()}</strong> ({signed(pattern.best.change, 3)} points).</>
+        : pattern.allWorse ? <>The trees missed by more in every group here, most at <strong>{subgroupLabel(dimension, pattern.worst.key).toLowerCase()}</strong> ({signed(pattern.worst.change, 3)} points).</>
+          : <>The trees did best at <strong>{subgroupLabel(dimension, pattern.best.key).toLowerCase()}</strong> ({signed(pattern.best.change, 3)} points) and worst at <strong>{subgroupLabel(dimension, pattern.worst.key).toLowerCase()}</strong> ({signed(pattern.worst.change, 3)}).</>}
+      {" "}No interval is served for a slice, so this is a pattern, not a result, and nothing is coloured.
+    </p>}
     {allMissing && <p className="fc-note" data-field="opponent-missing">Opponent data were missing for all {whole(total)} test forecasts, so the context model&apos;s opponent inputs were empty throughout.</p>}
     {phone && <Segmented size="sm" label="Slice columns" value={view} onChange={setView} options={[{ value: "misses", label: "Misses" }, { value: "change", label: "Change" }]} />}
     <StatsGrid<SliceRow> label={`Test forecasts by ${dimensionLabel(dimension).toLowerCase()}`} name="slices" density="compact" height="auto" leadWidth="md" className={phone ? "fc-grid fc-slices fc-phone" : "fc-grid fc-slices"} rows={rows} rowKey={r => r.key}
@@ -394,11 +438,14 @@ function LedgerSection({ ledger, evaluation }: { ledger: ForecastsListResponse; 
     <p className="fc-lead" data-field="ledger-line" data-timing="after" data-newest={span.games?.[1] ?? ""}>
       None yet for a game still to come. The newest of the {whole(ledger.total_items)} on record is for a game on <strong>{formatDate(span.games?.[1])}</strong>. The {whole(items.length)} newest were issued on <strong>{formatDate(span.issued?.[0])}</strong>{span.issued && span.issued[0] !== span.issued[1] ? ` to ${formatDate(span.issued[1])}` : ""}, after their games{inTest ? ", which fall inside the test season" : ""}: a back-dated test of the issuing and scoring steps, not forecasts made before the games.
     </p>
-    <ResearchDisclosure id="ledger-list" icon="table" title={`${shown} back-dated forecasts`}>
+    <details className="fc-ledger-list" id="ledger-list">
+      <ButtonSummary size="sm" variant="ghost" iconAfter="chevron-down">{items.length < ledger.total_items ? `Show the ${whole(items.length)} newest of ${whole(ledger.total_items)} forecasts` : `Show all ${whole(items.length)} forecasts`}</ButtonSummary>
+      <div className="fc-ledger-body">
       {totals}
       {s.accuracy_metrics?.mae != null && <p className="fc-note" data-field="ledger-accuracy" data-mae={s.accuracy_metrics.mae} data-coverage={s.accuracy_metrics.interval_coverage ?? ""}>Their typical miss was {fixed(s.accuracy_metrics.mae)} points and {pct(s.accuracy_metrics.interval_coverage)} landed inside the range. {inTest ? "These games are part of the test above, so this is not new evidence." : "Too few games to judge the model."}</p>}
       <LedgerGrid items={items} phone={phone} />
-    </ResearchDisclosure>
+      </div>
+    </details>
   </ResearchSection>;
   return <ResearchSection id="ledger" icon="list-ordered" title="Forecasts issued so far">
     <p className="fc-lead" data-field="ledger-line" data-timing={counts.after ? "mixed" : "before"}>
@@ -493,6 +540,8 @@ export function PointsForecastsResearch() {
       <ModelsSection evaluation={evaluation} />
       <CoverageSection evaluation={evaluation} />
       <GatesSection evaluation={evaluation} />
+      <SelectionDisclosure rows={pointsSelectionRows((evaluation.validation as { validation_results?: PointsValidationResults } | null | undefined)?.validation_results)}
+        folds={[`to ${formatDate(POINTS_PROTOCOL.splits[1].end)}`, `from ${formatDate(POINTS_PROTOCOL.splits[2].start)}`]} unit="points" />
       <SlicesSection evaluation={evaluation} />
       {ledgerError && <FeedFailure error={ledgerError} retry={ledgerRetry} what="The forecast ledger" />}
       {ledger && <LedgerSection ledger={ledger} evaluation={evaluation} />}
