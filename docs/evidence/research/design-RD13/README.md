@@ -52,3 +52,22 @@ Before the rebuild (:3100, read 2026-11-10): four stat tiles and seven stacked s
 **Glance test** (`sn-top-1440.png`, `sn-answer-*`, full pages at both widths, viewed). In five seconds: what the page is (hero), the answer in one sentence, and the strip showing FT% early and 3P% with no point.
 
 Screenshots viewed: `sn-top-*`, `sn-answer-*`, `sn-stabilization-*`, `sn-curve-*`, `sn-example-*`, `sn-test-*`, `sn-priors-*`, `sn-not-covered-*`, `sn-reading-*`, `sn-card-*`, the full page at both widths. Section captures can show the sticky site header or the Skip to content link across a section; neither is on the page there. Visuals were judged from the sandbox build; the CSS chunk :3100 serves was checked and carries the new rules.
+
+## Round 2 (owner, 2026-11-10)
+
+"give the selector highlight breathing room around the stats (fts, ftr, fg, etc.) It seems squished."
+
+**Changed.** The stat name in each strip row was the kit `Button` with `variant="text"`, which has no inline padding (`kit:px-0`), so the pressed outline sat on the letters. It is now `variant="ghost"`: 12 px each side, the same pressed outline, and a hover fill. At 390 the label column went from 72 to 80 px, because "Rim FG%" measured 78 px with its padding. No other change from that instruction.
+
+**Instruction 3:** "why does pressing a menu button in this chart/table auto scroll? I thought it wouldn't is there better behaviour?" It scrolled because round 1 (Q2) made a strip press both choose the stat and call `scrollIntoView` on the curve, jumping more than a screen. Now a press only selects the stat (pressed outline, curve and URL updated, page holds still). A kit ghost button, "{stat} curve" with a chevron, at the end of the strip's key moves to the curve when the reader asks: a smooth scroll, instant under reduced motion. The page's own 64 px `scroll-margin-top` on its sections is gone, because with the site's `scroll-padding-top` it left the heading 144 px under the header; it now lands at the site default, 80 px under the header. The chips above the curve already changed it in place and are unchanged.
+
+| Check | Result |
+| --- | --- |
+| Label fit on :3100 (real data) | every label inside its column at 1440 (96 px, widest button 78) and 390 (80 px, widest 78); 0 page overflow; buttons 32 px tall, 40 on a phone |
+| Strip press and curve button on :3100 ([`strip-select-check.mjs`](strip-select-check.mjs)) | at 1440 and 390: after pressing FG% the scroll position is unchanged (0 and 556 px) and the curve shows FG%; the button brings the curve heading to 144 px from the top (80 under the header); 0 overflow, 0 console errors |
+| Lint (ESLint, Stylelint), typecheck | clean after both changes |
+| Vitest | 852 passed |
+| `r03-signal-noise` ×3 (sandbox, new test: a press holds the page still, the button moves to the curve) | 21/21 |
+| Full Playwright (sandbox, mock API, 2 workers, 8 GiB cap) | 625 passed, 17 skipped, 0 failed |
+
+Screenshots viewed: `sn-strip-labels-1440.png`, `sn-strip-labels-390.png` (3P% pressed), `sn-strip-select-1440.png`, `sn-strip-select-390.png` (FG% pressed, the curve button), all from :3100.
