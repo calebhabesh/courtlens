@@ -1,0 +1,165 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-lineup-model-v1",
+  "block": "R14",
+  "registered_on": "2026-11-06",
+  "kind": "predictive",
+  "question": "Does a neural lineup model with learned player embeddings and an attention layer over the ten players on the floor predict held-out stint margins (per 100 possessions, weighted by possessions) better than ridge RAPM fitted on the same training games with the same inputs and weights?",
+  "inputs": [
+    "STINTS: every admitted R01 regular-season stint 2014-15 to 2025-26 from the sealed IM03 bundles (2023-24 to 2025-26) and the courtlens-impact-history-v2 bundles (2014-15 to 2022-23), read through impact_history_fits.Cohorts with every bundle, game and stint hash checked; exported by lineup_model_data as a content-hashed Parquet table (array hash in parameters.dataset_sha256.stints_sha256). 14,296 games, 719,529 stints, 1,632 players. R01 excluded 3 to 26 games a season (IM02 and event gate; reasons in docs/evidence/research/r01/coverage.json); their stints do not exist here.",
+    "USABLE STINTS: R01's diagnostic rule, both sides had at least one possession: 377,225 stints, 98.2 to 98.5% of each season's possessions. The 296,757 dropped stints with no possession on either side average 0.48 seconds (substitution and free-throw boundaries).",
+    "TARGET: home margin per 100 possessions = 100 x (home points - away points) / mean of the two sides' possessions; weight = that mean (R01's stint_margin_rmse definition). Neutral site (home term 0) only for the 2019-20 bubble, 2020-07-30 to 2020-10-15.",
+    "BOXES: each player's regular-season SportsDataverse box totals per season (R07's load_boxes; minutes and BOX_STATS), array hash in parameters.dataset_sha256.boxes_sha256. Read only for the cold-start fallback.",
+    "DATA CHECK (counts only, committed with the code in 98dd02f, docs/evidence/research/r14/data-check.json): usable stints per season 27,906 to 34,057; players per season 476 to 605; at the 1,000-possession threshold 514 to 546 players per window have their own parameters, covering 84 to 88% of target-season possessions; the box fallback covers 3.5 to 5.2% and newcomers (no box minutes in the window) 8.3 to 10.9%. No stint margin was summarised by player, lineup or model before this registration."
+  ],
+  "method": [
+    "ROLLING ORIGIN. A fit for target season t is trained on the usable stints of seasons t-3, t-2 and t-1 only, so every input precedes t's opener. Selection targets 2021-22 and 2022-23; test targets 2023-24, 2024-25 and 2025-26; 2022-23's fit also supplies the backtest calibration season (courtlens-lineup-backtest-v1); the 2026-27 serving fit reads 2023-24 to 2025-26.",
+    "COLD START. A player with at least min_possessions (1,000) on-court possessions in the window has his own parameters. Every other player (including players first seen in t) reads the box fallback: his window box totals as box_features (per-36 rates of points, FGA, 3PA, FTA, offensive and defensive rebounds, assists, steals, blocks, turnovers and fouls, and log minutes), standardized by the possession-weighted mean and SD of the fallback players in the window; a player with no box minutes in the window (newcomer) has all features at that mean (zeros). Both models read exactly these inputs.",
+    "RIDGE BASELINE (RAPM on stint margins). prediction = home x H + sum(home players' b) - sum(away players' b), b = own rating or gamma . features + gamma0 on the fallback. Weighted least squares with weight = possessions, solved exactly from the normal equations; penalty alpha on the own ratings and the fallback map (gamma, gamma0); home unpenalised. alpha from ridge_alphas.",
+    "LINEUP MODEL. The same additive part plus an interaction term. Each player has a vector e of size dim (own, or A . features + a0 on the fallback). The ten vectors, plus a learned home or away side vector, pass through one multi-head self-attention layer (heads = 2) and a feed-forward layer of width ffn_multiplier x dim with ReLU, both residual, no normalisation. interaction(X, Y) = w . (mean home token - mean away token); the model uses 0.5 x [interaction(X, Y) - interaction(Y, X)], so swapping the fives negates the prediction apart from the home term. Prediction per 100 = 100 x (home x H + additive + interaction).",
+    "TRAINING (backfitting, CPU, PyTorch). Rounds times: (1) solve the additive part exactly by ridge with the selected alpha on the margin minus the current interaction; (2) epochs of Adam (learning_rate, batch) on the interaction parameters with the additive part fixed; loss = possession-weighted mean squared error (per possession) + penalty x sum of squared interaction weights (vectors, fallback map A, side vectors, attention and feed-forward matrices, w). A final ridge solve makes the additive part exact for the final interaction. The additive part is initialised and kept at ridge, so the lineup model equals ridge when the interaction is zero. Each fit is the mean prediction of five seeds (seeds).",
+    "SELECTION (selection seasons only). First alpha: lowest possession-weighted stint margin RMSE (WRMSE) pooled over 2021-22 and 2022-23 (ties: larger alpha). Then, with that alpha, the lineup model's dim in dims and penalty in interaction_penalties (8 configurations, 5 seeds each): lowest pooled WRMSE (ties: smaller dim, then larger penalty). Written to evaluation/research/frozen/courtlens-lineup-model-v1-selection.json before any test season is read.",
+    "TEST (one read). Refit both chosen models for each test season on its window and score every usable test-season stint once. Reference: a home-only model (the window's possession-weighted mean home margin), reported without a verdict.",
+    "SERVING. The 2026-27 fit (window 2023-24 to 2025-26) with the chosen alpha and configuration, five seeds. Lineup tool: the predicted net rating per 100 of any five players with own parameters or window box minutes, defined as the mean predicted margin of that five (as home, neutral site) against each of the panel_lineups most-used fives of 2025-26 that share no player with it; for both models. Interval: the 10th and 90th percentiles over bootstrap_refits game-bootstrap refits of the window (games resampled with replacement, SeedSequence([bootstrap_seed, r]); ridge refit, then one lineup model trained with seed bootstrap_train_seed + r). The point is the five-seed fit, which can fall outside a refit percentile; the page says so.",
+    "SIMILARITY MAP. UMAP (McInnes, Healy and Melville; umap-learn) with the registered settings (n_neighbors 15, min_dist 0.1, euclidean, random_state 1414, one thread) on seed 1401's own-player vectors from the serving fit; one point per own player. Seed stability, descriptive: for each player, the share of his 10 nearest neighbours (cosine, in the vector space) that seed 1401's fit and each other seed's fit agree on, against chance 10 / (players - 1).",
+    "WHAT THE MAP MAY AND MAY NOT CLAIM. May: players close together have similar learned vectors in this one fit, so the model treats them alike in the interaction term; neighbourhoods are as stable as the seed-stability check shows. May not: that the axes, directions, distances between clusters or cluster sizes mean anything (UMAP does not preserve them); that the map shows playing style, position, skill or value (none was tested); or that neighbours are similar players beyond the model's own use of them. If the interaction term is small or the seeds disagree, the page says the map shows little.",
+    "CPU REPRODUCIBILITY (D12). Training runs on the local CPU only (no Colab), float32 PyTorch with deterministic algorithms and threads fixed; every published number is computed by the numpy forward pass (lineup_model_core.predict_lineup) from exported weights, and a unit test proves the two passes agree. The runner refuses to run if the dataset hashes, package_versions or code_sha256 differ. reproduce recomputes selection, test and serving and compares hashes."
+  ],
+  "parameters": {
+    "first_season": "2014-15",
+    "last_season": "2025-26",
+    "window_seasons": 3,
+    "selection_seasons": [
+      "2021-22",
+      "2022-23"
+    ],
+    "test_seasons": [
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "serving_season": "2026-27",
+    "backtest_calibration_season": "2022-23",
+    "min_possessions": 1000.0,
+    "box_features": [
+      "points_per36",
+      "field_goals_attempted_per36",
+      "three_pointers_attempted_per36",
+      "free_throws_attempted_per36",
+      "rebounds_offensive_per36",
+      "rebounds_defensive_per36",
+      "assists_per36",
+      "steals_per36",
+      "blocks_per36",
+      "turnovers_per36",
+      "fouls_personal_per36",
+      "log_minutes"
+    ],
+    "bubble_neutral": [
+      "2020-07-30",
+      "2020-10-15"
+    ],
+    "seeds": [
+      1401,
+      1402,
+      1403,
+      1404,
+      1405
+    ],
+    "ridge_alphas": [
+      100.0,
+      300.0,
+      1000.0,
+      3000.0,
+      10000.0,
+      30000.0
+    ],
+    "dims": [
+      8,
+      16
+    ],
+    "interaction_penalties": [
+      1e-05,
+      0.0001,
+      0.001,
+      0.01
+    ],
+    "heads": 2,
+    "ffn_multiplier": 2,
+    "rounds": 2,
+    "epochs": 6,
+    "batch": 2048,
+    "learning_rate": 0.002,
+    "threads": 2,
+    "replicates": 2000,
+    "level": 0.95,
+    "bootstrap_refits": 100,
+    "bootstrap_seed": 1414,
+    "bootstrap_train_seed": 2000,
+    "tool_interval_percentiles": [
+      10.0,
+      90.0
+    ],
+    "panel_lineups": 200,
+    "neighbours": 10,
+    "umap": {
+      "n_neighbors": 15,
+      "min_dist": 0.1,
+      "metric": "euclidean",
+      "random_state": 1414
+    },
+    "package_versions": {
+      "python": "3.14.9",
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.6.1",
+      "torch": "2.15.0+cpu",
+      "umap-learn": "0.5.12"
+    },
+    "code_sha256": {
+      "src/courtlens/evaluation/lineup_model_data.py": "f8f2c967e52c7fc4422ab6bf2f7581fa26bb00409077aef944cae7b171d29f32",
+      "src/courtlens/evaluation/lineup_model_core.py": "50a70651c6283cd769ce7a94f8d2f5c3ff2d28d6109b3c32f229c66986eb4318",
+      "src/courtlens/evaluation/lineup_model_train.py": "2ea34b4bc7be6e08818b4328b5d157274d007fe8c335719249b9753d421d91fb",
+      "src/courtlens/evaluation/lineup_model_runner.py": "b4d376112dff3a277701f4776da6df91712aeabc6d654084a4b5d935bd64b773"
+    },
+    "dataset_sha256": {
+      "stints_sha256": "694704a837d0e330c83a19452343c87358a6fae42fc0b0776c0a11cae4bd120b",
+      "boxes_sha256": "3ab77bd827a4803b2c1de069f1853dc55d32aef1016c38e43df9499de4b42a3e"
+    }
+  },
+  "selection": "Selection seasons only (2021-22 and 2022-23): ridge alpha first, then the lineup model's dim and interaction penalty, by pooled WRMSE with the registered tie rules. The window length (3), threshold (1,000 possessions), architecture, training schedule, seeds, panel and map settings are fixed here and were not tuned. PRIOR KNOWLEDGE, disclosed: R01 published held-out stint margin RMSE near 87 to 92 per 100 for 1Y ridge and time decay (all models within about 0.5 of a team baseline); a timing run of the training code on real lineups with pure-noise targets (no outcomes) and a synthetic end-to-end dry run were made before this registration.",
+  "uncertainty": "Paired game bootstrap within each test season: 2,000 replicates, games resampled with replacement (SeedSequence([1401, starting year])), every model on the same draws; WRMSE per replicate = sqrt(resampled sum of w x squared error / resampled sum of w); pooled replicates resample each season within itself. 95% percentile intervals for each model's WRMSE and for each gain (reference minus candidate). Fits are held fixed, so these intervals describe test-stint sampling only; seed variation is averaged over five seeds. The lineup tool's interval (10th to 90th percentile over 100 game-bootstrap refits) describes fitting uncertainty.",
+  "evaluation": [
+    "Per test season and pooled: WRMSE for the lineup model, ridge and the home-only reference, each with its interval; gains lineup over ridge, lineup over home-only and ridge over home-only with intervals; the number of seasons the lineup model is lower.",
+    "REGISTERED VERDICT RULE (written before any test number exists): 'the lineup model predicts held-out stint margins better than ridge' if and only if (1) the pooled 95% interval of (ridge WRMSE - lineup WRMSE) lies entirely above zero AND (2) the lineup model has the lower WRMSE in more than half of the test seasons (at least 2 of 3). 'Ridge predicts better' under the mirror rule. Otherwise: no difference. A zero-straddling interval never ranks.",
+    "Descriptive, no verdict: WRMSE on stints whose ten players all have own parameters against stints with any fallback player; the weighted SD of the interaction term and of the additive part per 100; the correlation of the two models' predictions; the selection grids.",
+    "Serving: the panel, the similarity map points, the seed-stability overlaps, model hashes."
+  ],
+  "acceptance": [
+    "Comparative: no gate decides publication; the result is published whichever way it goes, including 'ridge better' or 'no difference'.",
+    "The run fails if a dataset, code or package hash differs from this registration, a ridge system is singular, or a weight file's hash changes.",
+    "reproduce gives the same selection, results and serve hashes on CPU.",
+    "The page states the verdict exactly as the rule gives it."
+  ],
+  "outputs": [
+    "evaluation/research/frozen/courtlens-lineup-model-v1-selection.json",
+    "evaluation/research/frozen/courtlens-lineup-model-v1.json (test results)",
+    "evaluation/research/frozen/courtlens-lineup-model-v1-serving.json (2026-27 fit manifest, panel, map, seed stability)",
+    "data/derived/lineup-model-v1/ (dataset Parquet, model weights, game strengths; git-ignored, addressed by hash)",
+    "docs/evidence/research/r14/"
+  ],
+  "limitations": [
+    "Stint margins are very noisy (R01: RMSE near 88 per 100 for every model), so differences between models are small; the possession-weighted metric is dominated by long stints.",
+    "Season-start fits do not update within a season; newcomers and low-minute players read a box fallback that ignores draft position and college data.",
+    "The lineup tool predicts against a fixed panel of 2025-26 lineups, not a schedule; it is a model output, not a forecast of how a five will actually play, and players who changed teams keep one set of parameters.",
+    "The similarity map is one seed's vectors projected by UMAP; it is descriptive only.",
+    "Three test seasons; intervals are unadjusted for the reference comparisons."
+  ],
+  "negative_result_policy": "Publish every number whatever it shows, including a registered 'ridge better' or 'no difference', a seed-unstable map, or an interaction term near zero.",
+  "seed": 1401,
+  "budget": {
+    "cpu_threads": 2,
+    "max_peak_mib": 4096,
+    "max_wall_seconds": 1800
+  }
+}

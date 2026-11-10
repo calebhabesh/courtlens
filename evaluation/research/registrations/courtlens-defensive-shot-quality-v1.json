@@ -1,0 +1,95 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-defensive-shot-quality-v1",
+  "block": "R06",
+  "registered_on": "2026-11-05",
+  "kind": "descriptive",
+  "question": "For each defender and season, did shooters score fewer or more field-goal points in their matchups against this defender than their own season shooting against everyone else predicts? Is that signal: do more defenders' intervals exclude zero than chance would, does it persist from season to season, and does it agree with the lineup-adjusted defensive values of courtlens-shot-decomposition-v1?",
+  "inputs": [
+    "Matchups: the retained regular-season shufinskiy matchups_<year> archives 2017 to 2025 (nine seasons; none exist earlier) at the IM01/R01 pins, checked by SHA-256. Fields: game_id, team_id, home_team_id, away_team_id, person_id, matchups_person_id, matchup_field_goals_attempted, matchup_field_goals_made, matchup_three_pointers_attempted, matchup_three_pointers_made. Tables were built before this registration by courtlens.evaluation.defensive_shot_quality_data (two builds, identical hashes) and pinned in parameters.table_sha256.",
+    "Priors: R03's frozen league Beta priors for 2P% and 3P% for the target season (courtlens-signal-noise-v1, fitted on the three earlier seasons only).",
+    "Part A: courtlens-shot-decomposition-v1's frozen results (results SHA-256 in parameters), for the reported agreement check only. Part A's defensive values are lineup-adjusted and were read as league summaries and persistence before this registration; no matchup value had been computed.",
+    "DATA CHECK (done before this registration; counts only, no defender value). Orientation: person_id is the shooter and matchups_person_id the defender: player totals of person_id against the shot chart correlate 0.999 (FGA 2017-18), 0.997 (FGA 2025-26), 0.999 and 0.998 (3PA); matchups_person_id only 0.86 and 0.72 to 0.75. Games per season 2017-18 to 2025-26: 1,222, 1,223, 967, 1,080, 1,229, 1,230, 1,227, 1,229, 1,230 (2019-20 has 1,059 scheduled games, so it lacks 92). Rows: 181,840 to 240,839 per season, about half with no attempt (kept out of the table, counted). Every row's points equal its field-goal points plus free throws made. Double credit: matchup FGA total 8% to 12% more than the shot chart in the same games. The excess is in 2-pointers (2PA and 2PM both about 13% to 20% over the chart, at an ordinary make rate, e.g. 2022-23 160,374 / 86,871 against 132,952 / 72,841), while 3PA and 3PM are within about 3%, so some 2-pointers appear credited to more than one defender; they do not look like fouled misses. Help-defender columns are zero in every row of every season, so no second-defender value can be built."
+  ],
+  "method": [
+    "RULE. For a shooter o and defender d in a season, the expected make rate for 2s and for 3s separately is the Beta posterior mean (alpha_t + M) / (alpha_t + beta_t + A), with alpha_t, beta_t R03's prior for that stat and season and M, A o's matchup makes and attempts in that season against EVERY DEFENDER EXCEPT d. Excluding only the attempts on d, not whole games: it removes the defender's own influence on the prediction and keeps the shooter's other attempts in those games. Expected points of d's matchups = sum over rows of 2 * FGA2 * p2 + 3 * FGA3 * p3. Actual = 2 * FGM2 + 3 * FGM3. Field-goal points only, as Part A and R05: free throws are excluded because a foul drawn is not in these counts by shot type.",
+    "HINDSIGHT. This is descriptive and uses the whole season, including games after the matchup. It predicts nothing and feeds no forecast.",
+    "D-SQ. L_t = (sum expected - sum actual) / sum FGA over all rows of the season, the league term that removes the leave-out and shrinkage offset. D-SQ of d = 100 * ((expected - actual) / FGA - L_t), points per 100 matchup attempts. POSITIVE IS GOOD: shooters scored less than their own shooting predicts. Computed for all attempts, 2-pointers and 3-pointers, each with its own term.",
+    "MINIMUM VOLUME. D-SQ needs at least 300 matchup FGA in the season; otherwise status small_sample and no value. The 2PT and 3PT views also need at least 100 attempts of that type, otherwise unknown. Measured defender counts at 300+: 281 to 329 per season.",
+    "KEY MATCHUPS. For each served defender, the five shooters with the most attempts against him (ties by id): attempts, actual PPS and the expected PPS above. Descriptive; no interval. Small samples, never a verdict.",
+    "NOT REPRODUCIBLE, STATED ON THE PAGE. Databallr's card uses ShotQuality's tracking: closest defender and 2nd defender attempts, and opponent shot-quality expected value. Free data has no closest-defender feed, the help columns are empty, and matchup rows have no shot location, so CourtLens's 'expected PPS' is what the shooters' own shooting predicts, NOT a look-quality estimate; R05's model cannot be applied to matchups. The card's RAPM headline is dSQ from courtlens-shot-decomposition-v1 for 2022-23 onward and unknown before.",
+    "SIGNAL CHECK (reported, no gate). The number of served defender-seasons whose 95% interval excludes zero, against the 5% expected if no defender differed.",
+    "PERSISTENCE (reported, no gate). Consecutive served seasons, eight pairs from 2017-18 to 2025-26 pooled, players served in both, Pearson correlation weighted by the harmonic mean of matchup FGA, for D-SQ, expected PPS and actual PPS.",
+    "AGREEMENT (reported, no gate). Same player and season, 2022-23 to 2025-26, both served: weighted correlation (harmonic mean of matchup FGA and Part A defence shots) of D-SQ with dSQ, dContest and dTS.",
+    "RUN ORDER. No choice is made, so one pass. Any change after results are read is disclosed; analysis changes require v2. Timings are in the run log only.",
+    "CREDIT. The card layout and the concept are Databallr's D-ShotQuality page; ShotQuality owns the tracking-based values, not used here. Matchup data: NBA Stats via shufinskiy/nba_data."
+  ],
+  "parameters": {
+    "seasons": [
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "kinds": [
+      "all",
+      "2pt",
+      "3pt"
+    ],
+    "min_fga": 300,
+    "min_type_fga": 100,
+    "key_matchups": 5,
+    "bootstrap_replicates": 2000,
+    "interval": 0.95,
+    "part_a_results_sha256": "1e437b5ebaf0cda1af2e4f97c8a398cb58143bf46586d52eb25e1006e13f9bad",
+    "table_sha256": {
+      "2017-18": "95a67773facb6081cd3a9c7f03d42803436484eae54c6b706e18aa7abca746f8",
+      "2018-19": "e13f321bdaaf76e8014cb135fc2fe1e00c04843184ba3c5451acee22d2256933",
+      "2019-20": "da24636da142b921f724515f03170eb6cbfbb527323e40d5e6615711731b57c0",
+      "2020-21": "3bf503ff1aef961916ccd5e416406716e5802eb52ea788aead1314a6d4d0395c",
+      "2021-22": "43f0fe929a246940afb52aeeb6016458b692908fd1a1b7b319db13fccc4300d0",
+      "2022-23": "898454914e980879e92e86de95cee3dac629408c33c1b8d45cfad36f237d8eaa",
+      "2023-24": "2045e46324c8407809b6a9644c20eb1d4b0786a4552946cb610de737b10729f0",
+      "2024-25": "c6350ae939dd868fa86deea697c54dd005546e7b6dd33ff3440800d53425825a",
+      "2025-26": "c758f4450464958102a96b646b99e17b273d93d6694fde8d905c44ca4ce13f63"
+    }
+  },
+  "selection": "None. The rule, minimums and every reported check are fixed here, before any defender value is computed.",
+  "uncertainty": "D-SQ intervals: 2,000-replicate bootstrap of the defender's own games (seed SeedSequence([7007, starting year, kind index, player id])), 95% percentile, with each shooter's expected rate and the league term held fixed: they show matchup-outcome noise, not uncertainty in the expectation. Correlations: player-cluster bootstrap, 2,000 replicates, seed 7007 for persistence and 7008 for agreement, 95% percentile. Overlapping intervals do not rank two defenders.",
+  "evaluation": [
+    "Per season: games, league FGA, PPS, expected PPS and term by kind; defenders and those served; intervals excluding zero; median interval width.",
+    "Pooled signal share, persistence and agreement with intervals.",
+    "Reproducibility: two runs give the same results hash."
+  ],
+  "acceptance": [
+    "Descriptive: there is no gate. The run fails on a changed table, a changed Part A file, an unusable prior, a non-finite value or a constant that differs from this registration.",
+    "Every defender-season has a status, and every value an interval or a named unknown.",
+    "Two runs give the same results hash.",
+    "Published whichever way it goes, including no signal or no persistence."
+  ],
+  "outputs": [
+    "evaluation/research/frozen/courtlens-defensive-shot-quality-v1.json (served by the API)",
+    "data/derived/defensive-shot-quality-v1/tables (content-hashed, git-ignored)",
+    "docs/evidence/research/r06/ (receipt, data check, per-season summaries, signal, persistence, agreement)"
+  ],
+  "limitations": [
+    "Matchup assignment is the NBA's tracking-based estimate of who guarded whom. A defender is assigned tough or easy shooters by his team's scheme; using each shooter's own rate addresses that, but not the difficulty of the specific shots, teammates' help or the team's rim protection.",
+    "Some 2-pointers are credited to more than one defender, so 'shots defended' overstates distinct shots.",
+    "No shot location or contest data: this measures opponents' results against their norm, not the quality of the looks allowed.",
+    "3-point results are very noisy: R03 found 3P% does not stabilize at normal volumes. Intervals show game sampling only.",
+    "2019-20 lacks the games after the hiatus; 2017-18 to 2024-25 lack up to eight games each.",
+    "The expected rate is shrunk toward a league prior, not a positional one."
+  ],
+  "negative_result_policy": "Publish every number whatever it shows, including no signal, no persistence or disagreement with Part A.",
+  "seed": 7007,
+  "budget": {
+    "cpu_threads": 1,
+    "max_peak_mib": 4096,
+    "max_wall_seconds": 1800
+  }
+}

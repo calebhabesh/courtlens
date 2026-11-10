@@ -10,6 +10,10 @@
 #                             (WOWY, Stat Line Shift, on/off) from the first game; fits nothing.
 #   courtlens-impact-refresh  Mondays 14:30 UTC `courtlens refresh-season-impact`: provisional
 #                             current-season impact numbers (waits until teams have 10 games).
+#   courtlens-metric-backtest 15:00 UTC daily `courtlens refresh-metric-backtest`: scores completed
+#                             2026-27 games for the Metric Backtest. It fires daily because the
+#                             command scores only when its last score is at least 7 days old, so
+#                             a fixed weekly firing could land just short of that and skip a week.
 # Every run stores bytes only when the data changed and prunes bounded history (docs/deployment.md).
 # A refused or failed step admits nothing; pages keep serving the last good data.
 # Logs: journalctl --user -u courtlens-daily-refresh. Remove: scripts/install_data_refresh.sh --remove
@@ -17,7 +21,7 @@ set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
 units="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
-names=(courtlens-roster-refresh courtlens-daily-refresh courtlens-lineups-refresh courtlens-impact-refresh)
+names=(courtlens-roster-refresh courtlens-daily-refresh courtlens-lineups-refresh courtlens-impact-refresh courtlens-metric-backtest)
 
 if [[ "${1:-}" == "--remove" ]]; then
   for name in "${names[@]}"; do
@@ -66,6 +70,8 @@ unit courtlens-lineups-refresh "Refresh CourtLens provisional current-season lin
   refresh-season-lineups 1h "*-*-* 14:05:00 UTC"
 unit courtlens-impact-refresh "Refresh CourtLens provisional current-season impact numbers" \
   refresh-season-impact 2h "Mon *-*-* 14:30:00 UTC"
+unit courtlens-metric-backtest "Score completed 2026-27 games for the CourtLens Metric Backtest" \
+  refresh-metric-backtest 30min "*-*-* 15:00:00 UTC"
 
 systemctl --user daemon-reload
 for name in "${names[@]}"; do

@@ -1,0 +1,819 @@
+{
+ "checked_on": "2026-11-06",
+ "darko_raw_trace": [
+  {
+   "equal": true,
+   "player_id": "203497",
+   "raw_d_dpm": 3.65923,
+   "raw_found": true,
+   "raw_sha256": "40e20eec44ff2d016cc850f014066d1d733c10805179b60cca5ca36fc28b10db",
+   "season": "2024-25",
+   "table_d_dpm": 3.65923
+  },
+  {
+   "equal": true,
+   "player_id": "203497",
+   "raw_d_dpm": 3.7097,
+   "raw_found": true,
+   "raw_sha256": "6d16c8a5b0d6e340eb3259035ac222ea5bd1d024bc70defdaf3a2b8730584203",
+   "season": "2016-17",
+   "table_d_dpm": 3.7097
+  },
+  {
+   "equal": true,
+   "player_id": "1641744",
+   "raw_d_dpm": 1.36289,
+   "raw_found": true,
+   "raw_sha256": "f7e4656d4dfdb9a610231a79e5fedb85c75194fb1ea70a1a3cdfa0b7aaa62a46",
+   "season": "2025-26",
+   "table_d_dpm": 1.36289
+  },
+  {
+   "equal": true,
+   "player_id": "1628389",
+   "raw_d_dpm": 1.01552,
+   "raw_found": true,
+   "raw_sha256": "bf4b771179eb7fd7026cd7ee13c31796ec991b50f5e06465dec18c2eb6e5d635",
+   "season": "2020-21",
+   "table_d_dpm": 1.01552
+  },
+  {
+   "equal": true,
+   "player_id": "201599",
+   "raw_d_dpm": 0.718108,
+   "raw_found": true,
+   "raw_sha256": "37f03e4c3350e5d3a55548a01c6f7edeee2cd1e550b775d24649fff58abf197a",
+   "season": "2008-09",
+   "table_d_dpm": 0.718108
+  }
+ ],
+ "hand_sample_databallr": {
+  "detail": [
+   {
+    "courtlens": {
+     "combine_year": 2023,
+     "d_dpm": null,
+     "height": null,
+     "measured": false,
+     "name": "Victor Wembanyama",
+     "player_id": "1641705",
+     "position": "C",
+     "wingspan": null
+    },
+    "databallr": {
+     "ddpm": 2.8,
+     "height": 88,
+     "name": "Victor Wembanyama",
+     "pos": "PF",
+     "wingspan": 96
+    },
+    "status": "not measured at a combine"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2024,
+     "d_dpm": 0.858889,
+     "height": 87.75,
+     "measured": true,
+     "name": "Zach Edey",
+     "player_id": "1641744",
+     "position": "C",
+     "wingspan": 94.75
+    },
+    "databallr": {
+     "ddpm": 1.3,
+     "height": 87.75,
+     "name": "Zach Edey",
+     "pos": "C",
+     "wingspan": 94.75
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2018,
+     "d_dpm": 0.8909,
+     "height": 83.25,
+     "measured": true,
+     "name": "Mohamed Bamba",
+     "player_id": "1628964",
+     "position": "C",
+     "wingspan": 94.0
+    },
+    "databallr": {
+     "ddpm": 0.5,
+     "height": 83.25,
+     "name": "Mo Bamba",
+     "pos": "C",
+     "wingspan": 94
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2013,
+     "d_dpm": 3.763041,
+     "height": 84.5,
+     "measured": true,
+     "name": "Rudy Gobert",
+     "player_id": "203497",
+     "position": "C",
+     "wingspan": 92.5
+    },
+    "databallr": {
+     "ddpm": 4.0,
+     "height": 84.5,
+     "name": "Rudy Gobert",
+     "pos": "C",
+     "wingspan": 92.5
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2019,
+     "d_dpm": 0.797657,
+     "height": 84.75,
+     "measured": true,
+     "name": "Bol Bol",
+     "player_id": "1629626",
+     "position": "C",
+     "wingspan": 91.0
+    },
+    "databallr": {
+     "ddpm": 0.4,
+     "height": 84.75,
+     "name": "Bol Bol",
+     "pos": "C",
+     "wingspan": 91
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2023,
+     "d_dpm": null,
+     "height": null,
+     "measured": false,
+     "name": "Dereck Lively Jr.",
+     "player_id": "1641726",
+     "position": "C",
+     "wingspan": null
+    },
+    "databallr": {
+     "ddpm": 2.0,
+     "height": 84.75,
+     "name": "Dereck Lively II",
+     "pos": "C",
+     "wingspan": 91
+    },
+    "status": "not measured at a combine"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2024,
+     "d_dpm": 1.503524,
+     "height": 85.75,
+     "measured": true,
+     "name": "Donovan Clingan",
+     "player_id": "1642270",
+     "position": "C",
+     "wingspan": 90.75
+    },
+    "databallr": {
+     "ddpm": 1.1,
+     "height": 85.75,
+     "name": "Donovan Clingan",
+     "pos": "C",
+     "wingspan": 90.75
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2025,
+     "d_dpm": null,
+     "height": 84.75,
+     "measured": true,
+     "name": "Khaman Maluach",
+     "player_id": "1642863",
+     "position": "C",
+     "wingspan": 90.75
+    },
+    "databallr": {
+     "ddpm": 0.9,
+     "height": 84.75,
+     "name": "Khaman Maluach",
+     "pos": "C",
+     "wingspan": 90.75
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2022,
+     "d_dpm": -0.536181,
+     "height": 84.0,
+     "measured": true,
+     "name": "Mark Williams",
+     "player_id": "1631109",
+     "position": "C",
+     "wingspan": 90.5
+    },
+    "databallr": {
+     "ddpm": -0.2,
+     "height": 84,
+     "name": "Mark Williams",
+     "pos": "C",
+     "wingspan": 90.5
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2012,
+     "d_dpm": 0.373202,
+     "height": 81.75,
+     "measured": true,
+     "name": "Andre Drummond",
+     "player_id": "203083",
+     "position": "C",
+     "wingspan": 90.25
+    },
+    "databallr": {
+     "ddpm": 1.1,
+     "height": 81.75,
+     "name": "Andre Drummond",
+     "pos": "C",
+     "wingspan": 90.25
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2026,
+     "d_dpm": null,
+     "height": 87.0,
+     "measured": true,
+     "name": "Aday Mara",
+     "player_id": "1643530",
+     "position": "C",
+     "wingspan": 90.0
+    },
+    "databallr": {
+     "ddpm": null,
+     "height": 87,
+     "name": "Aday Mara",
+     "pos": "C",
+     "wingspan": 90
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2022,
+     "d_dpm": null,
+     "height": null,
+     "measured": false,
+     "name": "Chet Holmgren",
+     "player_id": "1631096",
+     "position": "PF",
+     "wingspan": null
+    },
+    "databallr": {
+     "ddpm": 2.3,
+     "height": 84,
+     "name": "Chet Holmgren",
+     "pos": "C",
+     "wingspan": 90
+    },
+    "status": "not measured at a combine"
+   },
+   {
+    "courtlens": null,
+    "databallr": {
+     "ddpm": 1.0,
+     "height": 83,
+     "name": "Deandre Ayton",
+     "pos": "C",
+     "wingspan": 90
+    },
+    "status": "not in CourtLens combine data"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2008,
+     "d_dpm": 1.430011,
+     "height": 81.75,
+     "measured": true,
+     "name": "DeAndre Jordan",
+     "player_id": "201599",
+     "position": "C",
+     "wingspan": 90.0
+    },
+    "databallr": {
+     "ddpm": 1.0,
+     "height": 81.75,
+     "name": "DeAndre Jordan",
+     "pos": "C",
+     "wingspan": 90
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": null,
+    "databallr": {
+     "ddpm": 0.8,
+     "height": 86.5,
+     "name": "Kristaps Porzingis",
+     "pos": "C",
+     "wingspan": 90
+    },
+    "status": "not in CourtLens combine data"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2024,
+     "d_dpm": null,
+     "height": 82.0,
+     "measured": true,
+     "name": "N'Faly Dante",
+     "player_id": "1642368",
+     "position": "C",
+     "wingspan": 90.0
+    },
+    "databallr": {
+     "ddpm": 0.1,
+     "height": 82,
+     "name": "N'faly Dante",
+     "pos": "C",
+     "wingspan": 90
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2017,
+     "d_dpm": -0.061336,
+     "height": 81.5,
+     "measured": true,
+     "name": "Thomas Bryant",
+     "player_id": "1628418",
+     "position": "PF",
+     "wingspan": 90.0
+    },
+    "databallr": {
+     "ddpm": -0.1,
+     "height": 81.5,
+     "name": "Thomas Bryant",
+     "pos": "C",
+     "wingspan": 90
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2012,
+     "d_dpm": 1.538145,
+     "height": 81.25,
+     "measured": true,
+     "name": "Anthony Davis",
+     "player_id": "203076",
+     "position": "PF",
+     "wingspan": 89.5
+    },
+    "databallr": {
+     "ddpm": 1.4,
+     "height": 81.25,
+     "name": "Anthony Davis",
+     "pos": "C",
+     "wingspan": 89.5
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2008,
+     "d_dpm": 1.35538,
+     "height": 83.25,
+     "measured": true,
+     "name": "Brook Lopez",
+     "player_id": "201572",
+     "position": "C",
+     "wingspan": 89.5
+    },
+    "databallr": {
+     "ddpm": 1.5,
+     "height": 83.25,
+     "name": "Brook Lopez",
+     "pos": "C",
+     "wingspan": 89.5
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": null,
+    "databallr": {
+     "ddpm": 1.9,
+     "height": 80,
+     "name": "Robert Williams",
+     "pos": "C",
+     "wingspan": 89.5
+    },
+    "status": "not in CourtLens combine data"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2022,
+     "d_dpm": 1.60122,
+     "height": 82.75,
+     "measured": true,
+     "name": "Christian Koloko",
+     "player_id": "1631132",
+     "position": "C",
+     "wingspan": 89.25
+    },
+    "databallr": {
+     "ddpm": 1.4,
+     "height": 82.75,
+     "name": "Christian Koloko",
+     "pos": "C",
+     "wingspan": 89.25
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2022,
+     "d_dpm": null,
+     "height": null,
+     "measured": false,
+     "name": "Jalen Duren",
+     "player_id": "1631105",
+     "position": "C",
+     "wingspan": null
+    },
+    "databallr": {
+     "ddpm": 0.6,
+     "height": 81.25,
+     "name": "Jalen Duren",
+     "pos": "C",
+     "wingspan": 89.25
+    },
+    "status": "not measured at a combine"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2018,
+     "d_dpm": 1.197986,
+     "height": 81.75,
+     "measured": true,
+     "name": "Jaren Jackson",
+     "player_id": "1628991",
+     "position": "PF",
+     "wingspan": 89.25
+    },
+    "databallr": {
+     "ddpm": 1.4,
+     "height": 81.75,
+     "name": "Jaren Jackson Jr.",
+     "pos": "PF",
+     "wingspan": 89.25
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2017,
+     "d_dpm": 1.344904,
+     "height": 81.0,
+     "measured": true,
+     "name": "Jarrett Allen",
+     "player_id": "1628386",
+     "position": "C",
+     "wingspan": 89.25
+    },
+    "databallr": {
+     "ddpm": 1.9,
+     "height": 81,
+     "name": "Jarrett Allen",
+     "pos": "C",
+     "wingspan": 89.25
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2025,
+     "d_dpm": 0.241682,
+     "height": 80.25,
+     "measured": true,
+     "name": "Rasheer Fleming",
+     "player_id": "1642853",
+     "position": "SF",
+     "wingspan": 89.25
+    },
+    "databallr": {
+     "ddpm": -0.6,
+     "height": 80.25,
+     "name": "Rasheer Fleming",
+     "pos": "PF",
+     "wingspan": 89.25
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": {
+     "combine_year": 2026,
+     "d_dpm": null,
+     "height": 82.25,
+     "measured": true,
+     "name": "Christopher Cenac Jr.",
+     "player_id": "1643416",
+     "position": "PF",
+     "wingspan": 89.0
+    },
+    "databallr": {
+     "ddpm": null,
+     "height": 82.25,
+     "name": "Christopher Cenac Jr.",
+     "pos": "PF",
+     "wingspan": 89
+    },
+    "status": "match"
+   },
+   {
+    "courtlens": null,
+    "databallr": {
+     "ddpm": null,
+     "height": 83.5,
+     "name": "James Wiseman",
+     "pos": "C",
+     "wingspan": 89
+    },
+    "status": "not in CourtLens combine data"
+   }
+  ],
+  "name_matching": "For this hand check only: names lowercased, punctuation and suffixes (II, III, Jr.) dropped; Mo Bamba = Mohamed Bamba. The pipeline itself matches by NBA person ID only.",
+  "rows_read": 27,
+  "source": "Databallr Wingspan page saved by the owner 2026-11-06: every row in the saved table (sorted by wingspan). Databallr's D-DPM is its current board, CourtLens's career D-DPM is a different quantity, so only measurements are compared.",
+  "status": {
+   "match": 19,
+   "not in CourtLens combine data": 4,
+   "not measured at a combine": 4
+  }
+ },
+ "independent_recomputation": {
+  "counts_equal": true,
+  "frozen_vs_independent": {
+   "means": {
+    "ALL": {
+     "d": [
+      -0.1512726243702686,
+      -0.151273
+     ],
+     "d_n": [
+      822,
+      822
+     ],
+     "diff": [
+      4.694945745288407,
+      4.694946
+     ],
+     "height": [
+      77.67101656196459,
+      77.671017
+     ],
+     "n": [
+      1751,
+      1751
+     ],
+     "wingspan": [
+      82.36596230725299,
+      82.365962
+     ]
+    },
+    "C": {
+     "d": [
+      0.7125423491512082,
+      0.712542
+     ],
+     "d_n": [
+      77,
+      77
+     ],
+     "diff": [
+      5.087155963302752,
+      5.087156
+     ],
+     "height": [
+      82.21674311926606,
+      82.216743
+     ],
+     "n": [
+      218,
+      218
+     ],
+     "wingspan": [
+      87.3038990825688,
+      87.303899
+     ]
+    },
+    "PF": {
+     "d": [
+      0.1771174128273118,
+      0.177117
+     ],
+     "d_n": [
+      190,
+      190
+     ],
+     "diff": [
+      5.049886877828055,
+      5.049887
+     ],
+     "height": [
+      80.04117647058823,
+      80.041176
+     ],
+     "n": [
+      442,
+      442
+     ],
+     "wingspan": [
+      85.09106334841628,
+      85.091063
+     ]
+    },
+    "PG": {
+     "d": [
+      -0.5483595756500146,
+      -0.54836
+     ],
+     "d_n": [
+      180,
+      180
+     ],
+     "diff": [
+      4.245730027548209,
+      4.24573
+     ],
+     "height": [
+      73.2396694214876,
+      73.239669
+     ],
+     "n": [
+      363,
+      363
+     ],
+     "wingspan": [
+      77.48539944903581,
+      77.485399
+     ]
+    },
+    "SF": {
+     "d": [
+      -0.12796257365798314,
+      -0.127963
+     ],
+     "d_n": [
+      182,
+      182
+     ],
+     "diff": [
+      4.487611940298507,
+      4.487612
+     ],
+     "height": [
+      78.39925373134328,
+      78.399254
+     ],
+     "n": [
+      335,
+      335
+     ],
+     "wingspan": [
+      82.88686567164179,
+      82.886866
+     ]
+    },
+    "SG": {
+     "d": [
+      -0.47437816589190507,
+      -0.474378
+     ],
+     "d_n": [
+      192,
+      192
+     ],
+     "diff": [
+      4.666454081632653,
+      4.666454
+     ],
+     "height": [
+      75.94706632653062,
+      75.947066
+     ],
+     "n": [
+      392,
+      392
+     ],
+     "wingspan": [
+      80.61352040816327,
+      80.61352
+     ]
+    }
+   },
+   "r": {
+    "diff:d": [
+     0.2130344255437157,
+     0.213034
+    ],
+    "height:d": [
+     0.4193545182793407,
+     0.419355
+    ],
+    "height:diff": [
+     -0.016063597425609717,
+     -0.016064
+    ],
+    "height:wingspan": [
+     0.8344540360445232,
+     0.834454
+    ],
+    "wingspan:d": [
+     0.4665129977354869,
+     0.466513
+    ],
+    "wingspan:diff": [
+     0.5376021079348595,
+     0.537602
+    ]
+   }
+  },
+  "independent": {
+   "analysis": 822,
+   "means": {
+    "ALL": {
+     "d": -0.1512726243702686,
+     "d_n": 822,
+     "diff": 4.694945745288407,
+     "height": 77.67101656196459,
+     "n": 1751,
+     "wingspan": 82.36596230725299
+    },
+    "C": {
+     "d": 0.7125423491512082,
+     "d_n": 77,
+     "diff": 5.087155963302752,
+     "height": 82.21674311926606,
+     "n": 218,
+     "wingspan": 87.3038990825688
+    },
+    "PF": {
+     "d": 0.1771174128273118,
+     "d_n": 190,
+     "diff": 5.049886877828055,
+     "height": 80.04117647058823,
+     "n": 442,
+     "wingspan": 85.09106334841628
+    },
+    "PG": {
+     "d": -0.5483595756500146,
+     "d_n": 180,
+     "diff": 4.245730027548209,
+     "height": 73.2396694214876,
+     "n": 363,
+     "wingspan": 77.48539944903581
+    },
+    "SF": {
+     "d": -0.12796257365798314,
+     "d_n": 182,
+     "diff": 4.487611940298507,
+     "height": 78.39925373134328,
+     "n": 335,
+     "wingspan": 82.88686567164179
+    },
+    "SG": {
+     "d": -0.47437816589190507,
+     "d_n": 192,
+     "diff": 4.666454081632653,
+     "height": 75.94706632653062,
+     "n": 392,
+     "wingspan": 80.61352040816327
+    }
+   },
+   "measured": 1751,
+   "r": {
+    "diff:d": 0.2130344255437157,
+    "height:d": 0.4193545182793407,
+    "height:diff": -0.016063597425609717,
+    "height:wingspan": 0.8344540360445232,
+    "wingspan:d": 0.4665129977354869,
+    "wingspan:diff": 0.5376021079348595
+   }
+  },
+  "max_abs_difference": 4.81720659251117e-07
+ },
+ "method": "independent_recomputation reads the combine mart, the published game logs and the sealed DARKO bundle directly with its own SQL and pure-Python Pearson and means (no wingspan_data or wingspan_runner code). darko_raw_trace re-parses the retained raw DARKO responses named by each board's raw_sha256."
+}

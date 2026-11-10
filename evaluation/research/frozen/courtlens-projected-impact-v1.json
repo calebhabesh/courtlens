@@ -1,0 +1,72 @@
+{
+ "calibrated_on": "2023-24",
+ "checks": {
+  "F1_coverage": {
+   "buckets_within_limit": false,
+   "overall_within_limit": false,
+   "passed": false
+  },
+  "F2_causality": true,
+  "F3_windows": true,
+  "F4_prospective_build": {
+   "cutoff": "2026-10-20",
+   "games_2026_27_in_boxes": 107,
+   "games_2026_27_in_features": 0,
+   "passed": true,
+   "same_feature_columns_as_test": true,
+   "snapshot_latest_game_date": "2026-04-12"
+  }
+ },
+ "conformal": {
+  "1500_plus": 3.9013519459331354,
+  "1500_plus_n": 180,
+  "500_to_1499": 3.4901670905317306,
+  "500_to_1499_n": 113,
+  "no_prior": 4.405814455944156,
+  "no_prior_n": 38,
+  "under_500": 4.704480643409204,
+  "under_500_n": 29
+ },
+ "f1_waiver": "Owner, 2026-11-05: F1 failed only by over-coverage (84.3% overall against a nominal 80%, limit 77-83%; under-500 and no-prior buckets 89%, limit 72-88%). Waived for over-coverage only; intervals frozen as tested, not tuned on test, and the page states they ran wide.",
+ "fallback_rating": -1.5896220987439333,
+ "feature_cutoff": "2026-10-20",
+ "feature_sha256": "8696116068062f241abb99bd709417d43db604e116f004a4dde3ac817bceae97",
+ "first_prospective_rule": "scheduled tip after frozen_at",
+ "frozen_at": "2026-11-05T04:53:33+00:00",
+ "game_mapping": {
+  "age_curve": {
+   "a": 2.204609902514282,
+   "b": 0.8158375970851071
+  },
+  "carry_forward": {
+   "a": 2.199352804222232,
+   "b": 0.75088553401213
+  },
+  "lightgbm": {
+   "a": 2.165986794553003,
+   "b": 1.4603817486800938
+  },
+  "ridge": {
+   "a": 2.1271425217296662,
+   "b": 1.6615274769179444
+  },
+  "time_decay": {
+   "a": 2.1965796332734753,
+   "b": 0.8456951142150431
+  }
+ },
+ "group_means": {
+  "returner": -0.6346714865092239,
+  "rookie": -1.5896220987439333
+ },
+ "lightgbm_sha256": "9028d0d9037147df828b5ca2ca8a398234e7ae1f0c0017a2bb78c3ac313ea1cb",
+ "manifest_sha256": "7728bb5c9f158feae0830f7554fdec85ae949efb7ca3a11a638159ba2563d070",
+ "players": 661,
+ "projections_sha256": "6eaef38960af783b4e3d1bdaab955f5f6185ce9c75ab8ff7e98b5a397242d41e",
+ "registration": "courtlens-projected-impact-v1",
+ "registration_sha256": "4c6bf16d1da1fc76097a66baee53ce22264c55a8e312fe098749823870fa10d9",
+ "selected": "lightgbm",
+ "state_sha256": "249cd2eaa638a5608b9555f7878ea4e1ce06e169662994323ecb44efe2e47e2b",
+ "trained_through": "2022-23",
+ "version": "courtlens-projected-impact-v1-frozen-2026-27"
+}

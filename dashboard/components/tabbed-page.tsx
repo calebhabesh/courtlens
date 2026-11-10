@@ -1,4 +1,5 @@
 import { Suspense, type ReactNode } from "react";
+import type { IconName } from "./ui/icon";
 import { PageHeader } from "./ui/panel";
 import { PageShell, type PageTemplate } from "./ui/page-shell";
 import { RouteTabs } from "./ui/route-tabs";
@@ -16,10 +17,10 @@ export function TabbedPage({ page, template, carry, children }: {
 }) {
   return (
     <PageShell template={template} className="ui-tabbed-page">
-      <PageHeader title={page.title} subtitle={page.subtitle} />
-      <Suspense fallback={<div className="ui-route-tabs" aria-hidden="true" />}>
+      <PageHeader title={page.title} subtitle={page.subtitle} icon={page.hero?.icon as IconName | undefined} className={page.hero ? "pvp-header research-hero" : undefined} />
+      {page.tabs.length > 1 && <Suspense fallback={<div className="ui-route-tabs" aria-hidden="true" />}>
         <RouteTabs tabs={page.tabs} aria-label={`${page.title} sections`} carry={carry} />
-      </Suspense>
+      </Suspense>}
       <div className="ui-tabbed-page-body">{children}</div>
     </PageShell>
   );

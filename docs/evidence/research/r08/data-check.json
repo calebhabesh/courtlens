@@ -1,0 +1,947 @@
+{
+ "2015-16": {
+  "box_games": 1230,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": false,
+    "reason": "no box_prior_rapm fit for 2014-15"
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 59,
+    "player_games": 26071,
+    "rated": 433,
+    "replaced_minutes_share": 0.10446400190746204,
+    "replaced_player_games": 3540,
+    "replacement": -4.129997730881627
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 59,
+    "player_games": 26071,
+    "rated": 433,
+    "replaced_minutes_share": 0.10446400190746204,
+    "replaced_player_games": 3540,
+    "replacement": -4.805355276078757
+   },
+   "projected_impact": {
+    "available": false,
+    "reason": "outside R07's selection and test seasons (2023-24 to 2025-26)"
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 26071,
+    "rated": 492,
+    "replaced_minutes_share": 0.08866804206783117,
+    "replaced_player_games": 3054,
+    "replacement": -2.792125302651355
+   },
+   "rapm_3y": {
+    "available": false,
+    "reason": "no complete 3-season fit ending 2014-15"
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 26071,
+    "replaced_minutes_share": 0.00538179990392645,
+    "replaced_player_games": 256,
+    "replacement": {
+     "2015-10-27": -2.4602859935943764,
+     "2015-11-01": -2.4972630625446453,
+     "2015-12-01": -2.4245730726422856,
+     "2016-01-01": -1.6036504251400645,
+     "2016-02-01": -1.5842343537332129,
+     "2016-03-01": -1.6247015105653695,
+     "2016-04-01": -1.6782735647804476,
+     "2016-05-01": -1.6951871345887388
+    },
+    "snapshots": 8
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 26071,
+    "rated": 492,
+    "replaced_minutes_share": 0.08866804206783117,
+    "replaced_player_games": 3054,
+    "replacement": -2.4602859935943764
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 7380,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1219
+ },
+ "2016-17": {
+  "box_games": 1230,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": true,
+    "player_games": 26135,
+    "rated": 476,
+    "replaced_minutes_share": 0.10503815081576504,
+    "replaced_player_games": 3780,
+    "replacement": -2.750151668664331
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 48,
+    "player_games": 26135,
+    "rated": 428,
+    "replaced_minutes_share": 0.11409500376776545,
+    "replaced_player_games": 4172,
+    "replacement": -4.0893867908937835
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 48,
+    "player_games": 26135,
+    "rated": 428,
+    "replaced_minutes_share": 0.11409500376776545,
+    "replaced_player_games": 4172,
+    "replacement": -4.545158585217422
+   },
+   "projected_impact": {
+    "available": false,
+    "reason": "outside R07's selection and test seasons (2023-24 to 2025-26)"
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 26135,
+    "rated": 476,
+    "replaced_minutes_share": 0.10503815081576504,
+    "replaced_player_games": 3780,
+    "replacement": -2.499102581538541
+   },
+   "rapm_3y": {
+    "available": false,
+    "reason": "no complete 3-season fit ending 2015-16"
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 26135,
+    "replaced_minutes_share": 0.005819476718714404,
+    "replaced_player_games": 306,
+    "replacement": {
+     "2016-10-25": -1.4924575678105199,
+     "2016-11-01": -1.5198256953357192,
+     "2016-12-01": -1.6271150241051506,
+     "2017-01-01": -1.6153857151177236,
+     "2017-02-01": -1.5900755578327517,
+     "2017-03-01": -1.6262481644987625,
+     "2017-04-01": -1.7087874508854362,
+     "2017-05-01": -1.6268750576771613
+    },
+    "snapshots": 8
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 26135,
+    "rated": 572,
+    "replaced_minutes_share": 0.09707692900828908,
+    "replaced_player_games": 3555,
+    "replacement": -1.4924575678105199
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 8610,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1206
+ },
+ "2017-18": {
+  "box_games": 1230,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": true,
+    "player_games": 26099,
+    "rated": 486,
+    "replaced_minutes_share": 0.13170621253792025,
+    "replaced_player_games": 4371,
+    "replacement": -2.4800922095454094
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 59,
+    "player_games": 26099,
+    "rated": 427,
+    "replaced_minutes_share": 0.14311635670192138,
+    "replaced_player_games": 4862,
+    "replacement": -4.0148611625843245
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 59,
+    "player_games": 26099,
+    "rated": 427,
+    "replaced_minutes_share": 0.14311635670192138,
+    "replaced_player_games": 4862,
+    "replacement": -4.309052134964176
+   },
+   "projected_impact": {
+    "available": false,
+    "reason": "outside R07's selection and test seasons (2023-24 to 2025-26)"
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 26099,
+    "rated": 486,
+    "replaced_minutes_share": 0.13170621253792025,
+    "replaced_player_games": 4371,
+    "replacement": -2.35598679536563
+   },
+   "rapm_3y": {
+    "available": true,
+    "player_games": 26099,
+    "rated": 665,
+    "replaced_minutes_share": 0.11922650505324467,
+    "replaced_player_games": 3887,
+    "replacement": -2.670787568706682
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 26099,
+    "replaced_minutes_share": 0.01141303487567863,
+    "replaced_player_games": 477,
+    "replacement": {
+     "2017-10-17": -2.3088514996849154,
+     "2017-11-01": -2.325679836229253,
+     "2017-12-01": -2.279132067514261,
+     "2018-01-01": -1.5011875469827427,
+     "2018-02-01": -1.4909819360375112,
+     "2018-03-01": -1.6153558347526185,
+     "2018-04-01": -1.5882495950798163,
+     "2018-05-01": -2.2379525092620383
+    },
+    "snapshots": 8
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 26099,
+    "rated": 665,
+    "replaced_minutes_share": 0.11922650505324467,
+    "replaced_player_games": 3887,
+    "replacement": -2.3088514996849154
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 9840,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1217
+ },
+ "2018-19": {
+  "box_games": 1230,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": true,
+    "player_games": 26095,
+    "rated": 540,
+    "replaced_minutes_share": 0.10372308362087015,
+    "replaced_player_games": 3449,
+    "replacement": -2.6909704932366907
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 96,
+    "player_games": 26095,
+    "rated": 444,
+    "replaced_minutes_share": 0.12789297069619704,
+    "replaced_player_games": 4335,
+    "replacement": -3.603461224114611
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 96,
+    "player_games": 26095,
+    "rated": 444,
+    "replaced_minutes_share": 0.12789297069619704,
+    "replaced_player_games": 4335,
+    "replacement": -4.890158158783223
+   },
+   "projected_impact": {
+    "available": false,
+    "reason": "outside R07's selection and test seasons (2023-24 to 2025-26)"
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 26095,
+    "rated": 540,
+    "replaced_minutes_share": 0.10372308362087015,
+    "replaced_player_games": 3449,
+    "replacement": -2.434207864407567
+   },
+   "rapm_3y": {
+    "available": true,
+    "player_games": 26095,
+    "rated": 713,
+    "replaced_minutes_share": 0.09719971640142476,
+    "replaced_player_games": 3202,
+    "replacement": -2.6476272101314287
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 26095,
+    "replaced_minutes_share": 0.00916811346275677,
+    "replaced_player_games": 402,
+    "replacement": {
+     "2018-10-16": -2.1102336783947973,
+     "2018-11-01": -2.2259465133556393,
+     "2018-12-01": -2.2181295322224237,
+     "2019-01-01": -2.256390958127395,
+     "2019-02-01": -1.6155769984445534,
+     "2019-03-01": -1.6214284309511724,
+     "2019-04-01": -2.246616443223773,
+     "2019-05-01": -2.2029032817304386
+    },
+    "snapshots": 8
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 26095,
+    "rated": 792,
+    "replaced_minutes_share": 0.09719032404905376,
+    "replaced_player_games": 3201,
+    "replacement": -2.1102336783947973
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 9840,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1227
+ },
+ "2019-20": {
+  "box_games": 1059,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": true,
+    "player_games": 22387,
+    "rated": 530,
+    "replaced_minutes_share": 0.1121744928382273,
+    "replaced_player_games": 3284,
+    "replacement": -2.664761089339917
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 78,
+    "player_games": 22387,
+    "rated": 452,
+    "replaced_minutes_share": 0.12444720040504462,
+    "replaced_player_games": 3791,
+    "replacement": -3.441042446199532
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 78,
+    "player_games": 22387,
+    "rated": 452,
+    "replaced_minutes_share": 0.12444720040504462,
+    "replaced_player_games": 3791,
+    "replacement": -5.528500983046442
+   },
+   "projected_impact": {
+    "available": false,
+    "reason": "outside R07's selection and test seasons (2023-24 to 2025-26)"
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 22387,
+    "rated": 530,
+    "replaced_minutes_share": 0.1121744928382273,
+    "replaced_player_games": 3284,
+    "replacement": -2.4583855300422224
+   },
+   "rapm_3y": {
+    "available": true,
+    "player_games": 22387,
+    "rated": 744,
+    "replaced_minutes_share": 0.10341939967418852,
+    "replaced_player_games": 3064,
+    "replacement": -2.5556557408300797
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 22387,
+    "replaced_minutes_share": 0.00889934279192551,
+    "replaced_player_games": 354,
+    "replacement": {
+     "2019-10-22": -2.0956882774950625,
+     "2019-11-01": -2.1148750725270644,
+     "2019-12-01": -2.201674105855197,
+     "2020-01-01": -2.1798697737125305,
+     "2020-02-01": -2.1603397289740314,
+     "2020-03-01": -1.511301820420631,
+     "2020-04-01": -1.464388423579313,
+     "2020-05-01": -2.1051815791338755,
+     "2020-06-01": -2.092011384678182,
+     "2020-07-01": -2.0662051518318294,
+     "2020-08-01": -2.021637946913931,
+     "2020-09-01": -2.0290302531580107
+    },
+    "snapshots": 12
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 22387,
+    "rated": 900,
+    "replaced_minutes_share": 0.10316823217003646,
+    "replaced_player_games": 3044,
+    "replacement": -2.0956882774950625
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 8472,
+   "violations": 0
+  },
+  "neutral_games": 88,
+  "r01_admitted_games": 1033
+ },
+ "2020-21": {
+  "box_games": 1080,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": true,
+    "player_games": 23053,
+    "rated": 528,
+    "replaced_minutes_share": 0.10683781060895917,
+    "replaced_player_games": 3215,
+    "replacement": -2.517588367519358
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 90,
+    "player_games": 23053,
+    "rated": 438,
+    "replaced_minutes_share": 0.13921512054147886,
+    "replaced_player_games": 4462,
+    "replacement": -3.5693813831676806
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 90,
+    "player_games": 23053,
+    "rated": 438,
+    "replaced_minutes_share": 0.13921512054147886,
+    "replaced_player_games": 4462,
+    "replacement": -5.081216159933362
+   },
+   "projected_impact": {
+    "available": false,
+    "reason": "outside R07's selection and test seasons (2023-24 to 2025-26)"
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 23053,
+    "rated": 528,
+    "replaced_minutes_share": 0.10683781060895917,
+    "replaced_player_games": 3215,
+    "replacement": -2.3440931338990834
+   },
+   "rapm_3y": {
+    "available": true,
+    "player_games": 23053,
+    "rated": 779,
+    "replaced_minutes_share": 0.09971285677341367,
+    "replaced_player_games": 3045,
+    "replacement": -2.5988701914193024
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 23053,
+    "replaced_minutes_share": 0.00769842214400702,
+    "replaced_player_games": 312,
+    "replacement": {
+     "2020-12-22": -1.9466164977771294,
+     "2021-01-01": -2.0155415916030224,
+     "2021-02-01": -2.0139790048361004,
+     "2021-03-01": -2.043412650717742,
+     "2021-04-01": -1.5091948777942474,
+     "2021-05-01": -1.4680435250718713,
+     "2021-06-01": -1.5125217037787617
+    },
+    "snapshots": 7
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 23053,
+    "rated": 938,
+    "replaced_minutes_share": 0.09952653709896368,
+    "replaced_player_games": 3032,
+    "replacement": -1.9466164977771294
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 8640,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1074
+ },
+ "2021-22": {
+  "box_games": 1230,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": true,
+    "player_games": 26035,
+    "rated": 540,
+    "replaced_minutes_share": 0.1123973052108096,
+    "replaced_player_games": 3707,
+    "replacement": -2.850805255183263
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 77,
+    "player_games": 26035,
+    "rated": 463,
+    "replaced_minutes_share": 0.12551540901482308,
+    "replaced_player_games": 4285,
+    "replacement": -3.737152866579043
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 77,
+    "player_games": 26035,
+    "rated": 463,
+    "replaced_minutes_share": 0.12551540901482308,
+    "replaced_player_games": 4285,
+    "replacement": -5.054329376916996
+   },
+   "projected_impact": {
+    "available": false,
+    "reason": "outside R07's selection and test seasons (2023-24 to 2025-26)"
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 26035,
+    "rated": 540,
+    "replaced_minutes_share": 0.1123973052108096,
+    "replaced_player_games": 3707,
+    "replacement": -2.674681939693067
+   },
+   "rapm_3y": {
+    "available": true,
+    "player_games": 26035,
+    "rated": 756,
+    "replaced_minutes_share": 0.10444470898767667,
+    "replaced_player_games": 3409,
+    "replacement": -2.29558240805666
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 26035,
+    "replaced_minutes_share": 0.008162615230105688,
+    "replaced_player_games": 386,
+    "replacement": {
+     "2021-10-19": -2.15776115485482,
+     "2021-11-01": -1.398697113703646,
+     "2021-12-01": -1.4694544419049365,
+     "2022-01-01": -1.4216245085974375,
+     "2022-02-01": -1.4431684708771773,
+     "2022-03-01": -1.4206681377621437,
+     "2022-04-01": -1.4829755594326555,
+     "2022-05-01": -1.448045942110031
+    },
+    "snapshots": 8
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 26035,
+    "rated": 958,
+    "replaced_minutes_share": 0.10441155843338172,
+    "replaced_player_games": 3407,
+    "replacement": -2.15776115485482
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 9840,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1228
+ },
+ "2022-23": {
+  "box_games": 1230,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": true,
+    "player_games": 25892,
+    "rated": 605,
+    "replaced_minutes_share": 0.10152404399967073,
+    "replaced_player_games": 3255,
+    "replacement": -2.660137049523575
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 121,
+    "player_games": 25892,
+    "rated": 484,
+    "replaced_minutes_share": 0.1166838482301514,
+    "replaced_player_games": 3912,
+    "replacement": -3.651386793838711
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 121,
+    "player_games": 25892,
+    "rated": 484,
+    "replaced_minutes_share": 0.1166838482301514,
+    "replaced_player_games": 3912,
+    "replacement": -5.545176773422526
+   },
+   "projected_impact": {
+    "available": false,
+    "reason": "outside R07's selection and test seasons (2023-24 to 2025-26)"
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 25892,
+    "rated": 605,
+    "replaced_minutes_share": 0.10152404399967073,
+    "replaced_player_games": 3255,
+    "replacement": -2.3787305512305057
+   },
+   "rapm_3y": {
+    "available": true,
+    "player_games": 25892,
+    "rated": 774,
+    "replaced_minutes_share": 0.08191310624829685,
+    "replaced_player_games": 2670,
+    "replacement": -2.311598545109484
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 25892,
+    "replaced_minutes_share": 0.006263140786069278,
+    "replaced_player_games": 273,
+    "replacement": {
+     "2022-10-18": -1.989955099767276,
+     "2022-11-01": -1.4150567444800113,
+     "2022-12-01": -1.3895968613683296,
+     "2023-01-01": -1.4449094426173983,
+     "2023-02-01": -1.513783910360744,
+     "2023-03-01": -1.5063691151845398,
+     "2023-04-01": -1.536923491623599,
+     "2023-05-01": -1.5295987523213415
+    },
+    "snapshots": 8
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 25892,
+    "rated": 1001,
+    "replaced_minutes_share": 0.08185255937865968,
+    "replaced_player_games": 2662,
+    "replacement": -1.989955099767276
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 9840,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1229
+ },
+ "2023-24": {
+  "box_games": 1230,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": true,
+    "player_games": 26393,
+    "rated": 539,
+    "replaced_minutes_share": 0.09697779249138178,
+    "replaced_player_games": 3347,
+    "replacement": -2.8628025300209567
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 78,
+    "player_games": 26393,
+    "rated": 461,
+    "replaced_minutes_share": 0.11550480734480806,
+    "replaced_player_games": 4225,
+    "replacement": -4.179209209250843
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 78,
+    "player_games": 26393,
+    "rated": 461,
+    "replaced_minutes_share": 0.11550480734480806,
+    "replaced_player_games": 4225,
+    "replacement": -4.33677645146318
+   },
+   "projected_impact": {
+    "available": true,
+    "player_games": 26393,
+    "rated": 572,
+    "replaced_minutes_share": 0.0,
+    "replaced_player_games": 0,
+    "replacement": -1.4322392816383536
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 26393,
+    "rated": 539,
+    "replaced_minutes_share": 0.09697779249138178,
+    "replaced_player_games": 3347,
+    "replacement": -2.551109840728352
+   },
+   "rapm_3y": {
+    "available": true,
+    "player_games": 26393,
+    "rated": 784,
+    "replaced_minutes_share": 0.08570361194432632,
+    "replaced_player_games": 2920,
+    "replacement": -2.443498527015743
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 26393,
+    "replaced_minutes_share": 0.004555319447372678,
+    "replaced_player_games": 262,
+    "replacement": {
+     "2023-10-24": -2.0106196399939518,
+     "2023-11-01": -1.9610084003155173,
+     "2023-12-01": -1.4574398171061236,
+     "2024-01-01": -1.5040453532572415,
+     "2024-02-01": -1.5839514843405242,
+     "2024-03-01": -1.525855627450614,
+     "2024-04-01": -1.5560657245966145,
+     "2024-05-01": -1.6330918238592451
+    },
+    "snapshots": 8
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 26393,
+    "rated": 966,
+    "replaced_minutes_share": 0.08570361194432632,
+    "replaced_player_games": 2920,
+    "replacement": -2.0106196399939518
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 11070,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1216
+ },
+ "2024-25": {
+  "box_games": 1230,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": false,
+    "reason": "no box_prior_rapm fit for 2023-24"
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 110,
+    "player_games": 26302,
+    "rated": 462,
+    "replaced_minutes_share": 0.13501377120262065,
+    "replaced_player_games": 4983,
+    "replacement": -4.48486363299358
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 110,
+    "player_games": 26302,
+    "rated": 462,
+    "replaced_minutes_share": 0.13501377120262065,
+    "replaced_player_games": 4983,
+    "replacement": -6.31189599424448
+   },
+   "projected_impact": {
+    "available": true,
+    "player_games": 26302,
+    "rated": 569,
+    "replaced_minutes_share": 0.0,
+    "replaced_player_games": 0,
+    "replacement": -1.4322392816383536
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 26302,
+    "rated": 572,
+    "replaced_minutes_share": 0.10799132376050191,
+    "replaced_player_games": 3737,
+    "replacement": -2.9465273396047786
+   },
+   "rapm_3y": {
+    "available": true,
+    "player_games": 26302,
+    "rated": 818,
+    "replaced_minutes_share": 0.0974059050180097,
+    "replaced_player_games": 3328,
+    "replacement": -2.446712065043347
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 26302,
+    "replaced_minutes_share": 0.007593731104184954,
+    "replaced_player_games": 396,
+    "replacement": {
+     "2024-10-22": -2.1081336960103823,
+     "2024-11-01": -2.1721136126167906,
+     "2024-12-01": -1.5750970691392356,
+     "2025-01-01": -1.6853009131936512,
+     "2025-02-01": -1.6520421590413243,
+     "2025-03-01": -1.7379533490515677,
+     "2025-04-01": -1.8695573847834046,
+     "2025-05-01": -1.781048805464501
+    },
+    "snapshots": 8
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 26302,
+    "rated": 962,
+    "replaced_minutes_share": 0.09738007418614911,
+    "replaced_player_games": 3323,
+    "replacement": -2.1081336960103823
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 9840,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1212
+ },
+ "2025-26": {
+  "box_games": 1230,
+  "candidates": {
+   "box_prior_rapm": {
+    "available": true,
+    "player_games": 26648,
+    "rated": 569,
+    "replaced_minutes_share": 0.11570305861091461,
+    "replaced_player_games": 3725,
+    "replacement": -2.8909376822501063
+   },
+   "on_off": {
+    "available": true,
+    "below_minimum": 85,
+    "player_games": 26648,
+    "rated": 484,
+    "replaced_minutes_share": 0.13899432864815459,
+    "replaced_player_games": 4751,
+    "replacement": -4.04772266377843
+   },
+   "plus_minus": {
+    "available": true,
+    "below_minimum": 85,
+    "player_games": 26648,
+    "rated": 484,
+    "replaced_minutes_share": 0.13899432864815459,
+    "replaced_player_games": 4751,
+    "replacement": -5.73816228619107
+   },
+   "projected_impact": {
+    "available": true,
+    "player_games": 26648,
+    "rated": 582,
+    "replaced_minutes_share": 0.0,
+    "replaced_player_games": 0,
+    "replacement": -1.4322392816383536
+   },
+   "rapm_1y": {
+    "available": true,
+    "player_games": 26648,
+    "rated": 569,
+    "replaced_minutes_share": 0.11570305861091461,
+    "replaced_player_games": 3725,
+    "replacement": -2.527651550174657
+   },
+   "rapm_3y": {
+    "available": true,
+    "player_games": 26648,
+    "rated": 771,
+    "replaced_minutes_share": 0.10847603680511028,
+    "replaced_player_games": 3506,
+    "replacement": -2.8112190220468474
+   },
+   "team_net": {
+    "available": true,
+    "teams": 30
+   },
+   "time_decay": {
+    "available": true,
+    "player_games": 26648,
+    "replaced_minutes_share": 0.009988716492530646,
+    "replaced_player_games": 373,
+    "replacement": {
+     "2025-10-21": -2.352681937266601,
+     "2025-11-01": -2.3110151925802764,
+     "2025-12-01": -2.3185134453290477,
+     "2026-01-01": -1.6641445771865606,
+     "2026-02-01": -1.6524096014679075,
+     "2026-03-01": -1.6653521911920506,
+     "2026-04-01": -2.366406745444975,
+     "2026-05-01": -2.3751316782343457
+    },
+    "snapshots": 8
+   },
+   "time_decay_opener": {
+    "available": true,
+    "player_games": 26648,
+    "rated": 991,
+    "replaced_minutes_share": 0.10698956015101327,
+    "replaced_player_games": 3459,
+    "replacement": -2.352681937266601
+   }
+  },
+  "leakage": {
+   "game_ratings_checked": 11070,
+   "violations": 0
+  },
+  "neutral_games": 0,
+  "r01_admitted_games": 1227
+ }
+}

@@ -1,0 +1,548 @@
+[
+ {
+  "view": "page",
+  "width": 1440,
+  "scrollWidth": 1440,
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "full",
+  "width": 1440,
+  "player": "Kawhi Leonard",
+  "season": "2025-26",
+  "team": "LAC",
+  "mismatches": [],
+  "portrait": "/team-logos/1610612746-6fe94cd7b648afe8.svg",
+  "reconstruction": "The six factors, weighted by the 2025-26 regression, rebuild this RAPM as +9.10 against +9.61 served: Net Efficiency +5.94, Possession Control +3.16.",
+  "nodes": {
+   "rapm": {
+    "status": "estimate",
+    "value": "9.610053040613952",
+    "low": "6.308705023942253",
+    "high": "12.277499723886432",
+    "text": "RAPM Total impact +9.61 pts 80%: +6.31 to +12.28"
+   },
+   "orapm": {
+    "status": "estimate",
+    "value": "6.367603941753038",
+    "low": "3.9974613062118824",
+    "high": "8.558304394025766",
+    "text": "ORAPM Offense +6.37 pts 80%: +4.00 to +8.56"
+   },
+   "drapm": {
+    "status": "estimate",
+    "value": "3.242449098860913",
+    "low": "1.3418901099993108",
+    "high": "5.3737550119621895",
+    "text": "DRAPM Defense +3.24 pts 80%: +1.34 to +5.37"
+   },
+   "o_ts": {
+    "status": "estimate",
+    "value": "2.587241000747994",
+    "low": "1.227628485186588",
+    "high": "3.7671449667393704",
+    "text": "oTS Offensive Shooting +2.59 pct pts 80%: +1.23 to +3.77"
+   },
+   "o_tov": {
+    "status": "estimate",
+    "value": "1.1790179086411778",
+    "low": "0.6288625574943993",
+    "high": "1.681848773821601",
+    "text": "oTOV Offensive Ball Security +1.18 pct pts 80%: +0.63 to +1.68"
+   },
+   "o_reb": {
+    "status": "estimate",
+    "value": "0.6205483226629582",
+    "low": "-0.11401723103371596",
+    "high": "1.3937469164653828",
+    "text": "oREB Offensive Rebounding +0.62 pct pts 80%: −0.11 to +1.39"
+   },
+   "d_ts": {
+    "status": "estimate",
+    "value": "1.7893355963486877",
+    "low": "0.47922125279591943",
+    "high": "3.1077238727904626",
+    "text": "dTS Shooting Defense +1.79 pct pts 80%: +0.48 to +3.11"
+   },
+   "d_tov": {
+    "status": "estimate",
+    "value": "0.6514683808915184",
+    "low": "0.16717158077902036",
+    "high": "1.1624925786546751",
+    "text": "dTOV Forcing Turnovers +0.65 pct pts 80%: +0.17 to +1.16"
+   },
+   "d_reb": {
+    "status": "estimate",
+    "value": "0.25623969976612254",
+    "low": "-0.5912318545850366",
+    "high": "1.0184417898748086",
+    "text": "dREB Defensive Rebounding +0.26 pct pts 80%: −0.59 to +1.02"
+   }
+  },
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "full-history",
+  "width": 1440,
+  "player": "LeBron James",
+  "season": "2018-19",
+  "team": "LAL",
+  "mismatches": [],
+  "portrait": "/team-logos/lal-2018-c93b5fcdb35e139a.png",
+  "reconstruction": "The six factors, weighted by the 2018-19 regression, rebuild this RAPM as +4.59 against +5.38 served: Net Efficiency +3.92, Possession Control +0.67.",
+  "nodes": {
+   "rapm": {
+    "status": "estimate",
+    "value": "5.378300260288986",
+    "low": "3.1154630772523078",
+    "high": "7.972877338186065",
+    "text": "RAPM Total impact +5.38 pts 80%: +3.12 to +7.97"
+   },
+   "orapm": {
+    "status": "estimate",
+    "value": "2.676855950703588",
+    "low": "0.9078346974575725",
+    "high": "4.336562559987675",
+    "text": "ORAPM Offense +2.68 pts 80%: +0.91 to +4.34"
+   },
+   "drapm": {
+    "status": "estimate",
+    "value": "2.7014443095853986",
+    "low": "0.8504515314911368",
+    "high": "4.75284389923531",
+    "text": "DRAPM Defense +2.70 pts 80%: +0.85 to +4.75"
+   },
+   "o_ts": {
+    "status": "estimate",
+    "value": "2.0810502756850937",
+    "low": "0.8942534982974298",
+    "high": "3.1418828991821868",
+    "text": "oTS Offensive Shooting +2.08 pct pts 80%: +0.89 to +3.14"
+   },
+   "o_tov": {
+    "status": "estimate",
+    "value": "0.08594850960643118",
+    "low": "-0.4686625684599468",
+    "high": "0.6353772729958846",
+    "text": "oTOV Offensive Ball Security +0.09 pct pts 80%: −0.47 to +0.64"
+   },
+   "o_reb": {
+    "status": "estimate",
+    "value": "-1.2209226827267894",
+    "low": "-2.0015469174470115",
+    "high": "-0.42947372713764326",
+    "text": "oREB Offensive Rebounding −1.22 pct pts 80%: −2.00 to −0.43"
+   },
+   "d_ts": {
+    "status": "estimate",
+    "value": "0.6341743784087567",
+    "low": "-0.3289742943834656",
+    "high": "1.5653045250844797",
+    "text": "dTS Shooting Defense +0.63 pct pts 80%: −0.33 to +1.57"
+   },
+   "d_tov": {
+    "status": "estimate",
+    "value": "0.77067348419512",
+    "low": "0.17497284317697048",
+    "high": "1.304476268289152",
+    "text": "dTOV Forcing Turnovers +0.77 pct pts 80%: +0.17 to +1.30"
+   },
+   "d_reb": {
+    "status": "estimate",
+    "value": "0.4916819486377037",
+    "low": "-0.29589246545315856",
+    "high": "1.3366519528836716",
+    "text": "dREB Defensive Rebounding +0.49 pct pts 80%: −0.30 to +1.34"
+   }
+  },
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "partial",
+  "width": 1440,
+  "player": "Jakob Poeltl",
+  "season": "2025-26",
+  "team": "TOR",
+  "mismatches": [],
+  "portrait": "/team-logos/1610612761-cb754caf37f8132f.svg",
+  "reconstruction": "Rebuilding RAPM from the factors is unknown here: it needs RAPM and all six factors for this player.",
+  "nodes": {
+   "rapm": {
+    "status": "estimate",
+    "value": "-0.8077998297378783",
+    "low": "-3.589471388035392",
+    "high": "2.4781330930242094",
+    "text": "RAPM Total impact −0.81 pts 80%: −3.59 to +2.48"
+   },
+   "orapm": {
+    "status": "estimate",
+    "value": "-0.9399749154660115",
+    "low": "-2.829124534452176",
+    "high": "1.1773223567746411",
+    "text": "ORAPM Offense −0.94 pts 80%: −2.83 to +1.18"
+   },
+   "drapm": {
+    "status": "estimate",
+    "value": "0.1321750857281332",
+    "low": "-2.0720625921129203",
+    "high": "2.1054621712342327",
+    "text": "DRAPM Defense +0.13 pts 80%: −2.07 to +2.11"
+   },
+   "o_ts": {
+    "status": "estimate",
+    "value": "0.09130808805802708",
+    "low": "-1.0792856742128047",
+    "high": "1.3608580500302383",
+    "text": "oTS Offensive Shooting +0.09 pct pts 80%: −1.08 to +1.36"
+   },
+   "o_tov": {
+    "status": "estimate",
+    "value": "-0.909283528487495",
+    "low": "-1.483757514098685",
+    "high": "-0.3521495469068955",
+    "text": "oTOV Offensive Ball Security −0.91 pct pts 80%: −1.48 to −0.35"
+   },
+   "o_reb": {
+    "status": "below_qualification",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "oREB Offensive Rebounding Unknown 80% interval unknown Below the fit's qualification"
+   },
+   "d_ts": {
+    "status": "estimate",
+    "value": "-0.5813063958741328",
+    "low": "-1.99582333872336",
+    "high": "0.7794928036134446",
+    "text": "dTS Shooting Defense −0.58 pct pts 80%: −2.00 to +0.78"
+   },
+   "d_tov": {
+    "status": "estimate",
+    "value": "0.5157559598948038",
+    "low": "0.00016689585003559895",
+    "high": "1.0804657591235924",
+    "text": "dTOV Forcing Turnovers +0.52 pct pts 80%: +0.00 to +1.08"
+   },
+   "d_reb": {
+    "status": "below_qualification",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "dREB Defensive Rebounding Unknown 80% interval unknown Below the fit's qualification"
+   }
+  },
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "factors-only",
+  "width": 1440,
+  "player": "Kevon Looney",
+  "season": "2025-26",
+  "team": "NOP",
+  "mismatches": [],
+  "portrait": "/team-logos/1610612740-3d74bfcf573428a0.svg",
+  "reconstruction": "Rebuilding RAPM from the factors is unknown here: it needs RAPM and all six factors for this player.",
+  "nodes": {
+   "rapm": {
+    "status": "below_qualification",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "RAPM Total impact Unknown 80% interval unknown Below the fit's qualification"
+   },
+   "orapm": {
+    "status": "below_qualification",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "ORAPM Offense Unknown 80% interval unknown Below the fit's qualification"
+   },
+   "drapm": {
+    "status": "below_qualification",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "DRAPM Defense Unknown 80% interval unknown Below the fit's qualification"
+   },
+   "o_ts": {
+    "status": "estimate",
+    "value": "-2.54887350667815",
+    "low": "-3.8282948302138764",
+    "high": "-1.2548660598952848",
+    "text": "oTS Offensive Shooting −2.55 pct pts 80%: −3.83 to −1.25"
+   },
+   "o_tov": {
+    "status": "below_qualification",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "oTOV Offensive Ball Security Unknown 80% interval unknown Below the fit's qualification"
+   },
+   "o_reb": {
+    "status": "below_qualification",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "oREB Offensive Rebounding Unknown 80% interval unknown Below the fit's qualification"
+   },
+   "d_ts": {
+    "status": "estimate",
+    "value": "0.46865486654866834",
+    "low": "-1.4833101239024633",
+    "high": "2.5965697656325517",
+    "text": "dTS Shooting Defense +0.47 pct pts 80%: −1.48 to +2.60"
+   },
+   "d_tov": {
+    "status": "below_qualification",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "dTOV Forcing Turnovers Unknown 80% interval unknown Below the fit's qualification"
+   },
+   "d_reb": {
+    "status": "below_qualification",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "dREB Defensive Rebounding Unknown 80% interval unknown Below the fit's qualification"
+   }
+  },
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "rookie-rated",
+  "width": 1440,
+  "player": "Cooper Flagg",
+  "season": "2025-26",
+  "team": "DAL",
+  "mismatches": [],
+  "portrait": "/team-logos/1610612742-1547494512746c18.svg",
+  "reconstruction": "The six factors, weighted by the 2025-26 regression, rebuild this RAPM as +0.68 against +0.33 served: Net Efficiency −0.51, Possession Control +1.19.",
+  "nodes": {
+   "rapm": {
+    "status": "estimate",
+    "value": "0.331040550545141",
+    "low": "-2.7467033794016666",
+    "high": "3.3586965509969824",
+    "text": "RAPM Total impact +0.33 pts 80%: −2.75 to +3.36"
+   },
+   "orapm": {
+    "status": "estimate",
+    "value": "-0.166042785473078",
+    "low": "-2.5019656868897724",
+    "high": "2.2162920628606138",
+    "text": "ORAPM Offense −0.17 pts 80%: −2.50 to +2.22"
+   },
+   "drapm": {
+    "status": "estimate",
+    "value": "0.49708333601821897",
+    "low": "-1.3010649521753064",
+    "high": "2.1022558586606177",
+    "text": "DRAPM Defense +0.50 pts 80%: −1.30 to +2.10"
+   },
+   "o_ts": {
+    "status": "estimate",
+    "value": "-0.8207893380856741",
+    "low": "-1.9482155041512819",
+    "high": "0.6550660799587652",
+    "text": "oTS Offensive Shooting −0.82 pct pts 80%: −1.95 to +0.66"
+   },
+   "o_tov": {
+    "status": "estimate",
+    "value": "0.8959045394718972",
+    "low": "0.3190400599784602",
+    "high": "1.4377058366596245",
+    "text": "oTOV Offensive Ball Security +0.90 pct pts 80%: +0.32 to +1.44"
+   },
+   "o_reb": {
+    "status": "estimate",
+    "value": "-0.36144499411374703",
+    "low": "-1.1980864876187272",
+    "high": "0.2490031534600113",
+    "text": "oREB Offensive Rebounding −0.36 pct pts 80%: −1.20 to +0.25"
+   },
+   "d_ts": {
+    "status": "estimate",
+    "value": "0.43711201466661975",
+    "low": "-0.6782385732067994",
+    "high": "1.48441001234059",
+    "text": "dTS Shooting Defense +0.44 pct pts 80%: −0.68 to +1.48"
+   },
+   "d_tov": {
+    "status": "estimate",
+    "value": "-0.26175878836739885",
+    "low": "-0.7796391486990576",
+    "high": "0.15481981001750364",
+    "text": "dTOV Forcing Turnovers −0.26 pct pts 80%: −0.78 to +0.15"
+   },
+   "d_reb": {
+    "status": "estimate",
+    "value": "0.63625241516021",
+    "low": "-0.1958948776975276",
+    "high": "1.6240577847003277",
+    "text": "dREB Defensive Rebounding +0.64 pct pts 80%: −0.20 to +1.62"
+   }
+  },
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "rookie-no-row",
+  "width": 1440,
+  "player": "AJ Dybantsa",
+  "season": "2025-26",
+  "team": null,
+  "mismatches": [],
+  "portrait": "/api/workbench/players/1643407/portrait?size=192&season=2025-26&crop=face-v6",
+  "reconstruction": "Rebuilding RAPM from the factors is unknown here: it needs RAPM and all six factors for this player.",
+  "nodes": {
+   "rapm": {
+    "status": "not_in_fit",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "RAPM Total impact Unknown 80% interval unknown Not in this fit"
+   },
+   "orapm": {
+    "status": "not_in_fit",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "ORAPM Offense Unknown 80% interval unknown Not in this fit"
+   },
+   "drapm": {
+    "status": "not_in_fit",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "DRAPM Defense Unknown 80% interval unknown Not in this fit"
+   },
+   "o_ts": {
+    "status": "not_in_fit",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "oTS Offensive Shooting Unknown 80% interval unknown Not in this fit"
+   },
+   "o_tov": {
+    "status": "not_in_fit",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "oTOV Offensive Ball Security Unknown 80% interval unknown Not in this fit"
+   },
+   "o_reb": {
+    "status": "not_in_fit",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "oREB Offensive Rebounding Unknown 80% interval unknown Not in this fit"
+   },
+   "d_ts": {
+    "status": "not_in_fit",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "dTS Shooting Defense Unknown 80% interval unknown Not in this fit"
+   },
+   "d_tov": {
+    "status": "not_in_fit",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "dTOV Forcing Turnovers Unknown 80% interval unknown Not in this fit"
+   },
+   "d_reb": {
+    "status": "not_in_fit",
+    "value": null,
+    "low": null,
+    "high": null,
+    "text": "dREB Defensive Rebounding Unknown 80% interval unknown Not in this fit"
+   }
+  },
+  "errors": []
+ },
+ {
+  "view": "page",
+  "width": 390,
+  "scrollWidth": 390,
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "full",
+  "width": 390,
+  "player": "Kawhi Leonard",
+  "season": "2025-26",
+  "team": "LAC",
+  "mismatches": [],
+  "portrait": "/team-logos/1610612746-6fe94cd7b648afe8.svg",
+  "reconstruction": "The six factors, weighted by the 2025-26 regression, rebuild this RAPM as +9.10 against +9.61 served: Net Efficiency +5.94, Possession Control +3.16.",
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "full-history",
+  "width": 390,
+  "player": "LeBron James",
+  "season": "2018-19",
+  "team": "LAL",
+  "mismatches": [],
+  "portrait": "/team-logos/lal-2018-c93b5fcdb35e139a.png",
+  "reconstruction": "The six factors, weighted by the 2018-19 regression, rebuild this RAPM as +4.59 against +5.38 served: Net Efficiency +3.92, Possession Control +0.67.",
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "partial",
+  "width": 390,
+  "player": "Jakob Poeltl",
+  "season": "2025-26",
+  "team": "TOR",
+  "mismatches": [],
+  "portrait": "/team-logos/1610612761-cb754caf37f8132f.svg",
+  "reconstruction": "Rebuilding RAPM from the factors is unknown here: it needs RAPM and all six factors for this player.",
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "factors-only",
+  "width": 390,
+  "player": "Kevon Looney",
+  "season": "2025-26",
+  "team": "NOP",
+  "mismatches": [],
+  "portrait": "/team-logos/1610612740-3d74bfcf573428a0.svg",
+  "reconstruction": "Rebuilding RAPM from the factors is unknown here: it needs RAPM and all six factors for this player.",
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "rookie-rated",
+  "width": 390,
+  "player": "Cooper Flagg",
+  "season": "2025-26",
+  "team": "DAL",
+  "mismatches": [],
+  "portrait": "/team-logos/1610612742-1547494512746c18.svg",
+  "reconstruction": "The six factors, weighted by the 2025-26 regression, rebuild this RAPM as +0.68 against +0.33 served: Net Efficiency −0.51, Possession Control +1.19.",
+  "errors": []
+ },
+ {
+  "view": "tree",
+  "case": "rookie-no-row",
+  "width": 390,
+  "player": "AJ Dybantsa",
+  "season": "2025-26",
+  "team": null,
+  "mismatches": [],
+  "portrait": "/api/workbench/players/1643407/portrait?size=192&season=2025-26&crop=face-v6",
+  "reconstruction": "Rebuilding RAPM from the factors is unknown here: it needs RAPM and all six factors for this player.",
+  "errors": []
+ }
+]

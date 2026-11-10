@@ -168,7 +168,17 @@ export function glossaryPlain(metric: MetricDefinition): string {
   if (rapm) return `${RAPM[rapm[1]]} ${SPAN[rapm[2] ?? ""]}`;
   const per36 = metric.key.match(/^(\w+)_per_36$/);
   if (per36 && PER_36[per36[1]]) return `${PER_36[per36[1]]} per 36 minutes played, putting players with different minutes on the same scale.`;
-  return metric.display_name;
+  return catalogDefinition(metric);
+}
+
+/**
+ * A metric without written copy is described from its own catalog fields (R11: the glossary is
+ * generated from the catalog), so no entry ever just repeats its name.
+ */
+export function catalogDefinition(metric: MetricDefinition): string {
+  const direction = metric.good_direction;
+  const better = direction === "high" ? " Higher is better." : direction === "low" ? " Lower is better." : "";
+  return `${metric.formula.replace(/\.$/, "")}, in ${metric.unit}.${better}`;
 }
 
 export function glossaryGroup(metric: MetricDefinition): GlossaryGroup {

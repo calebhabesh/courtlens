@@ -1,0 +1,17 @@
+{
+ "api_results_sha256": "0d45de08c46e5c1194dbcf7962cdaeee845b787cc591d0fe5bdc371b71372593",
+ "widths": {
+  "390": {
+   "values_checked": 3036,
+   "mismatches": [],
+   "console_errors": [],
+   "horizontal_overflow_px": 0
+  },
+  "1440": {
+   "values_checked": 3036,
+   "mismatches": [],
+   "console_errors": [],
+   "horizontal_overflow_px": 0
+  }
+ }
+}

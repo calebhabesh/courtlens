@@ -1,0 +1,178 @@
+[
+ {
+  "width": 1440,
+  "rookieHeader": {
+   "width": 226,
+   "height": 30,
+   "gapAbove": 18,
+   "groups": [
+    "Draft",
+    "Profile",
+    "Impact",
+    "Counting",
+    "Eff",
+    "Shooting",
+    "Other"
+   ]
+  },
+  "headerGapReport": {
+   "rookies per game": {
+    "above": 17.25,
+    "below": 17.25,
+    "width": 268,
+    "height": 32
+   },
+   "class table": {
+    "above": 17.25,
+    "below": 17.25,
+    "width": 256,
+    "height": 32
+   },
+   "rookies past picks": {
+    "above": 17.25,
+    "below": 17.25,
+    "width": 268,
+    "height": 32
+   }
+  },
+  "compared": 207349,
+  "loads": 150,
+  "mismatches": 0,
+  "errors": [],
+  "photos": {
+   "portraits": 6840,
+   "initials": 4180,
+   "wrongSeason": [],
+   "wrongSeasonCount": 0
+  },
+  "oldPhotos": [
+   {
+    "year": 1966,
+    "played": 31,
+    "playedWithPhoto": 17,
+    "neverPlayedWithPhoto": 0,
+    "noId": 81
+   },
+   {
+    "year": 1972,
+    "played": 49,
+    "playedWithPhoto": 17,
+    "neverPlayedWithPhoto": 0,
+    "noId": 149
+   },
+   {
+    "year": 1984,
+    "played": 58,
+    "playedWithPhoto": 21,
+    "neverPlayedWithPhoto": 0,
+    "noId": 170
+   },
+   {
+    "year": 1996,
+    "played": 47,
+    "playedWithPhoto": 31,
+    "neverPlayedWithPhoto": 0,
+    "noId": 0
+   }
+  ],
+  "missingLogos": [],
+  "overflow": 0,
+  "broken": [],
+  "small": [],
+  "column": 1352,
+  "index": 224,
+  "indexPhone": "none",
+  "iconCentred": true,
+  "cards": 7,
+  "watermarks": 0,
+  "tinted": 7,
+  "edgeRails": 0,
+  "draftballr": false,
+  "arrows": false,
+  "playerSelects": 0,
+  "noLogoCodes": [],
+  "indexPinned": true,
+  "current": "3Ranges of picks",
+  "firstMismatches": []
+ },
+ {
+  "width": 390,
+  "rookieHeader": {
+   "width": 150,
+   "height": 40,
+   "gapAbove": 19,
+   "groups": [
+    "Draft",
+    "Profile",
+    "Impact",
+    "Counting",
+    "Eff",
+    "Shooting",
+    "Other"
+   ]
+  },
+  "headerGapReport": {
+   "rookies per game": {
+    "above": 18.25,
+    "below": 18.25,
+    "width": 192,
+    "height": 42
+   },
+   "class table": {
+    "above": 18.25,
+    "below": 18.25,
+    "width": 256,
+    "height": 42
+   },
+   "rookies past picks": {
+    "above": 18.25,
+    "below": 18.25,
+    "width": 192,
+    "height": 42
+   }
+  },
+  "compared": 42203,
+  "loads": 26,
+  "mismatches": 0,
+  "errors": [],
+  "photos": {
+   "portraits": 1809,
+   "initials": 807,
+   "wrongSeason": [],
+   "wrongSeasonCount": 0
+  },
+  "oldPhotos": [
+   {
+    "year": 1966,
+    "played": 31,
+    "playedWithPhoto": 17,
+    "neverPlayedWithPhoto": 0,
+    "noId": 81
+   },
+   {
+    "year": 1984,
+    "played": 58,
+    "playedWithPhoto": 21,
+    "neverPlayedWithPhoto": 0,
+    "noId": 170
+   }
+  ],
+  "missingLogos": [],
+  "overflow": 0,
+  "broken": [],
+  "small": [],
+  "column": 366,
+  "index": 0,
+  "indexPhone": "grid",
+  "iconCentred": true,
+  "cards": 7,
+  "watermarks": 0,
+  "tinted": 7,
+  "edgeRails": 0,
+  "draftballr": false,
+  "arrows": false,
+  "playerSelects": 0,
+  "noLogoCodes": [],
+  "firstMismatches": []
+ }
+]

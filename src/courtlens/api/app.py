@@ -12,15 +12,27 @@ from courtlens.api.metrics import metrics_response, observe_request
 from courtlens.api.routers import (
     auth,
     conversation,
+    defensive_shot_quality,
+    draft_classes,
     fantasy,
     finance,
+    four_factors,
+    lineup_model,
     live,
+    metric_backtest,
     player_context,
+    projected_impact,
     public,
     research,
     shared_floor,
     shooting,
+    shot_quality,
+    signal_noise,
+    six_factor,
+    win_probability,
+    wingspan,
     workbench,
+    zts,
 )
 from courtlens.config import get_settings
 
@@ -69,6 +81,18 @@ def create_app() -> FastAPI:
     application.include_router(live.router, prefix="/api")
     application.include_router(shooting.router, prefix="/api")
     application.include_router(research.router, prefix="/api")
+    application.include_router(win_probability.router, prefix="/api")
+    application.include_router(projected_impact.router, prefix="/api")
+    application.include_router(metric_backtest.router, prefix="/api")
+    application.include_router(draft_classes.router, prefix="/api")
+    application.include_router(lineup_model.router, prefix="/api")
+    application.include_router(wingspan.router, prefix="/api")
+    application.include_router(four_factors.router, prefix="/api")
+    application.include_router(six_factor.router, prefix="/api")
+    application.include_router(signal_noise.router, prefix="/api")
+    application.include_router(zts.router, prefix="/api")
+    application.include_router(shot_quality.router, prefix="/api")
+    application.include_router(defensive_shot_quality.router, prefix="/api")
     application.include_router(auth.router, prefix="/api")
     application.include_router(fantasy.router, prefix="/api")
     application.add_api_route(

@@ -44,3 +44,10 @@ describe("glossary structure: abbreviation, full name, definition", () => {
     }
   });
 });
+
+describe("glossary generated from the catalog (R11)", () => {
+  it("describes a metric without written copy from its catalog fields, never its name alone", () => {
+    const bpm = { ...metric("bbref_bpm", "BPM", "Box Plus/Minus", "Basketball-Reference BPM 2.0"), unit: "points per 100 possessions", good_direction: "high" } as MetricDefinition;
+    expect(glossaryPlain(bpm)).toBe("Basketball-Reference BPM 2.0, in points per 100 possessions. Higher is better.");
+  });
+});

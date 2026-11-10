@@ -1,0 +1,93 @@
+{
+ "schema_version": "courtlens-research-registration-v1",
+ "identity": "courtlens-four-factors-inputs-v1",
+ "block": "R10",
+ "registered_on": "2026-11-06",
+ "kind": "descriptive",
+ "question": "What are each NBA regular season's (2014-15 to 2025-26) league and team inputs to Poropudas and Halme's four-factor offensive rating (Eq. 11), the share of possession-ending free throws mu, and the offensive-rebound rates after missed twos, threes and final free throws, counted from play-by-play?",
+ "inputs": [
+  "PlayByPlayV3 regular-season archives 2014-15 to 2025-26 (shufinskiy/nba_data, the same retained bytes R05 and R06 read), pinned by SHA-256 in parameters.archive_sha256. Every season complete (1,230 games; 1,059 in 2019-20 and 1,080 in 2020-21); no unknown free-throw text (docs/evidence/research/r10/data-check.json).",
+  "Method: J. Poropudas and T. Halme, 'Decomposing Basketball Team Efficiency Using the Four Factors and Shapley Values', arXiv:2305.13032v2 (2026; v1 2023 as 'Dean Oliver's Four Factors Revisited'), Eqs. (9)-(11) and Appendix A, read from the arXiv PDF."
+ ],
+ "method": [
+  "COUNTS per offensive team: field-goal attempts and makes (threes by shotValue 3), free throws by trip kind (the R06 classifier: two-shot, three-shot, and-one, technical, flagrant, clear path, other lone free throw), points, turnovers (team turnovers included; 'No Turnover' rows skipped). A row's team is its teamId, or its personId when teamId is 0 (team rebounds and team turnovers). A row with neither is unattributed: reported, kept out of every total.",
+  "POSSESSION-ENDING FREE THROWS: 'Free Throw 2 of 2', 'Free Throw 3 of 3', and a lone free throw that is not an and-one. mu = possession-ending free throws / all free throws, per season (paper Appendix A).",
+  "REBOUNDS AFTER A MISS: after a missed field goal (two or three), a missed possession-ending free throw, or a missed and-one, the next rebound row is offensive if its team is the shooter's, else defensive. A shot, free throw, turnover or period end before any rebound leaves the miss unrebounded (counted, outside the rates). Rebound rows after a missed non-final free throw are dead-ball placeholders and skipped. Rate = offensive / (offensive + defensive) per miss kind.",
+  "INPUTS (paper): eFG% = (FGM + 0.5 3PM)/FGA; FTr = FTM/FGA; FG%; FT%; ORB = all offensive rebounds above (team rebounds included, as the paper's footnote requires); ORB% = ORB/(FGA - FGM) (Eq. 9); TOV% = TOV/(FGA + TOV - ORB + mu FTA) (Eq. 10). ORTG = 100 (1 - TOV%)(FTr + 2 eFG%)/(1 - ORB%(1 - FG%) + mu FTr/FT%) (Eq. 11), which must equal 100 PTS/(FGA + TOV - ORB + mu FTA) (Eq. 3) exactly.",
+  "LEAGUE AND TEAM: league inputs from the summed counts with the season's mu; each team's inputs with the same league mu (Proposition 1, not Remark 1's team mu).",
+  "MARGINALS: change in Eq. (11) ORTG for +1 percentage point of eFG% (with FG%), FTr, FT%, ORB%, and -1 point of TOV%, the others fixed.",
+  "ALSO REPORTED: beta = make rate of possession-ending free throws; alpha = offensive-rebound rate after a missed possession-ending free throw; 2P%, 3P%, 3PA rate, TS% (0.44 FTA)."
+ ],
+ "parameters": {
+  "seasons": [
+   "2014-15",
+   "2015-16",
+   "2016-17",
+   "2017-18",
+   "2018-19",
+   "2019-20",
+   "2020-21",
+   "2021-22",
+   "2022-23",
+   "2023-24",
+   "2024-25",
+   "2025-26"
+  ],
+  "phase": "regular_season",
+  "ending_sub_types": [
+   "Free Throw 2 of 2",
+   "Free Throw 3 of 3"
+  ],
+  "miss_kinds": [
+   "two",
+   "three",
+   "ft_end",
+   "and_one"
+  ],
+  "marginal_step": 0.01,
+  "paper": "arXiv:2305.13032v2",
+  "archive_sha256": {
+   "2014-15": "76a5398235900fd5b914eaeb1464e76fc05517184d04c503404a16a44d14f741",
+   "2015-16": "7bbb1e8a1512dd2877be97cb73d990c424a2f7488137ca5d7a6285e2afea873e",
+   "2016-17": "6c94890f389abe5af085ff19a26a80e7fe0d205c55dc201aefaa078a887540f4",
+   "2017-18": "e9fedc33337e6a34dc4373bc5138e742e6bbcf09477b34568d79588dead7e62c",
+   "2018-19": "a8c05607863b0bb0da51ed65fc89866cbb5c1954f7951ce00ed05f2ad178097d",
+   "2019-20": "3fc651e4c294e231723fa097dca2cf938dd868ee2b9a6111f22ab9c0728e89dc",
+   "2020-21": "8bbd2406d741f8247db9eec222bb1655ea699edb60907d3851a048b8ea7a798d",
+   "2021-22": "f44ec8a4a9864732fca66943ae4d06a06ef98ba3932571c15a23ecae644f84c4",
+   "2022-23": "42c24abf0abbc0ccef00addaba4b8c76df230a0ff3c0e5b301353307941fd04c",
+   "2023-24": "3a6976219b87fb50cecf8b2c54cb2af110f2f013ed8368d694035806802c8b04",
+   "2024-25": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+   "2025-26": "790a01ea3f0b2f8335d96bd687e21501551fc8cdea3ada83457ee3208a940671"
+  }
+ },
+ "selection": "Nothing is chosen: the counting rules are fixed here and applied once to every season.",
+ "uncertainty": "None: these are complete-season counts, not samples. The paper's own comparison (Table 7) reports Eq. (11) against play-by-play ORTG; CourtLens does not re-estimate that error here.",
+ "evaluation": [
+  "Per season: mu, beta, alpha, league inputs, Eq. (3) and Eq. (11) ORTG, marginals, rebound rates by miss kind, coverage.",
+  "Per team-season: the same inputs and ORTG.",
+  "mu, alpha and beta for 2024-25 compared with the paper's 0.425, 0.131 and 0.795 (reported, not a gate)."
+ ],
+ "acceptance": [
+  "Eq. (11) equals Eq. (3) for every league and team season to within 1e-9.",
+  "Two `reproduce` runs give the frozen results hash.",
+  "The API serves every number with its unknown state, and the page's values equal the API's."
+ ],
+ "outputs": [
+  "evaluation/research/frozen/courtlens-four-factors-inputs-v1.json",
+  "docs/evidence/research/r10/"
+ ],
+ "limitations": [
+  "Regular seasons 2014-15 to 2025-26 only: the pinned play-by-play archives start in 2014-15.",
+  "Possessions use the paper's box-score approximation (Eq. 2) with the season's mu, not exact play-by-play possession counts.",
+  "A team's inputs use the league mu; the paper shows team mu varies a little (Remark 1).",
+  "Rebound attribution follows the play-by-play order; rare out-of-order rows can move a rebound between kinds."
+ ],
+ "negative_result_policy": "Publish every season's counts and rates as computed, including any disagreement with the paper's published 2024-25 values.",
+ "seed": 0,
+ "budget": {
+  "cpu_threads": 1,
+  "max_peak_mib": 2048,
+  "max_wall_seconds": 1200
+ }
+}

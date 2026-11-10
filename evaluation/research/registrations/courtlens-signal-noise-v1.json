@@ -1,0 +1,75 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-signal-noise-v1",
+  "block": "R03",
+  "registered_on": "2026-11-05",
+  "kind": "descriptive",
+  "question": "For each Stats-table rate stat that can be split by game, how large a sample does a player need before the stat is mostly signal (split-half reliability 0.5 and 0.7), and how much does beta-binomial shrinkage toward a prior fitted on earlier seasons change and improve the percentage stats?",
+  "inputs": [
+    "Game logs: workbench_player_games rows of the published sportsdataverse Stats dataset at run time, phase regular_season, appearance 'appeared', minutes_seconds > 0. Fields from stats_json: field_goals_made, field_goals_attempted, three_pointers_made, three_pointers_attempted, free_throws_made, free_throws_attempted, rebounds_offensive, rebounds_defensive, rebounds_total, assists, steals, blocks, turnovers, fouls_personal, points. Game-level rows exist for regular seasons 1983-84 to 2026-27; seasons before 1983-84 are season totals only and cannot be split or used for priors. The runner records a SHA-256 of the extracted rows per season; two runs must match.",
+    "Rim attempts: NBA ShotChartDetail rows from the retained shufinskiy nba_data archives (pinned revision e829d4678be1e075f99e5d41a1c5f97089be446b), regular season only, shotdetail_2014 to shotdetail_2025 (2014-15 to 2025-26), each verified against its retained SHA-256: 2014 e2bf7530..., 2015 ac48fad6..., 2016 0681285a..., 2017 a62d25aa..., 2018 c6588909..., 2019 0c6002cb..., 2020 02916ac0..., 2021 5b56b683..., 2022 62533f4e..., 2023 303e71f9..., 2024 950100f9..., 2025 dcb6c29e.... A rim attempt is a row with SHOT_ZONE_BASIC = 'Restricted Area' and SHOT_ATTEMPTED_FLAG = 1; a make has SHOT_MADE_FLAG = 1. GAME_ID is left-padded to ten digits to match the game logs. There is no 2026-27 shot detail, so 2026-27 rim values are unknown.",
+    "Nothing else: no impact, tracking, DARKO, Basketball-Reference, play-type or pbpstats season totals. Those are season totals or model outputs and cannot be split by game; the page lists them as not covered."
+  ],
+  "method": [
+    "STATS (20). Percentage and ratio stats, each a ratio of game sums, with the sample unit in brackets: FG% = FGM/FGA [FGA]; 2P% = (FGM-3PM)/(FGA-3PA) [2PA]; 3P% = 3PM/3PA [3PA]; FT% = FTM/FTA [FTA]; eFG% = (FGM+0.5*3PM)/FGA [FGA]; TS% = PTS/(2*(FGA+0.44*FTA)) [TSA = FGA+0.44*FTA]; FTr = FTA/FGA [FGA]; Rim FG% = rim makes/rim attempts [rim FGA]. Per-36 rates, 36*sum(stat)/sum(minutes) [minutes]: PTS, REB, OREB, DREB, AST, STL, BLK, TOV, PF, FGA, 3PA, FTA. These are exactly the game-log rate columns the Stats engine computes (stats_engine.py), plus rim FG%, which the Stats table does not serve and which R03 adds only behind the Shrunk toggle. A game counts for a stat only if every field that stat reads is present (the Stats engine's joint-validity rule); a missing field is unknown, never zero.",
+    "STABILIZATION SEASONS. Regular seasons 2014-15 to 2025-26 (twelve complete seasons; the same seasons as the shot detail). 2026-27 is in progress and excluded. Earlier game-log seasons feed only the shrinkage priors.",
+    "ELIGIBILITY. A player-season (all teams combined) is eligible for a stat if it has at least 10 games valid for that stat and a full-season sample of at least 10 units for percentage stats (10 TSA for TS%) or 100 minutes for per-36 rates.",
+    "SPLITS. Each eligible player-season's appeared games (ordered by game_date, then game_id) are split at random into two halves 500 times: draw a uniform key per game per split and put the floor(n/2) games with the smallest keys in half A, the rest in half B. Player-seasons are processed in (season, player_id) order from one numpy default_rng(seed) generator, and every stat uses the same 500 splits. In a split, a player counts for a stat only if both halves have a positive sample.",
+    "SAMPLE-SIZE BINS. For each stat, 8 bins with edges at the octiles of the full-season sample among that stat's eligible player-seasons pooled over the twelve seasons (a function of the samples only, fixed before any correlation is computed). A bin is reported only if its mean count of counted players per split is at least 100; otherwise it is listed as too few players.",
+    "SPLIT-HALF CORRELATION. Per bin and split, the Pearson correlation across counted players of the half-A and half-B values. The bin's correlation r_b is the Fisher-z mean over the 500 splits (tanh of the mean of atanh(r)). The bin's half sample h_b is the mean over counted (player, split) pairs of the average of the two halves' samples. The bin's observed full-season reliability is the Spearman-Brown step-up rho_b = 2*r_b/(1+r_b) at sample size n_b = 2*h_b.",
+    "STABILIZATION POINT. Under the Spearman-Brown model the reliability of a sample of n units is n/(n+M). M is fitted by minimising sum_b w_b*(r_b - h_b/(h_b+M))^2 over reported bins, with w_b the bin's mean counted players, by bounded scalar search on log M over [0.001*min h_b, 1000*max n_b]. Reliability 0.5 is reached at n_0.5 = M and 0.7 at n_0.7 = M*0.7/0.3.",
+    "REACHED OR NOT. A level R (0.5 or 0.7) is REACHED if some reported bin has rho_b >= R and the fitted n_R is no larger than the largest reported n_b; then n_R is served as the stabilization point. It is NOT REACHED if no reported bin has rho_b >= R: n_R is then served only in a separate field named extrapolated, with the largest observed n_b and rho_b, and the page says 'not reached within observed samples'. Any other combination is served as INCONSISTENT with both numbers. NO SIGNAL if every reported r_b <= 0 or the fitted M sits on the search's upper bound. No stabilization point is ever served from an extrapolation without that label.",
+    "SHRINKAGE: STATS. Beta-binomial empirical Bayes for 3P%, FT%, 2P% and Rim FG%, each a count of makes in attempts. TS% is not a binomial proportion (a possession can score 0 to 4 points and free throws count 0.44 of an attempt), so it is not shrunk directly: shrunk TS% = (2*2PA*p2 + 3*3PA*p3 + FTA*pft) / (2*(FGA + 0.44*FTA)) with p2, p3, pft the shrunk 2P%, 3P% and FT% and the player's own attempt mix. With no shrinkage this equals PTS/(2*TSA) whenever PTS = 2*2PM + 3*3PM + FTM; the runner counts player-seasons where that identity fails.",
+    "SHRINKAGE: PRIOR. For target season t and each binomial stat, a Beta(alpha, beta) prior fitted by maximum likelihood of the beta-binomial (scipy, optimised over log alpha and log beta) to the player-season totals (makes, attempts), attempts >= 1, of the regular seasons t-3, t-2 and t-1 that have game-level data for that stat. At least one such season is required, so priors exist for 1984-85 to 2026-27 (3P%, FT%, 2P%) and 2015-16 to 2026-27 (Rim FG%). THE PRIOR MAY READ ONLY those earlier regular-season player-season totals: never season t or any later season, never playoffs, never any player attribute (position, volume, age) and never any model output. A test changes every later season's rows and requires an identical prior. The prior is league-wide, not by position.",
+    "SHRINKAGE: POSTERIOR. A player with m makes in a attempts gets the posterior Beta(alpha+m, beta+a-m); the shrunk value is its mean (m+alpha)/(a+alpha+beta), with a 95% equal-tailed credible interval. Shrunk TS% gets a 95% interval from 4,000 joint draws of the three independent component posteriors (generator seeded with the registration seed). Shrunk values are served beside raw values and never replace them.",
+    "STATS TABLE. The Shrunk toggle is off by default and changes nothing when off: no Stats query, hash, saved view or URL changes. When on, it adds columns labelled as shrunk next to 3P%, FT% and TS%, computed from the row's own makes and attempts in the scope shown and the served prior for that season, and adds raw and shrunk Rim FG% from this run's per-player totals. Shrunk values are unknown for multi-season scopes, playoffs and seasons with no prior; Rim FG% only for a whole regular season from 2015-16 to 2025-26 with no team or date filter.",
+    "CREDIT. Split-half reliability with the Spearman-Brown prediction formula (Spearman 1910; Brown 1910); its use for sports stabilization points after Russell Carleton ('Pizza Cutter') for baseball and Darryl Blackport for the NBA. Beta-binomial empirical Bayes after Efron and Morris (1975) and David Robinson's batting-average exposition. CourtLens's numbers are its own and do not reproduce theirs."
+  ],
+  "parameters": {
+    "stabilization_seasons": ["2014-15", "2015-16", "2016-17", "2017-18", "2018-19", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25", "2025-26"],
+    "splits": 500,
+    "min_valid_games": 10,
+    "min_season_sample": {"percentage": 10, "per_36_minutes": 100},
+    "bins": 8,
+    "min_players_per_bin": 100,
+    "reliability_levels": [0.5, 0.7],
+    "prior_seasons_back": 3,
+    "prior_min_seasons": 1,
+    "prior_min_attempts": 1,
+    "credible_interval": 0.95,
+    "ts_interval_draws": 4000,
+    "validation_target_seasons": ["2015-16", "2016-17", "2017-18", "2018-19", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24", "2024-25"],
+    "validation_attempt_bands": [50, 200],
+    "bootstrap_replicates": 200
+  },
+  "selection": "None. Nothing is tuned: every stat, season, bin rule, prior window and split count above is fixed before any correlation, prior or validation number is computed.",
+  "uncertainty": "Player-cluster bootstrap, 200 replicates, seed 3003, 95% percentile intervals: resample players with replacement (all of a player's seasons together), reuse the same 500 splits, recompute every bin correlation and refit M, giving intervals for M, n_0.5, n_0.7 and each bin's rho_b. Split-to-split variation (SD of r across the 500 splits) is reported separately and is not an interval. Validation differences get the same player-cluster bootstrap. Shrunk values carry posterior credible intervals. Intervals, not verdicts: the page ranks no players by shrunk value and claims no 'better shooter' from overlapping intervals.",
+  "evaluation": [
+    "League table: for each of the 20 stats, its unit, eligible player-seasons, median season sample, M with interval, n_0.5 and n_0.7 with intervals and their status (reached, not reached, inconsistent, no signal).",
+    "Curves: for each stat and reported bin, n_b, rho_b with interval, r_b, the SD of r across splits and the mean counted players.",
+    "Priors: alpha, beta, prior mean, prior strength alpha+beta and the seasons and player-seasons read, for every stat and target season.",
+    "Shrinkage validation (reported, no gate): for target seasons t in 2015-16 to 2024-25, predict each player's raw value in t+1 from (a) raw t, (b) the prior mean for t, (c) shrunk t, for players with at least one attempt in both seasons. Mean squared error weighted by t+1 attempts, pooled and by t-attempt band (<50, 50-199, >=200), with the raw-minus-shrunk difference and its interval, for 3P%, FT%, 2P%, TS% and Rim FG% (rim from 2015-16; its last target is 2025-26).",
+    "Reproducibility: two runs from the seed give the same results hash."
+  ],
+  "acceptance": [
+    "Every one of the 20 stats has a served row with a status; none is extrapolated without the label.",
+    "Priors exist for every stated season, and the later-seasons test leaves them unchanged.",
+    "Two runs give the same results hash.",
+    "The Stats table with the toggle off gives the same query, query hash and rows as before R03."
+  ],
+  "outputs": [
+    "evaluation/research/frozen/courtlens-signal-noise-v1.json (served by the API)",
+    "docs/evidence/research/r03/results.json (byte-identical copy)"
+  ],
+  "limitations": [
+    "Reliability is population-relative: within a sample-size bin it measures how well the stat separates the players in that bin, whose true spread differs from bin to bin (high-volume three-point shooters are a selected group).",
+    "Game-level splitting keeps each game's attempts together, so halves are of unequal size and within-game streaks stay in one half; that understates reliability slightly against shot-level splits.",
+    "The Spearman-Brown curve n/(n+M) is a model; bins show where it fits.",
+    "One league-wide prior per stat: a centre with few three-point attempts is pulled toward the league's shooters, not toward other centres. Shrinkage helps most where samples are small and changes little for high-volume players.",
+    "Shrunk TS% assumes the three component percentages are independent and takes the attempt mix as given.",
+    "Rim FG% depends on the NBA's shot-zone coding of the restricted area, which can differ from the box score by a few attempts per season."
+  ],
+  "negative_result_policy": "Publish every stabilization point, status and validation number whatever they show, including stats that never stabilize within observed samples, stats with no signal, and any stat where shrinkage predicts the next season worse than the raw value.",
+  "seed": 3003,
+  "budget": {"cpu_threads": 1, "max_peak_mib": 3072, "max_wall_seconds": 1800}
+}

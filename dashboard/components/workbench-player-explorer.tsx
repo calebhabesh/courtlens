@@ -18,7 +18,8 @@ import { useToast } from "./ui/toast";
 import { PercentileCell } from "./charts/percentile-cell";
 import { Skeleton } from "./ui/skeleton";
 import { Field } from "./ui/field";
-import { Button, IconButton, Segmented } from "./ui/kit";
+import { Button, ButtonLink, IconButton, Segmented } from "./ui/kit";
+import { SHRUNK_PARAM, ShrunkNote, ShrunkToggle, isShrunkColumn, useShrunkOverlay, withShrunkColumns, withShrunkMetrics } from "./stats-shrunk";
 import { TeamLogo, TeamLogoStack } from "./team-logo";
 import { latestStatsSeason, teamMove } from "@/lib/current-team";
 import { PlayerPortrait } from "./player-portrait";
@@ -238,7 +239,23 @@ export function WorkbenchPlayerExplorer({
   const setLocalName = (value: string) => setNameDraft(draft => ({ ...draft, value }));
 
   const query = data.query;
-  const items = data.items;
+  // Research R03: the Shrunk toggle adds columns in table view only; when off nothing changes.
+  const shrunkOn = searchParams?.get(SHRUNK_PARAM) === "1";
+  const shrunkSeason = querySpec?.season ?? query.season;
+  const seasonEnd = catalog?.stats_scopes?.find(scope => scope.season === shrunkSeason && scope.phase === query.phase)?.default_before_date;
+  const shrunkOverlay = useShrunkOverlay(shrunkOn && viewMode === "table", {
+    season: shrunkSeason, phase: query.phase,
+    multiSeason: Boolean(querySpec?.season_scope?.seasons?.length),
+    wholeSeason: query.window === "season" && !(searchParams?.get("teamId") || searchParams?.get("team_id"))
+      && Boolean(seasonEnd) && Boolean(query.before_date) && query.before_date >= (seasonEnd ?? "")
+  });
+  const setShrunk = (on: boolean) => {
+    const params = new URLSearchParams(searchParams?.toString() ?? "");
+    if (on) params.set(SHRUNK_PARAM, "1"); else params.delete(SHRUNK_PARAM);
+    // A presentation flag: written without a navigation, so the Stats query never re-runs.
+    window.history.replaceState(null, "", `${pathname}${params.size ? `?${params}` : ""}`);
+  };
+  const items = useMemo(() => withShrunkMetrics(data.items, shrunkOverlay), [data.items, shrunkOverlay]);
   // A split-season row opens one full row per team (the same scope filtered to that team).
   const { expanded: stintRows, toggle: toggleStintRows } = useTeamStints();
   // The body fades in on first load; later changes (skeleton handoff, sort, filter, page, view or
@@ -277,11 +294,12 @@ export function WorkbenchPlayerExplorer({
     const hidden = columns.filter(column => empty.has(column.key) && column.sortMetric !== currentSortMetric);
     // A view whose every column is empty keeps them: an empty table explains nothing.
     const hidable = hidden.length < columns.length ? hidden : [];
+    const shown = showEmptyColumns ? columns : columns.filter(column => !hidable.includes(column));
     return {
-      preset: { ...base, columns: showEmptyColumns ? columns : columns.filter(column => !hidable.includes(column)) },
+      preset: { ...base, columns: withShrunkColumns(shown, shrunkOverlay) },
       hiddenColumns: hidable
     };
-  }, [activePresetId, views, countingMode, emptyFields, currentSortMetric, showEmptyColumns]);
+  }, [activePresetId, views, countingMode, emptyFields, currentSortMetric, showEmptyColumns, shrunkOverlay]);
 
   // Retained Comparison Tray derived from workspace compare_tray (F05)
   const comparedPlayers = useMemo<PlayerResearchItem[]>(() => {
@@ -705,7 +723,7 @@ export function WorkbenchPlayerExplorer({
       </td>}
       <td data-column={col.key}
         className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}>
-        {team === null ? <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player, columnKey: col.key })}
+        {team === null && !isShrunkColumn(col.key) ? <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player, columnKey: col.key })}
           aria-label={`${col.label} ${player.metrics[metricKey] == null ? "unknown" : formatted} for ${player.player_name}. Open ${col.label} trend`}>
           {shown}
         </button> : shown}
@@ -728,6 +746,7 @@ export function WorkbenchPlayerExplorer({
                 {v.id === defaultViewId && <span className="stats-default-view-star"><Icon name="star" size={14} filled /><span className="sr-only">Default view</span></span>}
                 {(v.unavailable_columns?.length ?? 0) > 0 && <span className="stats-preset-gated-tag">Unavailable: {v.unavailable_columns?.length}</span>}</> })),
           ]} />
+        {activePresetId === "sixfactor" && <ButtonLink size="sm" variant="text" href={`/research/rapm/six-factor?${new URLSearchParams({ season: query.season, phase: query.phase })}`}>How Six-Factor RAPM works</ButtonLink>}
 
         <Field label="Table Divider" layout="inline" className="stats-divider-field">
           <Segmented label="Table Divider" size="sm" tone="console" deferChange
@@ -777,6 +796,7 @@ export function WorkbenchPlayerExplorer({
           options={ORDERED_COUNTING_MODES.map(cm => ({ value: cm.id, label: cm.label, title: cm.tooltip,
             disabled: catalog?.stats_normalizations ? !catalog.stats_normalizations.includes(cm.id) : cm.gated }))}
           value={countingMode} onChange={handleCountingModeSelect} />
+        {viewMode === "table" && <ShrunkToggle pressed={shrunkOn} onChange={setShrunk} />}
         <div className="stats-tool-group" role="group" aria-label="Explorer View Mode">
           <IconButton variant="secondary" icon="scatter" label="Scatter plot" pressed={viewMode === "scatter"}
             onClick={() => setViewMode(viewMode === "scatter" ? "table" : "scatter")} />
@@ -818,6 +838,8 @@ export function WorkbenchPlayerExplorer({
             pressed={isExpanded} onClick={() => setIsExpanded(value => !value)} />
         </span>
       </div>
+
+      {shrunkOverlay && <ShrunkNote overlay={shrunkOverlay} season={shrunkSeason} />}
 
       {actionError && <div role="alert" className="notice-box stats-action-error">
         {actionError} <Button size="xs" onClick={() => setActionError(null)}>Dismiss</Button>

@@ -143,27 +143,6 @@ test("tab panels and the Ask composer show their keyboard focus", async ({ page 
   expect(await page.locator(".ask-composer").evaluate(e => getComputedStyle(e).boxShadow)).not.toBe("none");
 });
 
-test("clustered distribution values keep distinct readable labels on phones", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.route("**/api/workbench/operations/distribution", route => route.fulfill({ json: {
-    operation_version: "fixture-v1", evidence_hash: "c".repeat(64), player_id: "1630567", player_name: "Scottie Barnes",
-    metric: "pts", metric_display_name: "Points", window_n: 20, season: "2025-26", phase: "regular_season", before_date: "2026-04-13",
-    summary: { summary_available: true, n: 20, mean: 20, median: 20, min: 0, max: 100, population_sd: 2, p10: 19.9, p25: 20, p75: 20, p90: 20.1, iqr: 0 },
-    samples: [], disclosures: []
-  } }));
-  await openWorkbench(page, "/research/distributions?playerId=1630567&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
-  const labels = page.locator(".dist-strip-label");
-  await expect(labels).toHaveText(["p10: 19.9", "Median: 20", "p90: 20.1"]);
-  const boxes = await labels.evaluateAll(elements => elements.map(e => {
-    const r = e.getBoundingClientRect();
-    return { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
-  }));
-  for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
-    const a = boxes[i], b = boxes[j];
-    expect(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top).toBe(true);
-  }
-});
-
 test("floating player lookup keeps viewport geometry in CSS variables", async ({ page }) => {
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 844 });

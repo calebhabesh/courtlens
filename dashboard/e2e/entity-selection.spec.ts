@@ -59,19 +59,6 @@ test("API failure preserves text; retry and no-match states are distinct",async(
 // The multi-player chip and lookup scope-race checks moved to Vitest (entity-picker.test.tsx,
 // lookup-input.test.tsx) when Stat Line Shift (row 13) dropped its condition pickers.
 
-// Similarity left for Player Twins (row 17), which picks from its own season roster.
-for(const route of ["trends","distributions"]) {
-  test(`${route} selection preserves release, phase, cutoff and window context`,async({page})=>{
-    const requests: Record<string, unknown>[]=[];
-    page.on("request",request=>{if(request.method() === "POST" && request.url().includes("/operations/")) requests.push(request.postDataJSON());});
-    await openWorkbench(page,`/research/${route}?releaseId=fixture-release&season=2024-25&phase=playoffs&beforeDate=2025-06-01&window=last_10`);
-    await choose(page,"Target player","Fixture Star");await expect(page).toHaveURL(/playerId=23/);
-    const url=new URL(page.url());expect(url.searchParams.get("releaseId")).toBe("fixture-release");expect(url.searchParams.get("phase")).toBe("playoffs");expect(url.searchParams.get("beforeDate")).toBe("2025-06-01");expect(url.searchParams.get("window")).toBe("last_10");
-    await expect.poll(()=>requests.some(request=>request.player_id === "23" || request.target_player_id === "23")).toBe(true);
-    expect(requests.at(-1)).toMatchObject({release_id:"fixture-release",phase:"playoffs",before_date:"2025-06-01"});
-  });
-}
-
 test("planner selections stay within roster/watchlist and never query the public catalog",async({page})=>{
   let lookups=0;page.on("request",request=>{if(request.url().includes("/lookup?")) lookups++;});
   const cors={"Access-Control-Allow-Origin":"*","Access-Control-Allow-Headers":"Content-Type, Authorization","Access-Control-Allow-Methods":"GET, POST, OPTIONS"};

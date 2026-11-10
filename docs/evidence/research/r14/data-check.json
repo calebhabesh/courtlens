@@ -1,0 +1,568 @@
+{
+ "cold_start": {
+  "2021-22": {
+   "fallback_in_window": 238,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 2.6418,
+     "blocks_per36": 0.7724,
+     "field_goals_attempted_per36": 10.9752,
+     "fouls_personal_per36": 3.8363,
+     "free_throws_attempted_per36": 2.7256,
+     "log_minutes": 5.4706,
+     "points_per36": 12.5718,
+     "rebounds_defensive_per36": 4.9894,
+     "rebounds_offensive_per36": 1.8083,
+     "steals_per36": 1.0386,
+     "three_pointers_attempted_per36": 4.33,
+     "turnovers_per36": 1.8424
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2018-19",
+     "2019-20",
+     "2020-21"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 518,
+   "players_in_window": 756,
+   "target": {
+    "box_fallback": 81,
+    "newcomer_no_box_in_window": 128,
+    "own_embedding": 396,
+    "players": 605,
+    "possession_share_box_fallback": 0.0347,
+    "possession_share_newcomer": 0.1047,
+    "possession_share_own": 0.8605,
+    "stints": 32248,
+    "stints_with_any_fallback_player": 23173
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 518,
+    "2000": 440,
+    "250": 638,
+    "4000": 324,
+    "500": 582
+   },
+   "training_stints": 89041,
+   "window": [
+    "2018-19",
+    "2019-20",
+    "2020-21"
+   ],
+   "window_possession_share_own": 0.9763
+  },
+  "2022-23": {
+   "fallback_in_window": 260,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 2.8163,
+     "blocks_per36": 0.8216,
+     "field_goals_attempted_per36": 10.9533,
+     "fouls_personal_per36": 3.7595,
+     "free_throws_attempted_per36": 2.5298,
+     "log_minutes": 5.4952,
+     "points_per36": 12.2319,
+     "rebounds_defensive_per36": 4.8167,
+     "rebounds_offensive_per36": 1.9392,
+     "steals_per36": 1.127,
+     "three_pointers_attempted_per36": 4.562,
+     "turnovers_per36": 1.8797
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2019-20",
+     "2020-21",
+     "2021-22"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 514,
+   "players_in_window": 774,
+   "target": {
+    "box_fallback": 63,
+    "newcomer_no_box_in_window": 87,
+    "own_embedding": 389,
+    "players": 539,
+    "possession_share_box_fallback": 0.0412,
+    "possession_share_newcomer": 0.083,
+    "possession_share_own": 0.8759,
+    "stints": 32197,
+    "stints_with_any_fallback_player": 21912
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 514,
+    "2000": 432,
+    "250": 640,
+    "4000": 334,
+    "500": 587
+   },
+   "training_stints": 88491,
+   "window": [
+    "2019-20",
+    "2020-21",
+    "2021-22"
+   ],
+   "window_possession_share_own": 0.9748
+  },
+  "2023-24": {
+   "fallback_in_window": 266,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 2.9248,
+     "blocks_per36": 0.7035,
+     "field_goals_attempted_per36": 11.1024,
+     "fouls_personal_per36": 3.6615,
+     "free_throws_attempted_per36": 2.4051,
+     "log_minutes": 5.4159,
+     "points_per36": 12.2433,
+     "rebounds_defensive_per36": 4.6434,
+     "rebounds_offensive_per36": 1.6988,
+     "steals_per36": 1.1309,
+     "three_pointers_attempted_per36": 4.7525,
+     "turnovers_per36": 1.742
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2020-21",
+     "2021-22",
+     "2022-23"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 518,
+   "players_in_window": 784,
+   "target": {
+    "box_fallback": 75,
+    "newcomer_no_box_in_window": 101,
+    "own_embedding": 396,
+    "players": 572,
+    "possession_share_box_fallback": 0.039,
+    "possession_share_newcomer": 0.0862,
+    "possession_share_own": 0.8748,
+    "stints": 31365,
+    "stints_with_any_fallback_player": 21186
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 518,
+    "2000": 449,
+    "250": 638,
+    "4000": 345,
+    "500": 574
+   },
+   "training_stints": 92351,
+   "window": [
+    "2020-21",
+    "2021-22",
+    "2022-23"
+   ],
+   "window_possession_share_own": 0.9774
+  },
+  "2024-25": {
+   "fallback_in_window": 291,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 2.9482,
+     "blocks_per36": 0.7295,
+     "field_goals_attempted_per36": 10.7378,
+     "fouls_personal_per36": 3.5926,
+     "free_throws_attempted_per36": 2.2511,
+     "log_minutes": 5.4038,
+     "points_per36": 11.7495,
+     "rebounds_defensive_per36": 4.5799,
+     "rebounds_offensive_per36": 1.7819,
+     "steals_per36": 1.1125,
+     "three_pointers_attempted_per36": 4.6265,
+     "turnovers_per36": 1.6337
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2021-22",
+     "2022-23",
+     "2023-24"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 527,
+   "players_in_window": 818,
+   "target": {
+    "box_fallback": 67,
+    "newcomer_no_box_in_window": 107,
+    "own_embedding": 395,
+    "players": 569,
+    "possession_share_box_fallback": 0.0424,
+    "possession_share_newcomer": 0.0978,
+    "possession_share_own": 0.8598,
+    "stints": 32005,
+    "stints_with_any_fallback_player": 22522
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 527,
+    "2000": 448,
+    "250": 650,
+    "4000": 331,
+    "500": 589
+   },
+   "training_stints": 95810,
+   "window": [
+    "2021-22",
+    "2022-23",
+    "2023-24"
+   ],
+   "window_possession_share_own": 0.9769
+  },
+  "2025-26": {
+   "fallback_in_window": 237,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 3.2958,
+     "blocks_per36": 0.779,
+     "field_goals_attempted_per36": 10.7789,
+     "fouls_personal_per36": 3.6386,
+     "free_throws_attempted_per36": 2.3833,
+     "log_minutes": 5.4601,
+     "points_per36": 12.1439,
+     "rebounds_defensive_per36": 4.7017,
+     "rebounds_offensive_per36": 1.9125,
+     "steals_per36": 1.1623,
+     "three_pointers_attempted_per36": 4.4358,
+     "turnovers_per36": 1.9114
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2022-23",
+     "2023-24",
+     "2024-25"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 534,
+   "players_in_window": 771,
+   "target": {
+    "box_fallback": 77,
+    "newcomer_no_box_in_window": 106,
+    "own_embedding": 399,
+    "players": 582,
+    "possession_share_box_fallback": 0.0517,
+    "possession_share_newcomer": 0.1089,
+    "possession_share_own": 0.8394,
+    "stints": 34057,
+    "stints_with_any_fallback_player": 25688
+   },
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 534,
+    "2000": 444,
+    "250": 641,
+    "4000": 329,
+    "500": 593
+   },
+   "training_stints": 95567,
+   "window": [
+    "2022-23",
+    "2023-24",
+    "2024-25"
+   ],
+   "window_possession_share_own": 0.9792
+  },
+  "2026-27": {
+   "fallback_in_window": 256,
+   "fallback_in_window_without_box": 0,
+   "fallback_reads": {
+    "feature_means": {
+     "assists_per36": 3.1814,
+     "blocks_per36": 0.7953,
+     "field_goals_attempted_per36": 10.9399,
+     "fouls_personal_per36": 3.4391,
+     "free_throws_attempted_per36": 2.4297,
+     "log_minutes": 5.4978,
+     "points_per36": 12.4337,
+     "rebounds_defensive_per36": 4.647,
+     "rebounds_offensive_per36": 1.9182,
+     "steals_per36": 1.1883,
+     "three_pointers_attempted_per36": 4.8008,
+     "turnovers_per36": 1.7956
+    },
+    "features": [
+     "points_per36",
+     "field_goals_attempted_per36",
+     "three_pointers_attempted_per36",
+     "free_throws_attempted_per36",
+     "rebounds_offensive_per36",
+     "rebounds_defensive_per36",
+     "assists_per36",
+     "steals_per36",
+     "blocks_per36",
+     "turnovers_per36",
+     "fouls_personal_per36",
+     "log_minutes"
+    ],
+    "newcomer": "no box minutes in the window: all features at the mean (zeros)",
+    "seasons": [
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "standardized_on": "fallback players in the window, weighted by on-court possessions"
+   },
+   "own_embedding": 546,
+   "players_in_window": 802,
+   "threshold_sensitivity_players_at_or_above": {
+    "1000": 546,
+    "2000": 461,
+    "250": 668,
+    "4000": 338,
+    "500": 623
+   },
+   "training_stints": 97427,
+   "window": [
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "window_possession_share_own": 0.9759
+  }
+ },
+ "dataset": {
+  "boxes_sha256": "3ab77bd827a4803b2c1de069f1853dc55d32aef1016c38e43df9499de4b42a3e",
+  "stints_sha256": "694704a837d0e330c83a19452343c87358a6fae42fc0b0776c0a11cae4bd120b"
+ },
+ "excluded_games": "R01's admission (IM02 + event gate) excluded 3 to 26 games a season; their stints are not in the sealed bundles. Counts and reasons: docs/evidence/research/r01/coverage.json.",
+ "leakage_plan": [
+  "Rolling origin: a fit for target season t reads stints and boxes from seasons t-3..t-1 only, so every input is dated before t's opener.",
+  "Selection seasons 2021-22 and 2022-23, test seasons 2023-24 to 2025-26, fixed here.",
+  "Cold-start status and box features for a target season come from the window only; a player first seen in t reads the newcomer value.",
+  "The 2026-27 serving fit reads 2023-24 to 2025-26."
+ ],
+ "note": "Counts only; no stint margin summarised by player, lineup or model.",
+ "seasons": {
+  "2014-15": {
+   "dropped_stints_one_side_no_possession": 26444,
+   "first_date": "2014-10-28",
+   "games": 1208,
+   "last_date": "2015-04-15",
+   "neutral_stints": 0,
+   "players": 492,
+   "possessions": 114056.5,
+   "stints": 57810,
+   "usable_possessions": 111974.0,
+   "usable_stints": 31366
+  },
+  "2015-16": {
+   "dropped_stints_one_side_no_possession": 27599,
+   "first_date": "2015-10-27",
+   "games": 1219,
+   "last_date": "2016-04-13",
+   "neutral_stints": 0,
+   "players": 476,
+   "possessions": 117241.5,
+   "stints": 59475,
+   "usable_possessions": 115111.5,
+   "usable_stints": 31876
+  },
+  "2016-17": {
+   "dropped_stints_one_side_no_possession": 27308,
+   "first_date": "2016-10-25",
+   "games": 1206,
+   "last_date": "2017-04-12",
+   "neutral_stints": 0,
+   "players": 486,
+   "possessions": 116500.5,
+   "stints": 58726,
+   "usable_possessions": 114565.0,
+   "usable_stints": 31418
+  },
+  "2017-18": {
+   "dropped_stints_one_side_no_possession": 28063,
+   "first_date": "2017-10-17",
+   "games": 1217,
+   "last_date": "2018-04-11",
+   "neutral_stints": 0,
+   "players": 540,
+   "possessions": 118492.0,
+   "stints": 59715,
+   "usable_possessions": 116548.5,
+   "usable_stints": 31652
+  },
+  "2018-19": {
+   "dropped_stints_one_side_no_possession": 29138,
+   "first_date": "2018-10-16",
+   "games": 1227,
+   "last_date": "2019-04-10",
+   "neutral_stints": 0,
+   "players": 530,
+   "possessions": 122888.0,
+   "stints": 61936,
+   "usable_possessions": 120992.5,
+   "usable_stints": 32798
+  },
+  "2019-20": {
+   "dropped_stints_one_side_no_possession": 26357,
+   "first_date": "2019-10-22",
+   "games": 1033,
+   "last_date": "2020-08-14",
+   "neutral_stints": 4548,
+   "players": 528,
+   "possessions": 103880.0,
+   "stints": 54694,
+   "usable_possessions": 102135.0,
+   "usable_stints": 28337
+  },
+  "2020-21": {
+   "dropped_stints_one_side_no_possession": 25627,
+   "first_date": "2020-12-22",
+   "games": 1074,
+   "last_date": "2021-05-16",
+   "neutral_stints": 0,
+   "players": 540,
+   "possessions": 106529.0,
+   "stints": 53533,
+   "usable_possessions": 104918.5,
+   "usable_stints": 27906
+  },
+  "2021-22": {
+   "dropped_stints_one_side_no_possession": 30036,
+   "first_date": "2021-10-19",
+   "games": 1228,
+   "last_date": "2022-04-10",
+   "neutral_stints": 0,
+   "players": 605,
+   "possessions": 120584.5,
+   "stints": 62284,
+   "usable_possessions": 118719.5,
+   "usable_stints": 32248
+  },
+  "2022-23": {
+   "dropped_stints_one_side_no_possession": 30068,
+   "first_date": "2022-10-18",
+   "games": 1229,
+   "last_date": "2023-04-09",
+   "neutral_stints": 0,
+   "players": 539,
+   "possessions": 122082.0,
+   "stints": 62265,
+   "usable_possessions": 120209.0,
+   "usable_stints": 32197
+  },
+  "2023-24": {
+   "dropped_stints_one_side_no_possession": 27287,
+   "first_date": "2023-10-24",
+   "games": 1216,
+   "last_date": "2024-04-14",
+   "neutral_stints": 0,
+   "players": 572,
+   "possessions": 119840.5,
+   "stints": 58652,
+   "usable_possessions": 118078.0,
+   "usable_stints": 31365
+  },
+  "2024-25": {
+   "dropped_stints_one_side_no_possession": 29509,
+   "first_date": "2024-10-22",
+   "games": 1212,
+   "last_date": "2025-04-13",
+   "neutral_stints": 0,
+   "players": 569,
+   "possessions": 120012.5,
+   "stints": 61514,
+   "usable_possessions": 118172.5,
+   "usable_stints": 32005
+  },
+  "2025-26": {
+   "dropped_stints_one_side_no_possession": 34868,
+   "first_date": "2025-10-21",
+   "games": 1227,
+   "last_date": "2026-04-12",
+   "neutral_stints": 0,
+   "players": 582,
+   "possessions": 121933.0,
+   "stints": 68925,
+   "usable_possessions": 119838.0,
+   "usable_stints": 34057
+  }
+ },
+ "threshold": 1000.0,
+ "totals": {
+  "box_player_seasons": 6942,
+  "games": 14296,
+  "players": 1632,
+  "stints": 719529,
+  "usable_stints": 377225
+ },
+ "version": "courtlens-lineup-model-v1"
+}

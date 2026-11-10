@@ -1,0 +1,19 @@
+{
+ "widths": {
+  "390": {
+   "values": 25551,
+   "pages": 32,
+   "overflow_px": 0
+  },
+  "1440": {
+   "values": 88467,
+   "pages": 129,
+   "overflow_px": 0
+  }
+ },
+ "mismatches": [],
+ "console_errors": [],
+ "results_sha256": "7b7bd3b8f9a874091024f644e5eadb7cc5c83c8e3efcd4e4265270298fb4b7b9",
+ "comparison_date": "2026-11-04",
+ "mismatch_count": 0
+}

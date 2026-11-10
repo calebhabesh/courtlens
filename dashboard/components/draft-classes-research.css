@@ -1,0 +1,156 @@
+/* RD08 (owner, 2026-11-08): Research → Draft Classes as one scrolling page, built from approved Research patterns. The centred hero,
+   a 1352 px column, RD06's sticky 224 px numbered index beside the sections (a collapsed list below 1024 px), RD05-style cards with a
+   subdued team tint and no watermark, RD01/RD04 grids, and RD00's scatter. Labels take category tints in fixed order. One nesting
+   level (card to tile). No accent rail on any card edge. */
+@layer pages {
+  .rs-column.dc-page { max-width: 1352px; gap: var(--space-8); padding-bottom: var(--space-12); }
+  .dc-page .rs-intro { margin-top: calc(-1 * var(--space-4)); }
+  .dc-layout { display: grid; grid-template-columns: 224px minmax(0, 1fr); gap: var(--space-8); align-items: start; min-width: 0; }
+  .dc-sections { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-8); min-width: 0; }
+  /* The site's scroll padding leaves room for a filter bar; this page has none, so sections land closer to the header. */
+  .dc-sections > .rs-section { scroll-margin-top: calc(-1 * var(--space-12)); }
+  .dc-sections > .rs-section:first-child { padding-top: 0; border-top: 0; }
+  .dc-sections > .rs-disclosure { padding-top: var(--space-2); border-top: 0; }
+  .dc-page .rs-method-block { grid-template-columns: minmax(0, 1fr); }
+
+  /* Index. */
+  .dc-aside { align-self: stretch; min-width: 0; }
+  .dc-aside-sticky { position: sticky; top: calc(var(--header-height) + var(--space-6)); min-width: 0; }
+  .dc-index-list { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  .dc-index-link { display: flex; gap: var(--space-2); padding: var(--space-1) var(--space-2); border-radius: var(--radius-xs); color: var(--color-on-bg-tertiary); font-size: var(--text-sm); line-height: var(--text-sm-lh); text-decoration: none; transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out); }
+  .dc-index-link:hover { color: var(--color-text); }
+  .dc-index-link:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .dc-index-link[aria-current] { background: var(--color-accent-soft); color: var(--color-accent); font-weight: 600; }
+  .dc-index-number { flex: none; min-width: var(--space-3); font-variant-numeric: tabular-nums; }
+  .dc-index-phone { display: none; }
+
+  /* Copy. */
+  .dc-lead { max-width: 768px; margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .dc-lead strong { color: var(--color-text); font-weight: 650; font-variant-numeric: tabular-nums; }
+  .dc-lead a { color: var(--color-accent); }
+  .dc-note { max-width: 768px; margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .dc-note a { color: var(--color-accent); }
+  .dc-subhead { margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 650; }
+  .dc-card-text { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .dc-list { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5); color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .dc-team { display: inline-flex; align-items: center; gap: var(--space-1); white-space: nowrap; }
+  .dc-cell-strong { color: var(--color-text); font-weight: 650; font-variant-numeric: tabular-nums; }
+  .dc-cell-text { color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .dc-label { --dc-tint: var(--color-category-1); display: inline-flex; align-items: center; padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--dc-tint) 18%, transparent); color: var(--dc-tint); font-size: var(--text-2xs); line-height: var(--text-xs-lh); font-weight: 650; white-space: nowrap; }
+  .dc-label[data-tint="2"] { --dc-tint: var(--color-category-2); }
+  .dc-label[data-tint="3"] { --dc-tint: var(--color-category-3); }
+
+  /* Controls. */
+  .dc-controls.sq-panel { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); padding: var(--space-4); }
+  .dc-grid-tools, .dc-scatter-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .dc-rookie-pick { width: 100%; max-width: 360px; scroll-margin-top: calc(-1 * var(--space-12)); }
+  .dc-class-picker { display: flex; align-items: center; gap: var(--space-2); flex: 0 1 380px; min-width: 0; }
+  .dc-class-search { flex: 1 1 auto; min-width: 0; }
+
+  /* Cards. */
+  .dc-rookie-pair { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: var(--space-4); align-items: start; min-width: 0; }
+  .dc-past { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
+  .dc-past-grid .stats-table-frame .stats-scroll-region { max-height: 372px; }
+  .dc-card {
+    --dc-team: var(--color-text-tertiary);
+    display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: var(--space-3); min-width: 0; padding: var(--space-4); border-radius: var(--radius-lg);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--dc-team) 16%, transparent), color-mix(in srgb, var(--dc-team) 5%, transparent) 70%), var(--rs-panel);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--dc-team) 28%, var(--rs-rim));
+  }
+  .dc-card-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); }
+  .dc-avatar.ui-identity-lg { --identity-media: 60px; }
+  .dc-card-titles { display: grid; justify-items: start; gap: var(--space-1); min-width: 0; }
+  .dc-card-name { overflow: hidden; max-width: 100%; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; text-overflow: ellipsis; white-space: nowrap; text-decoration: none; }
+  a.dc-card-name:hover { text-decoration: underline; }
+  .dc-card-team { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
+  .dc-card-meta { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); }
+  .dc-badge { align-self: start; display: inline-grid; place-items: center; min-width: 36px; height: 28px; padding: 0 var(--space-2); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-white) 12%, transparent); color: var(--color-text); font-size: var(--text-sm); font-weight: 750; font-variant-numeric: tabular-nums; }
+  .dc-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
+  .dc-tiles[data-count="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .dc-tile-wrap { display: grid; min-width: 0; }
+  .dc-tile { display: grid; align-content: start; gap: var(--space-0-5); min-width: 0; padding: var(--space-2); border-radius: var(--radius-md); background: var(--rs-well); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .dc-tile-label { overflow: hidden; color: var(--color-on-bg-secondary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+  .dc-tile-sub { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
+  .dc-card .rs-grid-value { display: block; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .dc-card .rs-grid-value[data-identity="a"] { color: var(--color-identity-a); }
+  .dc-card .rs-grid-value[data-identity="b"] { color: var(--color-identity-b); }
+  .dc-card .rs-grid-value[data-tone="good"] { color: var(--color-positive); }
+  .dc-card .rs-grid-value[data-tone="bad"] { color: var(--color-negative); }
+  .dc-ratings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+  .dc-rating { display: grid; gap: var(--space-0-5); min-width: 0; padding: var(--space-2); border-radius: var(--radius-md); background: var(--rs-well); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .dc-rating-note { grid-column: 1 / -1; color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); }
+
+  /* Tables: the rookie table fits the 1096 px content column with its pinned player. */
+  .dc-section table[data-table="rookies"] col.rs-col-sm { width: 60px; }
+  .dc-section table[data-table="rookies"] col.rs-col-xs { width: 60px; }
+  .dc-section table[data-table="rookies"] col:nth-child(3) { width: 72px; }
+  .dc-section table[data-table="rookie-comparisons"] col.rs-col-lead { width: 246px; }
+  /* 710 px: the 720 px frame less a scrollbar, so TS% is never clipped. */
+  .dc-section table[data-table="rookie-comparisons"] col.rs-col-xs { width: 48px; }
+  .dc-section table[data-table="rookie-comparisons"] col:nth-child(2) { width: 48px; }
+  .dc-section table[data-table="rookie-comparisons"] col:nth-child(3) { width: 32px; }
+  .dc-section table[data-table="class"] col.rs-col-lead { width: 288px; }
+  .dc-section table[data-table="class"] col.rs-col-xs { width: 52px; }
+  .dc-section table[data-table="class"] col.rs-col-sm { width: 72px; }
+  .dc-section table[data-table="class"] col.rs-col-md { width: 92px; }
+  .dc-section table[data-table="class"] col.rs-col-lg { width: 140px; }
+  .dc-coverage-grid .dc-cell-text, .dc-page table[data-table="bands"] .dc-cell-strong, .dc-page table[data-table="combine-correlations"] .dc-cell-strong { white-space: normal; }
+  .dc-section .dc-slot-grid col.rs-col-lead { width: 80px; }
+  .dc-section .dc-slot-grid col:not(.rs-col-lead) { width: auto; }
+  .dc-section tr[data-selected="true"] > * { --table-data: color-mix(in srgb, var(--color-accent) 10%, var(--color-table-well)); }
+
+  /* Figures. */
+  .dc-figure { display: grid; gap: var(--space-2); min-width: 0; margin: 0; padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .dc-figure-title { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
+  .dc-axis-note { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); text-align: center; }
+  .dc-scatter-box { min-width: 0; }
+  .dc-scatter { display: block; width: 100%; height: auto; }
+  .dc-scatter text { fill: var(--color-on-bg-tertiary); font-size: var(--text-2xs); }
+  .dc-scatter-grid { stroke: var(--color-hairline); }
+  .dc-scatter-axis { stroke: var(--color-hairline-strong); }
+  .dc-scatter-dot { fill: color-mix(in srgb, var(--color-identity-b) 55%, transparent); }
+
+  /* Steals and misses. */
+  .dc-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); align-items: start; min-width: 0; }
+  .dc-column { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: var(--space-3); min-width: 0; }
+  .dc-cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+  .dc-list-grid.rs-grid { --rs-grid-min: 0px; }
+  .dc-list-grid col.rs-col-xs { width: 52px; }
+  .dc-list-grid col.rs-col-sm { width: 76px; }
+
+  /* RD08 round 5 (owner): beside the card, the past-picks table ends level with it. `contain: size` stops its rows setting the height. */
+  @media (min-width: 1024px) {
+    .dc-rookie-pair { align-items: stretch; }
+    .dc-past { grid-template-rows: auto minmax(0, 1fr); }
+    .dc-past-grid.rs-grid { contain: size; }
+    .dc-past-grid .stats-table-frame { height: 100%; }
+    .dc-past-grid .stats-table-frame .stats-scroll-region { height: 100%; max-height: none; }
+  }
+  @media (max-width: 1023px) {
+    .dc-layout { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+    .dc-aside { display: none; }
+    .dc-index-phone { display: grid; gap: var(--space-3); }
+    .dc-index-phone-list { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+    .dc-index-phone .dc-index-link { padding-block: var(--space-2); }
+    .dc-rookie-pair, .dc-pair { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 767px) {
+    .rs-column.dc-page, .dc-sections { gap: var(--space-6); }
+    .dc-controls.sq-panel { align-items: stretch; flex-direction: column; }
+    .dc-controls [role="radiogroup"] { width: 100%; min-height: var(--space-12); }
+    .dc-controls [role="radiogroup"] button { flex: 1 1 0; min-height: 40px; }
+    .dc-class-picker { flex: 0 0 auto; }
+    .dc-class-picker button, .dc-grid-tools button, .dc-scatter-head select, .dc-page .rs-grid-tools button { min-width: 40px; min-height: 40px; }
+    .dc-rookie-pick { max-width: none; }
+    .dc-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .dc-tiles[data-count="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .dc-section table[data-table="rookies"] col.rs-col-lead { width: 224px; }
+    .dc-rookie-tools { align-items: stretch; flex-direction: column; }
+    .dc-rookie-tools [role="radiogroup"] { width: 100%; min-height: var(--space-12); }
+    .dc-rookie-tools [role="radiogroup"] button { flex: 1 1 auto; min-height: 40px; padding-inline: var(--space-1); }
+    /* The rookie search above the card chooses on a phone; the row button has no room beside the name. */
+    .dc-section table[data-table="rookies"] .rs-grid-tools { display: none; }
+    .dc-section table:is([data-table="bands"], [data-table="combine-correlations"]) col.rs-col-lead { width: 168px; }
+    .dc-figure .slc-dot:not([data-active]) { width: 4px; height: 4px; box-shadow: none; }
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-impact-history-v2",
+  "block": "R01",
+  "registered_on": "2026-11-04",
+  "kind": "pipeline",
+  "question": "Can the sealed IM02 -> IM03 -> IM04/IM05 impact pipeline be run unchanged on regular seasons 2014-15 to 2022-23, and what coverage does it reach? (v2 supersedes v1 after the v1 pilot: 52 of 100 sampled 2014-15 games and 27 of 100 sampled 2017-18 games were excluded, every one because an older-era substitution name did not resolve.)",
+  "inputs": [
+    "shufinskiy/nba_data revision e829d4678be1e075f99e5d41a1c5f97089be446b (the IM01 pin): nbastatsv3_<y> for y = 2014..2022; cdnnba_<y> for y = 2020..2022 (the pinned index has no earlier cdnnba); matchups_<y> for y = 2017..2022; shotdetail_<y> and pbpstats_<y> for y = 2014..2022",
+    "SportsDataverse player/team boxes and schedules already retained under data/raw/sportsdataverse_<y+1>/, bound to their retrieval-manifest.json hashes",
+    "Sealed 2023-24 to 2025-26 IM03 bundles (acceptance 912254343fb563c128327c53b40becada7b912191981a2a7eeda14fa900d5c4d) as earlier/later windows; never modified"
+  ],
+  "method": [
+    "IM02: domain/possession_repair.reconstruct_repaired_game unchanged (possession-policy-v2 rules R1-R7). Seasons without a CDN archive pass cdn_rows=None, as the current-season pipeline does; a game the single source cannot reconstruct is excluded by the policy, never guessed. The independent team-box/schedule check (IM02-R7) is applied as in the sealed audit.",
+    "IM03: domain/impact_event_repairs, impact_possessions (method v2) and impact_verification (event gate v1) unchanged; pbpstats public possession groups are compared and reviewed where available, exactly as impact_population does.",
+    "H1 schedule denominators: 1230 regular-season games for every season except 2019-20 (1059, suspended season plus 88 bubble seeding games) and 2020-21 (1080, 72-game season). The season window runs from 1 July of the starting year to 1 November of the ending year so the 2019-20 bubble is included. Play-in games are not regular-season games.",
+    "H2 a game that fails IM03 event verification is excluded and listed with its errors (the sealed seasons were iterated per game until every game passed; this backfill does not iterate).",
+    "H3 completed-season rating cutoff is the day after the season's last admitted regular-season game (IM04 caps at 1 July, which would drop the 2019-20 bubble; for every other season the two rules select the same games).",
+    "H4 pilot gate (applies to v2 again): 100 games per era (2014-15, 2017-18, 2020-21) run first; if any full season excludes more than 5% of scheduled games, stop before population and report to the owner.",
+    "H5 (new in v2) older-era substitution names: before the pinned parser runs, a v3 substitution name that its box/row name lookup cannot resolve uniquely is resolved from the same game's rows only. An outgoing name belongs to the row's own personId unless the same text is attested for a different teammate; an incoming name belongs to the single teammate for whom the game attests that exact text (as the outgoing name of their own substitution row, or as the leading name of their own action row); only when the game attests the text for nobody, the single teammate whose box family name minus a generational suffix (Jr., Sr., II, III, IV) equals it. The text is replaced by that player's first box name the pinned lookup resolves uniquely (name_i, family name, first name); nothing else in the row changes. Every rewrite is kept per game with the original text and evidence rows and recorded as an r01_history_name_alias override when sealed. Unresolved names are left unchanged, so the game is excluded as before. The v3 input identity becomes sha256 of {archive_sha256, normalization: courtlens-history-name-alias-v1}.",
+    "IM04: evaluation/impact_ratings functions unchanged (alpha grid [10, 100, 1000], 3 game-grouped folds, seed 2501, BPR from earlier seasons only) for 1Y/2Y/3Y regular-season windows ending 2014-15 to 2022-23, plus the windows the sealed run could not form (2Y and 3Y ending 2023-24, 3Y ending 2024-25).",
+    "IM05: domain/impact_extras.game_facts unchanged with v3 rows, CDN rows where they exist, shot detail and matchups where they exist; columns whose source is missing stay unknown.",
+    "Population: each season is sealed as an ordinary append-only courtlens-impact dataset through impact_population.populate_impact_season, so WOWY, on/off and Stat Line Shift reach the new seasons."
+  ],
+  "parameters": {
+    "starting_years": [
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022
+    ],
+    "phase": "regular_season",
+    "cdn_years": [
+      2020,
+      2021,
+      2022
+    ],
+    "matchup_years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022
+    ],
+    "regular_season_games": {
+      "2019": 1059,
+      "2020": 1080,
+      "default": 1230
+    },
+    "pilot_exclusion_stop_fraction": 0.05
+  },
+  "selection": "None: no outcome-driven choice. Repair and method code are the sealed versions.",
+  "uncertainty": "Coverage counts are exact. Rating intervals are registered separately (courtlens-impact-intervals-v1).",
+  "evaluation": [
+    "Per-season clean / patched / excluded counts with reasons and rule counters, next to the sealed three seasons",
+    "Known player-minute and box plus-minus agreement distributions (diagnostics, as IM02)",
+    "Public pbpstats possession cross-check counts and event-gate pass counts",
+    "Two independent IM02 runs reproduce the same report content hash",
+    "Runtime and peak memory per stage",
+    "Rule R01-H5 counts per season: games with rewrites, rewrites by side, and the quality of rewritten games"
+  ],
+  "acceptance": [
+    "Every scheduled regular-season game is accounted for as clean, patched or excluded with a reason",
+    "Every admitted game passes the event gate; the bundle's verification gate is all true",
+    "Sealed datasets read back from PostgreSQL with matching counts; re-population reuses them",
+    "Sealed 2023-24 to 2025-26 artifacts and bundles are byte-identical before and after"
+  ],
+  "outputs": [
+    "data/derived/impact-history-v1/ (IM02 report, candidates, IM03 bundles, proofs, ratings, extras)",
+    "docs/evidence/research/r01/ coverage and run receipts"
+  ],
+  "limitations": [
+    "2014-15 to 2019-20 have one event source, so cross-source arbitration is unavailable there",
+    "Defensive matchup columns are unavailable before 2017-18",
+    "2019-20 bubble and 2020-21 limited-crowd games change home advantage; IM04-method fits keep one home column as the sealed contract defines",
+    "Rule R01-H5 relies on the game's own name text; a player whose era name never appears with their id in that game stays unresolved and the game is excluded"
+  ],
+  "negative_result_policy": "Publish coverage and exclusions whatever they are; a season that cannot be admitted is reported, not hidden.",
+  "seed": 2501,
+  "budget": {
+    "cpu_threads": 2,
+    "max_peak_mib": 3072,
+    "max_wall_seconds": 1800
+  }
+}

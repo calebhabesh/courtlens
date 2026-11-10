@@ -1,0 +1,230 @@
+/* RD03 (owner, 2026-11-07): Research → zTS as Databallr's zTS explainer. One 768 px essay column (Databallr's measured
+   `max-w-3xl`), an article hero, figures on light panels with wells one level deep, a floating About / Top 200 / Player
+   dock, blue-tinted on-background text and no dividers around the intro or above the collapsed section. */
+@layer pages {
+  .rs-column.zt-page { max-width: 768px; gap: var(--space-8); padding-bottom: calc(var(--space-16) + var(--space-8)); }
+  .zt-page .rs-section:first-of-type { border-top: 0; padding-top: 0; }
+  .zt-page .rs-disclosure { padding-top: var(--space-2); border-top: 0; }
+  .zt-page .rs-heading { font-size: var(--text-2xl); }
+  .zt-page .rs-prose { max-width: none; }
+  .zt-page .rs-prose p { font-size: var(--text-md); line-height: 1.7; }
+  .zt-page .rs-prose p.zt-lead { color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+  .zt-link { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+  .zt-note, .zt-panel-note, .zt-season-tag { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .zt-season-tag { font-family: var(--font-mono), monospace; font-size: var(--text-sm); color: var(--color-on-bg-secondary); }
+  .zt-code { padding: 1px var(--space-1-5); border-radius: var(--radius-xs); background: var(--rs-well); color: var(--color-accent); font-family: var(--font-mono), monospace; font-size: 0.88em; white-space: nowrap; }
+  .zt-subhead { margin: 0; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 650; }
+  .zt-quote { margin: 0; padding: var(--space-3) var(--space-5); border-left: 2px solid var(--color-hairline-strong); color: var(--color-text); font-family: var(--font-mono), monospace; font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .zt-list { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5); color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .zt-method-text { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); overflow-wrap: anywhere; }
+  .zt-season-cell { color: var(--color-text); font-variant-numeric: tabular-nums; }
+
+  /* Identity tones: gold above zero, blue below (no interval is served for a player). */
+  .zt-page [data-identity="a"] { color: var(--color-identity-a); }
+  .zt-page [data-identity="b"] { color: var(--color-identity-b); }
+
+  /* Panels and wells, one level deep. */
+  .zt-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; padding: var(--space-5); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .zt-panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+  .zt-panel-titles { display: grid; gap: var(--space-1); min-width: 0; }
+  .zt-panel-title { margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 650; }
+  .zt-panel-sub { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .zt-kicker { margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; }
+  .zt-well { display: grid; align-content: start; gap: var(--space-1); min-width: 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--rs-well); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .zt-legend { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); margin: 0; padding: 0; list-style: none; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
+  .zt-legend li { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .zt-legend li::before { content: ""; width: 10px; height: 10px; border-radius: var(--radius-xs); background: var(--zt-series, var(--color-text-tertiary)); }
+  .zt-page [data-series="a"] { --zt-series: var(--color-category-3); }
+  .zt-page [data-series="b"] { --zt-series: var(--color-category-4); }
+  .zt-page [data-series="league"] { --zt-series: var(--color-text-tertiary); }
+  .zt-page [data-series="players"] { --zt-series: var(--color-category-4); }
+  .zt-page [data-series="teams"] { --zt-series: var(--color-category-3); }
+  .zt-legend li[data-identity="a"]::before { background: var(--color-identity-a); }
+  .zt-legend li[data-identity="b"]::before { background: var(--color-identity-b); }
+  .zt-legend li[data-identity] { color: var(--color-on-bg-secondary); }
+  .zt-sd { color: var(--color-on-bg-tertiary); font-family: var(--font-mono), monospace; font-weight: 400; }
+
+  /* League play-type bars. */
+  .zt-league-rows { display: grid; gap: var(--space-1-5); margin: 0; padding: 0; list-style: none; }
+  .zt-league-row { display: grid; grid-template-columns: 136px 104px minmax(0, 1fr); align-items: center; gap: var(--space-3); color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .zt-league-value { font-family: var(--font-mono), monospace; font-size: var(--text-xs); color: var(--color-text); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .zt-track { position: relative; height: 10px; border-radius: var(--radius-pill); background: var(--rs-well); }
+  .zt-track-mid { position: absolute; inset-block: -3px; left: 50%; width: 1px; background: var(--color-hairline-strong); }
+  .zt-track-fill { position: absolute; inset-block: 0; left: var(--from); width: var(--w); border-radius: var(--radius-pill); background: var(--color-text-tertiary); }
+  .zt-track-fill[data-identity="a"] { background: var(--color-identity-a); }
+  .zt-track-fill[data-identity="b"] { background: var(--color-identity-b); }
+  .zt-league { --zt-league-lead: 264px; }
+  .zt-mix { --zt-mix-lead: 192px; --zt-mix-tail: 48px; }
+  .zt-league-avg { display: grid; justify-items: center; gap: var(--space-1); padding-left: var(--zt-league-lead); }
+  .zt-avg-pill { padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); background: var(--rs-well); box-shadow: inset 0 0 0 1px var(--rs-rim); color: var(--color-text); font-family: var(--font-mono), monospace; font-size: var(--text-sm); }
+  .zt-avg-label { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .zt-families { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .zt-family { padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); background: var(--rs-well); box-shadow: inset 0 0 0 1px currentcolor; color: var(--color-on-bg-secondary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* The calculation. */
+  .zt-formula-well { gap: var(--space-2); padding: var(--space-4) var(--space-5); }
+  .zt-formula-well[data-emphasis] { background: color-mix(in srgb, var(--color-accent) 6%, var(--rs-well)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 30%, transparent); }
+  .zt-formula { margin: 0; color: var(--color-text); font-family: var(--font-mono), monospace; font-size: var(--text-md); line-height: var(--text-md-lh); overflow-wrap: anywhere; }
+  .zt-formula-big { font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
+  .zt-formula-note { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .zt-page .rs-formula { color: var(--color-accent); text-align: center; font-size: var(--text-sm); line-height: var(--text-sm-lh); padding: var(--space-3) var(--space-4); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+
+  /* Pair mix. */
+  .zt-mix-rows { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .zt-mix-row { display: grid; grid-template-columns: 128px 40px minmax(0, 1fr); align-items: center; gap: var(--space-3); }
+  .zt-mix-label { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600; }
+  .zt-mix-league { color: var(--color-on-bg-tertiary); font-family: var(--font-mono), monospace; font-size: var(--text-xs); }
+  .zt-mix-bars { display: grid; gap: var(--space-1); min-width: 0; }
+  .zt-mix-bar { display: grid; grid-template-columns: minmax(0, 1fr) 40px; align-items: center; gap: var(--space-2); }
+  .zt-mix-bar::before { content: ""; grid-area: 1 / 1; height: 10px; border-radius: var(--radius-pill); background: var(--rs-well); }
+  .zt-mix-fill { grid-area: 1 / 1; width: var(--w); height: 10px; border-radius: var(--radius-pill); background: var(--zt-series); }
+  .zt-mix-num { color: var(--color-on-bg-secondary); font-family: var(--font-mono), monospace; font-size: var(--text-xs); font-variant-numeric: tabular-nums; }
+  .zt-mix-axis { display: flex; justify-content: space-between; margin-left: var(--zt-mix-lead); margin-right: var(--zt-mix-tail); color: var(--color-on-bg-tertiary); font-family: var(--font-mono), monospace; font-size: var(--text-2xs); }
+
+  /* Expected TS and difficulty panel. */
+  .zt-expected { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+  .zt-expected-half { display: grid; align-content: start; gap: var(--space-2); min-width: 0; }
+  .zt-wells { display: grid; grid-template-columns: repeat(var(--zt-n, 3), minmax(0, 1fr)); gap: var(--space-2); margin-top: var(--space-2); }
+  .zt-wells[data-count="2"] { --zt-n: 2; }
+  .zt-wells[data-count="1"] { --zt-n: 1; }
+  .zt-well-label { color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; }
+  .zt-well-value { color: var(--color-text); font-family: var(--font-mono), monospace; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
+  .zt-well[data-series] .zt-well-value { color: var(--zt-series); }
+  .zt-well-big { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); }
+  .zt-expected .zt-well { justify-items: center; }
+
+  /* Side by side. */
+  .zt-compare-panel { justify-items: center; }
+  .zt-compare { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: var(--space-4); width: 100%; max-width: 600px; padding: var(--space-5); border-radius: var(--radius-lg); background: var(--rs-well); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .zt-compare-side { display: grid; justify-items: center; gap: var(--space-2); min-width: 0; text-align: center; }
+  .zt-compare-search { position: relative; display: flex; align-items: center; gap: var(--space-1); width: 100%; }
+  /* Results drop straight under the search box (inline, not portalled: a shared phone rule pins floating lists at 112 px). */
+  .zt-compare-search .lookup-dropdown { top: calc(100% + var(--space-1)); left: 0; right: auto; width: min(300px, calc(100vw - var(--space-8))); min-width: 0; max-width: none; text-align: left; }
+  .zt-compare-side[data-series="b"] .zt-compare-search .lookup-dropdown { left: auto; right: 0; }
+  .zt-compare-search > :first-child { flex: 1 1 auto; min-width: 0; }
+  .zt-nowrap { white-space: nowrap; }
+  .zt-compare-note { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .zt-compare-name { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
+  .zt-compare-rows { display: grid; gap: var(--space-3); margin: 0; padding-top: var(--space-6); }
+  .zt-compare-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-3); }
+  .zt-compare-val { margin: 0; color: var(--color-text); font-family: var(--font-mono), monospace; font-size: var(--text-md); font-weight: 700; text-align: center; font-variant-numeric: tabular-nums; }
+  .zt-compare-label { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); font-weight: 650; letter-spacing: 0.12em; text-transform: uppercase; text-align: center; }
+
+  /* Distribution. */
+  .zt-controls { padding: var(--space-3) var(--space-4); grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .zt-controls > .zt-panel-head { grid-column: 2; grid-row: 1; }
+  .zt-control-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); grid-row: 1; min-width: 0; }
+  .zt-control-row .ui-input-wrapper { flex: none; width: 104px; }
+  .zt-count { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
+  .zt-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+  .zt-tile-value { color: var(--color-text); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .zt-tile-foot { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .zt-hist { display: grid; gap: var(--space-2); min-width: 0; }
+  .zt-hist-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); }
+  .zt-hist-median { color: var(--color-on-bg-secondary); font-size: var(--text-xs); }
+  .zt-hist-svg, .zt-scatter, .zt-spread-svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .zt-hist-bin { cursor: pointer; }
+  .zt-hist-hit { fill: transparent; }
+  .zt-hist-bar[data-identity="a"] { fill: color-mix(in srgb, var(--color-identity-a) 80%, transparent); }
+  .zt-hist-bar[data-identity="b"] { fill: color-mix(in srgb, var(--color-identity-b) 80%, transparent); }
+  .zt-hist-bin:hover .zt-hist-bar, .zt-hist-bin[data-selected] .zt-hist-bar { stroke: var(--color-text); stroke-width: 2; }
+  .zt-svg-num { fill: var(--color-on-bg-secondary); font-size: var(--text-xs); font-family: var(--font-mono), monospace; }
+  .zt-svg-tick { fill: var(--color-on-bg-tertiary); font-size: var(--text-xs); font-family: var(--font-mono), monospace; }
+  .zt-svg-label { fill: var(--color-on-bg-secondary); font-size: var(--text-sm); font-weight: 600; }
+  .zt-svg-axis, .zt-svg-grid { stroke: var(--color-hairline); }
+  .zt-svg-zero { stroke: var(--color-hairline-strong); stroke-width: 1.5; }
+  .zt-svg-diagonal { stroke: var(--color-on-bg-tertiary); stroke-dasharray: 5 5; }
+  .zt-bin-pick { display: flex; }
+
+  /* Explorer. */
+  .zt-axes { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+  .zt-axis-pick { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .zt-axis-name, .zt-axis-vs { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); font-weight: 400; }
+  .zt-dot { fill: color-mix(in srgb, var(--color-text-tertiary) 55%, transparent); stroke: color-mix(in srgb, var(--color-text-tertiary) 80%, transparent); }
+  .zt-dot[data-identity="a"] { fill: color-mix(in srgb, var(--color-identity-a) 60%, transparent); stroke: var(--color-identity-a); }
+  .zt-dot[data-identity="b"] { fill: color-mix(in srgb, var(--color-identity-b) 55%, transparent); stroke: var(--color-identity-b); }
+
+  /* Spread. */
+  .zt-area { stroke-width: 2; fill: color-mix(in srgb, var(--zt-series) 18%, transparent); stroke: var(--zt-series); }
+  .zt-spread-ends { display: flex; justify-content: space-between; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); }
+
+  /* Registered test. */
+  .zt-tests { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .zt-test-rows { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .zt-test-row { display: grid; grid-template-columns: 56px minmax(0, 1fr) 48px; align-items: center; gap: var(--space-3); }
+  .zt-test-label { color: var(--color-on-bg-secondary); font-family: var(--font-mono), monospace; font-size: var(--text-xs); }
+  .zt-test-track { position: relative; height: 20px; border-radius: var(--radius-sm); background: var(--rs-well); }
+  .zt-test-fill { position: absolute; inset-block: 0; left: 0; width: var(--w); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--color-text-tertiary) 45%, transparent); }
+  .zt-test-fill[data-series="zts"] { background: color-mix(in srgb, var(--color-accent) 40%, transparent); }
+  .zt-test-whisker { position: absolute; top: 50%; left: var(--lo); width: calc(var(--hi) - var(--lo)); height: 2px; background: var(--color-text); }
+  .zt-test-value { color: var(--color-text); font-family: var(--font-mono), monospace; font-size: var(--text-sm); text-align: right; font-variant-numeric: tabular-nums; }
+  .zt-test-delta { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-3); margin: 0; }
+  .zt-test-delta-label { color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+  .zt-test-delta .rs-value { font-size: var(--text-xl); }
+  .zt-test-ci { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); }
+
+  /* Moves, teams, the point, leaderboard. */
+  .zt-moves { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); max-width: 520px; }
+  .zt-team-cell { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text); }
+  .zt-lead-rank { display: flex; align-items: center; gap: var(--space-2); width: 100%; min-width: 0; }
+  .zt-lead-rank > .player-cell { flex: 1 1 auto; min-width: 0; overflow: hidden; }
+  .zt-rank { flex: none; min-width: 24px; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); text-align: right; }
+  .zt-progression { display: grid; gap: var(--space-2); margin: 0; padding: var(--space-1) 0 var(--space-1) var(--space-5); border-left: 2px solid var(--color-hairline-strong); list-style: none; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .zt-progression li[data-emphasis] { color: var(--color-accent); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 650; }
+  .zt-board, .zt-top, .zt-player { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+  .zt-board-bar, .zt-top-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .zt-top-bar { justify-content: flex-start; }
+  .zt-top-bar .ui-input-wrapper { flex: 1 1 200px; width: auto; max-width: 320px; }
+  .zt-glossary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); margin: 0; }
+  .zt-glossary dt { color: var(--color-text); font-size: var(--text-sm); font-weight: 650; }
+  .zt-glossary dd { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  /* Player tab. */
+  .zt-player-pick { grid-column: 1 / -1; align-items: flex-start; }
+  .zt-player-pick > :last-child { flex: 1 1 260px; min-width: 0; }
+  .zt-hero-card { display: flex; align-items: center; gap: var(--space-4); }
+  .zt-hero-text { display: grid; gap: var(--space-1); min-width: 0; }
+  .zt-hero-name { color: var(--color-text); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 700; }
+  .zt-hero-sub { display: inline-flex; align-items: center; gap: var(--space-1-5); color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
+
+  /* The floating view dock (Databallr's bottom pill). */
+  .zt-dock { position: fixed; bottom: var(--space-5); inset-inline: 0; z-index: var(--z-header); width: max-content; max-width: calc(100% - var(--space-8)); margin-inline: auto; padding: var(--space-1-5); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-surface-1) 92%, transparent); box-shadow: inset 0 0 0 1px var(--color-hairline-strong), var(--shadow-lg); backdrop-filter: blur(12px); }
+
+  @media (max-width: 767px) {
+    .rs-column.zt-page { gap: var(--space-6); }
+    .zt-panel { padding: var(--space-4); }
+    .zt-league-row { grid-template-columns: 96px 88px minmax(0, 1fr); gap: var(--space-2); font-size: var(--text-xs); }
+    .zt-league-avg { --zt-league-lead: 200px; }
+    .zt-mix-row { grid-template-columns: 84px 32px minmax(0, 1fr); gap: var(--space-2); }
+    .zt-mix-label { font-size: var(--text-xs); }
+    .zt-mix-axis { --zt-mix-lead: 132px; }
+    .zt-expected, .zt-tests, .zt-glossary { grid-template-columns: minmax(0, 1fr); }
+    .zt-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .zt-compare { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: var(--space-4); }
+    .zt-compare-rows { grid-column: 1 / -1; grid-row: 2; padding-top: 0; }
+    .zt-controls { grid-template-columns: minmax(0, 1fr); }
+    .zt-controls > .zt-panel-head { grid-column: 1; grid-row: auto; }
+    .zt-control-row > .zt-kicker:first-child { flex-basis: 100%; }
+    .rs-grid.zt-top-grid[data-lead] { --rs-grid-lead: 236px; }
+    .zt-quote { font-size: var(--text-md); }
+    .zt-dock { bottom: var(--space-3); }
+  }
+}
+
+/* Header and identity sizes live in the foundation layer (RD00–RD02 gotcha). */
+@layer foundation {
+  .ui-page-header.zt-hero { padding-top: var(--space-8); }
+  .zt-hero .ui-page-header-title-row { display: block; }
+  .zt-hero .ui-page-header-title { display: grid; gap: var(--space-5); margin: 0; }
+  .zt-hero-kicker { display: inline-flex; align-items: center; gap: var(--space-4); color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 400; letter-spacing: 0; }
+  .zt-hero-pill { color: var(--color-accent); font-family: var(--font-mono), monospace; font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; }
+  .zt-hero-title { color: var(--color-text); font-size: calc(var(--text-3xl) * 1.5); line-height: 1.1; font-weight: 800; letter-spacing: -0.03em; }
+  .zt-hero-chip { margin-inline-end: var(--space-2); padding: 0 var(--space-2); border-radius: var(--radius-md); background: var(--rs-well, color-mix(in srgb, var(--color-surface-0) 24%, transparent)); box-shadow: inset 0 0 0 1px var(--color-hairline-strong); color: var(--color-accent); }
+  .zt-hero .ui-page-header-subtitle { margin-top: var(--space-4); color: var(--color-on-bg-secondary); font-size: var(--text-xl); line-height: var(--text-xl-lh); white-space: normal; overflow: visible; }
+  /* Team-colour photos with the logo badge, as on other pages (owner, round 4): PlayerAvatar at 64 px. */
+  .zt-avatar.ui-identity-lg { --identity-media: 64px; }
+  @media (max-width: 767px) {
+    .zt-hero-title { font-size: calc(var(--text-2xl) * 1.5); }
+    .zt-hero .ui-page-header-subtitle { font-size: var(--text-md); line-height: var(--text-md-lh); }
+  }
+}

@@ -1,0 +1,112 @@
+{
+ "coefficients": {
+  "b2b_away": 2.168322683086667,
+  "b2b_home": -1.488594789105517,
+  "denver": 1.2422446725817107,
+  "form": 0.5660748193038668,
+  "games7": -0.4508780510224355,
+  "home": 0.44715907939657723,
+  "rest": -0.19328339540068312,
+  "strength_x_pace": 0.5915623962300777,
+  "travel_away_kkm": 0.14053780011340924,
+  "travel_home_kkm": 0.03889831093580275,
+  "utah": 1.506430855199161
+ },
+ "form_half_life_days": 120,
+ "form_rmse_by_half_life": {
+  "120": 13.181503247761071,
+  "30": 13.40753315992618,
+  "60": 13.270604084428545
+ },
+ "registration": {
+  "content_sha256": "7bba2a1b545e71bfac8967a73d82d593f1fb5fb6bc0a777feae91ffd7fc57d79",
+  "identity": "courtlens-win-probability-v2",
+  "parameters": {
+   "booster": {
+    "bagging_fraction": 0.3,
+    "early_stopping_rounds": 50,
+    "feature_fraction": 0.8,
+    "lambda_l2": 10,
+    "learning_rate": 0.03,
+    "max_rounds": 1500,
+    "min_data_in_leaf": 2000,
+    "num_leaves_grid_at_S1": [
+     15,
+     31
+    ]
+   },
+   "bootstrap": {
+    "replicates": 2000,
+    "unit": "game"
+   },
+   "ece_bins": 20,
+   "end_game_seconds": 120,
+   "expected_minutes": {
+    "appearances": 10,
+    "window_days": 365
+   },
+   "grid_seconds": 15,
+   "long_absence_seconds": 720,
+   "mean_start_shrink": 0.7,
+   "pregame_ewma_half_life_days": 60,
+   "seed": 2501,
+   "splits": {
+    "calibrate": [
+     "2023-24"
+    ],
+    "prospective": [
+     "2026-27"
+    ],
+    "select": [
+     "2022-23"
+    ],
+    "test": [
+     "2024-25",
+     "2025-26"
+    ],
+    "train": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22"
+    ]
+   },
+   "team_form": {
+    "half_life_days": [
+     30,
+     60,
+     120
+    ],
+    "ridge_lambda": 20,
+    "window_days": 400
+   }
+  },
+  "registered_on": "2026-11-04"
+ },
+ "sigma0": {
+  "pace_mean": 201.19328857552338,
+  "pace_sd": 4.767146154465593,
+  "theta": [
+   2.5553631136065404,
+   0.006216282316413355,
+   0.04802168050149086
+  ],
+  "three_mean": 0.6967733907332498,
+  "three_sd": 0.10365573661238951
+ },
+ "train_rmse": 12.909798362676328,
+ "train_seasons": [
+  "2015-16",
+  "2016-17",
+  "2017-18",
+  "2018-19",
+  "2019-20",
+  "2020-21",
+  "2021-22"
+ ],
+ "version": "courtlens-win-probability-v2"
+}

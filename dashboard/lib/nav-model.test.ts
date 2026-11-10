@@ -1,7 +1,7 @@
 import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { HOSTED_DEMO_HIDDEN, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems, moreLinks } from "./nav-model";
+import { HOSTED_DEMO_HIDDEN, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems, balanceColumns, moreLinks } from "./nav-model";
 
 const appDir = path.resolve(__dirname, "../app");
 function routeExists(href: string): boolean {
@@ -23,12 +23,20 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
     expect(new Set(hrefs).size).toBe(hrefs.length);
   });
 
-  it("groups Research by the FO07 targets; Players and Compare follow Databallr", () => {
+  it("groups Research by the handoff's target menu, with an icon and description on every item; Players and Compare follow Databallr", () => {
     const research = NAV_MENUS.find(menu => menu.id === "research")!;
-    expect(research.groups.map(group => group.title)).toEqual(["Impact", "Shooting", "Trends & Distributions", "Forecasts & Evaluation", "Tools"]);
-    expect(research.groups[0].items.map(item => item.href)).toEqual(["/research/rapm", "/research/defensive-matchups"]);
-    expect(research.groups[1].items.map(item => item.href)).toEqual(["/research/shooting"]);
-    expect(research.groups[3].items.map(item => item.label)).toEqual(["Points Forecasts", "Evaluation Archive", "Case Studies", "Saved Investigations"]);
+    expect(research.groups.map(group => group.title)).toEqual(["Models", "Impact", "Shooting", "Methods", "Tools"]);
+    expect(research.groups.map(group => group.items.map(item => item.href))).toEqual([
+      ["/research/win-probability", "/research/projected-impact", "/research/lineup-model"],
+      ["/research/rapm/six-factor", "/research/backtest"],
+      ["/research/shooting", "/research/defensive-matchups", "/research/zts", "/research/shot-quality"],
+      ["/research/signal-noise", "/forecasts", "/methodology/learning"],
+      ["/wingspan", "/draft", "/calculator", "/whats-new"],
+    ]);
+    for (const item of research.groups.flatMap(group => group.items)) {
+      expect(item.icon, item.label).toBeTruthy();
+      expect(item.description, item.label).toBeTruthy();
+    }
     const players = NAV_MENUS.find(menu => menu.id === "players")!.groups.flatMap(group => group.items.map(item => item.href));
     expect(players).toEqual(["/last-games", "/showcase", "/similar-players", "/players"]);
     const compare = NAV_MENUS.find(menu => menu.id === "compare")!.groups.flatMap(group => group.items.map(item => item.href));
@@ -36,7 +44,7 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
   });
 
   it("keeps the D9 support links in the More menu", () => {
-    expect(MORE_LINKS.map(item => item.label)).toEqual(["Settings", "Data Status", "Methodology", "What's New", "Planner"]);
+    expect(MORE_LINKS.map(item => item.label)).toEqual(["Settings", "Data Status", "Methodology", "Planner"]);
   });
 
   it("drops Planner from the hosted demo only (PC11)", () => {
@@ -56,10 +64,25 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
     expect(activeNavSection("/research/rapm/six-factor")).toBe("research");
     expect(activeNavSection("/similar-players/shot-profile")).toBe("players");
     expect(activeNavSection("/research/shooting/aftermath")).toBe("research");
+    // Off the menu but still reachable: they keep the Research section highlighted.
+    expect(activeNavSection("/research/case-studies")).toBe("research");
+    expect(activeNavSection("/evaluation")).toBe("research");
+    expect(activeNavSection("/investigations")).toBe("research");
   });
 
   it("keeps app directory routes discoverable (sanity check on the route probe)", () => {
     expect(readdirSync(appDir).length).toBeGreaterThan(10);
     expect(routeExists("/no-such-route")).toBe(false);
+  });
+});
+
+describe("dropdown columns (owner, 2026-11-06: no gaps)", () => {
+  it("splits Research into two columns of near-equal height, each in menu order", () => {
+    const research = NAV_MENUS.find(menu => menu.id === "research")!;
+    const [left, right] = balanceColumns(research.groups);
+    expect(left.length + right.length).toBe(research.groups.length);
+    expect(left[0].title).toBe("Models");
+    const order = (column: typeof left) => column.map(group => research.groups.indexOf(group));
+    for (const column of [left, right]) expect(order(column)).toEqual([...order(column)].sort((a, b) => a - b));
   });
 });

@@ -1,0 +1,99 @@
+{
+ "defect": "run_test overwrote the score block's key `models` with the weight-hash map; scores restored from the saved weights with the same functions, gains identical",
+ "gains_equal_frozen": true,
+ "models": {
+  "home_only": {
+   "pooled": {
+    "high": 94.69051451605068,
+    "low": 93.83824652333374,
+    "wrmse": 94.2696521407151
+   },
+   "seasons": {
+    "2023-24": {
+     "high": 93.19169540633159,
+     "low": 91.72833069753317,
+     "wrmse": 92.46150005711567
+    },
+    "2024-25": {
+     "high": 94.67482655638455,
+     "low": 93.17617447921565,
+     "wrmse": 93.94644491499095
+    },
+    "2025-26": {
+     "high": 97.10147577285494,
+     "low": 95.62299460624851,
+     "wrmse": 96.32982023369637
+    }
+   }
+  },
+  "lineup": {
+   "pooled": {
+    "high": 94.50423432348666,
+    "low": 93.64457559329742,
+    "wrmse": 94.08100708166252
+   },
+   "seasons": {
+    "2023-24": {
+     "high": 93.28496931244014,
+     "low": 91.78606665690468,
+     "wrmse": 92.52726541009076
+    },
+    "2024-25": {
+     "high": 94.29425834258505,
+     "low": 92.7990973556615,
+     "wrmse": 93.5732883350555
+    },
+    "2025-26": {
+     "high": 96.86189515444237,
+     "low": 95.35658895658857,
+     "wrmse": 96.07741771881895
+    }
+   }
+  },
+  "ridge": {
+   "pooled": {
+    "high": 94.50422199969285,
+    "low": 93.64456255628714,
+    "wrmse": 94.08099610384306
+   },
+   "seasons": {
+    "2023-24": {
+     "high": 93.2849516690396,
+     "low": 91.78605279690088,
+     "wrmse": 92.52724558251423
+    },
+    "2024-25": {
+     "high": 94.29425948333132,
+     "low": 92.79909477083102,
+     "wrmse": 93.57328803480391
+    },
+    "2025-26": {
+     "high": 96.86188093033181,
+     "low": 95.35658041550064,
+     "wrmse": 96.07740487981725
+    }
+   }
+  }
+ },
+ "results_sha256": "b03ba6ac866ba0d52351e15d0823e9cd1cd0e71318eddcd7a72e506dc0d22280",
+ "scores_sha256": "c10fd35e4eedb06870a359642da68fc30449810629567da55d9a957f98360ce6",
+ "version": "courtlens-lineup-model-v1",
+ "weights": {
+  "2022-23": {
+   "lineup": "e9c72e5210da75ec99a4b262b934788dcea22078a3e88a9e30e4092cea1db17a",
+   "ridge": "e95b26e5e4d5483c2e291e9b3d6152815b931e31872d8e076c3f71cc92e107e1"
+  },
+  "2023-24": {
+   "lineup": "334ef1d9843755c33b69d79f8ae17480961a6f075d8d8631174ced5113c1c1f6",
+   "ridge": "f673e10abb3aac19f6529090cd6d899ce033e59664eae22625ea0edaa7ee39cc"
+  },
+  "2024-25": {
+   "lineup": "1f03e7cd13231cbce25384d50c69dc4ead61d78e7a8c50cec29a2027f0b7e3c7",
+   "ridge": "f15964d8f83495ee9b7aaf56d993885f98fc584daa7551a239d217044bc667ad"
+  },
+  "2025-26": {
+   "lineup": "bcc0470fd3f95ac8173b1fb760420bbf91b154ad1ccff1fb30c52196230f1d45",
+   "ridge": "fa07e0f6448f2ffb5fce6262241b5f8cdbb0e5212450e9f3d563191332ec379c"
+  }
+ }
+}

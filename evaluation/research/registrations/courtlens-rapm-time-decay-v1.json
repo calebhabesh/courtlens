@@ -1,0 +1,47 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-rapm-time-decay-v1",
+  "block": "R01",
+  "registered_on": "2026-11-04",
+  "kind": "descriptive",
+  "question": "Player offensive/defensive RAPM as of a date, fitted on all earlier regular-season games with exponentially decaying game weights.",
+  "inputs": [
+    "Admitted regular-season stints 2014-15 to 2025-26: sealed IM03 bundles (2023-24 to 2025-26) and courtlens-impact-history-v1 bundles (2014-15 to 2022-23)"
+  ],
+  "method": [
+    "Design as impact-ratings-v1: per stint two offensive observations, +1 offensive indicators, +1 opponent defensive indicators, unpenalized intercept, target 100 * points / counted controls.",
+    "Home: one signed home column per season (+1 home offense, -1 away offense), instead of one column for all seasons; 2019-20 games on or after 2020-07-30 (bubble, neutral site) have home = 0.",
+    "Game weight w = 0.5 ** (age_days / half_life_days), age_days = cutoff - game_date in days, cutoff exclusive (game_date < cutoff). Observation weight = counted controls * w. Games with w < min_weight are dropped (age_days > 1827 for the registered parameters).",
+    "Ridge: scikit-learn 1.6.1 Ridge, lsqr, tol 1e-10, max_iter 10000, float64, one thread; an exhausted iteration budget fails the fit.",
+    "Centering: offense and defense coefficients separately, weighted by decayed player seconds; DRAPM = -defense coefficient; RAPM = ORAPM + DRAPM.",
+    "Season-end fits: one per regular season 2014-15 to 2025-26 with cutoff = day after the season's last admitted regular-season game."
+  ],
+  "parameters": {
+    "half_life_days": 550,
+    "min_weight": 0.1,
+    "alpha_grid": [100, 300, 1000, 3000, 10000],
+    "cv_folds": 3,
+    "bubble_neutral_from": "2020-07-30",
+    "qualification": {"recent_days": 550, "min_games": 20, "min_controls_each_side": 1000}
+  },
+  "selection": "Alpha by 3 shuffled game-grouped folds (seed 2501, sorted game ids) inside the fit window, minimizing decayed-weight pooled validation MSE; exact ties prefer smaller alpha. The selected alpha is refitted on the whole window. If the selected alpha is a grid endpoint it is reported as such; the grid is not widened after seeing results.",
+  "uncertainty": "Season-end fits get game-bootstrap intervals under courtlens-impact-intervals-v1.",
+  "evaluation": [
+    "Chronological diagnostic per season 2015-16 to 2025-26: fit with cutoff at the date starting the season's last 20% of game dates; held-out stint margin RMSE (per 100 mean controls) against the 1Y impact-ratings-v1 method fitted on the same season's earlier games only and against a team/context ridge. Descriptive diagnostic, not a promotion gate.",
+    "Adjacent season-end correlation of RAPM among players qualified in both"
+  ],
+  "acceptance": [
+    "Two independent runs reproduce every artifact hash",
+    "Changing or adding games on or after a cutoff never changes that cutoff's artifact hash",
+    "Decayed-seconds-weighted ORAPM and DRAPM means are approximately zero"
+  ],
+  "outputs": ["data/derived/impact-time-decay-v1/ season-end artifacts and diagnostics"],
+  "limitations": [
+    "Descriptive model estimate under lineup confounding, not isolated skill",
+    "Playoff games are not included",
+    "The 550-day half-life follows the common public default and is not tuned"
+  ],
+  "negative_result_policy": "Publish the diagnostic whichever way it goes, including if time decay does not beat the 1Y fit.",
+  "seed": 2501,
+  "budget": {"cpu_threads": 2, "max_peak_mib": 3072, "max_wall_seconds": 1800}
+}

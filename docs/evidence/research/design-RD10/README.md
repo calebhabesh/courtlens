@@ -1,0 +1,89 @@
+# RD10 Metric Backtest: design evidence
+
+Research → Metric Backtest (`/research/backtest`), rebuilt from approved CourtLens Research patterns. Instructions and status:
+[research design catalog, RD10](../../../research-design-catalog.md#rd10-metric-backtest--). How the analysis was built and what its
+numbers mean: [R08](../r08/README.md).
+
+## Reference
+
+None. There is no Databallr page for it, so each section borrows a named, approved CourtLens precedent (below). databallr.com and draftballr.com were not fetched.
+
+Before the rebuild (:3100, read 2026-11-09): ten stacked sections under the old header and four stat tiles, old `Table`s, an overlaid RMSE chart, hashes and a seed in the page body. 5,644 px tall at 1440 and 9,475 px at 390, 0 console errors, 0 page overflow. Those measurements are in the catalog; the before screenshots were not kept.
+
+## Round 1 (owner, 2026-11-09)
+
+"Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively." The proposal and its four recommendations are recorded with the instruction in the catalog.
+
+**Built**
+
+| Section | What it shows | Borrowed from |
+| --- | --- | --- |
+| Hero | `sq-hero research-hero`, one line, the meta line (games, seasons, metrics), links to RAPM Ratings, Projected Impact, Learning | RD00 to RD08; RD07's meta line |
+| Which metric predicts games best? | One sentence, the error and its gain over Team net with the interval, the two unranked pairs, and that this tests ratings, not forecasts | RD08 headline line |
+| Head to head | A 9×9 compact `StatsGrid` of all 36 RMSE gains, both directions, each with its 95% interval; green/red only where it excludes zero; its own colour key | RD04 `GridValue tone`, RD08 ranges |
+| Every score, against one metric | The paired table on `StatsGrid`, Against and Seasons selects; one sentence when every row has the same verdict, the column when they differ | RD08 round 4 |
+| Season by season | One line with a 95% band: a chosen metric's gain over a chosen reference, with zero on the axis; then RMSE by season | RD06, RD08 `SeasonLineChart` |
+| Scores, each over its own seasons | Pooled grid, no sort, a line saying why rows mustn't be compared; calibration plot of the chosen metric against Team net, its bins on `StatsGrid` beside it, ending level | RD08 grids, RD04 `ReliabilityPlot`, RD08 round 5 |
+| 2026-27 | Prospective first, hindsight apart and labelled | RD08 |
+| How to read | Three cards and a `Glossary` of scores, the nine metrics and DARKO's omission | RD05, RD08 |
+| About this page | Collapsed: caveats, method, rule, hashes, the R08 evidence link | RD06, RD07, RD08 |
+
+- **Shared additions.** `SeasonLineChart` gained an optional `zero` (keeps zero on the axis and marks it). `ReliabilityPlot` gained optional `tones`, `outcome` and `unit`, so win probabilities in category tints don't read as a gold/blue sign or as "make probability"; without them both behave as before.
+- **Rows stay in registered order**, Team net first. A pooled row covers its own seasons, so the page never ranks metrics itself.
+- **Served text.** The API's notes for Projected Impact say "R07's frozen model" and "(R07)", a project code; the page shows "the frozen Projected Impact model" and drops the code. The API is unchanged.
+- **Team net's Minutes replaced** shows a dash: it is served as 0 and the baseline rates no players.
+- **Nothing else moved.** No API, analysis or frozen result changed.
+
+**Page size.** 6,799 px at 1440 with About collapsed (was 5,644) and 8,988 px at 390 (was 9,475): the desktop page is longer because the 9×9, the calibration plot and its bins are new, and the metric notes are now cards.
+
+**Open, for the owner.** The served 2026-27 summary was written Nov 5, 2026 and stops at Nov 4, so the page shows 0 prospective games and 120 hindsight. R08's timer was never installed; the page moves only after `courtlens refresh-metric-backtest`, which was not run.
+
+**Checks**
+
+| Check | Result |
+| --- | --- |
+| Lint (ESLint, Stylelint), typecheck | clean |
+| Vitest | 837 passed (2 new: the zero line, the plot's own wording and tones) |
+| `r08-metric-backtest` ×3 (rewritten for the layout) | 24/24 |
+| Full Playwright (sandbox, mock API, 2 workers, 8 GiB cap) | 609 passed, 17 skipped, 0 failed. The known Projected Impact flake did not appear |
+| Real data ([`real-data-check.json`](real-data-check.json), [`real-check.mjs`](real-check.mjs), proxy [`readonly-proxy.mjs`](readonly-proxy.mjs), GET only) | 29,440 values (25,859 at 1440 over 180 loads; 3,581 at 390 over 13 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images |
+| Coverage of that check | all 36 pairs both ways; at 1440 every reference with every season, all 72 metric and reference pairs on the line, all eight calibration choices; the pooled, by-season and 2026-27 tables; served notes; hashes |
+| Layout and rules | 992 px column; hero icon centred; calibration panel and table end level (0 px); no section hairlines, gold/blue tones, arrow characters, ISO dates, project codes or repository wording on the page; no phone control under 40 px; whole-pixel control heights; axis title clear of the tick labels. No players or teams on this page, so 0 images and 0 logos |
+
+**Found by viewing the screenshots, then fixed and re-verified.** A missing comma in the headline, nested brackets in the unranked-pairs line, "0.0% to 0.0%", a lowercase rule sentence, the phone chart's axis title running into its tick labels (the foundation layer set that text for a tile-sized plot), and the "R07" code above.
+
+**Glance test** (`backtest-top-1440.png`, full pages at both widths, viewed). In five seconds: what the page asks (hero), the answer in one sentence, and the first rows of a green-and-red table saying who beats whom.
+
+**Notes.** Section captures taken by Playwright can show the sticky site header or the Skip to content link across the middle of a tall section; neither is on the page there. Visuals were judged from the sandbox build. Earlier in this round the new CSS file's import was added a moment before the file existed, so the owner's :3100 showed a build error until the import was toggled (no server restart, `app/globals.css` left unchanged).
+
+## Round 2 (owner, 2026-11-09): "Yes, do all 5. Complete it comprehensively."
+
+| # | Change | Result |
+| --- | --- | --- |
+| 1 | Ran the 2026-27 refresh | `courtlens refresh-metric-backtest --force` (the owner's instruction; forced because the last run was under 7 days old). 26 games added: **25 prospective and 121 hindsight, scored through Nov 8, 2026**. It only appends to `games.jsonl` and rewrites `summary.json` under the git-ignored `data/derived/metric-backtest-serving/`; no frozen result, database or server was touched. The API reads the file on each request. |
+| 2 | Definitions collapsed | "How to read" keeps the three cards and one visible DARKO line; the glossary is a collapsed "Scores and metrics, defined" |
+| 3 | Winner picked gains | "+2.6 pts", interval in the same unit |
+| 4 | Answer trimmed | "Projected Impact can't be separated from RAPM 3Y or Time decay (opener)."; the numbers stay in the grid |
+| 5 | Calibration captions | The panel's title, source and sample lines are gone; the source is in About, Method |
+
+**The first prospective result.** 25 games: no player metric's RMSE gain over Team net excludes zero (for example Time decay +0.89, 95% −1.28 to +3.18). Twenty-five games decide nothing, and the backtest verdict never changes from these. This is the first time this table has rendered on real data; the 1 to 19 game state is covered by the spec with a modified payload.
+
+**A bug the refresh exposed, fixed on the page.** The scorer orders each pair by the names in the group's first row, and rows read back from `games.jsonl` have sorted keys, while rows scored in the same run don't. After this refresh most hindsight pairs came back with Team net first, and the page (like the R08 build before it) only looked one way round, so those rows drew a dash. `groupGain` in `lib/metric-backtest.ts` now reads either direction and flips the sign, as `pairOf` already did. The scorer is unchanged. The real-data check had copied the page's one-way lookup, so it passed; it now finds the pair independently and requires a gain on every non-baseline row. The problem was spotted in the screenshot.
+
+**Spec fixture.** `e2e/fixtures/metric-backtest.json` is the real API answer again, now with the 25 prospective games.
+
+**Page size.** 5,789 px at 1440 with both disclosures collapsed (round 1: 6,799; the original: 5,644) and 6,891 px at 390 (round 1: 8,988; the original: 9,475).
+
+| Check | Result |
+| --- | --- |
+| Lint, typecheck | clean |
+| Vitest | 838 passed |
+| `r08-metric-backtest` ×3 | 30/30 |
+| Full Playwright | 611 passed, 17 skipped, 0 failed. The known Projected Impact flake did not appear |
+| Real data | 29,738 values (26,008 at 1440 over 180 loads; 3,730 at 390 over 13 loads), 0 mismatches, 0 console errors, 0 overflow, 0 broken images. Prospective and hindsight tables compared in full; the definitions and About collapsed; the calibration title and captions not visible; no phone control under 40 px |
+
+Screenshots viewed: `backtest-season-2026-27-1440.png`, `backtest-scores-1440.png`, `backtest-scores-against-1440.png`, `backtest-reading-1440.png`, `backtest-glossary-1440.png`, full pages, `backtest-top-390.png`. Visuals judged from the sandbox build; the :3100 CSS chunk was refreshed and checked before reporting.
+
+## Approved (owner, 2026-11-09)
+
+"Approved, install the timer." Timer `courtlens-metric-backtest` (daily, 15:00 UTC, in `scripts/install_data_refresh.sh`) is enabled; a manual start exited 0 with `{"skipped": true}` and left `summary.json` unchanged. The first scheduled score is expected on Nov 17, 2026, the first firing at least 7 days after the Nov 9 run.

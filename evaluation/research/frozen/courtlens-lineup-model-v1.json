@@ -1,0 +1,297 @@
+{
+ "diagnostics": {
+  "2023-24": {
+   "additive_sd_per100": 10.902778945761884,
+   "interaction_sd_per100": 0.004696166589468243,
+   "max_abs_interaction_per100": 0.02066004976362541,
+   "own_players": 518,
+   "prediction_correlation_with_ridge": 0.9999999993784172,
+   "test_games": 1216,
+   "test_stints": 31365
+  },
+  "2024-25": {
+   "additive_sd_per100": 9.147909965497059,
+   "interaction_sd_per100": 0.0033114455609969885,
+   "max_abs_interaction_per100": 0.014263655400885122,
+   "own_players": 527,
+   "prediction_correlation_with_ridge": 0.9999999996425522,
+   "test_games": 1212,
+   "test_stints": 32005
+  },
+  "2025-26": {
+   "additive_sd_per100": 8.761929188283263,
+   "interaction_sd_per100": 0.006501554250661034,
+   "max_abs_interaction_per100": 0.025526573777345844,
+   "own_players": 534,
+   "prediction_correlation_with_ridge": 0.9999999982181851,
+   "test_games": 1227,
+   "test_stints": 34057
+  }
+ },
+ "gains": {
+  "lineup_over_home_only": {
+   "pooled": {
+    "gain": 0.18864505905257545,
+    "high": 0.25438819321029726,
+    "low": 0.12084816131357744
+   },
+   "seasons": {
+    "2023-24": {
+     "gain": -0.06576535297509167,
+     "high": 0.08676401659012915,
+     "low": -0.2322401843478147
+    },
+    "2024-25": {
+     "gain": 0.37315657993545415,
+     "high": 0.4589007787934239,
+     "low": 0.2877646893915283
+    },
+    "2025-26": {
+     "gain": 0.25240251487741716,
+     "high": 0.33564060258426265,
+     "low": 0.1707719981895295
+    }
+   }
+  },
+  "lineup_over_ridge": {
+   "pooled": {
+    "gain": -1.0977819457025362e-05,
+    "high": -7.864771470877942e-06,
+    "low": -1.3989506306444354e-05
+   },
+   "seasons": {
+    "2023-24": {
+     "gain": -1.9827576537068126e-05,
+     "high": -1.4643681883441676e-05,
+     "low": -2.4880959335149554e-05
+    },
+    "2024-25": {
+     "gain": -3.002515853722798e-07,
+     "high": 3.178623678934399e-06,
+     "low": -3.502847008007847e-06
+    },
+    "2025-26": {
+     "gain": -1.2839001698239372e-05,
+     "high": -5.8561059613993e-06,
+     "low": -1.9877528432843405e-05
+    }
+   }
+  },
+  "ridge_over_home_only": {
+   "pooled": {
+    "gain": 0.18865603687203247,
+    "high": 0.2543970682758033,
+    "low": 0.12086191969933256
+   },
+   "seasons": {
+    "2023-24": {
+     "gain": -0.0657455253985546,
+     "high": 0.08678438669191868,
+     "low": -0.23221596792775898
+    },
+    "2024-25": {
+     "gain": 0.3731568801870395,
+     "high": 0.4588994390407499,
+     "low": 0.28776563762478347
+    },
+    "2025-26": {
+     "gain": 0.2524153538791154,
+     "high": 0.3356494525016866,
+     "low": 0.17079186140294278
+    }
+   }
+  }
+ },
+ "game_strengths_sha256": "70be6d84468b4a7652727efdbb3b97b6fd3f7cc54986cac608622d3743fd1112",
+ "models": {
+  "2022-23": {
+   "lineup": "e9c72e5210da75ec99a4b262b934788dcea22078a3e88a9e30e4092cea1db17a",
+   "ridge": "e95b26e5e4d5483c2e291e9b3d6152815b931e31872d8e076c3f71cc92e107e1"
+  },
+  "2023-24": {
+   "lineup": "334ef1d9843755c33b69d79f8ae17480961a6f075d8d8631174ced5113c1c1f6",
+   "ridge": "f673e10abb3aac19f6529090cd6d899ce033e59664eae22625ea0edaa7ee39cc"
+  },
+  "2024-25": {
+   "lineup": "1f03e7cd13231cbce25384d50c69dc4ead61d78e7a8c50cec29a2027f0b7e3c7",
+   "ridge": "f15964d8f83495ee9b7aaf56d993885f98fc584daa7551a239d217044bc667ad"
+  },
+  "2025-26": {
+   "lineup": "bcc0470fd3f95ac8173b1fb760420bbf91b154ad1ccff1fb30c52196230f1d45",
+   "ridge": "fa07e0f6448f2ffb5fce6262241b5f8cdbb0e5212450e9f3d563191332ec379c"
+  }
+ },
+ "registration": {
+  "content_sha256": "32140ebb73a4d59544f97683001861a7a24b5d6a82dc8046823e40c3fd5bd171",
+  "identity": "courtlens-lineup-model-v1",
+  "parameters": {
+   "backtest_calibration_season": "2022-23",
+   "batch": 2048,
+   "bootstrap_refits": 100,
+   "bootstrap_seed": 1414,
+   "bootstrap_train_seed": 2000,
+   "box_features": [
+    "points_per36",
+    "field_goals_attempted_per36",
+    "three_pointers_attempted_per36",
+    "free_throws_attempted_per36",
+    "rebounds_offensive_per36",
+    "rebounds_defensive_per36",
+    "assists_per36",
+    "steals_per36",
+    "blocks_per36",
+    "turnovers_per36",
+    "fouls_personal_per36",
+    "log_minutes"
+   ],
+   "bubble_neutral": [
+    "2020-07-30",
+    "2020-10-15"
+   ],
+   "code_sha256": {
+    "src/courtlens/evaluation/lineup_model_core.py": "50a70651c6283cd769ce7a94f8d2f5c3ff2d28d6109b3c32f229c66986eb4318",
+    "src/courtlens/evaluation/lineup_model_data.py": "f8f2c967e52c7fc4422ab6bf2f7581fa26bb00409077aef944cae7b171d29f32",
+    "src/courtlens/evaluation/lineup_model_runner.py": "b4d376112dff3a277701f4776da6df91712aeabc6d654084a4b5d935bd64b773",
+    "src/courtlens/evaluation/lineup_model_train.py": "2ea34b4bc7be6e08818b4328b5d157274d007fe8c335719249b9753d421d91fb"
+   },
+   "dataset_sha256": {
+    "boxes_sha256": "3ab77bd827a4803b2c1de069f1853dc55d32aef1016c38e43df9499de4b42a3e",
+    "stints_sha256": "694704a837d0e330c83a19452343c87358a6fae42fc0b0776c0a11cae4bd120b"
+   },
+   "dims": [
+    8,
+    16
+   ],
+   "epochs": 6,
+   "ffn_multiplier": 2,
+   "first_season": "2014-15",
+   "heads": 2,
+   "interaction_penalties": [
+    1e-05,
+    0.0001,
+    0.001,
+    0.01
+   ],
+   "last_season": "2025-26",
+   "learning_rate": 0.002,
+   "level": 0.95,
+   "min_possessions": 1000.0,
+   "neighbours": 10,
+   "package_versions": {
+    "numpy": "2.5.3",
+    "python": "3.14.9",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.18.1",
+    "torch": "2.15.0+cpu",
+    "umap-learn": "0.5.12"
+   },
+   "panel_lineups": 200,
+   "replicates": 2000,
+   "ridge_alphas": [
+    100.0,
+    300.0,
+    1000.0,
+    3000.0,
+    10000.0,
+    30000.0
+   ],
+   "rounds": 2,
+   "seeds": [
+    1401,
+    1402,
+    1403,
+    1404,
+    1405
+   ],
+   "selection_seasons": [
+    "2021-22",
+    "2022-23"
+   ],
+   "serving_season": "2026-27",
+   "test_seasons": [
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "threads": 2,
+   "tool_interval_percentiles": [
+    10.0,
+    90.0
+   ],
+   "umap": {
+    "metric": "euclidean",
+    "min_dist": 0.1,
+    "n_neighbors": 15,
+    "random_state": 1414
+   },
+   "window_seasons": 3
+  },
+  "registered_on": "2026-11-06"
+ },
+ "results_sha256": "b03ba6ac866ba0d52351e15d0823e9cd1cd0e71318eddcd7a72e506dc0d22280",
+ "rule": "lineup better only if the pooled 95% interval of ridge WRMSE minus lineup WRMSE lies above zero and the lineup model is lower in more than half of the test seasons; ridge better by the mirror rule; otherwise no difference",
+ "seasons_lineup_lower": 0,
+ "selected_alpha": 10000.0,
+ "selected_config": {
+  "dim": 8,
+  "penalty": 0.01
+ },
+ "selection_sha256": "65a4f741ff9da2278cdb58181b719d9b6db6eaf08eb4e05997e94fd7e03fae31",
+ "subsets": {
+  "all_ten_own": {
+   "2023-24": {
+    "lineup": 88.30978299458157,
+    "possession_share": 0.3474271244431647,
+    "ridge": 88.30978268950334,
+    "stints": 10179
+   },
+   "2024-25": {
+    "lineup": 90.9171538909156,
+    "possession_share": 0.3120184476083691,
+    "ridge": 90.91715414615331,
+    "stints": 9483
+   },
+   "2025-26": {
+    "lineup": 93.57204636262182,
+    "possession_share": 0.2574976217894157,
+    "ridge": 93.57204597642693,
+    "stints": 8369
+   }
+  },
+  "any_fallback": {
+   "2023-24": {
+    "lineup": 94.69604527908558,
+    "possession_share": 0.6525728755568353,
+    "ridge": 94.69601574271964,
+    "stints": 21186
+   },
+   "2024-25": {
+    "lineup": 94.75337956206432,
+    "possession_share": 0.6879815523916308,
+    "ridge": 94.7533790200051,
+    "stints": 22522
+   },
+   "2025-26": {
+    "lineup": 96.93115158490738,
+    "possession_share": 0.7425023782105843,
+    "ridge": 96.93113457496501,
+    "stints": 25688
+   }
+  }
+ },
+ "test_seasons": [
+  "2023-24",
+  "2024-25",
+  "2025-26"
+ ],
+ "verdict": "ridge_better",
+ "version": "courtlens-lineup-model-v1",
+ "versions": {
+  "numpy": "2.5.3",
+  "python": "3.14.9",
+  "scikit-learn": "1.6.1",
+  "scipy": "1.18.1",
+  "torch": "2.15.0+cpu",
+  "umap-learn": "0.5.12"
+ }
+}

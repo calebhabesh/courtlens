@@ -1,0 +1,501 @@
+{
+ "accepted": "S2",
+ "accepted_groups": [
+  "S1",
+  "S2"
+ ],
+ "baseline": {
+  "mu_form": {
+   "beta": 1.098853079778111,
+   "sigma": 16.030807738603812
+  },
+  "mu_full": {
+   "beta": 0.8772299870202851,
+   "sigma": 15.982772686448588
+  }
+ },
+ "calibration": {
+  "applied": false,
+  "cv_log_loss_after": 0.40378745184515313,
+  "cv_log_loss_before": 0.40355604889518587,
+  "ece_before": 0.014173438376339421,
+  "form": "slope on logit p, no intercept, so the two teams' probabilities sum to one",
+  "selected": "E",
+  "slope": 1.01713389869526
+ },
+ "comparators": {
+  "classifier": {
+   "features": [
+    "margin",
+    "seconds_left",
+    "fraction",
+    "overtime",
+    "mu",
+    "mu_fraction",
+    "possession",
+    "pending_own",
+    "pending_opp",
+    "timeouts_own",
+    "timeouts_opp",
+    "fouls_own",
+    "fouls_opp",
+    "bonus_own",
+    "bonus_opp",
+    "possession_age",
+    "home",
+    "strength",
+    "form",
+    "rest",
+    "b2b_own",
+    "b2b_opp",
+    "games7",
+    "travel_own",
+    "travel_opp",
+    "denver",
+    "utah"
+   ],
+   "model": "5ea5bbc68884cf2a49994127ef796567e7c3462100bc4f8637524997ebcda8b9",
+   "mu": "mu_full",
+   "rounds": 268
+  },
+  "elapsed_seconds": 28.8,
+  "logistic": {
+   "coefficients": [
+    0.08815243099649131,
+    0.20489272470498152,
+    0.0007784883429582244,
+    0.03842987825680205,
+    0.017377406616864568,
+    -0.027051231139759706,
+    0.0071989816201456875,
+    0.019886870989446644,
+    -0.13279368592038465
+   ],
+   "features": [
+    "z_margin",
+    "z_mu",
+    "fraction",
+    "z_possession",
+    "z_pending",
+    "timeouts",
+    "fouls",
+    "bonus",
+    "overtime"
+   ]
+  },
+  "select_log_loss": {
+   "classifier": 0.444928414736281,
+   "logistic": 0.4467088831900719
+  }
+ },
+ "end_game": {
+  "accepted": true,
+  "compared_with": "S2",
+  "elapsed_seconds": 47.0,
+  "features": [
+   "margin",
+   "seconds_left",
+   "fraction",
+   "overtime",
+   "mu",
+   "mu_fraction",
+   "possession",
+   "pending_own",
+   "pending_opp",
+   "timeouts_own",
+   "timeouts_opp",
+   "fouls_own",
+   "fouls_opp",
+   "bonus_own",
+   "bonus_opp",
+   "possession_age"
+  ],
+  "improvement_90_late": {
+   "games": 1229,
+   "high": 0.0052660646404067545,
+   "low": 0.0008634124350502258,
+   "mean": 0.003173754074359069
+  },
+  "model": "26bbd8a955d42ac8dc937f2fe0d5b72dc9de3db65badfcd7a646314a3c1719dd",
+  "mu": "mu_full",
+  "rounds": 182,
+  "states": 340647
+ },
+ "leaves": 31,
+ "overtime_slope": {
+  "mu_form": 0.06961668856553818,
+  "mu_full": 0.05264161791751983
+ },
+ "registration": {
+  "content_sha256": "7bba2a1b545e71bfac8967a73d82d593f1fb5fb6bc0a777feae91ffd7fc57d79",
+  "identity": "courtlens-win-probability-v2",
+  "parameters": {
+   "booster": {
+    "bagging_fraction": 0.3,
+    "early_stopping_rounds": 50,
+    "feature_fraction": 0.8,
+    "lambda_l2": 10,
+    "learning_rate": 0.03,
+    "max_rounds": 1500,
+    "min_data_in_leaf": 2000,
+    "num_leaves_grid_at_S1": [
+     15,
+     31
+    ]
+   },
+   "bootstrap": {
+    "replicates": 2000,
+    "unit": "game"
+   },
+   "ece_bins": 20,
+   "end_game_seconds": 120,
+   "expected_minutes": {
+    "appearances": 10,
+    "window_days": 365
+   },
+   "grid_seconds": 15,
+   "long_absence_seconds": 720,
+   "mean_start_shrink": 0.7,
+   "pregame_ewma_half_life_days": 60,
+   "seed": 2501,
+   "splits": {
+    "calibrate": [
+     "2023-24"
+    ],
+    "prospective": [
+     "2026-27"
+    ],
+    "select": [
+     "2022-23"
+    ],
+    "test": [
+     "2024-25",
+     "2025-26"
+    ],
+    "train": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22"
+    ]
+   },
+   "team_form": {
+    "half_life_days": [
+     30,
+     60,
+     120
+    ],
+    "ridge_lambda": 20,
+    "window_days": 400
+   }
+  },
+  "registered_on": "2026-11-04"
+ },
+ "steps": {
+  "S0": {
+   "features": [],
+   "mu": "mu_form",
+   "select_log_loss": {
+    "games": 1229,
+    "high": 0.4704372727620821,
+    "low": 0.43152697113121313,
+    "mean": 0.45127328449343285
+   }
+  },
+  "S0g": {
+   "accepted": false,
+   "compared_with": "S0",
+   "elapsed_seconds": 32.5,
+   "features": [
+    "margin",
+    "seconds_left",
+    "fraction",
+    "overtime",
+    "mu",
+    "mu_fraction"
+   ],
+   "groups": [
+    "base"
+   ],
+   "improvement_90": {
+    "games": 1229,
+    "high": 0.009017682592264122,
+    "low": 0.0011365828507988633,
+    "mean": 0.004760492099624241
+   },
+   "leaves": 31,
+   "mean_model": "a975e5a263dde4c56869e5f37372f2cfc3c2d939c24fe11c8847dd6be584d662",
+   "mean_rounds": 97,
+   "mu": "mu_form",
+   "select_log_loss": 0.44651279239380853,
+   "variance_model": "7503d7bec64d6b26a2768d772e9e835239e150bec582805cfe2a573dfb06a798",
+   "variance_rounds": 190
+  },
+  "S1": {
+   "accepted": true,
+   "compared_with": "S0",
+   "elapsed_seconds": 72.0,
+   "features": [
+    "margin",
+    "seconds_left",
+    "fraction",
+    "overtime",
+    "mu",
+    "mu_fraction",
+    "possession",
+    "pending_own",
+    "pending_opp",
+    "timeouts_own",
+    "timeouts_opp",
+    "fouls_own",
+    "fouls_opp",
+    "bonus_own",
+    "bonus_opp",
+    "possession_age"
+   ],
+   "groups": [
+    "S1"
+   ],
+   "improvement_90": {
+    "games": 1229,
+    "high": 0.010072177571580987,
+    "low": 0.0021757078067765404,
+    "mean": 0.005855542761163559
+   },
+   "leaves": 31,
+   "mean_model": "ac7a81e7a5602d33f7a8cece799a12471123b1f3016d16ad9774555e52ad702a",
+   "mean_rounds": 117,
+   "mu": "mu_form",
+   "select_log_loss": 0.44541774173226933,
+   "variance_model": "179d3dcbe466d6de48f5dfb2dfd4c2303b943dcf1491099e19bfb1cb211cd4bb",
+   "variance_rounds": 194
+  },
+  "S2": {
+   "accepted": true,
+   "compared_with": "S1",
+   "elapsed_seconds": 50.9,
+   "features": [
+    "margin",
+    "seconds_left",
+    "fraction",
+    "overtime",
+    "mu",
+    "mu_fraction",
+    "possession",
+    "pending_own",
+    "pending_opp",
+    "timeouts_own",
+    "timeouts_opp",
+    "fouls_own",
+    "fouls_opp",
+    "bonus_own",
+    "bonus_opp",
+    "possession_age",
+    "home",
+    "strength",
+    "form",
+    "rest",
+    "b2b_own",
+    "b2b_opp",
+    "games7",
+    "travel_own",
+    "travel_opp",
+    "denver",
+    "utah"
+   ],
+   "groups": [
+    "S1",
+    "S2"
+   ],
+   "improvement_90": {
+    "games": 1229,
+    "high": 0.010098171854934649,
+    "low": 0.0024719351135165848,
+    "mean": 0.006289784728692629
+   },
+   "leaves": 31,
+   "mean_model": "2b5c29aa57ac1405121087b6db006b8c9cd5c376475dce88cb724ae2f723a744",
+   "mean_rounds": 228,
+   "mu": "mu_full",
+   "select_log_loss": 0.4391279569262195,
+   "variance_model": "c6a7d9908db9f55b25730ec8c65dd01fe725403de6a4935c15f386d620b23fd2",
+   "variance_rounds": 143
+  },
+  "S3": {
+   "accepted": false,
+   "compared_with": "S2",
+   "elapsed_seconds": 51.8,
+   "features": [
+    "margin",
+    "seconds_left",
+    "fraction",
+    "overtime",
+    "mu",
+    "mu_fraction",
+    "possession",
+    "pending_own",
+    "pending_opp",
+    "timeouts_own",
+    "timeouts_opp",
+    "fouls_own",
+    "fouls_opp",
+    "bonus_own",
+    "bonus_opp",
+    "possession_age",
+    "home",
+    "strength",
+    "form",
+    "rest",
+    "b2b_own",
+    "b2b_opp",
+    "games7",
+    "travel_own",
+    "travel_opp",
+    "denver",
+    "utah",
+    "log_sigma0",
+    "pace_sum",
+    "three_sum"
+   ],
+   "groups": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "improvement_90": {
+    "games": 1229,
+    "high": 0.00012835275549364167,
+    "low": -0.0021212650895413195,
+    "mean": -0.0009753817084717945
+   },
+   "leaves": 31,
+   "mean_model": "70a39a502d20cd4fc6ee45ad55469c5817a7875b43b07b2ee324794107b6e4d4",
+   "mean_rounds": 172,
+   "mu": "mu_full",
+   "select_log_loss": 0.44010333834311727,
+   "variance_model": "0c8a01a9ca5f7fa9bd6a2b32c55a4add610acd44bba0874f84a2c32b837f53a2",
+   "variance_rounds": 247
+  },
+  "S4": {
+   "accepted": false,
+   "compared_with": "S2",
+   "elapsed_seconds": 82.3,
+   "features": [
+    "margin",
+    "seconds_left",
+    "fraction",
+    "overtime",
+    "mu",
+    "mu_fraction",
+    "possession",
+    "pending_own",
+    "pending_opp",
+    "timeouts_own",
+    "timeouts_opp",
+    "fouls_own",
+    "fouls_opp",
+    "bonus_own",
+    "bonus_opp",
+    "possession_age",
+    "home",
+    "strength",
+    "form",
+    "rest",
+    "b2b_own",
+    "b2b_opp",
+    "games7",
+    "travel_own",
+    "travel_opp",
+    "denver",
+    "utah",
+    "rotation",
+    "lost_own",
+    "lost_opp",
+    "foul_load_own",
+    "foul_load_opp",
+    "foul_trouble_own",
+    "foul_trouble_opp",
+    "current",
+    "current_near"
+   ],
+   "groups": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "improvement_90": {
+    "games": 1229,
+    "high": 0.002200870111224349,
+    "low": -0.0008404484910928679,
+    "mean": 0.0006930956360023627
+   },
+   "leaves": 31,
+   "mean_model": "d1dc06d2f2077028d12e2ba74893561d9f5961e823b00a5d1644650661d8c7db",
+   "mean_rounds": 432,
+   "mu": "mu_full",
+   "select_log_loss": 0.43843486099864304,
+   "variance_model": "e7560a03bdbb290e0ccdc1045d93ef8f75365c32333c0f660d5813f9ca0b1fb7",
+   "variance_rounds": 115
+  },
+  "S5": {
+   "accepted": false,
+   "compared_with": "S2",
+   "elapsed_seconds": 61.7,
+   "features": [
+    "margin",
+    "seconds_left",
+    "fraction",
+    "overtime",
+    "mu",
+    "mu_fraction",
+    "possession",
+    "pending_own",
+    "pending_opp",
+    "timeouts_own",
+    "timeouts_opp",
+    "fouls_own",
+    "fouls_opp",
+    "bonus_own",
+    "bonus_opp",
+    "possession_age",
+    "home",
+    "strength",
+    "form",
+    "rest",
+    "b2b_own",
+    "b2b_opp",
+    "games7",
+    "travel_own",
+    "travel_opp",
+    "denver",
+    "utah",
+    "run_120",
+    "run_300",
+    "three_luck",
+    "ft_luck"
+   ],
+   "groups": [
+    "S1",
+    "S2",
+    "S5"
+   ],
+   "improvement_90": {
+    "games": 1229,
+    "high": 0.00101612317116268,
+    "low": -0.0002130671735664479,
+    "mean": 0.00041165926953065277
+   },
+   "leaves": 31,
+   "mean_model": "eea6897a5213b6e11fe8027af68f22c383a721f33cef902516a6d6d23c8f9a11",
+   "mean_rounds": 281,
+   "mu": "mu_full",
+   "select_log_loss": 0.4387162973651148,
+   "variance_model": "8b515ed3c10da20df0801fe9c91d0d7ac4a562c371ce37c474bd0220aadbb4f1",
+   "variance_rounds": 134
+  }
+ }
+}

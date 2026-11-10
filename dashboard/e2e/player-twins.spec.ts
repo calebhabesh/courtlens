@@ -166,7 +166,8 @@ test.describe("Player Twins", () => {
       await page.setViewportSize({ width: view.width, height: view.height });
       await openWorkbench(page, "/similar-players");
       await expect(page.locator(".tw-match-row")).toHaveCount(12);
-      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
+      // The match rows can run 52 px wide for a moment under load before settling; judge the settled page.
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
       await page.screenshot({ path: `../docs/evidence/alignment/similar-players/player-twins-${view.name}.png`, fullPage: true });
     });
   }

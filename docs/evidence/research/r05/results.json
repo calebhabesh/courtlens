@@ -1,0 +1,3452 @@
+{
+ "calibration": {
+  "calibrated_in_sample": {
+   "attempts": 218701,
+   "games": 1230,
+   "models": {
+    "baseline": {
+     "actual_points_per_shot": 1.093076849,
+     "brier": 0.230855454,
+     "ece": 0.010772947,
+     "expected_points_per_shot": 1.097542218,
+     "log_loss": 0.653585521,
+     "mean_predicted": 0.474339623,
+     "observed": 0.474341681,
+     "points_mae": 1.107256708
+    },
+    "lightgbm_31": {
+     "actual_points_per_shot": 1.093076849,
+     "brier": 0.224470798,
+     "ece": 0.011754998,
+     "expected_points_per_shot": 1.097742236,
+     "log_loss": 0.637268417,
+     "mean_predicted": 0.474344893,
+     "observed": 0.474341681,
+     "points_mae": 1.080541837
+    },
+    "reference": {
+     "actual_points_per_shot": 1.093076849,
+     "brier": 0.227529125,
+     "ece": 0.006334094,
+     "expected_points_per_shot": 1.096759377,
+     "log_loss": 0.644641194,
+     "mean_predicted": 0.474341704,
+     "observed": 0.474341681,
+     "points_mae": 1.093516928
+    }
+   },
+   "versus_baseline": {
+    "lightgbm_31": {
+     "brier": {
+      "difference": 0.006384656,
+      "interval": [
+       0.005974422,
+       0.006772639
+      ]
+     },
+     "log_loss": {
+      "difference": 0.016317104,
+      "interval": [
+       0.015378031,
+       0.017201032
+      ]
+     },
+     "points_mae": {
+      "difference": 0.026714871,
+      "interval": [
+       0.025766981,
+       0.02765572
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.025895824,
+       0.02929058
+      ],
+      "value": 0.027656508
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.023553884,
+       0.026301697
+      ],
+      "value": 0.024965522
+     }
+    },
+    "reference": {
+     "brier": {
+      "difference": 0.003326329,
+      "interval": [
+       0.002856898,
+       0.003793819
+      ]
+     },
+     "log_loss": {
+      "difference": 0.008944328,
+      "interval": [
+       0.007861302,
+       0.010033207
+      ]
+     },
+     "points_mae": {
+      "difference": 0.01373978,
+      "interval": [
+       0.012481374,
+       0.015027008
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.01238783,
+       0.016398096
+      ],
+      "value": 0.01440871
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.012047909,
+       0.015349416
+      ],
+      "value": 0.013685015
+     }
+    }
+   }
+  },
+  "platt": {
+   "baseline": {
+    "a": 0.156146032,
+    "b": 1.115225875,
+    "iterations": 4
+   },
+   "lightgbm_31": {
+    "a": 0.020050123,
+    "b": 0.972330149,
+    "iterations": 3
+   },
+   "reference": {
+    "a": -0.021140002,
+    "b": 0.897683269,
+    "iterations": 4
+   }
+  },
+  "season": "2023-24",
+  "uncalibrated": {
+   "attempts": 218701,
+   "games": 1230,
+   "models": {
+    "baseline": {
+     "actual_points_per_shot": 1.093076849,
+     "brier": 0.231953152,
+     "ece": 0.029603329,
+     "expected_points_per_shot": 1.030328917,
+     "log_loss": 0.655815554,
+     "mean_predicted": 0.444793056,
+     "observed": 0.474341681,
+     "points_mae": 1.107989908
+    },
+    "lightgbm_31": {
+     "actual_points_per_shot": 1.093076849,
+     "brier": 0.224511115,
+     "ece": 0.012134627,
+     "expected_points_per_shot": 1.08332566,
+     "log_loss": 0.637370045,
+     "mean_predicted": 0.468708609,
+     "observed": 0.474341681,
+     "points_mae": 1.076871825
+    },
+    "reference": {
+     "actual_points_per_shot": 1.093076849,
+     "brier": 0.227704225,
+     "ece": 0.012082427,
+     "expected_points_per_shot": 1.09619722,
+     "log_loss": 0.645086765,
+     "mean_predicted": 0.475611342,
+     "observed": 0.474341681,
+     "points_mae": 1.0862164
+    }
+   },
+   "versus_baseline": {
+    "lightgbm_31": {
+     "brier": {
+      "difference": 0.007442037,
+      "interval": [
+       0.007026183,
+       0.007845468
+      ]
+     },
+     "log_loss": {
+      "difference": 0.018445509,
+      "interval": [
+       0.017493236,
+       0.019401066
+      ]
+     },
+     "points_mae": {
+      "difference": 0.031118083,
+      "interval": [
+       0.030155837,
+       0.032076328
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.030340063,
+       0.03382251
+      ],
+      "value": 0.032084226
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.026686953,
+       0.029585803
+      ],
+      "value": 0.028126062
+     }
+    },
+    "reference": {
+     "brier": {
+      "difference": 0.004248927,
+      "interval": [
+       0.003735196,
+       0.004790358
+      ]
+     },
+     "log_loss": {
+      "difference": 0.010728789,
+      "interval": [
+       0.009555375,
+       0.011983032
+      ]
+     },
+     "points_mae": {
+      "difference": 0.021773508,
+      "interval": [
+       0.02043286,
+       0.02316345
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.016134957,
+       0.020644068
+      ],
+      "value": 0.018318041
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.014569134,
+       0.018255197
+      ],
+      "value": 0.01635946
+     }
+    }
+   }
+  }
+ },
+ "choice": {
+  "baseline_cells": 60,
+  "choice_sha256": "5898444ecab8279387df77cad2a7557f33b51d18b980c20130f2417c2e55cd6e",
+  "chosen": "lightgbm_31",
+  "fits": {
+   "lightgbm_127": {
+    "train_log_loss_first": 0.684338128,
+    "train_log_loss_last": 0.616453298,
+    "trees": 600
+   },
+   "lightgbm_31": {
+    "train_log_loss_first": 0.684545452,
+    "train_log_loss_last": 0.624972481,
+    "trees": 600
+   },
+   "logistic_spline": {
+    "iterations": 878
+   }
+  },
+  "gate": 0.01,
+  "metrics": {
+   "attempts": 217218,
+   "games": 1230,
+   "models": {
+    "baseline": {
+     "actual_points_per_shot": 1.090512757,
+     "brier": 0.231457341,
+     "ece": 0.029048668,
+     "expected_points_per_shot": 1.030723136,
+     "log_loss": 0.654874137,
+     "mean_predicted": 0.446326301,
+     "observed": 0.475374969,
+     "points_mae": 1.103049601
+    },
+    "lightgbm_127": {
+     "actual_points_per_shot": 1.090512757,
+     "brier": 0.22366444,
+     "ece": 0.009907268,
+     "expected_points_per_shot": 1.081562816,
+     "log_loss": 0.635548596,
+     "mean_predicted": 0.469637551,
+     "observed": 0.475374969,
+     "points_mae": 1.06942762
+    },
+    "lightgbm_31": {
+     "actual_points_per_shot": 1.090512757,
+     "brier": 0.223489098,
+     "ece": 0.009606948,
+     "expected_points_per_shot": 1.081976584,
+     "log_loss": 0.635113155,
+     "mean_predicted": 0.469803753,
+     "observed": 0.475374969,
+     "points_mae": 1.070280998
+    },
+    "logistic_spline": {
+     "actual_points_per_shot": 1.090512757,
+     "brier": 0.225341135,
+     "ece": 0.014627835,
+     "expected_points_per_shot": 1.0857031,
+     "log_loss": 0.639293704,
+     "mean_predicted": 0.4711459,
+     "observed": 0.475374969,
+     "points_mae": 1.076100043
+    },
+    "reference": {
+     "actual_points_per_shot": 1.090512757,
+     "brier": 0.226575265,
+     "ece": 0.007505422,
+     "expected_points_per_shot": 1.094000517,
+     "log_loss": 0.642562229,
+     "mean_predicted": 0.476205364,
+     "observed": 0.475374969,
+     "points_mae": 1.079675726
+    }
+   },
+   "versus_baseline": {
+    "lightgbm_127": {
+     "brier": {
+      "difference": 0.007792901,
+      "interval": [
+       0.007383034,
+       0.00822239
+      ]
+     },
+     "log_loss": {
+      "difference": 0.019325541,
+      "interval": [
+       0.018358263,
+       0.020320132
+      ]
+     },
+     "points_mae": {
+      "difference": 0.033621981,
+      "interval": [
+       0.032596701,
+       0.034679823
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.031937685,
+       0.035489576
+      ],
+      "value": 0.033668843
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.028066111,
+       0.031006941
+      ],
+      "value": 0.029510313
+     }
+    },
+    "lightgbm_31": {
+     "brier": {
+      "difference": 0.007968243,
+      "interval": [
+       0.007571283,
+       0.008396514
+      ]
+     },
+     "log_loss": {
+      "difference": 0.019760982,
+      "interval": [
+       0.018830893,
+       0.020732322
+      ]
+     },
+     "points_mae": {
+      "difference": 0.032768603,
+      "interval": [
+       0.031773354,
+       0.033797954
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.032731049,
+       0.036229355
+      ],
+      "value": 0.034426399
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.028757352,
+       0.03165097
+      ],
+      "value": 0.030175236
+     }
+    },
+    "logistic_spline": {
+     "brier": {
+      "difference": 0.006116206,
+      "interval": [
+       0.005708936,
+       0.00655625
+      ]
+     },
+     "log_loss": {
+      "difference": 0.015580434,
+      "interval": [
+       0.014649112,
+       0.016597636
+      ]
+     },
+     "points_mae": {
+      "difference": 0.026949558,
+      "interval": [
+       0.025909612,
+       0.028007479
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.024686633,
+       0.028308978
+      ],
+      "value": 0.026424766
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.022365182,
+       0.025321269
+      ],
+      "value": 0.023791493
+     }
+    },
+    "reference": {
+     "brier": {
+      "difference": 0.004882076,
+      "interval": [
+       0.004371538,
+       0.005439962
+      ]
+     },
+     "log_loss": {
+      "difference": 0.012311908,
+      "interval": [
+       0.011100747,
+       0.013645413
+      ]
+     },
+     "points_mae": {
+      "difference": 0.023373875,
+      "interval": [
+       0.022032347,
+       0.024733422
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.018911981,
+       0.02348553
+      ],
+      "value": 0.021092767
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.016956486,
+       0.020823023
+      ],
+      "value": 0.018800419
+     }
+    }
+   }
+  },
+  "model_sha256": {
+   "baseline.json": "d9c06c724aaa0baeba5ecadb9d94d5063d71e27b9161c57f59f5cacdea4e456b",
+   "lightgbm_127.txt": "01d7eaa339d1223aa3b3ab1e405475c8270aa9c0081bcef306c87a3acc94ea80",
+   "lightgbm_31.txt": "732df4d80d902390ffd3e18c0c7f5edbd798e090313c14d0f4c39cbe65246cd5",
+   "logistic_spline.json": "f9e75082bbc34c0028be530655addd59cec44d7f63729af4b55da50567e9459b",
+   "reference.json": "bd522f3cced1e5e25beb54aaa890d84472d7e3ead1e7a2dda8fb38f826676fe7",
+   "vocabulary.json": "cb8284f3109f7614e2e6392822577f0bb854ebfecc948ac036e601c7b814f982"
+  },
+  "passed": true,
+  "reference_cells": 140,
+  "registration": {
+   "content_sha256": "1c1a2037705053042c2efe246faf78def961790057c7f64c69743e28c5b2c432",
+   "identity": "courtlens-expected-shot-v2",
+   "parameters": {
+    "baseline_cell_min_attempts": 100,
+    "baseline_distance_cap": 40,
+    "bootstrap_replicates": 2000,
+    "calibrate_season": "2023-24",
+    "candidates": [
+     "logistic_spline",
+     "lightgbm_31",
+     "lightgbm_127"
+    ],
+    "category_min_attempts": 500,
+    "curve_bins": 20,
+    "distance_knots": [
+     0,
+     1,
+     3,
+     5,
+     8,
+     12,
+     16,
+     20,
+     22,
+     24,
+     26,
+     30,
+     40,
+     50
+    ],
+    "ece_bins": 10,
+    "interval": 0.95,
+    "lightgbm": {
+     "feature_fraction": 1.0,
+     "learning_rate": 0.05,
+     "max_bin": 255,
+     "min_child_samples": 200,
+     "n_estimators": 600,
+     "num_leaves_grid": [
+      31,
+      127
+     ],
+     "num_threads": 1,
+     "reg_lambda": 1.0
+    },
+    "logistic": {
+     "C": 1.0,
+     "max_iter": 3000,
+     "solver": "lbfgs",
+     "tol": 1e-06
+    },
+    "margin_clip": 30,
+    "player_min_attempts": 300,
+    "player_seasons": [
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "possession_bands": [
+     6,
+     14
+    ],
+    "possession_knots": [
+     0,
+     2,
+     4,
+     6,
+     8,
+     10,
+     14,
+     18,
+     22,
+     26,
+     35,
+     60
+    ],
+    "probability_clip": 1e-06,
+    "remaining_bands": [
+     2,
+     5,
+     24
+    ],
+    "seasons": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "select_season": "2022-23",
+    "selection_gate_relative_brier": 0.01,
+    "since_oreb_bands": [
+     2,
+     6
+    ],
+    "slice_min_attempts": 200,
+    "table_sha256": {
+     "2014-15": "7ccd1619e781489f5c1eb9bcff56b78f3eb86d34ba09a44bda3df4d58a8ddfb9",
+     "2015-16": "44f482010dabf01975213685d17f102670cbb5d12843b905adcabd8a1f04bcac",
+     "2016-17": "0a4b15879f67b81b4610409e380729b979b21a881d0f2e1146be4fa5c32f0938",
+     "2017-18": "a2a598e77cbbed4c3e2a2c78fefa2b2fa68304cd4f8f6825654d5cd9b628014a",
+     "2018-19": "4b1126e4a5edb81af1f952813768c6c3970158d7f5bad3a2997f6c64fd7690e0",
+     "2019-20": "a5b473aeb2529da4d1e858cba29ad4d394a15e58377c7832dbf27aed54c50fa2",
+     "2020-21": "924da9a149eb0d39d731e9af3b07036fd828b273ce46c29eadc268bdc62aed3d",
+     "2021-22": "92975a791d161f5e7ac77768ea2badc98b12e7ac2c5442d621df73ca6cce886a",
+     "2022-23": "84a66b41afa88d7e5d5c1c4d7a34bc6ce4bbc7a4117781aabec0cbfbe2ceb0e4",
+     "2023-24": "196833fff2088c9bb8adf3b0b941eab76cb3e9ee2f8d848adca8f4ecc1391148",
+     "2024-25": "e529ebe0b5c795c8b7c8433b0bba2b1c0600994027c29e11a52db61581b65caf",
+     "2025-26": "5c68c0614ad40a26ede07e5fe54d586ffe3da013c26545c71f72811061b9b150"
+    },
+    "test_gate_max_ece": 0.02,
+    "test_gate_relative_brier": 0.01,
+    "test_seasons": [
+     "2024-25",
+     "2025-26"
+    ],
+    "train_seasons": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22"
+    ]
+   },
+   "registered_on": "2026-11-05"
+  },
+  "relative_brier": 0.034426399,
+  "season": "2022-23",
+  "seed": 5005,
+  "training_attempts": 1650358,
+  "vocabulary_sizes": {
+   "action": 52,
+   "zone": 15
+  }
+ },
+ "data": {
+  "2014-15": {
+   "action_types": 49,
+   "after_oreb_share_known": 0.126916059,
+   "and_ones": 4851,
+   "assist_in_description": {
+    "made_False": 38083,
+    "made_True": 54196,
+    "missed_False": 113271
+   },
+   "chart_attempts": 205550,
+   "content_sha256": "7ccd1619e781489f5c1eb9bcff56b78f3eb86d34ba09a44bda3df4d58a8ddfb9",
+   "games": 1230,
+   "join": {
+    "joined": 205550
+   },
+   "join_rate": 1.0,
+   "pbp_archive_sha256": "76a5398235900fd5b914eaeb1464e76fc05517184d04c503404a16a44d14f741",
+   "pbp_field_goal_events": 205570,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 556,
+    "known": 204978,
+    "possession_conflict": 16
+   },
+   "possession_known_rate": 0.997217222,
+   "possession_seconds_over_24": 18514,
+   "possession_seconds_quantiles": [
+    5.0,
+    10.1,
+    15.0,
+    20.0,
+    27.0
+   ],
+   "rows": 205550,
+   "season": "2014-15",
+   "shot_archive_sha256": "e2bf753050854e1eb99f6d5c5d690cdcfed4adae216726d330ef6adb3cd21513"
+  },
+  "2015-16": {
+   "action_types": 53,
+   "after_oreb_share_known": 0.119991124,
+   "and_ones": 5137,
+   "assist_in_description": {
+    "made_False": 39232,
+    "made_True": 54785,
+    "missed_False": 113876
+   },
+   "chart_attempts": 207893,
+   "content_sha256": "44f482010dabf01975213685d17f102670cbb5d12843b905adcabd8a1f04bcac",
+   "games": 1230,
+   "join": {
+    "joined": 207893
+   },
+   "join_rate": 1.0,
+   "pbp_archive_sha256": "7bbb1e8a1512dd2877be97cb73d990c424a2f7488137ca5d7a6285e2afea873e",
+   "pbp_field_goal_events": 208049,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 569,
+    "known": 207307,
+    "possession_conflict": 17
+   },
+   "possession_known_rate": 0.997181242,
+   "possession_seconds_over_24": 17586,
+   "possession_seconds_quantiles": [
+    5.0,
+    10.0,
+    15.0,
+    20.0,
+    26.0
+   ],
+   "rows": 207893,
+   "season": "2015-16",
+   "shot_archive_sha256": "ac48fad67cabf79f8a5a726aa55ea4a8c793a85eaa3835d38b46f2d0e37495a3"
+  },
+  "2016-17": {
+   "action_types": 53,
+   "after_oreb_share_known": 0.117345159,
+   "and_ones": 5495,
+   "assist_in_description": {
+    "made_False": 40398,
+    "made_True": 55592,
+    "missed_False": 113938
+   },
+   "chart_attempts": 209929,
+   "content_sha256": "0a4b15879f67b81b4610409e380729b979b21a881d0f2e1146be4fa5c32f0938",
+   "games": 1230,
+   "join": {
+    "joined": 209928,
+    "player_differs": 1
+   },
+   "join_rate": 0.999995236,
+   "pbp_archive_sha256": "6c94890f389abe5af085ff19a26a80e7fe0d205c55dc201aefaa078a887540f4",
+   "pbp_field_goal_events": 210114,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 599,
+    "known": 209263,
+    "possession_conflict": 66,
+    "unjoined": 1
+   },
+   "possession_known_rate": 0.996827499,
+   "possession_seconds_over_24": 17037,
+   "possession_seconds_quantiles": [
+    5.0,
+    10.0,
+    15.0,
+    19.8,
+    26.0
+   ],
+   "rows": 209929,
+   "season": "2016-17",
+   "shot_archive_sha256": "0681285a0bf08a1ef84b24895d2a4bb709f2d192ba9134e3600567c593dacd96"
+  },
+  "2017-18": {
+   "action_types": 46,
+   "after_oreb_share_known": 0.112757377,
+   "and_ones": 5513,
+   "assist_in_description": {
+    "made_False": 40240,
+    "made_True": 57105,
+    "missed_False": 114200
+   },
+   "chart_attempts": 211707,
+   "content_sha256": "a2a598e77cbbed4c3e2a2c78fefa2b2fa68304cd4f8f6825654d5cd9b628014a",
+   "games": 1230,
+   "join": {
+    "joined": 211545,
+    "no_pbp_event": 122,
+    "player_differs": 35,
+    "result_differs": 5
+   },
+   "join_rate": 0.999234791,
+   "pbp_archive_sha256": "e9fedc33337e6a34dc4373bc5138e742e6bbcf09477b34568d79588dead7e62c",
+   "pbp_field_goal_events": 211707,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 559,
+    "known": 210780,
+    "possession_conflict": 206,
+    "unjoined": 162
+   },
+   "possession_known_rate": 0.995621307,
+   "possession_seconds_over_24": 15464,
+   "possession_seconds_quantiles": [
+    4.0,
+    9.0,
+    14.0,
+    19.0,
+    26.0
+   ],
+   "rows": 211707,
+   "season": "2017-18",
+   "shot_archive_sha256": "a62d25aa9c9190477f350f06a9a2d808c7908a6720786970319a3b28af184e81"
+  },
+  "2018-19": {
+   "action_types": 46,
+   "after_oreb_share_known": 0.116356972,
+   "and_ones": 5832,
+   "assist_in_description": {
+    "made_False": 40579,
+    "made_True": 60483,
+    "missed_False": 118396
+   },
+   "chart_attempts": 219458,
+   "content_sha256": "4b1126e4a5edb81af1f952813768c6c3970158d7f5bad3a2997f6c64fd7690e0",
+   "games": 1230,
+   "join": {
+    "joined": 219458
+   },
+   "join_rate": 1.0,
+   "pbp_archive_sha256": "a8c05607863b0bb0da51ed65fc89866cbb5c1954f7951ce00ed05f2ad178097d",
+   "pbp_field_goal_events": 219458,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 559,
+    "known": 218818,
+    "possession_conflict": 81
+   },
+   "possession_known_rate": 0.997083724,
+   "possession_seconds_over_24": 14053,
+   "possession_seconds_quantiles": [
+    4.0,
+    9.0,
+    14.0,
+    18.0,
+    25.0
+   ],
+   "rows": 219458,
+   "season": "2018-19",
+   "shot_archive_sha256": "c658890976559b69dff44ed08352baf64b935514506e726d21f34950ad5bfe9d"
+  },
+  "2019-20": {
+   "action_types": 46,
+   "after_oreb_share_known": 0.113408495,
+   "and_ones": 5034,
+   "assist_in_description": {
+    "made_False": 34901,
+    "made_True": 51649,
+    "missed_False": 101566
+   },
+   "chart_attempts": 188116,
+   "content_sha256": "a5b473aeb2529da4d1e858cba29ad4d394a15e58377c7832dbf27aed54c50fa2",
+   "games": 1059,
+   "join": {
+    "joined": 188116
+   },
+   "join_rate": 1.0,
+   "pbp_archive_sha256": "3fc651e4c294e231723fa097dca2cf938dd868ee2b9a6111f22ab9c0728e89dc",
+   "pbp_field_goal_events": 188116,
+   "pbp_games_matched": 1059,
+   "possession": {
+    "jump_ball_or_clock": 535,
+    "known": 187508,
+    "possession_conflict": 73
+   },
+   "possession_known_rate": 0.996767952,
+   "possession_seconds_over_24": 11482,
+   "possession_seconds_quantiles": [
+    4.0,
+    9.0,
+    14.0,
+    18.0,
+    25.0
+   ],
+   "rows": 188116,
+   "season": "2019-20",
+   "shot_archive_sha256": "0c6002cbc8bc379ecc0a2e0f57defb2e9804be8240aa0234242002ec5dd124fe"
+  },
+  "2020-21": {
+   "action_types": 46,
+   "after_oreb_share_known": 0.111512152,
+   "and_ones": 4920,
+   "assist_in_description": {
+    "made_False": 35443,
+    "made_True": 53577,
+    "missed_False": 101963
+   },
+   "chart_attempts": 190983,
+   "content_sha256": "924da9a149eb0d39d731e9af3b07036fd828b273ce46c29eadc268bdc62aed3d",
+   "games": 1080,
+   "join": {
+    "joined": 190983
+   },
+   "join_rate": 1.0,
+   "pbp_archive_sha256": "8bbd2406d741f8247db9eec222bb1655ea699edb60907d3851a048b8ea7a798d",
+   "pbp_field_goal_events": 190983,
+   "pbp_games_matched": 1080,
+   "possession": {
+    "jump_ball_or_clock": 600,
+    "known": 190338,
+    "possession_conflict": 45
+   },
+   "possession_known_rate": 0.996622736,
+   "possession_seconds_over_24": 12142,
+   "possession_seconds_quantiles": [
+    4.0,
+    9.0,
+    14.0,
+    18.5,
+    25.0
+   ],
+   "rows": 190983,
+   "season": "2020-21",
+   "shot_archive_sha256": "02916ac0a4a0c8dcb1e115ed08ddb49b360305f98f4882c8933a2998b747487d"
+  },
+  "2021-22": {
+   "action_types": 46,
+   "after_oreb_share_known": 0.116875602,
+   "and_ones": 5726,
+   "assist_in_description": {
+    "made_False": 39294,
+    "made_True": 60636,
+    "missed_False": 116792
+   },
+   "chart_attempts": 216722,
+   "content_sha256": "92975a791d161f5e7ac77768ea2badc98b12e7ac2c5442d621df73ca6cce886a",
+   "games": 1230,
+   "join": {
+    "joined": 216722
+   },
+   "join_rate": 1.0,
+   "pbp_archive_sha256": "f44ec8a4a9864732fca66943ae4d06a06ef98ba3932571c15a23ecae644f84c4",
+   "pbp_field_goal_events": 216722,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 640,
+    "known": 216016,
+    "possession_conflict": 66
+   },
+   "possession_known_rate": 0.99674237,
+   "possession_seconds_over_24": 14885,
+   "possession_seconds_quantiles": [
+    4.0,
+    9.0,
+    14.0,
+    19.0,
+    26.0
+   ],
+   "rows": 216722,
+   "season": "2021-22",
+   "shot_archive_sha256": "5b56b6833d179fdef9c76223064c7923717b1add83570becf494a3f1d0a785f2"
+  },
+  "2022-23": {
+   "action_types": 48,
+   "after_oreb_share_known": 0.116978273,
+   "and_ones": 6560,
+   "assist_in_description": {
+    "made_False": 40981,
+    "made_True": 62279,
+    "missed_False": 113956
+   },
+   "chart_attempts": 217218,
+   "content_sha256": "84a66b41afa88d7e5d5c1c4d7a34bc6ce4bbc7a4117781aabec0cbfbe2ceb0e4",
+   "games": 1230,
+   "join": {
+    "joined": 217216,
+    "no_pbp_event": 1,
+    "player_differs": 1
+   },
+   "join_rate": 0.999990793,
+   "pbp_archive_sha256": "42c24abf0abbc0ccef00addaba4b8c76df230a0ff3c0e5b301353307941fd04c",
+   "pbp_field_goal_events": 217219,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 548,
+    "known": 216459,
+    "possession_conflict": 209,
+    "unjoined": 2
+   },
+   "possession_known_rate": 0.996505814,
+   "possession_seconds_over_24": 14110,
+   "possession_seconds_quantiles": [
+    4.0,
+    9.0,
+    14.0,
+    19.0,
+    25.0
+   ],
+   "rows": 217218,
+   "season": "2022-23",
+   "shot_archive_sha256": "62533f4e444ef0fc3354cdf6bbc04e249eb14ba9f444e6cd247c3e95d235e46d"
+  },
+  "2023-24": {
+   "action_types": 48,
+   "after_oreb_share_known": 0.118374031,
+   "and_ones": 5970,
+   "assist_in_description": {
+    "made_False": 38129,
+    "made_True": 65610,
+    "missed_False": 114961
+   },
+   "chart_attempts": 218701,
+   "content_sha256": "196833fff2088c9bb8adf3b0b941eab76cb3e9ee2f8d848adca8f4ecc1391148",
+   "games": 1230,
+   "join": {
+    "joined": 218700,
+    "no_pbp_event": 1
+   },
+   "join_rate": 0.999995428,
+   "pbp_archive_sha256": "3a6976219b87fb50cecf8b2c54cb2af110f2f013ed8368d694035806802c8b04",
+   "pbp_field_goal_events": 218702,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 563,
+    "known": 217987,
+    "possession_conflict": 150,
+    "unjoined": 1
+   },
+   "possession_known_rate": 0.996735269,
+   "possession_seconds_over_24": 14723,
+   "possession_seconds_quantiles": [
+    4.0,
+    9.0,
+    14.0,
+    19.0,
+    26.0
+   ],
+   "rows": 218701,
+   "season": "2023-24",
+   "shot_archive_sha256": "303e71f967c199568b345cd73a75e595f1f99532cca3e6ce59afb286b63f840d"
+  },
+  "2024-25": {
+   "action_types": 48,
+   "after_oreb_share_known": 0.123340405,
+   "and_ones": 5544,
+   "assist_in_description": {
+    "made_False": 37254,
+    "made_True": 65312,
+    "missed_False": 116960
+   },
+   "chart_attempts": 219527,
+   "content_sha256": "e529ebe0b5c795c8b7c8433b0bba2b1c0600994027c29e11a52db61581b65caf",
+   "games": 1230,
+   "join": {
+    "joined": 219526,
+    "player_differs": 1
+   },
+   "join_rate": 0.999995445,
+   "pbp_archive_sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+   "pbp_field_goal_events": 219528,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 636,
+    "known": 218728,
+    "possession_conflict": 162,
+    "unjoined": 1
+   },
+   "possession_known_rate": 0.996360357,
+   "possession_seconds_over_24": 15205,
+   "possession_seconds_quantiles": [
+    4.0,
+    9.0,
+    14.0,
+    19.0,
+    26.0
+   ],
+   "rows": 219527,
+   "season": "2024-25",
+   "shot_archive_sha256": "950100f9c84fe750ae2ac8eaeb82d24cdfb9f60a9ed04ceaa66f64789d7c216e"
+  },
+  "2025-26": {
+   "action_types": 48,
+   "after_oreb_share_known": 0.126856954,
+   "and_ones": 5847,
+   "assist_in_description": {
+    "made_False": 37444,
+    "made_True": 65782,
+    "missed_False": 115930
+   },
+   "chart_attempts": 219160,
+   "content_sha256": "5c68c0614ad40a26ede07e5fe54d586ffe3da013c26545c71f72811061b9b150",
+   "games": 1230,
+   "join": {
+    "joined": 219156,
+    "no_pbp_event": 2,
+    "player_differs": 2
+   },
+   "join_rate": 0.999981748,
+   "pbp_archive_sha256": "790a01ea3f0b2f8335d96bd687e21501551fc8cdea3ada83457ee3208a940671",
+   "pbp_field_goal_events": 219159,
+   "pbp_games_matched": 1230,
+   "possession": {
+    "jump_ball_or_clock": 673,
+    "known": 218301,
+    "possession_conflict": 182,
+    "unjoined": 4
+   },
+   "possession_known_rate": 0.996080489,
+   "possession_seconds_over_24": 14684,
+   "possession_seconds_quantiles": [
+    4.0,
+    9.0,
+    14.0,
+    19.0,
+    25.9
+   ],
+   "rows": 219160,
+   "season": "2025-26",
+   "shot_archive_sha256": "dcb6c29edda8463132ab62f63118b5cee80d751bcbee9ad98fa38ebe12e6d33c"
+  }
+ },
+ "outcome": "accepted",
+ "players": {
+  "league": {
+   "2022-23": {
+    "attempts": 217218,
+    "league_pps": 1.090512757,
+    "league_term": -0.005796096,
+    "league_xpps": 1.096308853,
+    "served": 270
+   },
+   "2023-24": {
+    "attempts": 218701,
+    "league_pps": 1.093076849,
+    "league_term": -0.004665387,
+    "league_xpps": 1.097742236,
+    "served": 261
+   },
+   "2024-25": {
+    "attempts": 219527,
+    "league_pps": 1.086135191,
+    "league_term": -0.017662591,
+    "league_xpps": 1.103797781,
+    "served": 277
+   },
+   "2025-26": {
+    "attempts": 219160,
+    "league_pps": 1.09130772,
+    "league_term": -0.016676294,
+    "league_xpps": 1.107984014,
+    "served": 284
+   }
+  },
+  "model": "lightgbm_31",
+  "persistence": {
+   "pairs": 633,
+   "players": 282,
+   "pps_minus_league": {
+    "interval": [
+     0.551162191,
+     0.683322864
+    ],
+    "r": 0.62316797
+   },
+   "shot_making": {
+    "interval": [
+     0.542157014,
+     0.696373085
+    ],
+    "r": 0.624585523
+   },
+   "xpps": {
+    "interval": [
+     0.801400921,
+     0.881193019
+    ],
+    "r": 0.844605236
+   }
+  }
+ },
+ "registration": {
+  "content_sha256": "1c1a2037705053042c2efe246faf78def961790057c7f64c69743e28c5b2c432",
+  "identity": "courtlens-expected-shot-v2",
+  "parameters": {
+   "baseline_cell_min_attempts": 100,
+   "baseline_distance_cap": 40,
+   "bootstrap_replicates": 2000,
+   "calibrate_season": "2023-24",
+   "candidates": [
+    "logistic_spline",
+    "lightgbm_31",
+    "lightgbm_127"
+   ],
+   "category_min_attempts": 500,
+   "curve_bins": 20,
+   "distance_knots": [
+    0,
+    1,
+    3,
+    5,
+    8,
+    12,
+    16,
+    20,
+    22,
+    24,
+    26,
+    30,
+    40,
+    50
+   ],
+   "ece_bins": 10,
+   "interval": 0.95,
+   "lightgbm": {
+    "feature_fraction": 1.0,
+    "learning_rate": 0.05,
+    "max_bin": 255,
+    "min_child_samples": 200,
+    "n_estimators": 600,
+    "num_leaves_grid": [
+     31,
+     127
+    ],
+    "num_threads": 1,
+    "reg_lambda": 1.0
+   },
+   "logistic": {
+    "C": 1.0,
+    "max_iter": 3000,
+    "solver": "lbfgs",
+    "tol": 1e-06
+   },
+   "margin_clip": 30,
+   "player_min_attempts": 300,
+   "player_seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "possession_bands": [
+    6,
+    14
+   ],
+   "possession_knots": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    14,
+    18,
+    22,
+    26,
+    35,
+    60
+   ],
+   "probability_clip": 1e-06,
+   "remaining_bands": [
+    2,
+    5,
+    24
+   ],
+   "seasons": [
+    "2014-15",
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "select_season": "2022-23",
+   "selection_gate_relative_brier": 0.01,
+   "since_oreb_bands": [
+    2,
+    6
+   ],
+   "slice_min_attempts": 200,
+   "table_sha256": {
+    "2014-15": "7ccd1619e781489f5c1eb9bcff56b78f3eb86d34ba09a44bda3df4d58a8ddfb9",
+    "2015-16": "44f482010dabf01975213685d17f102670cbb5d12843b905adcabd8a1f04bcac",
+    "2016-17": "0a4b15879f67b81b4610409e380729b979b21a881d0f2e1146be4fa5c32f0938",
+    "2017-18": "a2a598e77cbbed4c3e2a2c78fefa2b2fa68304cd4f8f6825654d5cd9b628014a",
+    "2018-19": "4b1126e4a5edb81af1f952813768c6c3970158d7f5bad3a2997f6c64fd7690e0",
+    "2019-20": "a5b473aeb2529da4d1e858cba29ad4d394a15e58377c7832dbf27aed54c50fa2",
+    "2020-21": "924da9a149eb0d39d731e9af3b07036fd828b273ce46c29eadc268bdc62aed3d",
+    "2021-22": "92975a791d161f5e7ac77768ea2badc98b12e7ac2c5442d621df73ca6cce886a",
+    "2022-23": "84a66b41afa88d7e5d5c1c4d7a34bc6ce4bbc7a4117781aabec0cbfbe2ceb0e4",
+    "2023-24": "196833fff2088c9bb8adf3b0b941eab76cb3e9ee2f8d848adca8f4ecc1391148",
+    "2024-25": "e529ebe0b5c795c8b7c8433b0bba2b1c0600994027c29e11a52db61581b65caf",
+    "2025-26": "5c68c0614ad40a26ede07e5fe54d586ffe3da013c26545c71f72811061b9b150"
+   },
+   "test_gate_max_ece": 0.02,
+   "test_gate_relative_brier": 0.01,
+   "test_seasons": [
+    "2024-25",
+    "2025-26"
+   ],
+   "train_seasons": [
+    "2014-15",
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22"
+   ]
+  },
+  "registered_on": "2026-11-05"
+ },
+ "results_sha256": "dd859539a6b5fbc8123e41eac44ff8c335a3258a49b3d50f91d4c701ac48f406",
+ "serving_model": "lightgbm_31",
+ "test": {
+  "accepted": true,
+  "by_season": {
+   "2024-25": {
+    "attempts": 219527,
+    "games": 1230,
+    "models": {
+     "baseline": {
+      "actual_points_per_shot": 1.086135191,
+      "brier": 0.230801609,
+      "ece": 0.012778288,
+      "expected_points_per_shot": 1.095836305,
+      "log_loss": 0.653524684,
+      "mean_predicted": 0.468756394,
+      "observed": 0.4672136,
+      "points_mae": 1.118752736
+     },
+     "lightgbm_31": {
+      "actual_points_per_shot": 1.086135191,
+      "brier": 0.224825621,
+      "ece": 0.013261142,
+      "expected_points_per_shot": 1.103797781,
+      "log_loss": 0.638416487,
+      "mean_predicted": 0.471940447,
+      "observed": 0.4672136,
+      "points_mae": 1.093270016
+     },
+     "reference": {
+      "actual_points_per_shot": 1.086135191,
+      "brier": 0.227567208,
+      "ece": 0.010608955,
+      "expected_points_per_shot": 1.103075518,
+      "log_loss": 0.644972214,
+      "mean_predicted": 0.472243529,
+      "observed": 0.4672136,
+      "points_mae": 1.104860657
+     }
+    },
+    "versus_baseline": {
+     "lightgbm_31": {
+      "brier": {
+       "difference": 0.005975987,
+       "interval": [
+        0.005575999,
+        0.006360917
+       ]
+      },
+      "log_loss": {
+       "difference": 0.015108196,
+       "interval": [
+        0.014156691,
+        0.016023973
+       ]
+      },
+      "points_mae": {
+       "difference": 0.02548272,
+       "interval": [
+        0.02456304,
+        0.026388971
+       ]
+      },
+      "relative_brier": {
+       "interval": [
+        0.024179364,
+        0.027551944
+       ],
+       "value": 0.025892313
+      },
+      "relative_log_loss": {
+       "interval": [
+        0.021678001,
+        0.024498672
+       ],
+       "value": 0.023118019
+      }
+     },
+     "reference": {
+      "brier": {
+       "difference": 0.003234401,
+       "interval": [
+        0.002766777,
+        0.003683847
+       ]
+      },
+      "log_loss": {
+       "difference": 0.00855247,
+       "interval": [
+        0.007446321,
+        0.009600847
+       ]
+      },
+      "points_mae": {
+       "difference": 0.013892079,
+       "interval": [
+        0.012688399,
+        0.015061433
+       ]
+      },
+      "relative_brier": {
+       "interval": [
+        0.01200018,
+        0.015932524
+       ],
+       "value": 0.01401377
+      },
+      "relative_log_loss": {
+       "interval": [
+        0.01140655,
+        0.014683209
+       ],
+       "value": 0.013086682
+      }
+     }
+    }
+   },
+   "2025-26": {
+    "attempts": 219160,
+    "games": 1230,
+    "models": {
+     "baseline": {
+      "actual_points_per_shot": 1.09130772,
+      "brier": 0.230766209,
+      "ece": 0.017322427,
+      "expected_points_per_shot": 1.100932085,
+      "log_loss": 0.653951271,
+      "mean_predicted": 0.47185353,
+      "observed": 0.471012046,
+      "points_mae": 1.117845387
+     },
+     "lightgbm_31": {
+      "actual_points_per_shot": 1.09130772,
+      "brier": 0.22494148,
+      "ece": 0.008271407,
+      "expected_points_per_shot": 1.107984014,
+      "log_loss": 0.638879545,
+      "mean_predicted": 0.474912903,
+      "observed": 0.471012046,
+      "points_mae": 1.092546956
+     },
+     "reference": {
+      "actual_points_per_shot": 1.09130772,
+      "brier": 0.227455093,
+      "ece": 0.009358285,
+      "expected_points_per_shot": 1.10537314,
+      "log_loss": 0.64495697,
+      "mean_predicted": 0.474381577,
+      "observed": 0.471012046,
+      "points_mae": 1.103177078
+     }
+    },
+    "versus_baseline": {
+     "lightgbm_31": {
+      "brier": {
+       "difference": 0.005824729,
+       "interval": [
+        0.005437671,
+        0.006212376
+       ]
+      },
+      "log_loss": {
+       "difference": 0.015071726,
+       "interval": [
+        0.014184872,
+        0.015974847
+       ]
+      },
+      "points_mae": {
+       "difference": 0.025298431,
+       "interval": [
+        0.024336094,
+        0.026238277
+       ]
+      },
+      "relative_brier": {
+       "interval": [
+        0.023559762,
+        0.026879772
+       ],
+       "value": 0.025240825
+      },
+      "relative_log_loss": {
+       "interval": [
+        0.02169966,
+        0.024439664
+       ],
+       "value": 0.02304717
+      }
+     },
+     "reference": {
+      "brier": {
+       "difference": 0.003311116,
+       "interval": [
+        0.002856837,
+        0.003788254
+       ]
+      },
+      "log_loss": {
+       "difference": 0.008994301,
+       "interval": [
+        0.00793468,
+        0.0101011
+       ]
+      },
+      "points_mae": {
+       "difference": 0.014668309,
+       "interval": [
+        0.013445829,
+        0.015930553
+       ]
+      },
+      "relative_brier": {
+       "interval": [
+        0.012391067,
+        0.016394551
+       ],
+       "value": 0.014348357
+      },
+      "relative_log_loss": {
+       "interval": [
+        0.012145843,
+        0.015453198
+       ],
+       "value": 0.013753779
+      }
+     }
+    }
+   }
+  },
+  "curves": {
+   "baseline": [
+    {
+     "bin": 1,
+     "count": 21934,
+     "high": 0.358777923,
+     "low": 0.018340505,
+     "mean_predicted": 0.324152877,
+     "observed": 0.31964074
+    },
+    {
+     "bin": 2,
+     "count": 21935,
+     "high": 0.368565685,
+     "low": 0.358777923,
+     "mean_predicted": 0.363444942,
+     "observed": 0.348848872
+    },
+    {
+     "bin": 3,
+     "count": 21934,
+     "high": 0.368565685,
+     "low": 0.368565685,
+     "mean_predicted": 0.368565685,
+     "observed": 0.353059178
+    },
+    {
+     "bin": 4,
+     "count": 21934,
+     "high": 0.377236959,
+     "low": 0.368565685,
+     "mean_predicted": 0.375399921,
+     "observed": 0.353423908
+    },
+    {
+     "bin": 5,
+     "count": 21935,
+     "high": 0.377236959,
+     "low": 0.377236959,
+     "mean_predicted": 0.377236959,
+     "observed": 0.357875541
+    },
+    {
+     "bin": 6,
+     "count": 21934,
+     "high": 0.384088107,
+     "low": 0.377236959,
+     "mean_predicted": 0.381083585,
+     "observed": 0.362496581
+    },
+    {
+     "bin": 7,
+     "count": 21934,
+     "high": 0.411140529,
+     "low": 0.384088107,
+     "mean_predicted": 0.399898209,
+     "observed": 0.377724081
+    },
+    {
+     "bin": 8,
+     "count": 21935,
+     "high": 0.413220566,
+     "low": 0.411140529,
+     "mean_predicted": 0.413069307,
+     "observed": 0.391155687
+    },
+    {
+     "bin": 9,
+     "count": 21934,
+     "high": 0.420388884,
+     "low": 0.413220566,
+     "mean_predicted": 0.416715987,
+     "observed": 0.411233701
+    },
+    {
+     "bin": 10,
+     "count": 21935,
+     "high": 0.421598545,
+     "low": 0.420388884,
+     "mean_predicted": 0.420616976,
+     "observed": 0.445406884
+    },
+    {
+     "bin": 11,
+     "count": 21934,
+     "high": 0.429282891,
+     "low": 0.421598545,
+     "mean_predicted": 0.427116249,
+     "observed": 0.424819914
+    },
+    {
+     "bin": 12,
+     "count": 21934,
+     "high": 0.435748635,
+     "low": 0.429282891,
+     "mean_predicted": 0.432019564,
+     "observed": 0.423680131
+    },
+    {
+     "bin": 13,
+     "count": 21935,
+     "high": 0.443631228,
+     "low": 0.435748635,
+     "mean_predicted": 0.441181818,
+     "observed": 0.438477319
+    },
+    {
+     "bin": 14,
+     "count": 21934,
+     "high": 0.452563373,
+     "low": 0.443631228,
+     "mean_predicted": 0.449373031,
+     "observed": 0.488556579
+    },
+    {
+     "bin": 15,
+     "count": 21934,
+     "high": 0.460032599,
+     "low": 0.452563373,
+     "mean_predicted": 0.455008987,
+     "observed": 0.488009483
+    },
+    {
+     "bin": 16,
+     "count": 21935,
+     "high": 0.5708062,
+     "low": 0.460032599,
+     "mean_predicted": 0.526052315,
+     "observed": 0.538636882
+    },
+    {
+     "bin": 17,
+     "count": 21934,
+     "high": 0.703726692,
+     "low": 0.5708062,
+     "mean_predicted": 0.587265216,
+     "observed": 0.624464302
+    },
+    {
+     "bin": 18,
+     "count": 21934,
+     "high": 0.703726692,
+     "low": 0.703726692,
+     "mean_predicted": 0.703726692,
+     "observed": 0.730965624
+    },
+    {
+     "bin": 19,
+     "count": 21935,
+     "high": 0.804653784,
+     "low": 0.703726692,
+     "mean_predicted": 0.739491738,
+     "observed": 0.745475268
+    },
+    {
+     "bin": 20,
+     "count": 21934,
+     "high": 0.804653784,
+     "low": 0.804653784,
+     "mean_predicted": 0.804653784,
+     "observed": 0.758274824
+    }
+   ],
+   "lightgbm_31": [
+    {
+     "bin": 1,
+     "count": 21934,
+     "high": 0.307646036,
+     "low": 0.008327794,
+     "mean_predicted": 0.252432324,
+     "observed": 0.292468314
+    },
+    {
+     "bin": 2,
+     "count": 21935,
+     "high": 0.342100222,
+     "low": 0.307647537,
+     "mean_predicted": 0.327743389,
+     "observed": 0.348438568
+    },
+    {
+     "bin": 3,
+     "count": 21934,
+     "high": 0.355472559,
+     "low": 0.342100259,
+     "mean_predicted": 0.349415976,
+     "observed": 0.354837239
+    },
+    {
+     "bin": 4,
+     "count": 21934,
+     "high": 0.364326588,
+     "low": 0.355473495,
+     "mean_predicted": 0.360006489,
+     "observed": 0.358986049
+    },
+    {
+     "bin": 5,
+     "count": 21935,
+     "high": 0.372644719,
+     "low": 0.3643272,
+     "mean_predicted": 0.368432476,
+     "observed": 0.370868475
+    },
+    {
+     "bin": 6,
+     "count": 21934,
+     "high": 0.382278722,
+     "low": 0.372646172,
+     "mean_predicted": 0.377211719,
+     "observed": 0.376356342
+    },
+    {
+     "bin": 7,
+     "count": 21934,
+     "high": 0.393773662,
+     "low": 0.382278853,
+     "mean_predicted": 0.388017383,
+     "observed": 0.381371387
+    },
+    {
+     "bin": 8,
+     "count": 21935,
+     "high": 0.403240709,
+     "low": 0.393774063,
+     "mean_predicted": 0.398682335,
+     "observed": 0.378937771
+    },
+    {
+     "bin": 9,
+     "count": 21934,
+     "high": 0.412199847,
+     "low": 0.403240835,
+     "mean_predicted": 0.407622822,
+     "observed": 0.380596334
+    },
+    {
+     "bin": 10,
+     "count": 21935,
+     "high": 0.425910642,
+     "low": 0.412200264,
+     "mean_predicted": 0.418332738,
+     "observed": 0.397948484
+    },
+    {
+     "bin": 11,
+     "count": 21934,
+     "high": 0.443250172,
+     "low": 0.425910837,
+     "mean_predicted": 0.434667668,
+     "observed": 0.412829397
+    },
+    {
+     "bin": 12,
+     "count": 21934,
+     "high": 0.458697926,
+     "low": 0.443250571,
+     "mean_predicted": 0.451133647,
+     "observed": 0.433846996
+    },
+    {
+     "bin": 13,
+     "count": 21935,
+     "high": 0.472425448,
+     "low": 0.458698896,
+     "mean_predicted": 0.465632364,
+     "observed": 0.454798268
+    },
+    {
+     "bin": 14,
+     "count": 21934,
+     "high": 0.48809711,
+     "low": 0.472425722,
+     "mean_predicted": 0.479666267,
+     "observed": 0.464985867
+    },
+    {
+     "bin": 15,
+     "count": 21934,
+     "high": 0.516606472,
+     "low": 0.488098811,
+     "mean_predicted": 0.500513908,
+     "observed": 0.483906264
+    },
+    {
+     "bin": 16,
+     "count": 21935,
+     "high": 0.555427255,
+     "low": 0.516606654,
+     "mean_predicted": 0.534090275,
+     "observed": 0.526555733
+    },
+    {
+     "bin": 17,
+     "count": 21934,
+     "high": 0.629003521,
+     "low": 0.555431024,
+     "mean_predicted": 0.590162883,
+     "observed": 0.588994255
+    },
+    {
+     "bin": 18,
+     "count": 21934,
+     "high": 0.723300684,
+     "low": 0.629005026,
+     "mean_predicted": 0.674986409,
+     "observed": 0.676985502
+    },
+    {
+     "bin": 19,
+     "count": 21935,
+     "high": 0.837468814,
+     "low": 0.723300746,
+     "mean_predicted": 0.775951326,
+     "observed": 0.783223159
+    },
+    {
+     "bin": 20,
+     "count": 21934,
+     "high": 0.992456424,
+     "low": 0.837483351,
+     "mean_predicted": 0.913807377,
+     "observed": 0.915291329
+    }
+   ],
+   "reference": [
+    {
+     "bin": 1,
+     "count": 21934,
+     "high": 0.351832242,
+     "low": 0.018227717,
+     "mean_predicted": 0.291778479,
+     "observed": 0.340886295
+    },
+    {
+     "bin": 2,
+     "count": 21935,
+     "high": 0.351832242,
+     "low": 0.351832242,
+     "mean_predicted": 0.351832242,
+     "observed": 0.360200593
+    },
+    {
+     "bin": 3,
+     "count": 21934,
+     "high": 0.351832242,
+     "low": 0.351832242,
+     "mean_predicted": 0.351832242,
+     "observed": 0.36386432
+    },
+    {
+     "bin": 4,
+     "count": 21934,
+     "high": 0.351832242,
+     "low": 0.351832242,
+     "mean_predicted": 0.351832242,
+     "observed": 0.355429926
+    },
+    {
+     "bin": 5,
+     "count": 21935,
+     "high": 0.388298048,
+     "low": 0.351832242,
+     "mean_predicted": 0.362050395,
+     "observed": 0.375655345
+    },
+    {
+     "bin": 6,
+     "count": 21934,
+     "high": 0.389320776,
+     "low": 0.388298048,
+     "mean_predicted": 0.388459379,
+     "observed": 0.382009665
+    },
+    {
+     "bin": 7,
+     "count": 21934,
+     "high": 0.389738274,
+     "low": 0.389320776,
+     "mean_predicted": 0.389541384,
+     "observed": 0.364229051
+    },
+    {
+     "bin": 8,
+     "count": 21935,
+     "high": 0.390066412,
+     "low": 0.389738274,
+     "mean_predicted": 0.389956534,
+     "observed": 0.351675405
+    },
+    {
+     "bin": 9,
+     "count": 21934,
+     "high": 0.41127069,
+     "low": 0.390066412,
+     "mean_predicted": 0.397812006,
+     "observed": 0.347497037
+    },
+    {
+     "bin": 10,
+     "count": 21935,
+     "high": 0.433071215,
+     "low": 0.41127069,
+     "mean_predicted": 0.423297585,
+     "observed": 0.40177798
+    },
+    {
+     "bin": 11,
+     "count": 21934,
+     "high": 0.44009912,
+     "low": 0.433071215,
+     "mean_predicted": 0.438978851,
+     "observed": 0.434986779
+    },
+    {
+     "bin": 12,
+     "count": 21934,
+     "high": 0.461680266,
+     "low": 0.44009912,
+     "mean_predicted": 0.449154453,
+     "observed": 0.447205252
+    },
+    {
+     "bin": 13,
+     "count": 21935,
+     "high": 0.465170795,
+     "low": 0.461680266,
+     "mean_predicted": 0.462637836,
+     "observed": 0.476134032
+    },
+    {
+     "bin": 14,
+     "count": 21934,
+     "high": 0.481878,
+     "low": 0.465170795,
+     "mean_predicted": 0.475850721,
+     "observed": 0.466581563
+    },
+    {
+     "bin": 15,
+     "count": 21934,
+     "high": 0.521322649,
+     "low": 0.481878,
+     "mean_predicted": 0.497406631,
+     "observed": 0.473283487
+    },
+    {
+     "bin": 16,
+     "count": 21935,
+     "high": 0.549442104,
+     "low": 0.521322649,
+     "mean_predicted": 0.54814512,
+     "observed": 0.542192842
+    },
+    {
+     "bin": 17,
+     "count": 21934,
+     "high": 0.652926274,
+     "low": 0.549442104,
+     "mean_predicted": 0.592582519,
+     "observed": 0.594966718
+    },
+    {
+     "bin": 18,
+     "count": 21934,
+     "high": 0.685230463,
+     "low": 0.652926274,
+     "mean_predicted": 0.664294664,
+     "observed": 0.662213914
+    },
+    {
+     "bin": 19,
+     "count": 21935,
+     "high": 0.828256408,
+     "low": 0.685230463,
+     "mean_predicted": 0.740967977,
+     "observed": 0.736858901
+    },
+    {
+     "bin": 20,
+     "count": 21934,
+     "high": 0.938924351,
+     "low": 0.828256408,
+     "mean_predicted": 0.897823485,
+     "observed": 0.904577368
+    }
+   ]
+  },
+  "failed_gates": [],
+  "gates": {
+   "ece": {
+    "passed": true,
+    "threshold": 0.02,
+    "value": 0.010155961
+   },
+   "log_loss": {
+    "difference": 0.015089976,
+    "interval": [
+     0.014464464,
+     0.015728197
+    ],
+    "passed": true
+   },
+   "relative_brier": {
+    "brier_difference_interval": [
+     0.005635073,
+     0.006174142
+    ],
+    "passed": true,
+    "threshold": 0.01,
+    "value": 0.025566866
+   }
+  },
+  "pooled": {
+   "attempts": 438687,
+   "games": 2460,
+   "models": {
+    "baseline": {
+     "actual_points_per_shot": 1.088719292,
+     "brier": 0.230783924,
+     "ece": 0.015048457,
+     "expected_points_per_shot": 1.098382063,
+     "log_loss": 0.653737799,
+     "mean_predicted": 0.470303667,
+     "observed": 0.469111234,
+     "points_mae": 1.118299441
+    },
+    "lightgbm_31": {
+     "actual_points_per_shot": 1.088719292,
+     "brier": 0.224883502,
+     "ece": 0.010155961,
+     "expected_points_per_shot": 1.105889147,
+     "log_loss": 0.638647822,
+     "mean_predicted": 0.473425431,
+     "observed": 0.469111234,
+     "points_mae": 1.092908788
+    },
+    "reference": {
+     "actual_points_per_shot": 1.088719292,
+     "brier": 0.227511197,
+     "ece": 0.009869942,
+     "expected_points_per_shot": 1.104223368,
+     "log_loss": 0.644964598,
+     "mean_predicted": 0.473311659,
+     "observed": 0.469111234,
+     "points_mae": 1.104019572
+    }
+   },
+   "versus_baseline": {
+    "lightgbm_31": {
+     "brier": {
+      "difference": 0.005900422,
+      "interval": [
+       0.005635073,
+       0.006174142
+      ]
+     },
+     "log_loss": {
+      "difference": 0.015089976,
+      "interval": [
+       0.014464464,
+       0.015728197
+      ]
+     },
+     "points_mae": {
+      "difference": 0.025390653,
+      "interval": [
+       0.024760302,
+       0.026037072
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.024436969,
+       0.026734003
+      ],
+      "value": 0.025566866
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.022121543,
+       0.024051986
+      ],
+      "value": 0.023082613
+     }
+    },
+    "reference": {
+     "brier": {
+      "difference": 0.003272726,
+      "interval": [
+       0.00295829,
+       0.003606121
+      ]
+     },
+     "log_loss": {
+      "difference": 0.008773201,
+      "interval": [
+       0.008028682,
+       0.009561193
+      ]
+     },
+     "points_mae": {
+      "difference": 0.014279869,
+      "interval": [
+       0.013440353,
+       0.015165329
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.012828486,
+       0.015612372
+      ],
+      "value": 0.014180911
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.012279729,
+       0.014607822
+      ],
+      "value": 0.013420061
+     }
+    }
+   }
+  },
+  "seasons": [
+   "2024-25",
+   "2025-26"
+  ],
+  "slices": [
+   {
+    "attempts": 123443,
+    "family": "zone",
+    "label": "Restricted Area",
+    "metrics": {
+     "attempts": 123443,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.33455927,
+       "brier": 0.216066354,
+       "ece": 0.042867928,
+       "expected_points_per_shot": 1.293632757,
+       "log_loss": 0.622963531,
+       "mean_predicted": 0.646816379,
+       "observed": 0.667279635,
+       "points_mae": 0.857931206
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.33455927,
+       "brier": 0.198071568,
+       "ece": 0.017542109,
+       "expected_points_per_shot": 1.300157699,
+       "log_loss": 0.57573853,
+       "mean_predicted": 0.650078849,
+       "observed": 0.667279635,
+       "points_mae": 0.790564252
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.017994786,
+        "interval": [
+         0.017212182,
+         0.018776675
+        ]
+       },
+       "log_loss": {
+        "difference": 0.047225002,
+        "interval": [
+         0.045316179,
+         0.049169732
+        ]
+       },
+       "points_mae": {
+        "difference": 0.067366954,
+        "interval": [
+         0.065591206,
+         0.069173159
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.07979843,
+         0.086738222
+        ],
+        "value": 0.083283612
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.072789481,
+         0.078828432
+        ],
+        "value": 0.075807008
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 88383,
+    "family": "zone",
+    "label": "In The Paint (Non-RA)",
+    "metrics": {
+     "attempts": 88383,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 0.889288664,
+       "brier": 0.247064291,
+       "ece": 0.008151757,
+       "expected_points_per_shot": 0.87298515,
+       "log_loss": 0.687270055,
+       "mean_predicted": 0.436492575,
+       "observed": 0.444644332,
+       "points_mae": 0.985563798
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 0.889288664,
+       "brier": 0.242045722,
+       "ece": 0.016128328,
+       "expected_points_per_shot": 0.875786212,
+       "log_loss": 0.67706193,
+       "mean_predicted": 0.437893106,
+       "observed": 0.444644332,
+       "points_mae": 0.957858898
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.005018568,
+        "interval": [
+         0.004367868,
+         0.005674998
+        ]
+       },
+       "log_loss": {
+        "difference": 0.010208126,
+        "interval": [
+         0.008797023,
+         0.01163116
+        ]
+       },
+       "points_mae": {
+        "difference": 0.027704899,
+        "interval": [
+         0.026245651,
+         0.029113958
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.017689364,
+         0.022973132
+        ],
+        "value": 0.020312802
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.012811687,
+         0.016925099
+        ],
+        "value": 0.014853151
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 43426,
+    "family": "zone",
+    "label": "Mid-Range",
+    "metrics": {
+     "attempts": 43426,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 0.833947405,
+       "brier": 0.24296055,
+       "ece": 0.013156619,
+       "expected_points_per_shot": 0.860197789,
+       "log_loss": 0.678990307,
+       "mean_predicted": 0.430049725,
+       "observed": 0.416893106,
+       "points_mae": 0.97593157
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 0.833947405,
+       "brier": 0.242007515,
+       "ece": 0.020921633,
+       "expected_points_per_shot": 0.873472631,
+       "log_loss": 0.676965776,
+       "mean_predicted": 0.436686484,
+       "observed": 0.416893106,
+       "points_mae": 0.969898309
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.000953036,
+        "interval": [
+         0.000440623,
+         0.001445332
+        ]
+       },
+       "log_loss": {
+        "difference": 0.002024531,
+        "interval": [
+         0.000935026,
+         0.003078446
+        ]
+       },
+       "points_mae": {
+        "difference": 0.006033261,
+        "interval": [
+         0.004960061,
+         0.007065813
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.001814598,
+         0.005947232
+        ],
+        "value": 0.003922594
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.001376943,
+         0.004533283
+        ],
+        "value": 0.002981679
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 24398,
+    "family": "zone",
+    "label": "Left Corner 3",
+    "metrics": {
+     "attempts": 24398,
+     "games": 2458,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.160136077,
+       "brier": 0.237759334,
+       "ece": 0.024283672,
+       "expected_points_per_shot": 1.232987094,
+       "log_loss": 0.668487843,
+       "mean_predicted": 0.410995698,
+       "observed": 0.386712026,
+       "points_mae": 1.439474025
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.160136077,
+       "brier": 0.238383568,
+       "ece": 0.019980065,
+       "expected_points_per_shot": 1.217966657,
+       "log_loss": 0.669725057,
+       "mean_predicted": 0.405988886,
+       "observed": 0.386712026,
+       "points_mae": 1.433101937
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": -0.000624234,
+        "interval": [
+         -0.001107879,
+         -0.000141916
+        ]
+       },
+       "log_loss": {
+        "difference": -0.001237214,
+        "interval": [
+         -0.002261583,
+         -0.00020462
+        ]
+       },
+       "points_mae": {
+        "difference": 0.006372088,
+        "interval": [
+         0.004861373,
+         0.007846048
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         -0.00465664,
+         -0.000594761
+        ],
+        "value": -0.002625485
+       },
+       "relative_log_loss": {
+        "interval": [
+         -0.003381193,
+         -0.00030624
+        ],
+        "value": -0.001850765
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 22757,
+    "family": "zone",
+    "label": "Right Corner 3",
+    "metrics": {
+     "attempts": 22757,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.163905611,
+       "brier": 0.237955147,
+       "ece": 0.022864983,
+       "expected_points_per_shot": 1.23250056,
+       "log_loss": 0.668881164,
+       "mean_predicted": 0.41083352,
+       "observed": 0.387968537,
+       "points_mae": 1.439907817
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.163905611,
+       "brier": 0.238273611,
+       "ece": 0.016616357,
+       "expected_points_per_shot": 1.211041728,
+       "log_loss": 0.669486374,
+       "mean_predicted": 0.403680576,
+       "observed": 0.387968537,
+       "points_mae": 1.431676012
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": -0.000318465,
+        "interval": [
+         -0.000875936,
+         0.000221655
+        ]
+       },
+       "log_loss": {
+        "difference": -0.000605209,
+        "interval": [
+         -0.001773129,
+         0.000525144
+        ]
+       },
+       "points_mae": {
+        "difference": 0.008231805,
+        "interval": [
+         0.006516215,
+         0.009950755
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         -0.003688449,
+         0.000929673
+        ],
+        "value": -0.001338339
+       },
+       "relative_log_loss": {
+        "interval": [
+         -0.002654095,
+         0.000786479
+        ],
+        "value": -0.000904808
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 135734,
+    "family": "zone",
+    "label": "Above the Break 3",
+    "metrics": {
+     "attempts": 135734,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.054849927,
+       "brier": 0.227951355,
+       "ece": 0.016094428,
+       "expected_points_per_shot": 1.101297773,
+       "log_loss": 0.648385067,
+       "mean_predicted": 0.3671185,
+       "observed": 0.351628921,
+       "points_mae": 1.379120895
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.054849927,
+       "brier": 0.228662848,
+       "ece": 0.022182584,
+       "expected_points_per_shot": 1.119609408,
+       "log_loss": 0.649641696,
+       "mean_predicted": 0.373223631,
+       "observed": 0.351628921,
+       "points_mae": 1.380632856
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": -0.000711492,
+        "interval": [
+         -0.000936803,
+         -0.000490083
+        ]
+       },
+       "log_loss": {
+        "difference": -0.001256629,
+        "interval": [
+         -0.001765041,
+         -0.000758717
+        ]
+       },
+       "points_mae": {
+        "difference": -0.001511961,
+        "interval": [
+         -0.002256221,
+         -0.000749097
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         -0.004108383,
+         -0.002146717
+        ],
+        "value": -0.003121246
+       },
+       "relative_log_loss": {
+        "interval": [
+         -0.002728429,
+         -0.001169505
+        ],
+        "value": -0.001938091
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 546,
+    "family": "zone",
+    "label": "Backcourt",
+    "metrics": {
+     "attempts": 546,
+     "games": 477,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 0.148351648,
+       "brier": 0.047973027,
+       "ece": 0.031110044,
+       "expected_points_per_shot": 0.055021516,
+       "log_loss": 0.215330516,
+       "mean_predicted": 0.018340505,
+       "observed": 0.049450549,
+       "points_mae": 0.197931476
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 0.148351648,
+       "brier": 0.045745395,
+       "ece": 0.015024301,
+       "expected_points_per_shot": 0.115566722,
+       "log_loss": 0.188656274,
+       "mean_predicted": 0.038522241,
+       "observed": 0.049450549,
+       "points_mae": 0.244900235
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.002227632,
+        "interval": [
+         -9.362e-05,
+         0.005444144
+        ]
+       },
+       "log_loss": {
+        "difference": 0.026674241,
+        "interval": [
+         0.007070719,
+         0.051940529
+        ]
+       },
+       "points_mae": {
+        "difference": -0.046968759,
+        "interval": [
+         -0.056246611,
+         -0.037699011
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         -0.002466517,
+         0.101332803
+        ],
+        "value": 0.046435097
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.042205977,
+         0.197460151
+        ],
+        "value": 0.123875807
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 255262,
+    "family": "value",
+    "label": "2PT",
+    "metrics": {
+     "attempts": 255262,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.095125792,
+       "brier": 0.231370153,
+       "ece": 0.021545098,
+       "expected_points_per_shot": 1.074209103,
+       "log_loss": 0.654751871,
+       "mean_predicted": 0.537104551,
+       "observed": 0.547562896,
+       "points_mae": 0.922167856
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.095125792,
+       "brier": 0.220769872,
+       "ece": 0.007799144,
+       "expected_points_per_shot": 1.080596052,
+       "log_loss": 0.628038681,
+       "mean_predicted": 0.540298026,
+       "observed": 0.547562896,
+       "points_mae": 0.878974435
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.010600281,
+        "interval": [
+         0.010175204,
+         0.01105552
+        ]
+       },
+       "log_loss": {
+        "difference": 0.02671319,
+        "interval": [
+         0.025681603,
+         0.027793199
+        ]
+       },
+       "points_mae": {
+        "difference": 0.043193421,
+        "interval": [
+         0.04225962,
+         0.044243391
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.043988353,
+         0.047766269
+        ],
+        "value": 0.045815248
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.039231861,
+         0.042450865
+        ],
+        "value": 0.040798951
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 183425,
+    "family": "value",
+    "label": "3PT",
+    "metrics": {
+     "attempts": 183425,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.079803734,
+       "brier": 0.229968101,
+       "ece": 0.018038945,
+       "expected_points_per_shot": 1.132022179,
+       "log_loss": 0.652326573,
+       "mean_predicted": 0.377340726,
+       "observed": 0.359934578,
+       "points_mae": 1.391244463
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.079803734,
+       "brier": 0.230608203,
+       "ece": 0.02110861,
+       "expected_points_per_shot": 1.141088088,
+       "log_loss": 0.653411953,
+       "mean_predicted": 0.380362696,
+       "observed": 0.359934578,
+       "points_mae": 1.390628897
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": -0.000640102,
+        "interval": [
+         -0.000835995,
+         -0.000443495
+        ]
+       },
+       "log_loss": {
+        "difference": -0.00108538,
+        "interval": [
+         -0.001516026,
+         -0.000637514
+        ]
+       },
+       "points_mae": {
+        "difference": 0.000615567,
+        "interval": [
+         -2.1654e-05,
+         0.001231127
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         -0.003638007,
+         -0.001924198
+        ],
+        "value": -0.002783437
+       },
+       "relative_log_loss": {
+        "interval": [
+         -0.002326078,
+         -0.000977145
+        ],
+        "value": -0.001663859
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 219527,
+    "family": "season",
+    "label": "2024-25",
+    "metrics": {
+     "attempts": 219527,
+     "games": 1230,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.086135191,
+       "brier": 0.230801609,
+       "ece": 0.012778288,
+       "expected_points_per_shot": 1.095836305,
+       "log_loss": 0.653524684,
+       "mean_predicted": 0.468756394,
+       "observed": 0.4672136,
+       "points_mae": 1.118752736
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.086135191,
+       "brier": 0.224825621,
+       "ece": 0.013261142,
+       "expected_points_per_shot": 1.103797781,
+       "log_loss": 0.638416487,
+       "mean_predicted": 0.471940447,
+       "observed": 0.4672136,
+       "points_mae": 1.093270016
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.005975987,
+        "interval": [
+         0.005588026,
+         0.006352237
+        ]
+       },
+       "log_loss": {
+        "difference": 0.015108196,
+        "interval": [
+         0.014183441,
+         0.015965171
+        ]
+       },
+       "points_mae": {
+        "difference": 0.02548272,
+        "interval": [
+         0.024554216,
+         0.02637249
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.024220971,
+         0.027506896
+        ],
+        "value": 0.025892313
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.021697495,
+         0.024396702
+        ],
+        "value": 0.023118019
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 219160,
+    "family": "season",
+    "label": "2025-26",
+    "metrics": {
+     "attempts": 219160,
+     "games": 1230,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.09130772,
+       "brier": 0.230766209,
+       "ece": 0.017322427,
+       "expected_points_per_shot": 1.100932085,
+       "log_loss": 0.653951271,
+       "mean_predicted": 0.47185353,
+       "observed": 0.471012046,
+       "points_mae": 1.117845387
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.09130772,
+       "brier": 0.22494148,
+       "ece": 0.008271407,
+       "expected_points_per_shot": 1.107984014,
+       "log_loss": 0.638879545,
+       "mean_predicted": 0.474912903,
+       "observed": 0.471012046,
+       "points_mae": 1.092546956
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.005824729,
+        "interval": [
+         0.005452586,
+         0.006217595
+        ]
+       },
+       "log_loss": {
+        "difference": 0.015071726,
+        "interval": [
+         0.014173617,
+         0.016026887
+        ]
+       },
+       "points_mae": {
+        "difference": 0.025298431,
+        "interval": [
+         0.024367758,
+         0.02624377
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.023629638,
+         0.026928082
+        ],
+        "value": 0.025240825
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.021699325,
+         0.024502679
+        ],
+        "value": 0.02304717
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 67214,
+    "family": "possession_seconds",
+    "label": "<= 6 s",
+    "metrics": {
+     "attempts": 67214,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.209837236,
+       "brier": 0.213575901,
+       "ece": 0.04533907,
+       "expected_points_per_shot": 1.156579844,
+       "log_loss": 0.615993487,
+       "mean_predicted": 0.503587575,
+       "observed": 0.534710031,
+       "points_mae": 1.058726689
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.209837236,
+       "brier": 0.203579991,
+       "ece": 0.024317166,
+       "expected_points_per_shot": 1.280965806,
+       "log_loss": 0.588033996,
+       "mean_predicted": 0.557980228,
+       "observed": 0.534710031,
+       "points_mae": 1.00151059
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.00999591,
+        "interval": [
+         0.009212783,
+         0.010816802
+        ]
+       },
+       "log_loss": {
+        "difference": 0.027959491,
+        "interval": [
+         0.025941368,
+         0.030057772
+        ]
+       },
+       "points_mae": {
+        "difference": 0.057216099,
+        "interval": [
+         0.055057051,
+         0.059391977
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.043116343,
+         0.050597777
+        ],
+        "value": 0.046802613
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.042133641,
+         0.048742534
+        ],
+        "value": 0.045389265
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 167681,
+    "family": "possession_seconds",
+    "label": "6 to 14 s",
+    "metrics": {
+     "attempts": 167681,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.10310053,
+       "brier": 0.233244552,
+       "ece": 0.015911675,
+       "expected_points_per_shot": 1.095659508,
+       "log_loss": 0.658853271,
+       "mean_predicted": 0.46440864,
+       "observed": 0.470148675,
+       "points_mae": 1.137590972
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.10310053,
+       "brier": 0.228598372,
+       "ece": 0.010333407,
+       "expected_points_per_shot": 1.107872505,
+       "log_loss": 0.647121396,
+       "mean_predicted": 0.469239004,
+       "observed": 0.470148675,
+       "points_mae": 1.120217992
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.00464618,
+        "interval": [
+         0.004252625,
+         0.005054248
+        ]
+       },
+       "log_loss": {
+        "difference": 0.011731875,
+        "interval": [
+         0.010816985,
+         0.012676781
+        ]
+       },
+       "points_mae": {
+        "difference": 0.01737298,
+        "interval": [
+         0.016437894,
+         0.0183196
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.018266931,
+         0.021652336
+        ],
+        "value": 0.019919779
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.01642723,
+         0.019245918
+        ],
+        "value": 0.017806506
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 202134,
+    "family": "possession_seconds",
+    "label": "> 14 s",
+    "metrics": {
+     "attempts": 202134,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.03717336,
+       "brier": 0.234456306,
+       "ece": 0.018854738,
+       "expected_points_per_shot": 1.08148497,
+       "log_loss": 0.662014762,
+       "mean_predicted": 0.464206292,
+       "observed": 0.446713566,
+       "points_mae": 1.122126781
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.03717336,
+       "brier": 0.22885491,
+       "ece": 0.008019356,
+       "expected_points_per_shot": 1.046668218,
+       "log_loss": 0.648356166,
+       "mean_predicted": 0.449020017,
+       "observed": 0.446713566,
+       "points_mae": 1.100747999
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.005601396,
+        "interval": [
+         0.005212641,
+         0.005970106
+        ]
+       },
+       "log_loss": {
+        "difference": 0.013658596,
+        "interval": [
+         0.012741583,
+         0.014524479
+        ]
+       },
+       "points_mae": {
+        "difference": 0.021378782,
+        "interval": [
+         0.020568933,
+         0.022191704
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.022248997,
+         0.025462688
+        ],
+        "value": 0.023891001
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.01925504,
+         0.021934199
+        ],
+        "value": 0.020631861
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 1658,
+    "family": "possession_seconds",
+    "label": "unknown",
+    "metrics": {
+     "attempts": 1658,
+     "games": 1113,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.008443908,
+       "brier": 0.231813003,
+       "ece": 0.035364394,
+       "expected_points_per_shot": 1.074432829,
+       "log_loss": 0.657430806,
+       "mean_predicted": 0.460548664,
+       "observed": 0.435464415,
+       "points_mae": 1.115684484
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.008443908,
+       "brier": 0.228637757,
+       "ece": 0.026638531,
+       "expected_points_per_shot": 1.027716011,
+       "log_loss": 0.649935036,
+       "mean_predicted": 0.444403909,
+       "observed": 0.435464415,
+       "points_mae": 1.080504062
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.003175246,
+        "interval": [
+         -0.001272929,
+         0.007757556
+        ]
+       },
+       "log_loss": {
+        "difference": 0.00749577,
+        "interval": [
+         -0.002916712,
+         0.018190725
+        ]
+       },
+       "points_mae": {
+        "difference": 0.035180422,
+        "interval": [
+         0.025036292,
+         0.045622494
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         -0.005537573,
+         0.033525756
+        ],
+        "value": 0.013697447
+       },
+       "relative_log_loss": {
+        "interval": [
+         -0.004438053,
+         0.027901546
+        ],
+        "value": 0.011401611
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 54671,
+    "family": "offensive_rebound",
+    "label": "after own offensive rebound",
+    "metrics": {
+     "attempts": 54671,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.116185912,
+       "brier": 0.242664321,
+       "ece": 0.047901707,
+       "expected_points_per_shot": 1.214728739,
+       "log_loss": 0.682882214,
+       "mean_predicted": 0.54599835,
+       "observed": 0.498234896,
+       "points_mae": 1.06949613
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.116185912,
+       "brier": 0.224060677,
+       "ece": 0.008959686,
+       "expected_points_per_shot": 1.129884113,
+       "log_loss": 0.637529055,
+       "mean_predicted": 0.503864802,
+       "observed": 0.498234896,
+       "points_mae": 1.045920755
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.018603644,
+        "interval": [
+         0.017434759,
+         0.019780014
+        ]
+       },
+       "log_loss": {
+        "difference": 0.04535316,
+        "interval": [
+         0.042636942,
+         0.048139383
+        ]
+       },
+       "points_mae": {
+        "difference": 0.023575375,
+        "interval": [
+         0.021195461,
+         0.025881933
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.072138336,
+         0.081200825
+        ],
+        "value": 0.076664108
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.06256903,
+         0.070283491
+        ],
+        "value": 0.066414323
+       }
+      }
+     }
+    }
+   },
+   {
+    "attempts": 382358,
+    "family": "offensive_rebound",
+    "label": "no offensive rebound",
+    "metrics": {
+     "attempts": 382358,
+     "games": 2460,
+     "models": {
+      "baseline": {
+       "actual_points_per_shot": 1.085140104,
+       "brier": 0.229080757,
+       "ece": 0.016695719,
+       "expected_points_per_shot": 1.081850223,
+       "log_loss": 0.649554606,
+       "mean_predicted": 0.459522853,
+       "observed": 0.465092923,
+       "points_mae": 1.125288863
+      },
+      "lightgbm_31": {
+       "actual_points_per_shot": 1.085140104,
+       "brier": 0.224984873,
+       "ece": 0.010699268,
+       "expected_points_per_shot": 1.102797233,
+       "log_loss": 0.638758844,
+       "mean_predicted": 0.469198939,
+       "observed": 0.465092923,
+       "points_mae": 1.099681106
+      }
+     },
+     "versus_baseline": {
+      "lightgbm_31": {
+       "brier": {
+        "difference": 0.004095884,
+        "interval": [
+         0.003831619,
+         0.004372327
+        ]
+       },
+       "log_loss": {
+        "difference": 0.010795762,
+        "interval": [
+         0.010154338,
+         0.01143563
+        ]
+       },
+       "points_mae": {
+        "difference": 0.025607757,
+        "interval": [
+         0.024952546,
+         0.026265324
+        ]
+       },
+       "relative_brier": {
+        "interval": [
+         0.016731908,
+         0.019093272
+        ],
+        "value": 0.01787965
+       },
+       "relative_log_loss": {
+        "interval": [
+         0.015638507,
+         0.017602291
+        ],
+        "value": 0.016620253
+       }
+      }
+     }
+    }
+   }
+  ],
+  "uncalibrated": {
+   "attempts": 438687,
+   "games": 2460,
+   "models": {
+    "baseline": {
+     "actual_points_per_shot": 1.088719292,
+     "brier": 0.231830472,
+     "ece": 0.027989059,
+     "expected_points_per_shot": 1.031420461,
+     "log_loss": 0.655816021,
+     "mean_predicted": 0.441122175,
+     "observed": 0.469111234,
+     "points_mae": 1.118189858
+    },
+    "lightgbm_31": {
+     "actual_points_per_shot": 1.088719292,
+     "brier": 0.224879386,
+     "ece": 0.009316643,
+     "expected_points_per_shot": 1.091215137,
+     "log_loss": 0.638680724,
+     "mean_predicted": 0.467747582,
+     "observed": 0.469111234,
+     "points_mae": 1.089043164
+    },
+    "reference": {
+     "actual_points_per_shot": 1.088719292,
+     "brier": 0.227706486,
+     "ece": 0.010948984,
+     "expected_points_per_shot": 1.103158346,
+     "log_loss": 0.64556233,
+     "mean_predicted": 0.47439331,
+     "observed": 0.469111234,
+     "points_mae": 1.096706979
+    }
+   },
+   "versus_baseline": {
+    "lightgbm_31": {
+     "brier": {
+      "difference": 0.006951086,
+      "interval": [
+       0.006679102,
+       0.007234105
+      ]
+     },
+     "log_loss": {
+      "difference": 0.017135296,
+      "interval": [
+       0.016478143,
+       0.017792942
+      ]
+     },
+     "points_mae": {
+      "difference": 0.029146694,
+      "interval": [
+       0.02848402,
+       0.029809981
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.028818141,
+       0.031179282
+      ],
+      "value": 0.029983485
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.025127314,
+       0.027141477
+      ],
+      "value": 0.026128206
+     }
+    },
+    "reference": {
+     "brier": {
+      "difference": 0.004123985,
+      "interval": [
+       0.003766668,
+       0.004499266
+      ]
+     },
+     "log_loss": {
+      "difference": 0.01025369,
+      "interval": [
+       0.009424134,
+       0.011097636
+      ]
+     },
+     "points_mae": {
+      "difference": 0.021482879,
+      "interval": [
+       0.020630325,
+       0.022365212
+      ]
+     },
+     "relative_brier": {
+      "interval": [
+       0.016264283,
+       0.019372778
+      ],
+      "value": 0.017788797
+     },
+     "relative_log_loss": {
+      "interval": [
+       0.014388334,
+       0.016904229
+      ],
+      "value": 0.015635011
+     }
+    }
+   }
+  }
+ }
+}

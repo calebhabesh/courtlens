@@ -1886,6 +1886,26 @@ def refresh_darko_daily_command(
     typer.echo(f"{verb} {path}  (served as the newest bundle in {output})")
 
 
+@app.command("acquire-draft-history")
+def acquire_draft_history_command(
+    root: Path = typer.Option(Path("data/raw/draft-history")),
+    output: Path = typer.Option(Path("data/derived/draft-history-v1")),
+    seal_only: bool = typer.Option(False, help="Re-parse held pages without fetching."),
+) -> None:
+    """Operator run: seal full draft lists for 1966-99 (hoopR mirror 1996-99, Wikipedia 1966-95)."""
+    import httpx
+
+    from courtlens.services.draft_history import acquire, seal
+
+    with SessionLocal() as session, httpx.Client() as client:
+        if seal_only:
+            path, result = seal(session, root, output)
+        else:
+            path, result = acquire(session, root, client, output, log=typer.echo)
+    typer.echo(json.dumps(result))
+    typer.echo(f"sealed {path}")
+
+
 @app.command("refresh-wikipedia-transactions")
 def refresh_wikipedia_transactions_command(
     season: str | None = typer.Option(None, help="Default: the season under way today."),
@@ -2019,6 +2039,49 @@ def retire_release_command(dataset_id: list[str] = typer.Argument(...)) -> None:
             typer.echo(f"retired {value}")
 
 
+@app.command("refresh-win-probability")
+def refresh_win_probability_command(
+    lookback_days: int = typer.Option(7, help="Days back to look for unscored finished games."),
+) -> None:
+    """Score finished games for CourtLens and ESPN, then seal today's pregame inputs (R15b)."""
+    from courtlens.ingestion.espn_win_probability import Client
+    from courtlens.services.win_probability_production import nightly
+
+    typer.echo(json.dumps(nightly(Client(), lookback_days=lookback_days)))
+
+
+@app.command("refresh-projected-impact")
+def refresh_projected_impact_command(
+    force: bool = typer.Option(False, help="Score now even if the last score is under 7 days old."),
+) -> None:
+    """Weekly game-level score of the frozen 2026-27 projections; a no-op on other days."""
+    from courtlens.services.projected_impact import weekly
+
+    typer.echo(json.dumps(weekly(force=force)))
+
+
+@app.command("refresh-metric-backtest")
+def refresh_metric_backtest_command(
+    force: bool = typer.Option(False, help="Score now even if the last score is under 7 days old."),
+) -> None:
+    """Score completed 2026-27 games for the Metric Backtest; a no-op within 7 days of the last."""
+    from courtlens.services.metric_backtest import weekly
+
+    typer.echo(json.dumps(weekly(force=force)))
+
+
+@app.command("capture-win-probability-inputs")
+def capture_win_probability_inputs_command() -> None:
+    """Seal today's pregame inputs only; run nearer tip-off to catch later injury news."""
+    from zoneinfo import ZoneInfo
+
+    from courtlens.ingestion.espn_win_probability import Client
+    from courtlens.services.win_probability_production import capture_slate
+
+    today = datetime.now(ZoneInfo("America/New_York")).date()
+    typer.echo(str(capture_slate(today, Client())))
+
+
 @app.command("refresh-daily")
 def refresh_daily_command(
     keep_days: int = typer.Option(30, help="Retention window passed to every step."),
@@ -2058,6 +2121,8 @@ def refresh_daily_command(
                 keep_days,
             ),
         ),
+        ("win probability", lambda: refresh_win_probability_command(7)),
+        ("projected impact", lambda: refresh_projected_impact_command(False)),
     )
     for name, step in steps:
         typer.echo(f"== {name}")
@@ -2249,3 +2314,33 @@ def reconcile_live_final_command(observation_id: str, dataset_id: str) -> None:
     with SessionLocal() as session:
         result = reconcile_final(session, observation_id, dataset_id)
     typer.echo(json.dumps(result, indent=2))
+
+
+@app.command("seal-wingspan-coverage")
+def seal_wingspan_coverage_command(
+    page: Path = typer.Option(
+        ..., exists=True, dir_okay=False, help="CraftedNBA length page, raw bytes."
+    ),
+    observed_at: str = typer.Option(
+        ..., help="When the page was fetched, ISO 8601 with a timezone."
+    ),
+) -> None:
+    """RD01: seal CraftedNBA's reported heights and wingspans beside the frozen R10 results."""
+    from courtlens.services import wingspan, wingspan_coverage
+
+    raw = page.read_bytes()
+    sealed = wingspan_coverage.build(
+        raw, datetime.fromisoformat(observed_at), wingspan._load_results(), wingspan.current_board()
+    )
+    raw_path, seal_path = wingspan_coverage.write(raw, sealed)
+    typer.echo(
+        json.dumps(
+            {
+                "raw": str(raw_path),
+                "seal": str(seal_path),
+                "seal_sha256": sealed["seal_sha256"],
+                **sealed["counts"],
+            },
+            indent=2,
+        )
+    )

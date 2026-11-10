@@ -1,0 +1,67 @@
+{
+ "frozen_at": "2026-11-05T04:53:33+00:00",
+ "hindsight": {
+  "games": 107,
+  "gaps": {
+   "lightgbm_over_carry_forward": {
+    "gap": 28.4272444038103,
+    "high": 46.15644540144131,
+    "level": 0.95,
+    "low": 10.497058901998916,
+    "units": 107
+   },
+   "lightgbm_over_time_decay": {
+    "gap": 19.094801582507174,
+    "high": 34.051166046741834,
+    "level": 0.95,
+    "low": 4.203997439853555,
+    "units": 107
+   },
+   "ridge_over_carry_forward": {
+    "gap": 24.34326493512425,
+    "high": 37.13499860805453,
+    "level": 0.95,
+    "low": 11.54173864526982,
+    "units": 107
+   },
+   "ridge_over_time_decay": {
+    "gap": 15.010822113821119,
+    "high": 28.53422586436096,
+    "level": 0.95,
+    "low": 1.351023014697988,
+    "units": 107
+   }
+  },
+  "ratings": {
+   "age_curve": {
+    "rmse": 15.39035160339761,
+    "winner_accuracy": 0.6261682242990654
+   },
+   "carry_forward": {
+    "rmse": 15.34577059989409,
+    "winner_accuracy": 0.6261682242990654
+   },
+   "lightgbm": {
+    "rmse": 14.389768271267037,
+    "winner_accuracy": 0.7102803738317757
+   },
+   "ridge": {
+    "rmse": 14.530981053234141,
+    "winner_accuracy": 0.6915887850467289
+   },
+   "time_decay": {
+    "rmse": 15.03862468722691,
+    "winner_accuracy": 0.6728971962616822
+   }
+  },
+  "unprojected_minutes_share": 0.0
+ },
+ "projections_sha256": "6eaef38960af783b4e3d1bdaab955f5f6185ce9c75ab8ff7e98b5a397242d41e",
+ "prospective": {
+  "games": 0
+ },
+ "prospective_by_week": [],
+ "scored_through": "2026-11-02",
+ "version": "courtlens-projected-impact-v1-frozen-2026-27",
+ "written_at": "2026-11-05T04:54:49+00:00"
+}

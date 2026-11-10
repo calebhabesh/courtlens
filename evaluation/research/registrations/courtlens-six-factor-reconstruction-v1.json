@@ -1,0 +1,31 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-six-factor-reconstruction-v1",
+  "block": "R01",
+  "registered_on": "2026-11-04",
+  "kind": "descriptive",
+  "question": "How much of a player's RAPM is reconstructed by a linear combination of their six-factor ratings, per season?",
+  "inputs": ["1Y regular-season impact-ratings-v1-method fits for 2014-15 to 2025-26 (RAPM and six factors from the same fit)"],
+  "method": [
+    "Sample: players qualified for RAPM and for all six factors in the season's 1Y fit.",
+    "Second stage: weighted least squares of RAPM (total) on oTS, oTOV, oREB, dTS, dTOV, dREB with an intercept, weights = player seconds.",
+    "Also reported: ORAPM on oTS, oTOV, oREB and DRAPM on dTS, dTOV, dREB."
+  ],
+  "parameters": {"cv_folds": 10},
+  "selection": "None.",
+  "uncertainty": "Player bootstrap (200 resamples of the qualified players, seed 2501) for each R2.",
+  "evaluation": [
+    "In-sample weighted R2 (the figure comparable with the commonly quoted 0.985)",
+    "10-fold cross-validated weighted R2 (shuffled players, seed 2501)",
+    "Cross-season R2: coefficients fitted on season t-1 applied to season t"
+  ],
+  "acceptance": ["All three R2 values reported for all twelve seasons (cross-season from 2015-16)"],
+  "outputs": ["docs/evidence/research/r01/six-factor-reconstruction.json"],
+  "limitations": [
+    "The six factors are rate models with their own denominators and penalties; they are not additive to RAPM by construction",
+    "A high in-sample R2 with six inputs and a few hundred players can overstate out-of-sample fit"
+  ],
+  "negative_result_policy": "Publish the measured R2 values whatever they are, including if they fall well below 0.985.",
+  "seed": 2501,
+  "budget": {"cpu_threads": 1, "max_peak_mib": 2048, "max_wall_seconds": 600}
+}

@@ -1,6 +1,7 @@
 import { assertCurrentEnvironment } from "./server-env";
 import type { SixFactorsResponse } from "./team-six-factors";
 import type { SavedDetail } from "./saved-operations";
+import type { WinProbabilityAdded, WinProbabilityPage } from "./win-probability";
 
 assertCurrentEnvironment();
 
@@ -13,12 +14,8 @@ import type {
   AssistantQueryRequest,
   AssistantStatusResponse,
   BackfillStatusResponse,
-  ComparePeriodsRequest,
-  ComparePeriodsResponse,
   DraftClassesResponse,
   CrosswalkResponse,
-  DistributionRequest,
-  DistributionResponse,
   ForecastIssuanceDetailResponse,
   ForecastsListResponse,
   InvestigationDetail,
@@ -28,8 +25,6 @@ import type {
   LookupResponse,
   MeasurementsQueryResponse,
   MetricCatalog,
-  OpponentContextRequest,
-  OpponentContextResponse,
   PlayerCareerResponse,
   PlayerComparisonResponse,
   PlayerGameLogResponse,
@@ -41,13 +36,9 @@ import type {
   PlayoffSeriesDetailResponse,
   ScheduleDatesResponse,
   PointsForecastEvaluation,
-  RankOperationRequest,
-  RankOperationResponse,
   SavedInvestigation,
   QuerySpec,
   StatsPresentation,
-  SplitProfileRequest,
-  SplitProfileResponse,
   StatisticalPeersRequest,
   StatisticalPeersResponse,
   TeamDetailResponse,
@@ -136,11 +127,29 @@ export async function getDraftClasses(): Promise<DraftClassesResponse> {
   return wbFetch<DraftClassesResponse>("/api/workbench/draft-classes");
 }
 
+/**
+ * Each player's team in a season's six-factor fit (the same served GET the Six-Factor tab reads). The RAPM
+ * Ratings feed serves no team, so its photos take their team colour and logo from here; a player missing
+ * from the fit stays without a team.
+ */
+export async function getSixFactorTeams(season: string, phase: string): Promise<Record<string, string>> {
+  const page = await wbFetch<{ status: string; players?: { player_id: string; team: string | null }[] }>(`/api/six-factor?${new URLSearchParams({ season, phase })}`);
+  return Object.fromEntries((page.players ?? []).flatMap(player => player.team ? [[player.player_id, player.team]] : []));
+}
+
 export async function getImpact(params: {
   season: string; phase: string; beforeDate: string; playerId?: string; teamId?: string; window?: string;
 }): Promise<ImpactResponse> {
   const query = new URLSearchParams(params);
   return wbFetch<ImpactResponse>(`/api/workbench/impact?${query}`);
+}
+
+export async function getWinProbabilityPage(): Promise<WinProbabilityPage> {
+  return wbFetch<WinProbabilityPage>("/api/win-probability");
+}
+
+export async function getWinProbabilityAdded(season: string): Promise<WinProbabilityAdded> {
+  return wbFetch<WinProbabilityAdded>(`/api/win-probability/wpa?season=${encodeURIComponent(season)}`);
 }
 
 export async function getWorkbenchStatus(): Promise<WorkbenchStatus> {
@@ -620,86 +629,6 @@ export async function queryLookup(options: LookupQueryOptions): Promise<LookupRe
   return response.json();
 }
 
-export async function comparePeriods(
-  req: ComparePeriodsRequest
-): Promise<ComparePeriodsResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/compare-periods`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
-export async function getDistribution(
-  req: DistributionRequest
-): Promise<DistributionResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/distribution`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
-export async function getSplitProfile(
-  req: SplitProfileRequest
-): Promise<SplitProfileResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/splits`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
-export async function getOpponentContext(
-  req: OpponentContextRequest = {}
-): Promise<OpponentContextResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/opponent-context`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
 export async function getStatisticalPeers(
   req: StatisticalPeersRequest
 ): Promise<StatisticalPeersResponse> {
@@ -710,27 +639,6 @@ export async function getStatisticalPeers(
     body: JSON.stringify(req),
     cache: "no-store",
     signal: AbortSignal.timeout(10000)
-  });
-
-  if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
-    throw new WorkbenchApiError(response.status, body?.detail ?? body);
-  }
-
-  return response.json();
-}
-
-export async function getRankOperation(
-  req: RankOperationRequest
-): Promise<RankOperationResponse> {
-  const base = typeof window !== "undefined" ? browserApi : internalApi;
-  const response = await fetch(`${base}/api/workbench/operations/rank`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(req),
-    cache: "no-store",
-    // League-wide ranks scan every eligible player (about 15s on a full season), like other operations.
-    signal: AbortSignal.timeout(50000)
   });
 
   if (!response.ok) {

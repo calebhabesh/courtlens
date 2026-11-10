@@ -1,0 +1,99 @@
+/* RD01 round 3 (owner): one table look for the site, the Stats page's NBA Player Statistics table. `StatsGrid`
+   renders the Stats classes (`stats-workspace`, `stats-table-frame`, `dense-stats-table`, header tiers,
+   pinned player card, metric cells) and only sets what a page table needs on top: no full-height workspace,
+   a frame height, column widths and a compact (scaled) density for small static tables. */
+@layer pages {
+  .rs-grid.stats-workspace { min-height: 0; background: transparent; }
+  .rs-grid .stats-table-frame {
+    --table-surface: var(--color-table-lift);
+    --table-data: var(--color-table-well);
+    --table-row-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-surface));
+    --table-data-hover: color-mix(in srgb, var(--color-white) 6%, var(--table-data));
+    border-radius: var(--radius-md);
+  }
+  .rs-grid .stats-table-frame .stats-scroll-region { height: auto; max-height: min(72dvh, 640px); isolation: isolate; }
+  .rs-grid[data-height="auto"] .stats-table-frame .stats-scroll-region { max-height: none; }
+  .rs-grid .dense-stats-table { --table-min-width: var(--rs-grid-min, 640px); }
+  .rs-grid .dense-stats-table thead th { position: sticky; top: 0; z-index: var(--z-sticky); }
+  .rs-grid .dense-stats-table .stats-header-tier-2 th { top: 26px; }
+  .rs-grid .dense-stats-table:not(:has(.stats-header-tier-1)) .stats-header-tier-2 th { top: 0; height: 40px; vertical-align: middle; }
+  .rs-grid .dense-stats-table .rs-grid-lead { position: sticky; left: 0; z-index: var(--z-sticky); text-align: left; }
+  .rs-grid .dense-stats-table thead .rs-grid-lead { z-index: var(--z-sticky-corner); }
+  .rs-grid .dense-stats-table tbody th.rs-grid-lead { padding: var(--space-1) var(--space-2); font-weight: 600; font-size: var(--text-md); text-transform: none; letter-spacing: 0; }
+  /* RD01 round 4 (owner): the lead column keeps one left edge in every row, header tiers included. */
+  .rs-grid .dense-stats-table thead th.rs-grid-lead { padding-inline: var(--space-4) var(--space-2); text-align: left; }
+  .rs-grid .dense-stats-table thead th.rs-grid-lead .table-sort-button { justify-content: flex-start; }
+  .rs-grid.density-compact .dense-stats-table tbody th.rs-grid-lead { padding-inline: var(--space-4) var(--space-2); }
+  .rs-grid.density-compact .dense-stats-table .stats-header-tier-2 th { color: var(--color-text-secondary); }
+  .rs-grid .dense-stats-table td.stats-metric-cell { text-align: center; }
+  .rs-grid .dense-stats-table td[data-align="left"] { text-align: left; padding-inline: var(--space-3); }
+  .rs-grid .dense-stats-table td[data-align="right"] { text-align: right; padding-inline: var(--space-3); }
+  .rs-grid .dense-stats-table .group-start { border-left: 1px solid var(--color-hairline-strong); }
+  .rs-grid .dense-stats-table thead .group-start { border-left: 0; }
+  .rs-grid .stats-header-search { padding-right: var(--space-2); }
+  /* RD04 round 6 (owner): equal space above and below the header search. The two header tiers share one background, so the
+     visible gap above is from the PLAYER label (about 7 px of tier-1 padding below it); the field sits flush on the tier line
+     and takes the same gap below it, before the first row; a taller phone row splits its slack evenly (middle). */
+  .rs-grid .dense-stats-table thead th.rs-grid-lead:has(> .rs-grid-search) { --rs-search-gap: 7px; padding-top: 0; padding-bottom: var(--rs-search-gap); vertical-align: middle; }
+  /* RD08 round 3 (owner): a search in a lead header that fills both rows, with equal space above and below. */
+  .rs-grid .dense-stats-table thead th.rs-grid-lead[rowspan]:has(> .rs-grid-search) { padding-block: var(--space-3); vertical-align: middle; }
+  .rs-grid .dense-stats-table thead th[rowspan] .rs-grid-search input { letter-spacing: 0; }
+  /* RD04 round 5: labels whose lowercase prefix carries meaning (oTS, dContest, xPPS) keep their case. */
+  .rs-grid .dense-stats-table thead th.rs-grid-keep-case, .rs-grid .dense-stats-table thead th.rs-grid-keep-case .table-sort-button { text-transform: none; }
+
+  /* Column widths (no inline geometry): the lead column and five figure widths. */
+  .rs-grid col.rs-col-lead { width: var(--rs-grid-lead, 280px); }
+  .rs-grid col.rs-col-guide { width: 38px; }
+  .rs-grid .dense-stats-table thead .stats-group-th[data-guided] { padding-left: var(--space-10); }
+  .rs-grid col.rs-col-xs { width: 64px; }
+  .rs-grid col.rs-col-sm { width: 88px; }
+  .rs-grid col.rs-col-md { width: 112px; }
+  .rs-grid col.rs-col-lg { width: 148px; }
+  .rs-grid col.rs-col-xl { width: 220px; }
+  .rs-grid col.rs-col-fill { width: auto; }
+  .rs-grid[data-min="wide"] { --rs-grid-min: 880px; }
+  .rs-grid[data-min="narrow"] { --rs-grid-min: 520px; }
+  .rs-grid[data-lead="sm"] { --rs-grid-lead: 168px; }
+  .rs-grid[data-lead="md"] { --rs-grid-lead: 240px; }
+  .rs-grid[data-lead="lg"] { --rs-grid-lead: 300px; }
+  .rs-grid[data-lead="xl"] { --rs-grid-lead: 340px; }
+
+  /* Figures: the Stats main value with a small second line (percentile, interval, note). */
+  .rs-grid .rs-grid-value { display: block; white-space: nowrap; }
+  .rs-grid .rs-grid-value[data-identity="a"] { color: var(--color-identity-a); }
+  .rs-grid .rs-grid-value[data-identity="b"] { color: var(--color-identity-b); }
+  /* RD04: green/red only where a served interval excludes zero. */
+  .rs-grid .rs-grid-value[data-tone="good"] { color: var(--color-positive); }
+  .rs-grid .rs-grid-value[data-tone="bad"] { color: var(--color-negative); }
+  /* RD04 round 2: the logo-grid team picker's dialog (`team-picker.tsx`), as WOWY's. */
+  .rs-team-modal { width: min(520px, calc(100vw - 2 * var(--space-4))); }
+  .rs-team-clear { margin-top: var(--space-3); }
+  .rs-grid .rs-grid-value[data-muted] { color: var(--color-text-secondary); font-weight: 400; }
+  .rs-grid .rs-grid-sub { display: block; margin-top: var(--space-0-5); color: var(--color-text-tertiary); font-size: var(--text-2xs); line-height: 1.2; white-space: nowrap; }
+  .rs-grid .rs-grid-unknown { color: var(--color-text-tertiary); }
+  .rs-grid .rs-grid-tools { display: inline-flex; flex: none; align-items: center; gap: var(--space-0-5); }
+  .rs-grid .player-cell .team-logo { flex: none; }
+  .rs-grid .rs-grid-empty { padding: var(--space-8); text-align: center; color: var(--color-text-secondary); }
+
+  /* Scaled equivalent for small static tables: the same look one step smaller. */
+  .rs-grid.density-compact .dense-stats-table tbody td,
+  .rs-grid.density-compact .dense-stats-table tbody th { height: 48px; font-size: var(--text-sm); }
+  .rs-grid.density-compact .dense-stats-table tbody th.rs-grid-lead { font-size: var(--text-sm); }
+
+  @media (max-width: 767px) {
+    .rs-grid[data-lead] { --rs-grid-lead: 200px; }
+    /* Row tools take a second line under the name so the name keeps its room. */
+    .rs-grid .dense-stats-table .player-cell:has(.rs-grid-tools) { display: grid; grid-template-columns: auto auto minmax(0, 1fr); align-items: center; column-gap: var(--space-2); }
+    .rs-grid .dense-stats-table .player-cell:has(.rs-grid-tools) .rs-grid-tools { grid-column: 3; }
+    .rs-grid .dense-stats-table tbody tr:has(.rs-grid-tools) :is(td, th) { height: 84px; }
+    .rs-grid[data-lead="sm"] { --rs-grid-lead: 120px; }
+  }
+}
+
+/* Portrait sizes live in the foundation layer: the Stats card's 40 px photo (36 px when compact). */
+@layer foundation {
+  .rs-grid .dense-stats-table .player-cell .player-portrait,
+  .rs-grid .dense-stats-table .player-cell .player-portrait-fallback { width: 40px; height: 40px; min-width: 40px; min-height: 40px; border: 0; }
+  .rs-grid.density-compact .dense-stats-table .player-cell .player-portrait,
+  .rs-grid.density-compact .dense-stats-table .player-cell .player-portrait-fallback { width: 36px; height: 36px; min-width: 36px; min-height: 36px; }
+}

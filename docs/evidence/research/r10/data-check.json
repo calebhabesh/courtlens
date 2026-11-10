@@ -1,0 +1,3392 @@
+{
+ "block": "R10",
+ "calculator": {
+  "existing_page": "/calculator computes a user-assumption 'hypothetical' repeated-chance model (lib/advanced-research possessionFlow); it holds no observed data and does not implement the paper's Eq. (11).",
+  "new_data_needed": "League (and team) season inputs for Eq. (11): eFG%, FTr, FG%, FT%, TOV% (Eq. 10), ORB% (Eq. 9), the season's mu (share of possession-ending free throws, paper Appendix A), plus offensive-rebound rates after missed twos, threes and final free throws for Databallr's split rebound term.",
+  "paper_verified_from_primary_source": {
+   "arxiv": "2305.13032",
+   "authors": "Jirka Poropudas (SportIQ, Helsinki) and Topi Halme (Aalto University)",
+   "eq10": "TOV% = TOV / (FGA + TOV - ORB + mu FTA)",
+   "eq11": "ORTG = (1 - TOV%)(FTr + 2 eFG%) / (1 - ORB%(1 - FG%) + mu FTr / FT%)",
+   "eq9": "ORB% ~ ORB / (FGA - FGM)",
+   "league_2024_25": "alpha 0.131 (ORB on missed FT), beta 0.795 (make rate of possession-ending FT), epsilon 0.026 (Appendix B, Remark 2 discussion)",
+   "mu": "Kubatko et al. 0.44 (2003-06); paper 0.425 for 2024-25 (Appendix A)",
+   "pdf_sha256": "a89c98df66f2ae0cf9b662f732fd2edf477a326fe65cff40b8dbb4d1ef04b5f3",
+   "title_v1": "Dean Oliver's Four Factors Revisited (the arXiv listing and search results for v1)",
+   "title_v2": "Decomposing Basketball Team Efficiency Using the Four Factors and Shapley Values",
+   "version": "v2, 13 Oct 2026 (v1 22 May 2023)"
+  },
+  "play_by_play": {
+   "2014-15": {
+    "archive_sha256": "76a5398235900fd5b914eaeb1464e76fc05517184d04c503404a16a44d14f741",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 30,
+    "unknown_ft_sub_types": {}
+   },
+   "2015-16": {
+    "archive_sha256": "7bbb1e8a1512dd2877be97cb73d990c424a2f7488137ca5d7a6285e2afea873e",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 30,
+    "unknown_ft_sub_types": {}
+   },
+   "2016-17": {
+    "archive_sha256": "6c94890f389abe5af085ff19a26a80e7fe0d205c55dc201aefaa078a887540f4",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 30,
+    "unknown_ft_sub_types": {}
+   },
+   "2017-18": {
+    "archive_sha256": "e9fedc33337e6a34dc4373bc5138e742e6bbcf09477b34568d79588dead7e62c",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 30,
+    "unknown_ft_sub_types": {}
+   },
+   "2018-19": {
+    "archive_sha256": "a8c05607863b0bb0da51ed65fc89866cbb5c1954f7951ce00ed05f2ad178097d",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 30,
+    "unknown_ft_sub_types": {}
+   },
+   "2019-20": {
+    "archive_sha256": "3fc651e4c294e231723fa097dca2cf938dd868ee2b9a6111f22ab9c0728e89dc",
+    "free_throw_rows_unclassified": 0,
+    "games": 1059,
+    "no_turnover_rows": 0,
+    "teams": 30,
+    "unknown_ft_sub_types": {}
+   },
+   "2020-21": {
+    "archive_sha256": "8bbd2406d741f8247db9eec222bb1655ea699edb60907d3851a048b8ea7a798d",
+    "free_throw_rows_unclassified": 0,
+    "games": 1080,
+    "no_turnover_rows": 0,
+    "teams": 31,
+    "unknown_ft_sub_types": {}
+   },
+   "2021-22": {
+    "archive_sha256": "f44ec8a4a9864732fca66943ae4d06a06ef98ba3932571c15a23ecae644f84c4",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 31,
+    "unknown_ft_sub_types": {}
+   },
+   "2022-23": {
+    "archive_sha256": "42c24abf0abbc0ccef00addaba4b8c76df230a0ff3c0e5b301353307941fd04c",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 31,
+    "unknown_ft_sub_types": {}
+   },
+   "2023-24": {
+    "archive_sha256": "3a6976219b87fb50cecf8b2c54cb2af110f2f013ed8368d694035806802c8b04",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 30,
+    "unknown_ft_sub_types": {}
+   },
+   "2024-25": {
+    "archive_sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 30,
+    "unknown_ft_sub_types": {}
+   },
+   "2025-26": {
+    "archive_sha256": "790a01ea3f0b2f8335d96bd687e21501551fc8cdea3ada83457ee3208a940671",
+    "free_throw_rows_unclassified": 0,
+    "games": 1230,
+    "no_turnover_rows": 0,
+    "teams": 30,
+    "unknown_ft_sub_types": {}
+   }
+  }
+ },
+ "checked_on": "2026-11-06",
+ "content_reference": {
+  "calculator": "Owner's saved Databallr page 'Offensive Rating Calculator' (ORTG Lab): ORTG = 100 x xSHOT x xEFF x xPOSS with xSHOT = 1 - TOV%, xEFF = 2 eFG% + FTr x FT%, xPOSS a recycle multiplier from 2P, 3P and FT offensive rebounds; league-average defaults and a marginal value per +1% for eFG, 2P, 3P, FT, TS, 3PA rate, FT rate, TOV, FG/2P/3P/FT OREB; credits Poropudas and Halme, 'Dean Oliver's Four Factors Revisited'; FT possession-ending weight 0.43.",
+  "shot_aftermath": "Owner's saved Databallr page 'Shot Aftermath': seasons 2024-25 and 2025-26, filters by shooting team and shooter position (guards/forwards/bigs), first-chance attempts by zone (rim, short mid 5-14 ft, long mid 15+ ft, three) with FG%, made points, second-chance points and opponent cost per attempt, opponent PPP after makes and misses.",
+  "wingspan": "Owner's saved Databallr page 'Wingspan Database - NBA Height & Wingspan Resource' (2026-11-06). Shows: Active/Inactive and position filters, barefoot/with-shoes (+1.25 in) height, inches or ft-in, CSV with nba_id; table of position, height, wingspan, diff (W-H) and D-DPM, each with a percentile; Avg H/W/Diff; positional averages (PG..C height, wingspan, diff); a selected-player overlay; a 'find similar profiles' action per row; a scatter with two selectable axes among height, wingspan, diff, D-DPM and its R; sources 'NBA Combine, Nick Kalinowski, NBA.com, CraftedNBA'."
+ },
+ "note": "Coverage counts only. No correlation, positional average, nearest build, mu or rating was computed before the registrations.",
+ "shot_aftermath": {
+  "finding": "Not restyle only. Databallr's page is a league/team/position view by shot zone for two seasons. CourtLens's /research/shooting/aftermath is per player and reads workbench_pbp_events, workbench_possessions and workbench_shots, which in the published database hold 2 test games (dataset 17251a08...). Serving Databallr's content needs new data (a frozen aggregate from the play-by-play archives). Left out of R10 and raised with the owner."
+ },
+ "temporal": "DARKO's dated season-end boards are retrospective: each is DARKO's pregame forecast at the season's last regular-season game date, recomputed later with DARKO's current model (R08 left DARKO out of its backtest as hindsight for this reason). Wingspan against D-DPM is a descriptive association between a pre-draft measurement and a later rating, not a forecast and not a causal claim.",
+ "wingspan": {
+  "coverage": {
+   "combine_rows": 1873,
+   "darko_board_season_without_logged_minutes": {
+    "count": 82,
+    "reason": "DARKO lists the player on its season-end board but the published game logs have no regular-season minutes for him that season (did not play, or rated from earlier seasons); never counted as 0 minutes.",
+    "rows": [
+     {
+      "name": "Channing Frye",
+      "player_id": "101112",
+      "season": "2012-13"
+     },
+     {
+      "name": "Ike Diogu",
+      "player_id": "101113",
+      "season": "2009-10"
+     },
+     {
+      "name": "Sean May",
+      "player_id": "101118",
+      "season": "2007-08"
+     },
+     {
+      "name": "Ersan Ilyasova",
+      "player_id": "101141",
+      "season": "2005-06"
+     },
+     {
+      "name": "Martynas Andriuskevicius",
+      "player_id": "101149",
+      "season": "2006-07"
+     },
+     {
+      "name": "Willie Cauley-Stein",
+      "player_id": "1626161",
+      "season": "2022-23"
+     },
+     {
+      "name": "Terry Rozier",
+      "player_id": "1626179",
+      "season": "2025-26"
+     },
+     {
+      "name": "Michael Frazier II",
+      "player_id": "1626187",
+      "season": "2018-19"
+     },
+     {
+      "name": "Denzel Valentine",
+      "player_id": "1627756",
+      "season": "2018-19"
+     },
+     {
+      "name": "Isaiah Whitehead",
+      "player_id": "1627785",
+      "season": "2018-19"
+     },
+     {
+      "name": "Zach Collins",
+      "player_id": "1628380",
+      "season": "2020-21"
+     },
+     {
+      "name": "Harry Giles",
+      "player_id": "1628385",
+      "season": "2017-18"
+     },
+     {
+      "name": "Frank Jackson",
+      "player_id": "1628402",
+      "season": "2017-18"
+     },
+     {
+      "name": "Kobi Simmons",
+      "player_id": "1628424",
+      "season": "2019-20"
+     },
+     {
+      "name": "Jontay Porter",
+      "player_id": "1629007",
+      "season": "2019-20"
+     },
+     {
+      "name": "Michael Porter",
+      "player_id": "1629008",
+      "season": "2018-19"
+     },
+     {
+      "name": "Ray Spalding",
+      "player_id": "1629034",
+      "season": "2019-20"
+     },
+     {
+      "name": "DaQuan Jeffries",
+      "player_id": "1629610",
+      "season": "2022-23"
+     },
+     {
+      "name": "Zion Williamson",
+      "player_id": "1629627",
+      "season": "2021-22"
+     },
+     {
+      "name": "Dylan Windler",
+      "player_id": "1629685",
+      "season": "2019-20"
+     },
+     {
+      "name": "Kai Jones",
+      "player_id": "1630539",
+      "season": "2023-24"
+     },
+     {
+      "name": "Jason Preston",
+      "player_id": "1630554",
+      "season": "2021-22"
+     },
+     {
+      "name": "E.J. Liddell",
+      "player_id": "1630604",
+      "season": "2022-23"
+     },
+     {
+      "name": "Duane Washington Jr.",
+      "player_id": "1630613",
+      "season": "2023-24"
+     },
+     {
+      "name": "Chet Holmgren",
+      "player_id": "1631096",
+      "season": "2022-23"
+     },
+     {
+      "name": "Justin Lewis",
+      "player_id": "1631171",
+      "season": "2022-23"
+     },
+     {
+      "name": "Collin Gillespie",
+      "player_id": "1631221",
+      "season": "2022-23"
+     },
+     {
+      "name": "Jaylen Clark",
+      "player_id": "1641740",
+      "season": "2023-24"
+     },
+     {
+      "name": "DaRon Holmes II",
+      "player_id": "1641747",
+      "season": "2024-25"
+     },
+     {
+      "name": "Seth Lundy",
+      "player_id": "1641754",
+      "season": "2024-25"
+     },
+     {
+      "name": "Nikola Topic",
+      "player_id": "1642260",
+      "season": "2024-25"
+     },
+     {
+      "name": "Thomas Sorber",
+      "player_id": "1642850",
+      "season": "2025-26"
+     },
+     {
+      "name": "Adam Morrison",
+      "player_id": "200747",
+      "season": "2007-08"
+     },
+     {
+      "name": "Greg Oden",
+      "player_id": "201141",
+      "season": "2007-08"
+     },
+     {
+      "name": "Greg Oden",
+      "player_id": "201141",
+      "season": "2010-11"
+     },
+     {
+      "name": "Kevin Durant",
+      "player_id": "201142",
+      "season": "2019-20"
+     },
+     {
+      "name": "Brandan Wright",
+      "player_id": "201148",
+      "season": "2009-10"
+     },
+     {
+      "name": "Jason Smith",
+      "player_id": "201160",
+      "season": "2008-09"
+     },
+     {
+      "name": "Herbert Hill",
+      "player_id": "201195",
+      "season": "2007-08"
+     },
+     {
+      "name": "Mustafa Shakur",
+      "player_id": "201203",
+      "season": "2009-10"
+     },
+     {
+      "name": "Derrick Rose",
+      "player_id": "201565",
+      "season": "2012-13"
+     },
+     {
+      "name": "D.J. Augustin",
+      "player_id": "201571",
+      "season": "2022-23"
+     },
+     {
+      "name": "Darrell Arthur",
+      "player_id": "201589",
+      "season": "2011-12"
+     },
+     {
+      "name": "Donte Greene",
+      "player_id": "201590",
+      "season": "2012-13"
+     },
+     {
+      "name": "Blake Griffin",
+      "player_id": "201933",
+      "season": "2009-10"
+     },
+     {
+      "name": "John Wall",
+      "player_id": "202322",
+      "season": "2019-20"
+     },
+     {
+      "name": "John Wall",
+      "player_id": "202322",
+      "season": "2021-22"
+     },
+     {
+      "name": "Daniel Orton",
+      "player_id": "202350",
+      "season": "2010-11"
+     },
+     {
+      "name": "Terrico White",
+      "player_id": "202358",
+      "season": "2010-11"
+     },
+     {
+      "name": "Kyrie Irving",
+      "player_id": "202681",
+      "season": "2025-26"
+     },
+     {
+      "name": "Tristan Thompson",
+      "player_id": "202684",
+      "season": "2022-23"
+     },
+     {
+      "name": "Brandon Knight",
+      "player_id": "202688",
+      "season": "2017-18"
+     },
+     {
+      "name": "Klay Thompson",
+      "player_id": "202691",
+      "season": "2019-20"
+     },
+     {
+      "name": "Klay Thompson",
+      "player_id": "202691",
+      "season": "2020-21"
+     },
+     {
+      "name": "Kawhi Leonard",
+      "player_id": "202695",
+      "season": "2021-22"
+     },
+     {
+      "name": "Damian Lillard",
+      "player_id": "203081",
+      "season": "2025-26"
+     },
+     {
+      "name": "Royce White",
+      "player_id": "203091",
+      "season": "2012-13"
+     },
+     {
+      "name": "Festus Ezeli",
+      "player_id": "203105",
+      "season": "2013-14"
+     },
+     {
+      "name": "Festus Ezeli",
+      "player_id": "203105",
+      "season": "2016-17"
+     },
+     {
+      "name": "Darius Miller",
+      "player_id": "203121",
+      "season": "2019-20"
+     },
+     {
+      "name": "Nerlens Noel",
+      "player_id": "203457",
+      "season": "2013-14"
+     },
+     {
+      "name": "Andre Roberson",
+      "player_id": "203460",
+      "season": "2018-19"
+     },
+     {
+      "name": "Steven Adams",
+      "player_id": "203500",
+      "season": "2023-24"
+     },
+     {
+      "name": "Grant Jerrett",
+      "player_id": "203511",
+      "season": "2013-14"
+     },
+     {
+      "name": "Seth Curry",
+      "player_id": "203552",
+      "season": "2017-18"
+     },
+     {
+      "name": "C.J. Wilcox",
+      "player_id": "203912",
+      "season": "2017-18"
+     },
+     {
+      "name": "T.J. Warren",
+      "player_id": "203933",
+      "season": "2021-22"
+     },
+     {
+      "name": "Dante Exum",
+      "player_id": "203957",
+      "season": "2015-16"
+     },
+     {
+      "name": "Speedy Claxton",
+      "player_id": "2049",
+      "season": "2007-08"
+     },
+     {
+      "name": "Ernest Brown",
+      "player_id": "2081",
+      "season": "2003-04"
+     },
+     {
+      "name": "Jason Richardson",
+      "player_id": "2202",
+      "season": "2013-14"
+     },
+     {
+      "name": "Steven Hunter",
+      "player_id": "2212",
+      "season": "2008-09"
+     },
+     {
+      "name": "Brendan Haywood",
+      "player_id": "2217",
+      "season": "2013-14"
+     },
+     {
+      "name": "Jamaal Tinsley",
+      "player_id": "2224",
+      "season": "2008-09"
+     },
+     {
+      "name": "Omar Cook",
+      "player_id": "2241",
+      "season": "2001-02"
+     },
+     {
+      "name": "Bobby Simmons",
+      "player_id": "2250",
+      "season": "2006-07"
+     },
+     {
+      "name": "Jannero Pargo",
+      "player_id": "2457",
+      "season": "2010-11"
+     },
+     {
+      "name": "Chris Bosh",
+      "player_id": "2547",
+      "season": "2016-17"
+     },
+     {
+      "name": "James Lang",
+      "player_id": "2591",
+      "season": "2005-06"
+     },
+     {
+      "name": "Emeka Okafor",
+      "player_id": "2731",
+      "season": "2013-14"
+     },
+     {
+      "name": "Shaun Livingston",
+      "player_id": "2733",
+      "season": "2007-08"
+     },
+     {
+      "name": "Peter Ramos",
+      "player_id": "2762",
+      "season": "2005-06"
+     }
+    ]
+   },
+   "logged_minutes_without_darko_rating": {
+    "at_or_above_500_minutes": 35,
+    "count": 407,
+    "reason": "Minutes in the game logs but no row on DARKO's season-end regular-season board: D-DPM unknown for that season, never zero.",
+    "rows": [
+     {
+      "minutes": 583.2167,
+      "name": "Andrew Bogut",
+      "player_id": "101106",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 216.4,
+      "name": "Andrew Bogut",
+      "player_id": "101106",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 227.5333,
+      "name": "Chris Paul",
+      "player_id": "101108",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 14.2,
+      "name": "Ike Diogu",
+      "player_id": "101113",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 31.3667,
+      "name": "Antoine Wright",
+      "player_id": "101120",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 361.3667,
+      "name": "Gerald Green",
+      "player_id": "101123",
+      "season": "2007-08"
+     },
+     {
+      "minutes": 488.9167,
+      "name": "Hakim Warrick",
+      "player_id": "101124",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 64.3333,
+      "name": "Julius Hodge",
+      "player_id": "101125",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 590.95,
+      "name": "Nate Robinson",
+      "player_id": "101126",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 23.3,
+      "name": "Nate Robinson",
+      "player_id": "101126",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 33.0833,
+      "name": "Jarrett Jack",
+      "player_id": "101127",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 200.4,
+      "name": "Francisco Garcia",
+      "player_id": "101128",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 585.5833,
+      "name": "Luther Head",
+      "player_id": "101129",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 19.3667,
+      "name": "Ronny Turiaf",
+      "player_id": "101142",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 34.25,
+      "name": "Ryan Gomes",
+      "player_id": "101155",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 50.1667,
+      "name": "Dijon Thompson",
+      "player_id": "101159",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 750.4667,
+      "name": "Marcin Gortat",
+      "player_id": "101162",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 494.8167,
+      "name": "Ronnie Price",
+      "player_id": "101179",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 4.7667,
+      "name": "Deng Gai",
+      "player_id": "101184",
+      "season": "2005-06"
+     },
+     {
+      "minutes": 226.6,
+      "name": "Anthony Roberson",
+      "player_id": "101194",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 52.4667,
+      "name": "Dwayne Jones",
+      "player_id": "101204",
+      "season": "2008-09"
+     },
+     {
+      "minutes": 13.0333,
+      "name": "Sharrod Ford",
+      "player_id": "101213",
+      "season": "2005-06"
+     },
+     {
+      "minutes": 391.1333,
+      "name": "Jawad Williams",
+      "player_id": "101214",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 35.8667,
+      "name": "Will Conroy",
+      "player_id": "101215",
+      "season": "2009-10"
+     },
+     {
+      "minutes": 20.4333,
+      "name": "Will Conroy",
+      "player_id": "101215",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 118.15,
+      "name": "Aaron Miles",
+      "player_id": "101223",
+      "season": "2005-06"
+     },
+     {
+      "minutes": 13.3,
+      "name": "Roger Powell",
+      "player_id": "101232",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 23.8333,
+      "name": "Charles Hayes",
+      "player_id": "101236",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 9.6,
+      "name": "Keith Langford",
+      "player_id": "101247",
+      "season": "2007-08"
+     },
+     {
+      "minutes": 106.6333,
+      "name": "John Lucas III",
+      "player_id": "101249",
+      "season": "2005-06"
+     },
+     {
+      "minutes": 10.6833,
+      "name": "John Lucas III",
+      "player_id": "101249",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 159.0167,
+      "name": "Anthony Brown",
+      "player_id": "1626148",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 185.7667,
+      "name": "Andrew Harrison",
+      "player_id": "1626150",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 16.5667,
+      "name": "Aaron Harrison",
+      "player_id": "1626151",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 9.15,
+      "name": "R.J. Hunter",
+      "player_id": "1626154",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 0.9,
+      "name": "Sam Dekker",
+      "player_id": "1626155",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 182.8333,
+      "name": "Willie Cauley-Stein",
+      "player_id": "1626161",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 712.2333,
+      "name": "Cameron Payne",
+      "player_id": "1626166",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 469.5,
+      "name": "Stanley Johnson",
+      "player_id": "1626169",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 211.9833,
+      "name": "Rashad Vaughn",
+      "player_id": "1626173",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 157.35,
+      "name": "Quinn Cook",
+      "player_id": "1626188",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 7.4,
+      "name": "Vince Hunter",
+      "player_id": "1626205",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 93.65,
+      "name": "Wade Baldwin IV",
+      "player_id": "1627735",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 26.7167,
+      "name": "Marquese Chriss",
+      "player_id": "1627737",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 15.1167,
+      "name": "Henry Ellenson",
+      "player_id": "1627740",
+      "season": "2019-20"
+     },
+     {
+      "minutes": 38.3667,
+      "name": "Henry Ellenson",
+      "player_id": "1627740",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 39.45,
+      "name": "Demetrius Jackson",
+      "player_id": "1627743",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 88.9667,
+      "name": "Brice Johnson",
+      "player_id": "1627744",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 11.9667,
+      "name": "Skal Labissiere",
+      "player_id": "1627746",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 37.55,
+      "name": "Skal Labissiere",
+      "player_id": "1627746",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 76.4667,
+      "name": "Thon Maker",
+      "player_id": "1627748",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 0.95,
+      "name": "Zhou Qi",
+      "player_id": "1627753",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 0.8333,
+      "name": "Tyler Ulis",
+      "player_id": "1627755",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 222.0,
+      "name": "Denzel Valentine",
+      "player_id": "1627756",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 151.9833,
+      "name": "Ron Baker",
+      "player_id": "1627758",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 12.85,
+      "name": "Cat Barber",
+      "player_id": "1627760",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 37.6667,
+      "name": "Joel Bolomboy",
+      "player_id": "1627762",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 27.6333,
+      "name": "Cheick Diallo",
+      "player_id": "1627767",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 204.1667,
+      "name": "Daniel Hamilton",
+      "player_id": "1627772",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 33.3667,
+      "name": "Patrick McCaw",
+      "player_id": "1627775",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 15.9167,
+      "name": "Gary Payton II",
+      "player_id": "1627780",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 103.4333,
+      "name": "Malachi Richardson",
+      "player_id": "1627781",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 19.1333,
+      "name": "Wayne Selden",
+      "player_id": "1627782",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 9.8667,
+      "name": "Ben Bentil",
+      "player_id": "1627791",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 36.4667,
+      "name": "Justin Jackson (UNC)",
+      "player_id": "1628382",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 107.4333,
+      "name": "Justin Jackson (UNC)",
+      "player_id": "1628382",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 0.7167,
+      "name": "Justin Jackson (UNC)",
+      "player_id": "1628382",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 24.25,
+      "name": "Justin Patton",
+      "player_id": "1628383",
+      "season": "2019-20"
+     },
+     {
+      "minutes": 246.75,
+      "name": "Justin Patton",
+      "player_id": "1628383",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 6.15,
+      "name": "Ike Anigbogu",
+      "player_id": "1628387",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 49.3167,
+      "name": "Terrance Ferguson",
+      "player_id": "1628390",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 54.0667,
+      "name": "D.J. Wilson",
+      "player_id": "1628391",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 2.0167,
+      "name": "Jordan Bell",
+      "player_id": "1628395",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 33.3667,
+      "name": "Tony Bradley",
+      "player_id": "1628396",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 405.85,
+      "name": "Semi Ojeleye",
+      "player_id": "1628400",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 5.05,
+      "name": "Frank Jackson",
+      "player_id": "1628402",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 340.4833,
+      "name": "PJ Dozier",
+      "player_id": "1628408",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 34.9167,
+      "name": "PJ Dozier",
+      "player_id": "1628408",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 82.2167,
+      "name": "Wesley Iwundu",
+      "player_id": "1628411",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 79.2833,
+      "name": "Frank Mason III",
+      "player_id": "1628412",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 8.25,
+      "name": "Tyler Dorsey",
+      "player_id": "1628416",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 43.3,
+      "name": "Cameron Oliver",
+      "player_id": "1628419",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 64.6167,
+      "name": "Monte Morris",
+      "player_id": "1628420",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 20.55,
+      "name": "Damyean Dotson",
+      "player_id": "1628422",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 1.8,
+      "name": "Kobi Simmons",
+      "player_id": "1628424",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 94.15,
+      "name": "Chris Boucher",
+      "player_id": "1628449",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 108.2333,
+      "name": "Derrick Walton Jr.",
+      "player_id": "1628476",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 195.2,
+      "name": "Nigel Hayes",
+      "player_id": "1628502",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 413.4833,
+      "name": "Mohamed Bamba",
+      "player_id": "1628964",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 43.8,
+      "name": "Mohamed Bamba",
+      "player_id": "1628964",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 14.8667,
+      "name": "Brian Bowen II",
+      "player_id": "1628968",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 4.75,
+      "name": "Hamidou Diallo",
+      "player_id": "1628977",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 143.5833,
+      "name": "Bruno Fernando",
+      "player_id": "1628981",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 167.2333,
+      "name": "Alize Johnson",
+      "player_id": "1628993",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 29.5167,
+      "name": "Alize Johnson",
+      "player_id": "1628993",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 19.1667,
+      "name": "George King",
+      "player_id": "1628994",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 560.25,
+      "name": "Kevin Knox",
+      "player_id": "1628995",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 55.1833,
+      "name": "Cody Martin",
+      "player_id": "1628998",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 3.6833,
+      "name": "Malik Newman",
+      "player_id": "1629005",
+      "season": "2019-20"
+     },
+     {
+      "minutes": 7.6833,
+      "name": "Malik Newman",
+      "player_id": "1629005",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 304.95,
+      "name": "Jerome Robinson",
+      "player_id": "1629010",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 18.7333,
+      "name": "Ray Spalding",
+      "player_id": "1629034",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 10.5833,
+      "name": "Shamorie Ponds",
+      "player_id": "1629044",
+      "season": "2019-20"
+     },
+     {
+      "minutes": 142.25,
+      "name": "O'Shae Brissett",
+      "player_id": "1629052",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 187.6833,
+      "name": "Mamadi Diakite",
+      "player_id": "1629603",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 58.7833,
+      "name": "Tacko Fall",
+      "player_id": "1629605",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 8.8,
+      "name": "DaQuan Jeffries",
+      "player_id": "1629610",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 589.4333,
+      "name": "Cameron Reddish",
+      "player_id": "1629629",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 136.8667,
+      "name": "Jarrett Culver",
+      "player_id": "1629633",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 244.0667,
+      "name": "KZ Okpala",
+      "player_id": "1629644",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 248.0667,
+      "name": "KZ Okpala",
+      "player_id": "1629644",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 195.85,
+      "name": "Jordan Bone",
+      "player_id": "1629648",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 118.5667,
+      "name": "Moses Brown",
+      "player_id": "1629650",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 85.1667,
+      "name": "Devon Dotson",
+      "player_id": "1629653",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 53.1,
+      "name": "Devon Dotson",
+      "player_id": "1629653",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 185.75,
+      "name": "Kyle Guy",
+      "player_id": "1629657",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 103.6,
+      "name": "Louis King",
+      "player_id": "1629663",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 12.1333,
+      "name": "Jalen Lecque",
+      "player_id": "1629665",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 7.35,
+      "name": "Jalen McDaniels",
+      "player_id": "1629667",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 40.8,
+      "name": "Zach Norvell Jr.",
+      "player_id": "1629668",
+      "season": "2019-20"
+     },
+     {
+      "minutes": 168.0667,
+      "name": "Jaylen Nowell",
+      "player_id": "1629669",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 44.2,
+      "name": "Miye Oni",
+      "player_id": "1629671",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 50.2833,
+      "name": "Tremont Waters",
+      "player_id": "1629682",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 213.2,
+      "name": "Theo Maledon",
+      "player_id": "1630177",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 133.9333,
+      "name": "Jahmi'us Ramsey",
+      "player_id": "1630186",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 121.0833,
+      "name": "Jahmi'us Ramsey",
+      "player_id": "1630186",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 155.0,
+      "name": "Cassius Stanley",
+      "player_id": "1630199",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 4.0667,
+      "name": "Ashton Hagans",
+      "player_id": "1630204",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 88.3167,
+      "name": "Karim Mane",
+      "player_id": "1630211",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 13.2333,
+      "name": "Daishen Nix",
+      "player_id": "1630227",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 360.6167,
+      "name": "Jeremiah Robinson-Earl",
+      "player_id": "1630526",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 93.1,
+      "name": "Greg Brown III",
+      "player_id": "1630535",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 80.9,
+      "name": "James Bouknight",
+      "player_id": "1630547",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 87.6833,
+      "name": "Johnny Juzang",
+      "player_id": "1630548",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 880.55,
+      "name": "Cam Thomas",
+      "player_id": "1630560",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 113.2333,
+      "name": "Matt Hurt",
+      "player_id": "1630562",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 93.3667,
+      "name": "Joshua Primo",
+      "player_id": "1630563",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 16.9833,
+      "name": "Aaron Henry",
+      "player_id": "1630565",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 23.2667,
+      "name": "Carlik Jones",
+      "player_id": "1630637",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 1.0333,
+      "name": "Michael Foster Jr.",
+      "player_id": "1630701",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 670.2333,
+      "name": "Jaden Ivey",
+      "player_id": "1631093",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 241.6667,
+      "name": "Johnny Davis",
+      "player_id": "1631098",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 275.5,
+      "name": "Malaki Branham",
+      "player_id": "1631103",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 24.8167,
+      "name": "Orlando Robinson",
+      "player_id": "1631115",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 3.65,
+      "name": "Ron Harper Jr.",
+      "player_id": "1631199",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 265.5,
+      "name": "Isaiah Wong",
+      "player_id": "1631209",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 5.2667,
+      "name": "Alondes Williams",
+      "player_id": "1631214",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 3.7167,
+      "name": "Alondes Williams",
+      "player_id": "1631214",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 100.7833,
+      "name": "Alondes Williams",
+      "player_id": "1631214",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 6.8167,
+      "name": "Colby Jones",
+      "player_id": "1641732",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 17.4333,
+      "name": "Chris Livingston",
+      "player_id": "1641753",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 35.0167,
+      "name": "Grant Nelson",
+      "player_id": "1641761",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 21.5,
+      "name": "Adama Sanogo",
+      "player_id": "1641766",
+      "season": "2024-25"
+     },
+     {
+      "minutes": 26.0833,
+      "name": "Mark Sears",
+      "player_id": "1641813",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 5.55,
+      "name": "Trentyn Flowers",
+      "player_id": "1642280",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 25.6667,
+      "name": "Hunter Sallis",
+      "player_id": "1642282",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 15.4167,
+      "name": "N'Faly Dante",
+      "player_id": "1642368",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 674.3833,
+      "name": "LaMarcus Aldridge",
+      "player_id": "200746",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 6.5167,
+      "name": "Tyrus Thomas",
+      "player_id": "200748",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 335.3167,
+      "name": "Rodney Carney",
+      "player_id": "200760",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 750.7667,
+      "name": "Shawne Williams",
+      "player_id": "200761",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 115.4,
+      "name": "Renaldo Balkman",
+      "player_id": "200764",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 53.5333,
+      "name": "Marcus Williams",
+      "player_id": "200766",
+      "season": "2008-09"
+     },
+     {
+      "minutes": 515.4667,
+      "name": "Jordan Farmar",
+      "player_id": "200770",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 35.3833,
+      "name": "Jordan Farmar",
+      "player_id": "200770",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 29.0,
+      "name": "Maurice Ager",
+      "player_id": "200772",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 21.9167,
+      "name": "Steve Novak",
+      "player_id": "200779",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 292.3167,
+      "name": "Solomon Jones",
+      "player_id": "200780",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 85.2,
+      "name": "Solomon Jones",
+      "player_id": "200780",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 261.1833,
+      "name": "Dee Brown",
+      "player_id": "200793",
+      "season": "2008-09"
+     },
+     {
+      "minutes": 96.05,
+      "name": "Tarence Kinsey",
+      "player_id": "200814",
+      "season": "2007-08"
+     },
+     {
+      "minutes": 122.8167,
+      "name": "Justin Williams",
+      "player_id": "200818",
+      "season": "2007-08"
+     },
+     {
+      "minutes": 119.6833,
+      "name": "Pops Mensah-Bonsu",
+      "player_id": "200822",
+      "season": "2009-10"
+     },
+     {
+      "minutes": 35.15,
+      "name": "Pops Mensah-Bonsu",
+      "player_id": "200822",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 146.0833,
+      "name": "Darius Washington",
+      "player_id": "200827",
+      "season": "2007-08"
+     },
+     {
+      "minutes": 41.3,
+      "name": "Ivan McFarlin",
+      "player_id": "200829",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 11.8,
+      "name": "Chris McCray",
+      "player_id": "200840",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 28.1333,
+      "name": "Steven Smith",
+      "player_id": "200848",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 380.8667,
+      "name": "Brandan Wright",
+      "player_id": "201148",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 696.1833,
+      "name": "Rodney Stuckey",
+      "player_id": "201155",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 37.1333,
+      "name": "Nick Young",
+      "player_id": "201156",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 190.5167,
+      "name": "Jason Smith",
+      "player_id": "201160",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 5.75,
+      "name": "Josh McRoberts",
+      "player_id": "201177",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 386.8833,
+      "name": "Dominic McGuire",
+      "player_id": "201187",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 14.2167,
+      "name": "Demetris Nichols",
+      "player_id": "201193",
+      "season": "2008-09"
+     },
+     {
+      "minutes": 11.4833,
+      "name": "Mustafa Shakur",
+      "player_id": "201203",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 71.2667,
+      "name": "Darryl Watkins",
+      "player_id": "201208",
+      "season": "2007-08"
+     },
+     {
+      "minutes": 208.0667,
+      "name": "Anthony Tolliver",
+      "player_id": "201229",
+      "season": "2008-09"
+     },
+     {
+      "minutes": 14.1333,
+      "name": "Trey Johnson",
+      "player_id": "201234",
+      "season": "2008-09"
+     },
+     {
+      "minutes": 61.3333,
+      "name": "Trey Johnson",
+      "player_id": "201234",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 277.4833,
+      "name": "Michael Beasley",
+      "player_id": "201563",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 73.75,
+      "name": "Eric Gordon",
+      "player_id": "201569",
+      "season": "2025-26"
+     },
+     {
+      "minutes": 256.0333,
+      "name": "JaVale McGee",
+      "player_id": "201580",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 498.3667,
+      "name": "Sonny Weems",
+      "player_id": "201603",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 114.9333,
+      "name": "Bobby Brown",
+      "player_id": "201628",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 32.9833,
+      "name": "Othello Hunter",
+      "player_id": "201629",
+      "season": "2009-10"
+     },
+     {
+      "minutes": 768.45,
+      "name": "Earl Clark",
+      "player_id": "201947",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 326.7,
+      "name": "Eric Maynor",
+      "player_id": "201953",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 37.1667,
+      "name": "Darren Collison",
+      "player_id": "201954",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 520.45,
+      "name": "Omri Casspi",
+      "player_id": "201956",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 393.8167,
+      "name": "Toney Douglas",
+      "player_id": "201962",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 208.5,
+      "name": "DaJuan Summers",
+      "player_id": "201969",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 218.1,
+      "name": "DeJuan Blair",
+      "player_id": "201971",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 574.6833,
+      "name": "Marcus Thornton",
+      "player_id": "201977",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 18.45,
+      "name": "Danny Green",
+      "player_id": "201980",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 99.3667,
+      "name": "A.J. Price",
+      "player_id": "201985",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 323.5167,
+      "name": "A.J. Price",
+      "player_id": "201985",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 73.3333,
+      "name": "Lester Hudson",
+      "player_id": "201991",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 754.7333,
+      "name": "John Wall",
+      "player_id": "202322",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 85.5667,
+      "name": "Xavier Henry",
+      "player_id": "202333",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 585.5833,
+      "name": "Larry Sanders",
+      "player_id": "202336",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 0.4,
+      "name": "Damion James",
+      "player_id": "202345",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 337.65,
+      "name": "Dominique Jones",
+      "player_id": "202346",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 38.5667,
+      "name": "Greivis Vasquez",
+      "player_id": "202349",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 250.7833,
+      "name": "Daniel Orton",
+      "player_id": "202350",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 31.0667,
+      "name": "Lazar Hayward",
+      "player_id": "202351",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 38.8833,
+      "name": "Darington Hobson",
+      "player_id": "202359",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 65.8833,
+      "name": "Sherron Collins",
+      "player_id": "202395",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 62.75,
+      "name": "Jeff Adrien",
+      "player_id": "202399",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 215.3333,
+      "name": "Jeff Adrien",
+      "player_id": "202399",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 179.7167,
+      "name": "Manny Harris",
+      "player_id": "202412",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 24.75,
+      "name": "Manny Harris",
+      "player_id": "202412",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 8.5167,
+      "name": "Derrick Williams",
+      "player_id": "202682",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 408.4,
+      "name": "Enes Kanter",
+      "player_id": "202683",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 143.9,
+      "name": "Kemba Walker",
+      "player_id": "202689",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 240.6667,
+      "name": "Iman Shumpert",
+      "player_id": "202697",
+      "season": "2019-20"
+     },
+     {
+      "minutes": 10.9833,
+      "name": "Iman Shumpert",
+      "player_id": "202697",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 386.7833,
+      "name": "Marshon Brooks",
+      "player_id": "202705",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 295.9167,
+      "name": "Cory Joseph",
+      "player_id": "202709",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 35.0833,
+      "name": "Justin Harper",
+      "player_id": "202712",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 31.3167,
+      "name": "Justin Harper",
+      "player_id": "202712",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 31.5,
+      "name": "Tyler Honeycutt",
+      "player_id": "202715",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 54.2167,
+      "name": "Chandler Parsons",
+      "player_id": "202718",
+      "season": "2019-20"
+     },
+     {
+      "minutes": 68.4333,
+      "name": "Jeremy Tyler",
+      "player_id": "202719",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 293.8333,
+      "name": "Darius Morris",
+      "player_id": "202721",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 2.0167,
+      "name": "Malcolm Lee",
+      "player_id": "202723",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 9.1333,
+      "name": "Keith Benson",
+      "player_id": "202728",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 58.8333,
+      "name": "Josh Selby",
+      "player_id": "202729",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 1.4,
+      "name": "DeAndre Liggins",
+      "player_id": "202732",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 924.6833,
+      "name": "Isaiah Thomas",
+      "player_id": "202738",
+      "season": "2019-20"
+     },
+     {
+      "minutes": 48.2667,
+      "name": "Isaiah Thomas",
+      "player_id": "202738",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 29.3833,
+      "name": "Meyers Leonard",
+      "player_id": "203086",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 417.4667,
+      "name": "Kendall Marshall",
+      "player_id": "203088",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 8.9,
+      "name": "Royce White",
+      "player_id": "203091",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 5.1,
+      "name": "Terrence Jones",
+      "player_id": "203093",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 117.7333,
+      "name": "Jared Sullinger",
+      "player_id": "203096",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 12.9333,
+      "name": "John Jenkins",
+      "player_id": "203098",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 89.0167,
+      "name": "Jared Cunningham",
+      "player_id": "203099",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 410.4167,
+      "name": "Jared Cunningham",
+      "player_id": "203099",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 392.4,
+      "name": "Orlando Johnson",
+      "player_id": "203111",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 101.7167,
+      "name": "Orlando Johnson",
+      "player_id": "203111",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 122.9333,
+      "name": "Quincy Acy",
+      "player_id": "203112",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 270.2,
+      "name": "Tyshawn Taylor",
+      "player_id": "203116",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 194.9667,
+      "name": "Mike Scott",
+      "player_id": "203118",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 43.3667,
+      "name": "Darius Miller",
+      "player_id": "203121",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 196.8167,
+      "name": "Darius Miller",
+      "player_id": "203121",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 5.6167,
+      "name": "Darius Johnson-Odom",
+      "player_id": "203130",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 15.3,
+      "name": "Darius Johnson-Odom",
+      "player_id": "203130",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 752.2,
+      "name": "Hollis Thompson",
+      "player_id": "203138",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 4.7833,
+      "name": "Henry Sims",
+      "player_id": "203156",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 9.75,
+      "name": "Tony Mitchell",
+      "player_id": "203183",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 42.6,
+      "name": "Glen Rice",
+      "player_id": "203318",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 194.6833,
+      "name": "Nerlens Noel",
+      "player_id": "203457",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 62.9333,
+      "name": "Andre Roberson",
+      "player_id": "203460",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 157.6167,
+      "name": "Ben McLemore",
+      "player_id": "203463",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 354.55,
+      "name": "Cody Zeller",
+      "player_id": "203469",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 42.1333,
+      "name": "Erick Green",
+      "player_id": "203475",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 421.7167,
+      "name": "Isaiah Canaan",
+      "player_id": "203477",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 627.9333,
+      "name": "Isaiah Canaan",
+      "player_id": "203477",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 39.3,
+      "name": "Jeff Withey",
+      "player_id": "203481",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 223.7333,
+      "name": "Lorenzo Brown",
+      "player_id": "203485",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 212.1833,
+      "name": "Lorenzo Brown",
+      "player_id": "203485",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 246.6833,
+      "name": "Nate Wolters",
+      "player_id": "203489",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 18.7833,
+      "name": "Nate Wolters",
+      "player_id": "203489",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 174.0667,
+      "name": "Otto Porter",
+      "player_id": "203490",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 14.6667,
+      "name": "Vander Blue",
+      "player_id": "203505",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 44.9167,
+      "name": "Vander Blue",
+      "player_id": "203505",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 84.4,
+      "name": "Pierre Jackson",
+      "player_id": "203510",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 283.45,
+      "name": "Phil Pressey",
+      "player_id": "203515",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 55.6,
+      "name": "James Ennis",
+      "player_id": "203516",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 139.4333,
+      "name": "Solomon Hill",
+      "player_id": "203524",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 12.9167,
+      "name": "Seth Curry",
+      "player_id": "203552",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 7.8,
+      "name": "Seth Curry",
+      "player_id": "203552",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 422.8833,
+      "name": "Brandon Davies",
+      "player_id": "203561",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 6.25,
+      "name": "Thanasis Antetokounmpo",
+      "player_id": "203648",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 19.0167,
+      "name": "Norvel Pelle",
+      "player_id": "203658",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 66.2,
+      "name": "Russ Smith",
+      "player_id": "203893",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 383.5167,
+      "name": "Jordan McRae",
+      "player_id": "203895",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 369.3333,
+      "name": "Glenn Robinson III",
+      "player_id": "203922",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 61.1167,
+      "name": "James Young",
+      "player_id": "203923",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 15.1,
+      "name": "Joe Harris",
+      "player_id": "203925",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 170.0,
+      "name": "Joe Harris",
+      "player_id": "203925",
+      "season": "2023-24"
+     },
+     {
+      "minutes": 50.05,
+      "name": "Cory Jefferson",
+      "player_id": "203928",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 71.5167,
+      "name": "Sean Kilpatrick",
+      "player_id": "203930",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 40.3667,
+      "name": "Lamar Patterson",
+      "player_id": "203934",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 42.55,
+      "name": "Adreian Payne",
+      "player_id": "203940",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 10.7667,
+      "name": "Noah Vonleh",
+      "player_id": "203943",
+      "season": "2020-21"
+     },
+     {
+      "minutes": 171.6167,
+      "name": "Noah Vonleh",
+      "player_id": "203943",
+      "season": "2022-23"
+     },
+     {
+      "minutes": 13.9833,
+      "name": "Alex Kirk",
+      "player_id": "203945",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 379.05,
+      "name": "Johnny O\u2019Bryant III",
+      "player_id": "203948",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 17.95,
+      "name": "James McAdoo",
+      "player_id": "203949",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 18.5833,
+      "name": "Jarnell Stokes",
+      "player_id": "203950",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 6.55,
+      "name": "Jarnell Stokes",
+      "player_id": "203950",
+      "season": "2016-17"
+     },
+     {
+      "minutes": 15.9,
+      "name": "Donnell Harvey",
+      "player_id": "2051",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 107.8,
+      "name": "Primoz Brezec",
+      "player_id": "2056",
+      "season": "2002-03"
+     },
+     {
+      "minutes": 599.6,
+      "name": "Mark Madsen",
+      "player_id": "2058",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 1760.3167,
+      "name": "Marko Jaric",
+      "player_id": "2060",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 35.8167,
+      "name": "Dan Langhi",
+      "player_id": "2061",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 8.5333,
+      "name": "A.J. Guyton",
+      "player_id": "2062",
+      "season": "2002-03"
+     },
+     {
+      "minutes": 935.35,
+      "name": "Khalid El-Amin",
+      "player_id": "2064",
+      "season": "2000-01"
+     },
+     {
+      "minutes": 22.15,
+      "name": "Jason Hart",
+      "player_id": "2078",
+      "season": "2009-10"
+     },
+     {
+      "minutes": 43.15,
+      "name": "Eddie Gill",
+      "player_id": "2109",
+      "season": "2008-09"
+     },
+     {
+      "minutes": 12.3167,
+      "name": "Terrance Roberson",
+      "player_id": "2121",
+      "season": "2000-01"
+     },
+     {
+      "minutes": 24.75,
+      "name": "Eddy Curry",
+      "player_id": "2201",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 91.6,
+      "name": "Eddie Griffin",
+      "player_id": "2204",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 109.5,
+      "name": "DeSagana Diop",
+      "player_id": "2205",
+      "season": "2001-02"
+     },
+     {
+      "minutes": 1.95,
+      "name": "Joe Johnson",
+      "player_id": "2207",
+      "season": "2021-22"
+     },
+     {
+      "minutes": 1356.4333,
+      "name": "Richard Jefferson",
+      "player_id": "2210",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 255.9667,
+      "name": "Troy Murphy",
+      "player_id": "2211",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 58.15,
+      "name": "Kirk Haston",
+      "player_id": "2213",
+      "season": "2002-03"
+     },
+     {
+      "minutes": 38.0333,
+      "name": "Joseph Forte",
+      "player_id": "2218",
+      "season": "2001-02"
+     },
+     {
+      "minutes": 110.2,
+      "name": "Jamaal Tinsley",
+      "player_id": "2224",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 29.1833,
+      "name": "Alton Ford",
+      "player_id": "2228",
+      "season": "2002-03"
+     },
+     {
+      "minutes": 40.5167,
+      "name": "Alton Ford",
+      "player_id": "2228",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 41.9667,
+      "name": "Maurice Evans",
+      "player_id": "2230",
+      "season": "2001-02"
+     },
+     {
+      "minutes": 1168.55,
+      "name": "Gilbert Arenas",
+      "player_id": "2240",
+      "season": "2009-10"
+     },
+     {
+      "minutes": 139.0,
+      "name": "Omar Cook",
+      "player_id": "2241",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 115.2333,
+      "name": "Damone Brown",
+      "player_id": "2245",
+      "season": "2002-03"
+     },
+     {
+      "minutes": 17.0,
+      "name": "Damone Brown",
+      "player_id": "2245",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 159.7167,
+      "name": "Jamison Brewer",
+      "player_id": "2249",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 183.8167,
+      "name": "Jamison Brewer",
+      "player_id": "2249",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 15.5167,
+      "name": "Bobby Simmons",
+      "player_id": "2250",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 61.9,
+      "name": "Sean Lampley",
+      "player_id": "2253",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 710.5833,
+      "name": "Loren Woods",
+      "player_id": "2254",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 25.4167,
+      "name": "Ruben Boumtje-Boumtje",
+      "player_id": "2257",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 420.8333,
+      "name": "Jarron Collins",
+      "player_id": "2260",
+      "season": "2002-03"
+     },
+     {
+      "minutes": 181.3833,
+      "name": "Jarron Collins",
+      "player_id": "2260",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 42.0,
+      "name": "Charlie Bell",
+      "player_id": "2294",
+      "season": "2001-02"
+     },
+     {
+      "minutes": 102.05,
+      "name": "Dajuan Wagner",
+      "player_id": "2402",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 6.7833,
+      "name": "Dajuan Wagner",
+      "player_id": "2402",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 481.25,
+      "name": "Chris Wilcox",
+      "player_id": "2404",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 290.35,
+      "name": "Jared Jeffries",
+      "player_id": "2407",
+      "season": "2002-03"
+     },
+     {
+      "minutes": 105.15,
+      "name": "Marcus Haislip",
+      "player_id": "2409",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 43.7667,
+      "name": "Marcus Haislip",
+      "player_id": "2409",
+      "season": "2009-10"
+     },
+     {
+      "minutes": 112.5667,
+      "name": "Fred Jones",
+      "player_id": "2410",
+      "season": "2002-03"
+     },
+     {
+      "minutes": 258.75,
+      "name": "Curtis Borchardt",
+      "player_id": "2414",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 317.4833,
+      "name": "Ryan Humphrey",
+      "player_id": "2415",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 969.7833,
+      "name": "Kareem Rush",
+      "player_id": "2416",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 1111.2833,
+      "name": "Kareem Rush",
+      "player_id": "2416",
+      "season": "2005-06"
+     },
+     {
+      "minutes": 57.7667,
+      "name": "Kareem Rush",
+      "player_id": "2416",
+      "season": "2009-10"
+     },
+     {
+      "minutes": 269.7,
+      "name": "John Salmons",
+      "player_id": "2422",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 1773.7,
+      "name": "Carlos Boozer",
+      "player_id": "2430",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 36.0,
+      "name": "Lonny Baxter",
+      "player_id": "2437",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 713.5833,
+      "name": "Matt Barnes",
+      "player_id": "2440",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 451.2167,
+      "name": "Rasual Butler",
+      "player_id": "2446",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 423.5167,
+      "name": "Rasual Butler",
+      "player_id": "2446",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 77.15,
+      "name": "Tamar Slay",
+      "player_id": "2447",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 10.5167,
+      "name": "Randy Holcomb",
+      "player_id": "2450",
+      "season": "2005-06"
+     },
+     {
+      "minutes": 110.1167,
+      "name": "Corsley Edwards",
+      "player_id": "2451",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 73.1833,
+      "name": "Jannero Pargo",
+      "player_id": "2457",
+      "season": "2014-15"
+     },
+     {
+      "minutes": 144.0,
+      "name": "Smush Parker",
+      "player_id": "2470",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 19.0,
+      "name": "Maurice Baker",
+      "player_id": "2486",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 4.5,
+      "name": "Darko Milicic",
+      "player_id": "2545",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 294.15,
+      "name": "Carmelo Anthony",
+      "player_id": "2546",
+      "season": "2018-19"
+     },
+     {
+      "minutes": 1475.0833,
+      "name": "T.J. Ford",
+      "player_id": "2551",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 190.55,
+      "name": "T.J. Ford",
+      "player_id": "2551",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 34.0,
+      "name": "Troy Bell",
+      "player_id": "2559",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 155.2833,
+      "name": "Dahntay Jones",
+      "player_id": "2563",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 205.7333,
+      "name": "Dahntay Jones",
+      "player_id": "2563",
+      "season": "2007-08"
+     },
+     {
+      "minutes": 44.4667,
+      "name": "Brian Cook",
+      "player_id": "2567",
+      "season": "2009-10"
+     },
+     {
+      "minutes": 207.15,
+      "name": "Josh Howard",
+      "player_id": "2572",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 269.0833,
+      "name": "Jason Kapono",
+      "player_id": "2574",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 93.65,
+      "name": "Keith Bogans",
+      "player_id": "2586",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 54.6167,
+      "name": "James Lang",
+      "player_id": "2591",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 26.0,
+      "name": "James Jones",
+      "player_id": "2592",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 5.0,
+      "name": "Jerome Beasley",
+      "player_id": "2602",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 509.2167,
+      "name": "Theron Smith",
+      "player_id": "2604",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 17.6833,
+      "name": "Kirk Penney",
+      "player_id": "2632",
+      "season": "2003-04"
+     },
+     {
+      "minutes": 12.0,
+      "name": "Kirk Penney",
+      "player_id": "2632",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 0.15,
+      "name": "Alex Scales",
+      "player_id": "2637",
+      "season": "2005-06"
+     },
+     {
+      "minutes": 87.0,
+      "name": "Britton Johnsen",
+      "player_id": "2639",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 12.75,
+      "name": "Ronald Dupree",
+      "player_id": "2648",
+      "season": "2010-11"
+     },
+     {
+      "minutes": 5.85,
+      "name": "Matt Carroll",
+      "player_id": "2679",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 3.0,
+      "name": "Brandin Knight",
+      "player_id": "2688",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 278.7667,
+      "name": "Ben Gordon",
+      "player_id": "2732",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 100.1167,
+      "name": "Josh Childress",
+      "player_id": "2735",
+      "season": "2012-13"
+     },
+     {
+      "minutes": 23.85,
+      "name": "Josh Childress",
+      "player_id": "2735",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 1663.7333,
+      "name": "Luol Deng",
+      "player_id": "2736",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 43.0,
+      "name": "Luke Jackson",
+      "player_id": "2739",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 228.1,
+      "name": "Luke Jackson",
+      "player_id": "2739",
+      "season": "2007-08"
+     },
+     {
+      "minutes": 11.8333,
+      "name": "Josh Smith",
+      "player_id": "2746",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 10.0,
+      "name": "Pavel Podkolzin",
+      "player_id": "2750",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 272.5667,
+      "name": "Tony Allen",
+      "player_id": "2754",
+      "season": "2017-18"
+     },
+     {
+      "minutes": 10.3833,
+      "name": "Sasha Vujacic",
+      "player_id": "2756",
+      "season": "2013-14"
+     },
+     {
+      "minutes": 707.65,
+      "name": "Beno Udrih",
+      "player_id": "2757",
+      "season": "2015-16"
+     },
+     {
+      "minutes": 405.6333,
+      "name": "Jackson Vroman",
+      "player_id": "2761",
+      "season": "2005-06"
+     },
+     {
+      "minutes": 26.75,
+      "name": "Andre Emmett",
+      "player_id": "2765",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 44.9333,
+      "name": "Andre Emmett",
+      "player_id": "2765",
+      "season": "2011-12"
+     },
+     {
+      "minutes": 440.5833,
+      "name": "Matt Freije",
+      "player_id": "2782",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 147.0667,
+      "name": "Matt Freije",
+      "player_id": "2782",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 76.95,
+      "name": "Luis Flores",
+      "player_id": "2784",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 12.0,
+      "name": "Tony Bobbitt",
+      "player_id": "2800",
+      "season": "2004-05"
+     },
+     {
+      "minutes": 41.3667,
+      "name": "Andre Brown",
+      "player_id": "2810",
+      "season": "2008-09"
+     },
+     {
+      "minutes": 31.8167,
+      "name": "Desmon Farmer",
+      "player_id": "2824",
+      "season": "2006-07"
+     },
+     {
+      "minutes": 53.9167,
+      "name": "Desmon Farmer",
+      "player_id": "2824",
+      "season": "2008-09"
+     },
+     {
+      "minutes": 25.3,
+      "name": "Andre Barrett",
+      "player_id": "2857",
+      "season": "2007-08"
+     },
+     {
+      "minutes": 152.4167,
+      "name": "Damien Wilkins",
+      "player_id": "2863",
+      "season": "2017-18"
+     }
+    ]
+   },
+   "measured_on_a_darko_regular_season_board": 1145,
+   "measured_with_a_season_at_or_above_minutes_and_d_dpm": {
+    "0": 1139,
+    "1000": 676,
+    "250": 933,
+    "500": 822
+   },
+   "measured_with_logged_minutes_2000_26": 1185,
+   "players_by_combine_count": {
+    "1": 1741,
+    "2": 62,
+    "3": 1
+   },
+   "players_measured_height_and_wingspan": 1751,
+   "players_not_measured": [
+    {
+     "name": "Blake Stepp",
+     "player_id": "12015"
+    },
+    {
+     "name": "Markelle Fultz",
+     "player_id": "1628365"
+    },
+    {
+     "name": "Zion Williamson",
+     "player_id": "1629627"
+    },
+    {
+     "name": "RJ Barrett",
+     "player_id": "1629628"
+    },
+    {
+     "name": "Ja Morant",
+     "player_id": "1629630"
+    },
+    {
+     "name": "De'Andre Hunter",
+     "player_id": "1629631"
+    },
+    {
+     "name": "Darius Garland",
+     "player_id": "1629636"
+    },
+    {
+     "name": "Chuma Okeke",
+     "player_id": "1629643"
+    },
+    {
+     "name": "Jalen Green",
+     "player_id": "1630224"
+    },
+    {
+     "name": "Jonathan Kuminga",
+     "player_id": "1630228"
+    },
+    {
+     "name": "Sharife Cooper",
+     "player_id": "1630536"
+    },
+    {
+     "name": "Isaiah Jackson",
+     "player_id": "1630543"
+    },
+    {
+     "name": "Day'Ron Sharpe",
+     "player_id": "1630549"
+    },
+    {
+     "name": "Cam Thomas",
+     "player_id": "1630560"
+    },
+    {
+     "name": "Cade Cunningham",
+     "player_id": "1630595"
+    },
+    {
+     "name": "Evan Mobley",
+     "player_id": "1630596"
+    },
+    {
+     "name": "Darius Days",
+     "player_id": "1630620"
+    },
+    {
+     "name": "Jaden Hardy",
+     "player_id": "1630702"
+    },
+    {
+     "name": "Scoot Henderson",
+     "player_id": "1630703"
+    },
+    {
+     "name": "Fanbo Zeng",
+     "player_id": "1630855"
+    },
+    {
+     "name": "Jaden Ivey",
+     "player_id": "1631093"
+    },
+    {
+     "name": "Paolo Banchero",
+     "player_id": "1631094"
+    },
+    {
+     "name": "Jabari Smith",
+     "player_id": "1631095"
+    },
+    {
+     "name": "Chet Holmgren",
+     "player_id": "1631096"
+    },
+    {
+     "name": "Keegan Murray",
+     "player_id": "1631099"
+    },
+    {
+     "name": "AJ Griffin",
+     "player_id": "1631100"
+    },
+    {
+     "name": "Jalen Duren",
+     "player_id": "1631105"
+    },
+    {
+     "name": "Jeremy Sochan",
+     "player_id": "1631110"
+    },
+    {
+     "name": "Josh Minnott",
+     "player_id": "1631125"
+    },
+    {
+     "name": "Ismael Kamagate",
+     "player_id": "1631130"
+    },
+    {
+     "name": "Ousmane Dieng",
+     "player_id": "1631172"
+    },
+    {
+     "name": "Jared Rhoden",
+     "player_id": "1631197"
+    },
+    {
+     "name": "Tyrese Martin",
+     "player_id": "1631213"
+    },
+    {
+     "name": "Khalifa Diop",
+     "player_id": "1631215"
+    },
+    {
+     "name": "Kenneth Lofton Jr.",
+     "player_id": "1631254"
+    },
+    {
+     "name": "Kevin McCullar",
+     "player_id": "1631256"
+    },
+    {
+     "name": "Bryson Williams",
+     "player_id": "1631258"
+    },
+    {
+     "name": "Victor Wembanyama",
+     "player_id": "1641705"
+    },
+    {
+     "name": "Brandon Miller",
+     "player_id": "1641706"
+    },
+    {
+     "name": "Keyonte George",
+     "player_id": "1641718"
+    },
+    {
+     "name": "Jett Howard",
+     "player_id": "1641724"
+    },
+    {
+     "name": "Dereck Lively Jr.",
+     "player_id": "1641726"
+    },
+    {
+     "name": "Brice Sensabaugh",
+     "player_id": "1641729"
+    },
+    {
+     "name": "Noah Clowney",
+     "player_id": "1641730"
+    },
+    {
+     "name": "Bilal Coulibaly",
+     "player_id": "1641731"
+    },
+    {
+     "name": "Nick Smith Jr.",
+     "player_id": "1641733"
+    },
+    {
+     "name": "James Nnaji",
+     "player_id": "1641762"
+    },
+    {
+     "name": "Jaden Harris",
+     "player_id": "1643541"
+    },
+    {
+     "name": "Jack Kayil",
+     "player_id": "1643583"
+    },
+    {
+     "name": "Mustafa Al-Sayyad",
+     "player_id": "200969"
+    },
+    {
+     "name": "Jianlian Yi",
+     "player_id": "201146"
+    },
+    {
+     "name": "Alex Len",
+     "player_id": "203458"
+    },
+    {
+     "name": "Andris Biedrins",
+     "player_id": "2740"
+    }
+   ],
+   "players_with_person_id": 1804,
+   "rows_without_person_id": [
+    {
+     "draft_year": 2001,
+     "name": "Jason Gardner"
+    },
+    {
+     "draft_year": 2002,
+     "name": "Chris Massie"
+    },
+    {
+     "draft_year": 2004,
+     "name": "Drago Pasalic"
+    },
+    {
+     "draft_year": 2005,
+     "name": "Carl Krauser"
+    },
+    {
+     "draft_year": 2006,
+     "name": "Blake Schilb"
+    }
+   ]
+  },
+  "darko_boards": {
+   "2000-01": {
+    "as_of": "2001-04-18",
+    "data_date": "2001-04-18",
+    "raw_sha256": "e4159bf957f122a9b97ea91c44d954ff140202ce40773394bfd2f61763a08ab7"
+   },
+   "2001-02": {
+    "as_of": "2002-04-17",
+    "data_date": "2002-04-17",
+    "raw_sha256": "255ca3e6981f36563798013d97ce37291c5498e223ec341a5711137b315e01dd"
+   },
+   "2002-03": {
+    "as_of": "2003-04-16",
+    "data_date": "2003-04-16",
+    "raw_sha256": "50a85305d1dfe0276f5fcf91bec73440ef08b539cf0b77cd45f56733a602f822"
+   },
+   "2003-04": {
+    "as_of": "2004-04-14",
+    "data_date": "2004-04-14",
+    "raw_sha256": "67d86635e3ce35b0b9112fc7e0e2e20dcf72c938c772ee115482df43265662db"
+   },
+   "2004-05": {
+    "as_of": "2005-04-20",
+    "data_date": "2005-04-20",
+    "raw_sha256": "3ec1e0a1eeac82e51fbb5d9199b585c6bb2ab997976a9b174b3356224241b74d"
+   },
+   "2005-06": {
+    "as_of": "2006-04-19",
+    "data_date": "2006-04-19",
+    "raw_sha256": "3e8c0bf3223203bfbbe12a180a61851ff83c32a0488901c25a49f513ebba6c0a"
+   },
+   "2006-07": {
+    "as_of": "2007-04-18",
+    "data_date": "2007-04-18",
+    "raw_sha256": "0ef4b290143b252c3c6e3f0230cac776653972d6479c444dc3d4667b587a839c"
+   },
+   "2007-08": {
+    "as_of": "2008-04-16",
+    "data_date": "2008-04-16",
+    "raw_sha256": "3777f6b35c691c08f9fc88790f4d7912d7e3cfde4d8a2bee7ad99e042e27c9ab"
+   },
+   "2008-09": {
+    "as_of": "2009-04-15",
+    "data_date": "2009-04-15",
+    "raw_sha256": "37f03e4c3350e5d3a55548a01c6f7edeee2cd1e550b775d24649fff58abf197a"
+   },
+   "2009-10": {
+    "as_of": "2010-04-14",
+    "data_date": "2010-04-14",
+    "raw_sha256": "3d0c9406219efeda60d70a6ecf5285d644791021dda40043dcb50ad3e45394ce"
+   },
+   "2010-11": {
+    "as_of": "2011-04-13",
+    "data_date": "2011-04-13",
+    "raw_sha256": "ef76138553e448d090d6d697b308a040a80890fcb976a29caedb3ebde3cc0de5"
+   },
+   "2011-12": {
+    "as_of": "2012-04-26",
+    "data_date": "2012-04-26",
+    "raw_sha256": "a1a7a672ff0b0945ba4a4760b6fd79d510cb3390415d5ea70fc38ddd8e2958b0"
+   },
+   "2012-13": {
+    "as_of": "2013-04-17",
+    "data_date": "2013-04-17",
+    "raw_sha256": "80fb6d19c7bc1eaa67483461058d3ad142c3e17a1d7e6982573ca44c8a08f8ef"
+   },
+   "2013-14": {
+    "as_of": "2014-04-16",
+    "data_date": "2014-04-16",
+    "raw_sha256": "8b0680d7e27c9d28307beabf1a0bb08dc87684d500f310772361e00d90f14d7a"
+   },
+   "2014-15": {
+    "as_of": "2015-04-15",
+    "data_date": "2015-04-15",
+    "raw_sha256": "db97ada557b48d1d5a41cbbb5daf048e88cb89c467089006684ad55818011922"
+   },
+   "2015-16": {
+    "as_of": "2016-04-13",
+    "data_date": "2016-04-13",
+    "raw_sha256": "1bcf36fbac2d76f94d641b4cdf1f031e23621e63b6abe09e2349b0b0ecb4c783"
+   },
+   "2016-17": {
+    "as_of": "2017-04-12",
+    "data_date": "2017-04-12",
+    "raw_sha256": "6d16c8a5b0d6e340eb3259035ac222ea5bd1d024bc70defdaf3a2b8730584203"
+   },
+   "2017-18": {
+    "as_of": "2018-04-11",
+    "data_date": "2018-04-11",
+    "raw_sha256": "3560806789c0e92393d6d5dc0d69741be2690d61870da6f0489eb1220514a5dd"
+   },
+   "2018-19": {
+    "as_of": "2019-04-10",
+    "data_date": "2019-04-10",
+    "raw_sha256": "27170fa7f64f07ea4ecda078d9b3592c3b3cb38b2ac3c13fa751358d016ad583"
+   },
+   "2019-20": {
+    "as_of": "2020-08-14",
+    "data_date": "2020-08-14",
+    "raw_sha256": "e9b233938b0b686577b3eb7b33ed9d4043ee716443783e18ddff947751aa4518"
+   },
+   "2020-21": {
+    "as_of": "2021-05-16",
+    "data_date": "2021-05-16",
+    "raw_sha256": "bf4b771179eb7fd7026cd7ee13c31796ec991b50f5e06465dec18c2eb6e5d635"
+   },
+   "2021-22": {
+    "as_of": "2022-04-10",
+    "data_date": "2022-04-10",
+    "raw_sha256": "0ef6822a513421fce7f140f7163d5c061f2c010b58af0223cbd883b1f51aea5a"
+   },
+   "2022-23": {
+    "as_of": "2023-04-09",
+    "data_date": "2023-04-09",
+    "raw_sha256": "6414db767a4b64b7577f79afde208a5b9b650b267f43af4a2b558f4cf57c9d41"
+   },
+   "2023-24": {
+    "as_of": "2024-04-14",
+    "data_date": "2024-04-14",
+    "raw_sha256": "fc0e8e86a018c5911b41fb871f0aab22f1dc7a9b7c878727e30d7c39e53bc5eb"
+   },
+   "2024-25": {
+    "as_of": "2025-04-13",
+    "data_date": "2025-04-13",
+    "raw_sha256": "40e20eec44ff2d016cc850f014066d1d733c10805179b60cca5ca36fc28b10db"
+   },
+   "2025-26": {
+    "as_of": "2026-04-12",
+    "data_date": "2026-04-12",
+    "raw_sha256": "f7e4656d4dfdb9a610231a79e5fedb85c75194fb1ea70a1a3cdfa0b7aaa62a46"
+   }
+  },
+  "id_matching": "Combine rows carry the NBA person ID; game logs and DARKO boards key by the same NBA person ID. No name matching. Rows without an ID are excluded, never name-matched.",
+  "sources": {
+   "combine": "analytics_marts.mart_stats_draft_combine (NBA Draft Combine via the hoopR mirror), 2000-2026",
+   "darko": "DARKO season-end regular-season boards in bundle e99039fbde7c8b0859a93088aca4081a459a5fd65320138f33636b08ba252c66",
+   "minutes": "published regular-season game logs, dataset 1940051a-cd59-40e9-9730-fc48f819e32c (release a584c88b, read only)"
+  },
+  "table_sha256": {
+   "combine": "e419681598d378113c6122e121c93552e987fbdee7bd86e1855cab875d90d234",
+   "seasons": "0cafcaf7b4bc5cf22d39e4cafd6f351a566d5e42464250f48a3b6f4a4bbdb986"
+  }
+ }
+}

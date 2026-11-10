@@ -113,8 +113,6 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/forecasts",
     "/evaluation",
     "/research/case-studies",
-    "/research/trends",
-    "/research/distributions",
     "/research/shooting/adjusted",
     "/research/rapm/six-factor",
     "/research/shooting",
@@ -125,7 +123,6 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/methodology",
     "/methodology/learning",
     "/whats-new",
-    "/whats-new/blog",
     "/playoffs",
     "/data-status",
     "/settings"
@@ -134,7 +131,7 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
   it("contains every canonical replica route once (EPV removed in PC11)", () => {
     const set = new Set(CANONICAL_ROUTES);
     expect(set.size).toBe(CANONICAL_ROUTES.length);
-    expect(CANONICAL_ROUTES.length).toBe(36);
+    expect(CANONICAL_ROUTES.length).toBe(33);
   });
 
   it("maps all compatibility and consolidation redirects to valid canonical routes", () => {

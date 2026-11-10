@@ -94,6 +94,121 @@ change and say why.
 **Cascade.** Overrides of foundation controls (the lookup focus ring, for example) belong in
 `app/styles/foundation.css`. The `foundation` layer outranks `pages` whatever the specificity.
 
+**Research pages (row 18, design phase).** Six-Factor RAPM (RD00, ✅ 2026-11-07) set the pattern for every Research page
+redesigned from the owner's Databallr screenshots (Research handoff D13). Owner instructions still win.
+- **Header:** a centred `TabbedPage` header (`hero: { icon }` in `lib/route-consolidation.ts`: the
+  `pvp-header research-hero` classes, accent icon, one subtitle line), route tabs centred under it, then
+  the sticky `FilterBar` for scope, then `ResearchIntro` (centred tagline and text links).
+- **Column (owner, RD00, 2026-11-06):** the filter bar and every section sit in `.rs-column`, a centred
+  992 px reading column (Databallr's), not the full page width. Each Research page adopts it in its own
+  design turn.
+  A database page whose Databallr counterpart is wider takes that width instead (RD01 Wingspan: 1352 px, a table
+  beside a side column); explainer pages keep 992 px.
+- **Tables (owner, RD01 round 3):** one look for the site, the Stats page's NBA Player Statistics table. Research tables use
+  `StatsGrid` (`components/research/stats-grid.tsx`), which renders the Stats classes; small static tables use its
+  `density="compact"` scaled version. Player rows use its Stats player card (logo, season photo, name, subtitle).
+- **Sign colours (owner, RD01):** where Databallr colours a value by its sign and no interval is served (a
+  measurement, a player's D-DPM), use the identity tones, gold above zero and blue below (`data-identity` on
+  `ResearchTable` cells), never green/red.
+- **Shaded, like Databallr (owner, RD00 round 4; supersedes round 2's open blocks):** light panels
+  (`--rs-panel`, 4% white, with a soft inset rim `--rs-rim`) for cards, glossary entries, method blocks and
+  the table toolbar; darker inner wells (`--rs-well`) for feature lists, callouts, formulas and steps.
+  Offense/Defense cards take a 7% gold/blue tint, the tab panel an accent ring. Tokens live on
+  `.rs-section, .rs-column` in `research-page.css`.
+- **Photos (owner, RD00 round 4):** season photos in team colour (pass `team` to `PlayerIdentity`), never
+  clipped: 64 px in ranked lists (48 px on a phone), 44 px in headline charts, 40 px in tables. A feed without
+  teams borrows them server-side from a feed that has them.
+- **Captions (owner, RD00 round 5):** cut any caption that is non-essential or pulls from the key point. Rules,
+  counts and coverage move into the collapsed Caveats & Methodology; honesty statements (unknowns,
+  confounding, overlap, no interval) and sources stay.
+- **Pickers (owner, RD00 round 6):** a first-load default is fine, but a picker's clear button must clear it,
+  leaving the picker and an empty state with a way back to the default (`player=none` in the URL).
+- **Sticky layers (owner, RD00 round 7):** `ResearchTable`'s scroll frame is its own stacking context, so pinned
+  columns scroll under the sticky filter bar. Anything new with sticky or z-indexed parts needs the same.
+- **Settled in RD02 (owner, ORtg Calculator, 2026-11-07):** where Databallr has a layout, copy it (RD02 used Databallr's own
+  hero bar through `PageHeader` instead of the centred hero); one level of nesting inside a panel (panel → card or well,
+  never panel → well → card); small control cards split into balanced, centred halves; text on Research pages uses the
+  blue-tinted `--color-on-bg-secondary` / `--color-on-bg-tertiary`, never the neutral `--color-text-secondary` greys; no
+  hairline dividers around an intro line or above a collapsed section.
+- **Settled in RD03 (owner, zTS, 2026-11-07):** never a dropdown of player names: change a player through a search field with
+  suggestions (`LookupInput` candidates / `EntityField`), opening in place under that player's photo; player photos are the
+  site's `PlayerAvatar` (team-colour fill, ring and logo badge, the season's photo), never a page-made circle; a per-player
+  season picker lists only the seasons that player has data for; leave a little space between a title chip and the text after it.
+- **Settled in RD04 (owner, Shot Quality, 2026-11-07):** every table is `StatsGrid` in the Wingspan/Stats look, even where the
+  Databallr reference draws its own table (bars and all); `ResearchTable` stays only on RD00's own tables. A table's search is
+  `GridSearch` (the NBA Player Statistics table's own markup), with equal space above it (from the PLAYER label) and below it.
+  A team filter is the site's Select Team logo grid (`TeamPicker` in `components/research/team-picker.tsx`), never a dropdown.
+  Labels whose lowercase prefix carries meaning (oTS, dContest, xPPS) keep their case (`keepCase`). Green/red goes on a value
+  (`GridValue tone`) only where its served interval excludes zero. Centre a `PageHeader` icon tile with flex alignment: the
+  unlayered `display: inline-flex` defeats grid centring.
+- **Settled in RD05 (owner, Defensive Shot Quality, 2026-11-08):** player cards after Databallr's take a subdued team-colour tint
+  (identity, not good/bad) with no team logo watermark behind them; the logo badge on the photo and the logo beside the code stay.
+  Where the frozen results serve only part of a list (five key matchups), link to the CourtLens page that serves all of it (Player
+  Matchups: everyone guarded, and each head-to-head) rather than building a search over data the page doesn't have, and say the
+  source difference beside the link, in the glossary and in Caveats & Methodology.
+- **Settled in RD06 (owner, Learning, 2026-11-08):** an explainer with many topics copies Databallr's Learning layout: a sticky
+  224 px index column (numbered tiers and topics, the one being read marked) beside the topic cards, collapsed into a "Topics"
+  disclosure above them on a phone. A search filtering that index heads its column at the column's width and stays pinned with it,
+  24 px clear of the list; on a phone it is full width above the disclosure. Categories that are labels, not ranks (tiers) take
+  `--color-category-*` tints in fixed order. A measure over seasons is one line on one axis with a switch between measures, never
+  Databallr's two y-axes, beside its `StatsGrid`. A myth is shown only where a frozen CourtLens result answers it, and that result
+  is its reality (the number appears once). A route under a tabbed page may draw its own centred hero (`OWN_HEADER_TABS`) without
+  moving its URL. Judge CSS from the sandbox build: when the owner's :3100 shows something the build doesn't, check the CSS chunk
+  :3100 serves and toggle the import line in `app/globals.css`.
+- **Settled in RD07 (owner, Patch Notes, 2026-11-08):** pages for visitors carry no repository detail: no commit hashes, progress-log
+  links, branch, merge or PR lines and no process notes ("approved after n rounds"); copy is plain language about what a visitor can
+  do. Where the data needs those references to stay checkable, they live in the source file and its check script, not on the page.
+  A changelog copies Databallr's: a 160 px release column (month, version, name, dates) beside plain entry rows (title, badge,
+  Explore, one sentence), the column a subdued gold-tinted tile with the version in gold, sticky while its release is read; entries
+  condensed, with no cards. No accent rail or edge highlight on a card or tile edge (it reads as vibe-coded). After a CSS change
+  the owner will view on :3100, check the served chunk and refresh it (remove the import, request the page for about 12 s, re-add,
+  request again) before reporting.
+- **Settled in RD08 (owner, Draft Classes, 2026-11-09):** a table of a season's players is built like the Stats table (a title saying
+  what it is, Per Game by default, the Stats groups and photo strip); say the unit in a heading when a table isn't per game. A search in
+  a table header has equal space above and below. Rows with a year sort by year unless the user sorts otherwise. Draft position is
+  written `R1 #2`, the Players bio's form. Dates use the Stats format (Nov 8, 2026). A column that would repeat one answer on every row
+  becomes one sentence. A table beside a card ends level with it. Heights and lengths on a chart are marked in feet and inches; a
+  difference between two lengths stays in inches.
+- **Settled in RD10 (owner, Metric Backtest, 2026-11-09):** a page comparing many models answers in one sentence first, then shows every served
+  pair at once as a compact `StatsGrid` read across a row, coloured only where the interval excludes zero. Rows keep their registered order, and a
+  table whose rows cover different samples says not to compare them and is not ranked. A gap between two series over seasons is one line with its
+  band and zero marked. Two series that are labels take `--color-category-3` and `-4` (1 and 2 read as gold and blue). A difference of shares is written in
+  points (`+2.6 pts`). Nine-row tables take no `GridSearch`. A long glossary is collapsed while an honesty statement stays visible as one line. A chart
+  its heading already names drops its own title and source lines; the source goes in About. Served text carrying a project code is replaced on the page.
+- **Settled in RD11 (owner, Projected Impact, 2026-11-09):** a model reads as the page's own name, with its technical name under it, and the one-sentence answer says what is being tested
+  and how big the edge is in units a reader can feel. A filter view where a column would be all dashes drops it and shows something that view has. A table of projections with overlapping intervals is sorted by the estimate
+  but carries no rank. Interval bars share one scale fitted to the served values, labelled in the column header and lined up with the bars. In a table comparing models the gains come before the raw scores, so they are on
+  screen on a phone. Games that aren't a test of the model are collapsed behind one visible line saying so, and are never coloured. On a phone a player row's tool stays on the name's line and names wrap whole, never mid-word;
+  two long lists that sit side by side on desktop become a switch. The same value takes the same colour everywhere on a card. A line chart with many points shows them on hover only. An early live sample that cuts against a finished test is drawn as served, with one line above it saying the sample is too few to overturn the test.
+- **Settled in RD12 (owner, Lineup Model, 2026-11-10):** a gap between two models is drawn to scale on a shared axis that includes zero, never on an axis fitted to the gap,
+  so a negligible difference looks negligible. A warning about a chart sits above it. A tool's players are team-tinted cards with search in place of the name, at full card width, opening its list only on typing;
+  a swap keeps the last result dimmed until the new one arrives, with no skeleton or jump. Correlations near one print at full served digits, never rounded up to 1. Ranked values with no interval are thin
+  gold bars on the Research track (`LeaderBars`), with a scale above them that says in words what its ends are and the unit in the title.
+- **Settled in RD13 (owner, Signal vs Noise, 2026-11-10):** a fitted curve or level is drawn only where the observed data reach it; a level that no group of observed players shows has no point,
+  only its observed range, and its fitted value lives in About. Pressing an item in a chart selects it in place and never scrolls the page; a small icon beside each item goes to its detail when asked.
+  A pressed toggle in a list has the kit ghost button's padding, never the unpadded text variant. Chart axes are 12 px in the secondary on-background colour, and chart keys are centred.
+  Sentences spell units out ("480 three-point attempts"); strips and tables keep the short unit. A long list of choices is one grouped select, not rows of chips. On a phone a wide table switches between its
+  column groups instead of scrolling sideways. A what-if tool applies served parameters to the reader's numbers, starts at the served values, and says it computes no interval.
+- **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
+  with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
+  explainer look; panels with text-colour icons stay the pattern for non-Research pages).
+- **Building blocks** (same file): `ResearchProse`, `ResearchCards`/`ResearchCard` (identity tones `a`
+  gold, `b` blue for Offense/Defense, never good/bad), `FormulaLine`, `ResearchTabPanel` (full-width
+  `Segmented` over an accent-ringed panel), `FeatureList`, `RankedList`, `ResearchCallout`,
+  `ReadingGuide`, `ToneLegend`, `Glossary`, `MethodSteps`/`MethodBlock` and `ResearchDisclosure`
+  (a collapsed section whose body stays in the DOM, for Caveats & Methodology).
+- **Ratings table:** `ResearchTable` from `components/research/research-table.tsx`, after Databallr's
+  ShotQuality table: toolbar (search, minimum, team, page actions, CSV, count), views as a `Segmented`
+  group, sticky logo and player columns, a bar beside each signed value, the interval on a second line,
+  unknowns "—" and last in both directions. Columns declare `signedValue` and `interval`. Column widths
+  follow content (128 px with an interval, 96 px without, 64 px for counts) so a five-value view fits the
+  column unscrolled; long names wrap inside the pinned player column. `team` is optional: without it there
+  is no logo column or team filter.
+- **Colour:** `SignalValue` and the table colour a value green or red only when its 80% interval
+  excludes zero (`lib/research-values.ts` `intervalTone`); values without an interval stay neutral.
+- **Verification:** a real-data script compares every drawn value with the API at 1440 and 390 for
+  several scopes (`docs/evidence/research/design-RD00/real-check.mjs`, `real-check-ratings.mjs`).
+
 **Verification.** For every instruction:
 - Build a production sandbox at 3180, never on the owner's ports 3100/8000.
 - For live data, run a read-only proxy at 4180 to the owner's API. Allow GET, HEAD, OPTIONS and

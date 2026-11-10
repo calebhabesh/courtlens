@@ -6,13 +6,12 @@ import { getWorkbenchCatalog } from "./workbench-api";
 const requirements: Record<string, string> = {
   "/stats": "core_stats", "/players": "core_stats", "/teams": "core_stats",
   "/compare": "core_stats", "/team-compare": "core_stats", "/last-games": "core_stats",
-  "/showcase": "core_stats", "/research/trends": "core_stats",
-  "/research/distributions": "core_stats", "/similar-players": "core_stats",
+  "/showcase": "core_stats", "/similar-players": "core_stats",
   "/roster-shapes": "core_stats", "/playoffs": "core_stats",
   "/wowy": "wowy", "/stat-line-shift": "on_off",
   "/research/shooting/aftermath": "shots", "/matchups": "matchups",
   "/research/shooting/adjusted": "play_types", "/stats/tracking": "tracking",
-  "/research/defensive-matchups": "defensive_tracking",
+  "/research/defensive-matchups/tracking": "defensive_tracking",
 };
 /**
  * Whether a route's release-bound source can serve it. `anySeason` (the header's menus) asks

@@ -1,6 +1,7 @@
-// FO07 route consolidation (frontend overhaul D3). Merged pages are one title with route tabs: the
-// first tab lives at the page's own path and every other tab at a sub-path, so views that rewrite
-// their URL from `usePathname()` keep the selected tab. This file is imported by `next.config.ts`,
+// FO07 route consolidation (frontend overhaul D3). Merged pages are one title with route tabs: one
+// tab lives at the page's own path and every other tab at a sub-path, so views that rewrite their
+// URL from `usePathname()` keep the selected tab. The first tab is where the menu opens the page,
+// normally the page's own path (Six-Factor RAPM opens on its sub-path). This file is imported by `next.config.ts`,
 // so it must stay free of path aliases and runtime dependencies.
 
 export interface RouteTab {
@@ -13,16 +14,27 @@ export interface TabbedPage {
   /** One short line under the title (D7). */
   subtitle: string;
   tabs: readonly RouteTab[];
+  /** Research design pattern (row 18): a centred header with this Lucide icon name, after Databallr's explainers. */
+  hero?: { icon: string };
 }
 
 export const TABBED_PAGES = {
   rapm: {
-    title: "RAPM Research",
-    subtitle: "Served impact ratings and registered impact experiments.",
+    title: "Six-Factor RAPM",
+    subtitle: "A structural decomposition of player impact",
+    hero: { icon: "book" },
+    // R02: the explainer is the main entry; the 1Y/2Y/3Y table and sealed experiment stay a tab.
     tabs: [
-      { label: "RAPM", href: "/research/rapm" },
       { label: "Six-Factor", href: "/research/rapm/six-factor" },
+      { label: "RAPM Ratings", href: "/research/rapm" },
     ],
+  },
+  // RD01: one page after Databallr's Wingspan Database; the hero frame with no route tabs.
+  wingspan: {
+    title: "Combine & Wingspan",
+    subtitle: "NBA Draft Combine measurements since 2000, with height and wingspan comps.",
+    hero: { icon: "ruler" },
+    tabs: [{ label: "Combine & Wingspan", href: "/wingspan" }],
   },
   shooting: {
     title: "Shooting",
@@ -33,12 +45,12 @@ export const TABBED_PAGES = {
       { label: "Shot Aftermath", href: "/research/shooting/aftermath" },
     ],
   },
+  // R11: the What's New route is the Patch Notes changelog, listed under Research → Tools (D8).
   whatsNew: {
-    title: "What's New",
-    subtitle: "Dated changes and engineering notes.",
+    title: "Patch Notes",
+    subtitle: "Every release, with the commit that shipped it.",
     tabs: [
       { label: "Patch Notes", href: "/whats-new" },
-      { label: "Blog", href: "/whats-new/blog" },
     ],
   },
   methodology: {
@@ -50,6 +62,9 @@ export const TABBED_PAGES = {
     ],
   },
 } satisfies Record<string, TabbedPage>;
+
+/** RD06, RD07 (owner, 2026-11-08): tabs that draw their own centred hero instead of the tabbed header (route and redirects unchanged). */
+export const OWN_HEADER_TABS: ReadonlySet<string> = new Set(["/methodology/learning", "/whats-new"]);
 
 /** PC11: Stats keeps its own header; Tracking is a second route tab (season totals, separate query). */
 export const STATS_TABS: readonly RouteTab[] = [
@@ -68,7 +83,7 @@ export const CONSOLIDATED_REDIRECTS: { source: string; destination: string }[] =
   { source: "/research/adjusted-shooting", destination: "/research/shooting/adjusted" },
   { source: "/shot-aftermath", destination: "/research/shooting/aftermath" },
   { source: "/patch-notes", destination: "/whats-new" },
-  { source: "/blog", destination: "/whats-new/blog" },
+  { source: "/blog", destination: "/whats-new" },
   { source: "/learning", destination: "/methodology/learning" },
 ];
 
@@ -101,6 +116,11 @@ export const HIDDEN_REDIRECTS: { source: string; destination: string }[] = [
   { source: "/rankings", destination: "/showcase" },
   // Alignment row 11 (owner, 2026-10-20): Tier List is cut for the same reason.
   { source: "/tierlist", destination: "/compare" },
+  // Research D8 (owner, 2026-11-05): Last X Games and the player page cover these two.
+  { source: "/research/trends", destination: "/last-games" },
+  { source: "/research/distributions", destination: "/last-games" },
+  // Research D3 (owner, 2026-11-05): the Blog is dropped.
+  { source: "/whats-new/blog", destination: "/whats-new" },
 ];
 
 /** PC11: removed from the hosted demo only (see HOSTED_DEMO_HIDDEN in lib/nav-model.ts). */

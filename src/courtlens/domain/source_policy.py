@@ -144,6 +144,15 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
         "Wikipedia (CC BY-SA 4.0)",
     ),
     AdmittedSource(
+        "wikipedia_drafts",
+        "Wikipedia NBA draft articles",
+        "en.wikipedia.org/wiki/<year>_NBA_draft",
+        "secondary",
+        ("draft_metadata",),
+        5,
+        "Wikipedia (CC BY-SA 4.0)",
+    ),
+    AdmittedSource(
         "darko",
         "DARKO Daily Plus-Minus",
         "www.darko.app",
@@ -151,6 +160,15 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
         ("external_impact",),
         5,
         "DARKO (darko.app, Kostya Medvedovsky)",
+    ),
+    AdmittedSource(
+        "craftednba",
+        "CraftedNBA height and wingspan",
+        "craftednba.com",
+        "secondary",
+        ("measurements",),
+        5,
+        "CraftedNBA (craftednba.com)",
     ),
     AdmittedSource(
         "nba_free_agent_tracker",

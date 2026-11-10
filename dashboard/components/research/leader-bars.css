@@ -1,0 +1,31 @@
+/* RD12 round 4 (owner): a short list of leaders in the Research look, replacing the old thick blue-on-black chart bars. A thin bar on the Research well, as RD11's contribution bars;
+   gold above zero and blue below, because these ratings have no interval (RD01). The scale sits over the bars and says what its ends are (RD11). */
+@layer pages {
+  .rs-leaders-list, .rs-leaders-scale-row { --rs-leaders-value: 48px; }
+  .rs-leaders-list { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .rs-leaders-scale-row { margin-bottom: var(--space-2); }
+  .rs-leaders-list > li, .rs-leaders-scale-row { display: grid; grid-template-columns: minmax(120px, 280px) minmax(0, 1fr) var(--rs-leaders-value); align-items: center; column-gap: var(--space-3); }
+  .rs-leaders-label { display: block; min-width: 0; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .rs-leaders-label small { display: block; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .rs-leaders-scale-gap { display: block; }
+  .rs-leaders-scale { position: relative; display: block; height: var(--space-4); color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--space-4); font-variant-numeric: tabular-nums; }
+  .rs-leaders-scale > span { position: absolute; top: 0; white-space: nowrap; }
+  .rs-leaders-scale > [data-end="left"] { left: 0; }
+  .rs-leaders-scale > [data-end="zero"] { left: var(--rs-leaders-zero); transform: translateX(-50%); }
+  .rs-leaders-scale > [data-end="right"] { right: 0; }
+  .rs-leaders-track { position: relative; display: block; height: var(--space-2); border-radius: var(--radius-xs); background: var(--rs-well); }
+  .rs-leaders-zero { position: absolute; top: calc(-1 * var(--space-1)); bottom: calc(-1 * var(--space-1)); left: var(--rs-leaders-zero); width: 1px; background: var(--color-text-tertiary); }
+  .rs-leaders-fill { position: absolute; top: 0; bottom: 0; left: var(--rs-leaders-left); width: var(--rs-leaders-width); border-radius: var(--radius-xs); background: var(--color-text-tertiary); }
+  .rs-leaders-fill[data-identity="a"] { background: var(--color-identity-a); }
+  .rs-leaders-fill[data-identity="b"] { background: var(--color-identity-b); }
+  .rs-leaders-value { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; text-align: right; font-variant-numeric: tabular-nums; }
+  .rs-leaders-value[data-identity="a"] { color: var(--color-identity-a); }
+  .rs-leaders-value[data-identity="b"] { color: var(--color-identity-b); }
+
+  @media (max-width: 767px) {
+    .rs-leaders-list > li { grid-template-columns: minmax(0, 1fr) var(--rs-leaders-value); row-gap: var(--space-1); }
+    .rs-leaders-scale-row { grid-template-columns: minmax(0, 1fr) var(--rs-leaders-value); }
+    .rs-leaders-scale-row > .rs-leaders-scale-gap:first-child { display: none; }
+    .rs-leaders-label { grid-column: 1 / -1; }
+  }
+}

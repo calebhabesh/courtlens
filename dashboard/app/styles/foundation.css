@@ -651,11 +651,11 @@
     padding: var(--space-1) var(--space-3);
     font-family: inherit;
     font-size: var(--text-xs);
-    font-weight: 600;
-    letter-spacing: 0;
-    text-transform: none;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     white-space: nowrap;
-    color: var(--color-text-tertiary);
+    color: var(--color-text-smoke);
   }
 
   .replica-mobile-drawer .ui-drawer-body { padding: 0; }
@@ -664,8 +664,10 @@
   .courtlens-mobile-group-title {
     padding: var(--space-1) var(--space-3);
     font-size: var(--text-xs);
-    font-weight: 600;
-    color: var(--color-text-tertiary);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-smoke);
   }
   .courtlens-mobile-link,
   .courtlens-mobile-sublink { min-height: var(--control-lg); }
@@ -932,6 +934,10 @@
   .pvp-header .ui-page-header-title-row { justify-content: center; }
   .pvp-header .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); }
   .pvp-header .ui-page-header-subtitle { color: var(--color-on-bg-secondary); }
+  /* Research design pattern (row 18): Databallr's centred explainer header; its tabs centre under it. */
+  .research-hero .ui-page-header-icon { color: var(--color-accent); }
+  .research-hero .ui-page-header-subtitle { white-space: normal; font-size: var(--text-md); line-height: var(--text-md-lh); }
+  .ui-tabbed-page:has(> .research-hero) .ui-route-tabs-list { justify-content: center; }
   /* Roster Shapes' and Stat Line Shift's explainers are the page's key, so they wrap (rows 12, 13). */
   .shapes-page .pvp-header .ui-page-header-subtitle, .sls-page .pvp-header .ui-page-header-subtitle, .lg-page .pvp-header .ui-page-header-subtitle, .sc-page .pvp-header .ui-page-header-subtitle, .tw-page .pvp-header .ui-page-header-subtitle { max-width: 72ch; margin-inline: auto; white-space: normal; }
   .fa-page .fa-title .ui-page-header-subtitle { max-width: 72ch; color: var(--color-on-bg-secondary); white-space: normal; }
@@ -955,4 +961,14 @@
   /* Unranked values (careers, small samples) keep the text colour instead of the cell's muted one (28). */
   .pvp-value .chart-percentile-text[data-qualified] { color: var(--color-text); }
   .pvp-value[data-leading] .stat-main-value { font-weight: 700; }
+}
+
+/* Projected Impact leaderboard: long names wrap on a phone so the projection stays on screen. */
+@layer foundation {
+  @media (max-width: 767px) {
+    .pi-board .ui-identity-text { min-width: 0; }
+    /* Six-Factor RAPM: long names wrap inside the pinned phone column. */
+    .sf-grid .ui-identity-name { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
+    .pi-board .ui-identity-name { white-space: normal; font-size: var(--text-xs); line-height: var(--text-xs-lh); letter-spacing: 0; }
+  }
 }

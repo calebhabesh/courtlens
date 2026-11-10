@@ -1,0 +1,34 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-rating-snapshots-v1",
+  "block": "R01",
+  "registered_on": "2026-11-04",
+  "kind": "descriptive",
+  "question": "Dated player ratings that later models (R07, R08, R15) can read without seeing the game they predict.",
+  "inputs": ["The courtlens-rapm-time-decay-v1 inputs"],
+  "method": [
+    "Each snapshot is a courtlens-rapm-time-decay-v1 fit (same parameters) at one cutoff, using only regular-season games with game_date < cutoff; alpha is reselected inside each snapshot's own window.",
+    "Cutoffs for each regular season 2015-16 to 2025-26: the season's first regular-season game date (opener), then the 1st of every month after the opener up to and including the first month start after the season's last regular-season game. 2014-15 is used only as earlier data.",
+    "Readers take the latest snapshot whose cutoff is on or before the game date; season-level fits never feed a prediction inside the same season.",
+    "An index lists every cutoff with its artifact hash, window start, game count and selected alpha."
+  ],
+  "parameters": {"first_season_start_year": 2015, "last_season_start_year": 2025},
+  "selection": "Alpha per snapshot as in courtlens-rapm-time-decay-v1.",
+  "uncertainty": "None in v1 (snapshots carry point estimates and sample support only).",
+  "evaluation": [
+    "Leakage test: adding or changing games on or after a cutoff leaves that snapshot's hash unchanged",
+    "Count of snapshots, games per snapshot and selected alphas"
+  ],
+  "acceptance": [
+    "Every registered cutoff has a snapshot whose recorded cutoff and latest input game date satisfy latest_game_date < cutoff",
+    "Two runs reproduce the index hash"
+  ],
+  "outputs": ["data/derived/rating-snapshots-v1/ snapshot artifacts and index"],
+  "limitations": [
+    "Playoff games are not included",
+    "Opener snapshots for 2015-16 see only one prior season"
+  ],
+  "negative_result_policy": "Publish snapshot coverage and any cutoff that could not be fitted.",
+  "seed": 2501,
+  "budget": {"cpu_threads": 2, "max_peak_mib": 3072, "max_wall_seconds": 1800}
+}

@@ -1,0 +1,77 @@
+/* RD10 (owner, 2026-11-09): Research → Metric Backtest, built from approved Research patterns: the centred hero, RD00's 992 px
+   column, RD04/RD08 grids and tone rule, RD06/RD08's one line with a band, RD05's cards and glossary, a collapsed About. No hairlines
+   between sections, one nesting level, no accent rail. Categories that are labels take --color-category-*; gold and blue stay for sign. */
+@layer pages {
+  .rs-column.mb-page { gap: var(--space-10); padding-bottom: var(--space-12); }
+  .mb-page .rs-intro { margin-top: calc(-1 * var(--space-6)); }
+  .mb-page > .rs-section { padding-top: 0; border-top: 0; scroll-margin-top: calc(-1 * var(--space-12)); }
+  .mb-page .rs-method-block { grid-template-columns: minmax(0, 1fr); }
+  .mb-page > .rs-disclosure + .rs-disclosure { margin-top: calc(-1 * var(--space-6)); }
+
+  /* Copy. */
+  .mb-answer { display: grid; gap: var(--space-3); max-width: 768px; }
+  .mb-headline { margin: 0; color: var(--color-text); font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 650; }
+  .mb-lead { max-width: 768px; margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .mb-lead strong { color: var(--color-text); font-weight: 650; font-variant-numeric: tabular-nums; }
+  .mb-note { max-width: 768px; margin: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .mb-subhead { margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 650; }
+  .mb-card-text { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .mb-list { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-5); color: var(--color-on-bg-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .mb-list strong { color: var(--color-text); }
+  .mb-defs { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-2) var(--space-4); margin: 0; font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .mb-defs dt { color: var(--color-text); font-weight: 650; }
+  .mb-defs dd { margin: 0; color: var(--color-on-bg-secondary); overflow-wrap: anywhere; }
+  .mb-block { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
+
+  /* Grid cells. */
+  .mb-metric { display: block; color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; white-space: normal; }
+  .mb-metric-sub { display: block; color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-xs-lh); font-weight: 400; white-space: normal; }
+  .mb-text { color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+
+  /* The 9×9: the lead column and nine equal columns fill the frame; on a phone the grid scrolls inside it. */
+  .mb-matrix.rs-grid, .mb-seasons.rs-grid { --rs-grid-min: 900px; --rs-grid-lead: 152px; }
+  .mb-matrix col:not(.rs-col-lead), .mb-seasons col:not(.rs-col-lead) { width: auto; }
+  .mb-matrix .dense-stats-table thead th:not(.rs-grid-lead), .mb-matrix .dense-stats-table thead th:not(.rs-grid-lead) .table-sort-button { white-space: normal; }
+  .mb-matrix .dense-stats-table .stats-header-tier-2 th { height: var(--space-12); vertical-align: middle; }
+  .mb-pairs.rs-grid { --rs-grid-min: 900px; }
+  .mb-scores.rs-grid { --rs-grid-min: 860px; }
+
+  /* Controls. */
+  .mb-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-5); }
+
+  /* Figures. */
+  .mb-figure { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); min-width: 0; margin: 0; padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .mb-figure-title { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
+
+  /* Calibration: the plot's panel ends level with the bins table beside it. */
+  .mb-calibration { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 456px); gap: var(--space-4); align-items: stretch; min-width: 0; }
+  .mb-calibration .mb-figure { align-content: center; }
+  .mb-calibration .chart-reliability { max-width: 100%; }
+  .mb-bins.rs-grid { --rs-grid-min: 0px; --rs-grid-lead: 84px; }
+  .mb-bins col:not(.rs-col-lead) { width: auto; }
+  .mb-page .mb-bins.density-compact .dense-stats-table tbody :is(td, th) { height: var(--space-10); }
+
+  @media (max-width: 1023px) {
+    .mb-calibration { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 767px) {
+    .rs-column.mb-page { gap: var(--space-8); }
+    .mb-headline { font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+    .mb-matrix.rs-grid, .mb-seasons.rs-grid { --rs-grid-lead: 104px; --rs-grid-min: 860px; }
+    .mb-bins.rs-grid { --rs-grid-min: 420px; }
+    .mb-controls { align-items: stretch; flex-direction: column; }
+    .mb-controls select { width: 100%; min-height: 40px; }
+    .mb-figure .slc-dot:not([data-active]) { width: 4px; height: 4px; box-shadow: none; }
+    .mb-defs { grid-template-columns: minmax(0, 1fr); }
+    .mb-defs dd { margin-bottom: var(--space-2); }
+  }
+}
+
+/* The foundation layer sets this chart's phone text at --text-xl for a tile-sized plot; here it would run the axis title into its tick labels. */
+@layer foundation {
+  /* The heading above names the chart and About carries its source; the title stays in the markup for the figure's accessible name. */
+  .mb-calibration .chart-title, .mb-calibration .chart-meta { display: none; }
+  @media (max-width: 767px) {
+    .mb-calibration .chart-reliability text { font-size: var(--text-md); }
+  }
+}

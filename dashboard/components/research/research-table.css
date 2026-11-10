@@ -1,0 +1,68 @@
+/* Research ratings table (alignment row 18, after Databallr's ShotQuality table) on the shared
+   reference grid: one 40 px header row, sticky logo and player columns, bars beside values. */
+@layer pages {
+  .rt { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
+  .rt-toolbar { display: grid; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
+  .rt-toolbar-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); min-width: 0; }
+  .rt-search { flex: 1 1 260px; max-width: 360px; }
+  .rt-minimum { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-sm); white-space: nowrap; }
+  .rt-minimum-input { width: 96px; }
+
+  /* Fixed columns: the table is the wider of the frame and the sum of its columns, so a phone scrolls
+     sideways under the pinned logo and player columns instead of squeezing the figures. */
+  .player-ref-grid.rt-grid { --grid-min-width: 0; }
+  /* RD00 round 7: its own stacking context, so the pinned lead column and header cells (z-sticky) stay
+     inside the table and can't paint over the sticky filter bar (also z-sticky, earlier in the page). */
+  .player-ref-grid-scroll.rt-scroll { --lead-width: 184px; isolation: isolate; }
+  .player-ref-grid.rt-grid .rt-col-logo { width: 48px; }
+  .player-ref-grid.rt-grid .rt-col-value { width: 128px; }
+  .player-ref-grid.rt-grid .rt-col-signed { width: 96px; }
+  .player-ref-grid.rt-grid .rt-col-count { width: 64px; }
+  .player-ref-grid.rt-grid .rt-col-text { width: 72px; }
+  .player-ref-grid.rt-grid .rt-col-action { width: 56px; }
+  .player-ref-grid.rt-grid thead th { top: 0; height: 40px; padding: var(--space-1) var(--space-3); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; text-transform: uppercase; vertical-align: middle; text-align: right; }
+  .player-ref-grid.rt-grid thead .group-start { border-left: 1px solid var(--color-hairline-strong); }
+  .player-ref-grid.rt-grid thead .player-ref-grid-lead, .player-ref-grid.rt-grid .player-ref-grid-lead { left: 48px; text-align: left; }
+  .player-ref-grid.rt-grid:not([data-team]) .player-ref-grid-lead { left: 0; }
+  .player-ref-grid.rt-grid .rt-logo { position: sticky; left: 0; z-index: var(--z-sticky); width: 48px; padding-inline: var(--space-2); text-align: center; }
+  .player-ref-grid.rt-grid tbody td.rt-logo { background: var(--color-table-lift); border-bottom: 1px solid var(--color-hairline-strong); }
+  .player-ref-grid.rt-grid thead .rt-logo { z-index: var(--z-sticky-corner); }
+  .player-ref-grid.rt-grid .player-ref-grid-lead .ui-identity { max-width: 100%; min-width: 0; }
+  .player-ref-grid.rt-grid tbody .player-ref-grid-lead { white-space: normal; }
+  .player-ref-grid.rt-grid tbody td { height: 52px; padding-inline: var(--space-3); text-align: right; }
+  .player-ref-grid.rt-grid tbody td.rt-action { text-align: center; padding-inline: var(--space-2); }
+  .rt-cell { display: inline-flex; align-items: center; justify-content: flex-end; gap: var(--space-2); }
+  .rt-bar { display: block; flex: none; width: 24px; height: 12px; border-radius: var(--radius-xs); background: var(--color-hairline); overflow: hidden; }
+  .rt-bar > span { display: block; width: var(--chart-position, 0%); height: 100%; background: var(--color-text-tertiary); }
+  .rt-bar[data-tone="good"] > span { background: var(--color-positive); }
+  .rt-bar[data-tone="bad"] > span { background: var(--color-negative); }
+  .player-ref-grid.rt-grid tbody td[data-column]:has(.rt-cell) { padding-inline: var(--space-2); }
+  .rt-figures { display: grid; justify-items: end; min-width: 64px; }
+  .rt-figures:not(:has(.rt-interval)) { min-width: 40px; }
+  .rt-value { font-weight: 650; }
+  .rt-value[data-tone="good"] { color: var(--color-positive); }
+  .rt-value[data-tone="bad"] { color: var(--color-negative); }
+  /* RD01: a sign in identity colour (gold above zero, blue below), after Databallr; never good or bad. */
+  .rt-value[data-identity="a"] { color: var(--color-identity-a); }
+  .rt-value[data-identity="b"] { color: var(--color-identity-b); }
+  .rt-interval { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: right; white-space: nowrap; }
+  .rt-interval[data-unknown] { white-space: normal; }
+  .rt-unknown { color: var(--color-text-tertiary); }
+  .player-ref-grid.rt-grid td.rt-empty { height: 96px; text-align: center; color: var(--color-text-secondary); }
+  .rt-foot { display: grid; gap: var(--space-2); }
+
+  @media (max-width: 767px) {
+    .rt-search { flex-basis: 100%; max-width: none; }
+    .player-ref-grid-scroll.rt-scroll { --lead-width: 168px; }
+    .player-ref-grid.rt-grid tbody .player-ref-grid-lead { padding-inline: var(--space-2); white-space: normal; overflow-wrap: anywhere; }
+  }
+}
+
+/* Identity names are styled in the foundation layer, so the wrap override lives there too: long names
+   take a second line inside the pinned column instead of being cut or running under the values. */
+@layer foundation {
+  .player-ref-grid.rt-grid tbody .player-ref-grid-lead .ui-identity-name { white-space: normal; text-overflow: clip; }
+  /* RD00 round 4: 40 px season photos in team colour; the logo column already shows the team, so no badge. */
+  .player-ref-grid.rt-grid .player-ref-grid-lead .ui-identity { --identity-media: 40px; }
+  .player-ref-grid.rt-grid .player-ref-grid-lead .ui-identity-badge { display: none; }
+}
