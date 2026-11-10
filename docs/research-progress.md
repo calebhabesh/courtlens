@@ -982,3 +982,13 @@ On Points Forecasts and its archive tab: the ledger's 50 forecasts open from a s
 
 The owner approved Points Forecasts ("Great, I approve this page.") after two build rounds. Row RD16 ✅; the alignment plan gains "Settled in RD16". Full Playwright before ✅: 632 passed, 17 skipped, 0 failed. Next in the queue: RD18 Shot Aftermath, which needs its new frozen play-by-play aggregate built before the design rounds (owner, 2026-11-09); RD14, RD17 and RD19 are paused.
 [`design-RD16`](evidence/research/design-RD16/README.md).
+
+## 2026-11-10 — Hosted demo brought up to RD13
+
+Release 3c2f1b03 (research through the RD13 approval, merged to main in PR #77) is live at
+courtlens.calebhabesh.com with a fresh 2026-11-10 database, so every Research page, full history and the
+2026-27 season are on the demo. The deploy-config gap found while preparing R12 is closed: the deploy
+syncs and mounts every Research serving input, pins the 12-season impact bundle and gives the API 3 GiB.
+RD16 and later are not on the demo yet. Details and measurements in
+[the deploy log](deployment.md#deploy-log).
+
