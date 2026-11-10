@@ -32,6 +32,7 @@ jobs:
             build_args: |
               NEXT_PUBLIC_COURTLENS_API_URL=
               NEXT_PUBLIC_COURTLENS_HOSTED=true
+              NEXT_PUBLIC_COURTLENS_PUBLIC_ASK=true
     steps:
       - uses: actions/checkout@v7
         with:
