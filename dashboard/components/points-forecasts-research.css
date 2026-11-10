@@ -30,6 +30,15 @@
   .fc-defs dd { margin: 0; color: var(--color-on-bg-secondary); overflow-wrap: anywhere; }
   .fc-document { max-height: 480px; margin: 0; padding: var(--space-3); overflow: auto; border-radius: var(--radius-md); background: var(--rs-well); color: var(--color-on-bg-secondary); font-family: var(--font-mono); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: pre-wrap; overflow-wrap: anywhere; }
   .fc-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .fc-figure-note { justify-self: center; text-align: center; }
+  .fc-setting { color: var(--color-on-bg-secondary); font-weight: 500; }
+
+  /* The ledger's list (owner, RD16 round 2): a small toggle inside its section, not a second heading. */
+  .fc-ledger-list { display: grid; gap: var(--space-3); }
+  .fc-ledger-list > summary { justify-self: start; }
+  .fc-ledger-list > summary svg { transition: transform var(--dur-fast) var(--ease-out); }
+  .fc-ledger-list[open] > summary svg { transform: rotate(180deg); }
+  .fc-ledger-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
 
   /* A panel holding one figure. */
   .fc-figure { --fc-label: 208px; --fc-value: 132px; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; margin: 0; padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
@@ -81,6 +90,8 @@
   .fc-wrap.rs-grid[data-lead] { --rs-grid-lead: 200px; }
   .fc-gates.fc-wrap.rs-grid[data-lead] { --rs-grid-lead: 128px; }
   .fc-ledger.rs-grid { --rs-grid-min: 900px; }
+  .fc-selection.rs-grid { --rs-grid-min: 720px; }
+  .fc-selection.rs-grid[data-lead] { --rs-grid-lead: 280px; }
   .fc-ledger.rs-grid[data-lead] { --rs-grid-lead: 232px; }
   .fc-phone.rs-grid { --rs-grid-min: 0px; }
 
@@ -116,6 +127,7 @@
     .fc-strip-scale > span[data-minor] { display: none; }
     .fc-models.rs-grid[data-lead] { --rs-grid-lead: 136px; }
     .fc-slices.rs-grid[data-lead] { --rs-grid-lead: 112px; }
+    .fc-selection.rs-grid[data-lead] { --rs-grid-lead: 136px; }
     .fc-gates.fc-wrap.rs-grid[data-lead] { --rs-grid-lead: 164px; }
     .fc-wrap.rs-grid[data-lead] { --rs-grid-lead: 132px; }
     .fc-ledger.rs-grid[data-lead] { --rs-grid-lead: 176px; }

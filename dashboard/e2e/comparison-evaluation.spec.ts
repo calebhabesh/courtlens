@@ -121,6 +121,40 @@ test.describe("RD16 Points Forecasts", () => {
     await expect(page.locator("#about [data-field=run-id]")).toHaveText("6f7af9e63f27aada910d");
   });
 
+  test("round 2: the scale note, distances from the target, how the models were chosen and the slice pattern", async ({ page }) => {
+    await realForecasts(page);
+    await page.goto("/forecasts");
+    await expect(page.locator("[data-chart=miss] [data-field=miss-scale-note]")).toHaveText("The gain is drawn to the same scale as the misses. Its whole interval spans 0.066 points, too small to see beside a miss of about 4.6.");
+    const gaps = page.locator("[data-chart=coverage] [data-field=target-gap]");
+    await expect(gaps).toHaveCount(6);
+    await expect(gaps.first()).toHaveText("+0.6 pts from 80%");
+    await expect(gaps.nth(1)).toHaveText("−0.3 pts from 80%");
+    const selection = page.locator("#selection");
+    await expect(selection.locator(".fc-selection")).toBeHidden();
+    await selection.locator("summary").click();
+    await expect(selection.locator("tbody tr")).toHaveCount(11);
+    await expect(selection.locator("[data-field=selection-line]")).toHaveAttribute("data-rule", "true");
+    await expect(selection.locator('tr[data-chosen="true"]')).toHaveCount(3);
+    await expect(selection.locator('tr[data-finalist="true"]')).toContainText("Player trees, 15\u00a0leaves, L2\u00a00");
+    await expect(selection.locator("[data-tone]")).toHaveCount(0);
+    await expect(page.locator("#slices [data-field=slice-pattern]")).toHaveText("The trees did best at 1 to 4 (−0.245 points) and worst at 40 or more (+0.021). No interval is served for a slice, so this is a pattern, not a result, and nothing is coloured.");
+    await expect(page.locator("[data-chart=coverage] [data-field=target-gap-note]")).toHaveText("Points are percentage points: +0.6 pts means the range held the real total in 0.6 more games of every 100 than the target.");
+    const toggle = page.locator("#ledger-list > summary");
+    await expect(toggle).toHaveText("Show the 50 newest of 489 forecasts");
+    await expect(page.locator("#ledger h2")).toHaveCount(1);
+  });
+
+  test("round 2: the archive tab has the reading cards, a glossary and its own selection grid", async ({ page }) => {
+    await realForecasts(page);
+    await page.goto("/evaluation");
+    await expect(page.getByRole("heading", { name: "How to read" })).toBeVisible();
+    await expect(page.locator("#glossary summary")).toBeVisible();
+    await page.locator("#selection summary").click();
+    await expect(page.locator("#selection tbody tr")).toHaveCount(9);
+    await expect(page.locator('#selection tr[data-finalist="true"]')).toContainText("Player + context trees, 15\u00a0leaves, L2\u00a01");
+    await expect(page.locator("#selection [data-field=selection-line]")).toContainText("the served simple average and 8 tree settings");
+  });
+
   test("a ledger issued before its games reads as forecasts, on the mock API", async ({ page }) => {
     await page.goto("/forecasts");
     await expect(page.locator("#ledger [data-field=ledger-line]")).toHaveAttribute("data-timing", "before");

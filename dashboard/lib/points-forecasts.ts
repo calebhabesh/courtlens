@@ -180,3 +180,69 @@ export function modelOrder(evaluation: PointsForecastEvaluation): string[] {
 
 /** Served text that names a project code is replaced on the page (RD10); the API is unchanged. */
 export const visitorText = (text: string) => text.replace(/\bS3\b/g, "the final test").replace(/\bM6\b ?/g, "");
+
+// ---- How the models were chosen (RD16 round 2) --------------------------------------------------------------------------
+
+interface FoldMetric { mae: number; rmse?: number; forecast_rows?: number }
+interface ConfigBlock { folds?: Record<string, FoldMetric>; pooled?: FoldMetric; parameters?: { max_leaf_nodes?: number; l2_regularization?: number } }
+/** The points run's served validation results (not in `PointsForecastEvaluation`'s declared type). */
+export interface PointsValidationResults {
+  baseline_validation?: { folds?: Record<string, Record<string, FoldMetric>>; pooled?: Record<string, FoldMetric> };
+  challenger_validation?: Record<string, { configs: Record<string, ConfigBlock> }>;
+  selected_baseline?: string;
+  selected_configs?: Record<string, string>;
+  challenger_finalist?: string;
+}
+
+export interface SelectionRow { key: string; group: "averages" | "trees"; model: string; setting: string | null; v1: number | null; v2: number | null; pooled: number | null; rows: number | null; chosen: boolean; finalist: boolean }
+
+/** "leaves_15__l2_0" or its served parameters → "15 leaves, L2 0", each number held to its word by a no-break space. */
+export function settingLabel(config: string, parameters?: ConfigBlock["parameters"]): string {
+  const m = /lea(?:f|ves)_(\d+)__l2_(\d+(?:\.\d+)?)/.exec(config);
+  const leaves = parameters?.max_leaf_nodes ?? (m ? Number(m[1]) : null), l2 = parameters?.l2_regularization ?? (m ? Number(m[2]) : null);
+  return leaves == null || l2 == null ? config.replaceAll("_", " ") : `${leaves}\u00a0leaves, L2\u00a0${Number(l2.toFixed(2))}`;
+}
+
+const treeRows = (variants: Record<string, { configs: Record<string, ConfigBlock> }>, selected: Record<string, string>, finalist: string | undefined): SelectionRow[] =>
+  Object.entries(variants).flatMap(([model, v]) => Object.entries(v.configs).map(([config, c]) => ({
+    key: `${model}-${config}`, group: "trees" as const, model, setting: settingLabel(config, c.parameters), v1: c.folds?.v1?.mae ?? null, v2: c.folds?.v2?.mae ?? null,
+    pooled: c.pooled?.mae ?? null, rows: c.pooled?.forecast_rows ?? null, chosen: selected[model] === config, finalist: selected[model] === config && model === finalist,
+  })));
+
+export function pointsSelectionRows(results: PointsValidationResults | null | undefined): SelectionRow[] {
+  if (!results?.baseline_validation?.pooled) return [];
+  const b = results.baseline_validation;
+  const averages: SelectionRow[] = Object.entries(b.pooled ?? {}).map(([model, pooled]) => ({
+    key: model, group: "averages", model, setting: null, v1: b.folds?.v1?.[model]?.mae ?? null, v2: b.folds?.v2?.[model]?.mae ?? null,
+    pooled: pooled.mae, rows: pooled.forecast_rows ?? null, chosen: model === results.selected_baseline, finalist: false,
+  }));
+  return [...averages, ...treeRows(results.challenger_validation ?? {}, results.selected_configs ?? {}, results.challenger_finalist)];
+}
+
+export function archiveSelectionRows(validation: ArchiveValidation): SelectionRow[] {
+  const b = validation.baseline_validation;
+  const variants = Object.fromEntries(Object.entries(validation.variants ?? {}).map(([k, v]) => [k, { configs: v.configs as Record<string, ConfigBlock> }]));
+  const selected = Object.fromEntries(Object.entries(validation.variants ?? {}).map(([k, v]) => [k, v.selected_config]));
+  const average: SelectionRow[] = b?.pooled && validation.baseline ? [{ key: validation.baseline, group: "averages", model: validation.baseline, setting: null,
+    v1: b.folds?.v1?.mae ?? null, v2: b.folds?.v2?.mae ?? null, pooled: b.pooled.mae, rows: b.pooled.forecast_rows ?? null, chosen: true, finalist: false }] : [];
+  return [...average, ...treeRows(variants, selected, validation.challenger_finalist)];
+}
+
+/** True when every chosen row has the lowest pooled typical miss of its comparison (averages; each tree type; the finalist among chosen trees). */
+export function chosenByLowestPooled(rows: readonly SelectionRow[]): boolean {
+  const lowest = (set: readonly SelectionRow[]) => set.reduce<SelectionRow | null>((best, r) => r.pooled != null && (best?.pooled == null || r.pooled < best.pooled) ? r : best, null);
+  const averages = rows.filter(r => r.group === "averages");
+  if (averages.length > 1 && !lowest(averages)?.chosen) return false;
+  const models = [...new Set(rows.filter(r => r.group === "trees").map(r => r.model))];
+  if (models.some(m => !lowest(rows.filter(r => r.model === m && r.group === "trees"))?.chosen)) return false;
+  const chosenTrees = rows.filter(r => r.group === "trees" && r.chosen);
+  return chosenTrees.length < 2 || Boolean(lowest(chosenTrees)?.finalist);
+}
+
+/** The clearest pattern in a slice's served changes: the group where the trees did best and where they did worst (no interval; never a result). */
+export function slicePattern(changes: readonly { key: string; change: number | null }[]) {
+  const known = changes.filter((c): c is { key: string; change: number } => c.change != null && Number.isFinite(c.change));
+  if (known.length < 2) return null;
+  const best = known.reduce((a, b) => b.change < a.change ? b : a), worst = known.reduce((a, b) => b.change > a.change ? b : a);
+  return { best, worst, allBetter: worst.change < 0, allWorse: best.change > 0 };
+}
