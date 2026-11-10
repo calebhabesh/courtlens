@@ -76,4 +76,8 @@ Screenshots viewed: `sa-r1-*` (all five) and the regenerated gallery baseline. F
 
 ## Open for the owner (2026-11-10, not built)
 
-Proposed after round 2; the full list is in the [catalog's RD18 section](../../../research-design-catalog.md#rd18-shot-aftermath--ready-for-review): six suggested improvements (other-season line in the answer, team-row scope icon, position grid, round cost-axis steps, phone label wrap, after-make against after-rebound chart; 1, 2, 4 and 5 recommended together) and whether to delete the now-unrendered `components/shooting-view.tsx` and `components/catalog-scope-fields.tsx`.
+Proposed after round 2; the full list is in the [catalog's RD18 section](../../../research-design-catalog.md#rd18-shot-aftermath--approved-by-the-owner-2026-11-10): six suggested improvements (other-season line in the answer, team-row scope icon, position grid, round cost-axis steps, phone label wrap, after-make against after-rebound chart; 1, 2, 4 and 5 recommended together) and whether to delete the now-unrendered `components/shooting-view.tsx` and `components/catalog-scope-fields.tsx`.
+
+## Approved (owner, 2026-11-10)
+
+"Sounds good. I approve them." (with RD17). Row ✅. The open suggestions and the deletion question above are not chosen by this approval and stay unbuilt.

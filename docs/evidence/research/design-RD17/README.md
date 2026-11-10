@@ -75,3 +75,7 @@ All five: 0 console errors, 0 page overflow, 0 broken images, no hashes in visib
 **Page size.** Shot Quality Model 4,650 / 5,605 px with the earlier attempt open (was 3,622 / 4,478); zTS Defense 2,887 / 3,549 px; Shot Aftermath 5,216 / 6,654 px.
 
 Screenshots viewed: `rd17-r1-sq-earlier-section-1440`, `rd17-r1-zts-defense-2025-26-rs-full-1440` and `-390`, `rd17-r1-zts-defense-2025-26-rs-traded-card-390`, `rd17-r1-zts-defense-2025-26-rs-top-390`, `rd17-r1-aftermath-top-1440`, `rd17-r1-menu-1440`. Element screenshots of the earlier-attempt section show the sticky site header over the section; the page viewport shows it in place.
+
+## Approved (owner, 2026-11-10)
+
+"Sounds good. I approve them." (with RD18). Row ✅. Full Playwright for this state: 628 passed, 17 skipped, 1 failed (`route-polish`, updated; touched specs 49/49 ×3).
