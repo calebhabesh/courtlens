@@ -80,3 +80,33 @@ describe("RD16 points forecasts rules", () => {
     expect(visitorText("M6 did not count observed S3 appearances")).toBe("did not count observed the final test appearances");
   });
 });
+
+describe("RD16 round 2", () => {
+  it("labels a tree setting from its served parameters or its key", async () => {
+    const { settingLabel } = await import("./points-forecasts");
+    expect(settingLabel("leaves_15__l2_0")).toBe("15\u00a0leaves, L2\u00a00");
+    expect(settingLabel("leaf_31__l2_1", { max_leaf_nodes: 31, l2_regularization: 1 })).toBe("31\u00a0leaves, L2\u00a01");
+  });
+
+  it("builds every candidate and checks the chosen ones had the lowest pooled miss", async () => {
+    const { pointsSelectionRows, chosenByLowestPooled } = await import("./points-forecasts");
+    const m = (mae: number) => ({ mae, forecast_rows: 10 });
+    const results = {
+      baseline_validation: { folds: { v1: { a: m(5), b: m(4) }, v2: { a: m(5), b: m(4) } }, pooled: { a: m(5), b: m(4) } },
+      challenger_validation: { t1: { configs: { leaves_15__l2_0: { pooled: m(3.9) }, leaves_31__l2_0: { pooled: m(3.8) } } }, t2: { configs: { leaves_15__l2_0: { pooled: m(3.7) } } } },
+      selected_baseline: "b", selected_configs: { t1: "leaves_31__l2_0", t2: "leaves_15__l2_0" }, challenger_finalist: "t2",
+    };
+    const rows = pointsSelectionRows(results);
+    expect(rows.map(r => [r.key, r.chosen, r.finalist])).toEqual([["a", false, false], ["b", true, false], ["t1-leaves_15__l2_0", false, false], ["t1-leaves_31__l2_0", true, false], ["t2-leaves_15__l2_0", true, true]]);
+    expect(chosenByLowestPooled(rows)).toBe(true);
+    expect(chosenByLowestPooled(pointsSelectionRows({ ...results, selected_baseline: "a" }))).toBe(false);
+    expect(chosenByLowestPooled(pointsSelectionRows({ ...results, challenger_finalist: "t1" }))).toBe(false);
+  });
+
+  it("finds a slice's best and worst groups without calling either a result", async () => {
+    const { slicePattern } = await import("./points-forecasts");
+    expect(slicePattern([{ key: "1_to_4", change: -0.245 }, { key: "40_plus", change: 0.021 }, { key: "x", change: null }])).toMatchObject({ best: { key: "1_to_4" }, worst: { key: "40_plus" }, allBetter: false, allWorse: false });
+    expect(slicePattern([{ key: "a", change: -0.1 }, { key: "b", change: -0.2 }])).toMatchObject({ allBetter: true, best: { key: "b" } });
+    expect(slicePattern([{ key: "a", change: 0.1 }])).toBeNull();
+  });
+});

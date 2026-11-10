@@ -106,6 +106,7 @@ async function checkForecasts(width) {
   const sg_ = strip.find(r => r.row === "gain");
   eq(`${w} strip gain`, sg_.value, gain.value); eq(`${w} strip gain low`, sg_.low, gain.low); eq(`${w} strip gain high`, sg_.high, gain.high);
   eq(`${w} strip gain tone`, sg_.tone ?? "", gain.low > 0 ? "good" : gain.high < 0 ? "bad" : "");
+  has(`${w} miss note`, await page.innerText("[data-chart=miss] [data-field=miss-scale-note]"), `Its whole interval spans ${f(gain.high - gain.low, 3)} points, too small to see beside a miss of about ${f(Math.min(...models.map(k => E.final_test.metrics[k].mae)), 1)}.`);
   // Model grid, both views on a phone.
   const views = width < 768 ? ["Misses", "80% ranges"] : [null];
   for (const view of views) {
@@ -134,8 +135,9 @@ async function checkForecasts(width) {
   for (const k of models) for (const [grp, key] of [["Established players", "core"], ["Early season", "early_season"]]) {
     const r = cov.find(x => x.model === k && x.group === grp), iv = E.final_test.intervals[k][key];
     eq(`${w} cov ${k} ${key}`, r?.value ?? null, iv.coverage); eq(`${w} cov ${k} ${key} width`, r?.width ?? null, iv.mean_width); eq(`${w} cov ${k} ${key} rows`, r?.rows ?? null, iv.rows);
-    has(`${w} cov ${k} ${key} text`, r?.text, `${pc(iv.coverage)}\n${f(iv.mean_width, 1)} points wide`);
+    has(`${w} cov ${k} ${key} text`, r?.text, `${pc(iv.coverage)}\n${sg((iv.coverage - 0.8) * 100, 1)} pts from 80%\n${f(iv.mean_width, 1)} points wide`);
   }
+  { const ex = (E.final_test.intervals[served].core.coverage - 0.8) * 100; has(`${w} coverage note`, await page.innerText("[data-field=target-gap-note]"), `${sg(ex, 1)} pts means the range held the real total in ${f(Math.abs(ex), 1)} ${ex >= 0 ? "more" : "fewer"} games of every 100 than the target.`); }
   has(`${w} coverage line`, await page.innerText("[data-field=coverage-line]"), `held it in ${pc(E.final_test.intervals[served].core.coverage)} of games for established players and ${pc(E.final_test.intervals[served].early_season.coverage)} early in the season, and it was about ${f(E.final_test.intervals[served].core.mean_width, 1)} points wide`);
   // Rules.
   const rules = await attrs(page, ".fc-gates tr[data-gate]");
@@ -151,12 +153,27 @@ async function checkForecasts(width) {
     eq(`${w} rule ${key} passed`, r?.passed ?? null, String(passed)); has(`${w} rule ${key} observed`, r?.text, observed); has(`${w} rule ${key} result`, r?.text, passed ? "Passed" : "Not passed");
   }
   has(`${w} rules line`, await page.innerText("[data-field=gates-line]"), `cleared ${Object.values(wantRules).filter(([p]) => p).length} of 4`);
+  const VR = E.validation.validation_results;
+  await checkSelection(page, w, [
+    ...Object.keys(VR.baseline_validation.pooled).map(k => ({ key: k, group: "averages", model: k, chosen: k === VR.selected_baseline, finalist: false, v1: VR.baseline_validation.folds.v1[k].mae, v2: VR.baseline_validation.folds.v2[k].mae, pooled: VR.baseline_validation.pooled[k].mae })),
+    ...Object.entries(VR.challenger_validation).flatMap(([t, v]) => Object.entries(v.configs).map(([c, d]) => ({ key: `${t}-${c}`, group: "trees", model: t, chosen: VR.selected_configs[t] === c, finalist: VR.selected_configs[t] === c && t === VR.challenger_finalist,
+      v1: d.folds.v1.mae, v2: d.folds.v2.mae, pooled: d.pooled.mae, label: `${NAMES[t]}, ${setting(c, d.parameters)}` }))),
+  ]);
   // Every slice dimension.
   const dims = Object.keys(E.final_test.prespecified_slices);
   const phone = width < 768;
   for (const dim of dims) {
     await page.getByRole("combobox", { name: "Slice" }).selectOption(dim);
     await page.waitForSelector(`.fc-slices tr[data-dimension="${dim}"]`, { timeout: 30000 });
+    const ch = Object.entries(E.final_test.prespecified_slices[dim]).map(([k, e]) => ({ k, c: e[finalist].mae - e[served].mae }));
+    const pat = (await attrs(page, "[data-field=slice-pattern]"))[0];
+    if (ch.length < 2) { checked += 1; if (pat) mismatches.push({ where: `${w} pattern ${dim}`, got: "shown for one group" }); }
+    else {
+      const best = ch.reduce((a, b) => b.c < a.c ? b : a), worst = ch.reduce((a, b) => b.c > a.c ? b : a);
+      eq(`${w} pattern ${dim} best`, pat?.best ?? null, best.k); eq(`${w} pattern ${dim} worst`, pat?.worst ?? null, worst.k);
+      has(`${w} pattern ${dim} text`, pat?.text, worst.c < 0 ? `(${sg(best.c, 3)} points)` : best.c > 0 ? `(${sg(worst.c, 3)} points)` : `(${sg(best.c, 3)} points) and worst at`);
+      has(`${w} pattern ${dim} honesty`, pat?.text, "No interval is served for a slice, so this is a pattern, not a result, and nothing is coloured.");
+    }
     for (const view of phone ? ["Misses", "Change"] : [null]) {
       if (view) await page.getByRole("radiogroup", { name: "Slice columns" }).getByRole("radio", { name: view }).click();
       await sideways(page, `${w} slices ${dim} ${view}`);
@@ -179,6 +196,8 @@ async function checkForecasts(width) {
   const newest = items.map(i => i.target_game_date).sort().at(-1);
   const issued = [...new Set(items.map(i => i.issued_at_utc.slice(0, 10)))].sort();
   has(`${w} ledger line`, line.text, `The newest of the ${n(L.total_items)} on record is for a game on ${day(newest)}. The ${items.length} newest were issued on ${day(issued[0])}, after their games, which fall inside the test season`);
+  has(`${w} ledger toggle`, await page.innerText("#ledger-list > summary"), `Show the ${items.length} newest of ${n(L.total_items)} forecasts`);
+  eq(`${w} ledger headings`, await page.locator("#ledger h2").count(), 1);
   await page.locator("#ledger-list summary").click();
   const tot = (await attrs(page, "[data-field=ledger-totals]"))[0];
   for (const [k, v] of [["issued", L.summary.total_issued], ["scored", L.summary.total_scored], ["unscored", L.summary.total_unscored_dnp], ["pending", L.summary.total_pending]]) eq(`${w} ledger ${k}`, tot[k], v);
@@ -306,6 +325,15 @@ async function checkArchive(width) {
     }
     if (width < 768) await page.getByRole("radiogroup", { name: "Slice columns" }).getByRole("radio", { name: "Misses" }).click();
   }
+  const AV = A.validation;
+  await checkSelection(page, w, [
+    { key: AV.baseline, group: "averages", model: AV.baseline, chosen: true, finalist: false, v1: AV.baseline_validation.folds.v1.mae, v2: AV.baseline_validation.folds.v2.mae, pooled: AV.baseline_validation.pooled.mae },
+    ...Object.entries(AV.variants).flatMap(([t, v]) => Object.entries(v.configs).map(([c, d]) => ({ key: `${t}-${c}`, group: "trees", model: t, chosen: v.selected_config === c, finalist: v.selected_config === c && t === AV.challenger_finalist,
+      v1: d.folds.v1.mae, v2: d.folds.v2.mae, pooled: d.pooled.mae, label: `${NAMES[t]}, ${setting(c, d.parameters)}` }))),
+  ]);
+  has(`${w} reading`, await page.innerText("#reading"), "How to read");
+  checked += 1; if (!(await page.$("#glossary summary"))) mismatches.push({ where: `${w} glossary`, got: "missing" });
+  has(`${w} miss note`, await page.innerText("[data-chart=miss] [data-field=miss-scale-note]").catch(() => ""), `Its whole interval spans ${f(again.high - again.low, 3)} reference points`);
   await page.locator("#about summary").click();
   eq(`${w} run id`, await page.innerText("[data-field=run-id]"), A.run_id);
   await sideways(page, `${w} about`);
@@ -321,6 +349,27 @@ async function sideways(page, where) {
   const wide = await page.$$eval(".fc-page .rs-grid", grids => grids.filter(g => !g.closest("details:not([open])")).map(g => { const r = g.querySelector(".stats-scroll-region"); return { name: g.className, over: r ? r.scrollWidth - r.clientWidth : 0 }; }).filter(x => x.over > 1));
   checked += 1; if (wide.length) mismatches.push({ where: `${where} sideways`, got: wide });
 }
+// Round 2: the validation grid against the served validation results, written independently of the page's lib.
+async function checkSelection(page, w, want) {
+  await page.locator("#selection summary").click();
+  const rows = await attrs(page, ".fc-selection tbody tr");
+  eq(`${w} selection rows`, rows.length, want.length);
+  for (const r of want) {
+    const row = rows.find(x => x.key === r.key);
+    checked += 1; if (!row) { mismatches.push({ where: `${w} selection ${r.key}`, got: "missing" }); continue; }
+    eq(`${w} selection ${r.key} chosen`, row.chosen, String(r.chosen)); eq(`${w} selection ${r.key} finalist`, row.finalist, String(r.finalist));
+    for (const f of ["v1", "v2", "pooled"]) eq(`${w} selection ${r.key} ${f}`, (await cell(page, ".fc-selection", ["key", r.key], f))?.value ?? null, r[f]);
+    if (r.label) has(`${w} selection ${r.key} label`, row.text, r.label);
+  }
+  // The rule line claims the lowest pooled miss won in each comparison; check it here.
+  const low = set => set.reduce((a, b) => b.pooled < a.pooled ? b : a);
+  const avg = want.filter(r => r.group === "averages"), types = [...new Set(want.filter(r => r.group === "trees").map(r => r.model))];
+  const rule = (avg.length < 2 || low(avg).chosen) && types.every(t => low(want.filter(r => r.model === t && r.group === "trees")).chosen) && low(want.filter(r => r.group === "trees" && r.chosen)).finalist;
+  eq(`${w} selection rule`, (await attrs(page, "[data-field=selection-line]"))[0]?.rule ?? null, String(rule));
+  await sideways(page, `${w} selection`);
+  await page.locator("#selection summary").click();
+}
+const setting = (key, p) => { const m = /lea(?:f|ves)_(\d+)__l2_(\d+)/.exec(key); return `${p?.max_leaf_nodes ?? m[1]}\u00a0leaves, L2\u00a0${Number(p?.l2_regularization ?? m[2])}`; };
 const CSS_ESCAPE = s => s.replace(/["\\]/g, "\\$&");
 
 for (const width of [1440, 390]) {

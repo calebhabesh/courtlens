@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Glossary, MethodBlock, ResearchDisclosure, ResearchIntro, ResearchLinks, ResearchSection, type GlossaryGroup } from "./research/research-page";
+import { MethodBlock, ResearchDisclosure, ResearchIntro, ResearchLinks, ResearchSection, type GlossaryGroup } from "./research/research-page";
 import { GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
 import { FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { GatedNote } from "./ui/gated-note";
 import { ButtonLink, Segmented } from "./ui/kit";
 import {
-  CoverageStrip, ForecastsFrame, GatesGrid, MetaLine, MissStrip, ModelLabel, possessive, SliceSelect, SplitsGrid, usePhone, type CoverageRow, type GateRow,
+  CoverageStrip, ForecastsFrame, GatesGrid, MetaLine, MissStrip, ModelLabel, possessive, Reading, SelectionDisclosure, SliceSelect, SplitsGrid, usePhone, type CoverageRow, type GateRow,
 } from "./points-forecasts-research";
 import { browserApi, getAnalyticsEvaluation } from "@/lib/api";
 import { formatDate } from "@/lib/format-date";
 import {
-  ARCHIVE_PROTOCOL, archiveDecision, archiveGates, archiveSlices, archiveValidation, dimensionLabel, estimandModels, fixed, gainBand, gainFromDifference, gainTone,
+  ARCHIVE_PROTOCOL, archiveDecision, archiveSelectionRows, archiveGates, archiveSlices, archiveValidation, dimensionLabel, estimandModels, fixed, gainBand, gainFromDifference, gainTone,
   modelName, orderedDimensions, orderedSubgroups, pct, selectedValidationMae, subgroupLabel, visitorText, whole, type ArchiveSliceMetric, type Gain,
 } from "@/lib/points-forecasts";
 import { evidenceUrl } from "@/lib/research-facts";
@@ -200,7 +200,6 @@ function About({ report }: { report: AnalyticsEvaluation }) {
       ]} />
     </MethodBlock>
     <MethodBlock title="Splits"><SplitsGrid splits={ARCHIVE_PROTOCOL.splits} /></MethodBlock>
-    <MethodBlock title="Terms"><Glossary groups={GLOSSARY} /></MethodBlock>
   </ResearchDisclosure>;
 }
 
@@ -227,7 +226,11 @@ export function EvaluationArchiveResearch() {
       <ModelsSection report={report} />
       <CoverageSection report={report} />
       <GatesSection report={report} />
+      <SelectionDisclosure rows={archiveSelectionRows(archiveValidation(report))} unit={UNIT}
+        folds={[`to ${formatDate(ARCHIVE_PROTOCOL.splits[1].end)}`, `from ${formatDate(ARCHIVE_PROTOCOL.splits[2].start)}`]} />
       <SlicesSection report={report} />
+      {/* RD16 round 2: the same reading cards and glossary as the points tab (owner). */}
+      <Reading glossary={GLOSSARY} />
       <About report={report} />
     </>}
   </ForecastsFrame>;
