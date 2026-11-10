@@ -121,10 +121,7 @@ _MODELS: dict[str, type[BaseModel]] = {
 }
 _DESCRIPTIONS = {
     "query_stats": (
-        'Execute a registered warehouse operation. Shape: {"operation": NAME, "arguments": '
-        "{...that operation's fields...}, optional season/phase/before_date}. For operation "
-        "query, arguments is the query itself (entity_kind, metric_selectors, sort, page), "
-        "not wrapped in a query key; only position_query takes {position, query}. "
+        "Execute a registered warehouse operation. Supply operation and its arguments. "
         "The server pins the release; optional season, phase and before_date select scope. "
         "last_season means the latest completed season. Errors are recoverable. "
         "Numbers, units, samples and equivalent-analysis links come from exact evidence."
