@@ -119,7 +119,7 @@ export function StatsGrid<T>({ label, rows, rowKey, lead, columns, sort, density
               {!spanLead && <th scope="col" className="pinned-col rs-grid-lead">{leadHeader}</th>}
               {columns.map((c, i) => c.guide ? <th key={c.key} className="stats-guide-cell" aria-hidden="true" /> : c.sort && sort
                 ? <SortHeader key={c.key} label={c.label} metric={c.key} description={c.title} active={sort.key === c.key} direction={sort.direction} onSort={sort.onSort} after={c.headerAfter} className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} />
-                : <th key={c.key} scope="col" className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} title={c.title}><span className="table-sort-button">{c.label}</span></th>)}
+                : <th key={c.key} scope="col" className={`num ${starts.has(i) ? "group-start" : ""} ${c.keepCase ? "rs-grid-keep-case" : ""}`} title={c.title}><span className="table-sort-button">{c.label}</span>{c.headerAfter}</th>)}
             </tr>
           </thead>
           <tbody>

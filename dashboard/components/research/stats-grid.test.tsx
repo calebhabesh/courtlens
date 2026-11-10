@@ -32,4 +32,11 @@ describe("GridValue", () => {
     expect(heads.find(th => th.textContent === "oTS")?.classList.contains("rs-grid-keep-case")).toBe(true);
     expect(heads.find(th => th.textContent === "Shots")?.classList.contains("rs-grid-keep-case")).toBe(false);
   });
+
+  it("RD16: a column's headerAfter is drawn whether or not the grid sorts", () => {
+    const after = <span data-testid="scale">0 to 40</span>;
+    const { container } = render(<StatsGrid<{ id: string }> label="T" rows={[{ id: "1" }]} rowKey={r => r.id} lead={{ label: "Player", cell: r => r.id }}
+      columns={[{ key: "range", label: "Range", headerAfter: after, cell: () => "1" }]} />);
+    expect(container.querySelector("thead [data-testid=scale]")?.textContent).toBe("0 to 40");
+  });
 });
