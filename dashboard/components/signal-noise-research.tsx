@@ -71,7 +71,7 @@ function Answer({ data }: { data: SignalNoiseSummary }) {
 
 // ---- The strip ---------------------------------------------------------------------------------
 
-function StripRow({ stat, end, onOpen, active }: { stat: StatResult; end: number; onOpen: (key: string) => void; active: boolean }) {
+function StripRow({ stat, end, onOpen, onJump, active }: { stat: StatResult; end: number; onOpen: (key: string) => void; onJump: (key: string) => void; active: boolean }) {
   const half = stat.levels["0.5"], seventy = stat.levels["0.7"];
   const ok = reached(half);
   const firstBin = stat.bins.find(b => b.reported)?.n ?? 0;
@@ -79,6 +79,7 @@ function StripRow({ stat, end, onOpen, active }: { stat: StatResult; end: number
     data-seventy={reached(seventy) ? seventy.n : ""} data-typical={stat.median_sample ?? ""} data-largest={half?.largest_n ?? ""} data-active={active || undefined}>
     <span className="sn-strip-name">
       <Button size="sm" variant="ghost" aria-pressed={active} onClick={() => onOpen(stat.key)} aria-label={`Choose ${stat.label} for the reliability curve`}>{stat.label}</Button>
+      <IconButton size="xs" variant="ghost" icon="chart-line" label={`Go to the ${stat.label} curve`} onClick={() => onJump(stat.key)} data-field="curve-jump" />
     </span>
     <span className="sn-track" aria-hidden="true">
       {typeof stat.median_sample === "number" && <span className="sn-track-typical" style={vars({ "--sn-at": pctAt(stat.median_sample, end) })} />}
@@ -95,8 +96,7 @@ function StripRow({ stat, end, onOpen, active }: { stat: StatResult; end: number
   </li>;
 }
 
-function Strip({ stats, family, end, onOpen, onJump, active }: { stats: readonly StatResult[]; family: Family; end: number; onOpen: (key: string) => void; onJump: () => void; active: string }) {
-  const activeStat = stats.find(s => s.key === active);
+function Strip({ stats, family, end, onOpen, onJump, active }: { stats: readonly StatResult[]; family: Family; end: number; onOpen: (key: string) => void; onJump: (key: string) => void; active: string }) {
   const ticks = niceTicks([0, end]).filter(t => t >= 0 && t <= end);
   return <figure className="sn-figure" data-chart="strip" data-family={family} data-end={end}>
     <figcaption className="sn-figure-title">Reliability 0.5 with its 95% interval, in {FAMILY_UNIT[family]}</figcaption>
@@ -106,17 +106,14 @@ function Strip({ stats, family, end, onOpen, onJump, active }: { stats: readonly
       <span />
     </div>
     <ul className="sn-strip" aria-label={`Stabilization, ${family === "percentage" ? "percentages" : "per 36 minutes"}`}>
-      {stats.map(stat => <StripRow key={stat.key} stat={stat} end={end} onOpen={onOpen} active={stat.key === active} />)}
+      {stats.map(stat => <StripRow key={stat.key} stat={stat} end={end} onOpen={onOpen} onJump={onJump} active={stat.key === active} />)}
     </ul>
-    <div className="sn-figure-foot">
     <ul className="sn-key">
       <li><span className="sn-key-mark" data-mark="dot" aria-hidden="true" />Reliability 0.5</li>
       <li><span className="sn-key-mark" data-mark="seventy" aria-hidden="true" />Reliability 0.7</li>
       <li><span className="sn-key-mark" data-mark="typical" aria-hidden="true" />A typical season (median)</li>
       {stats.some(s => !reached(s.levels["0.5"])) && <li><span className="sn-key-mark" data-mark="observed" aria-hidden="true" />Observed range, 0.5 not reached</li>}
     </ul>
-    {activeStat && <Button size="sm" variant="ghost" iconAfter="chevron-down" onClick={onJump} data-field="curve-jump">{activeStat.label} curve</Button>}
-    </div>
   </figure>;
 }
 
@@ -126,7 +123,7 @@ function LevelCell({ stat, level }: { stat: StatResult; level: "0.5" | "0.7" }) 
   return <GridValue text="Not reached" muted />;
 }
 
-function StabilizationSection({ data, family, onFamily, active, onOpen, onJump }: { data: SignalNoiseSummary; family: Family; onFamily: (f: Family) => void; active: string; onOpen: (key: string) => void; onJump: () => void }) {
+function StabilizationSection({ data, family, onFamily, active, onOpen, onJump }: { data: SignalNoiseSummary; family: Family; onFamily: (f: Family) => void; active: string; onOpen: (key: string) => void; onJump: (key: string) => void }) {
   const stats = stripOrder(data.stabilization.stats, family);
   const end = niceTicks([0, stripReach(stats)]).at(-1) ?? 1;
   const levelData = (s: StatResult, level: "0.5" | "0.7") => { const l = s.levels[level]; return { field: `level-${level}`, status: l?.status, value: reached(l) ? l.n : "", low: l?.interval.low ?? "", high: l?.interval.high ?? "", extrapolated: l?.extrapolated ?? "" }; };
@@ -534,9 +531,12 @@ function Sections({ data }: { data: SignalNoiseSummary }) {
   const activeFamily = data.stabilization.stats.find(s => s.key === active)?.family ?? "percentage";
   const family: Family = get("family") === "per_36" ? "per_36" : get("family") === "percentage" ? "percentage" : activeFamily;
   const reducedMotion = useReducedMotion();
-  // Choosing a stat in the strip only selects it; moving to its curve is the reader's own press.
+  // A stat's name in the strip only selects its curve; the chart icon beside it selects it and goes there.
   const open = (key: string) => set({ stat: key === DEFAULT_STAT ? null : key });
-  const jump = () => document.getElementById("curve")?.scrollIntoView({ block: "start", behavior: reducedMotion ? "auto" : "smooth" });
+  const jump = (key: string) => {
+    open(key);
+    document.getElementById("curve")?.scrollIntoView({ block: "start", behavior: reducedMotion ? "auto" : "smooth" });
+  };
   return <>
     <Answer data={data} />
     <StabilizationSection data={data} family={family} onFamily={f => set({ family: f === activeFamily ? null : f })} active={active} onOpen={open} onJump={jump} />

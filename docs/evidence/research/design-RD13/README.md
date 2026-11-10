@@ -71,3 +71,24 @@ Screenshots viewed: `sn-top-*`, `sn-answer-*`, `sn-stabilization-*`, `sn-curve-*
 | Full Playwright (sandbox, mock API, 2 workers, 8 GiB cap) | 625 passed, 17 skipped, 0 failed |
 
 Screenshots viewed: `sn-strip-labels-1440.png`, `sn-strip-labels-390.png` (3P% pressed), `sn-strip-select-1440.png`, `sn-strip-select-390.png` (FG% pressed, the curve button), all from :3100.
+
+## Round 3 (owner, 2026-11-10)
+
+"make the attempt number axis a little more visible"; "Should we add a small button near the stats to jump to their curves instead of the button in the bottom right"; "can we make this content below the table center aligned"; "Is there anything more we can do to improve this page."
+
+**Changed.**
+- The strip's attempt axis: 12 px (was 10), `--color-on-bg-secondary` (was tertiary), weight 500.
+- Each strip row has a kit `IconButton` (xs, ghost, `chart-line`, "Go to the {stat} curve") in one column beside the names: it selects that stat and scrolls to the curve (smooth, instant under reduced motion). The name still only selects. Round 2's "{stat} curve" button under the strip is gone. The label column is 128 px on desktop (was 96).
+- On a phone each row is two lines: name and icon on the left, the value on the right, and the track full width under them (342 px, was 154); the axis spans the full width too. The strip panel is 732 px tall at 390.
+- Chart keys are centred.
+- Question 4 was answered with suggestions in the session; nothing else was built.
+
+| Check | Result |
+| --- | --- |
+| Strip on :3100 ([`strip-r3-check.mjs`](strip-r3-check.mjs)) | at 1440 and 390: no label or icon outside its column; tracks 680 and 342 px; key centred (equal 16 and 12 px margins); axis 12 px `rgb(201, 211, 230)`; pressing FG%'s name leaves the scroll position unchanged (0 and 622 px); 2P%'s icon selects 2P% and brings the curve heading to 144 px from the top; 0 overflow, 0 console errors |
+| Lint (ESLint, Stylelint), typecheck | clean |
+| Vitest | 852 passed |
+| `r03-signal-noise` ×3 (sandbox; the jump test now uses a row icon) | 21/21 |
+| Full Playwright (sandbox, mock API, 2 workers, 8 GiB cap) | 625 passed, 17 skipped, 0 failed |
+
+Screenshots viewed: `sn-strip-r3-1440.png`, `sn-strip-r3-390.png` (FG% selected), from :3100.
