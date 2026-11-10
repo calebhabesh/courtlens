@@ -70,7 +70,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none (built from approved CourtLens Research patterns) | workbench, RD16 | ✅ |
-| RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed) | ⏸ redesign, fold into Shot Quality / zTS, or keep as is |
+| RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed) | ⬜ merge into Shot Quality and zTS (owner, 2026-11-10) |
 | **C. Blocked** | | | | | |
 | RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | R17, RD18 | 👀 |
 | RD19 | Ask evaluation [29] | `/research/assistant-evaluation` (not built) | none | R16 | ⏸ after R16 finishes |
@@ -992,11 +992,19 @@ Instructions (owner, 2026-11-10, round 3):
    — Approved after two build rounds; the settled rules are in the alignment plan ("Settled in RD16"). The full Playwright run owed under the owner's rule: 632 passed, 17 skipped, 0 failed.
 
 
-## RD17 Expected Shots and Adjusted Shooting — ⏸
+## RD17 Expected Shots and Adjusted Shooting — ⬜ queued: merge (owner, 2026-11-10)
 
 - **Now:** the sealed B26 experiments (expected-shot v1 is a registered negative result), tabs of Shooting.
-- **Decision:** Shot Quality v2 and zTS now cover the same ground. Redesign them, fold them into those pages
-  (keeping the sealed results reachable), or leave them as they are?
+- **Decision (owner, 2026-11-10, "I agree", answering the recommendation below):** merge both, keeping every sealed result reachable and unrenamed.
+  - Expected Shots → Shot Quality's Model tab as "An earlier attempt": one line and a collapsed section with the sealed v1 negative result (RD16's
+    earlier-experiment pattern); `/research/shooting` redirects there.
+  - Adjusted Shooting: the offensive view (points per possession against the league's play-type expectation) is dropped as a duplicate of zTS; the
+    defensive view (points allowed against the play-type expectation; 433 players, 7 play types in 2025-26) becomes a Defense tab on zTS;
+    `/research/shooting/adjusted` redirects there.
+  - The Shooting page and its menu entry go; Shot Aftermath stands alone at `/research/shooting/aftermath` (no tab bar). The Research → Shooting group
+    becomes the handoff's target menu: Shot Quality, zTS, Shot Aftermath, Defensive Shot Quality.
+  - Check first: whether the Adjusted page shows anything from the sealed `courtload-adjusted-shooting-v1` result or only the live play-type feed; any
+    sealed result moves with the defensive section, unchanged.
 
 ## RD18 Shot Aftermath — 👀 ready for review
 

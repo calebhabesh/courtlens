@@ -1006,3 +1006,7 @@ The owner answered the design proposal with "Go with your recommendations and bu
 ## 2026-11-10 — RD18 round 2: Shot Aftermath in the Research menu
 
 The owner asked where Shot Aftermath was and agreed to its own entry: Research → Shooting now lists it after Shot Quality as a shortcut to its Shooting tab (the Shooting entry reads "Expected shots and adjusted shooting"). The route's stale availability gate on the old workbench shot source, which hid the entry, is removed: the page reads only the frozen R17 file. Vitest 877; full Playwright 629 passed, 17 skipped, 1 failed (an old assertion that the menu had no Shot Aftermath entry, updated; then 39/39 over three runs). [`design-RD18`](evidence/research/design-RD18/README.md).
+
+## 2026-11-10 — RD17 decided: merge Expected Shots and Adjusted Shooting
+
+The owner agreed to the recommendation: Expected Shots folds into Shot Quality's Model tab as the earlier, failed attempt (sealed v1 result kept reachable); Adjusted Shooting's offensive view is dropped as a duplicate of zTS and its defensive view becomes a Defense tab on zTS; the Shooting page and menu entry go and Shot Aftermath stands alone. Row RD17 ⬜ queued; a new session takes it. RD18 stays 👀, awaiting the owner. [RD17 catalog](research-design-catalog.md#rd17-expected-shots-and-adjusted-shooting--queued-merge-owner-2026-11-10).
