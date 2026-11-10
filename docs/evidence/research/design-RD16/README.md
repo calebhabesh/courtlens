@@ -93,3 +93,7 @@ Screenshots viewed: `fc-full-*`, `ev-full-*`, `fc-ledger-*` and the six regenera
 | Full Playwright | not run: no shared code changed this round |
 
 Screenshots viewed: `fc-r2-miss-*`, `fc-r2-coverage-*`, `fc-r2-selection-*`, `fc-r2-slices-*`, `fc-r2-ledger-closed-*`, `ev-r2-reading-*`, `ev-r2-selection-*`, `fc-r2-full-*`, `ev-r2-full-*`.
+
+## Approved (owner, 2026-11-10)
+
+"Great, I approve this page." Row ✅. The settled rules are in the alignment plan ("Settled in RD16"). The full Playwright run owed before ✅ (sandbox, mock API, 2 workers, 8 GiB cap): 632 passed, 17 skipped, 0 failed.

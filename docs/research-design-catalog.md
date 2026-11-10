@@ -69,7 +69,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none (built from approved CourtLens Research patterns) | R03, RD13 | ✅ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
-| RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none (built from approved CourtLens Research patterns) | workbench, RD16 | 👀 |
+| RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none (built from approved CourtLens Research patterns) | workbench, RD16 | ✅ |
 | RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed) | ⏸ redesign, fold into Shot Quality / zTS, or keep as is |
 | **C. Blocked** | | | | | |
 | RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | — | ⬜ queued after RD12, RD13 and RD16: new frozen aggregate, then design (owner, 2026-11-09) |
@@ -953,7 +953,7 @@ Evidence: [`design-RD13`](evidence/research/design-RD13/README.md).
   already follows row 18.
 - **Instructions:** _(owner)_
 
-## RD16 Points Forecasts — 👀
+## RD16 Points Forecasts — ✅ approved by the owner (2026-11-10)
 
 - **Now:** next-game points estimates, their out-of-time test, the prospective ledger; Evaluation Archive
   linked from it.
@@ -986,6 +986,10 @@ was given six suggestions, and answered "Build them all comprehensively."):
    - (5) One line on the slices' clearest pattern (the trees did best early in the season), saying no slice has an interval, so it is a pattern, not a result.
    - (6) The archive tab gets the same How to read cards and a collapsed glossary.
    — All six built: the ledger opens from a small toggle under one heading; a centred scale note under each miss chart; every coverage row gives its distance from 80% in points; a collapsed validation grid on both tabs (every candidate on both folds, the chosen ones named, the lowest-pooled sentence shown only when the numbers bear it out); a computed pattern line on every slice that calls it a pattern, not a result; the archive gains How to read and a glossary. Real data 2,820 values, 0 mismatches; `comparison-evaluation` ×3 33/33; Vitest 868; no shared code, so no full suite. Evidence: [`design-RD16`](evidence/research/design-RD16/README.md).
+
+Instructions (owner, 2026-11-10, round 3):
+3. [x] Great, I approve this page.
+   — Approved after two build rounds; the settled rules are in the alignment plan ("Settled in RD16"). The full Playwright run owed under the owner's rule: 632 passed, 17 skipped, 0 failed.
 
 
 ## RD17 Expected Shots and Adjusted Shooting — ⏸
