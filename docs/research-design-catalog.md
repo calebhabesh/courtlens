@@ -65,7 +65,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD09 | Research landing [29] | `/research` | none | R12 | ✂️ cut by the owner (2026-11-09) |
 | RD10 | Metric Backtest [29] | `/research/backtest` | none (built from approved CourtLens Research patterns) | R08, RD10 | ✅ |
 | RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | ✅ |
-| RD12 | Lineup Model [29] | `/research/lineup-model` | none (built from approved CourtLens Research patterns) | R14, RD12 | 👀 |
+| RD12 | Lineup Model [29] | `/research/lineup-model` | none (built from approved CourtLens Research patterns) | R14, RD12 | ✅ |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none | R03 | ⬜ |
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
@@ -834,7 +834,7 @@ Instructions (owner, 2026-11-09, round 6):
 
 Evidence: [`design-RD11`](evidence/research/design-RD11/README.md).
 
-## RD12 Lineup Model — 👀
+## RD12 Lineup Model — ✅ approved by the owner (2026-11-10)
 
 - **Now:** registered verdict (ridge better, no practical difference), the lineup tool with intervals, the
   backtest placement, the UMAP player map with its seed-instability notice.
@@ -881,6 +881,10 @@ Instructions (owner, 2026-11-09, round 4; two screenshots of the RAPM Ratings Le
    — Answered: the ends of the bars' scale. 0 is an average player and 9.6 was the leader's 9.61, rounded. The new scale says so in words.
 8. [x] Also these blue/black bars are remannts of the old ugly design. Make sure you clean them up to the updated design
    — The Leaders chart is a new Research-native list (`LeaderBars`): thin gold bars on the Research track, the scale labelled above them and lined up with the bars, the unit in the title. Blue was wrong for values above zero. Real data 598 values across 4 scopes, 0 mismatches; full Playwright 622 passed, 17 skipped, 0 failed.
+
+Instructions (owner, 2026-11-10, round 5):
+9. [x] I approve this page.
+   — Approved after four build rounds. Left open from round 4, not built: whether the Leaders scale keeps "9.61 is the top of this list", and whether the three older `RankedBars` views (tracking stats, play-type shooting, defensive matchups) move to `LeaderBars`.
 
 Evidence: [`design-RD12`](evidence/research/design-RD12/README.md).
 

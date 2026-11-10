@@ -130,3 +130,7 @@ The shared `RankedBars` is untouched: three older views still use it (tracking s
 | Photos ([`photo-check.json`](photo-check.json)) | 470 portraits per width, 0 cut; control 5 of 5 |
 
 Screenshots viewed: `rapm-leaders-1440.png`, `rapm-leaders-390.png`. The CSS chunk :3100 serves has the new rules.
+
+## Approved (owner, 2026-11-10)
+
+"I approve this page." Row ✅. The settled rules are in the alignment plan ("Settled in RD12"). Not built, left to the owner: dropping the Leaders scale's right-hand label, and moving the three older `RankedBars` views to `LeaderBars`.

@@ -942,3 +942,8 @@ The tool says how far apart the two models are for each five, and a swap keeps t
 
 The RAPM Ratings Leaders chart is now a Research-native list: thin gold bars on the Research track, a scale above them that says what its ends are, and the unit in the title. Its two visual baselines were regenerated for this change. The shared `RankedBars` is unchanged. Vitest 846, `r14-lineup-model` ×3 39/39, full Playwright 622 passed, 17 skipped, 0 failed; Leaders on real data 598 values over 4 scopes, 0 mismatches. No API, analysis, frozen result or interval changed.
 [`design-RD12`](evidence/research/design-RD12/README.md). Awaits the owner.
+
+## 2026-11-10 — RD12 approved
+
+The owner approved Lineup Model ("I approve this page.") after four build rounds. Row RD12 ✅; the alignment plan gains "Settled in RD12". Not built: dropping the Leaders scale's right-hand label, and moving the three older `RankedBars` views to `LeaderBars`. Next in the queue: RD13 Signal vs Noise.
+[`design-RD12`](evidence/research/design-RD12/README.md).
