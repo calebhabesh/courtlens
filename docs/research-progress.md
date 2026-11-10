@@ -969,3 +969,26 @@ On Signal vs Noise, every chart's axis matches the strip's brighter labels; the 
 
 The owner approved Signal vs Noise ("Alright. I approve this page.") after four build rounds. Row RD13 ✅; the alignment plan gains "Settled in RD13". Full Playwright before ✅: 627 passed, 17 skipped, 0 failed. Next in the queue: RD16 Points Forecasts (RD14 and RD17 are paused; RD18 follows RD16).
 [`design-RD13`](evidence/research/design-RD13/README.md).
+
+## 2026-11-10 — RD16 round 1: Points Forecasts rebuilt, the Evaluation Archive as its tab
+
+Points Forecasts and the Evaluation Archive are one Research page with two route tabs (both URLs kept), built from approved patterns: the answer in one sentence (all three models miss by about 4.6 points a game; player trees' 0.015 gain has a 95% interval of −0.014 to +0.052, so the prior blend stays), the misses and the gain on one axis from zero, the models grid, coverage against the 80% target, the four rules in words, slices through a grouped select, and the ledger behind one line saying it is a back-dated pipeline test (issued Oct 1, 2026 for games inside the test season; owner Q1). The archive tab colours its one gain red (context trees 0.11 to 0.18 reference points worse, 95%) and drops today's database rows (Q3). No API, analysis, frozen result or interval changed; `StatsGrid` now draws `headerAfter` on unsorted columns. Real data 2,470 values, 0 mismatches, 100 photos; Vitest 865; `comparison-evaluation` ×3 27/27; full Playwright 630 passed, 17 skipped, 0 failed (6 baselines changed by design, regenerated and viewed). [`design-RD16`](evidence/research/design-RD16/README.md). Awaits the owner.
+
+## 2026-11-10 — RD16 round 2: six refinements to Points Forecasts
+
+On Points Forecasts and its archive tab: the ledger's 50 forecasts open from a small toggle under one heading; a line under each miss chart says the gain is drawn to scale and too small to see; every coverage row gives its distance from 80% in percentage points; a collapsed "How the models were chosen" grid on both tabs shows every candidate on both validation folds with the chosen ones named; each slice gets one computed line naming where the trees did best and worst, called a pattern, not a result; and the archive tab gains How to read and a glossary. No API, analysis, frozen result, interval or shared component changed. Real data 2,820 values, 0 mismatches; 100 photos, 0 faults; Vitest 868; `comparison-evaluation` ×3 33/33; full Playwright not run (no shared code changed). [`design-RD16`](evidence/research/design-RD16/README.md). Awaits the owner.
+
+## 2026-11-10 — RD16 approved
+
+The owner approved Points Forecasts ("Great, I approve this page.") after two build rounds. Row RD16 ✅; the alignment plan gains "Settled in RD16". Full Playwright before ✅: 632 passed, 17 skipped, 0 failed. Next in the queue: RD18 Shot Aftermath, which needs its new frozen play-by-play aggregate built before the design rounds (owner, 2026-11-09); RD14, RD17 and RD19 are paused.
+[`design-RD16`](evidence/research/design-RD16/README.md).
+
+## 2026-11-10 — Hosted demo brought up to RD13
+
+Release 3c2f1b03 (research through the RD13 approval, merged to main in PR #77) is live at
+courtlens.calebhabesh.com with a fresh 2026-11-10 database, so every Research page, full history and the
+2026-27 season are on the demo. The deploy-config gap found while preparing R12 is closed: the deploy
+syncs and mounts every Research serving input, pins the 12-season impact bundle and gives the API 3 GiB.
+RD16 and later are not on the demo yet. Details and measurements in
+[the deploy log](deployment.md#deploy-log).
+

@@ -147,6 +147,42 @@ To roll back, start the previous release. Migrations are not reversed.
 docker compose --env-file secrets.env --env-file release.prev.env --profile tunnel up -d --wait
 ```
 
+## Deploy log
+
+### 2026-11-10: release 3c2f1b03 (research merged, PR #77)
+
+Replaced 121bfa5d (2026-10-14). The demo database was replaced, not migrated: the 2026-10-13
+snapshot had 1 possession row (local 2.9M), games through 2026-06-13 (local 2026-11-09) and nothing
+before 2000-01, which migrations can't add. The `pg_dump -Fc --no-owner --exclude-schema='cl_candidate_*'`
+dump was 1.7 GB (105 s locally); it was restored with `pg_restore -j 2` into `courtlens_next` while the old
+release served, row counts matched local (player games 2,688,197; possessions 2,930,101; stint players
+7,494,080; Stats cohort rows 52,498; alembic `19b810a4f017`), and the dump was deleted on both machines.
+Cutover stopped the API and dashboard, renamed `courtlens` to `courtlens_prev` and `courtlens_next` to
+`courtlens`, then ran `scripts/deploy-vps.sh` (105 s; Stats cohorts already stored: 171 existing, 0 built).
+The restored database is 17 GB.
+
+The Images run was dispatched by hand: main CI on 3c2f1b03 failed twice on a Wingspan e2e timing flake
+(fixed in PR #78) while its tree (`bcc395cb`) was byte-identical to the PR merge tree that passed every CI
+job (run 42861543674).
+
+Serving files: 54 directories, 3.2 GB on the VPS. A crawl of 60 pages against an API that saw only the old
+SERVING_DIRS found 503s on Similar Players and Roster Shapes and missing Free Agency, Draft rookies, the
+Lineup Model tool, the Backtest 2026-27 score, Shooting runs, DARKO/DPM and Team Compare's starting five;
+with the added directories every page matched full local data. Pins: impact 3cfdb968 (12 seasons), team
+splits fce502d3, WOWY 894f9b09.
+
+Memory: locally the API peaked at 2.26 GB (1.8 GB steady) serving every page with these pins, so its cap is
+now 3 GiB. On the VPS right after deploy: API 167 MiB, db 84 MiB, dashboard 49 MiB. Win probability on
+arm64: 1,902 states, max difference 2.2e-16, passed. Disk after: 42 GB used of 193 GB, including
+`courtlens_prev` (5.6 GB), kept for rollback until the owner drops it.
+
+Verified on the public URL at 1440 and 390 px: 50 pages each, all 200, no page overflow or broken images,
+no console errors except one portrait 404 on Similar Players (1997-98 MIA, player 1134; local 404s too).
+Ask is off, Planner hidden and redirected, writes outside the allowlist get Caddy's 403. 36 of 38 Research
+API responses were byte-identical to the local API; the other two differ in a latency field and one
+float's last digit. Rollback: stop the API, rename the databases back, start `release.prev.env`.
+Refresh timers and the nightly job stay off; the data is the 2026-11-10 snapshot.
+
 ## First-time setup
 
 These steps have already been done once; they are recorded for a rebuild.

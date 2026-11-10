@@ -189,6 +189,12 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   A pressed toggle in a list has the kit ghost button's padding, never the unpadded text variant. Chart axes are 12 px in the secondary on-background colour, and chart keys are centred.
   Sentences spell units out ("480 three-point attempts"); strips and tables keep the short unit. A long list of choices is one grouped select, not rows of chips. On a phone a wide table switches between its
   column groups instead of scrolling sideways. A what-if tool applies served parameters to the reader's numbers, starts at the served values, and says it computes no interval.
+- **Settled in RD16 (owner, Points Forecasts, 2026-11-10):** two pages on one subject become route tabs under one centred hero, each keeping its URL. Records that aren't what
+  they claim (forecasts issued after their games) are named as what they are in one visible line, with the rows collapsed behind a small toggle in the same section, never a second
+  heading. A gain kept to scale beside the values it's a gap in carries one line when that makes it too small to see. A share is read against its target as a distance in percentage
+  points, with one line saying what a point means. How a model was chosen is a collapsed grid of every candidate on each fold, the chosen ones named in words; a sentence stating the
+  selection rule appears only when the served numbers bear it out. Groups with no interval may carry one computed line naming their best and worst, called a pattern, not a result.
+  Pass and fail are words, not colours. Player names wrap whole at every width.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).
