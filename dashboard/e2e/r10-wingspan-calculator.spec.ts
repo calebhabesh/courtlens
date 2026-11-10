@@ -134,7 +134,7 @@ test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
     await expect(page.locator('[data-field="overlay-empty"]')).toBeVisible();
     const [a, b] = active;
     await page.getByRole("button", { name: `Add ${a.name} to the overlay` }).click();
-    await expect(page.getByRole("button", { name: `${a.name} is in the overlay` })).toBeDisabled();
+    await expect(page.getByRole("button", { name: `${a.name} is in the overlay` })).toBeDisabled({ timeout: 15_000 });
     await page.getByRole("button", { name: `Add ${b.name} to the overlay` }).click();
     await expect(page).toHaveURL(new RegExp(`overlay=${a.player_id}(%2C|,)${b.player_id}`));
     for (const p of [a, b]) {
@@ -159,7 +159,8 @@ test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
     for (const p of added) {
       await page.getByRole("searchbox", { name: "Add a player to the graph" }).fill(p.name);
       await page.getByRole("button", { name: `Add ${p.name} to the graph` }).click();
-      await expect(page.getByRole("button", { name: `Stop highlighting ${p.name}` })).toBeVisible();
+      // Each add replaces the URL, a server round trip that can pass 5 s on a loaded CI runner.
+      await expect(page.getByRole("button", { name: `Stop highlighting ${p.name}` })).toBeVisible({ timeout: 15_000 });
     }
     await expect(page).toHaveURL(new RegExp(`mark=${added.map(p => p.player_id).join("(%2C|,)")}`));
     for (const p of added) await expect(page.locator(`.ws-picked[data-selected="${p.player_id}"]`)).toContainText(p.name);

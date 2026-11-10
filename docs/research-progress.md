@@ -1026,3 +1026,13 @@ The owner approved both ("Sounds good. I approve them."). Rows RD17 and RD18 ✅
 ## 2026-11-10 — RD18 round 4: suggestions 1, 2, 4, 5
 
 After approving the page, the owner asked for the recommended suggestions ("Yes, add these"). Shot Aftermath gains a line on whether the zone order and the rebound effect held in the other season, a crosshair on each team row that scopes the page in place, a cost axis ending on round steps (±2.00, not ±1.44), and phone cost intervals that stay on one line. `shooting-view.tsx` is deleted; `catalog-scope-fields.tsx` stays (still used by Ask and the contract drawer). Suggestions 3 and 6 stay open. Vitest 888; touched specs ×3 60/60; full Playwright 632 passed, 17 skipped, 0 failed. Row stays ✅. [`design-RD18`](evidence/research/design-RD18/README.md).
+
+## 2026-11-10 — Hosted demo brought up to RD13
+
+Release 3c2f1b03 (research through the RD13 approval, merged to main in PR #77) is live at
+courtlens.calebhabesh.com with a fresh 2026-11-10 database, so every Research page, full history and the
+2026-27 season are on the demo. The deploy-config gap found while preparing R12 is closed: the deploy
+syncs and mounts every Research serving input, pins the 12-season impact bundle and gives the API 3 GiB.
+RD16 followed the same day in release be43917a; RD17 and later are not on the demo yet. Details and measurements in
+[the deploy log](deployment.md#deploy-log).
+

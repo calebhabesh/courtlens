@@ -137,6 +137,8 @@ def test_no_unexplained_legacy_brand_references() -> None:
             or relative in baseline["file_sha256"]
             or relative.startswith(("docs/evidence/", "migrations/versions/"))
             or relative == "tests/unit/test_frozen_identifiers.py"
+            # RD16 serves the sealed pre-rename evaluation report verbatim as its fixture.
+            or relative == "dashboard/e2e/fixtures/rd16-points-evaluation.json"
         ):
             continue
         try:
@@ -150,6 +152,9 @@ def test_no_unexplained_legacy_brand_references() -> None:
         if relative == "TODO.md":
             # Preserve the owner's pre-RN01, uncommitted rename instruction verbatim.
             content = content.replace("- [ ] Rename env vars to CourtLens instead of CourtLoad", "")
+        if relative == "dashboard/content/patch-notes.json":
+            # The visitor-facing changelog records the rename itself (RD07).
+            content = content.replace("CourtLoad is now CourtLens", "")
         if relative in {"docs/frontend-overhaul-progress.md", "scripts/clean_scratch.sh"}:
             # Pre-rename scratch directories (FO09 record, scratch cleanup), not branding.
             content = content.replace("/tmp/courtload-*", "")

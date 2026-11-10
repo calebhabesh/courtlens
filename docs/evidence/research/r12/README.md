@@ -86,7 +86,7 @@ curl -fsS http://127.0.0.1:8090/api/health
 curl -fsS -o /dev/null -w '%{http_code}\n' http://127.0.0.1:8090/research
 ```
 
-**Found while preparing (not fixed, owner's call).** The deploy config predates most Research blocks.
+**Found while preparing (closed 2026-11-10 by PR #77; see [the deploy log](../../../deployment.md#deploy-log)).** The deploy config predates most Research blocks.
 The R11 and R12 pages are static and will work. Several Research pages read served directories
 that `scripts/deploy-vps.sh` (SERVING_DIRS) doesn't sync and `deploy/compose.prod.yml` doesn't mount,
 so on the demo they would lack data:

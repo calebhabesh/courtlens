@@ -93,8 +93,9 @@ docker compose --env-file secrets.env --env-file release.env exec api \
 The VPS boot volume is 193 GB, nearly all of the Always Free 200 GB block-storage allowance
 (measured 2026-10-19: 21 GB used across CourtLens, LineWatchTO and the portfolio; Docker images
 4.8 GB, volumes 8.3 GB). Outbound transfer is free up to 10 TB a month and inbound is free, and
-Caddy compresses responses (`encode zstd gzip`). The demo needs about 1.2 GB of images, about 6 GB
-of Postgres and about 1.4 GB of serving files. The data snapshot is frozen, so the database
+Caddy compresses responses (`encode zstd gzip`). The demo needs about 1.2 GB of images, about 21 GB
+of Postgres (the 2026-11-10 snapshot, with full history and the 12 impact seasons) and about
+3.1 GB of serving files. The data snapshot is frozen, so the database
 does not grow. Deploys never build on the VPS. Each deploy removes CourtLens images other
 than the current and previous release. Container logs rotate at 3 × 10 MB, and journald
 is capped at 200 MB.
@@ -150,8 +151,10 @@ scripts/deploy-vps.sh <sha>      # a specific main commit
 ```
 
 Serving files are git-ignored: evaluation reports, saved analyses, the impact,
-value-archetype and WOWY manifests, and player portraits (`SERVING_DIRS` in the script,
-about 1.4 GB). They are rsynced from
+value-archetype and WOWY manifests, player portraits, the Research serving tables and model
+files, DARKO, ESPN rosters, the Free Agency and Wikipedia bundles, shot zones, stint boxes and
+the raw box-score evidence behind starting positions (`SERVING_DIRS` in the script, about
+3.1 GB on 2026-11-10; the raw evidence is mounted read-only as `data/raw`). They are rsynced from
 `$COURTLENS_DATA_DIR`, which defaults to the checkout's `data/`. A worktree must point
 this at the primary checkout.
 
@@ -168,6 +171,56 @@ To roll back, start the previous release. Migrations are not reversed.
 ```bash
 docker compose --env-file secrets.env --env-file release.prev.env --profile tunnel up -d --wait
 ```
+
+## Deploy log
+
+### 2026-11-10: release be43917a (RD16, PR #79)
+
+Points Forecasts with the Evaluation Archive as its tab (research through the RD16 approval, d28783f8),
+plus the e2e and frozen-identifier test fixes (#78, #79). Frontend only: same database, serving files
+and pins; `deploy-vps.sh` took 57 s and stored no new Stats cohorts (171 existing). Main CI and Images
+passed on the merge commit. The old 2026-10-13 database (`courtlens_prev`) was dropped on the owner's
+instruction before this deploy.
+
+Verified on the public URL at 1440 and 390 px: 43 pages each, all 200, no page overflow or broken
+images, no console errors except the known 1997-98 portrait 404 on Similar Players. Both forecasts
+endpoints are byte-identical to the local API; writes get Caddy's 403; Planner redirects. After deploy:
+API 2.0 GiB of 3 GiB (every page had been served since the earlier deploy), db 0.6 of 2 GiB,
+dashboard 124 MiB; disk 35 GB used of 193 GB.
+
+### 2026-11-10: release 3c2f1b03 (research merged, PR #77)
+
+Replaced 121bfa5d (2026-10-14). The demo database was replaced, not migrated: the 2026-10-13
+snapshot had 1 possession row (local 2.9M), games through 2026-06-13 (local 2026-11-09) and nothing
+before 2000-01, which migrations can't add. The `pg_dump -Fc --no-owner --exclude-schema='cl_candidate_*'`
+dump was 1.7 GB (105 s locally); it was restored with `pg_restore -j 2` into `courtlens_next` while the old
+release served, row counts matched local (player games 2,688,197; possessions 2,930,101; stint players
+7,494,080; Stats cohort rows 52,498; alembic `19b810a4f017`), and the dump was deleted on both machines.
+Cutover stopped the API and dashboard, renamed `courtlens` to `courtlens_prev` and `courtlens_next` to
+`courtlens`, then ran `scripts/deploy-vps.sh` (105 s; Stats cohorts already stored: 171 existing, 0 built).
+The restored database is 17 GB.
+
+The Images run was dispatched by hand: main CI on 3c2f1b03 failed twice on a Wingspan e2e timing flake
+(fixed in PR #78) while its tree (`bcc395cb`) was byte-identical to the PR merge tree that passed every CI
+job (run 42861543674).
+
+Serving files: 54 directories, 3.2 GB on the VPS. A crawl of 60 pages against an API that saw only the old
+SERVING_DIRS found 503s on Similar Players and Roster Shapes and missing Free Agency, Draft rookies, the
+Lineup Model tool, the Backtest 2026-27 score, Shooting runs, DARKO/DPM and Team Compare's starting five;
+with the added directories every page matched full local data. Pins: impact 3cfdb968 (12 seasons), team
+splits fce502d3, WOWY 894f9b09.
+
+Memory: locally the API peaked at 2.26 GB (1.8 GB steady) serving every page with these pins, so its cap is
+now 3 GiB. On the VPS right after deploy: API 167 MiB, db 84 MiB, dashboard 49 MiB. Win probability on
+arm64: 1,902 states, max difference 2.2e-16, passed. Disk after: 42 GB used of 193 GB, including
+`courtlens_prev` (5.6 GB), kept for rollback until the owner drops it.
+
+Verified on the public URL at 1440 and 390 px: 50 pages each, all 200, no page overflow or broken images,
+no console errors except one portrait 404 on Similar Players (1997-98 MIA, player 1134; local 404s too).
+Ask is off, Planner hidden and redirected, writes outside the allowlist get Caddy's 403. 36 of 38 Research
+API responses were byte-identical to the local API; the other two differ in a latency field and one
+float's last digit. Rollback at the time: stop the API, rename the databases back, start `release.prev.env`.
+Refresh timers and the nightly job stay off; the data is the 2026-11-10 snapshot.
 
 ## First-time setup
 
