@@ -37,7 +37,8 @@ test.describe("R03 Signal vs Noise", () => {
     const visible = await page.locator("main").innerText();
     for (const code of [fixture.summary.results_sha256.slice(0, 16), "courtlens-signal-noise", "R03"]) expect(visible).not.toContain(code);
     await expect(page.locator("#about")).toContainText(fixture.summary.results_sha256.slice(0, 16));
-    expect(await page.locator("select").count()).toBe(1);
+    // The example season and the curve stat (grouped by family) are the page's two selects.
+    expect(await page.locator("select").count()).toBe(2);
   });
 
   test("3P%'s curve draws its bins but no fitted line; a reached stat draws both", async ({ page }) => {
@@ -47,9 +48,20 @@ test.describe("R03 Signal vs Noise", () => {
     await expect(curve).toHaveAttribute("data-fitted", "not-drawn");
     await expect(curve.locator(".sn-bin")).toHaveCount(8);
     await expect(page.locator('[data-field="curve-not-drawn"]')).toBeVisible();
-    await page.getByRole("group", { name: "Stat" }).getByRole("button", { name: "FT%", exact: true }).click();
+    await expect(curve.locator('[data-field="curve-mark"]')).toHaveCount(0);
+    await page.getByLabel("Curve stat").selectOption("ft_pct");
     await expect(page).toHaveURL(/stat=ft_pct/);
     await expect(curve).toHaveAttribute("data-fitted", "drawn");
+    // The strip's marks on the curve: each reached level at its served point and interval, and the typical season.
+    const ft = fixture.summary.stabilization.stats.find((s: { key: string }) => s.key === "ft_pct");
+    for (const level of ["0.5", "0.7"]) {
+      const mark = curve.locator(`[data-field="curve-mark"][data-level="${level}"]`);
+      expect(Number(await mark.getAttribute("data-n"))).toBe(ft.levels[level].n);
+      expect(Number(await mark.getAttribute("data-low"))).toBe(ft.levels[level].interval.low);
+      expect(Number(await mark.getAttribute("data-high"))).toBe(ft.levels[level].interval.high);
+    }
+    expect(Number(await curve.locator('[data-field="curve-typical"]').getAttribute("data-n"))).toBe(ft.median_sample);
+    await expect(page.locator('[data-field="curve-line"]')).toContainText("free-throw attempts");
     await expect(page.getByRole("table", { name: "FT% bins", includeHidden: true }).locator("tbody tr")).toHaveCount(8);
   });
 
@@ -85,6 +97,37 @@ test.describe("R03 Signal vs Noise", () => {
     await expect(page.locator('[data-chart="path"]')).toHaveAttribute("data-path", "ft_pct");
     await page.locator("#about summary").click();
     for (const credit of ["Spearman 1910", "Efron and Morris (1975)", "Darryl Blackport"]) await expect(page.getByText(credit, { exact: false }).first()).toBeVisible();
+  });
+
+  test("the what-if starts at the served shrunk value and follows the sliders with the served prior", async ({ page }) => {
+    await openWorkbench(page, path);
+    const box = page.locator('[data-chart="what-if"]');
+    const e = fixture.player.estimates.fg3_pct;
+    await expect(box).toHaveAttribute("data-stat", "fg3_pct");
+    expect(Number(await box.getAttribute("data-shrunk"))).toBeCloseTo(e.shrunk.value, 12);
+    await expect(box.getByRole("button", { name: /season$/ })).toHaveCount(0);
+    await box.getByRole("slider", { name: /Attempts/ }).fill("400");
+    await expect(box).toHaveAttribute("data-attempts", "400");
+    const makes = Math.round((e.makes / e.attempts) * 400);
+    expect(Number(await box.getAttribute("data-shrunk"))).toBeCloseTo((makes + e.prior.alpha) / (400 + e.prior.alpha + e.prior.beta), 12);
+    await expect(box.locator('[data-field="whatif-counts"]')).toHaveText(`${makes} / 400`);
+    await box.getByRole("button", { name: `${fixture.player.player_name}'s season` }).click();
+    await expect(box).toHaveAttribute("data-attempts", String(e.attempts));
+    await box.getByRole("radio", { name: "FT%" }).click();
+    await expect(box).toHaveAttribute("data-stat", "ft_pct");
+    expect(Number(await box.getAttribute("data-shrunk"))).toBeCloseTo(fixture.player.estimates.ft_pct.shrunk.value, 12);
+  });
+
+  test("on a phone the shrinkage test shows gains or errors, never a sideways-scrolling table", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openWorkbench(page, path);
+    const test = page.getByRole("table", { name: "Shrinkage test" });
+    await expect(test.locator('tbody tr[data-stat="fg3_pct"] [data-field="raw_minus_shrunk"]')).toHaveCount(1);
+    await expect(test.locator('tbody tr[data-stat="fg3_pct"] [data-field="mse-raw"]')).toHaveCount(0);
+    await page.getByRole("radio", { name: "Errors, RMSE" }).click();
+    await expect(test.locator('tbody tr[data-stat="fg3_pct"] [data-field="mse-raw"]')).toHaveCount(1);
+    await expect(test.locator('tbody tr[data-stat="fg3_pct"] [data-field="raw_minus_shrunk"]')).toHaveCount(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
   });
 
   test("the shrinkage test colours a gain only where its 95% interval excludes zero", async ({ page }) => {

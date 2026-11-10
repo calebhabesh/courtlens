@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
 import { LookupInput } from "./lookup-input";
 import {
   Glossary, MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchIntro, ResearchLinks, ResearchSection, FormulaLine, type GlossaryGroup,
@@ -11,7 +11,7 @@ import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui
 import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
 import { PlayerAvatar } from "./ui/identity";
-import { Button, Chip, IconButton, Segmented, Select } from "./ui/kit";
+import { Button, IconButton, Segmented, Select } from "./ui/kit";
 import { useReducedMotion } from "@/lib/motion";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
@@ -20,8 +20,8 @@ import { seasonEra } from "@/lib/portrait-source";
 import { evidenceUrl } from "@/lib/research-facts";
 import { signed } from "@/lib/research-values";
 import {
-  BAND_LABELS, exampleSeasons, formatPct, formatRho, formatSample, getPlayerExample, getSignalNoise, PRIOR_STATS, reached, rmsePoints, sampleText, sampleUnit,
-  shrinkingWins, squaredPoints, stripOrder, stripReach, TEST_STATS,
+  BAND_LABELS, exampleSeasons, formatPct, formatRho, formatSample, getPlayerExample, getSignalNoise, PRIOR_STATS, reached, rmsePoints, sampleText, sampleUnit, sampleWords,
+  shrinkingWins, squaredPoints, stripOrder, stripReach, TEST_STATS, whatIf,
   type Bin, type Family, type PlayerExample, type Posterior, type SeasonPrior, type SignalNoiseSummary, type StatResult, type ValidationBlock,
 } from "@/lib/signal-noise";
 import { getPlayerCareer } from "@/lib/workbench-api";
@@ -44,6 +44,15 @@ const sq = (value: number | null | undefined) => typeof value === "number" ? sig
 const sqBand = (g: { low: number | null; high: number | null } | undefined) => g && typeof g.low === "number" && typeof g.high === "number" ? `${signed(squaredPoints(g.low), 1)} to ${signed(squaredPoints(g.high), 1)}` : null;
 const toneOf = (g: { low: number | null; high: number | null } | undefined) => !g || g.low == null || g.high == null ? undefined : g.low > 0 ? "good" as const : g.high < 0 ? "bad" as const : undefined;
 const whole = (n: number) => Math.round(n).toLocaleString("en-US");
+const PHONE = "(max-width: 767px)";
+/** Phone layout for a table whose columns change at phone width (the shrinkage test); the server renders the desktop table. */
+function usePhone() {
+  return useSyncExternalStore(
+    notify => { const query = window.matchMedia(PHONE); query.addEventListener("change", notify); return () => query.removeEventListener("change", notify); },
+    () => window.matchMedia(PHONE).matches,
+    () => false,
+  );
+}
 
 // ---- The answer --------------------------------------------------------------------------------
 
@@ -159,7 +168,11 @@ function Curve({ stat }: { stat: StatResult }) {
   const levelsReached = reached(stat.levels["0.5"]) && reached(stat.levels["0.7"]);
   const m = stat.m?.value ?? null;
   const maxN = Math.max(...bins.map(b => b.n));
-  const ticks = niceTicks([0, maxN]).filter(t => t >= 0);
+  const half = stat.levels["0.5"], seventy = stat.levels["0.7"];
+  // The strip's marks on the curve (owner, RD13 round 4): each reached level where it crosses, with its 95% interval, and the typical season.
+  const marks = ([["0.5", half, 0.5], ["0.7", seventy, 0.7]] as const).flatMap(([level, l, rho]) => reached(l) ? [{ level, n: l.n, low: l.interval.low, high: l.interval.high, rho }] : []);
+  const typical = typeof stat.median_sample === "number" ? stat.median_sample : null;
+  const ticks = niceTicks([0, Math.max(maxN, typical ?? 0, ...marks.map(m => m.high ?? m.n))]).filter(t => t >= 0);
   const end = ticks.at(-1) ?? maxN;
   const x = (n: number) => (n / end) * 100;
   const y = (rho: number) => (1 - Math.max(0, Math.min(1, rho))) * 100;
@@ -170,11 +183,17 @@ function Curve({ stat }: { stat: StatResult }) {
       <div className="sn-curve-y" aria-hidden="true">{[0, 0.5, 0.7, 1].map(t => <span key={t} style={vars({ "--sn-y": `${y(t)}%` })}>{t === 0 || t === 1 ? t.toFixed(0) : t.toFixed(1)}</span>)}</div>
       <div className="sn-curve-plot" role="img" aria-label={`${stat.label} reliability by season sample: ${bins.map(b => `${formatSample(b.n)} ${sampleUnit(stat)} ${formatRho(b.rho, 2)}`).join(", ")}`}>
         {[0, 0.25, 0.5, 0.7, 1].map(t => <span key={t} className="sn-curve-grid" data-level={t === 0.5 || t === 0.7 || undefined} style={vars({ "--sn-y": `${y(t)}%` })} />)}
+        {typical != null && <span className="sn-curve-typical" data-field="curve-typical" data-n={typical} style={vars({ "--sn-x": `${x(typical)}%` })} />}
         {curve && <svg className="sn-curve-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path className="sn-curve-line" d={curve} vectorEffect="non-scaling-stroke" /></svg>}
         {bins.map(b => <span key={b.bin} className="sn-bin" data-bin={b.bin} data-n={b.n} data-value={b.rho} data-low={b.rho_interval.low ?? ""} data-high={b.rho_interval.high ?? ""}
           title={`${formatSample(b.n)} ${sampleUnit(stat)}: reliability ${formatRho(b.rho)} (95% ${formatRho(b.rho_interval.low)} to ${formatRho(b.rho_interval.high)}), ${whole(b.players_per_split)} players`}
           style={vars({ "--sn-x": `${x(b.n)}%`, "--sn-y": `${y(b.rho)}%`, "--sn-top": `${y(b.rho_interval.high ?? b.rho)}%`, "--sn-bottom": `${y(b.rho_interval.low ?? b.rho)}%` })}>
           <span className="sn-bin-bar" /><span className="sn-bin-dot" />
+        </span>)}
+        {marks.map(m => <span key={m.level} className="sn-curve-mark" data-field="curve-mark" data-level={m.level} data-n={m.n} data-low={m.low ?? ""} data-high={m.high ?? ""}
+          title={`Reliability ${m.level} at ${sampleText(m.n, stat)} (95% ${formatSample(m.low)} to ${formatSample(m.high)})`}
+          style={vars({ "--sn-x": `${x(m.n)}%`, "--sn-y": `${y(m.rho)}%`, "--sn-low": `${x(m.low ?? m.n)}%`, "--sn-high": `${x(m.high ?? m.n)}%` })}>
+          <span className="sn-curve-mark-span" /><span className="sn-curve-mark-dot" />
         </span>)}
       </div>
       <div className="sn-curve-x" aria-hidden="true">{ticks.map(t => <span key={t} style={vars({ "--sn-x": `${x(t)}%` })} data-edge={t === 0 ? "start" : t === end ? "end" : undefined}>{whole(t)}</span>)}</div>
@@ -183,6 +202,8 @@ function Curve({ stat }: { stat: StatResult }) {
     <ul className="sn-key">
       <li><span className="sn-key-mark" data-mark="bin" aria-hidden="true" />A bin of player-seasons with similar samples, with its 95% interval</li>
       {curve && <li><span className="sn-key-mark" data-mark="curve" aria-hidden="true" />Fitted curve, n / (n + M)</li>}
+      {marks.length > 0 && <li><span className="sn-key-mark" data-mark="cross-half" aria-hidden="true" /><span className="sn-key-mark" data-mark="cross-seventy" aria-hidden="true" />Where it reaches 0.5 and 0.7, with 95% intervals, as in the strip</li>}
+      {typical != null && <li><span className="sn-key-mark" data-mark="typical" aria-hidden="true" />A typical season (median)</li>}
       <li><span className="sn-key-mark" data-mark="level" aria-hidden="true" />Reliability 0.5 and 0.7</li>
     </ul>
   </div>;
@@ -193,17 +214,14 @@ function CurveSection({ data, active, onOpen }: { data: SignalNoiseSummary; acti
   const stat = stats.find(s => s.key === active) ?? stats[0];
   const half = stat.levels["0.5"], seventy = stat.levels["0.7"];
   const b = largestBin(stat);
-  return <ResearchSection id="curve" icon="chart-line" title={`Reliability by sample size: ${stat.label}`}>
-    <div className="sn-chips" role="group" aria-label="Stat">
-      {FAMILY_OPTIONS.map(f => <div key={f.value} className="sn-chip-row">
-        <span className="sn-chip-label">{f.label}</span>
-        <div className="sn-chip-list">{stats.filter(s => s.family === f.value).map(s => <Chip key={s.key} size="sm" pressed={s.key === stat.key} onClick={() => onOpen(s.key)}>{s.label}</Chip>)}</div>
-      </div>)}
-    </div>
+  return <ResearchSection id="curve" icon="chart-line" title={`Reliability by sample size: ${stat.label}`}
+    aside={<Select size="sm" aria-label="Curve stat" value={stat.key} onChange={event => onOpen(event.target.value)}>
+      {FAMILY_OPTIONS.map(f => <optgroup key={f.value} label={f.label}>{stats.filter(s => s.family === f.value).map(s => <option key={s.key} value={s.key}>{s.label}</option>)}</optgroup>)}
+    </Select>}>
     <p className="sn-lead" data-field="curve-line" data-stat={stat.key}>
       {reached(half) && reached(seventy)
-        ? <>{stat.label} reaches 0.5 at <strong>{sampleText(half.n, stat)}</strong> ({formatSample(half.interval.low)} to {formatSample(half.interval.high)}) and 0.7 at <strong>{sampleText(seventy.n, stat)}</strong> ({formatSample(seventy.interval.low)} to {formatSample(seventy.interval.high)}). A typical season has {sampleText(stat.median_sample, stat)}.</>
-        : <>No bin of {stat.label} reaches 0.5. The largest, at <strong>{sampleText(b?.n, stat)}</strong>, is <strong>{formatRho(b?.rho)}</strong> (95% {formatRho(b?.rho_interval.low)} to {formatRho(b?.rho_interval.high)}). A typical season has {sampleText(stat.median_sample, stat)}.</>}
+        ? <>{stat.label} reaches 0.5 at <strong>{sampleWords(half.n, stat)}</strong> ({formatSample(half.interval.low)} to {formatSample(half.interval.high)}) and 0.7 at <strong>{sampleWords(seventy.n, stat)}</strong> ({formatSample(seventy.interval.low)} to {formatSample(seventy.interval.high)}). A typical season has {sampleWords(stat.median_sample, stat)}.</>
+        : <>No bin of {stat.label} reaches 0.5. The largest, at <strong>{sampleWords(b?.n, stat)}</strong>, is <strong>{formatRho(b?.rho)}</strong> (95% {formatRho(b?.rho_interval.low)} to {formatRho(b?.rho_interval.high)}). A typical season has {sampleWords(stat.median_sample, stat)}.</>}
     </p>
     {!(reached(half) && reached(seventy)) && <p className="sn-note" data-field="curve-not-drawn">The fitted curve isn&apos;t drawn for {stat.label}: it would cross 0.5 before any observed bin does, and a level counts only where a bin shows it.</p>}
     <figure className="sn-figure"><Curve stat={stat} /></figure>
@@ -242,7 +260,12 @@ function exampleRows(example: PlayerExample): ExampleRow[] {
 
 function ExampleStrip({ rows }: { rows: readonly ExampleRow[] }) {
   return <figure className="sn-figure" data-chart="example-strip">
-    <figcaption className="sn-figure-title">Raw and shrunk on one scale, 0% to 100%</figcaption>
+    <figcaption className="sn-figure-title">Raw and shrunk on one scale</figcaption>
+    <div className="sn-strip-axis" aria-hidden="true">
+      <span />
+      <span className="sn-strip-scale">{[0, 0.25, 0.5, 0.75, 1].map(t => <span key={t} style={vars({ "--sn-at": pctAt(t, 1) })} data-edge={t === 0 ? "start" : t === 1 ? "end" : undefined} data-minor={t === 0.25 || t === 0.75 || undefined}>{formatPct(t, 0)}</span>)}</span>
+      <span />
+    </div>
     <ul className="sn-ex-strip">{rows.map(row => {
       const prior = row.prior?.status === "available" ? row.prior.mean : null;
       return <li key={row.key} className="sn-ex-row" data-stat={row.key}>
@@ -269,6 +292,7 @@ type PathKey = typeof PATHS[number]["value"];
 
 function ExamplePath({ example, path, onPath }: { example: PlayerExample; path: PathKey; onPath: (p: PathKey) => void }) {
   const unit = path === "fg3_pct" ? "3PA" : path === "ft_pct" ? "FTA" : "TSA";
+  const unitText = path === "fg3_pct" ? "three-point attempts" : path === "ft_pct" ? "free-throw attempts" : "true-shooting attempts";
   const points = example.path.map((p, i) => ({
     season: `${i + 1}`, value: p[path].raw, label: `Game ${i + 1} · ${formatDate(p.game_date)} · ${path === "ts_pct" ? p[path].attempts.toFixed(1) : whole(p[path].attempts)} ${unit}`,
   }));
@@ -282,7 +306,7 @@ function ExamplePath({ example, path, onPath }: { example: PlayerExample; path: 
       <Segmented size="sm" label="Season path" value={path} onChange={onPath} options={PATHS} />
     </div>
     {points.filter(p => p.value !== null).length < 2
-      ? <p className="sn-note" data-field="path-empty">Not enough games with {unit} to draw a line.</p>
+      ? <p className="sn-note" data-field="path-empty">Not enough games with {unitText} to draw a line.</p>
       : <SeasonLineChart label={`Raw and shrunk ${PATHS.find(p => p.value === path)?.label} for ${example.player_name}, game by game`} points={points} name="Raw" overlay={{ name: "Shrunk", values: shrunk }}
         format={v => formatPct(v)} axisFormat={v => formatPct(v, 0)} xTicks={ticks} floor={0} />}
     <ul className="sn-key">
@@ -330,6 +354,77 @@ function ExampleCard({ example, seasons, onSeason, onPlayer }: { example: Player
   </div>;
 }
 
+interface WhatIfSource { key: string; label: string; unit: string; words: string; makes: number; attempts: number; alpha: number; beta: number; mean: number; strength: number }
+
+function whatIfSources(example: PlayerExample): WhatIfSource[] {
+  const e = example.estimates;
+  if (!e) return [];
+  const from = (key: string, label: string, unit: string, words: string, makes: number, attempts: number, prior: SeasonPrior): WhatIfSource[] =>
+    prior.status === "available" ? [{ key, label, unit, words, makes, attempts, alpha: prior.alpha, beta: prior.beta, mean: prior.mean, strength: prior.strength }] : [];
+  return [
+    ...from("fg3_pct", "3P%", "3PA", "three-point attempts", e.fg3_pct.makes, e.fg3_pct.attempts, e.fg3_pct.prior),
+    ...from("ft_pct", "FT%", "FTA", "free-throw attempts", e.ft_pct.makes, e.ft_pct.attempts, e.ft_pct.prior),
+    ...from("fg2_pct", "2P%", "2PA", "two-point attempts", e.fg2_pct.makes, e.fg2_pct.attempts, e.fg2_pct.prior),
+    ...(example.rim.status === "available" ? from("rim_fg_pct", "Rim FG%", "rim FGA", "attempts at the rim", example.rim.makes, example.rim.attempts, example.rim.prior) : []),
+  ];
+}
+
+/**
+ * What if (owner-approved, RD13 round 4): the season's served prior applied to makes and attempts the reader picks, starting from the
+ * player's own. The same posterior mean the frozen run uses (shrunkRate); no interval is computed on the page.
+ */
+function WhatIf({ example }: { example: PlayerExample }) {
+  const sources = whatIfSources(example);
+  const [key, setKey] = useState(sources[0]?.key ?? "");
+  const source = sources.find(s => s.key === key) ?? sources[0];
+  const own = source ? { attempts: source.attempts, rate: source.attempts > 0 ? source.makes / source.attempts : source.mean } : { attempts: 0, rate: 0 };
+  const [picked, setPicked] = useState<Record<string, { attempts: number; rate: number }>>({});
+  if (!source) return null;
+  const state = picked[source.key] ?? own;
+  const max = Math.max(source.key === "ft_pct" ? 400 : 600, Math.ceil(source.attempts / 100) * 100);
+  const result = whatIf(state.rate, state.attempts, source.alpha, source.beta);
+  const changed = state.attempts !== own.attempts || Math.abs(state.rate - own.rate) > 1e-9;
+  const set = (next: Partial<{ attempts: number; rate: number }>) => setPicked(p => ({ ...p, [source.key]: { ...state, ...next } }));
+  const fill = (value: number, top: number) => `${Math.max(0, Math.min(100, (value / top) * 100))}%`;
+  return <figure className="sn-figure sn-whatif" data-chart="what-if" data-stat={source.key} data-attempts={state.attempts} data-makes={result.makes} data-shrunk={result.shrunk} data-weight={result.weight}>
+    <div className="sn-figure-head">
+      <figcaption className="sn-figure-title">What if: choose the attempts and the raw rate</figcaption>
+      <Segmented size="sm" label="What-if stat" value={source.key} onChange={setKey} options={sources.map(s => ({ value: s.key, label: s.label }))} />
+    </div>
+    <div className="sn-whatif-inputs">
+      <label className="sn-whatif-row">
+        <span className="sn-whatif-label">Attempts</span>
+        <span className="sn-whatif-value" data-field="whatif-attempts">{whole(state.attempts)} {source.unit}</span>
+        <input type="range" className="sn-range" min={0} max={max} step={1} value={state.attempts} aria-valuetext={`${whole(state.attempts)} ${source.words}`}
+          style={vars({ "--sn-fill": fill(state.attempts, max) })} onChange={event => set({ attempts: Number(event.target.value) })} />
+      </label>
+      <label className="sn-whatif-row">
+        <span className="sn-whatif-label">Raw {source.label}</span>
+        <span className="sn-whatif-value" data-field="whatif-rate">{formatPct(state.rate)}</span>
+        <input type="range" className="sn-range" min={0} max={1} step={0.005} value={state.rate} aria-valuetext={formatPct(state.rate)}
+          style={vars({ "--sn-fill": fill(state.rate, 1) })} onChange={event => set({ rate: Number(event.target.value) })} />
+      </label>
+    </div>
+    <dl className="sn-whatif-out">
+      <div><dt>Made / attempts</dt><dd data-field="whatif-counts">{whole(result.makes)} / {whole(state.attempts)}</dd></div>
+      <div data-series="raw"><dt>Raw</dt><dd data-field="whatif-raw">{formatPct(result.raw)}</dd></div>
+      <div data-series="shrunk"><dt>Shrunk</dt><dd data-field="whatif-shrunk">{formatPct(result.shrunk)}</dd></div>
+      <div><dt>League prior</dt><dd data-field="whatif-prior">{formatPct(source.mean)}</dd></div>
+    </dl>
+    <span className="sn-track sn-whatif-track" aria-hidden="true">
+      <span className="sn-track-prior" style={vars({ "--sn-at": pctAt(source.mean, 1) })} />
+      <span className="sn-track-dot" data-series="shrunk" style={vars({ "--sn-at": pctAt(result.shrunk, 1) })} />
+      {result.raw != null && <span className="sn-track-dot" data-series="raw" style={vars({ "--sn-at": pctAt(result.raw, 1) })} />}
+    </span>
+    <p className="sn-lead" data-field="whatif-line">With {whole(state.attempts)} {source.words}, the player&apos;s own shooting carries <strong>{formatPct(result.weight, 0)}</strong> of the weight and the league prior, worth {source.strength.toFixed(1)} attempts in {example.season}, carries the rest.</p>
+    <FormulaLine><span data-field="whatif-formula">Shrunk {source.label} = ({whole(result.makes)} + {source.alpha.toFixed(1)}) / ({whole(state.attempts)} + {source.strength.toFixed(1)}) = {formatPct(result.shrunk)}</span></FormulaLine>
+    <div className="sn-whatif-foot">
+      <p className="sn-note">A mean only: the page applies the season&apos;s prior to the numbers chosen here, so there is no interval. The table above has the served values.</p>
+      {changed && <Button size="sm" variant="ghost" icon="reset" onClick={() => setPicked(p => { const next = { ...p }; delete next[source.key]; return next; })}>{example.player_name}&apos;s season</Button>}
+    </div>
+  </figure>;
+}
+
 function ExampleBody({ example, path, onPath }: { example: PlayerExample; path: PathKey; onPath: (p: PathKey) => void }) {
   if (!example.estimates) return <GatedNote>No regular-season games for {example.player_name} in {example.season}: every value is unknown, not zero. Pick one of their seasons above.</GatedNote>;
   const rows = exampleRows(example);
@@ -352,6 +447,7 @@ function ExampleBody({ example, path, onPath }: { example: PlayerExample; path: 
     </FormulaLine>}
     <p className="sn-note">The prior adds α league makes and β league misses to the player&apos;s own, α + β being its strength. It is league-wide, not by position, so a centre&apos;s few threes are pulled toward the league&apos;s shooters. TS% is rebuilt from shrunk 2P%, 3P% and FT% with the player&apos;s attempt mix.</p>
     <ExampleStrip rows={rows} />
+    <WhatIf key={`${example.player_id}-${example.season}`} example={example} />
     <ExamplePath example={example} path={path} onPath={onPath} />
   </>;
 }
@@ -401,8 +497,10 @@ function TestSection({ data }: { data: SignalNoiseSummary }) {
   });
   const wins = shrinkingWins(data);
   const target = data.registration.parameters.validation_target_seasons as string[] | undefined;
+  const phone = usePhone();
+  const [view, setView] = useState<"gains" | "errors">("gains");
   const gain = (key: "raw_minus_shrunk" | "prior_minus_shrunk", label: string): GridColumn<TestRow> => ({
-    key, label, group: "Shrunk's gain, squared points, 95%", width: "md",
+    key, label, group: phone ? "Gain, squared points" : "Shrunk's gain, squared points, 95%", width: phone ? "sm" : "md",
     data: r => ({ field: key, value: r.block[key]?.value ?? "", low: r.block[key]?.low ?? "", high: r.block[key]?.high ?? "" }),
     cell: r => { const g = r.block[key]; return <GridValue text={sq(g?.value)} sub={sqBand(g)} tone={toneOf(g)} title={toneOf(g) ? "95% interval excludes zero" : "95% interval includes zero"} />; },
   });
@@ -421,10 +519,14 @@ function TestSection({ data }: { data: SignalNoiseSummary }) {
       <li><span className="rs-swatch" data-tone="bad" aria-hidden="true" />Shrunk worse: 95% interval below zero</li>
       <li><span className="rs-swatch" aria-hidden="true" />Interval includes zero</li>
     </ul>
-    <StatsGrid<TestRow> label="Shrinkage test" name="test" density="compact" height="auto" leadWidth="md" className="sn-grid sn-test" rows={rows} rowKey={r => r.stat}
+    {phone && <Segmented size="sm" label="Test columns" value={view} onChange={setView} options={[{ value: "gains", label: "Gains" }, { value: "errors", label: "Errors, RMSE" }]} />}
+    <StatsGrid<TestRow> label="Shrinkage test" name="test" density="compact" height="auto" leadWidth="md" className={phone ? "sn-grid sn-test sn-test-phone" : "sn-grid sn-test"} rows={rows} rowKey={r => r.stat}
       rowData={r => ({ stat: r.stat, band })}
       lead={{ label: "Stat", cell: r => <><span className="sn-name">{STAT_NAMES[r.stat]}</span><span className="sn-name-sub" data-field="pairs" data-value={r.block.pairs} data-players={r.block.players ?? ""}>{whole(r.block.pairs)} pairs{r.block.players ? ` · ${whole(r.block.players)} players` : ""}</span></> }}
-      columns={[gain("raw_minus_shrunk", "Over raw"), gain("prior_minus_shrunk", "Over the prior mean"), err("raw", "Raw"), err("prior", "Prior mean"), err("shrunk", "Shrunk")]} />
+      columns={[
+        ...(!phone || view === "gains" ? [gain("raw_minus_shrunk", "Over raw"), gain("prior_minus_shrunk", "Over the prior mean")] : []),
+        ...(!phone || view === "errors" ? [err("raw", "Raw"), err("prior", "Prior mean"), err("shrunk", "Shrunk")] : []),
+      ]} />
   </ResearchSection>;
 }
 
@@ -508,7 +610,7 @@ function About({ data }: { data: SignalNoiseSummary }) {
     <MethodBlock title="Method">
       <dl className="sn-defs">
         <dt>Stabilization</dt><dd data-field="method-stab">Regular seasons {data.stabilization_seasons[0]} to {data.stabilization_seasons.at(-1)}: {whole(data.stabilization.player_seasons_split)} player-seasons with {String(p.min_valid_games)} or more games, {whole(data.stabilization.players)} players. Each stat&apos;s player-seasons are grouped into {String(p.bins)} bins by season sample (at least {min?.percentage} attempts, or {min?.per_36_minutes} minutes for per-36 rates; bins need {String(p.min_players_per_bin)} players). Games are split at random {String(p.splits)} times; the mean split-half correlation is stepped up with Spearman–Brown, with a {String(p.bootstrap_replicates)}-replicate player bootstrap for the interval.</dd>
-        <dt>Levels</dt><dd>A curve n / (n + M) is fitted to the bins, so 0.5 sits at M and 0.7 at 7M/3. A level is reported only where a bin reaches it.{three?.m && three.levels["0.5"]?.status === "not_reached" && <span data-field="three-fitted" data-value={three.m.value}> For 3P% the fitted curve would put 0.5 at {formatSample(three.m.value)} 3PA (95% {formatSample(three.m.low)} to {formatSample(three.m.high)}), but no bin reaches 0.5, so it isn&apos;t a stabilization point.</span>}</dd>
+        <dt>Levels</dt><dd>A curve n / (n + M) is fitted to the bins, so 0.5 sits at M and 0.7 at 7M/3. A level is reported only where a bin reaches it.{three?.m && three.levels["0.5"]?.status === "not_reached" && <span data-field="three-fitted" data-value={three.m.value}> For 3P% the fitted curve would put 0.5 at {sampleWords(three.m.value, three)} (95% {formatSample(three.m.low)} to {formatSample(three.m.high)}), but no bin reaches 0.5, so it isn&apos;t a stabilization point.</span>}</dd>
         <dt>Priors</dt><dd>Beta-binomial empirical Bayes, fitted by maximum likelihood on the player-season makes and attempts of up to {String(p.prior_seasons_back)} earlier regular seasons. TS% isn&apos;t a single proportion, so it is rebuilt from shrunk 2P%, 3P% and FT%; its interval uses {whole(Number(p.ts_interval_draws))} draws.</dd>
         <dt>The test</dt><dd>Predict each player&apos;s raw value next season from this season&apos;s raw value, the prior mean or the shrunk value. Mean squared error weighted by next season&apos;s attempts; {String(p.bootstrap_replicates)} player-bootstrap replicates. Registered with no pass mark.</dd>
         <dt>Coverage</dt><dd data-field="coverage">Game logs: regular seasons {data.inputs.game_log_seasons[0]} to {data.inputs.game_log_seasons[1]}. Rim FG%: NBA shot detail ({source}) for {whole(rim.length)} seasons; its field-goal attempts disagree with the box score in {whole(mismatch)} of {whole(playerGames)} player-games. TS% points equal 2·2PM + 3·3PM + FTM in every player-season ({data.coverage.ts_identity_failures} exceptions). There is no 2026-27 shot detail, so 2026-27 rim values are unknown.</dd>

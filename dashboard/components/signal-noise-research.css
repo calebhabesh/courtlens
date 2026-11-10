@@ -29,6 +29,7 @@
   .sn-figure { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; margin: 0; padding: var(--space-4); border-radius: var(--radius-lg); background: var(--rs-panel); box-shadow: inset 0 0 0 1px var(--rs-rim); }
   .sn-figure-title { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; }
   .sn-figure-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+  .sn-page .slc-y-label, .sn-page .slc-x-label { color: var(--color-on-bg-secondary); font-size: var(--text-xs); font-weight: 500; }
   .sn-path .slc-line { stroke: var(--color-category-3); }
   .sn-path .slc-dot { background: var(--color-category-3); }
   .sn-path .slc-line[data-series="overlay"] { stroke: var(--color-category-4); }
@@ -45,6 +46,8 @@
   .sn-key-mark[data-mark="typical"] { width: 2px; height: 12px; background: var(--color-category-3); }
   .sn-key-mark[data-mark="observed"] { width: 16px; height: 3px; border-radius: var(--radius-pill); background: var(--color-text-tertiary); }
   .sn-key-mark[data-mark="curve"] { width: 16px; height: 2px; background: var(--color-category-4); }
+  .sn-key-mark[data-mark="cross-half"] { width: 10px; height: 10px; border-radius: var(--radius-pill); background: var(--color-category-4); }
+  .sn-key-mark[data-mark="cross-seventy"] { width: 10px; height: 10px; margin-left: calc(-1 * var(--space-1)); border-radius: var(--radius-pill); box-shadow: inset 0 0 0 2px var(--color-category-4); }
   .sn-key-mark[data-mark="level"] { width: 16px; height: 0; border-top: 1px dashed var(--color-on-bg-secondary); }
   .sn-key-mark[data-mark="raw"] { width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--color-category-3); }
   .sn-key-mark[data-mark="shrunk"] { width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--color-category-4); }
@@ -77,18 +80,34 @@
   .sn-track-dot[data-series="raw"] { background: var(--color-category-3); }
   .sn-strip-row[data-active] .sn-track { box-shadow: inset 0 0 0 1px var(--rs-rim); }
 
-  /* Chips choosing the curve's stat, grouped by family. */
-  .sn-chips { display: grid; gap: var(--space-2); }
-  .sn-chip-row { display: grid; grid-template-columns: 112px minmax(0, 1fr); align-items: start; gap: var(--space-3); }
-  .sn-chip-row > .sn-chip-label { padding-top: var(--space-2); }
-  .sn-chip-label { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
-  .sn-chip-list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  /* What if (RD13 round 4): two sliders, the readout, one track. The range input copies RD02's approved ORtg Lab slider. */
+  .sn-whatif-inputs { display: grid; gap: var(--space-2); }
+  .sn-whatif-row { display: grid; grid-template-columns: 96px 88px minmax(0, 1fr); align-items: center; gap: var(--space-3); min-height: var(--control-lg); }
+  .sn-whatif-label { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600; }
+  .sn-whatif-value { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sn-range { width: 100%; height: var(--space-6); min-height: 0; margin: 0; padding: 0; border: 0; background: transparent; appearance: none; cursor: pointer; }
+  .sn-range::-webkit-slider-runnable-track { height: var(--space-1); border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) var(--sn-fill), var(--color-surface-3) var(--sn-fill)); }
+  .sn-range::-moz-range-track { height: var(--space-1); border-radius: var(--radius-pill); background: linear-gradient(to right, var(--color-accent) var(--sn-fill), var(--color-surface-3) var(--sn-fill)); }
+  .sn-range::-webkit-slider-thumb { width: var(--space-4); height: var(--space-4); margin-top: calc(-1 * var(--space-1) * 1.5); border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-text); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 22%, transparent); appearance: none; }
+  .sn-range::-moz-range-thumb { width: var(--space-4); height: var(--space-4); border: 2px solid var(--color-accent); border-radius: 50%; background: var(--color-text); box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-accent) 22%, transparent); }
+  .sn-range:focus, .sn-range:focus-visible { outline: none; }
+  .sn-range:focus-visible::-webkit-slider-thumb { box-shadow: var(--focus-ring); }
+  .sn-range:focus-visible::-moz-range-thumb { box-shadow: var(--focus-ring); }
+  .sn-whatif-out { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+  .sn-whatif-out > div { display: grid; gap: var(--space-0-5); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--rs-well); }
+  .sn-whatif-out dt { color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .sn-whatif-out dd { margin: 0; color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 650; font-variant-numeric: tabular-nums; }
+  .sn-whatif-out > div[data-series="raw"] dd { color: var(--color-category-3); }
+  .sn-whatif-out > div[data-series="shrunk"] dd { color: var(--color-category-4); }
+  .sn-whatif-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-4); }
+
+  /* The shrinkage test grid; on a phone it shows gains or errors (RD13 round 4). */
 
   /* The reliability curve: HTML labels and points over an SVG that draws only the fitted line (RD06's chart method). */
   .sn-curve { display: grid; gap: var(--space-3); min-width: 0; }
   .sn-curve-frame { display: grid; grid-template-columns: 40px minmax(0, 1fr); grid-template-rows: 260px auto auto; column-gap: var(--space-2); }
   .sn-curve-y { position: relative; grid-column: 1; grid-row: 1; }
-  .sn-curve-y > span { position: absolute; top: var(--sn-y); right: 0; color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: 1; transform: translateY(-50%); font-variant-numeric: tabular-nums; }
+  .sn-curve-y > span { position: absolute; top: var(--sn-y); right: 0; color: var(--color-on-bg-secondary); font-size: var(--text-xs); font-weight: 500; line-height: 1; transform: translateY(-50%); font-variant-numeric: tabular-nums; }
   .sn-curve-plot { position: relative; grid-column: 2; grid-row: 1; }
   .sn-curve-grid { position: absolute; top: var(--sn-y); left: 0; right: 0; height: 0; border-top: 1px solid var(--color-hairline); }
   .sn-curve-grid[data-level] { border-top: 1px dashed var(--color-on-bg-tertiary); }
@@ -98,9 +117,15 @@
   .sn-bin-bar { position: absolute; top: var(--sn-top); left: var(--sn-x); width: 2px; height: calc(var(--sn-bottom) - var(--sn-top)); background: var(--color-text-secondary); transform: translateX(-50%); }
   .sn-bin-dot { position: absolute; top: var(--sn-y); left: var(--sn-x); width: 10px; height: 10px; border-radius: var(--radius-pill); background: var(--color-text); box-shadow: 0 0 0 2px var(--color-bg); transform: translate(-50%, -50%); pointer-events: auto; }
   .sn-curve-x { position: relative; grid-column: 2; grid-row: 2; height: var(--space-6); }
-  .sn-curve-x > span { position: absolute; top: var(--space-2); left: var(--sn-x); color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: 1; transform: translateX(-50%); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .sn-curve-x > span { position: absolute; top: var(--space-2); left: var(--sn-x); color: var(--color-on-bg-secondary); font-size: var(--text-xs); font-weight: 500; line-height: 1; transform: translateX(-50%); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .sn-curve-x > span[data-edge="start"] { transform: none; }
   .sn-curve-x > span[data-edge="end"] { transform: translateX(-100%); }
+  /* The strip's marks where the curve crosses each reached level, and the typical season (RD13 round 4). */
+  .sn-curve-typical { position: absolute; top: 0; bottom: 0; left: var(--sn-x); width: 2px; background: color-mix(in srgb, var(--color-category-3) 70%, transparent); transform: translateX(-50%); pointer-events: none; }
+  .sn-curve-mark { position: absolute; inset: 0; pointer-events: none; }
+  .sn-curve-mark-span { position: absolute; top: var(--sn-y); left: var(--sn-low); width: calc(var(--sn-high) - var(--sn-low)); height: 4px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-category-4) 55%, transparent); transform: translateY(-50%); }
+  .sn-curve-mark-dot { position: absolute; top: var(--sn-y); left: var(--sn-x); width: 12px; height: 12px; border-radius: var(--radius-pill); background: var(--color-category-4); box-shadow: 0 0 0 2px var(--color-bg); transform: translate(-50%, -50%); pointer-events: auto; }
+  .sn-curve-mark[data-level="0.7"] .sn-curve-mark-dot { background: var(--color-bg); box-shadow: inset 0 0 0 3px var(--color-category-4), 0 0 0 2px var(--color-bg); }
   .sn-curve-xlabel { grid-column: 2; grid-row: 3; color: var(--color-on-bg-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); text-align: center; }
 
   /* The worked example: one team-tinted card (identity, not good or bad), search in place of the name. */
@@ -130,6 +155,7 @@
   .sn-test col:not(.rs-col-lead) { width: auto; }
   .sn-test.rs-grid { --rs-grid-min: 820px; }
   .sn-test.rs-grid[data-lead] { --rs-grid-lead: 168px; }
+  .sn-test.sn-test-phone.rs-grid { --rs-grid-min: 0px; }
 
   @media (max-width: 767px) {
     .rs-column.sn-page { gap: var(--space-8); }
@@ -144,7 +170,6 @@
     .sn-strip-row > .sn-strip-name { grid-area: name; grid-template-columns: 88px auto; justify-content: start; }
     .sn-strip-row > .sn-track { grid-area: track; }
     .sn-strip-row > .sn-strip-value { grid-area: value; }
-    .sn-chip-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
     .sn-curve-frame { grid-template-columns: 28px minmax(0, 1fr); grid-template-rows: 220px auto auto; }
     .sn-card { grid-template-columns: auto minmax(0, 1fr) auto; padding: var(--space-3); gap: var(--space-2) var(--space-3); }
     .sn-card > .ui-identity { grid-row: 1 / span 2; }
@@ -155,6 +180,10 @@
     .sn-wrap.rs-grid[data-lead] { --rs-grid-lead: 132px; }
     .sn-stab.rs-grid[data-lead] { --rs-grid-lead: 96px; }
     .sn-test.rs-grid[data-lead] { --rs-grid-lead: 124px; }
+    .sn-strip-scale > span[data-minor] { display: none; }
+    .sn-whatif-row { grid-template-columns: minmax(0, 1fr) auto; }
+    .sn-whatif-row > .sn-range { grid-column: 1 / -1; height: var(--control-lg); }
+    .sn-whatif-out { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .sn-defs { grid-template-columns: minmax(0, 1fr); }
     .sn-defs dd { margin-bottom: var(--space-2); }
   }

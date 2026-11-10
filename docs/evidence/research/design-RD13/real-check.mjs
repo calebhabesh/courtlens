@@ -4,7 +4,9 @@
 // season with rim unknown, a season with no games) with their season pickers against the career endpoint, every path series, every test band,
 // every prior series, What this doesn't cover and About. Also the search in place, colour rules, console errors, overflow, broken images,
 // photos, logos, native selects, ISO dates, hyphen-minus numbers and project words. Formats and lookups are written here independently of
-// lib/signal-noise.ts. Usage: node real-check.mjs <report.json> [<shots dir>]
+// lib/signal-noise.ts. Round 4 adds the grouped curve picker, the marks on each curve, units spelled out in sentences, the what-if (every
+// available stat starts at the served shrunk value, and one slider move is recomputed here from the served prior) and the phone test view.
+// Usage: node real-check.mjs <report.json> [<shots dir>]
 import { chromium } from "/home/ethioking/dev/courtlens/dashboard/node_modules/playwright/index.mjs";
 import { writeFileSync } from "node:fs";
 const API = "http://127.0.0.1:4180", WEB = "http://localhost:3180/research/signal-noise";
@@ -19,6 +21,8 @@ const pct = (v, d = 1) => `${(v * 100).toFixed(d)}%`;
 const sgn = (v, d = 1) => { const t = Math.abs(v).toFixed(d); return Number(t) === 0 ? t : `${v > 0 ? "+" : "−"}${t}`; };
 const unit = s => s.family === "per_36" ? "min" : s.unit;
 const sample = (v, s) => `${whole(v)} ${unit(s)}`;
+const WORDS = { FGA: "field-goal attempts", "2PA": "two-point attempts", "3PA": "three-point attempts", FTA: "free-throw attempts", TSA: "true-shooting attempts", "rim FGA": "attempts at the rim", minutes: "minutes" };
+const words = (v, s) => `${whole(v)} ${s.family === "per_36" ? "minutes" : WORDS[s.unit]}`;
 const isReached = l => l?.status === "reached" && typeof l.n === "number";
 const num = v => v === null || v === undefined || v === "" ? null : Number(v);
 const STAT = { fg3_pct: "3P%", ft_pct: "FT%", fg2_pct: "2P%", rim_fg_pct: "Rim FG%", ts_pct: "TS%" };
@@ -106,10 +110,11 @@ async function checkCurves(page, width) {
   const keys = width > 600 ? S.stabilization.stats.map(s => s.key) : ["fg3_pct", "ft_pct", "ts_pct", "rim_fg_pct", "stl_per_36", "pts_per_36"];
   for (const key of keys) {
     const s = S.stabilization.stats.find(x => x.key === key);
-    await page.getByRole("group", { name: "Stat" }).getByRole("button", { name: s.label, exact: true }).click();
+    await page.getByLabel("Curve stat").selectOption(key);
     await page.waitForSelector(`[data-chart="curve"][data-stat="${key}"]`);
     const c = await page.locator('[data-chart="curve"]').evaluate(e => ({ fitted: e.dataset.fitted, bins: [...e.querySelectorAll(".sn-bin")].map(b => ({ ...b.dataset })), line: document.querySelector('[data-field="curve-line"]').textContent,
-      heading: document.querySelector("#curve h2").textContent, notDrawn: !!document.querySelector('[data-field="curve-not-drawn"]') }));
+      heading: document.querySelector("#curve h2").textContent, notDrawn: !!document.querySelector('[data-field="curve-not-drawn"]'),
+      marks: [...e.querySelectorAll('[data-field="curve-mark"]')].map(m => ({ ...m.dataset })), typical: e.querySelector('[data-field="curve-typical"]')?.dataset.n ?? null }));
     const both = isReached(s.levels["0.5"]) && isReached(s.levels["0.7"]);
     eq(`${width} curve ${key} heading`, c.heading, `Reliability by sample size: ${s.label}`);
     eq(`${width} curve ${key} fitted`, c.fitted, both ? "drawn" : "not-drawn");
@@ -119,8 +124,13 @@ async function checkCurves(page, width) {
     bins.forEach((b, i) => { const d = c.bins[i] ?? {}; eq(`${width} curve ${key} bin ${b.bin} n`, num(d.n), b.n); eq(`${width} curve ${key} bin ${b.bin} rho`, num(d.value), b.rho); eq(`${width} curve ${key} bin ${b.bin} low`, num(d.low), b.rho_interval.low); eq(`${width} curve ${key} bin ${b.bin} high`, num(d.high), b.rho_interval.high); });
     const h = s.levels["0.5"], sv = s.levels["0.7"], lb = largest(s);
     eq(`${width} curve ${key} line`, c.line, both
-      ? `${s.label} reaches 0.5 at ${sample(h.n, s)} (${whole(h.interval.low)} to ${whole(h.interval.high)}) and 0.7 at ${sample(sv.n, s)} (${whole(sv.interval.low)} to ${whole(sv.interval.high)}). A typical season has ${sample(s.median_sample, s)}.`
-      : `No bin of ${s.label} reaches 0.5. The largest, at ${sample(lb.n, s)}, is ${rho(lb.rho)} (95% ${rho(lb.rho_interval.low)} to ${rho(lb.rho_interval.high)}). A typical season has ${sample(s.median_sample, s)}.`);
+      ? `${s.label} reaches 0.5 at ${words(h.n, s)} (${whole(h.interval.low)} to ${whole(h.interval.high)}) and 0.7 at ${words(sv.n, s)} (${whole(sv.interval.low)} to ${whole(sv.interval.high)}). A typical season has ${words(s.median_sample, s)}.`
+      : `No bin of ${s.label} reaches 0.5. The largest, at ${words(lb.n, s)}, is ${rho(lb.rho)} (95% ${rho(lb.rho_interval.low)} to ${rho(lb.rho_interval.high)}). A typical season has ${words(s.median_sample, s)}.`);
+    // The strip's marks on the curve: one per reached level, at its served point and interval; the typical season.
+    const wantMarks = [["0.5", h], ["0.7", sv]].filter(([, l]) => isReached(l));
+    eq(`${width} curve ${key} marks`, c.marks.map(m => m.level).join(","), wantMarks.map(([lv]) => lv).join(","));
+    for (const [lv, l] of wantMarks) { const m = c.marks.find(x => x.level === lv) ?? {}; eq(`${width} curve ${key} mark ${lv} n`, num(m.n), l.n); eq(`${width} curve ${key} mark ${lv} low`, num(m.low), l.interval.low); eq(`${width} curve ${key} mark ${lv} high`, num(m.high), l.interval.high); }
+    eq(`${width} curve ${key} typical`, num(c.typical), s.median_sample);
     // The bins table under it (collapsed, in the DOM).
     const rows = await page.locator(`table[aria-label="${s.label} bins"] tbody tr`).evaluateAll(els => els.map(e => Object.fromEntries([...e.querySelectorAll("td")].map(td => [td.dataset.field, { ...td.dataset, text: td.textContent }]))));
     eq(`${width} bins ${key} rows`, rows.length, s.bins.length);
@@ -133,7 +143,7 @@ async function checkCurves(page, width) {
       eq(`${width} bins ${key} ${b.bin} rho`, r.rho?.text, `${rho(b.rho)}${rho(b.rho_interval.low)} to ${rho(b.rho_interval.high)}`);
     });
   }
-  await page.getByRole("group", { name: "Stat" }).getByRole("button", { name: "3P%", exact: true }).click();
+  await page.getByLabel("Curve stat").selectOption("fg3_pct");
 }
 
 async function checkExample(page, width, query, label) {
@@ -187,6 +197,31 @@ async function checkExample(page, width, query, label) {
   if (t.prior.status === "available" && t.attempts > 0) eq(`${width} ${label} formula`, await page.locator('[data-field="formula"]').textContent(), `Shrunk 3P% = (${whole(t.makes)} + ${t.prior.alpha.toFixed(1)}) / (${whole(t.attempts)} + ${t.prior.strength.toFixed(1)}) = ${pct(t.shrunk.value)}`);
   const strip = await page.locator('[data-chart="example-strip"] .sn-ex-row').evaluateAll(els => els.map(e => ({ stat: e.dataset.stat, text: e.querySelector(".sn-strip-value").textContent })));
   for (const [i, w] of wantRows.entries()) eq(`${width} ${label} strip ${w.k}`, strip[i]?.text, w.unknown ? "Unknown" : `${pct(w.raw)}to ${pct(w.shrunk.value)}`);
+  // The what-if: one option per stat with a served prior; each starts at the served shrunk value and its counts; then one slider move.
+  const sources = [...["fg3_pct", "ft_pct", "fg2_pct"].map(k => ({ k, ...e[k] })), ...(ex.rim.status === "available" ? [{ k: "rim_fg_pct", ...ex.rim }] : [])].filter(x => x.prior.status === "available");
+  const box = page.locator('[data-chart="what-if"]');
+  eq(`${width} ${label} what-if options`, (await box.getByRole("radio").allTextContents()).join(","), sources.map(x => STAT[x.k]).join(","));
+  for (const x of sources) {
+    await box.getByRole("radio", { name: STAT[x.k], exact: true }).click();
+    await page.waitForSelector(`[data-chart="what-if"][data-stat="${x.k}"]`);
+    const d = await box.evaluate(el => ({ ...el.dataset, counts: el.querySelector('[data-field="whatif-counts"]').textContent, prior: el.querySelector('[data-field="whatif-prior"]').textContent, formula: el.querySelector('[data-field="whatif-formula"]').textContent }));
+    const own = x.attempts > 0 ? (x.makes + x.prior.alpha) / (x.attempts + x.prior.alpha + x.prior.beta) : x.prior.mean;
+    eq(`${width} ${label} what-if ${x.k} attempts`, num(d.attempts), x.attempts); eq(`${width} ${label} what-if ${x.k} makes`, num(d.makes), x.makes);
+    eq(`${width} ${label} what-if ${x.k} shrunk`, num(d.shrunk), x.attempts > 0 ? x.shrunk.value : own);
+    eq(`${width} ${label} what-if ${x.k} counts`, d.counts, `${whole(x.makes)} / ${whole(x.attempts)}`); eq(`${width} ${label} what-if ${x.k} prior`, d.prior, pct(x.prior.mean));
+    eq(`${width} ${label} what-if ${x.k} formula`, d.formula, `Shrunk ${STAT[x.k]} = (${whole(x.makes)} + ${x.prior.alpha.toFixed(1)}) / (${whole(x.attempts)} + ${x.prior.strength.toFixed(1)}) = ${pct(x.attempts > 0 ? x.shrunk.value : own)}`);
+  }
+  if (sources.length) {
+    const x = sources[0];
+    await box.getByRole("radio", { name: STAT[x.k], exact: true }).click();
+    await box.getByRole("slider", { name: /Attempts/ }).fill("250");
+    await page.waitForSelector('[data-chart="what-if"][data-attempts="250"]');
+    const rate = x.attempts > 0 ? x.makes / x.attempts : x.prior.mean, makes = Math.round(rate * 250);
+    eq(`${width} ${label} what-if moved shrunk`, num(await box.getAttribute("data-shrunk")), (makes + x.prior.alpha) / (250 + x.prior.alpha + x.prior.beta));
+    eq(`${width} ${label} what-if moved weight`, num(await box.getAttribute("data-weight")), 250 / (250 + x.prior.alpha + x.prior.beta));
+    await box.getByRole("button", { name: `${ex.player_name}'s season` }).click();
+    eq(`${width} ${label} what-if reset`, num(await box.getAttribute("data-attempts")), x.attempts);
+  }
   // Every path series: raw on the main line, shrunk on the overlay, one point per game with attempts.
   for (const key of ["fg3_pct", "ft_pct", "ts_pct"]) {
     await page.getByRole("radiogroup", { name: "Season path" }).getByRole("radio", { name: STAT[key] }).click();
@@ -206,8 +241,18 @@ async function checkTest(page, width) {
   for (const band of ["all", "under 50", "50-199", "200 or more"]) {
     await page.getByRole("radiogroup", { name: "Attempts this season" }).getByRole("radio", { name: band === "all" ? "All" : BAND[band] }).click();
     await page.waitForSelector(`table[aria-label="Shrinkage test"] tbody tr[data-band="${band}"]`);
-    const rows = await page.locator('table[aria-label="Shrinkage test"] tbody tr').evaluateAll(els => els.map(e => ({ stat: e.dataset.stat, lead: e.querySelector("th").textContent,
+    // On a phone the table shows gains or errors (round 4): read both views and merge them.
+    const read = () => page.locator('table[aria-label="Shrinkage test"] tbody tr').evaluateAll(els => els.map(e => ({ stat: e.dataset.stat, lead: e.querySelector("th").textContent,
       cells: Object.fromEntries([...e.querySelectorAll("td")].map(td => [td.dataset.field, { ...td.dataset, text: td.textContent, tone: td.querySelector("[data-tone]")?.dataset.tone ?? null }])) })));
+    let rows = await read();
+    if (width < 600) {
+      eq(`${width} test ${band} phone gains only`, Object.keys(rows[0]?.cells ?? {}).join(","), "raw_minus_shrunk,prior_minus_shrunk");
+      await page.getByRole("radio", { name: "Errors, RMSE" }).click();
+      const errs = await read();
+      eq(`${width} test ${band} phone errors only`, Object.keys(errs[0]?.cells ?? {}).join(","), "mse-raw,mse-prior,mse-shrunk");
+      rows = rows.map((r, i) => ({ ...r, cells: { ...r.cells, ...errs[i]?.cells } }));
+      await page.getByRole("radio", { name: "Gains" }).click();
+    }
     eq(`${width} test ${band} order`, rows.map(r => r.stat).join(","), TESTS.join(","));
     for (const [i, stat] of TESTS.entries()) {
       const v = S.validation[stat], b = band === "all" ? v.pooled : v.bands.find(x => x.band === band), r = rows[i];
@@ -258,7 +303,7 @@ async function checkFixed(page, width) {
   const about = await page.locator("#about").textContent();
   const rim = Object.values(S.coverage.rim);
   has(`${width} about stab`, about, `${whole(S.stabilization.player_seasons_split)} player-seasons with 10 or more games, ${whole(S.stabilization.players)} players`);
-  has(`${width} about fitted`, about, `For 3P% the fitted curve would put 0.5 at ${whole(three.m.value)} 3PA (95% ${whole(three.m.low)} to ${whole(three.m.high)}), but no bin reaches 0.5, so it isn't a stabilization point.`);
+  has(`${width} about fitted`, about, `For 3P% the fitted curve would put 0.5 at ${whole(three.m.value)} three-point attempts (95% ${whole(three.m.low)} to ${whole(three.m.high)}), but no bin reaches 0.5, so it isn't a stabilization point.`);
   has(`${width} about coverage`, about, `disagree with the box score in ${whole(rim.reduce((n, r) => n + r.player_games_fga_mismatch, 0))} of ${whole(rim.reduce((n, r) => n + r.player_games, 0))} player-games`);
   has(`${width} about ts`, about, `(${S.coverage.ts_identity_failures} exceptions)`);
   has(`${width} about hashes`, about, `Registration ${S.registration.content_sha256.slice(0, 16)} · results ${S.results_sha256.slice(0, 16)}.`);
@@ -297,7 +342,7 @@ for (const width of [1440, 390]) {
   await open(page);
   await layout(page, width, "default");
   eq(`${width} column`, report.layout.at(-1).column, Math.min(992, width - (width > 600 ? 32 : 24)));
-  eq(`${width} native selects`, report.layout.at(-1).selects, 1);
+  eq(`${width} native selects`, report.layout.at(-1).selects, 2);
   await checkFixed(page, width);
   await checkStrip(page, width);
   await checkCurves(page, width);

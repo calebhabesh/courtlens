@@ -926,6 +926,16 @@ Instructions (owner, 2026-11-10, round 3):
 7. [x] Is there anything more we can do to improve this page.
    — Answered with suggestions in the session, nothing built until the owner picks.
 
+Instructions (owner, 2026-11-10, round 4; the owner answered the six suggestions of round 3 with "Do them all comprehensively."):
+8. [x] Do them all comprehensively.
+   - (1) Brighter axes on every chart. — The curve, the example scale (which gains a 0% to 100% axis, 0/50/100 on a phone), the season path and the league prior use the strip's 12 px secondary axis labels.
+   - (2) Tie the strip and the curve together. — The curve marks each reached level where it crosses (filled 0.5, hollow 0.7, in the curve's colour) with its served 95% interval, and a typical-season line; 3P% has only the typical season.
+   - (3) Clearer sample wording. — Sentences spell the unit out ("480 three-point attempts", "70 attempts at the rim"); the strip and tables keep "3PA".
+   - (4) Fewer rows of curve chips. — One kit select beside the curve's heading, grouped Percentages / Per 36 minutes.
+   - (5) The test table on a phone. — A Gains / Errors, RMSE switch at phone width, so the table never scrolls sideways; desktop unchanged.
+   - (6) A what-if in the worked example (approved by the owner here). — Sliders for attempts and raw rate on 3P%, FT%, 2P% and Rim FG% (when served), starting from the player's season; shrunk value, raw, league prior, the weight on the player's own attempts, the formula, a reset; a posterior mean from the served prior, no interval, said on the page.
+   — Built as listed. Real data 10,613 values, 0 mismatches, 0 console errors, 0 overflow; 12 portraits, 0 faults; `r03-signal-noise` ×3 27/27; Vitest 854. Full Playwright not run: no shared code changed (owner's rule, 2026-11-10).
+
 Evidence: [`design-RD13`](evidence/research/design-RD13/README.md).
 
 ## RD14 Win Probability — ⏸
