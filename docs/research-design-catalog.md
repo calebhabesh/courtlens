@@ -1067,10 +1067,20 @@ menu entry, and answered "Sure."):
   (6) on the After a defensive rebound view, opponent points per possession after a make and after a rebound side by side against the league line.
   Recommended: 1, 2, 4 and 5 together; 3 and 6 each add a section (owner's call). Also: delete the now-unrendered `components/shooting-view.tsx`
   and `components/catalog-scope-fields.tsx` (the old per-player tool; its POST endpoint stays), or keep them?
+  Round 4 built 1, 2, 4, 5 and the `shooting-view.tsx` deletion; 3 and 6 stay open.
 
 Instructions (owner, 2026-11-10, round 3):
 3. [x] Sounds good. I approve them. (RD17 and RD18 together.)
    — Approved after two build rounds and RD17's removal of the tab bar. The six suggestions and the deletion question above stay open and unbuilt; nothing in this approval chose them.
+
+Instructions (owner, 2026-11-10, round 4; after approving, the owner was offered the open suggestions with 1, 2, 4 and 5 recommended and the two-file deletion, and answered "Yes, add these"):
+4. [x] Yes, add these. (Suggestions 1, 2, 4 and 5, and the deletion.)
+   - (1) One line under the answer on the other season, same team and position: whether the zone order held (thin zones left out, as in the answer) and whether the clearest rebound effect kept its sign with an interval clear of zero.
+   - (2) A crosshair on every team row that scopes the whole page to that team, and back on a second press, without moving the row on screen.
+   - (4) The cost axis ends on a round step (0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5), at most two ticks each side of zero: BOS bigs after a defensive rebound reads ±2.00 with ticks at whole points, not ±1.44 / ±0.72.
+   - (5) On a phone, cost intervals under the bars drop their leading zeros ("−.389 to +.215"), the length of the points intervals that already fit, and never wrap.
+   - Deletion: `components/shooting-view.tsx` and its stylesheet are gone. `components/catalog-scope-fields.tsx` stays: the check found the Ask scope editor and the contract drawer still use it, so the question was wrong to call it unrendered.
+   — Built as listed. Nationally, 2024-25 kept the order (rim, three, short mid, long mid) and the rim rebound effect, read independently from the served rows. Row stays ✅ from round 3; this round is for the owner's look.
 
 ## RD19 Ask evaluation — ⏸
 

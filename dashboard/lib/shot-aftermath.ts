@@ -89,6 +89,12 @@ export function band(entry: Interval | null | undefined, sign = false, digits = 
   const f = sign ? signed : fixed;
   return `${f(entry.low, digits)} to ${f(entry.high, digits)}`;
 }
+/** A cost interval short enough for a phone chart label: leading zeros dropped, "−.389 to +.215" (RD18 suggestion 5). */
+export function shortBand(entry: Interval | null | undefined, digits = 3): string {
+  if (!entry) return "";
+  const f = (v: number) => signed(v, digits).replace(/^([+−]?)0\./, "$1.");
+  return `${f(entry.low)} to ${f(entry.high)}`;
+}
 export const pctBand = (entry: Interval | null | undefined) => entry ? `${pct(entry.low)} to ${pct(entry.high)}` : "";
 /** The kit's tone words for a cost: green is a benefit (below the league), red a cost. */
 export const gridTone = (tone: Tone | null | undefined): "good" | "bad" | undefined => tone === "benefit" ? "good" : tone === "cost" ? "bad" : undefined;
@@ -124,13 +130,25 @@ export function pointsAxis(rows: readonly Cell[], keys: readonly ValueKey[], lea
   const highs = rows.flatMap(r => keys.map(k => r.values[k]?.high ?? 0));
   return Math.max(0.5, Math.ceil(Math.max(...highs, league ?? 0) * 2) / 2);
 }
-/** Cost gets its own axis centred on zero, wide enough for every interval, in steps of 0.02. */
+/** Round steps for the cost axis: never more than two ticks either side of zero, each a round number (RD18 suggestion 4). */
+const COST_STEPS = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5] as const;
+const EPS = 1e-9;
+function costStep(reach: number): number {
+  return COST_STEPS.find(step => reach / step <= 2 + EPS) ?? COST_STEPS.at(-1)!;
+}
+/** Cost gets its own axis centred on zero, wide enough for every interval, ending on a round step (0.04, 0.10, 2.00 — never 1.44). */
 export function costAxis(rows: readonly Cell[], key: CostKey): number {
-  const reach = Math.max(...rows.flatMap(r => { const e = r.values[key]; return e ? [Math.abs(e.low), Math.abs(e.high)] : [0]; }));
-  return Math.max(0.02, Math.ceil(reach / 0.02 - 1e-9) * 0.02);
+  const reach = Math.max(0, ...rows.flatMap(r => { const e = r.values[key]; return e ? [Math.abs(e.low), Math.abs(e.high)] : [0]; }));
+  const r = Math.max(reach, 0.02);
+  const step = costStep(r);
+  return Number((Math.ceil(r / step - EPS) * step).toFixed(4));
 }
 export function ticks(top: number, kind: "points" | "cost"): number[] {
-  if (kind === "cost") return [-top, -top / 2, 0, top / 2, top];
+  if (kind === "cost") {
+    const step = COST_STEPS.find(s => top / s <= 2 + EPS && Math.abs(top / s - Math.round(top / s)) < 1e-6) ?? top;
+    const n = Math.round(top / step);
+    return Array.from({ length: 2 * n + 1 }, (_, i) => Number(((i - n) * step).toFixed(4)));
+  }
   const step = top <= 1 ? 0.25 : 0.5;
   return Array.from({ length: Math.round(top / step) + 1 }, (_, i) => i * step);
 }
@@ -160,6 +178,32 @@ export function answerOf(rows: readonly Cell[]): Answer | null {
   const toned = zones.filter(z => z.tones.dreb_cost && z.values.dreb_cost)
     .sort((a, b) => Math.abs(b.values.dreb_cost!.value) - Math.abs(a.values.dreb_cost!.value));
   return { best, worst, bestClear, worstClear, overall: rows.find(r => r.zone === "all") ?? null, reboundEffect: toned[0] ?? null, reboundAll: toned.length ? "some" : "none", thin };
+}
+
+/** Zones in net order (thin zones left out), best first. */
+export const zoneOrder = (rows: readonly Cell[]): Zone[] =>
+  rows.filter(r => r.zone !== "all" && r.status === "ok" && net(r)).sort((a, b) => net(b)!.value - net(a)!.value).map(r => r.zone);
+
+export interface SeasonCheck {
+  season: string; sameOrder: boolean; order: Zone[];
+  /** The current season's clearest rebound effect, read in the other season: held (same sign, interval clear of zero), unclear, or none to check. */
+  rebound: { zone: Zone; held: "held" | "unclear" } | null;
+}
+/** RD18 suggestion 1: did the zone order and the rebound effect hold in the other season of the same scope? */
+export function seasonCheck(current: readonly Cell[], other: readonly Cell[], season: string): SeasonCheck | null {
+  const a = answerOf(current);
+  if (!a || !answerOf(other)) return null;
+  const order = zoneOrder(other), mine = zoneOrder(current);
+  const sameOrder = order.length === mine.length && order.every((z, i) => z === mine[i]);
+  let rebound: SeasonCheck["rebound"] = null;
+  if (a.reboundEffect) {
+    const zone = a.reboundEffect.zone;
+    const there = other.find(r => r.zone === zone);
+    const sign = Math.sign(a.reboundEffect.values.dreb_cost!.value);
+    const held = there?.tones.dreb_cost && there.values.dreb_cost && Math.sign(there.values.dreb_cost.value) === sign ? "held" : "unclear";
+    rebound = { zone, held };
+  }
+  return { season, sameOrder, order, rebound };
 }
 
 /** Team cells coloured in a view, against what 95% intervals would colour by chance alone (1 in 20 of the cells that can take a colour). */
