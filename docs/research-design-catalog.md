@@ -916,6 +916,16 @@ Instructions (owner, 2026-11-10, round 2):
 3. [x] why does pressing a menu button in this chart/table auto scroll? I thought it wouldn't is there better behaviour?
    — It scrolled because round 1 made a strip press both select the stat and jump to its curve (Q2). Now a press only selects: the row stays outlined, the page holds still, and the curve below changes. Moving there is the reader's choice, through a "{stat} curve" button at the end of the strip's key (a smooth scroll, instant under reduced motion), and the heading lands at the site default, 80 px under the header. 625 passed, 17 skipped, 0 failed
 
+Instructions (owner, 2026-11-10, round 3):
+4. [x] make the attempt number axis a little more visible
+   — The strip's attempt axis is 12 px (was 10) in the secondary on-background colour (was tertiary), weight 500.
+5. [x] Should we add a small button near the stats to jump to their curves instead of the button in the bottom right
+   — Yes: every strip row has a kit chart icon button ("Go to the {stat} curve") in one column beside the names; it selects that stat and scrolls to its curve. The name still only selects. The button at the bottom right is gone. On a phone each row puts the name, icon and value on one line with the track full width under them (342 px, was 154).
+6. [x] can we make this content below the table center aligned
+   — The chart keys on the page are centred.
+7. [x] Is there anything more we can do to improve this page.
+   — Answered with suggestions in the session, nothing built until the owner picks.
+
 Evidence: [`design-RD13`](evidence/research/design-RD13/README.md).
 
 ## RD14 Win Probability — ⏸

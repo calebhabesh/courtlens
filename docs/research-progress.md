@@ -956,3 +956,7 @@ The page answers in one sentence: FT% means something after about 27 attempts an
 ## 2026-11-10 — RD13 round 2: the strip's stat names get room and stop moving the page
 
 The stat names in the Signal vs Noise strip were unpadded text buttons, so the pressed outline hugged the label. They are now the kit's ghost button (12 px each side), and the phone label column is 80 px (was 72) so "Rim FG%" fits. Pressing one no longer jumps to the curve: it selects the stat in place, and a "{stat} curve" button at the end of the strip's key scrolls there when asked. Lint and typecheck clean, Vitest 852, `r03-signal-noise` ×3 21/21, full Playwright 625 passed, 17 skipped, 0 failed. [`design-RD13`](evidence/research/design-RD13/README.md). Awaits the owner.
+
+## 2026-11-10 — RD13 round 3: a curve icon on every strip row
+
+The Signal vs Noise strip's attempt axis is larger and brighter; each row has a chart icon that selects that stat and goes to its curve (the name still only selects), replacing round 2's button under the strip; on a phone the track runs full width under the name and value; the chart keys are centred. Lint and typecheck clean, Vitest 852, `r03-signal-noise` ×3 21/21, full Playwright 625 passed, 17 skipped, 0 failed. [`design-RD13`](evidence/research/design-RD13/README.md). Awaits the owner.
