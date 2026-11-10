@@ -184,6 +184,11 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   so a negligible difference looks negligible. A warning about a chart sits above it. A tool's players are team-tinted cards with search in place of the name, at full card width, opening its list only on typing;
   a swap keeps the last result dimmed until the new one arrives, with no skeleton or jump. Correlations near one print at full served digits, never rounded up to 1. Ranked values with no interval are thin
   gold bars on the Research track (`LeaderBars`), with a scale above them that says in words what its ends are and the unit in the title.
+- **Settled in RD13 (owner, Signal vs Noise, 2026-11-10):** a fitted curve or level is drawn only where the observed data reach it; a level that no group of observed players shows has no point,
+  only its observed range, and its fitted value lives in About. Pressing an item in a chart selects it in place and never scrolls the page; a small icon beside each item goes to its detail when asked.
+  A pressed toggle in a list has the kit ghost button's padding, never the unpadded text variant. Chart axes are 12 px in the secondary on-background colour, and chart keys are centred.
+  Sentences spell units out ("480 three-point attempts"); strips and tables keep the short unit. A long list of choices is one grouped select, not rows of chips. On a phone a wide table switches between its
+  column groups instead of scrolling sideways. A what-if tool applies served parameters to the reader's numbers, starts at the served values, and says it computes no interval.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).
