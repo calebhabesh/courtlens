@@ -1024,6 +1024,14 @@ recommendations and build it comprehensively."):
    - Q1 a hero for this tab only (Expected Shots and Adjusted keep theirs, RD17 is paused); Q2 one shared points axis from zero for own scoring, second chances and net, cost on its own axis centred on zero, labelled; Q3 the team table included; Q4 2025-26 by default; Q5 the per-player tool leaves this tab, its POST endpoint unchanged.
    — Built as proposed: its own centred hero over the Shooting tabs; a sticky filter bar (season, team logo grid, estimated position, CSV); the answer in one sentence from the scope (thin zones named, never ranked); the view switch over Databallr's small zone charts with 95% whiskers, points on one axis from zero and cost on its own centred axis, coloured only where the interval excludes zero; Databallr's three tables as compact grids; all 30 teams with logos, sortable as a view, thin rows dimmed, a line on chance colours; the position and Databallr honesty lines with a toggle for the count comparison; How to read, glossary and a collapsed About. Phone tables switch column groups, none scrolls sideways. Real data 4,976 values, 0 mismatches; spec ×3 21/21; full Playwright 629 passed, 1 baseline changed by design (regenerated). Evidence: [`design-RD18`](evidence/research/design-RD18/README.md).
 
+Instructions (owner, 2026-11-10, round 2; the owner asked "Where is shot aftermath?" with a screenshot of the Research menu, was offered its own
+menu entry, and answered "Sure."):
+2. [x] Sure. (Give Shot Aftermath its own entry in Research → Shooting.)
+   — Listed after Shot Quality ("What first-chance shots score, what misses win back and what the opponent scores next", split icon) as a tab
+   shortcut like Learning, staying a Shooting tab; the Shooting entry now reads "Expected shots and adjusted shooting". Found while checking it: the route
+   was still gated on the old workbench shot source (unavailable), which hid the entry; the gate is gone, since the page reads only the frozen R17 file.
+   Vitest 877; full Playwright 629 passed, 17 skipped, 1 failed (`route-consolidation` still asserted no Shot Aftermath entry; updated to expect it, then 39/39 over three runs with the page spec). Evidence: [`design-RD18`](evidence/research/design-RD18/README.md).
+
 ## RD19 Ask evaluation — ⏸
 
 - **Now:** not built. R16 is running (development set partly done, holdout unopened).

@@ -93,10 +93,12 @@ export const NAV_MENUS: NavMenu[] = [
         { label: "Metric Backtest", href: "/research/backtest", icon: "chart-trend", description: "Which impact metric best predicts real game results" },
       ] },
       { title: "Shooting", items: [
-        { label: "Shooting", href: "/research/shooting", icon: "target", description: "Expected shots, adjusted shooting and what follows a shot" },
+        { label: "Shooting", href: "/research/shooting", icon: "target", description: "Expected shots and adjusted shooting" },
         { label: "Defensive Shot Quality", href: "/research/defensive-matchups", icon: "shield", description: "What shooters scored against each defender, against their own shooting" },
         { label: "zTS", href: "/research/zts", icon: "scale", description: "True shooting adjusted for the difficulty of a player's play types" },
         { label: "Shot Quality", href: "/research/shot-quality", icon: "scatter", description: "Expected points per shot and each player's shot-making above it" },
+        // RD18 (owner, 2026-11-10): Shot Aftermath gets its own entry; it stays a route tab of Shooting.
+        { label: "Shot Aftermath", href: "/research/shooting/aftermath", icon: "split", description: "What first-chance shots score, what misses win back and what the opponent scores next" },
       ] },
       { title: "Methods", items: [
         { label: "Signal vs Noise", href: "/research/signal-noise", icon: "waveform", description: "How big a sample a stat needs, and shrunk shooting percentages" },
@@ -115,9 +117,10 @@ export const NAV_MENUS: NavMenu[] = [
 
 /**
  * Menu items that open a merged page on a later tab. D8 lists Learning in Research → Methods while it
- * stays a Methodology tab beside the definitions it teaches (R11).
+ * stays a Methodology tab beside the definitions it teaches (R11); Shot Aftermath is listed in Research → Shooting while it stays a
+ * Shooting tab (RD18, owner 2026-11-10).
  */
-export const TAB_SHORTCUTS = new Set(["/methodology/learning"]);
+export const TAB_SHORTCUTS = new Set(["/methodology/learning", "/research/shooting/aftermath"]);
 
 /** Pages that exist locally but not on the hosted demo (PC11). Their routes redirect there too. */
 export const HOSTED_DEMO_HIDDEN = new Set(["/planner"]);
