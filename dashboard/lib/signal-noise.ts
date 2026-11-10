@@ -138,6 +138,19 @@ export type Family = StatResult["family"];
 export const sampleUnit = (stat: StatResult) => stat.family === "per_36" ? "min" : stat.unit;
 export const sampleText = (value: number | null | undefined, stat: StatResult) => value == null ? "—" : `${formatSample(value)} ${sampleUnit(stat)}`;
 
+/** The unit spelled out for sentences, where "480 3PA" can read as one number (owner, RD13 round 4); tables and strips keep the short unit. */
+const UNIT_WORDS: Record<string, string> = {
+  FGA: "field-goal attempts", "2PA": "two-point attempts", "3PA": "three-point attempts", FTA: "free-throw attempts", TSA: "true-shooting attempts", "rim FGA": "attempts at the rim", minutes: "minutes",
+};
+export const unitWords = (stat: StatResult) => stat.family === "per_36" ? "minutes" : UNIT_WORDS[stat.unit] ?? stat.unit;
+export const sampleWords = (value: number | null | undefined, stat: StatResult) => value == null ? "—" : `${formatSample(value)} ${unitWords(stat)}`;
+
+/** What-if shrinkage (RD13 round 4, owner-approved): the served prior applied to makes and attempts the reader picks. A posterior mean only; no interval. */
+export function whatIf(rate: number, attempts: number, alpha: number, beta: number) {
+  const makes = Math.round(rate * attempts);
+  return { makes, raw: attempts > 0 ? makes / attempts : null, shrunk: (makes + alpha) / (attempts + alpha + beta), weight: attempts / (attempts + alpha + beta) };
+}
+
 /** Reliability, a correlation stepped up to the full sample: three decimals. */
 export const formatRho = (value: number | null | undefined, digits = 3) =>
   typeof value === "number" && Number.isFinite(value) ? value.toFixed(digits) : "—";

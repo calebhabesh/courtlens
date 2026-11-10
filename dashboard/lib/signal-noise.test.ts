@@ -24,7 +24,7 @@ describe("Signal vs Noise shrinkage in the browser (R03)", () => {
 });
 
 import served from "../e2e/fixtures/signal-noise.json";
-import { exampleSeasons, reached, rmsePoints, shrinkingWins, squaredPoints, stripOrder, stripReach, type SignalNoiseSummary, type StatResult } from "./signal-noise";
+import { exampleSeasons, reached, rmsePoints, sampleText, sampleWords, shrinkingWins, squaredPoints, stripOrder, stripReach, whatIf, type PlayerExample, type SignalNoiseSummary, type StatResult } from "./signal-noise";
 
 describe("Signal vs Noise page helpers (RD13)", () => {
   const summary = served.summary as unknown as SignalNoiseSummary;
@@ -64,5 +64,29 @@ describe("Signal vs Noise page helpers (RD13)", () => {
     const priors = summary.priors.fg3_pct.map(p => p.season);
     expect(exampleSeasons(["1975-76", "1984-85", "1988-89"], priors, "1988-89")).toEqual(["1988-89", "1984-85"]);
     expect(exampleSeasons([], priors, "2025-26")).toEqual(["2025-26"]);
+  });
+
+  it("spells the unit out in sentences and keeps the short unit for tables (RD13 round 4)", () => {
+    const three = stats.find(s => s.key === "fg3_pct")!, stl = stats.find(s => s.key === "stl_per_36")!, rim = stats.find(s => s.key === "rim_fg_pct")!;
+    expect(sampleText(480, three)).toBe("480 3PA");
+    expect(sampleWords(480, three)).toBe("480 three-point attempts");
+    expect(sampleWords(70, rim)).toBe("70 attempts at the rim");
+    expect(sampleWords(284, stl)).toBe("284 minutes");
+  });
+
+  it("starts the what-if at the served shrunk value, and gives the prior's weight back as attempts grow", () => {
+    const player = served.player as unknown as PlayerExample;
+    for (const key of ["fg3_pct", "ft_pct", "fg2_pct"] as const) {
+      const e = player.estimates![key];
+      if (e.prior.status !== "available" || e.attempts === 0) continue;
+      const own = whatIf(e.makes / e.attempts, e.attempts, e.prior.alpha, e.prior.beta);
+      expect(own.makes).toBe(e.makes);
+      expect(own.shrunk).toBeCloseTo(e.shrunk.value!, 12);
+    }
+    const prior = player.estimates!.fg3_pct.prior;
+    if (prior.status !== "available") throw new Error("fixture prior");
+    expect(whatIf(0.4, 0, prior.alpha, prior.beta).shrunk).toBeCloseTo(prior.mean, 4);
+    expect(whatIf(0.4, 0, prior.alpha, prior.beta).raw).toBeNull();
+    expect(whatIf(0.4, prior.strength, prior.alpha, prior.beta).weight).toBeCloseTo(0.5, 2);
   });
 });
