@@ -16,6 +16,8 @@ class AssistantThread(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     version: Mapped[int] = mapped_column(Integer, default=1)
+    # Public Ask: the hashed browser that started the thread; None for local use.
+    visitor: Mapped[str | None] = mapped_column(String(64), nullable=True, default=None)
 
 
 class AssistantTurn(Base):

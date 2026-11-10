@@ -278,6 +278,17 @@ class QuotaLedger:
                 snapshot["provider_tokens_per_minute"] = state.header_tokens[2]
             return snapshot
 
+    def requests_today(self, name: str) -> int:
+        """Calls this process sent to a provider today (its own daily reset), across models."""
+        now, wall = time.monotonic(), datetime.now(UTC)
+        with self._lock:
+            total = 0
+            for (provider, _model), state in self._states.items():
+                if provider == name:
+                    self._roll(state, now, wall)
+                    total += state.day_requests
+            return total
+
     def reset(self) -> None:
         with self._lock:
             self._states.clear()
