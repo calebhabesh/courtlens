@@ -149,6 +149,20 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 
 ## Deploy log
 
+### 2026-11-10: release be43917a (RD16, PR #79)
+
+Points Forecasts with the Evaluation Archive as its tab (research through the RD16 approval, d28783f8),
+plus the e2e and frozen-identifier test fixes (#78, #79). Frontend only: same database, serving files
+and pins; `deploy-vps.sh` took 57 s and stored no new Stats cohorts (171 existing). Main CI and Images
+passed on the merge commit. The old 2026-10-13 database (`courtlens_prev`) was dropped on the owner's
+instruction before this deploy.
+
+Verified on the public URL at 1440 and 390 px: 43 pages each, all 200, no page overflow or broken
+images, no console errors except the known 1997-98 portrait 404 on Similar Players. Both forecasts
+endpoints are byte-identical to the local API; writes get Caddy's 403; Planner redirects. After deploy:
+API 2.0 GiB of 3 GiB (every page had been served since the earlier deploy), db 0.6 of 2 GiB,
+dashboard 124 MiB; disk 35 GB used of 193 GB.
+
 ### 2026-11-10: release 3c2f1b03 (research merged, PR #77)
 
 Replaced 121bfa5d (2026-10-14). The demo database was replaced, not migrated: the 2026-10-13
@@ -180,7 +194,7 @@ Verified on the public URL at 1440 and 390 px: 50 pages each, all 200, no page o
 no console errors except one portrait 404 on Similar Players (1997-98 MIA, player 1134; local 404s too).
 Ask is off, Planner hidden and redirected, writes outside the allowlist get Caddy's 403. 36 of 38 Research
 API responses were byte-identical to the local API; the other two differ in a latency field and one
-float's last digit. Rollback: stop the API, rename the databases back, start `release.prev.env`.
+float's last digit. Rollback at the time: stop the API, rename the databases back, start `release.prev.env`.
 Refresh timers and the nightly job stay off; the data is the 2026-11-10 snapshot.
 
 ## First-time setup

@@ -989,6 +989,6 @@ Release 3c2f1b03 (research through the RD13 approval, merged to main in PR #77) 
 courtlens.calebhabesh.com with a fresh 2026-11-10 database, so every Research page, full history and the
 2026-27 season are on the demo. The deploy-config gap found while preparing R12 is closed: the deploy
 syncs and mounts every Research serving input, pins the 12-season impact bundle and gives the API 3 GiB.
-RD16 and later are not on the demo yet. Details and measurements in
+RD16 followed the same day in release be43917a; RD17 and later are not on the demo yet. Details and measurements in
 [the deploy log](deployment.md#deploy-log).
 
