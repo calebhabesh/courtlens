@@ -207,6 +207,20 @@ def demo_sign_in(
     return _session(user)
 
 
+@router.post("/auth/dev-session", response_model=SessionResponse)
+def dev_sign_in(
+    _client: str = Depends(account_client), session: Session = Depends(get_db)
+) -> SessionResponse:
+    """Local development only (COURTLENS_DEV_ACCOUNT); every other server answers 404."""
+    settings = get_settings()
+    if not settings.dev_account or settings.environment == "production":
+        raise HTTPException(status_code=404, detail="Not Found")
+    try:
+        return _session(accounts.dev_account(session))
+    except AccountError as error:
+        raise HTTPException(status_code=403, detail=str(error)) from error
+
+
 @router.get("/me", response_model=AccountUser)
 def me(user: User = Depends(signed_in)) -> AccountUser:
     return _user(user)
