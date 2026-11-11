@@ -1,6 +1,12 @@
 /** Research → Win Probability: the frozen model's card, scorecard and player credit. */
 
 export interface Interval { mean: number; low: number; high: number; games: number }
+export interface UpgradeResult {
+  version: string; adopted: boolean; test_seasons: string[]; games: number;
+  comparisons: { v3_vs_v2_frozen: Interval; B_vs_v2_frozen: Interval; v3_vs_B: Interval };
+  pregame: { games: number; v2_mu0: { rmse: number }; v3_mu0: { rmse: number } };
+  selection: Record<string, { accepted: boolean; improvement_90?: Interval; judged_on?: string }>;
+}
 export interface CurvePoint { predicted: number; observed: number; share: number }
 export interface ScoreGroup {
   games: number; first_date?: string; last_date?: string; espn_compared_games?: number;
@@ -48,6 +54,8 @@ export interface WinProbabilityPage {
   };
   scorecard: Scorecard | null;
   wpa_seasons: string[];
+  /** F05: a second model tested against the frozen one on the same games; null before it ran. */
+  upgrade?: UpgradeResult | null;
 }
 export interface WpaRow { player: string; player_id: string | null; name: string; team: string | null; games: number; wpa: number; events: number; clutch_wpa: number; clutch_events: number }
 export interface WinProbabilityAdded { season: string; games: number; players: number; leaders: WpaRow[]; clutch_leaders: WpaRow[] }
