@@ -1,6 +1,7 @@
 """Research → Win Probability: the frozen model's card, live scorecard, drift and player credit."""
 
 import json
+from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
@@ -14,6 +15,16 @@ from courtlens.services.win_probability_production import (
 )
 
 router = APIRouter(prefix="/win-probability", tags=["win probability"])
+# F05: the tested upgrade (courtlens-win-probability-v3). Not adopted; shown as a published result.
+UPGRADE_PATH = Path("evaluation/research/derived/courtlens-win-probability-v3-test.json")
+
+
+def upgrade_result() -> dict[str, Any] | None:
+    try:
+        body: dict[str, Any] = json.loads(UPGRADE_PATH.read_text())
+    except (OSError, ValueError):
+        return None
+    return body
 
 
 @router.get("")
@@ -39,6 +50,7 @@ def win_probability_page() -> dict[str, Any]:
         "card": card,
         "scorecard": read_summary(),
         "wpa_seasons": wpa_seasons(),
+        "upgrade": upgrade_result(),
     }
 
 

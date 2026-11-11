@@ -318,6 +318,7 @@ function Negative({ data }: { data: WinProbabilityPage }) {
     ? `Against ${REF_NAMES[TEST_REFS[r.key]] ?? TEST_REFS[r.key]}`
     : SELECTION_REFS[r.key] === TEST_REFS[r.key] ? `Against ${REF_NAMES[TEST_REFS[r.key]]}` : `Selection against ${REF_NAMES[SELECTION_REFS[r.key]]}; test against ${REF_NAMES[TEST_REFS[r.key]]}`;
   const m = card.market, tip = card.espn.tipoff.log_loss.espn_minus_courtlens, ot = card.phases.overtime;
+  const up = data.upgrade, gain = up?.comparisons.v3_vs_v2_frozen ?? { mean: 0, low: 0, high: 0, games: 0 };
   return <ResearchSection id="negative" icon="layers" title="What didn't help">
     <p className="wp-lead" data-field="negative-line" data-rejected={rejected.map(r => r.key).join(",")} data-nothing={nothing.map(r => r.key).join(",")}>The model was built in steps, each kept only if it lowered log loss on the 2022-23 selection season with a 90% interval above zero.{nothing.length > 0 && <> {listOf(nothing.map(r => STEP_NAMES[r.key].toLowerCase())).replace(/^./, c => c.toUpperCase())}: no gain that clears zero, so {nothing.length === 1 ? "it was" : "they were"} left out{nothing.some(r => r.key === "S4") ? " and the frozen model has no live lineup tracker" : ""}.</>}</p>
     <p className="wp-note">Above zero, a step helped. Values have no colour: whether a step was kept is the result, in words. The flexible model added no information and was kept only as a diagnostic.{phone ? " The test gains are on a wider screen." : ""}</p>
@@ -328,6 +329,11 @@ function Negative({ data }: { data: WinProbabilityPage }) {
       <li data-field="market" data-courtlens={m.courtlens_rmse} data-market={m.market_rmse}><strong>Before tip-off, the betting market is better.</strong> Its closing spread missed the final margin by {metric(m.market_rmse, 2)} points (root mean square) against {metric(m.courtlens_rmse, 2)} for CourtLens, on {whole(m.games)} games.</li>
       <li data-field="tipoff" data-value={tip.mean} data-low={tip.low} data-high={tip.high}><strong>At tip-off, ESPN leads without a clear gap:</strong> {signed(tip.mean)} ({band(tip)}).</li>
       {ot && <li data-field="overtime" data-value={ot.calibration_error}><strong>Overtime is the weak spot:</strong> calibration error {metric(ot.calibration_error, 3)} on {whole(ot.log_loss.games)} games.</li>}
+      {up && <li data-field="upgrade" data-adopted={up.adopted} data-value={gain.mean} data-low={gain.low} data-high={gain.high}>
+        <strong>{up.adopted ? "A second model replaced it." : "A second model was tested and not adopted."}</strong> It added Projected Impact ratings to the pregame forecast and
+        two more training seasons{up.selection.P3?.accepted ? ", with an overtime model" : "; an overtime model was tried and not kept"}. On the same {whole(up.games)} test games it lowered
+        log loss by {signed(gain.mean)} ({band(gain)}){gain.low <= 0 ? ", an interval that includes zero, so the frozen model stays" : ""}. Its pregame forecast was no closer to the
+        final margin: {metric(up.pregame.v3_mu0.rmse, 2)} points against {metric(up.pregame.v2_mu0.rmse, 2)} (root mean square).</li>}
     </ul>
   </ResearchSection>;
 }
