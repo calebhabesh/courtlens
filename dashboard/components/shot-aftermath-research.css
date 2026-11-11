@@ -71,6 +71,19 @@
   .sa-key-mark[data-mark="league"] { width: 16px; height: 0; border-top: 2px dashed var(--color-text-secondary); background: none; }
   .sa-key-mark[data-mark="good"] { background: var(--color-positive); }
   .sa-key-mark[data-mark="bad"] { background: var(--color-negative); }
+  .sa-key-mark[data-mark="make"] { background: var(--color-text-tertiary); }
+  .sa-key-mark[data-mark="rebound"] { background: var(--color-text-secondary); }
+
+  /* After a make or after a rebound (F02): two neutral bars per zone, each with its whisker. */
+  .sa-pair-chart { margin-top: var(--space-4); }
+  .sa-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-1); padding-inline: 14%; }
+  .sa-pair-slot { position: relative; }
+  .sa-pair .sa-bar { left: 10%; width: 80%; }
+  .sa-pair .sa-bar[data-series="ppp_make"] { background: var(--color-text-tertiary); }
+  .sa-pair-values { display: grid; justify-items: center; color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 650; font-variant-numeric: tabular-nums; }
+  .sa-pair-values > [data-series="ppp_make"] { color: var(--color-text-secondary); font-weight: 500; }
+  .sa-positions.rs-grid { --rs-grid-min: 0px; }
+  .sa-positions.rs-grid[data-lead] { --rs-grid-lead: 112px; }
 
   /* Tables. */
   .sa-table { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
@@ -99,6 +112,7 @@
     .sa-plot { grid-template-columns: 40px minmax(0, 1fr); grid-template-rows: 140px auto; }
     .sa-grid.rs-grid[data-lead] { --rs-grid-lead: 104px; }
     .sa-teams.rs-grid[data-lead] { --rs-grid-lead: 88px; }
+    .sa-positions.rs-grid[data-lead] { --rs-grid-lead: 80px; }
     .sa-defs { grid-template-columns: minmax(0, 1fr); }
     .sa-defs dd { margin-bottom: var(--space-2); }
   }
