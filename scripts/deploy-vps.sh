@@ -115,6 +115,13 @@ if ! compose "$next" "${tunnel_profile[@]}" up -d --wait --wait-timeout 300 --re
   fi
   exit 1
 fi
+# Caddy mounts the single Caddyfile; rsync replaces the file, so a running container keeps the
+# old one until it restarts (2026-11-10: the public Ask allowlist wasn't live after a deploy).
+caddy_id="$(compose "$next" ps -q caddy)"
+if [[ -n "$caddy_id" ]] && ! docker exec "$caddy_id" cat /etc/caddy/Caddyfile | cmp -s - infra/Caddyfile; then
+  compose "$next" "${tunnel_profile[@]}" restart caddy
+  sleep 2
+fi
 curl -fsS http://127.0.0.1:8090/healthz >/dev/null
 curl -fsS http://127.0.0.1:8090/api/health >/dev/null
 # Store every season's Stats cohort now, so no visitor waits for one to be computed. A new
