@@ -43,7 +43,7 @@ Rows are in working order.
 | 26 | D-ShotQuality | `/research/defensive-matchups` | ✅ | Redesigned as RD05 (owner ✅ 2026-11-08) |
 | 27 | Shot Aftermath | `/research/shooting/aftermath` | ✅ | Rebuilt on R17 and redesigned as RD18 (owner ✅ 2026-11-10) |
 | 28 | NBA Draft (Draftballr) | `/draft` | ✅ | Redesigned as RD08 (owner ✅ 2026-11-09) |
-| 29 | — (CourtLens research) | `/research` landing, `/research/win-probability`, `/research/backtest`, `/research/projected-impact`, `/research/lineup-model`, `/research/signal-noise`, `/research/assistant-evaluation` | ⬜ | Metric Backtest, Projected Impact, Lineup Model, Signal vs Noise and Points Forecasts redesigned as RD10–RD13 and RD16 (owner ✅); landing ✂️ (RD09) and Ask evaluation ✂️ (RD19); Win Probability (RD14) is the one left, see the [finish plan](finish-plan.md) |
+| 29 | — (CourtLens research) | `/research` landing, `/research/win-probability`, `/research/backtest`, `/research/projected-impact`, `/research/lineup-model`, `/research/signal-noise`, `/research/assistant-evaluation` | ✅ | Metric Backtest, Projected Impact, Lineup Model, Signal vs Noise and Points Forecasts redesigned as RD10–RD13 and RD16 (owner ✅); landing ✂️ (RD09) and Ask evaluation ✂️ (RD19); Win Probability ✅ as RD14 (owner, 2026-11-11; [finish plan](finish-plan.md) F03) |
 
 **CourtLens-only (one sweep at the end, no checkbox):** `/forecasts`, `/evaluation`,
 `/investigations`, `/data-status`, `/settings`, `/planner`, `/design`.

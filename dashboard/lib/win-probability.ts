@@ -43,6 +43,8 @@ export interface WinProbabilityPage {
     espn: { games_compared: number; tipoff: EspnPhase; comparison: Record<string, EspnPhase> };
     market: { courtlens_rmse: number; market_rmse: number; games: number; squared_error_gap: Interval; source: string };
     pairs: { model: string; reference: string; label: string; overall: { log_loss: Interval; brier: Interval } }[];
+    gates?: { A1?: { improvement: Interval; passed: boolean }; A2?: { ece: number; limit: number; passed: boolean } };
+    steps?: Record<string, { accepted: boolean; selection_gain: Interval }>;
   };
   scorecard: Scorecard | null;
   wpa_seasons: string[];
@@ -73,3 +75,58 @@ export const DRIFT_COPY: Record<DriftStatus, { label: string; tone: "good" | "wa
   below: { label: "Below the test-season interval", tone: "unknown" },
   insufficient: { label: "Too few games to judge", tone: "unknown" },
 };
+
+// ---- F03 (RD14) page helpers ------------------------------------------------------------------------------------------------
+
+/** "−0.0336 to +0.0167": a 95% interval's ends, signed. */
+export function band(value: Interval | null | undefined, digits = 4): string {
+  return value ? `${signed(value.low, digits)} to ${signed(value.high, digits)}` : "—";
+}
+
+/** Green or red only where the 95% interval excludes zero (RD04); positive means CourtLens did better. */
+export function gapTone(value: Interval | null | undefined): "good" | "bad" | undefined {
+  if (!value) return undefined;
+  if (value.low > 0) return "good";
+  if (value.high < 0) return "bad";
+  return undefined;
+}
+
+export type Verdict = "better" | "worse" | "tied";
+export function verdictOf(value: Interval | null | undefined): Verdict | null {
+  if (!value) return null;
+  return value.low > 0 ? "better" : value.high < 0 ? "worse" : "tied";
+}
+
+/** Phases of the final test where the gap against ESPN clears zero, in page order. */
+export function clearPhases(card: WinProbabilityPage["card"]): { better: string[]; worse: string[]; tied: string[] } {
+  const out = { better: [] as string[], worse: [] as string[], tied: [] as string[] };
+  for (const name of PHASE_ORDER) {
+    const row = card.espn.comparison[name];
+    if (!row) continue;
+    const v = verdictOf(row.log_loss.espn_minus_courtlens);
+    if (v) out[v === "better" ? "better" : v === "worse" ? "worse" : "tied"].push(name);
+  }
+  return out;
+}
+
+/** "a", "a and b", "a, b and c". */
+export function listOf(items: readonly string[]): string {
+  return items.length < 2 ? (items[0] ?? "") : `${items.slice(0, -1).join(", ")} and ${items.at(-1)}`;
+}
+
+/** One table of a season's credited players: the served WPA leaders and clutch leaders, each player once (both lists carry both values). */
+export function wpaRows(table: WinProbabilityAdded): WpaRow[] {
+  const seen = new Map<string, WpaRow>();
+  for (const row of [...table.leaders, ...table.clutch_leaders]) if (!seen.has(row.player)) seen.set(row.player, row);
+  return [...seen.values()];
+}
+
+export type WpaSortKey = "wpa" | "events" | "clutch_wpa" | "clutch_events" | "games";
+export interface WpaSort { key: WpaSortKey; direction: "asc" | "desc" }
+export const WPA_DEFAULT_SORT: WpaSort = { key: "wpa", direction: "desc" };
+
+/** Sorted by the chosen value, ties by name; never ranked (no interval is served). */
+export function sortWpa(rows: readonly WpaRow[], sort: WpaSort): WpaRow[] {
+  const sign = sort.direction === "asc" ? 1 : -1;
+  return [...rows].sort((a, b) => sign * (a[sort.key] - b[sort.key]) || a.name.localeCompare(b.name));
+}

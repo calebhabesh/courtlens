@@ -177,6 +177,12 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 
 ## Deploy log
 
+### 2026-11-11: releases b98f790b and 301e2a2a (finish plan F00–F02)
+
+- **b98f790b** (PR #83): pins `gemini-3.5-flash-lite` and a 45 s turn limit for public Ask. Deployed on the owner's instruction although main CI failed three times on URL-timing flakes in unrelated specs; Images had passed.
+- **301e2a2a** (#84 prompt v3, #85 Shot Aftermath extras): CI and Images green. `deploy-vps.sh` stored no new Stats cohorts (171 existing); 158 GB free.
+- **Public Ask check:** one real question answered in 12.7 s, the counter went 3 → 2, the asker lists their own thread and a stranger none, and deletes and cross-site writes get 403.
+
 ### 2026-11-10: release be43917a (RD16, PR #79)
 
 Points Forecasts with the Evaluation Archive as its tab (research through the RD16 approval, d28783f8),
