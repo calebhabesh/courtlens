@@ -31,6 +31,8 @@ from courtlens.workbench_models import WorkbenchIdentity
 MAX_FAVORITES = 100
 MIN_PASSWORD_LENGTH = 12
 DEMO_EMAIL = "guest@demo.courtlens"
+DEV_EMAIL = "dev@courtlens.local"
+DEV_DISPLAY_NAME = "Dev"
 DEMO_DISPLAY_NAME = "Demo account"
 # The demo's seeded list (NBA person IDs), restored nightly. Current stars, so their season
 # photos and Stats rows exist in every recent release.
@@ -74,8 +76,8 @@ def create_user(
 ) -> User:
     """Create an enabled account. Refuses an existing email and the demo address."""
     address = normalize_email(email)
-    if address == DEMO_EMAIL:
-        raise AccountError("that address is reserved for the demo account")
+    if address in (DEMO_EMAIL, DEV_EMAIL):
+        raise AccountError("that address is reserved")
     _check_password(password)
     if find_user(session, address) is not None:
         raise AccountError("an account with that email already exists")
@@ -267,6 +269,23 @@ def seed_demo_account(session: Session) -> User:
     session.commit()
     if new:
         reset_demo_favorites(session)
+    return user
+
+
+def dev_account(session: Session) -> User:
+    """The local development account, created on first use. Its password is random and unused."""
+    user = session.scalar(select(User).where(func.lower(User.email) == DEV_EMAIL))
+    if user is None:
+        user = User(
+            email=DEV_EMAIL,
+            password_hash=hash_password(secrets.token_urlsafe(32)),
+            display_name=DEV_DISPLAY_NAME,
+            account_enabled=True,
+        )
+        session.add(user)
+        session.commit()
+    elif not user.account_enabled:
+        raise AccountError("the dev account is disabled")
     return user
 
 
