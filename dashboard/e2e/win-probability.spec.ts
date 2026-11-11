@@ -129,6 +129,16 @@ test.describe("F03 Win Probability research page", () => {
     await expect(grid.locator('tbody tr[data-step="E"] .wp-result')).toHaveText("Kept");
     await expect(grid.locator(".rs-grid-value[data-tone]")).toHaveCount(0);
     await expect(page.locator('[data-field="negative-line"]')).toContainText("no live lineup tracker");
+    // F05: the tested upgrade, with the served gain against the frozen model and its interval.
+    const up = wp.upgrade!, gain = up.comparisons.v3_vs_v2_frozen, finding = page.locator('[data-field="upgrade"]');
+    await expect(finding).toHaveAttribute("data-adopted", "false");
+    expect(await num(finding, "data-value")).toBe(gain.mean);
+    expect(await num(finding, "data-low")).toBe(gain.low);
+    expect(await num(finding, "data-high")).toBe(gain.high);
+    await expect(finding).toContainText("tested and not adopted");
+    await expect(finding).toContainText(`same ${up.games.toLocaleString("en-US")} test games`);
+    await expect(finding).toContainText("includes zero, so the frozen model stays");
+    await expect(finding).toContainText("an overtime model was tried and not kept");
   });
 
   test("win probability added: one sortable grid with photos, sorted not ranked, season in the URL", async ({ page }) => {

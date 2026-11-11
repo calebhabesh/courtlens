@@ -1,0 +1,319 @@
+{
+ "accepted": "P1",
+ "final": {
+  "baseline": {
+   "beta": 0.8660740948160068,
+   "sigma": 16.001152443696796
+  },
+  "elapsed_seconds": 80.8,
+  "from": "P1",
+  "leaves": 31,
+  "mean_model": "869a292915bd115e0a576a590638b1601d2aa0be2a50f7e546671f66b46f1451",
+  "mean_rounds": 158,
+  "overtime_slope": 0.04214502692140751,
+  "recipe": {
+   "features": [
+    "margin",
+    "seconds_left",
+    "fraction",
+    "overtime",
+    "mu",
+    "mu_fraction",
+    "possession",
+    "pending_own",
+    "pending_opp",
+    "timeouts_own",
+    "timeouts_opp",
+    "fouls_own",
+    "fouls_opp",
+    "bonus_own",
+    "bonus_opp",
+    "possession_age",
+    "home",
+    "strength",
+    "form",
+    "rest",
+    "b2b_own",
+    "b2b_opp",
+    "games7",
+    "travel_own",
+    "travel_opp",
+    "denver",
+    "utah",
+    "pi_strength"
+   ],
+   "mu": "mu_pi",
+   "overtime_specialist": false
+  },
+  "seasons": [
+   "2014-15",
+   "2015-16",
+   "2016-17",
+   "2017-18",
+   "2018-19",
+   "2019-20",
+   "2020-21",
+   "2021-22",
+   "2022-23",
+   "2023-24"
+  ],
+  "specialist_model": "693e55321947e84c84d3b33a161b5c46582dda1cc5aed9f3a7b01b3c0d3e55d5",
+  "specialist_rounds": 225,
+  "variance_model": "a6c78cb95169b6ee489e16a9aae4585278ebe7b8d5140274cef071a084818820",
+  "variance_rounds": 119
+ },
+ "registration": {
+  "content_sha256": "c9f79a11454e6ca0c4e5931f5a8caadcd69d88168d67f4edda25c87ac1069988",
+  "identity": "courtlens-win-probability-v3",
+  "parameters": {
+   "bootstrap": {
+    "replicates": 2000,
+    "unit": "game"
+   },
+   "ece_bins": 20,
+   "freeze_checks": {
+    "espn_state_parity_max_log_loss_change": 0.002,
+    "p95_ms_per_game_max": 100
+   },
+   "pi_first_target": "2018-19",
+   "pi_first_training_target": "2016-17",
+   "pi_lightgbm": {
+    "min_data_in_leaf": 20,
+    "num_leaves": 4,
+    "rounds": 150
+   },
+   "prospective": {
+    "report_from_games": 25,
+    "verdict_from_games": 300
+   },
+   "reference": "courtlens-win-probability-v2",
+   "seed": 2501,
+   "selection_level": 0.9,
+   "splits": {
+    "final_fit": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23",
+     "2023-24"
+    ],
+    "prospective": [
+     "2026-27"
+    ],
+    "select": [
+     "2023-24"
+    ],
+    "test": [
+     "2024-25",
+     "2025-26"
+    ],
+    "train": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23"
+    ]
+   }
+  },
+  "registered_on": "2026-11-11"
+ },
+ "steps": {
+  "B": {
+   "accepted": true,
+   "against_v2_E_on_2023_24": {
+    "games": 1216,
+    "high": 0.0010133988499769566,
+    "low": -0.0005820512526085532,
+    "mean": 0.00019130507224323487
+   },
+   "baseline": {
+    "beta": 0.8730125821868724,
+    "sigma": 15.981310189527406
+   },
+   "elapsed_seconds": 87.5,
+   "leaves": 31,
+   "mean_model": "591d45e7e86c9f1ba802a53471027ef0ccf66fc1cfa4916ade4045f922e24be3",
+   "mean_rounds": 165,
+   "overtime_slope": 0.049155832537965606,
+   "recipe": {
+    "features": [
+     "margin",
+     "seconds_left",
+     "fraction",
+     "overtime",
+     "mu",
+     "mu_fraction",
+     "possession",
+     "pending_own",
+     "pending_opp",
+     "timeouts_own",
+     "timeouts_opp",
+     "fouls_own",
+     "fouls_opp",
+     "bonus_own",
+     "bonus_opp",
+     "possession_age",
+     "home",
+     "strength",
+     "form",
+     "rest",
+     "b2b_own",
+     "b2b_opp",
+     "games7",
+     "travel_own",
+     "travel_opp",
+     "denver",
+     "utah"
+    ],
+    "mu": "mu_full",
+    "overtime_specialist": false
+   },
+   "select_log_loss": 0.40336474382294263,
+   "specialist_model": "e9525a977c7312db7af2a3001fa7e83d65295c0626eeac76db55609477f7b777",
+   "specialist_rounds": 165,
+   "variance_model": "94278504352f4d2e2dfe2a58473e137c31d8686475c97c5d279577e3802ee3c7",
+   "variance_rounds": 114
+  },
+  "P1": {
+   "accepted": true,
+   "against_v2_E_on_2023_24": {
+    "games": 1216,
+    "high": 0.0035432351100069225,
+    "low": 0.000260021598844546,
+    "mean": 0.0018470258059221463
+   },
+   "baseline": {
+    "beta": 0.8748626007853545,
+    "sigma": 15.974846496151015
+   },
+   "compared_with": "B",
+   "elapsed_seconds": 101.4,
+   "improvement_90": {
+    "games": 1216,
+    "high": 0.0030983636008109603,
+    "low": 0.00033517104311462607,
+    "mean": 0.0016557205922758638
+   },
+   "judged_on": "all states",
+   "leaves": 31,
+   "mean_model": "a96d36eec35b4a01c59ae5ab4b1167b6a68a5c2da40266223531ac256972496f",
+   "mean_rounds": 158,
+   "overtime_slope": 0.04719084706845263,
+   "recipe": {
+    "features": [
+     "margin",
+     "seconds_left",
+     "fraction",
+     "overtime",
+     "mu",
+     "mu_fraction",
+     "possession",
+     "pending_own",
+     "pending_opp",
+     "timeouts_own",
+     "timeouts_opp",
+     "fouls_own",
+     "fouls_opp",
+     "bonus_own",
+     "bonus_opp",
+     "possession_age",
+     "home",
+     "strength",
+     "form",
+     "rest",
+     "b2b_own",
+     "b2b_opp",
+     "games7",
+     "travel_own",
+     "travel_opp",
+     "denver",
+     "utah",
+     "pi_strength"
+    ],
+    "mu": "mu_pi",
+    "overtime_specialist": false
+   },
+   "select_log_loss": 0.4017090230892637,
+   "specialist_model": "28293390f0fe9bc9bc897150db636c3002bc1176c72ed41ae5b025724dedc582",
+   "specialist_rounds": 225,
+   "variance_model": "2628471810550e35c032f5b18776466889312b961adb6e079c7075c14046e98f",
+   "variance_rounds": 119
+  },
+  "P3": {
+   "accepted": false,
+   "against_v2_E_on_2023_24": {
+    "games": 1216,
+    "high": 0.0035086033742568724,
+    "low": 0.0002571600471086353,
+    "mean": 0.0018291202543344555
+   },
+   "baseline": {
+    "beta": 0.8748626007853545,
+    "sigma": 15.974846496151015
+   },
+   "compared_with": "P1",
+   "elapsed_seconds": 53.5,
+   "improvement_90": {
+    "games": 58,
+    "high": 0.005720066371529496,
+    "low": -0.008919011111197805,
+    "mean": -0.0014817105533460235
+   },
+   "judged_on": "overtime states",
+   "leaves": 31,
+   "mean_model": "a96d36eec35b4a01c59ae5ab4b1167b6a68a5c2da40266223531ac256972496f",
+   "mean_rounds": 158,
+   "overtime_slope": 0.04719084706845263,
+   "recipe": {
+    "features": [
+     "margin",
+     "seconds_left",
+     "fraction",
+     "overtime",
+     "mu",
+     "mu_fraction",
+     "possession",
+     "pending_own",
+     "pending_opp",
+     "timeouts_own",
+     "timeouts_opp",
+     "fouls_own",
+     "fouls_opp",
+     "bonus_own",
+     "bonus_opp",
+     "possession_age",
+     "home",
+     "strength",
+     "form",
+     "rest",
+     "b2b_own",
+     "b2b_opp",
+     "games7",
+     "travel_own",
+     "travel_opp",
+     "denver",
+     "utah",
+     "pi_strength"
+    ],
+    "mu": "mu_pi",
+    "overtime_specialist": true
+   },
+   "select_log_loss": 0.4017269286408514,
+   "specialist_model": "515c07a63973cf77ee04d456d4ac9c04f70f14744532015ab24b9df289a4c7be",
+   "specialist_rounds": 209,
+   "variance_model": "2628471810550e35c032f5b18776466889312b961adb6e079c7075c14046e98f",
+   "variance_rounds": 119
+  }
+ },
+ "version": "courtlens-win-probability-v3"
+}

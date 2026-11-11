@@ -1,0 +1,122 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-win-probability-v3",
+  "block": "F05",
+  "registered_on": "2026-11-11",
+  "kind": "predictive",
+  "question": "Does a second win-probability model, with a stronger pregame layer from rolling-origin Projected Impact ratings, an overtime specialist and two more training seasons, give lower log loss than the frozen served model (courtlens-win-probability-v2, frozen 2026-11-04) on the same 2024-25 and 2025-26 states, and then on the same 2026-27 games after its own freeze?",
+  "inputs": [
+    "Everything courtlens-win-probability-v2 reads, unchanged: its game table and state files under data/derived/win-probability-v1 (same content hashes), boxes, rating snapshots and benchmarks",
+    "The frozen served model's saved probabilities for every 2024-25 and 2025-26 state (data/derived/win-probability-v1/predictions/selected), the reference for gate A1",
+    "Projected Impact inputs as registered in courtlens-projected-impact-v1 (season features up to each opener, one-season RAPM targets 2016-17 to 2025-26), refitted per origin season with that registration's selected LightGBM settings",
+    "Benchmarks only, never inputs: ESPN per-play win probability (test seasons) and the hoopR-nba-data closing spread at commit 7be25dae, as in v2"
+  ],
+  "method": [
+    "v2 stays as it is: its files, version and live scorecard are untouched. v3 is a separate model with its own artifacts, freeze and scorecard.",
+    "Owner decisions, 2026-11-11: the betting line is a benchmark only, never an input; the gates read the same test games as v2 (a second read of those seasons, labelled as such), and the verdict is the head-to-head on 2026-27 games after v3's freeze.",
+    "States, views, weights, targets, metrics, the overtime tie rule and the Brownian baseline are v2's rules unchanged. v2's step S3, S4 and S5 inputs are not used: they were rejected in v2.",
+    "B (base): v2's selected recipe refitted on v3's splits. Team-form half-life chosen on train seasons from v2's grid; mu0 = v2's OLS columns fitted on 2015-16 to 2022-23; baseline beta and sigma and the overtime slope on train seasons; boosters with v2's base, S1 and S2 inputs, v2's selected num_leaves and every other v2 booster setting; the end-game specialist exactly as v2 (states with 120 seconds or less in period 4 or later, linear blend).",
+    "P1 (Projected Impact strength): for each target season t from 2018-19, a Projected Impact projection for every player in t's population from LightGBM with courtlens-projected-impact-v1's selected settings (4 leaves, min_data_in_leaf 20, 150 rounds, seed 2501), trained only on targets 2016-17 to t-1; rookies and returners take those training seasons' group means, and a player with no row takes the rookie mean. For 2026-27 the fit uses 2016-17 to 2025-26 and is frozen with v3. Team PI strength = sum over v2's stored roster of (expected-minutes share / 48) x projection. mu0_P1 = OLS of final margin on v2's columns plus PI strength difference x expected pace / 100, fitted on 2018-19 to 2022-23; games before 2018-19 keep B's mu0. P1 also adds the PI strength difference to the booster inputs.",
+    "P3 (overtime specialist): the end-game specialist is also fitted on and applied to every overtime state, with blend weight 1 throughout overtime; regulation keeps v2's linear blend over the last 120 seconds.",
+    "Selection on 2023-24 only, in order P1 then P3, each against the current accepted model: accepted when the paired game-bootstrap 90% interval of its log-loss improvement is above zero (P1 on all states, P3 on overtime states). A rejected step does not block the next.",
+    "P4 (final fit): the accepted recipe refitted on 2014-15 to 2023-24 (pregame OLS on 2015-16 to 2023-24, P1's OLS on 2018-19 to 2023-24), each booster and the specialist with the number of rounds early stopping chose on 2023-24. This final fit is the candidate v3; it is not selected, it is the registered procedure.",
+    "Test: read 2024-25 and 2025-26 once, after P4 is frozen. The reference is the frozen served model's saved probability for each state."
+  ],
+  "parameters": {
+    "seed": 2501,
+    "splits": {
+      "train": [
+        "2014-15",
+        "2015-16",
+        "2016-17",
+        "2017-18",
+        "2018-19",
+        "2019-20",
+        "2020-21",
+        "2021-22",
+        "2022-23"
+      ],
+      "select": [
+        "2023-24"
+      ],
+      "final_fit": [
+        "2014-15",
+        "2015-16",
+        "2016-17",
+        "2017-18",
+        "2018-19",
+        "2019-20",
+        "2020-21",
+        "2021-22",
+        "2022-23",
+        "2023-24"
+      ],
+      "test": [
+        "2024-25",
+        "2025-26"
+      ],
+      "prospective": [
+        "2026-27"
+      ]
+    },
+    "reference": "courtlens-win-probability-v2",
+    "pi_first_target": "2018-19",
+    "pi_first_training_target": "2016-17",
+    "pi_lightgbm": {
+      "num_leaves": 4,
+      "min_data_in_leaf": 20,
+      "rounds": 150
+    },
+    "selection_level": 0.9,
+    "bootstrap": {
+      "replicates": 2000,
+      "unit": "game"
+    },
+    "ece_bins": 20,
+    "freeze_checks": {
+      "espn_state_parity_max_log_loss_change": 0.002,
+      "p95_ms_per_game_max": 100
+    },
+    "prospective": {
+      "report_from_games": 25,
+      "verdict_from_games": 300
+    }
+  },
+  "selection": "On 2023-24 only: P1, then P3, each accepted when the paired game-bootstrap 90% interval (2000 replicates) of its log-loss improvement over the current accepted model is above zero; P1 on all states, P3 on overtime states. B is the starting model. P4 is not a selection step. The test seasons are read once, after P4 is fitted and frozen.",
+  "uncertainty": "Game bootstrap, 2000 replicates, seed 2501, for every metric and paired difference, overall and by v2's phases. Prospective head-to-head: the same paired game bootstrap on 2026-27 games.",
+  "evaluation": [
+    "Pooled and per-season log loss, Brier score and calibration curves for v3, B and the frozen served model on 2024-25 and 2025-26, overall and by phase",
+    "Paired differences, with 95% intervals: v3 against the frozen served model (gate A1), B against the frozen served model (what the refit alone does), v3 against B",
+    "Every selection result on 2023-24, accepted or not",
+    "ESPN comparison on matched states as in v2, for v3 and the frozen model side by side",
+    "Pregame margin RMSE and winner accuracy for v3's mu0, v2's mu0 and the closing spread on the same test games",
+    "Prospective: v3 against the frozen served model on the same 2026-27 games tipping after v3's freeze, with a 95% paired interval, reported from 25 games; until 300 games the page says it is too early to call"
+  ],
+  "acceptance": [
+    "A1: pooled test log loss of v3 beats the frozen served model on the same states, with the paired 95% game-bootstrap interval of the improvement above zero",
+    "A2: pooled test expected calibration error (20 equal-width bins) is 0.02 or less",
+    "Freeze checks, after A1 and A2: states built from ESPN change v3's test log loss by no more than 0.002, and p95 scoring time is 100 ms or less per full game on one thread",
+    "If A1 or A2 fails, v3 is not frozen or served, and the result is published on the page and in the evidence. The prospective head-to-head is reported, never a gate."
+  ],
+  "outputs": [
+    "Artifacts under data/derived/win-probability-v3 (pregame, ladder, models, predictions, test report)",
+    "If frozen: evaluation/research/frozen/courtlens-win-probability-v3.json and hashed model files in the artifact registry, served beside v2",
+    "docs/evidence/finish/f05: report with every metric, the selection log, comparisons and runtimes"
+  ],
+  "limitations": [
+    "The test seasons are a second read: v2's test results on these seasons shaped v3's design (P1 targets the pregame gap, P3 the overtime calibration). Only the 2026-27 head-to-head after v3's freeze is a fully fresh test.",
+    "About 14,000 game outcomes, so the effective sample is games, not states",
+    "Projected Impact exists only from 2018-19 (it needs two earlier target seasons), so training seasons 2014-15 to 2017-18 keep B's mu0",
+    "Overtime is rare (about 60 games a season), so P3's selection has little power",
+    "Selection and early stopping share 2023-24, so selection-season improvements are optimistic",
+    "Live uses ESPN's roster minus reported Out at tip-off, as v2 does; the test assumes the inactive list is known",
+    "Regular season only"
+  ],
+  "negative_result_policy": "Publish every result, including failed gates, rejected steps and any loss to the frozen model, ESPN or the market, in the evidence and on the page. A failed gate is not re-run with changed settings under this identity; a change needs a new version.",
+  "seed": 2501,
+  "budget": {
+    "cpu_threads": 2,
+    "max_peak_mib": 3072,
+    "max_wall_seconds": 1800
+  }
+}
