@@ -47,7 +47,14 @@ def test_revision_rejects_rehashed_holdout_edits(tmp_path):
 def test_prompt_routes_impact_to_warehouse_and_keeps_historical_policy():
     args = {"today": date(2026, 10, 8), "selections": ConversationContext(), "page_context": None}
     prompt = build_prompt(**args)
-    assert prompt.startswith("courtlens-agent-prompt-v2\n")
+    assert prompt.startswith("courtlens-agent-prompt-v3\n")
+    # v2 stays reproducible for the frozen replays; v3 answers settled history directly.
+    v2 = build_prompt(**args, version="courtlens-agent-prompt-v2")
+    assert v2.startswith("courtlens-agent-prompt-v2\n") and "history without numeric claims" in v2
+    assert '"web_search"' not in v2
+    assert "settled history" in prompt and "never invent a statistic" in prompt
+    assert '"web_search": "available"' in prompt
+    assert '"web_search": "unavailable"' in build_prompt(**args, web_search=False)
     assert "RAPM/ORAPM/DRAPM" in prompt and "onoff_net_rating" in prompt
     assert "BPR is a CourtLens analogue, never DPM" in prompt
     assert "strictly before before_date" in prompt and "not causal or forecasts" in prompt

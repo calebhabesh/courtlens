@@ -1,0 +1,56 @@
+[
+ {
+  "q": "Who won the 2016 NBA Finals, and what made it historic?",
+  "secs": 17.9,
+  "calls": 2,
+  "prompt": "courtlens-agent-prompt-v3",
+  "failure": null,
+  "tools": [],
+  "answer": "The Cleveland Cavaliers won the 2016 NBA Finals by defeating the Golden State Warriors in [7] games, capturing the franchise's first championship.\n\n- They became the first\u2014and currently only\u2014team in NBA history to overcome a [3]\u2013[1] deficit in the NBA Finals.\n- They achieved the feat against a Warriors team that had just set the all-time regular-season record with [73] wins ([73]\u2013[9]).\n- LeBron James delivered a legendary performance, leading all players in the series in points, rebounds, assists, steals, and blocks.\n- Kyrie Irving hit the iconic tiebreaking [three]-pointer with under a minute"
+ },
+ {
+  "q": "Who won MVP in 1998?",
+  "secs": 15.0,
+  "calls": 2,
+  "prompt": "courtlens-agent-prompt-v3",
+  "failure": null,
+  "tools": [],
+  "answer": "Michael Jordan won the NBA Most Valuable Player (MVP) award for the 1997-98 season.\n\n- It was Jordan's fifth and final regular-season MVP award with the Chicago Bulls.\n- He won the award during his final championship season in Chicago.\n- Karl Malone of the Utah Jazz finished as the runner-up in the voting."
+ },
+ {
+  "q": "Which team won the 1986 NBA championship?",
+  "secs": 12.2,
+  "calls": 2,
+  "prompt": "courtlens-agent-prompt-v3",
+  "failure": null,
+  "tools": [],
+  "answer": "The Boston Celtics won the 1986 NBA Championship, defeating the Houston Rockets in the NBA Finals.\n\n* The Celtics finished the regular season with a stellar record and dominated the postseason.\n* Larry Bird was named the NBA Finals MVP after leading the team throughout the series.\n* Boston's legendary starting lineup featured Bird, Kevin McHale, Robert Parish, Dennis Johnson, and Danny Ainge, with Bill Walton winning the Sixth Man of the Year award.\n* This title marked the 16th championship in franchise history."
+ },
+ {
+  "q": "What was the Malice at the Palace?",
+  "secs": 9.1,
+  "calls": 2,
+  "prompt": "courtlens-agent-prompt-v3",
+  "failure": null,
+  "tools": [],
+  "answer": "The Malice at the Palace was a notorious on-court brawl between players and fans that occurred during a game between the Indiana Pacers and the Detroit Pistons on November 19, 2004, at The Palace of Auburn Hills. \n\n* The altercation began in the final seconds of the game when a fight broke out on the court between the Pacers' Ron Artest (later known as Metta Sandiford-Artest) and the Pistons' Ben Wallace.\n* While Artest was lying on the scorer's table to cool down, a spectator threw a drink at him, prompting Artest to charge into the stands and confront a fan.\n* Teammates Stephen Jackson and J"
+ },
+ {
+  "q": "When was the three-point line introduced in the NBA?",
+  "secs": 9.3,
+  "calls": 2,
+  "prompt": "courtlens-agent-prompt-v3",
+  "failure": null,
+  "tools": [],
+  "answer": "The NBA introduced the three-point line ahead of the 1979\u201380 season.\n\n* The line was adopted from the American Basketball Association (ABA), which had featured the three-point shot throughout its history.\n* When first implemented in the NBA, it was set at a uniform distance in the corners and a longer distance at the top of the arc.\n* Chris Ford of the Boston Celtics scored the first three-pointer in NBA history during October 1979 against the Houston Rockets.\n* The league briefly shortened the line during the 1990s before returning it to the original dimensions."
+ },
+ {
+  "q": "Who holds the record for most points in a single NBA game?",
+  "secs": 3.3,
+  "calls": 2,
+  "prompt": "courtlens-agent-prompt-v3",
+  "failure": null,
+  "tools": [],
+  "answer": "Wilt Chamberlain holds the record for most points in a single NBA game.\n\n* Chamberlain achieved the historic feat playing for the Philadelphia Warriors against the New York Knicks.\n* Kobe Bryant holds the second-highest scoring game in NBA history against the Toronto Raptors.\n* Chamberlain also holds the third spot on the single-game scoring list against the Los Angeles Lakers."
+ }
+]
