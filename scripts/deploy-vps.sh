@@ -22,8 +22,11 @@ sha="${1:-$(git -C "$REPO_ROOT" rev-parse origin/main)}"
 [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || { echo "Give a full 40-character commit SHA." >&2; exit 1; }
 git -C "$REPO_ROOT" merge-base --is-ancestor "$sha" origin/main || { echo "$sha is not on origin/main." >&2; exit 1; }
 
+# Filter on the conclusion ourselves: GitHub's status=success filter can miss a run that already
+# succeeded (2026-11-11, a hand-dispatched Images run during a CI outage).
 images_run="$(gh run list --repo "$OWNER/courtlens" --workflow images.yml --commit "$sha" \
-  --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+  --limit 20 --json databaseId,conclusion \
+  --jq '[.[] | select(.conclusion == "success")][0].databaseId // empty')"
 [[ -n "$images_run" ]] || { echo "No successful Images run for $sha yet; wait for CI and Images on main." >&2; exit 1; }
 
 stage="$(mktemp -d "${TMPDIR:-$HOME/.cache/courtlens-tmp}/courtlens-release.XXXXXX")"
