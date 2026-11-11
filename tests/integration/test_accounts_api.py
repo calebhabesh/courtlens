@@ -400,3 +400,56 @@ def test_seeding_is_idempotent_and_keeps_todays_list(session: Session, players: 
 def test_reset_without_a_demo_account_says_so(session: Session) -> None:
     with pytest.raises(AccountError, match="seed-demo-account"):
         accounts.reset_demo_favorites(session)
+
+
+# --- The local dev account ------------------------------------------------------------------
+
+
+def test_dev_sign_in_is_off_unless_enabled(api_client: TestClient) -> None:
+    assert api_client.post("/api/auth/dev-session", headers=client_key("a")).status_code == 404
+
+
+def test_dev_sign_in_creates_one_dev_account_with_working_favourites(
+    api_client: TestClient, session: Session, players: list[str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("COURTLENS_DEV_ACCOUNT", "true")
+    get_settings.cache_clear()
+    first = api_client.post("/api/auth/dev-session", headers=client_key("a"))
+    second = api_client.post("/api/auth/dev-session", headers=client_key("a"))
+    assert first.json()["user"]["name"] == "Dev"
+    assert first.json()["user"]["email"] == accounts.DEV_EMAIL
+    assert first.json()["user"]["id"] == second.json()["user"]["id"]
+    assert (
+        session.scalar(
+            select(func.count()).select_from(User).where(User.email == accounts.DEV_EMAIL)
+        )
+        == 1
+    )
+    added = api_client.post(f"/api/me/favorites/{players[0]}", headers=bearer(first))
+    assert added.json()["player_ids"] == [players[0]]
+    # No password sign-in: its password is random and never shown.
+    assert sign_in(api_client, accounts.DEV_EMAIL).status_code == 401
+    with pytest.raises(AccountError, match="reserved"):
+        accounts.create_user(session, accounts.DEV_EMAIL, PASSWORD)
+
+
+def test_a_disabled_dev_account_is_refused(
+    api_client: TestClient, session: Session, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("COURTLENS_DEV_ACCOUNT", "true")
+    get_settings.cache_clear()
+    accounts.dev_account(session).account_enabled = False
+    session.commit()
+    assert api_client.post("/api/auth/dev-session", headers=client_key("a")).status_code == 403
+
+
+def test_production_refuses_the_dev_account(monkeypatch: pytest.MonkeyPatch) -> None:
+    from courtlens.config import Settings
+
+    monkeypatch.setenv("COURTLENS_ENVIRONMENT", "production")
+    monkeypatch.setenv("COURTLENS_JWT_SECRET", "p" * 40)
+    monkeypatch.setenv("COURTLENS_OPERATOR_TOKEN", "o" * 40)
+    monkeypatch.setenv("COURTLENS_CORS_ORIGINS", '["https://courtlens.example"]')
+    monkeypatch.setenv("COURTLENS_DEV_ACCOUNT", "true")
+    with pytest.raises(ValueError, match="COURTLENS_DEV_ACCOUNT"):
+        Settings()
