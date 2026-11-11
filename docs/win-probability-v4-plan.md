@@ -72,6 +72,23 @@ Facts measured while planning (2026-11-11):
 `evaluation/impact_history_ratings.py`: the Original's pin test hashes them. v4 reads them as they
 are.
 
+## How to work through this plan
+
+- **One block per session.** Start by reading this plan, the registration and the progress log.
+  End by writing the block's measured entry in the progress log, so the next session starts from
+  it.
+- **Work in a git worktree** of `feat/win-probability-v4`, not the main checkout: the owner's
+  daily timers run code from the main checkout, and W2 changes the step they run.
+- **Stop and ask the owner** before: any change to the registration; anything that would touch
+  the Original's pinned files or past scorecard rows; the VPS cutover deploy; the freeze; and
+  whenever a block needs something this plan does not list.
+- **Every block ends green:** pytest, strict mypy, Ruff, and for dashboard changes lint,
+  typecheck, Vitest and the touched Playwright specs (full Playwright for shared code and before
+  a ✅). A block is not done on prose alone; the progress entry carries the numbers.
+- **Where owner design instructions are recorded:** Live cards and the Pre-Game tab in the
+  [alignment catalog](databallr-alignment-catalog.md), row 7 (Live). The Win Probability page in
+  the [Research design catalog](research-design-catalog.md), RD14.
+
 ## The model in one paragraph
 
 `mu4 = own + w × (line − own)`. `own` is the Original's expected home margin, with its frozen
@@ -110,8 +127,14 @@ and state files, do not rebuild them, and confirm their content hashes.
 - **Stage S.** Fit `w` on 2022-23. Score K1 and K2 on 2023-24. Write and commit the selection log
   before stage C; stage C refuses to run without it and refuses to run twice (as v3's test did).
 - **Stage C.** Fit `w` on 2022-23 and 2023-24. Read 2024-25 and 2025-26 once. Gates D1, D2 and A2.
-- **Check to run first.** The Original's log loss recomputed on the stage C states must equal
-  0.4028, as it did in F05.
+- **Checks to run first.** The own forecast for every training game comes from the Original's
+  stored pregame table; confirm it equals `mu_from_entry` with the manifest's coefficients, and
+  that its RMSE on 2024-25 and 2025-26 recomputes to 14.163 and the closing line's to 13.708. The
+  Original's log loss recomputed on the stage C states must equal 0.4028, as it did in F05. A
+  mismatch means the wrong inputs are being read: stop and find out why before any fit.
+- **Lines to games.** Join the parquet to the game table the way
+  `evaluation/win_probability_report.py` does, and report how many regular-season games in each
+  line season have no line.
 
 Evidence in `docs/evidence/win-probability-v4/`: a README in the F05 README's form, the stage
 reports, every `w` with its games, runtimes and peaks.
@@ -150,9 +173,13 @@ one morning run for the previous night's scores.
   its read-only mounts.
 - `deploy-vps.sh` stops mirroring `derived/win-probability-serving` (the VPS owns it now), and
   the deploy must not delete `raw/espn-wp`.
-- The job must not refit ratings on the VPS: rating snapshots arrive from the PC. Check each thing
-  the nightly reads (`write_availability_checks`, `write_wpa_summary`) for a dependency the VPS
-  lacks, and measure the service's peak memory before setting its cap.
+- The job must not refit ratings on the VPS: rating snapshots arrive from the PC. Today's
+  `nightly` calls `ensure_snapshots`, which needs the season-impact bundle the VPS does not have;
+  the VPS job skips that call. `write_availability_checks` and `write_wpa_summary` read the
+  retained box files, which the PC pushes. Confirm both on the VPS, and measure the service's peak
+  memory before setting its cap.
+- The directories are settings (`win_probability_serving_dir`, `win_probability_models_dir`,
+  `win_probability_snapshots_dir`); use them, do not hard-code paths.
 - No new HTTP writes, so the Caddy allowlist is unchanged.
 
 **On the PC.** The local `refresh-daily` win-probability step stops sealing and scoring. It
@@ -182,6 +209,12 @@ existing platform check extended to v4). Freeze as R15b did: manifest
   `serving_model` field that Live reads. The 300-game and season-end reads flip it by the
   registered rule with no person involved. Unit-test both flips.
 - `/api/win-probability` gains the head-to-head; the existing fields keep their shape.
+- **Win probability added stays on the Original** for the whole 2026-27 season, so the season
+  table never mixes two models. The page says which model it uses.
+- **Drift.** The Original's drift status continues unchanged. v4 gets the same monitor, with its
+  interval taken from its stage C predictions.
+- **The Live chart** shows the serving model's line beside ESPN's. A game sealed before v4's
+  freeze shows the Original's line, and its "why" has no market row.
 
 The freeze needs the owner's word, because it starts the test. Record the freeze time and the
 first head-to-head slate.
