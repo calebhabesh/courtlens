@@ -22,8 +22,8 @@ Owner decisions, 2026-11-10:
 | F01 | Ask answers history questions directly | 👀 merged (#84) and live 2026-11-11 |
 | F02 | Shot Aftermath: position grid and after-make vs after-rebound chart (RD18 suggestions 3, 6) | 👀 merged (#85) and live 2026-11-11 |
 | F03 | Win Probability: uniform design pass (RD14) | ✅ owner, 2026-11-11 |
-| F04 | Simple accounts and a demo account; favourites saved per user | 👀 built 2026-11-11 (PR open), awaiting the owner |
-| F05 | Win Probability model upgrade | ⬜ owner-led |
+| F04 | Simple accounts and a demo account; favourites saved per user | 👀 merged (#87) 2026-11-11; not deployed; awaits the owner |
+| F05 | Win Probability model upgrade | 👀 measured 2026-11-11: not adopted (A1 interval includes zero); published |
 
 ## F00 Public Ask live
 
@@ -117,3 +117,17 @@ Planned by the owner separately. Constraints the plan inherits:
 - **Report it honestly.** Show calibration and intervals; no picks or certainty language; publish a
   negative result if v2 doesn't beat v1.
 - The page from F03 shows both versions if v2 is accepted.
+
+**Decided (owner, 2026-11-11):**
+- The betting line stays a benchmark only, never an input: the model stays CourtLens's own.
+- Test design as proposed: the gates read the same 2024-25 and 2025-26 games v1 was tested on (a
+  second read, labelled so), and the verdict is the head-to-head with v1 on 2026-27 games after the
+  upgrade's freeze.
+
+**Registered:** [`courtlens-win-probability-v3`](../evaluation/research/registrations/courtlens-win-probability-v3.json)
+(content hash `c9f79a11454e6ca0…`), committed before any fit. The served v1 is the registration of
+record `courtlens-win-probability-v2` (frozen 2026-11-04); that is why the upgrade is `-v3`. Steps:
+B (v1's recipe refitted on train ≤ 2022-23), P1 Projected Impact strength in the pregame layer
+(rolling-origin refits, no look-ahead), P3 an overtime specialist, selected on 2023-24, then P4 a
+final fit through 2023-24. Gates: A1 beats the frozen model on the same test states (paired 95%
+interval above zero), A2 calibration error 0.02 or less, then the freeze checks.
