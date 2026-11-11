@@ -43,7 +43,8 @@ export function FavoritePlayersList({ onNavigate }: { onNavigate?: () => void })
             return (
               <li key={player.player_id} className="favorite-players-row">
                 <Link href={`/players/${player.player_id}`} className="favorite-players-link" onClick={onNavigate}>
-                  <PlayerAvatar playerId={player.player_id} name={name} team={player.team} size="sm"
+                  {/* No logo badge on the photo: the logo sits beside the team code below. */}
+                  <PlayerAvatar playerId={player.player_id} name={name} size="sm"
                     era={seasonEra(player.season, player.team)} />
                   <span className="favorite-players-text">
                     <span className="favorite-players-name">{name}</span>
