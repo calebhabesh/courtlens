@@ -487,6 +487,7 @@ def run_turn(
             page_context=request.page_context,
             page_bindings=page_bindings,
             version=prompt_version,
+            web_search=settings.assistant_max_web_searches > 0,
         )
     except CalendarUnavailable:
         answer = base(
