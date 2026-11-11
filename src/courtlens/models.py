@@ -18,6 +18,7 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.sql.expression import false
 
 from courtlens.database import Base
 
@@ -37,6 +38,33 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(320), unique=True, nullable=False, index=True)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now)
+    # Accounts (finish plan F04). Rows from before F04 (the fantasy-league seed users, whose
+    # passwords are public fixtures) stay disabled: only the CLI enables an account.
+    display_name: Mapped[str | None] = mapped_column(String(80))
+    account_enabled: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default=false()
+    )
+    is_demo: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, default=False, server_default=false()
+    )
+    # Bumped to sign the account out everywhere; sessions carry the version they were issued at.
+    session_version: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=1, server_default="1"
+    )
+
+
+class UserFavoritePlayer(Base):
+    """One favourite player of one account. Bounded per user (services.accounts)."""
+
+    __tablename__ = "user_favorite_players"
+
+    user_id: Mapped[str] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    player_id: Mapped[str] = mapped_column(String(32), primary_key=True)
+    added_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, default=utc_now
+    )
 
 
 class IngestionRun(Base):

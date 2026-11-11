@@ -50,3 +50,40 @@ def decode_access_token(token: str, settings: Settings | None = None) -> str:
     if not isinstance(subject, str) or not subject:
         raise jwt.InvalidTokenError("token is missing a subject")
     return subject
+
+
+SESSION_AUDIENCE = "courtlens-session"
+
+
+def create_session_token(
+    user_id: str, session_version: int, settings: Settings | None = None
+) -> str:
+    """A sign-in session (F04). It lives only in an HttpOnly cookie set by the dashboard proxy."""
+    current = settings or get_settings()
+    now = datetime.now(UTC)
+    payload: dict[str, Any] = {
+        "sub": user_id,
+        "ver": session_version,
+        "iat": now,
+        "exp": now + timedelta(hours=current.session_hours),
+        "iss": "courtlens",
+        "aud": SESSION_AUDIENCE,
+    }
+    return jwt.encode(payload, current.jwt_secret.get_secret_value(), algorithm=ALGORITHM)
+
+
+def decode_session_token(token: str, settings: Settings | None = None) -> tuple[str, int]:
+    """The user ID and session version, or jwt.InvalidTokenError."""
+    current = settings or get_settings()
+    payload = jwt.decode(
+        token,
+        current.jwt_secret.get_secret_value(),
+        algorithms=[ALGORITHM],
+        audience=SESSION_AUDIENCE,
+        issuer="courtlens",
+    )
+    subject = payload.get("sub")
+    version = payload.get("ver")
+    if not isinstance(subject, str) or not subject or not isinstance(version, int):
+        raise jwt.InvalidTokenError("session is missing its subject or version")
+    return subject, version

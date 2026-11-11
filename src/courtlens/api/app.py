@@ -10,6 +10,7 @@ from courtlens import __version__
 from courtlens.api.assistant_limits import AssistantRequestLimit
 from courtlens.api.metrics import metrics_response, observe_request
 from courtlens.api.routers import (
+    account,
     auth,
     conversation,
     defensive_shot_quality,
@@ -96,6 +97,7 @@ def create_app() -> FastAPI:
     application.include_router(defensive_shot_quality.router, prefix="/api")
     application.include_router(shot_aftermath.router, prefix="/api")
     application.include_router(auth.router, prefix="/api")
+    application.include_router(account.router, prefix="/api")
     application.include_router(fantasy.router, prefix="/api")
     application.add_api_route(
         "/metrics", metrics_response, methods=["GET"], include_in_schema=False
