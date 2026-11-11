@@ -1082,6 +1082,10 @@ Instructions (owner, 2026-11-10, round 4; after approving, the owner was offered
    - Deletion: `components/shooting-view.tsx` and its stylesheet are gone. `components/catalog-scope-fields.tsx` stays: the check found the Ask scope editor and the contract drawer still use it, so the question was wrong to call it unrendered.
    — Built as listed. Nationally, 2024-25 kept the order (rim, three, short mid, long mid) and the rim rebound effect, read independently from the served rows. Row stays ✅ from round 3; this round is for the owner's look.
 
+Instructions (owner, 2026-11-10, round 5; offered suggestions 3 and 6 as optional, the owner answered "Yes, add these to the plan (not optional)"):
+5. [x] Suggestions 3 and 6. (Finish plan F02.)
+   — Built 2026-11-11: By estimated position (guards, forwards, bigs by zone; net or rebound cost; intervals, colour only where clear of zero, thin cells dimmed; phone column groups) and After a make or after a rebound on the rebound view (neutral paired bars, whiskers, league line). Specs ×3 72/72. Evidence: [`f02`](evidence/finish/f02/). 👀 for the owner's look; the row stays ✅.
+
 ## RD19 Ask evaluation — ✂️ cut by the owner (2026-11-10)
 
 - **Now:** not built. R16 is running (development set partly done, holdout unopened).
