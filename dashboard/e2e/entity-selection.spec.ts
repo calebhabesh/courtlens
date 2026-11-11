@@ -75,7 +75,7 @@ test("planner selections stay within roster/watchlist and never query the public
   });
   await page.goto("/planner?week=2026-10-05");
   await page.waitForLoadState("networkidle");
-  await page.getByLabel("Email",{exact:true}).fill("fixture@courtlens.local");await page.getByLabel("Password",{exact:true}).fill("fixture-only");await page.getByRole("button",{name:"Sign in",exact:true}).click();
+  await page.getByLabel("Email",{exact:true}).fill("fixture@courtlens.local");await page.getByLabel("Password",{exact:true}).fill("fixture-only");await page.locator("main").getByRole("button",{name:"Sign in",exact:true}).click();
   // FO13: the week lives in the URL and the styled picker; the plan loads without a Recalculate button.
   await expect(page.getByRole("button",{name:"Week starts: Oct 5, 2026"})).toHaveAttribute("data-value","2026-10-05");
   const drop=page.getByRole("combobox",{name:"Drop",exact:true});await drop.waitFor();await drop.fill("Jokic");await page.getByRole("option").filter({hasText:"Private Jokić"}).click();

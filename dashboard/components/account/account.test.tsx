@@ -1,13 +1,11 @@
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { MotionGlobalConfig } from "motion/react";
 import { AccountProvider, useAccount } from "../../lib/account-context";
 import { SignInDialog } from "./sign-in-dialog";
 import { FavoritePlayersList } from "./favorite-players";
 import { AccountMenu, FavoritesPopover } from "./account-controls";
 
-MotionGlobalConfig.skipAnimations = true;
 const refresh = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh, push: vi.fn(), replace: vi.fn(), prefetch: vi.fn() }) }));
 

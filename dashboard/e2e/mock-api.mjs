@@ -681,7 +681,7 @@ async function mockAccountRoute(request, response, url) {
     mockSignInFailures = 0;
     return json(response, 200, { reset: true });
   }
-  if (!url.pathname.startsWith("/api/me")) return false;
+  if (url.pathname !== "/api/me" && !url.pathname.startsWith("/api/me/")) return false;
   const account = mockSessions.get((request.headers.authorization ?? "").replace(/^Bearer /, ""));
   if (!account) return json(response, 401, { detail: "Your session has ended. Sign in again." });
   if (url.pathname === "/api/me") return json(response, 200, { id: account.id, name: account.name, email: account.email, is_demo: account.is_demo });
@@ -696,7 +696,7 @@ async function mockAccountRoute(request, response, url) {
 
 createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
-  if (url.pathname.startsWith("/api/auth/") || url.pathname.startsWith("/api/me") || url.pathname.startsWith("/api/__accounts/")) {
+  if (url.pathname.startsWith("/api/auth/") || url.pathname === "/api/me" || url.pathname.startsWith("/api/me/") || url.pathname.startsWith("/api/__accounts/")) {
     if (await mockAccountRoute(request, response, url) !== false) return;
   }
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
