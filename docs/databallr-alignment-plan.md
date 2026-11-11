@@ -199,6 +199,10 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   computed line ("An earlier attempt"), its numbers behind a small toggle, uncoloured with pass and fail in words, and its identifiers only in Caveats & Methodology; old URLs and
   aliases redirect to the tab that now holds it and frozen identifiers are never renamed. A page's one-sentence answer never ranks a thin group. Green and red mark a value only where
   its interval excludes zero. On a phone, wide tables switch column groups rather than scroll sideways.
+- **Settled in RD14 (owner, Win Probability, 2026-11-11):** a page with a live prospective record answers from it first, with the finished test's own gap as the next line;
+  replayed or hindsight games sit behind one line and a toggle, never coloured. A calibration chart is a square plot with HTML axes, so its 12 px labels stay 12 px at every width.
+  A table of model steps names each row's reference and each column's interval level, and a step that was only a diagnostic says so in words. A switch with more than five
+  choices becomes a select on a phone.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).
