@@ -19,7 +19,7 @@ Owner decisions, 2026-11-10:
 | Block | What | Status |
 | --- | --- | --- |
 | F00 | Public Ask live on the hosted demo, checked with a real question | 🛠 deploying |
-| F01 | Ask answers history questions directly | ⬜ |
+| F01 | Ask answers history questions directly | 👀 built 2026-11-11 |
 | F02 | Shot Aftermath: position grid and after-make vs after-rebound chart (RD18 suggestions 3, 6) | ⬜ |
 | F03 | Win Probability: uniform design pass (RD14) | ⬜ |
 | F04 | Simple accounts and a demo account; favourites saved per user | ⬜ |

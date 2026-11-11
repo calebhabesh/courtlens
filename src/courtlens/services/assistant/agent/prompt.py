@@ -9,7 +9,8 @@ from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
 from courtlens.services.assistant import knowledge
 from courtlens.services.assistant.defaults import last_completed_season
 
-PROMPT_VERSION = "courtlens-agent-prompt-v2"
+PROMPT_VERSION = "courtlens-agent-prompt-v3"
+PROMPT_V2 = "courtlens-agent-prompt-v2"
 
 POLICY = """You are CourtLens, an NBA answer engine. Answer basketball and CourtLens questions.
 Source order: CourtLens warehouse, native web search, model knowledge.
@@ -60,6 +61,30 @@ Only declared tools exist. All tool arguments are bounded, typed and read-only.
 """
 
 
+# v3 (2026-11-11, finish plan F01): settled history is answered directly from model knowledge when
+# no tool covers it, instead of searching the tools for numbers they don't hold; statistics still
+# need a tool result or a cited source. The deployment says whether web search exists.
+_V2_HISTORY = (
+    "Model knowledge is for concepts, rules and history without numeric claims. Every number in "
+    "your\nanswer must come from this turn's tool results or a cited source; "
+    "never invent a number.\n"
+)
+POLICY_V3 = POLICY.replace(
+    _V2_HISTORY,
+    """Model knowledge covers concepts, rules and settled history: champions, award winners, Finals
+and series results, famous games, records and eras. When no tool covers such a question, answer it
+directly from model knowledge without tool calls: awards covers only its registry seasons, and
+lookup_entity finds players, never teams. State only historical facts you are certain of (years,
+winners, opponents, series scores). Every statistic (an average, percentage, total or rating) must
+come from this turn's tool results or a cited source; never invent a statistic.
+General-knowledge answers carry no [^s] markers; the server labels them. Never refuse a basketball
+history question because nothing can be cited: answer it from model knowledge.
+When server facts say web_search is unavailable, don't plan around it: answer news questions with
+what CourtLens holds and say that very recent news may be missing.
+""",
+)
+
+
 def build_prompt(
     *,
     today: date,
@@ -67,6 +92,7 @@ def build_prompt(
     page_context: AssistantPageContext | None,
     page_bindings: dict[str, str] | None = None,
     version: str = PROMPT_VERSION,
+    web_search: bool = True,
 ) -> str:
     if version == "courtlens-agent-prompt-v1":
         from courtlens.services.assistant.agent.prompt_v1 import build_prompt as legacy_prompt
@@ -77,7 +103,7 @@ def build_prompt(
             page_context=page_context,
             page_bindings=page_bindings,
         )
-    if version != PROMPT_VERSION:
+    if version not in (PROMPT_VERSION, PROMPT_V2):
         raise ValueError("Unsupported agent prompt version")
     facts = {
         "today": today.isoformat(),
@@ -89,6 +115,8 @@ def build_prompt(
         "page_context": page_context.model_dump(mode="json") if page_context else None,
         "server_page_referents": page_bindings or {},
     }
+    if version == PROMPT_VERSION:
+        facts["web_search"] = "available" if web_search else "unavailable"
     glossary = [
         {"key": m.key, "label": m.display_name, "unit": m.unit, "definition": m.formula}
         for m in METRIC_CATALOG.values()
@@ -98,8 +126,8 @@ def build_prompt(
     ]
     return "\n".join(
         [
-            PROMPT_VERSION,
-            POLICY,
+            version,
+            POLICY_V3 if version == PROMPT_VERSION else POLICY,
             "Server facts: " + json.dumps(facts, sort_keys=True),
             "Glossary: " + json.dumps(glossary),
             "Site map: " + json.dumps(site_map),
