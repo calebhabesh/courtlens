@@ -146,6 +146,9 @@ class Settings(BaseSettings):
     # forwards for sign-in limits. Unset in production means accounts are off.
     account_proxy_token: SecretStr | None = None
     session_hours: int = Field(default=12, ge=1, le=720)
+    # Local development only: a passwordless dev account the dashboard signs into automatically
+    # (COURTLENS_DEV_ACCOUNT_AUTO_LOGIN). Refused in production.
+    dev_account: bool = False
     sign_in_failures_per_client: int = Field(default=5, ge=1, le=1000)
     sign_in_failures_per_email: int = Field(default=10, ge=1, le=1000)
     sign_in_window_minutes: int = Field(default=15, ge=1, le=1440)
@@ -293,6 +296,10 @@ class Settings(BaseSettings):
         ):
             raise ValueError(
                 "COURTLENS_OPERATOR_TOKEN must be a unique 32+ character value in production"
+            )
+        if self.dev_account:
+            raise ValueError(
+                "COURTLENS_DEV_ACCOUNT is for local development and is refused in production"
             )
         if self.account_proxy_token is not None:
             account_secret = self.account_proxy_token.get_secret_value()
