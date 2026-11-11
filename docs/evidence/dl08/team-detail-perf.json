@@ -1,18 +1,18 @@
 {
   "route": "/teams/1610612747",
-  "elapsedMs": 1533,
+  "elapsedMs": 1032,
   "cls": 0,
-  "fcp": 256,
-  "domInteractive": 710,
-  "loadComplete": 723,
+  "fcp": 308,
+  "domInteractive": 211,
+  "loadComplete": 211,
   "totalLongTasks": 1,
   "initialLoadLongTasksOver50ms": 1,
-  "maxInitialLoadTaskDurationMs": 75,
+  "maxInitialLoadTaskDurationMs": 85,
   "allLongTasks": [
     {
       "name": "self",
-      "duration": 75,
-      "startTime": 161.4000000357628
+      "duration": 85,
+      "startTime": 124.09999990463257
     }
   ],
   "animationLongTasksOver50ms": 0,

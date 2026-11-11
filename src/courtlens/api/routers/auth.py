@@ -1,37 +1,32 @@
+"""Planner sign-in from the early fantasy-league work: local only.
+
+Accounts are invite-only (finish plan F04): there is no sign-up endpoint, and the CLI creates
+accounts. The site's own sign-in lives in ``routers/account.py``. This bearer token is kept for
+the local Planner and is refused in production, where the Planner is hidden.
+"""
+
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, select
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from courtlens.api.dependencies import current_user
-from courtlens.api.schemas import LoginRequest, RegisterRequest, TokenResponse
+from courtlens.api.schemas import LoginRequest, TokenResponse
+from courtlens.config import get_settings
 from courtlens.database import get_db
 from courtlens.models import User
-from courtlens.security import create_access_token, hash_password, verify_password
+from courtlens.security import create_access_token, verify_password
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
 
-@router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
-def register(payload: RegisterRequest, session: Session = Depends(get_db)) -> TokenResponse:
-    email = payload.email.lower()
-    if session.scalar(select(User).where(func.lower(User.email) == email)) is not None:
-        raise HTTPException(status_code=409, detail="an account with that email already exists")
-    user = User(email=email, password_hash=hash_password(payload.password))
-    session.add(user)
-    try:
-        session.commit()
-    except IntegrityError as error:
-        session.rollback()
-        raise HTTPException(
-            status_code=409, detail="an account with that email already exists"
-        ) from error
-    return TokenResponse(access_token=create_access_token(user.id))
+def local_only() -> None:
+    if get_settings().environment == "production":
+        raise HTTPException(status_code=404, detail="Not Found")
 
 
-@router.post("/token", response_model=TokenResponse)
+@router.post("/token", response_model=TokenResponse, dependencies=[Depends(local_only)])
 def login(payload: LoginRequest, session: Session = Depends(get_db)) -> TokenResponse:
     user = session.scalar(select(User).where(func.lower(User.email) == payload.email.lower()))
     if user is None or not verify_password(payload.password, user.password_hash):
@@ -39,6 +34,6 @@ def login(payload: LoginRequest, session: Session = Depends(get_db)) -> TokenRes
     return TokenResponse(access_token=create_access_token(user.id))
 
 
-@router.get("/me")
+@router.get("/me", dependencies=[Depends(local_only)])
 def me(user: User = Depends(current_user)) -> dict[str, str]:
     return {"id": user.id, "email": user.email}

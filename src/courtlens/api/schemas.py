@@ -150,11 +150,6 @@ class AnalyticsLineageResponse(BaseModel):
     raw_payload_exposed: bool
 
 
-class RegisterRequest(BaseModel):
-    email: EmailStr
-    password: str = Field(min_length=12, max_length=128)
-
-
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=1, max_length=128)

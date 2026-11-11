@@ -1,0 +1,27 @@
+ok   POST /api/account/session -> 200 (dashboard)
+ok   POST /api/account/demo -> 200 (dashboard)
+ok   POST /api/account/sign-out -> 200 (dashboard)
+ok   POST /api/account/favorites/203999 -> 200 (dashboard)
+ok   DELETE /api/account/favorites/203999 -> 200 (dashboard)
+ok   GET /api/account/me -> 200 (dashboard)
+ok   GET /api/account/favorites -> 200 (dashboard)
+ok   PUT /api/account/favorites/203999 -> 403
+ok   POST /api/account/favorites -> 403
+ok   DELETE /api/account/favorites/abc -> 403
+ok   POST /api/account/favorites/203999/x -> 403
+ok   DELETE /api/account/session -> 403
+ok   POST /api/account/register -> 403
+ok   POST /api/auth/session -> 403
+ok   POST /api/auth/demo-session -> 403
+ok   POST /api/auth/register -> 403
+ok   POST /api/auth/token -> 403
+ok   POST /api/me/favorites/203999 -> 403
+ok   DELETE /api/me/favorites/203999 -> 403
+ok   GET /api/me -> 200 (api)
+ok   POST /api/workspace/favorites/203999 -> 403
+ok   DELETE /api/workspace/favorites/203999 -> 403
+ok   POST /api/assistant-v2/turn -> 200 (dashboard)
+ok   DELETE /api/assistant-v2/threads -> 403
+ok   POST /api/workbench/query -> 200 (api)
+ok   POST /api/workbench/workspace -> 403
+Caddy allowlist: all checks passed (caddy@sha256:77c07d5ebfa5be9fd6c820d2094ae662c9e7eeb9bf98346b7f639900263ee2a2)

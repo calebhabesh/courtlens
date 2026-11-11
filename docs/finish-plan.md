@@ -22,7 +22,7 @@ Owner decisions, 2026-11-10:
 | F01 | Ask answers history questions directly | 👀 merged (#84) and live 2026-11-11 |
 | F02 | Shot Aftermath: position grid and after-make vs after-rebound chart (RD18 suggestions 3, 6) | 👀 merged (#85) and live 2026-11-11 |
 | F03 | Win Probability: uniform design pass (RD14) | ✅ owner, 2026-11-11 |
-| F04 | Simple accounts and a demo account; favourites saved per user | ⬜ |
+| F04 | Simple accounts and a demo account; favourites saved per user | 👀 built 2026-11-11 (PR open), awaiting the owner |
 | F05 | Win Probability model upgrade | ⬜ owner-led |
 
 ## F00 Public Ask live
