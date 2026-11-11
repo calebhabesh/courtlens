@@ -23,6 +23,11 @@ x-api-environment: &api-environment
   COURTLENS_PUBLIC_ASK_DAILY_REQUESTS: "480"
   COURTLENS_ASSISTANT_PROVIDERS: gemini,groq
   COURTLENS_GEMINI_REQUESTS_PER_DAY: "500"
+  # The model measured locally (5 s answers, 500 free requests a day). The agent's built-in default
+  # is gemini-3.8-flash, which timed out on the demo's first live question (2026-11-11).
+  COURTLENS_GEMINI_MODEL: gemini-3.5-flash-lite
+  # Finish inside the dashboard proxy's 55 s, so a slow turn returns what it has, not an error.
+  COURTLENS_ASSISTANT_TURN_TIMEOUT_SECONDS: "45"
   # The free tier refuses Google Search grounding; trying costs a request and a 30 s cooldown.
   COURTLENS_ASSISTANT_MAX_WEB_SEARCHES: "0"
   COURTLENS_GEMINI_API_KEY: ${COURTLENS_GEMINI_API_KEY:?}
