@@ -1,0 +1,68 @@
+[
+  {
+    "route": "/research/shooting/aftermath",
+    "width": 1440,
+    "consoleErrors": [],
+    "apiRequests": [
+      "GET /api/workspace?workspaceId=default",
+      "GET /api/workbench/catalog",
+      "GET /api/workbench/players?releaseId=4d79e0d9-d181-45c9-ae29-f157e68043e0&season=2026-27&phase=regular_season&beforeDate=2026-11-10&window=season&minGames=1&minMinutes=1&sortMetric=min&sortDirection=desc&limit=2",
+      "GET /api/workbench/catalog?releaseId=4d79e0d9-d181-45c9-ae29-f157e68043e0",
+      "GET /api/workbench/lookup?q=1630178&releaseId=4d79e0d9-d181-45c9-ae29-f157e68043e0&season=2026-27&phase=regular_season&before_date=2026-11-10&kinds=player&limit=1",
+      "GET /api/workbench/players/1630178/portrait?size=64&crop=face-v6",
+      "POST /api/workbench/operations/shot-aftermath"
+    ],
+    "height": 1774,
+    "overflow": 0,
+    "brokenImages": [],
+    "nativeSelects": 2,
+    "oldTables": 3,
+    "statsGrids": 0,
+    "sections": [
+      "H1 Shooting",
+      "H2 Shot aftermath · Tyrese Maxey",
+      "H3 Focal Zone Profile",
+      "H3 Possession-Sequence Branches"
+    ],
+    "hashes": [],
+    "codes": [
+      "missed_recovery",
+      "missed_no_observed_recovery"
+    ],
+    "oldBadges": 0,
+    "textSample": "Shooting\n\nExpected-shot and adjusted-shooting research, and what follows a shot.\n\nExpected Shots\nAdjusted Shooting\nShot Aftermath\nSeason\nPublished Default · 2026-27\n1946-47\n1947-48\n1948-49\n1949-50\n1950-51\n1951-52\n1952-53\n1953-54\n1954-55\n1955-56\n1956-57\n1957-58\n1958-59\n1959-60\n1960-61\n1961-62\n1962-63\n1963-64\n1964-65\n1965-66\n1966-67\n1967-68\n1968-69\n1969-70\n1970-71\n1971-72\n1972-73\n1973-74\n1974-75\n1975-76\n1976-77\n1977-78\n1978-79\n1979-80\n1980-81\n1981-82\n1982-83\n1983-84\n1984-85\n1985-86\n1986-87\n1987-88\n1988-89\n1989-90\n1990-91\n1991-92\n1992-93\n1993-94\n1994-95\n1995-96\n1996-97\n1997-98\n1998-99\n1999-00\n2000-01\n2001-02\n2002-03\n2003-04\n2004-05\n2005-06\n2006-07\n2007-08\n2008-09\n2009-10\n2010-11\n2011-12\n2012-13\n2013-14\n2014-15\n2015-16\n2016-17\n2017-18\n2018-19\n2019-20\n2020-21\n2021-22\n2022-23\n2023-24\n2024-25\n2025-26\n2026-27\nPhase\nPublished Default · Regular Season\nRegular Season\nThrough\nNov 9, 2026\nFrom\nSelect a Date\nMin attempts\nMin games\nData Details\nExample: Tyrese Maxey\nChange\nTyrese Maxey\nPHI\n·\nA · 11 GP · 401 MIN\nPoints / Game\n26.9\nRebounds / Game\n3.7\nAssists / Game\n5.5\nSubject A · Points / Game\nSubject A · Points / Game\n26.9\n0\nZero baseline\n40\nSource: Published box scores\nSample: n=11 appearances\n\nSeason minutes rule. These box-score values are separate from the operation below.\n\nSource Coverage\nSource Unavailable\n0 / 154 league games\nAttempts\n0\n0 located · 0 unknown\nFG%\n—\nFG% unavailable\n0 makes · 0 points\nMapped Anchors\n0\n4 branches\nCensored Opponent\n0\nEnd-of-period possessions\nShot afterm"
+  },
+  {
+    "route": "/research/shooting/aftermath",
+    "width": 390,
+    "consoleErrors": [],
+    "apiRequests": [
+      "GET /api/workspace?workspaceId=default",
+      "GET /api/workbench/catalog",
+      "GET /api/workbench/players?releaseId=4d79e0d9-d181-45c9-ae29-f157e68043e0&season=2026-27&phase=regular_season&beforeDate=2026-11-10&window=season&minGames=1&minMinutes=1&sortMetric=min&sortDirection=desc&limit=2",
+      "GET /api/workbench/catalog?releaseId=4d79e0d9-d181-45c9-ae29-f157e68043e0",
+      "GET /api/workbench/lookup?q=1630178&releaseId=4d79e0d9-d181-45c9-ae29-f157e68043e0&season=2026-27&phase=regular_season&before_date=2026-11-10&kinds=player&limit=1",
+      "GET /api/workbench/players/1630178/portrait?size=64&crop=face-v6",
+      "POST /api/workbench/operations/shot-aftermath"
+    ],
+    "height": 2314,
+    "overflow": 0,
+    "brokenImages": [],
+    "nativeSelects": 2,
+    "oldTables": 3,
+    "statsGrids": 0,
+    "sections": [
+      "H1 Shooting",
+      "H2 Shot aftermath · Tyrese Maxey",
+      "H3 Focal Zone Profile",
+      "H3 Possession-Sequence Branches"
+    ],
+    "hashes": [],
+    "codes": [
+      "missed_recovery",
+      "missed_no_observed_recovery"
+    ],
+    "oldBadges": 0,
+    "textSample": "Shooting\n\nExpected-shot and adjusted-shooting research, and what follows a shot.\n\nExpected Shots\nAdjusted Shooting\nShot Aftermath\nFilters 2026-27\nData Details\nExample: Tyrese Maxey\nChange\nTyrese Maxey\nPHI\n·\nA · 11 GP · 401 MIN\nPoints / Game\n26.9\nRebounds / Game\n3.7\nAssists / Game\n5.5\nSubject A · Points / Game\nSubject A · Points / Game\n26.9\n0\nZero baseline\n40\nSource: Published box scores\nSample: n=11 appearances\n\nSeason minutes rule. These box-score values are separate from the operation below.\n\nSource Coverage\nSource Unavailable\n0 / 154 league games\nAttempts\n0\n0 located · 0 unknown\nFG%\n—\nFG% unavailable\n0 makes · 0 points\nMapped Anchors\n0\n4 branches\nCensored Opponent\n0\nEnd-of-period possessions\nShot aftermath · Tyrese Maxey\nSave Evidence JSON\nExport Evidence CSV\n\nSource coverage: Source Unavailable · 0 / 154 finalized league games across required inputs · Through Nov 9, 2026.\n\nReal analytics are unavailable for this retained scope.\nWhy?\nFocal Zone Profile\nTyrese Maxey · Empty · 0 games · 0 located / 0 unknown attempts\nZONE\tATTEMPTS\tMAKES\tPOINTS\tFG%\tALL-ATTEMPT SHARE\tLOCATED-ATTEMPT SHARE\nRestricted Area\t0\t0\t0\t—\t—\t—\nIn The Paint (Non-RA)\t0\t0\t0\t—\t—\t—\nMid-Range\t0\t0\t0\t—\t—\t—\nLeft Corner 3\t0\t0\t0\t—\t—\t—\nRight Corner 3\t0\t0\t0\t—\t—\t—\nAbove the Break 3\t0\t0\t0\t—\t—\t—\nBackcourt\t0\t0\t0\t—\t—\t—\nUnknown\t0\t0\t0\t—\t—\t—\nPossession-Sequence Branches\nEach branch has its own sample; totals cannot form a net rating.\nWhy?\nBranch-specific samples and observed point totals\nBRANCH\tANCHORS\tGAMES\tSAMPLE\tFIRST-CHA"
+  }
+]

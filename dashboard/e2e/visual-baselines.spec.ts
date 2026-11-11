@@ -2,7 +2,6 @@ import { test, expect, type Page } from "@playwright/test";
 import { mockContracts, mockFreeAgency, mockFinance, mockRosterShapes, initial as financeInitial } from "./finance-fixture";
 import { firstLoadFixtures, lastGamesFixtures, SGA } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
-import research from "./fixtures/research-negative-result.json";
 
 // FO06 screenshot baselines for the pages approved at owner gate 2 and the /design style guide,
 // plus each later block's rebuilt pages (FO08: Live Finals, Playoffs; FO09: profile, Recent Games).
@@ -198,15 +197,7 @@ for (const view of WIDTHS) test.describe(`FO11 baselines ${view.name}`,()=>{
 // FO12: Research template pages with deterministic data (mock API, sealed fixture or static content).
 for (const view of WIDTHS) test.describe(`FO12 baselines ${view.name}`, () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
-  test("expected shots", async ({ page }) => {
-    const run = research.run;
-    await page.route("**/api/workbench/research/experiments", route => route.fulfill({ json: [{ experiment: run.experiment, status: run.status, run_id: run.run_id, protocol_sha256: run.protocol_sha256, gate: null, classification: run.classification, http_fitting_available: false }] }));
-    await page.route("**/api/workbench/research/runs?*", route => route.fulfill({ json: [run] }));
-    await page.route(`**/api/workbench/research/runs/${run.run_id}`, route => route.fulfill({ json: research }));
-    await openWorkbench(page, "/research/shooting");
-    await expect(page.getByRole("region", { name: "Registered research result" })).toBeVisible();
-    await settle(page); await expect(page).toHaveScreenshot(`expected-shots-${view.name}.png`, shot);
-  });
+  // RD17: the Expected Shots page is gone (Shot Quality → Model → An earlier attempt); its baselines were removed with it.
   for (const [name, path, ready] of [["forecasts", "/forecasts", "Does a smarter model forecast points better?"], ["evaluation", "/evaluation", "Did adding context beat a simple average?"], ["case-studies", "/research/case-studies", "Mid-Season Trade & Jersey Stint Tracking"], ["calculator", "/calculator", "How this calculator is built"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByText(ready, { exact: true }).first()).toBeVisible();
@@ -227,7 +218,7 @@ for (const view of WIDTHS) test.describe(`FO13 baselines ${view.name}`, () => {
 // PC04: every entry is opened without parameters; canonical defaults are written by the page.
 for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.name}`, () => {
   test.beforeEach(async ({page}) => {await page.setViewportSize({width:view.width,height:view.height});await stableWorkspace(page);await firstLoadFixtures(page);});
-  for (const [name,path] of [["compare","/compare"],["shot-aftermath","/research/shooting/aftermath"],["recent-games","/last-games"],["operation-gallery","/research/operation"]]) test(name,async({page})=>{
+  for (const [name,path] of [["compare","/compare"],["recent-games","/last-games"],["operation-gallery","/research/operation"]]) test(name,async({page})=>{
     await openWorkbench(page,path);
     if(path === "/compare") await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
     else if(path === "/research/operation") await expect(page.getByRole("region",{name:"Available research operations"})).toBeVisible();
@@ -250,7 +241,7 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
 for (const view of WIDTHS) test.describe(`PC11 populated pages ${view.name}`, () => {
   test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
   for (const [name, path, ready] of [["defensive-matchups", "/research/defensive-matchups/tracking", "Makes below expected, top 12"], ["player-matchups", "/matchups", "Exposure"],
-    ["adjusted-shooting", "/research/shooting/adjusted", "Points per 100 above the play-type expectation"], ["six-factor", "/research/rapm/six-factor", "Net Efficiency vs Possession Control, 2025-26"],
+    ["six-factor", "/research/rapm/six-factor", "Net Efficiency vs Possession Control, 2025-26"],
     ["combine", "/wingspan", "Positional Averages"],
     ["stats-tracking", "/stats/tracking", "Drives per game, top 12"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);

@@ -1,32 +1,39 @@
 import { test, expect } from "@playwright/test";
-import result from "./fixtures/research-negative-result.json";
+import fixture from "./fixtures/rd17-expected-shot.json";
 import { openWorkbench } from "./workbench-navigation";
+// RD17: real answers of the research API (the sealed earlier expected-shot run and the registry).
+const result = fixture.result;
 const run = result.run;
 const BOS = "1610612738";
-const registry = [
-  {experiment:run.experiment, status:run.status, run_id:run.run_id, protocol_sha256:run.protocol_sha256, gate:null},
-  {experiment:"courtload-rapm-v1",status:"source_blocked",run_id:null,protocol_sha256:"rapm-fixture",gate:"requires complete reconciled stint and possession seasons"},
-  {experiment:"courtload-six-factor-v1",status:"source_blocked",run_id:null,protocol_sha256:"six-fixture",gate:"requires shooting, turnover and rebound attribution"},
-  {experiment:"courtload-adjusted-shooting-v1",status:"source_blocked",run_id:null,protocol_sha256:"adjusted-fixture",gate:"requires admitted playtypes and foul trips"}
-];
 async function researchRoutes(page: import("@playwright/test").Page) {
-  await page.route("**/api/workbench/research/experiments",route => route.fulfill({json:registry}));
-  await page.route("**/api/workbench/research/runs?*",route => route.fulfill({json:[run]}));
+  await page.route("**/api/workbench/research/experiments",route => route.fulfill({json:fixture.experiments}));
+  await page.route("**/api/workbench/research/runs?*",route => route.fulfill({json:fixture.runs}));
   await page.route(`**/api/workbench/research/runs/${run.run_id}`,route => route.fulfill({json:result}));
 }
-test("completed negative report shows amended identity, honest horizons, metrics and export", async ({page}) => {
+test("the sealed negative result is Shot Quality's earlier attempt: one line, numbers behind a toggle, identifiers in About, GET only", async ({page}) => {
   const methods: string[] = [];
   page.on("request",request => { if(request.url().includes("/research/")) methods.push(request.method()); });
-  await researchRoutes(page); await page.goto("/research/shooting");
-  const region = page.getByRole("region",{name:"Registered research result"});
-  await expect(region).toContainText("Completed negative result");
-  await expect(region).toContainText("0.08127%"); await expect(region).toContainText("No calibration fit");
-  await expect(region).toContainText("Final error report opened: no");
-  // FO12: one display date format (D11); the sealed ISO horizons sit in Data details.
-  await expect(region).toContainText("Apr 14, 2024"); await expect(region).toContainText("Jan 15, 2025");
-  await page.getByText("Selection Reliability Bins and Samples",{exact:true}).click();
-  await expect(page.getByRole("region",{name:"Reliability bins"})).toContainText("—");
-  const pending=page.waitForEvent("download");await page.getByRole("button",{name:"Export verified report JSON"}).click();
+  await researchRoutes(page);
+  // RD17: the old Expected Shots URL opens Shot Quality's Model tab with the earlier attempt open.
+  await page.goto("/research/shooting");
+  await expect(page).toHaveURL(url => url.pathname === "/research/shot-quality" && url.searchParams.get("tab") === "model" && url.searchParams.get("earlier") === "open");
+  const line = page.locator("[data-field=earlier-line]");
+  await expect(line).toContainText("0.08%"); await expect(line).toContainText("1%"); await expect(line).toContainText("never calibrated and never tested");
+  await expect(line).toContainText("Apr 14, 2024"); await expect(line).toHaveAttribute("data-passed", "false");
+  const grid = page.getByRole("table",{name:"The earlier attempt's selection scores"});
+  await expect(grid).toBeVisible();
+  await expect(grid.locator('tr[data-metric="brier"] [data-field=baseline]')).toHaveText("0.233961");
+  await expect(grid.locator('tr[data-metric="brier"] [data-field=candidate]')).toHaveText("0.233771");
+  await expect(grid.locator('tr[data-metric="rows"] [data-field=candidate]')).toHaveText("106,080");
+  await expect(page.locator("[data-field=earlier-result]")).toContainText("Failed");
+  await expect(page.locator("[data-field=earlier-sample]")).toContainText("Jan 15, 2025");
+  // No hashes or project codes in the visible text; they are in the collapsed Caveats & Methodology.
+  const visible = await page.locator("main").evaluate(main => (main as HTMLElement).innerText);
+  expect(visible).not.toMatch(/court(?:load|lens)-[a-z]|\b[0-9a-f]{16,}\b/);
+  await page.locator("#model-method summary").first().click();
+  await expect(page.locator(".sq-earlier-ids")).toContainText(result.manifest_sha256);
+  await expect(page.locator("[data-field=earlier-other-runs]")).toContainText("failed before any fit");
+  const pending=page.waitForEvent("download");await page.getByRole("button",{name:"Download the sealed report"}).click();
   const download=await pending; const {readFileSync}=await import("node:fs");
   expect(JSON.parse(readFileSync((await download.path())!,"utf8")).manifest_sha256).toBe(result.manifest_sha256);
   expect(methods.every(method => method === "GET")).toBe(true);
@@ -42,12 +49,14 @@ test("each unavailable model names its independent requirement",async ({page}) =
     await expect(page.getByRole("region",{name:"Registered research result"})).toHaveCount(0);
   }
 });
-test("integrity rejection hides numerical outputs and retry recovers",async ({page}) => {
+test("integrity rejection hides the earlier attempt's numbers and retry recovers",async ({page}) => {
   await researchRoutes(page); await page.route(`**/api/workbench/research/runs/${run.run_id}`,route => route.fulfill({status:503,json:{detail:"artifact failed integrity verification"}}));
-  await page.goto("/research/shooting");await expect(page.getByRole("alert").filter({hasText:"Report unavailable"})).toContainText("integrity verification");
-  await expect(page.getByRole("button",{name:"Export verified report JSON"})).toHaveCount(0);
+  await openWorkbench(page, "/research/shot-quality?tab=model");
+  const section = page.locator("#earlier-attempt");
+  await expect(section.getByRole("alert")).toContainText("The earlier attempt is unavailable");
+  await expect(page.locator("[data-field=earlier-line]")).toHaveCount(0);
   await page.unroute(`**/api/workbench/research/runs/${run.run_id}`);await page.route(`**/api/workbench/research/runs/${run.run_id}`,route => route.fulfill({json:result}));
-  await page.getByRole("button",{name:"Retry reads"}).click();await expect(page.getByRole("region",{name:"Registered research result"})).toContainText("Completed negative result");
+  await section.getByRole("button",{name:"Retry"}).click();await expect(page.locator("[data-field=earlier-line]")).toContainText("0.08%");
 });
 test("roster keeps observed and projected inputs separate and exports context",async ({page}) => {
   await page.route(`**/api/workbench/teams/${BOS}?*`,route => { expect(new URL(route.request().url()).searchParams.get("phase")).toBe("regular_season"); return route.fulfill({json:{team:{id:"fixture",name:"Fixture Team",tricode:"FIX"},context:{release_id:"fixture-release",season:"2025-26",phase:"regular",before_date:"2026-07-01"},record:{games_played:1},player_cohort:[{player_id:"1",player_name:"Fixture Player",games_played:1,total_minutes:30,points:0,points_per_game:0}],warnings:["Fixture scope only"]}}); });

@@ -195,6 +195,10 @@ redesigned from the owner's Databallr screenshots (Research handoff D13). Owner 
   points, with one line saying what a point means. How a model was chosen is a collapsed grid of every candidate on each fold, the chosen ones named in words; a sentence stating the
   selection rule appears only when the served numbers bear it out. Groups with no interval may carry one computed line naming their best and worst, called a pattern, not a result.
   Pass and fail are words, not colours. Player names wrap whole at every width.
+- **Settled in RD17–RD18 (owner, Shot Quality, zTS, Shot Aftermath, 2026-11-10):** a sealed experiment that never earned its own page joins the page it led to as one
+  computed line ("An earlier attempt"), its numbers behind a small toggle, uncoloured with pass and fail in words, and its identifiers only in Caveats & Methodology; old URLs and
+  aliases redirect to the tab that now holds it and frozen identifiers are never renamed. A page's one-sentence answer never ranks a thin group. Green and red mark a value only where
+  its interval excludes zero. On a phone, wide tables switch column groups rather than scroll sideways.
 - **Sections:** `ResearchSection` from `components/research/research-page.tsx`, on the page background
   with a hairline rule between sections and a 24 px heading with a 20 px accent Lucide icon (Databallr's
   explainer look; panels with text-colour icons stay the pattern for non-Research pages).

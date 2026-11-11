@@ -36,15 +36,6 @@ export const TABBED_PAGES = {
     hero: { icon: "ruler" },
     tabs: [{ label: "Combine & Wingspan", href: "/wingspan" }],
   },
-  shooting: {
-    title: "Shooting",
-    subtitle: "Expected-shot and adjusted-shooting research, and what follows a shot.",
-    tabs: [
-      { label: "Expected Shots", href: "/research/shooting" },
-      { label: "Adjusted Shooting", href: "/research/shooting/adjusted" },
-      { label: "Shot Aftermath", href: "/research/shooting/aftermath" },
-    ],
-  },
   // R11: the What's New route is the Patch Notes changelog, listed under Research → Tools (D8).
   whatsNew: {
     title: "Patch Notes",
@@ -79,8 +70,11 @@ export const STATS_TABS: readonly RouteTab[] = [
  */
 export const CONSOLIDATED_REDIRECTS: { source: string; destination: string }[] = [
   { source: "/six-factor-rapm", destination: "/research/rapm/six-factor" },
-  { source: "/research/expected-shots", destination: "/research/shooting" },
-  { source: "/research/adjusted-shooting", destination: "/research/shooting/adjusted" },
+  // RD17 (owner, 2026-11-10): Expected Shots is Shot Quality's earlier attempt (Model tab); Adjusted Shooting's defence is zTS's Defense tab.
+  { source: "/research/shooting", destination: "/research/shot-quality?tab=model&earlier=open" },
+  { source: "/research/expected-shots", destination: "/research/shot-quality?tab=model&earlier=open" },
+  { source: "/research/shooting/adjusted", destination: "/research/zts?tab=defense" },
+  { source: "/research/adjusted-shooting", destination: "/research/zts?tab=defense" },
   { source: "/shot-aftermath", destination: "/research/shooting/aftermath" },
   { source: "/patch-notes", destination: "/whats-new" },
   { source: "/blog", destination: "/whats-new" },
@@ -95,8 +89,9 @@ export const COMPATIBILITY_REDIRECTS: { source: string; destination: string }[] 
   { source: "/similar-players/shot-profile", destination: "/similar-players" },
   { source: "/pvp", destination: "/compare" },
   { source: "/StatLineShift", destination: "/stat-line-shift" },
-  { source: "/zts", destination: "/research/shooting/adjusted" },
-  { source: "/shotquality", destination: "/research/shooting" },
+  // RD17 Q4: Databallr's paths name zTS and Shot Quality.
+  { source: "/zts", destination: "/research/zts" },
+  { source: "/shotquality", destination: "/research/shot-quality" },
   { source: "/d-shotquality", destination: "/research/defensive-matchups" },
   { source: "/kawhifiles", destination: "/research/case-studies" },
   { source: "/ask", destination: "/research/ask" },

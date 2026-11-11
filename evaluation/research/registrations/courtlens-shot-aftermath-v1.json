@@ -1,0 +1,98 @@
+{
+  "schema_version": "courtlens-research-registration-v1",
+  "identity": "courtlens-shot-aftermath-v1",
+  "block": "R17",
+  "registered_on": "2026-11-10",
+  "kind": "descriptive",
+  "question": "On first-chance field-goal attempts from each shot zone, how many points does the shooting team score (made field goals plus second chances), and how much more or less than the league's normal scoring does the opponent score on its immediate next possession, by season, shooting team and estimated position group, with what uncertainty? Databallr's Shot Aftermath page, computed by CourtLens from its own sealed possessions.",
+  "inputs": [
+    "Shots: the pinned courtlens-expected-shot-v2 shot tables (game, event number, shooter, team, made, value, distance, action type) for 2024-25 and 2025-26, checked by content SHA-256 (parameters.shot_table_sha256). Read, never edited.",
+    "Possessions: the accepted regular-season R01 bundles (sealed IM03) for 2024-25 and 2025-26, every game member checked by content SHA-256 (parameters.possession_bundle_sha256). Hash-pinned impact modules are read, never edited.",
+    "Blocks: PlayByPlayV3 archives at the SHA-256 pins R05 read (parameters.pbp_archive_sha256); a row whose description contains ' BLOCK (' flags the field-goal attempt with the same game and action number. Used only to count blocked attempts.",
+    "Positions: courtlens-position-estimates-v1 artifact data/derived/position-estimates-v1/1f8c19f2f4f27e2322d80e59fbe1fa519d299bb970d6cdc60aa2d8febe572a00.json, checked by SHA-256: the shooter's estimated position for the season.",
+    "DATA CHECK (done 2026-11-10 before this registration; counts and joins only, no points, rates or averages read; docs/evidence/research/design-RD18/content-check.json). Shots 219,527 (2024-25) and 219,160 (2025-26); joined to a sealed possession event 216,313 and 218,625; unjoined 3,214 and 534 in the 18 and 4 games R01 excluded, plus 1 stray in 2025-26. First-chance attempts by the sealed possessions 193,336 and 194,813 (Databallr prints 190,685 for 2024-25). Every first-chance miss is followed by a rebound event in its possession but one. Next possession at a period or game end after 919 and 1,180 makes and 2,860 and 2,380 defensive rebounds. Every shooter has a position estimate. Blocked attempts 11,996 and 11,880."
+  ],
+  "method": [
+    "1 QUESTION. Descriptive: no model is chosen and nothing gates on a value. Seasons: the 2024-25 and 2025-26 regular seasons.",
+    "2 MATCHING. A shot counts when it joins a sealed possession event by (game, action number) with the same offence team and the same result. Unmatched shots are unknown, counted by reason (game not admitted by R01; not on a possession; team or result differs), never zero.",
+    "3 FIRST CHANCE. A matched attempt on a counted possession before that possession's first offensive rebound event. The sealed possessions decide; disagreement with the shot table's after_oreb flag is reported. Attempts on uncounted segments are unknown.",
+    "4 ZONES. Three: shot value 3. Rim: a 2 whose action type contains layup, dunk, tip, alley oop, putback or finger roll (case-insensitive), or any 2 at 4 ft or less; the label decides before distance. Short mid: other 2s at 5 to 14 ft. Long mid: other 2s at 15 ft or more. A 2 outside the rim with no distance is excluded from the mid rows and counted. All shots: the four together.",
+    "5 SCOPES. Season x shooting team (all teams, or the shot row's own team) x position group (All; Guards = PG or SG, Forwards = SF or PF, Bigs = C, from the shooter's position estimate for that season; a shooter without an estimate is counted as unclassified and kept only in All) x zone (four zones and all shots).",
+    "6 MADE POINTS. Shot value times made. The and-one free throw is excluded; and-one counts are reported.",
+    "7 SECOND CHANCE. For a first-chance miss, every point the shooting team scores later in the same counted possession (field goals and free throws, including free throws after an offensive rebound and putback and-ones). A miss rebounded by the defence has 0 second-chance points, a known zero because the possession ended.",
+    "8 MISS OUTCOME. The first rebound event after the miss in its possession: offensive (orb = 1, team rebounds included) or defensive (orb = 0 with an opportunity). A miss with no rebound event after it is unknown and leaves the defensive-rebound share and the second-chance mean.",
+    "9 OPPONENT'S NEXT POSSESSION. The next counted possession in the same game and period after the shot's possession; uncounted segments in between are skipped and their points not counted. It is paired only if the defending team has the ball. Period or game end: unknown (censored). The shooting team again, or a make followed by another field-goal attempt in its own possession: unknown. Its points are the full possession, its offensive rebounds included.",
+    "10 OPPONENT PPP. Mean points of paired next possessions after first-chance makes (PPP_make) and after defensively rebounded first-chance misses (PPP_dreb), with possession counts.",
+    "11 LEAGUE BASELINE. L = total points of counted possessions / number of counted possessions, over every admitted game in the season, both teams.",
+    "12 ALL ATTEMPTS VIEW (per first-chance attempt). m = makes / attempts; d = defensive rebounds / misses with a rebound event; SC = second-chance points / misses with a known outcome. made = value-weighted points / attempts; second = (1 - m) x SC; own = made + second; cost = m x (PPP_make - L) + (1 - m) x d x (PPP_dreb - L); net = own - cost.",
+    "13 AFTER A MISS VIEW (per first-chance miss). own = SC; cost = d x (PPP_dreb - L); net = own - cost.",
+    "14 AFTER A DEFENSIVE REBOUND VIEW (per defensively rebounded first-chance miss). cost = PPP_dreb - L.",
+    "15 ALSO SERVED per cell: attempts, makes, FG%, blocked attempts and share, and-ones, paired possessions after makes and after defensive rebounds, every unknown by category. Once per season: first-chance attempts by zone beside Databallr's printed 2024-25 counts (61,494 rim, 33,391 short mid, 13,195 long mid, 82,583 three), descriptive only.",
+    "16 COLOUR. Green or red only on opponent cost (in each view) where its 95% interval excludes zero; green is a benefit (below the league baseline). Net is a total near 1 to 1.4 points per attempt whose interval always excludes zero, so it is never coloured.",
+    "17 THIN CELLS. A cell with fewer than 100 attempts, or fewer than 50 paired opponent possessions on the cost side, has status thin: value and interval served, never coloured. Zero attempts: unknown, no value. No smoothing or shrinkage.",
+    "18 POSITIONS ARE ESTIMATES. Served with the estimate's out-of-sample group accuracy (888 of 1,039 = 85.5%; centres the weakest, 95 of 142 estimated C, 43 as PF).",
+    "19 RUN ORDER. One pass; nothing is chosen. Any change after results are read is disclosed; analysis changes require v2. Timings live in the run log, never in the hashed results.",
+    "20 CREDIT. Databallr's Shot Aftermath page defines the views, zones, first chance and the cost formula. CourtLens's numbers are its own and will not equal Databallr's."
+  ],
+  "parameters": {
+    "seasons": ["2024-25", "2025-26"],
+    "zones": ["rim", "short_mid", "long_mid", "three", "all"],
+    "positions": ["all", "guards", "forwards", "bigs"],
+    "position_groups": {"PG": "guards", "SG": "guards", "SF": "forwards", "PF": "forwards", "C": "bigs"},
+    "rim_action_words": ["layup", "dunk", "tip", "alley oop", "putback", "finger roll"],
+    "rim_max_feet": 4,
+    "short_mid_max_feet": 14,
+    "bootstrap_replicates": 2000,
+    "interval": 0.95,
+    "percentiles": [2.5, 97.5],
+    "thin_attempts": 100,
+    "thin_possessions": 50,
+    "identity_tolerance": 1e-12,
+    "databallr_first_chance_2024_25": {"rim": 61494, "short_mid": 33391, "long_mid": 13195, "three": 82583, "all": 190685},
+    "shot_table_sha256": {
+      "2024-25": "e529ebe0b5c795c8b7c8433b0bba2b1c0600994027c29e11a52db61581b65caf",
+      "2025-26": "5c68c0614ad40a26ede07e5fe54d586ffe3da013c26545c71f72811061b9b150"
+    },
+    "possession_bundle_sha256": {
+      "2024-25": "b3fe49d5919562bc017e56652197057850f729e12031ca76eab66541967ec939",
+      "2025-26": "25002650fb6f299948c75cc9caf6a11d03e32c2dd0aefeb8a7c06a1126c59291"
+    },
+    "pbp_archive_sha256": {
+      "2024-25": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+      "2025-26": "790a01ea3f0b2f8335d96bd687e21501551fc8cdea3ada83457ee3208a940671"
+    },
+    "position_estimates_sha256": "1f8c19f2f4f27e2322d80e59fbe1fa519d299bb970d6cdc60aa2d8febe572a00"
+  },
+  "selection": "None. Seasons, zones, scopes, baselines, formulas, intervals and thresholds are fixed here, before any point, rate or average is computed.",
+  "uncertainty": "Game bootstrap: 2,000 replicates, whole games resampled with replacement within the season (multinomial counts), seed SeedSequence([1717, starting year]); one set of game weights per replicate for every cell, so cells stay consistent; L recomputed in each replicate; every served rate, cost and net gets its 2.5th and 97.5th percentiles. Intervals describe game sampling only: not position-estimate error or matching error.",
+  "evaluation": [
+    "Per season: shots, joined, unjoined by reason, first-chance attempts, the after_oreb disagreement, L with its interval, and first-chance attempts by zone beside Databallr's printed 2024-25 counts.",
+    "Per cell: every value of the three views with its 95% interval and status (ok, thin, unknown), counts and unknowns by category.",
+    "Identities checked on every cell and replicate: own = made + second; net = own - cost; attempts = makes + misses; misses = offensive + defensive + unknown.",
+    "Reproducibility: two runs give the same results hash."
+  ],
+  "acceptance": [
+    "Descriptive: there is no gate on any value. The run fails if an input hash differs, a module constant differs from this registration, a value is non-finite, or an identity or count check fails (tolerance 1e-12).",
+    "Every served cell has a status, and every value an interval or a named unknown.",
+    "Two runs give the same results hash."
+  ],
+  "outputs": [
+    "evaluation/research/frozen/courtlens-shot-aftermath-v1.json (served by the API)",
+    "docs/evidence/research/r17-shot-aftermath/ (registration receipt, data check, headline extracts, reproducibility)"
+  ],
+  "limitations": [
+    "Descriptive, not causal, not a net rating and not shot-selection advice.",
+    "Cost covers the immediate opponent possession only: after an offensive recovery the later opponent possession is not counted, as on Databallr.",
+    "A fouled miss is not a field-goal attempt, so it is outside the sample; and-one free throws are excluded from made points.",
+    "Position groups are estimates from size, listing and box-score rates; centres are the least accurate.",
+    "Games R01 excluded (18 in 2024-25, 4 in 2025-26) are unknown and out of every value.",
+    "The opponent's possession after a make usually starts from an inbound, so the after-make comparison with the all-possession baseline carries that start; Databallr's page has the same property."
+  ],
+  "negative_result_policy": "Publish every number whatever it shows, including costs whose intervals include zero and counts that differ from Databallr's.",
+  "seed": 1717,
+  "budget": {
+    "cpu_threads": 1,
+    "max_peak_mib": 4096,
+    "max_wall_seconds": 1800
+  }
+}

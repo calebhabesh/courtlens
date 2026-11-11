@@ -1,0 +1,163 @@
+{
+ "2024-25": {
+  "checks": {
+   "count_residual": 0.0,
+   "identity_residual": 0.0
+  },
+  "coloured_costs": {
+   "league:cost:benefit": 7,
+   "league:dreb_cost:cost": 6,
+   "league:miss_cost:cost": 6,
+   "team:cost:benefit": 49,
+   "team:cost:cost": 21,
+   "team:dreb_cost:benefit": 16,
+   "team:dreb_cost:cost": 44,
+   "team:miss_cost:benefit": 16,
+   "team:miss_cost:cost": 44
+  },
+  "data_check": {
+   "blocked_attempts_all_shots": 11996,
+   "counts": {
+    "first_chance_attempts": 193336,
+    "second_chance_attempts": 22977,
+    "unjoined:game_not_admitted": 3214
+   },
+   "first_chance_vs_shot_table_after_oreb": {
+    "agree": 211810,
+    "possessions_first_chance": 3721,
+    "shot_table_flag_unknown": 782
+   },
+   "games": 1212,
+   "joined": 216313,
+   "shooter_groups_all_shots": {
+    "bigs": 25657,
+    "forwards": 79865,
+    "guards": 114005
+   },
+   "shots": 219527,
+   "unknown_free_throw_sub_types": 0,
+   "zones_all_shots": {
+    "long_mid": 13173,
+    "rim": 77347,
+    "short_mid": 36552,
+    "three": 92455
+   }
+  },
+  "databallr_comparison": {
+   "all": {
+    "courtlens": 193336,
+    "databallr": 190685,
+    "difference": 2651
+   },
+   "long_mid": {
+    "courtlens": 12346,
+    "databallr": 13195,
+    "difference": -849
+   },
+   "rim": {
+    "courtlens": 62906,
+    "databallr": 61494,
+    "difference": 1412
+   },
+   "short_mid": {
+    "courtlens": 33925,
+    "databallr": 33391,
+    "difference": 534
+   },
+   "three": {
+    "courtlens": 84159,
+    "databallr": 82583,
+    "difference": 1576
+   }
+  },
+  "first_chance_by_zone": {
+   "all": 193336,
+   "long_mid": 12346,
+   "rim": 62906,
+   "short_mid": 33925,
+   "three": 84159
+  },
+  "league": {
+   "points": 274723.0,
+   "possessions": 240025,
+   "ppp": {
+    "high": 1.149866333,
+    "low": 1.139962692,
+    "value": 1.144559942
+   }
+  },
+  "statuses": {
+   "ok": 545,
+   "thin": 70,
+   "unknown": 5
+  }
+ },
+ "2025-26": {
+  "checks": {
+   "count_residual": 0.0,
+   "identity_residual": 0.0
+  },
+  "coloured_costs": {
+   "league:cost:benefit": 5,
+   "league:dreb_cost:cost": 7,
+   "league:miss_cost:cost": 7,
+   "team:cost:benefit": 49,
+   "team:cost:cost": 31,
+   "team:dreb_cost:benefit": 15,
+   "team:dreb_cost:cost": 35,
+   "team:miss_cost:benefit": 15,
+   "team:miss_cost:cost": 35
+  },
+  "data_check": {
+   "blocked_attempts_all_shots": 11880,
+   "counts": {
+    "first_chance_attempts": 194813,
+    "second_chance_attempts": 23812,
+    "unjoined:game_not_admitted": 534,
+    "unjoined:not_on_a_possession": 1
+   },
+   "first_chance_vs_shot_table_after_oreb": {
+    "agree": 213795,
+    "possessions_first_chance": 3977,
+    "shot_table_flag_unknown": 853
+   },
+   "games": 1227,
+   "joined": 218625,
+   "shooter_groups_all_shots": {
+    "bigs": 27571,
+    "forwards": 81424,
+    "guards": 110165
+   },
+   "shots": 219160,
+   "unknown_free_throw_sub_types": 0,
+   "zones_all_shots": {
+    "long_mid": 13486,
+    "rim": 77280,
+    "short_mid": 37424,
+    "three": 90970
+   }
+  },
+  "databallr_comparison": null,
+  "first_chance_by_zone": {
+   "all": 194813,
+   "long_mid": 12787,
+   "rim": 63375,
+   "short_mid": 35149,
+   "three": 83502
+  },
+  "league": {
+   "points": 282206.0,
+   "possessions": 243866,
+   "ppp": {
+    "high": 1.161994309,
+    "low": 1.152490272,
+    "value": 1.157217488
+   }
+  },
+  "statuses": {
+   "ok": 552,
+   "thin": 65,
+   "unknown": 3
+  }
+ }
+}

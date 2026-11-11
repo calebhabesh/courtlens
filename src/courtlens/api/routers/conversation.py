@@ -3,7 +3,7 @@
 from typing import Literal
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query, Response
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
@@ -36,6 +36,12 @@ from courtlens.services.assistant.history import (
     run_durable_turn,
 )
 from courtlens.services.assistant.operations import declarations
+from courtlens.services.assistant.public_ask import (
+    PUBLIC_ASK,
+    AskIdentity,
+    ask_identity,
+    public_ask_writer,
+)
 from courtlens.services.assistant.saved import (
     export_saved,
     get_saved,
@@ -46,6 +52,17 @@ from courtlens.services.assistant.saved import (
 from courtlens.services.assistant.streaming import stream_turn
 
 router = APIRouter(prefix="/workbench/assistant", tags=["conversational analytics"])
+
+
+def verify_ask_write_access(
+    request: Request,
+    public_writer: bool = Depends(public_ask_writer),
+    x_operator_token: str | None = Header(None, alias="X-Operator-Token"),
+) -> None:
+    """Ask turns and threads: the operator, or in public mode the dashboard's Ask-only token."""
+    if public_writer:
+        return
+    verify_workspace_operator_access(request, x_operator_token)
 
 
 @router.get("/operations")
@@ -64,9 +81,15 @@ def post_turn(
 def post_hybrid_turn(
     request: HybridTurnRequest,
     session: Session = Depends(get_db),
-    _auth: None = Depends(verify_workspace_operator_access),
+    _auth: None = Depends(verify_ask_write_access),
+    identity: AskIdentity | None = Depends(ask_identity),
 ) -> TurnResponse:
     """Accept durably before execution; retransmissions replay the exact retained response."""
+    if identity:
+        PUBLIC_ASK.admit(identity.client)
+    # Public mode only: local callers (and their test doubles) keep the original signature.
+    if identity:
+        return run_durable_turn(session, request, visitor=identity.visitor)
     return run_durable_turn(session, request)
 
 
@@ -78,10 +101,15 @@ def post_hybrid_turn(
 def post_hybrid_turn_stream(
     request: HybridTurnRequest,
     session: Session = Depends(get_db),
-    _auth: None = Depends(verify_workspace_operator_access),
+    _auth: None = Depends(verify_ask_write_access),
+    identity: AskIdentity | None = Depends(ask_identity),
 ) -> StreamingResponse:
     """AR05 SSE view of the same durable turn. Acceptance errors stay plain HTTP statuses."""
-    claimed = claim_turn(session, request)
+    if identity:
+        PUBLIC_ASK.admit(identity.client)
+    claimed = (
+        claim_turn(session, request, identity.visitor) if identity else claim_turn(session, request)
+    )
     return StreamingResponse(
         stream_turn(session, request, claimed),
         media_type="text/event-stream",
@@ -93,10 +121,18 @@ def post_hybrid_turn_stream(
     "/v2/threads",
     response_model=DurableThreadHeader,
     status_code=201,
-    dependencies=[Depends(verify_workspace_operator_access)],
+    dependencies=[Depends(verify_ask_write_access)],
 )
-def new_thread(session: Session = Depends(get_db)) -> DurableThreadHeader:
-    return create_thread(session)
+def new_thread(
+    session: Session = Depends(get_db), identity: AskIdentity | None = Depends(ask_identity)
+) -> DurableThreadHeader:
+    return create_thread(session, _visitor(identity))
+
+
+@router.get("/v2/limits")
+def limits(identity: AskIdentity | None = Depends(ask_identity)) -> dict[str, object]:
+    """Public Ask: this visitor's questions left today and whether the site is taking any."""
+    return PUBLIC_ASK.status(identity.client) if identity else {"enabled": False}
 
 
 @router.get("/v2/threads", response_model=ThreadHistoryPage)
@@ -104,8 +140,9 @@ def threads(
     limit: int = Query(20, ge=1, le=100),
     cursor: UUID | None = None,
     session: Session = Depends(get_db),
+    identity: AskIdentity | None = Depends(ask_identity),
 ) -> ThreadHistoryPage:
-    return list_threads(session, limit, cursor)
+    return list_threads(session, limit, cursor, _visitor(identity))
 
 
 @router.get("/v2/threads/{thread_id}/turns", response_model=AgentHistoryPage)
@@ -114,27 +151,46 @@ def turns(
     limit: int = Query(20, ge=1, le=100),
     cursor: int = Query(0, ge=0),
     session: Session = Depends(get_db),
+    identity: AskIdentity | None = Depends(ask_identity),
 ) -> AgentHistoryPage:
-    return list_turns(session, thread_id, limit, cursor)
+    return list_turns(session, thread_id, limit, cursor, _visitor(identity))
 
 
 @router.post(
     "/v2/threads/{thread_id}/turns/{turn_id}/cancel",
     response_model=StoredTurnRecord,
-    dependencies=[Depends(verify_workspace_operator_access)],
+    dependencies=[Depends(verify_ask_write_access)],
 )
 def stop_turn(
-    thread_id: UUID, turn_id: UUID, session: Session = Depends(get_db)
+    thread_id: UUID,
+    turn_id: UUID,
+    session: Session = Depends(get_db),
+    identity: AskIdentity | None = Depends(ask_identity),
 ) -> StoredTurnRecord:
-    return cancel_turn(session, thread_id, turn_id)
+    return cancel_turn(session, thread_id, turn_id, _visitor(identity))
 
 
-@router.delete("/v2/threads/{thread_id}", dependencies=[Depends(verify_workspace_operator_access)])
+def _visitor(identity: AskIdentity | None) -> str | None:
+    return identity.visitor if identity else None
+
+
+def _no_public_deletes(identity: AskIdentity | None = Depends(ask_identity)) -> None:
+    if identity:
+        raise HTTPException(403, "History can't be deleted on the hosted demo.")
+
+
+@router.delete(
+    "/v2/threads/{thread_id}",
+    dependencies=[Depends(verify_workspace_operator_access), Depends(_no_public_deletes)],
+)
 def remove_thread(thread_id: UUID, session: Session = Depends(get_db)) -> dict[str, bool]:
     return delete_history(session, thread_id)
 
 
-@router.delete("/v2/threads", dependencies=[Depends(verify_workspace_operator_access)])
+@router.delete(
+    "/v2/threads",
+    dependencies=[Depends(verify_workspace_operator_access), Depends(_no_public_deletes)],
+)
 def clear_history(session: Session = Depends(get_db)) -> dict[str, bool]:
     return delete_history(session)
 

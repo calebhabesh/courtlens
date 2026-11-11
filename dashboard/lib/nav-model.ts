@@ -92,11 +92,12 @@ export const NAV_MENUS: NavMenu[] = [
         { label: "Six-Factor RAPM", href: "/research/rapm/six-factor", icon: "gauge", description: "Player impact ratings and their six-factor breakdown" },
         { label: "Metric Backtest", href: "/research/backtest", icon: "chart-trend", description: "Which impact metric best predicts real game results" },
       ] },
+      // RD17 (owner, 2026-11-10): the Shooting page is gone; its two tabs merged into Shot Quality and zTS, and Shot Aftermath stands alone.
       { title: "Shooting", items: [
-        { label: "Shooting", href: "/research/shooting", icon: "target", description: "Expected shots, adjusted shooting and what follows a shot" },
-        { label: "Defensive Shot Quality", href: "/research/defensive-matchups", icon: "shield", description: "What shooters scored against each defender, against their own shooting" },
-        { label: "zTS", href: "/research/zts", icon: "scale", description: "True shooting adjusted for the difficulty of a player's play types" },
         { label: "Shot Quality", href: "/research/shot-quality", icon: "scatter", description: "Expected points per shot and each player's shot-making above it" },
+        { label: "zTS", href: "/research/zts", icon: "scale", description: "True shooting adjusted for play-type difficulty, and points allowed by play type" },
+        { label: "Shot Aftermath", href: "/research/shooting/aftermath", icon: "split", description: "What first-chance shots score, what misses win back and what the opponent scores next" },
+        { label: "Defensive Shot Quality", href: "/research/defensive-matchups", icon: "shield", description: "What shooters scored against each defender, against their own shooting" },
       ] },
       { title: "Methods", items: [
         { label: "Signal vs Noise", href: "/research/signal-noise", icon: "waveform", description: "How big a sample a stat needs, and shrunk shooting percentages" },

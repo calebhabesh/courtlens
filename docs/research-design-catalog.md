@@ -70,9 +70,9 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none (built from approved CourtLens Research patterns) | workbench, RD16 | ✅ |
-| RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed) | ⏸ redesign, fold into Shot Quality / zTS, or keep as is |
+| RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed), RD17 | ✅ merged into Shot Quality and zTS (owner, 2026-11-10) |
 | **C. Blocked** | | | | | |
-| RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | — | ⬜ queued after RD12, RD13 and RD16: new frozen aggregate, then design (owner, 2026-11-09) |
+| RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | R17, RD18 | ✅ |
 | RD19 | Ask evaluation [29] | `/research/assistant-evaluation` (not built) | none | R16 | ⏸ after R16 finishes |
 
 **Not in this catalog** unless the owner adds them: Methodology Definitions (`/methodology`), Stats
@@ -992,17 +992,95 @@ Instructions (owner, 2026-11-10, round 3):
    — Approved after two build rounds; the settled rules are in the alignment plan ("Settled in RD16"). The full Playwright run owed under the owner's rule: 632 passed, 17 skipped, 0 failed.
 
 
-## RD17 Expected Shots and Adjusted Shooting — ⏸
+## RD17 Expected Shots and Adjusted Shooting — ✅ approved by the owner (2026-11-10)
 
 - **Now:** the sealed B26 experiments (expected-shot v1 is a registered negative result), tabs of Shooting.
-- **Decision:** Shot Quality v2 and zTS now cover the same ground. Redesign them, fold them into those pages
-  (keeping the sealed results reachable), or leave them as they are?
+- **Decision (owner, 2026-11-10, "I agree", answering the recommendation below):** merge both, keeping every sealed result reachable and unrenamed.
+  - Expected Shots → Shot Quality's Model tab as "An earlier attempt": one line and a collapsed section with the sealed v1 negative result (RD16's
+    earlier-experiment pattern); `/research/shooting` redirects there.
+  - Adjusted Shooting: the offensive view (points per possession against the league's play-type expectation) is dropped as a duplicate of zTS; the
+    defensive view (points allowed against the play-type expectation; 433 players, 7 play types in 2025-26) becomes a Defense tab on zTS;
+    `/research/shooting/adjusted` redirects there.
+  - The Shooting page and its menu entry go; Shot Aftermath stands alone at `/research/shooting/aftermath` (no tab bar). The Research → Shooting group
+    becomes the handoff's target menu: Shot Quality, zTS, Shot Aftermath, Defensive Shot Quality.
+  - Check first: whether the Adjusted page shows anything from the sealed `courtload-adjusted-shooting-v1` result or only the live play-type feed; any
+    sealed result moves with the defensive section, unchanged.
+- **Reference:** none. No Databallr page covers either; each change borrows a named, approved CourtLens Research precedent.
+- **Before (:3100, 2026-11-10):** Expected Shots under the old left-aligned Shooting header, full width: a run select (two runs: the sealed negative result and an empty preflight failure), a reliability chart, four tiles and 2 old tables; 1,645 px at 1440, 1,800 at 390. Adjusted (both sides): four tiles, twelve ranked bars, a 433/439-option player dropdown, a play-type table and a percentile-shaded player table (2 old tables, 3 native selects, no photos or logos); 5,340 / 6,011 px offence, 5,168 / 5,909 defence; on a phone both tables scroll sideways (273 to 373 px). Shot Quality's Model tab shows the project code `courtlens-expected-shot-v2` in a chart source line. 0 console errors, 0 overflow, 0 broken images on all five views; no hashes in visible text.
+- **Content check (2026-11-10, read only):** (A) Expected Shots reads only the sealed `courtload-expected-shot-retrospective-v2` run `de8dbe44…` through `GET /api/workbench/research/runs/{id}`: status, selection metrics (Brier 0.233961 → 0.233771, +0.08127% against the 1% gate, ECE 0.0052 → 0.0348), ten fixed reliability bins, dates, model card and hashes; no interval is served. Its "v1" (`courtload-expected-shot-v1`) never ran (source-blocked: prior exposure needed the retrospective amendment), so the sealed negative result is the retrospective v2 run; a second registered run (`d1dbc7ee…`) is the empty affinity-preflight failure, no fit. (B) Adjusted shows only the live play-type feed (`GET /api/workbench/play-types`); `courtload-adjusted-shooting-v1` is registered but source-blocked ("requires admitted playtypes and foul trips"), never run, so no sealed result moves with it. (C) The defensive feed serves 2015-16 to 2025-26, regular season and playoffs (2025-26: 433 players, 317 qualified at 250+ possessions; playoffs 146 / 104 at 40+), always the same 7 play types; no interval, so no green or red; percentiles only. Traded players carry several team codes in team-id order, not by date. (D) References: menu entry and `TAB_SHORTCUTS`, `TABBED_PAGES.shooting`, `OWN_HEADER_TABS`, two FO07 redirects and two old aliases (`/zts` → Adjusted, `/shotquality` → Expected Shots), the availability gate, a Learning link ("Shooting decomposition" → `/research/shooting`), the backend search entry `page_shooting`, Shot Aftermath's tabs; Vitest `nav-model`, `nav-trail`, `replica-nav`, `route-consolidation`; specs `route-consolidation`, `shot-aftermath`, `advanced-research`, `pc11-gated-pages`, `pc12-headlines`, `visual-baselines` with six baselines (`expected-shots-*`, `pc11-adjusted-shooting-*`, `pc12-b-shooting-*`).
 
-## RD18 Shot Aftermath — ⬜ queued
+Instructions (owner, 2026-11-10, round 1; the owner answered the content check with "Go with your recommendations and suggestions for optimal construction and layout of this page. Then fully build it comprehensively."):
+1. [x] Go with your recommendations and suggestions for optimal construction and layout of this page. Then fully build it comprehensively.
+   - (1) Shot Quality Model tab: a section "An earlier attempt" after persistence (RD16 earlier-experiment section): one visible line computed from the sealed run (a simpler location-and-type model, +0.08% Brier against the 1% gate, stopped before calibration and test), then a small toggle in the same section (RD16 ledger toggle) opening a compact `StatsGrid` of the five selection metrics, baseline against candidate, uncoloured with "Failed" in words, and the reliability chart; its identifiers, the model card, the empty preflight run and the report download in the tab's collapsed Caveats & Methodology.
+   - (2) Shot Quality Model tab: the chart source line names "Shot Quality v2", not the project code (RD07, RD10).
+   - (3) zTS Defense tab (fourth in the dock, after Player; RD03 page, RD13 and RD16 rules): a season select and a Regular season / Playoffs switch; one computed pattern line naming the season's lowest and highest qualified defender against expectation, called a pattern (no interval); the league's points allowed per play type as `LeaderBars`; every defender on `StatsGrid` (season photo, logos beside every code, `GridSearch`, sortable, not ranked, values uncoloured, thin samples dimmed and never ranked or coloured, column groups switch on a phone); a selected defender's play-type breakdown (64 px `PlayerAvatar` card, four tiles, a compact grid) chosen by search or the row's own icon, never scrolling; honesty lines (Synergy's defender credit, season totals, absent play types unknown); a collapsed About with qualification rules and sources.
+   - (4) Shot Aftermath standalone: its own centred hero with no tab bar, URL kept; the Shooting layout, tabbed page and own-header entry removed.
+   - (5) Menu: Research → Shooting is Shot Quality, zTS, Shot Aftermath, Defensive Shot Quality; the Shooting entry and the Shot Aftermath tab shortcut go.
+   - (6) Redirects straight to the final tab: `/research/shooting` and `/research/expected-shots` → Shot Quality Model; `/research/shooting/adjusted` and `/research/adjusted-shooting` → zTS Defense.
+   - Q1: the "v1" in the decision reads as the sealed retrospective-v2 run, the only expected-shot run sealed; the page calls it the earlier attempt and names the identifiers only in About. Q2: the empty preflight run is one sentence in About, not a run select. Q3: the Defense tab serves playoffs too, since the feed has them (zTS's own tabs stay regular season). Q4: the old aliases `/zts` → zTS and `/shotquality` → Shot Quality, the pages Databallr's own paths name. Q5: the Learning link goes to Shot Quality's Decomposition. Q6: the backend search entry `page_shooting` is replaced by entries for Shot Quality, zTS and Shot Aftermath (corrected while building: neither Shot Quality nor zTS had one). Q7: `play-type-shooting-view.tsx` is deleted with its route (nothing else renders it); `ResearchResultsView` stays for RAPM. Q8: traded players show every team code with its logo, the photo without a team tint.
+   — Built as proposed. Shot Quality's Model tab ends with "An earlier attempt": one line computed from the sealed run (0.08% better Brier than a zone rate against the 1% it needed, never calibrated or tested), a small toggle opening the five selection scores uncoloured, "Failed" in words and the reliability chart (12 px axes, centred key); identifiers, the model card, the empty preflight run and the report download in Caveats & Methodology. zTS gains a Defense tab: season and Regular season / Playoffs, a pattern line, the league's play types as `LeaderBars`, every defender on `StatsGrid` (photos, a logo per code, search, sortable, no rank or colour, thin samples dimmed and last), a crosshair selecting a defender in place, the defender card and play-type grid with Clear and an empty state, a collapsed About. Shot Aftermath stands alone with no tab bar; the menu, redirects, Learning link and search entries follow. Found and fixed: Shot Quality's Caveats widened the phone page when opened (pre-existing on the approved page), the new grid's sideways scroll and cut names. Real data 30,937 values, 0 mismatches; touched specs ×3 49/49; full Playwright 628 passed, 17 skipped, 1 failed (`route-polish` expected the old "Shooting" link; updated). Evidence: [`design-RD17`](evidence/research/design-RD17/README.md).
+
+Instructions (owner, 2026-11-10, round 2):
+2. [x] Sounds good. I approve them. (RD17 and RD18 together.)
+   — Approved after one build round. Full Playwright for this state: 628 passed, 17 skipped, 1 failed (`route-polish` expected the old "Shooting" drawer link; updated, then the touched specs 49/49 over three runs).
+
+## RD18 Shot Aftermath — ✅ approved by the owner (2026-11-10)
 
 - **Now:** a per-player page whose play-by-play tables hold two test games in the published database.
 - **Decision (owner, 2026-11-09):** build it, after RD12, RD13 and RD16: a new frozen play-by-play aggregate matching Databallr (league, team and position results by shot zone) for 2024-25 and 2025-26, then the design rounds.
+- **Content check (2026-11-10, counts only):** of 219,527 (2024-25) and 219,160 (2025-26) shots, 216,313 and 218,625 join a sealed R01 possession; the rest are in the 18 and 4 games R01 excluded (plus 1 stray). First-chance attempts 193,336 and 194,813 (Databallr prints 190,685 for 2024-25; cause not visible from its page); zones with rim labels first come close to Databallr's but not exactly. Opponent's next possession missing at period ends after 919 / 1,180 makes and 2,860 / 2,380 defensive rebounds; every shooter has a position estimate (group accuracy 85.5% out of sample; centres weakest). Evidence: [`design-RD18`](evidence/research/design-RD18/README.md).
+- **Owner, 2026-11-10 (answer to Q1–Q6 of the content check):** "Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively." Q1 95% game-bootstrap intervals on every rate, cost and net (2,000 replicates, seeded), green/red only on cost and net where the interval excludes zero; Q2 every cell served with counts and interval, flagged thin below 100 attempts or 50 opponent possessions, no smoothing; Q3 the After a miss and After a defensive rebound views defined from Databallr's formulas; Q4 Guards, Forwards, Bigs labelled estimates, no Unclassified; Q5 the tab body replaced, the old player operation and its POST endpoint left unchanged; Q6 `courtlens-shot-aftermath-v1`, block R17, evidence in `docs/evidence/research/r17-shot-aftermath/`.
 - **Feasibility (read 2026-11-09; nothing built or run):** no new source is needed. On disk: `expected-shot-v2` per-shot tables (zone, event id, `after_oreb`), the sealed possessions Shot Decomposition uses, and `position-estimates-v1`. Measure first how many shots fail to match. To work out: opponent cost (each possession against the opponent's next, and a league-normal baseline), blocks, free throws after a rebound, and-ones and period ends, with unmatched shots counted as unknown; position groups are estimated and the page says so. Usual Research path: register the method before reading results, freeze, API, then design.
+
+- **Built (R17, 2026-11-10):** `courtlens-shot-aftermath-v1` registered (`7bc242ab…`), frozen (results `5aa5161b…`, two byte-identical runs) and served at `GET /api/shot-aftermath`, `/scope`, `/teams`. Evidence: [`r17-shot-aftermath`](evidence/research/r17-shot-aftermath/README.md).
+
+Instructions (owner, 2026-11-10, round 1; the owner answered the design proposal and its five recommendations with "Go with your
+recommendations and build it comprehensively."):
+1. [x] Go with your recommendations and build it comprehensively.
+   - (1) A centred hero for this tab, "What happens after the shot?", with the Shooting route tabs under it and the URL kept.
+   - (2) The 992 px centred column.
+   - (3) A sticky filter bar: Season (segmented), Shooting team (`TeamPicker`), Position (All, Guards, Forwards, Bigs, labelled estimates), Export CSV; a meta line under it.
+   - (4) The answer in one sentence, computed from the served scope.
+   - (5) The view switch: All attempts / After a miss / After a defensive rebound.
+   - (6) Four small charts by zone (own scoring, second chances, opponent cost, scoring minus cost) with 95% whiskers; cost green/red only where its interval excludes zero; a scale note when a value is too small to see.
+   - (7) Databallr's three tables as compact `StatsGrid`s with intervals; column-group switch on a phone.
+   - (8) All 30 teams for one zone (logos, sortable, not ranked, thin rows dimmed) with one line on chance colours.
+   - (9) Visible honesty lines: positions are estimates (85.5%; centres weakest), values aren't Databallr's (second chances named); a collapsed count comparison.
+   - (10) How to read cards and a collapsed glossary. (11) A collapsed About: method, matching and unknowns, limits, credit, hashes.
+   - Q1 a hero for this tab only (Expected Shots and Adjusted keep theirs, RD17 is paused); Q2 one shared points axis from zero for own scoring, second chances and net, cost on its own axis centred on zero, labelled; Q3 the team table included; Q4 2025-26 by default; Q5 the per-player tool leaves this tab, its POST endpoint unchanged.
+   — Built as proposed: its own centred hero over the Shooting tabs; a sticky filter bar (season, team logo grid, estimated position, CSV); the answer in one sentence from the scope (thin zones named, never ranked); the view switch over Databallr's small zone charts with 95% whiskers, points on one axis from zero and cost on its own centred axis, coloured only where the interval excludes zero; Databallr's three tables as compact grids; all 30 teams with logos, sortable as a view, thin rows dimmed, a line on chance colours; the position and Databallr honesty lines with a toggle for the count comparison; How to read, glossary and a collapsed About. Phone tables switch column groups, none scrolls sideways. Real data 4,976 values, 0 mismatches; spec ×3 21/21; full Playwright 629 passed, 1 baseline changed by design (regenerated). Evidence: [`design-RD18`](evidence/research/design-RD18/README.md).
+
+Instructions (owner, 2026-11-10, round 2; the owner asked "Where is shot aftermath?" with a screenshot of the Research menu, was offered its own
+menu entry, and answered "Sure."):
+2. [x] Sure. (Give Shot Aftermath its own entry in Research → Shooting.)
+   — Listed after Shot Quality ("What first-chance shots score, what misses win back and what the opponent scores next", split icon) as a tab
+   shortcut like Learning, staying a Shooting tab; the Shooting entry now reads "Expected shots and adjusted shooting". Found while checking it: the route
+   was still gated on the old workbench shot source (unavailable), which hid the entry; the gate is gone, since the page reads only the frozen R17 file.
+   Vitest 877; full Playwright 629 passed, 17 skipped, 1 failed (`route-consolidation` still asserted no Shot Aftermath entry; updated to expect it, then 39/39 over three runs with the page spec). Evidence: [`design-RD18`](evidence/research/design-RD18/README.md).
+
+- **Open for the owner's review (2026-11-10, proposed after round 2, not built):** six suggested improvements, none needing new analysis:
+  (1) one line in the answer saying whether the zone order and the rim-rebound effect held in the other season (they did);
+  (2) a small icon on each team row that scopes the page to that team without scrolling (RD13);
+  (3) a compact grid of guards, forwards and bigs by zone (net and rebound cost, with intervals);
+  (4) round steps on the cost charts' axis (thin scopes give ±1.44 with ticks at 0.72);
+  (5) tighter phone labels under the cost bars (the interval wraps onto two lines);
+  (6) on the After a defensive rebound view, opponent points per possession after a make and after a rebound side by side against the league line.
+  Recommended: 1, 2, 4 and 5 together; 3 and 6 each add a section (owner's call). Also: delete the now-unrendered `components/shooting-view.tsx`
+  and `components/catalog-scope-fields.tsx` (the old per-player tool; its POST endpoint stays), or keep them?
+  Round 4 built 1, 2, 4, 5 and the `shooting-view.tsx` deletion; 3 and 6 stay open.
+
+Instructions (owner, 2026-11-10, round 3):
+3. [x] Sounds good. I approve them. (RD17 and RD18 together.)
+   — Approved after two build rounds and RD17's removal of the tab bar. The six suggestions and the deletion question above stay open and unbuilt; nothing in this approval chose them.
+
+Instructions (owner, 2026-11-10, round 4; after approving, the owner was offered the open suggestions with 1, 2, 4 and 5 recommended and the two-file deletion, and answered "Yes, add these"):
+4. [x] Yes, add these. (Suggestions 1, 2, 4 and 5, and the deletion.)
+   - (1) One line under the answer on the other season, same team and position: whether the zone order held (thin zones left out, as in the answer) and whether the clearest rebound effect kept its sign with an interval clear of zero.
+   - (2) A crosshair on every team row that scopes the whole page to that team, and back on a second press, without moving the row on screen.
+   - (4) The cost axis ends on a round step (0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5), at most two ticks each side of zero: BOS bigs after a defensive rebound reads ±2.00 with ticks at whole points, not ±1.44 / ±0.72.
+   - (5) On a phone, cost intervals under the bars drop their leading zeros ("−.389 to +.215"), the length of the points intervals that already fit, and never wrap.
+   - Deletion: `components/shooting-view.tsx` and its stylesheet are gone. `components/catalog-scope-fields.tsx` stays: the check found the Ask scope editor and the contract drawer still use it, so the question was wrong to call it unrendered.
+   — Built as listed. Nationally, 2024-25 kept the order (rim, three, short mid, long mid) and the rim rebound effect, read independently from the served rows. Row stays ✅ from round 3; this round is for the owner's look.
 
 ## RD19 Ask evaluation — ⏸
 

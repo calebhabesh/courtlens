@@ -17,7 +17,7 @@ import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
 import type { WorkbenchCatalog } from "@/lib/types";
 import { DIRECT_LINKS, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems, balanceColumns, type NavGroup } from "@/lib/nav-model";
 import { mergedPagePath } from "@/lib/route-consolidation";
-import { isHostedDemo } from "@/lib/hosted";
+import { askAvailable } from "@/lib/hosted";
 
 export function Header() {
   const pathname = usePathname();
@@ -382,7 +382,7 @@ export function Header() {
           />
         </span>
 
-        {!isHostedDemo && <Button
+        {askAvailable && <Button
           variant="ghost"
           tone="onBackground"
           size="md"

@@ -1,0 +1,70 @@
+{
+ "identity": "courtlens-shot-aftermath-v1",
+ "registered_on": "2026-11-10",
+ "content_sha256": "7bc242ab2812159e7e4d2f0006c4bac889a2ec9bcf165c17bd631ae64b6a86b5",
+ "parameters": {
+  "seasons": [
+   "2024-25",
+   "2025-26"
+  ],
+  "zones": [
+   "rim",
+   "short_mid",
+   "long_mid",
+   "three",
+   "all"
+  ],
+  "positions": [
+   "all",
+   "guards",
+   "forwards",
+   "bigs"
+  ],
+  "position_groups": {
+   "PG": "guards",
+   "SG": "guards",
+   "SF": "forwards",
+   "PF": "forwards",
+   "C": "bigs"
+  },
+  "rim_action_words": [
+   "layup",
+   "dunk",
+   "tip",
+   "alley oop",
+   "putback",
+   "finger roll"
+  ],
+  "rim_max_feet": 4,
+  "short_mid_max_feet": 14,
+  "bootstrap_replicates": 2000,
+  "interval": 0.95,
+  "percentiles": [
+   2.5,
+   97.5
+  ],
+  "thin_attempts": 100,
+  "thin_possessions": 50,
+  "identity_tolerance": 1e-12,
+  "databallr_first_chance_2024_25": {
+   "rim": 61494,
+   "short_mid": 33391,
+   "long_mid": 13195,
+   "three": 82583,
+   "all": 190685
+  },
+  "shot_table_sha256": {
+   "2024-25": "e529ebe0b5c795c8b7c8433b0bba2b1c0600994027c29e11a52db61581b65caf",
+   "2025-26": "5c68c0614ad40a26ede07e5fe54d586ffe3da013c26545c71f72811061b9b150"
+  },
+  "possession_bundle_sha256": {
+   "2024-25": "b3fe49d5919562bc017e56652197057850f729e12031ca76eab66541967ec939",
+   "2025-26": "25002650fb6f299948c75cc9caf6a11d03e32c2dd0aefeb8a7c06a1126c59291"
+  },
+  "pbp_archive_sha256": {
+   "2024-25": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+   "2025-26": "790a01ea3f0b2f8335d96bd687e21501551fc8cdea3ada83457ee3208a940671"
+  },
+  "position_estimates_sha256": "1f8c19f2f4f27e2322d80e59fbe1fa519d299bb970d6cdc60aa2d8febe572a00"
+ }
+}
