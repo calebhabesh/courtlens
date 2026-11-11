@@ -774,9 +774,73 @@ def pregame_errors(seasons: list[SeasonV3], output: Path) -> dict[str, Any]:
     return out
 
 
+PUBLISHED = Path("evaluation/research/derived/courtlens-win-probability-v3-test.json")
+
+
+def stage_publish(output: Path = OUTPUT) -> dict[str, Any]:
+    """The test result in a small committed file the page reads (the API image has no data/)."""
+    report_path = output / "test-report.json"
+    report = read_json(report_path)
+    state = ladder(output)
+    pooled = report["results"]["pooled"]
+
+    def interval(block: dict[str, Any]) -> dict[str, float]:
+        return {k: float(block[k]) for k in ("mean", "low", "high")} | {"games": block["games"]}
+
+    def scores(name: str) -> dict[str, float]:
+        overall = pooled[name]["overall"]
+        return {
+            "log_loss": float(overall["log_loss"]["mean"]),
+            "brier": float(overall["brier"]["mean"]),
+            "calibration_error": float(overall["calibration"]["ece"]),
+        }
+
+    body: dict[str, Any] = {
+        "version": REGISTRATION,
+        "registration_sha256": receipt()["content_sha256"],
+        "test_report_sha256": hashlib.sha256(report_path.read_bytes()).hexdigest(),
+        "adopted": bool(report["gates"]["A1"]["passed"] and report["gates"]["A2"]["passed"]),
+        "test_seasons": SPLITS["test"],
+        "games": int(sum(report["games"].values())),
+        "gates": report["gates"],
+        "scores": {"v3": scores("v3"), "v2_frozen": scores("v2_frozen")},
+        "comparisons": {
+            "v3_vs_v2_frozen": interval(pooled["v3"]["overall"]["log_loss_improvement"]),
+            "B_vs_v2_frozen": interval(pooled["B"]["overall"]["log_loss_improvement"]),
+            "v3_vs_B": interval(pooled["v3_vs_B"]["log_loss_improvement"]),
+        },
+        "by_phase": {
+            phase: interval(pooled["v3"][phase]["log_loss_improvement"])
+            for phase in ("first_half", "third_quarter", "fourth_early", "last_two", "overtime")
+        },
+        "by_season": {
+            season: interval(report["results"][season]["v3"]["overall"]["log_loss_improvement"])
+            for season in SPLITS["test"]
+        },
+        "pregame": report["pregame"],
+        "selection": {
+            name: {
+                "accepted": bool(step["accepted"]),
+                **(
+                    {
+                        "improvement_90": interval(step["improvement_90"]),
+                        "judged_on": step["judged_on"],
+                    }
+                    if "improvement_90" in step
+                    else {}
+                ),
+            }
+            for name, step in state["steps"].items()
+        },
+    }
+    write_json(PUBLISHED, body)
+    print(json.dumps({k: body[k] for k in ("adopted", "games", "comparisons")}), flush=True)
+    return body
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("pi", "pregame", "fit", "final", "test"))
+    parser.add_argument("command", choices=("pi", "pregame", "fit", "final", "test", "publish"))
     parser.add_argument("name", nargs="?")
     parser.add_argument("--output", type=Path, default=OUTPUT)
     args = parser.parse_args()
@@ -789,8 +853,10 @@ def main() -> None:
         stage_fit(args.name, args.output)
     elif args.command == "final":
         stage_final(args.output)
-    else:
+    elif args.command == "test":
         stage_test(args.output)
+    else:
+        stage_publish(args.output)
 
 
 if __name__ == "__main__":
