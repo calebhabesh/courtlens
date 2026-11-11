@@ -70,6 +70,9 @@ class Settings(BaseSettings):
     win_probability_serving_dir: Path = Path("data/derived/win-probability-serving")
     win_probability_models_dir: Path = Path("data/artifacts/win-probability")
     win_probability_snapshots_dir: Path = Path("data/derived/win-probability-ratings")
+    # Win Probability v4 W2: on, `refresh-daily` seals and scores here as before. Off once the
+    # VPS seal service owns the serving directory: the step then ensures rating snapshots only.
+    win_probability_local_sealing: bool = True
     projected_impact_serving_dir: Path = Path("data/derived/projected-impact-serving")
     projected_impact_models_dir: Path = Path("data/artifacts/projected-impact")
     metric_backtest_serving_dir: Path = Path("data/derived/metric-backtest-serving")
