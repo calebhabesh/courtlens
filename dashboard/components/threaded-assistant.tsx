@@ -15,6 +15,9 @@ import { BrandMark } from "./brand";
 import { HybridAnswer } from "./hybrid-answer";
 import { AgentAnswer } from "./agent-answer";
 import { Button, IconButton } from "./ui/kit";
+import { isPublicAsk } from "@/lib/hosted";
+import { askLimits, isLimitRefusal, limitLine, refusalMessage, type AskLimits } from "@/lib/public-ask";
+import { WorkbenchApiError } from "@/lib/workbench-api";
 
 function mergeTurns(previous: DurableTurnRecord[], fresh: DurableTurnRecord[]) {
   const replacements = new Map(fresh.map(turn => [turn.turn_id, turn]));
@@ -23,7 +26,12 @@ function mergeTurns(previous: DurableTurnRecord[], fresh: DurableTurnRecord[]) {
 const sidebarKey = storageKeys.sidebar;
 const narrowQuery = "(max-width: 900px)";
 function subscribeNarrow(change: () => void) { const media = window.matchMedia(narrowQuery); media.addEventListener("change", change); return () => media.removeEventListener("change", change); }
-const messageOf = (cause: unknown) => cause instanceof Error ? cause.message : "The assistant service could not be reached. Your question is preserved.";
+const limitRefusal = (cause: unknown) => cause instanceof WorkbenchApiError && cause.status === 429 && isLimitRefusal(cause.detail) ? cause.detail : null;
+const messageOf = (cause: unknown) => {
+  const refusal = limitRefusal(cause);
+  if (refusal) return refusalMessage(refusal);
+  return cause instanceof Error ? cause.message : "The assistant service could not be reached. Your question is preserved.";
+};
 type LiveTurn = StreamProgress & { requestId: string };
 function remember(thread: string | null) { try { if (thread) localStorage.setItem(activeThreadKey, thread); else localStorage.removeItem(activeThreadKey); } catch { /* History itself remains on the server. */ } }
 
@@ -50,6 +58,10 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Public Ask (hosted demo): this visitor's questions left today and the shared limit.
+  const [limits, setLimits] = useState<AskLimits | null>(null);
+  const readLimits = () => { if (isPublicAsk) void askLimits().then(setLimits).catch(() => undefined); };
+  useEffect(() => { readLimits(); }, []);
   const [transportRetry, setTransportRetry] = useState<HybridTurnRequest | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -218,10 +230,13 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
       await readTurns(answer.thread_id, owned);
       if (epoch.current !== owned) return;
       // Stop may already have returned a terminal cancellation. History is authoritative.
-      setQuestion(previous => previous.trim() === request.message ? "" : previous); setScopeEdited(false); scopeChanged.current = false; await refreshThreads(); notifyHistory(); input.current?.focus();
+      setQuestion(previous => previous.trim() === request.message ? "" : previous); setScopeEdited(false); scopeChanged.current = false; await refreshThreads(); notifyHistory(); readLimits(); input.current?.focus();
     } catch (cause) {
       if (epoch.current === owned) {
-        setError(messageOf(cause)); setTransportRetry(request);
+        const refusal = limitRefusal(cause);
+        setError(messageOf(cause));
+        if (refusal) { setLimits(refusal); return; }
+        setTransportRetry(request);
         if (request.thread_id) { try { await readTurns(request.thread_id, owned); } catch { /* Keep the transport error and retry identity. */ } }
       }
     } finally {
@@ -307,14 +322,14 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
         {threads.length === 0 && <p className="text-muted">No saved conversations yet.</p>}
         {threadCursor && <Button size="sm" disabled={blocked} onClick={() => void refreshThreads(threadCursor).catch(cause => setError(messageOf(cause)))}>Load more conversations</Button>}
       </nav>
-      <div className="ask-sidebar-foot"><Link href="/research/ask?experience=manual">Open manual research</Link><Link href="/settings#history">History and privacy settings</Link></div>
+      <div className="ask-sidebar-foot"><Link href="/research/ask?experience=manual">Open manual research</Link>{!isPublicAsk && <Link href="/settings#history">History and privacy settings</Link>}</div>
     </aside>
     <div className={`ask-main${isEmpty ? " is-empty" : ""}`}>
       <div className="ask-topbar">
         <IconButton size="sm" variant="secondary" icon="sidebar" label="Conversations" aria-expanded={overlay ? drawer : !collapsed} aria-controls={sidebarId} onClick={toggleSidebar} />
         <p className="ask-title" title={title}>{title}</p>
         <Button size="sm" variant="ghost" icon="compose" disabled={blocked} onClick={() => void createThread()}>New chat</Button>
-        <IconButton size="sm" variant="secondary" icon="trash" label="Delete chat" disabled={blocked || !thread} onClick={() => setConfirmDelete(true)} />
+        {!isPublicAsk && <IconButton size="sm" variant="secondary" icon="trash" label="Delete chat" disabled={blocked || !thread} onClick={() => setConfirmDelete(true)} />}
       </div>
       <div className="ask-scroll" ref={scroller}>
         <div className="ask-column">
@@ -322,7 +337,9 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
           {isEmpty && <div className="ask-empty">
             <BrandMark size={44} />
             <h2>What do you want to know?</h2>
-            <p className="text-muted">Ask about NBA stats, history and news. Answers use CourtLens data first, then cited web sources.</p>
+            <p className="text-muted">{isPublicAsk
+              ? "Ask about NBA stats, players, history and rules. Answers use CourtLens data first; very recent news may be missing."
+              : "Ask about NBA stats, history and news. Answers use CourtLens data first, then cited web sources."}</p>
             {composer}
             <div className="ask-examples">{examplePrompts.map(example => <button type="button" key={example.prompt} className="ask-example" disabled={blocked} onClick={() => void submit(example.prompt)}><span>{example.label}</span>{example.prompt}</button>)}</div>
           </div>}
@@ -343,6 +360,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
         {attachedPage && <div className="ask-composer-meta"><div className="ask-page-context" role="group" aria-label="Attached page context"><span>{pageContextLabel(attachedPage, pageLabel)}</span><IconButton size="xs" icon="close" label="Remove page context" disabled={blocked} onClick={() => setRemovedPage(pageKey)} /></div></div>}
             <details className="ask-scope"><summary>Scope: {scopeChipLabel(shownContext)}{scopeEdited ? " · edited" : ""}<span className="sr-only"> · Edit scope for the next question</span></summary><div className="ask-scope-pop"><p className="text-muted">Applies to the next question. Earlier answers keep their scope, and relative dates in your question are resolved by the assistant.</p><fieldset disabled={blocked} className="conversation-controls"><legend>Next question scope</legend><CatalogScopeFields release={shownContext.release_id ?? undefined} season={shownContext.season ?? ""} phase={shownContext.phase ?? ""} before={shownContext.before_date ?? ""} onSeason={season => editScope({ season: season || null })} onPhase={phase => editScope({ phase: (phase || undefined) as ConversationContext["phase"] })} onBefore={before_date => editScope({ before_date: before_date || null })} /><label>Window<select value={shownContext.window ?? ""} onChange={event => editScope({ window: (event.target.value || undefined) as ConversationContext["window"] })}><option value="">Inherit or Use Default</option><option value="season">Season to Date</option><option value="last_10">Last 10 Appearances</option><option value="last_5">Last 5 Appearances</option></select></label></fieldset></div></details>
         {!isEmpty && composer}
+        {limits && limitLine(limits) && <p className="ask-limit" data-field="ask-limit" data-remaining={limits.remaining} data-site-open={limits.site_open}>{limitLine(limits)}</p>}
         <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">{busy || pending ? live?.step?.label ?? (live?.phase ? phaseLabels[live.phase] : "Question retained; verifying the answer…") : "Ready"}</p>
       </div>
     </div>

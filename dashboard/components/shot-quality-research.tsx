@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { ReliabilityPlot } from "./charts";
 import { EntityField } from "./entity-picker";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
+import { EarlierAttemptMethod, EarlierAttemptSection, useEarlierAttempt } from "./expected-shot-earlier";
 import { DECOMPOSITION_LATEST, openMethodology, ShotDecompositionTab } from "./shot-decomposition-tab";
 import { SqPanel, Tiles, Toned } from "./shot-quality-figures";
 import { TeamLogo } from "./team-logo";
@@ -190,6 +191,7 @@ function Model({ summary }: { summary: ShotQualitySummary }) {
     gates.ece && { key: "ece", label: GATE_LABELS.ece, text: formatFixed(gates.ece.value, 4), value: gates.ece.value, interval: null, intervalText: "No interval: a threshold", passed: gates.ece.passed },
   ].filter((g): g is NonNullable<typeof g> => Boolean(g));
   type GateRow = (typeof gateRows)[number];
+  const earlier = useEarlierAttempt();
   return <>
     <section className="sq-model-head" aria-label="Test results">
       <Tiles label="Key findings" tiles={[
@@ -234,7 +236,7 @@ function Model({ summary }: { summary: ShotQualitySummary }) {
     <ResearchSection icon="chart-line" title="Calibration on the Test Seasons">
       <SqPanel className="sq-chart" label="Calibration chart">
         <ReliabilityPlot title="Predicted against observed make rate" label="Test calibration: predicted make probability against observed make rate"
-          source={`Frozen ${summary.registration.identity} results`} sample={`${formatWhole(test.pooled.attempts)} test shots, 20 equal-count bins per model`}
+          source="Frozen Shot Quality v2 results" sample={`${formatWhole(test.pooled.attempts)} test shots, 20 equal-count bins per model`}
           note="Dashed line: observed = predicted. Exact bins in Caveats & Methodology."
           series={[{ name: labels.baseline, bins: reliabilityBins(test.curves.baseline) }, { name: labels[chosen], bins: reliabilityBins(test.curves[chosen]) }]} />
       </SqPanel>
@@ -264,6 +266,8 @@ function Model({ summary }: { summary: ShotQualitySummary }) {
           { key: "interval", label: "95% interval", width: "md", cell: k => <GridValue text={formatInterval(p[k].interval, v => formatFixed(v))} />, data: k => ({ value: p[k].interval[0], high: p[k].interval[1] }) },
         ]} />
     </ResearchSection>
+
+    <EarlierAttemptSection feed={earlier} />
 
     <ResearchDisclosure id="model-method" icon="layers" title="Caveats & Methodology">
       <MethodBlock title={`Selection, ${sel.season} (uncalibrated)`}>
@@ -306,6 +310,7 @@ function Model({ summary }: { summary: ShotQualitySummary }) {
         <p className="sq-text">{summary.credit}</p>
         <p className="sq-note">Registration <code>{summary.registration.content_sha256.slice(0, 16)}</code> · results <code>{summary.results_sha256.slice(0, 16)}</code>. Two runs from the seed give the same hash.</p>
       </MethodBlock>
+      <EarlierAttemptMethod feed={earlier} />
     </ResearchDisclosure>
   </>;
 }

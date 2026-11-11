@@ -50,7 +50,8 @@ test.describe("R05 Shot Quality", () => {
     await expect(page.locator("[data-table='gates'] tr[data-gate='relative_brier'] [data-field='value']")).toHaveAttribute("data-tone", "good");
     await expect(page.locator("[data-table='gates'] tr[data-gate='ece'] [data-field='value']")).not.toHaveAttribute("data-tone", /.+/);
     await expect(page.locator("[data-table='curve'] tbody tr[data-bin]")).toHaveCount(20);
-    await expect(page.locator("svg.chart-reliability [data-series]")).toHaveCount(40);
+    // RD17: the earlier attempt below draws its own reliability chart; count only the test calibration.
+    await expect(page.locator(".sq-chart svg.chart-reliability [data-series]")).toHaveCount(40);
     await expect(page.locator("[data-table='data'] tbody tr[data-season]")).toHaveCount(12);
     await expect(page.locator("[data-outcome]")).toHaveAttribute("data-outcome", fixture.summary.outcome);
   });

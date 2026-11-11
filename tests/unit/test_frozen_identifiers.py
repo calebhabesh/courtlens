@@ -176,6 +176,11 @@ def test_no_unexplained_legacy_brand_references() -> None:
             # RN02 exercises the old namespace exclusively as a negative control.
             content = content.replace("courtload.allow_admin_mutation", "")
             content = content.replace('"courtload_"', "").replace('"courtload"', "")
+        if relative == "dashboard/e2e/fixtures/rd17-expected-shot.json":
+            # RD17: the sealed B26 run exactly as the research API serves it; its model card
+            # title and resource-accounting unit name predate the rename (sealed bytes).
+            content = content.replace("# CourtLoad expected shots", "")
+            content = re.sub(r'"unit":"courtload-research-[0-9a-f]+"', "", content)
         if relative == "docker-compose.yml":
             content = "\n".join(line for line in content.splitlines() if not line.startswith("#"))
         if re.search("courtload", content, re.IGNORECASE):

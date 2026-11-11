@@ -8,7 +8,7 @@ import pytest
 
 from courtlens.services.assistant import operations
 from courtlens.services.assistant.agent.providers.base import ToolCall
-from courtlens.services.assistant.agent.tools import declarations, dispatch
+from courtlens.services.assistant.agent.tools import declarations, dispatch, repair_stats_call
 
 
 def call(name, **arguments):
@@ -139,3 +139,127 @@ def test_worker_disconnect_is_a_recoverable_error(session, monkeypatch):
     )
     assert result.result.payload["error"]["code"] == "execution_failed"
     assert not dispatch(session, call("site_help")).result.is_error
+
+
+# ---- Argument repair (measured on R16's 224 development calls) ----------------------------------
+
+
+LEADERS = {
+    "entity_kind": "player_season",
+    "metric_selectors": [{"key": "pts_per_game", "normalization": "raw"}],
+    "sort": [{"direction": "desc", "field": "pts_per_game"}],
+    "page": {"limit": 5},
+}
+
+
+@pytest.mark.parametrize(
+    "sent,expected",
+    [
+        # 73 calls: the query wrapped in {"query": ...}.
+        (
+            {"operation": "query", "season": "2025-26", "arguments": {"query": LEADERS}},
+            {"operation": "query", "season": "2025-26", "arguments": LEADERS},
+        ),
+        # The query at the top level, beside operation.
+        (
+            {"operation": "query", "season": "2025-26", "query": LEADERS},
+            {"operation": "query", "season": "2025-26", "arguments": LEADERS},
+        ),
+        # The operation inside arguments, scope keys the operation doesn't own hoisted.
+        (
+            {"arguments": {"operation": "profile", "player_id": "1630567", "season": "2025-26"}},
+            {"operation": "profile", "season": "2025-26", "arguments": {"player_id": "1630567"}},
+        ),
+        # The tool's name given as the operation; the nested operation wins.
+        (
+            {"operation": "query_stats", "arguments": {"operation": "profile", "player_id": "1"}},
+            {"operation": "profile", "arguments": {"player_id": "1"}},
+        ),
+        # A redundant compare inside a query call: the fields belong to compare.
+        (
+            {
+                "operation": "query",
+                "arguments": {"operation": "compare", "player_a": "1", "player_b": "2"},
+            },
+            {"operation": "compare", "arguments": {"player_a": "1", "player_b": "2"}},
+        ),
+        # A bare player in a query asks for that player's numbers.
+        (
+            {"operation": "query", "season": "2025-26", "arguments": {"player_id": "203999"}},
+            {"operation": "profile", "season": "2025-26", "arguments": {"player_id": "203999"}},
+        ),
+        # operation_version is pinned by the server.
+        (
+            {
+                "operation": "profile",
+                "operation_version": "profile-v1",
+                "arguments": {"player_id": "1"},
+            },
+            {"operation": "profile", "arguments": {"player_id": "1"}},
+        ),
+    ],
+)
+def test_repairs_unambiguous_shapes(sent, expected):
+    repaired, notes = repair_stats_call(sent)
+    assert repaired == expected
+    assert notes
+
+
+def test_repairs_units_and_pinned_release_inside_a_query():
+    sent = {
+        "operation": "query",
+        "arguments": {
+            "entity_kind": "player_season",
+            "release_id": "model-chosen",
+            "season": "2024-25",
+            "season_scope": {"aggregate_multi_season": False, "seasons": ["2024-25"]},
+            "metric_selectors": [
+                {"key": "pts", "normalization": "per_game"},
+                {"key": "blk_per_game", "normalization": "per_game"},
+                {"key": "reb_per_game", "normalization": "totals"},
+                {"key": "ast", "normalization": "per_36"},
+            ],
+            "sort": [{"field": "pts", "direction": "desc"}],
+        },
+    }
+    repaired, _ = repair_stats_call(sent)
+    query = repaired["arguments"]
+    # The inner season isn't moved up: only a call-level season may change the pinned scope.
+    assert "season" not in repaired and query["season"] == "2024-25"
+    assert "release_id" not in query and "season_scope" not in query
+    assert query["metric_selectors"] == [
+        {"key": "pts_per_game", "normalization": "raw"},
+        {"key": "blk_per_game", "normalization": "raw"},
+        {"key": "reb", "normalization": "raw"},
+        # No per-36 key exists, so it is left for the validator to name.
+        {"key": "ast", "normalization": "per_36"},
+    ]
+    assert query["sort"] == [{"field": "pts_per_game", "direction": "desc"}]
+
+
+def test_a_conflicting_season_is_not_silently_chosen():
+    sent = {
+        "operation": "query",
+        "season": "2025-26",
+        "arguments": {**LEADERS, "season": "2023-24"},
+    }
+    repaired, _ = repair_stats_call(sent)
+    assert repaired["season"] == "2025-26"
+    assert repaired["arguments"]["season"] == "2023-24"
+
+
+def test_unrepairable_calls_get_specific_safe_corrections(session):
+    missing = dispatch(session, call("query_stats", operation="query", season="2025-26"))
+    error = missing.result.payload["error"]
+    assert error["code"] == "invalid_arguments"
+    assert error["example"]["operation"] == "query"
+    assert "arguments is required" in error["hint"]
+    unknown = dispatch(
+        session,
+        call("query_stats", operation="profile", arguments={"player_id": "1", "shell; DROP": 1}),
+    )
+    error = unknown.result.payload["error"]
+    assert error["required_fields"] == ["player_id"]
+    assert "DROP" not in json.dumps(error)
+    bad_operation = dispatch(session, call("query_stats", operation="made_up", arguments={}))
+    assert "profile" in bad_operation.result.payload["error"]["operations"]

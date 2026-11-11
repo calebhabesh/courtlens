@@ -82,16 +82,12 @@ test.describe("PC11 populated pages", () => {
     await noPhoneOverflow(page);
   });
 
-  test("Adjusted Shooting ranks play-type-adjusted scoring and breaks down the focus player", async ({ page }) => {
-    await openWorkbench(page, "/research/shooting/adjusted");
-    await expect(page.getByRole("link", { name: "Adjusted Shooting" })).toHaveAttribute("aria-current", "page");
-    await expect(page.getByRole("figure", { name: /Points per 100 above the play-type expectation/ })).toBeVisible();
-    await expect(page.getByRole("region", { name: "Play-type breakdown table" })).toContainText("Spot-up");
-    await page.getByRole("button", { name: "Fixture Guard" }).click();
-    await expect(page).toHaveURL(/playerId=99002/);
-    await page.getByRole("radio", { name: "Defense" }).click();
-    await expect(page).toHaveURL(/side=defensive/);
-    await expect(page).not.toHaveURL(/playerId=/);
+  test("Adjusted Shooting's old URL opens zTS's Defense tab with its season and player kept (RD17)", async ({ page }) => {
+    await openWorkbench(page, "/research/shooting/adjusted?season=2025-26&phase=regular_season&playerId=99002");
+    await expect(page).toHaveURL(url => url.pathname === "/research/zts" && url.searchParams.get("tab") === "defense" && url.searchParams.get("playerId") === "99002");
+    await expect(page.getByRole("heading", { name: "Points allowed by play type" })).toBeVisible();
+    await expect(page.locator("[data-field=defender-card]")).toHaveAttribute("data-player", "99002");
+    await expect(page.getByRole("table", { name: /^Defenders by play type/ })).toBeVisible();
     await noPhoneOverflow(page);
   });
 

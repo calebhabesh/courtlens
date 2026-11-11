@@ -1,0 +1,4 @@
+/research/shooting/adjusted 1440 {"sideways":["Play-type breakdown table: 0px","Play-type player table: 0px"],"selects":["Season (11 options)","Phase (2 options)","Player (439 options)"],"logos":0,"shaded":0}
+/research/shooting/adjusted 390 {"sideways":["Play-type breakdown table: 273px","Play-type player table: 347px"],"selects":["Season (11 options)","Phase (2 options)","Player (439 options)"],"logos":0,"shaded":0}
+/research/shooting/adjusted?side=defensive 1440 {"sideways":["Play-type breakdown table: 0px","Play-type player table: 0px"],"selects":["Season (11 options)","Phase (2 options)","Player (433 options)"],"logos":0,"shaded":0}
+/research/shooting/adjusted?side=defensive 390 {"sideways":["Play-type breakdown table: 346px","Play-type player table: 373px"],"selects":["Season (11 options)","Phase (2 options)","Player (433 options)"],"logos":0,"shaded":0}

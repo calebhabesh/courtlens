@@ -28,13 +28,38 @@ to writes. The hosted demo removes that in two layers:
 1. The dashboard container has no operator token, so its writes fail at the API, which
    runs with `COURTLENS_ENVIRONMENT=production` and unique secrets.
 2. Caddy refuses every non-GET request except `POST /api/workbench/query` and
-   `POST /api/workbench/operations/*`, which compute results without writing.
+   `POST /api/workbench/operations/*`, which compute results without writing, and the four
+   public Ask writes below.
 
-Workspace changes (favorites, boards, saved views), jobs, saved analyses
-and the assistant are therefore unavailable. The dashboard image is built with
-`NEXT_PUBLIC_COURTLENS_HOSTED=true`, which hides the Ask button and replaces the Ask page
-with a note, and with an empty `NEXT_PUBLIC_COURTLENS_API_URL`, so browser calls are
-same-origin.
+Workspace changes (favorites, boards, saved views), jobs and saved analyses are therefore
+unavailable. The dashboard image is built with `NEXT_PUBLIC_COURTLENS_HOSTED=true` and an empty
+`NEXT_PUBLIC_COURTLENS_API_URL`, so browser calls are same-origin.
+
+### Public Ask (2026-11-10)
+
+Anyone with the link may ask a few questions a day. The image is also built with
+`NEXT_PUBLIC_COURTLENS_PUBLIC_ASK=true`, which brings back the Ask button and page.
+
+- **Writes allowed:** `POST /api/assistant-v2/turn`, `/turn/stream`, `/threads` and
+  `/threads/{id}/turns/{id}/cancel` reach the dashboard's Ask proxy. Deleting history and every
+  other write stay refused, and the API's own `/api/workbench/assistant/...` writes are refused
+  at Caddy.
+- **Credentials:** the dashboard holds only `COURTLENS_PUBLIC_ASK_TOKEN`. The API accepts it for
+  those four endpoints only, and only with `COURTLENS_PUBLIC_ASK=true`. Without both, the proxy
+  refuses Ask writes on a hosted build.
+- **Visitors:** the proxy forwards two salted SHA-256 hashes. One is the browser (an HttpOnly
+  cookie), which owns its conversations. The other is the client address (Cloudflare's
+  `CF-Connecting-IP`), which carries the limit. A visitor lists and reads only their own threads.
+  Threads without a visitor, such as history copied in a database restore, are never listed.
+- **Limits:** `COURTLENS_PUBLIC_ASK_PROMPTS_PER_VISITOR` (3) questions per client a day. The site
+  stops taking questions once this process has sent `COURTLENS_PUBLIC_ASK_DAILY_REQUESTS` (480)
+  Gemini requests minus one full answer (`assistant_max_steps`). Both reset at midnight Pacific,
+  with Gemini's free quota. Counts are in memory (one API worker), so a restart forgets them and
+  Gemini's own refusal is the backstop. `GET /api/assistant-v2/limits` reports what is left.
+- **Keys:** `COURTLENS_GEMINI_API_KEY` (required) and `COURTLENS_GROQ_API_KEY` (optional) in
+  `secrets.env`. Both must be free-tier keys on accounts with **no billing attached**, so the
+  worst case is "limit reached", never a charge. Google Search grounding is refused on the free
+  tier, so answers about very recent news may be missing; the Ask page says so.
 
 ### Live
 
@@ -202,8 +227,10 @@ Refresh timers and the nightly job stay off; the data is the 2026-11-10 snapshot
 These steps have already been done once; they are recorded for a rebuild.
 
 1. Generate `secrets.env` on the VPS (mode 0600). It holds
-   `COURTLENS_POSTGRES_PASSWORD`, `COURTLENS_JWT_SECRET` and `COURTLENS_OPERATOR_TOKEN`,
-   each from `openssl rand -hex 32`. It never leaves the VPS.
+   `COURTLENS_POSTGRES_PASSWORD`, `COURTLENS_JWT_SECRET`, `COURTLENS_OPERATOR_TOKEN` and
+   `COURTLENS_PUBLIC_ASK_TOKEN`, each from `openssl rand -hex 32`, plus the free-tier
+   `COURTLENS_GEMINI_API_KEY` and optional `COURTLENS_GROQ_API_KEY` (see Public Ask). It never
+   leaves the VPS.
 2. Take a dump of the local database without the dbt candidate build schemas, which
    serving never reads:
    `pg_dump -Fc --no-owner --exclude-schema='cl_candidate_*'`.
