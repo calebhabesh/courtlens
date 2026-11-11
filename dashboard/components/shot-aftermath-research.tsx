@@ -108,6 +108,50 @@ function ZoneChart({ spec, rows, top, league }: { spec: ChartSpec; rows: readonl
   </figure>;
 }
 
+/** RD18 suggestion 6 (finish plan F02): after a make and after a defensive rebound, side by side per zone against the league line. Neutral
+ * marks only: the difference between the two is read off the bars and their intervals, never coloured. */
+function MakeReboundChart({ rows, league }: { rows: readonly Cell[]; league: number }) {
+  const top = pointsAxis(rows, ["ppp_make", "ppp_dreb"], league);
+  const at = (v: number) => `${Math.max(0, Math.min(1, v / top)) * 100}%`;
+  const pairs: { key: "ppp_make" | "ppp_dreb"; label: string }[] = [{ key: "ppp_make", label: "After a make" }, { key: "ppp_dreb", label: "After a rebound" }];
+  return <figure className="sa-chart sa-pair-chart" data-chart="make-vs-rebound" data-top={top}>
+    <figcaption className="sa-chart-head">
+      <span className="sa-chart-title">After a make or after a rebound</span>
+      <span className="sa-chart-sub">The opponent&apos;s points per possession after each result. The dashed line is the league average</span>
+    </figcaption>
+    <div className="sa-plot">
+      <div className="sa-axis" aria-hidden="true">{ticks(top, "points").map(t => <span key={t} style={cssVars({ "--sa-at": at(t) })}>{fixed(t, 2)}</span>)}</div>
+      <div className="sa-bars">
+        <span className="sa-gridline" data-zero="true" style={cssVars({ "--sa-at": at(0) })} aria-hidden="true" />
+        <span className="sa-gridline" data-league="true" style={cssVars({ "--sa-at": at(league) })} aria-hidden="true" />
+        {rows.map(r => <div key={r.zone} className="sa-col sa-pair" data-zone={r.zone} data-status={r.status}>
+          {pairs.map(p => {
+            const e = r.values[p.key];
+            return <span key={p.key} className="sa-pair-slot" data-series={p.key} data-value={e?.value ?? ""} data-low={e?.low ?? ""} data-high={e?.high ?? ""}
+              title={e ? `${ZONE_LABEL[r.zone]}, ${p.label.toLowerCase()}: ${fixed(e.value)} (95% interval ${band(e)})` : `${ZONE_LABEL[r.zone]}, ${p.label.toLowerCase()}: unknown`}>
+              {e && <>
+                <span className="sa-bar" data-series={p.key} style={cssVars({ "--sa-from": at(0), "--sa-to": at(e.value) })} />
+                <span className="sa-whisker" style={cssVars({ "--sa-from": at(e.low), "--sa-to": at(e.high) })} />
+              </>}
+            </span>;
+          })}
+        </div>)}
+      </div>
+      <span aria-hidden="true" />
+      <div className="sa-labels">{rows.map(r => <div key={r.zone} className="sa-label" data-zone={r.zone}>
+        <span className="sa-label-zone">{ZONE_LABEL[r.zone]}</span>
+        <span className="sa-pair-values" data-field="pair-values"><span data-series="ppp_make">{fixed(r.values.ppp_make?.value)}</span><span data-series="ppp_dreb">{fixed(r.values.ppp_dreb?.value)}</span></span>
+        {r.status === "thin" && <small className="sa-label-band" data-field="thin">Thin sample</small>}
+      </div>)}</div>
+    </div>
+    <ul className="sa-key">
+      <li><span className="sa-key-mark" data-mark="make" aria-hidden="true" />After a make (upper value)</li>
+      <li><span className="sa-key-mark" data-mark="rebound" aria-hidden="true" />After a rebound (lower value)</li>
+      <li><span className="sa-key-mark" data-mark="league" aria-hidden="true" />League average, {fixed(league)}</li>
+    </ul>
+  </figure>;
+}
+
 function ChartsSection({ scope, view, setView }: { scope: Scope; view: View; setView: (v: View) => void }) {
   const zones = SHOT_ZONES.map(z => scope.rows.find(r => r.zone === z)!).filter(Boolean);
   const specs = viewCharts(view);
@@ -125,6 +169,7 @@ function ChartsSection({ scope, view, setView }: { scope: Scope; view: View; set
     <div className="sa-charts" data-count={specs.length}>
       {specs.map(spec => <ZoneChart key={spec.key} spec={spec} rows={zones} top={spec.kind === "cost" ? costTop : top} league={spec.key === "ppp_dreb" ? league : undefined} />)}
     </div>
+    {view === "dreb" && <MakeReboundChart rows={zones} league={league} />}
     <ul className="sa-key">
       <li><span className="sa-key-mark" data-mark="bar" aria-hidden="true" />Estimate</li>
       <li><span className="sa-key-mark" data-mark="whisker" aria-hidden="true" />95% interval</li>
@@ -245,6 +290,46 @@ function TablesSection({ scope }: { scope: Scope }) {
   return <ResearchSection id="tables" icon="table" title="By shot zone">
     <p className="sa-lead">Each value with its 95% interval underneath. Only opponent cost can be green or red.</p>
     {specs.map(spec => <ZoneTable key={spec.key} spec={spec} rows={rows} />)}
+  </ResearchSection>;
+}
+
+// ---- By estimated position (RD18 suggestion 3, finish plan F02) -------------------------------------------------------------
+
+const POSITION_ROWS: readonly Exclude<Position, "all">[] = ["guards", "forwards", "bigs"];
+type PositionRow = { position: Exclude<Position, "all">; cells: Record<Zone, Cell | undefined> };
+
+function PositionsSection({ scopes, team }: { scopes: Record<Exclude<Position, "all">, Scope>; team: string | null }) {
+  const [metric, setMetric] = useState<"net" | "dreb_cost">("net");
+  const phone = usePhone();
+  const [group, setGroup] = useState<"inside" | "outside">("inside");
+  const shown = phone ? (group === "inside" ? ZONES.filter(z => z === "rim" || z === "short_mid") : ZONES.filter(z => z === "long_mid" || z === "three" || z === "all")) : ZONES;
+  const rows: PositionRow[] = POSITION_ROWS.map(position => ({
+    position, cells: Object.fromEntries(ZONES.map(z => [z, scopes[position].rows.find(r => r.zone === z)])) as Record<Zone, Cell | undefined>,
+  }));
+  const cost = metric === "dreb_cost";
+  const columns: GridColumn<PositionRow>[] = shown.map(zone => ({
+    key: zone, label: ZONE_LABEL[zone], width: "md",
+    data: r => { const c = r.cells[zone]; const e = c?.values[metric]; return { field: `${metric}:${zone}`, value: e?.value ?? "", low: e?.low ?? "", high: e?.high ?? "", status: c?.status ?? "unknown", tone: cost ? c?.tones.dreb_cost ?? "" : "" }; },
+    cell: r => {
+      const c = r.cells[zone]; const e = c?.values[metric];
+      if (!c || !e) return <GridValue text={null} />;
+      const thin = c.status !== "ok";
+      return <GridValue text={cost ? signed(e.value) : fixed(e.value)} sub={thin ? "Thin sample" : band(e, cost)} tone={cost && !thin ? gridTone(c.tones.dreb_cost) : undefined} muted={thin} />;
+    },
+  }));
+  return <ResearchSection id="positions" icon="users" title="By estimated position">
+    <div className="sa-view">
+      <Segmented size="sm" label="Position value" value={metric} onChange={setMetric} options={[{ value: "net", label: "Net per attempt" }, { value: "dreb_cost", label: "Rebound cost" }]} />
+    </div>
+    <p className="sa-lead" data-field="positions-line" data-metric={metric}>
+      {cost
+        ? "How much more or less than an average possession the opponent scores after a miss the defence rebounds, per rebounded miss, by who shot it."
+        : "Made points plus second chances minus opponent cost, per first-chance attempt, by who shot it."} {team ? `${team} only.` : "Every team."} Positions are estimates; each value has its 95% interval underneath.
+    </p>
+    {phone && <Segmented size="sm" label="Position columns" value={group} onChange={setGroup} options={[{ value: "inside", label: "Rim, short mid" }, { value: "outside", label: "Long mid, three, all" }]} />}
+    <StatsGrid<PositionRow> label={`By estimated position, ${cost ? "rebound cost" : "net"}`} name="positions" density="compact" height="auto" leadWidth="sm" className={phone ? "sa-grid sa-positions sa-phone" : "sa-grid sa-positions"} rows={rows} rowKey={r => r.position}
+      rowData={r => ({ position: r.position })} lead={{ label: "Shooter", cell: r => <><span className="sa-name">{POSITION_LABEL[r.position]}</span><span className="sa-name-sub">Estimated</span></> }} columns={columns} />
+    {cost && <p className="sa-note" data-field="positions-colour">Green or red only where the interval is clear of zero. Thin samples are dimmed and never coloured.</p>}
   </ResearchSection>;
 }
 
@@ -387,6 +472,8 @@ export function ShotAftermathResearch() {
   const otherSeason = summary ? seasons.find(s => s !== season) ?? null : null;
   const otherFeed = useFeed([otherSeason, team, position], signal => otherSeason ? getScope(otherSeason, team, position, signal) : Promise.resolve(null));
   const teamsFeed = useFeed([season, position, zone], signal => getTeams(season, position, zone, signal));
+  const positionsFeed = useFeed([season, team], signal => Promise.all(POSITION_ROWS.map(p => getScope(season, team, p, signal)))
+    .then(([guards, forwards, bigs]) => ({ guards, forwards, bigs })));
   const scope = scopeFeed.data ?? scopeFeed.stale;
   const board = teamsFeed.data ?? teamsFeed.stale;
   const overall = scope?.rows.find(r => r.zone === "all");
@@ -409,6 +496,7 @@ export function ShotAftermathResearch() {
       <AnswerSection scope={scope} other={otherFeed.data && otherFeed.data.season === otherSeason ? otherFeed.data : null} />
       <ChartsSection scope={scope} view={view} setView={next => set({ view: next === "all" ? null : next })} />
       <TablesSection scope={scope} />
+      {positionsFeed.data && <PositionsSection scopes={positionsFeed.data} team={scope.team_code} />}
       {teamsFeed.error && <FeedFailure error={teamsFeed.error} retry={teamsFeed.retry} what="The team table" />}
       {board && <TeamsSection board={board} selected={team} zone={zone} season={season} setZone={next => set({ zone: next === "all" ? null : next })} onScope={code => set({ team: code })} />}
       {summary && <CompareSection summary={summary} season={scope.season} />}
