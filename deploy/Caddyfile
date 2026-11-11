@@ -19,10 +19,12 @@
 		respond "ok" 200
 	}
 
-	# Route handlers owned by Next.js: reads only, except public Ask. Their writes would
-	# carry server-side credentials (jobs, workspace, live leases). Ask's proxy holds only
-	# an Ask token, and the API limits each visitor and the site (docs/deployment.md).
-	@nextApi path /api/assistant-v2 /api/assistant-v2/* /api/live /api/live/* /api/workspace /api/workspace/* /api/jobs /api/jobs/* /api/finance-import /api/finance-import/*
+	# Route handlers owned by Next.js: reads only, except public Ask and accounts. Their writes
+	# would carry server-side credentials (jobs, workspace, live leases). Ask's proxy holds only
+	# an Ask token, and the API limits each visitor and the site. The account proxy holds only the
+	# account token: sign-in (rate-limited), the demo account, sign-out and the signed-in user's
+	# own favourites (docs/deployment.md).
+	@nextApi path /api/assistant-v2 /api/assistant-v2/* /api/live /api/live/* /api/workspace /api/workspace/* /api/jobs /api/jobs/* /api/finance-import /api/finance-import/* /api/account /api/account/*
 	handle @nextApi {
 		@write {
 			not method GET HEAD
@@ -30,12 +32,21 @@
 				method POST
 				path_regexp ^/api/assistant-v2/(turn|turn/stream|threads|threads/[0-9a-fA-F-]{36}/turns/[0-9a-fA-F-]{36}/cancel)$
 			}
+			not {
+				method POST
+				path /api/account/session /api/account/demo /api/account/sign-out
+			}
+			not {
+				method POST DELETE
+				path_regexp ^/api/account/favorites/[0-9]{1,12}$
+			}
 		}
 		respond @write "The hosted demo is read-only." 403
 		reverse_proxy dashboard:3000
 	}
 
-	# FastAPI. Only read-only computations may POST; every other write is refused.
+	# FastAPI. Only read-only computations may POST; every other write is refused, including
+	# /api/auth/* and /api/me/*, which only the account proxy reaches (over the internal network).
 	handle /api/* {
 		@write {
 			not method GET HEAD OPTIONS

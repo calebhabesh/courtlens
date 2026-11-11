@@ -19,6 +19,9 @@ x-api-environment: &api-environment
   # and one shared daily budget below Gemini's 500 free requests (docs/deployment.md).
   COURTLENS_PUBLIC_ASK: "true"
   COURTLENS_PUBLIC_ASK_TOKEN: ${COURTLENS_PUBLIC_ASK_TOKEN:?}
+  # Accounts (finish plan F04): held only by the dashboard's account proxy; also salts the
+  # client address for sign-in limits. Without it the API refuses every account request.
+  COURTLENS_ACCOUNT_PROXY_TOKEN: ${COURTLENS_ACCOUNT_PROXY_TOKEN:?}
   COURTLENS_PUBLIC_ASK_PROMPTS_PER_VISITOR: "3"
   COURTLENS_PUBLIC_ASK_DAILY_REQUESTS: "480"
   COURTLENS_ASSISTANT_PROVIDERS: gemini,groq
@@ -81,6 +84,31 @@ services:
       db:
         condition: service_healthy
 
+  # Finish plan F04: restores the demo account's shared favourites to the seeded list at 08:00 UTC
+  # (about midnight Pacific). It sleeps in sh between runs and stores nothing: each run deletes
+  # the demo's rows and inserts the seed again (docs/deployment.md).
+  demo-reset:
+    image: ${COURTLENS_API_IMAGE:?}
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.25
+    environment: *api-environment
+    command:
+      - sh
+      - -c
+      - >-
+        while :; do
+        now=$$(date -u +%s);
+        next=$$(date -u -d 'today 08:00' +%s);
+        [ "$$next" -gt "$$now" ] || next=$$(date -u -d 'tomorrow 08:00' +%s);
+        sleep $$((next - now));
+        courtlens reset-demo-favorites || echo 'demo favourites reset failed' >&2;
+        done
+    logging: *logging
+    depends_on:
+      db:
+        condition: service_healthy
+
   api:
     image: ${COURTLENS_API_IMAGE:?}
     restart: unless-stopped
@@ -132,11 +160,13 @@ services:
     mem_limit: 768m
     cpus: 1.0
     # No operator token: the hosted demo cannot mutate the workspace or start jobs. The Ask
-    # token lets its proxy start Ask turns and threads only, under the API's public limits.
+    # token lets its proxy start Ask turns and threads only, under the API's public limits. The
+    # account token lets its proxy sign in and change the signed-in user's own favourites only.
     environment:
       COURTLENS_API_INTERNAL_URL: http://api:8000
       COURTLENS_PUBLIC_ASK: "true"
       COURTLENS_PUBLIC_ASK_TOKEN: ${COURTLENS_PUBLIC_ASK_TOKEN:?}
+      COURTLENS_ACCOUNT_PROXY_TOKEN: ${COURTLENS_ACCOUNT_PROXY_TOKEN:?}
     logging: *logging
     depends_on:
       api:
