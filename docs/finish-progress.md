@@ -79,3 +79,43 @@ Evidence: [`f03`](evidence/finish/f03/README.md). 👀 for the owner's look.
 ## 2026-11-11 — F03 approved
 
 The owner approved the page ("Okay. I approve this page.") after one build round. Its rules are in the alignment plan ("Settled in RD14"); RD14 and alignment row 29 are ✅. The F03 evidence script was formatted for ruff, which PR #86's backend job had failed on. Next is F04 (simple accounts), handed to a new session.
+
+## 2026-11-11 — F04 accounts, demo account and favourite players (built, awaiting the owner)
+
+The owner approved the plan as proposed ("Go with your recommendations"): favourites always belong to an account, the Favorite Players list is a header star (desktop) and a drawer section (phones), each favourite shows its latest season's photo and team, and the Planner's local bearer sign-in is left as it is. Branch `feat/f04-accounts`, cut from PR #86's head (#86 was still open) so it merges cleanly after it.
+
+**Backend.**
+- Migration `3c4d9e1f0a21` (additive): `users` gains `display_name`, `account_enabled`, `is_demo` and `session_version`; new table `user_favorite_players` (user, player, added at; cascade on user delete).
+- The two fantasy-league seed users already in the database (`demo@courtlens.dev`, `demo@courtload.dev`, public fixture passwords) come out disabled. `courtlens set-password` enables one deliberately.
+- `POST /api/auth/register` is gone. `/api/auth/token` and `/me` stay for the local Planner and return 404 in production.
+- New endpoints: `/api/auth/session`, `/api/auth/demo-session`, `/api/me`, and `/api/me/favorites` (GET, plus POST and DELETE per player). In production they require `COURTLENS_ACCOUNT_PROXY_TOKEN` and a hashed client address.
+- Sessions are stateless JWTs with their own audience and the account's `session_version`.
+- Limits: 5 failed sign-ins per client and 10 per email in 15 minutes; 20 demo sign-ins per client an hour; 120 favourite writes an hour; at most 100 favourites per account.
+- CLI: `create-user`, `set-password`, `disable-user`, `revoke-sessions`, `list-users`, `seed-demo-account`, `reset-demo-favorites`, `import-workspace-favorites`.
+
+**Dashboard.**
+- `/api/account/*` proxy: same-origin writes; the session lives in an HttpOnly, Secure, SameSite=Lax cookie and is forwarded as a bearer token; the response body never carries it.
+- `AccountProvider` holds the account and its favourites. `useWorkspace()`'s favourites now read it, so the existing hearts (player page, Stats preview rail and detail drawer) and the scatter plot follow the account. Views, boards and the compare tray stay install-wide.
+- Header: star popover with the Favorite Players list (season photo, logo beside the code, season; remove buttons) and an account control ("Sign in", or the account's name with Sign out). Below 1600 px the account control shows its icon, so the search pill stays readable. On phones both move into the drawer.
+- Sign-in dialog: email and password, "Use the demo account", the limit's wait in words, "Accounts are by invitation only".
+- Stats: the existing star filter reads the account's favourites on the server from the cookie. Signed out, it opens sign-in; a `favorites=1` link shows a sign-in note, never every player.
+
+**Hosted demo** (not deployed).
+- Caddy allows `POST /api/account/(session|demo|sign-out)` and `POST`/`DELETE /api/account/favorites/<digits>`. `/api/auth/*` and `/api/me/*` writes are refused, so only the proxy reaches them.
+- New secret `COURTLENS_ACCOUNT_PROXY_TOKEN` in `secrets.env` (Compose refuses to start without it). `deploy-vps.sh` seeds the demo account.
+- A `demo-reset` Compose service resets the shared list at 08:00 UTC and stores nothing that grows. Documented in the [deployment guide](deployment.md#accounts-and-favourites-finish-plan-f04-2026-11-11).
+
+**Checks.**
+- pytest: 26 account API tests (invite-only, sessions and revocation, the proxy token, sign-in limits per client and per email, per-user isolation, the 100 cap, demo sharing and reset, bounded limiter memory) and 3 PostgreSQL migration tests. Full suite: 2,742 passed, 8 failed. The 8 are the Anthropic provider tests, which fail the same way on unmodified main: the local venv has `httpx2`, and the SDK expects `httpx.Client`.
+- mypy (388 files), ruff and ruff format: clean. Dashboard lint, typecheck: clean. Vitest: 918 passed (10 proxy and 8 account component tests new). Correction: the first PR push failed one of these in CI. The password stayed in the closing dialog's frozen exit copy, and a local rerun showing `1 failed` was missed. The field is now cleared on submit, and the 918 were re-measured after that fix.
+- Playwright, `f04-accounts` (8 tests) with the touched specs (visual baselines, header and palette, Stats preview, player profile, table interactions, Stats entrance, accessibility): 126/126 on each of three runs.
+- Full Playwright on the sandbox build (mock API 4180, dashboard 3180): 649 passed, 17 skipped, 0 failed.
+  - Earlier runs found two real problems, both fixed. The Planner's own "Sign in" button now shares a name with the header's, so its specs scope to the page. The mock's `/api/me` prefix also caught `/api/metric-backtest`.
+  - Two runs made while pytest was also running had timing flakes (Last X Games, Saved Operations, WOWY). Each passes three times in isolation.
+- Caddy: `scripts/check_caddy_allowlist.sh` with the pinned image, 26/26 ([`caddy-allowlist.txt`](evidence/finish/f04/caddy-allowlist.txt)). `docker compose config` refuses a `secrets.env` without the new token. The reset loop's schedule was checked in the API image (GNU date; next run 08:00 UTC).
+- Real data (read-only, owner's database): all eight seeded demo players resolve with names, season 2026-27 and current teams.
+- Screenshots viewed at 1440 and 390. The first pass found the search pill squeezed to "Se…" at 1440, so the account control shows its icon below 1600 px. It also found two logos per favourite (photo badge and code), so the photo badge was dropped.
+
+**For the owner, locally:** `alembic upgrade head`, then `courtlens create-user --email … --name …` and `courtlens import-workspace-favorites --email …` (copies the old install-wide list; local favourites are empty until you sign in). On the VPS, add `COURTLENS_ACCOUNT_PROXY_TOKEN` to `secrets.env` before the deploy.
+
+Evidence: [`f04`](evidence/finish/f04/README.md). 👀 for the owner's look.

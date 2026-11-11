@@ -637,8 +637,68 @@ const mockPlayoffSeriesDetail = {
   disclaimers: ["Descriptive completed-game facts only."]
 };
 
+// Finish plan F04: accounts as the API answers them, in memory. One invited account and the shared
+// demo; sessions are opaque JWT-shaped tokens the dashboard's account proxy keeps in a cookie.
+const mockFavoritePlayers = {
+  "23": { name: "Fixture Star", season: "2025-26", team: "TOR" },
+  "24": { name: "Fixture Guard", season: "2025-26", team: "BOS" },
+};
+const mockAccounts = {
+  "owner@example.com": { id: "u-owner", name: "Owner", email: "owner@example.com", is_demo: false, password: "correct horse battery", favorites: [] },
+  demo: { id: "u-demo", name: "Demo account", email: null, is_demo: true, favorites: ["23"] },
+};
+const mockSessions = new Map();
+let mockSignInFailures = 0;
+function mockSession(account) {
+  const token = `mock.${account.id}.${mockSessions.size + 1}`;
+  mockSessions.set(token, account);
+  return { user: { id: account.id, name: account.name, email: account.email, is_demo: account.is_demo }, token, expires_in: 43200 };
+}
+function mockFavorites(account) {
+  return { player_ids: account.favorites, players: account.favorites.map(id => ({ player_id: id, ...(mockFavoritePlayers[id] ?? { name: null, season: null, team: null }) })), limit: 100, shared: account.is_demo };
+}
+async function mockAccountRoute(request, response, url) {
+  if (url.pathname === "/api/auth/session" && request.method === "POST") {
+    let raw = "";
+    for await (const chunk of request) raw += chunk;
+    const { email = "", password = "" } = JSON.parse(raw || "{}");
+    if (mockSignInFailures >= 5) {
+      response.writeHead(429, { "Content-Type": "application/json", "Retry-After": "540" });
+      return response.end(JSON.stringify({ detail: "Too many attempts. Try again later." }));
+    }
+    const account = mockAccounts[String(email).trim().toLowerCase()];
+    if (!account || account.password !== password) {
+      mockSignInFailures += 1;
+      return json(response, 401, { detail: "That email and password don't match an account." });
+    }
+    return json(response, 200, mockSession(account));
+  }
+  if (url.pathname === "/api/auth/demo-session" && request.method === "POST") return json(response, 200, mockSession(mockAccounts.demo));
+  if (url.pathname === "/api/__accounts/reset" && request.method === "POST") {
+    mockAccounts["owner@example.com"].favorites = [];
+    mockAccounts.demo.favorites = ["23"];
+    mockSessions.clear();
+    mockSignInFailures = 0;
+    return json(response, 200, { reset: true });
+  }
+  if (url.pathname !== "/api/me" && !url.pathname.startsWith("/api/me/")) return false;
+  const account = mockSessions.get((request.headers.authorization ?? "").replace(/^Bearer /, ""));
+  if (!account) return json(response, 401, { detail: "Your session has ended. Sign in again." });
+  if (url.pathname === "/api/me") return json(response, 200, { id: account.id, name: account.name, email: account.email, is_demo: account.is_demo });
+  if (url.pathname === "/api/me/favorites" && request.method === "GET") return json(response, 200, mockFavorites(account));
+  const match = url.pathname.match(/^\/api\/me\/favorites\/(\d{1,12})$/);
+  if (!match) return json(response, 404, { detail: "Not Found" });
+  if (!mockFavoritePlayers[match[1]]) return json(response, 404, { detail: "unknown player" });
+  if (request.method === "POST" && !account.favorites.includes(match[1])) account.favorites = [...account.favorites, match[1]];
+  if (request.method === "DELETE") account.favorites = account.favorites.filter(id => id !== match[1]);
+  return json(response, 200, mockFavorites(account));
+}
+
 createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
+  if (url.pathname.startsWith("/api/auth/") || url.pathname === "/api/me" || url.pathname.startsWith("/api/me/") || url.pathname.startsWith("/api/__accounts/")) {
+    if (await mockAccountRoute(request, response, url) !== false) return;
+  }
   if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
   // Live (alignment row 7): an observed empty date; e2e/live.spec.ts routes real ESPN reads itself.
   if (url.pathname === "/api/six-factor") return json(response, 200, sixFactorPage.pages[url.searchParams.get("season") ?? "2025-26"] ?? { status: "unavailable", season: url.searchParams.get("season"), phase: "regular_season", scopes: sixFactorPage.pages["2025-26"].scopes });

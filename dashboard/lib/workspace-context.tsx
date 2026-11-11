@@ -19,7 +19,6 @@ import type {
 } from "./types";
 import {
   addComparePlayer,
-  addFavorite,
   clearCompareTray,
   createCustomView,
   createRankingBoard,
@@ -31,7 +30,6 @@ import {
   getWorkspace,
   importWorkspaceBundle,
   removeComparePlayer,
-  removeFavorite,
   reorderCustomViews,
   resetWorkspace,
   updateCustomView,
@@ -43,6 +41,7 @@ import {
   type CreateRankingBoardPayload,
   type CreateTierListPayload
 } from "./workspace-client";
+import { useAccount } from "./account-context";
 
 const DEFAULT_PREFERENCES: WorkspacePreferences = {
   density: "standard",
@@ -165,41 +164,11 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     setConflictNotice(null);
   }, []);
 
-  const isFavorite = useCallback(
-    (playerId: string) => {
-      return workspace.favorites.includes(playerId);
-    },
-    [workspace.favorites]
-  );
-
-  const toggleFavorite = useCallback(
-    async (playerId: string) => {
-      const exists = workspace.favorites.includes(playerId);
-      // Optimistic update
-      setWorkspace((prev) => ({
-        ...prev,
-        favorites: exists
-          ? prev.favorites.filter((id) => id !== playerId)
-          : [...prev.favorites, playerId]
-      }));
-
-      try {
-        const next = exists
-          ? await removeFavorite(playerId, workspace.version)
-          : await addFavorite(playerId, workspace.version);
-        setWorkspace(next);
-      } catch (err) {
-        if (err instanceof WorkspaceConflictError) {
-          await handleConflict(err);
-        } else {
-          // Rollback on non-conflict failure
-          await fetchLatest();
-          throw err;
-        }
-      }
-    },
-    [workspace.favorites, workspace.version, handleConflict, fetchLatest]
-  );
+  // Favourites belong to the signed-in account (finish plan F04), not to the install-wide
+  // workspace; views, boards and the compare tray stay install-wide.
+  const account = useAccount();
+  const isFavorite = account.isFavorite;
+  const toggleFavorite = account.toggleFavorite;
 
   const isInCompare = useCallback(
     (playerId: string) => {
@@ -506,7 +475,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
       error,
       conflictNotice,
       clearConflictNotice,
-      favorites: workspace.favorites,
+      favorites: account.favorites,
       isFavorite,
       toggleFavorite,
       compareTray: workspace.compare_tray,
@@ -540,6 +509,7 @@ export function WorkspaceProvider({ children }: { children: React.ReactNode }) {
     error,
     conflictNotice,
     clearConflictNotice,
+    account.favorites,
     isFavorite,
     toggleFavorite,
     isInCompare,
