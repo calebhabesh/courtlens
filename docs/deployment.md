@@ -56,6 +56,9 @@ Anyone with the link may ask a few questions a day. The image is also built with
   Gemini requests minus one full answer (`assistant_max_steps`). Both reset at midnight Pacific,
   with Gemini's free quota. Counts are in memory (one API worker), so a restart forgets them and
   Gemini's own refusal is the backstop. `GET /api/assistant-v2/limits` reports what is left.
+- **Model and time:** `COURTLENS_GEMINI_MODEL=gemini-3.5-flash-lite` (the agent's built-in
+  default, `gemini-3.8-flash`, timed out on the first live question) and a 45 s turn limit, inside
+  the dashboard proxy's 55 s, so a slow turn returns its partial answer.
 - **Keys:** `COURTLENS_GEMINI_API_KEY` (required) and `COURTLENS_GROQ_API_KEY` (optional) in
   `secrets.env`. Both must be free-tier keys on accounts with **no billing attached**, so the
   worst case is "limit reached", never a charge. Google Search grounding is refused on the free
