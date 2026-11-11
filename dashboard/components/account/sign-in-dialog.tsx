@@ -36,9 +36,12 @@ export function SignInDialog() {
     if (busy) return;
     setBusy("password");
     setError(null);
+    // Clear the field before the request: on success the dialog's exit animation keeps a frozen
+    // copy of the form, so clearing afterwards would leave the password in the DOM until it ends.
+    const secret = password;
+    setPassword("");
     try {
-      await signIn(email.trim(), password);
-      setPassword("");
+      await signIn(email.trim(), secret);
     } catch (failure) {
       setError(message(failure));
     } finally {
@@ -69,8 +72,7 @@ export function SignInDialog() {
         </Field>
         <Field label="Password" htmlFor={passwordId}>
           <Input id={passwordId} type="password" autoComplete="current-password" required
-            // Empty as soon as the dialog closes, so the password never lingers in the exiting DOM.
-            value={signInOpen ? password : ""} onChange={event => setPassword(event.target.value)} disabled={busy !== null} />
+            value={password} onChange={event => setPassword(event.target.value)} disabled={busy !== null} />
         </Field>
         {error && <p className="account-error" role="alert">{error}</p>}
         <Button type="submit" variant="primary" size="lg" loading={busy === "password"}
