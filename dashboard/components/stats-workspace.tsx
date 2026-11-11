@@ -102,7 +102,9 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   let researchData: PlayerResearchResponse | null = null;
   let loadError: string | null = null;
 
-  if (!favoritesSignedOut) try {
+  // Signed out, a favorites link has no list to filter by: no query, the note below instead.
+  if (!favoritesSignedOut) {
+  try {
     if (!catalog.stats_normalizations?.includes(countingMode)) throw new Error(`Counting mode ${countingMode} is unavailable for these Stats queries.`);
     if (!catalog.stats_scopes?.some((scope) => scope.season === querySpec.season && scope.phase === querySpec.phase)) throw new Error(`No observed Stats coverage for ${querySpec.season} / ${querySpec.phase}.`);
     const result = await executeWorkbenchQuery(querySpec, {
@@ -122,6 +124,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     };
   } catch (err) {
     loadError = err instanceof Error ? err.message : "Failed to load player stats from workbench";
+  }
   }
   let draftClasses: DraftClassesResponse["classes"] = [];
   let hints: Record<string, MetricHint> = {};
