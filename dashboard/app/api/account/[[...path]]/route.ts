@@ -16,6 +16,19 @@ const routes: Record<string, { methods: string[]; upstream?: (suffix: string) =>
   "favorites/:id": { methods: ["POST", "DELETE"], upstream: suffix => `/api/me/${suffix}` },
 };
 const MAX_BODY = 4 * 1024;
+/** After a sign-out in dev, auto sign-in waits until the next real sign-in (or a day). */
+const DEV_OPT_OUT = "courtlens-dev-signed-out";
+
+/**
+ * Local development only: sign a visitor with no session into the API's dev account, so the
+ * workbench is always signed in. Needs `next dev` (NODE_ENV=development), a non-hosted build,
+ * COURTLENS_DEV_ACCOUNT_AUTO_LOGIN=true here and COURTLENS_DEV_ACCOUNT=true in the API.
+ */
+function devAutoLogin(): boolean {
+  return process.env.NODE_ENV === "development"
+    && process.env.NEXT_PUBLIC_COURTLENS_HOSTED !== "true"
+    && process.env.COURTLENS_DEV_ACCOUNT_AUTO_LOGIN === "true";
+}
 
 type Context = { params: Promise<{ path?: string[] }> };
 
@@ -71,7 +84,15 @@ async function proxy(request: NextRequest, context: Context) {
 
   const session = validSession(request.cookies.get(SESSION_COOKIE)?.value);
   const cleared = sessionCookie("", 0);
-  if (key === "sign-out") return json({ user: null }, 200, cleared);
+  if (key === "sign-out") {
+    const response = json({ user: null }, 200, cleared);
+    if (devAutoLogin()) response.headers.append("Set-Cookie", `${DEV_OPT_OUT}=1; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax`);
+    return response;
+  }
+  if (!session && key === "me" && devAutoLogin() && !request.cookies.get(DEV_OPT_OUT)) {
+    const signedIn = await devSession(clientAddress(request));
+    if (signedIn) return json({ user: signedIn.user }, 200, sessionCookie(signedIn.token, signedIn.maxAge));
+  }
   // Signed out: reads answer "nobody" without calling the API; writes need a session.
   if (!session && (key === "me" || key === "favorites")) return json(key === "me" ? { user: null } : { detail: "Sign in to use favourites." }, key === "me" ? 200 : 401);
   if (!session && key === "favorites/:id") return json({ detail: "Sign in to use favourites." }, 401);
@@ -100,7 +121,9 @@ async function proxy(request: NextRequest, context: Context) {
     const token = validSession(typeof payload.token === "string" ? payload.token : null);
     const maxAge = typeof payload.expires_in === "number" ? Math.max(60, Math.floor(payload.expires_in)) : 43200;
     if (!token) return json({ detail: "Sign-in failed" }, 502);
-    return json({ user: payload.user }, 200, sessionCookie(token, maxAge));
+    const signedIn = json({ user: payload.user }, 200, sessionCookie(token, maxAge));
+    if (request.cookies.get(DEV_OPT_OUT)) signedIn.headers.append("Set-Cookie", `${DEV_OPT_OUT}=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax`);
+    return signedIn;
   }
   // An ended session (revoked, disabled, expired) clears the cookie and reads as signed out.
   if (response.status === 401) return key === "me" ? json({ user: null }, 200, cleared) : json(payload, 401, cleared);
@@ -108,6 +131,22 @@ async function proxy(request: NextRequest, context: Context) {
   const result = json(payload, response.status);
   if (retry) result.headers.set("Retry-After", retry);
   return result;
+}
+
+async function devSession(address: string): Promise<{ user: unknown; token: string; maxAge: number } | null> {
+  try {
+    const response = await fetch(new URL("/api/auth/dev-session", apiBase()), {
+      method: "POST", headers: { "Content-Type": "application/json", ...proxyHeaders(address) },
+      redirect: "error", cache: "no-store", signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) return null;
+    const body = await response.json() as { user?: unknown; token?: unknown; expires_in?: unknown };
+    const token = validSession(typeof body.token === "string" ? body.token : null);
+    if (!token) return null;
+    return { user: body.user, token, maxAge: typeof body.expires_in === "number" ? Math.max(60, Math.floor(body.expires_in)) : 43200 };
+  } catch {
+    return null;
+  }
 }
 
 export const GET = proxy;
