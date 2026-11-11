@@ -1,0 +1,167 @@
+{
+  "checked": 30937,
+  "mismatches": [],
+  "pages": [
+    {
+      "page": "shot-quality model, earlier attempt",
+      "width": 1440,
+      "consoleErrors": [],
+      "height": 4650,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0,
+      "overflowWithCaveatsOpen": 0
+    },
+    {
+      "page": "shot-quality model, earlier attempt",
+      "width": 390,
+      "consoleErrors": [],
+      "height": 5605,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0,
+      "overflowWithCaveatsOpen": 0
+    },
+    {
+      "page": "zts defense 2025-26-rs",
+      "width": 1440,
+      "consoleErrors": [],
+      "height": 2887,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "zts defense 2025-26-rs",
+      "width": 390,
+      "consoleErrors": [],
+      "height": 3549,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "zts defense 2024-25-po",
+      "width": 1440,
+      "consoleErrors": [],
+      "height": 2839,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "zts defense 2024-25-po",
+      "width": 390,
+      "consoleErrors": [],
+      "height": 3485,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "zts defense 2025-26-rs-traded",
+      "width": 1440,
+      "consoleErrors": [],
+      "height": 2831,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "zts defense 2025-26-rs-traded",
+      "width": 390,
+      "consoleErrors": [],
+      "height": 3466,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "zts defense 2025-26-rs-thin",
+      "width": 1440,
+      "consoleErrors": [],
+      "height": 2625,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "zts defense 2025-26-rs-thin",
+      "width": 390,
+      "consoleErrors": [],
+      "height": 3278,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "shot aftermath",
+      "width": 1440,
+      "consoleErrors": [],
+      "height": 5216,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "shot aftermath",
+      "width": 390,
+      "consoleErrors": [],
+      "height": 6654,
+      "overflow": 0,
+      "broken": [],
+      "sideways": [],
+      "hashes": [],
+      "codes": [],
+      "routeTabs": 0
+    },
+    {
+      "page": "research menu",
+      "width": 1440,
+      "consoleErrors": []
+    }
+  ],
+  "axis": {
+    "390": {
+      "px": 12.2,
+      "fill": "rgb(201, 211, 230)"
+    },
+    "1440": {
+      "px": 12,
+      "fill": "rgb(201, 211, 230)"
+    }
+  }
+}

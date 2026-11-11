@@ -6,7 +6,7 @@ const walk = (...hrefs: string[]) => hrefs.reduce<TrailEntry[]>((trail, href) =>
 describe("nav trail", () => {
   it("treats filter changes and a merged page's tabs as the same page; Roster Shapes' team view as another", () => {
     expect(pageKey("/stats?season=2024-25")).toBe(pageKey("/stats?season=2025-26"));
-    expect(pageKey("/research/shooting/adjusted")).toBe(pageKey("/research/shooting"));
+    expect(pageKey("/methodology/learning")).toBe(pageKey("/methodology"));
     expect(pageKey("/roster-shapes?team=SAS&mode=playoff")).not.toBe(pageKey("/roster-shapes?mode=playoff"));
   });
 
@@ -22,7 +22,7 @@ describe("nav trail", () => {
     expect(pageLabel("/roster-shapes?season=2025-26")).toBe("Roster Shapes");
     expect(pageLabel("/stats?season=2025-26")).toBe("Stats");
     expect(pageLabel("/players")).toBe("Player Dashboard");
-    expect(pageLabel("/research/shooting/adjusted")).toBe("Shooting");
+    expect(pageLabel("/research/rapm")).toBe("Six-Factor RAPM");
     expect(pageLabel("/teams/1610612759")).toBe("Team");
     expect(pageLabel("/contracts/books")).toBe("Source Books");
   });
