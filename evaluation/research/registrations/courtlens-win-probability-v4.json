@@ -1,0 +1,171 @@
+{
+ "schema_version": "courtlens-research-registration-v1",
+ "identity": "courtlens-win-probability-v4",
+ "block": "W1",
+ "registered_on": "2026-11-11",
+ "kind": "predictive",
+ "question": "Does a win-probability model whose pregame forecast is the frozen served model's own forecast moved toward the betting line by one fitted weight give a lower pregame margin error, and a lower whole-game log loss, than the frozen served model (courtlens-win-probability-v2, frozen 2026-11-04) on the same 2026-27 games, sealed from the same inputs, after its own freeze?",
+ "inputs": [
+  "Everything courtlens-win-probability-v2 reads, unchanged: its game table and state files under data/derived/win-probability-v1 (same content hashes), boxes, rating snapshots and its saved probabilities for every 2024-25 and 2025-26 state",
+  "The frozen served model's pregame coefficients and half-life, read from its freeze manifest (manifest_sha256 b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa). They are not refitted: the own forecast in v4 is the frozen model's forecast.",
+  "Training line: the hoopR-nba-data consensus closing spread (data/raw/market-lines/closing_lines_odds_api.parquet at the sha256 pinned in evaluation/win_probability_report.py, CC BY 4.0), 2020-21 to 2025-26, taken about five minutes before tip-off. Market home margin = -home_point.",
+  "Serving line: the spread of the first book ESPN lists on its scoreboard for a game that has not started, read when the game's inputs are sealed. An input from v4 on (owner decision, 2026-11-11, reversing the v3 decision).",
+  "Benchmark only: ESPN per-play win probability, as in v2"
+ ],
+ "method": [
+  "v2 stays as it is: its model files, manifest and pin test are untouched. v4 is a separate model with its own artifacts, manifest and scorecard rows.",
+  "Owner decisions, 2026-11-11: the betting line is an input to v4's pregame layer; the own forecast stays visible and the market enters as one labelled adjustment; the line's weight is fitted and published, never fixed; no new own-forecast inputs; the old test seasons are read a third time as a do-no-harm check only and then join the final fit; from v4's freeze both models are scored from the same sealed inputs.",
+  "Own forecast (own): the frozen model's expected home margin, from its coefficients and its stored inputs for each game.",
+  "Pregame forecast: mu4 = own + w x (line - own), where line is the market's expected home margin. w is the least-squares value sum((line - own)(margin - own)) / sum((line - own)^2) over the fitting games, clipped to 0..1. A game with no line takes mu4 = own. w is fitted only on seasons after the frozen coefficients' training seasons (2022-23 onward), so the own forecast is out of sample where w is fitted.",
+  "Two candidates for the in-game layer. K1 (swap): the frozen model's boosters, baseline and end-game specialist unchanged, reading mu4 where they read the own forecast. K2 (refit): v2's selected recipe (base, S1 and S2 inputs, the end-game specialist, every v2 booster setting and v2's selected num_leaves) refitted with mu4 in place of the own forecast for games with a line and the own forecast for earlier games; baseline beta and sigma and the overtime slope refitted on the same seasons.",
+  "States, views, weights, targets, metrics, the overtime tie rule and the Brownian baseline are v2's rules unchanged. No new in-game inputs.",
+  "Stage S (selection, 2023-24 only): w fitted on 2022-23. K1 as defined. K2 fitted on 2014-15 to 2022-23 with early stopping on 2023-24. K2 replaces K1 only when the paired game-bootstrap 90% interval of its log-loss improvement over K1 on 2023-24 is above zero; otherwise K1, the simpler model, is kept.",
+  "Stage C (do-no-harm check, 2024-25 and 2025-26, a third read of those seasons): w fitted on 2022-23 and 2023-24; if K2 was kept, it is refitted on 2014-15 to 2023-24 with the rounds early stopping chose in stage S. The reference is the frozen served model's saved probability for each state. This stage can stop the work (see acceptance) and cannot promote it: these seasons are spent.",
+  "Stage F (final fit): w fitted on 2022-23 to 2025-26; if K2 was kept, it is refitted on 2014-15 to 2025-26 with stage S's rounds. This is the candidate v4. It is the registered procedure, not a selection.",
+  "Sealing, from v4's freeze: one seal per game feeds both models. The seal job runs every 30 minutes from noon US Eastern until the last game of the day has tipped, and writes a new sealed file when a game's inputs or line changed. The seal used for a game is the newest one captured before ESPN's scheduled tip-off (v2's rule). Each seal stores the own forecast's inputs, the line and its book, mu4, and each model's tip-off probability for the home team.",
+  "Prospective head-to-head: 2026-27 regular-season games tipping after v4's freeze that have a seal. A game sealed with no line counts, with mu4 = own; the number of such games is reported."
+ ],
+ "parameters": {
+  "seed": 2501,
+  "reference": "courtlens-win-probability-v2",
+  "reference_manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+  "line_seasons": [
+   "2020-21",
+   "2021-22",
+   "2022-23",
+   "2023-24",
+   "2024-25",
+   "2025-26"
+  ],
+  "weight_fit_seasons": {
+   "selection": [
+    "2022-23"
+   ],
+   "check": [
+    "2022-23",
+    "2023-24"
+   ],
+   "final": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ]
+  },
+  "weight_bounds": [
+   0.0,
+   1.0
+  ],
+  "splits": {
+   "train": [
+    "2014-15",
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23"
+   ],
+   "select": [
+    "2023-24"
+   ],
+   "check": [
+    "2024-25",
+    "2025-26"
+   ],
+   "final_fit": [
+    "2014-15",
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "prospective": [
+    "2026-27"
+   ]
+  },
+  "candidates": [
+   "K1",
+   "K2"
+  ],
+  "selection_level": 0.9,
+  "bootstrap": {
+   "replicates": 2000,
+   "unit": "game"
+  },
+  "ece_bins": 20,
+  "freeze_checks": {
+   "espn_state_parity_max_log_loss_change": 0.002,
+   "p95_ms_per_game_max": 100,
+   "arm64_max_probability_difference": 1e-09
+  },
+  "seal": {
+   "interval_minutes": 30,
+   "first_run_local_time": "12:00 America/New_York"
+  },
+  "prospective": {
+   "report_from_games": 25,
+   "verdict_from_games": 300,
+   "final_read": "end of the 2026-27 regular season"
+  },
+  "display": {
+   "toss_up_band": [
+    0.45,
+    0.55
+   ]
+  }
+ },
+ "selection": "On 2023-24 only: K2 replaces K1 when the paired game-bootstrap 90% interval (2000 replicates) of its log-loss improvement over K1 is above zero; otherwise K1 is kept. Nothing is selected on 2024-25 or 2025-26, and nothing is selected after the final fit.",
+ "uncertainty": "Game bootstrap, 2000 replicates, seed 2501, for every metric and paired difference, overall and by v2's phases. Prospective results use the same paired game bootstrap on the 2026-27 games.",
+ "evaluation": [
+  "Every fitted weight w, with the games it was fitted on, and the unconstrained regression of final margin on the own forecast and the line beside it as a check (not used)",
+  "Stage S: K1 and K2 against each other and against the frozen served model on 2023-24",
+  "Stage C: pooled and per-season log loss, Brier score and calibration for the selected candidate and the frozen served model on 2024-25 and 2025-26, overall and by phase, with paired 95% intervals; pregame margin RMSE and winner accuracy for mu4, the own forecast and the closing spread on the same games",
+  "V1, the prospective verdict: the paired mean difference in squared pregame margin error (own forecast minus mu4) on the head-to-head games, with a 95% interval. Reported from 25 games, read once at 300 games.",
+  "V2, the prospective whole-game result: the paired difference in log loss over the same sampled states, with a 95% interval, overall and by phase. Reported from 25 games, read at 300 games, and read a final time at the end of the 2026-27 regular season.",
+  "Each read gives one of three results, written by the nightly job: better (interval above zero), worse (interval below zero), not distinguishable (interval includes zero). Before 300 games the page says it is too early to call.",
+  "Record of calls, for display: every head-to-head game counted by the side with the higher sealed tip-off probability, beside the same count for the frozen model and for the line (a line of zero counts as half). The 45% to 55% toss-up label is display only and excludes nothing.",
+  "The number of head-to-head games sealed without a line, and the age of each seal at tip-off"
+ ],
+ "acceptance": [
+  "D1 (do-no-harm, stage C): the work stops if the paired 95% game-bootstrap interval of the selected candidate's pooled log-loss improvement over the frozen served model is entirely below zero",
+  "D2 (do-no-harm, stage C): the work stops if the paired 95% interval of mu4's squared-error improvement over the own forecast is entirely below zero",
+  "A2 (stage C): pooled expected calibration error (20 equal-width bins) is 0.02 or less",
+  "Freeze checks, after stage F: states built from ESPN change v4's stage C log loss by no more than 0.002; p95 scoring time is 100 ms or less per full game on one thread; on the hosted arm64 machine every probability matches the reference within 1e-9",
+  "If D1, D2, A2 or a freeze check fails, v4 is not frozen or served and the result is published on the page and in the evidence",
+  "Serving rule after the freeze: v4 is the model shown on Live. At the 300-game read, if V1 or V2 is 'worse', Live returns to the frozen served model automatically and the page says so. The same rule is applied once more at the final read. No person decides either read."
+ ],
+ "outputs": [
+  "Artifacts under data/derived/win-probability-v4 (weights, stage reports, models, predictions)",
+  "If frozen: evaluation/research/frozen/courtlens-win-probability-v4.json and hashed model files, served beside v2",
+  "docs/evidence/win-probability-v4: every stage report, the selection log, runtimes and the freeze checks",
+  "evaluation/research/derived/courtlens-win-probability-v4-check.json: the summary the page shows"
+ ],
+ "limitations": [
+  "The market's forecast is known to be better than the own forecast before a game (RMSE 13.71 against 14.16 points on 2024-25 and 2025-26), so V1 is expected to favour v4; it measures how much of that gap the served line recovers. Whether it carries into in-game probabilities (V2) is the open question.",
+  "V2 has little power at 300 games: v3's whole-game interval was about +/-0.0015 on 2,439 games, so about +/-0.004 is expected at 300. 'Not distinguishable' at 300 games is a likely result even if v4 is better; the end-of-season read has about 1,000 games.",
+  "Training reads a consensus closing line taken about five minutes before tip-off. Serving reads one book's line from ESPN, up to about 30 minutes before tip-off. The serving line is therefore a little less accurate than the line w was fitted on.",
+  "Lines exist for six seasons only (2020-21 onward). Earlier training games keep the own forecast, so a refitted in-game layer (K2) sees two qualities of pregame forecast.",
+  "2024-25 and 2025-26 are read a third time (v2's test, v3's test, this check) and then used in the final fit, so v4 has no untouched offline test. Only the 2026-27 head-to-head is a fresh test.",
+  "Selection and early stopping share 2023-24, which favours K2 slightly",
+  "On the hosted machine the seal uses the box scores, rosters and rating snapshots last copied from the owner's machine; each seal records how old they are",
+  "Availability is ESPN's roster minus players listed Out at the seal; Questionable and Doubtful players count as playing in the own forecast",
+  "About 14,000 game outcomes, so the effective sample is games, not states. Regular season only."
+ ],
+ "negative_result_policy": "Publish every result, including a failed do-no-harm check, a rejected candidate, and any loss to the frozen model, ESPN or the line, in the evidence and on the page. A failed gate is not re-run with changed settings under this identity; a change needs a new version.",
+ "seed": 2501,
+ "budget": {
+  "cpu_threads": 2,
+  "max_peak_mib": 3072,
+  "max_wall_seconds": 1800
+ }
+}
