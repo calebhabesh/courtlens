@@ -67,13 +67,13 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | ✅ |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none (built from approved CourtLens Research patterns) | R14, RD12 | ✅ |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none (built from approved CourtLens Research patterns) | R03, RD13 | ✅ |
-| RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⏸ D13 keeps its page unless the owner asks |
+| RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ⬜ next: uniform design pass, then a model upgrade (owner, 2026-11-10; [finish plan](finish-plan.md)) |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none (built from approved CourtLens Research patterns) | workbench, RD16 | ✅ |
 | RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed), RD17 | ✅ merged into Shot Quality and zTS (owner, 2026-11-10) |
 | **C. Blocked** | | | | | |
 | RD18 | Shot Aftermath [27] | `/research/shooting/aftermath` | D: `Shot Aftermath` | R17, RD18 | ✅ |
-| RD19 | Ask evaluation [29] | `/research/assistant-evaluation` (not built) | none | R16 | ⏸ after R16 finishes |
+| RD19 | Ask evaluation [29] | `/research/assistant-evaluation` (not built) | none | R16 | ✂️ cut by the owner (2026-11-10): public Ask on the hosted demo replaces it |
 
 **Not in this catalog** unless the owner adds them: Methodology Definitions (`/methodology`), Stats
 Glossary (`/stats/glossary`, part of the approved Stats page), Ask (`/research/ask`), Case Studies,
@@ -942,7 +942,7 @@ Instructions (owner, 2026-11-10, round 5):
 
 Evidence: [`design-RD13`](evidence/research/design-RD13/README.md).
 
-## RD14 Win Probability — ⏸
+## RD14 Win Probability — ⬜ next (uniform design pass, owner 2026-11-10)
 
 - **Now:** the live model's page with the final-test report, the nightly scorecard and WPA.
 - **Decision:** D13 keeps this page as it is unless the owner asks. Include it in the design phase?
@@ -1082,7 +1082,8 @@ Instructions (owner, 2026-11-10, round 4; after approving, the owner was offered
    - Deletion: `components/shooting-view.tsx` and its stylesheet are gone. `components/catalog-scope-fields.tsx` stays: the check found the Ask scope editor and the contract drawer still use it, so the question was wrong to call it unrendered.
    — Built as listed. Nationally, 2024-25 kept the order (rim, three, short mid, long mid) and the rim rebound effect, read independently from the served rows. Row stays ✅ from round 3; this round is for the owner's look.
 
-## RD19 Ask evaluation — ⏸
+## RD19 Ask evaluation — ✂️ cut by the owner (2026-11-10)
 
 - **Now:** not built. R16 is running (development set partly done, holdout unopened).
 - **Waits for:** R16's results; then a page with accuracy, intervals, failure categories and per-tool errors.
+- **Cut (owner, 2026-11-10):** asked "WHat exactly is ask evaluation page? Should we even have this?", the owner chose to put Ask itself on the hosted demo with per-visitor and site-wide daily limits instead, then "Yes cut it". R16 stays unfinished on its branch (`research-r16`, dev 117/573, holdout unopened); its replay of the 214 recorded stats calls drove the stats-tool argument repair (46e1f707).
