@@ -35,7 +35,7 @@ export function AccountMenu() {
   if (status === "signed-out" || !user) {
     return (
       <span className="account-header-control">
-        <Button variant="ghost" tone="onBackground" size="md" icon="user" onClick={() => openSignIn()}>Sign in</Button>
+        <Button variant="ghost" tone="onBackground" size="md" icon="user" onClick={() => openSignIn()}><span className="account-label">Sign in</span></Button>
       </span>
     );
   }
@@ -43,7 +43,7 @@ export function AccountMenu() {
     <span className="account-header-control">
       <Menu align="right" renderTrigger={props => (
         <MenuTrigger {...props} variant="ghost" tone="onBackground" size="md" icon="user">
-          <span className="account-name">{user.name}</span>
+          <span className="account-label account-name">{user.name}</span>
         </MenuTrigger>
       )}>
         <div className="account-menu-who">{user.is_demo ? "Shared demo account" : user.email}</div>

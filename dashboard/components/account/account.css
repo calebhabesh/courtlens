@@ -20,6 +20,19 @@
   color: var(--color-text-secondary);
 }
 
+/* Below 1600px the header keeps the search pill readable: the account control shows its icon,
+   and its text stays the accessible name. */
+@media (max-width: 1599px) {
+  .account-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 767px) {
   .courtlens-header .account-header-control { display: none; }
 }
