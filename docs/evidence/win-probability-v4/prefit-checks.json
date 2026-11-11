@@ -1,0 +1,186 @@
+{
+ "by_season": {
+  "2024-25": {
+   "v2_log_loss": 0.4061418086001672
+  },
+  "2025-26": {
+   "v2_log_loss": 0.3994554751401795
+  }
+ },
+ "check_seasons": {
+  "games": 2439,
+  "games_with_line": 2439,
+  "line_rmse": 13.70812700562918,
+  "line_winner_accuracy": 0.6953669536695367,
+  "own_rmse": 14.163081894948089,
+  "own_winner_accuracy": 0.6842968429684296,
+  "v2_log_loss": 0.402778081189177
+ },
+ "elapsed_seconds": 2.4,
+ "expected": {
+  "line_rmse": 13.708,
+  "own_rmse": 14.163,
+  "v2_log_loss": 0.4028
+ },
+ "line_join": {
+  "coverage": {
+   "2020-21": {
+    "games": 1074,
+    "mapped_to_espn": 1074,
+    "with_line": 1064,
+    "without_line": 10
+   },
+   "2021-22": {
+    "games": 1228,
+    "mapped_to_espn": 1228,
+    "with_line": 1227,
+    "without_line": 1
+   },
+   "2022-23": {
+    "games": 1229,
+    "mapped_to_espn": 1229,
+    "with_line": 1228,
+    "without_line": 1
+   },
+   "2023-24": {
+    "games": 1216,
+    "mapped_to_espn": 1216,
+    "with_line": 1216,
+    "without_line": 0
+   },
+   "2024-25": {
+    "games": 1212,
+    "mapped_to_espn": 1212,
+    "with_line": 1212,
+    "without_line": 0
+   },
+   "2025-26": {
+    "games": 1227,
+    "mapped_to_espn": 1227,
+    "with_line": 1227,
+    "without_line": 0
+   }
+  },
+  "market_rows": 7942,
+  "market_rows_not_joined": 768,
+  "market_sha256": "b58911bf54af2cff9f33b214787cf90a8e8545ebe4b807e11569e178f542ede7",
+  "score_mismatch": [],
+  "scoreboard_dates": 629
+ },
+ "matches": {
+  "line_rmse": true,
+  "own_rmse": true,
+  "v2_log_loss": true
+ },
+ "own_forecast": {
+  "max_abs_difference": 3.552713678800501e-15,
+  "passed": true,
+  "rated_games": 13088
+ },
+ "passed": true,
+ "registration": {
+  "content_sha256": "654b26bab5ee149999f69934e7cdcf288dafd31985cb2d375a32754972225085",
+  "identity": "courtlens-win-probability-v4",
+  "parameters": {
+   "bootstrap": {
+    "replicates": 2000,
+    "unit": "game"
+   },
+   "candidates": [
+    "K1",
+    "K2"
+   ],
+   "display": {
+    "toss_up_band": [
+     0.45,
+     0.55
+    ]
+   },
+   "ece_bins": 20,
+   "freeze_checks": {
+    "arm64_max_probability_difference": 1e-09,
+    "espn_state_parity_max_log_loss_change": 0.002,
+    "p95_ms_per_game_max": 100
+   },
+   "line_seasons": [
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "prospective": {
+    "final_read": "end of the 2026-27 regular season",
+    "report_from_games": 25,
+    "verdict_from_games": 300
+   },
+   "reference": "courtlens-win-probability-v2",
+   "reference_manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+   "seal": {
+    "first_run_local_time": "12:00 America/New_York",
+    "interval_minutes": 30
+   },
+   "seed": 2501,
+   "selection_level": 0.9,
+   "splits": {
+    "check": [
+     "2024-25",
+     "2025-26"
+    ],
+    "final_fit": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "prospective": [
+     "2026-27"
+    ],
+    "select": [
+     "2023-24"
+    ],
+    "train": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23"
+    ]
+   },
+   "weight_bounds": [
+    0.0,
+    1.0
+   ],
+   "weight_fit_seasons": {
+    "check": [
+     "2022-23",
+     "2023-24"
+    ],
+    "final": [
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "selection": [
+     "2022-23"
+    ]
+   }
+  },
+  "registered_on": "2026-11-11"
+ },
+ "version": "courtlens-win-probability-v4"
+}
