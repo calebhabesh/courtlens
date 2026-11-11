@@ -12,6 +12,8 @@ import { GlobalCommandPalette } from "./command-palette";
 import { Brand } from "../brand";
 import { useAssistantPage } from "@/lib/assistant-page-context";
 import { AskDrawer } from "../ask-drawer";
+import { AccountMenu, DrawerAccount, FavoritesPopover } from "../account/account-controls";
+import { FavoritePlayersList } from "../account/favorite-players";
 import { HotkeysModal } from "../hotkeys-modal";
 import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
 import type { WorkbenchCatalog } from "@/lib/types";
@@ -397,6 +399,9 @@ export function Header() {
           Ask
         </Button>}
 
+        <FavoritesPopover />
+        <AccountMenu />
+
         <div className="courtlens-nav-item courtlens-more">
           <IconButton
             ref={moreButtonRef}
@@ -515,6 +520,12 @@ export function Header() {
         title={<Brand />}
       >
         <nav className="courtlens-mobile-drawer-body" aria-label="Drawer navigation">
+          {/* Favourites and the account live here on phones (alignment row 0, finish plan F04). */}
+          <section className="account-drawer-section courtlens-drawer-account" aria-label="Favorite players">
+            <span className="favorite-players-title">Favorite Players</span>
+            <FavoritePlayersList onNavigate={closeDrawer} />
+          </section>
+
           <div className="courtlens-mobile-direct-links">
             {DIRECT_LINKS.map(({ id, item }) => (
               <Link
@@ -606,6 +617,9 @@ export function Header() {
               Keyboard Shortcuts
             </button>
           </div>
+
+          <div className="courtlens-dropdown-divider courtlens-drawer-account" />
+          <div className="courtlens-drawer-account"><DrawerAccount onDone={closeDrawer} /></div>
         </nav>
       </Drawer>
 

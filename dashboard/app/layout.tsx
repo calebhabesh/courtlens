@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import { ReplicaNav } from "@/components/replica-nav";
 import { NavTrailRecorder } from "@/components/ui/back-button";
 import { WorkspaceProvider } from "@/lib/workspace-context";
+import { AccountProvider } from "@/lib/account-context";
+import { SignInDialog } from "@/components/account/sign-in-dialog";
 import { AssistantPageProvider } from "@/lib/assistant-page-context";
 import { ToastProvider } from "@/components/ui/toast";
 import "./globals.css";
@@ -66,7 +68,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a className="skip-link" href="#content">
           Skip to content
         </a>
-        <WorkspaceProvider><AssistantPageProvider><ToastProvider>
+        <AccountProvider><WorkspaceProvider><AssistantPageProvider><ToastProvider>
           <div className="replica-shell">
             <Suspense fallback={<div className="header-suspense-fallback" />}>
               <ReplicaNav />
@@ -81,7 +83,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               </Suspense>
             </main>
           </div>
-        </ToastProvider></AssistantPageProvider></WorkspaceProvider>
+          <SignInDialog />
+        </ToastProvider></AssistantPageProvider></WorkspaceProvider></AccountProvider>
       </body>
     </html>
   );

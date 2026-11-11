@@ -31,6 +31,7 @@ import { Menu, MenuItem } from "./ui/menu";
 import { ScatterPlotView } from "./scatter-plot-view";
 import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
+import { useAccount } from "@/lib/account-context";
 import { saveInvestigation } from "@/lib/workbench-api";
 import { getTeamStints, useTeamStints } from "@/lib/team-stints";
 import {
@@ -115,6 +116,7 @@ export function WorkbenchPlayerExplorer({
   const rowSeason = querySpec?.season_scope?.seasons?.length ? null : querySpec?.season ?? data?.context?.season ?? null;
   const latestSeason = useMemo(() => latestStatsSeason(catalog), [catalog]);
 
+  const { status: accountStatus, openSignIn } = useAccount();
   const {
     views,
     favorites,
@@ -813,7 +815,11 @@ export function WorkbenchPlayerExplorer({
               onClick={handleSaveInvestigation} />
           </Menu>
           <IconButton variant="secondary" icon="star" filled={favoritesOnly} pressed={favoritesOnly}
-            onClick={() => updateParam({ favorites: favoritesOnly ? null : "1" })}
+            onClick={() => {
+              // Signed out, the filter has no list to apply: invite a sign-in (finish plan F04).
+              if (!favoritesOnly && accountStatus !== "signed-in") openSignIn("Sign in, or use the demo account, to filter Stats to your favourite players.");
+              else updateParam({ favorites: favoritesOnly ? null : "1" });
+            }}
             label={favoritesOnly ? "Show all players" : `Favorites only${favorites.length ? ` (${favorites.length})` : ""}`}
             title={favoritesOnly ? "Show all players" : "Filter to favorite players only"} />
           <IconButton variant="secondary" icon="help" label="Hotkeys" title="Keyboard shortcuts (?)" onClick={() => setIsHotkeysOpen(true)} />
