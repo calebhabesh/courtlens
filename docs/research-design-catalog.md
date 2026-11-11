@@ -67,7 +67,7 @@ Row numbers in brackets are the old alignment-catalog rows.
 | RD11 | Projected Impact [29] | `/research/projected-impact` | none (built from approved CourtLens Research patterns) | R07, RD11 | ✅ |
 | RD12 | Lineup Model [29] | `/research/lineup-model` | none (built from approved CourtLens Research patterns) | R14, RD12 | ✅ |
 | RD13 | Signal vs Noise [29] | `/research/signal-noise` | none (built from approved CourtLens Research patterns) | R03, RD13 | ✅ |
-| RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | 👀 round 1 built 2026-11-11 (finish plan F03); model upgrade F05 after |
+| RD14 | Win Probability [29] | `/research/win-probability` | none | R15b | ✅ (owner, 2026-11-11; finish plan F03); model upgrade F05 next |
 | RD15 | RAPM Ratings tab | `/research/rapm` | D: `Six-Factor RAPM` (table) | R01, R02 | folded into RD00 (owner, round 3) |
 | RD16 | Points Forecasts | `/forecasts`, `/evaluation` | none (built from approved CourtLens Research patterns) | workbench, RD16 | ✅ |
 | RD17 | Expected Shots, Adjusted Shooting | `/research/shooting`, `/research/shooting/adjusted` | none | B25–B26 (sealed), RD17 | ✅ merged into Shot Quality and zTS (owner, 2026-11-10) |
@@ -942,7 +942,7 @@ Instructions (owner, 2026-11-10, round 5):
 
 Evidence: [`design-RD13`](evidence/research/design-RD13/README.md).
 
-## RD14 Win Probability — 👀 round 1 built (uniform design pass, finish plan F03)
+## RD14 Win Probability — ✅ approved by the owner (2026-11-11)
 
 - **Now:** the live model's page with the final-test report, the nightly scorecard and WPA.
 - **Decision (owner, 2026-11-10):** a uniform design pass so it looks like the other Research pages, then a model upgrade (F05). Presentation only: model, frozen results, ledger and API unchanged.
@@ -960,6 +960,11 @@ Instructions (owner, 2026-11-11, round 1; the owner was asked to confirm their s
    - (6) Win probability added: one sortable `StatsGrid` with `GridPlayer` photos, columns for WPA and clutch WPA, season switch and phone column groups. Labelled credit assignment, sorted not ranked.
    - (7) How-to-read cards, a collapsed glossary, and a collapsed About holding the model card, identifiers and hashes.
    — Built as proposed: the centred hero and meta line; the answer ("Not so far … the two can't be told apart"), with the final test's own gap as a second line and both log losses and the gap drawn on one axis from zero (RD12); the scorecard grid (gap with its interval first, then log loss, Brier and calibration error, phone column groups), drift in one line, the live calibration chart, the 107 replayed games behind one line and a toggle (RD11, never coloured), the 60 most recent games behind a toggle with logos beside both codes; the final test as one grid per phase (CourtLens, ESPN and the gap with intervals; green only where the gap clears zero), its chart and the two rules in words; "What didn't help" as a grid of every step with its selection gain (90%) and test gain (95%) against the right reference, "Kept", "Not kept" or "Diagnostic" in words, uncoloured, and four short findings; WPA as one sortable, searchable grid with season photos and logos, sorted not ranked, season in the URL, phone column groups; How to read, the glossary and a collapsed About with the model card and identifiers. On a phone the phase switch is a select (six choices) and the GP column moves under the name. Calibration axes are HTML at 12 px over a square plot, so they stay 12 px at every width; points show on hover. The fixture now holds the real API's answers of 2026-11-11 (47 prospective games; three full WPA seasons). Evidence: [`f03`](evidence/finish/f03/README.md).
+
+Instructions (owner, 2026-11-11, round 2):
+2. [x] Okay. I approve this page.
+   — Approved after one build round; the settled rules are in the alignment plan ("Settled in RD14"). Full Playwright for this state: 641 passed, 17 skipped, 0 failed (round 1).
+
 
 ## RD15 RAPM Ratings tab — folded into RD00 (round 3)
 

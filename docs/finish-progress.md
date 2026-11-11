@@ -75,3 +75,7 @@ Presentation only: no model, result, ledger or API change.
 **Found:** the old page called every step's gain "over S2"; the served selection gains are 90% intervals against other references, and S0g was a diagnostic.
 
 Evidence: [`f03`](evidence/finish/f03/README.md). 👀 for the owner's look.
+
+## 2026-11-11 — F03 approved
+
+The owner approved the page ("Okay. I approve this page.") after one build round. Its rules are in the alignment plan ("Settled in RD14"); RD14 and alignment row 29 are ✅. The F03 evidence script was formatted for ruff, which PR #86's backend job had failed on. Next is F04 (simple accounts), handed to a new session.
