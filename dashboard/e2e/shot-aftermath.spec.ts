@@ -137,7 +137,7 @@ test.describe("RD18 Shot Aftermath", () => {
     const wide = await page.evaluate(() => [...document.querySelectorAll(".stats-scroll-region")].filter(r => r.scrollWidth > r.clientWidth + 1).map(r => r.getAttribute("aria-label")));
     expect(wide).toEqual([]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
-    await page.getByRole("radio", { name: "Cost" }).click();
+    await page.getByRole("radio", { name: "Cost", exact: true }).click();
     await expect(page.locator("table[data-table=teams] thead")).toContainText("Opponent cost");
   });
 
@@ -169,5 +169,68 @@ test.describe("RD18 Shot Aftermath", () => {
     await page.getByRole("button", { name: "Export CSV" }).click();
     const file = await download;
     expect(file.suggestedFilename()).toBe("courtlens-shot-aftermath-2025-26-nba-all.csv");
+  });
+});
+
+test.describe("RD18 extras (finish plan F02)", () => {
+  test.beforeEach(async ({ page }) => { await serve(page); });
+
+  test("shows guards, forwards and bigs by zone with the served values, net or rebound cost", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await openWorkbench(page, "/research/shooting/aftermath");
+    const grid = page.locator("table[data-table=positions]");
+    await expect(grid.locator("tbody tr")).toHaveCount(3);
+    for (const position of ["guards", "forwards", "bigs"]) {
+      const served = scope(`/scope?season=2025-26&team=all&position=${position}`);
+      for (const zone of ["rim", "three"]) {
+        const cell = grid.locator(`tr[data-position=${position}] [data-field="net:${zone}"]`);
+        await expect(cell).toHaveAttribute("data-value", String(served.rows.find(r => r.zone === zone)!.values.net!.value));
+      }
+    }
+    await page.getByRole("radio", { name: "Rebound cost" }).click();
+    const bigs = scope("/scope?season=2025-26&team=all&position=bigs").rows.find(r => r.zone === "rim")!;
+    const cell = grid.locator('tr[data-position=bigs] [data-field="dreb_cost:rim"]');
+    await expect(cell).toHaveAttribute("data-value", String(bigs.values.dreb_cost!.value));
+    await expect(cell).toHaveAttribute("data-tone", bigs.tones.dreb_cost ?? "");
+    await expect(page.locator("[data-field=positions-colour]")).toBeVisible();
+  });
+
+  test("dims thin position cells and never colours them (BOS)", async ({ page }) => {
+    await openWorkbench(page, "/research/shooting/aftermath?team=BOS");
+    await page.getByRole("radio", { name: "Rebound cost" }).click();
+    const thin = page.locator('table[data-table=positions] td[data-status="thin"]');
+    await expect(thin.first()).toBeVisible();
+    for (const td of await thin.all()) {
+      await expect(td.locator(".rs-grid-value")).toHaveAttribute("data-muted", "true");
+      await expect(td.locator(".rs-grid-value")).not.toHaveAttribute("data-tone", /.+/);
+    }
+  });
+
+  test("puts after-a-make beside after-a-rebound on the rebound view, neutral, with the league line", async ({ page }) => {
+    await openWorkbench(page, "/research/shooting/aftermath?view=dreb");
+    const chart = page.locator("[data-chart=make-vs-rebound]");
+    await expect(chart).toBeVisible();
+    const served = scope("/scope?season=2025-26&team=all&position=all");
+    for (const zone of ["rim", "short_mid", "long_mid", "three"]) {
+      const row = served.rows.find(r => r.zone === zone)!;
+      await expect(chart.locator(`.sa-col[data-zone=${zone}] [data-series=ppp_make]`).first()).toHaveAttribute("data-value", String(row.values.ppp_make!.value));
+      await expect(chart.locator(`.sa-col[data-zone=${zone}] [data-series=ppp_dreb]`).first()).toHaveAttribute("data-value", String(row.values.ppp_dreb!.value));
+    }
+    await expect(chart.locator(".sa-gridline[data-league]")).toHaveCount(1);
+    await expect(chart.locator("[data-tone=good], [data-tone=bad]")).toHaveCount(0);
+    await page.getByRole("radio", { name: "All attempts" }).click();
+    await expect(chart).toHaveCount(0);
+  });
+
+  test("fits a phone: position column groups and stacked pair values, no sideways scroll", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await openWorkbench(page, "/research/shooting/aftermath?view=dreb");
+    await expect(page.locator("table[data-table=positions]")).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const wide = await page.evaluate(() => [...document.querySelectorAll(".stats-scroll-region")].filter(r => r.scrollWidth > r.clientWidth + 1).map(r => r.getAttribute("aria-label")));
+    expect(wide).toEqual([]);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(0);
+    await page.getByRole("radio", { name: "Long mid, three, all" }).click();
+    await expect(page.locator("table[data-table=positions] thead")).toContainText("Three");
   });
 });
