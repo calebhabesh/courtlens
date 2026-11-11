@@ -69,7 +69,8 @@ export function SignInDialog() {
         </Field>
         <Field label="Password" htmlFor={passwordId}>
           <Input id={passwordId} type="password" autoComplete="current-password" required
-            value={password} onChange={event => setPassword(event.target.value)} disabled={busy !== null} />
+            // Empty as soon as the dialog closes, so the password never lingers in the exiting DOM.
+            value={signInOpen ? password : ""} onChange={event => setPassword(event.target.value)} disabled={busy !== null} />
         </Field>
         {error && <p className="account-error" role="alert">{error}</p>}
         <Button type="submit" variant="primary" size="lg" loading={busy === "password"}

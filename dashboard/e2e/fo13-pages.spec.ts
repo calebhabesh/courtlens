@@ -91,7 +91,7 @@ async function signInPlanner(page: Page) {
   // the form can briefly exist twice; act on the visible one.
   await page.getByLabel("Email", { exact: true }).filter({ visible: true }).fill("fixture@courtlens.local");
   await page.getByLabel("Password", { exact: true }).filter({ visible: true }).fill("fixture-only");
-  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await page.locator("main").getByRole("button", { name: "Sign in", exact: true }).click();
 }
 
 test("planner keeps a failed workspace sign-in actionable and retries successfully", async ({ page }) => {
@@ -107,7 +107,7 @@ test("planner keeps a failed workspace sign-in actionable and retries successful
   await page.goto("/planner?week=2026-10-05");
   await signInPlanner(page);
   await expect(page.getByRole("status")).toContainText("League service unavailable");
-  await expect(page.getByRole("button", { name: "Sign in", exact: true })).toBeEnabled();
+  await expect(page.locator("main").getByRole("button", { name: "Sign in", exact: true })).toBeEnabled();
   fail = false;
   await signInPlanner(page);
   await expect(page.getByRole("region", { name: "Key findings" })).toContainText("11");

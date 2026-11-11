@@ -1,14 +1,25 @@
 {
   "route": "/stats",
-  "elapsedMs": 2273,
-  "cls": 0,
-  "fcp": 56,
-  "domInteractive": 772,
-  "loadComplete": 776,
-  "totalLongTasks": 0,
-  "initialLoadLongTasksOver50ms": 0,
-  "maxInitialLoadTaskDurationMs": 0,
-  "allLongTasks": [],
+  "elapsedMs": 1248,
+  "cls": 0.0002,
+  "fcp": 204,
+  "domInteractive": 176,
+  "loadComplete": 307,
+  "totalLongTasks": 2,
+  "initialLoadLongTasksOver50ms": 2,
+  "maxInitialLoadTaskDurationMs": 173,
+  "allLongTasks": [
+    {
+      "name": "self",
+      "duration": 73,
+      "startTime": 102.09999990463257
+    },
+    {
+      "name": "self",
+      "duration": 173,
+      "startTime": 337.2000002861023
+    }
+  ],
   "animationLongTasksOver50ms": 0,
   "maxAnimationTaskDurationMs": 0
 }
