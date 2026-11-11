@@ -121,18 +121,53 @@ part of the demo database that grows after deploy.
 
 ### Projected Impact
 
-The API reads the frozen projections from `data/artifacts/projected-impact` (1.1 MB, hash-checked at load) and the weekly score from `data/derived/projected-impact-serving` (about 60 KB plus 0.5 KB per game), both rsynced by each deploy and mounted read-only. Scoring runs locally in `refresh-daily`; `scripts/sync-win-probability.sh` copies the score over when it syncs the scorecard. The endpoints are GETs, so the Caddy allowlist is unchanged.
+The API reads the frozen projections from `data/artifacts/projected-impact` (1.1 MB, hash-checked at load) and the weekly score from `data/derived/projected-impact-serving` (about 60 KB plus 0.5 KB per game), both rsynced by each deploy and mounted read-only. Scoring runs locally in `refresh-daily`; `scripts/win-probability-push.sh` copies the score over with the win-probability inputs. The endpoints are GETs, so the Caddy allowlist is unchanged.
 
 ### Win probability
 
-The API serves the frozen model on CPU; the model files and scorecard bundle are plain read-only
-files (`data/artifacts/win-probability`, 8.4 MB; `data/derived/win-probability-serving`, about
-9 MB plus about 6 KB per game), rsynced by each deploy. The nightly job does **not** run on the
-VPS (owner decision, 2026-11-04): it runs locally in `refresh-daily`, and
-`scripts/sync-win-probability.sh` copies the bundle over; a new scorecard appears without a
-restart. `scripts/install_win_probability_sync.sh` installs a daily 16:00 UTC timer for that sync.
-Between syncs a Live game with no sealed inputs shows ESPN's line alone. The endpoints are GETs, so
-the Caddy allowlist is unchanged. After a deploy, confirm arm64 predictions in the API container:
+The API serves the frozen model on CPU. The model files (`data/artifacts/win-probability`, 8.4 MB)
+are rsynced by each deploy and mounted read-only. The serving bundle
+(`data/derived/win-probability-serving`: seals, scorecard and win probability added, about 10 MB
+plus about 6 KB per scored game) is **made on the VPS** from Win Probability v4's W2 cutover; the API
+mounts it read-only and a new scorecard appears without a restart.
+
+**The seal service** (`win-probability-seal` in `deploy/compose.prod.yml`): the API image running
+`courtlens seal-win-probability --next-wake` in a shell loop, as the `demo-reset` service does. Each
+run seals the day's scheduled regular-season games (schema `courtlens-win-probability-pregame-v2`,
+a new file only when a game's inputs, line, Out list or tip time changed), scores finished games
+from the previous three days that are not yet on the scorecard, and rewrites the summaries. It runs
+once when the container starts, at 09:00 US Eastern for last night's scores, then every 30 minutes
+from noon while a run still lands before the day's last scheduled tip. A failed run retries in 30
+minutes. It never refits ratings.
+
+- **Mounts.** Read-write: `data/derived/win-probability-serving` and `data/raw/espn-wp` (ESPN's raw
+  scoreboards, injury reports and game summaries), as uid 1001, the host's `ubuntu` user, which
+  owns them. Read-only: the model files, `derived/win-probability-ratings`,
+  `derived/espn-rosters-v1` and `data/raw` (the box scores).
+- **Owned by the VPS.** `scripts/deploy-vps.sh` creates those two directories and never rsyncs
+  them, so a deploy cannot delete or overwrite a seal made there.
+- **Inputs from the PC.** The seal fetches ESPN's injury report and line itself at every run, so
+  late Out news needs no PC. Box scores, rating snapshots and the roster bundle come from the
+  owner's PC: `scripts/win-probability-push.sh` pushes the current season's
+  `raw/sportsdataverse_<year>`, `derived/win-probability-ratings`, `derived/espn-rosters-v1` and
+  the Projected Impact score, then pulls the serving bundle back for local development (never
+  `--delete`; the pull is skipped while the PC's `.env` does not set
+  `COURTLENS_WIN_PROBABILITY_LOCAL_SEALING=false`). `scripts/install_win_probability_push.sh`
+  installs it to run after every `refresh-daily` and every 6-hourly `refresh-espn-rosters`. When
+  the PC is off, seals continue on older inputs, and each seal records their ages (`ages`: box
+  scores through, roster observed and checked, rating snapshot cutoff, injury report time).
+- **The PC's switch.** `COURTLENS_WIN_PROBABILITY_LOCAL_SEALING` (default true) keeps
+  `refresh-daily` sealing and scoring locally. Set to false at the cutover, its win-probability step
+  only ensures rating snapshots.
+- **Measured (PC, 2026-11-11).** One run with nothing to score: 22 s, peak 338 MB. Three nights (21
+  games) scored in one run: 127 s, peak 338 MB. The cap is 768 MB and one CPU. Disk: a seal is about
+  5 KB per game, and the raw ESPN files about 2 MB a day at most; under 1 GB a year together.
+- **Health.** `docker compose … logs --tail 20 win-probability-seal` shows each run's JSON report
+  (`seal_sealed`, `seal_changed`, `scored`, `next_run`). Seals are under
+  `data/derived/win-probability-serving/pregame/<date>.<sha256>.json`.
+
+Between seals a Live game with no sealed inputs shows ESPN's line alone. No endpoint writes, so the
+Caddy allowlist is unchanged. After a deploy, confirm arm64 predictions in the API container:
 
 ```bash
 docker compose --env-file secrets.env --env-file release.env exec api \

@@ -109,6 +109,37 @@ services:
       db:
         condition: service_healthy
 
+  # Win Probability v4 W2: seals each scheduled game's pregame inputs and scores finished games.
+  # One run at start, then at 09:00 US Eastern (last night's scores) and every 30 minutes from
+  # noon until the day's last scheduled tip; `--next-wake` prints the seconds to sleep. It owns
+  # the serving directory and ESPN's raw store (read-write, as the host's ubuntu user, which owns
+  # them); everything else it reads is pushed from the owner's PC and mounted read-only. Peak
+  # 338 MB measured on the PC with three nights scored in one run (docs/deployment.md).
+  win-probability-seal:
+    image: ${COURTLENS_API_IMAGE:?}
+    restart: unless-stopped
+    user: "1001:1001"
+    mem_limit: 768m
+    cpus: 1.0
+    environment: *api-environment
+    command:
+      - sh
+      - -c
+      - >-
+        while :; do
+        wait=$$(courtlens seal-win-probability --next-wake | tail -n 1);
+        case "$$wait" in ''|*[!0-9]*) echo 'seal run gave no wake time' >&2; wait=1800;; esac;
+        sleep "$$wait";
+        done
+    volumes:
+      - ./data/artifacts/win-probability:/app/data/artifacts/win-probability:ro
+      - ./data/derived/win-probability-ratings:/app/data/derived/win-probability-ratings:ro
+      - ./data/derived/espn-rosters-v1:/app/data/derived/espn-rosters-v1:ro
+      - ./data/raw:/app/data/raw:ro
+      - ./data/raw/espn-wp:/app/data/raw/espn-wp
+      - ./data/derived/win-probability-serving:/app/data/derived/win-probability-serving
+    logging: *logging
+
   api:
     image: ${COURTLENS_API_IMAGE:?}
     restart: unless-stopped

@@ -58,3 +58,63 @@ four `.gitkeep` files set skip-worktree). New files only: `evaluation/win_probab
   touched here.
 
 Under the registration the work continues: W2 next, after the owner reads this result.
+
+## 2026-11-11 — W2 part A: seal v2, the seal job and the VPS service built and proved locally
+
+Built in the worktree on `feat/win-probability-v4`; the cutover (part B) has not run. Nothing
+on the VPS, the main checkout, its `.env` or any systemd unit was changed. Every trial ran against
+a copy of the serving directory under `~/.cache/courtlens-tmp`, in a scratch tree laid out like the
+VPS (only `artifacts/win-probability`, `derived/win-probability-ratings`, `derived/espn-rosters-v1`,
+`raw/sportsdataverse_2025` to `2027`, an empty `raw/espn-wp`; no `derived/impact-history-v2`).
+
+New: `services/win_probability_seal.py` (seal v2, `seal_slate`, the job `run`, `next_run`), the CLI
+command `seal-win-probability [--next-wake]`, the setting `win_probability_local_sealing` (default
+true), `scripts/win-probability-push.sh` and `scripts/install_win_probability_push.sh` (replacing
+`sync-win-probability.sh` and its installer), the Compose service `win-probability-seal`,
+`tests/unit/test_win_probability_seal.py` with line fixtures in
+`tests/fixtures/win-probability-lines/`. Changed: `refresh-daily`'s win-probability step reads the
+setting; `deploy-vps.sh` no longer mirrors `derived/win-probability-serving` and only creates it and
+`raw/espn-wp`; the deployment guide. No existing function in `win_probability_production.py` or
+`win_probability_pregame.py` changed; the pinned files are untouched.
+
+- **Seal v2** (`courtlens-win-probability-pregame-v2`). Each game keeps every v1 field and adds
+  `line` (home margin, spread, book, details, favourite), `players` (id, name, expected minutes,
+  rating, default flag), `out` (each Out roster player with minutes, rating and absence cost),
+  `form_split` (team form and home court), `ages` (box scores through, roster observed and
+  checked, rating cutoff, injury report time), and null `mu4`, `w` and `tip_off_home` for W3.
+  Absence cost and the form split come from extra targets in the same `build_entries` pass (the
+  player added back; a neutral-site copy), so the real target is computed exactly as in v1.
+- **Parity, real slate** (2026-11-11, 10 games, the same fetched bytes): every v1 field identical
+  in all 10 v2 records, `inputs` included; the frozen model's probabilities on a fixed state grid
+  differ by 0.0. Unit test on a synthetic slate: identical inputs and identical `score_game` rows.
+- **Line sign.** ESPN's `spread` is the home spread, like the parquet's `home_point`; market home
+  margin = −spread. Kept scoreboards: 77 of 77 lines name the favourite the sign gives. ESPN game
+  summaries' `pickcenter` for 2024-25 and 2025-26 against the parquet: 977 games, sign agrees on
+  973, median difference 0.0, p95 0.5. The four that disagree are lines crossing zero or a moved
+  line (401810569: ESPN MIN −7.5, parquet −5.0). Fixtures from both are unit-tested.
+- **Seal only on change.** Run 1 sealed one game, whose line moved from NO −3.5 to −2.5 in the
+  minute after the parity seal; run 2, 22 s later, wrote nothing (`seal_changed: []`).
+- **Scoring parity.** 2026-11-10's 6 games removed from a copy and rescored by the job: the
+  scorecard rows, availability rows and 141 win-probability-added rows equal the real files'
+  rows; the summary differs only in `updated_at`. Three nights (2026-11-08 to 10, 21 games,
+  474 credit rows): all identical.
+- **Memory and time** (PC, cgroup peak): nothing to score 22 s, 338 MB; 21 games scored 127 s,
+  338 MB (the peak is loading three seasons of boxes). Compose cap 768 MB, one CPU.
+- **Disk.** A v2 seal is about 5 KB per game (53 KB for 10). Raw ESPN files: scoreboard 12 KB,
+  injury report 51 KB, summary 41 KB each, about 2 MB a day at most. Under 1 GB a year together.
+- **VPS, read only** (2026-11-11): uid 1001 `ubuntu` owns the data; the API image runs as uid 999,
+  so the service runs as `1001:1001`. Box files 2025 to 2027, ratings and the roster bundle are
+  present; a dry-run push shows them current (only the roster heartbeat differed). No
+  `raw/espn-wp` yet (the deploy creates it). 159 GB free of 193 GB; 20 GB of 24 GB memory
+  available; release 8ef78660.
+- **Schedule.** One run at container start, 09:00 Eastern, then every 30 minutes from noon while a
+  run lands before the day's last scheduled tip (tested across the March clock change).
+- **Resilience.** A scoring failure (an odd ESPN summary, say) is reported as `score_error` and the
+  run still seals; a failed run retries in 30 minutes.
+- **Green:** 29 new unit tests; the Original's serving and pin tests pass untouched. Full suite
+  2,790 passed, 9 failed, the same 9 that fail on `main` (8 `test_agent_providers` Anthropic cases,
+  `test_no_unexplained_legacy_brand_references`). Strict mypy (391 files), Ruff check and format
+  clean.
+
+Next: part B, the cutover, on the owner's word. Until then nothing changes on merge: local
+sealing stays on, and the first deploy after the merge is the cutover deploy.

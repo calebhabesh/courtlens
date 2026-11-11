@@ -1,0 +1,179 @@
+{
+ "note": "Excerpts of kept ESPN raw files (scoreboards captured 2026-27; summaries pickcenter 2024-26) and the closing-lines parquet home_point (hoopR-nba-data, CC BY 4.0). ESPN spread is the home team spread: negative means the home team is favoured.",
+ "scoreboards": [
+  {
+   "source": "data/raw/espn-wp/scoreboard/463f42dab88e2cc34e11e529872320cda535af119d8c47619398f3602344d5e1.json.gz",
+   "event_id": "401909966",
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "abbreviation": "IND"
+     }
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "abbreviation": "WSH"
+     }
+    }
+   ],
+   "odds": [
+    {
+     "details": "IND -2.5",
+     "spread": -2.5,
+     "overUnder": 226.5,
+     "provider": {
+      "name": "DraftKings"
+     }
+    }
+   ]
+  },
+  {
+   "source": "data/raw/espn-wp/scoreboard/463f42dab88e2cc34e11e529872320cda535af119d8c47619398f3602344d5e1.json.gz",
+   "event_id": "401909968",
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "abbreviation": "TOR"
+     }
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "abbreviation": "BOS"
+     }
+    }
+   ],
+   "odds": [
+    {
+     "details": "BOS -7.5",
+     "spread": 7.5,
+     "overUnder": 216.5,
+     "provider": {
+      "name": "DraftKings"
+     }
+    }
+   ]
+  }
+ ],
+ "summaries": [
+  {
+   "source": "data/raw/espn-wp/summary/0105e1847b4a79ecc364f99d3b6bde9c2c904689a9e55debb2ff27670f13179c.json.gz",
+   "event_id": "401809821",
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "abbreviation": "LAC"
+     }
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "abbreviation": "MEM"
+     }
+    }
+   ],
+   "odds": [
+    {
+     "details": "LAC -6.5",
+     "spread": -6.5,
+     "overUnder": 224.5,
+     "provider": {
+      "name": "DraftKings"
+     }
+    }
+   ],
+   "parquet_home_point": -6.5
+  },
+  {
+   "source": "data/raw/espn-wp/summary/03100ed1e09c422c41b8fe531f1c4c44122e5e05f34e36227f8a6de58040a4df.json.gz",
+   "event_id": "401810669",
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "abbreviation": "CHI"
+     }
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "abbreviation": "DET"
+     }
+    }
+   ],
+   "odds": [
+    {
+     "details": "DET -10.5",
+     "spread": 10.5,
+     "overUnder": 234.5,
+     "provider": {
+      "name": "DraftKings"
+     }
+    }
+   ],
+   "parquet_home_point": 10.5
+  },
+  {
+   "source": "data/raw/espn-wp/summary/03596419f8810b051ca27c7a1bdb3285bcbefb6d8048eaaf3348541068b8e166.json.gz",
+   "event_id": "401810843",
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "abbreviation": "NO"
+     }
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "abbreviation": "DAL"
+     }
+    }
+   ],
+   "odds": [
+    {
+     "details": "NO -8.5",
+     "spread": -8.5,
+     "overUnder": 240.5,
+     "provider": {
+      "name": "DraftKings"
+     }
+    }
+   ],
+   "parquet_home_point": -8.5
+  },
+  {
+   "source": "data/raw/espn-wp/summary/0557944f1afaad47647d7cc39419221d0f09c4fe8d87e6a079989947b2458b18.json.gz",
+   "event_id": "401810339",
+   "competitors": [
+    {
+     "homeAway": "home",
+     "team": {
+      "abbreviation": "GS"
+     }
+    },
+    {
+     "homeAway": "away",
+     "team": {
+      "abbreviation": "OKC"
+     }
+    }
+   ],
+   "odds": [
+    {
+     "details": "OKC -13.5",
+     "spread": 13.5,
+     "overUnder": 226.5,
+     "provider": {
+      "name": "DraftKings"
+     }
+    }
+   ],
+   "parquet_home_point": 13.5
+  }
+ ]
+}
