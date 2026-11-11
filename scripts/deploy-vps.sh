@@ -124,6 +124,10 @@ if [[ -n "$caddy_id" ]] && ! docker exec "$caddy_id" cat /etc/caddy/Caddyfile | 
 fi
 curl -fsS http://127.0.0.1:8090/healthz >/dev/null
 curl -fsS http://127.0.0.1:8090/api/health >/dev/null
+# The one-click demo account (finish plan F04). Idempotent: an existing demo keeps today's list,
+# which the demo-reset service restores to the seed each night.
+compose "$next" exec -T api courtlens seed-demo-account < /dev/null \
+  || echo "Demo account seeding failed; the demo sign-in reports it isn't set up." >&2
 # Store every season's Stats cohort now, so no visitor waits for one to be computed. A new
 # release or changed serving code changes the stored keys (docs/deployment.md).
 compose "$next" exec -T api courtlens warm-stats-cohorts < /dev/null \

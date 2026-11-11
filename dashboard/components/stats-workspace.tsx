@@ -20,6 +20,9 @@ const ESTIMATED_POSITIONS: EstimatedPosition[] = ["PG", "SG", "SF", "PF", "C"];
 import { Icon } from "./ui/icon";
 import { latestPatchEntry, shortDate } from "@/lib/patch-notes";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { SESSION_COOKIE, serverFavoriteIds, validSession } from "@/lib/account-server";
+import { SignInPrompt } from "./account/sign-in-prompt";
 import { ControlScope } from "./ui/control-scope";
 
 export async function StatsWorkspace({ params: rawParams, basePath = "/stats", team }: {
@@ -48,8 +51,11 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     (entry): entry is [string, string] => typeof entry[1] === "string" && !["releaseId", "release_id", "darkoManifest", "darko_manifest_sha256", "impactManifest", "impact_manifest_sha256", "cursor", "beforeDate", "before_date"].includes(entry[0])
   ))}` : null;
   const workspace = workspaceResult.status === "fulfilled" ? workspaceResult.value : undefined;
-  // A favorites request must never silently become an unfiltered query.
-  if (!workspace && params.favorites === "1") return <div role="alert">Favorites unavailable. Try again.</div>;
+  // Favourites belong to the signed-in account (finish plan F04), read here from the session
+  // cookie. A favorites request must never silently become an unfiltered query.
+  const favoritesOnly = params.favorites === "1";
+  const favoriteIds = favoritesOnly ? await serverFavoriteIds(validSession((await cookies()).get(SESSION_COOKIE)?.value)) : null;
+  const favoritesSignedOut = favoritesOnly && favoriteIds === null;
   const countingMode = (params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
   const presetId = params.viewId || params.view_id || params.preset || workspace?.preferences.default_view_id || "overview";
   const preset = getPresetById(presetId, workspace?.views);
@@ -96,12 +102,14 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   let researchData: PlayerResearchResponse | null = null;
   let loadError: string | null = null;
 
+  // Signed out, a favorites link has no list to filter by: no query, the note below instead.
+  if (!favoritesSignedOut) {
   try {
     if (!catalog.stats_normalizations?.includes(countingMode)) throw new Error(`Counting mode ${countingMode} is unavailable for these Stats queries.`);
     if (!catalog.stats_scopes?.some((scope) => scope.season === querySpec.season && scope.phase === querySpec.phase)) throw new Error(`No observed Stats coverage for ${querySpec.season} / ${querySpec.phase}.`);
     const result = await executeWorkbenchQuery(querySpec, {
       table_percentiles: true,
-      player_ids: params.favorites === "1" ? workspace?.favorites ?? [] : null,
+      player_ids: favoritesOnly ? favoriteIds ?? [] : null,
       positions: positions.length ? positions : null,
       draft_year: draftYear
     });
@@ -116,6 +124,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     };
   } catch (err) {
     loadError = err instanceof Error ? err.message : "Failed to load player stats from workbench";
+  }
   }
   let draftClasses: DraftClassesResponse["classes"] = [];
   let hints: Record<string, MetricHint> = {};
@@ -162,6 +171,13 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           ] : []}
           filters={team ? <StatsPositionChips /> : <><StatsTeamSelect /><StatsPositionChips /><StatsDraftClassSelect classes={draftClasses} /></>}
         />
+
+        {favoritesSignedOut && (
+          <GatedNote action={<><SignInPrompt reason="Sign in, or use the demo account, to filter Stats to your favourite players." />
+            <ButtonLink size="sm" variant="ghost" href={`${basePath}?${new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string" && entry[0] !== "favorites"))}`}>Show all players</ButtonLink></>}>
+            Favourites belong to an account. Sign in, or use the demo account, to filter Stats to your favourite players.
+          </GatedNote>
+        )}
 
         {loadError && (
           <GatedNote tone="warning" action={<ButtonLink size="sm" href={`${basePath}?${new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string"))}`}>Retry</ButtonLink>}>

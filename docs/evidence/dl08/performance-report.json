@@ -1,31 +1,25 @@
 {
   "ask": {
     "route": "/research/ask",
-    "elapsedMs": 1199,
-    "cls": 0,
-    "fcp": 304,
-    "domInteractive": 138,
-    "loadComplete": 278,
-    "totalLongTasks": 1,
-    "initialLoadLongTasksOver50ms": 1,
-    "maxInitialLoadTaskDurationMs": 51,
-    "allLongTasks": [
-      {
-        "name": "self",
-        "duration": 51,
-        "startTime": 194.79999995231628
-      }
-    ],
+    "elapsedMs": 1066,
+    "cls": 0.0027,
+    "fcp": 272,
+    "domInteractive": 137,
+    "loadComplete": 179,
+    "totalLongTasks": 0,
+    "initialLoadLongTasksOver50ms": 0,
+    "maxInitialLoadTaskDurationMs": 0,
+    "allLongTasks": [],
     "animationLongTasksOver50ms": 0,
     "maxAnimationTaskDurationMs": 0
   },
   "player-profile": {
     "route": "/players/2544",
-    "elapsedMs": 1541,
+    "elapsedMs": 1110,
     "cls": 0,
-    "fcp": 308,
-    "domInteractive": 730,
-    "loadComplete": 738,
+    "fcp": 296,
+    "domInteractive": 185,
+    "loadComplete": 241,
     "totalLongTasks": 0,
     "initialLoadLongTasksOver50ms": 0,
     "maxInitialLoadTaskDurationMs": 0,
@@ -35,33 +29,44 @@
   },
   "stats": {
     "route": "/stats",
-    "elapsedMs": 2273,
-    "cls": 0,
-    "fcp": 56,
-    "domInteractive": 772,
-    "loadComplete": 776,
-    "totalLongTasks": 0,
-    "initialLoadLongTasksOver50ms": 0,
-    "maxInitialLoadTaskDurationMs": 0,
-    "allLongTasks": [],
+    "elapsedMs": 1248,
+    "cls": 0.0002,
+    "fcp": 204,
+    "domInteractive": 176,
+    "loadComplete": 307,
+    "totalLongTasks": 2,
+    "initialLoadLongTasksOver50ms": 2,
+    "maxInitialLoadTaskDurationMs": 173,
+    "allLongTasks": [
+      {
+        "name": "self",
+        "duration": 73,
+        "startTime": 102.09999990463257
+      },
+      {
+        "name": "self",
+        "duration": 173,
+        "startTime": 337.2000002861023
+      }
+    ],
     "animationLongTasksOver50ms": 0,
     "maxAnimationTaskDurationMs": 0
   },
   "team-detail": {
     "route": "/teams/1610612747",
-    "elapsedMs": 1533,
+    "elapsedMs": 1032,
     "cls": 0,
-    "fcp": 256,
-    "domInteractive": 710,
-    "loadComplete": 723,
+    "fcp": 308,
+    "domInteractive": 211,
+    "loadComplete": 211,
     "totalLongTasks": 1,
     "initialLoadLongTasksOver50ms": 1,
-    "maxInitialLoadTaskDurationMs": 75,
+    "maxInitialLoadTaskDurationMs": 85,
     "allLongTasks": [
       {
         "name": "self",
-        "duration": 75,
-        "startTime": 161.4000000357628
+        "duration": 85,
+        "startTime": 124.09999990463257
       }
     ],
     "animationLongTasksOver50ms": 0,

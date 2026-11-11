@@ -1,20 +1,14 @@
 {
   "route": "/research/ask",
-  "elapsedMs": 1199,
-  "cls": 0,
-  "fcp": 304,
-  "domInteractive": 138,
-  "loadComplete": 278,
-  "totalLongTasks": 1,
-  "initialLoadLongTasksOver50ms": 1,
-  "maxInitialLoadTaskDurationMs": 51,
-  "allLongTasks": [
-    {
-      "name": "self",
-      "duration": 51,
-      "startTime": 194.79999995231628
-    }
-  ],
+  "elapsedMs": 1066,
+  "cls": 0.0027,
+  "fcp": 272,
+  "domInteractive": 137,
+  "loadComplete": 179,
+  "totalLongTasks": 0,
+  "initialLoadLongTasksOver50ms": 0,
+  "maxInitialLoadTaskDurationMs": 0,
+  "allLongTasks": [],
   "animationLongTasksOver50ms": 0,
   "maxAnimationTaskDurationMs": 0
 }
