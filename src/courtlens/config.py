@@ -141,6 +141,16 @@ class Settings(BaseSettings):
     public_ask_daily_requests: int = Field(default=480, ge=1, le=10_000_000)
     # Held only by the dashboard's server proxy: it may start Ask turns, nothing else.
     public_ask_token: SecretStr | None = None
+    # Accounts (finish plan F04). The token is held only by the dashboard's server proxy: the
+    # account endpoints require it in production, and it salts the client address the proxy
+    # forwards for sign-in limits. Unset in production means accounts are off.
+    account_proxy_token: SecretStr | None = None
+    session_hours: int = Field(default=12, ge=1, le=720)
+    sign_in_failures_per_client: int = Field(default=5, ge=1, le=1000)
+    sign_in_failures_per_email: int = Field(default=10, ge=1, le=1000)
+    sign_in_window_minutes: int = Field(default=15, ge=1, le=1440)
+    demo_sign_ins_per_client_hour: int = Field(default=20, ge=1, le=10_000)
+    favorite_writes_per_hour: int = Field(default=120, ge=1, le=100_000)
     assistant_max_web_searches: int = Field(default=3, ge=0, le=20)
     assistant_max_tokens: int = Field(default=60000, ge=1024, le=1_000_000)
     assistant_turn_timeout_seconds: int = Field(default=60, ge=1, le=300)
@@ -284,6 +294,15 @@ class Settings(BaseSettings):
             raise ValueError(
                 "COURTLENS_OPERATOR_TOKEN must be a unique 32+ character value in production"
             )
+        if self.account_proxy_token is not None:
+            account_secret = self.account_proxy_token.get_secret_value()
+            if len(account_secret) < 32 or any(
+                marker in account_secret.lower() for marker in ("development", "replace")
+            ):
+                raise ValueError(
+                    "COURTLENS_ACCOUNT_PROXY_TOKEN must be a unique 32+ character value "
+                    "in production"
+                )
         if "*" in self.cors_origins:
             raise ValueError("wildcard CORS is not permitted in production")
         return self
