@@ -225,6 +225,24 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 
 ## Deploy log
 
+### 2026-11-11: release 8ef78660 (finish plan F04 and F05)
+
+- **What:** accounts, the one-click demo account and favourite players (#87), and the published Win Probability upgrade result, not adopted (#88).
+- **Why Images was started by hand:** GitHub-hosted runners couldn't resolve Ubuntu's mirrors, so main's CI failed before running tests and Images was skipped. The owner chose to merge on local evidence. The hand-started Images run (43066801122) passed.
+- **Deploy script fix:** GitHub's `status=success` filter didn't return that run, so the script now checks each run's conclusion itself (#90).
+- **Secret:** `COURTLENS_ACCOUNT_PROXY_TOKEN` was generated on the VPS with `openssl rand -hex 32` and appended to `secrets.env` (still mode 600). It never left the server.
+- **Deploy:** migration `3c4d9e1f0a21` applied; the demo account was seeded with 8 favourites; the `demo-reset` service is healthy; Caddy restarted for the new allowlist; 1 Stats cohort built (170 existing); 158 GB free.
+- **Checked on the public URL:**
+  - Signed out, `/api/account/me` returns no user.
+  - Demo sign-in sets an HttpOnly, Secure session cookie and returns no token in the body.
+  - The shared list has the 8 seeded players with 2026-27 teams.
+  - Adding and removing a favourite works (9, then 8).
+  - A cross-site add gets 403.
+  - `POST /api/auth/session`, `/api/auth/register`, `/api/me/favorites/…`, `PUT /api/account/favorites/…` and workspace favourite writes all get Caddy's 403.
+  - A wrong password gets the generic message.
+  - Sign-out clears the session.
+  - `/api/win-probability` returns `upgrade.adopted: false`.
+
 ### 2026-11-11: releases b98f790b and 301e2a2a (finish plan F00–F02)
 
 - **b98f790b** (PR #83): pins `gemini-3.5-flash-lite` and a 45 s turn limit for public Ask. Deployed on the owner's instruction although main CI failed three times on URL-timing flakes in unrelated specs; Images had passed.
