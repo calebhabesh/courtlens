@@ -28,6 +28,8 @@ For seasons before 2000-01 (the Basketball-Reference history crawl, historical s
 
 For the Research menu (Win Probability, Six-Factor RAPM, zTS, shot quality, Metric Backtest, Projected Impact, Lineup Model, Signal vs Noise, Draft Classes, Wingspan, calculator, Learning, Patch Notes) or any new model or experiment, read the [Research handoff](docs/research-plan.md) first. It supersedes the alignment handoff's rows 18–21 and keeps its page patterns, verification and owner-only ✅. Record evidence in the [Research progress log](docs/research-progress.md). For the Research **design phase** (redesigning Research pages from the owner's Databallr references), work from the [Research design catalog](docs/research-design-catalog.md): one page at a time, owner instructions recorded there first, only the owner marks ✅.
 
+For the last open work (Win Probability's design pass and model upgrade, Shot Aftermath's remaining suggestions, simple accounts with a demo account, Ask's history answers), read the [finish plan](docs/finish-plan.md) first. Execute its blocks in order, record evidence in the [finish progress log](docs/finish-progress.md); only the owner marks a block ✅.
+
 For the hosted read-only demo at courtlens.calebhabesh.com (production Compose stack, Caddy read-only boundary, arm64 images, VPS deploys and disk budget), read [the deployment guide](docs/deployment.md) first. Any new non-GET endpoint the demo should allow must be added to the Caddy allowlist there.
 
 ## Architecture and Stack
