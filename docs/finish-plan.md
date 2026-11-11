@@ -18,10 +18,10 @@ Owner decisions, 2026-11-10:
 
 | Block | What | Status |
 | --- | --- | --- |
-| F00 | Public Ask live on the hosted demo, checked with a real question | 🛠 deploying |
-| F01 | Ask answers history questions directly | 👀 built 2026-11-11 |
-| F02 | Shot Aftermath: position grid and after-make vs after-rebound chart (RD18 suggestions 3, 6) | 👀 built 2026-11-11 |
-| F03 | Win Probability: uniform design pass (RD14) | ⬜ |
+| F00 | Public Ask live on the hosted demo, checked with a real question | 👀 live and checked 2026-11-11 |
+| F01 | Ask answers history questions directly | 👀 merged (#84) and live 2026-11-11 |
+| F02 | Shot Aftermath: position grid and after-make vs after-rebound chart (RD18 suggestions 3, 6) | 👀 merged (#85) and live 2026-11-11 |
+| F03 | Win Probability: uniform design pass (RD14) | 👀 round 1 built 2026-11-11 |
 | F04 | Simple accounts and a demo account; favourites saved per user | ⬜ |
 | F05 | Win Probability model upgrade | ⬜ owner-led |
 
@@ -97,6 +97,11 @@ favourites that no page reads (`api/routers/workbench.py`).
 - open sign-up or invite-only;
 - whether the demo account's favourites are shared and reset nightly;
 - which other workspace features (saved views, boards) move to accounts now.
+
+**Decided (owner, 2026-11-11, answering the three questions above):**
+- Invite-only: accounts are created by the operator from the CLI; there is no public sign-up form.
+- The demo account's favourites are shared and reset nightly to a seeded list.
+- Favourites only: favourite players, the Favorite Players list in the app shell and the Stats Favorites filter. Saved views and boards stay install-wide.
 
 **Hosted demo:** add the new writes to the Caddy allowlist ([deployment guide](deployment.md)).
 Keep the operator token off the dashboard, as with the Ask token. Rate-limit sign-in.
