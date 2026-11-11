@@ -22,3 +22,19 @@ Deployed 9a651112 (PR #81 public Ask, PR #82 https origin behind TLS and Caddy r
 v2 is unchanged, so the frozen replays keep passing.
 
 **Measured.** Six history questions on the demo's configuration: both prompt versions answered all six correctly. Provider calls 22 → 12, time 128 s → 67 s, failed tool calls 9 → 0. Assistant integration tests: 90 passed. Evidence: [`f01`](evidence/finish/f01/README.md).
+
+## 2026-11-11 — F02 Shot Aftermath extras (RD18 suggestions 3 and 6)
+
+Both read the frozen R17 aggregate only (`/api/shot-aftermath/scope` per estimated position); no new analysis.
+
+- **By estimated position.** Guards, forwards and bigs by zone, switchable between net per attempt and rebound cost. Each value has its 95% interval underneath. Green or red appear only where the interval clears zero; thin cells are dimmed and never coloured. On a phone the zones split into two column groups.
+- **After a make or after a rebound.** On the After a defensive rebound view: two neutral bars per zone with whiskers, against the league line. The make value is upper, the rebound value lower.
+
+**Reading.** Across the league, opponents score more after a rebounded miss than after a make in every zone, and the gap is widest at the rim (1.126 against 1.202 points per possession). That is consistent with the page's headline rim-rebound effect.
+
+**Checks.**
+- Real data: guards and forwards scopes captured from the owner's API; the existing bigs fixtures still equal the live responses. The spec checks every displayed net, rebound cost and pair value against the served fixture.
+- `shot-aftermath`, `route-consolidation` and `route-polish` specs: 72/72 over three runs.
+- Screenshots viewed: `f02-dreb-view-1440`, `f02-positions-net-1440`, `f02-positions-cost-1440`, `f02-pair-chart-390`, `f02-positions-390`.
+
+Evidence: [`f02`](evidence/finish/f02/).
