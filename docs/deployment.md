@@ -28,11 +28,11 @@ to writes. The hosted demo removes that in two layers:
 1. The dashboard container has no operator token, so its writes fail at the API, which
    runs with `COURTLENS_ENVIRONMENT=production` and unique secrets.
 2. Caddy refuses every non-GET request except `POST /api/workbench/query` and
-   `POST /api/workbench/operations/*`, which compute results without writing, and the four
-   public Ask writes below.
+   `POST /api/workbench/operations/*`, which compute results without writing, the four
+   public Ask writes below, and the account writes under Accounts and favourites.
 
-Workspace changes (favorites, boards, saved views), jobs and saved analyses are therefore
-unavailable. The dashboard image is built with `NEXT_PUBLIC_COURTLENS_HOSTED=true` and an empty
+Workspace changes (boards, saved views, the compare tray), jobs and saved analyses are therefore
+unavailable. Favourite players belong to accounts instead (below). The dashboard image is built with `NEXT_PUBLIC_COURTLENS_HOSTED=true` and an empty
 `NEXT_PUBLIC_COURTLENS_API_URL`, so browser calls are same-origin.
 
 ### Public Ask (2026-11-10)
@@ -63,6 +63,54 @@ Anyone with the link may ask a few questions a day. The image is also built with
   `secrets.env`. Both must be free-tier keys on accounts with **no billing attached**, so the
   worst case is "limit reached", never a charge. Google Search grounding is refused on the free
   tier, so answers about very recent news may be missing; the Ask page says so.
+
+### Accounts and favourites (finish plan F04, 2026-11-11)
+
+Invite-only accounts keep favourite players. There is no sign-up: the operator creates accounts in
+the API container. Anyone may use the one shared demo account with one click.
+
+- **Writes allowed:** `POST /api/account/session` (sign-in), `/demo`, `/sign-out`, and
+  `POST`/`DELETE /api/account/favorites/<player id>`. They reach the dashboard's account proxy.
+  The API's own `/api/auth/*` and `/api/me/*` are refused at Caddy, so only the proxy reaches
+  them, over the Compose network. `scripts/check_caddy_allowlist.sh` runs the pinned Caddy image
+  against stub upstreams and checks every allowed and refused write.
+- **Session:** the proxy stores the signed session in an HttpOnly, Secure, SameSite=Lax cookie
+  (`courtlens-session`, 12 hours) and forwards it to the API as a bearer token. The browser never
+  sees it. Sessions are stateless: nothing is stored per sign-in. `courtlens revoke-sessions`
+  signs an account out everywhere.
+- **Credentials:** the dashboard holds only `COURTLENS_ACCOUNT_PROXY_TOKEN`, which the API requires
+  on every account call in production. It also salts the hashed client address sent for the
+  limits. The JWT secret and operator token stay in the API. Without the token the API refuses
+  accounts, and `docker compose` refuses to start.
+- **Limits:** 5 failed sign-ins per client and 10 per email in 15 minutes (then 429 with
+  `Retry-After`); 20 demo sign-ins per client an hour; 120 favourite writes per account and client
+  an hour. Counts are in memory (one API worker) and bounded at 10,000 keys each. Each account
+  holds at most 100 favourites.
+- **Pre-F04 users:** the fantasy-league seed users in the restored database (public fixture
+  passwords) are disabled by the migration (`account_enabled = false`). `courtlens set-password`
+  enables one deliberately.
+- **Operator commands** (in the API container): `courtlens create-user --email … --name …`
+  (prompts for the password), `set-password`, `disable-user`, `revoke-sessions`, `list-users`.
+  For example:
+
+  ```bash
+  docker compose --env-file secrets.env --env-file release.env exec api \
+    courtlens create-user --email friend@example.com --name "Friend"
+  ```
+
+- **Demo account:** `deploy-vps.sh` runs `courtlens seed-demo-account` after each deploy
+  (idempotent). Its favourites are one list shared by every visitor.
+- **Nightly reset:** the `demo-reset` Compose service (the API image, 256 MB cap, a quarter CPU)
+  sleeps in `sh` until 08:00 UTC (about midnight Pacific), then runs
+  `courtlens reset-demo-favorites`. That deletes the demo's rows and inserts the eight seeded
+  players in one transaction. Storage stays bounded: no history or log rows, at most 100 rows per
+  account, and Postgres reuses the deleted rows' space. Because it ships with the stack, there is
+  no host timer to install, and `restart: unless-stopped` brings it back after a reboot. Run it by
+  hand with `docker compose … exec api courtlens reset-demo-favorites`, and check the last run
+  with `docker compose … logs demo-reset`.
+
+**Before the first deploy with F04:** add `COURTLENS_ACCOUNT_PROXY_TOKEN` (from
+`openssl rand -hex 32`) to `secrets.env`. The migration `3c4d9e1f0a21` is additive.
 
 ### Live
 
@@ -236,8 +284,9 @@ Refresh timers and the nightly job stay off; the data is the 2026-11-10 snapshot
 These steps have already been done once; they are recorded for a rebuild.
 
 1. Generate `secrets.env` on the VPS (mode 0600). It holds
-   `COURTLENS_POSTGRES_PASSWORD`, `COURTLENS_JWT_SECRET`, `COURTLENS_OPERATOR_TOKEN` and
-   `COURTLENS_PUBLIC_ASK_TOKEN`, each from `openssl rand -hex 32`, plus the free-tier
+   `COURTLENS_POSTGRES_PASSWORD`, `COURTLENS_JWT_SECRET`, `COURTLENS_OPERATOR_TOKEN`,
+   `COURTLENS_PUBLIC_ASK_TOKEN` and `COURTLENS_ACCOUNT_PROXY_TOKEN`, each from
+   `openssl rand -hex 32`, plus the free-tier
    `COURTLENS_GEMINI_API_KEY` and optional `COURTLENS_GROQ_API_KEY` (see Public Ask). It never
    leaves the VPS.
 2. Take a dump of the local database without the dbt candidate build schemas, which
