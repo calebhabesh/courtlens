@@ -107,7 +107,7 @@ The owner approved the plan as proposed ("Go with your recommendations"): favour
 
 **Checks.**
 - pytest: 26 account API tests (invite-only, sessions and revocation, the proxy token, sign-in limits per client and per email, per-user isolation, the 100 cap, demo sharing and reset, bounded limiter memory) and 3 PostgreSQL migration tests. Full suite: 2,742 passed, 8 failed. The 8 are the Anthropic provider tests, which fail the same way on unmodified main: the local venv has `httpx2`, and the SDK expects `httpx.Client`.
-- mypy (388 files), ruff and ruff format: clean. Dashboard lint, typecheck: clean. Vitest: 918 passed (10 proxy and 8 account component tests new).
+- mypy (388 files), ruff and ruff format: clean. Dashboard lint, typecheck: clean. Vitest: 918 passed (10 proxy and 8 account component tests new). Correction: the first PR push failed one of these in CI. The password stayed in the closing dialog's frozen exit copy, and a local rerun showing `1 failed` was missed. The field is now cleared on submit, and the 918 were re-measured after that fix.
 - Playwright, `f04-accounts` (8 tests) with the touched specs (visual baselines, header and palette, Stats preview, player profile, table interactions, Stats entrance, accessibility): 126/126 on each of three runs.
 - Full Playwright on the sandbox build (mock API 4180, dashboard 3180): 649 passed, 17 skipped, 0 failed.
   - Earlier runs found two real problems, both fixed. The Planner's own "Sign in" button now shares a name with the header's, so its specs scope to the page. The mock's `/api/me` prefix also caught `/api/metric-backtest`.
