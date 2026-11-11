@@ -1,0 +1,71 @@
+[
+ {
+  "q": "Who won the 2016 NBA Finals, and what made it historic?",
+  "secs": 41.5,
+  "calls": 6,
+  "prompt": "courtlens-agent-prompt-v2",
+  "failure": null,
+  "tools": [
+   "awards:error",
+   "awards:ok",
+   "query_stats:error",
+   "provenance_repair:error"
+  ],
+  "answer": "The Cleveland Cavaliers won the 2016 NBA Finals, overcoming a 3\u20131 deficit against the 73-win Golden State Warriors [^s1].\n\n* The Cavaliers became the first team in NBA history to rally from 3\u20131 down in the Finals [^s1].\n* They topped the record-setting 73-win Warriors (73\u20139 regular season) [^s1].\n* It marked Cleveland's first NBA title and ended a 52-year championship drought for the city [^s1].\n* LeBron James secured Finals MVP honors with stellar all-around production [^s1].\n* The deciding Game 7 featured historic plays like Kyrie Irving's late three-pointer and LeBron James' chasedown block"
+ },
+ {
+  "q": "Who won MVP in 1998?",
+  "secs": 14.1,
+  "calls": 5,
+  "prompt": "courtlens-agent-prompt-v2",
+  "failure": null,
+  "tools": [
+   "awards:error",
+   "awards:error",
+   "query_stats:error",
+   "query_stats:ok"
+  ],
+  "answer": "Michael Jordan won the NBA Most Valuable Player award for the 1997-98 regular season [^s1].\n\n- Michael Jordan led the 1997-98 league with 28.7 points per game across 82 games played for the Chicago Bulls [^s1].\n- Karl Malone finished second in scoring that season with 27.0 points per game for the Utah Jazz [^s1].\n- Shaquille O'Neal averaged 28.3 points per game in 60 games for the Los Angeles Lakers [^s1].\n- Warehouse award registry lookup is unavailable for historical MVP queries, so this response relies on player scoring and season context from the query tool [^s1].\n\nStopped at the tokens li"
+ },
+ {
+  "q": "Which team won the 1986 NBA championship?",
+  "secs": 39.2,
+  "calls": 5,
+  "prompt": "courtlens-agent-prompt-v2",
+  "failure": null,
+  "tools": [
+   "awards:error",
+   "awards:ok",
+   "query_stats:error",
+   "list_metrics:error"
+  ],
+  "answer": "The Boston Celtics won the 1986 NBA championship.\n\n- The warehouse and pinned award registry do not cover historical seasons prior to the current era [^s1].\n- This response is based on general historical knowledge as tool coverage for historical champions is limited.\n\nStopped at the tokens limit."
+ },
+ {
+  "q": "What was the Malice at the Palace?",
+  "secs": 9.0,
+  "calls": 2,
+  "prompt": "courtlens-agent-prompt-v2",
+  "failure": null,
+  "tools": [],
+  "answer": "The Malice at the Palace was a notorious on-court brawl between players and fans that occurred on November 19, 2004, during a game between the Indiana Pacers and the Detroit Pistons at The Palace of Auburn Hills. \n\n* The incident began in the final minute of the game when a physical altercation on the court between Detroit's Ben Wallace and Indiana's Ron Artest escalated after a fan threw a cup of drink at Artest while he was lying on the scorer's table.\n* Artest and teammate Stephen Jackson rushed into the stands to confront the crowd, triggering a massive melee involving multiple players and"
+ },
+ {
+  "q": "When was the three-point line introduced in the NBA?",
+  "secs": 7.7,
+  "calls": 2,
+  "prompt": "courtlens-agent-prompt-v2",
+  "failure": null,
+  "tools": [],
+  "answer": "The three-point line was officially introduced in the NBA at the start of the 1979\u201380 season.\n\n* The NBA adopted the three-point arc after testing it during the preseason and having it used in the American Basketball Association prior to the ABA-NBA merger.\n* Boston Celtics player Chris Ford scored the first three-pointer in NBA history during an opening-month game.\n* The arc was originally set at a uniform distance from the center of the basket, including the corners."
+ },
+ {
+  "q": "Who holds the record for most points in a single NBA game?",
+  "secs": 16.4,
+  "calls": 2,
+  "prompt": "courtlens-agent-prompt-v2",
+  "failure": null,
+  "tools": [],
+  "answer": "Wilt Chamberlain holds the NBA single-game scoring record with his legendary 100-point performance for the Philadelphia Warriors against the New York Knicks on March 2, 1962.\n\n* Chamberlain achieved the milestone on 36-of-63 shooting from the field and 28-of-32 from the free-throw line in Hershey, Pennsylvania.\n* Kobe Bryant holds the second-highest scoring game in NBA history with 81 points against the Toronto Raptors on January 22, 2006.\n* Chamberlain also holds the third-place spot, having scored 78 points in a triple-overtime game against the Los Angeles Lakers in 1961."
+ }
+]
