@@ -1,0 +1,266 @@
+{
+ "against_v2_on_select_90": {
+  "K1": {
+   "games": 1216,
+   "high": 0.009596998323877254,
+   "low": 0.003457115500928736,
+   "mean": 0.006496307411044143
+  },
+  "K2": {
+   "games": 1216,
+   "high": 0.009928823721190866,
+   "low": 0.0035370610384546216,
+   "mean": 0.006690492553846607
+  }
+ },
+ "elapsed_seconds": 111.2,
+ "games": 1216,
+ "k1": {
+  "definition": "v2's frozen boosters, baseline and end-game specialist reading mu4",
+  "models": {
+   "end_game": "26bbd8a955d42ac8dc937f2fe0d5b72dc9de3db65badfcd7a646314a3c1719dd",
+   "mean": "2b5c29aa57ac1405121087b6db006b8c9cd5c376475dce88cb724ae2f723a744",
+   "variance": "c6a7d9908db9f55b25730ec8c65dd01fe725403de6a4935c15f386d620b23fd2"
+  },
+  "reproduces_v2_with_own_forecast_max_abs": 5.622145959893743e-08,
+  "select_log_loss": 0.3970597414841417
+ },
+ "k2": {
+  "baseline": {
+   "beta": 0.8745551563227205,
+   "sigma": 15.955509171388686
+  },
+  "definition": "v2's recipe refitted with mu4 on train, early stopping on select",
+  "leaves": 31,
+  "mean_model": "b8ef70e7bd9d926a0dae22d76898c82eed94328b22822f2b6947c2a5f17c318f",
+  "mean_rounds": 164,
+  "overtime_slope": 0.05141779105533248,
+  "select_log_loss": 0.39686555634133924,
+  "specialist_model": "4f338780eaf8fdf11df79b4d13e6adc4638c6fcd72bcf60c4f5819ebb53e37e4",
+  "specialist_rounds": 223,
+  "train_seasons": [
+   "2014-15",
+   "2015-16",
+   "2016-17",
+   "2017-18",
+   "2018-19",
+   "2019-20",
+   "2020-21",
+   "2021-22",
+   "2022-23"
+  ],
+  "variance_model": "722d5ed65f207213f2d5e21ec5f90e64bc1141859b5d1a6006e6b802273ee6e6",
+  "variance_rounds": 125
+ },
+ "k2_vs_k1_90": {
+  "games": 1216,
+  "high": 0.0009484291796600315,
+  "low": -0.0005761090328583892,
+  "mean": 0.00019418514280246366
+ },
+ "line_join": {
+  "coverage": {
+   "2020-21": {
+    "games": 1074,
+    "mapped_to_espn": 1074,
+    "with_line": 1064,
+    "without_line": 10
+   },
+   "2021-22": {
+    "games": 1228,
+    "mapped_to_espn": 1228,
+    "with_line": 1227,
+    "without_line": 1
+   },
+   "2022-23": {
+    "games": 1229,
+    "mapped_to_espn": 1229,
+    "with_line": 1228,
+    "without_line": 1
+   },
+   "2023-24": {
+    "games": 1216,
+    "mapped_to_espn": 1216,
+    "with_line": 1216,
+    "without_line": 0
+   },
+   "2024-25": {
+    "games": 1212,
+    "mapped_to_espn": 1212,
+    "with_line": 1212,
+    "without_line": 0
+   },
+   "2025-26": {
+    "games": 1227,
+    "mapped_to_espn": 1227,
+    "with_line": 1227,
+    "without_line": 0
+   }
+  },
+  "market_rows": 7942,
+  "market_rows_not_joined": 768,
+  "market_sha256": "b58911bf54af2cff9f33b214787cf90a8e8545ebe4b807e11569e178f542ede7",
+  "score_mismatch": [],
+  "scoreboard_dates": 629
+ },
+ "pregame_on_select": {
+  "games_without_line": 0,
+  "line": {
+   "rmse": 13.512712170908392,
+   "squared_error": {
+    "games": 1216,
+    "high": 199.27534436677632,
+    "low": 167.83067048725331,
+    "mean": 182.59339021381578
+   },
+   "winner_accuracy": 0.6924342105263158
+  },
+  "mu4": {
+   "rmse": 13.555312072111246,
+   "squared_error": {
+    "games": 1216,
+    "high": 200.6594548382944,
+    "low": 168.70153588880802,
+    "mean": 183.74648537232488
+   },
+   "winner_accuracy": 0.694078947368421
+  },
+  "own": {
+   "rmse": 13.887137736598033,
+   "squared_error": {
+    "games": 1216,
+    "high": 210.30632642840285,
+    "low": 176.74024424168334,
+    "mean": 192.85259451524516
+   },
+   "winner_accuracy": 0.6817434210526315
+  }
+ },
+ "registration": {
+  "content_sha256": "654b26bab5ee149999f69934e7cdcf288dafd31985cb2d375a32754972225085",
+  "identity": "courtlens-win-probability-v4",
+  "parameters": {
+   "bootstrap": {
+    "replicates": 2000,
+    "unit": "game"
+   },
+   "candidates": [
+    "K1",
+    "K2"
+   ],
+   "display": {
+    "toss_up_band": [
+     0.45,
+     0.55
+    ]
+   },
+   "ece_bins": 20,
+   "freeze_checks": {
+    "arm64_max_probability_difference": 1e-09,
+    "espn_state_parity_max_log_loss_change": 0.002,
+    "p95_ms_per_game_max": 100
+   },
+   "line_seasons": [
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "prospective": {
+    "final_read": "end of the 2026-27 regular season",
+    "report_from_games": 25,
+    "verdict_from_games": 300
+   },
+   "reference": "courtlens-win-probability-v2",
+   "reference_manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+   "seal": {
+    "first_run_local_time": "12:00 America/New_York",
+    "interval_minutes": 30
+   },
+   "seed": 2501,
+   "selection_level": 0.9,
+   "splits": {
+    "check": [
+     "2024-25",
+     "2025-26"
+    ],
+    "final_fit": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "prospective": [
+     "2026-27"
+    ],
+    "select": [
+     "2023-24"
+    ],
+    "train": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23"
+    ]
+   },
+   "weight_bounds": [
+    0.0,
+    1.0
+   ],
+   "weight_fit_seasons": {
+    "check": [
+     "2022-23",
+     "2023-24"
+    ],
+    "final": [
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "selection": [
+     "2022-23"
+    ]
+   }
+  },
+  "registered_on": "2026-11-11"
+ },
+ "rule": "On 2023-24 only: K2 replaces K1 when the paired game-bootstrap 90% interval (2000 replicates) of its log-loss improvement over K1 is above zero; otherwise K1 is kept. Nothing is selected on 2024-25 or 2025-26, and nothing is selected after the final fit.",
+ "select_season": "2023-24",
+ "selected": "K1",
+ "stage": "S",
+ "states": 266365,
+ "v2_select_log_loss": 0.40355604889518587,
+ "version": "courtlens-win-probability-v4",
+ "weight": {
+  "games": 1228,
+  "games_sha256": "166685f9ba6ea9b413213890b6d54fdb05c16b928c01673496bdd66c95ae2ac7",
+  "regression_check": {
+   "games": 1228,
+   "intercept": 0.40011999466469805,
+   "line": 0.7403433284036248,
+   "own": 0.19408818087489746,
+   "rmse": 12.460224356652832
+  },
+  "seasons": [
+   "2022-23"
+  ],
+  "unclipped": 0.7200356919439594,
+  "w": 0.7200356919439594
+ }
+}
