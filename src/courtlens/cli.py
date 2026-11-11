@@ -2344,3 +2344,8 @@ def seal_wingspan_coverage_command(
             indent=2,
         )
     )
+
+
+from courtlens import cli_accounts  # noqa: E402
+
+cli_accounts.register(app)
