@@ -119,3 +119,35 @@ The owner approved the plan as proposed ("Go with your recommendations"): favour
 **For the owner, locally:** `alembic upgrade head`, then `courtlens create-user --email … --name …` and `courtlens import-workspace-favorites --email …` (copies the old install-wide list; local favourites are empty until you sign in). On the VPS, add `COURTLENS_ACCOUNT_PROXY_TOKEN` to `secrets.env` before the deploy.
 
 Evidence: [`f04`](evidence/finish/f04/README.md). 👀 for the owner's look.
+
+## 2026-11-11 — F04 merged; F05 registered, measured and not adopted
+
+**F04.** #86 and #87 merged on the owner's instruction ("merge them now on local evidence"). GitHub-hosted runners couldn't resolve Ubuntu's package mirrors from about 13:48 UTC (actions/runner-images #15296, #15297), so the jobs that install system packages failed before running tests on every attempt. Every check that ran had passed. The owner's checkout is on main and the local database is migrated to `3c4d9e1f0a21`. Not deployed: the VPS needs `COURTLENS_ACCOUNT_PROXY_TOKEN` first.
+
+**F05.** Owner decisions are recorded in the plan: the market stays a benchmark, and the gates read the same test games. [`courtlens-win-probability-v3`](../evaluation/research/registrations/courtlens-win-probability-v3.json) was committed and pushed (5797bd62) before any fit.
+
+- **Selection on 2023-24:**
+  - B, the frozen recipe refitted on train through 2022-23, is level with the frozen model.
+  - P1, Projected Impact strength in the pregame layer from rolling-origin refits, was kept: +0.0017 (90% interval +0.0003 to +0.0031).
+  - P3, an overtime specialist, was not kept: −0.0015 (−0.0089 to +0.0057) on 58 overtime games.
+  - P4 refitted P1 on 2014-15 to 2023-24.
+- **Test** (read once, same 2,439 games and states as the frozen model's test):
+  - **A1 fails.** v3 against the frozen model is +0.0007 (−0.0007 to +0.0024).
+  - A2 passes, at 0.0082.
+  - Every phase and both seasons lean slightly toward v3, and none clears zero.
+  - The pregame RMSE is unchanged (14.160 against 14.163; market 13.71).
+- **Outcome, by the registration:** v3 is not frozen or served, and the frozen model and its live scorecard are untouched. The result is published:
+  - the Win Probability page's "What didn't help" gains one finding, in words with its interval;
+  - `/api/win-probability` returns it as `upgrade`;
+  - [`f05` evidence](evidence/finish/f05/README.md).
+- **Checks.** Stages ran under the registered caps (peak 2.2 GB, longest 1 min 42 s). Rolling-origin projections reproduce R07's rookie mean on R07's own training seasons. The frozen model's pooled log loss (0.4028) equals R15a's published number on these states.
+
+**Page checks.**
+- `win-probability` spec: 9/9 on each of three runs. It asserts the finding's served gain, interval and wording, and that it says "not adopted".
+- Screenshots viewed: [1440](evidence/finish/f05/f05-upgrade-finding-1440.png), [390](evidence/finish/f05/f05-upgrade-finding-390.png). No page overflow.
+- Full Playwright: 649 passed, 17 skipped, 0 failed.
+- Vitest: 918 passed on three runs. One earlier run, started straight after the full Playwright suite, reported 3 failures that did not recur; their names were not captured.
+- pytest: 4 new unit tests. The published summary matches its registration and gates, plus the specialist masks and the team PI sum.
+- ruff, format and mypy (389 files): clean. Lint and typecheck: clean.
+
+👀 for the owner's look.

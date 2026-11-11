@@ -23,7 +23,7 @@ Owner decisions, 2026-11-10:
 | F02 | Shot Aftermath: position grid and after-make vs after-rebound chart (RD18 suggestions 3, 6) | 👀 merged (#85) and live 2026-11-11 |
 | F03 | Win Probability: uniform design pass (RD14) | ✅ owner, 2026-11-11 |
 | F04 | Simple accounts and a demo account; favourites saved per user | 👀 merged (#87) 2026-11-11; not deployed; awaits the owner |
-| F05 | Win Probability model upgrade | 🟡 registered 2026-11-11; fitting |
+| F05 | Win Probability model upgrade | 👀 measured 2026-11-11: not adopted (A1 interval includes zero); published |
 
 ## F00 Public Ask live
 
