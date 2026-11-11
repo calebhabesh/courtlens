@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hmac
 import re
+from dataclasses import dataclass
 from typing import Any
 
 import jwt
@@ -33,34 +34,34 @@ SESSION_ENDED = "Your session has ended. Sign in again."
 NO_MATCH = "That email and password don't match an account."
 
 
-class Limits:
-    """Process-wide limiters, built from settings on first use (tests reset them)."""
+@dataclass(frozen=True)
+class AccountLimits:
+    failures_by_client: SlidingWindowLimiter
+    failures_by_email: SlidingWindowLimiter
+    demo_by_client: SlidingWindowLimiter
+    writes_by_user: SlidingWindowLimiter
 
-    failures_by_client: SlidingWindowLimiter | None = None
-    failures_by_email: SlidingWindowLimiter | None = None
-    demo_by_client: SlidingWindowLimiter | None = None
-    writes_by_user: SlidingWindowLimiter | None = None
+
+class Limits:
+    """Process-wide limiters, built from settings on first use (tests rebuild them)."""
+
+    current: AccountLimits | None = None
 
     @classmethod
-    def build(cls) -> None:
+    def build(cls) -> AccountLimits:
         settings = get_settings()
         window = settings.sign_in_window_minutes * 60
-        cls.failures_by_client = SlidingWindowLimiter(settings.sign_in_failures_per_client, window)
-        cls.failures_by_email = SlidingWindowLimiter(settings.sign_in_failures_per_email, window)
-        cls.demo_by_client = SlidingWindowLimiter(settings.demo_sign_ins_per_client_hour, 3600)
-        cls.writes_by_user = SlidingWindowLimiter(settings.favorite_writes_per_hour, 3600)
+        cls.current = AccountLimits(
+            failures_by_client=SlidingWindowLimiter(settings.sign_in_failures_per_client, window),
+            failures_by_email=SlidingWindowLimiter(settings.sign_in_failures_per_email, window),
+            demo_by_client=SlidingWindowLimiter(settings.demo_sign_ins_per_client_hour, 3600),
+            writes_by_user=SlidingWindowLimiter(settings.favorite_writes_per_hour, 3600),
+        )
+        return cls.current
 
     @classmethod
-    def get(
-        cls,
-    ) -> tuple[
-        SlidingWindowLimiter, SlidingWindowLimiter, SlidingWindowLimiter, SlidingWindowLimiter
-    ]:
-        if cls.failures_by_client is None:
-            cls.build()
-        assert cls.failures_by_client and cls.failures_by_email
-        assert cls.demo_by_client and cls.writes_by_user
-        return cls.failures_by_client, cls.failures_by_email, cls.demo_by_client, cls.writes_by_user
+    def get(cls) -> AccountLimits:
+        return cls.current if cls.current is not None else cls.build()
 
 
 def _too_many(retry_after: int) -> HTTPException:
@@ -176,7 +177,8 @@ def sign_in(
     client: str = Depends(account_client),
     session: Session = Depends(get_db),
 ) -> SessionResponse:
-    by_client, by_email, _, _ = Limits.get()
+    limits = Limits.get()
+    by_client, by_email = limits.failures_by_client, limits.failures_by_email
     email_key = payload.email.strip().lower()
     wait = max(by_client.retry_after(client), by_email.retry_after(email_key))
     if wait:
@@ -194,7 +196,7 @@ def sign_in(
 def demo_sign_in(
     client: str = Depends(account_client), session: Session = Depends(get_db)
 ) -> SessionResponse:
-    _, _, demo_limit, _ = Limits.get()
+    demo_limit = Limits.get().demo_by_client
     wait = demo_limit.retry_after(client)
     if wait:
         raise _too_many(wait)
@@ -218,7 +220,7 @@ def list_favorites(
 
 
 def _write_allowed(user: User, client: str) -> None:
-    _, _, _, writes = Limits.get()
+    writes = Limits.get().writes_by_user
     key = f"{user.id}:{client}"
     wait = writes.retry_after(key)
     if wait:
