@@ -1,0 +1,69 @@
+{
+ "checks": {
+  "arm64_parity": {
+   "limit": 1e-09,
+   "machine": "aarch64",
+   "max_abs_difference": 2.220446049250313e-16,
+   "passed": true,
+   "states": 1902
+  },
+  "espn_state_parity": {
+   "limit": 0.002,
+   "passed": true,
+   "w": 0.9057924083961976
+  },
+  "p95_latency": {
+   "limit_seconds": 0.1,
+   "passed": true,
+   "seconds_p95": 0.021
+  }
+ },
+ "evidence": {
+  "final-fit.json": "34375edfa959714a7bfb41f17f973276183fc4bfb3a4482429c7c3216f00cc66",
+  "freeze-latency.json": "cbb62f85dddc708ff4854585534ecf476c10467c3f66e734630524de9d8419e6",
+  "freeze-parity.json": "91650027343b584511edf568f22aff18fe696c1c37df115353c84aeef4c696d4",
+  "platform-arm64.json": "493fb6f2df2d244dfe2e21373a607262960bbba86ad397bd6da4f49283cc955a",
+  "platform-reference.json": "1f4c99d1619edb5195a8855aca6dcff76d1f3e4694f4b08b21adac18f0636276"
+ },
+ "frozen_at": "2026-11-12T17:00:42+00:00",
+ "manifest_sha256": "ac2c47012bee342fe93f9f3c14ad6c36699d7d740bd1d21de615c0a6be923ad4",
+ "market": {
+  "line_serving": "ESPN's line in the seal, home margin = -spread; null when none",
+  "line_training": "hoopR-nba-data consensus closing spread, home margin = -home_point",
+  "own": "the Original's expected home margin, its frozen coefficients unchanged",
+  "rule": "mu4 = own + w * (line - own); mu4 = own when the seal has no line",
+  "w": 1.0,
+  "w_bounds": [
+   0.0,
+   1.0
+  ],
+  "w_fit_games": 4883,
+  "w_fit_seasons": [
+   "2022-23",
+   "2023-24",
+   "2024-25",
+   "2025-26"
+  ],
+  "w_unclipped": 1.0114542421098622,
+  "weights_by_stage": {
+   "check": 0.9057924083961976,
+   "final": 1.0,
+   "selection": 0.7200356919439594
+  }
+ },
+ "models": {
+  "end_game": "26bbd8a955d42ac8dc937f2fe0d5b72dc9de3db65badfcd7a646314a3c1719dd",
+  "mean": "2b5c29aa57ac1405121087b6db006b8c9cd5c376475dce88cb724ae2f723a744",
+  "variance": "c6a7d9908db9f55b25730ec8c65dd01fe725403de6a4935c15f386d620b23fd2"
+ },
+ "prospective": "2026-27 regular-season games tipping after frozen_at that have a seal; a game sealed with no line counts, with mu4 = own",
+ "reference": {
+  "manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+  "registration": "courtlens-win-probability-v2"
+ },
+ "registration": "courtlens-win-probability-v4",
+ "registration_sha256": "654b26bab5ee149999f69934e7cdcf288dafd31985cb2d375a32754972225085",
+ "schema": "courtlens-win-probability-v4-frozen-v1",
+ "selected": "K1: the Original's boosters, baseline and end-game specialist reading mu4",
+ "version": "courtlens-win-probability-v4-frozen-2026-27"
+}
