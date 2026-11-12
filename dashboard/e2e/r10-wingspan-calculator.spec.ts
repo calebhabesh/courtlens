@@ -1,6 +1,10 @@
-import { expect, test, type Locator } from "@playwright/test";
+import { expect as baseExpect, test, type Locator } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { openWorkbench } from "./workbench-navigation";
+
+// Every control on this page writes the URL with router.replace, a server round trip that passed the
+// 5 s default under two workers on CI (units, build and overlay checks, 2026-11-05 and 2026-11-12).
+const expect = baseExpect.configure({ timeout: 15_000 });
 
 // Real R10 API answers (e2e/fixtures/r10-*.json): the pages must show them exactly.
 const read = (name: string) => JSON.parse(readFileSync(`e2e/fixtures/r10-${name}.json`, "utf8"));
@@ -134,7 +138,7 @@ test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
     await expect(page.locator('[data-field="overlay-empty"]')).toBeVisible();
     const [a, b] = active;
     await page.getByRole("button", { name: `Add ${a.name} to the overlay` }).click();
-    await expect(page.getByRole("button", { name: `${a.name} is in the overlay` })).toBeDisabled({ timeout: 15_000 });
+    await expect(page.getByRole("button", { name: `${a.name} is in the overlay` })).toBeDisabled();
     await page.getByRole("button", { name: `Add ${b.name} to the overlay` }).click();
     await expect(page).toHaveURL(new RegExp(`overlay=${a.player_id}(%2C|,)${b.player_id}`));
     for (const p of [a, b]) {
@@ -159,8 +163,7 @@ test.describe("R10 Wingspan beside D-DPM (RD01 layout)", () => {
     for (const p of added) {
       await page.getByRole("searchbox", { name: "Add a player to the graph" }).fill(p.name);
       await page.getByRole("button", { name: `Add ${p.name} to the graph` }).click();
-      // Each add replaces the URL, a server round trip that can pass 5 s on a loaded CI runner.
-      await expect(page.getByRole("button", { name: `Stop highlighting ${p.name}` })).toBeVisible({ timeout: 15_000 });
+      await expect(page.getByRole("button", { name: `Stop highlighting ${p.name}` })).toBeVisible();
     }
     await expect(page).toHaveURL(new RegExp(`mark=${added.map(p => p.player_id).join("(%2C|,)")}`));
     for (const p of added) await expect(page.locator(`.ws-picked[data-selected="${p.player_id}"]`)).toContainText(p.name);
