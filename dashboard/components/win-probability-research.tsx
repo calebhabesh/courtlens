@@ -17,6 +17,7 @@ import {
   type CurvePoint, type Interval, type RecentGame, type ScoreGroup, type WinProbabilityAdded, type WinProbabilityPage, type WpaRow, type WpaSort, type WpaSortKey,
 } from "@/lib/win-probability";
 import { getWinProbabilityAdded, getWinProbabilityPage } from "@/lib/workbench-api";
+import { HowItThinks, PredictionBoard, TrackRecord, Trial } from "./win-probability-v4";
 
 /**
  * Research → Win Probability (R15b model, designed in F03 / RD14). Presentation only: every number is the frozen card's, the nightly
@@ -37,7 +38,7 @@ const lower = (phase: string) => PHASE_PROSE[phase] ?? phase;
 function Frame({ meta, children }: { meta: string[] | null; children: React.ReactNode }) {
   return <PageShell template="research">
     <div className="rs-column wp-page">
-      <PageHeader className="sq-hero research-hero" icon="activity" title="Win Probability" subtitle="Every game's live win chance, tested against ESPN's on games played after the model was frozen." />
+      <PageHeader className="sq-hero research-hero" icon="activity" title="Win Probability" subtitle="CourtLens picks a favorite for every game, shows its reasoning, and is graded every night." />
       <ResearchIntro tagline={meta ? <span data-field="hero-meta">{meta.map((item, i) => <Fragment key={item}>{i > 0 ? " · " : ""}<span className="wp-meta-item">{item}</span></Fragment>)}</span> : null}
         links={[{ label: "Live games", href: "/live", icon: "activity" }, { label: "How CourtLens tests models", href: "/methodology", icon: "book" }]} />
       {children}
@@ -329,6 +330,10 @@ function Negative({ data }: { data: WinProbabilityPage }) {
       <li data-field="market" data-courtlens={m.courtlens_rmse} data-market={m.market_rmse}><strong>Before tip-off, the betting market is better.</strong> Its closing spread missed the final margin by {metric(m.market_rmse, 2)} points (root mean square) against {metric(m.courtlens_rmse, 2)} for CourtLens, on {whole(m.games)} games.</li>
       <li data-field="tipoff" data-value={tip.mean} data-low={tip.low} data-high={tip.high}><strong>At tip-off, ESPN leads without a clear gap:</strong> {signed(tip.mean)} ({band(tip)}).</li>
       {ot && <li data-field="overtime" data-value={ot.calibration_error}><strong>Overtime is the weak spot:</strong> calibration error {metric(ot.calibration_error, 3)} on {whole(ot.log_loss.games)} games.</li>}
+      {data.do_no_harm && <li data-field="do-no-harm" data-passed={data.do_no_harm.passed} data-value={data.do_no_harm.log_loss_gain.mean}>
+        <strong>The Market-informed model had to do no harm first.</strong> On {whole(data.do_no_harm.games)} games of {data.do_no_harm.seasons.join(" and ")}, before it was frozen, it lowered log loss against the Original
+        by {signed(data.do_no_harm.log_loss_gain.mean)} ({band(data.do_no_harm.log_loss_gain)}), its pregame margin missed by {metric(data.do_no_harm.squared_error_gain.mean, 1)} squared points less than its own read
+        ({band(data.do_no_harm.squared_error_gain, 1)}), and its calibration error was {metric(data.do_no_harm.calibration_error, 3)} against a limit of {metric(data.do_no_harm.calibration_limit, 2)}. {data.do_no_harm.passed ? "It passed all three." : "It did not pass all three."}</li>}
       {up && <li data-field="upgrade" data-adopted={up.adopted} data-value={gain.mean} data-low={gain.low} data-high={gain.high}>
         <strong>{up.adopted ? "A second model replaced it." : "A second model was tested and not adopted."}</strong> It added Projected Impact ratings to the pregame forecast and
         two more training seasons{up.selection.P3?.accepted ? ", with an overtime model" : "; an overtime model was tried and not kept"}. On the same {whole(up.games)} test games it lowered
@@ -453,11 +458,19 @@ function About({ data }: { data: WinProbabilityPage }) {
 
 export function WinProbabilityResearch() {
   const { data, error, loading, retry } = useFeed([], () => getWinProbabilityPage());
-  const meta = data ? [`frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, `${whole(data.scorecard?.prospective.games ?? 0)} games since the freeze`, "checked nightly against ESPN"] : null;
+  // W5 round 2: the hero names the serving model; the Original's counts stay in Evidence.
+  const h2h = data?.head_to_head;
+  const meta = data ? (h2h ? [h2h.serving_model.model === "market_informed" ? "Market-informed model, on trial" : "Original model", `frozen ${formatDate(h2h.model.frozen_at.slice(0, 10))}`, "graded every morning"]
+    : [`frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, `${whole(data.scorecard?.prospective.games ?? 0)} games since the freeze`, "checked nightly against ESPN"]) : null;
   return <Frame meta={meta}>
     {error && <FeedFailure error={error} retry={retry} what="Win Probability" />}
     {loading && <FeedSkeleton label="Loading Win Probability" />}
     {data && <>
+      <PredictionBoard />
+      <TrackRecord data={data} />
+      <HowItThinks data={data} />
+      <Trial data={data} />
+      <h2 className="wp-evidence-head" id="evidence">Evidence</h2>
       <Answer data={data} />
       <Scorecard data={data} />
       <FinalTest data={data} />
