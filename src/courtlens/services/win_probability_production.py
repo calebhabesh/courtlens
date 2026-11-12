@@ -44,6 +44,7 @@ from courtlens.domain.win_probability_state import (
     replay,
     segment_end,
 )
+from courtlens.services.win_probability_market import HomeModel
 from courtlens.services.win_probability_serving import (
     MANIFEST_SCHEMA,
     FrozenModel,
@@ -421,7 +422,7 @@ def score_game(
 
 
 def event_series(
-    model: FrozenModel, plays: list[dict[str, Any]], record: dict[str, Any]
+    model: HomeModel, plays: list[dict[str, Any]], record: dict[str, Any]
 ) -> list[dict[str, Any]]:
     """Home win probability after each play, in game order.
 
