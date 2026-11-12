@@ -46,7 +46,6 @@ SERVING_DIRS=(
   derived/wowy-v1
   derived/series-matchups-v1
   artifacts/win-probability
-  derived/win-probability-serving
   artifacts/projected-impact
   derived/projected-impact-serving
   derived/win-probability-ratings
@@ -73,10 +72,13 @@ done
 for dir in "${SERVING_DIRS[@]}"; do
   [[ -d "$DATA_DIR/$dir" ]] || { echo "Missing $DATA_DIR/$dir; set COURTLENS_DATA_DIR." >&2; exit 1; }
 done
+# Written on the VPS by the win-probability-seal service (Win Probability v4 W2). A deploy only
+# makes sure they exist: never rsynced, so never deleted or overwritten from this machine.
+VPS_OWNED_DIRS=(derived/win-probability-serving raw/espn-wp)
 
 echo "Deploying $sha to $SSH_HOST:$REMOTE_DIR"
 remote_dirs=("$REMOTE_DIR/infra")
-for dir in "${SERVING_DIRS[@]}"; do remote_dirs+=("$REMOTE_DIR/data/$dir"); done
+for dir in "${SERVING_DIRS[@]}" "${VPS_OWNED_DIRS[@]}"; do remote_dirs+=("$REMOTE_DIR/data/$dir"); done
 "${SSH[@]}" "install -d -m 755 ${remote_dirs[*]} && install -d -m 700 '$REMOTE_DIR/secrets'"
 "${RSYNC[@]}" "$stage/docker-compose.yml" "$stage/pinned.env" "$SSH_HOST:$REMOTE_DIR/"
 "${RSYNC[@]}" "$stage/infra/" "$SSH_HOST:$REMOTE_DIR/infra/"

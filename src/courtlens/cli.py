@@ -2050,6 +2050,54 @@ def refresh_win_probability_command(
     typer.echo(json.dumps(nightly(Client(), lookback_days=lookback_days)))
 
 
+@app.command("seal-win-probability")
+def seal_win_probability_command(
+    lookback_days: int = typer.Option(3, help="Earlier days to look for unscored finished games."),
+    next_wake: bool = typer.Option(
+        False,
+        help="Print only the seconds until the next scheduled run on stdout (the report goes to "
+        "stderr). The hosted seal service sleeps on it.",
+    ),
+) -> None:
+    """Seal today's slate (v2, only when a game changed), score finished games, rewrite summaries.
+
+    Never refits ratings: rating snapshots, box scores and rosters come from the owner's PC.
+    """
+    from courtlens.ingestion.espn_win_probability import Client
+    from courtlens.services.win_probability_seal import RETRY, next_run, run
+
+    started = datetime.now(UTC)
+    try:
+        report = run(Client(), started, lookback_days)
+    except Exception as error:
+        if not next_wake:
+            raise
+        typer.echo(f"win-probability seal run failed: {error!r}", err=True)
+        typer.echo(str(int(RETRY.total_seconds())))
+        return
+    if not next_wake:
+        typer.echo(json.dumps(report))
+        return
+    wake = next_run(datetime.now(UTC), report["seal_last_tip"])
+    report["next_run"] = wake.isoformat(timespec="seconds")
+    typer.echo(json.dumps(report), err=True)
+    typer.echo(str(max(60, int((wake - datetime.now(UTC)).total_seconds()))))
+
+
+def _refresh_win_probability_step() -> None:
+    """refresh-daily's step: seal and score here, or only ensure rating snapshots (W2 cutover)."""
+    if get_settings().win_probability_local_sealing:
+        refresh_win_probability_command(7)
+        return
+    from zoneinfo import ZoneInfo
+
+    from courtlens.evaluation.win_probability_ratings import ensure_snapshots
+
+    today = datetime.now(ZoneInfo("America/New_York")).date()
+    snapshots = ensure_snapshots(today, get_settings().win_probability_snapshots_dir)
+    typer.echo(json.dumps({"date": today.isoformat(), "sealing": "vps", "snapshots": snapshots}))
+
+
 @app.command("refresh-projected-impact")
 def refresh_projected_impact_command(
     force: bool = typer.Option(False, help="Score now even if the last score is under 7 days old."),
@@ -2121,7 +2169,7 @@ def refresh_daily_command(
                 keep_days,
             ),
         ),
-        ("win probability", lambda: refresh_win_probability_command(7)),
+        ("win probability", _refresh_win_probability_step),
         ("projected impact", lambda: refresh_projected_impact_command(False)),
     )
     for name, step in steps:

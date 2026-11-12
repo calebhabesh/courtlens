@@ -14,11 +14,13 @@ Materiality was fixed before the first full run. The difference is material if a
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import gzip
 import json
 import tempfile
 import time
 from collections import Counter
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -144,7 +146,14 @@ def _values(state: np.ndarray, times: np.ndarray) -> dict[str, np.ndarray]:
     }
 
 
-def run(limit: int | None = None) -> dict[str, Any]:
+def run(
+    limit: int | None = None,
+    mu_for: Callable[[str], float] | None = None,
+    reference: Callable[[str], np.ndarray] | None = None,
+) -> dict[str, Any]:
+    """v2's check as frozen. `mu_for` replaces each game's pregame mu (Win Probability v4 reads the
+    same boosters with mu4) and `reference` gives the saved predictions the archive states must
+    reproduce; both default to v2's."""
     started = time.monotonic()
     table = read_games(OUTPUT)["games"]
     pregame = json.loads((OUTPUT / "pregame.json").read_text())["games"]
@@ -170,7 +179,7 @@ def run(limit: int | None = None) -> dict[str, Any]:
     for season in TEST_SEASONS:
         year = int(season[:4])
         saved, ids = read_season(season)
-        selected = read_prediction(OUTPUT, "selected", season)
+        selected = reference(season) if reference else read_prediction(OUTPUT, "selected", season)
         path, _ = bundle_paths()[season]
         bundle = checked(path, path.name.removesuffix(".json.gz"))
         asset = assets[f"datasets/nbastatsv3_{year}.tar.xz"]
@@ -192,6 +201,8 @@ def run(limit: int | None = None) -> dict[str, Any]:
                     score_source[scores] += 1
                     entry = table[gid]
                     inputs = game_inputs(entry, pregame[gid])
+                    if mu_for is not None:
+                        inputs = dataclasses.replace(inputs, mu=mu_for(gid))
                     win = 1.0 if entry["home_pts"] > entry["away_pts"] else 0.0
                     source = replay(store.get("v3", gid), entry["home"], entry["away"])
                     states = sampled_states(source)

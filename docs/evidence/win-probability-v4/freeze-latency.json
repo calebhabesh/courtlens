@@ -1,0 +1,16 @@
+{
+ "check": "p95_latency",
+ "events_per_game_mean": 481.9,
+ "games": 200,
+ "limit_seconds": 0.1,
+ "machine": "x86_64",
+ "model_load_seconds": 0.021,
+ "passed": true,
+ "peak_rss_mib": 403.2,
+ "seconds_max": 0.0302,
+ "seconds_p50": 0.0134,
+ "seconds_p95": 0.021,
+ "threads": 1,
+ "version": "courtlens-win-probability-v4",
+ "w": 1.0
+}
