@@ -148,3 +148,25 @@ file, pin test, serving file, v4 scoring, API or dashboard change. Evidence:
 
 Next: tomorrow, after the cutover is confirmed, run `scripts/win_probability_v4_platform_check.sh`
 and report. The owner decides on the freeze.
+
+## 2026-11-11 — Plan revised: W2 and W3 splits recorded, W7 added; nothing built
+
+Plan text only (Fable 5.2, with the owner). No code, data, VPS or timer was changed.
+
+- **W-D14.** The plan now records what was agreed after W1: W2 in two parts (A built, B the
+  cutover), W3 as W3a (final fit, checks, freeze) and W3b (both models scored afterwards from every
+  seal since the freeze), and the dated protocol note as a committed file whose API field ships in
+  W3b.
+- **W-D15, block W7.** The owner wants CourtLens to run entirely on the VPS, like their other
+  projects ("self sustaining"). W7a surveys every job and tries every source from the VPS; W7b
+  moves the data directory, the database, rosters and the daily refresh; W7c moves the rest and
+  adds backups and job health. It runs after W3b and before W4.
+- **Measured for W7 on the PC today:** daily refresh 11 min and 2.9 GB peak; rosters 2.6 min and
+  265 MB; lineups 40 to 58 min and 1.0 GB; Metric Backtest seconds and 180 MB; the season impact
+  job has had no real run this season. Data: 6.7 GB raw, 5.4 GB derived, 4.6 GB artifacts.
+- **Not known yet:** whether any source refuses the VPS's address, and how each job behaves on
+  arm64. W7a answers both before anything moves.
+- "How to work through this plan" now carries the worktree, Python, trial-run and known-failure
+  notes, so a new session needs only the plan, the registration and this log.
+
+Next is unchanged: W2 part B on the owner's "cut over", then the arm64 check and the freeze (W3a).
