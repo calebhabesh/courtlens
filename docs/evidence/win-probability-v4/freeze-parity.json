@@ -1,0 +1,157 @@
+{
+ "changes": {
+  "espn_own_sample": {
+   "games": 2439,
+   "high": 0.0002353178964999122,
+   "low": 0.00010484825891590897,
+   "mean": 0.00016023298746666958
+  },
+  "espn_same_times": {
+   "games": 2439,
+   "high": 0.0007334993754559654,
+   "low": 0.00035241761872292033,
+   "mean": 0.0005343745207059082
+  }
+ },
+ "check": "espn_state_parity",
+ "detail": {
+  "any_material": false,
+  "calibration_error": {
+   "archive": 0.008646197109637255,
+   "espn_own_sample": 0.008675910216181549,
+   "espn_same_times": 0.008912552304391941
+  },
+  "elapsed_seconds": 114.6,
+  "espn_replay_final_score_differs": 3,
+  "feature_exact_agreement": {
+   "bonus_away": 0.99098,
+   "bonus_home": 0.99032,
+   "fouls_away": 0.9682,
+   "fouls_home": 0.96928,
+   "ft_pending_away": 0.99971,
+   "ft_pending_home": 0.99959,
+   "margin": 0.98995,
+   "possession": 0.98237,
+   "possession_age": 0.94696,
+   "timeouts_away": 0.99749,
+   "timeouts_home": 0.99649
+  },
+  "feature_near_agreement": {
+   "fouls_away": {
+    "share": 0.98026,
+    "tolerance": 1.0
+   },
+   "fouls_home": {
+    "share": 0.98192,
+    "tolerance": 1.0
+   },
+   "possession_age": {
+    "share": 0.99187,
+    "tolerance": 5.0
+   }
+  },
+  "games": 2439,
+  "games_without_espn": [],
+  "limits": {
+   "ece": 0.02,
+   "log_loss_change": 0.002,
+   "mean_abs_probability_gap": 0.01
+  },
+  "log_loss": {
+   "aligned": 0.39435250973520575,
+   "archive": 0.3938181352144998,
+   "own": 0.39397836820196647
+  },
+  "log_loss_change_aligned": {
+   "games": 2439,
+   "high": 0.0007334993754559654,
+   "low": 0.00035241761872292033,
+   "mean": 0.0005343745207059082
+  },
+  "log_loss_change_own_sample": {
+   "games": 2439,
+   "high": 0.0002353178964999122,
+   "low": 0.00010484825891590897,
+   "mean": 0.00016023298746666958
+  },
+  "material": {
+   "ece_aligned": false,
+   "ece_own_sample": false,
+   "log_loss_aligned": false,
+   "log_loss_own_sample": false,
+   "probability_gap": false
+  },
+  "probability_gap": {
+   "max": 0.8176193826100115,
+   "mean_abs": 0.0016489980906766383,
+   "p50": 0.0,
+   "p95": 0.00035843235488548206,
+   "p99": 0.05705756210646328
+  },
+  "reproduction_max_abs_difference": 2.9802234569054065e-08,
+  "score_source": {
+   "scoring_plays": 2433,
+   "source": 6
+  },
+  "states_compared": 533770,
+  "worst_games": [
+   {
+    "game": "0022500158",
+    "mean_abs_probability_gap": 0.0361
+   },
+   {
+    "game": "0022400615",
+    "mean_abs_probability_gap": 0.0321
+   },
+   {
+    "game": "0022400436",
+    "mean_abs_probability_gap": 0.0317
+   },
+   {
+    "game": "0022400883",
+    "mean_abs_probability_gap": 0.0293
+   },
+   {
+    "game": "0022400953",
+    "mean_abs_probability_gap": 0.0285
+   },
+   {
+    "game": "0022400159",
+    "mean_abs_probability_gap": 0.0284
+   },
+   {
+    "game": "0022400002",
+    "mean_abs_probability_gap": 0.0264
+   },
+   {
+    "game": "0022401102",
+    "mean_abs_probability_gap": 0.0246
+   },
+   {
+    "game": "0022400942",
+    "mean_abs_probability_gap": 0.0233
+   },
+   {
+    "game": "0022400734",
+    "mean_abs_probability_gap": 0.0231
+   }
+  ]
+ },
+ "limit": 0.002,
+ "passed": true,
+ "r15b_view": {
+  "any_material": false,
+  "material": {
+   "ece_aligned": false,
+   "ece_own_sample": false,
+   "log_loss_aligned": false,
+   "log_loss_own_sample": false,
+   "probability_gap": false
+  }
+ },
+ "rule": "passes when the mean change in log loss is within the limit for both ESPN views",
+ "serving_path_reproduces_stage_c": 2.9802234569054065e-08,
+ "version": "courtlens-win-probability-v4",
+ "w": 0.9057924083961976,
+ "w_from": "stage C (the model whose stage C log loss is compared)"
+}
