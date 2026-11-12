@@ -141,6 +141,37 @@ services:
       - ./data/derived/win-probability-serving:/app/data/derived/win-probability-serving
     logging: *logging
 
+  # Win Probability v4 W7: the PC's scheduled jobs on the VPS (`courtlens run-jobs`), one at a
+  # time on the PC's schedule: rosters every 6 hours Eastern, the daily refresh 13:30 UTC,
+  # lineups 14:05, season impact Mondays 14:30, Metric Backtest 15:00. Each job runs as its own
+  # process; a failed job is recorded (`GET /api/jobs`) and the loop continues. It owns `data/`
+  # read-write; the API's mounts stay read-only. Seals stay with `win-probability-seal`, so the
+  # daily refresh's win-probability step only refits rating snapshots here.
+  jobs:
+    image: ${COURTLENS_API_IMAGE:?}
+    restart: unless-stopped
+    user: "1001:1001"
+    mem_limit: 4g
+    cpus: 2.0
+    environment:
+      <<: *api-environment
+      COURTLENS_WIN_PROBABILITY_LOCAL_SEALING: "false"
+    command:
+      - sh
+      - -c
+      - >-
+        while :; do
+        wait=$$(courtlens run-jobs --next-wake | tail -n 1);
+        case "$$wait" in ''|*[!0-9]*) echo 'jobs run gave no wake time' >&2; wait=1800;; esac;
+        sleep "$$wait";
+        done
+    volumes:
+      - ./data:/app/data
+    logging: *logging
+    depends_on:
+      db:
+        condition: service_healthy
+
   api:
     image: ${COURTLENS_API_IMAGE:?}
     restart: unless-stopped
@@ -158,6 +189,7 @@ services:
       - ./data/cache/portraits:/app/data/cache/portraits:ro
       - ./data/artifacts/win-probability:/app/data/artifacts/win-probability:ro
       - ./data/derived/win-probability-serving:/app/data/derived/win-probability-serving:ro
+      - ./data/derived/job-health:/app/data/derived/job-health:ro
       - ./data/artifacts/projected-impact:/app/data/artifacts/projected-impact:ro
       - ./data/derived/projected-impact-serving:/app/data/derived/projected-impact-serving:ro
       - ./data/derived/win-probability-ratings:/app/data/derived/win-probability-ratings:ro

@@ -2050,6 +2050,41 @@ def refresh_win_probability_command(
     typer.echo(json.dumps(nightly(Client(), lookback_days=lookback_days)))
 
 
+@app.command("run-jobs")
+def run_jobs_command(
+    next_wake: bool = typer.Option(
+        False,
+        help="Run every due job, then print only the seconds until the next scheduled time on "
+        "stdout (reports go to stderr). The hosted jobs service sleeps on it.",
+    ),
+    run: str = typer.Option("", help="Run this one job now, whatever its schedule."),
+    show: bool = typer.Option(False, "--status", help="Print every job's health and exit."),
+) -> None:
+    """The PC's scheduled jobs on the VPS (W7), one at a time, each with a health record."""
+    from courtlens.services import scheduled_jobs as jobs
+
+    if show:
+        typer.echo(json.dumps(jobs.status(), indent=1))
+        return
+    if run:
+        job = jobs.BY_NAME.get(run)
+        if job is None:
+            raise typer.BadParameter(f"unknown job {run!r}; one of {sorted(jobs.BY_NAME)}")
+        result = jobs.run_job(job, job.last_slot(datetime.now(UTC)))
+        typer.echo(json.dumps({k: v for k, v in result.items() if k != "last_output"}))
+        if result.get("last_exit") != 0:
+            raise typer.Exit(1)
+        return
+    ran = jobs.run_due()
+    report = [{k: v for k, v in r.items() if k != "last_output"} for r in ran]
+    if not next_wake:
+        typer.echo(json.dumps(report))
+        return
+    for line in report:
+        typer.echo(json.dumps(line), err=True)
+    typer.echo(str(jobs.seconds_to_next()))
+
+
 @app.command("seal-win-probability")
 def seal_win_probability_command(
     lookback_days: int = typer.Option(3, help="Earlier days to look for unscored finished games."),
