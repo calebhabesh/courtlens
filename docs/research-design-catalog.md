@@ -1110,3 +1110,23 @@ Instructions (owner, 2026-11-10, round 5; offered suggestions 3 and 6 as optiona
 - **Now:** not built. R16 is running (development set partly done, holdout unopened).
 - **Waits for:** R16's results; then a page with accuracy, intervals, failure categories and per-tool errors.
 - **Cut (owner, 2026-11-10):** asked "WHat exactly is ask evaluation page? Should we even have this?", the owner chose to put Ask itself on the hosted demo with per-visitor and site-wide daily limits instead, then "Yes cut it". R16 stays unfinished on its branch (`research-r16`, dev 117/573, holdout unopened); its replay of the 214 recorded stats calls drove the stats-tool argument repair (46e1f707).
+
+## W4/W5 Win Probability v4 (Live cards, Pre-Game why, the page) — round 2 (2026-11-12)
+
+- **Round 1** (W4 #101, W5 #103): the card row and Pre-Game "CourtLens prediction" panel from the
+  plan's mock-ups; the page reordered to slate, track record, how it thinks, trial, then Evidence.
+- **Owner instruction (2026-11-12, verbatim in part):** "The current win prob page, doesn't show any
+  upcoming games, and what courtlens' model predicts. It's not user friendly … bring some more clear,
+  nice ux focused design to the forefront (that doesn't mean the statistics, and data goes away, I
+  just want it to look nice). A nice example is our 'Live' page … user centric but still rich with
+  data." On the open decisions: "use your best judgment and select the optimal choice."
+- **Round 2 built:** the page opens on a prediction board: Live's date strip (any day, past days
+  show results), one card per game with both logos, the sealed chance for each side (the favourite's
+  large), a bar split at that chance in each team's colour, the call, the line and who's out; a
+  final card shows the score and "Called X ✓ right / ✗ wrong". A card opens the game (Pre-Game
+  "why" for past games). The three model steps are cards; the track record is tiles.
+- **Decisions taken (owner delegated):** (1) the 100% weight is said plainly: "when there is a line,
+  the pregame margin follows it, and the own read is the fallback when there is none"; (2) the
+  why panel's bars run away (left) to home (right), the site's away-first order, not the mock-up's;
+  (3) the hero names the serving model and its freeze ("Market-informed model, on trial · frozen
+  Nov 12, 2026 · graded every morning"); the Original's game counts stay in Evidence.
