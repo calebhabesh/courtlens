@@ -56,7 +56,31 @@ export interface WinProbabilityPage {
   wpa_seasons: string[];
   /** F05: a second model tested against the frozen one on the same games; null before it ran. */
   upgrade?: UpgradeResult | null;
+  /** W3b: the Market-informed model against the Original on the same seals; null before the first scoring run. */
+  head_to_head?: HeadToHead | null;
+  protocol_notes?: ProtocolNote[];
+  /** W5 */
+  head_to_head_calibration?: HeadToHeadCalibration | null;
+  worked_example?: WorkedExample | null;
+  do_no_harm?: DoNoHarm | null;
 }
+export interface TrialRead { games: number; through: string; v1: Interval & { result: string }; v2: Interval & { result: string; phases: Record<string, Interval & { result: string }> } }
+export interface HeadToHead {
+  games: number; report_from_games: number; verdict_at_games: number; games_without_line: number; updated_at: string;
+  model: { version: string; manifest_sha256: string; frozen_at: string; w: number };
+  record_of_calls: { games: number; original: number; market_informed: number; line: { games: number; right: number }; toss_ups: number };
+  current: TrialRead | null; too_early_to_call: boolean; reads: (TrialRead & { kind: "verdict" | "final"; read_at: string })[];
+  serving_model: { model: "original" | "market_informed"; reason: string; since?: string };
+  seal_age_minutes: { median: number | null; maximum: number | null };
+}
+export interface ProtocolNote { date: string; kind: string; note: string }
+export interface HeadToHeadCalibration { games: number; market_informed: { curve: CurvePoint[]; calibration_error: number }; original: { curve: CurvePoint[]; calibration_error: number } }
+export interface WorkedExample {
+  rule: string; stored: boolean;
+  game: { game_id: string; date: string; home: string; away: string; home_score: number; away_score: number; calls: Record<string, number | null> } | null;
+  why: WinProbabilityWhy | null;
+}
+export interface DoNoHarm { games: number; seasons: string[]; log_loss_gain: Interval; squared_error_gain: Interval; calibration_error: number; calibration_limit: number; passed: boolean }
 export interface WpaRow { player: string; player_id: string | null; name: string; team: string | null; games: number; wpa: number; events: number; clutch_wpa: number; clutch_events: number }
 export interface WinProbabilityAdded { season: string; games: number; players: number; leaders: WpaRow[]; clutch_leaders: WpaRow[] }
 
