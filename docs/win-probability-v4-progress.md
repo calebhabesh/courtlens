@@ -209,3 +209,33 @@ Nothing frozen, nothing marked ✅.
 
 Still to do: check the VPS's runs through tonight and tomorrow's 09:00 ET scoring run before W2 is
 called done; update the deploy guide's evidence; the owner's decision on the freeze.
+
+## 2026-11-12 — W3a: v4 frozen; seals moved to 5 minutes before tip
+
+On the owner's "freeze" (with the owner present). Nothing serves v4 yet; W3b scores both models
+from the seals. Not marked ✅: only the owner does that.
+
+- **Freeze.** `evaluation/research/frozen/courtlens-win-probability-v4.json` (manifest sha
+  `ac2c4701`), written by `evaluation/win_probability_v4_freeze.py` with the pin test
+  `tests/unit/test_win_probability_v4_freeze.py` (PR #96). `frozen_at` 2026-11-12T17:00:42Z;
+  commit `90d022d5` pushed **2026-11-12T17:14:57Z**, the plan's freeze time. K1 at w = 1.0
+  (unclipped 1.0115) on the Original's manifest `b2b0db82` and its three model files, unchanged.
+  The manifest records the three freeze checks (ESPN-state parity, p95 21 ms, arm64 2.2e-16 over
+  1,902 states, limit 1e-9) and the hashes of the five evidence files. The freeze refuses a failed
+  check, an arm64 check at another w, and a second run (all tested). 69 win-probability tests
+  pass; strict mypy (394 files) and Ruff clean.
+- **First slate that counts.** By the registration, 2026-27 regular-season games tipping after the
+  freeze that have a seal: first 401909976 (TOR @ PHI) and 401909977 (DET @ WAS), tip
+  2026-11-13T00:00Z. The VPS's noon run (17:00:03Z) was clean: 4 games sealed, each with a line.
+- **Seal times (owner's decision, PR #95, release `3988ffc4`).** Runs moved from :00/:30 to
+  :25/:55 Eastern. Tips are on the hour or half hour, so the run at a tip's own time had landed
+  after it and each game's last seal was 30 minutes old, before most game-time decisions (the
+  league's injury report updates every 15 minutes to tip-off). Now it is 5 minutes old. The rule
+  for which seal a game uses, the seal's contents and both models are unchanged; second protocol
+  note added. First run in the new release 17:45:32Z, next 17:55:00Z.
+- **CI.** #94 made the backend job green (the legacy-brand test). The dashboard job still fails on
+  the same 2 R10 Wingspan Playwright tests (failed on 2 of the 3 runs today, all retries), so
+  Images was started by hand again (43272196653). That spec needs its own look.
+
+Still to do: check tonight's seals (taken at 18:55, 19:55 and 20:55 ET) and tomorrow's 09:00 ET
+scoring run on the VPS before W2 is called done. Next block: W3b.

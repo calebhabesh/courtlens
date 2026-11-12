@@ -12,11 +12,43 @@
    "last_pc_seal": "pregame/2026-11-12.03604c0cf687fe057f8f96c1fa54c558781c3250bf8c71e59d16b424177839eb.json (captured 2026-11-12T13:46:34Z, superseded before every tip-off that day)",
    "pc_local_sealing_off_at_utc": "2026-11-12T15:29:01Z",
    "first_games_affected": [
-    {"espn_id": "401909976", "tip_off_utc": "2026-11-13T00:00Z", "away": "TOR", "home": "PHI"},
-    {"espn_id": "401909977", "tip_off_utc": "2026-11-13T00:00Z", "away": "DET", "home": "WAS"}
+    {
+     "espn_id": "401909976",
+     "tip_off_utc": "2026-11-13T00:00Z",
+     "away": "TOR",
+     "home": "PHI"
+    },
+    {
+     "espn_id": "401909977",
+     "tip_off_utc": "2026-11-13T00:00Z",
+     "away": "DET",
+     "home": "WAS"
+    }
    ],
    "first_games_affected_note": "Two games share the first tip-off. Every game from these on uses a seal written by the VPS.",
    "scoring_check": "The VPS re-scored 2026-11-11's 10 games on a temporary copy: same game ids, 2 rows byte-identical, 8 differing only in score floats (max absolute difference 1.1e-16), no other differences."
+  },
+  {
+   "date": "2026-11-12",
+   "kind": "seal_times_moved",
+   "note": "The seal service's runs moved from :00 and :30 to :25 and :55 Eastern (release 3988ffc4, PR #95). Tips are on the hour or half hour, so a game's last seal is now taken about 5 minutes before its scheduled tip instead of 30, after most game-time injury decisions. The rule for which seal a game uses (the newest captured before ESPN's scheduled tip-off), the seal's contents and both models are unchanged. It applies to both the Original and the Market-informed model.",
+   "changed_at_utc": "2026-11-12T17:45:32Z",
+   "changed_measured_as": "ran_at of the seal service's first run in release 3988ffc4; its next run was 17:55:00Z",
+   "first_games_affected": [
+    {
+     "espn_id": "401909976",
+     "tip_off_utc": "2026-11-13T00:00Z",
+     "away": "TOR",
+     "home": "PHI"
+    },
+    {
+     "espn_id": "401909977",
+     "tip_off_utc": "2026-11-13T00:00Z",
+     "away": "DET",
+     "home": "WAS"
+    }
+   ],
+   "first_games_affected_note": "Every game tipping from 2026-11-13T00:00Z on; no game tipped on the old schedule after the Market-informed model's freeze (2026-11-12T17:14:57Z push)."
   }
  ]
 }

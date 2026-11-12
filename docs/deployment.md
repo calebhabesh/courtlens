@@ -260,6 +260,12 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 
 ## Deploy log
 
+### 2026-11-12: release 3988ffc4 (seals 5 minutes before tip, #95; legacy-brand test, #94)
+
+- **What:** the seal service runs at :25 and :55 Eastern instead of :00 and :30, so each game's last seal is 5 minutes before its tip, not 30 (a protocol note records it).
+- **Why Images was started by hand:** the backend job is green again (#94), but the dashboard job failed on the same 2 R10 Wingspan Playwright tests as the morning run. The hand-started Images run (43272196653) passed.
+- **Deploy:** no Stats cohorts built (171 existing); 158 GB free. The seal service's first run (17:45:32Z) sealed nothing new and set its next run to 17:55:00Z; `/api/health` ok.
+
 ### 2026-11-12: release 8afa373d (Win Probability v4 W2 part B, the cutover)
 
 - **What:** the `win-probability-seal` service; seals and scoring now run on the VPS (#92). The PC only pushes inputs (`scripts/win-probability-push.sh`) and pulls the bundle back.
