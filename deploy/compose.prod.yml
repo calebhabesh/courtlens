@@ -111,7 +111,8 @@ services:
 
   # Win Probability v4 W2: seals each scheduled game's pregame inputs and scores finished games.
   # One run at start, then at 09:00 US Eastern (last night's scores) and every 30 minutes from
-  # noon until the day's last scheduled tip; `--next-wake` prints the seconds to sleep. It owns
+  # 12:25 (at :25 and :55, so a game's last seal is 5 minutes before its tip) until the day's
+  # last scheduled tip; `--next-wake` prints the seconds to sleep. It owns
   # the serving directory and ESPN's raw store (read-write, as the host's ubuntu user, which owns
   # them); everything else it reads is pushed from the owner's PC and mounted read-only. Peak
   # 338 MB measured on the PC with three nights scored in one run (docs/deployment.md).

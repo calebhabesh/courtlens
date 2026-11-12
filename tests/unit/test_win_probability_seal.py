@@ -401,11 +401,12 @@ def eastern(day, clock):
     ("now", "last_tip", "expected"),
     [
         (eastern(11, "03:00"), None, eastern(11, "09:00")),
-        (eastern(11, "09:00"), "2026-11-12T03:00Z", eastern(11, "12:00")),
-        (eastern(11, "12:00"), "2026-11-12T03:00Z", eastern(11, "12:30")),
-        (eastern(11, "21:01"), "2026-11-12T03:00Z", eastern(11, "21:30")),
-        # The last run lands before the last tip (22:00 Eastern), not at it.
-        (eastern(11, "21:30"), "2026-11-12T03:00Z", eastern(12, "09:00")),
+        (eastern(11, "09:00"), "2026-11-12T03:00Z", eastern(11, "12:25")),
+        (eastern(11, "12:25"), "2026-11-12T03:00Z", eastern(11, "12:55")),
+        (eastern(11, "21:01"), "2026-11-12T03:00Z", eastern(11, "21:25")),
+        # The last run lands 5 minutes before the last tip (22:00 Eastern), not at it.
+        (eastern(11, "21:30"), "2026-11-12T03:00Z", eastern(11, "21:55")),
+        (eastern(11, "21:55"), "2026-11-12T03:00Z", eastern(12, "09:00")),
         (eastern(11, "09:01"), None, eastern(12, "09:00")),
         (eastern(11, "23:00"), None, eastern(12, "09:00")),
     ],
@@ -415,11 +416,25 @@ def test_next_run(now, last_tip, expected):
 
 
 def test_daylight_saving_keeps_eastern_clock_times():
-    # 2027-03-14 is the spring change; noon is 16:00 UTC that day, 17:00 the day before.
+    # 2027-03-14 is the spring change; 12:25 is 16:25 UTC that day, 17:25 the day before.
     before = seal.next_run(datetime(2027, 3, 13, 14, 0, tzinfo=UTC), "2027-03-14T00:00Z")
     after = seal.next_run(datetime(2027, 3, 14, 14, 0, tzinfo=UTC), "2027-03-15T00:00Z")
-    assert before == datetime(2027, 3, 13, 17, 0, tzinfo=UTC)
-    assert after == datetime(2027, 3, 14, 16, 0, tzinfo=UTC)
+    assert before == datetime(2027, 3, 13, 17, 25, tzinfo=UTC)
+    assert after == datetime(2027, 3, 14, 16, 25, tzinfo=UTC)
+
+
+@pytest.mark.parametrize("tip", ["19:00", "19:30", "22:00", "22:30"])
+def test_the_last_seal_before_a_tip_is_five_minutes_before_it(tip):
+    tip_at = eastern(11, tip)
+    last_tip = tip_at.astimezone(UTC).strftime("%Y-%m-%dT%H:%MZ")
+    run = eastern(11, "12:00")
+    runs = []
+    while run.date() == tip_at.date():
+        run = seal.next_run(run, last_tip).astimezone(seal.EASTERN)
+        runs.append(run)
+    before = [r for r in runs if r < tip_at]
+    assert tip_at - before[-1] == timedelta(minutes=5)
+    assert all(r.minute in {25, 55} for r in before)
 
 
 # ---------------------------------------------------------------------------------------------

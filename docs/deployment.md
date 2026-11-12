@@ -137,7 +137,9 @@ run seals the day's scheduled regular-season games (schema `courtlens-win-probab
 a new file only when a game's inputs, line, Out list or tip time changed), scores finished games
 from the previous three days that are not yet on the scorecard, and rewrites the summaries. It runs
 once when the container starts, at 09:00 US Eastern for last night's scores, then every 30 minutes
-from noon while a run still lands before the day's last scheduled tip. A failed run retries in 30
+from 12:25, at :25 and :55, while a run still lands before the day's last scheduled tip. Tips are on
+the hour or half hour, so each game's last seal is taken 5 minutes before it (from 2026-11-12;
+before that the runs were at :00 and :30 and the last seal was 30 minutes old). A failed run retries in 30
 minutes. It never refits ratings.
 
 - **Mounts.** Read-write: `data/derived/win-probability-serving` and `data/raw/espn-wp` (ESPN's raw
