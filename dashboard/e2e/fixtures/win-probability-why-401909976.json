@@ -1,0 +1,426 @@
+{
+ "game_id": "401909976",
+ "date": "2026-11-12",
+ "home": "1610612755",
+ "away": "1610612761",
+ "tip_off": "2026-11-13T00:00Z",
+ "captured_at": "2026-11-12T19:10:34+00:00",
+ "seal": "2026-11-12.c46c845577616f966ca48c2507d0d79b1c6bf87dee828ecfbc161ea91cbecb16.json",
+ "model": "market_informed",
+ "serving": "market_informed",
+ "own": {
+  "own": 2.1444087793773425,
+  "groups": [
+   {
+    "group": "players",
+    "label": "Players available",
+    "contribution": -0.49097674655814316,
+    "rows": [
+     {
+      "input": "strength",
+      "label": "Strength of the players available (home minus away), times pace",
+      "value": -0.8151253827210915,
+      "coefficient": 0.5915623962300777,
+      "contribution": -0.49097674655814316
+     }
+    ]
+   },
+   {
+    "group": "form",
+    "label": "Recent form",
+    "contribution": -0.746908006570885,
+    "rows": [
+     {
+      "input": "team_form",
+      "label": "Team form",
+      "value": -1.3194510356235216,
+      "coefficient": 0.5660748193038668,
+      "contribution": -0.746908006570885
+     }
+    ]
+   },
+   {
+    "group": "home_court",
+    "label": "Home court",
+    "contribution": 1.3309644851162439,
+    "rows": [
+     {
+      "input": "home",
+      "label": "Home court",
+      "value": 1.0,
+      "coefficient": 0.44715907939657723,
+      "contribution": 0.44715907939657723
+     },
+     {
+      "input": "denver",
+      "label": "Denver altitude",
+      "value": 0.0,
+      "coefficient": 1.2422446725817107,
+      "contribution": 0.0
+     },
+     {
+      "input": "utah",
+      "label": "Utah altitude",
+      "value": 0.0,
+      "coefficient": 1.506430855199161,
+      "contribution": 0.0
+     },
+     {
+      "input": "home_court_form",
+      "label": "Home-court part of form",
+      "value": 1.5612872637693556,
+      "coefficient": 0.5660748193038668,
+      "contribution": 0.8838054057196666
+     }
+    ]
+   },
+   {
+    "group": "rest_travel",
+    "label": "Rest and travel",
+    "contribution": 2.051329047390127,
+    "rows": [
+     {
+      "input": "rest",
+      "label": "Rest days (home minus away)",
+      "value": 1.0,
+      "coefficient": -0.19328339540068312,
+      "contribution": -0.19328339540068312
+     },
+     {
+      "input": "b2b_home",
+      "label": "Home on a back-to-back",
+      "value": 0.0,
+      "coefficient": -1.488594789105517,
+      "contribution": -0.0
+     },
+     {
+      "input": "b2b_away",
+      "label": "Away on a back-to-back",
+      "value": 1.0,
+      "coefficient": 2.168322683086667,
+      "contribution": 2.168322683086667
+     },
+     {
+      "input": "games7",
+      "label": "Games in seven days (home minus away)",
+      "value": 0.0,
+      "coefficient": -0.4508780510224355,
+      "contribution": -0.0
+     },
+     {
+      "input": "travel_home",
+      "label": "Home travel (1,000 km)",
+      "value": 0.0,
+      "coefficient": 0.03889831093580275,
+      "contribution": 0.0
+     },
+     {
+      "input": "travel_away",
+      "label": "Away travel (1,000 km)",
+      "value": 0.542841567482767,
+      "coefficient": 0.14053780011340924,
+      "contribution": 0.07628975970414287
+     }
+    ]
+   }
+  ]
+ },
+ "market": {
+  "status": "ok",
+  "w": 1.0,
+  "line": 7.5,
+  "book": "DraftKings",
+  "details": "PHI -7.5",
+  "adjustment": 5.3555912206226575
+ },
+ "prediction": {
+  "home_margin": 7.5,
+  "home_win": 0.7125346134809497
+ },
+ "tip_off_home": {
+  "market_informed": 0.7125346134809497,
+  "original": 0.5625754524925003
+ },
+ "out": {
+  "away": [
+   {
+    "cost": 2.4816628326688708,
+    "default_rating": false,
+    "minutes": 25.328,
+    "name": "Kawhi Leonard",
+    "player_id": "202695",
+    "rating": 7.84621743301294
+   },
+   {
+    "cost": null,
+    "default_rating": null,
+    "minutes": null,
+    "name": "Nate Bittle",
+    "player_id": "1642927",
+    "rating": null
+   },
+   {
+    "cost": 0.6046638742875521,
+    "default_rating": false,
+    "minutes": 27.501,
+    "name": "Scottie Barnes",
+    "player_id": "1630567",
+    "rating": 1.790134173080505
+   },
+   {
+    "cost": -0.16824345704208987,
+    "default_rating": false,
+    "minutes": 6.58,
+    "name": "Trayce Jackson-Davis",
+    "player_id": "1631218",
+    "rating": -1.9996013623719477
+   }
+  ],
+  "home": [
+   {
+    "cost": -0.05272755095824433,
+    "default_rating": false,
+    "minutes": 12.246,
+    "name": "Adem Bona",
+    "player_id": "1641737",
+    "rating": -0.46816501561471496
+   },
+   {
+    "cost": -0.2068747261253876,
+    "default_rating": false,
+    "minutes": 9.325,
+    "name": "Ariel Hukporti",
+    "player_id": "1630574",
+    "rating": -1.8929676740558916
+   },
+   {
+    "cost": 0.14959202405817784,
+    "default_rating": false,
+    "minutes": 17.775,
+    "name": "Dominick Barlow",
+    "player_id": "1631230",
+    "rating": 0.5456265802624632
+   },
+   {
+    "cost": 0.20397180356872946,
+    "default_rating": false,
+    "minutes": 25.81,
+    "name": "LeBron James",
+    "player_id": "2544",
+    "rating": 0.5047245134773711
+   }
+  ]
+ },
+ "out_lists": {
+  "home": [
+   "Adem Bona",
+   "Ariel Hukporti",
+   "Dominick Barlow",
+   "LeBron James"
+  ],
+  "away": [
+   "Kawhi Leonard",
+   "Nate Bittle",
+   "Scottie Barnes",
+   "Trayce Jackson-Davis"
+  ]
+ },
+ "players": {
+  "away": [
+   {
+    "default_rating": false,
+    "minutes": 31.594,
+    "name": "RJ Barrett",
+    "player_id": "1629628",
+    "rating": 0.44289849538832704
+   },
+   {
+    "default_rating": false,
+    "minutes": 28.731,
+    "name": "Ja'Kobe Walter",
+    "player_id": "1642266",
+    "rating": -0.8951191305538961
+   },
+   {
+    "default_rating": false,
+    "minutes": 27.897,
+    "name": "Immanuel Quickley",
+    "player_id": "1630193",
+    "rating": 2.588786380212179
+   },
+   {
+    "default_rating": false,
+    "minutes": 23.252,
+    "name": "Jamal Shead",
+    "player_id": "1642347",
+    "rating": 1.0486604103349846
+   },
+   {
+    "default_rating": false,
+    "minutes": 22.608,
+    "name": "Malachi Smith",
+    "player_id": "1641869",
+    "rating": -2.600121471031465
+   },
+   {
+    "default_rating": false,
+    "minutes": 21.735,
+    "name": "Jakob Poeltl",
+    "player_id": "1627751",
+    "rating": 1.0578059456105078
+   },
+   {
+    "default_rating": false,
+    "minutes": 20.488,
+    "name": "Collin Murray-Boyles",
+    "player_id": "1642867",
+    "rating": 1.8486169452615127
+   },
+   {
+    "default_rating": false,
+    "minutes": 18.238,
+    "name": "Jamison Battle",
+    "player_id": "1642419",
+    "rating": -1.88291296339434
+   },
+   {
+    "default_rating": false,
+    "minutes": 12.237,
+    "name": "Allen Graves",
+    "player_id": "1643512",
+    "rating": -0.284086685559771
+   },
+   {
+    "default_rating": false,
+    "minutes": 11.244,
+    "name": "Kyle Anderson",
+    "player_id": "203937",
+    "rating": -0.23093932892985514
+   },
+   {
+    "default_rating": false,
+    "minutes": 10.862,
+    "name": "Alijah Martin",
+    "player_id": "1642918",
+    "rating": -1.9223986088440406
+   },
+   {
+    "default_rating": false,
+    "minutes": 6.355,
+    "name": "Kevin McCullar Jr.",
+    "player_id": "1641755",
+    "rating": -2.442330618262875
+   },
+   {
+    "default_rating": false,
+    "minutes": 4.758,
+    "name": "Jaden Bradley",
+    "player_id": "1643558",
+    "rating": -0.21639660759025114
+   }
+  ],
+  "home": [
+   {
+    "default_rating": false,
+    "minutes": 31.438,
+    "name": "Tyrese Maxey",
+    "player_id": "1630178",
+    "rating": 2.853839458611841
+   },
+   {
+    "default_rating": false,
+    "minutes": 31.008,
+    "name": "Jaylen Brown",
+    "player_id": "1627759",
+    "rating": -0.3602639967981406
+   },
+   {
+    "default_rating": false,
+    "minutes": 29.584,
+    "name": "VJ Edgecombe",
+    "player_id": "1642845",
+    "rating": 1.8805926250528495
+   },
+   {
+    "default_rating": false,
+    "minutes": 28.275,
+    "name": "Joel Embiid",
+    "player_id": "203954",
+    "rating": 4.043845787512328
+   },
+   {
+    "default_rating": false,
+    "minutes": 24.738,
+    "name": "Rayan Rupert",
+    "player_id": "1641712",
+    "rating": -7.883667024212337
+   },
+   {
+    "default_rating": false,
+    "minutes": 21.696,
+    "name": "Dean Wade",
+    "player_id": "1629731",
+    "rating": 3.2482889045983563
+   },
+   {
+    "default_rating": false,
+    "minutes": 19.277,
+    "name": "Anfernee Simons",
+    "player_id": "1629014",
+    "rating": -3.1199722725354313
+   },
+   {
+    "default_rating": false,
+    "minutes": 18.323,
+    "name": "Kentavious Caldwell-Pope",
+    "player_id": "203484",
+    "rating": -0.5167644469397581
+   },
+   {
+    "default_rating": false,
+    "minutes": 10.747,
+    "name": "Caleb Love",
+    "player_id": "1631126",
+    "rating": -3.12599578630161
+   },
+   {
+    "default_rating": false,
+    "minutes": 9.133,
+    "name": "Jabari Walker",
+    "player_id": "1631133",
+    "rating": -1.633097328964569
+   },
+   {
+    "default_rating": false,
+    "minutes": 7.244,
+    "name": "Justin Edwards",
+    "player_id": "1642348",
+    "rating": -4.796345641721918
+   },
+   {
+    "default_rating": false,
+    "minutes": 5.56,
+    "name": "Labaron Philon Jr.",
+    "player_id": "1642889",
+    "rating": 0.3390596098868288
+   },
+   {
+    "default_rating": false,
+    "minutes": 2.976,
+    "name": "Tacko Fall",
+    "player_id": "1629605",
+    "rating": -1.0066519778551382
+   }
+  ]
+ },
+ "ages": {
+  "box_through": "2026-11-11",
+  "injury_report_at": "2026-11-12T19:10:34+00:00",
+  "rating_snapshot_cutoff": "2026-11-01",
+  "roster_checked_at": "2026-11-12T17:07:49.126078+00:00",
+  "roster_observed_at": "2026-11-12T17:07:49.126078+00:00"
+ },
+ "availability_note": "Players ESPN lists as Out at the seal; Questionable and Doubtful players count as playing. Absence cost is an estimate in the own forecast's points.",
+ "result": null,
+ "manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa"
+}

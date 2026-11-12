@@ -1,0 +1,382 @@
+{
+ "namespace": "espn",
+ "resource": "game:401909976",
+ "status": "observed",
+ "final": false,
+ "stale": false,
+ "age_seconds": 0,
+ "acquired_at": "2026-11-12T19:29:19.103979Z",
+ "source_time": null,
+ "http_date": "Thu, 12 Nov 2026 19:29:19 GMT",
+ "refresh_seconds": 600,
+ "error": null,
+ "observation_id": null,
+ "content_sha256": null,
+ "data": {
+  "game": {
+   "source_id": "401909976",
+   "canonical_id": null,
+   "identity_status": "unmapped",
+   "namespace": "espn",
+   "slate_date": "2026-11-12",
+   "event_time": "2026-11-13T00:00:00Z",
+   "status": "scheduled",
+   "period": null,
+   "clock": null,
+   "teams": [
+    {
+     "source_id": "20",
+     "canonical_id": "1610612755",
+     "identity_status": "verified",
+     "name": "Philadelphia 76ers",
+     "side": "home",
+     "score": null,
+     "abbreviation": "PHI",
+     "record": "9-3",
+     "venue_record": "4-2",
+     "linescores": null,
+     "winner": null,
+     "tricode": "PHI"
+    },
+    {
+     "source_id": "28",
+     "canonical_id": "TOR",
+     "identity_status": "verified",
+     "name": "Toronto Raptors",
+     "side": "away",
+     "score": null,
+     "abbreviation": "TOR",
+     "record": "5-6",
+     "venue_record": "3-3",
+     "linescores": null,
+     "winner": null,
+     "tricode": "TOR"
+    }
+   ],
+   "provisional": true,
+   "status_detail": "11/12 - 7:00 PM EST",
+   "odds": {
+    "provider": null,
+    "details": null,
+    "spread": null,
+    "over_under": null,
+    "over_odds": null,
+    "under_odds": null,
+    "home_moneyline": -269,
+    "away_moneyline": 221,
+    "home_spread_odds": -104,
+    "away_spread_odds": -116
+   }
+  },
+  "players": null,
+  "player_sections": null,
+  "team_sections": null,
+  "boxes_status": "unknown",
+  "team_totals": null,
+  "plays": null,
+  "play_scores": null,
+  "leaders": null,
+  "injuries": [
+   {
+    "team_source_id": "20",
+    "players": [
+     {
+      "source_id": "1966",
+      "name": "LeBron James",
+      "position": "F",
+      "status": "Out",
+      "detail": "Back",
+      "canonical_id": "2544",
+      "identity_status": "roster_bundle"
+     },
+     {
+      "source_id": "4870562",
+      "name": "Dominick Barlow",
+      "position": "F",
+      "status": "Out",
+      "detail": "Back",
+      "canonical_id": "1631230",
+      "identity_status": "roster_bundle"
+     },
+     {
+      "source_id": "5105637",
+      "name": "Adem Bona",
+      "position": "C",
+      "status": "Out",
+      "detail": "Back",
+      "canonical_id": "1641737",
+      "identity_status": "roster_bundle"
+     },
+     {
+      "source_id": "3059318",
+      "name": "Joel Embiid",
+      "position": "C",
+      "status": "Day-To-Day",
+      "detail": "Foot",
+      "canonical_id": "203954",
+      "identity_status": "roster_bundle"
+     },
+     {
+      "source_id": "4871141",
+      "name": "Ariel Hukporti",
+      "position": "C",
+      "status": "Out",
+      "detail": "Achilles",
+      "canonical_id": "1630574",
+      "identity_status": "roster_bundle"
+     }
+    ]
+   },
+   {
+    "team_source_id": "28",
+    "players": [
+     {
+      "source_id": "4431684",
+      "name": "Trayce Jackson-Davis",
+      "position": "F",
+      "status": "Out",
+      "detail": "Illness",
+      "canonical_id": "1631218",
+      "identity_status": "roster_bundle"
+     },
+     {
+      "source_id": "4433134",
+      "name": "Scottie Barnes",
+      "position": "F",
+      "status": "Out",
+      "detail": "Groin",
+      "canonical_id": "1630567",
+      "identity_status": "verified"
+     },
+     {
+      "source_id": "6450",
+      "name": "Kawhi Leonard",
+      "position": "F",
+      "status": "Out",
+      "detail": "Knee",
+      "canonical_id": "202695",
+      "identity_status": "roster_bundle"
+     },
+     {
+      "source_id": "4432586",
+      "name": "Nate Bittle",
+      "position": "C",
+      "status": "Out",
+      "detail": "Foot",
+      "canonical_id": "1642927",
+      "identity_status": "roster_bundle"
+     }
+    ]
+   }
+  ],
+  "odds": {
+   "provider": "DraftKings",
+   "details": "PHI -7.5",
+   "spread": -7.5,
+   "over_under": 223.5,
+   "over_odds": -115,
+   "under_odds": -105,
+   "home_moneyline": -269,
+   "away_moneyline": 221,
+   "home_spread_odds": -104,
+   "away_spread_odds": -116
+  },
+  "info": {
+   "venue": "Xfinity Mobile Arena",
+   "venue_image": "https://a.espncdn.com/i/venues/nba/day/1845.jpg",
+   "city": "Philadelphia",
+   "state": "PA",
+   "attendance": null,
+   "officials": [],
+   "broadcasts": []
+  },
+  "win_probability": null,
+  "season_series": {
+   "summary": "",
+   "short_summary": "Season Matchup",
+   "score": "0-0",
+   "total": 4,
+   "games": [
+    {
+     "source_id": "401909976",
+     "date": "2026-11-13T00:00:00Z",
+     "state": "pre",
+     "detail": "11/12 - 7:00 PM EST",
+     "teams": [
+      {
+       "source_id": "20",
+       "side": "home",
+       "score": 0,
+       "winner": null
+      },
+      {
+       "source_id": "28",
+       "side": "away",
+       "score": 0,
+       "winner": null
+      }
+     ]
+    },
+    {
+     "source_id": "401910309",
+     "date": "2027-01-10T23:00:00Z",
+     "state": "pre",
+     "detail": "1/10 - 6:00 PM EST",
+     "teams": [
+      {
+       "source_id": "28",
+       "side": "home",
+       "score": 0,
+       "winner": null
+      },
+      {
+       "source_id": "20",
+       "side": "away",
+       "score": 0,
+       "winner": null
+      }
+     ]
+    },
+    {
+     "source_id": "401910734",
+     "date": "2027-03-15T23:00:00Z",
+     "state": "pre",
+     "detail": "3/15 - 7:00 PM EDT",
+     "teams": [
+      {
+       "source_id": "20",
+       "side": "home",
+       "score": 0,
+       "winner": null
+      },
+      {
+       "source_id": "28",
+       "side": "away",
+       "score": 0,
+       "winner": null
+      }
+     ]
+    },
+    {
+     "source_id": "401910899",
+     "date": "2027-04-06T23:30:00Z",
+     "state": "pre",
+     "detail": "4/6 - 7:30 PM EDT",
+     "teams": [
+      {
+       "source_id": "28",
+       "side": "home",
+       "score": 0,
+       "winner": null
+      },
+      {
+       "source_id": "20",
+       "side": "away",
+       "score": 0,
+       "winner": null
+      }
+     ]
+    }
+   ]
+  },
+  "standings": [
+   {
+    "division": "Atlantic",
+    "conference": "Eastern Conference",
+    "entries": [
+     {
+      "team_source_id": "2",
+      "name": "Boston",
+      "gb": "-",
+      "losses": "2",
+      "streak": "W5",
+      "pct": ".833",
+      "wins": "10",
+      "tricode": "BOS"
+     },
+     {
+      "team_source_id": "20",
+      "name": "Philadelphia",
+      "gb": "1",
+      "losses": "3",
+      "streak": "L1",
+      "pct": ".750",
+      "wins": "9",
+      "tricode": "PHI"
+     },
+     {
+      "team_source_id": "18",
+      "name": "New York",
+      "gb": "3.5",
+      "losses": "5",
+      "streak": "L1",
+      "pct": ".545",
+      "wins": "6",
+      "tricode": "NYK"
+     },
+     {
+      "team_source_id": "28",
+      "name": "Toronto",
+      "gb": "4.5",
+      "losses": "6",
+      "streak": "L2",
+      "pct": ".455",
+      "wins": "5",
+      "tricode": "TOR"
+     },
+     {
+      "team_source_id": "17",
+      "name": "Brooklyn",
+      "gb": "6.5",
+      "losses": "8",
+      "streak": "W1",
+      "pct": ".273",
+      "wins": "3",
+      "tricode": "BKN"
+     }
+    ]
+   }
+  ],
+  "news": {
+   "recap": {
+    "headline": "Philadelphia plays conference foe Toronto",
+    "description": "Toronto Raptors (5-6, seventh in the Eastern Conference) vs. Philadelphia 76ers (9-3, second in the Eastern Conference)",
+    "published": "2026-11-12T07:04:38Z",
+    "source": "Data Skrive",
+    "type": "Preview",
+    "link": "https://www.espn.com/nba/preview?gameId=401909976",
+    "image": null
+   },
+   "stories": [
+    {
+     "headline": "76ers Joel Embiid (foot) questionable, LeBron James (back) out vs. Raptors",
+     "description": "76ers center Joel Embiid is questionable for Thursday night's game against the Raptors with right foot plantar fascia management. LeBron James is out with lower back/sciatica management.",
+     "published": "2026-11-12T18:36:15Z",
+     "source": null,
+     "type": "HeadlineNews",
+     "link": "https://www.espn.com/nba/story/_/id/50463008/76ers-joel-embiid-lebron-james-questionable-vs-raptors",
+     "image": "https://a.espncdn.com/photo/2026/1031/r1739014_600x400_3-2.jpg"
+    },
+    {
+     "headline": "Thursday's fantasy hoops adds, top NBA bets: Ride hot streaks of Jenkins, Allen",
+     "description": "Eric Moody breaks down Thursday's NBA slate, highlighting the fantasy streamers to add and his favorite bets.",
+     "published": "2026-11-12T17:23:39Z",
+     "source": null,
+     "type": "Story",
+     "link": "https://www.espn.com/fantasy/basketball/story/_/id/50435461/fantasy-basketball-tips-nba-betting-picks-today",
+     "image": "https://a.espncdn.com/photo/2026/1112/r1744872_608x342_16-9.jpg"
+    },
+    {
+     "headline": "Warriors' Stephen Curry out at least 2 weeks with oblique tear",
+     "description": "Warriors star Stephen Curry has an oblique abdominal tear and will be reevaluated in two weeks.",
+     "published": "2026-11-12T17:36:47Z",
+     "source": null,
+     "type": "HeadlineNews",
+     "link": "https://www.espn.com/nba/story/_/id/50462899/warriors-stephen-curry-least-2-weeks-oblique-tear",
+     "image": "https://a.espncdn.com/photo/2026/1112/r1744663_1296x729_16-9.jpg"
+    }
+   ]
+  },
+  "parser_version": "espn-live-v6"
+ }
+}
