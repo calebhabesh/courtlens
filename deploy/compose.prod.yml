@@ -144,7 +144,7 @@ services:
   # Win Probability v4 W7: the PC's scheduled jobs on the VPS (`courtlens run-jobs`), one at a
   # time on the PC's schedule: rosters every 6 hours Eastern, the daily refresh 13:30 UTC,
   # lineups 14:05, season impact Mondays 14:30, Metric Backtest 15:00. Each job runs as its own
-  # process; a failed job is recorded (`GET /api/jobs`) and the loop continues. It owns `data/`
+  # process; a failed job is recorded (`GET /api/job-health`) and the loop continues. It owns `data/`
   # read-write; the API's mounts stay read-only. Seals stay with `win-probability-seal`, so the
   # daily refresh's win-probability step only refits rating snapshots here.
   jobs:

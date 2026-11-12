@@ -139,7 +139,7 @@ def test_the_health_endpoint(tmp_path, monkeypatch):
     jobs.write_health(
         DAILY, {"job": "daily", "last_success": "2026-11-13T13:40:00+00:00"}, tmp_path
     )
-    response = TestClient(create_app()).get("/api/jobs")
+    response = TestClient(create_app()).get("/api/job-health")
     assert response.status_code == 200 and response.headers["cache-control"] == "no-store"
     names = [j["job"] for j in response.json()["jobs"]]
     assert names == ["rosters", "daily", "lineups", "season-impact", "metric-backtest"]
