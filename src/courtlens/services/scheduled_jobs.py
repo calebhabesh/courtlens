@@ -5,8 +5,8 @@ process so a failure or a memory peak never takes the loop down. One job at a ti
 order. A job is due when its newest scheduled time is later than the last one it was attempted
 for; a job seen for the first time records that time without running, so a deploy never starts a
 refresh by surprise (`--run` starts one by hand). Every attempt writes the job's health record:
-last success, last failure, how long it took and the tail of its output. `GET /api/job-health` returns
-them; a job whose last success is older than its stale limit is stale.
+last success, last failure, how long it took and the tail of its output. `GET /api/job-health`
+returns them; a job whose last success is older than its stale limit is stale.
 """
 
 from __future__ import annotations
