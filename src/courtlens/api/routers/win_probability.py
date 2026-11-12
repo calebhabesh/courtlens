@@ -6,6 +6,7 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException, Query
 
+from courtlens.services import win_probability_head_to_head as head_to_head
 from courtlens.services.win_probability_production import (
     CARD_PATH,
     load_manifest,
@@ -51,6 +52,10 @@ def win_probability_page() -> dict[str, Any]:
         "scorecard": read_summary(),
         "wpa_seasons": wpa_seasons(),
         "upgrade": upgrade_result(),
+        # W3b: the Market-informed model against the Original from the same seals, and the dated
+        # protocol notes. Existing fields keep their shape.
+        "head_to_head": head_to_head.read_summary(),
+        "protocol_notes": head_to_head.protocol_notes(),
     }
 
 

@@ -135,7 +135,13 @@ mounts it read-only and a new scorecard appears without a restart.
 `courtlens seal-win-probability --next-wake` in a shell loop, as the `demo-reset` service does. Each
 run seals the day's scheduled regular-season games (schema `courtlens-win-probability-pregame-v2`,
 a new file only when a game's inputs, line, Out list or tip time changed), scores finished games
-from the previous three days that are not yet on the scorecard, and rewrites the summaries. It runs
+from the previous three days that are not yet on the scorecard, and rewrites the summaries. Since
+Win Probability v4's W3b it also scores the Market-informed model beside the Original from the same
+seal for every game tipping after v4's freeze (`scorecard/head-to-head.jsonl`), writes the
+registered 300-game and final reads once (`scorecard/head-to-head-reads.jsonl`), and rewrites
+`scorecard/head-to-head.json`, whose `serving_model` the Live chart follows. Seals captured after the
+freeze also carry `mu4`, `w` and both models' tip-off probabilities. A head-to-head failure is
+reported as `head_to_head_error` and never costs the night's seals. It runs
 once when the container starts, at 09:00 US Eastern for last night's scores, then every 30 minutes
 from 12:25, at :25 and :55, while a run still lands before the day's last scheduled tip. Tips are on
 the hour or half hour, so each game's last seal is taken 5 minutes before it (from 2026-11-12;

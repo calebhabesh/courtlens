@@ -66,14 +66,15 @@ def live_game_win_probability(
     session: Session = Depends(get_db),
     provider: ESPNLiveProvider = Depends(get_provider),
 ) -> dict[str, Any]:
-    """The frozen CourtLens model's line for one game, with its version and hash."""
-    from courtlens.services.win_probability_production import game_probability
+    """The serving CourtLens model's line for one game, with its version and hash (W3b: the
+    Market-informed model unless a registered read returned Live to the Original)."""
+    from courtlens.services.win_probability_head_to_head import live_probability
 
     if not game_id.isdigit() or len(game_id) > 20:
         raise HTTPException(422, "Invalid ESPN game ID")
     response.headers["Cache-Control"] = "no-store"
     try:
-        return game_probability(game_id, read(session, provider, slate_date, game_id).get("data"))
+        return live_probability(game_id, read(session, provider, slate_date, game_id).get("data"))
     except (OSError, ValueError) as error:
         raise HTTPException(503, "Win probability model unavailable") from error
 
