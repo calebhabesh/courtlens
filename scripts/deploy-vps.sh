@@ -12,7 +12,6 @@ set -euo pipefail
 SSH_HOST="${COURTLENS_SSH_HOST:-vps}"
 REMOTE_DIR=/home/ubuntu/apps/courtlens
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-DATA_DIR="${COURTLENS_DATA_DIR:-$REPO_ROOT/data}"
 OWNER=calebhabesh
 SSH=(ssh -o BatchMode=yes -o ConnectTimeout=15 "$SSH_HOST")
 RSYNC=(rsync -az --delete -e 'ssh -o BatchMode=yes -o ConnectTimeout=15')
@@ -35,8 +34,13 @@ mkdir -p "$stage/infra"
 git -C "$REPO_ROOT" show "$sha:deploy/compose.prod.yml" > "$stage/docker-compose.yml"
 git -C "$REPO_ROOT" show "$sha:deploy/Caddyfile" > "$stage/infra/Caddyfile"
 git -C "$REPO_ROOT" show "$sha:deploy/pinned.env" > "$stage/pinned.env"
+mkdir -p "$stage/scripts"
+git -C "$REPO_ROOT" show "$sha:scripts/vps-backup.sh" > "$stage/scripts/vps-backup.sh"
+chmod +x "$stage/scripts/vps-backup.sh"
 
-# Git-ignored files the API reads at serve time, mirrored read-only to the VPS.
+# Directories the API mounts read-only. Since Win Probability v4's W7 the VPS owns all of
+# `data/` (the jobs service writes it), so a deploy only makes sure they exist: nothing under
+# `data/` is copied, overwritten or deleted from this machine.
 SERVING_DIRS=(
   artifacts/evaluation
   artifacts/analyses
@@ -63,18 +67,9 @@ SERVING_DIRS=(
   artifacts/research-runs
   artifacts/research-run-packages
   cache/portraits
-  # Raw box-score evidence for starting positions and starting fives (mounted as data/raw).
   raw/bbref_history_sealed
 )
-for dir in "$DATA_DIR"/raw/sportsdataverse_*/; do
-  dir="${dir%/}"; SERVING_DIRS+=("raw/${dir##*/}")
-done
-for dir in "${SERVING_DIRS[@]}"; do
-  [[ -d "$DATA_DIR/$dir" ]] || { echo "Missing $DATA_DIR/$dir; set COURTLENS_DATA_DIR." >&2; exit 1; }
-done
-# Written on the VPS by the win-probability-seal service (Win Probability v4 W2). A deploy only
-# makes sure they exist: never rsynced, so never deleted or overwritten from this machine.
-VPS_OWNED_DIRS=(derived/win-probability-serving raw/espn-wp)
+VPS_OWNED_DIRS=(derived/win-probability-serving raw/espn-wp derived/job-health)
 
 echo "Deploying $sha to $SSH_HOST:$REMOTE_DIR"
 remote_dirs=("$REMOTE_DIR/infra")
@@ -82,9 +77,8 @@ for dir in "${SERVING_DIRS[@]}" "${VPS_OWNED_DIRS[@]}"; do remote_dirs+=("$REMOT
 "${SSH[@]}" "install -d -m 755 ${remote_dirs[*]} && install -d -m 700 '$REMOTE_DIR/secrets'"
 "${RSYNC[@]}" "$stage/docker-compose.yml" "$stage/pinned.env" "$SSH_HOST:$REMOTE_DIR/"
 "${RSYNC[@]}" "$stage/infra/" "$SSH_HOST:$REMOTE_DIR/infra/"
-for dir in "${SERVING_DIRS[@]}"; do
-  "${RSYNC[@]}" "$DATA_DIR/$dir/" "$SSH_HOST:$REMOTE_DIR/data/$dir/"
-done
+"${SSH[@]}" "install -d -m 755 '$REMOTE_DIR/scripts'"
+"${RSYNC[@]}" "$stage/scripts/" "$SSH_HOST:$REMOTE_DIR/scripts/"
 
 # Upload the remote script first and run it with stdin closed, so no command
 # (docker compose run, for one) can swallow the rest of the script.
