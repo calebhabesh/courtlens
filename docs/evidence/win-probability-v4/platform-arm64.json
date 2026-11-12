@@ -1,0 +1,1 @@
+{"version": "courtlens-win-probability-v4", "check": "arm64_parity", "machine": "aarch64", "python": "3.12.16", "reference": {"machine": "x86_64", "python": "3.14.10"}, "w": 1.0, "states": 1902, "max_abs_difference": 2.220446049250313e-16, "limit": 1e-09, "passed": true, "seconds": 1.46}
