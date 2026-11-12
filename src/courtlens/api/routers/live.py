@@ -41,7 +41,10 @@ def live_slate(
     games = (result.get("data") or {}).get("games") or []
     if any(game["status"] == "scheduled" for game in games):
         result = with_injury_counts(result, read(session, provider, None))
-    return result
+    # W4: each game's sealed CourtLens call for the card.
+    from courtlens.services.win_probability_breakdown import with_cards
+
+    return with_cards(result)
 
 
 @router.get("/games/{game_id}", response_model=LiveCache)
