@@ -170,3 +170,42 @@ Plan text only (Fable 5.2, with the owner). No code, data, VPS or timer was chan
   notes, so a new session needs only the plan, the registration and this log.
 
 Next is unchanged: W2 part B on the owner's "cut over", then the arm64 check and the freeze (W3a).
+
+## 2026-11-12 — W2 part B: the cutover; the Original's seal now runs on the VPS
+
+Run by a scheduled session on the owner's advance authorization (handoff
+`~/dev/courtlens-cutover-handoff.md`; the full command log is in `~/dev/courtlens-cutover-log.md`).
+Nothing frozen, nothing marked ✅.
+
+- **Gate 0.** The PC's `refresh-daily` ran 08:35–08:46 ET and succeeded; it sealed today locally
+  (v1, 13:46:34Z) as before.
+- **Merge.** #92 merged at 13:52Z as `8afa373d`. CI's first run failed in the dashboard job as well
+  (2 Playwright tests in the R10 Wingspan calculator spec; the same job failed on `ac57a8db` and
+  passed on the runs either side), so Images was skipped and the session stopped. With the owner
+  present: the failed jobs were re-run (dashboard passed; backend again only
+  `test_no_unexplained_legacy_brand_references`), and Images was dispatched by hand (run
+  43244641923, success), as for 8ef78660.
+- **Push and deploy.** The PC's serving bundle was pushed once (no `--delete`), then
+  `scripts/deploy-vps.sh` from the worktree at `origin/main` deployed release `8afa373d` (10:25 ET).
+- **The VPS seal.** The service's first run (15:25:07Z) sealed all 4 of today's games (v2, every
+  game with a line): `pregame/2026-11-12.4fada14d….json`. Next run noon ET.
+- **Scoring check.** A one-off `docker compose run --rm` re-scored 2026-11-11's 10 games on copies
+  of the serving and `raw/espn-wp` directories inside the container. Same game ids as the PC's
+  scorecard; 2 rows byte-identical, 8 differing only in score floats, max 1.1e-16, nothing else.
+  The live scorecard's hash was unchanged before and after.
+- **Resources.** Seal service idle at 5 MiB of 768 MiB; API 170 MiB; host 2.6 GB of 24 GB used;
+  disk 36 GB used, 158 GB free. `/api/health` ok, `/api/win-probability` 200.
+- **PC switch.** `main` pulled; `.env` now sets `COURTLENS_WIN_PROBABILITY_LOCAL_SEALING=false`;
+  `courtlens-win-probability-push` installed (after `refresh-daily` and `refresh-espn-rosters`).
+  Its first run pushed the four inputs and pulled the VPS's seal back (15:29:01Z). No old sync unit
+  remains.
+- **Protocol note.** `evaluation/research/derived/courtlens-win-probability-v2-protocol-notes.json`:
+  cutover 2026-11-12T15:25:07Z; first games affected 401909976 (TOR @ PHI) and 401909977
+  (DET @ WAS), both tip 2026-11-13T00:00Z.
+- **arm64 parity (W3a step 1).** `scripts/win_probability_v4_platform_check.sh`: 1,902 states,
+  max_abs_difference **2.22e-16**, limit 1e-9, **passes** (aarch64, Python 3.12.16, against the
+  x86 reference). Evidence written to `docs/evidence/win-probability-v4/platform-arm64.json` in
+  the worktree, not committed.
+
+Still to do: check the VPS's runs through tonight and tomorrow's 09:00 ET scoring run before W2 is
+called done; update the deploy guide's evidence; the owner's decision on the freeze.
