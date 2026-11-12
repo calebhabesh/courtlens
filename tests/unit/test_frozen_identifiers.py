@@ -155,6 +155,9 @@ def test_no_unexplained_legacy_brand_references() -> None:
         if relative == "dashboard/content/patch-notes.json":
             # The visitor-facing changelog records the rename itself (RD07).
             content = content.replace("CourtLoad is now CourtLens", "")
+        if relative == "docs/finish-progress.md":
+            # F04: the pre-rename fantasy seed user's address as it exists in the database.
+            content = content.replace("demo@courtload.dev", "")
         if relative in {"docs/frontend-overhaul-progress.md", "scripts/clean_scratch.sh"}:
             # Pre-rename scratch directories (FO09 record, scratch cleanup), not branding.
             content = content.replace("/tmp/courtload-*", "")
