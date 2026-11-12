@@ -117,19 +117,35 @@ def test_the_seal_used_is_the_newest_before_tip(serving):
     assert breakdown.sealed("10", "2026-11-13") is None
 
 
+def sealed_probabilities(mu: float, line: float) -> dict:
+    """A post-freeze seal carries both models' tip-off chances, so no model file is loaded (CI
+    has none)."""
+    return {**record(mu, line), "tip_off_home": {"original": 0.61, "market_informed": 0.68}}
+
+
 def test_the_breakdown_predicts_with_the_market_model_after_the_freeze(serving):
-    seal(serving / "pregame", "2026-11-13", "2026-11-14T01:55:00+00:00", {"9": record(4.0, 6.5)})
+    seal(
+        serving / "pregame",
+        "2026-11-13",
+        "2026-11-14T01:55:00+00:00",
+        {"9": sealed_probabilities(4.0, 6.5)},
+    )
     body = breakdown.breakdown("9", "2026-11-13")
     assert body["model"] == "market_informed" and body["market"]["status"] == "ok"
     assert body["prediction"]["home_margin"] == pytest.approx(6.5)
-    assert body["prediction"]["home_win"] == body["tip_off_home"]["market_informed"]
+    assert body["prediction"]["home_win"] == body["tip_off_home"]["market_informed"] == 0.68
     assert body["result"] is None
 
 
 def test_the_endpoint(serving):
     from courtlens.api.app import create_app
 
-    seal(serving / "pregame", "2026-11-13", "2026-11-14T01:55:00+00:00", {"9": record(4.0, 6.5)})
+    seal(
+        serving / "pregame",
+        "2026-11-13",
+        "2026-11-14T01:55:00+00:00",
+        {"9": sealed_probabilities(4.0, 6.5)},
+    )
     client = TestClient(create_app())  # no lifespan: the route reads no database
     ok = client.get("/api/win-probability/games/9/breakdown", params={"date": "2026-11-13"})
     assert ok.status_code == 200 and ok.json()["seal"].startswith("2026-11-13.")
