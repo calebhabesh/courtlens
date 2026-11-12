@@ -17,7 +17,7 @@ import {
   type CurvePoint, type Interval, type RecentGame, type ScoreGroup, type WinProbabilityAdded, type WinProbabilityPage, type WpaRow, type WpaSort, type WpaSortKey,
 } from "@/lib/win-probability";
 import { getWinProbabilityAdded, getWinProbabilityPage } from "@/lib/workbench-api";
-import { HowItThinks, LatestSlate, TrackRecord, Trial } from "./win-probability-v4";
+import { HowItThinks, PredictionBoard, TrackRecord, Trial } from "./win-probability-v4";
 
 /**
  * Research → Win Probability (R15b model, designed in F03 / RD14). Presentation only: every number is the frozen card's, the nightly
@@ -458,12 +458,15 @@ function About({ data }: { data: WinProbabilityPage }) {
 
 export function WinProbabilityResearch() {
   const { data, error, loading, retry } = useFeed([], () => getWinProbabilityPage());
-  const meta = data ? [`frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, `${whole(data.scorecard?.prospective.games ?? 0)} games since the freeze`, "checked nightly against ESPN"] : null;
+  // W5 round 2: the hero names the serving model; the Original's counts stay in Evidence.
+  const h2h = data?.head_to_head;
+  const meta = data ? (h2h ? [h2h.serving_model.model === "market_informed" ? "Market-informed model, on trial" : "Original model", `frozen ${formatDate(h2h.model.frozen_at.slice(0, 10))}`, "graded every morning"]
+    : [`frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, `${whole(data.scorecard?.prospective.games ?? 0)} games since the freeze`, "checked nightly against ESPN"]) : null;
   return <Frame meta={meta}>
     {error && <FeedFailure error={error} retry={retry} what="Win Probability" />}
     {loading && <FeedSkeleton label="Loading Win Probability" />}
     {data && <>
-      <LatestSlate />
+      <PredictionBoard />
       <TrackRecord data={data} />
       <HowItThinks data={data} />
       <Trial data={data} />

@@ -1,13 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { easternToday, liveRead, nearestGameDate, type LiveGame, type LiveSlateData, type LiveTeam } from "@/lib/live";
+import { Suspense, type CSSProperties } from "react";
+import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, liveRead, nearestGameDate, predictionCall, seasonOf, teamCode, validSlate, type LiveGame, type LiveSlateData, type LiveTeam } from "@/lib/live";
 import { formatDate } from "@/lib/format-date";
 import { band, metric, signed, type HeadToHead, type TrialRead, type WinProbabilityPage, type WorkedExample } from "@/lib/win-probability";
-import { GameCard } from "./live-board";
+import { DateStrip } from "./live-board";
+import { teamColors } from "./live-game";
+import { TeamLogo } from "./team-logo";
+import { Icon } from "./ui/icon";
 import { PredictionBody } from "./live-prediction";
 import { ResearchSection } from "./research/research-page";
-import { useFeed } from "./stats-feed-ui";
+import { useFeed, useUrlState } from "./stats-feed-ui";
 import { GatedNote } from "./ui/gated-note";
 import { ButtonSummary } from "./ui/kit";
 import { CalibrationChart } from "./win-probability-research";
@@ -18,34 +22,97 @@ import { CalibrationChart } from "./win-probability-research";
  * Before the first scored game, and in the offseason, each section says what it is waiting for.
  */
 
+const vars = (values: Record<`--${string}`, string>) => values as CSSProperties;
 const whole = (n: number) => n.toLocaleString("en-US");
 const pct = (right: number, games: number) => games ? `${Math.round((right / games) * 100)}%` : "—";
 const RESULT_WORDS: Record<string, string> = { better: "better", worse: "worse", inconclusive: "no clear difference" };
 
-// ---- 2. Latest slate ------------------------------------------------------------------------------------------------------
+// ---- 2. The prediction board: a date strip and one card per game, the call first --------------------------------------
 
-async function latestSlate(signal: AbortSignal): Promise<{ day: string; games: LiveGame[]; today: boolean } | null> {
+type Board = { day: string; games: LiveGame[]; calendar: string[]; today: boolean; fallback: boolean };
+
+async function loadBoard(wanted: string | null, signal: AbortSignal): Promise<Board> {
   const today = easternToday();
-  const first = await liveRead<LiveSlateData>(`?slate_date=${today}`, signal);
-  if (first.data?.games.length) return { day: today, games: first.data.games, today: true };
-  const earlier = nearestGameDate(first.data?.calendar?.filter(d => d < today), today);
-  if (!earlier) return null;
+  const day = wanted ?? today;
+  const first = await liveRead<LiveSlateData>(`?slate_date=${day}`, signal);
+  const calendar = first.data?.calendar ?? [];
+  const games = first.data?.games ?? [];
+  if (games.length || wanted) return { day, games, calendar, today: day === today, fallback: false };
+  // No games today: the latest earlier slate, so its calls and results show.
+  const earlier = nearestGameDate(calendar.filter(d => d < today), today);
+  if (!earlier) return { day, games: [], calendar, today: true, fallback: false };
   const read = await liveRead<LiveSlateData>(`?slate_date=${earlier}`, signal);
-  return read.data?.games.length ? { day: earlier, games: read.data.games, today: false } : null;
+  return { day: earlier, games: read.data?.games ?? [], calendar, today: false, fallback: true };
 }
 
-export function LatestSlate() {
-  const { data, error, loading } = useFeed([], signal => latestSlate(signal));
-  const title = data?.today ? "Tonight's games" : "The latest slate";
-  return <ResearchSection id="slate" icon="activity" title={title} aside={<Link href="/live" className="wp-link">All games on Live</Link>}>
-    {loading ? <p className="wp-note" role="status">Loading the slate…</p>
-      : error ? <GatedNote tone="warning">The slate is unavailable right now.</GatedNote>
-      : !data ? <p className="wp-lead" data-field="slate-empty">No games are scheduled. The first slate of the next season appears here with CourtLens&apos;s call for each game.</p>
-      : <>
-        <p className="wp-note" data-field="slate-day" data-day={data.day}>{data.today ? "Each card shows the call CourtLens sealed before tip-off. It does not move during the game." : `${formatDate(data.day)}: each card shows the sealed call and whether it was right.`}</p>
-        <ol className="live-grid wp-slate">{data.games.map((game, i) => <li key={game.source_id}><GameCard game={game} index={i} href={`/live/games/${game.source_id}?date=${game.slate_date}`} /></li>)}</ol>
-      </>}
+function TeamSide({ team, season, game, favoured }: { team: LiveTeam; season: string; game: LiveGame; favoured: boolean }) {
+  const played = game.status === "in_progress" || game.status === "final";
+  return <span className="wpc-team" data-side={team.side} data-favoured={favoured || undefined} data-lost={(game.status === "final" && team.winner === false) || undefined}>
+    <TeamLogo team={team.tricode ?? team.canonical_id ?? teamCode(team)} season={season} size={40} />
+    <span className="wpc-team-text">
+      <strong className="wpc-code">{teamCode(team)}</strong>
+      <span className="wpc-sub">{played ? <strong className="wpc-score">{team.score ?? "—"}</strong> : formatRecord(team.record) ?? (team.side === "home" ? "Home" : "Away")}</span>
+    </span>
+  </span>;
+}
+
+export function PredictionCard({ game }: { game: LiveGame }) {
+  const [away, home] = awayFirst(game.teams);
+  const season = seasonOf(game.slate_date);
+  const p = game.prediction;
+  const sealed = p?.status === "sealed" && p.home_win != null ? p.home_win : null;
+  const call = predictionCall(game);
+  const fav = sealed == null ? null : sealed >= 0.5 ? home : away;
+  const line = game.status === "scheduled" ? lineFavourite(game.odds, game.teams) : null;
+  const href = `/live/games/${game.source_id}?date=${game.slate_date}${game.status === "scheduled" ? "" : "&tab=pregame"}`;
+  return <Link className="wpc" href={href} data-status={game.status} data-game={game.source_id} data-home-win={sealed ?? undefined}
+    aria-label={`${away.name} at ${home.name}, ${gameStatus(game)}${fav && sealed != null ? `. CourtLens: ${teamCode(fav)} ${Math.round(Math.max(sealed, 1 - sealed) * 100)}% to win` : ""}. Open the game and why.`}
+    style={teamColors(game.teams, season)}>
+    <span className="wpc-head">
+      <span className="wpc-status">{game.status === "in_progress" && <span className="live-dot" aria-hidden="true" />}{gameStatus(game)}</span>
+      <span className="wpc-why">Why{fav ? ` ${teamCode(fav)}` : ""}<Icon name="right" size={14} /></span>
+    </span>
+    <span className="wpc-teams">
+      <TeamSide team={away} season={season} game={game} favoured={fav === away} />
+      {sealed != null ? <span className="wpc-pcts" aria-hidden="true">
+        <span data-favoured={fav === away || undefined}>{Math.round((1 - sealed) * 100)}%</span>
+        <span data-favoured={fav === home || undefined}>{Math.round(sealed * 100)}%</span>
+      </span> : <span className="wpc-pcts wpc-none" aria-hidden="true">—</span>}
+      <TeamSide team={home} season={season} game={game} favoured={fav === home} />
+    </span>
+    {sealed != null && <span className="wpc-bar" aria-hidden="true" style={vars({ "--wpc-away": `${(1 - sealed) * 100}%` })}><span data-side="away" /><span data-side="home" /></span>}
+    <span className="wpc-foot">
+      {call && call.kind !== "none" && fav ? <span className="wpc-call" data-call={call.kind} data-right={call.right == null ? undefined : String(call.right)} title={call.title}>
+        {{ favours: "CourtLens favors", toss_up: "Toss-up, leaning", pregame: "Pregame call:", called: "Called" }[call.kind]} <strong>{teamCode(fav)}</strong>
+        {call.kind === "called" && call.right != null && <span className="wpc-mark"><Icon name={call.right ? "check" : "close"} size={14} />{call.right ? "right" : "wrong"}</span>}
+      </span> : <span className="wpc-call" data-call="none">{p ? "No prediction was sealed for this game" : "Before CourtLens sealed predictions"}</span>}
+      {line && <span className="wpc-line" title={`The betting line (${game.odds?.provider ?? "sportsbook"})`}>Line: {line === "even" ? "even" : `${teamCode(line.team)} by ${line.points}`}</span>}
+      {game.status === "scheduled" && (away.out || home.out) ? <span className="wpc-out">{[away, home].filter(t => t.out).map(t => `${teamCode(t)} ${t.out} out`).join(" · ")}</span> : null}
+    </span>
+  </Link>;
+}
+
+function BoardInner() {
+  const { get } = useUrlState();
+  const wanted = get("day");
+  const day = wanted && validSlate(wanted) ? wanted : null;
+  const { data, stale, error, loading } = useFeed([day], signal => loadBoard(day, signal));
+  const board = data ?? stale;
+  const href = (d: string) => `/research/win-probability?day=${d}`;
+  const label = !board ? "Tonight's games" : board.today ? "Tonight's games" : formatDate(board.day);
+  return <ResearchSection id="slate" icon="activity" title={label} aside={<Link href={board ? `/live/${board.day}` : "/live"} className="wp-link">Open on Live</Link>}>
+    {board && <DateStrip slate={board.day} calendar={board.calendar} href={href} />}
+    {loading && !board ? <p className="wp-note" role="status">Loading the games…</p>
+      : error ? <GatedNote tone="warning">The games are unavailable right now.</GatedNote>
+      : board && board.games.length ? <>
+        <p className="wp-note" data-field="slate-day" data-day={board.day}>{board.fallback ? `No games today. The latest slate, ${formatDate(board.day)}: each call and whether it was right.` : board.today ? "The chance CourtLens sealed before tip-off. It does not move during the game; open a game for the live chart and the reasons." : "Each call as sealed before tip-off, and whether it was right."}</p>
+        <ol className="wpc-grid" aria-label="Predictions">{board.games.map(game => <li key={game.source_id}><PredictionCard game={game} /></li>)}</ol>
+      </> : <p className="wp-lead" data-field="slate-empty">{day ? "No games on this day." : "No games are scheduled. The first slate of the next season appears here with CourtLens's call for each game."}</p>}
   </ResearchSection>;
+}
+
+export function PredictionBoard() {
+  return <Suspense fallback={null}><BoardInner /></Suspense>;
 }
 
 // ---- 3. Track record ------------------------------------------------------------------------------------------------------
@@ -91,9 +158,9 @@ export function HowItThinks({ data }: { data: WinProbabilityPage }) {
   const game = example ? exampleGame(example) : null;
   return <ResearchSection id="how" icon="layers" title="How the model thinks">
     <ol className="wp-steps" data-field="steps">
-      <li><strong>Its own read.</strong> Before tip-off CourtLens adds up who is available and how good they are, recent form, home court, rest and travel into a predicted margin.</li>
-      <li data-field="weight" data-w={w}><strong>The market adjustment.</strong> It then moves from its own read toward the betting line by a fitted weight{w != null ? <>: <strong>{Math.round(w * 100)}%</strong>{w >= 0.995 ? ". With a line, the pregame margin is the line; the own read decides only when there is none" : ""}</> : ""}.</li>
-      <li><strong>During the game.</strong> The score, time left and possession update the chance on every play, starting from that pregame number.</li>
+      <li><span className="wp-step-n" aria-hidden="true">1</span><strong>Its own read</strong><span>Who is available and how good they are, recent form, home court, rest and travel add up to a predicted margin.</span></li>
+      <li data-field="weight" data-w={w}><span className="wp-step-n" aria-hidden="true">2</span><strong>The betting line{w != null ? `, weighted ${Math.round(w * 100)}%` : ""}</strong><span>{w != null && w >= 0.995 ? "The fitted weight is 100%: when there is a line, the pregame margin follows it, and the own read is the fallback when there is none." : "It moves from its own read toward the line by a fitted weight."}</span></li>
+      <li><span className="wp-step-n" aria-hidden="true">3</span><strong>During the game</strong><span>The score, time left and possession update the chance on every play, starting from that pregame number.</span></li>
     </ol>
     <h3 className="wp-subhead">A worked example</h3>
     <p className="wp-note" data-field="example-rule">Chosen by rule, not by taste: {example?.rule.replace(/^./, c => c.toLowerCase()) ?? "—"}</p>

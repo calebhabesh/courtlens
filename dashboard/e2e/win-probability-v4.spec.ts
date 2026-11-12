@@ -42,12 +42,23 @@ test("the v4 sections come first, in the plan's order, and read correctly before
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/research/win-probability");
   await expect(page.getByText("CourtLens picks a favorite for every game, shows its reasoning, and is graded every night.")).toBeVisible();
+  await page.locator("#trial").waitFor();
   const ids = await page.locator(".wp-page > section.rs-section, .wp-page > h2#evidence").evaluateAll(els => els.map(e => e.id));
   expect(ids.slice(0, 6)).toEqual(["slate", "track-record", "how", "trial", "evidence", "answer"]);
-  await expect(page.locator(".wp-slate .live-card")).toHaveCount(4);
-  await expect(page.locator(".wp-slate .live-card").first().locator(".live-card-call")).toHaveText(/CourtLens favors\s*PHI\s*71%/);
+  const cards = page.getByRole("list", { name: "Predictions" }).getByRole("link");
+  await expect(cards).toHaveCount(4);
+  const first = cards.first();
+  await expect(first).toHaveAttribute("aria-label", "Toronto Raptors at Philadelphia 76ers, 7:00 PM EST. CourtLens: PHI 71% to win. Open the game and why.");
+  await expect(first.locator(".wpc-pcts [data-favoured]")).toHaveText("71%");
+  await expect(first.locator(".wpc-call")).toHaveText(/CourtLens favors\s*PHI/);
+  await expect(first.locator(".wpc-line")).toHaveText("Line: PHI by 7.5");
+  await expect(first).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12");
+  // The bar splits at the sealed chance: away 29%, home 71%.
+  const [bar, away] = [await first.locator(".wpc-bar").boundingBox(), await first.locator('.wpc-bar [data-side="away"]').boundingBox()];
+  expect(away!.width / bar!.width).toBeCloseTo(1 - why.prediction.home_win, 2);
+  await expect(page.getByRole("navigation", { name: "Live dates" }).locator('[aria-current="date"]')).toContainText("12");
   await expect(page.locator('[data-field="record-empty"]')).toContainText("No game has been graded yet");
-  await expect(page.locator('[data-field="weight"]')).toContainText("100%. With a line, the pregame margin is the line");
+  await expect(page.locator('[data-field="weight"]')).toContainText("The fitted weight is 100%: when there is a line, the pregame margin follows it");
   await expect(page.locator('[data-field="example-empty"]')).toBeVisible();
   await expect(page.locator('[data-field="example-rule"]')).toContainText("a player ESPN listed Out cost at least 1.0 point");
   await expect(page.locator('[data-field="trial-progress"]')).toContainText("0 of 300 games");
@@ -78,7 +89,8 @@ test("a day with no games shows the latest earlier slate", async ({ page }) => {
   });
   await page.clock.setFixedTime(new Date("2026-11-13T17:00:00Z"));
   await page.goto("/research/win-probability");
-  await expect(page.getByRole("heading", { name: "The latest slate" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Nov 12, 2026" })).toBeVisible();
+  await expect(page.locator('[data-field="slate-day"]')).toContainText("No games today.");
   await expect(page.locator('[data-field="slate-day"]')).toHaveAttribute("data-day", "2026-11-12");
 });
 
@@ -97,4 +109,21 @@ test("graded games (test data): record, calibration, the worked example and the 
   await expect(page.locator('[data-field="v2"]')).toContainText("no clear difference");
   await expect(page.locator('[data-field="too-early"]')).toContainText("The running numbers below can change");
   await shot(page, "w5-page-graded-test-data-1440");
+});
+
+test("the date strip moves the board; a final card says whether the call was right", async ({ page }) => {
+  const games = slate.data!.games;
+  const finals = { ...slate, data: { ...slate.data!, games: [{ ...games[0], status: "final" as const,
+    teams: games[0].teams.map(t => ({ ...t, score: t.side === "home" ? 110 : 101, winner: t.side === "home" })), prediction: { ...games[0].prediction!, right: true } }] } };
+  await page.route("**/api/win-probability", route => route.fulfill({ json: real }));
+  await page.route("**/api/live?**", route => route.fulfill({ json: new URL(route.request().url()).searchParams.get("slate_date") === "2026-11-11" ? finals : slate }));
+  await page.goto("/research/win-probability?day=2026-11-12");
+  await page.getByRole("navigation", { name: "Live dates" }).getByRole("link", { name: "Previous day" }).click();
+  await expect(page).toHaveURL(/day=2026-11-11/);
+  const card = page.getByRole("list", { name: "Predictions" }).getByRole("link").first();
+  await expect(card.locator(".wpc-call")).toHaveText(/Called\s*PHI\s*right/);
+  await expect(card.locator(".wpc-call")).toHaveAttribute("data-right", "true");
+  await expect(card.locator('.wpc-team[data-side="home"] .wpc-score')).toHaveText("110");
+  await expect(card).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12&tab=pregame");
+  await shot(page, "w5-board-final-test-data-1440");
 });
