@@ -196,3 +196,65 @@ def breakdown(game_id: str, day: str) -> dict[str, Any] | None:
         "result": result_of(game_id),
         "manifest_sha256": record.get("manifest_sha256") or original["manifest_sha256"],
     }
+
+
+# ---------------------------------------------------------------------------------------------
+# The Live card.
+
+FIRST_SEAL_DAY = "2026-11-04"  # the Original's freeze: no game before it had a real seal
+TOSS_UP = head_to_head.TOSS_UP
+
+
+def card(game: dict[str, Any]) -> dict[str, Any] | None:
+    """A slate game's sealed call: the serving model's tip-off probability, the favourite, and for a
+    final game whether the call was right. None before any real seal existed; `no_seal` after."""
+    day = game.get("slate_date") or ""
+    if day < FIRST_SEAL_DAY:
+        return None
+    found = sealed(str(game["source_id"]), day)
+    if found is None or found[0].get("availability") != "tip_off_capture":
+        return {"status": "no_seal"}
+    record, captured_at, _ = found
+    summary = head_to_head.read_summary()
+    serving = (summary or {}).get("serving_model", {}).get("model", head_to_head.MARKET)
+    market = market_row(record, float(record["inputs"]["mu"]), captured_at, serving)
+    model = head_to_head.MARKET if market["status"] in ("ok", "no_line") else head_to_head.ORIGINAL
+    probabilities = record.get("tip_off_home") or {}
+    home_win = probabilities.get(model)
+    if home_win is None:
+        w = float(market.get("w", 0.0))
+        home_win = head_to_head.tip_off_probabilities(production.get_model(), record, w)[model]
+    favourite = "home" if home_win >= 0.5 else "away"
+    probability = home_win if favourite == "home" else 1 - home_win
+    body: dict[str, Any] = {
+        "status": "sealed",
+        "model": model,
+        "home_win": home_win,
+        "favourite": favourite,
+        "probability": probability,
+        "toss_up": TOSS_UP[0] <= home_win <= TOSS_UP[1],
+        "captured_at": captured_at,
+        "right": None,
+    }
+    if game.get("status") == "final":
+        scores = {t.get("side"): t.get("score") for t in game.get("teams", [])}
+        try:
+            home, away = int(scores["home"]), int(scores["away"])
+        except (KeyError, TypeError, ValueError):
+            return body
+        body["right"] = (home > away) == (favourite == "home") if home_win != 0.5 else None
+    return body
+
+
+def with_cards(slate_read: dict[str, Any]) -> dict[str, Any]:
+    data = slate_read.get("data")
+    if not data:
+        return slate_read
+    games = []
+    for game in data.get("games", []):
+        try:
+            prediction = card(game)
+        except (OSError, ValueError, KeyError):
+            prediction = None
+        games.append({**game, "prediction": prediction})
+    return {**slate_read, "data": {**data, "games": games}}
