@@ -4,8 +4,9 @@ A v2 seal holds everything a v1 seal holds, with each game's `inputs` block comp
 `win_probability_production.capture_slate` computes it, so the Original model's score is the
 same from either. It adds what the pregame "why" needs: the betting line, the player rows behind
 `strength`, each player listed Out with what their absence costs, `form` split from the
-home-court term, and how old the inputs are. Fields W3 fills (`mu4`, `w`, tip-off probabilities)
-are present and null.
+home-court term, and how old the inputs are. A seal captured after the Market-informed model's
+freeze (W3b) also carries `mu4`, `w` and each model's tip-off probability; earlier seals have them
+null, and scoring computes them from the seal's line.
 
 The seal job (`run`) seals today's scheduled regular-season games, scores finished games not yet
 on the scorecard and rewrites the summaries. It never refits ratings: rating snapshots, box scores
@@ -23,6 +24,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from courtlens.config import get_settings
+from courtlens.services import win_probability_head_to_head as head_to_head
 from courtlens.services import win_probability_production as production
 
 SCHEMA = "courtlens-win-probability-pregame-v2"
@@ -262,6 +264,20 @@ def build_records(
     return records
 
 
+def _add_market_fields(records: dict[str, dict[str, Any]], now: datetime) -> None:
+    """After v4's freeze, fill `mu4`, `w` and both tip-off probabilities (not compared)."""
+    try:
+        manifest = head_to_head.load_market_manifest()
+    except (OSError, ValueError):
+        return
+    if now <= production._parse_time(manifest["frozen_at"]):
+        return
+    base = production.get_model()
+    w = float(manifest["market"]["w"])
+    for record in records.values():
+        record.update(head_to_head.seal_fields(base, record, w))
+
+
 # ---------------------------------------------------------------------------------------------
 # Sealing.
 
@@ -335,6 +351,7 @@ def seal_slate(day: date, client: Any, now: datetime | None = None) -> dict[str,
         ages,
     )
     report["without_line"] = sum(r["line"] is None for r in records.values())
+    _add_market_fields(records, now)
     report["changed"] = changed_games(day.isoformat(), records)
     if not report["changed"]:
         return report
@@ -380,15 +397,30 @@ def run(client: Any, now: datetime | None = None, lookback_days: int = 3) -> dic
                 totals[key] += value
     except Exception as error:
         score_error = repr(error)
+    # Both models from the same seals since v4's freeze (W3b). Its failure is reported, not fatal.
+    head_to_head_error = None
+    try:
+        market = head_to_head.load_market_manifest()
+        for key, value in head_to_head.score_pending(client, model, market).items():
+            totals[key] += value
+    except Exception as error:
+        head_to_head_error = repr(error)
     seal = seal_slate(today, client, now)
     production.write_availability_checks()
     summary = production.write_summary()
     production.write_wpa_summary(production.season_of(today.isoformat()))
+    serving = None
+    try:
+        serving = head_to_head.write_summary(client, today, now)["serving_model"]["model"]
+    except Exception as error:
+        head_to_head_error = head_to_head_error or repr(error)
     return {
         "date": today.isoformat(),
         "ran_at": now.isoformat(timespec="seconds"),
         **totals,
         "score_error": score_error,
+        "head_to_head_error": head_to_head_error,
+        "serving_model": serving,
         **{f"seal_{key}": value for key, value in seal.items()},
         "games_on_scorecard": summary["games_scored"],
         "prospective_games": summary["prospective"]["games"],

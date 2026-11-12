@@ -13,6 +13,7 @@ import argparse
 import hashlib
 import json
 import shutil
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -47,8 +48,16 @@ def file_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def per_game_bins() -> tuple[np.ndarray, list[str]]:
-    """Calibration bins per test game from saved predictions, as the scorecard stores them."""
+def _selected(season: str) -> np.ndarray:
+    return read_prediction(OUTPUT, "selected", season)
+
+
+def per_game_bins(
+    load: Callable[[str], np.ndarray] = _selected,
+) -> tuple[np.ndarray, list[str]]:
+    """Calibration bins per test game from saved predictions, as the scorecard stores them.
+
+    `load` gives a season's saved predictions on v2's state rows (v4's drift reuses this)."""
     from courtlens.evaluation.win_probability_data import read_games
 
     dates = {g: e["date"] for g, e in read_games(OUTPUT)["games"].items()}
@@ -57,7 +66,7 @@ def per_game_bins() -> tuple[np.ndarray, list[str]]:
     edges = np.linspace(0, 1, ECE_BINS + 1)
     for season in TEST_SEASONS:
         columns, games = read_season(season)
-        p = read_prediction(OUTPUT, "selected", season)
+        p = load(season)
         win = columns["win_home"].astype(np.float64)
         index = columns["game_index"].astype(np.int64)
         counts = np.bincount(index, minlength=len(games))
@@ -72,13 +81,16 @@ def per_game_bins() -> tuple[np.ndarray, list[str]]:
     return np.concatenate(blocks), order
 
 
-def drift_interval() -> dict[str, Any]:
+def drift_interval(
+    load: Callable[[str], np.ndarray] = _selected,
+    source: str = "the saved selected-model predictions",
+) -> dict[str, Any]:
     """How much calibration error varies by chance, for windows of each size, on the test seasons.
 
     Calibration error depends strongly on sample size, so the flag compares a window against
     windows of the same size. Each entry resamples whole games from the two test seasons.
     """
-    bins, dates = per_game_bins()
+    bins, dates = per_game_bins(load)
     rng = np.random.default_rng(SEED)
     table = []
     for size in WINDOW_SIZES:
@@ -105,7 +117,7 @@ def drift_interval() -> dict[str, Any]:
             windows.append(calibration_error(ordered[chosen].sum(axis=0)))
     return {
         "method": (
-            "Game bootstrap of the saved selected-model predictions for 2024-25 and 2025-26, "
+            f"Game bootstrap of {source} for 2024-25 and 2025-26, "
             f"{REPLICATES} resamples per window size, 2.5th and 97.5th percentiles. No refit; "
             "run_test was not re-run."
         ),

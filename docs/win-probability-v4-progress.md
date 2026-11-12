@@ -239,3 +239,37 @@ from the seals. Not marked ✅: only the owner does that.
 
 Still to do: check tonight's seals (taken at 18:55, 19:55 and 20:55 ET) and tomorrow's 09:00 ET
 scoring run on the VPS before W2 is called done. Next block: W3b.
+
+## 2026-11-12 — W3b: both models scored from the same seals; reads and the serving rule built
+
+Built the same day as the freeze, on branch `feat/wp4-w3b`. Nothing marked ✅; the owner's gate
+is reading the first head-to-head.
+
+- **Code.** `services/win_probability_head_to_head.py`: the frozen v4 manifest (hash-checked and
+  tied to the Original's), K1 as `MarketModel` (the Original's model reading mu4), one row per
+  game tipping after the freeze with both models on the same sampled states, V1/V2 with the
+  registered game bootstrap (identical to stage C's `bootstrap_interval`, tested), the three-way
+  result, the 300-game and final reads written once to `scorecard/head-to-head-reads.jsonl`, and
+  `serving_model` (v4 unless a read finds V1 or V2 "worse"). The final read triggers the first time
+  ESPN's scoreboard leaves the regular season in April to June. The seal job scores head-to-head
+  after the Original and reports `head_to_head_error` without costing seals; seals after the freeze
+  carry `mu4`, `w` and both tip-off probabilities. `/api/win-probability` gains `head_to_head` and
+  `protocol_notes`; Live serves `live_probability` (the Original's line, unchanged, for games
+  sealed before the freeze or while the Original serves). Win probability added stays on the
+  Original.
+- **v4 drift.** `evaluation/research/derived/courtlens-win-probability-v4-drift.json` from v4's
+  stage C predictions with the Original's method (`win_probability_freeze.drift_interval`, now
+  taking its prediction source; with its defaults it reproduces the Original's frozen manifest
+  exactly). All test games' calibration error 0.0086; 292 30-day windows.
+- **Dry run on real data** (a copy of the serving directory, the freeze moved to 2026-11-10 so
+  real games count): 16 games scored; the Original's column equals its own scorecard rows exactly
+  (largest difference 0.0). Those seals are v1 with no line, so mu4 = own, as registered. On
+  today's v2 seal, w = 1 gives mu4 = the line (PHI −8.5 → 8.5; tip-off 0.577 → 0.747); the opening
+  state's probability equals a real game's first state exactly, for both models.
+- **Found by a test:** the opening state's `period` column is 1, not 0.
+- **Green:** 27 new unit tests; win-probability tests 154 passed; full suite 2,837 passed, 8 failed
+  (the 8 known Anthropic provider cases). Strict mypy (396 files) and Ruff clean.
+
+Note: tonight's counted games were last sealed at 15:25Z, before the freeze, so Live shows the
+Original's line for them unless a later seal is written (a line or Out change). They still count in
+the head-to-head, from the same seal, as the registration defines.
