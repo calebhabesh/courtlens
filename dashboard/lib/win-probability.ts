@@ -138,3 +138,58 @@ export function sortWpa(rows: readonly WpaRow[], sort: WpaSort): WpaRow[] {
   const sign = sort.direction === "asc" ? 1 : -1;
   return [...rows].sort((a, b) => sign * (a[sort.key] - b[sort.key]) || a.name.localeCompare(b.name));
 }
+
+/** W4: one input of the own forecast, coefficient x value = contribution (home margin points). */
+export interface WhyRow { input: string; label: string; value: number; coefficient: number; contribution: number }
+export interface WhyGroup { group: "players" | "form" | "home_court" | "rest_travel"; label: string; contribution: number; rows: WhyRow[] }
+export interface WhyOutPlayer { name: string; player_id: string | null; minutes: number | null; rating: number | null; cost: number | null; default_rating: boolean | null }
+export interface WhyPlayer { name: string; player_id: string; minutes: number; rating: number; default_rating: boolean }
+/** The pregame "why" for one game, built from its seal (`/api/win-probability/games/{id}/breakdown`). */
+export interface WinProbabilityWhy {
+  game_id: string; date: string; home: string; away: string; tip_off: string | null; captured_at: string; seal: string;
+  model: "original" | "market_informed"; serving: "original" | "market_informed";
+  own: { own: number; groups: WhyGroup[] };
+  market:
+    | { status: "ok"; w: number; line: number; book: string | null; details: string | null; adjustment: number }
+    | { status: "no_line"; w: number }
+    | { status: "sealed_before_freeze" | "original_serving" };
+  prediction: { home_margin: number; home_win: number };
+  tip_off_home: { original: number; market_informed: number };
+  out: { home: WhyOutPlayer[]; away: WhyOutPlayer[] } | null;
+  players: { home: WhyPlayer[]; away: WhyPlayer[] } | null;
+  ages: { box_through?: string; rating_snapshot_cutoff?: string; injury_report_at?: string; roster_observed_at?: string } | null;
+  availability_note: string;
+  result: { home_score: number; away_score: number; calls: Record<string, number | null> | null } | null;
+  manifest_sha256: string;
+}
+
+/** One bar of the "why" chart, in home-margin points (above zero: toward the home team). */
+export interface WhyBar { key: string; label: string; points: number; kind: "group" | "own" | "market" | "prediction" }
+
+/** The panel's rows in order: each group, the own read, the market row when the model used one, the prediction. */
+export function whyBars(why: Pick<WinProbabilityWhy, "own" | "market" | "prediction">): WhyBar[] {
+  const bars: WhyBar[] = why.own.groups.map(g => ({ key: g.group, label: g.label, points: g.contribution, kind: "group" }));
+  bars.push({ key: "own", label: "CourtLens's own read", points: why.own.own, kind: "own" });
+  if (why.market.status === "ok") bars.push({ key: "market", label: "Market adjustment", points: why.market.adjustment, kind: "market" });
+  bars.push({ key: "prediction", label: "Prediction", points: why.prediction.home_margin, kind: "prediction" });
+  return bars;
+}
+
+/** "PHI +3.1" toward the team the points favour; "Even" when they round to zero. */
+export function towardTeam(points: number, home: string, away: string, digits = 1): string {
+  const rounded = Number(Math.abs(points).toFixed(digits));
+  if (rounded === 0) return "Even";
+  return `${points > 0 ? home : away} +${rounded.toFixed(digits)}`;
+}
+
+/** "PHI by 7.5" for a home margin. */
+export function marginText(points: number, home: string, away: string, digits = 1): string {
+  const rounded = Number(Math.abs(points).toFixed(digits));
+  return rounded === 0 ? "Even" : `${points > 0 ? home : away} by ${rounded.toFixed(digits)}`;
+}
+
+/** Whether a final game went the way the sealed call said (null: exactly even, or no result). */
+export function callRight(why: Pick<WinProbabilityWhy, "prediction" | "result">): boolean | null {
+  if (!why.result || why.prediction.home_win === 0.5) return null;
+  return (why.result.home_score > why.result.away_score) === (why.prediction.home_win > 0.5);
+}

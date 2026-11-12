@@ -20,6 +20,13 @@ export interface LiveGame {
   source_id: string; canonical_id: string | null; identity_status: string; namespace?: string; slate_date: string;
   event_time: string | null; status: LiveStatus; period: number | null; clock: string | null; teams: LiveTeam[];
   provisional?: boolean; status_detail?: string | null; odds?: LiveOdds | null;
+  /** W4: the sealed CourtLens call (null before any real seal existed). */
+  prediction?: LivePrediction | null;
+}
+export type WinModel = "original" | "market_informed";
+export interface LivePrediction {
+  status: "sealed" | "no_seal"; model?: WinModel; home_win?: number; favourite?: "home" | "away";
+  probability?: number; toss_up?: boolean; captured_at?: string; right?: boolean | null;
 }
 export interface LivePlayer {
   source_id: string; team_source_id: string; name: string; short_name?: string | null; position?: string | null;
@@ -195,4 +202,25 @@ export async function liveRequest<T>(path: string): Promise<T> {
   const response = await fetch(`/api/live${path}`, { cache: "no-store", signal: AbortSignal.timeout(10000) });
   if (!response.ok) throw new Error(`Live request failed (${response.status})`);
   return response.json();
+}
+
+export const WIN_MODEL_NAMES: Record<WinModel, string> = { market_informed: "Market-informed model (on trial)", original: "Original model" };
+
+/**
+ * W4: the card's CourtLens row from the sealed call. The number is the sealed tip-off probability and
+ * never moves during the game. `right` is set only for a final game whose call was not exactly even.
+ */
+export function predictionCall(game: Pick<LiveGame, "status" | "prediction">): {
+  kind: "none" | "favours" | "toss_up" | "pregame" | "called"; side?: "home" | "away"; percent?: number; right?: boolean | null; title: string;
+} | null {
+  const p = game.prediction;
+  if (!p) return null;
+  if (p.status === "no_seal" || p.favourite == null || p.probability == null) return { kind: "none", title: "No prediction was sealed before tip-off" };
+  const percent = Math.round(p.probability * 100);
+  const sealed = tipoff(p.captured_at ?? null);
+  const title = `${p.model ? WIN_MODEL_NAMES[p.model] : "CourtLens"}: the sealed tip-off probability${sealed ? `, sealed ${sealed}` : ""}. Not betting advice.`;
+  const base = { side: p.favourite, percent, title };
+  if (game.status === "final") return { ...base, kind: "called", right: p.right ?? null };
+  if (game.status === "in_progress") return { ...base, kind: "pregame" };
+  return { ...base, kind: p.toss_up ? "toss_up" : "favours" };
 }

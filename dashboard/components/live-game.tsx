@@ -16,6 +16,7 @@ import { Icon, type IconName } from "./ui/icon";
 import { PlayerPortrait } from "./player-portrait";
 import { teamRecord } from "./compare-player-slot";
 import { TeamWatermark } from "./team-watermark";
+import { PredictionPanel } from "./live-prediction";
 import { PageHeader } from "./ui/panel";
 import { SearchField } from "./ui/input";
 import { ButtonLink, Segmented } from "./ui/kit";
@@ -505,6 +506,7 @@ export function PreGameTab({ data }: { data: LiveGameData }) {
   const season = seasonOf(data.game.slate_date);
   const list = (team: LiveTeam) => data.injuries ? data.injuries.find(t => t.team_source_id === team.source_id)?.players ?? [] : null;
   return <div className="live-pregame">
+    <PredictionPanel game={data.game} />
     <Panel title="Injury Report" icon="alert" className="live-pregame-injuries">
       <InjuryList team={away} players={list(away)} season={season} />
       <InjuryList team={home} players={list(home)} season={season} />

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 import * as route from "../app/api/live/[[...path]]/route";
-import { formatRecord, gameStatus, lineFavourite, madeAttempted, nearestGameDate, periodLabel, seasonOf, shiftSlate, shootingTone, trueShooting, twoPoint, validSlate, type LiveGame, type LiveTeam } from "./live";
+import { formatRecord, gameStatus, lineFavourite, madeAttempted, nearestGameDate, periodLabel, predictionCall, seasonOf, shiftSlate, shootingTone, trueShooting, twoPoint, validSlate, type LiveGame, type LiveTeam } from "./live";
 
 const context = (path: string[] = []) => ({ params: Promise.resolve({ path }) });
 const request = (path: string) => new NextRequest(`http://localhost:3000/api/live${path}`);
@@ -86,4 +86,21 @@ it("records read with an en dash", () => {
   expect(formatRecord("10-0")).toBe("10–0");
   expect(formatRecord(null)).toBeNull();
   expect(formatRecord("2-3-1")).toBe("2-3-1");
+});
+
+describe("the card's sealed call (W4)", () => {
+  const sealed = { status: "sealed" as const, model: "market_informed" as const, home_win: 0.2875, favourite: "away" as const, probability: 0.7125, toss_up: false, captured_at: "2026-11-12T19:10:34+00:00", right: null };
+  it("shows nothing before any real seal and says so when none was sealed", () => {
+    expect(predictionCall({ status: "scheduled", prediction: null })).toBeNull();
+    expect(predictionCall({ status: "scheduled", prediction: { status: "no_seal" } })?.kind).toBe("none");
+  });
+  it("names the favourite, a toss-up, the pregame call in play and the graded final", () => {
+    expect(predictionCall({ status: "scheduled", prediction: sealed })).toMatchObject({ kind: "favours", side: "away", percent: 71 });
+    expect(predictionCall({ status: "scheduled", prediction: { ...sealed, toss_up: true } })?.kind).toBe("toss_up");
+    expect(predictionCall({ status: "in_progress", prediction: sealed })?.kind).toBe("pregame");
+    expect(predictionCall({ status: "final", prediction: { ...sealed, right: false } })).toMatchObject({ kind: "called", right: false });
+  });
+  it("names the model only in the title", () => {
+    expect(predictionCall({ status: "scheduled", prediction: sealed })?.title).toMatch(/^Market-informed model \(on trial\): the sealed tip-off probability, sealed 2:10 PM EST/);
+  });
 });

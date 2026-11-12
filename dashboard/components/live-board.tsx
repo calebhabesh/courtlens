@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, seasonOf, shiftSlate, teamCode, type LiveGame, type LiveTeam } from "@/lib/live";
+import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, predictionCall, seasonOf, shiftSlate, teamCode, type LiveGame, type LiveTeam } from "@/lib/live";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 
@@ -90,6 +90,27 @@ function label(game: LiveGame) {
   return `${teams.map(t => `${t.name}${t.score != null ? ` ${t.score}` : ""}`).join(" at ")} · ${gameStatus(game)}`;
 }
 
+/**
+ * W4: CourtLens's sealed call above the book's line chips. The favoured team is not coloured; only
+ * a final call's ✓ and ✗ carry the green and red convention. The model is named in the title only.
+ */
+function PredictionRow({ game, season }: { game: LiveGame; season: string }) {
+  const call = predictionCall(game);
+  if (!call) return null;
+  if (call.kind === "none") return <span className="live-card-call" data-call="none" title={call.title}>No prediction was sealed for this game</span>;
+  const team = game.teams.find(t => t.side === call.side);
+  if (!team) return null;
+  const pick = <span className="live-card-call-team">
+    <TeamLogo team={team.tricode ?? team.canonical_id ?? teamCode(team)} season={season} size={16} />
+    <strong>{teamCode(team)}</strong> <span className="live-card-call-pct">{call.percent}%</span>
+  </span>;
+  const lead = { favours: "CourtLens favors", toss_up: "Toss-up ·", pregame: "Pregame call:", called: "Called" }[call.kind];
+  return <span className="live-card-call" data-call={call.kind} data-right={call.right == null ? undefined : String(call.right)} title={call.title}>
+    <span className="live-card-call-lead">{lead}</span>{pick}
+    {call.kind === "called" && call.right != null && <span className="live-card-call-mark"><Icon name={call.right ? "check" : "close"} size={14} /><span className="sr-only">{call.right ? "right" : "wrong"}</span></span>}
+  </span>;
+}
+
 /** One game on the board: status or tipoff, hotkey, the free line before tipoff, both teams. */
 export function GameCard({ game, href, index }: { game: LiveGame; href: string; index: number }) {
   const teams = awayFirst(game.teams);
@@ -106,6 +127,7 @@ export function GameCard({ game, href, index }: { game: LiveGame; href: string; 
       </span>
     </span>
     {teams.map(team => <TeamRow key={team.source_id} team={team} game={game} season={season} />)}
+    <PredictionRow game={game} season={season} />
     {/* Follow-up 8: the line on its own row, naming the favourite, so the header never wraps. */}
     {(favourite || odds?.over_under != null) && <span className="live-card-line">
       {favourite && <span className="live-chip" title={favourite === "even" ? `Spread (${book}): an even game, no favorite` : `Spread (${book}): ${favourite.team.name} favored by ${favourite.points} points`}>{favourite === "even" ? "Even" : `${teamCode(favourite.team)} by ${favourite.points}`}</span>}
