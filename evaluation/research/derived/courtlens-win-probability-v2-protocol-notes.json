@@ -49,6 +49,21 @@
     }
    ],
    "first_games_affected_note": "Every game tipping from 2026-11-13T00:00Z on; no game tipped on the old schedule after the Market-informed model's freeze (2026-11-12T17:14:57Z push)."
+  },
+  {
+   "date": "2026-11-12",
+   "kind": "registered_parameter_deviation",
+   "note": "The seal-time change of the previous note departs from the Market-informed model's registration (courtlens-win-probability-v4, parameters.seal.first_run_local_time \"12:00 America/New_York\", interval_minutes 30): runs start at 12:25 and fall at :25 and :55. The interval is unchanged. The owner chose to keep it so each game's last seal is 5 minutes before tip, not 30. The registration is not edited. The change applies to both models' shared seal, was live before any counted game tipped (first 2026-11-13T00:00Z), and does not change the model, the seal's contents or which seal a game uses.",
+   "registered": {
+    "first_run_local_time": "12:00 America/New_York",
+    "interval_minutes": 30
+   },
+   "served": {
+    "first_run_local_time": "12:25 America/New_York",
+    "interval_minutes": 30
+   },
+   "decided_by": "owner, 2026-11-12, after the conflict was found while reading the registration for W3b",
+   "effective_from_utc": "2026-11-12T17:45:32Z"
   }
  ]
 }
