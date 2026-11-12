@@ -28,7 +28,10 @@ from courtlens.services import win_probability_production as production
 SCHEMA = "courtlens-win-probability-pregame-v2"
 EASTERN = ZoneInfo("America/New_York")
 MORNING_RUN = time(9, 0)
-FIRST_SEAL = time(12, 0)
+# Runs at :25 and :55 so the last seal before a tip on the hour or half hour is taken 5 minutes
+# before it, after most game-time injury decisions (a run takes about 25 s). On :00 and :30 the
+# run at a tip's own time landed after it, so the seal a game used was 30 minutes old.
+FIRST_SEAL = time(12, 25)
 SEAL_INTERVAL = timedelta(minutes=30)
 RETRY = timedelta(minutes=30)
 # What a seal is compared on; the input ages and seal times are not part of a change.
@@ -395,7 +398,7 @@ def run(client: Any, now: datetime | None = None, lookback_days: int = 3) -> dic
 
 def next_run(now: datetime, last_tip: str | None) -> datetime:
     """When the job runs next: 09:00 Eastern for last night's scores, then every 30 minutes from
-    noon while a run would still land before the day's last scheduled tip.
+    12:25 (at :25 and :55) while a run would still land before the day's last scheduled tip.
     """
     local = now.astimezone(EASTERN)
     today = local.date()
