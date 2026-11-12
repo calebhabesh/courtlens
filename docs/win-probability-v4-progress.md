@@ -291,3 +291,23 @@ the owner's approval before W7b.
 - **Season impact** has had no real run this season; it is measured on its first run (W7c C1).
 
 Next: the owner approves the runbook; W7b on "move", 09:00 to noon Eastern, owner present.
+
+## 2026-11-12 — W7b B2–B5: the VPS database is the PC's, with the visitors' rows
+
+- **B2 data copy:** 18.9 GB to the VPS, nothing deleted (no `--delete`), file counts identical in
+  raw, derived, artifacts and cache.
+- **B3 restore:** `pg_restore -j 2` of the PC dump (alembic `3c4d9e1f0a21`) into `courtlens_next`
+  while the live database served. Exact row counts of all 127 tables equal the PC's
+  (`workbench_player_games` 2,688,980; `workbench_possessions` 2,935,327). Both dump copies and
+  the PC's scratch dump deleted.
+- **B4 visitor rows** (19:44Z, with `api`, `dashboard`, `demo-reset` stopped; the seal service
+  kept running): the Ask tables, `user_favorite_players` and `workbench_personal_workspaces`
+  truncated and restored from live; `users` upserted from live and the PC-only dev user deleted,
+  **not** truncated, because `fantasy_leagues` references `users` and a cascade would have erased
+  the fantasy tables. Every carried table's contents md5-identical to live (users 3, favourites 8,
+  threads 10, turns 15, turn inputs 6, transcripts 6, workspaces 5). No sequences (UUID keys).
+  Found while checking: only `fantasy_leagues` has a user FK beyond the runbook's list; it and the
+  saved investigations already matched.
+- **B5 swap:** `courtlens` → `courtlens_prev`, `courtlens_next` → `courtlens`; services started.
+  `/api/health` ok, demo sign-in and its 8 favourites ok, Stats cohorts warmed (1 built, 170
+  existing; first `/stats` 8.1 s cold, 0.7 s warm). `courtlens_prev` kept until the owner drops it.
