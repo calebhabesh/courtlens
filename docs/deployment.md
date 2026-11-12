@@ -262,6 +262,23 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 
 ## Deploy log
 
+### 2026-11-12: release 3988ffc4 (seals 5 minutes before tip, #95; legacy-brand test, #94)
+
+- **What:** the seal service runs at :25 and :55 Eastern instead of :00 and :30, so each game's last seal is 5 minutes before its tip, not 30 (a protocol note records it).
+- **Why Images was started by hand:** the backend job is green again (#94), but the dashboard job failed on the same 2 R10 Wingspan Playwright tests as the morning run. The hand-started Images run (43272196653) passed.
+- **Deploy:** no Stats cohorts built (171 existing); 158 GB free. The seal service's first run (17:45:32Z) sealed nothing new and set its next run to 17:55:00Z; `/api/health` ok.
+
+### 2026-11-12: release 8afa373d (Win Probability v4 W2 part B, the cutover)
+
+- **What:** the `win-probability-seal` service; seals and scoring now run on the VPS (#92). The PC only pushes inputs (`scripts/win-probability-push.sh`) and pulls the bundle back.
+- **Why Images was started by hand:** Images runs only when CI succeeds. CI failed on the known legacy-brand test (fixed in #94) and, on the first run, on 2 flaky R10 Wingspan Playwright tests that passed when re-run. The hand-started Images run (43244641923) passed.
+- **Before the deploy:** the PC's serving bundle was pushed once, without `--delete`. The deploy ran from the worktree's `scripts/deploy-vps.sh`, which no longer mirrors `derived/win-probability-serving`.
+- **Deploy:** no Stats cohorts built (171 existing); 158 GB free.
+- **The seal service:** first run at 15:25:07Z sealed all 4 of the day's games (schema v2, each with a line). Re-scoring 2026-11-11's 10 games in a one-off container on copies matched the PC's rows to 1.1e-16; the live scorecard's hash didn't change. Idle at 5 MiB of its 768 MiB cap.
+- **arm64:** v4's platform check gave a largest difference of 2.2e-16 over 1,902 states (limit 1e-9).
+- **The PC:** `COURTLENS_WIN_PROBABILITY_LOCAL_SEALING=false` in `.env`; `courtlens-win-probability-push` installed. Its first run pushed the inputs and pulled the VPS's seal back.
+- **Checked on the public URL:** `/api/health` ok; `/api/win-probability` serves the Original with 63 prospective games through 2026-11-11; `/research/win-probability` loads; `POST /api/win-probability` gets Caddy's 403.
+
 ### 2026-11-11: release 8ef78660 (finish plan F04 and F05)
 
 - **What:** accounts, the one-click demo account and favourite players (#87), and the published Win Probability upgrade result, not adopted (#88).
