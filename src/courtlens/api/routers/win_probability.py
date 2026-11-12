@@ -59,6 +59,24 @@ def win_probability_page() -> dict[str, Any]:
     }
 
 
+@router.get("/games/{game_id}/breakdown")
+def win_probability_breakdown(
+    game_id: str, day: str = Query(alias="date", pattern=r"^\d{4}-\d{2}-\d{2}$")
+) -> dict[str, Any]:
+    """The pregame "why" for one game from its seal (W4): rows that add up to the forecast."""
+    from courtlens.services.win_probability_breakdown import breakdown
+
+    if not game_id.isdigit() or len(game_id) > 20:
+        raise HTTPException(422, "Invalid ESPN game ID")
+    try:
+        body = breakdown(game_id, day)
+    except (OSError, ValueError) as error:
+        raise HTTPException(503, "Win probability model unavailable") from error
+    if body is None:
+        raise HTTPException(404, "No prediction was sealed for this game")
+    return body
+
+
 @router.get("/wpa")
 def win_probability_added(season: str = Query(pattern=r"^\d{4}-\d{2}$")) -> dict[str, Any]:
     table = wpa_table(season)
