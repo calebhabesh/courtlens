@@ -4,7 +4,7 @@ from typing import Any
 
 from fastapi import APIRouter, Response
 
-router = APIRouter(prefix="/jobs", tags=["operations"])
+router = APIRouter(prefix="/job-health", tags=["operations"])
 
 
 @router.get("")
