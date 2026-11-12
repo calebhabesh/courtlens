@@ -56,6 +56,7 @@
 @import "../components/finance-workspace.css";
 @import "../components/live-workspace.css";
 @import "../components/live-game.css";
+@import "../components/live-prediction.css";
 @import "../components/standings-view.css";
 @import "./styles/route-surfaces.css";
 @import "../components/planner-client.css";
