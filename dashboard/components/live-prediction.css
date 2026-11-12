@@ -1,0 +1,57 @@
+@layer pages {
+  /* W4: the Pre-Game "CourtLens prediction" panel. Bars are neutral; only a final call's ✓/✗ is green or red. */
+  .live-pregame-prediction { grid-column: 1 / -1; }
+  .lp-body { display: grid; gap: var(--space-3); min-width: 0; }
+  /* Grid items default to min-width: auto; the inputs table would widen the page on a phone. */
+  .lp-body > *, .lp-toggle > * { min-width: 0; }
+  .lp-headline { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); margin: 0; font-size: var(--text-md); }
+  .lp-team { display: inline-flex; align-items: center; gap: var(--space-1); }
+  .lp-muted { color: var(--color-text-tertiary); }
+  .lp-note { margin: 0; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: 1.5; }
+  .lp-note code { font-size: var(--text-2xs); overflow-wrap: anywhere; }
+
+  .lp-bars { display: grid; gap: var(--space-1); }
+  .lp-bar-row { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(0, 2fr) minmax(120px, auto); align-items: center; gap: var(--space-3); min-height: 28px; }
+  .lp-bar-label { font-size: var(--text-sm); color: var(--color-text-secondary); }
+  .lp-bar-value { font-size: var(--text-sm); font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; }
+  .lp-bar-axis { min-height: 20px; }
+  .lp-axis-label { grid-column: 2; display: flex; justify-content: space-between; color: var(--color-text-tertiary); font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.02em; }
+  .lp-bar-track { position: relative; height: 12px; }
+  .lp-bar-track::before { content: ""; position: absolute; inset-block: -4px; inset-inline-start: 50%; width: 1px; background: var(--color-hairline-strong); }
+  .lp-bar { position: absolute; inset-block: 0; width: var(--lp-width); border-radius: var(--radius-xs); background: var(--color-text-tertiary); }
+  .lp-bar[data-side="home"] { inset-inline-start: 50%; }
+  .lp-bar[data-side="away"] { inset-inline-end: 50%; }
+  .lp-bar-row[data-kind="own"], .lp-bar-row[data-kind="prediction"] { border-top: 1px solid var(--color-hairline); padding-top: var(--space-1); }
+  .lp-bar-row[data-kind="own"] .lp-bar-label, .lp-bar-row[data-kind="prediction"] .lp-bar-label,
+  .lp-bar-row[data-kind="own"] .lp-bar-value, .lp-bar-row[data-kind="prediction"] .lp-bar-value { color: var(--color-text); font-weight: 600; }
+  .lp-bar-row[data-kind="own"] .lp-bar, .lp-bar-row[data-kind="prediction"] .lp-bar { background: var(--color-text-secondary); }
+
+  .lp-section { display: grid; gap: var(--space-2); }
+  .lp-section h3 { margin: 0; font-size: var(--text-sm); font-weight: 700; }
+  .lp-out { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .lp-out-team { display: grid; align-content: start; gap: var(--space-1); font-size: var(--text-sm); }
+  .lp-out-team ul, .lp-out-team ol { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  .lp-out-team li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-1) var(--space-2); }
+  .lp-out-team li .lp-muted { font-size: var(--text-xs); }
+  .lp-arrow { vertical-align: -2px; }
+  .lp-mark { display: inline-flex; align-items: center; gap: var(--space-0-5); }
+  .lp-result { margin: 0; font-size: var(--text-sm); font-weight: 600; }
+  .lp-result[data-right="true"] .lp-mark { color: var(--color-positive); }
+  .lp-result[data-right="false"] .lp-mark { color: var(--color-negative); }
+  .lp-toggle { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); min-width: 0; }
+  .lp-toggle > summary { justify-self: start; }
+  .lp-toggle > summary svg { transition: transform var(--dur-fast) var(--ease-out); }
+  .lp-toggle[open] > summary svg { transform: rotate(180deg); }
+  .lp-toggle-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-2); min-width: 0; }
+  .lp-toggle-body.lp-out { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lp-input-name { display: block; }
+
+  @media (max-width: 640px) {
+    .lp-bar-row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-1) var(--space-2); }
+    .lp-bar-label { grid-column: 1; }
+    .lp-bar-value { grid-column: 2; grid-row: 1; }
+    .lp-bar-track { grid-column: 1 / -1; }
+    .lp-axis-label { grid-column: 1 / -1; }
+    .lp-out, .lp-toggle-body.lp-out { grid-template-columns: minmax(0, 1fr); }
+  }
+}
