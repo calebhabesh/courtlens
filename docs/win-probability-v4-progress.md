@@ -273,3 +273,21 @@ is reading the first head-to-head.
 Note: tonight's counted games were last sealed at 15:25Z, before the freeze, so Live shows the
 Original's line for them unless a later seal is written (a line or Out change). They still count in
 the head-to-head, from the same seal, as the registration defines.
+## 2026-11-12 — W7a: jobs surveyed, every source reached from the VPS, runbook written
+
+Nothing live changed. Runbook: [w7-runbook.md](evidence/win-probability-v4/w7-runbook.md), for
+the owner's approval before W7b.
+
+- **Jobs.** Five timers plus the push; the daily refresh's eight steps. Six hosts are fetched:
+  `api.github.com`, `raw.githubusercontent.com` (hoopR), `www.basketball-reference.com`,
+  `www.darko.app`, `en.wikipedia.org`, `site.api.espn.com`. Lineups, season impact, Metric
+  Backtest, Projected Impact and the rating snapshots fetch nothing.
+- **Sources from the VPS.** One document per host from a one-off API-image container (aarch64,
+  policy User-Agent, no redirects, robots.txt first, 10 s between a host's requests, no database):
+  **all six returned 200** with real documents. No source is refused; step 3 needs no decision.
+- **Found:** since F04 the VPS database holds visitor rows the PC's does not (3 users, 8
+  favourites, 10 Ask threads with 15 turns, 5 personal workspaces). Replacing the database as
+  planned would erase them; the runbook carries them across (B4).
+- **Season impact** has had no real run this season; it is measured on its first run (W7c C1).
+
+Next: the owner approves the runbook; W7b on "move", 09:00 to noon Eastern, owner present.
