@@ -20,6 +20,13 @@ export interface LiveGame {
   source_id: string; canonical_id: string | null; identity_status: string; namespace?: string; slate_date: string;
   event_time: string | null; status: LiveStatus; period: number | null; clock: string | null; teams: LiveTeam[];
   provisional?: boolean; status_detail?: string | null; odds?: LiveOdds | null;
+  /** W4: the sealed CourtLens call (null before any real seal existed). */
+  prediction?: LivePrediction | null;
+}
+export type WinModel = "original" | "market_informed";
+export interface LivePrediction {
+  status: "sealed" | "no_seal"; model?: WinModel; home_win?: number; favourite?: "home" | "away";
+  probability?: number; toss_up?: boolean; captured_at?: string; right?: boolean | null;
 }
 export interface LivePlayer {
   source_id: string; team_source_id: string; name: string; short_name?: string | null; position?: string | null;
