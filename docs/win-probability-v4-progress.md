@@ -118,3 +118,33 @@ setting; `deploy-vps.sh` no longer mirrors `derived/win-probability-serving` and
 
 Next: part B, the cutover, on the owner's word. Until then nothing changes on merge: local
 sealing stays on, and the first deploy after the merge is the cutover deploy.
+
+## 2026-11-11 — W3 offline part: stage F, ESPN-state parity and latency pass; nothing frozen
+
+The owner approved starting W3's offline part on the same branch before the cutover ("start W3's
+offline part today… so it is in tomorrow's deploy"), limited to stage F, the offline freeze
+checks, the v4 predict path and an arm64 check command. Written only under
+`data/derived/win-probability-v4` and `docs/evidence/win-probability-v4`; no manifest, model
+file, pin test, serving file, v4 scoring, API or dashboard change. Evidence:
+[README, W3 offline part](evidence/win-probability-v4/README.md).
+
+- **Stage F** (K1): w = **1.0** on 2022-23 to 2025-26 (4,883 games; unclipped 1.0115, clipped to
+  the registered bound; regression check line 1.002, own 0.025). The weight rose 0.720, 0.906,
+  1.0 across stages S, C and F. With a line, v4's pregame forecast is the line; with none, the
+  own forecast. The plan's risk table covers this: publish as measured.
+- **ESPN-state parity** (stage C's w, 2,439 games): log loss +0.00053 at the same times and
+  +0.00016 on ESPN's own sample, limit 0.002. **Passes.** The archive states reproduce stage C's
+  saved predictions through the serving path to 3.0e-8 (float32 storage).
+- **p95 latency** (w 1.0, 200 games, one thread): 21 ms, limit 100 ms. **Passes.**
+- **Platform reference** (w 1.0): 1,902 states; the stdin check passes on x86 (0.0).
+- **Code.** `services/win_probability_market.py` (the predict path: the Original's model with
+  mu4); `evaluation/win_probability_v4_checks.py` (`parity`, `latency`, `platform-write`,
+  `platform-check --reference -`); stage `final` in `win_probability_v4.py`; optional `mu_for` and
+  `reference` hooks in `win_probability_parity.run` and the platform check (defaults unchanged: v2's
+  platform check still gives 0.0 on its committed reference, and its sampled states are identical);
+  `scripts/win_probability_v4_platform_check.sh` runs the arm64 check in the VPS API container with
+  the reference on stdin.
+- **Green:** 8 new unit tests. Full suite 2,799 passed, 9 failed (the same 9 that fail on `main`). Strict mypy (393 files), Ruff check and format clean.
+
+Next: tomorrow, after the cutover is confirmed, run `scripts/win_probability_v4_platform_check.sh`
+and report. The owner decides on the freeze.

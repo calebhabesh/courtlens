@@ -125,10 +125,30 @@ The scoreboard acquisition (`events`) is not a fit and ran outside the cap: 629 
 5-second pacing, 52 min. Before stage C, its code was run end to end on 2023-24 in a scratch
 directory (no test season read, output deleted) so that a bug could not spend the single read.
 
+## W3 offline part (2026-11-11): stage F and the freeze checks, before any freeze
+
+| Step | Result | Runtime | Peak |
+| --- | --- | --- | --- |
+| Stage F (K1): w on 2022-23 to 2025-26, 4,883 games | **w = 1.0** (unclipped 1.0115, clipped to the registered bound); regression check: line 1.002, own 0.025 | 2.5 s | 317 MB |
+| ESPN-state parity, stage C's w 0.906, 2,439 games | Log loss +0.00053 (95% +0.00035 to +0.00073) at the same times, +0.00016 (+0.00010 to +0.00024) on ESPN's own sample; limit 0.002: **passes** | 1 min 57 s | 501 MB |
+| The serving path reproduces stage C | Max difference 3.0e-8 (stage C's predictions are stored as float32; v2's R15b showed the same) | (same run) | |
+| p95 latency, w 1.0, 200 games, one thread | 21 ms (p50 13 ms, max 30 ms); limit 100 ms: **passes** | 6.8 s | 320 MB |
+| Platform reference, w 1.0 | 1,902 states from 8 games of 2025-26, scored on x86 | 3.1 s | 312 MB |
+
+The weight rose from 0.720 (stage S) to 0.906 (stage C) to 1.0 (stage F). With a line, the
+candidate's pregame forecast is the line itself; with no line, the own forecast. The plan's risk
+table expected this case and says to publish it as measured.
+
+ESPN-state parity was read with stage C's w, as registered ("v4's stage C log loss"). Running it with
+stage C's w is also what lets the archive states be checked against stage C's saved predictions.
+
+Still to do: the arm64 check on the VPS (`scripts/win_probability_v4_platform_check.sh`, after
+the deploy that contains `win_probability_v4_checks`), then the owner's freeze decision. No
+manifest, model file, pin test, serving file, v4 scoring, API or dashboard change was made.
+
 ## Not done, by the plan
 
-- Stage F, the freeze checks and the freeze (W3). Seal schema v2 and the VPS seal job (W2).
-- No page, API or dashboard change.
+- The arm64 check and the freeze (W3). No page, API or dashboard change.
 
 ## Files
 
@@ -137,4 +157,8 @@ directory (no test season read, output deleted) so that a bug could not spend th
 | [`check-report.json`](check-report.json) | Stage C: every metric, overall and by phase, pooled and per season, the gates, the weight and the pregame table |
 | [`selection-log.json`](selection-log.json) | Stage S: the weight, K1 and K2 with model hashes and rounds, the decision, committed before stage C |
 | [`prefit-checks.json`](prefit-checks.json) | The pre-fit checks and the line coverage |
+| [`final-fit.json`](final-fit.json) | Stage F: the final weight, its games and the weights by stage |
+| [`freeze-parity.json`](freeze-parity.json) | ESPN-state parity for v4, with the R15b detail |
+| [`freeze-latency.json`](freeze-latency.json) | Whole-game scoring time on one thread |
+| [`platform-reference.json`](platform-reference.json) | The states and x86 probabilities the arm64 check compares |
 | [`../../../evaluation/research/derived/courtlens-win-probability-v4-check.json`](../../../evaluation/research/derived/courtlens-win-probability-v4-check.json) | The summary a later block shows on the page |

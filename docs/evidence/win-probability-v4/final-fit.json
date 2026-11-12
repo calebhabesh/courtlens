@@ -1,0 +1,187 @@
+{
+ "check_report_sha256": "7a632d1ff19feec27f4435671043ba3be1994b1318db0b2b1858c15e32046c83",
+ "elapsed_seconds": 1.5,
+ "line_join": {
+  "coverage": {
+   "2020-21": {
+    "games": 1074,
+    "mapped_to_espn": 1074,
+    "with_line": 1064,
+    "without_line": 10
+   },
+   "2021-22": {
+    "games": 1228,
+    "mapped_to_espn": 1228,
+    "with_line": 1227,
+    "without_line": 1
+   },
+   "2022-23": {
+    "games": 1229,
+    "mapped_to_espn": 1229,
+    "with_line": 1228,
+    "without_line": 1
+   },
+   "2023-24": {
+    "games": 1216,
+    "mapped_to_espn": 1216,
+    "with_line": 1216,
+    "without_line": 0
+   },
+   "2024-25": {
+    "games": 1212,
+    "mapped_to_espn": 1212,
+    "with_line": 1212,
+    "without_line": 0
+   },
+   "2025-26": {
+    "games": 1227,
+    "mapped_to_espn": 1227,
+    "with_line": 1227,
+    "without_line": 0
+   }
+  },
+  "market_rows": 7942,
+  "market_rows_not_joined": 768,
+  "market_sha256": "b58911bf54af2cff9f33b214787cf90a8e8545ebe4b807e11569e178f542ede7",
+  "score_mismatch": [],
+  "scoreboard_dates": 629
+ },
+ "models": {
+  "end_game": "26bbd8a955d42ac8dc937f2fe0d5b72dc9de3db65badfcd7a646314a3c1719dd",
+  "mean": "2b5c29aa57ac1405121087b6db006b8c9cd5c376475dce88cb724ae2f723a744",
+  "variance": "c6a7d9908db9f55b25730ec8c65dd01fe725403de6a4935c15f386d620b23fd2"
+ },
+ "reference_manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+ "registration": {
+  "content_sha256": "654b26bab5ee149999f69934e7cdcf288dafd31985cb2d375a32754972225085",
+  "identity": "courtlens-win-probability-v4",
+  "parameters": {
+   "bootstrap": {
+    "replicates": 2000,
+    "unit": "game"
+   },
+   "candidates": [
+    "K1",
+    "K2"
+   ],
+   "display": {
+    "toss_up_band": [
+     0.45,
+     0.55
+    ]
+   },
+   "ece_bins": 20,
+   "freeze_checks": {
+    "arm64_max_probability_difference": 1e-09,
+    "espn_state_parity_max_log_loss_change": 0.002,
+    "p95_ms_per_game_max": 100
+   },
+   "line_seasons": [
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "prospective": {
+    "final_read": "end of the 2026-27 regular season",
+    "report_from_games": 25,
+    "verdict_from_games": 300
+   },
+   "reference": "courtlens-win-probability-v2",
+   "reference_manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+   "seal": {
+    "first_run_local_time": "12:00 America/New_York",
+    "interval_minutes": 30
+   },
+   "seed": 2501,
+   "selection_level": 0.9,
+   "splits": {
+    "check": [
+     "2024-25",
+     "2025-26"
+    ],
+    "final_fit": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "prospective": [
+     "2026-27"
+    ],
+    "select": [
+     "2023-24"
+    ],
+    "train": [
+     "2014-15",
+     "2015-16",
+     "2016-17",
+     "2017-18",
+     "2018-19",
+     "2019-20",
+     "2020-21",
+     "2021-22",
+     "2022-23"
+    ]
+   },
+   "weight_bounds": [
+    0.0,
+    1.0
+   ],
+   "weight_fit_seasons": {
+    "check": [
+     "2022-23",
+     "2023-24"
+    ],
+    "final": [
+     "2022-23",
+     "2023-24",
+     "2024-25",
+     "2025-26"
+    ],
+    "selection": [
+     "2022-23"
+    ]
+   }
+  },
+  "registered_on": "2026-11-11"
+ },
+ "selected": "K1",
+ "selection_log_sha256": "e4f17951f6fe2a82369607abcab60893d2028f313ed636f5af42d655854e9c99",
+ "stage": "F",
+ "version": "courtlens-win-probability-v4",
+ "weight": {
+  "games": 4883,
+  "games_sha256": "8de18f0165ef1ec352692b40a84541d91ee6c63c40bb4af3a331547a7b6fb2aa",
+  "regression_check": {
+   "games": 4883,
+   "intercept": -0.09410833650480574,
+   "line": 1.0018461987562604,
+   "own": 0.024705902568946416,
+   "rmse": 13.362789833324019
+  },
+  "seasons": [
+   "2022-23",
+   "2023-24",
+   "2024-25",
+   "2025-26"
+  ],
+  "unclipped": 1.0114542421098622,
+  "w": 1.0
+ },
+ "weights_by_stage": {
+  "check": 0.9057924083961976,
+  "final": 1.0,
+  "selection": 0.7200356919439594
+ }
+}

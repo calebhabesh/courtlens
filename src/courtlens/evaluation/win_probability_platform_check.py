@@ -8,11 +8,13 @@ probability: far below anything shown, and above floating-point noise between bu
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 import platform
 import resource
 import sys
 import time
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -38,7 +40,10 @@ def score(reference: dict[str, Any]) -> np.ndarray:
     return np.concatenate(results)
 
 
-def write(season: str = "2025-26", count: int = 8) -> dict[str, Any]:
+def reference_games(
+    season: str = "2025-26", count: int = 8, mu_for: Callable[[str], float] | None = None
+) -> list[dict[str, Any]]:
+    """A fixed sample of real states with their inputs; `mu_for` replaces each game's mu (v4)."""
     from courtlens.evaluation.win_probability_data import OUTPUT, read_games
     from courtlens.evaluation.win_probability_models import read_season
     from courtlens.evaluation.win_probability_parity import game_inputs
@@ -62,9 +67,18 @@ def write(season: str = "2025-26", count: int = 8) -> dict[str, Any]:
                     for k, values in columns.items()
                     if k not in skip and k in _MODEL_COLUMNS
                 },
-                "inputs": vars(game_inputs(table[gid], pregame[gid])),
+                "inputs": vars(_inputs(game_inputs(table[gid], pregame[gid]), gid, mu_for)),
             }
         )
+    return games
+
+
+def _inputs(inputs: GameInputs, gid: str, mu_for: Callable[[str], float] | None) -> GameInputs:
+    return inputs if mu_for is None else dataclasses.replace(inputs, mu=mu_for(gid))
+
+
+def write(season: str = "2025-26", count: int = 8) -> dict[str, Any]:
+    games = reference_games(season, count)
     reference: dict[str, Any] = {
         "manifest_sha256": load_manifest()["manifest_sha256"],
         "games": games,
@@ -109,7 +123,7 @@ def check() -> dict[str, Any]:
     }
 
 
-def latency(count: int = 200) -> dict[str, Any]:
+def latency(count: int = 200, mu_for: Callable[[str], float] | None = None) -> dict[str, Any]:
     """Time scoring whole games with Live's path, single-threaded, on archived test games."""
     from courtlens.evaluation.win_probability_data import OUTPUT, read_games
     from courtlens.evaluation.win_probability_parity import game_inputs
@@ -130,7 +144,7 @@ def latency(count: int = 200) -> dict[str, Any]:
     for gid in chosen:
         extract = json.loads((OUTPUT / "espn" / f"{gid}.json").read_text())
         plays = raw_plays(read_raw_summary(extract["raw_sha256"]))
-        record = {"inputs": vars(game_inputs(table[gid], pregame[gid]))}
+        record = {"inputs": vars(_inputs(game_inputs(table[gid], pregame[gid]), gid, mu_for))}
         begin = time.perf_counter()
         series = event_series(model, plays, record)
         times.append(time.perf_counter() - begin)

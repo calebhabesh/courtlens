@@ -13,7 +13,8 @@ Stages:
 closing lines can be joined to games; acquisition only, resumable), `checks` (the pre-fit checks:
 own forecast, RMSEs and v2's log loss; no fit), `select` (stage S: w on 2022-23, K1 against K2 on
 2023-24, writes the selection log), `check` (stage C: once, after the selection log is committed;
-gates D1, D2 and A2 on 2024-25 and 2025-26) and `publish` (the summary the page reads).
+gates D1, D2 and A2 on 2024-25 and 2025-26), `publish` (the summary the page reads) and `final`
+(stage F: w on 2022-23 to 2025-26).
 """
 
 from __future__ import annotations
@@ -824,6 +825,68 @@ def stage_check(output: Path = OUTPUT, evidence: Path = EVIDENCE) -> dict[str, A
 
 
 # ---------------------------------------------------------------------------------------------
+# Stage F: the final fit (the registered procedure; nothing is selected).
+
+FINAL_FIT = "final-fit.json"
+
+
+def stage_final(output: Path = OUTPUT, evidence: Path = EVIDENCE) -> dict[str, Any]:
+    """w on 2022-23 to 2025-26. K1 needs nothing else: its boosters are v2's, unchanged."""
+    check_shared_rules()
+    started = time.monotonic()
+    report = read_json(output / CHECK_REPORT)
+    if not report.get("continue"):
+        raise ValueError("stage C did not pass; v4 is not fitted further")
+    selection = read_json(output / SELECTION_LOG)
+    if selection["selected"] != "K1" or report["selected"] != "K1":
+        raise ValueError("stage F here covers K1 only; K2 needs its refit")
+    table = wpd.read_games(V2)["games"]
+    v2_pregame = read_json(V2 / "pregame.json")
+    lines, join = game_lines(table, output)
+    weight = weight_for(WEIGHT_SEASONS["final"], table, v2_pregame, lines)
+    frozen = frozen_v2()
+    body = {
+        "version": REGISTRATION,
+        "registration": receipt(),
+        "stage": "F",
+        "selected": "K1",
+        "selection_log_sha256": report["selection_log_sha256"],
+        "check_report_sha256": hashlib.sha256((output / CHECK_REPORT).read_bytes()).hexdigest(),
+        "reference_manifest_sha256": PARAMETERS["reference_manifest_sha256"],
+        "models": frozen["models"],
+        "line_join": join,
+        "weight": weight,
+        "weights_by_stage": {
+            "selection": selection["weight"]["w"],
+            "check": report["weight"]["w"],
+            "final": weight["w"],
+        },
+        "elapsed_seconds": round(time.monotonic() - started, 1),
+    }
+    path = output / FINAL_FIT
+    if path.exists():
+        before = read_json(path)
+        if before["weight"] != body["weight"]:
+            raise ValueError("stage F gave a different w from its earlier run")
+    write_json(path, body)
+    evidence.mkdir(parents=True, exist_ok=True)
+    (evidence / FINAL_FIT).write_bytes(path.read_bytes())
+    print(json.dumps({"weight": weight, "weights_by_stage": body["weights_by_stage"]}, indent=1))
+    return body
+
+
+def final_weight(output: Path = OUTPUT) -> float:
+    return float(read_json(output / FINAL_FIT)["weight"]["w"])
+
+
+def market_pregame(w: float, output: Path = OUTPUT) -> dict[str, Any]:
+    """v2's pregame table with mu4 at weight w (for the freeze checks)."""
+    table = wpd.read_games(V2)["games"]
+    lines, _ = game_lines(table, output)
+    return pregame_with(read_json(V2 / "pregame.json"), lines, w)
+
+
+# ---------------------------------------------------------------------------------------------
 # The summary the page reads.
 
 
@@ -901,7 +964,9 @@ def stage_publish(output: Path = OUTPUT, evidence: Path = EVIDENCE) -> dict[str,
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("events", "checks", "select", "check", "publish"))
+    parser.add_argument(
+        "command", choices=("events", "checks", "select", "check", "publish", "final")
+    )
     parser.add_argument("--output", type=Path, default=OUTPUT)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
@@ -911,6 +976,7 @@ def main() -> None:
         "select": stage_select,
         "check": stage_check,
         "publish": stage_publish,
+        "final": stage_final,
     }[args.command](args.output)
 
 
