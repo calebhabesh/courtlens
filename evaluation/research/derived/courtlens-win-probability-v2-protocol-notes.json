@@ -1,0 +1,22 @@
+{
+ "schema": "courtlens-win-probability-protocol-notes-v1",
+ "append_only": "Notes are only ever added. Past notes and past scorecard rows are never changed.",
+ "notes": [
+  {
+   "date": "2026-11-12",
+   "kind": "seal_moved_to_vps",
+   "note": "The Original's pregame seal and scoring moved from the owner's PC to the hosted demo's win-probability-seal service (Win Probability v4, W2 part B). Release 8afa373ddd252075e798c8d2bd80ad85c6e98669. The rule for which seal a game uses is unchanged: the newest one captured before ESPN's scheduled tip-off. The model, manifest and scoring are unchanged.",
+   "cutover_at_utc": "2026-11-12T15:25:07Z",
+   "cutover_measured_as": "captured_at of the first seal written on the VPS, the seal service's first run after the deploy",
+   "first_vps_seal": "pregame/2026-11-12.4fada14de237f387598987277a117492b1ff06e0ed7bb48a40e19155d71becdf.json",
+   "last_pc_seal": "pregame/2026-11-12.03604c0cf687fe057f8f96c1fa54c558781c3250bf8c71e59d16b424177839eb.json (captured 2026-11-12T13:46:34Z, superseded before every tip-off that day)",
+   "pc_local_sealing_off_at_utc": "2026-11-12T15:29:01Z",
+   "first_games_affected": [
+    {"espn_id": "401909976", "tip_off_utc": "2026-11-13T00:00Z", "away": "TOR", "home": "PHI"},
+    {"espn_id": "401909977", "tip_off_utc": "2026-11-13T00:00Z", "away": "DET", "home": "WAS"}
+   ],
+   "first_games_affected_note": "Two games share the first tip-off. Every game from these on uses a seal written by the VPS.",
+   "scoring_check": "The VPS re-scored 2026-11-11's 10 games on a temporary copy: same game ids, 2 rows byte-identical, 8 differing only in score floats (max absolute difference 1.1e-16), no other differences."
+  }
+ ]
+}
