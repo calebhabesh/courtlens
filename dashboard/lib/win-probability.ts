@@ -162,3 +162,34 @@ export interface WinProbabilityWhy {
   result: { home_score: number; away_score: number; calls: Record<string, number | null> | null } | null;
   manifest_sha256: string;
 }
+
+/** One bar of the "why" chart, in home-margin points (above zero: toward the home team). */
+export interface WhyBar { key: string; label: string; points: number; kind: "group" | "own" | "market" | "prediction" }
+
+/** The panel's rows in order: each group, the own read, the market row when the model used one, the prediction. */
+export function whyBars(why: Pick<WinProbabilityWhy, "own" | "market" | "prediction">): WhyBar[] {
+  const bars: WhyBar[] = why.own.groups.map(g => ({ key: g.group, label: g.label, points: g.contribution, kind: "group" }));
+  bars.push({ key: "own", label: "CourtLens's own read", points: why.own.own, kind: "own" });
+  if (why.market.status === "ok") bars.push({ key: "market", label: "Market adjustment", points: why.market.adjustment, kind: "market" });
+  bars.push({ key: "prediction", label: "Prediction", points: why.prediction.home_margin, kind: "prediction" });
+  return bars;
+}
+
+/** "PHI +3.1" toward the team the points favour; "Even" when they round to zero. */
+export function towardTeam(points: number, home: string, away: string, digits = 1): string {
+  const rounded = Number(Math.abs(points).toFixed(digits));
+  if (rounded === 0) return "Even";
+  return `${points > 0 ? home : away} +${rounded.toFixed(digits)}`;
+}
+
+/** "PHI by 7.5" for a home margin. */
+export function marginText(points: number, home: string, away: string, digits = 1): string {
+  const rounded = Number(Math.abs(points).toFixed(digits));
+  return rounded === 0 ? "Even" : `${points > 0 ? home : away} by ${rounded.toFixed(digits)}`;
+}
+
+/** Whether a final game went the way the sealed call said (null: exactly even, or no result). */
+export function callRight(why: Pick<WinProbabilityWhy, "prediction" | "result">): boolean | null {
+  if (!why.result || why.prediction.home_win === 0.5) return null;
+  return (why.result.home_score > why.result.away_score) === (why.prediction.home_win > 0.5);
+}
