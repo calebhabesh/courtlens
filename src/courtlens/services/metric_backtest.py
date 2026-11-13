@@ -106,18 +106,18 @@ METRICS: dict[str, dict[str, str]] = {
     "projected_impact": {
         "label": "Projected Impact",
         "short": "Projected Impact",
-        "what": "CourtLens's own learned projection of each player's season RAPM, made before the "
+        "what": "CourtLens' own learned projection of each player's season RAPM, made before the "
         "season from earlier seasons (box score, play types, shot profile, past RAPM, age). Scored "
         "only on 2024-25 and 2025-26: it was trained on 2016-17 to 2022-23 and selected on "
         "2023-24, so earlier seasons would flatter it.",
         "source": "R07's frozen model",
-        "credit": "CourtLens's own (R07), in the style of DARKO and EPM.",
+        "credit": "CourtLens' own (R07), in the style of DARKO and EPM.",
     },
 }
 
 OMITTED = {
     "darko": "DARKO (Daily Plus-Minus, by Kostya Medvedovsky) is left out of the comparison and "
-    "every verdict. CourtLens's stored DARKO history is one rating per season, recomputed later "
+    "every verdict. CourtLens' stored DARKO history is one rating per season, recomputed later "
     "with DARKO's current model; the ratings as published before each game are not available "
     "free. Scoring those would be hindsight, not a pregame rating."
 }

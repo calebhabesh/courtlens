@@ -5,7 +5,7 @@ import { fact } from "./research-facts";
  * page. Each topic links to the CourtLens page that shows it and, where CourtLens measured something,
  * quotes that result (and, for a few, the myth that result answers). Every number here comes from
  * `research-facts.ts`, which a test checks against the committed frozen results. The prose is
- * CourtLens's own.
+ * CourtLens' own.
  */
 
 export interface LearningLink { label: string; href: string }
@@ -119,7 +119,7 @@ export const LEARNING_TIERS: readonly LearningTier[] = [
         subtitle: "What a shot is worth before it goes in",
         body: [
           "A layup and a long two have very different make rates, and a corner three is worth 50% more than either when it falls. Expected points per shot puts a value on each attempt from where and how it was taken, before the result is known.",
-          "CourtLens's Shot Quality model predicts each shot's make probability from its location, shot type and the play-by-play context before it. A player's actual points per shot minus his expected points is his shot-making.",
+          "CourtLens' Shot Quality model predicts each shot's make probability from its location, shot type and the play-by-play context before it. A player's actual points per shot minus his expected points is his shot-making.",
         ],
         formulas: [{ label: "Expected points", line: "xPTS = P(make) × shot value" }, { label: "Shot-making", line: "Shot-making = Actual PTS per shot − xPTS per shot" }],
         takeaways: [
@@ -177,7 +177,7 @@ export const LEARNING_TIERS: readonly LearningTier[] = [
         subtitle: "How many attempts before a stat says more about the player than about luck",
         body: [
           "Split a player's attempts into two random halves and correlate the halves across players. When the correlation reaches 0.5, half of the spread between players is skill. The number of attempts at that point is the stat's stabilization point.",
-          "Free-throw percentage stabilizes quickly. Three-point percentage is much slower: in CourtLens's data it never reached 0.5 within the samples real players have.",
+          "Free-throw percentage stabilizes quickly. Three-point percentage is much slower: in CourtLens' data it never reached 0.5 within the samples real players have.",
         ],
         formulas: [{ label: "Split-half reliability", line: "ρ(n) = correlation between two random halves of n attempts" }, { label: "Stabilization point", line: "smallest n with ρ(n) ≥ 0.5" }],
         takeaways: [
@@ -393,7 +393,7 @@ export const LEARNING_TIERS: readonly LearningTier[] = [
     ],
   },
   {
-    id: "testing-models", number: 5, title: "Testing Models", blurb: "CourtLens's own addition: claims checked on games the model never saw.",
+    id: "testing-models", number: 5, title: "Testing Models", blurb: "CourtLens' own addition: claims checked on games the model never saw.",
     topics: [
       {
         id: "out-of-time",

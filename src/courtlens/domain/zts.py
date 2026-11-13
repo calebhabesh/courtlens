@@ -3,7 +3,7 @@
 After the reference site's zTS: Expected TS = sum(play-type share x league TS for that play type),
 Playtype Difficulty = league TS - Expected TS, zTS = rTS + Difficulty.
 
-Synergy rows carry no FTA, so play-type TS here is CourtLens's own definition,
+Synergy rows carry no FTA, so play-type TS here is CourtLens' own definition,
 PTS / (2 x scoring possessions) with scoring possessions = possessions x (1 - turnover share).
 It is not the reference site's number. Pure functions only; the runner reads the data.
 """

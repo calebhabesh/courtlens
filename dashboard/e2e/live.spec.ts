@@ -240,7 +240,8 @@ for (const view of [{ name: "board", path: "/live/2026-10-26" }, { name: "game",
     await mock(page);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(view.path);
-    await expect(page.locator(".live-page")).toBeVisible();
+    // While React swaps the streamed page in, a hidden copy of the wrapper is briefly in the DOM too.
+    await expect(page.locator(".live-page").filter({ visible: true })).toBeVisible();
     await page.waitForTimeout(300);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
