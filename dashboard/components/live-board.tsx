@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, predictionCall, seasonOf, shiftSlate, teamCode, type LiveGame, type LiveTeam } from "@/lib/live";
+import { CourtLensSays } from "./brand";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 
@@ -104,7 +105,7 @@ function PredictionRow({ game, season }: { game: LiveGame; season: string }) {
     <TeamLogo team={team.tricode ?? team.canonical_id ?? teamCode(team)} season={season} size={16} />
     <strong>{teamCode(team)}</strong> <span className="live-card-call-pct">{call.percent}%</span>
   </span>;
-  const lead = { favours: "CourtLens favors", toss_up: "Toss-up ·", pregame: "Pregame call:", called: "Called" }[call.kind];
+  const lead = call.kind === "favours" ? <><CourtLensSays size={11} /> favors</> : { toss_up: "Toss-up ·", pregame: "Pregame call:", called: "Called" }[call.kind];
   return <span className="live-card-call" data-call={call.kind} data-right={call.right == null ? undefined : String(call.right)} title={call.title}>
     <span className="live-card-call-lead">{lead}</span>{pick}
     {call.kind === "called" && call.right != null && <span className="live-card-call-mark"><Icon name={call.right ? "check" : "close"} size={14} /><span className="sr-only">{call.right ? "right" : "wrong"}</span></span>}

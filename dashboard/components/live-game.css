@@ -212,7 +212,11 @@
   .live-injury-team + .live-injury-team { padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); }
   .live-injury-team h3 { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; font-size: var(--text-sm); font-weight: 700; }
   .live-injury-team ul { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
-  .live-injury-team li { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; gap: var(--space-2); min-height: 28px; font-size: var(--text-sm); }
+  .live-injury-team li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); min-height: 40px; font-size: var(--text-sm); }
+  .live-injury-team h3 { padding-bottom: var(--space-2); border-bottom: 2px solid color-mix(in srgb, var(--live-away, var(--color-hairline-strong)) 60%, transparent); }
+  .live-injury-team[data-side="home"] h3 { border-bottom-color: color-mix(in srgb, var(--live-home, var(--color-hairline-strong)) 60%, transparent); }
+  .live-injury-name { display: grid; gap: var(--space-0-5); min-width: 0; }
+  .live-injury-detail { font-size: var(--text-xs); }
   .live-injury-team p { margin: 0; font-size: var(--text-sm); }
   .live-injury-position { color: var(--color-text-tertiary); font-size: var(--text-2xs); }
   .live-injury-name a { color: var(--color-text); text-decoration: none; }
@@ -221,7 +225,7 @@
   .live-lines { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
   .live-line-tile { display: grid; align-content: start; justify-items: center; gap: var(--space-1); padding: var(--space-3); border-radius: var(--radius-sm); background: var(--color-table-well); text-align: center; }
   .live-line-label { color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
-  .live-line-value { color: var(--color-text); font-size: var(--text-md); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .live-line-value { display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-1); color: var(--color-text); font-size: var(--text-md); font-weight: 700; font-variant-numeric: tabular-nums; }
   .live-line-note { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
 
   @media (max-width: 1100px) {

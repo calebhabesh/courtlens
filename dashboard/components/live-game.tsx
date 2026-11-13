@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useDeferredValue, useState, type CSSProperties, type ReactNode } from "react";
 import {
-  awayFirst, formatRecord, gameStatus, lineFavourite, madeAttempted, moneyline, periodLabel, seasonOf, shootingTone, STAT_KEYS, teamCode, trueShooting, twoPoint,
+  awayFirst, formatRecord, gameStatus, lineFavourite, madeAttempted, moneyline, periodLabel, seasonOf, shootingTone, STAT_KEYS, teamCode, teamFullName, trueShooting, twoPoint,
   type LiveGame, type LiveGameData, type LiveInjury, type LiveLeader, type LiveOdds, type LivePlay, type LivePlayer, type LiveTeam,
 } from "@/lib/live";
 import { teamAccent, teamBrandColor } from "@/lib/team-colors";
+import { seasonEra } from "@/lib/portrait-source";
 import { ShotChart } from "./live-shot-chart";
 import { logoTeam, Panel } from "./live-panel";
 import { DivisionStandings, GameFlow, Matchups, NewsPanel } from "./live-game-extras";
@@ -459,11 +460,13 @@ export function PlaysTab({ data }: { data: LiveGameData }) {
 // ---------------------------------------------------------------- Pre-Game
 
 function InjuryList({ team, players, season }: { team: LiveTeam; players: LiveInjury[] | null; season: string }) {
-  return <div className="live-injury-team">
-    <h3><TeamLogo team={logoTeam(team)} season={season} size={20} />{teamCode(team)}<span className="live-muted">({players?.length ?? "?"})</span></h3>
+  // Round 3: logo, full name and each player's photo (the season's headshot for that team).
+  return <div className="live-injury-team" data-side={team.side}>
+    <h3><TeamLogo team={logoTeam(team)} season={season} size={32} />{teamFullName(team, season)}<span className="live-muted">({players?.length ?? "?"})</span></h3>
     {players == null ? <p className="live-muted">Injury report unknown.</p> : players.length ? <ul>{players.map(p => <li key={p.source_id}>
-      <span className="live-injury-position">{p.position ?? ""}</span>
-      <span className="live-injury-name">{p.canonical_id ? <Link href={`/players/${p.canonical_id}?season=${season}`}>{p.name}</Link> : p.name}{p.detail && <span className="live-muted"> · {p.detail}</span>}</span>
+      <PlayerPortrait playerId={p.canonical_id ?? undefined} name={p.name} size="sm" era={seasonEra(season, logoTeam(team))} />
+      <span className="live-injury-name">{p.canonical_id ? <Link href={`/players/${p.canonical_id}?season=${season}`}>{p.name}</Link> : p.name}
+        <span className="live-muted live-injury-detail">{[p.position, p.detail].filter(Boolean).join(" · ")}</span></span>
       <span className="live-injury-status" data-status={p.status?.toLowerCase().replace(/\s+/g, "-")}>{p.status ?? "Unknown"}</span>
     </li>)}</ul> : <p className="live-muted live-italic">No injuries reported</p>}
   </div>;
@@ -474,15 +477,17 @@ function Lines({ odds, game }: { odds: LiveOdds; game: LiveGame }) {
   // Follow-up 8: every number names its team, with a plain-language line under it.
   const spread = lineFavourite(odds, game.teams);
   const winner = odds.home_moneyline != null && odds.away_moneyline != null && odds.home_moneyline !== odds.away_moneyline ? (odds.home_moneyline < odds.away_moneyline ? home : away) : null;
-  const tiles = [
+  const season = seasonOf(game.slate_date);
+  const logo = (team: LiveTeam) => <TeamLogo team={logoTeam(team)} season={season} size={24} />;
+  const tiles: { label: string; value: ReactNode; note: string | null }[] = [
     {
       label: "Spread",
-      value: spread === "even" ? "Even" : spread ? `${teamCode(spread.team)} −${spread.points}` : null,
+      value: spread === "even" ? "Even" : spread ? <>{logo(spread.team)}{teamCode(spread.team)} −{spread.points}</> : null,
       note: spread === "even" ? "An even game: no favorite" : spread ? `${spread.team.name} favored by ${spread.points} points` : null,
     },
     {
       label: "Moneyline",
-      value: odds.home_moneyline != null || odds.away_moneyline != null ? `${teamCode(home)} ${moneyline(odds.home_moneyline) ?? "—"} · ${teamCode(away)} ${moneyline(odds.away_moneyline) ?? "—"}` : null,
+      value: odds.home_moneyline != null || odds.away_moneyline != null ? <>{logo(home)}{teamCode(home)} {moneyline(odds.home_moneyline) ?? "—"}{" · "}{logo(away)}{teamCode(away)} {moneyline(odds.away_moneyline) ?? "—"}</> : null,
       note: winner ? `${winner.name} favored to win` : null,
     },
     {

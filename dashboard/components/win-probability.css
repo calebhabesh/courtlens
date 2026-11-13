@@ -137,61 +137,88 @@
   .wp-record dt { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
   .wp-record dd { margin: 0; color: var(--color-text); font-size: var(--text-lg); font-weight: 650; font-variant-numeric: tabular-nums; }
   .wp-record dd .wp-name-sub { font-size: var(--text-2xs); font-weight: 400; }
-  /* Round 2: the three steps as cards. */
-  .wp-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
-  .wp-steps > li { display: grid; align-content: start; gap: var(--space-2); padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-surface-1); box-shadow: var(--shadow-1); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
-  .wp-steps strong { color: var(--color-text); font-size: var(--text-md); font-weight: 650; }
-  .wp-step-n { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--color-surface-3); color: var(--color-text); font-size: var(--text-xs); font-weight: 700; }
-
-  /* Round 2: the prediction board. Team colours mark identity only; right and wrong are words with ✓/✗. */
-  /* The strip sits in column 2 of Live's row grid; here it is a centred row of its own. */
+  /* Round 3: the board. The favourite's half of a card is washed in its brand colour, as Team Compare shades the
+     better player; ✓/✗ alone are green and red. Full team names; codes only beside logos in the chips. */
   .wp-page .live-strip { grid-column: auto; justify-content: center; }
   .wpc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
   .wpc-grid > li { display: grid; }
   .wpc {
-    display: grid; gap: var(--space-3); padding: var(--space-4) var(--space-5) var(--space-4); border-radius: var(--radius-md);
+    display: grid; gap: var(--space-3); padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);
     background: var(--color-surface-1); box-shadow: var(--shadow-1); color: var(--color-text); text-decoration: none; transition: background var(--dur-fast) var(--ease-out);
   }
-  .wpc:hover { background: var(--color-surface-2); }
+  .wpc[data-favoured="away"] { background: linear-gradient(90deg, color-mix(in srgb, var(--live-away-brand) 36%, var(--color-surface-1)), color-mix(in srgb, var(--live-away-brand) 8%, var(--color-surface-1)) 50%, var(--color-surface-1) 70%); }
+  .wpc[data-favoured="home"] { background: linear-gradient(270deg, color-mix(in srgb, var(--live-home-brand) 36%, var(--color-surface-1)), color-mix(in srgb, var(--live-home-brand) 8%, var(--color-surface-1)) 50%, var(--color-surface-1) 70%); }
+  .wpc:hover { box-shadow: var(--shadow-2); filter: brightness(1.08); }
   .wpc:focus-visible { outline: none; box-shadow: var(--focus-ring); }
   .wpc-head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); font-size: var(--text-xs); }
   .wpc-status { display: inline-flex; align-items: center; gap: var(--space-1); font-weight: 700; }
   .wpc-why { display: inline-flex; align-items: center; gap: var(--space-0-5); color: var(--color-text-tertiary); }
-  .wpc:hover .wpc-why { color: var(--color-text-secondary); }
+  .wpc:hover .wpc-why { color: var(--color-text); }
   .wpc-teams { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--space-3); }
-  .wpc-team { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+  .wpc-team { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
   .wpc-team[data-side="home"] { flex-direction: row-reverse; text-align: end; }
-  .wpc-team-text { display: grid; min-width: 0; }
-  .wpc-code { font-size: var(--text-lg); line-height: 1.1; font-weight: 700; }
+  .wpc-team-text { display: grid; gap: var(--space-0-5); min-width: 0; }
+  .wpc-name { font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 700; text-wrap: balance; }
   .wpc-sub { color: var(--color-text-tertiary); font: 500 var(--text-xs) / 1.3 var(--font-mono, ui-monospace, monospace); }
   .wpc-score { color: var(--color-text); font-size: var(--text-xl); line-height: 1.1; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .wpc-team[data-lost] .wpc-code, .wpc-team[data-lost] .wpc-score { color: var(--color-text-secondary); font-weight: 600; }
-  .wpc-pcts { display: flex; gap: var(--space-3); font-size: var(--text-md); font-variant-numeric: tabular-nums; color: var(--color-text-tertiary); }
-  .wpc-pcts [data-favoured] { color: var(--color-text); font-size: var(--text-2xl); line-height: 1; font-weight: 700; }
-  .wpc-pcts { align-items: baseline; }
+  .wpc-team[data-lost] .wpc-name, .wpc-team[data-lost] .wpc-score { color: var(--color-text-secondary); font-weight: 600; }
+  .wpc-pcts { display: flex; align-items: baseline; gap: var(--space-2); font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--color-text-tertiary); }
+  .wpc-pcts [data-favoured] { color: var(--color-text); font-size: var(--text-2xl); line-height: 1; font-weight: 750; }
   .wpc-bar { display: flex; height: 8px; overflow: hidden; border-radius: var(--radius-pill); background: var(--color-surface-3); }
   .wpc-bar > [data-side="away"] { width: var(--wpc-away); background: var(--live-away); }
   .wpc-bar > [data-side="home"] { flex: 1; background: var(--live-home); }
   .wpc-bar > span + span { border-inline-start: 2px solid var(--color-surface-1); }
-  .wpc-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-3); padding-top: var(--space-2); border-top: 1px solid var(--color-hairline); color: var(--color-text-secondary); font-size: var(--text-xs); }
-  .wpc-call strong { color: var(--color-text); }
+  .wpc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .wpc-call { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
+  .wpc-call strong { color: var(--color-text); font-size: var(--text-sm); }
+  .wpc-pick { display: inline-flex; align-items: center; gap: var(--space-1); }
   .wpc-call[data-call="none"] { color: var(--color-text-tertiary); font-style: italic; }
   .wpc-mark { display: inline-flex; align-items: center; gap: var(--space-0-5); margin-inline-start: var(--space-1); font-weight: 600; }
   .wpc-call[data-right="true"] .wpc-mark { color: var(--color-positive); }
   .wpc-call[data-right="false"] .wpc-mark { color: var(--color-negative); }
-  .wpc-line, .wpc-out { color: var(--color-text-tertiary); }
-  .wpc-out { margin-inline-start: auto; }
+  .wpc-chips { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+  .wpc-line, .wpc-out-team { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-surface-0) 40%, transparent); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .wpc-out { display: inline-flex; gap: var(--space-1); }
+  .wpc-caption { justify-self: center; text-align: center; }
+
+  /* Round 3: the track record as three tiles, each with a share meter. */
+  .wp-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+  .wp-tile { display: grid; gap: var(--space-2); padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-surface-1); box-shadow: var(--shadow-1); }
+  .wp-tile[data-tone="serving"] { background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 14%, var(--color-surface-1)), var(--color-surface-1) 60%); }
+  .wp-tile dt { display: flex; align-items: center; gap: var(--space-2); color: var(--color-text); font-size: var(--text-sm); font-weight: 650; }
+  .wp-tile dt small { display: block; color: var(--color-text-tertiary); font-size: var(--text-2xs); font-weight: 400; }
+  .wp-tile-icon { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-surface-3); color: var(--color-text-secondary); }
+  .wp-tile[data-tone="serving"] .wp-tile-icon { background: color-mix(in srgb, var(--color-accent) 22%, transparent); color: var(--color-accent); }
+  .wp-tile dd { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-2); margin: 0; color: var(--color-text); font-size: var(--text-xl); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .wp-tile-pct { color: var(--color-text-tertiary); font-size: var(--text-xs); font-weight: 500; }
+  .wp-tile-meter { position: relative; height: 6px; overflow: hidden; border-radius: var(--radius-pill); background: var(--color-surface-3); }
+  .wp-tile-meter::after { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: var(--wp-share); border-radius: inherit; background: var(--color-text-secondary); }
+  .wp-tile[data-tone="serving"] .wp-tile-meter::after { background: var(--color-accent); }
+
+  /* Round 3: "How the model works" may run wider than the column, to give the diagram room. */
+  .wp-page > .rs-section.wp-wide { width: min(1200px, calc(100vw - 2 * var(--space-6))); justify-self: center; }
   .wp-subhead { margin: var(--space-2) 0 0; color: var(--color-text); font-size: var(--text-md); font-weight: 650; }
   .wp-example { display: grid; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-surface-1); box-shadow: var(--shadow-1); }
-  .wp-progress { display: grid; gap: var(--space-1); max-width: 480px; }
-  .wp-progress-label { color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
-  .wp-progress-label strong { color: var(--color-text); font-variant-numeric: tabular-nums; }
-  .wp-meter { width: 100%; height: 8px; }
+  .wp-toggles { display: grid; gap: var(--space-1); }
+
+  /* Round 3: the trial's progress toward 300, with the running-numbers mark. */
+  .wp-progress { display: grid; gap: var(--space-2); max-width: 640px; padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-surface-1); box-shadow: var(--shadow-1); }
+  .wp-progress-label { color: var(--color-text-secondary); font-size: var(--text-sm); }
+  .wp-progress-label strong { color: var(--color-text); font-size: var(--text-2xl); font-variant-numeric: tabular-nums; }
+  .wp-progress-track { position: relative; height: 10px; border-radius: var(--radius-pill); background: var(--color-surface-3); }
+  .wp-progress-track > span { position: absolute; inset-block: 0; inset-inline-start: 0; width: max(var(--wp-share), 0px); border-radius: inherit; background: var(--color-accent); }
+  .wp-progress-track::after { content: ""; position: absolute; inset-block: -4px; inset-inline-start: var(--wp-from); width: 2px; background: var(--color-text-tertiary); }
+  .wp-progress-marks { position: relative; display: flex; justify-content: space-between; color: var(--color-text-tertiary); font-size: var(--text-2xs); }
+  .wp-progress-from { position: absolute; inset-inline-start: var(--wp-from); transform: translateX(-1px); }
   .wp-evidence-head { margin: var(--space-4) 0 calc(-1 * var(--space-6)); padding-top: var(--space-6); border-top: 1px solid var(--color-hairline); color: var(--color-on-bg-tertiary); font-size: var(--text-xs); font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; }
   @media (max-width: 640px) {
-    .wpc-grid, .wp-record, .wp-steps { grid-template-columns: minmax(0, 1fr); }
+    .wpc-grid, .wp-record, .wp-tiles { grid-template-columns: minmax(0, 1fr); }
     .wpc { padding: var(--space-3) var(--space-4); }
-    .wpc-out { margin-inline-start: 0; }
+    .wpc-team { gap: var(--space-2); }
+    .wpc-team, .wpc-team[data-side="home"] { flex-direction: column; align-items: flex-start; }
+    .wpc-team[data-side="home"] { align-items: flex-end; }
+    .wpc-name { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+    .wp-page > .rs-section.wp-wide { width: 100%; }
     .wp-example { padding: var(--space-3); }
   }
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { band, callRight, DRIFT_COPY, gapTone, listOf, marginText, metric, signed, sortWpa, towardTeam, verdictOf, whyBars, wpaRows, type WinProbabilityWhy } from "./win-probability";
+import { band, callRight, DRIFT_COPY, gapTone, listOf, marginText, metric, signed, sortWpa, towardTeam, verdictOf, whyBars, whyFlow, ribbonPath, ribbonSize, wpaRows, type WinProbabilityWhy } from "./win-probability";
 import why from "../e2e/fixtures/win-probability-why-401909976.json";
 
 describe("win probability formatting", () => {
@@ -62,5 +62,30 @@ describe("the pregame why (W4), on the real sealed 2026-11-12 TOR at PHI", () =>
     expect(callRight(real)).toBeNull();
     expect(callRight({ ...real, result: { home_score: 110, away_score: 101, calls: null } })).toBe(true);
     expect(callRight({ ...real, result: { home_score: 99, away_score: 101, calls: null } })).toBe(false);
+  });
+});
+
+describe("round 3: the model flow, on the same sealed game", () => {
+  const w = why as unknown as WinProbabilityWhy;
+  it("keeps the seal's numbers: inputs add to the own read, the line carries its weight", () => {
+    const flow = whyFlow(w);
+    expect(flow.inputs.map(i => i.key)).toEqual(["players", "form", "home_court", "rest_travel"]);
+    expect(flow.inputs.reduce((s, i) => s + i.points, 0)).toBeCloseTo(flow.own, 9);
+    expect(flow.margin).toBe(w.prediction.home_margin);
+    if (w.market.status === "ok") {
+      expect(flow.line).toMatchObject({ status: "ok", points: w.market.line, w: w.market.w });
+      expect(flow.ownWeight).toBeCloseTo(1 - w.market.w, 12);
+    }
+  });
+  it("with no line, the own read carries the whole margin", () => {
+    const flow = whyFlow({ ...w, market: { status: "no_line", w: 1 } });
+    expect(flow.line.status).toBe("no_line");
+    expect(flow.ownWeight).toBe(1);
+  });
+  it("draws bands as closed paths, with a visible floor and zero for nothing", () => {
+    expect(ribbonPath({ x0: 0, y0: 10, x1: 100, y1: 50, size: 4 })).toBe("M0 10C50 10 50 50 100 50L100 54C50 54 50 14 0 14Z");
+    expect(ribbonSize(0.1, 9)).toBe(3);
+    expect(ribbonSize(-2, 9)).toBe(18);
+    expect(ribbonSize(0, 9)).toBe(0);
   });
 });

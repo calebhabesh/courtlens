@@ -17,7 +17,7 @@ import {
   type CurvePoint, type Interval, type RecentGame, type ScoreGroup, type WinProbabilityAdded, type WinProbabilityPage, type WpaRow, type WpaSort, type WpaSortKey,
 } from "@/lib/win-probability";
 import { getWinProbabilityAdded, getWinProbabilityPage } from "@/lib/workbench-api";
-import { HowItThinks, PredictionBoard, TrackRecord, Trial } from "./win-probability-v4";
+import { WinProbabilityV4 } from "./win-probability-v4";
 
 /**
  * Research → Win Probability (R15b model, designed in F03 / RD14). Presentation only: every number is the frozen card's, the nightly
@@ -466,10 +466,7 @@ export function WinProbabilityResearch() {
     {error && <FeedFailure error={error} retry={retry} what="Win Probability" />}
     {loading && <FeedSkeleton label="Loading Win Probability" />}
     {data && <>
-      <PredictionBoard />
-      <TrackRecord data={data} />
-      <HowItThinks data={data} />
-      <Trial data={data} />
+      <WinProbabilityV4 data={data} />
       <h2 className="wp-evidence-head" id="evidence">Evidence</h2>
       <Answer data={data} />
       <Scorecard data={data} />

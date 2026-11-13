@@ -1,5 +1,6 @@
 // Live (alignment row 7): ESPN reads the API fetches on demand and caches (docs/design/shared-live-v2.md).
 
+import { teamNameAt } from "./team-era";
 export type LiveStatus = "scheduled" | "in_progress" | "final" | "postponed" | "cancelled" | "unknown";
 
 export interface LiveOdds {
@@ -223,4 +224,11 @@ export function predictionCall(game: Pick<LiveGame, "status" | "prediction">): {
   if (game.status === "final") return { ...base, kind: "called", right: p.right ?? null };
   if (game.status === "in_progress") return { ...base, kind: "pregame" };
   return { ...base, kind: p.toss_up ? "toss_up" : "favours" };
+}
+
+/** A team's full name ("Philadelphia 76ers"), from ESPN's name or, when only a code is known, the team's name that season. */
+export function teamFullName(team: Pick<LiveTeam, "tricode" | "abbreviation" | "name">, season?: string | null): string {
+  const code = teamCode(team);
+  if (team.name && team.name !== code) return team.name;
+  return teamNameAt(code, season) ?? code;
 }
