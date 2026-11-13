@@ -78,6 +78,14 @@
    },
    "decided_by": "owner, 2026-11-12 (decision W-D16 in docs/win-probability-v4-plan.md)",
    "effective_from": "the first demo release that includes this note; before it, Live led with the Market-informed model from its first serving release"
+  },
+  {
+   "date": "2026-11-13",
+   "kind": "grading_time_moved",
+   "note": "Games are graded on the seal service's first run after ESPN calls them final, instead of the next morning at 09:00 Eastern (the owner's decision of 2026-11-13). After the day's last tip the service keeps running at :25 and :55 Eastern while a game that tipped within the last six hours is not on the scorecard; the 09:00 run stays as a catch-up. Each game is still graded once, from ESPN's play-by-play as published at that run, so a correction ESPN publishes afterwards is not picked up. Which seal a game uses, the seal's contents, both models and the scoring are unchanged. It applies to both the Original and the Market-informed model.",
+   "decided_by": "owner",
+   "effective_from": "the first seal-service run of the release that carries this note",
+   "first_games_affected_note": "Every game tipping on 2026-11-13 Eastern or later, if the release is live before that night's first final."
   }
  ]
 }
