@@ -2,7 +2,7 @@
 
 Databallr's Teams page splits each side's rating, relative to league, into a shooting (TS),
 turnover and rebound term. Its own split reads play-by-play first- and second-chance points,
-which CourtLens's admitted team box scores do not carry. This module uses an exact box-score
+which CourtLens' admitted team box scores do not carry. This module uses an exact box-score
 identity instead. With the conventional possession estimate
 
     Poss = FGA + 0.44 FTA - OREB + TOV   and   TSA = FGA + 0.44 FTA,

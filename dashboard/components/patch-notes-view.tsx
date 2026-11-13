@@ -59,7 +59,7 @@ export function PatchNotesView() {
       <ResearchDisclosure id="about" icon="info" title="About this page">
         <div className="pn-about">
           <p>{PATCH_ABOUT}</p>
-          <p>Layout after Databallr&apos;s changelog, the design reference. The wording and the releases are CourtLens&apos;s own.</p>
+          <p>Layout after Databallr&apos;s changelog, the design reference. The wording and the releases are CourtLens&apos; own.</p>
         </div>
       </ResearchDisclosure>
     </div>

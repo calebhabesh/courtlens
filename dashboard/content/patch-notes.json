@@ -14,7 +14,7 @@
           "title": "Models",
           "entries": [
             { "title": "Win Probability", "badge": "New", "href": "/research/win-probability", "date": "2026-11-04", "commit": "a87e648", "text": "Live win probability for every game, checked each night against ESPN's.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-04 — R15b measured" } },
-            { "title": "Projected Impact", "badge": "New", "href": "/research/projected-impact", "date": "2026-11-05", "commit": "7ef5f35", "text": "CourtLens's own player rating, with aging curves and 2026-27 projections locked in before the games are played.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — R07 measured" } },
+            { "title": "Projected Impact", "badge": "New", "href": "/research/projected-impact", "date": "2026-11-05", "commit": "7ef5f35", "text": "CourtLens' own player rating, with aging curves and 2026-27 projections locked in before the games are played.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-05 — R07 measured" } },
             { "title": "Lineup Model", "badge": "New", "href": "/research/lineup-model", "date": "2026-11-06", "commit": "1ebc5ea", "text": "A lineup tool that rates any five-player lineup, and a map of similar players.", "log": { "file": "docs/research-progress.md", "heading": "2026-11-06 — R14 measured" } }
           ]
         },

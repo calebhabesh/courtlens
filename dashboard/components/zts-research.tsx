@@ -29,7 +29,7 @@ import {
 /*
  * Research → zTS (R04 analysis; RD03 design after Databallr's zTS explainer). Databallr's layout: an article hero, one
  * 768 px essay column in its section order, figures on light panels one level deep, and About / Top 200 / Player in a
- * floating pill dock. The prose is CourtLens's own and every number is CourtLens's: the frozen
+ * floating pill dock. The prose is CourtLens' own and every number is CourtLens': the frozen
  * courtlens-zts-validation-v1 results, the served impact bundle's volume and the descriptive team file. Databallr's
  * add-stat R² study, SV/100 and its other studies are not reproduced. Exact values sit on `data-*` for checks.
  */
@@ -70,7 +70,7 @@ function pointsColumn(key: "rts" | "difficulty" | "zts", label: string, sortable
 }
 const usageColumn: GridColumn<ZtsRow> = { key: "scoring_usage", label: "USG", width: "xs", sort: r => r.scoring_usage,
   cell: r => <GridValue text={formatNumber(r.scoring_usage)} />, data: r => ({ field: "scoring_usage", value: r.scoring_usage ?? undefined }) };
-const addColumn: GridColumn<ZtsRow> = { key: "zts_add", label: "zTS add/100", title: "2 × scoring usage × zTS, points per 100 offensive possessions (CourtLens's; Databallr's SV/100 formula is not published)",
+const addColumn: GridColumn<ZtsRow> = { key: "zts_add", label: "zTS add/100", title: "2 × scoring usage × zTS, points per 100 offensive possessions (CourtLens'; Databallr's SV/100 formula is not published)",
   width: "sm", sort: r => r.zts_add, cell: r => <GridValue text={formatSigned(r.zts_add)} identity={signTone(r.zts_add, 1, 1)} />,
   data: r => ({ field: "zts_add", value: r.zts_add ?? undefined }) };
 
@@ -268,7 +268,7 @@ function Teams({ season }: { season: string }) {
         <span className="zt-team-cell"><span className="zt-rank">{t.rank}</span>{t.tricode && <TeamLogo team={t.tricode} season={board.season} size={20} />}{t.tricode ?? t.team_id}</span></Button> }}
       columns={[
         { key: "difficulty", label: "PT diff", width: "sm", sort: t => t.difficulty, cell: t => <GridValue text={formatPoints(t.difficulty, 2)} identity={signTone(t.difficulty, 2)} />, data: t => ({ field: "difficulty", value: t.difficulty }) },
-        { key: "synergy_ts", label: "TS", title: "Play-type TS over the team's listed rows (CourtLens's definition)", width: "sm", sort: t => t.synergy_ts, cell: t => <GridValue text={formatTs(t.synergy_ts)} />, data: t => ({ field: "synergy_ts", value: t.synergy_ts }) },
+        { key: "synergy_ts", label: "TS", title: "Play-type TS over the team's listed rows (CourtLens' definition)", width: "sm", sort: t => t.synergy_ts, cell: t => <GridValue text={formatTs(t.synergy_ts)} />, data: t => ({ field: "synergy_ts", value: t.synergy_ts }) },
       ]} />
     {team && <StatsGrid<TeamPlayer> label={`${team.tricode ?? team.team_id} player roles, ${board.season}`} name="zts-team-players" density="compact" height="scroll" leadWidth="md" minWidth="narrow"
       rows={team.players} rowKey={p => p.player_id}
@@ -309,7 +309,7 @@ function Glossary({ summary }: { summary: ZtsSummary }) {
     ["rTS", summary.definitions.rts],
     ["Role", summary.definitions.difficulty],
     ["zTS", summary.definitions.zts],
-    ["zTS add/100", "2 × scoring usage × zTS, points per 100 offensive possessions. CourtLens's figure in place of Databallr's SV/100, whose formula is not published."],
+    ["zTS add/100", "2 × scoring usage × zTS, points per 100 offensive possessions. CourtLens' figure in place of Databallr's SV/100, whose formula is not published."],
   ];
   return <dl className="zt-glossary">{items.map(([t, d]) => <div key={t} className="zt-well"><dt>{t}</dt><dd>{d}</dd></div>)}</dl>;
 }
@@ -346,7 +346,7 @@ function Caveats({ summary, season, board }: { summary: ZtsSummary; season: stri
     <MethodBlock title="Coverage and unknowns">
       <ul className="zt-list">
         <li>Seasons {summary.seasons[0]} to {summary.seasons.at(-1)}, regular season only: Synergy play types start in 2015-16, 2026-27 has no play-type rows or sealed rTS yet, and playoffs are outside the registration (Post is disabled on Top 200).</li>
-        <li>FTA cannot be derived from the play-type rows: they count free-throw trips and and-ones, not attempts. On {int(fta.player_seasons)} single-team player-seasons the best estimate is {(fta.ratio_proxy_to_box_fta.p50 * 100).toFixed(1)}% of box FTA at the median ({(fta.ratio_proxy_to_box_fta.p05 * 100).toFixed(1)}% to {(fta.ratio_proxy_to_box_fta.p95 * 100).toFixed(1)}%, 5th to 95th percentile), so play-type TS is CourtLens&apos;s own definition, not Databallr&apos;s.</li>
+        <li>FTA cannot be derived from the play-type rows: they count free-throw trips and and-ones, not attempts. On {int(fta.player_seasons)} single-team player-seasons the best estimate is {(fta.ratio_proxy_to_box_fta.p50 * 100).toFixed(1)}% of box FTA at the median ({(fta.ratio_proxy_to_box_fta.p05 * 100).toFixed(1)}% to {(fta.ratio_proxy_to_box_fta.p95 * 100).toFixed(1)}%, 5th to 95th percentile), so play-type TS is CourtLens&apos; own definition, not Databallr&apos;s.</li>
         <li>The source omits a play type a player used fewer than {summary.parameters.source_min_possessions} times, and some seasons miss whole rows. Databallr estimates the missing frequencies; CourtLens does not: a player-season with a missing row, under {summary.parameters.min_coverage * 100}% coverage or under {summary.parameters.min_tsa} TSA has no zTS and says why.</li>
       </ul>
       <StatsGrid label="Coverage by season" name="zts-coverage" density="compact" height="auto" leadWidth="sm" rows={coverage} rowKey={r => r.season}
@@ -463,7 +463,7 @@ function About({ summary }: { summary: ZtsSummary }) {
       <ResearchProse>
         <p>Volume and efficiency are the two numbers that matter most about a scorer, and both should carry as much context as possible. <Code>rTS</Code> says a player scored efficiently, not on what. A diet heavy in cuts and transition flatters it, and it cannot tell.</p>
         <p>Playtype difficulty is the context &ldquo;role&rdquo; always gestured at. <Code>zTS</Code> folds it in: how efficient was this player on the possessions he actually used?</p>
-        <p className="zt-lead">On CourtLens&apos;s registered test, that makes zTS the better account of a season&apos;s shooting impact, and the worse forecast of next season&apos;s raw efficiency.</p>
+        <p className="zt-lead">On CourtLens&apos; registered test, that makes zTS the better account of a season&apos;s shooting impact, and the worse forecast of next season&apos;s raw efficiency.</p>
       </ResearchProse>
       <div><ButtonLink size="md" variant="secondary" href="/research/zts?tab=top" iconAfter="right">Top 200 seasons since {summary.seasons[0]}</ButtonLink></div>
     </ResearchSection>
@@ -517,7 +517,7 @@ function BoardSections({ board, summary, season, setSeason, x, y, ext, setAxes }
       </ResearchProse>
       <FormulaLine>TS add = 2 × scoring usage × rTS (points per 100 offensive possessions)</FormulaLine>
       <FormulaLine>zTS add = 2 × scoring usage × zTS</FormulaLine>
-      <ResearchProse><p>The factor of 2 puts the result in points. The leaderboard below ranks by <Code>zTS add/100</Code>, CourtLens&apos;s figure in the place of Databallr&apos;s SV/100, whose formula is not published.</p></ResearchProse>
+      <ResearchProse><p>The factor of 2 puts the result in points. The leaderboard below ranks by <Code>zTS add/100</Code>, CourtLens&apos; figure in the place of Databallr&apos;s SV/100, whose formula is not published.</p></ResearchProse>
     </ResearchSection>
   </>;
 }

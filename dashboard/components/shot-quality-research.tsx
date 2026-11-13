@@ -31,7 +31,7 @@ import {
 /*
  * Research → Shot Quality (R05 and R06 analyses; RD04 design after Databallr's ShotQuality RAPM page). Databallr's centred
  * hero through `PageHeader`, a 1352 px column (Databallr's measured width), then four views: Decomposition (the reference
- * page, default), Shot-making (R05's per-player view on the same table), Player and Model (no reference: CourtLens's own
+ * page, default), Shot-making (R05's per-player view on the same table), Player and Model (no reference: CourtLens' own
  * design on the Research pattern). Colour: green/red only where a served interval excludes zero. Every number is the frozen
  * courtlens-expected-shot-v2 and courtlens-shot-decomposition-v1 results'; exact values sit on `data-*` for checks.
  */
@@ -421,7 +421,7 @@ export function ShotQualityResearch() {
   return <PageShell template="research" className="sq-shell">
     <div className="rs-column sq-page" data-tab={tab}>
       <PageHeader className="sq-hero research-hero" icon="target" title="Shot Quality"
-        subtitle="Every player's shooting impact split into the quality of the looks, the making and the free throws, on both ends, from CourtLens's own expected-points model on free NBA data." />
+        subtitle="Every player's shooting impact split into the quality of the looks, the making and the free throws, on both ends, from CourtLens' own expected-points model on free NBA data." />
       <nav className="sq-tabs" aria-label="Shot Quality views">
         <span className="sq-tabs-wide"><Segmented label="Shot Quality view" size="lg" value={tab} onChange={next => set({ tab: next === "decomposition" ? null : next })} options={TABS} /></span>
         <span className="sq-tabs-phone"><Segmented label="Shot Quality view" size="md" dense stretch value={tab} onChange={next => set({ tab: next === "decomposition" ? null : next })}
