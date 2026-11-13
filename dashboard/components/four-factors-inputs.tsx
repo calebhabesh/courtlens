@@ -108,7 +108,7 @@ export function ObservedInputs({ data, season, seasonData, seasonError, retry, d
       <MethodBlock title={`League inputs, ${head.season}`}><LeagueTable season={head.season} row={head.league} mu={head.mu} /></MethodBlock>
       <div className="ol-observed-stack">
         <MethodBlock title="Marginal value"><p className="rs-note">Eq. (11) change when one input moves one point, the others at the league value.</p><MarginalTable row={head.league} /></MethodBlock>
-        <MethodBlock title="Against the paper"><p className="rs-note">The paper&apos;s published 2024-25 values (Appendix A and B) beside CourtLens&apos;s counts. Reported, not adjusted.</p><PaperTable data={data} /></MethodBlock>
+        <MethodBlock title="Against the paper"><p className="rs-note">The paper&apos;s published 2024-25 values (Appendix A and B) beside CourtLens&apos; counts. Reported, not adjusted.</p><PaperTable data={data} /></MethodBlock>
       </div>
     </div>
     <MethodBlock title="Offensive rebounds by miss"><p className="rs-note">The share of rebounds the shooting team took after each kind of miss (team rebounds included). A miss followed by a shot, foul shot, turnover or period end before any rebound is unrebounded and left out of the rate.</p><ReboundTable row={head.league} /></MethodBlock>

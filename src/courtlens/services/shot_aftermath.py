@@ -61,7 +61,7 @@ DEFINITIONS = {
         "mid: other 2s from 15 feet out. Three: every 3."
     ),
     "positions": (
-        "Estimated positions: guards (PG, SG), forwards (SF, PF) and bigs (C), from CourtLens's "
+        "Estimated positions: guards (PG, SG), forwards (SF, PF) and bigs (C), from CourtLens' "
         "estimate for the season, built from listed position, size and box-score rates."
     ),
     "interval": (

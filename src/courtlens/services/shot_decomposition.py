@@ -40,7 +40,7 @@ DEFINITIONS = {
         "TS = SQ + Make + FT."
     ),
     "sq": (
-        "SQ: the quality of the looks. CourtLens's expected field-goal points before the shot, "
+        "SQ: the quality of the looks. CourtLens' expected field-goal points before the shot, "
         "plus avg_pts / 2 or avg_pts / 3 per free throw of a 2-shot or 3-shot trip (the value of "
         "the possession the foul replaced)."
     ),
