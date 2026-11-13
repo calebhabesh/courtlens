@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { CSSProperties, ReactNode } from "react";
+import { useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
 import { awayFirst, seasonOf, teamCode, teamFullName, tipoff, WIN_MODEL_NAMES, type LiveGame, type LiveTeam } from "@/lib/live";
 import { formatDate } from "@/lib/format-date";
 import { seasonEra } from "@/lib/portrait-source";
@@ -15,7 +15,7 @@ import { GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
 import { useFeed } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
 import { Icon, type IconName } from "./ui/icon";
-import { ButtonSummary } from "./ui/kit";
+import { ButtonLink, ButtonSummary } from "./ui/kit";
 
 /**
  * W4: the Pre-Game "why". Every number is the seal's, read through the breakdown API: the own read's
@@ -195,13 +195,13 @@ export function PredictionBody({ why, game }: { why: WinProbabilityWhy; game: Li
     <Matchup why={why} sides={sides} />
     <Header why={why} sides={sides} />
     <Result why={why} sides={sides} />
-    <section className="lp-section" aria-label="What moved the prediction">
-      <h3><Icon name="chart" size={16} />What moved the prediction</h3>
+    <section className="lp-section" aria-label="What Moved the Prediction">
+      <h3><Icon name="chart" size={20} />What Moved the Prediction</h3>
       <Bars why={why} sides={sides} />
       <MarketNote why={why} sides={sides} />
     </section>
-    <section className="lp-section" aria-label="Who's out">
-      <h3><Icon name="alert" size={16} />Who&apos;s out</h3>
+    <section className="lp-section" aria-label="Who's Out">
+      <h3><Icon name="alert" size={20} />Who&apos;s Out</h3>
       <div className="lp-out">
         <OutList team={away} players={why.out?.away} sides={sides} scale={costScale} />
         <OutList team={home} players={why.out?.home} sides={sides} scale={costScale} />
@@ -222,15 +222,21 @@ export function PredictionBody({ why, game }: { why: WinProbabilityWhy; game: Li
   </div>;
 }
 
+/** `?from=win-probability`: the game was opened from a Win Probability card. */
+const fromWinProbability = () => new URLSearchParams(window.location.search).get("from") === "win-probability";
+const subscribeToNothing = () => () => {};
+
 /** The first Pre-Game panel. A game with no seal says so; nothing is invented in its place. */
 export function PredictionPanel({ game }: { game: LiveGame }) {
+  const fromWp = useSyncExternalStore(subscribeToNothing, fromWinProbability, () => false);
   const sealedCard = game.prediction?.status !== "no_seal";
   const { data, error, loading } = useFeed([game.source_id, game.slate_date, sealedCard ? "1" : "0"], async () => {
     if (!sealedCard) return null;
     try { return await getWinProbabilityWhy(game.source_id, game.slate_date); }
     catch (e) { if (e instanceof WorkbenchApiError && e.status === 404) return null; throw e; }
   });
-  return <Panel title="CourtLens prediction" icon="gauge" className="live-pregame-prediction">
+  return <Panel title="CourtLens Prediction" icon="gauge" className="live-pregame-prediction"
+    action={fromWp ? <ButtonLink size="sm" variant="secondary" icon="back" href={`/research/win-probability?day=${game.slate_date}`}>Back to Win Probability</ButtonLink> : undefined}>
     {loading ? <p className="lp-muted" role="status">Loading the sealed prediction…</p>
       : error ? <p className="lp-muted" role="alert">The prediction is unavailable right now.</p>
       : data ? <PredictionBody why={data} game={game} />

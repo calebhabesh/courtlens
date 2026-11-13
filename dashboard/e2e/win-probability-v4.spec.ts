@@ -53,7 +53,7 @@ test("the v4 sections come first, in the plan's order, and read correctly before
   await expect(first.locator(".wpc-pcts [data-favoured]")).toHaveText("71%");
   await expect(first.locator(".wpc-call")).toHaveText(/CourtLens\s*favors\s*Philadelphia 76ers/);
   await expect(first.locator(".wpc-line")).toHaveText("Line: PHI by 7.5");
-  await expect(first).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12");
+  await expect(first).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12&tab=pregame&from=win-probability");
   // The bar splits at the sealed chance: away 29%, home 71%.
   const [bar, away] = [await first.locator(".wpc-bar").boundingBox(), await first.locator('.wpc-bar [data-side="away"]').boundingBox()];
   expect(away!.width / bar!.width).toBeCloseTo(1 - why.prediction.home_win, 2);
@@ -132,6 +132,6 @@ test("the date strip moves the board; a final card says whether the call was rig
   await expect(card.locator(".wpc-call")).toHaveText(/Called\s*Philadelphia 76ers\s*right/);
   await expect(card.locator(".wpc-call")).toHaveAttribute("data-right", "true");
   await expect(card.locator('.wpc-team[data-side="home"] .wpc-score')).toHaveText("110");
-  await expect(card).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12&tab=pregame");
+  await expect(card).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12&tab=pregame&from=win-probability");
   await shot(page, "w5-board-final-test-data-1440");
 });
