@@ -268,6 +268,14 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 
 ## Deploy log
 
+### 2026-11-13: releases 5d608d81 (#104) and 61de4107 (#105), W7b on the VPS
+
+- **What:** the own read leads (W-D16), the non-linear test (W-D17), the Win Probability page and Live cards (#101 to #103), the `jobs` service and deploys that no longer copy data (W7), grading right after each game, and the image fixes the jobs needed (the dbt project path, a writable dbt target, the sealed docs the fits check).
+- **Images** ran by themselves after CI on both merges; no hand dispatch.
+- **Deploy:** no Stats cohorts built at either deploy (171 existing); nothing under `data/` copied. 125 GB free.
+- **After the deploy:** the PC's push, roster and daily timers removed; the VPS's daily refresh published a release equal to the PC's (counts in the v4 progress log, W7b entry).
+- **Checked on the public URL:** `/api/health` ok, `/research/win-probability` and `/stats` load, `/api/job-health` lists five jobs, `POST /api/win-probability` gets 403.
+
 ### 2026-11-12: release 3988ffc4 (seals 5 minutes before tip, #95; legacy-brand test, #94)
 
 - **What:** the seal service runs at :25 and :55 Eastern instead of :00 and :30, so each game's last seal is 5 minutes before its tip, not 30 (a protocol note records it).
