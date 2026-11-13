@@ -217,6 +217,8 @@
   .live-injury-team[data-side="home"] h3 { border-bottom-color: color-mix(in srgb, var(--live-home, var(--color-hairline-strong)) 60%, transparent); }
   .live-injury-name { display: grid; gap: var(--space-0-5); min-width: 0; }
   .live-injury-detail { font-size: var(--text-xs); }
+  .live-injury-team .player-portrait, .live-injury-team .player-portrait-fallback { box-shadow: 0 0 0 var(--space-0-5) var(--live-away, var(--color-hairline-strong)); border-radius: 50%; }
+  .live-injury-team[data-side="home"] .player-portrait, .live-injury-team[data-side="home"] .player-portrait-fallback { box-shadow: 0 0 0 var(--space-0-5) var(--live-home, var(--color-hairline-strong)); }
   .live-injury-team p { margin: 0; font-size: var(--text-sm); }
   .live-injury-position { color: var(--color-text-tertiary); font-size: var(--text-2xs); }
   .live-injury-name a { color: var(--color-text); text-decoration: none; }

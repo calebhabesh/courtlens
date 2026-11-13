@@ -81,7 +81,9 @@ test("pre-game: the CourtLens prediction panel adds up and names its inputs", as
   await mock(page);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/live/games/401909976?date=2026-11-12&tab=pregame");
-  const panel = page.getByRole("region", { name: "CourtLens prediction" });
+  const panel = page.getByRole("region", { name: "CourtLens Prediction" });
+  // Opened from Live, there is no way back to Win Probability; that link appears only from its cards.
+  await expect(panel.getByRole("link", { name: "Back to Win Probability" })).toHaveCount(0);
   await expect(panel.locator('[data-field="headline"]')).toHaveText(/CourtLens\s*favors\s*Philadelphia 76ers\s*· 71% to win · predicted margin PHI by 7.5/);
   const rows = panel.locator(".lp-bar-row[data-row]");
   await expect(rows).toHaveCount(7);
@@ -111,7 +113,7 @@ test("pre-game: the CourtLens prediction panel adds up and names its inputs", as
   await expect(panel.locator('[data-field="model"]')).toHaveText(/Market-informed model, on trial against the Original \(the Original gave PHI \d+%\) · Not betting advice\./);
   // The panel comes first on Pre-Game.
   const regions = await page.locator(".live-pregame > section").evaluateAll(els => els.map(e => e.getAttribute("aria-label")));
-  expect(regions[0]).toBe("CourtLens prediction");
+  expect(regions[0]).toBe("CourtLens Prediction");
 
   await panel.getByText("Exact inputs").click();
   const grid = panel.getByRole("table", { name: "Exact inputs" });
@@ -119,17 +121,17 @@ test("pre-game: the CourtLens prediction panel adds up and names its inputs", as
   await expect(grid.locator('[data-input="b2b_away"] [data-field="contribution"]')).toHaveAttribute("data-value", String(why.own.groups[3].rows[2].contribution));
   await expect(panel).toContainText(why.seal);
   await panel.getByText("Players available, by expected minutes").click();
-  await shot(page, "w4-pregame-1440", "CourtLens prediction");
+  await shot(page, "w4-pregame-1440", "CourtLens Prediction");
   await page.setViewportSize({ width: 390, height: 844 });
   // Open, the inputs table scrolls inside its own frame; the page never scrolls sideways.
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await shot(page, "w4-pregame-390", "CourtLens prediction");
+  await shot(page, "w4-pregame-390", "CourtLens Prediction");
 });
 
 test("pre-game: no line, the Original's pre-freeze call, a result, and no seal", async ({ page }) => {
   await mock(page, { breakdown: { status: 200, json: { ...why, market: { status: "no_line", w: 1 }, prediction: { home_margin: why.own.own, home_win: 0.58 }, result: { home_score: 101, away_score: 110, calls: null } } } });
   await page.goto("/live/games/401909976?date=2026-11-12&tab=pregame");
-  const panel = page.getByRole("region", { name: "CourtLens prediction" });
+  const panel = page.getByRole("region", { name: "CourtLens Prediction" });
   await expect(panel.locator('[data-field="market"]')).toHaveText("No line when this was sealed; own read only.");
   await expect(panel.locator('.lp-bar-row[data-row="market"]')).toHaveCount(0);
   await expect(panel.locator('[data-field="result"]')).toHaveText(/Final: TOR 110, PHI 101 · the call was wrong/);
@@ -143,4 +145,11 @@ test("pre-game: no line, the Original's pre-freeze call, a result, and no seal",
   await mock(page, { breakdown: { status: 404, json: { detail: "No prediction was sealed for this game" } } });
   await page.reload();
   await expect(panel.locator('[data-field="no-seal"]')).toHaveText("No prediction was sealed for this game.");
+});
+
+test("pre-game opened from a Win Probability card links back to that day's board", async ({ page }) => {
+  await mock(page);
+  await page.goto("/live/games/401909976?date=2026-11-12&tab=pregame&from=win-probability");
+  const back = page.getByRole("region", { name: "CourtLens Prediction" }).getByRole("link", { name: "Back to Win Probability" });
+  await expect(back).toHaveAttribute("href", "/research/win-probability?day=2026-11-12");
 });
