@@ -82,7 +82,7 @@ test("pre-game: the CourtLens prediction panel adds up and names its inputs", as
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/live/games/401909976?date=2026-11-12&tab=pregame");
   const panel = page.getByRole("region", { name: "CourtLens prediction" });
-  await expect(panel.locator('[data-field="headline"]')).toHaveText(/CourtLens favors\s*PHI\s*· 71% to win · predicted margin PHI by 7.5/);
+  await expect(panel.locator('[data-field="headline"]')).toHaveText(/CourtLens\s*favors\s*Philadelphia 76ers\s*· 71% to win · predicted margin PHI by 7.5/);
   const rows = panel.locator(".lp-bar-row[data-row]");
   await expect(rows).toHaveCount(7);
   await expect(panel.locator('.lp-bar-row[data-row="players"] .lp-bar-value')).toHaveText("TOR +0.5");
