@@ -4,7 +4,7 @@ Written offline by ``scripts/team_season_records.py`` from the retained Basketba
 league season pages: wins and losses from the standings, and margin of victory, schedule
 strength, SRS, offensive and defensive rating, pace, arena and attendance from the advanced
 team table. Ratings and pace are the source's own possession estimates. Keys are the codes
-releases store games under. From 1983-84 the records equal CourtLens's own game logs.
+releases store games under. From 1983-84 the records equal CourtLens' own game logs.
 """
 
 from __future__ import annotations

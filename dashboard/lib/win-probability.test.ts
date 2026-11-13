@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { band, callRight, DRIFT_COPY, gapTone, listOf, marginText, metric, signed, sortWpa, towardTeam, verdictOf, whyBars, wpaRows, type WinProbabilityWhy } from "./win-probability";
+import { band, callRight, candidateResult, DRIFT_COPY, gapTone, listOf, marginText, metric, signed, sortWpa, towardTeam, verdictOf, whyBars, whyFlow, ribbonPath, ribbonSize, wpaRows, type WinProbabilityWhy } from "./win-probability";
 import why from "../e2e/fixtures/win-probability-why-401909976.json";
 
 describe("win probability formatting", () => {
@@ -41,16 +41,20 @@ describe("F03 helpers", () => {
 
 describe("the pregame why (W4), on the real sealed 2026-11-12 TOR at PHI", () => {
   const real = why as unknown as WinProbabilityWhy;
-  it("adds up: groups to the own read, own read plus the market row to the prediction", () => {
+  it("adds up: the groups to the prediction, which is the own read; the line's version sits beside it", () => {
     const bars = whyBars(real);
     const groups = bars.filter(b => b.kind === "group").reduce((sum, b) => sum + b.points, 0);
-    expect(groups).toBeCloseTo(real.own.own, 9);
-    const own = bars.find(b => b.kind === "own")!.points, market = bars.find(b => b.kind === "market")!.points;
-    expect(own + market).toBeCloseTo(bars.find(b => b.kind === "prediction")!.points, 9);
-    expect(bars.map(b => b.key)).toEqual(["players", "form", "home_court", "rest_travel", "own", "market", "prediction"]);
+    const prediction = bars.find(b => b.kind === "prediction")!;
+    expect(groups).toBeCloseTo(prediction.points, 9);
+    expect(prediction.points).toBe(real.own.own);
+    expect(prediction.homeWin).toBe(real.tip_off_home.original);
+    const market = bars.find(b => b.kind === "market")!;
+    expect(market.points).toBeCloseTo(real.own.own + (real.market.status === "ok" ? real.market.adjustment : 0), 9);
+    expect(market.homeWin).toBe(real.tip_off_home.market_informed);
+    expect(bars.map(b => b.key)).toEqual(["players", "form", "home_court", "rest_travel", "prediction", "market"]);
   });
-  it("drops the market row when the model used none", () => {
-    expect(whyBars({ ...real, market: { status: "no_line", w: 1 } }).some(b => b.kind === "market")).toBe(false);
+  it("drops the comparison row when the seal had no line", () => {
+    expect(whyBars({ ...real, market: { status: "no_line", w: 1 }, market_informed: null }).some(b => b.kind === "market")).toBe(false);
   });
   it("names the team the points favour", () => {
     expect(towardTeam(3.14, "PHI", "TOR")).toBe("PHI +3.1");
@@ -62,5 +66,37 @@ describe("the pregame why (W4), on the real sealed 2026-11-12 TOR at PHI", () =>
     expect(callRight(real)).toBeNull();
     expect(callRight({ ...real, result: { home_score: 110, away_score: 101, calls: null } })).toBe(true);
     expect(callRight({ ...real, result: { home_score: 99, away_score: 101, calls: null } })).toBe(false);
+  });
+});
+
+describe("the non-linear own-read diagnostic", () => {
+  it("says a result in plain words, and never calls an interval through zero a win or a loss", () => {
+    expect(candidateResult({ result: "not distinguishable" })).toBe("no clear difference");
+    expect(candidateResult({ result: "worse" })).toBe("worse");
+    expect(candidateResult({ result: "better" })).toBe("better");
+  });
+});
+
+describe("round 3: the model flow, on the same sealed game", () => {
+  const w = why as unknown as WinProbabilityWhy;
+  it("keeps the seal's numbers: inputs add to the own read, which is the margin; the line is a second path", () => {
+    const flow = whyFlow(w);
+    expect(flow.inputs.map(i => i.key)).toEqual(["players", "form", "home_court", "rest_travel"]);
+    expect(flow.inputs.reduce((s, i) => s + i.points, 0)).toBeCloseTo(flow.own, 9);
+    expect(flow.margin).toBe(flow.own);
+    expect(flow.homeWin).toBe(w.tip_off_home.original);
+    expect(w.market.status).toBe("ok");
+    if (w.market.status === "ok") expect(flow.line).toEqual({ status: "ok", points: w.market.line, w: w.market.w, book: w.market.book, margin: 7.5, homeWin: w.tip_off_home.market_informed });
+  });
+  it("with no line, there is no second path", () => {
+    const flow = whyFlow({ ...w, market: { status: "no_line", w: 1 }, market_informed: null });
+    expect(flow.line.status).toBe("no_line");
+    expect(flow.margin).toBe(flow.own);
+  });
+  it("draws bands as closed paths, with a visible floor and zero for nothing", () => {
+    expect(ribbonPath({ x0: 0, y0: 10, x1: 100, y1: 50, size: 4 })).toBe("M0 10C50 10 50 50 100 50L100 54C50 54 50 14 0 14Z");
+    expect(ribbonSize(0.1, 9)).toBe(3);
+    expect(ribbonSize(-2, 9)).toBe(18);
+    expect(ribbonSize(0, 9)).toBe(0);
   });
 });

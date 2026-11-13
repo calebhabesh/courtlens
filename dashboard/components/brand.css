@@ -28,4 +28,16 @@
   text-transform: uppercase;
   font-family: var(--font-mono), monospace;
 }
+/* Round 3: "CourtLens" in a sentence, mark and wordmark together. */
+.brand-says {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-accent);
+  line-height: 1;
+}
+/* BrandMark's lens sits slightly high in its 32x32 viewBox to leave room for the diagonal handle. */
+.brand-says > svg:first-child {
+  transform: translateY(1px);
+}
 }

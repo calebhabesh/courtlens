@@ -56,7 +56,7 @@ DEFINITIONS = {
         "for a whole regular season with no team or date filter."
     ),
     "play_type_ts": (
-        "Play-type TS (CourtLens's definition): PTS / (2 x scoring possessions), scoring "
+        "Play-type TS (CourtLens' definition): PTS / (2 x scoring possessions), scoring "
         "possessions = possessions x (1 - turnover share). Synergy rows carry no FTA, so this is "
         "not box TS and not the reference site's number."
     ),
@@ -76,7 +76,7 @@ DEFINITIONS = {
 }
 CREDIT = (
     "zTS, Expected TS and Playtype Difficulty are the reference site's concepts and names "
-    "(the reference site); the reference site is the design and method reference for this page. CourtLens's "
+    "(the reference site); the reference site is the design and method reference for this page. CourtLens' "
     "play-type TS definition, coverage rules and numbers are its own and do not reproduce "
     "The reference site's. Play-type data: NBA Stats (Synergy Sports) via hoopR / sportsdataverse."
 )

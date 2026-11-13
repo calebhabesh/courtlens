@@ -47,7 +47,7 @@ from courtlens.services.quality import run_operational_checks
 
 app = typer.Typer(
     no_args_is_help=True,
-    help="Ingest source data, seed labeled fixtures, and verify CourtLens's warehouse.",
+    help="Ingest source data, seed labeled fixtures, and verify CourtLens' warehouse.",
 )
 
 

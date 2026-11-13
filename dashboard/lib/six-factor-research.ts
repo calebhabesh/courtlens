@@ -113,7 +113,7 @@ export function intervalDomain(nodes: readonly ImpactNode[]): [number, number] {
 }
 
 /**
- * CourtLens's own explainer copy for each factor (design phase, owner 2026-11-06): what can move it
+ * CourtLens' own explainer copy for each factor (design phase, owner 2026-11-06): what can move it
  * and what a box score would not show. Descriptive, not a claim about any player.
  */
 export interface FactorCopy { tagline: string; showsUp: readonly string[]; boxMisses: readonly string[]; pair: FactorKey }

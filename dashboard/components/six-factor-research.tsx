@@ -200,7 +200,7 @@ function Credits() {
   return <ul className="sf-caveats">
     <li><strong>Design reference:</strong> the reference site&apos;s Six-Factor RAPM explainer and ShotQuality RAPM table. No value on this page comes from the reference site.</li>
     <li><strong>Method:</strong> regularized adjusted plus-minus after Rosenbaum (2004) and Sill (2010); the factors after Dean Oliver&apos;s Four Factors; the six-factor split after the reference site&apos;s framework.</li>
-    <li><strong>Data:</strong> NBA play-by-play (PlayByPlayV3) via shufinskiy/nba_data, rebuilt into stints by CourtLens. Every fit, interval and weight is CourtLens&apos;s own.</li>
+    <li><strong>Data:</strong> NBA play-by-play (PlayByPlayV3) via shufinskiy/nba_data, rebuilt into stints by CourtLens. Every fit, interval and weight is CourtLens&apos; own.</li>
   </ul>;
 }
 
@@ -413,7 +413,7 @@ function Body({ page, factor, playerId, treeHref, statsHref, set }: { page: SixF
 /** URL value for a cleared Impact Tree picker (no `player` means the default, the top RAPM player). */
 const NO_PLAYER = "none";
 
-/** Research → Six-Factor RAPM (R02, design phase row 18). Layout after the reference site's explainer; every value is CourtLens's own. */
+/** Research → Six-Factor RAPM (R02, design phase row 18). Layout after the reference site's explainer; every value is CourtLens' own. */
 export function SixFactorResearch() {
   const { get, set } = useUrlState();
   const pathname = usePathname();

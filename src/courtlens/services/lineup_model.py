@@ -55,7 +55,7 @@ CREDITS = [
     },
     {
         "what": "Stints and possessions",
-        "who": "CourtLens's R01 reconstruction of NBA play-by-play (shufinskiy/nba_data "
+        "who": "CourtLens' R01 reconstruction of NBA play-by-play (shufinskiy/nba_data "
         "archives, pbpstats checks)",
     },
 ]

@@ -1,0 +1,112 @@
+@layer pages {
+  /* Round 3: "How the model works" as a flow. Bands take each team's colour (--live-away / --live-home from teamColors);
+     a band that favours neither team, and the game state, stay neutral. */
+  .wpf { --wpf-away: var(--live-away, var(--color-text-tertiary)); --wpf-home: var(--live-home, var(--color-text-secondary));
+    display: grid; gap: var(--space-4); min-width: 0; padding: var(--space-5); border-radius: var(--radius-lg); background: var(--color-surface-1); box-shadow: var(--shadow-1); }
+  .wpf-games { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .wpf-at { color: var(--color-text-tertiary); font-size: var(--text-xs); }
+  .wpf-note { margin: 0; color: var(--color-text-tertiary); font-size: var(--text-sm); }
+
+  .wpf-diagram { position: relative; height: 400px; min-width: 0; }
+  .wpf-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .wpf-band { fill: var(--color-text-tertiary); opacity: 0.38; transition: opacity var(--dur-fast) var(--ease-out); }
+  .wpf-band[data-side="away"] { fill: var(--wpf-away); }
+  .wpf-band[data-side="home"] { fill: var(--wpf-home); }
+  .wpf-band[data-lit] { opacity: 0.78; }
+  .wpf-diagram[data-active] .wpf-band:not([data-lit]) { opacity: 0.14; }
+  .wpf-diagram[data-schematic] .wpf-band { fill: var(--color-text-tertiary); }
+  /* W-D16: the betting line's path, the second model on trial; dashed, never a band. */
+  .wpf-second { fill: none; stroke: var(--color-text-tertiary); stroke-width: 1.5px; stroke-dasharray: 4 4; }
+  .wpf-second[data-lit] { stroke: var(--color-text-secondary); stroke-width: 2px; }
+  .wpf-bar { fill: var(--color-surface-3); }
+  .wpf-bar[data-bar="engine"] { fill: var(--color-accent); }
+
+  .wpf-node { position: absolute; left: var(--x); top: var(--y); display: flex; align-items: center; gap: var(--space-2); transform: translate(0, -50%); cursor: default; }
+  .wpf-node[data-align="center"] { flex-direction: column; gap: 0; text-align: center; transform: translate(-50%, calc(-100% - var(--space-2))); }
+  .wpf-node[data-align="end"] { transform: translate(-100%, -50%); }
+  .wpf-node strong { color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 650; white-space: nowrap; }
+  .wpf-node-text { display: grid; gap: var(--space-0-5); }
+  .wpf-text-end { text-align: end; }
+  .wpf-node[data-on] strong { color: var(--color-accent); }
+  .wpf-sub { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
+  .wpf-icon { display: inline-grid; flex: none; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-surface-3); color: var(--color-text-secondary); }
+  .wpf-icon[data-tone="market"] { color: var(--color-text); }
+  .wpf-icon[data-tone="engine"] { width: 28px; height: 28px; margin-bottom: var(--space-1); background: color-mix(in srgb, var(--color-accent) 22%, transparent); color: var(--color-accent); }
+  .wpf-value { display: inline-flex; align-items: center; gap: var(--space-1); font-size: var(--text-xs); font-weight: 650; font-variant-numeric: tabular-nums; color: var(--color-text-secondary); white-space: nowrap; }
+  .wpf-value[data-side="away"] { color: color-mix(in srgb, var(--wpf-away) 70%, var(--color-text)); }
+  .wpf-value[data-side="home"] { color: color-mix(in srgb, var(--wpf-home) 70%, var(--color-text)); }
+  .wpf-margin { color: var(--color-text); font-size: var(--text-md); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .wpf-final { flex-direction: column; align-items: flex-start; gap: var(--space-1); padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-surface-2); box-shadow: var(--shadow-1); width: max-content; max-width: 16%; min-width: 132px; }
+  .wpf-final-kicker { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-text-tertiary); font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.06em; }
+  .wpf-final-team { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .wpf-node .wpf-final-pct { font-size: var(--text-3xl); line-height: 1; font-weight: 750; }
+  .wpf-final-name { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .wpf-final-alt { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .wpf-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .wpf-key { display: inline-block; width: 16px; height: 8px; border-radius: var(--radius-pill); background: var(--wpf-away); opacity: 0.78; }
+  .wpf-key[data-side="home"] { margin-inline-start: var(--space-2); background: var(--wpf-home); }
+  .wpf-key[data-kind="second"] { height: 0; margin-inline-start: var(--space-2); border-top: 2px dashed var(--color-text-tertiary); border-radius: 0; background: none; opacity: 1; }
+  .wpf-legend-note { margin-inline-start: auto; color: var(--color-text-tertiary); }
+  .wpf-steps { justify-self: start; }
+
+  .wpf-details { display: grid; gap: var(--space-3); padding-top: var(--space-1); }
+  .wpf-lead { margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); }
+  .wpf-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); }
+  .wpf-card { display: grid; align-content: start; gap: var(--space-2); padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-surface-2); }
+  .wpf-card-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
+  .wpf-card-head .wpf-icon { width: 28px; height: 28px; }
+  .wpf-card-head .wpf-value { margin-inline-start: auto; }
+  .wpf-rows { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .wpf-rows li { display: flex; justify-content: space-between; gap: var(--space-2); }
+  .wpf-how { margin: 0; padding-top: var(--space-2); border-top: 1px solid var(--color-hairline); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .wpf-roster { display: grid; gap: var(--space-1); }
+  .wpf-roster-team { display: flex; align-items: center; gap: var(--space-2); }
+  .wpf-faces { display: flex; }
+  .wpf-faces > * { margin-inline-start: calc(-1 * var(--space-2)); box-shadow: 0 0 0 var(--space-0-5) var(--color-surface-2); border-radius: 50%; }
+  .wpf-faces > :first-child { margin-inline-start: 0; }
+  .wpf-roster-team[data-side="away"] .wpf-faces > * { box-shadow: 0 0 0 var(--space-0-5) var(--wpf-away); }
+  .wpf-roster-team[data-side="home"] .wpf-faces > * { box-shadow: 0 0 0 var(--space-0-5) var(--wpf-home); }
+
+  .wpf-equation { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin: 0; }
+  .wpf-term { display: inline-grid; gap: var(--space-0-5); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--color-surface-2); }
+  .wpf-term-total { background: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface-2)); }
+  .wpf-term-label { color: var(--color-text-tertiary); font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.04em; }
+  .wpf-op { display: inline-flex; color: var(--color-text-tertiary); font-size: var(--text-lg); font-weight: 600; }
+  .wpf-term .wpf-op { display: none; }
+  .wpf-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .wpf-chips li { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); background: var(--color-surface-2); font-size: var(--text-xs); }
+  .wpf-chips li span { color: var(--color-text-tertiary); font-variant-numeric: tabular-nums; }
+  .wpf-spec { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-2) var(--space-4); margin: 0; }
+  .wpf-spec > div { display: grid; align-content: start; gap: var(--space-0-5); padding-inline-start: var(--space-3); border-inline-start: 2px solid var(--color-hairline-strong); }
+  .wpf-spec dt { color: var(--color-text-tertiary); font-size: var(--text-2xs); text-transform: uppercase; letter-spacing: 0.04em; }
+  .wpf-spec dd { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .wpf-split { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); max-width: 640px; }
+  .wpf-split-team { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-xl); font-variant-numeric: tabular-nums; }
+  .wpf-split-bar { display: flex; height: 12px; overflow: hidden; border-radius: var(--radius-pill); }
+  .wpf-split-bar > [data-side="away"] { width: var(--wpf-away-share); background: var(--wpf-away); }
+  .wpf-split-bar > [data-side="home"] { flex: 1; background: var(--wpf-home); }
+  .wpf-split-bar > span + span { border-inline-start: 2px solid var(--color-surface-1); }
+
+  .wpf-pipeline { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .wpf-pipeline > li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: var(--color-surface-2); font-size: var(--text-sm); }
+  .wpf-pipeline > li .wpf-margin, .wpf-pipeline > li .wpf-sub { margin-inline-start: auto; font-size: var(--text-sm); white-space: normal; }
+  .wpf-pipe-group { display: grid; }
+  .wpf-pipeline > .wpf-pipe-group { display: grid; }
+  .wpf-pipe-input { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-1) var(--space-2); }
+  .wpf-pipe-input .wpf-icon { width: 28px; height: 28px; }
+  .wpf-pipe-bar { grid-column: 2 / 4; justify-self: start; width: var(--wpf-size); height: 6px; border-radius: var(--radius-pill); background: var(--color-text-tertiary); }
+  .wpf-pipe-bar[data-side="away"] { background: var(--wpf-away); }
+  .wpf-pipe-bar[data-side="home"] { background: var(--wpf-home); }
+  .wpf-pipe-input .wpf-value { grid-column: 3; grid-row: 1; }
+  .wpf-pipe-final { background: color-mix(in srgb, var(--color-accent) 14%, var(--color-surface-2)); }
+
+  @media (max-width: 1100px) {
+    .wpf-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 767px) {
+    .wpf { padding: var(--space-4); }
+    .wpf-cards { grid-template-columns: minmax(0, 1fr); }
+    .wpf-steps { justify-self: stretch; overflow-x: auto; }
+  }
+}

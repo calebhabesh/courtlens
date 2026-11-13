@@ -63,14 +63,17 @@ export interface WinProbabilityPage {
   head_to_head_calibration?: HeadToHeadCalibration | null;
   worked_example?: WorkedExample | null;
   do_no_harm?: DoNoHarm | null;
+  /** courtlens-pregame-nonlinear-v1: trees on the own read's inputs against the frozen linear fit; null before it ran. */
+  pregame_nonlinear?: PregameNonlinear | null;
 }
 export interface TrialRead { games: number; through: string; v1: Interval & { result: string }; v2: Interval & { result: string; phases: Record<string, Interval & { result: string }> } }
 export interface HeadToHead {
   games: number; report_from_games: number; verdict_at_games: number; games_without_line: number; updated_at: string;
   model: { version: string; manifest_sha256: string; frozen_at: string; w: number };
-  record_of_calls: { games: number; original: number; market_informed: number; line: { games: number; right: number }; toss_ups: number };
+  record_of_calls: { games: number; original: number; market_informed: number; line: { games: number; right: number }; toss_ups: number; toss_ups_by_model?: { original: number; market_informed: number } };
   current: TrialRead | null; too_early_to_call: boolean; reads: (TrialRead & { kind: "verdict" | "final"; read_at: string })[];
-  serving_model: { model: "original" | "market_informed"; reason: string; since?: string };
+  /** The model Live leads with (W-D16: the Original), and what the registered rule would serve. */
+  serving_model: { model: "original" | "market_informed"; reason: string; since?: string; registered_rule?: { model: "original" | "market_informed"; reason: string; since?: string } };
   seal_age_minutes: { median: number | null; maximum: number | null };
 }
 export interface ProtocolNote { date: string; kind: string; note: string }
@@ -79,6 +82,18 @@ export interface WorkedExample {
   rule: string; stored: boolean;
   game: { game_id: string; date: string; home: string; away: string; home_score: number; away_score: number; calls: Record<string, number | null> } | null;
   why: WinProbabilityWhy | null;
+}
+export interface PregameScore { games: number; rmse: number; winner_accuracy: number }
+export type PregameCandidate = PregameScore & { squared_error_gain: Interval; result: "better" | "worse" | "not distinguishable" };
+/** A diagnostic: above zero, a candidate's squared margin error is lower than the linear own read's. */
+export interface PregameNonlinear {
+  registration: string; registration_sha256: string; seasons: string[]; games: number; train_games: number; inputs: number;
+  linear: PregameScore; candidates: { trees: PregameCandidate; linear_plus_trees: PregameCandidate };
+  correction_points: { mean_abs: number; max_abs: number };
+}
+/** "worse", "better" or "no clear difference", from a candidate's registered result. */
+export function candidateResult(candidate: Pick<PregameCandidate, "result">): string {
+  return candidate.result === "not distinguishable" ? "no clear difference" : candidate.result;
 }
 export interface DoNoHarm { games: number; seasons: string[]; log_loss_gain: Interval; squared_error_gain: Interval; calibration_error: number; calibration_limit: number; passed: boolean }
 export interface WpaRow { player: string; player_id: string | null; name: string; team: string | null; games: number; wpa: number; events: number; clutch_wpa: number; clutch_events: number }
@@ -176,8 +191,11 @@ export interface WinProbabilityWhy {
   market:
     | { status: "ok"; w: number; line: number; book: string | null; details: string | null; adjustment: number }
     | { status: "no_line"; w: number }
-    | { status: "sealed_before_freeze" | "original_serving" };
+    | { status: "sealed_before_freeze" | "unavailable" };
+  /** W-D16: the own read, the Original's margin and tip-off chance. */
   prediction: { home_margin: number; home_win: number };
+  /** The Market-informed model on the same seal, when it had a line; shown beside the prediction. */
+  market_informed?: { home_margin: number; home_win: number } | null;
   tip_off_home: { original: number; market_informed: number };
   out: { home: WhyOutPlayer[]; away: WhyOutPlayer[] } | null;
   players: { home: WhyPlayer[]; away: WhyPlayer[] } | null;
@@ -188,14 +206,16 @@ export interface WinProbabilityWhy {
 }
 
 /** One bar of the "why" chart, in home-margin points (above zero: toward the home team). */
-export interface WhyBar { key: string; label: string; points: number; kind: "group" | "own" | "market" | "prediction" }
+export interface WhyBar { key: string; label: string; points: number; kind: "group" | "prediction" | "market"; homeWin?: number }
 
-/** The panel's rows in order: each group, the own read, the market row when the model used one, the prediction. */
-export function whyBars(why: Pick<WinProbabilityWhy, "own" | "market" | "prediction">): WhyBar[] {
+/**
+ * The panel's rows in order: each group, then the prediction they add up to (the own read), then,
+ * when the seal had a line, the Market-informed model's margin as a comparison row.
+ */
+export function whyBars(why: Pick<WinProbabilityWhy, "own" | "market" | "prediction" | "market_informed">): WhyBar[] {
   const bars: WhyBar[] = why.own.groups.map(g => ({ key: g.group, label: g.label, points: g.contribution, kind: "group" }));
-  bars.push({ key: "own", label: "CourtLens's own read", points: why.own.own, kind: "own" });
-  if (why.market.status === "ok") bars.push({ key: "market", label: "Market adjustment", points: why.market.adjustment, kind: "market" });
-  bars.push({ key: "prediction", label: "Prediction", points: why.prediction.home_margin, kind: "prediction" });
+  bars.push({ key: "prediction", label: "Prediction: CourtLens' own read", points: why.prediction.home_margin, kind: "prediction", homeWin: why.prediction.home_win });
+  if (why.market.status === "ok" && why.market_informed) bars.push({ key: "market", label: "With the betting line", points: why.market_informed.home_margin, kind: "market", homeWin: why.market_informed.home_win });
   return bars;
 }
 
@@ -216,4 +236,52 @@ export function marginText(points: number, home: string, away: string, digits = 
 export function callRight(why: Pick<WinProbabilityWhy, "prediction" | "result">): boolean | null {
   if (!why.result || why.prediction.home_win === 0.5) return null;
   return (why.result.home_score > why.result.away_score) === (why.prediction.home_win > 0.5);
+}
+
+// ---- Round 3: the "How the model works" flow --------------------------------------------------------------------
+
+/** One stream into the flow diagram, in home-margin points (above zero: toward the home team). */
+export interface FlowStream { key: WhyGroup["group"]; label: string; points: number }
+export interface WhyFlow {
+  inputs: FlowStream[];
+  own: number;
+  /**
+   * The second path (W-D16): the betting line's home margin, its fitted weight, and the margin and
+   * chance the Market-informed model gets from it; or why there is none.
+   */
+  line: { status: "ok"; points: number; w: number; book: string | null; margin: number; homeWin: number } | { status: "no_line" | "sealed_before_freeze" | "unavailable" };
+  /** The pregame margin CourtLens leads with: the own read. */
+  margin: number;
+  homeWin: number;
+}
+
+/** The seal's numbers in the diagram's order: inputs, own read, the pregame margin, the win chance; the line's path beside them. */
+export function whyFlow(why: Pick<WinProbabilityWhy, "own" | "market" | "prediction" | "market_informed">): WhyFlow {
+  const m = why.market;
+  const line: WhyFlow["line"] = m.status === "ok" && why.market_informed
+    ? { status: "ok", points: m.line, w: m.w, book: m.book, margin: why.market_informed.home_margin, homeWin: why.market_informed.home_win }
+    : { status: m.status === "ok" ? "unavailable" : m.status };
+  return {
+    inputs: why.own.groups.map(g => ({ key: g.group, label: g.label, points: g.contribution })),
+    own: why.own.own,
+    line,
+    margin: why.prediction.home_margin,
+    homeWin: why.prediction.home_win,
+  };
+}
+
+/** A ribbon between two columns of the diagram: its top edge at each end and its thickness, in SVG units. */
+export interface Ribbon { x0: number; y0: number; x1: number; y1: number; size: number }
+
+/** A filled band from (x0, y0) to (x1, y1), `size` thick, as one SVG path. */
+export function ribbonPath({ x0, y0, x1, y1, size }: Ribbon): string {
+  const mid = (x0 + x1) / 2;
+  const r = (n: number) => Math.round(n * 100) / 100;
+  return `M${r(x0)} ${r(y0)}C${r(mid)} ${r(y0)} ${r(mid)} ${r(y1)} ${r(x1)} ${r(y1)}L${r(x1)} ${r(y1 + size)}C${r(mid)} ${r(y1 + size)} ${r(mid)} ${r(y0 + size)} ${r(x0)} ${r(y0 + size)}Z`;
+}
+
+/** Ribbon thickness for a number of points: proportional, with a visible floor for anything above zero. */
+export function ribbonSize(points: number, scale: number, floor = 3): number {
+  const size = Math.abs(points) * scale;
+  return size === 0 ? 0 : Math.max(floor, size);
 }

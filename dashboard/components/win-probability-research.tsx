@@ -13,11 +13,11 @@ import { PageHeader } from "./ui/panel";
 import { formatDate } from "@/lib/format-date";
 import { seasonEra } from "@/lib/portrait-source";
 import {
-  band, clearPhases, DRIFT_COPY, gapTone, listOf, metric, PHASE_LABELS, PHASE_ORDER, signed, sortWpa, verdictOf, WPA_DEFAULT_SORT, wpaRows,
+  band, candidateResult, clearPhases, DRIFT_COPY, gapTone, listOf, metric, PHASE_LABELS, PHASE_ORDER, signed, sortWpa, verdictOf, WPA_DEFAULT_SORT, wpaRows,
   type CurvePoint, type Interval, type RecentGame, type ScoreGroup, type WinProbabilityAdded, type WinProbabilityPage, type WpaRow, type WpaSort, type WpaSortKey,
 } from "@/lib/win-probability";
 import { getWinProbabilityAdded, getWinProbabilityPage } from "@/lib/workbench-api";
-import { HowItThinks, PredictionBoard, TrackRecord, Trial } from "./win-probability-v4";
+import { WinProbabilityV4 } from "./win-probability-v4";
 
 /**
  * Research → Win Probability (R15b model, designed in F03 / RD14). Presentation only: every number is the frozen card's, the nightly
@@ -130,7 +130,7 @@ function Answer({ data }: { data: WinProbabilityPage }) {
         : !gap ? <p className="wp-headline" data-field="headline">Not known yet: {whole(p.games)} games since the freeze, too few for an interval.</p>
           : <p className="wp-headline" data-field="headline" data-value={gap.mean} data-low={gap.low} data-high={gap.high} data-games={gap.games}>
             {verdict === "tied" ? "Not so far. " : verdict === "better" ? "So far, yes. " : "Not so far: ESPN is ahead. "}
-            On the <strong>{whole(p.games)}</strong> games played since the freeze, CourtLens&apos;s log loss was <strong>{metric(Math.abs(gap.mean))}</strong> {gap.mean <= 0 ? "higher" : "lower"} than ESPN&apos;s
+            On the <strong>{whole(p.games)}</strong> games played since the freeze, CourtLens&apos; log loss was <strong>{metric(Math.abs(gap.mean))}</strong> {gap.mean <= 0 ? "higher" : "lower"} than ESPN&apos;s
             (95% interval <strong>{band(gap)}</strong>){verdict === "tied" ? <>: the two can&apos;t be told apart.</> : "."}
           </p>}
       {test && <p className="wp-lead" data-field="answer-test" data-value={test.mean} data-low={test.low} data-high={test.high}>
@@ -157,7 +157,7 @@ function ScoreGrid({ rows, label, name }: { rows: ScoreRow[]; label: string; nam
   });
   const columns: GridColumn<ScoreRow>[] = [
     ...(showLog ? [
-      { key: "gap", label: "Gap, 95%", title: "ESPN's log loss minus CourtLens's on the same states. Above zero, CourtLens did better", group: "Log loss", width: "md" as const,
+      { key: "gap", label: "Gap, 95%", title: "ESPN's log loss minus CourtLens' on the same states. Above zero, CourtLens did better", group: "Log loss", width: "md" as const,
         data: (r: ScoreRow) => { const g = s(r)?.log_loss_gap; return g ? { field: "gap", value: g.mean, low: g.low, high: g.high } : { field: "gap", value: "" }; },
         cell: (r: ScoreRow) => { const g = s(r)?.log_loss_gap; return g ? <GridValue text={signed(g.mean)} sub={band(g)} tone={replay(r) ? undefined : gapTone(g)} muted={replay(r)} /> : <GridValue text={r.group.games ? "Under 20 games" : "—"} muted />; } },
       num("courtlens_log_loss", "CourtLens", "Log loss", r => s(r)?.courtlens_log_loss),
@@ -320,6 +320,7 @@ function Negative({ data }: { data: WinProbabilityPage }) {
     : SELECTION_REFS[r.key] === TEST_REFS[r.key] ? `Against ${REF_NAMES[TEST_REFS[r.key]]}` : `Selection against ${REF_NAMES[SELECTION_REFS[r.key]]}; test against ${REF_NAMES[TEST_REFS[r.key]]}`;
   const m = card.market, tip = card.espn.tipoff.log_loss.espn_minus_courtlens, ot = card.phases.overtime;
   const up = data.upgrade, gain = up?.comparisons.v3_vs_v2_frozen ?? { mean: 0, low: 0, high: 0, games: 0 };
+  const nl = data.pregame_nonlinear, trees = nl?.candidates.trees, plus = nl?.candidates.linear_plus_trees;
   return <ResearchSection id="negative" icon="layers" title="What didn't help">
     <p className="wp-lead" data-field="negative-line" data-rejected={rejected.map(r => r.key).join(",")} data-nothing={nothing.map(r => r.key).join(",")}>The model was built in steps, each kept only if it lowered log loss on the 2022-23 selection season with a 90% interval above zero.{nothing.length > 0 && <> {listOf(nothing.map(r => STEP_NAMES[r.key].toLowerCase())).replace(/^./, c => c.toUpperCase())}: no gain that clears zero, so {nothing.length === 1 ? "it was" : "they were"} left out{nothing.some(r => r.key === "S4") ? " and the frozen model has no live lineup tracker" : ""}.</>}</p>
     <p className="wp-note">Above zero, a step helped. Values have no colour: whether a step was kept is the result, in words. The flexible model added no information and was kept only as a diagnostic.{phone ? " The test gains are on a wider screen." : ""}</p>
@@ -339,6 +340,11 @@ function Negative({ data }: { data: WinProbabilityPage }) {
         two more training seasons{up.selection.P3?.accepted ? ", with an overtime model" : "; an overtime model was tried and not kept"}. On the same {whole(up.games)} test games it lowered
         log loss by {signed(gain.mean)} ({band(gain)}){gain.low <= 0 ? ", an interval that includes zero, so the frozen model stays" : ""}. Its pregame forecast was no closer to the
         final margin: {metric(up.pregame.v3_mu0.rmse, 2)} points against {metric(up.pregame.v2_mu0.rmse, 2)} (root mean square).</li>}
+      {nl && trees && plus && <li data-field="nonlinear" data-games={nl.games} data-linear={nl.linear.rmse} data-trees={trees.rmse} data-plus={plus.rmse} data-trees-result={trees.result} data-plus-result={plus.result}>
+        <strong>A non-linear own read was tested and did not help.</strong> The own read is a linear regression. On its {nl.inputs} inputs and training seasons, gradient-boosted trees alone
+        missed the final margin by {metric(trees.rmse, 2)} points against {metric(nl.linear.rmse, 2)} for the linear model: {candidateResult(trees)}, {signed(trees.squared_error_gain.mean, 2)} squared points
+        ({band(trees.squared_error_gain, 2)}). The linear model plus a tree correction missed by {metric(plus.rmse, 2)}: {candidateResult(plus)}, {signed(plus.squared_error_gain.mean, 2)} ({band(plus.squared_error_gain, 2)});
+        the correction averaged {metric(nl.correction_points.mean_abs, 1)} points. On {whole(nl.games)} games of {nl.seasons[0]} to {nl.seasons.at(-1)}, seasons already read, so this is a diagnostic; nothing from it is served.</li>}
     </ul>
   </ResearchSection>;
 }
@@ -400,7 +406,7 @@ const GLOSSARY: GlossaryGroup[] = [
     { term: "Log loss", text: "How surprised a model was by what happened, averaged over game states. A confident wrong call costs most. Lower is better." },
     { term: "Brier", text: "The squared gap between the win chance and the result (1 or 0). Lower is better." },
     { term: "Calibration error", text: "How far, on average, the stated win chances sit from how often those teams won. Zero is perfect." },
-    { term: "Gap", text: "ESPN's score minus CourtLens's on the same game states. Above zero, CourtLens did better." },
+    { term: "Gap", text: "ESPN's score minus CourtLens' on the same game states. Above zero, CourtLens did better." },
     { term: "95% interval", text: "From resampling whole games, so every state of one game stays together." },
   ] },
   { label: "The test", icon: "shield", items: [
@@ -460,16 +466,14 @@ export function WinProbabilityResearch() {
   const { data, error, loading, retry } = useFeed([], () => getWinProbabilityPage());
   // W5 round 2: the hero names the serving model; the Original's counts stay in Evidence.
   const h2h = data?.head_to_head;
-  const meta = data ? (h2h ? [h2h.serving_model.model === "market_informed" ? "Market-informed model, on trial" : "Original model", `frozen ${formatDate(h2h.model.frozen_at.slice(0, 10))}`, "graded every morning"]
+  const meta = data ? (h2h ? (h2h.serving_model.model === "market_informed" ? ["Market-informed model, on trial", `frozen ${formatDate(h2h.model.frozen_at.slice(0, 10))}`, "graded every morning"]
+      : ["CourtLens' own read", `Original model, frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, "graded every morning"])
     : [`frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, `${whole(data.scorecard?.prospective.games ?? 0)} games since the freeze`, "checked nightly against ESPN"]) : null;
   return <Frame meta={meta}>
     {error && <FeedFailure error={error} retry={retry} what="Win Probability" />}
     {loading && <FeedSkeleton label="Loading Win Probability" />}
     {data && <>
-      <PredictionBoard />
-      <TrackRecord data={data} />
-      <HowItThinks data={data} />
-      <Trial data={data} />
+      <WinProbabilityV4 data={data} />
       <h2 className="wp-evidence-head" id="evidence">Evidence</h2>
       <Answer data={data} />
       <Scorecard data={data} />
