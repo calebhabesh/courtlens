@@ -1130,3 +1130,44 @@ Instructions (owner, 2026-11-10, round 5; offered suggestions 3 and 6 as optiona
   why panel's bars run away (left) to home (right), the site's away-first order, not the mock-up's;
   (3) the hero names the serving model and its freeze ("Market-informed model, on trial · frozen
   Nov 12, 2026 · graded every morning"); the Original's game counts stay in Evidence.
+- **Round 3 instructions (owner, 2026-11-12, verbatim in part):** "The theme of this revamp will be
+  to add more color coding, graphics, charts, diagrams, pictures, and illustrations to make the
+  pages more lively and clear and easy to understand. If you need to widen the page margins …
+  that's fine if it's necessary to convey information."
+  1. Cards: "try the full team names instead of the 3 letter abbrev"; "use the courtlens wordmark
+     and logo for the 'courtlens favors X'"; "shade the favored side like we do in team
+     comparisons" (the Team Compare starting-five gradient).
+  2. "How the model thinks": "more interactive … some sort of spider/sankey diagram that shows the
+     different features/categories our model ingests to make a winner prediction. Use your best
+     judgement" (owner's sketch: input lines converging on one "CourtLens Prediction" point). Also
+     "more of the high level technical details … what type of ml method/model we are using, we
+     also use a lightgbm pass, etc."
+  3. The grey "The chance CourtLens sealed…" line "is breaking continuity": place it under the cards.
+  4. "too verbose … could either be shortened or made to be drop down", as Protocol notes does.
+  5. Pre-Game "CourtLens prediction": "lacks proper construction and organization of information,
+     and proper text formatting"; team colours for the "toward" bars, larger team logos, player
+     photos and team logos "everywhere we can put them" (Who's out, Injury Report, Betting Lines).
+- **Round 3 built (2026-11-12, branch `feat/wp4-design-r3`):**
+  - **Cards:** full team names with 52 px logos. The favourite's half is washed in its brand colour,
+    as Team Compare shades the better player. The call reads "[mark + wordmark] favors [logo]
+    Philadelphia 76ers"; the line and Outs are chips with logos. The grey caption sits under the
+    cards. Live's cards use the same mark and wordmark.
+  - **How the model works** (renamed from "thinks", allowed to run 1,200 px wide): a flow diagram
+    from the owner's sketch. The four inputs and the betting line are streams as wide as their
+    points for the chosen game, coloured by the team they push toward. They join into the own read,
+    then the pregame margin (with weight 1, the own read is a dashed fallback), then the LightGBM
+    in-game engine with the game state, then the prediction card. Game chips pick tonight's sealed
+    games (or the worked example); hovering traces a stream. The tabs Inputs, Own read, Betting
+    line, In-game engine and Win chance open plain words plus the method: OLS on 11 inputs, ridge
+    form, time-decay RAPM, the least-squares weight on 4,883 games, the two LightGBM boosters and the
+    end-game classifier. Those numbers are checked against the frozen manifests by
+    `lib/win-probability-stack.test.ts`. On a phone the diagram becomes a vertical pipeline.
+    Schematic, with no numbers, when no game is sealed.
+  - **Copy:** the track record is three tiles with share meters. The trial's long explanation and
+    the serving note moved behind "How the trial works"; progress is a bar with the game-25 mark.
+    The worked example is behind a disclosure.
+  - **Pre-Game:** a matchup band (72 px logos, full names, both chances, the favourite's side
+    washed). "What moved the prediction" has icons, 28 px logos at the axis heads and bars in each
+    team's colour. "Who's out" has photos and cost bars in team colour, with the cost in words.
+    "Players available" has photos and minutes bars. Ages and notes sit behind "About this
+    prediction". The Injury Report has photos, logos and full names; Betting Lines has logos.

@@ -28,4 +28,12 @@
   text-transform: uppercase;
   font-family: var(--font-mono), monospace;
 }
+/* Round 3: "CourtLens" in a sentence, mark and wordmark together. */
+.brand-says {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-accent);
+  vertical-align: middle;
+}
 }

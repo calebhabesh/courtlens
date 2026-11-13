@@ -217,3 +217,48 @@ export function callRight(why: Pick<WinProbabilityWhy, "prediction" | "result">)
   if (!why.result || why.prediction.home_win === 0.5) return null;
   return (why.result.home_score > why.result.away_score) === (why.prediction.home_win > 0.5);
 }
+
+// ---- Round 3: the "How the model works" flow --------------------------------------------------------------------
+
+/** One stream into the flow diagram, in home-margin points (above zero: toward the home team). */
+export interface FlowStream { key: WhyGroup["group"]; label: string; points: number }
+export interface WhyFlow {
+  inputs: FlowStream[];
+  own: number;
+  /** The betting line's home margin and its fitted weight, or why there is none. */
+  line: { status: "ok"; points: number; w: number; book: string | null } | { status: "no_line" | "sealed_before_freeze" | "original_serving" };
+  /** The share of the pregame margin that comes from the own read: 1 − w with a line, 1 without. */
+  ownWeight: number;
+  margin: number;
+  homeWin: number;
+}
+
+/** The seal's numbers in the diagram's order: inputs, own read, the line's blend, the pregame margin, the win chance. */
+export function whyFlow(why: Pick<WinProbabilityWhy, "own" | "market" | "prediction">): WhyFlow {
+  const m = why.market;
+  const line: WhyFlow["line"] = m.status === "ok" ? { status: "ok", points: m.line, w: m.w, book: m.book } : { status: m.status === "no_line" ? "no_line" : m.status };
+  return {
+    inputs: why.own.groups.map(g => ({ key: g.group, label: g.label, points: g.contribution })),
+    own: why.own.own,
+    line,
+    ownWeight: line.status === "ok" ? 1 - line.w : 1,
+    margin: why.prediction.home_margin,
+    homeWin: why.prediction.home_win,
+  };
+}
+
+/** A ribbon between two columns of the diagram: its top edge at each end and its thickness, in SVG units. */
+export interface Ribbon { x0: number; y0: number; x1: number; y1: number; size: number }
+
+/** A filled band from (x0, y0) to (x1, y1), `size` thick, as one SVG path. */
+export function ribbonPath({ x0, y0, x1, y1, size }: Ribbon): string {
+  const mid = (x0 + x1) / 2;
+  const r = (n: number) => Math.round(n * 100) / 100;
+  return `M${r(x0)} ${r(y0)}C${r(mid)} ${r(y0)} ${r(mid)} ${r(y1)} ${r(x1)} ${r(y1)}L${r(x1)} ${r(y1 + size)}C${r(mid)} ${r(y1 + size)} ${r(mid)} ${r(y0 + size)} ${r(x0)} ${r(y0 + size)}Z`;
+}
+
+/** Ribbon thickness for a number of points: proportional, with a visible floor for anything above zero. */
+export function ribbonSize(points: number, scale: number, floor = 3): number {
+  const size = Math.abs(points) * scale;
+  return size === 0 ? 0 : Math.max(floor, size);
+}
