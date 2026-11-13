@@ -28,11 +28,11 @@
   .lp-split > [data-side="home"] { flex: 1; background: var(--live-home); }
   .lp-split > span + span { border-inline-start: 2px solid var(--color-surface-2); }
 
-  .lp-headline { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); margin: 0; font-size: var(--text-md); }
-  .lp-team { display: inline-flex; align-items: center; gap: var(--space-1); }
+  .lp-headline { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-2); margin: 0; font-size: var(--text-md); }
+  .lp-team { display: inline-flex; align-self: center; align-items: center; gap: var(--space-1); }
 
   .lp-section { display: grid; gap: var(--space-3); }
-  .lp-section h3 { display: flex; align-items: center; gap: var(--space-2); margin: 0; padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline); color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }
+  .lp-section h3 { display: flex; align-items: center; gap: var(--space-2); margin: 0; padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline); color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
   .lp-section h3 svg { color: var(--color-text-tertiary); }
 
   .lp-bars { display: grid; gap: var(--space-1); }
@@ -68,6 +68,10 @@
   .lp-person { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-1) var(--space-3); }
   .lp-person-text { display: grid; gap: var(--space-0-5); min-width: 0; }
   .lp-person-name { color: var(--color-text); font-weight: 600; }
+  /* Each photo ringed in its team's colour, as Team Compare does. */
+  .lp-out-team .player-portrait, .lp-out-team .player-portrait-fallback { box-shadow: 0 0 0 var(--space-0-5) var(--live-away); border-radius: 50%; }
+  .lp-out-team[data-side="home"] .player-portrait, .lp-out-team[data-side="home"] .player-portrait-fallback { box-shadow: 0 0 0 var(--space-0-5) var(--live-home); }
+  .live-pregame-prediction .live-panel-head { justify-content: flex-start; gap: var(--space-4); }
   .lp-person-text .lp-muted { font-size: var(--text-xs); }
   .lp-person-stat { font-size: var(--text-xs); font-variant-numeric: tabular-nums; white-space: nowrap; }
   .lp-none { font-style: italic; }

@@ -31,9 +31,13 @@
 /* Round 3: "CourtLens" in a sentence, mark and wordmark together. */
 .brand-says {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--space-1);
   color: var(--color-accent);
-  vertical-align: middle;
+  vertical-align: baseline;
+}
+/* The mark is centred and left out of the baseline, so the row's baseline is the wordmark's foot. */
+.brand-says > svg:first-child {
+  align-self: center;
 }
 }

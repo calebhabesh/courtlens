@@ -2,7 +2,8 @@
    answer first with its gap drawn to scale from zero (RD10, RD12), compact StatsGrids with intervals, RD13's 12 px axes and centred keys,
    the RD16 toggle for records, pass and fail in words. Green and red only on a gap against ESPN whose 95% interval excludes zero. */
 @layer pages {
-  .rs-column.wp-page { gap: var(--space-10); padding-bottom: var(--space-12); }
+  /* Round 3b: the whole page runs at the diagram's width, so every section shares one left edge. */
+  .rs-column.wp-page { max-width: 1200px; gap: var(--space-10); padding-bottom: var(--space-12); }
   .wp-page .rs-intro { margin-top: calc(-1 * var(--space-6)); }
   .wp-page > .rs-section { padding-top: 0; border-top: 0; }
   .wp-page .rs-method-block { grid-template-columns: minmax(0, 1fr); }
@@ -169,7 +170,8 @@
   .wpc-bar > [data-side="home"] { flex: 1; background: var(--live-home); }
   .wpc-bar > span + span { border-inline-start: 2px solid var(--color-surface-1); }
   .wpc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); color: var(--color-text-secondary); font-size: var(--text-xs); }
-  .wpc-call { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
+  .wpc-call { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1); }
+  .wpc-pick { align-self: center; }
   .wpc-call strong { color: var(--color-text); font-size: var(--text-sm); }
   .wpc-pick { display: inline-flex; align-items: center; gap: var(--space-1); }
   .wpc-call[data-call="none"] { color: var(--color-text-tertiary); font-style: italic; }
@@ -195,8 +197,6 @@
   .wp-tile-meter::after { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: var(--wp-share); border-radius: inherit; background: var(--color-text-secondary); }
   .wp-tile[data-tone="serving"] .wp-tile-meter::after { background: var(--color-accent); }
 
-  /* Round 3: "How the model works" may run wider than the column, to give the diagram room. */
-  .wp-page > .rs-section.wp-wide { width: min(1200px, calc(100vw - 2 * var(--space-6))); justify-self: center; }
   .wp-subhead { margin: var(--space-2) 0 0; color: var(--color-text); font-size: var(--text-md); font-weight: 650; }
   .wp-example { display: grid; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); background: var(--color-surface-1); box-shadow: var(--shadow-1); }
   .wp-toggles { display: grid; gap: var(--space-1); }
@@ -218,7 +218,6 @@
     .wpc-team, .wpc-team[data-side="home"] { flex-direction: column; align-items: flex-start; }
     .wpc-team[data-side="home"] { align-items: flex-end; }
     .wpc-name { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
-    .wp-page > .rs-section.wp-wide { width: 100%; }
     .wp-example { padding: var(--space-3); }
   }
 }

@@ -76,7 +76,7 @@ export function PredictionCard({ game }: { game: LiveGame }) {
   const call = predictionCall(game);
   const fav = sealed == null ? null : sealed >= 0.5 ? home : away;
   const line = game.status === "scheduled" ? lineFavourite(game.odds, game.teams) : null;
-  const href = `/live/games/${game.source_id}?date=${game.slate_date}${game.status === "scheduled" ? "" : "&tab=pregame"}`;
+  const href = `/live/games/${game.source_id}?date=${game.slate_date}&tab=pregame&from=win-probability`;
   const outs = game.status === "scheduled" ? [away, home].filter(t => t.out) : [];
   return <Link className="wpc" href={href} data-status={game.status} data-game={game.source_id} data-home-win={sealed ?? undefined} data-favoured={fav?.side}
     aria-label={`${away.name} at ${home.name}, ${gameStatus(game)}${fav && sealed != null ? `. CourtLens: ${teamCode(fav)} ${Math.round(Math.max(sealed, 1 - sealed) * 100)}% to win` : ""}. Open the game and why.`}
@@ -173,7 +173,7 @@ export function HowItWorks({ data, games }: { data: WinProbabilityPage; games: L
   const game = example ? exampleGame(example) : null;
   const options: FlowOption[] = games.filter(g => g.prediction?.status === "sealed").map(g => ({ game: g }));
   if (game && example?.why) options.push({ game, why: example.why, example: true });
-  return <ResearchSection id="how" icon="layers" title="How the model works" className="wp-wide">
+  return <ResearchSection id="how" icon="layers" title="How the model works">
     <p className="wp-lead" data-field="weight" data-w={w}>Four pregame inputs add up to CourtLens&apos;s own read. {w != null && w >= 0.995 ? "With a betting line, the pregame margin follows the line (its fitted weight is 100%); without one, it is the own read." : `The betting line moves it by a fitted weight${w != null ? ` of ${Math.round(w * 100)}%` : ""}.`} An in-game engine then turns that margin into a win chance, play by play.</p>
     <ModelFlow options={options} data={data} />
     {example?.why && game ? <Toggle label="The worked example, in full">
