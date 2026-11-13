@@ -153,7 +153,7 @@ test.describe("R08 Metric Backtest (RD10 design)", () => {
     await expect(page.locator("#glossary details")).not.toHaveAttribute("open");
     await page.locator("#glossary summary").click();
     await expect(page.locator("dt", { hasText: /^DARKO$/ })).toBeVisible();
-    for (const credit of ["Dan Rosenbaum", "Joe Sill", "CourtLens's own"]) await expect(page.getByText(credit, { exact: false }).filter({ visible: true }).first()).toBeVisible();
+    for (const credit of ["Dan Rosenbaum", "Joe Sill", "CourtLens' own"]) await expect(page.getByText(credit, { exact: false }).filter({ visible: true }).first()).toBeVisible();
     await expect(page.locator("#about details")).not.toHaveAttribute("open");
     await page.locator("#about summary").click();
     await expect(page.getByText("Actual minutes, on purpose.")).toBeVisible();

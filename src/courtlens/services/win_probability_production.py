@@ -551,7 +551,7 @@ def player_credit(
 
 
 def game_probability(game_id: str, data: dict[str, Any] | None) -> dict[str, Any]:
-    """The Live chart for one game read: CourtLens's line, swings, and the model's identity."""
+    """The Live chart for one game read: CourtLens' line, swings, and the model's identity."""
     manifest = load_manifest()
     identity = {
         "version": manifest["version"],
