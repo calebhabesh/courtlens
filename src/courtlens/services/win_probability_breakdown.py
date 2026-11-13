@@ -2,10 +2,12 @@
 
 The own forecast is linear, so each row is coefficient x input and the rows add up to it exactly.
 The seal keeps the strength difference but not the pace it is multiplied by, so "Players
-available" is the own forecast minus every other term: exact by construction. The market row is
-`w x (line - own)`. The win chance comes from the full model at the opening state, so it is not a
-straight conversion of the margin. Works for past games: nothing is read but the seal, the frozen
-manifests and the scored rows.
+available" is the own forecast minus every other term: exact by construction. The prediction is
+the own read (W-D16): the Original's margin and tip-off chance. The market row is
+`w x (line - own)`, and with it `market_informed` carries the Market-informed model's margin and
+chance, shown beside the prediction. Each win chance comes from the full model at the opening
+state, so it is not a straight conversion of the margin. Works for past games: nothing is read but
+the seal, the frozen manifests and the scored rows.
 """
 
 from __future__ import annotations
@@ -115,16 +117,12 @@ def own_rows(record: dict[str, Any], coefficients: dict[str, float]) -> dict[str
     return {"own": own, "groups": groups}
 
 
-def market_row(
-    record: dict[str, Any], own: float, captured_at: str, serving: str
-) -> dict[str, Any]:
-    """The market adjustment, or why there is none."""
-    if serving != head_to_head.MARKET:
-        return {"status": "original_serving"}
+def market_row(record: dict[str, Any], own: float, captured_at: str) -> dict[str, Any]:
+    """The Market-informed model's adjustment to the own read, or why there is none."""
     try:
         manifest = head_to_head.load_market_manifest()
     except (OSError, ValueError):
-        return {"status": "original_serving"}
+        return {"status": "unavailable"}
     if production._parse_time(captured_at) <= production._parse_time(manifest["frozen_at"]):
         return {"status": "sealed_before_freeze"}
     line = head_to_head.line_of(record)
@@ -162,15 +160,20 @@ def breakdown(game_id: str, day: str) -> dict[str, Any] | None:
     record, captured_at, seal_name = found
     original = production.load_manifest()
     own = own_rows(record, original["pregame"]["coefficients"])
-    summary = head_to_head.read_summary()
-    serving = (summary or {}).get("serving_model", {}).get("model", head_to_head.MARKET)
-    market = market_row(record, own["own"], captured_at, serving)
-    prediction = own["own"] + (market.get("adjustment") or 0.0)
+    market = market_row(record, own["own"], captured_at)
     probabilities = (record.get("tip_off_home") or {}).copy()
     if probabilities.get(head_to_head.ORIGINAL) is None:
         w = float(market.get("w", 0.0))
         probabilities = head_to_head.tip_off_probabilities(production.get_model(), record, w)
-    model = head_to_head.MARKET if market["status"] in ("ok", "no_line") else head_to_head.ORIGINAL
+    model = head_to_head.LEAD
+    with_line = (
+        {
+            "home_margin": own["own"] + market["adjustment"],
+            "home_win": probabilities[head_to_head.MARKET],
+        }
+        if market["status"] == "ok"
+        else None
+    )
     return {
         "game_id": game_id,
         "date": day,
@@ -180,10 +183,11 @@ def breakdown(game_id: str, day: str) -> dict[str, Any] | None:
         "captured_at": captured_at,
         "seal": seal_name,
         "model": model,
-        "serving": serving,
+        "serving": model,
         "own": own,
         "market": market,
-        "prediction": {"home_margin": prediction, "home_win": probabilities[model]},
+        "prediction": {"home_margin": own["own"], "home_win": probabilities[model]},
+        "market_informed": with_line,
         "tip_off_home": probabilities,
         "out": record.get("out"),
         "out_lists": {"home": record.get("out_home"), "away": record.get("out_away")},
@@ -206,8 +210,9 @@ TOSS_UP = head_to_head.TOSS_UP
 
 
 def card(game: dict[str, Any]) -> dict[str, Any] | None:
-    """A slate game's sealed call: the serving model's tip-off probability, the favourite, and for a
-    final game whether the call was right. None before any real seal existed; `no_seal` after."""
+    """A slate game's sealed call: the own read's tip-off probability (W-D16), the favourite, and
+    for a final game whether the call was right. `market_informed_home_win` is the Market-informed
+    model's chance when the seal has a line. None before any real seal existed; `no_seal` after."""
     day = game.get("slate_date") or ""
     if day < FIRST_SEAL_DAY:
         return None
@@ -215,21 +220,22 @@ def card(game: dict[str, Any]) -> dict[str, Any] | None:
     if found is None or found[0].get("availability") != "tip_off_capture":
         return {"status": "no_seal"}
     record, captured_at, _ = found
-    summary = head_to_head.read_summary()
-    serving = (summary or {}).get("serving_model", {}).get("model", head_to_head.MARKET)
-    market = market_row(record, float(record["inputs"]["mu"]), captured_at, serving)
-    model = head_to_head.MARKET if market["status"] in ("ok", "no_line") else head_to_head.ORIGINAL
+    market = market_row(record, float(record["inputs"]["mu"]), captured_at)
+    model = head_to_head.LEAD
     probabilities = record.get("tip_off_home") or {}
-    home_win = probabilities.get(model)
-    if home_win is None:
+    if probabilities.get(model) is None:
         w = float(market.get("w", 0.0))
-        home_win = head_to_head.tip_off_probabilities(production.get_model(), record, w)[model]
+        probabilities = head_to_head.tip_off_probabilities(production.get_model(), record, w)
+    home_win = probabilities[model]
     favourite = "home" if home_win >= 0.5 else "away"
     probability = home_win if favourite == "home" else 1 - home_win
     body: dict[str, Any] = {
         "status": "sealed",
         "model": model,
         "home_win": home_win,
+        "market_informed_home_win": (
+            probabilities[head_to_head.MARKET] if market["status"] == "ok" else None
+        ),
         "favourite": favourite,
         "probability": probability,
         "toss_up": TOSS_UP[0] <= home_win <= TOSS_UP[1],

@@ -28,6 +28,8 @@ export type WinModel = "original" | "market_informed";
 export interface LivePrediction {
   status: "sealed" | "no_seal"; model?: WinModel; home_win?: number; favourite?: "home" | "away";
   probability?: number; toss_up?: boolean; captured_at?: string; right?: boolean | null;
+  /** W-D16: the Market-informed model's home chance for the same seal, when it had a line. Shown beside the call, never as it. */
+  market_informed_home_win?: number | null;
 }
 export interface LivePlayer {
   source_id: string; team_source_id: string; name: string; short_name?: string | null; position?: string | null;
@@ -56,6 +58,8 @@ export interface WinProbabilityLine {
   model: { version: string; manifest_sha256: string; frozen_at: string };
   availability?: "tip_off_capture" | "hindsight_box" | null; captured_at?: string;
   points?: WinProbabilityPoint[]; swings?: WinProbabilitySwing[]; reason?: string;
+  /** W-D16: the Market-informed model's line for a game sealed after its freeze with a betting line; drawn beside the Original's. */
+  market_informed?: { model: { version: string; manifest_sha256: string; frozen_at: string }; market: { own: number; line: number; mu4: number; w: number }; points: WinProbabilityPoint[] } | null;
 }
 export interface LiveSeriesGame {
   source_id: string; date: string | null; state: "pre" | "in" | "post" | null; detail: string | null;
@@ -205,7 +209,7 @@ export async function liveRequest<T>(path: string): Promise<T> {
   return response.json();
 }
 
-export const WIN_MODEL_NAMES: Record<WinModel, string> = { market_informed: "Market-informed model (on trial)", original: "Original model" };
+export const WIN_MODEL_NAMES: Record<WinModel, string> = { market_informed: "Market-informed model (on trial)", original: "CourtLens' own read (Original model)" };
 
 /**
  * W4: the card's CourtLens row from the sealed call. The number is the sealed tip-off probability and
@@ -213,6 +217,8 @@ export const WIN_MODEL_NAMES: Record<WinModel, string> = { market_informed: "Mar
  */
 export function predictionCall(game: Pick<LiveGame, "status" | "prediction">): {
   kind: "none" | "favours" | "toss_up" | "pregame" | "called"; side?: "home" | "away"; percent?: number; right?: boolean | null; title: string;
+  /** The same seal's call with the betting line (the Market-informed model), when it had one. */
+  withLine?: { side: "home" | "away"; percent: number };
 } | null {
   const p = game.prediction;
   if (!p) return null;
@@ -220,7 +226,9 @@ export function predictionCall(game: Pick<LiveGame, "status" | "prediction">): {
   const percent = Math.round(p.probability * 100);
   const sealed = tipoff(p.captured_at ?? null);
   const title = `${p.model ? WIN_MODEL_NAMES[p.model] : "CourtLens"}: the sealed tip-off probability${sealed ? `, sealed ${sealed}` : ""}. Not betting advice.`;
-  const base = { side: p.favourite, percent, title };
+  const m = p.market_informed_home_win;
+  const withLine = m == null ? undefined : { side: m >= 0.5 ? "home" as const : "away" as const, percent: Math.round(Math.max(m, 1 - m) * 100) };
+  const base = { side: p.favourite, percent, title, withLine };
   if (game.status === "final") return { ...base, kind: "called", right: p.right ?? null };
   if (game.status === "in_progress") return { ...base, kind: "pregame" };
   return { ...base, kind: p.toss_up ? "toss_up" : "favours" };

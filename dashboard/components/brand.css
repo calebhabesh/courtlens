@@ -31,13 +31,13 @@
 /* Round 3: "CourtLens" in a sentence, mark and wordmark together. */
 .brand-says {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-1);
   color: var(--color-accent);
-  vertical-align: baseline;
+  line-height: 1;
 }
-/* The mark is centred and left out of the baseline, so the row's baseline is the wordmark's foot. */
+/* BrandMark's lens sits slightly high in its 32x32 viewBox to leave room for the diagonal handle. */
 .brand-says > svg:first-child {
-  align-self: center;
+  transform: translateY(1px);
 }
 }

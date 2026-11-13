@@ -18,9 +18,9 @@ import { Chip, Segmented } from "./ui/kit";
 
 /**
  * Round 3: "How the model works" as a flow. Each input is a stream as wide as its points for the
- * chosen game, in the colour of the team it pushes toward; the streams join into the own read, the
- * line blends in by its fitted weight, and the in-game engine turns the pregame margin into the win
- * chance. Every number is the seal's, read through the breakdown API; with no sealed game the
+ * chosen game, in the colour of the team it pushes toward; the streams join into the own read, which
+ * is the pregame margin (W-D16), and the in-game engine turns it into the win chance. The betting
+ * line is a dashed second path: the Market-informed model, on trial, shown beside. Every number is the seal's, read through the breakdown API; with no sealed game the
  * diagram is drawn as a schematic with no numbers.
  */
 
@@ -34,7 +34,7 @@ type NodeKey = WhyGroup["group"] | "own" | "line" | "margin" | "state" | "engine
 
 const sideOf = (points: number): Side => points > 0.05 ? "home" : points < -0.05 ? "away" : "even";
 const GROUP_ICONS: Record<WhyGroup["group"], IconName> = { players: "users", form: "trend", home_court: "home", rest_travel: "plane" };
-const STEP_OF: Record<NodeKey, Step> = { players: "inputs", form: "inputs", home_court: "inputs", rest_travel: "inputs", own: "own", line: "line", margin: "line", state: "engine", engine: "engine", final: "chance" };
+const STEP_OF: Record<NodeKey, Step> = { players: "inputs", form: "inputs", home_court: "inputs", rest_travel: "inputs", own: "own", line: "line", margin: "own", state: "engine", engine: "engine", final: "chance" };
 
 /** One game the diagram can draw: a board game (its why is fetched) or the stored worked example. */
 export interface FlowOption { game: LiveGame; why?: WinProbabilityWhy; example?: boolean }
@@ -51,15 +51,14 @@ const STATE = 18;
 
 const SCHEMATIC: WhyFlow = {
   inputs: (["players", "form", "home_court", "rest_travel"] as const).map((key, i) => ({ key, label: ["Players available", "Recent form", "Home court", "Rest and travel"][i], points: [4, 3, 1.5, 1.5][i] })),
-  own: 10, line: { status: "ok", points: 10, w: 1, book: null }, ownWeight: 0, margin: 10, homeWin: 0.75,
+  own: 10, line: { status: "ok", points: 10, w: 1, book: null, margin: 10, homeWin: 0.75 }, margin: 10, homeWin: 0.75,
 };
 
 interface Band { key: string; nodes: NodeKey[]; side: Side; d: string }
 
 function layout(flow: WhyFlow) {
-  const lineShare = flow.line.status === "ok" ? Math.abs(flow.line.points) * flow.line.w : 0;
   const total = flow.inputs.reduce((s, i) => s + Math.abs(i.points), 0);
-  const k = Math.min(9, 150 / Math.max(total, lineShare + Math.abs(flow.own) * flow.ownWeight, Math.abs(flow.margin), 1));
+  const k = Math.min(9, 150 / Math.max(total, Math.abs(flow.margin), 1));
   const bands: Band[] = [];
   // Inputs stack into the own read's bar in their order.
   const sizes = flow.inputs.map(i => ribbonSize(i.points, k));
@@ -71,23 +70,20 @@ function layout(flow: WhyFlow) {
     bands.push({ key: input.key, nodes: [input.key, "own"], side: sideOf(input.points), d: ribbonPath({ x0: X.in, y0: ROWS[i] - size / 2, x1: X.own - BAR / 2, y1: at, size }) });
     at += size;
   });
-  // The own read and the line blend into the pregame margin by the fitted weight.
-  const ownOut = ribbonSize(flow.own * flow.ownWeight, k);
-  const lineOut = flow.line.status === "ok" ? ribbonSize(flow.line.points * flow.line.w, k) : 0;
+  // The own read is the pregame margin: one band carries it across.
   const marginOut = Math.max(ribbonSize(flow.margin, k), 3);
-  const marginH = Math.max(ownOut + lineOut, marginOut);
+  const marginH = marginOut;
   const marginTop = MID - marginH / 2;
-  if (ownOut) bands.push({ key: "own-margin", nodes: ["own", "margin"], side: sideOf(flow.own), d: ribbonPath({ x0: X.own + BAR / 2, y0: ownTop + ownH / 2 - ownOut / 2, x1: X.margin - BAR / 2, y1: marginTop, size: ownOut }) });
-  if (lineOut && flow.line.status === "ok") bands.push({ key: "line-margin", nodes: ["line", "margin"], side: sideOf(flow.line.points), d: ribbonPath({ x0: X.in, y0: LINE_Y - lineOut / 2, x1: X.margin - BAR / 2, y1: marginTop + ownOut, size: lineOut }) });
+  bands.push({ key: "own-margin", nodes: ["own", "margin"], side: sideOf(flow.own), d: ribbonPath({ x0: X.own + BAR / 2, y0: ownTop + ownH / 2 - marginOut / 2, x1: X.margin - BAR / 2, y1: marginTop, size: marginOut }) });
   // The pregame margin and the game state feed the engine; the engine gives the chance.
   const engineH = marginOut + STATE;
   const engineTop = MID - engineH / 2;
   bands.push({ key: "margin-engine", nodes: ["margin", "engine"], side: sideOf(flow.margin), d: ribbonPath({ x0: X.margin + BAR / 2, y0: MID - marginOut / 2, x1: X.engine - BAR / 2, y1: engineTop, size: marginOut }) });
   bands.push({ key: "state-engine", nodes: ["state", "engine"], side: "even", d: ribbonPath({ x0: X.margin + 56, y0: LINE_Y - STATE / 2, x1: X.engine - BAR / 2, y1: engineTop + marginOut, size: STATE }) });
   bands.push({ key: "engine-final", nodes: ["engine", "final"], side: flow.homeWin >= 0.5 ? "home" : "away", d: ribbonPath({ x0: X.engine + BAR / 2, y0: engineTop, x1: X.end, y1: MID - engineH / 2, size: engineH }) });
-  // With a line and a weight of 1, the own read is the fallback: a dashed path, not a band.
-  const fallback = ownOut === 0 ? ribbonPath({ x0: X.own + BAR / 2, y0: ownTop + ownH / 2, x1: X.margin - BAR / 2, y1: marginTop + 1, size: 0 }).split("L")[0] : null;
-  return { bands, fallback, bars: { own: { top: ownTop, h: ownH }, margin: { top: marginTop, h: marginH }, engine: { top: engineTop, h: engineH } } };
+  // The betting line is the second model's path, where it replaces the own read: dashed, not a band.
+  const second = flow.line.status === "ok" ? ribbonPath({ x0: X.in, y0: LINE_Y, x1: X.margin - BAR / 2, y1: marginTop + marginH, size: 0 }).split("L")[0] : null;
+  return { bands, second, bars: { own: { top: ownTop, h: ownH }, margin: { top: marginTop, h: marginH }, engine: { top: engineTop, h: engineH } } };
 }
 
 // ---- The diagram -----------------------------------------------------------------------------------------------------
@@ -113,16 +109,17 @@ function Node({ k, x, y, align = "center", active, onHover, children, className 
 
 function Diagram({ flow, teams, active, setActive, step }: { flow: WhyFlow | null; teams: Teams | null; active: NodeKey | null; setActive: (k: NodeKey | null) => void; step: Step }) {
   const f = flow ?? SCHEMATIC;
-  const { bands, fallback, bars } = layout(f);
+  const { bands, second, bars } = layout(f);
   const lit = (nodes: NodeKey[]) => active ? nodes.includes(active) : STEP_OF[nodes[0]] === step || STEP_OF[nodes[1]] === step;
   const fav = teams ? (f.homeWin >= 0.5 ? teams.home : teams.away) : null;
   const favP = f.homeWin >= 0.5 ? f.homeWin : 1 - f.homeWin;
   const line = f.line;
+  const lineFav = line.status === "ok" && teams ? (line.homeWin >= 0.5 ? teams.home : teams.away) : null;
   return <div className="wpf-diagram" data-schematic={flow ? undefined : true} data-active={active ?? undefined}>
     <svg className="wpf-svg" viewBox={`0 0 1000 ${H}`} preserveAspectRatio="none" aria-hidden="true">
       {bands.map(b => <path key={b.key} className="wpf-band" data-band={b.key} data-side={b.side} data-lit={lit(b.nodes) || undefined} d={b.d}
         onMouseEnter={() => setActive(b.nodes[0])} onMouseLeave={() => setActive(null)} />)}
-      {fallback && <path className="wpf-fallback" d={fallback} vectorEffect="non-scaling-stroke" />}
+      {second && <path className="wpf-second" data-lit={step === "line" || active === "line" || undefined} d={second} vectorEffect="non-scaling-stroke" />}
       {(["own", "margin", "engine"] as const).map(key => <rect key={key} className="wpf-bar" data-bar={key} x={X[key] - BAR / 2} y={bars[key].top} width={BAR} height={bars[key].h} rx="3" />)}
     </svg>
     {f.inputs.map((input, i) => <Node key={input.key} k={input.key} x={0} y={ROWS[i]} align="start" active={active} onHover={setActive}>
@@ -133,13 +130,12 @@ function Diagram({ flow, teams, active, setActive, step }: { flow: WhyFlow | nul
       <span className="wpf-icon" data-tone="market"><Icon name="scale" size={16} /></span>
       <span className="wpf-node-text"><strong>Betting line</strong>
         {!flow ? <span className="wpf-value" data-side="even">—</span>
-          : line.status === "ok" ? <span className="wpf-sub"><Toward points={line.points} teams={teams} word="by " /> · weight {pct(line.w)}</span>
-          : <span className="wpf-sub">{line.status === "no_line" ? "No line at the seal" : "Not used by this model"}</span>}
+          : line.status === "ok" ? <span className="wpf-sub"><Toward points={line.points} teams={teams} word="by " /> · second model, on trial</span>
+          : <span className="wpf-sub">{line.status === "no_line" ? "No line at the seal" : "No second model for this game"}</span>}
       </span>
     </Node>
     <Node k="own" x={X.own} y={bars.own.top} active={active} onHover={setActive} className="wpf-above">
       <strong>Own read</strong><span className="wpf-sub">Linear model</span>{flow && teams && <span className="wpf-margin" data-side={sideOf(f.own)}>{marginText(f.own, teamCode(teams.home), teamCode(teams.away))}</span>}
-      {fallback && <span className="wpf-sub wpf-fallback-note">fallback when no line</span>}
     </Node>
     <Node k="margin" x={X.margin} y={bars.margin.top} active={active} onHover={setActive} className="wpf-above">
       <strong>Pregame margin</strong>{flow && teams ? <span className="wpf-margin" data-side={sideOf(f.margin)}>{marginText(f.margin, teamCode(teams.home), teamCode(teams.away))}</span> : <span className="wpf-sub">expected score gap</span>}
@@ -156,6 +152,7 @@ function Diagram({ flow, teams, active, setActive, step }: { flow: WhyFlow | nul
       {fav && teams ? <>
         <span className="wpf-final-team"><TeamLogo team={logoTeam(fav)} season={teams.season} size={48} /><strong className="wpf-final-pct">{pct(favP)}</strong></span>
         <span className="wpf-final-name">{teamFullName(fav, teams.season)}</span>
+        {flow && line.status === "ok" && lineFav && <span className="wpf-final-alt" data-field="flow-with-line">With the line: {teamCode(lineFav)} {pct(Math.max(line.homeWin, 1 - line.homeWin))}</span>}
       </> : <span className="wpf-final-name">Win chance for each team</span>}
     </Node>
   </div>;
@@ -174,9 +171,9 @@ function Pipeline({ flow, teams }: { flow: WhyFlow | null; teams: Teams | null }
       </span>)}
     </li>
     <li><Icon name="arrow-right" size={14} /><strong>Own read</strong>{flow && teams && <span className="wpf-margin">{marginText(f.own, teamCode(teams.home), teamCode(teams.away))}</span>}</li>
-    <li><Icon name="scale" size={14} /><strong>Betting line</strong>{flow && teams && f.line.status === "ok" ? <span className="wpf-margin">{marginText(f.line.points, teamCode(teams.home), teamCode(teams.away))}, weight {pct(f.line.w)}</span> : <span className="wpf-sub">{flow ? "none" : ""}</span>}</li>
     <li><Icon name="cpu" size={14} /><strong>In-game engine</strong><span className="wpf-sub">LightGBM, from the pregame margin and the game state</span></li>
     <li className="wpf-pipe-final"><BrandMark size={18} framed={false} /><strong>Prediction</strong>{flow && teams && <span className="wpf-margin">{teamFullName(f.homeWin >= 0.5 ? teams.home : teams.away, teams.season)} {pct(Math.max(f.homeWin, 1 - f.homeWin))}</span>}</li>
+    <li className="wpf-pipe-second"><Icon name="scale" size={14} /><strong>With the betting line</strong>{flow && teams && f.line.status === "ok" ? <span className="wpf-sub">second model, on trial: {marginText(f.line.points, teamCode(teams.home), teamCode(teams.away))}, {teamCode(f.line.homeWin >= 0.5 ? teams.home : teams.away)} {pct(Math.max(f.line.homeWin, 1 - f.line.homeWin))}</span> : <span className="wpf-sub">{flow ? "no line at the seal" : "a second model, on trial"}</span>}</li>
   </ol>;
 }
 
@@ -198,6 +195,7 @@ function Details({ step, why, flow, teams, data }: { step: Step; why: WinProbabi
   const code = (side: "home" | "away") => teams ? teamCode(teams[side]) : side;
   const margin = (points: number) => teams ? marginText(points, code("home"), code("away")) : "—";
   const w = data.head_to_head?.model.w;
+  const nl = data.pregame_nonlinear;
   if (step === "inputs") {
     const how: Record<WhyGroup["group"], string> = {
       players: `Each available player's rating (time-decay RAPM, refreshed monthly), weighted by expected minutes: the mean of their last ${MODEL_STACK.recentAppearances} games. Players ESPN lists as Out are removed.`,
@@ -219,7 +217,7 @@ function Details({ step, why, flow, teams, data }: { step: Step; why: WinProbabi
     </div>;
   }
   if (step === "own") return <div className="wpf-details" data-step="own">
-    <p className="wpf-lead">The inputs add up to CourtLens&apos;s own predicted margin.</p>
+    <p className="wpf-lead">The inputs add up to CourtLens&apos; own predicted margin. It is the pregame margin the prediction uses.</p>
     {flow && teams && <p className="wpf-equation" data-field="own-equation">
       {flow.inputs.map((input, i) => <span key={input.key} className="wpf-term">{i > 0 && <span className="wpf-op">+</span>}<span className="wpf-term-label">{input.label}</span><Toward points={input.points} teams={teams} /></span>)}
       <span className="wpf-op">=</span><span className="wpf-term wpf-term-total"><span className="wpf-term-label">Own read</span><span className="wpf-margin" data-side={sideOf(flow.own)}>{margin(flow.own)}</span></span>
@@ -228,19 +226,24 @@ function Details({ step, why, flow, teams, data }: { step: Step; why: WinProbabi
       ["Method", `Linear regression (least squares) of the final margin on ${MODEL_STACK.ownInputs} inputs`],
       ["Trained on", `Every regular-season game, ${MODEL_STACK.ownFitSeasons}`],
       ["Output", "The expected home margin in points"],
+      ...(nl ? [["Why linear", `Tested against gradient-boosted trees on the same inputs: alone they were ${nl.candidates.trees.result} (${nl.candidates.trees.rmse.toFixed(2)} points missed against ${nl.linear.rmse.toFixed(2)}), and added to the linear model they made no clear difference (${nl.candidates.linear_plus_trees.rmse.toFixed(2)}), on ${nl.games.toLocaleString("en-US")} later games`] as [string, string]] : []),
     ]} />
   </div>;
   if (step === "line") return <div className="wpf-details" data-step="line">
-    <p className="wpf-lead">The betting line moves the own read by a fitted weight.{w != null && w >= 0.995 ? " The fit gave 100%: with a line, the pregame margin is the line; with none, it is the own read." : ""}</p>
+    <p className="wpf-lead">CourtLens&apos; prediction does not use the betting line. A second model, on trial beside it, moves the own read toward the line by a fitted weight.{w != null && w >= 0.995 ? " The fit gave 100%: with a line, its pregame margin is the line." : ""}</p>
     {flow && teams && <p className="wpf-equation" data-field="line-equation">
       <span className="wpf-term"><span className="wpf-term-label">Own read</span><span className="wpf-margin" data-side={sideOf(flow.own)}>{margin(flow.own)}</span></span>
       <span className="wpf-op"><Icon name="arrow-right" size={16} /></span>
       {flow.line.status === "ok" ? <><span className="wpf-term"><span className="wpf-term-label">Line ({flow.line.book ?? "sportsbook"}), weight {pct(flow.line.w)}</span><span className="wpf-margin" data-side={sideOf(flow.line.points)}>{margin(flow.line.points)}</span></span>
-        <span className="wpf-op">=</span></> : <span className="wpf-term"><span className="wpf-term-label">{flow.line.status === "no_line" ? "No line at the seal" : "Sealed for the Original model"}</span></span>}
-      <span className="wpf-term wpf-term-total"><span className="wpf-term-label">Pregame margin</span><span className="wpf-margin" data-side={sideOf(flow.margin)}>{margin(flow.margin)}</span></span>
+        <span className="wpf-op">=</span>
+        <span className="wpf-term wpf-term-total"><span className="wpf-term-label">Second model&apos;s margin</span><span className="wpf-margin" data-side={sideOf(flow.line.margin)}>{margin(flow.line.margin)}</span></span>
+        <span className="wpf-op"><Icon name="arrow-right" size={16} /></span>
+        <span className="wpf-term"><span className="wpf-term-label">Its win chance</span><span className="wpf-margin">{code(flow.line.homeWin >= 0.5 ? "home" : "away")} {pct(Math.max(flow.line.homeWin, 1 - flow.line.homeWin))}</span></span></>
+        : <span className="wpf-term"><span className="wpf-term-label">{flow.line.status === "no_line" ? "No line at the seal: no second number" : "No second model for this game"}</span></span>}
     </p>}
     <Spec items={[
-      ["Rule", "Pregame margin = own read + weight × (line − own read)"],
+      ["Rule", "Second model's pregame margin = own read + weight × (line − own read)"],
+      ["Why it is second", "With a weight of 100% its pregame number is the market's, so CourtLens leads with its own read and grades both (see The trial)"],
       ["Weight", `Least squares on ${MODEL_STACK.weightFitGames.toLocaleString("en-US")} games, ${MODEL_STACK.weightFitSeasons}, kept between 0 and 1${w != null ? `: ${w.toFixed(2)}` : ""}`],
       ["Line", "ESPN's line (DraftKings) when the game is sealed; closing lines for training"],
     ]} />
@@ -266,7 +269,7 @@ function Details({ step, why, flow, teams, data }: { step: Step; why: WinProbabi
     <Spec items={[
       ["At tip-off", "The engine's first state: 0–0, 48 minutes left. So the chance is not a straight conversion of the margin."],
       ["Then", "It updates on every play during the game (on Live). The sealed pregame chance never changes."],
-      ...(why && why.model === "market_informed" && teams ? [["Original model", `${pct(Math.max(why.tip_off_home.original, 1 - why.tip_off_home.original))} for ${teamFullName(why.tip_off_home.original >= 0.5 ? teams.home : teams.away, teams.season)}, from the own read alone`] as [string, string]] : []),
+      ...(flow && flow.line.status === "ok" && teams ? [["With the betting line", `${pct(Math.max(flow.line.homeWin, 1 - flow.line.homeWin))} for ${teamFullName(flow.line.homeWin >= 0.5 ? teams.home : teams.away, teams.season)}, from the second model on trial`] as [string, string]] : []),
     ]} />
   </div>;
 }
@@ -307,7 +310,7 @@ export function ModelFlow({ options, data }: { options: FlowOption[]; data: WinP
     </div>}
     {!option && <p className="wpf-note" data-field="flow-schematic">No sealed game to draw yet; the diagram shows the model&apos;s shape.</p>}
     {phone ? <Pipeline flow={flow} teams={teams} /> : <Diagram flow={flow} teams={teams} active={active} setActive={setActive} step={step} />}
-    {!phone && flow && <p className="wpf-legend"><span className="wpf-key" data-side="away" />toward {teams ? teamFullName(teams.away, season) : "away"}<span className="wpf-key" data-side="home" />toward {teams ? teamFullName(teams.home, season) : "home"}<span className="wpf-legend-note">Band width is points of margin. Hover to trace a stream.</span></p>}
+    {!phone && flow && <p className="wpf-legend"><span className="wpf-key" data-side="away" />toward {teams ? teamFullName(teams.away, season) : "away"}<span className="wpf-key" data-side="home" />toward {teams ? teamFullName(teams.home, season) : "home"}{flow.line.status === "ok" && <><span className="wpf-key" data-kind="second" />second model, on trial</>}<span className="wpf-legend-note">Band width is points of margin. Hover to trace a stream.</span></p>}
     <Segmented className="wpf-steps" size="sm" label="Model step" value={step} onChange={setStep} options={STEPS.map(s => ({ value: s.value, label: s.label, icon: s.icon }))} />
     <Details step={step} why={why} flow={flow} teams={teams} data={data} />
   </div>;

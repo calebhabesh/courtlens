@@ -201,12 +201,33 @@ def test_the_verdict_is_read_once_at_300_games_on_the_first_300(serving):
     assert again == first and len(h2h.written_reads()) == 1
 
 
-def test_a_worse_read_returns_live_to_the_original(serving):
+def test_the_registered_rule_returns_live_to_the_original_on_a_worse_read(serving):
     games = [game(i, 90, 100, 0.40, 0.45) for i in range(300)]
     written = h2h.take_reads(games, False, NOW)
     assert written[0]["v1"]["result"] == "worse"
-    assert h2h.serving_model(written)["model"] == "original"
-    assert h2h.serving_model([])["model"] == "market_informed"
+    assert h2h.registered_serving_model(written)["model"] == "original"
+    assert h2h.registered_serving_model([])["model"] == "market_informed"
+
+
+def test_live_leads_with_the_original_and_reports_the_registered_rule(serving):
+    # W-D16: the own read leads whatever the reads say; the registered rule is still reported.
+    none = h2h.serving_model([])
+    assert none["model"] == "original" and none["since"] == "2026-11-12"
+    assert none["registered_rule"]["model"] == "market_informed"
+    games = [game(i, 90, 100, 0.40, 0.45) for i in range(300)]
+    worse = h2h.serving_model(h2h.take_reads(games, False, NOW))
+    assert worse["model"] == "original" and worse["registered_rule"]["model"] == "original"
+
+
+def test_the_page_never_reads_a_stale_lead_from_a_stored_summary(serving, monkeypatch):
+    stored = {"games": 0, "reads": [], "serving_model": {"model": "market_informed", "reason": "x"}}
+    monkeypatch.setattr(h2h, "read_summary", lambda: stored)
+    page = h2h.page_summary()
+    assert page["serving_model"]["model"] == "original"
+    assert page["serving_model"]["registered_rule"]["model"] == "market_informed"
+    assert page["games"] == 0 and stored["serving_model"]["model"] == "market_informed"
+    monkeypatch.setattr(h2h, "read_summary", lambda: None)
+    assert h2h.page_summary() is None
 
 
 def test_the_final_read_waits_for_the_season_to_end_and_is_written_once(serving):
@@ -217,11 +238,11 @@ def test_the_final_read_waits_for_the_season_to_end_and_is_written_once(serving)
     assert h2h.take_reads(games, True, NOW) == final
 
 
-def test_the_final_read_can_flip_live_too(serving):
+def test_the_final_read_can_flip_the_registered_rule_too(serving):
     games = [game(i, 100, 90, 0.40, 0.48) for i in range(40)]
     written = h2h.take_reads(games, True, NOW)
     assert written[0]["kind"] == "final" and written[0]["v2"]["result"] == "worse"
-    assert h2h.serving_model(written)["model"] == "original"
+    assert h2h.registered_serving_model(written)["model"] == "original"
 
 
 @pytest.mark.parametrize(
@@ -247,6 +268,7 @@ def test_the_record_of_calls_counts_halves_and_toss_ups():
     assert calls["original"] == 3.5 and calls["market_informed"] == 3.0
     assert calls["line"] == {"games": 3, "right": 3.0}
     assert calls["toss_ups"] == 1
+    assert calls["toss_ups_by_model"] == {"original": 0, "market_informed": 1}
 
 
 def test_the_summary_reports_from_25_games_and_says_it_is_too_early(serving):
@@ -254,7 +276,8 @@ def test_the_summary_reports_from_25_games_and_says_it_is_too_early(serving):
     assert few["current"] is None and few["too_early_to_call"] is True
     some = h2h.summarize([game(i, 100, 90, 0.45, 0.44) for i in range(25)], [])
     assert some["current"]["games"] == 25 and some["too_early_to_call"] is True
-    assert some["serving_model"]["model"] == "market_informed"
+    assert some["serving_model"]["model"] == "original"
+    assert some["serving_model"]["registered_rule"]["model"] == "market_informed"
 
 
 def test_only_games_tipping_after_the_freeze_with_a_seal_are_pending(serving, monkeypatch):
@@ -295,24 +318,28 @@ def live(monkeypatch):
     return original
 
 
-def test_live_shows_the_market_model_for_a_game_sealed_after_the_freeze(live):
+def test_live_leads_with_the_original_and_carries_the_market_line_beside_it(live):
     result = h2h.live_probability("501", live_data())
-    assert result["serving"] == "market_informed"
-    assert result["model"]["version"].startswith("courtlens-win-probability-v4")
-    assert result["original_model"] == {"version": "v2"}
-    assert result["market"]["mu4"] == 8.0 and result["points"] != ["original"]
+    assert result["serving"] == "original"
+    assert result["model"] == {"version": "v2"} and result["points"] == ["original"]
+    beside = result["market_informed"]
+    assert beside["model"]["version"].startswith("courtlens-win-probability-v4")
+    assert beside["market"]["mu4"] == 8.0 and beside["points"] != ["original"]
 
 
-def test_live_keeps_the_original_for_a_game_sealed_before_the_freeze(live):
+def test_live_has_no_market_line_for_a_game_sealed_before_the_freeze(live):
     live["captured_at"] = "2026-11-12T16:00:00+00:00"
     result = h2h.live_probability("501", live_data())
     assert result["serving"] == "original" and result["points"] == ["original"]
+    assert "market_informed" not in result
 
 
-def test_live_returns_to_the_original_when_a_read_says_so(live, monkeypatch):
-    monkeypatch.setattr(h2h, "read_summary", lambda: {"serving_model": {"model": "original"}})
+def test_live_has_no_market_line_when_the_seal_has_no_line(live, monkeypatch):
+    monkeypatch.setattr(
+        production, "inputs_for", lambda *a: (record(None), "2026-11-12T23:55:00+00:00")
+    )
     result = h2h.live_probability("501", live_data())
-    assert result["serving"] == "original" and result["points"] == ["original"]
+    assert result["points"] == ["original"] and "market_informed" not in result
 
 
 def test_the_v4_drift_interval_is_committed_with_its_predictions():
@@ -324,10 +351,11 @@ def test_the_v4_drift_interval_is_committed_with_its_predictions():
 
 def test_protocol_notes_are_served_in_order():
     notes = h2h.protocol_notes()
-    assert [n["kind"] for n in notes][:3] == [
+    assert [n["kind"] for n in notes][:4] == [
         "seal_moved_to_vps",
         "seal_times_moved",
         "registered_parameter_deviation",
+        "registered_serving_rule_deviation",
     ]
 
 

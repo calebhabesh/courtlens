@@ -1,5 +1,6 @@
 """The Win Probability page's v4 sections (W5): calibration on the head-to-head games, the worked
-example chosen by rule, and the do-no-harm check. Read-only: nothing here writes."""
+example chosen by rule, the do-no-harm check, and the non-linear own-read diagnostic. Read-only:
+nothing here writes."""
 
 from __future__ import annotations
 
@@ -16,6 +17,8 @@ from courtlens.services import win_probability_head_to_head as head_to_head
 CHECK_PATH = Path("evaluation/research/derived/courtlens-win-probability-v4-check.json")
 # Written once, by hand, when the rule first finds a game, so the example never changes after.
 EXAMPLE_PATH = Path("evaluation/research/derived/courtlens-win-probability-v4-worked-example.json")
+# courtlens-pregame-nonlinear-v1: trees on the own read's inputs against the frozen linear fit.
+NONLINEAR_PATH = Path("evaluation/research/derived/courtlens-pregame-nonlinear-v1.json")
 EXAMPLE_COST = 1.0
 EXAMPLE_RULE = (
     "The first head-to-head game in which a player ESPN listed Out cost at least 1.0 point, "
@@ -28,7 +31,7 @@ def calibration(games: list[dict[str, Any]]) -> dict[str, Any] | None:
     if not games:
         return None
     out: dict[str, Any] = {"games": len(games)}
-    for name in (head_to_head.MARKET, head_to_head.ORIGINAL):
+    for name in (head_to_head.ORIGINAL, head_to_head.MARKET):
         bins = np.array([g[name]["bins"] for g in games]).sum(axis=0)
         out[name] = {"curve": calibration_curve(bins), "calibration_error": calibration_error(bins)}
     return out
@@ -77,10 +80,31 @@ def do_no_harm() -> dict[str, Any] | None:
     }
 
 
+def pregame_nonlinear() -> dict[str, Any] | None:
+    """The diagnostic's pooled result: each candidate against the frozen linear forecast."""
+    try:
+        body: dict[str, Any] = json.loads(NONLINEAR_PATH.read_text())
+    except (OSError, ValueError):
+        return None
+    pooled = body["evaluation"]["pooled"]
+    return {
+        "registration": body["registration"]["identity"],
+        "registration_sha256": body["registration"]["content_sha256"],
+        "seasons": body["evaluation"]["seasons"],
+        "games": pooled["linear"]["games"],
+        "train_games": body["reference_check"]["train_games"],
+        "inputs": len(body["fitted"]["trees"]["gain_share"]),
+        "linear": pooled["linear"],
+        "candidates": {name: pooled[name] for name in body["candidates"]},
+        "correction_points": body["fitted"]["linear_plus_trees"]["correction_points"],
+    }
+
+
 def page_sections() -> dict[str, Any]:
     games = head_to_head.rows()
     return {
         "head_to_head_calibration": calibration(games),
         "worked_example": worked_example(games),
         "do_no_harm": do_no_harm(),
+        "pregame_nonlinear": pregame_nonlinear(),
     }

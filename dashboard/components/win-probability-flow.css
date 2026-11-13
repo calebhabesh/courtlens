@@ -15,7 +15,9 @@
   .wpf-band[data-lit] { opacity: 0.78; }
   .wpf-diagram[data-active] .wpf-band:not([data-lit]) { opacity: 0.14; }
   .wpf-diagram[data-schematic] .wpf-band { fill: var(--color-text-tertiary); }
-  .wpf-fallback { fill: none; stroke: var(--color-text-tertiary); stroke-width: 1.5px; stroke-dasharray: 4 4; }
+  /* W-D16: the betting line's path, the second model on trial; dashed, never a band. */
+  .wpf-second { fill: none; stroke: var(--color-text-tertiary); stroke-width: 1.5px; stroke-dasharray: 4 4; }
+  .wpf-second[data-lit] { stroke: var(--color-text-secondary); stroke-width: 2px; }
   .wpf-bar { fill: var(--color-surface-3); }
   .wpf-bar[data-bar="engine"] { fill: var(--color-accent); }
 
@@ -27,7 +29,6 @@
   .wpf-text-end { text-align: end; }
   .wpf-node[data-on] strong { color: var(--color-accent); }
   .wpf-sub { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); white-space: nowrap; }
-  .wpf-fallback-note { font-style: italic; }
   .wpf-icon { display: inline-grid; flex: none; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-surface-3); color: var(--color-text-secondary); }
   .wpf-icon[data-tone="market"] { color: var(--color-text); }
   .wpf-icon[data-tone="engine"] { width: 28px; height: 28px; margin-bottom: var(--space-1); background: color-mix(in srgb, var(--color-accent) 22%, transparent); color: var(--color-accent); }
@@ -40,10 +41,12 @@
   .wpf-final-team { display: inline-flex; align-items: center; gap: var(--space-2); }
   .wpf-node .wpf-final-pct { font-size: var(--text-3xl); line-height: 1; font-weight: 750; }
   .wpf-final-name { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .wpf-final-alt { color: var(--color-text-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; white-space: nowrap; }
 
   .wpf-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); margin: 0; color: var(--color-text-secondary); font-size: var(--text-xs); }
   .wpf-key { display: inline-block; width: 16px; height: 8px; border-radius: var(--radius-pill); background: var(--wpf-away); opacity: 0.78; }
   .wpf-key[data-side="home"] { margin-inline-start: var(--space-2); background: var(--wpf-home); }
+  .wpf-key[data-kind="second"] { height: 0; margin-inline-start: var(--space-2); border-top: 2px dashed var(--color-text-tertiary); border-radius: 0; background: none; opacity: 1; }
   .wpf-legend-note { margin-inline-start: auto; color: var(--color-text-tertiary); }
   .wpf-steps { justify-self: start; }
 

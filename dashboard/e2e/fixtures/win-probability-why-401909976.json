@@ -6,8 +6,8 @@
  "tip_off": "2026-11-13T00:00Z",
  "captured_at": "2026-11-12T19:10:34+00:00",
  "seal": "2026-11-12.c46c845577616f966ca48c2507d0d79b1c6bf87dee828ecfbc161ea91cbecb16.json",
- "model": "market_informed",
- "serving": "market_informed",
+ "model": "original",
+ "serving": "original",
  "own": {
   "own": 2.1444087793773425,
   "groups": [
@@ -134,6 +134,10 @@
   "adjustment": 5.3555912206226575
  },
  "prediction": {
+  "home_margin": 2.1444087793773425,
+  "home_win": 0.5625754524925003
+ },
+ "market_informed": {
   "home_margin": 7.5,
   "home_win": 0.7125346134809497
  },

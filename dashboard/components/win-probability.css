@@ -32,9 +32,10 @@
   .wp-figure-note { justify-self: center; text-align: center; }
 
   /* The ledger and replay toggles (RD16): small, inside their section. */
-  .wp-toggle { display: grid; gap: var(--space-3); }
+  .wp-toggle { display: grid; }
   .wp-toggle > summary { justify-self: start; }
   .wp-toggle > summary svg { transition: transform var(--dur-fast) var(--ease-out); }
+  .wp-toggle[open] { gap: var(--space-3); }
   .wp-toggle[open] > summary svg { transform: rotate(180deg); }
   .wp-toggle-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); min-width: 0; }
 
@@ -169,18 +170,18 @@
   .wpc-bar > [data-side="away"] { width: var(--wpc-away); background: var(--live-away); }
   .wpc-bar > [data-side="home"] { flex: 1; background: var(--live-home); }
   .wpc-bar > span + span { border-inline-start: 2px solid var(--color-surface-1); }
-  .wpc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); color: var(--color-text-secondary); font-size: var(--text-xs); }
-  .wpc-call { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1); }
-  .wpc-pick { align-self: center; }
-  .wpc-call strong { color: var(--color-text); font-size: var(--text-sm); }
+  .wpc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2) var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--color-hairline); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: 1; }
+  .wpc-call { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); font-size: var(--text-sm); line-height: 1; }
+  .wpc-call-lead { display: inline-flex; align-items: center; gap: var(--space-1); }
+  .wpc-call strong { color: var(--color-text); line-height: 1; }
   .wpc-pick { display: inline-flex; align-items: center; gap: var(--space-1); }
   .wpc-call[data-call="none"] { color: var(--color-text-tertiary); font-style: italic; }
-  .wpc-mark { display: inline-flex; align-items: center; gap: var(--space-0-5); margin-inline-start: var(--space-1); font-weight: 600; }
+  .wpc-mark { display: inline-flex; align-items: center; gap: var(--space-0-5); margin-inline-start: var(--space-1); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.03em; line-height: 1; }
   .wpc-call[data-right="true"] .wpc-mark { color: var(--color-positive); }
   .wpc-call[data-right="false"] .wpc-mark { color: var(--color-negative); }
   .wpc-chips { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
-  .wpc-line, .wpc-out-team { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-surface-0) 40%, transparent); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .wpc-out { display: inline-flex; gap: var(--space-1); }
+  .wpc-line, .wpc-with-line, .wpc-out-team { display: inline-flex; align-items: center; gap: var(--space-1); padding: var(--space-0-5) var(--space-2); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--color-surface-0) 40%, transparent); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .wpc-out { display: inline-flex; align-items: center; gap: var(--space-1); }
   .wpc-caption { justify-self: center; text-align: center; }
 
   /* Round 3: the track record as three tiles, each with a share meter. */
@@ -210,7 +211,7 @@
   .wp-progress-track::after { content: ""; position: absolute; inset-block: -4px; inset-inline-start: var(--wp-from); width: 2px; background: var(--color-text-tertiary); }
   .wp-progress-marks { position: relative; display: flex; justify-content: space-between; color: var(--color-text-tertiary); font-size: var(--text-2xs); }
   .wp-progress-from { position: absolute; inset-inline-start: var(--wp-from); transform: translateX(-1px); }
-  .wp-evidence-head { margin: var(--space-4) 0 calc(-1 * var(--space-6)); padding-top: var(--space-6); border-top: 1px solid var(--color-hairline); color: var(--color-on-bg-tertiary); font-size: var(--text-xs); font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; }
+  .wp-evidence-head { margin: calc(-1 * var(--space-2)) 0 calc(-1 * var(--space-6)); padding-top: var(--space-6); border-top: 1px solid var(--color-hairline); color: var(--color-on-bg-tertiary); font-size: var(--text-xs); font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; }
   @media (max-width: 640px) {
     .wpc-grid, .wp-record, .wp-tiles { grid-template-columns: minmax(0, 1fr); }
     .wpc { padding: var(--space-3) var(--space-4); }
