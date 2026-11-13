@@ -156,6 +156,10 @@ services:
     environment:
       <<: *api-environment
       COURTLENS_WIN_PROBABILITY_LOCAL_SEALING: "false"
+      # The daily refresh publishes a statistics release with dbt; the image's /app/warehouse
+      # belongs to the image user, so dbt's working files go to the container's /tmp.
+      DBT_TARGET_PATH: /tmp/dbt-target
+      DBT_LOG_PATH: /tmp/dbt-logs
     command:
       - sh
       - -c
