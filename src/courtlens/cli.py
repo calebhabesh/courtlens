@@ -2096,7 +2096,7 @@ def seal_win_probability_command(
 ) -> None:
     """Seal today's slate (v2, only when a game changed), score finished games, rewrite summaries.
 
-    Never refits ratings: rating snapshots, box scores and rosters come from the owner's PC.
+    Never refits ratings: rating snapshots, box scores and rosters come from the daily refresh.
     """
     from courtlens.ingestion.espn_win_probability import Client
     from courtlens.services.win_probability_seal import RETRY, next_run, run
@@ -2113,7 +2113,7 @@ def seal_win_probability_command(
     if not next_wake:
         typer.echo(json.dumps(report))
         return
-    wake = next_run(datetime.now(UTC), report["seal_last_tip"])
+    wake = next_run(datetime.now(UTC), report["seal_last_tip"], bool(report["awaiting_grade"]))
     report["next_run"] = wake.isoformat(timespec="seconds")
     typer.echo(json.dumps(report), err=True)
     typer.echo(str(max(60, int((wake - datetime.now(UTC)).total_seconds()))))

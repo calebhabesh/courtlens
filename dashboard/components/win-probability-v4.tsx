@@ -130,7 +130,7 @@ function RecordTile({ name, sub, icon, right, games, tone }: { name: string; sub
   const share = right != null && games ? right / games : null;
   return <div className="wp-tile" data-tone={tone}>
     <dt><span className="wp-tile-icon"><Icon name={icon} size={16} /></span><span>{name}<small>{sub}</small></span></dt>
-    <dd>{right != null && games ? `${whole(right)} of ${whole(games)}` : "—"}<span className="wp-tile-pct">{share != null ? pct(right!, games) : "first grades at 9:00 AM ET"}</span></dd>
+    <dd>{right != null && games ? `${whole(right)} of ${whole(games)}` : "—"}<span className="wp-tile-pct">{share != null ? pct(right!, games) : "graded when each game ends"}</span></dd>
     <span className="wp-tile-meter" aria-hidden="true" style={vars({ "--wp-share": `${(share ?? 0) * 100}%` })} />
   </div>;
 }
@@ -144,7 +144,7 @@ export function TrackRecord({ data }: { data: WinProbabilityPage }) {
   return <ResearchSection id="track-record" icon="target" title="Track record">
     {graded ? <p className="wp-lead" data-field="record" data-games={rec.games} data-market={rec.market_informed} data-original={rec.original}>
       On {whole(rec.games)} {rec.games === 1 ? "game" : "games"} since the Market-informed model&apos;s freeze, CourtLens&apos; own read picked the winner {whole(rec.original)} times ({pct(rec.original, rec.games)}).
-    </p> : <p className="wp-lead" data-field="record-empty">No game graded yet. Each night&apos;s games are graded the next morning at 9:00 AM ET.</p>}
+    </p> : <p className="wp-lead" data-field="record-empty">No game graded yet. Each game is graded within 30 minutes of its final buzzer.</p>}
     <dl className="wp-tiles" data-field="record-table">
       <RecordTile name="CourtLens' own read" sub="Original model, leads" icon="chart" right={graded ? rec.original : null} games={rec?.games ?? 0} tone="serving" />
       <RecordTile name="With the betting line" sub="Market-informed, on trial" icon="scale" right={graded ? rec.market_informed : null} games={rec?.games ?? 0} tone="plain" />
