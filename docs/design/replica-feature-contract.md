@@ -45,7 +45,7 @@ Every row stays in the implementation coverage ledger. `Gated` means the feature
 | F33 Spatial EPV | `/epv` → `/research/epv` | Capability/methodology page; NBA spatial replay only after NBA tracking and model gates. | B25–B27 if inputs ever admitted; ACB demo excluded |
 | F34 Measurements | `/wingspan` → same | Listed versus combine measurements, draft/position/active-evidence filters, units, compare/scatter and source export. | B14, B27 |
 | F35 Hypothetical calculator | `/calculator` → same | Editable shooting/turnover/rebound assumptions, defined offensive-rating scenario, contribution/flow charts, explicit unsupported inputs. | B15, B20, B27; scenario definition |
-| F36 Learning | `/learning` → `/learning` | CourtLens's own metric/model tutorials, worked queries and dataset-bound examples; links to definitions and explorations. | B35 |
+| F36 Learning | `/learning` → `/learning` | CourtLens' own metric/model tutorials, worked queries and dataset-bound examples; links to definitions and explorations. | B35 |
 | F37 Case studies | `/kawhifiles` → `/research/case-studies`; compatibility redirect | Original reproducible player/team investigations, including previously agreed case studies; saved manifests and cited limits. | B13, B35 |
 | F38 Blog/patch notes | `/blog`, `/patch-notes` → same | Original Markdown-based articles and release notes, source/date and links to implemented capabilities; no CMS/account dependency. | B35 |
 | F39 Workload/change | CourtLens addition → Stats view and `/research/trends` | Disjoint window deltas for minutes/attempts/production, filter/rank and examine game rows. | B12–B13 |

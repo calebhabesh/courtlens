@@ -37,10 +37,10 @@ only restyles existing data is worth less than a page that tests a claim.
 | # | Decision |
 | --- | --- |
 | D1 Replicate | Six Factor RAPM, zTS, Shot Aftermath, Wingspan, Offensive (ORtg) Calculator, Learning + Glossary, Patch Notes. |
-| D2 Diverge | ShotQuality and D-ShotQuality need paid tracking data. Build CourtLens's own expected-points shot model from free shot and play-by-play data, then the same decomposition. |
+| D2 Diverge | ShotQuality and D-ShotQuality need paid tracking data. Build CourtLens' own expected-points shot model from free shot and play-by-play data, then the same decomposition. |
 | D3 Drop | EPV Replays, Kawhi Files, Blog (remove `/whats-new/blog` and its menu entries), Databallr's games. |
 | D4 Draft | Refactor into a **Draft Classes** page: rookies now, value by pick, class retrospectives. **No prospect projection model** in this phase (parked R13). It needs a new college-stats domain, and with roughly ten testable classes the result would likely be weak. |
-| D5 Novel work | Headline results: **Live Win Probability** (R15, the ML centrepiece: a model in production, scored every night), **Metric Backtest** (R08), **Projected Impact** (R07, CourtLens's own learned player rating with aging curves) and **Shot Quality v2** (R05). **Signal vs Noise** (R03) is a cheap extra. |
+| D5 Novel work | Headline results: **Live Win Probability** (R15, the ML centrepiece: a model in production, scored every night), **Metric Backtest** (R08), **Projected Impact** (R07, CourtLens' own learned player rating with aging curves) and **Shot Quality v2** (R05). **Signal vs Noise** (R03) is a cheap extra. |
 | D6 Uncertainty | Every impact number gets an interval (bootstrap over games). Databallr shows none; this is a visible difference. |
 | D7 Prospective test | Projected Impact freezes 2026-27 predictions on its freeze date and scores them only on later games, published as the season runs. |
 | D8 Menu | Research menu regrouped (below). Workload Trends and Distributions & Splits are cut: Last X Games and the player page cover them. Case Studies and Saved Investigations move to the Methodology page. |
@@ -129,7 +129,7 @@ play type), Playtype Difficulty = league TS − expected TS, zTS = rTS + difficu
 - Synergy rows carry points, FGA, possessions and shooting-foul share but **no FTA**. Before
   building, check whether FTA can be derived exactly. If not, define play-type TS as
   `PTS / (2 × scoring possessions)`, with scoring possessions = possessions × (1 − turnover share).
-  Name it as CourtLens's definition; never imply it is Databallr's number.
+  Name it as CourtLens' definition; never imply it is Databallr's number.
 - **The test:** register `courtlens-zts-validation-v1`. Does season-t zTS predict season-t+1 rTS,
   and track season-t oTS RAPM, better than season-t rTS does? Test on seasons not used for any
   choice. Publish the result whichever way it goes.
@@ -164,7 +164,7 @@ Use whichever R05 model passed selection (the baseline if none did; say which on
 
 ### R07 — Projected Impact (headline result 2)
 
-CourtLens's own player rating, in the style of DARKO and EPM, built and tested here.
+CourtLens' own player rating, in the style of DARKO and EPM, built and tested here.
 
 - Target: a player's next-season per-100 impact (two-year RAPM centred on the target season,
   minutes-weighted; the target definition is frozen in the registration).
@@ -245,7 +245,7 @@ learn interactions (spacing, redundant skills, two bigs) that additive RAPM cann
 
 ### R15 — Live Win Probability in production (ML centrepiece)
 
-CourtLens's own in-game win probability, trained on history, served on the Live page, and scored in
+CourtLens' own in-game win probability, trained on history, served on the Live page, and scored in
 public every night of the 2026-27 season against ESPN's.
 
 Run it in two commits. **R15a:** registration, training data, models, ablations and the
@@ -275,9 +275,9 @@ leaves flexibility for the few inputs that can earn it.
    - *Volatility:* both teams' expected pace and three-point attempt rate. Faster games and more
      threes mean more variance, which matters for comebacks.
    - Benchmark: the betting market's closing spread. Check for a free historical source (for
-     example archived closing lines) covering the test seasons; if one exists, report CourtLens's
+     example archived closing lines) covering the test seasons; if one exists, report CourtLens'
      pregame error against the market's. The market is a benchmark, not an input, so the model
-     stays CourtLens's own. This layer is also the deployable form of R08 (expected minutes
+     stays CourtLens' own. This layer is also the deployable form of R08 (expected minutes
      instead of actual minutes).
 
 2. **In-game layer** → win probability as `P(final margin > 0)`, with ties sent to an overtime

@@ -15,7 +15,7 @@ import { evidenceUrl } from "@/lib/research-facts";
  * Learning (Research R11, catalog row 21; RD06 design, owner 2026-11-08), after Databallr's Learning page: the centred hero, a
  * topic search, a sticky numbered index beside the topic cards (a collapsed index above them on a phone), each card with its
  * tier pill, prose, labelled formula wells, a Myth / Reality well where a CourtLens result answers the myth, the Measured in
- * CourtLens well, Key Takeaways, prerequisite chips and links. The prose and numbers are CourtLens's own.
+ * CourtLens well, Key Takeaways, prerequisite chips and links. The prose and numbers are CourtLens' own.
  */
 
 const tierVar = (tier: LearningTier) => ({ "--ln-tier": `var(--color-category-${TIER_HUES[tier.number - 1] ?? 6})` }) as CSSProperties;
@@ -149,9 +149,9 @@ export function LearningView() {
       </div>
       <ResearchDisclosure id="about" icon="info" title="About this page">
         <div className="ln-prose">
-          <p>Topic layout after Databallr&apos;s Learning page, the design reference. The prose is CourtLens&apos;s own, and so is every number.</p>
+          <p>Topic layout after Databallr&apos;s Learning page, the design reference. The prose is CourtLens&apos; own, and so is every number.</p>
           <p>Each Measured in CourtLens figure, including the Reality under a myth, is the frozen result of a registered CourtLens experiment; a test checks every one against the committed results, and the evidence links open its README in the public repository. Formulas are definitions in symbols, with no made-up examples.</p>
-          <p>The league trends come from CourtLens&apos;s own count of every regular-season play-by-play game, which starts in 2014-15. The Teams data holds box-score league averages for older seasons, but it defines turnover and rebound rates differently, so the two are not joined into one line.</p>
+          <p>The league trends come from CourtLens&apos; own count of every regular-season play-by-play game, which starts in 2014-15. The Teams data holds box-score league averages for older seasons, but it defines turnover and rebound rates differently, so the two are not joined into one line.</p>
         </div>
       </ResearchDisclosure>
     </div>

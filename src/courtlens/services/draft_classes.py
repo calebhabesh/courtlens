@@ -46,14 +46,14 @@ SOURCES: tuple[dict[str, Any], ...] = (
         "classes": [2000, 2026],
         "name": "NBA Stats draft history via the sportsdataverse hoopR mirror",
         "license": None,
-        "note": "CourtLens's official draft-history mart.",
+        "note": "CourtLens' official draft-history mart.",
     },
 )
 
 CREDITS = [
-    "Win shares: Basketball-Reference (Justin Kubatko's method), read from CourtLens's "
+    "Win shares: Basketball-Reference (Justin Kubatko's method), read from CourtLens' "
     "full-history season totals.",
-    "RAPM: CourtLens's own 1Y fits (R01) after Rosenbaum and Sill; time-decay RAPM for rookies "
+    "RAPM: CourtLens' own 1Y fits (R01) after Rosenbaum and Sill; time-decay RAPM for rookies "
     "after Databallr's default.",
     "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app).",
     "Draft lists 1966-95: Wikipedia (CC BY-SA 4.0); 1996-2026: NBA Stats via sportsdataverse "

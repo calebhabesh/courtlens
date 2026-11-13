@@ -28,6 +28,7 @@ const graded: WinProbabilityPage = {
 async function mock(page: Page, body: WinProbabilityPage, liveSlate: LiveRead<LiveSlateData> = slate) {
   await page.route("**/api/win-probability", route => route.fulfill({ json: body }));
   await page.route("**/api/live?**", route => route.fulfill({ json: liveSlate }));
+  await page.route("**/api/win-probability/games/*/breakdown**", route => route.fulfill({ json: why }));
 }
 
 async function shot(page: Page, name: string) {
@@ -40,6 +41,8 @@ async function shot(page: Page, name: string) {
 test("the v4 sections come first, in the plan's order, and read correctly before any graded game", async ({ page }) => {
   await mock(page, real);
   await page.setViewportSize({ width: 1440, height: 1000 });
+  // The slate fixture is 2026-11-12's; without a fixed clock the date strip marks the real today.
+  await page.clock.setFixedTime(new Date("2026-11-12T17:00:00Z"));
   await page.goto("/research/win-probability");
   await expect(page.getByText("CourtLens picks a favorite for every game, shows its reasoning, and is graded every night.")).toBeVisible();
   await page.locator("#trial").waitFor();
@@ -48,23 +51,43 @@ test("the v4 sections come first, in the plan's order, and read correctly before
   const cards = page.getByRole("list", { name: "Predictions" }).getByRole("link");
   await expect(cards).toHaveCount(4);
   const first = cards.first();
-  await expect(first).toHaveAttribute("aria-label", "Toronto Raptors at Philadelphia 76ers, 7:00 PM EST. CourtLens: PHI 71% to win. Open the game and why.");
-  await expect(first.locator(".wpc-pcts [data-favoured]")).toHaveText("71%");
-  await expect(first.locator(".wpc-call")).toHaveText(/CourtLens favors\s*PHI/);
+  await expect(first).toHaveAttribute("aria-label", "Toronto Raptors at Philadelphia 76ers, 7:00 PM EST. CourtLens: PHI 56% to win. Open the game and why.");
+  // W-D16: the card's chance is the own read; the Market-informed model's is a chip beside the line.
+  await expect(first.locator(".wpc-pcts [data-favoured]")).toHaveText("56%");
+  await expect(first.locator('[data-field="with-line"]')).toHaveText("With the line: PHI 71%");
+  await expect(first.locator(".wpc-call")).toHaveText(/CourtLens\s*favors\s*Philadelphia 76ers/);
   await expect(first.locator(".wpc-line")).toHaveText("Line: PHI by 7.5");
-  await expect(first).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12");
-  // The bar splits at the sealed chance: away 29%, home 71%.
+  await expect(first).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12&tab=pregame&from=win-probability");
+  // The bar splits at the sealed chance: away 44%, home 56%.
   const [bar, away] = [await first.locator(".wpc-bar").boundingBox(), await first.locator('.wpc-bar [data-side="away"]').boundingBox()];
   expect(away!.width / bar!.width).toBeCloseTo(1 - why.prediction.home_win, 2);
   await expect(page.getByRole("navigation", { name: "Live dates" }).locator('[aria-current="date"]')).toContainText("12");
-  await expect(page.locator('[data-field="record-empty"]')).toContainText("No game has been graded yet");
-  await expect(page.locator('[data-field="weight"]')).toContainText("The fitted weight is 100%: when there is a line, the pregame margin follows it");
-  await expect(page.locator('[data-field="example-empty"]')).toBeVisible();
-  await expect(page.locator('[data-field="example-rule"]')).toContainText("a player ESPN listed Out cost at least 1.0 point");
+  await expect(page.locator('[data-field="record-empty"]')).toContainText("No game graded yet");
+  await expect(page.locator('[data-field="weight"]')).toContainText("That is the number CourtLens leads with. A second model, on trial, swaps the own read for the betting line (the fit gave the line a weight of 100%)");
+  await expect(page.locator('[data-field="example-empty"]')).toContainText("a player ESPN listed Out cost at least 1.0 point");
+  // Round 3: the flow diagram draws the first sealed game, its streams adding up to the own read.
+  const flow = page.locator('[data-field="flow"]');
+  await expect(flow).toHaveAttribute("data-game", "401909976");
+  await expect(flow.locator(".wpf-band")).toHaveCount(8);
+  // The own read is the margin; the betting line is one dashed second path, its chance under the prediction.
+  await expect(flow.locator(".wpf-second")).toHaveCount(1);
+  await expect(flow.locator('[data-node="margin"]')).toContainText("PHI by 2.1");
+  await expect(flow.locator('[data-node="final"] .wpf-final-pct')).toHaveText("56%");
+  await expect(flow.locator('[data-field="flow-with-line"]')).toHaveText("With the line: PHI 71%");
+  await expect(flow.locator('[data-node="final"]')).toContainText("Philadelphia 76ers");
+  await flow.getByRole("radio", { name: "Own read" }).click();
+  await expect(flow.locator('[data-field="own-equation"]')).toContainText("PHI by 2.1");
+  await expect(flow.locator('[data-step="own"] .wpf-spec')).toContainText("Why linear");
+  await expect(flow.locator('[data-step="own"] .wpf-spec')).toContainText("alone they were worse (13.79 points missed against 13.73)");
+  await flow.getByRole("radio", { name: "Betting line" }).click();
+  await expect(flow.locator('[data-step="line"] .wpf-lead')).toContainText("CourtLens' prediction does not use the betting line.");
+  await expect(flow.locator('[data-field="line-equation"]')).toContainText("PHI 71%");
   await expect(page.locator('[data-field="trial-progress"]')).toContainText("0 of 300 games");
   await expect(page.locator('[data-field="too-early"]')).toContainText("Too early to call");
   await expect(page.locator('[data-field="too-early"]')).toContainText("Running numbers appear from game 25");
-  await expect(page.locator('[data-field="serving"]')).toHaveAttribute("data-model", "market_informed");
+  await expect(page.locator('[data-field="serving"]')).toHaveAttribute("data-model", "original");
+  await expect(page.locator('[data-field="serving"]')).toHaveAttribute("data-registered", "market_informed");
+  await expect(page.locator('[data-field="serving"]')).toContainText("Live leads with CourtLens' own read (the Original model)");
   await expect(page.locator('[data-field="do-no-harm"]')).toContainText("On 2,439 games of 2024-25 and 2025-26");
   await expect(page.locator('[data-field="do-no-harm"]')).toContainText("It passed all three.");
   await page.getByText(/^Protocol notes/).click();
@@ -98,13 +121,16 @@ test("graded games (test data): record, calibration, the worked example and the 
   await mock(page, graded);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/research/win-probability");
-  await expect(page.locator('[data-field="record"]')).toHaveText("On 40 games since the freeze, CourtLens picked the winner 27 times (68%).");
+  await expect(page.locator('[data-field="record"]')).toHaveText("On 40 games since the Market-informed model's freeze, CourtLens' own read picked the winner 25.5 times (64%).");
+  await expect(page.locator('[data-field="record-table"] .wp-tile').first()).toContainText("CourtLens' own read");
+  await expect(page.locator('[data-field="record-table"] .wp-tile[data-tone="serving"]')).toContainText("25.5 of 40");
+  await expect(page.locator('[data-field="record-table"]')).toContainText("27 of 40");
   await expect(page.locator('[data-field="record-table"]')).toContainText("25.5 of 40");
   await expect(page.locator('[data-field="record-table"]')).toContainText("26.5 of 39");
   await expect(page.getByRole("figure", { name: "Calibration on the graded games" })).toBeVisible();
   const example = page.locator('[data-field="example"]');
   await expect(example.locator('[data-field="headline"]')).toContainText("CourtLens favors");
-  await expect(example.locator('[data-field="result"]')).toContainText("the call was right");
+  await expect(example.locator('[data-field="result"]')).toContainText("the call was RIGHT");
   await expect(page.locator('[data-field="v1"]')).toContainText("+9.10");
   await expect(page.locator('[data-field="v2"]')).toContainText("no clear difference");
   await expect(page.locator('[data-field="too-early"]')).toContainText("The running numbers below can change");
@@ -121,9 +147,9 @@ test("the date strip moves the board; a final card says whether the call was rig
   await page.getByRole("navigation", { name: "Live dates" }).getByRole("link", { name: "Previous day" }).click();
   await expect(page).toHaveURL(/day=2026-11-11/);
   const card = page.getByRole("list", { name: "Predictions" }).getByRole("link").first();
-  await expect(card.locator(".wpc-call")).toHaveText(/Called\s*PHI\s*right/);
+  await expect(card.locator(".wpc-call")).toHaveText(/Called\s*Philadelphia 76ers\s*RIGHT/);
   await expect(card.locator(".wpc-call")).toHaveAttribute("data-right", "true");
   await expect(card.locator('.wpc-team[data-side="home"] .wpc-score')).toHaveText("110");
-  await expect(card).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12&tab=pregame");
+  await expect(card).toHaveAttribute("href", "/live/games/401909976?date=2026-11-12&tab=pregame&from=win-probability");
   await shot(page, "w5-board-final-test-data-1440");
 });

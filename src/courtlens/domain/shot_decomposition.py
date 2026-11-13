@@ -1,7 +1,7 @@
 """Shooting-value decomposition (Research R06, `courtlens-shot-decomposition-v1`).
 
 Pure rules, no I/O. Every shooting attempt on an R01 possession gets four values that add up
-exactly: TS = SQ + MAKE + FT (Databallr's ShotQuality RAPM decomposition, rebuilt on CourtLens's
+exactly: TS = SQ + MAKE + FT (Databallr's ShotQuality RAPM decomposition, rebuilt on CourtLens'
 own expected-shot model instead of the paid ShotQuality feed).
 
 - A field-goal attempt is one shot: TS = actual field-goal points, SQ = expected field-goal points

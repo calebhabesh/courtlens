@@ -393,7 +393,7 @@ function CompareSection({ summary, season }: { summary: Summary; season: string 
       Positions are estimates from listed position, size and box-score rates, not roster listings. Tested against Draft Combine positions, <strong>{whole(p.group_correct)}</strong> of <strong>{whole(p.samples)}</strong> players ({pct(p.group_correct / p.samples)}) landed in the right group. Centres are the weakest: {whole(p.centres_estimated_c)} of {whole(p.centres)} came out as centres and {whole(p.centres_estimated_pf)} as power forwards, so Bigs is undercounted.
     </p>
     <p className="sa-lead" data-field="databallr-line">
-      These are CourtLens&apos;s numbers from its own possessions, not Databallr&apos;s. Shooting percentages, made points and the opponent&apos;s scoring after makes and misses come close to Databallr&apos;s page; second chances come out lower, by a definition its page doesn&apos;t show.
+      These are CourtLens&apos; numbers from its own possessions, not Databallr&apos;s. Shooting percentages, made points and the opponent&apos;s scoring after makes and misses come close to Databallr&apos;s page; second chances come out lower, by a definition its page doesn&apos;t show.
     </p>
     {withComparison && <details className="sa-details" id="counts">
       <ButtonSummary size="sm" variant="ghost" iconAfter="chevron-down">Compare the attempt counts for {withComparison.season}</ButtonSummary>
@@ -442,7 +442,7 @@ function About({ summary, scope }: { summary: Summary; scope: Scope }) {
   return <ResearchDisclosure id="about" icon="info" title="About this page">
     <MethodBlock title="Method">
       <dl className="sa-defs">
-        <dt>Sample</dt><dd>Every first-chance field-goal attempt of the {scope.season} regular season, joined to CourtLens&apos;s sealed play-by-play possessions. Shots after an offensive rebound are second chances, counted in the miss that started them, not as attempts of their own.</dd>
+        <dt>Sample</dt><dd>Every first-chance field-goal attempt of the {scope.season} regular season, joined to CourtLens&apos; sealed play-by-play possessions. Shots after an offensive rebound are second chances, counted in the miss that started them, not as attempts of their own.</dd>
         <dt>Cost</dt><dd>Made shots and misses the defence rebounds are paired with the opponent&apos;s next possession in the same period. Cost weights the two by how often each happens, against the season&apos;s league points per possession.</dd>
         {c && <><dt>Matching</dt><dd data-field="about-matching" data-shots={c.shots} data-joined={c.joined}>{whole(c.shots)} shots; {whole(c.joined)} joined a possession. {whole(missing)} sit in the {missing ? "games" : "no games"} the possessions excluded and are unknown, never zero. The possessions and the shot table agree on first chance for {whole(flag.agree)} shots; {whole(flag.possessions_first_chance)} more are first chance by the possessions, which decide.</dd></>}
         {u && <><dt>Unknown here</dt><dd data-field="about-unknowns">In this scope, {whole(u.periodEnd)} shots ended a period before the opponent had the ball, {whole(u.sameTeam)} were followed by the shooting team again, {whole(u.makeFollowed)} makes were followed by another attempt and {whole(u.missNoRebound)} misses had no rebound recorded. Each is left out of the averages it can&apos;t inform.</dd></>}

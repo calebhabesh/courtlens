@@ -56,7 +56,7 @@ model never saw ([Research progress](docs/research-progress.md)):
   (2016-17 to 2025-26), monthly time-decay RAPM predicts the margin +0.80 points
   better in RMSE (+0.72 to +0.88) than team net rating, the only metric ranked
   above every other ([evidence](docs/evidence/research/r08/README.md)).
-- **Projected Impact (R07):** CourtLens's own player rating beats carrying last
+- **Projected Impact (R07):** CourtLens' own player rating beats carrying last
   season forward by +4.38 (+3.25 to +5.50) in minutes-weighted squared error on
   2024-25 and 2025-26 ([evidence](docs/evidence/research/r07/README.md)).
 - **Shot Quality v2 (R05):** the expected-points shot model's Brier score is

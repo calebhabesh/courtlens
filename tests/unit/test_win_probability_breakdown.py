@@ -77,16 +77,15 @@ def test_a_neutral_site_has_no_home_court_term():
 
 
 @pytest.mark.parametrize(
-    ("serving", "captured", "line", "status"),
+    ("captured", "line", "status"),
     [
-        ("market_informed", "2026-11-13T23:55:00+00:00", 6.5, "ok"),
-        ("market_informed", "2026-11-13T23:55:00+00:00", None, "no_line"),
-        ("market_informed", "2026-11-12T15:25:07+00:00", 6.5, "sealed_before_freeze"),
-        ("original", "2026-11-13T23:55:00+00:00", 6.5, "original_serving"),
+        ("2026-11-13T23:55:00+00:00", 6.5, "ok"),
+        ("2026-11-13T23:55:00+00:00", None, "no_line"),
+        ("2026-11-12T15:25:07+00:00", 6.5, "sealed_before_freeze"),
     ],
 )
-def test_the_market_row_or_why_there_is_none(serving, captured, line, status):
-    row = breakdown.market_row(record(4.0, line), 4.0, captured, serving)
+def test_the_market_row_or_why_there_is_none(captured, line, status):
+    row = breakdown.market_row(record(4.0, line), 4.0, captured)
     assert row["status"] == status
     if status == "ok":
         assert row["adjustment"] == pytest.approx(1.0 * (6.5 - 4.0))
@@ -123,7 +122,7 @@ def sealed_probabilities(mu: float, line: float) -> dict:
     return {**record(mu, line), "tip_off_home": {"original": 0.61, "market_informed": 0.68}}
 
 
-def test_the_breakdown_predicts_with_the_market_model_after_the_freeze(serving):
+def test_the_breakdown_leads_with_the_own_read_and_shows_the_market_model_beside_it(serving):
     seal(
         serving / "pregame",
         "2026-11-13",
@@ -131,10 +130,23 @@ def test_the_breakdown_predicts_with_the_market_model_after_the_freeze(serving):
         {"9": sealed_probabilities(4.0, 6.5)},
     )
     body = breakdown.breakdown("9", "2026-11-13")
-    assert body["model"] == "market_informed" and body["market"]["status"] == "ok"
-    assert body["prediction"]["home_margin"] == pytest.approx(6.5)
-    assert body["prediction"]["home_win"] == body["tip_off_home"]["market_informed"] == 0.68
+    assert body["model"] == body["serving"] == "original" and body["market"]["status"] == "ok"
+    assert body["prediction"] == {"home_margin": 4.0, "home_win": 0.61}
+    assert body["market_informed"]["home_margin"] == pytest.approx(6.5)
+    assert body["market_informed"]["home_win"] == body["tip_off_home"]["market_informed"] == 0.68
     assert body["result"] is None
+
+
+def test_with_no_line_there_is_no_market_figure(serving):
+    seal(
+        serving / "pregame",
+        "2026-11-13",
+        "2026-11-14T01:55:00+00:00",
+        {"9": {**sealed_probabilities(4.0, 6.5), "line": None}},
+    )
+    body = breakdown.breakdown("9", "2026-11-13")
+    assert body["market"]["status"] == "no_line" and body["market_informed"] is None
+    assert body["prediction"] == {"home_margin": 4.0, "home_win": 0.61}
 
 
 def test_the_endpoint(serving):
@@ -153,3 +165,29 @@ def test_the_endpoint(serving):
     assert missing.status_code == 404
     bad = client.get("/api/win-probability/games/x/breakdown", params={"date": "2026-11-13"})
     assert bad.status_code == 422
+
+
+def test_the_card_leads_with_the_own_read_and_carries_the_market_chance(serving):
+    # W-D16: the card's call is the Original's; the Market-informed chance rides beside it.
+    seal(
+        serving / "pregame",
+        "2026-11-13",
+        "2026-11-14T01:55:00+00:00",
+        {
+            "9": {**sealed_probabilities(4.0, 6.5), "availability": "tip_off_capture"},
+            "10": {
+                **sealed_probabilities(4.0, 6.5),
+                "line": None,
+                "availability": "tip_off_capture",
+            },
+        },
+    )
+    teams = [{"side": "home", "score": 99}, {"side": "away", "score": 104}]
+    game = {"source_id": "9", "slate_date": "2026-11-13", "status": "final", "teams": teams}
+    body = breakdown.card(game)
+    assert body["model"] == "original" and body["home_win"] == 0.61
+    assert body["favourite"] == "home" and body["probability"] == 0.61
+    assert body["market_informed_home_win"] == 0.68
+    assert body["right"] is False
+    no_line = breakdown.card({**game, "source_id": "10", "status": "scheduled"})
+    assert no_line["home_win"] == 0.61 and no_line["market_informed_home_win"] is None

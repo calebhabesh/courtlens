@@ -73,10 +73,11 @@
     },
     "prediction": {
      "status": "sealed",
-     "model": "market_informed",
-     "home_win": 0.7125346134809497,
+     "model": "original",
+     "home_win": 0.5625754524925003,
+     "market_informed_home_win": 0.7125346134809497,
      "favourite": "home",
-     "probability": 0.7125346134809497,
+     "probability": 0.5625754524925003,
      "toss_up": false,
      "captured_at": "2026-11-12T19:10:34+00:00",
      "right": null
@@ -140,10 +141,11 @@
     },
     "prediction": {
      "status": "sealed",
-     "model": "market_informed",
-     "home_win": 0.15821067854189502,
+     "model": "original",
+     "home_win": 0.12302755547278615,
+     "market_informed_home_win": 0.15821067854189502,
      "favourite": "away",
-     "probability": 0.8417893214581049,
+     "probability": 0.8769724445272138,
      "toss_up": false,
      "captured_at": "2026-11-12T19:10:34+00:00",
      "right": null
@@ -207,10 +209,11 @@
     },
     "prediction": {
      "status": "sealed",
-     "model": "market_informed",
-     "home_win": 0.6957090352318394,
+     "model": "original",
+     "home_win": 0.7098601748306201,
+     "market_informed_home_win": 0.6957090352318394,
      "favourite": "home",
-     "probability": 0.6957090352318394,
+     "probability": 0.7098601748306201,
      "toss_up": false,
      "captured_at": "2026-11-12T19:10:34+00:00",
      "right": null
@@ -274,10 +277,11 @@
     },
     "prediction": {
      "status": "sealed",
-     "model": "market_informed",
-     "home_win": 0.7106495865031094,
+     "model": "original",
+     "home_win": 0.5662000547670034,
+     "market_informed_home_win": 0.7106495865031094,
      "favourite": "home",
-     "probability": 0.7106495865031094,
+     "probability": 0.5662000547670034,
      "toss_up": false,
      "captured_at": "2026-11-12T19:10:34+00:00",
      "right": null

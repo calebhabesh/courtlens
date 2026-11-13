@@ -617,7 +617,7 @@ function About({ data }: { data: SignalNoiseSummary }) {
         <dt>Limits</dt><dd>Reliability is relative to the players in each bin, whose true spread differs from bin to bin. Splitting by game keeps each game&apos;s attempts together, which understates reliability slightly against shot-level splits.</dd>
         <dt>Fixed in advance</dt><dd>Registered on {formatDate(data.registration.registered_on)}, before any fit. Two runs from the same seed give the same results.</dd>
         <dt>Hashes</dt><dd>Registration <code>{data.registration.content_sha256.slice(0, 16)}</code> · results <code data-field="results-sha" data-value={data.results_sha256}>{data.results_sha256.slice(0, 16)}</code>.</dd>
-        <dt>Credits</dt><dd data-field="credits">Split-half reliability and the Spearman–Brown prediction formula (Spearman 1910; Brown 1910), as used for stabilization points by Russell Carleton for baseball and Darryl Blackport for the NBA. Beta-binomial empirical Bayes after Efron and Morris (1975) and David Robinson. The numbers here are CourtLens&apos;s own.</dd>
+        <dt>Credits</dt><dd data-field="credits">Split-half reliability and the Spearman–Brown prediction formula (Spearman 1910; Brown 1910), as used for stabilization points by Russell Carleton for baseball and Darryl Blackport for the NBA. Beta-binomial empirical Bayes after Efron and Morris (1975) and David Robinson. The numbers here are CourtLens&apos; own.</dd>
       </dl>
       <ResearchLinks label="Evidence" links={[{ label: "How this analysis was built", href: evidenceUrl("docs/evidence/research/r03/README.md"), icon: "external" }]} />
     </MethodBlock>

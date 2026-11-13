@@ -23,9 +23,9 @@ import { downloadCsv, intervalTone, toCsv } from "@/lib/research-values";
 /*
  * Research → Shot Quality → Decomposition (R06 analysis; RD04 design after Databallr's ShotQuality RAPM page). Databallr's
  * order: the toolbar panel and table (the site's `StatsGrid` look, owner round 4), the colour key, the
- * Six-Factor card, How to Read, the Column Glossary, then a results section of CourtLens's own and the collapsed Caveats &
+ * Six-Factor card, How to Read, the Column Glossary, then a results section of CourtLens' own and the collapsed Caveats &
  * Methodology. Every number is the frozen courtlens-shot-decomposition-v1 results'; exact values sit on `data-*`.
- * CourtLens fits one season at a time; Databallr pools three. The prose is CourtLens's own.
+ * CourtLens fits one season at a time; Databallr pools three. The prose is CourtLens' own.
  */
 
 export const DECOMPOSITION_LATEST = "2025-26";
@@ -237,7 +237,7 @@ function Methodology({ summary, season }: { summary: DecompositionSummary; seaso
     <MethodBlock title="Overview">
       <p className="sq-text">Plain RAPM says how much a lineup scores with a player on the floor. This split says why: whether his lineups get better looks,
         make more of the looks they get, or earn more at the free-throw line, and the same three things against them on defense.</p>
-      <p className="sq-text">The expected value of each look comes from CourtLens&apos;s own expected-points model (Shot Quality v2, on the Model tab), which reads
+      <p className="sq-text">The expected value of each look comes from CourtLens&apos; own expected-points model (Shot Quality v2, on the Model tab), which reads
         free NBA shot and play-by-play data. It has no tracking data, so it does not know where the defenders were; that sits in Make.</p>
     </MethodBlock>
     <MethodBlock title="The four parallel regressions">

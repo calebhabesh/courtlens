@@ -119,7 +119,7 @@ Planned by the owner separately. Constraints the plan inherits:
 - The page from F03 shows both versions if v2 is accepted.
 
 **Decided (owner, 2026-11-11):**
-- The betting line stays a benchmark only, never an input: the model stays CourtLens's own.
+- The betting line stays a benchmark only, never an input: the model stays CourtLens' own.
 - Test design as proposed: the gates read the same 2024-25 and 2025-26 games v1 was tested on (a
   second read, labelled so), and the verdict is the head-to-head with v1 on 2026-27 games after the
   upgrade's freeze.

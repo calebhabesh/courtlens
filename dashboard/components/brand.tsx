@@ -43,3 +43,8 @@ export function Brand({ subtitle }: { subtitle?: string }) {
     </Link>
   );
 }
+
+/** "CourtLens" as the mark and the wordmark, where a sentence names CourtLens ("CourtLens favors …"). */
+export function CourtLensSays({ size = 13 }: { size?: number }) {
+  return <span className="brand-says"><BrandMark size={size + 5} framed={false} /><CourtLensWordmark height={size} /></span>;
+}

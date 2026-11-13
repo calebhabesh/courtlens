@@ -26,7 +26,7 @@ import { formatFixed, formatInterval, formatShare, formatSigned, formatWhole } f
  * a toolbar panel (search, season, rank by, team picker, global shot type), then its ranked player cards three across: photo,
  * name, a RAPM chip and a #N badge over a team-colour tint (round 2: no logo watermark), the card's own All / 2PT / 3PT, value tiles with ranks
  * and a Key Matchups table. Databallr's 2nd Defender tiles are left out: the free matchup data has no help defender. Below the
- * cards, CourtLens's own reading guide, glossary, signal checks and collapsed Caveats & Methodology. Green/red only where a
+ * cards, CourtLens' own reading guide, glossary, signal checks and collapsed Caveats & Methodology. Green/red only where a
  * served interval excludes zero (D-SQ 95%, RAPM 80%). Every number is the frozen courtlens-defensive-shot-quality-v1 results'
  * (the RAPM chip is courtlens-shot-decomposition-v1's dSQ); exact values sit on `data-*`.
  */
