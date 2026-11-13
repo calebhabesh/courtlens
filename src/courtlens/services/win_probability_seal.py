@@ -10,8 +10,9 @@ null, and scoring computes them from the seal's line.
 
 The seal job (`run`) seals today's scheduled regular-season games, scores finished games not yet
 on the scorecard and rewrites the summaries. It never refits ratings: rating snapshots, box scores
-and the roster bundle arrive from the owner's PC. The rule for which seal a game uses is
+and the roster bundle come from the scheduled jobs. The rule for which seal a game uses is
 unchanged (`win_probability_production.inputs_for`): the newest captured before ESPN's tip-off.
+A game is graded on the first run after ESPN calls it final (`GRADING_WINDOW`).
 """
 
 from __future__ import annotations
@@ -36,6 +37,10 @@ MORNING_RUN = time(9, 0)
 FIRST_SEAL = time(12, 25)
 SEAL_INTERVAL = timedelta(minutes=30)
 RETRY = timedelta(minutes=30)
+# A game is graded on the first run after ESPN calls it final, not the next morning (the owner's
+# decision of 2026-11-13). The job keeps running on the :25 and :55 grid while a game that tipped
+# within this window is not on the scorecard yet; a postponed game stops counting when it ends.
+GRADING_WINDOW = timedelta(hours=6)
 # What a seal is compared on; the input ages and seal times are not part of a change.
 COMPARED = ("inputs", "line", "out_home", "out_away", "event_time")
 
@@ -375,21 +380,67 @@ def seal_slate(day: date, client: Any, now: datetime | None = None) -> dict[str,
 # The job and its schedule.
 
 
-def run(client: Any, now: datetime | None = None, lookback_days: int = 3) -> dict[str, Any]:
-    """One run: score earlier dates' finished games, seal today's slate, rewrite the summaries.
+class _Scoreboards:
+    """The run's ESPN client, remembering each scoreboard it reads so nothing is fetched twice."""
 
-    Unlike `production.nightly` it never calls `ensure_snapshots`: ratings arrive from the PC.
+    def __init__(self, client: Any) -> None:
+        self.client = client
+        self.seen: dict[str, dict[str, Any]] = {}
+
+    def get(self, kind: str, params: dict[str, str]) -> tuple[bytes, dict[str, Any]]:
+        raw, payload = self.client.get(kind, params)
+        if kind == "scoreboard":
+            self.seen[params["dates"]] = payload
+        return raw, payload
+
+
+def awaiting_grade(scoreboards: list[dict[str, Any]], scored: set[str], now: datetime) -> list[str]:
+    """Regular-season games that tipped within the grading window and are not on the scorecard.
+
+    A game ESPN has closed without a result (postponed or cancelled) is not waited for.
+    """
+    waiting = []
+    for payload in scoreboards:
+        for event in payload.get("events") or []:
+            game_id = str(event["id"])
+            status = (event.get("status") or {}).get("type", {})
+            if (
+                game_id in scored
+                or (event.get("season") or {}).get("type") != production.REGULAR_SEASON_TYPE
+                or (status.get("state") == "post" and status.get("completed") is not True)
+            ):
+                continue
+            tip = production._parse_time(event["date"])
+            if tip <= now < tip + GRADING_WINDOW:
+                waiting.append(game_id)
+    return sorted(set(waiting))
+
+
+def run(client: Any, now: datetime | None = None, lookback_days: int = 3) -> dict[str, Any]:
+    """One run: score finished games, today's included, seal today's slate, rewrite the summaries.
+
+    Unlike `production.nightly` it never calls `ensure_snapshots`: ratings are refit by the daily
+    refresh.
     """
     now = now or datetime.now(UTC)
     today = now.astimezone(EASTERN).date()
+    client = _Scoreboards(client)
     manifest = production.load_manifest()
     model = production.get_model()
     done = {row["game_id"] for row in production.scorecard_rows()}
     totals: dict[str, int] = defaultdict(int)
+    # The seal comes first, so grading the games that just ended never delays a seal taken five
+    # minutes before a tip. Its failure still ends the run, after the scoring it used to follow.
+    seal: dict[str, Any] = {}
+    seal_failure: Exception | None = None
+    try:
+        seal = seal_slate(today, client, now)
+    except Exception as error:
+        seal_failure = error
     # A scoring failure must not cost tonight's seals: it is reported, and retried next run.
     score_error = None
     try:
-        for offset in range(lookback_days, 0, -1):
+        for offset in range(lookback_days, -1, -1):
             counts = production.score_date(
                 today - timedelta(days=offset), client, model, manifest, done
             )
@@ -405,7 +456,8 @@ def run(client: Any, now: datetime | None = None, lookback_days: int = 3) -> dic
             totals[key] += value
     except Exception as error:
         head_to_head_error = repr(error)
-    seal = seal_slate(today, client, now)
+    if seal_failure is not None:
+        raise seal_failure
     production.write_availability_checks()
     summary = production.write_summary()
     production.write_wpa_summary(production.season_of(today.isoformat()))
@@ -414,10 +466,17 @@ def run(client: Any, now: datetime | None = None, lookback_days: int = 3) -> dic
         serving = head_to_head.write_summary(client, today, now)["serving_model"]["model"]
     except Exception as error:
         head_to_head_error = head_to_head_error or repr(error)
+    recent = [
+        client.seen[day.strftime("%Y%m%d")]
+        for day in (today - timedelta(days=1), today)
+        if day.strftime("%Y%m%d") in client.seen
+    ]
+    scored = {row["game_id"] for row in production.scorecard_rows()}
     return {
         "date": today.isoformat(),
         "ran_at": now.isoformat(timespec="seconds"),
         **totals,
+        "awaiting_grade": awaiting_grade(recent, scored, now),
         "score_error": score_error,
         "head_to_head_error": head_to_head_error,
         "serving_model": serving,
@@ -428,9 +487,10 @@ def run(client: Any, now: datetime | None = None, lookback_days: int = 3) -> dic
     }
 
 
-def next_run(now: datetime, last_tip: str | None) -> datetime:
-    """When the job runs next: 09:00 Eastern for last night's scores, then every 30 minutes from
-    12:25 (at :25 and :55) while a run would still land before the day's last scheduled tip.
+def next_run(now: datetime, last_tip: str | None, awaiting: bool = False) -> datetime:
+    """When the job runs next: every 30 minutes from 12:25 Eastern (at :25 and :55) while a run
+    would still land before the day's last scheduled tip, then on the same grid while a game that
+    has tipped is still to be graded, and at 09:00 Eastern to catch anything the night left.
     """
     local = now.astimezone(EASTERN)
     today = local.date()
@@ -439,6 +499,13 @@ def next_run(now: datetime, last_tip: str | None) -> datetime:
         return datetime.combine(day, clock, EASTERN)
 
     candidates = [at(today, MORNING_RUN), at(today + timedelta(days=1), MORNING_RUN)]
+    if awaiting:
+        # The grid is anchored on the UTC half hour, so it holds across an Eastern clock change.
+        grid = now.astimezone(UTC).replace(second=0, microsecond=0)
+        grid += timedelta(minutes=1)
+        while grid.minute not in {FIRST_SEAL.minute, (FIRST_SEAL.minute + 30) % 60}:
+            grid += timedelta(minutes=1)
+        candidates.append(grid.astimezone(EASTERN))
     if last_tip is not None:
         tip = production._parse_time(last_tip)
         slot = at(today, FIRST_SEAL)

@@ -19,6 +19,12 @@ COPY fixtures ./fixtures
 COPY evaluation ./evaluation
 COPY config ./config
 COPY warehouse ./warehouse
+# The scheduled jobs check sealed contracts and evidence by path before fitting: the monthly
+# win-probability rating snapshot and the weekly season impact (about 4 MB together).
+COPY docs/design ./docs/design
+COPY docs/evidence/im03-event-gate/acceptance-v2.json.gz ./docs/evidence/im03-event-gate/
+COPY docs/evidence/im04/acceptance.json.gz ./docs/evidence/im04/
+COPY docs/evidence/im04/artifacts ./docs/evidence/im04/artifacts
 
 RUN pip install --upgrade pip && pip install -c requirements-lock.txt ".[warehouse]"
 

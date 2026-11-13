@@ -23,6 +23,7 @@ from courtlens.archive_models import ArchiveDataset, ArchivePlayerGame, ArchiveT
 from courtlens.config import get_settings
 from courtlens.models import new_uuid
 from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
+from courtlens.warehouse_path import warehouse_dir
 
 PUBLICATION_LOCK_KEY = 0x434F5552544C4F41  # ASCII "COURTLOA", stable across processes.
 REFERENCE_POINTS_FORMULA = "PTS+1.2*REB+1.5*AST+3*STL+3*BLK-TOV"
@@ -102,7 +103,7 @@ def run_dbt_candidate(build: WarehouseBuild) -> None:
             executable = str(candidate)
         else:
             raise RuntimeError("dbt executable is unavailable; install the warehouse extra")
-    warehouse = Path(__file__).resolve().parents[3] / "warehouse"
+    warehouse = warehouse_dir()
     command = [
         executable,
         "build",

@@ -466,8 +466,8 @@ export function WinProbabilityResearch() {
   const { data, error, loading, retry } = useFeed([], () => getWinProbabilityPage());
   // W5 round 2: the hero names the serving model; the Original's counts stay in Evidence.
   const h2h = data?.head_to_head;
-  const meta = data ? (h2h ? (h2h.serving_model.model === "market_informed" ? ["Market-informed model, on trial", `frozen ${formatDate(h2h.model.frozen_at.slice(0, 10))}`, "graded every morning"]
-      : ["CourtLens' own read", `Original model, frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, "graded every morning"])
+  const meta = data ? (h2h ? (h2h.serving_model.model === "market_informed" ? ["Market-informed model, on trial", `frozen ${formatDate(h2h.model.frozen_at.slice(0, 10))}`, "graded after every game"]
+      : ["CourtLens' own read", `Original model, frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, "graded after every game"])
     : [`frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, `${whole(data.scorecard?.prospective.games ?? 0)} games since the freeze`, "checked nightly against ESPN"]) : null;
   return <Frame meta={meta}>
     {error && <FeedFailure error={error} retry={retry} what="Win Probability" />}

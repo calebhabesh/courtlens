@@ -38,6 +38,7 @@ from courtlens.services.publication import (
 )
 from courtlens.services.workbench_registry import compute_semantic_signature
 from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
+from courtlens.warehouse_path import warehouse_dir
 from courtlens.workbench_models import (
     WorkbenchAcquisition,
     WorkbenchArtifact,
@@ -86,7 +87,7 @@ def run_dbt_workbench(dataset_id: str | None = None) -> None:
             executable = str(candidate)
         else:
             raise RuntimeError("dbt executable is unavailable; install the warehouse extra")
-    warehouse = Path(__file__).resolve().parents[3] / "warehouse"
+    warehouse = warehouse_dir()
     command = [
         executable,
         "build",
