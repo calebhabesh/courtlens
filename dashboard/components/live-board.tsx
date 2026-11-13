@@ -92,8 +92,9 @@ function label(game: LiveGame) {
 }
 
 /**
- * W4: CourtLens's sealed call above the book's line chips. The favoured team is not coloured; only
+ * W4: CourtLens' sealed call above the book's line chips. The favoured team is not coloured; only
  * a final call's ✓ and ✗ carry the green and red convention. The model is named in the title only.
+ * W-D16: the call is the own read; the same seal's call with the betting line follows it in grey.
  */
 function PredictionRow({ game, season }: { game: LiveGame; season: string }) {
   const call = predictionCall(game);
@@ -102,13 +103,15 @@ function PredictionRow({ game, season }: { game: LiveGame; season: string }) {
   const team = game.teams.find(t => t.side === call.side);
   if (!team) return null;
   const pick = <span className="live-card-call-team">
-    <TeamLogo team={team.tricode ?? team.canonical_id ?? teamCode(team)} season={season} size={16} />
+    <TeamLogo team={team.tricode ?? team.canonical_id ?? teamCode(team)} season={season} size={14} />
     <strong>{teamCode(team)}</strong> <span className="live-card-call-pct">{call.percent}%</span>
   </span>;
-  const lead = call.kind === "favours" ? <><CourtLensSays size={11} /> favors</> : { toss_up: "Toss-up ·", pregame: "Pregame call:", called: "Called" }[call.kind];
+  const lineTeam = call.withLine && game.teams.find(t => t.side === call.withLine!.side);
+  const lead = call.kind === "favours" ? <><CourtLensSays size={10} /> favors</> : { toss_up: "Toss-up ·", pregame: "Pregame call:", called: "Called" }[call.kind];
   return <span className="live-card-call" data-call={call.kind} data-right={call.right == null ? undefined : String(call.right)} title={call.title}>
     <span className="live-card-call-lead">{lead}</span>{pick}
     {call.kind === "called" && call.right != null && <span className="live-card-call-mark"><Icon name={call.right ? "check" : "close"} size={14} /><span className="sr-only">{call.right ? "right" : "wrong"}</span></span>}
+    {call.withLine && lineTeam && <span className="live-card-call-alt" title="The same seal with the betting line: the Market-informed model, on trial beside CourtLens' own read">with the line <span className="live-card-call-pct">{teamCode(lineTeam)} {call.withLine.percent}%</span></span>}
   </span>;
 }
 

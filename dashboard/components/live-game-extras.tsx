@@ -46,12 +46,17 @@ export function leadChanges(plays: readonly Pick<LivePlay, "away_score" | "home_
 const W = 600, H = 200;
 type WinSource = "both" | "courtlens" | "espn";
 
-/** One team's win-probability trace: dotted in the away colour above 50, solid in the home colour below. */
-function WinPlot({ points, x, ticks, label, swings }: {
+/**
+ * One team's win-probability trace: dotted in the away colour above 50, solid in the home colour below.
+ * `second` is a thin grey dashed comparison trace over it (W-D16: the same game with the betting line).
+ */
+function WinPlot({ points, x, ticks, label, swings, second }: {
   points: { t: number; home: number }[]; x: (t: number) => number; ticks: { label: string; at: number }[]; label: string; swings?: WinProbabilitySwing[];
+  second?: { t: number; home: number }[];
 }) {
   const id = useId();
-  const line = points.map(w => `${x(w.t).toFixed(1)},${((1 - w.home) * H).toFixed(1)}`).join(" L ");
+  const trace = (list: { t: number; home: number }[]) => list.map(w => `${x(w.t).toFixed(1)},${((1 - w.home) * H).toFixed(1)}`).join(" L ");
+  const line = trace(points);
   const area = points.length ? `M ${x(points[0].t)},${H / 2} L ${line} L ${x(points.at(-1)!.t)},${H / 2} Z` : "";
   return <div className="live-flow-plot"><div className="live-flow-canvas">
     <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label={label}>
@@ -65,6 +70,7 @@ function WinPlot({ points, x, ticks, label, swings }: {
       <path className="live-flow-area" data-side="home" clipPath={`url(#${id}-bottom)`} d={area} />
       <path className="live-flow-line" data-side="away" clipPath={`url(#${id}-top)`} d={`M ${line}`} />
       <path className="live-flow-line" data-side="home" clipPath={`url(#${id}-bottom)`} d={`M ${line}`} />
+      {second && second.length > 1 && <path className="live-flow-second" d={`M ${trace(second)}`} />}
       {swings?.map((s, i) => <line key={s.play_id} className="live-flow-swing" x1={x(s.t)} x2={x(s.t)} y1={0} y2={H}><title>{`${i + 1}: ${s.text ?? ""}`}</title></line>)}
     </svg>
     {swings?.map((s, i) => <span key={s.play_id} className="live-flow-swing-mark" style={vars({ "--at": `${x(s.t) / W * 100}%`, "--row": String(i) })} aria-hidden="true">{i + 1}</span>)}
@@ -87,7 +93,7 @@ function SwingList({ swings, away, home, season }: { swings: WinProbabilitySwing
 }
 
 /**
- * Follow-up 25: Probabilities & Game Flow, now with CourtLens's frozen model beside ESPN Analytics'
+ * Follow-up 25: Probabilities & Game Flow, now with CourtLens' frozen model beside ESPN Analytics'
  * (labelled as theirs). Game flow is both scores over time, marked at the biggest swings.
  */
 export function GameFlow({ data, className = "" }: { data: LiveGameData; className?: string }) {
@@ -111,6 +117,9 @@ export function GameFlow({ data, className = "" }: { data: LiveGameData; classNa
   }, [gameId, slate, playCount]);
   const ours = frozen?.status === "ok" ? frozen.points ?? [] : [];
   const swings = frozen?.status === "ok" ? frozen.swings ?? [] : [];
+  // W-D16: the Market-informed model's line for the same game, drawn beside the own read's when the seal had a betting line.
+  const withLine = frozen?.status === "ok" ? frozen.market_informed?.points ?? [] : [];
+  const lastWithLine = withLine.at(-1);
   const hasWin = wins.length > 0 || ours.length > 0;
   const [chosenMode, setMode] = useState<"win" | "flow">("win");
   const mode = hasWin ? chosenMode : "flow";
@@ -139,7 +148,8 @@ export function GameFlow({ data, className = "" }: { data: LiveGameData; classNa
   const axisTicks = <div className="live-flow-ticks" aria-hidden="true">{ticks.map(t => <span key={t.label} style={vars({ "--at": `${t.at}%` })}>{t.label}</span>)}</div>;
   const courtlensPlot = <div className="live-flow-source">
     <span className="live-flow-source-name">CourtLens{source === "both" && lastOurs && <strong>{teamCode(home)} {percent(lastOurs.home)}</strong>}</span>
-    <WinPlot points={ours} x={x} ticks={ticks} label={describe("CourtLens", lastOurs)} swings={swings} />{axisTicks}
+    <WinPlot points={ours} x={x} ticks={ticks} label={`${describe("CourtLens", lastOurs)}${lastWithLine ? `; with the betting line, ${teamCode(home)} ${percent(lastWithLine.home)}` : ""}`} swings={swings} second={withLine} />{axisTicks}
+    {lastWithLine && <span className="live-flow-second-key" data-field="with-line"><span className="live-flow-second-swatch" aria-hidden="true" />With the betting line (second model, on trial): {teamCode(home)} {percent(lastWithLine.home)}</span>}
   </div>;
   const espnPlot = <div className="live-flow-source">
     <span className="live-flow-source-name">ESPN Analytics{source === "both" && lastEspn && <strong>{teamCode(home)} {percent(lastEspn.home)}</strong>}</span>
@@ -173,7 +183,7 @@ export function GameFlow({ data, className = "" }: { data: LiveGameData; classNa
         {axisTicks}
       </>}
       {swings.length > 0 && (mode === "flow" || source !== "espn") && <SwingList swings={swings} away={away} home={home} season={season} />}
-      {mode === "win" && <p className="live-note">Above the line favours {teamCode(away)}, below favours {teamCode(home)}. {wins.length > 0 && "ESPN Analytics is their model, not ours. "}{frozen?.status === "no_inputs" && "CourtLens has no line for this game: no pregame inputs were sealed before tip-off. "}{frozen?.availability === "hindsight_box" && "This game predates the freeze, so CourtLens's inputs use hindsight on who played. "}</p>}
+      {mode === "win" && <p className="live-note">Above the line favours {teamCode(away)}, below favours {teamCode(home)}. {wins.length > 0 && "ESPN Analytics is their model, not ours. "}{frozen?.status === "no_inputs" && "CourtLens has no line for this game: no pregame inputs were sealed before tip-off. "}{frozen?.availability === "hindsight_box" && "This game predates the freeze, so CourtLens' inputs use hindsight on who played. "}</p>}
       {frozen && <p className="live-note live-flow-model">CourtLens model <code>{frozen.model.version}</code> · <code title={frozen.model.manifest_sha256}>{frozen.model.manifest_sha256.slice(0, 12)}</code> · <a className="live-link" href="/research/win-probability">How it is scored</a></p>}
     </div>
   </Panel>;

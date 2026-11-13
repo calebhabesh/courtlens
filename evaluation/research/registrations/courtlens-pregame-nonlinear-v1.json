@@ -1,0 +1,107 @@
+{
+ "schema_version": "courtlens-research-registration-v1",
+ "identity": "courtlens-pregame-nonlinear-v1",
+ "block": "W-N1",
+ "registered_on": "2026-11-12",
+ "kind": "predictive",
+ "question": "On the same 11 pregame inputs and the same training seasons as the frozen served model's own forecast (courtlens-win-probability-v2, a least-squares linear regression), does a non-linear model predict the final home margin better on later seasons? A diagnostic: it answers whether the linear form limits the own forecast. It cannot change either frozen model.",
+ "inputs": [
+  "The frozen model's game table under data/derived/win-probability-v1/games (content hash in parameters.games_table_sha256), read only: for every regular-season game the 11 pregame inputs of win_probability_models.PREGAME_COLUMNS, built from games before the game date only, and the final score.",
+  "The frozen own forecast for every game: mu_full in data/derived/win-probability-v1/pregame.json (file sha256 in parameters.pregame_sha256), whose coefficients equal the freeze manifest's (manifest_sha256 in parameters.reference_manifest_sha256). It is the reference and is not refitted.",
+  "Games with no player rating on either side (all of 2014-15) are left out, as they were from the frozen regression's fit."
+ ],
+ "method": [
+  "Owner decision, 2026-11-12: the owner asked whether a linear regression is too simple for the own forecast and left the choice of whether to test it to the assistant. This registration is that test. Its text was written before any candidate was fitted; it was not committed before the fit, so its content hash and the time it was written are recorded in the result instead.",
+  "Target: final home margin (home points minus away points). Inputs: the 11 columns the frozen regression uses, in its order, with the form column at the frozen half-life (120 days). No new inputs and no betting line.",
+  "Reference L: the frozen own forecast, as served. Check before any fit: least squares on the training seasons must reproduce the frozen coefficients to 1e-9, or the run stops.",
+  "Candidate T (trees alone): a LightGBM regressor (L2) on the 11 inputs.",
+  "Candidate R (linear plus a tree correction): the same LightGBM regressor started from the linear forecast (init score), so the trees learn only what the straight-line fit misses. Its forecast is the linear forecast plus the correction.",
+  "Settings for each candidate come from the training seasons only, by forward validation: for each of 2018-19, 2019-20, 2020-21 and 2021-22, fit on every earlier training season and score that season. Within a fold, candidate R starts from a least-squares fit on that fold's training seasons, never from the frozen coefficients, which have seen the scored season. The setting and the number of rounds with the lowest squared error pooled over the four scored seasons are kept (ties: fewer leaves, then larger min_data_in_leaf, then fewer rounds).",
+  "Final fit: each candidate is refitted once on all seven training seasons with its kept setting and rounds; candidate R starts from the frozen own forecast. Nothing is chosen after this fit.",
+  "Evaluation seasons: 2022-23, 2023-24, 2024-25 and 2025-26, every rated game. The frozen coefficients were fitted on none of them."
+ ],
+ "parameters": {
+  "seed": 2501,
+  "games_table_sha256": "270c16439d1165713fce9240d206ee86abce7483172bbcb3e31443ec12bca617",
+  "pregame_sha256": "e5adcad32017e8a0e63cfe2ee31ae6df03d7ca8bfe6f20cf5cb9c5e48409db90",
+  "reference_manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+  "train_seasons": [
+   "2015-16",
+   "2016-17",
+   "2017-18",
+   "2018-19",
+   "2019-20",
+   "2020-21",
+   "2021-22"
+  ],
+  "validation_seasons": [
+   "2018-19",
+   "2019-20",
+   "2020-21",
+   "2021-22"
+  ],
+  "evaluation_seasons": [
+   "2022-23",
+   "2023-24",
+   "2024-25",
+   "2025-26"
+  ],
+  "form_half_life_days": 120,
+  "booster": {
+   "objective": "regression",
+   "learning_rate": 0.02,
+   "num_leaves_grid": [
+    2,
+    4,
+    8
+   ],
+   "min_data_in_leaf_grid": [
+    100,
+    400
+   ],
+   "lambda_l2": 10,
+   "feature_fraction": 1.0,
+   "bagging_fraction": 1.0,
+   "max_rounds": 3000,
+   "num_threads": 1,
+   "deterministic": true
+  },
+  "bootstrap": {
+   "replicates": 2000,
+   "unit": "game",
+   "level": 0.95
+  },
+  "coefficient_tolerance": 1e-09
+ },
+ "selection": "Settings and rounds are chosen on the training seasons only, by the forward validation above. Nothing is selected on 2022-23 to 2025-26. Both candidates are reported whatever they score; neither is chosen over the other.",
+ "uncertainty": "Paired game bootstrap, 2000 replicates, seed 2501, 95% interval, on the difference in squared margin error (frozen linear forecast minus candidate) over the evaluation games; the same per season.",
+ "evaluation": [
+  "For L, T and R on the evaluation games: margin RMSE and the share of winners picked (a forecast of exactly zero picks the away team), pooled and per season.",
+  "For T and R: the paired mean difference in squared error against L with its 95% interval, pooled and per season. Above zero the candidate is better.",
+  "Each pooled comparison gives one of three results: better (interval above zero), worse (interval below zero), not distinguishable (interval includes zero).",
+  "The forward-validation table: every setting's pooled squared error and kept rounds, and the linear fit's squared error on the same four seasons.",
+  "For the kept settings: each input's share of total split gain, and for candidate R the size of the correction (mean absolute and largest absolute, in points) on the evaluation games."
+ ],
+ "acceptance": [
+  "There is no gate. Whatever the result, the frozen served model, the Market-informed model, their seals and their scorecards are unchanged, and no candidate is served.",
+  "The result is published on the Win Probability page and in the evidence, as one of: better, worse, not distinguishable, for each candidate.",
+  "A 'better' result would be a finding to act on only under a new owner decision and a new model version with its own registration and prospective test."
+ ],
+ "outputs": [
+  "evaluation/research/derived/courtlens-pregame-nonlinear-v1.json: the registration receipt, the coefficient check, the validation table, the kept settings, every metric and interval, and the run's time and library versions",
+  "No model file is kept: no candidate is served."
+ ],
+ "limitations": [
+  "The evaluation seasons are not fresh: 2022-23 and 2023-24 were used to select and calibrate the frozen in-game model, and 2024-25 and 2025-26 have been read as test seasons three times. No candidate here was tuned on them, but this is a labelled diagnostic, not a new prospective test.",
+  "The registration was written before the fit but not committed or pushed before it; the result records its content hash.",
+  "Two tree-based candidates on 11 inputs do not cover every non-linear model. A result of 'not distinguishable' says these did not help, not that nothing could.",
+  "About 8,200 training games with a margin noise of roughly 13 points leave little room to detect small gains; the interval shows how small a gain could have been missed."
+ ],
+ "negative_result_policy": "Publish the result whichever way it falls, on the page and in the evidence. The candidates are not re-run with changed settings under this identity; a change needs a new version.",
+ "seed": 2501,
+ "budget": {
+  "cpu_threads": 1,
+  "max_peak_mib": 1024,
+  "max_wall_seconds": 600
+ }
+}
