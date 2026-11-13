@@ -170,7 +170,7 @@ export function visitorText(text: string): string {
     .replace("R01's admission (IM02 + event gate) excluded", "Checks on the source data left out")
     .replace(/\s*Counts and reasons:.*$/, "")
     .replace("their stints are not in the sealed bundles", "their stints aren't in the data")
-    .replace("CourtLens's R01 reconstruction", "CourtLens's reconstruction")
+    .replace(/CourtLens['’]s? R01 reconstruction/g, "CourtLens' reconstruction")
     .replace("R08's: ", "")
     .replace("after a defect in the frozen runner overwrote it", "after a fault in the original run overwrote it");
 }

@@ -43,6 +43,8 @@ If a block grows, stop and ask rather than widen it.
 | W-D13 | **One seal feeds both models** from v4's freeze, so the comparison isolates the model. The Original's record gets a dated note that its seal moved closer to tip-off. |
 | W-D14 | **W2 and W3 are each split** (added 2026-11-11, after W1). W2: part A builds and proves locally; part B is the cutover, on the owner's word. W3: W3a is the final fit, the freeze checks and the freeze; W3b builds the scoring of both models afterwards and scores every seal captured since the freeze. The dated note on the Original's record is a committed, append-only file. |
 | W-D15 | **CourtLens runs entirely on the VPS** (added 2026-11-11), like the owner's other projects: every scheduled job, the live database and the data directory. The PC is for development only. Block W7. |
+| W-D16 | **The own read leads** (added 2026-11-12, after the fit gave the line a weight of 1.0). Live cards, the Pre-Game panel, the Live chart and the Win Probability page lead with the Original model's number: CourtLens' own read. The Market-informed model's number is a labelled second figure ("with the betting line") and a second line on the chart. This revises W-D1's "moved toward the betting line" for what is shown first, and overrides the registered serving rule ("v4 is the model shown on Live"). Nothing about either frozen model, the seals, the scoring or the reads changes: both models are still scored from the same seal, and the 300-game and final reads are still written. The registration is not edited; a dated protocol note records the deviation. Reason: with a weight of 1.0 the served pregame number was the market's, and the "why" explained a number that was not the one shown. |
+| W-D17 | **The own read's linear form was tested, once** (added 2026-11-12). The owner asked whether a linear regression is too simple for the own read and left the choice of testing it to the assistant. One diagnostic, `courtlens-pregame-nonlinear-v1`: gradient-boosted trees on the same 11 inputs and training seasons, alone and as a correction to the linear fit, scored on 2022-23 to 2025-26 against the frozen forecast. It cannot change either frozen model and serves nothing; the result is published under "What didn't help". A better own read would need a new owner decision and a new version. |
 
 ## What exists (read before building)
 
@@ -114,7 +116,8 @@ the contract. If this plan and the registration disagree, the registration wins.
 
 Measured on 2026-11-11: K1 was kept, and `w` came out 0.720 (stage S), 0.906 (stage C) and 1.0
 (stage F, clipped from 1.0115). So with a line, v4's pregame forecast is the line; with none, it
-is the own forecast. The cards still show the own read and the market adjustment as separate items.
+is the own forecast. Since W-D16 the surfaces lead with the own read (the Original's number) and
+show v4's number beside it as "with the betting line".
 
 ## Blocks
 
@@ -275,6 +278,11 @@ made before this code was deployed.
   interval taken from its stage C predictions.
 - **The Live chart** shows the serving model's line beside ESPN's. A game sealed before v4's
   freeze shows the Original's line, and its "why" has no market row.
+- **Revised by W-D16 (2026-11-12).** The surfaces lead with the Original. `serving_model` now
+  reports the Original as the model Live leads with, and keeps what the registered rule gives
+  under `registered_rule`. The Live chart draws the Original's line and, for a game sealed after
+  the freeze with a line, v4's as a dashed second line. The "why" ends at the own read and shows
+  v4's margin and chance as a comparison row.
 
 - `/api/win-probability` also returns the protocol notes written in W2 part B.
 - Seals made from here on carry `mu4`, `w` and each model's tip-off probability. Seals made
@@ -430,7 +438,7 @@ Players available                   │████████  BOS +3.1   ▸
 Recent form                         │███       BOS +1.4
 Home court                        █ │          IND +0.6
 Rest and travel                  ██ │          IND +0.4   ▸
-─ CourtLens's own read ─────────────────────── BOS by 3.5
+─ CourtLens' own read ─────────────────────── BOS by 3.5
 Market adjustment                   │█         BOS +0.4
    The line is BOS by 4.5. The model moves 85% of the way to it.
 ─ Prediction ───────────────────────────────── BOS by 3.9 → 64%
@@ -501,7 +509,7 @@ Sections 2 and 3 must read correctly on a day with no games and in the offseason
 
 | Risk | What to do |
 | --- | --- |
-| The fitted weight comes out near 1 and v4 is "the market" | Publish it as measured. W-D2 already accepts this. |
+| The fitted weight comes out near 1 and v4 is "the market" | Publish it as measured (W-D2). It happened (w = 1.0), and W-D16 answers it: the own read leads and v4's number is shown beside it. |
 | K2 loses to K1 because lines cover only six seasons | That is what stage S decides; K1 is the default. |
 | ESPN lists no line, or changes the field | Fall back to the own forecast, count those games, and alert in the job's log. |
 | The PC is off for days, before W7 | Seals continue on older box scores and say so. The scorecard is unaffected. W7 removes the dependence. |

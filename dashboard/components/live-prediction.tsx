@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSyncExternalStore, type CSSProperties, type ReactNode } from "react";
-import { awayFirst, seasonOf, teamCode, teamFullName, tipoff, WIN_MODEL_NAMES, type LiveGame, type LiveTeam } from "@/lib/live";
+import { awayFirst, seasonOf, teamCode, teamFullName, tipoff, type LiveGame, type LiveTeam } from "@/lib/live";
 import { formatDate } from "@/lib/format-date";
 import { seasonEra } from "@/lib/portrait-source";
 import { callRight, marginText, towardTeam, whyBars, type WhyGroup, type WhyOutPlayer, type WhyPlayer, type WhyRow, type WinProbabilityWhy } from "@/lib/win-probability";
@@ -18,18 +18,19 @@ import { Icon, type IconName } from "./ui/icon";
 import { ButtonLink, ButtonSummary } from "./ui/kit";
 
 /**
- * W4: the Pre-Game "why". Every number is the seal's, read through the breakdown API: the own read's
- * groups add up exactly, the market row is w × (line − own), and the win chance is the full model's
- * at tip-off. Round 3 (2026-11-12): bars run toward the away team (left) or the home team (right) in
+ * W4: the Pre-Game "why". Every number is the seal's, read through the breakdown API: the groups add
+ * up exactly to the prediction, which is the own read (W-D16); the Market-informed model's margin
+ * and chance sit beside it as a comparison row; each win chance is the full model's at tip-off. Round 3 (2026-11-12): bars run toward the away team (left) or the home team (right) in
  * that team's colour; logos, full names and player photos; the notes sit behind "About this prediction".
  */
 
 const vars = (values: Record<`--${string}`, string>) => values as CSSProperties;
 const pct = (p: number) => `${Math.round(p * 100)}%`;
 const num = (v: number, digits = 2) => v.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
-const ROW_ICONS: Record<WhyGroup["group"] | "own" | "market" | "prediction", IconName> = {
-  players: "users", form: "trend", home_court: "home", rest_travel: "plane", own: "chart", market: "scale", prediction: "gauge",
+const ROW_ICONS: Record<WhyGroup["group"] | "market" | "prediction", IconName> = {
+  players: "users", form: "trend", home_court: "home", rest_travel: "plane", market: "scale", prediction: "gauge",
 };
+const favoured = (homeWin: number) => homeWin >= 0.5 ? homeWin : 1 - homeWin;
 
 interface Sides { home: LiveTeam; away: LiveTeam; season: string }
 
@@ -60,9 +61,9 @@ function Header({ why, sides }: { why: WinProbabilityWhy; sides: Sides }) {
   const team = homeFav ? sides.home : sides.away;
   const p = homeFav ? why.prediction.home_win : 1 - why.prediction.home_win;
   return <p className="lp-headline" data-field="headline" data-home-win={why.prediction.home_win}>
-    <CourtLensSays size={15} />{" "}
+    <CourtLensSays size={12} />{" "}
     <span>favors</span>
-    <span className="lp-team"><TeamLogo team={logoTeam(team)} season={sides.season} size={24} /><strong>{teamFullName(team, sides.season)}</strong></span>
+    <span className="lp-team"><TeamLogo team={logoTeam(team)} season={sides.season} size={20} /><strong>{teamFullName(team, sides.season)}</strong></span>
     <span>· <strong>{pct(p)}</strong> to win · predicted margin {marginText(why.prediction.home_margin, teamCode(sides.home), teamCode(sides.away))}</span>
   </p>;
 }
@@ -75,8 +76,8 @@ function Bars({ why, sides }: { why: WinProbabilityWhy; sides: Sides }) {
     <div className="lp-bar-row lp-bar-axis" role="row">
       <span role="columnheader" className="sr-only">Reason</span>
       <span role="columnheader" className="lp-axis-label">
-        <span className="lp-axis-team" data-side="away"><TeamLogo team={logoTeam(sides.away)} season={sides.season} size={28} />toward {teamFullName(sides.away, sides.season)}</span>
-        <span className="lp-axis-team" data-side="home">toward {teamFullName(sides.home, sides.season)}<TeamLogo team={logoTeam(sides.home)} season={sides.season} size={28} /></span>
+        <span className="lp-axis-team" data-side="away"><TeamLogo team={logoTeam(sides.away)} season={sides.season} size={36} />toward {teamFullName(sides.away, sides.season)}</span>
+        <span className="lp-axis-team" data-side="home">toward {teamFullName(sides.home, sides.season)}<TeamLogo team={logoTeam(sides.home)} season={sides.season} size={36} /></span>
       </span>
       <span role="columnheader" className="sr-only">Points</span>
     </div>
@@ -85,7 +86,7 @@ function Bars({ why, sides }: { why: WinProbabilityWhy; sides: Sides }) {
       <span role="cell" className="lp-bar-track" aria-hidden="true">
         <span className="lp-bar" data-side={bar.points >= 0 ? "home" : "away"} style={vars({ "--lp-width": `${(Math.abs(bar.points) / scale) * 50}%` })} />
       </span>
-      <span role="cell" className="lp-bar-value" data-side={Math.abs(bar.points) < 0.05 ? undefined : bar.points > 0 ? "home" : "away"}>{bar.kind === "group" || bar.kind === "market" ? towardTeam(bar.points, home, away) : marginText(bar.points, home, away)}{bar.kind === "prediction" && <> <Icon name="right" size={14} className="lp-arrow" /><span className="sr-only">gives</span> {pct(why.prediction.home_win >= 0.5 ? why.prediction.home_win : 1 - why.prediction.home_win)}</>}</span>
+      <span role="cell" className="lp-bar-value" data-side={Math.abs(bar.points) < 0.05 ? undefined : bar.points > 0 ? "home" : "away"}>{bar.kind === "group" ? towardTeam(bar.points, home, away) : marginText(bar.points, home, away)}{bar.homeWin != null && <> <Icon name="right" size={14} className="lp-arrow" /><span className="sr-only">gives</span> {bar.kind === "market" && `${bar.homeWin >= 0.5 ? home : away} `}{pct(favoured(bar.homeWin))}</>}</span>
     </div>)}
   </div>;
 }
@@ -93,7 +94,7 @@ function Bars({ why, sides }: { why: WinProbabilityWhy; sides: Sides }) {
 function MarketNote({ why, sides }: { why: WinProbabilityWhy; sides: Sides }) {
   const m = why.market;
   const home = teamCode(sides.home), away = teamCode(sides.away);
-  const text = m.status === "ok" ? `The line is ${marginText(m.line, home, away)}${m.book ? ` (${m.book})` : ""}. The model moves ${Math.round(m.w * 100)}% of the way from its own read to it.`
+  const text = m.status === "ok" ? `The prediction is CourtLens' own read; the betting line is not in it. The line is ${marginText(m.line, home, away)}${m.book ? ` (${m.book})` : ""}. A second model, on trial, moves ${Math.round(m.w * 100)}% of the way from the own read to the line; its number is the last row.`
     : m.status === "no_line" ? "No line when this was sealed; own read only."
     : m.status === "sealed_before_freeze" ? "Sealed before the market-informed model was frozen, so this is the Original model's call: own read only." : null;
   return text ? <p className="lp-callout" data-field="market"><Icon name="scale" size={14} /><span>{text}</span></p> : null;
@@ -147,7 +148,7 @@ type InputRow = WhyRow & { group: string };
 
 function ExactInputs({ why }: { why: WinProbabilityWhy }) {
   const rows: InputRow[] = why.own.groups.flatMap(g => g.rows.map(r => ({ ...r, group: g.label })));
-  if (why.market.status === "ok") rows.push({ input: "market", label: "Line minus own read", value: why.market.line - why.own.own, coefficient: why.market.w, contribution: why.market.adjustment, group: "Market adjustment" });
+  if (why.market.status === "ok") rows.push({ input: "market", label: "Line minus own read", value: why.market.line - why.own.own, coefficient: why.market.w, contribution: why.market.adjustment, group: "Market-informed model only, not in the prediction" });
   const columns: GridColumn<InputRow>[] = [
     { key: "value", label: "Value", width: "sm", data: r => ({ field: "value", value: r.value }), cell: r => <GridValue text={num(r.value, 3)} /> },
     { key: "coefficient", label: "Coefficient", width: "sm", data: r => ({ field: "coefficient", value: r.coefficient }), cell: r => <GridValue text={num(r.coefficient, 3)} /> },
@@ -165,7 +166,7 @@ function Result({ why, sides }: { why: WinProbabilityWhy; sides: Sides }) {
   const right = callRight(why);
   return <p className="lp-result" data-field="result" data-right={right == null ? undefined : String(right)}>
     Final: {teamCode(sides.away)} {why.result.away_score}, {teamCode(sides.home)} {why.result.home_score}
-    {right != null && <> · the call was <span className="lp-mark">{right ? "right" : "wrong"}<Icon name={right ? "check" : "close"} size={14} /></span></>}
+    {right != null && <> · the call was <span className="lp-mark">{right ? "RIGHT" : "WRONG"}<Icon name={right ? "check" : "close"} size={14} /></span></>}
   </p>;
 }
 
@@ -190,7 +191,7 @@ export function PredictionBody({ why, game }: { why: WinProbabilityWhy; game: Li
   const sides: Sides = { home, away, season: seasonOf(game.slate_date) };
   const out = [...(why.out?.away ?? []), ...(why.out?.home ?? [])];
   const costScale = Math.max(1, ...out.map(p => Math.abs(p.cost ?? 0)));
-  const other = why.model === "market_informed" ? why.tip_off_home.original : null;
+  const other = why.market.status === "ok" && why.market_informed ? why.market_informed.home_win : null;
   return <div className="lp-body" data-model={why.model} data-seal={why.seal} style={teamColors(game.teams, sides.season)}>
     <Matchup why={why} sides={sides} />
     <Header why={why} sides={sides} />
@@ -216,8 +217,8 @@ export function PredictionBody({ why, game }: { why: WinProbabilityWhy; game: Li
       <Toggle label="About this prediction"><About why={why} /></Toggle>
     </div>
     <p className="lp-note lp-model" data-field="model">
-      Model: {why.model === "market_informed" ? "Market-informed model, on trial against the Original" : WIN_MODEL_NAMES.original}
-      {other != null && ` (the Original gave ${other >= 0.5 ? teamCode(home) : teamCode(away)} ${pct(other >= 0.5 ? other : 1 - other)})`} · Not betting advice.
+      Model: Original model, CourtLens&apos; own read.
+      {other != null && ` With the betting line, the Market-informed model (on trial) gave ${other >= 0.5 ? teamCode(home) : teamCode(away)} ${pct(favoured(other))}.`} Not betting advice.
     </p>
   </div>;
 }

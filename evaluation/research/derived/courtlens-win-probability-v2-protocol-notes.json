@@ -64,6 +64,20 @@
    },
    "decided_by": "owner, 2026-11-12, after the conflict was found while reading the registration for W3b",
    "effective_from_utc": "2026-11-12T17:45:32Z"
+  },
+  {
+   "date": "2026-11-12",
+   "kind": "registered_serving_rule_deviation",
+   "note": "Live, the Pre-Game panel and the Win Probability page now lead with the Original model's number (CourtLens' own read). The Market-informed model's number is shown beside it, labelled \"with the betting line\", and as a dashed second line on the Live chart. This departs from the Market-informed model's registration (courtlens-win-probability-v4, acceptance: \"Serving rule after the freeze: v4 is the model shown on Live\"). The owner chose it because the fitted weight is 1.0, so with a line the Market-informed pregame number is the market's, and the pregame breakdown explained a number that was not the one shown. The registration is not edited. Both models, the seal's contents, which seal a game uses, the scoring, the record of calls and the 300-game and final reads are unchanged; the reads are still written by the nightly job, and what the registered rule would serve is still reported.",
+   "registered": {
+    "shown_on_live": "courtlens-win-probability-v4 unless a read finds V1 or V2 worse"
+   },
+   "served": {
+    "leads": "courtlens-win-probability-v2 (Original)",
+    "shown_beside": "courtlens-win-probability-v4 (Market-informed), for games sealed after its freeze with a line"
+   },
+   "decided_by": "owner, 2026-11-12 (decision W-D16 in docs/win-probability-v4-plan.md)",
+   "effective_from": "the first demo release that includes this note; before it, Live led with the Market-informed model from its first serving release"
   }
  ]
 }

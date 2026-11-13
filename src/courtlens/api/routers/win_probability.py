@@ -55,7 +55,7 @@ def win_probability_page() -> dict[str, Any]:
         "upgrade": upgrade_result(),
         # W3b: the Market-informed model against the Original from the same seals, and the dated
         # protocol notes. Existing fields keep their shape.
-        "head_to_head": head_to_head.read_summary(),
+        "head_to_head": head_to_head.page_summary(),
         "protocol_notes": head_to_head.protocol_notes(),
         # W5: calibration on the head-to-head games, the worked example, the do-no-harm check.
         **page_sections(),

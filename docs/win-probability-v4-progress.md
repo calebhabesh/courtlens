@@ -311,3 +311,124 @@ Next: the owner approves the runbook; W7b on "move", 09:00 to noon Eastern, owne
 - **B5 swap:** `courtlens` → `courtlens_prev`, `courtlens_next` → `courtlens`; services started.
   `/api/health` ok, demo sign-in and its 8 favourites ok, Stats cohorts warmed (1 built, 170
   existing; first `/stats` 8.1 s cold, 0.7 s warm). `courtlens_prev` kept until the owner drops it.
+
+## 2026-11-12 — W-D16: the own read leads; the Market-informed number is shown beside it
+
+Owner's decision, recorded in the plan (W-D16) and as the fourth protocol note
+(`registered_serving_rule_deviation`) before any code changed. Built on `feat/wp4-design-r3` in
+the main checkout; **not committed, not deployed**. Nothing marked ✅.
+
+- **Why.** With w = 1.0 the served pregame number was the line, and the "why" explained a number
+  that was not the one shown. Stage F's check regression gave the line 1.002 and the own read 0.025.
+- **Unchanged.** Both frozen models and their manifests, the seals, which seal a game uses, the
+  Original's scorecard, the head-to-head rows, V1, V2, the record of calls and both reads. The
+  registration is not edited.
+- **Backend.** `head_to_head.LEAD = ORIGINAL`. `serving_model` reports the Original with the
+  registered rule's answer under `registered_rule` (`registered_serving_model`, both flips still
+  tested). `live_probability` returns the Original's line and swings, plus `market_informed`
+  (model, market, points) for a game sealed after the freeze with a line. The breakdown's
+  `prediction` is the own read (margin and the Original's tip-off chance); `market_informed`
+  carries v4's margin and chance, or null. The card's call is the Original's, with
+  `market_informed_home_win` beside it. `record_of_calls` adds `toss_ups_by_model`. The market
+  row no longer depends on the serving model; status `original_serving` became `unavailable`
+  (manifest unreadable).
+- **Dashboard.** Described in the [Research design catalog](research-design-catalog.md) (W4/W5,
+  2026-11-12). Fixtures rebuilt from the real 19:10:34Z seal, which carries both chances:
+  PHI 56% (71% with the line), DET 88% (84%), MIN 71% (70%), PHX 57% (71%).
+- **Screenshots.** `docs/evidence/win-probability-v4/own-read-leads/` (cards 1440 and 390,
+  Pre-Game 1440, the page 1440 and 390), from the fixture build.
+- **Green.** Win-probability unit tests 171 passed (5 new, others rewritten, for the lead rule, the
+  Live payload, the breakdown and the card). Full unit suite 2,241 passed, 10 failed: the 8 known
+  Anthropic provider cases, plus `test_production_rejects_wildcard_cors` (the local `.env` dev
+  account flag) and `test_admitted_seasons_mapping_compatibility`; both fail the same way without
+  this change. Strict mypy (400 files) and Ruff clean. Dashboard lint and typecheck clean; Vitest
+  937 passed. Playwright in a sandbox build (fixture API): the 11 specs that touch Live or Win
+  Probability, 90 passed, 1 skipped (the evidence spec). `live.spec.ts`'s three "phone … has no
+  page overflow" tests failed once under load and passed on the next run; they fail the same way
+  on the unchanged branch. The full Playwright suite was not run.
+- **Fixed on the way.** `win-probability.spec.ts` still expected the hero to say "N games since
+  the freeze"; it had failed since W5 round 2 changed the hero. It now checks the new hero.
+
+- **Real data, API only** (the owner's local API, 2026-11-13 about 01:30Z, on the local copy of
+  the 21:55:03Z seal). TOR at PHI in progress: the breakdown gives the own read PHI by 2.14 and
+  56.3%, with `market_informed` PHI by 7.5 and 71.3%; the Live line is the Original's (228
+  points, 56.3% at tip-off) with v4's beside it (228 points, 71.3% at tip-off, 68.8% against
+  56.3% at 60–60). All four cards carry both chances. `/api/win-probability` serves four
+  protocol notes and, through `page_summary`, `serving_model` worked out at read time (the
+  Original, registered rule Market-informed), so a summary stored before this change cannot name
+  the wrong lead.
+
+Still to do: the owner's review on :3100 (the second line on a real game was checked through the
+API, not in a browser); commit and deploy on the owner's word (the protocol note takes effect
+with that release).
+
+## 2026-11-12 — W-D17: a non-linear own read, tested once; it did not help
+
+The owner asked whether a linear regression is too simple for the own read and left the choice
+of testing it to the assistant. Run as one diagnostic; **not committed, not deployed**.
+
+- **Registration.** `courtlens-pregame-nonlinear-v1` (content hash `7aa5302c…`, file sha256
+  `1a38e023…`), written before any fit. It was **not committed or pushed before the fit**, which
+  the Research plan asks for; the registration says so and the result records its hash. Code
+  `evaluation/pregame_nonlinear.py`, runner `scripts/run_pregame_nonlinear.sh` (1 CPU, 1,024 MiB,
+  600 s). The code was tested on made-up games only before the one real run.
+- **Reference check.** Least squares on the 8,204 training games (2015-16 to 2021-22) reproduces
+  the frozen coefficients exactly (largest difference 0.0; forecasts to 3.6e-15).
+- **Settings, from the training seasons only** (forward validation, 4,562 games of 2018-19 to
+  2021-22; the linear fit 13.462 points): trees alone 13.511 (stumps, 565 rounds); linear plus
+  trees 13.458 (4 leaves, 54 rounds).
+- **Result, 4,884 games of 2022-23 to 2025-26** (95% paired game bootstrap; above zero the
+  candidate is better):
+
+  | Forecast | RMSE | Winners | Squared-error gain | Result |
+  | --- | --- | --- | --- | --- |
+  | Linear (frozen, as served) | 13.727 | 67.7% | | |
+  | Trees alone | 13.785 | 67.5% | −1.60 (−2.37 to −0.84) | worse |
+  | Linear plus a tree correction | 13.726 | 67.6% | +0.03 (−0.23 to +0.27) | not distinguishable |
+
+  The correction averaged 0.28 points and never exceeded 0.80. By season the correction is not
+  distinguishable in all four; trees alone are worse in 2024-25 and 2025-26.
+- **Reading.** The linear form is not what limits the own read: the interval's upper end, 0.27
+  squared points, is about 0.01 points of RMSE. Two tree models do not cover every non-linear
+  model. The seasons are not fresh (read before as selection, calibration and test seasons).
+- **Published.** `evaluation/research/derived/courtlens-pregame-nonlinear-v1.json`;
+  `/api/win-probability` gains `pregame_nonlinear`; the page has one finding under "What didn't
+  help" and a "Why linear" line on the flow's Own read tab. Screenshot in
+  `docs/evidence/win-probability-v4/pregame-nonlinear/`.
+- **Run.** 17.6 s, peak 421.7 MB, LightGBM 4.7.0, x86_64.
+- **Green.** 10 new unit tests; strict mypy (401 files) and Ruff clean; dashboard lint and
+  typecheck clean, Vitest 938 passed; Playwright in a sandbox build: `win-probability`,
+  `win-probability-v4` and `live-prediction` specs, 20 passed, 1 skipped.
+
+## 2026-11-13 — W-D16 and W-D17 committed on the owner's word; checked before the commit
+
+The owner said to commit and deploy (about 00:10 ET). Committed on `feat/wp4-design-r3` and pushed
+to pull request #104. **Not merged, not deployed.** Nothing marked ✅.
+
+- **Committed.** W-D16 (the own read leads), W-D17 (the non-linear test) and the possessive
+  sweep ("CourtLens'" for "CourtLens's" in copy, docs and docstrings; 43 files change in nothing
+  else). Registrations and the zTS runner's stored result text keep the old wording; the
+  registrations are hashed.
+- **Track record wording.** The owner read "first grades at 9:00 ET" as 9 PM. Both phrases on the
+  page now say "9:00 AM ET".
+- **Two tests fixed.** `win-probability-v4.spec.ts` checked that the date strip marked the 12th
+  and so failed from 2026-11-13 on; it now fixes the clock to the fixture's day.
+  `live.spec.ts`'s three "phone … has no page overflow" tests matched `.live-page` twice while
+  React swaps the streamed page in (the known failure on `main`'s CI); they now wait for the
+  visible one. Each passed three runs in a row.
+- **The first grades, checked on the VPS (read only, 05:10Z).** The seal service's last run
+  (01:55:03Z) reports no error and its next run at 14:00:00Z, 09:00 Eastern. All four of
+  2026-11-12's games have seals written after the freeze (20:25Z to 21:55Z). The VPS still runs
+  release `14139203` (W3b); it has no `jobs` service, and the PC's timers and its push still run.
+- **Green.** Full Python suite 2,874 passed, 8 failed (the 8 known Anthropic provider cases);
+  strict mypy (401 files) and Ruff clean. Dashboard lint and typecheck clean; Vitest 938 passed.
+  Full Playwright in a sandbox build (fixture API, 4 workers): 648 passed, 5 failed, 17 skipped,
+  7 did not run. The 5: the four tests fixed above, and `f04-accounts.spec.ts`'s first test,
+  which reached for the fixture API on port 4100 because the run did not pass the sandbox's port;
+  run again with it, all 8 accounts tests passed (the 7 that did not run are its serial
+  followers).
+
+Still to do: the owner merges #104. The deploy of `main` is also W7b's B6 and B7: it stops
+copying data and starts the `jobs` service on the VPS while the PC's timers and push still run,
+so it belongs in the runbook's window (after the 09:00 ET seal run, before noon, owner present),
+followed by B8 to B11.

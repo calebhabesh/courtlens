@@ -9,8 +9,10 @@ before. This module adds, beside them and keyed by the same game:
 - the registered reads (V1 pregame margin, V2 whole-game log loss), each "better", "worse" or
   "not distinguishable", reported from 25 games, read once at 300 games and once at the end of the
   regular season; the 300-game and final reads are written once and never recomputed;
-- `serving_model`, which the Live chart follows: the Market-informed model, unless a read found
-  V1 or V2 "worse", which returns Live to the Original with no person involved.
+- `serving_model`: the model Live leads with. By the owner's decision W-D16 (2026-11-12) that is
+  the Original, CourtLens' own read, with the Market-informed model shown beside it. What the
+  registered rule would serve (the Market-informed model, unless a read found V1 or V2 "worse")
+  is still reported, under `registered_rule`.
 
 Positive differences favour v4. Nothing here changes the Original's rows or files.
 """
@@ -59,6 +61,9 @@ VERDICT_AT = 300
 TOSS_UP = (0.45, 0.55)
 ORIGINAL = "original"
 MARKET = "market_informed"
+# W-D16: every surface leads with the own read. The registered rule is reported, not followed.
+LEAD = ORIGINAL
+LEAD_SINCE = "2026-11-12"
 POSTSEASON_MONTHS = (4, 5, 6)
 EASTERN = ZoneInfo("America/New_York")
 
@@ -349,7 +354,7 @@ def take_reads(games: list[dict[str, Any]], over: bool, now: datetime) -> list[d
     return written
 
 
-def serving_model(written: list[dict[str, Any]]) -> dict[str, Any]:
+def registered_serving_model(written: list[dict[str, Any]]) -> dict[str, Any]:
     """The registered rule: Live returns to the Original if a read found V1 or V2 worse."""
     for body in written:
         if "worse" in (body["v1"]["result"], body["v2"]["result"]):
@@ -361,15 +366,32 @@ def serving_model(written: list[dict[str, Any]]) -> dict[str, Any]:
     return {"model": MARKET, "reason": "no read has found the Market-informed model worse"}
 
 
+def serving_model(written: list[dict[str, Any]]) -> dict[str, Any]:
+    """The model Live leads with: the Original (W-D16), beside what the registered rule gives."""
+    return {
+        "model": LEAD,
+        "reason": (
+            "the owner's decision of 2026-11-12: CourtLens leads with its own read, and the "
+            "Market-informed model's number is shown beside it"
+        ),
+        "since": LEAD_SINCE,
+        "registered_rule": registered_serving_model(written),
+    }
+
+
 def record_of_calls(games: list[dict[str, Any]]) -> dict[str, Any]:
     lined = [g for g in games if g["calls"]["line"] is not None]
-    toss_up = [g for g in games if TOSS_UP[0] <= g[MARKET]["tip_off_home"] <= TOSS_UP[1]]
+
+    def toss_ups(model: str) -> int:
+        return sum(TOSS_UP[0] <= g[model]["tip_off_home"] <= TOSS_UP[1] for g in games)
+
     return {
         "games": len(games),
         ORIGINAL: sum(g["calls"][ORIGINAL] for g in games),
         MARKET: sum(g["calls"][MARKET] for g in games),
         "line": {"games": len(lined), "right": sum(g["calls"]["line"] for g in lined)},
-        "toss_ups": len(toss_up),
+        "toss_ups": toss_ups(MARKET),
+        "toss_ups_by_model": {ORIGINAL: toss_ups(ORIGINAL), MARKET: toss_ups(MARKET)},
     }
 
 
@@ -452,6 +474,15 @@ def read_summary() -> dict[str, Any] | None:
     return body
 
 
+def page_summary() -> dict[str, Any] | None:
+    """The stored summary as the page reads it, with `serving_model` worked out now, so a summary
+    written before W-D16 never names the wrong lead."""
+    body = read_summary()
+    if body is None:
+        return None
+    return {**body, "serving_model": serving_model(body.get("reads", []))}
+
+
 def protocol_notes() -> list[dict[str, Any]]:
     try:
         notes: list[dict[str, Any]] = json.loads(NOTES_PATH.read_text())["notes"]
@@ -465,46 +496,45 @@ def protocol_notes() -> list[dict[str, Any]]:
 
 
 def live_probability(game_id: str, data: dict[str, Any] | None) -> dict[str, Any]:
-    """The Live chart: the serving model's line. A game sealed before v4's freeze, or any game
-    while the Original serves, shows the Original's line exactly as before."""
-    original = production.game_probability(game_id, data)
+    """The Live chart: the Original's line leads (W-D16). A game sealed after v4's freeze with a
+    line also carries the Market-informed model's line, under `market_informed`, to draw beside it.
+    With no line the two models are the same, so there is nothing to add."""
+    original = {**production.game_probability(game_id, data), "serving": LEAD}
     if original.get("status") != "ok" or not data:
-        return {**original, "serving": ORIGINAL}
+        return original
     try:
         manifest = load_market_manifest()
     except (OSError, ValueError):
-        return {**original, "serving": ORIGINAL}
-    summary = read_summary()
-    serving = (summary or {}).get("serving_model", {}).get("model", MARKET)
+        return original
     sealed_after = production._parse_time(original["captured_at"]) > production._parse_time(
         manifest["frozen_at"]
     )
-    if serving != MARKET or not sealed_after:
-        return {**original, "serving": ORIGINAL}
+    if not sealed_after:
+        return original
     game = data["game"]
     found = production.inputs_for(game_id, game["slate_date"], game.get("event_time"))
     if found is None:
-        return {**original, "serving": ORIGINAL}
+        return original
     record = found[0]
-    w = float(manifest["market"]["w"])
     line = line_of(record)
+    if line is None:
+        return original
+    w = float(manifest["market"]["w"])
     model = MarketModel(production.get_model(), line, w)
-    series = production.event_series(model, data["plays"], record)
     return {
         **original,
-        "serving": MARKET,
-        "model": {
-            "version": manifest["version"],
-            "manifest_sha256": manifest["manifest_sha256"],
-            "frozen_at": manifest["frozen_at"],
+        "market_informed": {
+            "model": {
+                "version": manifest["version"],
+                "manifest_sha256": manifest["manifest_sha256"],
+                "frozen_at": manifest["frozen_at"],
+            },
+            "market": {
+                "own": float(record["inputs"]["mu"]),
+                "line": line,
+                "mu4": market_mu(float(record["inputs"]["mu"]), line, w),
+                "w": w,
+            },
+            "points": production.event_series(model, data["plays"], record),
         },
-        "original_model": original["model"],
-        "market": {
-            "own": float(record["inputs"]["mu"]),
-            "line": line,
-            "mu4": market_mu(float(record["inputs"]["mu"]), line, w),
-            "w": w,
-        },
-        "points": series,
-        "swings": production.biggest_swings(series, data["plays"]),
     }

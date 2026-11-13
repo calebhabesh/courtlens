@@ -110,7 +110,7 @@ Instructions (owner, 2026-11-06, round 3; screenshot of the RAPM Ratings tab at 
    leaders chart (still the PC12 first-load headline), open facts and an open experiment block.
 
 Instructions (owner, 2026-11-06, round 4; screenshots: Databallr's Six-Factor page from the header to The Six Factors,
-CourtLens's page at the same point, CourtLens's Six Factors panel, CourtLens's RAPM Ratings Leaders and All Ratings):
+CourtLens' page at the same point, CourtLens' Six Factors panel, CourtLens' RAPM Ratings Leaders and All Ratings):
 4. [x] The page should be shaded like Databallr does it; we are currently only using thin white lines.
    — Shared light panels (4% white, soft rim) and darker inner wells, tinted Offense/Defense cards, an accent-ringed factor panel; supersedes round 2's open blocks.
 5. [x] Six Factors section: the player photos need to be much larger.
@@ -278,7 +278,7 @@ Instructions (owner, 2026-11-07, round 4; screenshots: the methodology panel, an
 - **Now:** About and Top 200 replicated, a Player tab built without a reference; registered test: zTS
   tracks oTS RAPM better, predicts next-season rTS worse.
 - **Known gaps:** SV/100, the team table, the X/Y explorer and the position filter weren't reproduced. FTA
-  per play type isn't derivable, so play-type TS is CourtLens's own.
+  per play type isn't derivable, so play-type TS is CourtLens' own.
 - **Reference (2026-11-07):** `~/Downloads/LocalSend/zTS — Playtype-Adjusted Scoring Efficiency _ databallr.html` (newer
   than the `~/Downloads/Webpages/` copy), rendered offline with its 12 scripts and every `crossorigin=""` stripped, a
   `<base>` at the saved folder and every non-file request blocked; plus eight owner screenshots. The save holds the About
@@ -296,8 +296,8 @@ recommendations look good. Go ahead and comprehensively create redesign the page
    - (1) Copy Databallr's layout: its article hero through `PageHeader`, one essay column in its section order, the
      floating bottom pill tabs, panels and wells one level deep.
    - (2) Databallr's measured 768 px column.
-   - (3) CourtLens's own prose in Databallr's structure with CourtLens's numbers; Databallr's wording and findings are not
-     copied or presented as CourtLens's.
+   - (3) CourtLens' own prose in Databallr's structure with CourtLens' numbers; Databallr's wording and findings are not
+     copied or presented as CourtLens'.
    - (4) Gaps: (A) zTS add/100 in place of SV/100; (B) and (E) left out, no stub sections; (C) team playtype difficulty
      from each team's summed player Synergy rows (a new descriptive analysis, no new source; rows under 10 possessions are
      absent, so team totals run slightly low); (D) no position chips; (F) 2015-16 onward, Post disabled.
@@ -351,7 +351,7 @@ Instructions (owner, 2026-11-07, round 6; the compare card's season select for A
 ## RD04 Shot Quality — ✅ approved by the owner (2026-11-07)
 
 - **Now:** four tabs: Players (ranked per 100 shots), Decomposition (oTS = oSQ + oMake + oFT, offence,
-  defence, combined, CSV, intervals), Model, Player. CourtLens's expected-points model (Shot Quality v2)
+  defence, combined, CSV, intervals), Model, Player. CourtLens' expected-points model (Shot Quality v2)
   replaces the paid ShotQuality feed.
 - **Known gaps:** Databallr's four-regression ShotQuality RAPM on its own pool; the Model and Player tabs
   have no reference.
@@ -371,7 +371,7 @@ your recommendations. Let's comprehensively build it out."):
      Decomposition in Databallr's order (toolbar panel, table, colour key, Six-Factor link card, How to Read, Column Glossary,
      collapsed Caveats & Methodology); the three result tiles move to Model.
    - (2) Width: Databallr's measured 1352 px column on every tab.
-   - (3) CourtLens's own prose in Databallr's structure with CourtLens's numbers; none of Databallr's wording or claims.
+   - (3) CourtLens' own prose in Databallr's structure with CourtLens' numbers; none of Databallr's wording or claims.
    - (4) Gaps: (A) per-season fit with a season select, said in one line, no pooled run; (B, C) Shots and min shots from
      1,000; (D, E) player search and a Methodology button that opens and scrolls to Caveats & Methodology; (H) the link card
      without 98.5%; (K) four regressions as steps, the foul-baseline table and a worked example with our avg_pts, calibration,
@@ -571,7 +571,7 @@ Instructions (owner, 2026-11-08, round 2; screenshot: the desktop index with the
 Instructions (owner, 2026-11-08, round 1; the owner answered the gap list and recommendations with "Go with your recommendations
 and suggestions for optimal construction and layout of this page. Build it comprehensively."):
 1. [x] Go with your recommendations and suggestions for optimal construction and layout of this page. Build it comprehensively.
-   - (A) Version numbers: CourtLens's releases numbered in merge order, v1.0 (research workbench) to v1.6 (PR #42); the unmerged
+   - (A) Version numbers: CourtLens' releases numbered in merge order, v1.0 (research workbench) to v1.6 (PR #42); the unmerged
      research branch shows v1.7 with an "Unmerged" pill. Kept in `patch-notes.json`, checked by `check-patch-notes.mjs`, and an
      About line says they were assigned on 2026-11-08.
    - (B) Content: one Updated entry per approved Research redesign (RD00 to RD06) in the research release, each linked to the
@@ -1171,3 +1171,25 @@ Instructions (owner, 2026-11-10, round 5; offered suggestions 3 and 6 as optiona
     team's colour. "Who's out" has photos and cost bars in team colour, with the cost in words.
     "Players available" has photos and minutes bars. Ages and notes sit behind "About this
     prediction". The Injury Report has photos, logos and full names; Betting Lines has logos.
+- **Owner, 2026-11-12, after round 3b (decision W-D16 in the v4 plan):** "I don't want our
+  prediction model to be crutched by the betting line, but from a pedagogical and practical
+  standpoint that relies on the actual merits of the model (I'm not saying it should have no
+  influence, but it should be tempered)." Offered three options, the owner chose: lead with the own
+  read everywhere (cards, Pre-Game and the Live chart) and show the Market-informed number as a
+  labelled second figure and a second line on the chart. No new model and no hand-set weight.
+  This supersedes round 2's decisions (1) and (3) above.
+- **Built (2026-11-12, uncommitted on `feat/wp4-design-r3`):**
+  - **Live cards:** "CourtLens favors PHI 56%" is the own read; "with the line PHI 71%" follows
+    in grey at the row's end, only when the seal had a line.
+  - **Page cards:** the percentages, bar and favourite are the own read's; a "With the line:
+    PHI 71%" chip sits before the Line chip.
+  - **Pre-Game:** the four groups add up to "Prediction: CourtLens' own read" (the separate own
+    row is gone); "With the betting line" is a quieter comparison row under it with its own margin
+    and chance. The note says the line is not in the prediction.
+  - **How the model works:** the own read is the pregame margin, one band; the betting line is a
+    dashed second path with "second model, on trial", and "With the line: PHI 71%" sits under
+    the prediction. The Betting line tab explains the second model and why it is second.
+  - **Track record:** the own read's tile leads; the lead sentence counts the own read's calls.
+  - **Live chart:** the Original's line; the Market-informed line is a grey dashed trace over it
+    with a key under the plot.
+  - **Hero:** "CourtLens' own read · Original model, frozen Nov 4, 2026 · graded every morning".

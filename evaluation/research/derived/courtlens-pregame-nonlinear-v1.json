@@ -1,0 +1,385 @@
+{
+ "candidates": {
+  "linear_plus_trees": "the linear forecast plus a LightGBM correction",
+  "trees": "LightGBM on the 11 inputs"
+ },
+ "elapsed_seconds": 16.5,
+ "evaluation": {
+  "by_season": {
+   "2022-23": {
+    "linear": {
+     "games": 1229,
+     "rmse": 12.647621885240598,
+     "winner_accuracy": 0.6574450772986168
+    },
+    "linear_plus_trees": {
+     "games": 1229,
+     "result": "not distinguishable",
+     "rmse": 12.642716374550869,
+     "squared_error_gain": {
+      "games": 1229,
+      "high": 0.5752658593304537,
+      "low": -0.29756426995837393,
+      "mean": 0.12406202468025124
+     },
+     "winner_accuracy": 0.6574450772986168
+    },
+    "trees": {
+     "games": 1229,
+     "result": "not distinguishable",
+     "rmse": 12.669146052782876,
+     "squared_error_gain": {
+      "games": 1229,
+      "high": 0.7073085551852955,
+      "low": -1.7824977314956607,
+      "mean": -0.5449223547269629
+     },
+     "winner_accuracy": 0.6550040683482506
+    }
+   },
+   "2023-24": {
+    "linear": {
+     "games": 1216,
+     "rmse": 13.887137736598033,
+     "winner_accuracy": 0.6817434210526315
+    },
+    "linear_plus_trees": {
+     "games": 1216,
+     "result": "not distinguishable",
+     "rmse": 13.88142106114088,
+     "squared_error_gain": {
+      "games": 1216,
+      "high": 0.6463511348564788,
+      "low": -0.33496441687488315,
+      "mean": 0.15874383855956414
+     },
+     "winner_accuracy": 0.6792763157894737
+    },
+    "trees": {
+     "games": 1216,
+     "result": "not distinguishable",
+     "rmse": 13.913213556854245,
+     "squared_error_gain": {
+      "games": 1216,
+      "high": 0.7176825597356842,
+      "low": -2.229234812428039,
+      "mean": -0.7249169633876098
+     },
+     "winner_accuracy": 0.6743421052631579
+    }
+   },
+   "2024-25": {
+    "linear": {
+     "games": 1212,
+     "rmse": 13.887475525951178,
+     "winner_accuracy": 0.6823432343234324
+    },
+    "linear_plus_trees": {
+     "games": 1212,
+     "result": "not distinguishable",
+     "rmse": 13.893181580242501,
+     "squared_error_gain": {
+      "games": 1212,
+      "high": 0.3803338135406481,
+      "low": -0.6943582476104572,
+      "mean": -0.15851793769657302
+     },
+     "winner_accuracy": 0.6864686468646864
+    },
+    "trees": {
+     "games": 1212,
+     "result": "worse",
+     "rmse": 13.987613543784972,
+     "squared_error_gain": {
+      "games": 1212,
+      "high": -1.2100625041239292,
+      "low": -4.548320776481827,
+      "mean": -2.791356166383826
+     },
+     "winner_accuracy": 0.6856435643564357
+    }
+   },
+   "2025-26": {
+    "linear": {
+     "games": 1227,
+     "rmse": 14.430152151382785,
+     "winner_accuracy": 0.6862265688671557
+    },
+    "linear_plus_trees": {
+     "games": 1227,
+     "result": "not distinguishable",
+     "rmse": 14.430976501501416,
+     "squared_error_gain": {
+      "games": 1227,
+      "high": 0.4898783999187387,
+      "low": -0.5816893919688287,
+      "mean": -0.023791674828802664
+     },
+     "winner_accuracy": 0.6821515892420538
+    },
+    "trees": {
+     "games": 1227,
+     "result": "worse",
+     "rmse": 14.510861307204411,
+     "squared_error_gain": {
+      "games": 1227,
+      "high": -0.7377667006720603,
+      "low": -3.9842267916255394,
+      "mean": -2.335804764864874
+     },
+     "winner_accuracy": 0.684596577017115
+    }
+   }
+  },
+  "pooled": {
+   "linear": {
+    "games": 4884,
+    "rmse": 13.727401395602552,
+    "winner_accuracy": 0.6769041769041769
+   },
+   "linear_plus_trees": {
+    "games": 4884,
+    "result": "not distinguishable",
+    "rmse": 13.726475200595374,
+    "squared_error_gain": {
+     "games": 4884,
+     "high": 0.2696193719355814,
+     "low": -0.22553292053391633,
+     "mean": 0.025427643431054775
+    },
+    "winner_accuracy": 0.6762899262899262
+   },
+   "trees": {
+    "games": 4884,
+    "result": "worse",
+    "rmse": 13.78545158309519,
+    "squared_error_gain": {
+     "games": 4884,
+     "high": -0.8384792553003854,
+     "low": -2.3707943430009117,
+     "mean": -1.5971262738708374
+    },
+    "winner_accuracy": 0.6748566748566749
+   }
+  },
+  "seasons": [
+   "2022-23",
+   "2023-24",
+   "2024-25",
+   "2025-26"
+  ]
+ },
+ "fitted": {
+  "linear_plus_trees": {
+   "correction_points": {
+    "max_abs": 0.80430036070545,
+    "mean_abs": 0.2775010346021207
+   },
+   "gain_share": {
+    "b2b_away": 0.0,
+    "b2b_home": 0.0,
+    "denver": 0.0,
+    "form": 0.2745929004646968,
+    "games7": 0.0,
+    "home": 0.0,
+    "rest": 0.0,
+    "strength_x_pace": 0.3859877196918019,
+    "travel_away_kkm": 0.33132167498078907,
+    "travel_home_kkm": 0.008097704862712177,
+    "utah": 0.0
+   }
+  },
+  "trees": {
+   "gain_share": {
+    "b2b_away": 0.01607418276863911,
+    "b2b_home": 0.004244788922742934,
+    "denver": 0.0002234612967895463,
+    "form": 0.3445372307379309,
+    "games7": 0.0027895527252958753,
+    "home": 0.0,
+    "rest": 0.0004325234455866322,
+    "strength_x_pace": 0.6305931001925764,
+    "travel_away_kkm": 0.0,
+    "travel_home_kkm": 0.0,
+    "utah": 0.0011051599104385781
+   }
+  }
+ },
+ "libraries": {
+  "lightgbm": "4.7.0",
+  "machine": "x86_64",
+  "numpy": "2.5.3",
+  "python": "3.14.10"
+ },
+ "question": "On the same 11 pregame inputs and the same training seasons as the frozen served model's own forecast (courtlens-win-probability-v2, a least-squares linear regression), does a non-linear model predict the final home margin better on later seasons? A diagnostic: it answers whether the linear form limits the own forecast. It cannot change either frozen model.",
+ "ran_at": "2026-11-13T02:11:15+00:00",
+ "reference_check": {
+  "max_abs_coefficient_difference": 0.0,
+  "max_abs_forecast_difference": 3.552713678800501e-15,
+  "passed": true,
+  "train_games": 8204
+ },
+ "registration": {
+  "content_sha256": "7aa5302ca2cbdacc0877d4fa6f3b731b41efda1a0ea2b81f764f497786155304",
+  "identity": "courtlens-pregame-nonlinear-v1",
+  "parameters": {
+   "booster": {
+    "bagging_fraction": 1.0,
+    "deterministic": true,
+    "feature_fraction": 1.0,
+    "lambda_l2": 10,
+    "learning_rate": 0.02,
+    "max_rounds": 3000,
+    "min_data_in_leaf_grid": [
+     100,
+     400
+    ],
+    "num_leaves_grid": [
+     2,
+     4,
+     8
+    ],
+    "num_threads": 1,
+    "objective": "regression"
+   },
+   "bootstrap": {
+    "level": 0.95,
+    "replicates": 2000,
+    "unit": "game"
+   },
+   "coefficient_tolerance": 1e-09,
+   "evaluation_seasons": [
+    "2022-23",
+    "2023-24",
+    "2024-25",
+    "2025-26"
+   ],
+   "form_half_life_days": 120,
+   "games_table_sha256": "270c16439d1165713fce9240d206ee86abce7483172bbcb3e31443ec12bca617",
+   "pregame_sha256": "e5adcad32017e8a0e63cfe2ee31ae6df03d7ca8bfe6f20cf5cb9c5e48409db90",
+   "reference_manifest_sha256": "b2b0db82311fd6c56eca8588e6ec0c7c8e8ad31546ef3710093eff3fac8bd9fa",
+   "seed": 2501,
+   "train_seasons": [
+    "2015-16",
+    "2016-17",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22"
+   ],
+   "validation_seasons": [
+    "2018-19",
+    "2019-20",
+    "2020-21",
+    "2021-22"
+   ]
+  },
+  "registered_on": "2026-11-12"
+ },
+ "validation": {
+  "candidates": {
+   "linear_plus_trees": {
+    "kept": {
+     "min_data_in_leaf": 400,
+     "num_leaves": 4,
+     "rmse": 13.457692690860398,
+     "rounds": 54
+    },
+    "settings": [
+     {
+      "min_data_in_leaf": 400,
+      "num_leaves": 2,
+      "rmse": 13.46230630293906,
+      "rounds": 1
+     },
+     {
+      "min_data_in_leaf": 100,
+      "num_leaves": 2,
+      "rmse": 13.46232597952401,
+      "rounds": 1
+     },
+     {
+      "min_data_in_leaf": 400,
+      "num_leaves": 4,
+      "rmse": 13.457692690860398,
+      "rounds": 54
+     },
+     {
+      "min_data_in_leaf": 100,
+      "num_leaves": 4,
+      "rmse": 13.4626896011079,
+      "rounds": 1
+     },
+     {
+      "min_data_in_leaf": 400,
+      "num_leaves": 8,
+      "rmse": 13.458164223184914,
+      "rounds": 20
+     },
+     {
+      "min_data_in_leaf": 100,
+      "num_leaves": 8,
+      "rmse": 13.462640119620254,
+      "rounds": 1
+     }
+    ]
+   },
+   "trees": {
+    "kept": {
+     "min_data_in_leaf": 100,
+     "num_leaves": 2,
+     "rmse": 13.511248078815518,
+     "rounds": 565
+    },
+    "settings": [
+     {
+      "min_data_in_leaf": 400,
+      "num_leaves": 2,
+      "rmse": 13.519701119543868,
+      "rounds": 610
+     },
+     {
+      "min_data_in_leaf": 100,
+      "num_leaves": 2,
+      "rmse": 13.511248078815518,
+      "rounds": 565
+     },
+     {
+      "min_data_in_leaf": 400,
+      "num_leaves": 4,
+      "rmse": 13.52284077817256,
+      "rounds": 292
+     },
+     {
+      "min_data_in_leaf": 100,
+      "num_leaves": 4,
+      "rmse": 13.519083527419276,
+      "rounds": 243
+     },
+     {
+      "min_data_in_leaf": 400,
+      "num_leaves": 8,
+      "rmse": 13.540291177806514,
+      "rounds": 189
+     },
+     {
+      "min_data_in_leaf": 100,
+      "num_leaves": 8,
+      "rmse": 13.52831237868602,
+      "rounds": 182
+     }
+    ]
+   }
+  },
+  "games": 4562,
+  "linear_rmse": 13.462228913410803,
+  "seasons": [
+   "2018-19",
+   "2019-20",
+   "2020-21",
+   "2021-22"
+  ]
+ },
+ "version": "courtlens-pregame-nonlinear-v1"
+}

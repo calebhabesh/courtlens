@@ -78,6 +78,7 @@ export function PredictionCard({ game }: { game: LiveGame }) {
   const line = game.status === "scheduled" ? lineFavourite(game.odds, game.teams) : null;
   const href = `/live/games/${game.source_id}?date=${game.slate_date}&tab=pregame&from=win-probability`;
   const outs = game.status === "scheduled" ? [away, home].filter(t => t.out) : [];
+  const withLine = call?.withLine ? { team: call.withLine.side === "home" ? home : away, percent: call.withLine.percent } : null;
   return <Link className="wpc" href={href} data-status={game.status} data-game={game.source_id} data-home-win={sealed ?? undefined} data-favoured={fav?.side}
     aria-label={`${away.name} at ${home.name}, ${gameStatus(game)}${fav && sealed != null ? `. CourtLens: ${teamCode(fav)} ${Math.round(Math.max(sealed, 1 - sealed) * 100)}% to win` : ""}. Open the game and why.`}
     style={teamColors(game.teams, season)}>
@@ -96,13 +97,14 @@ export function PredictionCard({ game }: { game: LiveGame }) {
     {sealed != null && <span className="wpc-bar" aria-hidden="true" style={vars({ "--wpc-away": `${(1 - sealed) * 100}%` })}><span data-side="away" /><span data-side="home" /></span>}
     <span className="wpc-foot">
       {call && call.kind !== "none" && fav ? <span className="wpc-call" data-call={call.kind} data-right={call.right == null ? undefined : String(call.right)} title={call.title}>
-        {call.kind === "favours" ? <><CourtLensSays /> favors</> : { toss_up: "Toss-up, leaning", pregame: "Pregame call:", called: "Called" }[call.kind]}
+        <span className="wpc-call-lead">{call.kind === "favours" ? <><CourtLensSays size={11} /> favors</> : { toss_up: "Toss-up, leaning", pregame: "Pregame call:", called: "Called" }[call.kind]}</span>
         <span className="wpc-pick"><TeamLogo team={logoTeam(fav)} season={season} size={18} /><strong>{teamFullName(fav, season)}</strong></span>
-        {call.kind === "called" && call.right != null && <span className="wpc-mark"><Icon name={call.right ? "check" : "close"} size={14} />{call.right ? "right" : "wrong"}</span>}
+        {call.kind === "called" && call.right != null && <span className="wpc-mark"><Icon name={call.right ? "check" : "close"} size={14} /><span>{call.right ? "RIGHT" : "WRONG"}</span></span>}
       </span> : <span className="wpc-call" data-call="none">{p ? "No prediction was sealed for this game" : "Before CourtLens sealed predictions"}</span>}
-      {(line || outs.length > 0) && <span className="wpc-chips">
-        {line && <span className="wpc-line" title={`The betting line (${game.odds?.provider ?? "sportsbook"})`}>Line:{line === "even" ? " even" : <> <TeamLogo team={logoTeam(line.team)} season={season} size={16} />{teamCode(line.team)} by {line.points}</>}</span>}
-        {outs.length > 0 && <span className="wpc-out" title="Players ESPN lists as Out">{outs.map(t => <span key={t.side} className="wpc-out-team"><TeamLogo team={logoTeam(t)} season={season} size={16} />{t.out} out</span>)}</span>}
+      {(withLine || line || outs.length > 0) && <span className="wpc-chips">
+        {withLine && <span className="wpc-with-line" data-field="with-line" title="The same seal with the betting line: the Market-informed model, on trial beside CourtLens' own read"><span>With the line:</span> <TeamLogo team={logoTeam(withLine.team)} season={season} size={16} /><span>{teamCode(withLine.team)} {withLine.percent}%</span></span>}
+        {line && <span className="wpc-line" title={`The betting line (${game.odds?.provider ?? "sportsbook"})`}><span>Line:{line === "even" ? " even" : ""}</span>{line !== "even" && <> <TeamLogo team={logoTeam(line.team)} season={season} size={16} /><span>{teamCode(line.team)} by {line.points}</span></>}</span>}
+        {outs.length > 0 && <span className="wpc-out" title="Players ESPN lists as Out">{outs.map(t => <span key={t.side} className="wpc-out-team"><TeamLogo team={logoTeam(t)} season={season} size={16} /><span>{t.out} out</span></span>)}</span>}
       </span>}
     </span>
   </Link>;
@@ -118,7 +120,7 @@ function Board({ board, loading, error, day }: { board: Board | null; loading: b
       : board && board.games.length ? <>
         <ol className="wpc-grid" aria-label="Predictions">{board.games.map(game => <li key={game.source_id}><PredictionCard game={game} /></li>)}</ol>
         <p className="wp-note wpc-caption" data-field="slate-day" data-day={board.day}>{board.fallback ? `No games today. The latest slate, ${formatDate(board.day)}. ` : ""}{board.today || board.fallback ? "Sealed before tip-off; the chance does not move during the game. Open a game for the live chart and the why." : "Each call as sealed before tip-off, and whether it was right."}</p>
-      </> : <p className="wp-lead" data-field="slate-empty">{day ? "No games on this day." : "No games are scheduled. The first slate of the next season appears here with CourtLens's call for each game."}</p>}
+      </> : <p className="wp-lead" data-field="slate-empty">{day ? "No games on this day." : "No games are scheduled. The first slate of the next season appears here with CourtLens' call for each game."}</p>}
   </ResearchSection>;
 }
 
@@ -128,7 +130,7 @@ function RecordTile({ name, sub, icon, right, games, tone }: { name: string; sub
   const share = right != null && games ? right / games : null;
   return <div className="wp-tile" data-tone={tone}>
     <dt><span className="wp-tile-icon"><Icon name={icon} size={16} /></span><span>{name}<small>{sub}</small></span></dt>
-    <dd>{right != null && games ? `${whole(right)} of ${whole(games)}` : "—"}<span className="wp-tile-pct">{share != null ? pct(right!, games) : "first grades at 9:00 ET"}</span></dd>
+    <dd>{right != null && games ? `${whole(right)} of ${whole(games)}` : "—"}<span className="wp-tile-pct">{share != null ? pct(right!, games) : "first grades at 9:00 AM ET"}</span></dd>
     <span className="wp-tile-meter" aria-hidden="true" style={vars({ "--wp-share": `${(share ?? 0) * 100}%` })} />
   </div>;
 }
@@ -138,19 +140,20 @@ export function TrackRecord({ data }: { data: WinProbabilityPage }) {
   const cal = data.head_to_head_calibration;
   const rec = h?.record_of_calls;
   const graded = !!rec && rec.games > 0;
+  const tossUps = rec ? rec.toss_ups_by_model?.original ?? rec.toss_ups : 0;
   return <ResearchSection id="track-record" icon="target" title="Track record">
     {graded ? <p className="wp-lead" data-field="record" data-games={rec.games} data-market={rec.market_informed} data-original={rec.original}>
-      On {whole(rec.games)} {rec.games === 1 ? "game" : "games"} since the freeze, CourtLens picked the winner {whole(rec.market_informed)} times ({pct(rec.market_informed, rec.games)}).
-    </p> : <p className="wp-lead" data-field="record-empty">No game graded yet. Each night&apos;s games are graded the next morning at 9:00 ET.</p>}
+      On {whole(rec.games)} {rec.games === 1 ? "game" : "games"} since the Market-informed model&apos;s freeze, CourtLens&apos; own read picked the winner {whole(rec.original)} times ({pct(rec.original, rec.games)}).
+    </p> : <p className="wp-lead" data-field="record-empty">No game graded yet. Each night&apos;s games are graded the next morning at 9:00 AM ET.</p>}
     <dl className="wp-tiles" data-field="record-table">
-      <RecordTile name="Market-informed" sub="serving" icon="scale" right={graded ? rec.market_informed : null} games={rec?.games ?? 0} tone="serving" />
-      <RecordTile name="Original" sub="own read only" icon="chart" right={graded ? rec.original : null} games={rec?.games ?? 0} tone="plain" />
+      <RecordTile name="CourtLens' own read" sub="Original model, leads" icon="chart" right={graded ? rec.original : null} games={rec?.games ?? 0} tone="serving" />
+      <RecordTile name="With the betting line" sub="Market-informed, on trial" icon="scale" right={graded ? rec.market_informed : null} games={rec?.games ?? 0} tone="plain" />
       <RecordTile name="The betting line" sub="its favourite" icon="trend" right={graded && rec.line.games ? rec.line.right : null} games={rec?.line.games ?? 0} tone="plain" />
     </dl>
-    {graded && <p className="wp-note">An even call counts half.{rec.toss_ups ? ` ${whole(rec.toss_ups)} ${rec.toss_ups === 1 ? "game was a toss-up" : "games were toss-ups"} (45% to 55%).` : ""}</p>}
+    {graded && <p className="wp-note">An even call counts half.{tossUps ? ` ${whole(tossUps)} ${tossUps === 1 ? "game was a toss-up" : "games were toss-ups"} (45% to 55%).` : ""}</p>}
     {cal && <>
-      <CalibrationChart label="Calibration on the graded games" series={[{ name: "Market-informed", key: "courtlens", curve: cal.market_informed.curve }, { name: "Original", key: "baseline", curve: cal.original.curve }]} />
-      <p className="wp-note" data-field="calibration">When CourtLens says 70%, that team should win about 7 times in 10. Calibration error {metric(cal.market_informed.calibration_error, 3)} (Market-informed) and {metric(cal.original.calibration_error, 3)} (Original), {whole(cal.games)} games.</p>
+      <CalibrationChart label="Calibration on the graded games" series={[{ name: "Own read (Original)", key: "courtlens", curve: cal.original.curve }, { name: "With the betting line", key: "baseline", curve: cal.market_informed.curve }]} />
+      <p className="wp-note" data-field="calibration">When CourtLens says 70%, that team should win about 7 times in 10. Calibration error {metric(cal.original.calibration_error, 3)} (own read) and {metric(cal.market_informed.calibration_error, 3)} (with the betting line), {whole(cal.games)} games.</p>
     </>}
   </ResearchSection>;
 }
@@ -174,7 +177,7 @@ export function HowItWorks({ data, games }: { data: WinProbabilityPage; games: L
   const options: FlowOption[] = games.filter(g => g.prediction?.status === "sealed").map(g => ({ game: g }));
   if (game && example?.why) options.push({ game, why: example.why, example: true });
   return <ResearchSection id="how" icon="layers" title="How the model works">
-    <p className="wp-lead" data-field="weight" data-w={w}>Four pregame inputs add up to CourtLens&apos;s own read. {w != null && w >= 0.995 ? "With a betting line, the pregame margin follows the line (its fitted weight is 100%); without one, it is the own read." : `The betting line moves it by a fitted weight${w != null ? ` of ${Math.round(w * 100)}%` : ""}.`} An in-game engine then turns that margin into a win chance, play by play.</p>
+    <p className="wp-lead" data-field="weight" data-w={w}>Four pregame inputs add up to CourtLens&apos; own read, and an in-game engine turns that margin into a win chance, play by play. That is the number CourtLens leads with. A second model, on trial, {w != null && w >= 0.995 ? "swaps the own read for the betting line (the fit gave the line a weight of 100%)" : `moves the own read toward the betting line by a fitted weight${w != null ? ` of ${Math.round(w * 100)}%` : ""}`}; its number is shown beside as &ldquo;with the line&rdquo;.</p>
     <ModelFlow options={options} data={data} />
     {example?.why && game ? <Toggle label="The worked example, in full">
       <p className="wp-note" data-field="example-rule">Chosen by rule: {example.rule.replace(/^./, c => c.toLowerCase())}</p>
@@ -217,7 +220,11 @@ export function Trial({ data }: { data: WinProbabilityPage }) {
     <div className="wp-toggles">
       <Toggle label="How the trial works" id="trial-how">
         <p className="wp-note">The Market-informed model uses the betting line, which was expected to improve its pregame number. The trial asks whether it also beats the Original over whole games, on games neither model had seen. V1 compares pregame margin errors, V2 whole-game log loss; above zero, the Market-informed model did better.</p>
-        {h && <p className="wp-note" data-field="serving" data-model={h.serving_model.model}>Live uses the {h.serving_model.model === "market_informed" ? "Market-informed model" : "Original"}: {h.serving_model.reason}. If a read finds it worse, Live returns to the Original.</p>}
+        {h && <p className="wp-note" data-field="serving" data-model={h.serving_model.model} data-registered={h.serving_model.registered_rule?.model}>{h.serving_model.model === "market_informed"
+          ? `Live uses the Market-informed model: ${h.serving_model.reason}. If a read finds it worse, Live returns to the Original.`
+          : h.serving_model.registered_rule
+            ? `Live leads with CourtLens' own read (the Original model) and shows the Market-informed model's number beside it, by the owner's decision${h.serving_model.since ? ` of ${formatDate(h.serving_model.since)}` : ""}. The registered rule would show the ${h.serving_model.registered_rule.model === "market_informed" ? "Market-informed model" : "Original"}: ${h.serving_model.registered_rule.reason}. The trial is unaffected: both models are graded from the same seals. See the protocol notes.`
+            : `Live uses the Original: ${h.serving_model.reason}.`}</p>}
       </Toggle>
       {notes.length > 0 && <Toggle label={`Protocol notes (${notes.length})`} id="protocol-notes">
         <ul className="wp-findings" data-field="protocol-notes">{notes.map(n => <li key={`${n.date}-${n.kind}`}><strong>{formatDate(n.date)}.</strong> {n.note}</li>)}</ul>

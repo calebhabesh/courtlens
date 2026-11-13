@@ -69,8 +69,8 @@ def live_game_win_probability(
     session: Session = Depends(get_db),
     provider: ESPNLiveProvider = Depends(get_provider),
 ) -> dict[str, Any]:
-    """The serving CourtLens model's line for one game, with its version and hash (W3b: the
-    Market-informed model unless a registered read returned Live to the Original)."""
+    """CourtLens' line for one game, with its version and hash: the Original's (W-D16), and
+    beside it the Market-informed model's for a game sealed after its freeze with a line."""
     from courtlens.services.win_probability_head_to_head import live_probability
 
     if not game_id.isdigit() or len(game_id) > 20:

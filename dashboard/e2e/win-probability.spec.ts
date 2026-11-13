@@ -17,8 +17,14 @@ test("Live: CourtLens beside ESPN with a toggle, swings and the model's identity
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/live/games/401909869?date=2026-10-26");
   const panel = page.getByRole("region", { name: "Probabilities & Game Flow" });
-  await expect(panel.getByRole("img", { name: /Win probability by CourtLens/ })).toBeVisible();
-  await expect(panel.getByRole("img", { name: /Win probability by ESPN Analytics/ })).toBeVisible();
+  const courtlensPlot = panel.getByRole("img", { name: /Win probability by CourtLens/ });
+  const espnPlot = panel.getByRole("img", { name: /Win probability by ESPN Analytics/ });
+  await expect(courtlensPlot).toBeVisible();
+  await expect(espnPlot).toBeVisible();
+  const [courtlensBox, espnBox] = [await courtlensPlot.boundingBox(), await espnPlot.boundingBox()];
+  expect(espnBox!.y).toBeGreaterThanOrEqual(courtlensBox!.y + courtlensBox!.height);
+  expect(Math.abs(espnBox!.x - courtlensBox!.x)).toBeLessThanOrEqual(2);
+  if (process.env.W4_EVIDENCE_DIR) await panel.screenshot({ path: `${process.env.W4_EVIDENCE_DIR}/w4-flow-stacked-1440.png` });
   await expect(panel.getByText(line.model.manifest_sha256.slice(0, 12))).toBeVisible();
   await expect(panel.getByRole("list", { name: "Biggest swings" }).getByRole("listitem")).toHaveCount(line.swings!.length);
   await panel.getByRole("radiogroup", { name: "Model" }).getByRole("radio", { name: "ESPN" }).click();
@@ -28,6 +34,26 @@ test("Live: CourtLens beside ESPN with a toggle, swings and the model's identity
   await panel.getByRole("radiogroup", { name: "Chart" }).getByRole("radio", { name: "Game Flow" }).click();
   await expect(panel.getByRole("img", { name: /Game flow/ })).toBeVisible();
   await expect(panel.getByRole("list", { name: "Biggest swings" })).toBeVisible();
+});
+
+test("Live: the line with the betting line is a dashed second trace over the own read's (test data)", async ({ page }) => {
+  // W-D16. TEST DATA: the real line shifted by a constant stands in for the Market-informed model's.
+  const second = line.points!.map(p => ({ ...p, home: Math.min(0.99, p.home + 0.05) }));
+  await mockLive(page, { ...line, market_informed: { model: { ...line.model, version: "courtlens-win-probability-v4-frozen-2026-27" }, market: { own: 2, line: 7.5, mu4: 7.5, w: 1 }, points: second } });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/live/games/401909869?date=2026-10-26");
+  const panel = page.getByRole("region", { name: "Probabilities & Game Flow" });
+  await expect(panel.getByRole("img", { name: /Win probability by CourtLens.*with the betting line/ })).toBeVisible();
+  await expect(panel.locator(".live-flow-second")).toHaveCount(1);
+  await expect(panel.locator('[data-field="with-line"]')).toContainText("With the betting line (second model, on trial):");
+  // The model named under the chart is still the Original: its line leads.
+  await expect(panel.getByText(line.model.manifest_sha256.slice(0, 12))).toBeVisible();
+  // ESPN's plot never carries the second trace, and without a market line there is none at all.
+  await mockLive(page);
+  await page.reload();
+  await expect(panel.getByRole("img", { name: /Win probability by CourtLens/ })).toBeVisible();
+  await expect(panel.locator(".live-flow-second")).toHaveCount(0);
+  await expect(panel.locator('[data-field="with-line"]')).toHaveCount(0);
 });
 
 test("Live: a game with no sealed inputs shows ESPN and says why", async ({ page }) => {
@@ -59,7 +85,8 @@ test.describe("F03 Win Probability research page", () => {
     const tied = gap.low <= 0 && gap.high >= 0;
     if (tied) await expect(headline).toContainText("can't be told apart");
     await expect(headline).toContainText(`${wp.scorecard!.prospective.games} games`);
-    await expect(page.locator('[data-field="hero-meta"]')).toContainText(`${wp.scorecard!.prospective.games} games since the freeze`);
+    // W-D16: the hero names the model the page leads with, the own read, and its freeze date.
+    await expect(page.locator('[data-field="hero-meta"]')).toHaveText("CourtLens' own read · Original model, frozen Nov 4, 2026 · graded every morning");
     const strip = page.locator('[data-chart="gap"]');
     expect(await num(strip, "data-left")).toBeLessThanOrEqual(0);
     expect(await num(strip.locator('[data-row="courtlens"]'), "data-value")).toBe(wp.scorecard!.prospective.same_events!.courtlens_log_loss);
@@ -139,6 +166,17 @@ test.describe("F03 Win Probability research page", () => {
     await expect(finding).toContainText(`same ${up.games.toLocaleString("en-US")} test games`);
     await expect(finding).toContainText("includes zero, so the frozen model stays");
     await expect(finding).toContainText("an overtime model was tried and not kept");
+    // courtlens-pregame-nonlinear-v1: trees on the own read's inputs, every number from the served result.
+    const nl = wp.pregame_nonlinear!, nonlinear = page.locator('[data-field="nonlinear"]');
+    expect(await num(nonlinear, "data-linear")).toBe(nl.linear.rmse);
+    expect(await num(nonlinear, "data-trees")).toBe(nl.candidates.trees.rmse);
+    expect(await num(nonlinear, "data-plus")).toBe(nl.candidates.linear_plus_trees.rmse);
+    await expect(nonlinear).toHaveAttribute("data-trees-result", nl.candidates.trees.result);
+    await expect(nonlinear).toHaveAttribute("data-plus-result", nl.candidates.linear_plus_trees.result);
+    await expect(nonlinear).toContainText("A non-linear own read was tested and did not help.");
+    await expect(nonlinear).toContainText(`${nl.candidates.trees.rmse.toFixed(2)} points against ${nl.linear.rmse.toFixed(2)} for the linear model: worse`);
+    await expect(nonlinear).toContainText(`${nl.candidates.linear_plus_trees.rmse.toFixed(2)}: no clear difference`);
+    await expect(nonlinear).toContainText(`On ${nl.games.toLocaleString("en-US")} games of 2022-23 to 2025-26, seasons already read, so this is a diagnostic`);
   });
 
   test("win probability added: one sortable grid with photos, sorted not ranked, season in the URL", async ({ page }) => {

@@ -28,8 +28,8 @@
   .lp-split > [data-side="home"] { flex: 1; background: var(--live-home); }
   .lp-split > span + span { border-inline-start: 2px solid var(--color-surface-2); }
 
-  .lp-headline { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-2); margin: 0; font-size: var(--text-md); }
-  .lp-team { display: inline-flex; align-self: center; align-items: center; gap: var(--space-1); }
+  .lp-headline { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); margin: 0; font-size: var(--text-md); line-height: 1.2; }
+  .lp-team { display: inline-flex; align-items: center; gap: var(--space-1); }
 
   .lp-section { display: grid; gap: var(--space-3); }
   .lp-section h3 { display: flex; align-items: center; gap: var(--space-2); margin: 0; padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-hairline); color: var(--color-text); font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 700; }
@@ -42,20 +42,23 @@
   .lp-bar-value { font-size: var(--text-sm); font-weight: 600; font-variant-numeric: tabular-nums; text-align: end; white-space: nowrap; }
   .lp-bar-value[data-side="away"] { color: color-mix(in srgb, var(--live-away) 65%, var(--color-text)); }
   .lp-bar-value[data-side="home"] { color: color-mix(in srgb, var(--live-home) 65%, var(--color-text)); }
-  .lp-bar-axis { min-height: 40px; }
-  .lp-axis-label { grid-column: 2; display: flex; justify-content: space-between; gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-xs); }
+  .lp-bar-axis { min-height: 48px; margin-bottom: var(--space-1); }
+  .lp-axis-label { grid-column: 2; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-2) var(--space-3); color: var(--color-text); font-size: var(--text-md); font-weight: 600; line-height: 1.2; }
   .lp-axis-team { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .lp-axis-team[data-side="home"] { margin-inline-start: auto; }
   .lp-bar-track { position: relative; height: 14px; }
   .lp-bar-track::before { content: ""; position: absolute; inset-block: -6px; inset-inline-start: 50%; width: 1px; background: var(--color-hairline-strong); }
   .lp-bar { position: absolute; inset-block: 0; width: var(--lp-width); background: var(--live-home); opacity: 0.75; }
   .lp-bar[data-side="home"] { inset-inline-start: 50%; border-radius: 0 var(--radius-xs) var(--radius-xs) 0; }
   .lp-bar[data-side="away"] { inset-inline-end: 50%; border-radius: var(--radius-xs) 0 0 var(--radius-xs); background: var(--live-away); }
-  .lp-bar-row[data-kind="own"], .lp-bar-row[data-kind="prediction"] { border-top: 1px solid var(--color-hairline); padding-top: var(--space-1); }
-  .lp-bar-row[data-kind="own"] .lp-bar-label, .lp-bar-row[data-kind="prediction"] .lp-bar-label { color: var(--color-text); font-weight: 650; }
+  .lp-bar-row[data-kind="prediction"] { margin-top: var(--space-1); border-top: 1px solid var(--color-hairline); padding-block: var(--space-3) var(--space-1); }
+  .lp-bar-row[data-kind="prediction"] .lp-bar-label { color: var(--color-text); font-weight: 650; }
   .lp-bar-row[data-kind="prediction"] .lp-bar { opacity: 1; }
   .lp-bar-row[data-kind="prediction"] .lp-bar-track { height: 18px; }
   .lp-bar-row[data-kind="prediction"] .lp-bar-icon { background: color-mix(in srgb, var(--color-accent) 22%, transparent); color: var(--color-accent); }
+  /* W-D16: the same seal with the betting line, a quieter comparison under the prediction. */
   .lp-bar-row[data-kind="market"] .lp-bar { opacity: 0.5; }
+  .lp-bar-row[data-kind="market"] .lp-bar-label, .lp-bar-row[data-kind="market"] .lp-bar-value { color: var(--color-text-secondary); }
   .lp-callout { display: flex; align-items: flex-start; gap: var(--space-2); margin: 0; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
   .lp-callout svg { flex: none; margin-top: var(--space-0-5); color: var(--color-text-tertiary); }
 
@@ -86,7 +89,7 @@
   .lp-out-team[data-side="home"] .lp-minutes > span { background: var(--live-home); }
 
   .lp-arrow { vertical-align: -2px; }
-  .lp-mark { display: inline-flex; align-items: center; gap: var(--space-0-5); }
+  .lp-mark { display: inline-flex; align-items: center; gap: var(--space-0-5); font-weight: 700; letter-spacing: 0.03em; line-height: 1; }
   .lp-result { margin: 0; font-size: var(--text-sm); font-weight: 600; }
   .lp-result[data-right="true"] .lp-mark { color: var(--color-positive); }
   .lp-result[data-right="false"] .lp-mark { color: var(--color-negative); }

@@ -89,7 +89,7 @@ it("records read with an en dash", () => {
 });
 
 describe("the card's sealed call (W4)", () => {
-  const sealed = { status: "sealed" as const, model: "market_informed" as const, home_win: 0.2875, favourite: "away" as const, probability: 0.7125, toss_up: false, captured_at: "2026-11-12T19:10:34+00:00", right: null };
+  const sealed = { status: "sealed" as const, model: "original" as const, home_win: 0.2875, favourite: "away" as const, probability: 0.7125, toss_up: false, captured_at: "2026-11-12T19:10:34+00:00", right: null };
   it("shows nothing before any real seal and says so when none was sealed", () => {
     expect(predictionCall({ status: "scheduled", prediction: null })).toBeNull();
     expect(predictionCall({ status: "scheduled", prediction: { status: "no_seal" } })?.kind).toBe("none");
@@ -101,6 +101,12 @@ describe("the card's sealed call (W4)", () => {
     expect(predictionCall({ status: "final", prediction: { ...sealed, right: false } })).toMatchObject({ kind: "called", right: false });
   });
   it("names the model only in the title", () => {
-    expect(predictionCall({ status: "scheduled", prediction: sealed })?.title).toMatch(/^Market-informed model \(on trial\): the sealed tip-off probability, sealed 2:10 PM EST/);
+    expect(predictionCall({ status: "scheduled", prediction: sealed })?.title).toMatch(/^CourtLens' own read \(Original model\): the sealed tip-off probability, sealed 2:10 PM EST/);
+  });
+  it("carries the call with the betting line beside it, only when the seal had a line", () => {
+    expect(predictionCall({ status: "scheduled", prediction: sealed })?.withLine).toBeUndefined();
+    expect(predictionCall({ status: "scheduled", prediction: { ...sealed, market_informed_home_win: null } })?.withLine).toBeUndefined();
+    expect(predictionCall({ status: "scheduled", prediction: { ...sealed, market_informed_home_win: 0.158 } })).toMatchObject({ side: "away", percent: 71, withLine: { side: "away", percent: 84 } });
+    expect(predictionCall({ status: "final", prediction: { ...sealed, market_informed_home_win: 0.56 } })?.withLine).toEqual({ side: "home", percent: 56 });
   });
 });
