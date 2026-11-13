@@ -86,7 +86,7 @@ test.describe("F03 Win Probability research page", () => {
     if (tied) await expect(headline).toContainText("can't be told apart");
     await expect(headline).toContainText(`${wp.scorecard!.prospective.games} games`);
     // W-D16: the hero names the model the page leads with, the own read, and its freeze date.
-    await expect(page.locator('[data-field="hero-meta"]')).toHaveText("CourtLens' own read · Original model, frozen Nov 4, 2026 · graded every morning");
+    await expect(page.locator('[data-field="hero-meta"]')).toHaveText("CourtLens' own read · Original model, frozen Nov 4, 2026 · graded after every game");
     const strip = page.locator('[data-chart="gap"]');
     expect(await num(strip, "data-left")).toBeLessThanOrEqual(0);
     expect(await num(strip.locator('[data-row="courtlens"]'), "data-value")).toBe(wp.scorecard!.prospective.same_events!.courtlens_log_loss);

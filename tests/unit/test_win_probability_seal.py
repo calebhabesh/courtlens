@@ -415,6 +415,108 @@ def test_next_run(now, last_tip, expected):
     assert seal.next_run(now, last_tip) == expected
 
 
+@pytest.mark.parametrize(
+    ("now", "last_tip", "expected"),
+    [
+        # After the last tip the job stays on the :25 and :55 grid while a game is ungraded.
+        (eastern(11, "21:55"), "2026-11-12T03:00Z", eastern(11, "22:25")),
+        (eastern(11, "23:56"), "2026-11-12T03:00Z", eastern(12, "00:25")),
+        # After midnight the scoreboard is the new day's; last night's game still counts.
+        (eastern(12, "00:25"), "2026-11-13T00:00Z", eastern(12, "00:55")),
+        # During the slate it changes nothing: the grid already runs.
+        (eastern(11, "19:25"), "2026-11-12T03:00Z", eastern(11, "19:55")),
+        # A run that starts a few seconds late still lands on the grid.
+        (eastern(11, "22:25").replace(second=40), None, eastern(11, "22:55")),
+    ],
+)
+def test_the_job_keeps_running_while_a_game_awaits_its_grade(now, last_tip, expected):
+    assert seal.next_run(now, last_tip, awaiting=True) == expected
+
+
+def event(game_id, tip, state="in", completed=False, season_type=2):
+    return {
+        "id": game_id,
+        "date": tip,
+        "season": {"type": season_type},
+        "status": {"type": {"state": state, "completed": completed}},
+    }
+
+
+def test_awaiting_grade_counts_tipped_games_not_yet_on_the_scorecard():
+    now = datetime(2026, 11, 12, 3, 30, tzinfo=UTC)
+    boards = [
+        {
+            "events": [
+                event("1", "2026-11-12T00:00Z", "post", True),  # final, graded
+                event("2", "2026-11-12T00:30Z", "post", True),  # final, not graded yet
+                event("3", "2026-11-12T03:00Z"),  # in progress
+                event("4", "2026-11-12T04:00Z", "pre"),  # not tipped
+                event("5", "2026-11-12T00:00Z", "post", False),  # postponed
+                event("6", "2026-11-12T00:00Z", "in", season_type=1),  # preseason
+                event("7", "2026-11-11T20:00Z", "post", True),  # tipped over six hours ago
+            ]
+        },
+        {"events": [event("3", "2026-11-12T03:00Z")]},
+    ]
+    assert seal.awaiting_grade(boards, {"1"}, now) == ["2", "3"]
+    assert seal.awaiting_grade(boards, {"1", "2", "3"}, now) == []
+    assert seal.awaiting_grade([{}], set(), now) == []
+
+
+def stub_summaries(monkeypatch):
+    monkeypatch.setattr(production, "get_model", lambda: InputsModel())
+    monkeypatch.setattr(production, "write_availability_checks", lambda: {})
+    monkeypatch.setattr(production, "write_wpa_summary", lambda _: None)
+    monkeypatch.setattr(
+        production,
+        "write_summary",
+        lambda: {
+            "games_scored": 0,
+            "prospective": {"games": 0},
+            "drift": {"latest": {"status": "x"}},
+        },
+    )
+
+
+def test_a_run_grades_todays_date_after_the_seal_and_reports_what_still_waits(slate, monkeypatch):
+    order = []
+    real_seal = seal.seal_slate
+
+    def sealing(*args):
+        order.append("seal")
+        return real_seal(*args)
+
+    def scoring(day, *_):
+        order.append(day.isoformat())
+        return {"scored": 0}
+
+    stub_summaries(monkeypatch)
+    monkeypatch.setattr(seal, "seal_slate", sealing)
+    monkeypatch.setattr(production, "score_date", scoring)
+    report = seal.run(Client(), NOW)
+    assert order == ["seal", "2026-11-08", "2026-11-09", "2026-11-10", "2026-11-11"]
+    # The fixture slate has not tipped at NOW, so nothing waits for a grade.
+    assert report["awaiting_grade"] == [] and report["seal_sealed"]
+    after_tip = datetime(2026, 11, 12, 1, 0, tzinfo=UTC)
+    assert seal.run(Client(), after_tip)["awaiting_grade"] == ["401", "402"]
+
+
+def test_a_seal_failure_still_grades_then_fails_the_run(slate, monkeypatch):
+    scored = []
+
+    def broken(*_):
+        raise ValueError("no ESPN roster bundle")
+
+    stub_summaries(monkeypatch)
+    monkeypatch.setattr(seal, "seal_slate", broken)
+    monkeypatch.setattr(
+        production, "score_date", lambda day, *_: scored.append(day) or {"scored": 0}
+    )
+    with pytest.raises(ValueError, match="roster bundle"):
+        seal.run(Client(), NOW)
+    assert len(scored) == 4
+
+
 def test_daylight_saving_keeps_eastern_clock_times():
     # 2027-03-14 is the spring change; 12:25 is 16:25 UTC that day, 17:25 the day before.
     before = seal.next_run(datetime(2027, 3, 13, 14, 0, tzinfo=UTC), "2027-03-14T00:00Z")
