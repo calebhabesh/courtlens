@@ -432,3 +432,51 @@ Still to do: the owner merges #104. The deploy of `main` is also W7b's B6 and B7
 copying data and starts the `jobs` service on the VPS while the PC's timers and push still run,
 so it belongs in the runbook's window (after the 09:00 ET seal run, before noon, owner present),
 followed by B8 to B11.
+
+## 2026-11-13 — W7b B1, B6–B11 on the VPS; grading moved to right after each game
+
+With the owner at the PC from about 11:15 ET. Releases `5d608d81` (#104) and `61de4107` (#105)
+deployed. Nothing marked ✅.
+
+- **First grades (09:00 ET run, 14:00:03Z).** 2026-11-12's 4 games scored for both models, no
+  error: the own read, the Market-informed model and the line each called 4 of 4.
+- **B6, deploys stop copying data.** Before and after each deploy, nothing under `data/` changed
+  except the seal service's and the jobs' own files (`find data -newer <marker>`).
+- **B7, the `jobs` service** started with `5d608d81`. Each job recorded a first-seen baseline and
+  waits for its next scheduled time; `GET /api/job-health` serves them.
+- **B1.** The PC's push unit removed at 16:19Z.
+- **B8, rosters.** The VPS (157 s) and the PC (154 s, 211 MB) ran at the same minute. Same 522
+  players, all equal field for field; the bundle hashes differ only because the roster digest
+  includes the player-index dataset id, which each database assigns itself. PC roster timer
+  removed.
+- **B9, the daily refresh.** First VPS run: 234 s, 408 MB, exit 0, but the statistics release
+  did not advance: the PC's push had already copied the morning's box scores, so the step saw
+  nothing new and skipped the publish. Forced (`refresh-season-stats --force`), it then failed in
+  dbt: the image installs the package into site-packages, so the dbt project path pointed at
+  `/usr/local/lib/python3.12/warehouse`. Fixed in #105 (`warehouse_dir()`, plus
+  `DBT_TARGET_PATH`/`DBT_LOG_PATH`, since uid 1001 can't write the image's `/app/warehouse`).
+  The failed attempt had imported a dataset that was never published; the next publish retired
+  it. With `61de4107`: 828 s, 1.1 GB peak, dbt 93 of 93, 171 Stats cohorts built. **Equal to the
+  PC's release:** 32,925 mart rows; 2026-27 regular season 531 rows, 39,416 points, 15,227
+  rebounds, 9,100 assists, 83,898.8 minutes; 2,689,351 player games. Box-score CSVs identical by
+  hash. DARKO: 528 players, ratings identical (only ids and timestamps differ). Wikipedia bundle
+  identical by hash. PC daily timer removed.
+- **B10, rating snapshots.** The refit failed on the VPS too: it checks sealed contracts and
+  evidence under `docs/` (IM03 acceptance, IM04 artifacts, `docs/design`) that the image didn't
+  ship; the weekly season impact reads the same files. Added to the image in #105 (about 4 MB).
+  With them mounted into the then-current image, the 2026-11-01 snapshot refit on the VPS (325 s,
+  1.3 GB) equals the PC's file to **5.8e-11** over 1,076 players (limit 0.01); the intercept and
+  home terms differ in the 14th digit, so no sealed game's own forecast moves. The newest
+  snapshot was not replaced. No snapshot is due until 2026-12-01.
+- **B11.** During the daily run the public `/api/health`, `/api/win-probability` and
+  `/api/live` stayed under 0.11 s p95 (20 samples each). `/stats` took 8 s for about 15 minutes
+  after the publish, until Postgres auto-analyzed `workbench_player_games` (18:36:41Z); then
+  0.79 s. Disk: 124 GB free of 193 GB, `data/` 18 GB.
+- **Grading right after each game** (the owner's decision, #105). The seal job scores today's date
+  and keeps running at :25 and :55 Eastern after the last tip while a game that tipped within six
+  hours is ungraded; 09:00 stays as a catch-up. Fifth protocol note `grading_time_moved`. The
+  first run in `61de4107` (18:19:50Z) saw today's 9 games as not final and reported
+  `awaiting_grade: []`.
+
+Still on the PC: the lineups, Metric Backtest and season impact timers (W7c C1) and the scratch
+cleanup. Next: tonight's grading runs (check the log after the last game), then W7c.
