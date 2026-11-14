@@ -2415,7 +2415,7 @@ export type PlayerBio = {
   age: number | null;
   country: string | null;
   college: string | null;
-  draft: { year: number; round: number | null; pick: number | null; team_id: string | null; team_tricode: string | null; organization: string | null } | null;
+  draft: { year: number; round: number | null; pick: number | null; team_id: string | null; team_tricode: string | null; organization: string | null; organization_type?: string | null } | null;
   undrafted: boolean;
   combine: {
     draft_year: number;
@@ -2436,6 +2436,10 @@ export type PlayerBio = {
     honours: string[]; awards: Record<string, string[]>; all_star_seasons: string[];
     salary_history?: PlayerSalary[]; career_earnings?: string | null;
     current_contract?: PlayerSalary[]; remaining_guaranteed?: PlayerGuarantee | null;
+    /** The last college Basketball-Reference lists; location (Sports-Reference) and logo (ESPN)
+     *  where the school could be placed. */
+    college?: { name: string; school: string | null; location: string | null; logo_url: string | null;
+      source_url: string | null; attribution: string | null } | null;
     contract_events?: PlayerReferenceEvent[]; transactions?: PlayerReferenceEvent[];
     contract_spans?: PlayerContractSpan[];
     /** Signings no span could be placed for (an extension's start or a contract's end unknown). */

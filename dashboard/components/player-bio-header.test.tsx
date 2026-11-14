@@ -26,3 +26,38 @@ it("names an active listing without a last-team prefix", () => {
   expect(screen.getByText("Toronto Raptors")).toBeTruthy();
   expect(screen.queryByText(/Last with/)).toBeNull();
 });
+
+const reference = {
+  source: "Basketball-Reference.com", url: "https://www.basketball-reference.com/players/b/brunsja01.html", as_of: "2026-11-14",
+  birthplace: null, high_school: null, shoots: null, debut_date: null, honours: [], awards: {}, all_star_seasons: [],
+};
+
+it("shows the college with its logo and location, and the draft team by its full name then", () => {
+  render(<PlayerBioHeader name="Fixture Guard" playerId="24" team={null} currentSeason="2025-26" actions={null} bio={{
+    ...bio, college: "Villanova",
+    // NBA.com's draft record can name the school differently ("California-Los Angeles" for UCLA).
+    draft: { year: 2018, round: 2, pick: 33, team_id: "1610612742", team_tricode: "DAL", organization: "Villanova University", organization_type: "College/University" },
+    reference: { ...reference, college: { name: "Villanova", school: "Villanova Wildcats", location: "Villanova, Pennsylvania",
+      logo_url: "/api/workbench/college-logos/222", source_url: null, attribution: "Sports-Reference.com college basketball schools" } },
+  }} />);
+  const fact = screen.getByText("College").closest("div")!;
+  expect(fact.textContent).toContain("Villanova, Pennsylvania");
+  expect(fact.querySelector("img")?.getAttribute("src")).toMatch(/\/api\/workbench\/college-logos\/222$/);
+  // The draft names its team in full and no longer repeats the college under it.
+  const draft = screen.getByText("Draft").closest("div")!;
+  expect(draft.textContent).toContain("Dallas Mavericks");
+  expect(draft.textContent).not.toContain("Villanova");
+  expect(fact.textContent).not.toContain("University");
+});
+
+it("names a pick by the team that made it: Seattle in 2008, a club origin stays under Draft", () => {
+  render(<PlayerBioHeader name="Fixture Guard" playerId="24" team={null} currentSeason="2025-26" actions={null} bio={{
+    ...bio, college: null,
+    draft: { year: 2008, round: 1, pick: 4, team_id: "1610612760", team_tricode: "OKC", organization: "Fixture Club" },
+    reference: { ...reference, college: null },
+  }} />);
+  const draft = screen.getByText("Draft").closest("div")!;
+  expect(draft.textContent).toContain("Seattle SuperSonics");
+  expect(draft.textContent).toContain("Fixture Club");
+  expect(screen.queryByText("College")).toBeNull();
+});

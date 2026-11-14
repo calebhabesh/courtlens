@@ -690,6 +690,7 @@ class PlayerBioDraft(BaseModel):
     team_id: str | None
     team_tricode: str | None
     organization: str | None
+    organization_type: str | None = None
 
 
 class PlayerBioCombine(BaseModel):
@@ -772,6 +773,18 @@ class PlayerGameHighs(BaseModel):
     values: dict[str, PlayerGameHighValue]
 
 
+class PlayerCollege(BaseModel):
+    """The last college Basketball-Reference lists, placed in Sports-Reference's schools index
+    (location) with ESPN's logo where both are known; unplaced colleges keep only the name."""
+
+    name: str
+    school: str | None = None
+    location: str | None = None
+    logo_url: str | None = None
+    source_url: str | None = None
+    attribution: str | None = None
+
+
 class PlayerBioReference(BaseModel):
     """Basketball-Reference biography and honours as of its last crawl (career-to-date facts)."""
 
@@ -795,6 +808,7 @@ class PlayerBioReference(BaseModel):
     unplaced_signings: list[PlayerUnplacedSigning] = Field(default_factory=list)
     game_highs: list[PlayerGameHighs] = Field(default_factory=list)
     remaining_guaranteed: PlayerGuarantee | None = None
+    college: PlayerCollege | None = None
 
 
 class PlayerBioResponse(BaseModel):
