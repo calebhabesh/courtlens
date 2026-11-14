@@ -11,6 +11,7 @@ from courtlens.ingestion.bbref_players import (
     confirms_legal_name,
     legal_name,
     match_by_seasons,
+    match_near,
     match_players,
     normalize_name,
     parse_index,
@@ -520,3 +521,77 @@ def test_history_crawl_confirms_provisional_matches_and_rereads_unconfirmed_page
     summary = run()
     assert requested == ["/players/a/"] and summary["skipped"] == 1
     assert len(summary["unconfirmed"]) == 1  # type: ignore[arg-type]
+
+
+def test_near_matches_forgive_one_birth_date_field_or_a_shortened_first_name() -> None:
+    entries = [
+        IndexEntry("sheadja01", "Jamal Shead", 2025, 2026, date(2002, 6, 24)),
+        IndexEntry("huffja01", "Jay Huff", 2022, 2026, date(1998, 8, 25)),
+        IndexEntry("hollaro01", "Ron Holland", 2025, 2026, date(2005, 7, 7)),
+        IndexEntry("swapxx01", "Day Swap", 2020, 2026, date(2000, 4, 3)),
+        IndexEntry("morrima02", "Marcus Morris", 2012, 2026, date(1989, 9, 2)),
+        IndexEntry("morrima03", "Markieff Morris", 2012, 2026, date(1989, 9, 2)),
+        IndexEntry("oldxx01", "Old Timer", 1990, 1995, date(1970, 1, 2)),
+        IndexEntry("twinsa01", "Sam Twin", 2020, 2026, date(2001, 5, 5)),
+        IndexEntry("twinsa02", "Sam Twin", 2020, 2026, date(2001, 6, 5)),
+        IndexEntry("takenxx01", "Taken Page", 2020, 2026, date(2000, 1, 2)),
+    ]
+    players = [
+        NbaPlayer("1", "Jamal Shead", date(2002, 7, 24), 2024, 2026),  # month differs
+        NbaPlayer("2", "Jay Huff", date(1997, 8, 25), 2021, 2026),  # year differs
+        NbaPlayer("3", "Ronald Holland II", date(2005, 7, 7), 2024, 2026),  # Ron is Ronald
+        NbaPlayer("4", "Day Swap", date(2000, 3, 4), 2019, 2026),  # two fields differ
+        NbaPlayer("5", "Mark Morris", date(1989, 9, 2), 2011, 2026),  # Morris twins: ambiguous
+        NbaPlayer("6", "Old Timer", date(1970, 1, 1), 2010, 2015),  # seasons do not overlap
+        NbaPlayer("7", "Sam Twin", date(2001, 5, 6), 2019, 2026),  # two same-name candidates
+        NbaPlayer("8", "Taken Page", date(2000, 1, 1), 2019, 2026),  # page matched elsewhere
+        NbaPlayer("9", "No Birth", None, 2019, 2026),
+    ]
+    assert match_near(entries, players, {"takenxx01"}) == {
+        "1": ("sheadja01", "name+near_birth_date"),
+        "2": ("huffja01", "name+near_birth_date"),
+        "3": ("hollaro01", "surname+birth_date+first_name_prefix"),
+    }
+    # Exact matching still refuses them, so a near match is always recorded as one.
+    assert match_players(entries, players[:3]) == {}
+    # Two players claiming one page leave both unmatched.
+    pair = [players[0], NbaPlayer("10", "Jamal Shead", date(2002, 6, 25), 2024, 2026)]
+    assert match_near(entries, pair, set()) == {}
+
+
+def test_crawl_fetches_near_matches_and_records_their_basis(
+    session: Session, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import httpx
+
+    from courtlens.services import bbref_bio
+
+    index = b"""<html><body><table id="players"><tbody>
+<tr><th data-stat="player" data-append-csv="sheadja01"><a>Jamal Shead</a></th>
+<td data-stat="year_min">2025</td><td data-stat="year_max">2026</td>
+<td data-stat="birth_date" csk="20020624">June 24, 2002</td></tr>
+</tbody></table></body></html>"""
+    pages = {
+        "/players/s/": index,
+        "/players/s/sheadja01.html": _old_page("Jamal Shead", "Jamal Shead"),
+    }
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/robots.txt":
+            return httpx.Response(404)
+        return httpx.Response(200, content=pages[request.url.path])
+
+    players = [(NbaPlayer("1642347", "Jamal Shead", date(2002, 7, 24), 2024, 2026), True)]
+    monkeypatch.setattr(bbref_bio, "candidate_players", lambda _s, history: players)
+    monkeypatch.setattr("courtlens.services.source_acquisition.time.sleep", lambda _: None)
+    with httpx.Client(transport=httpx.MockTransport(respond)) as client:
+        summary = bbref_bio.crawl(
+            session, bbref_bio.BbrefFetcher(session, tmp_path, client), tmp_path, letters="s"
+        )
+    assert summary["matched"] == 0 and summary["near"] == 1 and summary["profiles"] == 1
+    profile = session.scalars(select(BbrefPlayerProfile)).one()
+    assert (profile.player_id, profile.bbref_id, profile.match_basis) == (
+        "1642347",
+        "sheadja01",
+        "name+near_birth_date",
+    )
