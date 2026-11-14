@@ -61,7 +61,7 @@ migration and are deleted in DL08.
 | `--color-accent` | `#ffd166` | Active nav, primary action, focus |
 | `--color-accent-soft` | `rgb(255 209 102 / 12%)` | Selected chip/tab background |
 | `--color-on-accent` | `#0e1013` | Text on the accent |
-| `--color-brand` | `#ff7a2f` | Logo only |
+| `--color-brand` | `#ff7a2f` | Flag accents (Contracts aprons, Free Agency flags). The logo's ball is game-ball brown `#b44d28`, set in the mark and icons (owner, 2026-11-14) |
 | `--color-positive` / `--color-negative` / `--color-info` | `#60d394` / `#ff6b6b` / `#67aaf9` | Data semantics |
 | `--focus-ring` | `0 0 0 2px var(--color-surface-0), 0 0 0 4px var(--color-accent)` | All focusable elements (`:focus-visible`) |
 
@@ -293,7 +293,12 @@ Rules:
   `box-shadow` and `clip-path`. Never animate width, height, top/left or padding. For height
   changes (accordions, expanding rows), use `grid-template-rows: 0fr → 1fr` or motion `layout`.
 - Exits are faster than enters (`--dur-fast` vs. `--dur-base`).
-- No UI-response animation runs longer than 320ms, except the first chart draw (450ms).
+- No UI-response animation runs longer than 320ms, except the first chart draw (450ms) and the
+  brand mark's hover spin (owner, 2026-11-14): pointing at or keyboard-focusing the header or footer
+  brand link spins the logo's ball clockwise in place inside the lens, up to 1.5 turns a second;
+  leaving winds it down, still clockwise, to its resting seams within 1.6s
+  (`components/spinning-brand-mark.tsx`, spin timing in `lib/ball-seams.ts`). Touch never starts it and
+  reduced motion keeps it still. The mark elsewhere (exports, avatars, `CourtLensSays`) stays static.
 - Hover-intent: menus open after 80ms of hover and close after 150ms of leave. Clicks open them
   immediately.
 - **Reduce motion:** replace the current global `animation: none !important; transition: none
