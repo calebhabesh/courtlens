@@ -195,7 +195,9 @@ from courtlens.services.portrait_derivatives import (
 from courtlens.services.position_estimates import (
     draft_class_player_ids,
     draft_classes,
+    position_coverage,
     position_player_ids,
+    season_estimates,
     season_positions,
 )
 from courtlens.services.roster_shapes import roster_shape_history, roster_shapes
@@ -394,6 +396,7 @@ def get_catalog(
         capabilities=capabilities,
         impact=impact_catalog_scope(),
         darko=darko_catalog_scope(),
+        position_estimates=position_coverage(),
     )
 
 
@@ -1028,7 +1031,7 @@ def execute_query_endpoint(
                 )
             }
         )
-    positions = season_positions(position_scope)
+    positions = season_estimates(position_scope)
     view_impact = impact_query_fields(spec)
 
     # Presentation queries page through a cached whole cohort: display filters never re-run
@@ -1087,7 +1090,9 @@ def execute_query_endpoint(
             table_qualified=r.get("table_qualified"),
             table_percentiles=r.get("table_percentiles"),
             table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),
-            position=positions.get(r["player_id"]),
+            position=positions.get(r["player_id"], {}).get("position"),
+            position_listed=positions.get(r["player_id"], {}).get("listed"),
+            position_provisional=positions.get(r["player_id"], {}).get("provisional"),
             current_team=listings.get(r["player_id"]),
             current_status=statuses.get(r["player_id"]),
         )
@@ -1319,6 +1324,7 @@ def get_player(
         last_observed_date=profile["last_observed_date"],
         forecast_status=profile["forecast_status"],
         warnings=profile["warnings"],
+        position_estimate=season_estimates(context.season).get(id),
     )
 
 

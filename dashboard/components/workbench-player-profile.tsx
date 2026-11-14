@@ -227,7 +227,7 @@ export function WorkbenchPlayerProfile({
       <AssistantPageSelection route={`/players/${player.id}`} playerIds={[player.id]} scope={context} label={player.name} />
       <PlayerBioHeader name={player.name} playerId={player.id} portraitUrl={player.portrait_url}
         team={latest_team ? { id: latest_team.id, tricode: latest_team.tricode, name: latest_team.name } : null}
-        bio={bio} currentSeason={catalog?.default_season ?? null}
+        bio={bio} currentSeason={catalog?.default_season ?? null} positionEstimate={profile.position_estimate}
         actions={<>
           <IconButton size="sm" variant="secondary" icon="star" filled={isFavorite} pressed={isFavorite}
             label={isFavorite ? "Remove from favorites" : "Add to favorites"} onClick={() => toggleFavorite(player.id)} />

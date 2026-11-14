@@ -13,8 +13,9 @@ import { teamBrandColor } from "@/lib/team-colors";
 import { teamArtwork, teamNameAt } from "@/lib/team-era";
 import { readStatsReturn, STATS_RETURN_PARAM, markStatsRestore } from "@/lib/stats-return";
 import { BackButton, onBareEscape, useNavLabel } from "./ui/back-button";
-import type { PlayerBio } from "@/lib/types";
+import type { PlayerBio, PositionEstimate } from "@/lib/types";
 import { TeamWatermark } from "./team-watermark";
+import { positionTitle } from "@/lib/position-estimates";
 
 /** Feet and inches with quarter-inch fractions: 79.25 → 6′7¼″. */
 export function formatHeight(inches: number | null | undefined): string | null {
@@ -45,7 +46,7 @@ function ordinalSuffix(value: number): string {
  * the combine line. Listings are team-reported; the combine line holds
  * measured values and appears only when the player attended a combine.
  */
-export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, currentSeason, actions }: {
+export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, currentSeason, positionEstimate, actions }: {
   name: string;
   playerId: string;
   portraitUrl?: string | null;
@@ -53,6 +54,8 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   bio: PlayerBio | null;
   /** The catalog's current season: age is dated only when the page looks at another one. */
   currentSeason: string | null;
+  /** The page season's estimated five-position label, shown after the NBA listing. */
+  positionEstimate?: PositionEstimate | null;
   actions: ReactNode;
 }) {
   const router = useRouter();
@@ -124,7 +127,15 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   const status = bio?.current_status;
   const state = status?.state === "abroad" ? `Abroad${status.move?.club ? ` · ${status.move.club}` : ""}`
     : status?.state === "retired" ? "Retired" : status?.state === "free_agent" ? "Free agent" : null;
-  const details = [state, bio?.listed_position, bio?.jersey && !status ? `#${bio.jersey}` : null].filter((part): part is string => part != null);
+  // The NBA listing (G, F, C) and, beside it, the season's estimated five-position label.
+  const estimate = positionEstimate
+    ? <span title={`${positionTitle(positionEstimate.position, positionEstimate.listed, positionEstimate.provisional)} (${positionEstimate.season})`}>plays {positionEstimate.position} (est.)</span>
+    : null;
+  const details: { key: string; node: ReactNode }[] = [];
+  if (state) details.push({ key: "state", node: state });
+  if (bio?.listed_position) details.push({ key: "listed", node: bio.listed_position });
+  if (estimate) details.push({ key: "estimate", node: estimate });
+  if (bio?.jersey && !status) details.push({ key: "jersey", node: `#${bio.jersey}` });
   const tint = teamBrandColor(headerTeam?.tricode, headerTeam?.season);
   const watermark = teamArtwork(headerTeam?.tricode, headerTeam?.season)?.asset ?? null;
 
@@ -146,7 +157,7 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
             {headerTeam && <span className="player-bio-identity-team">
               <TeamLogo team={headerTeam.tricode} season={headerTeam.season} size={36} />{teamPrefix}{headerTeam.name}
             </span>}
-            {details.length > 0 && <span className="player-bio-identity-details">{details.map(part => <span key={part}>{part}</span>)}</span>}
+            {details.length > 0 && <span className="player-bio-identity-details">{details.map(part => <span key={part.key}>{part.node}</span>)}</span>}
           </p>}
           <dl className="player-bio-facts">
             {facts.filter(fact => fact.value).map(fact => <div key={fact.label} title={fact.title}>

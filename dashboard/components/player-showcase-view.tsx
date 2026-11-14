@@ -26,6 +26,7 @@ import { TeamLogo } from "./team-logo";
 import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPositionChips, StatsTeamSelect } from "./stats-page-controls";
+import { positionChipStatus } from "@/lib/position-estimates";
 import { PageHeader } from "./ui/panel";
 import { Modal } from "./ui/modal";
 import { Checkbox } from "./ui/checkbox";
@@ -252,7 +253,7 @@ export function PlayerShowcaseView({ catalog, state, board, previous, draftClass
 
         <section className="sc-console sc-console-order" aria-label="Order and slideshow">
           <span className="sc-console-label">Position</span>
-          <StatsPositionChips />
+          <StatsPositionChips status={positionChipStatus(catalog.position_estimates, [shown.season])} seasons={[shown.season]} />
           <span className="sc-console-label">Sort by</span>
           <div className="sc-sort">
             <Select size="sm" aria-label="Sort by" value={state.sort} onChange={event => set({ sort: event.target.value === defaultSort(catalog, state.season) ? null : event.target.value, show: null })}>
