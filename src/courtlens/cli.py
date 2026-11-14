@@ -2176,6 +2176,17 @@ def refresh_position_estimates_command() -> None:
     typer.echo(json.dumps(run_provisional(get_settings().database_url, sealed)))
 
 
+@app.command("refresh-player-reference")
+def refresh_player_reference_command() -> None:
+    """Rebuild the player reference marts (salaries with cap shares, awards, honours,
+    transactions) from the newest parsed Basketball-Reference profiles and retained cap
+    thresholds. The API joins them by profile id, so a re-parse is invisible until this runs."""
+    from courtlens.services.workbench_ingestion import run_dbt_workbench
+
+    run_dbt_workbench(select="tag:player_reference")
+    typer.echo("player reference marts rebuilt")
+
+
 @app.command("refresh-daily")
 def refresh_daily_command(
     keep_days: int = typer.Option(30, help="Retention window passed to every step."),
@@ -2201,6 +2212,7 @@ def refresh_daily_command(
             lambda: acquire_team_scoring_command([], None, Path("data/raw/stats-feeds"), None),
         ),
         ("contracts", lambda: refresh_contracts_command(None, Path("data/raw/finance"), keep_days)),
+        ("player reference", refresh_player_reference_command),
         (
             "darko",
             lambda: refresh_darko_daily_command(

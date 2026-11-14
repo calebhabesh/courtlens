@@ -3,7 +3,7 @@ import { cleanup, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { PlayerReferenceSections } from "./player-reference-sections";
 import fixture from "@/lib/player-reference-fixture.json";
-import type { PlayerBio } from "@/lib/types";
+import type { PlayerBio, PlayerSalary } from "@/lib/types";
 
 // JSON import widens option/scope strings; check the boundary through the real union members.
 const reference: NonNullable<PlayerBio["reference"]> = {
@@ -33,6 +33,33 @@ describe("player reference sections", () => {
     expect(rows.find(text => text.startsWith("Career Earnings"))).toContain("$1,000,000");
     expect(screen.getByText(/Career earnings total reported salaries/)).toBeTruthy();
     expect(screen.getByText("Traded from BOS to TOR.").getAttribute("title")).toContain("September 14, 2026");
+  });
+  it("leaves out a column with nothing reported for this player", () => {
+    const plain = (rows: PlayerSalary[] = []) => rows.map(row => ({ ...row, option: null, guarantee: null, share_of_cap: null }));
+    render(<PlayerReferenceSections reference={{ ...reference, current_contract: plain(reference.current_contract), salary_history: plain(reference.salary_history) }} />);
+    const table = screen.getByRole("table", { name: "Contract and salary history by season" });
+    const headers = within(table).getAllByRole("columnheader").map(cell => cell.textContent);
+    expect(headers).not.toContain("% of Cap");
+    expect(headers).not.toContain("Option / Guarantee");
+    expect(headers).not.toContain("Terms");
+    // The totals keep their place under Salary.
+    expect(within(table).getAllByRole("row").find(row => row.textContent?.startsWith("Career Earnings"))?.textContent).toContain("$1,000,000");
+  });
+  it("shows a guarantee settled by the remaining total, and no terms on played seasons", () => {
+    const guarantee = { amount: "2000000", status: "full" as const, source_url: "https://www.basketball-reference.com/contracts/TOR.html", as_of: "2026-11-13T00:00:00Z", basis: "total_equals_non_option_salaries" as const };
+    render(<PlayerReferenceSections reference={{ ...reference, current_contract: (reference.current_contract ?? []).map((row, i) => i === 0 ? { ...row, guarantee } : row),
+      salary_history: (reference.salary_history ?? []).map(row => ({ ...row, option: "team" as const })) }} />);
+    const table = screen.getByRole("table", { name: "Contract and salary history by season" });
+    const link = within(table).getByRole("link", { name: "Fully guaranteed" });
+    expect(link.getAttribute("title")).toContain("outside an option year");
+    // The history's options never show: a played season's terms no longer apply.
+    const history = within(table).getAllByRole("row").filter(row => row.textContent?.startsWith("2024-25"));
+    expect(history.every(row => !row.textContent?.includes("Team option"))).toBe(true);
+  });
+  it("names the cap's source on each share", () => {
+    render(<PlayerReferenceSections reference={{ ...reference, current_contract: (reference.current_contract ?? []).map((row, i) => i === 0
+      ? { ...row, cap_source: "basketball_reference" as const, cap_source_url: "https://www.basketball-reference.com/contracts/salary-cap-history.html" } : row) }} />);
+    expect(screen.getByText("1.2%").getAttribute("title")).toContain("Basketball-Reference's cap history");
   });
   it("keeps events outside the listed seasons in their own row", () => {
     render(<PlayerReferenceSections reference={{ ...reference, contract_events: [

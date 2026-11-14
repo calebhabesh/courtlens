@@ -2369,12 +2369,16 @@ export type PlayerCurrentStatus = {
 export type PlayerGuarantee = {
   amount: string | null; status: "full" | "partial" | "none" | null;
   source_url: string; as_of: string;
+  /** Null when reported for the season; else settled exactly by the remaining guaranteed total. */
+  basis?: "total_equals_salaries" | "total_equals_non_option_salaries" | null;
 };
 
 export type PlayerSalary = {
   season: string; team: string | null; team_code: string | null; salary: string | null;
   salary_note?: string | null; league?: string | null; option?: "player" | "team" | null;
   share_of_cap?: number | null; cap_source_url?: string | null; cap_as_of?: string | null;
+  /** The official NBA release when retained, else Basketball-Reference's salary cap history. */
+  cap_source?: "nba_release" | "basketball_reference" | null;
   guarantee?: PlayerGuarantee | null;
 };
 
