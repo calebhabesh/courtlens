@@ -735,6 +735,30 @@ class PlayerReferenceEvent(BaseModel):
     to_team_code: str | None
 
 
+class PlayerContractSpan(BaseModel):
+    """Seasons one contract covers, placed only where both ends are known (contract_spans.py)."""
+
+    start_season: str
+    end_season: str
+    # stated_length, next_contract (the next one began), current_contract, last_reported_season
+    end_basis: str | None
+    signed_date: date
+    kind: Literal["signing", "extension"]
+    length_stated: bool
+    team_code: str | None
+    description: str
+    current: bool
+
+
+class PlayerUnplacedSigning(BaseModel):
+    """A signing whose contract could not be bracketed (an extension's start or an end unknown)."""
+
+    signed_date: date
+    season: str
+    kind: Literal["signing", "extension"]
+    description: str
+
+
 class PlayerGameHighValue(BaseModel):
     value: str | None
     url: str | None
@@ -767,6 +791,8 @@ class PlayerBioReference(BaseModel):
     current_contract: list[PlayerSalary] = Field(default_factory=list)
     contract_events: list[PlayerReferenceEvent] = Field(default_factory=list)
     transactions: list[PlayerReferenceEvent] = Field(default_factory=list)
+    contract_spans: list[PlayerContractSpan] = Field(default_factory=list)
+    unplaced_signings: list[PlayerUnplacedSigning] = Field(default_factory=list)
     game_highs: list[PlayerGameHighs] = Field(default_factory=list)
     remaining_guaranteed: PlayerGuarantee | None = None
 

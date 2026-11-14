@@ -6,7 +6,24 @@
   .player-contract-guaranteed { color: var(--color-text-secondary); }
   .player-contract-option.is-player { color: var(--color-status-player-option); }
   .player-contract-option.is-team { color: var(--color-status-team-option); }
-  .player-contract-events-column { width: 32%; }
+  .player-contract-events-column { width: 28%; }
+  .player-contract-span-column { width: 22%; }
+  /* Contract brackets: a rail down the seasons one contract covers, capped at its newest and
+     oldest season, labelled on its newest. A season outside any placed contract has no rail. */
+  .player-ref-grid tbody td.player-contract-span { position: relative; padding-inline: var(--space-6) var(--space-3); text-align: left; }
+  .player-contract-span[data-edge]::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: var(--space-3); width: 2px; background: var(--color-hairline-strong); }
+  .player-contract-span[data-edge="top"]::before { top: 50%; }
+  .player-contract-span[data-edge="bottom"]::before { bottom: 50%; }
+  .player-contract-span[data-edge="single"]::before { top: 50%; bottom: 50%; }
+  .player-contract-span:is([data-edge="top"], [data-edge="bottom"], [data-edge="single"])::after { content: ""; position: absolute; inset-inline-start: calc(var(--space-3) - 3px); top: calc(50% - 4px); width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--color-text-tertiary); }
+  .player-contract-span.is-current[data-edge]::before, .player-contract-span.is-current[data-edge]::after { background: var(--color-accent); }
+  .player-contract-span-label, .player-contract-unplaced { display: flex; flex-direction: column; min-width: 0; }
+  .player-contract-unplaced .player-contract-span-name { color: var(--color-text-secondary); font-weight: 500; }
+  .player-ref-grid td .player-contract-unplaced small { overflow: hidden; text-overflow: ellipsis; color: var(--color-text-tertiary); }
+  .player-contract-span-label + .player-contract-unplaced { margin-top: var(--space-1); }
+  .player-contract-span-name { overflow: hidden; text-overflow: ellipsis; font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; }
+  .player-contract-span-name strong { color: var(--color-accent); }
+  .player-ref-grid td .player-contract-span-label small { overflow: hidden; text-overflow: ellipsis; color: var(--color-text-tertiary); }
   /* Career highs: ten equal value columns; values read as figures, linked to the source game. */
   .player-highs-grid { --grid-min-width: 760px; }
   .player-highs-grid tbody th.player-ref-grid-lead { white-space: normal; }
