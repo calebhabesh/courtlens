@@ -156,6 +156,10 @@ def _destination(
     fixed = entity.metadata.get("season")
     if entity.kind == "team" and isinstance(fixed, str):
         return build_destination_url(entity.base_destination, release_id=release_id, season=fixed)
+    if entity.kind == "player" and entity.seasons and season and season not in entity.seasons:
+        # A player who did not play the scope's season opens on their own latest season (the
+        # player page's default), not on a season with no games (Chris Dudley from 2026-27).
+        return build_destination_url(entity.base_destination, release_id=release_id)
     return build_destination_url(
         entity.base_destination,
         release_id=release_id,
@@ -254,7 +258,13 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
     except Exception:
         session.rollback()
 
+    # With appearances loaded for a dataset, a player with neither games nor season totals has no
+    # page to open (unplayed signings, duplicate identities), so search leaves them out.
+    hide_unplayed = dataset_id is not None and bool(player_summaries)
+
     for ident in player_identities:
+        if hide_unplayed and ident.external_id not in player_summaries:
+            continue
         raw_aliases = []
         if isinstance(ident.metadata_json, dict) and "aliases" in ident.metadata_json:
             raw_aliases = ident.metadata_json["aliases"]
