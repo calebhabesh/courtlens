@@ -3,7 +3,7 @@ import { Icon } from "./ui/icon";
 import { TeamLogo } from "./team-logo";
 import teamCatalog from "@/lib/team-branding.json";
 import { formatDate } from "@/lib/format-date";
-import type { PlayerBio, PlayerGuarantee, PlayerReferenceEvent, PlayerSalary } from "@/lib/types";
+import type { PlayerBio, PlayerContractSpan, PlayerGuarantee, PlayerReferenceEvent, PlayerSalary } from "@/lib/types";
 
 type Reference = NonNullable<PlayerBio["reference"]>;
 const TEAM_ARTWORK = new Set(teamCatalog.teams.map(team => team.tricode));
@@ -64,79 +64,133 @@ function Terms({ row }: { row: PlayerSalary }) {
   </span>;
 }
 
+const SPAN_END: Record<string, string> = {
+  stated_length: "Ends after its stated length",
+  next_contract: "Ends where the next contract begins",
+  current_contract: "Runs through the current contract's last season",
+  last_reported_season: "Ends with the last reported salary",
+};
+
+/** The contract covering a salary row: same season, and the signing team when two share it. */
+function spanFor(spans: PlayerContractSpan[], salary: PlayerSalary): number {
+  const covering = spans.map((span, i) => ({ span, i })).filter(({ span }) => span.start_season <= salary.season && salary.season <= span.end_season);
+  const team = covering.find(({ span }) => span.team_code && span.team_code === salary.team_code);
+  return (team ?? covering[covering.length - 1])?.i ?? -1;
+}
+
+type UnplacedSigning = NonNullable<Reference["unplaced_signings"]>[number];
+
+/** A signing with no bracket: what is known, and which end is missing. */
+function UnplacedNote({ signing }: { signing: UnplacedSigning }) {
+  const missing = signing.kind === "extension" ? "start not reported" : "end not reported";
+  return <span className="player-contract-unplaced" title={`${signing.description} · signed ${formatDate(signing.signed_date)} · ${missing}, so its seasons are not grouped`}>
+    <span className="player-contract-span-name">{signing.kind === "extension" && !/extension/i.test(signing.description) ? `Extension: ${signing.description}` : signing.description}</span>
+    <small>Signed {formatDate(signing.signed_date)} · {missing}</small>
+  </span>;
+}
+
+/** One row's piece of a contract's bracket; the newest row of each contract carries its label. */
+function SpanCell({ span, edge, unplaced }: {
+  span: PlayerContractSpan | undefined; edge: "top" | "middle" | "bottom" | "single" | null; unplaced: UnplacedSigning[];
+}) {
+  const notes = unplaced.map(signing => <UnplacedNote key={signing.signed_date} signing={signing} />);
+  if (!span || !edge) return <td className="player-contract-span">{notes}</td>;
+  const label = edge === "top" || edge === "single";
+  return <td className={`player-contract-span${span.current ? " is-current" : ""}`} data-edge={edge}>
+    {label && <span className="player-contract-span-label" title={`${span.description} · signed ${formatDate(span.signed_date)} · ${SPAN_END[span.end_basis ?? ""] ?? ""}`}>
+      <span className="player-contract-span-name">{span.current && <strong>Current · </strong>}{span.kind === "extension" && !/extension/i.test(span.description) ? `Extension: ${span.description}` : span.description}</span>
+      <small>{span.start_season === span.end_season ? span.start_season : `${span.start_season} to ${span.end_season}`} · signed {formatDate(span.signed_date)}</small>
+    </span>}
+    {notes}
+  </td>;
+}
+
 /**
- * Every contract fact in one table, styled like the Stats table: the current contract's seasons,
- * then reported salary history (newest first), each with that season's dated contract events,
- * and gold total rows for the remaining guarantee and reported career earnings. A column with no
- * reported value for this player (cap share for ABA-only careers, terms for most past seasons)
+ * Every contract fact in one table, styled like the Stats table: every reported season newest
+ * first, each in the bracket of the contract it belongs to (where both ends of that contract are
+ * known, contract_spans.py), with that season's dated contract events, and gold total rows for the
+ * remaining guarantee and reported career earnings. Current-contract seasons carry their option
+ * or guarantee under the salary. A column with no reported value (cap share for ABA-only careers)
  * is left out rather than drawn as a column of dashes.
  */
 function ContractTable({ reference, contract, history, events }: {
   reference: Reference; contract: PlayerSalary[]; history: PlayerSalary[]; events: PlayerReferenceEvent[];
 }) {
+  const spans = reference.contract_spans ?? [];
   const contractKeys = new Set(contract.map(row => `${row.season}:${row.team_code}`));
-  const past = history.filter(row => !contractKeys.has(`${row.season}:${row.team_code}`)).sort((a, b) => b.season.localeCompare(a.season));
-  const seasons = new Set([...contract, ...past].map(row => row.season));
+  const past = history.filter(row => !contractKeys.has(`${row.season}:${row.team_code}`));
+  const rows = [...contract.map(salary => ({ salary, current: true })), ...past.map(salary => ({ salary, current: false }))]
+    .sort((a, b) => b.salary.season.localeCompare(a.salary.season));
+  const seasons = new Set(rows.map(({ salary }) => salary.season));
+  // Signings show in the Deal column (as a bracket's label, or a note when no bracket could be
+  // placed), so they are not repeated among the season's events.
+  const unplacedSignings = reference.unplaced_signings ?? [];
+  const spanDates = new Set([...spans.map(span => span.signed_date), ...unplacedSignings.map(signing => signing.signed_date)]);
   const bySeason = new Map<string, PlayerReferenceEvent[]>();
   const unplaced: PlayerReferenceEvent[] = [];
   for (const event of [...events].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))) {
+    if (event.date && spanDates.has(event.date) && (event.type === "signed" || event.type === "extended" || /^(signed|agreed to)\b/i.test(event.description))) continue;
     const season = event.date ? eventSeason(event.date) : null;
     if (season && seasons.has(season)) bySeason.set(season, [...(bySeason.get(season) ?? []), event]);
     else unplaced.push(event);
   }
-  const rows = [...contract, ...past];
-  const showCap = rows.some(salary => salary.share_of_cap != null);
+  const owners = rows.map(({ salary }) => spanFor(spans, salary));
+  const edgeOf = (i: number) => {
+    if (owners[i] < 0) return null;
+    const top = owners[i - 1] !== owners[i], bottom = owners[i + 1] !== owners[i];
+    return top && bottom ? "single" : top ? "top" : bottom ? "bottom" : "middle";
+  };
+  const showCap = rows.some(({ salary }) => salary.share_of_cap != null);
   const salaryColumns = showCap ? 3 : 2;
-  const columns = 1 + salaryColumns + 1;
+  const columns = 2 + salaryColumns + 1;
   // Empty cells after a total, keeping each column group's left edge.
   const afterSalary = <>{showCap && <td />}<td className="group-start" /></>;
   // A season's events show once, on its first row (a split season has one row per team).
   const shown = new Set<string>();
-  const row = (salary: PlayerSalary, i: number, current: boolean) => {
-    const seasonEvents = shown.has(salary.season) ? [] : bySeason.get(salary.season) ?? [];
-    shown.add(salary.season);
-    return <tr key={`${current ? "c" : "h"}:${salary.season}:${salary.team_code}:${i}`}>
-      <th scope="row" className="player-ref-grid-lead">{salary.season}</th>
-      <td className="group-start player-contract-team"><SalaryTeam row={salary} /></td>
-      {/* Terms sit under the current contract's salaries: the salary history never reports them,
-          and a played season's terms no longer apply, so a column for them would be mostly empty. */}
-      <td><Salary row={salary} />{current && <Terms row={salary} />}</td>
-      {showCap && <td><CapShare row={salary} /></td>}
-      <td className="group-start player-contract-events-cell">{seasonEvents.length ? <EventList events={seasonEvents} /> : "—"}</td>
-    </tr>;
-  };
   return <div className="player-ref-grid-frame">
     <div className="player-ref-grid-scroll" role="region" aria-label="Contract table scroll area" tabIndex={0}>
       <table className="player-ref-grid" aria-label="Contract and salary history by season">
         {/* Fixed, equal data columns: each group label centers over its columns (row 2, 66). */}
         <colgroup>
           <col className="player-ref-grid-lead-column" />
-          {Array.from({ length: columns - 2 }, (_, i) => <col key={i} />)}
+          <col className="player-contract-span-column" />
+          {Array.from({ length: columns - 3 }, (_, i) => <col key={i} />)}
           <col className="player-contract-events-column" />
         </colgroup>
         <thead>
           <tr className="player-ref-grid-tier-1">
             <th scope="colgroup" className="player-ref-grid-lead">Season</th>
+            <th scope="colgroup" className="group-start">Contract</th>
             <th scope="colgroup" colSpan={salaryColumns} className="group-start">Salary</th>
             <th scope="colgroup" className="group-start">Events</th>
           </tr>
           <tr className="player-ref-grid-tier-2">
-            {/* The first section's label shares the column-label row (row 2, 66). */}
-            <th scope="rowgroup" className="player-ref-grid-lead">Current Contract</th>
+            <td className="player-ref-grid-lead" />
+            <th scope="col" className="group-start" title="Seasons grouped by the contract they belong to, where its start and end are known">Deal</th>
             <th scope="col" className="group-start player-contract-team">Team</th>
             <th scope="col" title="Current-contract seasons show their option or guarantee under the salary">Salary</th>
-            {showCap && <th scope="col" title="Salary against that season's official NBA salary cap">% of Cap</th>}
+            {showCap && <th scope="col" title="Salary against that season's NBA salary cap">% of Cap</th>}
             <th scope="col" className="group-start player-contract-events-cell">Contract Events</th>
           </tr>
         </thead>
         <tbody>
-          {contract.length > 0 ? contract.map((salary, i) => row(salary, i, true))
-            : <tr><td colSpan={columns} className="player-contract-empty">No current contract listed in the retained report.</td></tr>}
+          {rows.length === 0 && <tr><td colSpan={columns} className="player-contract-empty">No salaries listed in the retained report.</td></tr>}
+          {rows.map(({ salary, current }, i) => {
+            const firstOfSeason = !shown.has(salary.season);
+            const seasonEvents = firstOfSeason ? bySeason.get(salary.season) ?? [] : [];
+            shown.add(salary.season);
+            return <tr key={`${current ? "c" : "h"}:${salary.season}:${salary.team_code}:${i}`}>
+              <th scope="row" className="player-ref-grid-lead">{salary.season}</th>
+              <SpanCell span={spans[owners[i]]} edge={edgeOf(i)} unplaced={firstOfSeason ? unplacedSignings.filter(signing => signing.season === salary.season) : []} />
+              <td className="group-start player-contract-team"><SalaryTeam row={salary} /></td>
+              {/* Terms sit under the current contract's salaries: the salary history never reports
+                  them, and a played season's terms no longer apply. */}
+              <td><Salary row={salary} />{current && <Terms row={salary} />}</td>
+              {showCap && <td><CapShare row={salary} /></td>}
+              <td className="group-start player-contract-events-cell">{seasonEvents.length ? <EventList events={seasonEvents} /> : "—"}</td>
+            </tr>;
+          })}
         </tbody>
-        {past.length > 0 && <tbody>
-          <tr className="player-contract-section"><th scope="rowgroup" className="player-ref-grid-lead" title={`${past.length} reported ${past.length === 1 ? "season" : "seasons"}`}>Salary History</th><td colSpan={columns - 1} /></tr>
-          {past.map((salary, i) => row(salary, i, false))}
-        </tbody>}
         {unplaced.length > 0 && <tbody>
           <tr className="player-contract-section"><th scope="rowgroup" className="player-ref-grid-lead">Other Contract Events</th><td colSpan={columns - 1} /></tr>
           <tr><th scope="row" className="player-ref-grid-lead">—</th><td colSpan={columns - 2} className="group-start" /><td className="group-start player-contract-events-cell"><EventList events={unplaced} /></td></tr>
@@ -145,12 +199,12 @@ function ContractTable({ reference, contract, history, events }: {
           {/* Both totals sit under Salary: they are dollar sums of the salary column's kind. */}
           {reference.remaining_guaranteed && <tr className="player-contract-total">
             <th scope="row" className="player-ref-grid-lead">Remaining Guaranteed</th>
-            <td className="group-start" /><td><strong><Guarantee value={reference.remaining_guaranteed} /></strong></td>
+            <td className="group-start" /><td className="group-start" /><td><strong><Guarantee value={reference.remaining_guaranteed} /></strong></td>
             {afterSalary}
           </tr>}
           {reference.career_earnings && <tr className="player-contract-total">
             <th scope="row" className="player-ref-grid-lead">Career Earnings</th>
-            <td className="group-start" /><td><strong title="Reported salaries, not verified cash earned">{money(reference.career_earnings)}</strong></td>
+            <td className="group-start" /><td className="group-start" /><td><strong title="Reported salaries, not verified cash earned">{money(reference.career_earnings)}</strong></td>
             {afterSalary}
           </tr>}
         </tfoot>}
@@ -196,10 +250,10 @@ export function PlayerReferenceSections({ reference }: { reference: Reference })
   const transactions = reference.transactions ?? [];
   const highs = (reference.game_highs ?? []).filter(row => row.scope === "career");
   return <>
-    {(contract.length > 0 || history.length > 0 || events.length > 0) && <section className="player-open-section player-reference player-glass" aria-label="Contract">
-      <header className="player-open-heading"><h2><Icon name="banknote" size={20} />Contract</h2><span>Reported salaries · USD</span></header>
+    {(contract.length > 0 || history.length > 0 || events.length > 0) && <section className="player-open-section player-reference player-glass" aria-label="Contracts">
+      <header className="player-open-heading"><h2><Icon name="banknote" size={20} />Contracts</h2><span>Reported salaries · USD</span></header>
       <ContractTable reference={reference} contract={contract} history={history} events={events} />
-      <p className="player-reference-note">Options are reported terms. &ldquo;Fully guaranteed&rdquo; means the reported remaining guaranteed total equals those seasons&apos; salaries; otherwise a dash means unknown, and a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s official NBA salary cap release where retained, otherwise Basketball-Reference&apos;s salary cap history. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
+      <p className="player-reference-note">Seasons are bracketed by contract where Basketball-Reference&apos;s signing events fix both its start and end; a signing without a known start or end is noted without a bracket. Options are reported terms. &ldquo;Fully guaranteed&rdquo; means the reported remaining guaranteed total equals those seasons&apos; salaries; otherwise a dash means unknown, and a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s official NBA salary cap release where retained, otherwise Basketball-Reference&apos;s salary cap history. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
       <Credit reference={reference} anchor="all_contract" />
     </section>}
     {transactions.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Transaction News">

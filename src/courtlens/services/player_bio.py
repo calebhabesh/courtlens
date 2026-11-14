@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 from courtlens.domain.teams import franchise_of, team_identity
 from courtlens.reference_models import BbrefPlayerSeason
 from courtlens.services.bbref_bio import player_reference
+from courtlens.services.contract_spans import contract_spans, unplaced_signings
 from courtlens.services.player_contracts import enrich_contracts
 from courtlens.services.stats_feed_views import _mart, _rows, team_tricode
 from courtlens.services.workbench_analytics import resolve_workbench_context
@@ -222,6 +223,8 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
     reference = player_reference(session, player_id)
     if reference is not None:
         enrich_contracts(session, player_id, reference)
+        reference["contract_spans"] = contract_spans(reference)
+        reference["unplaced_signings"] = unplaced_signings(reference, reference["contract_spans"])
     last_team = None
     # Off every roster now: the team of his final season, else the index's last (or listed) team.
     last_id = bio and (bio.get("last_team_id") or bio.get("listed_team_id"))
