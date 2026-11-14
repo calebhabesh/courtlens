@@ -1,8 +1,11 @@
 # Hosted demo
 
-CourtLens runs as a read-only public demo at <https://courtlens.calebhabesh.com>, linked
-from the portfolio site. It is the parked PC13 hosting block, narrowed by the owner on
-2026-10-13: a frozen data snapshot, Ask turned off, zero recurring cost.
+CourtLens runs as a public demo at <https://courtlens.calebhabesh.com>, linked from the
+portfolio site, at zero recurring cost. It began as a read-only frozen snapshot (2026-10-13). Since
+Win Probability v4's W7 (2026-11-13) **the VPS is the system of record**: it runs every scheduled
+job, holds the only live database and owns `data/`. The owner's PC is for development and only
+pulls from it (`scripts/pull-from-vps.sh`). The owner's one-page summary is
+[Running the hosted demo](operations/hosted-operations.md).
 
 ## Shape
 
@@ -18,7 +21,9 @@ with them. Only the loopback origin port is published.
 | `deploy/Caddyfile` | Routing and the read-only boundary |
 | `deploy/pinned.env` | Third-party image digests and serving manifest paths |
 | `.github/workflows/images.yml` | arm64 API and dashboard images, built after CI passes on main |
-| `scripts/deploy-vps.sh` | Pull, migrate, health-check, warm Stats cohorts, prune |
+| `scripts/deploy-vps.sh` | Pull, migrate, health-check, warm Stats cohorts, prune; copies nothing under `data/` |
+| `scripts/vps-backup.sh` | Weekly database dump and nightly records copy, from the VPS crontab |
+| `scripts/pull-from-vps.sh` | Copies the VPS's `data/` (and, on request, a database dump) to the PC; never pushes |
 
 ### Read-only boundary
 
@@ -121,12 +126,12 @@ part of the demo database that grows after deploy.
 
 ### Projected Impact
 
-The API reads the frozen projections from `data/artifacts/projected-impact` (1.1 MB, hash-checked at load) and the weekly score from `data/derived/projected-impact-serving` (about 60 KB plus 0.5 KB per game), both rsynced by each deploy and mounted read-only. Scoring runs locally in `refresh-daily`; `scripts/win-probability-push.sh` copies the score over with the win-probability inputs. The endpoints are GETs, so the Caddy allowlist is unchanged.
+The API reads the frozen projections from `data/artifacts/projected-impact` (1.1 MB, hash-checked at load) and the weekly score from `data/derived/projected-impact-serving` (about 60 KB plus 0.5 KB per game), both made on the VPS and mounted read-only. The weekly score runs in `refresh-daily` in the `jobs` service (below); the VPS rescored the PC's games identically before the move (W7c). The endpoints are GETs, so the Caddy allowlist is unchanged.
 
 ### Win probability
 
 The API serves the frozen model on CPU. The model files (`data/artifacts/win-probability`, 8.4 MB)
-are rsynced by each deploy and mounted read-only. The serving bundle
+are mounted read-only. The serving bundle
 (`data/derived/win-probability-serving`: seals, scorecard and win probability added, about 10 MB
 plus about 6 KB per scored game) is **made on the VPS** from Win Probability v4's W2 cutover; the API
 mounts it read-only and a new scorecard appears without a restart.
@@ -154,19 +159,17 @@ minutes. It never refits ratings.
   `derived/espn-rosters-v1` and `data/raw` (the box scores).
 - **Owned by the VPS.** `scripts/deploy-vps.sh` creates those two directories and never rsyncs
   them, so a deploy cannot delete or overwrite a seal made there.
-- **Inputs from the PC.** The seal fetches ESPN's injury report and line itself at every run, so
-  late Out news needs no PC. Box scores, rating snapshots and the roster bundle come from the
-  owner's PC: `scripts/win-probability-push.sh` pushes the current season's
-  `raw/sportsdataverse_<year>`, `derived/win-probability-ratings`, `derived/espn-rosters-v1` and
-  the Projected Impact score, then pulls the serving bundle back for local development (never
-  `--delete`; the pull is skipped while the PC's `.env` does not set
-  `COURTLENS_WIN_PROBABILITY_LOCAL_SEALING=false`). `scripts/install_win_probability_push.sh`
-  installs it to run after every `refresh-daily` and every 6-hourly `refresh-espn-rosters`. When
-  the PC is off, seals continue on older inputs, and each seal records their ages (`ages`: box
-  scores through, roster observed and checked, rating snapshot cutoff, injury report time).
-- **The PC's switch.** `COURTLENS_WIN_PROBABILITY_LOCAL_SEALING` (default true) keeps
-  `refresh-daily` sealing and scoring locally. Set to false at the cutover, its win-probability step
-  only ensures rating snapshots.
+- **Inputs.** The seal fetches ESPN's injury report and line itself at every run. Box scores,
+  rating snapshots and the roster bundle are made on the VPS by the `jobs` service (below); from
+  W2 to W7 they came from the PC's push, which W7b removed. If a job stops, seals continue on
+  older inputs, and each seal records their ages (`ages`: box scores through, roster observed and
+  checked, rating snapshot cutoff, injury report time).
+- **Grading.** From 2026-11-13 each game is graded on the first run after ESPN calls it final:
+  after the day's last tip the service keeps running at :25 and :55 while a game that tipped in
+  the last six hours is ungraded (`awaiting_grade` in the report). The 09:00 run is the catch-up.
+- **The switch.** `COURTLENS_WIN_PROBABILITY_LOCAL_SEALING=false` on the VPS's `jobs` service and on
+  the PC: `refresh-daily`'s win-probability step only ensures rating snapshots; sealing belongs to
+  the seal service.
 - **Measured (PC, 2026-11-11).** One run with nothing to score: 22 s, peak 338 MB. Three nights (21
   games) scored in one run: 127 s, peak 338 MB. The cap is 768 MB and one CPU. Disk: a seal is about
   5 KB per game, and the raw ESPN files about 2 MB a day at most; under 1 GB a year together.
@@ -188,9 +191,9 @@ The VPS boot volume is 193 GB, nearly all of the Always Free 200 GB block-storag
 (measured 2026-10-19: 21 GB used across CourtLens, LineWatchTO and the portfolio; Docker images
 4.8 GB, volumes 8.3 GB). Outbound transfer is free up to 10 TB a month and inbound is free, and
 Caddy compresses responses (`encode zstd gzip`). The demo needs about 1.2 GB of images, about 21 GB
-of Postgres (the 2026-11-10 snapshot, with full history and the 12 impact seasons) and about
-3.1 GB of serving files. The data snapshot is frozen, so the database
-does not grow. Deploys never build on the VPS. Each deploy removes CourtLens images other
+of Postgres (with full history and the 12 impact seasons) and about 3.1 GB of serving files;
+`data/` is 18 GB in all with the raw evidence (2026-11-13: 124 GB of the disk free). Since W7 the
+daily jobs grow both slowly (table below). Deploys never build on the VPS. Each deploy removes CourtLens images other
 than the current and previous release. Container logs rotate at 3 × 10 MB, and journald
 is capped at 200 MB.
 
@@ -211,8 +214,7 @@ two to three daily releases and Postgres reuses retired rows' space rather than 
 full hand-built releases sealed on 2026-10-13 were retired with `courtlens retire-release` (owner
 approved, 2026-10-20); it refuses the published release, impact datasets and cited releases.
 
-Operational inputs refresh on timers (`scripts/install_data_refresh.sh`; not yet installed on the
-VPS): ESPN rosters every 6 hours, and `courtlens refresh-daily` at 13:30 UTC for the hoopR player
+Operational inputs refresh in the `jobs` service (below): ESPN rosters every 6 hours, and `courtlens refresh-daily` at 13:30 UTC for the hoopR player
 index, Basketball-Reference contracts, DARKO's current ratings and Wikipedia's transactions
 article (source policy v3, "Daily refresh"). Each stores bytes only when its data changed and prunes unchanged runs' receipts after
 30 days. Measured locally on 2026-10-20:
@@ -228,12 +230,51 @@ article (source policy v3, "Daily refresh"). Each stores bytes only when its dat
 | Season impact, weekly | about 58 MB served bundle (3 kept), working files pruned to what they cite; raw per-game documents about 0.6 GB a season (box, play-by-play, matchups) | one provisional dataset kept per run, the newest two retained |
 
 Roster, DARKO and Wikipedia bundles are pruned after 30 days. Impact serving, team splits, WOWY
-and stint-box configs name directories that serve their `.current` bundle; `deploy/pinned.env`
-still pins the sealed files, so the VPS keeps serving sealed seasons until it switches to the
-directories. Player-index datasets, contract refreshes and
+and stint-box configs name directories that serve their `.current` bundle. Since 2026-11-13
+`deploy/pinned.env` names the impact serving and team-splits directories too, so the weekly season
+impact moves what the VPS serves; WOWY and value archetypes stay pinned to their sealed files.
+Player-index datasets, contract refreshes and
 finance books are sealed and never pruned, so they grow only on days the data changes: in the
 worst case, every day, about 5 GB a year, roughly 3% of the free disk. Egress is
 unaffected because refreshes only download.
+
+## Scheduled jobs
+
+The `jobs` service (`deploy/compose.prod.yml`) is the API image running
+`courtlens run-jobs --next-wake` in a shell loop: it runs every due job, one at a time, each as its
+own process with a timeout, then sleeps until the next scheduled time. Cap 4 GiB and two CPUs. A
+job seen for the first time (after a deploy that adds it) records a baseline and waits for its
+next scheduled time; `courtlens run-jobs --run <job>` runs one now. Schedules
+(`services/scheduled_jobs.py`) are the PC's old timers:
+
+| Job | Command | When | Stale after | Measured on the VPS |
+| --- | --- | --- | --- | --- |
+| rosters | `refresh-espn-rosters` | every 6 hours, Eastern | 13 h | 157 s (W7b) |
+| daily | `refresh-daily` | 13:30 UTC | 30 h | 234 s with no new games; 828 s and 1.1 GB peak with a new statistics release (W7b) |
+| lineups | `refresh-season-lineups` | 14:05 UTC | 30 h | 52 s, 412 MiB peak, output identical to the PC's; over an hour (timed out) before the `stint_id` index (W7c) |
+| season-impact | `refresh-season-impact` | Mondays 14:30 UTC | 8 days | waits until every team has 10 games; first fit expected 2026-11-16 |
+| metric-backtest | `refresh-metric-backtest` | 15:00 UTC (scores every 7 days) | 30 h | scoring 174 games takes about 2 s |
+
+Each attempt writes `data/derived/job-health/<job>.json` (last success, last failure, seconds,
+exit code, output tail). `GET /api/job-health` returns them all with `stale` set when the last
+success is older than the limit. There is no alert channel; the
+[operations note](operations/hosted-operations.md) says what to check.
+
+## Backups
+
+The VPS holds the only live copy. `scripts/vps-backup.sh` (copied by each deploy) runs from the
+`ubuntu` user's crontab, installed with `scripts/vps-backup.sh install`; output goes to
+`~/backups/courtlens/backup.log`.
+
+- **Database, weekly** (Sundays 07:20 UTC): `pg_dump -Fc` without the dbt candidate schemas to
+  `~/backups/courtlens/db/`, the newest two kept. Measured 2026-11-13: 1.6 GB in 228 s for a 19 GB database.
+- **Records, nightly** (15:10 UTC): the files nothing can recompute (`win-probability-serving`:
+  seals, scorecards, head-to-head and its reads; `projected-impact-serving` and
+  `metric-backtest-serving`: weekly scores; `job-health`) committed to `~/backups/courtlens/records`
+  and pushed to the private repository `calebhabesh/courtlens-records` with a deploy key
+  (`~/.ssh/courtlens_records`) that can write to that repository only.
+- **Restore** steps are in the [operations note](operations/hosted-operations.md#restoring-a-backup).
+  Both were proved on 2026-11-13: a fresh clone of the records repository matched all 60 live record files by SHA-256, and the dump restored into a scratch database in 23 minutes (single stream) with every one of 127 tables' exact row counts, 245 indexes and 313 constraints equal to live.
 
 ## Deploy
 
@@ -244,13 +285,10 @@ scripts/deploy-vps.sh            # latest origin/main
 scripts/deploy-vps.sh <sha>      # a specific main commit
 ```
 
-Serving files are git-ignored: evaluation reports, saved analyses, the impact,
-value-archetype and WOWY manifests, player portraits, the Research serving tables and model
-files, DARKO, ESPN rosters, the Free Agency and Wikipedia bundles, shot zones, stint boxes and
-the raw box-score evidence behind starting positions (`SERVING_DIRS` in the script, about
-3.1 GB on 2026-11-10; the raw evidence is mounted read-only as `data/raw`). They are rsynced from
-`$COURTLENS_DATA_DIR`, which defaults to the checkout's `data/`. A worktree must point
-this at the primary checkout.
+Serving files are git-ignored and live only under the VPS's `data/` (`SERVING_DIRS` in the
+script). Since W7 a deploy only makes sure those directories exist: nothing under `data/` is
+copied, overwritten or deleted from the deploying machine. Before W7 they were rsynced from the
+PC.
 
 On the VPS:
 
@@ -267,6 +305,16 @@ docker compose --env-file secrets.env --env-file release.prev.env --profile tunn
 ```
 
 ## Deploy log
+
+### 2026-11-13 (evening): W7c applied by hand; no new release
+
+- **What:** `release.env` and `pinned.env` on the VPS switched to the impact serving and team-splits
+  directories (the same bundles served); only `api` and `jobs` recreated with `--no-deps`, so the
+  seal service kept running through the slate. `ix_wb_stint_players_stint` built concurrently by
+  hand (migration `4d5e6f7a8b92` creates it if missing, so the next deploy only stamps it).
+  Backup crontab installed; `courtlens_prev` dropped after the restore test.
+- **Next deploy:** any green main commit from 9:00 AM to noon Eastern carries the same settings;
+  nothing else changes on the site.
 
 ### 2026-11-13: releases 5d608d81 (#104) and 61de4107 (#105), W7b on the VPS
 

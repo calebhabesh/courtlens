@@ -7,6 +7,8 @@ model as the project's ML centrepiece (R15) and approved the lineup model (R14) 
 holdout evaluation (R16). **Blocks R01–R16 are pending until the
 [progress log](research-progress.md) records measured evidence.** A plan is not runtime evidence.
 
+**Closed 2026-11-13.** The owner marked the whole project finished on 2026-11-13; every block below is ✅ or recorded as cut. R16 was cut before it finished and R13 closed unbuilt ([progress](research-progress.md)).
+
 ## Why this phase exists
 
 Every core page is aligned with Databallr (owner, 2026-11-03). What remains is the Research menu.

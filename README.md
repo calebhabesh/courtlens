@@ -15,11 +15,14 @@ from the warehouse, and its numbers are checked against real query results.
 
 ## Status
 
-This is a working portfolio project, not a hosted product. The warehouse,
-impact metrics, forecasting and dashboard all run locally. Page-by-page
-alignment with Databallr is in progress ([catalog](docs/databallr-alignment-catalog.md)).
-The assistant's held-out evaluation (Research R16) is in progress on the free
-provider tier, so no holdout accuracy is claimed yet.
+Finished (2026-11-13). CourtLens is a non-commercial portfolio project with
+a public demo at <https://courtlens.calebhabesh.com>: read-only pages, Ask with
+a few free questions a day, and a shared demo account. The demo runs on one
+free-tier VPS that also runs every scheduled data job, the nightly win
+probability seals and their grading ([deployment guide](docs/deployment.md)).
+Every page is aligned with Databallr ([catalog](docs/databallr-alignment-catalog.md)).
+The assistant's held-out evaluation (Research R16) was cut by the owner before
+it finished, so no holdout accuracy is claimed.
 
 Design rules:
 
@@ -50,8 +53,8 @@ model never saw ([Research progress](docs/research-progress.md)):
 
 - **Win probability (R15):** log loss 0.4028 against 0.4157 for the baseline on
   2,439 test games in 2024-25 and 2025-26, calibration error 0.0083
-  ([evidence](docs/evidence/research/r15a/README.md)). Frozen and scored nightly
-  on 2026-27.
+  ([evidence](docs/evidence/research/r15a/README.md)). Frozen and graded after
+  every 2026-27 game, beside a market-informed model (v4) on the same seals.
 - **Metric backtest (R08):** with ratings fixed before each of 11,979 games
   (2016-17 to 2025-26), monthly time-decay RAPM predicts the margin +0.80 points
   better in RMSE (+0.72 to +0.88) than team net rating, the only metric ranked
@@ -62,7 +65,7 @@ model never saw ([Research progress](docs/research-progress.md)):
 - **Shot Quality v2 (R05):** the expected-points shot model's Brier score is
   2.56% better (2.44% to 2.67%) than league zone and distance rates on 2024-25
   and 2025-26 ([evidence](docs/evidence/research/r05/README.md)).
-- **Ask evaluation (R16):** evaluation in progress; no number yet.
+- **Ask evaluation (R16):** cut before it finished (owner, 2026-11-13); no number.
 
 Earlier results:
 
