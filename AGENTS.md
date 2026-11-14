@@ -32,7 +32,7 @@ For the last open work (Win Probability's design pass and model upgrade, Shot Af
 
 For the market-informed Win Probability model (`courtlens-win-probability-v4`), predictions on Live cards, the per-game "why", sealing and scoring on the VPS, moving the scheduled data jobs and the live database to the VPS (W7), or the Win Probability page's layman-first layout, read the [Win Probability v4 plan](docs/win-probability-v4-plan.md) and its registration first. It supersedes the finish plan's F05 and revises its "no picks" wording for win probability only. Execute its blocks in order, stop at its owner gates, and record evidence in the [v4 progress log](docs/win-probability-v4-progress.md). Never edit the Original model's pinned files.
 
-For the hosted read-only demo at courtlens.calebhabesh.com (production Compose stack, Caddy read-only boundary, arm64 images, VPS deploys and disk budget), read [the deployment guide](docs/deployment.md) first. Any new non-GET endpoint the demo should allow must be added to the Caddy allowlist there.
+For the hosted demo at courtlens.calebhabesh.com (production Compose stack, Caddy read-only boundary, arm64 images, VPS deploys, the scheduled `jobs` service, backups and disk budget), read [the deployment guide](docs/deployment.md) first; the owner's one-page summary is [Running the hosted demo](docs/operations/hosted-operations.md). Since 2026-11-13 the VPS is the system of record: it runs every scheduled job and holds the only live database and `data/`. The PC develops against copies pulled with `scripts/pull-from-vps.sh` and never pushes data to the VPS. Any new non-GET endpoint the demo should allow must be added to the Caddy allowlist there.
 
 ## Architecture and Stack
 

@@ -884,6 +884,9 @@ class WorkbenchStintPlayer(Base):
         Index("ix_wb_stint_players_dataset_player", "dataset_id", "player_id"),
         Index("ix_wb_stint_players_dataset_game", "dataset_id", "game_id"),
         Index("ix_wb_stint_players_dataset_team", "dataset_id", "team_id"),
+        # Deleting a stint cascades here by stint_id; without this index each cascade scanned
+        # the whole table and retiring one provisional dataset took about an hour (W7c).
+        Index("ix_wb_stint_players_stint", "stint_id"),
     )
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)
