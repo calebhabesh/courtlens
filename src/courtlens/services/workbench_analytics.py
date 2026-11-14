@@ -879,8 +879,9 @@ def get_player_game_log(
 ) -> tuple[dict[str, str], list[dict[str, Any]], str | None, bool]:
     """Retrieve prior-only game log for a player."""
     all_games = _load_player_games(session, context, player_id=player_id)
-    if not all_games and context.season in context.totals_seasons:
-        # Seasons before the 1983-84 game logs have no games to list: an empty log, not a 404.
+    if not all_games:
+        # A known player with no games in the scope (seasons before the 1983-84 game logs, or a
+        # season they did not play) has an empty log, as the profile shows zero appearances.
         name = session.scalar(
             select(WorkbenchIdentity.display_name).where(
                 WorkbenchIdentity.external_id == player_id, WorkbenchIdentity.kind == "player"
