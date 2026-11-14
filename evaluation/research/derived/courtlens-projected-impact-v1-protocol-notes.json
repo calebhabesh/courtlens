@@ -1,0 +1,13 @@
+{
+ "schema": "courtlens-projected-impact-protocol-notes-v1",
+ "append_only": "Notes are only ever added. The frozen files and past scored rows are never changed.",
+ "notes": [
+  {
+   "date": "2026-11-13",
+   "kind": "scored_on_a_new_machine",
+   "note": "From the week of 2026-11-16 the weekly score runs on the hosted VPS (arm64, Python 3.12 in the API image) instead of the owner's PC (x86-64), as part of moving every scheduled job to the VPS (Win Probability v4, W7c). Before the move both machines rescored the same 174 finished 2026-27 games (through 2026-11-12) from the same frozen files and the same database contents: the predicted margin of each of the five ratings, 870 values, largest difference 0 (registered tolerance 1e-9). The VPS rescore also equals the 730 values of the 146 rows the PC had already written, exactly. The frozen model, the rules and the past rows are unchanged.",
+   "decided_by": "owner (W-D15, 2026-11-11)",
+   "effective_from": "the first weekly score written on the VPS"
+  }
+ ]
+}
