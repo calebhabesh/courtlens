@@ -8,12 +8,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, modalVariants, scrimVariants } from "../../lib/motion";
 import { Icon, type IconName } from "./icon";
 import { OverlayPortal } from "./overlay-portal";
-import { Button, IconButton } from "./kit";
+import { Button, IconButton, Segmented } from "./kit";
 import { PlayerPortrait } from "../player-portrait";
 import { TeamLogo, TeamLogoStack } from "../team-logo";
 import { queryLookup } from "@/lib/workbench-api";
 import { defaultLookupCache, buildLookupCacheKey } from "@/lib/lookup-cache";
-import { clearRecentSearches, forgetRecentSearch, IDLE_SETTLE_MS, rememberRecentSearch, useRecentSearches, useScopedRecents } from "@/lib/recent-searches";
+import { clearRecentSearches, forgetRecentSearch, IDLE_SETTLE_MS, readRecentSearches, rememberRecentSearch, useRecentSearches, useScopedRecents } from "@/lib/recent-searches";
+import { groupBySection, isStrongPageMatch, searchSitePages, SITE_PAGES, sitePageFor, type SitePage } from "@/lib/site-pages";
 import { nicknameCaption } from "@/lib/lookup-caption";
 import type { LookupItem, LookupAvailability } from "@/lib/types";
 
@@ -215,92 +216,74 @@ function compactCaption(item: LookupItem) {
   return teams.length ? teams.join(" / ") : undefined;
 }
 
-const DEFAULT_PAGE_AVAILABILITY: LookupAvailability = {
-  has_current_season: true,
-  status: "available",
-  seasons: [],
-  latest_tricode: null,
+/** What the search covers: everything, or one kind of result. */
+type SearchScope = "all" | "pages" | "players" | "teams";
+
+const SCOPES: { value: SearchScope; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "pages", label: "Pages" },
+  { value: "players", label: "Players" },
+  { value: "teams", label: "Teams" },
+];
+
+const SCOPE_KINDS: Record<Exclude<SearchScope, "pages">, ("player" | "team")[]> = {
+  all: ["player", "team"],
+  players: ["player"],
+  teams: ["team"],
 };
 
-const DEFAULT_QUICK_ACTIONS: LookupItem[] = [
-  {
-    id: "action-stats",
-    canonical_id: "stats",
+/** Rows per group under All; each group's "See all" opens its own scope. */
+const ALL_LIMITS = { pages: 4, players: 6, teams: 3 } as const;
+/** Pages shown before typing under All, ahead of the "See all" link to the full list. */
+const IDLE_PAGE_HREFS = ["/stats", "/live", "/players", "/teams", "/compare", "/research/win-probability"];
+const LOOKUP_LIMIT = 20;
+
+const PAGE_AVAILABILITY: LookupAvailability = { has_current_season: true, status: "available", seasons: [], latest_tricode: null };
+
+/** A page as a recent search; its path is its identity, so renamed pages refresh from the index. */
+function pageAsLookupItem(page: SitePage): LookupItem {
+  return {
+    id: `page:${page.href}`,
     kind: "page",
-    display_name: "Stats Workspace",
-    subtitle: "Player and team statistics, leaderboards, and rate percentiles",
-    destination_url: "/stats",
+    canonical_id: page.href,
+    display_name: page.label,
+    subtitle: page.description,
     match_basis: "exact",
-    match_score: 1.0,
-    availability: DEFAULT_PAGE_AVAILABILITY,
-  },
-  {
-    id: "action-live",
-    canonical_id: "live",
-    kind: "page",
-    display_name: "Live Scoreboard & Finals",
-    subtitle: "Real-time game tracking, win probabilities, and postseason series",
-    destination_url: "/live",
-    match_basis: "exact",
-    match_score: 1.0,
-    availability: DEFAULT_PAGE_AVAILABILITY,
-  },
-  {
-    id: "action-players",
-    canonical_id: "players",
-    kind: "page",
-    display_name: "Player Dashboard",
-    subtitle: "Player panels side by side, from the DARKO leaders or search",
-    destination_url: "/players",
-    match_basis: "exact",
-    match_score: 1.0,
-    availability: DEFAULT_PAGE_AVAILABILITY,
-  },
-  {
-    id: "action-teams",
-    canonical_id: "teams",
-    kind: "page",
-    display_name: "Team Stats & Cohorts",
-    subtitle: "Efficiency ratings, four factors, and team comparison",
-    destination_url: "/teams",
-    match_basis: "exact",
-    match_score: 1.0,
-    availability: DEFAULT_PAGE_AVAILABILITY,
-  },
-  {
-    id: "action-compare",
-    canonical_id: "compare",
-    kind: "page",
-    display_name: "Player Comparison",
-    subtitle: "Multi-player radar charts, differential tables, and percentiles",
-    destination_url: "/compare",
-    match_basis: "exact",
-    match_score: 1.0,
-    availability: DEFAULT_PAGE_AVAILABILITY,
-  },
-  {
-    id: "action-ask",
-    canonical_id: "ask",
-    kind: "page",
-    display_name: "Ask CourtLens AI",
-    subtitle: "Natural language analytics assistant with evidence citations",
-    destination_url: "/research/ask",
-    match_basis: "exact",
-    match_score: 1.0,
-    availability: DEFAULT_PAGE_AVAILABILITY,
-  },
-  {
-    id: "action-rapm",
-    canonical_id: "rapm",
-    kind: "page",
-    display_name: "Six-Factor RAPM",
-    subtitle: "Regularized adjusted plus-minus and six-factor possessions",
-    destination_url: "/research/rapm/six-factor",
-    match_basis: "exact",
-    match_score: 1.0,
-    availability: DEFAULT_PAGE_AVAILABILITY,
-  },
-];
+    match_score: 1,
+    availability: PAGE_AVAILABILITY,
+    destination_url: page.href,
+  };
+}
+
+/** Stored page recents point at the page that has their path today; removed pages drop out. */
+function refreshPageRecents(items: LookupItem[]): LookupItem[] {
+  const seen = new Set<string>();
+  return items.flatMap(item => {
+    if (item.kind !== "page") return [item];
+    const page = sitePageFor(item.destination_url);
+    if (!page || seen.has(page.href)) return [];
+    seen.add(page.href);
+    return [pageAsLookupItem(page)];
+  });
+}
+
+type Row = { type: "entity"; item: LookupItem; recent?: boolean } | { type: "page"; page: SitePage; showSection: boolean };
+
+interface DisplayGroup {
+  key: string;
+  name: string;
+  rows: Row[];
+  /** Matches in total, when more exist than the group shows. */
+  total?: number;
+  seeAll?: SearchScope;
+  recent?: boolean;
+  /** A line in place of rows: searching, unavailable or nothing found. */
+  status?: { text: string; error?: boolean };
+}
+
+function rowKey(group: DisplayGroup, row: Row) {
+  return row.type === "page" ? `${group.key}:page:${row.page.href}` : `${group.key}:${row.item.kind}:${row.item.canonical_id}`;
+}
 
 export interface GlobalCommandPaletteProps {
   isOpen: boolean;
@@ -309,8 +292,8 @@ export interface GlobalCommandPaletteProps {
 }
 
 /**
- * GlobalCommandPalette connects directly to CourtLens Workbench API (global-lookup)
- * with real-time candidate search, keyboard navigation, grouped results, and preserved context.
+ * The site search: every canonical page (searched here, from the navigation model) and every
+ * player and team (the workbench lookup), in separate groups, with a scope to narrow to one kind.
  */
 export function GlobalCommandPalette({
   isOpen,
@@ -321,15 +304,15 @@ export function GlobalCommandPalette({
   const searchParams = useSearchParams();
 
   const [query, setQuery] = useState("");
+  const [scope, setScope] = useState<SearchScope>("all");
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [items, setItems] = useState<LookupItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [lookup, setLookup] = useState<{ key: string; items: LookupItem[]; total: number } | null>(null);
+  const [lookupError, setLookupError] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const internalTriggerRef = useRef<HTMLElement | null>(null);
   const activeTrigger = externalTriggerRef ?? internalTriggerRef;
-  const controller = useRef<AbortController | null>(null);
 
   const releaseId = searchParams.get("releaseId") ?? searchParams.get("release_id") ?? undefined;
   const season = searchParams.get("season") ?? undefined;
@@ -337,6 +320,13 @@ export function GlobalCommandPalette({
   const beforeDate = searchParams.get("beforeDate") ?? searchParams.get("before_date") ?? undefined;
 
   const wasOpenRef = useRef(false);
+
+  const close = () => {
+    onClose();
+    setQuery("");
+    setScope("all");
+    setSelectedIndex(0);
+  };
 
   // On open, trap focus into input; on close, restore to trigger
   useEffect(() => {
@@ -361,6 +351,7 @@ export function GlobalCommandPalette({
         e.preventDefault();
         onClose();
         setQuery("");
+        setScope("all");
       }
     };
     window.addEventListener("keydown", handleGlobalKeyDown);
@@ -389,143 +380,181 @@ export function GlobalCommandPalette({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, leaderKey]);
 
-  // Query API when query changes
+  // Players and teams come from the lookup; pages never need a request.
+  const trimmed = query.trim();
+  const isQueryEmpty = trimmed === "";
+  const lookupKinds = scope === "pages" || isQueryEmpty ? null : SCOPE_KINDS[scope];
+  const lookupKey = lookupKinds
+    ? buildLookupCacheKey({ query: trimmed, releaseId, season, phase, beforeDate, kinds: lookupKinds, limit: LOOKUP_LIMIT })
+    : null;
   useEffect(() => {
-    controller.current?.abort();
-    if (!isOpen) return;
-
-    const trimmed = query.trim();
-    if (!trimmed) {
-      return;
-    }
-
-    const cacheKey = buildLookupCacheKey({
-      query: trimmed,
-      releaseId,
-      season,
-      phase,
-      beforeDate,
-      limit: 12,
-    });
-
+    if (!isOpen || !lookupKey || !lookupKinds || defaultLookupCache.get(lookupKey)) return;
     const abort = new AbortController();
-    controller.current = abort;
-
-    const timer = setTimeout(async () => {
-      const cached = defaultLookupCache.get(cacheKey);
-      if (cached) {
-        setItems(cached.items);
-        setLoading(false);
-        setSelectedIndex(0);
-        return;
-      }
-
-      setLoading(true);
-      setError(null);
+    const timer = window.setTimeout(async () => {
       try {
         const response = await queryLookup({
-          query: trimmed,
-          releaseId,
-          season,
-          phase,
-          beforeDate,
-          limit: 12,
-          signal: abort.signal,
+          query: trimmed, releaseId, season, phase, beforeDate, kinds: lookupKinds, limit: LOOKUP_LIMIT, signal: abort.signal,
         });
-
-        if (!abort.signal.aborted) {
-          defaultLookupCache.set(cacheKey, response);
-          setItems(response.items);
-          setLoading(false);
-          setSelectedIndex(0);
-        }
+        if (abort.signal.aborted) return;
+        defaultLookupCache.set(lookupKey, response);
+        setLookup({ key: lookupKey, items: response.items, total: response.total_matches });
+        setLookupError(null);
       } catch {
-        if (!abort.signal.aborted) {
-          setLoading(false);
-          setError("Search is temporarily unavailable. Check backend connection.");
-        }
+        if (!abort.signal.aborted) setLookupError(lookupKey);
       }
     }, 120);
+    return () => { window.clearTimeout(timer); abort.abort(); };
+    // lookupKey holds the query, scope and kinds of the request.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, lookupKey]);
 
-    return () => {
-      clearTimeout(timer);
-      abort.abort();
-    };
-  }, [query, isOpen, releaseId, season, phase, beforeDate]);
+  // A cached read shows at once; otherwise the request above fills it in.
+  const cached = lookupKey ? defaultLookupCache.get(lookupKey) : undefined;
+  const current = cached ? { items: cached.items, total: cached.total_matches } : lookup && lookup.key === lookupKey ? lookup : null;
+  const failed = lookupKey !== null && lookupError === lookupKey;
+  const searching = lookupKey !== null && !current && !failed;
+  const players = current?.items.filter(item => item.kind === "player") ?? [];
+  const teams = current?.items.filter(item => item.kind === "team") ?? [];
+  // The lookup counts every match but returns at most LOOKUP_LIMIT; a full page means "more".
+  const moreThanShown = (current?.total ?? 0) > (current?.items.length ?? 0);
 
-  // Result groupings
-  const isQueryEmpty = query.trim() === "";
+  const pageMatches = searchSitePages(trimmed);
+
   // Recents read as ordinary results: the same team logo and caption in this scope (70).
-  const { items: recents, ready: recentsReady } = useScopedRecents(useRecentSearches(), { releaseId, season, phase, beforeDate }, isOpen && isQueryEmpty);
+  const { items: scopedRecents, ready: recentsReady } = useScopedRecents(useRecentSearches(), { releaseId, season, phase, beforeDate }, isOpen && isQueryEmpty);
+  const recents = refreshPageRecents(scopedRecents).filter(item =>
+    scope === "all" || item.kind === (scope === "pages" ? "page" : scope === "players" ? "player" : "team"));
   // The empty state appears once, complete: recents, leaders and pages together (72).
   const idleReady = recentsReady && leadersReady;
   const seasonLeaders = leaders.filter(item => item.match_basis === "leader" && !recents.some(entry => entry.kind === "player" && entry.canonical_id === item.canonical_id));
-  const players = items.filter(i => i.kind === "player");
-  const teams = items.filter(i => i.kind === "team");
-  const pages = items.filter(i => i.kind === "page");
 
-  // D8: one search with grouped results. The empty state shows bounded local recents, then pages.
-  const displayGroups: { name: string; recent?: boolean; items: LookupItem[] }[] = isQueryEmpty
-    ? !idleReady ? [] : [
-        ...(recents.length > 0 ? [{ name: "Recent", recent: true, items: recents }] : []),
-        ...(seasonLeaders.length > 0 ? [{ name: `Season leaders${season ? ` · ${season}` : ""}`, items: seasonLeaders }] : []),
-        { name: "Pages", items: DEFAULT_QUICK_ACTIONS },
-      ]
-    : [
-        ...(players.length > 0 ? [{ name: "Players", items: players }] : []),
-        ...(teams.length > 0 ? [{ name: "Teams", items: teams }] : []),
-        ...(pages.length > 0 ? [{ name: "Pages", items: pages }] : []),
-      ];
+  const entityRows = (items: LookupItem[]): Row[] => items.map(item => ({ type: "entity", item }));
+  const pageRows = (pages: readonly SitePage[], showSection: boolean): Row[] => pages.map(page => ({ type: "page", page, showSection }));
+  const lookupStatus = (noun: string) =>
+    searching ? { text: `Searching ${noun}…` } : failed ? { text: "Search is temporarily unavailable. Check backend connection.", error: true } : undefined;
 
-  const flatItems = displayGroups.flatMap(g => g.items);
-  const activeIndex = flatItems.length > 0 ? Math.min(selectedIndex, flatItems.length - 1) : -1;
+  const groups: DisplayGroup[] = [];
+  const recentGroup = (): DisplayGroup | null => recents.length > 0
+    ? { key: "recent", name: "Recent", recent: true, rows: recents.map(item => ({ type: "entity", item, recent: true })) }
+    : null;
+  if (isQueryEmpty) {
+    if (scope === "pages") {
+      const recent = recentGroup();
+      if (recent) groups.push(recent);
+      for (const section of groupBySection(SITE_PAGES)) groups.push({ key: `section:${section.section}`, name: section.section, rows: pageRows(section.pages, false) });
+    } else if (idleReady) {
+      const recent = recentGroup();
+      if (recent) groups.push(recent);
+      if (scope !== "teams" && seasonLeaders.length > 0) {
+        groups.push({ key: "leaders", name: `Season leaders${season ? ` · ${season}` : ""}`, rows: entityRows(seasonLeaders) });
+      }
+      if (scope === "all") {
+        const idlePages = IDLE_PAGE_HREFS.flatMap(href => SITE_PAGES.filter(page => page.href === href));
+        groups.push({ key: "pages", name: "Pages", rows: pageRows(idlePages, true), total: SITE_PAGES.length, seeAll: "pages" });
+      }
+    }
+  } else if (scope === "all") {
+    const pagesGroup: DisplayGroup | null = pageMatches.length > 0
+      ? { key: "pages", name: "Pages", rows: pageRows(pageMatches.slice(0, ALL_LIMITS.pages), true), total: pageMatches.length, seeAll: pageMatches.length > ALL_LIMITS.pages ? "pages" : undefined }
+      : null;
+    const lookupGroups: DisplayGroup[] = [];
+    const status = lookupStatus("players and teams");
+    if (status) {
+      lookupGroups.push({ key: "players", name: "Players", rows: [], status });
+    } else {
+      if (players.length > 0) lookupGroups.push({
+        key: "players", name: "Players", rows: entityRows(players.slice(0, ALL_LIMITS.players)), total: players.length,
+        seeAll: players.length > ALL_LIMITS.players || moreThanShown ? "players" : undefined,
+      });
+      if (teams.length > 0) lookupGroups.push({
+        key: "teams", name: "Teams", rows: entityRows(teams.slice(0, ALL_LIMITS.teams)), total: teams.length,
+        seeAll: teams.length > ALL_LIMITS.teams ? "teams" : undefined,
+      });
+    }
+    // Pages lead when the query names one ("draft", "shot qu") and no player's full name is typed.
+    const pagesLead = pageMatches.length > 0 && isStrongPageMatch(trimmed, pageMatches[0])
+      && !players.some(item => item.match_basis === "exact");
+    groups.push(...(pagesLead && pagesGroup ? [pagesGroup, ...lookupGroups] : [...lookupGroups, ...(pagesGroup ? [pagesGroup] : [])]));
+  } else if (scope === "pages") {
+    if (pageMatches.length > 0) groups.push({ key: "pages", name: "Pages", rows: pageRows(pageMatches, true), total: pageMatches.length });
+  } else {
+    const noun = scope === "players" ? "players" : "teams";
+    const status = lookupStatus(noun);
+    const items = scope === "players" ? players : teams;
+    if (status) groups.push({ key: noun, name: scope === "players" ? "Players" : "Teams", rows: [], status });
+    else if (items.length > 0) groups.push({ key: noun, name: scope === "players" ? "Players" : "Teams", rows: entityRows(items), total: current?.total });
+  }
 
-  const handleSelect = (item: LookupItem) => {
+  const flatRows = groups.flatMap(group => group.rows);
+  const activeIndex = flatRows.length > 0 ? Math.min(selectedIndex, flatRows.length - 1) : -1;
+  const nothingFound = !isQueryEmpty && !searching && flatRows.length === 0 && groups.every(group => !group.status);
+  const teamsIdle = isQueryEmpty && scope === "teams" && idleReady && flatRows.length === 0;
+
+  // Keep the arrowed-to row in view.
+  useEffect(() => {
+    if (activeIndex < 0) return;
+    listRef.current?.querySelector(`#global-cmd-opt-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
+  }, [activeIndex]);
+
+  const changeScope = (next: SearchScope) => {
+    setScope(next);
+    setSelectedIndex(0);
+    listRef.current?.scrollTo({ top: 0 });
+    inputRef.current?.focus();
+  };
+
+  const handleSelect = (row: Row) => {
+    const item = row.type === "page" ? pageAsLookupItem(row.page) : row.item;
     rememberRecentSearch(item);
-    onClose();
-    setQuery("");
+    close();
     // Results open at the destination's own scope: one page's season never carries to another.
     router.push(item.destination_url);
   };
 
   const handleRawSubmit = () => {
-    const trimmed = query.trim();
     if (trimmed) {
-      onClose();
-      setQuery("");
+      close();
       router.push(`/stats?name=${encodeURIComponent(trimmed)}`);
     }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    // The scope control handles its own arrows, Home and End.
+    if (e.key !== "Escape" && (e.target as HTMLElement).closest("[data-kit='segmented']")) return;
     if (e.key === "Escape") {
       e.preventDefault();
-      onClose();
-      setQuery("");
+      close();
+    } else if (e.key === "Tab" && e.target === inputRef.current) {
+      // Tab steps through the scopes from the search field, as in most command palettes.
+      e.preventDefault();
+      const index = SCOPES.findIndex(option => option.value === scope);
+      changeScope(SCOPES[(index + (e.shiftKey ? SCOPES.length - 1 : 1)) % SCOPES.length].value);
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      if (flatItems.length > 0) {
-        setSelectedIndex(prev => (prev + 1) % flatItems.length);
+      if (flatRows.length > 0) {
+        setSelectedIndex(prev => (Math.min(prev, flatRows.length - 1) + 1) % flatRows.length);
       }
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      if (flatItems.length > 0) {
-        setSelectedIndex(prev => (prev - 1 + flatItems.length) % flatItems.length);
+      if (flatRows.length > 0) {
+        setSelectedIndex(prev => (Math.min(prev, flatRows.length - 1) - 1 + flatRows.length) % flatRows.length);
       }
-    } else if (e.key === "Home") {
+    } else if (e.key === "Home" && e.target !== inputRef.current) {
       e.preventDefault();
       setSelectedIndex(0);
-    } else if (e.key === "End") {
+    } else if (e.key === "End" && e.target !== inputRef.current) {
       e.preventDefault();
-      setSelectedIndex(flatItems.length - 1);
-    } else if (e.key === "Delete" && isQueryEmpty && activeIndex >= 0 && activeIndex < recents.length) {
-      // Recents lead the empty state, so the active index is the recent's own index.
+      setSelectedIndex(flatRows.length - 1);
+    } else if (e.key === "Delete" && isQueryEmpty && activeIndex >= 0) {
+      const row = flatRows[activeIndex];
+      if (row.type === "entity" && row.recent) {
+        e.preventDefault();
+        forgetRecent(row.item);
+      }
+    } else if (e.key === "Enter" && e.target === inputRef.current) {
       e.preventDefault();
-      forgetRecentSearch(recents[activeIndex]);
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (activeIndex >= 0 && flatItems[activeIndex]) {
-        handleSelect(flatItems[activeIndex]);
+      if (activeIndex >= 0 && flatRows[activeIndex]) {
+        handleSelect(flatRows[activeIndex]);
       } else {
         handleRawSubmit();
       }
@@ -544,10 +573,7 @@ export function GlobalCommandPalette({
             animate="animate"
             exit="exit"
             className="ui-scrim ui-command-palette-scrim"
-            onClick={() => {
-              onClose();
-              setQuery("");
-            }}
+            onClick={close}
           >
             <motion.div
               role="dialog"
@@ -575,16 +601,10 @@ export function GlobalCommandPalette({
                   aria-activedescendant={activeIndex >= 0 ? `global-cmd-opt-${activeIndex}` : undefined}
                   value={query}
                   onChange={e => {
-                    const val = e.target.value;
-                    setQuery(val);
+                    setQuery(e.target.value);
                     setSelectedIndex(0);
-                    if (!val.trim()) {
-                      setItems([]);
-                      setLoading(false);
-                      setError(null);
-                    }
                   }}
-                  placeholder="Search players, teams, leaderboards, or research tools…"
+                  placeholder={scope === "pages" ? "Search pages…" : scope === "players" ? "Search players…" : scope === "teams" ? "Search teams…" : "Search pages, players and teams…"}
                   className="ui-command-input lookup-input"
                 />
                 {query && (
@@ -595,7 +615,6 @@ export function GlobalCommandPalette({
                     label="Clear search"
                     onClick={() => {
                       setQuery("");
-                      setItems([]);
                       setSelectedIndex(0);
                       inputRef.current?.focus();
                     }}
@@ -606,136 +625,72 @@ export function GlobalCommandPalette({
                   type="button"
                   className="ui-command-close"
                   aria-label="Close search"
-                  onClick={() => {
-                    onClose();
-                    setQuery("");
-                  }}
+                  onClick={close}
                 >
                   Cancel
                 </button>
               </div>
 
+              <div className="ui-command-scopes">
+                <Segmented size="sm" label="Search in" options={SCOPES} value={scope} onChange={changeScope} />
+              </div>
+
               <div
                 id="global-command-list"
+                ref={listRef}
                 className="ui-command-list lookup-listbox"
                 role="listbox"
-                aria-label="Search suggestions"
+                aria-label="Search results"
               >
-                {loading && <div className="lookup-status-message">Searching…</div>}
-
-                {error && (
-                  <div className="lookup-status-message error">
-                    {error}
-                  </div>
-                )}
-
-                {!loading && !error && !isQueryEmpty && flatItems.length === 0 && (
+                {nothingFound && (
                   <div className="lookup-status-message">
-                    No matches for &ldquo;{query}&rdquo;. Try another spelling or tricode.
+                    No {scope === "all" ? "pages, players or teams" : scope} match &ldquo;{trimmed}&rdquo;.
+                    {scope !== "all" ? " Try All, or another spelling." : " Try another spelling or tricode."}
                   </div>
                 )}
+                {teamsIdle && <div className="lookup-status-message">Type a team name, city or code.</div>}
 
-                {!loading &&
-                  !error &&
-                  displayGroups.map(group => (
-                    <div key={group.name} className="ui-command-group">
-                      <div className="lookup-group-header ui-command-group-heading">
-                        <span>{group.name}</span>
-                        {group.recent && (
-                          <Button size="xs" variant="text" onMouseDown={e => e.preventDefault()}
-                            onClick={() => { clearRecentSearches(); setSelectedIndex(0); }}>
-                            Clear all
-                          </Button>
-                        )}
-                      </div>
-                      {group.items.map(item => {
-                        const itemIndex = globalCounter++;
-                        const isSelected = itemIndex === activeIndex;
-                        const caption = group.recent && item.kind !== "player" ? KIND_LABEL[item.kind] : compactCaption(item) ?? KIND_LABEL[item.kind];
-
-                        return (
-                          <div
-                            key={`${group.name}:${item.kind}:${item.canonical_id}`}
-                            id={`global-cmd-opt-${itemIndex}`}
-                            role="option"
-                            tabIndex={-1}
-                            aria-selected={isSelected}
-                            data-active={isSelected}
-                            onClick={() => handleSelect(item)}
-                            onMouseEnter={() => setSelectedIndex(itemIndex)}
-                            className={`ui-command-item lookup-option ${
-                              isSelected ? "ui-command-item-active selected" : ""
-                            }`}
-                          >
-                            <span className="lookup-item-leading">
-                              {item.kind === "player" ? (
-                                <PlayerPortrait
-                                  playerId={
-                                    item.metadata?.identity_namespace === "planner"
-                                      ? undefined
-                                      : item.canonical_id
-                                  }
-                                  name={item.display_name}
-                                  portraitUrl={item.portrait_url}
-                                  size="sm"
-                                />
-                              ) : item.kind === "team" ? (
-                                <TeamLogo team={item.portrait_fallback ?? item.canonical_id} size={28} />
-                              ) : (
-                                <Icon
-                                  name={
-                                    group.recent
-                                      ? "history"
-                                      : item.id.includes("ask")
-                                      ? "message"
-                                      : item.id.includes("live")
-                                      ? "play"
-                                      : "page"
-                                  }
-                                  size={16}
-                                />
-                              )}
-                            </span>
-
-                            <span className="lookup-item-content ui-command-item-text">
-                              <span className="lookup-item-name ui-command-item-label">
-                                {item.display_name}
-                                {!group.recent && nicknameCaption(item) && (
-                                  <span className="lookup-alias-badge">{nicknameCaption(item)}</span>
-                                )}
-                              </span>
-                              <span className="lookup-item-subtitle ui-command-item-subtitle">
-                                {item.kind === "player" && (
-                                  <TeamLogoStack
-                                    decorative
-                                    size={16}
-                                    teams={item.team_association?.teams ?? []}
-                                    label={
-                                      item.team_association?.basis === "last_observed"
-                                        ? "Last observed team"
-                                        : "Teams observed in selected scope"
-                                    }
-                                  />
-                                )}
-                                {caption}
-                              </span>
-                            </span>
-                            {group.recent && (
-                              <span className="ui-command-item-actions">
-                                <IconButton size="xs" variant="ghost" icon="close"
-                                  label={`Remove ${item.display_name} from recent searches`}
-                                  onMouseDown={e => e.preventDefault()}
-                                  onClick={e => { e.stopPropagation(); forgetRecentSearch(item); }} />
-                              </span>
-                            )}
-                          </div>
-                        );
-                      })}
+                {groups.map(group => (
+                  <div key={group.key} className="ui-command-group" role="group" aria-label={group.name}>
+                    <div className="lookup-group-header ui-command-group-heading">
+                      <span>{group.name}</span>
+                      {group.recent && (
+                        <Button size="xs" variant="text" onMouseDown={e => e.preventDefault()}
+                          onClick={() => { clearRecentSearches(); setSelectedIndex(0); }}>
+                          Clear all
+                        </Button>
+                      )}
+                      {group.seeAll && <SeeAll scope={group.seeAll} total={group.seeAll === "players" && moreThanShown ? undefined : group.total} onSelect={changeScope} />}
                     </div>
-                  ))}
+                    {group.status && (
+                      <div className={`lookup-status-message${group.status.error ? " error" : ""}`}>{group.status.text}</div>
+                    )}
+                    {group.rows.map(row => {
+                      const itemIndex = globalCounter++;
+                      const isSelected = itemIndex === activeIndex;
+                      return (
+                        <div
+                          key={rowKey(group, row)}
+                          id={`global-cmd-opt-${itemIndex}`}
+                          role="option"
+                          tabIndex={-1}
+                          aria-selected={isSelected}
+                          data-active={isSelected}
+                          data-kind={row.type === "page" ? "page" : row.item.kind}
+                          onClick={() => handleSelect(row)}
+                          onMouseEnter={() => setSelectedIndex(itemIndex)}
+                          className={`ui-command-item lookup-option ${isSelected ? "ui-command-item-active selected" : ""}`}
+                        >
+                          {row.type === "page" ? <PageRow page={row.page} showSection={row.showSection} /> : <EntityRow item={row.item} recent={row.recent} />}
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
               </div>
 
               <div className="ui-command-footer" aria-hidden="true">
+                <span><kbd>Tab</kbd> Filter</span>
                 <span><kbd><Icon name="up" size={14} /></kbd><kbd><Icon name="down" size={14} /></kbd> Navigate</span>
                 <span><kbd><Icon name="enter" size={14} /></kbd> Open</span>
                 <span><kbd>Esc</kbd> Close</span>
@@ -745,5 +700,87 @@ export function GlobalCommandPalette({
         )}
       </AnimatePresence>
     </OverlayPortal>
+  );
+}
+
+function SeeAll({ scope, total, onSelect }: { scope: SearchScope; total?: number; onSelect: (scope: SearchScope) => void }) {
+  return (
+    <Button size="xs" variant="text" iconAfter="arrow-right" onMouseDown={e => e.preventDefault()} onClick={() => onSelect(scope)}>
+      {total === undefined ? "See all" : `See all ${total}`}
+    </Button>
+  );
+}
+
+/** Forgets a recent; a page is forgotten under every stored id that opens the same path. */
+function forgetRecent(item: LookupItem) {
+  forgetRecentSearch(item);
+  if (item.kind !== "page") return;
+  const path = item.destination_url.split("?")[0];
+  for (const entry of readRecentSearches()) {
+    if (entry.kind === "page" && entry.destination_url.split("?")[0] === path) forgetRecentSearch(entry);
+  }
+}
+
+function PageRow({ page, showSection }: { page: SitePage; showSection: boolean }) {
+  return (
+    <>
+      <span className="lookup-item-leading ui-command-page-icon"><Icon name={page.icon} size={16} /></span>
+      <span className="lookup-item-content ui-command-item-text">
+        <span className="lookup-item-name ui-command-item-label">{page.label}</span>
+        {page.description && <span className="lookup-item-subtitle ui-command-item-subtitle">{page.description}</span>}
+      </span>
+      {showSection && <span className="ui-command-item-section">{page.section}</span>}
+    </>
+  );
+}
+
+function EntityRow({ item, recent }: { item: LookupItem; recent?: boolean }) {
+  const page = item.kind === "page" ? sitePageFor(item.destination_url) : undefined;
+  const caption = recent && item.kind !== "player" ? KIND_LABEL[item.kind] : compactCaption(item) ?? KIND_LABEL[item.kind];
+  return (
+    <>
+      <span className="lookup-item-leading">
+        {item.kind === "player" ? (
+          <PlayerPortrait
+            playerId={item.metadata?.identity_namespace === "planner" ? undefined : item.canonical_id}
+            name={item.display_name}
+            portraitUrl={item.portrait_url}
+            size="sm"
+          />
+        ) : item.kind === "team" ? (
+          <TeamLogo team={item.portrait_fallback ?? item.canonical_id} size={28} />
+        ) : (
+          <Icon name={recent ? "history" : page?.icon ?? "page"} size={16} />
+        )}
+      </span>
+
+      <span className="lookup-item-content ui-command-item-text">
+        <span className="lookup-item-name ui-command-item-label">
+          {item.display_name}
+          {!recent && nicknameCaption(item) && (
+            <span className="lookup-alias-badge">{nicknameCaption(item)}</span>
+          )}
+        </span>
+        <span className="lookup-item-subtitle ui-command-item-subtitle">
+          {item.kind === "player" && (
+            <TeamLogoStack
+              decorative
+              size={16}
+              teams={item.team_association?.teams ?? []}
+              label={item.team_association?.basis === "last_observed" ? "Last observed team" : "Teams observed in selected scope"}
+            />
+          )}
+          {caption}
+        </span>
+      </span>
+      {recent && (
+        <span className="ui-command-item-actions">
+          <IconButton size="xs" variant="ghost" icon="close"
+            label={`Remove ${item.display_name} from recent searches`}
+            onMouseDown={e => e.preventDefault()}
+            onClick={e => { e.stopPropagation(); forgetRecent(item); }} />
+        </span>
+      )}
+    </>
   );
 }
