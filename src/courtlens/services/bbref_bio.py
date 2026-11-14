@@ -34,6 +34,7 @@ from courtlens.ingestion.bbref_players import (
     confirms_legal_name,
     index_url,
     match_by_seasons,
+    match_near,
     match_players,
     parse_index,
     parse_player_page,
@@ -165,16 +166,25 @@ def crawl(
 
     players = candidate_players(session, history)
     matched = match_players(entries, [player for player, _ in players])
+    near = match_near(
+        entries,
+        [player for player, _ in players if player.player_id not in matched],
+        set(matched.values()),
+    )
     provisional = (
         match_by_seasons(
             entries,
-            [player for player, _ in players if player.player_id not in matched],
-            set(matched.values()),
+            [
+                player
+                for player, _ in players
+                if player.player_id not in matched.keys() | near.keys()
+            ],
+            set(matched.values()) | {bbref_id for bbref_id, _ in near.values()},
         )
         if history
         else {}
     )
-    chosen = matched | provisional
+    chosen = matched | {pid: bbref_id for pid, (bbref_id, _) in near.items()} | provisional
     plan = [(p, active) for p, active in players if p.player_id in chosen]
     if active_only:
         plan = [(p, active) for p, active in plan if active]
@@ -182,6 +192,7 @@ def crawl(
         "index_players": len(entries),
         "candidates": len(players),
         "matched": len(matched),
+        "near": len(near),
         "provisional": len(provisional),
         "unmatched": [p.player_id for p, _ in players if p.player_id not in chosen][:50],
         "unmatched_count": len(players) - len(chosen),
@@ -192,7 +203,7 @@ def crawl(
         "stopped": False,
     }
     for player, _ in _limited(plan, limit, session, max_age, summary):
-        bbref_id = matched.get(player.player_id) or provisional[player.player_id]
+        bbref_id = chosen[player.player_id]
         receipt = (
             retained_receipt(session, player_url(bbref_id))
             if player.player_id in provisional
@@ -219,6 +230,8 @@ def crawl(
             continue
         if player.player_id in matched:
             basis = "name+birth_date" if player.birth_date else "name+seasons"
+        elif player.player_id in near:
+            basis = near[player.player_id][1]
         elif confirms_legal_name(player.name, _body(session, receipt, root), profile):
             basis = "surname+exact_seasons+legal_name"
         else:
@@ -389,6 +402,7 @@ def player_reference(session: Session, player_id: str) -> dict[str, Any] | None:
     profile = deepcopy(row.profile)
     return {
         "profile_id": row.id,
+        "bbref_id": row.bbref_id,
         "salary_history": profile.get("salary_history") or [],
         "career_earnings": profile.get("career_earnings"),
         "current_contract": profile.get("current_contract") or [],
