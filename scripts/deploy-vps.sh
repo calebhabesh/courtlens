@@ -69,7 +69,7 @@ SERVING_DIRS=(
   cache/portraits
   raw/bbref_history_sealed
 )
-VPS_OWNED_DIRS=(derived/win-probability-serving raw/espn-wp derived/job-health)
+VPS_OWNED_DIRS=(derived/win-probability-serving raw/espn-wp derived/job-health derived/position-estimates-provisional-v1)
 
 echo "Deploying $sha to $SSH_HOST:$REMOTE_DIR"
 remote_dirs=("$REMOTE_DIR/infra")

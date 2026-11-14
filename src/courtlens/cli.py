@@ -2165,11 +2165,22 @@ def capture_win_probability_inputs_command() -> None:
     typer.echo(str(capture_slate(today, Client())))
 
 
+@app.command("refresh-position-estimates")
+def refresh_position_estimates_command() -> None:
+    """Label the season in progress with the sealed position model (provisional, daily)."""
+    from courtlens.evaluation.position_estimates import run_provisional
+
+    sealed = get_settings().position_estimates_manifest
+    if sealed is None or not sealed.is_file():
+        raise typer.BadParameter("no sealed position estimate artifact is configured")
+    typer.echo(json.dumps(run_provisional(get_settings().database_url, sealed)))
+
+
 @app.command("refresh-daily")
 def refresh_daily_command(
     keep_days: int = typer.Option(30, help="Retention window passed to every step."),
 ) -> None:
-    """Scheduled daily run: player index, season stats, team scoring, contracts, DARKO, moves.
+    """Scheduled daily run: player index, season stats, positions, team scoring, contracts, more.
 
     Each step runs even when an earlier one fails (contracts then pin the previous index);
     the run exits non-zero if any step failed so the timer's journal records it.
@@ -2184,6 +2195,7 @@ def refresh_daily_command(
             "season stats",
             lambda: refresh_season_stats_command(None, Path("data/raw/season-boxscores"), 2, False),
         ),
+        ("position estimates", refresh_position_estimates_command),
         (
             "team scoring",
             lambda: acquire_team_scoring_command([], None, Path("data/raw/stats-feeds"), None),

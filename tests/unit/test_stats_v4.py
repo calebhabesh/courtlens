@@ -28,6 +28,7 @@ from courtlens.evaluation.position_estimates import (
     estimate,
     extend,
     feature_matrix,
+    provisional,
 )
 from courtlens.services import position_estimates
 from courtlens.services.impact_serving import derive_extras
@@ -325,3 +326,89 @@ def test_stats_presentation_rejects_unusable_season_ranges(seasons: list[str]) -
     query = QuerySpec(season=season, season_scope=SeasonScope(seasons=seasons))
     with pytest.raises(HTTPException, match="season range"):
         execute_stats_query(None, None, query, presentation=StatsPresentation())  # type: ignore[arg-type]
+
+
+def test_provisional_labels_only_seasons_after_the_sealed_ones() -> None:
+    profiles = {
+        "PG": ("G", 74, 600, 250, 10),
+        "SG": ("G", 77, 300, 300, 15),
+        "SF": ("F", 79, 220, 400, 30),
+        "PF": ("F", 81, 180, 600, 60),
+        "C": ("C", 84, 150, 800, 120),
+    }
+    current, labels = [], {}
+    for position, (listed, height, ast, reb, blk) in profiles.items():
+        for i in range(6):
+            current.append(sample(f"{position}-{i}", listed, height + i * 0.1, ast, reb, blk))
+            labels[f"{position}-{i}"] = position
+    sealed = {**estimate(current, labels), "version": "v"}
+    new_big = Sample("2026-27", "new-big", 300.0, "C", 85, 290, current[-1].totals)
+    old = Sample("2000-01", "old", 900.0, "G", 75, 190, current[0].totals)
+    # Drifted inputs would stop `extend`; the provisional run neither reads nor checks them.
+    drifted = [replace(s, listed="G") if s.player_id == "C-0" else s for s in current]
+    result = provisional([*drifted, new_big, old], sealed, "abc")
+    assert result["status"] == "provisional"
+    assert list(result["seasons"]) == ["2026-27"]
+    assert result["seasons"]["2026-27"]["new-big"]["position"] == "C"
+    assert result["frozen_from_sha256"] == "abc"
+
+
+def test_provisional_season_served_only_after_the_newest_sealed_one(tmp_path: Path) -> None:
+    from courtlens.services import served_bundle
+
+    sealed, _ = write_artifact(
+        tmp_path / "sealed",
+        {"version": position_estimates.VERSION, "seasons": {"2025-26": {"1": {"position": "PG"}}}},
+    )
+    pending_dir = tmp_path / "pending"
+    pending, _ = write_artifact(
+        pending_dir,
+        {
+            "version": position_estimates.VERSION,
+            "input": {"player_index_observed_at": "2026-11-13T13:38:18+00:00"},
+            "seasons": {
+                "2025-26": {"1": {"position": "C"}},
+                "2026-27": {"1": {"position": "SG"}, "2": {"position": "C"}},
+            },
+        },
+    )
+    served_bundle.install(pending_dir, pending)
+    settings = Settings(
+        position_estimates_manifest=sealed, position_estimates_provisional_dir=pending_dir
+    )
+    with patch("courtlens.services.position_estimates.get_settings", return_value=settings):
+        assert position_estimates.season_positions("2025-26") == {"1": "PG"}
+        assert position_estimates.position_player_ids("2026-27", ["C"]) == {"2"}
+        coverage = position_estimates.position_coverage()
+        assert coverage["sealed_seasons"] == ["2025-26"]
+        assert coverage["provisional_seasons"] == ["2026-27"]
+    empty = Settings(position_estimates_manifest=sealed, position_estimates_provisional_dir=None)
+    with patch("courtlens.services.position_estimates.get_settings", return_value=empty):
+        assert position_estimates.season_positions("2026-27") == {}
+        assert position_estimates.position_coverage()["provisional_seasons"] == []
+
+
+def test_provisional_prior_is_the_players_own_earlier_season() -> None:
+    profiles = {
+        "PG": ("G", 74, 600, 250, 10),
+        "SG": ("G", 77, 300, 300, 15),
+        "SF": ("F", 79, 220, 400, 30),
+        "PF": ("F", 81, 180, 600, 60),
+        "C": ("C", 84, 150, 800, 120),
+    }
+    current, labels = [], {}
+    for position, (listed, height, ast, reb, blk) in profiles.items():
+        for i in range(6):
+            current.append(sample(f"{position}-{i}", listed, height + i * 0.1, ast, reb, blk))
+            labels[f"{position}-{i}"] = position
+    sealed = {**estimate(current, labels), "version": "v"}
+    # The same 50 neutral minutes (the F group's own average rates) for a wing and a big:
+    # each keeps the label of his own earlier season instead of the listing's average.
+    forwards = [s for s in current if s.listed == "F"]
+    minutes = sum(s.minutes for s in forwards)
+    neutral = {f: 50 * sum(s.totals[f] for s in forwards) / minutes for f in forwards[0].totals}
+    wing = Sample("2026-27", "SF-0", 50.0, "F", 80, 280, neutral)
+    big = Sample("2026-27", "PF-0", 50.0, "F", 80, 280, neutral)
+    result = provisional([*current, wing, big], sealed, "abc")["seasons"]["2026-27"]
+    assert result["SF-0"]["position"] == "SF"
+    assert result["PF-0"]["position"] == "PF"

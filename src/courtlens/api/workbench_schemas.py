@@ -279,6 +279,8 @@ class WorkbenchCatalogResponse(BaseModel):
     warnings: list[str]
     impact: dict[str, Any] | None = None
     darko: dict[str, Any] | None = None
+    # Seasons with estimated positions (sealed or provisional); the Stats position chips use it.
+    position_estimates: dict[str, Any] | None = None
 
 
 class ResearchQuerySchema(BaseModel):
@@ -348,6 +350,10 @@ class PlayerResearchItem(BaseModel):
     table_cohort_sample_sizes: dict[str, int] | None = None
     # Estimated five-position label for the queried season (position-estimates-v1).
     position: Literal["PG", "SG", "SF", "PF", "C"] | None = None
+    # The NBA listing (G, F, C, hybrids) that estimate was bounded by, and whether the estimate
+    # is provisional (the season in progress, relabelled daily).
+    position_listed: str | None = None
+    position_provisional: bool | None = None
     # Who the player is listed with today (active players); the row's teams stay its games' teams.
     current_team: PlayerBioCurrentTeam | None = None
     # Set instead when the player is on no NBA roster today (free agent, abroad or retired).
@@ -834,6 +840,8 @@ class PlayerProfileResponse(BaseModel):
     last_observed_date: str | None = None
     forecast_status: dict[str, Any]
     warnings: list[str]
+    # The season's estimated position: {position, listed, provisional, season}; absent when none.
+    position_estimate: dict[str, Any] | None = None
 
 
 class PlayerGameLogItem(BaseModel):

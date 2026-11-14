@@ -333,8 +333,18 @@ export type MetricCatalog = {
   metrics: MetricDefinition[];
 };
 
+export type PositionEstimateCoverage = {
+  version: string;
+  method_url: string;
+  sealed_seasons: string[];
+  provisional_seasons: string[];
+  provisional_observed_at: string | null;
+};
+
 export type WorkbenchCatalog = {
   darko?: { status: string; manifest_sha256: string | null; scopes: { season: string; phase: string; as_of: string; data_date: string }[] } | null;
+  /** Seasons with estimated positions; provisional ones are a season in progress, relabelled daily. */
+  position_estimates?: PositionEstimateCoverage | null;
   impact?: { status: string; scopes: ImpactArtifact[]; manifest_sha256: string | null } | null;
   release_id: string;
   snapshot_id: string;
@@ -610,6 +620,10 @@ export type PlayerResearchItem = {
   cohort_sample_sizes?: Record<string, number> | null;
   // Estimated position for the queried season (Stats query only).
   position?: EstimatedPosition | null;
+  /** The NBA listing (G, F, C, hybrids) the estimate was bounded by. */
+  position_listed?: string | null;
+  /** The estimate is for the season in progress and is relabelled daily. */
+  position_provisional?: boolean | null;
   /** Who the player is on a roster with today; the row's teams stay its games' teams. */
   current_team?: PlayerCurrentTeam | null;
   /** Set instead of current_team when the player is on no NBA roster today. */
@@ -827,7 +841,11 @@ export type PlayerProfile = {
     policy_name?: string;
   };
   warnings: string[];
+  /** The page season's estimated position; absent when the season has none. */
+  position_estimate?: PositionEstimate | null;
 };
+
+export type PositionEstimate = { position: EstimatedPosition; listed: string | null; provisional: boolean; season: string };
 
 export type PlayerGameLogItem = {
   game_id: string;

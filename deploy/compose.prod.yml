@@ -206,6 +206,7 @@ services:
       - ./data/derived/free-agency-v1:/app/data/derived/free-agency-v1:ro
       - ./data/derived/shot-zones-v1:/app/data/derived/shot-zones-v1:ro
       - ./data/derived/position-estimates-v1:/app/data/derived/position-estimates-v1:ro
+      - ./data/derived/position-estimates-provisional-v1:/app/data/derived/position-estimates-provisional-v1:ro
       - ./data/derived/contracts-checks:/app/data/derived/contracts-checks:ro
       - ./data/derived/stint-box-v1:/app/data/derived/stint-box-v1:ro
       - ./data/artifacts/research-runs:/app/data/artifacts/research-runs:ro
