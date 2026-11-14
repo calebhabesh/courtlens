@@ -86,7 +86,8 @@ def _body(session: Session, receipt: WorkbenchAcquisition, root: Path) -> bytes:
 
 
 def candidate_players(session: Session, history: bool = False) -> list[tuple[NbaPlayer, bool]]:
-    """Players CourtLens has seasons for, active-roster players first, then newest careers.
+    """Players CourtLens has seasons for, or that NBA.com lists on a team now (a season's rookies
+    and new signings have no roster season yet), active-roster players first, then newest careers.
 
     ``history`` adds every other player in the NBA.com player index (careers before 2000-01,
     docs/full-history-plan.md) after them.
@@ -98,7 +99,7 @@ def candidate_players(session: Session, history: bool = False) -> list[tuple[Nba
                 bio.to_year, bio.listed_team_id IS NOT NULL AS active,
                 bio.player_id IN ({roster}) AS rostered
             FROM {_mart("mart_player_bio")} AS bio
-            WHERE :history OR bio.player_id IN ({roster})
+            WHERE :history OR bio.player_id IN ({roster}) OR bio.listed_team_id IS NOT NULL
             ORDER BY rostered DESC, active DESC, bio.to_year DESC NULLS LAST, bio.player_id"""
         ),
         {"history": history},
