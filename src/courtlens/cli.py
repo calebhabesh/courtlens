@@ -1586,6 +1586,43 @@ def acquire_bbref_bios_command(
         raise typer.Exit(1)
 
 
+@app.command("refresh-college-schools")
+def refresh_college_schools_command(
+    pages_root: Path = typer.Option(
+        Path("data/raw/bbref"), help="Retained Basketball-Reference player pages."
+    ),
+    root: Path = typer.Option(Path("data/raw/college-schools"), help="Retained index pages."),
+) -> None:
+    """Each player's college, its "City, State" and logo for the player header (weekly).
+
+    Reads colleges from retained Basketball-Reference pages, fetches Sports-Reference's schools
+    index and ESPN's college teams once each, downloads logos it does not have yet, and writes
+    colleges.json to `college_schools_dir`. A run that cannot read an index writes nothing.
+    """
+    import httpx
+
+    from courtlens.services.college_schools import CollegeFetcher, refresh
+
+    out_dir = get_settings().college_schools_dir
+    if out_dir is None:
+        raise typer.BadParameter("college_schools_dir is not configured")
+
+    def log(event: dict[str, Any]) -> None:
+        typer.echo(json.dumps(event, default=str), err=True)
+
+    with SessionLocal() as session, httpx.Client() as client:
+        summary = refresh(
+            session,
+            CollegeFetcher(session, root, client),
+            pages_root=pages_root,
+            out_dir=out_dir,
+            log=log,
+        )
+    typer.echo(json.dumps(summary, default=str))
+    if not summary["written"]:
+        raise typer.Exit(1)
+
+
 @app.command("acquire-bbref-history")
 def acquire_bbref_history_command(
     phase: list[str] = typer.Option(["league", "gamelogs"], help="league and/or gamelogs."),

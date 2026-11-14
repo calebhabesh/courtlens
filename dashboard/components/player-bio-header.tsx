@@ -11,6 +11,7 @@ import { countryFlag } from "@/lib/country-flags";
 import { formatDate } from "@/lib/format-date";
 import { teamBrandColor } from "@/lib/team-colors";
 import { teamArtwork, teamNameAt } from "@/lib/team-era";
+import { browserApi } from "@/lib/workbench-api";
 import { readStatsReturn, STATS_RETURN_PARAM, markStatsRestore } from "@/lib/stats-return";
 import { BackButton, onBareEscape, useNavLabel } from "./ui/back-button";
 import type { PlayerBio, PositionEstimate } from "@/lib/types";
@@ -29,6 +30,19 @@ export function formatHeight(inches: number | null | undefined): string | null {
 }
 
 /** The team's name in that season (the Philadelphia Warriors in 1961-62), else today's. */
+/** Franchises that drafted under their old name because they moved after that June's draft. */
+const MOVED_AFTER_DRAFT: Record<string, number> = { MEM: 2001, OKC: 2008 };
+
+/**
+ * The season whose name a draft pick was made under. Moves and renames before the draft count
+ * (New Orleans 2002, Charlotte Bobcats 2004, Brooklyn 2012, Pelicans 2013, Hornets 2014), so a
+ * draft is named by the season it opens; Vancouver (2001) and Seattle (2008) moved after it.
+ */
+function draftedAs(tricode: string, year: number): string {
+  const start = MOVED_AFTER_DRAFT[tricode] === year ? year - 1 : year;
+  return `${start}-${String((start + 1) % 100).padStart(2, "0")}`;
+}
+
 function teamName(tricode: string, season?: string | null): string {
   return teamNameAt(tricode, season) ?? tricode;
 }
@@ -78,10 +92,15 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   const listed = [formatHeight(bio?.listed_height_inches), bio?.listed_weight_lbs != null ? `${Math.round(bio.listed_weight_lbs)} lb` : null].filter(Boolean).join(" · ");
   const datedAge = bio?.age != null && currentSeason != null && bio.season !== currentSeason;
   const draftTeam = bio?.draft?.team_tricode ?? null;
+  const draftSeason = bio?.draft && draftTeam ? draftedAs(draftTeam, bio.draft.year) : null;
   const draftPick = bio?.draft ? [String(bio.draft.year), bio.draft.round != null && bio.draft.pick != null ? `R${bio.draft.round} #${bio.draft.pick}` : null].filter(Boolean).join(" · ") : null;
   const experience = bio?.prior_seasons == null ? null : bio.prior_seasons === 0 ? "Rookie"
     : `${bio.prior_seasons + 1}${ordinalSuffix(bio.prior_seasons + 1)} season`;
-  const origin = bio?.draft?.organization ?? bio?.college ?? null;
+  const college = bio?.reference?.college ?? null;
+  // The College fact names the school, so Draft repeats only an origin that is not it (a club).
+  const draftOrigin = bio?.draft?.organization ?? bio?.college ?? null;
+  const originIsCollege = bio?.draft?.organization_type === "College/University" || draftOrigin === bio?.college;
+  const origin = college && originIsCollege ? null : draftOrigin;
   const flag = countryFlag(bio?.country);
   // Born carries the age; outside the current season the age is dated to the page's cutoff.
   const ref = bio?.reference ?? null;
@@ -91,13 +110,21 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     : { label: "Age", value: bio?.age != null ? String(bio.age) : null, detail: datedAge ? `On ${formatDate(bio?.as_of ?? "")}` : null };
   // "King in Riverside, California" -> school "King", place "Riverside, California".
   const school = ref?.high_school?.match(/^(.*?)\s+in\s+(.+)$/) ?? null;
-  const facts: { label: string; value: ReactNode; detail?: string | null; title?: string }[] = [
+  const facts: { label: string; value: ReactNode; detail?: ReactNode; title?: string }[] = [
     born,
     { label: "Listed", value: listed || null, detail: ref?.shoots ? `Shoots ${ref.shoots.toLowerCase()}` : null,
       title: "Team-reported height (in shoes) and weight" },
-    { label: "Draft", value: bio?.draft ? <>{draftPick}{draftTeam && <> · <span className="player-bio-team">
-      <TeamLogo team={draftTeam} size={18} />{draftTeam}</span></>}</> : bio?.undrafted ? "Undrafted" : null, detail: origin },
+    // The pick on top, the team that made it underneath (like the school's town), then any
+    // non-college origin.
+    { label: "Draft", value: bio?.draft ? draftPick : bio?.undrafted ? "Undrafted" : null,
+      detail: draftTeam ? <span className="player-bio-team"><TeamLogo team={draftTeam} season={draftSeason} size={16} />
+        {teamName(draftTeam, draftSeason)}{origin && ` · ${origin}`}</span> : origin },
     { label: "Experience", value: experience, detail: ref?.debut_date ? `Debut ${formatDate(ref.debut_date)}` : null },
+    { label: "College", value: college ? <span className="player-bio-college">
+      {/* eslint-disable-next-line @next/next/no-img-element -- a 96 px logo the API keeps needs no image optimisation */}
+      {college.logo_url && <img src={`${browserApi.replace(/\/$/, "")}${college.logo_url}`} width={18} height={18} alt="" />}{college.name}</span> : null,
+      detail: college?.location ?? null,
+      title: college?.school ? `${college.school}${college.location ? ` · ${college.location}` : ""} · ${college.attribution ?? ""}${college.logo_url ? " · logo: ESPN" : ""}` : undefined },
     { label: "High school", value: school ? school[1] : ref?.high_school ?? null, detail: school ? school[2] : null },
     { label: "Country", value: bio?.country ? <span className="player-bio-country">
       {/* eslint-disable-next-line @next/next/no-img-element -- a 1 KB static flag needs no image optimisation */}

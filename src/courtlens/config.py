@@ -63,6 +63,9 @@ class Settings(BaseSettings):
     contracts_check_dir: Path | None = Path("data/derived/contracts-checks")
     # `courtlens refresh-wikipedia-transactions` seals here; Free Agency reads the newest bundle.
     wikipedia_transactions_dir: Path | None = Path("data/derived/wikipedia-transactions-v1")
+    # `courtlens refresh-college-schools` writes colleges.json and logos/ here; player headers
+    # read it.
+    college_schools_dir: Path | None = Path("data/derived/college-schools-v1")
     # Sealed by `courtlens refresh-free-agency`; absent means the tracker reads not_configured.
     free_agency_manifest: Path | None = Path(
         "data/derived/free-agency-v1/9af16a45e65bd0ac876c635afe65e856545415c27538da8077d6212b136fda58.json"

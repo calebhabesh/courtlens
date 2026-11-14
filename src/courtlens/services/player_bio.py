@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 from courtlens.domain.teams import franchise_of, team_identity
 from courtlens.reference_models import BbrefPlayerSeason
 from courtlens.services.bbref_bio import player_reference
+from courtlens.services.college_schools import player_school
 from courtlens.services.contract_spans import contract_spans, unplaced_signings
 from courtlens.services.player_contracts import enrich_contracts
 from courtlens.services.stats_feed_views import _mart, _rows, team_tricode
@@ -167,7 +168,7 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
     draft_rows = _rows(
         session,
         f"""SELECT draft_year, round_number, round_pick, overall_pick, drafting_team_id,
-            organization FROM {_mart("mart_stats_draft_history")}
+            organization, organization_type FROM {_mart("mart_stats_draft_history")}
         WHERE player_id = :pid ORDER BY draft_year DESC LIMIT 1""",
         pid=player_id,
     )
@@ -191,6 +192,8 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
             "team_id": team,
             "team_tricode": team_tricode(team) if team else None,
             "organization": row["organization"],
+            # "College/University", "High School" or "Other Team/Club", as NBA.com classes it.
+            "organization_type": row["organization_type"] or None,
         }
     elif bio is not None and bio["draft_year"] is not None:
         draft = {
@@ -222,6 +225,7 @@ def player_bio(session: Session, player_id: str, season: str, before_date: date)
 
     reference = player_reference(session, player_id)
     if reference is not None:
+        reference["college"] = player_school(player_id)
         enrich_contracts(session, player_id, reference)
         reference["contract_spans"] = contract_spans(reference)
         reference["unplaced_signings"] = unplaced_signings(reference, reference["contract_spans"])
