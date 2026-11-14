@@ -1957,6 +1957,19 @@ def get_player_portrait_media(hash: str, session: Session = Depends(get_db)) -> 
     return FileResponse(path, media_type=portrait.mime_type)
 
 
+@router.get("/college-logos/{espn_id}")
+def get_college_logo(espn_id: str) -> FileResponse:
+    """A college's 96 px dark-background logo kept by `courtlens refresh-college-schools`."""
+    from courtlens.services.college_schools import logo_path
+
+    path = logo_path(espn_id)
+    if path is None:
+        raise HTTPException(status_code=404, detail="College logo not found")
+    return FileResponse(
+        path, media_type="image/png", headers={"Cache-Control": "public, max-age=86400"}
+    )
+
+
 @router.get("/portrait-credits")
 def get_portrait_credits(session: Session = Depends(get_db)) -> dict[str, Any]:
     """Wikimedia Commons photos in use, with author, licence and file page (their licences

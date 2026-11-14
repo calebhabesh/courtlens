@@ -59,6 +59,7 @@ SERVING_DIRS=(
   derived/darko-dpm-v2
   derived/espn-rosters-v1
   derived/wikipedia-transactions-v1
+  derived/college-schools-v1
   derived/free-agency-v1
   derived/shot-zones-v1
   derived/position-estimates-v1

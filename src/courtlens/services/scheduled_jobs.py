@@ -128,6 +128,15 @@ JOBS: tuple[Job, ...] = (
         timedelta(days=7),
         timedelta(days=8),
     ),
+    # Each player's college, its location and logo (player header), after the pages it reads.
+    Job(
+        "college-schools",
+        ("refresh-college-schools",),
+        timedelta(hours=1),
+        _daily(time(17, 0), UTC, weekday=1),
+        timedelta(days=7),
+        timedelta(days=8),
+    ),
 )
 BY_NAME = {job.name: job for job in JOBS}
 
