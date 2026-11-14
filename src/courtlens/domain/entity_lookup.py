@@ -14,6 +14,57 @@ LOOKUP_NORMALIZATION_VERSION = "v1"
 # Suffixes commonly present in player names
 SUFFIX_RE = re.compile(r"\b(jr\.?|sr\.?|ii|iii|iv|v)\b", re.IGNORECASE)
 
+# First names that are the same name (a short form and its formal forms). A player is found by
+# any of them in place of the listed first name: "ron holland" finds Ronald Holland II.
+FIRST_NAME_GROUPS: tuple[frozenset[str], ...] = tuple(
+    frozenset(group.split())
+    for group in (
+        "alex alexander alexandre alexandr",
+        "andy andrew drew",
+        "ben benjamin",
+        "bill billy william willie will",
+        "bob bobby robert rob robbie",
+        "cam cameron",
+        "charles charlie chuck",
+        "chris christopher",
+        "dan daniel danny",
+        "dave david",
+        "don donald donnie",
+        "doug douglas",
+        "ed eddie edward",
+        "fred freddie frederick",
+        "greg gregory",
+        "jake jacob",
+        "jeff jeffrey",
+        "jim jimmy james",
+        "joe joey joseph",
+        "jon jonathan",
+        "josh joshua",
+        "ken kenny kenneth",
+        "larry lawrence",
+        "matt matthew",
+        "mike michael mikey",
+        "nate nathan nathaniel",
+        "nic nick nicholas nicolas nicky",
+        "pat patrick",
+        "phil philip phillip",
+        "ray raymond",
+        "rich richard rick ricky",
+        "ron ronald ronnie",
+        "sam samuel sammy",
+        "steve steven stephen",
+        "tim timothy timmy",
+        "tom thomas tommy",
+        "tony anthony",
+        "vince vincent",
+        "walt walter",
+        "zach zachary zack",
+    )
+)
+_FIRST_NAME_EQUIVALENTS: dict[str, frozenset[str]] = {
+    name: group for group in FIRST_NAME_GROUPS for name in group
+}
+
 # Punctuation characters to strip/replace
 PUNCT_RE = re.compile(r"[\x27\`\.\,\-\_\/\(\)]")
 
@@ -120,7 +171,16 @@ def generate_player_aliases(
         if len(tok) >= 2 and tok not in aliases and not SUFFIX_RE.match(tok):
             aliases.append(tok)
 
-    # 5. External aliases provided from metadata or data sources
+    # 5. The same name with another form of the first name ("mike conley" for Michael Conley,
+    # "ron holland" for Ronald Holland II), suffix dropped, so either spelling finds the player.
+    name_tokens = without_suffix.split()
+    if len(name_tokens) >= 2:
+        for other in sorted(_FIRST_NAME_EQUIVALENTS.get(name_tokens[0], frozenset())):
+            variant = " ".join([other, *name_tokens[1:]])
+            if other != name_tokens[0] and variant not in aliases:
+                aliases.append(variant)
+
+    # 6. External aliases provided from metadata or data sources
     if external_aliases:
         for ext in external_aliases:
             ext_norm = normalize_lookup_text(ext)
