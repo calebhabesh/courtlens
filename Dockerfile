@@ -22,7 +22,17 @@ COPY warehouse ./warehouse
 # The scheduled jobs check sealed contracts and evidence by path before fitting: the monthly
 # win-probability rating snapshot and the weekly season impact (about 4 MB together).
 COPY docs/design ./docs/design
-COPY docs/evidence/im03-event-gate/acceptance-v2.json.gz ./docs/evidence/im03-event-gate/
+# The IM03 acceptance hash-checks every evidence file it names before the season impact fits.
+COPY docs/evidence/im03-event-gate/acceptance-v2.json.gz \
+     docs/evidence/im03-event-gate/coverage-and-conservation-v2.json.gz \
+     docs/evidence/im03-event-gate/idempotence.json.gz \
+     docs/evidence/im03-event-gate/independent-verification-v2.json.gz \
+     docs/evidence/im03-event-gate/input-reextraction.json.gz \
+     docs/evidence/im03-event-gate/original-candidates-retained.json.gz \
+     docs/evidence/im03-event-gate/population-receipts.json.gz \
+     docs/evidence/im03-event-gate/public-sequence-review.json.gz \
+     docs/evidence/im03-event-gate/v1-counterexamples.json.gz \
+     ./docs/evidence/im03-event-gate/
 COPY docs/evidence/im04/acceptance.json.gz ./docs/evidence/im04/
 COPY docs/evidence/im04/artifacts ./docs/evidence/im04/artifacts
 
