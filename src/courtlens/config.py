@@ -49,6 +49,11 @@ class Settings(BaseSettings):
     position_estimates_manifest: Path | None = Path(
         "data/derived/position-estimates-v1/1f8c19f2f4f27e2322d80e59fbe1fa519d299bb970d6cdc60aa2d8febe572a00.json"
     )
+    # The season in progress, labelled daily by that sealed model (`refresh-position-estimates`);
+    # the newest `.current` file is served.
+    position_estimates_provisional_dir: Path | None = Path(
+        "data/derived/position-estimates-provisional-v1"
+    )
     # Sealed by `courtlens refresh-darko` and the daily `refresh-darko-daily`; a directory serves
     # its newest bundle, a file pins one. Absent means DPM columns stay unknown.
     darko_manifest: Path | None = Path("data/derived/darko-dpm-v2")

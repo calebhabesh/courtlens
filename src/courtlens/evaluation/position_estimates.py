@@ -75,11 +75,17 @@ def listed_group(listed: str | None) -> str:
     return (listed or "?").split("-")[0] or "?"
 
 
-def feature_matrix(samples: list[Sample], reference: list[Sample] | None = None) -> np.ndarray:
+def feature_matrix(
+    samples: list[Sample],
+    reference: list[Sample] | None = None,
+    own_prior: dict[str, Sample] | None = None,
+) -> np.ndarray:
     """Rates shrink toward the listed group's league rate; missing size takes the group median.
 
     Group priors come from `reference` (default: the samples themselves), so a frozen model can
-    score new seasons against the population it was trained on.
+    score new seasons against the population it was trained on. `own_prior` (season in progress
+    only) shrinks a player toward his own earlier season instead, itself shrunk toward the group
+    as its sealed label was, so a few weeks of games do not pull him to his listing's average.
     """
     pooled: dict[str, Counter[str]] = defaultdict(Counter)
     minutes: dict[str, float] = defaultdict(float)
@@ -101,16 +107,30 @@ def feature_matrix(samples: list[Sample], reference: list[Sample] | None = None)
     league: Counter[str] = sum(pooled.values(), Counter())
     league_minutes = sum(minutes.values())
     rows = []
+
+    def group_rates(listed: str | None) -> dict[str, float]:
+        group = listed_group(listed)
+        prior, prior_minutes = (
+            (pooled[group], minutes[group]) if minutes.get(group) else (league, league_minutes)
+        )
+        return {field: prior[field] / max(prior_minutes, 1.0) for field in RATE_FIELDS}
+
     for s in samples:
         group = listed_group(s.listed)
         heights = sizes[group]["h"] or all_heights
         weights = sizes[group]["w"] or all_weights
-        prior, prior_minutes = (
-            (pooled[group], minutes[group]) if minutes.get(group) else (league, league_minutes)
-        )
+        prior_rate = group_rates(s.listed)
+        earlier = (own_prior or {}).get(s.player_id)
+        if earlier is not None:
+            earlier_group = group_rates(earlier.listed)
+            prior_rate = {
+                field: (earlier.totals[field] + PRIOR_MINUTES * earlier_group[field])
+                / (earlier.minutes + PRIOR_MINUTES)
+                for field in RATE_FIELDS
+            }
         rates = [
             36.0
-            * (s.totals[field] + PRIOR_MINUTES * prior[field] / max(prior_minutes, 1.0))
+            * (s.totals[field] + PRIOR_MINUTES * prior_rate[field])
             / (s.minutes + PRIOR_MINUTES)
             for field in RATE_FIELDS
         ]
@@ -231,10 +251,13 @@ def estimate(samples: list[Sample], labels: dict[str, str]) -> dict[str, Any]:
 
 
 def frozen_probabilities(
-    samples: list[Sample], reference: list[Sample], coefficients: dict[str, Any]
+    samples: list[Sample],
+    reference: list[Sample],
+    coefficients: dict[str, Any],
+    own_prior: dict[str, Sample] | None = None,
 ) -> np.ndarray:
     """Apply a sealed run's scaler and multinomial coefficients without refitting."""
-    x = feature_matrix(samples, reference)
+    x = feature_matrix(samples, reference, own_prior)
     z = (x - np.asarray(coefficients["scaler_mean"])) / np.asarray(coefficients["scaler_scale"])
     logits = z @ np.asarray(coefficients["weights"]).T + np.asarray(coefficients["intercept"])
     exp = np.exp(logits - logits.max(axis=1, keepdims=True))
@@ -285,6 +308,50 @@ def extend(samples: list[Sample], sealed: dict[str, Any]) -> dict[str, Any]:
             "added_seasons": sorted(seasons),
             "added_player_seasons": len(added),
         },
+    }
+
+
+def label_rows(samples: list[Sample], probabilities: np.ndarray) -> dict[str, dict[str, Any]]:
+    seasons: dict[str, dict[str, Any]] = defaultdict(dict)
+    for sample, probs in zip(samples, probabilities, strict=True):
+        best = int(np.argmax(probs))
+        seasons[sample.season][sample.player_id] = {
+            "position": POSITIONS[best],
+            "probability": round(float(probs[best]), 3),
+            "probabilities": [round(float(p), 3) for p in probs],
+            "minutes": round(sample.minutes, 1),
+            "listed": sample.listed,
+        }
+    return {season: dict(sorted(rows.items())) for season, rows in sorted(seasons.items())}
+
+
+def provisional(
+    samples: list[Sample], sealed: dict[str, Any], sealed_sha256: str
+) -> dict[str, Any]:
+    """Label seasons after the newest sealed one (the season in progress) with the frozen model.
+
+    Nothing is refit and no sealed label is touched or re-checked: the result is a separate,
+    replaceable file that the daily refresh rewrites as the season's box rates accumulate. The
+    season is sealed into the append-only artifact only once it is complete.
+    """
+    sealed_seasons = sealed["seasons"]
+    newest = max(sealed_seasons)
+    reference = [s for s in samples if s.season in sealed_seasons]
+    added = [s for s in samples if s.season > newest]
+    # Each player's latest earlier season with minutes (a rookie has none: the group prior).
+    earlier: dict[str, Sample] = {}
+    for s in sorted(reference, key=lambda s: s.season):
+        earlier[s.player_id] = s
+    probabilities = frozen_probabilities(added, reference, sealed["coefficients"], earlier)
+    seasons = label_rows(added, probabilities)
+    return {
+        "status": "provisional",
+        "prior": "own latest sealed season (shrunk toward its listing group); rookies: group",
+        "frozen_from_sha256": sealed_sha256,
+        "features": sealed["features"],
+        "prior_minutes": sealed["prior_minutes"],
+        "seasons": seasons,
+        "player_seasons": len(added),
     }
 
 
@@ -412,6 +479,49 @@ def run(database_url: str, output: Path, extend_from: Path | None = None) -> Pat
         flush=True,
     )
     return path
+
+
+PROVISIONAL_OUTPUT = Path("data/derived/position-estimates-provisional-v1")
+
+
+def run_provisional(
+    database_url: str, sealed_path: Path, output: Path = PROVISIONAL_OUTPUT
+) -> dict[str, Any]:
+    """Write today's provisional labels, serve them (`.current`) and prune older files."""
+    from courtlens.services import served_bundle
+
+    raw = sealed_path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != sealed_path.stem:
+        raise ValueError("sealed position estimate content address changed")
+    samples, _labels, provenance = read_inputs(database_url)
+    with threadpool_limits(limits=1):
+        result = provisional(samples, json.loads(raw), sealed_path.stem)
+    if not result["seasons"]:
+        return {"status": "no season after the sealed ones", "player_seasons": 0}
+    added = [s for s in samples if s.season in result["seasons"]]
+    artifact = {
+        "version": VERSION,
+        "claim": "provisional estimated position for a season in progress; not a listing",
+        "input": {
+            **provenance,
+            "player_seasons": len(added),
+            "samples_sha256": content_hash([s.__dict__ for s in added]),
+        },
+        "implementation": {
+            name: hash_file(Path(name))[0]
+            for name in ("src/courtlens/evaluation/position_estimates.py", CONTRACT)
+        },
+        **result,
+    }
+    path, digest = write_artifact(output, artifact)
+    served_bundle.install(output, path)
+    pruned = served_bundle.prune(output, {digest})
+    return {
+        "artifact": str(path),
+        "sha256": digest,
+        "seasons": {season: len(rows) for season, rows in result["seasons"].items()},
+        "pruned": len(pruned),
+    }
 
 
 def main() -> None:

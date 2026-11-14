@@ -12,6 +12,7 @@ import { querySpecToLegacyQuery } from "@/lib/query-url";
 import { resolveStatsQuery, normalizedColumn, overviewSortMetric } from "@/lib/stats-query";
 import { getPresetById, usesImpactManifest, type CountingMode } from "@/lib/stats-presets";
 import { getWorkspace } from "@/lib/workspace-client";
+import { positionChipStatus } from "@/lib/position-estimates";
 import type { DraftClassesResponse, EstimatedPosition, PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
 import { StatsDraftClassSelect, StatsHelpRow, StatsPositionChips, StatsTeamSelect } from "./stats-page-controls";
 import { DarkoSourceLink } from "./darko-source-link";
@@ -95,6 +96,8 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
 
   const positions = String(params.positions ?? "").split(",").filter((value): value is EstimatedPosition => ESTIMATED_POSITIONS.includes(value as EstimatedPosition));
   const draftYear = Number(params.draftYear) || null;
+  const positionSeasons = querySpec.season_scope?.seasons ?? (querySpec.season ? [querySpec.season] : []);
+  const positionChips = <StatsPositionChips status={positionChipStatus(catalog.position_estimates, positionSeasons)} seasons={positionSeasons} />;
   // Draft classes and header hints load beside the table query; either failing only hides
   // the Draft Class menu or the header hover text.
   const extras = Promise.allSettled([getDraftClasses(), getMetricCatalog()]);
@@ -169,7 +172,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
             { label: "DARKO raw snapshot", value: researchData.darko.raw_sha256 ?? "Unknown", mono: true },
             { label: "DARKO interpretation", value: researchData.darko.limitations.join(" ") }
           ] : []}
-          filters={team ? <StatsPositionChips /> : <><StatsTeamSelect /><StatsPositionChips /><StatsDraftClassSelect classes={draftClasses} /></>}
+          filters={team ? positionChips : <><StatsTeamSelect />{positionChips}<StatsDraftClassSelect classes={draftClasses} /></>}
         />
 
         {favoritesSignedOut && (
