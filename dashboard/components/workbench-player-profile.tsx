@@ -14,7 +14,7 @@ import { FIRST_GAME_LOG_SEASON, isTotalsSeason } from "@/lib/season-basis";
 import { teamNameAt } from "@/lib/team-era";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { CourtLensWordmark } from "./courtlens-wordmark";
-import { ImpactPlayerCard } from "./impact-player-card";
+import { ImpactPlayerCard, type PlayerImpactView } from "./impact-player-card";
 
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
@@ -41,7 +41,6 @@ import type {
   PlayerProfile,
   WorkbenchCatalog
 } from "@/lib/types";
-import type { ImpactResponse } from "@/lib/types";
 
 type ProfileTab = "overview" | "games" | "tracking" | "combine";
 const PROFILE_TABS: ProfileTab[] = ["overview", "games", "tracking", "combine"];
@@ -100,7 +99,7 @@ interface WorkbenchPlayerProfileProps {
   games: PlayerGameLogItem[];
   catalog?: WorkbenchCatalog | null;
   bio?: PlayerBio | null;
-  impact?: ImpactResponse | null;
+  impact?: PlayerImpactView | null;
   hero?: ProfileHeroStats | null;
   /** The career table's rows, read with the page; null fetches them in the browser. */
   career?: PlayerCareerResponse | null;
@@ -288,7 +287,7 @@ export function WorkbenchPlayerProfile({
         awards={bio?.reference ? { bySeason: bio.reference.awards, allStarSeasons: bio.reference.all_star_seasons, source: bio.reference.source } : null}
         trendQuery={hero?.query ?? null} hints={metricHints} />}
       <div className="player-overview-duo">
-        <ImpactPlayerCard data={impact} compact />
+        <ImpactPlayerCard data={impact?.data ?? null} season={impact?.season} requestedSeason={impact?.requestedSeason} currentSeason={catalog?.default_season} compact />
         <section className="player-open-section player-glass" aria-label="Recent form">
           <header className="player-open-heading"><h2><Icon name="trend" size={20} />Recent Form</h2><span>Last 10 and last 5 against the season</span></header>
           <div className="player-form-table" role="region" aria-label="Recent form table" tabIndex={0}>

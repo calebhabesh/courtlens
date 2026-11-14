@@ -78,8 +78,8 @@ def _dbt_workbench_env(database_url: str, schema: str = "analytics") -> dict[str
     }
 
 
-def run_dbt_workbench(dataset_id: str | None = None) -> None:
-    """Build workbench models via dbt."""
+def run_dbt_workbench(dataset_id: str | None = None, select: str = "tag:workbench") -> None:
+    """Build workbench models (or another tag's, e.g. `tag:player_reference`) via dbt."""
     executable = shutil.which("dbt")
     if executable is None:
         candidate = Path(sys.executable).parent / "dbt"
@@ -94,7 +94,7 @@ def run_dbt_workbench(dataset_id: str | None = None) -> None:
         "--profiles-dir",
         ".",
         "--select",
-        "tag:workbench",
+        select,
     ]
     if dataset_id:
         command.extend(["--vars", json.dumps({"workbench_dataset_id": dataset_id})])

@@ -24,3 +24,7 @@ models:
     marts:
       +materialized: table
       +schema: marts
+
+seeds:
+  courtlens_warehouse:
+    +schema: reference
