@@ -2387,6 +2387,14 @@ export type PlayerReferenceEvent = {
   from_team_code: string | null; to_team_code: string | null;
 };
 
+/** Seasons one contract covers, placed only where both its ends are known (contract_spans.py). */
+export type PlayerContractSpan = {
+  start_season: string; end_season: string;
+  end_basis: "stated_length" | "next_contract" | "current_contract" | "last_reported_season" | null;
+  signed_date: string; kind: "signing" | "extension"; length_stated: boolean;
+  team_code: string | null; description: string; current: boolean;
+};
+
 export type PlayerGameHighs = {
   phase: "regular_season" | "playoffs"; scope: "career" | "season"; season: string | null;
   values: Partial<Record<string, { value: string | null; url: string | null; date: string | null }>>;
@@ -2429,6 +2437,9 @@ export type PlayerBio = {
     salary_history?: PlayerSalary[]; career_earnings?: string | null;
     current_contract?: PlayerSalary[]; remaining_guaranteed?: PlayerGuarantee | null;
     contract_events?: PlayerReferenceEvent[]; transactions?: PlayerReferenceEvent[];
+    contract_spans?: PlayerContractSpan[];
+    /** Signings no span could be placed for (an extension's start or a contract's end unknown). */
+    unplaced_signings?: { signed_date: string; season: string; kind: "signing" | "extension"; description: string }[];
     game_highs?: PlayerGameHighs[];
   } | null;
   limitations: string[];
