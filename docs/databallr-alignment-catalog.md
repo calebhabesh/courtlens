@@ -4363,7 +4363,7 @@ settings) differ in the nav bar from the uncommitted Live/Standings nav work, no
 Evidence (`docs/evidence/alignment/playoffs/`): `bracket-1440.png`, `bracket-finals-390.png`,
 `bracket-west-390.png`, `bracket-1975-76-1440.png`, `series-1440.png`, `series-390.png`.
 
-### 18 Six-Factor RAPM — 👀 ready for review, awaiting the owner (Research design phase, page 1; sets the Research page pattern)
+### 18 Six-Factor RAPM — ✅ approved as Research design RD00 (owner, 2026-11-07; [research design catalog](research-design-catalog.md))
 Instructions (owner, 2026-11-06; saved Databallr pages `six-factor-rapm` and `shotquality`, plus seven
 screenshots of the Six-Factor explainer and the ShotQuality table, glossary and methodology; Research
 handoff D13):
@@ -4403,7 +4403,7 @@ Data-blocked: Databallr's six-year 550-day time-decay pool (CourtLens serves one
 hand-written per-player notes, the "residual < 0.6 per player" summary (not served), possessions.
 Evidence: docs/evidence/research/design-18/
 
-### 21 Learning / Patch Notes — 👀 built (Research R11, build phase), awaiting the owner
+### 21 Learning / Patch Notes — ✅ approved as Research design RD06 and RD07 ([research design catalog](research-design-catalog.md))
 From the owner's saved Databallr `Learning` and `patch-notes` pages (Research handoff R11, D14). Build
 phase: shared Research components; the Databallr styling is the design phase's.
 - Learning: 22 topics across 5 tiers (Databallr's four plus Testing Models), each linked to its CourtLens

@@ -13,6 +13,8 @@ model upgrade and revises one of its rules for this feature only (W-D4 below). W
 time, in order. Record measured evidence in the [progress log](win-probability-v4-progress.md).
 Only the owner marks a block ✅.
 
+**Closed 2026-11-13.** The owner marked the whole project finished on 2026-11-13; every block below is ✅ or recorded as cut. Two W7 observations that need calendar time (a day with the PC off, disk after a week) are logged as follow-ups in the [progress log](win-probability-v4-progress.md).
+
 Scope guard: this is the final piece of a portfolio project. Anything not listed in a block is out.
 If a block grows, stop and ask rather than widen it.
 
@@ -121,20 +123,20 @@ show v4's number beside it as "with the betting line".
 
 ## Blocks
 
-| Block | What | Owner gate |
-| --- | --- | --- |
-| W0 | Registration committed and pushed | Approves this plan and the registration text |
-| W1 | Fit stages S and C; the do-no-harm check | Reads the result before W2 |
-| W2 part A | Seal with the line and player rows; the seal job and VPS service, proved locally | Reads the result |
-| W2 part B | The cutover: sealing and scoring on the VPS | Says "cut over", present at the PC |
-| W3a | Final fit, freeze checks, arm64 check on the VPS, freeze | Says "freeze" |
-| W3b | Both models scored from every seal since the freeze; head-to-head; Live serves the result | Reads the first head-to-head |
-| W7a | Every job surveyed and every source tried from the VPS; nothing live changes | Decides any refused source; approves the runbook |
-| W7b | Data directory and database move; rosters and the daily refresh run on the VPS | Says "move", present at the PC |
-| W7c | Remaining jobs, backups, job health, the PC's timers removed | ✅ |
-| W4 | Live cards and the Pre-Game "why" | Design rounds, ✅ |
-| W5 | Win Probability page | Design rounds, ✅ |
-| W6 | Close-out | ✅ |
+| Block | What | Owner gate | Status |
+| --- | --- | --- | --- |
+| W0 | Registration committed and pushed | Approves this plan and the registration text | ✅ owner, 2026-11-13 |
+| W1 | Fit stages S and C; the do-no-harm check | Reads the result before W2 | ✅ owner, 2026-11-13 |
+| W2 part A | Seal with the line and player rows; the seal job and VPS service, proved locally | Reads the result | ✅ owner, 2026-11-13 |
+| W2 part B | The cutover: sealing and scoring on the VPS | Says "cut over", present at the PC | ✅ owner, 2026-11-13 |
+| W3a | Final fit, freeze checks, arm64 check on the VPS, freeze | Says "freeze" | ✅ owner, 2026-11-13 |
+| W3b | Both models scored from every seal since the freeze; head-to-head; Live serves the result | Reads the first head-to-head | ✅ owner, 2026-11-13 |
+| W7a | Every job surveyed and every source tried from the VPS; nothing live changes | Decides any refused source; approves the runbook | ✅ owner, 2026-11-13 |
+| W7b | Data directory and database move; rosters and the daily refresh run on the VPS | Says "move", present at the PC | ✅ owner, 2026-11-13 |
+| W7c | Remaining jobs, backups, job health, the PC's timers removed | ✅ | ✅ owner, 2026-11-13 |
+| W4 | Live cards and the Pre-Game "why" | Design rounds, ✅ | ✅ owner, 2026-11-13 |
+| W5 | Win Probability page | Design rounds, ✅ | ✅ owner, 2026-11-13 |
+| W6 | Close-out | ✅ | ✅ owner, 2026-11-13 |
 
 The table is in working order. W7 comes before W4 so the seals stop depending on the PC early in
 the 40-day test and the design blocks deploy on the final setup. W7 and W4/W5 do not depend on

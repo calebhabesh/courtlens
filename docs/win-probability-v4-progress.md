@@ -480,3 +480,70 @@ deployed. Nothing marked ✅.
 
 Still on the PC: the lineups, Metric Backtest and season impact timers (W7c C1) and the scratch
 cleanup. Next: tonight's grading runs (check the log after the last game), then W7c.
+
+## 2026-11-13 — W7c and W6 done; the owner marks the project finished
+
+The owner asked for the rest to be finished and the whole project marked finished. Their answers
+the same evening: cut R16; mark W7c ✅ now and log the checks that need calendar time as
+follow-ups; drop `courtlens_prev` after the restore test.
+
+- **C1, jobs moved.** Lineups first failed on the VPS: `deploy/pinned.env` pinned the impact
+  serving and team-splits manifests to files, and the job needs the directories. Both now name
+  the directories, which serve the same bundles today (each `.current` pointed at the pinned file;
+  checked in the API container). Only `api` and `jobs` were recreated (`--no-deps`); the seal
+  service kept running through tonight's slate. The rerun then took over an hour and hit the job's
+  1-hour timeout: retiring yesterday's provisional dataset cascades to `workbench_stint_players`
+  by `stint_id`, which no index led with, so each of about 10,000 stints scanned 7.5 million rows
+  (the PC's runs took 45 minutes for the same reason). The orphaned delete was cancelled (rolled
+  back), the index built concurrently by hand on the VPS (60 s, 95 MB) and added as migration
+  `4d5e6f7a8b92` (if-not-exists, so the next deploy skips it; up, down and up again on a
+  throwaway Postgres 17). Rerun: **52 s, 412 MiB peak**, output identical to the PC's run of
+  09:06 Eastern: quality 147 clean, 7 patched, 20 excluded; dataset `b87509d6…`; stint box
+  `f5a43284…`; the same dataset retired; 447 working files pruned. Metric Backtest's job is a
+  no-op until 2026-11-16 (weekly). Season impact waits until every team has 10 games (8 on
+  2026-11-09); its first fit runs on the VPS on Monday 2026-11-16. The Projected Impact weekly
+  score already runs inside the VPS's daily refresh.
+- **C2, frozen models on a new machine.** Both machines rescored the same 174 finished 2026-27
+  games (through 2026-11-12) from the same frozen files: Metric Backtest 3,132 values, largest
+  difference 1.1e-16; Projected Impact 870 values, identical. The VPS rescore also equals the
+  PC's 146 stored rows of each exactly. A dated note `scored_on_a_new_machine` starts each
+  model's protocol-notes file
+  (`evaluation/research/derived/courtlens-{metric-backtest,projected-impact}-v1-protocol-notes.json`).
+- **C3, backups.** `scripts/vps-backup.sh install` put both lines in the `ubuntu` crontab
+  (Sundays 07:20 UTC dump, 15:10 UTC records). Records: pushed under a cron-like environment
+  (commit `8ab1e76` in `calebhabesh/courtlens-records`); a fresh clone on the PC matched all 60
+  live record files on the VPS by SHA-256. Database: the weekly dump run by hand, 1.6 GB in
+  228 s. Its first restore into a scratch database failed at one foreign key: one Ask turn input
+  (turn `d203c734…`, step `agent_1`, 2026-11-10) pointed at dataset `5a6182e7…`, a sportsdataverse
+  dataset the PC had already retired when its database replaced the VPS's. B4 copied the visitor
+  rows without foreign-key checks, so the dead pointer got in. A check of all 135 foreign keys
+  found no other. The pointer was set to null (the turn and its answer kept; the dataset no
+  longer exists anywhere but in `courtlens_prev`). A fresh dump (1.6 GB, 228 s) then restored with exit 0 in 1,406 s
+  (single stream: `pg_restore -j` cannot read a pipe, so the operations note's command was
+  corrected): all 127 tables' exact row counts equal to live, 245 indexes and 313 constraints on
+  both. The scratch database and `courtlens_prev` were then dropped on the owner's word; the VPS
+  disk went from 124 GB to 139 GB free.
+- **C4, job health.** Already built in W7b: each job's record, `GET /api/job-health` with
+  `stale`, and now the operations note. No alert channel was added.
+- **C5, the PC.** `scripts/install_data_refresh.sh --remove` removed the roster, daily, lineups,
+  impact and Metric Backtest units; only `courtlens-scratch-clean` remains. `scripts/pull-from-vps.sh`
+  exists (W7b) and never pushes.
+- **C6 and W6, docs.** The deployment guide rewritten around the VPS as the system of record
+  (scheduled jobs table with measured times, backups, grading, deploys copy nothing under
+  `data/`); AGENTS.md's hosted-demo paragraph; a one-page
+  [operations note](operations/hosted-operations.md) (what runs when, health, restores, game 300
+  and season end); README status; finish plan F05 set to the measured state. No source was
+  refused, so no source-policy note was needed.
+- **W6 checks** on `feat/w7c-close`: pytest 2,885 passed, 8 failed (the same Anthropic-provider
+  tests that fail only on this PC's SDK; CI passes them); mypy 402 files and Ruff clean; dashboard
+  lint and typecheck clean; Vitest 938 passed; full Playwright in a sandbox 660 passed, 17 skipped,
+  0 failed. Evidence screenshots of the live Win Probability page and Live at 1440 and 390 px,
+  no horizontal overflow: [`w6`](evidence/win-probability-v4/w6/).
+- **Marked by the owner's instruction:** every v4 block, the finish plan's F00–F05, Research
+  R02–R12, R14 and R15b ✅; R16 ✂️ cut (dev 117 of 573, holdout never opened, no number); R13 ✂️
+  closed unbuilt; alignment rows 18 and 21 point to their ✅ Research design rows.
+
+**Follow-ups that need calendar time** (logged, not done at close): Monday 2026-11-16's first
+season-impact fit on the VPS (time, memory, the API's memory with the bigger bundle); a full day
+with no PC job and every page advancing (2026-11-14 is the first); disk after a week of runs
+(baseline 139 GB free after `courtlens_prev` was dropped, `data/` 18 GB, two dumps of 1.6 GB).
