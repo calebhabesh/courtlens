@@ -31,7 +31,10 @@ function Salary({ row }: { row: PlayerSalary }) {
 function CapShare({ row }: { row: PlayerSalary }) {
   if (row.share_of_cap == null) return <>—</>;
   const share = `${(row.share_of_cap * 100).toFixed(1)}%`;
-  return row.cap_source_url ? <a href={row.cap_source_url} target="_blank" rel="noreferrer" title={`Official cap threshold · retained ${formatDate(row.cap_as_of)}`}>{share}</a> : <>{share}</>;
+  const title = row.cap_source === "basketball_reference"
+    ? `Salary cap from Basketball-Reference's cap history · retrieved ${formatDate(row.cap_as_of)}`
+    : `Official cap threshold · retained ${formatDate(row.cap_as_of)}`;
+  return row.cap_source_url ? <a href={row.cap_source_url} target="_blank" rel="noreferrer" title={title}>{share}</a> : <>{share}</>;
 }
 
 /** The NBA season (July to June) a dated event falls in, matching the salary rows' labels. */
@@ -41,10 +44,32 @@ function eventSeason(date: string): string {
   return `${start}-${String(start + 1).slice(2)}`;
 }
 
+const DERIVED_GUARANTEE: Record<NonNullable<PlayerGuarantee["basis"]>, string> = {
+  total_equals_salaries: "The remaining guaranteed total equals every remaining salary, so each season is fully guaranteed",
+  total_equals_non_option_salaries: "The remaining guaranteed total equals every salary outside an option year (the source leaves option years out), so this season is fully guaranteed",
+};
+
+/**
+ * A current-contract season's terms under its salary: the reported option, and the guarantee,
+ * reported or settled by the total. Nothing when neither is known (the footnote says so).
+ */
+function Terms({ row }: { row: PlayerSalary }) {
+  if (!row.option && !row.guarantee) return null;
+  const guarantee = row.guarantee;
+  return <span className="player-contract-terms">
+    {row.option && <span className={`player-contract-option is-${row.option}`}>{row.option === "player" ? "Player option" : "Team option"}</span>}
+    {guarantee?.basis ? <a className="player-contract-guaranteed" href={guarantee.source_url} target="_blank" rel="noreferrer"
+      title={`${DERIVED_GUARANTEE[guarantee.basis]} · finance report as of ${formatDate(guarantee.as_of)}`}>Fully guaranteed</a>
+      : guarantee && <span>Guaranteed <Guarantee value={guarantee} /></span>}
+  </span>;
+}
+
 /**
  * Every contract fact in one table, styled like the Stats table: the current contract's seasons,
  * then reported salary history (newest first), each with that season's dated contract events,
- * and gold total rows for the remaining guarantee and reported career earnings.
+ * and gold total rows for the remaining guarantee and reported career earnings. A column with no
+ * reported value for this player (cap share for ABA-only careers, terms for most past seasons)
+ * is left out rather than drawn as a column of dashes.
  */
 function ContractTable({ reference, contract, history, events }: {
   reference: Reference; contract: PlayerSalary[]; history: PlayerSalary[]; events: PlayerReferenceEvent[];
@@ -59,6 +84,12 @@ function ContractTable({ reference, contract, history, events }: {
     if (season && seasons.has(season)) bySeason.set(season, [...(bySeason.get(season) ?? []), event]);
     else unplaced.push(event);
   }
+  const rows = [...contract, ...past];
+  const showCap = rows.some(salary => salary.share_of_cap != null);
+  const salaryColumns = showCap ? 3 : 2;
+  const columns = 1 + salaryColumns + 1;
+  // Empty cells after a total, keeping each column group's left edge.
+  const afterSalary = <>{showCap && <td />}<td className="group-start" /></>;
   // A season's events show once, on its first row (a split season has one row per team).
   const shown = new Set<string>();
   const row = (salary: PlayerSalary, i: number, current: boolean) => {
@@ -67,10 +98,10 @@ function ContractTable({ reference, contract, history, events }: {
     return <tr key={`${current ? "c" : "h"}:${salary.season}:${salary.team_code}:${i}`}>
       <th scope="row" className="player-ref-grid-lead">{salary.season}</th>
       <td className="group-start player-contract-team"><SalaryTeam row={salary} /></td>
-      <td><Salary row={salary} /></td>
-      <td><CapShare row={salary} /></td>
-      <td className="group-start">{salary.option ? <span className={`player-contract-option is-${salary.option}`}>{salary.option === "player" ? "Player option" : "Team option"}</span> : "—"}</td>
-      <td><Guarantee value={salary.guarantee} /></td>
+      {/* Terms sit under the current contract's salaries: the salary history never reports them,
+          and a played season's terms no longer apply, so a column for them would be mostly empty. */}
+      <td><Salary row={salary} />{current && <Terms row={salary} />}</td>
+      {showCap && <td><CapShare row={salary} /></td>}
       <td className="group-start player-contract-events-cell">{seasonEvents.length ? <EventList events={seasonEvents} /> : "—"}</td>
     </tr>;
   };
@@ -80,51 +111,47 @@ function ContractTable({ reference, contract, history, events }: {
         {/* Fixed, equal data columns: each group label centers over its columns (row 2, 66). */}
         <colgroup>
           <col className="player-ref-grid-lead-column" />
-          {[0, 1, 2, 3, 4].map(i => <col key={i} />)}
+          {Array.from({ length: columns - 2 }, (_, i) => <col key={i} />)}
           <col className="player-contract-events-column" />
         </colgroup>
         <thead>
           <tr className="player-ref-grid-tier-1">
             <th scope="colgroup" className="player-ref-grid-lead">Season</th>
-            <th scope="colgroup" colSpan={3} className="group-start">Salary</th>
-            <th scope="colgroup" colSpan={2} className="group-start">Terms</th>
+            <th scope="colgroup" colSpan={salaryColumns} className="group-start">Salary</th>
             <th scope="colgroup" className="group-start">Events</th>
           </tr>
           <tr className="player-ref-grid-tier-2">
             {/* The first section's label shares the column-label row (row 2, 66). */}
             <th scope="rowgroup" className="player-ref-grid-lead">Current Contract</th>
             <th scope="col" className="group-start player-contract-team">Team</th>
-            <th scope="col">Salary</th>
-            <th scope="col">% of Cap</th>
-            <th scope="col" className="group-start">Option</th>
-            <th scope="col" title="Annual guarantee only when explicitly reported; the remaining total appears below">Guaranteed</th>
+            <th scope="col" title="Current-contract seasons show their option or guarantee under the salary">Salary</th>
+            {showCap && <th scope="col" title="Salary against that season's official NBA salary cap">% of Cap</th>}
             <th scope="col" className="group-start player-contract-events-cell">Contract Events</th>
           </tr>
         </thead>
         <tbody>
           {contract.length > 0 ? contract.map((salary, i) => row(salary, i, true))
-            : <tr><td colSpan={7} className="player-contract-empty">No current contract listed in the retained report.</td></tr>}
+            : <tr><td colSpan={columns} className="player-contract-empty">No current contract listed in the retained report.</td></tr>}
         </tbody>
         {past.length > 0 && <tbody>
-          <tr className="player-contract-section"><th scope="rowgroup" className="player-ref-grid-lead" title={`${past.length} reported ${past.length === 1 ? "season" : "seasons"}`}>Salary History</th><td colSpan={6} /></tr>
+          <tr className="player-contract-section"><th scope="rowgroup" className="player-ref-grid-lead" title={`${past.length} reported ${past.length === 1 ? "season" : "seasons"}`}>Salary History</th><td colSpan={columns - 1} /></tr>
           {past.map((salary, i) => row(salary, i, false))}
         </tbody>}
         {unplaced.length > 0 && <tbody>
-          <tr className="player-contract-section"><th scope="rowgroup" className="player-ref-grid-lead">Other Contract Events</th><td colSpan={6} /></tr>
-          <tr><th scope="row" className="player-ref-grid-lead">—</th><td colSpan={5} className="group-start" /><td className="group-start player-contract-events-cell"><EventList events={unplaced} /></td></tr>
+          <tr className="player-contract-section"><th scope="rowgroup" className="player-ref-grid-lead">Other Contract Events</th><td colSpan={columns - 1} /></tr>
+          <tr><th scope="row" className="player-ref-grid-lead">—</th><td colSpan={columns - 2} className="group-start" /><td className="group-start player-contract-events-cell"><EventList events={unplaced} /></td></tr>
         </tbody>}
         {(reference.remaining_guaranteed || reference.career_earnings) && <tfoot>
+          {/* Both totals sit under Salary: they are dollar sums of the salary column's kind. */}
           {reference.remaining_guaranteed && <tr className="player-contract-total">
             <th scope="row" className="player-ref-grid-lead">Remaining Guaranteed</th>
-            <td colSpan={3} className="group-start" />
             <td className="group-start" /><td><strong><Guarantee value={reference.remaining_guaranteed} /></strong></td>
-            <td className="group-start" />
+            {afterSalary}
           </tr>}
           {reference.career_earnings && <tr className="player-contract-total">
             <th scope="row" className="player-ref-grid-lead">Career Earnings</th>
-            <td className="group-start" /><td><strong title="Reported salaries, not verified cash earned">{money(reference.career_earnings)}</strong></td><td />
-            <td colSpan={2} className="group-start" />
-            <td className="group-start" />
+            <td className="group-start" /><td><strong title="Reported salaries, not verified cash earned">{money(reference.career_earnings)}</strong></td>
+            {afterSalary}
           </tr>}
         </tfoot>}
       </table>
@@ -172,7 +199,7 @@ export function PlayerReferenceSections({ reference }: { reference: Reference })
     {(contract.length > 0 || history.length > 0 || events.length > 0) && <section className="player-open-section player-reference player-glass" aria-label="Contract">
       <header className="player-open-heading"><h2><Icon name="banknote" size={20} />Contract</h2><span>Reported salaries · USD</span></header>
       <ContractTable reference={reference} contract={contract} history={history} events={events} />
-      <p className="player-reference-note">Options are reported terms. A dash means unknown; a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s retained official NBA threshold. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
+      <p className="player-reference-note">Options are reported terms. &ldquo;Fully guaranteed&rdquo; means the reported remaining guaranteed total equals those seasons&apos; salaries; otherwise a dash means unknown, and a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s official NBA salary cap release where retained, otherwise Basketball-Reference&apos;s salary cap history. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
       <Credit reference={reference} anchor="all_contract" />
     </section>}
     {transactions.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Transaction News">

@@ -9,7 +9,8 @@ import {
   getAnalyticsGames,
   getAnalyticsProfile
 } from "@/lib/api";
-import type { AnalyticsGame, AnalyticsProfile, AnalyticsSummary, PlayerGameLogResponse, PlayerProfile } from "@/lib/types";
+import type { AnalyticsGame, AnalyticsProfile, AnalyticsSummary, PlayerCareerResponse, PlayerGameLogResponse, PlayerProfile } from "@/lib/types";
+import type { PlayerImpactView } from "@/components/impact-player-card";
 
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerProfile, type ProfileHeroStats } from "@/components/workbench-player-profile";
@@ -114,7 +115,7 @@ export default async function PlayerPage({
 
   if (wbLoaded) {
     const [impact, hero, bio, career, metricCatalog] = await Promise.all([
-      getImpact({ season, phase, beforeDate, playerId: id, window: windowParam }).catch(() => null),
+      playerImpact(id, { season, phase, beforeDate, window: windowParam }, careerRequest, catalog),
       catalog ? heroStats(id, { ...selected, season, phase, beforeDate }, catalog) : null,
       getPlayerBio(id, { season, beforeDate }).catch(() => null),
       careerRequest,
@@ -169,6 +170,31 @@ export default async function PlayerPage({
   }
 
   return <PlayerError error={loadError} id={id} date={selected.date} />;
+}
+
+/**
+ * The player's impact for the page's scope; when that season has no fit yet (the current season
+ * before its first weekly fit, or a season without one), the latest earlier regular season that
+ * has one, labelled as such by the panel. Every fit read ends before its own cutoff, which is
+ * before the page's, so no later outcome is used.
+ */
+async function playerImpact(
+  id: string,
+  scope: { season: string; phase: string; beforeDate: string; window: string },
+  careerRequest: Promise<PlayerCareerResponse | null>,
+  catalog: WorkbenchCatalog | null,
+): Promise<PlayerImpactView> {
+  const data = await getImpact({ ...scope, playerId: id }).catch(() => null);
+  if (!data || data.players.length > 0) return { data, season: scope.season, requestedSeason: scope.season };
+  const earlier = ((await careerRequest)?.seasons ?? []).map(entry => entry.season)
+    .filter(season => season < scope.season).sort().reverse().slice(0, 3);
+  for (const season of earlier) {
+    const beforeDate = catalog?.stats_scopes?.find(entry => entry.season === season && entry.phase === "regular_season")?.default_before_date;
+    if (!beforeDate) continue;
+    const fallback = await getImpact({ season, phase: "regular_season", beforeDate, playerId: id, window: "season" }).catch(() => null);
+    if (fallback?.players.length) return { data: fallback, season, requestedSeason: scope.season };
+  }
+  return { data, season: scope.season, requestedSeason: scope.season };
 }
 
 function windowGames(profile: PlayerProfile, window: string): number | undefined {

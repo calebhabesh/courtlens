@@ -706,6 +706,9 @@ class PlayerGuarantee(BaseModel):
     status: Literal["full", "partial", "none"] | None
     source_url: str
     as_of: datetime
+    # How a season's guarantee is known: reported for the season (None), or settled exactly by
+    # the contract's remaining guaranteed total (every salary, or every non-option salary).
+    basis: Literal["total_equals_salaries", "total_equals_non_option_salaries"] | None = None
 
 
 class PlayerSalary(BaseModel):
@@ -718,6 +721,8 @@ class PlayerSalary(BaseModel):
     option: Literal["player", "team"] | None = None
     share_of_cap: float | None = None
     cap_source_url: str | None = None
+    # The official NBA release when retained, else Basketball-Reference's cap history.
+    cap_source: Literal["nba_release", "basketball_reference"] | None = None
     cap_as_of: datetime | None = None
     guarantee: PlayerGuarantee | None = None
 

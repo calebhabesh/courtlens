@@ -1,6 +1,9 @@
 @layer pages {
   .player-reference-team { display: inline-flex; align-items: center; gap: var(--space-1); }
+  /* A current season's option and guarantee, on one line under its salary. */
+  .player-contract-terms { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 var(--space-2); margin-top: var(--space-0-5); font-size: var(--text-xs); }
   .player-contract-option { font-size: var(--text-xs); }
+  .player-contract-guaranteed { color: var(--color-text-secondary); }
   .player-contract-option.is-player { color: var(--color-status-player-option); }
   .player-contract-option.is-team { color: var(--color-status-team-option); }
   .player-contract-events-column { width: 32%; }

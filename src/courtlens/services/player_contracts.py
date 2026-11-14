@@ -38,6 +38,7 @@ def enrich_contracts(session: Session, player_id: str, reference: dict[str, Any]
                             else None
                         )
                         salary["cap_source_url"] = mart["cap_source_url"]
+                        salary["cap_source"] = mart.get("cap_source")
                         salary["cap_as_of"] = mart["cap_observed_at"]
     _guarantees(session, player_id, reference)
 
@@ -106,3 +107,46 @@ def _guarantees(session: Session, player_id: str, reference: dict[str, Any]) -> 
                     salary["guarantee"] = context
         elif row.amount_kind == "guaranteed_value" and row.value is not None:
             reference["remaining_guaranteed"] = context
+            options = {
+                r.financial_season
+                for r in book
+                if r.contract_id == row.contract_id
+                and r.team_id == row.team_id
+                and r.kind == "option"
+            }
+            _seasons_from_total(reported, salary_rows, options, Decimal(row.value), context)
+
+
+def _seasons_from_total(
+    reported: list[dict[str, Any]],
+    salary_rows: dict[str | None, str | None],
+    options: set[str | None],
+    total: Decimal,
+    context: dict[str, Any],
+) -> None:
+    """Mark seasons fully guaranteed when the remaining guaranteed total settles them exactly.
+
+    The source reports one total per contract, never a season's guarantee. No season's guarantee
+    can exceed its salary, so a total equal to every remaining salary means each season is fully
+    guaranteed. A total equal to the seasons without an option says the same of those seasons,
+    given the source's convention of leaving option years out of the total. Any other total stays
+    a total: it is never divided among seasons.
+    """
+    salaries = {s: Decimal(v) for s, v in salary_rows.items() if s is not None and v is not None}
+    if not salaries:
+        return
+    firm = {s: v for s, v in salaries.items() if s not in options}
+    if total == sum(salaries.values()):
+        covered, basis = salaries, "total_equals_salaries"
+    elif options and firm and total == sum(firm.values()):
+        covered, basis = firm, "total_equals_non_option_salaries"
+    else:
+        return
+    for salary in reported:
+        if salary["season"] in covered and "guarantee" not in salary:
+            salary["guarantee"] = {
+                **context,
+                "amount": salary["salary"],
+                "status": "full",
+                "basis": basis,
+            }
