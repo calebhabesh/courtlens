@@ -57,7 +57,7 @@ describe("README results", () => {
   ] as const)("quotes %s as checked", id => {
     expect(readme).toContain(formatFact(RESEARCH_FACTS[id]));
   });
-  it("gives R16 no number while its evaluation is in progress", () => {
-    expect(readme).toContain("**Ask evaluation (R16):** evaluation in progress; no number yet.");
+  it("gives R16 no number, since it was cut before it finished", () => {
+    expect(readme).toContain("**Ask evaluation (R16):** cut before it finished (owner, 2026-11-13); no number.");
   });
 });
