@@ -367,7 +367,7 @@ export function Header() {
           onClick={() => setPaletteOpen(true)}
         >
           <Icon name="search" size={16} className="courtlens-search-pill-icon" />
-          <span className="courtlens-search-pill-label">Search players, teams…</span>
+          <span className="courtlens-search-pill-label">Search pages, players…</span>
           <kbd className="courtlens-search-pill-kbd">⌘K</kbd>
         </button>
       </div>

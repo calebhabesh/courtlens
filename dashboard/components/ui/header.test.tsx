@@ -195,7 +195,7 @@ describe("FO02 search and drawer", () => {
     expect(screen.getByRole("option", { name: /Victor Wembanyama/ })).toBeDefined();
     act(() => { fireEvent.click(screen.getByRole("button", { name: "Clear all" })); });
     expect(screen.queryByRole("option", { name: /Victor Wembanyama/ })).toBeNull();
-    expect(document.querySelector(".ui-command-group-heading")?.textContent).toBe("Pages");
+    expect(document.querySelector(".ui-command-group-heading > span:first-child")?.textContent).toBe("Pages");
     expect(window.localStorage.getItem("courtlens-recent-searches-v1")).toBeNull();
   });
 
