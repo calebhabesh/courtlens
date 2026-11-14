@@ -245,7 +245,7 @@ The `jobs` service (`deploy/compose.prod.yml`) is the API image running
 own process with a timeout, then sleeps until the next scheduled time. Cap 4 GiB and two CPUs. A
 job seen for the first time (after a deploy that adds it) records a baseline and waits for its
 next scheduled time; `courtlens run-jobs --run <job>` runs one now. Schedules
-(`services/scheduled_jobs.py`) are the PC's old timers:
+(`services/scheduled_jobs.py`) are the PC's old timers plus the jobs added on the VPS:
 
 | Job | Command | When | Stale after | Measured on the VPS |
 | --- | --- | --- | --- | --- |
@@ -254,6 +254,7 @@ next scheduled time; `courtlens run-jobs --run <job>` runs one now. Schedules
 | lineups | `refresh-season-lineups` | 14:05 UTC | 30 h | 52 s, 412 MiB peak, output identical to the PC's; over an hour (timed out) before the `stint_id` index (W7c) |
 | season-impact | `refresh-season-impact` | Mondays 14:30 UTC | 8 days | waits until every team has 10 games; first fit expected 2026-11-16 |
 | metric-backtest | `refresh-metric-backtest` | 15:00 UTC (scores every 7 days) | 30 h | scoring 174 games takes about 2 s |
+| player-pages | `acquire-bbref-bios --active-only --max-age-days 6` | Tuesdays 16:00 UTC | 8 days | Basketball-Reference pages (contracts, transactions, career highs) for every rostered player at about 4 s a page: about 26 index pages plus ~530 players, so ~40 min; not yet run on the VPS. A 403/429 ends the run and records a failure |
 
 Each attempt writes `data/derived/job-health/<job>.json` (last success, last failure, seconds,
 exit code, output tail). `GET /api/job-health` returns them all with `stale` set when the last

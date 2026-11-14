@@ -25,7 +25,12 @@ def test_the_schedule_is_the_pcs_timers():
         "refresh-season-lineups",
         "refresh-season-impact",
         "refresh-metric-backtest",
+        "acquire-bbref-bios",
     ]
+    # Player pages: Tuesdays only (2026-11-17 is a Tuesday), roster players, a week's freshness.
+    pages = jobs.BY_NAME["player-pages"]
+    assert pages.args[1:] == ("--active-only", "--max-age-days", "6")
+    assert pages.next_slot(utc(2026, 11, 14, 12, 0)) == utc(2026, 11, 17, 16, 0)
     assert DAILY.last_slot(utc(2026, 11, 12, 13, 29)) == utc(2026, 11, 11, 13, 30)
     assert DAILY.last_slot(utc(2026, 11, 12, 13, 30)) == utc(2026, 11, 12, 13, 30)
     assert jobs.BY_NAME["lineups"].next_slot(utc(2026, 11, 12, 13, 0)) == utc(2026, 11, 12, 14, 5)
@@ -142,4 +147,11 @@ def test_the_health_endpoint(tmp_path, monkeypatch):
     response = TestClient(create_app()).get("/api/job-health")
     assert response.status_code == 200 and response.headers["cache-control"] == "no-store"
     names = [j["job"] for j in response.json()["jobs"]]
-    assert names == ["rosters", "daily", "lineups", "season-impact", "metric-backtest"]
+    assert names == [
+        "rosters",
+        "daily",
+        "lineups",
+        "season-impact",
+        "metric-backtest",
+        "player-pages",
+    ]
