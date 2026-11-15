@@ -269,7 +269,7 @@ function GameInfo({ data, className = "" }: { data: LiveGameData; className?: st
     { label: "Where", icon: "map-pin", wide: true, value: info?.venue ? <span className="live-info-venue">
       <span className="live-info-team"><TeamLogo team={logoTeam(home)} season={season} size={20} />{info.venue}{place && <span className="live-muted"> · {place}</span>}</span>
       {info.venue_image && /* eslint-disable-next-line @next/next/no-img-element -- ESPN's venue photo */
-        <img className="live-info-photo" src={info.venue_image} alt={`${info.venue}`} loading="lazy" />}
+        <img className="live-info-photo" src={info.venue_image} alt={`${info.venue}`} width={640} height={360} loading="lazy" />}
     </span> : null },
     { label: "Away", icon: "users", value: away ? team(away) : null },
     { label: "Home", icon: "home", value: home ? team(home) : null },

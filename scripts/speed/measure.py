@@ -11,6 +11,11 @@ wire bytes (the body as sent, compressed), decoded bytes, status and the cache h
     scripts/speed/measure.py --base http://localhost:3180 --api-base http://localhost:8180 \
         --label local
 
+The `static` section (SP06) holds one file of each kind the pages load: a portrait at both API
+paths, a team logo, an era logo and a flag. An entry with `"origin": "api"` is requested from the
+API origin, the others from the dashboard; their `cache-control` and `cf-cache-status` are the
+point.
+
 `{releaseId}`, `{season}` and `{beforeDate}` in urls.json are filled from the target's
 `/api/workbench/catalog` (its release and default scope) before the first request, and recorded
 in the output. Writes JSON to `--out-dir` and prints a Markdown table of medians.
@@ -144,6 +149,8 @@ def table(results: list[dict[str, Any]]) -> str:
         last: dict[str, Any] = next((r for r in reversed(item["runs"]) if "error" not in r), {})
         cache = last.get("headers", {})
         tag = cache.get("x-cache") or cache.get("cf-cache-status") or ""
+        if item["kind"] == "file":
+            tag = " ".join(filter(None, (cache.get("cf-cache-status"), cache.get("cache-control"))))
         if summary["failed_runs"]:
             tag = f"**{summary['failed_runs']} FAILED** {tag}".strip()
 
@@ -171,18 +178,20 @@ def main() -> int:
     parser.add_argument("--runs", type=int, default=5)
     parser.add_argument("--timeout", type=float, default=60)
     parser.add_argument("--out-dir", type=Path, default=REPO / "docs/evidence/speed")
-    parser.add_argument("--only", choices=("pages", "api"), help="measure one section only")
+    parser.add_argument(
+        "--only", choices=("pages", "api", "static"), help="measure one section only"
+    )
     args = parser.parse_args()
 
     base, api_base = args.base.rstrip("/"), (args.api_base or args.base).rstrip("/")
     spec = json.loads(args.urls.read_text())
     scope = resolve_scope(api_base, args.timeout)
     targets: list[tuple[str, str, str, str | None]] = []
-    for kind, origin in (("page", base), ("api", api_base)):
-        section = "pages" if kind == "page" else "api"
+    for kind, section in (("page", "pages"), ("api", "api"), ("file", "static")):
         if args.only and args.only != section:
             continue
-        for entry in spec[section]:
+        for entry in spec.get(section, []):
+            origin = api_base if kind == "api" or entry.get("origin") == "api" else base
             expect = fill(entry["expect"], scope) if "expect" in entry else None
             targets.append((kind, entry["name"], origin + fill(entry["path"], scope), expect))
 

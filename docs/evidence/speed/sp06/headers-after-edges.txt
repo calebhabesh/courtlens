@@ -1,0 +1,27 @@
+### GET http://localhost:3180/players/2544
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate
+### GET http://localhost:3180/team-logos/lakers.svg
+HTTP/1.1 404 Not Found
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate
+### GET http://localhost:3180/team-logos/1610612747-5b68f7b92ba7d058.svg.bak
+HTTP/1.1 404 Not Found
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate
+### GET http://localhost:3180/icon.svg
+HTTP/1.1 200 OK
+X-Content-Type-Options: nosniff
+Referrer-Policy: same-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Cache-Control: public, max-age=0
+### GET http://localhost:3180/team-logos/nope-0123456789abcdef.svg
+HTTP/1.1 404 Not Found
+Cache-Control: private, no-cache, no-store, max-age=0, must-revalidate

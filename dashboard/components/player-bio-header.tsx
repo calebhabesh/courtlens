@@ -123,13 +123,13 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     { label: "Experience", value: experience, detail: ref?.debut_date ? `Debut ${formatDate(ref.debut_date)}` : null },
     { label: "College", value: college ? <span className="player-bio-college">
       {/* eslint-disable-next-line @next/next/no-img-element -- a 96 px logo the API keeps needs no image optimisation */}
-      {college.logo_url && <img src={`${browserApi.replace(/\/$/, "")}${college.logo_url}`} width={18} height={18} alt="" />}{college.name}</span> : null,
+      {college.logo_url && <img src={`${browserApi.replace(/\/$/, "")}${college.logo_url}`} width={18} height={18} alt="" loading="lazy" />}{college.name}</span> : null,
       detail: college?.location ?? null,
       title: college?.school ? `${college.school}${college.location ? ` · ${college.location}` : ""} · ${college.attribution ?? ""}${college.logo_url ? " · logo: ESPN" : ""}` : undefined },
     { label: "High school", value: school ? school[1] : ref?.high_school ?? null, detail: school ? school[2] : null },
     { label: "Country", value: bio?.country ? <span className="player-bio-country">
       {/* eslint-disable-next-line @next/next/no-img-element -- a 1 KB static flag needs no image optimisation */}
-      {flag && <img src={flag} width={20} height={15} alt="" />}{bio.country}</span> : null },
+      {flag && <img src={flag} width={20} height={15} alt="" loading="lazy" />}{bio.country}</span> : null },
   ];
   const combine = bio?.combine;
   const measured = combine ? [
@@ -176,7 +176,7 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
       <div className="player-bio-main">
         <span className="player-bio-photo">
           {watermark && <TeamWatermark asset={watermark} className="player-bio-watermark" />}
-          <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size="xl" className="player-bio-portrait" />
+          <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size="xl" className="player-bio-portrait" priority />
         </span>
         <span className="player-bio-divider" aria-hidden="true" />
         <div className="player-bio-who">

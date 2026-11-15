@@ -1483,3 +1483,279 @@ created (no stamp bump, no `warm-site`).
 - Full suites not run as suites: the owner's stop after SP06. Not deployed; nothing ran against
   the live site. Servers, Playwright browsers, the mock API, the scratch trees and the workspace
   were stopped and removed.
+
+## 2026-11-15 — SP06 built: images and static files
+
+Done-when: **met, except "no layout shift reported"**: the player and team pages report small
+shifts, none from an image, and both builds show them identically (below). Evidence:
+`docs/evidence/speed/sp06/`, scratch tools in its `tools/`.
+
+### Local stack, and the pager session's edits
+
+- The pager session's edits (numbered paging, `page_cursors`) were still uncommitted in the tree,
+  so every measurement compares two isolated trees, as SP05 did:
+  - **before**: `git archive HEAD` (b3367cca) of `dashboard src tests scripts`;
+  - **after**: the same plus this block's files only (`tools/mine.txt`). `workbench.py` is shared
+    with the pager session, so its two SP06 edits were replayed onto `HEAD`'s copy
+    (`tools/replay_workbench.py`; the result equals this block's two hunks exactly).
+- Turbopack production builds on :3180 (and :3181 for the A/B runs), the API on :8180 with the
+  read cache and warm start on, the PC's copy, release `71639af2…`, scope 2026-27 before
+  2026-11-13. A webpack fixture build of each tree against the mock API (:4180) for Playwright.
+- ListAgents at the start: two peer sessions, both idle.
+
+### What was built
+
+1. **Portraits at a `.webp` path.** `GET /api/workbench/players/{id}/portrait.webp` is a second
+   route on the same handler (`get_player_portrait`): same query parameters, same bytes, same
+   `Cache-Control: public, max-age=86400`. The old path keeps working.
+   - Read-cache class `never` (binary), like the old path. The route classification test fails
+     without it (checked: `unclassified_routes` names the route when its class is removed).
+   - `lib/portrait-source.ts` accepts either path and always asks for `/portrait.webp`. The API
+     still returns `portrait_url: "/api/workbench/players/{id}/portrait"` (`stats_engine`,
+     `entity_lookup`, `workbench_analytics`). Changing those would change API bodies and their
+     snapshot hashes; the builder rewrites them instead. The Lineup Model's prebuilt URL and the
+     Settings page's "Serving route" line now name `.webp` too.
+   - **Caddy needs no change**: `handle /api/*` proxies every method-allowed request to the API,
+     and GET is allowed (`deploy/Caddyfile`). Its `header` block adds no `Cache-Control`.
+   - Without `size`, both paths serve the original file (PNG) under its own type. The dashboard
+     always sends `size`.
+2. **Cache headers from `next.config.ts`** (after the security block, so the last-wins rule only
+   adds `Cache-Control`):
+   - `/team-logos/:file([a-z0-9-]+-[0-9a-f]{16}\.(?:svg|png))`: `public, max-age=31536000,
+     immutable`. All 214 files match, and each name's hash is the first 16 hex of the file's own
+     SHA-256 (checked, 0 mismatches). The rule is still scoped to the pattern, so a future file
+     without a hash keeps the default.
+   - `/flags/:file*`: `public, max-age=2592000`.
+   - A missing file keeps `no-store` (a 404 on a hashed-shape name is not cached).
+3. **Images** (`PlayerPortrait` gains `priority`):
+
+| Image | Before | After |
+| --- | --- | --- |
+| Player page hero (`player-bio-header`, `xl`) | eager | **eager, `fetchPriority="high"`** (`priority`) |
+| Other `lg`/`xl` portraits (Players cards, Compare slots, showcase, matchups, last games, twins) | eager | lazy |
+| `sm`/`md` portraits | lazy | lazy (unchanged) |
+| `TeamWatermark` (every card and the hero) | eager, **no width/height** | lazy, `width=160 height=160` |
+| College logo (bio) | eager, 18×18 | lazy |
+| Flag (bio) | eager, 20×15 | lazy |
+| Live recap photo | lazy, **no width/height** | `width=640 height=360` |
+| Live news photos | lazy, **no width/height** | `width=96 height=54` |
+| Live venue photo | lazy, **no width/height** | `width=640 height=360` |
+| `TeamLogo` | lazy, size×size | unchanged |
+| SVG `<image>` (compare and grid exports, Contracts flow, Live shot chart) | width/height in SVG units | unchanged (SVG has no `loading`) |
+
+   The given sizes change no layout. Page CSS already sets each box: the watermarks are absolute
+   with CSS width and height (or width and `aspect-ratio: 1`), and the Live photos have a CSS
+   width and an explicit `aspect-ratio: 16 / 9` that the attributes match. srcset candidates
+   and `sizes` are unchanged.
+
+### Headers (local production build; `headers-before.txt`, `headers-after.txt`, `headers-after-edges.txt`)
+
+| File | Before | After |
+| --- | --- | --- |
+| Portrait `/portrait?size=288&crop=face-v6` | 200 `image/webp`, `public, max-age=86400` | the same |
+| Portrait `/portrait.webp?size=288&crop=face-v6` | **404** | 200 `image/webp`, `public, max-age=86400`, 20,626 B |
+| Team logo `1610612747-5b68f7b92ba7d058.svg` | `public, max-age=0` | **`public, max-age=31536000, immutable`** |
+| Era logo `bos-1977-4571e077bce6b1e7.png` | `public, max-age=0` | **`public, max-age=31536000, immutable`** |
+| Flag `us.png` | `public, max-age=0` | **`public, max-age=2592000`** |
+| `/_next/static/chunks/*.js` | `public, max-age=31536000, immutable` | the same (Next's own) |
+| A page (`/players/2544`) | `private, no-cache, no-store, …` | the same |
+
+`X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy` are on every path before and
+after. The first look's `max-age=14400` on logos and flags was Cloudflare's default browser TTL
+over the origin's `max-age=0`; it applies only when the origin's value is lower, so the new
+values should pass through.
+
+`scripts/speed/urls.json` has a new `static` section (both portrait paths, a season portrait, the
+two logos, the flag), and `measure.py` reports it (`kind` `file`, from the API origin when the
+entry says `"origin": "api"`; the table shows `cf-cache-status` and `cache-control` for files).
+
+### Portrait bytes (`portrait-bytes.txt`)
+
+13 queries at both paths (sizes 64–288 and none; LeBron current and 2003-04 CLE, 2011-12 MIA,
+2019-20 LAL; Bird current and 1991-92 BOS; the rookie; Jokić 2015-16 DEN; Durant 2007-08 SEA and
+2016-17 GSW): **13 identical** in SHA-256, status, `content-type`, `content-length`,
+`cache-control` and `x-portrait-season`. pytest covers the same for sizes 64, 128, 288 and none,
+the 422 and 404, and a season and team query.
+
+### LCP and CLS (`lcp-*.json`, `summary.json`)
+
+Measure: a `PerformanceObserver` for `largest-contentful-paint` and `layout-shift`, registered
+before any page script (`buffered`), in Playwright Chromium, fresh context per load, 1440×900,
+no input. This is the same browser measure a trace records; no trace file was kept.
+
+**Interleaved** (`lcp-interleaved.json`): both builds served at once against one API, one load at
+a time, alternating ABAB, 10 loads per build and page after a warm-up load:
+
+| Page | LCP element | Before | After |
+| --- | --- | --- | --- |
+| LeBron 2544 | hero `img.player-portrait` (`portrait?size=192` → `portrait.webp?size=192`, 27,556 px²) | 428 ms (404–468) | **420 ms** (376–472) |
+| Bird 1449 | hero portrait | 378 ms (336–404) | **348 ms** (332–440) |
+| Lakers | `h1` "Los Angeles Lakers" | 216 ms | 216 ms |
+
+- The hero file arrives at about 49 ms (resource timing) on both builds. The paint waits for the
+  streamed hero section to render, about 420 ms locally, so high priority changes little here.
+  On the live site the image crosses the network, and there it can matter.
+- The **sequential rounds** (`rounds/`; each round restarted the API, after always second) gave
+  440 → 464 ms and 390 → 424 ms, and also +20 ms on the Lakers' `h1`, which SP06 does not touch.
+  That ordering effect is why the interleaved run is the one that counts.
+- In 1 of 5 loads of the first after run, the final LCP entry was the hero's watermark
+  (`player-bio-watermark`, 28,223 px², at 320 ms, before the portrait). That happens only when the
+  watermark paints first.
+
+**Layout shift**: 0 shifts from an image in any load of either build (70 loads checked source by
+source). Two shifts that exist on `HEAD` remain, identical on both builds:
+
+| Page | Shift | Source |
+| --- | --- | --- |
+| Lakers | 0.00374, every load | the Stats preview rail: the hotkeys card moves up 100 px as the "Hover over a player…" hint and its icon appear |
+| Player pages | 0.00021, some loads (Bird 4–7 of 10, LeBron 0–1 of 10) | the header's right group widens from 158 to 206 px when "Sign in" appears, moving the search pill's `⌘K` |
+
+Removing these is a layout or behaviour change outside SP06, so they stay. **This is the floor
+for "no layout shift"**, and the owner's call.
+
+### Side effect: React's image preloads (`image-preloads.txt`)
+
+React's server renderer adds `<link rel="preload" as="image">` to `<head>` for every image that is
+not lazy. Eager portraits and watermarks were preloaded; now only the hero is:
+
+| Page | Image preloads before | After |
+| --- | --- | --- |
+| Players | 72 (36,072 B) | 0 |
+| Compare | 4 (1,519 B) | 0 |
+| Player pages | 3–4 (watermark, hero, flag) | 1 (the hero, `fetchPriority="high"`) |
+
+### HTML (`html-ab-sizes.txt`, `html-ab-normalised.txt`, `portrait-url-growth.txt`)
+
+Both builds at once on one API. Each portrait URL grows by 5 bytes (`.webp`).
+
+| Page | Before | After | Change |
+| --- | --- | --- | --- |
+| Stats | 1,631,968 | 1,640,968 | +9,000 (1,800 portrait URLs) |
+| Players | 280,081 | 247,530 | −32,551 (72 preloads gone, 300 URLs +1,500) |
+| Lakers / Celtics | 1,131,898 / 1,036,875 | 1,136,098 / 1,040,445 | +4,200 / +3,570 |
+| Compare | 397,645 | 396,337 | −1,308 |
+| Player pages | | | −60 to +16 |
+| RAPM | 666,800 | 667,550 | +750 |
+| `/`, Teams, Standings | | | 0 |
+
+With the intended changes normalised away (the `.webp` suffix, image preloads, `loading` and
+`fetchPriority`, the watermark size, and build-specific chunk names), **all 12 pages are
+byte-identical** between the builds (`tools/html_ab.py`). RAPM's first fetch differed only in the
+order two streamed chunks arrived; four refetches were identical.
+
+**Finding for the owner: the Stats guide-cell portraits** (`guide-cell-weight.txt`). The server
+HTML carries 300 portrait `<img>` tags (265,574 B), 250 of them guide cells (220,395 B). At
+1440 px none of the 250 is in the DOM after hydration, so they never load an image. Their cost is
+all markup, and 7,500 of the 9,000 bytes `.webp` adds to Stats. The 50 primary portraits load 64w
+files at DPR 1 and 96w at DPR 2 (39 loaded after scrolling: 90 KB at DPR 1, 148 KB at DPR 2).
+srcset and `sizes` were not changed (that changes which file a screen loads).
+
+### Warm `measure.py` and navigation
+
+Today's machine is busier than at SP05 (46 of 60 GB in use), so `HEAD` itself measures slower
+than SP05's recorded numbers. As the handoff asks, the comparison is within this session.
+
+**Warm** (`rounds/`, cache on, two rounds per build alternating, median of round medians):
+
+| | Before (`HEAD`) | After | SP05 recorded |
+| --- | --- | --- | --- |
+| Player pages | 18.3–35.4 ms | **14.3–31.6 ms** | 14–28 ms |
+| Team pages | 31.9–36.4 ms | **29.0–33.8 ms** | 28–30 ms |
+| Stats | 37.0 ms | **36.4 ms** | 33 ms |
+| Players | 11.4 ms | 10.3 ms | 9 ms |
+| API reads (all hits) | ≤ 1.6 ms | ≤ 1.5 ms | ≤ 1.3 ms |
+
+**Navigation**, interleaved (`nav-interleaved/`, both builds served at once on one API, spec runs
+alternating, 15 runs per journey per build, medians):
+
+| Journey | Before | After | SP05 recorded |
+| --- | --- | --- | --- |
+| Stats row → player | 160 | **149** | 136.5 |
+| Player header → team | 147 | 151 | 130.5 |
+| Header nav → Stats | 191 | **186** | 170 |
+| Back (Stats → team) | 137 | **135** | 126 |
+| Stats row → player, prefetched | 76 | **75** | 70 |
+| Player → team, prefetched | 131 | **124** | 115 |
+| Nav → Stats, prefetched | 181 | **179** | 159.5 |
+
+The sequential rounds (10 runs each, API restarted per round) gave a mixed picture: after better
+on three journeys, equal on one, worse on three (back 144 → 153, prefetched row → player 76 → 84,
+prefetched nav → Stats 181 → 189). In the interleaved run, which shares one API and removes the
+restart, after is equal or faster on six of seven, and player header → team is +4 ms. SP06
+changes no route code and no client JS beyond image attributes, so these differences are noise.
+
+### Snapshot and page text
+
+- **Snapshot**: the after API against the before snapshot (`snapshot-before.json`, `HEAD` API):
+  **no differences** (`snapshot-compare-after.txt`). The three team six-factor reads are equal at
+  12 significant digits (the known jitter). The workspace read did not move this time.
+- **Page text**: **0 differences** on all 12 pages (`page-text-before.json`, `page-text-after.json`).
+
+### Database writes (`db-writes.txt`)
+
+None. `stats_cohort_entries` held 250 rows (newest 10:24 UTC) before the first API start and
+still did after the last. `data/derived/job-health/` was not created (no stamp bump, no
+`warm-site`).
+
+### For the stop after SP06: the Cloudflare check
+
+After the owner's deploy, run `docs/evidence/speed/sp06/cf-cache-check.sh` (GETs only). It
+requests each of these twice, 2 s apart:
+
+```bash
+curl -s -o /dev/null -D- 'https://courtlens.calebhabesh.com/api/workbench/players/2544/portrait.webp?size=288&crop=face-v6' | grep -iE '^(HTTP/|cf-cache-status:|cache-control:|age:)'
+```
+
+and the same for the old portrait path, the Lakers logo and the US flag. Expected:
+
+- `.webp` portrait: the second answer `cf-cache-status: HIT`;
+- the old path: `DYNAMIC`, as before;
+- the logo and flag: the new `cache-control`.
+
+`.webp` is in Cloudflare's default cached extensions, and the response is `public` with no
+cookie. No zone or Caddy change is needed.
+
+### Where this differs from the plan and the handoff
+
+- **Layout shift**: floor above; the shifts are pre-existing and not from images.
+- **LCP from a `PerformanceObserver` in Playwright**, not a saved trace (the handoff allowed
+  this).
+- **The API's `portrait_url` still names `/portrait`**; the dashboard rewrites it (snapshot hashes
+  unchanged).
+- **Stats HTML +9,000 B** against SP05's floor (1.63 → 1.64 MB), 7,500 B of it in guide-cell
+  portraits that hydration removes. Players −32 KB from the preloads.
+- **Settings text**: the "Serving route" line names `/portrait.webp`.
+- **`ruff check .` was already red on `HEAD`**: 197 findings, all in the SP04 and SP05 scratch tools
+  committed under `docs/evidence/speed/*/tools/`. Not touched here. SP06's own Python tools pass
+  `ruff check` and `ruff format --check`.
+
+### Checks
+
+- **Python** (isolated tree): `ruff check src tests scripts` and `ruff format --check` (731 files)
+  pass; `mypy src/courtlens`: no issues (411 files); `mypy --strict scripts/speed/measure.py`:
+  no issues. Working tree `ruff check .`: red only on the SP04/SP05 evidence tools above.
+- **pytest** (`scripts/test_python.py`, disposable Postgres 17), on both the working tree and the
+  isolated tree: `test_portrait_derivatives`, `test_season_portraits`, `test_read_cache`
+  (route classification), `test_bbref_portraits`, `test_wikidata_portraits`,
+  `integration/test_workbench_api`: **85 passed, 3 deselected**, both trees.
+  `test_agent_providers.py` not run: no provider code changed (its 8 `[anthropic]` cases were
+  red before SP00).
+- **Dashboard**: `npm run lint` (ESLint with the prefetch, entity-href and control-kit rules;
+  Stylelint) and `typecheck` pass on the isolated tree and the working tree. Vitest: isolated
+  **152 files, 1,092 passed**; working tree 153 files, 1,098 passed (with the pager session's
+  test). New: `player-portrait.test.tsx`, a hero test in `player-bio-header.test.tsx`, and a
+  `.webp` case in `portrait-source.test.ts`.
+- **Playwright, fixture production build** (webpack, mock API :4180), every spec except
+  title-matched "real", 4 workers: **646 passed, 13 failed, 27 skipped, 7 did not run**
+  (`playwright-fixture-after.log`).
+  - 11 are SP05's `HEAD` failures: `advanced-research:61`, `f04-accounts:32`,
+    `pc12-demo-hygiene:6`, `roster-shapes` ×4, `visual-baselines` ×4. The four visual baselines
+    were rerun on a `HEAD` fixture build: the same four fail, with identical pixel counts (25,023;
+    7,581; 6,276; 28,552).
+  - `live.spec.ts:83`: passes alone (2 of 2).
+  - `table-interactions.spec.ts:63`: a focus-return flake on both builds. At 4 workers, 40 runs
+    each, alternating: `HEAD` 3 failures, after 2, all the same `toBeFocused` assertion.
+  - `f04-accounts.spec.ts:59` (the demo account's favourites; its portrait request now matches `.webp`) passed.
+- Full suites not run as suites (the stop after SP06). Not deployed; nothing ran against the live
+  site; Cloudflare not touched. Servers, Playwright browsers, the mock API and the scratch trees
+  were stopped and removed.

@@ -265,6 +265,7 @@ ROUTE_CLASSES: dict[str, CacheClass] = {
         GET /api/workbench/media/players/{hash}
         GET /api/workbench/college-logos/{espn_id}
         GET /api/workbench/players/{id}/portrait
+        GET /api/workbench/players/{id}/portrait.webp
         GET /api/workbench/assistant/status
         GET /api/workbench/workspace
         GET /api/workbench/workspace/export

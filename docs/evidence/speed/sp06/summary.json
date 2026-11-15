@@ -1,0 +1,204 @@
+{
+ "before": {
+  "navigation_median_ms": {
+   "player-header-to-team-prefetched": 124.5,
+   "nav-to-stats-prefetched": 181.0,
+   "stats-row-to-player-prefetched": 76.0,
+   "stats-row-to-player": 165.5,
+   "player-header-to-team": 156.5,
+   "nav-to-stats": 192.5,
+   "back-to-team": 144.0
+  },
+  "navigation_runs": {
+   "player-header-to-team-prefetched": 10,
+   "nav-to-stats-prefetched": 10,
+   "stats-row-to-player-prefetched": 10,
+   "stats-row-to-player": 10,
+   "player-header-to-team": 10,
+   "nav-to-stats": 10,
+   "back-to-team": 10
+  },
+  "warm_total_ms_median_of_round_medians": {
+   "page:home": 4.6,
+   "page:stats": 37.0,
+   "page:players": 11.4,
+   "page:teams": 9.1,
+   "page:standings": 7.2,
+   "page:compare": 16.9,
+   "page:player-star": 35.4,
+   "page:player-rookie": 18.3,
+   "page:player-pre2000": 24.8,
+   "page:team-lal": 36.4,
+   "page:team-bos": 31.9,
+   "page:research-rapm": 24.0,
+   "api:workbench-catalog": 0.5,
+   "api:player-career-2544": 0.5,
+   "api:player-profile-2544": 0.5,
+   "api:player-games-2544": 0.5,
+   "api:workbench-metrics": 0.5,
+   "api:workbench-impact-2544": 0.4,
+   "api:workbench-impact-2544-2025-26": 0.4,
+   "api:player-bio-2544": 0.5,
+   "api:player-career-1643411": 0.4,
+   "api:player-profile-1643411": 0.4,
+   "api:player-games-1643411": 0.4,
+   "api:workbench-impact-1643411": 0.4,
+   "api:player-bio-1643411": 0.4,
+   "api:player-career-1449": 0.4,
+   "api:player-games-1449-1991-92": 0.4,
+   "api:player-profile-1449-1991-92": 0.7,
+   "api:workbench-impact-1449-1991-92": 0.5,
+   "api:workbench-impact-1449-1990-91": 0.4,
+   "api:workbench-impact-1449-1989-90": 0.4,
+   "api:workbench-impact-1449-1988-89": 0.4,
+   "api:player-bio-1449-1991-92": 0.4,
+   "api:team-schedule-1610612747": 0.4,
+   "api:team-detail-1610612747": 0.4,
+   "api:team-peers-1610612747": 0.4,
+   "api:workbench-teams-six-factors": 0.4,
+   "api:workbench-teams-six-factors-away": 0.5,
+   "api:workbench-teams-six-factors-home": 0.4,
+   "api:workbench-workspace": 1.6,
+   "api:workbench-draft-classes": 0.4,
+   "api:team-schedule-1610612738": 0.4,
+   "api:team-peers-1610612738": 0.4,
+   "api:team-detail-1610612738": 0.5
+  },
+  "lcp": {
+   "/players/2544": {
+    "median_ms": 440.0,
+    "min": 356,
+    "max": 456,
+    "elements": {
+     "img.player-portrait": 10
+    },
+    "max_cls": 0.00021,
+    "runs_with_shift": 1,
+    "runs": 10
+   },
+   "/players/1449": {
+    "median_ms": 390.0,
+    "min": 340,
+    "max": 408,
+    "elements": {
+     "img.player-portrait": 10
+    },
+    "max_cls": 0.00021,
+    "runs_with_shift": 1,
+    "runs": 10
+   },
+   "/teams/1610612747": {
+    "median_ms": 214.0,
+    "min": 196,
+    "max": 228,
+    "elements": {
+     "h1.ui-page-header-title": 10
+    },
+    "max_cls": 0.00374,
+    "runs_with_shift": 10,
+    "runs": 10
+   }
+  }
+ },
+ "after": {
+  "navigation_median_ms": {
+   "player-header-to-team-prefetched": 124.5,
+   "nav-to-stats-prefetched": 189.0,
+   "stats-row-to-player-prefetched": 84.0,
+   "stats-row-to-player": 159.0,
+   "player-header-to-team": 155.5,
+   "nav-to-stats": 194.0,
+   "back-to-team": 153.0
+  },
+  "navigation_runs": {
+   "player-header-to-team-prefetched": 10,
+   "nav-to-stats-prefetched": 10,
+   "stats-row-to-player-prefetched": 10,
+   "stats-row-to-player": 10,
+   "player-header-to-team": 10,
+   "nav-to-stats": 10,
+   "back-to-team": 10
+  },
+  "warm_total_ms_median_of_round_medians": {
+   "page:home": 3.9,
+   "page:stats": 36.4,
+   "page:players": 10.3,
+   "page:teams": 9.1,
+   "page:standings": 6.5,
+   "page:compare": 15.2,
+   "page:player-star": 31.6,
+   "page:player-rookie": 14.3,
+   "page:player-pre2000": 22.8,
+   "page:team-lal": 33.8,
+   "page:team-bos": 29.0,
+   "page:research-rapm": 21.9,
+   "api:workbench-catalog": 0.5,
+   "api:player-career-2544": 0.5,
+   "api:player-profile-2544": 0.4,
+   "api:player-games-2544": 0.4,
+   "api:workbench-metrics": 0.4,
+   "api:workbench-impact-2544": 0.4,
+   "api:workbench-impact-2544-2025-26": 0.4,
+   "api:player-bio-2544": 0.7,
+   "api:player-career-1643411": 0.6,
+   "api:player-profile-1643411": 0.4,
+   "api:player-games-1643411": 0.4,
+   "api:workbench-impact-1643411": 0.4,
+   "api:player-bio-1643411": 0.5,
+   "api:player-career-1449": 0.7,
+   "api:player-games-1449-1991-92": 0.5,
+   "api:player-profile-1449-1991-92": 0.5,
+   "api:workbench-impact-1449-1991-92": 0.4,
+   "api:workbench-impact-1449-1990-91": 0.4,
+   "api:workbench-impact-1449-1989-90": 0.4,
+   "api:workbench-impact-1449-1988-89": 0.4,
+   "api:player-bio-1449-1991-92": 0.4,
+   "api:team-schedule-1610612747": 0.4,
+   "api:team-detail-1610612747": 0.4,
+   "api:team-peers-1610612747": 0.5,
+   "api:workbench-teams-six-factors": 0.7,
+   "api:workbench-teams-six-factors-away": 0.5,
+   "api:workbench-teams-six-factors-home": 0.4,
+   "api:workbench-workspace": 1.5,
+   "api:workbench-draft-classes": 0.4,
+   "api:team-schedule-1610612738": 0.4,
+   "api:team-peers-1610612738": 0.4,
+   "api:team-detail-1610612738": 0.4
+  },
+  "lcp": {
+   "/players/2544": {
+    "median_ms": 464.0,
+    "min": 428,
+    "max": 500,
+    "elements": {
+     "img.player-portrait": 10
+    },
+    "max_cls": 0,
+    "runs_with_shift": 0,
+    "runs": 10
+   },
+   "/players/1449": {
+    "median_ms": 424.0,
+    "min": 364,
+    "max": 440,
+    "elements": {
+     "img.player-portrait": 10
+    },
+    "max_cls": 0.00021,
+    "runs_with_shift": 1,
+    "runs": 10
+   },
+   "/teams/1610612747": {
+    "median_ms": 234.0,
+    "min": 204,
+    "max": 556,
+    "elements": {
+     "h1.ui-page-header-title": 10
+    },
+    "max_cls": 0.00374,
+    "runs_with_shift": 10,
+    "runs": 10
+   }
+  }
+ }
+}

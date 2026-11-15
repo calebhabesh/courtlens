@@ -1,0 +1,4576 @@
+{
+  "tool": "scripts/speed/measure.py",
+  "version": 1,
+  "label": "warm-after-1",
+  "base": "http://localhost:3180",
+  "api_base": "http://localhost:8180",
+  "scope": {
+    "releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+    "season": "2026-27",
+    "beforeDate": "2026-11-13"
+  },
+  "runs_per_url": 5,
+  "started_at": "2026-11-15T21:15:42+00:00",
+  "finished_at": "2026-11-15T21:15:44+00:00",
+  "client": {
+    "curl": "curl 8.23.0 (x86_64-pc-linux-gnu) libcurl/8.23.0 OpenSSL/4.1.0 zlib/1.4 brotli/1.2.1 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.5 libssh2/1.11.1 nghttp2/1.71.0 ngtcp2/1.26.0 nghttp3/1.19.0 mit-krb5/1.22.2",
+    "python": "3.14.10"
+  },
+  "results": [
+    {
+      "kind": "page",
+      "name": "home",
+      "url": "http://localhost:3180/",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0045,
+          "total": 0.005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 7792,
+          "http_version": "1.1",
+          "decoded_bytes": 34347,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0038,
+          "total": 0.0043,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 7792,
+          "http_version": "1.1",
+          "decoded_bytes": 34347,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0033,
+          "total": 0.0037,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 7792,
+          "http_version": "1.1",
+          "decoded_bytes": 34347,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0051,
+          "total": 0.0055,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 7792,
+          "http_version": "1.1",
+          "decoded_bytes": 34347,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0035,
+          "total": 0.0039,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 7792,
+          "http_version": "1.1",
+          "decoded_bytes": 34347,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0038,
+        "total": 0.0043,
+        "total_min": 0.0037,
+        "total_max": 0.0055,
+        "wire_bytes": 7792,
+        "decoded_bytes": 34347,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "stats",
+      "url": "http://localhost:3180/stats",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0065,
+          "total": 0.0358,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 84238,
+          "http_version": "1.1",
+          "decoded_bytes": 1640968,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0126,
+          "total": 0.0489,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 84238,
+          "http_version": "1.1",
+          "decoded_bytes": 1640968,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.009,
+          "total": 0.0363,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 84238,
+          "http_version": "1.1",
+          "decoded_bytes": 1640968,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0075,
+          "total": 0.0374,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 84238,
+          "http_version": "1.1",
+          "decoded_bytes": 1640968,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0073,
+          "total": 0.0376,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 84238,
+          "http_version": "1.1",
+          "decoded_bytes": 1640968,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0075,
+        "total": 0.0374,
+        "total_min": 0.0358,
+        "total_max": 0.0489,
+        "wire_bytes": 84238,
+        "decoded_bytes": 1640968,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "players",
+      "url": "http://localhost:3180/players",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0056,
+          "total": 0.0117,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 30462,
+          "http_version": "1.1",
+          "decoded_bytes": 247530,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.005,
+          "total": 0.0129,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 30462,
+          "http_version": "1.1",
+          "decoded_bytes": 247530,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0056,
+          "total": 0.011,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 30462,
+          "http_version": "1.1",
+          "decoded_bytes": 247530,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0048,
+          "total": 0.0105,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 30462,
+          "http_version": "1.1",
+          "decoded_bytes": 247530,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0047,
+          "total": 0.0104,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 30462,
+          "http_version": "1.1",
+          "decoded_bytes": 247530,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.005,
+        "total": 0.011,
+        "total_min": 0.0104,
+        "total_max": 0.0129,
+        "wire_bytes": 30462,
+        "decoded_bytes": 247530,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "teams",
+      "url": "http://localhost:3180/teams",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0077,
+          "total": 0.0095,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 24120,
+          "http_version": "1.1",
+          "decoded_bytes": 246310,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0125,
+          "total": 0.0143,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 24120,
+          "http_version": "1.1",
+          "decoded_bytes": 246310,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0095,
+          "total": 0.0112,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 24120,
+          "http_version": "1.1",
+          "decoded_bytes": 246310,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0081,
+          "total": 0.0096,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 24120,
+          "http_version": "1.1",
+          "decoded_bytes": 246310,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0073,
+          "total": 0.0087,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 24120,
+          "http_version": "1.1",
+          "decoded_bytes": 246310,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0081,
+        "total": 0.0096,
+        "total_min": 0.0087,
+        "total_max": 0.0143,
+        "wire_bytes": 24120,
+        "decoded_bytes": 246310,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "standings",
+      "url": "http://localhost:3180/standings",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0065,
+          "total": 0.0072,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 12508,
+          "http_version": "1.1",
+          "decoded_bytes": 188163,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.009,
+          "total": 0.0099,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 12508,
+          "http_version": "1.1",
+          "decoded_bytes": 188163,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.006,
+          "total": 0.0067,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 12508,
+          "http_version": "1.1",
+          "decoded_bytes": 188163,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.006,
+          "total": 0.0068,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 12508,
+          "http_version": "1.1",
+          "decoded_bytes": 188163,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0054,
+          "total": 0.0063,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 12508,
+          "http_version": "1.1",
+          "decoded_bytes": 188163,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.006,
+        "total": 0.0068,
+        "total_min": 0.0063,
+        "total_max": 0.0099,
+        "wire_bytes": 12508,
+        "decoded_bytes": 188163,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "compare",
+      "url": "http://localhost:3180/compare?playerA=2544&playerB=203999",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0071,
+          "total": 0.0156,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 46925,
+          "http_version": "1.1",
+          "decoded_bytes": 396337,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0071,
+          "total": 0.0156,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 46925,
+          "http_version": "1.1",
+          "decoded_bytes": 396337,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0068,
+          "total": 0.0156,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 46925,
+          "http_version": "1.1",
+          "decoded_bytes": 396337,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0109,
+          "total": 0.0164,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 46600,
+          "http_version": "1.1",
+          "decoded_bytes": 396337,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0081,
+          "total": 0.0167,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 46925,
+          "http_version": "1.1",
+          "decoded_bytes": 396337,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0071,
+        "total": 0.0156,
+        "total_min": 0.0156,
+        "total_max": 0.0167,
+        "wire_bytes": 46925,
+        "decoded_bytes": 396337,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "player-star",
+      "url": "http://localhost:3180/players/2544",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0144,
+          "total": 0.0352,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 94889,
+          "http_version": "1.1",
+          "decoded_bytes": 924107,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0188,
+          "total": 0.0425,
+          "connect": 0.0003,
+          "tls": 0.0,
+          "wire_bytes": 94889,
+          "http_version": "1.1",
+          "decoded_bytes": 924107,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0108,
+          "total": 0.0312,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 94889,
+          "http_version": "1.1",
+          "decoded_bytes": 924107,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0135,
+          "total": 0.034,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 94889,
+          "http_version": "1.1",
+          "decoded_bytes": 924107,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0085,
+          "total": 0.0295,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 94889,
+          "http_version": "1.1",
+          "decoded_bytes": 924107,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0135,
+        "total": 0.034,
+        "total_min": 0.0295,
+        "total_max": 0.0425,
+        "wire_bytes": 94889,
+        "decoded_bytes": 924107,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "player-rookie",
+      "url": "http://localhost:3180/players/1643411",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0096,
+          "total": 0.0148,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 44469,
+          "http_version": "1.1",
+          "decoded_bytes": 332714,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0093,
+          "total": 0.0145,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 44469,
+          "http_version": "1.1",
+          "decoded_bytes": 332714,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0103,
+          "total": 0.0156,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 44469,
+          "http_version": "1.1",
+          "decoded_bytes": 332714,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0126,
+          "total": 0.0176,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 44469,
+          "http_version": "1.1",
+          "decoded_bytes": 332714,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0093,
+          "total": 0.0143,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 44469,
+          "http_version": "1.1",
+          "decoded_bytes": 332714,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0096,
+        "total": 0.0148,
+        "total_min": 0.0143,
+        "total_max": 0.0176,
+        "wire_bytes": 44469,
+        "decoded_bytes": 332714,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "player-pre2000",
+      "url": "http://localhost:3180/players/1449",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0131,
+          "total": 0.0332,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 62068,
+          "http_version": "1.1",
+          "decoded_bytes": 624282,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.009,
+          "total": 0.0224,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 62068,
+          "http_version": "1.1",
+          "decoded_bytes": 624282,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0087,
+          "total": 0.032,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 62068,
+          "http_version": "1.1",
+          "decoded_bytes": 624282,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0096,
+          "total": 0.0237,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 62068,
+          "http_version": "1.1",
+          "decoded_bytes": 624282,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0094,
+          "total": 0.0242,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 62068,
+          "http_version": "1.1",
+          "decoded_bytes": 624282,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0094,
+        "total": 0.0242,
+        "total_min": 0.0224,
+        "total_max": 0.0332,
+        "wire_bytes": 62068,
+        "decoded_bytes": 624282,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "team-lal",
+      "url": "http://localhost:3180/teams/1610612747",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0119,
+          "total": 0.0337,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 80777,
+          "http_version": "1.1",
+          "decoded_bytes": 1136098,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0113,
+          "total": 0.036,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 80777,
+          "http_version": "1.1",
+          "decoded_bytes": 1136098,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0113,
+          "total": 0.0361,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 80777,
+          "http_version": "1.1",
+          "decoded_bytes": 1136098,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0154,
+          "total": 0.0395,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 80777,
+          "http_version": "1.1",
+          "decoded_bytes": 1136098,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0108,
+          "total": 0.0308,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 80777,
+          "http_version": "1.1",
+          "decoded_bytes": 1136098,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0113,
+        "total": 0.036,
+        "total_min": 0.0308,
+        "total_max": 0.0395,
+        "wire_bytes": 80777,
+        "decoded_bytes": 1136098,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "team-bos",
+      "url": "http://localhost:3180/teams/1610612738",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0111,
+          "total": 0.0296,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 77978,
+          "http_version": "1.1",
+          "decoded_bytes": 1040445,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0115,
+          "total": 0.0338,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 77978,
+          "http_version": "1.1",
+          "decoded_bytes": 1040445,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0112,
+          "total": 0.0297,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 77978,
+          "http_version": "1.1",
+          "decoded_bytes": 1040445,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0104,
+          "total": 0.0287,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 77978,
+          "http_version": "1.1",
+          "decoded_bytes": 1040445,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0148,
+          "total": 0.0402,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 77978,
+          "http_version": "1.1",
+          "decoded_bytes": 1040445,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0112,
+        "total": 0.0297,
+        "total_min": 0.0287,
+        "total_max": 0.0402,
+        "wire_bytes": 77978,
+        "decoded_bytes": 1040445,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "page",
+      "name": "research-rapm",
+      "url": "http://localhost:3180/research/rapm",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0101,
+          "total": 0.0252,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 65063,
+          "http_version": "1.1",
+          "decoded_bytes": 667550,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0181,
+          "total": 0.0223,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 64409,
+          "http_version": "1.1",
+          "decoded_bytes": 667550,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0182,
+          "total": 0.0224,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 64409,
+          "http_version": "1.1",
+          "decoded_bytes": 667550,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0212,
+          "total": 0.0255,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 64409,
+          "http_version": "1.1",
+          "decoded_bytes": 667550,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0175,
+          "total": 0.0213,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 64409,
+          "http_version": "1.1",
+          "decoded_bytes": 667550,
+          "rendered": true,
+          "headers": {
+            "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0181,
+        "total": 0.0224,
+        "total_min": 0.0213,
+        "total_max": 0.0255,
+        "wire_bytes": 64409,
+        "decoded_bytes": 667550,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-catalog",
+      "url": "http://localhost:8180/api/workbench/catalog",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0006,
+          "total": 0.0007,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 65628,
+          "http_version": "1.1",
+          "decoded_bytes": 65628,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 65628,
+          "http_version": "1.1",
+          "decoded_bytes": 65628,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 65628,
+          "http_version": "1.1",
+          "decoded_bytes": 65628,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 65628,
+          "http_version": "1.1",
+          "decoded_bytes": 65628,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 65628,
+          "http_version": "1.1",
+          "decoded_bytes": 65628,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0005,
+        "total_min": 0.0004,
+        "total_max": 0.0007,
+        "wire_bytes": 65628,
+        "decoded_bytes": 65628,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-career-2544",
+      "url": "http://localhost:8180/api/workbench/players/2544/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 233954,
+          "http_version": "1.1",
+          "decoded_bytes": 233954,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 233954,
+          "http_version": "1.1",
+          "decoded_bytes": 233954,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 233954,
+          "http_version": "1.1",
+          "decoded_bytes": 233954,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 233954,
+          "http_version": "1.1",
+          "decoded_bytes": 233954,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 233954,
+          "http_version": "1.1",
+          "decoded_bytes": 233954,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0005,
+        "total_min": 0.0004,
+        "total_max": 0.0005,
+        "wire_bytes": 233954,
+        "decoded_bytes": 233954,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-profile-2544",
+      "url": "http://localhost:8180/api/workbench/players/2544?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5598,
+          "http_version": "1.1",
+          "decoded_bytes": 5598,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5598,
+          "http_version": "1.1",
+          "decoded_bytes": 5598,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5598,
+          "http_version": "1.1",
+          "decoded_bytes": 5598,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5598,
+          "http_version": "1.1",
+          "decoded_bytes": 5598,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5598,
+          "http_version": "1.1",
+          "decoded_bytes": 5598,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0003,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 5598,
+        "decoded_bytes": 5598,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-games-2544",
+      "url": "http://localhost:8180/api/workbench/players/2544/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=50",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8581,
+          "http_version": "1.1",
+          "decoded_bytes": 8581,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8581,
+          "http_version": "1.1",
+          "decoded_bytes": 8581,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8581,
+          "http_version": "1.1",
+          "decoded_bytes": 8581,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8581,
+          "http_version": "1.1",
+          "decoded_bytes": 8581,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8581,
+          "http_version": "1.1",
+          "decoded_bytes": 8581,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0005,
+        "wire_bytes": 8581,
+        "decoded_bytes": 8581,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-metrics",
+      "url": "http://localhost:8180/api/workbench/metrics?version=courtlens-stats-v4",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 106801,
+          "http_version": "1.1",
+          "decoded_bytes": 106801,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 106801,
+          "http_version": "1.1",
+          "decoded_bytes": 106801,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 106801,
+          "http_version": "1.1",
+          "decoded_bytes": 106801,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 106801,
+          "http_version": "1.1",
+          "decoded_bytes": 106801,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 106801,
+          "http_version": "1.1",
+          "decoded_bytes": 106801,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0003,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 106801,
+        "decoded_bytes": 106801,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-2544",
+      "url": "http://localhost:8180/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&playerId=2544",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0003,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0003,
+        "total": 0.0004,
+        "total_min": 0.0003,
+        "total_max": 0.0004,
+        "wire_bytes": 1561,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-2544-2025-26",
+      "url": "http://localhost:8180/api/workbench/impact?season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=2544&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 24710,
+          "http_version": "1.1",
+          "decoded_bytes": 24710,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0003,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 24710,
+          "http_version": "1.1",
+          "decoded_bytes": 24710,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 24710,
+          "http_version": "1.1",
+          "decoded_bytes": 24710,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 24710,
+          "http_version": "1.1",
+          "decoded_bytes": 24710,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 24710,
+          "http_version": "1.1",
+          "decoded_bytes": 24710,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0003,
+        "total": 0.0004,
+        "total_min": 0.0003,
+        "total_max": 0.0004,
+        "wire_bytes": 24710,
+        "decoded_bytes": 24710,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-bio-2544",
+      "url": "http://localhost:8180/api/workbench/players/2544/bio?season=2026-27&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 98627,
+          "http_version": "1.1",
+          "decoded_bytes": 98627,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0006,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 98627,
+          "http_version": "1.1",
+          "decoded_bytes": 98627,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0009,
+          "total": 0.0009,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 98627,
+          "http_version": "1.1",
+          "decoded_bytes": 98627,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.001,
+          "total": 0.0011,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 98627,
+          "http_version": "1.1",
+          "decoded_bytes": 98627,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0011,
+          "total": 0.0012,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 98627,
+          "http_version": "1.1",
+          "decoded_bytes": 98627,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0009,
+        "total": 0.0009,
+        "total_min": 0.0004,
+        "total_max": 0.0012,
+        "wire_bytes": 98627,
+        "decoded_bytes": 98627,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-career-1643411",
+      "url": "http://localhost:8180/api/workbench/players/1643411/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0009,
+          "total": 0.001,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 12724,
+          "http_version": "1.1",
+          "decoded_bytes": 12724,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0009,
+          "total": 0.0009,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 12724,
+          "http_version": "1.1",
+          "decoded_bytes": 12724,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0007,
+          "total": 0.0007,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 12724,
+          "http_version": "1.1",
+          "decoded_bytes": 12724,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 12724,
+          "http_version": "1.1",
+          "decoded_bytes": 12724,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 12724,
+          "http_version": "1.1",
+          "decoded_bytes": 12724,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0007,
+        "total": 0.0007,
+        "total_min": 0.0004,
+        "total_max": 0.001,
+        "wire_bytes": 12724,
+        "decoded_bytes": 12724,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-profile-1643411",
+      "url": "http://localhost:8180/api/workbench/players/1643411?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5620,
+          "http_version": "1.1",
+          "decoded_bytes": 5620,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5620,
+          "http_version": "1.1",
+          "decoded_bytes": 5620,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5620,
+          "http_version": "1.1",
+          "decoded_bytes": 5620,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5620,
+          "http_version": "1.1",
+          "decoded_bytes": 5620,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5620,
+          "http_version": "1.1",
+          "decoded_bytes": 5620,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 5620,
+        "decoded_bytes": 5620,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-games-1643411",
+      "url": "http://localhost:8180/api/workbench/players/1643411/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=50",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8631,
+          "http_version": "1.1",
+          "decoded_bytes": 8631,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0003,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8631,
+          "http_version": "1.1",
+          "decoded_bytes": 8631,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8631,
+          "http_version": "1.1",
+          "decoded_bytes": 8631,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8631,
+          "http_version": "1.1",
+          "decoded_bytes": 8631,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 8631,
+          "http_version": "1.1",
+          "decoded_bytes": 8631,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0003,
+        "total_max": 0.0004,
+        "wire_bytes": 8631,
+        "decoded_bytes": 8631,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1643411",
+      "url": "http://localhost:8180/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&playerId=1643411",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0005,
+        "wire_bytes": 1561,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-bio-1643411",
+      "url": "http://localhost:8180/api/workbench/players/1643411/bio?season=2026-27&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 7403,
+          "http_version": "1.1",
+          "decoded_bytes": 7403,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 7403,
+          "http_version": "1.1",
+          "decoded_bytes": 7403,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 7403,
+          "http_version": "1.1",
+          "decoded_bytes": 7403,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0008,
+          "total": 0.0009,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 7403,
+          "http_version": "1.1",
+          "decoded_bytes": 7403,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0008,
+          "total": 0.0009,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 7403,
+          "http_version": "1.1",
+          "decoded_bytes": 7403,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0005,
+        "total_min": 0.0004,
+        "total_max": 0.0009,
+        "wire_bytes": 7403,
+        "decoded_bytes": 7403,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-career-1449",
+      "url": "http://localhost:8180/api/workbench/players/1449/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0009,
+          "total": 0.001,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 113612,
+          "http_version": "1.1",
+          "decoded_bytes": 113612,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0008,
+          "total": 0.0009,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 113612,
+          "http_version": "1.1",
+          "decoded_bytes": 113612,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0008,
+          "total": 0.0009,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 113612,
+          "http_version": "1.1",
+          "decoded_bytes": 113612,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0006,
+          "total": 0.0007,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 113612,
+          "http_version": "1.1",
+          "decoded_bytes": 113612,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0008,
+          "total": 0.0009,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 113612,
+          "http_version": "1.1",
+          "decoded_bytes": 113612,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0008,
+        "total": 0.0009,
+        "total_min": 0.0007,
+        "total_max": 0.001,
+        "wire_bytes": 113612,
+        "decoded_bytes": 113612,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-games-1449-1991-92",
+      "url": "http://localhost:8180/api/workbench/players/1449/games?season=1991-92&phase=regular_season&beforeDate=1992-04-20&limit=50",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0006,
+          "total": 0.0006,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 32592,
+          "http_version": "1.1",
+          "decoded_bytes": 32592,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 32592,
+          "http_version": "1.1",
+          "decoded_bytes": 32592,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 32592,
+          "http_version": "1.1",
+          "decoded_bytes": 32592,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 32592,
+          "http_version": "1.1",
+          "decoded_bytes": 32592,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 32592,
+          "http_version": "1.1",
+          "decoded_bytes": 32592,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0005,
+        "total": 0.0005,
+        "total_min": 0.0005,
+        "total_max": 0.0006,
+        "wire_bytes": 32592,
+        "decoded_bytes": 32592,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-profile-1449-1991-92",
+      "url": "http://localhost:8180/api/workbench/players/1449?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5565,
+          "http_version": "1.1",
+          "decoded_bytes": 5565,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5565,
+          "http_version": "1.1",
+          "decoded_bytes": 5565,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0008,
+          "total": 0.0008,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5565,
+          "http_version": "1.1",
+          "decoded_bytes": 5565,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5565,
+          "http_version": "1.1",
+          "decoded_bytes": 5565,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5565,
+          "http_version": "1.1",
+          "decoded_bytes": 5565,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0005,
+        "total_min": 0.0004,
+        "total_max": 0.0008,
+        "wire_bytes": 5565,
+        "decoded_bytes": 5565,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1449-1991-92",
+      "url": "http://localhost:8180/api/workbench/impact?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&playerId=1449",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0005,
+        "wire_bytes": 1561,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1449-1990-91",
+      "url": "http://localhost:8180/api/workbench/impact?season=1990-91&phase=regular_season&beforeDate=1991-04-22&playerId=1449&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0005,
+        "wire_bytes": 1561,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1449-1989-90",
+      "url": "http://localhost:8180/api/workbench/impact?season=1989-90&phase=regular_season&beforeDate=1990-04-23&playerId=1449&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 1561,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-impact-1449-1988-89",
+      "url": "http://localhost:8180/api/workbench/impact?season=1988-89&phase=regular_season&beforeDate=1989-04-24&playerId=1449&window=season",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1561,
+          "http_version": "1.1",
+          "decoded_bytes": 1561,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0005,
+        "wire_bytes": 1561,
+        "decoded_bytes": 1561,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "player-bio-1449-1991-92",
+      "url": "http://localhost:8180/api/workbench/players/1449/bio?season=1991-92&beforeDate=1992-04-20",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 55461,
+          "http_version": "1.1",
+          "decoded_bytes": 55461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 55461,
+          "http_version": "1.1",
+          "decoded_bytes": 55461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 55461,
+          "http_version": "1.1",
+          "decoded_bytes": 55461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 55461,
+          "http_version": "1.1",
+          "decoded_bytes": 55461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 55461,
+          "http_version": "1.1",
+          "decoded_bytes": 55461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 55461,
+        "decoded_bytes": 55461,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-schedule-1610612747",
+      "url": "http://localhost:8180/api/workbench/teams/1610612747/schedule?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6466,
+          "http_version": "1.1",
+          "decoded_bytes": 6466,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6466,
+          "http_version": "1.1",
+          "decoded_bytes": 6466,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6466,
+          "http_version": "1.1",
+          "decoded_bytes": 6466,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6466,
+          "http_version": "1.1",
+          "decoded_bytes": 6466,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6466,
+          "http_version": "1.1",
+          "decoded_bytes": 6466,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0003,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 6466,
+        "decoded_bytes": 6466,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-detail-1610612747",
+      "url": "http://localhost:8180/api/workbench/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5930,
+          "http_version": "1.1",
+          "decoded_bytes": 5930,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5930,
+          "http_version": "1.1",
+          "decoded_bytes": 5930,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5930,
+          "http_version": "1.1",
+          "decoded_bytes": 5930,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5930,
+          "http_version": "1.1",
+          "decoded_bytes": 5930,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5930,
+          "http_version": "1.1",
+          "decoded_bytes": 5930,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0005,
+        "wire_bytes": 5930,
+        "decoded_bytes": 5930,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-peers-1610612747",
+      "url": "http://localhost:8180/api/workbench/teams/1610612747/peers?limit=6&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9160,
+          "http_version": "1.1",
+          "decoded_bytes": 9160,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9160,
+          "http_version": "1.1",
+          "decoded_bytes": 9160,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9160,
+          "http_version": "1.1",
+          "decoded_bytes": 9160,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0007,
+          "total": 0.0007,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9160,
+          "http_version": "1.1",
+          "decoded_bytes": 9160,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0008,
+          "total": 0.0009,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 9160,
+          "http_version": "1.1",
+          "decoded_bytes": 9160,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0005,
+        "total_min": 0.0004,
+        "total_max": 0.0009,
+        "wire_bytes": 9160,
+        "decoded_bytes": 9160,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-teams-six-factors",
+      "url": "http://localhost:8180/api/workbench/teams/six-factors?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0009,
+          "total": 0.001,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 49706,
+          "http_version": "1.1",
+          "decoded_bytes": 49706,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.001,
+          "total": 0.0011,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 49706,
+          "http_version": "1.1",
+          "decoded_bytes": 49706,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.001,
+          "total": 0.0011,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 49706,
+          "http_version": "1.1",
+          "decoded_bytes": 49706,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0008,
+          "total": 0.0008,
+          "connect": 0.0002,
+          "tls": 0.0,
+          "wire_bytes": 49706,
+          "http_version": "1.1",
+          "decoded_bytes": 49706,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0006,
+          "total": 0.0007,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 49706,
+          "http_version": "1.1",
+          "decoded_bytes": 49706,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.2, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0009,
+        "total": 0.001,
+        "total_min": 0.0007,
+        "total_max": 0.0011,
+        "wire_bytes": 49706,
+        "decoded_bytes": 49706,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-teams-six-factors-away",
+      "url": "http://localhost:8180/api/workbench/teams/six-factors?venue=away&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42886,
+          "http_version": "1.1",
+          "decoded_bytes": 42886,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42886,
+          "http_version": "1.1",
+          "decoded_bytes": 42886,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42886,
+          "http_version": "1.1",
+          "decoded_bytes": 42886,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42886,
+          "http_version": "1.1",
+          "decoded_bytes": 42886,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42886,
+          "http_version": "1.1",
+          "decoded_bytes": 42886,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0005,
+        "total_min": 0.0005,
+        "total_max": 0.0005,
+        "wire_bytes": 42886,
+        "decoded_bytes": 42886,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-teams-six-factors-home",
+      "url": "http://localhost:8180/api/workbench/teams/six-factors?venue=home&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42909,
+          "http_version": "1.1",
+          "decoded_bytes": 42909,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42909,
+          "http_version": "1.1",
+          "decoded_bytes": 42909,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42909,
+          "http_version": "1.1",
+          "decoded_bytes": 42909,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42909,
+          "http_version": "1.1",
+          "decoded_bytes": 42909,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 42909,
+          "http_version": "1.1",
+          "decoded_bytes": 42909,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0005,
+        "wire_bytes": 42909,
+        "decoded_bytes": 42909,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-workspace",
+      "url": "http://localhost:8180/api/workbench/workspace?workspaceId=default",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.002,
+          "total": 0.002,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1061,
+          "http_version": "1.1",
+          "decoded_bytes": 1061,
+          "headers": {
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.6, db;dur=0.3, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0017,
+          "total": 0.0017,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1061,
+          "http_version": "1.1",
+          "decoded_bytes": 1061,
+          "headers": {
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.4, db;dur=0.3, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0015,
+          "total": 0.0015,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1061,
+          "http_version": "1.1",
+          "decoded_bytes": 1061,
+          "headers": {
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.2, db;dur=0.2, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0016,
+          "total": 0.0016,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1061,
+          "http_version": "1.1",
+          "decoded_bytes": 1061,
+          "headers": {
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.3, db;dur=0.3, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0016,
+          "total": 0.0016,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 1061,
+          "http_version": "1.1",
+          "decoded_bytes": 1061,
+          "headers": {
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.3, db;dur=0.3, queries;desc=\"1\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0016,
+        "total": 0.0016,
+        "total_min": 0.0015,
+        "total_max": 0.002,
+        "wire_bytes": 1061,
+        "decoded_bytes": 1061,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "workbench-draft-classes",
+      "url": "http://localhost:8180/api/workbench/draft-classes",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 818,
+          "http_version": "1.1",
+          "decoded_bytes": 818,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 818,
+          "http_version": "1.1",
+          "decoded_bytes": 818,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 818,
+          "http_version": "1.1",
+          "decoded_bytes": 818,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 818,
+          "http_version": "1.1",
+          "decoded_bytes": 818,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 818,
+          "http_version": "1.1",
+          "decoded_bytes": 818,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 818,
+        "decoded_bytes": 818,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-schedule-1610612738",
+      "url": "http://localhost:8180/api/workbench/teams/1610612738/schedule?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6109,
+          "http_version": "1.1",
+          "decoded_bytes": 6109,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6109,
+          "http_version": "1.1",
+          "decoded_bytes": 6109,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6109,
+          "http_version": "1.1",
+          "decoded_bytes": 6109,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6109,
+          "http_version": "1.1",
+          "decoded_bytes": 6109,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 6109,
+          "http_version": "1.1",
+          "decoded_bytes": 6109,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 6109,
+        "decoded_bytes": 6109,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-peers-1610612738",
+      "url": "http://localhost:8180/api/workbench/teams/1610612738/peers?limit=6&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9188,
+          "http_version": "1.1",
+          "decoded_bytes": 9188,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9188,
+          "http_version": "1.1",
+          "decoded_bytes": 9188,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9188,
+          "http_version": "1.1",
+          "decoded_bytes": 9188,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9188,
+          "http_version": "1.1",
+          "decoded_bytes": 9188,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9188,
+          "http_version": "1.1",
+          "decoded_bytes": 9188,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 9188,
+        "decoded_bytes": 9188,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "api",
+      "name": "team-detail-1610612738",
+      "url": "http://localhost:8180/api/workbench/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5461,
+          "http_version": "1.1",
+          "decoded_bytes": 5461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5461,
+          "http_version": "1.1",
+          "decoded_bytes": 5461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5461,
+          "http_version": "1.1",
+          "decoded_bytes": 5461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5461,
+          "http_version": "1.1",
+          "decoded_bytes": 5461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 5461,
+          "http_version": "1.1",
+          "decoded_bytes": 5461,
+          "headers": {
+            "x-cache": "hit",
+            "server-timing": "total;dur=0.1, db;dur=0.0, queries;desc=\"0\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0004,
+        "wire_bytes": 5461,
+        "decoded_bytes": 5461,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "portrait-2544-288",
+      "url": "http://localhost:8180/api/workbench/players/2544/portrait?size=288&crop=face-v6",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0023,
+          "total": 0.0023,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=2.0, db;dur=0.7, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0024,
+          "total": 0.0024,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=2.1, db;dur=1.0, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.002,
+          "total": 0.002,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.7, db;dur=0.3, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0018,
+          "total": 0.0018,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.4, db;dur=0.3, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0016,
+          "total": 0.0016,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.3, db;dur=0.3, queries;desc=\"1\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.002,
+        "total": 0.002,
+        "total_min": 0.0016,
+        "total_max": 0.0024,
+        "wire_bytes": 20626,
+        "decoded_bytes": 20626,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "portrait-2544-288-webp",
+      "url": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=288&crop=face-v6",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0016,
+          "total": 0.0017,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.3, db;dur=0.4, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0016,
+          "total": 0.0016,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.2, db;dur=0.3, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0016,
+          "total": 0.0016,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.3, db;dur=0.3, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0016,
+          "total": 0.0016,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.3, db;dur=0.4, queries;desc=\"1\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0014,
+          "total": 0.0015,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 20626,
+          "http_version": "1.1",
+          "decoded_bytes": 20626,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=1.1, db;dur=0.3, queries;desc=\"1\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0016,
+        "total": 0.0016,
+        "total_min": 0.0015,
+        "total_max": 0.0017,
+        "wire_bytes": 20626,
+        "decoded_bytes": 20626,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "portrait-1449-192-season-webp",
+      "url": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&season=1991-92&team=BOS&crop=face-v6",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0027,
+          "total": 0.0028,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9968,
+          "http_version": "1.1",
+          "decoded_bytes": 9968,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=2.4, db;dur=1.0, queries;desc=\"3\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0026,
+          "total": 0.0026,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9968,
+          "http_version": "1.1",
+          "decoded_bytes": 9968,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=2.3, db;dur=0.9, queries;desc=\"3\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0026,
+          "total": 0.0026,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9968,
+          "http_version": "1.1",
+          "decoded_bytes": 9968,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=2.2, db;dur=1.0, queries;desc=\"3\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0028,
+          "total": 0.0029,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9968,
+          "http_version": "1.1",
+          "decoded_bytes": 9968,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=2.4, db;dur=1.1, queries;desc=\"3\""
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0024,
+          "total": 0.0024,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 9968,
+          "http_version": "1.1",
+          "decoded_bytes": 9968,
+          "headers": {
+            "cache-control": "public, max-age=86400",
+            "x-cache": "bypass",
+            "server-timing": "total;dur=2.1, db;dur=0.7, queries;desc=\"3\""
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0026,
+        "total": 0.0026,
+        "total_min": 0.0024,
+        "total_max": 0.0029,
+        "wire_bytes": 9968,
+        "decoded_bytes": 9968,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "team-logo-lal-svg",
+      "url": "http://localhost:3180/team-logos/1610612747-5b68f7b92ba7d058.svg",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0011,
+          "total": 0.0012,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 4425,
+          "http_version": "1.1",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0007,
+          "total": 0.0008,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 4425,
+          "http_version": "1.1",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0006,
+          "total": 0.0008,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 4425,
+          "http_version": "1.1",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0007,
+          "total": 0.0008,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 4425,
+          "http_version": "1.1",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable",
+            "content-encoding": "gzip"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0006,
+          "total": 0.0007,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 4425,
+          "http_version": "1.1",
+          "decoded_bytes": 12296,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable",
+            "content-encoding": "gzip"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0007,
+        "total": 0.0008,
+        "total_min": 0.0007,
+        "total_max": 0.0012,
+        "wire_bytes": 4425,
+        "decoded_bytes": 12296,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "team-logo-bos-1977-png",
+      "url": "http://localhost:3180/team-logos/bos-1977-4571e077bce6b1e7.png",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 18731,
+          "http_version": "1.1",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0006,
+          "total": 0.0006,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 18731,
+          "http_version": "1.1",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 18731,
+          "http_version": "1.1",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 18731,
+          "http_version": "1.1",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 18731,
+          "http_version": "1.1",
+          "decoded_bytes": 18731,
+          "headers": {
+            "cache-control": "public, max-age=31536000, immutable"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0005,
+        "total_min": 0.0004,
+        "total_max": 0.0006,
+        "wire_bytes": 18731,
+        "decoded_bytes": 18731,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    },
+    {
+      "kind": "file",
+      "name": "flag-us",
+      "url": "http://localhost:3180/flags/us.png",
+      "runs": [
+        {
+          "status": 200,
+          "ttfb": 0.0005,
+          "total": 0.0005,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 773,
+          "http_version": "1.1",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=2592000"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 773,
+          "http_version": "1.1",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=2592000"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 773,
+          "http_version": "1.1",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=2592000"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0003,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 773,
+          "http_version": "1.1",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=2592000"
+          }
+        },
+        {
+          "status": 200,
+          "ttfb": 0.0004,
+          "total": 0.0004,
+          "connect": 0.0001,
+          "tls": 0.0,
+          "wire_bytes": 773,
+          "http_version": "1.1",
+          "decoded_bytes": 773,
+          "headers": {
+            "cache-control": "public, max-age=2592000"
+          }
+        }
+      ],
+      "median": {
+        "ok_runs": 5,
+        "ttfb": 0.0004,
+        "total": 0.0004,
+        "total_min": 0.0004,
+        "total_max": 0.0005,
+        "wire_bytes": 773,
+        "decoded_bytes": 773,
+        "statuses": [
+          200
+        ],
+        "failed_runs": 0
+      }
+    }
+  ]
+}

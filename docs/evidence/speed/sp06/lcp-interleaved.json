@@ -1,0 +1,2073 @@
+{
+ "tool": "lcp-interleave.mjs",
+ "builds": [
+  [
+   "before",
+   "http://localhost:3181"
+  ],
+  [
+   "after",
+   "http://localhost:3180"
+  ]
+ ],
+ "runs": 10,
+ "taken_at": "2026-11-15T21:20:03.593Z",
+ "loads": [
+  {
+   "i": 0,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 464,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 14,
+    "dcl": 98
+   },
+   "hero_request": {
+    "start": 46,
+    "end": 53
+   }
+  },
+  {
+   "i": 0,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 412,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 13,
+    "dcl": 84
+   },
+   "hero_request": {
+    "start": 42,
+    "end": 47
+   }
+  },
+  {
+   "i": 0,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 384,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 73
+   },
+   "hero_request": {
+    "start": 31,
+    "end": 38
+   }
+  },
+  {
+   "i": 0,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 388,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 13,
+    "dcl": 76
+   },
+   "hero_request": {
+    "start": 32,
+    "end": 37
+   }
+  },
+  {
+   "i": 0,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 220,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 256,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 14,
+    "dcl": 112
+   },
+   "hero_request": null
+  },
+  {
+   "i": 0,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 216,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 255,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 16,
+    "dcl": 110
+   },
+   "hero_request": null
+  },
+  {
+   "i": 1,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 420,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 14,
+    "dcl": 95
+   },
+   "hero_request": {
+    "start": 52,
+    "end": 57
+   }
+  },
+  {
+   "i": 1,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 468,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 9,
+    "dcl": 109
+   },
+   "hero_request": {
+    "start": 64,
+    "end": 70
+   }
+  },
+  {
+   "i": 1,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 440,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 77
+   },
+   "hero_request": {
+    "start": 34,
+    "end": 41
+   }
+  },
+  {
+   "i": 1,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 344,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 184,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 103
+   },
+   "hero_request": {
+    "start": 28,
+    "end": 36
+   }
+  },
+  {
+   "i": 1,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 208,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 247,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 13,
+    "dcl": 103
+   },
+   "hero_request": null
+  },
+  {
+   "i": 1,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 212,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 250,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 13,
+    "dcl": 102
+   },
+   "hero_request": null
+  },
+  {
+   "i": 2,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 436,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 88
+   },
+   "hero_request": {
+    "start": 39,
+    "end": 48
+   }
+  },
+  {
+   "i": 2,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 416,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 8,
+    "dcl": 93
+   },
+   "hero_request": {
+    "start": 45,
+    "end": 51
+   }
+  },
+  {
+   "i": 2,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 380,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 68
+   },
+   "hero_request": {
+    "start": 28,
+    "end": 35
+   }
+  },
+  {
+   "i": 2,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 364,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 216,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 15,
+    "dcl": 124
+   },
+   "hero_request": {
+    "start": 35,
+    "end": 41
+   }
+  },
+  {
+   "i": 2,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 216,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 256,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 109
+   },
+   "hero_request": null
+  },
+  {
+   "i": 2,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 216,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 253,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 13,
+    "dcl": 105
+   },
+   "hero_request": null
+  },
+  {
+   "i": 3,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 420,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 87
+   },
+   "hero_request": {
+    "start": 43,
+    "end": 48
+   }
+  },
+  {
+   "i": 3,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 448,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 7,
+    "dcl": 78
+   },
+   "hero_request": {
+    "start": 54,
+    "end": 60
+   }
+  },
+  {
+   "i": 3,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 336,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 178,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 97
+   },
+   "hero_request": {
+    "start": 28,
+    "end": 34
+   }
+  },
+  {
+   "i": 3,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 380,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 68
+   },
+   "hero_request": {
+    "start": 27,
+    "end": 33
+   }
+  },
+  {
+   "i": 3,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 208,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 246,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 100
+   },
+   "hero_request": null
+  },
+  {
+   "i": 3,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 216,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 251,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 13,
+    "dcl": 104
+   },
+   "hero_request": null
+  },
+  {
+   "i": 4,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 412,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 87
+   },
+   "hero_request": {
+    "start": 43,
+    "end": 49
+   }
+  },
+  {
+   "i": 4,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 376,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 235,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 7,
+    "dcl": 63
+   },
+   "hero_request": {
+    "start": 46,
+    "end": 50
+   }
+  },
+  {
+   "i": 4,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 380,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 69
+   },
+   "hero_request": {
+    "start": 28,
+    "end": 35
+   }
+  },
+  {
+   "i": 4,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 336,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 181,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 61
+   },
+   "hero_request": {
+    "start": 28,
+    "end": 34
+   }
+  },
+  {
+   "i": 4,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 212,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 260,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 105
+   },
+   "hero_request": null
+  },
+  {
+   "i": 4,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 236,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 275,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 16,
+    "dcl": 122
+   },
+   "hero_request": null
+  },
+  {
+   "i": 5,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 448,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 98
+   },
+   "hero_request": {
+    "start": 48,
+    "end": 54
+   }
+  },
+  {
+   "i": 5,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 428,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 7,
+    "dcl": 64
+   },
+   "hero_request": {
+    "start": 42,
+    "end": 47
+   }
+  },
+  {
+   "i": 5,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 396,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 67
+   },
+   "hero_request": {
+    "start": 27,
+    "end": 33
+   }
+  },
+  {
+   "i": 5,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 376,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 67
+   },
+   "hero_request": {
+    "start": 28,
+    "end": 35
+   }
+  },
+  {
+   "i": 5,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 200,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 240,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 94
+   },
+   "hero_request": null
+  },
+  {
+   "i": 5,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 216,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 269,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 103
+   },
+   "hero_request": null
+  },
+  {
+   "i": 6,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 424,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 9,
+    "dcl": 86
+   },
+   "hero_request": {
+    "start": 40,
+    "end": 45
+   }
+  },
+  {
+   "i": 6,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 420,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 7,
+    "dcl": 62
+   },
+   "hero_request": {
+    "start": 41,
+    "end": 46
+   }
+  },
+  {
+   "i": 6,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 336,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 176,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 98
+   },
+   "hero_request": {
+    "start": 26,
+    "end": 34
+   }
+  },
+  {
+   "i": 6,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 332,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 178,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 98
+   },
+   "hero_request": {
+    "start": 24,
+    "end": 31
+   }
+  },
+  {
+   "i": 6,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 200,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 239,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 97
+   },
+   "hero_request": null
+  },
+  {
+   "i": 6,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 224,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 256,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 99
+   },
+   "hero_request": null
+  },
+  {
+   "i": 7,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 436,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 9,
+    "dcl": 84
+   },
+   "hero_request": {
+    "start": 41,
+    "end": 45
+   }
+  },
+  {
+   "i": 7,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 424,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 7,
+    "dcl": 88
+   },
+   "hero_request": {
+    "start": 42,
+    "end": 48
+   }
+  },
+  {
+   "i": 7,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 336,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 189,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 9,
+    "dcl": 62
+   },
+   "hero_request": {
+    "start": 25,
+    "end": 31
+   }
+  },
+  {
+   "i": 7,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 404,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 76
+   },
+   "hero_request": {
+    "start": 32,
+    "end": 40
+   }
+  },
+  {
+   "i": 7,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 264,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 311,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 13,
+    "dcl": 128
+   },
+   "hero_request": null
+  },
+  {
+   "i": 7,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 236,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 295,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 114
+   },
+   "hero_request": null
+  },
+  {
+   "i": 8,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 428,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 68
+   },
+   "hero_request": {
+    "start": 46,
+    "end": 52
+   }
+  },
+  {
+   "i": 8,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 472,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 7,
+    "dcl": 118
+   },
+   "hero_request": {
+    "start": 65,
+    "end": 73
+   }
+  },
+  {
+   "i": 8,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 336,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 182,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 99
+   },
+   "hero_request": {
+    "start": 26,
+    "end": 35
+   }
+  },
+  {
+   "i": 8,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 360,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 187,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 63
+   },
+   "hero_request": {
+    "start": 27,
+    "end": 33
+   }
+  },
+  {
+   "i": 8,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 208,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 251,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 13,
+    "dcl": 103
+   },
+   "hero_request": null
+  },
+  {
+   "i": 8,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 212,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 254,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 12,
+    "dcl": 103
+   },
+   "hero_request": null
+  },
+  {
+   "i": 9,
+   "path": "/players/2544",
+   "label": "after",
+   "lcp": {
+    "time": 416,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 85
+   },
+   "hero_request": {
+    "start": 43,
+    "end": 48
+   }
+  },
+  {
+   "i": 9,
+   "path": "/players/2544",
+   "label": "before",
+   "lcp": {
+    "time": 404,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/2544/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0,
+   "shifts": [],
+   "nav": {
+    "ttfb": 7,
+    "dcl": 62
+   },
+   "hero_request": {
+    "start": 41,
+    "end": 46
+   }
+  },
+  {
+   "i": 9,
+   "path": "/players/1449",
+   "label": "after",
+   "lcp": {
+    "time": 336,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait.webp?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 179,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 10,
+    "dcl": 94
+   },
+   "hero_request": {
+    "start": 25,
+    "end": 32
+   }
+  },
+  {
+   "i": 9,
+   "path": "/players/1449",
+   "label": "before",
+   "lcp": {
+    "time": 344,
+    "size": 27556,
+    "el": {
+     "tag": "img",
+     "cls": "player-portrait",
+     "src": "http://localhost:8180/api/workbench/players/1449/portrait?size=192&crop=face-v6"
+    }
+   },
+   "cls": 0.00021,
+   "shifts": [
+    {
+     "time": 191,
+     "value": 0.00020941358024691357,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "courtlens-header-right",
+       "src": null
+      },
+      {
+       "tag": "kbd",
+       "cls": "courtlens-search-pill-kbd",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 14,
+    "dcl": 109
+   },
+   "hero_request": {
+    "start": 35,
+    "end": 42
+   }
+  },
+  {
+   "i": 9,
+   "path": "/teams/1610612747",
+   "label": "after",
+   "lcp": {
+    "time": 216,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 266,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 11,
+    "dcl": 96
+   },
+   "hero_request": null
+  },
+  {
+   "i": 9,
+   "path": "/teams/1610612747",
+   "label": "before",
+   "lcp": {
+    "time": 216,
+    "size": 6390,
+    "el": {
+     "tag": "h1",
+     "cls": "ui-page-header-title",
+     "src": null
+    }
+   },
+   "cls": 0.00374,
+   "shifts": [
+    {
+     "time": 255,
+     "value": 0.0037355152606310016,
+     "hadRecentInput": false,
+     "sources": [
+      {
+       "tag": "div",
+       "cls": "stats-preview-shortcuts",
+       "src": null
+      },
+      {
+       "tag": "p",
+       "cls": "",
+       "src": null
+      },
+      {
+       "tag": "svg",
+       "cls": "[object",
+       "src": null
+      }
+     ]
+    }
+   ],
+   "nav": {
+    "ttfb": 15,
+    "dcl": 107
+   },
+   "hero_request": null
+  }
+ ]
+}
