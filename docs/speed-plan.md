@@ -6,7 +6,7 @@ contract, the control kit and the approved page layouts; no number on any page c
 Work one block at a time, in order. Record measured evidence in the
 [speed progress log](speed-progress.md). Only the owner marks a block ✅.
 
-**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP06 built 2026-11-15, all ✅ owner 2026-11-15 (SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS, SP06 a floor for layout shift: two small shifts from page elements, none from an image). The G1/G2 stop ran 2026-11-15: suites green but for known failures, draft PR #110, G2 ✅ owner; the deploy and its live checks move to SP08. Next is SP07, then SP08.**
+**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP06 built 2026-11-15, all ✅ owner 2026-11-15 (SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS, SP06 a floor for layout shift: two small shifts from page elements, none from an image). The G1/G2 stop ran 2026-11-15: suites green but for known failures, draft PR #110, G2 ✅ owner; the deploy and its live checks move to SP08. SP07 built 2026-11-15 (Smart Tiered Cache and Early Hints on). Next is SP08.**
 
 ## Where the time goes (measured 2026-11-14)
 
@@ -93,8 +93,9 @@ gate G2; any other may be overturned at gate G1.
   the merge. The one deploy is SP08's, and the stop's checks after a deploy (the Cloudflare `.webp`
   check, `docker stats` during the warm start and the first crawl, `measure.py` live) move there.
 - SP07: the owner left the zone settings to the agent ("Choose the optimal settings for
-  courtlens"). Chosen: Smart Tiered Cache, Early Hints and 0-RTT on; the browser cache TTL stays
-  at 4 hours (reasons in the progress log).
+  courtlens"). Chosen: Smart Tiered Cache and Early Hints on; 0-RTT stays off (zone-wide replay
+  exposure for the other sites); the browser cache TTL stays at 4 hours (reasons in the progress
+  log).
 - D6 stays closed: no HTML or API responses cached at Cloudflare.
 - The recorded floors are accepted as they are: SP03's two prefetched journeys, SP05's Stats HTML
   and player first load, SP06's two non-image layout shifts. No further work on them before SP08.
@@ -135,7 +136,7 @@ gate G2; any other may be overturned at gate G1.
 | SP05 | Page weight: HTML and JS | ✅ owner, 2026-11-15; built 2026-11-15 |
 | SP06 | Images and static files | ✅ owner, 2026-11-15; built 2026-11-15 |
 | G2 | Owner gate: Cloudflare changes | ✅ owner, 2026-11-15 |
-| SP07 | Cloudflare settings | pending |
+| SP07 | Cloudflare settings | built 2026-11-15 |
 | SP08 | Close: suites, deploy, final numbers, docs | pending |
 
 ## SP00 Measuring tools and baseline

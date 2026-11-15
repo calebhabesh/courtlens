@@ -1894,3 +1894,54 @@ Asked at the G2 gate with the budget table (baseline, local SP04–SP06, live on
 2. **D6:** stays closed.
 3. **Floors:** accepted as recorded.
 4. **Gates:** G2 ✅ now; G1 after the SP08 deploy.
+
+## 2026-11-15 — SP07 built: Cloudflare settings
+
+Done-when: **met.** Evidence: `docs/evidence/speed/sp07/`.
+
+### Changed (cf CLI; `zone-settings-before.txt`, `zone-settings-after.txt`)
+
+| Setting | Before | After |
+| --- | --- | --- |
+| Smart Tiered Cache | off | **on** (22:18:57 UTC) |
+| Early Hints | off | **on** |
+| 0-RTT | off | off |
+| Browser cache TTL | 14400 | 14400 |
+
+Each change was dry-run first (one `PATCH` each).
+
+**0-RTT left off, against the G2 entry above.** It is zone-wide, and the zone's proxied hostnames
+include `doorbell`, whose root redirects to an `/access` gate. Whether any of its GETs act (a
+sign-in link, say) cannot be seen from here, and early data can be replayed. CourtLens would gain
+one round trip on resumed connections only. Not worth the exposure on sites this plan does not
+own.
+
+### Early Hints works (`early-hints.txt`)
+
+From the second request on, a player page answers `103` with the two font preloads, then `200`.
+After a deploy that renames the font files, the first 103s may name the old files until Cloudflare
+sees the new `Link` header; a stale preload only wastes one request.
+
+### Other hostnames (`hosts-check.sh`, `hosts-before.txt`, `hosts-after.txt`)
+
+GET `/` twice on each proxied hostname (`calebhabesh.com`, `www`, `courtlens`, `doorbell`,
+`linewatch-dev`), before and after: **same status, redirect, content type, body size and cache
+headers on all five.** `linewatch-dev` answered 530 (origin down) before the change too.
+
+### Live `measure.py` before and after (5 runs each; both on `main`'s code)
+
+Before: `docs/evidence/speed/stop/measure-live-predeploy-*.json`; after:
+`measure-live-sp07-after-*.json`.
+
+| | Before | After |
+| --- | --- | --- |
+| Player pages | 0.75–1.47 s | 0.75–1.49 s |
+| Team pages | 1.46–1.61 s | 1.26–1.38 s |
+| Stats | 0.71 s | 0.65 s |
+| Compare | 1.63 s | 1.66 s |
+| Static files (logos, flag, portrait) | 42–50 ms | 35–42 ms |
+
+Pages are set by `main`'s render on the origin, which SP07 does not touch; their differences are
+noise. Tiered cache and Early Hints show in first visits from cold edge locations and in the
+browser's font fetch, which `measure.py` (curl, no browser) does not see. The SP08 deploy brings
+the speed work itself.
