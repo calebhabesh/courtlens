@@ -1,0 +1,393 @@
+{
+ "tool": "tools/page-text.mjs (Playwright, main innerText after networkidle + 1.5 s, 1440x900, real data)",
+ "captures": {
+  "before-1": {
+   "taken_at": "2026-11-15T07:22:55.938Z",
+   "pages": {
+    "home": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f"
+    },
+    "stats": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f"
+    },
+    "players": {
+     "url": "/players",
+     "chars": 4751,
+     "sha256": "43c11cb1ac1092a59f82a1abf9a1a62d30c041be5b3b574efbba62614742ffc5"
+    },
+    "teams": {
+     "url": "/teams",
+     "chars": 5787,
+     "sha256": "6d6c97ca02083a889506b68a9a68b5f926686dbeddab189fa31ed7a66c0d50b1"
+    },
+    "standings": {
+     "url": "/standings",
+     "chars": 3180,
+     "sha256": "f5783d26ae1dddb7f9ce7cc49adf02acf65a7a3cfca801f9c1f20be0bdf49cd8"
+    },
+    "compare": {
+     "url": "/compare?playerA=2544&playerB=203999",
+     "chars": 3584,
+     "sha256": "4457fa1cbe6eb9fa2a0b046b04a136aba65ee08c93ad3fa64386ea914b62f2c6"
+    },
+    "player-star": {
+     "url": "/players/2544",
+     "chars": 53494,
+     "sha256": "675cc2ab633b7e1fc70e75a0248ce4b8da8f5f8ae868b4275638fed4736c3560"
+    },
+    "player-rookie": {
+     "url": "/players/1643411",
+     "chars": 7997,
+     "sha256": "20449f8bab5349f2056902bdefa7f17c522d3cf63636ba7636741e01f3bcd6cd"
+    },
+    "player-pre2000": {
+     "url": "/players/1449",
+     "chars": 29657,
+     "sha256": "866a1d846c7ab83c8878898da88b984f802102ca24509cb8dfdeff7e4e67656b"
+    },
+    "team-lal": {
+     "url": "/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 41331,
+     "sha256": "adcd28c3449fc09237e5bffe03eacd0e5f535f14a7f09ab79cdcf5f57b7f9009"
+    },
+    "team-bos": {
+     "url": "/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 36113,
+     "sha256": "b41eb2c5116b047184f8a352dcb0d2dad1e93cfb1f923ba709c6589473a3bbe3"
+    },
+    "research-rapm": {
+     "url": "/research/rapm",
+     "chars": 3833,
+     "sha256": "d7b422c02896f00a499f73b32b8b306c67beadecc7a5b2755e8ccf124a819401"
+    }
+   },
+   "browser_reads": {
+    "home": [
+     "GET /api/workbench/catalog 200 4009 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 84 ms"
+    ],
+    "stats": [
+     "GET /api/workbench/catalog 200 102 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 85 ms"
+    ],
+    "players": [
+     "GET /api/workbench/catalog 200 191 ms"
+    ],
+    "teams": [
+     "GET /api/workbench/catalog 200 86 ms",
+     "GET /api/workbench/teams/six-factors?season=2026-27&phase=regular_season 200 87 ms"
+    ],
+    "standings": [
+     "GET /api/workbench/catalog 200 70 ms"
+    ],
+    "compare": [
+     "GET /api/workbench/catalog 200 117 ms"
+    ],
+    "player-star": [
+     "GET /api/workbench/catalog 200 76 ms",
+     "POST /api/workbench/query 200 154 ms",
+     "POST /api/workbench/query 200 201 ms",
+     "POST /api/workbench/query 200 204 ms",
+     "POST /api/workbench/query 200 214 ms",
+     "POST /api/workbench/query 200 218 ms",
+     "POST /api/workbench/query 200 251 ms"
+    ],
+    "player-rookie": [
+     "GET /api/workbench/catalog 200 92 ms",
+     "POST /api/workbench/query 200 157 ms",
+     "POST /api/workbench/query 200 170 ms",
+     "POST /api/workbench/query 200 189 ms",
+     "POST /api/workbench/query 200 203 ms",
+     "POST /api/workbench/query 200 213 ms",
+     "POST /api/workbench/query 200 246 ms"
+    ],
+    "player-pre2000": [
+     "GET /api/workbench/catalog 200 90 ms",
+     "POST /api/workbench/query 200 209 ms",
+     "POST /api/workbench/query 200 218 ms",
+     "POST /api/workbench/query 200 218 ms",
+     "POST /api/workbench/query 200 249 ms",
+     "POST /api/workbench/query 200 252 ms",
+     "POST /api/workbench/query 200 254 ms"
+    ],
+    "team-lal": [
+     "GET /api/workbench/catalog 200 153 ms",
+     "GET /api/workbench/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13 200 44 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 118 ms"
+    ],
+    "team-bos": [
+     "GET /api/workbench/catalog 200 125 ms",
+     "GET /api/workbench/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13 200 33 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 102 ms"
+    ],
+    "research-rapm": [
+     "GET /api/workbench/catalog 200 88 ms",
+     "GET /api/workbench/research/runs?limit=100 200 69 ms",
+     "GET /api/workbench/research/experiments 200 70 ms"
+    ]
+   }
+  },
+  "before-2": {
+   "taken_at": "2026-11-15T07:23:39.044Z",
+   "pages": {
+    "home": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f"
+    },
+    "stats": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f"
+    },
+    "players": {
+     "url": "/players",
+     "chars": 4751,
+     "sha256": "43c11cb1ac1092a59f82a1abf9a1a62d30c041be5b3b574efbba62614742ffc5"
+    },
+    "teams": {
+     "url": "/teams",
+     "chars": 5787,
+     "sha256": "6d6c97ca02083a889506b68a9a68b5f926686dbeddab189fa31ed7a66c0d50b1"
+    },
+    "standings": {
+     "url": "/standings",
+     "chars": 3180,
+     "sha256": "f5783d26ae1dddb7f9ce7cc49adf02acf65a7a3cfca801f9c1f20be0bdf49cd8"
+    },
+    "compare": {
+     "url": "/compare?playerA=2544&playerB=203999",
+     "chars": 3584,
+     "sha256": "4457fa1cbe6eb9fa2a0b046b04a136aba65ee08c93ad3fa64386ea914b62f2c6"
+    },
+    "player-star": {
+     "url": "/players/2544",
+     "chars": 53494,
+     "sha256": "675cc2ab633b7e1fc70e75a0248ce4b8da8f5f8ae868b4275638fed4736c3560"
+    },
+    "player-rookie": {
+     "url": "/players/1643411",
+     "chars": 7997,
+     "sha256": "20449f8bab5349f2056902bdefa7f17c522d3cf63636ba7636741e01f3bcd6cd"
+    },
+    "player-pre2000": {
+     "url": "/players/1449",
+     "chars": 29657,
+     "sha256": "866a1d846c7ab83c8878898da88b984f802102ca24509cb8dfdeff7e4e67656b"
+    },
+    "team-lal": {
+     "url": "/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 41331,
+     "sha256": "adcd28c3449fc09237e5bffe03eacd0e5f535f14a7f09ab79cdcf5f57b7f9009"
+    },
+    "team-bos": {
+     "url": "/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 36113,
+     "sha256": "b41eb2c5116b047184f8a352dcb0d2dad1e93cfb1f923ba709c6589473a3bbe3"
+    },
+    "research-rapm": {
+     "url": "/research/rapm",
+     "chars": 3833,
+     "sha256": "d7b422c02896f00a499f73b32b8b306c67beadecc7a5b2755e8ccf124a819401"
+    }
+   },
+   "browser_reads": {
+    "home": [
+     "GET /api/workbench/catalog 200 91 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 80 ms"
+    ],
+    "stats": [
+     "GET /api/workbench/catalog 200 86 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 72 ms"
+    ],
+    "players": [
+     "GET /api/workbench/catalog 200 113 ms"
+    ],
+    "teams": [
+     "GET /api/workbench/catalog 200 88 ms",
+     "GET /api/workbench/teams/six-factors?season=2026-27&phase=regular_season 200 71 ms"
+    ],
+    "standings": [
+     "GET /api/workbench/catalog 200 77 ms"
+    ],
+    "compare": [
+     "GET /api/workbench/catalog 200 92 ms"
+    ],
+    "player-star": [
+     "GET /api/workbench/catalog 200 76 ms",
+     "POST /api/workbench/query 200 174 ms",
+     "POST /api/workbench/query 200 193 ms",
+     "POST /api/workbench/query 200 230 ms",
+     "POST /api/workbench/query 200 230 ms",
+     "POST /api/workbench/query 200 230 ms",
+     "POST /api/workbench/query 200 236 ms"
+    ],
+    "player-rookie": [
+     "GET /api/workbench/catalog 200 90 ms",
+     "POST /api/workbench/query 200 184 ms",
+     "POST /api/workbench/query 200 187 ms",
+     "POST /api/workbench/query 200 198 ms",
+     "POST /api/workbench/query 200 204 ms",
+     "POST /api/workbench/query 200 212 ms",
+     "POST /api/workbench/query 200 232 ms"
+    ],
+    "player-pre2000": [
+     "GET /api/workbench/catalog 200 90 ms",
+     "POST /api/workbench/query 200 182 ms",
+     "POST /api/workbench/query 200 202 ms",
+     "POST /api/workbench/query 200 208 ms",
+     "POST /api/workbench/query 200 212 ms",
+     "POST /api/workbench/query 200 234 ms",
+     "POST /api/workbench/query 200 242 ms"
+    ],
+    "team-lal": [
+     "GET /api/workbench/catalog 200 160 ms",
+     "GET /api/workbench/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13 200 45 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 103 ms"
+    ],
+    "team-bos": [
+     "GET /api/workbench/catalog 200 127 ms",
+     "GET /api/workbench/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13 200 36 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 105 ms"
+    ],
+    "research-rapm": [
+     "GET /api/workbench/catalog 200 96 ms",
+     "GET /api/workbench/research/experiments 200 51 ms",
+     "GET /api/workbench/research/runs?limit=100 200 51 ms"
+    ]
+   }
+  },
+  "after": {
+   "taken_at": "2026-11-15T08:07:23.120Z",
+   "pages": {
+    "home": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f"
+    },
+    "stats": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f"
+    },
+    "players": {
+     "url": "/players",
+     "chars": 4751,
+     "sha256": "43c11cb1ac1092a59f82a1abf9a1a62d30c041be5b3b574efbba62614742ffc5"
+    },
+    "teams": {
+     "url": "/teams",
+     "chars": 5787,
+     "sha256": "6d6c97ca02083a889506b68a9a68b5f926686dbeddab189fa31ed7a66c0d50b1"
+    },
+    "standings": {
+     "url": "/standings",
+     "chars": 3180,
+     "sha256": "f5783d26ae1dddb7f9ce7cc49adf02acf65a7a3cfca801f9c1f20be0bdf49cd8"
+    },
+    "compare": {
+     "url": "/compare?playerA=2544&playerB=203999",
+     "chars": 3584,
+     "sha256": "4457fa1cbe6eb9fa2a0b046b04a136aba65ee08c93ad3fa64386ea914b62f2c6"
+    },
+    "player-star": {
+     "url": "/players/2544",
+     "chars": 53494,
+     "sha256": "675cc2ab633b7e1fc70e75a0248ce4b8da8f5f8ae868b4275638fed4736c3560"
+    },
+    "player-rookie": {
+     "url": "/players/1643411",
+     "chars": 7997,
+     "sha256": "20449f8bab5349f2056902bdefa7f17c522d3cf63636ba7636741e01f3bcd6cd"
+    },
+    "player-pre2000": {
+     "url": "/players/1449",
+     "chars": 29657,
+     "sha256": "866a1d846c7ab83c8878898da88b984f802102ca24509cb8dfdeff7e4e67656b"
+    },
+    "team-lal": {
+     "url": "/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 41331,
+     "sha256": "adcd28c3449fc09237e5bffe03eacd0e5f535f14a7f09ab79cdcf5f57b7f9009"
+    },
+    "team-bos": {
+     "url": "/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 36113,
+     "sha256": "b41eb2c5116b047184f8a352dcb0d2dad1e93cfb1f923ba709c6589473a3bbe3"
+    },
+    "research-rapm": {
+     "url": "/research/rapm",
+     "chars": 3833,
+     "sha256": "d7b422c02896f00a499f73b32b8b306c67beadecc7a5b2755e8ccf124a819401"
+    }
+   },
+   "browser_reads": {
+    "home": [
+     "GET /api/workbench/catalog 200 115 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 57 ms"
+    ],
+    "stats": [
+     "GET /api/workbench/catalog 200 350 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 54 ms"
+    ],
+    "players": [
+     "GET /api/workbench/catalog 200 111 ms"
+    ],
+    "teams": [
+     "GET /api/workbench/catalog 200 59 ms",
+     "GET /api/workbench/teams/six-factors?season=2026-27&phase=regular_season 200 70 ms"
+    ],
+    "standings": [
+     "GET /api/workbench/catalog 200 55 ms"
+    ],
+    "compare": [
+     "GET /api/workbench/catalog 200 132 ms"
+    ],
+    "player-star": [
+     "GET /api/workbench/catalog 200 115 ms",
+     "POST /api/workbench/query 200 180 ms",
+     "POST /api/workbench/query 200 204 ms",
+     "POST /api/workbench/query 200 212 ms",
+     "POST /api/workbench/query 200 228 ms",
+     "POST /api/workbench/query 200 230 ms",
+     "POST /api/workbench/query 200 285 ms"
+    ],
+    "player-rookie": [
+     "GET /api/workbench/catalog 200 89 ms",
+     "POST /api/workbench/query 200 192 ms",
+     "POST /api/workbench/query 200 199 ms",
+     "POST /api/workbench/query 200 213 ms",
+     "POST /api/workbench/query 200 214 ms",
+     "POST /api/workbench/query 200 218 ms",
+     "POST /api/workbench/query 200 221 ms"
+    ],
+    "player-pre2000": [
+     "GET /api/workbench/catalog 200 64 ms",
+     "POST /api/workbench/query 200 194 ms",
+     "POST /api/workbench/query 200 218 ms",
+     "POST /api/workbench/query 200 223 ms",
+     "POST /api/workbench/query 200 240 ms",
+     "POST /api/workbench/query 200 249 ms",
+     "POST /api/workbench/query 200 260 ms"
+    ],
+    "team-lal": [
+     "GET /api/workbench/catalog 200 160 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 65 ms"
+    ],
+    "team-bos": [
+     "GET /api/workbench/catalog 200 150 ms",
+     "GET /api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853 200 67 ms"
+    ],
+    "research-rapm": [
+     "GET /api/workbench/catalog 200 78 ms",
+     "GET /api/workbench/research/runs?limit=100 200 46 ms",
+     "GET /api/workbench/research/experiments 200 46 ms"
+    ]
+   }
+  }
+ }
+}

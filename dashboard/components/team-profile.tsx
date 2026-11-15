@@ -261,10 +261,10 @@ export function TeamGameLogSection({ games, season, scopeParams, teamId, tricode
 }
 
 /** The depth chart (moved from Roster Shapes in alignment row 12): minutes by position for this scope. */
-export function TeamDepthSection({ catalog, teamId, scope }: Omit<RosterAllocationViewProps, "embedded">) {
+export function TeamDepthSection({ catalog, teamId, scope, initial }: Omit<RosterAllocationViewProps, "embedded">) {
   return <section id="depth-chart" className="player-open-section player-glass team-profile-section" aria-label="Depth chart">
     <header className="player-open-heading"><h2><Icon name="shapes" size={20} />Depth Chart</h2><span>Observed minutes by position · drag players to project</span></header>
-    <RosterAllocationView catalog={catalog} teamId={teamId} scope={scope} embedded />
+    <RosterAllocationView catalog={catalog} teamId={teamId} scope={scope} initial={initial} embedded />
   </section>;
 }
 

@@ -14,7 +14,8 @@ from typing import Any, Literal
 from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException
-from sqlalchemy import func, or_, select
+from sqlalchemy import Connection, event, func, or_, select
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
 from courtlens.archive_models import (
@@ -213,14 +214,46 @@ def decode_cursor(cursor: str, expected_context_hash: str) -> int:
 _READY_DATASET_FACTS: dict[tuple[Any, ...], dict[str, Any]] = {}
 
 
+FINGERPRINT_MEMO = "courtlens.dataset_fingerprint"
+
+
+def _forget_fingerprints_on_write(
+    conn: Connection, cursor: Any, statement: str, parameters: Any, context: Any, executemany: bool
+) -> None:
+    # Only statements that start with SELECT are reads; anything else may append rows.
+    if FINGERPRINT_MEMO in conn.info and statement.lstrip()[:6].upper() != "SELECT":
+        conn.info.pop(FINGERPRINT_MEMO, None)
+
+
+event.listen(Engine, "before_cursor_execute", _forget_fingerprints_on_write)
+
+
 def dataset_fingerprint(session: Session, dataset_id: str) -> tuple[int, Any]:
-    """Row count and latest game date of a workbench dataset; any appended row changes it."""
+    """Row count and latest game date of a workbench dataset; any appended row changes it.
+
+    Remembered on the connection for the rest of its current transaction, until that connection
+    runs any statement other than a SELECT. Sessions run REPEATABLE READ, so a repeat inside one
+    read-only transaction could not see another answer anyway; a read that resolves its context
+    several times (a career resolves each season) counts the rows once (speed plan SP04).
+    """
+    connection = session.connection()
+    transaction = connection.get_transaction()
+    memo = connection.info.get(FINGERPRINT_MEMO)
+    if memo is None or memo[0] is not transaction:
+        memo = (transaction, {})
+    found: dict[str, tuple[int, Any]] = memo[1]
+    if dataset_id in found:
+        return found[dataset_id]
     row = session.execute(
         select(func.count(), func.max(WorkbenchPlayerGame.game_date)).where(
             WorkbenchPlayerGame.dataset_id == dataset_id
         )
     ).one()
-    return int(row[0]), row[1]
+    fingerprint = int(row[0]), row[1]
+    if transaction is not None:
+        found[dataset_id] = fingerprint
+        connection.info[FINGERPRINT_MEMO] = memo
+    return fingerprint
 
 
 def _dataset_facts(session: Session, dataset: WorkbenchDataset) -> dict[str, Any]:

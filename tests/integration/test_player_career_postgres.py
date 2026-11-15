@@ -400,3 +400,31 @@ def test_comparison_group_columns_match_stats_rows_and_careers(client: TestClien
         "/api/workbench/compare/group", params={**params, "playerId": [str(n) for n in range(6)]}
     )
     assert six.status_code == 422
+
+
+def test_tracking_fingerprint_query_matches_the_whole_mart_aggregate(
+    workbench_db: Session, tracking_mart: str
+) -> None:
+    """SP04's grouped query gives the same rows and md5 as the original over the whole mart."""
+    for dataset_id in ("feed-3", "feed-2", "feed-10"):
+        add_tracking(workbench_db, tracking_mart, dataset_id)
+    workbench_db.execute(
+        text(
+            f"INSERT INTO {tracking_mart} VALUES "
+            "(NULL,'2025-26','regular_season','1','LAL','passing','x',1,'n1'),"
+            "('feed-9','2024-25','playoffs','1','LAL','passing','x',1,'p1'),"
+            "('feed-9','2024-25','playoffs','2','LAL','passing','x',1,'p2'),"
+            "('feed-8',NULL,'regular_season','1','LAL','passing','x',1,'s1')"
+        )
+    )
+    workbench_db.commit()
+    original = workbench_db.execute(
+        text(
+            "SELECT season, season_type, count(*), "
+            f"md5(string_agg(DISTINCT dataset_id::text, ',')) FROM {tracking_mart} "
+            "GROUP BY season, season_type"
+        )
+    ).all()
+    grouped = workbench_db.execute(text(stats_cohort_store.tracking_facts_sql(tracking_mart))).all()
+    assert len(original) == 3
+    assert sorted(map(tuple, grouped), key=repr) == sorted(map(tuple, original), key=repr)

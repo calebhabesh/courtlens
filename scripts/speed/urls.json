@@ -1154,6 +1154,360 @@
       "pages": [
         "research-rapm"
       ]
+    },
+    {
+      "name": "query-hero-rank-pts_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "pts_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-reb_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "reb_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-ast_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "ast_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-ts_pct",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "ts_pct",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-dpm",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "dpm",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
+    },
+    {
+      "name": "query-hero-rank-min_per_game",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "body": {
+        "query": {
+          "release_id": "{releaseId}",
+          "season": "{season}",
+          "phase": "regular_season",
+          "before_date": "{beforeDate}",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season"
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true
+          },
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "min_per_game",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": {
+            "columns": [
+              "pts_per_game",
+              "reb_per_game",
+              "ast_per_game",
+              "ts_pct",
+              "dpm",
+              "min_per_game"
+            ]
+          },
+          "page": {
+            "limit": 100
+          },
+          "predicates": null,
+          "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+        },
+        "presentation": {
+          "player_ids": null
+        }
+      },
+      "pages": [
+        "player-star",
+        "player-rookie"
+      ],
+      "note": "hero rank page (useCohortRanks): read from the browser after mount before SP04"
     }
   ]
 }

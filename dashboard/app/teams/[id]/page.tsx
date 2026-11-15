@@ -9,14 +9,15 @@ import { askedNote, resolveTeamScope, rewrittenUrl, teamSeasons } from "@/lib/li
 import { ScopeFallbackNote } from "@/components/scope-fallback-note";
 import { RelatedRow } from "@/components/related-row";
 import { availableRelated, teamRelated } from "@/lib/related-links";
-import { WorkbenchApiError, getTeamDetail, getTeamPeers, getTeamSchedule, getTeamsSixFactors, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { WorkbenchApiError, getDraftClasses, getMetricCatalog, getTeamDetail, getTeamPeers, getTeamSchedule, getTeamsSixFactors, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { getWorkspace } from "@/lib/workspace-client";
 import { ALL_COLUMNS, columnRanks, standingGroup, withStandings } from "@/lib/team-six-factors";
 import { FIRST_GAME_LOG_SEASON, isTotalsSeason } from "@/lib/season-basis";
 import { PageShell } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
 import { GatedNote } from "@/components/ui/gated-note";
 import { ButtonLink } from "@/components/ui/kit";
-import { StatsWorkspace } from "@/components/stats-workspace";
+import { StatsWorkspace, preloadStatsWorkspace } from "@/components/stats-workspace";
 import { TeamDivisionStandings } from "@/components/team-division-standings";
 import { TeamScheduleSection } from "@/components/team-schedule";
 import { TeamDepthSection, TeamGameLogSection, TeamPeersSection, TeamProfileHeader, TeamRankStrip, TeamSixFactorsSection, TeamStandingSection, TeamTrendSection, TeamVenueSection } from "@/components/team-profile";
@@ -35,7 +36,11 @@ export default async function TeamDetailPage({ params, searchParams }: {
 }) {
   const [{ id }, raw] = await Promise.all([params, searchParams]);
   const sp = Object.fromEntries(Object.entries(raw).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value]));
-  const catalog = await getWorkbenchCatalog(sp.releaseId || sp.release_id).catch(() => null);
+  // Two waves (speed plan SP04): the catalog, with the roster table's reads that need nothing
+  // from it; then the team reads and the roster table's query together.
+  const catalogRequest = getWorkbenchCatalog(sp.releaseId || sp.release_id);
+  for (const early of [getWorkspace(), getDraftClasses(), getMetricCatalog()]) void early.catch(() => undefined);
+  const catalog = await catalogRequest.catch(() => null);
   const query = catalog ? resolveStatsQuery(sp, catalog, "per_game") : null;
   const season = query?.season || sp.season || "";
   const phase = query?.phase || sp.phase || "regular_season";
@@ -54,6 +59,7 @@ export default async function TeamDetailPage({ params, searchParams }: {
   // Links carry franchise ids or era codes; the season's stored id (SEA for the 2000-01 Thunder) drives every read.
   const dataTeamId = seasonTeamId(franchise ?? id, season);
   const scope = { season, phase, beforeDate, releaseId };
+  preloadStatsWorkspace(raw, pathname, dataTeamId);
   const [detail, schedule, peers, factors, home, away] = await Promise.all([
     getTeamDetail(dataTeamId, scope).catch((error: unknown) => error instanceof Error ? error : new Error("Failed to load team details")),
     getTeamSchedule(dataTeamId, scope).catch(() => null),
@@ -105,7 +111,7 @@ export default async function TeamDetailPage({ params, searchParams }: {
       <TeamScheduleSection teamId={dataTeamId} tricode={team.tricode} season={season} phase={phase}
         log={schedule ? <TeamGameLogSection embedded games={schedule.games} season={season} scopeParams={scopeParams} teamId={dataTeamId} tricode={team.tricode}
           empty={totals ? `Game logs start in ${FIRST_GAME_LOG_SEASON}; ${season} has season totals only.` : undefined} /> : <p className="player-open-empty">The game log is unavailable.</p>} />
-      <TeamDepthSection catalog={catalog} teamId={dataTeamId} scope={{ releaseId, season, phase, beforeDate: beforeDate || undefined }} />
+      <TeamDepthSection catalog={catalog} teamId={dataTeamId} scope={{ releaseId, season, phase, beforeDate: beforeDate || undefined }} initial={detail} />
       {peers && <TeamPeersSection peers={peers} season={season} scopeParams={scopeParams} />}
     </div>
     {/* Site links SL05: the hub's Related row, from data this page already has. */}
