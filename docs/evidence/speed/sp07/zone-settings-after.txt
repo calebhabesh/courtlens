@@ -1,0 +1,8 @@
+# Zone settings after SP07, 2026-11-15T22:19:01Z
+early_hints: {"id":"early_hints","value":"on","modified_on":null,"editable":true}
+0rtt: {"id":"0rtt","value":"off","modified_on":null,"editable":true}
+browser_cache_ttl: {"id":"browser_cache_ttl","value":14400,"editable":true}
+http3: {"id":"http3","value":"on","modified_on":null,"editable":true}
+brotli: {"id":"brotli","value":"on","editable":true}
+cache_level: {"id":"cache_level","value":"aggressive","editable":true}
+smart_tiered_cache: {"editable":true,"id":"tiered_cache_smart_topology_enable","modified_on":"2026-11-15T22:18:57.964799Z","value":"on"}

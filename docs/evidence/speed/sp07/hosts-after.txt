@@ -1,0 +1,22 @@
+calebhabesh.com run1 status=200 redirect= type=text/html; charset=utf-8 bytes=110691 total=0.081022s http=2
+calebhabesh.com run2 status=200 redirect= type=text/html; charset=utf-8 bytes=110691 total=0.058477s http=2
+  calebhabesh.com cache-control: public, max-age=0, must-revalidate
+  calebhabesh.com server: cloudflare
+  calebhabesh.com cf-cache-status: DYNAMIC
+www.calebhabesh.com run1 status=308 redirect=https://calebhabesh.com/ type= bytes=0 total=0.036193s http=2
+www.calebhabesh.com run2 status=308 redirect=https://calebhabesh.com/ type= bytes=0 total=0.036522s http=2
+  www.calebhabesh.com server: cloudflare
+  www.calebhabesh.com cf-cache-status: DYNAMIC
+courtlens.calebhabesh.com run1 status=200 redirect= type=text/html; charset=utf-8 bytes=49411 total=0.079793s http=2
+courtlens.calebhabesh.com run2 status=200 redirect= type=text/html; charset=utf-8 bytes=49411 total=0.051219s http=2
+  courtlens.calebhabesh.com cache-control: private, no-cache, no-store, max-age=0, must-revalidate
+  courtlens.calebhabesh.com cf-cache-status: DYNAMIC
+  courtlens.calebhabesh.com server: cloudflare
+doorbell.calebhabesh.com run1 status=307 redirect=https://doorbell.calebhabesh.com/access type= bytes=7 total=0.053124s http=2
+doorbell.calebhabesh.com run2 status=307 redirect=https://doorbell.calebhabesh.com/access type= bytes=7 total=0.061189s http=2
+  doorbell.calebhabesh.com cf-cache-status: DYNAMIC
+  doorbell.calebhabesh.com server: cloudflare
+linewatch-dev.calebhabesh.com run1 status=530 redirect= type=text/plain; charset=UTF-8 bytes=17 total=0.035567s http=2
+linewatch-dev.calebhabesh.com run2 status=530 redirect= type=text/plain; charset=UTF-8 bytes=17 total=0.038738s http=2
+  linewatch-dev.calebhabesh.com cache-control: private, max-age=0, no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+  linewatch-dev.calebhabesh.com server: cloudflare
