@@ -182,7 +182,10 @@ services:
     # The 12-season impact bundle peaks near 2.3 GB while serving (measured 2026-11-10).
     mem_limit: 3g
     cpus: 2.0
-    environment: *api-environment
+    environment:
+      <<: *api-environment
+      # Speed plan SP01: in-memory read cache, at most 128 MiB (COURTLENS_READ_CACHE_MAX_BYTES).
+      COURTLENS_READ_CACHE: "true"
     volumes:
       - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
       - ./data/derived/impact-serving-v1:/app/data/derived/impact-serving-v1:ro

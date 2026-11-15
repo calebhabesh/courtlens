@@ -1,0 +1,265 @@
+{
+ "scope": {
+  "releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+  "season": "2026-27",
+  "beforeDate": "2026-11-13"
+ },
+ "rows": [
+  {
+   "name": "workbench-catalog",
+   "first": "hit",
+   "first_total_ms": 0.1,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 65628
+  },
+  {
+   "name": "player-career-2544",
+   "first": "miss",
+   "first_total_ms": 1166.1,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 233954
+  },
+  {
+   "name": "player-profile-2544",
+   "first": "miss",
+   "first_total_ms": 59.0,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 5598
+  },
+  {
+   "name": "player-games-2544",
+   "first": "miss",
+   "first_total_ms": 46.0,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 8581
+  },
+  {
+   "name": "workbench-metrics",
+   "first": "miss",
+   "first_total_ms": 1.0,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 106801
+  },
+  {
+   "name": "workbench-impact-2544",
+   "first": "miss",
+   "first_total_ms": 2.1,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 1561
+  },
+  {
+   "name": "workbench-impact-2544-2025-26",
+   "first": "miss",
+   "first_total_ms": 10.8,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 24710
+  },
+  {
+   "name": "player-bio-2544",
+   "first": "miss",
+   "first_total_ms": 408.9,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 98627
+  },
+  {
+   "name": "player-career-1643411",
+   "first": "miss",
+   "first_total_ms": 64.3,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 12724
+  },
+  {
+   "name": "player-profile-1643411",
+   "first": "miss",
+   "first_total_ms": 32.7,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 5620
+  },
+  {
+   "name": "player-games-1643411",
+   "first": "miss",
+   "first_total_ms": 45.7,
+   "second": "hit",
+   "second_total_ms": 0.2,
+   "bytes": 8631
+  },
+  {
+   "name": "workbench-impact-1643411",
+   "first": "miss",
+   "first_total_ms": 1.7,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 1561
+  },
+  {
+   "name": "player-bio-1643411",
+   "first": "miss",
+   "first_total_ms": 120.4,
+   "second": "hit",
+   "second_total_ms": 0.2,
+   "bytes": 7403
+  },
+  {
+   "name": "player-career-1449",
+   "first": "miss",
+   "first_total_ms": 89.8,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 113612
+  },
+  {
+   "name": "player-games-1449-1991-92",
+   "first": "miss",
+   "first_total_ms": 39.6,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 32592
+  },
+  {
+   "name": "player-profile-1449-1991-92",
+   "first": "miss",
+   "first_total_ms": 45.7,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 5565
+  },
+  {
+   "name": "workbench-impact-1449-1991-92",
+   "first": "miss",
+   "first_total_ms": 1.6,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 1561
+  },
+  {
+   "name": "workbench-impact-1449-1990-91",
+   "first": "miss",
+   "first_total_ms": 1.4,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 1561
+  },
+  {
+   "name": "workbench-impact-1449-1989-90",
+   "first": "miss",
+   "first_total_ms": 1.2,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 1561
+  },
+  {
+   "name": "workbench-impact-1449-1988-89",
+   "first": "miss",
+   "first_total_ms": 1.1,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 1561
+  },
+  {
+   "name": "player-bio-1449-1991-92",
+   "first": "miss",
+   "first_total_ms": 56.1,
+   "second": "hit",
+   "second_total_ms": 0.2,
+   "bytes": 55461
+  },
+  {
+   "name": "team-schedule-1610612747",
+   "first": "miss",
+   "first_total_ms": 39.9,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 6466
+  },
+  {
+   "name": "team-detail-1610612747",
+   "first": "miss",
+   "first_total_ms": 45.4,
+   "second": "hit",
+   "second_total_ms": 0.2,
+   "bytes": 5930
+  },
+  {
+   "name": "team-peers-1610612747",
+   "first": "miss",
+   "first_total_ms": 60.8,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 9160
+  },
+  {
+   "name": "workbench-teams-six-factors",
+   "first": "miss",
+   "first_total_ms": 70.6,
+   "second": "hit",
+   "second_total_ms": 0.2,
+   "bytes": 49706
+  },
+  {
+   "name": "workbench-teams-six-factors-away",
+   "first": "miss",
+   "first_total_ms": 68.0,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 42886
+  },
+  {
+   "name": "workbench-teams-six-factors-home",
+   "first": "miss",
+   "first_total_ms": 67.9,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 42912
+  },
+  {
+   "name": "workbench-workspace",
+   "first": "bypass",
+   "first_total_ms": 2.6,
+   "second": "bypass",
+   "second_total_ms": 1.2,
+   "bytes": 1061
+  },
+  {
+   "name": "workbench-draft-classes",
+   "first": "miss",
+   "first_total_ms": 1.8,
+   "second": "hit",
+   "second_total_ms": 0.1,
+   "bytes": 818
+  },
+  {
+   "name": "team-schedule-1610612738",
+   "first": "miss",
+   "first_total_ms": 34.1,
+   "second": "hit",
+   "second_total_ms": 0.2,
+   "bytes": 6109
+  },
+  {
+   "name": "team-peers-1610612738",
+   "first": "miss",
+   "first_total_ms": 60.2,
+   "second": "hit",
+   "second_total_ms": 0.2,
+   "bytes": 9188
+  },
+  {
+   "name": "team-detail-1610612738",
+   "first": "miss",
+   "first_total_ms": 36.6,
+   "second": "hit",
+   "second_total_ms": 0.2,
+   "bytes": 5461
+  }
+ ]
+}

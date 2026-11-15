@@ -1,0 +1,26 @@
+# SP01 snapshot comparisons, 2026-11-15T05:12:33Z. Baseline: docs/evidence/speed/sp01/snapshot-cache-off.json (cache off).
+
+## cache off, against the cache-off snapshot (new process)
+pins {"releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853", "season": "2026-27", "beforeDate": "2026-11-13"}; 46 reads; 16 without a release pin
+1 difference(s):
+  workbench-teams-six-factors: canonical_sha256 2513cfc431d2408447503acf1e58272de7434da2055c030820f4eac7cea20a7c -> 47a21f3a35a0f42fffb2c94c6e078bf5844068cb91631e6af93ef5c3f9999488
+46 reads; 0 differ at 12 significant digits: []
+
+## cache on, cold (new process)
+pins {"releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853", "season": "2026-27", "beforeDate": "2026-11-13"}; 46 reads; 16 without a release pin
+1 difference(s):
+  workbench-teams-six-factors-away: canonical_sha256 31a9abcd7797562fb116bdfde74dd0364ac33cfd18ff38c56f254dfe0477c294 -> fe100b748f2ecc66a3d8e114ad0d82513c60f52ee236373284f2ab18722636b7
+status: {"enabled":true,"entries":45,"bytes":3774720,"max_bytes":134217728,"hits":0,"misses":45,"bypasses":3,"evictions":0,"stamp":"590cc857b832bccbc05deeb75548ceb8a39b055493555397fe0afbe25062c873","running_jobs":[],"generation":"7d9859a18f3da5c1"}
+
+## cache on, warm (same process)
+pins {"releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853", "season": "2026-27", "beforeDate": "2026-11-13"}; 46 reads; 16 without a release pin
+1 difference(s):
+  workbench-teams-six-factors-away: canonical_sha256 31a9abcd7797562fb116bdfde74dd0364ac33cfd18ff38c56f254dfe0477c294 -> fe100b748f2ecc66a3d8e114ad0d82513c60f52ee236373284f2ab18722636b7
+46 reads; 0 differ at 12 significant digits: []
+status: {"enabled":true,"entries":45,"bytes":3774720,"max_bytes":134217728,"hits":90,"misses":45,"bypasses":6,"evictions":0,"stamp":"590cc857b832bccbc05deeb75548ceb8a39b055493555397fe0afbe25062c873","running_jobs":[],"generation":"7d9859a18f3da5c1"}
+
+## cache on: hit against the miss it stored, raw bytes (new process: --out cold, then --compare --bytes warm)
+  six-factor-2025-26: takes season and phase only; serves the sealed six-factor fit
+pins {"releaseId": "71639af2-d8b7-4ce7-99a9-3194b1869853", "season": "2026-27", "beforeDate": "2026-11-13"}; 46 reads; 16 without a release pin
+no differences (raw bytes too)
+status: {"enabled":true,"entries":46,"bytes":3840952,"max_bytes":134217728,"hits":45,"misses":46,"bypasses":4,"evictions":0,"stamp":"590cc857b832bccbc05deeb75548ceb8a39b055493555397fe0afbe25062c873","running_jobs":[],"generation":"bfb2cc81bcc3b14c"}

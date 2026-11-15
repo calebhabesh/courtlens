@@ -196,7 +196,11 @@ container, which owns `data/` read-write:
 ```bash
 docker compose --env-file secrets.env --env-file release.env exec jobs \
   courtlens acquire-wikipedia-contracts --scope all
+docker compose --env-file secrets.env --env-file release.env exec jobs courtlens bump-data-stamp
 ```
+
+`bump-data-stamp` empties the API's read cache (speed plan SP01) after any write run by hand; a
+scheduled job does it on its own. Run it in `jobs`, whose `data/` is writable.
 
 One Wikidata query maps Basketball-Reference IDs to articles, then each article is read serially at
 5 s: `--scope all` is the 3,297 players with a reported salary, about 4.6 hours the first time. It
