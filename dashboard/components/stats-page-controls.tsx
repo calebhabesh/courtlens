@@ -2,7 +2,11 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { HotkeysModal } from "./hotkeys-modal";
+import dynamic from "next/dynamic";
+import { useOpenedOnce } from "@/lib/use-opened-once";
+
+// The shortcuts sheet loads on its first opening (speed plan SP05).
+const HotkeysModal = dynamic(() => import("./hotkeys-modal").then(mod => mod.HotkeysModal), { loading: () => null });
 import { Button, ButtonLink, Chip, MenuTrigger } from "./ui/kit";
 import { Menu, MenuItem } from "./ui/menu";
 import { Modal } from "./ui/modal";
@@ -14,6 +18,7 @@ import type { PositionChipStatus } from "@/lib/position-estimates";
 export function StatsHelpRow() {
   const [howToOpen, setHowToOpen] = useState(false);
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
+  const hotkeysMounted = useOpenedOnce(hotkeysOpen);
   return (
     <div className="stats-help-row" role="group" aria-label="Page help">
       <Button size="sm" tone="console" icon="help" onClick={() => setHowToOpen(true)}>How to Use This Page</Button>
@@ -31,7 +36,7 @@ export function StatsHelpRow() {
           <li>Columns with no values yet for the season are hidden; the eye button shows them.</li>
         </ul>
       </Modal>
-      <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
+      {hotkeysMounted && <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />}
     </div>
   );
 }

@@ -27,9 +27,7 @@ import { PlayerReferenceSections } from "./player-reference-sections";
 import { PlayerBioHeader } from "./player-bio-header";
 import { PlayerCareerTable } from "./player-career-table";
 import { ResearchTrendCharts } from "./research-trend-charts";
-import { LineageDrawer } from "./lineage-drawer";
 import { useWorkspace } from "@/lib/workspace-context";
-import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
 import { formatPercent, scaleToPer36, type CountingExposureMode } from "@/lib/player-pages";
 import { HERO_METRICS } from "@/lib/player-hero";
 import type {
@@ -45,6 +43,10 @@ import { playerHref } from "@/lib/entity-links";
 import { TeamLink } from "./entity-link";
 import { RelatedRow } from "./related-row";
 import { playerRelated } from "@/lib/related-links";
+import dynamic from "next/dynamic";
+
+// Opens from a game row; loads then, not with the page (speed plan SP05).
+const LineageDrawer = dynamic(() => import("./lineage-drawer").then(mod => mod.LineageDrawer), { loading: () => null });
 
 type ProfileTab = "overview" | "games" | "tracking" | "combine";
 const PROFILE_TABS: ProfileTab[] = ["overview", "games", "tracking", "combine"];
@@ -177,6 +179,8 @@ export function WorkbenchPlayerProfile({
     if (!cardSvgRef.current) return;
     setExporting(true);
     try {
+      // Image export loads when asked for, not with the page (speed plan SP05).
+      const { exportSvgAsPng } = await import("@/lib/image-export");
       await exportSvgAsPng(cardSvgRef.current, {
         title: `${player.name} — Research Profile Summary`,
         subtitle: `${context.season} ${context.phase.replace("_", " ")} · ${latest_team?.tricode ?? "NBA"} · Cutoff: ${context.before_date}`,
@@ -193,10 +197,12 @@ export function WorkbenchPlayerProfile({
     }
   };
 
-  const handleExportSvg = () => {
-    if (!cardSvgRef.current) return;
+  const handleExportSvg = async () => {
+    const svg = cardSvgRef.current;
+    if (!svg) return;
+    const { exportSvgFile } = await import("@/lib/image-export");
     exportSvgFile(
-      cardSvgRef.current,
+      svg,
       `${player.name.toLowerCase().replace(/\s+/g, "_")}-profile-card.svg`,
       {
         title: `${player.name} — Profile Summary`,

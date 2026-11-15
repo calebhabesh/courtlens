@@ -1137,3 +1137,349 @@ unindexed scan.
   nothing ran against the live site. Servers, Playwright browsers, the mock API, the `HEAD`
   worktree and the scratch workspace were stopped and removed, and `data/derived/job-health/` (the
   bump file) was deleted.
+
+## 2026-11-15 — SP05 built: page weight (HTML and JS)
+
+Done-when: **two floors recorded** (Stats HTML, player page first-load JS and CSS), the rest met.
+Evidence: `docs/evidence/speed/sp05/`. Scratch tools are in its `tools/`.
+
+### Local stack, and a second session in the same tree
+
+Same recipe as SP00–SP04: Turbopack production builds on :3180, the API on :8180 (cache and warm
+start on) on the PC's copy, release `71639af2…`, scope 2026-27 before 2026-11-13.
+
+- **Before** is `HEAD` (dda031e4): a sandbox copy of `dashboard/`, and an API run from a
+  `git archive HEAD src` (`PYTHONPATH`).
+- **Another session (courtlens-91) edited the same working tree during this block.** It added
+  numbered paging (`page_cursors` in the query response, a Stats pager, some icons and CSS).
+  - So **after** is an isolated tree: `HEAD` plus this block's changes only, for both the
+    dashboard and the API.
+  - It differs from the working tree only by that session's files and hunks (checked file by
+    file). The commit stages only this block's hunks.
+  - Every number below comes from builds of those two trees on one stack, run back to back.
+
+### Where the bytes went (before), `html-weight/*-before.json`
+
+`tools/html_weight.py` splits each page's HTML into markup and the inline RSC payload
+(`self.__next_f.push`). It walks the payload's element tree and adds up each client component's
+props.
+
+| Page | HTML | Markup | RSC scripts | Largest client props |
+| --- | --- | --- | --- | --- |
+| Stats | 2,170,376 | 1,350,761 | 816,678 | `WorkbenchPlayerExplorer.data` 622,259; `ContextBar.catalog` 58,399; `metricHints` 20,190 |
+| Players | 748,179 | 148,902 | 596,410 | `PlayerDashboardView.carousel` 453,839; `catalog` 58,399 |
+| LeBron (2544) | 1,130,892 | 581,629 | 546,326 | `WorkbenchPlayerProfile.career` 229,624; `bio` 98,623; `catalog` 58,399; `impact` 24,562 |
+| Bird (1449) | 738,546 | 367,583 | 368,026 | `career` 111,870; `catalog` 58,399; `bio` 55,459 |
+| Lakers | 1,346,254 | 864,731 | 477,245 | Stats table `data` 250,670; `RosterAllocationView.catalog` 58,399 |
+| Celtics | 1,219,314 | 780,591 | 434,445 | Stats table `data` 214,020 |
+| Compare | 532,509 | 109,073 | 420,499 | `bios` 146,558; `metricDefinitions` 106,758; `workbenchCatalog` 58,399 |
+| RAPM | 667,982 | 197,019 | 467,758 | `RapmRatingsTable.players` 391,248 |
+
+What made them heavy:
+
+- **Query rows carry every metric four times over.**
+  - Each Stats row has `metrics`, `sample_sizes`, `percentiles` and `cohort_sample_sizes`, plus
+    `table_percentiles` and `table_cohort_sample_sizes`: six maps over about 120–200 keys, about
+    12 KB a row.
+  - The table reads percentiles only for its view's columns, and one sample size (the drawer's
+    games line). Nothing on any page reads `percentiles` or `cohort_sample_sizes`.
+  - `metrics` must stay whole: the scatter view plots any catalog metric without a new read.
+- **Why every metric when `view_state.columns` names six:**
+  - `view_state.columns` only chooses which joins the cohort runs (impact, tracking: the cohort
+    cache key, `stats_cohort_cache.py`).
+  - The base metric map always comes back whole, and the route copies each row as it is.
+- **Career and bio.**
+  - The career table switches views and counting modes in the browser, so it needs every view's
+    columns in every mode, but no sample sizes.
+  - Basketball-Reference game highs come per season and for the career. Only the career rows
+    are read (the Game Highs table). LeBron's 44 rows were 81 KB.
+- **Stats markup** (1.35 MB for 50 rows, before):
+  - metric cells 563 KB (1,050 cells of about 536 B, mostly accessible text: `aria-label`,
+    `title`, `sr-only`);
+  - guide-cell portraits 263 KB (250 `img` with five-width `srcSet`);
+  - name cells 186 KB; row actions 90 KB (kit icon buttons, about 1.1 KB of class each);
+  - the loading skeleton 71 KB;
+  - React text separators (`<!-- -->`) in every cell's screen-reader text, about 50 KB.
+- **Duplicates.** The catalog (58 KB) goes once per page; the explorer's `catalog` prop is a
+  reference to it, not a copy. No other object was serialised twice. No column is rendered and
+  hidden: hidden empty columns are left out of the markup.
+
+### Changes and their effect
+
+1. **`lib/client-props.ts`** (new). Each helper copies values as sent and never computes; Vitest
+   covers each one (`client-props.test.ts`, 10).
+   - `statsTableData`: the Stats and team-roster table's rows with whole `metrics`, the view's
+     own columns' percentile, cohort size and impact support, and `sample_sizes.pts`.
+   - `careerTableData`: every view's columns in every counting mode, no sample sizes.
+   - `playerBioData`: career game highs only; Compare uses it too.
+
+   Effect: Stats `data` 622 → 182 KB; Lakers and Celtics `data` 251 / 214 → 76 / 65 KB; LeBron
+   `career` 230 → 150 KB and `bio` 99 → 19 KB; Bird 112 → 71 and 55 → 9 KB; Compare `bios`
+   147 → 30 KB.
+2. **API: `presentation.metrics: "sort"`** (`StatsPresentation`, query route).
+   - Each item's metric maps keep only the query's sort fields. Rows, order, counts, cohort and
+     cursors are unchanged.
+   - It is not part of the presentation hash, and the cohort cache ignores it. The default is
+     `"all"`, so every existing body answers as before.
+   - Used by the hero ranks (`useCohortRanks`) and by the Players carousel, which reads DPM
+     only. Players `carousel` 454 → 35 KB.
+   - Postgres test `test_sort_metrics_presentation_keeps_rows_order_and_cursor`: same ids,
+     order, values, counts, cohort and `next_cursor` in both directions; an unknown value is 422.
+3. **`lib/team-branding.client.json`** (new). The browser's copy of the branding catalog without
+   provenance (source URLs, SHA-256s, byte counts): 130 KB → 41 KB, 30.2 → 7.1 KB gzip, on every
+   page.
+   - All 13 dashboard importers use it.
+   - `scripts/team_branding_assets.py` writes it beside the full file.
+   - `lib/team-branding-client.test.ts` fails when the two disagree.
+4. **Lazy overlays** (`next/dynamic`, mounted on first opening with `lib/use-opened-once.ts`,
+   then kept mounted so their state carries over as before):
+   - the command palette, the Ask panel (`AskDrawer` → `ThreadedAssistant`/`AskCourtLens` and the
+     answer components), the shortcuts sheet (header and Stats);
+   - the sign-in dialog (layout, `components/account/lazy-sign-in-dialog.tsx`);
+   - on Stats: the detail drawer, Manage Views and the trend dialog, plus the scatter and lines
+     views (loaded when chosen);
+   - the career table's trend dialog and the profile's lineage drawer;
+   - image export as `import()` on click.
+
+   **Every `dynamic()` passes `loading: () => null`.** This version adds a Suspense boundary
+   only when `ssr: false` or `loading` is set (`shared/lib/lazy-dynamic/loadable.js`). The first
+   build had none, and 11 focus specs failed:
+   - while a chunk loaded, the overlay suspended the layout's boundary around the header;
+   - the header blanked, and the button that opened it lost focus.
+
+   With `loading`, each overlay waits alone. `use-opened-once.test.tsx` (4) covers mounting on
+   first opening, state kept after closing, starting open, and the page (and focused button)
+   staying on screen while the code loads.
+5. **Screen-reader text as one string** in `PercentileCell`: the same words, without React's
+   text separators. Stats markup −42 KB, LeBron −26 KB.
+
+### HTML after (`html-weight/*-after.json`, `measure-final-summary.txt`)
+
+| Page | Before | After | Change | What moved it |
+| --- | --- | --- | --- | --- |
+| Stats | 2,170,376 | **1,631,968** | −538,408 | table rows (1), sr-only text (5) |
+| Players | 748,179 | 280,081 | −468,098 | carousel sort-only (2) |
+| LeBron | 1,130,892 | 924,091 | −206,801 | career and bio (1), sr-only (5) |
+| Rookie 1643411 | 343,878 | 332,774 | −11,104 | career (1) |
+| Bird | 738,546 | 624,342 | −114,204 | career and bio (1) |
+| Lakers | 1,346,254 | 1,131,898 | −214,356 | roster table rows (1) |
+| Celtics | 1,219,314 | 1,036,875 | −182,439 | roster table rows (1) |
+| Compare | 532,509 | 397,645 | −134,864 | bios (1) |
+| `/`, Teams, Standings, RAPM | 35–668 KB | about −1.2 KB each | | fewer client references in the layout (4) |
+
+**Floor, Stats ≤ 1.1 MB: not met (1.63 MB).** The markup alone is 1.31 MB for 50 rows of 21
+columns, and the RSC payload is now 320 KB. Reaching 1.1 MB would need one of these, and each
+changes something the plan keeps:
+
+- shorter accessible text: the cells' `aria-label`, `title` and screen-reader text are about half
+  of the 563 KB of cells, and the page-text rule counts them;
+- the guide-cell portraits (263 KB), a layout and image matter for SP06 or the owner;
+- the control kit's class output for icon buttons (108 KB in the table).
+
+These are the owner's call.
+
+### JS and CSS (`transfer-*.json`, `brotli.txt`, `bundle-report-*.txt`)
+
+Measure: Playwright resource timing (`tools/transfer.mjs`), fresh context, `encodedBodySize` of
+the JS and CSS the HTML names, as the local server sends them (gzip). Nothing else loaded before
+network idle, except a 2 KB chunk on Stats before (none after). `brotli.txt` gives the same files at brotli
+quality 11, as an upper bound for what Cloudflare could send.
+
+| Page | Before (gzip) | After (gzip) | JS | CSS | After, brotli 11 |
+| --- | --- | --- | --- | --- | --- |
+| Player 2544 | 469,684 | **406,945** | 355,929 → 293,190 | 113,755 | 339,759 |
+| Stats | 474,261 | 394,818 | 362,587 → 283,144 | 111,674 | 329,406 |
+| Lakers | 509,419 | 438,185 | 397,745 → 326,511 | 111,674 | 367,897 |
+| Players | 446,876 | 389,720 | 335,202 → 278,046 | 111,674 | 324,702 |
+
+**Floor, player page ≤ 350 KB compressed: not met with the repeatable gzip measure (407 KB).**
+It is 340 KB at brotli 11; the live encoding is unknown until a deploy.
+
+- **CSS is one site-wide stylesheet**: 729 KB decoded, 104 KB gzip, 87 KB brotli
+  (`css-report.txt`). 549 KB of it is the `pages` layer for every route. AGENTS.md has all
+  component and page CSS imported from `app/globals.css`, so every page loads all of it.
+  Per-route CSS would cut it most, and that needs the owner to change the rule.
+- **The framework** (React DOM, the Next router and runtime) is about 160 KB gzip of the
+  remaining JS.
+- **motion** (motion-dom and framer-motion, 58 KB in the analyzer's per-module sizes) is
+  imported by name (`motion/react`) in the allowlisted files. `LazyMotion` with async features is
+  the next lever. It was not done here: it changes when animations can start.
+- **Imports by name.** lucide-react: by name, only in `components/ui/icon.tsx` (and optimised by
+  default in this Next). motion: by name. `d3-scale`, `d3-shape`, `d3-sankey` and `d3-hierarchy`:
+  by name, in the chart components and Contracts; none is in the player or Stats route's first
+  load.
+
+Bundle report: `next analyze --output` on the source tree, exported with
+`next analyze export` (graph not committed: 37 MB). `tools/bundle_report.py` sums a route's
+initial groups (bootstrap and render-dependent, not async) by module, using the analyzer's own
+per-module compressed sizes. These over-count the real gzip of whole chunks: 446 KB against
+356 KB measured.
+
+| `/players/[id]` | Before | After |
+| --- | --- | --- |
+| Initial client JS (analyzer sizes) | 445,576 | 376,194 |
+| App code | 190,610 | 118,111 |
+| `team-branding` JSON | 30,837 | 7,212 (client copy) |
+| Loaded on demand | none | 63,224 (9 chunks: palette, Ask panel and answers, sign-in, shortcuts, trend dialog, lineage, …) |
+
+Largest modules after: `react-dom-client` 63,930; the RSC client 7,774; team branding 7,212; the
+segment cache 6,401; the motion projection node 6,346; `stats-presets` 6,128; the profile
+5,590.
+
+### Hero ranks (`hero-ranks.json`): fixed
+
+- The six hero reads now send `presentation.metrics: "sort"`.
+- For each of the six, on the same API:
+  - the full and the sort-only responses give the same 100 `(player, value)` pairs in the same
+    order;
+  - so the same `rankInSortedPage` ranks: 6–28 tied ranks per metric, no nulls on these pages.
+    Ranks still come from the server's order; nothing new is computed.
+- Bytes: 855–861 KB → 73–77 KB a read, **5.16 MB → 452 KB per player page**.
+- The seven new bodies (six hero reads, the carousel) are in `scripts/speed/urls.json` as
+  `…-sort-only`. `HEAD`'s API answers them 422, because the model forbids unknown fields. The
+  after API answers 200 (`snapshot-after.json`).
+
+### Prefetch: nothing prefetches on entering the viewport
+
+31 files moved from Next's default viewport prefetch to `IntentLink` (`tools/convert_links.py`
+plus one by hand). Links that had `prefetch={false}` in those files keep it.
+
+- app: `app/methodology/page.tsx`, `app/players/[id]/page.tsx`;
+- Ask: `agent-answer`, `ask-courtlens`, `ask-drawer`, `hybrid-answer`, `threaded-assistant`;
+- pages: `compare-grid-view`, `contracts-view`, `defensive-shot-quality-view`,
+  `draft-classes-research` (`/stats`), `finance-workspace`, `footer`, `impact-disclosure`,
+  `live-board`, `player-compare-view`, `player-feed-panels`, `player-twins-view`,
+  `playoffs-bracket`, `playoffs-bracket-view`, `public-investigation-library`,
+  `research-operation-view`, `roster-shapes-view`, `save-operation`, `saved-operation-detail`,
+  `saved-operation-library`, `stats-workspace` (`/whats-new`), `team-division-standings`,
+  `ui/route-tabs`, `win-probability-v4`, `workbench-player-explorer`.
+
+Notes:
+
+- **Live keeps the SP03 rule.** `IntentLink` skips `/live` hrefs, so Live links prefetch
+  nothing, not even on intent.
+- **The footer is not rendered anywhere** (`components/footer.tsx` has no importer). It was
+  converted anyway. The plan's "footer on every page" did not hold.
+- **ESLint now rejects a `next/link` `<Link>` without a `prefetch` prop**: one
+  `no-restricted-syntax` rule in `baseSyntaxRules`. It found the 31st file.
+- **Spec.** `site-links-prefetch.spec.ts` now fails on any `otherPrefetch` on `/stats` and
+  `/draft`. It adds load-and-scroll checks on `/live`, `/playoffs`, `/methodology`,
+  `/research/ask` and `/whats-new`, which allow no prefetch request at all. Its `/draft` count
+  now waits for the first link: `HEAD` showed the race too (63, 183 or 331 links counted).
+- **Result (fixture, 3 repeats): 24 of 24 passed**, `otherPrefetch: []` everywhere. `HEAD` on
+  `/draft` sent `/stats` three times.
+
+### Navigation and long tasks (`navigation-final-*.json`, `navigation-final-summary.json`)
+
+`speed-navigation.spec.ts` now records each journey's long tasks, the SP03 §3 method: a
+`PerformanceObserver` of `longtask`, `[start, duration]` in ms from the click. The same spec file
+ran on both builds. Four runs alternated before, after, before, after on one stack. Medians of
+10 runs each:
+
+| Journey | SP04 | Before | After | Longest task before / after |
+| --- | --- | --- | --- | --- |
+| Stats row → player | 145 | 153 | **136.5** | 72 / 68.5 |
+| Player header → team | 136 | 142 | **130.5** | 53 / 56.5 |
+| Header nav → Stats | 186 | 191.5 | **170** | 106 / 107.5 |
+| Back (Stats → team) | 136 | 137 | **126** | none |
+| Stats row → player, prefetched | 72 | 74 | **70** | 52.5 / 25 |
+| Player → team, prefetched | 115 | 118.5 | **115** | 69.5 / 68 |
+| Nav → Stats, prefetched | 171 | 169.5 | **159.5** | 110.5 / 105 |
+
+- **The prefetched nav → Stats floor is still one long task**, about 105–110 ms here. SP03's
+  trace on a busier machine measured 190 ms. It starts about 40–50 ms after the click and
+  renders the 1.3 MB of table markup from the cached payload. Removing 500 KB of payload moved
+  it by about 5 ms, so the markup sets it, not the data.
+- **Player → team** is a 68–70 ms render task, as at SP04.
+- An earlier pair (before the `loading` fix, `prelim/`) gave the same picture.
+
+### Warm `measure.py` (cache on, full set, `measure-final-summary.txt`)
+
+| | Before | After | SP04 |
+| --- | --- | --- | --- |
+| Player pages | 13–33 ms | 14–28 ms | 14–37 ms |
+| Team pages | 32–35 ms | 28–30 ms | 32–38 ms |
+| Stats | 43 ms | 33 ms | 47–52 ms |
+| Players | 24 ms | 9 ms | |
+| API reads (all hits) | ≤ 2.6 ms | ≤ 1.3 ms | |
+
+### Snapshot and page text
+
+- **Snapshot: no differences.**
+  - Against the before snapshot, with the cache on: two differences.
+    - The away six-factor read: the known last-digit jitter, beyond 12 digits this time, as at
+      SP04.
+    - The workspace read: personal state. Its version moved to 133 during the session, and an
+      API run from `HEAD` returns the byte-identical body.
+  - So, as SP04 did, a new snapshot from a `HEAD` API (cache off,
+    `snapshot-before-head2.json`): the after API compared against it three times, **no
+    differences** (`snapshot-compare-after-vs-head2.txt`).
+  - The new `…-sort-only` bodies were then snapshotted from the after API
+    (`snapshot-after.json`; self-compare: no differences).
+- **Page text: 0 differences** on all 12 pages (`page-text.json`). Compared: two before captures
+  (equal to each other and to SP04's counts), the first after build, and the final after build.
+  The visible hero ranks are part of the player pages' text.
+
+### Database writes
+
+The API persists the cohorts it computes. 82 `stats_cohort_entries` were created during the
+session:
+
+- 42 (17,521 rows) when the `HEAD` API, cache off, read LeBron's and Bird's careers for the
+  snapshot (their seasons exactly);
+- 1 at the after API's first Stats read;
+- 39 at 04:27 and 04:35–04:38 local, while none of this block's APIs had a request in flight.
+  They are likely the other session's.
+
+Left in place: they are the store's recomputable serving rows. `data/derived/job-health/` was not
+created (no stamp bump, no `warm-site`).
+
+### Where this differs from the plan and the handoff
+
+- **Two floors**, above. The Stats markup and the site-wide stylesheet set them.
+- **Not done: trimming the catalog** (58 KB on every page). It flows into many components
+  (`ContextBar`, the scope fields, route availability reads `capabilities`), and the saving is
+  about 20 KB a page; the risk of a missed reader was not worth it here.
+- **The plan's "charts below the first screen"**: only charts the server does not render moved
+  behind `next/dynamic`: the Stats scatter and lines views and the trend dialogs. A chart in the
+  server HTML still needs its code to hydrate, so `dynamic()` would not take it out of the first
+  load, and `ssr: false` would show an empty box at load (a layout change).
+- **Overlay first opening waits for its chunk** (one local request, a few ms; a Cloudflare HIT
+  live). The overlay then appears with its usual entrance; nothing else on the page changes.
+- **`header.test.tsx`**: the palette test now awaits the dialog (`findByRole`), because it loads
+  on first opening.
+- **Tooling**: the navigation spec gained long tasks; `urls.json` has 7 new snapshot bodies. The
+  scratch tools are in `tools/`: `html_weight.py`, `transfer.mjs`, `bundle_report.py`,
+  `css_report.py`, `hero_ranks.py`, `longtasks.py`, `convert_links.py`, and the hunk-splitting
+  helpers used to isolate this block from the other session's edits.
+
+### Checks
+
+- **Python** (on the isolated tree): `ruff check`, `ruff format --check` (731 files) pass.
+  `mypy src/courtlens`: no issues (411 files). `mypy --strict scripts/speed/*.py`: no issues.
+- **pytest** (`scripts/test_python.py`, disposable Postgres 17, working tree including the other
+  session's change): 7 files on the query route, presentation, read cache and personal state
+  (`test_personal_state`, `test_stats_v4`, `test_read_cache`, `test_workbench_api`,
+  `test_player_career_postgres`, `test_impact_serving_postgres`,
+  `test_stats_presentation_postgres`): **123 passed**, 3 deselected. `test_agent_providers.py`
+  was not run: no provider code changed, and its 8 `[anthropic]` cases were red before SP00.
+- **Dashboard**: `npm run lint` (ESLint with the new prefetch rule, entity-href and control-kit
+  rules; Stylelint) and `typecheck` pass, on the isolated tree and the working tree. Vitest
+  (working tree): **152 files, 1,094 passed**, including `client-props.test.ts` (10),
+  `team-branding-client.test.ts` (2) and `use-opened-once.test.tsx` (4).
+- **Playwright, fixture production build** (webpack, mock API :4180, dashboard :3181): every
+  spec except the two real-data ones (`assistant-panel-real`, `im06-real`, and titles matching
+  "real"), 4 workers: **646 passed, 13 failed, 27 skipped, 7 did not run**.
+  - **11 of the 13 fail the same way on a `HEAD` fixture build**, so they predate SP05:
+    `advanced-research:61`, `f04-accounts:32`, `pc12-demo-hygiene:6`, `roster-shapes` ×4,
+    `visual-baselines` ×4.
+  - The other two pass alone: `live.spec.ts:83` (2 of 2, one worker), and
+    `site-links-prefetch` `/draft` after the wait above.
+  - `site-links-prefetch` and `speed-navigation`, `--repeat-each=3`: 27 passed.
+  - The first fixture run, before the `loading` fix, had 11 more failures (focus return in
+    `conversation`, `stats-preview`, `table-interactions` and `threaded-assistant` ×8). All pass
+    now.
+- `speed-navigation.spec.ts` with `SPEED_REAL=1`, before and after: passed (four runs).
+- Full suites not run as suites: the owner's stop after SP06. Not deployed; nothing ran against
+  the live site. Servers, Playwright browsers, the mock API, the scratch trees and the workspace
+  were stopped and removed.

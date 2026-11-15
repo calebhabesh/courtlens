@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties, ReactNode } from "react";
-import catalog from "../../lib/team-branding.json";
+import catalog from "../../lib/team-branding.client.json";
 import { teamAccent } from "../../lib/team-colors";
 import type { PortraitEra } from "@/lib/portrait-source";
 import { PlayerPortrait } from "../player-portrait";

@@ -4,8 +4,8 @@ import { openWorkbench } from "./workbench-navigation";
 // Site links (docs/site-links-plan.md) as revised by speed plan SP03 (D4): links prefetch on intent
 // only. Loading and scrolling a table of names sends no prefetch at all; a pointer resting on one
 // link fetches that page once; a pointer sweeping across rows fetches nothing; and the click after a
-// prefetch is served from it. Prefetching only happens in production builds, which is what this
-// suite runs against.
+// prefetch is served from it. Since SP05 no link anywhere prefetches on entering the viewport.
+// Prefetching only happens in production builds, which is what this suite runs against.
 const ENTITY_PATH = /^\/(players|teams|live\/games|live\/open|playoffs)\//;
 const LINKS = 'main a[href^="/players/"], main a[href^="/teams/"]';
 
@@ -44,6 +44,8 @@ for (const route of process.env.SITE_LINKS_PREFETCH_REAL ? ["/stats", "/standing
     await page.setViewportSize({ width: 1440, height: 700 });
     const requests = record(page);
     await openWorkbench(page, route);
+    // The table fills in after load (Draft Classes' rows arrive in steps): count once a link shows.
+    await expect(page.locator(LINKS).first()).toBeVisible();
     const count = await page.locator(LINKS).count();
     expect(count).toBeGreaterThan(0);
     // Keep the pointer off every link while the page settles and scrolls.
@@ -53,10 +55,32 @@ for (const route of process.env.SITE_LINKS_PREFETCH_REAL ? ["/stats", "/standing
       await page.waitForTimeout(250);
     }
     await page.waitForTimeout(1000);
-    // Links outside SP03's scope (the footer, some page links) still use Next's default viewport
-    // prefetch; they are logged, not asserted.
-    log({ route, phase: "load+scroll", links: count, requests: requests.length, entity: entity(requests).length, otherPrefetch: requests.filter(isPrefetch).map(request => new URL(request.url()).pathname) });
+    // SP05: every link renders IntentLink (or prefetch={false}), the footer and page links
+    // included, so no prefetch of any page is sent on load or scroll.
+    const otherPrefetch = requests.filter(isPrefetch).map(request => new URL(request.url()).pathname);
+    log({ route, phase: "load+scroll", links: count, requests: requests.length, entity: entity(requests).length, otherPrefetch });
     expect(entity(requests).map(request => request.url())).toEqual([]);
+    expect(otherPrefetch).toEqual([]);
+  });
+}
+
+// SP05: pages whose links used Next's default viewport prefetch until SP05 (Live, the playoffs
+// bracket, methodology, Ask, What's New). Nothing prefetches on load or scroll.
+for (const route of ["/live", "/playoffs", "/methodology", "/research/ask", "/whats-new"]) {
+  test(`loading and scrolling ${route} prefetches no page`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 700 });
+    const requests = record(page);
+    await openWorkbench(page, route);
+    await expect(page.locator("header a[href='/stats']").first()).toBeAttached();
+    await page.mouse.move(1, 699);
+    for (let i = 0; i < 6; i++) {
+      await page.mouse.wheel(0, 500);
+      await page.waitForTimeout(250);
+    }
+    await page.waitForTimeout(1000);
+    const prefetches = requests.filter(request => isPrefetch(request) || (isRsc(request) && isTree(request)));
+    log({ route, phase: "load+scroll", links: await page.locator("a[href^='/']").count(), prefetch: prefetches.map(request => new URL(request.url()).pathname) });
+    expect(prefetches.map(request => request.url())).toEqual([]);
   });
 }
 

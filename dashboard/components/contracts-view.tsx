@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useEffect, useId, useState, type CSSProperties, type ReactNode } from "react";
 import { arc, pie } from "d3-shape";
 import { sankey, sankeyLinkHorizontal, sankeyLeft, type SankeyLink, type SankeyNode } from "d3-sankey";
-import branding from "@/lib/team-branding.json";
+import branding from "@/lib/team-branding.client.json";
 import { formatDate } from "@/lib/format-date";
 import { portraitSource, seasonEra, type PortraitEra } from "@/lib/portrait-source";
 import {
@@ -171,7 +171,7 @@ function ContractTimeline({ data, year, players, era }: { data: TeamContracts; y
       <div role="row" className="ctr-timeline-head"><span role="columnheader">Player</span><span role="columnheader" title="DARKO Daily Plus-Minus, latest board">DPM</span>
         {years.map(y => <span role="columnheader" key={y} data-current={y === year || undefined}>{y}</span>)}</div>
       {rows.map(player => <div role="row" key={player.player_id} className="ctr-timeline-row">
-        <span role="rowheader" className="ctr-timeline-name"><PlayerAvatar playerId={player.player_id} name={player.name} team={data.team_id} size="sm" era={era(player)} /><Link className="entity-link" href={playerHref(player.player_id)} prefetch={false} title={player.name}>{shortName(player.name)}</Link>
+        <span role="rowheader" className="ctr-timeline-name"><PlayerAvatar playerId={player.player_id} name={player.name} team={data.team_id} size="sm" era={era(player)} /><IntentLink className="entity-link" href={playerHref(player.player_id)} prefetch={false} title={player.name}>{shortName(player.name)}</IntentLink>
           <span className="ctr-timeline-info" title={[player.name, ...years.map(y => `${y}: ${money(salaryIn(player, y, current))}`), nextOption(player) ?? ""].filter(Boolean).join("\n")}><Icon name="info" size={14} /></span></span>
         <span role="cell" className="ctr-timeline-dpm">{player.darko_dpm === null || player.darko_dpm === undefined ? "—" : `${player.darko_dpm > 0 ? "+" : ""}${player.darko_dpm.toFixed(1)}`}</span>
         {timelineMarks(player, years, current).map(cell => <span role="cell" key={cell.year} className="ctr-timeline-cell" data-mark={cell.mark}
@@ -248,7 +248,7 @@ function ValueTable({ title, label, rows }: { title: ReactNode; label: string; r
     <h3>{title}</h3>
     <table className="ctr-sv-table"><thead><tr><th scope="col">Player</th><th scope="col" className="num">Salary</th><th scope="col" className="num" title="DARKO market value minus salary">Surplus</th></tr></thead>
       <tbody>{rows.map(row => <tr key={row.player.player_id}>
-        <th scope="row"><Link className="entity-link" href={playerHref(row.player.player_id)} prefetch={false}>{row.player.name}</Link></th>
+        <th scope="row"><IntentLink className="entity-link" href={playerHref(row.player.player_id)} prefetch={false}>{row.player.name}</IntentLink></th>
         <td className="num">{money(row.salary)}</td>
         <td className="num ctr-surplus" data-sign={row.surplus === null ? undefined : row.surplus >= 0 ? "up" : "down"} title={row.value === null ? "No DARKO value for this player" : `DARKO value ${money(row.value)}`}>{signedMoney(row.surplus)}</td>
       </tr>)}{!rows.length && <tr><td colSpan={3} className="ctr-sv-empty">No contracts on this side</td></tr>}</tbody></table>
@@ -372,7 +372,7 @@ export function ContractsView({ statsTable }: { statsTable?: ReactNode }) {
         { label: "DARKO board", value: data.darko ? `${data.darko.season} · data ${formatDate(data.darko.data_date)} · sealed ${data.darko.as_of}` : "Not configured" }]}>
         <ul className="ctr-method">{data.limitations.map(item => <li key={item}>{item}</li>)}</ul>
         <p className="ctr-note">Source: {SOURCE}; DARKO (darko.app, Kostya Medvedovsky) for value and DPM.</p>
-        <p><Link href={`/contracts/books${query}`}>Retained source books (advanced)</Link></p>
+        <p><IntentLink href={`/contracts/books${query}`}>Retained source books (advanced)</IntentLink></p>
       </DataDetailsButton>}
     </div>
     <Segmented<Tab> size="lg" label="Contracts view" value={tab} onChange={next => set({ tab: next === "overview" ? null : next })} options={TABS} className="ctr-tabs" />

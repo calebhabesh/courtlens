@@ -1,7 +1,7 @@
 // Site links SL05: the Related row on the four hub pages (player, team, game, playoff series),
 // built only from data each page already loads. Each item names the release-bound route it opens
 // (`route`), so the row can leave out a destination the release cannot serve (`routeAvailability`).
-import branding from "./team-branding.json";
+import branding from "./team-branding.client.json";
 import { gameHref, teamHref, type GameTeamRef } from "./entity-links";
 import { franchiseOf, teamNameAt } from "./team-era";
 import { routeAvailability } from "./route-availability";

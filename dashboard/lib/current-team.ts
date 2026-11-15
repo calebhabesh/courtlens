@@ -1,5 +1,5 @@
 import { formatDate } from "./format-date";
-import catalog from "./team-branding.json";
+import catalog from "./team-branding.client.json";
 import type { PlayerCurrentStatus, PlayerResearchItem, WorkbenchCatalog } from "./types";
 
 function teamName(tricode: string): string {

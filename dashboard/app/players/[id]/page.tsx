@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { isTotalsSeason } from "@/lib/season-basis";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { TrendChart } from "@/components/trend-chart";
 import {
   AnalyticsApiError,
@@ -23,6 +23,7 @@ import { formatDate } from "@/lib/format-date";
 import type { GoodDirection } from "@/lib/percentile-display";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import type { WorkbenchCatalog } from "@/lib/types";
+import { careerTableData, playerBioData } from "@/lib/client-props";
 import { executeWorkbenchQuery, getPlayerBio, getPlayerCareer, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact, getMetricCatalog } from "@/lib/workbench-api";
 import { metricHints } from "@/lib/stats-glossary";
 import { redirect } from "next/navigation";
@@ -158,10 +159,11 @@ export default async function PlayerPage({
         profile={wbLoaded.profile}
         games={wbLoaded.log.games}
         catalog={catalog}
-        bio={bio}
+        // Only what the page reads (speed plan SP05): career-table ranks, career game highs.
+        bio={bio ? playerBioData(bio) : bio}
         impact={impact}
         hero={hero}
-        career={career}
+        career={career ? careerTableData(career) : career}
         metricHints={metricCatalog ? metricHints(metricCatalog.metrics) : {}}
         notice={<ScopeFallbackNote note={askedNote(selected.asked, { season, phase }, wbLoaded.profile.player.name)} />}
         filterBar={<ContextBar
@@ -343,7 +345,7 @@ function ProfileView({
         <div><p>{estimateDescription(profile.estimate.status)}</p>
           {profile.estimate.interval && <p>80% empirical interval: {profile.estimate.interval.lower.toFixed(1)}–{profile.estimate.interval.upper.toFixed(1)} CourtLens points.</p>}
           {profile.estimate.point != null && <p>Conditional on appearance in the reconstructed next team game. Based on {profile.estimate.history_n} valid same-season appearances.</p>}
-          <Link href="/evaluation">Read the evaluation</Link>
+          <IntentLink href="/evaluation">Read the evaluation</IntentLink>
         </div>
       </section>
 

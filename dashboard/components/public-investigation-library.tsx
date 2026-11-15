@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { publicInvestigation } from "@/lib/public-investigations";
 import type { SavedDetail } from "@/lib/saved-operations";
 import { throughLabel } from "@/lib/format-date";
@@ -19,7 +19,7 @@ export function PublicInvestigationLibrary({ details }: { details: (SavedDetail 
         const context = detail.manifest.context;
         return <article key={detail.id} className="panel pc12-public-finding">
           <PlayerIdentity playerId="1630567" name="Scottie Barnes" team="TOR" size="sm" />
-          <h2><Link href={`/investigations/saved/${detail.id}`}>{entry.title}</Link></h2>
+          <h2><IntentLink href={`/investigations/saved/${detail.id}`}>{entry.title}</IntentLink></h2>
           <p>{entry.description}</p>
           <p className="research-caption">{String(context.season)} · {humanLabel(String(context.phase))} · {throughLabel(typeof context.before_date === "string" ? context.before_date : null)}</p>
           <p className="research-caption">Source: retained CourtLens operation · {detail.manifest.results.reduce((n, result) => n + result.rows.length, 0)} returned rows</p>

@@ -8,18 +8,25 @@ import { Icon } from "./icon";
 import { Button, IconButton } from "./kit";
 import { Drawer } from "./drawer";
 import { Accordion, AccordionItem } from "./accordion";
-import { GlobalCommandPalette } from "./command-palette";
 import { Brand } from "../brand";
 import { useAssistantPage } from "@/lib/assistant-page-context";
-import { AskDrawer } from "../ask-drawer";
 import { AccountMenu, DrawerAccount, FavoritesPopover } from "../account/account-controls";
 import { FavoritePlayersList } from "../account/favorite-players";
-import { HotkeysModal } from "../hotkeys-modal";
 import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
 import type { WorkbenchCatalog } from "@/lib/types";
 import { DIRECT_LINKS, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems, balanceColumns, type NavGroup } from "@/lib/nav-model";
 import { mergedPagePath } from "@/lib/route-consolidation";
 import { askAvailable } from "@/lib/hosted";
+import { useOpenedOnce } from "@/lib/use-opened-once";
+import dynamic from "next/dynamic";
+
+// Overlays load on first opening, not with the page (speed plan SP05): the search palette, the
+// Ask panel and the shortcuts sheet are not on screen at first paint. `loading` gives each its own
+// Suspense boundary; without one, a loading overlay suspends the layout's boundary around the
+// header, which blanks the header and takes focus from the button that opened it.
+const GlobalCommandPalette = dynamic(() => import("./command-palette").then(mod => mod.GlobalCommandPalette), { loading: () => null });
+const AskDrawer = dynamic(() => import("../ask-drawer").then(mod => mod.AskDrawer), { loading: () => null });
+const HotkeysModal = dynamic(() => import("../hotkeys-modal").then(mod => mod.HotkeysModal), { loading: () => null });
 
 export function Header() {
   const pathname = usePathname();
@@ -37,6 +44,8 @@ export function Header() {
   const [askOpen, setAskOpen] = useState(false);
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const paletteMounted = useOpenedOnce(paletteOpen);
+  const hotkeysMounted = useOpenedOnce(hotkeysOpen);
 
   // Catalog and route availability
   const releaseId = searchParams.get("releaseId") ?? searchParams.get("release_id") ?? undefined;
@@ -623,11 +632,11 @@ export function Header() {
         </nav>
       </Drawer>
 
-      <GlobalCommandPalette
+      {paletteMounted && <GlobalCommandPalette
         isOpen={paletteOpen}
         onClose={() => setPaletteOpen(false)}
         triggerRef={searchPillRef}
-      />
+      />}
 
       {askOpen && assistantPage && (
         <AskDrawer
@@ -637,7 +646,7 @@ export function Header() {
         />
       )}
 
-      <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
+      {hotkeysMounted && <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />}
     </header>
   );
 }

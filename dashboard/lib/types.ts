@@ -550,6 +550,8 @@ export type StatsPresentation = {
   positions?: EstimatedPosition[] | null;
   // NBA draft class (draft year); undrafted players never match.
   draft_year?: number | null;
+  // "sort": each item's metric maps hold only the sort fields (rows, order and cursor unchanged).
+  metrics?: "all" | "sort";
 };
 
 export type EstimatedPosition = "PG" | "SG" | "SF" | "PF" | "C";

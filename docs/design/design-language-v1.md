@@ -561,7 +561,9 @@ season it was shown in ([site links plan](../site-links-plan.md)).
   a mouse or pen rests on the link for 80 ms, on keyboard focus, or on touch start, at most once
   per href in five minutes. A pointer sweeping across rows fetches nothing, so a 30-row table never
   sends 30 requests. Live pages (`/live/...`) are not prefetched: their data is real-time. A link
-  that must not prefetch at all passes `prefetch={false}`.
+  that must not prefetch at all passes `prefetch={false}`. Since SP05 every other link renders
+  `IntentLink` too, so nothing on the site prefetches on entering the viewport; ESLint rejects a
+  `next/link` `<Link>` without a `prefetch` prop.
 - **These stay plain:** picker options, search suggestions, segmented controls, compare slots and
   tray chips, chart tooltips (link the legend or the click panel instead), exported images, and
   the subject in its own page header.

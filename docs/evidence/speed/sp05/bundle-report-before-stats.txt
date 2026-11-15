@@ -1,0 +1,41 @@
+route /stats: initial client JS 19 files, 451,894 B compressed (analyzer); CSS 110,696 B
+ by package:
+    196,928  app code
+    169,443  next
+     42,943  motion-dom
+     20,742  lucide-react
+     15,476  framer-motion
+      2,156  [turbopack]/shared/runtime/runtime-utils.ts
+      1,348  motion-utils
+      1,082  [turbopack]/browser/runtime/dom/runtime-backend-dom.ts
+      1,032  [turbopack]/browser/runtime/base/runtime-base.ts
+        395  @swc/helpers
+        333  [turbopack]/browser/runtime/base/build-base.ts
+         16  motion
+ largest modules:
+     63,930  node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js
+     30,837  lib/team-branding.json.[json].cjs
+     12,177  components/workbench-player-explorer.tsx
+      7,774  node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.production.js
+      6,401  node_modules/next/dist/client/components/segment-cache/cache.js
+      6,346  node_modules/motion-dom/dist/es/projection/node/create-projection-node.mjs
+      6,128  lib/stats-presets.ts
+      5,099  components/threaded-assistant.tsx
+      5,007  components/manage-views-modal.tsx
+      4,977  components/ui/command-palette.tsx
+      4,943  components/ui/content-skeletons.tsx
+      4,844  components/multi-player-lines-view.tsx
+      4,003  node_modules/next/dist/client/components/render-tree.js
+      3,969  node_modules/next/dist/client/components/segment-cache/scheduler.js
+      3,938  components/ask-courtlens.tsx
+      3,744  components/research/stats-grid.tsx
+      3,627  components/scatter-plot-view.tsx
+      3,551  components/lookup-input.tsx
+      3,507  components/agent-answer.tsx
+      3,418  components/ui/header.tsx
+      3,402  components/stats-trend-dialog.tsx
+      3,398  lib/site-pages.ts
+      2,972  node_modules/next/dist/compiled/react/cjs/react.production.js
+      2,679  lib/impact-metrics.json.[json].cjs
+      2,432  lib/nav-model.ts
+ loaded on demand (next/dynamic, import()): 0 files, 0 B; app modules: 

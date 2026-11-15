@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useId, useRef, useState, type ReactNode } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import type { AgentResultBlock, AgentSource, AgentTurnResponse } from "@/lib/assistant-v3.generated";
 import { agentCellText, agentResultView, answerEntityNames, entityOfCell, flagAt, proseLinks, resultAnchor, resultScope, type ProseLink, resultColumnLabel, reviewDestination, safeAgentUrl, sourceDestination, sourceDetails, sourceLabel } from "@/lib/agent-answer";
 import { parsePositionedMarkdown } from "@/lib/markdown";
@@ -10,7 +10,7 @@ import { pinnedContext } from "@/lib/conversation";
 import { PlayerLink, TeamLink } from "@/components/entity-link";
 
 function AnswerLink({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
-  return href.startsWith("/") ? <Link className={className} href={href}>{children}</Link> : <a className={className} href={href} {...(href.startsWith("https:") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{children}</a>;
+  return href.startsWith("/") ? <IntentLink className={className} href={href}>{children}</IntentLink> : <a className={className} href={href} {...(href.startsWith("https:") ? { target: "_blank", rel: "noopener noreferrer" } : {})}>{children}</a>;
 }
 
 export function SourceChip({ source, answer }: { source: AgentSource; answer: AgentTurnResponse }) {
@@ -132,7 +132,7 @@ export function AgentResult({ block, answer }: { block: AgentResultBlock; answer
       ? <dl className="ask-facts">{view.entries.map(([key]) => <div key={key}><dt>{resultColumnLabel(key, result)}</dt><dd><ResultCell row={view.row} column={key} scope={scope} /></dd></div>)}</dl>
       : <><div className="ask-table" role="region" aria-label={`${name} table`} tabIndex={0}><table className="data-table"><caption>{expanded ? `All ${view.total} returned rows` : `${Math.min(10, view.total)} of ${view.total} returned rows`}</caption><thead><tr>{view.columns.map(key => <th scope="col" key={key}>{resultColumnLabel(key, result)}</th>)}</tr></thead><tbody>{(expanded ? view.rows : view.rows.slice(0, 10)).map((row, i) => <tr key={i}>{view.columns.map(key => <td key={key} title={agentCellText(row[key])}><ResultCell row={row} column={key} scope={scope} /></td>)}</tr>)}</tbody></table></div>{view.total > 10 && <button type="button" className="ask-chip" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? "Show fewer" : `Show all ${view.total} rows`}</button>}</>}
     {result.limitations?.map((text, i) => <p key={i} className="text-muted ask-limitation">{text}</p>)}
-    <div className="ask-chips">{href && <AnswerLink className="ask-chip" href={href}>Open equivalent analysis</AnswerLink>}{review && <Link className="ask-chip" href={review}>Review and save {result.operation.replaceAll("_", " ")}</Link>}</div>
+    <div className="ask-chips">{href && <AnswerLink className="ask-chip" href={href}>Open equivalent analysis</AnswerLink>}{review && <IntentLink className="ask-chip" href={review}>Review and save {result.operation.replaceAll("_", " ")}</IntentLink>}</div>
     <details className="ask-disclosure"><summary>Returned Fields and Exact Evidence</summary><pre>{JSON.stringify({ data: result.data, rows: result.rows, evidence: result.evidence, context: block.context }, null, 2)}</pre></details>
   </section>;
 }

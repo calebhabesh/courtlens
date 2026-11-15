@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { Brand } from "./brand";
 
 export function Footer() {
@@ -10,9 +10,9 @@ export function Footer() {
           <p>Decision support for fantasy basketball. Unofficial and not affiliated with the NBA.</p>
         </div>
         <div className="footer-links">
-          <Link href="/methodology">Definitions</Link>
-          <Link href="/data-status">Source health</Link>
-          <Link href="/players">Historical players</Link>
+          <IntentLink href="/methodology">Definitions</IntentLink>
+          <IntentLink href="/data-status">Source health</IntentLink>
+          <IntentLink href="/players">Historical players</IntentLink>
         </div>
       </div>
     </footer>

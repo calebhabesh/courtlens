@@ -1,0 +1,132 @@
+{
+ "method": "speed-navigation.spec.ts SPEED_REAL=1, 2x5 runs per build, alternating before/after/before/after on one stack (API :8180 cache+warm start, dashboard :3180); medians",
+ "journeys": {
+  "player-header-to-team-prefetched": {
+   "runs": 10,
+   "before_ms": 118.5,
+   "after_ms": 115.0,
+   "before_longest_task_ms": 69.5,
+   "after_longest_task_ms": 68.0,
+   "before_long_tasks_ms": 69.5,
+   "after_long_tasks_ms": 68.0,
+   "before_example": [
+    [
+     38,
+     73
+    ]
+   ],
+   "after_example": [
+    [
+     37,
+     67
+    ]
+   ]
+  },
+  "nav-to-stats-prefetched": {
+   "runs": 10,
+   "before_ms": 169.5,
+   "after_ms": 159.5,
+   "before_longest_task_ms": 110.5,
+   "after_longest_task_ms": 105.0,
+   "before_long_tasks_ms": 110.5,
+   "after_long_tasks_ms": 105.0,
+   "before_example": [
+    [
+     49,
+     108
+    ]
+   ],
+   "after_example": [
+    [
+     49,
+     133
+    ]
+   ]
+  },
+  "stats-row-to-player-prefetched": {
+   "runs": 10,
+   "before_ms": 74.0,
+   "after_ms": 70.0,
+   "before_longest_task_ms": 52.5,
+   "after_longest_task_ms": 25.0,
+   "before_long_tasks_ms": 52.5,
+   "after_long_tasks_ms": 25.0,
+   "before_example": [
+    [
+     18,
+     55
+    ]
+   ],
+   "after_example": []
+  },
+  "stats-row-to-player": {
+   "runs": 10,
+   "before_ms": 153.0,
+   "after_ms": 136.5,
+   "before_longest_task_ms": 72.0,
+   "after_longest_task_ms": 68.5,
+   "before_long_tasks_ms": 72.0,
+   "after_long_tasks_ms": 68.5,
+   "before_example": [
+    [
+     108,
+     73
+    ]
+   ],
+   "after_example": [
+    [
+     75,
+     72
+    ]
+   ]
+  },
+  "player-header-to-team": {
+   "runs": 10,
+   "before_ms": 142.0,
+   "after_ms": 130.5,
+   "before_longest_task_ms": 53.0,
+   "after_longest_task_ms": 56.5,
+   "before_long_tasks_ms": 53.0,
+   "after_long_tasks_ms": 56.5,
+   "before_example": [],
+   "after_example": [
+    [
+     80,
+     57
+    ]
+   ]
+  },
+  "nav-to-stats": {
+   "runs": 10,
+   "before_ms": 191.5,
+   "after_ms": 170.0,
+   "before_longest_task_ms": 106.0,
+   "after_longest_task_ms": 107.5,
+   "before_long_tasks_ms": 106.0,
+   "after_long_tasks_ms": 109.0,
+   "before_example": [
+    [
+     33,
+     122
+    ]
+   ],
+   "after_example": [
+    [
+     43,
+     117
+    ]
+   ]
+  },
+  "back-to-team": {
+   "runs": 10,
+   "before_ms": 137.0,
+   "after_ms": 126.0,
+   "before_longest_task_ms": 0.0,
+   "after_longest_task_ms": 0.0,
+   "before_long_tasks_ms": 0.0,
+   "after_long_tasks_ms": 0.0,
+   "before_example": [],
+   "after_example": []
+  }
+ }
+}
