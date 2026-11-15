@@ -289,3 +289,180 @@ SPEED_REAL=1 SPEED_NAV_OUT=<file> PLAYWRIGHT_EXTERNAL_SERVER=1 PLAYWRIGHT_BASE_U
   `speed-navigation.spec.ts` and `site-links-prefetch.spec.ts`, `--repeat-each=3`: 9 passed.
   `speed-navigation.spec.ts` with `SPEED_REAL=1` on the local real-data stack: passed.
 - Full pytest and full Playwright suites were not run (plan: once before each gate).
+
+
+## 2026-11-15 — SP01 built: API read cache and data stamp
+
+### Writers of served data (listed before choosing the stamp)
+
+| Writer | Writes | How the cache follows it |
+| --- | --- | --- |
+| `jobs` service, `rosters` (`refresh-espn-rosters`, every 6 h) | `data/derived/espn-rosters-v1` | job health: start and finish change the stamp; nothing `stamp` is stored while it runs |
+| `jobs`, `daily` (`refresh-daily`: player index, season stats + release publication, position estimates, team scoring, contracts, player reference marts, DARKO, Wikipedia transactions, Win Probability ratings, Projected Impact score) | database (statistics release, `published_snapshots`), many `data/derived/*` bundles | job health, as above; the publication also moves `published_snapshots` |
+| `jobs`, `lineups` (`refresh-season-lineups`) | stints, stint box, WOWY (`.current` pointers) | job health; `.current` pointers |
+| `jobs`, `season-impact` (`refresh-season-impact`, weekly) | impact bundle (`.current`) | job health; `.current` pointers |
+| `jobs`, `metric-backtest`, `player-pages` (`acquire-bbref-bios`, about 2 h), `college-schools` | serving JSON, bio tables row by row, college bundle | job health (bios change row by row, hence the running rule) |
+| `win-probability-seal` (every 30 min on game days) | `data/derived/win-probability-serving`, `data/raw/espn-wp` | read only by `/api/win-probability*` (`short`, 30 s) and `/api/live*` (`never`); checked by import graph |
+| `demo-reset` (08:00 UTC) | demo account favourites | `/api/me*`, account routes: `never`, and credentialed (`bypass`) |
+| API writes (Ask, accounts, workspace, saved analyses, fantasy) | their own tables | every read of them is `never` |
+| `migrate` (each deploy) | schema | a deploy starts a new API process: new generation, empty cache |
+| Hand-run CLI on the VPS (`exec jobs courtlens …`, e.g. `acquire-wikipedia-contracts`), `scripts/restore.sh`, the PC's `worker.py` | anything | `courtlens bump-data-stamp` (new); a publication or rollback also moves `published_snapshots`; else at most 6 h stale |
+| `scripts/pull-from-vps.sh` (PC only) | the PC's whole `data/` and database | the cache is off on the PC by default; with it on, restart the API or bump |
+| The clock | `contract_spans` (player bio) and free agency compare against `date.today()`; forecasts against the Eastern date; data status, player form and the legacy schedule against `now` | today's date (local and Eastern) is in the stamp; `now` readers are `short` |
+
+**Stamp inputs chosen:** SHA-256 over `published_snapshots` (channel, snapshot, published_at);
+every `data/derived/*/.current` and `data/derived/*/*/.current`; each `scheduled_jobs.JOBS` entry's
+`last_started` and `last_finished`; the `data-stamp-bump` file in `data/derived/job-health`; and
+today's date, local and Eastern. Read lazily, at most every 5 s (one small query plus a few file
+reads, in the thread pool, on whichever request finds it due). **Added to the plan:** while any
+job's `last_started` is newer than its `last_finished` (and younger than its timeout plus 10 min),
+`stamp` reads are served uncached (`bypass`), because jobs write as they go and record their finish
+last. A job's start empties the cache (within 5 s) and so does its finish.
+
+### Credential headers
+
+Every header the API reads (grep of `Header(`, `request.headers`, `HTTPBearer`, cookies, plus the
+dashboard proxies): `Authorization` (`HTTPBearer`, operator access), `X-Operator-Token`
+(workspace, conversations, finance import), `X-CourtLens-Account-Token` and `X-CourtLens-Client`
+(account proxy), `X-CourtLens-Ask-Token`, `X-CourtLens-Visitor` and `X-CourtLens-Client` (public
+Ask). The API reads no cookie; `Cookie` is bypassed anyway. A request carrying any of the seven is
+`bypass`. The dashboard's server reads send none of them (`dashboard/lib/api.ts`,
+`workbench-api.ts`). `X-Request-ID` is read but only echoed. `request.client.host` is read only
+by operator and account checks (`never` routes).
+
+### What was built
+
+- `src/courtlens/api/read_cache.py`: the classes (`ROUTE_CLASSES`: 125 `stamp`, 10 `short`, 53
+  `never`, covering all 188 GETs and Caddy-allowed POSTs), the route walk, the stamp, the LRU store
+  and a pure ASGI middleware, plus `GET /api/cache/status` (`never`: entries, bytes, hits, misses,
+  bypasses, evictions, stamp, running jobs, generation). Off unless `COURTLENS_READ_CACHE`;
+  `COURTLENS_READ_CACHE_MAX_BYTES` (default 128 MiB). On in `deploy/compose.prod.yml` for `api`
+  only.
+- `courtlens bump-data-stamp`; one line added to the contract-terms hand run in
+  `docs/deployment.md`, since that run is still owed on the VPS.
+- Stored: complete status-200 `application/json` responses up to 4 MiB whose only headers are
+  content headers (so `Cache-Control: no-store` routes never store), and only when FastAPI's
+  dispatched route (`scope["route"]`) is the route the class came from and the generation did not
+  change during the request. Key: method, root path, path, query pairs sorted by name (repeated
+  names keep their order, as Starlette parses them), and for a POST the content type and body
+  SHA-256 (bodies over 1 MiB bypass).
+- A hit sends the stored body, `content-type`, a computed `content-length` and `X-Cache: hit`;
+  `X-Request-ID` and `Server-Timing` are fresh (a hit reads `db;dur=0.0, queries;desc="0"`, except
+  the request that rechecks the stamp, which shows its 1 query). Prometheus labels the hit with
+  its route.
+
+### Where this differs from the plan and the handoff
+
+- **Position:** a pure ASGI middleware directly around the router, not code inside the
+  `@app.middleware("http")` function. Inside the outer function a hit would skip CORS (browser reads
+  would lose `Access-Control-Allow-Origin`). Where it sits, a hit still never enters the thread
+  pool, and the outer middleware gives it a fresh request id and Server-Timing for free.
+- **Store on the last chunk.** The first version stored after `await app(...)` returned. Behind
+  the outer `BaseHTTPMiddleware` that runs only after the client has the whole body, so a quick
+  second request missed (career reads did, every time). It now stores before forwarding the last
+  chunk; `test_entry_is_stored_before_the_client_gets_the_last_chunk` fails on the old code.
+- **`GET /api/job-health` is `never`, not `short`:** it sends `Cache-Control: no-store`, which the
+  cache honours. The legacy `/api/schedule/week`, `/api/players`, `/api/players/{id}/form` and
+  player-game lineage are `short` (clock or tables no job owns). Portrait, media and logo routes
+  are `never` (binary).
+- **Running-job rule and today's date in the stamp** (above): not in the plan.
+- **Route walk:** `app.routes` holds `_IncludedRouter` branches; the walk recurses through
+  `effective_candidates()` and finds 232 routes (228 decorated + 4 on the app; 233 with the status
+  route), every OpenAPI operation among them. The progress log's "261 route functions" counted
+  every module-level function in the routers (266 today), not routes.
+
+### Snapshot comparisons (`snapshot-compare.txt`)
+
+**Found, pre-existing, not fixed:** with the cache off, two runs of the team six-factor reads
+(`workbench-teams-six-factors`, `-home`, `-away`) differ in the last digits of `sos` and `adj_net`
+(e.g. `12.266686692388026` vs `…030`). `load_context_team_games` orders by
+`(game_date, game_id)` with no tiebreak, so a game's two team rows arrive in either order and the
+float sums change order. Displayed values are unaffected. SP00's two runs happened to agree. A
+cache freezes one of the answers until the stamp changes. Left for SP04 or the owner (fixing the
+order changes stored hashes).
+
+| Comparison | Canonical | At 12 significant digits | Raw bytes |
+| --- | --- | --- | --- |
+| Cache off vs cache-off snapshot (new process) | 1 difference: six-factors jitter | 0 of 46 | |
+| Cache on, cold (new process) | 1 difference: six-factors jitter | | |
+| Cache on, warm (same process; 45 hits) | 1 difference: six-factors jitter | 0 of 46 | |
+| Cache on: hit vs the miss it stored (`--out` cold, `--compare --bytes` warm) | 0 | | 0 of 46 |
+
+### Before and after (local production stack)
+
+Same recipe as SP00: production build of this branch on :3180, its API on :8180 on the PC's data
+(release `71639af2…`, scope 2026-27 before 2026-11-13). Before: cache off, API memoisation warm.
+After, cold: one run on a fresh API process (empty cache, cold memoisation). After, warm: five runs
+after one warm-up pass. Medians.
+
+| Page | Before (cache off) | After, cold (1 run) | After, warm |
+| --- | --- | --- | --- |
+| `/` | 10 ms | 6 ms | 7 ms |
+| `/stats` | 321 ms | 2.34 s | 81 ms |
+| `/players` | 286 ms | 334 ms | 47 ms |
+| `/teams` | 131 ms | 19 ms | 15 ms |
+| `/standings` | 17 ms | 13 ms | 13 ms |
+| `/compare` | 806 ms | 1.11 s | 35 ms |
+| `/players/2544` | 752 ms | 414 ms | **65 ms** |
+| `/players/1643411` | 536 ms | 403 ms | **29 ms** |
+| `/players/1449` | 477 ms | 396 ms | **41 ms** |
+| `/teams/1610612747` | 436 ms | 263 ms | 65 ms |
+| `/teams/1610612738` | 376 ms | 135 ms | 60 ms |
+| `/research/rapm` | 40 ms | 49 ms | 40 ms |
+
+API reads: every read in the set fell from 26–135 ms (cache off) to a 1 ms median served from the
+cache, except `workbench-workspace` (`never`, 2–4 ms). On the second request every `stamp` read
+reported `X-Cache: hit` with `Server-Timing` total 0.1–0.2 ms (`second-request-local.json`; the
+stamp recheck adds about 3–4 ms to one request every 5 s).
+
+Today's "before" player pages (0.48–0.75 s) are slower than SP00's local 0.28–0.40 s on the same
+code; the machine was busier. The comparison above is within one session.
+
+Click to content (`SPEED_REAL=1`, cache on, five runs; SP00's local numbers beside):
+
+| Journey | SP01 median (min to max) | SP00 median |
+| --- | --- | --- |
+| Stats row → player | 152 ms (148–463) | 665 ms |
+| Player header → team | 290 ms (275–524) | 605 ms |
+| Header nav → Stats | 226 ms (213–239) | 444 ms |
+| Back (Stats → team) | 199 ms (172–232) | 193 ms |
+
+### Memory (`memory-fill-local.json`)
+
+A fresh API process (cache on) served the page set, every season's impact table (2014-15 to
+2025-26, loading the impact bundle), then 11,000 real player reads (profile, game log, impact,
+bio, career for every player of 12 seasons), four at a time, until 2,000 evictions:
+
+| Point | API RSS | Cache |
+| --- | --- | --- |
+| After start | 250 MB | empty |
+| After the page set and impact bundle | 1,014 MB | 8 MiB, 58 entries |
+| Cap reached (5,500 reads) | 1,168 MB | 127.9 MiB, 4,355 entries |
+| End (11,000 reads, 2,199 evictions) | 1,178 MB | 128.0 MiB, 6,332 entries |
+
+The full cache costs about 165 MB of resident memory over the loaded bundle (128 MiB of entries
+plus Python overhead, and whatever else 11,000 distinct reads memoised). RSS stayed flat once the
+cap held. **Limit:** the PC's impact bundle has no 2026-27 fits, so it is smaller than live; the
+VPS measured 2.3 GB peak with its bundle. 2.3 GB + about 0.17 GB ≈ 2.5 GB, under the 3 GB limit by
+about 0.5 GB. This is an estimate for the VPS, not a VPS measurement; G1 should read
+`docker stats` after the cache fills.
+
+### Checks
+
+- pytest `tests/unit/test_read_cache.py`: 33 passed (hit bytes identical with fresh request id,
+  timing and CORS; scope and body keys; stamp change empties; running job stores nothing; stamp
+  unreadable serves uncached; each of the seven credential headers bypasses; 30 s and 6 h ages;
+  404, `no-store` and non-JSON not stored; oversized served, not stored; LRU byte bound; store
+  before the last chunk; the walk finds every OpenAPI operation; every GET and allowed POST
+  classified, no stale class; an unclassified route fails the check; allowed POSTs match
+  `deploy/Caddyfile`; wiring and off by default; stamp follows each writer; dead job stops counting;
+  bump).
+- Every unit test file that drives the app (21 files): 330 passed, 8 failed — the 8 `[anthropic]`
+  cases in `test_agent_providers.py`, red before SP00.
+- `ruff check .`, `ruff format --check .`: pass. `mypy src/courtlens`: no issues (409 files).
+- `npm --prefix dashboard run lint` and `run typecheck`: pass (no dashboard file changed).
+- Playwright `speed-navigation.spec.ts` with `SPEED_REAL=1` on the local stack: passed. The
+  fixture-API runs of it and `site-links-prefetch.spec.ts` were not rerun: no dashboard file changed.
+  Vitest not run for the same reason.
+- `docker compose -f deploy/compose.prod.yml config`: `COURTLENS_READ_CACHE` set on `api` only.
+- Full pytest and Playwright suites not run (plan: before each gate). Not deployed; no live run.

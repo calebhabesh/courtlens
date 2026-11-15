@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     access_token_minutes: int = Field(default=720, ge=5, le=10_080)
     cors_origins: list[str] = ["http://localhost:3000"]
     log_level: str = "INFO"
+    # Speed plan SP01: the API's in-memory read cache (off unless set; on in compose.prod.yml).
+    read_cache: bool = False
+    read_cache_max_bytes: int = Field(default=128 * 1024 * 1024, ge=1024 * 1024)
 
     balldontlie_api_key: SecretStr | None = Field(
         default=None, validation_alias="BALLDONTLIE_API_KEY"

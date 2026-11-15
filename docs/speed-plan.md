@@ -6,7 +6,7 @@ contract, the control kit and the approved page layouts; no number on any page c
 Work one block at a time, in order. Record measured evidence in the
 [speed progress log](speed-progress.md). Only the owner marks a block ✅.
 
-**Status: plan written 2026-11-14; SP00 built 2026-11-14 (awaits the owner's ✅); SP01 is next.**
+**Status: plan written 2026-11-14; SP00 built 2026-11-14 and SP01 built 2026-11-15 (both await the owner's ✅); SP02 is next.**
 
 ## Where the time goes (measured 2026-11-14)
 
@@ -99,7 +99,7 @@ gate G2; any other may be overturned at gate G1.
 | Block | What | Status |
 | --- | --- | --- |
 | SP00 | Measuring tools and baseline | built 2026-11-14 |
-| SP01 | API read cache and data stamp | pending |
+| SP01 | API read cache and data stamp | built 2026-11-15 |
 | SP02 | Warm crawl after each data change | pending |
 | SP03 | Prefetch on intent; skeletons that do not flash | pending |
 | G1 | Owner gate: deploy, try the site | |

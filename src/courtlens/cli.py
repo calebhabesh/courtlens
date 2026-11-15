@@ -51,6 +51,18 @@ app = typer.Typer(
 )
 
 
+@app.command("bump-data-stamp")
+def bump_data_stamp_command() -> None:
+    """Empty the API read cache after a hand-run write of served data (speed plan SP01).
+
+    Scheduled jobs change the data stamp themselves (their health records); a command run by
+    hand does not, so run this after it. The API notices within 5 seconds.
+    """
+    from courtlens.api.read_cache import bump_data_stamp
+
+    typer.echo(bump_data_stamp())
+
+
 @app.command("warm-stats-cohorts")
 def warm_stats_cohorts_command(
     release_id: str | None = typer.Option(
