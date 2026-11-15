@@ -678,6 +678,26 @@ suggested optimal fixes."
       (the "Index refreshed" tooltip spec fails identically without this change).
       [Evidence](evidence/alignment/stats/default-sort/README.md).
 
+Follow-up instruction (owner, 2026-11-15, with screenshots of the footer): "what does the w- and e+
+mean here? Also, why does it go first page, and next page only? Isn't there a better way for a page
+based navigation console (instead of only two buttons we can have multiple, a button for going all
+the way to the first, or end, etc.)" Then: "Yes, go ahead. And make these things clear."
+
+85. [ ] Numbered paging and a readable footer. Awaits the owner. — The −W ▮▯ E+ density control
+    (1f) becomes a "Compact | Standard" row-height switch (kit `Segmented`; W and E stay as keys and
+    are named in each tooltip); the expand button reads "Expand" / "Shrink" beside T.
+    - First Page / Next Page become a pager (`components/ui/pager.tsx`, kit controls only): first,
+      previous, page numbers with gaps (`1 … 4 5 6 … 11`), next, last; the current page carries
+      `aria-current`. `[` and `]` page from the table; the hotkeys list names them.
+    - The query response gains `page_cursors`: the same opaque cursors it already issued, one per
+      page of the shown rows (page 1 is null), for presentation queries only. No spec field, hash or
+      cursor format changed; cursor URLs stay shareable.
+    - Below 1,800 px the footer is two rows (records and pager, then the table controls) instead
+      of wrapping three to five rows; at 1920 it stays one row. Phones stack records, controls, pager.
+    - Measured on the owner's servers (2025-26, 528 shown): page 5 shows 201–250, Last 501–528 with
+      next/last disabled; footer 49 px at 1920, 85 px at 1280–1600 (was 81–189). Postgres presentation
+      tests 24/24 (new last-page asserts); pager Vitest 6/6; dashboard lint/typecheck clean.
+
 ### 2 Dashboard (player) — ✅ aligned (first revision)
 
 Owner approval (2026-10-15): "I think I'm done the first solid revision of the main stats page
