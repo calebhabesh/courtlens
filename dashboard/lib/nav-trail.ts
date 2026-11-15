@@ -38,6 +38,7 @@ export function pageLabel(href: string): string {
   if (path.startsWith("/contracts/")) return "Contracts";
   if (path.startsWith(ENTITY_ROUTES.series)) return "Series";
   if (path.startsWith("/live")) return "Live";
+  if (path === "/investigations") return "Saved Investigations";
   if (path.startsWith("/investigations/saved/")) return "Investigation";
   if (path.startsWith("/stats")) return "Stats";
   return "Previous Page";
