@@ -1759,3 +1759,20 @@ cookie. No zone or Caddy change is needed.
 - Full suites not run as suites (the stop after SP06). Not deployed; nothing ran against the live
   site; Cloudflare not touched. Servers, Playwright browsers, the mock API and the scratch trees
   were stopped and removed.
+
+## 2026-11-15 — Owner approves SP00–SP06
+
+The owner, after SP06 and the pager commit: "Alright, you can approve all slices we have worked on
+up until now." SP00–SP06 are ✅ in the plan, and Stats follow-up 85 (numbered paging, the other
+session's change committed as 75e0b4f4) is ✅ in the alignment catalog.
+
+The approval marks the blocks. It does not change the budget, and the open items for the
+G1/G2 stop remain:
+
+- the full suites and the owner's deploy;
+- the Cloudflare `.webp` check (`docs/evidence/speed/sp06/cf-cache-check.sh`);
+- `docker stats` during the first crawl and the API's warm start, and `measure.py` live;
+- the owner's calls on the recorded floors: SP03's two prefetched journeys, SP05's Stats HTML and
+  player first load (per-route CSS, the Stats markup, lazy motion), SP06's two non-image layout
+  shifts and the Stats guide-cell portraits;
+- which of Early Hints, 0-RTT and Smart Tiered Cache SP07 turns on.
