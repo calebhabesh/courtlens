@@ -276,7 +276,7 @@ export function NewsPanel({ data, part, className = "" }: { data: LiveGameData; 
     return <Panel title="Recap" icon="news" className={className}>
       <article className="live-recap">
         {recap.image && /* eslint-disable-next-line @next/next/no-img-element -- ESPN's recap photo, linked to its source */
-          <img className="live-recap-image" src={recap.image} alt="" loading="lazy" />}
+          <img className="live-recap-image" src={recap.image} alt="" width={640} height={360} loading="lazy" />}
         <div className="live-recap-text">
           <h3>{recap.link ? <a href={recap.link} target="_blank" rel="noreferrer">{recap.headline}</a> : recap.headline}</h3>
           {recap.description && <p>{recap.description.replace(/^—\s*/, "")}</p>}
@@ -289,7 +289,7 @@ export function NewsPanel({ data, part, className = "" }: { data: LiveGameData; 
   return <Panel title="NBA News" icon="news" className={className}>
     <ul className="live-stories">{news.stories.map(story => <li key={story.headline}>
       {story.image && /* eslint-disable-next-line @next/next/no-img-element -- ESPN story photo, linked to its source */
-        <img src={story.image} alt="" loading="lazy" />}
+        <img src={story.image} alt="" width={96} height={54} loading="lazy" />}
       <span>
         {story.link ? <a href={story.link} target="_blank" rel="noreferrer">{story.headline}</a> : <strong>{story.headline}</strong>}
         <span className="live-note">{published(story.published)}</span>

@@ -1,5 +1,5 @@
 {
-  "_about": "Fixed URL set for the speed plan (docs/speed-plan.md, SP00). pages: what measure.py times; expect is text a page holds only when its data rendered. api: the GET reads the player and team pages make, as captured by capture_reads.py. snapshot: every read behind the pages, for snapshot.py; {releaseId}, {season} and {beforeDate} are the target's release and default scope.",
+  "_about": "Fixed URL set for the speed plan (docs/speed-plan.md, SP00). pages: what measure.py times; expect is text a page holds only when its data rendered. api: the GET reads the player and team pages make, as captured by capture_reads.py. snapshot: every read behind the pages, for snapshot.py; {releaseId}, {season} and {beforeDate} are the target's release and default scope. static (SP06): one file of each kind the pages load, for their cache headers; origin api means the API origin.",
   "version": 1,
   "pages": [
     {
@@ -298,6 +298,35 @@
       "pages": [
         "team-bos"
       ]
+    }
+  ],
+  "static": [
+    {
+      "name": "portrait-2544-288",
+      "origin": "api",
+      "path": "/api/workbench/players/2544/portrait?size=288&crop=face-v6"
+    },
+    {
+      "name": "portrait-2544-288-webp",
+      "origin": "api",
+      "path": "/api/workbench/players/2544/portrait.webp?size=288&crop=face-v6"
+    },
+    {
+      "name": "portrait-1449-192-season-webp",
+      "origin": "api",
+      "path": "/api/workbench/players/1449/portrait.webp?size=192&season=1991-92&team=BOS&crop=face-v6"
+    },
+    {
+      "name": "team-logo-lal-svg",
+      "path": "/team-logos/1610612747-5b68f7b92ba7d058.svg"
+    },
+    {
+      "name": "team-logo-bos-1977-png",
+      "path": "/team-logos/bos-1977-4571e077bce6b1e7.png"
+    },
+    {
+      "name": "flag-us",
+      "path": "/flags/us.png"
     }
   ],
   "snapshot": [

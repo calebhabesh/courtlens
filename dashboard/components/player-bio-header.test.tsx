@@ -1,5 +1,6 @@
 // @vitest-environment happy-dom
 import { cleanup, render, screen } from "@testing-library/react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import { PlayerBioHeader } from "./player-bio-header";
 import type { PlayerBio } from "@/lib/types";
@@ -63,4 +64,22 @@ it("names a pick by the team that made it: Seattle in 2008, a club origin stays 
   expect(draft.textContent).toContain("Seattle SuperSonics");
   expect(draft.textContent).toContain("Fixture Club");
   expect(screen.queryByText("College")).toBeNull();
+});
+
+it("loads only the hero portrait eagerly at high priority; the watermark, logos and flag are lazy (SP06)", () => {
+  // The server HTML (happy-dom never loads an image, so mounted portraits fall back to initials).
+  document.body.innerHTML = renderToStaticMarkup(<PlayerBioHeader name="Fixture Guard" playerId="24" team={null} currentSeason="2025-26" actions={null}
+    bio={{ ...bio, country: "USA", current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27" } }} />);
+  const hero = document.querySelector<HTMLImageElement>("img.player-bio-portrait")!;
+  expect(hero.getAttribute("loading")).toBe("eager");
+  expect(hero.getAttribute("fetchpriority")).toBe("high");
+  expect(hero.getAttribute("src")).toMatch(/\/api\/workbench\/players\/24\/portrait\.webp\?size=288&crop=face-v6$/);
+  const others = [...document.querySelectorAll<HTMLImageElement>("img")].filter(img => img !== hero);
+  expect(others.length).toBeGreaterThan(1);
+  for (const img of others) {
+    expect(img.getAttribute("loading")).toBe("lazy");
+    expect(img.getAttribute("fetchpriority")).toBeNull();
+    expect(Number(img.getAttribute("width"))).toBeGreaterThan(0);
+    expect(Number(img.getAttribute("height"))).toBeGreaterThan(0);
+  }
 });

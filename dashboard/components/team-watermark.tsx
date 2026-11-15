@@ -10,7 +10,9 @@ const SHIFTS: Record<string, number> = centring;
  */
 export function TeamWatermark({ asset, className = "pvp-watermark" }: { asset: string; className?: string }) {
   const shift = SHIFTS[asset.split("/").pop() ?? ""];
+  // Page CSS sets the box (absolute, sized from its card, `object-fit: contain`); the square
+  // width and height only reserve that box's ratio before the file arrives. Lazy (SP06).
   // eslint-disable-next-line @next/next/no-img-element -- static logo artwork, decorative
-  return <img className={className} src={asset} alt="" aria-hidden="true"
+  return <img className={className} src={asset} alt="" aria-hidden="true" width={160} height={160} loading="lazy"
     style={shift ? ({ "--logo-shift": shift } as CSSProperties) : undefined} />;
 }

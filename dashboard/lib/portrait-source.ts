@@ -4,7 +4,12 @@ import { browserApi } from "./workbench-api";
 export const PORTRAIT_WIDTHS = [64, 96, 128, 192, 288] as const;
 export type PortraitWidth = (typeof PORTRAIT_WIDTHS)[number];
 
-const PLAYER_PORTRAIT_PATH = /^\/api\/workbench\/players\/[^/]+\/portrait$/;
+/**
+ * The API's player endpoint, at either path. Its responses still name `/portrait` in
+ * `portrait_url`; the builder asks for `/portrait.webp`, the same handler and bytes, because
+ * Cloudflare caches by file extension (speed plan SP06).
+ */
+const PLAYER_PORTRAIT_PATH = /^(\/api\/workbench\/players\/[^/]+\/portrait)(?:\.webp)?$/;
 /**
  * Mirrors `PORTRAIT_CROP_VERSION` in the API. Derivatives are cached by browsers for a day, so a
  * new crop needs a new URL; the API ignores the parameter. Change both together.
@@ -30,9 +35,11 @@ export interface PortraitSource {
 export interface PortraitEra { season: string; team?: string | null }
 
 export function portraitSource(portraitUrl: string | null | undefined, playerId: string | undefined, fallbackWidth: PortraitWidth, era?: PortraitEra | null): PortraitSource | null {
-  const path = portraitUrl || (playerId ? `/api/workbench/players/${playerId}/portrait` : null);
-  if (!path) return null;
-  if (!PLAYER_PORTRAIT_PATH.test(path)) return { src: absolute(path) };
+  const given = portraitUrl || (playerId ? `/api/workbench/players/${playerId}/portrait` : null);
+  if (!given) return null;
+  const endpoint = PLAYER_PORTRAIT_PATH.exec(given);
+  if (!endpoint) return { src: absolute(given) };
+  const path = `${endpoint[1]}.webp`;
   const extra = (era?.season ? `&season=${encodeURIComponent(era.season)}${era.team ? `&team=${encodeURIComponent(era.team)}` : ""}` : "")
     + `&crop=${PORTRAIT_CROP_VERSION}`;
   return {
