@@ -2051,6 +2051,7 @@ def get_portrait_credits(session: Session = Depends(get_db)) -> dict[str, Any]:
     }
 
 
+@router.get("/players/{id}/portrait.webp", response_model=None)
 @router.get("/players/{id}/portrait", response_model=None)
 def get_player_portrait(
     id: str,
@@ -2080,6 +2081,10 @@ def get_player_portrait(
     first for players whose NBA.com photo is from after their career (a coaching photo), so a
     player is never shown out of uniform (alignment row 9, follow-ups 15 and 16). A Wikimedia
     Commons career photo found through Wikidata is the last resort.
+
+    ``/portrait.webp`` is the same handler with the same parameters and bytes (speed plan SP06):
+    Cloudflare caches by file extension, so the dashboard asks for that path. ``/portrait``
+    stays for the ``portrait_url`` values the API returns and for older links.
     """
     if size is not None and size not in PORTRAIT_SIZES:
         raise HTTPException(status_code=422, detail=f"size must be one of {PORTRAIT_SIZES}")

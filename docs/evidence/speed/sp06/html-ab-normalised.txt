@@ -1,0 +1,18 @@
+compare: identical
+home: identical
+player-pre2000: identical
+player-rookie: identical
+player-star: identical
+players: identical
+research-rapm: DIFFERENT first difference at 47795: before b'ript><div hidden id="S:2"><template id="P:3"></template><!--$--><!--/$--></div><div hidden id="S:3"><div class="rs-column rapm-ratings"><!--$--><div class="ui-filter-bar   " role="region" aria-label="' after b'ript><div hidden id="S:2"><template id="P:3"></template><!--$--><!--/$--></div><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\\"/_next/static/X\\"\\n2:\\"/_n'
+standings: identical
+stats: identical
+team-bos: identical
+team-lal: identical
+teams: identical
+1 page(s) differ
+rapm1: identical
+rapm2: identical
+rapm3: identical
+rapm4: identical
+0 page(s) differ

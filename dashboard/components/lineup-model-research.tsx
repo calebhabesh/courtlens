@@ -168,7 +168,7 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
   const { data: fit, error, loading, retry, stale } = useFeed([key, String(ready)], signal => ready ? getLineupFit(five, signal) : Promise.resolve(null));
   const items = useMemo(() => (roster?.players ?? []).map((p): LookupItem => ({
     id: p.player_id, canonical_id: p.player_id, kind: "player", display_name: p.name ?? p.player_id, match_basis: "suggestion", match_score: 1,
-    portrait_url: p.photo_season ? `/api/workbench/players/${p.player_id}/portrait?size=64&season=${p.photo_season}${p.tricode ? `&team=${p.tricode}` : ""}&crop=${PORTRAIT_CROP_VERSION}` : undefined,
+    portrait_url: p.photo_season ? `/api/workbench/players/${p.player_id}/portrait.webp?size=64&season=${p.photo_season}${p.tricode ? `&team=${p.tricode}` : ""}&crop=${PORTRAIT_CROP_VERSION}` : undefined,
     availability: { has_current_season: true, status: "available", seasons: [serving.season] }, destination_url: playerHref(p.player_id),
     team_association: p.tricode ? { basis: "last_observed", teams: [p.tricode], observed_through: null, season: p.photo_season } : null,
     metadata: { caption: `${p.tricode ?? "No team"} · ${p.status ? STATUS_LABEL[p.status] : "Unknown"}` },
