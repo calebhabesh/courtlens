@@ -85,7 +85,8 @@ test("summary: line score, leaders, shot chart and team stats", async ({ page })
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/live/games/401909869?date=2026-10-26");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Minnesota Timberwolves at Cleveland Cavaliers");
-  const banner = page.locator(".live-banner");
+  // The loading skeleton reuses .live-banner inside an aria-hidden .live-game while the page streams in.
+  const banner = page.locator(".live-game:not([aria-hidden]) .live-banner");
   await expect(banner).toContainText("Final/OT");
   await expect(banner.locator("[data-lost]")).toContainText("125");
   // The line score lives in the banner now (follow-up 23).
@@ -193,7 +194,7 @@ test("game hotkeys and the All Games rail", async ({ page }) => {
   expect(Math.round(box!.y + box!.height)).toBe(900);
   await page.keyboard.press("3");
   await expect(page).toHaveURL(/games\/401909870/);
-  await expect(page.locator(".live-banner")).toContainText("BOS");
+  await expect(page.locator(".live-game:not([aria-hidden]) .live-banner")).toContainText("BOS");
   await page.keyboard.press("Tab");
   await expect(page).toHaveURL(/tab=box/);
   await page.keyboard.press("Shift+Tab");
