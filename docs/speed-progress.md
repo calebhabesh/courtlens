@@ -1872,3 +1872,25 @@ so those URLs answer 404 JSON with no `Cache-Control`. Cloudflare caches the 404
 browser TTL (`webp-404-predeploy.txt`). Only `measure.py` and curl asked for those URLs (`main`'s
 pages request `/portrait`). After the deploy, wait a few minutes after the last such request
 before `cf-cache-check.sh`, or the first answer may be a cached 404.
+
+## 2026-11-15 — G2: the owner's answers
+
+Asked at the G2 gate with the budget table (baseline, local SP04–SP06, live on `main`):
+
+1. **SP07 zone settings:** "Choose the optimal settings for courtlens." Chosen, after reading the
+   live headers:
+   - **Smart Tiered Cache on.** Edge locations fetch through one upper tier, so a low-traffic site
+     gets more `HIT`s on portraits, logos and chunks. Zone-wide, free, no effect on dynamic
+     responses.
+   - **Early Hints on.** The pages already send `Link: rel=preload` for the two fonts, so
+     Cloudflare can answer with 103 while the page renders.
+   - **0-RTT on.** Saves a round trip when a returning visitor resumes a connection. CourtLens's
+     GETs are reads, and the POSTs Caddy allows are read-only queries, so a replay cannot write.
+   - **Browser cache TTL left at 14400.** It applies only to responses Cloudflare caches (API reads
+     carry no `Cache-Control` and are `DYNAMIC`, so it never touches data). The un-hashed public
+     files (brand, fonts, icons, `og-image.png`) send `max-age=0`, and the 4 hours is what lets
+     browsers keep them; "respect existing headers" would make each visit revalidate them. Hashed
+     chunks, logos and flags already send longer values, which pass through.
+2. **D6:** stays closed.
+3. **Floors:** accepted as recorded.
+4. **Gates:** G2 ✅ now; G1 after the SP08 deploy.

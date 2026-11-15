@@ -6,7 +6,7 @@ contract, the control kit and the approved page layouts; no number on any page c
 Work one block at a time, in order. Record measured evidence in the
 [speed progress log](speed-progress.md). Only the owner marks a block ✅.
 
-**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP06 built 2026-11-15, all ✅ owner 2026-11-15 (SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS, SP06 a floor for layout shift: two small shifts from page elements, none from an image). Next is the G1/G2 stop: the full suites, the owner's deploy, the Cloudflare cache check for `.webp` portraits, `docker stats` and `measure.py` live, then SP07 and SP08.**
+**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP06 built 2026-11-15, all ✅ owner 2026-11-15 (SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS, SP06 a floor for layout shift: two small shifts from page elements, none from an image). The G1/G2 stop ran 2026-11-15: suites green but for known failures, draft PR #110, G2 ✅ owner; the deploy and its live checks move to SP08. Next is SP07, then SP08.**
 
 ## Where the time goes (measured 2026-11-14)
 
@@ -87,6 +87,19 @@ gate G2; any other may be overturned at gate G1.
 - The stale `player-career.spec.ts:83` assertion (expects `2018 · R1 #9 · TOR`; the page has shown
   the full team name since 5ace395a) is fixed in SP04's commit.
 
+## Decided (owner, G2, 2026-11-15)
+
+- The branch is pushed and its PR (#110) stays a draft: the owner finishes the whole plan before
+  the merge. The one deploy is SP08's, and the stop's checks after a deploy (the Cloudflare `.webp`
+  check, `docker stats` during the warm start and the first crawl, `measure.py` live) move there.
+- SP07: the owner left the zone settings to the agent ("Choose the optimal settings for
+  courtlens"). Chosen: Smart Tiered Cache, Early Hints and 0-RTT on; the browser cache TTL stays
+  at 4 hours (reasons in the progress log).
+- D6 stays closed: no HTML or API responses cached at Cloudflare.
+- The recorded floors are accepted as they are: SP03's two prefetched journeys, SP05's Stats HTML
+  and player first load, SP06's two non-image layout shifts. No further work on them before SP08.
+- G2 passes now; G1 is marked after the SP08 deploy, once the owner has tried the live site.
+
 ## Rules every block follows
 
 - **Speed never changes a number.** Before a block that touches an API read or a page's data
@@ -117,11 +130,11 @@ gate G2; any other may be overturned at gate G1.
 | SP01 | API read cache and data stamp | ✅ owner, 2026-11-15; built 2026-11-15 |
 | SP02 | Warm crawl after each data change | ✅ owner, 2026-11-15; built 2026-11-15 |
 | SP03 | Prefetch on intent; skeletons that do not flash | ✅ owner, 2026-11-15; built 2026-11-15 |
-| G1 | Owner gate: deploy, try the site | |
+| G1 | Owner gate: deploy, try the site | open: marked after the SP08 deploy (owner, 2026-11-15) |
 | SP04 | Cold path: page waves and slow reads | ✅ owner, 2026-11-15; built 2026-11-15 |
 | SP05 | Page weight: HTML and JS | ✅ owner, 2026-11-15; built 2026-11-15 |
 | SP06 | Images and static files | ✅ owner, 2026-11-15; built 2026-11-15 |
-| G2 | Owner gate: Cloudflare changes | |
+| G2 | Owner gate: Cloudflare changes | ✅ owner, 2026-11-15 |
 | SP07 | Cloudflare settings | pending |
 | SP08 | Close: suites, deploy, final numbers, docs | pending |
 
