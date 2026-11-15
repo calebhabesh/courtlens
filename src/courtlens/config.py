@@ -63,6 +63,8 @@ class Settings(BaseSettings):
     contracts_check_dir: Path | None = Path("data/derived/contracts-checks")
     # `courtlens refresh-wikipedia-transactions` seals here; Free Agency reads the newest bundle.
     wikipedia_transactions_dir: Path | None = Path("data/derived/wikipedia-transactions-v1")
+    # `courtlens acquire-wikipedia-contracts` seals here; player pages read the newest bundle.
+    wikipedia_contracts_dir: Path | None = Path("data/derived/wikipedia-contracts-v1")
     # `courtlens refresh-college-schools` writes colleges.json and logos/ here; player headers
     # read it.
     college_schools_dir: Path | None = Path("data/derived/college-schools-v1")

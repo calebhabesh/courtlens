@@ -25,8 +25,8 @@ describe("player reference sections", () => {
     expect(current).toContain("1.2%");
     // Both dated 2026 events fall in 2026-27, newest first.
     expect(current.indexOf("Signed extension.")).toBeLessThan(current.indexOf("Traded from BOS to TOR."));
-    expect(rows.find(text => text.startsWith("2027-28"))).toContain("Player option");
-    expect(rows.find(text => text.startsWith("2028-29"))).toContain("Team option");
+    expect(rows.find(text => text.startsWith("2027-28"))).toContain("Player Option");
+    expect(rows.find(text => text.startsWith("2028-29"))).toContain("Team Option");
     expect(rows.find(text => text.startsWith("2028-29"))).toContain("Two-way");
     expect(rows.find(text => text.startsWith("2024-25"))).toContain("$0");
     expect(rows.find(text => text.startsWith("Remaining Guaranteed"))).toContain("$123.45");
@@ -51,11 +51,11 @@ describe("player reference sections", () => {
     render(<PlayerReferenceSections reference={{ ...reference, current_contract: (reference.current_contract ?? []).map((row, i) => i === 0 ? { ...row, guarantee } : row),
       salary_history: (reference.salary_history ?? []).map(row => ({ ...row, option: "team" as const })) }} />);
     const table = screen.getByRole("table", { name: "Contract and salary history by season" });
-    const link = within(table).getByRole("link", { name: "Fully guaranteed" });
+    const link = within(table).getByRole("link", { name: "Fully Guaranteed" });
     expect(link.getAttribute("title")).toContain("outside an option year");
     // The history's options never show: a played season's terms no longer apply.
     const history = within(table).getAllByRole("row").filter(row => row.textContent?.startsWith("2024-25"));
-    expect(history.every(row => !row.textContent?.includes("Team option"))).toBe(true);
+    expect(history.every(row => !row.textContent?.includes("Team Option"))).toBe(true);
   });
   it("brackets each contract's seasons and notes a signing it cannot bracket", () => {
     render(<PlayerReferenceSections reference={{ ...reference,
@@ -65,13 +65,39 @@ describe("player reference sections", () => {
     }} />);
     const table = screen.getByRole("table", { name: "Contract and salary history by season" });
     const cells = within(table).getAllByRole("cell").filter(cell => cell.classList.contains("player-contract-span"));
-    // The newest season carries the label and the bracket's top cap; the oldest its bottom cap.
-    expect(cells.map(cell => cell.getAttribute("data-edge")).slice(0, 3)).toEqual(["top", "middle", "bottom"]);
+    // The rail runs down the Season column's edge: the newest season carries the top cap, the oldest its bottom cap.
+    const seasons = within(table).getAllByRole("rowheader").filter(cell => cell.classList.contains("player-contract-season"));
+    expect(seasons.map(cell => cell.getAttribute("data-edge")).slice(0, 3)).toEqual(["top", "middle", "bottom"]);
+    expect(seasons[0].getAttribute("data-tone")).toBe("current");
+    expect(cells[0].getAttribute("data-tone")).toBe("current");
     expect(cells[0].textContent).toContain("Current · Signed 3-yr contract");
     expect(cells[0].textContent).toContain("2026-27 to 2028-29");
     const note = within(table).getByText("Signed a contract extension");
     expect(note.closest("tr")?.textContent?.startsWith("2024-25")).toBe(true);
-    expect(within(table).getByText(/start not reported/)).toBeTruthy();
+    expect(within(table).getByText(/Length and first season not reported/)).toBeTruthy();
+  });
+  it("links Wikipedia's terms, marks a signing Basketball-Reference does not list, and credits the article", () => {
+    const url = "https://en.wikipedia.org/wiki/Example_Player";
+    render(<PlayerReferenceSections reference={{ ...reference,
+      contract_spans: [
+        { start_season: "2026-27", end_season: "2028-29", end_basis: "stated_length", start_basis: "current_contract", signed_date: "2026-07-01", kind: "extension",
+          length_stated: true, length_source: "wikipedia", team_code: "TOR", description: "Signed extension", terms: "3-yr/$90M", source: "basketball_reference", source_url: url, current: true },
+        { start_season: "2025-26", end_season: "2025-26", end_basis: "next_contract", signed_date: "2025-07-25", kind: "signing",
+          length_stated: true, length_source: "wikipedia", team_code: "TOR", description: "Signed 2-yr/$51.25M contract", source: "wikipedia", source_url: url, current: false },
+      ],
+      unplaced_signings: [{ signed_date: "2024-08-01", season: "2024-25", kind: "extension", description: "Signed 4-yr/$194M contract extension", years: 4, length_source: "stated" }],
+      contract_terms_source: { name: "Wikipedia", title: "Example Player", url, revision_id: 1, as_of: "2026-11-14T12:00:00Z" },
+    }} />);
+    const table = screen.getByRole("table", { name: "Contract and salary history by season" });
+    const terms = within(table).getByRole("link", { name: "3-yr/$90M" });
+    expect(terms.getAttribute("href")).toBe(url);
+    const label = terms.closest(".player-contract-span-label");
+    expect(label?.getAttribute("title")).toContain("Counted back from the current contract's last season");
+    expect(within(table).getByRole("link", { name: "from Wikipedia" }).closest("td")?.textContent).toContain("Signed 2-yr/$51.25M contract");
+    // A stated length is already in the label: only the missing first season is named.
+    const missing = within(table).getByText(/first season not reported/);
+    expect(missing.textContent).toMatch(/^Signed .+ · first season not reported$/);
+    expect(screen.getByRole("link", { name: "Wikipedia: Example Player" }).getAttribute("href")).toBe(url);
   });
   it("names the cap's source on each share", () => {
     render(<PlayerReferenceSections reference={{ ...reference, current_contract: (reference.current_contract ?? []).map((row, i) => i === 0

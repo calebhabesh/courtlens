@@ -956,6 +956,16 @@ Follow-up instructions (owner, 2026-10-15, contract and career footer):
 71. [x] Now that the logos are larger and easier to see, undo the contrast effect. (Owner,
     2026-10-15.) Plain logo at 42% opacity with no filter, at the 115% size; share image too.
     [Evidence](evidence/alignment/players/team-header/README.md#contrast-treatment-removed-instruction-71).
+72. [ ] "What should we do for these start not reported? … Did we determine there is no other way to
+    get reliable contract data for our table?" then "You can build all three. We're trying to make
+    sure we have good coverage here, and the contract data is as coherent as possible." (Owner,
+    2026-11-14.) Spotrac still refuses (403) and HoopsHype's contract grouping is wrong for
+    Durant, so the player's Wikipedia article (matched by Wikidata's Basketball-Reference ID, not by
+    name) fills lengths Basketball-Reference leaves out and adds signings it does not list; the
+    CBA fixes 10-day and Exhibit 10 lengths; trailing extensions are counted back from the current
+    contract's last season; notes still unbracketed say what is known and which end is missing.
+    `courtlens acquire-wikipedia-contracts`, `services/contract_spans.py`.
+    [Evidence](evidence/alignment/players/contract-terms/README.md).
 
 Operational instructions (owner, 2026-10-14):
 - The existing Basketball-Reference crawl runs in another session. Do not run
