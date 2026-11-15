@@ -185,6 +185,26 @@ docker compose --env-file secrets.env --env-file release.env exec api \
   python -m courtlens.evaluation.win_probability_platform_check check
 ```
 
+### Player contract terms (Wikipedia)
+
+The player page's Contracts table fills lengths Basketball-Reference leaves out, and signings it
+does not list, from the player's Wikipedia article (`services/contract_spans.py`). The API reads the
+newest bundle in `data/derived/wikipedia-contracts-v1` (mounted read-only); without one the table
+falls back to Basketball-Reference alone. The bundle is filled by an operator run in the `jobs`
+container, which owns `data/` read-write:
+
+```bash
+docker compose --env-file secrets.env --env-file release.env exec jobs \
+  courtlens acquire-wikipedia-contracts --scope all
+```
+
+One Wikidata query maps Basketball-Reference IDs to articles, then each article is read serially at
+5 s: `--scope all` is the 3,297 players with a reported salary, about 4.6 hours the first time. It
+seals every 100 players and skips players read within `--max-age-days` (300), so an interrupted run
+resumes where it stopped; `--scope active` rereads only players with a current contract. Raw pages
+go to `data/raw/wikipedia-contracts` only when an article's revision changed, about 1.5 GB for a
+full first run. `--reparse` re-reads them with a newer parser and no network.
+
 ### Disk budget
 
 The VPS boot volume is 193 GB, nearly all of the Always Free 200 GB block-storage allowance

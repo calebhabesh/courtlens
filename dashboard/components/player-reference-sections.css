@@ -4,19 +4,31 @@
   .player-contract-terms { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 var(--space-2); margin-top: var(--space-0-5); font-size: var(--text-xs); }
   .player-contract-option { font-size: var(--text-xs); }
   .player-contract-guaranteed { color: var(--color-text-secondary); }
+  .player-contract-terms-dot { color: var(--color-text-tertiary); }
   .player-contract-option.is-player { color: var(--color-status-player-option); }
   .player-contract-option.is-team { color: var(--color-status-team-option); }
   .player-contract-events-column { width: 28%; }
   .player-contract-span-column { width: 22%; }
-  /* Contract brackets: a rail down the seasons one contract covers, capped at its newest and
-     oldest season, labelled on its newest. A season outside any placed contract has no rail. */
-  .player-ref-grid tbody td.player-contract-span { position: relative; padding-inline: var(--space-6) var(--space-3); text-align: left; }
-  .player-contract-span[data-edge]::before { content: ""; position: absolute; inset-block: 0; inset-inline-start: var(--space-3); width: 2px; background: var(--color-hairline-strong); }
-  .player-contract-span[data-edge="top"]::before { top: 50%; }
-  .player-contract-span[data-edge="bottom"]::before { bottom: 50%; }
-  .player-contract-span[data-edge="single"]::before { top: 50%; bottom: 50%; }
-  .player-contract-span:is([data-edge="top"], [data-edge="bottom"], [data-edge="single"])::after { content: ""; position: absolute; inset-inline-start: calc(var(--space-3) - 3px); top: calc(50% - 4px); width: 8px; height: 8px; border-radius: var(--radius-pill); background: var(--color-text-tertiary); }
-  .player-contract-span.is-current[data-edge]::before, .player-contract-span.is-current[data-edge]::after { background: var(--color-accent); }
+  /* Contract brackets: a rail on the seam between the pinned Season column and the Deal column,
+     down the seasons one contract covers, labelled on its newest, with that contract's Deal cells
+     shaded in its color. Drawn from the pinned cell so it
+     paints above the Deal cells. A season outside any placed contract has no rail or shade. */
+  .player-contract-grid [data-tone="current"] { --contract-tone: var(--color-accent); }
+  .player-contract-grid [data-tone="1"] { --contract-tone: var(--color-trend-1); }
+  .player-contract-grid [data-tone="2"] { --contract-tone: var(--color-trend-2); }
+  .player-contract-grid [data-tone="3"] { --contract-tone: var(--color-trend-3); }
+  .player-ref-grid tbody td.player-contract-span { padding-inline: var(--space-4) var(--space-3); text-align: left; }
+  .player-ref-grid tbody td.player-contract-span[data-tone] { background: color-mix(in srgb, var(--contract-tone) 10%, var(--color-table-well)); }
+  .player-ref-grid tbody tr:hover td.player-contract-span[data-tone] { background: color-mix(in srgb, var(--contract-tone) 16%, var(--color-table-well)); }
+  /* A rail the full height of each cell, with a short crossbar at each contract's newest and oldest
+     ends; the oldest end's crossbar covers the row line, so two contracts meet as a double tick. */
+  .player-contract-season[data-edge]::before { content: ""; position: absolute; inset-block: 0 -1px; inset-inline-end: -1px; width: 2px; background: var(--contract-tone, var(--color-hairline-strong)); }
+  .player-contract-season:is([data-edge="top"], [data-edge="bottom"], [data-edge="single"])::after { content: ""; position: absolute; inset-block: 0 -1px; inset-inline-end: -5px; width: 10px; border-color: var(--contract-tone, var(--color-hairline-strong)); border-style: solid; border-width: 0; }
+  .player-contract-season:is([data-edge="top"], [data-edge="single"])::after { border-top-width: 2px; }
+  .player-contract-season:is([data-edge="bottom"], [data-edge="single"])::after { border-bottom-width: 2px; }
+  /* The rail overhangs the pinned Season cells, so those body cells sit on the base layer:
+     still above the unpositioned data cells, but under the sticky header and total rows. */
+  .player-contract-grid tbody th.player-ref-grid-lead { z-index: var(--z-base); }
   .player-contract-span-label, .player-contract-unplaced { display: flex; flex-direction: column; min-width: 0; }
   .player-contract-unplaced .player-contract-span-name { color: var(--color-text-secondary); font-weight: 500; }
   .player-ref-grid td .player-contract-unplaced small { overflow: hidden; text-overflow: ellipsis; color: var(--color-text-tertiary); }

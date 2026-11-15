@@ -3,7 +3,7 @@ import { Icon } from "./ui/icon";
 import { TeamLogo } from "./team-logo";
 import teamCatalog from "@/lib/team-branding.json";
 import { formatDate } from "@/lib/format-date";
-import type { PlayerBio, PlayerContractSpan, PlayerGuarantee, PlayerReferenceEvent, PlayerSalary } from "@/lib/types";
+import type { PlayerBio, PlayerContractLengthSource, PlayerContractSpan, PlayerGuarantee, PlayerReferenceEvent, PlayerSalary, PlayerUnplacedSigning } from "@/lib/types";
 
 type Reference = NonNullable<PlayerBio["reference"]>;
 const TEAM_ARTWORK = new Set(teamCatalog.teams.map(team => team.tricode));
@@ -57,9 +57,10 @@ function Terms({ row }: { row: PlayerSalary }) {
   if (!row.option && !row.guarantee) return null;
   const guarantee = row.guarantee;
   return <span className="player-contract-terms">
-    {row.option && <span className={`player-contract-option is-${row.option}`}>{row.option === "player" ? "Player option" : "Team option"}</span>}
+    {row.option && <span className={`player-contract-option is-${row.option}`}>{row.option === "player" ? "Player Option" : "Team Option"}</span>}
+    {row.option && guarantee && <span className="player-contract-terms-dot" aria-hidden="true">·</span>}
     {guarantee?.basis ? <a className="player-contract-guaranteed" href={guarantee.source_url} target="_blank" rel="noreferrer"
-      title={`${DERIVED_GUARANTEE[guarantee.basis]} · finance report as of ${formatDate(guarantee.as_of)}`}>Fully guaranteed</a>
+      title={`${DERIVED_GUARANTEE[guarantee.basis]} · finance report as of ${formatDate(guarantee.as_of)}`}>Fully Guaranteed</a>
       : guarantee && <span>Guaranteed <Guarantee value={guarantee} /></span>}
   </span>;
 }
@@ -71,6 +72,44 @@ const SPAN_END: Record<string, string> = {
   last_reported_season: "Ends with the last reported salary",
 };
 
+const SPAN_START: Record<string, string> = {
+  previous_contract: "Starts after the contract it extends",
+  current_contract: "Counted back from the current contract's last season",
+};
+
+const LENGTH_SOURCE: Record<PlayerContractLengthSource, string> = {
+  stated: "Length stated by Basketball-Reference",
+  rookie_scale: "A rookie scale contract is four seasons by the CBA",
+  ten_day: "A 10-day contract falls within one season",
+  exhibit_10: "An Exhibit 10 contract is one season by the CBA",
+  wikipedia: "Length stated in the player's Wikipedia article",
+};
+
+const ARTICLE_TITLE = "Stated in the player's Wikipedia article (CC BY-SA 4.0); Basketball-Reference gives no length";
+const ADDED_TITLE = "Basketball-Reference does not list this signing; it is stated in the player's Wikipedia article (CC BY-SA 4.0)";
+
+function yearsLabel(years: number) { return `${years} ${years === 1 ? "year" : "years"}`; }
+
+/** Wikipedia's terms for a signing whose length Basketball-Reference left out, linked to the article. */
+function ArticleTerms({ terms, url }: { terms: string; url: string | null | undefined }) {
+  return url ? <a href={url} target="_blank" rel="noreferrer" title={ARTICLE_TITLE}>{terms}</a> : <>{terms}</>;
+}
+
+/** A signing's label: its source wording, the article's terms where they filled the length. */
+function SigningName({ signing, current = false }: { signing: Pick<PlayerContractSpan, "kind" | "description" | "terms" | "source_url">; current?: boolean }) {
+  return <span className="player-contract-span-name">
+    {current && <strong>Current · </strong>}
+    {signing.kind === "extension" && !/extension/i.test(signing.description) ? `Extension: ${signing.description}` : signing.description}
+    {signing.terms && <> · <ArticleTerms terms={signing.terms} url={signing.source_url} /></>}
+  </span>;
+}
+
+/** A signing Basketball-Reference does not list carries a link to the article it came from. */
+function AddedFrom({ signing }: { signing: Pick<PlayerContractSpan, "source" | "source_url"> }) {
+  if (signing.source !== "wikipedia") return null;
+  return <> · {signing.source_url ? <a href={signing.source_url} target="_blank" rel="noreferrer" title={ADDED_TITLE}>from Wikipedia</a> : "from Wikipedia"}</>;
+}
+
 /** The contract covering a salary row: same season, and the signing team when two share it. */
 function spanFor(spans: PlayerContractSpan[], salary: PlayerSalary): number {
   const covering = spans.map((span, i) => ({ span, i })).filter(({ span }) => span.start_season <= salary.season && salary.season <= span.end_season);
@@ -78,28 +117,43 @@ function spanFor(spans: PlayerContractSpan[], salary: PlayerSalary): number {
   return (team ?? covering[covering.length - 1])?.i ?? -1;
 }
 
-type UnplacedSigning = NonNullable<Reference["unplaced_signings"]>[number];
+type UnplacedSigning = PlayerUnplacedSigning;
+
+/**
+ * Which part of an unbracketed signing is missing. A length the label does not already show (one
+ * the CBA fixes) is spelled out; a stated or article length is already in the label.
+ */
+function missingPart(signing: UnplacedSigning): string {
+  const shown = signing.length_source === "stated" || Boolean(signing.terms) || signing.source === "wikipedia";
+  const length = signing.years && !shown ? `${yearsLabel(signing.years)} · ` : "";
+  if (signing.kind === "extension") return signing.years ? `${length}first season not reported` : "Length and first season not reported";
+  return signing.years ? `${length}seasons not grouped` : "Length not reported";
+}
 
 /** A signing with no bracket: what is known, and which end is missing. */
 function UnplacedNote({ signing }: { signing: UnplacedSigning }) {
-  const missing = signing.kind === "extension" ? "start not reported" : "end not reported";
+  const missing = missingPart(signing);
   return <span className="player-contract-unplaced" title={`${signing.description} · signed ${formatDate(signing.signed_date)} · ${missing}, so its seasons are not grouped`}>
-    <span className="player-contract-span-name">{signing.kind === "extension" && !/extension/i.test(signing.description) ? `Extension: ${signing.description}` : signing.description}</span>
-    <small>Signed {formatDate(signing.signed_date)} · {missing}</small>
+    <SigningName signing={signing} />
+    <small>Signed {formatDate(signing.signed_date)} · {missing}<AddedFrom signing={signing} /></small>
   </span>;
 }
 
 /** One row's piece of a contract's bracket; the newest row of each contract carries its label. */
-function SpanCell({ span, edge, unplaced }: {
-  span: PlayerContractSpan | undefined; edge: "top" | "middle" | "bottom" | "single" | null; unplaced: UnplacedSigning[];
+function SpanCell({ span, edge, tone, unplaced }: {
+  span: PlayerContractSpan | undefined; edge: "top" | "middle" | "bottom" | "single" | null; tone: string | undefined; unplaced: UnplacedSigning[];
 }) {
   const notes = unplaced.map(signing => <UnplacedNote key={signing.signed_date} signing={signing} />);
   if (!span || !edge) return <td className="player-contract-span">{notes}</td>;
   const label = edge === "top" || edge === "single";
-  return <td className={`player-contract-span${span.current ? " is-current" : ""}`} data-edge={edge}>
-    {label && <span className="player-contract-span-label" title={`${span.description} · signed ${formatDate(span.signed_date)} · ${SPAN_END[span.end_basis ?? ""] ?? ""}`}>
-      <span className="player-contract-span-name">{span.current && <strong>Current · </strong>}{span.kind === "extension" && !/extension/i.test(span.description) ? `Extension: ${span.description}` : span.description}</span>
-      <small>{span.start_season === span.end_season ? span.start_season : `${span.start_season} to ${span.end_season}`} · signed {formatDate(span.signed_date)}</small>
+  const basis = [
+    SPAN_START[span.start_basis ?? ""], SPAN_END[span.end_basis ?? ""],
+    span.length_source ? LENGTH_SOURCE[span.length_source] : undefined, span.source === "wikipedia" ? ADDED_TITLE : undefined,
+  ].filter(Boolean).join(" · ");
+  return <td className="player-contract-span" data-tone={tone}>
+    {label && <span className="player-contract-span-label" title={`${span.description} · signed ${formatDate(span.signed_date)}${basis ? ` · ${basis}` : ""}`}>
+      <SigningName signing={span} current={span.current} />
+      <small>{span.start_season === span.end_season ? span.start_season : `${span.start_season} to ${span.end_season}`} · signed {formatDate(span.signed_date)}<AddedFrom signing={span} /></small>
     </span>}
     {notes}
   </td>;
@@ -140,6 +194,13 @@ function ContractTable({ reference, contract, history, events }: {
     const top = owners[i - 1] !== owners[i], bottom = owners[i + 1] !== owners[i];
     return top && bottom ? "single" : top ? "top" : bottom ? "bottom" : "middle";
   };
+  // Each contract has its own color: the current one gold, earlier ones cycling three series
+  // colors newest first, so neighbouring contracts never share a color.
+  const tones = new Map<number, string>();
+  for (const owner of owners) {
+    if (owner < 0 || tones.has(owner)) continue;
+    tones.set(owner, spans[owner].current ? "current" : String(([...tones.values()].filter(t => t !== "current").length % 3) + 1));
+  }
   const showCap = rows.some(({ salary }) => salary.share_of_cap != null);
   const salaryColumns = showCap ? 3 : 2;
   const columns = 2 + salaryColumns + 1;
@@ -149,7 +210,7 @@ function ContractTable({ reference, contract, history, events }: {
   const shown = new Set<string>();
   return <div className="player-ref-grid-frame">
     <div className="player-ref-grid-scroll" role="region" aria-label="Contract table scroll area" tabIndex={0}>
-      <table className="player-ref-grid" aria-label="Contract and salary history by season">
+      <table className="player-ref-grid player-contract-grid" aria-label="Contract and salary history by season">
         {/* Fixed, equal data columns: each group label centers over its columns (row 2, 66). */}
         <colgroup>
           <col className="player-ref-grid-lead-column" />
@@ -180,8 +241,9 @@ function ContractTable({ reference, contract, history, events }: {
             const seasonEvents = firstOfSeason ? bySeason.get(salary.season) ?? [] : [];
             shown.add(salary.season);
             return <tr key={`${current ? "c" : "h"}:${salary.season}:${salary.team_code}:${i}`}>
-              <th scope="row" className="player-ref-grid-lead">{salary.season}</th>
-              <SpanCell span={spans[owners[i]]} edge={edgeOf(i)} unplaced={firstOfSeason ? unplacedSignings.filter(signing => signing.season === salary.season) : []} />
+              <th scope="row" className="player-ref-grid-lead player-contract-season"
+                data-edge={edgeOf(i) ?? undefined} data-tone={tones.get(owners[i])}>{salary.season}</th>
+              <SpanCell span={spans[owners[i]]} edge={edgeOf(i)} tone={tones.get(owners[i])} unplaced={firstOfSeason ? unplacedSignings.filter(signing => signing.season === salary.season) : []} />
               <td className="group-start player-contract-team"><SalaryTeam row={salary} /></td>
               {/* Terms sit under the current contract's salaries: the salary history never reports
                   them, and a played season's terms no longer apply. */}
@@ -253,8 +315,11 @@ export function PlayerReferenceSections({ reference }: { reference: Reference })
     {(contract.length > 0 || history.length > 0 || events.length > 0) && <section className="player-open-section player-reference player-glass" aria-label="Contracts">
       <header className="player-open-heading"><h2><Icon name="banknote" size={20} />Contracts</h2><span>Reported salaries · USD</span></header>
       <ContractTable reference={reference} contract={contract} history={history} events={events} />
-      <p className="player-reference-note">Seasons are bracketed by contract where Basketball-Reference&apos;s signing events fix both its start and end; a signing without a known start or end is noted without a bracket. Options are reported terms. &ldquo;Fully guaranteed&rdquo; means the reported remaining guaranteed total equals those seasons&apos; salaries; otherwise a dash means unknown, and a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s official NBA salary cap release where retained, otherwise Basketball-Reference&apos;s salary cap history. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
+      <p className="player-reference-note">Seasons are bracketed by contract where its start and end are known: from Basketball-Reference&apos;s signing events, the CBA&apos;s fixed lengths (rookie scale, 10-day, Exhibit 10), and lengths or signings the player&apos;s Wikipedia article states where Basketball-Reference gives none. Where counting forward would run past the current contract (an extension that replaced an option year), the extensions are counted back from its last season. A signing whose start or end is still unknown is noted without a bracket, saying which is missing. Options are reported terms. &ldquo;Fully Guaranteed&rdquo; means the reported remaining guaranteed total equals those seasons&apos; salaries; otherwise a dash means unknown, and a salary without an option is not confirmed guaranteed. Cap shares use each season&apos;s official NBA salary cap release where retained, otherwise Basketball-Reference&apos;s salary cap history. Career earnings total reported salaries and may be incomplete; they are not verified cash earned. Events sit in the NBA season (July to June) of their date.</p>
       <Credit reference={reference} anchor="all_contract" />
+      {reference.contract_terms_source && <p className="player-reference-credit">
+        <a href={reference.contract_terms_source.url} target="_blank" rel="noreferrer">Wikipedia: {reference.contract_terms_source.title}</a> (CC BY-SA 4.0) · Contract terms Basketball-Reference does not state · As of {formatDate(reference.contract_terms_source.as_of)}
+      </p>}
     </section>}
     {transactions.length > 0 && <section className="player-open-section player-reference player-glass" aria-label="Transaction News">
       <header className="player-open-heading"><h2><Icon name="swap" size={20} />Transaction News</h2><span>{transactions.length} dated reports and notes</span></header>

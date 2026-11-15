@@ -743,11 +743,21 @@ class PlayerContractSpan(BaseModel):
     end_season: str
     # stated_length, next_contract (the next one began), current_contract, last_reported_season
     end_basis: str | None
+    # signed (its signing season), previous_contract (after the one in force), current_contract
+    # (counted back from the current contract's last season)
+    start_basis: str = "signed"
     signed_date: date
     kind: Literal["signing", "extension"]
     length_stated: bool
+    # stated, rookie_scale, ten_day, exhibit_10 (by the CBA) or wikipedia
+    length_source: str | None = None
     team_code: str | None
     description: str
+    # Wikipedia's terms ("4-yr/$164.3M") when they supplied a length the source left out.
+    terms: str | None = None
+    # wikipedia: a signing Basketball-Reference does not list, from the player's article.
+    source: Literal["basketball_reference", "wikipedia"] = "basketball_reference"
+    source_url: str | None = None
     current: bool
 
 
@@ -758,6 +768,21 @@ class PlayerUnplacedSigning(BaseModel):
     season: str
     kind: Literal["signing", "extension"]
     description: str
+    years: int | None = None
+    length_source: str | None = None
+    terms: str | None = None
+    source: Literal["basketball_reference", "wikipedia"] = "basketball_reference"
+    source_url: str | None = None
+
+
+class PlayerContractTermsSource(BaseModel):
+    """The Wikipedia article reading that supplied contract terms (CC BY-SA 4.0)."""
+
+    name: str
+    title: str
+    url: str
+    revision_id: int | None
+    as_of: datetime
 
 
 class PlayerGameHighValue(BaseModel):
@@ -806,6 +831,7 @@ class PlayerBioReference(BaseModel):
     transactions: list[PlayerReferenceEvent] = Field(default_factory=list)
     contract_spans: list[PlayerContractSpan] = Field(default_factory=list)
     unplaced_signings: list[PlayerUnplacedSigning] = Field(default_factory=list)
+    contract_terms_source: PlayerContractTermsSource | None = None
     game_highs: list[PlayerGameHighs] = Field(default_factory=list)
     remaining_guaranteed: PlayerGuarantee | None = None
     college: PlayerCollege | None = None

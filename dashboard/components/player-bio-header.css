@@ -38,7 +38,7 @@
   .player-bio-combine dt { color: color-mix(in srgb, var(--color-on-bg-tertiary) 75%, var(--color-bg)); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
   .player-bio-facts dd { display: flex; flex-direction: column; gap: var(--space-0-5); margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .player-bio-facts dd small { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 400; }
-  .player-bio-team { display: inline-flex; align-items: center; gap: var(--space-1); vertical-align: top; }
+  .player-bio-team { display: inline-flex; align-items: center; gap: calc(var(--space-1) + var(--space-0-5)); vertical-align: top; }
   .player-bio-country { display: inline-flex; align-items: center; gap: var(--space-2); }
   .player-bio-college { display: inline-flex; align-items: center; gap: var(--space-2); vertical-align: top; }
   .player-bio-college img { flex: none; object-fit: contain; }
@@ -65,8 +65,8 @@
     display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; padding: var(--space-4);
   }
   .player-summary-stat dt { display: flex; justify-content: space-between; gap: var(--space-2); color: var(--color-text-secondary);
-    font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
-  .player-summary-rank { color: var(--color-accent); letter-spacing: 0; text-transform: none; }
+    font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .player-summary-rank { color: var(--color-accent); font-size: var(--text-xs); letter-spacing: 0; text-transform: none; }
   .player-summary-stat dd { display: contents; }
   .player-summary-value { color: var(--color-text); font-size: var(--text-2xl); line-height: var(--text-2xl-lh); font-weight: 650; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
   .player-summary-bar { position: relative; height: 3px; overflow: hidden; border-radius: var(--radius-pill); background: var(--color-hairline-strong); }
