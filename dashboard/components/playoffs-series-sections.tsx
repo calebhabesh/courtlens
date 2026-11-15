@@ -22,6 +22,8 @@ import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 import { PlayerAvatar } from "./ui/identity";
 import { Segmented } from "./ui/kit";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 function vars(team: string, season: string): CSSProperties | undefined {
   const accent = teamAccent(team, season);
@@ -29,8 +31,11 @@ function vars(team: string, season: string): CSSProperties | undefined {
 }
 
 /** A team code with its logo beside it, so teams scan by mark as well as letters (row 8, 14). */
-export function TeamCode({ team, code, season, size = 16 }: { team: string; code: string; season: string; size?: number }) {
-  return <span className="ps-team-code"><TeamLogo team={team} season={season} size={size} />{code}</span>;
+/** A series team: logo and code, linked to the team's playoffs that season (site links SL04).
+ * `link={false}` inside a control (a segmented option); `phase` for regular-season meetings. */
+export function TeamCode({ team, code, season, size = 16, link = true, phase = "playoffs" }: { team: string; code: string; season: string; size?: number; link?: boolean; phase?: string }) {
+  const body = <><TeamLogo team={team} season={season} size={size} /><span className="entity-link-text">{code}</span></>;
+  return link ? <TeamLink team={team} scope={{ season, phase }} variant="block" className="ps-team-code">{body}</TeamLink> : <span className="ps-team-code">{body}</span>;
 }
 
 type TeamKey = "team1" | "team2";
@@ -59,7 +64,7 @@ export function SeriesMatchupsPanel({ detail, matchups }: { detail: PlayoffSerie
   const opponentLabel = side === "offense" ? "Defender" : "Scorer";
   const teamOption = (key: TeamKey) => ({
     value: key,
-    label: <TeamCode team={detail[key].team_id} code={detail[key].tricode} season={detail.season} />
+    label: <TeamCode team={detail[key].team_id} code={detail[key].tricode} season={detail.season} link={false} />
   });
 
   return (
@@ -87,7 +92,7 @@ export function SeriesMatchupsPanel({ detail, matchups }: { detail: PlayoffSerie
           <div className="ps-mu-card" style={vars(team.team_id, detail.season)}>
             <PlayerAvatar playerId={focus.player_id} name={focus.player_name} team={team.team_id} size="lg" era={seasonEra(detail.season, team.tricode)} />
             <div>
-              <Link className="ps-mu-name" href={`/players/${focus.player_id}?season=${detail.season}&phase=playoffs`}>{focus.player_name}</Link>
+              <Link className="ps-mu-name entity-link" href={playerHref(focus.player_id, { season: detail.season, phase: "playoffs" })} prefetch={false}>{focus.player_name}</Link>
               <p>{side === "offense" ? "Faced" : "Guarded"} <strong style={vars(opponent.team_id, detail.season)}><TeamCode team={opponent.team_id} code={opponent.tricode} season={detail.season} /></strong> {side === "offense" ? "defenders" : "scorers"} across <strong>{Math.round(focus.possessions)}</strong> possessions in {phaseGames} game{phaseGames === 1 ? "" : "s"}</p>
             </div>
           </div>
@@ -166,7 +171,7 @@ function ImpactCell({ player, value, side, season, era, ahead }: { player: Serie
     <div className={`ps-impact-cell ${ahead ? "is-ahead" : ""}`} data-side={side} style={vars(player.team_id, season)}>
       <PlayerAvatar playerId={player.player_id} name={player.player_name} team={player.team_id} size="md" era={era} />
       <span className="ps-impact-text">
-        <Link href={`/players/${player.player_id}?season=${season}`}>{player.player_name}</Link>
+        <Link className="entity-link" href={playerHref(player.player_id, { season })} prefetch={false}>{player.player_name}</Link>
         <span className={value == null ? "" : value >= 0 ? "is-good" : "is-bad"}>{signed(value)}</span>
       </span>
     </div>

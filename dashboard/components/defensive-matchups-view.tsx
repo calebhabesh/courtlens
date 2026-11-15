@@ -15,6 +15,7 @@ import { Select } from "./ui/select";
 import { StatTile } from "./ui/stat-tile";
 import { fmt, getDefense, pct, signed, sourceLabel, type Defender, type DefenseView, type FeedPhase, type MatchupDetail } from "@/lib/stats-feeds";
 import { Button } from "./ui/kit";
+import { playerHref, scopeFromQuery } from "@/lib/entity-links";
 
 const TABLE_LIMIT = 50;
 const COHORT = "qualified defenders in this season, phase and shot category";
@@ -25,7 +26,7 @@ export function MatchupTable({ detail, caption, scope }: { detail: MatchupDetail
     <table className="data-table"><caption>{caption}</caption>
       <thead><tr><th>{other}</th><th className="num">Games</th><th className="num">Matchup min</th><th className="num">Partial poss.</th><th className="num">Points</th><th className="num">Pts / 100</th><th className="num">FG</th><th className="num">3P</th></tr></thead>
       <tbody>{detail.rows.length ? detail.rows.map(row => <tr key={row.player_id}>
-        <th scope="row"><Link href={`/players/${row.player_id}?${scope}`}>{row.player_name}</Link></th>
+        <th scope="row"><Link className="entity-link" href={playerHref(row.player_id, scopeFromQuery(scope))} prefetch={false}>{row.player_name}</Link></th>
         <td className="num">{row.games ?? "—"}</td><td className="num">{fmt(row.matchup_minutes)}</td><td className="num">{fmt(row.partial_possessions)}</td>
         <td className="num">{fmt(row.player_points, 0)}</td><td className="num">{fmt(row.points_per_100)}</td>
         <td className="num">{row.fga == null ? "—" : `${fmt(row.fgm, 0)}/${fmt(row.fga, 0)}`}</td><td className="num">{row.fg3a == null ? "—" : `${fmt(row.fg3m, 0)}/${fmt(row.fg3a, 0)}`}</td>
@@ -60,11 +61,11 @@ function Body({ data, setFocus, scope }: { data: DefenseView; setFocus: (id: str
     <RankedBars title="Makes below expected, top 12" measure="makes below expected" source={source}
       sample={`${qualified.length} qualified defenders · ${data.categories.find(c => c.value === data.category)?.label ?? data.category}`}
       note="Expected = the shooters' normal FG% on these shots. Descriptive, not blame or credit."
-      items={top.map(p => ({ key: p.player_id, name: p.player_name, label: <Link href={`/players/${p.player_id}?${scope}`}>{p.player_name}</Link>, detail: `${p.team_tricode ?? "—"} · ${fmt(p.defended_fga, 0)} shots · ${pct(p.defended_fg_pct)} vs ${pct(p.expected_fg_pct)}`, value: p.makes_below_expected, formatted: fmt(p.makes_below_expected) }))} />
+      items={top.map(p => ({ key: p.player_id, name: p.player_name, label: <Link className="entity-link" href={playerHref(p.player_id, scopeFromQuery(scope))} prefetch={false}>{p.player_name}</Link>, detail: `${p.team_tricode ?? "—"} · ${fmt(p.defended_fga, 0)} shots · ${pct(p.defended_fg_pct)} vs ${pct(p.expected_fg_pct)}`, value: p.makes_below_expected, formatted: fmt(p.makes_below_expected) }))} />
     {data.detail ? <section className="panel research-section" aria-label="Who this defender guarded">
       <h2>Who {data.detail.player_name} guarded</h2>
       <div className="feed-subject">
-        <PlayerIdentity playerId={data.detail.player_id} name={data.detail.player_name} href={`/players/${data.detail.player_id}?${scope}`}
+        <PlayerIdentity playerId={data.detail.player_id} name={data.detail.player_name} href={playerHref(data.detail.player_id, scopeFromQuery(scope))}
           era={seasonEra(data.season, data.players.find(p => p.player_id === data.detail!.player_id)?.team_tricode)}
           subtitle={data.players.find(p => p.player_id === data.detail!.player_id)?.team_tricode ?? undefined} />
         <ExampleNote name={data.detail.player_name} rule={data.focus_rule} />
@@ -85,7 +86,7 @@ function Body({ data, setFocus, scope }: { data: DefenseView; setFocus: (id: str
           <caption>Shaded cells are percentiles among {COHORT}; muted cells are small samples.</caption>
           <thead><tr><th>Defender</th><th className="num">Games</th><th className="num">Defended FGA</th><th className="num">FG% allowed</th><th className="num">Expected</th><th className="num">Diff (pts)</th><th className="num">Makes saved</th><th className="num">Contests / G</th><th className="num">Deflections / G</th><th className="num">Matchup pts / 100</th></tr></thead>
           <tbody>{shown.map(p => <tr key={p.player_id}>
-            <th scope="row"><Link href={`/players/${p.player_id}?${scope}`}>{p.player_name}</Link><small className="feed-cell-note">{p.team_tricode ?? "—"}{p.qualified ? "" : " · small sample"}</small></th>
+            <th scope="row"><Link className="entity-link" href={playerHref(p.player_id, scopeFromQuery(scope))} prefetch={false}>{p.player_name}</Link><small className="feed-cell-note">{p.team_tricode ?? "—"}{p.qualified ? "" : " · small sample"}</small></th>
             <td className="num">{p.games ?? "—"}</td><td className="num">{fmt(p.defended_fga, 0)}</td>
             {cell(p, "fg_pct_difference", pct(p.defended_fg_pct), "FG% allowed")}
             <td className="num">{pct(p.expected_fg_pct)}</td>

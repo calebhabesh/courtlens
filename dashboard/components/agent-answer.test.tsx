@@ -1,10 +1,12 @@
 import { renderToStaticMarkup } from "react-dom/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { AgentResultBlock, AgentTurnResponse } from "../lib/assistant-v3.generated";
 import { agentCellText, resultColumnLabel, reviewDestination, safeAgentUrl, sourceDestination, sourceLabel } from "../lib/agent-answer";
 import { parsePositionedMarkdown } from "../lib/markdown";
 import { AgentAnswer } from "./agent-answer";
 import { AssistantStatusCard } from "./assistant-status-card";
+
+vi.mock("next/navigation", () => ({ usePathname: () => "/ask" }));
 
 const hash = "a".repeat(64);
 const block: AgentResultBlock = { context: { release_id: "retained", season: "2025-26", phase: "regular_season", before_date: "2026-07-01" }, result: { step_id: "r1", operation: "query", operation_version: "fixture", arguments: {}, operation_hash: hash, result_hash: hash, data: {}, rows: Array.from({ length: 12 }, (_, i) => ({ rank: i + 1, player_name: `Player ${i}`, team_tricodes: ["SAS"], blk_per_game: i === 1 ? null : 0 })), evidence: [] } };
@@ -96,5 +98,65 @@ describe("AG05 answer components", () => {
     const rendered = renderToStaticMarkup(<AssistantStatusCard status={{ configured: true, provider: "openai", model: "fixture-model", limited_mode: false, limits: { max_steps: 6, max_web_searches: 3, max_tokens: 60000, turn_timeout_seconds: 60, max_rounds: 1, max_total_tool_calls: 8, max_rows_per_call: 25, max_total_rows: 200, timeout_seconds: 45 }, allowed_tools: [], privacy_notice: "Local history", setup_instructions: "Server environment only" }} />);
     expect(rendered).toContain("openai"); expect(rendered).toContain("fixture-model"); expect(rendered).toContain("60,000 tokens"); expect(rendered).toContain("<dd>No</dd>");
     expect(renderToStaticMarkup(<AssistantStatusCard status={null} />)).toContain("configuration is unavailable");
+  });
+
+  describe("SL06 links in answers", () => {
+    const players = (rows: Record<string, unknown>[], context: AgentResultBlock["context"] = block.context): AgentResultBlock => ({ context, result: { ...block.result, rows } });
+    const lebron = { player_id: "2544", player_name: "LeBron James", pts_per_game: 25.7 };
+    const davis = { player_id: "203076", player_name: "Anthony Davis", pts_per_game: 24.7 };
+    const anchors = (rendered: string) => [...rendered.matchAll(/<a [^>]*href="([^"]+)"[^>]*>([^<]*)<\/a>/g)].map(match => [match[1], match[2]]);
+    const prose = (rendered: string) => rendered.slice(0, rendered.indexOf("Assumption:"));
+
+    it("links a row's name cell through its id, in the result's season", () => {
+      const rendered = html({ results: [players([lebron, davis])], answer: { text: "Two scorers." } });
+      expect(anchors(rendered)).toEqual(expect.arrayContaining([["/players/2544?season=2025-26", "LeBron James"], ["/players/203076?season=2025-26", "Anthony Davis"]]));
+      expect(rendered).toMatch(/<td title="LeBron James"><a class="entity-link"/);
+      // Ids never show; a row without an id (the SAS code, the base fixture's names) stays plain.
+      expect(html()).not.toMatch(/href="\/players\//); expect(html()).toContain(">SAS</td>");
+    });
+
+    it("links profile and team facts through their nested ids, carrying the playoffs", () => {
+      const profile = players([{ player: { id: "2544", name: "LeBron James" }, latest_team: { id: "1610612747", tricode: "LAL", name: "Los Angeles Lakers" } }], { ...block.context, phase: "playoffs" });
+      const rendered = html({ results: [{ ...profile, result: { ...profile.result, operation: "profile" } }], answer: { text: "Profile." } });
+      expect(anchors(rendered)).toEqual(expect.arrayContaining([["/players/2544?season=2025-26&amp;phase=playoffs", "LeBron James"]]));
+      const team = players([{ team: { id: "1610612747", tricode: "LAL", name: "Los Angeles Lakers" } }], { season: "2024-25" });
+      expect(anchors(html({ results: [{ ...team, result: { ...team.result, operation: "team" } }], answer: { text: "The Los Angeles Lakers." } })).filter(([, text]) => text === "Los Angeles Lakers")).toEqual([["/teams/1610612747?season=2024-25", "Los Angeles Lakers"], ["/teams/1610612747?season=2024-25", "Los Angeles Lakers"]]);
+    });
+
+    it("links only the first exact full-name mention, with the prose look", () => {
+      const rendered = prose(html({ results: [players([lebron, davis])], answer: { text: "**LeBron James** led; LeBron James again, then LeBron and Anthony Davis's 24.7. `Anthony Davis` stays code.\n\n- LeBron James in a list." } }));
+      expect(anchors(rendered)).toEqual([["/players/2544?season=2025-26", "LeBron James"], ["/players/203076?season=2025-26", "Anthony Davis"]]);
+      expect(rendered).toContain('<strong><a class="entity-link is-prose" href="/players/2544?season=2025-26">LeBron James</a></strong>');
+      expect(rendered).toContain("<code>Anthony Davis</code>");
+    });
+
+    it("leaves a name plain when two ids share it, when no result has it, or inside a longer word", () => {
+      const twins = players([{ player_id: "1", player_name: "Marcus Morris", pts_per_game: 1 }, { player_id: "2", player_name: "Marcus Morris", pts_per_game: 2 }, lebron]);
+      const rendered = html({ results: [twins], answer: { text: "Marcus Morris and Kevin Durant; LeBron Jameson is not him." } });
+      expect(anchors(prose(rendered))).toEqual([]);
+      // Each row still links through its own id.
+      expect(anchors(rendered).filter(([, text]) => text === "Marcus Morris").map(([href]) => href)).toEqual(["/players/1?season=2025-26", "/players/2?season=2025-26"]);
+    });
+
+    it("keeps the unverified marking on its positions with a link inside, and never splits a name", () => {
+      const text = "🏀 LeBron James scored 99.9 points. Anthony Davis played.";
+      const chars = Array.from(text); const start = chars.indexOf("L"); const end = Array.from(text.slice(0, text.indexOf(" Anthony"))).length;
+      const rendered = prose(html({ results: [players([lebron, davis])], answer: { text }, provenance: { unsupported_numbers: ["99.9"], unverified_sentences: [{ text: chars.slice(start, end).join(""), start, end, numbers: ["99.9"] }] } }));
+      expect(rendered).toMatch(/<span class="agent-unverified"[^>]*><a class="entity-link is-prose" href="\/players\/2544\?season=2025-26">LeBron James<\/a> scored 99.9 points.<span class="agent-unverified-label"> unverified/);
+      expect(rendered).toContain('</span> <a class="entity-link is-prose" href="/players/203076?season=2025-26">Anthony Davis</a> played.');
+      expect(rendered).not.toMatch(/agent-unverified[^>]*>🏀/);
+      // A marking boundary inside the first mention: that mention stays plain and the next one links.
+      const split = "LeBron James. LeBron James again.";
+      const cut = Array.from("LeBron ").length;
+      const marked = prose(html({ results: [players([lebron])], answer: { text: split }, provenance: { unverified_sentences: [{ text: "LeBron ", start: 0, end: cut, numbers: [] }] } }));
+      expect(anchors(marked)).toEqual([["/players/2544?season=2025-26", "LeBron James"]]);
+      expect(marked).toMatch(/James\. <a class="entity-link is-prose"/);
+    });
+
+    it("drops the season when results disagree on it, and links nothing without results", () => {
+      const rendered = prose(html({ results: [players([lebron]), players([lebron], { season: "2019-20" })], answer: { text: "LeBron James." } }));
+      expect(anchors(rendered)).toEqual([["/players/2544", "LeBron James"]]);
+      expect(anchors(prose(html({ results: [], answer: { text: "LeBron James." } })))).toEqual([]);
+    });
   });
 });

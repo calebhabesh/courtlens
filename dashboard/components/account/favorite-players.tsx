@@ -6,6 +6,7 @@ import { PlayerAvatar } from "../ui/identity";
 import { TeamLogo } from "../team-logo";
 import { seasonEra } from "../../lib/portrait-source";
 import { useAccount } from "../../lib/account-context";
+import { playerHref } from "@/lib/entity-links";
 
 /**
  * Finish plan F04, alignment row 0: the reference site's Favorite Players list. Each player shows the
@@ -42,7 +43,7 @@ export function FavoritePlayersList({ onNavigate }: { onNavigate?: () => void })
             const name = player.name ?? `Player ${player.player_id}`;
             return (
               <li key={player.player_id} className="favorite-players-row">
-                <Link href={`/players/${player.player_id}`} className="favorite-players-link" onClick={onNavigate}>
+                <Link href={playerHref(player.player_id)} prefetch={false} className="favorite-players-link" onClick={onNavigate}>
                   {/* No logo badge on the photo: the logo sits beside the team code below. */}
                   <PlayerAvatar playerId={player.player_id} name={name} size="sm"
                     era={seasonEra(player.season, player.team)} />

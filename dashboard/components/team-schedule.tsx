@@ -2,6 +2,7 @@
 
 import { useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
+import { HashTarget } from "./hash-target";
 import { useSearchParams } from "next/navigation";
 import { gameStatus, type LiveGame, type LiveTeam } from "@/lib/live";
 import { useLiveRead } from "@/lib/use-live-read";
@@ -11,6 +12,10 @@ import { TeamWatermark } from "./team-watermark";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 import { IconButton, Segmented } from "./ui/kit";
+import { gameHref } from "@/lib/entity-links";
+
+/** The Live API's team route (a data read, not a page link). */
+const LIVE_TEAMS_PATH = "/teams";
 
 /** ESPN's team schedule read (`/api/live/teams/{team}/schedule`). */
 export interface TeamScheduleData { team_source_id: string; season: string; year: number; season_type: number; games: (LiveGame & { note?: string | null })[]; dropped_events: number }
@@ -79,7 +84,7 @@ function GameCell({ game, own, season }: { game: LiveGame & { note?: string | nu
   const score = won == null ? null : `${teamSide(game, own).team!.score}–${opponent!.score}`;
   const result = won == null ? null : `${won ? "W" : "L"} ${score}`;
   const title = `${home ? "vs" : "at"} ${opponent?.name ?? code}${result ? `: ${result}` : status ? `: ${status}` : ""}${game.note ? ` (${game.note})` : ""}. Open the game page.`;
-  return <Link className="team-cal-game" href={`/live/games/${game.source_id}?date=${game.slate_date}`} prefetch={false} title={title}
+  return <Link className="team-cal-game" href={gameHref({ espnId: game.source_id, date: game.slate_date })!} prefetch={false} title={title}
     data-result={won == null ? undefined : won ? "win" : "loss"} data-live={game.status === "in_progress" || undefined}>
     <span className="team-cal-opponent"><span className="team-cal-venue">{home ? "vs" : "@"}</span>
       {opponent?.tricode && <TeamLogo team={code} season={season} size={20} />}<strong>{code}</strong></span>
@@ -96,7 +101,7 @@ function GameCell({ game, own, season }: { game: LiveGame & { note?: string | nu
 export function TeamScheduleSection({ teamId, tricode, season, phase, log }: { teamId: string; tricode: string; season: string; phase: string; /** The Game Log table (admitted results). */ log: ReactNode }) {
   const params = useSearchParams();
   const [view, setView] = useState<ScheduleView>(params.get("schedule") === "log" ? "log" : "calendar");
-  const { read, error } = useLiveRead<TeamScheduleData>(`/teams/${teamId}/schedule?season=${season}&phase=${phase}`);
+  const { read, error } = useLiveRead<TeamScheduleData>(`${LIVE_TEAMS_PATH}/${teamId}/schedule?season=${season}&phase=${phase}`);
   const own = franchiseOf(tricode) ?? tricode;
   const games = read?.data?.games ?? [];
   const months = scheduleMonths(games);
@@ -124,6 +129,7 @@ export function TeamScheduleSection({ teamId, tricode, season, phase, log }: { t
   ].filter(Boolean).join(" · ");
 
   return <section id="schedule" className="player-open-section player-glass team-profile-section team-schedule" aria-label="Schedule">
+    <HashTarget id="schedule" />
     <header className="player-open-heading"><h2><Icon name="calendar" size={20} />Schedule</h2>
       <span className="team-schedule-tools">
         {view === "calendar" && summary && <span className="team-schedule-summary">{summary}</span>}

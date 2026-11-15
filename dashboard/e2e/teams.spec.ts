@@ -24,7 +24,7 @@ test("six-factor table keeps unknowns last, sorts and applies window and 3P luck
   await page.getByRole("menuitem", { name: "League 3P%" }).first().click();
   await expect(page).toHaveURL(/offenseLuck=1/);
   await expect(rows.first().locator("td").first()).toContainText("114.4");
-  await expect(rows.first().locator("a")).toHaveAttribute("href", /\/teams\/100\?season=2025-26&phase=regular_season&beforeDate=2026-04-13/);
+  await expect(rows.first().locator("a")).toHaveAttribute("href", "/teams/100?season=2025-26"); // The season travels; the table's cutoff stays behind (site links D5).
 });
 
 test("conference selector shows the league's marks and ranks within the conference", async ({ page }) => {

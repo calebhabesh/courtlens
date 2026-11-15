@@ -19,7 +19,6 @@ import { Select } from "./ui/select";
 import { Skeleton } from "./ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { downloadResearch } from "@/lib/advanced-research";
-import { buildPreservedContextUrl } from "@/lib/query-url";
 import {
   ALLOCATION_EXPORT_FILENAME, LANES, POSITION_LANES, REGULATION_TEAM_MINUTES, allocationExport, buildAllocations,
   gaugeStatus, isValidMinutes, summarize, type Allocation, type AllocationMode, type Lane
@@ -28,6 +27,7 @@ import { teamAccent } from "@/lib/team-colors";
 import { getTeamDetail } from "@/lib/workbench-api";
 import type { TeamDetailResponse, WorkbenchCatalog } from "@/lib/types";
 import { Button, IconButton, Segmented } from "./ui/kit";
+import { playerHref as buildPlayerHref } from "@/lib/entity-links";
 
 export interface RosterAllocationViewProps {
   catalog: WorkbenchCatalog | null;
@@ -115,12 +115,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
     if (playerId) move(playerId, lane);
   };
 
-  const playerHref = (playerId: string) => buildPreservedContextUrl(`/players/${playerId}`, new URLSearchParams({
-    ...(scope.releaseId ? { releaseId: scope.releaseId } : {}),
-    ...(scope.season ? { season: scope.season } : {}),
-    ...(scope.phase ? { phase: scope.phase } : {}),
-    ...(scope.beforeDate ? { beforeDate: scope.beforeDate } : {})
-  }));
+  const playerHref = (playerId: string) => buildPlayerHref(playerId, { season: scope.season, phase: scope.phase });
 
   const chip = (row: Allocation) => {
     const minutesInvalid = !isValidMinutes(row.allocation_minutes);
@@ -293,7 +288,7 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
                   <TableBody>
                     {allocations.map((row) => (
                       <TableRow key={row.player_id}>
-                        <TableCell><Link href={playerHref(row.player_id)}>{row.player_name}</Link></TableCell>
+                        <TableCell><Link className="entity-link" href={playerHref(row.player_id)} prefetch={false}>{row.player_name}</Link></TableCell>
                         <TableCell numeric>{row.games_played}</TableCell>
                         <TableCell numeric>{tenthMinutes(row.total_minutes)}</TableCell>
                         <TableCell>

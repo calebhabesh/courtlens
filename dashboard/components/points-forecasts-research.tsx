@@ -22,6 +22,8 @@ import {
 import { signed } from "@/lib/research-values";
 import type { ForecastIssuanceItem, ForecastsListResponse, PointsForecastEvaluation } from "@/lib/types";
 import { getPointsForecastEvaluation, getProspectiveForecasts } from "@/lib/workbench-api";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 /**
  * Research → Methods → Points Forecasts (workbench P7, designed in RD16), with the Evaluation Archive as its second route tab. Every number is
@@ -381,7 +383,7 @@ function LedgerGrid({ items, phone }: { items: readonly ForecastIssuanceItem[]; 
   const columns: GridColumn<ForecastIssuanceItem>[] = [
     ...(showForecast ? [
       { key: "game", label: "Game", group: "Forecast", width: "md" as const, align: "left" as const, data: (i: ForecastIssuanceItem) => ({ field: "game", value: i.target_game_date, opponent: i.target_opponent_tricode }),
-        cell: (i: ForecastIssuanceItem) => <span className="fc-game"><span>{formatDate(i.target_game_date)}</span><span className="fc-team" data-team={i.target_opponent_tricode}>vs <TeamLogo team={i.target_opponent_tricode} season={seasonOf(i.target_game_date)} size={16} />{i.target_opponent_tricode}</span></span> },
+        cell: (i: ForecastIssuanceItem) => <span className="fc-game"><span>{formatDate(i.target_game_date)}</span><span className="fc-team" data-team={i.target_opponent_tricode}>vs <TeamLink team={i.target_opponent_tricode} scope={{ season: seasonOf(i.target_game_date) }} variant="block"><TeamLogo team={i.target_opponent_tricode} season={seasonOf(i.target_game_date)} size={16} /><span className="entity-link-text">{i.target_opponent_tricode}</span></TeamLink></span></span> },
       { key: "estimate", label: "Points, 80% range", title: "The forecast and its 80% range, drawn on one scale for every row", group: "Forecast", width: "fill" as const,
         headerAfter: <span className="fc-ledger-scale" aria-hidden="true" data-field="ledger-axis" data-right={right}><span data-end="left">0</span><span data-end="right">{right}</span></span>,
         data: (i: ForecastIssuanceItem) => ({ field: "estimate", value: i.point_estimate, low: i.interval_lower, high: i.interval_upper }),
@@ -409,7 +411,7 @@ function LedgerGrid({ items, phone }: { items: readonly ForecastIssuanceItem[]; 
     {phone && <Segmented size="sm" label="Ledger columns" value={view} onChange={setView} options={[{ value: "forecast", label: "Forecast" }, { value: "result", label: "Result" }, { value: "basis", label: "Basis" }]} />}
     <StatsGrid<ForecastIssuanceItem> label="Issued forecasts" name="ledger" density="compact" height="auto" leadWidth="lg" className={phone ? "fc-grid fc-ledger fc-phone" : "fc-grid fc-ledger"} rows={items} rowKey={i => i.id}
       rowData={i => ({ id: i.id, player: i.player_id, timing: issueTiming(i) })}
-      lead={{ label: "Player", cell: i => { const season = seasonOf(i.target_game_date); return <GridPlayer playerId={i.player_id} name={i.player_name} team={i.team_tricode} season={season} era={seasonEra(season, i.team_tricode)} subtitle={i.team_tricode} href={`/players/${i.player_id}?season=${season}`} />; } }}
+      lead={{ label: "Player", cell: i => { const season = seasonOf(i.target_game_date); return <GridPlayer playerId={i.player_id} name={i.player_name} team={i.team_tricode} season={season} era={seasonEra(season, i.team_tricode)} subtitle={i.team_tricode} href={playerHref(i.player_id, { season })} />; } }}
       columns={columns} />
     <ul className="fc-key">
       <li><span className="fc-key-mark" data-mark="dot" aria-hidden="true" />Forecast</li>

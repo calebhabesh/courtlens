@@ -26,6 +26,9 @@ import {
 } from "@/lib/signal-noise";
 import { getPlayerCareer } from "@/lib/workbench-api";
 import { teamAccent } from "@/lib/team-colors";
+import Link from "next/link";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 /**
  * Research → Signal vs Noise (R03, designed in RD13). Every number is the frozen courtlens-signal-noise-v1 run's or the worked example's;
@@ -341,8 +344,8 @@ function ExampleCard({ example, seasons, onSeason, onPlayer }: { example: Player
         excludedIds={[example.player_id]} limit={10} portalDropdown dropdownMinWidth={280} autoFocus openOnFocus={false} clearable={false}
         onSelect={item => { close(); onPlayer(item.canonical_id); }} />
     </div> : <span className="sn-card-copy">
-      <a className="sn-card-name" href={`/players/${example.player_id}?season=${example.season}`}>{example.player_name}</a>
-      <span className="sn-card-sub" data-field="card-sub">{example.teams.map(t => <span key={t} className="sn-card-team" data-team={t}><TeamLogo team={t} season={example.season} size={16} />{t}</span>)}
+      <Link className="sn-card-name entity-link" href={playerHref(example.player_id, { season: example.season })} prefetch={false}>{example.player_name}</Link>
+      <span className="sn-card-sub" data-field="card-sub">{example.teams.map(t => <span key={t} className="sn-card-team" data-team={t}><TeamLink team={t} scope={{ season: example.season }} variant="block"><TeamLogo team={t} season={example.season} size={16} /><span className="entity-link-text">{t}</span></TeamLink></span>)}
         <span>{example.games} {example.games === 1 ? "game" : "games"}</span></span>
     </span>}
     <span className="sn-card-tool"><IconButton size="xs" variant="ghost" icon={open ? "close" : "search"} label={open ? "Cancel the search" : `Replace ${example.player_name}`} onClick={() => open ? close() : setOpen(true)} /></span>

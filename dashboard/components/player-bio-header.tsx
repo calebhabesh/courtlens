@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/kit";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
+import { TeamLink } from "./entity-link";
 import { PageHeader } from "./ui/panel";
 import { honours } from "@/lib/awards";
 import { countryFlag } from "@/lib/country-flags";
@@ -118,7 +119,7 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
     // non-college origin.
     { label: "Draft", value: bio?.draft ? draftPick : bio?.undrafted ? "Undrafted" : null,
       detail: draftTeam ? <span className="player-bio-team"><TeamLogo team={draftTeam} season={draftSeason} size={16} />
-        {teamName(draftTeam, draftSeason)}{origin && ` · ${origin}`}</span> : origin },
+        <TeamLink team={draftTeam} scope={{ season: draftSeason }}>{teamName(draftTeam, draftSeason)}</TeamLink>{origin && ` · ${origin}`}</span> : origin },
     { label: "Experience", value: experience, detail: ref?.debut_date ? `Debut ${formatDate(ref.debut_date)}` : null },
     { label: "College", value: college ? <span className="player-bio-college">
       {/* eslint-disable-next-line @next/next/no-img-element -- a 96 px logo the API keeps needs no image optimisation */}
@@ -146,9 +147,9 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
   // A last team is drawn as it was in the season he last played for it (the 1961-62 Warriors).
   const lastSeason = bio?.last_team?.listing_season ?? null;
   const headerTeam = listedTeam
-    ? { tricode: listedTeam, name: teamName(listedTeam), season: null }
-    : lastTeam ? { tricode: lastTeam, name: teamName(lastTeam, lastSeason), season: lastSeason }
-    : team ? { tricode: team.tricode, name: team.name, season: null } : null;
+    ? { tricode: listedTeam, name: teamName(listedTeam), season: null, linkSeason: currentSeason }
+    : lastTeam ? { tricode: lastTeam, name: teamName(lastTeam, lastSeason), season: lastSeason, linkSeason: lastSeason }
+    : team ? { tricode: team.tricode, name: team.name, season: null, linkSeason: currentSeason } : null;
   const teamPrefix = listedTeam ? "" : lastTeam ? "Last with " : "Observed with ";
   // Off every NBA roster today (the free-agency tracker's evidence): the state leads the details.
   const status = bio?.current_status;
@@ -182,7 +183,7 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
           <PageHeader title={name} className="player-bio-name" />
           {(headerTeam || details.length > 0) && <p className="player-bio-identity">
             {headerTeam && <span className="player-bio-identity-team">
-              <TeamLogo team={headerTeam.tricode} season={headerTeam.season} size={36} />{teamPrefix}{headerTeam.name}
+              <TeamLogo team={headerTeam.tricode} season={headerTeam.season} size={36} />{teamPrefix}<TeamLink team={headerTeam.tricode} scope={{ season: headerTeam.linkSeason }}>{headerTeam.name}</TeamLink>
             </span>}
             {details.length > 0 && <span className="player-bio-identity-details">{details.map(part => <span key={part.key}>{part.node}</span>)}</span>}
           </p>}

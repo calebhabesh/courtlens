@@ -65,6 +65,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
 export interface ButtonLinkProps extends ControlLookProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "className" | "href"> {
   href: string;
+  /** Next `Link` prefetch; entity links pass false (site links plan). */
+  prefetch?: boolean;
   /** Current route or section: sets `aria-current` and the selected look. */
   current?: boolean;
 }
@@ -114,11 +116,13 @@ export interface IconButtonProps extends Omit<ButtonProps, "icon" | "iconAfter" 
   identity?: KitIdentity;
   /** Pulses to invite the next press (the second pick of a pair); still ring under reduced motion. */
   beckon?: boolean;
+  /** Sits inside a text field's box (a search clear ×): a 24 px square with the `xs` icon. */
+  inField?: boolean;
 }
 
 /** Square icon-only button. */
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, expanded, identity, beckon = false, className, type = "button", disabled, ...props },
+  { size = "md", variant = "ghost", tone, icon, label, filled = false, loading = false, pressed, expanded, identity, beckon = false, inField = false, className, type = "button", disabled, ...props },
   ref,
 ) {
   const disclosure = expanded !== undefined && !loading;
@@ -133,7 +137,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       aria-pressed={pressed}
       aria-expanded={expanded}
       data-kit="icon-button"
-      className={cx(controlClasses({ size, variant, tone, square: true, identity, beckon: beckon && !pressed && !disabled }), className)}
+      className={cx(controlClasses({ size, variant, tone, square: true, inField, identity, beckon: beckon && !pressed && !disabled }), className)}
       {...props}
     >
       <Icon name={loading ? "loader" : icon} size={kitIconSize[size]} filled={filled && !loading}

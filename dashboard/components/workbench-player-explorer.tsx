@@ -56,6 +56,7 @@ import { DarkoSourceLink } from "./darko-source-link";
 import { StatsTrendDialog, type TrendTarget } from "./stats-trend-dialog";
 import type { QuerySpec, WorkbenchCatalog, PlayerResearchResponse, PlayerResearchItem } from "@/lib/types";
 import { positionTitle } from "@/lib/position-estimates";
+import { playerHref } from "@/lib/entity-links";
 
 interface WorkbenchPlayerExplorerProps {
   data: PlayerResearchResponse;
@@ -1066,7 +1067,7 @@ export function WorkbenchPlayerExplorer({
                         if (event.key === "Enter") { event.preventDefault(); if (typedName !== lastName) pushName(typedName); }
                         else if (event.key === "Escape" && localName) { event.preventDefault(); setLocalName(""); }
                       }} />
-                    {localName && <IconButton size="sm" icon="close" label="Clear player search"
+                    {localName && <IconButton size="xs" inField icon="close" label="Clear player search"
                       onClick={() => { setLocalName(""); pushName(""); nameInputRef.current?.focus(); }} />}
                   </div>
                 </div>
@@ -1173,13 +1174,9 @@ export function WorkbenchPlayerExplorer({
                         <TeamLogoStack teams={player.teams ?? []} />
                         <PlayerPortrait key={player.player_id} playerId={player.player_id} name={player.player_name}
                           portraitUrl={player.portrait_url} size="sm" era={seasonEra(rowSeason, player.teams)} className="stats-primary-portrait" />
-                        <div className="stats-identity-copy"><Link href={`/players/${player.player_id}?${new URLSearchParams({
-                          season: query.season, phase: query.phase, beforeDate: query.before_date,
-                          window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {}),
-                          [STATS_RETURN_PARAM]: "stats"
-                        })}`} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link"
+                        <div className="stats-identity-copy"><Link href={playerHref(player.player_id, { season: query.season, phase: query.phase, params: { [STATS_RETURN_PARAM]: "stats" } })} prefetch={false} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link entity-link is-block"
                           onClick={rememberTablePosition}>
-                          <span className="player-cell-name font-semibold">{player.player_name}</span>
+                          <span className="player-cell-name font-semibold entity-link-text">{player.player_name}</span>
                         <span className={`player-cell-teams ${inlineMove ? "has-move" : ""}`} title={player.teams?.join(" / ")}><span>{teamsCaption(player.teams)}{player.position && <span className="player-cell-position"> · <abbr title={`${positionTitle(player.position, player.position_listed, player.position_provisional)}${querySpec?.season_scope?.seasons?.length ? " · latest season in the range" : ""}`}>{player.position}</abbr></span>} ·</span>{" "}{/* On a one-team row the chip takes the season's place (every row
                           shares the season; the chip's title names it); a multi-team row keeps its season and puts
                           the chip on a line of its own, so it is never truncated. */}

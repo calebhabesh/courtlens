@@ -27,6 +27,8 @@ import {
   getPlayerShots, getShotQuality, reliabilityBins, SLICE_FAMILIES,
   type Leaderboard, type LeagueSeason, type MetricBlock, type ModelName, type PlayerRow, type ShotQualitySummary
 } from "@/lib/shot-quality";
+import Link from "next/link";
+import { playerHref } from "@/lib/entity-links";
 
 /*
  * Research → Shot Quality (R05 and R06 analyses; RD04 design after the reference site's ShotQuality RAPM page). The reference site's centred
@@ -139,7 +141,7 @@ function ShotMakingTable({ board, summary, seasonSelect, league, minFga }: { boa
       sort={{ key: sort.key, direction: sort.direction, onSort }} empty="No players match these filters."
       lead={{ group: "Player",
         label: <GridSearch value={query} onChange={setQuery} />,
-        cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.tricode} season={board.season} era={seasonEra(board.season, r.tricode)} href={`/players/${r.player_id}?season=${board.season}`}
+        cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.tricode} season={board.season} era={seasonEra(board.season, r.tricode)} href={playerHref(r.player_id, { season: board.season })}
           subtitle={r.teams.map(t => t.tricode ?? t.team_id).join(" · ")} /> }} />
     <div className="sq-foot">
       <ToneLegend level={95} />
@@ -357,7 +359,7 @@ function PlayerTab({ summary }: { summary: ShotQualitySummary }) {
       <div className="sq-hero-card" data-player={data.player_id}>
         <PlayerAvatar playerId={data.player_id} name={data.player_name} team={team} size="lg" era={latest ? seasonEra(latest.season, team) : undefined} className="sq-avatar" />
         <span className="sq-hero-text">
-          <a className="sq-hero-name" href={`/players/${data.player_id}${latest ? `?season=${latest.season}` : ""}`}>{data.player_name}</a>
+          <Link className="sq-hero-name entity-link" href={playerHref(data.player_id, { season: latest?.season })} prefetch={false}>{data.player_name}</Link>
           <span className="sq-hero-sub">{team && <TeamLogo team={team} season={latest?.season} size={16} />}{team ?? ""}{team ? " · " : ""}{latest ? `${latest.season} regular season` : "No served season"}</span>
         </span>
       </div>

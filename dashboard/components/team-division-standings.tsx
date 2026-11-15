@@ -7,6 +7,7 @@ import { franchiseOf } from "@/lib/team-era";
 import { FIRST_STANDINGS_SEASON, gamesBehind, bySeed, type StandingsData } from "@/lib/standings";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
+import { teamHref } from "@/lib/entity-links";
 
 const COLUMNS = [["W", "wins"], ["L", "losses"], ["PCT", "pct"], ["GB", "gb"], ["HOME", "home"], ["AWAY", "away"], ["STRK", "streak"], ["L10", "l10"]] as const;
 
@@ -30,7 +31,7 @@ export function TeamDivisionStandings({ tricode, season }: { tricode: string; se
         <thead><tr><th scope="col">{division.conference}</th>{COLUMNS.map(([label]) => <th key={label} scope="col">{label}</th>)}</tr></thead>
         <tbody>{rows.map(row => <tr key={row.team_source_id} data-current={(row.tricode && (franchiseOf(row.tricode) ?? row.tricode) === own) || undefined}>
           <th scope="row"><span className="team-division-team">{row.tricode && <TeamLogo team={row.tricode} season={season} size={20} />}
-            {row.tricode ? <Link href={`/teams/${row.tricode}?season=${season}`}>{row.name}</Link> : row.name}</span></th>
+            {row.tricode ? <Link className="entity-link" href={teamHref(row.tricode, { season })} prefetch={false}>{row.name}</Link> : row.name}</span></th>
           {COLUMNS.map(([label, key]) => <td key={label}>{key === "gb" ? gamesBehind(row, division.entries) : formatRecord((row as unknown as Record<string, string | null | undefined>)[key]) ?? "—"}</td>)}
         </tr>)}</tbody>
       </table>

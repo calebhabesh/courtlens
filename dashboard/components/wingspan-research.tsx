@@ -22,6 +22,7 @@ import {
 } from "@/lib/research-r10";
 import { fmt, getCombine, type CombineRow } from "@/lib/stats-feeds";
 import { UNIT_LABELS, diffText, lengthText, lengthTicks, percentileText, signIdentity, type Units } from "@/lib/wingspan-format";
+import { playerHref } from "@/lib/entity-links";
 
 /*
  * RD01 Combine & Wingspan, after the reference site's Wingspan Database: one filter panel, the players table
@@ -146,7 +147,7 @@ function PlayersTable({ rows, scope, overlay, set }: { rows: WingspanPlayer[]; s
       group: "Player",
       label: <span className="stats-header-search"><SearchField aria-label="Search players" placeholder="Search players…" value={query} onChange={e => setQuery(e.target.value)} onClear={() => setQuery("")} inputSize="sm" wrapperClassName="ws-search" /></span>,
       cell: p => { const inOverlay = overlay.includes(p.player_id);
-        return <GridPlayer playerId={p.player_id} name={p.name} team={p.photo_team} season={p.photo_season} era={seasonEra(p.photo_season, p.photo_team)} href={`/players/${p.player_id}`}
+        return <GridPlayer playerId={p.player_id} name={p.name} team={p.photo_team} season={p.photo_season} era={seasonEra(p.photo_season, p.photo_team)} href={playerHref(p.player_id)}
           subtitle={reported(p) ? <>{p.photo_team ?? "—"} · <ReportedTag /></> : <>{p.photo_team ?? "—"}{p.combine_year != null ? ` · ${p.combine_year} combine` : ""}</>}
           tools={<>
             <IconButton size="xs" icon="target" label={`Find similar profiles for ${p.name}`} onClick={() => set({ build: p.player_id })} />
@@ -340,7 +341,7 @@ function SimilarProfiles({ data, playerId, fallback, units, onPick, onClear }: {
     {near && near.state === "not_measured" && <GatedNote>No height and wingspan for this player: similar builds are unknown.</GatedNote>}
     {near && near.state === "ready" && <StatsGrid<Row> label="Nearest builds" name="nearest" rows={rows} rowKey={p => p.player_id} columns={columns} density="compact" height="auto" leadWidth="lg"
       rowData={p => ({ current: p.distance == null || undefined })}
-      lead={{ label: "Player", cell: p => <GridPlayer playerId={p.player_id} name={p.name} team={p.photo_team} season={p.photo_season} era={seasonEra(p.photo_season, p.photo_team)} href={`/players/${p.player_id}`}
+      lead={{ label: "Player", cell: p => <GridPlayer playerId={p.player_id} name={p.name} team={p.photo_team} season={p.photo_season} era={seasonEra(p.photo_season, p.photo_team)} href={playerHref(p.player_id)}
         subtitle={reported(p) ? <>{p.photo_team ?? "—"} · <ReportedTag /></> : <>{p.photo_team ?? "—"}{p.combine_year != null ? ` · ${p.combine_year} combine` : ""}</>} /> }} />}
   </ResearchSection>;
 }
@@ -374,7 +375,7 @@ function CombineDrills({ year }: { year: number }) {
     {data && <StatsGrid<CombineRow> label="Combine drills" name="drills" rows={sortRows(data.rows, column.sort!, sort.direction, r => r.row_key)} rowKey={r => r.row_key} columns={columns} leadWidth="lg"
       sort={{ ...sort, onSort: key => setSort(s => s.key === key ? { key, direction: s.direction === "desc" ? "asc" : "desc" } : { key, direction: "desc" }) }}
       lead={{ group: "Player", label: "Player", cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.drafted_by} season={rookie} era={seasonEra(rookie, r.drafted_by)}
-        href={r.player_id ? `/players/${r.player_id}` : undefined} subtitle={r.player_id ? `${r.position ?? "—"} · ${year} combine` : "Identity unknown"} /> }} />}
+        href={playerHref(r.player_id) ?? undefined} subtitle={r.player_id ? `${r.position ?? "—"} · ${year} combine` : "Identity unknown"} /> }} />}
   </ResearchSection>;
 }
 
