@@ -1,7 +1,7 @@
 import { ButtonSummary } from "./ui/kit";
 import { Icon } from "./ui/icon";
 import { TeamLogo } from "./team-logo";
-import teamCatalog from "@/lib/team-branding.json";
+import teamCatalog from "@/lib/team-branding.client.json";
 import { formatDate } from "@/lib/format-date";
 import type { PlayerBio, PlayerContractLengthSource, PlayerContractSpan, PlayerGuarantee, PlayerReferenceEvent, PlayerSalary, PlayerUnplacedSigning } from "@/lib/types";
 

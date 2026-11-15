@@ -119,7 +119,7 @@ describe("Design Language v1 Header Component", () => {
     expect(moreBtn.getAttribute("aria-expanded")).toBe("false");
   });
 
-  it("opens command palette dialog when clicking search pill", () => {
+  it("opens command palette dialog when clicking search pill", async () => {
     const { container } = render(<Header />);
     const searchPill = screen.getByRole("searchbox", { name: "Search players, teams and pages" });
 
@@ -127,7 +127,8 @@ describe("Design Language v1 Header Component", () => {
       fireEvent.click(searchPill);
     });
 
-    const dialog = screen.getByRole("dialog", { name: "CourtLens global command palette" });
+    // The palette's code loads on its first opening (speed plan SP05).
+    const dialog = await screen.findByRole("dialog", { name: "CourtLens global command palette" });
     expect(dialog).not.toBeNull();
 
     const input = screen.getByRole("combobox", { name: "Search players, teams and pages" });

@@ -6,7 +6,7 @@ contract, the control kit and the approved page layouts; no number on any page c
 Work one block at a time, in order. Record measured evidence in the
 [speed progress log](speed-progress.md). Only the owner marks a block ✅.
 
-**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01, SP02, SP03 and SP04 built 2026-11-15 (all await the owner's ✅; SP03 records a floor for two prefetched journeys). Per the owner's G1 decisions, SP05 is next; G1 and G2 are one stop after SP06.**
+**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01–SP05 built 2026-11-15 (all await the owner's ✅; SP03 records a floor for two prefetched journeys, SP05 floors for Stats HTML and the player page's first-load JS and CSS). Per the owner's G1 decisions, SP06 is next; G1 and G2 are one stop after SP06.**
 
 ## Where the time goes (measured 2026-11-14)
 
@@ -119,7 +119,7 @@ gate G2; any other may be overturned at gate G1.
 | SP03 | Prefetch on intent; skeletons that do not flash | built 2026-11-15 |
 | G1 | Owner gate: deploy, try the site | |
 | SP04 | Cold path: page waves and slow reads | built 2026-11-15 |
-| SP05 | Page weight: HTML and JS | pending |
+| SP05 | Page weight: HTML and JS | built 2026-11-15 |
 | SP06 | Images and static files | pending |
 | G2 | Owner gate: Cloudflare changes | |
 | SP07 | Cloudflare settings | pending |

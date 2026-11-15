@@ -30,7 +30,12 @@ const baseSyntaxRules = [
   },
   { selector: `JSXText[value=${GLYPH}]`, message: GLYPH_MESSAGE },
   { selector: `Literal[value=${GLYPH}]`, message: GLYPH_MESSAGE },
-  { selector: `TemplateElement[value.raw=${GLYPH}]`, message: GLYPH_MESSAGE }
+  { selector: `TemplateElement[value.raw=${GLYPH}]`, message: GLYPH_MESSAGE },
+  // Speed plan SP05: nothing prefetches on entering the viewport (D4), site-wide.
+  {
+    selector: "JSXOpeningElement[name.name='Link']:not(:has(JSXAttribute[name.name='prefetch']))",
+    message: "Render links with IntentLink (components/intent-link.tsx), which prefetches on intent only; a next/link Link needs prefetch={false} (speed plan D4, SP05)."
+  }
 ];
 // Site links (SL01): player, team, game and series hrefs come from lib/entity-links.ts, so ids,
 // scope and prefetch on intent (SP03, components/intent-link.tsx) stay consistent. A literal that starts with one of these paths is a hand-built href.

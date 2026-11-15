@@ -440,5 +440,6 @@ export function carouselQuery(catalog: WorkbenchCatalog, season: string, team: s
   };
   if (team) query.team_scope = { team_id: team };
   if (catalog.darko?.manifest_sha256) query.darko_manifest_sha256 = catalog.darko.manifest_sha256;
-  return { query, presentation: { table_percentiles: false } };
+  // A card shows the sort metric (DPM) only: the server sends no other metric (speed plan SP05).
+  return { query, presentation: { table_percentiles: false, metrics: "sort" } };
 }

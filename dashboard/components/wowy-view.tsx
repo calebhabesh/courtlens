@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import branding from "@/lib/team-branding.json";
+import branding from "@/lib/team-branding.client.json";
 import { formatDate } from "@/lib/format-date";
 import {
   CLOCK_OPTIONS, FILTER_KEYS, MAX_COMBO, TAB_COLUMNS, activeFilters, assignRole, fmt, getWowyCombos, readState, requestParams, roleOf, shortName, signed, tone,

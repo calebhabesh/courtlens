@@ -10,6 +10,8 @@ import { openWorkbench } from "./workbench-navigation";
 // SP03 adds the prefetched variant of the three click journeys: the pointer rests on the link until
 // its intent prefetch has finished, then clicks.
 // Prefetching only happens in production builds, which is what this suite runs against.
+// SP05 adds each journey's long tasks (PerformanceObserver "longtask", start and duration in ms
+// from the click), the method of SP03's traces.
 
 const REAL = Boolean(process.env.SPEED_REAL);
 const RUNS = REAL ? Number(process.env.SPEED_RUNS || 5) : 1;
@@ -39,6 +41,8 @@ interface Measurement extends Counts {
   to: string;
   /** Click (or popstate, for Back) to the first frame where the destination's content is shown. */
   ms: number;
+  /** Main-thread tasks over 50 ms that started between the click and the content: [start, duration] in ms from the click. */
+  longTasks: [number, number][];
 }
 
 const results: Measurement[] = [];
@@ -65,6 +69,15 @@ async function armClock(page: Page) {
   await page.evaluate(() => {
     const w = window as unknown as { __speedT0?: number };
     delete w.__speedT0;
+    const lt = window as unknown as { __speedLongTasks?: [number, number][] };
+    if (!lt.__speedLongTasks) {
+      lt.__speedLongTasks = [];
+      try {
+        new PerformanceObserver(list => {
+          for (const entry of list.getEntries()) lt.__speedLongTasks!.push([entry.startTime, entry.duration]);
+        }).observe({ type: "longtask" });
+      } catch { /* long tasks are not observable in this browser */ }
+    }
     const mark = (event: Event) => { w.__speedT0 ??= event.timeStamp; };
     document.addEventListener("click", mark, { capture: true, once: true });
     window.addEventListener("popstate", mark, { once: true });
@@ -91,9 +104,15 @@ async function journey(page: Page, name: Journey, run: number, path: RegExp, con
   const counts = track(page, path);
   await act();
   const ms = await contentShown(page, path, content);
+  const longTasks = await page.evaluate((shown) => {
+    const w = window as unknown as { __speedT0?: number; __speedLongTasks?: [number, number][] };
+    const t0 = w.__speedT0 ?? 0;
+    return (w.__speedLongTasks ?? []).filter(([start]) => start >= t0 && start - t0 <= shown)
+      .map(([start, duration]) => [Math.round(start - t0), Math.round(duration)] as [number, number]);
+  }, ms);
   // Late requests for the same navigation (streamed reads, deferred chunks) still count.
   await page.waitForLoadState("networkidle").catch(() => undefined);
-  const measurement: Measurement = { journey: name, run, from, to: new URL(page.url()).pathname, ms, ...counts(), ...(hoverPrefetch === undefined ? {} : { hoverPrefetch }) };
+  const measurement: Measurement = { journey: name, run, from, to: new URL(page.url()).pathname, ms, longTasks, ...counts(), ...(hoverPrefetch === undefined ? {} : { hoverPrefetch }) };
   results.push(measurement);
   console.log(`SPEED_NAV ${JSON.stringify(measurement)}`);
   return measurement;

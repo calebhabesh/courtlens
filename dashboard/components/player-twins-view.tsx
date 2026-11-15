@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 // The Stats table look, as Player Matchups borrows it.
 import "./stats-explorer.css";
 import { LookupInput } from "./lookup-input";
@@ -221,7 +221,7 @@ function ProfileCard({ view, profile, twin, next }: { view: TwinsView; profile: 
         {profile.team && <span className="tw-avatar-logo"><TeamLogo team={profile.team} season={profile.season} size={22} /></span>}
       </span>
       <div className="tw-who-text">
-        <h3><span className="tw-season">{profile.season}</span> <Link className="entity-link" href={playerHref(profile.player_id, { season: profile.season })} prefetch={false}>{profile.name}</Link>
+        <h3><span className="tw-season">{profile.season}</span> <IntentLink className="entity-link" href={playerHref(profile.player_id, { season: profile.season })} prefetch={false}>{profile.name}</IntentLink>
           {profile.team && <span className="tw-name-logo"><TeamLogo team={profile.team} season={profile.season} size={24} /></span>}</h3>
         <div className="tw-badges">
           {profile.teams.length > 0 && <span className="tw-badge tw-badge-team">{profile.teams.join(" / ")}</span>}
@@ -324,7 +324,7 @@ function Matches({ view, rows, set, excludeOwn }: { view: TwinsView; rows: numbe
                   <span className="tw-identity">
                     <PlayerPortrait playerId={match.player_id} name={match.name} size="sm" era={match.team ? { season: match.season, team: match.team } : null} />
                     <span className="tw-identity-text">
-                      <Link className="entity-link" href={playerHref(match.player_id, { season: match.season })} prefetch={false}>{match.name}</Link>
+                      <IntentLink className="entity-link" href={playerHref(match.player_id, { season: match.season })} prefetch={false}>{match.name}</IntentLink>
                       <small>{[match.teams.join(" / ") || "—", match.position].filter(Boolean).join(" · ")}</small>
                     </span>
                   </span>
@@ -432,7 +432,7 @@ function Career({ view }: { view: TwinsView }) {
     </header>
     <ol className="tw-career-list">
       {view.career.map(entry => <li key={entry.season}>
-        <Link className="tw-career-card" href={href(entry)} scroll={false} aria-current={entry.season === view.season || undefined}
+        <IntentLink className="tw-career-card" href={href(entry)} scroll={false} aria-current={entry.season === view.season || undefined}
           aria-label={`${entry.season}: ${entry.twin ? `${entry.twin.season} ${entry.twin.name}, ${one(entry.twin.match)}% match` : "no twin in this pool"}`}>
           <span className="tw-career-season">{entry.team && <TeamLogo team={entry.team} season={entry.season} size={16} />}{entry.season}</span>
           {entry.twin ? <>
@@ -440,7 +440,7 @@ function Career({ view }: { view: TwinsView }) {
             <span className="tw-career-name">{entry.twin.name}</span>
             <span className="tw-career-meta">{entry.twin.season} · {one(entry.twin.match)}%</span>
           </> : <span className="tw-career-meta">No twin in this pool</span>}
-        </Link>
+        </IntentLink>
       </li>)}
     </ol>
   </section>;

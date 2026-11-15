@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type CSSProperties, type ReactNode } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { SqPanel, Tiles, Toned } from "./shot-quality-figures";
 import { TeamLogo } from "./team-logo";
@@ -122,7 +122,7 @@ function Card({ card, position, data, global }: { card: DefenseCard; position: n
     <header className="dq-card-head">
       <PlayerAvatar playerId={card.player_id} name={card.player_name} team={card.tricode} size="lg" era={seasonEra(season, card.tricode)} className="dq-avatar" />
       <div className="dq-card-titles">
-        <Link className="dq-card-name entity-link" href={playerHref(card.player_id, { season })} prefetch={false}>{card.player_name}</Link>
+        <IntentLink className="dq-card-name entity-link" href={playerHref(card.player_id, { season })} prefetch={false}>{card.player_name}</IntentLink>
         <TeamLink team={card.tricode} scope={{ season }} variant="block" className="dq-card-team">{card.tricode && <TeamLogo team={card.tricode} season={season} size={16} />}<span className="entity-link-text">{card.tricode ?? "—"}</span></TeamLink>
         <RapmChip card={card} />
       </div>
@@ -272,8 +272,8 @@ function Methodology({ summary }: { summary: DefenseSummary }) {
         ]} />
     </MethodBlock>
     <MethodBlock title="Tracking">
-      <p className="sq-text">NBA tracking&apos;s closest-defender season numbers and hustle stats are on the <Link href="/research/defensive-matchups/tracking">Tracking page</Link>.
-        Every card links to <Link href="/matchups">Player Matchups</Link>, NBA tracking&apos;s season matchups (who guarded whom, every season these cards cover): the
+      <p className="sq-text">NBA tracking&apos;s closest-defender season numbers and hustle stats are on the <IntentLink href="/research/defensive-matchups/tracking">Tracking page</IntentLink>.
+        Every card links to <IntentLink href="/matchups">Player Matchups</IntentLink>, NBA tracking&apos;s season matchups (who guarded whom, every season these cards cover): the
         All matchups link lists everyone the defender guarded, and a Key Matchups name opens that head-to-head. Its counts come from tracking, not from the
         matchup rows behind D-SQ, and it has no expected PPS, so the two pages&apos; numbers differ.</p>
     </MethodBlock>

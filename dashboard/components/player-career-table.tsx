@@ -23,8 +23,13 @@ import { getPlayerCareer } from "@/lib/workbench-api";
 import { getTeamStints, useTeamStints } from "@/lib/team-stints";
 import { seasonAwardChips } from "@/lib/awards";
 import type { MetricHint } from "@/lib/stats-glossary";
-import { StatsTrendDialog, type TrendTarget } from "./stats-trend-dialog";
+import type { TrendTarget } from "./stats-trend-dialog";
+import dynamic from "next/dynamic";
+import { useOpenedOnce } from "@/lib/use-opened-once";
 import type { PlayerCareerResponse, PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
+
+// The trend dialog loads on its first opening (speed plan SP05).
+const StatsTrendDialog = dynamic(() => import("./stats-trend-dialog").then(mod => mod.StatsTrendDialog), { loading: () => null });
 
 const PHASES = [{ id: "regular_season", label: "Regular" }, { id: "playoffs", label: "Playoffs" }] as const;
 
@@ -62,6 +67,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   const [presetId, setPresetId] = useState<PresetId>("overview");
   const [countingMode, setCountingMode] = useState<CountingMode>("per_game");
   const [trendTarget, setTrendTarget] = useState<TrendTarget | null>(null);
+  const trendMounted = useOpenedOnce(trendTarget !== null);
   const { expanded, toggle } = useTeamStints();
 
   const preset = useMemo(() => {
@@ -254,7 +260,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
             </tfoot>}
           </table>
         </div>
-        {trendQuery && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={trendQuery} catalog={catalog}
+        {trendQuery && trendMounted && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={trendQuery} catalog={catalog}
           hints={hints} onClose={() => setTrendTarget(null)} />}
         {Boolean(seasons?.length) && <div className="player-career-totals">
           <span className="player-career-totals-label">Total = {seasons?.length} {seasons?.length === 1 ? "Season" : "Seasons"}</span>

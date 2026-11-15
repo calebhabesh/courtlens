@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { Suspense, type CSSProperties } from "react";
 import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, liveRead, nearestGameDate, predictionCall, seasonOf, teamCode, teamFullName, validSlate, type LiveGame, type LiveSlateData, type LiveTeam } from "@/lib/live";
 import { formatDate } from "@/lib/format-date";
@@ -82,7 +82,7 @@ export function PredictionCard({ game }: { game: LiveGame }) {
   const href = gameHref({ espnId: game.source_id, date: game.slate_date }, { tab: "pregame", params: { from: "win-probability" } })!;
   const outs = game.status === "scheduled" ? [away, home].filter(t => t.out) : [];
   const withLine = call?.withLine ? { team: call.withLine.side === "home" ? home : away, percent: call.withLine.percent } : null;
-  return <Link className="wpc" href={href} data-status={game.status} data-game={game.source_id} data-home-win={sealed ?? undefined} data-favoured={fav?.side}
+  return <IntentLink className="wpc" href={href} data-status={game.status} data-game={game.source_id} data-home-win={sealed ?? undefined} data-favoured={fav?.side}
     aria-label={`${away.name} at ${home.name}, ${gameStatus(game)}${fav && sealed != null ? `. CourtLens: ${teamCode(fav)} ${Math.round(Math.max(sealed, 1 - sealed) * 100)}% to win` : ""}. Open the game and why.`}
     style={teamColors(game.teams, season)}>
     <span className="wpc-head">
@@ -110,13 +110,13 @@ export function PredictionCard({ game }: { game: LiveGame }) {
         {outs.length > 0 && <span className="wpc-out" title="Players ESPN lists as Out">{outs.map(t => <span key={t.side} className="wpc-out-team"><TeamLogo team={logoTeam(t)} season={season} size={16} /><span>{t.out} out</span></span>)}</span>}
       </span>}
     </span>
-  </Link>;
+  </IntentLink>;
 }
 
 function Board({ board, loading, error, day }: { board: Board | null; loading: boolean; error: string | undefined; day: string | null }) {
   const href = (d: string) => `/research/win-probability?day=${d}`;
   const label = !board ? "Tonight's games" : board.today ? "Tonight's games" : formatDate(board.day);
-  return <ResearchSection id="slate" icon="activity" title={label} aside={<Link href={board ? `/live/${board.day}` : "/live"} className="wp-link">Open on Live</Link>}>
+  return <ResearchSection id="slate" icon="activity" title={label} aside={<IntentLink href={board ? `/live/${board.day}` : "/live"} className="wp-link">Open on Live</IntentLink>}>
     {board && <DateStrip slate={board.day} calendar={board.calendar} href={href} />}
     {loading && !board ? <p className="wp-note" role="status">Loading the games…</p>
       : error ? <GatedNote tone="warning">The games are unavailable right now.</GatedNote>
@@ -186,7 +186,7 @@ export function HowItWorks({ data, games }: { data: WinProbabilityPage; games: L
       <p className="wp-note" data-field="example-rule">Chosen by rule: {example.rule.replace(/^./, c => c.toLowerCase())}</p>
       <div className="wp-example" data-field="example" data-game={game.source_id}>
         <PredictionBody why={example.why} game={game} />
-        <Link className="wp-link" href={gameHref({ espnId: game.source_id, date: game.slate_date }, { tab: "pregame" })!} prefetch={false}>Open this game on Live</Link>
+        <IntentLink className="wp-link" href={gameHref({ espnId: game.source_id, date: game.slate_date }, { tab: "pregame" })!} prefetch={false}>Open this game on Live</IntentLink>
       </div>
     </Toggle> : <p className="wp-note" data-field="example-empty">Worked example: {example?.rule.replace(/^The first/, "the first").replace(/\.$/, "") ?? "the first graded game that meets the rule"}. None yet.</p>}
   </ResearchSection>;

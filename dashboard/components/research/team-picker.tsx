@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import catalog from "@/lib/team-branding.json";
+import catalog from "@/lib/team-branding.client.json";
 import { teamEra } from "@/lib/team-era";
 import { TeamGrid, teamDisplayName } from "../team-grid";
 import { TeamLogo } from "../team-logo";

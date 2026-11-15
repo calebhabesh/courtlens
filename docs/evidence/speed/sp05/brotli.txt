@@ -1,0 +1,8 @@
+before /players/2544        gzip as served  469,684   brotli q11  390,927 (JS 303,630, CSS 87,297)  files missing 0
+before /stats               gzip as served  474,261   brotli q11  394,903 (JS 308,982, CSS 85,921)  files missing 0
+before /teams/1610612747    gzip as served  509,419   brotli q11  425,815 (JS 339,894, CSS 85,921)  files missing 0
+before /players             gzip as served  446,876   brotli q11  370,665 (JS 284,744, CSS 85,921)  files missing 0
+after  /players/2544        gzip as served  406,945   brotli q11  339,759 (JS 252,462, CSS 87,297)  files missing 0
+after  /stats               gzip as served  394,818   brotli q11  329,406 (JS 243,485, CSS 85,921)  files missing 0
+after  /teams/1610612747    gzip as served  438,185   brotli q11  367,897 (JS 281,976, CSS 85,921)  files missing 0
+after  /players             gzip as served  389,720   brotli q11  324,702 (JS 238,781, CSS 85,921)  files missing 0

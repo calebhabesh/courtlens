@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { formatRecord } from "@/lib/live";
 import { useLiveRead } from "@/lib/use-live-read";
 import { franchiseOf } from "@/lib/team-era";
@@ -25,13 +25,13 @@ export function TeamDivisionStandings({ tricode, season }: { tricode: string; se
   const rows = [...division.entries].sort(bySeed);
   return <section className="player-open-section player-glass team-profile-section team-division" aria-label="Division standings">
     <header className="player-open-heading"><h2><Icon name="list-ordered" size={20} />{division.division} Division</h2>
-      <Link className="team-division-link" href={`/standings?season=${season}&group=division`}>Full standings <Icon name="right" size={14} /></Link></header>
+      <IntentLink className="team-division-link" href={`/standings?season=${season}&group=division`}>Full standings <Icon name="right" size={14} /></IntentLink></header>
     <div className="team-division-scroll" role="region" aria-label={`${division.division} division standings`} tabIndex={0}>
       <table className="team-division-table">
         <thead><tr><th scope="col">{division.conference}</th>{COLUMNS.map(([label]) => <th key={label} scope="col">{label}</th>)}</tr></thead>
         <tbody>{rows.map(row => <tr key={row.team_source_id} data-current={(row.tricode && (franchiseOf(row.tricode) ?? row.tricode) === own) || undefined}>
           <th scope="row"><span className="team-division-team">{row.tricode && <TeamLogo team={row.tricode} season={season} size={20} />}
-            {row.tricode ? <Link className="entity-link" href={teamHref(row.tricode, { season })} prefetch={false}>{row.name}</Link> : row.name}</span></th>
+            {row.tricode ? <IntentLink className="entity-link" href={teamHref(row.tricode, { season })} prefetch={false}>{row.name}</IntentLink> : row.name}</span></th>
           {COLUMNS.map(([label, key]) => <td key={label}>{key === "gb" ? gamesBehind(row, division.entries) : formatRecord((row as unknown as Record<string, string | null | undefined>)[key]) ?? "—"}</td>)}
         </tr>)}</tbody>
       </table>

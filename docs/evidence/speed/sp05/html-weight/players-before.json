@@ -1,0 +1,192 @@
+{
+ "url": "http://localhost:3180/players",
+ "total": 748179,
+ "markup": 148902,
+ "rsc_scripts": 596410,
+ "other_scripts": 2867,
+ "rsc_payload_chars": 533886,
+ "markup_style_attrs": 2524,
+ "markup_class_attrs": 26589,
+ "markup_svg": 9279,
+ "rows_by_tag": {
+  "json": 524455,
+  "I": 1496,
+  "C": 0,
+  "n": 3,
+  "T": 7238
+ },
+ "client_components": [
+  {
+   "component": "PlayerDashboardView",
+   "count": 1,
+   "prop_bytes": 512238
+  },
+  {
+   "component": "LoadingBoundaryProvider",
+   "count": 2,
+   "prop_bytes": 2330
+  },
+  {
+   "component": "default",
+   "count": 4,
+   "prop_bytes": 898
+  },
+  {
+   "component": "SkelText",
+   "count": 5,
+   "prop_bytes": 50
+  },
+  {
+   "component": "SkelHeader",
+   "count": 2,
+   "prop_bytes": 25
+  },
+  {
+   "component": "SkelControl",
+   "count": 3,
+   "prop_bytes": 16
+  },
+  {
+   "component": "SkelLines",
+   "count": 3,
+   "prop_bytes": 15
+  },
+  {
+   "component": "ButtonLink",
+   "count": 1,
+   "prop_bytes": 7
+  }
+ ],
+ "props": [
+  {
+   "component": "PlayerDashboardView",
+   "prop": "carousel",
+   "bytes": 453839
+  },
+  {
+   "component": "PlayerDashboardView",
+   "prop": "catalog",
+   "bytes": 58399
+  },
+  {
+   "component": "LoadingBoundaryProvider",
+   "prop": "loading",
+   "bytes": 2330
+  },
+  {
+   "component": "default",
+   "prop": "notFound",
+   "bytes": 632
+  },
+  {
+   "component": "default",
+   "prop": "template",
+   "bytes": 96
+  },
+  {
+   "component": "default",
+   "prop": "error",
+   "bytes": 24
+  },
+  {
+   "component": "default",
+   "prop": "errorStyles",
+   "bytes": 24
+  },
+  {
+   "component": "default",
+   "prop": "errorScripts",
+   "bytes": 24
+  },
+  {
+   "component": "default",
+   "prop": "forbidden",
+   "bytes": 24
+  },
+  {
+   "component": "default",
+   "prop": "unauthorized",
+   "bytes": 24
+  },
+  {
+   "component": "SkelText",
+   "prop": "size",
+   "bytes": 20
+  },
+  {
+   "component": "default",
+   "prop": "parallelRouterKey",
+   "bytes": 20
+  },
+  {
+   "component": "SkelText",
+   "prop": "className",
+   "bytes": 16
+  },
+  {
+   "component": "default",
+   "prop": "templateScripts",
+   "bytes": 16
+  },
+  {
+   "component": "SkelText",
+   "prop": "width",
+   "bytes": 14
+  },
+  {
+   "component": "default",
+   "prop": "templateStyles",
+   "bytes": 14
+  },
+  {
+   "component": "SkelControl",
+   "prop": "width",
+   "bytes": 12
+  },
+  {
+   "component": "SkelLines",
+   "prop": "size",
+   "bytes": 12
+  },
+  {
+   "component": "SkelHeader",
+   "prop": "align",
+   "bytes": 8
+  },
+  {
+   "component": "SkelHeader",
+   "prop": "title",
+   "bytes": 6
+  },
+  {
+   "component": "SkelHeader",
+   "prop": "subtitle",
+   "bytes": 6
+  },
+  {
+   "component": "SkelHeader",
+   "prop": "icon",
+   "bytes": 5
+  },
+  {
+   "component": "ButtonLink",
+   "prop": "size",
+   "bytes": 4
+  },
+  {
+   "component": "SkelControl",
+   "prop": "size",
+   "bytes": 4
+  },
+  {
+   "component": "SkelLines",
+   "prop": "lines",
+   "bytes": 3
+  },
+  {
+   "component": "ButtonLink",
+   "prop": "href",
+   "bytes": 3
+  }
+ ]
+}

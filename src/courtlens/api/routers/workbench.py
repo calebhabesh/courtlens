@@ -1067,6 +1067,18 @@ def execute_query_endpoint(
         [r["player_id"] for r in items_raw],
         {r["player_id"]: r["player_name"] for r in items_raw},
     )
+    # presentation.metrics == "sort": every per-item metric map keeps only the sort fields.
+    sort_fields = (
+        {sort.field for sort in spec.sort}
+        if payload.presentation is not None and payload.presentation.metrics == "sort"
+        else None
+    )
+
+    def sort_only[V](values: dict[str, V] | None) -> dict[str, V] | None:
+        if values is None or sort_fields is None:
+            return values
+        return {key: value for key, value in values.items() if key in sort_fields}
+
     items = [
         PlayerResearchItem(
             player_id=r["player_id"],
@@ -1075,21 +1087,23 @@ def execute_query_endpoint(
             stints_count=r["stints_count"],
             games_played=r["games_played"],
             total_minutes=r["total_minutes"],
-            metrics=r["metrics"],
-            sample_sizes=r["sample_sizes"],
-            percentiles=r.get("percentiles"),
-            cohort_sample_sizes=r.get("cohort_sample_sizes"),
+            metrics=sort_only(r["metrics"]) or {},
+            sample_sizes=sort_only(r["sample_sizes"]) or {},
+            percentiles=sort_only(r.get("percentiles")),
+            cohort_sample_sizes=sort_only(r.get("cohort_sample_sizes")),
             # Support for the view's own impact columns, not every sealed metric (~26 KB a row).
-            impact_support={
-                key: value
-                for key, value in (r.get("impact_support") or {}).items()
-                if key in view_impact
-            }
+            impact_support=sort_only(
+                {
+                    key: value
+                    for key, value in (r.get("impact_support") or {}).items()
+                    if key in view_impact
+                }
+            )
             if r.get("impact_support") is not None
             else None,
             table_qualified=r.get("table_qualified"),
-            table_percentiles=r.get("table_percentiles"),
-            table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),
+            table_percentiles=sort_only(r.get("table_percentiles")),
+            table_cohort_sample_sizes=sort_only(r.get("table_cohort_sample_sizes")),
             position=positions.get(r["player_id"], {}).get("position"),
             position_listed=positions.get(r["player_id"], {}).get("listed"),
             position_provisional=positions.get(r["player_id"], {}).get("provisional"),
