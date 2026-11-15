@@ -114,7 +114,7 @@ export function ObservedInputs({ data, season, seasonData, seasonError, retry, d
     </div>
     <MethodBlock title="Offensive rebounds by miss"><p className="rs-note">The share of rebounds the shooting team took after each kind of miss (team rebounds included). A miss followed by a shot, foul shot, turnover or period end before any rebound is unrebounded and left out of the rate.</p><ReboundTable row={head.league} /></MethodBlock>
     <MethodBlock title={`Teams, ${head.season}`}>
-      {seasonError ? <FeedFailure error={seasonError} retry={retry} what="Team inputs" /> : !seasonData ? <FeedSkeleton label="Loading team inputs" /> : <><p className="rs-note">Each team&apos;s own inputs with the league&apos;s μ ({fixed(seasonData.mu, 4)}); highest rating first.</p><TeamsTable season={seasonData} /></>}
+      {seasonError ? <FeedFailure error={seasonError} retry={retry} what="Team inputs" /> : !seasonData ? <FeedSkeleton label="Loading team inputs" shape="grid" rows={10} lead="team" density="compact" /> : <><p className="rs-note">Each team&apos;s own inputs with the league&apos;s μ ({fixed(seasonData.mu, 4)}); highest rating first.</p><TeamsTable season={seasonData} /></>}
     </MethodBlock>
     <MethodBlock title="μ by season"><p className="rs-note">The last of a two- or three-shot trip, or a lone free throw that is not an and-one.</p><MuTable data={data} /></MethodBlock>
     <MethodBlock title="Caveats"><ul className="ol-list">{data.caveats.map(c => <li key={c}>{c}</li>)}</ul></MethodBlock>

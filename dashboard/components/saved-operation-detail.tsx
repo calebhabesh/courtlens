@@ -16,7 +16,7 @@ import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { BackButton } from "./ui/back-button";
 import { StatTile } from "./ui/stat-tile";
-import { TemplateSkeleton } from "./ui/template-skeleton";
+import { ResearchBodySkeleton } from "./research-investigation";
 import { useToast } from "./ui/toast";
 import { Button, ButtonLink } from "./ui/kit";
 
@@ -55,7 +55,7 @@ export function SavedOperationDetail({ id }: { id: string }) {
     <PageHeader title="Saved Investigation" />
     <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => { setError(null); setRetry(value => value + 1); }}>Retry saved detail</Button>}>{error}</GatedNote></div>
   </PageShell>;
-  if (!detail) return <><p role="status" className="sr-only">Loading retained evidence…</p><TemplateSkeleton template="research" /></>;
+  if (!detail) return <><p role="status" className="sr-only">Loading retained evidence…</p><ResearchBodySkeleton tiles={3} /></>;
   const manifest = detail.manifest;
   const context = manifest.context;
   const entry = publicInvestigation(detail);

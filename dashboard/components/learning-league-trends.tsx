@@ -35,7 +35,7 @@ const COLUMNS: readonly GridColumn<Season>[] = MEASURES.map(m => ({
 export function LearningLeagueTrends() {
   const { data, error, loading, retry } = useFeed([], signal => getFourFactors(signal));
   const [measure, setMeasure] = useState<Measure>("ts");
-  if (loading) return <FeedSkeleton label="League averages by season" />;
+  if (loading) return <FeedSkeleton label="League averages by season" shape="chart" height={280} />;
   if (error || !data) return <FeedFailure error={error} retry={retry} what="League averages" />;
   const chosen = MEASURES.find(m => m.key === measure) ?? MEASURES[0];
   const first = data.seasons[0]?.season, last = data.seasons.at(-1)?.season;

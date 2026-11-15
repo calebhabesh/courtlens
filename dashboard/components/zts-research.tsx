@@ -228,7 +228,7 @@ function Moves({ season }: { season: string }) {
   const { data, error, loading, retry } = useFeed([season], signal => getRoleMoves(season, signal));
   const [chosen, setChosen] = useState<string | null>(null);
   if (error) return <FeedFailure error={error} retry={retry} what="Role moves" />;
-  if (loading || !data) return <FeedSkeleton label="Loading role moves" />;
+  if (loading || !data) return <FeedSkeleton label="Loading role moves" shape="grid" rows={8} density="compact" />;
   if (data.status !== "available") return <GatedNote>{data.reason}</GatedNote>;
   const moves = data as RoleMoves;
   if (!moves.players.length) return <GatedNote>No player meets the role-moves rule for {moves.window[0]} to {moves.window.at(-1)}.</GatedNote>;
@@ -247,7 +247,7 @@ function Teams({ season }: { season: string }) {
   const [open, setOpen] = useState<string | null>(null);
   const [sort, setSort] = useState<{ key: string; direction: "asc" | "desc" }>({ key: "difficulty", direction: "desc" });
   if (error) return <FeedFailure error={error} retry={retry} what="Team playtype difficulty" />;
-  if (loading || !data) return <FeedSkeleton label="Loading team playtype difficulty" />;
+  if (loading || !data) return <FeedSkeleton label="Loading team playtype difficulty" shape="grid" rows={10} lead="team" density="compact" />;
   if (data.status !== "available") return <GatedNote>{data.reason}</GatedNote>;
   const board = data as TeamBoard;
   const value = (t: ZtsTeam) => sort.key === "synergy_ts" ? t.synergy_ts : t.difficulty;
@@ -414,7 +414,7 @@ function About({ summary }: { summary: ZtsSummary }) {
       <Calculation board={board} />
     </ResearchSection>
     {error && <FeedFailure error={error} retry={retry} what="The season's zTS" />}
-    {loading && <FeedSkeleton label="Loading the season's zTS" />}
+    {loading && <FeedSkeleton label="Loading the season's zTS" shape="chart" height={420} />}
     {data?.status === "unknown" && <GatedNote>{data.reason}</GatedNote>}
     {board && <BoardSections board={board} summary={summary} season={season} setSeason={setSeason} x={x} y={y} ext={ext!} setAxes={(nx, ny) => set({ x: nx === "rts" ? null : nx, y: ny === "difficulty" ? null : ny })} />}
     <ResearchSection className="zt-section" title="What the Test Measures">
@@ -549,7 +549,7 @@ function TopSeasons({ summary }: { summary: ZtsSummary }) {
     </div>
     {glossary && <Glossary summary={summary} />}
     {error && <FeedFailure error={error} retry={retry} what="Top 200" />}
-    {loading && <FeedSkeleton label="Loading Top 200" />}
+    {loading && <FeedSkeleton label="Loading Top 200" shape="grid" rows={12} search />}
     {data?.status === "unknown" && <GatedNote>{data.reason}</GatedNote>}
     {board && <StatsGrid label="Top 200 seasons" name="zts-top" rows={rows} rowKey={r => `${r.season}:${r.player_id}`} height="scroll" leadWidth="md" className="zt-top-grid"
       sort={{ key: sort, direction: "desc", onSort: key => set({ rank: key === "zts" ? "zts" : null }) }}
@@ -586,7 +586,7 @@ function PlayerTab({ summary }: { summary: ZtsSummary }) {
     {cleared && <GatedNote action={<Button size="lg" variant="secondary" onClick={() => set({ player: null, playerSeason: null })}>Open the default player</Button>}>
       No player chosen. Search for one above, or open the default: the highest zTS add/100 in {LATEST}.</GatedNote>}
     {error && <FeedFailure error={error} retry={retry} what="The player's zTS" />}
-    {loading && <FeedSkeleton label="Loading the player's zTS" />}
+    {loading && <FeedSkeleton label="Loading the player's zTS" shape="profile" />}
     {data && <>
       <div className="zt-hero-card" data-player={data.player_id}>
         <PlayerAvatar playerId={data.player_id} name={data.player_name} team={team} size="lg" era={seasonEra(data.season, team)} className="zt-avatar" />

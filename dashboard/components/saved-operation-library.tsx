@@ -12,7 +12,7 @@ import { CountChip, FilterBar } from "./ui/filter-bar";
 import { DataDetailsButton } from "./ui/data-details";
 import { GatedNote } from "./ui/gated-note";
 import { ResearchLayout } from "./ui/page-shell";
-import { Skeleton } from "./ui/skeleton";
+import { SkelGrid, SkelTile } from "./ui/content-skeletons";
 import { StatTile } from "./ui/stat-tile";
 import { Button, ButtonLink } from "./ui/kit";
 
@@ -43,7 +43,7 @@ export function SavedOperationLibrary({ legacy, legacyError }: { legacy: SavedIn
   return <>
     <FilterBar collapsible={false} label="Saved investigations" summary="Saved investigations" scope={<span className="research-scope-label">Retained results reopen against their pinned release</span>}
       count={<CountChip>{loading ? "…" : `${items.length}${items.length >= 50 ? "+" : ""}`} saved · {legacy.length} legacy</CountChip>} />
-    <ResearchLayout findings={loading ? <>{[0, 1, 2].map(i => <Skeleton key={i} height={88} />)}</> : <>
+    <ResearchLayout findings={loading ? <>{[0, 1, 2].map(i => <SkelTile key={i} index={i} />)}</> : <>
       <StatTile label="Saved Operations" value={error ? null : `${offset + items.length}${items.length >= 50 ? "+" : ""}`} footnote="Manual or conversational results" />
       <StatTile label="Legacy Investigations" value={legacyError ? null : legacy.length} footnote="Original IDs and signatures kept" />
       <StatTile label="Last Saved" value={latest ? day(latest) : null} footnote={latest ? undefined : "Nothing saved yet"} />
@@ -53,7 +53,7 @@ export function SavedOperationLibrary({ legacy, legacyError }: { legacy: SavedIn
         {loading && <p role="status" className="sr-only">Loading retained operations…</p>}
         {error && <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => { setLoading(true); setRetry(value => value + 1); }}>Retry library</Button>}>{error}</GatedNote></div>}
         {!loading && !error && items.length === 0 && <GatedNote action={<ButtonLink size="lg" href="/research/ask">Run an Investigation Without AI</ButtonLink>} why={<p>Explicitly retained manual or conversational results. Questions are optional metadata; provider narrative is excluded.</p>}>No retained operations on this page.</GatedNote>}
-        {loading && <Skeleton height={240} />}
+        {loading && <SkelGrid label="Saved operations" rows={6} lead="text" columns={5} density="compact" />}
         {!loading && !error && items.length > 0 && <div className="table-wrapper research-table" role="region" aria-label="Saved operations table" tabIndex={0}>
           <table className="data-table">
             <thead><tr><th>Title</th><th>Operations</th><th>Scope</th><th>Saved</th><th>Question</th><th><span className="sr-only">Details</span></th></tr></thead>
