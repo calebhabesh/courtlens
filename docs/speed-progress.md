@@ -1776,3 +1776,62 @@ G1/G2 stop remain:
   player first load (per-route CSS, the Stats markup, lazy motion), SP06's two non-image layout
   shifts and the Stats guide-cell portraits;
 - which of Early Hints, 0-RTT and Smart Tiered Cache SP07 turns on.
+
+## 2026-11-15 — G1/G2 stop: part A (branch mergeable, full suites)
+
+The stop after SP06 (plan, "Decided (owner, G1, 2026-11-15)"). Part A needs no owner input; it ends
+at owner point 1 (push and PR). Evidence: `docs/evidence/speed/stop/`. ListAgents at the start:
+two peer sessions, both idle; the tree was clean at 4fe3e910.
+
+### Ruff (9e2fcc45)
+
+CI runs `ruff check .` and `ruff format --check .` on the whole repository. Both were red: 197
+findings and 13 files to reformat, all in the SP04 and SP05 scratch tools under
+`docs/evidence/speed/sp04/tools/` and `sp05/tools/`.
+
+- Fixed in place: `ruff --fix` and `ruff format`, then 42 by hand: `with` blocks for `open()`,
+  long f-strings split, ambiguous names renamed, a `def` for one lambda, `contextlib.suppress`,
+  an import moved to the top, one unused assignment removed, the loop variable bound in
+  `css_report.py`'s nested `walk`. No exclude added to `pyproject.toml`.
+- What the tools compute is unchanged. `waves.py`, `longtasks.py`, `transfer_top.py` and
+  `css_report.py` give byte-identical output before and after on the recorded evidence;
+  `textdiff.py` fails identically on the one pair tried (traceback line only). The others need a
+  live API, database or an uncommitted analyzer export; their edits are mechanical.
+- `ruff check .`: all checks passed; `ruff format --check .`: 1,185 files formatted (`ruff.log`).
+
+### Live spec fix (b837171c)
+
+`live.spec.ts:83` failed 3 runs in 20 on this branch at 1 and 4 workers, with a strict-mode
+violation: `.live-banner` resolved to 3 elements. On a fixture build of `main` (91975cbd) it passed
+10 of 10. Cause: the Live game skeleton added on this branch (c3df0fb8,
+`components/live-skeletons.tsx`) reuses `<header className="live-banner">` inside an
+`aria-hidden` `.live-game`, and while the page streams in both are in the DOM. The page itself is
+right (the skeleton is hidden); the spec's locator was too wide. Both banner locators now scope to
+`.live-game:not([aria-hidden])`. The whole Live spec, 4 workers, 10 repeats: **140 of 140 passed**
+(`playwright-live-fixed.log`). So `live.spec.ts:83` was not a worker-count flake on this branch;
+it is fixed, not waived.
+
+### Full suites (branch at 9e2fcc45; the live spec rerun at b837171c)
+
+| Suite | Result |
+| --- | --- |
+| `ruff check .`, `ruff format --check .` | pass |
+| `mypy src/courtlens` | no issues, 411 files |
+| pytest, `scripts/test_python.py` (disposable Postgres 17), 8 min 24 s | **3,004 passed, 8 failed, 4 skipped, 25 deselected**. The 8 are the `[anthropic]` cases in `tests/unit/test_agent_providers.py`, red since before SP00; not fixed (`pytest-summary.log`) |
+| `npm run lint` (ESLint + Stylelint) | pass |
+| `npm run typecheck` | pass |
+| Vitest | **153 files, 1,098 passed** |
+| Playwright, webpack fixture production build (mock API :4180, dashboard :3181), every spec except titles matching "real", 4 workers, 3.1 min | **655 passed, 11 failed, 27 skipped**, none left unrun (`playwright.log`) |
+
+The 11 Playwright failures:
+
+- 10 are the known `HEAD` failures recorded at SP05 and SP06: `advanced-research:61`,
+  `pc12-demo-hygiene:6`, `roster-shapes` ×4, `visual-baselines` ×4 (player profile desktop and
+  phone, search modal phone, roster shapes depth chart phone).
+- `live.spec.ts:83`: above; fixed.
+- `f04-accounts:32`, also on the known list, **passed** in this run.
+- `table-interactions.spec.ts:63` (the known 1-in-15 focus flake) passed in this run.
+
+Servers, Playwright browsers, the mock API, the test container and the scratch trees (branch and
+`main` fixture builds) were stopped and removed. Nothing was pushed, deployed or run against the
+live site; Cloudflare was not touched.

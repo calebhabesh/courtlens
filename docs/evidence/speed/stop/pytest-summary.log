@@ -1,0 +1,18 @@
+            # if the user passed in a custom http client with a non-default
+            # if the user passed in a custom http client with a non-default
+            # if the user passed in a custom http client with a non-default
+            # if the user passed in a custom http client with a non-default
+            # if the user passed in a custom http client with a non-default
+            # if the user passed in a custom http client with a non-default
+            # if the user passed in a custom http client with a non-default
+            # if the user passed in a custom http client with a non-default
+FAILED tests/unit/test_agent_providers.py::test_tools_citations_usage_and_exact_continuation[anthropic]
+FAILED tests/unit/test_agent_providers.py::test_sdk_failures_are_safe_and_not_retried[provider_quota-429-anthropic]
+FAILED tests/unit/test_agent_providers.py::test_sdk_failures_are_safe_and_not_retried[provider_busy-503-anthropic]
+FAILED tests/unit/test_agent_providers.py::test_sdk_failures_are_safe_and_not_retried[provider_timeout-504-anthropic]
+FAILED tests/unit/test_agent_providers.py::test_sdk_failures_are_safe_and_not_retried[provider_error-401-anthropic]
+FAILED tests/unit/test_agent_providers.py::test_sdk_deadline_and_exhausted_search_budget[anthropic]
+FAILED tests/unit/test_agent_providers.py::test_native_streaming_callbacks_and_final_response[anthropic]
+FAILED tests/unit/test_agent_providers.py::test_record_replay_and_tool_payload_drift[anthropic]
+8 failed, 3004 passed, 4 skipped, 25 deselected, 68 warnings in 504.30s (0:08:24)
+exit 1
