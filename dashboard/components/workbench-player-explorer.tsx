@@ -6,6 +6,7 @@ import { MAX_GRID_PLAYERS } from "@/lib/compare-grid";
 import { saveStatsReturn, STATS_RETURN_PARAM, takeStatsRestore } from "@/lib/stats-return";
 
 import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail, STATS_CELL_HOVER } from "./stats-preview-rail";
 import { STATS_SCOPE_PENDING } from "./stats-page-controls";
@@ -1174,7 +1175,7 @@ export function WorkbenchPlayerExplorer({
                         <TeamLogoStack teams={player.teams ?? []} />
                         <PlayerPortrait key={player.player_id} playerId={player.player_id} name={player.player_name}
                           portraitUrl={player.portrait_url} size="sm" era={seasonEra(rowSeason, player.teams)} className="stats-primary-portrait" />
-                        <div className="stats-identity-copy"><Link href={playerHref(player.player_id, { season: query.season, phase: query.phase, params: { [STATS_RETURN_PARAM]: "stats" } })} prefetch={false} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link entity-link is-block"
+                        <div className="stats-identity-copy"><IntentLink href={playerHref(player.player_id, { season: query.season, phase: query.phase, params: { [STATS_RETURN_PARAM]: "stats" } })} title={player.player_name} aria-label={move ? `${player.player_name}, ${move.spoken}` : player.player_name} className="stats-player-link entity-link is-block"
                           onClick={rememberTablePosition}>
                           <span className="player-cell-name font-semibold entity-link-text">{player.player_name}</span>
                         <span className={`player-cell-teams ${inlineMove ? "has-move" : ""}`} title={player.teams?.join(" / ")}><span>{teamsCaption(player.teams)}{player.position && <span className="player-cell-position"> · <abbr title={`${positionTitle(player.position, player.position_listed, player.position_provisional)}${querySpec?.season_scope?.seasons?.length ? " · latest season in the range" : ""}`}>{player.position}</abbr></span>} ·</span>{" "}{/* On a one-team row the chip takes the season's place (every row
@@ -1182,7 +1183,7 @@ export function WorkbenchPlayerExplorer({
                           the chip on a line of its own, so it is never truncated. */}
                           {inlineMove ? moveChip : seasonLabel}</span>
                         {move && !inlineMove && <span className="player-cell-move-line">{moveChip}</span>}
-                        </Link>
+                        </IntentLink>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>
                         {/* A split season's expand arrow sits flush with the details button, so the

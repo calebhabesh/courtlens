@@ -650,3 +650,165 @@ same. The first capture pass sent read-only GETs (portraits) there, before the r
 - Full pytest and Playwright suites not run (plan: before each gate). Not deployed; no live run.
   The `data-stamp-bump` and `warm-site.json` written to the PC's `data/derived/job-health/` (a
   directory that did not exist before) were deleted, along with the scratch workspace.
+
+## 2026-11-15 — SP03 built: prefetch on intent; skeletons that do not flash
+
+### What was built
+
+- **`lib/intent-prefetch.ts`**, `useIntentPrefetch(href)`. Intent is one of:
+  - a mouse or pen resting on the link for 80 ms (`pointerenter` starts a timer, `pointerleave` cancels it);
+  - keyboard focus (only when the link matches `:focus-visible`, so the focus a mouse press gives does not count);
+  - `touchstart`. The touch's own `pointerenter` is ignored.
+
+  Each href is prefetched at most once in 5 minutes (`PREFETCH_WINDOW_MS`, a per-tab record), which is
+  how long the router keeps a full prefetch. Nothing prefetches on entering the viewport. Outside a
+  production build it does nothing, as Next's own prefetch does.
+- **The mechanism is `router.prefetch(href, { kind: "full" })`.** The bundled Link reference says
+  `prefetch={true}` is "the full route ... for both static and dynamic routes". The default (`auto`)
+  prefetches a dynamic route only "down to the nearest segment with a loading.js boundary". The
+  `staleTimes` reference says full prefetches and `router.prefetch` are kept for `staleTimes.static`
+  (5 minutes). The source of this version
+  (`client/components/prefetch.js`) shows `router.prefetch` defaults to `PrefetchKind.AUTO`, so the
+  kind has to be named. I chose the router call over the documented hover pattern
+  (`prefetch={active ? true : false}`) because `links.js` re-prefetches every prefetch-enabled
+  Link on screen whenever the router tree changes (`pingVisibleLinks`). That would mean every armed
+  header link after each navigation, and every armed row after each Stats filter change. That is
+  the per-row traffic this rule exists to stop. The router call is one request per href per window.
+  `PrefetchKind` is not exported from a public entry point, so the option type is derived from
+  `useRouter`'s own signature and nothing imports from `next/dist`.
+- **`components/intent-link.tsx`**, `IntentLink`: `next/link` with `prefetch={false}` plus the hook,
+  keeping the caller's own pointer, focus and touch handlers. `prefetch={false}` on it turns intent
+  off as well. It is rendered by:
+  - `EntityAnchor`, so `PlayerLink`, `TeamLink`, `GameLink` and `SeriesLink` call sites did not change;
+  - every link in `components/ui/header.tsx` (direct links, menu items, More, the mobile drawer);
+  - `Brand`;
+  - the kit's `ButtonLink` and `IconButtonLink`;
+  - the Stats table's player link.
+- **Live links are not prefetched.** Their reads are `never` (an uncached render every time), and
+  the router would keep the prefetched page for 5 minutes, so a click could show an old score. The
+  bundled Adopting Partial Prefetching guide says the same: "A prefetch of real-time content would
+  be stale by the click."
+- **Skeletons.** Every `loading.tsx` root and every in-page loader is `role="status" aria-busy="true"`.
+  I checked all 42; each one is a skeleton. Other `aria-busy` uses (live content being refreshed) do
+  not carry `role="status"`. One rule in `components/ui/skeleton.css` gives that selector
+  `animation: skeletonReveal var(--dur-fast) var(--ease-out) var(--delay-skeleton) backwards`.
+  - New token `--delay-skeleton: 120ms` (`tokens.css`), keyframes in `motion.css`.
+  - The region is transparent for 120 ms, then fades in over 140 ms, so a response faster than
+    120 ms never shows a skeleton. It is CSS only, with no timer.
+  - **Reduced motion keeps the delay.** It is a wait, not motion, and a flash of skeleton is the
+    thing reduced-motion users least want. The fade stays at `--dur-fast`, the opacity duration that
+    Design Language keeps under reduced motion. Checked in the build: same computed animation, opacity
+    0 at 60 ms and 1 at 300 ms with `prefers-reduced-motion: reduce` (`traces-local.txt` §4).
+- **Words of the old rule** updated:
+  - the Links section of Design Language (new "Prefetch on intent" bullet), plus its motion token
+    table and Loading row;
+  - the site links paragraph in `AGENTS.md`;
+  - the `entity-link.tsx` header comment;
+  - the ESLint entity-href comment;
+  - a pointer under "No viewport prefetch" in the site links plan.
+
+  The entity-href ESLint rule itself is unchanged and passes.
+- **`next.config.ts`: no change.** Full prefetches live for `staleTimes.static` (5 minutes default).
+  `staleTimes.dynamic` stays 0, so an unprefetched click still fetches fresh.
+
+### Prefetch request counts (production webpack build, fixture API :4180, dashboard :3181; `fixture-prefetch-counts.txt`, 3 repeats)
+
+| Action | Entity page requests |
+| --- | --- |
+| Load and scroll `/stats` (2 links on fixture data) | 0 |
+| Load and scroll `/draft` (183–331 links) | 0 |
+| Sweep over 20 rows (`/draft`), ending off every link | 0 |
+| Resting hover on one link | 1 page render + 2 route-tree lookups |
+| Click after that prefetch | 0 RSC, 0 documents |
+
+A full prefetch is one page render: an RSC request without the prefetch header, the same request a
+click makes. It also sends one or two `_tree` lookups (`Next-Router-Segment-Prefetch: /_tree`).
+Replayed on real data, a lookup is about 300 B, takes 2 ms and makes **no API read**. The render is
+288 KB, takes 9–11 ms warm and makes 9 API reads, all cache hits (`traces-local.txt` §1). The spec
+counts renders and lookups separately.
+
+Navigation spec, fixture: every journey is a client transition. Each click-only journey makes 1 RSC
+request and Back makes none. Each prefetched journey sends 1 render while hovering and **0 RSC after
+the click**.
+
+### Click to content (real data, `SPEED_REAL=1`, five runs, medians; `navigation-before-local.json`, `navigation-after-local.json`)
+
+Same stack and warm cache for both; "before" is a build of `HEAD` (9e926246) with its own spec.
+
+| Journey | SP01 | Before (today) | After, click only | After, prefetched | Budget |
+| --- | --- | --- | --- | --- | --- |
+| Stats row → player | 152 ms | 171 ms (159–290) | 171 ms (157–202) | **72 ms (66–74)** | ≤ 100 prefetched, ≤ 300 not |
+| Player header → team | 290 ms | 298 ms (295–366) | 283 ms (272–283) | **230 ms (207–260)** | |
+| Header nav → Stats | 226 ms | 235 ms (214–281) | 201 ms (192–242) | **179 ms (173–188)** | |
+| Back (Stats → team) | 199 ms | 194 ms (181–209) | 184 ms (165–191) | n/a | |
+
+- **Met:** prefetched Stats row → player (72 ms), and every unprefetched warm click (≤ 283 ms).
+- **Not met: prefetched player → team (230 ms) and nav → Stats (179 ms).** Both make no network
+  request after the click. The measured floor (`traces-local.txt` §3) is main-thread work and reads
+  made after mount:
+  - Rendering the destination from the cached payload: one 190 ms long task for Stats (2.2 MB of
+    HTML, 50 wide rows), and 70–90 ms for the team page, starting about 40 ms after the click.
+  - On the team page, the roster board ("Loading minutes") reads from the browser after mount
+    (team, catalog and eight portraits). Its skeleton clears at 267–386 ms.
+
+  Prefetch cannot remove either. SP05 (page weight) addresses the render, and SP04 or the G1
+  question about warming browser reads addresses the reads. Per the plan, the floor is recorded and
+  the budget is the owner's.
+- The prefetched team journey starts on the player page loaded as a document, so the comparison with
+  the click-only journey is not exact. A page loaded as a document is kept by the router, so the
+  prefetched block starts on the player page rather than on `/stats`. Otherwise nav → Stats would
+  have nothing left to fetch.
+
+### Memory (`resources-navigation-local.json`, sampled every 0.5 s through the after run)
+
+The dashboard went from 195 MB to a peak of 312 MB (CPU peak 38 % of one core) over 5 runs × 7
+journeys, with 15 intent prefetches. The API stayed at 1,654 MB. Each prefetch is an ordinary page
+render, so the dashboard's working set grows as it does for clicks; SP02's crawl peak of 596 MB
+remains the high mark. The before run was not sampled, so this is not a before/after comparison.
+
+### Where this differs from the plan and the handoff
+
+- **More links than the plan names.** `IconButtonLink` is rendered in a row action on every
+  Six-Factor and RAPM table row, and it used Next's default viewport prefetch. `Brand` sits in the
+  header. The Stats table's player link is a hand-built `Link prefetch={false}` with the
+  `entity-link` class, not `EntityAnchor`, and the done-when times its prefetched journey. All
+  three now use `IntentLink`. The other `prefetch={false}` links are unchanged, including the
+  `ButtonLink`s that pass `prefetch={false}`, which still never prefetch.
+- **Default-prefetch links remain.** About 30 files still render `next/link` with Next's default
+  (viewport) prefetch: the footer on every page, `/whats-new` on Stats, `/stats` on Draft Classes,
+  Live, the playoffs bracket, Ask and methodology links. They were outside the handoff's list. The
+  load-and-scroll spec logs them (`otherPrefetch`) but does not fail on them. For a dynamic page
+  with a `loading.tsx`, Next prefetches only the shell, so these are cheap but not zero. Converting
+  them is a one-line change each if the owner wants "nothing prefetches on entering the viewport"
+  to hold site-wide.
+- **The once-only window is 5 minutes**, the router's lifetime for a full prefetch, rather than the
+  data stamp. The browser cannot see the stamp. A prefetch older than that would be thrown away by
+  the router anyway.
+- **The hover spec runs on `/draft`.** The fixture's `/stats` has 2 rows, too few for a 20-row
+  sweep.
+- **Prefetched pages can be up to 5 minutes old at the click**, which is the router's rule for
+  any full prefetch. Data changes about seven times a day.
+
+### Checks
+
+- `npm --prefix dashboard run lint` (ESLint, including the entity-href and control-kit rules, and
+  Stylelint): pass. `run typecheck`: pass.
+- Vitest: 147 files, 1,071 tests passed. The new `lib/intent-prefetch.test.tsx` (10 tests) covers
+  the 80 ms timer, cancel on leave, a 20-row sweep, once per window, touch start (and ignoring the
+  touch's own `pointerenter`), keyboard focus versus mouse focus, Live hrefs, `prefetch={false}`,
+  outside production, and keeping the caller's handlers.
+- Playwright, production webpack build, fixture API:
+  - `site-links-prefetch.spec.ts` and `speed-navigation.spec.ts`, `--repeat-each=3`: 12 passed.
+  - The 18 specs that touch skeletons, links, the header, the kit or motion (live, player-career,
+    teams, dl08-evidence, chart-kit, last-games, fo13-pages, r11-learning-patch-notes,
+    fo14-accessibility, finance, control-kit, header-command-palette, motion-coverage,
+    site-links-crawl, site-links-gate, conversation, threaded-assistant, saved-operations): 202
+    passed, 27 skipped, **1 failed**. The failure is `player-career.spec.ts:83`, which expects the
+    draft line `2018 · R1 #9 · TOR`. The page shows the team's full name, as commit 5ace395a
+    ("draft team by full name") made it. The assertion predates SP03 and SP03 does not touch the bio
+    header, so it is left for the owner.
+- `speed-navigation.spec.ts` with `SPEED_REAL=1` on the local real-data stack: passed (timings above).
+- No Python changed, so ruff, mypy and pytest were not run.
+- Full Playwright and pytest suites not run (plan: at G1). Not deployed; nothing ran against the live
+  site. `data/derived/job-health/` (written by `warm-site`) was deleted, and the servers and scratch
+  workspace were removed.
