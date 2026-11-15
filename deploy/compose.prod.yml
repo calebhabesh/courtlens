@@ -156,6 +156,9 @@ services:
     environment:
       <<: *api-environment
       COURTLENS_WIN_PROBABILITY_LOCAL_SEALING: "false"
+      # Speed plan SP02: the warm crawl requests pages from the dashboard and reads the API status.
+      COURTLENS_WARM_BASE_URL: http://dashboard:3000
+      COURTLENS_WARM_API_URL: http://api:8000
       # The daily refresh publishes a statistics release with dbt; the image's /app/warehouse
       # belongs to the image user, so dbt's working files go to the container's /tmp.
       DBT_TARGET_PATH: /tmp/dbt-target
@@ -163,10 +166,17 @@ services:
     command:
       - sh
       - -c
+      # After the jobs, the warm crawl (speed plan SP02) refills the API read cache when the data
+      # generation changed. It runs as its own step with stdout sent to stderr, bounded by
+      # `timeout`, and its time is taken off the sleep, so it never shifts a job's wake.
       - >-
         while :; do
         wait=$$(courtlens run-jobs --next-wake | tail -n 1);
         case "$$wait" in ''|*[!0-9]*) echo 'jobs run gave no wake time' >&2; wait=1800;; esac;
+        began=$$(date +%s);
+        timeout 1500 courtlens warm-site >&2 || echo 'warm-site did not complete' >&2;
+        wait=$$((wait - $$(date +%s) + began));
+        [ "$$wait" -gt 0 ] || wait=1;
         sleep "$$wait";
         done
     volumes:
