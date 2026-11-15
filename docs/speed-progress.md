@@ -1835,3 +1835,40 @@ The 11 Playwright failures:
 Servers, Playwright browsers, the mock API, the test container and the scratch trees (branch and
 `main` fixture builds) were stopped and removed. Nothing was pushed, deployed or run against the
 live site; Cloudflare was not touched.
+
+## 2026-11-15 — G1/G2 stop: owner's order, zone read, live before any deploy
+
+The owner, at owner point 1: "You will be doing everything. You can push the branch and open a pr,
+but I would like to finish everything in this plan first." So the branch is pushed and the PR
+is a **draft**, [#110](https://github.com/calebhabesh/courtlens/pull/110), and it is not merged.
+The one deploy then comes in SP08, and the stop's live checks after a deploy (the Cloudflare
+`.webp` check, `docker stats` during the warm start and the first crawl, `measure.py` live) move
+there.
+
+### Zone settings (`zone-settings-before.txt`, cf CLI, read only)
+
+| Setting | Value |
+| --- | --- |
+| Early Hints | off |
+| 0-RTT | off |
+| Smart Tiered Cache | off |
+| Tiered caching (Argo) | off, not editable on this plan |
+| Browser cache TTL | 14400 (Cloudflare's default 4 hours) |
+| HTTP/3 | on |
+| Brotli | on |
+| Cache level | aggressive |
+
+Nothing in Cloudflare was changed.
+
+### Live, still running `main` (`measure-live-predeploy-*.json`, 5 runs)
+
+Same code and data as the SP00 baseline, and it measures the same: player pages 0.75–1.47 s,
+team pages 1.46–1.61 s, Stats 0.71 s, Compare 1.63 s, API reads 36–371 ms, every page and read
+`DYNAMIC`. This is SP07's "before" reading if SP07 runs before the deploy.
+
+**Finding: Cloudflare caches the `.webp` 404 for now.** `main`'s API has no `portrait.webp` route,
+so those URLs answer 404 JSON with no `Cache-Control`. Cloudflare caches the 404 (`HIT`, Age
+7–35 s: its short default edge TTL for 404) and sends `max-age=14400` to the browser from the zone's
+browser TTL (`webp-404-predeploy.txt`). Only `measure.py` and curl asked for those URLs (`main`'s
+pages request `/portrait`). After the deploy, wait a few minutes after the last such request
+before `cf-cache-check.sh`, or the first answer may be a cached 404.
