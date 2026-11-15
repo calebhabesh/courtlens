@@ -50,6 +50,8 @@
    add a line to every heading and subtitle that names a player or team. */
 @media (max-width: 767px) {
   :is(h1, h2, h3, h4, .ui-identity-subtitle, .player-bio-facts) a.entity-link { display: inline; min-height: 0; }
+  /* An identity's own name keeps its line box too (it already sits on a line of its own). */
+  .ui-identity-text > a.entity-link.ui-identity-name { min-height: 0; }
 }
 
 /* The stretched link shows nothing itself; the card shows the focus ring. */

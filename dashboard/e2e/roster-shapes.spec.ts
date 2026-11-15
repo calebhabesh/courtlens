@@ -7,18 +7,8 @@ import { openWorkbench } from "./workbench-navigation";
 // FO05 depth chart (on the team profile since alignment row 12): drag and menu moves,
 // Observed/Projected, the 240-minute gauge and the byte-compatible JSON export.
 const BOS = "1610612738";
-const detail = {
-  team: { id: BOS, tricode: "BOS", name: "Boston Celtics" },
-  context: { release_id: "fixture-release", season: "2025-26", phase: "regular_season", before_date: "2026-04-13" },
-  record: { games_played: 82, wins: 56, losses: 26, win_pct: 0.683 },
-  production: {}, allowance: {}, recent_games: [],
-  player_cohort: [
-    { player_id: "11", player_name: "Fixture Guard", games_played: 80, total_minutes: 2400, pts_per_game: 20, reb_per_game: 4, ast_per_game: 6 },
-    { player_id: "12", player_name: "Fixture Wing", games_played: 70, total_minutes: 1400, pts_per_game: 10, reb_per_game: 5, ast_per_game: 2 },
-    { player_id: "13", player_name: "Fixture Big", games_played: 60, total_minutes: 1200, pts_per_game: 8, reb_per_game: 9, ast_per_game: 1 }
-  ],
-  warnings: ["Fixture scope only"]
-};
+// The same Boston the mock API serves at this scope (the server reads it since speed plan SP04).
+const detail = JSON.parse(readFileSync(path.resolve(process.cwd(), "e2e/fixtures/team-bos-depth-2025-26.json"), "utf8"));
 
 async function mockTeam(page: Page) {
   await page.route(`**/api/workbench/teams/${BOS}?*`, (route) => route.fulfill({ json: detail }));
@@ -290,9 +280,9 @@ test.describe("Roster Shapes", () => {
 
   test("players with only reported non-appearances render unknown minutes, not a crash", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    const inactive = { player_id: "14", player_name: "Fixture Inactive", games_played: 0, total_minutes: null, pts_per_game: null, reb_per_game: null, ast_per_game: null };
-    await page.route(`**/api/workbench/teams/${BOS}?*`, (route) => route.fulfill({ json: { ...detail, player_cohort: [...detail.player_cohort, inactive] } }));
-    await openWorkbench(page, depth);
+    // The mock API serves this Boston before 2026-03-01 with "Fixture Inactive" (0 GP, unknown
+    // minutes) added: the depth chart reads its team on the server since speed plan SP04.
+    await openWorkbench(page, `/teams/${BOS}?season=2025-26&phase=regular_season&beforeDate=2026-03-01`);
     const unassigned = page.getByRole("region", { name: "Roster allocations" }).getByRole("region", { name: "Unassigned lane" });
     await expect(unassigned.locator(".roster-chip")).toHaveCount(4);
     await expect(unassigned.locator(".roster-chip", { hasText: "Fixture Inactive" })).toContainText("— min · 0 GP");
