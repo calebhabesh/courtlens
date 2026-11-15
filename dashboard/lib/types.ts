@@ -587,6 +587,8 @@ export type WorkbenchQueryResponse = {
   } | null;
   items: PlayerResearchItem[];
   next_cursor: string | null;
+  /** One cursor per page of the shown rows (page 1 is null); presentation queries only. */
+  page_cursors?: (string | null)[] | null;
   has_more: boolean;
   warnings: string[];
 };
@@ -739,6 +741,8 @@ export type PlayerResearchResponse = {
   total_eligible_players: number;
   items: PlayerResearchItem[];
   next_cursor: string | null;
+  /** One cursor per page of the shown rows (page 1 is null); presentation queries only. */
+  page_cursors?: (string | null)[] | null;
   has_more: boolean;
   warnings: string[];
 };

@@ -123,7 +123,12 @@ from courtlens.domain.metrics import (
     list_metric_definitions,
 )
 from courtlens.domain.personal_state import CANONICAL_BUILTIN_VIEWS
-from courtlens.domain.query_spec import ALLOWED_METADATA_FIELDS, QuerySpec, WindowKind
+from courtlens.domain.query_spec import (
+    ALLOWED_METADATA_FIELDS,
+    MAX_PAGE_SIZE,
+    QuerySpec,
+    WindowKind,
+)
 from courtlens.domain.query_url import deserialize_params_to_query, query_spec_to_research_query
 from courtlens.domain.source_policy import pending_capabilities
 from courtlens.services.analytical_ops import (
@@ -208,6 +213,7 @@ from courtlens.services.stats_cohort_cache import presentation_page
 from courtlens.services.stats_engine import (
     darko_query_fields,
     decode_cursor,
+    encode_cursor,
     execute_stats_query,
     stats_cohort_summary,
     stats_presentation_hash,
@@ -1113,6 +1119,17 @@ def execute_query_endpoint(
         for r in items_raw
     ]
 
+    # Numbered paging: the same opaque cursors the query issues, one per page, so the pager can
+    # jump to any page (first, previous, a number, last) without a new contract or spec field.
+    page_cursors: list[str | None] | None = None
+    if payload.presentation is not None:
+        page_hash = stats_presentation_hash(context, spec, payload.presentation)
+        page_size = min(max(1, spec.page.limit), MAX_PAGE_SIZE)
+        page_cursors = [
+            encode_cursor(page_hash, start) if start else None
+            for start in range(0, max(total_count, 1), page_size)
+        ]
+
     return WorkbenchQueryResponse(
         context=context.to_dict(),
         query=spec,
@@ -1129,6 +1146,7 @@ def execute_query_endpoint(
         table_cohort=table_cohort,
         items=items,
         next_cursor=next_cursor,
+        page_cursors=page_cursors,
         has_more=has_more,
         warnings=context.warnings,
         impact={

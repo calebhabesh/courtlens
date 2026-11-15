@@ -19,6 +19,7 @@ import { PercentileCell } from "./charts/percentile-cell";
 import { Skeleton } from "./ui/skeleton";
 import { Field } from "./ui/field";
 import { Button, ButtonLink, IconButton, Segmented } from "./ui/kit";
+import { Pager } from "./ui/pager";
 import { SHRUNK_PARAM, ShrunkNote, ShrunkToggle, isShrunkColumn, useShrunkOverlay, withShrunkColumns, withShrunkMetrics } from "./stats-shrunk";
 import { TeamLogo, TeamLogoStack } from "./team-logo";
 import { latestStatsSeason, teamMove } from "@/lib/current-team";
@@ -523,6 +524,16 @@ export function WorkbenchPlayerExplorer({
     router.push(`/compare?${params}`);
   };
 
+  // Numbered paging: the API sends one opaque cursor per page (page 1 has none). The current page
+  // is the one whose cursor is in the URL; an older cursor that is not in the list falls back to
+  // the row offset.
+  const pageCursors = data.page_cursors && data.page_cursors.length > 0 ? data.page_cursors : null;
+  const urlCursor = searchParams?.get("cursor") ?? null;
+  const cursorPage = pageCursors ? pageCursors.indexOf(urlCursor) : -1;
+  const currentPage = cursorPage >= 0 ? cursorPage + 1
+    : Math.floor((data.output_offset ?? 0) / Math.max(1, querySpec?.page?.limit ?? 50)) + 1;
+  const goToPage = (page: number) => updateParam({ cursor: pageCursors?.[page - 1] ?? null });
+
   // One handler in the focused table region; editable/modified/IME events keep native behavior.
   const handleTableKey = (e: KeyboardEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
@@ -535,6 +546,10 @@ export function WorkbenchPlayerExplorer({
     else if (key === "?") { e.preventDefault(); setIsHotkeysOpen(true); }
     else if (key === "t") { e.preventDefault(); setIsExpanded(value => !value); }
     else if (key === "w" || key === "e") { e.preventDefault(); handleDensityChange(key === "w" ? "compact" : "standard"); }
+    else if ((key === "[" || key === "]") && pageCursors) {
+      const target = currentPage + (key === "[" ? -1 : 1);
+      if (target >= 1 && target <= pageCursors.length) { e.preventDefault(); goToPage(target); }
+    }
     else if (key === "a" || key === "d") { e.preventDefault(); e.currentTarget.scrollBy({ left: key === "a" ? -240 : 240 }); }
     else if (key === "f") { e.preventDefault(); setFiltersOpen(value => !value); }
     else if (key === "z" && comparedPlayers.length >= 2) { e.preventDefault(); openComparison(); }
@@ -1265,15 +1280,14 @@ export function WorkbenchPlayerExplorer({
           </DarkoSourceLink>}
         </div>
         <div className="stats-footer-controls">
-          <div className="stats-footer-group" role="group" aria-label="Row density">
-            <Button size="xs" variant="ghost" dense onClick={() => handleDensityChange("compact")}
-              pressed={tableDensity === "compact"} aria-label="Compact rows (W)"><span aria-hidden="true">−W</span></Button>
-            <span className="stats-density-meter" role="img" aria-label={tableDensity === "compact" ? "Compact density" : "Standard density"}>
-              <span className="is-on" /><span className={tableDensity === "standard" ? "is-on" : ""} />
-            </span>
-            <Button size="xs" variant="ghost" dense onClick={() => handleDensityChange("standard")}
-              pressed={tableDensity === "standard"} aria-label="Standard rows (E)"><span aria-hidden="true">E+</span></Button>
-          </div>
+          {/* Row height in words (was a cryptic −W ▮▯ E+); the W and E keys are in each tooltip. */}
+          <Segmented label="Row height" size="xs" dense value={tableDensity} onChange={handleDensityChange}
+            options={[
+              { value: "compact", title: "Compact rows: more players on screen (W)",
+                label: "Compact" },
+              { value: "standard", title: "Standard rows: taller and easier to read (E)",
+                label: "Standard" }
+            ]} />
           <div className="stats-footer-group" role="group" aria-label="View">
             <IconButton size="xs" icon="left" label="Previous view" onClick={() => stepView(-1)} />
             <span className="stats-footer-label" aria-hidden="true">View</span>
@@ -1290,26 +1304,23 @@ export function WorkbenchPlayerExplorer({
           </div>
           <div className="stats-footer-group is-single">
             <Button size="xs" variant="ghost" dense icon={isExpanded ? "collapse" : "expand"} onClick={() => setIsExpanded(value => !value)}
-              pressed={isExpanded} aria-label={isExpanded ? "Standard height (T)" : "Expand table (T)"}><kbd aria-hidden="true">T</kbd></Button>
+              pressed={isExpanded} aria-label={isExpanded ? "Standard height (T)" : "Expand table (T)"}><span aria-hidden="true">{isExpanded ? "Shrink" : "Expand"}</span><kbd aria-hidden="true">T</kbd></Button>
           </div>
         </div>
         <div className="stats-pagination-actions">
-          <Button size="xs" icon="left"
-            onClick={() => {
-              const params = new URLSearchParams(searchParams?.toString() ?? "");
-              params.delete("cursor");
-              router.push(`${pathname}?${params.toString()}`);
-            }}
-            disabled={!searchParams?.get("cursor")}
-          >
-            First Page
-          </Button>
-
-          {data.has_more && data.next_cursor && (
-            <Button size="xs" variant="primary" iconAfter="right" onClick={() => updateParam({ cursor: data.next_cursor })}>
-              Next Page
-            </Button>
-          )}
+          {pageCursors
+            ? <Pager label="Stats pages" page={currentPage} pageCount={pageCursors.length} onPage={goToPage} />
+            : <>
+                {/* Queries without a presentation have no page list: first and next only. */}
+                <Button size="xs" icon="first" onClick={() => updateParam({ cursor: null })} disabled={!searchParams?.get("cursor")}>
+                  First page
+                </Button>
+                {data.has_more && data.next_cursor && (
+                  <Button size="xs" variant="primary" iconAfter="right" onClick={() => updateParam({ cursor: data.next_cursor })}>
+                    Next page
+                  </Button>
+                )}
+              </>}
         </div>
 
       </div>
