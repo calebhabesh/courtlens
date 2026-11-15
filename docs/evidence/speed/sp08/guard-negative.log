@@ -1,0 +1,5 @@
+[2/2] e2e/speed-page-weight.spec.ts:23:5 › Stats HTML stays under its ceiling and carries no analytical percentile maps
+  1) e2e/speed-page-weight.spec.ts:23:5 › Stats HTML stays under its ceiling and carries no analytical percentile maps 
+    Error: Stats rows carry the analytical `percentiles` map
+    > 27 |   expect(body.includes(PERCENTILES), "Stats rows carry the analytical `percentiles` map").toBe(false);
+    Error Context: test-results/speed-page-weight-Stats-HT-d65a8--analytical-percentile-maps/error-context.md

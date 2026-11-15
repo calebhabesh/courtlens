@@ -1,0 +1,8 @@
+ RUN  v4.1.12 /home/ethioking/.cache/courtlens-tmp/sp08/tree/dashboard
+
+
+ Test Files  153 passed (153)
+      Tests  1098 passed (1098)
+   Start at  17:28:41
+   Duration  6.33s (transform 15.57s, setup 2.38s, import 36.74s, tests 14.25s, environment 10.49s)
+
