@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { assertCurrentEnvironment } from "./server-env";
 
 assertCurrentEnvironment();
@@ -59,10 +60,11 @@ async function analyticsFetch<T>(path: string): Promise<T> {
   return (await response.json()) as T;
 }
 
-export function getAnalyticsCatalog(snapshotId?: string): Promise<AnalyticsCatalog> {
+/** One read per server render (speed plan SP04: the timeout signal opts out of fetch memoization). */
+export const getAnalyticsCatalog = cache((snapshotId?: string): Promise<AnalyticsCatalog> => {
   const query = snapshotId ? `?snapshotId=${encodeURIComponent(snapshotId)}` : "";
   return analyticsFetch<AnalyticsCatalog>(`/api/analytics/catalog${query}`);
-}
+});
 
 export function getAnalyticsProfile(
   playerId: string,

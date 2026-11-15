@@ -1,0 +1,28 @@
+SP04 query plans on the PC's database copy (read-only), 2026-11-15.
+
+1. Tracking facts, original (stats_cohort_store before SP04):
+   SELECT season, season_type, count(*), md5(string_agg(DISTINCT dataset_id::text, ','))
+   FROM analytics_marts.mart_stats_player_tracking GROUP BY season, season_type
+   GroupAggregate (actual 802.6..1113.6 ms, rows=26)
+     -> Sort (Sort Method: external merge  Disk: 137048kB; rows=2050202)
+        -> Seq Scan on mart_stats_player_tracking (rows=2050202)
+   Buffers: shared hit=261 read=49790, temp read=34255 written=34306
+   Execution Time: 1130.5 ms   (timed run: 1042.6 ms)
+
+2. Tracking facts, SP04 (tracking_facts_sql):
+   SELECT season, season_type, sum(rows)::bigint, md5(string_agg(dataset_id::text, ',' ORDER BY dataset_id::text))
+   FROM (SELECT season, season_type, dataset_id, count(*) AS rows FROM … GROUP BY 1, 2, 3) per_dataset GROUP BY 1, 2
+   GroupAggregate (rows=26) -> Finalize GroupAggregate (rows=312) -> Gather Merge (2 workers)
+     -> Sort (quicksort, 49 kB) -> Partial HashAggregate (Batches: 1, 465 kB) -> Parallel Seq Scan (683401 rows x 3)
+   Buffers: shared hit=466 read=49598 (no temp)
+   Execution Time: 125.4 ms   (timed run: 104.4 ms)
+   Result compared with (1) over all 26 (season, type) rows: 0 mismatches in count or md5.
+
+3. Dataset fingerprint (workbench_analytics.dataset_fingerprint), unchanged query:
+   SELECT count(*), max(game_date) FROM workbench_player_games WHERE dataset_id = '<published dataset>'
+   Finalize Aggregate -> Gather (2 workers) -> Partial Aggregate
+     -> Parallel Index Only Scan using ix_wb_player_dataset_season_phase_date (430820 rows x 3, Heap Fetches: 0)
+   Buffers: shared hit=1766
+   Execution Time: 29.7 ms
+   Already index-only (relallvisible = relpages = 306264); no index can make the count cheaper.
+   SP04 counts it once per read-only transaction instead of up to three times per read.

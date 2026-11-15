@@ -759,7 +759,9 @@ async def cache_status(request: Request) -> dict[str, Any]:
     crawl (SP02) waits on it.
     """
     store: ReadCacheStore | None = getattr(request.app.state, "read_cache", None)
+    warmed = getattr(request.app.state, "warm_start", None)
+    extra = {"warm_start": warmed} if warmed is not None else {}
     if store is None:
-        return {"enabled": False}
+        return {"enabled": False, **extra}
     await store.current()
-    return store.status()
+    return {**store.status(), **extra}

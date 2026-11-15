@@ -78,24 +78,54 @@ export default async function PlayerPage({
     return <PlayerError error={loadError} id={id} date={selected.date} />;
   }
 
-  // Modern Workbench Research Mode
-  const catalog = await getWorkbenchCatalog(selected.releaseId).catch(() => null);
+  // Modern Workbench Research Mode. Two waves (speed plan SP04): the catalog (with the metric
+  // catalog, which needs nothing), then the career and every scope read together.
+  const catalogRequest = getWorkbenchCatalog(selected.releaseId).catch(() => null);
+  // Header hover text for the career table's trend dialog; failing only hides it.
+  const metricCatalogRequest = getMetricCatalog().catch(() => null);
+  const catalog = await catalogRequest;
 
   const phase = selected.phase || catalog?.default_phase || "regular_season";
   const windowParam = selected.window || "season";
 
   let wbLoaded: { profile: PlayerProfile; log: PlayerGameLogResponse } | null = null;
-  // The career table arrives with the page: one stored read, started beside the profile.
+  // The career table arrives with the page: one stored read, started beside the profile. It names
+  // the catalog's release: a career read without one misses the stored season cohorts.
   const careerRequest = catalog
     ? getPlayerCareer(id, { phase, releaseId: catalog.release_id }).catch(() => null)
     : Promise.resolve(null);
-  // Without a season in the link, a player who did not play the default season opens on his
-  // latest season (careers reach back to 1946-47), not on an empty one.
-  const played = selected.season ? [] : ((await careerRequest)?.seasons ?? []).map(entry => entry.season);
   const fallback = catalog?.default_season || "2024-25";
+  const scopeOf = (season: string) => {
+    const seasonScope = catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase);
+    const beforeDate = selected.beforeDate || (season !== fallback ? seasonScope?.default_before_date : null) || catalog?.default_before_date || "2026-06-30";
+    return { season, beforeDate };
+  };
+  // Every read of one season, started together: the profile and game log decide the page, the
+  // rest only hide their section when they fail (as before).
+  const scopeReads = ({ season, beforeDate }: { season: string; beforeDate: string }, chosen: Promise<boolean>) => {
+    const loads = Promise.all([
+      getPlayerProfile(id, { season, phase, beforeDate, window: windowParam, releaseId: selected.releaseId }),
+      getPlayerGameLog(id, { season, phase, beforeDate, releaseId: selected.releaseId, limit: 50 })
+    ]);
+    void loads.catch(() => undefined);
+    const extras = Promise.all([
+      playerImpact(id, { season, phase, beforeDate, window: windowParam }, careerRequest, catalog, chosen),
+      catalog ? heroStats(id, { ...selected, season, phase, beforeDate }, catalog) : null,
+      getPlayerBio(id, { season, beforeDate }).catch(() => null),
+      careerRequest,
+      metricCatalogRequest,
+    ]);
+    return { loads, extras };
+  };
+  // Without a season in the link, a player who did not play the default season opens on his
+  // latest season (careers reach back to 1946-47), not on an empty one. Only that choice waits for
+  // the career: the default season's reads start beside it and are kept when the player played
+  // it (or the career is unknown), and read again for the latest season otherwise.
+  const guessed = selected.season ? null : scopeReads(scopeOf(fallback),
+    careerRequest.then(career => !career?.seasons.length || career.seasons.some(entry => entry.season === fallback)));
+  const played = selected.season ? [] : ((await careerRequest)?.seasons ?? []).map(entry => entry.season);
   const season = selected.season || (played.length && !played.includes(fallback) ? played[0] : fallback);
-  const seasonScope = catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase);
-  const beforeDate = selected.beforeDate || (season !== fallback ? seasonScope?.default_before_date : null) || catalog?.default_before_date || "2026-06-30";
+  const { beforeDate } = scopeOf(season);
   // A link names the season it was shown in; when the player has no games then (or missed those
   // playoffs) the page opens the closest season he played and says so once (site links SL02).
   // Checked beside the profile reads, so a link that resolves costs no extra round trip.
@@ -110,23 +140,9 @@ export default async function PlayerPage({
     return shown ? rewrittenUrl(playerHref(id), selected, asked, shown) : null;
   }) : Promise.resolve(null);
 
+  const { loads, extras } = guessed && season === fallback ? guessed : scopeReads({ season, beforeDate }, Promise.resolve(true));
   try {
-    const [profile, log] = await Promise.all([
-      getPlayerProfile(id, {
-        season,
-        phase,
-        beforeDate,
-        window: windowParam,
-        releaseId: selected.releaseId
-      }),
-      getPlayerGameLog(id, {
-        season,
-        phase,
-        beforeDate,
-        releaseId: selected.releaseId,
-        limit: 50
-      })
-    ]);
+    const [profile, log] = await loads;
     wbLoaded = { profile, log };
   } catch (err) {
     loadError = err;
@@ -135,14 +151,7 @@ export default async function PlayerPage({
   if (rewritten) redirect(rewritten);
 
   if (wbLoaded) {
-    const [impact, hero, bio, career, metricCatalog] = await Promise.all([
-      playerImpact(id, { season, phase, beforeDate, window: windowParam }, careerRequest, catalog),
-      catalog ? heroStats(id, { ...selected, season, phase, beforeDate }, catalog) : null,
-      getPlayerBio(id, { season, beforeDate }).catch(() => null),
-      careerRequest,
-      // Header hover text for the career table's trend dialog; failing only hides it.
-      getMetricCatalog().catch(() => null),
-    ]);
+    const [impact, hero, bio, career, metricCatalog] = await extras;
 
     return (
       <WorkbenchPlayerProfile
@@ -208,17 +217,22 @@ async function playerImpact(
   scope: { season: string; phase: string; beforeDate: string; window: string },
   careerRequest: Promise<PlayerCareerResponse | null>,
   catalog: WorkbenchCatalog | null,
+  chosen: Promise<boolean>,
 ): Promise<PlayerImpactView> {
   const data = await getImpact({ ...scope, playerId: id }).catch(() => null);
   if (!data || data.players.length > 0) return { data, season: scope.season, requestedSeason: scope.season };
+  // A guessed season the page does not show reads no fallbacks (its answer is discarded).
+  if (!(await chosen)) return { data, season: scope.season, requestedSeason: scope.season };
   const earlier = ((await careerRequest)?.seasons ?? []).map(entry => entry.season)
     .filter(season => season < scope.season).sort().reverse().slice(0, 3);
-  for (const season of earlier) {
+  // The (at most three) earlier seasons are read together; the newest with a fit wins, as when
+  // they were read one after another.
+  const fallbacks = await Promise.all(earlier.map(season => {
     const beforeDate = catalog?.stats_scopes?.find(entry => entry.season === season && entry.phase === "regular_season")?.default_before_date;
-    if (!beforeDate) continue;
-    const fallback = await getImpact({ season, phase: "regular_season", beforeDate, playerId: id, window: "season" }).catch(() => null);
-    if (fallback?.players.length) return { data: fallback, season, requestedSeason: scope.season };
-  }
+    return beforeDate ? getImpact({ season, phase: "regular_season", beforeDate, playerId: id, window: "season" }).catch(() => null) : null;
+  }));
+  const found = fallbacks.findIndex(fallback => fallback?.players.length);
+  if (found >= 0) return { data: fallbacks[found], season: earlier[found], requestedSeason: scope.season };
   return { data, season: scope.season, requestedSeason: scope.season };
 }
 

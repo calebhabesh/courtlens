@@ -36,6 +36,9 @@ class Settings(BaseSettings):
     # Speed plan SP01: the API's in-memory read cache (off unless set; on in compose.prod.yml).
     read_cache: bool = False
     read_cache_max_bytes: int = Field(default=128 * 1024 * 1024, ge=1024 * 1024)
+    # Load the catalog's bundles, the tracking fingerprint and the finance book as the API starts
+    # (speed plan SP04); off by default so tests and local runs are untouched.
+    warm_start: bool = False
 
     balldontlie_api_key: SecretStr | None = Field(
         default=None, validation_alias="BALLDONTLIE_API_KEY"

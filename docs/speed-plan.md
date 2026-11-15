@@ -6,7 +6,7 @@ contract, the control kit and the approved page layouts; no number on any page c
 Work one block at a time, in order. Record measured evidence in the
 [speed progress log](speed-progress.md). Only the owner marks a block ✅.
 
-**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01, SP02 and SP03 built 2026-11-15 (all await the owner's ✅; SP03 records a floor for two prefetched journeys); G1 is next.**
+**Status: plan written 2026-11-14; SP00 built 2026-11-14, SP01, SP02, SP03 and SP04 built 2026-11-15 (all await the owner's ✅; SP03 records a floor for two prefetched journeys). Per the owner's G1 decisions, SP05 is next; G1 and G2 are one stop after SP06.**
 
 ## Where the time goes (measured 2026-11-14)
 
@@ -72,6 +72,21 @@ gate G2; any other may be overturned at gate G1.
 - **D7 No new services, no paid features.** No Redis, no extra API workers (the impact bundle
   peaks near 2.3 GB of the API's 3 GB), Cloudflare Free only.
 
+## Decided (owner, G1, 2026-11-15)
+
+- Run SP04, SP05 and SP06 before any deploy. G1 and G2 become one stop after SP06: the full
+  suites, the owner's deploy, then `docker stats` and `measure.py` live, then SP07 and SP08.
+- The two prefetched journeys over budget (player → team 230 ms, nav → Stats 179 ms) are accepted
+  for now. SP05 works on the render cost behind them.
+- No block for warming browser-side reads. SP04 shortens those reads instead.
+- The ~30 files that still use Next's default viewport prefetch are converted to `IntentLink` in
+  SP05, not SP04.
+- The team six-factor last-digit jitter stays as it is. Compare those reads at 12 significant
+  digits.
+- D1–D5 stand.
+- The stale `player-career.spec.ts:83` assertion (expects `2018 · R1 #9 · TOR`; the page has shown
+  the full team name since c9f0c676) is fixed in SP04's commit.
+
 ## Rules every block follows
 
 - **Speed never changes a number.** Before a block that touches an API read or a page's data
@@ -103,7 +118,7 @@ gate G2; any other may be overturned at gate G1.
 | SP02 | Warm crawl after each data change | built 2026-11-15 |
 | SP03 | Prefetch on intent; skeletons that do not flash | built 2026-11-15 |
 | G1 | Owner gate: deploy, try the site | |
-| SP04 | Cold path: page waves and slow reads | pending |
+| SP04 | Cold path: page waves and slow reads | built 2026-11-15 |
 | SP05 | Page weight: HTML and JS | pending |
 | SP06 | Images and static files | pending |
 | G2 | Owner gate: Cloudflare changes | |

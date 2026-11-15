@@ -59,6 +59,25 @@ ENGINE_MODULES = (
 SOURCE_TTL_SECONDS = 30.0
 TRACKING_MART = "analytics_marts.mart_stats_player_tracking"
 
+
+def tracking_facts_sql(mart: str) -> str:
+    """Rows and observed feed datasets of each tracking season, as one fingerprint per season.
+
+    Grouping the (season, type, dataset) triples first gives the same count and the same md5 as
+    `count(*), md5(string_agg(DISTINCT dataset_id::text, ','))` over the whole mart (DISTINCT
+    orders by the value, as ORDER BY does; NULL ids are counted and skipped alike), but hashes
+    2 M rows into ~300 groups instead of sorting them on disk: 0.1 s instead of 1 s on the PC
+    (speed plan SP04).
+    """
+    return (
+        "SELECT season, season_type, sum(rows)::bigint, "
+        "md5(string_agg(dataset_id::text, ',' ORDER BY dataset_id::text)) "
+        "FROM (SELECT season, season_type, dataset_id, count(*) AS rows "
+        f"FROM {mart} GROUP BY season, season_type, dataset_id) AS per_dataset "
+        "GROUP BY season, season_type"
+    )
+
+
 _sources: dict[str, tuple[float, dict[str, Any] | None]] = {}
 _lock = Lock()
 
@@ -114,11 +133,7 @@ def _read_source_facts(session: Session, context: ResolvedContext) -> dict[str, 
         tracking = {
             f"{season}:{phase}": f"{rows}:{datasets}"
             for season, phase, rows, datasets in session.execute(
-                text(
-                    f"SELECT season, season_type, count(*), "
-                    f"md5(string_agg(DISTINCT dataset_id::text, ',')) FROM {TRACKING_MART} "
-                    "GROUP BY season, season_type"
-                )
+                text(tracking_facts_sql(TRACKING_MART))
             )
         }
     return {
