@@ -1,0 +1,14 @@
+warm measure.py (cache on, 5 runs, medians): before measure-local-warm-before-final-20261115T101901Z.json  after measure-local-warm-after-final-20261115T102039Z.json
+home             total    3 ->    3 ms   decoded     35,476 ->     34,347   wire (gzip)    7,905 ->    7,797
+stats            total   43 ->   33 ms   decoded  2,170,376 ->  1,631,968   wire (gzip)  110,475 ->   84,199
+players          total   24 ->    9 ms   decoded    748,179 ->    280,081   wire (gzip)  112,685 ->   32,439
+teams            total    7 ->    8 ms   decoded    247,495 ->    246,310   wire (gzip)   24,252 ->   24,127
+standings        total    6 ->    6 ms   decoded    189,400 ->    188,163   wire (gzip)   12,673 ->   12,512
+compare          total   16 ->   14 ms   decoded    532,509 ->    397,645   wire (gzip)   58,999 ->   47,007
+player-star      total   33 ->   28 ms   decoded  1,130,892 ->    924,091   wire (gzip)  115,095 ->   94,880
+player-rookie    total   13 ->   14 ms   decoded    343,878 ->    332,774   wire (gzip)   45,337 ->   44,588
+player-pre2000   total   24 ->   23 ms   decoded    738,546 ->    624,342   wire (gzip)   72,002 ->   62,066
+team-lal         total   35 ->   30 ms   decoded  1,346,254 ->  1,131,898   wire (gzip)   90,933 ->   80,722
+team-bos         total   32 ->   28 ms   decoded  1,219,314 ->  1,036,875   wire (gzip)   86,515 ->   77,938
+research-rapm    total   20 ->   20 ms   decoded    667,982 ->    666,800   wire (gzip)   64,483 ->   64,389
+API reads: 32; median total before 2.6 ms max, after 1.3 ms max

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { motion } from "../../lib/motion";
 import { buildPreservedContextUrl } from "../../lib/query-url";
@@ -70,7 +70,7 @@ export function RouteTabs({ tabs, "aria-label": ariaLabel, carry = [], active: a
           const gate = catalog ? routeAvailability(tab.href, catalog, searchParams.get("season") ?? undefined, searchParams.get("phase") ?? undefined) : null;
           return (
             <li key={tab.href}>
-              <Link
+              <IntentLink
                 href={hrefFor(tab)}
                 className="ui-tab-trigger ui-route-tab"
                 aria-current={selected ? "page" : undefined}
@@ -87,7 +87,7 @@ export function RouteTabs({ tabs, "aria-label": ariaLabel, carry = [], active: a
                     transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
                   />
                 )}
-              </Link>
+              </IntentLink>
             </li>
           );
         })}

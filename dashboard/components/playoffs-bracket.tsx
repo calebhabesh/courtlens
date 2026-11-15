@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useState, type CSSProperties } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import type { PlayoffSeriesSummary, TeamSeriesHeader } from "@/lib/types";
 import { recordLabel, seasonSeriesLabel, type BracketLayout, type BracketSide, type BracketSlot } from "@/lib/playoffs-bracket";
 import { splitTeamName } from "@/lib/playoffs";
@@ -51,7 +51,7 @@ function Slot({ slot, seeded, href }: { slot: BracketSlot; seeded: boolean; href
   const meetings = seasonSeriesLabel(series);
   const records = [series.team1, series.team2].map(team => recordLabel(team) && `${team.tricode} ${recordLabel(team)}`).filter(Boolean);
   return (
-    <Link className="pb-slot" href={href(series.slug)} aria-describedby={tip}
+    <IntentLink className="pb-slot" href={href(series.slug)} aria-describedby={tip}
       aria-label={`${series.team1.name} vs ${series.team2.name}, ${series.series_score}`}>
       <SlotTeam team={series.team1} series={series} seeded={seeded} />
       <SlotTeam team={series.team2} series={series} seeded={seeded} />
@@ -60,7 +60,7 @@ function Slot({ slot, seeded, href }: { slot: BracketSlot; seeded: boolean; href
         <span>{meetings ? `Regular season: ${meetings}` : "No regular-season meetings"}</span>
         {records.length > 0 && <span>{records.join(" · ")}</span>}
       </span>
-    </Link>
+    </IntentLink>
   );
 }
 
@@ -138,7 +138,7 @@ function FinalsCard({ series, name, href }: { series: PlayoffSeriesSummary | nul
         <small>vs</small>
         <span style={teamVars(series.team2.team_id, series.season)}>{two}</span>
       </p>
-      <Link className="pb-finals-card" href={href(series.slug)} aria-label={`${name}: ${series.team1.name} vs ${series.team2.name}, ${series.series_score}. Open the series breakdown.`}>
+      <IntentLink className="pb-finals-card" href={href(series.slug)} aria-label={`${name}: ${series.team1.name} vs ${series.team2.name}, ${series.series_score}. Open the series breakdown.`}>
         <span className="pb-finals-teams">
           <FinalsTeam team={series.team1} series={series} />
           <span className="pb-finals-vs">vs</span>
@@ -154,7 +154,7 @@ function FinalsCard({ series, name, href }: { series: PlayoffSeriesSummary | nul
             {Array.from({ length: series.total_scheduled }, (_, game) => <i key={game} aria-hidden="true" className={game < series.games_count ? "is-played" : ""} />)}
           </span>
         </span>
-      </Link>
+      </IntentLink>
       <span className="pb-finals-hint">Open any matchup for the full series breakdown.</span>
     </div>
   );

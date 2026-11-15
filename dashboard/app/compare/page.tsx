@@ -1,3 +1,4 @@
+import { playerBioData } from "@/lib/client-props";
 import type { ReactNode } from "react";
 import { ComparisonRows } from "@/components/ui/comparison-rows";
 import { TeamLogo } from "@/components/team-logo";
@@ -100,7 +101,7 @@ export default async function ComparePage({ searchParams }: {
   // The legacy snapshot comparison keeps its form; everything else is the duel card.
   if(!comparison) return <PageShell template="compare" className="fo11-player-comparison">
     {urlSync}
-    <PlayerCompareView comparison={wbComparison} pending={selected.snapshotId === "snapshot-browser-fixture" ? null : pending} bios={bios} career={career} sides={sides} played={played} best={best} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
+    <PlayerCompareView comparison={wbComparison} pending={selected.snapshotId === "snapshot-browser-fixture" ? null : pending} bios={bios && compareBios(bios)} career={career} sides={sides} played={played} best={best} span={rawSelected.span === "career" ? "career" : "season"} catalog={catalog} workbenchCatalog={workbenchCatalog} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} error={error}
       selector={<CompareSelector catalog={catalog} date={date} legacy={selected.snapshotId === "snapshot-browser-fixture"}
         initialA={targetA ? {id:targetA,name:`Player ${targetA}`} : null} initialB={targetB ? {id:targetB,name:`Player ${targetB}`} : null} />} />
   </PageShell>;
@@ -407,4 +408,9 @@ function estimateReason(status: string) {
     : status === "evaluation_pending"
     ? "Estimate artifact not installed"
     : status.replaceAll("_", " ");
+}
+
+/** Compare reads no per-season game highs; only the career rows travel (speed plan SP05). */
+function compareBios<T extends readonly (PlayerBio | null)[]>(bios: T): T {
+  return bios.map(bio => bio && playerBioData(bio)) as unknown as T;
 }

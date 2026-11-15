@@ -1,0 +1,196 @@
+{
+ "url": "http://localhost:3180/standings",
+ "total": 189400,
+ "markup": 125512,
+ "rsc_scripts": 61457,
+ "other_scripts": 2431,
+ "rsc_payload_chars": 50937,
+ "markup_style_attrs": 15573,
+ "markup_class_attrs": 48657,
+ "markup_svg": 7475,
+ "rows_by_tag": {
+  "json": 48680,
+  "I": 1465,
+  "C": 0,
+  "n": 3
+ },
+ "client_components": [
+  {
+   "component": "SkelText",
+   "count": 449,
+   "prop_bytes": 8867
+  },
+  {
+   "component": "LoadingBoundaryProvider",
+   "count": 2,
+   "prop_bytes": 2360
+  },
+  {
+   "component": "default",
+   "count": 4,
+   "prop_bytes": 898
+  },
+  {
+   "component": "SkelControls",
+   "count": 1,
+   "prop_bytes": 53
+  },
+  {
+   "component": "StandingsView",
+   "count": 1,
+   "prop_bytes": 30
+  },
+  {
+   "component": "SkelHeader",
+   "count": 2,
+   "prop_bytes": 22
+  },
+  {
+   "component": "SkelLines",
+   "count": 3,
+   "prop_bytes": 15
+  },
+  {
+   "component": "ButtonLink",
+   "count": 1,
+   "prop_bytes": 7
+  }
+ ],
+ "props": [
+  {
+   "component": "SkelText",
+   "prop": "className",
+   "bytes": 6144
+  },
+  {
+   "component": "LoadingBoundaryProvider",
+   "prop": "loading",
+   "bytes": 2360
+  },
+  {
+   "component": "SkelText",
+   "prop": "size",
+   "bytes": 1820
+  },
+  {
+   "component": "SkelText",
+   "prop": "width",
+   "bytes": 903
+  },
+  {
+   "component": "default",
+   "prop": "notFound",
+   "bytes": 632
+  },
+  {
+   "component": "default",
+   "prop": "template",
+   "bytes": 96
+  },
+  {
+   "component": "SkelControls",
+   "prop": "items",
+   "bytes": 29
+  },
+  {
+   "component": "default",
+   "prop": "error",
+   "bytes": 24
+  },
+  {
+   "component": "default",
+   "prop": "errorStyles",
+   "bytes": 24
+  },
+  {
+   "component": "default",
+   "prop": "errorScripts",
+   "bytes": 24
+  },
+  {
+   "component": "default",
+   "prop": "forbidden",
+   "bytes": 24
+  },
+  {
+   "component": "default",
+   "prop": "unauthorized",
+   "bytes": 24
+  },
+  {
+   "component": "SkelControls",
+   "prop": "className",
+   "bytes": 20
+  },
+  {
+   "component": "default",
+   "prop": "parallelRouterKey",
+   "bytes": 20
+  },
+  {
+   "component": "default",
+   "prop": "templateScripts",
+   "bytes": 16
+  },
+  {
+   "component": "default",
+   "prop": "templateStyles",
+   "bytes": 14
+  },
+  {
+   "component": "SkelLines",
+   "prop": "size",
+   "bytes": 12
+  },
+  {
+   "component": "StandingsView",
+   "prop": "group",
+   "bytes": 12
+  },
+  {
+   "component": "SkelHeader",
+   "prop": "icon",
+   "bytes": 10
+  },
+  {
+   "component": "StandingsView",
+   "prop": "season",
+   "bytes": 9
+  },
+  {
+   "component": "StandingsView",
+   "prop": "current",
+   "bytes": 9
+  },
+  {
+   "component": "SkelHeader",
+   "prop": "title",
+   "bytes": 6
+  },
+  {
+   "component": "SkelHeader",
+   "prop": "subtitle",
+   "bytes": 6
+  },
+  {
+   "component": "SkelControls",
+   "prop": "size",
+   "bytes": 4
+  },
+  {
+   "component": "ButtonLink",
+   "prop": "size",
+   "bytes": 4
+  },
+  {
+   "component": "SkelLines",
+   "prop": "lines",
+   "bytes": 3
+  },
+  {
+   "component": "ButtonLink",
+   "prop": "href",
+   "bytes": 3
+  }
+ ]
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, predictionCall, seasonOf, shiftSlate, teamCode, type LiveGame, type LiveTeam } from "@/lib/live";
 import { CourtLensSays } from "./brand";
 import { TeamLogo } from "./team-logo";
@@ -25,14 +25,14 @@ export function DateStrip({ slate, calendar, href }: { slate: string; calendar?:
   const today = easternToday();
   const known = calendar?.length ? new Set(calendar) : null;
   return <nav className="live-strip" aria-label="Live dates">
-    <Link className="live-strip-step" href={href(shiftSlate(slate, -1))} aria-label="Previous day"><Icon name="left" size={16} /></Link>
+    <IntentLink className="live-strip-step" href={href(shiftSlate(slate, -1))} aria-label="Previous day"><Icon name="left" size={16} /></IntentLink>
     <ol className="live-strip-days">
       {days.map(day => {
         const label = monthDay(day);
         // The calendar covers the season's phase; outside its range a day is unknown, not empty.
         const empty = known && day >= calendar![0] && day <= calendar!.at(-1)! && !known.has(day);
         return <li key={day}>
-          <Link
+          <IntentLink
             href={href(day)}
             className="live-strip-day"
             aria-current={day === slate ? "date" : undefined}
@@ -42,11 +42,11 @@ export function DateStrip({ slate, calendar, href }: { slate: string; calendar?:
           >
             <span className="live-strip-month">{label.month}</span>
             <span className="live-strip-number">{label.day}</span>
-          </Link>
+          </IntentLink>
         </li>;
       })}
     </ol>
-    <Link className="live-strip-step" href={href(shiftSlate(slate, 1))} aria-label="Next day"><Icon name="right" size={16} /></Link>
+    <IntentLink className="live-strip-step" href={href(shiftSlate(slate, 1))} aria-label="Next day"><Icon name="right" size={16} /></IntentLink>
   </nav>;
 }
 
@@ -155,10 +155,10 @@ export function AllGamesRail({ games, current, href }: { games: readonly LiveGam
     <span className="live-rail-title">All Games</span>
     <ol className="live-rail-list">
       {games.map((game, i) => <li key={game.source_id}>
-        <Link className="live-rail-card" href={href(game.source_id)} aria-current={game.source_id === current ? "page" : undefined} aria-label={label(game)}>
+        <IntentLink className="live-rail-card" href={href(game.source_id)} aria-current={game.source_id === current ? "page" : undefined} aria-label={label(game)}>
           <span className="live-rail-head"><span>{gameStatus(game)}</span>{i < 9 && <kbd>{i + 1}</kbd>}</span>
           {awayFirst(game.teams).map(team => <TeamRow key={team.source_id} team={team} game={game} season={seasonOf(game.slate_date)} compact />)}
-        </Link>
+        </IntentLink>
       </li>)}
     </ol>
   </nav>;

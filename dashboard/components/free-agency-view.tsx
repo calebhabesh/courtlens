@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import branding from "@/lib/team-branding.json";
+import branding from "@/lib/team-branding.client.json";
 import { formatDate } from "@/lib/format-date";
 import {
   FILTERS, OPTION_LABELS, getFreeAgency, isRosterStale, isStale, matchesFilter, matchesSearch, sortAgents,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useSearchParams } from "next/navigation";
 import type { PlayoffBracketResponse, PlayoffSeriesSummary } from "@/lib/types";
 import { getSeriesStatusBadge } from "@/lib/playoffs";
@@ -195,12 +195,12 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
                             <span className="font-mono font-bold playoffs-seed-tricode">
                               {st.tricode}
                             </span>
-                            <Link
+                            <IntentLink
                               href={teamHref(st.team_id, { season })}
                               className="font-semibold text-accent entity-link"
                             >
                               {st.team_name}
-                            </Link>
+                            </IntentLink>
                           </div>
                         </td>
                         <td className="num font-mono">
@@ -254,12 +254,12 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
                             <span className="font-mono font-bold playoffs-seed-tricode">
                               {st.tricode}
                             </span>
-                            <Link
+                            <IntentLink
                               href={teamHref(st.team_id, { season })}
                               className="font-semibold text-accent entity-link"
                             >
                               {st.team_name}
-                            </Link>
+                            </IntentLink>
                           </div>
                         </td>
                         <td className="num font-mono">

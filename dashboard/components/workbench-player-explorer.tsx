@@ -5,7 +5,6 @@ import { seasonEra } from "@/lib/portrait-source";
 import { MAX_GRID_PLAYERS } from "@/lib/compare-grid";
 import { saveStatsReturn, STATS_RETURN_PARAM, takeStatsRestore } from "@/lib/stats-return";
 
-import Link from "next/link";
 import { IntentLink } from "@/components/intent-link";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail, STATS_CELL_HOVER } from "./stats-preview-rail";
@@ -24,13 +23,8 @@ import { SHRUNK_PARAM, ShrunkNote, ShrunkToggle, isShrunkColumn, useShrunkOverla
 import { TeamLogo, TeamLogoStack } from "./team-logo";
 import { latestStatsSeason, teamMove } from "@/lib/current-team";
 import { PlayerPortrait } from "./player-portrait";
-import { StatsDetailDrawer } from "./stats-detail-drawer";
 import { CompareTray } from "./compare-tray";
-import { HotkeysModal } from "./hotkeys-modal";
-import { ManageViewsModal } from "./manage-views-modal";
 import { Menu, MenuItem } from "./ui/menu";
-import { ScatterPlotView } from "./scatter-plot-view";
-import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
 import { useAccount } from "@/lib/account-context";
 import { saveInvestigation } from "@/lib/workbench-api";
@@ -54,10 +48,21 @@ import { formatDate } from "@/lib/format-date";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { StatsHeaderTip, type HeaderTip } from "./stats-header-tip";
 import { DarkoSourceLink } from "./darko-source-link";
-import { StatsTrendDialog, type TrendTarget } from "./stats-trend-dialog";
+import type { TrendTarget } from "./stats-trend-dialog";
+import dynamic from "next/dynamic";
+import { useOpenedOnce } from "@/lib/use-opened-once";
 import type { QuerySpec, WorkbenchCatalog, PlayerResearchResponse, PlayerResearchItem } from "@/lib/types";
 import { positionTitle } from "@/lib/position-estimates";
 import { playerHref } from "@/lib/entity-links";
+
+// Not on screen at first paint, so not in the page's first load (speed plan SP05): dialogs and
+// drawers load on first opening, the scatter and lines views when chosen.
+const StatsDetailDrawer = dynamic(() => import("./stats-detail-drawer").then(mod => mod.StatsDetailDrawer), { loading: () => null });
+const HotkeysModal = dynamic(() => import("./hotkeys-modal").then(mod => mod.HotkeysModal), { loading: () => null });
+const ManageViewsModal = dynamic(() => import("./manage-views-modal").then(mod => mod.ManageViewsModal), { loading: () => null });
+const ScatterPlotView = dynamic(() => import("./scatter-plot-view").then(mod => mod.ScatterPlotView), { loading: () => null });
+const MultiPlayerLinesView = dynamic(() => import("./multi-player-lines-view").then(mod => mod.MultiPlayerLinesView), { loading: () => null });
+const StatsTrendDialog = dynamic(() => import("./stats-trend-dialog").then(mod => mod.StatsTrendDialog), { loading: () => null });
 
 interface WorkbenchPlayerExplorerProps {
   data: PlayerResearchResponse;
@@ -493,6 +498,7 @@ export function WorkbenchPlayerExplorer({
   };
   useEffect(() => () => { if (headerTipTimer.current) clearTimeout(headerTipTimer.current); }, []);
   const [trendTarget, setTrendTarget] = useState<TrendTarget | null>(null);
+  const trendMounted = useOpenedOnce(trendTarget !== null);
   const showHeaderTip = (event: React.SyntheticEvent<HTMLTableRowElement>) => {
     keepHeaderTip();
     const cell = (event.target as HTMLElement).closest<HTMLElement>("th[data-column]");
@@ -535,6 +541,9 @@ export function WorkbenchPlayerExplorer({
   };
 
   const closeDetailDrawer = useCallback(() => setSelectedPlayerForDrawer(null), []);
+  const drawerMounted = useOpenedOnce(selectedPlayerForDrawer !== null);
+  const hotkeysMounted = useOpenedOnce(isHotkeysOpen);
+  const manageViewsMounted = useOpenedOnce(isManageViewsOpen);
 
   const legacySaveAvailable = !querySpec?.predicates && (querySpec?.sort?.length ?? 1) <= 1 &&
     !querySpec?.sample_filters?.min_possessions && !querySpec?.sample_filters?.min_attempts;
@@ -858,9 +867,9 @@ export function WorkbenchPlayerExplorer({
       {saveSuccess && (
         <div className="notice-box notice-box-success">
           <strong>Saved:</strong> {saveSuccess}. Inspect under{" "}
-          <Link href="/investigations" className="text-accent underline">
+          <IntentLink href="/investigations" className="text-accent underline">
             Saved Investigations
-          </Link>.
+          </IntentLink>.
         </div>
       )}
 
@@ -1326,7 +1335,7 @@ export function WorkbenchPlayerExplorer({
       </div>
 
       {/* Detail Slide-out Drawer */}
-      <StatsDetailDrawer
+      {drawerMounted && <StatsDetailDrawer
         player={selectedPlayerForDrawer}
         isOpen={Boolean(selectedPlayerForDrawer)}
         onClose={closeDetailDrawer}
@@ -1346,18 +1355,18 @@ export function WorkbenchPlayerExplorer({
             ? isFavorite(selectedPlayerForDrawer.player_id)
             : false
         }
-      />
+      />}
 
 
       <StatsHeaderTip tip={headerTip} onEnter={keepHeaderTip} onLeave={hideHeaderTip} onClose={() => { keepHeaderTip(); setHeaderTip(null); }} />
-      {querySpec && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={querySpec} catalog={catalog}
+      {querySpec && trendMounted && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={querySpec} catalog={catalog}
         hints={metricHints} onClose={() => setTrendTarget(null)} />}
 
       {/* Keyboard Shortcuts Modal */}
-      <HotkeysModal isOpen={isHotkeysOpen} onClose={() => setIsHotkeysOpen(false)} />
+      {hotkeysMounted && <HotkeysModal isOpen={isHotkeysOpen} onClose={() => setIsHotkeysOpen(false)} />}
 
       {/* Manage Custom Views Modal (F04) */}
-      <ManageViewsModal
+      {manageViewsMounted && <ManageViewsModal
         isOpen={isManageViewsOpen}
         onClose={() => setIsManageViewsOpen(false)}
         activeViewId={activePresetId}
@@ -1365,7 +1374,7 @@ export function WorkbenchPlayerExplorer({
         onSelectView={(viewId) => {
           handlePresetSelect(viewId as PresetId);
         }}
-      />
+      />}
     </div>
   );
 }

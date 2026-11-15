@@ -28,7 +28,9 @@ export function useCohortRanks(baseQuery: QuerySpec, metrics: string[], directio
       try {
         const result = await executeWorkbenchQuery(
           { ...baseQuery, sort: [{ field: metric, direction: bestFirst(direction), nulls_last: true }], page: { limit: RANK_PAGE_LIMIT } },
-          { player_ids: null }
+          // Only the sort field is read: the response carries no other metric (speed plan SP05;
+          // every metric for 100 rows was about 860 KB per read).
+          { player_ids: null, metrics: "sort" }
         );
         const page = result.items.map((item) => ({ playerId: item.player_id, value: item.metrics[metric] }));
         const ranks: Record<string, number | null> = {};

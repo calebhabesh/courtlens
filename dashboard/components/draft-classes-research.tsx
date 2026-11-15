@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
@@ -193,7 +193,7 @@ function RookieCard({ rookie, tracker }: { rookie: Rookie; tracker: RookieTracke
     <header className="dc-card-head">
       <PlayerAvatar playerId={rookie.player_id ?? undefined} name={rookie.name} team={rookie.team} size="lg" era={seasonEra(ROOKIE_SEASON, rookie.team)} className="dc-avatar" />
       <div className="dc-card-titles">
-        {rookie.player_id ? <Link className="dc-card-name entity-link" href={playerHref(rookie.player_id, { season: ROOKIE_SEASON })} prefetch={false}>{rookie.name}</Link> : <span className="dc-card-name">{rookie.name}</span>}
+        {rookie.player_id ? <IntentLink className="dc-card-name entity-link" href={playerHref(rookie.player_id, { season: ROOKIE_SEASON })} prefetch={false}>{rookie.name}</IntentLink> : <span className="dc-card-name">{rookie.name}</span>}
         <span className="dc-card-team"><TeamCode team={rookie.team} season={ROOKIE_SEASON} />{drafted && drafted !== rookie.team ? <> · drafted by <TeamCode team={rookie.draft_team} season={ROOKIE_SEASON} /></> : null}</span>
         <span className="dc-card-meta" data-field="games" data-value={line.games}>{line.games} games · {whole(line.minutes)} minutes{rookie.comparison!.small_sample ? " · under 100 minutes" : ""}</span>
       </div>
@@ -338,7 +338,7 @@ function RookiesSection({ feed }: { feed: ReturnType<typeof useFeed<RookieTracke
       ? <p className="dc-note" data-field="rookie-note">Per 36 minutes, so rookies on different minutes can be compared with past picks at their slot. Under each figure, the rookie&apos;s percentile among those picks.
         Green or red: outside their middle 80% (turnovers count the other way). * Under 100 minutes. DARKO and RAPM are gold above zero and blue below.</p>
       : <p className="dc-note" data-field="rookie-note">Every {ROOKIE_CLASS} draft pick this regular season, with games through <time dateTime={data.comparison_date ?? undefined}>{formatDate(data.comparison_date)}</time>.
-        DARKO and RAPM are gold above zero and blue below. <Link href={`/stats?season=${ROOKIE_SEASON}&draftYear=${ROOKIE_CLASS}`}>Open this class in Stats</Link></p>}
+        DARKO and RAPM are gold above zero and blue below. <IntentLink href={`/stats?season=${ROOKIE_SEASON}&draftYear=${ROOKIE_CLASS}`}>Open this class in Stats</IntentLink></p>}
     {view !== "past" && stats.error ? <FeedFailure error={stats.error} retry={stats.retry} what="The rookie stats" />
       : view !== "past" && (stats.loading || !stats.data) ? <FeedSkeleton label="Loading the rookie stats" shape="grid" rows={10} search />
       :     <StatsGrid<Rookie> label={`${data.season} rookies`} name="rookies" leadWidth="lg" rows={sorted.rows} rowKey={r => String(r.pick)}
@@ -543,7 +543,7 @@ function PickCard({ row }: { row: PickRow }) {
     <header className="dc-card-head">
       <PlayerAvatar playerId={row.player_id ?? undefined} name={row.name} team={row.photo_team} size="lg" era={seasonEra(row.photo_season, row.photo_team)} className="dc-avatar" />
       <div className="dc-card-titles">
-        {row.player_id ? <Link className="dc-card-name entity-link" href={playerHref(row.player_id, { season: row.photo_season })} prefetch={false}>{row.name}</Link> : <span className="dc-card-name">{row.name}</span>}
+        {row.player_id ? <IntentLink className="dc-card-name entity-link" href={playerHref(row.player_id, { season: row.photo_season })} prefetch={false}>{row.name}</IntentLink> : <span className="dc-card-name">{row.name}</span>}
         <span className="dc-card-team"><TeamCode team={row.team} season={season} /> · {row.year} draft</span>
       </div>
       <span className="dc-badge" data-field="pick" data-value={row.pick}>{pickLabel(row.round, row.pick)}</span>

@@ -1,0 +1,1744 @@
+{
+ "tool": "docs/evidence/speed/sp04/tools/page-text.mjs (main innerText after networkidle + 1.5 s, 1440x900, real data); full texts kept in scratch, hashes here",
+ "captures": {
+  "page-text-before-1": {
+   "taken_at": "2026-11-15T09:16:34.273Z",
+   "pages": {
+    "home": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "stats": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "players": {
+     "url": "/players",
+     "chars": 4751,
+     "sha256": "43c11cb1ac1092a59f82a1abf9a1a62d30c041be5b3b574efbba62614742ffc5",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      }
+     ]
+    },
+    "teams": {
+     "url": "/teams",
+     "chars": 5787,
+     "sha256": "6d6c97ca02083a889506b68a9a68b5f926686dbeddab189fa31ed7a66c0d50b1",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/teams/six-factors?season=2026-27&phase=regular_season",
+       "status": 200
+      }
+     ]
+    },
+    "standings": {
+     "url": "/standings",
+     "chars": 3180,
+     "sha256": "f5783d26ae1dddb7f9ce7cc49adf02acf65a7a3cfca801f9c1f20be0bdf49cd8",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      }
+     ]
+    },
+    "compare": {
+     "url": "/compare?playerA=2544&playerB=203999",
+     "chars": 3584,
+     "sha256": "4457fa1cbe6eb9fa2a0b046b04a136aba65ee08c93ad3fa64386ea914b62f2c6",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      }
+     ]
+    },
+    "player-star": {
+     "url": "/players/2544",
+     "chars": 53494,
+     "sha256": "675cc2ab633b7e1fc70e75a0248ce4b8da8f5f8ae868b4275638fed4736c3560",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "player-rookie": {
+     "url": "/players/1643411",
+     "chars": 7997,
+     "sha256": "20449f8bab5349f2056902bdefa7f17c522d3cf63636ba7636741e01f3bcd6cd",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "player-pre2000": {
+     "url": "/players/1449",
+     "chars": 29657,
+     "sha256": "866a1d846c7ab83c8878898da88b984f802102ca24509cb8dfdeff7e4e67656b",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "team-lal": {
+     "url": "/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 41331,
+     "sha256": "adcd28c3449fc09237e5bffe03eacd0e5f535f14a7f09ab79cdcf5f57b7f9009",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/teams/1610612747/schedule?season=2026-27&phase=regular_season",
+       "status": 200
+      }
+     ]
+    },
+    "team-bos": {
+     "url": "/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 36113,
+     "sha256": "b41eb2c5116b047184f8a352dcb0d2dad1e93cfb1f923ba709c6589473a3bbe3",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/teams/1610612738/schedule?season=2026-27&phase=regular_season",
+       "status": 200
+      }
+     ]
+    },
+    "research-rapm": {
+     "url": "/research/rapm",
+     "chars": 3833,
+     "sha256": "d7b422c02896f00a499f73b32b8b306c67beadecc7a5b2755e8ccf124a819401",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/research/runs?limit=100",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/research/experiments",
+       "status": 200
+      }
+     ]
+    }
+   }
+  },
+  "page-text-before-2": {
+   "taken_at": "2026-11-15T09:17:09.610Z",
+   "pages": {
+    "home": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "stats": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "players": {
+     "url": "/players",
+     "chars": 4751,
+     "sha256": "43c11cb1ac1092a59f82a1abf9a1a62d30c041be5b3b574efbba62614742ffc5",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      }
+     ]
+    },
+    "teams": {
+     "url": "/teams",
+     "chars": 5787,
+     "sha256": "6d6c97ca02083a889506b68a9a68b5f926686dbeddab189fa31ed7a66c0d50b1",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/teams/six-factors?season=2026-27&phase=regular_season",
+       "status": 200
+      }
+     ]
+    },
+    "standings": {
+     "url": "/standings",
+     "chars": 3180,
+     "sha256": "f5783d26ae1dddb7f9ce7cc49adf02acf65a7a3cfca801f9c1f20be0bdf49cd8",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      }
+     ]
+    },
+    "compare": {
+     "url": "/compare?playerA=2544&playerB=203999",
+     "chars": 3584,
+     "sha256": "4457fa1cbe6eb9fa2a0b046b04a136aba65ee08c93ad3fa64386ea914b62f2c6",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      }
+     ]
+    },
+    "player-star": {
+     "url": "/players/2544",
+     "chars": 53494,
+     "sha256": "675cc2ab633b7e1fc70e75a0248ce4b8da8f5f8ae868b4275638fed4736c3560",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "player-rookie": {
+     "url": "/players/1643411",
+     "chars": 7997,
+     "sha256": "20449f8bab5349f2056902bdefa7f17c522d3cf63636ba7636741e01f3bcd6cd",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "player-pre2000": {
+     "url": "/players/1449",
+     "chars": 29657,
+     "sha256": "866a1d846c7ab83c8878898da88b984f802102ca24509cb8dfdeff7e4e67656b",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "team-lal": {
+     "url": "/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 41331,
+     "sha256": "adcd28c3449fc09237e5bffe03eacd0e5f535f14a7f09ab79cdcf5f57b7f9009",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/teams/1610612747/schedule?season=2026-27&phase=regular_season",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "team-bos": {
+     "url": "/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 36113,
+     "sha256": "b41eb2c5116b047184f8a352dcb0d2dad1e93cfb1f923ba709c6589473a3bbe3",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/teams/1610612738/schedule?season=2026-27&phase=regular_season",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "research-rapm": {
+     "url": "/research/rapm",
+     "chars": 3833,
+     "sha256": "d7b422c02896f00a499f73b32b8b306c67beadecc7a5b2755e8ccf124a819401",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/research/experiments",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/research/runs?limit=100",
+       "status": 200
+      }
+     ]
+    }
+   }
+  },
+  "page-text-after": {
+   "taken_at": "2026-11-15T09:48:49.896Z",
+   "pages": {
+    "home": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "stats": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "players": {
+     "url": "/players",
+     "chars": 4751,
+     "sha256": "43c11cb1ac1092a59f82a1abf9a1a62d30c041be5b3b574efbba62614742ffc5",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      }
+     ]
+    },
+    "teams": {
+     "url": "/teams",
+     "chars": 5787,
+     "sha256": "6d6c97ca02083a889506b68a9a68b5f926686dbeddab189fa31ed7a66c0d50b1",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/teams/six-factors?season=2026-27&phase=regular_season",
+       "status": 200
+      }
+     ]
+    },
+    "standings": {
+     "url": "/standings",
+     "chars": 3180,
+     "sha256": "f5783d26ae1dddb7f9ce7cc49adf02acf65a7a3cfca801f9c1f20be0bdf49cd8",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      }
+     ]
+    },
+    "compare": {
+     "url": "/compare?playerA=2544&playerB=203999",
+     "chars": 3584,
+     "sha256": "4457fa1cbe6eb9fa2a0b046b04a136aba65ee08c93ad3fa64386ea914b62f2c6",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      }
+     ]
+    },
+    "player-star": {
+     "url": "/players/2544",
+     "chars": 53494,
+     "sha256": "675cc2ab633b7e1fc70e75a0248ce4b8da8f5f8ae868b4275638fed4736c3560",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "player-rookie": {
+     "url": "/players/1643411",
+     "chars": 7997,
+     "sha256": "20449f8bab5349f2056902bdefa7f17c522d3cf63636ba7636741e01f3bcd6cd",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "player-pre2000": {
+     "url": "/players/1449",
+     "chars": 29657,
+     "sha256": "866a1d846c7ab83c8878898da88b984f802102ca24509cb8dfdeff7e4e67656b",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "team-lal": {
+     "url": "/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 41331,
+     "sha256": "adcd28c3449fc09237e5bffe03eacd0e5f535f14a7f09ab79cdcf5f57b7f9009",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/teams/1610612747/schedule?season=2026-27&phase=regular_season",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "team-bos": {
+     "url": "/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 36113,
+     "sha256": "b41eb2c5116b047184f8a352dcb0d2dad1e93cfb1f923ba709c6589473a3bbe3",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/teams/1610612738/schedule?season=2026-27&phase=regular_season",
+       "status": 200
+      }
+     ]
+    },
+    "research-rapm": {
+     "url": "/research/rapm",
+     "chars": 3833,
+     "sha256": "d7b422c02896f00a499f73b32b8b306c67beadecc7a5b2755e8ccf124a819401",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/research/runs?limit=100",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/research/experiments",
+       "status": 200
+      }
+     ]
+    }
+   }
+  },
+  "page-text-after-final": {
+   "taken_at": "2026-11-15T10:21:10.768Z",
+   "pages": {
+    "home": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "stats": {
+     "url": "/stats?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 90935,
+     "sha256": "4cb5907b2425eb521da132c6510255d966edfaf9bb6035bc72a5a7dceb1a232f",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "players": {
+     "url": "/players",
+     "chars": 4751,
+     "sha256": "43c11cb1ac1092a59f82a1abf9a1a62d30c041be5b3b574efbba62614742ffc5",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      }
+     ]
+    },
+    "teams": {
+     "url": "/teams",
+     "chars": 5787,
+     "sha256": "6d6c97ca02083a889506b68a9a68b5f926686dbeddab189fa31ed7a66c0d50b1",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/teams/six-factors?season=2026-27&phase=regular_season",
+       "status": 200
+      }
+     ]
+    },
+    "standings": {
+     "url": "/standings",
+     "chars": 3180,
+     "sha256": "f5783d26ae1dddb7f9ce7cc49adf02acf65a7a3cfca801f9c1f20be0bdf49cd8",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      }
+     ]
+    },
+    "compare": {
+     "url": "/compare?playerA=2544&playerB=203999",
+     "chars": 3584,
+     "sha256": "4457fa1cbe6eb9fa2a0b046b04a136aba65ee08c93ad3fa64386ea914b62f2c6",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      }
+     ]
+    },
+    "player-star": {
+     "url": "/players/2544",
+     "chars": 53494,
+     "sha256": "675cc2ab633b7e1fc70e75a0248ce4b8da8f5f8ae868b4275638fed4736c3560",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "player-rookie": {
+     "url": "/players/1643411",
+     "chars": 7997,
+     "sha256": "20449f8bab5349f2056902bdefa7f17c522d3cf63636ba7636741e01f3bcd6cd",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "player-pre2000": {
+     "url": "/players/1449",
+     "chars": 29657,
+     "sha256": "866a1d846c7ab83c8878898da88b984f802102ca24509cb8dfdeff7e4e67656b",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      },
+      {
+       "method": "POST",
+       "url": "/api/workbench/query",
+       "status": 200
+      }
+     ]
+    },
+    "team-lal": {
+     "url": "/teams/1610612747?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 41331,
+     "sha256": "adcd28c3449fc09237e5bffe03eacd0e5f535f14a7f09ab79cdcf5f57b7f9009",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/teams/1610612747/schedule?season=2026-27&phase=regular_season",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      }
+     ]
+    },
+    "team-bos": {
+     "url": "/teams/1610612738?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853&season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&countingMode=per_game&darkoManifest=181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d",
+     "chars": 36113,
+     "sha256": "b41eb2c5116b047184f8a352dcb0d2dad1e93cfb1f923ba709c6589473a3bbe3",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/standings?season=2026-27",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog?releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/live/teams/1610612738/schedule?season=2026-27&phase=regular_season",
+       "status": 200
+      }
+     ]
+    },
+    "research-rapm": {
+     "url": "/research/rapm",
+     "chars": 3833,
+     "sha256": "d7b422c02896f00a499f73b32b8b306c67beadecc7a5b2755e8ccf124a819401",
+     "browser_reads": [
+      {
+       "method": "GET",
+       "url": "/api/account/me",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workspace?workspaceId=default",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/catalog",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/research/runs?limit=100",
+       "status": 200
+      },
+      {
+       "method": "GET",
+       "url": "/api/workbench/research/experiments",
+       "status": 200
+      }
+     ]
+    }
+   }
+  }
+ },
+ "differences_before-1_vs_page-text-before-2": [],
+ "differences_before-1_vs_page-text-after": [],
+ "differences_before-1_vs_page-text-after-final": []
+}

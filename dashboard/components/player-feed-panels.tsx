@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import type { CSSProperties, ReactNode } from "react";
 import { FeedFailure, FeedSkeleton, useFeed } from "./stats-feed-ui";
 import { GatedNote } from "./ui/gated-note";
@@ -34,7 +34,7 @@ export function PlayerTrackingPanel({ playerId, name, season, phase }: { playerI
         </section>)}
       </div>
     </section>
-    <p className="research-caption">Source: NBA optical tracking season totals (hoopR mirror). Bars are percentiles among {cohort}. <Link href={`/stats/tracking?season=${data.season}&phase=${data.phase}`}>League tracking table</Link></p>
+    <p className="research-caption">Source: NBA optical tracking season totals (hoopR mirror). Bars are percentiles among {cohort}. <IntentLink href={`/stats/tracking?season=${data.season}&phase=${data.phase}`}>League tracking table</IntentLink></p>
   </div>;
 }
 
@@ -106,6 +106,6 @@ export function PlayerCombinePanel({ playerId, name }: { playerId: string; name:
         </section>
       </div>
     </section>
-    <p className="research-caption">Source: official NBA Draft Combine (hoopR mirror). Percentiles among {cohort}. <Link href={`/wingspan?playerId=${playerId}`}>Compare with the {row.draft_year} class</Link></p>
+    <p className="research-caption">Source: official NBA Draft Combine (hoopR mirror). Percentiles among {cohort}. <IntentLink href={`/wingspan?playerId=${playerId}`}>Compare with the {row.draft_year} class</IntentLink></p>
   </div>;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { useEffect, useState } from "react";
 import { listOperations, type SavedSummary } from "@/lib/saved-operations";
 import { formatDate, throughLabel } from "@/lib/format-date";
@@ -58,7 +58,7 @@ export function SavedOperationLibrary({ legacy, legacyError }: { legacy: SavedIn
           <table className="data-table">
             <thead><tr><th>Title</th><th>Operations</th><th>Scope</th><th>Saved</th><th>Question</th><th><span className="sr-only">Details</span></th></tr></thead>
             <tbody>{items.map(item => <tr key={item.id}>
-              <th scope="row"><Link href={`/investigations/saved/${item.id}`}>{publicInvestigation(item)?.title ?? item.title}</Link></th>
+              <th scope="row"><IntentLink href={`/investigations/saved/${item.id}`}>{publicInvestigation(item)?.title ?? item.title}</IntentLink></th>
               <td>{item.operations.map(humanLabel).join(" · ")}</td>
               <td>{contextLine(item.context)}</td>
               <td>{day(item.created_at)}</td>

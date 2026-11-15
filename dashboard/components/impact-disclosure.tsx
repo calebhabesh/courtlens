@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import "./impact.css";
 import type { ImpactDisclosureData } from "@/lib/types";
 
@@ -9,7 +9,7 @@ export function ImpactDisclosure({ data }: { data: ImpactDisclosureData }) {
   return <section className="impact-disclosure" aria-label="Impact methodology and coverage">
     <div className="impact-heading"><span className="badge badge-accent">CourtLens model</span>
       {data.provisional && <span className="badge">Provisional</span>}
-      <Link href={data.methodology_url}>Methodology and definitions</Link></div>
+      <IntentLink href={data.methodology_url}>Methodology and definitions</IntentLink></div>
     {data.status !== "available" ? <p role="status">{data.reason || "No sealed impact fit for this scope."}</p> : <>
       <p>Descriptive model estimates under lineup confounding.</p>
       {data.provisional && <p>{data.provisional.note} Games through {data.provisional.last_included_date}.</p>}

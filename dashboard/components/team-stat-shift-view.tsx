@@ -6,7 +6,7 @@ import { DEFAULT_SHIFT_STATS, SHIFT_STATS, clearShift, floorCsv, formatShift, sh
 import { formatDate } from "@/lib/format-date";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamGrid, teamDisplayName } from "./team-grid";
-import branding from "@/lib/team-branding.json";
+import branding from "@/lib/team-branding.client.json";
 import { TeamLogo } from "./team-logo";
 import { Skeleton } from "./ui/skeleton";
 import { SkelGrid, SkelSegmented, SkelText } from "./ui/content-skeletons";

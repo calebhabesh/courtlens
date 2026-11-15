@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { seasonEra } from "@/lib/portrait-source";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
@@ -73,7 +73,7 @@ function TeamCard({ team, entries, rank, mode, data, href, large = false, action
     <ShapeBox entries={entries} mode={mode} capacity={data.capacity} large={large} era={data.projected ? null : seasonEra(data.season, team.team_id)} label={`${team.team_name}: ${entries.filter(e => e.size && e.size > 0).length} players drawn, ${Math.round(fill * 100)}% of the box filled`} />
   </span>;
   return <li className={`shapes-card ${large ? "is-large" : ""}`}>
-    {href ? <Link href={href} className="shapes-card-link" aria-label={`${team.team_name}: ${Math.round(fill * 100)}% of the box filled, rank ${rank}`}>{head}{box}</Link> : <div className="shapes-card-link">{head}{box}</div>}
+    {href ? <IntentLink href={href} className="shapes-card-link" aria-label={`${team.team_name}: ${Math.round(fill * 100)}% of the box filled, rank ${rank}`}>{head}{box}</IntentLink> : <div className="shapes-card-link">{head}{box}</div>}
     <Missing entries={entries} data={data} detailed={large} />
     {actions}
   </li>;
@@ -123,7 +123,7 @@ function RosterTable({ team, data, mode }: { team: ShapeTeam; data: RosterShapes
         <tbody>{team.roster.map(p => {
           const size = playerSize(p, mode);
           return <tr key={p.player_id} title={p.unknown_reasons.join(" ") || undefined}>
-            <th scope="row" className="player-ref-grid-lead"><Link className="entity-link" href={playerHref(p.player_id)} prefetch={false}>{p.player_name}</Link></th>
+            <th scope="row" className="player-ref-grid-lead"><IntentLink className="entity-link" href={playerHref(p.player_id)} prefetch={false}>{p.player_name}</IntentLink></th>
             <td className="shapes-style-cell">{p.archetype ? <span className="shapes-style"><span className="shapes-swatch" style={chartVars({ "--chart-tone": tone(p.archetype.primary) })} aria-hidden="true" />{p.archetype.primary_name}</span> : "—"}</td>
             <td title={p.continuity === "unknown" ? `No ${data.projected ? data.reference_season : "prior-season"} games` : undefined}>{CONTINUITY_LABELS[p.continuity]}{p.continuity === "new" && p.previous_teams.length > 0 && <small>{p.previous_teams.join(", ")}</small>}</td>
             <td className="group-start" data-tone={p.dpm === null || Math.abs(p.dpm) < 0.05 ? undefined : p.dpm > 0 ? "up" : "down"}>{signed(p.dpm)}</td>

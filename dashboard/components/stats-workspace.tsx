@@ -9,6 +9,7 @@ import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer"
 import { executeWorkbenchQuery, getDraftClasses, getMetricCatalog, getWorkbenchCatalog } from "@/lib/workbench-api";
 import { metricHints, type MetricHint } from "@/lib/stats-glossary";
 import { querySpecToLegacyQuery } from "@/lib/query-url";
+import { statsTableData } from "@/lib/client-props";
 import { resolveStatsQuery, normalizedColumn, overviewSortMetric } from "@/lib/stats-query";
 import { getPresetById, usesImpactManifest, type CountingMode } from "@/lib/stats-presets";
 import { getWorkspace } from "@/lib/workspace-client";
@@ -20,7 +21,7 @@ import { DarkoSourceLink } from "./darko-source-link";
 const ESTIMATED_POSITIONS: EstimatedPosition[] = ["PG", "SG", "SF", "PF", "C"];
 import { Icon } from "./ui/icon";
 import { latestPatchEntry, shortDate } from "@/lib/patch-notes";
-import Link from "next/link";
+import { IntentLink } from "@/components/intent-link";
 import { cookies } from "next/headers";
 import { SESSION_COOKIE, serverFavoriteIds, validSession } from "@/lib/account-server";
 import { SignInPrompt } from "./account/sign-in-prompt";
@@ -223,7 +224,8 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
             querySpec={querySpec}
             countingMode={countingMode}
             catalog={catalog}
-            data={researchData}
+            // Only what the table reads: its own columns' percentiles (speed plan SP05).
+            data={statsTableData(researchData, [...(querySpec.view_state?.columns ?? []), ...(querySpec.sort ?? []).map(sort => sort.field)])}
             currentSortMetric={researchQuery.sort_metric}
             currentSortDirection={researchQuery.sort_direction}
             metricHints={hints}
@@ -246,7 +248,7 @@ function WhatsNewLine() {
   const latest = latestPatchEntry();
   const note = latest ? `${shortDate(latest.date).replace(/, \d{4}$/, "")}: ${latest.title}` : "";
   return <p className="stats-whats-new">
-    <Link href="/whats-new"><Icon name="sparkles" size={14} />What&apos;s New</Link>
+    <IntentLink href="/whats-new"><Icon name="sparkles" size={14} />What&apos;s New</IntentLink>
     {note && <span className="stats-whats-new-note">· {note}</span>}
   </p>;
 }
