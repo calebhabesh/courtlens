@@ -4,6 +4,7 @@ import Link from "next/link";
 import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, predictionCall, seasonOf, shiftSlate, teamCode, type LiveGame, type LiveTeam } from "@/lib/live";
 import { CourtLensSays } from "./brand";
 import { TeamLogo } from "./team-logo";
+import { EntityAnchor, TeamLink } from "./entity-link";
 import { Icon } from "./ui/icon";
 
 /** Days either side of the selected one in the strip (Databallr shows seven). */
@@ -64,14 +65,16 @@ function KeyCap({ n }: { n: number }) {
   return <kbd className="live-card-key" title={`Press ${n} to open this game`}>{n}<span className="sr-only">: press {n} to open this game</span></kbd>;
 }
 
+/** A team on a card: on the board its logo and code link to the team that season (site links D2);
+ * in the compact rail the whole mini card is one link, so the team is plain. */
 function TeamRow({ team, game, season, compact }: { team: LiveTeam; game: LiveGame; season: string; compact?: boolean }) {
   const played = game.status === "in_progress" || game.status === "final";
   const lost = game.status === "final" && team.winner === false;
-  return <span className="live-card-team" data-lost={lost || undefined} data-won={(game.status === "final" && team.winner) || undefined}>
+  const identity = <>
     <TeamLogo team={team.tricode ?? team.canonical_id ?? teamCode(team)} season={season} size={compact ? 16 : 32} />
     <span className="live-card-team-text">
       <span className="live-card-team-line">
-        <span className="live-card-code">{teamCode(team)}</span>
+        <span className="live-card-code entity-link-text">{teamCode(team)}</span>
         {compact && <span className="live-side">{team.side === "home" ? "Home" : "Away"}</span>}
         {!compact && team.record && <span className="live-card-record">{formatRecord(team.record)}</span>}
       </span>
@@ -81,6 +84,9 @@ function TeamRow({ team, game, season, compact }: { team: LiveTeam; game: LiveGa
         {game.status === "scheduled" && team.out != null && team.out > 0 && <span className="live-card-out"><span className="live-card-out-dot" aria-hidden="true" />{team.out} OUT</span>}
       </span>}
     </span>
+  </>;
+  return <span className="live-card-team" data-lost={lost || undefined} data-won={(game.status === "final" && team.winner) || undefined}>
+    {compact ? identity : <TeamLink team={team.canonical_id} scope={{ season }} variant="block" className="live-card-team-link" title={team.name}>{identity}</TeamLink>}
     {game.status === "final" && team.winner && !compact && <span className="live-card-winner"><span className="sr-only">Winner</span></span>}
     <strong className="live-card-score">{played ? team.score ?? "—" : compact ? "" : "0"}</strong>
   </span>;
@@ -122,14 +128,16 @@ export function GameCard({ game, href, index }: { game: LiveGame; href: string; 
   const odds = game.status === "scheduled" ? game.odds : null;
   const favourite = lineFavourite(odds, game.teams);
   const book = odds?.provider ?? "sportsbook";
-  return <Link className="live-card" href={href} aria-label={label(game)} data-status={game.status}>
-    <span className="live-card-head">
+  // Site links D2: the card is one target that opens the game (a stretched link, first in tab
+  // order), and each team's logo and code is its own link on top of it. Anchors never nest.
+  return <article className="live-card has-stretched-link" data-status={game.status}>
+    <EntityAnchor href={href} variant="stretched" className="live-card-head" label={label(game)}>
       <span className="live-card-status">{game.status === "in_progress" && <span className="live-dot" aria-hidden="true" />}{gameStatus(game)}</span>
       <span className="live-card-meta">
         <KeyCap n={index + 1} />
         <Icon name="right" size={14} className="live-card-chevron" />
       </span>
-    </span>
+    </EntityAnchor>
     {teams.map(team => <TeamRow key={team.source_id} team={team} game={game} season={season} />)}
     <PredictionRow game={game} season={season} />
     {/* Follow-up 8: the line on its own row, naming the favourite, so the header never wraps. */}
@@ -137,7 +145,7 @@ export function GameCard({ game, href, index }: { game: LiveGame; href: string; 
       {favourite && <span className="live-chip" title={favourite === "even" ? `Spread (${book}): an even game, no favorite` : `Spread (${book}): ${favourite.team.name} favored by ${favourite.points} points`}>{favourite === "even" ? "Even" : `${teamCode(favourite.team)} by ${favourite.points}`}</span>}
       {odds?.over_under != null && <span className="live-chip" title={`Over/under (${book}): about ${odds.over_under} points combined`}>O/U {odds.over_under}</span>}
     </span>}
-  </Link>;
+  </article>;
 }
 
 /** The fixed All Games rail under a game: numbered mini cards, the open game outlined. */

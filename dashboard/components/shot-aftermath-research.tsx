@@ -22,6 +22,7 @@ import {
   ZONE_LABEL, ZONE_SENTENCE, ZONES, type Cell, type ChartSpec, type CostKey, type Position, type Scope, type Summary, type TeamBoard, type TeamSort,
   type ValueKey, type View, type Zone,
 } from "@/lib/shot-aftermath";
+import { TeamLink } from "./entity-link";
 
 /**
  * Research → Shooting → Shot Aftermath (R17 data, RD18 design), after Databallr's Shot Aftermath page: what a first-chance shot scores, what a
@@ -375,7 +376,7 @@ function TeamsSection({ board, selected, zone, setZone, season, onScope }: {
     <StatsGrid<Cell> label={`Teams, ${ZONE_LABEL[zone].toLowerCase()}`} name="teams" density="compact" height="auto" leadWidth="sm" className={phone ? "sa-grid sa-teams sa-phone" : "sa-grid sa-teams"}
       rows={rows} rowKey={r => r.team} sort={{ key: sort.key, direction: sort.direction, onSort }}
       rowData={r => ({ team: r.team_code ?? r.team, status: r.status, selected: r.team_code === selected || undefined })}
-      lead={{ label: "Team", cell: r => <span className="sa-team" data-team={r.team_code ?? ""}><TeamLogo team={r.team_code ?? r.team} season={season} size={20} /><span className="sa-name">{r.team_code}</span>{r.status !== "ok" && <span className="sa-name-sub">{r.status === "thin" ? "Thin" : "No attempts"}</span>}
+      lead={{ label: "Team", cell: r => <span className="sa-team" data-team={r.team_code ?? ""}><TeamLink team={r.team_code ?? r.team} scope={{ season }} variant="block" className="sa-team-link"><TeamLogo team={r.team_code ?? r.team} season={season} size={20} /><span className="sa-name entity-link-text">{r.team_code}</span></TeamLink>{r.status !== "ok" && <span className="sa-name-sub">{r.status === "thin" ? "Thin" : "No attempts"}</span>}
         {r.team_code && <span className="sa-team-scope"><IconButton size="xs" variant="ghost" icon="crosshair" pressed={r.team_code === selected}
           label={r.team_code === selected ? "Show every team again" : `Show the page for ${r.team_code}`} onClick={() => onScope(r.team_code === selected ? null : r.team_code)} data-field="scope-team" /></span>}</span> }}
       columns={columns} />
@@ -478,7 +479,7 @@ export function ShotAftermathResearch() {
   const board = teamsFeed.data ?? teamsFeed.stale;
   const overall = scope?.rows.find(r => r.zone === "all");
   const exportCsv = () => scope && downloadCsv(`courtlens-shot-aftermath-${scope.season}-${scope.team_code ?? "nba"}-${scope.position}.csv`, toCsv(CSV_HEADER, csvRows(scope)));
-  const meta = scope && overall ? [scope.season, scope.team_code ? <span className="sa-meta-team"><TeamLogo team={scope.team_code} season={scope.season} size={16} />{scope.team_code}</span> : "NBA",
+  const meta = scope && overall ? [scope.season, scope.team_code ? <TeamLink team={scope.team_code} scope={{ season: scope.season }} variant="block" className="sa-meta-team"><TeamLogo team={scope.team_code} season={scope.season} size={16} /><span className="entity-link-text">{scope.team_code}</span></TeamLink> : "NBA",
     POSITION_LABEL[scope.position] + (scope.position === "all" ? "" : " (estimated)"), `${whole(overall.counts.attempts)} first-chance attempts`, "Regular season"] : null;
   return <AftermathFrame intro={<ResearchIntro tagline={meta ? <MetaLine items={meta} /> : null} />}>
     <FilterBar label="Shot Aftermath filters" summary={`${season} · ${team ?? "NBA"} · ${POSITION_LABEL[position]}`}

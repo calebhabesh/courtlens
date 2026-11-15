@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { executeWorkbenchQuery, getPlayerDashboardFeeds, getPlayerSeasons } from "@/lib/workbench-api";
 import { teamBrandColor } from "@/lib/team-colors";
@@ -25,6 +25,8 @@ import { Icon } from "./ui/icon";
 import { Tooltip } from "./ui/tooltip";
 import { HoverCard, HoverCardBody } from "./ui/hover-card";
 import { Chip, IconButton, IconButtonLink, Select } from "./ui/kit";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "./entity-link";
 
 const BLURB = "Pick players from the season's DARKO leaders or search, then compare them in compact panels.";
 
@@ -332,7 +334,7 @@ function Panel({ catalog, panel, index, pair, flash, taken, onChange, onClose, o
             label={swapped ? `Remove ${name} from the head-to-head` : pair === "candidate" ? `Compare ${name} with the first pick` : `Compare ${name} head to head`} />
           <IconButton size="sm" variant="ghost" icon="close" label={`Close ${name}`} onClick={onClose} />
         </div>
-        <h3><Link href={`/players/${panel.playerId}?season=${panel.season}`}>{name}</Link></h3>
+        <h3><Link className="entity-link" href={playerHref(panel.playerId, { season: panel.season })} prefetch={false}>{name}</Link></h3>
         <span className="pd-panel-team">{player?.teams.join(" / ") || "—"}</span>
       </div>
     </header>
@@ -638,7 +640,7 @@ function VersusPanel({ catalog, a, b, rate, jumpRef, onRate, onClose }: {
 function VersusTeam({ data, season }: { data: PanelData | null; season: string }) {
   const teams = data?.player?.teams ?? [];
   const latest = teams.at(-1);
-  return <small className="pd-vs-team">{latest && <TeamLogo team={latest} season={season} size={14} />}<span>{teams.join(" / ") || "—"}</span></small>;
+  return <small className="pd-vs-team">{latest && <TeamLogo team={latest} season={season} size={14} />}<span>{teams.length ? teams.map((team, i) => <Fragment key={team}>{i ? " / " : ""}<TeamLink team={team} scope={{ season }}>{team}</TeamLink></Fragment>) : "—"}</span></small>;
 }
 
 /** A head-to-head card's note: both players' values and who leads by how much. */

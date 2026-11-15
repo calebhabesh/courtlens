@@ -8,6 +8,7 @@ import { AccountProvider } from "@/lib/account-context";
 import { SignInDialog } from "@/components/account/sign-in-dialog";
 import { AssistantPageProvider } from "@/lib/assistant-page-context";
 import { ToastProvider } from "@/components/ui/toast";
+import { ScrollMemory } from "@/components/scroll-memory";
 import "./globals.css";
 
 const switzer = localFont({
@@ -84,6 +85,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             </main>
           </div>
           <SignInDialog />
+          <ScrollMemory />
         </ToastProvider></AssistantPageProvider></WorkspaceProvider></AccountProvider>
       </body>
     </html>

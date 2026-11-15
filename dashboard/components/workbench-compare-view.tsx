@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { PlayerPortrait } from "./player-portrait";
 import type { PlayerComparisonResponse } from "@/lib/types";
+import { playerHref } from "@/lib/entity-links";
 
 interface WorkbenchCompareViewProps {
   comparison: PlayerComparisonResponse;
@@ -25,7 +26,7 @@ export function WorkbenchCompareView({ comparison }: WorkbenchCompareViewProps) 
           <div>
             <span className="text-xs text-muted font-mono uppercase">Player A · {player_a.teams?.join(", ") || "—"}</span>
             <h2 className="panel-title text-accent">
-              <Link href={`/players/${player_a.id}`}>{player_a.name}</Link>
+              <Link className="entity-link" href={playerHref(player_a.id)} prefetch={false}>{player_a.name}</Link>
             </h2>
             <span className="text-xs text-muted font-mono">
               {player_a.games_played} GP · {player_a.total_minutes?.toFixed(0)} MIN
@@ -38,7 +39,7 @@ export function WorkbenchCompareView({ comparison }: WorkbenchCompareViewProps) 
           <div>
             <span className="text-xs text-muted font-mono uppercase">Player B · {player_b.teams?.join(", ") || "—"}</span>
             <h2 className="panel-title text-accent">
-              <Link href={`/players/${player_b.id}`}>{player_b.name}</Link>
+              <Link className="entity-link" href={playerHref(player_b.id)} prefetch={false}>{player_b.name}</Link>
             </h2>
             <span className="text-xs text-muted font-mono">
               {player_b.games_played} GP · {player_b.total_minutes?.toFixed(0)} MIN

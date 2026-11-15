@@ -19,6 +19,8 @@ import { PageHeader } from "./ui/panel";
 import { Icon } from "./ui/icon";
 import { SearchField } from "./ui/input";
 import { Chip, Segmented, Select } from "./ui/kit";
+import { playerHref } from "@/lib/entity-links";
+import { TeamLink } from "@/components/entity-link";
 
 const TEAMS = [...branding.teams].sort((a, b) => a.artwork_name.localeCompare(b.artwork_name));
 type Klass = "all" | "ufa" | "rfa";
@@ -58,10 +60,10 @@ function MoveNote({ player, roster, moves }: { player: FreeAgent; roster: Roster
 
 function Movement({ player }: { player: FreeAgent }) {
   return <span className="fa-move">
-    {player.old_team_id ? <TeamLogo team={player.old_team_id} size={20} /> : <span>—</span>}
+    {player.old_team_id ? <TeamLink team={player.old_team_id} variant="block"><TeamLogo team={player.old_team_id} size={20} /></TeamLink> : <span>—</span>}
     <Icon name="right" size={14} />
     {player.current_team_id
-      ? <><TeamLogo team={player.current_team_id} size={20} /><strong>{player.current_team_tricode}</strong></>
+      ? <TeamLink team={player.current_team_id} variant="block"><TeamLogo team={player.current_team_id} size={20} /><strong className="entity-link-text">{player.current_team_tricode}</strong></TeamLink>
       : <span>{player.current_status === "abroad" ? "Abroad" : "Open market"}</span>}
   </span>;
 }
@@ -79,7 +81,7 @@ function Row({ player, roster, moves }: { player: FreeAgent; roster: RosterIndex
       <span className="player-cell">
         {team ? <TeamLogo team={team} size={20} /> : <span className="fa-logo-gap" />}
         <PlayerPortrait playerId={player.player_id} name={player.name} size="sm" />
-        <span className="stats-identity-copy"><Link className="stats-player-link fa-player" href={`/players/${player.player_id}`} title={player.name}>
+        <span className="stats-identity-copy"><Link className="stats-player-link fa-player entity-link" href={playerHref(player.player_id)} prefetch={false} title={player.name}>
           <span className="player-cell-name font-semibold">{player.name}</span>
           <span className="player-cell-teams">{tags.join(" · ")}</span>
         </Link></span>

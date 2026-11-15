@@ -31,6 +31,8 @@ import { DatePicker } from "./ui/date-picker";
 import { ControlScope } from "./ui/control-scope";
 import { Icon } from "./ui/icon";
 import { Button, IconButton, RemovableChip, Segmented, Select } from "./ui/kit";
+import { TeamLink } from "@/components/entity-link";
+import { PlayerLink } from "./entity-link";
 
 export type LastGamesScope = { season: string; phase: string; beforeDate: string };
 type Phase = "all" | "regular_season" | "playoffs";
@@ -237,8 +239,8 @@ function WindowCard({ playerId, name, team, season, size, played, onSize, onPick
  * adds or removes its stat on the chart, and plotted rows show their line's colour. Follow-up 28:
  * a Context band compares opponents' defence and the record.
  */
-function Comparison({ name, who, games, first, last, stats, mode, plotted, onPlot, context, defence }: {
-  name: string; who?: string; games: PlayerGameLogItem[]; first: PlayerGameLogItem[]; last: PlayerGameLogItem[]; stats: LastGamesStat[]; mode: Exposure;
+function Comparison({ playerId, season, name, who, games, first, last, stats, mode, plotted, onPlot, context, defence }: {
+  playerId: string; season: string; name: string; who?: string; games: PlayerGameLogItem[]; first: PlayerGameLogItem[]; last: PlayerGameLogItem[]; stats: LastGamesStat[]; mode: Exposure;
   plotted: string[]; onPlot: (key: string) => void; context: Record<string, GameContext>; defence: (game: PlayerGameLogItem) => OpponentDefence | null;
 }) {
   const a = totals(first), b = totals(last);
@@ -254,7 +256,7 @@ function Comparison({ name, who, games, first, last, stats, mode, plotted, onPlo
   const rank = (value: number | null) => value === null ? "—" : value.toFixed(1);
   const record = (s: typeof now) => s.wins + s.losses ? `${s.wins}–${s.losses}` : "—";
   return <section className="lg-compare player-glass" aria-label={`${name}: first ${first.length} against last ${last.length} games`}>
-    <h2>{name}{who && <small className="lg-compare-who" title="Team and estimated position this season">{who}</small>}</h2>
+    <h2><PlayerLink id={playerId} scope={{ season }}>{name}</PlayerLink>{who && <small className="lg-compare-who" title="Team and estimated position this season">{who}</small>}</h2>
     <div className="lg-compare-frame">
     <table className="lg-compare-table">
       <thead><tr>
@@ -374,7 +376,7 @@ function GameLogTable({ games, stats, mode, sort, onSort, windowIds, expanded = 
           <th scope="row" className="player-ref-grid-lead">
             {formatDate(game.game_date)}
           </th>
-          <td className="group-start"><span className="lg-opp">{side === "away" ? "@" : side === "home" ? "vs" : ""}<TeamLogo team={game.opponent_tricode || game.opponent_id} season={game.season} size={18} />{game.opponent_tricode}</span></td>
+          <td className="group-start"><span className="lg-opp">{side === "away" ? "@" : side === "home" ? "vs" : ""}<TeamLink team={game.opponent_id || game.opponent_tricode} scope={{ season: game.season }} variant="block"><TeamLogo team={game.opponent_tricode || game.opponent_id} season={game.season} size={18} /><span className="entity-link-text">{game.opponent_tricode}</span></TeamLink></span></td>
           <td><span className="lg-result" data-result={c?.result ?? undefined}>{resultText(c)}</span></td>
           <td><span className="lg-rest" data-b2b={c?.backToBack || undefined}>{restText(c)}</span></td>
           <td title={d ? `Defensive rating ${d.rating.toFixed(1)}, ${ordinal(d.rank)} of 30` : "Not rated"}>{d ? ordinal(d.rank) : "—"}</td>
@@ -391,7 +393,7 @@ function GameCards({ games, stats, mode, context }: { games: PlayerGameLogItem[]
     const t = totals([game]);
     return <li key={game.game_id} className="lg-card">
       <header><span>{formatDate(game.game_date)}<small className="lg-result" data-result={context[game.game_id]?.result ?? undefined}>{resultText(context[game.game_id])}</small></span>
-        <span className="lg-opp">{game.side === "away" ? "@" : game.side === "home" ? "vs" : ""}<TeamLogo team={game.opponent_tricode || game.opponent_id} season={game.season} size={18} />{game.opponent_tricode}</span></header>
+        <span className="lg-opp">{game.side === "away" ? "@" : game.side === "home" ? "vs" : ""}<TeamLink team={game.opponent_id || game.opponent_tricode} scope={{ season: game.season }} variant="block"><TeamLogo team={game.opponent_tricode || game.opponent_id} season={game.season} size={18} /><span className="entity-link-text">{game.opponent_tricode}</span></TeamLink></span></header>
       <dl>{stats.map(stat => <div key={stat.key}><dt title={stat.title}>{stat.label}</dt><dd>{formatStat(stat, stat.value(t, mode), mode === "per_game")}</dd></div>)}</dl>
     </li>;
   })}</ol>;
@@ -532,7 +534,7 @@ export function LastGamesView({ scopes, defaultSeason, example }: {
           <WindowCard playerId={player} name={name} team={team} season={season} size={size} played={games.length}
             onSize={n => set({ window: n === DEFAULT_WINDOW ? null : String(n), since: null })} onPick={pick}
             anchors={anchors} since={since} dates={dates} onSince={date => set({ since: date, window: null })} />
-          <Comparison name={name} who={[team, data?.position].filter(Boolean).join(" · ") || undefined} games={games} first={first} last={last} stats={stats} mode={mode} plotted={plotted} onPlot={plot} context={context} defence={defence} />
+          <Comparison playerId={player} season={season} name={name} who={[team, data?.position].filter(Boolean).join(" · ") || undefined} games={games} first={first} last={last} stats={stats} mode={mode} plotted={plotted} onPlot={plot} context={context} defence={defence} />
         </div>
         <section className="lg-logs player-glass" aria-label="Game Logs">
           <header className="lg-logs-head">

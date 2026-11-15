@@ -23,6 +23,7 @@ import { PageHeader } from "./ui/panel";
 import { Switch } from "./ui/switch";
 import { Tooltip } from "./ui/tooltip";
 import { Button, IconButton, RemovableChip, Segmented, Select } from "./ui/kit";
+import { PlayerLink } from "./entity-link";
 
 const BLURB = "A team's on/off combinations by date, game clock, opponent and matchup";
 const TEAM_CATALOG = branding.teams;
@@ -374,7 +375,7 @@ function Composition({ data, cell, order, split, season }: { data: WowyCombosRes
         {mates.map(m => <li key={m.player_id} className="wowy-mate">
           <span className="wowy-mate-share">{Math.round(m.share)}%</span>
           <PlayerAvatar playerId={m.player_id} name={name(m.player_id)} team={team} era={era} size="md" className="wowy-mate-photo" />
-          <span className="wowy-mate-name">{name(m.player_id)}</span>
+          <PlayerLink id={m.player_id} scope={{ season }} className="wowy-mate-name">{name(m.player_id)}</PlayerLink>
           <span className="wowy-mate-dpm" data-tone={tone(m.dpm, "up")}>{signed(m.dpm)}</span>
         </li>)}
       </ul>

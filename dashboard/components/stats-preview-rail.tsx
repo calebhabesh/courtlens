@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { seasonEra } from "@/lib/portrait-source";
 import { Icon } from "./ui/icon";
 import { Button, IconButton } from "./ui/kit";
@@ -10,6 +10,7 @@ import { TeamLogoStack } from "./team-logo";
 import { DARKO_COLUMNS, formatColumnValue, type ColumnDefinition } from "@/lib/stats-presets";
 import { DarkoSourceLink } from "./darko-source-link";
 import type { PlayerResearchItem } from "@/lib/types";
+import { PlayerLink, TeamLink } from "./entity-link";
 
 type PercentileVars = React.CSSProperties & { "--pct": number };
 const percentileVars = (percentile: number): PercentileVars => ({ "--pct": Math.round(percentile) });
@@ -59,9 +60,9 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
       <div className="stats-preview-identity">
         <PlayerPortrait key={player.player_id} playerId={player.player_id} name={player.player_name}
           portraitUrl={player.portrait_url} size="md" era={seasonEra(season, player.teams)} />
-        <div><h2>{player.player_name}</h2><span className="stats-preview-subtitle">
+        <div><h2><PlayerLink id={player.player_id} scope={{ season }}>{player.player_name}</PlayerLink></h2><span className="stats-preview-subtitle">
           <TeamLogoStack teams={player.teams ?? []} decorative />
-          {player.teams?.join(" / ") || "Team unknown"} · {season}
+          {player.teams?.length ? player.teams.map((team, i) => <Fragment key={team}>{i ? " / " : ""}<TeamLink team={team} scope={{ season }}>{team}</TeamLink></Fragment>) : "Team unknown"} · {season}
         </span></div>
       </div>
       <dl className="stats-preview-metrics" ref={metricsRef}>

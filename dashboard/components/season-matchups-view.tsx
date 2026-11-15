@@ -21,6 +21,7 @@ import { PageHeader } from "./ui/panel";
 import { Button, IconButton, Segmented, Select } from "./ui/kit";
 import { teamBrandColor } from "@/lib/team-colors";
 import { fmt, getSeasonMatchups, pct, type FeedPhase, type MatchupDetail, type MatchupPair, type MatchupRow } from "@/lib/stats-feeds";
+import { playerHref, scopeFromQuery } from "@/lib/entity-links";
 
 /** Every opponent, so the table sorts the whole season rather than a top slice. */
 const ROW_LIMIT = 500;
@@ -169,7 +170,7 @@ export function SeasonMatchupsView() {
                             placeholder={guardedBy ? "Search defenders…" : "Search players…"} autoComplete="off" spellCheck={false} value={searchText}
                             onChange={event => setSearch({ key: tableKey, text: event.target.value })}
                             onKeyDown={event => { if (event.key === "Escape" && searchText) { event.preventDefault(); setSearch({ key: tableKey, text: "" }); } }} />
-                          {searchText && <IconButton size="sm" icon="close" label="Clear name search" onClick={() => setSearch({ key: tableKey, text: "" })} />}
+                          {searchText && <IconButton size="xs" inField icon="close" label="Clear name search" onClick={() => setSearch({ key: tableKey, text: "" })} />}
                         </div>
                       </div>
                     </th>
@@ -186,7 +187,7 @@ export function SeasonMatchupsView() {
                     <th scope="row" className="pinned-col mu-name">
                       <span className="mu-identity">
                         <PlayerPortrait playerId={row.player_id} name={row.player_name} size="sm" era={data.season && row.team_tricode ? { season: data.season, team: row.team_tricode } : null} />
-                        <Link href={`/players/${row.player_id}?${scope}`}>{row.player_name}</Link>
+                        <Link className="entity-link" href={playerHref(row.player_id, scopeFromQuery(scope))} prefetch={false}>{row.player_name}</Link>
                         {row.team_tricode && <TeamLogo team={row.team_tricode} season={data.season} size={16} />}
                       </span>
                     </th>
@@ -267,7 +268,7 @@ function MatchupSlot({ side, detail, pair, guardedBy = true, excludedIds, onPick
             onChange={(next, items) => { if (next && items[0]) { setSearching(false); onPick(next); } }} />
         </div>
       : <div className="pvp-who">
-          <Link className="pvp-name" href={`/players/${id}`}>{name}</Link>
+          <Link className="pvp-name" href={playerHref(id)} prefetch={false}>{name}</Link>
           {team && <span className="pvp-team"><span className="pvp-team-entry"><TeamLogo team={team} season={season} size={16} />{record?.artwork_name ?? team}</span></span>}
           {detail && <span className="pvp-bio mu-bio">{guardedBy ? "Scored" : "Allowed"} {fmt(detail.points_per_100)} pts/100 · {pct(detail.fg_pct)} FG<span>{guardedBy ? "against all defenders" : "guarding all players"}</span></span>}
         </div>}

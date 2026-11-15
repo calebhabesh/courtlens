@@ -122,7 +122,7 @@ test("graded games (test data): record, calibration, the worked example and the 
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/research/win-probability");
   await expect(page.locator('[data-field="record"]')).toHaveText("On 40 games since the Market-informed model's freeze, CourtLens' own read picked the winner 25.5 times (64%).");
-  await expect(page.locator('[data-field="record-table"] .wp-tile').first()).toContainText("CourtLens' own read");
+  await expect(page.locator('[data-field="record-table"] .wp-tile').first()).toContainText("CourtLens' Own Read");
   await expect(page.locator('[data-field="record-table"] .wp-tile[data-tone="serving"]')).toContainText("25.5 of 40");
   await expect(page.locator('[data-field="record-table"]')).toContainText("27 of 40");
   await expect(page.locator('[data-field="record-table"]')).toContainText("25.5 of 40");

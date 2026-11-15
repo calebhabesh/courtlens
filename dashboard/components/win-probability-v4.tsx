@@ -18,6 +18,7 @@ import { GatedNote } from "./ui/gated-note";
 import { ButtonSummary } from "./ui/kit";
 import { CalibrationChart } from "./win-probability-research";
 import { ModelFlow, type FlowOption } from "./win-probability-flow";
+import { gameHref } from "@/lib/entity-links";
 
 /**
  * W5: the v4 sections above the evidence. Every number is served: the head-to-head summary the
@@ -76,7 +77,7 @@ export function PredictionCard({ game }: { game: LiveGame }) {
   const call = predictionCall(game);
   const fav = sealed == null ? null : sealed >= 0.5 ? home : away;
   const line = game.status === "scheduled" ? lineFavourite(game.odds, game.teams) : null;
-  const href = `/live/games/${game.source_id}?date=${game.slate_date}&tab=pregame&from=win-probability`;
+  const href = gameHref({ espnId: game.source_id, date: game.slate_date }, { tab: "pregame", params: { from: "win-probability" } })!;
   const outs = game.status === "scheduled" ? [away, home].filter(t => t.out) : [];
   const withLine = call?.withLine ? { team: call.withLine.side === "home" ? home : away, percent: call.withLine.percent } : null;
   return <Link className="wpc" href={href} data-status={game.status} data-game={game.source_id} data-home-win={sealed ?? undefined} data-favoured={fav?.side}
@@ -141,14 +142,14 @@ export function TrackRecord({ data }: { data: WinProbabilityPage }) {
   const rec = h?.record_of_calls;
   const graded = !!rec && rec.games > 0;
   const tossUps = rec ? rec.toss_ups_by_model?.original ?? rec.toss_ups : 0;
-  return <ResearchSection id="track-record" icon="target" title="Track record">
+  return <ResearchSection id="track-record" icon="target" title="Track Record">
     {graded ? <p className="wp-lead" data-field="record" data-games={rec.games} data-market={rec.market_informed} data-original={rec.original}>
       On {whole(rec.games)} {rec.games === 1 ? "game" : "games"} since the Market-informed model&apos;s freeze, CourtLens&apos; own read picked the winner {whole(rec.original)} times ({pct(rec.original, rec.games)}).
     </p> : <p className="wp-lead" data-field="record-empty">No game graded yet. Each game is graded within 30 minutes of its final buzzer.</p>}
     <dl className="wp-tiles" data-field="record-table">
-      <RecordTile name="CourtLens' own read" sub="Original model, leads" icon="chart" right={graded ? rec.original : null} games={rec?.games ?? 0} tone="serving" />
-      <RecordTile name="With the betting line" sub="Market-informed, on trial" icon="scale" right={graded ? rec.market_informed : null} games={rec?.games ?? 0} tone="plain" />
-      <RecordTile name="The betting line" sub="its favourite" icon="trend" right={graded && rec.line.games ? rec.line.right : null} games={rec?.line.games ?? 0} tone="plain" />
+      <RecordTile name="CourtLens' Own Read" sub="Original model, leads" icon="chart" right={graded ? rec.original : null} games={rec?.games ?? 0} tone="serving" />
+      <RecordTile name="With the Betting Line" sub="Market-informed, on trial" icon="scale" right={graded ? rec.market_informed : null} games={rec?.games ?? 0} tone="plain" />
+      <RecordTile name="The Betting Line" sub="its favourite" icon="trend" right={graded && rec.line.games ? rec.line.right : null} games={rec?.line.games ?? 0} tone="plain" />
     </dl>
     {graded && <p className="wp-note">An even call counts half.{tossUps ? ` ${whole(tossUps)} ${tossUps === 1 ? "game was a toss-up" : "games were toss-ups"} (45% to 55%).` : ""}</p>}
     {cal && <>
@@ -183,7 +184,7 @@ export function HowItWorks({ data, games }: { data: WinProbabilityPage; games: L
       <p className="wp-note" data-field="example-rule">Chosen by rule: {example.rule.replace(/^./, c => c.toLowerCase())}</p>
       <div className="wp-example" data-field="example" data-game={game.source_id}>
         <PredictionBody why={example.why} game={game} />
-        <Link className="wp-link" href={`/live/games/${game.source_id}?date=${game.slate_date}&tab=pregame`}>Open this game on Live</Link>
+        <Link className="wp-link" href={gameHref({ espnId: game.source_id, date: game.slate_date }, { tab: "pregame" })!} prefetch={false}>Open this game on Live</Link>
       </div>
     </Toggle> : <p className="wp-note" data-field="example-empty">Worked example: {example?.rule.replace(/^The first/, "the first").replace(/\.$/, "") ?? "the first graded game that meets the rule"}. None yet.</p>}
   </ResearchSection>;

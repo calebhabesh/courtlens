@@ -25,6 +25,11 @@ import { resolveStatsQuery } from "@/lib/stats-query";
 import type { WorkbenchCatalog } from "@/lib/types";
 import { executeWorkbenchQuery, getPlayerBio, getPlayerCareer, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact, getMetricCatalog } from "@/lib/workbench-api";
 import { metricHints } from "@/lib/stats-glossary";
+import { redirect } from "next/navigation";
+import PlayerNotFound from "./not-found";
+import { playerHref } from "@/lib/entity-links";
+import { askedNote, resolvePlayerScope, rewrittenUrl } from "@/lib/link-scope";
+import { ScopeFallbackNote } from "@/components/scope-fallback-note";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Profile" };
@@ -42,6 +47,7 @@ export default async function PlayerPage({
     beforeDate?: string;
     window?: string;
     releaseId?: string;
+    asked?: string;
   }>;
 }) {
   const [{ id }, selected] = await Promise.all([params, searchParams]);
@@ -90,6 +96,19 @@ export default async function PlayerPage({
   const season = selected.season || (played.length && !played.includes(fallback) ? played[0] : fallback);
   const seasonScope = catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase);
   const beforeDate = selected.beforeDate || (season !== fallback ? seasonScope?.default_before_date : null) || catalog?.default_before_date || "2026-06-30";
+  // A link names the season it was shown in; when the player has no games then (or missed those
+  // playoffs) the page opens the closest season he played and says so once (site links SL02).
+  // Checked beside the profile reads, so a link that resolves costs no extra round trip.
+  const rewrite = selected.season && catalog ? careerRequest.then(async own => {
+    if (!own) return null;
+    const asked = { season, phase };
+    const ownSeasons = own.seasons.map(entry => entry.season);
+    const regular = phase !== "playoffs" ? ownSeasons
+      : ownSeasons.includes(season) ? ownSeasons
+      : (await getPlayerCareer(id, { phase: "regular_season", releaseId: catalog.release_id }).catch(() => null))?.seasons.map(entry => entry.season) ?? null;
+    const shown = resolvePlayerScope(asked, { regular, playoffs: phase === "playoffs" ? ownSeasons : null });
+    return shown ? rewrittenUrl(playerHref(id), selected, asked, shown) : null;
+  }) : Promise.resolve(null);
 
   try {
     const [profile, log] = await Promise.all([
@@ -112,6 +131,8 @@ export default async function PlayerPage({
   } catch (err) {
     loadError = err;
   }
+  const rewritten = await rewrite;
+  if (rewritten) redirect(rewritten);
 
   if (wbLoaded) {
     const [impact, hero, bio, career, metricCatalog] = await Promise.all([
@@ -133,6 +154,7 @@ export default async function PlayerPage({
         hero={hero}
         career={career}
         metricHints={metricCatalog ? metricHints(metricCatalog.metrics) : {}}
+        notice={<ScopeFallbackNote note={askedNote(selected.asked, { season, phase }, wbLoaded.profile.player.name)} />}
         filterBar={<ContextBar
           key="filter-bar"
           initialSeason={season}
@@ -169,6 +191,9 @@ export default async function PlayerPage({
     );
   }
 
+  // An id the release has never seen gets the not-found page, which leads back to search. Rendered
+  // directly: `notFound()` inside this streamed route leaves a stale hidden staging copy behind.
+  if (loadError instanceof AnalyticsApiError && loadError.status === 404) return <PlayerNotFound />;
   return <PlayerError error={loadError} id={id} date={selected.date} />;
 }
 

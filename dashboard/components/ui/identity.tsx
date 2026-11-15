@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import catalog from "../../lib/team-branding.json";
 import { teamAccent } from "../../lib/team-colors";
 import type { PortraitEra } from "@/lib/portrait-source";
 import { PlayerPortrait } from "../player-portrait";
 import { TeamLogo } from "../team-logo";
+import { EntityAnchor, TeamLink } from "../entity-link";
+import { playerHref, teamHref } from "@/lib/entity-links";
 
 export type IdentitySize = "sm" | "md" | "lg" | "xl";
 
@@ -25,8 +26,9 @@ function teamCode(team: string): string {
   return catalog.teams.find((entry) => entry.team_id === team || entry.tricode === team)?.tricode ?? team;
 }
 
-function Name({ href, children }: { href?: string; children: ReactNode }) {
-  return href ? <Link className="ui-identity-name" href={href}>{children}</Link> : <span className="ui-identity-name">{children}</span>;
+/** The name links to its page (site links SL04); a self link or `null` href is plain text. */
+function Name({ href, children }: { href: string | null; children: ReactNode }) {
+  return <EntityAnchor href={href} className="ui-identity-name">{children}</EntityAnchor>;
 }
 
 function IdentityMedia({ playerId, name, team, size, portraitUrl, era }: { playerId?: string; name: string; team?: string | null; size: IdentitySize; portraitUrl?: string | null; era?: PortraitEra | null }) {
@@ -60,7 +62,8 @@ export interface PlayerIdentityProps {
   team?: string | null;
   subtitle?: ReactNode;
   size?: IdentitySize;
-  href?: string;
+  /** Defaults to the player's page in `era.season`; `null` keeps the name plain (pickers, own header). */
+  href?: string | null;
   portraitUrl?: string | null;
   /** The team-season under analysis (Design Language, Identity); the current photo when absent. */
   era?: PortraitEra | null;
@@ -76,10 +79,10 @@ export function PlayerIdentity({ playerId, name, team, subtitle, size = "md", hr
     <div className={`ui-identity ui-identity-${size} ${team ? "has-team" : ""} ${className}`} style={teamStyle(team)}>
       <IdentityMedia playerId={playerId} name={name} team={team} size={size} portraitUrl={portraitUrl} era={era} />
       <span className="ui-identity-text">
-        <Name href={href}>{name}</Name>
+        <Name href={href === undefined ? playerHref(playerId, { season: era?.season }) : href}>{name}</Name>
         {(team || subtitle) && (
           <span className="ui-identity-subtitle">
-            {team && <span>{teamCode(team)}</span>}
+            {team && (href === null ? <span>{teamCode(team)}</span> : <TeamLink team={team} scope={{ season: era?.season }} title={teamName(team)}>{teamCode(team)}</TeamLink>)}
             {team && subtitle && <span aria-hidden="true">·</span>}
             {subtitle}
           </span>
@@ -95,7 +98,8 @@ export interface TeamIdentityProps {
   name?: string;
   subtitle?: ReactNode;
   size?: IdentitySize;
-  href?: string;
+  /** Defaults to the team's page in `season`; `null` keeps the name plain. */
+  href?: string | null;
   className?: string;
   /** Draw the team as it was this season (the 1965-66 Celtics' logo). */
   season?: string | null;
@@ -108,7 +112,7 @@ export function TeamIdentity({ team, name, subtitle, size = "md", href, classNam
     <div className={`ui-identity ui-identity-team ui-identity-${size} ${className}`} style={teamStyle(team)}>
       <span className="ui-identity-media"><TeamLogo team={team} season={season} size={logo} /></span>
       <span className="ui-identity-text">
-        <Name href={href}>{name ?? teamName(team)}</Name>
+        <Name href={href === undefined ? teamHref(team, { season }) : href}>{name ?? teamName(team)}</Name>
         {subtitle && <span className="ui-identity-subtitle">{subtitle}</span>}
       </span>
     </div>

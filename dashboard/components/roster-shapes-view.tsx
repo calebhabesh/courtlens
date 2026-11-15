@@ -27,6 +27,7 @@ import {
   getRosterShapeHistory, playerSize, sandboxRoster, shapeKind, signed, sortTeams,
   type RosterShapes, type ShapeMode, type ShapeSort, type ShapeTeam
 } from "@/lib/roster-shapes";
+import { playerHref } from "@/lib/entity-links";
 
 /** Pins the resolved player index in the URL (C3) so a shared link reproduces the same rosters. */
 function useShapes(season: string | null) {
@@ -121,7 +122,7 @@ function RosterTable({ team, data, mode }: { team: ShapeTeam; data: RosterShapes
         <tbody>{team.roster.map(p => {
           const size = playerSize(p, mode);
           return <tr key={p.player_id} title={p.unknown_reasons.join(" ") || undefined}>
-            <th scope="row" className="player-ref-grid-lead"><Link href={`/players/${p.player_id}`}>{p.player_name}</Link></th>
+            <th scope="row" className="player-ref-grid-lead"><Link className="entity-link" href={playerHref(p.player_id)} prefetch={false}>{p.player_name}</Link></th>
             <td className="shapes-style-cell">{p.archetype ? <span className="shapes-style"><span className="shapes-swatch" style={chartVars({ "--chart-tone": tone(p.archetype.primary) })} aria-hidden="true" />{p.archetype.primary_name}</span> : "—"}</td>
             <td title={p.continuity === "unknown" ? `No ${data.projected ? data.reference_season : "prior-season"} games` : undefined}>{CONTINUITY_LABELS[p.continuity]}{p.continuity === "new" && p.previous_teams.length > 0 && <small>{p.previous_teams.join(", ")}</small>}</td>
             <td className="group-start" data-tone={p.dpm === null || Math.abs(p.dpm) < 0.05 ? undefined : p.dpm > 0 ? "up" : "down"}>{signed(p.dpm)}</td>

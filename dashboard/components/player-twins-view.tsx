@@ -23,6 +23,7 @@ import {
   ordinal, relativeText, signed, tone, valueText, weightsParam,
   type CareerSeason, type TwinCard, type TwinDimension, type TwinMatch, type TwinNext, type TwinProfile, type TwinsMode, type TwinsPool, type TwinsView,
 } from "@/lib/player-twins";
+import { playerHref } from "@/lib/entity-links";
 
 const one = (value: number | null | undefined, digits = 1) =>
   value == null || !Number.isFinite(value) ? "—" : value.toLocaleString("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits });
@@ -107,7 +108,7 @@ function Console({ view, set, mode, pool, minPoss, byPosition }: {
       id, canonical_id: id, kind: "player", display_name: name, subtitle: team ?? undefined, match_basis: "suggestion", match_score: 1,
       availability: { has_current_season: true, status: "available", seasons: [] },
       team_association: { basis: "selected_scope", teams: team ? [team] : [], observed_through: null, season: null, phase: null, before_date: null },
-      destination_url: `/players/${id}`, metadata: { caption },
+      destination_url: playerHref(id), metadata: { caption },
     });
     const here = view.roster.map(player => item(player.player_id, player.name, player.team,
       `${view.season} · ${[player.team, player.position].filter(Boolean).join(" · ") || "—"} · ${whole(player.off_poss)} offensive possessions`));
@@ -186,7 +187,7 @@ function ProfileCard({ view, profile, twin, next }: { view: TwinsView; profile: 
         {profile.team && <span className="tw-avatar-logo"><TeamLogo team={profile.team} season={profile.season} size={22} /></span>}
       </span>
       <div className="tw-who-text">
-        <h3><span className="tw-season">{profile.season}</span> <Link href={`/players/${profile.player_id}?season=${profile.season}`}>{profile.name}</Link>
+        <h3><span className="tw-season">{profile.season}</span> <Link className="entity-link" href={playerHref(profile.player_id, { season: profile.season })} prefetch={false}>{profile.name}</Link>
           {profile.team && <span className="tw-name-logo"><TeamLogo team={profile.team} season={profile.season} size={24} /></span>}</h3>
         <div className="tw-badges">
           {profile.teams.length > 0 && <span className="tw-badge tw-badge-team">{profile.teams.join(" / ")}</span>}
@@ -289,7 +290,7 @@ function Matches({ view, rows, set, excludeOwn }: { view: TwinsView; rows: numbe
                   <span className="tw-identity">
                     <PlayerPortrait playerId={match.player_id} name={match.name} size="sm" era={match.team ? { season: match.season, team: match.team } : null} />
                     <span className="tw-identity-text">
-                      <Link href={`/players/${match.player_id}?season=${match.season}`}>{match.name}</Link>
+                      <Link className="entity-link" href={playerHref(match.player_id, { season: match.season })} prefetch={false}>{match.name}</Link>
                       <small>{[match.teams.join(" / ") || "—", match.position].filter(Boolean).join(" · ")}</small>
                     </span>
                   </span>

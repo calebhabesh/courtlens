@@ -19,6 +19,7 @@ import {
 import { formatFixed, formatInterval, formatShare, formatSigned, formatWhole } from "@/lib/shot-quality";
 import type { Pair } from "@/lib/shot-quality";
 import { downloadCsv, intervalTone, toCsv } from "@/lib/research-values";
+import { playerHref } from "@/lib/entity-links";
 
 /*
  * Research → Shot Quality → Decomposition (R06 analysis; RD04 design after Databallr's ShotQuality RAPM page). Databallr's
@@ -143,7 +144,7 @@ function Board({ data, summary, side, seasonSelect, onSide }: { data: Merged; su
       sort={{ key: sort.key, direction: sort.direction, onSort }} empty="No players match these filters."
       lead={{ group: "Player",
         label: <GridSearch value={query} onChange={setQuery} />,
-        cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.tricode} season={data.season} era={seasonEra(data.season, r.tricode)} href={`/players/${r.player_id}?season=${data.season}`}
+        cell: r => <GridPlayer playerId={r.player_id} name={r.player_name} team={r.tricode} season={data.season} era={seasonEra(data.season, r.tricode)} href={playerHref(r.player_id, { season: data.season })}
           subtitle={`${r.tricode ?? "—"} · ${r.games} games`} /> }} />
     <div className="sq-foot">
       <ToneLegend />

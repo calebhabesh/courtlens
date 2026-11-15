@@ -18,6 +18,7 @@ import { PlayerAvatar } from "./ui/identity";
 import { Checkbox } from "./ui/checkbox";
 import { Icon } from "./ui/icon";
 import { Button, IconButton, Segmented, Select } from "./ui/kit";
+import { PlayerLink } from "./entity-link";
 
 const BLURB = "Analyze how individual player stats change when playing with or without specific teammates";
 const TEAM_CATALOG = branding.teams;
@@ -86,8 +87,8 @@ function ShiftTable({ data, subject, stats, view, sort, onSort, onSubject, names
   return <section className="sls-table player-glass" aria-label={`Per 75 stats without and with ${subject.name}`}>
     <header className="sls-table-head">
       <PlayerAvatar playerId={subject.player_id} name={subject.name ?? subject.player_id} team={data.team_id} era={era} size="md" />
-      <h2>{view === "shift" ? <>Per 75 stats <strong>without</strong> and <strong>with {subject.name}</strong></>
-        : <>Per 75 stats <strong>{view === "with" ? "with" : "without"} {subject.name}</strong></>}</h2>
+      <h2>{view === "shift" ? <>Per 75 stats <strong>without</strong> and <strong>with <PlayerLink id={subject.player_id} scope={{ season: era.season }}>{subject.name}</PlayerLink></strong></>
+        : <>Per 75 stats <strong>{view === "with" ? "with" : "without"} <PlayerLink id={subject.player_id} scope={{ season: era.season }}>{subject.name}</PlayerLink></strong></>}</h2>
     </header>
     <div className="player-ref-grid-frame"><div className="player-ref-grid-scroll" role="region" aria-label="Teammate stat shifts" tabIndex={0}>
       <table className="player-ref-grid sls-grid" style={{ "--columns": stats.length } as CSSProperties}>

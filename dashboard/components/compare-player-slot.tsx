@@ -15,6 +15,7 @@ import { teamArtwork } from "@/lib/team-era";
 import type { ComparisonPlayer, PlayerBio } from "@/lib/types";
 import type { SeasonEnds } from "@/lib/compare-accolades";
 import type { BestSeason } from "@/lib/landing-season";
+import { playerHref } from "@/lib/entity-links";
 
 export type CompareSlotPlayer = ComparisonPlayer;
 export type CompareSelection = { id: string; name: string };
@@ -102,7 +103,7 @@ export function ComparePlayerSlot({ side, player, bio, season, beforeDate, games
             onChange={(id, items) => { if (id && items[0]) { setSearch("closing"); onPick({ id, name: items[0].display_name }); } }} />
         </div>
       : <div className="pvp-who" data-returned={returned || undefined}>
-          <Link className="pvp-name" href={`/players/${player.id}`}>{player.name}</Link>
+          <Link className="pvp-name" href={playerHref(player.id)} prefetch={false}>{player.name}</Link>
           {/* Full team names with small logos, oldest first: "Brooklyn Nets, Phoenix Suns" (32, 35). */}
           {inactive && <span className="pvp-dnp">No Games in {season}{span ? <><br />Played {span}</> : null}</span>}
           {!inactive && teams.length > 0 && <span className="pvp-team">{teams.map(team => <span key={team} className="pvp-team-entry">

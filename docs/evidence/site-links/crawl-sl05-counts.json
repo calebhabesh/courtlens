@@ -1,0 +1,115 @@
+{
+  "patterns": 27,
+  "found": 515,
+  "opened": 63,
+  "counts": {
+    "/": {
+      "found": 11,
+      "opened": 5
+    },
+    "/compare": {
+      "found": 1,
+      "opened": 1
+    },
+    "/contracts": {
+      "found": 2,
+      "opened": 2
+    },
+    "/draft": {
+      "found": 1,
+      "opened": 1
+    },
+    "/last-games": {
+      "found": 1,
+      "opened": 1
+    },
+    "/live/:date": {
+      "found": 7,
+      "opened": 5
+    },
+    "/live/games/:id": {
+      "found": 11,
+      "opened": 5
+    },
+    "/live/open": {
+      "found": 4,
+      "opened": 4
+    },
+    "/matchups": {
+      "found": 1,
+      "opened": 1
+    },
+    "/methodology/learning": {
+      "found": 1,
+      "opened": 1
+    },
+    "/players": {
+      "found": 1,
+      "opened": 1
+    },
+    "/players/:id": {
+      "found": 351,
+      "opened": 5
+    },
+    "/playoffs": {
+      "found": 1,
+      "opened": 1
+    },
+    "/playoffs/:series": {
+      "found": 15,
+      "opened": 5
+    },
+    "/research/win-probability": {
+      "found": 1,
+      "opened": 1
+    },
+    "/roster-shapes": {
+      "found": 1,
+      "opened": 1
+    },
+    "/similar-players": {
+      "found": 1,
+      "opened": 1
+    },
+    "/standings": {
+      "found": 3,
+      "opened": 3
+    },
+    "/stat-line-shift": {
+      "found": 1,
+      "opened": 1
+    },
+    "/stats": {
+      "found": 2,
+      "opened": 2
+    },
+    "/stats/glossary": {
+      "found": 1,
+      "opened": 1
+    },
+    "/team-compare": {
+      "found": 2,
+      "opened": 2
+    },
+    "/teams": {
+      "found": 12,
+      "opened": 5
+    },
+    "/teams/:id": {
+      "found": 80,
+      "opened": 5
+    },
+    "/whats-new": {
+      "found": 1,
+      "opened": 1
+    },
+    "/wingspan": {
+      "found": 1,
+      "opened": 1
+    },
+    "/wowy": {
+      "found": 1,
+      "opened": 1
+    }
+  }
+}

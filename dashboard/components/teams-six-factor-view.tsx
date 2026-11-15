@@ -22,6 +22,7 @@ import {
   ALL_COLUMNS, LUCK_SHARES, TEAM_VIEWS, VENUES, WINDOWS, columnRanks, formatValue, getTeamSixFactors, luckLabel, sortTeams, viewColumns, withStandings,
   type SixFactorTeam, type TeamColumn, type TeamCounting, type TeamVenue, type TeamView,
 } from "@/lib/team-six-factors";
+import { scopeFromQuery, teamHref } from "@/lib/entity-links";
 
 const PHASES = [{ value: "regular_season", label: "Regular Season" }, { value: "playoffs", label: "Playoffs" }] as const;
 const DEFAULT_SORT: Record<TeamView, string> = { overall: "net", offense: "off", defense: "def", standings: "seed", scoring: "pts_fb" };
@@ -96,7 +97,7 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
       <input type="search" className="lookup-input" aria-label="Filter teams by name" placeholder="Search teams…" autoComplete="off" spellCheck={false}
         value={typed} onChange={event => search(event.target.value)}
         onKeyDown={event => { if (event.key === "Escape" && typed) { event.preventDefault(); search(""); } }} />
-      {typed && <IconButton size="sm" icon="close" label="Clear team search" onClick={() => search("")} />}
+      {typed && <IconButton size="xs" inField icon="close" label="Clear team search" onClick={() => search("")} />}
     </div>
   </div>;
 
@@ -181,7 +182,7 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
                   <span className="teams-identity">
                     <span className="teams-rank-badge" data-top={(position.get(team.team_id) ?? 99) <= 3 || undefined}>{position.get(team.team_id)}</span>
                     <TeamLogo team={team.tricode} season={season} size={32} />
-                    <Link href={`/teams/${team.team_id}?${scopeParams}`} title={`${team.name} · ${team.wins}–${team.losses}`}>{team.tricode}</Link>
+                    <Link className="entity-link" href={teamHref(team.team_id, { season, phase })} prefetch={false} title={`${team.name} · ${team.wins}–${team.losses}`}>{team.tricode}</Link>
                     <span className="teams-record">{team.wins}–{team.losses}</span>
                   </span>
                 </th>
@@ -238,7 +239,7 @@ function TeamCards({ teams, all, position, counting, ranks, season, scopeParams 
           <span className="teams-rank-badge" data-top={index < 3 || undefined}>{index + 1}</span>
           <TeamLogo team={team.tricode} season={season} size={48} />
           <span className="teams-card-who">
-            <Link href={`/teams/${team.team_id}?${scopeParams}`}>{team.name}</Link>
+            <Link className="entity-link" href={teamHref(team.team_id, scopeFromQuery(scopeParams))} prefetch={false}>{team.name}</Link>
             <span>{team.wins}–{team.losses} · ORTG {formatValue(column("ortg").value(team, counting), "rating", counting)} · DRTG {formatValue(column("drtg").value(team, counting), "rating", counting)}</span>
           </span>
           <span className="teams-card-net" data-tone={tone(net, netValue)} title="Net rating">{formatValue(netValue, "signed", counting)}<small>Net · #{ranks.get("net")?.get(team.team_id)}</small></span>

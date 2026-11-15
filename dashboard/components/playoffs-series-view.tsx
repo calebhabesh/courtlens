@@ -18,6 +18,9 @@ import { PageHeader } from "./ui/panel";
 import { SortHeader } from "./table-ui";
 import { ButtonLink, ButtonSummary, Segmented } from "./ui/kit";
 import { SeriesImpact, SeriesMatchupsPanel, TeamCode } from "./playoffs-series-sections";
+import { RelatedRow } from "./related-row";
+import { seriesRelated } from "@/lib/related-links";
+import { playerHref, teamHref } from "@/lib/entity-links";
 
 interface PlayoffsSeriesViewProps {
   detail: PlayoffSeriesDetailResponse;
@@ -39,7 +42,7 @@ function HeroTeam({ team, detail, side }: { team: TeamSeriesStats; detail: Playo
     <div className={`ps-hero-team ${lost ? "is-out" : ""}`} data-side={side} style={teamVars(team.team_id, detail.season)}>
       <span className="ps-hero-logo"><TeamLogo team={team.team_id} season={detail.season} size={88} /></span>
       <span className="ps-hero-city">{city}</span>
-      <Link className="ps-hero-name" href={`/teams/${team.team_id}?season=${detail.season}&phase=playoffs`}>{nickname}</Link>
+      <Link className="ps-hero-name entity-link" href={teamHref(team.team_id, { season: detail.season, phase: "playoffs" })} prefetch={false}>{nickname}</Link>
       <span className="ps-hero-meta">
         {team.seed != null && <span className="ps-hero-seed">#{team.seed}</span>}
         {record && <strong>{record}</strong>}
@@ -64,9 +67,9 @@ function SeasonSeries({ detail }: { detail: PlayoffSeriesDetailResponse }) {
         {games.map(game => (
           <li key={game.game_id}>
             <span className="ps-meetings-date">{formatDate(game.game_date)}</span>
-            <span className={game.winner_team_id === game.away_team_id ? "is-winner" : ""}><TeamCode team={game.away_team_id} code={game.away_tricode} season={detail.season} /> {game.away_score}</span>
+            <span className={game.winner_team_id === game.away_team_id ? "is-winner" : ""}><TeamCode team={game.away_team_id} code={game.away_tricode} season={detail.season} phase="regular_season" /> {game.away_score}</span>
             <span className="ps-meetings-at">@</span>
-            <span className={game.winner_team_id === game.home_team_id ? "is-winner" : ""}><TeamCode team={game.home_team_id} code={game.home_tricode} season={detail.season} /> {game.home_score}</span>
+            <span className={game.winner_team_id === game.home_team_id ? "is-winner" : ""}><TeamCode team={game.home_team_id} code={game.home_tricode} season={detail.season} phase="regular_season" /> {game.home_score}</span>
           </li>
         ))}
       </ol>
@@ -288,7 +291,7 @@ function Averages({ detail }: { detail: PlayoffSeriesDetailResponse }) {
         </header>
         <div className="ps-switch">
           <Segmented<AveragesTeam> size="sm" label="Series players" value={team} onChange={setTeam} options={[
-            { value: "both", label: "Both" }, { value: "team1", label: <TeamCode team={detail.team1.team_id} code={detail.team1.tricode} season={detail.season} /> }, { value: "team2", label: <TeamCode team={detail.team2.team_id} code={detail.team2.tricode} season={detail.season} /> }
+            { value: "both", label: "Both" }, { value: "team1", label: <TeamCode team={detail.team1.team_id} code={detail.team1.tricode} season={detail.season} link={false} /> }, { value: "team2", label: <TeamCode team={detail.team2.team_id} code={detail.team2.tricode} season={detail.season} link={false} /> }
           ]} />
         </div>
         <div className="player-ref-grid-frame">
@@ -317,7 +320,7 @@ function Averages({ detail }: { detail: PlayoffSeriesDetailResponse }) {
                     <th scope="row" className="player-ref-grid-lead">
                       <span className="ps-player">
                         <TeamLogo team={player.team_id} season={detail.season} size={16} />
-                        <Link href={`/players/${player.player_id}?season=${detail.season}&phase=playoffs`}>{player.player_name}</Link>
+                        <Link className="entity-link" href={playerHref(player.player_id, { season: detail.season, phase: "playoffs" })} prefetch={false}>{player.player_name}</Link>
                         <span className="sr-only">{tricode(player.team_id)}</span>
                       </span>
                     </th>
@@ -370,6 +373,14 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
       <GatedNote why="Unplayed games are never results and never enter ratings or averages. CourtLens shows no series-winner projections or win probabilities.">
         Completed games only; no winner projections.
       </GatedNote>
+      {/* Site links SL05: the hub's Related row, from data this page already has. */}
+      <RelatedRow links={seriesRelated({
+        season: detail.season,
+        teams: [{ id: team1.team_id, name: team1.team_name }, { id: team2.team_id, name: team2.team_name }],
+        games: game_cards,
+        beforeDate: searchParams.get("beforeDate"),
+        releaseId: searchParams.get("releaseId"),
+      })} />
     </div>
   );
 }

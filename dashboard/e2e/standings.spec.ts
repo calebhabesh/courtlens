@@ -54,7 +54,7 @@ test("league and division groupings, sorting and seasons", async ({ page }) => {
   await expect(east.locator("tbody tr[data-line]")).toHaveCount(1);
   await expect(east.locator("tbody tr").nth(7)).toHaveAttribute("data-line", "true");
   // A team links to its page for that season.
-  await expect(east.getByRole("link", { name: "Milwaukee Bucks" })).toHaveAttribute("href", "/teams/MIL?season=2018-19");
+  await expect(east.getByRole("link", { name: "Milwaukee Bucks" })).toHaveAttribute("href", "/teams/1610612749?season=2018-19"); // Franchise id plus season (site links D6).
 });
 
 test("phone standings scroll inside their tables", async ({ page }) => {

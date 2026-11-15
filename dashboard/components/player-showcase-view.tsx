@@ -5,7 +5,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { executeWorkbenchQuery } from "@/lib/workbench-api";
 import { useReducedMotion, DURATIONS } from "@/lib/motion";
 import { formatDate } from "@/lib/format-date";
-import { buildPreservedContextUrl } from "@/lib/query-url";
 import { formatColumnValue } from "@/lib/stats-presets";
 import { teamBrandColor } from "@/lib/team-colors";
 import {
@@ -35,6 +34,7 @@ import { Icon } from "./ui/icon";
 import { Tooltip } from "./ui/tooltip";
 import { Button, ButtonLink, IconButton, Segmented, Select } from "./ui/kit";
 import { CompareTray, compareHref } from "./compare-tray";
+import { playerHref } from "@/lib/entity-links";
 
 export interface ShowcaseBoard {
   season: string;
@@ -339,7 +339,7 @@ export function PlayerShowcaseView({ catalog, state, board, previous, draftClass
         </ul>
       </Modal>
       <PlayerDialog key={open?.id ?? "closed"} player={open} catalog={catalog} season={shown.season} phase={board.phase} onClose={() => setOpen(null)}
-        onSeason={season => { setOpen(null); goSeason(season); }} searchParams={searchParams}
+        onSeason={season => { setOpen(null); goSeason(season); }}
         inCompare={open ? compared.has(open.id) : false}
         onCompare={openItem ? () => toggleCompare(openItem) : undefined} />
       {comparing && compareContext && (
@@ -514,9 +514,9 @@ function DialogPhoto({ player, season }: { player: { id: string; name: string; t
   );
 }
 
-function PlayerDialog({ player, catalog, season, phase, onClose, onSeason, searchParams, inCompare, onCompare }: {
+function PlayerDialog({ player, catalog, season, phase, onClose, onSeason, inCompare, onCompare }: {
   player: { id: string; name: string; team: string | null; position?: string | null } | null; catalog: WorkbenchCatalog; season: string; phase: string;
-  onClose: () => void; onSeason: (season: string) => void; searchParams: URLSearchParams;
+  onClose: () => void; onSeason: (season: string) => void;
   /** Add or remove the player from the compare selection; absent when the card is not on the board. */
   inCompare: boolean; onCompare?: () => void;
 }) {
@@ -533,7 +533,7 @@ function PlayerDialog({ player, catalog, season, phase, onClose, onSeason, searc
         <p className="sc-dialog-foot">
           {onCompare && <Button size="sm" icon="swap" pressed={inCompare} onClick={onCompare}>{inCompare ? `Remove from Compare` : `Add to Compare (${season})`}</Button>}
           <ButtonLink size="sm" variant="text" iconAfter="right"
-            href={buildPreservedContextUrl(`/players/${player.id}?season=${season}&phase=${careerPhase}`, searchParams)}>Open Player Dashboard</ButtonLink>
+            href={playerHref(player.id, { season, phase: careerPhase })} prefetch={false}>Open Player Dashboard</ButtonLink>
         </p>
       </>}
     </Modal>

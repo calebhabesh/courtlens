@@ -17,8 +17,11 @@ const bio: PlayerBio = {
 
 it("names the last indexed team when no active listing exists, even on an older season", () => {
   render(<PlayerBioHeader name="Fixture Guard" playerId="24" team={{ id: "1610612761", tricode: "TOR", name: "Toronto Raptors" }} bio={bio} currentSeason="2025-26" actions={null} />);
-  expect(screen.getByText("Last with Boston Celtics")).toBeTruthy();
-  expect(screen.queryByText("Last with Toronto Raptors")).toBeNull();
+  const identity = document.querySelector(".player-bio-identity-team");
+  expect(identity?.textContent).toBe("Last with Boston Celtics");
+  // Site links D11: the team links to its page in the season he last played for it.
+  expect(screen.getByRole("link", { name: "Boston Celtics" }).getAttribute("href")).toBe("/teams/1610612738?season=2026-27");
+  expect(screen.queryByText(/Toronto Raptors/)).toBeNull();
 });
 
 it("names an active listing without a last-team prefix", () => {
