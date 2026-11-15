@@ -1,0 +1,36 @@
+SP03 local traces, 2026-11-15 (production build of feat/site-improvements + SP03 on :3180, API :8180 with
+COURTLENS_READ_CACHE=true on the PC's data, release 71639af2..., warm-site complete for generation 57fde6a64b643829).
+Headless Chromium through Playwright. Ad-hoc probes; the scripts were not kept.
+
+1. What one intent prefetch sends (hover on a Stats row, /players/1629029?season=2026-27&from=stats)
+   Captured from the browser, then replayed twice each with the same headers, counting API cache hits+misses:
+
+   request                                             headers                                     bytes    time     API reads
+   /players/1629029?season=2026-27&from=stats&_rsc=..  rsc, next-router-prefetch, segment /_tree     341 B   2.0-2.8 ms   0
+   /players/1629029?season=2026-27&from=stats&_rsc=..  rsc (no prefetch header): the page render  288,309 B  8.8-11.3 ms  9 (all hits)
+   /players/1629029?_rsc=..                            rsc, next-router-prefetch, segment /_tree     315 B   1.8-1.9 ms   0
+
+   So a full prefetch costs the server one page render (the same request a click makes) plus one or two
+   route-tree lookups that read nothing. The header's /stats link sends one tree lookup and one render.
+
+2. Click after a prefetch: no RSC request and no document (fixture and real data alike). The click renders from
+   the router's copy. A page that was loaded as a document is kept by the router too: starting on /stats, a hover
+   on the header's Stats link sends nothing and the click after it sends nothing.
+
+3. Where the prefetched click still spends its time (long tasks via PerformanceObserver, ms from the click event)
+   player -> team (prefetched): URL and h1 at 119-147 ms; long tasks [37-50 ms start, 71-88 ms long], then
+     [129-162, 50-54]; the team page's roster board ("Loading minutes", role=status) waits for browser reads
+     after mount (/api/workbench/teams/<id>, catalog, eight 64 px portraits) and clears at 267-386 ms.
+   team -> Stats (prefetched): URL, h1 and content at 246 ms; long tasks [42, 190] and [265, 141]; no network.
+   Stats row -> player (prefetched): 66-74 ms (spec runs).
+   The floor of the two slow journeys is main-thread work rendering the destination from the cached payload
+   (Stats: about 190 ms in one task; team: about 70-90 ms) and, on the team page, reads the browser makes after
+   mount. Neither is a network wait, so prefetching cannot remove it.
+
+4. Skeleton reveal (fixture build, an injected <div role="status" aria-busy="true"> in main)
+   no-preference: animation "skeletonReveal 0.14s 0.12s backwards"; opacity 0 at 0 ms, 0 at 60 ms, 1 at 300 ms
+   reduce:        animation "skeletonReveal 0.14s 0.12s backwards"; opacity 0 at 0 ms, 0 at 60 ms, 1 at 300 ms
+
+5. next.config.ts: no change. router.prefetch(href, { kind: "full" }) entries live for staleTimes.static
+   (default 5 minutes; bundled next.config.js staleTimes reference: "The static property is used ... when calling
+   router.prefetch"). staleTimes.dynamic stays 0, so a click with no prefetch still fetches the page fresh.

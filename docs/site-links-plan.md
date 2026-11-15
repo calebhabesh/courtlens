@@ -80,6 +80,8 @@ The owner asked the agent to pick what is best for the site ("use your best judg
   panel that opens on click), exported images, and the subject in its own page header.
 - **No viewport prefetch.** Entity links pass `prefetch={false}` (precedent: `team-schedule.tsx`);
   a 30-row table must not send 30 requests to the shared VPS.
+  Revised by [speed plan](speed-plan.md) SP03 (2026-11-15): entity links prefetch on intent only
+  (pointer resting 80 ms, keyboard focus, touch start), never on entering the viewport.
 - **Tap targets.** At least 24 px tall in tables; 44 px for the team targets on Live cards at 390.
 - **Checks.** Targeted Vitest and the touched Playwright specs per block; the full Playwright suite
   once after SL04 and once before merge, because SL03 and SL04 change shared components.

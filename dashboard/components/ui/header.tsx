@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "../intent-link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { motion, AnimatePresence, popoverVariants } from "../../lib/motion";
@@ -274,13 +274,13 @@ export function Header() {
         <nav className="courtlens-nav" aria-label="Workspace Navigation">
           {DIRECT_LINKS.map(({ id, item }) => (
             <div key={id} className="courtlens-nav-item">
-              <Link
+              <IntentLink
                 href={item.href}
                 className={`courtlens-nav-link ${activeSection === id ? "active" : ""}`}
               >
                 {item.label}
                 {activeSection === id && indicator}
-              </Link>
+              </IntentLink>
             </div>
           ))}
 
@@ -328,7 +328,7 @@ export function Header() {
                             <span className="courtlens-dropdown-section-title">{group.title}</span>
                           )}
                           {group.items.map(item => (
-                            <Link
+                            <IntentLink
                               key={item.href}
                               href={item.href}
                               role="menuitem"
@@ -340,7 +340,7 @@ export function Header() {
                                 <span className="courtlens-dropdown-icon" aria-hidden="true"><Icon name={item.icon} size={20} /></span>
                                 <span className="courtlens-dropdown-text"><span>{item.label}</span>{item.description && <small>{item.description}</small>}</span>
                               </> : <span>{item.label}</span>}
-                            </Link>
+                            </IntentLink>
                           ))}
                         </div>
                         ));
@@ -427,7 +427,7 @@ export function Header() {
                 onKeyDown={handleDropdownKeyDown}
               >
                 {MORE_LINKS.map(item => (
-                  <Link
+                  <IntentLink
                     key={item.href}
                     href={item.href}
                     role="menuitem"
@@ -436,7 +436,7 @@ export function Header() {
                     onClick={() => setMoreMenuOpen(false)}
                   >
                     <span>{item.label}</span>
-                  </Link>
+                  </IntentLink>
                 ))}
 
                 <div className="courtlens-dropdown-divider" />
@@ -458,7 +458,7 @@ export function Header() {
                     {availabilitySubmenuOpen && (
                       <div className="availability-menu" role="menu">
                         {unavailableItems.map(item => (
-                          <Link
+                          <IntentLink
                             key={item.href}
                             href={item.href}
                             role="menuitem"
@@ -471,7 +471,7 @@ export function Header() {
                                 {availability(item.href).reason}
                               </small>
                             </span>
-                          </Link>
+                          </IntentLink>
                         ))}
                       </div>
                     )}
@@ -528,7 +528,7 @@ export function Header() {
 
           <div className="courtlens-mobile-direct-links">
             {DIRECT_LINKS.map(({ id, item }) => (
-              <Link
+              <IntentLink
                 key={id}
                 href={item.href}
                 aria-current={activeSection === id ? "page" : undefined}
@@ -536,7 +536,7 @@ export function Header() {
                 onClick={closeDrawer}
               >
                 {item.label}
-              </Link>
+              </IntentLink>
             ))}
           </div>
 
@@ -552,7 +552,7 @@ export function Header() {
                     <div key={group.title ?? index} className="courtlens-mobile-group">
                       {group.title && <span className="courtlens-mobile-group-title">{group.title}</span>}
                       {group.items.map(item => (
-                        <Link
+                        <IntentLink
                           key={item.href}
                           href={item.href}
                           aria-current={isCurrent(item.href) ? "page" : undefined}
@@ -560,7 +560,7 @@ export function Header() {
                           onClick={closeDrawer}
                         >
                           {item.icon ? <span className="courtlens-mobile-sublink-label"><Icon name={item.icon} size={16} />{item.label}</span> : item.label}
-                        </Link>
+                        </IntentLink>
                       ))}
                     </div>
                   ))}
@@ -573,7 +573,7 @@ export function Header() {
                 <div className="courtlens-mobile-section-links replica-mobile-section">
                   <span className="replica-dropdown-section-title sr-only">Availability</span>
                   {unavailableItems.map(item => (
-                    <Link
+                    <IntentLink
                       key={item.href}
                       href={item.href}
                       className="courtlens-mobile-sublink"
@@ -585,7 +585,7 @@ export function Header() {
                           {availability(item.href).reason}
                         </small>
                       </span>
-                    </Link>
+                    </IntentLink>
                   ))}
                 </div>
               </AccordionItem>
@@ -596,7 +596,7 @@ export function Header() {
 
           <div className="courtlens-mobile-direct-links">
             {MORE_LINKS.map(item => (
-              <Link
+              <IntentLink
                 key={item.href}
                 href={item.href}
                 aria-current={isCurrent(item.href) ? "page" : undefined}
@@ -604,7 +604,7 @@ export function Header() {
                 onClick={closeDrawer}
               >
                 {item.label}
-              </Link>
+              </IntentLink>
             ))}
             <button
               type="button"

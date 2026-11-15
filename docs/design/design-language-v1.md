@@ -282,6 +282,7 @@ both axes, e.g. pinned identity header cells; added 2026-10-08) · `--z-header: 
 | `--dur-base` | 200ms | Enters, popovers, tabs, crossfades |
 | `--dur-slow` | 320ms | Drawers, modals, page transitions, layout moves |
 | `--dur-chart` | 450ms | First chart draw only |
+| `--delay-skeleton` | 120ms | Wait before a loading skeleton shows (kept under reduced motion) |
 | `--ease-out` | `cubic-bezier(0.22, 1, 0.36, 1)` | Enters and most transitions |
 | `--ease-in` | `cubic-bezier(0.4, 0, 1, 1)` | Exits |
 | `--ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | Moves between two resting states |
@@ -321,7 +322,7 @@ Rules:
 | Tabs, segmented controls, nav active item | A sliding indicator (motion `layoutId` or a measured CSS transform) with the spring. Content crossfades over `--dur-base`. |
 | Page / route change | Root `template.tsx` enter: opacity plus `translateY(6px)` over `--dur-slow`. Use View Transitions (`experimental.viewTransition` in Next, React `<ViewTransition>`) only if DL02 confirms they're supported in the pinned Next/React versions. Otherwise only the template enter. The header never animates on navigation. |
 | Table sort, filter or column change | Rows ≤ 100: motion `layout` reorder over `--dur-slow`. More rows: crossfade the body over `--dur-base`. Columns added or removed: crossfade. The sort arrow rotates over `--dur-fast`. |
-| Loading | Skeletons in the final layout's shape (no layout shift), shimmer 1.2s linear. Skeletons crossfade into content over `--dur-base`. A spinner is used only inside buttons. |
+| Loading | Skeletons in the final layout's shape (no layout shift), shimmer 1.2s linear. A loading region (`role="status" aria-busy="true"`) stays transparent for `--delay-skeleton` (120 ms), then fades in over `--dur-fast`, so a faster response never shows a skeleton; reduced motion keeps the delay (it is a wait, not motion). Skeletons crossfade into content over `--dur-base`. A spinner is used only inside buttons. |
 | Charts | The first view draws in (line stroke-dash, bar `scaleY` from baseline) over `--dur-chart`. Data changes morph or crossfade over `--dur-base`, with no re-draw from zero. |
 | Accordion / expanding row | Grid-rows technique over `--dur-slow`. The chevron rotates over `--dur-fast`. |
 | Toast | Slides in from the bottom-right with the spring and auto-dismisses after 5s. Exit is opacity plus `translateY(8px)`. |
@@ -551,9 +552,16 @@ season it was shown in ([site links plan](../site-links-plan.md)).
   link opens the Sonics); a folded team keeps its code.
 - **Ids only.** A name links when its row carries the id; otherwise it is plain text. Names are
   never matched to ids by similarity. A link to the page it sits on renders as text.
-- **Real anchors, never nested.** Links are `next/link` anchors with `prefetch={false}` (no
-  viewport or hover prefetch). Inside a clickable card or row, the card's primary link is
-  `variant="stretched"` in a `.has-stretched-link` container; entity links sit above it.
+- **Real anchors, never nested.** Links are `next/link` anchors. Inside a clickable card or row,
+  the card's primary link is `variant="stretched"` in a `.has-stretched-link` container; entity
+  links sit above it.
+- **Prefetch on intent, never on entering the viewport** (speed plan SP03). Entity links, the
+  header navigation and the kit's `ButtonLink` and `IconButtonLink` render `IntentLink`
+  (`components/intent-link.tsx`, hook in `lib/intent-prefetch.ts`): the whole page is fetched when
+  a mouse or pen rests on the link for 80 ms, on keyboard focus, or on touch start, at most once
+  per href in five minutes. A pointer sweeping across rows fetches nothing, so a 30-row table never
+  sends 30 requests. Live pages (`/live/...`) are not prefetched: their data is real-time. A link
+  that must not prefetch at all passes `prefetch={false}`.
 - **These stay plain:** picker options, search suggestions, segmented controls, compare slots and
   tray chips, chart tooltips (link the legend or the click panel instead), exported images, and
   the subject in its own page header.

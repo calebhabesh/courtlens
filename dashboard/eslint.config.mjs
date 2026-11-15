@@ -33,7 +33,7 @@ const baseSyntaxRules = [
   { selector: `TemplateElement[value.raw=${GLYPH}]`, message: GLYPH_MESSAGE }
 ];
 // Site links (SL01): player, team, game and series hrefs come from lib/entity-links.ts, so ids,
-// scope and prefetch stay consistent. A literal that starts with one of these paths is a hand-built href.
+// scope and prefetch on intent (SP03, components/intent-link.tsx) stay consistent. A literal that starts with one of these paths is a hand-built href.
 const ENTITY_PATH = "/^\\/(players\\/|teams\\/|live\\/games\\/|live\\/open|playoffs\\/)/";
 const ENTITY_HREF_MESSAGE = "Build player, team, game and series hrefs with lib/entity-links.ts (or PlayerLink/TeamLink/GameLink/SeriesLink), never a literal path (site links plan).";
 const entityHrefRules = [

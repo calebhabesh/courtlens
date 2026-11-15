@@ -2,11 +2,12 @@
 
 // Site links (docs/site-links-plan.md, D1): every player, team, game and series name is a real
 // anchor through next/link, or plain text when the row has no id or the link would point at the
-// page it sits on, so call sites never branch. No viewport or hover prefetch: a table of names
-// must not send a request per row to the shared VPS.
-import Link from "next/link";
+// page it sits on, so call sites never branch. Prefetch on intent only (speed plan SP03, D4): the
+// page is fetched when the pointer rests on the link for 80 ms, on keyboard focus or on touch start,
+// never on entering the viewport, so a table of names does not send a request per row to the shared VPS.
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { IntentLink } from "@/components/intent-link";
 import { cx } from "@/components/ui/kit/recipes";
 import { gameHref, isSelfLink, playerHref, seriesHref, teamHref, type EntityScope, type GameRef } from "@/lib/entity-links";
 
@@ -37,9 +38,9 @@ export function EntityAnchor({ href, children, className, variant = "entity", la
     return <span className={className} title={title}>{children}</span>;
   }
   return (
-    <Link href={href} prefetch={false} className={cx(VARIANT_CLASS[variant], className)} aria-label={label} title={title}>
+    <IntentLink href={href} className={cx(VARIANT_CLASS[variant], className)} aria-label={label} title={title}>
       {children}
-    </Link>
+    </IntentLink>
   );
 }
 

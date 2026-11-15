@@ -33,6 +33,15 @@
   border-radius: var(--radius-pill);
 }
 
+/* A loading region (every loading.tsx root and in-page loader is role="status" aria-busy="true")
+   stays transparent for --delay-skeleton, then fades in, so a response faster than that never
+   shows a skeleton (speed plan SP03). Fill mode "backwards" holds opacity 0 through the delay and
+   leaves nothing behind. Opacity only, over --dur-fast, which reduced motion keeps (DL Motion);
+   the delay is a wait rather than motion, so it stays under reduced motion too. */
+[role="status"][aria-busy="true"] {
+  animation: skeletonReveal var(--dur-fast) var(--ease-out) var(--delay-skeleton) backwards;
+}
+
 /* ---------- Content-shaped parts (content-skeletons.tsx) ---------- */
 
 /* A text line: a box of the real line height holding a bar of the font's cap height. */

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { IntentLink } from "../../intent-link";
 import { forwardRef, type AnchorHTMLAttributes, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
 import { Icon, type IconName } from "../icon";
 import { controlClasses, cx, disclosureIconClasses, disclosureOpenClasses, kitIconSize, trailingChevronClasses, type KitIdentity, type KitSize, type KitTone, type KitVariant } from "./recipes";
@@ -65,19 +65,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
 export interface ButtonLinkProps extends ControlLookProps, Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "className" | "href"> {
   href: string;
-  /** Next `Link` prefetch; entity links pass false (site links plan). */
-  prefetch?: boolean;
+  /** The page is prefetched on intent (speed plan SP03); `false` turns even that off. */
+  prefetch?: false;
   /** Current route or section: sets `aria-current` and the selected look. */
   current?: boolean;
 }
 
-/** A link with button geometry (Next `Link`, so client navigation and prefetch still apply). */
+/** A link with button geometry (Next `Link`: client navigation, prefetch on intent, never on entering the viewport). */
 export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(function ButtonLink(
   { size = "md", variant = "secondary", tone, icon, iconAfter, dense, current, className, href, children, ...props },
   ref,
 ) {
   return (
-    <Link
+    <IntentLink
       ref={ref}
       href={href}
       aria-current={current ? "page" : undefined}
@@ -86,7 +86,7 @@ export const ButtonLink = forwardRef<HTMLAnchorElement, ButtonLinkProps>(functio
       {...props}
     >
       <Content size={size} icon={icon} iconAfter={iconAfter}>{children}</Content>
-    </Link>
+    </IntentLink>
   );
 });
 
@@ -158,7 +158,7 @@ export const IconButtonLink = forwardRef<HTMLAnchorElement, IconButtonLinkProps>
   ref,
 ) {
   return (
-    <Link
+    <IntentLink
       ref={ref}
       href={href}
       aria-label={label}
@@ -169,6 +169,6 @@ export const IconButtonLink = forwardRef<HTMLAnchorElement, IconButtonLinkProps>
       {...props}
     >
       <Icon name={icon} size={kitIconSize[size]} />
-    </Link>
+    </IntentLink>
   );
 });
