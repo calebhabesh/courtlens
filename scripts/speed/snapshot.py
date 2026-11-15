@@ -36,6 +36,9 @@ from typing import Any
 
 HERE = Path(__file__).resolve().parent
 USER_AGENT = "courtlens-speed-snapshot/1"
+# Floats rounded to this many significant digits give a second hash, for reads whose last digits
+# move between runs (the team six-factor sums; owner, G1 2026-11-15).
+DIGITS = 12
 PLACEHOLDER = re.compile(r"\{(releaseId|season|beforeDate)\}")
 
 
@@ -51,8 +54,20 @@ def fill(value: Any, pins: dict[str, str]) -> Any:
     return value
 
 
-def canonical(payload: bytes) -> bytes:
+def rounded(value: Any, digits: int) -> Any:
+    if isinstance(value, float):
+        return float(f"{value:.{digits}g}")
+    if isinstance(value, list):
+        return [rounded(item, digits) for item in value]
+    if isinstance(value, dict):
+        return {key: rounded(item, digits) for key, item in value.items()}
+    return value
+
+
+def canonical(payload: bytes, digits: int | None = None) -> bytes:
     document = json.loads(payload)
+    if digits is not None:
+        document = rounded(document, digits)
     return json.dumps(document, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
 
 
@@ -103,10 +118,13 @@ def take(
         started = time.perf_counter()
         status, payload = request(api, entry["method"], path, body, timeout)
         elapsed = time.perf_counter() - started
+        canonical_sha: str | None = None
+        digits_sha: str | None = None
         try:
             canonical_sha = hashlib.sha256(canonical(payload)).hexdigest()
+            digits_sha = hashlib.sha256(canonical(payload, DIGITS)).hexdigest()
         except ValueError:
-            canonical_sha = None
+            pass
         reads.append(
             {
                 "name": entry["name"],
@@ -118,6 +136,7 @@ def take(
                 "status": status,
                 "bytes": len(payload),
                 "canonical_sha256": canonical_sha,
+                f"canonical{DIGITS}_sha256": digits_sha,
                 "raw_sha256": hashlib.sha256(payload).hexdigest(),
                 "seconds": round(elapsed, 4),
             }
@@ -138,23 +157,35 @@ def current_pins(api: str, args: argparse.Namespace) -> dict[str, str]:
     }
 
 
-def compare(saved: dict[str, Any], fresh: list[dict[str, Any]], strict_bytes: bool) -> list[str]:
+def compare(
+    saved: dict[str, Any], fresh: list[dict[str, Any]], strict_bytes: bool, digits_only: set[str]
+) -> tuple[list[str], list[str]]:
+    """Differences, and reads that differ only beyond DIGITS significant digits (allowed)."""
     before = {read["name"]: read for read in saved["reads"]}
-    differences = []
+    differences: list[str] = []
+    within_digits: list[str] = []
+    digits_field = f"canonical{DIGITS}_sha256"
     for read in fresh:
         old = before.pop(read["name"], None)
         if old is None:
             differences.append(f"{read['name']}: not in the saved snapshot")
             continue
-        for field in ("path", "body_sha256", "status", "canonical_sha256"):
+        for field in ("path", "body_sha256", "status"):
             if old[field] != read[field]:
                 differences.append(f"{read['name']}: {field} {old[field]} -> {read[field]}")
+        if old["canonical_sha256"] != read["canonical_sha256"]:
+            same_at_digits = digits_field in old and old[digits_field] == read[digits_field]
+            if same_at_digits and read["name"] in digits_only:
+                within_digits.append(read["name"])
+            else:
+                note = f" (equal at {DIGITS} digits)" if same_at_digits else ""
+                differences.append(f"{read['name']}: canonical body differs{note}")
         if strict_bytes and old["raw_sha256"] != read["raw_sha256"]:
             differences.append(
                 f"{read['name']}: raw bytes differ ({old['bytes']} -> {read['bytes']})"
             )
     differences += [f"{name}: missing from this run" for name in before]
-    return differences
+    return differences, within_digits
 
 
 def main() -> int:
@@ -169,6 +200,13 @@ def main() -> int:
     parser.add_argument("--season")
     parser.add_argument("--before-date")
     parser.add_argument("--timeout", type=float, default=120)
+    parser.add_argument(
+        "--digits-only",
+        default="workbench-teams-six-factors,workbench-teams-six-factors-away,"
+        "workbench-teams-six-factors-home",
+        help=f"comma-separated reads compared at {DIGITS} significant digits (default: the "
+        "three team six-factor reads, whose float sums jitter in the last digits)",
+    )
     args = parser.parse_args()
 
     api = args.api.rstrip("/")
@@ -179,8 +217,11 @@ def main() -> int:
         saved = json.loads(args.compare.read_text())
         pins = saved["pins"]
         fresh = take(api, entries, pins, args.timeout)
-        differences = compare(saved, fresh, args.bytes)
+        digits_only = {name for name in args.digits_only.split(",") if name}
+        differences, within_digits = compare(saved, fresh, args.bytes, digits_only)
         print(f"pins {json.dumps(pins)}; {len(fresh)} reads; {len(unpinned)} without a release pin")
+        for name in within_digits:
+            print(f"  {name}: equal at {DIGITS} significant digits (last digits differ)")
         if differences:
             print(f"{len(differences)} difference(s):")
             for line in differences:

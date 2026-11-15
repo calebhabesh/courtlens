@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { assertCurrentEnvironment } from "./server-env";
 
 assertCurrentEnvironment();
@@ -119,9 +120,10 @@ async function request<T>(
 // Root Workspace Operations
 // ---------------------------------------------------------------------------
 
-export async function getWorkspace(workspaceId = "default"): Promise<PersonalWorkspaceState> {
+/** One read per server render (speed plan SP04: a page can start it early); in the browser, every call reads. */
+export const getWorkspace = cache(async (workspaceId = "default"): Promise<PersonalWorkspaceState> => {
   return request<PersonalWorkspaceState>("", { method: "GET", workspaceId });
-}
+});
 
 export async function saveWorkspace(
   state: PersonalWorkspaceState,

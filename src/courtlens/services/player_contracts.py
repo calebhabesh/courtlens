@@ -2,17 +2,51 @@
 
 from __future__ import annotations
 
+from collections import OrderedDict
 from decimal import Decimal
+from threading import Lock
 from typing import Any
 
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
+from courtlens.domain.finance import FinanceRow
 from courtlens.domain.teams import get_team_info
 from courtlens.finance_context_models import FinanceRefresh
 from courtlens.finance_models import FinanceSource
 from courtlens.services.finance_import import release_rows
 from courtlens.services.stats_feed_views import _mart, _rows
+
+# Finance books are append-only and a release's members are written in its one admission
+# transaction, so a book's rows never change once its id is visible. Parsing one validated about
+# 4,000 rows on every player page (about 0.15 s); keep the few latest books, grouped by player.
+BOOK_MEMO_SIZE = 4
+_books: OrderedDict[str, dict[str, tuple[FinanceRow, ...]]] = OrderedDict()
+_books_lock = Lock()
+
+
+def book_rows(session: Session, release_id: str) -> dict[str, tuple[FinanceRow, ...]]:
+    """A finance book's parsed rows by NBA player id, memoised by its immutable release id."""
+    with _books_lock:
+        found = _books.get(release_id)
+        if found is not None:
+            _books.move_to_end(release_id)
+            return found
+    grouped: dict[str, list[FinanceRow]] = {}
+    for _, row in release_rows(session, release_id):
+        grouped.setdefault(row.nba_player_id, []).append(row)
+    rows = {player: tuple(entries) for player, entries in grouped.items()}
+    with _books_lock:
+        _books[release_id] = rows
+        _books.move_to_end(release_id)
+        while len(_books) > BOOK_MEMO_SIZE:
+            _books.popitem(last=False)
+    return rows
+
+
+def clear_book_memo() -> None:
+    with _books_lock:
+        _books.clear()
 
 
 def enrich_contracts(session: Session, player_id: str, reference: dict[str, Any]) -> None:
@@ -55,7 +89,7 @@ def _guarantees(session: Session, player_id: str, reference: dict[str, Any]) -> 
     )
     if refresh is None or refresh.book_id is None:
         return
-    book = [r for _, r in release_rows(session, refresh.book_id) if r.nba_player_id == player_id]
+    book = list(book_rows(session, refresh.book_id).get(player_id, ()))
     # A changed salary schedule or a later contract event invalidates the old guarantee scope.
     # Totals are never divided into annual guarantees.
     last_event = max(

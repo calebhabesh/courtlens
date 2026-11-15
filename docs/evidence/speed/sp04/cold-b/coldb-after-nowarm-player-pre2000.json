@@ -1,0 +1,259 @@
+{
+  "tool": "scripts/speed/capture_reads.py",
+  "captured_at": "2026-11-15T08:14:06+00:00",
+  "pages": [
+    {
+      "name": "player-pre2000",
+      "path": "/players/1449",
+      "status": 200,
+      "bytes": 738546,
+      "seconds": 2.623,
+      "reads": [
+        {
+          "method": "GET",
+          "path": "/api/workbench/metrics?version=courtlens-stats-v4",
+          "status": 200,
+          "start": 0.0177,
+          "end": 0.022,
+          "seconds": 0.0042,
+          "server_timing": "total;dur=2.2, db;dur=0.0, queries;desc=\"0\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/catalog",
+          "status": 200,
+          "start": 0.0176,
+          "end": 2.1229,
+          "seconds": 2.1053,
+          "server_timing": "total;dur=2104.2, db;dur=256.1, queries;desc=\"9\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season&playerId=1449",
+          "status": 200,
+          "start": 2.1266,
+          "end": 2.1453,
+          "seconds": 0.0187,
+          "server_timing": "total;dur=15.5, db;dur=2.3, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/games?season=2026-27&phase=regular_season&beforeDate=2026-11-13&limit=50",
+          "status": 200,
+          "start": 2.1263,
+          "end": 2.2016,
+          "seconds": 0.0754,
+          "server_timing": "total;dur=71.6, db;dur=49.2, queries;desc=\"6\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449?season=2026-27&phase=regular_season&beforeDate=2026-11-13&window=season",
+          "status": 200,
+          "start": 2.126,
+          "end": 2.2284,
+          "seconds": 0.1023,
+          "server_timing": "total;dur=98.6, db;dur=66.2, queries;desc=\"11\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/bio?season=2026-27&beforeDate=2026-11-13",
+          "status": 200,
+          "start": 2.127,
+          "end": 2.3282,
+          "seconds": 0.2012,
+          "server_timing": "total;dur=196.6, db;dur=63.2, queries;desc=\"16\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 2.1273,
+          "end": 2.4189,
+          "seconds": 0.2916,
+          "server_timing": "total;dur=287.3, db;dur=186.7, queries;desc=\"9\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-11-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "columns": [
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "ts_pct",
+                  "dpm",
+                  "min_per_game"
+                ]
+              },
+              "page": {
+                "limit": 1
+              },
+              "predicates": null,
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "player_ids": [
+                "1449"
+              ]
+            }
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/career?phase=regular_season&releaseId=71639af2-d8b7-4ce7-99a9-3194b1869853",
+          "status": 200,
+          "start": 2.1246,
+          "end": 2.4532,
+          "seconds": 0.3286,
+          "server_timing": "total;dur=327.7, db;dur=255.6, queries;desc=\"15\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season&playerId=1449",
+          "status": 200,
+          "start": 2.4548,
+          "end": 2.4638,
+          "seconds": 0.009,
+          "server_timing": "total;dur=7.3, db;dur=2.4, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1990-91&phase=regular_season&beforeDate=1991-04-22&playerId=1449&window=season",
+          "status": 200,
+          "start": 2.465,
+          "end": 2.4719,
+          "seconds": 0.0069,
+          "server_timing": "total;dur=5.7, db;dur=2.1, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1989-90&phase=regular_season&beforeDate=1990-04-23&playerId=1449&window=season",
+          "status": 200,
+          "start": 2.4671,
+          "end": 2.4938,
+          "seconds": 0.0267,
+          "server_timing": "total;dur=25.5, db;dur=1.3, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/impact?season=1988-89&phase=regular_season&beforeDate=1989-04-24&playerId=1449&window=season",
+          "status": 200,
+          "start": 2.4662,
+          "end": 2.4945,
+          "seconds": 0.0283,
+          "server_timing": "total;dur=27.0, db;dur=1.9, queries;desc=\"1\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449?season=1991-92&phase=regular_season&beforeDate=1992-04-20&window=season",
+          "status": 200,
+          "start": 2.4545,
+          "end": 2.5673,
+          "seconds": 0.1128,
+          "server_timing": "total;dur=111.4, db;dur=40.9, queries;desc=\"9\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/games?season=1991-92&phase=regular_season&beforeDate=1992-04-20&limit=50",
+          "status": 200,
+          "start": 2.4546,
+          "end": 2.5684,
+          "seconds": 0.1137,
+          "server_timing": "total;dur=113.0, db;dur=48.0, queries;desc=\"7\""
+        },
+        {
+          "method": "GET",
+          "path": "/api/workbench/players/1449/bio?season=1991-92&beforeDate=1992-04-20",
+          "status": 200,
+          "start": 2.4552,
+          "end": 2.5786,
+          "seconds": 0.1234,
+          "server_timing": "total;dur=122.0, db;dur=97.9, queries;desc=\"15\""
+        },
+        {
+          "method": "POST",
+          "path": "/api/workbench/query",
+          "status": 200,
+          "start": 2.4553,
+          "end": 2.6001,
+          "seconds": 0.1449,
+          "server_timing": "total;dur=143.8, db;dur=70.8, queries;desc=\"11\"",
+          "body": {
+            "query": {
+              "release_id": "71639af2-d8b7-4ce7-99a9-3194b1869853",
+              "season": "1991-92",
+              "phase": "regular_season",
+              "before_date": "1992-04-20",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season"
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true
+              },
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc"
+                }
+              ],
+              "view_state": {
+                "columns": [
+                  "pts_per_game",
+                  "reb_per_game",
+                  "ast_per_game",
+                  "ts_pct",
+                  "dpm",
+                  "min_per_game"
+                ]
+              },
+              "page": {
+                "limit": 1
+              },
+              "predicates": null,
+              "darko_manifest_sha256": "181a08f5dbb6d59c36e6a617b3e8088b1289fc7d903498be4936f7050412995d"
+            },
+            "presentation": {
+              "player_ids": [
+                "1449"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import logging
 import uuid
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from courtlens import __version__
-from courtlens.api import read_cache
+from courtlens.api import read_cache, warm_start
 from courtlens.api.assistant_limits import AssistantRequestLimit
 from courtlens.api.metrics import metrics_response, observe_request
 from courtlens.api.routers import (
@@ -49,7 +51,17 @@ def create_app() -> FastAPI:
         level=getattr(logging, settings.log_level.upper(), logging.INFO),
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
+
+    @asynccontextmanager
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        if settings.warm_start:
+            from courtlens.database import SessionLocal
+
+            warm_start.start(app.state, SessionLocal)
+        yield
+
     application = FastAPI(
+        lifespan=lifespan,
         title="CourtLens API",
         version=__version__,
         description=(

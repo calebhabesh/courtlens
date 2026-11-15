@@ -33,10 +33,12 @@ class Recorder:
     def __init__(self) -> None:
         self.lock = threading.Lock()
         self.reads: list[dict[str, Any]] = []
+        self.page_started = time.perf_counter()
 
     def take(self) -> list[dict[str, Any]]:
         with self.lock:
             reads, self.reads = self.reads, []
+            self.page_started = time.perf_counter()
         return reads
 
 
@@ -64,6 +66,9 @@ def make_handler(upstream: str, recorder: Recorder) -> type[BaseHTTPRequestHandl
                 "method": self.command,
                 "path": self.path,
                 "status": status,
+                # When the read started and ended, from the page request (SP04: the waves).
+                "start": round(started - recorder.page_started, 4),
+                "end": round(time.perf_counter() - recorder.page_started, 4),
                 "seconds": round(time.perf_counter() - started, 4),
                 "server_timing": reply.get("Server-Timing"),
             }
@@ -96,6 +101,7 @@ def main() -> int:
     parser.add_argument("--dashboard", required=True, help="dashboard origin")
     parser.add_argument("--urls", type=Path, default=HERE / "urls.json")
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--only", help="comma-separated page names")
     args = parser.parse_args()
 
     recorder = Recorder()
@@ -103,10 +109,12 @@ def main() -> int:
     threading.Thread(target=server.serve_forever, daemon=True).start()
 
     pages = json.loads(args.urls.read_text())["pages"]
+    if args.only:
+        pages = [page for page in pages if page["name"] in set(args.only.split(","))]
     result: list[dict[str, Any]] = []
     for page in pages:
         recorder.take()
-        started = time.perf_counter()
+        started = recorder.page_started
         with urllib.request.urlopen(args.dashboard + page["path"], timeout=120) as response:
             status, size = response.status, len(response.read())
         time.sleep(0.5)  # late reads still in flight when the stream closes

@@ -1,0 +1,54 @@
+label=before-fresh cache=true pid=1229310 start_s= rss_kb=256340
+label=warmup cache=true pid=1231833 start_s=1.53 rss_kb=255888
+label=before-fresh-player-star cache=true pid=1232454 start_s=1.54 rss_kb=256400
+label=before-fresh-player-rookie cache=true pid=1232835 start_s=1.53 rss_kb=255876
+label=before-fresh-player-pre2000 cache=true pid=1233123 start_s=1.53 rss_kb=256492
+label=before-fresh-team-lal cache=true pid=1233384 start_s=1.61 rss_kb=256284
+label=before-fresh-team-bos cache=true pid=1233687 start_s=1.53 rss_kb=256520
+label=before-fresh-compare cache=true pid=1234044 start_s=1.53 rss_kb=255916
+label=before-fresh-stats cache=true pid=1234231 start_s=1.55 rss_kb=256332
+label=before-fresh-players cache=true pid=1234582 start_s=1.54 rss_kb=256140
+label=before-a cache=true pid=1240881 start_s=1.59 rss_kb=256152
+label=api-fixes cache=false pid=1255091 start_s=1.57 rss_kb=252220
+label=text-after cache=false pid=1312822 start_s=1.59 rss_kb=252340
+label=after-a cache=true pid=1317494 start_s=1.53 rss_kb=256424
+label=before-idle cache=true pid=1333546 start_s=1.46 rss_kb=256548
+label=after-nowarm-fresh-player-star cache=true pid=1338807 start_s=1.55 rss_kb=256468
+label=after-nowarm-fresh-player-rookie cache=true pid=1339793 start_s=1.6 rss_kb=256120
+label=after-nowarm-fresh-player-pre2000 cache=true pid=1340128 start_s=1.66 rss_kb=256632
+label=after-nowarm-fresh-team-lal cache=true pid=1341107 start_s=1.54 rss_kb=256536
+label=after-nowarm-fresh-compare cache=true pid=1341389 start_s=1.59 rss_kb=256560
+label=after2 cache=false pid=1344132 start_s=1.59 rss_kb=252000
+label=after-a2 cache=true pid=1350220 start_s=1.64 rss_kb=256620
+label=after-nowarm-fresh-player-star cache=true pid=1365541 start_s=1.71 rss_kb=256344
+label=after-nowarm-fresh-player-rookie cache=true pid=1365973 start_s=1.67 rss_kb=256388
+label=after-nowarm-fresh-player-pre2000 cache=true pid=1366207 start_s=1.61 rss_kb=256148
+label=after-nowarm-fresh-team-lal cache=true pid=1366508 start_s=1.62 rss_kb=256132
+label=after-nowarm-fresh-compare cache=true pid=1366982 start_s=1.55 rss_kb=256612
+label=after-warm-immediate-fresh-player-star cache=true pid=1367487 start_s=1.61 rss_kb=261256
+label=after-warm-immediate-fresh-team-lal cache=true pid=1367742 start_s=1.62 rss_kb=261320
+label=after-warmed-fresh-player-star cache=true pid=1368163 start_s=1.65 rss_kb=261676
+label=after-warmed-warmed-player-star warm={"state":"done","steps":{"catalog":{"seconds":2.352},"source_facts":{"seconds":0.126},"finance_book":{"seconds":0.097}},"seconds":2.575} rss_kb=942600
+label=after-warmed-fresh-player-rookie cache=true pid=1368605 start_s=1.57 rss_kb=261328
+label=after-warmed-warmed-player-rookie warm={"state":"done","steps":{"catalog":{"seconds":2.256},"source_facts":{"seconds":0.123},"finance_book":{"seconds":0.097}},"seconds":2.476} rss_kb=942272
+label=after-warmed-fresh-player-pre2000 cache=true pid=1369013 start_s=1.7 rss_kb=261488
+label=after-warmed-warmed-player-pre2000 warm={"state":"done","steps":{"catalog":{"seconds":2.246},"source_facts":{"seconds":0.126},"finance_book":{"seconds":0.095}},"seconds":2.467} rss_kb=939392
+label=after-warmed-fresh-team-lal cache=true pid=1369369 start_s=1.57 rss_kb=261516
+label=after-warmed-warmed-team-lal warm={"state":"done","steps":{"catalog":{"seconds":2.305},"source_facts":{"seconds":0.122},"finance_book":{"seconds":0.094}},"seconds":2.521} rss_kb=942468
+label=after-warmed-fresh-compare cache=true pid=1369732 start_s=1.56 rss_kb=261520
+label=after-warmed-warmed-compare warm={"state":"done","steps":{"catalog":{"seconds":2.235},"source_facts":{"seconds":0.124},"finance_book":{"seconds":0.101}},"seconds":2.46} rss_kb=943480
+label=rss-before cache=true pid=1370782 start_s=1.59 rss_kb=256372
+label=rss-after-nowarm cache=true pid=1371887 start_s=1.7 rss_kb=256288
+label=rss-after-warm cache=true pid=1372699 start_s=1.57 rss_kb=261288
+label=warm-before cache=true pid=1373313 start_s=1.59 rss_kb=256632
+label=warm-after cache=true pid=1375356 start_s=1.61 rss_kb=261332
+label=w-before cache=true pid=1377957 start_s=1.53 rss_kb=256036
+label=w-after cache=true pid=1380103 start_s=1.57 rss_kb=261708
+label=w-after2 cache=true pid=1382041 start_s=1.74 rss_kb=261592
+label=w-before2 cache=true pid=1382716 start_s=1.53 rss_kb=256312
+label=nav-before cache=true pid=1516275 start_s=2.14 rss_kb=254300
+label=nav-after cache=true pid=1518747 start_s=1.88 rss_kb=261028
+label=final-off cache=false pid=1528707 start_s=1.5 rss_kb=251948
+label=head-away cache=false pid=1531027 start_s=1.51 rss_kb=251700
+label=final-off2 cache=false pid=1532812 start_s=1.56 rss_kb=251896
+label=final-on cache=true pid=1534958 start_s=1.58 rss_kb=260908

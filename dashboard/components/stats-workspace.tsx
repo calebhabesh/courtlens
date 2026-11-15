@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { cache, type ReactNode } from "react";
 import { GatedNote } from "./ui/gated-note";
 import { ButtonLink } from "./ui/kit";
 import { PageHeader } from "./ui/panel";
@@ -26,27 +26,34 @@ import { SESSION_COOKIE, serverFavoriteIds, validSession } from "@/lib/account-s
 import { SignInPrompt } from "./account/sign-in-prompt";
 import { ControlScope } from "./ui/control-scope";
 
-export async function StatsWorkspace({ params: rawParams, basePath = "/stats", team }: {
-  params: Record<string, string | string[] | undefined>;
-  basePath?: string;
-  /** A team profile's roster (alignment row 4): the table fixed to one team under that page's header. */
-  team?: { id: string; header: ReactNode };
-}) {
+type RawParams = Record<string, string | string[] | undefined>;
+
+/**
+ * Everything the Stats table reads, once per server render (speed plan SP04). A team page starts
+ * it beside its own reads (`preloadStatsWorkspace`) and `StatsWorkspace` then reuses the same
+ * promise, so the table's query no longer waits for the page's six team reads. Arguments are
+ * primitives because `cache` matches them by identity.
+ */
+const loadStatsWorkspace = cache(async (paramsJson: string, basePath: string, teamId: string | null) => {
+  const rawParams = JSON.parse(paramsJson) as RawParams;
   const params = Object.fromEntries(Object.entries(rawParams).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value]));
   // The team filter is the page's own, not a URL value, so it never lands in canonical links.
-  const queryParams = team ? { ...params, teamId: team.id, team_id: undefined } : params;
+  const queryParams = teamId ? { ...params, teamId, team_id: undefined } : params;
+  // Draft classes and header hints need nothing from the catalog: they start with it, and either
+  // failing only hides the Draft Class menu or the header hover text.
+  const extras = Promise.allSettled([getDraftClasses(), getMetricCatalog()]);
+  // A link pinned to a release also reads the latest catalog, to say when it is not the latest.
+  const pinnedRelease = String(params.releaseId || params.release_id || "");
+  const latestRequest = pinnedRelease ? getWorkbenchCatalog().catch(() => null) : null;
   // Independent reads run together; every sort or filter re-renders this page.
   const [catalogResult, workspaceResult] = await Promise.allSettled([
     getWorkbenchCatalog(String(params.releaseId || params.release_id || "") || undefined),
     getWorkspace()
   ]);
-  if (catalogResult.status === "rejected") {
-    return <div className="workbench-content"><GatedNote tone="warning">Stats catalog unavailable. Try again.</GatedNote></div>;
-  }
+  if (catalogResult.status === "rejected") return null;
   const catalog: WorkbenchCatalog = catalogResult.value;
   // A link pinned to a retired release keeps working, but says so and offers the current data.
-  const pinnedRelease = String(params.releaseId || params.release_id || "");
-  const latest = pinnedRelease ? await getWorkbenchCatalog().catch(() => null) : null;
+  const latest = await latestRequest;
   const staleRelease = latest && latest.release_id !== catalog.release_id ? latest : null;
   const latestHref = staleRelease ? `${basePath}?${new URLSearchParams(Object.entries(params).filter(
     (entry): entry is [string, string] => typeof entry[1] === "string" && !["releaseId", "release_id", "darkoManifest", "darko_manifest_sha256", "impactManifest", "impact_manifest_sha256", "cursor", "beforeDate", "before_date"].includes(entry[0])
@@ -97,10 +104,6 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   const positions = String(params.positions ?? "").split(",").filter((value): value is EstimatedPosition => ESTIMATED_POSITIONS.includes(value as EstimatedPosition));
   const draftYear = Number(params.draftYear) || null;
   const positionSeasons = querySpec.season_scope?.seasons ?? (querySpec.season ? [querySpec.season] : []);
-  const positionChips = <StatsPositionChips status={positionChipStatus(catalog.position_estimates, positionSeasons)} seasons={positionSeasons} />;
-  // Draft classes and header hints load beside the table query; either failing only hides
-  // the Draft Class menu or the header hover text.
-  const extras = Promise.allSettled([getDraftClasses(), getMetricCatalog()]);
 
   let researchData: PlayerResearchResponse | null = null;
   let loadError: string | null = null;
@@ -134,6 +137,28 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   const [classes, metrics] = await extras;
   if (classes.status === "fulfilled") draftClasses = classes.value.classes;
   if (metrics.status === "fulfilled") hints = metricHints(metrics.value.metrics);
+  return { params, catalog, staleRelease, latestHref, favoritesSignedOut, countingMode, querySpec, researchQuery,
+    canonicalHref, draftYear, positionSeasons, researchData, loadError, draftClasses, hints };
+});
+
+/** Start the Stats table's reads now; the `StatsWorkspace` rendered later with the same props reuses them. */
+export function preloadStatsWorkspace(params: RawParams, basePath = "/stats", teamId: string | null = null) {
+  void loadStatsWorkspace(JSON.stringify(params), basePath, teamId).catch(() => undefined);
+}
+
+export async function StatsWorkspace({ params: rawParams, basePath = "/stats", team }: {
+  params: RawParams;
+  basePath?: string;
+  /** A team profile's roster (alignment row 4): the table fixed to one team under that page's header. */
+  team?: { id: string; header: ReactNode };
+}) {
+  const data = await loadStatsWorkspace(JSON.stringify(rawParams), basePath, team?.id ?? null);
+  if (!data) {
+    return <div className="workbench-content"><GatedNote tone="warning">Stats catalog unavailable. Try again.</GatedNote></div>;
+  }
+  const { params, catalog, staleRelease, latestHref, favoritesSignedOut, countingMode, querySpec, researchQuery,
+    canonicalHref, draftYear, positionSeasons, researchData, loadError, draftClasses, hints } = data;
+  const positionChips = <StatsPositionChips status={positionChipStatus(catalog.position_estimates, positionSeasons)} seasons={positionSeasons} />;
 
   return (
     <ControlScope tone="console">

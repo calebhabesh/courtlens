@@ -196,6 +196,9 @@ services:
       <<: *api-environment
       # Speed plan SP01: in-memory read cache, at most 128 MiB (COURTLENS_READ_CACHE_MAX_BYTES).
       COURTLENS_READ_CACHE: "true"
+      # Speed plan SP04: load the catalog's bundles, tracking fingerprint and finance book as the
+      # API starts, in the background, so the first visitor after a deploy does not wait for them.
+      COURTLENS_WARM_START: "true"
     volumes:
       - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
       - ./data/derived/impact-serving-v1:/app/data/derived/impact-serving-v1:ro

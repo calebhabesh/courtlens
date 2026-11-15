@@ -812,3 +812,328 @@ remains the high mark. The before run was not sampled, so this is not a before/a
 - Full Playwright and pytest suites not run (plan: at G1). Not deployed; nothing ran against the live
   site. `data/derived/job-health/` (written by `warm-site`) was deleted, and the servers and scratch
   workspace were removed.
+
+## 2026-11-15 — SP04 built: cold path (page waves and slow reads)
+
+The owner's G1 decisions are recorded under "Decided (owner, G1, 2026-11-15)" in the plan.
+
+### Local stack and what "cold" means here
+
+Same recipe as SP00–SP03: production build (Turbopack) on :3180, the API on :8180 on the PC's
+database copy (release `71639af2…`, scope 2026-27 before 2026-11-13). "Before" is a build of
+`HEAD` (24e5a998) with its API run from a worktree of `HEAD` on the same data. "After" is this
+block. Server reads were captured through `capture_reads.py`'s recording proxy, which now records
+each read's start and end from the page request.
+
+- **Cold (a)**: `courtlens bump-data-stamp` on a running API (cache on). The cache is empty and
+  the memos are warm, as after a job. Each run: bump, wait for the generation to move, then load
+  the page once with curl (HTML complete). Five runs per page.
+- **Cold (a), idle**: the same, after 32 s with no request, so the 30 s source-facts memo has
+  expired. This is what a visitor meets after a quiet spell.
+- **Cold (b)**: a fresh API process per page (as after a deploy), with the dashboard warmed.
+
+### Dependency maps (server reads, `waves-before.txt`, `waves-after.txt`)
+
+Before:
+
+| Page | Read | Waits for | Why |
+| --- | --- | --- | --- |
+| Player | catalog | — | release, default scope |
+| | career | catalog | needs the release id; without a season in the link, the season depends on it |
+| | profile, game log | career | season (true only for the fallback) |
+| | impact, hero query, bio, metric catalog | profile, game log | written after them; none uses their answer |
+| | impact fallbacks (up to 3) | each other | read one after another |
+| Team | catalog | — | |
+| | detail, schedule, peers, three six-factor reads | catalog | scope |
+| | Stats table: catalog again, workspace | the six team reads | `StatsWorkspace` renders after the page's awaits; `wbFetch`'s timeout signal opts out of Next's fetch memoization, so the catalog is read twice |
+| | draft classes, metric catalog, table query | workspace, catalog | query needs workspace preferences; the other two need nothing |
+| Compare | analytics catalog | — | |
+| | workbench catalog | analytics catalog | written after it; independent |
+| | comparison | workbench catalog | scope |
+| | cohort query | comparison | written after it; needs only the two ids in the URL |
+| | bios, played seasons, metric catalog | cohort query | written after it; need only the ids and scope |
+| Stats | catalog, workspace | — | |
+| | latest catalog (pinned links: the canonical Stats URL is pinned) | catalog | written after it; independent |
+| | draft classes, metric catalog, query | catalog, workspace | the first two need nothing |
+| Players | catalog, then the carousel query | catalog | scope (true dependency) |
+
+Waves before → after (uncached reads, memos warm; one capture each):
+
+| Page | Before | After |
+| --- | --- | --- |
+| `/players/2544` | 5 waves, 9 reads, 331 ms | 2 waves + impact fallback, 11 reads, 374 ms |
+| `/players/1643411` | 4 waves, 8 reads, 254 ms | 2 waves, 8 reads, 148 ms |
+| `/players/1449` (no season in the link, never played the default) | 7 waves, 11 reads, 279 ms | 3 waves + impact fallback, 16 reads, 285 ms |
+| `/teams/1610612747` | 4 waves, 12 reads, 333 ms | 2 waves, 11 reads, 268 ms |
+| `/teams/1610612738` | 4 waves, 12 reads, 281 ms | 2 waves, 11 reads, 218 ms |
+| `/compare?…` | 5 waves, 8 reads, 304 ms | 2 waves, 8 reads, 311 ms |
+| `/stats` | 2 waves | 2 waves (draft classes and metric catalog moved to the first) |
+| `/players` | 2 waves | 2 waves (no change: a true dependency) |
+
+Single captures are noisy; the cold (a) medians below are the measure. With six reads in flight
+the API's handler times grow (career 85 → 205 ms, profile 50 → 133 ms in the LeBron capture):
+one API process, and the Python parts of concurrent reads share one interpreter lock, so a
+parallel wave saves only the database and network part of each read.
+
+After, by page:
+
+- **Player.** Wave 1: catalog and metric catalog. Wave 2: career, profile, game log, impact, hero
+  query and bio. Without a season in the link, the default season's reads start beside the career.
+  For a player who did not play it (Bird), the page reads again for his latest season. That is
+  the third wave, and the one dependency left: the season depends on the career. The discarded
+  guess's impact fallbacks are not fired (they wait for the season decision), but its other
+  reads are: Bird's page makes 16 reads instead of 11. Current players gain the career round trip.
+- **Impact fallback.** When the scope's impact read comes back empty, the up to three earlier
+  seasons are now read together, and the newest with a fit wins, as before. It still waits for
+  that first read, because whether a fallback is needed depends on its answer. Starting the
+  fallbacks with it would triple impact reads and cache entries for every current player live,
+  where 2026-27 fits exist. On the PC there are no 2026-27 fits, so every current player takes
+  the fallback here.
+- **Team.** Wave 1: catalog, workspace, draft classes, metric catalog. Wave 2: the six team reads
+  and the Stats table's query, through `preloadStatsWorkspace` and a per-render cached loader (the
+  bundled docs' preload pattern with `React.cache`).
+- **Compare.** Wave 1: both catalogs and the metric catalog (started before the default pair's
+  query). Wave 2: the comparison, and beside it the cohort query, bios and played seasons for the
+  two ids in the URL. These are used only when the comparison answers for the same ids and phase,
+  and are read again otherwise.
+- **Per-render sharing.** `getWorkbenchCatalog`, `getMetricCatalog`, `getDraftClasses`,
+  `getAnalyticsCatalog` and `getWorkspace` are wrapped in `React.cache` (one read per server
+  render; a pass-through in the browser).
+
+### Browser reads
+
+| Page | Read | Waits on | Outcome |
+| --- | --- | --- | --- |
+| Team | roster board: `GET /teams/<id>` | mount; the server already made the identical read | **Fixed.** `RosterAllocationView` takes the server's response (`initial`) and reads only on Retry or a scope change. The browser no longer makes this read. |
+| Player | 6 × `POST /query` hero ranks (`useCohortRanks`), 155–250 ms each uncached | mount; the server has their inputs | **Recorded, not moved.** Each response is about 860 KB (every item carries every metric), so about 5 MB per player page. Moving them to the server would make the dashboard fetch and parse 5 MB on every player render, warm ones included, and break "warm no worse than SP03". They are shared by every player of a scope, so only the first visit per scope after a data change misses. For SP05: the 5 MB the browser downloads per player page. |
+| Every page | `GET /catalog` (header route tabs, `getSharedCatalog`); `GET /catalog?releaseId=…` (`ContextBar`) | mount | Recorded. Header and context bar are shared components outside this block's pages; a cache hit after the first visitor. |
+
+### What made the first career read take 3.4 s
+
+`stats_cohort_store.source_facts` fingerprints the tracking mart before any persisted cohort key
+can be computed. It ran `count(*), md5(string_agg(DISTINCT dataset_id::text, ','))` over all
+2,050,202 rows of `analytics_marts.mart_stats_player_tracking` (391 MB, no index; a dbt table),
+which sorted to disk (137 MB external merge): **1,043–1,131 ms on the PC**. Live runs 3–4× slower,
+which matches 3.4 s. It lands on whichever read first needs a cohort: career on player pages, the
+Stats query on team and Players pages. The memo holds the facts for **30 s** (`SOURCE_TTL_SECONDS`),
+so the cost recurred after every quiet spell. That is SP00's "the slow first request recurs".
+
+Fix: the same facts from a two-level aggregate (hash the ~300 (season, type, dataset) triples,
+then aggregate them with `string_agg(… ORDER BY dataset_id::text)`). It gives **identical**
+counts and md5s (0 mismatches over 26 seasons on the PC; a Postgres test also covers several
+datasets per season, NULL ids and a NULL season) in **104–125 ms**, with no sort to disk. Because
+the values are identical, every persisted cohort key stays valid. No index: one created by
+Alembic on a table dbt rebuilds would vanish at the next dbt run. The 30 s memo is unchanged.
+
+The other first-request cost on a fresh process was the catalog: **2.0 s**, of which 0.96 s
+decodes the 47 MB impact store and 0.62 s decodes all 21 DARKO bundles to find the newest. These
+are loaded once per process, plus the facts and the finance book (below), now at API start (see
+warm start).
+
+### Slow reads (`slow-reads-before.json`, `slow-reads-after.json`)
+
+`scripts/speed/slow_reads.py` (new): each read of the snapshot sample (now including the six hero
+rank queries), five times against the API with `COURTLENS_READ_CACHE=false`. It records the
+median handler total, database time and query count from Server-Timing (memos warm). Reads under
+20 ms both times are left out.
+
+| Read | Pages | Before: total / db / queries | After | Fix that moved it |
+| --- | --- | --- | --- | --- |
+| workbench-compare | compare | 145 / 102 ms / 22 | 125 / 88 ms / 22 | fingerprint memo |
+| player-bio-203999 | compare | 122 / 35 ms / 18 | 21 / 10 ms / 16 | finance book memo |
+| player-bio-2544 | compare, player | 122 / 35 ms / 18 | 22 / 11 ms / 16 | finance book memo |
+| player-bio-1643411 | player | 120 / 36 ms / 18 | 19 / 10 ms / 16 | finance book memo |
+| player-career-2544 | player | 106 / 66 ms / 12 | 79 / 40 ms / 11 | fingerprint memo |
+| query-hero-rank-ts_pct | player (browser) | 89 / 58 ms / 11 | 84 / 57 ms / 11 | — |
+| player-career-1449 | player | 84 / 60 ms / 12 | 56 / 33 ms / 11 | fingerprint memo |
+| query-team-lal | team | 80 / 57 ms / 11 | 72 / 54 ms / 11 | — |
+| workbench-catalog | every page | 80 / 50 ms / 5 | 52 / 24 ms / 4 | fingerprint memo |
+| query-players | players | 64 / 29 ms / 9 | 87 / 28 ms / 9 | — (noise: first run 153 ms) |
+| workbench-teams-six-factors (+ home, away) | team | 60–61 / 48 ms / 6 | 46–58 / 33–45 ms / 6 | — |
+| player-career-1643411 | player | 60 / 52 ms / 12 | 35 / 28 ms / 11 | fingerprint memo |
+| query-hero-rank-* (other five) | player (browser) | 57–59 / 30 ms / 9 | 54–55 / 28 ms / 9 | — |
+| query-stats, query-player-* | stats, player | 43–58 ms | 39–56 ms | — |
+| team-peers-* | team | 53 / 45 ms / 4 | 38–50 / 31–43 ms / 4 | — |
+| player-profile-2544 | player | 50 / 28 ms / 8 | 40 / 20 ms / 8 | fingerprint memo |
+| every other player and team read | | 22–48 ms | 22–43 ms | |
+
+**Done-when met:** every read behind the player and team pages is ≤ 150 ms uncached (largest
+after: 87 ms; Compare's own read 125 ms). Compare's remaining cost is `season_champions`
+(78 ms, two scans of playoff team games). It depends on team-game rows, which can be appended,
+so it is not memoised by id. Recorded only.
+
+The fixes:
+
+1. **Tracking fingerprint query** (`stats_cohort_store.tracking_facts_sql`), above.
+2. **Finance book memo** (`player_contracts.book_rows`): the player bio parsed and validated
+   every row of the latest finance book (3,987 pydantic rows, about 0.15 s) to read one player's
+   guarantees. Finance books are append-only (ORM guard and Postgres seals), and a release's
+   members are written in its one admission transaction. So the parsed rows are memoised by
+   release id, grouped by player, at most 4 books (LRU). Tests: once per id, ids never share
+   rows, the bound evicts the least recent. The memo is cleared between tests (`conftest.py`), as
+   the cohort cache is.
+3. **Dataset fingerprint per transaction** (`workbench_analytics.dataset_fingerprint`): the
+   `count(*), max(game_date)` over a dataset's 1.29 M rows is already an index-only scan (28 ms;
+   EXPLAIN in `tools/`), and the comment there says ready datasets may still be appended to, so
+   it cannot be memoised by id. A career resolved its context three times per read. It is now
+   remembered on the connection for the rest of its transaction (REPEATABLE READ: a repeat could
+   not see another answer). Any statement other than a SELECT on that connection drops it, so a
+   writer appending rows in the same transaction sees the new count. Tests: once per read-only
+   transaction, recounted in a new one, dropped after an ORM insert and after raw SQL.
+4. **Warm start** (`src/courtlens/api/warm_start.py`, `COURTLENS_WARM_START`, off by default, on
+   in `deploy/compose.prod.yml` beside the read cache). As the API starts, a daemon thread runs the
+   catalog route function, `source_facts` for the published context and the finance book memo,
+   each in its own session. A failed step is logged and the others still run. The API answers at
+   once; the report is in `GET /api/cache/status` under `warm_start`. It only fills memos the reads
+   fill anyway, stores no response and changes none. Tests: every step runs and a failure is
+   recorded, the thread does not block, and the app starts it only when configured.
+
+Snapshot after each fix: `snapshot-compare-api-fixes.txt` (fixes 1–3, cache off: no differences;
+the three six-factor reads equal at 12 digits).
+
+### Snapshot and page text
+
+- `snapshot.py` gained a second hash per read, at 12 significant digits. `--compare` accepts a
+  difference that vanishes at 12 digits only for the reads in `--digits-only`, by default the
+  three team six-factor reads (owner, G1). The sample gained the six hero-rank queries (52 reads).
+- **Final code, cache off, against the saved `snapshot-before.json`:** one difference. The away
+  six-factor read differed even at 12 digits. That is the same read's order jitter (SP01) caught in
+  another state, not this block: eight fetches from the changed API and six from an API run from
+  `HEAD` on the same data all returned byte-identical canonical bodies (0 differing fields), and
+  all differed from the saved hash in the same way. A new snapshot from the `HEAD` API
+  (`snapshot-before-head2.json`), compared with the final API three times: **no differences**
+  (`snapshot-compare-final-vs-head2.txt`). With the cache and warm start on, cold and then warm
+  (51 hits): **no differences** (`snapshot-compare-final-cache-on.txt`).
+- **Page text** (`page-text.json`, `tools/page-text.mjs`): each of the 12 pages' `main` innerText
+  after network idle, on real data. Two before captures agree with each other (the capture is
+  deterministic), and the after capture equals them on all 12 pages: **0 differences**. The
+  per-page SHA-256s are recorded.
+
+### Cold and warm page times (HTML complete, curl; `cold-a.txt`, `cold-b/`)
+
+| Page | Cold (a) before: median (min–max) | Cold (a) after |
+| --- | --- | --- |
+| `/players/2544` | 412 ms (411–651) | **281 ms** (276–522) |
+| `/players/1643411` | 328 ms (307–1,333) | **156 ms** (147–248) |
+| `/players/1449` | 320 ms (265–1,327) | **266 ms** (264–379) |
+| `/teams/1610612747` | 332 ms (314–346) | 252 ms (228–280) |
+| `/teams/1610612738` | 283 ms (266–294) | 217 ms (215–446) |
+| `/compare?…` | 525 ms (459–740) | 250 ms (241–261) |
+| `/stats` | 189 ms | 159 ms |
+| `/players` | 163 ms | 140 ms |
+| `/players/2544`, idle (facts expired; 3 runs) | 1,466 ms (1,456–1,668) | **384 ms** (372–421) |
+
+**Done-when (≤ 800 ms cold player page, definition (a)): met**, worst single run 522 ms. The
+before runs' 1.33 s outliers are the facts memo expiring.
+
+Cold (b), one fresh API process per page (one run each):
+
+| Page | Before | After, warm start off | After, warm start on, request as the API first answers | After, warm start on, after it finishes |
+| --- | --- | --- | --- | --- |
+| `/players/2544` | 3.87 s | 2.81 s | 3.07 s | **0.63 s** |
+| `/players/1643411` | 3.68 s | 2.76 s | | **0.55 s** |
+| `/players/1449` | 3.53 s | 2.62 s | | **0.68 s** |
+| `/teams/1610612747` | 3.50 s | 2.74 s | 3.19 s | **0.65 s** |
+| `/compare?…` | 3.85 s | 2.93 s | | **0.81 s** |
+
+The warm-up takes 2.5 s on the PC (catalog 2.2–2.35 s, facts 0.12 s, finance book 0.10 s) and
+starts as the API starts. The warm crawl waits for readiness and a settled generation (at least
+6 s), so its first page arrives after it. A request that races the warm-up computes the same
+loads itself, so it gains nothing. The remaining ~0.35 s over cold (a) is other first-call work:
+free-agency rosters in the bio, loading the stored cohort into memory for the query, position
+estimates in the career. Recorded, not warmed: (b) already meets 800 ms after the warm-up.
+
+**Warm** (cache on, after one warm-up pass; `measure-local-warm-*.json`, plus four alternating
+9-run passes of the pages): no worse. Player pages before / after 14–35 / 14–37 ms, team pages
+32–38 / 32–38 ms, Stats 48–50 / 47–52 ms, every API read 0.4–0.6 ms (hits) both times.
+
+Navigation (`SPEED_REAL=1`, five runs, medians; same session, cache on):
+
+| Journey | Before | After |
+| --- | --- | --- |
+| Stats row → player | 170 ms | 145 ms |
+| Player header → team | 295 ms | **136 ms** |
+| Header nav → Stats | 210 ms | 186 ms |
+| Back (Stats → team) | 181 ms | 136 ms |
+| Stats row → player, prefetched | 78 ms | 72 ms |
+| Player → team, prefetched | 228 ms | **115 ms** |
+| Nav → Stats, prefetched | 189 ms | 171 ms |
+
+The team journeys gain most because the roster board no longer reads after mount. Prefetched
+player → team (230 ms at SP03, accepted at G1) is now 115 ms. Nav → Stats remains SP05's render
+cost.
+
+### API start time and memory (`api-starts.txt`)
+
+| | Start (launch to first answer) | RSS at first answer | After warm-up | After the first `/players/2544` | + a team page |
+| --- | --- | --- | --- | --- | --- |
+| Before (`HEAD`) | 1.53–1.61 s | 256 MB | | 1,081 MB | 1,095 MB |
+| After, warm start off | 1.56–1.70 s | 261 MB | | 1,116 MB | 1,138 MB |
+| After, warm start on | 1.56–1.65 s | 261 MB | 940–943 MB (2.46–2.58 s) | 980 MB | 993 MB |
+
+The warm-up loads at start what the first catalog read loaded anyway (about 680 MB: the impact
+store and DARKO bundle). It adds nothing to the memory after the first page, which stays far
+under the API's 3 GB limit. The finance memo holds at most four parsed books (a few MB). The VPS
+bundle is larger (2026-27 fits), so the post-deploy `docker stats` at the G1/G2 stop should
+include the warm-up.
+
+### Migration
+
+None. The one index candidate (the tracking mart) is a dbt table that is rebuilt by the jobs, so
+an Alembic index would not survive; the query rewrite removed the need. The dataset fingerprint
+query is already an index-only scan. No other read in the table spends its time in an
+unindexed scan.
+
+### Where this differs from the plan and the handoff
+
+- **Player pages are two waves except where the career decides the season.** With no season in
+  the link, the default season's reads start beside the career. A player who did not play it
+  gets a third wave and up to 5 wasted reads. The impact fallback is a further wave only when the
+  scope's impact read is empty.
+- **First attempt reverted:** starting the career beside the catalog, without `releaseId`, took
+  **28–32 s** on a fresh process (236 queries). That read misses the persisted cohort store and
+  recomputes every season. The career is read with the catalog's release, as before.
+- **Side effect on the owner's database:** the API persists the cohorts it computes (it always
+  has, and SP00–SP03 runs did too). This session's reads wrote 57 `stats_cohort_entries` (17,786
+  rows), most of them from that reverted attempt. They are the store's recomputable serving rows
+  and were left in place.
+- **Hero rank reads stay in the browser** (above).
+- **Six-factor snapshot:** the saved before snapshot needed a second, `HEAD`-API snapshot to
+  settle the jitter question (above).
+- **`player-career.spec.ts`:** the draft assertion now checks `2018 · R1 #9` and
+  `Toronto Raptors` separately (the team's full name sits on the fact's detail line since
+  5ace395a).
+- **New tools:** `scripts/speed/slow_reads.py`; `capture_reads.py --only` and read start and end
+  times; `snapshot.py`'s 12-digit hash and `--digits-only`. The ad hoc scripts (page text, waves,
+  cold runs, profilers, the facts SQL) are in `tools/`; they use the scratch paths of this run.
+- **During the run the disk filled once** while docs/ was being copied into two Playwright
+  sandboxes (1.3 GB each). The copy was stopped and removed; the owner's database container
+  logged no error. `scripts/clean_scratch.sh` was changed in the working tree during the session,
+  by someone else; it is not part of this block's commit.
+
+### Checks
+
+- `ruff check .`, `ruff format --check .`: pass. `mypy src/courtlens`: no issues (411 files).
+  `mypy --strict scripts/speed/*.py`: no issues.
+- pytest (`scripts/test_python.py`, disposable Postgres 17):
+  - `tests/unit/test_cold_path_memos.py` (new, 10) and the Postgres equivalence test in
+    `test_player_career_postgres.py`;
+  - every suite touching the catalog, career, bio, finance, cohort store, read cache, stats feeds
+    and workbench API (19 files): **247 passed**;
+  - `test_bbref_marts_postgres`, `test_agent_tools_postgres`, `test_cli`,
+    `test_deploy_job_inputs`: 38 passed;
+  - `test_agent_providers.py`: 35 passed, **8 failed**, the 8 `[anthropic]` cases, red before SP00.
+- Dashboard: lint (ESLint and Stylelint) and typecheck pass. Vitest: 148 files, **1,073 passed**,
+  including the new `components/roster-allocation-view.test.tsx` (the seeded board makes no read;
+  without a server read it reads once).
+- Playwright, webpack production build, fixture API :4180, dashboard :3181. 23 specs covering the
+  player, team, Compare, Stats and Players pages, links, prefetch and navigation (player-profile,
+  player-career, player-reference, player-dashboard, players-fo09, teams, compare-overhaul,
+  comparison-evaluation, entity-selection, workbench, the eight stats-* and table specs,
+  site-links-gate/crawl/prefetch, speed-navigation, dl08-evidence): **118 passed, 28 skipped,
+  0 failed**.
+- `speed-navigation.spec.ts` with `SPEED_REAL=1` on the local stack, before and after: passed.
+- Full pytest, Vitest and Playwright suites not run (the owner's stop after SP06). Not deployed;
+  nothing ran against the live site. Servers, Playwright browsers, the mock API, the `HEAD`
+  worktree and the scratch workspace were stopped and removed, and `data/derived/job-health/` (the
+  bump file) was deleted.
