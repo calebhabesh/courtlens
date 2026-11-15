@@ -465,6 +465,8 @@ class WorkbenchQueryResponse(BaseModel):
     table_cohort: dict[str, Any] | None = None
     items: list[PlayerResearchItem]
     next_cursor: str | None = None
+    # One cursor per page of the shown rows (page 1 is null); presentation queries only.
+    page_cursors: list[str | None] | None = None
     has_more: bool
     warnings: list[str] = Field(default_factory=list)
     impact: dict[str, Any] | None = None

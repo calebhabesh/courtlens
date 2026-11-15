@@ -45,6 +45,7 @@
 @import "../components/ui/skeleton.css";
 @import "../components/ui/empty-state.css";
 @import "../components/ui/accordion.css";
+@import "../components/ui/pager.css";
 @import "../components/workbench-compare-view.css";
 /* Page styles live next to their views and routes (UC05); this order is the cascade order. */
 @import "./styles/pages.css";

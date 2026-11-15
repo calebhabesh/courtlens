@@ -322,9 +322,14 @@
   /* A group holding one button: the button's own padding is the group's. */
   .stats-workspace .stats-footer-group.is-single { padding: 0; }
   .stats-workspace .stats-footer-label { font-size: var(--text-xs); color: var(--color-text); }
-  .stats-workspace .stats-density-meter { display: inline-flex; gap: var(--space-0-5); }
-  .stats-workspace .stats-density-meter > span { width: 6px; height: 12px; border-radius: 1px; background: var(--color-hairline-strong); }
-  .stats-workspace .stats-density-meter > span.is-on { background: var(--color-accent); }
+  /* Below about 1,800 px the meta, controls and pager do not fit one row: records and pager share
+     the first row and the table controls take the second, instead of wrapping three to five rows. */
+  @media (max-width: 1799px) {
+    .stats-workspace .stats-pagination-footer { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "meta pager" "controls controls"; }
+    .stats-workspace .stats-results-meta { grid-area: meta; }
+    .stats-workspace .stats-pagination-actions { grid-area: pager; }
+    .stats-workspace .stats-footer-controls { grid-area: controls; justify-content: flex-start; }
+  }
 
   @media (max-width: 1199px) {
     .stats-workspace .stats-tool-group { padding-left: var(--space-2); }
@@ -341,7 +346,7 @@
     .stats-workspace .dense-stats-table tbody td { padding-block: 1px; }
     /* Expand lives in the footer on phones. */
     .stats-workspace .stats-expand-action { display: none; }
-    .stats-workspace .stats-pagination-footer { grid-template-columns: minmax(0, 1fr); }
+    .stats-workspace .stats-pagination-footer { grid-template-columns: minmax(0, 1fr); grid-template-areas: "meta" "controls" "pager"; }
     .stats-workspace .stats-footer-controls { width: 100%; justify-content: flex-start; }
   }
 }

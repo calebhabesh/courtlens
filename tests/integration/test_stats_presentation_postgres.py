@@ -475,6 +475,24 @@ def test_http_opt_in_and_legacy_payload(facts: tuple[Session, ResolvedContext]) 
             },
         ).json()
         assert second["output_offset"] == 1
+        # Numbered paging: one cursor per page, page 1 has none, and the cursor for page 2 is
+        # the one Next issues; the last page's cursor lands on the last row.
+        assert len(first["page_cursors"]) == first["total_output_players"]
+        assert first["page_cursors"][0] is None
+        assert first["page_cursors"][1] == first["next_cursor"]
+        last = client.post(
+            "/api/workbench/query",
+            json={
+                "query": {
+                    "season": "2023-24",
+                    "page": {"limit": 1, "cursor": first["page_cursors"][-1]},
+                },
+                "presentation": {},
+            },
+        ).json()
+        assert last["output_offset"] == first["total_output_players"] - 1
+        assert last["has_more"] is False
+        assert last["page_cursors"] == first["page_cursors"]
         empty = client.post(
             "/api/workbench/query", json={"query": query, "presentation": {"player_ids": []}}
         ).json()
