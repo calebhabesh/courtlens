@@ -1945,3 +1945,50 @@ Pages are set by `main`'s render on the origin, which SP07 does not touch; their
 noise. Tiered cache and Early Hints show in first visits from cold edge locations and in the
 browser's font fetch, which `measure.py` (curl, no browser) does not see. The SP08 deploy brings
 the speed work itself.
+
+## 2026-11-15 — SP08 part 1: guards, docs, suites (before the merge)
+
+Evidence: `docs/evidence/speed/sp08/`.
+
+### Guards that stay in CI
+
+- **Route classification:** `tests/unit/test_read_cache.py` (since SP01) fails on any GET or
+  allowed POST without a class. CI runs it with the full pytest.
+- **Prefetch request counts:** `site-links-prefetch.spec.ts` and `speed-navigation.spec.ts`
+  (since SP03 and SP05) run in CI's Playwright job against the mock API.
+- **Byte ceilings (new):** `dashboard/e2e/speed-page-weight.spec.ts`, against the mock API:
+  - Stats HTML ≤ 340,000 B and player 23 ≤ 230,000 B, about 15% above the fixture build's
+    297,085 B and 200,998 B;
+  - Stats HTML carries the table's own `table_percentiles` but neither the analytical
+    `percentiles` map nor `cohort_sample_sizes` (SP05's `statsTableData`).
+  - **Checked that it bites:** with `tableRow` made to return the row unchanged in a sandbox
+    build, the Stats test fails on the `percentiles` check (`guard-negative.log`). The player page
+    has a ceiling only: the fixture's career rows never carry those maps, so a field check there
+    would test nothing.
+- Timings are not asserted in CI.
+
+### Docs
+
+- `docs/deployment.md`: a **Speed** section (read cache and its classes, credential bypass, the
+  data stamp, `bump-data-stamp`, `/api/cache/status`, warm start, warm crawl, memory, how to turn
+  the cache off, prefetch and the Cloudflare settings).
+- `docs/operations/hosted-operations.md`: a row for the warm crawl in "What runs", and a line to
+  run `bump-data-stamp` after a hand-run write.
+
+### Suites (fixture build of 066c05c7's tree; dashboard checks in the same sandbox)
+
+- Playwright, every spec except "real", 4 workers: **658 passed, 10 failed, 27 skipped**
+  (`playwright-fixture.log`). The 10 are exactly the known `HEAD` failures (`advanced-research:61`,
+  `pc12-demo-hygiene:6`, `roster-shapes` ×4, `visual-baselines` ×4); `live.spec.ts:83` and the
+  new guard pass. On `main`, CI passes all three jobs, so these 10 fail only in local runs.
+- `npm run lint`, `typecheck`: pass. Vitest: **153 files, 1,098 passed**.
+- Python: unchanged since part A's full run (3,004 passed, the 8 `[anthropic]` cases red); CI
+  reruns it on the PR.
+- CI on the PR: the runs for superseded commits were cancelled (no `concurrency` group in
+  `ci.yml`, so each push started a full run in parallel).
+
+### Left for part 2
+
+The merge, the deploy (inside the deploy log's 9:00 AM to noon Eastern window), and after it: the
+`.webp` check, `docker stats` during the warm start and the first crawl, `measure.py` live (five
+runs after the crawl, one during it if caught), the navigation spec live, and the final table.
