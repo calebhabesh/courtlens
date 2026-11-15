@@ -262,6 +262,54 @@ finance books are sealed and never pruned, so they grow only on days the data ch
 worst case, every day, about 5 GB a year, roughly 3% of the free disk. Egress is
 unaffected because refreshes only download.
 
+## Speed
+
+The [speed plan](speed-plan.md) (2026-11-14 to 2026-11-15) made warm pages render in tens of
+milliseconds. Its parts, as they run on the VPS:
+
+- **Read cache** (`src/courtlens/api/read_cache.py`, `COURTLENS_READ_CACHE: "true"` on `api` in
+  `compose.prod.yml`). An in-memory LRU of API read responses, capped at 128 MiB
+  (`COURTLENS_READ_CACHE_MAX_BYTES`). Every response from a classified route carries
+  `X-Cache: hit`, `miss` or `bypass`, and every response a `Server-Timing` header (handler time,
+  database time, query count).
+- **Classes.** Every GET route and every read-only POST Caddy allows has one, in `ROUTE_CLASSES`;
+  `tests/unit/test_read_cache.py` fails on a route without one, so a new endpoint must be
+  classified before it ships:
+  - `stamp`: published or job-written data, kept until the data stamp changes (at most 6 hours);
+  - `short`: data that moves between jobs (Win Probability, data and job status), 30 seconds;
+  - `never`: per-viewer, live, written through the API, binary, or unsure.
+
+  A request with `Authorization`, `Cookie` or `X-Operator-Token` (and the other headers in
+  `CREDENTIAL_HEADERS`) is never served from the cache or stored.
+- **Data stamp.** A SHA-256 over the publication pointers, the bundles' `.current` pointers, each
+  scheduled job's start and finish in `data/derived/job-health/`, the manual bump file and today's
+  date. The API reads it at most every 5 seconds and empties the cache when it changes, so no job
+  has to notify anything. While a job runs, `stamp` reads are not stored.
+- **`bump-data-stamp`.** A write run by hand (an operator command in `jobs`, such as
+  `acquire-wikipedia-contracts`) does not touch a job record, so follow it with
+  `courtlens bump-data-stamp` in `jobs` (whose `data/` is writable). Scheduled jobs need nothing.
+- **Status.** `GET /api/cache/status`: entries, bytes, hits, misses, the stamp and a generation id
+  that changes with the stamp and with each API start.
+- **Warm start** (`COURTLENS_WARM_START: "true"` on `api`). The API loads the catalog's bundles,
+  the tracking fingerprint and the finance book in the background as it starts, so the first
+  visitor after a deploy does not wait for them.
+- **Warm crawl** (`courtlens warm-site`, in the `jobs` loop after each `run-jobs`). When the
+  generation at `/api/cache/status` differs from its last run, it requests the top-level pages,
+  all 30 team pages and every current roster player's page from `http://dashboard:3000`, two at a
+  time, so the cache is filled by the same code visitors use. It stops after 5 consecutive 5xx
+  responses, is bounded by `timeout 1500`, and its time comes off the loop's sleep. Its record is
+  `data/derived/job-health/warm-site.json`. A failed or skipped crawl only leaves pages cold.
+- **Memory.** The cache cap is part of the API's 3 GB limit, beside the impact bundle (about
+  2.3 GB at its peak). No container limit was raised.
+- **Turning it off.** Set `COURTLENS_READ_CACHE: "false"` (and, if wanted,
+  `COURTLENS_WARM_START: "false"`) on `api` in `compose.prod.yml` on the VPS and recreate `api`
+  with `--no-deps`. The crawl then only renders pages; it is harmless and can stay.
+- **Browser and Cloudflare.** Links prefetch their page on intent (pointer resting 80 ms, focus,
+  touch start), never on entering the viewport. Portraits are served at `/portrait.webp` so
+  Cloudflare caches them; hashed team logos are `immutable` for a year and flags 30 days. HTML and
+  API responses are not cached at Cloudflare (D6, kept closed at G2). Zone settings (SP07): Smart
+  Tiered Cache and Early Hints on, 0-RTT off, browser cache TTL 4 hours.
+
 ## Scheduled jobs
 
 The `jobs` service (`deploy/compose.prod.yml`) is the API image running
