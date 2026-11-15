@@ -2391,8 +2391,26 @@ export type PlayerReferenceEvent = {
 export type PlayerContractSpan = {
   start_season: string; end_season: string;
   end_basis: "stated_length" | "next_contract" | "current_contract" | "last_reported_season" | null;
+  /** signed: its signing season; previous_contract: after the one in force; current_contract: counted back from the current contract's last season. */
+  start_basis?: "signed" | "previous_contract" | "current_contract";
   signed_date: string; kind: "signing" | "extension"; length_stated: boolean;
+  /** Where the length comes from: the source's "N-yr", the CBA (rookie scale, 10-day, Exhibit 10) or Wikipedia. */
+  length_source?: PlayerContractLengthSource | null;
   team_code: string | null; description: string; current: boolean;
+  /** Wikipedia's terms ("4-yr/$164.3M") when they supplied a length Basketball-Reference left out. */
+  terms?: string | null;
+  /** wikipedia: a signing Basketball-Reference does not list, from the player's article. */
+  source?: "basketball_reference" | "wikipedia";
+  source_url?: string | null;
+};
+
+export type PlayerContractLengthSource = "stated" | "rookie_scale" | "ten_day" | "exhibit_10" | "wikipedia";
+
+/** A signing no bracket could be placed for: what is known, and which end is missing. */
+export type PlayerUnplacedSigning = {
+  signed_date: string; season: string; kind: "signing" | "extension"; description: string;
+  years?: number | null; length_source?: PlayerContractLengthSource | null; terms?: string | null;
+  source?: "basketball_reference" | "wikipedia"; source_url?: string | null;
 };
 
 export type PlayerGameHighs = {
@@ -2443,7 +2461,9 @@ export type PlayerBio = {
     contract_events?: PlayerReferenceEvent[]; transactions?: PlayerReferenceEvent[];
     contract_spans?: PlayerContractSpan[];
     /** Signings no span could be placed for (an extension's start or a contract's end unknown). */
-    unplaced_signings?: { signed_date: string; season: string; kind: "signing" | "extension"; description: string }[];
+    unplaced_signings?: PlayerUnplacedSigning[];
+    /** The Wikipedia article reading that supplied contract terms (CC BY-SA 4.0). */
+    contract_terms_source?: { name: string; title: string; url: string; revision_id: number | null; as_of: string } | null;
     game_highs?: PlayerGameHighs[];
   } | null;
   limitations: string[];

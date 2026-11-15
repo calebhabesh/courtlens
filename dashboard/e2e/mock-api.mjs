@@ -1,6 +1,24 @@
 import { createServer } from "node:http";
 import { readFileSync } from "node:fs";
 const playerReference = JSON.parse(readFileSync(new URL("../lib/player-reference-fixture.json", import.meta.url), "utf8"));
+// The served profile places its contracts as the API does (services/contract_spans.py): the
+// current contract counted back from its last season with Wikipedia's terms, and a signing only
+// the article lists.
+const articleUrl = "https://en.wikipedia.org/wiki/Fixture_Player";
+const servedReference = {
+  ...playerReference,
+  contract_spans: [
+    { start_season: "2026-27", end_season: "2028-29", end_basis: "stated_length", start_basis: "current_contract", signed_date: "2026-09-22",
+      kind: "extension", length_stated: true, length_source: "wikipedia", team_code: "TOR", description: "Signed extension", terms: "3-yr/$6M",
+      source: "basketball_reference", source_url: articleUrl, current: true },
+    { start_season: "2025-26", end_season: "2025-26", end_basis: "next_contract", start_basis: "signed", signed_date: "2025-07-25",
+      kind: "signing", length_stated: true, length_source: "wikipedia", team_code: "BOS", description: "Signed 2-yr/$2M contract", terms: null,
+      source: "wikipedia", source_url: articleUrl, current: false },
+  ],
+  unplaced_signings: [{ signed_date: "2024-08-01", season: "2024-25", kind: "extension", description: "Signed a contract extension", years: null,
+    length_source: null, terms: null, source: "basketball_reference", source_url: null }],
+  contract_terms_source: { name: "Wikipedia", title: "Fixture Player", url: articleUrl, revision_id: 1, as_of: "2026-11-14T12:00:00Z" },
+};
 import { pc11Response, sixFactor } from "./pc11-fixtures.mjs";
 
 // Recorded real retained finding, no question/provider prose. Other public examples stay
@@ -995,7 +1013,7 @@ createServer(async (request, response) => {
     return json(response, 200, { player_id: bioMatch[1], season: url.searchParams.get("season") ?? "2025-26", as_of: "2026-04-12",
       listing_source: "season_roster", combine: null,
       current_team: { team_id: "1610612761", team_tricode: "TOR", listing_season: "2026-27", index_refreshed_at: "2026-10-01T12:00:00Z" },
-      reference: bioMatch[1] === "24" ? playerReference : null, limitations: ["Synthetic UI fixture."], ...fixture });
+      reference: bioMatch[1] === "24" ? servedReference : null, limitations: ["Synthetic UI fixture."], ...fixture });
   }
   if (url.pathname === "/api/workbench/players/23") return json(response, 200, workbenchPlayerProfile("23"));
   if (url.pathname === "/api/workbench/players/24") return json(response, 200, workbenchPlayerProfile("24"));

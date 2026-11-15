@@ -203,6 +203,7 @@ services:
       - ./data/derived/darko-dpm-v2:/app/data/derived/darko-dpm-v2:ro
       - ./data/derived/espn-rosters-v1:/app/data/derived/espn-rosters-v1:ro
       - ./data/derived/wikipedia-transactions-v1:/app/data/derived/wikipedia-transactions-v1:ro
+      - ./data/derived/wikipedia-contracts-v1:/app/data/derived/wikipedia-contracts-v1:ro
       - ./data/derived/college-schools-v1:/app/data/derived/college-schools-v1:ro
       - ./data/derived/free-agency-v1:/app/data/derived/free-agency-v1:ro
       - ./data/derived/shot-zones-v1:/app/data/derived/shot-zones-v1:ro

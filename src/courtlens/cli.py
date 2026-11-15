@@ -1965,6 +1965,45 @@ def refresh_wikipedia_transactions_command(
     typer.echo(f"{verb} {path}  (served as the newest bundle in {output})")
 
 
+@app.command("acquire-wikipedia-contracts")
+def acquire_wikipedia_contracts_command(
+    scope: str = typer.Option(
+        "gaps", help="gaps (unbracketed signings), active (current contract) or all (salaried)."
+    ),
+    max_age_days: int = typer.Option(300, help="Skip players read within this many days."),
+    limit: int | None = typer.Option(None, help="Read at most this many articles."),
+    root: Path = typer.Option(Path("data/raw/wikipedia-contracts")),
+    output: Path = typer.Option(Path("data/derived/wikipedia-contracts-v1")),
+    reparse_only: bool = typer.Option(
+        False, "--reparse", help="Re-read retained pages with the current parser; no network."
+    ),
+) -> None:
+    """Seal the contract terms players' Wikipedia articles state (lengths, missing signings)."""
+    import httpx
+
+    from courtlens.services.wikipedia_contracts import acquire, reparse
+
+    if reparse_only:
+        path, result = reparse(root, output)
+    else:
+        with SessionLocal() as session, httpx.Client() as client:
+            found, result = acquire(
+                session,
+                root,
+                client,
+                output,
+                scope=scope,
+                max_age=timedelta(days=max_age_days),
+                limit=limit,
+                log=typer.echo,
+            )
+        if found is None:
+            raise typer.Exit(1)
+        path = found
+    typer.echo(json.dumps(result))
+    typer.echo(f"sealed {path}  (served as the newest bundle in {output})")
+
+
 @app.command("refresh-season-stats")
 def refresh_season_stats_command(
     season: str | None = typer.Option(None, help="Default: the season under way today."),
