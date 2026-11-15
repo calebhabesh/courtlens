@@ -63,6 +63,32 @@ def bump_data_stamp_command() -> None:
     typer.echo(bump_data_stamp())
 
 
+@app.command("warm-site")
+def warm_site_command(
+    base_url: str = typer.Option(
+        "http://localhost:3000", envvar="COURTLENS_WARM_BASE_URL", help="Dashboard origin."
+    ),
+    api_url: str = typer.Option(
+        "http://localhost:8000", envvar="COURTLENS_WARM_API_URL", help="API origin."
+    ),
+    deadline_seconds: float = typer.Option(1200.0, help="Stop crawling after this long."),
+    force: bool = typer.Option(False, help="Crawl even if this generation was already warmed."),
+) -> None:
+    """Request the most-opened pages so the API read cache is warm (speed plan SP02).
+
+    Crawls only a settled generation it has not warmed yet; reports go to stderr and its health
+    record to data/derived/job-health/warm-site.json. Exits 1 when the crawl did not finish
+    cleanly; it never touches the data stamp.
+    """
+    from courtlens.services.warm_site import warm_site
+
+    record = warm_site(
+        base_url=base_url, api_url=api_url, deadline_seconds=deadline_seconds, force=force
+    )
+    if record.get("outcome") not in ("complete", "skipped"):
+        raise typer.Exit(1)
+
+
 @app.command("warm-stats-cohorts")
 def warm_stats_cohorts_command(
     release_id: str | None = typer.Option(
