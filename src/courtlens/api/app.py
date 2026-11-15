@@ -37,11 +37,13 @@ from courtlens.api.routers import (
     workbench,
     zts,
 )
+from courtlens.api.server_timing import install_query_timing
 from courtlens.config import get_settings
 
 
 def create_app() -> FastAPI:
     settings = get_settings()
+    install_query_timing()
     logging.basicConfig(
         level=getattr(logging, settings.log_level.upper(), logging.INFO),
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
