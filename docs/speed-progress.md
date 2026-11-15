@@ -1980,7 +1980,7 @@ Evidence: `docs/evidence/speed/sp08/`.
 - Playwright, every spec except "real", 4 workers: **658 passed, 10 failed, 27 skipped**
   (`playwright-fixture.log`). The 10 are exactly the known `HEAD` failures (`advanced-research:61`,
   `pc12-demo-hygiene:6`, `roster-shapes` ×4, `visual-baselines` ×4); `live.spec.ts:83` and the
-  new guard pass. On `main`, CI passes all three jobs, so these 10 fail only in local runs.
+  new guard pass. (Corrected below: these 10 are the branch's own failures, not local-only.)
 - `npm run lint`, `typecheck`: pass. Vitest: **153 files, 1,098 passed**.
 - Python: unchanged since part A's full run (3,004 passed, the 8 `[anthropic]` cases red); CI
   reruns it on the PR.
@@ -1992,3 +1992,27 @@ Evidence: `docs/evidence/speed/sp08/`.
 The merge, the deploy (inside the deploy log's 9:00 AM to noon Eastern window), and after it: the
 `.webp` check, `docker stats` during the warm start and the first crawl, `measure.py` live (five
 runs after the crawl, one during it if caught), the navigation spec live, and the final table.
+
+## 2026-11-15 — SP08: CI found the branch's 10 Playwright failures; fixed
+
+**Correction.** Since SP05 the log called 10 Playwright failures "`HEAD` failures" that predate
+each block. `HEAD` was this branch, never `main`, and part A and SP08 part 1 repeated the label as
+if `main` failed them too. CI on PR #110 (run 43769603249, commit f77263a6) failed the dashboard job
+on exactly those 10, while `main`'s last CI passed 660 of 660. They were the branch's.
+
+Causes and fixes (31f07e69):
+
+| Failure | Cause | Fix |
+| --- | --- | --- |
+| `roster-shapes` ×4, `advanced-research:61`, roster chart phone baseline | SP04 hands the depth chart the team page's server read, so the specs' `page.route` mocks (browser only) never applied and the board showed the mock API's 1-player Boston | The mock API serves the specs' 3-player Boston at their scope (`e2e/fixtures/team-bos-depth-2025-26.json`), and a `beforeDate=2026-03-01` variant with the non-appearance player; `advanced-research:61` asserts against the same fixture. Page code unchanged |
+| `pc12-demo-hygiene:6` (saved, 390 px) | Site links made an identity's name a link, and the phone tap-target rule (`main a`, 40 px inline-flex) added a line to every small identity on phones; Back said "Previous Page" because `/investigations` now reaches the trail without a name | `.ui-identity-name` joins the existing heading and subtitle exemption (`min-height: 0`); `pageLabel("/investigations")` is "Saved Investigations". `pc12-c-public-390` matches `main`'s baseline again, so the branch's earlier refresh of it is reverted |
+| `visual-baselines` player profile desktop and phone, search modal phone | Approved changes: the draft line with the college under it (5ace395a), grouped search (4cd60d54) | Baselines refreshed, after looking at each diff |
+
+The baselines had drifted since 2026-10-19 to just under the 1% pixel tolerance on `main`; the
+branch's approved changes crossed it. Local and CI renders agree within a few pixels (25,023 and
+25,016), so baselines made here hold in CI.
+
+Fixture Playwright on the fixed tree: **668 passed, 0 failed, 27 skipped**
+(`docs/evidence/speed/sp08/playwright-fixture-after-fixes.log`). Lint and typecheck pass; Vitest
+153 files, 1,098 passed. The phone identity fix touches every small identity on phones; the full
+suite, including the phone baselines, passes with it.
