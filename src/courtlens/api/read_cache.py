@@ -751,9 +751,15 @@ router = APIRouter(tags=["operations"])
 
 
 @router.get("/cache/status")
-def cache_status(request: Request) -> dict[str, Any]:
-    """The read cache: entries, bytes, hits, misses, the data stamp and its generation."""
+async def cache_status(request: Request) -> dict[str, Any]:
+    """The read cache: entries, bytes, hits, misses, the data stamp and its generation.
+
+    It rechecks the stamp when the last check is older than the recheck interval (as any cached
+    read does), so the generation it reports follows the data even when no read came in; the warm
+    crawl (SP02) waits on it.
+    """
     store: ReadCacheStore | None = getattr(request.app.state, "read_cache", None)
     if store is None:
         return {"enabled": False}
+    await store.current()
     return store.status()

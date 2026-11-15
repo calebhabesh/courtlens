@@ -466,3 +466,187 @@ about 0.5 GB. This is an estimate for the VPS, not a VPS measurement; G1 should 
   Vitest not run for the same reason.
 - `docker compose -f deploy/compose.prod.yml config`: `COURTLENS_READ_CACHE` set on `api` only.
 - Full pytest and Playwright suites not run (plan: before each gate). Not deployed; no live run.
+
+
+## 2026-11-15 — SP02 built: warm crawl after each data change
+
+### What was built
+
+- `courtlens warm-site` (`src/courtlens/services/warm_site.py`): requests pages from the dashboard
+  (`COURTLENS_WARM_BASE_URL`, `http://dashboard:3000` in `deploy/compose.prod.yml`) two at a time,
+  with no cookies (a cookie jar whose policy accepts none) and none of the seven
+  `CREDENTIAL_HEADERS`, redirects not followed, 30 s per request, 1,200 s deadline. It stops after
+  5 server errors (5xx, timeout or refused) in a row. It writes `data/derived/job-health/warm-site.json`
+  (outcome, generation before and after, pages, failures, median and slowest time, crawl seconds,
+  cache counters before and after, roster source). Reports go to stderr; stdout stays empty. It
+  exits 1 unless the outcome is `complete` or `skipped`.
+- **URL list: 567 pages** on the PC's data. 16 top-level pages, 30 team pages and 521 roster players:
+  - The top-level pages are the header's direct links and the menu pages whose route is
+    `force-dynamic`: `/`, `/stats`, `/wowy`, `/stat-line-shift`, `/playoffs`, `/last-games`,
+    `/showcase`, `/players`, `/teams`, `/standings`, `/roster-shapes`, `/contracts`,
+    `/free-agency`, `/compare`, `/team-compare` and `/methodology`.
+  - Team pages are `/teams/<NBA team id>`, as `teamHref(id)` builds with no scope.
+  - Player pages are `/players/<id>`, as `playerHref(id)` builds with no scope. The players come
+    from the newest sealed ESPN roster bundle (`espn_rosters.load_latest()`, the source Free Agency,
+    Live and Win Probability read). The bundle lists 522 players; 521 have a verified NBA id. ESPN
+    players without one have no page and are skipped.
+  - No URL carries a query string.
+- **Generation check.** `/api/cache/status` now rechecks the stamp when its last check is more than
+  5 s old, as any cached read does. Before this change it returned the last reading, which no
+  request had refreshed. The crawl runs only on a settled generation:
+  1. If `running_jobs` is not empty, it skips the run (no wait; the next loop retries).
+  2. Otherwise it reads the generation again 6 s later. It crawls once two readings agree, with up
+     to 10 tries.
+  3. It crawls only when that generation differs from its last record's, or when the last outcome
+     was not `complete` or `partial`.
+  4. After the crawl it waits 6 s and reads the generation again. If the generation moved, the
+     outcome is `stale` and the next loop crawls again.
+- **The stamp never moves for the crawl.** warm-site is not a `scheduled_jobs.JOBS` entry. Its
+  record is `warm-site.json`, which is not a job's file and not the bump file, so `read_data_stamp`
+  never reads it. A test runs a whole crawl that writes its record into the stamp's health
+  directory (with `last_started`/`last_finished` fields added) and expects the same stamp. On the
+  local stack, a second `warm-site` right after a crawl skipped in 6 s with
+  `generation already warmed`, and the generation and stamp did not change
+  (`warm-site-second-run-skip.txt`).
+- **Jobs loop** (`deploy/compose.prod.yml`): after `wait=$(courtlens run-jobs --next-wake | tail -n 1)`
+  the loop runs `timeout 1500 courtlens warm-site >&2 || echo …`, takes the crawl's time off the
+  sleep, and sleeps at least 1 s, so a crawl never shifts a job's wake time. A stubbed dry run of the
+  rendered loop under `sh` gave a wake of 120 s, a 2 s crawl and a 118 s sleep. With the crawl
+  failing, the loop logged `warm-site did not complete` and kept going. The jobs service gets
+  `COURTLENS_WARM_BASE_URL` and `COURTLENS_WARM_API_URL` (`http://api:8000`).
+- `scripts/speed/sample_proc.py` (not in the plan; added): samples VmRSS and CPU from `/proc`, for
+  the resource figures below.
+
+### Local run (`docs/evidence/speed/sp02/`)
+
+Same recipe as SP00 and SP01: production build of this branch on :3180, its API on :8180 with
+`COURTLENS_READ_CACHE=true`, on the PC's data (release `71639af2…`, scope 2026-27 before
+2026-11-13). Both processes were started fresh for the first crawl.
+
+| Run | Pages | Crawl | Whole command | Median page | Slowest page | Outcome |
+| --- | --- | --- | --- | --- | --- | --- |
+| Fresh API and dashboard (as after a deploy) | 567, all 200 | 118.9 s | 131.0 s | 0.374 s | `/stats` 4.57 s | complete |
+| After `bump-data-stamp` (as after a job) | 567, all 200 | 118.3 s | 130.3 s | 0.392 s | `/players/1631260` 1.67 s | complete |
+
+The extra ~12 s is the readiness check, the 6 s settle and the 6 s final recheck.
+
+**Cache** (`cache-status-*.json`; cap 134,217,728 bytes):
+
+| Point | Entries | Bytes | Evictions | Misses (cumulative) |
+| --- | --- | --- | --- | --- |
+| Before the crawl after the bump (emptied) | 0 | 0 | 0 | 3,723 |
+| After that crawl | 3,716 | 82,958,367 (79.1 MiB, 62 % of the cap) | 0 | 7,444 |
+| After `measure.py` loaded every warmed page twice | 3,716 | 82,958,367 | 0 | 7,450 |
+
+The crawl fits with 49 MiB to spare. On the VPS it will be larger: the PC has no 2026-27 impact fits,
+so each current player's impact read is 1.6 KB here and about 25 KB live. That adds about
+521 × 23 KB ≈ 12 MB, for an estimated 91 MiB, still under the cap. This is an estimate, not a VPS
+measurement.
+
+**No new misses** (`measure-local-warmed-…json`): `measure.py --only pages --runs 2` over the 567
+crawled pages (`urls-warmed.json`) gave 1,134 loads, all 200. Hits rose from 2,530 to 12,499 and
+misses from 7,444 to 7,450. All 6 misses are the 3 reads that return 404 for one roster player,
+Richie Saunders (1643563, MEM, matched by unique name). The PC's release has no 2026-27 row for him:
+profile, game log and the legacy `/api/analytics/players/1643563?date=1983-10-28…`. A non-200 is
+never stored, so those 3 reads miss on every visit. His page still answers 200 with its fallback.
+No storable read missed. Page times from the cache:
+
+| Pages | Median | Worst median | Slowest single run |
+| --- | --- | --- | --- |
+| 521 player pages | 17 ms | 48 ms | 73 ms (`/players/203500`) |
+| 30 team pages | 32 ms | 38 ms | 46 ms |
+| 16 top-level pages | 8 ms | 55 ms (`/showcase`) | 58 ms (`/stats`) |
+
+**Peak CPU and memory during the crawl** (`resources-*.json`, sampled every 0.5 s; CPU is percent
+of one core):
+
+| Run | API RSS start → peak | API CPU peak | Dashboard RSS start → peak | Dashboard CPU peak |
+| --- | --- | --- | --- | --- |
+| Fresh processes | 250 → 1,678 MB | 118 % | 121 → 493 MB | 68 % |
+| After the bump | 1,627 → 1,749 MB | 98 % | 483 → 596 MB | 74 % |
+
+Limits: API 3 GB and 2 CPUs, dashboard 768 MB and 1 CPU. The API stays well inside its limit. The
+dashboard is the tight one: 596 MB is 78 % of 768 MB. Its RSS grew from 493 MB to 596 MB on the
+second crawl rather than returning to its start, so it is Node's heap settling, not yet a measured
+ceiling. The live pages are larger and the VPS is slower, so **G1 should read
+`docker stats courtlens-dashboard-1` during the first crawl after deploy.** On the VPS, two requests
+at a time will probably keep the dashboard's one CPU busy for the whole crawl. Live reads cost 3–4×
+their local time, so the crawl is estimated at 6–8 minutes there, inside the 1,200 s deadline.
+
+### What stays cold
+
+The crawl fetches HTML, so it warms only the reads each page's server render makes.
+`client-reads-local.json` lists every read the browser made after load on 35 pages (Playwright,
+`client-reads.mjs`, with the build's browser API base `localhost:8000` rerouted to the local API).
+After the crawl these were still misses, so the first visitor pays for them:
+
+- **Player pages:** 6 `POST /api/workbench/query` reads from the browser. They are shared across
+  players of a scope: on `/players/1643411` they were already hits after `/players/2544`.
+- **Server-rendered pages:**
+  - `/teams`: `teams/six-factors`
+  - `/wowy`: `operations/wowy-combos`
+  - `/stat-line-shift`: `POST operations/stat-shift-roster`
+  - `/last-games`: the default player's game log, team schedule and `teams`
+  - `/roster-shapes`: `roster-shapes` (twice) and `teams/six-factors` for 2025-26
+  - `/contracts`: `finance/refreshes`
+  - `/free-agency`: `operations/free-agency`
+- **Static pages** (no server data; left out of the crawl because their HTML warms nothing): every
+  Research page, `/forecasts`, `/wingspan`, `/draft`, `/calculator`, `/matchups` and
+  `/similar-players`. All of their reads come from the browser (for example `/api/zts*`,
+  `/api/shot-aftermath*`, `/api/lineup-model*`, `/api/six-factor*`, `/api/draft*`).
+- `never` reads stay uncached by design: account, workspace, Live standings and schedules,
+  portraits, college logos.
+
+Warming the browser reads would mean requesting API reads directly, not pages. That is outside the
+plan's D5 ("filled by the same code visitors use"); the owner decides at G1 whether it is worth a
+block. SP04 (two waves, slow reads) also shortens them.
+
+**Side effect found:** a local production build without `NEXT_PUBLIC_COURTLENS_API_URL` sends the
+browser's reads to `localhost:8000`, which is the owner's dev API pane. SP00 and SP01 builds did the
+same. The first capture pass sent read-only GETs (portraits) there, before the reroute was added.
+
+### Where this differs from the plan and the handoff
+
+- **`/api/cache/status` rechecks the stamp** (an `async` route awaiting `store.current()`). Without
+  this, the generation it reports could be the one before a job finished, until some cached read
+  came in.
+- **Top-level pages are the 16 server-rendered ones.** The first run crawled 583 pages, including 16
+  static ones. They answered in about 1 ms and added no cache entries (3,716 entries either way), so
+  they were dropped. A test requires `force-dynamic` on every listed page.
+- **Roster source:** the ESPN bundle is read from disk in the jobs container, which mounts `data/`.
+  No API route serves it: `/api/workbench/player-context/rosters` is a projected roster from a
+  context dataset, and the release lists everyone who played this season, including departed
+  players.
+- **A job running means skip, not wait.** The loop runs jobs one at a time, so a running job here is
+  a hand run or a killed job inside its timeout window. The next loop retries.
+- **`partial` counts as warmed** (the crawl finished, but some pages were not 200), so a permanent
+  404 does not trigger a recrawl on every loop. `stale`, `stopped`, `not-ready` and `error` crawl
+  again.
+
+### Checks
+
+- pytest `tests/unit/test_warm_site.py`: 22 passed. It covers:
+  - the URL list: teams, roster players, top-level pages, no query string, unmatched and duplicate
+    players, no bundle;
+  - top-level pages exist, are `force-dynamic` and are in the navigation;
+  - href parity with `entity-links.ts`;
+  - the generation check: new, same, job running, settling, moved during the crawl;
+  - dashboard not ready and cache off;
+  - an unexpected error is recorded, not raised;
+  - the failure stop: 5xx in a row, network errors, a 404 resetting the run, the deadline;
+  - concurrency at most 2;
+  - no cookie or credential header;
+  - the stamp unchanged after a crawl writes its record;
+  - `run-jobs --next-wake` prints only the wake seconds on stdout, and `warm-site` prints nothing
+    there;
+  - the compose loop;
+  - the status route rechecking the stamp.
+- With `test_read_cache.py`, `test_scheduled_jobs.py`, `test_cli.py`, `test_deploy_job_inputs.py`
+  and `test_agent_providers.py`: 105 passed, 8 failed. The 8 failures are the `[anthropic]` cases,
+  red since before SP00.
+- `ruff check .` and `ruff format --check .`: pass. `mypy src/courtlens`: no issues (410 files).
+  `mypy --strict scripts/speed/*.py`: no issues.
+- No dashboard file changed, so dashboard lint, typecheck, Vitest and Playwright were not run.
+- Full pytest and Playwright suites not run (plan: before each gate). Not deployed; no live run.
+  The `data-stamp-bump` and `warm-site.json` written to the PC's `data/derived/job-health/` (a
+  directory that did not exist before) were deleted, along with the scratch workspace.

@@ -1,0 +1,44 @@
+{
+ "api_url": "http://localhost:8180",
+ "base_url": "http://localhost:3180",
+ "cache_after": {
+  "bypasses": 78,
+  "bytes": 82958367,
+  "entries": 3716,
+  "evictions": 0,
+  "hits": 2530,
+  "max_bytes": 134217728,
+  "misses": 7444
+ },
+ "cache_before": {
+  "bypasses": 46,
+  "bytes": 0,
+  "entries": 0,
+  "evictions": 0,
+  "hits": 1264,
+  "max_bytes": 134217728,
+  "misses": 3723
+ },
+ "command": "courtlens warm-site",
+ "crawl_seconds": 118.3,
+ "failed": 0,
+ "failures": [],
+ "finished": "2026-11-15T06:27:32+00:00",
+ "generation": "9c9c8fd38f11c5a5",
+ "generation_after": "9c9c8fd38f11c5a5",
+ "median_seconds": 0.392,
+ "ok": 567,
+ "outcome": "complete",
+ "pages": 567,
+ "roster_players": 521,
+ "roster_source": "ef7f81fbd68b8741934f72371c250873d64e8338d9d269fb4bc725a335b80708.json (observed 2026-11-13T16:22:14.898072+00:00)",
+ "seconds": 130.3,
+ "slowest": {
+  "path": "/players/1631260",
+  "seconds": 1.669
+ },
+ "started": "2026-11-15T06:25:22+00:00",
+ "teams": 30,
+ "top_level": 16,
+ "urls": 567
+}
