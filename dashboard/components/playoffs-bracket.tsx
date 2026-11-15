@@ -9,6 +9,8 @@ import { teamAccent } from "@/lib/team-colors";
 import { TeamLogo } from "./team-logo";
 import { Icon } from "./ui/icon";
 import { Segmented } from "./ui/kit";
+import { Skeleton } from "./ui/skeleton";
+import { SkelText } from "./ui/content-skeletons";
 
 type Focus = "Western" | "finals" | "Eastern";
 
@@ -175,4 +177,30 @@ export function PlayoffsBracket({ layout, season, seeded, href }: { layout: Brac
       </div>
     </section>
   );
+}
+
+function SlotSkeleton() {
+  const team = <span className="pb-team"><Skeleton variant="circle" width={36} height={36} /><SkelText size="lg" width={48} /><SkelText size="lg" width={14} /></span>;
+  return <span className="pb-slot">{team}{team}</span>;
+}
+
+function SideSkeleton({ side }: { side: "Western" | "Eastern" }) {
+  return <div className="pb-side" data-side={side} style={{ "--pb-columns": 3, "--pb-rows": 4 } as CSSProperties}>
+    <SkelText size="xs" width={96} className="pb-side-title ui-skel-center" />
+    {[0, 1, 2].map(index => <SkelText key={index} size="xs" width={96} className="pb-round-name ui-skel-center" />)}
+    {[4, 2, 1].map((cells, index) => <div key={index} className="pb-col" data-inner={index === 2 || undefined}>
+      {Array.from({ length: Math.max(1, cells / 2) }, (_, pair) => <div key={pair} className="pb-pair" data-single={cells === 1 || undefined}>
+        {Array.from({ length: Math.min(cells, 2) }, (_, cell) => <div key={cell} className="pb-cell"><SlotSkeleton /></div>)}
+      </div>)}
+    </div>)}
+  </div>;
+}
+
+/** The bracket while it loads: both conference sides in their rounds around the Finals card. */
+export function PlayoffsBracketSkeleton() {
+  return <section className="pb-bracket" aria-hidden="true"><div className="pb-grid">
+    <SideSkeleton side="Western" />
+    <div className="pb-finals"><SkelText size="xs" width={80} className="ui-skel-center" /><SkelText size="3xl" width={240} className="ui-skel-center" /><Skeleton className="pb-finals-card" height={356} /></div>
+    <SideSkeleton side="Eastern" />
+  </div></section>;
 }

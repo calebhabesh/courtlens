@@ -16,7 +16,7 @@ import { CountChip, FilterBar } from "./ui/filter-bar";
 import { GatedNote } from "./ui/gated-note";
 import { Input } from "./ui/input";
 import { Select } from "./ui/select";
-import { Skeleton } from "./ui/skeleton";
+import { SkelGrid, SkelTile } from "./ui/content-skeletons";
 import { StatTile } from "./ui/stat-tile";
 
 type League = { id: string; name: string; timezone: string; lineup_slots: Record<string, number> };
@@ -222,7 +222,7 @@ export function PlannerClient({ fixtureMode, defaultWeek }: { fixtureMode: boole
           ) : null}
         </>
       ) : busy ? (
-        <div className="planner-loading" role="status" aria-busy="true" aria-label="Loading plan"><div className="ui-findings">{[0, 1, 2, 3].map(i => <Skeleton key={i} height={88} />)}</div><Skeleton height={320} /></div>
+        <div className="planner-loading" role="status" aria-busy="true" aria-label="Loading plan"><div className="ui-findings">{[0, 1, 2, 3].map(i => <SkelTile key={i} index={i} />)}</div><SkelGrid label="Plan" rows={8} lead="text" columns={6} density="compact" /></div>
       ) : !error ? (
         <GatedNote>No plan for this week yet.</GatedNote>
       ) : null}

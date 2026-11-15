@@ -71,7 +71,7 @@ function ShotMaking({ summary }: { summary: ShotQualitySummary }) {
   return <>
     <section className="sq-board-section" aria-label="Player shot-making">
       {error && <FeedFailure error={error} retry={retry} what="Player shot-making" />}
-      {loading && <FeedSkeleton label="Loading player shot-making" />}
+      {loading && <FeedSkeleton label="Loading player shot-making" shape="grid" rows={12} search />}
       {data?.status === "unknown" && <SqPanel className="sq-unknown" label="Season"><div className="sq-control-row">{seasonSelect}</div><GatedNote>{data.reason}</GatedNote></SqPanel>}
       {data?.status === "available" && <ShotMakingTable board={data} summary={summary} seasonSelect={seasonSelect} league={league} minFga={minFga} />}
     </section>
@@ -354,7 +354,7 @@ function PlayerTab({ summary }: { summary: ShotQualitySummary }) {
     {cleared && <GatedNote action={<Button size="lg" variant="secondary" onClick={() => set({ player: null })}>Open the default player</Button>}>
       No player chosen. Search for one above, or open the default: the most field-goal attempts in {LATEST}.</GatedNote>}
     {error && <FeedFailure error={error} retry={retry} what="The player's shot-making" />}
-    {loading && <FeedSkeleton label="Loading the player's shot-making" />}
+    {loading && <FeedSkeleton label="Loading the player's shot-making" shape="profile" />}
     {data && <>
       <div className="sq-hero-card" data-player={data.player_id}>
         <PlayerAvatar playerId={data.player_id} name={data.player_name} team={team} size="lg" era={latest ? seasonEra(latest.season, team) : undefined} className="sq-avatar" />
@@ -387,7 +387,7 @@ function PlayerTab({ summary }: { summary: ShotQualitySummary }) {
         <p className="sq-text">The same player&apos;s offensive decomposition: how lineups shot with this player on the floor, split into the looks, the making and the free throws.
           Points per 100 shots against the average player, 80% intervals.</p>
         {splits.error && <FeedFailure error={splits.error} retry={splits.retry} what="The player's decomposition" />}
-        {splits.loading && <FeedSkeleton label="Loading the player's decomposition" />}
+        {splits.loading && <FeedSkeleton label="Loading the player's decomposition" shape="grid" rows={4} density="compact" lead="text" />}
         {splits.data && <StatsGrid label="Lineup split by season" name="splits" density="compact" height="auto" leadWidth="sm" rows={splits.data} rowKey={r => r.season} rowData={r => ({ season: r.season })}
           lead={{ label: "Season", cell: r => <span className="sq-cell-strong">{r.season}</span> }}
           columns={[

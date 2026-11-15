@@ -13,6 +13,8 @@ import {
 import { formatDate } from "@/lib/format-date";
 import { teamBrandColor } from "@/lib/team-colors";
 import { copyCanonicalQueryUrl } from "@/lib/image-export";
+import { SkelControl, SkelGrid, SkelLines, SkelSegmented, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, ExampleNote } from "./stats-feed-ui";
 import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
@@ -399,6 +401,28 @@ function GameCards({ games, stats, mode, context }: { games: PlayerGameLogItem[]
   })}</ol>;
 }
 
+/** The page body's loading state: photo and window chooser over the first/last comparison, beside the game log. */
+export function LastGamesSkeleton() {
+  return <div className="lg-grid" aria-hidden="true">
+    <div className="lg-side">
+      <div className="lg-window">
+        <div className="lg-photo-frame"><Skeleton className="ui-skel-box ui-skel-card" /></div>
+        <div className="lg-chooser"><SkelControl width="100%" size="lg" /><SkelControl width="100%" size="lg" /><SkelSegmented options={[1]} stretch /><SkelControl width="100%" size="sm" /></div>
+      </div>
+      <section className="lg-compare player-glass">
+        <div className="ui-skel-header-center"><SkelText size="xl" width={120} /><SkelText size="xs" width={56} /></div>
+        <SkelGrid label="First and last games" rows={16} columns={2} lead="text" density="compact" leadWidth="sm" />
+        <SkelLines lines={1} size="xs" />
+      </section>
+    </div>
+    <section className="lg-logs player-glass">
+      <header className="lg-logs-head"><div><SkelText size="lg" width={96} /><SkelText size="sm" width={88} /></div><div className="lg-logs-actions"><SkelControl width={32} /><SkelControl width={129} /></div></header>
+      <div className="lg-chips"><SkelControl width={176} size="xs" /></div>
+      <SkelGrid label="Game logs" rows={12} groupSizes={[4, 5]} lead="text" density="compact" leadWidth="sm" />
+    </section>
+  </div>;
+}
+
 export function LastGamesView({ scopes, defaultSeason, example }: {
   scopes: LastGamesScope[]; defaultSeason: string; example: { id: string; name: string; season: string; rule: string } | null;
 }) {
@@ -526,7 +550,7 @@ export function LastGamesView({ scopes, defaultSeason, example }: {
 
     {!player && <p className="lg-empty">Choose a player to begin.</p>}
     {main.error && <FeedFailure error={main.error} retry={main.retry} what="the game log" />}
-    {player && main.loading && <FeedSkeleton label="Loading the game log" />}
+    {player && main.loading && <FeedSkeleton label="Loading the game log"><LastGamesSkeleton /></FeedSkeleton>}
     {data && games.length === 0 && <p className="lg-empty">{name} has no games in {season} {phaseLabel(phase)}.</p>}
     {data && games.length > 0 && <>
       <div className="lg-grid">

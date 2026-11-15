@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { PlayerTwinsView } from "@/components/player-twins-view";
+import { PlayerTwinsView, TwinsPageSkeleton } from "@/components/player-twins-view";
 import { PageShell } from "@/components/ui/page-shell";
-import { TemplateSkeleton } from "@/components/ui/template-skeleton";
 
 export const metadata: Metadata = {
   title: "Player Twins",
@@ -10,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <Suspense fallback={<TemplateSkeleton template="compare" />}><PageShell template="compare"><PlayerTwinsView /></PageShell></Suspense>;
+  return <Suspense fallback={<PageShell template="compare"><TwinsPageSkeleton /></PageShell>}><PageShell template="compare"><PlayerTwinsView /></PageShell></Suspense>;
 }

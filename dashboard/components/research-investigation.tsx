@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useReleaseCatalog } from "@/lib/use-release-catalog";
 import type { DataDetailRow } from "./ui/data-details";
 import { useToast } from "./ui/toast";
-import { Skeleton } from "./ui/skeleton";
+import { SkelGrid, SkelTiles } from "./ui/content-skeletons";
 import { LookupInput } from "./lookup-input";
 
 /**
@@ -66,11 +66,11 @@ export function useShareLink() {
   };
 }
 
-/** In-page loading state shaped like a Research body: a findings row, then the main table. */
+/** In-page loading state shaped like a Research body: the key findings tiles, then the observations table. */
 export function ResearchBodySkeleton({ tiles = 4 }: { tiles?: number }) {
   return <div className="ui-research" role="status" aria-busy="true" aria-label="Loading">
-    <div className="ui-findings">{Array.from({ length: tiles }, (_, index) => <Skeleton key={index} height={88} />)}</div>
-    <Skeleton height={360} />
+    <SkelTiles count={tiles} className="ui-findings" />
+    <SkelGrid label="Observations" rows={8} lead="text" density="compact" />
   </div>;
 }
 

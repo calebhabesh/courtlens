@@ -6,6 +6,8 @@ import { awayFirst, easternToday, formatRecord, gameStatus, lineFavourite, liveR
 import { formatDate } from "@/lib/format-date";
 import { band, metric, signed, type HeadToHead, type TrialRead, type WinProbabilityPage, type WorkedExample } from "@/lib/win-probability";
 import { CourtLensSays } from "./brand";
+import { Skeleton } from "./ui/skeleton";
+import { SkelLines, SkelText } from "./ui/content-skeletons";
 import { DateStrip } from "./live-board";
 import { teamColors } from "./live-game";
 import { logoTeam } from "./live-panel";
@@ -252,4 +254,28 @@ function V4Inner({ data }: { data: WinProbabilityPage }) {
 
 export function WinProbabilityV4({ data }: { data: WinProbabilityPage }) {
   return <Suspense fallback={null}><V4Inner data={data} /></Suspense>;
+}
+
+/** The page body's loading state: tonight's games (date strip and game cards), then the track record tiles. */
+export function WinProbabilityV4Skeleton() {
+  const heading = (width: number) => <div className="rs-section-head"><span className="rs-heading"><Skeleton width={20} height={20} /><SkelText size="2xl" width={width} /></span></div>;
+  return <>
+    <section className="rs-section ui-skel-section-first" aria-hidden="true">
+      {heading(200)}
+      <div className="live-strip"><ol className="live-strip-days">{Array.from({ length: 7 }, (_, index) => <li key={index}><Skeleton width={52} height={56} /></li>)}</ol></div>
+      <ol className="wpc-grid">{Array.from({ length: 6 }, (_, index) => <li key={index}><div className="wpc">
+        <span className="wpc-head"><SkelText size="xs" width={40} /><SkelText size="xs" width={32} /></span>
+        <span className="wpc-teams">
+          <span className="wpc-team"><Skeleton variant="circle" width={52} height={52} /><span className="wpc-team-text"><SkelText size="sm" width={110} /><SkelText size="lg" width={36} /></span></span>
+          <span className="wpc-team" data-side="home"><span className="wpc-team-text"><SkelText size="sm" width={110} /><SkelText size="lg" width={36} /></span><Skeleton variant="circle" width={52} height={52} /></span>
+        </span>
+        <span className="wpc-foot"><SkelText size="xs" width={180} /></span>
+      </div></li>)}</ol>
+    </section>
+    <section className="rs-section" aria-hidden="true">
+      {heading(160)}
+      <SkelLines lines={1} size="sm" className="ui-skel-measure" />
+      <dl className="wp-tiles">{[0, 1, 2].map(index => <div key={index} className="wp-tile"><Skeleton width={32} height={32} /><SkelText size="xl" width={72} /><SkelText size="sm" width={172} /></div>)}</dl>
+    </section>
+  </>;
 }

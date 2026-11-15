@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SkelBars, SkelFilterBar, SkelHeader, SkelTiles } from "./ui/content-skeletons";
 import { seasonEra } from "@/lib/portrait-source";
 import { useState } from "react";
 import { PercentileCell, RankedBars } from "./charts";
@@ -104,6 +105,16 @@ function Body({ data, setFocus, scope }: { data: DefenseView; setFocus: (id: str
 }
 
 /** PC11 Defensive Matchups: populated from NBA tracking defense, hustle and season matchups. */
+/** The body while it loads: the scope bar, four leader tiles, then the top-12 bars. */
+function DefensiveMatchupsBodySkeleton() {
+  return <FeedSkeleton label="Loading defensive matchups"><SkelFilterBar fields={[[44, 92], [40, 124], [40, 100]]} meta={[88]} /><SkelTiles count={4} /><SkelBars rows={12} card={false} /></FeedSkeleton>;
+}
+
+/** The whole page before the view mounts (Suspense). */
+export function DefensiveMatchupsPageSkeleton() {
+  return <PageShell template="research" className="feed-page"><SkelHeader icon={false} title={200} subtitle={420} actions={[108]} /><DefensiveMatchupsBodySkeleton /></PageShell>;
+}
+
 export function DefensiveMatchupsView() {
   const { get, set } = useUrlState();
   const season = get("season"), phase = get("phase"), category = get("category") ?? "overall", playerId = get("playerId");
@@ -117,7 +128,7 @@ export function DefensiveMatchupsView() {
         {data.categories.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}</Select></Field>}
       count={<CountChip>{data.players.length} defenders</CountChip>} />}
     {error && <FeedFailure error={error} retry={retry} what="Defensive Matchups" />}
-    {loading && <FeedSkeleton label="Loading defensive matchups" />}
+    {loading && <DefensiveMatchupsBodySkeleton />}
     {data && <Body data={data} scope={scope} setFocus={id => set({ playerId: id })} />}
   </PageShell>;
 }

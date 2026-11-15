@@ -78,7 +78,7 @@ export function ShotDecompositionTab() {
   return <>
     <section className="sq-board-section" aria-label="ShotQuality decomposition">
       {error && <FeedFailure error={error} retry={retry} what="The decomposition" />}
-      {loading && <FeedSkeleton label="Loading the decomposition" />}
+      {loading && <FeedSkeleton label="Loading the decomposition" shape="grid" rows={10} search />}
       {data?.status === "unknown" && <SqPanel className="sq-unknown" label="Season">
         <div className="sq-control-row">{seasonSelect}</div>
         <GatedNote>{data.reason}</GatedNote>

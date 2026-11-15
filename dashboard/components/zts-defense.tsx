@@ -254,7 +254,7 @@ export function DefenseTab() {
         </div>
       </Panel>}
       {error && <FeedFailure error={error} retry={retry} what="Play-type defense" />}
-      {loading && !view && <FeedSkeleton label="Loading play-type defense" />}
+      {loading && !view && <FeedSkeleton label="Loading play-type defense" shape="grid" rows={10} density="compact" />}
       {view && <div className="ztd-body" data-loading={loading || undefined}>
         <PatternLine view={view} />
         {view.players.length === 0 ? <GatedNote>No defensive play types are served for the {scopeLabel(view)}.</GatedNote> : <>

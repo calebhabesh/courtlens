@@ -184,7 +184,7 @@ function Why({ page, id, fallback, onChoose, onClear, onReset }: { page: Project
     {id === NO_PLAYER && <GatedNote action={fallback ? <Button size="lg" variant="secondary" onClick={onReset}>Open the default player</Button> : undefined}>No player chosen. Search for one above, or open the default: the highest projection on a roster.</GatedNote>}
     {id !== NO_PLAYER && !row && <GatedNote>No contributions for this player.</GatedNote>}
     {row && error && <FeedFailure error={error} retry={retry} what="The player's contributions" />}
-    {row && loading && <FeedSkeleton label="Loading the player's contributions" />}
+    {row && loading && <FeedSkeleton label="Loading the player's contributions" shape="profile" rows={6} />}
     {row && data && <article className="pi-card" data-player={row.player_id} style={tint ? vars({ "--pi-team": tint }) : undefined}>
       <header className="pi-card-head">
         <PlayerAvatar playerId={row.player_id} name={row.name} team={team} size="lg" era={seasonEra(teamSeason(row), team)} />

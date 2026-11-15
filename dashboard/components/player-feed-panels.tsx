@@ -12,7 +12,7 @@ export function PlayerTrackingPanel({ playerId, name, season, phase }: { playerI
   const { data, error, loading, retry } = useFeed([playerId, season, feedPhase], signal => getPlayerTracking(playerId, { season, phase: feedPhase }, signal).catch(() =>
     // The profile's season may predate the tracking feeds; fall back to the latest observed scope.
     getPlayerTracking(playerId, {}, signal)));
-  if (loading) return <FeedSkeleton label="Loading tracking" />;
+  if (loading) return <FeedSkeleton label="Loading tracking" shape="tiles-grid" count={4} rows={0} />;
   if (error || !data) return <FeedFailure error={error} retry={retry} what="Tracking" />;
   const scope = `${data.season} · ${PHASE_LABELS[data.phase]}`;
   if (!data.observed) return <GatedNote why="NBA tracking lists players who appeared in this scope; a missing row is unknown, not zero.">No tracking row for {name} in {scope}.</GatedNote>;
@@ -63,7 +63,7 @@ function StatRow({ label, value, percentile, qualified, cohort }: { label: strin
 /** PC11 profile Measurements tab: the player's official Draft Combine record, if any. */
 export function PlayerCombinePanel({ playerId, name }: { playerId: string; name: string }) {
   const { data, error, loading, retry } = useFeed([playerId], signal => getCombine({ playerId }, signal));
-  if (loading) return <FeedSkeleton label="Loading combine measurements" />;
+  if (loading) return <FeedSkeleton label="Loading combine measurements" shape="tiles-grid" count={4} rows={0} />;
   if (error || !data) return <FeedFailure error={error} retry={retry} what="Combine measurements" />;
   // Rows without an NBA id have player_id null; only an explicit match is this player's record.
   const row = data.selected_player_id ? data.rows.find(r => r.player_id === data.selected_player_id) : undefined;
