@@ -46,3 +46,24 @@ done
 
 verb=$([[ $dry_run == 1 ]] && echo "would free" || echo "freed")
 echo "courtlens scratch: $verb $((freed_kib / 1024)) MiB"
+
+# Disposable test PostgreSQL containers (scripts/test_python.py) are removed with
+# their anonymous data volume when the run ends, but a killed run leaves both
+# behind. Remove any older than the scratch age limit; a full suite takes minutes.
+if command -v docker >/dev/null 2>&1; then
+  now="$(date +%s)"
+  while read -r name created; do
+    [[ -n "$name" ]] || continue
+    age_min=$(((now - $(date -d "$created" +%s)) / 60))
+    ((age_min >= max_age_min)) || continue
+    if ((dry_run)); then
+      echo "would remove container $name (${age_min} min old)"
+    else
+      docker rm -f -v "$name" >/dev/null && echo "removed container $name"
+    fi
+  done < <(
+    docker ps -a --filter name=^courtlens-tests- --format '{{.Names}}' 2>/dev/null |
+      xargs -r docker inspect --format '{{.Name}} {{.Created}}' 2>/dev/null |
+      sed 's#^/##'
+  )
+fi
