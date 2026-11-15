@@ -11,7 +11,7 @@ import { Select } from "./ui/select";
 import { GatedNote } from "./ui/gated-note";
 import { ResearchLayout } from "./ui/page-shell";
 import { StatTile } from "./ui/stat-tile";
-import { Skeleton } from "./ui/skeleton";
+import { SkelTile } from "./ui/content-skeletons";
 import { Button } from "./ui/kit";
 
 const titles: Record<string, string> = {
@@ -92,7 +92,7 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
   if (error) {
     body = <div role="alert"><GatedNote tone="warning" action={<Button size="lg" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v + 1); }}>Retry reads</Button>}>Report unavailable: {error}</GatedNote></div>;
   } else if (!registry || (runId && !result)) {
-    findings = <>{[0, 1, 2, 3].map(i => <Skeleton key={i} height={88} />)}</>;
+    findings = <>{[0, 1, 2, 3].map(i => <SkelTile key={i} index={i} />)}</>;
     body = <p className="sr-only" role="status">Loading the registered experiment…</p>;
   } else if (!entry) {
     body = <GatedNote why={<ExperimentLimits />}>This experiment has no registered entry. No model output is available.</GatedNote>;

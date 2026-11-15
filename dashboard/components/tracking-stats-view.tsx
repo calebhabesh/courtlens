@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { SkelBars, SkelFilterBar, SkelHeader, SkelTiles } from "./ui/content-skeletons";
 import { useState } from "react";
 import { PercentileCell, RankedBars } from "./charts";
 import { FeedDetails, FeedFailure, FeedScopeFields, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
@@ -58,6 +59,16 @@ function Body({ data, sort, setSort }: { data: TrackingView; sort: string; setSo
 }
 
 /** PC11 Stats · Tracking: NBA optical tracking season totals, kept apart from date-windowed Stats. */
+/** The tracking body while it loads: the scope bar, four leader tiles, then the top-12 bars. */
+function TrackingBodySkeleton() {
+  return <FeedSkeleton label="Loading tracking"><SkelFilterBar fields={[[44, 92], [40, 124], [56, 100]]} meta={[88]} /><SkelTiles count={4} /><SkelBars rows={12} card={false} /></FeedSkeleton>;
+}
+
+/** The whole page before the view mounts (Suspense): header, the Stats tabs, then the body. */
+export function TrackingPageSkeleton() {
+  return <PageShell template="research" className="feed-page"><SkelHeader title={64} subtitle={520} actions={[108]} /><div className="ui-route-tabs" aria-hidden="true" /><TrackingBodySkeleton /></PageShell>;
+}
+
 export function TrackingStatsView() {
   const { get, set } = useUrlState();
   const season = get("season"), phase = get("phase"), group = get("group") ?? "drives", sort = get("sort") ?? "";
@@ -75,7 +86,7 @@ export function TrackingStatsView() {
     {error && (season || phase
       ? <GatedNote why={error} action={<Button size="lg" onClick={() => set({ season: null, phase: null })}>Show the latest observed season</Button>}>No tracking feed was observed for this season or phase.</GatedNote>
       : <FeedFailure error={error} retry={retry} what="Tracking" />)}
-    {loading && <FeedSkeleton label="Loading tracking" />}
+    {loading && <TrackingBodySkeleton />}
     {data && <Body data={data} sort={sort} setSort={key => set({ sort: key })} />}
   </PageShell>;
 }

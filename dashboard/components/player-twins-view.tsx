@@ -8,6 +8,8 @@ import { LookupInput } from "./lookup-input";
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogo } from "./team-logo";
 import { CourtLensWordmark } from "./courtlens-wordmark";
+import { SkelControl, SkelHeader, SkelSegmented, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { ControlScope } from "./ui/control-scope";
 import { Icon } from "./ui/icon";
@@ -34,6 +36,38 @@ const whole = (value: number) => Math.round(value).toLocaleString("en-US");
  * player-season beside its twin, four groups of league-relative volume and efficiency, then the
  * closest player-seasons. Box Score mode applies the same method to box rates.
  */
+/** One twin card: kicker, the photo and name block, then four measure groups of volume and efficiency bars. */
+function TwinCardSkeleton() {
+  return <article className="tw-card" aria-hidden="true">
+    <SkelText size="2xs" width={140} />
+    <div className="tw-who"><Skeleton variant="circle" width={56} height={56} /><span className="ui-skel-identity"><SkelText size="xl" width={220} /><SkelText size="xs" width={200} /><SkelText size="xs" width={160} /></span></div>
+    {[0, 1, 2, 3].map(index => <section key={index} className="tw-group">
+      <SkelText size="lg" width={40} className="ui-skel-center" />
+      {[0, 1].map(row => <div key={row} className="ui-skel-bar-row"><SkelText size="xs" width={28} /><Skeleton className="ui-skel-track" width={`${40 + ((index + row) * 17) % 40}%`} /><SkelText size="xs" width={40} /></div>)}
+    </section>)}
+  </article>;
+}
+
+/** The page body's loading state: both consoles, the weights button, then the twin panel with two cards. */
+function TwinsSkeleton() {
+  return <>
+    <div className="tw-consoles" aria-hidden="true">
+      <section className="tw-console tw-console-scope"><SkelSegmented options={[96, 84, 92]} /><SkelControl width={161} /><SkelControl width={220} size="lg" /><SkelSegmented options={[92, 84]} /></section>
+      <section className="tw-console tw-console-pool"><SkelSegmented options={[100, 108]} /><SkelControl width={221} /><SkelControl width={218} /></section>
+    </div>
+    <section className="tw-panel player-glass" aria-hidden="true">
+      <header className="tw-panel-head"><div><SkelText size="2xs" width={140} /><SkelText size="xl" width={194} /></div><SkelText size="lg" width={124} /></header>
+      <SkelText size="xs" width={320} />
+      <div className="tw-cards"><TwinCardSkeleton /><TwinCardSkeleton /></div>
+    </section>
+  </>;
+}
+
+/** The whole page before the view mounts (Suspense): centred header, then the consoles and twin cards. */
+export function TwinsPageSkeleton() {
+  return <div className="tw-page" role="status" aria-busy="true" aria-label="Loading Player Twins"><SkelHeader align="center" title={187} subtitle={504} /><TwinsSkeleton /></div>;
+}
+
 export function PlayerTwinsView() {
   const { get, set } = useUrlState();
   const modeParam = get("mode");
@@ -58,7 +92,7 @@ export function PlayerTwinsView() {
     <PageHeader className="pvp-header" icon="fingerprint" title="Player Twins" subtitle={meta.blurb} />
     {view && <Console view={view} set={set} mode={mode} pool={pool} minPoss={minPoss} byPosition={byPosition} />}
     {error && <FeedFailure error={error} retry={retry} what="Player Twins" />}
-    {loading && !view && <FeedSkeleton label="Finding twins" />}
+    {loading && !view && <FeedSkeleton label="Finding twins"><TwinsSkeleton /></FeedSkeleton>}
     {view && <>
       <section className="tw-panel player-glass" aria-label={meta.title}>
         <header className="tw-panel-head">

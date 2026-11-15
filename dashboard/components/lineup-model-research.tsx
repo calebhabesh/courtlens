@@ -182,7 +182,7 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
     {unavailable ? <p className="lm-lead" data-field="tool-unavailable">The lineup tool needs the model&apos;s weights, which aren&apos;t on this server. Everything else on this page still works.</p> : <>
       <p className="lm-lead">Pick any five of {whole(roster?.players.length ?? 0)} players. Both models predict that five&apos;s net rating against {serving.panel_season}&apos;s {serving.panel_size} most-used lineups, from a fit trained on {serving.window[0]} to {serving.window.at(-1)}.</p>
       {rosterError && <FeedFailure error={rosterError} retry={retryRoster} what="The lineup tool's players" />}
-      {rosterLoading && <FeedSkeleton label="Loading the players" />}
+      {rosterLoading && <FeedSkeleton label="Loading the players" shape="cards" count={5} rows={1} />}
       {ready && <>
         <div className="lm-tool-head">
           <p className="lm-note" data-field="five-note">{isDefault ? `Opens on ${serving.panel_season}'s most-used lineup, by possessions together.` : "Your five, in the link so it can be shared."}</p>
@@ -194,7 +194,7 @@ function Tool({ page, roster, rosterError, rosterLoading, retryRoster, five, pla
         <p className="lm-note" data-field="rating-gap" data-value={gap}>Each card shows the player&apos;s ridge rating, in points per 100 above an average player, and possessions in the fit. The lineup model&apos;s own additive ratings differ from these by at most {fixed(gap, 4)} across all {whole(roster?.players.length ?? 0)} players.</p>
         <p className="lm-note" data-field="positions">Neither model takes a player&apos;s position as an input, so neither judges a lineup&apos;s balance.</p>
         {error && <FeedFailure error={error} retry={retry} what="This five's prediction" />}
-        {loading && !shown && <FeedSkeleton label="Predicting this five" />}
+        {loading && !shown && <FeedSkeleton label="Predicting this five" shape="bars" rows={3} />}
         {shown && <div className="lm-fit-result" data-result data-stale={loading || undefined} aria-busy={loading}><FitView fit={shown} /></div>}
       </>}
     </>}

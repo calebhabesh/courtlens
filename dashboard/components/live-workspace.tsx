@@ -7,6 +7,7 @@ import { useLiveRead } from "@/lib/use-live-read";
 import { formatDate } from "@/lib/format-date";
 import { AllGamesRail, DateStrip, GameCard } from "./live-board";
 import { GAME_TABS, GameBanner, GameTabs, teamColors, type GameTab } from "./live-game";
+import { LiveCardsSkeleton, LiveGameSkeleton } from "./live-skeletons";
 import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
 import { DatePicker } from "./ui/date-picker";
 import { GatedNote } from "./ui/gated-note";
@@ -88,7 +89,7 @@ function Board({ slate, explicit }: { slate: string; explicit: boolean }) {
       <ol className="live-grid">{games.map((game, i) => <li key={game.source_id}><GameCard game={game} index={i} href={gameHref(game.source_id)} /></li>)}</ol>
     </section>}
     {read?.data && !games.length && <GatedNote>No games on {formatDate(slate, "compact")}.</GatedNote>}
-    {!read && !error && <p className="live-loading" aria-live="polite">Loading games…</p>}
+    {!read && !error && <div role="status" aria-busy="true" aria-label="Loading games"><LiveCardsSkeleton /></div>}
     {read && read.status !== "observed" && !read.data && <GatedNote why={read.error ?? undefined}>ESPN hasn&apos;t answered for this date yet.</GatedNote>}
     <SourceLine read={read} rows={detailRows(read)} />
   </>;
@@ -159,7 +160,7 @@ function Game({ gameId, slate, requested }: { gameId: string; slate: string; req
         teams: awayFirst(data.game.teams).map(team => ({ id: team.canonical_id, name: team.name })) })} />
     </> : <>
       <div className="sr-only"><PageHeader title="Live game" /></div>
-      {!read && !error && <p className="live-loading" aria-live="polite">Loading game…</p>}
+      {!read && !error && <div role="status" aria-busy="true" aria-label="Loading game"><LiveGameSkeleton /></div>}
       {(error || read) && <GatedNote why={read?.error ?? error ?? undefined}>This game isn&apos;t available from ESPN right now.</GatedNote>}
     </>}
     <SourceLine read={read} rows={[...detailRows(read), { label: "Slate date", value: `${slate} (Eastern)`, mono: true }]} />

@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { WingspanResearch } from "@/components/wingspan-research";
-import { FeedSkeleton } from "@/components/stats-feed-ui";
+import { WingspanResearch, WingspanSkeleton } from "@/components/wingspan-research";
 
 export const metadata: Metadata = {
   title: "Combine & Wingspan",
@@ -9,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function WingspanPage() {
-  return <Suspense fallback={<FeedSkeleton label="Loading wingspan measurements" />}><WingspanResearch /></Suspense>;
+  return <Suspense fallback={<WingspanSkeleton />}><WingspanResearch /></Suspense>;
 }

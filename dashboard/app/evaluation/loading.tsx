@@ -1,3 +1,3 @@
-import { TemplateSkeleton } from "@/components/ui/template-skeleton";
+import { ForecastsSkeleton } from "@/components/points-forecasts-research";
 
-export default function Loading() { return <TemplateSkeleton template="research" />; }
+export default function Loading() { return <ForecastsSkeleton label="Loading the Evaluation Archive" />; }

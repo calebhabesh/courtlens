@@ -308,7 +308,7 @@ function TreeBody({ page, playerId, onPlayer }: { page: SixFactorPage; playerId:
         subtitle={data.in_fit ? <>{data.games ?? "—"} GP · {data.minutes == null ? "—" : count(Math.round(data.minutes))} MIN</> : `Not in the ${page.season} fit`} />}
     </div>
     {error && <FeedFailure error={error} retry={retry} what="Impact Tree" />}
-    {loading && <FeedSkeleton label="Loading Impact Tree" />}
+    {loading && <FeedSkeleton label="Loading Impact Tree" shape="profile" rows={0} />}
     {data && <>
       {!data.in_fit && <GatedNote>This player has no stints in the {page.season} {phaseLabel(page.phase).toLowerCase()} fit, so every number is unknown, not zero.{data.rated_seasons.length > 0 ? ` RAPM is served for ${data.rated_seasons.join(", ")}.` : ""}</GatedNote>}
       <ImpactTree tree={data} reconstruction={page.reconstruction} />
@@ -455,7 +455,7 @@ export function SixFactorResearch() {
       count={data && <CountChip>{count(data.players.length)} rated</CountChip>}
       details={details} />
     {error && <FeedFailure error={error} retry={retry} what="Six-Factor RAPM" />}
-    {loading && <FeedSkeleton label="Loading six-factor ratings" />}
+    {loading && <FeedSkeleton label="Loading six-factor ratings" shape="grid" rows={12} search />}
     {answer?.status === "unavailable" && <GatedNote action={answer.scopes[0] && <ButtonLink size="lg" href={`${pathname}?season=${answer.scopes[0].season}`}>Open {answer.scopes[0].season}</ButtonLink>}>No one-year fit is served for {season} {phaseLabel(phase).toLowerCase()}. RAPM is sealed after a season ends, and history starts in 2014-15.</GatedNote>}
     {data && <Body page={data} factor={factor} playerId={playerId} treeHref={treeHref} statsHref={statsHref} set={set} />}
   </div>;

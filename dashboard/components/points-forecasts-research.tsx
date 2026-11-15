@@ -5,6 +5,7 @@ import {
   Glossary, MethodBlock, ResearchCard, ResearchCards, ResearchDisclosure, ResearchIntro, ResearchSection, type GlossaryGroup,
 } from "./research/research-page";
 import { GridPlayer, GridValue, StatsGrid, type GridColumn } from "./research/stats-grid";
+import { SkelIntro, SkelText } from "./ui/content-skeletons";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
@@ -57,6 +58,18 @@ export function ForecastsFrame({ intro, children }: { intro: ReactNode; children
       </Suspense>
       {intro}
       {children}
+    </div>
+  </PageShell>;
+}
+
+/** Both tabs' loading state: the hero (it needs no data), the two tabs as placeholders, then the tab's sections. */
+export function ForecastsSkeleton({ label }: { label: string }) {
+  return <PageShell template="research">
+    <div className="rs-column fc-page">
+      <PageHeader className="sq-hero research-hero" icon="chart-line" title="Points Forecasts" subtitle="Next-game points for every player, tested on a season no model saw." />
+      <nav className="ui-route-tabs fc-tabs" aria-hidden="true"><div className="ui-tabs-list ui-route-tabs-list">{[120, 136].map(width => <span key={width} className="ui-skel-tab"><SkelText size="sm" width={width - 24} /></span>)}</div></nav>
+      <SkelIntro tagline={400} links={[180]} />
+      <FeedSkeleton label={label} />
     </div>
   </PageShell>;
 }

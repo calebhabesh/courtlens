@@ -5,6 +5,8 @@ import Link from "next/link";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { SqPanel, Tiles, Toned } from "./shot-quality-figures";
 import { TeamLogo } from "./team-logo";
+import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelGrid, SkelHeader, SkelSegmented, SkelText } from "./ui/content-skeletons";
 import { GatedNote } from "./ui/gated-note";
 import { CountChip } from "./ui/filter-bar";
 import { PlayerAvatar } from "./ui/identity";
@@ -139,6 +141,26 @@ function Card({ card, position, data, global }: { card: DefenseCard; position: n
   </article>;
 }
 
+/** A defender card's loading state: the card's own head, kind tabs, value tiles and Key Matchups table. */
+function CardSkeleton() {
+  return <article className="dq-card" aria-hidden="true">
+    <header className="dq-card-head">
+      <Skeleton variant="circle" width={80} height={80} />
+      <div className="dq-card-titles"><SkelText size="lg" width={120} /><SkelText size="xs" width={48} /><Skeleton width={125} height={20} /><SkelText size="2xs" width={88} /></div>
+      <Skeleton className="dq-badge" width={36} height={28} />
+    </header>
+    <SkelSegmented options={[1, 1, 1]} stretch />
+    <div className="dq-stats">
+      <div className="dq-stat" data-wide><SkelText size="2xs" width={96} /><SkelText size="xl" width={56} /><SkelText size="2xs" width={84} /></div>
+      {[0, 1, 2].map(index => <div key={index} className="dq-stat"><SkelText size="2xs" width="80%" /><SkelText size="lg" width={36} /></div>)}
+    </div>
+    <div className="dq-matchups-block">
+      <div className="dq-matchups-head"><SkelText size="md" width={96} /><SkelText size="sm" width={84} /></div>
+      <SkelGrid label="Key matchups" rows={5} labels={["FGA", "xPPS", "PPS"]} leadLabel="Shooter" density="compact" leadWidth="sm" className="dq-matchups" />
+    </div>
+  </article>;
+}
+
 function Board({ data, query, kind }: { data: Boards; query: string; kind: ShotKind }) {
   const [shown, setShown] = useState(PAGE);
   const needle = query.trim().toLocaleLowerCase("en-US");
@@ -265,6 +287,17 @@ function Methodology({ summary }: { summary: DefenseSummary }) {
 
 // ---- Page ------------------------------------------------------------------------------------------
 
+/** The whole page before the view mounts (Suspense): the hero, the card filters, then three defender cards. */
+export function DefensiveShotQualityPageSkeleton() {
+  return <PageShell template="research" className="dq-shell"><div className="rs-column dq-page" role="status" aria-busy="true" aria-label="Loading Defensive Shot Quality">
+    <SkelHeader align="hero" title={280} subtitle={620} />
+    <section className="dq-board-section" aria-hidden="true">
+      <div className="ui-skel-chart-card"><div className="ui-skel-controls"><SkelControl width={178} /><span className="ui-skel-push" /><SkelControl width={88} size="md" /><SkelControl width={110} size="md" /><SkelControl width={110} size="md" /><SkelSegmented options={[36, 40, 40]} size="md" /></div></div>
+      <div className="dq-grid">{[0, 1, 2].map(index => <CardSkeleton key={index} />)}</div>
+    </section>
+  </div></PageShell>;
+}
+
 export function DefensiveShotQualityView() {
   const { get, set } = useUrlState();
   const season = get("season") ?? LATEST;
@@ -297,7 +330,7 @@ export function DefensiveShotQualityView() {
           {available && <div className="dq-toolbar-foot"><ToneLegend level={95} className="dq-legend" /><CountChip>{formatWhole(available.board.rows.length)} defenders</CountChip></div>}
         </SqPanel>
         {error && <FeedFailure error={error} retry={retry} what="The defender cards" />}
-        {loading && <FeedSkeleton label="Loading the defender cards" />}
+        {loading && <FeedSkeleton label="Loading the defender cards"><div className="dq-grid">{[0, 1, 2].map(index => <CardSkeleton key={index} />)}</div></FeedSkeleton>}
         {data?.status === "unknown" && <GatedNote>{data.reason}</GatedNote>}
         {available && <Board key={`${season}:${kind}:${sort}:${team}`} data={available} query={query} kind={kind} />}
       </section>

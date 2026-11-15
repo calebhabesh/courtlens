@@ -7,7 +7,7 @@ import { CatalogScopeFields } from "./catalog-scope-fields";
 import { GatedNote } from "./ui/gated-note";
 import { PlayerIdentity } from "./ui/identity";
 import { TeamLogo } from "./team-logo";
-import { Skeleton } from "./ui/skeleton";
+import { SkelTiles } from "./ui/content-skeletons";
 import { formatDate, throughLabel } from "@/lib/format-date";
 import type { PlayerProfile } from "@/lib/types";
 import { Button } from "./ui/kit";
@@ -54,7 +54,7 @@ export function FinanceContractDrawer({ contract, result, name, onClose, params 
     <Button size="sm" onClick={() => setShowStats(value => !value)} aria-expanded={showStats}>Player Stats</Button>
     {showStats && <section><h3>Embedded player Stats · separate basketball context</h3>
       <div className="finance-controls"><CatalogScopeFields release={scope.release || undefined} season={scope.season} phase={scope.phase} before={scope.before} onSeason={season => changeScope({season})} onPhase={phase => changeScope({phase})} onBefore={before => changeScope({before})} /></div>
-      {loading && <div role="status"><Skeleton height={96} /><span className="sr-only">Loading player Stats…</span></div>}
+      {loading && <div role="status"><SkelTiles count={4} /><span className="sr-only">Loading player Stats…</span></div>}
       {statsError && <div role="alert"><GatedNote why={statsError} action={<Button size="sm" onClick={() => setScope(previous => ({...previous}))}>Retry Stats</Button>}>Stats unavailable.</GatedNote></div>}
       {stats && <section aria-label="Embedded player Stats"><p>Basketball season {stats.context.season} · {stats.context.phase} · {throughLabel(stats.context.before_date)} · {stats.summaries.season.gp ?? stats.context.sample_size ?? "Unknown"} appearances</p><dl>{Object.entries(stats.summaries.season).map(([key,value]) => <div key={key}><dt>{key}</dt><dd>{value ?? "Unknown"}</dd></div>)}</dl><GatedNote why={[...(stats.warnings ?? []),...(stats.context.warnings ?? [])].join(" · ") || "Basketball participation does not establish a financial association."}>Basketball context is separate from financial terms.</GatedNote></section>}
     </section>}

@@ -9,6 +9,8 @@ import {
   type CurrentStatus, type FreeAgencyFilter, type FreeAgencySort, type FreeAgent, type MovesIndex, type RosterIndex,
 } from "@/lib/free-agency";
 import "./stats-explorer.css";
+import { SkelControl, SkelControls, SkelGrid, SkelSegmented, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
 import { PlayerPortrait } from "./player-portrait";
@@ -114,6 +116,20 @@ const GROUPS: { label: string; columns: { key: string; label: string; sort?: Fre
 ];
 
 /** Free Agency (alignment row 14): NBA.com's 2026 tracker in Databallr's one large table. */
+/** The tracker's loading state: the summary card, status chips, search row and the movement table. */
+export function FreeAgencySkeleton() {
+  return <>
+    <section className="fa-summary" aria-hidden="true">
+      <dl>{[64, 72, 56, 72, 56, 150].map((width, index) => <div key={index}><SkelText size="xs" width={width} /><SkelText size="3xl" width={index === 0 ? 56 : 40} /></div>)}</dl>
+      <div className="fa-summary-foot"><div className="fa-market"><SkelText size="xs" width={92} /><Skeleton className="ui-skel-bar" height={4} /><SkelText size="xl" width={40} /></div></div>
+    </section>
+    <SkelControls items={[64, 101, 86, 99, 89, 84, 103, 184, 82]} />
+    <div className="fa-filters" aria-hidden="true"><span className="fa-search"><SkelControl width="100%" size="lg" /></span><SkelControl width={99} size="lg" /><SkelSegmented options={[40, 44, 44]} size="md" /></div>
+    <SkelGrid label="Free agents" rows={10} leadLabel="Name" leadGroup="Player" labels={["Status", "Team", "PTS", "REB", "AST", "Age", "Exp", "Terms", "Source"]}
+      groups={["Movement", "Movement", "2025-26", "2025-26", "2025-26", "Profile", "Profile", "Deal", "Deal"]} />
+  </>;
+}
+
 export function FreeAgencyView() {
   const { get, set } = useUrlState();
   const filter = (FILTERS.find(f => f.value === get("status"))?.value ?? "all") as FreeAgencyFilter;
@@ -158,7 +174,7 @@ export function FreeAgencyView() {
       </div>}
     </header>
     {feed.error && <FeedFailure error={feed.error} retry={feed.retry} what="Free Agency" />}
-    {feed.loading && <FeedSkeleton label="Loading free agency" />}
+    {feed.loading && <FeedSkeleton label="Loading free agency"><FreeAgencySkeleton /></FeedSkeleton>}
     {data?.status === "not_configured" && <GatedNote why={data.limitations[0]}>No free-agent tracker snapshot is installed yet. An operator imports NBA.com&apos;s tracker with <code>courtlens import-free-agency</code>.</GatedNote>}
     {data?.status === "available" && <>
       <section className="fa-summary" aria-label="Tracker summary">

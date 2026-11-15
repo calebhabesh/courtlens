@@ -7,6 +7,8 @@ import { PlayerPortrait } from "./player-portrait";
 import { SqPanel } from "./shot-quality-figures";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
+import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelGrid, SkelLines, SkelSegmented, SkelText } from "./ui/content-skeletons";
 import { GatedNote } from "./ui/gated-note";
 import { PlayerAvatar } from "./ui/identity";
 import { ButtonSummary, IconButton, Segmented, Select } from "./ui/kit";
@@ -162,6 +164,27 @@ function RookieTile({ stat, rookie }: { stat: RookieStat; rookie: Rookie }) {
   </div>;
 }
 
+/** The rookie tracker's loading state: lead, rookie search, the rookie card beside past picks, then the rookie stats table. */
+export function RookieTrackerSkeleton() {
+  return <>
+    <SkelLines lines={2} size="sm" last="40%" className="dc-lead" />
+    <div className="dc-rookie-pick"><SkelControl width={200} size="md" /></div>
+    <div className="dc-rookie-pair">
+      <div className="dc-card dc-rookie-card" aria-hidden="true">
+        <div className="dc-card-head"><Skeleton variant="circle" width={64} height={64} /><div className="dc-card-titles"><SkelText size="lg" width={120} /><SkelText size="xs" width={48} /><SkelText size="2xs" width={96} /></div></div>
+        <div className="dc-tiles">{Array.from({ length: 8 }, (_, index) => <div key={index} className="dc-tile"><SkelText size="2xs" width={36} /><SkelText size="lg" width={40} /><SkelText size="2xs" width={44} /></div>)}</div>
+        <div className="dc-ratings">{[0, 1].map(index => <div key={index} className="dc-rating"><SkelText size="2xs" width={64} /><SkelText size="lg" width={44} /></div>)}</div>
+        <SkelLines lines={2} size="2xs" />
+      </div>
+      <div className="dc-past"><SkelText size="md" width={320} /><SkelGrid label="Past picks" rows={8} columns={11} density="compact" leadWidth="md" /></div>
+    </div>
+    <SkelText size="lg" width={180} />
+    <div className="dc-grid-tools dc-rookie-tools"><SkelSegmented options={[72, 56, 56, 92]} size="md" /><SkelControl width={120} size="md" /></div>
+    <SkelLines lines={2} size="xs" last="20%" />
+    <SkelGrid label="Rookies" rows={10} search />
+  </>;
+}
+
 function RookieCard({ rookie, tracker }: { rookie: Rookie; tracker: RookieTracker }) {
   const line = rookie.comparison!.line;
   const tint = teamAccent(rookie.team, ROOKIE_SEASON);
@@ -209,7 +232,7 @@ function PastPicks({ rookie }: { rookie: Rookie }) {
   return <div className="dc-past">
     <h3 className="dc-subhead">Past number {rookie.pick} picks over their first {games} games, per 36 minutes</h3>
     {error && <FeedFailure error={error} retry={retry} what="The comparison" />}
-    {loading && <FeedSkeleton label="Loading the comparison" />}
+    {loading && <FeedSkeleton label="Loading the comparison" shape="grid" rows={8} density="compact" />}
     {data && (data.comparisons.length === 0 ? <GatedNote>No past rookie at this pick has logged games.</GatedNote> :
       <StatsGrid<Row> label={`Past number ${rookie.pick} picks at ${games} games`} name="rookie-comparisons" density="compact" leadWidth="md" className="dc-past-grid"
         rows={sorted.rows} sort={sorted.sort} rowKey={r => r.player_id} rowData={r => ({ current: r.current ? "true" : undefined })}
@@ -287,7 +310,7 @@ function RookiesSection({ feed }: { feed: ReturnType<typeof useFeed<RookieTracke
   const filtered = useMemo(() => (data?.rookies ?? []).filter(r => matches(r.name, query) && (!team || r.team === team)), [data, query, team]);
   const sorted = useSort(filtered, columns, { key: "pick", direction: "asc" });
   if (feed.error) return <FeedFailure error={feed.error} retry={feed.retry} what="The rookie tracker" />;
-  if (feed.loading || !data) return <FeedSkeleton label="Loading the rookie tracker" />;
+  if (feed.loading || !data) return <FeedSkeleton label="Loading the rookie tracker"><RookieTrackerSkeleton /></FeedSkeleton>;
   if (data.state !== "ok") return <GatedNote>{data.state === "no_games" ? `No ${data.season} regular-season game is in the published data yet.` : "The past-rookie comparison table is not on this server, so the rookies can't be compared here."}</GatedNote>;
   const chosen = compared.find(r => r.player_id === get("rookie")) ?? compared[0] ?? null;
   const choose = (id: string | null) => {
@@ -317,7 +340,7 @@ function RookiesSection({ feed }: { feed: ReturnType<typeof useFeed<RookieTracke
       : <p className="dc-note" data-field="rookie-note">Every {ROOKIE_CLASS} draft pick this regular season, with games through <time dateTime={data.comparison_date ?? undefined}>{formatDate(data.comparison_date)}</time>.
         DARKO and RAPM are gold above zero and blue below. <Link href={`/stats?season=${ROOKIE_SEASON}&draftYear=${ROOKIE_CLASS}`}>Open this class in Stats</Link></p>}
     {view !== "past" && stats.error ? <FeedFailure error={stats.error} retry={stats.retry} what="The rookie stats" />
-      : view !== "past" && (stats.loading || !stats.data) ? <FeedSkeleton label="Loading the rookie stats" />
+      : view !== "past" && (stats.loading || !stats.data) ? <FeedSkeleton label="Loading the rookie stats" shape="grid" rows={10} search />
       :     <StatsGrid<Rookie> label={`${data.season} rookies`} name="rookies" leadWidth="lg" rows={sorted.rows} rowKey={r => String(r.pick)}
       rowData={r => ({ pick: r.pick, selected: chosen?.pick === r.pick ? "true" : undefined })} sort={sorted.sort}
       empty={query || team ? "No rookie matches these filters." : "No rookies."}
@@ -452,7 +475,7 @@ function ClassesSection({ summary }: { summary: DraftSummary }) {
       <TeamPicker value={team} onChange={setTeam} season={season} />
     </SqPanel>
     {error && <FeedFailure error={error} retry={retry} what="The draft class" />}
-    {loading && <FeedSkeleton label="Loading the draft class" />}
+    {loading && <FeedSkeleton label="Loading the draft class" shape="grid" rows={12} search />}
     {data && data.year === year && <ClassBody data={data} order={data.status === "complete" ? order : "draft"} query={query} setQuery={setQuery} team={team} showAll={showAll} />}
   </>;
 }
@@ -627,7 +650,7 @@ function CombineSection({ summary }: { summary: DraftSummary }) {
       </Select>
     </div>
     {error && <FeedFailure error={error} retry={retry} what="Combine rows" />}
-    {loading && <FeedSkeleton label="Loading combine rows" />}
+    {loading && <FeedSkeleton label="Loading combine rows" shape="chart" height={360} />}
     {data && <figure className="dc-figure">
       <CombineScatter rows={data.rows} measure={measure} r={rText} />
       <figcaption className="dc-note" data-field="combine-r">{rText}. Each dot is one drafted player; hover for the name.</figcaption>

@@ -17,7 +17,7 @@ import {
   type CurvePoint, type Interval, type RecentGame, type ScoreGroup, type WinProbabilityAdded, type WinProbabilityPage, type WpaRow, type WpaSort, type WpaSortKey,
 } from "@/lib/win-probability";
 import { getWinProbabilityAdded, getWinProbabilityPage } from "@/lib/workbench-api";
-import { WinProbabilityV4 } from "./win-probability-v4";
+import { WinProbabilityV4, WinProbabilityV4Skeleton } from "./win-probability-v4";
 import { playerHref } from "@/lib/entity-links";
 import { TeamLink } from "./entity-link";
 
@@ -363,7 +363,7 @@ function WpaSection({ seasons }: { seasons: string[] }) {
     <p className="wp-lead">Each play&apos;s swing in win probability goes to its first listed player. This is credit assignment, not causal value: the swing also holds time passing since the last play, and nothing goes to the player who created the shot. Clutch means the last five minutes of the fourth quarter or overtime with the margin at five or fewer.</p>
     {!season && <GatedNote>No win probability added has been computed yet.</GatedNote>}
     {error && <FeedFailure error={error} retry={retry} what="Win probability added" />}
-    {loading && <FeedSkeleton label="Loading win probability added" />}
+    {loading && <FeedSkeleton label="Loading win probability added" shape="grid" rows={10} />}
     {table && <WpaGrid table={table} />}
   </ResearchSection>;
 }
@@ -473,7 +473,7 @@ export function WinProbabilityResearch() {
     : [`frozen ${formatDate(data.model.frozen_at.slice(0, 10))}`, `${whole(data.scorecard?.prospective.games ?? 0)} games since the freeze`, "checked nightly against ESPN"]) : null;
   return <Frame meta={meta}>
     {error && <FeedFailure error={error} retry={retry} what="Win Probability" />}
-    {loading && <FeedSkeleton label="Loading Win Probability" />}
+    {loading && <FeedSkeleton label="Loading Win Probability"><WinProbabilityV4Skeleton /></FeedSkeleton>}
     {data && <>
       <WinProbabilityV4 data={data} />
       <h2 className="wp-evidence-head" id="evidence">Evidence</h2>

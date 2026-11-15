@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { TrackingStatsView } from "@/components/tracking-stats-view";
-import { TemplateSkeleton } from "@/components/ui/template-skeleton";
+import { TrackingPageSkeleton, TrackingStatsView } from "@/components/tracking-stats-view";
 
 export const metadata: Metadata = { title: "Tracking · Stats" };
 
 export default function Page() {
-  return <Suspense fallback={<TemplateSkeleton template="research" />}><TrackingStatsView /></Suspense>;
+  return <Suspense fallback={<TrackingPageSkeleton />}><TrackingStatsView /></Suspense>;
 }

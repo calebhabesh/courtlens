@@ -8,7 +8,7 @@ import { GatedNote } from "./ui/gated-note";
 import { Button } from "./ui/kit";
 import { LookupInput } from "./lookup-input";
 import { Select } from "./ui/select";
-import { Skeleton } from "./ui/skeleton";
+import { SkelBars, SkelChart, SkelGrid, SkelLines, SkelProfileCard, SkelResearchArticle, SkelText, SkelTiles } from "./ui/content-skeletons";
 import { formatDate } from "@/lib/format-date";
 import { PHASE_LABELS, type FeedEnvelope, type FeedPhase, type FeedScope, type FeedSource } from "@/lib/stats-feeds";
 
@@ -90,8 +90,28 @@ export function FeedFailure({ error, retry, what }: { error: string; retry: () =
   return <div role="alert"><GatedNote tone="warning" why={error} action={<Button size="lg" onClick={retry}>Retry</Button>}>{what} is unavailable right now.</GatedNote></div>;
 }
 
-export function FeedSkeleton({ label }: { label: string }) {
-  return <div role="status" aria-busy="true" aria-label={label} className="feed-loading"><Skeleton height={96} /><Skeleton height={360} /></div>;
+export type FeedShape = "article" | "grid" | "chart" | "bars" | "cards" | "profile" | "tiles-grid" | "tiles-bars";
+
+/**
+ * A feed's loading state in the shape of what it loads (DL Loading): a Research article, the site table,
+ * a chart panel, bars, cards, a player card over its figures, or tiles over a table. `children` replaces
+ * the shape for a page whose layout none of these match.
+ */
+export function FeedSkeleton({ label, shape = "article", rows, count, height, search, labels, groups, density, lead, children }: {
+  label: string; shape?: FeedShape; rows?: number; count?: number; height?: number; search?: boolean;
+  labels?: readonly string[]; groups?: readonly string[]; density?: "default" | "compact"; lead?: "player" | "team" | "text"; children?: ReactNode;
+}) {
+  const grid = <SkelGrid label={label} rows={rows ?? 10} labels={labels} groups={groups} columns={count ?? 8} search={search} density={density} lead={lead} />;
+  const body = children ?? (
+    shape === "grid" ? grid
+      : shape === "chart" ? <SkelChart height={height ?? 320} />
+        : shape === "bars" ? <SkelBars rows={rows ?? 6} />
+          : shape === "cards" ? <div className="rs-cards" data-columns={Math.min(count ?? 3, 4) as 2 | 3 | 4}>{Array.from({ length: count ?? 3 }, (_, index) => <div key={index} className="rs-card"><SkelText size="xs" width="40%" /><SkelText size="lg" width="72%" /><SkelLines lines={rows ?? 3} size="sm" /></div>)}</div>
+            : shape === "profile" ? <><SkelProfileCard /><SkelTiles count={count ?? 4} />{rows !== 0 && <SkelGrid label={label} rows={rows ?? 6} columns={7} density="compact" lead="text" />}</>
+              : shape === "tiles-grid" ? <><SkelTiles count={count ?? 4} />{rows !== 0 && grid}</>
+                : shape === "tiles-bars" ? <><SkelTiles count={count ?? 4} /><SkelBars rows={rows ?? 12} card={false} /></>
+                : <SkelResearchArticle />);
+  return <div role="status" aria-busy="true" aria-label={label} className="feed-loading" data-shape={children ? "custom" : shape}>{body}</div>;
 }
 
 /** C3: a default subject chosen by a fixed rule says so, with the rule, beside a way to change it. */

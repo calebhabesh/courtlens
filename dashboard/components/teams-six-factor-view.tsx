@@ -11,6 +11,7 @@ import { NetTrend } from "./team-trend";
 import { SortHeader } from "./table-ui";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { FilterBar } from "./ui/filter-bar";
+import { SkelFilterBar, SkelGrid, SkelHeader } from "./ui/content-skeletons";
 import { DataDetailsButton } from "./ui/data-details";
 import { Menu, MenuItem } from "./ui/menu";
 import { PageHeader } from "./ui/panel";
@@ -42,6 +43,21 @@ const tone = (column: TeamColumn, value: number | null) => !column.signed || val
  * NBA Team Stats (alignment row 4): Databallr's six-factor team table. Each side's rating against
  * league average splits into shooting, turnover and rebound points per 100, in the Stats table look.
  */
+/** The six-factor table while it loads: team rows under the Ratings, Offense, Defense and Net groups. */
+export function TeamsTableSkeleton() {
+  return <SkelGrid label="Team six factors" rows={15} lead="team" search groupSizes={[3, 4, 4, 2]} className="teams-table" />;
+}
+
+/** The whole page while the route loads: centred header, the two-row console, then the table. */
+export function TeamsPageSkeleton() {
+  return <div className="teams-page" role="status" aria-busy="true" aria-label="Loading NBA Team Stats">
+    <SkelHeader align="center" title={260} subtitle={218} />
+    <div className="teams-console"><SkelFilterBar fields={[64, 104]} modes={[[56, 72, 72], [92, 88, 88, 84], [80]]} meta={[]} /></div>
+    <div className="teams-console"><SkelFilterBar fields={[]} modes={[[64, 60, 64, 76, 64], [84, 52, 52], [60, 64], [56, 64]]} meta={[108]} /></div>
+    <TeamsTableSkeleton />
+  </div>;
+}
+
 export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | null }) {
   const { get, set } = useUrlState();
   const season = get("season") || catalog?.default_season || "";
@@ -155,7 +171,7 @@ export function TeamsSixFactorView({ catalog }: { catalog: WorkbenchCatalog | nu
     {totals && <p className="teams-note">{season} has season totals only (game logs start in {FIRST_GAME_LOG_SEASON}): records come from the standings, and last ten, streaks, close games, the trend, schedule strength and home and away need games.
       {estimated && " Turnovers and offensive rebounds were not kept before 1973-74, so ratings are Basketball-Reference's estimates and the six factors are unknown."}</p>}
     {error && <FeedFailure error={error} retry={retry} what="team stats" />}
-    {loading && !data && <FeedSkeleton label="Loading team stats" />}
+    {loading && !data && <FeedSkeleton label="Loading team stats"><TeamsTableSkeleton /></FeedSkeleton>}
     {data && !sorted.length && <p className="teams-empty">{conference ? `No ${conference} Conference teams in this scope.` : "No team games in this scope."}</p>}
     {scoringMissing && <p className="teams-note" role="status">Scoring is unknown{data.scoring?.status === "partial" ? " for some teams" : ""} here: {data.scoring?.reason ?? "no team scoring totals are admitted."} These are season totals, so they show for full-season scopes from 1996-97 on.</p>}
     {data && sorted.length > 0 && layout === "table" && <section className="stats-workspace teams-table" aria-label="Team six factors" aria-busy={loading || undefined}>

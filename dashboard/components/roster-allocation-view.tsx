@@ -16,7 +16,7 @@ import { Modal } from "./ui/modal";
 import { PageHeader } from "./ui/panel";
 import { BoardLayout, PageShell } from "./ui/page-shell";
 import { Select } from "./ui/select";
-import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelText } from "./ui/content-skeletons";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
 import { downloadResearch } from "@/lib/advanced-research";
 import {
@@ -257,8 +257,8 @@ export function RosterAllocationView({ catalog, teamId, scope, embedded = false 
               why={<p>{load.message}</p>}>Couldn’t load {teamName} minutes.</GatedNote>
           ) : load.status !== "ready" ? (
             <BoardLayout className="roster-board" main={<div className="roster-skeleton" role="status" aria-busy="true" aria-label="Loading minutes">
-              <Skeleton height={168} />
-              <div className="roster-lanes">{POSITION_LANES.map((name) => <Skeleton key={name} height={200} />)}</div>
+              <div className="roster-lane roster-lane-pool" aria-hidden="true"><div className="roster-lane-head"><SkelText size="md" width={96} /><SkelText size="xs" width={72} /></div><div className="ui-skel-controls">{Array.from({ length: 6 }, (_, index) => <SkelControl key={index} width={132} size="md" />)}</div></div>
+              <div className="roster-lanes" aria-hidden="true">{POSITION_LANES.map((name) => <div key={name} className="roster-lane roster-lane-position"><div className="roster-lane-head"><SkelText size="md" width={40} /><SkelText size="xs" width={72} /></div>{[0, 1, 2].map(index => <SkelControl key={index} width="100%" size="md" />)}</div>)}</div>
             </div>} />
           ) : !rows.length ? (
             <GatedNote why={caveats} action={<Button size="xs" variant="secondary" icon="swap" onClick={() => setPickerOpen(true)}>Change team</Button>}>

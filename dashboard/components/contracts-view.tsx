@@ -12,6 +12,8 @@ import {
   nextOption, payrollSlices, resolveRefresh, salaryIn, shortName, smallVsBig, thresholdLines, timelineMarks, yearRoster,
   type ContractPlayer, type PayrollSlice, type PositionGroup, type RefreshContext, type TeamContracts, type ValueGroup, type ValueRow,
 } from "@/lib/contracts";
+import { SkelChart, SkelLines, SkelText } from "./ui/content-skeletons";
+import { Skeleton } from "./ui/skeleton";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamGrid } from "./team-grid";
 import { TeamLogo } from "./team-logo";
@@ -313,6 +315,27 @@ function RosterBanner({ data, players }: { data: TeamContracts; players: Contrac
 const tricodeOf = (team: string) => TEAMS.find(t => t.team_id === team || t.tricode === team)?.tricode ?? team;
 
 /** Contracts (alignment row 14): Databallr's Select Team flow, Overview and Small vs Big. */
+/** A contracts panel's loading state: its icon heading, then the panel's own body. */
+function PanelSkeleton({ title, children, className = "" }: { title: number; children: ReactNode; className?: string }) {
+  return <section className={`ctr-panel player-glass ${className}`} aria-hidden="true">
+    <header className="ctr-panel-head"><span className="ui-skel-labeled"><Skeleton width={20} height={20} /><SkelText size="xl" width={title} /></span></header>
+    {children}
+  </section>;
+}
+
+/** The team's loading state: the roster banner, then the four overview panels in their grid. */
+export function ContractsSkeleton() {
+  return <>
+    <div className="ctr-banner" aria-hidden="true"><SkelText size="sm" width={180} /><SkelLines lines={2} size="sm" last="40%" /></div>
+    <div className="ctr-grid">
+      <PanelSkeleton title={120}><SkelText size="3xl" width={150} /><SkelText size="xs" width={260} /><SkelText size="xs" width={240} /></PanelSkeleton>
+      <PanelSkeleton title={140}><SkelText size="xs" width={200} /><Skeleton height={24} className="ui-skel-bar" /><SkelLines lines={2} size="xs" last="80%" /></PanelSkeleton>
+      <PanelSkeleton title={130}><SkelChart height={560} title={false} className="ui-skel-plain" /></PanelSkeleton>
+      <PanelSkeleton title={170}>{Array.from({ length: 12 }, (_, index) => <div key={index} className="ui-skel-labeled"><Skeleton variant="circle" width={24} height={24} /><SkelText size="sm" width={80} /><Skeleton width={56 + (index % 3) * 60} height={20} /></div>)}</PanelSkeleton>
+    </div>
+  </>;
+}
+
 export function ContractsView({ statsTable }: { statsTable?: ReactNode }) {
   const { get, set } = useUrlState();
   const team = get("team")?.toUpperCase() ?? null;
@@ -365,7 +388,7 @@ export function ContractsView({ statsTable }: { statsTable?: ReactNode }) {
       <p>Choose an NBA team to view their salary cap breakdown, contract details, and multi-year commitments.</p>
       <Button size="md" variant="primary" onClick={() => setPicker(true)}>Choose Team</Button>
     </div>}
-    {team && !failure && !data && <FeedSkeleton label="Loading contracts" />}
+    {team && !failure && !data && <FeedSkeleton label="Loading contracts"><ContractsSkeleton /></FeedSkeleton>}
     {data && <>
       <RosterBanner data={data} players={data.players.filter(p => p.on_index_roster)} />
       {tab === "overview" && <>

@@ -1,59 +1,38 @@
-import type { PageTemplate } from "./page-shell";
-import { Skeleton } from "./skeleton";
+"use client";
 
-function Rows({ count, height = 40 }: { count: number; height?: number }) {
-  return <>{Array.from({ length: count }, (_, index) => <Skeleton key={index} height={height} />)}</>;
-}
+import type { PageTemplate } from "./page-shell";
+import { SkelBars, SkelChart, SkelControls, SkelFilterBar, SkelGrid, SkelHeader, SkelLines, SkelProfileCard, SkelResearchArticle, SkelText, SkelTiles } from "./content-skeletons";
 
 function Body({ template }: { template: PageTemplate }) {
   switch (template) {
     case "explorer":
-      return <div className="ui-skeleton-table"><Skeleton height={40} /><Rows count={10} height={48} /></div>;
+      return <SkelGrid label="Rows" rows={10} search groupSizes={[3, 4, 3]} />;
     case "profile":
-      return (
-        <div className="ui-profile">
-          <div className="ui-skeleton-hero"><Skeleton variant="circle" width={96} height={96} /><div className="ui-skeleton-stack"><Skeleton variant="text" width="40%" height={28} /><Skeleton variant="text" width="25%" /></div></div>
-          <div className="ui-skeleton-tiles"><Rows count={4} height={88} /></div>
-          <Skeleton height={320} />
-        </div>
-      );
+      return <div className="ui-profile"><SkelProfileCard /><SkelTiles count={6} bar /><SkelGrid label="Career" rows={6} lead="text" columns={12} density="compact" /></div>;
     case "compare":
-      return (
-        <div className="ui-compare">
-          <div className="ui-compare-sides"><Skeleton height={120} /><Skeleton height={120} /></div>
-          <div className="ui-skeleton-stack"><Rows count={8} height={36} /></div>
-        </div>
-      );
+      return <div className="ui-compare"><div className="ui-compare-sides"><SkelProfileCard /><SkelProfileCard /></div><SkelBars rows={8} /></div>;
     case "board":
-      return (
-        <div className="ui-board">
-          <div className="ui-board-main"><Skeleton height={480} /></div>
-          <aside className="ui-board-rail ui-skeleton-stack"><Skeleton height={64} /><Rows count={6} height={40} /></aside>
-        </div>
-      );
+      return <div className="ui-board"><div className="ui-board-main"><SkelChart height={420} /></div><aside className="ui-board-rail"><SkelLines lines={8} size="md" /></aside></div>;
     case "research":
-      return (
-        <div className="ui-research">
-          <div className="ui-findings"><Rows count={3} height={88} /></div>
-          <Skeleton height={360} />
-        </div>
-      );
+      return <SkelResearchArticle />;
     case "article":
-      return (
-        <div className="ui-article">
-          <div className="ui-skeleton-article-toc"><Rows count={5} height={40} /></div>
-          <div className="ui-article-body"><Skeleton variant="text" width="45%" height={28} /><Rows count={6} height={20} /><Skeleton height={160} /></div>
-        </div>
-      );
+      return <div className="ui-article">
+        <nav className="ui-article-toc"><SkelText size="xs" width={72} className="ui-article-toc-title" /><ol className="ui-article-toc-list">{[56, 88, 120, 72, 96].map(width => <li key={width}><span className="ui-article-toc-link"><SkelText size="sm" width={width} /></span></li>)}</ol></nav>
+        <div className="ui-article-body ui-skel-measure"><SkelText size="xl" width={180} /><SkelLines lines={4} size="md" /><SkelText size="xl" width={220} /><SkelLines lines={3} size="md" /></div>
+      </div>;
   }
 }
 
-/** Loading state shaped like the final layout of each template (D11), never a blank area. */
+/**
+ * A reference loading state per page template (D11), built from the content-shaped parts. Pages use
+ * their own loader in their real layout's shape; this is the showcase of the parts on /design.
+ */
 export function TemplateSkeleton({ template }: { template: PageTemplate }) {
   return (
     <div className={`ui-page ui-page-${template}`} role="status" aria-busy="true" aria-label="Loading">
-      <div className="ui-skeleton-header"><Skeleton variant="text" width={240} height={32} /><Skeleton variant="text" width={420} /></div>
-      {template !== "article" && <div className="ui-skeleton-filters"><Rows count={4} height={40} /></div>}
+      <SkelHeader align={template === "research" ? "hero" : "left"} title={240} subtitle={420} />
+      {template === "explorer" || template === "profile" ? <SkelFilterBar fields={[[44, 92], [40, 124], [50, 124]]} />
+        : template !== "article" && template !== "research" ? <SkelControls items={[120, 140, 120]} /> : null}
       <Body template={template} />
     </div>
   );

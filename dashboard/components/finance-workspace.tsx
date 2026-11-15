@@ -20,7 +20,7 @@ import { DataDetailsButton } from "./ui/data-details";
 import { GatedNote } from "./ui/gated-note";
 import { TeamIdentity } from "./ui/identity";
 import { TeamLogo } from "./team-logo";
-import { Skeleton } from "./ui/skeleton";
+import { SkelGrid, SkelTiles } from "./ui/content-skeletons";
 import { Button } from "./ui/kit";
 import { playerHref, scopeFromQuery } from "@/lib/entity-links";
 
@@ -116,7 +116,7 @@ export function FinanceWorkspace({ team }: { team?: string }) {
     />
     {catalogError && <div role="alert"><GatedNote why={catalogError} action={<Button size="lg" onClick={loadBooks}>Reload Books</Button>}>Book discovery is unavailable.</GatedNote></div>}
     {!valid && <GatedNote why={thresholdIssue || "Queries require an explicitly selected book, financial season, timezone-aware known-at and inclusive effective date. No newest branch is selected automatically. Manual UUID entry is in Data details."}>Choose a book and both financial dates.</GatedNote>}
-    {loading && <div role="status" aria-label="Loading financial observations" aria-busy="true"><Skeleton height={96} /><Skeleton height={320} /></div>}
+    {loading && <div role="status" aria-label="Loading financial observations" aria-busy="true" className="feed-loading"><SkelTiles count={4} /><SkelGrid label="Financial observations" rows={10} lead="text" columns={7} density="compact" /></div>}
     {error && <div role="alert"><GatedNote why={error} action={<Button size="lg" onClick={() => setRetry(value => value + 1)}>Retry query</Button>}>Finance unavailable.</GatedNote></div>}
     {result && <section aria-label="Financial query result" className="finance-result">
       {resolvedTeam ? <ProfileLayout hero={<div className="finance-team-hero"><TeamIdentity team={resolvedTeam} size="xl" />{summary}</div>}>{null}</ProfileLayout> : summary}

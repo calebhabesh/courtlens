@@ -3,6 +3,8 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { FeedFailure, FeedSkeleton, useFeed, useUrlState } from "./stats-feed-ui";
 import { TeamLogo } from "./team-logo";
+import { Skeleton } from "./ui/skeleton";
+import { SkelControl, SkelLines, SkelSegmented, SkelText } from "./ui/content-skeletons";
 import { Icon } from "./ui/icon";
 import { DataDetailsButton } from "./ui/data-details";
 import { PageShell } from "./ui/page-shell";
@@ -37,6 +39,36 @@ const tone = (v: number, d = 2): "a" | "b" | undefined => { const r = Number(v.t
 const tricode = (team: string, season: string) => teamArtwork(team, season)?.tricode ?? team;
 
 interface Baseline { base: LabBase; name: string; team: string | null; leagueOrtg: number; season: string; games: number; mu: number }
+
+/** The lab's loading state: inputs with their slider rows beside the equation, tabs and cards; `hero` adds the header bar. */
+export function OrtgLabSkeleton({ hero = false }: { hero?: boolean }) {
+  const row = (index: number) => <div key={index} className="ol-row"><SkelText size="xs" width={40} /><SkelText size="xs" width={36} /><Skeleton className="ui-skel-track" width="100%" /><SkelText size="xs" width={44} /></div>;
+  const body = <div className="ol-main" aria-hidden="true">
+    <section className="ol-panel ol-inputs">
+      <div className="ol-inputs-head"><SkelText size="2xs" width={46} /><SkelControl width={83} /></div>
+      <div className="ol-baseline"><SkelControl width={89} /><SkelControl width={143} /></div>
+      {[5, 3, 4].map((count, group) => <div key={group} className="ol-group"><SkelText size="2xs" width={72} />{Array.from({ length: count }, (_, index) => row(index))}</div>)}
+    </section>
+    <section className="ol-panel ol-result">
+      <div className="ol-well ol-equation">
+        <div className="ol-term ol-term-main"><SkelText size="2xs" width={40} className="ui-skel-center" /><SkelText size="3xl" width={120} className="ui-skel-center" /><SkelText size="xs" width={96} className="ui-skel-center" /></div>
+        {[0, 1, 2].map(index => <div key={index} className="ol-term"><SkelText size="2xs" width={44} className="ui-skel-center" /><SkelText size="xl" width={64} className="ui-skel-center" /><SkelLines lines={2} size="xs" /></div>)}
+      </div>
+      <SkelSegmented options={[100, 108, 100]} className="ol-tabs" />
+      <div className="ol-tab-body"><div className="ol-cards">{[0, 1].map(card => <div key={card} className="ol-well"><SkelText size="2xs" width={96} />{[0, 1, 2].map(index => <div key={index}><SkelText size="xs" width={80} /><SkelText size="xl" width={72} /></div>)}</div>)}</div></div>
+    </section>
+  </div>;
+  if (!hero) return body;
+  return <>
+    <header className="ui-page-header ol-hero" aria-hidden="true"><div className="ui-page-header-title-row"><Skeleton width={118} height={40} className="ol-pill" /><SkelText size="xl" width={256} /><div className="ui-page-header-actions"><SkelText size="sm" width={55} /></div></div></header>
+    {body}
+  </>;
+}
+
+/** The whole page while the lab's inputs load (route loading, Suspense and the first fetch). */
+export function OrtgLabPageSkeleton() {
+  return <PageShell template="research" className="ol-shell"><div className="rs-column ol-page"><FeedSkeleton label="Loading the ORTG lab"><OrtgLabSkeleton hero /></FeedSkeleton></div></PageShell>;
+}
 
 function Hero({ paper }: { paper: FourFactorsSummary["paper"] }) {
   return <PageHeader className="ol-hero"
@@ -271,7 +303,7 @@ export function OrtgLabView() {
     return { base, name: teamRow ? tricode(teamRow.team, head.season) : "League average", team: teamRow?.team ?? null, leagueOrtg: head.league.ortg_factors, season: head.season, games: head.games, mu: head.mu };
   }, [data, season, teamParam, seasonData]);
   if (summary.error) return <PageShell template="research"><div className="rs-column ol-page"><FeedFailure error={summary.error} retry={summary.retry} what="Four-factor inputs" /></div></PageShell>;
-  if (summary.loading || !data || !season) return <PageShell template="research"><div className="rs-column ol-page"><FeedSkeleton label="Loading the ORTG lab" /></div></PageShell>;
+  if (summary.loading || !data || !season) return <OrtgLabPageSkeleton />;
   const waitingTeam = Boolean(teamParam) && !seasonData && !seasonFeed.error;
   const details = <DataDetailsButton rows={[
     { label: "Registration", value: `${data.registration.identity} · ${data.registration.content_sha256}`, mono: true },
@@ -280,7 +312,7 @@ export function OrtgLabView() {
   return <PageShell template="research" className="ol-shell">
     <div className="rs-column ol-page" data-section="ortg-lab">
       <Hero paper={data.paper} />
-      {waitingTeam || !baseline ? <FeedSkeleton label="Loading team inputs" />
+      {waitingTeam || !baseline ? <FeedSkeleton label="Loading team inputs"><OrtgLabSkeleton /></FeedSkeleton>
         : <Lab key={`${baseline.season}-${baseline.team ?? "league"}`} data={data} b={baseline} teams={teams} season={season} set={set} />}
       <Methodology data={data} />
       <ResearchDisclosure id="observed" icon="table" title="Observed Inputs & Caveats">
